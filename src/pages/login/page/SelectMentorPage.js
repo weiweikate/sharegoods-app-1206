@@ -22,7 +22,6 @@ import {
 import BasePage from "../../../BasePage";
 import DesignRule from "../../../constants/DesignRule";
 import MentorItemView from "../components/MentorItemView";
-// import { NavigationActions } from 'react-navigation';
 import ScreenUtils from "../../../utils/ScreenUtils";
 import res from "../res";
 import LoginAPI from "../api/LoginApi";
@@ -31,6 +30,7 @@ import UIText from "../../../components/ui/UIText";
 import Styles from "../style/SelectMentorPage.style";
 import { homeRegisterFirstManager } from "../../home/manager/HomeRegisterFirstManager";
 import { MRText as Text } from "../../../components/ui";
+import { TrackApi } from "../../../utils/SensorsTrack";
 
 const { px2dp } = ScreenUtils;
 const {
@@ -40,7 +40,6 @@ const {
 export default class SelectMentorPage extends BasePage {
     constructor(props) {
         super(props);
-        ScreenUtils;
         this.state = {
             selectIndex: -1,
             mentorData: [],
@@ -49,6 +48,7 @@ export default class SelectMentorPage extends BasePage {
         this.scrView = null;
         this.itemViewArr = [];
         this.itemRefArr = [];
+        TrackApi.adviserSelectPage();
     }
     // 禁用某个页面的手势
     static navigationOptions = {
@@ -434,7 +434,7 @@ export default class SelectMentorPage extends BasePage {
                             this.changeSelectIndex(index);
                         }}
                         itemData={item}
-                        isSelect={this.state.selectIndex == -1 ? true : (this.state.selectIndex == index)}
+                        isSelect={this.state.selectIndex === -1 ? true : (this.state.selectIndex === index)}
                     />
                 );
             }

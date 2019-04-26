@@ -92,6 +92,7 @@ export default class MinePage extends BasePage {
             hasFans: false,
             modalId: false
         };
+        TrackApi.myPage();
     }
 
     $navigationBarOptions = {
@@ -108,18 +109,6 @@ export default class MinePage extends BasePage {
     };
 
     componentDidMount() {
-
-        this.listener = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
-        // this.refresh();
-    }
-
-    componentWillUnmount() {
-        this.didFocusSubscription && this.didFocusSubscription.remove();
-        this.willBlurSubscription && this.willBlurSubscription.remove();
-        this.listener && this.listener.remove();
-    }
-
-    componentWillMount() {
         this.willBlurSubscription = this.props.navigation.addListener(
             'willBlur',
             payload => {
@@ -138,6 +127,14 @@ export default class MinePage extends BasePage {
                 }
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
             });
+        this.listener = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
+        // this.refresh();
+    }
+
+    componentWillUnmount() {
+        this.didFocusSubscription && this.didFocusSubscription.remove();
+        this.willBlurSubscription && this.willBlurSubscription.remove();
+        this.listener && this.listener.remove();
     }
 
     handleBackPress = () => {

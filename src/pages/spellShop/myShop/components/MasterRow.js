@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import {
     View,
     StyleSheet,
-    TouchableWithoutFeedback,Image
+    TouchableWithoutFeedback, Image
 } from 'react-native';
 import DesignRule from '../../../../constants/DesignRule';
 import StringUtils from '../../../../utils/StringUtils';
@@ -60,7 +60,6 @@ export default class MasterRow extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        height: 105,
         borderRadius: 10,
         backgroundColor: '#ffffff',
         shadowColor: 'rgba(0, 0, 0, 0.1)',
@@ -79,7 +78,7 @@ const styles = StyleSheet.create({
     },
     row: {
         flexDirection: 'row',
-        marginTop: 7
+        marginTop: 7, marginBottom: 10
     },
     headerImg: {
         width: 28,

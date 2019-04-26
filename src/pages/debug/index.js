@@ -5,7 +5,6 @@
 
 import FetchHistoryPage from './FetchHistoryPage';
 import RequestDetailPage from './RequestDetailPage';
-import UserInfoPage from './UserInfoPage';
 
 //调试面板
 import DebugPanelPage from './DebugPanelPage';
@@ -15,7 +14,6 @@ export default {
     childRoutes: {
         DebugPanelPage,
         RequestDetailPage,
-        UserInfoPage,
         FetchHistoryPage
     }
 };

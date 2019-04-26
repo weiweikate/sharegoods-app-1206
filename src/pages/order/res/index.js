@@ -29,6 +29,7 @@ const index = {
     message_bg: require('./dingdan_bg_gengduo_nor.png'),
     message_three: require('./tongyong_icon_more_nor.png'),
     delete_icon: require('./tongyong_icon_dingdan_nor.png'),
+    empty_icon: require('./emptyIcon.png'),
     afterSaleService: {
         ...afterSaleService
     },

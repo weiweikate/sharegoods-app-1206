@@ -96,24 +96,22 @@ export default class ShopRecruitPage extends BasePage {
         };
     };
 
-    componentWillMount() {
-        this.willFocusSubscription = this.props.navigation.addListener(
-            'willFocus',
-            payload => {
-                const { state } = payload;
-                console.log('willFocus', state);
-                if (state && state.routeName === 'MyShop_RecruitPage') {//tab出现的时候
-                    this._loadPageData();
-                }
-            }
-        );
-    }
-
     componentWillUnmount() {
         this.willFocusSubscription && this.willFocusSubscription.remove();
     }
 
     componentDidMount() {
+        this.willFocusSubscription = this.props.navigation.addListener(
+            'didFocus',
+            payload => {
+                const { state } = payload;
+                console.log('didFocus', state);
+                if (state && state.routeName === 'MyShop_RecruitPage') {//tab出现的时候
+                    this._loadPageData();
+                }
+            }
+        );
+        /*上面的方法第一次_loadPageData不会执行  page已经出现了*/
         this._loadPageData();
     }
 

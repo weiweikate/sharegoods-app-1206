@@ -9,8 +9,12 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 
+import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.meeruu.commonlib.callback.ForegroundCallbacks;
 import com.meeruu.commonlib.handler.CrashHandler;
 import com.meeruu.commonlib.handler.WeakHandler;
@@ -28,6 +32,8 @@ import com.taobao.sophix.PatchStatus;
 import com.taobao.sophix.SophixManager;
 import com.taobao.sophix.listener.PatchLoadStatusListener;
 
+import org.greenrobot.eventbus.EventBus;
+
 import cn.jpush.android.api.JPushInterface;
 
 import static com.meeruu.commonlib.config.QiyuConfig.options;
@@ -40,7 +46,6 @@ public class InitializeService extends IntentService {
     @Override
     public void onCreate() {
         super.onCreate();
-        startForeground();
         mHandler = new WeakHandler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
@@ -56,6 +61,12 @@ public class InitializeService extends IntentService {
         });
     }
 
+    @Override
+    public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
+        startForeground();
+        return super.onStartCommand(intent, flags, startId);
+    }
+
     public InitializeService() {
         super("InitializeService");
     }
@@ -66,7 +77,10 @@ public class InitializeService extends IntentService {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.startForegroundService(intent);
         } else {
-            context.startService(intent);
+            try {
+                context.startService(intent);
+            } catch (Exception e) {
+            }
         }
     }
 
@@ -165,18 +179,21 @@ public class InitializeService extends IntentService {
         YSFOptions ysfOptions = options();
         ysfOptions.onMessageItemClickListener = new OnMessageItemClickListener() {
             // 响应 url 点击事件
+            @Override
             public void onURLClicked(Context context, String url) {
-                ((QiyuServiceMessageActivity) context).finish(true);
-                // 打开内置浏览器等动作
-//                try {
-//                    context.startActivity(new Intent(context, Class.forName("com.meeruu.sharegoods.ui.activity.MRWebviewActivity"))
-//                            .putExtra("web_url", url)
-//                            .putExtra("url_action", "get"));
-//                } catch (ClassNotFoundException e) {
-//                    e.printStackTrace();
-//                }
+                ((QiyuServiceMessageActivity) context).finish();
+                QiyuUrlEvent event = new QiyuUrlEvent();
+                event.setUrl(url);
+                EventBus.getDefault().post(event);
             }
         };
         return ysfOptions;
+    }
+
+    private void sendEvent(ReactContext reactContext,
+                           String eventName,
+                           @Nullable WritableMap params) {
+        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit(eventName, params);
     }
 }

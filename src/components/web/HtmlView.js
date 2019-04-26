@@ -17,7 +17,14 @@ import { observer } from "mobx-react";
 import DeviceInfo from 'react-native-device-info';
 import res from '../../comm/res'
 import ScreenUtils from '../../utils/ScreenUtils';
+import Manager,{AdViewBindModal} from './WebModalManager'
+import SmoothPushHighComponent from '../../comm/components/SmoothPushHighComponent';
+import ShareUtil from '../../utils/ShareUtil';
+import { homeType } from '../../pages/home/HomeTypes';
+import LuckyIcon from '../../pages/guide/LuckyIcon';
 const moreIcon = res.button.message_three;
+
+@SmoothPushHighComponent
 @observer
 export default class RequestDetailPage extends BasePage {
 
@@ -61,7 +68,16 @@ export default class RequestDetailPage extends BasePage {
             shareParmas: {},
             hasRightItem: false,
         };
+      this.manager = new Manager();
+      this.WebAdModal = observer(AdViewBindModal(this.manager))
+    }
 
+    $NavigationBarDefaultLeftPressed = () => {
+        if (this.webType === 'exitShowAlert') {
+            this.manager.showAd(()=>this.$navigateBack())
+        }else {
+            this.$navigateBack();
+        }
     }
 
     $NavBarRenderRightItem = () => {
@@ -85,6 +101,10 @@ export default class RequestDetailPage extends BasePage {
         this.webView && this.webView.sendToBridge(JSON.stringify({action: 'clickRightItem'}));
     }
 
+    clickShareBtn = ()=>{
+        this.webView && this.webView.sendToBridge(JSON.stringify({action: 'clickShareBtn'}));
+    }
+
     autoRun = autorun(() => {
         user.token ? (this.webView && this.webView.reload()):null
     });
@@ -100,6 +120,15 @@ export default class RequestDetailPage extends BasePage {
             return;
         }
 
+        if (msg.action === "onShare") {
+            let {data,api,trackParmas,trackEvent} = msg.onShareParmas || {}
+            ShareUtil.onShare(data,api,trackParmas,trackEvent,()=>{
+                console.log('webView reload');
+                this.webView && this.webView.reload();
+            });
+           return;
+        }
+
         if (msg.action === "backToHome") {
             this.$navigateBackToHome();
             return;
@@ -110,9 +139,23 @@ export default class RequestDetailPage extends BasePage {
             this.$renderSuperView();//为了触发render
             return;
         }
+
+        if (msg.action === "exitShowAlert") {
+            this.webType = 'exitShowAlert';
+            let parmas = msg.params || {};
+            this.manager.getAd(parmas.showPage, parmas.showPageValue,homeType.Alert);
+            return;
+        }
+
+        if (msg.action === "showFloat") {
+            let parmas = msg.params || {};
+            this.luckyIcon&&this.luckyIcon.getLucky(parmas.showPage, parmas.showPageValue)
+            return;
+        }
     };
 
     _render() {
+        let WebAdModal = this.WebAdModal;
         return (
             <View style={{ flex: 1, overflow: "hidden" }}>
                 <WebViewBridge
@@ -128,6 +171,9 @@ export default class RequestDetailPage extends BasePage {
                             r = RouterMap[routerKey] || r;
                         }
                         this.$navigate(r, p);
+                    }}
+                    onScrollBeginDrag={() => {//这个方法原生还没桥接过来
+                        this.luckyIcon&&this.luckyIcon.close();
                     }}
                     onNavigationStateChange={event => {
                         this.canGoBack = event.canGoBack;
@@ -149,8 +195,13 @@ export default class RequestDetailPage extends BasePage {
                     reloadWeb={() => {
                         this.webView && this.webView.reload();
                     }}
+                    clickShareBtn={()=>{
+                        this.clickShareBtn && this.clickShareBtn()
+                    }}
                     {...this.state.shareParmas}
                 />
+                <WebAdModal />
+                <LuckyIcon ref={(ref)=>{this.luckyIcon = ref}}></LuckyIcon>
             </View>
         );
     }

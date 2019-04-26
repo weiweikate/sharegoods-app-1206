@@ -29,6 +29,7 @@ Navigator.router.getStateForAction = (action, state) => {
     if (state && action.type === NavigationActions.BACK && state.routes.length === 1) {
         console.log('退出RN页面');
         const currentPage = getCurrentRouteName(state);
+        console.log(`当前页面${currentPage}`);
         if (currentPage === 'HomePage') {
             // Android物理回退键到桌面
             if (Platform.OS === 'android') {
@@ -85,6 +86,26 @@ Navigator.router.getStateForAction = (action, state) => {
             routes,
             index: routes.length - 1
         };
+    }
+
+    //支付页面路由替换，需要替换2个
+    if (state && action.type === 'ReplacePaymentPage') {
+        const routes = state.routes.slice(0, state.routes.length - 1);
+        routes.push(action);
+        return {
+            ...state,
+            routes,
+            index: routes.length - 1
+        };
+    }
+
+
+
+    //页面埋点
+
+    if (state && action.type === NavigationActions.NAVIGATE || action.type === NavigationActions.BACK){
+        const currentPage = getCurrentRouteName(state);
+        console.log(`当前页面${currentPage}`);
     }
 
 

@@ -126,7 +126,6 @@ public class VersionUpdateService extends Service {
                         // 取消通知
                         mNotificationManager.cancel(NOTIFY_ID);
                         handleInstallApk();
-                        Utils.installApk(VersionUpdateService.this, apk_path);
                         break;
                     default:
                         break;

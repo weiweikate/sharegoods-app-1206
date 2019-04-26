@@ -85,7 +85,11 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     NSString *retailPrice = model.retailPrice;
     NSString *spellPrice = model.spellPrice;
     priceStr = [NSString stringWithFormat:@"市场价：%@",priceStr];
-    retailPrice = [NSString stringWithFormat:@"V  1  价：%@",retailPrice];
+    if ([model.priceType isEqualToString:@"mr_skill"]) {
+      retailPrice = [NSString stringWithFormat:@"秒杀价：%@",retailPrice];
+    }else{
+      retailPrice = [NSString stringWithFormat:@"V  1  价：%@",retailPrice];
+    }
     spellPrice = [NSString stringWithFormat:@"拼店价：%@",spellPrice];
     
     CGFloat sigle =  [self getStringHeightWithText:@"1" fontSize:13*i viewWidth:220*i];
@@ -128,7 +132,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
   NSMutableAttributedString *retailPriceAttrStr = [[NSMutableAttributedString alloc]initWithString:retailPrice
                                                                                         attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:10*i], NSForegroundColorAttributeName: [UIColor redColor]}];
   [retailPriceAttrStr addAttributes:@{ NSForegroundColorAttributeName: [UIColor colorWithHexString:@"333333"]}
-                              range:NSMakeRange(0, 8)];
+                              range:NSMakeRange(0, retailPrice.length - model.retailPrice.length)];
   [nodes addObject:@{
                      @"value": retailPriceAttrStr,
                      @"location": [NSValue valueWithCGPoint:CGPointMake(15*i, 253*i+height+10*i + 15*i)]}

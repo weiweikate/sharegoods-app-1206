@@ -46,11 +46,14 @@ export default class RecommendRow extends Component {
     render() {
         const { ...RecommendRowItem } = this.props.RecommendRowItem;
         //bonusNeedMoney总额 tradeBalance本月收入 totalTradeBalance累计收入
-        let { storeUserList, tradeBalance, bonusNeedMoney, totalTradeBalance } = RecommendRowItem;
+        //店铺本月销售额salesAmount  店铺总计销售额totalSalesAmount
+        let { storeUserList, tradeBalance, bonusNeedMoney,salesAmount,totalSalesAmount } = RecommendRowItem;
         let tradeBalanceS = StringUtils.isEmpty(tradeBalance) ? 0 : parseFloat(tradeBalance);
+        /*进度*/
         bonusNeedMoney = StringUtils.isEmpty(bonusNeedMoney) ? 0 : parseFloat(bonusNeedMoney);
         let progress = bonusNeedMoney === 0 ? 0.00 : ((tradeBalanceS / bonusNeedMoney) * 100).toFixed(2);
         let widthScale = bonusNeedMoney === 0 ? 0 : ((tradeBalanceS / bonusNeedMoney > 1) ? 1 : tradeBalanceS / bonusNeedMoney);
+        /*星星*/
         const storeStar = RecommendRowItem.storeStarId;
         const starsArr = [];
         if (storeStar && typeof storeStar === 'number') {
@@ -128,13 +131,13 @@ export default class RecommendRow extends Component {
                     </View>
                     <View style={{ backgroundColor: 'rgb(244,231,221)', width: 1, height: 25 }}/>
                     <View style={styles.moneyContainer}>
-                        <Text style={styles.containTop} allowFontScaling={false}>店铺本月收入</Text>
-                        <Text style={styles.containBottom} allowFontScaling={false}>{`${tradeBalance || '0.00'}元`}</Text>
+                        <Text style={styles.containTop} allowFontScaling={false}>店铺本月销售额</Text>
+                        <Text style={styles.containBottom} allowFontScaling={false}>{`${salesAmount || '0.00'}元`}</Text>
                     </View>
                     <View style={{ backgroundColor: 'rgb(244,231,221)', width: 1, height: 25 }}/>
                     <View style={styles.moneyContainer}>
-                        <Text style={styles.containTop} allowFontScaling={false}>店铺累计收入</Text>
-                        <Text style={styles.containBottom} allowFontScaling={false}>{`${totalTradeBalance || '0.00'}元`}</Text>
+                        <Text style={styles.containTop} allowFontScaling={false}>店铺总计销售额</Text>
+                        <Text style={styles.containBottom} allowFontScaling={false}>{`${totalSalesAmount || '0.00'}元`}</Text>
                     </View>
                 </View>
 

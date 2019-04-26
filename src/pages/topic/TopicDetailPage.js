@@ -47,8 +47,12 @@ import { track, trackEvent } from '../../utils/SensorsTrack';
 import DetailHeaderServiceModal from '../product/components/DetailHeaderServiceModal';
 import ProductApi from '../product/api/ProductApi';
 import { beginChatType, QYChatTool } from '../../utils/QYModule/QYChatTool';
+import { SmoothPushPreLoadHighComponent } from '../../comm/components/SmoothPushHighComponent';
 
-
+/*
+* 仅有礼包了  2019.4.25
+* */
+@SmoothPushPreLoadHighComponent
 export default class TopicDetailPage extends BasePage {
 
     $navigationBarOptions = {
@@ -93,6 +97,17 @@ export default class TopicDetailPage extends BasePage {
 
     componentDidMount() {
         // this.getPromotion();
+        this.willFocusSubscription = this.props.navigation.addListener(
+            'didFocus',
+            payload => {
+                const { state } = payload;
+                console.log('didFocus', state);
+                if (state && state.routeName === 'topic/TopicDetailPage') {
+                    this._getActivityData();
+                    this._getMessageCount();
+                }
+            }
+        );
     }
 
     // getPromotion = async () => {
@@ -116,20 +131,6 @@ export default class TopicDetailPage extends BasePage {
     //     } catch (error) {
     //     }
     // };
-
-    componentWillMount() {
-        this.willFocusSubscription = this.props.navigation.addListener(
-            'willFocus',
-            payload => {
-                const { state } = payload;
-                console.log('willFocus', state);
-                if (state && state.routeName === 'topic/TopicDetailPage') {
-                    this._getActivityData();
-                    this._getMessageCount();
-                }
-            }
-        );
-    }
 
     componentWillUnmount() {
         this.willFocusSubscription && this.willFocusSubscription.remove();
@@ -276,7 +277,7 @@ export default class TopicDetailPage extends BasePage {
                 netFailedInfo: { msg: `该商品走丢了\n去看看别的商品吧` }
             });
         } else {
-            ProductApi.getProductDetailByCode({
+            ProductApi.getProductDetailByCodeV2({
                 code: prodCode
             }).then((data) => {
                 this.setState({
@@ -459,13 +460,18 @@ export default class TopicDetailPage extends BasePage {
     };
 
     _renderSmallItem = ({ item }) => {
-        return <View style={{ flexDirection: 'row', height: 35 }}>
-            <View style={{ backgroundColor: DesignRule.lineColor_inGrayBg, width: 70, justifyContent: 'center' }}>
+        return <View style={{ flexDirection: 'row' }}>
+            <View style={{
+                backgroundColor: DesignRule.lineColor_inGrayBg,
+                width: 70,
+                alignItems: 'center'
+            }}>
                 <Text style={{
-                    marginLeft: 10,
+                    paddingHorizontal: 10,
+                    paddingVertical: 5,
                     color: DesignRule.textColor_mainTitle,
                     fontSize: 12
-                }} allowFontScaling={false}>{item.paramName || ''}</Text>
+                }} numberOfLines={2}>{item.paramName || ''}</Text>
             </View>
             <Text style={{
                 flex: 1,

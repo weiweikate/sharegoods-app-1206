@@ -1,5 +1,7 @@
 import HttpUtils from './HttpUtils';
 import User from '../../model/user';
+import apiEnvironment from '../ApiEnvironment';
+import { navigate } from '../../navigation/RouterMap';
 
 export default function ApiUtils(Urls) {
     let result = {}, list = [];
@@ -45,6 +47,10 @@ export default function ApiUtils(Urls) {
                     config.nav && config.nav.navigate('login/login/LoginPage', {
                         callback: config.callback
                     });
+                }
+                //系统升级中跳转错误网页
+                if (response.code === 9999) {
+                    navigate('HtmlPage', {uri: apiEnvironment.getCurrentH5Url() + '/system-maintenance'})
                 }
                 return Promise.reject(response);
             }

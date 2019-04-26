@@ -3,4 +3,12 @@
 
     <uses-permission android:name="android.permission.VIBRATE" />
 
+    <application>
+        <activity
+            android:name=".CodeScanActivity"
+            android:resizeableActivity="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateUnchanged|adjustResize" />
+    </application>
+
 </manifest>

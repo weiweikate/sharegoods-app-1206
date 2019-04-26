@@ -33,6 +33,20 @@ const account_bg = res.bankCard.account_bg;
 const account_bg_white = res.bankCard.account_bg_white;
 const red_up = res.cashAccount.zhanghu_red;
 const lv_down = res.cashAccount.zhanghu_lv;
+const icon_invite = res.myData.icon_invite;
+
+const allKinds = {
+    1:{title:'注册赠送',img:singInImg},
+    2:{title:'活动赠送',img:taskImg},
+    3:{title:'其他',img:taskImg},
+    4:{title:'兑换1元现金券',img:yiyuanImg},
+    5:{title:'签到奖励',img:singInImg},
+    6:{title:'任务奖励',img:taskImg},
+    7:{title:'秀购奖励',img:zensong},
+    8:{title:'抽奖奖励',img:xiugou_reword},
+    9:{title:'秀购奖励',img:zensong},
+    10:{title:'邀请有礼奖励',img:icon_invite},
+}
 @observer
 export default class MyIntegralAccountPage extends BasePage {
     constructor(props) {
@@ -113,7 +127,9 @@ export default class MyIntegralAccountPage extends BasePage {
                     <TouchableWithoutFeedback onPress={() => {
                         this.$navigateBack();
                     }}>
-                        <Image source={res.button.white_back}/>
+                        <View style={{ width: 60 }}>
+                            <Image source={res.button.white_back}/>
+                        </View>
                     </TouchableWithoutFeedback>
                 </View>
             </ImageBackground>
@@ -186,10 +202,7 @@ export default class MyIntegralAccountPage extends BasePage {
     }
 
     getDataFromNetwork = () => {
-        let use_type = ['', '注册赠送', '活动赠送', '其他', '兑换1元现金券', '签到奖励', '任务奖励', '秀购奖励', '抽奖奖励', '秀购奖励'];
-
         let use_type_symbol = ['', '+', '-'];
-        let use_let_img = ['', singInImg, taskImg, taskImg, yiyuanImg, singInImg, taskImg, zensong, xiugou_reword, zensong];
         let arrData = this.currentPage === 1 ? [] : this.state.viewData;
         if (this.currentPage > 1) {
             Toast.showLoading();
@@ -205,11 +218,11 @@ export default class MyIntegralAccountPage extends BasePage {
                 let data = response.data;
                 data.data.map((item, index) => {
                     arrData.push({
-                        type: use_type[item.useType],
+                        type: allKinds[item.useType].title,
                         time: DataUtils.getFormatDate(item.createTime / 1000),
                         serialNumber: item.serialNo || '',
                         capital: use_type_symbol[item.usType] + (item.userScore ? item.userScore : 0),
-                        iconImage: use_let_img[item.useType],
+                        iconImage: allKinds[item.useType].img,
                         capitalRed: use_type_symbol[item.usType] === '+'
 
 

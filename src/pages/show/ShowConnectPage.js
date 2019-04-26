@@ -51,7 +51,7 @@ export default class ShowConnectPage extends BasePage {
 
     componentDidMount() {
         this.willFocusSubscription = this.props.navigation.addListener(
-            'willFocus',
+            'didFocus',
             payload => {
                 const { state } = payload;
                 if (state && state.routeName === 'show/ShowConnectPage') {
