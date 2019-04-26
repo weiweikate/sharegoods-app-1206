@@ -16,7 +16,6 @@ const { search } = res;
  * @org www.sharegoodsmall.com
  * @email chenxiang@meeruu.com
  */
-
 class MyOrdersListPage extends BasePage {
     constructor(props) {
         super(props);
