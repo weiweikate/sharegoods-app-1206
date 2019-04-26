@@ -131,9 +131,13 @@ export default class MyShopPage extends BasePage {
         };
     };
 
-    componentWillMount() {
+    componentWillUnmount() {
+        this.willFocusSubscription && this.willFocusSubscription.remove();
+    }
+
+    componentDidMount() {
         this.willFocusSubscription = this.props.navigation.addListener(
-            'willFocus',
+            'didFocus',
             payload => {
                 const { state } = payload;
                 console.log('willFocus', state);
@@ -142,14 +146,6 @@ export default class MyShopPage extends BasePage {
                 }
             }
         );
-    }
-
-    componentWillUnmount() {
-        this.willFocusSubscription && this.willFocusSubscription.remove();
-    }
-
-    componentDidMount() {
-        this._loadPageData();
     }
 
 
