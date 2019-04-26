@@ -94,6 +94,7 @@ export default class MyOrdersDetailPage extends BasePage {
         );
     };
 
+
     componentWillUnmount() {
         this.didFocusSubscription && this.didFocusSubscription.remove();
         // DeviceEventEmitter.removeAllListeners("OrderNeedRefresh");

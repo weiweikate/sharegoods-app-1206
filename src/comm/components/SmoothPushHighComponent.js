@@ -15,7 +15,6 @@ import React, { Component } from 'react';
 
 import {
     View,
-    InteractionManager
 
 } from 'react-native';
 import DesignRule from '../../constants/DesignRule';
@@ -30,7 +29,7 @@ export default function SmoothPushHighComponent(WrappedComponent) {
 
         componentDidMount() {
             if (this.state.xg_finishPush !== true){
-                TimerMixin.setTimeout(()=>{
+                this.xg_finishPush_timer = TimerMixin.setTimeout(()=>{
                     this.setState({xg_finishPush: true});
                     WrappedComponent.xg_finishPush = true
                 },700);
@@ -43,6 +42,10 @@ export default function SmoothPushHighComponent(WrappedComponent) {
             } else {
                 return <View style={{flex: 1, backgroundColor: DesignRule.bgcolor}}/>;
             }
+        }
+
+        componentWillUnmount(){
+            this.xg_finishPush_timer&& TimerMixin.clearTimeout(this.xg_finishPush_timer)
         }
 
     };
@@ -58,7 +61,7 @@ export function SmoothPushHighComponentEverydelay(WrappedComponent) {
         }
 
         componentDidMount() {
-                TimerMixin.setTimeout(()=>{
+             this.xg_finishPush_timer = TimerMixin.setTimeout(()=>{
                     this.setState({xg_finishPush: true})
                 },700);
         }
@@ -71,13 +74,16 @@ export function SmoothPushHighComponentEverydelay(WrappedComponent) {
             }
         }
 
+        componentWillUnmount(){
+            this.xg_finishPush_timer&&TimerMixin.clearTimeout(this.xg_finishPush_timer);
+        }
+
     };
 
 }
 
 //先请求，如果在第一次退出动画的完成也不进行render，防止卡顿
 function SmoothPushPreLoadHighComponent(WrappedComponent) {
-    WrappedComponent.xg_finishPush = false;
     const shouldComponentUpdate = WrappedComponent.prototype.shouldComponentUpdate;
 
      WrappedComponent.prototype.shouldComponentUpdate = function(nextProps, nextState){
@@ -99,16 +105,19 @@ function SmoothPushPreLoadHighComponent(WrappedComponent) {
         if (componentDidMount) {
             componentDidMount.call(this);
         }
-        if (WrappedComponent.xg_finishPush === false){
-            TimerMixin.setTimeout(()=>{
-               // WrappedComponent.xg_finishPush = true;
+            this.xg_finishPush_timer = TimerMixin.setTimeout(()=>{
                this.change_xg_finishPush();
            },700);
-           //  InteractionManager.runAfterInteractions(() => {
-           //      this&&this.change_xg_finishPush&&this.change_xg_finishPush();
-           //  });
-        }
     }
+
+    const componentWillUnmount =  WrappedComponent.prototype.componentWillUnmount;
+    WrappedComponent.prototype.componentWillUnmount = function()  {
+        if (componentWillUnmount) {
+            componentWillUnmount.call(this);
+        }
+        this.xg_finishPush_timer&&TimerMixin.clearTimeout(this.xg_finishPush_timer);
+    }
+
     return WrappedComponent;
 }
 
