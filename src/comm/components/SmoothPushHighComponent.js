@@ -14,7 +14,8 @@ import TimerMixin from 'react-timer-mixin';
 import React, { Component } from 'react';
 
 import {
-    View
+    View,
+    InteractionManager
 
 } from 'react-native';
 import DesignRule from '../../constants/DesignRule';
@@ -48,19 +49,45 @@ export default function SmoothPushHighComponent(WrappedComponent) {
 
 }
 
+
+export function SmoothPushHighComponentEverydelay(WrappedComponent) {
+    return class HighComponent extends Component {
+        constructor(props) {
+            super(props);
+            this.state={xg_finishPush:  false}
+        }
+
+        componentDidMount() {
+            InteractionManager.runAfterInteractions(() => {
+               this.setState({xg_finishPush: true});
+            });
+        }
+
+        render() {
+            if (this.state.xg_finishPush === true) {
+                return <WrappedComponent {...this.props}/>;
+            } else {
+                return <View style={{flex: 1, backgroundColor: DesignRule.bgcolor}}/>;
+            }
+        }
+
+    };
+
+}
+
 //先请求，如果在第一次退出动画的完成也不进行render，防止卡顿
 function SmoothPushPreLoadHighComponent(WrappedComponent) {
     WrappedComponent.xg_finishPush = false;
     const shouldComponentUpdate = WrappedComponent.prototype.shouldComponentUpdate;
 
      WrappedComponent.prototype.shouldComponentUpdate = function(nextProps, nextState){
-         if (WrappedComponent.xg_finishPush === true){
-             if (shouldComponentUpdate) {
-                 return  shouldComponentUpdate.call(this,nextProps,nextState);
-             }else {
-                 return true
-             }
-         } else {
+         if(nextState&&nextState.xg_finishPush === true){
+                 if (shouldComponentUpdate) {
+                     return  shouldComponentUpdate.call(this,nextProps,nextState);
+                 }else {
+                     return true
+                 }
+         }else {
              return false;
          }
      };
@@ -73,10 +100,13 @@ function SmoothPushPreLoadHighComponent(WrappedComponent) {
             componentDidMount.call(this);
         }
         if (WrappedComponent.xg_finishPush === false){
-            TimerMixin.setTimeout(()=>{
-               WrappedComponent.xg_finishPush = true;
-               this.change_xg_finishPush();
-           },700);
+            // TimerMixin.setTimeout(()=>{
+               // WrappedComponent.xg_finishPush = true;
+           //     this.change_xg_finishPush();
+           // },700);
+            InteractionManager.runAfterInteractions(() => {
+                this&&this.change_xg_finishPush&&this.change_xg_finishPush();
+            });
         }
     }
     return WrappedComponent;
