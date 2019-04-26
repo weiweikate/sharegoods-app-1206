@@ -20,7 +20,7 @@ export default class ProductDetailNavView extends Component {
         const { showAction, productDetailModel, showNavTextT } = this.props;
         const { name, showNavText } = productDetailModel;
         return (
-            <View style={[styles.bgView, showNavTextT && { backgroundColor: 'white' }]}>
+            <View style={showNavTextT ? { backgroundColor: 'white' } : styles.bgView}>
                 <View style={styles.containerView}>
                     <View style={[styles.barItemContainer, { justifyContent: 'flex-start' }]}>
                         <NoMoreClick style={styles.btnContainer} onPress={() => {
