@@ -58,9 +58,9 @@ export function SmoothPushHighComponentEverydelay(WrappedComponent) {
         }
 
         componentDidMount() {
-            InteractionManager.runAfterInteractions(() => {
-               this.setState({xg_finishPush: true});
-            });
+                TimerMixin.setTimeout(()=>{
+                    this.setState({xg_finishPush: true})
+                },700);
         }
 
         render() {
@@ -100,13 +100,13 @@ function SmoothPushPreLoadHighComponent(WrappedComponent) {
             componentDidMount.call(this);
         }
         if (WrappedComponent.xg_finishPush === false){
-            // TimerMixin.setTimeout(()=>{
+            TimerMixin.setTimeout(()=>{
                // WrappedComponent.xg_finishPush = true;
-           //     this.change_xg_finishPush();
-           // },700);
-            InteractionManager.runAfterInteractions(() => {
-                this&&this.change_xg_finishPush&&this.change_xg_finishPush();
-            });
+               this.change_xg_finishPush();
+           },700);
+           //  InteractionManager.runAfterInteractions(() => {
+           //      this&&this.change_xg_finishPush&&this.change_xg_finishPush();
+           //  });
         }
     }
     return WrappedComponent;
