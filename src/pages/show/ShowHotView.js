@@ -15,8 +15,9 @@ import DesignRule from '../../constants/DesignRule';
 
 const { px2dp } = ScreenUtils;
 import ShowGroundView from './components/ShowGroundView';
+import { SmoothPushHighComponentEverydelay } from '../../comm/components/SmoothPushHighComponent';
 
-
+@SmoothPushHighComponentEverydelay
 @observer
 export default class ShowHotView extends React.Component {
 
