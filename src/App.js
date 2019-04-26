@@ -34,7 +34,6 @@ import codePush from "react-native-code-push";
 
 import { SpellShopFlag } from "./navigation/Tab";
 import chatModel from "./utils/QYModule/QYChatModel";
-import WebViewBridge from "@mr/webview";
 
 if (__DEV__) {
     const modules = require.getModules();

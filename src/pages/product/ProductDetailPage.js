@@ -21,7 +21,6 @@ import NavigatorBar from '../../components/pageDecorator/NavigatorBar/NavigatorB
 import DetailHeaderServiceModal from './components/DetailHeaderServiceModal';
 import DetailPromoteModal from './components/DetailPromoteModal';
 import { beginChatType, QYChatTool } from '../../utils/QYModule/QYChatTool';
-import { SmoothPushPreLoadHighComponent } from '../../comm/components/SmoothPushHighComponent';
 // import bridge from '../../../utils/bridge';
 
 // const redEnvelopeBg = res.other.red_big_envelope;
@@ -49,7 +48,6 @@ import ProductDetailNavView from './components/ProductDetailNavView';
  */
 
 // const LASTSHOWPROMOTIONTIME = 'LASTSHOWPROMOTIONTIME';
-@SmoothPushPreLoadHighComponent
 @observer
 export default class ProductDetailPage extends BasePage {
 
@@ -81,16 +79,20 @@ export default class ProductDetailPage extends BasePage {
 
 
     componentDidMount() {
-    }
-
-    componentWillMount() {
+        this.firstLoad = true;
         this.willFocusSubscription = this.props.navigation.addListener('willFocus', payload => {
                 const { state } = payload;
-                if (state && state.routeName === 'product/ProductDetailPage') {
-                    this.productDetailModel.requestProductDetail();
+                if (state && state.routeName === 'product/ProductDetailPage' && !this.firstLoad) {
+                    this.productDetailModel && this.productDetailModel.requestProductDetail();
                 }
+                this.firstLoad = false;
             }
         );
+        if (this.firstLoad) {
+            setTimeout(() => {
+                this.productDetailModel && this.productDetailModel.requestProductDetail();
+            }, 500);
+        }
     }
 
     componentWillUnmount() {
