@@ -23,6 +23,7 @@ const LoginModular = {
         "name": "LoginSuccess",
         "params": { "loginMethod": 3 }
     },
+    // 222
     "localPhoneNumLogin": {
         "des":"本机号码一键登录",
         "name":"LoginSuccess",

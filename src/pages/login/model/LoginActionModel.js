@@ -24,13 +24,13 @@ import { track } from "../../../utils/SensorsTrack";
  * @param successCallBack 登录成功后的回调
  */
 const oneClickLoginValidation = (phone, authenToken, navigation, successCallBack) => {
-    TrackApi.LoginButtonClick({"loginType":1})
+    TrackApi.LoginButtonClick({"loginMethod":4})
     LoginAPI.oneClickLoginValidation({
         phone: phone,
         token: authenToken
     }).then(result => {
         successCallBack && successCallBack();
-        TrackApi.localPhoneNumLogin()
+        TrackApi.localPhoneNumLogin({"loginMethod":4})
         if (result.unionid == null) {
             //未绑定微信
             phoneBindWx();
@@ -103,7 +103,7 @@ const getWxUserInfo = (callback) => {
  * @param callBack
  */
 const wxLoginAction = (callBack) => {
-    TrackApi.LoginButtonClick({"loginType":2})
+    TrackApi.LoginButtonClick({"loginMethod":1})
     getWxUserInfo((data) => {
         LoginAPI.appWechatLogin({
             device: data.device,
@@ -148,7 +148,7 @@ const wxLoginAction = (callBack) => {
  * @param callBack
  */
 const codeLoginAction = (LoginParam, callBack) => {
-    TrackApi.LoginButtonClick({"loginType":3})
+    TrackApi.LoginButtonClick({"loginMethod":2})
     LoginAPI.codeLogin({
         authcode: "",
         code: LoginParam.code,
@@ -184,7 +184,7 @@ const codeLoginAction = (LoginParam, callBack) => {
  * @param callBack
  */
 const pwdLoginAction = (LoginParam, callBack) => {
-    TrackApi.LoginButtonClick({"loginType":4})
+    TrackApi.LoginButtonClick({"loginMethod":3})
     LoginAPI.passwordLogin({
         authcode: "22",
         code: LoginParam.code,
