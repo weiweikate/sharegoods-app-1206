@@ -1,5 +1,10 @@
 //登录相关埋点
 const LoginModular = {
+    "LoginButtonClick":{
+        "des":"登录按钮点击",
+        "name":"LoginButtonClick",
+        "params":{}
+    },
     //微信登录
     "wxLoginSuccess": {
         "des": "微信登录成功埋点",
