@@ -24,6 +24,7 @@ import { track } from "../../../utils/SensorsTrack";
  * @param successCallBack 登录成功后的回调
  */
 const oneClickLoginValidation = (phone, authenToken, navigation, successCallBack) => {
+    TrackApi.LoginButtonClick({"loginType":1})
     LoginAPI.oneClickLoginValidation({
         phone: phone,
         token: authenToken
@@ -102,6 +103,7 @@ const getWxUserInfo = (callback) => {
  * @param callBack
  */
 const wxLoginAction = (callBack) => {
+    TrackApi.LoginButtonClick({"loginType":2})
     getWxUserInfo((data) => {
         LoginAPI.appWechatLogin({
             device: data.device,
@@ -146,6 +148,7 @@ const wxLoginAction = (callBack) => {
  * @param callBack
  */
 const codeLoginAction = (LoginParam, callBack) => {
+    TrackApi.LoginButtonClick({"loginType":3})
     LoginAPI.codeLogin({
         authcode: "",
         code: LoginParam.code,
@@ -181,6 +184,7 @@ const codeLoginAction = (LoginParam, callBack) => {
  * @param callBack
  */
 const pwdLoginAction = (LoginParam, callBack) => {
+    TrackApi.LoginButtonClick({"loginType":4})
     LoginAPI.passwordLogin({
         authcode: "22",
         code: LoginParam.code,
