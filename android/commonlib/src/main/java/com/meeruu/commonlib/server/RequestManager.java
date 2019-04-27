@@ -325,7 +325,6 @@ public class RequestManager {
                                 result = response.body().string();
                             }
                             if (result != null) {
-                                LogUtils.d("re");
                                 ResponseInfo info = JSON.parseObject(result, ResponseInfo.class);
                                 if (info != null) {
                                     LogUtils.d("responseinfo======", info.toString());

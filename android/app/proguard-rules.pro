@@ -29,7 +29,7 @@ public static final int *;
 -keep class * {
     public protected *;
 }
-
+-keep class com.meeruu.sharegoods.rn.showground.**{*;}
 -dontwarn android.webkit.WebView
 -dontwarn android.net.http.SslError
 -dontwarn android.webkit.WebViewClient
@@ -68,6 +68,8 @@ public static final int *;
     public static **[] values();
     public static ** valueOf(java.lang.String);
 }
+
+-keep class com.meeruu.commonlib.bean.**{*;}
 
 -dontshrink
 -dontoptimize
