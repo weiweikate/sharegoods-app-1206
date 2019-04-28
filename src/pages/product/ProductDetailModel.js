@@ -107,6 +107,7 @@ export default class ProductDetailModel {
 
     /*商品评论{ headImg, nickname, imgUrl ,comment}*/
     @observable comment;
+    @observable overtimeComment;
     /*商品数量*/
     @observable totalComment;
     /*商品详情图片*/
@@ -291,7 +292,7 @@ export default class ProductDetailModel {
                 originalPrice, priceType, name, secondName, freight,
                 groupPrice, v0Price, shareMoney,
                 monthSaleCount, skuList, specifyList, stockSysConfig, promoteInfoVOList,
-                restrictions, paramList, comment, totalComment,
+                restrictions, paramList, comment, totalComment, overtimeComment,
                 prodCode, upTime, now, content,
                 promotionResult, promotionDecreaseAmount, promotionPrice, promotionLimitNum,
                 promotionSaleNum, promotionStockNum, promotionMinPrice, promotionMaxPrice
@@ -322,6 +323,7 @@ export default class ProductDetailModel {
             this.paramList = paramList || [];
             /*不赋值默认 判空用*/
             this.comment = comment;
+            this.overtimeComment = overtimeComment;
             this.totalComment = totalComment;
             this.contentArr = contentArr;
             this.now = now;
