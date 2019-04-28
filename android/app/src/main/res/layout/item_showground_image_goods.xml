@@ -48,10 +48,12 @@
         android:layout_toRightOf="@id/user_icon"
         android:ellipsize="end"
         android:includeFontPadding="false"
-        android:maxLines="3"
         android:text="@string/test"
         android:textColor="@color/textColor_mainTitle"
+        android:layout_marginLeft="5dp"
+        android:maxLines="3"
         android:textSize="13sp" />
+
 
     <TextView
         android:id="@+id/content_button"
@@ -59,6 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/content"
         android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
         android:layout_toRightOf="@id/user_icon"
         android:text="@string/spread_out"
         android:textColor="@color/mainColor"
@@ -66,7 +69,7 @@
 
     <com.meeruu.sharegoods.rn.showground.widgets.GridView.NineGridView
         android:id="@+id/nine_grid"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/content_button"
         android:layout_marginTop="5dp"
@@ -79,6 +82,7 @@
         android:layout_height="60dp"
         android:layout_below="@+id/nine_grid"
         android:layout_marginTop="10dp"
+        android:layout_marginLeft="5dp"
         android:layout_toRightOf="@id/user_icon"
         android:background="@color/mainColor" />
 
@@ -89,6 +93,7 @@
         android:layout_marginTop="15dp"
         android:layout_toRightOf="@id/user_icon"
         android:src="@drawable/icon_hand"
+        android:layout_marginLeft="5dp"
         android:id="@+id/icon_hand"/>
     <TextView
         android:textColor="@color/textColor_mainTitle"

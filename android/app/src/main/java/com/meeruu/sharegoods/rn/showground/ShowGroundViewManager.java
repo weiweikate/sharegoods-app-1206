@@ -31,9 +31,12 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> {
 
     @Override
     protected ViewGroup createViewInstance(ThemedReactContext reactContext) {
-        ShowGroundView showGroundView = new ShowGroundView();
-        ViewGroup viewGroup = showGroundView.getShowGroundView(reactContext);
-        viewGroup.setTag(showGroundView);
+//        ShowGroundView showGroundView = new ShowGroundView();
+//        ViewGroup viewGroup = showGroundView.getShowGroundView(reactContext);
+//        viewGroup.setTag(showGroundView);
+        ShowRecommendView showRecommendView = new ShowRecommendView();
+        ViewGroup viewGroup = showRecommendView.getShowRecommendView(reactContext);
+
         return viewGroup;
 
     }

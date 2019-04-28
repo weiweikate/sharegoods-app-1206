@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.meeruu.sharegoods.R;
 
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class NineGridView extends ViewGroup {
     private int gridWidth;      // 宫格宽度
     private int gridHeight;     // 宫格高度
 
-    private List<ImageView> imageViews;
+    private List<SimpleDraweeView> imageViews;
     private List<ImageInfo> mImageInfo;
     private NineGridViewAdapter mAdapter;
 
@@ -92,7 +93,7 @@ public class NineGridView extends ViewGroup {
         //根据图片数量 创建相应个数的imageview  并根据设定的imageview的宽高以及间距 ，将imageview放置在正确的位置
         for (int i = 0; i < childrenCount; i++) {
             //得到父控件中相应的imageview
-            ImageView childrenView = (ImageView) getChildAt(i);
+            SimpleDraweeView childrenView = (SimpleDraweeView) getChildAt(i);
             int rowNum = i / columnCount;
             int columnNum = i % columnCount;
             int left = (gridWidth + gridSpacing) * columnNum + getPaddingLeft();
@@ -151,7 +152,7 @@ public class NineGridView extends ViewGroup {
         //mImageInfo=null 表示第一次创建
         if (mImageInfo == null) {
             for (int i = 0; i < imageCount; i++) {
-                ImageView iv = getImageView(i);
+                SimpleDraweeView iv = getImageView(i);
                 if (iv == null) {return;}
                 //添加相应个imageview到父控件 viewgroup中
                 addView(iv, generateDefaultLayoutParams());
@@ -164,7 +165,7 @@ public class NineGridView extends ViewGroup {
                 removeViews(newViewCount, oldViewCount - newViewCount);
             } else if (oldViewCount < newViewCount) {
                 for (int i = oldViewCount; i < newViewCount; i++) {
-                    ImageView iv = getImageView(i);
+                    SimpleDraweeView iv = getImageView(i);
                     if (iv == null) {return;}
                     addView(iv, generateDefaultLayoutParams());
                 }
@@ -184,8 +185,8 @@ public class NineGridView extends ViewGroup {
     }
 
     /** 获得 ImageView 保证了 ImageView 的重用 */
-    private ImageView getImageView(final int position) {
-        ImageView imageView;
+    private SimpleDraweeView getImageView(final int position) {
+        SimpleDraweeView imageView;
         if (position < imageViews.size()) {
             imageView = imageViews.get(position);
         } else {
@@ -242,7 +243,7 @@ public class NineGridView extends ViewGroup {
          * @param imageView 需要展示图片的ImageView
          * @param url       图片地址
          */
-        void onDisplayImage(Context context, ImageView imageView, String url);
+        void onDisplayImage(Context context, SimpleDraweeView imageView, String url);
 
         /*  *//**
          * @param url 图片的地址

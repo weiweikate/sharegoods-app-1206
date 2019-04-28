@@ -3,6 +3,8 @@ package com.meeruu.sharegoods.rn.showground.widgets.GridView;
 import android.content.Context;
 import android.widget.ImageView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -33,8 +35,8 @@ public class NineGridViewAdapter implements Serializable {
      * @param context 上下文
      * @return 生成的 ImageView
      */
-    protected ImageView generateImageView(Context context) {
-        ImageView imageView = new ImageView(context);
+    protected SimpleDraweeView generateImageView(Context context) {
+        SimpleDraweeView imageView = new SimpleDraweeView(context);
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         //imageView.setImageResource(R.drawable.ic);
         return imageView;
