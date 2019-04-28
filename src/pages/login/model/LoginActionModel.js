@@ -24,12 +24,13 @@ import { track } from "../../../utils/SensorsTrack";
  * @param successCallBack 登录成功后的回调
  */
 const oneClickLoginValidation = (phone, authenToken, navigation, successCallBack) => {
+    TrackApi.LoginButtonClick({"loginMethod":4})
     LoginAPI.oneClickLoginValidation({
         phone: phone,
         token: authenToken
     }).then(result => {
         successCallBack && successCallBack();
-        TrackApi.localPhoneNumLogin()
+        TrackApi.localPhoneNumLogin({"loginMethod":4})
         if (result.unionid == null) {
             //未绑定微信
             phoneBindWx();
@@ -41,6 +42,7 @@ const oneClickLoginValidation = (phone, authenToken, navigation, successCallBack
             //老用户
             gobackPage(navigation);
         }
+
         UserModel.saveUserInfo(result.data);
         UserModel.saveToken(result.data.token);
         homeModule.loadHomeList();
@@ -101,6 +103,7 @@ const getWxUserInfo = (callback) => {
  * @param callBack
  */
 const wxLoginAction = (callBack) => {
+    TrackApi.LoginButtonClick({"loginMethod":1})
     getWxUserInfo((data) => {
         LoginAPI.appWechatLogin({
             device: data.device,
@@ -145,6 +148,7 @@ const wxLoginAction = (callBack) => {
  * @param callBack
  */
 const codeLoginAction = (LoginParam, callBack) => {
+    TrackApi.LoginButtonClick({"loginMethod":2})
     LoginAPI.codeLogin({
         authcode: "",
         code: LoginParam.code,
@@ -159,7 +163,6 @@ const codeLoginAction = (LoginParam, callBack) => {
         callBack(data);
         UserModel.saveUserInfo(data.data);
         UserModel.saveToken(data.data.token);
-        track("LoginSuccess", { "loginMethod": 2 });
         TrackApi.codeLoginSuccess();
         bridge.setCookies(data.data);
         DeviceEventEmitter.emit("homePage_message", null);
@@ -181,6 +184,7 @@ const codeLoginAction = (LoginParam, callBack) => {
  * @param callBack
  */
 const pwdLoginAction = (LoginParam, callBack) => {
+    TrackApi.LoginButtonClick({"loginMethod":3})
     LoginAPI.passwordLogin({
         authcode: "22",
         code: LoginParam.code,

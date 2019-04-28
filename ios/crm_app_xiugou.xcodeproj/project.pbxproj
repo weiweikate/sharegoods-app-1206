@@ -121,6 +121,7 @@
 		C4F01EE8222D116B00ACA1B4 /* ATAuthSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4F01EB2222D116B00ACA1B4 /* ATAuthSDK.framework */; };
 		C4F01EEC222D141200ACA1B4 /* PhoneAutherTool.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F01EEB222D141200ACA1B4 /* PhoneAutherTool.m */; };
 		C4F01EEF222D150E00ACA1B4 /* PhoneAuthenModule.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F01EEE222D150E00ACA1B4 /* PhoneAuthenModule.m */; };
+		C4F56A20226F5E960091E4E8 /* JSPushBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F56A1F226F5E960091E4E8 /* JSPushBridge.m */; };
 		C670FCDB76F54137AAA53057 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FED5F2163DB441AEAFBF1AB2 /* FontAwesome.ttf */; };
 		C77A347B0E47408BA04324B4 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EB6EFB6B04564EBAB951820B /* Feather.ttf */; };
 		CD11955721870DE1007F602E /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD11955421870DB6007F602E /* libRCTVideo.a */; };
@@ -261,13 +262,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNGeolocation;
-		};
-		03F8F0422265F8260043DA61 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0347BAC12237CC670011184A /* Lottie.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 6445B0D5207E0D4D00D84F6A;
-			remoteInfo = LottieLibraryMacOS;
 		};
 		0409D91D222F7706003A53EC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -886,6 +880,8 @@
 		C4F01EEB222D141200ACA1B4 /* PhoneAutherTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhoneAutherTool.m; sourceTree = "<group>"; };
 		C4F01EED222D150E00ACA1B4 /* PhoneAuthenModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhoneAuthenModule.h; sourceTree = "<group>"; };
 		C4F01EEE222D150E00ACA1B4 /* PhoneAuthenModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhoneAuthenModule.m; sourceTree = "<group>"; };
+		C4F56A1E226F5E960091E4E8 /* JSPushBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JSPushBridge.h; sourceTree = "<group>"; };
+		C4F56A1F226F5E960091E4E8 /* JSPushBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JSPushBridge.m; sourceTree = "<group>"; };
 		CAB2E4DB260FDFCE4611A647 /* libPods-crm_app_xiugou-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-crm_app_xiugou-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD11954E21870DB6007F602E /* RCTVideo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTVideo.xcodeproj; path = "../node_modules/react-native-video/ios/RCTVideo.xcodeproj"; sourceTree = "<group>"; };
 		CD13653321BA0F4200754B0E /* MBProgressHUD+PD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+PD.m"; sourceTree = "<group>"; };
@@ -1146,7 +1142,6 @@
 				0347BACB2237CC680011184A /* Lottie.framework */,
 				0347BACD2237CC680011184A /* Lottie.framework */,
 				0347BACF2237CC680011184A /* libLottie.a */,
-				03F8F0432265F8260043DA61 /* libLottie.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1729,6 +1724,8 @@
 			children = (
 				5077FDC821A79326003B860D /* JSPushManager.h */,
 				5077FDC921A79326003B860D /* JSPushManager.m */,
+				C4F56A1E226F5E960091E4E8 /* JSPushBridge.h */,
+				C4F56A1F226F5E960091E4E8 /* JSPushBridge.m */,
 			);
 			path = JSPush;
 			sourceTree = "<group>";
@@ -2391,13 +2388,6 @@
 			remoteRef = 03A568E021DEFA0C00D6A770 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		03F8F0432265F8260043DA61 /* libLottie.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libLottie.a;
-			remoteRef = 03F8F0422265F8260043DA61 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		0409D91E222F7706003A53EC /* libRNCWebView.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -2975,6 +2965,7 @@
 				5068363A21379B78001AB175 /* SGQRCodeScanningView.m in Sources */,
 				CD14EA192183FC9A00480A06 /* XGImageCompression.m in Sources */,
 				CD24240921F825C1008C7FF4 /* StorageFromRN.m in Sources */,
+				C4F56A20226F5E960091E4E8 /* JSPushBridge.m in Sources */,
 				5068362C21379B78001AB175 /* JRCacheManager.m in Sources */,
 				5068363721379B78001AB175 /* PickerManager.m in Sources */,
 				50043A8721C79D7F00270DFA /* ShopCartListManager.m in Sources */,

@@ -3,6 +3,7 @@ import CheckBigImagesView from './CheckBigImagesView';
 import xpProduct from './xpProduct/index';
 import productScore from './productScore/index';
 import BigImagesPage from './BigImagesPage';
+import suitProduct from './suitProduct';
 
 export default {
     moduleName: 'product',    //模块名称
@@ -11,6 +12,7 @@ export default {
         CheckBigImagesView,
         xpProduct,
         productScore,
-        BigImagesPage
+        BigImagesPage,
+        suitProduct
     }
 };

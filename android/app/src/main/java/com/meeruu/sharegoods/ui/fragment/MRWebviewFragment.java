@@ -374,7 +374,7 @@ public class MRWebviewFragment extends BaseFragment implements Handler.Callback 
 
     private boolean handleOverrideUrl(WebView webView, String url) {
         if (!TextUtils.isEmpty(url)) {
-            if (url.equals(HttpUrlUtils.getGongmaoUrl())) {
+            if (url.contains(HttpUrlUtils.getGongmaoUrl())) {
                 mActivity.setResult(ParameterUtils.SIGN_OK);
                 mActivity.finish();
                 return true;//表示我已经处理过了

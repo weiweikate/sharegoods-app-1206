@@ -15,6 +15,7 @@ const { px2dp } = ScreenUtils;
 import Toast from "../../utils/bridge";
 import { NavigationActions } from "react-navigation";
 import RouterMap from "../../navigation/RouterMap";
+import StringUtils from "../../utils/StringUtils";
 
 @observer
 export default class PaymentPage extends BasePage {
@@ -74,7 +75,7 @@ export default class PaymentPage extends BasePage {
                 }
             } else if (result.code === payStatus.payNeedThrid) {
                 this.$navigate("payment/ChannelPage", {
-                    remainMoney: Math.floor(result.unpaidAmount * 100) / 100 ,
+                    // remainMoney: Math.floor(StringUtils.mul(result.unpaidAmount,100)) / 100 ,
                     bizType:bizType,
                     modeType:modeType
                 });
@@ -115,7 +116,7 @@ export default class PaymentPage extends BasePage {
                 payType: paymentType.coupon,
                 payAmount: oneCoupon
             });
-            channelAmount = (channelAmount - oneCoupon * 1) > 0 ? (channelAmount - oneCoupon * 1) : 0;
+            channelAmount = StringUtils.sub(channelAmount,oneCoupon) > 0 ? StringUtils.sub(channelAmount,oneCoupon) : 0;
         }
        //余额支付
         if (selectBance) {
@@ -133,8 +134,6 @@ export default class PaymentPage extends BasePage {
                 }
             }
         }
-
-
         payment.platformPay(password, fundsTradingNo, detailList).then((result) => {
             this.setState({ showPwd: false });
             if (parseInt(result.status) === payStatus.payNeedThrid) {
@@ -199,21 +198,20 @@ export default class PaymentPage extends BasePage {
                 { cancelable: false }
             );
         }, 600);
-
     };
 
     _goToOrder(index) {
         const {bizType} = payment;
-        if (bizType == 1){
+        if (bizType === 1){
             this.props.navigation.dispatch({
                 key: this.props.navigation.state.key,
-                type:'ReplacePayScreen',
+                type:'ReplacePaymentPage',
                 routeName: RouterMap.AddCapacityHistoryPage,
             })
         } else {
             this.props.navigation.dispatch({
                 key: this.props.navigation.state.key,
-                type: "ReplacePayScreen",
+                type: "ReplacePaymentPage",
                 routeName: "order/order/MyOrdersListPage",
                 params: { index: index ? index : 1 }
             });

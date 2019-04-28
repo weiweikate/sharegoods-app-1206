@@ -18,6 +18,11 @@ typedef NS_ENUM(NSInteger,CHAT_TYPE){
   BEGIN_FROM_MESSAGE=3//从消息列表发起客服
 };
 
+typedef NS_ENUM(NSInteger,CARD_TYPE) {
+  PRODUCT_CARD=0, //商品卡片
+  ORDER_CARD=1,//订单卡片
+};
+
 @interface JRServiceManager (Util)
 
 /**

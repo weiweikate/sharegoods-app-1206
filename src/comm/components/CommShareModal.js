@@ -76,9 +76,8 @@ import DesignRule from '../../constants/DesignRule';
 import { track } from '../../utils/SensorsTrack';
 import user from '../../model/user';
 import { getSource } from '@mr/image-placeholder/oos';
-import apiEnvironment from '../../api/ApiEnvironment';
-import HttpUtils from '../../api/network/HttpUtils';
-import EmptyUtils from '../../utils/EmptyUtils';
+import ShareUtil from '../../utils/ShareUtil';
+
 // 0：未知
 // 1：微信好友2：微信朋友圈3：qq好友4：qq空间5：微博6：复制链接7：分享图片
 // 100：其他
@@ -196,66 +195,29 @@ export default class CommShareModal extends React.Component {
      **/
     share(platformType) {
         this.close();
+        this.props.clickShareBtn && this.props.clickShareBtn();
         let that = this;
-        let params = { shareType: this.state.shareType, platformType: platformType };
+        let params = {};
+        let trackParmas = this.props.trackParmas;
+        let trackEvent = this.props.trackEvent;
         if (this.state.shareType === 0) {//图片分享
             params.shareImage = this.state.path;
         } else if (this.state.shareType === 1) {//图文链接分享
-            let { title, dec, linkUrl, thumImage } = this.props.webJson;
-            params.title = title;
-            params.dec = dec;
-            params.linkUrl = linkUrl;
-            params.thumImage = thumImage;
+            params = this.props.webJson;
         } else if (this.state.shareType === 2) {
-            let { title, dec, linkUrl, thumImage, userName, miniProgramPath, hdImageURL } = this.props.miniProgramJson;
-            params.title = title;
-            params.dec = dec;
-            params.linkUrl = linkUrl;
-            params.thumImage = thumImage;
-            // params.userName = userName || uat 'gh_a7c8f565ea2e';// 测试 gh_aa91c3ea0f6c
-            params.userName = userName || apiEnvironment.getCurrentWxAppletKey();
-            params.miniProgramType = apiEnvironment.getMiniProgramType();
-            params.miniProgramPath = miniProgramPath;
-            params.hdImageURL = hdImageURL;
+            params = this.props.miniProgramJson
         }
-        if (this.props.trackEvent) {
-            let p = this.props.trackParmas || {};
-            let shareType = [TrackShareType.wx, TrackShareType.wxTimeline, TrackShareType.qq, TrackShareType.qqSpace, TrackShareType.weibo][platformType];
-            track(this.props.trackEvent, { shareType, ...p });
-        }
-        bridge.share(params, () => {
-            if (user.isLogin && that.props.luckyDraw === true) {
-                user.luckyDraw();
-            }
-            that.shareSucceedCallBlack();
-        }, (errorStr) => {
 
-        });
-    }
+        params = {
+            ...params,
+            shareType: this.state.shareType,
+            platformType: platformType
+        };
 
-    shareSucceedCallBlack() {
-        let api = this.props.api;
-        if (EmptyUtils.isEmpty(api)) {
-            return;
-        }
-        let { url, methods, params, refresh } = api;
-        if (EmptyUtils.isEmpty(url)) {
-            return;
-        }
-        if (methods && methods.tolocaleUpperCase === 'GET') {
-            HttpUtils.get(url, false, params).then(() => {
-                if (refresh === true) {
-                    this.props.reloadWeb && this.props.reloadWeb();
-                }
-            });
-        } else {
-            HttpUtils.post(url, false, params, {}).then(() => {
-                if (refresh === true) {
-                    this.props.reloadWeb && this.props.reloadWeb();
-                }
-            }).catch(() => {
-            });
-        }
+        ShareUtil.onShare(params, that.props.api, trackParmas,trackEvent , () => {
+            console.log('分享成功结束后回调');
+            this.props.reloadWeb && this.props.reloadWeb();
+        }, that.props.luckyDraw);
     }
 
     saveImage(path) {
@@ -369,7 +331,7 @@ export default class CommShareModal extends React.Component {
         const { shareMoney } = this.props.imageJson || {};
         let shareMoneyText = (shareMoney && shareMoney !== '?') ? `${shareMoney.split('-').shift()}` : '';
         //值相等  不要使用===  0的时候不显示
-        if (shareMoneyText == 0) {
+        if (shareMoneyText === 0) {
             shareMoneyText = null;
         }
 

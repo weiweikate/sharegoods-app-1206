@@ -66,7 +66,7 @@ export default class TopicItemView extends Component {
                             :
                             <UIText style={Styles.itemBottomPriceTextStyle}>
                                 {/*{ '¥'+itemData.originalPrice+ '起'}*/}
-                                {/*{'专题类目'}*/}
+                                {'专题类目'}
                             </UIText>
                         }
                     </View>
@@ -108,7 +108,7 @@ const Styles = StyleSheet.create({
         includeFontPadding: false,
         marginTop: 10,
         color: DesignRule.textColor_mainTitle,
-        height: 29,
+        height: 35,
         fontSize: 12,
         marginLeft: 10
     },

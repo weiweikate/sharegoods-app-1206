@@ -141,7 +141,7 @@ class AfterSaleServicePage extends BasePage {
                         </View>
                         <UIText value={`最多¥${payAmount}，含发货邮费¥${freightAmount}`}
                                 style={{
-                                    height: DesignRule.autoSizeWidth(14),
+                                    height: DesignRule.autoSizeWidth(18),
                                     marginLeft: DesignRule.margin_page,
                                     color: DesignRule.textColor_instruction,
                                     fontSize: DesignRule.fontSize_24,

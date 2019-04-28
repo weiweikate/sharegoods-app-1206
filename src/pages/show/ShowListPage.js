@@ -3,6 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Image, BackHandler } from 'react-na
 import BasePage from '../../BasePage';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 import ScreenUtils from '../../utils/ScreenUtils';
+
 const { px2dp } = ScreenUtils;
 import backIconImg from '../../comm/res/button/icon_header_back.png';
 import DesignRule from '../../constants/DesignRule';
@@ -39,21 +40,8 @@ export default class ShowListPage extends BasePage {
     };
 
 
-    componentWillMount() {
+    componentDidMount() {
         this.setState({ left: this.params.fromHome });
-        this.willFocusSubscription = this.props.navigation.addListener(
-            'willFocus',
-            payload => {
-                const { state } = payload;
-                console.log('ShowListPage willFocus', state);
-                if (state && (state.routeName === 'ShowListPage' || state.routeName === 'show/ShowListPage')) {
-                    this.setState({
-                        pageFocused: true
-                    });
-                }
-
-            }
-        );
         this.didBlurSubscription = this.props.navigation.addListener(
             'willBlur',
             payload => {
@@ -83,7 +71,6 @@ export default class ShowListPage extends BasePage {
 
 
     componentWillUnmount() {
-        this.willFocusSubscription && this.willFocusSubscription.remove();
         this.didBlurSubscription && this.didBlurSubscription.remove();
         this.didFocusSubscription && this.didFocusSubscription.remove();
     }
@@ -100,19 +87,18 @@ export default class ShowListPage extends BasePage {
         this.props.navigation.goBack(null);
     }
 
-    _press = ({nativeEvent})=>{
+    _press = ({ nativeEvent }) => {
         let data = nativeEvent;
         // data.click = data.click + 1;
         // this.recommendModules.recommendList.replace
         this.$navigate('show/ShowDetailPage', { id: data.id, code: data.code });
-    }
+    };
 
     _render() {
         let that = this;
         const { page, left, needsExpensive } = this.state;
 
         let HotView = null;
-        // let HotFindView = null;
         if (needsExpensive) {
             HotView = require('./ShowHotView').default;
         }
@@ -156,7 +142,7 @@ export default class ShowListPage extends BasePage {
                     {
                         needsExpensive
                             ?
-                            <HotView navigate={this.$navigate} pageFocus={this.props.isFocused}/>
+                            <HotView navigate={this.$navigate} pageFocus={this.state.pageFocused}/>
                             :
                             null
                     }
@@ -166,10 +152,20 @@ export default class ShowListPage extends BasePage {
                         needsExpensive
                             ?
 
-                            <ShowGroundView style={{flex:1}}
-                                            uri={'/discover/query@GET'}
-                                            onItemPress={({nativeEvent})=> {
-                                                that.$navigate('show/ShowDetailPage', { id: nativeEvent.id, code: nativeEvent.code });}}
+                            <ShowGroundView
+                                ref={(ref) => {
+                                    this.rightShowList = ref;
+                                }}
+                                style={{ flex: 1 }}
+                                uri={'/discover/query@GET'}
+                                onItemPress={({ nativeEvent }) => {
+                                    that.$navigate('show/ShowDetailPage', {
+                                        id: nativeEvent.id,
+                                        code: nativeEvent.code,
+                                        ref: this.rightShowList,
+                                        index: nativeEvent.index
+                                    });
+                                }}
                             />
                             :
                             null

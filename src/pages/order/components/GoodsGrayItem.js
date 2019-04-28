@@ -63,11 +63,16 @@ export default class GoodsGrayItem extends React.Component {
     }
 
     render() {
-        let { uri, goodsName, salePrice, category, goodsNum, onPress } = this.props;
-        // let types = activityCodes && activityCodes[0].orderType || 0;
-        // const datas = ["", "秒杀", "降价拍", "升级礼包", "普通礼包", "经验专区"];
-        let tips = ["秒杀","秒杀", "降价拍", "升级礼包", "普通礼包", "经验专区","秒杀", "降价拍", "升级礼包", "普通礼包", "经验专区"];
-
+        let { uri, goodsName, salePrice, category, goodsNum, onPress,activityCodes} = this.props;
+        let tips = [];
+        if (activityCodes){
+            activityCodes.forEach((item)=> {
+                let types = item && item.tag;
+                if (types){
+                    tips.push(types)
+                }
+            })
+        }
         return (
             <TouchableWithoutFeedback onPress={onPress}>
                 <View style={[styles.container, this.props.style]}>

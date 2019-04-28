@@ -86,7 +86,7 @@ export default class MRBannerViewComponent extends Component {
                 {/*加一个0.5修正值*/}
                 <MRBannerView
                     ref={(ref) => this.mr_banner = ref}
-                    style={[{ height: bannerHeight, width: imgWidth }]}
+                    style={[{ height: bannerHeight, width: imgWidth + 0.5 }]}
                     onDidScrollToIndex={(e) => this._onDidScrollToIndex(e)}
                     itemWidth={imgWidth + 0.5}
                     itemRadius={itemRadius}
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     activityIndex: {
-        width: px2dp(10),
+        width: px2dp(14),
         height: px2dp(3),
         borderRadius: px2dp(1.5),
         backgroundColor: DesignRule.mainColor,
