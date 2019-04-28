@@ -178,6 +178,7 @@ function AdViewBindModal(modal) {
                             <ImageLoad style={{ width: autoSizeWidth(310), height: autoSizeWidth(410) }}
                                        source={{ uri: image }}
                                        resizeMode={'contain'}
+                                       showPlaceholder={false}
                             >
                             </ImageLoad>
                         </TouchableOpacity>
