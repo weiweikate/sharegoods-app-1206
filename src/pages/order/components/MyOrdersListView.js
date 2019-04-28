@@ -23,9 +23,9 @@ import {
 import RouterMap from '../../../navigation/RouterMap';
 import { payStatus, payment, payStatusMsg } from '../../payment/Payment';
 import { NavigationActions } from 'react-navigation';
-
+import { SmoothPushPreLoadHighComponent } from '../../../comm/components/SmoothPushHighComponent';
 const emptyIcon = res.kongbeuye_dingdan;
-
+@SmoothPushPreLoadHighComponent
 export default class MyOrdersListView extends Component {
     constructor(props) {
         super(props);

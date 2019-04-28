@@ -97,6 +97,17 @@ export default class TopicDetailPage extends BasePage {
 
     componentDidMount() {
         // this.getPromotion();
+        this.willFocusSubscription = this.props.navigation.addListener(
+            'didFocus',
+            payload => {
+                const { state } = payload;
+                console.log('didFocus', state);
+                if (state && state.routeName === 'topic/TopicDetailPage') {
+                    this._getActivityData();
+                    this._getMessageCount();
+                }
+            }
+        );
     }
 
     // getPromotion = async () => {
@@ -120,20 +131,6 @@ export default class TopicDetailPage extends BasePage {
     //     } catch (error) {
     //     }
     // };
-
-    componentWillMount() {
-        this.willFocusSubscription = this.props.navigation.addListener(
-            'willFocus',
-            payload => {
-                const { state } = payload;
-                console.log('willFocus', state);
-                if (state && state.routeName === 'topic/TopicDetailPage') {
-                    this._getActivityData();
-                    this._getMessageCount();
-                }
-            }
-        );
-    }
 
     componentWillUnmount() {
         this.willFocusSubscription && this.willFocusSubscription.remove();

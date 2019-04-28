@@ -50,7 +50,18 @@ export default class MyShop_RecruitPage extends BasePage {
         };
     };
 
-    componentWillMount() {
+    _handleAppStateChange = (nextAppState) => {
+        if (nextAppState === 'active') {
+            //初始化init和app变活跃 会定位存储
+            geolocation.getLastLocation().then(result => {
+                Storage.set('storage_MrLocation', result);
+            }).catch((error) => {
+                }
+            );
+        }
+    };
+
+    componentDidMount() {
         //app状态
         AppState.addEventListener('change', this._handleAppStateChange);
 
@@ -62,7 +73,7 @@ export default class MyShop_RecruitPage extends BasePage {
         );
         //页面出现时
         this.willFocusSubscription = this.props.navigation.addListener(
-            'willFocus',
+            'didFocus',
             payload => {
                 const { state } = payload;
                 if (!state.params) {//二级页面不返回首页 //安卓回退
@@ -100,20 +111,6 @@ export default class MyShop_RecruitPage extends BasePage {
                 }
             }
         );
-    }
-
-    _handleAppStateChange = (nextAppState) => {
-        if (nextAppState === 'active') {
-            //初始化init和app变活跃 会定位存储
-            geolocation.getLastLocation().then(result => {
-                Storage.set('storage_MrLocation', result);
-            }).catch((error) => {
-                }
-            );
-        }
-    };
-
-    componentDidMount() {
         this._loadPageData();
     }
 

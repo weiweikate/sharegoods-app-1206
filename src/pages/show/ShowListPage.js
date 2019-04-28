@@ -40,21 +40,8 @@ export default class ShowListPage extends BasePage {
     };
 
 
-    componentWillMount() {
+    componentDidMount() {
         this.setState({ left: this.params.fromHome });
-        this.willFocusSubscription = this.props.navigation.addListener(
-            'willFocus',
-            payload => {
-                const { state } = payload;
-                console.log('ShowListPage willFocus', state);
-                if (state && (state.routeName === 'ShowListPage' || state.routeName === 'show/ShowListPage')) {
-                    this.setState({
-                        pageFocused: true
-                    });
-                }
-
-            }
-        );
         this.didBlurSubscription = this.props.navigation.addListener(
             'willBlur',
             payload => {
@@ -74,9 +61,12 @@ export default class ShowListPage extends BasePage {
             'didFocus',
             payload => {
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
-                this.setState({
-                    pageFocused: true
-                });
+                const { state } = payload;
+                if (state && (state.routeName === 'ShowListPage' || state.routeName === 'show/ShowListPage')) {
+                    this.setState({
+                        pageFocused: true
+                    });
+                }
             }
         );
         this.setState({ needsExpensive: true });
@@ -84,7 +74,6 @@ export default class ShowListPage extends BasePage {
 
 
     componentWillUnmount() {
-        this.willFocusSubscription && this.willFocusSubscription.remove();
         this.didBlurSubscription && this.didBlurSubscription.remove();
         this.didFocusSubscription && this.didFocusSubscription.remove();
     }
