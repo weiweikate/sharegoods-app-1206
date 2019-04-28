@@ -1,7 +1,20 @@
 package com.meeruu.sharegoods.rn.showground.widgets.GridView;
 
+import android.content.Context;
+import android.content.res.TypedArray;
+import android.support.annotation.NonNull;
+import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.util.TypedValue;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import com.meeruu.sharegoods.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class NineGridView extends ViewGroup {
     // public static final int MODE_FILL = 0;          //填充模式，类似于微信
@@ -74,7 +87,7 @@ public class NineGridView extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        if (mImageInfo == null) return;
+        if (mImageInfo == null) {return;}
         int childrenCount = mImageInfo.size();
         //根据图片数量 创建相应个数的imageview  并根据设定的imageview的宽高以及间距 ，将imageview放置在正确的位置
         for (int i = 0; i < childrenCount; i++) {
@@ -139,7 +152,7 @@ public class NineGridView extends ViewGroup {
         if (mImageInfo == null) {
             for (int i = 0; i < imageCount; i++) {
                 ImageView iv = getImageView(i);
-                if (iv == null) return;
+                if (iv == null) {return;}
                 //添加相应个imageview到父控件 viewgroup中
                 addView(iv, generateDefaultLayoutParams());
             }
@@ -152,7 +165,7 @@ public class NineGridView extends ViewGroup {
             } else if (oldViewCount < newViewCount) {
                 for (int i = oldViewCount; i < newViewCount; i++) {
                     ImageView iv = getImageView(i);
-                    if (iv == null) return;
+                    if (iv == null) {return;}
                     addView(iv, generateDefaultLayoutParams());
                 }
             }

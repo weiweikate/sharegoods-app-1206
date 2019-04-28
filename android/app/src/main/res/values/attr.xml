@@ -37,4 +37,7 @@
         <attr name="wlv_titleCenterStrokeColor" format="color" />
         <attr name="wlv_titleCenterStrokeWidth" format="dimension" />
     </declare-styleable>
+    <declare-styleable name="NineGridView">
+        <attr name="ngv_gridSpacing" format="dimension"/>
+    </declare-styleable>
 </resources>
