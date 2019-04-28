@@ -70,6 +70,7 @@ public static final int *;
 }
 
 -keep class com.meeruu.commonlib.bean.**{*;}
+-keep class com.meeruu.sharegoods.bean.**{*;}
 
 -dontshrink
 -dontoptimize
