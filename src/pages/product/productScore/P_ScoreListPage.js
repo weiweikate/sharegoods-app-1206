@@ -17,6 +17,7 @@ import ProductApi from '../api/ProductApi';
 import { beginChatType, QYChatTool } from '../../../utils/QYModule/QYChatTool';
 import ProductDetailNavView from '../components/ProductDetailNavView';
 import { SmoothPushPreLoadHighComponent } from '../../../comm/components/SmoothPushHighComponent';
+import ScreenUtils from '../../../utils/ScreenUtils';
 
 const { p_score_smile, p_score_empty } = res.productScore;
 
@@ -258,7 +259,8 @@ export default class P_ScoreListPage extends BasePage {
     };
 
     _renderFlatList = () => {
-        return <FlatList data={this.state.dataArray}
+        return <FlatList style={{marginTop: ScreenUtils.headerHeight}}
+                         data={this.state.dataArray}
                          renderItem={this._renderItem}
                          keyExtractor={this._keyExtractor}
                          onEndReached={this._onEndReached}
