@@ -41,6 +41,14 @@
             "miniProgramType": 0,
             "gongmao": "https://api.sharegoodsmall.com/gateway/gongmall/contract/reback"
         },
+        "common-dev": {
+            "name": "common-dev",
+            "host": "http://172.16.10.12:1080/gateway",
+            "h5": "https://testh5.sharegoodsmall.com",
+            "oss": "https://testcdn.sharegoodsmall.com",
+            "wxAppletKey": "gh_aa91c3ea0f6c",
+            "gongmao": "http://testsop.sharegoodsmall.com/gateway/gongmall/contract/reback"
+        },
         "garyTest": {
             "name": "灰度测试",
             "host": "https://apif.sharegoodsmall.com/gateway",
@@ -64,7 +72,7 @@
         },
         "吴承骏": {
             "name": "吴承骏",
-            "host": "http://172.16.10.53:8903/gateway"
+            "host": "http://172.18.7.77:8903/gateway"
         },
         "da_wei": {
             "name": "蒋大为",

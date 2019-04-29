@@ -65,11 +65,12 @@ public class AppUtils {
      */
     public static String getVersionName() {
         try {
-            PackageManager packageManager = BaseApplication.appContext.getPackageManager();
-            PackageInfo packageInfo = packageManager.getPackageInfo(
-                    BaseApplication.appContext.getPackageName(), 0);
-            return packageInfo.versionName;
-
+            if (BaseApplication.appContext != null) {
+                PackageManager packageManager = BaseApplication.appContext.getPackageManager();
+                PackageInfo packageInfo = packageManager.getPackageInfo(
+                        BaseApplication.appContext.getPackageName(), 0);
+                return packageInfo.versionName;
+            }
         } catch (NameNotFoundException e) {
             e.printStackTrace();
         }
