@@ -61,9 +61,12 @@ export default class ShowListPage extends BasePage {
             'didFocus',
             payload => {
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
-                this.setState({
-                    pageFocused: true
-                });
+                const { state } = payload;
+                if (state && (state.routeName === 'ShowListPage' || state.routeName === 'show/ShowListPage')) {
+                    this.setState({
+                        pageFocused: true
+                    });
+                }
             }
         );
         this.setState({ needsExpensive: true });

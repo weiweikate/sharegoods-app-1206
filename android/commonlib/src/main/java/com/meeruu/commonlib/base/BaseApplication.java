@@ -69,7 +69,9 @@ public class BaseApplication extends MultiDexApplication {
         super.onTrimMemory(level);
         try {
             if (level >= ComponentCallbacks2.TRIM_MEMORY_MODERATE) {
-                ImagePipelineFactory.getInstance().getImagePipeline().clearMemoryCaches();
+                if (ImagePipelineFactory.hasBeenInitialized()) {
+                    ImagePipelineFactory.getInstance().getImagePipeline().clearMemoryCaches();
+                }
             }
         } catch (Exception e) {
         }
@@ -79,7 +81,9 @@ public class BaseApplication extends MultiDexApplication {
     public void onLowMemory() {
         super.onLowMemory();
         try {
-            ImagePipelineFactory.getInstance().getImagePipeline().clearMemoryCaches();
+            if (ImagePipelineFactory.hasBeenInitialized()) {
+                ImagePipelineFactory.getInstance().getImagePipeline().clearMemoryCaches();
+            }
         } catch (Exception e) {
         }
     }
