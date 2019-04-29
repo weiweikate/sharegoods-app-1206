@@ -5,7 +5,7 @@ import { homeModule } from './Modules';
 
 const { px2dp } = ScreenUtils;
 import HomeApi from '../api/HomeAPI';
-import { differenceInCalendarDays, format, addDays, subDays } from 'date-fns';
+import { differenceInCalendarDays, format } from 'date-fns';
 
 export const limitStatus = {
     del: 0, //删除
@@ -31,7 +31,6 @@ export class LimitGoModules {
     }
 
     @action loadLimitGo = flow(function* () {
-        const date = new Date();
         try {
             const isShowResult = yield HomeApi.isShowLimitGo();
             if (!isShowResult.data) {
@@ -42,9 +41,7 @@ export class LimitGoModules {
                 throw new Error('不显示秒杀');
             } else {
                 const res = yield HomeApi.getLimitGo({
-                    type: 0,
-                    startTime: subDays(date, 7).getTime(),
-                    endTime: addDays(date, 7).getTime()
+                    type: 0
                 });
                 const result = res.data || [];
 
@@ -54,14 +51,15 @@ export class LimitGoModules {
                 let _currentPage = -1; // 当前page
                 result.map((data, index) => {
                     spikeTime = (result[index] && result[index].simpleActivity.startTime) || 0;
+                    const date = (result[index] && result[index].simpleActivity.currentTime) || 0;
 
-                    let diffTime = Math.abs(date.getTime() - parseInt(spikeTime, 0));
+                    let diffTime = Math.abs(date - parseInt(spikeTime, 0));
 
                     if (lastSeckills === 0) {
                         lastSeckills = diffTime;
                         _initialPage = index;
                     } else if (lastSeckills !== 0) {
-                        if (lastSeckills > diffTime && date.getTime() >= parseInt(spikeTime, 0)) {
+                        if (lastSeckills > diffTime && date >= parseInt(spikeTime, 0)) {
                             lastSeckills = diffTime;
                             _initialPage = index;
                             _currentPage = index;
@@ -79,7 +77,7 @@ export class LimitGoModules {
                         }
                     }
 
-                    if (diff === 0 && date.getTime() >= parseInt(spikeTime, 0)) {  //今天，已经结束
+                    if (diff === 0 && date >= parseInt(spikeTime, 0)) {  //今天，已经结束
                         title = '抢购中';
                     }
 
