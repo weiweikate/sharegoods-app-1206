@@ -45,6 +45,8 @@ export class LimitGoModules {
                 });
                 const result = res.data || [];
 
+                let _spikeList = [];
+
                 let spikeTime = 0;     // 秒杀开始时间
                 let lastSeckills = 0;  // 最近的秒杀
                 let _initialPage = 0;  // 初始page
@@ -94,7 +96,7 @@ export class LimitGoModules {
                         timeFormat = format(spikeTime, 'D日HH:mm');
                     }
 
-                    this.spikeList.push({
+                    _spikeList.push({
                         title: title,
                         id: index,
                         time: timeFormat,
@@ -104,7 +106,8 @@ export class LimitGoModules {
                 });
                 this.initialPage = _initialPage;
                 this.currentPage = _currentPage;
-                this.currentGoodsList = (this.spikeList[_currentPage] && this.spikeList[_currentPage].goods) || [];
+                this.spikeList = _spikeList;
+                this.currentGoodsList = (_spikeList[_currentPage] && _spikeList[_currentPage].goods) || [];
                 homeModule.changeHomeList(homeType.limitGo);
             }
         } catch (error) {
