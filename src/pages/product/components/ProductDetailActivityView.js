@@ -105,7 +105,7 @@ export class ActivityDidBeginView extends Component {
                     <View style={{ marginLeft: 13, marginRight: 8 }}>
                         <MRText style={DidBeginViewStyles.timeText}>{showTimeText}</MRText>
                         <View style={DidBeginViewStyles.leaveView}>
-                            <View style={[DidBeginViewStyles.progressView, { width: progress * 90 }]}/>
+                            <View style={[DidBeginViewStyles.progressView, { width: (1 - progress) * 90 }]}/>
                             <View style={DidBeginViewStyles.leaveAmountView}>
                                 <MRText
                                     style={DidBeginViewStyles.leaveAmountText}>{progress == 0 ? '已抢完' : `还剩${promotionStockNum}件`}</MRText>
