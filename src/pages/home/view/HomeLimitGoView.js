@@ -145,7 +145,7 @@ const GoodsItem = ({ item }) => {
             width={px2dp(120)}
             height={px2dp(120)}
             style={styles.goodsImage}>
-            {item.status === limitStatus.end ?
+            {item.promotionStatus === limitStatus.end ?
                 <Image source={resHome.home_sallout}
                        style={styles.goodsTag}/> : null}
         </ImageLoader>
@@ -156,7 +156,7 @@ const GoodsItem = ({ item }) => {
                 <View style={[styles.progressView, { width: (1 - progress) * px2dp(120) }]}/>
                 <View style={styles.leaveAmountView}>
                     <MRText
-                        style={styles.leaveAmountText}>{progress == 0 ? '已抢完' : `还剩${item.promotionStockNum}件`}</MRText>
+                        style={styles.leaveAmountText}>{`还剩${item.promotionStockNum}件`}</MRText>
                 </View>
             </View>
             <View style={styles.moneyView}>
@@ -177,8 +177,8 @@ const GoodsItem = ({ item }) => {
     </View>;
 };
 
-const GoodsItemButton = (data) => {
-    if (data.status === limitStatus.doing) {
+const GoodsItemButton = ({ data }) => {
+    if (data.promotionStatus === limitStatus.doing) {
         return <LinearGradient style={styles.button}
                                start={{ x: 0, y: 0 }}
                                end={{ x: 1, y: 0 }}
@@ -187,7 +187,7 @@ const GoodsItemButton = (data) => {
                 马上抢
             </Text>
         </LinearGradient>;
-    } else if (data.status === limitStatus.noBegin) {
+    } else if (data.promotionStatus === limitStatus.noBegin) {
         return <View style={styles.buttonWill}>
             <Text style={styles.buttonWillTitle}>
                 即将开抢
@@ -196,7 +196,7 @@ const GoodsItemButton = (data) => {
     } else {
         return <View style={styles.disbutton}>
             <Text style={styles.disbuttonTitle}>
-                {data.status === limitStatus.end ? '抢光了' : '已结束'}
+                {data.promotionStatus === limitStatus.end ? '抢光了' : '已结束'}
             </Text>
         </View>;
     }
