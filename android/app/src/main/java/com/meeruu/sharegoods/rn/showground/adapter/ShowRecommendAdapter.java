@@ -32,7 +32,7 @@ public class ShowRecommendAdapter extends BaseQuickAdapter<ShowRecommendBean, Ba
         NineGridView.setImageLoader(new NineGridView.ImageLoader() {
             @Override
             public void onDisplayImage(Context context, SimpleDraweeView imageView, String url) {
-                ImageLoadUtils.loadRoundNetImage(url, imageView, 0);
+                ImageLoadUtils.loadRoundNetImage(url, imageView, 5);
             }
         });
 

@@ -73,8 +73,12 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/content_button"
         android:layout_marginTop="5dp"
-        android:layout_toRightOf="@id/user_icon"
-        android:background="@color/mainColor" />
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@id/user_icon" />
+
+    <HorizontalScrollView android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <>
 
     <View
         android:id="@+id/product_list"
@@ -85,6 +89,7 @@
         android:layout_marginLeft="5dp"
         android:layout_toRightOf="@id/user_icon"
         android:background="@color/mainColor" />
+    </HorizontalScrollView>
 
     <ImageView
         android:layout_width="23dp"

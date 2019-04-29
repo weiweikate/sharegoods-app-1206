@@ -69,6 +69,12 @@ public class ShowRecommendView {
         list.add(bean);
         List<String> urls = new ArrayList<>();
         urls.add("https://k.zol-img.com.cn/sjbbs/7692/a7691501_s.jpg");
+        urls.add("https://k.zol-img.com.cn/sjbbs/7692/a7691501_s.jpg");
+        urls.add("https://k.zol-img.com.cn/sjbbs/7692/a7691501_s.jpg");
+        urls.add("https://k.zol-img.com.cn/sjbbs/7692/a7691501_s.jpg");
+        urls.add("https://k.zol-img.com.cn/sjbbs/7692/a7691501_s.jpg");
+        urls.add("https://k.zol-img.com.cn/sjbbs/7692/a7691501_s.jpg");
+        urls.add("https://k.zol-img.com.cn/sjbbs/7692/a7691501_s.jpg");
         bean.setImageUrls(urls);
         list.add(bean);
         adapter.setNewData(list);

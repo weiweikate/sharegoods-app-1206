@@ -26,7 +26,7 @@ public class NineGridView extends ViewGroup {
     private int singleImageSize = 250;              // 单张图片时的最大大小,单位dp
     private float singleImageRatio = 1.0f;          // 单张图片的宽高比(宽/高)
     private int maxImageSize = 9;                   // 最大显示的图片数
-    private int gridSpacing = 4;                    // 宫格间距，单位dp
+    private int gridSpacing = 10;                    // 宫格间距，单位dp
     // private int mode = MODE_FILL;                   // 默认使用fill模式
 
     private int columnCount;    // 列数
@@ -71,7 +71,7 @@ public class NineGridView extends ViewGroup {
             //只有1张图时 图片宽度即是总宽度  高度等于宽度
             if (mImageInfo.size() == 1) {
                 gridWidth = totalWidth;
-                gridHeight = gridWidth;
+                gridHeight = gridWidth*14/29;
                 Log.d("yzpzz","wid  "+gridWidth+ "height   "+gridHeight);
             } else {
                 //按照有几列 来计算每张图片的宽度和高度
