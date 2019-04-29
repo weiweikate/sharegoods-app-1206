@@ -5,7 +5,7 @@ import { homeModule } from './Modules';
 
 const { px2dp } = ScreenUtils;
 import HomeApi from '../api/HomeAPI';
-import { differenceInCalendarDays, format } from 'date-fns';
+import { differenceInCalendarDays, format, addDays, subDays } from 'date-fns';
 
 export const limitStatus = {
     del: 0, //删除
@@ -17,79 +17,69 @@ export const limitStatus = {
 };
 
 export class LimitGoModules {
-    @observable goodsList = {};
-    @observable timeList = [];
+    @observable spikeList = [];
     @observable currentGoodsList = [];
     @observable initialPage = 0;
     @observable currentPage = -1;
 
     @computed get limitHeight() {
-        if (this.currentGoodsList && this.currentGoodsList.length > 0) {
-            return px2dp(98) + this.currentGoodsList.length * px2dp(140) + (this.currentGoodsList.length - 1) * px2dp(10) + 0.8;
+        const len = (this.currentGoodsList && this.currentGoodsList.length) || 0;
+        if (len > 0) {
+            return px2dp(98) + len * px2dp(140) + (len - 1) * px2dp(10) + 0.8;
         }
         return 0;
     }
 
     @action loadLimitGo = flow(function* () {
+        const date = new Date();
         try {
             const isShowResult = yield HomeApi.isShowLimitGo();
             if (!isShowResult.data) {
-                this.goodsList = {};
-                this.timeList = [];
+                this.spikeList = [];
                 this.currentGoodsList = [];
                 this.initialPage = 0;
                 this.currentPage = -1;
                 throw new Error('不显示秒杀');
             } else {
-                const res = yield HomeApi.getLimitGo();
-                const result = res.data;
-                const keys = Object.keys(result);
-                const sortKeys = keys.sort((val1, val2) => parseInt(val1, 0) - parseInt(val2, 0));
+                const res = yield HomeApi.getLimitGo({
+                    type: 0,
+                    startTime: subDays(date, 7).getTime(),
+                    endTime: addDays(date, 7).getTime()
+                });
+                const result = res.data || [];
 
-                let _timeList = [];
-                let _goodsList = {};
-                let _currentDate = 0;
+                let spikeTime = 0;     // 秒杀开始时间
+                let lastSeckills = 0;  // 最近的秒杀
+                let _initialPage = 0;  // 初始page
+                let _currentPage = -1; // 当前page
+                result.map((data, index) => {
+                    spikeTime = (result[index] && result[index].simpleActivity.startTime) || 0;
 
-                let currentId = 0;
-                let lastSeckills = 0; //最近的秒杀
-                let _initialPage = 0;
-                let _currentPage = -1;
-                sortKeys.map((value, index) => {
-                    let goods = result[value];
-                    let seckills = goods.seckills;
-                    if (!_currentDate) {
-                        _currentDate = goods.date;
-                    }
-
-                    let nowTime = new Date(_currentDate);
-                    let secTime = new Date(parseInt(value, 0));
-                    let diffTime = Math.abs(_currentDate - parseInt(value, 0));
+                    let diffTime = Math.abs(date.getTime() - parseInt(spikeTime, 0));
 
                     if (lastSeckills === 0) {
                         lastSeckills = diffTime;
-                        currentId = value;
                         _initialPage = index;
                     } else if (lastSeckills !== 0) {
-                        if (lastSeckills > diffTime && (_currentDate >= parseInt(value, 0))) {
+                        if (lastSeckills > diffTime && date.getTime() >= parseInt(spikeTime, 0)) {
                             lastSeckills = diffTime;
                             _initialPage = index;
                             _currentPage = index;
-                            currentId = value;
                         }
                     }
 
-                    let diff = differenceInCalendarDays(nowTime, secTime);
+                    let diff = differenceInCalendarDays(date, spikeTime);
                     let title = '即将开抢';
 
                     if (diff > 0) { //如果是昨天， title就是昨日精选
                         if (diff === 1) {
                             title = '昨日精选';
                         } else {
-                            title = format(secTime, 'D日') + '精选';
+                            title = format(spikeTime, 'D日') + '精选';
                         }
                     }
 
-                    if (diff === 0 && _currentDate >= parseInt(value, 0)) {  //今天，已经结束
+                    if (diff === 0 && date.getTime() >= parseInt(spikeTime, 0)) {  //今天，已经结束
                         title = '抢购中';
                     }
 
@@ -97,31 +87,26 @@ export class LimitGoModules {
 
                     let timeFormat = '';
                     if (diff === 0) {
-                        timeFormat = format(secTime, 'HH:mm');
+                        timeFormat = format(spikeTime, 'HH:mm');
                     } else if (diff === 1) {
-                        timeFormat = '昨日' + format(secTime, 'HH:mm');
+                        timeFormat = '昨日' + format(spikeTime, 'HH:mm');
                     } else if (diff === -1) {
-                        timeFormat = '明日' + format(secTime, 'HH:mm');
+                        timeFormat = '明日' + format(spikeTime, 'HH:mm');
                     } else {
-                        timeFormat = format(secTime, 'D日HH:mm');
+                        timeFormat = format(spikeTime, 'D日HH:mm');
                     }
 
-                    _timeList.push({
+                    this.spikeList.push({
                         title: title,
-                        id: value,
+                        id: index,
                         time: timeFormat,
-                        diff: diff
+                        diff: diff,
+                        goods: (result[index] && result[index].productDetailList) || []
                     });
-
-                    _goodsList[value] = seckills;
                 });
-
-                console.log('loadLimitGo', _timeList);
                 this.initialPage = _initialPage;
                 this.currentPage = _currentPage;
-                this.timeList = _timeList || [];
-                this.goodsList = _goodsList;
-                this.currentGoodsList = this.goodsList[currentId] || [];
+                this.currentGoodsList = (this.spikeList[_currentPage] && this.spikeList[_currentPage].goods) || [];
                 homeModule.changeHomeList(homeType.limitGo);
             }
         } catch (error) {
@@ -129,8 +114,8 @@ export class LimitGoModules {
         }
     });
 
-    @action changeLimitGo(id, index) {
-        this.currentGoodsList = this.goodsList[id] || [];
+    @action changeLimitGo(index) {
+        this.currentGoodsList = (this.spikeList[index] && this.spikeList[index].goods) || [];
         this.currentPage = index;
         homeModule.changeHomeList(homeType.limitGo);
     }
