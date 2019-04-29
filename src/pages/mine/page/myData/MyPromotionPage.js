@@ -34,13 +34,14 @@ const ProgressImg = res.myData.jdt_05;
 const arrowRightImg= res.myData.black_right_arrow
 import LinearGradient from 'react-native-linear-gradient';
 import StringUtils from "../../../../utils/StringUtils";
+import { SmoothPushPreLoadHighComponent } from '../../../../comm/components/SmoothPushHighComponent';
 
 const { px2dp } = ScreenUtils;
 
 const headerBgHeight = px2dp(182) + ScreenUtils.statusBarHeight + 30;
 const headerHeight = ScreenUtils.headerHeight;
 const offset = headerBgHeight - headerHeight;
-
+@SmoothPushPreLoadHighComponent
 export default class MyPromotionPage extends BasePage {
 
     $navigationBarOptions = {

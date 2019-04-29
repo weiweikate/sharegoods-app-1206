@@ -18,12 +18,12 @@ const { arrow_right_black } = res.button;
 export class ActivityWillBeginView extends Component {
     render() {
         const { productDetailModel } = this.props;
-        const { promotionPrice, showTimeText, singleActivity } = productDetailModel;
+        const { promotionPrice, showTimeText, singleActivity, prodCode } = productDetailModel;
         const { extraProperty } = singleActivity;
         return (
             <NoMoreClick style={WillBeginStyles.bgView} onPress={() => {
                 extraProperty === 'toSpike' && navigate('HtmlPage', {
-                    uri: `${apiEnvironment.getCurrentH5Url()}/spike`
+                    uri: `${apiEnvironment.getCurrentH5Url()}/spike?spuCode=${prodCode}`
                 });
             }}>
                 <View style={WillBeginStyles.leftView}>
@@ -76,14 +76,14 @@ const WillBeginStyles = StyleSheet.create({
 export class ActivityDidBeginView extends Component {
     render() {
         const { productDetailModel } = this.props;
-        const { promotionPrice, originalPrice, promotionSaleNum, promotionStockNum, showTimeText, singleActivity } = productDetailModel;
+        const { promotionPrice, originalPrice, promotionSaleNum, promotionStockNum, showTimeText, prodCode, singleActivity } = productDetailModel;
         let total = math.eval(promotionSaleNum + promotionStockNum);
         let progress = total == 0 ? 0 : math.eval(promotionStockNum / total);
         const { extraProperty } = singleActivity;
         return (
             <NoMoreClick style={DidBeginViewStyles.bgView} onPress={() => {
                 extraProperty === 'toSpike' && navigate('HtmlPage', {
-                    uri: `${apiEnvironment.getCurrentH5Url()}/spike`
+                    uri: `${apiEnvironment.getCurrentH5Url()}/spike?spuCode=${prodCode}`
                 });
             }}>
                 <View style={DidBeginViewStyles.leftView}>
@@ -105,7 +105,7 @@ export class ActivityDidBeginView extends Component {
                     <View style={{ marginLeft: 13, marginRight: 8 }}>
                         <MRText style={DidBeginViewStyles.timeText}>{showTimeText}</MRText>
                         <View style={DidBeginViewStyles.leaveView}>
-                            <View style={[DidBeginViewStyles.progressView, { width: progress * 90 }]}/>
+                            <View style={[DidBeginViewStyles.progressView, { width: (1 - progress) * 90 }]}/>
                             <View style={DidBeginViewStyles.leaveAmountView}>
                                 <MRText
                                     style={DidBeginViewStyles.leaveAmountText}>{progress == 0 ? '已抢完' : `还剩${promotionStockNum}件`}</MRText>
