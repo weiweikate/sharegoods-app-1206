@@ -18,12 +18,12 @@ const { arrow_right_black } = res.button;
 export class ActivityWillBeginView extends Component {
     render() {
         const { productDetailModel } = this.props;
-        const { promotionPrice, showTimeText, singleActivity } = productDetailModel;
+        const { promotionPrice, showTimeText, singleActivity, prodCode } = productDetailModel;
         const { extraProperty } = singleActivity;
         return (
             <NoMoreClick style={WillBeginStyles.bgView} onPress={() => {
                 extraProperty === 'toSpike' && navigate('HtmlPage', {
-                    uri: `${apiEnvironment.getCurrentH5Url()}/spike`
+                    uri: `${apiEnvironment.getCurrentH5Url()}/spike?spuCode=${prodCode}`
                 });
             }}>
                 <View style={WillBeginStyles.leftView}>
