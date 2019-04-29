@@ -9,6 +9,8 @@ import { limitGoModule, limitStatus } from '../model/HomeLimitGoModel';
 import DesignRule from '../../../constants/DesignRule';
 import resHome from '../res';
 import { homeLinkType, homeRoute } from '../HomeTypes';
+import { MRText } from '../../../components/ui';
+import * as math from 'mathjs';
 
 const { px2dp } = ScreenUtils;
 
@@ -20,16 +22,16 @@ export default class HomeLimitGoView extends Component {
 
     _selectedLimit(number) {
         let index = number !== -1 ? number : this.state.page;
-        let limit = limitGoModule.timeList[index];
+        let limit = limitGoModule.spikeList[index];
         if (limit) {
-            limitGoModule.changeLimitGo(limit.id, number);
+            limitGoModule.changeLimitGo(number);
         }
     }
 
     _renderTab(name, page, isTabActive, onPressHandler, onLayoutHandler) {
         const textColor = isTabActive ? '#FC533B' : '#333';
         const selectedValue = (value) => value.id === name;
-        const selectedModels = limitGoModule.timeList.filter(selectedValue);
+        const selectedModels = limitGoModule.spikeList.filter(selectedValue);
         let selected = null;
         if (selectedModels) {
             selected = selectedModels[0];
@@ -72,19 +74,18 @@ export default class HomeLimitGoView extends Component {
     }
 
     _goToDetail(value) {
-        this.props.navigate(homeRoute[homeLinkType.spike], { productCode: value.activityCode });
+        this.props.navigate(homeRoute[homeLinkType.spike], { productCode: value.prodCode });
     }
 
-    _renderGoodsList(id) {
+    _renderGoodsList(spikeGoods) {
         let goodsItems = [];
-        const goods = limitGoModule.goodsList[id];
-        goods.map((value, index) => {
+        spikeGoods.map((data, index) => {
             goodsItems.push(
                 <TouchableWithoutFeedback key={index}
-                                          onPress={() => this._goToDetail(value)}>
+                                          onPress={() => this._goToDetail(data || {})}>
                     <View>
-                        <GoodsItem key={index} item={value}/>
-                        {index === goods.length - 1 ? null : <View style={{ height: px2dp(10) }}/>}
+                        <GoodsItem key={index} item={data || {}}/>
+                        {index === spikeGoods.length - 1 ? null : <View style={{ height: px2dp(10) }}/>}
                     </View>
                 </TouchableWithoutFeedback>
             );
@@ -94,11 +95,12 @@ export default class HomeLimitGoView extends Component {
 
     render() {
         let viewItems = [];
-        limitGoModule.timeList.map((value, index) => {
+        const { spikeList } = limitGoModule;
+        spikeList.map((data, index) => {
             viewItems.push(
                 <View key={index}
-                      tabLabel={value.id}>
-                    {this._renderGoodsList(value.id)}
+                      tabLabel={data.id}>
+                    {this._renderGoodsList((data.goods) || [])}
                 </View>
             );
         });
@@ -133,43 +135,49 @@ export default class HomeLimitGoView extends Component {
     }
 }
 
-const GoodsItem = (item) => {
-    let data = item.item;
-    console.log('GoodsItem', data);
+const GoodsItem = ({ item }) => {
+    let total = math.eval(item.promotionSaleNum + item.promotionStockNum);
+    let progress = total == 0 ? 0 : math.eval(item.promotionStockNum / total);
     return <View style={styles.goodsItem}>
         <ImageLoader
-            source={{ uri: data.specImg }}
+            source={{ uri: item.imgUrl }}
             showPlaceholder={false}
             width={px2dp(120)}
             height={px2dp(120)}
             style={styles.goodsImage}>
-            {data.status === limitStatus.end ?
+            {item.status === limitStatus.end ?
                 <Image source={resHome.home_sallout}
                        style={styles.goodsTag}/> : null}
         </ImageLoader>
         <View style={styles.goodsContent}>
-            <Text style={styles.goodsTitle} numberOfLines={2}>{data.productName}</Text>
-            <Text style={styles.text} numberOfLines={1}>{data.secondName}</Text>
-            {data.status === limitStatus.doing ? null : <Text style={styles.text}>已有{data.subscribeCount}人关注了</Text>}
+            <Text style={styles.goodsTitle} numberOfLines={2}>{item.name}</Text>
+            <Text style={styles.text} numberOfLines={1}>{item.secondName}</Text>
+            <View style={styles.leaveView}>
+                <View style={[styles.progressView, { width: (1 - progress) * px2dp(120) }]}/>
+                <View style={styles.leaveAmountView}>
+                    <MRText
+                        style={styles.leaveAmountText}>{progress == 0 ? '已抢完' : `还剩${item.promotionStockNum}件`}</MRText>
+                </View>
+            </View>
             <View style={styles.moneyView}>
                 {
-                    data.seckillPrice
+                    item.promotionPrice
                         ?
                         <Text style={styles.money}>¥<Text
-                            style={styles.moneyText}>{data.seckillPrice + ' '}</Text>
-                            <Text style={styles.originMoneyText}>¥{data.originalPrice}</Text>
+                            style={styles.moneyText}>{item.promotionPrice + ' '}</Text>
+                            <Text style={styles.originMoneyText}>¥{item.originalPrice}</Text>
                         </Text>
                         :
                         null
                 }
                 <View style={{ flex: 1 }}/>
-                <GoodsItemButton data={data}/>
+                <GoodsItemButton data={item}/>
             </View>
         </View>
     </View>;
 };
 
-const GoodsItemButton = ({ data }) => {
+const GoodsItemButton = (data) => {
     if (data.status === limitStatus.doing) {
         return <LinearGradient style={styles.button}
                                start={{ x: 0, y: 0 }}
@@ -340,5 +348,19 @@ const styles = StyleSheet.create({
     disbuttonTitle: {
         color: 'white',
         fontSize: px2dp(14)
+    },
+    leaveView: {
+        marginTop: px2dp(5),
+        backgroundColor: 'rgba(255,0,80,0.1)', borderRadius: px2dp(6), width: px2dp(120), height: px2dp(12)
+    },
+    progressView: {
+        backgroundColor: DesignRule.mainColor, borderRadius: px2dp(6), height: px2dp(12)
+    },
+    leaveAmountView: {
+        justifyContent: 'center', marginLeft: px2dp(8),
+        position: 'absolute', top: 0, bottom: 0, left: 0, right: 0
+    },
+    leaveAmountText: {
+        fontSize: 10, color: DesignRule.textColor_white
     }
 });

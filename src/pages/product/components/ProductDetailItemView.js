@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
 * */
 export class SuitItemView extends Component {
     _renderItem = ({ item }) => {
-        const { imgUrl, name, minPrice, prodCode, skuList } = item;
+        const { imgUrl, name, minPrice, skuList } = item;
 
         let decreaseList = (skuList || []).map((sku) => {
             return sku.promotionDecreaseAmount;
@@ -198,9 +198,7 @@ export class SuitItemView extends Component {
 
         return (
             <View style={SuitItemViewStyles.item}>
-                <NoMoreClick onPress={() => {
-                    navigate(RouterMap.ProductDetailPage, { productCode: prodCode });
-                }}>
+                <NoMoreClick onPress={this._goSuitPage}>
                     <UIImage style={SuitItemViewStyles.itemImg} source={{ uri: imgUrl }}>
                         <View style={SuitItemViewStyles.subView}>
                             <Text style={SuitItemViewStyles.subText}>立省{minDecrease}起</Text>
@@ -368,12 +366,12 @@ const PromoteItemViewStyles = StyleSheet.create({
 * 服务
 * */
 export class ServiceItemView extends Component {
-    _imgText(text) {
+    _imgText = (text) => {
         return <View style={ServiceItemViewStyles.itemView}>
             <Image source={service_true}/>
             <Text style={ServiceItemViewStyles.serviceValueText}>{text}</Text>
         </View>;
-    }
+    };
 
     render() {
         const { productDetailModel, serviceAction } = this.props;
