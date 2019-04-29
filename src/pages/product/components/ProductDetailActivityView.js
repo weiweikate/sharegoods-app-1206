@@ -76,14 +76,14 @@ const WillBeginStyles = StyleSheet.create({
 export class ActivityDidBeginView extends Component {
     render() {
         const { productDetailModel } = this.props;
-        const { promotionPrice, originalPrice, promotionSaleNum, promotionStockNum, showTimeText, singleActivity } = productDetailModel;
+        const { promotionPrice, originalPrice, promotionSaleNum, promotionStockNum, showTimeText, prodCode, singleActivity } = productDetailModel;
         let total = math.eval(promotionSaleNum + promotionStockNum);
         let progress = total == 0 ? 0 : math.eval(promotionStockNum / total);
         const { extraProperty } = singleActivity;
         return (
             <NoMoreClick style={DidBeginViewStyles.bgView} onPress={() => {
                 extraProperty === 'toSpike' && navigate('HtmlPage', {
-                    uri: `${apiEnvironment.getCurrentH5Url()}/spike`
+                    uri: `${apiEnvironment.getCurrentH5Url()}/spike?spuCode=${prodCode}`
                 });
             }}>
                 <View style={DidBeginViewStyles.leftView}>
