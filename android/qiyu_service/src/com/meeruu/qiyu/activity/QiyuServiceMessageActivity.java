@@ -25,12 +25,13 @@ public class QiyuServiceMessageActivity extends ServiceMessageActivity {
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        SoftKeyboardFixerForFullscreen.assistActivity(this);
         ImmersionBar.with(this).barColor(android.R.color.white)
                 .fitsSystemWindows(true)
                 .navigationBarColor(android.R.color.white)
                 .statusBarDarkFont(true)
+                .keyboardEnable(true)
                 .navigationBarDarkIcon(true).init();
+        SoftKeyboardFixerForFullscreen.assistActivity(this);
         MyKefuButton myKefuButton = findViewById(R.id.mb_kefu_btn);
         final ImageView ivKefu = findViewById(R.id.iv_kefu);
         Bundle data = getIntent().getExtras();
