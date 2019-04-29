@@ -9,6 +9,8 @@ import { limitGoModule, limitStatus } from '../model/HomeLimitGoModel';
 import DesignRule from '../../../constants/DesignRule';
 import resHome from '../res';
 import { homeLinkType, homeRoute } from '../HomeTypes';
+import { MRText } from '../../../components/ui';
+import * as math from 'mathjs';
 
 const { px2dp } = ScreenUtils;
 
@@ -133,7 +135,9 @@ export default class HomeLimitGoView extends Component {
     }
 }
 
-const GoodsItem = ({item}) => {
+const GoodsItem = ({ item }) => {
+    let total = math.eval(item.promotionSaleNum + item.promotionStockNum);
+    let progress = total == 0 ? 0 : math.eval(item.promotionStockNum / total);
     return <View style={styles.goodsItem}>
         <ImageLoader
             source={{ uri: item.imgUrl }}
@@ -148,7 +152,13 @@ const GoodsItem = ({item}) => {
         <View style={styles.goodsContent}>
             <Text style={styles.goodsTitle} numberOfLines={2}>{item.name}</Text>
             <Text style={styles.text} numberOfLines={1}>{item.secondName}</Text>
-            {item.status === limitStatus.doing ? null : <Text style={styles.text}>已有{item.subscribeCount}人关注了</Text>}
+            <View style={styles.leaveView}>
+                <View style={[styles.progressView, { width: (1 - progress) * px2dp(120) }]}/>
+                <View style={styles.leaveAmountView}>
+                    <MRText
+                        style={styles.leaveAmountText}>{progress == 0 ? '已抢完' : `还剩${item.promotionStockNum}件`}</MRText>
+                </View>
+            </View>
             <View style={styles.moneyView}>
                 {
                     item.promotionPrice
@@ -338,5 +348,19 @@ const styles = StyleSheet.create({
     disbuttonTitle: {
         color: 'white',
         fontSize: px2dp(14)
+    },
+    leaveView: {
+        marginTop: px2dp(5),
+        backgroundColor: 'rgba(255,0,80,0.1)', borderRadius: px2dp(6), width: px2dp(120), height: px2dp(12)
+    },
+    progressView: {
+        backgroundColor: DesignRule.mainColor, borderRadius: px2dp(6), height: px2dp(12)
+    },
+    leaveAmountView: {
+        justifyContent: 'center', marginLeft: px2dp(8),
+        position: 'absolute', top: 0, bottom: 0, left: 0, right: 0
+    },
+    leaveAmountText: {
+        fontSize: 10, color: DesignRule.textColor_white
     }
 });
