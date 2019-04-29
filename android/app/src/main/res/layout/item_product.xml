@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="@drawable/card_product_background">
+    <com.facebook.drawee.view.SimpleDraweeView android:layout_height="50dp"
+        android:layout_width="50dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
+        android:background="@color/ysf_red_9d3b39"
+        android:id="@+id/product_img"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/test"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:includeFontPadding="false"
+        android:textColor="@color/textColor_mainTitle"
+        android:textSize="12sp"
+        android:layout_toRightOf="@+id/product_img"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="15dp"/>
+    <LinearLayout android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/product_img"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="15dp">
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:includeFontPadding="false"
+            android:text="￥"
+            android:textSize="10sp"
+            android:textColor="@color/mainColor"/>
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:includeFontPadding="false"
+            android:text="499"
+            android:textSize="15sp"
+            android:textColor="@color/mainColor"/>
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:includeFontPadding="false"
+            android:text="￥999"
+            android:textSize="10sp"
+            android:textColor="@color/textColor_instruction"
+            android:layout_marginLeft="5dp"/>
+    </LinearLayout>
+    <ImageView android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="5dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/icon_product_car"/>
+</RelativeLayout>

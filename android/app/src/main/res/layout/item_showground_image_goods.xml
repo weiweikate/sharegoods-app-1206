@@ -76,20 +76,15 @@
         android:layout_marginLeft="5dp"
         android:layout_toRightOf="@id/user_icon" />
 
-    <HorizontalScrollView android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <>
-
-    <View
+    <com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView
         android:id="@+id/product_list"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_below="@+id/nine_grid"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="5dp"
-        android:layout_toRightOf="@id/user_icon"
-        android:background="@color/mainColor" />
-    </HorizontalScrollView>
+        android:layout_toRightOf="@id/user_icon" />
+
 
     <ImageView
         android:layout_width="23dp"

@@ -9,35 +9,27 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.TypeReference;
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
-import com.facebook.react.bridge.UiThreadUtil;
-import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.uimanager.UIManagerModule;
+import com.facebook.react.uimanager.events.EventDispatcher;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.adapter.ShowRecommendAdapter;
-import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
 import com.meeruu.sharegoods.rn.showground.bean.ShowRecommendBean;
-import com.meeruu.sharegoods.rn.showground.event.onEndScrollEvent;
-import com.meeruu.sharegoods.rn.showground.event.onItemPressEvent;
-import com.meeruu.sharegoods.rn.showground.event.onStartRefreshEvent;
-import com.meeruu.sharegoods.rn.showground.event.onStartScrollEvent;
 import com.meeruu.sharegoods.rn.showground.widgets.CustomLoadMoreView;
 import com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ShowRecommendView {
     private RnRecyclerView recyclerView;
     private ShowRecommendAdapter adapter;
-    public ViewGroup getShowRecommendView(ReactContext reactContext){
+    private EventDispatcher eventDispatcher;
+
+    public ViewGroup getShowRecommendView(ReactContext reactContext) {
+        eventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
+
         LayoutInflater inflater = LayoutInflater.from(reactContext);
         View view = inflater.inflate(R.layout.view_showground, null);
         initView(reactContext, view);
@@ -45,11 +37,12 @@ public class ShowRecommendView {
 
         return (ViewGroup) view;
     }
-    public void initView(Context context,View view){
+
+    public void initView(Context context, View view) {
 
         recyclerView = view.findViewById(R.id.home_recycler_view);
 
-        adapter = new ShowRecommendAdapter();
+        adapter = new ShowRecommendAdapter(eventDispatcher);
         adapter.setPreLoadNumber(3);
         adapter.setHasStableIds(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
@@ -63,7 +56,7 @@ public class ShowRecommendView {
 
     }
 
-    private void initData(){
+    private void initData() {
         ShowRecommendBean bean = new ShowRecommendBean();
         List list = new ArrayList();
         list.add(bean);

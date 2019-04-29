@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="textColor_mainTitle">#333333</color>
-    <color name="textColor_instruction">#999999</color>
-    <color name="mainColor">#F00050</color>
+
 </resources>
