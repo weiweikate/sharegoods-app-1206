@@ -125,7 +125,7 @@ const DidBeginViewStyles = StyleSheet.create({
     },
     leftView: {
         flexDirection: 'row', flex: 1, alignItems: 'center',
-        backgroundColor: DesignRule.bgColor_redCard
+        backgroundColor: DesignRule.mainColor
     },
     priceText: {
         paddingLeft: 15, paddingRight: 10, paddingTop: (36 - 20) / 2,
@@ -154,7 +154,7 @@ const DidBeginViewStyles = StyleSheet.create({
         backgroundColor: '#FFA186', borderRadius: 6, width: 90, height: 12
     },
     progressView: {
-        backgroundColor: DesignRule.bgColor_redCard, borderRadius: 6, height: 12
+        backgroundColor: DesignRule.mainColor, borderRadius: 6, height: 12
     },
     leaveAmountView: {
         justifyContent: 'center', alignItems: 'center',
