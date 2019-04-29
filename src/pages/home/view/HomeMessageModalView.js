@@ -175,9 +175,10 @@ function AdViewBindModal(modal) {
                         <TouchableOpacity onPress={() => {
                             this.gotoPage();
                         }}>
-                            <ImageLoad style={{ width: autoSizeWidth(310), height: autoSizeWidth(410) }}
+                            <ImageLoad style={{ width: autoSizeWidth(310), height: autoSizeWidth(410), backgroundColor: '#f5f5f5' }}
                                        source={{ uri: image }}
                                        resizeMode={'contain'}
+                                       showPlaceholder={false}
                             >
                             </ImageLoad>
                         </TouchableOpacity>

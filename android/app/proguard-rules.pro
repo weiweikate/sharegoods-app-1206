@@ -70,6 +70,7 @@ public static final int *;
 }
 
 -keep class com.meeruu.commonlib.bean.**{*;}
+-keep class com.meeruu.sharegoods.bean.**{*;}
 
 -dontshrink
 -dontoptimize
@@ -120,6 +121,7 @@ public static final int *;
 -keep class com.tencent.wxop.** {
    *;
 }
+-keep class com.meeruu.sharegoods.wxapi.**{*;}
 -keep class com.tencent.mm.sdk.** {
    *;
 }
