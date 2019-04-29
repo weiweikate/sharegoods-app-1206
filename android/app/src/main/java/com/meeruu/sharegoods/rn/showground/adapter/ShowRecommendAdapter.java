@@ -35,9 +35,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShowRecommendAdapter extends BaseQuickAdapter<ShowRecommendBean, BaseViewHolder> {
-    private EventDispatcher eventDispatcher;
-    private onNineClickEvent event;
-    public ShowRecommendAdapter(EventDispatcher dispatcher) {
+   private NineGridView.clickL clickL;
+    public ShowRecommendAdapter(NineGridView.clickL clickL) {
         super(R.layout.item_showground_image_goods);
         NineGridView.setImageLoader(new NineGridView.ImageLoader() {
             @Override
@@ -45,8 +44,7 @@ public class ShowRecommendAdapter extends BaseQuickAdapter<ShowRecommendBean, Ba
                 ImageLoadUtils.loadRoundNetImage(url, imageView, 5);
             }
         });
-        this.eventDispatcher = dispatcher;
-        event = new onNineClickEvent();
+        this.clickL = clickL;
     }
 
     @Override
@@ -104,18 +102,9 @@ public class ShowRecommendAdapter extends BaseQuickAdapter<ShowRecommendBean, Ba
             info.setImageUrl(url);
             imageInfoList.add(info);
         }
-
-        nineGridView.setClick(new NineGridView.clickL() {
-            @Override
-            public void imageClick(List urls, int index) {
-                if(eventDispatcher != null){
-                    WritableMap map = Arguments.createMap();
-                    WritableArray array = Arguments.makeNativeArray(urls);
-                    map.putArray("imageUrls",array);
-                    map.putInt("index",index);
-                }
-            }
-        });
+        if(this.clickL != null){
+            nineGridView.setClick(clickL);
+        }
 
         NineGridViewAdapter adapter = new NineGridViewAdapter(mContext, imageInfoList);
         nineGridView.setAdapter(adapter);

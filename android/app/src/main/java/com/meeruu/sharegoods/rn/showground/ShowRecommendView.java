@@ -10,19 +10,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.WritableArray;
+import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.adapter.ShowRecommendAdapter;
 import com.meeruu.sharegoods.rn.showground.bean.ShowRecommendBean;
+import com.meeruu.sharegoods.rn.showground.event.onNineClickEvent;
 import com.meeruu.sharegoods.rn.showground.widgets.CustomLoadMoreView;
+import com.meeruu.sharegoods.rn.showground.widgets.GridView.NineGridView;
 import com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShowRecommendView {
+public class ShowRecommendView{
     private RnRecyclerView recyclerView;
     private ShowRecommendAdapter adapter;
     private EventDispatcher eventDispatcher;
@@ -38,22 +43,28 @@ public class ShowRecommendView {
         return (ViewGroup) view;
     }
 
-    public void initView(Context context, View view) {
-
+    public void initView(Context context, final View view) {
+        final onNineClickEvent onNineClickEvent = new onNineClickEvent();
         recyclerView = view.findViewById(R.id.home_recycler_view);
-
-        adapter = new ShowRecommendAdapter(eventDispatcher);
+        adapter = new ShowRecommendAdapter(new NineGridView.clickL() {
+            @Override
+            public void imageClick(List urls, int index) {
+                onNineClickEvent.init(view.getId());
+                WritableMap map = Arguments.createMap();
+                WritableArray array = Arguments.makeNativeArray(urls);
+                map.putArray("imageUrls",array);
+                map.putInt("index",index);
+                onNineClickEvent.setData(map);
+                eventDispatcher.dispatchEvent(onNineClickEvent);
+            }
+        });
         adapter.setPreLoadNumber(3);
         adapter.setHasStableIds(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
-
         adapter.setEnableLoadMore(true);
-
         adapter.setLoadMoreView(new CustomLoadMoreView());
-
         recyclerView.setAdapter(adapter);
-
     }
 
     private void initData() {
@@ -72,4 +83,5 @@ public class ShowRecommendView {
         list.add(bean);
         adapter.setNewData(list);
     }
+
 }

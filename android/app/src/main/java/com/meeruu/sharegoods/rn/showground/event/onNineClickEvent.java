@@ -6,7 +6,7 @@ import com.facebook.react.uimanager.events.RCTEventEmitter;
 
 public class onNineClickEvent extends Event<onNineClickEvent> {
     private WritableMap data;
-    private static final String EVENT_NAME = "MrNineClickEventt";
+    private static final String EVENT_NAME = "MrNineClickEvent";
 
     public void setData(WritableMap data) {
         this.data = data;

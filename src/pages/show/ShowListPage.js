@@ -126,22 +126,32 @@ export default class ShowListPage extends BasePage {
                             <Image source={backIconImg} style={styles.img}/>
                         </TouchableOpacity>
                         :
-                        <View style={styles.backImg}/>
+                        null
                 }
+                <View style={[{ marginLeft: left ? px2dp(10) : px2dp(15) }, styles.userIcon]}/>
+                <View style={{flex:1}}/>
                 <View style={styles.titleView}>
                     <TouchableOpacity style={styles.items} onPress={() => this._gotoPage(0)}>
-                        <Text style={page === 0 ? styles.activityIndex : styles.index}
-                              allowFontScaling={false}>精选热门</Text>
-                        {page === 0 ? <View style={styles.line}/> : null}
+                        <Text style={[{marginRight:px2dp(20)},page === 0 ? styles.activityIndex : styles.index]}
+                              allowFontScaling={false}>推荐</Text>
                     </TouchableOpacity>
-                    <View style={{ width: 50 }}/>
-                    <TouchableOpacity style={styles.items} onPress={() => this._gotoPage(1)}>
+                    <TouchableOpacity style={[{marginRight:px2dp(20)},styles.items]}onPress={() => this._gotoPage(1)}>
                         <Text style={page === 1 ? styles.activityIndex : styles.index}
-                              allowFontScaling={false}>最新秀场</Text>
-                        {page === 1 ? <View style={styles.line}/> : null}
+                              allowFontScaling={false}>素材圈</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={[styles.items,{marginRight:px2dp(20)}]} onPress={() => this._gotoPage(2)}>
+                        <Text style={page === 2 ? styles.activityIndex : styles.index}
+                              allowFontScaling={false}>发现</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.items} onPress={() => this._gotoPage(3)}>
+                        <Text style={page === 3 ? styles.activityIndex : styles.index}
+                              allowFontScaling={false}>活动</Text>
                     </TouchableOpacity>
                 </View>
-                <View style={styles.backImg}/>
+                <View style={{flex:1}}/>
+                <View style={[{marginRight:px2dp(15)}, styles.userIcon]}/>
             </View>
             <ScrollableTabView
                 ref={(ref) => this.scrollableTabView = ref}
@@ -172,6 +182,74 @@ export default class ShowListPage extends BasePage {
                                 }}
                                 style={{ flex: 1 }}
                                 uri={'/discover/query@GET'}
+                                onNineClick={({ nativeEvent }) => {
+                                    that.$navigate('show/ShowDetailImagePage', {
+                                        imageUrls: nativeEvent.imageUrls,
+                                        index: nativeEvent.index
+                                    });
+                                }}
+                                onItemPress={({ nativeEvent }) => {
+                                    that.$navigate('show/ShowDetailPage', {
+                                        id: nativeEvent.id,
+                                        code: nativeEvent.code,
+                                        ref: this.rightShowList,
+                                        index: nativeEvent.index
+                                    });
+                                }}
+                            />
+                            :
+                            null
+                    }
+                </View>
+
+                <View key={3} style={styles.container} tabLabel="   ">
+                    {
+                        needsExpensive
+                            ?
+
+                            <ShowGroundView
+                                ref={(ref) => {
+                                    this.rightShowList = ref;
+                                }}
+                                style={{ flex: 1 }}
+                                uri={'/discover/query@GET'}
+                                onNineClick={({ nativeEvent }) => {
+                                    that.$navigate('show/ShowDetailImagePage', {
+                                        imageUrls: nativeEvent.imageUrls,
+                                        index: nativeEvent.index
+                                    });
+                                }}
+                                onItemPress={({ nativeEvent }) => {
+                                    that.$navigate('show/ShowDetailPage', {
+                                        id: nativeEvent.id,
+                                        code: nativeEvent.code,
+                                        ref: this.rightShowList,
+                                        index: nativeEvent.index
+                                    });
+                                }}
+                            />
+                            :
+                            null
+                    }
+                </View>
+
+                <View key={4} style={styles.container} tabLabel="   ">
+                    {
+                        needsExpensive
+                            ?
+
+                            <ShowGroundView
+                                ref={(ref) => {
+                                    this.rightShowList = ref;
+                                }}
+                                style={{ flex: 1 }}
+                                uri={'/discover/query@GET'}
+                                onNineClick={({ nativeEvent }) => {
+                                    that.$navigate('show/ShowDetailImagePage', {
+                                        imageUrls: nativeEvent.imageUrls,
+                                        index: nativeEvent.index
+                                    });
+                                }}
                                 onItemPress={({ nativeEvent }) => {
                                     that.$navigate('show/ShowDetailPage', {
                                         id: nativeEvent.id,
@@ -214,7 +292,7 @@ let styles = StyleSheet.create({
     },
     backImg: {
         height: 44,
-        width: ScreenUtils.headerHeight,
+        width: 45,
         paddingLeft: 15,
         flexDirection: 'row',
         alignItems: 'center'
@@ -224,33 +302,34 @@ let styles = StyleSheet.create({
         width: 15
     },
     titleView: {
-        flex: 1,
-        height: 44,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center'
+        alignSelf:'center',
     },
     items: {
-        height: 44,
         alignItems: 'center',
         justifyContent: 'flex-end'
     },
     index: {
         color: DesignRule.textColor_secondTitle,
-        fontSize: px2dp(14),
+        fontSize: px2dp(13),
         fontWeight: '600',
-        marginBottom: 16
     },
     activityIndex: {
         color: DesignRule.mainColor,
-        fontSize: px2dp(14),
+        fontSize: px2dp(15),
         fontWeight: '600',
-        marginBottom: 15
     },
     line: {
         backgroundColor: DesignRule.mainColor,
         width: 30,
         height: 2,
         borderRadius: 1
+    },
+    userIcon: {
+        width: px2dp(30),
+        height: px2dp(30),
+        borderRadius: px2dp(15),
+        backgroundColor: 'red'
     }
 });
