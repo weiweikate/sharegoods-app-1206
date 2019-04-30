@@ -2,6 +2,7 @@ package com.meeruu.sharegoods.rn.showground;
 
 import android.content.Context;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
@@ -20,6 +21,7 @@ import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.adapter.ShowRecommendAdapter;
 import com.meeruu.sharegoods.rn.showground.bean.ShowRecommendBean;
 import com.meeruu.sharegoods.rn.showground.event.onNineClickEvent;
+import com.meeruu.sharegoods.rn.showground.event.onScrollStateChangedEvent;
 import com.meeruu.sharegoods.rn.showground.widgets.CustomLoadMoreView;
 import com.meeruu.sharegoods.rn.showground.widgets.GridView.NineGridView;
 import com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView;
@@ -45,7 +47,23 @@ public class ShowRecommendView{
 
     public void initView(Context context, final View view) {
         final onNineClickEvent onNineClickEvent = new onNineClickEvent();
+        final onScrollStateChangedEvent onScrollStateChangedEvent = new onScrollStateChangedEvent();
         recyclerView = view.findViewById(R.id.home_recycler_view);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+//                public static final int SCROLL_STATE_IDLE = 0;
+//                public static final int SCROLL_STATE_DRAGGING = 1;
+//                public static final int SCROLL_STATE_SETTLING = 2;
+                super.onScrollStateChanged(recyclerView, newState);
+                onScrollStateChangedEvent.init(view.getId());
+                WritableMap map = Arguments.createMap();
+                map.putInt("state",newState);
+                onScrollStateChangedEvent.setData(map);
+                eventDispatcher.dispatchEvent(onScrollStateChangedEvent);
+            }
+        });
+
         adapter = new ShowRecommendAdapter(new NineGridView.clickL() {
             @Override
             public void imageClick(List urls, int index) {
@@ -80,6 +98,8 @@ public class ShowRecommendView{
         urls.add("https://k.zol-img.com.cn/sjbbs/7692/a7691501_s.jpg");
         urls.add("https://k.zol-img.com.cn/sjbbs/7692/a7691501_s.jpg");
         bean.setImageUrls(urls);
+        list.add(bean);
+        list.add(bean);
         list.add(bean);
         adapter.setNewData(list);
     }

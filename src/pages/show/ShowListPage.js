@@ -175,13 +175,16 @@ export default class ShowListPage extends BasePage {
                     {
                         needsExpensive
                             ?
-
+                            <View>
                             <ShowGroundView
                                 ref={(ref) => {
                                     this.rightShowList = ref;
                                 }}
                                 style={{ flex: 1 }}
                                 uri={'/discover/query@GET'}
+                                onScrollStateChanged={({nativeEvent})=>{
+                                    console.log(nativeEvent.state)
+                                }}
                                 onNineClick={({ nativeEvent }) => {
                                     that.$navigate('show/ShowDetailImagePage', {
                                         imageUrls: nativeEvent.imageUrls,
@@ -197,6 +200,8 @@ export default class ShowListPage extends BasePage {
                                     });
                                 }}
                             />
+                                <View style={{width:34,height:34, backgroundColor: 'red', position: 'absolute',right:15}}/>
+                            </View>
                             :
                             null
                     }

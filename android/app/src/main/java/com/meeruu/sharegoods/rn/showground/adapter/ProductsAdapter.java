@@ -1,5 +1,6 @@
 package com.meeruu.sharegoods.rn.showground.adapter;
 
+import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,10 +17,12 @@ import java.util.List;
 
 public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.VH> {
     public static class VH extends RecyclerView.ViewHolder {
-        //        public final TextView title;
+        public TextView originalPrice;
+
         public VH(View v) {
             super(v);
-//            title = (TextView) v.findViewById(R.id.title);
+            originalPrice = v.findViewById(R.id.originalPrice);
+            originalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
         }
     }
 
@@ -44,10 +47,10 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.VH> {
     public VH onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_product, viewGroup, false);
         if (getItemCount() > 1) {
-            int width = ScreenUtils.getScreenWidth()-DensityUtils.dip2px(80);
+            int width = ScreenUtils.getScreenWidth() - DensityUtils.dip2px(80);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT);
-            if(i != mDatas.size()-1){
-                lp.setMargins(0,0,10,0);
+            if (i != mDatas.size() - 1) {
+                lp.setMargins(0, 0, 10, 0);
             }
             view.setLayoutParams(lp);
         }

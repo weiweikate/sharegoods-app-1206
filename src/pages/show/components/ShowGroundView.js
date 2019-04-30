@@ -9,6 +9,11 @@ import { requireNativeComponent,findNodeHandle,UIManager } from 'react-native';
 const RCTShowGroundView = requireNativeComponent('ShowGroundView', ShowGroundView);
 const NativeHeader = requireNativeComponent('ShowHeaderView');
 const RCT_SHOWGROUND_REF = 'showGroundViewRef'
+
+
+// public static final int SCROLL_STATE_IDLE = 0;//停止状态
+// public static final int SCROLL_STATE_DRAGGING = 1;//拖动状态
+// public static final int SCROLL_STATE_SETTLING = 2;//甩动状态
 export default class ShowGroundView extends Component {
 
     replaceData = (index, num) => {
