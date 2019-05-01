@@ -77,3 +77,4 @@ build
 /.update
 /.vscode
 *.mobileprovision
+/android/app/mapping.txt
