@@ -256,7 +256,9 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
                     popupWindow.setOutsideTouchable(true);
                     fitPopupWindowOverStatusBar(popupWindow, true);
                     if (currentActivity != null || !currentActivity.isFinishing()) {
-                        popupWindow.showAtLocation(mHostView, Gravity.BOTTOM, 0, 0);
+                        if (popupWindow != null) {
+                            popupWindow.showAtLocation(mHostView, Gravity.BOTTOM, 0, 0);
+                        }
                     }
                 }
             }
