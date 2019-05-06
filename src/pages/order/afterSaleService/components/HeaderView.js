@@ -14,20 +14,23 @@ import React from "react";
 
 import {
     StyleSheet,
-    View
+    View,
+    ImageBackground
 } from "react-native";
 
 import {
-    UIText, UIImage
+    UIImage, MRText
 } from "../../../../components/ui";
 // import DesignRule from 'DesignRule';
 import ScreenUtils from "../../../../utils/ScreenUtils";
 // import DateUtils from '../../../../utils/DateUtils';
 import res from "../../res";
+const  autoSizeWidth = ScreenUtils.autoSizeWidth;
 
 const {
     afterSaleService: {
-        exchangeGoodsDetailBg
+        exchangeGoodsDetailBg,
+        white_triangular
     }
 } = res;
 
@@ -36,68 +39,119 @@ export default class HeaderView extends React.Component {
     constructor(props) {
         super(props);
 
-        this._bind();
-
         this.state = {};
     }
 
-    _bind() {
-
-    }
-
     componentDidMount() {
+
     }
 
+    // type: 1、实心的圆 2、空心的圆 3、三角型
+    renderItem(type = 1, topText = '', bottomText = ''){
+        let width = type === 3 ? 6: 10;
+        let middleView = () => {};
+        if (type === 1){
+            middleView = () => {return(
+                <View style={{height:10 ,width:10 ,backgroundColor: 'white', borderRadius: 5, overflow: 'hidden'}}>
+                </View>
+            )};
+        } else if (type === 2){
+            middleView = () => {return(
+                <View style={{height:10 ,width:10 ,borderColor: 'white', borderRadius: 5, overflow: 'hidden', borderWidth: 1}}>
+                </View>
+            )};
 
-    render() {
-        let { status, pageType, headerTitle, timeString, detailTitle} = this.props;
+        }else if (type === 3){
+            middleView = () => {return(
+               <UIImage source={white_triangular} style={{height:8 ,width:8 }}/>
+            )};
 
-        let titleCommpent = () => {
-            return <UIText value={headerTitle} style={styles.header_title}/>;
-        };
-        let detialCommpent = () => {
-            return <UIText value={detailTitle} style={styles.header_detail}/>;
-        };
-        let timerCommpent = () => {
-        };
-        if (status === 2 && (pageType === 1 || pageType === 2)){
-            timerCommpent = () => {
-                return <UIText value={timeString} style={styles.header_detail}/>;
-            };
+        }
+        return (
+            <View style={{height: 55, width, alignItems: 'center'}}>
+                <MRText style={{width: 88, height: 20, textAlign:'center', fontSize: autoSizeWidth(11), color: '#f5f5f5'}}>
+                    {topText}
+                </MRText>
+                <View style={{flex: 1}}/>
+                {middleView()}
+                <View style={{flex: 1}}/>
+                <MRText style={{width: 88, height: 20, textAlign:'center', fontSize: autoSizeWidth(11), color: '#f5f5f5'}}>
+                    {bottomText}
+                </MRText>
+            </View>
+        )
+    }
+
+    /**
+     * 画进度线
+     * @param status  1.待审核 2.待寄回 3.待仓库确认 4.待平台处理 5.售后完成 6.售后关闭
+     * @param pageType 0 退款详情  1 退货详情   2 换货详情
+     */
+    renderTimerLine(status, pageType){
+        switch (pageType) {
+            case 0:
+                return this.renderArefundTimerLine(status);
+                break
+            case 1:
+                break
+            case 2:
+                break
+            default:
+                break;
 
         }
 
+    }
+
+    renderArefundTimerLine(status) {
+       switch (status) {
+           case 1:
+               return(
+                   <View style={styles.timerLine}>
+                       {this.renderItem(1,'','填写申请')}
+                       <View style={{flex: 1}}/>
+                       {this.renderItem(3,'待平台审核','')}
+                       <View style={{flex: 1}}/>
+                       {this.renderItem(2,'','完成退款')}
+                   </View>
+               )
+               break
+           case 2:
+           case 3:
+           case 4:// 2、3这种状态退款情况是不存在，如果存在2、3统一当作4（待平台处理）处理
+               break
+           default:
+               break;
+       }
+    }
+
+
+
+
+    render() {
+        let { status, pageType} = this.props;
         return (
-            <View>
-                <View style={{ position: "absolute", height: 100, width: ScreenUtils.width }}>
-                    <UIImage source={exchangeGoodsDetailBg} style={{ height: 100, width: ScreenUtils.width }}/>
+            <ImageBackground source={exchangeGoodsDetailBg} style={styles.container}>
+                <View style={{marginHorizontal: autoSizeWidth(34), height: 55, marginBottom: autoSizeWidth(20)}}>
+                {this.renderTimerLine(status, pageType)}
                 </View>
-                <View style={{
-                    height: 100,
-                    alignItems: "center",
-                    flexDirection: "row",
-                    width: ScreenUtils.width
-                }}>
-                    {/*{imageCommpent()}*/}
-                    <View style={{ marginLeft: 15 }}>
-                        {titleCommpent()}
-                        {detialCommpent()}
-                        {timerCommpent()}
-                    </View>
-                </View>
-            </View>
+            </ImageBackground>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    header_title: {
-        fontSize: 18,
-        color: "white"
+    container: {
+        height: autoSizeWidth(152),
+        width: autoSizeWidth(375),
+        justifyContent: 'flex-end',
     },
-    header_detail: {
-        fontSize: 12,
-        color: "white",
-        marginTop: 3
+    timerLine: {
+        flex: 1,
+        alignItems: 'center',
+        flexDirection: 'row',
+    },
+    solidLine: {
+        flex: 1,
     }
 });

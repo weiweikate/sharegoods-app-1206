@@ -9,6 +9,7 @@ const afterSaleService = {
     applyRefundMessage: require('./applyRefundMessage.png'),
     applyRefundPhone: require('./applyRefundPhone.png'),
     exchangeGoodsDetailBg: require('./exchangeGoodsDetailBg.png'),
+    white_triangular: require('./white_triangular.png'),
 };
 
 export default afterSaleService;
