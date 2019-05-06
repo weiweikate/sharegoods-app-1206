@@ -205,7 +205,9 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
                 @Override
                 public void run() {
                     fitPopupWindowOverStatusBar(popupWindow, true);
-                    popupWindow.showAtLocation(mHostView, Gravity.BOTTOM, 0, 0);
+                    if (popupWindow != null) {
+                        popupWindow.showAtLocation(mHostView, Gravity.BOTTOM, 0, 0);
+                    }
                 }
             });
             return;
@@ -295,6 +297,7 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
             FrameLayout frameLayout = new FrameLayout(context);
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
             frameLayout.setLayoutParams(params);
+            frameLayout.removeView(mHostView);
             frameLayout.addView(mHostView);
             frameLayout.setFocusable(true);
             frameLayout.setFocusableInTouchMode(true);

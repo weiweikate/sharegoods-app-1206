@@ -46,6 +46,7 @@ public class InitializeService extends IntentService {
     @Override
     public void onCreate() {
         super.onCreate();
+        startForeground();
         mHandler = new WeakHandler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
@@ -195,5 +196,11 @@ public class InitializeService extends IntentService {
                            @Nullable WritableMap params) {
         reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit(eventName, params);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopForeground(true);
     }
 }
