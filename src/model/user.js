@@ -3,7 +3,7 @@ import { action, computed, observable, autorun } from 'mobx';
 import shopCartCacheTool from '../pages/shopCart/model/ShopCartCacheTool';
 import UserApi from './userApi';
 import bridge from '../utils/bridge';
-import { QYChatTool } from "../utils/QYModule/QYChatTool";
+import { QYChatTool } from '../utils/QYModule/QYChatTool';
 
 
 const USERINFOCACHEKEY = 'UserInfo';
@@ -29,7 +29,7 @@ class User {
 
     @observable info = null;
     @observable
-    unionid=null;
+    unionid = null;
     @observable
     id = 0;                 //用户id
     @observable
@@ -194,7 +194,7 @@ class User {
                 console.log('readUserInfoFromDisk', info);
                 // bridge.setCookies(info);
                 this.saveUserInfo(info, false);
-            }else {
+            } else {
                 bridge.clearCookies();
             }
         }).catch(err => {
@@ -217,9 +217,10 @@ class User {
             return;
         }
         this.token = token;
-        AsyncStorage.setItem(USERTOKEN, token).catch(e => {
+        AsyncStorage.setItem(USERTOKEN, String(token)).catch(e => {
         });
     }
+
     // 设置用户信息
     @action
     saveUserInfo(info, saveToDisk = true) {
@@ -295,6 +296,7 @@ class User {
         }
         QYChatTool.initQYChat();
     }
+
     // 修改手机号
     @action
     changePhone(phone) {
@@ -303,7 +305,7 @@ class User {
 
     // 解绑/绑定微信号
     @action
-    untiedWechat(wechatName, openId,unionid) {
+    untiedWechat(wechatName, openId, unionid) {
         this.wechatName = wechatName;
         this.openid = openId;
         this.unionid = unionid;
@@ -453,6 +455,7 @@ class User {
     userShare() {
         UserApi.userShare();
     }
+
     luckyDraw() {
         UserApi.luckyDraw();
     }
@@ -464,6 +467,6 @@ class User {
 
 const user = new User();
 autorun(() => {
-   user.token ? shopCartCacheTool.synchronousData() : null;
+    user.token ? shopCartCacheTool.synchronousData() : null;
 });
 export default user;

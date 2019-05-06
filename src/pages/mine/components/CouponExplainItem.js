@@ -34,7 +34,7 @@ export  default class CouponExplainItem extends Component{
                     height: item.tobeextend ? px2dp(94) : px2dp(118),
                     margin: 2
                 }}
-                                 source={item.status == 0 ? (item.levelimit ? (item.tobeextend ? useBgexd : usedBgex) : (item.tobeextend ? unUsedBgExd : unUsedBgex)) : (item.tobeextend ? useBgexd : usedBgex)}
+                                 source={item.status === 0 ? (item.levelimit ? (item.tobeextend ? useBgexd : usedBgex) : (item.tobeextend ? unUsedBgExd : unUsedBgex)) : (item.tobeextend ? useBgexd : usedBgex)}
                                  resizeMode='stretch'>
                     <View style={{ flexDirection: "row", alignItems: "center", height: px2dp(94) }}>
                         <View style={styles.itemFirStyle}>
@@ -97,7 +97,7 @@ export  default class CouponExplainItem extends Component{
                             <UIText style={{ fontSize: 11, color: DesignRule.textColor_instruction, marginTop: 6 }}
                                     value={item.limit}/>
                         </View>
-                        {item.status == 0 ?
+                        {item.status === 0 ?
                             (
                                 item.type === 99 ?
                                     <UIText value={"x" + user.tokenCoin}

@@ -21,14 +21,30 @@ android {
         applicationId rootProject.ext.android.applicationId
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
-        versionCode 1202
-        versionName "1.2.2"
+        versionCode 1020320
+        versionName "1.2.3.20"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
         javaCompileOptions {
             annotationProcessorOptions { includeCompileClasspath = true }
         }
+
+        manifestPlaceholders = [
+                JPUSH_PKGNAME : "com.meeruu.sharegoods",
+                JPUSH_APPKEY  : "7fde54543daf045a209a7abf", //JPush 上注册的包名对应的 Appkey.
+                JPUSH_CHANNEL : "guanwang", //暂时填写默认值即可.
+                XIAOMI_APPKEY : "MI-5841792166549",//小米平台注册的appkey
+                XIAOMI_APPID  : "MI-2882303761517921549",//小米平台注册的appid
+                HUAWEI_APPID  : "100536409",//华为平台注册的appid
+                MEIZU_APPKEY  : "MZ-6fa2ae705bca45f490850830f10ef308",//魅族平台注册的appkey
+                MEIZU_APPID   : "MZ-1005278",//魅族平台注册的appid
+                OPPO_APPKEY   : "OP-47aa3cbd552a49c6baf2c3289e69b07b", // OPPO平台注册的appkey
+                OPPO_APPID    : "OP-3730052", // OPPO平台注册的appid
+                OPPO_APPSECRET: "OP-b7f0edbb073b40b493714a996a6db099",//OPPO平台注册的appsecret
+                //                VIVO_APPKEY  : "您的应用对应的vivo的AppKey", // VIVO平台注册的appkey
+                //                VIVO_APPID   : "您的应用对应的vivo的AppID", // VIVO平台注册的appid
+        ]
     }
     dexOptions {
         jumboMode true

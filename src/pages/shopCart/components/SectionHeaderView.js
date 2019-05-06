@@ -5,7 +5,7 @@
  *
  * @flow
  * @format
- * Created by huchao on 2019/1/3.
+ * Created by huyufeng on 2019/1/3.
  *
  */
 
@@ -26,19 +26,17 @@ import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import PropTypes from 'prop-types';
 import shopCartCacheTool from '../model/ShopCartCacheTool';
+import RouterMap from "../../../navigation/RouterMap";
+import StringUtils from "../../../utils/StringUtils";
+import bridge from "../../../utils/bridge";
+
+const {px2dp} = ScreenUtils
 
 export default class SectionHeaderView extends Component {
 
     constructor(props) {
         super(props);
-
-        this._bind();
-
         this.state = {};
-    }
-
-    _bind() {
-
     }
 
     componentDidMount() {
@@ -48,9 +46,7 @@ export default class SectionHeaderView extends Component {
         const { sectionData } = this.props;
         return (
             <View>
-                {
-                    sectionData.type === 8 ? this._renderNormalHeaderView(sectionData) : this._renderView(sectionData)
-                }
+                {sectionData.type === 8 ? this._renderNormalHeaderView(sectionData) : this._renderView(sectionData)}
             </View>
         );
     }
@@ -161,7 +157,6 @@ export default class SectionHeaderView extends Component {
      * 清除当前组失效商品
      */
     clearAllInvaildGood = () => {
-
         Alert.alert(
             '是否清空失效商品',
             '',
@@ -187,26 +182,33 @@ export default class SectionHeaderView extends Component {
      * 去凑单
      */
     collectBills = () => {
-        const { sectionData } = this.props;
-        this.props&&this.props.gotoCollectBills&&this.props.gotoCollectBills(sectionData);
+        const { sectionData ,navigate} = this.props;
+
+            if (!StringUtils.isEmpty(sectionData.activityCode)) {
+                navigate(RouterMap.XpDetailPage, {
+                    activityCode: sectionData.activityCode
+                });
+            } else {
+                bridge.$toast("活动不存在");
+            }
     };
 }
 
 SectionHeaderView.propTypes = {
     //cell 数据
     sectionData: PropTypes.object.isRequired,
-    gotoCollectBills:PropTypes.func,
+    navigate:PropTypes.func.isRequired,
 };
 const styles = StyleSheet.create({
     bgViewStyle: {
-        height: 40,
+        marginTop:px2dp(15),
+        height: px2dp(40),
         flexDirection: 'column',
         backgroundColor: '#fff',
         justifyContent: 'space-between'
     },
     topContentBgStyle: {
         flex: 1,
-        // justifyContent: 'center',
         flexDirection: 'row',
         alignItems: 'center'
     },
@@ -217,38 +219,41 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     leftTipBgStyle: {
-        backgroundColor: DesignRule.mainColor,
-        borderRadius: 7,
-        width: 70,
-        marginLeft: 20,
+        borderRadius: px2dp(8.5),
+        width: px2dp(48),
+        marginLeft: px2dp(10),
         justifyContent: 'center',
         alignItems: 'center',
-        height: 14
+        height: px2dp(17),
+        borderWidth:px2dp(0.3),
+        paddingLeft:px2dp(2),
+        paddingRight:px2dp(2),
+        borderColor:'rgba(255, 0, 80, 0.5)'
     },
     leftTextStyle: {
-        color: '#fff',
-        fontSize: 11
+        color: DesignRule.mainColor,
+        fontSize: px2dp(9)
     },
     middleTextBgStyle: {
-        marginLeft: 20,
-        width: ScreenUtils.width - 180,
-        height: 25,
+        marginLeft: px2dp(20),
+        width: ScreenUtils.width - px2dp(180),
+        height: px2dp(25),
         justifyContent: 'center'
     },
     middleTextStyle: {
         color: DesignRule.textColor_secondTitle,
-        fontSize: 10
+        fontSize: px2dp(10)
     },
     bottomLineStyle: {
         height: 1,
         backgroundColor: DesignRule.bgColor
     },
     rightTextBgView: {
-        marginLeft: 20
+        marginLeft: px2dp(10)
     },
     rightTextStyle: {
-        fontSize: 10,
+        fontSize: px2dp(10),
         color: DesignRule.mainColor,
-        marginRight: 10
+        marginRight: px2dp(10)
     }
 });

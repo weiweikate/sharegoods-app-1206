@@ -354,7 +354,7 @@ export default class MyOrdersListView extends Component {
 
     //当父组件Tab改变的时候让子组件更新
     componentWillReceiveProps(nextProps) {
-        if (nextProps.selectTab != this.state.pageStatus) {
+        if (nextProps.selectTab !== this.state.pageStatus) {
             this.onRefresh();
         }
     }
@@ -424,7 +424,7 @@ export default class MyOrdersListView extends Component {
                 if (StringUtils.isEmpty(data.expList)) {
                     Toast.$toast('当前物流信息不存在');
                 }
-                else if (data.expList.length === 1 && data.unSendProductInfoList.length == 0) {
+                else if (data.expList.length === 1 && data.unSendProductInfoList.length === 0) {
                     this.props.nav('order/logistics/LogisticsDetailsPage', {
                         expressNo: data.expList[0].expNO
                     });

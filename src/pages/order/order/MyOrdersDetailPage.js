@@ -31,6 +31,7 @@ import OrderDetailBottomButtonView from "../components/orderDetail/OrderDetailBo
 import { orderDetailModel, orderDetailAfterServiceModel, assistDetailModel } from "../model/OrderDetailModel";
 import { observer } from "mobx-react/native";
 import GiftHeaderView from "../components/orderDetail/GiftHeaderView";
+import { SmoothPushPreLoadHighComponent } from '../../../comm/components/SmoothPushHighComponent';
 
 const buyerHasPay = res.buyerHasPay;
 const productDetailHome = res.productDetailHome;
@@ -44,7 +45,7 @@ const deleteIcon = res.delete_icon;
 
 const { px2dp } = ScreenUtils;
 
-
+@SmoothPushPreLoadHighComponent
 @observer
 export default class MyOrdersDetailPage extends BasePage {
     constructor(props) {

@@ -3,19 +3,20 @@
  * @date 2018/11/20
  */
 
-"use strict";
-import { action, observable, flow } from "mobx";
-import DeviceInfo from "react-native-device-info/deviceinfo";
-import MineApi from "../../mine/api/MineApi";
-import HomeAPI from '../api/HomeAPI'
-import {homeType}from '../HomeTypes'
-import GuideApi from '../../guide/GuideApi'
-import { AsyncStorage, Platform } from 'react-native';
-import MessageApi from "../../message/api/MessageApi";
-import bridge from '../../../utils/bridge';
+'use strict';
+import { action, observable, flow } from 'mobx';
+import DeviceInfo from 'react-native-device-info/deviceinfo';
+import MineApi from '../../mine/api/MineApi';
+import HomeAPI from '../api/HomeAPI';
+import { homeType } from '../HomeTypes';
+import GuideApi from '../../guide/GuideApi';
+import { AsyncStorage } from 'react-native';
+import MessageApi from '../../message/api/MessageApi';
 import user from '../../../model/user';
 import { homeFocusAdModel } from '../model/HomeFocusAdModel';
+
 const requsetCount = 4;
+
 class HomeModalManager {
     /** 控制升级框*/
     @observable
@@ -27,7 +28,8 @@ class HomeModalManager {
     isShowGuide = false;
     needShowGuide = false;
     @observable
-    step = 0; /** 新手引导第几步*/
+    step = 0;
+    /** 新手引导第几步*/
     @observable
     guideData = {};
     /** 控制公告*/
@@ -48,29 +50,33 @@ class HomeModalManager {
 
 
     finishCount = 0;
+
     @action
-    entryHome () {
+    entryHome() {
         this.isHome = true;
     }
+
     @action
-    leaveHome () {
+    leaveHome() {
         this.isHome = false;
         this.step = 0;
     }
+
     @action
-    guideNextAction () {
-        if (this.step === 2 && homeFocusAdModel.foucusHeight === 0){
+    guideNextAction() {
+        if (this.step === 2 && homeFocusAdModel.foucusHeight === 0) {
             this.step = this.step + 2;
-        }else {
-            this.step ++;
+        } else {
+            this.step++;
         }
-        if (this.step === 5){
-            GuideApi.registerSend({})//完成了新手引导
+        if (this.step === 5) {
+            GuideApi.registerSend({});//完成了新手引导
             user.finishGiudeAction();//防止请求失败，重复调用新手引导
         }
     }
+
     @action
-    requestGuide () {
+    requestGuide() {
         if (this.finishCount !== requsetCount) {
             return;
         }
@@ -86,83 +92,80 @@ class HomeModalManager {
         }).catch(() => {
         });
     }
+
     @action
-    requestData () {
-        this.finishCount = 0
+    requestData() {
+        this.finishCount = 0;
         this.getVersion();
         this.getMessage();
         this.getAd();
         this.getUserRecord();
     }
+
     @action
-    closeUpdate () {
-        AsyncStorage.setItem('isToUpdate',  this.versionData.version);
+    closeUpdate(skip) {
+        if (skip) {
+            AsyncStorage.setItem('isToUpdate', String(this.versionData.version));
+        }
         this.isShowUpdate = false;
         this.versionData = null;
-        if (this.needShowGuide === true){
-            this.isShowGuide = true
-        } else if (this.needShowNotice === true){
-            this.isShowNotice = true
-        } else if (this.needShowAd === true){
-            this.isShowAd = true
+        if (this.needShowGuide === true) {
+            this.isShowGuide = true;
+        } else if (this.needShowNotice === true) {
+            this.isShowNotice = true;
+        } else if (this.needShowAd === true) {
+            this.isShowAd = true;
         }
     }
 
     @action
-    closeMessage () {
-        let currStr = new Date().getTime() + '';
-        AsyncStorage.setItem('lastMessageTime', currStr);
+    closeMessage() {
+        let currStr = new Date().getTime();
+        AsyncStorage.setItem('lastMessageTime', String(currStr));
         this.isShowNotice = false;
         this.needShowNotice = false;
         this.noticeData = null;
     }
 
     @action
-    closeGuide  () {
+    closeGuide() {
         this.isShowGuide = false;
         this.needShowGuide = false;
         this.guideData = {};
-        if (this.needShowNotice === true){
-            this.isShowNotice = true
-        } else if (this.needShowAd === true){
-            this.isShowAd = true
+        if (this.needShowNotice === true) {
+            this.isShowNotice = true;
+        } else if (this.needShowAd === true) {
+            this.isShowAd = true;
         }
     }
 
     @action
-    closeAd () {
-        let currStr = new Date().getTime() + '';
-        AsyncStorage.setItem('home_lastAdTime', currStr);
+    closeAd() {
+        let currStr = new Date().getTime();
+        AsyncStorage.setItem('home_lastAdTime', String(currStr));
         this.isShowAd = false;
         this.needShowAd = false;
         this.AdData = null;
     }
 
     @action
-    checkShowAlert  = flow(function* () {
+    checkShowAlert = flow(function* () {
         try {
-            let versionData = this.versionData || {}
-            let {forceUpdate, version, upgrade} = versionData;
-            if ( this.versionData && upgrade === 1){
-                let storage_version = yield AsyncStorage.getItem('isToUpdate')
+            let versionData = this.versionData || {};
+            let { forceUpdate, version, upgrade } = versionData;
+            if (this.versionData && upgrade === 1) {
+                let storage_version = yield AsyncStorage.getItem('isToUpdate');
                 if (storage_version !== version || forceUpdate === 1) {
-                    //安卓需要判断是否有apk存在
-                    if (Platform.OS !== 'ios') {
-                        let exist = yield bridge.isApkExist(version)
-                        this.versionData.apkExist = exist;
-                        this.isShowUpdate = true;
-                    } else {
-                        this.isShowUpdate = true;
-                    }
+                    this.isShowUpdate = true;
                 }
             }
-            if (this.isShowUpdate === false){
-                if (this.needShowGuide === true){
-                    this.isShowGuide = true
-                } else if (this.needShowNotice === true){
-                    this.isShowNotice = true
-                } else if (this.needShowAd === true){
-                    this.isShowAd = true
+            if (this.isShowUpdate === false) {
+                if (this.needShowGuide === true) {
+                    this.isShowGuide = true;
+                } else if (this.needShowNotice === true) {
+                    this.isShowNotice = true;
+                } else if (this.needShowAd === true) {
+                    this.isShowAd = true;
                 }
             }
         } catch (error) {
@@ -173,12 +176,12 @@ class HomeModalManager {
 
     @action
     getVersion = () => {
-        return  MineApi.getVersion({ version: DeviceInfo.getVersion() }).then((resp) => {
+        return MineApi.getVersion({ version: DeviceInfo.getVersion() }).then((resp) => {
             this.versionData = resp.data;
             this.actionFinish();
-        }).catch(()=> {
+        }).catch(() => {
             this.actionFinish();
-        })
+        });
     };
     @action
     getUserRecord = () => {
@@ -205,11 +208,12 @@ class HomeModalManager {
             }
         });
     };
+
 //一天弹一次 公告与广告不共存
     @action
     getMessage() {
-        let currStr = new Date().getTime() + "";
-        AsyncStorage.getItem("lastMessageTime").then((value) => {
+        let currStr = new Date().getTime() + '';
+        AsyncStorage.getItem('lastMessageTime').then((value) => {
             if (value == null || parseInt(currStr) - parseInt(value) > 24 * 60 * 60 * 1000) {
                 MessageApi.queryNotice({ pageSize: 10, type: 100 }).then(resp => {
                     this.homeMessage = resp.data.data;
@@ -217,9 +221,9 @@ class HomeModalManager {
                         this.needShowNotice = true;
                     }
                     this.actionFinish();
-                }).catch(()=> {
+                }).catch(() => {
                     this.actionFinish();
-                })
+                });
             } else {
                 this.actionFinish();
             }
@@ -227,32 +231,33 @@ class HomeModalManager {
             this.actionFinish();
         });
     }
+
 //一天弹一次 公告与广告不共存
     @action
     getAd() {
-        let currStr = new Date().getTime() + "";
-        AsyncStorage.getItem("home_lastAdTime").then((value) => {
+        let currStr = new Date().getTime() + '';
+        AsyncStorage.getItem('home_lastAdTime').then((value) => {
             if (value == null || parseInt(currStr) - parseInt(value) > 24 * 60 * 60 * 1000) {
-                HomeAPI.getHomeData({type:  homeType.windowAlert}).then(resp => {
+                HomeAPI.getHomeData({ type: homeType.windowAlert }).then(resp => {
                     if (resp.data && resp.data.length > 0) {
                         this.needShowAd = true;
                         this.AdData = resp.data[0];
                     }
                     this.actionFinish();
-                }).catch((msg)=> {
+                }).catch((msg) => {
                     this.actionFinish();
-                })
+                });
             } else {
                 this.actionFinish();
             }
         }).catch(() => {
             this.actionFinish();
-        });;
+        });
     }
 
     actionFinish() {
         this.finishCount++;
-        if (this.finishCount == requsetCount){
+        if (this.finishCount === requsetCount) {
             this.checkShowAlert();
         }
     }

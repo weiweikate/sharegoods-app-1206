@@ -2,36 +2,35 @@
  * 精选热门
  */
 import React from 'react';
-import { View, StyleSheet, Platform } from 'react-native';
+import { View, StyleSheet, Platform, TouchableWithoutFeedback } from 'react-native';
 import ShowBannerView from './ShowBannerView';
-import ShowChoiceView from './ShowChoiceView';
-import {
-    MRText as Text
-} from '../../components/ui';
 import { observer } from 'mobx-react';
 import { tag, showBannerModules, showChoiceModules } from './Show';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
 
 const { px2dp } = ScreenUtils;
-import ShowGroundView from './components/ShowGroundView';
+import ShowRecommendView from './components/ShowRecommendView';
+import TimerMixin from 'react-timer-mixin';
+import ReleaseButton from './components/ReleaseButton';
 
 
 @observer
 export default class ShowHotView extends React.Component {
 
-    state = {
-        isEnd: false,
-        isFetching: false,
-        hasRecommend: false,
-        isScroll: false
-    };
+    // state = {
+    //     isEnd: false,
+    //     isFetching: false,
+    //     hasRecommend: false,
+    //     isScroll: false,
+    // };
 
     constructor(props) {
         super(props);
         this.firstLoad = true;
         this.state = {
-            headerView: null
+            headerView: null,
+            showEditorIcon: true
         };
 
     }
@@ -68,14 +67,8 @@ export default class ShowHotView extends React.Component {
     }
 
     renderHeader = () => {
-        return (<View style={{ backgroundColor: '#f5f5f5', width: ScreenUtils.width }}>
+        return (<View style={{ backgroundColor: DesignRule.bgColor, width: ScreenUtils.width - px2dp(30) }}>
                 <ShowBannerView navigate={this.props.navigate} pageFocused={this.props.pageFocus}/>
-                <ShowChoiceView navigate={this.props.navigate} ref={(ref) => {
-                    this.choiceView = ref;
-                }}/>
-                <View style={styles.titleView}>
-                    <Text style={styles.recTitle} allowFontScaling={false}>推荐</Text>
-                </View>
             </View>
         );
     };
@@ -83,30 +76,82 @@ export default class ShowHotView extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <ShowGroundView style={{ flex: 1 }}
-                                uri={'/discover/query@GET'}
-                                headerHeight={showBannerModules.bannerHeight + showChoiceModules.choiceHeight + px2dp(116)}
-                                renderHeader={Platform.OS === 'ios' ? this.renderHeader() : this.state.headerView}
-                                onStartRefresh={() => {
-                                    this.loadData();
+                <View style={{ flex: 1, paddingHorizontal: 15 }}>
+                    <ShowRecommendView style={{ flex: 1 }}
+                                       uri={'/discover/query@GET'}
+                                       ref={(ref) => {
+                                           this.rightShowList = ref;
+                                       }}
+                                       headerHeight={showBannerModules.bannerHeight + 20}
+                                       renderHeader={Platform.OS === 'ios' ? this.renderHeader() : this.state.headerView}
+                                       onStartRefresh={() => {
+                                           this.loadData();
+                                       }}
+                                       params={{ generalize: tag.Recommend + '' }}
+                                       onStartScroll={() => {
+                                           console.log('_onChoiceAction star');
+                                           this.timer && clearTimeout(this.timer);
+                                           this.choiceView && this.choiceView.changeIsScroll(true);
+                                       }}
+                                       onEndScroll={() => {
+                                           console.log('_onChoiceAction end1');
+                                           this.timer = setTimeout(() => {
+                                               this.choiceView && this.choiceView.changeIsScroll(false);
+                                           }, 500);
+                                       }}
+                                       onItemPress={({ nativeEvent }) => {
+                                           const { navigate } = this.props;
+                                           navigate('show/ShowDetailPage', {
+                                               id: nativeEvent.id,
+                                               code: nativeEvent.code,
+                                               ref: this.rightShowList,
+                                               index: nativeEvent.index
+                                           });
+                                       }}
+                                       onNineClick={({ nativeEvent }) => {
+                                           this.props.navigate('show/ShowDetailImagePage', {
+                                               imageUrls: nativeEvent.imageUrls,
+                                               index: nativeEvent.index
+                                           });
+                                       }}
+
+                                       onScrollStateChanged={({ nativeEvent }) => {
+                                           const { state } = nativeEvent;
+                                           if (state === 0) {
+                                               this.lastStopScrollTime = (new Date()).getTime();
+                                               TimerMixin.setTimeout(() => {
+                                                   if (this.lastStopScrollTime === -1) {
+                                                       return;
+                                                   }
+                                                   let currentTime = (new Date()).getTime();
+                                                   if ((currentTime - this.lastStopScrollTime) < 3000) {
+                                                       return;
+                                                   }
+                                                   this.setState({
+                                                       showEditorIcon: true
+                                                   });
+                                               }, 3000);
+                                           } else {
+                                               this.lastStopScrollTime = -1;
+                                               this.setState({
+                                                   showEditorIcon: false
+                                               });
+                                           }
+                                       }}
+                    />
+                    {
+                        this.state.showEditorIcon ?
+                            <ReleaseButton
+                                style={{
+                                    position: 'absolute',
+                                    right: 15,
+                                    bottom: 118
                                 }}
-                                params={{ generalize: tag.Recommend + '' }}
-                                onStartScroll={() => {
-                                    console.log('_onChoiceAction star');
-                                    this.timer && clearTimeout(this.timer);
-                                    this.choiceView && this.choiceView.changeIsScroll(true);
-                                }}
-                                onEndScroll={() => {
-                                    console.log('_onChoiceAction end1');
-                                    this.timer = setTimeout(() => {
-                                        this.choiceView && this.choiceView.changeIsScroll(false);
-                                    }, 500);
-                                }}
-                                onItemPress={({ nativeEvent }) => {
-                                    const { navigate } = this.props;
-                                    navigate('show/ShowDetailPage', { id: nativeEvent.id, code: nativeEvent.code });
-                                }}
-                />
+                                onPress={() => {
+                                    this.props.navigate('show/ReleaseNotesPage');
+                                }}/> : null
+                    }
+                </View>
             </View>
         );
     }

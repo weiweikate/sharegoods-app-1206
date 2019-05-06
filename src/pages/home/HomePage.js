@@ -3,7 +3,9 @@ import {
     View,
     StyleSheet,
     DeviceEventEmitter, InteractionManager,
-    RefreshControl, BackHandler
+    RefreshControl, BackHandler,
+    NativeEventEmitter,
+    NativeModules
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import ShareTaskIcon from '../shareTask/components/ShareTaskIcon';
@@ -46,6 +48,11 @@ import { limitGoModule } from './model/HomeLimitGoModel';
 import HomeExpandBannerView from './view/HomeExpandBannerView';
 import HomeFocusAdView from './view/HomeFocusAdView';
 
+const { JSPushBridge } = NativeModules;
+const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
+
+const HOME_REFRESH = 'homeRefresh';
+
 /**
  * @author zhangjian
  * @date on 2018/9/7
@@ -57,7 +64,7 @@ import HomeFocusAdView from './view/HomeFocusAdView';
 const { px2dp, height, headerHeight } = ScreenUtils;
 const scrollDist = height / 2 - headerHeight;
 import BasePage from '../../BasePage';
-import { TrackApi } from "../../utils/SensorsTrack";
+import { TrackApi } from '../../utils/SensorsTrack';
 
 const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
     <Text style={styles.text}
@@ -164,7 +171,7 @@ class HomePage extends BasePage {
                 }
                 console.log('willFocusSubscription', state);
                 if (state && state.routeName === 'HomePage') {
-                    this.luckyIcon.getLucky();
+                    this.luckyIcon&&this.luckyIcon.getLucky(1,'');
                 }
             }
         );
@@ -199,16 +206,21 @@ class HomePage extends BasePage {
         this.listenerMessage = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
         this.listenerLogout = DeviceEventEmitter.addListener('login_out', this.loadMessageCount);
         this.listenerRetouchHome = DeviceEventEmitter.addListener('retouch_home', this.retouchHome);
+        this.listenerHomeRefresh = JSManagerEmitter.addListener(HOME_REFRESH, this.homeTypeRefresh);
 
         InteractionManager.runAfterInteractions(() => {
             user.getToken().then(() => {//让user初始化完成
-                this.luckyIcon.getLucky();
+                this.luckyIcon&&this.luckyIcon.getLucky(1,'');
                 homeModalManager.requestGuide();
                 homeModalManager.requestData();
                 this.loadMessageCount();
             });
         });
     }
+
+    homeTypeRefresh = (type) => {
+        homeModule.refreshHome(type);
+    };
 
     componentWillUnmount() {
         this.willBlurSubscription && this.willBlurSubscription.remove();
@@ -218,6 +230,7 @@ class HomePage extends BasePage {
         this.listenerMessage && this.listenerMessage.remove();
         this.listenerLogout && this.listenerLogout.remove();
         this.listenerRetouchHome && this.listenerRetouchHome.remove();
+        this.listenerHomeRefresh && this.listenerHomeRefresh.remove();
     }
 
     retouchHome = () => {
@@ -293,6 +306,7 @@ class HomePage extends BasePage {
 
     _onRefresh() {
         homeModule.loadHomeList(true);
+        this.luckyIcon&&this.luckyIcon.getLucky(1,'');
     }
 
     _onListViewScroll = (event) => {

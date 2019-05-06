@@ -43,13 +43,13 @@ import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.SDCardUtils;
 import com.meeruu.commonlib.utils.SecurityUtils;
-import com.meeruu.commonlib.utils.StatusBarUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.sharegoods.bean.NetCommonParamsBean;
 import com.meeruu.sharegoods.event.HideSplashEvent;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
 import com.meeruu.sharegoods.event.VersionUpdateEvent;
 import com.meeruu.sharegoods.ui.activity.MRWebviewActivity;
+import com.meeruu.statusbar.ImmersionBar;
 import com.meituan.android.walle.WalleChannelReader;
 import com.qiyukf.unicorn.api.Unicorn;
 
@@ -317,7 +317,7 @@ public class CommModule extends ReactContextBaseJavaModule {
             getCurrentActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    StatusBarUtils.setLightMode(getCurrentActivity());
+                    ImmersionBar.with(getCurrentActivity()).statusBarDarkFont(true).init();
                 }
             });
         }
@@ -329,7 +329,7 @@ public class CommModule extends ReactContextBaseJavaModule {
             getCurrentActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    StatusBarUtils.setDarkMode(getCurrentActivity());
+                    ImmersionBar.with(getCurrentActivity()).statusBarDarkFont(false).init();
                 }
             });
         }
@@ -533,6 +533,4 @@ public class CommModule extends ReactContextBaseJavaModule {
         intent.putExtra("url_action", "get");
         getCurrentActivity().startActivityForResult(intent, ParameterUtils.REQUEST_CODE_GONGMAO);
     }
-
-
 }

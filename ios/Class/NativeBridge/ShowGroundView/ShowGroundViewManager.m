@@ -26,4 +26,17 @@ RCT_EXPORT_VIEW_PROPERTY(onEndScroll, RCTBubblingEventBlock)
   return view;
 }
 
+RCT_EXPORT_METHOD(replaceData:(nonnull NSNumber *)reactTag
+                  index:(NSInteger) index
+                  num:(NSInteger) num){
+  [self.bridge.uiManager addUIBlock:^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *, ASDK_ShowGround *> *viewRegistry) {
+    ASDK_ShowGround *view = viewRegistry[reactTag];
+    if (![view isKindOfClass:[ASDK_ShowGround class]]) {
+      RCTLogError(@"Invalid view returned from registry, expecting RNCUIWebView, got: %@", view);
+    } else {
+      [view replaceData:index num:num];
+    }
+  }];
+}
+
 @end

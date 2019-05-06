@@ -117,7 +117,6 @@ class App extends Component {
         });
         // 移除启动页
         bridge.removeLaunch();
-        this.preView && this.preView.isLoaded();
     }
 
     render() {
@@ -147,20 +146,20 @@ class App extends Component {
                 }
                 {/*{*/}
                     {/*<DebugButton onPress={this.lianjie111} style={{ backgroundColor: "red" }}><Text*/}
-                        {/*style={{ color: "white" }}>微信支付</Text></DebugButton>*/}
+                        {/*style={{ color: "white" }}>客服</Text></DebugButton>*/}
                 {/*}*/}
-
-                <PreComponent ref={(ref)=>{this.preView = ref}}/>
             </View>
         );
     }
 
     // lianjie111 = () => {
-    //     const navigationAction = NavigationActions.navigate({
-    //         routeName: 'payment/TextWxPay'
-    //     });
-    //     global.$navigator.dispatch(navigationAction);
+    //     // const navigationAction = NavigationActions.navigate({
+    //     //     routeName: 'payment/TextWxPay'
+    //     // });
+    //     // global.$navigator.dispatch(navigationAction);
     // };
+
+
     showDebugPage = () => {
         const navigationAction = NavigationActions.navigate({
             routeName: RouterMap.DebugPanelPage
@@ -169,28 +168,6 @@ class App extends Component {
     };
 }
 export default codePush(App);
-
-class PreComponent extends Component {
-    constructor(props) {
-        super(props);
-        this.state = ({ isLoaded: false });
-    }
-
-    isLoaded = () => {
-        this.setState({ isLoaded: true });
-    }
-    render() {
-        if (this.state.isLoaded === true) {
-            return <View />
-        }
-        return (
-            <View style={{ height: 2, width: 1 }}>
-                <WebViewBridge/>
-            </View>
-        )
-    }
-}
-
 
 const styles = StyleSheet.create({
     container: {

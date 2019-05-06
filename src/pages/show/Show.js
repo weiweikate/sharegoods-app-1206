@@ -4,6 +4,7 @@ import Toast from '../../utils/bridge';
 import ScreenUtil from '../../utils/ScreenUtils';
 import { TrackApi } from '../../utils/SensorsTrack';
 import { homeType } from '../home/HomeTypes';
+import {height} from './ShowBannerView';
 
 const { px2dp } = ScreenUtil;
 
@@ -64,7 +65,7 @@ class ShowBannerModules {
     @observable type = showTypes.banner;
 
     @computed get bannerHeight() {
-        return this.bannerList.length > 0 ? px2dp(210) : 0;
+        return this.bannerList.length > 0 ? height : 0;
     }
 
     @action loadBannerList = () => {

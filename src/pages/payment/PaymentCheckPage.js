@@ -10,7 +10,7 @@ import { payment, paymentTrack, payStatus } from "./Payment";
 import DesignRule from "../../constants/DesignRule";
 import ScreenUtils from "../../utils/ScreenUtils";
 import res from "./res";
-import { track, trackEvent } from "../../utils/SensorsTrack";
+import { track, TrackApi, trackEvent } from "../../utils/SensorsTrack";
 import { PaymentResult } from "./PaymentResultPage";
 import { NavigationActions } from "react-navigation";
 import RouterMap from "../../navigation/RouterMap";
@@ -90,7 +90,7 @@ export default class PaymentCheckPage extends BasePage {
             let resultData = result.data;
             if (parseInt(resultData.status) === payStatus.paySuccess) {
                 let replace;
-                if (bizType != 1) {
+                if (bizType !== 1) {
                     replace = NavigationActions.replace({
                         key: this.props.navigation.state.key,
                         routeName: RouterMap.PaymentResultPage,
@@ -105,7 +105,8 @@ export default class PaymentCheckPage extends BasePage {
                 }
                 this.props.navigation.dispatch(replace);
                 payment.resetPayment();
-                track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: "success" });
+                TrackApi.orderPayResultPage({isPaySuccess:true})
+                // track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: "success" });
             } else if (parseInt(resultData.status) === payStatus.payClose) {
                 const {bizType} = payment;
                 if (bizType !== 1){
@@ -118,8 +119,8 @@ export default class PaymentCheckPage extends BasePage {
                 } else {
                     this._goToOrder();
                 }
-
                 payment.resetPayment();
+                TrackApi.orderPayResultPage({isPaySuccess:false})
             } else {
                 setTimeout(() => {
                     this._checkStatues();
@@ -133,7 +134,7 @@ export default class PaymentCheckPage extends BasePage {
 
     _goToOrder(index) {
         const {bizType} = payment;
-        if (bizType == 1){
+        if (bizType === 1){
             this.props.navigation.dispatch({
                 key: this.props.navigation.state.key,
                 type:'ReplacePayScreen',
@@ -154,7 +155,6 @@ export default class PaymentCheckPage extends BasePage {
 const styles = StyleSheet.create({
     waitBgViewStyle: {
         flex: 1,
-        backgroundColor: DesignRule.color_fff,
         marginTop: -2,
         backgroundColor: DesignRule.bgColor
     },

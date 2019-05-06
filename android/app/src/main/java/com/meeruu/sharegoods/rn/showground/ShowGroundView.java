@@ -1,10 +1,12 @@
 package com.meeruu.sharegoods.rn.showground;
 
 import android.content.Context;
+import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.meeruu.sharegoods.R;
+import com.meeruu.sharegoods.rn.showground.adapter.ShowGroundAdapter;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
 import com.meeruu.sharegoods.rn.showground.event.onEndScrollEvent;
 import com.meeruu.sharegoods.rn.showground.event.onItemPressEvent;
@@ -44,8 +47,10 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
     private onStartRefreshEvent startRefreshEvent;
     private onStartScrollEvent startScrollEvent;
     private onEndScrollEvent endScrollEvent;
-
+    private View errView;
     private WeakReference<View> showgroundView;
+    private Handler handler;
+    private View errImg;
 
     public ViewGroup getShowGroundView(ReactContext reactContext) {
         eventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
@@ -53,11 +58,31 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
         View view = inflater.inflate(R.layout.view_showground, null);
         initView(reactContext, view);
         initData();
+
         return (ViewGroup) view;
     }
 
     private void initView(Context context, final View view) {
+        handler = new Handler();
         showgroundView = new WeakReference<>(view);
+        errView = view.findViewById(R.id.err_view);
+        errImg = view.findViewById(R.id.errImg);
+        errImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                swipeRefreshLayout.setVisibility(View.VISIBLE);
+                errView.setVisibility(View.INVISIBLE);
+                swipeRefreshLayout.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefreshLayout.setRefreshing(true);
+                        onRefresh();
+                    }
+                }, 200);
+            }
+        });
+
+        errView.setVisibility(View.INVISIBLE);
         swipeRefreshLayout = view.findViewById(R.id.refresh_control);
         swipeRefreshLayout.setColorSchemeResources(R.color.app_main_color);
         recyclerView = view.findViewById(R.id.home_recycler_view);
@@ -111,22 +136,12 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
             @Override
             public void onItemClick(final BaseQuickAdapter adapter, View view1, final int position) {
                 final List<NewestShowGroundBean.DataBean> data = adapter.getData();
-
-                recyclerView.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        NewestShowGroundBean.DataBean bean = data.get(position);
-                        bean.setClick(bean.getClick() + 5);
-                        adapter.replaceData(data);
-
-                    }
-                }, 200);
-
                 if (data != null) {
                     NewestShowGroundBean.DataBean item = data.get(position);
                     String json = JSONObject.toJSONString(item);
                     Map map = JSONObject.parseObject(json, new TypeReference<Map>() {
                     });
+                    map.put("index", position);
                     WritableMap realData = Arguments.makeNativeMap(map);
                     if (eventDispatcher != null) {
                         itemPressEvent.init(view.getId());
@@ -172,15 +187,29 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
     }
 
     @Override
-    public void loadMoreFail() {
+    public void loadMoreFail(final String code) {
         swipeRefreshLayout.setRefreshing(false);
         if (adapter != null) {
             adapter.loadMoreFail();
         }
+
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (TextUtils.equals(code, "9999") && page == 1) {
+                    errView.setVisibility(View.VISIBLE);
+                    swipeRefreshLayout.setVisibility(View.INVISIBLE);
+                } else {
+                    errView.setVisibility(View.INVISIBLE);
+                    swipeRefreshLayout.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 
     @Override
     public void viewLoadMore(final List data) {
+        showList();
         if (data != null) {
             adapter.addData(data);
         }
@@ -197,13 +226,32 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
 
     @Override
     public void loadMoreEnd() {
+        showList();
         if (adapter != null) {
             adapter.loadMoreEnd();
         }
     }
 
     @Override
+    public void repelaceData(final int index, final int clickNum) {
+        if (adapter != null) {
+            final List<NewestShowGroundBean.DataBean> data = adapter.getData();
+
+            recyclerView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    NewestShowGroundBean.DataBean bean = data.get(index);
+                    bean.setClick(clickNum);
+                    adapter.replaceData(data);
+
+                }
+            }, 200);
+        }
+    }
+
+    @Override
     public void loadMoreComplete() {
+        showList();
         adapter.loadMoreComplete();
     }
 
@@ -220,5 +268,15 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
         if (presenter != null) {
             presenter.setParams(map);
         }
+    }
+
+    private void showList() {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                errView.setVisibility(View.INVISIBLE);
+                swipeRefreshLayout.setVisibility(View.VISIBLE);
+            }
+        });
     }
 }

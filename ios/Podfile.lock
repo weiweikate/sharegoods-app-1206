@@ -98,7 +98,7 @@ DEPENDENCIES:
   - Bugly (~> 2.5.0)
   - CocoaLumberjack (~> 3.4.1)
   - IQKeyboardManager (~> 6.2.0)
-  - JPush (~> 3.1.0)
+  - JPush (~> 3.1.2)
   - MBProgressHUD (~> 1.1.0)
   - MJRefresh
   - QIYU_iOS_SDK (~> 4.9.0)
@@ -173,6 +173,6 @@ SPEC CHECKSUMS:
   WechatOpenSDK: 9b721089507c895d05f997408c30bb6e6f5f9b60
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-PODFILE CHECKSUM: cde610e6eaf2b5b58dae06a5afd9710d6a510ef5
+PODFILE CHECKSUM: 16a0f75b4b573af0f9ee135f0fa52bf00d4b7e3d
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.6.0

@@ -37,7 +37,7 @@ export default class DetailNavShowModal extends Component {
             modalVisible: false, //是否显示
             confirmCallBack: null,
             messageCount: 0,
-            showType: 1//1客服,2首页
+            showType: 1//1显示客服,2显示去首页
         };
     }
 

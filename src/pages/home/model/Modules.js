@@ -56,7 +56,8 @@ class HomeModule {
             categoryId: data.linkTypeCode,
             uri: data.linkTypeCode,
             id: data.id,
-            code: data.linkTypeCode
+            code: data.linkTypeCode,
+            keywords: data.name
         };
 
     };
@@ -65,6 +66,38 @@ class HomeModule {
             return ({ ...item });
         });
     };
+
+    @action refreshHome = (type) => {
+        switch (type) {
+            case homeType.swiper:
+                bannerModule.loadBannerList(this.firstLoad);
+                break;
+            case homeType.channel:
+                channelModules.loadChannel(this.firstLoad);
+                break;
+            case homeType.expandBanner:
+                homeExpandBnnerModel.loadBannerList();
+                break;
+            case homeType.focusGrid:
+                homeFocusAdModel.loadAdList();
+                break;
+            case homeType.focusGrid:
+                homeFocusAdModel.loadAdList();
+                break;
+            case homeType.today:
+                todayModule.loadTodayList(this.firstLoad);
+                break;
+            case homeType.fine:
+                recommendModule.loadRecommendList(this.firstLoad);
+                break;
+            case homeType.homeHot:
+                subjectModule.loadSubjectList(this.firstLoad);
+                break;
+            default:
+                break;
+        }
+    };
+
     //加载为你推荐列表
     @action loadHomeList = flow(function* () {
         this.isRefreshing = true;

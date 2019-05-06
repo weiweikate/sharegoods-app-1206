@@ -49,6 +49,25 @@ const unAbleSelectStatus = [
     2,
     3
 ];
+
+/**
+ * 获取秒杀是否开始或者结束
+ * @param itemData
+ * @private
+ * return 0 未开始 1进行中 2已结束
+ */
+const getSkillIsBegin = (itemData) => {
+    if (itemData.nowTime < itemData.activityBeginTime) {
+        return 0;
+    } else if (
+        (new Date().getTime()) > itemData.activityBeginTime &&
+        (new Date().getTime()) < itemData.activityEndTime
+    ) {
+        return 1;
+    } else {
+        return 2;
+    }
+};
 /**
  * 获取购物车列表选中图片方法
  * @param itemData
@@ -66,14 +85,9 @@ const getSelectImage = (itemData) => {
 function add0(m){return m<10?'0'+m:m }
 const formatTime =(updateTime)=>
 {
-//shijianchuo是整数，否则要parseInt转换
     let time = new Date(updateTime);
-    // let y = time.getFullYear();
     let m = time.getMonth()+1;
     let d = time.getDate();
-    // let h = time.getHours();
-    // let mm = time.getMinutes();
-    // let s = time.getSeconds();
     return add0(m)+'月-'+add0(d)+'日 开售';
 }
 /**
@@ -83,16 +97,11 @@ const formatTime =(updateTime)=>
  */
 const getTipString = (itemData) => {
     let tipString = '';
-    //是否需要右上角的小标识
-    let needIconText = false;
-    let iconText = null;
+    //是否需要左上角的小标识
     let returnObj = {
         tipString: tipString,
-        needIconText: needIconText,
-        iconText: iconText
     };
     if (itemData.amount > itemData.sellStock) {
-        // tipString = tipString + '库存不足\n';
         returnObj.tipString = tipString + '库存不足\n';
     }
     //暂未开售
@@ -100,59 +109,10 @@ const getTipString = (itemData) => {
         returnObj.tipString += tipString + formatTime(itemData.upTime);
         return  returnObj;
     }
-
-
-    if (itemData.shoppingCartActivity === null || itemData.shoppingCartActivity === undefined) {
-        return returnObj;
-        // return tipString;
+    if (itemData.displayItem && !isNaN(parseInt(itemData.displayItem.limitNum ))) {
+        returnObj.tipString = `${tipString}限购${itemData.displayItem.limitNum}件`
     }
-
-    if (itemData.shoppingCartActivity.length > 0) {
-        itemData.shoppingCartActivity.map((activityItem, activityIndex) => {
-            //秒杀活动
-            if (activityItem.activityType === 1 && activityItem.seckill) {
-                if (itemData.nowTime < activityItem.seckill.beginTime) {
-
-                    if (tipString.indexOf("秒杀活动未开始,暂不可购买~") === -1) {
-                        tipString += '秒杀活动未开始,暂不可购买~';
-                    }
-                    //是否存在字符标识
-                    if (activityString[activityItem.activityType]) {
-                         returnObj.tipString = tipString;
-                         returnObj.needIconText = true;
-                         returnObj.iconText = activityString[activityItem.activityType];
-                    }
-                } else if (
-                    activityItem.seckill.beginTime < itemData.nowTime &&
-                    activityItem.seckill.endTime > itemData.nowTime
-                ) {
-                    if (tipString.indexOf('该商品正在进行秒杀活动,快去看看~') === -1){
-                        tipString += '该商品正在进行秒杀活动,快去看看~';
-                    }
-
-                    //是否存在字符标识
-                    if (activityString[activityItem.activityType]) {
-                        returnObj.tipString = tipString;
-                        returnObj.needIconText = true;
-                        returnObj.iconText = activityString[activityItem.activityType];
-                    }
-                }
-            }
-            //降价拍
-            if (activityItem.activityType === 2) {
-
-                if (tipString.indexOf('该商品正在进行降价拍活动,快去看看~') === -1){
-                    tipString += '该商品正在进行降价拍活动,快去看看~';
-                }
-                returnObj.tipString = tipString;
-                returnObj.needIconText = true;
-                returnObj.iconText = activityString[activityItem.activityType];
-            }
-        });
-        return returnObj;
-    } else {
-        return returnObj;
-    }
+    return returnObj;
 };
 
-export { activityCode, activityString, statueImage, getSelectImage, getTipString };
+export { activityCode, activityString, statueImage, getSelectImage, getTipString ,getSkillIsBegin};

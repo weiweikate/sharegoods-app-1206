@@ -47,8 +47,12 @@ import { track, trackEvent } from '../../utils/SensorsTrack';
 import DetailHeaderServiceModal from '../product/components/DetailHeaderServiceModal';
 import ProductApi from '../product/api/ProductApi';
 import { beginChatType, QYChatTool } from '../../utils/QYModule/QYChatTool';
+import { SmoothPushPreLoadHighComponent } from '../../comm/components/SmoothPushHighComponent';
 
-
+/*
+* 仅有礼包了  2019.4.25
+* */
+@SmoothPushPreLoadHighComponent
 export default class TopicDetailPage extends BasePage {
 
     $navigationBarOptions = {
@@ -276,7 +280,7 @@ export default class TopicDetailPage extends BasePage {
                 netFailedInfo: { msg: `该商品走丢了\n去看看别的商品吧` }
             });
         } else {
-            ProductApi.getProductDetailByCode({
+            ProductApi.getProductDetailByCodeV2({
                 code: prodCode
             }).then((data) => {
                 this.setState({
@@ -459,13 +463,18 @@ export default class TopicDetailPage extends BasePage {
     };
 
     _renderSmallItem = ({ item }) => {
-        return <View style={{ flexDirection: 'row', height: 35 }}>
-            <View style={{ backgroundColor: DesignRule.lineColor_inGrayBg, width: 70, justifyContent: 'center' }}>
+        return <View style={{ flexDirection: 'row' }}>
+            <View style={{
+                backgroundColor: DesignRule.lineColor_inGrayBg,
+                width: 70,
+                alignItems: 'center'
+            }}>
                 <Text style={{
-                    marginLeft: 10,
+                    paddingHorizontal: 10,
+                    paddingVertical: 5,
                     color: DesignRule.textColor_mainTitle,
                     fontSize: 12
-                }} allowFontScaling={false}>{item.paramName || ''}</Text>
+                }} numberOfLines={2}>{item.paramName || ''}</Text>
             </View>
             <Text style={{
                 flex: 1,

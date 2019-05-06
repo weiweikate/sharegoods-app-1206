@@ -78,7 +78,7 @@ export default class EditPhonePwdPage extends BasePage {
             bridge.$toast('新密码需数字、字母组合');
             return;
         }
-        this.isLoadding == true;
+        this.isLoadding = true;
         MineAPI.changePhonePwd({
             oldPassword: this.state.oldPwd,
             newPassword: this.state.newPwd
@@ -93,10 +93,10 @@ export default class EditPhonePwdPage extends BasePage {
                     this.$navigateResetLogin();
                     bridge.$toast('密码修改成功，请重新登录');
                 }
-                this.isLoadding == false;
+                this.isLoadding = false;
             }).catch(err => {
                 bridge.$toast(err.msg);
-                this.isLoadding == false;
+                this.isLoadding = false;
                 if (err.code === 10009) {
                     user.clearUserInfo();
                     shopCartStore.data = [];
@@ -106,7 +106,7 @@ export default class EditPhonePwdPage extends BasePage {
                 }
             });
         }).catch((data) => {
-            this.isLoadding == false;
+            this.isLoadding = false;
             bridge.$toast(data.msg);
         });
     };

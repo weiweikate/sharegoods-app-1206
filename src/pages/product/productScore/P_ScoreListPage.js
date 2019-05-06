@@ -13,13 +13,14 @@ import apiEnvironment from '../../../api/ApiEnvironment';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
-import DetailNavShowModal from '../components/DetailNavShowModal';
-import DetailNavView from '../components/DetailNavView';
 import ProductApi from '../api/ProductApi';
 import { beginChatType, QYChatTool } from '../../../utils/QYModule/QYChatTool';
+import ProductDetailNavView from '../components/ProductDetailNavView';
+import { SmoothPushPreLoadHighComponent } from '../../../comm/components/SmoothPushHighComponent';
 
 const { p_score_smile, p_score_empty } = res.productScore;
 
+@SmoothPushPreLoadHighComponent
 export default class P_ScoreListPage extends BasePage {
 
     state = {
@@ -267,49 +268,19 @@ export default class P_ScoreListPage extends BasePage {
     };
 
     _render() {
-        const { pData, messageCount } = this.params;
+        const { pData } = this.params;
         const { name, imgUrl, prodCode, originalPrice, groupPrice, v0Price, shareMoney } = pData || {};
         return (
             <View style={styles.container}>
-                <DetailNavView ref={(e) => this.DetailNavView = e}
-                               messageCount={messageCount}
-                               scale={true}
-                               source={imgUrl}
-                               navBack={() => {
-                                   this.$navigateBack();
-                               }}
-                               navRLeft={() => {
-                                   this.$navigate('shopCart/ShopCart', {
-                                       hiddeLeft: false
-                                   });
-                               }}
-                               navRRight={() => {
-                                   this.DetailNavShowModal.show(messageCount, (item) => {
-                                       switch (item.type) {
-                                           case 0:
-                                               if (!user.isLogin) {
-                                                   this.gotoLoginPage();
-                                                   return;
-                                               }
-                                               this.$navigate('message/MessageCenterPage');
-                                               break;
-                                           case 1:
-                                               this.$navigate('home/search/SearchPage');
-                                               break;
-                                           case 2:
-                                               this.shareModal && this.shareModal.open();
-                                               break;
-                                           case 4:
-                                               this.$navigateBackToHome();
-                                               break;
-                                       }
-                                   }, 2);
-                               }}/>
+                <ProductDetailNavView productDetailModel={pData}
+                                      showNavTextT={true}
+                                      showAction={() => {
+                                          this.shareModal && this.shareModal.open();
+                                      }}/>
                 {renderViewByLoadingState(this._getPageStateOptions(), this._renderFlatList)}
                 <DetailBottomView bottomViewAction={this._bottomViewAction}
                                   pData={pData}/>
                 <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
-                <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 trackParmas={{
                                     spuCode: prodCode,

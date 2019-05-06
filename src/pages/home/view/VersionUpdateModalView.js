@@ -16,6 +16,7 @@ import StringUtils from '../../../utils/StringUtils';
 import { observer } from 'mobx-react';
 import { autorun } from 'mobx';
 import HomeModalManager from '../manager/HomeModalManager';
+import bridge from '../../../utils/bridge';
 
 @observer
 export default class VersionUpdateModalView extends React.Component {
@@ -30,13 +31,15 @@ export default class VersionUpdateModalView extends React.Component {
     }
 
 
-    autoRun = autorun(() => {
+    versionUpdate = autorun(() => {
         let versionData = HomeModalManager.versionData || {};
         if (versionData) {
             if (Platform.OS !== 'ios') {
-                this.setState({
-                    positiveTxt: versionData.apkExist ? '立即安装' : '立即更新',
-                    updateContent: versionData.apkExist ? '是否安装V' + versionData.version + '版本？' : '是否更新为V' + versionData.version + '版本？'
+                bridge.isApkExist(versionData.version).then((isExist) => {
+                    this.setState({
+                        positiveTxt: isExist ? '立即安装' : '立即更新',
+                        updateContent: isExist ? '是否安装V' + versionData.version + '版本？' : '是否更新为V' + versionData.version + '版本？'
+                    });
                 });
             } else {
                 this.setState({
@@ -73,7 +76,7 @@ export default class VersionUpdateModalView extends React.Component {
             focusable={false}
             animationType='fade'
             onRequestClose={() => {
-                HomeModalManager.closeUpdate();
+                HomeModalManager.closeUpdate(false);
             }}
             visible={HomeModalManager.isShowUpdate}>
             <View style={{
@@ -119,7 +122,7 @@ export default class VersionUpdateModalView extends React.Component {
                                     style={{ flex: 1, justifyContent: 'center', alignItems: 'center', height: 45 }}
                                     onPress={() => {
                                         // 缓存状态
-                                        HomeModalManager.closeUpdate();
+                                        HomeModalManager.closeUpdate(true);
                                     }}>
                                     <UIText value={'以后再说'} style={{ color: DesignRule.textColor_instruction }}/>
                                 </TouchableOpacity>
@@ -158,7 +161,6 @@ export default class VersionUpdateModalView extends React.Component {
                 Linking.openURL(updateData.url);
             }
         } else {
-
             if (updateData.forceUpdate === 1) {
                 // 强制更新app
                 NativeModules.commModule.updateable(JSON.stringify(updateData), true, (exist) => {
@@ -172,7 +174,7 @@ export default class VersionUpdateModalView extends React.Component {
                 });
             } else {
                 // 关闭弹框
-                HomeModalManager.closeUpdate();
+                HomeModalManager.closeUpdate(false);
                 // 更新app
                 NativeModules.commModule.updateable(JSON.stringify(updateData), false, null);
             }
