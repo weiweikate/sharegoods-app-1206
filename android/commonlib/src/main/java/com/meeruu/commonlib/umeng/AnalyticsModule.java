@@ -159,7 +159,9 @@ public class AnalyticsModule extends ReactContextBaseJavaModule {
     public void getSuperProperty(String propertyName, Callback callback) {
         try {
             String result = UMADplus.getSuperProperty(context, propertyName).toString();
-            callback.invoke(result);
+            if (callback != null) {
+                callback.invoke(result);
+            }
         } catch (Exception e) {
         }
 
@@ -168,7 +170,9 @@ public class AnalyticsModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void getSuperProperties(Callback callback) {
         String result = UMADplus.getSuperProperties(context);
-        callback.invoke(result);
+        if (callback != null) {
+            callback.invoke(result);
+        }
     }
 
     @ReactMethod
