@@ -3,7 +3,6 @@ package com.meeruu.sharegoods.rn.showground;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
@@ -11,17 +10,13 @@ import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
-import com.facebook.react.views.webview.ReactWebViewManager;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> {
-    private static final String COMPONENT_NAME = "ShowGroundView";
+public class ShowActivityViewManager extends ViewGroupManager<ViewGroup> {
+    private static final String COMPONENT_NAME = "ShowActivityView";
     public static final int REPLACE_DATA = 1;
 
     @Override
@@ -31,9 +26,9 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> {
 
     @Override
     protected ViewGroup createViewInstance(ThemedReactContext reactContext) {
-        ShowGroundView showGroundView = new ShowGroundView();
-        ViewGroup viewGroup = showGroundView.getShowGroundView(reactContext);
-        viewGroup.setTag(showGroundView);
+        ShowActivityView showRecommendView = new ShowActivityView();
+        ViewGroup viewGroup = showRecommendView.getActivityView(reactContext);
+        viewGroup.setTag(showRecommendView);
         return viewGroup;
 
     }
@@ -50,8 +45,8 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> {
     @Override
     public void addView(ViewGroup parent, View child, int index) {
         Object object = parent.getTag();
-        if (object != null && object instanceof ShowGroundView) {
-            ((ShowGroundView) object).addHeader(child);
+        if (object != null && object instanceof ShowActivityView) {
+            ((ShowActivityView) object).addHeader(child);
         }
     }
 
@@ -71,7 +66,6 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> {
                 }
             }
             break;
-
         }
     }
 
@@ -87,7 +81,4 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> {
                 .put("MrShowScrollStateChangeEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onScrollStateChanged")))
                 .build();
     }
-
 }
-
-

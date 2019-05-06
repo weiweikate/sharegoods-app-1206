@@ -1,12 +1,9 @@
 package com.meeruu.sharegoods.rn.showground;
 
 import android.content.Context;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SimpleItemAnimator;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +15,9 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.meeruu.sharegoods.R;
+import com.meeruu.sharegoods.rn.showground.adapter.ShowActivityAdapter;
 import com.meeruu.sharegoods.rn.showground.adapter.ShowRecommendAdapter;
+import com.meeruu.sharegoods.rn.showground.bean.ShowActivityBean;
 import com.meeruu.sharegoods.rn.showground.bean.ShowRecommendBean;
 import com.meeruu.sharegoods.rn.showground.event.onEndScrollEvent;
 import com.meeruu.sharegoods.rn.showground.event.onNineClickEvent;
@@ -31,13 +30,13 @@ import com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShowRecommendView{
+public class ShowActivityView {
     private RnRecyclerView recyclerView;
-    private ShowRecommendAdapter adapter;
+    private ShowActivityAdapter adapter;
     private EventDispatcher eventDispatcher;
     private onStartScrollEvent startScrollEvent;
     private onEndScrollEvent endScrollEvent;
-    public ViewGroup getShowRecommendView(ReactContext reactContext) {
+    public ViewGroup getActivityView(ReactContext reactContext) {
         eventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
 
         LayoutInflater inflater = LayoutInflater.from(reactContext);
@@ -82,18 +81,7 @@ public class ShowRecommendView{
             }
         });
 
-        adapter = new ShowRecommendAdapter(new NineGridView.clickL() {
-            @Override
-            public void imageClick(List urls, int index) {
-                onNineClickEvent.init(view.getId());
-                WritableMap map = Arguments.createMap();
-                WritableArray array = Arguments.makeNativeArray(urls);
-                map.putArray("imageUrls",array);
-                map.putInt("index",index);
-                onNineClickEvent.setData(map);
-                eventDispatcher.dispatchEvent(onNineClickEvent);
-            }
-        });
+        adapter = new ShowActivityAdapter();
         adapter.setPreLoadNumber(3);
         adapter.setHasStableIds(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
@@ -104,18 +92,10 @@ public class ShowRecommendView{
     }
 
     private void initData() {
-        ShowRecommendBean bean = new ShowRecommendBean();
+        ShowActivityBean bean = new ShowActivityBean();
         List list = new ArrayList();
+        bean.setUrl("https://k.zol-img.com.cn/sjbbs/7692/a7691501_s.jpg");
         list.add(bean);
-        List<String> urls = new ArrayList<>();
-        urls.add("https://k.zol-img.com.cn/sjbbs/7692/a7691501_s.jpg");
-        urls.add("https://k.zol-img.com.cn/sjbbs/7692/a7691501_s.jpg");
-        urls.add("https://k.zol-img.com.cn/sjbbs/7692/a7691501_s.jpg");
-        urls.add("https://k.zol-img.com.cn/sjbbs/7692/a7691501_s.jpg");
-        urls.add("https://k.zol-img.com.cn/sjbbs/7692/a7691501_s.jpg");
-        urls.add("https://k.zol-img.com.cn/sjbbs/7692/a7691501_s.jpg");
-        urls.add("https://k.zol-img.com.cn/sjbbs/7692/a7691501_s.jpg");
-        bean.setImageUrls(urls);
         list.add(bean);
         list.add(bean);
         list.add(bean);
@@ -130,5 +110,4 @@ public class ShowRecommendView{
         adapter.addHeaderView(view);
         recyclerView.scrollToPosition(0);
     }
-
 }

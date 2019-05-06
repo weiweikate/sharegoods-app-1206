@@ -1,4 +1,4 @@
-package com.meeruu.sharegoods.rn.showground;
+package com.meeruu.sharegoods.rn.showground.adapter;
 
 import android.text.TextUtils;
 import android.widget.RelativeLayout;

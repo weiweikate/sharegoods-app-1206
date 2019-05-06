@@ -26,7 +26,8 @@ const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
 
 const HOME_REFRESH = 'homeRefresh';
-
+const width =  ScreenUtils.width -px2dp(30);
+const height = width *120 /345;
 @observer
 export default class ShowBannerView extends Component {
     state = {
@@ -119,23 +120,27 @@ export default class ShowBannerView extends Component {
         bannerList.map(value => {
             items.push(value.image);
         });
-        return <View style={styles.container}>
+
+        return <View style={{height,marginVertical:px2dp(10)}}>
             {
                 bannerList.length === 1
                     ?
                     <TouchableWithoutFeedback onPress={() => this._onPressRowWithItem(bannerList[0])}>
-                        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                        <View style={{ justifyContent: 'center', alignItems: 'center',borderRadius:px2dp(5),overflow:'hidden' }}>
                             {this.renderRow(bannerList[0])}
                         </View>
                     </TouchableWithoutFeedback>
                     :
+
                     <MRBannerView
                         style={{
-                            height: px2dp(175),
-                            width: ScreenUtils.width
+                            height: height,
+                            width: width,
+                            alignSelf:'center',
                         }}
-                        itemWidth={px2dp(300)}
-                        itemSpace={px2dp(10)}
+                        itemWidth={width}
+                        autoInterval={5}
+                        itemSpace={0}
                         itemRadius={5}
                         imgUrlArray={items}
                         interceptTouchEvent={true}  //android端起作用，是否拦截touch事件
@@ -153,31 +158,29 @@ export default class ShowBannerView extends Component {
     }
 }
 
+export {width,height}
+
 let styles = StyleSheet.create({
-    container: {
-        height: px2dp(200),
-        width: ScreenUtils.width
-    },
     scroll: {
-        height: px2dp(175)
+        height
     },
     swiper: {
         width: ScreenUtils.width,
-        height: px2dp(175)
+        height
     },
     img: {
         width: ScreenUtil.width - px2dp(50),
-        height: px2dp(175),
+        height,
         justifyContent: 'flex-end'
     },
     imgView: {
-        height: px2dp(175),
+        height,
         borderRadius: px2dp(5),
         overflow: 'hidden'
     },
     item: {
         width: px2dp(280),
-        height: px2dp(175),
+        height,
         marginLeft: px2dp(10)
     },
     space: {
@@ -203,20 +206,20 @@ let styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: px2dp(10)
+        marginTop: -px2dp(10)
     },
     activityIndex: {
-        width: 14,
+        width: 10,
         height: 4,
         borderRadius: 2,
-        backgroundColor: DesignRule.mainColor,
-        margin: 3
+        backgroundColor: DesignRule.textColor_mainTitle,
+        margin: 5
     },
     index: {
-        width: 4,
+        width: 10,
         height: 4,
         borderRadius: 2,
         backgroundColor: 'white',
-        margin: 3
+        margin: 5
     }
 });

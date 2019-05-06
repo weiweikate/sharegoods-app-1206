@@ -35,7 +35,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShowRecommendAdapter extends BaseQuickAdapter<ShowRecommendBean, BaseViewHolder> {
-   private NineGridView.clickL clickL;
+    private NineGridView.clickL clickL;
+
     public ShowRecommendAdapter(NineGridView.clickL clickL) {
         super(R.layout.item_showground_image_goods);
         NineGridView.setImageLoader(new NineGridView.ImageLoader() {
@@ -56,13 +57,13 @@ public class ShowRecommendAdapter extends BaseQuickAdapter<ShowRecommendBean, Ba
         content.post(new Runnable() {
             @Override
             public void run() {
-                if(content.getLineCount() > 3){
+                if (content.getLineCount() > 3) {
                     return;
                 }
                 int ellipsisCount = content.getLayout().getEllipsisCount(content.getLineCount() - 1);
-                if(ellipsisCount>0){
+                if (ellipsisCount > 0) {
                     button.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     button.setVisibility(View.GONE);
                 }
             }
@@ -72,21 +73,21 @@ public class ShowRecommendAdapter extends BaseQuickAdapter<ShowRecommendBean, Ba
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!item.isHasExpand()){
+                if (!item.isHasExpand()) {
                     UiThreadUtil.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             content.setMaxLines(Integer.MAX_VALUE);
-                            setExpandValue(helper.getAdapterPosition(),true);
+                            setExpandValue(helper.getAdapterPosition(), true);
                             button.setText(R.string.pack_up);
                         }
                     });
-                }else {
+                } else {
                     UiThreadUtil.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             content.setMaxLines(3);
-                            setExpandValue(helper.getAdapterPosition(),false);
+                            setExpandValue(helper.getAdapterPosition(), false);
                             button.setText(R.string.spread_out);
                         }
                     });
@@ -102,7 +103,7 @@ public class ShowRecommendAdapter extends BaseQuickAdapter<ShowRecommendBean, Ba
             info.setImageUrl(url);
             imageInfoList.add(info);
         }
-        if(this.clickL != null){
+        if (this.clickL != null) {
             nineGridView.setClick(clickL);
         }
 
@@ -121,7 +122,7 @@ public class ShowRecommendAdapter extends BaseQuickAdapter<ShowRecommendBean, Ba
 
     }
 
-    private void setExpandValue(int index,boolean expandValue){
+    private void setExpandValue(int index, boolean expandValue) {
         List<ShowRecommendBean> list = ShowRecommendAdapter.this.getData();
         ShowRecommendBean bean = list.get(index);
         bean.setHasExpand(expandValue);

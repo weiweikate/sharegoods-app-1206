@@ -9,6 +9,8 @@ const index = {
     showFire:require('./show_fire.png'),
     noShowFire:require('./no_show_fire.png'),
     grayMore:require('./gray_more.png'),
-    likeIcon:require('./like_icon.png')
+    likeIcon:require('./like_icon.png'),
+    showReleaseIcon:require('./show_release_icon.png'),
+
 };
 export default index

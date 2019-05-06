@@ -3,7 +3,6 @@ import { View, StyleSheet, TouchableOpacity, Image, BackHandler } from 'react-na
 import BasePage from '../../BasePage';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 import ScreenUtils from '../../utils/ScreenUtils';
-
 const { px2dp } = ScreenUtils;
 import backIconImg from '../../comm/res/button/icon_header_back.png';
 import DesignRule from '../../constants/DesignRule';
@@ -12,7 +11,8 @@ import {
     MRText as Text
 } from '../../components/ui';
 import ShowGroundView from './components/ShowGroundView';
-
+import ShowRecommendView from './components/ShowRecommendView';
+import ShowActivityView from './components/ShowActivityView';
 @observer
 export default class ShowListPage extends BasePage {
 
@@ -27,7 +27,8 @@ export default class ShowListPage extends BasePage {
         page: 0,
         left: false,
         pageFocused: false,
-        needsExpensive: false
+        needsExpensive: false,
+        showEditorIcon:true
     };
 
     handleBackPress = () => {
@@ -39,6 +40,10 @@ export default class ShowListPage extends BasePage {
         }
     };
 
+    constructor(props){
+        super(props);
+        this.lastStopScrollTime = -1;
+    }
 
     componentWillMount() {
         this.setState({ left: this.params.fromHome });
@@ -175,16 +180,13 @@ export default class ShowListPage extends BasePage {
                     {
                         needsExpensive
                             ?
-                            <View>
-                            <ShowGroundView
+
+                            <ShowRecommendView
                                 ref={(ref) => {
                                     this.rightShowList = ref;
                                 }}
-                                style={{ flex: 1 }}
+                                style={{ flex: 1,margin:px2dp(10) }}
                                 uri={'/discover/query@GET'}
-                                onScrollStateChanged={({nativeEvent})=>{
-                                    console.log(nativeEvent.state)
-                                }}
                                 onNineClick={({ nativeEvent }) => {
                                     that.$navigate('show/ShowDetailImagePage', {
                                         imageUrls: nativeEvent.imageUrls,
@@ -199,11 +201,7 @@ export default class ShowListPage extends BasePage {
                                         index: nativeEvent.index
                                     });
                                 }}
-                            />
-                                <View style={{width:34,height:34, backgroundColor: 'red', position: 'absolute',right:15}}/>
-                            </View>
-                            :
-                            null
+                            /> : null
                     }
                 </View>
 
@@ -243,11 +241,11 @@ export default class ShowListPage extends BasePage {
                         needsExpensive
                             ?
 
-                            <ShowGroundView
+                            <ShowActivityView
                                 ref={(ref) => {
                                     this.rightShowList = ref;
                                 }}
-                                style={{ flex: 1 }}
+                                style={{ flex: 1 ,marginHorizontal:px2dp(15),marginTop:px2dp(15)}}
                                 uri={'/discover/query@GET'}
                                 onNineClick={({ nativeEvent }) => {
                                     that.$navigate('show/ShowDetailImagePage', {
