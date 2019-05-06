@@ -11,8 +11,30 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class RecommendedCell;
+
+@protocol JXCellDelegate <NSObject>
+/**
+ *  折叠按钮点击代理
+ *
+ *  @param cell 按钮所属cell
+ */
+- (void)clickFoldLabel:(RecommendedCell*)cell;
+
+-(void)zanClick:(RecommendedCell*)cell;
+-(void)downloadClick:(RecommendedCell*)cell;
+-(void)shareClick:(RecommendedCell*)cell;
+-(void)imageClick:(RecommendedCell*)cell;
+
+@end
+
+typedef void(^cellBlock)(RecommendedCell*);//block写法比较特殊，一般重命名一下
+
+
 @interface RecommendedCell : UITableViewCell
 @property (nonatomic,strong) JXModel * model;
+@property (nonatomic,copy) cellBlock block;
+@property (nonatomic, weak) id<JXCellDelegate> cellDelegate;
 
 @end
 

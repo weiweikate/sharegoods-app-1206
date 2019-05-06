@@ -7,19 +7,23 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "JXModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface JXFooterView : UIView
 
+@property (nonatomic,assign) NSInteger downloadCount;
+@property (nonatomic,assign) NSInteger likesCount;
+@property (nonatomic,assign) NSInteger shareCount;
+@property (nonatomic,copy) NSString * showNo;
 @property (nonatomic,assign) NSInteger type; //事件类型
-@property (nonatomic,strong) UIImageView * goodsImg;
-@property (nonatomic,strong) UILabel * titile;
-@property (nonatomic,strong) UILabel * price;
-@property (nonatomic,strong) UIButton * shopCarBtn;
-@property (nonatomic,strong) UIButton * zanBtn;
-@property (nonatomic,strong) UIButton * downloadBtn;
-@property (nonatomic,strong) UIButton * shareBtn;
+@property (nonatomic,strong)NSArray * products;
+
+
+@property(nonatomic,copy)void (^zanBlock)(NSString*);
+@property(nonatomic,copy)void (^downloadBlock)(NSString*);
+@property(nonatomic,copy)void (^shareBlock)(NSString*);
 
 @end
 

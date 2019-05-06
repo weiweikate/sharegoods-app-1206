@@ -8,14 +8,25 @@
 
 #import "JXHeaderView.h"
 #import "UIView+SDAutoLayout.h"
-#import "NSString+OpenAndClose.h"
+
+#define SCREEN_WIDTH ([UIScreen mainScreen].bounds.size.width)
+
+@interface JXHeaderView()
+@property (nonatomic,strong) UIImageView * headImg;
+@property (nonatomic,strong) UILabel * nameLab;
+@property (nonatomic,strong) UIButton * guanBtn;
+@property (nonatomic,strong) UILabel * timeLab;
+
+@end
 
 @implementation JXHeaderView
+
 
 -(UIImageView*)headImg{
   if (!_headImg) {
     _headImg = [[UIImageView alloc] init];
-    _headImg.image = [UIImage imageNamed:@"welcome3"];
+//    _headImg.image = [UIImage imageNamed:@"welcome3"];
+    _headImg.layer.masksToBounds = YES;
     
   }
   return _headImg;
@@ -25,7 +36,7 @@
   if(!_nameLab){
     _nameLab = [[UILabel alloc]init];
     _nameLab.font = [UIFont systemFontOfSize:13];
-    _nameLab.text = @"friend";
+    _nameLab.textColor =[UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
   }
   return _nameLab;
 }
@@ -34,7 +45,7 @@
   if(!_timeLab){
     _timeLab = [[UILabel alloc]init];
     _timeLab.font = [UIFont systemFontOfSize:11];
-    _timeLab.textColor = [UIColor lightGrayColor];
+    _timeLab.textColor = [UIColor colorWithRed:153/255.0 green:153/255.0 blue:153/255.0 alpha:1.0];
     _timeLab.text = @"2小时前";
   }
   return _timeLab;
@@ -52,24 +63,12 @@
   return _guanBtn;
 }
 
--(UILabel*)contentLab{
-  if(!_contentLab){
-    _contentLab = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 200, 0)];
-    _contentLab.font = [UIFont systemFontOfSize:16];
-    _contentLab.textColor = [UIColor blackColor];
-    _contentLab.backgroundColor = [UIColor redColor];
-    _contentLab.numberOfLines = 0;
-    //调整frame
-    [_contentLab sizeToFit];
-  }
-  return _contentLab;
-}
+
 
 -(instancetype)initWithFrame:(CGRect)frame{
   self = [super initWithFrame:frame];
   if (self) {
     [self setUI];
-//    self.backgroundColor = [UIColor yellowColor];
 
   }
   return  self;
@@ -78,46 +77,50 @@
 -(void)setUI{
   [self addSubview:self.headImg];
   [self addSubview:self.nameLab];
-  [self addSubview:self.guanBtn];
+//  [self addSubview:self.guanBtn];
   [self addSubview:self.timeLab];
-
-  [self addSubview:self.contentLab];
+  
   //头像
+    self.headImg.backgroundColor = [UIColor redColor];
   self.headImg.sd_layout.leftSpaceToView(self, 10)
   .topSpaceToView(self, 0)
   .widthIs(30).heightIs(30);
-  
+  self.headImg.layer.cornerRadius = self.headImg.frame.size.width/2.0;
+
   //昵称
   self.nameLab.sd_layout.leftSpaceToView(_headImg, 5)
   .heightIs(15).topEqualToView(_headImg);
-  [_nameLab setSingleLineAutoResizeWithMaxWidth:200];
-  
+  [_nameLab setSingleLineAutoResizeWithMaxWidth:100];
+
   //关注
-  [_guanBtn setTitle:@"+关注" forState:UIControlStateNormal];
-  [_guanBtn setTitle:@"已关注" forState:UIControlStateSelected];
-  [_guanBtn addTarget:self action:@selector(tapGuanzhuBtn:) forControlEvents:UIControlEventTouchUpInside];
-  
-  self.guanBtn.sd_layout.centerYEqualToView(self.headImg)
-  .rightSpaceToView(self, 20)
-  .heightIs(20)
-  .widthIs(50);
+//  [_guanBtn setTitle:@"+关注" forState:UIControlStateNormal];
+//  [_guanBtn setTitle:@"已关注" forState:UIControlStateSelected];
+//  [_guanBtn addTarget:self action:@selector(tapGuanzhuBtn:) forControlEvents:UIControlEventTouchUpInside];
+//
+//  self.guanBtn.sd_layout.centerYEqualToView(self.headImg)
+//  .rightSpaceToView(self, 20)
+//  .heightIs(20)
+//  .widthIs(50);
   
   //发布时间
   self.timeLab.sd_layout.leftSpaceToView(_headImg, 5)
-  .topSpaceToView(self.nameLab, 5)
-  .heightIs(20);
-  [_timeLab setSingleLineAutoResizeWithMaxWidth:200];
-  
-  //内容
-  self.contentLab.sd_layout.topSpaceToView(self.headImg, 10)
-  .leftSpaceToView(self, 20)
-  .rightSpaceToView(self, 20);
-  
+    .topSpaceToView(self.nameLab, 2);
+    [_timeLab setSingleLineAutoResizeWithMaxWidth:200];
+
 }
 
 -(void)tapGuanzhuBtn:(UIButton*)sender{
   sender.selected = !sender.selected;
   NSLog(@"tapGuanzhuBtn");
+}
+
+-(void)setUserInfoModel:(NSDictionary *)UserInfoModel{
+    _UserInfoModel = UserInfoModel;
+    if([UserInfoModel[@"userName"] length]>13){
+        self.nameLab.text = [NSString stringWithFormat:@"%@...",[UserInfoModel[@"userName"] substringToIndex:13]];
+    }else{
+        self.nameLab.text = UserInfoModel[@"userName"];
+    }
 }
 
 @end

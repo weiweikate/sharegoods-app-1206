@@ -7,15 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "JXModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class RecommendedCell;
+
 @interface JXHeaderView : UIView
-@property (nonatomic,strong) UIImageView * headImg;
-@property (nonatomic,strong) UILabel * nameLab;
-@property (nonatomic,strong) UIButton * guanBtn;
-@property (nonatomic,strong) UILabel * timeLab;
-@property (nonatomic,strong) UILabel * contentLab;
+
+@property(nonatomic,strong)NSDictionary* UserInfoModel;
 
 @end
 

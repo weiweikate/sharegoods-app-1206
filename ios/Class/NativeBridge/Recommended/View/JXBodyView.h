@@ -7,11 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "JXModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void(^imgBlock)(NSString*);//block写法比较特殊，一般重命名一下
+
 @interface JXBodyView : UIView
-@property (nonatomic,strong)UIImage* picImag;
+
+@property (nonatomic,copy)imgBlock imgBlock; //定义一个MyBlock属性
+
+@property (nonatomic,strong)NSArray * sources;
+
 
 @end
 

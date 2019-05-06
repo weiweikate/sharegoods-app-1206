@@ -10,4 +10,11 @@
 
 @implementation JXModel
 
++ (nullable NSDictionary<NSString *, id> *)modelContainerPropertyGenericClass{
+  return @{
+           @"products" : @"GoodsDataModel",
+           @"sources" : @"SourcesModel",
+           };
+}
+
 @end

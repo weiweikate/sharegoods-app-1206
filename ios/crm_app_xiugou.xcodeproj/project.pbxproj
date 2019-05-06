@@ -16,6 +16,7 @@
 		01091615227053800043E997 /* RecommendedManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 01091614227053800043E997 /* RecommendedManager.m */; };
 		01091618227053B00043E997 /* RecommendedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01091617227053B00043E997 /* RecommendedView.m */; };
 		0109161B227053D30043E997 /* RecommendedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0109161A227053D30043E997 /* RecommendedCell.m */; };
+		01262D79228009CB008D4F7E /* RecTypeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01262D78228009CB008D4F7E /* RecTypeCell.m */; };
 		014FF1C222708C30008B0094 /* JXBodyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 014FF1C122708C30008B0094 /* JXBodyView.m */; };
 		014FF20122708C57008B0094 /* JXFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 014FF20022708C57008B0094 /* JXFooterView.m */; };
 		017390C32270853700FD46DD /* JXModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 017390C22270853700FD46DD /* JXModel.m */; };
@@ -659,6 +660,8 @@
 		01091617227053B00043E997 /* RecommendedView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RecommendedView.m; sourceTree = "<group>"; };
 		01091619227053D30043E997 /* RecommendedCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RecommendedCell.h; sourceTree = "<group>"; };
 		0109161A227053D30043E997 /* RecommendedCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RecommendedCell.m; sourceTree = "<group>"; };
+		01262D3B228009CA008D4F7E /* RecTypeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecTypeCell.h; sourceTree = "<group>"; };
+		01262D78228009CB008D4F7E /* RecTypeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecTypeCell.m; sourceTree = "<group>"; };
 		014FF1C022708C30008B0094 /* JXBodyView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JXBodyView.h; sourceTree = "<group>"; };
 		014FF1C122708C30008B0094 /* JXBodyView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JXBodyView.m; sourceTree = "<group>"; };
 		014FF1FF22708C57008B0094 /* JXFooterView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JXFooterView.h; sourceTree = "<group>"; };
@@ -1147,6 +1150,8 @@
 				01091617227053B00043E997 /* RecommendedView.m */,
 				01091619227053D30043E997 /* RecommendedCell.h */,
 				0109161A227053D30043E997 /* RecommendedCell.m */,
+				01262D3B228009CA008D4F7E /* RecTypeCell.h */,
+				01262D78228009CB008D4F7E /* RecTypeCell.m */,
 			);
 			path = Recommended;
 			sourceTree = "<group>";
@@ -3012,6 +3017,7 @@
 				CDAB6D20219AC5F800DE6716 /* TYWaveProgressView.m in Sources */,
 				CD5EB146221EA148007AAEE0 /* WHCWaterfallFlowLayout.m in Sources */,
 				033C66B821927ACB00433026 /* MRBannerViewManager.m in Sources */,
+				01262D79228009CB008D4F7E /* RecTypeCell.m in Sources */,
 				CD89B3F4224C9F8F006CCEF7 /* ASCollectionNode+ReloadIndexPaths.m in Sources */,
 				CD89B1F2224B4C54006CCEF7 /* SGNetworkImageNode.m in Sources */,
 				CD1E52E021CCB8D2007103A1 /* WelcomeView.m in Sources */,

@@ -8,12 +8,39 @@
 
 #import <Foundation/Foundation.h>
 
+@class GoodsDataModel,SourcesModel,UserInfoModel;
+
 @interface JXModel : NSObject
+
 @property (nonatomic,copy) NSString * content;
+@property (nonatomic,assign) NSInteger downloadCount;
+@property (nonatomic,assign) NSInteger likesCount;
+@property (nonatomic,assign) NSInteger shareCount;
+@property (nonatomic,copy) NSString * showNo;
+
+@property (nonatomic,strong)NSArray<GoodsDataModel*> * products;
+@property (nonatomic,strong)NSArray<SourcesModel*> * sources;
+@property (nonatomic,strong)UserInfoModel * userInfoVO;
+
+@property (nonatomic,assign) BOOL  isOpening;
+@end
+
+@interface SourcesModel : NSObject
+@property (nonatomic,copy) NSString * url;
 @property (nonatomic,assign) NSInteger type;
-@property (nonatomic,strong) NSArray * list;
-@property (nonatomic,copy) NSString * name;
-@property (nonatomic,copy) NSString * videoImgStr;
-@property (nonatomic,assign) NSInteger guanType;//0 未关注 1 已关注
+@end
+
+@interface GoodsDataModel : NSObject
+@property (nonatomic,copy) NSString * desc;
+@property (nonatomic,copy) NSString * image;
+@property (nonatomic,assign) CGFloat originalPrice;
+@property (nonatomic,assign) CGFloat price;
+@property (nonatomic,copy) NSString * productNo;
+@end
+
+@interface UserInfoModel : NSObject
+@property (nonatomic,copy) NSString * userImg;
+@property (nonatomic,assign) NSInteger userName;
+@property (nonatomic,assign) NSInteger userNo;
 
 @end

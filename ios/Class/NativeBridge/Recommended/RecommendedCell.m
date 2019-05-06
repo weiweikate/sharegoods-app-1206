@@ -17,10 +17,36 @@
 @property (nonatomic,strong)JXHeaderView* headView;
 @property (nonatomic,strong)JXBodyView* bodyView;
 @property (nonatomic,strong)JXFooterView* footerView;
+@property (nonatomic,strong) UILabel * contentLab;
+@property (nonatomic, strong) UILabel *foldLabel;       // 展开按钮
 
 @end
 
 @implementation RecommendedCell
+
+-(UILabel *)contentLab{
+    if(!_contentLab){
+        _contentLab = [[UILabel alloc]init];
+        _contentLab.font = [UIFont systemFontOfSize:13];
+        _contentLab.textColor = [UIColor colorWithRed:102/255.0 green:102/255.0 blue:102/255.0 alpha:1.0];
+    }
+    return _contentLab;
+}
+
+
+-(UILabel *)foldLabel{
+    if (!_foldLabel) {
+        _foldLabel = [[UILabel alloc] init];
+        _foldLabel.font = [UIFont systemFontOfSize:13.f];
+        _foldLabel.textColor = [UIColor colorWithRed:255/255.0 green:0/255.0 blue:80/255.0 alpha:1.0];
+        _foldLabel.userInteractionEnabled = YES;
+        UITapGestureRecognizer *foldTap =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(foldNewsOrNoTap:)];
+        [_foldLabel addGestureRecognizer:foldTap];
+        _foldLabel.hidden = NO;
+        [_foldLabel sizeToFit];
+    }
+    return _foldLabel;
+}
 
 -(JXHeaderView *)headView{
   if (!_headView) {
@@ -31,6 +57,14 @@
 -(JXBodyView *)bodyView{
   if (!_bodyView) {
     _bodyView = [[JXBodyView alloc] init];
+    __weak RecommendedCell *weakSelf = self;
+    _bodyView.imgBlock =  ^(NSString* a){
+      NSLog(@"imgBlock");
+      __strong RecommendedCell *strongSelf = weakSelf;
+      if (strongSelf.cellDelegate) {
+          [strongSelf.cellDelegate imageClick:strongSelf];
+      }
+    };
   }
   return _bodyView;
 }
@@ -38,6 +72,25 @@
 -(JXFooterView *)footerView{
   if (!_footerView) {
     _footerView = [[JXFooterView alloc] init];
+    __weak RecommendedCell *weakSelf = self;
+    _footerView.zanBlock =  ^(NSString* a){
+      NSLog(@"zanClick");
+      if (weakSelf.cellDelegate) {
+        [weakSelf.cellDelegate zanClick:weakSelf];
+      }
+    };
+    _footerView.downloadBlock =  ^(NSString* a){
+      NSLog(@"downloadClick");
+      if (weakSelf.cellDelegate) {
+        [weakSelf.cellDelegate downloadClick:weakSelf];
+      }
+    };
+    _footerView.shareBlock =  ^(NSString* a){
+      NSLog(@"shareClick");
+      if (weakSelf.cellDelegate) {
+        [weakSelf.cellDelegate shareClick:weakSelf];
+      }
+    };
   }
   return _footerView;
 }
@@ -53,8 +106,8 @@
 -(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
   
   if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-    
     self.selectionStyle = UITableViewCellSelectionStyleNone;
+    self.contentView.backgroundColor = [UIColor colorWithRed:247/255.0 green:247/255.0 blue:247/255.0 alpha:1.0];
     [self setUI];
   }
   
@@ -62,42 +115,94 @@
 }
 
 -(void)setUI{
-  [self.contentView addSubview:self.headView];
-  [self.contentView addSubview:self.bodyView];
-  [self.contentView addSubview:self.footerView];
+  UIView*  bgView = [[UIView alloc] init];
+    bgView.backgroundColor =  [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0];
+  [bgView.layer setCornerRadius:4.0];
+  [self.contentView addSubview:bgView];
+    
+  [bgView addSubview:self.headView];
+  [bgView addSubview:self.bodyView];
+  [bgView addSubview:self.footerView];
+  [bgView addSubview:self.contentLab];
+  [bgView addSubview:self.foldLabel];
+  
+    bgView.sd_layout
+    .leftSpaceToView(self.contentView, 10)
+    .rightSpaceToView(self.contentView, 10)
+    .topSpaceToView(self.contentView, 5)
+    .autoHeightRatio(0);
   
   self.headView.sd_layout
-  .topSpaceToView(self.contentView, 50)
-  .leftSpaceToView(self.contentView, 25)
-  .rightSpaceToView(self.contentView, 25)
-  .heightIs(130);
+  .topSpaceToView(bgView, 9)
+  .leftSpaceToView(bgView, 0)
+  .rightSpaceToView(bgView, 5)
+  .heightIs(34);
   
+    //内容
+  self.contentLab.sd_layout.topSpaceToView(self.headView, 8)
+  .leftSpaceToView(bgView, 45)
+  .rightSpaceToView(bgView, 30)
+  .autoHeightRatio(0);
+    
+  self.foldLabel.sd_layout.topSpaceToView(self.contentLab, 5)
+  .leftSpaceToView(bgView, 45)
+  .widthIs(40)
+  .heightIs(20);
+    
   self.bodyView.sd_layout
-  .topSpaceToView(self.headView, 10)
-  .leftSpaceToView(self.contentView, 60)
-  .rightSpaceToView(self.contentView, 60)
-  .heightIs(140);
-//
+  .topSpaceToView(self.foldLabel, 5)
+  .leftSpaceToView(bgView, 45);
+    
+    //
   self.footerView.sd_layout
   .topSpaceToView(self.bodyView, 10)
-  .leftSpaceToView(self.contentView, 60)
-  .rightSpaceToView(self.contentView, 60)
-  .heightIs(130);
+  .leftSpaceToView(bgView, 15)
+  .rightSpaceToView(bgView, 15)
+  .heightIs(120);
+    
+  [bgView setupAutoHeightWithBottomView:self.footerView bottomMargin:5];
+  [self setupAutoHeightWithBottomView:bgView bottomMargin:5];
 }
 
 -(void)setModel:(JXModel *)model{
-  _model = model;
-  
-  UIView * lastView;
-  
-    [self.contentView addSubview:self.footerView];
-    lastView = _footerView;
-    self.footerView.sd_layout
-    .topSpaceToView(self.bodyView, 10)
-    .leftEqualToView(self.contentView)
-    .rightEqualToView(self.contentView)
-    .heightIs(([UIScreen mainScreen].bounds.size.width-30-6)/3*2);
+    _model = model;
+    self.headView.UserInfoModel = model.userInfoVO;
+    self.bodyView.sources = model.sources;
+    self.contentLab.text = model.content;
+    
+    self.footerView.products = model.products;
+    if( model.content.length>60){
+        self.foldLabel.hidden = NO;
+        if (model.isOpening) {
+            self.foldLabel.sd_layout.heightIs(20);
+            [self.contentLab setMaxNumberOfLinesToShow:0];
+            self.foldLabel.text = @"收起";
+        }else{
+            self.foldLabel.sd_layout.heightIs(20);
+            [self.contentLab setMaxNumberOfLinesToShow:3];
+            self.foldLabel.text = @"展开";
+        }
+    }else{
+        [self.contentLab setMaxNumberOfLinesToShow:3];
+        self.foldLabel.sd_layout.heightIs(0);
+        self.foldLabel.hidden = YES;
 
-  [self setupAutoHeightWithBottomView:lastView bottomMargin:15];
+    }
 }
+
+/**
+ *  折叠展开按钮的点击事件
+ *
+ *  @param recognizer 点击手势
+ */
+- (void)foldNewsOrNoTap:(UITapGestureRecognizer *)recognizer{
+    if(recognizer.state == UIGestureRecognizerStateEnded){
+        
+        if (self.cellDelegate && [self.cellDelegate respondsToSelector:@selector(clickFoldLabel:)]) {
+            
+            [self.cellDelegate clickFoldLabel:self];
+        }
+    }
+}
+
 @end
