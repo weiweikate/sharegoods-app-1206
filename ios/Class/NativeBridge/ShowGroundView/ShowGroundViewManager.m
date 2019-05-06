@@ -10,6 +10,8 @@
 #import "ShowGroundView.h"
 #import "ASDK_ShowGround.h"
 #import "RecommendedView.h"
+#import <React/RCTBridge.h>
+#import <React/RCTUIManager.h>
 @implementation ShowGroundViewManager
 RCT_EXPORT_VIEW_PROPERTY(onItemPress, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onStartRefresh, RCTBubblingEventBlock)
