@@ -34,8 +34,8 @@ export default class ReleaseButton extends PureComponent {
 
 var styles = StyleSheet.create({
     wrapper: {
-        width: px2dp(60),
-        height: px2dp(24)
+        width: px2dp(34),
+        height: px2dp(34)
     }
 
 });
