@@ -21,7 +21,7 @@ import ImageLoad from '@mr/image-placeholder';
 import NoMoreClick from '../../components/ui/NoMoreClick';
 import UIImage from '../../components/ui/UIImage';
 
-const { addIcon ,delIcon} = res;
+const { addIcon, delIcon } = res;
 
 const { px2dp } = ScreenUtils;
 
@@ -33,9 +33,9 @@ export default class ReleaseNotesPage extends BasePage {
 
     constructor(props) {
         super(props);
-        this.state={
-            imageArr: [],
-        }
+        this.state = {
+            imageArr: []
+        };
     }
 
     $NavBarRenderRightItem = () => {
@@ -48,17 +48,17 @@ export default class ReleaseNotesPage extends BasePage {
         );
     };
 
-    choosePicker=()=>{
+    choosePicker = () => {
         let imageArr = this.state.imageArr;
-        if(imageArr.length >= 9){
+        if (imageArr.length >= 9) {
             return;
         }
-        let num = 9-imageArr.length;
+        let num = 9 - imageArr.length;
         BusinessUtils.getImagePicker(callback => {
             let result = imageArr.concat(callback.imageUrl);
             this.setState({ imageArr: result });
-        },num,true);
-    }
+        }, num, true);
+    };
 
     deletePic = (index) => {
         let imageArr = [];
@@ -71,16 +71,18 @@ export default class ReleaseNotesPage extends BasePage {
     };
 
     _imageRender = () => {
-        let images = this.state.imageArr.map((value,index)=>{
-            let left = index === 0 ? 0 : px2dp(15)
+        let images = this.state.imageArr.map((value, index) => {
+            let left = index === 0 ? 0 : px2dp(15);
             return (
-                <View style={{ marginLeft: left}} key={index}>
+                <View style={{ marginLeft: left }} key={index}>
                     <ImageLoad style={styles.photo_item} source={{ uri: value }}/>
-                    <NoMoreClick style={styles.delete_btn} onPress={() => {this.deletePic(index)}}>
+                    <NoMoreClick style={styles.delete_btn} onPress={() => {
+                        this.deletePic(index);
+                    }}>
                         <UIImage style={{ width: px2dp(15), height: px2dp(15) }} source={delIcon}/>
                     </NoMoreClick>
                 </View>
-            )
+            );
         });
 
         return (
@@ -97,14 +99,14 @@ export default class ReleaseNotesPage extends BasePage {
 
     _addImageButton = () => {
         let imageArr = this.state.imageArr;
-        if(imageArr.length >= 9){
+        if (imageArr.length >= 9) {
             return null;
         }
 
-        let left = imageArr.length === 0 ? 0 : px2dp(15)
+        let left = imageArr.length === 0 ? 0 : px2dp(15);
         return (
             <TouchableWithoutFeedback onPress={this.choosePicker}>
-                <View style={[styles.addButtonStyle,{ marginLeft: left}]}>
+                <View style={[styles.addButtonStyle, { marginLeft: left }]}>
                     <Image source={addIcon} style={styles.addIconStyle}/>
                 </View>
             </TouchableWithoutFeedback>
@@ -113,9 +115,13 @@ export default class ReleaseNotesPage extends BasePage {
 
     _addProductButton = () => {
         return (
-            <View style={styles.addProductWrapper}>
-                <MRText style={styles.addProductText}>+ 添加推荐商品</MRText>
-            </View>
+            <TouchableWithoutFeedback onPress={()=>{
+                this.$navigate('show/ShowProductListPage')
+            }}>
+                <View style={styles.addProductWrapper}>
+                    <MRText style={styles.addProductText}>+ 添加推荐商品</MRText>
+                </View>
+            </TouchableWithoutFeedback>
         );
     };
 
@@ -169,7 +175,7 @@ var styles = StyleSheet.create({
         flexDirection: 'row',
         marginVertical: px2dp(15),
         marginLeft: px2dp(15),
-        paddingRight:px2dp(15)
+        paddingRight: px2dp(15)
     },
     addButtonStyle: {
         width: px2dp(90),
@@ -201,16 +207,16 @@ var styles = StyleSheet.create({
         width: px2dp(20),
         height: px2dp(20)
     },
-    photo_item:{
-        width:px2dp(90),
-        height:px2dp(90)
+    photo_item: {
+        width: px2dp(90),
+        height: px2dp(90)
     },
-    delete_btn:{
-        width:px2dp(15),
-        height:px2dp(15),
-        position:'absolute',
-        top:-px2dp(7),
-        right:-px2dp(7)
+    delete_btn: {
+        width: px2dp(15),
+        height: px2dp(15),
+        position: 'absolute',
+        top: -px2dp(7),
+        right: -px2dp(7)
     }
 
 });
