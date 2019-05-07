@@ -2,6 +2,7 @@ import { action, observable } from 'mobx';
 import orderApi from '../api/orderApi';
 // import TimerMixin from 'react-timer-mixin';
 import { DeviceEventEmitter } from 'react-native';
+import {AfterStatus, SubStatus} from './AfterType'
 
 class AfterSaleDetailModel {
     serviceNo = 0;
@@ -30,9 +31,82 @@ class AfterSaleDetailModel {
         this.loadingShow && this.loadingShow();
         orderApi.afterSaleDetail({ serviceNo: this.serviceNo }).then(result => {
             this.loadingDismiss && this.loadingDismiss();
+            result.data = {
+                "serviceNo": "3190321161030619116103",
+                    "platformOrderNo": "P190103152053000001",
+                    "warehouseOrderNo": "C190103152053000001",
+                    "orderProductNo": "G190103152053000001",
+                    "userCode": "1000004",
+                    "userPhone": "15755373887",
+                    "supplierCode": "GYS00002",
+                    "supplierName": "小米供应商",
+                    "productName": "我是测试产品3.0",
+                    "type": 3,
+                    "refundNum": 1,
+                    "payAmount": 0.01,
+                    "applyRefundAmount": 0.01,
+                    "adjustAmount": null,
+                    "damageNum": 0,
+                    "reason": "七天无理由退换",
+                    "description": "",
+                    "remarks": null,
+                    "warehouseType": 3,
+                    "warehouseCode": null,
+                    "sendWarehouseFeedback": null,
+                    "refundWarehouseFeedback": null,
+                    "status": 1,
+                    "subStatus": 1,
+                    "cancelTime": 1556190614000,
+                    "imgList": "",
+                    "receiver": null,
+                    "receiverPhone": null,
+                    "province": null,
+                    "city": null,
+                    "area": null,
+                    "street": null,
+                    "address": null,
+                    "createTime": 1553155831000,
+                    "updateTime": 1556590104000,
+                    "skuCode": "SKU000002470001",
+                    "specTitle": "默认",
+                    "specValues": "默认",
+                    "spec": "默认:默认",
+                    "specImg": "https://testcdn.sharegoodsmall.com/sharegoods/383d458cc2384e118d4c36ab311708d4.png",
+                    "originalPrice": 0.01,
+                    "unitPrice": 0.01,
+                    "quantity": 1,
+                    "refundPrice": 0.01,
+                    "refundAddress": {
+                    "receiver": "张三",
+                        "receiverPhone": "07946499535",
+                        "province": "上海市",
+                        "city": "市辖区",
+                        "area": "徐汇区",
+                        "street": null,
+                        "address": "一二三四五六七八九十十一十二十三十四十五十六十七十八十九二十二一二二二三二四二五二六二七二八二九三十"
+                },
+                "refundAccountAmount": null,
+                    "refundCashAmount": null,
+                    "maxRevokeTimes": null,
+                    "hadRevokeTimes": null,
+                    "orderRefundExpress": null,
+                    "sendExpressCode": null,
+                    "sendExpressName": null,
+                    "sendExpressNo": null,
+                    "reject": "买家取消本次退款申请",
+                    "headerTitle": "退款关闭",
+                    "nowTime": 1557208035451,
+                    "refundStatus": null
+            };
             this.pageData = result.data || {};
             let status = this.pageData.status;
             let subStatus = this.pageData.subStatus;
+            //申请被拒绝且，有物流，说明在寄回商品以后被拒绝（把subStatus状态REFUSE_APPLY改为REFUSE_AFTER）
+            if (status === AfterStatus.FAIL){
+                if (subStatus === SubStatus.REFUSE_APPLY && this.pageData.orderRefundExpress && this.pageData.orderRefundExpress.expressName) {
+                    this.pageData.subStatus = SubStatus.REFUSE_AFTER;
+                }
+            }
             let refundStatus = this.pageData.refundStatus;
             let remarks = this.pageData.remarks;
             let cancelTime = this.pageData.cancelTime || 0;

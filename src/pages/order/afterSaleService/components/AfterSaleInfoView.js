@@ -20,7 +20,7 @@ import {
 } from "../../../../components/ui";
 import DesignRule from '../../../../constants/DesignRule';
 import EmptyUtils from "../../../../utils/EmptyUtils";
-import DateUtils from "../../../../utils/DateUtils";
+import {PageType}from '../AfterType'
 
 
 export default class AfterSaleInfoView extends React.Component {
@@ -57,36 +57,39 @@ export default class AfterSaleInfoView extends React.Component {
             return null;
         }
 
-        let typeStr = ["退款", "退货", "换货"][pageType];
-
+        let strRefundPrice = '退款金额：¥' +  (afterSaleInfo.refundPrice || "");
+        let strNum =  '申请数量：' + (afterSaleInfo.quantity || "");
         return (
-            <View style={{ backgroundColor: "white" }}>
+            <View style={{ backgroundColor: "white" , marginBottom: 10}}>
                 <View style={{
                     height: 1,
                     backgroundColor: DesignRule.lineColor_inColorBg
                 }}/>
-                <UIText value={typeStr + "原因：" + afterSaleInfo.reason}
+                <UIText value={"申请售后原因：" + afterSaleInfo.reason}
                         style={styles.refundReason}/>
-                <UIText value={typeStr + "说明：" + afterSaleInfo.description || ""}
+                {
+                    pageType !== PageType.AREFUND?  <UIText value={strNum}
+                                                            style={styles.refundReason}/> :null
+                }
+                {
+                    pageType !== PageType.EXCHANGE?  <UIText value={strRefundPrice}
+                                                             style={styles.refundReason}/> :null
+                }
+
+                <UIText value={ "问题说明：" + (afterSaleInfo.description || "")}
                         style={styles.refundReason}/>
                 <UIText value={"凭证图片："}
                         style={styles.refundReason}/>
                 <View style={{
                     flexDirection: "row",
                     flexWrap: "wrap",
-                    paddingRight: 15
+                    paddingRight: 15,
+                    marginBottom: 15
                 }}>
 
                     {this.renderCertificateImage(afterSaleInfo.imgList)}
 
                 </View>
-                <UIText value={"申请时间：" + DateUtils.getFormatDate(afterSaleInfo.createTime / 1000)}
-                        style={styles.refundReason}/>
-                <UIText value={"订单编号：" + afterSaleInfo.warehouseOrderNo}
-                        style={styles.refundReason}/>
-                <UIText value={typeStr + "编号：" + afterSaleInfo.serviceNo}
-                        style={styles.refundReason}/>
-
             </View>
         );
     }

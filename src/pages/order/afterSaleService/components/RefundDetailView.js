@@ -23,7 +23,7 @@ import DesignRule from '../../../../constants/DesignRule';
 import StringUtils from '../../../../utils/StringUtils';
 import UserSingleItem from '../../components/UserSingleItem';
 
-export default class RefundDetailView extends React.Component {
+export default class  RefundDetailView extends React.Component {
 
   constructor(props) {
     super(props);

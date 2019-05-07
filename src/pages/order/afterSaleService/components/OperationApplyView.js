@@ -32,12 +32,11 @@ export default class OperationApplyView extends React.Component {
     }
 
     render() {
-        let { pageType, cancelPress, changePress } = this.props;
-        let typeStr = ['退款', '退货', '换货'][pageType];
+        let {cancelPress} = this.props;
         return (
             <View style={styles.container}>
                 <View style={styles.title}>
-                    <UIText value={'您已成功发起' + typeStr + '申请，请耐心等待商家处理'}
+                    <UIText value={'您的售后申请正在等待审核'}
                             style={{
                                 color: DesignRule.textColor_mainTitle,
                                 fontSize: 15,
@@ -46,26 +45,15 @@ export default class OperationApplyView extends React.Component {
                 </View>
                 <View style={{
                     flex: 1,
-                    flexDirection: 'row',
-                    justifyContent: 'flex-end',
+                    justifyContent: 'center',
                     alignItems: 'center'
                 }}>
                     <TouchableOpacity onPress={cancelPress}
-                                      style={[
-                                          styles.borderButton,
-                                          { borderColor: DesignRule.textColor_instruction }]}>
+                                      style={styles.borderButton}>
                         <UIText value={'撤销申请'}
                                 style={{
-                                    fontSize: 16,
-                                    color: DesignRule.textColor_instruction
-                                }}/>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={changePress}
-                                      style={styles.borderButton}>
-                        <UIText value={'修改申请'}
-                                style={{
-                                    fontSize: 16,
-                                    color: DesignRule.bgColor_btn
+                                    fontSize: 12,
+                                    color: DesignRule.mainColor
                                 }}/>
                     </TouchableOpacity>
                 </View>
@@ -77,11 +65,11 @@ export default class OperationApplyView extends React.Component {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
-        height: 110,
+        height: 95,
         marginBottom: 10
     },
     title: {
-        height: 45,
+        height: 50,
         borderBottomWidth: 0.5,
         borderBottomColor: DesignRule.lineColor_inWhiteBg,
         justifyContent: 'center'
@@ -89,10 +77,9 @@ const styles = StyleSheet.create({
     borderButton: {
         borderWidth: 0.5,
         borderColor: DesignRule.mainColor,
-        borderRadius: 5,
-        height: 30,
-        width: 83,
-        marginRight: 15,
+        borderRadius: 12.5,
+        height: 25,
+        width: 80,
         alignItems: 'center',
         justifyContent: 'center'
     }

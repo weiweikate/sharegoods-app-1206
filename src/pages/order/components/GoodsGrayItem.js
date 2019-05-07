@@ -94,6 +94,7 @@ export default class GoodsGrayItem extends React.Component {
                             <UIText value={"x" + goodsNum} style={styles.detail}/>
                         </View>
                         {this._renderTips(tips)}
+                        {this.props.renderExtraView&&this.props.renderExtraView()}
                     </View>
                 </View>
             </TouchableWithoutFeedback>
@@ -119,7 +120,7 @@ const styles = StyleSheet.create({
         color: DesignRule.textColor_mainTitle
     },
     detail: {
-        fontSize: 10,
+        fontSize: 12,
         color: DesignRule.textColor_instruction,
         textAlign: "right"
     }

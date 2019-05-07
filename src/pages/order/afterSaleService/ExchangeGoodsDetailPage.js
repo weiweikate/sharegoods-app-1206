@@ -13,7 +13,7 @@ import {
     RefreshControl
 } from 'react-native';
 import BasePage from '../../../BasePage';
-import { UIText, UIImage } from '../../../components/ui';
+import { UIText, UIImage, MRText } from '../../../components/ui';
 import StringUtils from '../../../utils/StringUtils';
 import GoodsItem from '../components/GoodsGrayItem';
 // import DateUtils from '../../../utils/DateUtils';
@@ -36,8 +36,10 @@ import {
 import { observer } from 'mobx-react';
 import res from '../res';
 import RouterMap from '../../../navigation/RouterMap';
+import {PageType}from './AfterType'
 
 const netError = res.placeholder.netError;
+const arrow_right_black = res.button.arrow_right_black;
 
 @observer
 class ExchangeGoodsDetailPage extends BasePage {
@@ -101,12 +103,13 @@ class ExchangeGoodsDetailPage extends BasePage {
         let {
             type,
             status,// 1.待审核 2.待寄回 3.待仓库确认 4.待平台处理 5.售后完成 6.售后关闭
-            // subStatus,  // REVOKED(1, "手动撤销"),OVERTIME(2, "超时关闭"),(3, "拒绝关闭");
+            subStatus,  // REVOKED(1, "手动撤销"),OVERTIME(2, "超时关闭"),(3, "拒绝关闭");
             refundStatus,//退款状态: 1.待退款 2.退款成功 3.三方退款失败 4.平台退款失败 5.取消退款(关闭)
             // orderProductNo,
             refundPrice,
             refundAccountAmount,
             refundCashAmount,
+            payAmount,
             //平台物流
             sendExpressName,
             sendExpressNo,
@@ -114,9 +117,6 @@ class ExchangeGoodsDetailPage extends BasePage {
             reason,
             description,
             imgList,
-            createTime,
-            serviceNo,
-            warehouseOrderNo,
             //用户地址
             receiver,
             receiverPhone,
@@ -133,6 +133,7 @@ class ExchangeGoodsDetailPage extends BasePage {
             unitPrice,
             spec,
             quantity,
+            remarks,
             //寄回物流
             orderRefundExpress = {}
         } = pageData;
@@ -145,19 +146,19 @@ class ExchangeGoodsDetailPage extends BasePage {
 
         let isShow_refuseReasonView = false;
         let refuseReasonViewType = 0;
-        /** 退款、退货、在提交申请中和完成时候显示金额*/
-        if (pageType === 0 && (status === 1 || status === 5) ||
-            pageType === 1 && (status === 1 || status === 5)
-        ) {
-            isShow_refuseReasonView = true;
-
-            /** 只要是被拒绝就显示拒绝理由*/
-        } else if (status === 6) {
-            if(reject && reject.length > 0){
-                isShow_refuseReasonView = true;
-                refuseReasonViewType = 1;
-            }
-        }
+        // /** 退款、退货、在提交申请中和完成时候显示金额*/
+        // if (pageType === 0 && (status === 1 || status === 5) ||
+        //     pageType === 1 && (status === 1 || status === 5)
+        // ) {
+        //     isShow_refuseReasonView = true;
+        //
+        //     /** 只要是被拒绝就显示拒绝理由*/
+        // } else if (status === 6) {
+        //     if(reject && reject.length > 0){
+        //         isShow_refuseReasonView = true;
+        //         refuseReasonViewType = 1;
+        //     }
+        // }
 
         let isShow_shippingAddressView = false;
         let isShow_backAddressView = false;
@@ -209,9 +210,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                     <TipView pageType={pageType} status={status}/>
                     <HeaderView pageType={pageType}
                                 status={status}
-                                headerTitle={this.afterSaleDetailModel.headerTitle}
-                                detailTitle={this.afterSaleDetailModel.detailTitle}
-                                timeString={this.afterSaleDetailModel.timeString}
+                                subStatus={subStatus}
                     />
                     {isShow_operationApplyView ?
                         <OperationApplyView pageType={pageType}
@@ -219,9 +218,10 @@ class ExchangeGoodsDetailPage extends BasePage {
                                             changePress={this.changePress}/> : null}
                     {
                         isShow_refuseReasonView ?
-                            <RefuseReasonView type={refuseReasonViewType}
-                                              refundPrice={refundPrice}
-                                              reject={reject}
+                            <RefuseReasonView pageType={pageType}
+                                              status={status}
+                                              subStatus={subStatus}
+                                              remarks={remarks}
                             /> : null
                     }
                     {
@@ -259,6 +259,22 @@ class ExchangeGoodsDetailPage extends BasePage {
                         category={spec}
                         goodsNum={quantity}
                         style={{ backgroundColor: DesignRule.white }}
+                        renderExtraView={()=> {
+                            if (pageType === PageType.AREFUND || pageType === PageType.SALES_RETURN){
+                                return(
+                                    <View style={{marginTop: 10, flexDirection: 'row'}}>
+                                        <MRText style={{fontSize: 12,
+                                            color: DesignRule.textColor_instruction,}}>退款金额：</MRText>
+                                        <MRText style={{fontSize: 12,
+                                            color: DesignRule.textColor_mainTitle,
+                                            fontWeight: '600'
+                                        }}>{'¥'+payAmount}</MRText>
+                                    </View>
+                                )
+                            }
+
+                            return null;
+                        }}
                     />
                     <AfterSaleInfoView pageData={pageData}
                                        pageType={pageType}
@@ -266,13 +282,17 @@ class ExchangeGoodsDetailPage extends BasePage {
                                            reason,
                                            description,
                                            imgList,
-                                           createTime,
-                                           serviceNo,
-                                           warehouseOrderNo
+                                           refundPrice,
+                                           quantity
                                        }}
                     />
+                    <TouchableOpacity style={styles.item_style}
+                                      onPress={()=>{this.gotoNegotiateHistory()}}
+                    >
+                        <MRText style={styles.item_text}>协商记录</MRText>
+                        <UIImage style={styles.item_arrow} source={arrow_right_black}/>
+                    </TouchableOpacity>
                 </ScrollView>
-                <CustomerServiceView/>
             </View>
         );
     }
@@ -298,6 +318,9 @@ class ExchangeGoodsDetailPage extends BasePage {
         );
     }
 
+    gotoNegotiateHistory(){
+
+    }
     //取消申请
     cancelPress = () => {
         this.afterSaleDetailModel.loadPageData(() => this.onPressOperationApply(true));
@@ -309,18 +332,17 @@ class ExchangeGoodsDetailPage extends BasePage {
 
 
     renderOrder = () => {
-        let pageType = this.afterSaleDetailModel.pageData.type - 1;
         return (
             <View
                 style={{
-                    backgroundColor: DesignRule.bgColor,
+                    backgroundColor: 'white',
                     height: 40,
                     justifyContent: 'center',
                     paddingLeft: 15,
                     marginTop: -5
                 }}>
-                <UIText value={['退款订单', '退货订单', '换货订单'][pageType]}
-                        style={{ color: DesignRule.textColor_instruction, fontSize: 13 }}/>
+                <UIText value={'售后信息'}
+                        style={{ color: DesignRule.textColor_mainTitle, fontSize: 13 }}/>
             </View>
         );
     };
@@ -442,7 +464,23 @@ const styles = StyleSheet.create({
         flex: 1, backgroundColor: DesignRule.bgColor,
         justifyContent: 'flex-end'
     },
-    addressStyle: {}
+    addressStyle: {},
+    item_style: {
+        height: 50,
+        paddingHorizontal: 15,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        backgroundColor: 'white'
+    },
+    item_text: {
+        fontSize: 13,
+        color: DesignRule.textColor_mainTitle
+    },
+    item_arrow: {
+        height: 10,
+        width: 6,
+    }
 });
 
 export default ExchangeGoodsDetailPage;

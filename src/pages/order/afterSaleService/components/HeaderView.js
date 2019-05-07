@@ -26,6 +26,28 @@ import ScreenUtils from "../../../../utils/ScreenUtils";
 // import DateUtils from '../../../../utils/DateUtils';
 import res from "../../res";
 const  autoSizeWidth = ScreenUtils.autoSizeWidth;
+import {AfterStatus, SubStatus, PageType} from '../AfterType'
+const {
+    IN_REVIEW, //待审核
+    SEND_BACK, //待寄回
+    WAREHOUSE_CONFIRMED, //待仓库确认
+    PLATFORM_PROCESSING, //待平台处理
+    FINISH,//售后完成
+    FAIL
+} = AfterStatus;
+const {
+    REVOKED,
+    OVERTIME,
+    REFUSE_APPLY,//拒绝售后申请
+    REFUSE_AFTER
+} = SubStatus;
+
+
+const {
+    AREFUND,
+    SALES_RETURN,
+    EXCHANGE
+} = PageType;
 
 const {
     afterSaleService: {
@@ -87,17 +109,16 @@ export default class HeaderView extends React.Component {
      * @param status  1.待审核 2.待寄回 3.待仓库确认 4.待平台处理 5.售后完成 6.售后关闭
      * @param pageType 0 退款详情  1 退货详情   2 换货详情
      */
-    renderTimerLine(status, pageType){
-        pageType = 1;
-        status = 3
+    renderTimerLine(status, pageType, subStatus){
         switch (pageType) {
-            case 0:
-                return this.renderArefundTimerLine(status);
+            case AREFUND:
+                return this.renderArefundTimerLine(status, subStatus);
                 break
-            case 1:
-                return this.renderReturnSalesTimerLine(status);
+            case SALES_RETURN:
+                return this.renderReturnSalesTimerLine(status, subStatus);
                 break
-            case 2:
+            case EXCHANGE:
+                return this.renderExchangeTimerLine(status, subStatus);
                 break
             default:
                 break;
@@ -108,7 +129,7 @@ export default class HeaderView extends React.Component {
 
     renderArefundTimerLine(status) {
         switch (status) {
-            case 1:
+            case IN_REVIEW:
                 return(
                     <View style={styles.timerLine}>
                         {this.renderItem(1,'','填写申请')}
@@ -119,9 +140,9 @@ export default class HeaderView extends React.Component {
                     </View>
                 )
                 break
-            case 2:
-            case 3:
-            case 4:// 2、3这种状态退款情况是不存在，如果存在2、3统一当作4（待平台处理）处理
+            case SEND_BACK:
+            case WAREHOUSE_CONFIRMED:
+            case PLATFORM_PROCESSING:// 2、3这种状态退款情况是不存在，如果存在2、3统一当作4（待平台处理）处理
                 return(
                     <View style={styles.timerLine}>
                         {this.renderItem(1,'','填写申请')}
@@ -132,7 +153,7 @@ export default class HeaderView extends React.Component {
                     </View>
                 )
                 break
-            case 5:
+            case FINISH:
                 return(
                     <View style={styles.timerLine}>
                         {this.renderItem(1,'','填写申请')}
@@ -141,13 +162,13 @@ export default class HeaderView extends React.Component {
                     </View>
                 )
                 break
-            case 6://售后关闭
+            case FAIL://售后关闭
                 return(
                     <View style={styles.timerLine}>
                         {this.renderItem(1,'','填写申请')}
                         <View style={styles.solidLine}/>
                         {this.renderItem(3,'待平台审核','')}
-                        <View style={[styles.dashedLine, {borderColor: 'yellow'}]}/>
+                        <View style={[styles.solidLine, {borderColor: 'yellow'}]}/>
                         {this.renderItem(1,'','售后关闭','yellow')}
                     </View>
                 )
@@ -156,10 +177,10 @@ export default class HeaderView extends React.Component {
                 break;
         }
     }
-
-    renderReturnSalesTimerLine(status) {
+//退货
+    renderReturnSalesTimerLine(status, subStatus) {
         switch (status) {
-            case 1:
+            case IN_REVIEW:
                 return(
                     <View style={styles.timerLine}>
                         {this.renderItem(1,'','填写申请')}
@@ -174,7 +195,7 @@ export default class HeaderView extends React.Component {
                     </View>
                 )
                 break
-            case 2://待寄回
+            case SEND_BACK://待寄回
                 return(
                     <View style={styles.timerLine}>
                         {this.renderItem(1,'','填写申请')}
@@ -187,12 +208,12 @@ export default class HeaderView extends React.Component {
                     </View>
                 )
                 break
-            case 3://待仓库确认
+            case WAREHOUSE_CONFIRMED://待仓库确认
                 return(
                     <View style={styles.timerLine}>
                         {this.renderItem(1,'','填写申请')}
                         <View style={[styles.solidLine, {flex: 2}]}/>
-                        {this.renderItem(2,'','寄回商品')}
+                        {this.renderItem(1,'','寄回商品')}
                         <View style={styles.solidLine}/>
                         {this.renderItem(3,'待平台审核','')}
                         <View style={styles.dashedLine}/>
@@ -202,38 +223,54 @@ export default class HeaderView extends React.Component {
                     </View>
                 )
                 break
-            case 4://待平台处理
+            case PLATFORM_PROCESSING://待平台处理
                 return(
                     <View style={styles.timerLine}>
                         {this.renderItem(1,'','填写申请')}
                         <View style={styles.solidLine}/>
                         {this.renderItem(1,'','寄回商品')}
                         <View style={styles.solidLine}/>
-                        {this.renderItem(2,'','平台确认')}
+                        {this.renderItem(1,'','平台确认')}
                         <View style={styles.dashedLine}/>
                         {this.renderItem(2,'','完成退款')}
                     </View>
                 )
                 break
-            case 5:
+            case FINISH:
                 return(
                     <View style={styles.timerLine}>
                         {this.renderItem(1,'','填写申请')}
+                        <View style={styles.solidLine}/>
+                        {this.renderItem(1,'','寄回商品')}
+                        <View style={styles.solidLine}/>
+                        {this.renderItem(1,'','平台确认')}
                         <View style={styles.solidLine}/>
                         {this.renderItem(1,'','完成退款')}
                     </View>
                 )
                 break
-            case 6://售后关闭
-                return(
-                    <View style={styles.timerLine}>
-                        {this.renderItem(1,'','填写申请')}
-                        <View style={styles.solidLine}/>
-                        {this.renderItem(3,'待平台审核','')}
-                        <View style={[styles.dashedLine, {borderColor: 'yellow'}]}/>
-                        {this.renderItem(1,'','售后关闭','yellow')}
-                    </View>
-                )
+            case FAIL://售后关闭
+                if (subStatus === REVOKED || subStatus === REFUSE_APPLY) {
+                    return(
+                        <View style={styles.timerLine}>
+                            {this.renderItem(1,'','填写申请')}
+                            <View style={[styles.solidLine, {borderColor: 'yellow'}]}/>
+                            {this.renderItem(1,'','售后关闭', 'yellow')}
+                        </View>
+                    )
+                }
+
+                if (subStatus === OVERTIME || subStatus === REFUSE_AFTER) {
+                    return(
+                        <View style={styles.timerLine}>
+                            {this.renderItem(1,'','填写申请')}
+                            <View style={styles.solidLine}/>
+                            {this.renderItem(1,'','寄回商品')}
+                            <View style={[styles.solidLine, {borderColor: 'yellow'}]}/>
+                            {this.renderItem(1,'','售后关闭', 'yellow')}
+                        </View>
+                    )
+                }
                 break
             default:
                 break;
@@ -241,12 +278,131 @@ export default class HeaderView extends React.Component {
     }
 
 
+    //换货
+    renderExchangeTimerLine(status, subStatus) {
+        switch (status) {
+            case IN_REVIEW:
+                return(
+                    <View style={styles.timerLine}>
+                        {this.renderItem(1,'','填写申请')}
+                        <View style={styles.solidLine}/>
+                        {this.renderItem(3,'待平台审核','')}
+                        <View style={styles.dashedLine}/>
+                        {this.renderItem(2,'','寄回商品')}
+                        <View style={[styles.dashedLine, {flex: 2}]}/>
+                        {this.renderItem(2,'','平台确认')}
+                        <View style={[styles.dashedLine, {flex: 2}]}/>
+                        {this.renderItem(2,'','完成换货')}
+                    </View>
+                )
+                break
+            case SEND_BACK://待寄回
+                return(
+                    <View style={styles.timerLine}>
+                        {this.renderItem(1,'','填写申请')}
+                        <View style={styles.solidLine}/>
+                        {this.renderItem(1,'','寄回商品')}
+                        <View style={styles.dashedLine}/>
+                        {this.renderItem(2,'','平台确认')}
+                        <View style={styles.dashedLine}/>
+                        {this.renderItem(2,'','完成换货')}
+                    </View>
+                )
+                break
+            case WAREHOUSE_CONFIRMED://待仓库确认
+                return(
+                    <View style={styles.timerLine}>
+                        {this.renderItem(1,'','填写申请')}
+                        <View style={[styles.solidLine, {flex: 2}]}/>
+                        {this.renderItem(1,'','寄回商品')}
+                        <View style={styles.solidLine}/>
+                        {this.renderItem(3,'待平台审核','')}
+                        <View style={styles.dashedLine}/>
+                        {this.renderItem(2,'','平台确认')}
+                        <View style={[styles.dashedLine, {flex: 2}]}/>
+                        {this.renderItem(2,'','完成换货')}
+                    </View>
+                )
+                break
+            case PLATFORM_PROCESSING://待平台处理
+                return(
+                    <View style={styles.timerLine}>
+                        {this.renderItem(1,'','填写申请')}
+                        <View style={styles.solidLine}/>
+                        {this.renderItem(1,'','寄回商品')}
+                        <View style={styles.solidLine}/>
+                        {this.renderItem(1,'','平台确认')}
+                        <View style={styles.dashedLine}/>
+                        {this.renderItem(2,'','完成换货')}
+                    </View>
+                )
+                break
+            case FINISH:
+                return(
+                    <View style={styles.timerLine}>
+                        {this.renderItem(1,'','填写申请')}
+                        <View style={styles.solidLine}/>
+                        {this.renderItem(1,'','寄回商品')}
+                        <View style={styles.solidLine}/>
+                        {this.renderItem(1,'','平台确认')}
+                        <View style={styles.solidLine}/>
+                        {this.renderItem(1,'','完成换货')}
+                    </View>
+                )
+                break
+            case FAIL://售后关闭
+                if (subStatus === REVOKED || subStatus === REFUSE_APPLY) {
+                    return(
+                        <View style={styles.timerLine}>
+                            {this.renderItem(1,'','填写申请')}
+                            <View style={styles.solidLine}/>
+                            {this.renderItem(1,'','待平台审核')}
+                            <View style={[styles.solidLine, {borderColor: 'yellow'}]}/>
+                            {this.renderItem(1,'','售后关闭', 'yellow')}
+                        </View>
+                    )
+                }
+
+                if (subStatus === OVERTIME) {
+                    return(
+                        <View style={styles.timerLine}>
+                            {this.renderItem(1,'','填写申请')}
+                            <View style={styles.solidLine}/>
+                            {this.renderItem(1,'','待平台审核')}
+                            <View style={styles.solidLine}/>
+                            {this.renderItem(1,'','寄回商品')}
+                            <View style={[styles.solidLine, {borderColor: 'yellow'}]}/>
+                            {this.renderItem(1,'','售后关闭', 'yellow')}
+                        </View>
+                    )
+                }
+                if (subStatus === REFUSE_AFTER) {
+                    return(
+                        <View style={styles.timerLine}>
+                            {this.renderItem(1,'','填写申请')}
+                            <View style={styles.solidLine}/>
+                            {this.renderItem(1,'','寄回商品')}
+                            <View style={styles.solidLine}/>
+                            {this.renderItem(1,'','平台确认')}
+                            <View style={[styles.solidLine, {borderColor: 'yellow'}]}/>
+                            {this.renderItem(1,'','换货失败', 'yellow')}
+                        </View>
+                    )
+                }
+                break
+            default:
+                break;
+        }
+    }
+
+
+
     render() {
-        let { status, pageType} = this.props;
+        let { status, pageType, subStatus} = this.props;
         return (
             <ImageBackground source={exchangeGoodsDetailBg} style={styles.container}>
                 <View style={{marginHorizontal: autoSizeWidth(34), height: 55, marginBottom: autoSizeWidth(20)}}>
-                    {this.renderTimerLine(status, pageType)}
+                    {this.renderTimerLine(status, pageType, subStatus)}
                 </View>
             </ImageBackground>
         );
