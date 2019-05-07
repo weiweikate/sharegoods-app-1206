@@ -6,34 +6,34 @@
  * @email luoyongming@meeruu.com
  */
 
-import React, { Component } from "react";
-import { observer } from "mobx-react";
+import React, { Component } from 'react';
+import { observer } from 'mobx-react';
 import {
     StyleSheet,
     Text,
     View,
     InteractionManager
     // Image
-} from "react-native";
-import { NavigationActions } from "react-navigation";
-import RouterMap from "./navigation/RouterMap";
-import user from "../src/model/user";
-import DebugButton from "./components/debug/DebugButton";
-import apiEnvironment from "./api/ApiEnvironment";
-import CONFIG from "../config";
-import { netStatus } from "./comm/components/NoNetHighComponent";
-import bridge from "./utils/bridge";
-import TimerMixin from "react-timer-mixin";
+} from 'react-native';
+import { NavigationActions } from 'react-navigation';
+import RouterMap from './navigation/RouterMap';
+import user from '../src/model/user';
+import DebugButton from './components/debug/DebugButton';
+import apiEnvironment from './api/ApiEnvironment';
+import CONFIG from '../config';
+import { netStatus } from './comm/components/NoNetHighComponent';
+import bridge from './utils/bridge';
+import TimerMixin from 'react-timer-mixin';
 
-import geolocation from "@mr/rn-geolocation";
-import Navigator, { getCurrentRouteName } from "./navigation/Navigator";
-import Storage from "./utils/storage";
-import { login, logout } from "./utils/SensorsTrack";
-import ScreenUtils from "./utils/ScreenUtils";
-import codePush from "react-native-code-push";
+import geolocation from '@mr/rn-geolocation';
+import Navigator, { getCurrentRouteName } from './navigation/Navigator';
+import Storage from './utils/storage';
+import { login, logout } from './utils/SensorsTrack';
+import ScreenUtils from './utils/ScreenUtils';
+import codePush from 'react-native-code-push';
 
-import { SpellShopFlag } from "./navigation/Tab";
-import chatModel from "./utils/QYModule/QYChatModel";
+import { SpellShopFlag } from './navigation/Tab';
+import chatModel from './utils/QYModule/QYChatModel';
 
 if (__DEV__) {
     const modules = require.getModules();
@@ -47,23 +47,23 @@ if (__DEV__) {
 
     // make sure that the modules you expect to be waiting are actually waiting
     console.log(
-        "loaded:",
+        'loaded:',
         loadedModuleNames.length,
-        "waiting:",
+        'waiting:',
         waitingModuleNames.length
     );
 }
+
+
+let codePushOptions = {
+    checkFrequency: codePush.CheckFrequency.ON_APP_RESUME
+};
 
 @observer
 class App extends Component {
     constructor(props) {
         super(props);
         chatModel;
-        // codepush
-        codePush.sync({
-            updateDialog: false,
-            installMode: codePush.InstallMode.ON_NEXT_RESTART
-        });
 
         this.state = {
             load: false,
@@ -79,6 +79,14 @@ class App extends Component {
     }
 
     async componentWillMount() {
+        // 禁止重启
+        codePush.disallowRestart();
+        // code push
+        codePush.sync({
+            updateDialog: false,
+            installMode: codePush.InstallMode.ON_NEXT_RESUME
+        });
+
         netStatus.startMonitorNetworkStatus();
 
         // 环境配置
@@ -88,18 +96,19 @@ class App extends Component {
     }
 
     componentDidMount() {
+        // 在加载完了，允许重启
+        codePush.allowRestart();
         //初始化init  定位存储  和app变活跃 会定位
-
         InteractionManager.runAfterInteractions(() => {
 
             TimerMixin.setTimeout(() => {
                 geolocation.init({
-                    ios: "f85b644981f8642aef08e5a361e9ab6b",
-                    android: "4a3ff7c2164aaf7d67a98fb9b88ae0e6"
+                    ios: 'f85b644981f8642aef08e5a361e9ab6b',
+                    android: '4a3ff7c2164aaf7d67a98fb9b88ae0e6'
                 }).then(() => {
                     return geolocation.getLastLocation();
                 }).then(result => {
-                    Storage.set("storage_MrLocation", result);
+                    Storage.set('storage_MrLocation', result);
                 }).catch((error) => {
                 });
             }, 200);
@@ -119,7 +128,7 @@ class App extends Component {
     }
 
     render() {
-        const prefix = "meeruu://";
+        const prefix = 'meeruu://';
         const { isShowShopFlag } = this.state;
         const showDebugPanel = String(CONFIG.showDebugPanel);
         return (
@@ -139,13 +148,13 @@ class App extends Component {
                 />
                 <SpellShopFlag isShow={isShowShopFlag}/>
                 {
-                    showDebugPanel === "true" ?
-                        <DebugButton onPress={this.showDebugPage} style={{ backgroundColor: "red" }}><Text
-                            style={{ color: "white" }}>调试页</Text></DebugButton> : null
+                    showDebugPanel === 'true' ?
+                        <DebugButton onPress={this.showDebugPage} style={{ backgroundColor: 'red' }}><Text
+                            style={{ color: 'white' }}>调试页</Text></DebugButton> : null
                 }
                 {/*{*/}
-                    {/*<DebugButton onPress={this.lianjie111} style={{ backgroundColor: "red" }}><Text*/}
-                        {/*style={{ color: "white" }}>客服</Text></DebugButton>*/}
+                {/*<DebugButton onPress={this.lianjie111} style={{ backgroundColor: "red" }}><Text*/}
+                {/*style={{ color: "white" }}>客服</Text></DebugButton>*/}
                 {/*}*/}
             </View>
         );
@@ -166,7 +175,8 @@ class App extends Component {
         global.$navigator.dispatch(navigationAction);
     };
 }
-export default codePush(App);
+
+export default codePush(codePushOptions)(App);
 
 const styles = StyleSheet.create({
     container: {
@@ -176,8 +186,8 @@ const styles = StyleSheet.create({
         width: 60,
         height: 35,
         borderRadius: 10,
-        alignItems: "center",
-        justifyContent: "center"
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     oldLoginBtnStyle: {
         width: 120,
