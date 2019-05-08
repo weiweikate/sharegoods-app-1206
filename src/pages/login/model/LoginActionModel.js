@@ -169,7 +169,6 @@ const codeLoginAction = (LoginParam, callBack) => {
         DeviceEventEmitter.emit("contentViewed", null);
         bridge.$toast("登录成功");
         homeModule.loadHomeList();
-        login(data.data.code); // 埋点登录成功
         //推送
         JPushUtils.updatePushTags();
         JPushUtils.updatePushAlias();
@@ -204,7 +203,6 @@ const pwdLoginAction = (LoginParam, callBack) => {
         DeviceEventEmitter.emit("homePage_message", null);
         DeviceEventEmitter.emit("contentViewed", null);
         homeModule.loadHomeList();
-        login(data.data.code); // 埋点登录成功
         //推送
         JPushUtils.updatePushTags();
         JPushUtils.updatePushAlias();
