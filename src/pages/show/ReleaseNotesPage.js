@@ -11,11 +11,10 @@ import {
     Image,
     TouchableWithoutFeedback,
     Keyboard,
-    KeyboardAvoidingView,
-    Platform
+    TextInput
 } from 'react-native';
 import BasePage from '../../BasePage';
-import { MRText, MRTextInput } from '../../components/ui';
+import { MRText } from '../../components/ui';
 import DesignRule from '../../constants/DesignRule';
 import ScreenUtils from '../../utils/ScreenUtils';
 import res from './res';
@@ -24,6 +23,7 @@ import ImageLoad from '@mr/image-placeholder';
 import NoMoreClick from '../../components/ui/NoMoreClick';
 import UIImage from '../../components/ui/UIImage';
 import Emoticons, * as emoticons from '../../comm/components/emoticons';
+
 const { addIcon, delIcon } = res;
 
 const { px2dp } = ScreenUtils;
@@ -39,39 +39,39 @@ export default class ReleaseNotesPage extends BasePage {
         this.state = {
             imageArr: [],
             showEmoji: false,
-            showEmojiButton:false,
+            showEmojiButton: false,
             text: '',
+            keyBoardHeight: 0
         };
+
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
         this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
     }
 
-    // componentWillUnmount() {
-    //     this.keyboardDidShowListener.remove();
-    //     this.keyboardDidHideListener.remove();
-    // }
+    componentWillUnmount() {
+        this.keyboardDidShowListener.remove();
+        this.keyboardDidHideListener.remove();
+    }
 
-    _keyboardDidShow = () => {
-        alert(1)
-
+    _keyboardDidShow = (e) => {
         this.setState({
             showEmoji: false,
-            showEmojiButton:true
-        })
+            showEmojiButton: true,
+            keyBoardHeight: e.endCoordinates.height
+        });
+    };
 
-    }
-
-    _keyboardDidHide=()=>{
-        alert(2)
-        if(!this.state.showEmoji){
+    _keyboardDidHide = () => {
+        if (!this.state.showEmoji) {
             this.setState({
-                showEmojiButton:false
-            })
+                showEmojiButton: false,
+                keyBoardHeight: 0
+            });
         }
-    }
+    };
 
     $NavBarRenderRightItem = () => {
         return (
@@ -150,8 +150,8 @@ export default class ReleaseNotesPage extends BasePage {
 
     _addProductButton = () => {
         return (
-            <TouchableWithoutFeedback onPress={()=>{
-                this.$navigate('show/ShowProductListPage')
+            <TouchableWithoutFeedback onPress={() => {
+                this.$navigate('show/ShowProductListPage');
             }}>
                 <View style={styles.addProductWrapper}>
                     <MRText style={styles.addProductText}>+ 添加推荐商品</MRText>
@@ -161,11 +161,14 @@ export default class ReleaseNotesPage extends BasePage {
     };
 
     _emojiButton = () => {
-        alert(1)
         return (<View style={{
             width: DesignRule.width,
-            height: 50,
-            backgroundColor: 'red',
+            height: px2dp(40),
+            backgroundColor: DesignRule.white,
+            position: 'absolute',
+            alignItems: 'center',
+            bottom: this.state.keyBoardHeight,
+            flexDirection: 'row'
         }}
                       ref={(ref) => this.bottom = ref}
         >
@@ -173,22 +176,34 @@ export default class ReleaseNotesPage extends BasePage {
                 const isShow = this.state.showEmoji;
                 if (!isShow) {
                     Keyboard.dismiss();
-                }else {
+                    this.setState({
+                        showEmoji: true,
+                        keyBoardHeight: 300
+                    });
+                } else {
                     this.textinput && this.textinput.focus();
+                    this.setState({
+                        showEmoji: false
+                    });
                 }
-                this.setState({
-                    showEmoji: !isShow
-                })
-
             }}>
                 <View style={{
-                    width: 50,
-                    height: 50,
-                    backgroundColor: 'green'
-                }}/>
+                    flexDirection: 'row',
+                    alignSelf: 'center'
+                }}>
+                    <View style={styles.emojiButtonWrapper}>
+                        <View style={styles.emojiButtonStyle}/>
+                        <MRText style={styles.emojiTextStyle}>
+                            表情
+                        </MRText>
+                    </View>
+
+                </View>
             </TouchableWithoutFeedback>
-        </View>)
-    }
+            <View style={{ flex: 1 }}/>
+            <View style={styles.closeKeyboard}/>
+        </View>);
+    };
 
     _render() {
 
@@ -204,54 +219,50 @@ export default class ReleaseNotesPage extends BasePage {
                     arr.pop();
                     this.setState({
                         text: arr.join('')
-                    })
+                    });
                 }}
                 onEmoticonPress={(emoji) => {
-                    console.log(emoji)
+                    console.log(emoji);
                     this.setState({
                         text: this.state.text + emoji.code
                     }, () => {
-                        let str = emoticons.stringify(this.state.text)
-                        console.log(str)
-                    })
+                        let str = emoticons.stringify(this.state.text);
+                        console.log(str);
+                    });
 
                 }}
             />
-        </View>
+        </View>;
 
         return (
             <View style={styles.contain}>
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    <View style={styles.noteContain}>
-                        <MRTextInput style={styles.textInputStyle}
-                                     ref={(ref)=>{this.textinput = ref}}
-                                     onChangeText={(text) => {
-                                         this.setState({
-                                             text: text
-                                         })
-                                     }}
-                                     placeholder={'可分享购物心得，生活感悟......'}
-                                     maxLength={1000}
-                                     value={this.state.text}
-                        />
-                        <View style={styles.lineStyle}/>
-                        {this._imageRender()}
-                    </View>
-                    {this._addProductButton()}
-                </ScrollView>
-                <KeyboardAvoidingView
-                    behavior={Platform.OS === 'ios' ? 'position' : 'height'}
-                    style={{
-                        width: DesignRule.width,
-                    }}>
-
-                    {this.state.showEmojiButton ? this._emojiButton() : null}
-
-
-                    {this.state.showEmoji ? emoji : null}
+                <View style={{ flex: 1 }}>
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                        <View style={styles.noteContain}>
+                            <TextInput style={styles.textInputStyle}
+                                       allowFontScaling={false}
+                                       ref={(ref) => {
+                                           this.textinput = ref;
+                                       }}
+                                       onChangeText={(text) => {
+                                           this.setState({
+                                               text: text
+                                           });
+                                       }}
+                                       placeholder={'可分享购物心得，生活感悟......'}
+                                       maxLength={1000}
+                                       value={this.state.text}
+                            />
+                            <View style={styles.lineStyle}/>
+                            {this._imageRender()}
+                        </View>
+                        {this._addProductButton()}
+                    </ScrollView>
+                </View>
+                {this.state.showEmojiButton ? this._emojiButton() : null}
 
 
-                </KeyboardAvoidingView>
+                {this.state.showEmoji ? emoji : null}
             </View>
         );
     }
@@ -330,7 +341,29 @@ var styles = StyleSheet.create({
         position: 'absolute',
         top: -px2dp(7),
         right: -px2dp(7)
+    },
+    emojiButtonStyle: {
+        width: px2dp(18),
+        height: px2dp(18),
+        backgroundColor: 'blue'
+    },
+    emojiTextStyle: {
+        color: DesignRule.textColor_instruction,
+        fontSize: DesignRule.fontSize_threeTitle_28,
+        marginLeft: px2dp(5)
+    },
+    emojiButtonWrapper: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginLeft: DesignRule.margin_page
+    },
+    closeKeyboard: {
+        width: px2dp(20),
+        height: px2dp(20),
+        backgroundColor: 'red',
+        marginRight: DesignRule.margin_page
     }
+
 
 });
 
