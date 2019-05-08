@@ -51,7 +51,7 @@ export default class OrderDetailTimeView extends Component {
             title = item.supplierName	|| '';
             if (item.products && item.products[0]){
                 let product = item.products[0];
-                 desc = product.productName || '';
+                desc = product.productName || '';
                 pictureUrlString = product.specImg || '';
             }
         }
@@ -72,11 +72,24 @@ export default class OrderDetailTimeView extends Component {
     }
 
     render() {
+        let message = '';
+        if (orderDetailModel.warehouseOrderDTOList && orderDetailModel.warehouseOrderDTOList[0]) {
+            let item = orderDetailModel.warehouseOrderDTOList[0];
+            message = item.message || '';
+        }
         return (
             <View style={{ backgroundColor: "white", paddingTop: px2dp(10), marginTop: px2dp(10) }}>
+                {message.length > 0? <View style={{  flexDirection: "row"}}>
+                    <UIText value={"订单备注："}
+                            style={[styles.textGoodsDownStyle]}/>
+                    <View style={{flex: 1, marginRight: 10}}>
+                        <UIText value={message}
+                                style={[styles.textGoodsDownStyle,{marginLeft: 0}]}/>
+                    </View>
+                </View>: null}
                 <View style={{ justifyContent: "space-between", flexDirection: "row", alignItems: "center" }}>
                     <UIText value={"订单编号：" + `${orderDetailModel.getOrderNo()}`}
-                            style={[styles.textGoodsDownStyle, { marginTop: px2dp(10) }]}/>
+                            style={[styles.textGoodsDownStyle]}/>
                     <NoMoreClick style={styles.clipStyle} onPress={() => this.copyOrderNumToClipboard()}>
                         <Text style={{ paddingLeft: px2dp(10), paddingRight: px2dp(10) }}
                               allowFontScaling={false}>复制</Text>
