@@ -71,7 +71,7 @@ export default class Login extends BasePage {
                         }
                     </View> : <View style={Styles.middleBgContent}>
                         {
-                            createLoginButton(loginBtnType.localPhoneNumLoginType, "微信授权登录", () => {
+                            createLoginButton(loginBtnType.wxLoginBtnType, "微信授权登录", () => {
                                 this._clickAction(loginBtnType.wxLoginBtnType);
                             })
                         }
