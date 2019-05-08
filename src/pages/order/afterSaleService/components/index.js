@@ -4,7 +4,7 @@ import OperationApplyView from './OperationApplyView';
 import TipView from './TipView';
 import HeaderView from './HeaderView';
 import RefundDetailView from './RefundDetailView';
-import RefuseReasonView from './RefuseReasonView';
+import StatusInfoView from './StatusInfoView';
 import BackAddressView from './BackAddressView';
 import ShippingAddressView from  './ShippingAddressView';
 import LogisticsView from './LogisticsView';
@@ -16,7 +16,7 @@ export {
     TipView,
     HeaderView,
     RefundDetailView,
-    RefuseReasonView,
+    StatusInfoView,
     BackAddressView,
     ShippingAddressView,
     LogisticsView

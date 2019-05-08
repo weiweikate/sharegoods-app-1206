@@ -28,7 +28,7 @@ import {
     TipView,
     HeaderView,
     RefundDetailView,
-    RefuseReasonView,
+    StatusInfoView,
     BackAddressView,
     ShippingAddressView,
     LogisticsView
@@ -218,7 +218,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                                             changePress={this.changePress}/> : null}
                     {
                         isShow_refuseReasonView ?
-                            <RefuseReasonView pageType={pageType}
+                            <StatusInfoView pageType={pageType}
                                               status={status}
                                               subStatus={subStatus}
                                               remarks={remarks}
