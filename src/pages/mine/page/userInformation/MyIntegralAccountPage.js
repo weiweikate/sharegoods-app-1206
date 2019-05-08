@@ -21,6 +21,7 @@ import res from '../../res';
 import { MRText as Text } from '../../../../components/ui';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
 import StringUtils from '../../../../utils/StringUtils';
+import RouterMap from "../../../../navigation/RouterMap";
 
 const { px2dp } = ScreenUtils;
 
@@ -102,7 +103,13 @@ export default class MyIntegralAccountPage extends BasePage {
                         秀豆账户（枚）
                     </Text>
                     <NoMoreClick style={styles.withdrawButtonWrapper}
-                                 onPress={() => this.$navigate('home/signIn/SignInPage')}>
+                                 onPress={() => {
+                                     if (!user.isLogin) {
+                                         this.$navigate(RouterMap.loginPage);
+                                         return;
+                                     }
+                                     this.$navigate('home/signIn/SignInPage')
+                                 }}>
                         <Text style={{
                             fontSize: DesignRule.fontSize_threeTitle,
                             color: DesignRule.mainColor
