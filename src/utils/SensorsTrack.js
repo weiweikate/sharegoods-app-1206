@@ -100,6 +100,7 @@ function trackUtil(p) {
             track(value.name, {
                 "platformType":Platform.OS ==="ios"?"iOS":"Android",
                 "userLevel":user.isLogin?user.level:"V1",
+                "distinct_id":user.isLogin?user.id:'',
                 ...value.params,...s})
         }
     }
