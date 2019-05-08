@@ -5,6 +5,7 @@ import ShowConnectPage from './ShowConnectPage'
 import ShowDetailImagePage from './ShowDetailImagePage'
 import ReleaseNotesPage from './ReleaseNotesPage'
 import ShowProductListPage from './ShowProductListPage'
+import ShowRichTextDetailPage from './ShowRichTextDetailPage'
 export default {
     moduleName: 'show',
     childRoutes: {
@@ -14,6 +15,7 @@ export default {
         ShowConnectPage,
         ShowDetailImagePage,
         ReleaseNotesPage,
-        ShowProductListPage
+        ShowProductListPage,
+        ShowRichTextDetailPage
     }
 }

@@ -9,7 +9,10 @@ import {
     TouchableOpacity,
     ScrollView,
     Image,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    Keyboard,
+    KeyboardAvoidingView,
+    Platform
 } from 'react-native';
 import BasePage from '../../BasePage';
 import { MRText, MRTextInput } from '../../components/ui';
@@ -20,7 +23,7 @@ import BusinessUtils from '../mine/components/BusinessUtils';
 import ImageLoad from '@mr/image-placeholder';
 import NoMoreClick from '../../components/ui/NoMoreClick';
 import UIImage from '../../components/ui/UIImage';
-
+import Emoticons, * as emoticons from '../../comm/components/emoticons';
 const { addIcon, delIcon } = res;
 
 const { px2dp } = ScreenUtils;
@@ -34,8 +37,40 @@ export default class ReleaseNotesPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            imageArr: []
+            imageArr: [],
+            showEmoji: false,
+            showEmojiButton:false,
+            text: '',
         };
+    }
+
+    componentDidMount(){
+        this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
+        this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
+    }
+
+    // componentWillUnmount() {
+    //     this.keyboardDidShowListener.remove();
+    //     this.keyboardDidHideListener.remove();
+    // }
+
+    _keyboardDidShow = () => {
+        alert(1)
+
+        this.setState({
+            showEmoji: false,
+            showEmojiButton:true
+        })
+
+    }
+
+    _keyboardDidHide=()=>{
+        alert(2)
+        if(!this.state.showEmoji){
+            this.setState({
+                showEmojiButton:false
+            })
+        }
     }
 
     $NavBarRenderRightItem = () => {
@@ -125,20 +160,98 @@ export default class ReleaseNotesPage extends BasePage {
         );
     };
 
+    _emojiButton = () => {
+        alert(1)
+        return (<View style={{
+            width: DesignRule.width,
+            height: 50,
+            backgroundColor: 'red',
+        }}
+                      ref={(ref) => this.bottom = ref}
+        >
+            <TouchableWithoutFeedback onPress={() => {
+                const isShow = this.state.showEmoji;
+                if (!isShow) {
+                    Keyboard.dismiss();
+                }else {
+                    this.textinput && this.textinput.focus();
+                }
+                this.setState({
+                    showEmoji: !isShow
+                })
+
+            }}>
+                <View style={{
+                    width: 50,
+                    height: 50,
+                    backgroundColor: 'green'
+                }}/>
+            </TouchableWithoutFeedback>
+        </View>)
+    }
+
     _render() {
+
+        const emoji = <View>
+            <Emoticons
+                show={true}
+                concise={true}
+                showHistoryBar={true}
+                showPlusBar={false}
+                onBackspacePress={() => {
+                    let text = this.state.text;
+                    let arr = emoticons.splitter(text);
+                    arr.pop();
+                    this.setState({
+                        text: arr.join('')
+                    })
+                }}
+                onEmoticonPress={(emoji) => {
+                    console.log(emoji)
+                    this.setState({
+                        text: this.state.text + emoji.code
+                    }, () => {
+                        let str = emoticons.stringify(this.state.text)
+                        console.log(str)
+                    })
+
+                }}
+            />
+        </View>
+
         return (
             <View style={styles.contain}>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={styles.noteContain}>
                         <MRTextInput style={styles.textInputStyle}
+                                     ref={(ref)=>{this.textinput = ref}}
+                                     onChangeText={(text) => {
+                                         this.setState({
+                                             text: text
+                                         })
+                                     }}
                                      placeholder={'可分享购物心得，生活感悟......'}
                                      maxLength={1000}
+                                     value={this.state.text}
                         />
                         <View style={styles.lineStyle}/>
                         {this._imageRender()}
                     </View>
                     {this._addProductButton()}
                 </ScrollView>
+                <KeyboardAvoidingView
+                    behavior={Platform.OS === 'ios' ? 'position' : 'height'}
+                    style={{
+                        width: DesignRule.width,
+                    }}>
+
+                    {this.state.showEmojiButton ? this._emojiButton() : null}
+
+
+                    {this.state.showEmoji ? emoji : null}
+
+
+                </KeyboardAvoidingView>
             </View>
         );
     }

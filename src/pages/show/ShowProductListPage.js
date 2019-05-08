@@ -17,7 +17,7 @@ import BasePage from '../../BasePage';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 import ScreenUtils from '../../utils/ScreenUtils';
 import backIconImg from '../../comm/res/button/icon_header_back.png';
-import { MRText,UIImage } from '../../components/ui';
+import { MRText, UIImage } from '../../components/ui';
 import DesignRule from '../../constants/DesignRule';
 import ShowApi from './ShowApi';
 
@@ -46,10 +46,9 @@ export default class ShowProductListPage extends BasePage {
             isRefresh: true
         });
         ShowApi.carList().then((data) => {
-            alert()
             if (data.data) {
                 this.setState({
-                    catData: data.data.shoppingCartGoodsVOS.products,
+                    catData: this.packingShopCartGoodsData(data.data),
                     isRefresh: false
                 });
             } else {
@@ -65,6 +64,51 @@ export default class ShowProductListPage extends BasePage {
                 isRefresh: false
             });
         });
+    };
+
+
+    packingShopCartGoodsData = (response) => {
+        let originData = response;
+        let tempAllData = [];
+        //有效商品
+        if (response === null) {
+            return tempAllData;
+        }
+        let effectiveArr = originData.shoppingCartGoodsVOS;
+        if (effectiveArr && effectiveArr instanceof Array && effectiveArr.length > 0) {
+            effectiveArr.map((itemObj, index) => {
+                //增加两个字段
+                itemObj.type = itemObj.activityType;//当前分组类型
+                itemObj.middleTitle = '';
+                itemObj.key = index;
+                itemObj.data = itemObj.products;
+                itemObj.data.map((goodItem, goodItemIndex) => {
+                    // 有一个showPrice 搞活动显示的价格，有就重置掉price，没有你就老实的用原来的 OJBK?
+                    goodItem.price = goodItem.showPrice ? goodItem.showPrice : goodItem.price;
+                    goodItem.sectionType = itemObj.activityType;//当前组所属类型 8 经验值 null是其他
+                    goodItem.isSelected = false;
+                    goodItem.key = `${index}_${goodItemIndex}`;
+                    goodItem.nowTime = itemObj.nowTime;//系统当前时间戳
+                    goodItem.activityCode = itemObj.activityCode;
+                    goodItem.topSpace = itemObj.activityType == 8 ? 0 : 10;
+
+                    let tempSpecContent = '规格:';
+                    goodItem.specifies.map((specify, specifyIndex) => {
+                        if (specifyIndex === 0) {
+                            tempSpecContent += specify.paramValue;
+                        } else {
+                            tempSpecContent += '-' + specify.paramValue;
+                        }
+                    });
+                    goodItem.specifyContent = tempSpecContent;
+
+                    tempAllData.push(itemObj);
+                });
+            })
+        }
+        // alert(JSON.stringify(tempAllData))
+        return tempAllData;
+
     };
 
     _changeTabIndex = (index) => {
@@ -92,21 +136,22 @@ export default class ShowProductListPage extends BasePage {
     // };
 
     _listItemRender = ({ itemData }) => {
-        alert(JSON.stringify(itemData))
+        // return null;
+        alert(JSON.stringify(itemData.item))
         return (
             <View style={styles.itemWrapper}>
-                <UIImage source={{ uri: itemData.imgUrl ? itemData.imgUrl : '' }}
+                <UIImage source={{ uri: itemData.item.imgUrl ? itemData.item.imgUrl : '' }}
                          style={[styles.validProductImg]}/>
                 <View>
                     <MRText numberOfLines={1}
                             style={styles.itemTitle}
                             ellipsizeMode={'tail'}>
-                        {itemData.productName ? itemData.productName : ''}
+                        {itemData.item.productName ? itemData.item.productName : ''}
                     </MRText>
                     <MRText numberOfLines={1}
                             ellipsizeMode={'tail'}
                             style={styles.contentStyle}>
-                        {itemData.specifyContent ? itemData.specifyContent : ''}
+                        {itemData.item.specifyContent ? itemData.item.specifyContent : ''}
                     </MRText>
 
                 </View>
@@ -238,24 +283,24 @@ var styles = StyleSheet.create({
         backgroundColor: DesignRule.bgColor,
         paddingTop: 10
     },
-    itemWrapper:{
-        backgroundColor:DesignRule.white,
-        borderRadius:px2dp(5),
-        flexDirection:'row',
-        marginBottom:px2dp(10),
-        padding:px2dp(5)
+    itemWrapper: {
+        backgroundColor: DesignRule.white,
+        borderRadius: px2dp(5),
+        flexDirection: 'row',
+        marginBottom: px2dp(10),
+        padding: px2dp(5)
     },
-    validProductImg:{
-        width:px2dp(80),
-        height:px2dp(80),
+    validProductImg: {
+        width: px2dp(80),
+        height: px2dp(80)
     },
-    itemTitle:{
-        color:DesignRule.textColor_mainTitle,
-        fontSize:DesignRule.fontSize_mediumBtnText
+    itemTitle: {
+        color: DesignRule.textColor_mainTitle,
+        fontSize: DesignRule.fontSize_mediumBtnText
     },
-    contentStyle:{
-        color:DesignRule.textColor_instruction,
-        fontSize:DesignRule.fontSize_threeTitle
+    contentStyle: {
+        color: DesignRule.textColor_instruction,
+        fontSize: DesignRule.fontSize_threeTitle
     }
 });
 

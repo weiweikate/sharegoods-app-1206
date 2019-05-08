@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Image, BackHandler } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image, BackHandler, InteractionManager ,DeviceEventEmitter} from 'react-native';
 import BasePage from '../../BasePage';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 import ScreenUtils from '../../utils/ScreenUtils';
@@ -8,11 +8,21 @@ import backIconImg from '../../comm/res/button/icon_header_back.png';
 import DesignRule from '../../constants/DesignRule';
 import { observer } from 'mobx-react';
 import {
-    MRText as Text
+    MRText as Text,
+    AvatarImage,
+    UIImage
 } from '../../components/ui';
 import ShowGroundView from './components/ShowGroundView';
 import ShowRecommendView from './components/ShowRecommendView';
 import ShowActivityView from './components/ShowActivityView';
+import user from '../../model/user';
+import res from '../mine/res';
+import EmptyUtils from '../../utils/EmptyUtils';
+import MessageApi from '../message/api/MessageApi';
+const {
+    mine_user_icon,
+    mine_message_icon_gray
+} = res.homeBaseImg;
 @observer
 export default class ShowListPage extends BasePage {
 
@@ -87,11 +97,15 @@ export default class ShowListPage extends BasePage {
         this.setState({ needsExpensive: true });
     }
 
+    componentDidMount(){
+        this.listener = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
+    }
 
     componentWillUnmount() {
         this.willFocusSubscription && this.willFocusSubscription.remove();
         this.didBlurSubscription && this.didBlurSubscription.remove();
         this.didFocusSubscription && this.didFocusSubscription.remove();
+        this.listener && this.listener.remove();
     }
 
     _gotoPage(number) {
@@ -106,12 +120,40 @@ export default class ShowListPage extends BasePage {
         this.props.navigation.goBack(null);
     }
 
-    _press = ({ nativeEvent }) => {
-        let data = nativeEvent;
-        // data.click = data.click + 1;
-        // this.recommendModules.recommendList.replace
-        this.$navigate('show/ShowDetailPage', { id: data.id, code: data.code });
+    jumpToServicePage = () => {
+        if (!user.isLogin) {
+            this.$navigate('login/login/LoginPage');
+            return;
+        }
+        this.$navigate('message/MessageCenterPage');
     };
+
+
+    // _press = ({ nativeEvent }) => {
+    //     let data = nativeEvent;
+    //     // data.click = data.click + 1;
+    //     // this.recommendModules.recommendList.replace
+    //     this.$navigate('show/ShowDetailPage', { id: data.id, code: data.code });
+    // };
+
+    loadMessageCount = () => {
+        if (user.token) {
+            InteractionManager.runAfterInteractions(() => {
+                MessageApi.getNewNoticeMessageCount().then(result => {
+                    if (!EmptyUtils.isEmpty(result.data)) {
+                        this.setState({
+                            hasMessage: result.data.shopMessageCount || result.data.noticeCount || result.data.messageCount
+                        });
+                    }
+                }).catch((error) => {
+                    this.setState({
+                        hasMessage: false
+                    });
+                });
+            });
+        }
+    };
+
 
     _render() {
         let that = this;
@@ -121,7 +163,29 @@ export default class ShowListPage extends BasePage {
         if (needsExpensive) {
             HotView = require('./ShowHotView').default;
         }
+        let icon = (user.headImg && user.headImg.length > 0) ?
+            <AvatarImage source={{ uri: user.headImg }} style={styles.userIcon}
+                         borderRadius={px2dp(15)}/> : <Image source={mine_user_icon} style={styles.userIcon}
+                                                             borderRadius={px2dp(15)}/>;
 
+
+        let message = (
+            <View>
+                <UIImage source={mine_message_icon_gray}
+                         style={{ height: px2dp(21), width: px2dp(21) }}
+                         onPress={() => this.jumpToServicePage()}/>
+                {this.state.hasMessageNum ? <View style={{
+                    width: 10,
+                    height: 10,
+                    backgroundColor: DesignRule.mainColor,
+                    position: 'absolute',
+                    top: -3,
+                    right: -3,
+                    borderRadius: 5
+                }}/> : null}
+
+            </View>
+        )
         return <View style={styles.container}>
             <View style={styles.header}>
                 {
@@ -133,7 +197,9 @@ export default class ShowListPage extends BasePage {
                         :
                         null
                 }
-                <View style={[{ marginLeft: left ? px2dp(10) : px2dp(15) }, styles.userIcon]}/>
+                <View style={[{ marginLeft: left ? px2dp(10) : px2dp(15) }]}>
+                    {icon}
+                </View>
                 <View style={{flex:1}}/>
                 <View style={styles.titleView}>
                     <TouchableOpacity style={styles.items} onPress={() => this._gotoPage(0)}>
@@ -156,7 +222,9 @@ export default class ShowListPage extends BasePage {
                     </TouchableOpacity>
                 </View>
                 <View style={{flex:1}}/>
-                <View style={[{marginRight:px2dp(15)}, styles.userIcon]}/>
+                <View style={{marginRight:px2dp(15)}}>
+                    {message}
+                </View>
             </View>
             <ScrollableTabView
                 ref={(ref) => this.scrollableTabView = ref}
@@ -223,7 +291,7 @@ export default class ShowListPage extends BasePage {
                                     });
                                 }}
                                 onItemPress={({ nativeEvent }) => {
-                                    that.$navigate('show/ShowDetailPage', {
+                                    that.$navigate('show/ShowRichTextDetailPage', {
                                         id: nativeEvent.id,
                                         code: nativeEvent.code,
                                         ref: this.rightShowList,
@@ -333,6 +401,5 @@ let styles = StyleSheet.create({
         width: px2dp(30),
         height: px2dp(30),
         borderRadius: px2dp(15),
-        backgroundColor: 'red'
     }
 });

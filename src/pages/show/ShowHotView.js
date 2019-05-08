@@ -14,6 +14,7 @@ import ShowRecommendView from './components/ShowRecommendView';
 import TimerMixin from 'react-timer-mixin';
 import ReleaseButton from './components/ReleaseButton';
 
+import user from '../../model/user';
 
 @observer
 export default class ShowHotView extends React.Component {
@@ -148,6 +149,10 @@ export default class ShowHotView extends React.Component {
                                     bottom: 118
                                 }}
                                 onPress={() => {
+                                    if (!user.isLogin) {
+                                        this.props.navigate('login/login/LoginPage');
+                                        return;
+                                    }
                                     this.props.navigate('show/ReleaseNotesPage');
                                 }}/> : null
                     }
