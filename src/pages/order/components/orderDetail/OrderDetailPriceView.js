@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import {
     View,
-     StyleSheet,  NativeModules,
+     StyleSheet,  NativeModules
     // Image
 } from "react-native";
 import { orderDetailAfterServiceModel, orderDetailModel } from "../../model/OrderDetailModel";
@@ -14,12 +14,12 @@ import {MRText as Text,NoMoreClick} from '../../../../components/ui';
 import ScreenUtils from "../../../../utils/ScreenUtils";
 import RouterMap,{ navigate } from "../../../../navigation/RouterMap";
 const { px2dp } = ScreenUtils;
-// const couponIcon = res.coupons_icon;
 
 @observer
 export default class OrderDetailPriceView extends Component {
 
     renderGiftAfterSales = () => {
+
         return (
             <View>
                 {orderDetailAfterServiceModel.currentAsList.length === 0 ? null :
@@ -117,24 +117,6 @@ export default class OrderDetailPriceView extends Component {
        promotionAmount = parseFloat(promotionAmount);
        return(
            <View style={{ backgroundColor: 'white',marginTop:10 ,paddingTop:10}}>
-               {/*{orderDetailModel.orderSubType >= 3 ? this.renderGiftAfterSales() : null}*/}
-               {/*{orderDetailModel.orderSubType >= 3 && orderDetailModel.giftCouponDTOList.length > 0 ?*/}
-                   {/*<View>*/}
-                       {/*{this.renderLine()}*/}
-                       {/*{orderDetailModel.giftCouponDTOList.map((item, index) => {*/}
-                           {/*return <View style={{ backgroundColor: 'white' }} key={index}>*/}
-                               {/*{index === 0 ? <Image source={couponIcon} style={styles.couponsIconStyle}/> : null}*/}
-                               {/*<View style={styles.couponsOuterStyle}>*/}
-                                   {/*<Text style={styles.couponsTextStyle} allowFontScaling={false}>{item.couponName}</Text>*/}
-                                   {/*<Text style={[styles.couponsTextStyle, { marginRight: 14 }]} allowFontScaling={false}>x1</Text>*/}
-                               {/*</View>*/}
-                               {/*<View style={styles.couponsLineStyle}/>*/}
-                           {/*</View>*/}
-                       {/*})}*/}
-                       {/*{this.renderWideLine()}*/}
-                   {/*</View>*/}
-                   {/*:*/}
-                   {/*null}*/}
                <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'商品总价'}
                                leftTextStyle={{ color: DesignRule.textColor_instruction }}
                                rightText={orderDetailModel.status>1?StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].productPrice):StringUtils.formatMoneyString(orderDetailModel.detail.productPrice)}
