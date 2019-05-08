@@ -16,7 +16,6 @@ const { search } = res;
  * @org www.sharegoodsmall.com
  * @email chenxiang@meeruu.com
  */
-
 class MyOrdersListPage extends BasePage {
     constructor(props) {
         super(props);
@@ -52,21 +51,23 @@ class MyOrdersListPage extends BasePage {
         this.didFocusSubscription && this.didFocusSubscription.remove();
     }
 
-    componentWillMount() {
-        let i = 0;
+    componentDidMount() {
+        this.firstLoad = true;
         this.didFocusSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
-                i++;
                 const { state } = payload;
                 console.log('willFocusSubscriptionOrdersList', payload);
-                if (state && state.routeName === 'order/order/MyOrdersListPage') {
-                    if (i > 1) {
-                        this.reLoads && this.reLoads.onRefresh();
-                    }
-
+                if (state && state.routeName === 'order/order/MyOrdersListPage' && !this.firstLoad) {
+                    this.reLoads && this.reLoads.onRefresh();
                 }
+                this.firstLoad = false;
             });
+        if (this.firstLoad) {
+            setTimeout(() => {
+                this.reLoads && this.reLoads.onRefresh();
+            }, 500);
+        }
     }
 
     _render() {

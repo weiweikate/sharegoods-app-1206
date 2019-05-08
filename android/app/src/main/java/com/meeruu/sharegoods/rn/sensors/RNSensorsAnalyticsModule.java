@@ -14,6 +14,8 @@ import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
 
 import org.json.JSONObject;
 
+import cn.jpush.android.api.JPushInterface;
+
 
 /**
  * Created by yang on 2017/4/5
@@ -31,13 +33,15 @@ import org.json.JSONObject;
 
 public class RNSensorsAnalyticsModule extends ReactContextBaseJavaModule {
 
-    public RNSensorsAnalyticsModule(ReactApplicationContext reactContext) {
-        super(reactContext);
-    }
-
     private static final String MODULE_NAME = "RNSensorsAnalyticsModule";
     private static final String MODULE_VERSION = "1.0.1";
     private static final String LOGTAG = "SA.RN";
+    private ReactApplicationContext mContext;
+
+    public RNSensorsAnalyticsModule(ReactApplicationContext reactContext) {
+        super(reactContext);
+        this.mContext = reactContext;
+    }
 
     /**
      * 返回一个字符串名字，这个名字在 JavaScript (RN)端标记这个模块。
@@ -212,6 +216,8 @@ public class RNSensorsAnalyticsModule extends ReactContextBaseJavaModule {
     public void login(String loginId) {
         try {
             SensorsDataAPI.sharedInstance().login(loginId);
+            SensorsDataAPI.sharedInstance().profilePushId("jgId",
+                    JPushInterface.getRegistrationID(this.mContext));
         } catch (Exception e) {
 
         }

@@ -21,8 +21,8 @@ android {
         applicationId rootProject.ext.android.applicationId
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
-        versionCode 1203
-        versionName "1.2.3"
+        versionCode 1205
+        versionName "1.2.5"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -94,7 +94,7 @@ android {
         }
         releaseStaging {
             signingConfig signingConfigs.release
-            buildConfigField "String", "CODEPUSH_KEY", '"HKzEg3HP45t9OtM1gJFYCxWkTelu6783993f-12ef-4196-b554-7a1aede160dd"'
+            buildConfigField "String", "CODEPUSH_KEY", '"94RNS0GDIN5Nz11zEuDHvFV0NXhY4ksvOXqog"'
         }
         release {
             minifyEnabled true
@@ -102,7 +102,7 @@ android {
             zipAlignEnabled true
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "CODEPUSH_KEY", '"iZdb5VLxosx59xBg3emyav97bwgw6783993f-12ef-4196-b554-7a1aede160dd"'
+            buildConfigField "String", "CODEPUSH_KEY", '"6ZFHpKAvxdVykH8IMLL3aLRxwwFk4ksvOXqog"'
         }
     }
 
