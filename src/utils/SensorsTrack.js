@@ -2,8 +2,10 @@ import { NativeModules,Platform } from 'react-native';
 // import SensorsEvent from './SensorsEvent'
 import SensorsEvent from './TrackEvent'
 import user from "../model/user";
+import apiEnvironment from '../api/ApiEnvironment';
+let timeStamp = null;
 const {
-    track,
+    track:nativeTrack,
     trackTimerStart,
     trackTimerEnd,
     trackViewScreen,
@@ -89,6 +91,26 @@ const trackEvent = {
     ...mineEvent,
     ...afterEvent,
 };
+
+function track(event_name,parmas) {
+    //不为线上环境就，不上传埋点数据
+    if (apiEnvironment.envType !== 'online') {
+        return;
+    }
+    let currentTimeStamp = new Date().getTime();
+    //时间间隔超过10分钟重新生成sessionId
+    if (!timeStamp || currentTimeStamp - timeStamp > 1000*60*10) {
+        timeStamp = currentTimeStamp
+    }
+    parmas = {
+        "platformType":Platform.OS ==="ios"?"iOS":"Android",
+        "userLevel":user.isLogin?user.level:"V1",
+        sessionId:'sessionId_'+timeStamp,
+        ...parmas
+    }
+    nativeTrack(event_name,parmas);
+}
+
 function trackUtil(p) {
     let arr = {};
     let keys = Object.keys(p);
@@ -98,8 +120,6 @@ function trackUtil(p) {
         let value = p[key]
         arr[key]= (s) => {
             track(value.name, {
-                "platformType":Platform.OS ==="ios"?"iOS":"Android",
-                "userLevel":user.isLogin?user.level:"V1",
                 ...value.params,...s})
         }
     }
