@@ -469,7 +469,7 @@ export default class MinePage extends BasePage {
                     flexDirection: 'row',
                     justifyContent: 'space-between'
                 }}>
-                    {this.accountItemView(StringUtils.formatMoneyString(user.availableBalance ? user.availableBalance : '0.00', false), '我的余额', () => {
+                    {this.accountItemView(StringUtils.formatMoneyString(user.availableBalance ? user.availableBalance : '0.00', false), '余额', () => {
                         this.go2CashDetailPage(1);
                         TrackApi.ViewAccountBalance();
                     })}
