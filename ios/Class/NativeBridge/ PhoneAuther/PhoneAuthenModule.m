@@ -29,17 +29,17 @@ RCT_EXPORT_METHOD(isCanPhoneAuthen:(RCTPromiseResolveBlock)resolve reject:(RCTPr
   }
 }
 RCT_EXPORT_METHOD(startPhoneAuthenWithPhoneNum:(NSString *)phoneNum resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject){
-  [PhoneAutherTool startPhoneAutherWithPhoneNum:phoneNum andFinshBlock:^(NSDictionary * _Nonnull resultDic) {
-    resolve(resultDic);
-  }];
+//  [PhoneAutherTool startPhoneAutherWithPhoneNum:phoneNum andFinshBlock:^(NSDictionary * _Nonnull resultDic) {
+//    resolve(resultDic);
+//  }];
 }
 
 RCT_EXPORT_METHOD(startLoginAuth:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 {
   
-  [PhoneAutherTool startPhoneAutherWithPhoneNum:@"" andFinshBlock:^(NSDictionary * _Nonnull resultDic) {
-    
-  }];
+//  [PhoneAutherTool startPhoneAutherWithPhoneNum:@"" andFinshBlock:^(NSDictionary * _Nonnull resultDic) {
+//
+//  }];
 }
 
 RCT_EXPORT_METHOD(checkInitResult:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)

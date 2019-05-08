@@ -23,6 +23,7 @@ DerivedData
 project.xcworkspace
 Pods/
 *.bundle
+!ATAuthSDK.bundle
 
 # Android/IntelliJ
 #
