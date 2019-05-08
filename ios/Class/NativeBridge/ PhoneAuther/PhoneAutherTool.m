@@ -51,7 +51,6 @@
             }
         }
     }];
-    
   });
 }
 +(BOOL)isCanPhoneAuthen{
