@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {
     View,
     Image,
+    TouchableWithoutFeedback,
     StyleSheet,
     FlatList, Clipboard
 } from 'react-native';
@@ -114,7 +115,7 @@ export class HeaderItemView extends Component {
                 <View style={styles.freightMonthView}>
                     {/*值为0*/}
                     <Text style={styles.freightMonthText}>快递：{freight == 0 ? '包邮' : `${freight}元`}</Text>
-                    <Text style={styles.freightMonthText}>{`月销: ${monthSaleCount}`}</Text>
+                    <Text style={styles.freightMonthText}>{`近期销量: ${monthSaleCount}`}</Text>
                 </View>
             </View>
         );
@@ -465,11 +466,11 @@ export class ContentItemView extends Component {
         if (height === 0) {
             return null;
         }
-        return <NoMoreClick onPress={() => {
+        return <TouchableWithoutFeedback onPress={() => {
             navigate(RouterMap.CheckBigImagesView, { imageUrls: [item] });
         }}>
             <Image source={{ uri: item }} style={{ width, height }}/>
-        </NoMoreClick>;
+        </TouchableWithoutFeedback>;
     }
 }
 

@@ -113,7 +113,7 @@ export default class Login extends BasePage {
         wxLoginAction((code, data) => {
             if (code === 10000) {
                 this.$navigateBack(-1);
-                this.params.callback && this.params.callBack();
+                this.params.callback &&  this.params.callback();
             } else if (code === 34005) {
                 //绑定手机号
                 this.$navigate(RouterMap.InputPhoneNum, data);

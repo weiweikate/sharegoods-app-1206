@@ -105,6 +105,7 @@ function track(event_name,parmas) {
     parmas = {
         "platformType":Platform.OS ==="ios"?"iOS":"Android",
         "userLevel":user.isLogin?user.level:"V1",
+        "distinct_id":user.isLogin?user.id:'',
         sessionId:'sessionId_'+timeStamp,
         ...parmas
     }
