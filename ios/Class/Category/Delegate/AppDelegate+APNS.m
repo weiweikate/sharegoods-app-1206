@@ -17,6 +17,7 @@
 #endif
 // 如果需要使用 idfa 功能所需要引入的头文件
 #import <AdSupport/AdSupport.h>
+#import <SensorsAnalyticsSDK.h>
 
 @implementation AppDelegate (APNS)
 
@@ -120,11 +121,10 @@
   [JPUSHService registerDeviceToken:deviceToken];
   [JPUSHService registrationIDCompletionHandler:^(int resCode, NSString *registrationID) {
     NSLog(@"%@",registrationID);
-//    [JPUSHService setAlias:@"家人组" completion:^(NSInteger iResCode, NSString *iAlias, NSInteger seq) {
-//      NSLog(@"isRescode---%ld",iResCode);
-//    } seq:1];
-//    [JPUSHService setTags:@"userID" completion:^(NSInteger iResCode, NSSet *iTags, NSInteger seq) {
-//    } seq:1];
+    if (resCode == 0) {
+      // 将极光推送的 Registration Id 存储在神策分析的用户 Profile "jgId" 中
+      [SensorsAnalyticsSDK.sharedInstance profilePushKey:@"jgId" pushId:registrationID];
+    }
   }];
   
 
