@@ -67,13 +67,13 @@ export default class Login extends BasePage {
                         {
                             createLoginButton(loginBtnType.localPhoneNumLoginType, "本机号码一键登录", () => {
                                 this._clickAction(loginBtnType.localPhoneNumLoginType);
-                            })
+                            },true)
                         }
                     </View> : <View style={Styles.middleBgContent}>
                         {
                             createLoginButton(loginBtnType.wxLoginBtnType, "微信授权登录", () => {
                                 this._clickAction(loginBtnType.wxLoginBtnType);
-                            })
+                            },true)
                         }
                     </View>
 

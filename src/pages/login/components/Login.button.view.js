@@ -112,7 +112,7 @@ const getTextStyle = {
 
 };
 
-const getLoginBtn = (btnStyle, btnText, btnClick, isC = true) => (<View style={getLoginBtnBgStyle[btnStyle]}>
+const getLoginBtn = (btnStyle, btnText, btnClick, isC = true) => (<View style={[getLoginBtnBgStyle[btnStyle],isC?{borderWidth:0}:null]}>
         {
             isC ?
                 <LinearGradient colors={["#FF1C89", "#FD0129"]}
