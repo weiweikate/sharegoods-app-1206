@@ -114,7 +114,7 @@ export class HeaderItemView extends Component {
                 <View style={styles.freightMonthView}>
                     {/*值为0*/}
                     <Text style={styles.freightMonthText}>快递：{freight == 0 ? '包邮' : `${freight}元`}</Text>
-                    <Text style={styles.freightMonthText}>{`月销: ${monthSaleCount}`}</Text>
+                    <Text style={styles.freightMonthText}>{`近期销量: ${monthSaleCount}`}</Text>
                 </View>
             </View>
         );
