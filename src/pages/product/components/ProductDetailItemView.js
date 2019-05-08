@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {
     View,
     Image,
+    TouchableWithoutFeedback,
     StyleSheet,
     FlatList, Clipboard
 } from 'react-native';
@@ -465,11 +466,11 @@ export class ContentItemView extends Component {
         if (height === 0) {
             return null;
         }
-        return <NoMoreClick onPress={() => {
+        return <TouchableWithoutFeedback onPress={() => {
             navigate(RouterMap.CheckBigImagesView, { imageUrls: [item] });
         }}>
             <Image source={{ uri: item }} style={{ width, height }}/>
-        </NoMoreClick>;
+        </TouchableWithoutFeedback>;
     }
 }
 
