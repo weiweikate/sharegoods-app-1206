@@ -2,10 +2,11 @@ import React, { Component } from "react";
 import {
     StyleSheet,
     View,
-    NativeModules
+    NativeModules,
+    TouchableOpacity
 } from "react-native";
 import {
-    UIText, MRText as Text, NoMoreClick
+    UIText, MRText as Text, NoMoreClick, UIImage
 } from "../../../../components/ui";
 import StringUtils from "../../../../utils/StringUtils";
 import ScreenUtils from "../../../../utils/ScreenUtils";
@@ -13,8 +14,11 @@ import DateUtils from "../../../../utils/DateUtils";
 import DesignRule from "../../../../constants/DesignRule";
 import { orderDetailModel } from "../../model/OrderDetailModel";
 import { observer } from "mobx-react/native";
+import {QYChatTool, beginChatType} from '../../../../utils/QYModule/QYChatTool'
 
 const { px2dp } = ScreenUtils;
+import res from '../../res'
+const kefu_icon = res.button.kefu_icon;
 
 @observer
 export default class OrderDetailTimeView extends Component {
@@ -34,6 +38,38 @@ export default class OrderDetailTimeView extends Component {
         StringUtils.clipboardSetString(orderDetailModel.getOrderNo());
         NativeModules.commModule.toast("订单号已经复制到剪切板");
     };
+
+    concactKeFu(){
+        orderDetailModel.status;
+        let shopId = '';
+        let title = '平台客服';
+        let desc = ''
+        let pictureUrlString = '';
+        if (orderDetailModel.warehouseOrderDTOList && orderDetailModel.warehouseOrderDTOList[0]){
+            let item = orderDetailModel.warehouseOrderDTOList[0];
+            shopId = item.supplierCode	|| '';
+            title = item.supplierName	|| '';
+            if (item.products && item.products[0]){
+                let product = item.products[0];
+                 desc = product.productName || '';
+                pictureUrlString = product.specImg || '';
+            }
+        }
+        QYChatTool.beginQYChat({
+            routePath: '',
+            urlString: '',
+            title,
+            shopId,
+            chatType: beginChatType.BEGIN_FROM_ORDER,
+            data: {
+                title: orderDetailModel.getOrderNo(),
+                desc,
+                pictureUrlString,
+                urlString:'',
+                note:'',
+            }}
+        )
+    }
 
     render() {
         return (
@@ -68,6 +104,12 @@ export default class OrderDetailTimeView extends Component {
                     <UIText
                         value={"完成时间：" + DateUtils.getFormatDate(orderDetailModel.warehouseOrderDTOList[0].autoReceiveTime ? orderDetailModel.warehouseOrderDTOList[0].autoReceiveTime / 1000 : orderDetailModel.warehouseOrderDTOList[0].finishTime / 1000)}
                         style={styles.textOrderDownStyle}/> : null}
+                <TouchableOpacity style={styles.kefuContainer}
+                                  onPress={()=>{this.concactKeFu()}}
+                >
+                    <UIImage source={kefu_icon} style={styles.kefuIcon}/>
+                    <Text style={styles.kefuText}>联系客服</Text>
+                </TouchableOpacity>
                 {this.renderWideLine()}
             </View>
         );
@@ -121,5 +163,22 @@ const styles = StyleSheet.create({
         backgroundColor: DesignRule.bgColor,
         height: 0.5,
         width: "100%"
+    },
+    kefuContainer: {
+        height: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row',
+        borderTopColor: DesignRule.bgColor,
+        borderTopWidth: 1
+    },
+    kefuIcon: {
+        height: 20,
+        width: 20,
+        marginRight: 5
+    },
+    kefuText: {
+        fontSize: 13,
+        color: DesignRule.textColor_instruction
     }
 });
