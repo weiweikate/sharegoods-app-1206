@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -17,6 +16,12 @@
 		01091618227053B00043E997 /* RecommendedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01091617227053B00043E997 /* RecommendedView.m */; };
 		0109161B227053D30043E997 /* RecommendedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0109161A227053D30043E997 /* RecommendedCell.m */; };
 		01262D79228009CB008D4F7E /* RecTypeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01262D78228009CB008D4F7E /* RecTypeCell.m */; };
+		01263012228113D2008D4F7E /* ActiveView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01263011228113D2008D4F7E /* ActiveView.m */; };
+		012630182281196A008D4F7E /* ActiveModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 012630172281196A008D4F7E /* ActiveModel.m */; };
+		0126301D22811AB1008D4F7E /* ActivityCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0126301C22811AB1008D4F7E /* ActivityCell.m */; };
+		0126302022811B3E008D4F7E /* ActivetyViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0126301F22811B3D008D4F7E /* ActivetyViewManager.m */; };
+		012630E2228175A1008D4F7E /* ShowShareImgMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 012630E1228175A1008D4F7E /* ShowShareImgMaker.m */; };
+		012630E322826C0C008D4F7E /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0126302122815AEF008D4F7E /* Accelerate.framework */; };
 		014FF1C222708C30008B0094 /* JXBodyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 014FF1C122708C30008B0094 /* JXBodyView.m */; };
 		014FF20122708C57008B0094 /* JXFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 014FF20022708C57008B0094 /* JXFooterView.m */; };
 		017390C32270853700FD46DD /* JXModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 017390C22270853700FD46DD /* JXModel.m */; };
@@ -263,13 +268,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 62CA59B71E3C173B002D7188;
 			remoteInfo = Lottie_iOS;
-		};
-		03649742226EABD700B48ADF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0347BAC12237CC670011184A /* Lottie.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 6445B0D5207E0D4D00D84F6A;
-			remoteInfo = LottieLibraryMacOS;
 		};
 		03A568E021DEFA0C00D6A770 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -670,6 +668,18 @@
 		0109161A227053D30043E997 /* RecommendedCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RecommendedCell.m; sourceTree = "<group>"; };
 		01262D3B228009CA008D4F7E /* RecTypeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecTypeCell.h; sourceTree = "<group>"; };
 		01262D78228009CB008D4F7E /* RecTypeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecTypeCell.m; sourceTree = "<group>"; };
+		01263010228113D2008D4F7E /* ActiveView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ActiveView.h; sourceTree = "<group>"; };
+		01263011228113D2008D4F7E /* ActiveView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ActiveView.m; sourceTree = "<group>"; };
+		012630162281196A008D4F7E /* ActiveModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ActiveModel.h; sourceTree = "<group>"; };
+		012630172281196A008D4F7E /* ActiveModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ActiveModel.m; sourceTree = "<group>"; };
+		0126301B22811AB1008D4F7E /* ActivityCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityCell.h; sourceTree = "<group>"; };
+		0126301C22811AB1008D4F7E /* ActivityCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityCell.m; sourceTree = "<group>"; };
+		0126301E22811B3D008D4F7E /* ActivetyViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivetyViewManager.h; sourceTree = "<group>"; };
+		0126301F22811B3D008D4F7E /* ActivetyViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivetyViewManager.m; sourceTree = "<group>"; };
+		0126302122815AEF008D4F7E /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		012630E0228175A1008D4F7E /* ShowShareImgMaker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShowShareImgMaker.h; sourceTree = "<group>"; };
+		012630E1228175A1008D4F7E /* ShowShareImgMaker.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShowShareImgMaker.m; sourceTree = "<group>"; };
+		012631F22282AB05008D4F7E /* libreact-native-blur.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libreact-native-blur.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		014FF1C022708C30008B0094 /* JXBodyView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JXBodyView.h; sourceTree = "<group>"; };
 		014FF1C122708C30008B0094 /* JXBodyView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JXBodyView.m; sourceTree = "<group>"; };
 		014FF1FF22708C57008B0094 /* JXFooterView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JXFooterView.h; sourceTree = "<group>"; };
@@ -1014,6 +1024,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				012630E322826C0C008D4F7E /* Accelerate.framework in Frameworks */,
 				10611B422249D662001960A9 /* JavaScriptCore.framework in Frameworks */,
 				104548842239FB5D00E73EF8 /* libCodePush.a in Frameworks */,
 				0347BAD92237CD120011184A /* libLottieReactNative.a in Frameworks */,
@@ -1188,6 +1199,29 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		01262FB022811353008D4F7E /* Activity */ = {
+			isa = PBXGroup;
+			children = (
+				0126301E22811B3D008D4F7E /* ActivetyViewManager.h */,
+				0126301F22811B3D008D4F7E /* ActivetyViewManager.m */,
+				01262FB822811353008D4F7E /* Model */,
+				01263010228113D2008D4F7E /* ActiveView.h */,
+				01263011228113D2008D4F7E /* ActiveView.m */,
+				0126301B22811AB1008D4F7E /* ActivityCell.h */,
+				0126301C22811AB1008D4F7E /* ActivityCell.m */,
+			);
+			path = Activity;
+			sourceTree = "<group>";
+		};
+		01262FB822811353008D4F7E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				012630162281196A008D4F7E /* ActiveModel.h */,
+				012630172281196A008D4F7E /* ActiveModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		033C66B521927AA800433026 /* MRBannerView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1212,7 +1246,6 @@
 				0347BACB2237CC680011184A /* Lottie.framework */,
 				0347BACD2237CC680011184A /* Lottie.framework */,
 				0347BACF2237CC680011184A /* libLottie.a */,
-				03649743226EABD700B48ADF /* libLottie.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1377,6 +1410,8 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				012631F22282AB05008D4F7E /* libreact-native-blur.a */,
+				0126302122815AEF008D4F7E /* Accelerate.framework */,
 				10611AFA2249D662001960A9 /* JavaScriptCore.framework */,
 				101157C7219AB72A001F5E99 /* GLKit.framework */,
 				101157C5219AB715001F5E99 /* libc++.tbd */,
@@ -1569,6 +1604,8 @@
 				506835C321379B78001AB175 /* JRShareManager.m */,
 				CDA2F57621744443005FD4B3 /* ShareImageMaker.h */,
 				CDA2F57721744443005FD4B3 /* ShareImageMaker.m */,
+				012630E0228175A1008D4F7E /* ShowShareImgMaker.h */,
+				012630E1228175A1008D4F7E /* ShowShareImgMaker.m */,
 			);
 			path = "Share-分享";
 			sourceTree = "<group>";
@@ -1576,8 +1613,9 @@
 		506835C421379B78001AB175 /* NativeBridge */ = {
 			isa = PBXGroup;
 			children = (
+				01262FB022811353008D4F7E /* Activity */,
 				01091612227053450043E997 /* Recommended */,
-				C4F01EE9222D13F500ACA1B4 /*  PhoneAuther */,
+				C4F01EE9222D13F500ACA1B4 /* PhoneAuther */,
 				CD5EAF9A221BFADF007AAEE0 /* ShowGroundView */,
 				CD3A89D021F05DD3003B9803 /* MRLoadingView */,
 				50043A7721C76D6100270DFA /* ShopCart */,
@@ -1921,7 +1959,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		C4F01EE9222D13F500ACA1B4 /*  PhoneAuther */ = {
+		C4F01EE9222D13F500ACA1B4 /* PhoneAuther */ = {
 			isa = PBXGroup;
 			children = (
 				C4F01EEA222D141200ACA1B4 /* PhoneAutherTool.h */,
@@ -2453,13 +2491,6 @@
 			remoteRef = 0347BACE2237CC680011184A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		03649743226EABD700B48ADF /* libLottie.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libLottie.a;
-			remoteRef = 03649742226EABD700B48ADF /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		03A568E121DEFA0C00D6A770 /* libRNGeolocation.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -2972,6 +3003,7 @@
 				5068363521379B78001AB175 /* RCTPayTool.m in Sources */,
 				C4F01EEC222D141200ACA1B4 /* PhoneAutherTool.m in Sources */,
 				5068362E21379B78001AB175 /* JRLoadingAndToastTool.m in Sources */,
+				012630E2228175A1008D4F7E /* ShowShareImgMaker.m in Sources */,
 				5077FC8221A4F987003B860D /* HBRSAHandler.m in Sources */,
 				5068361221379B78001AB175 /* UIView+captureSceen.m in Sources */,
 				CD3A8A0A21F05E17003B9803 /* MRLoadingViewManager.m in Sources */,
@@ -3002,10 +3034,13 @@
 				5068363621379B78001AB175 /* JRAddressPickView.m in Sources */,
 				CDAB6D21219AC5F800DE6716 /* TYWaterWaveView.m in Sources */,
 				CD1E51C921C9D96B007103A1 /* BGKeychainTool.m in Sources */,
+				0126301D22811AB1008D4F7E /* ActivityCell.m in Sources */,
+				01263012228113D2008D4F7E /* ActiveView.m in Sources */,
 				50043A8121C79C4900270DFA /* ShopCartListView.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				C4D4505A2249F6B800196E1B /* JRServiceManager+Util.m in Sources */,
 				5077FCE321A4FE37003B860D /* NSString+Base64.m in Sources */,
+				012630182281196A008D4F7E /* ActiveModel.m in Sources */,
 				CD5EAFA7221BFE89007AAEE0 /* ShowQueryModel.m in Sources */,
 				017390C32270853700FD46DD /* JXModel.m in Sources */,
 				5068363921379B78001AB175 /* SGQRCodeScanManager.m in Sources */,
@@ -3032,6 +3067,7 @@
 				CD5EAF48221BEA9F007AAEE0 /* NetWorkTool.m in Sources */,
 				CD5EB149221EA933007AAEE0 /* ShowCollectionReusableView.m in Sources */,
 				CD3A8A0721F05DF3003B9803 /* MRLoadingView.m in Sources */,
+				0126302022811B3E008D4F7E /* ActivetyViewManager.m in Sources */,
 				CD5EB143221E9AB3007AAEE0 /* ShowHeaderView.m in Sources */,
 				0109161B227053D30043E997 /* RecommendedCell.m in Sources */,
 				CDAB6D20219AC5F800DE6716 /* TYWaveProgressView.m in Sources */,

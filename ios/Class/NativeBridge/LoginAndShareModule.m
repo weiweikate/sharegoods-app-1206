@@ -9,6 +9,8 @@
 #import "LoginAndShareModule.h"
 #import "UIView+captureSceen.h"
 #import "ShareImageMaker.h"
+#import "ShowShareImgMaker.h"
+
 #import <AssetsLibrary/AssetsLibrary.h>
 
 @implementation LoginAndShareModule
@@ -174,6 +176,35 @@ RCT_EXPORT_METHOD(creatShareImage:(id) jsonParam
                                                                }];
   });
 }
+
+/**
+ 
+ 
+ @param id
+ {
+ imageUrlStr: NSString,
+ titleStr: NSString,
+ priceStr: NSString,
+ QRCodeStr: NSString,
+ }
+ onSuccess(NSSting) 成功的回调
+ onError(NSSting)   失败的回调
+ */
+RCT_EXPORT_METHOD(creatShowShareImage:(id) jsonParam
+                  onSuccess:(RCTResponseSenderBlock) onSuccess
+                  onError:(RCTResponseSenderBlock) onError){
+  dispatch_async(dispatch_get_main_queue(), ^{
+    ShowShareImgMakerModel * model = [ShowShareImgMakerModel modelWithJSON:jsonParam];
+    [[ShowShareImgMaker sharedInstance] creatShareImageWithShareImageMakerModel:model completion:^(NSString *paths, NSString *errorStr) {
+      if (errorStr) {
+        onError(@[errorStr]);
+      }else{
+        onSuccess(@[paths]);
+      }
+    }];
+  });
+}
+
 /**
 @QRCodeStr  二维码字符串
 onSuccess(NSSting) 成功的回调
