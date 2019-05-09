@@ -312,20 +312,14 @@ var styles = StyleSheet.create({
         alignItems: 'center'
     },
     addProductWrapper: {
-        borderWidth: 1,
-        borderColor: DesignRule.mainColor,
-        height: px2dp(34),
-        borderRadius: px2dp(17),
         alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: DesignRule.white,
-        marginTop: px2dp(15),
-        width: px2dp(135),
-        alignSelf: 'center'
+        marginTop: px2dp(11),
+        marginLeft:DesignRule.margin_page,
+        alignSelf:'flex-start'
     },
     addProductText: {
         color: DesignRule.mainColor,
-        fontSize: DesignRule.fontSize_mediumBtnText
+        fontSize: DesignRule.fontSize_threeTitle_28
     },
     addIconStyle: {
         width: px2dp(20),

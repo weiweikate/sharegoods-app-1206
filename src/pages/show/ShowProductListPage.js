@@ -77,36 +77,9 @@ export default class ShowProductListPage extends BasePage {
         let effectiveArr = originData.shoppingCartGoodsVOS;
         if (effectiveArr && effectiveArr instanceof Array && effectiveArr.length > 0) {
             effectiveArr.map((itemObj, index) => {
-                //增加两个字段
-                itemObj.type = itemObj.activityType;//当前分组类型
-                itemObj.middleTitle = '';
-                itemObj.key = index;
-                itemObj.data = itemObj.products;
-                itemObj.data.map((goodItem, goodItemIndex) => {
-                    // 有一个showPrice 搞活动显示的价格，有就重置掉price，没有你就老实的用原来的 OJBK?
-                    goodItem.price = goodItem.showPrice ? goodItem.showPrice : goodItem.price;
-                    goodItem.sectionType = itemObj.activityType;//当前组所属类型 8 经验值 null是其他
-                    goodItem.isSelected = false;
-                    goodItem.key = `${index}_${goodItemIndex}`;
-                    goodItem.nowTime = itemObj.nowTime;//系统当前时间戳
-                    goodItem.activityCode = itemObj.activityCode;
-                    goodItem.topSpace = itemObj.activityType == 8 ? 0 : 10;
-
-                    let tempSpecContent = '规格:';
-                    goodItem.specifies.map((specify, specifyIndex) => {
-                        if (specifyIndex === 0) {
-                            tempSpecContent += specify.paramValue;
-                        } else {
-                            tempSpecContent += '-' + specify.paramValue;
-                        }
-                    });
-                    goodItem.specifyContent = tempSpecContent;
-
-                    tempAllData.push(itemObj);
-                });
+                Array.prototype.push.apply(tempAllData,itemObj.products);
             })
         }
-        // alert(JSON.stringify(tempAllData))
         return tempAllData;
 
     };
@@ -129,31 +102,21 @@ export default class ShowProductListPage extends BasePage {
 
     };
 
-    // _renderBuy = () => {
-    //     return (
-    //         <View style={styles.listBackground}/>
-    //     );
-    // };
-
-    _listItemRender = ({ itemData }) => {
-        // return null;
-        alert(JSON.stringify(itemData.item))
+    _listItemRender = ( {item} ) => {
         return (
             <View style={styles.itemWrapper}>
-                <UIImage source={{ uri: itemData.item.imgUrl ? itemData.item.imgUrl : '' }}
+                <UIImage source={{ uri: item.imgUrl ? item.imgUrl : '' }}
                          style={[styles.validProductImg]}/>
-                <View>
+                <View style={{ height:px2dp(70)}}>
                     <MRText numberOfLines={1}
                             style={styles.itemTitle}
                             ellipsizeMode={'tail'}>
-                        {itemData.item.productName ? itemData.item.productName : ''}
+                        {item.productName ? item.productName : ''}
                     </MRText>
-                    <MRText numberOfLines={1}
-                            ellipsizeMode={'tail'}
-                            style={styles.contentStyle}>
-                        {itemData.item.specifyContent ? itemData.item.specifyContent : ''}
+                    <View style={{flex:1}}/>
+                    <MRText style={styles.priceText}>
+                        <MRText style={{fontSize:px2dp(10)}}>￥</MRText>{item.showPrice ? item.showPrice : item.price}
                     </MRText>
-
                 </View>
             </View>
         );
@@ -288,11 +251,13 @@ var styles = StyleSheet.create({
         borderRadius: px2dp(5),
         flexDirection: 'row',
         marginBottom: px2dp(10),
-        padding: px2dp(5)
+        padding: px2dp(5),
+        marginHorizontal:DesignRule.margin_page,
+        width:(DesignRule.width-DesignRule.margin_page*2)
     },
     validProductImg: {
-        width: px2dp(80),
-        height: px2dp(80)
+        width: px2dp(60),
+        height: px2dp(60)
     },
     itemTitle: {
         color: DesignRule.textColor_mainTitle,
@@ -301,6 +266,10 @@ var styles = StyleSheet.create({
     contentStyle: {
         color: DesignRule.textColor_instruction,
         fontSize: DesignRule.fontSize_threeTitle
+    },
+    priceText:{
+        color:DesignRule.mainColor,
+        fontSize:px2dp(18)
     }
 });
 
