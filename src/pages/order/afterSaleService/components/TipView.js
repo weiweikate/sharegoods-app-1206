@@ -31,7 +31,7 @@ export default class TipView extends React.Component {
         } else if (pageType === 1) {//退货详情
 
             if (status === 2) {//同意申请
-                tip = '商家已同意换货申请，请尽早发货';
+                tip = '商家已同意退货退款申请，请尽早发货';
             } else if (status === 8) {//超时关闭
                 tip = '已撤销退货退款申请，申请已关闭，交易将正常进行，请关注交易';
             }

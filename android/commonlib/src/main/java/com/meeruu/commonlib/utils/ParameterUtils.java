@@ -22,6 +22,7 @@ public class ParameterUtils {
     // 无网络连接错误码
     public static final String RESPONE_CODE_NETERR = "net_err";
     public static final String RN_MAIN_NAME = "sharegoods";
+    public static final String CODE_PUSH_SERVER = "https://codepush.sharegoodsmall.com/";
     /**
      * 标题
      */

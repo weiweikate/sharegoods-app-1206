@@ -129,7 +129,9 @@ public class CommModule extends ReactContextBaseJavaModule {
         // 1.处理业务逻辑...
         String result = "处理结果：" + msg;
         // 2.回调RN,即将处理结果返回给RN
-        callback.invoke(result);
+        if(callback != null){
+            callback.invoke(result);
+        }
     }
 
     /**
@@ -162,7 +164,9 @@ public class CommModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void netCommParas(Callback callback) {
         final NetCommonParamsBean paramsBean = new NetCommonParamsBean();
-        callback.invoke(JSON.toJSONString(paramsBean));
+        if(callback != null) {
+            callback.invoke(JSON.toJSONString(paramsBean));
+        }
     }
 
     /**
@@ -202,7 +206,9 @@ public class CommModule extends ReactContextBaseJavaModule {
         CookieSyncManager.createInstance(mContext);
         CookieManager cookieManager = CookieManager.getInstance();
         cookieManager.setAcceptCookie(true);
-        callback.invoke(cookieManager.getCookie(url));
+        if(callback != null) {
+            callback.invoke(cookieManager.getCookie(url));
+        }
     }
 
     /**
@@ -212,7 +218,9 @@ public class CommModule extends ReactContextBaseJavaModule {
     public void RN_ImageCompression(ReadableArray filePaths, ReadableArray fileSizes, Integer maxSize, Callback callback) {
         List list = filePaths.toArrayList();
         if (list == null) {
-            callback.invoke();
+            if(callback != null) {
+                callback.invoke();
+            }
             return;
         }
         for (int i = 0; i < list.size(); i++) {
@@ -232,7 +240,9 @@ public class CommModule extends ReactContextBaseJavaModule {
             }
             BitmapUtils.compressBitmap(filePath, (int) maxSize.doubleValue() / 1024, filePath);
         }
-        callback.invoke();
+        if(callback != null) {
+            callback.invoke();
+        }
     }
 
 
@@ -347,7 +357,9 @@ public class CommModule extends ReactContextBaseJavaModule {
         try {
             long s = ImageCacheUtils.getInstance().getCacheSize(mContext);
             int reslut = new Long(s).intValue();
-            callback.invoke(reslut);
+            if(callback != null) {
+                callback.invoke(reslut);
+            }
         } catch (Exception e) {
             LogUtils.d(e.getMessage());
         }
@@ -359,7 +371,9 @@ public class CommModule extends ReactContextBaseJavaModule {
             // 清楚七鱼缓存
             Unicorn.clearCache();
             ImageCacheUtils.getInstance().deleteCacheFloder();
-            callback.invoke();
+            if(callback != null) {
+                callback.invoke();
+            }
         } catch (Exception e) {
             LogUtils.d(e.getMessage());
         }
@@ -382,7 +396,9 @@ public class CommModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void isPushStopped(Callback callback) {
-        callback.invoke(JPushInterface.isPushStopped(mContext));
+        if(callback != null) {
+            callback.invoke(JPushInterface.isPushStopped(mContext));
+        }
     }
 
     /*

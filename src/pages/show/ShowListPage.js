@@ -56,21 +56,8 @@ export default class ShowListPage extends BasePage {
         this.lastStopScrollTime = -1;
     }
 
-    componentWillMount() {
+    componentDidMount(){
         this.setState({ left: this.params.fromHome });
-        this.willFocusSubscription = this.props.navigation.addListener(
-            'willFocus',
-            payload => {
-                const { state } = payload;
-                console.log('ShowListPage willFocus', state);
-                if (state && (state.routeName === 'ShowListPage' || state.routeName === 'show/ShowListPage')) {
-                    this.setState({
-                        pageFocused: true
-                    });
-                }
-
-            }
-        );
         this.didBlurSubscription = this.props.navigation.addListener(
             'willBlur',
             payload => {
@@ -90,24 +77,23 @@ export default class ShowListPage extends BasePage {
             'didFocus',
             payload => {
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
-                this.setState({
-                    pageFocused: true
-                });
+                const { state } = payload;
+                if (state && (state.routeName === 'ShowListPage' || state.routeName === 'show/ShowListPage')) {
+                    this.setState({
+                        pageFocused: true
+                    });
+                }
             }
         );
         this.setState({ needsExpensive: true });
-    }
 
-    componentDidMount(){
         this.listener = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
         this.publishListener = DeviceEventEmitter.addListener('PublishShowFinish', ()=>{
             this._gotoPage(2)
         });
-
     }
 
     componentWillUnmount() {
-        this.willFocusSubscription && this.willFocusSubscription.remove();
         this.didBlurSubscription && this.didBlurSubscription.remove();
         this.didFocusSubscription && this.didFocusSubscription.remove();
         this.listener && this.listener.remove();
@@ -358,7 +344,7 @@ export default class ShowListPage extends BasePage {
 
 let styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
     },
     underline: {
         height: 0

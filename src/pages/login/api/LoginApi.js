@@ -6,7 +6,8 @@ const api = {
     //用户注册
     signUser: ['/user/userSign/signUser', { isRSA: true }],
     //验证码登陆
-    codeLogin: ['/user/userLogin/codeLogin', { isRSA: true }],
+    // codeLogin: ['/user/userLogin/codeLogin', { isRSA: true }],
+    codeLogin:['/user/userLogin/codeLoginWithRegister',{isRSA:true}],
     //密码登陆
     passwordLogin: ['/user/userLogin/passwordLogin', { isRSA: true }],
     //app微信登陆

@@ -87,14 +87,6 @@ export default class RecommendPage extends BasePage {
                 bannerModule.loadBannerList();
             }
         });
-        this.willFocusSubscription = this.props.navigation.addListener(
-            'willFocus',
-            payload => {
-                this.setState({
-                    pageFocused: true
-                });
-            }
-        );
         this.willBlurSubscription = this.props.navigation.addListener(
             'willBlur',
             payload => {
@@ -118,7 +110,6 @@ export default class RecommendPage extends BasePage {
     componentWillUnmount() {
         this.listenerBannerRefresh && this.listenerBannerRefresh.remove();
         this.willBlurSubscription && this.willBlurSubscription.remove();
-        this.willFocusSubscription && this.willFocusSubscription.remove();
         this.didFocusSubscription && this.didFocusSubscription.remove();
     }
 

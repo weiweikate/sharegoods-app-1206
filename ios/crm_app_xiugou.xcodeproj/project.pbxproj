@@ -256,13 +256,6 @@
 			remoteGlobalIDString = 62CA59B71E3C173B002D7188;
 			remoteInfo = Lottie_iOS;
 		};
-		03649742226EABD700B48ADF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0347BAC12237CC670011184A /* Lottie.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 6445B0D5207E0D4D00D84F6A;
-			remoteInfo = LottieLibraryMacOS;
-		};
 		03A568E021DEFA0C00D6A770 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BC4C1D05C5514093933F2341 /* RNGeolocation.xcodeproj */;
@@ -542,6 +535,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 358F4ED71D1E81A9004DF814;
 			remoteInfo = RCTBlob;
+		};
+		BF1AD72C2282872700915D22 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0347BAC12237CC670011184A /* Lottie.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6445B0D5207E0D4D00D84F6A;
+			remoteInfo = LottieLibraryMacOS;
 		};
 		BF6EE5F2214F89C2007C1185 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1149,7 +1149,7 @@
 				0347BACB2237CC680011184A /* Lottie.framework */,
 				0347BACD2237CC680011184A /* Lottie.framework */,
 				0347BACF2237CC680011184A /* libLottie.a */,
-				03649743226EABD700B48ADF /* libLottie.a */,
+				BF1AD72D2282872700915D22 /* libLottie.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2188,6 +2188,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -2387,13 +2388,6 @@
 			fileType = archive.ar;
 			path = libLottie.a;
 			remoteRef = 0347BACE2237CC680011184A /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		03649743226EABD700B48ADF /* libLottie.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libLottie.a;
-			remoteRef = 03649742226EABD700B48ADF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		03A568E121DEFA0C00D6A770 /* libRNGeolocation.a */ = {
@@ -2667,6 +2661,13 @@
 			fileType = archive.ar;
 			path = libRCTBlob.a;
 			remoteRef = ADBDB9261DFEBF0700ED6528 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		BF1AD72D2282872700915D22 /* libLottie.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLottie.a;
+			remoteRef = BF1AD72C2282872700915D22 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		BF6EE5F3214F89C2007C1185 /* libBVLinearGradient.a */ = {
@@ -3146,7 +3147,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODEPUSH_KEY = "31r7ZbKmqulZicphxPwDPJZNoMHC6783993f-12ef-4196-b554-7a1aede160dd";
+				CODEPUSH_HOST = "https://codepush.sharegoodsmall.com/";
+				CODEPUSH_KEY = PDjCQYi8abVyq72JDGrfJoYmKvyE4ksvOXqog;
 				CODE_SIGN_ENTITLEMENTS = crm_app_xiugou/crm_app_xiugou.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -3181,6 +3183,7 @@
 					"$(PROJECT_DIR)/Class/openssl/include",
 					"$(PROJECT_DIR)/Class/libs/QIYU_iOS_SDK/SDK",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -3294,6 +3297,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODEPUSH_HOST = "https://codepush.sharegoodsmall.com/";
 				CODE_SIGN_ENTITLEMENTS = crm_app_xiugou/crm_app_xiugou.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -3355,7 +3359,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODEPUSH_KEY = "V0Zn0oYGrJd0AWgwz4teLOX69aas6783993f-12ef-4196-b554-7a1aede160dd";
+				CODEPUSH_HOST = "https://codepush.sharegoodsmall.com/";
+				CODEPUSH_KEY = "gBw0o3x8miBkB80LLWHDdmBax4G34ksvOXqog ";
 				CODE_SIGN_ENTITLEMENTS = crm_app_xiugou/crm_app_xiugou.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
