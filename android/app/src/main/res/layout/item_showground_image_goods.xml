@@ -56,24 +56,13 @@
         android:textSize="13sp" />
 
 
-    <TextView
-        android:id="@+id/content_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/content"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_toRightOf="@id/user_icon"
-        android:text="@string/spread_out"
-        android:textColor="@color/mainColor"
-        android:textSize="13sp" />
 
     <com.meeruu.sharegoods.rn.showground.widgets.GridView.NineGridView
         android:id="@+id/nine_grid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/content_button"
-        android:layout_marginTop="5dp"
+        android:layout_below="@id/content"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="5dp"
         android:layout_toRightOf="@id/user_icon" />
 

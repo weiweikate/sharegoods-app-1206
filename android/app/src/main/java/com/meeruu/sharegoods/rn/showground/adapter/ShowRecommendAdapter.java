@@ -51,49 +51,8 @@ public class ShowRecommendAdapter extends BaseQuickAdapter<ShowRecommendBean, Ba
     @Override
     protected void convert(final BaseViewHolder helper, final ShowRecommendBean item) {
         final TextView content = helper.getView(R.id.content);
-        final TextView button = helper.getView(R.id.content_button);
 
-        //如果不需要展开按钮隐藏
-        content.post(new Runnable() {
-            @Override
-            public void run() {
-                if (content.getLineCount() > 3) {
-                    return;
-                }
-                int ellipsisCount = content.getLayout().getEllipsisCount(content.getLineCount() - 1);
-                if (ellipsisCount > 0) {
-                    button.setVisibility(View.VISIBLE);
-                } else {
-                    button.setVisibility(View.GONE);
-                }
-            }
-        });
 
-        //展开按钮
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!item.isHasExpand()) {
-                    UiThreadUtil.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            content.setMaxLines(Integer.MAX_VALUE);
-                            setExpandValue(helper.getAdapterPosition(), true);
-                            button.setText(R.string.pack_up);
-                        }
-                    });
-                } else {
-                    UiThreadUtil.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            content.setMaxLines(3);
-                            setExpandValue(helper.getAdapterPosition(), false);
-                            button.setText(R.string.spread_out);
-                        }
-                    });
-                }
-            }
-        });
 
         NineGridView nineGridView = helper.getView(R.id.nine_grid);
         List<ImageInfo> imageInfoList = new ArrayList<>();
