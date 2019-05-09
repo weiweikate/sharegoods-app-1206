@@ -20,6 +20,7 @@ import backIconImg from '../../comm/res/button/icon_header_back.png';
 import { MRText, UIImage } from '../../components/ui';
 import DesignRule from '../../constants/DesignRule';
 import ShowApi from './ShowApi';
+import EmptyUtils from '../../utils/EmptyUtils';
 
 const { px2dp } = ScreenUtils;
 
@@ -77,8 +78,8 @@ export default class ShowProductListPage extends BasePage {
         let effectiveArr = originData.shoppingCartGoodsVOS;
         if (effectiveArr && effectiveArr instanceof Array && effectiveArr.length > 0) {
             effectiveArr.map((itemObj, index) => {
-                Array.prototype.push.apply(tempAllData,itemObj.products);
-            })
+                Array.prototype.push.apply(tempAllData, itemObj.products);
+            });
         }
         return tempAllData;
 
@@ -99,26 +100,42 @@ export default class ShowProductListPage extends BasePage {
                 });
             }
         }
-
     };
 
-    _listItemRender = ( {item} ) => {
+    _listItemRender = ({ item }) => {
         return (
-            <View style={styles.itemWrapper}>
-                <UIImage source={{ uri: item.imgUrl ? item.imgUrl : '' }}
-                         style={[styles.validProductImg]}/>
-                <View style={{ height:px2dp(70)}}>
-                    <MRText numberOfLines={1}
-                            style={styles.itemTitle}
-                            ellipsizeMode={'tail'}>
-                        {item.productName ? item.productName : ''}
-                    </MRText>
-                    <View style={{flex:1}}/>
-                    <MRText style={styles.priceText}>
-                        <MRText style={{fontSize:px2dp(10)}}>￥</MRText>{item.showPrice ? item.showPrice : item.price}
-                    </MRText>
+            <TouchableWithoutFeedback onPress={()=>{
+                let spus = this.params.spus;
+                if(!EmptyUtils.isEmptyArr(spus)){
+                    if(spus.indexOf(item.spuCode) !== -1){
+                        this.$toastShow('已经选择过该商品！')
+                        return
+                    }
+                }
+
+                let callBack = this.params.callBack;
+                callBack && callBack(item);
+                this.$navigateBack();
+            }}>
+                <View style={styles.itemWrapper}>
+                    <UIImage source={{ uri: item.imgUrl ? item.imgUrl : '' }}
+                             style={[styles.validProductImg]}/>
+                    <View style={{ height: px2dp(70) }}>
+                        <MRText numberOfLines={1}
+                                style={styles.itemTitle}
+                                ellipsizeMode={'tail'}>
+                            {item.productName ? item.productName : ''}
+                        </MRText>
+                        <View style={{ flex: 1 }}/>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <MRText style={{ fontSize: px2dp(10), color: DesignRule.mainColor }}>￥</MRText>
+                            <MRText style={styles.priceText}>
+                                {item.showPrice ? item.showPrice : item.price}
+                            </MRText>
+                        </View>
+                    </View>
                 </View>
-            </View>
+            </TouchableWithoutFeedback>
         );
     };
 
@@ -252,8 +269,8 @@ var styles = StyleSheet.create({
         flexDirection: 'row',
         marginBottom: px2dp(10),
         padding: px2dp(5),
-        marginHorizontal:DesignRule.margin_page,
-        width:(DesignRule.width-DesignRule.margin_page*2)
+        marginHorizontal: DesignRule.margin_page,
+        width: (DesignRule.width - DesignRule.margin_page * 2)
     },
     validProductImg: {
         width: px2dp(60),
@@ -261,15 +278,16 @@ var styles = StyleSheet.create({
     },
     itemTitle: {
         color: DesignRule.textColor_mainTitle,
-        fontSize: DesignRule.fontSize_mediumBtnText
+        fontSize: DesignRule.fontSize_mediumBtnText,
+        width: DesignRule.width - px2dp(115)
     },
     contentStyle: {
         color: DesignRule.textColor_instruction,
         fontSize: DesignRule.fontSize_threeTitle
     },
-    priceText:{
-        color:DesignRule.mainColor,
-        fontSize:px2dp(18)
+    priceText: {
+        color: DesignRule.mainColor,
+        fontSize: px2dp(18)
     }
 });
 

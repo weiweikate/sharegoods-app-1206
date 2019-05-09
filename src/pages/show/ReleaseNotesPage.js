@@ -41,7 +41,8 @@ export default class ReleaseNotesPage extends BasePage {
             showEmoji: false,
             showEmojiButton: false,
             text: '',
-            keyBoardHeight: 0
+            keyBoardHeight: 0,
+            products: []
         };
 
     }
@@ -149,9 +150,21 @@ export default class ReleaseNotesPage extends BasePage {
     };
 
     _addProductButton = () => {
+        let spus = this.state.products.map((value) => {
+            return value.spuCode;
+        });
         return (
             <TouchableWithoutFeedback onPress={() => {
-                this.$navigate('show/ShowProductListPage');
+                this.$navigate('show/ShowProductListPage', {
+                    spus,
+                    callBack: (value) => {
+                        let arr = this.state.products;
+                        arr.push(value);
+                        this.setState({
+                            products: arr
+                        });
+                    }
+                });
             }}>
                 <View style={styles.addProductWrapper}>
                     <MRText style={styles.addProductText}>+ 添加推荐商品</MRText>
@@ -203,6 +216,32 @@ export default class ReleaseNotesPage extends BasePage {
             <View style={{ flex: 1 }}/>
             <View style={styles.closeKeyboard}/>
         </View>);
+    };
+
+    _productsRender = () => {
+        return this.state.products.map((item, index) => {
+            return (<View>
+                <View style={styles.itemWrapper}>
+                    <UIImage source={{ uri: item.imgUrl ? item.imgUrl : '' }}
+                             style={[styles.validProductImg]}/>
+                    <View style={{ height: px2dp(70) }}>
+                        <MRText numberOfLines={1}
+                                style={styles.itemTitle}
+                                ellipsizeMode={'tail'}>
+                            {item.productName ? item.productName : ''}
+                        </MRText>
+                        <View style={{ flex: 1 }}/>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <MRText style={{ fontSize: px2dp(10), color: DesignRule.mainColor }}>￥</MRText>
+                            <MRText style={styles.priceText}>
+                                {item.showPrice ? item.showPrice : item.price}
+                            </MRText>
+                        </View>
+                    </View>
+                </View>
+                <Image source={delIcon} style={{width:15,height:15,position:'absolute',top:-8,right:px2dp(8)}}/>
+            </View>);
+        });
     };
 
     _render() {
@@ -257,6 +296,7 @@ export default class ReleaseNotesPage extends BasePage {
                             {this._imageRender()}
                         </View>
                         {this._addProductButton()}
+                        {this._productsRender()}
                     </ScrollView>
                 </View>
                 {this.state.showEmojiButton ? this._emojiButton() : null}
@@ -314,8 +354,8 @@ var styles = StyleSheet.create({
     addProductWrapper: {
         alignItems: 'center',
         marginTop: px2dp(11),
-        marginLeft:DesignRule.margin_page,
-        alignSelf:'flex-start'
+        marginLeft: DesignRule.margin_page,
+        alignSelf: 'flex-start'
     },
     addProductText: {
         color: DesignRule.mainColor,
@@ -356,6 +396,32 @@ var styles = StyleSheet.create({
         height: px2dp(20),
         backgroundColor: 'red',
         marginRight: DesignRule.margin_page
+    },
+    itemWrapper: {
+        backgroundColor: DesignRule.white,
+        borderRadius: px2dp(5),
+        flexDirection: 'row',
+        marginBottom: px2dp(10),
+        padding: px2dp(5),
+        marginHorizontal: DesignRule.margin_page,
+        width: (DesignRule.width - DesignRule.margin_page * 2)
+    },
+    validProductImg: {
+        width: px2dp(60),
+        height: px2dp(60)
+    },
+    itemTitle: {
+        color: DesignRule.textColor_mainTitle,
+        fontSize: DesignRule.fontSize_mediumBtnText,
+        width: DesignRule.width - px2dp(115)
+    },
+    contentStyle: {
+        color: DesignRule.textColor_instruction,
+        fontSize: DesignRule.fontSize_threeTitle
+    },
+    priceText: {
+        color: DesignRule.mainColor,
+        fontSize: px2dp(18)
     }
 
 
