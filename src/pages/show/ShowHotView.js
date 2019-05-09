@@ -2,7 +2,7 @@
  * 精选热门
  */
 import React from 'react';
-import { View, StyleSheet, Platform, TouchableWithoutFeedback } from 'react-native';
+import { View, StyleSheet, Platform } from 'react-native';
 import ShowBannerView from './ShowBannerView';
 import { observer } from 'mobx-react';
 import { tag, showBannerModules, showChoiceModules } from './Show';
