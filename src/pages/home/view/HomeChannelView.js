@@ -16,6 +16,9 @@ import DesignRule from '../../../constants/DesignRule';
 import { MRText as Text } from '../../../components/ui/index';
 import ImageLoad from '@mr/image-placeholder';
 import { homeModule } from '../model/Modules';
+import RouterMap from "../../../navigation/RouterMap";
+import user from "../../../model/user";
+
 
 const { px2dp } = ScreenUtils;
 
@@ -43,12 +46,24 @@ class Item extends Component {
 @observer
 export default class HomeChannelView extends Component {
 
-    _onItemPress = (data) => {
+
+
+    _filterNav=(router,params)=>{
         const { navigate } = this.props;
+        if (router === 'home/signIn/SignInPage' && !user.isLogin){
+            navigate(RouterMap.LoginPage);
+        } else {
+            navigate(router, { ...params });
+        }
+    }
+
+    _onItemPress = (data) => {
+        // const { navigate } = this.props;
         let router = homeModule.homeNavigate(data.linkType, data.linkTypeCode) || '';
         let params = homeModule.paramsNavigate(data);
         params.fromHome = true;
-        navigate(router, { ...params });
+        this._filterNav(router,{...params})
+        // navigate(router, { ...params });
     };
 
     renderItems = () => {
