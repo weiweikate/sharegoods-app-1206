@@ -108,7 +108,7 @@ export default class ShowProductListPage extends BasePage {
                 let spus = this.params.spus;
                 if(!EmptyUtils.isEmptyArr(spus)){
                     if(spus.indexOf(item.spuCode) !== -1){
-                        this.$toastShow('已经选择过该商品！')
+                        this.$toastShow('这个商品已经选过了哦')
                         return
                     }
                 }
@@ -127,7 +127,7 @@ export default class ShowProductListPage extends BasePage {
                             {item.productName ? item.productName : ''}
                         </MRText>
                         <View style={{ flex: 1 }}/>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' ,marginLeft:px2dp(10)}}>
                             <MRText style={{ fontSize: px2dp(10), color: DesignRule.mainColor }}>￥</MRText>
                             <MRText style={styles.priceText}>
                                 {item.showPrice ? item.showPrice : item.price}
@@ -177,7 +177,7 @@ export default class ShowProductListPage extends BasePage {
                     this._changeTabIndex(0);
                 }}>
                     <View>
-                        <MRText style={this.state.page === 0 ? styles.selectStyle : styles.noSelectStyle}>已购商品</MRText>
+                        <MRText style={styles.titleText}>购物车商品</MRText>
                     </View>
                 </TouchableWithoutFeedback>
                 {/*<View style={{ width: 40 }}/>*/}
@@ -287,7 +287,11 @@ var styles = StyleSheet.create({
     },
     priceText: {
         color: DesignRule.mainColor,
-        fontSize: px2dp(18)
+        fontSize: px2dp(18),
+    },
+    titleText:{
+        color:DesignRule.textColor_mainTitle,
+        fontSize:DesignRule.fontSize_mainTitle
     }
 });
 

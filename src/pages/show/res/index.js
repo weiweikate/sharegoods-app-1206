@@ -16,5 +16,8 @@ const index = {
     addIcon:require('./icon_add.png'),
     addCarIcon:require('./icon_add_car.png'),
     addShieldIcon:require('./icon_show_shield.png'),
+    addShowIcon:require('./icon_show_add.png'),
+    iconShowDown:require('./icon_show_down.png'),
+    iconShowEmoji:require('./icon_show_emoji.png')
 };
 export default index

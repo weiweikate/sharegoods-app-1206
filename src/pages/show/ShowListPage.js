@@ -38,7 +38,8 @@ export default class ShowListPage extends BasePage {
         left: false,
         pageFocused: false,
         needsExpensive: false,
-        showEditorIcon:true
+        showEditorIcon:true,
+        hasMessage:false
     };
 
     handleBackPress = () => {
@@ -99,6 +100,10 @@ export default class ShowListPage extends BasePage {
 
     componentDidMount(){
         this.listener = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
+        this.publishListener = DeviceEventEmitter.addListener('PublishShowFinish', ()=>{
+            this._gotoPage(2)
+        });
+
     }
 
     componentWillUnmount() {
@@ -106,7 +111,10 @@ export default class ShowListPage extends BasePage {
         this.didBlurSubscription && this.didBlurSubscription.remove();
         this.didFocusSubscription && this.didFocusSubscription.remove();
         this.listener && this.listener.remove();
+        this.publishListener && this.publishListener.remove();
     }
+
+
 
     _gotoPage(number) {
         this.setState({ page: number });
@@ -151,6 +159,10 @@ export default class ShowListPage extends BasePage {
                     });
                 });
             });
+        }else {
+            this.setState({
+                hasMessage: false
+            });
         }
     };
 
@@ -174,7 +186,7 @@ export default class ShowListPage extends BasePage {
                 <UIImage source={mine_message_icon_gray}
                          style={{ height: px2dp(21), width: px2dp(21) }}
                          onPress={() => this.jumpToServicePage()}/>
-                {this.state.hasMessageNum ? <View style={{
+                {this.state.hasMessage ? <View style={{
                     width: 10,
                     height: 10,
                     backgroundColor: DesignRule.mainColor,
@@ -203,22 +215,27 @@ export default class ShowListPage extends BasePage {
                 <View style={{flex:1}}/>
                 <View style={styles.titleView}>
                     <TouchableOpacity style={styles.items} onPress={() => this._gotoPage(0)}>
-                        <Text style={[{marginRight:px2dp(20)},page === 0 ? styles.activityIndex : styles.index]}
+                        <Text style={[page === 0 ? styles.activityIndex : styles.index]}
                               allowFontScaling={false}>推荐</Text>
+                        {page === 0 ? <View style={styles.line}/> : null}
                     </TouchableOpacity>
+                    <View style={{ width: px2dp(20)}}/>
                     <TouchableOpacity style={[{marginRight:px2dp(20)},styles.items]}onPress={() => this._gotoPage(1)}>
                         <Text style={page === 1 ? styles.activityIndex : styles.index}
                               allowFontScaling={false}>素材圈</Text>
+                        {page === 1 ? <View style={styles.line}/> : null}
                     </TouchableOpacity>
 
                     <TouchableOpacity style={[styles.items,{marginRight:px2dp(20)}]} onPress={() => this._gotoPage(2)}>
                         <Text style={page === 2 ? styles.activityIndex : styles.index}
                               allowFontScaling={false}>发现</Text>
+                        {page === 2 ? <View style={styles.line}/> : null}
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.items} onPress={() => this._gotoPage(3)}>
                         <Text style={page === 3 ? styles.activityIndex : styles.index}
                               allowFontScaling={false}>活动</Text>
+                        {page === 3 ? <View style={styles.line}/> : null}
                     </TouchableOpacity>
                 </View>
                 <View style={{flex:1}}/>
@@ -379,7 +396,7 @@ let styles = StyleSheet.create({
     },
     items: {
         alignItems: 'center',
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
     },
     index: {
         color: DesignRule.textColor_secondTitle,
@@ -393,7 +410,7 @@ let styles = StyleSheet.create({
     },
     line: {
         backgroundColor: DesignRule.mainColor,
-        width: 30,
+        width: 20,
         height: 2,
         borderRadius: 1
     },

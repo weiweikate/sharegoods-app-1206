@@ -11,7 +11,7 @@ import {
     Image,
     TouchableWithoutFeedback,
     Keyboard,
-    TextInput
+    TextInput, DeviceEventEmitter
 } from 'react-native';
 import BasePage from '../../BasePage';
 import { MRText } from '../../components/ui';
@@ -23,8 +23,9 @@ import ImageLoad from '@mr/image-placeholder';
 import NoMoreClick from '../../components/ui/NoMoreClick';
 import UIImage from '../../components/ui/UIImage';
 import Emoticons, * as emoticons from '../../comm/components/emoticons';
+import EmptyUtils from '../../utils/EmptyUtils';
 
-const { addIcon, delIcon } = res;
+const { addIcon, delIcon, iconShowDown, iconShowEmoji, addShowIcon } = res;
 
 const { px2dp } = ScreenUtils;
 
@@ -76,13 +77,24 @@ export default class ReleaseNotesPage extends BasePage {
 
     $NavBarRenderRightItem = () => {
         return (
-            <TouchableOpacity>
+            <TouchableOpacity onPress={this._publish}>
                 <MRText style={styles.publishTextStyle}>
                     发布
                 </MRText>
             </TouchableOpacity>
         );
     };
+
+    _publish=()=>{
+        // if(EmptyUtils.isEmptyArr(this.state.imageArr)){
+        //     this.$toastShow('至少需要上传一张图片哦');
+        //     return;
+        // }
+
+        this.props.navigation.popToTop();
+        this.props.navigation.navigate('ShowListPage');
+        DeviceEventEmitter.emit('PublishShowFinish');
+    }
 
     choosePicker = () => {
         let imageArr = this.state.imageArr;
@@ -167,7 +179,8 @@ export default class ReleaseNotesPage extends BasePage {
                 });
             }}>
                 <View style={styles.addProductWrapper}>
-                    <MRText style={styles.addProductText}>+ 添加推荐商品</MRText>
+                    <Image source={addShowIcon} style={styles.addProductIcon}/>
+                    <MRText style={styles.addProductText}>添加推荐商品</MRText>
                 </View>
             </TouchableWithoutFeedback>
         );
@@ -181,7 +194,9 @@ export default class ReleaseNotesPage extends BasePage {
             position: 'absolute',
             alignItems: 'center',
             bottom: this.state.keyBoardHeight,
-            flexDirection: 'row'
+            flexDirection: 'row',
+            borderTopColor: '#E4E4E4',
+            borderTopWidth: 1
         }}
                       ref={(ref) => this.bottom = ref}
         >
@@ -203,9 +218,10 @@ export default class ReleaseNotesPage extends BasePage {
                 <View style={{
                     flexDirection: 'row',
                     alignSelf: 'center'
+
                 }}>
                     <View style={styles.emojiButtonWrapper}>
-                        <View style={styles.emojiButtonStyle}/>
+                        <Image source={iconShowEmoji} style={styles.emojiButtonStyle}/>
                         <MRText style={styles.emojiTextStyle}>
                             表情
                         </MRText>
@@ -214,13 +230,18 @@ export default class ReleaseNotesPage extends BasePage {
                 </View>
             </TouchableWithoutFeedback>
             <View style={{ flex: 1 }}/>
-            <View style={styles.closeKeyboard}/>
+            <TouchableWithoutFeedback onPress={() => {
+                Keyboard.dismiss();
+            }}>
+                <Image source={iconShowDown} style={styles.closeKeyboard}/>
+            </TouchableWithoutFeedback>
         </View>);
     };
 
     _productsRender = () => {
-        return this.state.products.map((item, index) => {
-            return (<View>
+        let products = this.state.products;
+        return products.map((item, index) => {
+            return (<View key={'product' + index}>
                 <View style={styles.itemWrapper}>
                     <UIImage source={{ uri: item.imgUrl ? item.imgUrl : '' }}
                              style={[styles.validProductImg]}/>
@@ -231,7 +252,7 @@ export default class ReleaseNotesPage extends BasePage {
                             {item.productName ? item.productName : ''}
                         </MRText>
                         <View style={{ flex: 1 }}/>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' ,marginLeft:px2dp(10)}}>
                             <MRText style={{ fontSize: px2dp(10), color: DesignRule.mainColor }}>￥</MRText>
                             <MRText style={styles.priceText}>
                                 {item.showPrice ? item.showPrice : item.price}
@@ -239,7 +260,14 @@ export default class ReleaseNotesPage extends BasePage {
                         </View>
                     </View>
                 </View>
-                <Image source={delIcon} style={{width:15,height:15,position:'absolute',top:-8,right:px2dp(8)}}/>
+                <TouchableWithoutFeedback onPress={() => {
+                    products.splice(index, 1);
+                    this.setState({ products });
+                }
+                }>
+                    <Image source={delIcon}
+                           style={{ width: 15, height: 15, position: 'absolute', top: -8, right: px2dp(8) }}/>
+                </TouchableWithoutFeedback>
             </View>);
         });
     };
@@ -345,8 +373,6 @@ var styles = StyleSheet.create({
         width: px2dp(90),
         height: px2dp(90),
         borderRadius: px2dp(5),
-        borderColor: '#E4E4E4',
-        borderWidth: 1,
         backgroundColor: DesignRule.bgColor,
         justifyContent: 'center',
         alignItems: 'center'
@@ -354,8 +380,10 @@ var styles = StyleSheet.create({
     addProductWrapper: {
         alignItems: 'center',
         marginTop: px2dp(11),
+        marginBottom: px2dp(20),
         marginLeft: DesignRule.margin_page,
-        alignSelf: 'flex-start'
+        alignSelf: 'flex-start',
+        flexDirection: 'row'
     },
     addProductText: {
         color: DesignRule.mainColor,
@@ -378,8 +406,7 @@ var styles = StyleSheet.create({
     },
     emojiButtonStyle: {
         width: px2dp(18),
-        height: px2dp(18),
-        backgroundColor: 'blue'
+        height: px2dp(18)
     },
     emojiTextStyle: {
         color: DesignRule.textColor_instruction,
@@ -394,7 +421,6 @@ var styles = StyleSheet.create({
     closeKeyboard: {
         width: px2dp(20),
         height: px2dp(20),
-        backgroundColor: 'red',
         marginRight: DesignRule.margin_page
     },
     itemWrapper: {
@@ -422,8 +448,11 @@ var styles = StyleSheet.create({
     priceText: {
         color: DesignRule.mainColor,
         fontSize: px2dp(18)
+    },
+    addProductIcon: {
+        width: px2dp(18),
+        height: px2dp(18),
+        marginRight: px2dp(8)
     }
-
-
 });
 
