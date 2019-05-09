@@ -22,7 +22,6 @@ import OrderApi from '../api/orderApi';
 import DesignRule from '../../../constants/DesignRule';
 import AfterSaleDetailModel from './AfterSaleDetailModel';
 import {
-    CustomerServiceView,
     AfterSaleInfoView,
     OperationApplyView,
     TipView,
@@ -36,7 +35,21 @@ import {
 import { observer } from 'mobx-react';
 import res from '../res';
 import RouterMap from '../../../navigation/RouterMap';
-import {PageType}from './AfterType'
+import { PageType, isRefundFail, AfterStatus } from './AfterType';
+const {
+    PAGE_AREFUND,
+    PAGE_SALES_RETURN,
+} = PageType;
+
+const {
+    STATUS_IN_REVIEW ,           //待审核
+    STATUS_SEND_BACK,            //待寄回
+    STATUS_WAREHOUSE_CONFIRMED,  //待仓库确认
+    STATUS_PLATFORM_PROCESSING, //待平台处理
+    STATUS_SUCCESS,              //售后完成
+    STATUS_FAIL
+} = AfterStatus;
+
 
 const netError = res.placeholder.netError;
 const arrow_right_black = res.button.arrow_right_black;
@@ -54,13 +67,11 @@ class ExchangeGoodsDetailPage extends BasePage {
         this.afterSaleDetailModel.loadingShow = this.$loadingShow;
         this.afterSaleDetailModel.loadingDismiss = this.$loadingDismiss;
         this.afterSaleDetailModel.toastShow = this.$toastShow;
-        this.afterSaleDetailModel.navigationBarResetTitle = this.$NavigationBarResetTitle;
     }
 
     $navigationBarOptions = {
-        // title: ['退款详情', '退货详情', '换货详情'][this.params.pageType],
         show: true,// false则隐藏导航
-        title: '售后详情'
+        title: '售后进度'
     };
 
     $NavigationBarDefaultLeftPressed = () => {
@@ -141,24 +152,18 @@ class ExchangeGoodsDetailPage extends BasePage {
         let pageType = type - 1;
         let reject = this.afterSaleDetailModel.reject;
         let isShow_operationApplyView = status === 1;
-        /** 退款成功、退货成功、换货变退款成功, (!refundStatus|| refundStatus === 3|| refundStatus === 4)退款没有失败*/
-        let isShow_refundDetailView = ((pageType === 0 && status === 5) || (pageType === 1 && status === 5)) &&((!refundStatus|| (refundStatus !== 3 && refundStatus !== 4)));
 
-        let isShow_refuseReasonView = false;
-        let refuseReasonViewType = 0;
-        // /** 退款、退货、在提交申请中和完成时候显示金额*/
-        // if (pageType === 0 && (status === 1 || status === 5) ||
-        //     pageType === 1 && (status === 1 || status === 5)
-        // ) {
-        //     isShow_refuseReasonView = true;
-        //
-        //     /** 只要是被拒绝就显示拒绝理由*/
-        // } else if (status === 6) {
-        //     if(reject && reject.length > 0){
-        //         isShow_refuseReasonView = true;
-        //         refuseReasonViewType = 1;
-        //     }
-        // }
+        let isShow_refundDetailView =  false;
+        /** 退款成功、退货成功、换货变退款成功,退款没有失败*/
+        if ((pageType === PAGE_AREFUND || PageType === PAGE_SALES_RETURN) && status === STATUS_SUCCESS&&!isRefundFail(refundStatus)) {
+            isShow_refundDetailView = true;
+        }
+
+        let isShow_afterInfo = true;
+        if (pageType === PAGE_AREFUND && status === STATUS_SUCCESS&&!isRefundFail(refundStatus)) {
+            isShow_afterInfo = false;
+        }
+
 
         let isShow_shippingAddressView = false;
         let isShow_backAddressView = false;
@@ -211,23 +216,23 @@ class ExchangeGoodsDetailPage extends BasePage {
                     <HeaderView pageType={pageType}
                                 status={status}
                                 subStatus={subStatus}
+                                refundStatus={refundStatus}
                     />
                     {isShow_operationApplyView ?
                         <OperationApplyView pageType={pageType}
                                             cancelPress={this.cancelPress}
                                             changePress={this.changePress}/> : null}
-                    {
-                        isShow_refuseReasonView ?
-                            <StatusInfoView pageType={pageType}
-                                              status={status}
-                                              subStatus={subStatus}
-                                              remarks={remarks}
-                            /> : null
-                    }
+                    <StatusInfoView pageType={pageType}
+                                    status={status}
+                                    subStatus={subStatus}
+                                    remarks={remarks}
+                                    refundStatus={refundStatus}
+                    />
                     {
                         isShow_refundDetailView ?
                             <RefundDetailView refundAccountAmount={refundAccountAmount}
                                               refundCashAmount={refundCashAmount}
+                                              refundPrice={refundPrice}
                             /> : null
                     }
                     {
@@ -251,41 +256,49 @@ class ExchangeGoodsDetailPage extends BasePage {
                             <LogisticsView data={logistics}
                             /> : null
                     }
-                    {this.renderOrder()}
-                    <GoodsItem
-                        uri={specImg}
-                        goodsName={productName}
-                        salePrice={StringUtils.formatMoneyString(unitPrice)}
-                        category={spec}
-                        goodsNum={quantity}
-                        style={{ backgroundColor: DesignRule.white }}
-                        renderExtraView={()=> {
-                            if (pageType === PageType.AREFUND || pageType === PageType.SALES_RETURN){
-                                return(
-                                    <View style={{marginTop: 10, flexDirection: 'row'}}>
-                                        <MRText style={{fontSize: 12,
-                                            color: DesignRule.textColor_instruction,}}>退款金额：</MRText>
-                                        <MRText style={{fontSize: 12,
-                                            color: DesignRule.textColor_mainTitle,
-                                            fontWeight: '600'
-                                        }}>{'¥'+payAmount}</MRText>
-                                    </View>
-                                )
-                            }
+                    {
+                        isShow_afterInfo?this.renderOrder():null
+                    }
+                    {
+                        isShow_afterInfo?
+                            <GoodsItem
+                                uri={specImg}
+                                goodsName={productName}
+                                salePrice={StringUtils.formatMoneyString(unitPrice)}
+                                category={spec}
+                                goodsNum={quantity}
+                                style={{ backgroundColor: DesignRule.white }}
+                                renderExtraView={()=> {
+                                    if (pageType === PAGE_AREFUND || pageType === PAGE_SALES_RETURN){
+                                        return(
+                                            <View style={{marginTop: 10, flexDirection: 'row'}}>
+                                                <MRText style={{fontSize: 12,
+                                                    color: DesignRule.textColor_instruction,}}>退款金额：</MRText>
+                                                <MRText style={{fontSize: 12,
+                                                    color: DesignRule.textColor_mainTitle,
+                                                    fontWeight: '600'
+                                                }}>{'¥'+payAmount}</MRText>
+                                            </View>
+                                        )
+                                    }
 
-                            return null;
-                        }}
-                    />
-                    <AfterSaleInfoView pageData={pageData}
-                                       pageType={pageType}
-                                       afterSaleInfo={{
-                                           reason,
-                                           description,
-                                           imgList,
-                                           refundPrice,
-                                           quantity
-                                       }}
-                    />
+                                    return null;
+                                }}
+                            />:null
+                    }
+
+                    {
+                        isShow_afterInfo? <AfterSaleInfoView pageData={pageData}
+                                                             pageType={pageType}
+                                                             afterSaleInfo={{
+                                                                 reason,
+                                                                 description,
+                                                                 imgList,
+                                                                 refundPrice,
+                                                                 quantity
+                                                             }}
+                        />:null
+                    }
                     <TouchableOpacity style={styles.item_style}
                                       onPress={()=>{this.gotoNegotiateHistory()}}
                     >

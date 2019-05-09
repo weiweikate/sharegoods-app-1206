@@ -20,7 +20,11 @@ import {
 } from "../../../../components/ui";
 import DesignRule from '../../../../constants/DesignRule';
 import EmptyUtils from "../../../../utils/EmptyUtils";
-import {PageType}from '../AfterType'
+import { PageType } from '../AfterType';
+const {
+    PAGE_AREFUND,
+    PAGE_EXCHANGE
+} = PageType;
 
 
 export default class AfterSaleInfoView extends React.Component {
@@ -68,11 +72,11 @@ export default class AfterSaleInfoView extends React.Component {
                 <UIText value={"申请售后原因：" + afterSaleInfo.reason}
                         style={styles.refundReason}/>
                 {
-                    pageType !== PageType.AREFUND?  <UIText value={strNum}
+                    pageType !== PAGE_AREFUND?  <UIText value={strNum}
                                                             style={styles.refundReason}/> :null
                 }
                 {
-                    pageType !== PageType.EXCHANGE?  <UIText value={strRefundPrice}
+                    pageType !== PAGE_EXCHANGE?  <UIText value={strRefundPrice}
                                                              style={styles.refundReason}/> :null
                 }
 

@@ -9,7 +9,6 @@ class AfterSaleDetailModel {
     loadingShow = null;
     loadingDismiss = null;
     toastShow = null;
-    navigationBarResetTitle = null;
     @observable
     refreshing = false;
     @observable
@@ -41,7 +40,7 @@ class AfterSaleDetailModel {
                     "supplierCode": "GYS00002",
                     "supplierName": "小米供应商",
                     "productName": "我是测试产品3.0",
-                    "type": 3,
+                    "type": 1,
                     "refundNum": 1,
                     "payAmount": 0.01,
                     "applyRefundAmount": 0.01,
@@ -49,12 +48,12 @@ class AfterSaleDetailModel {
                     "damageNum": 0,
                     "reason": "七天无理由退换",
                     "description": "",
-                    "remarks": null,
+                    "remarks": 'remarks',
                     "warehouseType": 3,
                     "warehouseCode": null,
                     "sendWarehouseFeedback": null,
                     "refundWarehouseFeedback": null,
-                    "status": 1,
+                    "status": 5,
                     "subStatus": 1,
                     "cancelTime": 1556190614000,
                     "imgList": "",
@@ -126,7 +125,6 @@ class AfterSaleDetailModel {
             }
             this.isLoaded = true;
             this.refreshing = false;
-            this.navigationBarResetTitle(['退款详情', '退货详情', '换货详情'][result.data.type - 1]);
             switch (result.data.type) {
                 case 1: {
                     if (status === 1) {

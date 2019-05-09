@@ -22,63 +22,47 @@ import {
 
 } from '../../../../components/ui';
 import DesignRule from '../../../../constants/DesignRule';
-import {AfterStatus, SubStatus, PageType} from '../AfterType'
+import { AfterStatus, SubStatus, PageType, isRefundFail } from '../AfterType';
+
 const {
-    IN_REVIEW, //待审核
-    SEND_BACK, //待寄回
-    WAREHOUSE_CONFIRMED, //待仓库确认
-    PLATFORM_PROCESSING, //待平台处理
-    FINISH,//售后完成
-    FAIL
+    PAGE_AREFUND,
+    PAGE_SALES_RETURN,
+    PAGE_EXCHANGE
+} = PageType;
+
+const {
+    STATUS_IN_REVIEW ,           //待审核
+    STATUS_SEND_BACK,            //待寄回
+    STATUS_WAREHOUSE_CONFIRMED,  //待仓库确认
+    STATUS_PLATFORM_PROCESSING, //待平台处理
+    STATUS_SUCCESS,              //售后完成
+    STATUS_FAIL
 } = AfterStatus;
+
 const {
-    REVOKED,
-    OVERTIME,
-    REFUSE_APPLY,//拒绝售后申请
-    REFUSE_AFTER
+    REFUSE_REVOKED , //用户自己关闭
+    REFUSE_APPLY   , //拒绝售后申请
 } = SubStatus;
 
 
-const {
-    AREFUND,
-    SALES_RETURN,
-    EXCHANGE
-} = PageType;
 
 export default class StatusInfoView extends React.Component {
 
     constructor(props) {
         super(props);
-
-        this._bind();
-
         this.state = {};
     }
 
-    _bind() {
-
-    }
-
-    componentDidMount() {
-    }
-
-
     render() {
+        let { status, pageType, remarks, subStatus, refundStatus} = this.props;
 
-        let { status, pageType, remarks, subStatus} = this.props;
-        let titleStr = null;
-        let detialStr = null;
-        let remarkStr = null;
-        
-        if (pageType === AREFUND) {
-            if (status === ) 
-            
-        }else if (pageType === SALES_RETURN) {
-            
-        }else if (pageType === EXCHANGE) {
-
+        //获取要显示文案
+        let content = this.getContent(pageType, status, subStatus, refundStatus, remarks)
+        //文案为null，就不显示该组件
+        if (!content) {
+            return;
         }
-
+        const {titleStr, detialStr, remarkStr} = content;
         return (
             <View style={styles.container}>
                     <UIText value={titleStr}
@@ -88,32 +72,89 @@ export default class StatusInfoView extends React.Component {
                                       style={styles.detail}/>: null
                 }
                 {
-                    remarkStr?<UIText value={remarkStr}
+                    remarkStr?<UIText value={'平台说明：' + remarkStr}
                                       style={styles.detail}/>: null
                 }
-                    
+
             </View>
         );
+    }
+
+
+    getContent(pageType, status, subStatus, refundStatus, remarks){
+        switch (pageType) {
+            case PAGE_AREFUND:
+                return this.getArefundContent(status, subStatus, refundStatus, remarks);
+            case PAGE_SALES_RETURN:
+                return this.getSalesReturnContent(status, subStatus, refundStatus, remarks);
+            case PAGE_EXCHANGE:
+                return this.getExchangeContent(status, subStatus, refundStatus, remarks);
+            default:
+                return null;
+        }
+    }
+
+    getArefundContent(status, subStatus, refundStatus, remarks){
+        switch (status) {
+            case STATUS_SUCCESS:
+                if (isRefundFail(refundStatus)) {
+                    return{
+                        titleStr: '售后已完成，退款失败',
+                        detialStr: '若有疑问请联系客服',
+                        remarkStr: remarks,
+                      }
+                }
+                return{
+                    titleStr: '售后已完成，退款成功',
+                    remarkStr: remarks,
+                }
+            case STATUS_FAIL: {
+                if (subStatus === REFUSE_REVOKED){
+                    return{
+                        titleStr: '售后已关闭',
+                        detialStr: '您已经撤销售后申请',
+                    }
+                }
+                if (subStatus === REFUSE_APPLY){
+                    return{
+                        titleStr: '售后已关闭',
+                        detialStr: '平台已经拒绝售后申请',
+                        remarkStr: remarks,
+                    }
+                }
+            }
+            default://待审核 不显 || 退款不存在，待寄回，待仓库确认，待平台处理的状态
+                return null;
+
+        }
+    }
+
+    getSalesReturnContent(status, subStatus, refundStatus, remarks){
+
+    }
+    getExchangeContent(status, subStatus, refundStatus, remarks){
+
     }
 }
 
 const styles = StyleSheet.create({
     container: {
-        height: 44,
         backgroundColor: 'white',
-        flexDirection: 'row',
-        alignItems: 'center',
         paddingLeft: 15,
         paddingRight: 15,
-        marginBottom: 10
+        marginBottom: 10,
+        paddingBottom: 10,
     },
     title:{
         color: DesignRule.textColor_mainTitle,
-        fontSize: 13
+        fontSize: 13,
+        fontWeight: '600',
+        marginTop: 15
     },
     detail:{
-        color: DesignRule.textColor_mainTitle,
-        fontSize: 13, marginLeft: 5
+        color: DesignRule.textColor_instruction,
+        fontSize: 13,
+        marginTop: 4
     }
 
     });
