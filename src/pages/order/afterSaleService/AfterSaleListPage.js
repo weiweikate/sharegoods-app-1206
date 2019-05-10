@@ -89,8 +89,7 @@ export default class AfterSaleListPage extends BasePage<Props> {
 
     renderItem({ item }) {
         return (
-            <View style={{ height: 160 }}>
-                <View style={{ height: 10 }}/>
+            <View style={{ height: 160, marginBottom: 10 }}>
                 <GoodsGrayItem
                     uri={item.specImg}
                     goodsName={item.productName}
@@ -127,6 +126,7 @@ export default class AfterSaleListPage extends BasePage<Props> {
                         />
                     </TouchableOpacity>
                 </View>
+                <View style={{ height: 10 }}/>
             </View>
         );
     }

@@ -3,7 +3,9 @@ import {
     View,
     StyleSheet,
     DeviceEventEmitter, InteractionManager,
-    RefreshControl, BackHandler
+    RefreshControl, BackHandler,
+    NativeEventEmitter,
+    NativeModules
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import ShareTaskIcon from '../shareTask/components/ShareTaskIcon';
@@ -45,6 +47,11 @@ import HomeLimitGoView from './view/HomeLimitGoView';
 import { limitGoModule } from './model/HomeLimitGoModel';
 import HomeExpandBannerView from './view/HomeExpandBannerView';
 import HomeFocusAdView from './view/HomeFocusAdView';
+
+const { JSPushBridge } = NativeModules;
+const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
+
+const HOME_REFRESH = 'homeRefresh';
 
 /**
  * @author zhangjian
@@ -149,26 +156,7 @@ class HomePage extends BasePage {
         TrackApi.homePage();//埋点
     }
 
-    componentWillMount() {
-        this.willFocusSubscription = this.props.navigation.addListener(
-            'willFocus',
-            payload => {
-                homeTabManager.setHomeFocus(true);
-                const { state } = payload;
-                if (user.token) {
-                    this.loadMessageCount();
-                } else {
-                    this.setState({
-                        hasMessage: false
-                    });
-                }
-                console.log('willFocusSubscription', state);
-                if (state && state.routeName === 'HomePage') {
-                    this.luckyIcon.getLucky();
-                }
-            }
-        );
-
+    componentDidMount() {
         this.willBlurSubscription = this.props.navigation.addListener(
             'willBlur',
             payload => {
@@ -185,25 +173,34 @@ class HomePage extends BasePage {
         this.didFocusSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
-                homeTabManager.setHomeFocus(true);
-                homeModule.homeFocused(true);
-                homeModalManager.entryHome();
-                homeModalManager.requestGuide();
+                if (user.token) {
+                    this.loadMessageCount();
+                } else {
+                    this.setState({
+                        hasMessage: false
+                    });
+                }
+                const { state } = payload;
+
+                if (state && state.routeName === 'HomePage') {
+                    this.luckyIcon && this.luckyIcon.getLucky(1, '');
+                    homeTabManager.setHomeFocus(true);
+                    homeModule.homeFocused(true);
+                    homeModalManager.entryHome();
+                    homeModalManager.requestGuide();
+                }
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
             }
         );
-    }
-
-    componentDidMount() {
         this.listener = DeviceEventEmitter.addListener('homePage_message', this.getMessageData);
         this.listenerMessage = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
         this.listenerLogout = DeviceEventEmitter.addListener('login_out', this.loadMessageCount);
         this.listenerRetouchHome = DeviceEventEmitter.addListener('retouch_home', this.retouchHome);
-        this.listenerHomeRefresh = DeviceEventEmitter.addListener('homeRefresh', this.homeTypeRefresh);
+        this.listenerHomeRefresh = JSManagerEmitter.addListener(HOME_REFRESH, this.homeTypeRefresh);
 
         InteractionManager.runAfterInteractions(() => {
             user.getToken().then(() => {//让user初始化完成
-                this.luckyIcon.getLucky();
+                this.luckyIcon && this.luckyIcon.getLucky(1, '');
                 homeModalManager.requestGuide();
                 homeModalManager.requestData();
                 this.loadMessageCount();
@@ -299,6 +296,7 @@ class HomePage extends BasePage {
 
     _onRefresh() {
         homeModule.loadHomeList(true);
+        this.luckyIcon && this.luckyIcon.getLucky(1, '');
     }
 
     _onListViewScroll = (event) => {

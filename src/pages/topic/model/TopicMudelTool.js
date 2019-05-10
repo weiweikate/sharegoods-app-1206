@@ -1,6 +1,8 @@
 /**
  * 状态：0.删除 1.未开始 2.进行中 3.已售完 4.时间结束 5.手动结束
  */
+import StringUtils from '../../../utils/StringUtils';
+
 const statues = {
     deleteStatue: 0,
     noBegin: 1,
@@ -50,14 +52,14 @@ const typeName = {
  * @type {{[p: string]: string, [p: number]: string}}
  */
 const jumpPageParams = {
-    [productTypes.skill]: 'topic/TopicDetailPage',
+    [productTypes.skill]: 'product/ProductDetailPage',
     //降价拍需要判断statue 如果为1 则为startPrice 如果为2 则为 markdownPrice
     [productTypes.down]: 'topic/TopicDetailPage',
     [productTypes.giftPackage]: 'topic/TopicDetailPage',
     [productTypes.helpFree]: 'topic/TopicDetailPage',
     [productTypes.newTopic]: 'topic/DownPricePage',
     [productTypes.normalProduct]: 'product/ProductDetailPage',
-    [productTypes.experienceValue]: 'product/xpProduct/XpDetailPage',
+    [productTypes.experienceValue]: 'product/xpProduct/XpDetailPage'
 };
 
 /**
@@ -89,9 +91,11 @@ function getShowPrice(itemData) {
     }
     let showPrice = itemData.productType === 2
         ?
-        '¥' + itemData[typeName[itemData.productType][itemData.status]]
+        `￥${StringUtils.isEmpty(itemData.promotionMinPrice) ? itemData[typeName[itemData.productType][itemData.status]] : itemData.promotionMinPrice}`
+        // '¥' +  itemData[typeName[itemData.productType][itemData.status]]
         :
-        '¥' + itemData[typeName[itemData.productType]];
+        `￥${StringUtils.isEmpty(itemData.promotionMinPrice) ? itemData[typeName[itemData.productType]] : itemData.promotionMinPrice }`;
+    // '¥' + itemData[typeName[itemData.productType]];
     return showPrice;
 }
 

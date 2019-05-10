@@ -31,6 +31,7 @@ import Toast from '../../utils/bridge';
 import { NetFailedView } from '../../components/pageDecorator/BaseView';
 import AvatarImage from '../../components/ui/AvatarImage';
 import { TrackApi } from '../../utils/SensorsTrack';
+import { SmoothPushPreLoadHighComponent } from '../../comm/components/SmoothPushHighComponent';
 
 const Goods = ({ data, press }) => <TouchableOpacity style={styles.goodsItem} onPress={() => {
     press && press();
@@ -42,7 +43,7 @@ const Goods = ({ data, press }) => <TouchableOpacity style={styles.goodsItem} on
         <Text style={styles.price} allowFontScaling={false}>￥ {data.price}起</Text>
     </View>
 </TouchableOpacity>;
-
+@SmoothPushPreLoadHighComponent
 @observer
 export default class ShowDetailPage extends BasePage {
 
@@ -67,9 +68,13 @@ export default class ShowDetailPage extends BasePage {
         return true;
     }
 
-    componentWillMount() {
+    componentWillUnmount() {
+        this.willFocusSubscription && this.willFocusSubscription.remove();
+    }
+
+    componentDidMount() {
         this.willFocusSubscription = this.props.navigation.addListener(
-            'willFocus',
+            'didFocus',
             payload => {
                 if (this.noNeedRefresh) {
                     this.noNeedRefresh = true;
@@ -86,17 +91,17 @@ export default class ShowDetailPage extends BasePage {
                                 author: detail.userName,
                                 collectionCount: detail.collectCount
                             });
-                            if(this.params.isFormHeader){
-                                this.params.ref && this.params.ref.setClick(detail.click)
-                            }else {
-                                this.params.ref && this.params.ref.replaceData(this.params.index,detail.click)
+                            if (this.params.isFormHeader) {
+                                this.params.ref && this.params.ref.setClick(detail.click);
+                            } else {
+                                this.params.ref && this.params.ref.replaceData(this.params.index, detail.click);
                             }
                             this.setState({
                                 pageState: PageLoadingState.success
                             });
-                            this._whiteNavRef.setNativeProps({
-                                opacity: 0
-                            });
+                            // this._whiteNavRef.setNativeProps({
+                            //     opacity: 0
+                            // });
                             Toast.hiddenLoading();
                         }).catch(error => {
                             this.setState({
@@ -118,9 +123,9 @@ export default class ShowDetailPage extends BasePage {
                             this.setState({
                                 pageState: PageLoadingState.success
                             });
-                            this._whiteNavRef.setNativeProps({
-                                opacity: 0
-                            });
+                            // this._whiteNavRef.setNativeProps({
+                            //     opacity: 0
+                            // });
                             Toast.hiddenLoading();
                         }).catch(error => {
                             this.setState({
@@ -134,12 +139,6 @@ export default class ShowDetailPage extends BasePage {
                 }
             }
         );
-    }
-
-    componentWillUnmount() {
-        this.willFocusSubscription && this.willFocusSubscription.remove();
-    }
-    componentDidMount() {
     }
 
 
@@ -178,7 +177,7 @@ export default class ShowDetailPage extends BasePage {
     _goToShare() {
         const { pageState } = this.state;
         if (pageState === PageLoadingState.fail) {
-            return
+            return;
         }
         this.shareModal && this.shareModal.open();
     }
@@ -202,10 +201,10 @@ export default class ShowDetailPage extends BasePage {
     };
 
 
-    _renderNormalTitle() {
+    _renderNormalTitle(opacity) {
         return <View style={styles.whiteNav} ref={(ref) => {
             this._whiteNavRef = ref;
-        }} opacity={1}>
+        }} opacity={opacity}>
             <View style={styles.navTitle}>
                 <TouchableOpacity style={styles.backView} onPress={() => this._goBack()}>
                     <Image source={res.back}/>
@@ -253,12 +252,17 @@ export default class ShowDetailPage extends BasePage {
         if (pageState === PageLoadingState.fail) {
             return <View style={styles.container}>
                 <NetFailedView netFailedInfo={{ msg: this.state.errorMsg }}/>{this._renderNormalTitle()}
-                </View>;
+            </View>;
+        }
+        if (pageState === PageLoadingState.loading) {
+            return <View style={styles.container}>
+                {this._renderNormalTitle(1)}
+            </View>;
         }
 
         let { detail, isCollecting } = this.showDetailModule;
         if (!detail) {
-            detail = {imgs: '', products: [], click: 0, content: ''}
+            detail = { imgs: '', products: [], click: 0, content: '' };
         }
         let products = detail.products;
         let number = detail.click;
@@ -283,7 +287,7 @@ export default class ShowDetailPage extends BasePage {
             // + '<link rel="stylesheet" href="http://m.007fenqi.com/app/app.css" type="text/css"/>'
             + '<style type="text/css">' + 'html, body, p, embed, iframe, div ,video {'
             + 'position:relative;width:100%;margin:0;padding:0;background-color:#ffffff' + ';line-height:28px;box-sizing:border-box;display:block;font-size:'
-            +13
+            + 13
             + 'px;'
             + '}'
             + 'p {word-break:break-all;}'
@@ -378,7 +382,7 @@ export default class ShowDetailPage extends BasePage {
                             <Image style={styles.collectImg}
                                    source={detail.hadCollect ? res.showFire : res.noShowFire}/>
                             <Text style={styles.bottomText}
-                                  allowFontScaling={false}>{pageState === PageLoadingState.fail ? '' :'收藏'} · {detail.collectCount}</Text>
+                                  allowFontScaling={false}>{pageState === PageLoadingState.fail ? '' : '收藏'} · {detail.collectCount}</Text>
                         </TouchableOpacity>
                 }
             </ScrollView>
@@ -411,7 +415,7 @@ export default class ShowDetailPage extends BasePage {
                     </TouchableOpacity>
                 </View>
             </View>
-            {this._renderNormalTitle()}
+            {this._renderNormalTitle(0)}
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             type={'miniProgram'}
                             trackEvent={'ArticleShare'}

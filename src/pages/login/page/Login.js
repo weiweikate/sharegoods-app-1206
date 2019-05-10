@@ -5,7 +5,7 @@ import {
 } from "react-native";
 import BasePage from "../../../BasePage";
 import Styles from "../style/Login.style";
-import { createBottomButton, createLoginButton, loginBtnType } from "../components/Login.button.view";
+import { createLoginButton, loginBtnType } from "../components/Login.button.view";
 import res from "../res";
 import RouterMap from "../../../navigation/RouterMap";
 import { oneClickLoginValidation, wxLoginAction } from '../model/LoginActionModel';
@@ -134,7 +134,7 @@ export default class Login extends BasePage {
         wxLoginAction((code, data) => {
             if (code === 10000) {
                 this.$navigateBack(-1);
-                this.params.callback && this.params.callBack();
+                this.params.callback &&  this.params.callback();
             } else if (code === 34005) {
                 //绑定手机号
                 this.$navigate(RouterMap.InputPhoneNum, data);

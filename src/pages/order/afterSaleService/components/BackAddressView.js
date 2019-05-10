@@ -67,7 +67,7 @@ export default class BackAddressView extends React.Component {
                 </View>
                 <View
                     style={{ backgroundColor: DesignRule.lineColor_inColorBg, width: 1, height: 40, marginLeft: 10 }}/>
-                <AddressItem height={82}
+                <AddressItem
                              style={{
                                  flex: 1,
                                  flexDirection: 'row',
@@ -87,7 +87,7 @@ export default class BackAddressView extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        height: 82,
+        minHeight: 82,
         alignItems: 'center',
         backgroundColor: 'white',
         marginBottom: 10

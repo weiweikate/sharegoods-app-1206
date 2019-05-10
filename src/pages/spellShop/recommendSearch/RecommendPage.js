@@ -8,7 +8,7 @@ import {
     StyleSheet,
     SectionList,
     TouchableOpacity,
-    RefreshControl, DeviceEventEmitter
+    RefreshControl, NativeModules, NativeEventEmitter
 } from 'react-native';
 
 import { observer } from 'mobx-react';
@@ -19,7 +19,6 @@ import SegementHeaderView from './components/RecommendSegmentView';
 import BasePage from '../../../BasePage';
 import SpellStatusModel from '../model/SpellStatusModel';
 import SpellShopApi from '../api/SpellShopApi';
-import HomeAPI from '../../home/api/HomeAPI';
 import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
 import StringUtils from '../../../utils/StringUtils';
 import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
@@ -29,8 +28,14 @@ import res from '../res';
 import geolocation from '@mr/rn-geolocation';
 import Storage from '../../../utils/storage';
 import { TrackApi } from '../../../utils/SensorsTrack';
-import { homeLinkType, homeType } from '../../home/HomeTypes';
+import { homeType } from '../../home/HomeTypes';
 import { homeModule } from '../../home/model/Modules';
+import { bannerModule } from './PinShopBannerModel';
+
+const { JSPushBridge } = NativeModules;
+const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
+
+const HOME_REFRESH = 'homeRefresh';
 
 const ShopItemLogo = res.recommendSearch.dp_03;
 const SearchItemLogo = res.recommendSearch.pdss_03;
@@ -56,7 +61,7 @@ export default class RecommendPage extends BasePage {
             locationResult: {},//latitude  //longitude
             //data
             dataList: [{}],//默认一行显示状态页面使用 错误页 无数据页面
-            adList: []
+            pageFocused: false
         };
     }
 
@@ -66,13 +71,10 @@ export default class RecommendPage extends BasePage {
     };
 
     $NavBarRenderRightItem = () => {
-        const showShopItem = SpellStatusModel.canCreateStore || SpellStatusModel.storeCode && SpellStatusModel.storeStatus && SpellStatusModel.storeStatus !== 0;
         return <View style={styles.rightBarItemContainer}>
-            {
-                showShopItem ? <TouchableOpacity style={styles.rightItemBtn} onPress={this._clickOpenShopItem}>
-                    <Image source={ShopItemLogo}/>
-                </TouchableOpacity> : null
-            }
+            <TouchableOpacity style={styles.rightItemBtn} onPress={this._clickOpenShopItem}>
+                <Image source={ShopItemLogo}/>
+            </TouchableOpacity>
             <TouchableOpacity style={styles.rightItemBtn} onPress={this._clickSearchItem}>
                 <Image source={SearchItemLogo}/>
             </TouchableOpacity>
@@ -80,17 +82,35 @@ export default class RecommendPage extends BasePage {
     };
 
     componentDidMount() {
-        this.listenerBannerRefresh = DeviceEventEmitter.addListener('homeRefresh', (type) => {
+        this.listenerBannerRefresh = JSManagerEmitter.addListener(HOME_REFRESH, (type) => {
             if (type === homeType.pinShop) {
-                this._getSwipers;
+                bannerModule.loadBannerList();
             }
         });
+        this.willBlurSubscription = this.props.navigation.addListener(
+            'willBlur',
+            payload => {
+                this.setState({
+                    pageFocused: false
+                });
+            }
+        );
+        this.didFocusSubscription = this.props.navigation.addListener(
+            'didFocus',
+            payload => {
+                this.setState({
+                    pageFocused: true
+                });
+            }
+        );
         this._verifyLocation();
-        this._getSwipers();
+        bannerModule.loadBannerList();
     }
 
     componentWillUnmount() {
         this.listenerBannerRefresh && this.listenerBannerRefresh.remove();
+        this.willBlurSubscription && this.willBlurSubscription.remove();
+        this.didFocusSubscription && this.didFocusSubscription.remove();
     }
 
     _getSize = () => {
@@ -129,7 +149,7 @@ export default class RecommendPage extends BasePage {
             refreshing: true
         }, () => {
             this._verifyLocation();
-            this._getSwipers();
+            bannerModule.loadBannerList();
             SpellStatusModel.getUser(0);
         });
     };
@@ -161,17 +181,6 @@ export default class RecommendPage extends BasePage {
                 dataList: [{}],
                 loadingState: PageLoadingState.fail
             });
-        });
-    };
-
-    _getSwipers = () => {
-        HomeAPI.getHomeData({
-            type: homeType.pinShop
-        }).then((data) => {
-            this.setState({
-                adList: data.data || []
-            });
-        }).catch((error) => {
         });
     };
 
@@ -249,11 +258,8 @@ export default class RecommendPage extends BasePage {
     };
 
     _renderListHeader = () => {
-        if (this.state.adList.length > 0) {
-            return <RecommendBanner bannerList={this.state.adList} onPress={this._clickItem}/>;
-        } else {
-            return null;
-        }
+        return <RecommendBanner pageFocused={this.state.pageFocused}
+                                onPress={this._clickItem}/>;
     };
 
     _renderSectionHeader = () => {

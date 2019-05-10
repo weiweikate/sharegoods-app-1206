@@ -18,6 +18,7 @@
 // 如果需要使用 idfa 功能所需要引入的头文件
 #import <AdSupport/AdSupport.h>
 #import "JVERIFICATIONService.h"
+#import <SensorsAnalyticsSDK.h>
 
 @implementation AppDelegate (APNS)
 
@@ -32,10 +33,30 @@
   NSDictionary * userInfo = [notification userInfo];
   [[NSNotificationCenter defaultCenter]postNotificationName:@"HOME_CUSTOM_MSG" object:nil];
   NSString *typeString = userInfo[@"content_type"];
-  NSString *homeType = userInfo[@"homeType"];
+  
   if ([typeString isEqualToString:@"HomeRefresh"]) {
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"HOME_CUSTOM_MSG" object:homeType];
+    NSString *homeTypeStr = userInfo[@"content"];
+    NSDictionary * dic = [self dictionaryWithJsonString:homeTypeStr];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"HOME_CUSTOM_MSG" object:dic[@"homeType"]];
   }
+}
+-(NSDictionary *)dictionaryWithJsonString:(NSString *)jsonString
+{
+  if (jsonString == nil) {
+    return nil;
+  }
+  
+  NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+  NSError *err;
+  NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                      options:NSJSONReadingMutableContainers
+                                                        error:&err];
+  if(err)
+  {
+    NSLog(@"json解析失败：%@",err);
+    return nil;
+  }
+  return dic;
 }
 
 #pragma mark 配置推送
@@ -193,7 +214,7 @@
    */
   [JVERIFICATIONService customUIWithConfig:telecomUIConfig customViews:^(UIView *customAreaView) {
     /*
-     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom]}
      button.frame = CGRectMake(50, 300, 44, 44);
      button.backgroundColor = [UIColor redColor];
      [button addTarget:self action:@selector(buttonTouch) forControlEvents:UIControlEventTouchUpInside];
@@ -202,10 +223,6 @@
   }];
 }
 
-- (void)buttonTouch{
-  NSLog(@"button touch");
-//  [self dismissViewControllerAnimated:YES completion:nil];
-}
 
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
@@ -226,11 +243,10 @@
   [JPUSHService registerDeviceToken:deviceToken];
   [JPUSHService registrationIDCompletionHandler:^(int resCode, NSString *registrationID) {
     NSLog(@"%@",registrationID);
-//    [JPUSHService setAlias:@"家人组" completion:^(NSInteger iResCode, NSString *iAlias, NSInteger seq) {
-//      NSLog(@"isRescode---%ld",iResCode);
-//    } seq:1];
-//    [JPUSHService setTags:@"userID" completion:^(NSInteger iResCode, NSSet *iTags, NSInteger seq) {
-//    } seq:1];
+    if (resCode == 0) {
+      // 将极光推送的 Registration Id 存储在神策分析的用户 Profile "jgId" 中
+      [SensorsAnalyticsSDK.sharedInstance profilePushKey:@"jgId" pushId:registrationID];
+    }
   }];
   
 

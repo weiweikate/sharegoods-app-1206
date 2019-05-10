@@ -9,6 +9,7 @@ import android.util.Log;
 import com.meeruu.commonlib.utils.AppUtils;
 import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.sharegoods.event.Event;
+import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
@@ -43,6 +44,8 @@ public class MRJPushReceiver extends BroadcastReceiver {
 
         if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
             final String regId = bundle.getString(JPushInterface.EXTRA_REGISTRATION_ID);
+            // 将推送 ID 保存到用户表中
+            SensorsDataAPI.sharedInstance().profilePushId("jgId", regId);
             Log.d(TAG, "[MyReceiver] 接收Registration Id : " + regId);
         } else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
             Log.d(TAG, "[MyReceiver] 接收到推送下来的自定义消息: " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
@@ -87,7 +90,6 @@ public class MRJPushReceiver extends BroadcastReceiver {
 
     //接收到通知
     private void receiveNotify(JSONObject objExtra) {
-
     }
 
     //用户点击了通知

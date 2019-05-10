@@ -87,8 +87,13 @@ class HomeModule {
             case homeType.fine:
                 recommendModule.loadRecommendList(this.firstLoad);
                 break;
+            case homeType.limitGo:
+                limitGoModule.loadLimitGo();
+                break;
+            case homeType.homeHot:
+                subjectModule.loadSubjectList(this.firstLoad);
+                break;
             default:
-                this.loadHomeList();
                 break;
         }
     };

@@ -3,5 +3,6 @@ export default {
     ji_su: require('./ji_su.png'),
     qi_tian: require('./qi_tian.png'),
     zheng_ping: require('./zheng_ping.png'),
-    bounus: require('./bounus.png')
+    bounus: require('./bounus.png'),
+    service_true: require('./service_true.png'),
 };

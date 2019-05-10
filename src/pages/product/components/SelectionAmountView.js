@@ -8,7 +8,8 @@ import {
 import bridge from '../../../utils/bridge';
 import StringUtils from '../../../utils/StringUtils';
 import DesignRule from '../../../constants/DesignRule';
-import {MRText as Text, MRTextInput as TextInput} from '../../../components/ui/index';
+import { MRText as Text, MRTextInput as TextInput } from '../../../components/ui/index';
+
 /**
  * 选择数量view
  */
@@ -39,6 +40,11 @@ export default class SelectionAmountView extends Component {
     };
 
     _rightAction = () => {
+        const { promotionLimit } = this.props;
+        if (promotionLimit !== null && promotionLimit <= this.state.amount) {
+            bridge.$toast(`最多只能购买${promotionLimit}件~`);
+            return;
+        }
         if (this.props.maxCount <= this.state.amount) {
             bridge.$toast('超出最大库存~');
             return;
@@ -88,15 +94,21 @@ export default class SelectionAmountView extends Component {
     };
 
     componentWillReceiveProps(nextProps) {
-        const { maxCount } = nextProps;
+        const { maxCount, promotionLimit } = nextProps;
+
+        if (promotionLimit !== null && this.state.amount > promotionLimit) {
+            this.setState({
+                amount: promotionLimit
+            }, () => {
+                bridge.$toast(`最多只能购买${promotionLimit}件~`);
+                this.props.amountClickAction(promotionLimit);
+            });
+        }
         if (this.state.amount > maxCount && maxCount > 0) {
             this.setState({
                 amount: maxCount
             }, () => {
-                if (this.state.amount > 0) {
-                    bridge.$toast('超出最大库存~');
-                }
-
+                bridge.$toast('超出最大库存~');
                 this.props.amountClickAction(maxCount);
             });
         }
@@ -108,7 +120,7 @@ export default class SelectionAmountView extends Component {
 
         let leftEnable = this.state.amount > 1;
         let rightEnable = this.state.amount !== maxCount;
-
+        const { promotionLimit } = this.props;
         return (
             <View style={[{
                 flexDirection: 'row',
@@ -116,13 +128,18 @@ export default class SelectionAmountView extends Component {
                 justifyContent: 'space-between',
                 alignItems: 'center'
             }, this.props.style]}>
-                <Text style={{ color: DesignRule.textColor_secondTitle, marginLeft: 16, fontSize: 13 }} allowFontScaling={false}>购买数量</Text>
+                <Text
+                    style={{
+                        color: DesignRule.textColor_secondTitle,
+                        marginLeft: 16,
+                        fontSize: 13
+                    }}>购买数量<Text>{promotionLimit !== null ? `(限购${promotionLimit}件)` : ''}</Text></Text>
                 <View style={{
                     flexDirection: 'row',
                     borderColor: DesignRule.lineColor_inGrayBg,
                     borderWidth: 1,
                     borderRadius: 2,
-                    marginRight: 16,
+                    marginRight: 16
                 }}>
                     <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}
                                       onPress={this._leftAction} disabled={type === 'after'}>

@@ -17,17 +17,6 @@ public class onDidScrollToIndexEvent extends Event<onDidScrollToIndexEvent> {
         super.init(viewTag);
     }
 
-    public boolean isInit() {
-        try {
-            Method dm = getClass().getDeclaredMethod("isInitialized", null);
-            dm.setAccessible(true);
-            return (boolean) dm.invoke(getClass());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
     public void setIndex(int index) {
         this.index = index;
     }

@@ -6,8 +6,8 @@
  * @email luoyongming@meeruu.com
  */
 
-import React, { Component } from "react";
-import { observer } from "mobx-react";
+import React, { Component } from 'react';
+import { observer } from 'mobx-react';
 import {
     StyleSheet,
     Text,
@@ -16,27 +16,24 @@ import {
     // Image
 } from "react-native";
 import { NavigationActions } from "react-navigation";
-import RouterMap from "./navigation/RouterMap";
-import user from "../src/model/user";
 import DebugButton from "./components/debug/DebugButton";
-import apiEnvironment from "./api/ApiEnvironment";
-import CONFIG from "../config";
 import { netStatus } from "./comm/components/NoNetHighComponent";
-import bridge from "./utils/bridge";
-import TimerMixin from "react-timer-mixin";
-
-import geolocation from "@mr/rn-geolocation";
 import Navigator, { getCurrentRouteName } from "./navigation/Navigator";
-import Storage from "./utils/storage";
 import { login, logout } from "./utils/SensorsTrack";
-import ScreenUtils from "./utils/ScreenUtils";
-import codePush from "react-native-code-push";
-
 import { SpellShopFlag } from "./navigation/Tab";
-import chatModel from "./utils/QYModule/QYChatModel";
-import WebViewBridge from "@mr/webview";
 import { checkInitResult } from "./pages/login/model/PhoneAuthenAction";
 import loginModel from "./pages/login/model/LoginModel";
+import RouterMap from './navigation/RouterMap';
+import user from '../src/model/user';
+import apiEnvironment from './api/ApiEnvironment';
+import CONFIG from '../config';
+import bridge from './utils/bridge';
+import TimerMixin from 'react-timer-mixin';
+import geolocation from '@mr/rn-geolocation';
+import Storage from './utils/storage';
+import ScreenUtils from './utils/ScreenUtils';
+import codePush from 'react-native-code-push';
+import chatModel from './utils/QYModule/QYChatModel';
 
 if (__DEV__) {
     const modules = require.getModules();
@@ -50,23 +47,23 @@ if (__DEV__) {
 
     // make sure that the modules you expect to be waiting are actually waiting
     console.log(
-        "loaded:",
+        'loaded:',
         loadedModuleNames.length,
-        "waiting:",
+        'waiting:',
         waitingModuleNames.length
     );
 }
+
+
+let codePushOptions = {
+    checkFrequency: codePush.CheckFrequency.ON_APP_RESUME
+};
 
 @observer
 class App extends Component {
     constructor(props) {
         super(props);
         chatModel;
-        // codepush
-        codePush.sync({
-            updateDialog: false,
-            installMode: codePush.InstallMode.ON_NEXT_RESTART
-        });
 
         this.state = {
             load: false,
@@ -82,6 +79,14 @@ class App extends Component {
     }
 
     async componentWillMount() {
+        // 禁止重启
+        codePush.disallowRestart();
+        // code push
+        codePush.sync({
+            updateDialog: false,
+            installMode: codePush.InstallMode.ON_NEXT_RESUME
+        });
+
         netStatus.startMonitorNetworkStatus();
 
         // 环境配置
@@ -91,8 +96,9 @@ class App extends Component {
     }
 
     componentDidMount() {
+        // 在加载完了，允许重启
+        codePush.allowRestart();
         //初始化init  定位存储  和app变活跃 会定位
-
         InteractionManager.runAfterInteractions(() => {
             TimerMixin.setTimeout(() => {
                 checkInitResult().then((data)=>{
@@ -103,12 +109,12 @@ class App extends Component {
 
 
                 geolocation.init({
-                    ios: "f85b644981f8642aef08e5a361e9ab6b",
-                    android: "4a3ff7c2164aaf7d67a98fb9b88ae0e6"
+                    ios: 'f85b644981f8642aef08e5a361e9ab6b',
+                    android: '4a3ff7c2164aaf7d67a98fb9b88ae0e6'
                 }).then(() => {
                     return geolocation.getLastLocation();
                 }).then(result => {
-                    Storage.set("storage_MrLocation", result);
+                    Storage.set('storage_MrLocation', result);
                 }).catch((error) => {
                 });
             }, 200);
@@ -125,11 +131,10 @@ class App extends Component {
         });
         // 移除启动页
         bridge.removeLaunch();
-        this.preView && this.preView.isLoaded();
     }
 
     render() {
-        const prefix = "meeruu://";
+        const prefix = 'meeruu://';
         const { isShowShopFlag } = this.state;
         const showDebugPanel = String(CONFIG.showDebugPanel);
         return (
@@ -149,16 +154,14 @@ class App extends Component {
                 />
                 <SpellShopFlag isShow={isShowShopFlag}/>
                 {
-                    showDebugPanel === "true" ?
-                        <DebugButton onPress={this.showDebugPage} style={{ backgroundColor: "red" }}><Text
-                            style={{ color: "white" }}>调试页</Text></DebugButton> : null
+                    showDebugPanel === 'true' ?
+                        <DebugButton onPress={this.showDebugPage} style={{ backgroundColor: 'red' }}><Text
+                            style={{ color: 'white' }}>调试页</Text></DebugButton> : null
                 }
                 {/*{*/}
-                    {/*<DebugButton onPress={this.lianjie111} style={{ backgroundColor: "red" }}><Text*/}
-                        {/*style={{ color: "white" }}>客服</Text></DebugButton>*/}
+                {/*<DebugButton onPress={this.lianjie111} style={{ backgroundColor: "red" }}><Text*/}
+                {/*style={{ color: "white" }}>客服</Text></DebugButton>*/}
                 {/*}*/}
-
-                <PreComponent ref={(ref)=>{this.preView = ref}}/>
             </View>
         );
     }
@@ -178,29 +181,8 @@ class App extends Component {
         global.$navigator.dispatch(navigationAction);
     };
 }
-export default codePush(App);
 
-class PreComponent extends Component {
-    constructor(props) {
-        super(props);
-        this.state = ({ isLoaded: false });
-    }
-
-    isLoaded = () => {
-        this.setState({ isLoaded: true });
-    }
-    render() {
-        if (this.state.isLoaded === true) {
-            return <View />
-        }
-        return (
-            <View style={{ height: 2, width: 1 }}>
-                <WebViewBridge/>
-            </View>
-        )
-    }
-}
-
+export default codePush(codePushOptions)(App);
 
 const styles = StyleSheet.create({
     container: {
@@ -210,8 +192,8 @@ const styles = StyleSheet.create({
         width: 60,
         height: 35,
         borderRadius: 10,
-        alignItems: "center",
-        justifyContent: "center"
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     oldLoginBtnStyle: {
         width: 120,

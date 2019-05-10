@@ -140,7 +140,7 @@ export default class TopicDetailHeaderView extends Component {
                                 color: DesignRule.textColor_instruction,
                                 fontSize: 11,
                                 marginLeft: ScreenUtils.autoSizeWidth(108)
-                            }} allowFontScaling={false}>{`月销售${isNoEmpty(monthSale) ? monthSale : 0}笔`}</Text>
+                            }} allowFontScaling={false}>{`近期销量: ${isNoEmpty(monthSale) ? monthSale : 0}`}</Text>
                         </View>
                     </View>
                 </View>
@@ -168,7 +168,8 @@ export default class TopicDetailHeaderView extends Component {
                     </Text>
                     {activityType !== 3 ? <Image source={arrow_right}/> : null}
                 </NoMoreClick>
-                {activityType === 3 ? null : <DetailHeaderScoreView pData={data} navigation={navigation}/>}
+                {activityType === 3 ? null :
+                    <DetailHeaderScoreView style={{ marginBottom: 10 }} pData={data} navigation={navigation}/>}
             </View>
         );
     }

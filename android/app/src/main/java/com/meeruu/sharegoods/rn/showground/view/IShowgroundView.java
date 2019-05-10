@@ -10,7 +10,7 @@ public interface IShowgroundView {
 
     void loadMoreComplete();
 
-    void loadMoreFail();
+    void loadMoreFail(String code);
 
     void viewLoadMore(List data);
 

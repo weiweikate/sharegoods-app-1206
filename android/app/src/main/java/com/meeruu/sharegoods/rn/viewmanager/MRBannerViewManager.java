@@ -60,7 +60,10 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
                 }
                 scrollToIndexEvent.setIndex(position);
                 scrollToIndexEvent.init(banner.getId());
-                eventDispatcher.dispatchEvent(scrollToIndexEvent);
+                try {
+                    eventDispatcher.dispatchEvent(scrollToIndexEvent);
+                } catch (AssertionError e) {
+                }
             }
         });
     }
@@ -127,7 +130,7 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
                     selectItemAtIndexEvent.setIndex(position);
                     try {
                         eventDispatcher.dispatchEvent(selectItemAtIndexEvent);
-                    } catch (Exception e) {
+                    } catch (AssertionError e) {
                     }
                 }
             });
@@ -142,14 +145,14 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
 
     @ReactProp(name = "itemWidth")
     public void setItemWidth(BannerLayout view, Integer width) {
-        if (width > 0) {
+        if (width > 0 && BaseApplication.appContext != null) {
             view.setItemWidth(DensityUtils.dip2px(width));
         }
     }
 
     @ReactProp(name = "itemRadius")
     public void setItemRadius(BannerLayout view, Integer radius) {
-        if (radius > 0 && view.getAdapter() != null) {
+        if (radius > 0 && view.getAdapter() != null && BaseApplication.appContext != null) {
             ((WebBannerAdapter) view.getAdapter()).setRadius(DensityUtils.dip2px(radius));
         }
     }

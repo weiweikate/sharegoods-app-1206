@@ -24,12 +24,13 @@ import { track } from "../../../utils/SensorsTrack";
  * @param successCallBack 登录成功后的回调
  */
 const oneClickLoginValidation = (phone, authenToken, navigation, successCallBack) => {
+    TrackApi.LoginButtonClick({"loginMethod":4})
     LoginAPI.oneClickLoginValidation({
         phone: phone,
         token: authenToken
     }).then(result => {
         successCallBack && successCallBack();
-        TrackApi.localPhoneNumLogin()
+        TrackApi.localPhoneNumLogin({"loginMethod":4})
         if (result.unionid == null) {
             //未绑定微信
             phoneBindWx();
@@ -102,6 +103,7 @@ const getWxUserInfo = (callback) => {
  * @param callBack
  */
 const wxLoginAction = (callBack) => {
+    TrackApi.LoginButtonClick({"loginMethod":1})
     getWxUserInfo((data) => {
         LoginAPI.appWechatLogin({
             device: data.device,
@@ -136,6 +138,7 @@ const wxLoginAction = (callBack) => {
                 callBack && callBack(error.code, data);
                 TrackApi.wxSignUpSuccess();
             }
+            alert(error.msg)
             bridge.$toast(data.msg);
         });
     });
@@ -146,6 +149,7 @@ const wxLoginAction = (callBack) => {
  * @param callBack
  */
 const codeLoginAction = (LoginParam, callBack) => {
+    TrackApi.LoginButtonClick({"loginMethod":2})
     LoginAPI.codeLogin({
         authcode: "",
         code: LoginParam.code,
@@ -166,7 +170,6 @@ const codeLoginAction = (LoginParam, callBack) => {
         DeviceEventEmitter.emit("contentViewed", null);
         bridge.$toast("登录成功");
         homeModule.loadHomeList();
-        login(data.data.code); // 埋点登录成功
         //推送
         JPushUtils.updatePushTags();
         JPushUtils.updatePushAlias();
@@ -181,6 +184,7 @@ const codeLoginAction = (LoginParam, callBack) => {
  * @param callBack
  */
 const pwdLoginAction = (LoginParam, callBack) => {
+    TrackApi.LoginButtonClick({"loginMethod":3})
     LoginAPI.passwordLogin({
         authcode: "22",
         code: LoginParam.code,
@@ -200,7 +204,6 @@ const pwdLoginAction = (LoginParam, callBack) => {
         DeviceEventEmitter.emit("homePage_message", null);
         DeviceEventEmitter.emit("contentViewed", null);
         homeModule.loadHomeList();
-        login(data.data.code); // 埋点登录成功
         //推送
         JPushUtils.updatePushTags();
         JPushUtils.updatePushAlias();

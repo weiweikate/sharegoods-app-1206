@@ -5,7 +5,9 @@
  */
 import {PageKey} from './Stack';
 import { NavigationActions } from 'react-navigation';
+import apiEnvironment from '../api/ApiEnvironment';
 let timeStamp = null;
+let errWebtimeStamp = null;
 let perRouteName = null;
  const RouterMap = {
     // base
@@ -23,6 +25,15 @@ let perRouteName = null;
      if (!routeName) {
          return;
      }
+
+     if (routeName === 'HtmlPage' && params && params.uri === apiEnvironment.getCurrentH5Url() + '/system-maintenance') {
+         let time = new Date().getTime();
+         if (errWebtimeStamp && time - errWebtimeStamp < 1000*30) {
+             return;
+         }
+         errWebtimeStamp = new Date().getTime();
+     }
+
      if (perRouteName !== routeName){
          perRouteName = routeName;
      }else {

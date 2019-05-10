@@ -76,7 +76,7 @@ export default class BottomMenu extends Component {
                             </View>
                             <View style={{ justifyContent: "flex-end", flexDirection: "row", marginRight: px2dp(10) }}>
                                 <UIText
-                                    value={"免运费"}
+                                    value={"不含运费"}
                                     style={styles.shippingText}/>
                             </View>
 

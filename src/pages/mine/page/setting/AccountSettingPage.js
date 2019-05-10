@@ -12,14 +12,14 @@ import StringUtils from '../../../../utils/StringUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import RouterMap from '../../../../navigation/RouterMap';
-import {PageType} from '../myaccount/JudgePhonePage';
+import { PageType } from '../myaccount/JudgePhonePage';
 
 const arrow_right = res.button.arrow_right;
 const PhonePwdStatus = {
     Undefined: 0,
     UnSet: 1,
-    Setted: 2,
-}
+    Setted: 2
+};
 @observer
 export default class AccountSettingPage extends BasePage {
 
@@ -31,17 +31,17 @@ export default class AccountSettingPage extends BasePage {
         super(props);
         this.state = {
             phonePwdStatus: PhonePwdStatus.Undefined
-        }
+        };
     }
 
     componentDidMount() {
-        MineAPI.checkPhonePwd({}).then((data)=> {
-            if (data.data === true){
-                this.setState({phonePwdStatus: PhonePwdStatus.Setted})
+        MineAPI.checkPhonePwd({}).then((data) => {
+            if (data.data === true) {
+                this.setState({ phonePwdStatus: PhonePwdStatus.Setted });
             } else {
-                this.setState({phonePwdStatus: PhonePwdStatus.UnSet})
+                this.setState({ phonePwdStatus: PhonePwdStatus.UnSet });
             }
-        }).catch((err)=> {
+        }).catch((err) => {
             this.$toastShow(err.msg);
         });
     }
@@ -63,7 +63,7 @@ export default class AccountSettingPage extends BasePage {
                     marginRight: 15
                 }}/>
                 <TouchableOpacity style={styles.viewStyle} onPress={() => this._toEditPwd()}>
-                    <UIText value={this.state.phonePwdStatus === 1?'设置密码':'修改密码'} style={styles.blackText}/>
+                    <UIText value={this.state.phonePwdStatus === 1 ? '设置密码' : '修改密码'} style={styles.blackText}/>
                     <Image source={arrow_right} resizeMode={'contain'}/>
                 </TouchableOpacity>
                 <View style={{
@@ -84,7 +84,7 @@ export default class AccountSettingPage extends BasePage {
                 }}/>
                 <TouchableOpacity style={styles.viewStyle} onPress={() => this._toEditWechat(user.unionid)}>
                     <UIText value={'微信账号'} style={[styles.blackText, { flex: 1 }]}/>
-                    <UIText value={StringUtils.isEmpty(user.unionid) ? '未绑定' : (user.wechatName||'无昵称')}
+                    <UIText value={StringUtils.isEmpty(user.unionid) ? '未绑定' : (user.wechatName || '无昵称')}
                             style={{ fontSize: 13, color: DesignRule.textColor_secondTitle, marginRight: 8 }}/>
                     <Image source={arrow_right} resizeMode={'contain'}/>
                 </TouchableOpacity>
@@ -98,35 +98,49 @@ export default class AccountSettingPage extends BasePage {
         });
     };
     _toEditPwd = () => {
-        let {phonePwdStatus} = this.state;
-        if (phonePwdStatus === PhonePwdStatus.UnSet){
+        let { phonePwdStatus } = this.state;
+        if (phonePwdStatus === PhonePwdStatus.UnSet) {
             Alert.alert('未设置登录密码',
                 '你还没有设置登录密码',
                 [
-                    {onPress:()=>{}, text: '稍后就去'},
-                    {onPress:()=>{this.$navigate(RouterMap.JudgePhonePage, {title: PageType.setLoginPW})}, text: '马上设置'}
-                ])
+                    {
+                        onPress: () => {
+                        }, text: '稍后就去'
+                    },
+                    {
+                        onPress: () => {
+                            this.$navigate(RouterMap.JudgePhonePage, { title: PageType.setLoginPW });
+                        }, text: '马上设置'
+                    }
+                ]);
             return;
         }
 
-        if (phonePwdStatus === PhonePwdStatus.Setted){
+        if (phonePwdStatus === PhonePwdStatus.Setted) {
             this.$navigate('mine/account/EditPhonePwdPage');
             return;
         }
-        MineAPI.checkPhonePwd({}).then((data)=> {
-            if (data.data === true){
-                this.setState({phonePwdStatus: PhonePwdStatus.Setted})
+        MineAPI.checkPhonePwd({}).then((data) => {
+            if (data.data === true) {
+                this.setState({ phonePwdStatus: PhonePwdStatus.Setted });
                 this.$navigate('mine/account/EditPhonePwdPage');
             } else {
-                this.setState({phonePwdStatus: PhonePwdStatus.UnSet})
+                this.setState({ phonePwdStatus: PhonePwdStatus.UnSet });
                 Alert.alert('未设置登录密码',
                     '你还没有设置登录密码',
                     [
-                        {onPress:()=>{}, text: '稍后就去'},
-                        {onPress:()=>{this.$navigate(RouterMap.JudgePhonePage, {title: PageType.setLoginPW})}, text: '马上设置'}
-                    ])
+                        {
+                            onPress: () => {
+                            }, text: '稍后就去'
+                        },
+                        {
+                            onPress: () => {
+                                this.$navigate(RouterMap.JudgePhonePage, { title: PageType.setLoginPW });
+                            }, text: '马上设置'
+                        }
+                    ]);
             }
-        }).catch((err)=> {
+        }).catch((err) => {
             this.$toastShow(err.msg);
         });
 
@@ -153,7 +167,7 @@ export default class AccountSettingPage extends BasePage {
                     wechatName: data.nickName
                 }).then((resp) => {
                     if (resp.code === 10000) {
-                        user.untiedWechat(data.nickName, data.appOpenid,data.unionid);
+                        user.untiedWechat(data.nickName, data.appOpenid, data.unionid);
                         bridge.$toast('绑定成功');
                     } else {
                         bridge.$toast(resp.msg);
@@ -172,7 +186,7 @@ export default class AccountSettingPage extends BasePage {
                 {
                     text: '确定', onPress: () => {
                         MineAPI.untiedWechat({}).then((response) => {
-                            user.untiedWechat('', '','');
+                            user.untiedWechat('', '', '');
                             bridge.$toast('解绑成功');
                         }).catch((data) => {
                             bridge.$toast(data.msg);

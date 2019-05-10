@@ -3,19 +3,20 @@
  * Api HOST配置
  * 支持动态切换
  */
-import { AsyncStorage } from "react-native";
-import config from "../../config";
+import { AsyncStorage } from 'react-native';
+import config from '../../config';
 // 磁盘缓存key
-const KEY_ApiEnvironment = "ApiEnvironment";
-const KEY_HostJson = "HostJson";
-const KEY_DefaultFetchTimeout = "DefaultFetchTimeout";
+const KEY_ApiEnvironment = 'ApiEnvironment';
+const KEY_HostJson = 'HostJson';
+const KEY_DefaultFetchTimeout = 'DefaultFetchTimeout';
 // HOST配置
 const ApiConfig = config.env;
+
 class ApiEnvironment {
 
     constructor() {
         const envType = config.envType;
-        this.envType = envType && Object.keys(ApiConfig).indexOf(envType) >= 0 ? envType : "dev";
+        this.envType = envType && Object.keys(ApiConfig).indexOf(envType) >= 0 ? envType : 'dev';
         //预上上线直接使用release
         // this.envType =  "pre_release"
         this.defaultTimeout = 15; // 请求默认超时时间 单位秒
@@ -40,7 +41,7 @@ class ApiEnvironment {
         return ApiConfig[this.envType].h5;
     }
 
-    getMiniProgramType(){
+    getMiniProgramType() {
         return ApiConfig[this.envType].miniProgramType === 0 ? 0 : 2;
     }
 
@@ -72,8 +73,10 @@ class ApiEnvironment {
             const [[, envType], [, defaultTimeout]] = await AsyncStorage.multiGet([KEY_ApiEnvironment, KEY_DefaultFetchTimeout]);
             if (envType && Object.keys(ApiConfig).indexOf(envType) >= 0) {
                 this.envType = envType;
-                if (ApiConfig[envType]) { await AsyncStorage.setItem(KEY_HostJson, JSON.stringify(ApiConfig[envType]));}
-            }else {
+                if (ApiConfig[envType]) {
+                    await AsyncStorage.setItem(KEY_HostJson, JSON.stringify(ApiConfig[envType]));
+                }
+            } else {
                 this.saveEnv(this.envType);
             }
             if (defaultTimeout && Number(defaultTimeout) <= 60 && Number(defaultTimeout) > 0) {
@@ -92,8 +95,10 @@ class ApiEnvironment {
     async saveEnv(envType) {
         try {
             if (envType && Object.keys(ApiConfig).indexOf(envType) >= 0) {
-                await AsyncStorage.setItem(KEY_ApiEnvironment, envType);
-                if (ApiConfig[envType]) { await AsyncStorage.setItem(KEY_HostJson, JSON.stringify(ApiConfig[envType]));}
+                await AsyncStorage.setItem(KEY_ApiEnvironment, String(envType));
+                if (ApiConfig[envType]) {
+                    await AsyncStorage.setItem(KEY_HostJson, JSON.stringify(ApiConfig[envType]));
+                }
                 this.envType = envType;
             } else {
                 __DEV__ && console.error(`Not support envType with: 【${envType}】, for more details to see documents in ApiEnvironment.js file`);
@@ -109,10 +114,10 @@ class ApiEnvironment {
      * @returns {Promise<void>}
      */
     async setTimeOut(timeout) {
-        if (timeout && typeof timeout === "number" && timeout <= 60 && timeout > 0) {
+        if (timeout && typeof timeout === 'number' && timeout <= 60 && timeout > 0) {
             this.defaultTimeout = timeout;
             // 磁盘缓存超时时间
-            timeout && AsyncStorage.setItem(KEY_DefaultFetchTimeout, `${timeout}`).catch((error) => {
+            timeout && AsyncStorage.setItem(KEY_DefaultFetchTimeout, String(timeout)).catch((error) => {
                 console.warn(`setTimeOut error: ${error.toString()}`);
             });
         } else {
