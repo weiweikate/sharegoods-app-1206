@@ -18,6 +18,8 @@ import {QYChatTool, beginChatType} from '../../../../utils/QYModule/QYChatTool'
 
 const { px2dp } = ScreenUtils;
 import res from '../../res'
+import orderApi from '../../api/orderApi';
+import bridge from '../../../../utils/bridge';
 const kefu_icon = res.button.kefu_icon;
 
 @observer
@@ -40,34 +42,55 @@ export default class OrderDetailTimeView extends Component {
     };
 
     concactKeFu(){
-        let shopId = '';
-        let title = '平台客服';
+        let supplierCode = '';
         let desc = ''
         let pictureUrlString = '';
         if (orderDetailModel.warehouseOrderDTOList && orderDetailModel.warehouseOrderDTOList[0]){
             let item = orderDetailModel.warehouseOrderDTOList[0];
-            shopId = item.supplierCode	|| '';
-            title = item.supplierName	|| '';
+            supplierCode = item.supplierCode	|| '';
             if (item.products && item.products[0]){
                 let product = item.products[0];
                 desc = product.productName || '';
                 pictureUrlString = product.specImg || '';
             }
         }
-        QYChatTool.beginQYChat({
-            routePath: '',
-            urlString: '',
-            title,
-            shopId,
-            chatType: beginChatType.BEGIN_FROM_ORDER,
-            data: {
-                title: orderDetailModel.getOrderNo(),
-                desc,
-                pictureUrlString,
-                urlString:'',
-                note:'',
-            }}
-        )
+        if (this.data){
+            QYChatTool.beginQYChat({
+                routePath: '',
+                urlString: '',
+                title:this.data.title,
+                shopId:this.data.shopId,
+                chatType: beginChatType.BEGIN_FROM_ORDER,
+                data: {
+                    title: orderDetailModel.getOrderNo(),
+                    desc,
+                    pictureUrlString,
+                    urlString:'',
+                    note:'',
+                }}
+            )
+        } else {
+            orderApi.getProductShopInfoBySupplierCode({supplierCode}).then((data)=> {
+                this.data = data.data;
+                QYChatTool.beginQYChat({
+                    routePath: '',
+                    urlString: '',
+                    title: this.data.title,
+                    shopId: this.data.shopId,
+                    chatType: beginChatType.BEGIN_FROM_ORDER,
+                    data: {
+                        title: orderDetailModel.getOrderNo(),
+                        desc,
+                        pictureUrlString,
+                        urlString:'',
+                        note:'',
+                    }}
+                )
+            }).catch((e) => {
+                bridge.$toast(e.msg)
+            })
+        }
+
     }
 
     render() {
