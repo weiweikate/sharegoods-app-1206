@@ -32,7 +32,10 @@ android {
 
         manifestPlaceholders = [
                 JPUSH_PKGNAME : "com.meeruu.sharegoods",
-                JPUSH_APPKEY  : "7fde54543daf045a209a7abf", //JPush 上注册的包名对应的 Appkey.
+                // 生产环境
+                JPUSH_APPKEY  : "7fde54543daf045a209a7abf",
+                // 开发环境
+//                JPUSH_APPKEY  : "3288c3f3feb6c119e3d88049",
                 JPUSH_CHANNEL : "guanwang", //暂时填写默认值即可.
                 XIAOMI_APPKEY : "MI-5841792166549",//小米平台注册的appkey
                 XIAOMI_APPID  : "MI-2882303761517921549",//小米平台注册的appid
