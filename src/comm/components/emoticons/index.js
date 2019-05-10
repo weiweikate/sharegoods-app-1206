@@ -91,6 +91,11 @@ class Emoticons extends React.Component {
         this._classify();
     }
 
+    componentWillUnmount() {
+        let result = this.state.history;
+        AsyncStorage.setItem(HISTORY_STORAGE, JSON.stringify(result));
+    }
+
     // componentDidUpdate() {
     //     Animated.timing(
     //         this.state.position,
@@ -175,40 +180,29 @@ class Emoticons extends React.Component {
     }
 
     _history = (val) => {
-        //AsyncStorage.removeItem(HISTORY_STORAGE);
-        AsyncStorage.getItem(HISTORY_STORAGE, (err, result) => {
-            let value = _.clone(val);
-            if (result) {
-                result = JSON.parse(result);
-                let valIndex = _.find(result, value);
-                if (valIndex) {
-                    valIndex.freq++;
-                    _.remove(result, { name: valIndex.name });
-                    result.push(valIndex);
-                } else {
-                    value.freq = 1;
-                    result.push(value);
-                }
+        let result = this.state.history;
+        let value = _.clone(val);
+        if (result) {
+            // result = JSON.parse(result);
+            let valIndex = _.find(result, value);
+            if (valIndex) {
+                // valIndex.freq++;
+                _.remove(result, { name: valIndex.name });
+                result.push(valIndex);
+            } else {
+                // value.freq = 1;
+                result.push(value);
             }
-            result = _.reverse(_.sortBy(result, [function(o) {
-                return o.freq;
-            }]));
-            AsyncStorage.setItem(HISTORY_STORAGE, JSON.stringify(result));
-            console.log('emoji==='+JSON.stringify(result));
-            this.setState({ history: result });
-        });
+        }
+        this.setState({ history: result });
+
     };
 
     group = (emoji, type) => {
-        // if (this.props.asyncRender && this.state.currentMainTab !== groupIndex) {
-        //     groupIndex++;
-        //     return [];
-        // }
-        // groupIndex++;
+
 
         let groupView = [];
-        // if (!emoji)
-        //   return groupView;
+
         const blocks = Math.ceil(emoji.length / blockIconNum);
         for (let i = 0; i < blocks; i++) {
             let ge = _.slice(emoji, i * blockIconNum, (i + 1) * blockIconNum);
@@ -292,10 +286,9 @@ class Emoticons extends React.Component {
             groupsView.push(plusButton);
         }
 
-        if (this.props.showHistoryBar) {
-            groupsView.push(history);
-        }
-
+        // if (this.props.showHistoryBar) {
+        //     groupsView.push(history);
+        // }
         if (this.props.concise) {
             const groupView = this.group(this.state.data);
 
@@ -340,6 +333,8 @@ class Emoticons extends React.Component {
                                 style={styles.scrollGroupTable}
                                 tabBarUnderlineStyle={{ backgroundColor: '#fc7d30', height: 2 }}
                             >
+                                groupsView.push(history);
+
                                 {
                                     groupView
                                 }
@@ -363,6 +358,7 @@ class Emoticons extends React.Component {
                     style={styles.scrollTable}
                     tabBarUnderlineStyle={{ backgroundColor: '#fc7d30', height: 2 }}
                 >
+                    {history}
                     {groupsView}
                 </ScrollableTabView>
 
