@@ -174,10 +174,6 @@
         "姜振兴": {
             "name": "姜振兴",
             "host": "http://172.18.6.166:9090/gateway"
-        },
-        "zhaoQing":{
-            "name": "赵强",
-            "host": "http://172.18.6.243:9000/gateway"
         }
     }
 }
