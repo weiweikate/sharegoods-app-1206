@@ -90,7 +90,7 @@ export class ActivityDidBeginView extends Component {
                     <MRText style={DidBeginViewStyles.priceText}>¥<MRText
                         style={{ fontSize: 36 }}>{promotionPrice}</MRText></MRText>
                     <View style={{ flex: 1 }}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 3 }}>
                             <View style={DidBeginViewStyles.skillView}>
                                 <MRText style={DidBeginViewStyles.skillText}>秒杀价</MRText>
                             </View>
@@ -132,7 +132,7 @@ const DidBeginViewStyles = StyleSheet.create({
         fontSize: 20, color: DesignRule.white
     },
     skillView: {
-        justifyContent: 'center', alignItems: 'center', marginBottom: 3, marginRight: 5,
+        justifyContent: 'center', alignItems: 'center', marginRight: 5,
         borderRadius: 2, backgroundColor: 'rgba(0,0,0,0.1)', width: 40, height: 16
     },
     skillText: {
