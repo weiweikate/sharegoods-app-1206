@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     },
     shopText: {
         marginLeft: 10,
-        color: DesignRule.textColor_mainTitle, fontSize: 12
+        color: DesignRule.textColor_mainTitle, fontSize: 14
     },
     shopSubView: {
         flexDirection: 'row', alignItems: 'center', marginRight: 13
@@ -164,8 +164,8 @@ const styles = StyleSheet.create({
         height: 22, width: 1, backgroundColor: DesignRule.lineColor_inGrayBg
     },
     shopSubText: {
-        paddingLeft: 15, paddingRight: 5,
-        color: DesignRule.textColor_redWarn, fontSize: 12
+        paddingLeft: 15, paddingRight: 5, fontWeight: 'bold',
+        color: DesignRule.textColor_redWarn, fontSize: 14
     },
 
     nameText: {
