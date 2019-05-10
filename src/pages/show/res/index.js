@@ -12,7 +12,6 @@ const index = {
     likeIcon:require('./like_icon.png'),
     showReleaseIcon:require('./icon_release.png'),
     delIcon:require('./icon_del.png'),
-    showShareIcon:require('./show_release_icon.png'),
     addIcon:require('./icon_add.png'),
     addCarIcon:require('./icon_add_car.png'),
     addShieldIcon:require('./icon_show_shield.png'),

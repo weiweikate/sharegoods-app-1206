@@ -32,7 +32,7 @@ function GraphemeSplitter(){
         if(idx === undefined){
             idx = 0;
         }
-        code = str.charCodeAt(idx);
+        let code = str.charCodeAt(idx);
 
         // if a high surrogate
         if (0xD800 <= code && code <= 0xDBFF &&
@@ -156,19 +156,19 @@ function GraphemeSplitter(){
     };
 
     // Returns the number of grapheme clusters there are in the given string
-    var countGraphemes = function(str){
-        var count = 0;
-        var index = 0;
-        var brk;
-        while((brk = nextBreak(str, index)) < str.length){
-            index = brk;
-            count++;
-        }
-        if(index < str.length){
-            count++;
-        }
-        return count;
-    };
+    // var countGraphemes = function(str){
+    //     var count = 0;
+    //     var index = 0;
+    //     var brk;
+    //     while((brk = nextBreak(str, index)) < str.length){
+    //         index = brk;
+    //         count++;
+    //     }
+    //     if(index < str.length){
+    //         count++;
+    //     }
+    //     return count;
+    // };
 
     //given a Unicode code point, determines this symbol's grapheme break property
     function getGraphemeBreakProperty(code){

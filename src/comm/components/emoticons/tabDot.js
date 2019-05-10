@@ -1,11 +1,7 @@
 import React from 'react';
 import {
-    Text,
     View,
     TouchableOpacity,
-    Navigator,
-    InteractionManager,
-    Platform,
     DeviceEventEmitter
 } from 'react-native';
 import styles from './style';

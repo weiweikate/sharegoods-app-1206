@@ -3,7 +3,6 @@ import React from 'react-native';
 const {
     StyleSheet,
     Dimensions,
-    Platform
     } = React;
 const {height, width} = Dimensions.get('window');
 

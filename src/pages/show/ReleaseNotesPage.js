@@ -23,7 +23,6 @@ import ImageLoad from '@mr/image-placeholder';
 import NoMoreClick from '../../components/ui/NoMoreClick';
 import UIImage from '../../components/ui/UIImage';
 import Emoticons, * as emoticons from '../../comm/components/emoticons';
-import EmptyUtils from '../../utils/EmptyUtils';
 
 const { addIcon, delIcon, iconShowDown, iconShowEmoji, addShowIcon } = res;
 
@@ -232,6 +231,10 @@ export default class ReleaseNotesPage extends BasePage {
             <View style={{ flex: 1 }}/>
             <TouchableWithoutFeedback onPress={() => {
                 Keyboard.dismiss();
+                this.setState({
+                    showEmoji:false,
+                    keyBoardHeight:0
+                })
             }}>
                 <Image source={iconShowDown} style={styles.closeKeyboard}/>
             </TouchableWithoutFeedback>

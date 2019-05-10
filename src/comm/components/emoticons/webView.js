@@ -5,14 +5,10 @@ import {
     Text,
     View,
     TouchableOpacity,
-    Animated,
     StyleSheet,
     Dimensions,
-    TouchableWithoutFeedback,
     Image,
-    WebView,
     Platform,
-    Button,
 } from 'react-native';
 const {height, width} = Dimensions.get('window');
 var backImg = require('./rg_left.png');

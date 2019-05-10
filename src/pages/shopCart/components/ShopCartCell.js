@@ -29,7 +29,6 @@ import { getSelectImage, getTipString, statueImage } from '../model/ShopCartMacr
 import bridge from '../../../utils/bridge';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import shopCartCacheTool from '../model/ShopCartCacheTool';
-import res from '../res';
 
 const dismissKeyboard = require('dismissKeyboard');
 

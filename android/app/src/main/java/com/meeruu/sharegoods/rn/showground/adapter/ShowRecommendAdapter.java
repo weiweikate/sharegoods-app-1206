@@ -36,8 +36,9 @@ import java.util.List;
 
 public class ShowRecommendAdapter extends BaseQuickAdapter<ShowRecommendBean, BaseViewHolder> {
     private NineGridView.clickL clickL;
+    private ProductsAdapter.AddCartListener addCartListener;
 
-    public ShowRecommendAdapter(NineGridView.clickL clickL) {
+    public ShowRecommendAdapter(NineGridView.clickL clickL, ProductsAdapter.AddCartListener addCartListener) {
         super(R.layout.item_showground_image_goods);
         NineGridView.setImageLoader(new NineGridView.ImageLoader() {
             @Override
@@ -46,6 +47,7 @@ public class ShowRecommendAdapter extends BaseQuickAdapter<ShowRecommendBean, Ba
             }
         });
         this.clickL = clickL;
+        this.addCartListener = addCartListener;
     }
 
     @Override
@@ -77,6 +79,9 @@ public class ShowRecommendAdapter extends BaseQuickAdapter<ShowRecommendBean, Ba
         list.add("1");
 
         ProductsAdapter productsAdapter = new ProductsAdapter(list);
+        if (this.addCartListener != null) {
+            productsAdapter.setAddCartListener(addCartListener);
+        }
         recyclerView.setAdapter(productsAdapter);
 
     }

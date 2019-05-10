@@ -4,7 +4,6 @@ import {
     Image,
     TouchableOpacity,
     View,
-    ActivityIndicator,
     StyleSheet,
     NativeModules,
     Alert,
@@ -22,7 +21,6 @@ import { observer } from 'mobx-react';
 import CommShareModal from '../../comm/components/CommShareModal';
 import user from '../../model/user';
 import apiEnvironment from '../../api/ApiEnvironment';
-import ImageLoad from '@mr/image-placeholder';
 import BasePage from '../../BasePage';
 import { PageLoadingState } from '../../components/pageDecorator/PageState';
 import {
@@ -36,16 +34,7 @@ import {SmoothPushPreLoadHighComponent} from '../../comm/components/SmoothPushHi
 import ProductRowListView from './components/ProductRowListView';
 import ProductListModal from './components/ProductListModal';
 
-const Goods = ({ data, press }) => <TouchableOpacity style={styles.goodsItem} onPress={() => {
-    press && press();
-}}>
-    <ImageLoad style={styles.goodImg} source={{ uri: data.headImg ? data.headImg : '' }}/>
-    <View style={styles.goodDetail}>
-        <Text style={styles.name} allowFontScaling={false}>{data.name}</Text>
-        <View style={{ height: px2dp(4) }}/>
-        <Text style={styles.price} allowFontScaling={false}>￥ {data.price}起</Text>
-    </View>
-</TouchableOpacity>;
+
 @SmoothPushPreLoadHighComponent
 @observer
 export default class ShowDetailPage extends BasePage {
@@ -327,7 +316,7 @@ export default class ShowDetailPage extends BasePage {
             </View>
         }
 
-        let { detail, isCollecting } = this.showDetailModule;
+        let { detail } = this.showDetailModule;
         if (!detail) {
             detail = {imgs: '', products: [], click: 0, content: ''}
         }
