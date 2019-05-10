@@ -24,6 +24,15 @@ export const tagName = {
 };
 
 
+class ShowActiveModules {
+    @observable topBtnHide;
+    @action setTopBtnHide = (state) => {
+        this.topBtnHide = state;
+
+    };
+}
+export const showActiveModules = new ShowActiveModules();
+
 export class HomeShowModules {
     @observable showList = [];
 
@@ -352,3 +361,5 @@ export class ShowDetail {
     });
 
 }
+
+

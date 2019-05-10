@@ -29,6 +29,10 @@
     _contentLab = [[UILabel alloc]init];
     _contentLab.font = [UIFont systemFontOfSize:13];
     _contentLab.textColor = [UIColor colorWithRed:102/255.0 green:102/255.0 blue:102/255.0 alpha:1.0];
+    _contentLab.userInteractionEnabled=YES;
+    UITapGestureRecognizer *labelTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(labelTouchUpInside)];
+    
+    [_contentLab addGestureRecognizer:labelTapGestureRecognizer];
   }
   return _contentLab;
 }
@@ -104,8 +108,8 @@
   [bgView addSubview:self.shareBtn];
   
   bgView.sd_layout
-  .leftSpaceToView(self.contentView, 10)
-  .rightSpaceToView(self.contentView, 10)
+  .leftSpaceToView(self.contentView, 0)
+  .rightSpaceToView(self.contentView, 0)
   .topSpaceToView(self.contentView, 5)
   .autoHeightRatio(0);
   
@@ -130,11 +134,12 @@
   .leftSpaceToView(bgView, 45)
   .rightSpaceToView(bgView, 30)
   .autoHeightRatio(0);
+  [self.contentLab setMaxNumberOfLinesToShow:2];
   
   //点赞
   [_zanBtn addTarget:self action:@selector(tapZanBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.zanBtn.sd_layout.topSpaceToView(self.contentLab,10)
-  .leftSpaceToView(bgView, 40)
+  .leftSpaceToView(bgView, 45)
    .widthIs(25).heightIs(25);
 
   self.zanNum.sd_layout.centerYEqualToView(self.zanBtn)
@@ -151,7 +156,7 @@
   [self setupAutoHeightWithBottomView:bgView bottomMargin:5];
 }
 
--(void)setModel:(JXModel *)model{
+-(void)setModel:(JXModelData *)model{
   _model = model;
   self.headView.UserInfoModel = model.userInfoVO;
   [self.picImg sd_setImageWithURL:[NSURL URLWithString:[model.products[0] valueForKey: @"image"]] placeholderImage:[self createImageWithUIColor:[UIColor grayColor]]];
@@ -163,15 +168,22 @@
 -(void)tapZanBtn:(UIButton*)sender{
   NSLog(@"tapZanBtn");
   if(self.recTypeDelegate){
-    [self.recTypeDelegate clickLabel:self];
+    [self.recTypeDelegate zanBtnClick:self];
   }
 }
 
 -(void)tapShareBtn:(UIButton*)sender{
   NSLog(@"tapShareBtn");
+  if(self.recTypeDelegate){
+    [self.recTypeDelegate shareBtnClick:self];
+  }
 }
 
-
+-(void)labelTouchUpInside{
+  if(self.recTypeDelegate){
+    [self.recTypeDelegate clickLabel:self];
+  }
+}
 
 - (void)awakeFromNib {
     [super awakeFromNib];

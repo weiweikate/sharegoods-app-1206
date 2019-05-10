@@ -18,6 +18,7 @@
 @property(nonatomic, strong)ASImageNode *numIconNode;
 @property(nonatomic, strong)ASTextNode *numNode;
 @property(nonatomic, strong)ASImageNode *numBgNode;
+@property(nonatomic, strong)ASImageNode *hotNode;
 @end
 @implementation ShowCellNode
 
@@ -34,6 +35,7 @@
     [self addSubnode:self.numBgNode];
     [self addSubnode:self.numNode];
     [self addSubnode:self.numIconNode];
+    [self addSubnode:self.hotNode];
     self.backgroundColor = [UIColor whiteColor];
   }
   return self;
@@ -45,27 +47,29 @@
   
   ASRatioLayoutSpec *ImageSpec = [ASRatioLayoutSpec ratioLayoutSpecWithRatio:1/_model.aspectRatio
                                                                        child:_imageNode];
-  _numIconNode.style.spacingBefore = 10;
-  ASStackLayoutSpec *hNumSpec = [ASStackLayoutSpec stackLayoutSpecWithDirection:ASStackLayoutDirectionHorizontal
-                                                                        spacing:10
-                                                                 justifyContent:ASStackLayoutJustifyContentStart alignItems:ASStackLayoutAlignItemsCenter
-                                                                       children:@[_numIconNode,
-                                                                                  _numNode
-                                                                                  ]];
-  _numBgNode.style.preferredSize = CGSizeMake(constrainedSize.min.width, 30);
-  hNumSpec.style.preferredSize = CGSizeMake(constrainedSize.min.width, 30);
-  ASOverlayLayoutSpec * overSpec1 =  [ASOverlayLayoutSpec overlayLayoutSpecWithChild:_numBgNode overlay: hNumSpec];
+//  _numIconNode.style.spacingBefore = 10;
+//  ASStackLayoutSpec *hNumSpec = [ASStackLayoutSpec stackLayoutSpecWithDirection:ASStackLayoutDirectionHorizontal
+//                                                                        spacing:10
+//                                                                 justifyContent:ASStackLayoutJustifyContentStart alignItems:ASStackLayoutAlignItemsCenter
+//                                                                       children:@[_numIconNode,
+//                                                                                  _numNode
+//                                                                                  ]];
+//  _numBgNode.style.preferredSize = CGSizeMake(constrainedSize.min.width, 30);
+//  hNumSpec.style.preferredSize = CGSizeMake(constrainedSize.min.width, 30);
+//  ASOverlayLayoutSpec * overSpec1 =  [ASOverlayLayoutSpec overlayLayoutSpecWithChild:_numBgNode overlay: hNumSpec];
   //  ASAbsoluteLayoutSpec * overSpec1  = [ASAbsoluteLayoutSpec absoluteLayoutSpecWithChildren:@[_numBgNode, hNumSpec]];
   //  overSpec1.style.height = ASDimensionMake(30);
-  UIEdgeInsets insets = UIEdgeInsetsMake(INFINITY,0,0,0);
-  ASInsetLayoutSpec * numBgNode = [ASInsetLayoutSpec insetLayoutSpecWithInsets:insets child:overSpec1];
-  ASOverlayLayoutSpec * overSpec =  [ASOverlayLayoutSpec overlayLayoutSpecWithChild:ImageSpec overlay: numBgNode];
+//  UIEdgeInsets insets = UIEdgeInsetsMake(INFINITY,0,0,0);
+//  ASInsetLayoutSpec * numBgNode = [ASInsetLayoutSpec insetLayoutSpecWithInsets:insets child:overSpec1];
+//  ASOverlayLayoutSpec * overSpec =  [ASOverlayLayoutSpec overlayLayoutSpecWithChild:ImageSpec overlay: numBgNode];
   _headerNode.style.spacingBefore = 10;
   _headerNode.style.preferredSize = CGSizeMake(30, 30);
   _headerNode.style.spacingAfter = 5;
   _timeNode.style.spacingAfter = 10;
   _userNameNode.style.flexShrink = 1.0;
   _userNameNode.style.flexGrow = 1.0;
+  _hotNode.style.preferredSize = CGSizeMake(15, 15);
+  _hotNode.style.spacingAfter = 5;
   
   
   ASStackLayoutSpec *hSpec = [ASStackLayoutSpec stackLayoutSpecWithDirection:ASStackLayoutDirectionHorizontal
@@ -73,12 +77,13 @@
                                                               justifyContent:ASStackLayoutJustifyContentStart alignItems:ASStackLayoutAlignItemsCenter
                                                                     children:@[_headerNode,
                                                                                _userNameNode,
+                                                                               _hotNode,
                                                                                _timeNode                                                                ]];
   hSpec.style.width = ASDimensionMake(constrainedSize.min.width);
   ASStackLayoutSpec *vSpec = [ASStackLayoutSpec stackLayoutSpecWithDirection:ASStackLayoutDirectionVertical
                                                                      spacing:10
                                                               justifyContent:ASStackLayoutJustifyContentStart alignItems:ASStackLayoutAlignItemsStart
-                                                                    children:@[overSpec,
+                                                                    children:@[ImageSpec,
                                                                                [ASInsetLayoutSpec insetLayoutSpecWithInsets:UIEdgeInsetsMake(0, 10, 0, 10) child:_titleNode],
                                                                                hSpec                                                                ]];
   
@@ -98,6 +103,9 @@
     _imageNode = [SGNetworkImageNode new];
     _imageNode.placeholderColor = [UIColor colorWithHexString:@"f4f4f4"];
     _imageNode.URL = [NSURL URLWithString:showImage];
+    _imageNode.cornerRadius = 5;
+    _imageNode.clipsToBounds = YES;
+
   }
   return _imageNode;
 }
@@ -183,6 +191,16 @@
   }
   return _numBgNode;
 }
+
+- (ASImageNode *)hotNode
+{
+  if (!_hotNode) {
+    _hotNode = [ASImageNode new];
+    _hotNode.image = [UIImage imageNamed:@"hot"];
+  }
+  return _hotNode;
+}
+
 
 - (ASTextNode *)numNode
 {

@@ -13,6 +13,8 @@ import {
 import ShowGroundView from './components/ShowGroundView';
 import ShowRecommendView from './components/ShowRecommendView';
 import ShowActivityView from './components/ShowActivityView';
+import ShowActivityViewIOS from './ShowActivityView';
+
 @observer
 export default class ShowListPage extends BasePage {
 
@@ -240,7 +242,7 @@ export default class ShowListPage extends BasePage {
                     {
                         needsExpensive
                             ?
-
+                            !ScreenUtils.isIOS?
                             <ShowActivityView
                                 ref={(ref) => {
                                     this.rightShowList = ref;
@@ -261,7 +263,7 @@ export default class ShowListPage extends BasePage {
                                         index: nativeEvent.index
                                     });
                                 }}
-                            />
+                            />:<ShowActivityViewIOS />
                             :
                             null
                     }

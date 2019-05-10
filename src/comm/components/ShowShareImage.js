@@ -26,10 +26,10 @@ export default class ShowShareImage extends Component {
 
             return (
                 <View style={styles.container}>
-                    <Image style={{marginTop:10,marginLeft:5,width:230,height:258,borderRadius:5}}
+                    <Image style={{marginTop:10,marginLeft:5,width:230,height:258,borderRadius:5,overflow: 'hidden',}}
                            source={{uri:goodsImg}}/>
                     <View style={{flexDirection:'row',width:230,height:30,alignItems:'center',marginBottom:5,marginTop:5}}>
-                        <Image style={{backgroundColor:'red',width:20,height:20,borderRadius:10}}
+                        <Image style={{backgroundColor:'red',width:20,height:20,borderRadius:10,overflow: 'hidden',}}
                                source={{uri:headerImg}}/>
                         <Text style={{marginLeft:5,fontSize:13}}>{name ?
                             (name.length > 13 ? name.substr(0, 13) + "..." : name) : ""

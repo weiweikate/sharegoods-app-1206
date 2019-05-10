@@ -8,19 +8,33 @@
 
 #import <Foundation/Foundation.h>
 
-@class GoodsDataModel,SourcesModel,UserInfoModel;
+@class JXModelData,GoodsDataModel,SourcesModel,UserInfoModel;
 
 @interface JXModel : NSObject
+@property (nonatomic, assign)NSInteger currentPage;
+@property (nonatomic, assign)NSInteger pageSize;
+@property (nonatomic, assign)NSInteger totalNum;
+@property (nonatomic, assign)NSInteger isMore;
+@property (nonatomic, assign)NSInteger totalPage;
+@property (nonatomic, assign)NSInteger startIndex;
+@property (nonatomic, strong)NSArray<JXModelData *> * data;
 
+@end
+
+@interface JXModelData : NSObject
 @property (nonatomic,copy) NSString * content;
 @property (nonatomic,assign) NSInteger downloadCount;
 @property (nonatomic,assign) NSInteger likesCount;
 @property (nonatomic,assign) NSInteger shareCount;
+@property (nonatomic,assign) NSInteger hotCount;
 @property (nonatomic,copy) NSString * showNo;
-
 @property (nonatomic,strong)NSArray<GoodsDataModel*> * products;
-@property (nonatomic,strong)NSArray<SourcesModel*> * sources;
+@property (nonatomic,strong)NSArray<SourcesModel*> * resource;
 @property (nonatomic,strong)UserInfoModel * userInfoVO;
+@property (nonatomic,assign) NSInteger  clickCount;
+@property (nonatomic,copy) NSString * showType;
+@property (nonatomic,copy) NSString * publishTimeStr;
+@property (nonatomic,assign) BOOL * like;
 
 @property (nonatomic,assign) BOOL  isOpening;
 @end

@@ -122,10 +122,10 @@
 {
   if (array.count == 1){
       return (SCREEN_WIDTH-190);
-  }else if(array.count>1&&array.count <= 4) {
-      return array.count==4 ? (SCREEN_WIDTH-85)/2:(SCREEN_WIDTH-85)/array.count;
+  }else if(array.count==4||array.count==2) {
+      return (SCREEN_WIDTH-95)/2;
     } else {
-      CGFloat w =  (SCREEN_WIDTH-85)/3;
+      CGFloat w =  (SCREEN_WIDTH-105)/3;
       return w;
     }
 }

@@ -29,6 +29,10 @@
         _contentLab = [[UILabel alloc]init];
         _contentLab.font = [UIFont systemFontOfSize:13];
         _contentLab.textColor = [UIColor colorWithRed:102/255.0 green:102/255.0 blue:102/255.0 alpha:1.0];
+      _contentLab.userInteractionEnabled=YES;
+      UITapGestureRecognizer *labelTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(labelTouchUpInside)];
+      
+      [_contentLab addGestureRecognizer:labelTapGestureRecognizer];
     }
     return _contentLab;
 }
@@ -127,8 +131,8 @@
   [bgView addSubview:self.foldLabel];
   
     bgView.sd_layout
-    .leftSpaceToView(self.contentView, 10)
-    .rightSpaceToView(self.contentView, 10)
+    .leftSpaceToView(self.contentView, 0)
+    .rightSpaceToView(self.contentView, 0)
     .topSpaceToView(self.contentView, 5)
     .autoHeightRatio(0);
   
@@ -164,30 +168,30 @@
   [self setupAutoHeightWithBottomView:bgView bottomMargin:5];
 }
 
--(void)setModel:(JXModel *)model{
+-(void)setModel:(JXModelData *)model{
     _model = model;
     self.headView.UserInfoModel = model.userInfoVO;
-    self.bodyView.sources = model.sources;
+    self.bodyView.sources = model.resource;
     self.contentLab.text = model.content;
     
     self.footerView.products = model.products;
-    if( model.content.length>60){
-        self.foldLabel.hidden = NO;
-        if (model.isOpening) {
-            self.foldLabel.sd_layout.heightIs(20);
-            [self.contentLab setMaxNumberOfLinesToShow:0];
-            self.foldLabel.text = @"收起";
-        }else{
-            self.foldLabel.sd_layout.heightIs(20);
-            [self.contentLab setMaxNumberOfLinesToShow:3];
-            self.foldLabel.text = @"展开";
-        }
-    }else{
+//    if( model.content.length>60){
+//        self.foldLabel.hidden = NO;
+//        if (model.isOpening) {
+//            self.foldLabel.sd_layout.heightIs(20);
+//            [self.contentLab setMaxNumberOfLinesToShow:0];
+//            self.foldLabel.text = @"收起";
+//        }else{
+//            self.foldLabel.sd_layout.heightIs(20);
+//            [self.contentLab setMaxNumberOfLinesToShow:3];
+//            self.foldLabel.text = @"展开";
+//        }
+//    }else{
         [self.contentLab setMaxNumberOfLinesToShow:3];
         self.foldLabel.sd_layout.heightIs(0);
         self.foldLabel.hidden = YES;
 
-    }
+//    }
 }
 
 /**
@@ -203,6 +207,12 @@
             [self.cellDelegate clickFoldLabel:self];
         }
     }
+}
+
+-(void)labelTouchUpInside{
+  if (self.cellDelegate) {
+    [self.cellDelegate labelClick:self];
+  }
 }
 
 @end

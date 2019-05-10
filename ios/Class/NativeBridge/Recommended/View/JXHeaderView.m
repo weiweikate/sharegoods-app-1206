@@ -37,6 +37,7 @@
     _nameLab = [[UILabel alloc]init];
     _nameLab.font = [UIFont systemFontOfSize:13];
     _nameLab.textColor =[UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
+    _nameLab.text = @"";
   }
   return _nameLab;
 }

@@ -102,7 +102,7 @@
   [_zanBtn addTarget:self action:@selector(tapZanBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.zanBtn.sd_layout.topSpaceToView(self.scrollView,10)
   .heightIs(25).widthIs(25)
-  .leftSpaceToView(self, 25);
+  .leftSpaceToView(self, 30);
     
   self.zanNum.sd_layout.centerYEqualToView(self.zanBtn)
   .leftSpaceToView(self.zanBtn, 1)
@@ -139,7 +139,7 @@
 
 -(void)setGoodsView{
     NSInteger len = self.products.count;
-    CGFloat width = len>0&&len<=1?(SCREEN_WIDTH-65):(SCREEN_WIDTH-110);
+    CGFloat width = len>0&&len<=1?(SCREEN_WIDTH-90):(SCREEN_WIDTH-110);
   if(len>0){
     self.scrollView.sd_layout
     .topEqualToView(self)
@@ -173,7 +173,7 @@
       
         UILabel* titile = [[UILabel alloc]init];
         titile.font = [UIFont systemFontOfSize:10];
-        titile.textColor = [UIColor grayColor];
+        titile.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
         titile.text = [self.products[0] valueForKey:@"desc"];
     
         
@@ -198,7 +198,7 @@
         //标题
         titile.sd_layout.topSpaceToView(bgView, 10)
         .leftSpaceToView(goodsImg, 10)
-        .rightSpaceToView(bgView, 1)
+        .rightSpaceToView(bgView, 10)
         .heightIs(20);
         
         //购物车

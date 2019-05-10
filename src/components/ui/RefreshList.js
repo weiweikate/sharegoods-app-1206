@@ -20,11 +20,13 @@ const defaultPageSize = 10;
 export default class RefreshList extends Component {
     static defaultProps = {
         data: [],
-        isHideFooter: true
+        isHideFooter: true,
+        topBtn:false,
     };
 
     static propTypes = {
-        emptyIcon: PropTypes.any
+        emptyIcon: PropTypes.any,
+        topBtn: PropTypes.bool,
     };
 
     constructor(props) {
@@ -125,9 +127,10 @@ export default class RefreshList extends Component {
 
 
     render() {
-        const { data, headerData, renderItem, onRefresh, keyExtractor, isEmpty, extraData, progressViewOffset, ...attributes } = this.props;
+        const { data, headerData, renderItem, onRefresh, keyExtractor, onListViewScroll, isEmpty, extraData, progressViewOffset, topBtn, ...attributes} = this.props;
         if (data.length > 0 || headerData) {
             return (
+                <View style={{flex:1}}>
                 <FlatList
                     style={[{ width: ScreenUtils.width, flex: 1 }, this.props.style && this.props.style]}
                     data={data}
@@ -136,6 +139,7 @@ export default class RefreshList extends Component {
                     onEndReached={this.props.onLoadMore ? this.onEndReached : null}
                     extraData={extraData}
                     onEndReachedThreshold={0.1}
+                    onScroll={(e)=>{onListViewScroll && onListViewScroll(e)}}
                     ListFooterComponent={this.renderFooter}
                     ListHeaderComponent={this.props.ListHeaderComponent}
                     keyExtractor={keyExtractor ? keyExtractor : (item, index) => index.toString()}
@@ -146,6 +150,15 @@ export default class RefreshList extends Component {
                     ref={'flatlist'}
                     {...attributes}
                 />
+                    {topBtn ?
+                        <View style={styles.topbtnStyle}>
+                            <TouchableOpacity onPress={()=>this.scrollToIndex({viewPosition: 0, index: 0 })}>
+                                <Image source={res.other.top_Icon} style={{width:36, height:36,backgroundColor:'white'}} />
+                            </TouchableOpacity>
+                        </View>
+                        : null
+                    }
+                </View>
             );
 
         } else {
@@ -174,6 +187,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 20,
         height: 44
+    },
+    topbtnStyle:{
+        position: 'absolute',
+        right: 14,
+        bottom: 50,
     }
 });
 

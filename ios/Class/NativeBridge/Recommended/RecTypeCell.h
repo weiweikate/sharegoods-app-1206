@@ -13,17 +13,20 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class RecTypeCell;
 
-@protocol recTypeCellDelegate <NSObject>
+@protocol RecTypeCellDelegate <NSObject>
 
 - (void)clickLabel:(RecTypeCell*)cell;
+
+- (void)zanBtnClick:(RecTypeCell*)cell;
+- (void)shareBtnClick:(RecTypeCell*)cell;
 
 @end
 
 
 @interface RecTypeCell : UITableViewCell
 
-@property (nonatomic,strong) JXModel * model;
-@property (nonatomic, weak) id<recTypeCellDelegate> recTypeDelegate;
+@property (nonatomic,strong) JXModelData * model;
+@property (nonatomic, weak) id<RecTypeCellDelegate> recTypeDelegate;
 
 @end
 

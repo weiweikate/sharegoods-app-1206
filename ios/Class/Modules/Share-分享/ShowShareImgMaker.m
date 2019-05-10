@@ -111,20 +111,23 @@ SINGLETON_FOR_CLASS(ShowShareImgMaker)
   
   //白色背景
   UIImage * whiteBgImg = [UIImage imageWithColor:[UIColor whiteColor]];
+  
   [nodes addObject:@{
-                     @"value": whiteBgImg,
+                     @"value": [self creatRoundImagwwwe:whiteBgImg Radius:0.01 width:(375-30)*i height:472*i],
                      @"locationType": @"rect",
                      @"location": [NSValue valueWithCGRect:CGRectMake(15*i, 42*i, (375-30)*i, 472*i)]}
    ];
   
+  //商品
   [nodes addObject:@{
-                     @"value": productImage,
+                     @"value": [self creatRoundImagwwwe:productImage Radius:0.02 width:(375-60)*i height:345*i],
                      @"locationType": @"rect",
                      @"location": [NSValue valueWithCGRect:CGRectMake(30*i, 57*i, (375-60)*i, 345*i)]}
    ];
 
+  //头像
   [nodes addObject:@{
-                     @"value": headerImage,
+                     @"value": [self creatRoundImagwwwe:headerImage Radius:0.5 width:35*i height:35*i],
                      @"locationType": @"rect",
                      @"location": [NSValue valueWithCGRect:CGRectMake(30*i, 412*i, 35*i, 35*i)]}
    ];
@@ -315,6 +318,30 @@ SINGLETON_FOR_CLASS(ShowShareImgMaker)
   UIGraphicsEndImageContext();
   return image2;
 }
+
+
+-(UIImage *)creatRoundImagwwwe:(UIImage *)image Radius:(CGFloat)radius width:(CGFloat)width height:(CGFloat)height{
+  // 开始图形上下文
+  UIGraphicsBeginImageContextWithOptions(CGSizeMake(width, height), NO, 0.0);
+  // 获得图形上下文
+  CGContextRef ctx = UIGraphicsGetCurrentContext();
+  // 根据radius的值画出路线
+  // 设置一个范围
+  CGRect rect = CGRectMake(0.0f, 0.0f,width, height);
+  // 根据radius的值画出路线
+  CGContextAddPath(ctx, [UIBezierPath bezierPathWithRoundedRect:rect cornerRadius:radius*height].CGPath);
+  
+  // 裁剪
+  CGContextClip(ctx);
+  // 将原照片画到图形上下文
+  [image drawInRect:rect];
+  // 从上下文上获取剪裁后的照片
+  UIImage *image2 = UIGraphicsGetImageFromCurrentImageContext();
+  // 关闭上下文
+  UIGraphicsEndImageContext();
+  return image2;
+}
+
 
 /**
  *  设置图片透明度

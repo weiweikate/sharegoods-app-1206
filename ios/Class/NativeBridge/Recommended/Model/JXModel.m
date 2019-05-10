@@ -12,6 +12,16 @@
 
 + (nullable NSDictionary<NSString *, id> *)modelContainerPropertyGenericClass{
   return @{
+           @"data" : @"JXModelData",
+           };
+}
+
+@end
+
+@implementation JXModelData
+
++ (nullable NSDictionary<NSString *, id> *)modelContainerPropertyGenericClass{
+  return @{
            @"products" : @"GoodsDataModel",
            @"sources" : @"SourcesModel",
            };
