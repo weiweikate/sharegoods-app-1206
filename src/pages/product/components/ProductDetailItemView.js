@@ -400,11 +400,10 @@ const ServiceItemViewStyles = StyleSheet.create({
         backgroundColor: 'white', height: 44
     },
     serviceNameText: {
-        marginRight: 20,
         color: DesignRule.textColor_instruction, fontSize: 13
     },
     itemView: {
-        flexDirection: 'row', alignItems: 'center', marginLeft: 5
+        flexDirection: 'row', alignItems: 'center', marginLeft: 10
     },
     serviceValueText: {
         marginLeft: 5,
