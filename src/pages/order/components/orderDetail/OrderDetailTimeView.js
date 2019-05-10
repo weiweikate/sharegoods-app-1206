@@ -40,7 +40,6 @@ export default class OrderDetailTimeView extends Component {
     };
 
     concactKeFu(){
-        orderDetailModel.status;
         let shopId = '';
         let title = '平台客服';
         let desc = ''

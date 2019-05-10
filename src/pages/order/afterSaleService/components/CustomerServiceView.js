@@ -30,7 +30,7 @@ import res from "../../res";
 import BusinessUtils from "../../../mine/components/BusinessUtils";
 // import QYChatUtil from "../../../mine/page/helper/QYChatModel";
 import { track, trackEvent } from '../../../../utils/SensorsTrack';
-import {  QYChatTool } from '../../../../utils/QYModule/QYChatTool';
+import { beginChatType, QYChatTool } from '../../../../utils/QYModule/QYChatTool';
 
 const {
     afterSaleService: {
@@ -57,19 +57,24 @@ export default class CustomerServiceView extends React.Component {
     };
     /** 七鱼客服*/
     contactSeller = () => {
+        let pageData = this.props.pageData;
         track(trackEvent.ClickOnlineCustomerService, {customerServiceModuleSource: 4});
-         //QYChatUtil.qiYUChat();
-        // QYChatTool.beginQYChat({
-        //     routePath: '',
-        //     urlString: '',
-        //     title: '平台客服',
-        //     shopId: '',
-        //     chatType: beginChatType.BEGIN_FROM_ORDER,
-        //     data: {
-        //
-        //     }
-        // })
-        QYChatTool.beginQYChat();
+        let shopId = pageData.supplierCode	|| '';
+        let title = pageData.supplierName	|| '';
+        QYChatTool.beginQYChat({
+            routePath: '',
+            urlString: '',
+            title,
+            shopId,
+            chatType: beginChatType.BEGIN_FROM_ORDER,
+            data: {
+                title: pageData.warehouseOrderNo,
+                desc: pageData.productName,
+                pictureUrlString: pageData.specImg,
+                urlString:'',
+                note:'',
+            }}
+        )
     };
 
     render() {
