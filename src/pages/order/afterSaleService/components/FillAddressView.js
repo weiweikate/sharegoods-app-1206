@@ -19,23 +19,16 @@ import {
 } from 'react-native';
 
 import {
-  UIText,
-  UIImage
-} from '../../../components/ui';
-import DesignRule from 'DesignRule';
+  MRText
+} from '../../../../components/ui';
+import DesignRule from '../../../../constants/DesignRule';
 
 export default class FillAddressView extends React.Component {
 
   constructor(props) {
     super(props);
 
-    this._bind();
-
     this.state = {};
-  }
-
-  _bind() {
-
   }
 
   componentDidMount() {
@@ -45,9 +38,30 @@ export default class FillAddressView extends React.Component {
   render() {
     return (
       <View>
+
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    container: {
+        backgroundColor: 'white'
+    },
+    bottomContainer: {
+
+    },
+    borderButton: {
+        borderWidth: 0.5,
+        borderColor: DesignRule.mainColor,
+        borderRadius: 14,
+        height: 28,
+        width: 105,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    btnText: {
+        color: DesignRule.mainColor,
+        fontSize: 12,
+    }
+});
