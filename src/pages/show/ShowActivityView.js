@@ -22,7 +22,6 @@ import ScreenUtils from "../../utils/ScreenUtils";
 import {showActiveModules} from './Show'
 
 @observer
-
 export default class ShowActivityView extends Component {
     constructor(props) {
         super(props);

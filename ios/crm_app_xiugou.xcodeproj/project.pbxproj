@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -1615,7 +1616,7 @@
 			children = (
 				01262FB022811353008D4F7E /* Activity */,
 				01091612227053450043E997 /* Recommended */,
-				C4F01EE9222D13F500ACA1B4 /* PhoneAuther */,
+				C4F01EE9222D13F500ACA1B4 /*  PhoneAuther */,
 				CD5EAF9A221BFADF007AAEE0 /* ShowGroundView */,
 				CD3A89D021F05DD3003B9803 /* MRLoadingView */,
 				50043A7721C76D6100270DFA /* ShopCart */,
@@ -1959,7 +1960,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		C4F01EE9222D13F500ACA1B4 /* PhoneAuther */ = {
+		C4F01EE9222D13F500ACA1B4 /*  PhoneAuther */ = {
 			isa = PBXGroup;
 			children = (
 				C4F01EEA222D141200ACA1B4 /* PhoneAutherTool.h */,

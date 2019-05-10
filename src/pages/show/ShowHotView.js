@@ -78,7 +78,7 @@ export default class ShowHotView extends React.Component {
             <View style={styles.container}>
                 <View style={{ flex: 1, paddingHorizontal: 15 }}>
                     <ShowRecommendView style={{ flex: 1 }}
-                                       uri={'/discover/query@GET'}
+                                       uri={'/social/show/content/page/query@GET'}
                                        ref={(ref) => {
                                            this.rightShowList = ref;
                                        }}
@@ -87,7 +87,7 @@ export default class ShowHotView extends React.Component {
                                        onStartRefresh={() => {
                                            this.loadData();
                                        }}
-                                       params={{ generalize: tag.Recommend + '' }}
+                                       params={{ generalize: tag.Recommend + '',spreadPosition:'spreadPosition',spread_position:'1'}}
                                        onStartScroll={() => {
                                            console.log('_onChoiceAction star');
                                            this.timer && clearTimeout(this.timer);
