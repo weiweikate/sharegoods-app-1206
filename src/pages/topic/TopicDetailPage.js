@@ -582,7 +582,7 @@ export default class TopicDetailPage extends BasePage {
         let dic = this._getPageStateOptions();
         return (
             <View style={styles.container}>
-                {dic.loadingState === PageLoadingState.fail ?
+                {dic.loadingState !== PageLoadingState.success ?
                     <NavigatorBar title={superStatus === 0 ? '暂无商品' : '商品详情'} leftPressed={() => {
                         this.$navigateBack();
                     }}/> : null}

@@ -90,7 +90,7 @@ export class ActivityDidBeginView extends Component {
                     <MRText style={DidBeginViewStyles.priceText}>¥<MRText
                         style={{ fontSize: 36 }}>{promotionPrice}</MRText></MRText>
                     <View style={{ flex: 1 }}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 3 }}>
                             <View style={DidBeginViewStyles.skillView}>
                                 <MRText style={DidBeginViewStyles.skillText}>秒杀价</MRText>
                             </View>
@@ -107,8 +107,10 @@ export class ActivityDidBeginView extends Component {
                         <View style={DidBeginViewStyles.leaveView}>
                             <View style={[DidBeginViewStyles.progressView, { width: (1 - progress) * 90 }]}/>
                             <View style={DidBeginViewStyles.leaveAmountView}>
-                                <MRText
-                                    style={DidBeginViewStyles.leaveAmountText}>{progress == 0 ? '已抢完' : `还剩${promotionStockNum}件`}</MRText>
+                                <View style={DidBeginViewStyles.textView}>
+                                    <MRText
+                                        style={DidBeginViewStyles.leaveAmountText}>{progress == 0 ? '已抢完' : `还剩${promotionStockNum}件`}</MRText>
+                                </View>
                             </View>
                         </View>
                     </View>
@@ -132,7 +134,7 @@ const DidBeginViewStyles = StyleSheet.create({
         fontSize: 20, color: DesignRule.white
     },
     skillView: {
-        justifyContent: 'center', alignItems: 'center', marginBottom: 3, marginRight: 5,
+        justifyContent: 'center', alignItems: 'center', marginRight: 5,
         borderRadius: 2, backgroundColor: 'rgba(0,0,0,0.1)', width: 40, height: 16
     },
     skillText: {
@@ -157,8 +159,11 @@ const DidBeginViewStyles = StyleSheet.create({
         backgroundColor: DesignRule.mainColor, borderRadius: 6, height: 12
     },
     leaveAmountView: {
-        justifyContent: 'center', alignItems: 'center',
-        position: 'absolute', top: 0, bottom: 0, left: 0, right: 0
+        justifyContent: 'center',
+        position: 'absolute', top: 0, bottom: 0, left: 6, right: 0
+    },
+    textView: {
+        justifyContent: 'center', height: 14
     },
     leaveAmountText: {
         fontSize: 10, color: DesignRule.textColor_white
