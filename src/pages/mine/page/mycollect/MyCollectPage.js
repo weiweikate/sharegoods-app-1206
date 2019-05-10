@@ -11,7 +11,7 @@ import {
     StyleSheet,
     View,
     ListView, Image,RefreshControl
-} from "react-native";
+} from 'react-native';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
 import ScreenUtils from '../../../../utils/ScreenUtils';
@@ -26,7 +26,7 @@ import {MRText as Text,NoMoreClick,AvatarImage} from '../../../../components/ui'
 import { PageLoadingState, renderViewByLoadingState } from '../../../../components/pageDecorator/PageState';
 
 import RES from '../../res';
-import shopCartStore from "../../../shopCart/model/ShopCartStore";
+import shopCartStore from '../../../shopCart/model/ShopCartStore';
 
 const MoneyIcon = RES.collectShop.ic_money;
 const StarIcon = RES.collectShop.colloct_star;
@@ -218,7 +218,7 @@ export default class MyCollectPage extends BasePage {
         }
 
     }
-    componentWillMount() {
+    componentDidMount() {
         this.willBlurSubscription = this.props.navigation.addListener(
             'willBlur',
             payload => {

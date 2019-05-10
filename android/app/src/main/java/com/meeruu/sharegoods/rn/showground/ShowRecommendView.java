@@ -18,8 +18,10 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.meeruu.sharegoods.R;
+import com.meeruu.sharegoods.rn.showground.adapter.ProductsAdapter;
 import com.meeruu.sharegoods.rn.showground.adapter.ShowRecommendAdapter;
 import com.meeruu.sharegoods.rn.showground.bean.ShowRecommendBean;
+import com.meeruu.sharegoods.rn.showground.event.addCartEvent;
 import com.meeruu.sharegoods.rn.showground.event.onEndScrollEvent;
 import com.meeruu.sharegoods.rn.showground.event.onNineClickEvent;
 import com.meeruu.sharegoods.rn.showground.event.onScrollStateChangedEvent;
@@ -50,6 +52,7 @@ public class ShowRecommendView{
 
     public void initView(Context context, final View view) {
         final onNineClickEvent onNineClickEvent = new onNineClickEvent();
+        final addCartEvent addCartEvent = new addCartEvent();
         final onScrollStateChangedEvent onScrollStateChangedEvent = new onScrollStateChangedEvent();
         recyclerView = view.findViewById(R.id.home_recycler_view);
         startScrollEvent = new onStartScrollEvent();
@@ -81,8 +84,18 @@ public class ShowRecommendView{
                 }
             }
         });
+        ProductsAdapter.AddCartListener addCartListener =  new ProductsAdapter.AddCartListener() {
+            @Override
+            public void onAddCart(String code) {
+                addCartEvent.init(view.getId());
+                WritableMap map = Arguments.createMap();
+                map.putString("prodCode",code);
+                addCartEvent.setData(map);
+                eventDispatcher.dispatchEvent(addCartEvent);
+            }
+        };
 
-        adapter = new ShowRecommendAdapter(new NineGridView.clickL() {
+        NineGridView.clickL clickL = new NineGridView.clickL() {
             @Override
             public void imageClick(List urls, int index) {
                 onNineClickEvent.init(view.getId());
@@ -93,7 +106,10 @@ public class ShowRecommendView{
                 onNineClickEvent.setData(map);
                 eventDispatcher.dispatchEvent(onNineClickEvent);
             }
-        });
+        };
+
+
+        adapter = new ShowRecommendAdapter(clickL,addCartListener);
         adapter.setPreLoadNumber(3);
         adapter.setHasStableIds(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);

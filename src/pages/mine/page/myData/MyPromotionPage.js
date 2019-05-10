@@ -31,16 +31,17 @@ const HeaderBarBgImg = res.homeBaseImg.home_jingshenqingk_bg;
 const iconbg = res.homeBaseImg.home_jingshnegqingk_icon;
 const CCZImg = res.myData.ccz_03;
 const ProgressImg = res.myData.jdt_05;
-const arrowRightImg= res.myData.black_right_arrow
+const arrowRightImg = res.myData.black_right_arrow
 import LinearGradient from 'react-native-linear-gradient';
-import StringUtils from "../../../../utils/StringUtils";
+import StringUtils from '../../../../utils/StringUtils';
+import { SmoothPushPreLoadHighComponent } from '../../../../comm/components/SmoothPushHighComponent';
 
 const { px2dp } = ScreenUtils;
 
 const headerBgHeight = px2dp(182) + ScreenUtils.statusBarHeight + 30;
 const headerHeight = ScreenUtils.headerHeight;
 const offset = headerBgHeight - headerHeight;
-
+@SmoothPushPreLoadHighComponent
 export default class MyPromotionPage extends BasePage {
 
     $navigationBarOptions = {
@@ -147,7 +148,7 @@ export default class MyPromotionPage extends BasePage {
                         justifyContent: 'center',
                         marginLeft: 10
                     }}>
-                        <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between',width:ScreenUtils.width-130}}>
+                        <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between',width:ScreenUtils.width - 130}}>
                             <Text style={{
                                 fontSize: 15,
                                 color: 'white'
@@ -157,7 +158,7 @@ export default class MyPromotionPage extends BasePage {
                                                  experience:this.state.experience,
                                                  levelExperience:this.state.levelExperience
                                              })}>
-                                    <Text style={{fontSize:10,color:"#000000",marginRight:4}}>经验明细</Text>
+                                    <Text style={{fontSize:10,color:'#000000',marginRight:4}}>经验明细</Text>
                                     <Image source={arrowRightImg}/>
                                 </NoMoreClick>
                         </View>
@@ -223,7 +224,7 @@ export default class MyPromotionPage extends BasePage {
                             color: DesignRule.textColor_mainTitle,
                             fontSize: 12
                         }}>
-                            {(parseFloat(this.state.levelExperience) - parseFloat(this.state.experience)) > 0 ? `${StringUtils.formatDecimal(this.state.levelExperience-this.state.experience)}Exp` : '0Exp'}
+                            {(parseFloat(this.state.levelExperience) - parseFloat(this.state.experience)) > 0 ? `${StringUtils.formatDecimal(this.state.levelExperience - this.state.experience)}Exp` : '0Exp'}
                         </Text>
                         {(this.state.levelExperience - this.state.experience) > 0 ? null :
                             <Text style={{ color: DesignRule.mainColor, fontSize: 11 }}

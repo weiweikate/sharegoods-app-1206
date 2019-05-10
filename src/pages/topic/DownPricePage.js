@@ -26,7 +26,7 @@ import user from '../../model/user';
 import Manager,{AdViewBindModal} from '../../components/web/WebModalManager'
 
 import res from '../../comm/res';
-import { TrackApi } from "../../utils/SensorsTrack";
+import { TrackApi } from '../../utils/SensorsTrack';
 import LuckyIcon from '../guide/LuckyIcon';
 import { homeType } from '../home/HomeTypes';
 
@@ -90,11 +90,11 @@ export default class DownPricePage extends BasePage {
                 console.log('-----' + linkTypeCode);
                 setTimeout(() => {
                     this.dataModel.loadTopicData(linkTypeCode);
-                    this.luckyIcon&&this.luckyIcon.getLucky(4,linkTypeCode)
+                    this.luckyIcon && this.luckyIcon.getLucky(4,linkTypeCode)
                 });
             }
         );
-        TrackApi.specialTopicPage({"specialTopicId":linkTypeCode});
+        TrackApi.specialTopicPage({'specialTopicId':linkTypeCode});
     }
 
     componentWillUnmount() {
@@ -214,7 +214,7 @@ export default class DownPricePage extends BasePage {
                     contentContainerStyle={Styles.list}
                     showsVerticalScrollIndicator={false}
                     onScrollBeginDrag={() => {
-                        this.luckyIcon&&this.luckyIcon.close();
+                        this.luckyIcon && this.luckyIcon.close();
                     }}
                     style={{
                         width: ScreenUtils.width,
@@ -281,7 +281,7 @@ export default class DownPricePage extends BasePage {
                     />
                 </ScrollView>
                 <AdModal />
-                <LuckyIcon ref={(ref)=>{this.luckyIcon = ref}}></LuckyIcon>
+                <LuckyIcon ref={(ref)=>{this.luckyIcon = ref}} />
             </View>
         );
     }

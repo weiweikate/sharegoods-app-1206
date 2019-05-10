@@ -38,7 +38,7 @@ export default class WithdrawFinishModal extends PureComponent {
                             {'提交成功'}
                         </MRText>
                         <MRText style={styles.textStyle}>
-                            {`预计1-5个工作日到款\n每月28日到次月5号不进行提现审核`}
+                            {'预计1-5个工作日到款\n每月28日到次月5号不进行提现审核'}
                         </MRText>
                     </ImageBackground>
                 </View>

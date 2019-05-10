@@ -65,7 +65,7 @@ import ImagePicker from '@mr/rn-image-crop-picker'
             Utiles.upload([image.path], [image.size + ''], callBack, true)
         }).catch(e => {});
     },
-    pickSingle(cropit, circular=false, callBack) {
+    pickSingle(cropit, circular = false, callBack) {
         ImagePicker.openPicker({
             width: 300,
             height: 300,
@@ -103,8 +103,8 @@ import ImagePicker from '@mr/rn-image-crop-picker'
              Utiles.upload(images.map(item => item.path), images.map(item => item.size + ''), callBack)
          }).catch(e => {});
      },
-     upload(paths, sizes, callBack, camera=false) {
-        for (let i = 0; i < paths.length; i ++)
+     upload(paths, sizes, callBack, camera = false) {
+        for (let i = 0; i < paths.length; i++)
          {
              let uri = paths[i];
              uri = uri || '';
@@ -166,7 +166,7 @@ import ImagePicker from '@mr/rn-image-crop-picker'
                  Toast.$toast('图片上传失败');
              });
          }
-         NativeModules.commModule.RN_ImageCompression(paths, sizes, 1024*1024*3, upload);
+         NativeModules.commModule.RN_ImageCompression(paths, sizes, 1024 * 1024 * 3, upload);
      },
     callPhone: (phoneNum) => {
         Linking.openURL('tel:' + phoneNum);

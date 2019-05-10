@@ -1,14 +1,14 @@
-import { observable, action, computed } from "mobx";
+import { observable, action, computed } from 'mobx';
 
 class LoginModel {
     @observable
     selectIndex = 0;
     @observable
-    phoneNumber = "";
+    phoneNumber = '';
     @observable
-    vertifyCode = "";
+    vertifyCode = '';
     @observable
-    password = "";
+    password = '';
     @observable
     isSecuret = true;
     @observable
@@ -26,7 +26,7 @@ class LoginModel {
     @action
     savePhoneNumber(phoneNmber) {
         if (!phoneNmber || phoneNmber.length === 0) {
-            this.phoneNumber = "";
+            this.phoneNumber = '';
             return;
         }
         this.phoneNumber = phoneNmber;
@@ -40,7 +40,7 @@ class LoginModel {
     @action
     savePassword(password) {
         if (!password) {
-            this.password = "";
+            this.password = '';
             return;
         }
         this.password = password;
@@ -48,13 +48,13 @@ class LoginModel {
 
     @action
     clearPassword() {
-        this.password = "";
+        this.password = '';
     }
 
     @action
     saveVertifyCode(vertifyCode) {
         if (!vertifyCode) {
-            this.vertifyCode = "";
+            this.vertifyCode = '';
             return;
         }
         this.vertifyCode = vertifyCode;

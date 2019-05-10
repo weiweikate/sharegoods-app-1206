@@ -10,29 +10,29 @@
  */
 
 
-"use strict";
-import { observer } from "mobx-react";
-import { observable, computed, action } from "mobx";
-import React from "react";
+'use strict';
+import { observer } from 'mobx-react';
+import { observable, computed, action } from 'mobx';
+import React from 'react';
 import {
     StyleSheet,
     View,
     TouchableOpacity
-} from "react-native";
-import BasePage from "../../../BasePage";
-import DesignRule from "../../../constants/DesignRule";
-import ScreenUtils from "../../../utils/ScreenUtils";
-import UIText from "../../../components/ui/UIText";
-import LoginAPI from "../api/LoginApi";
-import bridge from "../../../utils/bridge";
-import { MRTextInput as TextInput } from "../../../components/ui";
-import { homeRegisterFirstManager } from "../../home/manager/HomeRegisterFirstManager";
-import RouterMap from "../../../navigation/RouterMap";
+} from 'react-native';
+import BasePage from '../../../BasePage';
+import DesignRule from '../../../constants/DesignRule';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import UIText from '../../../components/ui/UIText';
+import LoginAPI from '../api/LoginApi';
+import bridge from '../../../utils/bridge';
+import { MRTextInput as TextInput } from '../../../components/ui';
+import { homeRegisterFirstManager } from '../../home/manager/HomeRegisterFirstManager';
+import RouterMap from '../../../navigation/RouterMap';
 
 class inviteModel {
     /*0代表验证码登录 1代表密码登录*/
     @observable
-    inviteCode = "";
+    inviteCode = '';
 
     @action
     saveInviteCode(code) {
@@ -62,12 +62,12 @@ export default class InviteCodePage extends BasePage {
     }
 
     $navigationBarOptions = {
-        title: "",
+        title: '',
         show: true,// false则隐藏导航
         leftNavItemHidden:true,
     };
     _jump = () => {
-        bridge.$toast("注册成功");
+        bridge.$toast('注册成功');
         LoginAPI.givePackage().then(result => {
             homeRegisterFirstManager.setShowRegisterModalUrl(result.data.give);
             this.$navigateBackToHome();
@@ -92,7 +92,7 @@ export default class InviteCodePage extends BasePage {
             <View style={styles.mainBgStyle}>
                 <View style={styles.contentStyle}>
                     <UIText
-                        value={"填输入会员号"}
+                        value={'填输入会员号'}
                         style={{
                             marginTop: 80,
                             fontSize: 23
@@ -121,14 +121,14 @@ export default class InviteCodePage extends BasePage {
                                             backgroundColor: DesignRule.mainColor
                                         } :
                                         {
-                                            backgroundColor: "#bbb"
+                                            backgroundColor: '#bbb'
                                         }
                                 ]}
                         >
                             <UIText
-                                value={"确定"}
+                                value={'确定'}
                                 style={{
-                                    color: "#fff",
+                                    color: '#fff',
                                     fontSize: 17
                                 }}
                             />
@@ -143,7 +143,7 @@ export default class InviteCodePage extends BasePage {
                             style={styles.selectMentorBgStyle}
                         >
                             <UIText
-                                value={"秀购为您推荐顾问"}
+                                value={'秀购为您推荐顾问'}
                                 style={{
                                     color: DesignRule.textColor_instruction,
                                     fontSize: 13
@@ -152,7 +152,7 @@ export default class InviteCodePage extends BasePage {
                         </View>
                     </TouchableOpacity>
                     <UIText
-                        value={"跳过"}
+                        value={'跳过'}
                         style={{
                             marginTop: ScreenUtils.px2dp(10),
                             color: DesignRule.textColor_instruction,
@@ -176,7 +176,7 @@ export default class InviteCodePage extends BasePage {
                 code: this.inviteModel.inviteCode
             }).then(res => {
                 this.$loadingDismiss();
-                bridge.$toast("注册成功");
+                bridge.$toast('注册成功');
                 homeRegisterFirstManager.setShowRegisterModalUrl(res.data.give);
                 this.$navigateBackToHome();
             }).catch(res => {
@@ -191,13 +191,13 @@ const styles = StyleSheet.create({
     mainBgStyle: {
         marginTop: px2dp(-3),
         backgroundColor: DesignRule.bgColor,
-        justifyContent: "space-between",
-        flexDirection: "column",
+        justifyContent: 'space-between',
+        flexDirection: 'column',
         flex: 1
     },
     contentStyle: {
-        alignItems: "center",
-        flexDirection: "column",
+        alignItems: 'center',
+        flexDirection: 'column',
         flex: 1
     },
     inputTextStyle: {
@@ -222,20 +222,20 @@ const styles = StyleSheet.create({
         width: ScreenUtils.width - px2dp(60),
         height: 40,
         borderRadius: 20,
-        justifyContent: "center",
-        alignItems: "center"
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     bottomContentStyle: {
         height: ScreenUtils.px2dp(130),
-        justifyContent: "center",
-        flexDirection: "column",
-        alignItems: "center"
+        justifyContent: 'center',
+        flexDirection: 'column',
+        alignItems: 'center'
     },
     selectMentorBgStyle: {
         borderRadius: 20,
         borderColor: DesignRule.textColor_placeholder,
-        justifyContent: "center",
-        alignItems: "center",
+        justifyContent: 'center',
+        alignItems: 'center',
         borderWidth: 1,
         height: ScreenUtils.px2dp(40),
         width: ScreenUtils.width - 60

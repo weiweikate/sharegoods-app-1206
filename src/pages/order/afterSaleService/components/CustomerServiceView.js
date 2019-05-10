@@ -10,24 +10,24 @@
  */
 
 
-"use strict";
+'use strict';
 
-import React from "react";
+import React from 'react';
 
 import {
     StyleSheet,
     View,
     TouchableOpacity,
     NativeModules
-} from "react-native";
+} from 'react-native';
 
 import {
     UIText,
     UIImage
-} from "../../../../components/ui";
+} from '../../../../components/ui';
 import DesignRule from '../../../../constants/DesignRule';
-import res from "../../res";
-import BusinessUtils from "../../../mine/components/BusinessUtils";
+import res from '../../res';
+import BusinessUtils from '../../../mine/components/BusinessUtils';
 // import QYChatUtil from "../../../mine/page/helper/QYChatModel";
 import { track, trackEvent } from '../../../../utils/SensorsTrack';
 import {  QYChatTool } from '../../../../utils/QYModule/QYChatTool';
@@ -49,10 +49,10 @@ export default class CustomerServiceView extends React.Component {
     /** 打电话*/
     callPhone = () => {
         track(trackEvent.ClickPhoneCustomerService, {customerServiceModuleSource: 4});
-        if ("400-9696-365") {
-            BusinessUtils.callPhone("4009696365");
+        if ('400-9696-365') {
+            BusinessUtils.callPhone('4009696365');
         } else {
-            NativeModules.commModule.toast("电话号码不存在");
+            NativeModules.commModule.toast('电话号码不存在');
         }
     };
     /** 七鱼客服*/
@@ -75,15 +75,15 @@ export default class CustomerServiceView extends React.Component {
     render() {
         let data = [
             {
-                name: "在线客服",
+                name: '在线客服',
                 image: applyRefundMessage,
-                time: "9:00-22:00",
+                time: '9:00-22:00',
                 onPress: this.contactSeller
             },
             {
-                name: "客服电话",
+                name: '客服电话',
                 image: applyRefundPhone,
-                time: "9:00-22:00",
+                time: '9:00-22:00',
                 onPress: this.callPhone
             }
         ];
@@ -118,14 +118,14 @@ export default class CustomerServiceView extends React.Component {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: DesignRule.white,
-        flexDirection: "row",
+        flexDirection: 'row',
         height: DesignRule.autoSizeWidth(70),
         marginBottom: DesignRule.safeBottom
     },
     button: {
-        alignItems: "center",
+        alignItems: 'center',
         flex: 1,
-        flexDirection: "row"
+        flexDirection: 'row'
     },
     image: {
         marginLeft: DesignRule.autoSizeWidth(40),
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
         backgroundColor: DesignRule.lineColor_inWhiteBg,
         width: DesignRule.lineHeight,
         height: DesignRule.autoSizeWidth(30),
-        position: "absolute",
+        position: 'absolute',
         top: DesignRule.autoSizeWidth(20),
         left: DesignRule.width / 2
     }

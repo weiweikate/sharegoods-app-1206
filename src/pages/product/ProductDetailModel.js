@@ -107,6 +107,7 @@ export default class ProductDetailModel {
 
     /*商品评论{ headImg, nickname, imgUrl ,comment}*/
     @observable comment;
+    @observable overtimeComment;
     /*商品数量*/
     @observable totalComment;
     /*商品详情图片*/
@@ -187,9 +188,9 @@ export default class ProductDetailModel {
         let leave4 = Math.floor(leave3 % 1000 / 100);
 
         hours = days * 24 + hours;
-        hours = hours >= 10 ? hours : hours === 0 ? `00` : `0${hours}`;
-        minutes = minutes >= 10 ? minutes : minutes === 0 ? `00` : `0${minutes}`;
-        second = second >= 10 ? second : second === 0 ? `00` : `0${second}`;
+        hours = hours >= 10 ? hours : hours === 0 ? '00' : `0${hours}`;
+        minutes = minutes >= 10 ? minutes : minutes === 0 ? '00' : `0${minutes}`;
+        second = second >= 10 ? second : second === 0 ? '00' : `0${second}`;
         if (activityStatus === activity_status.unBegin) {
             //'yyyy-MM-dd HH:mm:ss';
             //小于一小时
@@ -209,7 +210,7 @@ export default class ProductDetailModel {
             if (days < 1) {
                 return `距结束${hours}:${minutes}:${second}:${leave4}`;
             } else {
-                return DateUtils.formatDate(this.endTime, 'dd-HH mm:ss') + '结束';
+                return DateUtils.formatDate(this.endTime, 'MM-dd HH:mm') + '结束';
             }
         } else {
             return '';
@@ -283,7 +284,7 @@ export default class ProductDetailModel {
         this.productStatus = productStatus;
         if (productStatus === product_status.delete) {
             this.loadingState = PageLoadingState.fail;
-            this.netFailedInfo = { msg: `该商品走丢了\n去看看别的商品吧` };
+            this.netFailedInfo = { msg: '该商品走丢了\n去看看别的商品吧' };
         } else {
             this.productData = data || {};
             const {
@@ -291,7 +292,7 @@ export default class ProductDetailModel {
                 originalPrice, priceType, name, secondName, freight,
                 groupPrice, v0Price, shareMoney,
                 monthSaleCount, skuList, specifyList, stockSysConfig, promoteInfoVOList,
-                restrictions, paramList, comment, totalComment,
+                restrictions, paramList, comment, totalComment, overtimeComment,
                 prodCode, upTime, now, content,
                 promotionResult, promotionDecreaseAmount, promotionPrice, promotionLimitNum,
                 promotionSaleNum, promotionStockNum, promotionMinPrice, promotionMaxPrice
@@ -322,6 +323,7 @@ export default class ProductDetailModel {
             this.paramList = paramList || [];
             /*不赋值默认 判空用*/
             this.comment = comment;
+            this.overtimeComment = overtimeComment;
             this.totalComment = totalComment;
             this.contentArr = contentArr;
             this.now = now;

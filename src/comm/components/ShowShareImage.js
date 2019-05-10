@@ -32,7 +32,7 @@ export default class ShowShareImage extends Component {
                         <Image style={{backgroundColor:'red',width:20,height:20,borderRadius:10,overflow: 'hidden',}}
                                source={{uri:headerImg}}/>
                         <Text style={{marginLeft:5,fontSize:13}}>{name ?
-                            (name.length > 13 ? name.substr(0, 13) + "..." : name) : ""
+                            (name.length > 13 ? name.substr(0, 13) + '...' : name) : ''
                         }</Text>
                     </View>
                     <View style={{width:230}}>
@@ -51,12 +51,12 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor:'white',
         // justifyContent: "center",
-        alignItems: "center",
+        alignItems: 'center',
         width: 250,
         height: 350,
     },
     absolute: {
-        position: "absolute",
+        position: 'absolute',
         flex: 1,
         top: 0,
         left: 0,

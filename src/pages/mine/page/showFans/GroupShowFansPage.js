@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     },
     groupWrapper:{
         height:px2dp(44),
-        width:DesignRule.width - DesignRule.margin_page*2,
+        width:DesignRule.width - DesignRule.margin_page * 2,
         backgroundColor:DesignRule.white,
         borderRadius:px2dp(5),
         flexDirection:'row',

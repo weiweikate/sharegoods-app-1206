@@ -56,24 +56,13 @@
         android:textSize="13sp" />
 
 
-    <TextView
-        android:id="@+id/content_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/content"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_toRightOf="@id/user_icon"
-        android:text="@string/spread_out"
-        android:textColor="@color/mainColor"
-        android:textSize="13sp" />
 
     <com.meeruu.sharegoods.rn.showground.widgets.GridView.NineGridView
         android:id="@+id/nine_grid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/content_button"
-        android:layout_marginTop="5dp"
+        android:layout_below="@id/content"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="5dp"
         android:layout_toRightOf="@id/user_icon" />
 
@@ -115,7 +104,7 @@
         android:layout_below="@id/product_list"
         android:layout_marginTop="15dp"
         android:layout_toRightOf="@id/like_num"
-        android:src="@drawable/icon_hand"
+        android:src="@drawable/icon_show_download"
         android:id="@+id/icon_download"
         android:layout_marginLeft="24dp"/>
     <TextView
@@ -132,24 +121,14 @@
         android:text="22"/>
 
 
-    <TextView
-        android:textColor="@color/textColor_mainTitle"
-        android:textSize="10sp"
-        android:layout_height="23dp"
-        android:layout_width="wrap_content"
-        android:layout_alignTop="@+id/icon_download"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:gravity="center_vertical"
-        android:id="@+id/share_num"
-        android:text="22"/>
+
     <ImageView
-        android:layout_width="23dp"
-        android:layout_height="23dp"
+        android:layout_width="60dp"
+        android:layout_height="24dp"
         android:layout_below="@id/product_list"
         android:layout_marginTop="15dp"
-        android:layout_toLeftOf="@id/share_num"
-        android:src="@drawable/icon_hand"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/show_release_icon"
         android:id="@+id/icon_share"
         android:layout_marginRight="5dp"/>
 

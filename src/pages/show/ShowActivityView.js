@@ -15,10 +15,10 @@ import {
 } from 'react-native';
 import { observer } from 'mobx-react';
 import RefreshList from '../../components/ui/RefreshList';
-import Toast from "../../utils/bridge";
-import res from "./res";
-import DesignRule from "../../constants/DesignRule";
-import ScreenUtils from "../../utils/ScreenUtils";
+import Toast from '../../utils/bridge';
+import res from './res';
+import DesignRule from '../../constants/DesignRule';
+import ScreenUtils from '../../utils/ScreenUtils';
 import {showActiveModules} from './Show'
 
 @observer
@@ -81,7 +81,7 @@ export default class ShowActivityView extends Component {
     onListViewScroll = (event) => {
         let offsetY = event.nativeEvent.contentOffset.y;
         this.item0 && this.item0.measure((fx, fy, w, h, left, top) => {
-            if(offsetY>ScreenUtils.height-100){
+            if(offsetY > ScreenUtils.height - 100){
                 showActiveModules.setTopBtnHide(true);
             }else {
                 showActiveModules.setTopBtnHide(false);
@@ -135,7 +135,7 @@ export default class ShowActivityView extends Component {
 
     renderItem = ({ item, index }) => {
         return (
-            <TouchableOpacity ref={(ref)=>{this['item'+index] = ref}} key={'row'+index} onPress={()=>this.clickItem(index)}>
+            <TouchableOpacity ref={(ref)=>{this['item' + index] = ref}} key={'row' + index} onPress={()=>this.clickItem(index)}>
                 <View style={styles.itemBgStyle}>
                     <Image style={styles.itemImgStyle} source={res.likeIcon}/>
                     <Text style={{marginLeft: 10, marginRight: 10, marginTop: 10}} numberOfLines={2}>

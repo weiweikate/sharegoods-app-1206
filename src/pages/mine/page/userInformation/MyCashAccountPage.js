@@ -115,7 +115,7 @@ export default class MyCashAccountPage extends BasePage {
                     marginLeft: DesignRule.margin_page,
                     marginTop: px2dp(15),
                     marginBottom: px2dp(30)
-                }}>{user.availableBalance ? user.availableBalance : `0.00`}</Text>
+                }}>{user.availableBalance ? user.availableBalance : '0.00'}</Text>
             </ImageBackground>
         );
     }

@@ -1,5 +1,3 @@
-
-
 #基本指令
 -optimizationpasses 5  #指定代码的压缩级别 0 - 7
 -dontskipnonpubliclibraryclassmembers  #如果应用程序引入的有jar包，并且想混淆jar包里面的class
@@ -183,6 +181,8 @@ public static final int *;
     native <methods>;
 }
 
+-keep class com.meeruu.commonlib.server.**{*;}
+
 -dontwarn okio.**
 -dontwarn com.squareup.okhttp.**
 -dontwarn okhttp3.**
@@ -202,7 +202,7 @@ public static final int *;
 -keep class cn.jiguang.** { *; }
 
 #  huawei
--keepclasscom.huawei.hms.**{*;}
+-keep class com.huawei.hms.**{*;}
 -dontwarn com.huawei.**
 -keep public class * extends android.app.Activity
 -keep interface com.huawei.android.hms.agent.common.INoProguard {*;}
@@ -211,7 +211,7 @@ public static final int *;
 
 # xiaomi
 -dontwarncom.xiaomi.push.**
--keepclasscom.xiaomi.push.**{*;}
+-keep class com.xiaomi.push.**{*;}
 
 # oppo
 -dontwarn com.coloros.mcsdk.**

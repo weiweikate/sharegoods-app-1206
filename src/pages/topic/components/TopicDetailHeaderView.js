@@ -135,12 +135,12 @@ export default class TopicDetailHeaderView extends Component {
                                 color: DesignRule.textColor_instruction,
                                 fontSize: 11
                             }}
-                                  allowFontScaling={false}>快递：{freightValue === 0 ? `包邮` : `${isNoEmpty(freightValue) ? freightValue : ''}元`}</Text>
+                                  allowFontScaling={false}>快递：{freightValue === 0 ? '包邮' : `${isNoEmpty(freightValue) ? freightValue : ''}元`}</Text>
                             <Text style={{
                                 color: DesignRule.textColor_instruction,
                                 fontSize: 11,
                                 marginLeft: ScreenUtils.autoSizeWidth(108)
-                            }} allowFontScaling={false}>{`月销售${isNoEmpty(monthSale) ? monthSale : 0}笔`}</Text>
+                            }} allowFontScaling={false}>{`近期销量: ${isNoEmpty(monthSale) ? monthSale : 0}`}</Text>
                         </View>
                     </View>
                 </View>
@@ -164,7 +164,7 @@ export default class TopicDetailHeaderView extends Component {
                 <NoMoreClick style={styles.serviceView} onPress={activityType !== 3 ? serviceAction : null}>
                     <Text style={styles.serviceNameText}>服务</Text>
                     <Text style={styles.serviceValueText} numberOfLines={1}>
-                        {`质量保障·48小时发货${(restrictionsTT & 4) === 4 ? `·7天退换` : ``}${(restrictionsTT & 8) === 8 ? `·节假日发货` : ``}`}
+                        {`质量保障·48小时发货${(restrictionsTT & 4) === 4 ? '·7天退换' : ''}${(restrictionsTT & 8) === 8 ? '·节假日发货' : ''}`}
                     </Text>
                     {activityType !== 3 ? <Image source={arrow_right}/> : null}
                 </NoMoreClick>

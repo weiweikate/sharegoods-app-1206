@@ -2,7 +2,7 @@
  * 精选热门
  */
 import React from 'react';
-import { View, StyleSheet, Platform, TouchableWithoutFeedback } from 'react-native';
+import { View, StyleSheet, Platform } from 'react-native';
 import ShowBannerView from './ShowBannerView';
 import { observer } from 'mobx-react';
 import { tag, showBannerModules, showChoiceModules } from './Show';
@@ -14,6 +14,12 @@ import ShowRecommendView from './components/ShowRecommendView';
 import TimerMixin from 'react-timer-mixin';
 import ReleaseButton from './components/ReleaseButton';
 
+import user from '../../model/user';
+import SelectionPage, { sourceType } from '../product/SelectionPage';
+import AddCartModel from './model/AddCartModel';
+import shopCartCacheTool from '../shopCart/model/ShopCartCacheTool';
+import { track, trackEvent } from '../../utils/SensorsTrack';
+import bridge from '../../utils/bridge';
 
 @observer
 export default class ShowHotView extends React.Component {
@@ -66,6 +72,31 @@ export default class ShowHotView extends React.Component {
         navigate('show/ShowDetailPage', { id: data.id, code: data.code });
     }
 
+    addCart = (code) => {
+        let addCartModel = new AddCartModel();
+        addCartModel.requestProductDetail(code,(productIsPromotionPrice)=>{
+            this.SelectionPage.show(addCartModel, (amount, skuCode)=>{
+                const { prodCode, name, originalPrice } = addCartModel;
+                shopCartCacheTool.addGoodItem({
+                    'amount': amount,
+                    'skuCode': skuCode,
+                    'productCode': code
+                });
+                /*加入购物车埋点*/
+                track(trackEvent.AddToShoppingcart, {
+                    spuCode: prodCode,
+                    skuCode: skuCode,
+                    spuName: name,
+                    pricePerCommodity: originalPrice,
+                    spuAmount: amount,
+                    shoppingcartEntrance: 1
+                });
+            }, { sourceType: productIsPromotionPrice ? sourceType.promotion : null });
+        },(error)=>{
+            bridge.$toast(error.msg || '服务器繁忙');
+        })
+    }
+
     renderHeader = () => {
         return (<View style={{ backgroundColor: DesignRule.bgColor, width: ScreenUtils.width - px2dp(30) }}>
                 <ShowBannerView navigate={this.props.navigate} pageFocused={this.props.pageFocus}/>
@@ -115,6 +146,11 @@ export default class ShowHotView extends React.Component {
                                            });
                                        }}
 
+                                       onAddCartClick={({ nativeEvent }) => {
+                                           // alert(nativeEvent.prodCode);
+                                           this.addCart(nativeEvent.prodCode);
+                                       }}
+
                                        onScrollStateChanged={({ nativeEvent }) => {
                                            const { state } = nativeEvent;
                                            if (state === 0) {
@@ -148,10 +184,15 @@ export default class ShowHotView extends React.Component {
                                     bottom: 118
                                 }}
                                 onPress={() => {
+                                    if (!user.isLogin) {
+                                        this.props.navigate('login/login/LoginPage');
+                                        return;
+                                    }
                                     this.props.navigate('show/ReleaseNotesPage');
                                 }}/> : null
                     }
                 </View>
+                <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             </View>
         );
     }

@@ -6,8 +6,8 @@ import { observer } from 'mobx-react';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import BasePage from '../../../BasePage';
 import CommRegistView from '../components/CommRegistView';
-import LoginAPI from "../api/LoginApi";
-import bridge from "../../../utils/bridge";
+import LoginAPI from '../api/LoginApi';
+import bridge from '../../../utils/bridge';
 
 @observer
 export default class ForgetPasswordPage extends BasePage {

@@ -1,36 +1,36 @@
-import React from "react";
-import { View, StyleSheet, Image, TouchableWithoutFeedback, Alert } from "react-native";
-import res from "./res";
-import BasePage from "../../BasePage";
-import { observer } from "mobx-react/native";
-import ScreenUtils from "../../utils/ScreenUtils";
-import DesignRule from "../../constants/DesignRule";
-import { MRText as Text } from "../../components/ui";
-import user from "../../model/user";
-import { payment, paymentType, payStatus, payStatusMsg } from "./Payment";
-import PasswordView from "./PayPasswordView";
-import { PaymentResult } from "./PaymentResultPage";
+import React from 'react';
+import { View, StyleSheet, Image, TouchableWithoutFeedback, Alert } from 'react-native';
+import res from './res';
+import BasePage from '../../BasePage';
+import { observer } from 'mobx-react/native';
+import ScreenUtils from '../../utils/ScreenUtils';
+import DesignRule from '../../constants/DesignRule';
+import { MRText as Text } from '../../components/ui';
+import user from '../../model/user';
+import { payment, paymentType, payStatus, payStatusMsg } from './Payment';
+import PasswordView from './PayPasswordView';
+import { PaymentResult } from './PaymentResultPage';
 
 const { px2dp } = ScreenUtils;
-import Toast from "../../utils/bridge";
-import { NavigationActions } from "react-navigation";
-import RouterMap from "../../navigation/RouterMap";
-import StringUtils from "../../utils/StringUtils";
+import Toast from '../../utils/bridge';
+import { NavigationActions } from 'react-navigation';
+import RouterMap from '../../navigation/RouterMap';
+import StringUtils from '../../utils/StringUtils';
 
 @observer
 export default class PaymentPage extends BasePage {
 
     $navigationBarOptions = {
-        title: "订单支付",
+        title: '订单支付',
         show: true
     };
 
     state = {
         showPwd: false,
-        showPwdMsg: "",
+        showPwdMsg: '',
         showResult: false,
         payResult: PaymentResult.none,
-        payMsg: ""
+        payMsg: ''
     };
 
     constructor(props) {
@@ -61,7 +61,7 @@ export default class PaymentPage extends BasePage {
                 //是否选择余额
                 const { selectedBalace } = payment;
                 if (!selectedBalace && oneCoupon <= 0) {
-                    this.$navigate("payment/ChannelPage",{
+                    this.$navigate('payment/ChannelPage',{
                         bizType:bizType,
                         modeType:modeType
                     });
@@ -71,10 +71,10 @@ export default class PaymentPage extends BasePage {
                 if (user.hadSalePassword) {
                     this.setState({ showPwd: true });
                 } else {
-                    this.$navigate("mine/account/JudgePhonePage", { title: "设置交易密码" });
+                    this.$navigate('mine/account/JudgePhonePage', { title: '设置交易密码' });
                 }
             } else if (result.code === payStatus.payNeedThrid) {
-                this.$navigate("payment/ChannelPage", {
+                this.$navigate('payment/ChannelPage', {
                     // remainMoney: Math.floor(StringUtils.mul(result.unpaidAmount,100)) / 100 ,
                     bizType:bizType,
                     modeType:modeType
@@ -138,7 +138,7 @@ export default class PaymentPage extends BasePage {
             this.setState({ showPwd: false });
             if (parseInt(result.status) === payStatus.payNeedThrid) {
                 payment.selectedBalace = false;
-                this.$navigate("payment/ChannelPage", {
+                this.$navigate('payment/ChannelPage', {
                     remainMoney: (payment.amounts - channelAmount).toFixed(2) ,
                     bizType:bizType,
                     modeType:modeType
@@ -156,7 +156,7 @@ export default class PaymentPage extends BasePage {
             } else {
                 replace = NavigationActions.replace({
                     key: this.props.navigation.state.key,
-                    routeName: "payment/PaymentResultPage",
+                    routeName: 'payment/PaymentResultPage',
                     params: { payResult: PaymentResult.success }
                 });
             }
@@ -173,24 +173,24 @@ export default class PaymentPage extends BasePage {
 
     _forgetPassword = () => {
         this.setState({ showPwd: false });
-        this.$navigate("mine/account/JudgePhonePage", { title: "设置交易密码" });
+        this.$navigate('mine/account/JudgePhonePage', { title: '设置交易密码' });
     };
 
     _cancelPay = () => {
         this.setState({ showPwd: false });
         setTimeout(() => {
             Alert.alert(
-                "确认要放弃付款？",
-                "订单会超时关闭，请尽快支付",
+                '确认要放弃付款？',
+                '订单会超时关闭，请尽快支付',
                 [
                     {
-                        text: "确认离开", onPress: () => {
+                        text: '确认离开', onPress: () => {
                             this.setState({ showPwd: false });
                             this._goToOrder();
                         }
                     },
                     {
-                        text: "继续支付", onPress: () => {
+                        text: '继续支付', onPress: () => {
                             this.setState({ showPwd: true });
                         }
                     }
@@ -211,8 +211,8 @@ export default class PaymentPage extends BasePage {
         } else {
             this.props.navigation.dispatch({
                 key: this.props.navigation.state.key,
-                type: "ReplacePaymentPage",
-                routeName: "order/order/MyOrdersListPage",
+                type: 'ReplacePaymentPage',
+                routeName: 'order/order/MyOrdersListPage',
                 params: { index: index ? index : 1 }
             });
         }
@@ -290,9 +290,9 @@ export default class PaymentPage extends BasePage {
     }
 }
 
-const bgColor = "#f2f2f2";
-const whiteBg = "#fff";
-const buttonBg = "#FF0050";
+const bgColor = '#f2f2f2';
+const whiteBg = '#fff';
+const buttonBg = '#FF0050';
 
 const styles = StyleSheet.create({
     container: {
@@ -316,15 +316,15 @@ const styles = StyleSheet.create({
         height: px2dp(50),
         backgroundColor: whiteBg,
         borderRadius: 5,
-        flexDirection: "row",
-        alignItems: "center"
+        flexDirection: 'row',
+        alignItems: 'center'
     },
     row: {
         height: px2dp(50),
-        flexDirection: "row",
+        flexDirection: 'row',
         paddingRight: px2dp(10),
         paddingLeft: px2dp(10),
-        alignItems: "center"
+        alignItems: 'center'
     },
     name: {
         color: DesignRule.textColor_secondTitle,
@@ -361,11 +361,11 @@ const styles = StyleSheet.create({
         marginTop: px2dp(10),
         color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(30),
-        fontWeight: "600"
+        fontWeight: '600'
     },
     needView: {
         flex: 1,
-        alignItems: "center"
+        alignItems: 'center'
     },
     payBtn: {
         backgroundColor: buttonBg,
@@ -374,8 +374,8 @@ const styles = StyleSheet.create({
         marginLeft: px2dp(15),
         marginRight: px2dp(15),
         borderRadius: px2dp(22),
-        alignItems: "center",
-        justifyContent: "center"
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     payText: {
         color: whiteBg,

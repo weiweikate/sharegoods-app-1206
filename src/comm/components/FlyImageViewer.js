@@ -808,7 +808,7 @@ export default class FlyImageViewer extends Component {
                 width: 18,
                 height: 18,
                 position: 'absolute',
-                top: 20+ScreenUtils.statusBarHeight,
+                top: 20 + ScreenUtils.statusBarHeight,
                 left: 15
             }}
                    source={close_icon}/>

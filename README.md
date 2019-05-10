@@ -231,3 +231,5 @@ android开发人员在引入新的module包时，需要重新配置gradle文件�
     "bulid_path":"../node_nodules/module_name/android/build.gradle "
 }
 ```
+#### code push 登录
+   * 登录命令：code-push login https://codepush.sharegoodsmall.com/

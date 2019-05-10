@@ -1,5 +1,5 @@
-import BasePage from "../../../../BasePage";
-import React from "react";
+import BasePage from '../../../../BasePage';
+import React from 'react';
 
 import {
     StyleSheet,
@@ -7,15 +7,15 @@ import {
     ImageBackground,
     Image,
     TouchableWithoutFeedback
-} from "react-native";
-import ScreenUtils from "../../../../utils/ScreenUtils";
-import ImageLoad from "@mr/image-placeholder";
+} from 'react-native';
+import ScreenUtils from '../../../../utils/ScreenUtils';
+import ImageLoad from '@mr/image-placeholder';
 
 const { px2dp } = ScreenUtils;
-import res from "../../../spellShop/res";
-import homeRes from "../../res"
-import DesignRule from "../../../../constants/DesignRule";
-import MineAPI from "../../api/MineApi";
+import res from '../../../spellShop/res';
+import homeRes from '../../res'
+import DesignRule from '../../../../constants/DesignRule';
+import MineAPI from '../../api/MineApi';
 import {MRText as Text} from '../../../../components/ui'
 import { TrackApi } from '../../../../utils/SensorsTrack';
 
@@ -29,11 +29,11 @@ export default class MyMentorPage extends BasePage {
         super(props);
         this.state = {
             headImg: null,
-            nickName: "",
-            levelName: "",
-            code: "",
-            phone: "",
-            profile: ""
+            nickName: '',
+            levelName: '',
+            code: '',
+            phone: '',
+            profile: ''
         };
     }
 
@@ -59,7 +59,7 @@ export default class MyMentorPage extends BasePage {
                     levelName: `${info.levelName}品鉴官`,
                     code: info.code,
                     phone: info.phone,
-                    profile: info.profile ? info.profile : "这位服务顾问很懒，什么也没留下~"
+                    profile: info.profile ? info.profile : '这位服务顾问很懒，什么也没留下~'
                 });
                 TrackApi.ViewMyAdviser({hasAdviser:true,adviserCode:info.code});
 
@@ -75,7 +75,7 @@ export default class MyMentorPage extends BasePage {
         return (
             <View style={styles.container}>
                 {this._headerRender()}
-                {this._itemRender("昵称", this.state.nickName)}
+                {this._itemRender('昵称', this.state.nickName)}
                 {/*{this._lineRender()}*/}
                 {/*{this._itemRender("职称", this.state.levelName)}*/}
                 {/*{this._lineRender()}*/}
@@ -91,10 +91,10 @@ export default class MyMentorPage extends BasePage {
     _navRender() {
         return (
             <View
-                style={{ position: "absolute", top: 0, left: 0, right: 0 }}>
+                style={{ position: 'absolute', top: 0, left: 0, right: 0 }}>
                 <View style={{
-                    flexDirection: "row",
-                    alignItems: "center",
+                    flexDirection: 'row',
+                    alignItems: 'center',
                     paddingLeft: px2dp(15),
                     height: headerHeight,
                     paddingTop: ScreenUtils.statusBarHeight
@@ -173,13 +173,13 @@ const styles = StyleSheet.create({
     headerWrapper: {
         width: ScreenUtils.width,
         height: px2dp(200),
-        alignItems: "center"
+        alignItems: 'center'
     },
     headerIconWrapper: {
         height: px2dp(80),
         width: px2dp(80),
         borderRadius: px2dp(40),
-        backgroundColor: "white",
+        backgroundColor: 'white',
         marginTop: headerHeight + 20,
         overflow:'hidden'
     },
@@ -192,8 +192,8 @@ const styles = StyleSheet.create({
         height: px2dp(40),
         width: ScreenUtils.width,
         backgroundColor: DesignRule.white,
-        flexDirection: "row",
-        alignItems: "center",
+        flexDirection: 'row',
+        alignItems: 'center',
         paddingLeft: DesignRule.margin_page
     },
     itemTextStyle: {

@@ -30,7 +30,7 @@ export default function ApiUtils(Urls) {
                 });
                 return  Promise.reject({
                     code: 10009,
-                    msg: "用户登录失效",
+                    msg: '用户登录失效',
                 });
             }
             const response = await HttpUtils[method](url, isRSA, params, config);

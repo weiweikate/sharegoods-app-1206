@@ -1,17 +1,17 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
     Image,
     ImageBackground,
     StyleSheet,
     View,
     TouchableOpacity
-} from "react-native";
-import {  UIText ,NoMoreClick, MRText as Text,} from "../../../components/ui";
-import ScreenUtils from "../../../utils/ScreenUtils";
-import DesignRule from "../../../constants/DesignRule";
-import user from "../../../model/user";
-import { observer } from "mobx-react";
-import res from "../res";
+} from 'react-native';
+import {  UIText ,NoMoreClick, MRText as Text,} from '../../../components/ui';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import DesignRule from '../../../constants/DesignRule';
+import user from '../../../model/user';
+import { observer } from 'mobx-react';
+import res from '../res';
 const { px2dp } = ScreenUtils;
 const unUsedBgex = res.couponsImg.youhuiquan_bg_unUsedBg_ex;
 const unUsedBgExd = res.couponsImg.youhuiquan_bg_unUsedBg_exd;
@@ -24,10 +24,10 @@ const itemDown = res.couponsImg.youhuiquan_icon_smallDown;
 export  default class CouponExplainItem extends Component{
 
     render(){
-      let  {item,index}=this.props;
+      let  {item,index} = this.props;
         return(
             <TouchableOpacity
-                style={{ backgroundColor: DesignRule.bgColor, marginBottom: 5, justifyContent: "center" }}
+                style={{ backgroundColor: DesignRule.bgColor, marginBottom: 5, justifyContent: 'center' }}
                 onPress={() => this.props.clickItem(index, item)}>
                 <ImageBackground style={{
                     width: ScreenUtils.width - px2dp(30),
@@ -36,12 +36,12 @@ export  default class CouponExplainItem extends Component{
                 }}
                                  source={item.status === 0 ? (item.levelimit ? (item.tobeextend ? useBgexd : usedBgex) : (item.tobeextend ? unUsedBgExd : unUsedBgex)) : (item.tobeextend ? useBgexd : usedBgex)}
                                  resizeMode='stretch'>
-                    <View style={{ flexDirection: "row", alignItems: "center", height: px2dp(94) }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', height: px2dp(94) }}>
                         <View style={styles.itemFirStyle}>
-                            <View style={{ flexDirection: "row", alignItems: "center" }}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 {
                                     item.type === 3 || item.type === 4 || item.type === 5 || item.type === 12 ? null :
-                                        <View style={{ alignSelf: "flex-end", marginBottom: 2 }}>
+                                        <View style={{ alignSelf: 'flex-end', marginBottom: 2 }}>
                                             <Text
                                                 style={{
                                                     fontSize: 14,
@@ -57,7 +57,7 @@ export  default class CouponExplainItem extends Component{
                                 </View>
                                 {
                                     item.type === 3 ?
-                                        <View style={{ alignSelf: "flex-end", marginBottom: 2 }}>
+                                        <View style={{ alignSelf: 'flex-end', marginBottom: 2 }}>
                                             <Text
                                                 style={{
                                                     fontSize: 14,
@@ -70,55 +70,55 @@ export  default class CouponExplainItem extends Component{
 
                         <View style={{
                             flex: 1,
-                            alignItems: "flex-start",
+                            alignItems: 'flex-start',
                             marginLeft: 10,
-                            justifyContent: "space-between"
+                            justifyContent: 'space-between'
                         }}>
-                            <View style={{ flexDirection: "row" }}>
+                            <View style={{ flexDirection: 'row' }}>
                                 <Text style={{
                                     fontSize: 15,
                                     color: DesignRule.textColor_mainTitle,
                                     marginRight: 10
                                 }} allowFontScaling={false}>
-                                    {item.name}{item.type !== 99 ? null : <UIText value={"（可叠加使用）"} style={{
+                                    {item.name}{item.type !== 99 ? null : <UIText value={'（可叠加使用）'} style={{
                                     fontSize: 11,
                                     color: DesignRule.textColor_instruction
                                 }}/>}</Text>
-                                {item.type === 12 ? <UIText value={"x" + item.number} style={{
+                                {item.type === 12 ? <UIText value={'x' + item.number} style={{
                                     fontSize: 15,
                                     color: DesignRule.textColor_mainTitle
                                 }}/> : null}
                             </View>
-                            {item.timeStr?<Text style={{
+                            {item.timeStr ? <Text style={{
                                 fontSize: 11,
                                 color: DesignRule.textColor_instruction,
                                 marginTop: 6
-                            }} allowFontScaling={false}>{item.timeStr}</Text>:null}
+                            }} allowFontScaling={false}>{item.timeStr}</Text> : null}
                             <UIText style={{ fontSize: 11, color: DesignRule.textColor_instruction, marginTop: 6 }}
                                     value={item.limit}/>
                         </View>
                         {item.status === 0 ?
                             (
                                 item.type === 99 ?
-                                    <UIText value={"x" + user.tokenCoin}
+                                    <UIText value={'x' + user.tokenCoin}
                                             style={styles.xNumStyle}/> : (item.levelimit ?
                                     <View
-                                        style={{ marginRight: 15, justifyContent: "center", alignItems: "center" }}>
-                                        {item.count > 1 ? <UIText value={"x" + item.count}
+                                        style={{ marginRight: 15, justifyContent: 'center', alignItems: 'center' }}>
+                                        {item.count > 1 ? <UIText value={'x' + item.count}
                                                                   style={styles.xNumsStyle}/> : null}
-                                        <UIText value={"等级受限"}
+                                        <UIText value={'等级受限'}
                                                 style={{
                                                     fontSize: 13,
                                                     color: DesignRule.textColor_instruction,
                                                 }}/>
                                     </View>
-                                    : (item.count>1?<UIText value={"x" + item.count}
-                                                            style={styles.xNumsStyle}/>:null)))
+                                    : (item.count > 1 ? <UIText value={'x' + item.count}
+                                                            style={styles.xNumsStyle}/> : null)))
 
-                            : <View style={{ marginRight: 15, justifyContent: "center", alignItems: "center" }}>
-                                {item.count > 1 ? <UIText value={"x" + item.count}
+                            : <View style={{ marginRight: 15, justifyContent: 'center', alignItems: 'center' }}>
+                                {item.count > 1 ? <UIText value={'x' + item.count}
                                                           style={styles.xNumsStyle}/> : null}
-                                <UIText value={`${item.status === 1 ? "已使用" : (item.status === 2 ? "已失效" : "待激活")}`}
+                                <UIText value={`${item.status === 1 ? '已使用' : (item.status === 2 ? '已失效' : '待激活')}`}
                                         style={{
                                             fontSize: 13,
                                             color: DesignRule.textColor_instruction,
@@ -127,7 +127,7 @@ export  default class CouponExplainItem extends Component{
                             </View>}
                     </View>
                     {!item.tobeextend ?
-                        <NoMoreClick style={{ height: px2dp(24), justifyContent: "center", alignItems: "center" }}
+                        <NoMoreClick style={{ height: px2dp(24), justifyContent: 'center', alignItems: 'center' }}
                                      onPress={() => this.props.pickUpData(item)}><Image style={{ width: 14, height: 7 }}
                                                                                   source={itemDown}/>
                         </NoMoreClick> : null}
@@ -151,7 +151,7 @@ export  default class CouponExplainItem extends Component{
 
                             }} allowFontScaling={false}>{item.remarks}</Text>
                         </View>
-                        <NoMoreClick style={{ height: px2dp(24), justifyContent: "center", alignItems: "center" }}
+                        <NoMoreClick style={{ height: px2dp(24), justifyContent: 'center', alignItems: 'center' }}
                                      onPress={() => this.props.toExtendData(item)}><Image style={{ width: 14, height: 7 }}
                                                                                     source={itemUp}/>
                         </NoMoreClick>
@@ -175,9 +175,9 @@ const styles = StyleSheet.create({
         color: DesignRule.textColor_mainTitle_222
     },
     itemFirStyle: {
-        alignItems: "center",
-        flexDirection: "row",
-        justifyContent: "center",
+        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'center',
         width: px2dp(80)
     },
 })

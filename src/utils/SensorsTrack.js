@@ -1,9 +1,11 @@
 import { NativeModules,Platform } from 'react-native';
 // import SensorsEvent from './SensorsEvent'
 import SensorsEvent from './TrackEvent'
-import user from "../model/user";
+import user from '../model/user';
+import apiEnvironment from '../api/ApiEnvironment';
+let timeStamp = null;
 const {
-    track,
+    track:nativeTrack,
     trackTimerStart,
     trackTimerEnd,
     trackViewScreen,
@@ -80,7 +82,7 @@ const trackEvent = {
     ViewWaitToRecord:'ViewWaitToRecord',//点击查看待入帐
     ModifuAvatarSuccess:'ModifuAvatarSuccess',//修改头像
     ViewMyOrder:'ViewMyOrder',//查看-我的订单
-    OrderAgain:"OrderAgain",//再次购买
+    OrderAgain:'OrderAgain',//再次购买
     submitOrder: 'SubmitOrder',//提交订单,
     SubmitOrderDetail:'SubmitOrderDetail',//提交订单详情
     ...spellShopTrack,
@@ -89,17 +91,36 @@ const trackEvent = {
     ...mineEvent,
     ...afterEvent,
 };
+
+function track(event_name,parmas) {
+    //不为线上环境就，不上传埋点数据
+    if (apiEnvironment.envType !== 'online') {
+        return;
+    }
+    let currentTimeStamp = new Date().getTime();
+    //时间间隔超过10分钟重新生成sessionId
+    if (!timeStamp || currentTimeStamp - timeStamp > 1000 * 60 * 10) {
+        timeStamp = currentTimeStamp
+    }
+    parmas = {
+        'platformType':Platform.OS === 'ios' ? 'iOS' : 'Android',
+        'userLevel':user.isLogin ? user.level : 'V1',
+        'distinct_id':user.isLogin ? user.id : '',
+        sessionId:'sessionId_' + timeStamp,
+        ...parmas
+    }
+    nativeTrack(event_name,parmas);
+}
+
 function trackUtil(p) {
     let arr = {};
     let keys = Object.keys(p);
     const count = keys.length;
-    for (let i = 0; i< count; i++) {
+    for (let i = 0; i < count; i++) {
         let key = keys[i];
         let value = p[key]
-        arr[key]= (s) => {
+        arr[key] = (s) => {
             track(value.name, {
-                "platformType":Platform.OS ==="ios"?"iOS":"Android",
-                "userLevel":user.isLogin?user.level:"V1",
                 ...value.params,...s})
         }
     }

@@ -33,7 +33,7 @@ export default class EditPhonePwdPage extends BasePage {
 
     _render() {
         let {newPwd, newPwdAgain} = this.state;
-        let enabled = newPwd.length>0 && newPwdAgain.length>0 ;
+        let enabled = newPwd.length > 0 && newPwdAgain.length > 0 ;
         return(
             <KeyboardAvoidingView style={{alignItems: 'center'}}>
                 <Text style={styles.title}>{title}</Text>
@@ -41,7 +41,7 @@ export default class EditPhonePwdPage extends BasePage {
                 <PasswordInputText placeholder={'请输入新密码'} onChangeText={(text)=>{this.setState({newPwd: text})}}/>
                 <PasswordInputText placeholder={'请再次输入密码'} onChangeText={(text)=>{this.setState({newPwdAgain: text})}}/>
                 <TouchableOpacity style={[{
-                    backgroundColor: enabled ? DesignRule.mainColor: '#cccccc',
+                    backgroundColor: enabled ? DesignRule.mainColor : '#cccccc',
                     enabled: enabled
                 }, styles.btn]} onPress={() => this._done()}>
                     <Text style={{ fontSize: 17, color: 'white' }}>完成</Text>

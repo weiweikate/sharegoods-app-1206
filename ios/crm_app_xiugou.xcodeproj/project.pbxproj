@@ -550,6 +550,13 @@
 			remoteGlobalIDString = 358F4ED71D1E81A9004DF814;
 			remoteInfo = RCTBlob;
 		};
+		BF1AD72C2282872700915D22 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0347BAC12237CC670011184A /* Lottie.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6445B0D5207E0D4D00D84F6A;
+			remoteInfo = LottieLibraryMacOS;
+		};
 		BF6EE5F2214F89C2007C1185 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BF6EE5ED214F89C2007C1185 /* BVLinearGradient.xcodeproj */;
@@ -2291,6 +2298,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -2763,6 +2771,13 @@
 			fileType = archive.ar;
 			path = libRCTBlob.a;
 			remoteRef = ADBDB9261DFEBF0700ED6528 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		BF1AD72D2282872700915D22 /* libLottie.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLottie.a;
+			remoteRef = BF1AD72C2282872700915D22 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		BF6EE5F3214F89C2007C1185 /* libBVLinearGradient.a */ = {
@@ -3255,7 +3270,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODEPUSH_KEY = "31r7ZbKmqulZicphxPwDPJZNoMHC6783993f-12ef-4196-b554-7a1aede160dd";
+				CODEPUSH_HOST = "https://codepush.sharegoodsmall.com/";
+				CODEPUSH_KEY = PDjCQYi8abVyq72JDGrfJoYmKvyE4ksvOXqog;
 				CODE_SIGN_ENTITLEMENTS = crm_app_xiugou/crm_app_xiugou.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -3290,6 +3306,7 @@
 					"$(PROJECT_DIR)/Class/openssl/include",
 					"$(PROJECT_DIR)/Class/libs/QIYU_iOS_SDK/SDK",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -3403,6 +3420,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODEPUSH_HOST = "https://codepush.sharegoodsmall.com/";
 				CODE_SIGN_ENTITLEMENTS = crm_app_xiugou/crm_app_xiugou.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -3464,7 +3482,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODEPUSH_KEY = "V0Zn0oYGrJd0AWgwz4teLOX69aas6783993f-12ef-4196-b554-7a1aede160dd";
+				CODEPUSH_HOST = "https://codepush.sharegoodsmall.com/";
+				CODEPUSH_KEY = "gBw0o3x8miBkB80LLWHDdmBax4G34ksvOXqog ";
 				CODE_SIGN_ENTITLEMENTS = crm_app_xiugou/crm_app_xiugou.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;

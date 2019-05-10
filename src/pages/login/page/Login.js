@@ -1,15 +1,15 @@
-import React, {} from "react";
+import React, {} from 'react';
 import {
     View,
     Image,
-} from "react-native";
-import BasePage from "../../../BasePage";
-import Styles from "../style/Login.style";
-import { createBottomButton, createLoginButton, loginBtnType } from "../components/Login.button.view";
-import res from "../res";
-import RouterMap from "../../../navigation/RouterMap";
-import { wxLoginAction } from "../model/LoginActionModel";
-import { TrackApi } from "../../../utils/SensorsTrack";
+} from 'react-native';
+import BasePage from '../../../BasePage';
+import Styles from '../style/Login.style';
+import { createBottomButton, createLoginButton, loginBtnType } from '../components/Login.button.view';
+import res from '../res';
+import RouterMap from '../../../navigation/RouterMap';
+import { wxLoginAction } from '../model/LoginActionModel';
+import { TrackApi } from '../../../utils/SensorsTrack';
 
 const {
     other: {
@@ -25,8 +25,8 @@ export default class Login extends BasePage {
         this.state = {
             canPhoneAuthen: false,//是否可以本地号码一键登录 默认不可以
             isSelectProtocol: true,
-            tempPhone:"",
-            authenToken: ""
+            tempPhone:'',
+            authenToken: ''
         };
         TrackApi.loginPage();
     }
@@ -61,7 +61,7 @@ export default class Login extends BasePage {
                 {/*中部视图*/}
                 <View style={Styles.middleBgContent}>
                     {
-                        createLoginButton(loginBtnType.localPhoneNumLoginType, "本机号码一键登录", () => {
+                        createLoginButton(loginBtnType.localPhoneNumLoginType, '本机号码一键登录', () => {
                             this._clickAction(loginBtnType.localPhoneNumLoginType);
                         })
                     }
@@ -71,17 +71,17 @@ export default class Login extends BasePage {
                 <View style={Styles.bottomBgContent}>
                     {
 
-                        createLoginButton(loginBtnType.wxLoginBtnType, "微信授权登录", () => {
+                        createLoginButton(loginBtnType.wxLoginBtnType, '微信授权登录', () => {
                             this._clickAction(loginBtnType.wxLoginBtnType);
                         })}
                     {
-                        createLoginButton(loginBtnType.otherLoginBtnType, "其他登录方式", () => {
+                        createLoginButton(loginBtnType.otherLoginBtnType, '其他登录方式', () => {
                             this._clickAction(loginBtnType.otherLoginBtnType);
                         })
                     }
                     {
-                        createBottomButton(["手动注册新账号"], (text) => {
-                            if (text === "手动注册新账号") {
+                        createBottomButton(['手动注册新账号'], (text) => {
+                            if (text === '手动注册新账号') {
                                 this.$navigate(RouterMap.InputPhoneNum);
                             } else {
                                 this.$navigate(RouterMap.OtherLoginPage);
@@ -95,7 +95,7 @@ export default class Login extends BasePage {
 
     _clickAction = (btnType) => {
         if (!this.state.isSelectProtocol) {
-            this.$toastShow("清先勾选用户协议");
+            this.$toastShow('清先勾选用户协议');
             return;
         }
         if (btnType === loginBtnType.wxLoginBtnType) {
@@ -113,7 +113,7 @@ export default class Login extends BasePage {
         wxLoginAction((code, data) => {
             if (code === 10000) {
                 this.$navigateBack(-1);
-                this.params.callback && this.params.callBack();
+                this.params.callback &&  this.params.callback();
             } else if (code === 34005) {
                 //绑定手机号
                 this.$navigate(RouterMap.InputPhoneNum, data);

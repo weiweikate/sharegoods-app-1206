@@ -1,23 +1,23 @@
-import React from "react";
-import LoginTopView from "../components/LoginTopView";
+import React from 'react';
+import LoginTopView from '../components/LoginTopView';
 import {
     View,
     StyleSheet,
     TouchableOpacity,
     Image
-} from "react-native";
-import { MRText as Text } from "../../../components/ui";
-import CommSpaceLine from "../../../comm/components/CommSpaceLine";
-import BasePage from "../../../BasePage";
-import LoginAPI from "../api/LoginApi";
-import ScreenUtils from "../../../utils/ScreenUtils";
-import DesignRule from "../../../constants/DesignRule";
-import res from "../res";
-import { track, TrackApi, trackEvent } from "../../../utils/SensorsTrack";
-import RouterMap from "../../../navigation/RouterMap";
-import { wxLoginAction, codeLoginAction, pwdLoginAction } from "../model/LoginActionModel";
-import ProtocolView from "../components/Login.protocol.view";
-import loginModel from "../model/LoginModel";
+} from 'react-native';
+import { MRText as Text } from '../../../components/ui';
+import CommSpaceLine from '../../../comm/components/CommSpaceLine';
+import BasePage from '../../../BasePage';
+import LoginAPI from '../api/LoginApi';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import DesignRule from '../../../constants/DesignRule';
+import res from '../res';
+import { track, TrackApi, trackEvent } from '../../../utils/SensorsTrack';
+import RouterMap from '../../../navigation/RouterMap';
+import { wxLoginAction, codeLoginAction, pwdLoginAction } from '../model/LoginActionModel';
+import ProtocolView from '../components/Login.protocol.view';
+import loginModel from '../model/LoginModel';
 
 const {
     share: {
@@ -47,7 +47,7 @@ const rendOtherLoginView = (isShow, wxLoginClick, protocolClick) => {
             <ProtocolView
                 textClick={(htmlUrl) => {
                     protocolClick && protocolClick({
-                        title: "用户协议内容",
+                        title: '用户协议内容',
                         uri: htmlUrl
                     });
                 }}
@@ -77,7 +77,7 @@ export default class LoginPage extends BasePage {
 
     $navigationBarOptions = {
         leftNavItemHidden: true,
-        title: ""
+        title: ''
     };
     $NavBarRenderRightItem = () => {
         return (
@@ -98,7 +98,7 @@ export default class LoginPage extends BasePage {
 
     componentDidMount() {
         LoginAPI.oldUserActivateJudge().then((res) => {
-            console.log("是还是非-------", res);
+            console.log('是还是非-------', res);
             this.setState({
                 showWxLoginBtn: res.data
             });
@@ -132,7 +132,7 @@ export default class LoginPage extends BasePage {
                     rendOtherLoginView(true, () => {
                         this.weChatLoginClick();
                     }, (htmlParams) => {
-                        this.$navigate("HtmlPage", htmlParams);
+                        this.$navigate('HtmlPage', htmlParams);
                     })
                 }
 
@@ -141,11 +141,11 @@ export default class LoginPage extends BasePage {
     }
     /*忘记密码*/
     forgetPasswordClick = () => {
-        this.$navigate("login/login/ForgetPasswordPage");
+        this.$navigate('login/login/ForgetPasswordPage');
     };
     /*微信登陆*/
     weChatLoginClick = () => {
-        track(trackEvent.login, { loginMethod: "微信登录用" });
+        track(trackEvent.login, { loginMethod: '微信登录用' });
         wxLoginAction((code, data) => {
             if (code === 10000) {
                 this.params.callback && this.params.callBack();
@@ -161,10 +161,10 @@ export default class LoginPage extends BasePage {
     /*登陆*/
     loginClick = (loginType, LoginParam) => {
         if (loginType === 0) {
-            track(trackEvent.login, { loginMethod: "验证码登录" });
+            track(trackEvent.login, { loginMethod: '验证码登录' });
             codeLoginAction(LoginParam, (data) => {
                 if (data.code === 10000) {
-                    this.$toastShow("登录成功");
+                    this.$toastShow('登录成功');
                     this.params.callback && this.params.callback();
                     this.$loadingDismiss();
                     //走了注册
@@ -180,10 +180,10 @@ export default class LoginPage extends BasePage {
                 }
             });
         } else {
-            track(trackEvent.login, { loginMethod: "密码登录" });
+            track(trackEvent.login, { loginMethod: '密码登录' });
             pwdLoginAction(LoginParam, (data) => {
                 if (data.code === 10000) {
-                    this.$toastShow("登录成功");
+                    this.$toastShow('登录成功');
                     this.params.callback && this.params.callback();
                     this.$loadingDismiss();
                     this.$navigateBack(-2);
@@ -202,8 +202,8 @@ const Styles = StyleSheet.create(
             flex: 1,
             margin: 0,
             marginTop: -2,
-            backgroundColor: "#fff",
-            justifyContent: "space-between"
+            backgroundColor: '#fff',
+            justifyContent: 'space-between'
         },
         rightTopTitleStyle: {
             fontSize: 15,
@@ -213,16 +213,16 @@ const Styles = StyleSheet.create(
             width: ScreenUtils.width,
             bottom: 10,
             height: 170,
-            justifyContent: "center",
-            alignItems: "center"
+            justifyContent: 'center',
+            alignItems: 'center'
         },
         lineBgStyle: {
             width: ScreenUtils.width,
-            flexDirection: "row",
+            flexDirection: 'row',
             height: 30,
-            backgroundColor: "#fff",
-            justifyContent: "center",
-            alignItems: "center"
+            backgroundColor: '#fff',
+            justifyContent: 'center',
+            alignItems: 'center'
         },
         otherLoginTextStyle: {
             color: DesignRule.textColor_secondTitle,
@@ -232,9 +232,9 @@ const Styles = StyleSheet.create(
             marginTop: 15,
             marginLeft: 0,
             marginRight: 0,
-            justifyContent: "center",
-            backgroundColor: "#fff",
-            alignItems: "center"
+            justifyContent: 'center',
+            backgroundColor: '#fff',
+            alignItems: 'center'
         }
     }
 );

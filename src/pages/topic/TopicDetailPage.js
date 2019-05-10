@@ -97,6 +97,17 @@ export default class TopicDetailPage extends BasePage {
 
     componentDidMount() {
         // this.getPromotion();
+        this.willFocusSubscription = this.props.navigation.addListener(
+            'didFocus',
+            payload => {
+                const { state } = payload;
+                console.log('didFocus', state);
+                if (state && state.routeName === 'topic/TopicDetailPage') {
+                    this._getActivityData();
+                    this._getMessageCount();
+                }
+            }
+        );
     }
 
     // getPromotion = async () => {
@@ -120,20 +131,6 @@ export default class TopicDetailPage extends BasePage {
     //     } catch (error) {
     //     }
     // };
-
-    componentWillMount() {
-        this.willFocusSubscription = this.props.navigation.addListener(
-            'willFocus',
-            payload => {
-                const { state } = payload;
-                console.log('willFocus', state);
-                if (state && state.routeName === 'topic/TopicDetailPage') {
-                    this._getActivityData();
-                    this._getMessageCount();
-                }
-            }
-        );
-    }
 
     componentWillUnmount() {
         this.willFocusSubscription && this.willFocusSubscription.remove();
@@ -191,7 +188,7 @@ export default class TopicDetailPage extends BasePage {
                 if (superStatus === 0) {
                     this.setState({
                         loadingState: PageLoadingState.fail,
-                        netFailedInfo: { msg: `该商品走丢了\n去看看别的商品吧` }
+                        netFailedInfo: { msg: '该商品走丢了\n去看看别的商品吧' }
                     });
                 } else {
                     this.setState({
@@ -277,7 +274,7 @@ export default class TopicDetailPage extends BasePage {
         if (superStatus === 0) {
             this.setState({
                 loadingState: PageLoadingState.fail,
-                netFailedInfo: { msg: `该商品走丢了\n去看看别的商品吧` }
+                netFailedInfo: { msg: '该商品走丢了\n去看看别的商品吧' }
             });
         } else {
             ProductApi.getProductDetailByCodeV2({
@@ -319,7 +316,7 @@ export default class TopicDetailPage extends BasePage {
             param
         ).then(result => {
             this._getActivityData();
-            this.$toastShow(`已关注本商品,\n活动开始前3分钟会有消息通知您`);
+            this.$toastShow('已关注本商品,\n活动开始前3分钟会有消息通知您');
         }).catch(error => {
             this.$toastShow(error.msg);
         });
@@ -419,7 +416,7 @@ export default class TopicDetailPage extends BasePage {
                                           this.DetailHeaderServiceModal.show(this.state.data);
                                       }}
                                       showDetailModal={() => {
-                                          this.TopicDetailShowModal.show('降价拍玩法规则', null, null, `1、参与降价拍的商品，活动开始之后，商品价格由高到低依次递减，直到竞买人应价，商品库存有限，活动时间有限，先拍先得。\n2、一个降价拍商品，每人只能抢购一件，下单之后不可立马取消订单，直到该商品结束降价拍活动，才开放退货退款入口。\n3、降价拍商品不与其它优惠同享。`);
+                                          this.TopicDetailShowModal.show('降价拍玩法规则', null, null, '1、参与降价拍的商品，活动开始之后，商品价格由高到低依次递减，直到竞买人应价，商品库存有限，活动时间有限，先拍先得。\n2、一个降价拍商品，每人只能抢购一件，下单之后不可立马取消订单，直到该商品结束降价拍活动，才开放退货退款入口。\n3、降价拍商品不与其它优惠同享。');
                                       }}/>;
     };
 

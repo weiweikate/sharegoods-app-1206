@@ -12,9 +12,13 @@ const index = {
     likeIcon:require('./like_icon.png'),
     showReleaseIcon:require('./icon_release.png'),
     delIcon:require('./icon_del.png'),
-    showShareIcon:require('./show_release_icon.png'),
     addIcon:require('./icon_add.png'),
-    hotIcon:require('./hot.png')
+    hotIcon:require('./hot.png'),
 
+    addCarIcon:require('./icon_add_car.png'),
+    addShieldIcon:require('./icon_show_shield.png'),
+    addShowIcon:require('./icon_show_add.png'),
+    iconShowDown:require('./icon_show_down.png'),
+    iconShowEmoji:require('./icon_show_emoji.png')
 };
 export default index

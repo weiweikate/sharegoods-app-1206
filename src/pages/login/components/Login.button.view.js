@@ -1,12 +1,12 @@
-import React from "react";
+import React from 'react';
 import {
     Text,
     View,
     StyleSheet,
     TouchableOpacity
-} from "react-native";
-import ScreenUtils from "../../../utils/ScreenUtils";
-import DesignRule from "../../../constants/DesignRule";
+} from 'react-native';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import DesignRule from '../../../constants/DesignRule';
 
 const { px2dp, width } = ScreenUtils;
 
@@ -55,13 +55,13 @@ const Styles = StyleSheet.create(
         },
         touchableStyle: {
             flex: 1,
-            justifyContent: "center",
-            alignItems: "center"
+            justifyContent: 'center',
+            alignItems: 'center'
         },
         bottomTipBtnBgStyle: {
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
             marginBottom: px2dp(40),
             marginTop:px2dp(15)
         },

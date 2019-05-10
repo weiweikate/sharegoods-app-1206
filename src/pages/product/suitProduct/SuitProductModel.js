@@ -2,7 +2,7 @@ import { observable, computed, action } from 'mobx';
 import bridge from '../../../utils/bridge';
 import StringUtils from '../../../utils/StringUtils';
 
-const { add, mul, sub } = StringUtils;
+const { add, mul } = StringUtils;
 
 export default class SuitProductModel {
     @observable groupCode;

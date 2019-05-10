@@ -98,7 +98,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                     marginLeft: DesignRule.margin_page,
                     marginTop: px2dp(15),
                     marginBottom: px2dp(30)
-                }}>{user.blockedBalance ? user.blockedBalance : `0.00`}</Text>
+                }}>{user.blockedBalance ? user.blockedBalance : '0.00'}</Text>
             </ImageBackground>
         );
     }
@@ -185,7 +185,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                                 marginTop: ScreenUtils.px2dp(10),
                                 color: DesignRule.textColor_secondTitle,
                                 fontSize: ScreenUtils.px2dp(13)
-                            }} allowFontScaling={false}>{`待提现账户为用户推广预期的奖励明细，可通过查看待提现账户查询收益情况。`}</Text>
+                            }} allowFontScaling={false}>{'待提现账户为用户推广预期的奖励明细，可通过查看待提现账户查询收益情况。'}</Text>
                         </View>
                         <View style={{
                             marginLeft: ScreenUtils.px2dp(22),
@@ -202,7 +202,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                                 color: DesignRule.textColor_secondTitle,
                                 fontSize: ScreenUtils.px2dp(13)
                             }}
-                                  allowFontScaling={false}>{`你的推广成功后会获得平台的预计收益，而预计收益会因最后推广结果被调整，最终推广成功后，待提现账户金额会自动提现至您的余额账户。`}</Text>
+                                  allowFontScaling={false}>{'你的推广成功后会获得平台的预计收益，而预计收益会因最后推广结果被调整，最终推广成功后，待提现账户金额会自动提现至您的余额账户。'}</Text>
                         </View>
                     </View>
                     <TouchableOpacity style={{
@@ -268,7 +268,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                             fontSize: 17,
                             color: DesignRule.textColor_mainTitle
                         }}>{StringUtils.formatMoneyString(item.capital, false)}</Text>
-                        <UIText value={item.realBalance === null ? '待入账：?' : `已入账：` + item.realBalance}
+                        <UIText value={item.realBalance === null ? '待入账：?' : '已入账：' + item.realBalance}
                                 style={{ color: DesignRule.textColor_secondTitle, fontSize: 12 }}/>
                     </View>
                 </View>

@@ -388,7 +388,7 @@ export default class CommShareModal extends React.Component {
                                             color: DesignRule.textColor_secondTitle,
                                             fontSize: autoSizeWidth(17),
                                             marginHorizontal: 7
-                                        }}>{`分享秀一秀 `}<MRText
+                                        }}>{'分享秀一秀 '}<MRText
                                             style={{ color: DesignRule.mainColor }}>{shareMoneyText || ''}</MRText>{shareMoneyText ? '起' : ''}
                                         </MRText>
                                         :

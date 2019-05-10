@@ -32,7 +32,7 @@ export default class ConfirmBottomView extends Component {
                             style={styles.commitAmountStyle}/>
                     </View>
                     <NoMoreClick
-                        style={[styles.commitTouStyle,{backgroundColor: StringUtils.isEmpty(confirmOrderModel.err)?DesignRule.mainColor:DesignRule.textColor_placeholder}]}
+                        style={[styles.commitTouStyle,{backgroundColor: StringUtils.isEmpty(confirmOrderModel.err) ? DesignRule.mainColor : DesignRule.textColor_placeholder}]}
                         onPress={() => {
                             bridge.showLoading('提交中...');
                             setTimeout(() => {

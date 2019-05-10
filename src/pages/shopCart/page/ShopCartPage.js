@@ -1,6 +1,6 @@
-"use strict";
-import React from "react";
-import { observer } from "mobx-react";
+'use strict';
+import React from 'react';
+import { observer } from 'mobx-react';
 
 import {
     View,
@@ -9,22 +9,22 @@ import {
     ListView,
     RefreshControl,
     BackHandler
-} from "react-native";
-import { SwipeListView } from "../../../components/ui/react-native-swipe-list-view";
-import BasePage from "../../../BasePage";
-import ScreenUtils from "../../../utils/ScreenUtils";
+} from 'react-native';
+import { SwipeListView } from '../../../components/ui/react-native-swipe-list-view';
+import BasePage from '../../../BasePage';
+import ScreenUtils from '../../../utils/ScreenUtils';
 import {
     UIText
-} from "../../../components/ui/index";
-import shopCartStore from "../model/ShopCartStore";
-import shopCartCacheTool from "../model/ShopCartCacheTool";
-import DesignRule from "../../../constants/DesignRule";
-import ShopCartEmptyView from "../components/ShopCartEmptyView";
-import ShopCartCell from "../components/ShopCartCell";
-import SectionHeaderView from "../components/SectionHeaderView";
-import RouterMap from "../../../navigation/RouterMap";
-import { TrackApi } from "../../../utils/SensorsTrack";
-import BottomMenu from "../components/BottomMenu";
+} from '../../../components/ui/index';
+import shopCartStore from '../model/ShopCartStore';
+import shopCartCacheTool from '../model/ShopCartCacheTool';
+import DesignRule from '../../../constants/DesignRule';
+import ShopCartEmptyView from '../components/ShopCartEmptyView';
+import ShopCartCell from '../components/ShopCartCell';
+import SectionHeaderView from '../components/SectionHeaderView';
+import RouterMap from '../../../navigation/RouterMap';
+import { TrackApi } from '../../../utils/SensorsTrack';
+import BottomMenu from '../components/BottomMenu';
 
 const { px2dp } = ScreenUtils;
 
@@ -32,7 +32,7 @@ const { px2dp } = ScreenUtils;
 @observer
 export default class ShopCartPage extends BasePage {
     $navigationBarOptions = {
-        title: "购物车",
+        title: '购物车',
         leftNavItemHidden: true
     };
 
@@ -56,21 +56,21 @@ export default class ShopCartPage extends BasePage {
 
     componentDidMount() {
         this.didFocusSubscription = this.props.navigation.addListener(
-            "didFocus",
+            'didFocus',
             payload => {
-                BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+                BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
                 this.pageFocus = true;
                 shopCartCacheTool.getShopCartGoodsListData();
             }
         );
         this.willBlurSubscription = this.props.navigation.addListener(
-            "willBlur",
+            'willBlur',
             payload => {
-                BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+                BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
             }
         );
         this.didBlurSubscription = this.props.navigation.addListener(
-            "didBlur",
+            'didBlur',
             payload => {
                 this.pageFocus = false;
             }
@@ -85,7 +85,7 @@ export default class ShopCartPage extends BasePage {
 
     handleBackPress = () => {
         if (this.$navigationBarOptions.leftNavItemHidden) {
-            this.$navigate("HomePage");
+            this.$navigate('HomePage');
             return true;
         } else {
             return false;
@@ -94,7 +94,7 @@ export default class ShopCartPage extends BasePage {
 
     _render() {
         return (
-            <View style={{ flex: 1, justifyContent: "space-between", flexDirection: "column" }}>
+            <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'column' }}>
                 {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderListView() : this._renderEmptyView()}
                 {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderShopCartBottomMenu() : null}
             </View>
@@ -206,17 +206,17 @@ export default class ShopCartPage extends BasePage {
             });
             return;
         }
-        this.$navigate("product/ProductDetailPage", {
+        this.$navigate('product/ProductDetailPage', {
             productId: itemData.productId,
             productCode: itemData.spuCode
         });
     };
     /*删除操作*/
     _deleteFromShoppingCartByProductId = (itemData) => {
-        console.log("删除前");
+        console.log('删除前');
         console.log(itemData);
         let delteCode = [
-            { "skuCode": itemData.item.skuCode }
+            { 'skuCode': itemData.item.skuCode }
         ];
         shopCartCacheTool.deleteShopCartGoods(delteCode);
     };
@@ -226,33 +226,33 @@ const shopCartListWidth = ScreenUtils.width - px2dp(30);
 
 const styles = StyleSheet.create({
     listBgContent: {
-        justifyContent: "center",
-        alignItems: "center",
+        justifyContent: 'center',
+        alignItems: 'center',
         flex: 1
         // backgroundColor:'green'
     },
     swipeListView: { width: shopCartListWidth },
     standaloneRowBack: {
-        alignItems: "center",
+        alignItems: 'center',
         flex: 1,
-        flexDirection: "row",
-        justifyContent: "flex-end"
+        flexDirection: 'row',
+        justifyContent: 'flex-end'
     },
     backUITextWhite: {
-        color: "white",
+        color: 'white',
         fontSize: px2dp(17)
     },
     hideBgView: {
-        backgroundColor: "white",
+        backgroundColor: 'white',
         height: px2dp(145),
         width: shopCartListWidth,
-        justifyContent: "center",
-        alignItems: "flex-end"
+        justifyContent: 'center',
+        alignItems: 'flex-end'
     },
     hideTextBgView: {
         width: px2dp(75),
-        justifyContent: "center",
-        alignItems: "center",
+        justifyContent: 'center',
+        alignItems: 'center',
         backgroundColor: DesignRule.mainColor,
         height: px2dp(145)
     }

@@ -29,7 +29,7 @@ import userOrderNum from '../../../../model/userOrderNum';
 import apiEnvironment from '../../../../api/ApiEnvironment';
 import loginModel from '../../../login/model/LoginModel';
 import StringUtils from '../../../../utils/StringUtils';
-import { QYChatTool } from "../../../../utils/QYModule/QYChatTool";
+import { QYChatTool } from '../../../../utils/QYModule/QYChatTool';
 
 /**
  * @author luoyongming

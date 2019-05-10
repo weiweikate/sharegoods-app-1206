@@ -4,10 +4,10 @@ import {
     Image,
     TouchableOpacity,
     View,
-    ActivityIndicator,
     StyleSheet,
     NativeModules,
-    Alert
+    Alert,
+    TouchableWithoutFeedback
 } from 'react-native';
 import ShowImageView from './ShowImageView';
 import res from './res';
@@ -21,7 +21,6 @@ import { observer } from 'mobx-react';
 import CommShareModal from '../../comm/components/CommShareModal';
 import user from '../../model/user';
 import apiEnvironment from '../../api/ApiEnvironment';
-import ImageLoad from '@mr/image-placeholder';
 import BasePage from '../../BasePage';
 import { PageLoadingState } from '../../components/pageDecorator/PageState';
 import {
@@ -32,17 +31,10 @@ import { NetFailedView } from '../../components/pageDecorator/BaseView';
 import AvatarImage from '../../components/ui/AvatarImage';
 import { TrackApi } from '../../utils/SensorsTrack';
 import {SmoothPushPreLoadHighComponent} from '../../comm/components/SmoothPushHighComponent'
+import ProductRowListView from './components/ProductRowListView';
+import ProductListModal from './components/ProductListModal';
 
-const Goods = ({ data, press }) => <TouchableOpacity style={styles.goodsItem} onPress={() => {
-    press && press();
-}}>
-    <ImageLoad style={styles.goodImg} source={{ uri: data.headImg ? data.headImg : '' }}/>
-    <View style={styles.goodDetail}>
-        <Text style={styles.name} allowFontScaling={false}>{data.name}</Text>
-        <View style={{ height: px2dp(4) }}/>
-        <Text style={styles.price} allowFontScaling={false}>￥ {data.price}起</Text>
-    </View>
-</TouchableOpacity>;
+
 @SmoothPushPreLoadHighComponent
 @observer
 export default class ShowDetailPage extends BasePage {
@@ -58,7 +50,8 @@ export default class ShowDetailPage extends BasePage {
         this.showDetailModule = new ShowDetail();
         this.state = {
             pageState: PageLoadingState.loading,
-            errorMsg: ''
+            errorMsg: '',
+            productModalVisible:false
         };
         this.noNeedRefresh = false;
         TrackApi.xiuChangDetail();
@@ -140,8 +133,6 @@ export default class ShowDetailPage extends BasePage {
     componentWillUnmount() {
         this.willFocusSubscription && this.willFocusSubscription.remove();
     }
-    componentDidMount() {
-    }
 
 
     _goBack() {
@@ -203,24 +194,48 @@ export default class ShowDetailPage extends BasePage {
     };
 
 
-    _renderNormalTitle(opacity) {
-        return <View style={styles.whiteNav} ref={(ref) => {
-            this._whiteNavRef = ref;
-        }} opacity={opacity}>
+    _renderNormalTitle() {
+        let { detail } = this.showDetailModule;
+        if (!detail) {
+            detail = {imgs: '', products: [], click: 0, content: ''}
+        }
+        return(
+
             <View style={styles.navTitle}>
                 <TouchableOpacity style={styles.backView} onPress={() => this._goBack()}>
                     <Image source={res.back}/>
                 </TouchableOpacity>
-                <View style={styles.titleView}>
-                    <Text style={styles.title}>秀场</Text>
+                <View style={styles.profileRow}>
+                    <View style={styles.profileLeft}>
+                        <AvatarImage borderRadius={px2dp(18)} style={styles.portrait}
+                                     source={{ uri: detail.userHeadImg ? detail.userHeadImg : '' }}/>
+                        <Text style={styles.showName}
+                              allowFontScaling={false}>{detail.userName ? detail.userName : ''}</Text>
+                    </View>
+
                 </View>
+
                 <TouchableOpacity style={styles.shareView} onPress={() => {
                     this._goToShare();
                 }}>
                     <Image source={res.more}/>
                 </TouchableOpacity>
             </View>
-        </View>;
+        )
+
+    }
+
+    _shieldRender=()=>{
+        return(
+            <View style={styles.shieldWrapper}>
+                <View style={styles.shieldTextWrapper}>
+                    <Text style={styles.shieldText}>
+                        尊敬的用户，经平台审核，您发布的内容因涉嫌【内容违规】，被下架处理，请严格遵守相关规则，期待您的下一次分享
+                    </Text>
+                </View>
+                <Image style={styles.shieldImage} source={res.addShieldIcon}/>
+            </View>
+        )
     }
 
     _showImagesPage(imgs, index) {
@@ -249,6 +264,45 @@ export default class ShowDetailPage extends BasePage {
             }]);
     };
 
+    _bottomRender=()=>{
+        return(
+            <View style={styles.bottom}>
+                <Image style={styles.bottomIcon}/>
+                <Text style={styles.bottomNumText}>
+                    999+
+                </Text>
+                <View style={{width:px2dp(24)}}/>
+                <Image style={styles.bottomIcon}/>
+                <Text style={styles.bottomNumText}>
+                    999+
+                </Text>
+                <View style={{flex:1}}/>
+                <TouchableWithoutFeedback onPress={()=>{
+                    this.setState({
+                        productModalVisible:true
+                    })
+                }}>
+                <View style={{width:90,height:34,backgroundColor:'red'}}/>
+                </TouchableWithoutFeedback>
+            </View>
+        )
+    }
+
+
+    _otherInfoRender=()=>{
+        return(
+            <View style={styles.otherInfoWrapper}>
+                <Text style={styles.timeTextStyle}>
+                    2小时前
+                </Text>
+                <View style={{flex:1}}/>
+                <View style={styles.fireIcon}/>
+                <Text style={styles.fireNumText}>999+</Text>
+            </View>
+        )
+    }
+
+
     _render() {
         const { pageState } = this.state;
         if (pageState === PageLoadingState.fail) {
@@ -258,15 +312,15 @@ export default class ShowDetailPage extends BasePage {
         }
         if (pageState === PageLoadingState.loading) {
             return <View style={styles.container} >
-                {this._renderNormalTitle(1)}
+                {this._renderNormalTitle()}
             </View>
         }
 
-        let { detail, isCollecting } = this.showDetailModule;
+        let { detail } = this.showDetailModule;
         if (!detail) {
             detail = {imgs: '', products: [], click: 0, content: ''}
         }
-        let products = detail.products;
+        // let products = detail.products;
         let number = detail.click;
         if (!number) {
             number = 0;
@@ -289,7 +343,7 @@ export default class ShowDetailPage extends BasePage {
             // + '<link rel="stylesheet" href="http://m.007fenqi.com/app/app.css" type="text/css"/>'
             + '<style type="text/css">' + 'html, body, p, embed, iframe, div ,video {'
             + 'position:relative;width:100%;margin:0;padding:0;background-color:#ffffff' + ';line-height:28px;box-sizing:border-box;display:block;font-size:'
-            +13
+            + 13
             + 'px;'
             + '}'
             + 'p {word-break:break-all;}'
@@ -329,27 +383,22 @@ export default class ShowDetailPage extends BasePage {
                 style={styles.container}
                 showsVerticalScrollIndicator={false}
                 scrollEventThrottle={30}
-                onScroll={this._onScroll.bind(this)}
+                // onScroll={this._onScroll.bind(this)}
                 scrollEnabled={pageState === PageLoadingState.success}
 
             >
+                <View style={styles.virHeader}/>
                 {
                     detail.imgs
                         ?
                         <ShowImageView items={detail.imgs.slice()}
                                        onPress={(imgs, index) => this._showImagesPage(imgs, index)}/>
                         :
-                        <View style={styles.header}/>
+                        null
                 }
-                <View style={styles.profileRow}>
-                    <View style={styles.profileLeft}>
-                        <AvatarImage borderRadius={px2dp(15)} style={styles.portrait}
-                                     source={{ uri: detail.userHeadImg ? detail.userHeadImg : '' }}/>
-                        <Text style={styles.showName}
-                              allowFontScaling={false}>{detail.userName ? detail.userName : ''}</Text>
-                    </View>
 
-                </View>
+                <ProductRowListView style={{ marginLeft: DesignRule.margin_page,marginVertical:px2dp(10)}} products={[1,2,3]}/>
+
 
                 <AutoHeightWebView source={{ html: html }}
                                    style={{ width: DesignRule.width - 30, alignSelf: 'center' }}
@@ -363,61 +412,44 @@ export default class ShowDetailPage extends BasePage {
                                    showsVerticalScrollIndicator={false}
 
                 />
-                <View style={styles.goodsView}>
-                    {
-                        products.map((value, index) => {
-                            return <Goods key={index} data={value} press={() => {
-                                this._goToGoodsPage(value);
-                            }}/>;
-                        })
-                    }
-                </View>
+                {/*<View style={styles.goodsView}>*/}
+                    {/*{*/}
+                        {/*products.map((value, index) => {*/}
+                            {/*return <Goods key={index} data={value} press={() => {*/}
+                                {/*this._goToGoodsPage(value);*/}
+                            {/*}}/>;*/}
+                        {/*})*/}
+                    {/*}*/}
+                {/*</View>*/}
 
-                {
-                    isCollecting
-                        ?
-                        <View style={[styles.bottomBtn]}>
-                            <ActivityIndicator style={styles.btnLoading} size='small'/>
-                        </View>
-                        :
-                        <TouchableOpacity style={styles.bottomBtn} onPress={() => this._collectAction()}>
-                            <Image style={styles.collectImg}
-                                   source={detail.hadCollect ? res.showFire : res.noShowFire}/>
-                            <Text style={styles.bottomText}
-                                  allowFontScaling={false}>{pageState === PageLoadingState.fail ? '' :'收藏'} · {detail.collectCount}</Text>
-                        </TouchableOpacity>
-                }
+                {this._otherInfoRender()}
+
+                {/*{*/}
+                    {/*isCollecting*/}
+                        {/*?*/}
+                        {/*<View style={[styles.bottomBtn]}>*/}
+                            {/*<ActivityIndicator style={styles.btnLoading} size='small'/>*/}
+                        {/*</View>*/}
+                        {/*:*/}
+                        {/*<TouchableOpacity style={styles.bottomBtn} onPress={() => this._collectAction()}>*/}
+                            {/*<Image style={styles.collectImg}*/}
+                                   {/*source={detail.hadCollect ? res.showFire : res.noShowFire}/>*/}
+                            {/*<Text style={styles.bottomText}*/}
+                                  {/*allowFontScaling={false}>{pageState === PageLoadingState.fail ? '' :'收藏'} · {detail.collectCount}</Text>*/}
+                        {/*</TouchableOpacity>*/}
+                {/*}*/}
             </ScrollView>
             {pageState === PageLoadingState.fail ? null :
-                <View style={styles.bottom}>
-                    <View style={styles.showTimesWrapper}>
-                        <Image source={res.likeIcon} style={styles.seeImgStyle}/>
-                        <Text style={styles.number} allowFontScaling={false}>人气值 · {number}</Text>
-                    </View>
-
-                    <TouchableOpacity style={styles.leftButton} onPress={() => this._goToShare()}>
-                        <Image source={res.share}/>
-                        <View style={{ width: px2dp(10) }}/>
-                        <Text style={styles.text} allowFontScaling={false}>秀一秀</Text>
-                    </TouchableOpacity>
-                </View>
+                (this._bottomRender())
             }
-            <View style={styles.nav} ref={(ref) => {
-                this._blackNavRef = ref;
-            }}>
-                <View style={styles.navTitle}>
-                    <TouchableOpacity style={styles.backView} onPress={() => this._goBack()}>
-                        <Image source={res.button.show_detail_back}/>
-                    </TouchableOpacity>
-                    <View style={{ flex: 1 }}/>
-                    <TouchableOpacity style={styles.shareView} onPress={() => {
-                        this._goToShare();
-                    }}>
-                        <Image source={res.grayMore}/>
-                    </TouchableOpacity>
-                </View>
-            </View>
-            {this._renderNormalTitle(0)}
+            <View style={styles.whiteNav}/>
+            {this._renderNormalTitle()}
+            {/*{this._shieldRender()}*/}
+            <ProductListModal visible={this.state.productModalVisible} products={[1,2]} requestClose={()=>{
+                this.setState({
+                    productModalVisible:false
+                })
+            }}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             type={'miniProgram'}
                             trackEvent={'ArticleShare'}
@@ -460,7 +492,7 @@ let styles = StyleSheet.create({
         alignItems: 'center',
         borderTopWidth: ScreenUtils.onePixel,
         borderTopColor: '#ddd',
-        justifyContent: 'space-between'
+        paddingHorizontal:DesignRule.margin_page
     },
     goodsItem: {
         height: px2dp(66),
@@ -519,31 +551,30 @@ let styles = StyleSheet.create({
         color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(11)
     },
-    connectImg: {},
     profileRow: {
         height: px2dp(45),
         alignItems: 'center',
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        flex:1,
+        marginLeft:px2dp(5)
     },
     portrait: {
-        width: px2dp(30),
-        height: px2dp(30),
-        borderRadius: px2dp(15)
+        width: px2dp(36),
+        height: px2dp(36),
+        borderRadius: px2dp(18)
     },
     showName: {
         color: DesignRule.textColor_mainTitle,
-        marginLeft: px2dp(5),
-        fontSize: px2dp(11)
+        marginLeft: px2dp(10),
+        fontSize: px2dp(15)
     },
     profileLeft: {
         flexDirection: 'row',
-        marginLeft: px2dp(15),
         alignItems: 'center'
     },
     profileRight: {
         flexDirection: 'row',
-        marginRight: px2dp(15),
+        marginLeft: px2dp(10),
         alignItems: 'center'
     },
     number: {
@@ -585,18 +616,25 @@ let styles = StyleSheet.create({
         top: 0,
         left: 0,
         width: ScreenUtils.width,
-        height: ScreenUtils.headerHeight,
-        paddingTop: ScreenUtils.statusBarHeight,
+        height: ScreenUtils.statusBarHeight,
         backgroundColor: '#fff'
     },
     navTitle: {
         height: px2dp(44),
         width: ScreenUtils.width,
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        top: ScreenUtils.statusBarHeight,
+        position:'absolute',
+        left:0,
+        backgroundColor:DesignRule.white
+    },
+    virHeader:{
+        height: px2dp(44),
+        marginTop:ScreenUtils.statusBarHeight
     },
     backView: {
-        width: px2dp(50),
+        width: px2dp(44),
         height: px2dp(44),
         alignItems: 'center',
         justifyContent: 'center'
@@ -625,6 +663,60 @@ let styles = StyleSheet.create({
     seeImgStyle: {
         width: px2dp(20),
         height: px2dp(20)
+    },
+    bottomIcon:{
+        width:px2dp(18),
+        height:px2dp(18)
+    },
+    bottomNumText:{
+        color:DesignRule.textColor_mainTitle,
+        fontSize:px2dp(11),
+        marginLeft:px2dp(5)
+    },
+    shieldWrapper:{
+        position:'absolute',
+        top:(ScreenUtils.statusBarHeight + px2dp(44)),
+        bottom:0,
+        left:0,
+        right:0,
+        backgroundColor:'rgba(255,255,255,0.7)'
+    },
+    shieldTextWrapper:{
+        width:DesignRule.width,
+        backgroundColor:'black',
+        paddingHorizontal:DesignRule.margin_page,
+        paddingVertical:px2dp(6)
+    },
+    shieldText:{
+        color:DesignRule.white,
+        fontSize:DesignRule.fontSize_24
+    },
+    shieldImage:{
+        width:px2dp(120),
+        height:px2dp(120),
+        marginTop:px2dp(50),
+        alignSelf:'center'
+    },
+    otherInfoWrapper:{
+        flexDirection:'row',
+        alignItems:'center',
+        marginVertical:px2dp(18),
+        paddingHorizontal:DesignRule.margin_page
+    },
+    timeTextStyle:{
+        color:DesignRule.textColor_instruction,
+        fontSize:DesignRule.fontSize_20
+    },
+    fireIcon:{
+        width:px2dp(13),
+        height:px2dp(17),
+        marginRight:px2dp(8),
+        backgroundColor:'red'
+    },
+    fireNumText:{
+        fontSize:DesignRule.fontSize_22,
+        color:DesignRule.textColor_mainTitle
     }
+
 });
 
