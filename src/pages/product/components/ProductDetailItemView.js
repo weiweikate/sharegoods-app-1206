@@ -384,7 +384,8 @@ export class ServiceItemView extends Component {
                     {this._imgText('质量保障')}
                     {this._imgText('48小时发货')}
                     {(restrictions & 4) === 4 && this._imgText('7天退换')}
-                    {(restrictions & 8) === 8 && this._imgText('节假日发货')}
+                    {/*最多显示3条*/}
+                    {(restrictions & 8) === 8 && (restrictions & 4) !== 4 && this._imgText('节假日发货')}
                 </View>
                 <Image source={arrow_right_black}/>
             </NoMoreClick>
@@ -398,6 +399,7 @@ const ServiceItemViewStyles = StyleSheet.create({
         backgroundColor: 'white', height: 44
     },
     serviceNameText: {
+        marginRight: 20,
         color: DesignRule.textColor_instruction, fontSize: 13
     },
     itemView: {
