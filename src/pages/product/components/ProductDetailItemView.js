@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
 
     nameText: {
         marginHorizontal: 15, paddingVertical: 5,
-        color: DesignRule.textColor_mainTitle, fontSize: 15, fontWeight: 'bold'
+        color: DesignRule.textColor_mainTitle, fontSize: 16, fontWeight: 'bold'
     },
 
     secondNameText: {
