@@ -90,7 +90,6 @@ public class MRJPushReceiver extends BroadcastReceiver {
 
     //接收到通知
     private void receiveNotify(JSONObject objExtra) {
-
     }
 
     //用户点击了通知
