@@ -133,17 +133,18 @@ const styles = StyleSheet.create({
     },
     priceText: {
         paddingTop: (24 - 16) / 2.0,
-        color: DesignRule.textColor_redWarn, fontSize: 16
+        color: DesignRule.textColor_redWarn, fontSize: 16, fontWeight: 'bold'
     },
     originalText: {
         paddingHorizontal: 5,
         color: DesignRule.textColor_instruction, fontSize: 12, textDecorationLine: 'line-through'
     },
     levelView: {
-        borderRadius: 2, backgroundColor: 'rgba(255,0,80,0.1)'
+        justifyContent: 'center',
+        borderRadius: 2, backgroundColor: 'rgba(255,0,80,0.1)', height: 14
     },
     levelText: {
-        paddingHorizontal: 4, paddingVertical: 2,
+        paddingHorizontal: 4,
         color: DesignRule.textColor_redWarn, fontSize: 10
     },
 
