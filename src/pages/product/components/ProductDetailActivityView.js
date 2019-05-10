@@ -107,8 +107,10 @@ export class ActivityDidBeginView extends Component {
                         <View style={DidBeginViewStyles.leaveView}>
                             <View style={[DidBeginViewStyles.progressView, { width: (1 - progress) * 90 }]}/>
                             <View style={DidBeginViewStyles.leaveAmountView}>
-                                <MRText
-                                    style={DidBeginViewStyles.leaveAmountText}>{progress == 0 ? '已抢完' : `还剩${promotionStockNum}件`}</MRText>
+                                <View style={DidBeginViewStyles.textView}>
+                                    <MRText
+                                        style={DidBeginViewStyles.leaveAmountText}>{progress == 0 ? '已抢完' : `还剩${promotionStockNum}件`}</MRText>
+                                </View>
                             </View>
                         </View>
                     </View>
@@ -157,8 +159,11 @@ const DidBeginViewStyles = StyleSheet.create({
         backgroundColor: DesignRule.mainColor, borderRadius: 6, height: 12
     },
     leaveAmountView: {
-        justifyContent: 'center', alignItems: 'center',
-        position: 'absolute', top: 0, bottom: 0, left: 0, right: 0
+        justifyContent: 'center',
+        position: 'absolute', top: 0, bottom: 0, left: 6, right: 0
+    },
+    textView: {
+        justifyContent: 'center', height: 14
     },
     leaveAmountText: {
         fontSize: 10, color: DesignRule.textColor_white
