@@ -11,7 +11,7 @@ import ScreenUtils from '../utils/ScreenUtils';
 import ShowListPage from '../pages/show/ShowListPage';
 import user from '../model/user';
 import { homeTabManager } from '../pages/home/manager/HomeTabManager';
-import RouterMap from './RouterMap';
+// import RouterMap from './RouterMap';
 import DesignRule from '../constants/DesignRule';
 import { observer } from 'mobx-react';
 import { autorun } from 'mobx';
@@ -201,7 +201,8 @@ export const TabNav = TabNavigator(
                     if (user && user.isLogin) {
                         jumpToIndex(scene.index);
                     } else {
-                        navigation.navigate(RouterMap.LoginPage);
+                        // alert(RouterMap.LoginPage);
+                        navigation.navigate('login/login/LoginPage');
                     }
                 }
             })
