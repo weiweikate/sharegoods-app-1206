@@ -34,6 +34,7 @@ import com.taobao.sophix.listener.PatchLoadStatusListener;
 
 import org.greenrobot.eventbus.EventBus;
 
+import cn.jiguang.verifysdk.api.JVerificationInterface;
 import cn.jpush.android.api.JPushInterface;
 
 import static com.meeruu.commonlib.config.QiyuConfig.options;
@@ -114,6 +115,8 @@ public class InitializeService extends IntentService {
         UShare.init(getApplicationContext(), ParameterUtils.UM_KEY);
         // 初始化极光
         JPushInterface.init(getApplicationContext());
+        // 初始化一键登录
+        JVerificationInterface.init(getApplicationContext());
         if (Utils.isApkInDebug()) {
             // jpush debug
             JPushInterface.setDebugMode(true);
@@ -121,6 +124,8 @@ public class InitializeService extends IntentService {
             UApp.debug();
             // 禁止极光捕获crash
             JPushInterface.stopCrashHandler(getApplicationContext());
+            // 一键登录debug
+            JVerificationInterface.setDebugMode(true);
         } else {
             JPushInterface.setDebugMode(false);
             JPushInterface.initCrashHandler(getApplicationContext());
