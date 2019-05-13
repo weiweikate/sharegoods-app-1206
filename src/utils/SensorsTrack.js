@@ -3,6 +3,7 @@ import { NativeModules,Platform } from 'react-native';
 import SensorsEvent from './TrackEvent'
 import user from "../model/user";
 import apiEnvironment from '../api/ApiEnvironment';
+import EmptyUtils from './EmptyUtils';
 let timeStamp = null;
 const {
     track:nativeTrack,
@@ -105,10 +106,11 @@ function track(event_name,parmas) {
     parmas = {
         "platformType":Platform.OS ==="ios"?"iOS":"Android",
         "userLevel":user.isLogin?user.level:"V1",
-        "distinct_id":user.isLogin?user.id:'',
+        // "distinct_id":user.isLogin?user.id:'',
         sessionId:'sessionId_'+timeStamp,
         ...parmas
     }
+    EmptyUtils.clearEmptyProperty(parmas)
     nativeTrack(event_name,parmas);
 }
 
