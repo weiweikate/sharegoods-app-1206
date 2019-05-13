@@ -14,7 +14,6 @@ import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import { MRText as Text } from '../../../../components/ui';
 import UIImage from '@mr/image-placeholder';
-import StringUtils from '../../../../utils/StringUtils';
 
 const gwc = res.search.gwc;
 
@@ -34,7 +33,8 @@ export default class ResultVerticalRow extends Component {
 
 
     render() {
-        let { minPrice, imgUrl, name } = this.props.itemData || {};
+        const { isActivity } = this.props;
+        let { minPrice, promotionMinPrice, imgUrl, name } = this.props.itemData || {};
         return (
             <TouchableWithoutFeedback onPress={() => {
                 this.props.onPressAtIndex(this.props.itemData || {});
@@ -49,7 +49,7 @@ export default class ResultVerticalRow extends Component {
                                 <Text style={{
                                     color: DesignRule.mainColor,
                                     fontSize: 17
-                                }} allowFontScaling={false}>{`￥${StringUtils.isNoEmpty(minPrice) ? minPrice : ''}`}<Text
+                                }} allowFontScaling={false}>{`￥${isActivity ? promotionMinPrice : minPrice}`}<Text
                                     style={{ fontSize: 12 }} allowFontScaling={false}>起</Text>
                                 </Text>
                             </View>
