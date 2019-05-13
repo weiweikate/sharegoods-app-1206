@@ -40,9 +40,14 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
     public void checkInitResult(Promise callback) {
         String hostJson = (String) SPCacheUtils.get(ParameterUtils.API_SERVER, "");
         String contractUrl = "";
+        String h5Url = "";
         if (!TextUtils.isEmpty(hostJson)) {
             JSONObject object = JSON.parseObject(hostJson);
-            contractUrl = object.getString("h5") + "/static/protocol/service.html";
+            h5Url = object.getString("h5");
+            if (TextUtils.isEmpty(h5Url)) {
+                h5Url = "https://h5.sharegoodsmall.com";
+            }
+            contractUrl = h5Url + "/static/protocol/service.html";
         }
         JVerifyUIConfig.Builder builder = new JVerifyUIConfig.Builder();
 
