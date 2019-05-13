@@ -1,6 +1,8 @@
 const api = {
     // 获取秀场
     showQuery: ['/discover/query', { method: 'get' }],
+    //活动
+    showActivity: ['/social/show/content/page/query', { method: 'get' }],
     // 发现详情
     showDetail: ['/discover/getById', { method: 'get' }],
     // 发现详情

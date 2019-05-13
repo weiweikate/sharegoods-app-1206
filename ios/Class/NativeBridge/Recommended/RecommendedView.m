@@ -23,6 +23,7 @@
 @interface RecommendedView()<RecTypeCellDelegate,JXCellDelegate,UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>
 @property (nonatomic, weak)UITableView *tableView;
 @property (nonatomic, strong)NSMutableArray *dataArr;
+@property (nonatomic, strong)NSMutableArray *callBackArr;
 @property (nonatomic, assign)NSInteger page;
 @property (nonatomic, strong)UIView *headerView;
 
@@ -49,6 +50,7 @@ static NSString *IDType = @"TypeCell";
 - (void)initData
 {
   _dataArr = [NSMutableArray new];
+  _callBackArr = [NSMutableArray new];
 }
 
 -(void)setUI{
@@ -117,6 +119,8 @@ static NSString *IDType = @"TypeCell";
   __weak RecommendedView * weakSelf = self;
   [NetWorkTool requestWithURL:self.uri params:dic toModel:[JXModel class] success:^(JXModel * result) {
     weakSelf.dataArr = [result.data mutableCopy];
+    weakSelf.callBackArr = [result.data mutableCopy];
+
     [self.tableView.mj_header endRefreshing];
     if(result.data.count < 10){
       [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
@@ -150,6 +154,7 @@ static NSString *IDType = @"TypeCell";
     __weak  RecommendedView * weakSelf = self;
     [NetWorkTool requestWithURL:self.uri params:dic toModel:[JXModel class] success:^(JXModel * result) {
     [weakSelf.dataArr addObjectsFromArray:result.data];
+    [weakSelf.callBackArr addObjectsFromArray:result.data];
     [weakSelf.tableView reloadData];
     //    [weakSelf.collectionView.collectionViewLayout invalidateLayout];
       if(result.data.count < 10){
@@ -176,16 +181,17 @@ static NSString *IDType = @"TypeCell";
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-  if(indexPath.row==1){
+  JXModelData * model= [self.dataArr objectAtIndex:indexPath.row];
+  if(model.showType&& model.showType == 2){
     RecTypeCell * cell = [tableView dequeueReusableCellWithIdentifier:IDType];
-    cell.model = [self.dataArr objectAtIndex:indexPath.row];
+    cell.model = model;
     cell.recTypeDelegate = self;
     cell.clipsToBounds = YES;
     return cell;
     
   }
   RecommendedCell * cell = [tableView dequeueReusableCellWithIdentifier:ID];
-  cell.model = [self.dataArr objectAtIndex:indexPath.row];
+  cell.model = model;
   cell.cellDelegate = self;
   cell.clipsToBounds = YES;
   return cell;
@@ -196,10 +202,20 @@ static NSString *IDType = @"TypeCell";
 {
     /* model 为模型实例， keyPath为 model的属性名，通过 kvc统一赋值接口 */
     // keypath:比如你要显示的是str,str对应的model的属性是text（model属性名）
-  if(indexPath.row==1){
+  JXModelData * modelType= [self.dataArr objectAtIndex:indexPath.row];
+  if(modelType.showType&& modelType.showType == 2){
     return [self.tableView cellHeightForIndexPath:indexPath model:_dataArr[indexPath.row] keyPath:@"model" cellClass:[RecTypeCell class] contentViewWidth: self.frame.size.width];
   }
     return [self.tableView cellHeightForIndexPath:indexPath model:_dataArr[indexPath.row] keyPath:@"model" cellClass:[RecommendedCell class] contentViewWidth: self.frame.size.width];
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+  JXModelData * model= [self.dataArr objectAtIndex:indexPath.row];
+  if(model.showType&& model.showType == 2){
+    if (_onItemPress) {
+      _onItemPress([self.callBackArr[indexPath.item] modelToJSONObject]);
+    }
+  }
 }
 
 #pragma mark - 按钮点击代理
@@ -212,7 +228,6 @@ static NSString *IDType = @"TypeCell";
 -(void)clickFoldLabel:(RecommendedCell*)cell{
     NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
     JXModelData *model = self.dataArr[indexPath.row];
-    
     model.isOpening = !model.isOpening;
     [self.tableView beginUpdates];
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
@@ -221,6 +236,14 @@ static NSString *IDType = @"TypeCell";
 
 -(void)imageClick:(RecommendedCell *)cell{
   NSLog(@"delegate 1");
+  NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
+  if (_onNineClick) {
+    _onNineClick([self.callBackArr[indexPath.item] modelToJSONObject]);
+  }
+}
+
+-(void)addCar:(RecommendedCell *)cell{
+  NSLog(@"delegate 2%@",cell);
 }
 
 -(void)zanClick:(RecommendedCell *)cell{
@@ -236,7 +259,11 @@ NSLog(@"delegate 2");
 }
 
 -(void)labelClick:(RecommendedCell *)cell{
-  
+  NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
+  if (_onItemPress) {
+//    _onItemPress([self.callBackArr[indexPath.item] modelToJSONObject]);
+    [self refreshData];
+  }
 }
 
 - (void)didUpdateReactSubviews {
@@ -263,8 +290,25 @@ NSLog(@"delegate 2");
   
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+  if (self.onStartScroll) {
+    self.onStartScroll(@{});
+  }
+}
+
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+  if (self.onEndScroll) {
+    self.onEndScroll(@{});
+  }
+}
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-  
+  if (decelerate==NO) {
+    if (self.onEndScroll) {
+      self.onEndScroll(@{});
+    }
+  }
 }
 @end

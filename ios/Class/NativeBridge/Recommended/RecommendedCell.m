@@ -95,6 +95,11 @@
         [weakSelf.cellDelegate shareClick:weakSelf];
       }
     };
+    _footerView.addCarBlock = ^(NSString* a){
+      if (weakSelf.cellDelegate) {
+        [weakSelf.cellDelegate addCar:weakSelf];
+      }
+    };
   }
   return _footerView;
 }
@@ -170,11 +175,18 @@
 
 -(void)setModel:(JXModelData *)model{
     _model = model;
-    self.headView.UserInfoModel = model.userInfoVO;
+    self.headView.UserInfoModel =  (NSMutableDictionary*)model.userInfoVO;
+    self.headView.time = model.publishTimeStr;
     self.bodyView.sources = model.resource;
     self.contentLab.text = model.content;
     
     self.footerView.products = model.products;
+    self.footerView.downloadCount = model.downloadCount;
+    self.footerView.likesCount = model.likesCount;
+    self.footerView.shareCount = model.shareCount;
+    self.footerView.isLike = model.like;
+
+  
 //    if( model.content.length>60){
 //        self.foldLabel.hidden = NO;
 //        if (model.isOpening) {

@@ -8,6 +8,7 @@
 
 #import "JXHeaderView.h"
 #import "UIView+SDAutoLayout.h"
+#import "UIImageView+WebCache.h"
 
 #define SCREEN_WIDTH ([UIScreen mainScreen].bounds.size.width)
 
@@ -47,7 +48,6 @@
     _timeLab = [[UILabel alloc]init];
     _timeLab.font = [UIFont systemFontOfSize:11];
     _timeLab.textColor = [UIColor colorWithRed:153/255.0 green:153/255.0 blue:153/255.0 alpha:1.0];
-    _timeLab.text = @"2小时前";
   }
   return _timeLab;
 }
@@ -82,7 +82,6 @@
   [self addSubview:self.timeLab];
   
   //头像
-    self.headImg.backgroundColor = [UIColor redColor];
   self.headImg.sd_layout.leftSpaceToView(self, 10)
   .topSpaceToView(self, 0)
   .widthIs(30).heightIs(30);
@@ -105,7 +104,8 @@
   
   //发布时间
   self.timeLab.sd_layout.leftSpaceToView(_headImg, 5)
-    .topSpaceToView(self.nameLab, 2);
+    .topSpaceToView(self.nameLab, 2)
+  .heightIs(15);
     [_timeLab setSingleLineAutoResizeWithMaxWidth:200];
 
 }
@@ -117,11 +117,30 @@
 
 -(void)setUserInfoModel:(NSDictionary *)UserInfoModel{
     _UserInfoModel = UserInfoModel;
+  
+    [self.headImg sd_setImageWithURL:[NSURL URLWithString:UserInfoModel[@"url"]] placeholderImage:[self createImageWithUIColor:[UIColor grayColor]]];
+  
     if([UserInfoModel[@"userName"] length]>13){
         self.nameLab.text = [NSString stringWithFormat:@"%@...",[UserInfoModel[@"userName"] substringToIndex:13]];
     }else{
-        self.nameLab.text = UserInfoModel[@"userName"];
+      self.nameLab.text = [UserInfoModel[@"userName"] length]>0? UserInfoModel[@"userName"]:@" ";
     }
+}
+
+-(void)setTime:(NSString *)time{
+  _time = time;
+  self.timeLab.text = self.time;
+}
+
+- (UIImage *)createImageWithUIColor:(UIColor *)imageColor{
+  CGRect rect = CGRectMake(0, 0, 1.f, 1.f);
+  UIGraphicsBeginImageContext(rect.size);
+  CGContextRef context = UIGraphicsGetCurrentContext();
+  CGContextSetFillColorWithColor(context, [imageColor CGColor]);
+  CGContextFillRect(context, rect);
+  UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+  UIGraphicsEndImageContext();
+  return image;
 }
 
 @end

@@ -60,8 +60,6 @@
     _zanNum = [[UILabel alloc]init];
     _zanNum.font = [UIFont systemFontOfSize:10];
     _zanNum.textColor =[UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
-    _zanNum.text = @"10";
-    
   }
   return _zanNum;
 }
@@ -158,7 +156,14 @@
 
 -(void)setModel:(JXModelData *)model{
   _model = model;
-  self.headView.UserInfoModel = model.userInfoVO;
+  self.headView.UserInfoModel = (NSDictionary*)model.userInfoVO;
+  if(model.like){
+    [_zanBtn setBackgroundImage:[UIImage imageNamed:@"yizan"] forState:UIControlStateNormal];
+    
+  }else{
+    [_zanBtn setBackgroundImage:[UIImage imageNamed:@"zan"] forState:UIControlStateNormal];
+  }
+  _zanNum.text = [NSString stringWithFormat:@"%ld",model.likesCount];
   [self.picImg sd_setImageWithURL:[NSURL URLWithString:[model.products[0] valueForKey: @"image"]] placeholderImage:[self createImageWithUIColor:[UIColor grayColor]]];
   self.contentLab.text = model.content;
   

@@ -73,7 +73,7 @@ export default class RefreshList extends Component {
                 if (this.isEnd()) {
                     return (
                         <View style={styles.footer_container}>
-                            <Text style={styles.footer_text}>No More</Text>
+                            <Text style={styles.footer_text}>我也是有底线</Text>
                         </View>
                     );
                 } else {
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 20,
+        margin: 10,
         height: 44
     },
     topbtnStyle:{

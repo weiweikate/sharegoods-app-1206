@@ -20,13 +20,14 @@ import res from './res';
 import DesignRule from '../../constants/DesignRule';
 import ScreenUtils from '../../utils/ScreenUtils';
 import {showActiveModules} from './Show'
+import ShowApi from './ShowApi'
 
 @observer
 export default class ShowActivityView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            viewData:[1,2,3,4,5,6,7,8,9,0],
+            viewData:[],
             isEmpty: false,
             currentPage: 1,
             isError: false,
@@ -68,6 +69,19 @@ export default class ShowActivityView extends Component {
         if (!this.isRefresh) {
             Toast.showLoading('加载中...');
         }
+
+        ShowApi.showActivity({page:1, size:10, spreadPosition:4 }).then(result => {
+            console.log('showActivity',result);
+            if(result.code && result.code === 10000){
+                if( result.data && result.data.data){
+                    this.setState({viewData:result.data.data});
+                }
+            }
+        }).catch(err=>{
+            console.log('showActivityError');
+
+        });
+
         setTimeout(()=>{
             this.isRefresh = false;
             Toast.hiddenLoading();
@@ -94,6 +108,7 @@ export default class ShowActivityView extends Component {
             <View style={styles.container} >
                 {this.state.isError ? this.renderError() : <RefreshList
                     topBtn={showActiveModules.topBtnHide}
+                    isHideFooter={false}
                     data={this.state.viewData}
                     renderItem={this.renderItem}
                     onRefresh={this.onRefresh}
@@ -134,19 +149,24 @@ export default class ShowActivityView extends Component {
     }
 
     renderItem = ({ item, index }) => {
+        console.log(item)
+        let imageUrl = item.resource && item.resource.map((images,index)=>{
+            if(item.type === 3) {return item.url;}
+        });
+        console.log(imageUrl)
         return (
             <TouchableOpacity ref={(ref)=>{this['item' + index] = ref}} key={'row' + index} onPress={()=>this.clickItem(index)}>
                 <View style={styles.itemBgStyle}>
-                    <Image style={styles.itemImgStyle} source={res.likeIcon}/>
+                    <Image style={styles.itemImgStyle} source={{uri: '111.png'}}/>
                     <Text style={{marginLeft: 10, marginRight: 10, marginTop: 10}} numberOfLines={2}>
-                        {index == 0 ? '马赛克妈妈说看看马上快递马上都没啦' : '你卡上你家阿三开电脑就看谁对你撒的缴纳进口税都能健康三等奖剋三角裤对你撒娇看到你就可能经常能看见吃的蔬菜十年春季开始接触拿手机看电脑'}
+                        {item['content']}
                     </Text>
                     <View style={{flexDirection: 'row', alignItems: 'center', margin: 10}}>
-                        <Image style={{width: 24, height: 24, borderRadius: 12, overflow: 'hidden',}}
-                               source={res.hotIcon}/>
-                        <Text style={{flex: 1, marginLeft: 5}} numberOfLines={1}>mksmaksdmkdksja你家阿三开电脑就看谁对你撒的缴纳进口税都能健康三等奖剋三角裤对你撒</Text>
+                        <Image style={{width: 24, height: 24, borderRadius: 12, overflow: 'hidden',backgroundColor:'#666a6d'}}
+                               source={{uri:item.userInfoVO.userImg}}/>
+                        <Text style={{flex: 1, marginLeft: 5}} numberOfLines={1}>{item.userInfoVO.userName}</Text>
                         <Image style={{width: 12, height: 16,}} source={res.hotIcon}/>
-                        <Text style={{marginLeft:8}}>10000</Text>
+                        <Text style={{marginLeft:8}}>{item.hotCount>999? item.hotCount>100000?'10w+':'999+':item.hotCount}</Text>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -182,6 +202,9 @@ const styles = StyleSheet.create({
     itemImgStyle:{
         height: 160,
         width: ScreenUtils.width - 30,
+        backgroundColor:'#666a6d',
+        borderRadius: 5,
+        overflow: 'hidden',
     },
     btnText: {
         fontSize: 15,

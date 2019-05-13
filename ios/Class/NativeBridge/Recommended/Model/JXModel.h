@@ -31,12 +31,12 @@
 @property (nonatomic,strong)NSArray<GoodsDataModel*> * products;
 @property (nonatomic,strong)NSArray<SourcesModel*> * resource;
 @property (nonatomic,strong)UserInfoModel * userInfoVO;
-@property (nonatomic,assign) NSInteger  clickCount;
-@property (nonatomic,copy) NSString * showType;
+@property (nonatomic,assign) NSInteger clickCount;
+@property (nonatomic,assign) NSInteger showType;
 @property (nonatomic,copy) NSString * publishTimeStr;
-@property (nonatomic,assign) BOOL * like;
+@property (nonatomic,assign) BOOL like;
 
-@property (nonatomic,assign) BOOL  isOpening;
+@property (nonatomic,assign) BOOL isOpening;
 @end
 
 @interface SourcesModel : NSObject
@@ -45,11 +45,19 @@
 @end
 
 @interface GoodsDataModel : NSObject
-@property (nonatomic,copy) NSString * desc;
-@property (nonatomic,copy) NSString * image;
+@property (nonatomic,copy) NSString * name;
+@property (nonatomic,copy) NSString * imgUrl;
 @property (nonatomic,assign) CGFloat originalPrice;
-@property (nonatomic,assign) CGFloat price;
+@property (nonatomic,assign) CGFloat maxPrice;
+@property (nonatomic,assign) CGFloat minPrice;
+@property (nonatomic,assign) CGFloat promotionMaxPrice;
+@property (nonatomic,assign) CGFloat promotionMinPrice;
+@property (nonatomic,copy) NSString * secondName;
+@property (nonatomic,assign) CGFloat v0Price;
 @property (nonatomic,copy) NSString * productNo;
+@property (nonatomic,assign) CGFloat groupPrice;
+@property (nonatomic,copy) NSString * prodCode;
+
 @end
 
 @interface UserInfoModel : NSObject

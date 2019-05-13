@@ -148,7 +148,7 @@ SINGLETON_FOR_CLASS(ShowShareImgMaker)
   //介绍
   NSMutableAttributedString *contentStrAttrStr = [[NSMutableAttributedString alloc]initWithString:contentStr
                                                                                        attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:13*i], NSForegroundColorAttributeName: [UIColor colorWithHexString:@"333333"]}];
-  [contentStrAttrStr appendString:@" 年擦肩擦肩说才收到你从哪车内第四次你说你才能生存南昌年第四次弄死你此生那次都是农村"];
+  [contentStrAttrStr appendString:@""];
   
   [nodes addObject:@{
                      @"value": contentStrAttrStr,

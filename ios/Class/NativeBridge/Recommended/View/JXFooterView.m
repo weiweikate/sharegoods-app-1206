@@ -40,8 +40,6 @@
         _zanNum = [[UILabel alloc]init];
         _zanNum.font = [UIFont systemFontOfSize:10];
         _zanNum.textColor =[UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
-        _zanNum.text = @"10";
-
     }
     return _zanNum;
 }
@@ -51,7 +49,6 @@
         _downLoadNUm = [[UILabel alloc]init];
         _downLoadNUm.font = [UIFont systemFontOfSize:10];
         _downLoadNUm.textColor =[UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
-        _downLoadNUm.text = @"99";
     }
     return _downLoadNUm;
     
@@ -60,8 +57,6 @@
 -(UIButton*)zanBtn{
   if(!_zanBtn){
     _zanBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_zanBtn setBackgroundImage:[UIImage imageNamed:@"yizan"] forState:UIControlStateNormal];
-
   }
   return _zanBtn;
 }
@@ -137,6 +132,25 @@
   [self setGoodsView];
 }
 
+-(void)setDownloadCount:(NSInteger)downloadCount{
+    _downloadCount = downloadCount;
+  self.downLoadNUm.text = [NSString stringWithFormat:@"%ld",downloadCount];
+}
+
+-(void)setLikesCount:(NSInteger)likesCount{
+  _likesCount = likesCount;
+  self.zanNum.text = [NSString stringWithFormat:@"%ld",likesCount];
+}
+
+-(void)setIsLike:(BOOL)isLike{
+  if(isLike){
+    [_zanBtn setBackgroundImage:[UIImage imageNamed:@"yizan"] forState:UIControlStateNormal];
+
+  }else{
+    [_zanBtn setBackgroundImage:[UIImage imageNamed:@"zan"] forState:UIControlStateNormal];
+  }
+}
+
 -(void)setGoodsView{
     NSInteger len = self.products.count;
     CGFloat width = len>0&&len<=1?(SCREEN_WIDTH-90):(SCREEN_WIDTH-110);
@@ -168,13 +182,13 @@
         //将多余的部分切掉
         goodsImg.layer.masksToBounds = YES;
         goodsImg.image = [UIImage imageNamed:@"welcome3"];
-        [goodsImg sd_setImageWithURL:[NSURL URLWithString:[self.products[0] valueForKey:@"image"]] placeholderImage:[self createImageWithUIColor:[UIColor grayColor]]];
+        [goodsImg sd_setImageWithURL:[NSURL URLWithString:[self.products[0] valueForKey:@"imgUrl"]] placeholderImage:[self createImageWithUIColor:[UIColor grayColor]]];
       
       
         UILabel* titile = [[UILabel alloc]init];
         titile.font = [UIFont systemFontOfSize:10];
         titile.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
-        titile.text = [self.products[0] valueForKey:@"desc"];
+        titile.text = [self.products[0] valueForKey:@"name"];
     
         
         UILabel* price = [[UILabel alloc]init];
@@ -188,7 +202,8 @@
         shopCarBtn.tag = i+1;
         shopCarBtn.titleLabel.font = [UIFont systemFontOfSize:12];
         [shopCarBtn setImage:[UIImage imageNamed:@"jiarugouwuche"] forState:UIControlStateNormal];
-        
+        //加入购物车
+        [shopCarBtn addTarget:self action:@selector(addCarBtn:) forControlEvents:UIControlEventTouchUpInside];
         [bgView sd_addSubviews:@[goodsImg,titile,price,shopCarBtn]];
         //商品图片
         goodsImg.sd_layout.topSpaceToView(bgView, 5)
@@ -237,6 +252,12 @@
     NSLog(@"tapShareBtn");
   if(self.shareBlock){
     self.shareBlock(@"");
+  }
+}
+
+-(void)addCarBtn:(UIButton*)sender{
+  if(self.addCarBlock){
+    self.addCarBlock(@"");
   }
 }
 

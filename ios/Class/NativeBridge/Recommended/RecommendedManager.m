@@ -15,11 +15,13 @@ RCT_EXPORT_MODULE(ShowRecommendView)
 
 
 RCT_EXPORT_VIEW_PROPERTY(onItemPress, RCTBubblingEventBlock)
-RCT_EXPORT_VIEW_PROPERTY(onImgPress, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onNineClick, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onZanPress, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onDownloadPress, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onSharePress, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onAddCartClick, RCTBubblingEventBlock)
 
+RCT_EXPORT_VIEW_PROPERTY(onScrollStateChanged, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onStartRefresh, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(uri, NSString)
 RCT_EXPORT_VIEW_PROPERTY(params, NSDictionary)
