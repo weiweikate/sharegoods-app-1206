@@ -77,8 +77,10 @@ android {
             buildConfigField "String", "CODEPUSH_KEY", '""'
             manifestPlaceholders = [
                     JPUSH_PKGNAME: "com.meeruu.sharegoods",
+                    // 生产环境
+                    JPUSH_APPKEY  : "7fde54543daf045a209a7abf",
                     // 开发环境
-                    JPUSH_APPKEY : "3288c3f3feb6c119e3d88049",
+//                    JPUSH_APPKEY : "3288c3f3feb6c119e3d88049",
                     JPUSH_CHANNEL: "guanwang", //暂时填写默认值即可.
                     XIAOMI_APPKEY : "",//小米平台注册的appkey
                     XIAOMI_APPID  : "",//小米平台注册的appid
@@ -182,8 +184,6 @@ dependencies {
     api rootProject.ext.dependencies.lottie
 
     api(name: 'alipaySdk-15.5.9-20181123210657-noUtdid', ext: 'aar')
-//    api(name: 'alicom-number-verification-android-2.0.0-20190219-release', ext: 'aar')
-    api(name: 'phoneNumber-AuthSDK-2.2.0-20190424', ext: 'aar')
     api project(':react-native-video')
     api project(':react-native-vector-icons')
     api project(':react-native-svg')
