@@ -95,18 +95,24 @@
           advertisingIdentifier:nil];
   
   // 下边为一键登录相关设置,有问题请联系胡玉峰同志 OK? 如需使用 IDFA 功能请添加此代码并在初始化配置类中设置 advertisingId
-  NSString *idfaStr = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
+//  NSString *idfaStr = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
   JVAuthConfig *config = [[JVAuthConfig alloc] init];
   config.appKey = KJSPushKey;
-  config.advertisingId = idfaStr;
+//  config.advertisingId = idfaStr;
   [JVERIFICATIONService setupWithConfig:config];
-  [JVERIFICATIONService setDebug:NO];
+  [JVERIFICATIONService setDebug:YES];
+  [self customUI];
 }
 
 -(void)customUI{
   /*移动*/
   JVMobileUIConfig *mobileUIConfig = [[JVMobileUIConfig alloc] init];
   mobileUIConfig.logoImg = [UIImage imageNamed:@"cmccLogo"];
+   mobileUIConfig.navColor = [UIColor whiteColor];
+  NSMutableAttributedString * attriString =[[NSMutableAttributedString  alloc]initWithString:@"一键登录"];
+  [ attriString  addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#4d4d4d"] range:NSMakeRange(0, 4)];
+  mobileUIConfig.navText = attriString;
+  mobileUIConfig.appPrivacyOne = @[@"应用自定义服务条款1",@"https://www.jiguang.cn/about"];
   /*
    mobileUIConfig.authPageBackgroundImage = [UIImage imageNamed:@"背景图"];
    mobileUIConfig.navColor = [UIColor redColor];

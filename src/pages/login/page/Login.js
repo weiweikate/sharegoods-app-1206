@@ -116,10 +116,6 @@ export default class Login extends BasePage {
         if (btnType === loginBtnType.wxLoginBtnType) {
             this._wxLogin();
         } else if (btnType === loginBtnType.localPhoneNumLoginType) {
-            // this.$navigate(RouterMap.LocalNumLogin, {
-            //     tempPhone: this.state.tempPhone,
-            //     authenToken: this.state.authenToken
-            // });
             startLoginAuth().then((data)=>{
                 let { navigation } = this.props;
                 oneClickLoginValidation(loginModel.authPhone, data, navigation);
