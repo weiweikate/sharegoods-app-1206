@@ -13,7 +13,6 @@
 #import "NSObject+Util.h"
 @implementation PhoneAutherTool
 +(void)startPhoneAutherWithPhoneNum:(NSString *)phoneNum andFinshBlock:(void (^)(NSString * _Nonnull))finshBlock{
-//
 //  TXCustomModel *modelNew = [[TXCustomModel alloc] init];
 //  //modelNew.navColor = UIColor.orangeColor;
 //  modelNew.navTitle = [[NSAttributedString alloc] initWithString:@"一键登录" attributes:@{NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#333"],NSFontAttributeName: [UIFont systemFontOfSize:18.0]}];
@@ -54,17 +53,22 @@
 //        }
 //    }];
 //  });
-  [JVERIFICATIONService getAuthorizationWithController:self.currentViewController_XG completion:^(NSDictionary *result) {
-    NSLog(@"一键登录 result:%@", result);
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//      [self.authorizationResult setText:result.description];
-//    });
-  }];
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [JVERIFICATIONService getAuthorizationWithController:self.currentViewController_XG completion:^(NSDictionary *result) {
+      NSLog(@"一键登录 result:%@", result);
+      if ([result[@"code"] integerValue] == 6000) {
+        if (finshBlock) {
+          finshBlock(result[@"loginToken"]);
+        }
+      }else{
+        dispatch_async(dispatch_get_main_queue(), ^{
+          [JRLoadingAndToastTool showToast:result[@"content"] andDelyTime:0.5];
+        });
+      }
+    }];
+  });
 }
 +(BOOL)isCanPhoneAuthen{
-//  BOOL isCan = [[TXCommonAuthHandler  sharedInstance]checkGatewayVerifyEnable:nil];;
-//  return isCan;
-  
   if(![JVERIFICATIONService checkVerifyEnable]) {
     NSLog(@"当前网络环境不支持认证！");
     return false;
