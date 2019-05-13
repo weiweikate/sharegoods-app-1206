@@ -30,7 +30,8 @@ import {
     StatusInfoView,
     BackAddressView,
     ShippingAddressView,
-    LogisticsView
+    LogisticsView,
+    FillAddressView
 } from './components';
 import { observer } from 'mobx-react';
 import res from '../res';
@@ -212,7 +213,6 @@ class ExchangeGoodsDetailPage extends BasePage {
                                 />
                             }
                 >
-                    <TipView pageType={pageType} status={status}/>
                     <HeaderView pageType={pageType}
                                 status={status}
                                 subStatus={subStatus}
@@ -228,34 +228,10 @@ class ExchangeGoodsDetailPage extends BasePage {
                                     remarks={remarks}
                                     refundStatus={refundStatus}
                     />
-                    {
-                        isShow_refundDetailView ?
-                            <RefundDetailView refundAccountAmount={refundAccountAmount}
-                                              refundCashAmount={refundCashAmount}
-                                              refundPrice={refundPrice}
-                            /> : null
-                    }
-                    {
-                        isShow_shippingAddressView ?
-                            <ShippingAddressView
-                                receiver={receiver}
-                                receiverPhone={receiverPhone}
-                                province={province}
-                                city={city}
-                                area={area}
-                                street={street}
-                                address={address}
-                            /> : null
-                    }
-                    {
-                        isShow_backAddressView ?
-                            <BackAddressView refundAddress={refundAddress}/> : null
-                    }
-                    {
-                        logistics.length > 0 ?
-                            <LogisticsView data={logistics}
-                            /> : null
-                    }
+                    <FillAddressView
+                        afterSaleDetailModel = {this.afterSaleDetailModel}
+                        status={status}
+                    />
                     {
                         isShow_afterInfo?this.renderOrder():null
                     }
@@ -352,7 +328,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                     height: 40,
                     justifyContent: 'center',
                     paddingLeft: 15,
-                    marginTop: -5
+                    marginTop: 10
                 }}>
                 <UIText value={'售后信息'}
                         style={{ color: DesignRule.textColor_mainTitle, fontSize: 13 }}/>

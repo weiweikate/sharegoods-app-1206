@@ -60,7 +60,7 @@ export default class StatusInfoView extends React.Component {
         let content = this.getContent(pageType, status, subStatus, refundStatus, remarks)
         //文案为null，就不显示该组件
         if (!content) {
-            return;
+            return null;
         }
         const {titleStr, detialStr, remarkStr} = content;
         return (

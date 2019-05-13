@@ -1,4 +1,4 @@
-import CustomerServiceView from './CustomerServiceView';
+
 import AfterSaleInfoView from './AfterSaleInfoView';
 import OperationApplyView from './OperationApplyView';
 import TipView from './TipView';
@@ -8,9 +8,9 @@ import StatusInfoView from './StatusInfoView';
 import BackAddressView from './BackAddressView';
 import ShippingAddressView from  './ShippingAddressView';
 import LogisticsView from './LogisticsView';
+import FillAddressView from './FillAddressView'
 
 export {
-    CustomerServiceView,
     AfterSaleInfoView,
     OperationApplyView,
     TipView,
@@ -19,5 +19,6 @@ export {
     StatusInfoView,
     BackAddressView,
     ShippingAddressView,
-    LogisticsView
+    LogisticsView,
+    FillAddressView
 };

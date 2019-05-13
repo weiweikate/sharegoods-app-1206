@@ -27,9 +27,10 @@ class AfterSaleDetailModel {
     @action
     loadPageData(callBack) {
         this.refreshing = true;
-        this.loadingShow && this.loadingShow();
-        orderApi.afterSaleDetail({ serviceNo: this.serviceNo }).then(result => {
-            this.loadingDismiss && this.loadingDismiss();
+        // this.loadingShow && this.loadingShow();
+        // orderApi.afterSaleDetail({ serviceNo: this.serviceNo }).then(result => {
+        //     this.loadingDismiss && this.loadingDismiss();
+        let result = {};
             result.data = {
                 "serviceNo": "3190321161030619116103",
                     "platformOrderNo": "P190103152053000001",
@@ -40,7 +41,7 @@ class AfterSaleDetailModel {
                     "supplierCode": "GYS00002",
                     "supplierName": "小米供应商",
                     "productName": "我是测试产品3.0",
-                    "type": 1,
+                    "type": 2,
                     "refundNum": 1,
                     "payAmount": 0.01,
                     "applyRefundAmount": 0.01,
@@ -53,9 +54,9 @@ class AfterSaleDetailModel {
                     "warehouseCode": null,
                     "sendWarehouseFeedback": null,
                     "refundWarehouseFeedback": null,
-                    "status": 5,
+                    "status": 1,
                     "subStatus": 1,
-                    "cancelTime": 1556190614000,
+                    "cancelTime": 1557209035451,
                     "imgList": "",
                     "receiver": null,
                     "receiverPhone": null,
@@ -237,12 +238,12 @@ class AfterSaleDetailModel {
             //     subStatus,  // REVOKED(1, "手动撤销"),OVERTIME(2, "超时关闭"),(3, "拒绝关闭");
             //     refundStatus,//退款状态: 1.待退款 2.退款成功 3.三方退款失败 4.平台退款失败 5.取消退款(关闭)
 
-        }).catch((error) => {
-            this.refreshing = false;
-            this.loadingDismiss && this.loadingDismiss();
-            this.isLoaded = true;
-
-        });
+        // }).catch((error) => {
+        //     this.refreshing = false;
+        //     this.loadingDismiss && this.loadingDismiss();
+        //     this.isLoaded = true;
+        //
+        // });
     }
 
     @action
@@ -270,7 +271,7 @@ class AfterSaleDetailModel {
         remainingTime = (remainingTime - H) / 24;
         let d = remainingTime;
 
-        return '剩余' + d + '天' + H + '小时' + m + '分' + s + '秒';
+        return  d + '天' + H + '小时' + m + '分' + s + '秒';
     }
 
     @action

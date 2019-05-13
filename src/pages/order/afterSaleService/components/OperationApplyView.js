@@ -66,7 +66,6 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
         height: 95,
-        marginBottom: 10
     },
     title: {
         height: 50,
