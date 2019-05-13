@@ -4,15 +4,14 @@ import java.util.List;
 
 public class NewestShowGroundBean {
 
-
     /**
      * currentPage : 1
-     * pageSize : 1
-     * totalNum : 59
+     * pageSize : 10
+     * totalNum : 1
      * isMore : 0
-     * totalPage : 59
+     * totalPage : 1
      * startIndex : 0
-     * data : [{"id":118,"code":"FX190218000001","title":"初谜暖绒谜情系列内衣，女神必备","coverImg":"https://cdn.sharegoodsmall.com/sharegoods/4084dce12ea54f4a87662379b454f00a.png","img":"https://cdn.sharegoodsmall.com/sharegoods/bedde64946ce48628a9c5b51b11cb93e.png","generalize":3,"categoryId":4,"userCode":"1566565","click":190,"createAdminId":21,"updateId":21,"updateTime":1550479659000,"createTime":1550458794000,"content":"<p>有些女孩子，表面光鲜亮丽！其实里头的内衣又土又旧！<\/p><p><img src=\"https://cdn.sharegoodsmall.com/sharegoods/378d73a1437f4408bfc0e0590999c7ea.jpg\"><\/p><p>妆容再精致、发型再女神、穿的再光鲜靓丽又有什么用？关键时刻还不是不敢一把将男神推到？<\/p><p><img src=\"https://cdn.sharegoodsmall.com/sharegoods/d74d4ac70f3841778c3f20f890cc9e16.jpg\"><\/p><p>呐~听我一句劝，家里的内衣可以换一换啦！推荐你们入手初谜的暖绒谜情系列内衣，4大技术研发，用科技探索内衣新发现！轻薄透气，在材质与质感上首先就秒杀了市场上一堆鱼龙混杂的内衣牌子。女人的贴身衣服阿，质量必须经得起推敲呀！<\/p><p><img src=\"https://cdn.sharegoodsmall.com/sharegoods/98a860b5edce4d6f915d51ce7eebcb56.png\"><\/p><p>不过我最喜欢的还是他们家的内衣都是无钢圈的，0压力，保护乳腺健康！而罩杯又很立体，不会因为没有钢圈就下垂啥的，完全不用担心！<\/p><p><img src=\"https://cdn.sharegoodsmall.com/sharegoods/c5ea7f8b0e004b2d9db06ff9504e4c36.png\"><\/p><p>罩杯下扒位增加了按摩凸点设计，按摩胸部，并且下扒位设计出空气导流槽的设计，更舒适透气。还有聚拢效果哦，像我这样胸小的妹纸，挤挤还是很重要的~<\/p><p>俗话说的好，乳沟就像时间，挤挤就有了！除了聚拢效果，对于副乳的提拉、上托效果也是非常明显的哦！<\/p><p><img src=\"https://cdn.sharegoodsmall.com/sharegoods/3f0f9d12307d4e3b96997f744d84c2f7.jpg\"><\/p><p>说了那么多，还是要着重介绍一下它的美观程度！整体简约大气，不会花里胡哨显得庸俗，但中间又带有精美的刺绣作为点缀，在简洁优雅中又不失一点诱人的轻奢风情！最适合性感女人啦！<\/p><p><img src=\"https://cdn.sharegoodsmall.com/sharegoods/7d545e3fb14b4e5c95bf020d8ef68f6f.png\"><\/p><p>作为一个精致的仙女，美就得从里到外！时刻准备着，穿上\u201c初迷战衣\u201d分分钟搞定男神！<\/p><p>问我哪里有的卖？上秀购超品日呀！2.19号！等你抢购！<\/p><p><img src=\"https://cdn.sharegoodsmall.com/sharegoods/586212d299ac49a5aad4b240319b4804.jpg\"><\/p>","likeCount":null,"collectCount":null,"hadLike":null,"hadCollect":null,"products":null,"userName":"派大金Jocelyn","userHeadImg":"https://thirdwx.qlogo.cn/mmopen/vi_32/OxB7iaDnibrsqkjicytNjZkicScTKmriaRv317onLkQt5eANfJFicRZ6ymwaGhAPWKibcEGc8IwgzR6Z7BvwshoIlUDSg/132","coverImgHigh":"251","coverImgWide":"335","imgWide":"750","imgHigh":"750","imgs":null,"time":"5小时前","pureContent":"有些女孩子，表面光鲜亮丽！其实里头的内衣又土又旧！妆容再精致、发型再女神、穿的再光鲜靓丽又有什么用？关键时刻还不是不敢一把将男神推到？呐~听我一句劝，家里的内衣可以换一换啦！推荐你们入手初谜的暖绒谜情系列内衣，4大技术研发，用科技探索内衣新发现！轻薄透气，在材质与质感上首先就秒杀了市场上一堆鱼龙混杂的内衣牌子。女人的贴身衣服阿，质量必须经得起推敲呀！不过我最喜欢的还是他们家的内衣都是无钢圈的，0压力，保护乳腺健康！而罩杯又很立体，不会因为没有钢圈就下垂啥的，完全不用担心！罩杯下扒位增加了按摩凸点设计，按摩胸部，并且下扒位设计出空气导流槽的设计，更舒适透气。还有聚拢效果哦，像我这样胸小的妹纸，挤挤还是很重要的~俗话说的好，乳沟就像时间，挤挤就有了！除了聚拢效果，对于副乳的提拉、上托效果也是非常明显的哦！说了那么多，还是要着重介绍一下它的美观程度！整体简约大气，不会花里胡哨显得庸俗，但中间又带有精美的刺绣作为点缀，在简洁优雅中又不失一点诱人的轻奢风情！最适合性感女人啦！作为一个精致的仙女，美就得从里到外！时刻准备着，穿上\u201c初迷战衣\u201d分分钟搞定男神！问我哪里有的卖？上秀购超品日呀！2.19号！等你抢购！"}]
+     * data : [{"showNo":"SHOW2019051311331980800003300000","userInfoVO":{"userNo":"1000004","userImg":"https://testcdn.sharegoodsmall.com/sharegoods/da3a1f00cbc64733a0a8522ad7e3dbfe.png","userName":"15755373887"},"content":"","publishTime":1557718399000,"publishTimeStr":"20分钟前","showType":1,"products":null,"resource":[{"type":2,"url":"https://devcdn.sharegoodsmall.com/sharegoods/ff4647ea22dd4d14aad0adecb177b9f6.png"}],"likesCount":0,"shareCount":0,"downloadCount":0,"clickCount":0,"hotCount":8,"nowTime":1557719616374,"like":false}]
      */
 
     private int currentPage;
@@ -81,167 +80,53 @@ public class NewestShowGroundBean {
 
     public static class DataBean {
         /**
-         * id : 118
-         * code : FX190218000001
-         * title : 初谜暖绒谜情系列内衣，女神必备
-         * coverImg : https://cdn.sharegoodsmall.com/sharegoods/4084dce12ea54f4a87662379b454f00a.png
-         * img : https://cdn.sharegoodsmall.com/sharegoods/bedde64946ce48628a9c5b51b11cb93e.png
-         * generalize : 3
-         * categoryId : 4
-         * userCode : 1566565
-         * click : 190
-         * createAdminId : 21
-         * updateId : 21
-         * updateTime : 1550479659000
-         * createTime : 1550458794000
-         * content : <p>有些女孩子，表面光鲜亮丽！其实里头的内衣又土又旧！</p><p><img src="https://cdn.sharegoodsmall.com/sharegoods/378d73a1437f4408bfc0e0590999c7ea.jpg"></p><p>妆容再精致、发型再女神、穿的再光鲜靓丽又有什么用？关键时刻还不是不敢一把将男神推到？</p><p><img src="https://cdn.sharegoodsmall.com/sharegoods/d74d4ac70f3841778c3f20f890cc9e16.jpg"></p><p>呐~听我一句劝，家里的内衣可以换一换啦！推荐你们入手初谜的暖绒谜情系列内衣，4大技术研发，用科技探索内衣新发现！轻薄透气，在材质与质感上首先就秒杀了市场上一堆鱼龙混杂的内衣牌子。女人的贴身衣服阿，质量必须经得起推敲呀！</p><p><img src="https://cdn.sharegoodsmall.com/sharegoods/98a860b5edce4d6f915d51ce7eebcb56.png"></p><p>不过我最喜欢的还是他们家的内衣都是无钢圈的，0压力，保护乳腺健康！而罩杯又很立体，不会因为没有钢圈就下垂啥的，完全不用担心！</p><p><img src="https://cdn.sharegoodsmall.com/sharegoods/c5ea7f8b0e004b2d9db06ff9504e4c36.png"></p><p>罩杯下扒位增加了按摩凸点设计，按摩胸部，并且下扒位设计出空气导流槽的设计，更舒适透气。还有聚拢效果哦，像我这样胸小的妹纸，挤挤还是很重要的~</p><p>俗话说的好，乳沟就像时间，挤挤就有了！除了聚拢效果，对于副乳的提拉、上托效果也是非常明显的哦！</p><p><img src="https://cdn.sharegoodsmall.com/sharegoods/3f0f9d12307d4e3b96997f744d84c2f7.jpg"></p><p>说了那么多，还是要着重介绍一下它的美观程度！整体简约大气，不会花里胡哨显得庸俗，但中间又带有精美的刺绣作为点缀，在简洁优雅中又不失一点诱人的轻奢风情！最适合性感女人啦！</p><p><img src="https://cdn.sharegoodsmall.com/sharegoods/7d545e3fb14b4e5c95bf020d8ef68f6f.png"></p><p>作为一个精致的仙女，美就得从里到外！时刻准备着，穿上“初迷战衣”分分钟搞定男神！</p><p>问我哪里有的卖？上秀购超品日呀！2.19号！等你抢购！</p><p><img src="https://cdn.sharegoodsmall.com/sharegoods/586212d299ac49a5aad4b240319b4804.jpg"></p>
-         * likeCount : null
-         * collectCount : null
-         * hadLike : null
-         * hadCollect : null
+         * showNo : SHOW2019051311331980800003300000
+         * userInfoVO : {"userNo":"1000004","userImg":"https://testcdn.sharegoodsmall.com/sharegoods/da3a1f00cbc64733a0a8522ad7e3dbfe.png","userName":"15755373887"}
+         * content :
+         * publishTime : 1557718399000
+         * publishTimeStr : 20分钟前
+         * showType : 1
          * products : null
-         * userName : 派大金Jocelyn
-         * userHeadImg : https://thirdwx.qlogo.cn/mmopen/vi_32/OxB7iaDnibrsqkjicytNjZkicScTKmriaRv317onLkQt5eANfJFicRZ6ymwaGhAPWKibcEGc8IwgzR6Z7BvwshoIlUDSg/132
-         * coverImgHigh : 251
-         * coverImgWide : 335
-         * imgWide : 750
-         * imgHigh : 750
-         * imgs : null
-         * time : 5小时前
-         * pureContent : 有些女孩子，表面光鲜亮丽！其实里头的内衣又土又旧！妆容再精致、发型再女神、穿的再光鲜靓丽又有什么用？关键时刻还不是不敢一把将男神推到？呐~听我一句劝，家里的内衣可以换一换啦！推荐你们入手初谜的暖绒谜情系列内衣，4大技术研发，用科技探索内衣新发现！轻薄透气，在材质与质感上首先就秒杀了市场上一堆鱼龙混杂的内衣牌子。女人的贴身衣服阿，质量必须经得起推敲呀！不过我最喜欢的还是他们家的内衣都是无钢圈的，0压力，保护乳腺健康！而罩杯又很立体，不会因为没有钢圈就下垂啥的，完全不用担心！罩杯下扒位增加了按摩凸点设计，按摩胸部，并且下扒位设计出空气导流槽的设计，更舒适透气。还有聚拢效果哦，像我这样胸小的妹纸，挤挤还是很重要的~俗话说的好，乳沟就像时间，挤挤就有了！除了聚拢效果，对于副乳的提拉、上托效果也是非常明显的哦！说了那么多，还是要着重介绍一下它的美观程度！整体简约大气，不会花里胡哨显得庸俗，但中间又带有精美的刺绣作为点缀，在简洁优雅中又不失一点诱人的轻奢风情！最适合性感女人啦！作为一个精致的仙女，美就得从里到外！时刻准备着，穿上“初迷战衣”分分钟搞定男神！问我哪里有的卖？上秀购超品日呀！2.19号！等你抢购！
+         * resource : [{"type":2,"url":"https://devcdn.sharegoodsmall.com/sharegoods/ff4647ea22dd4d14aad0adecb177b9f6.png"}]
+         * likesCount : 0
+         * shareCount : 0
+         * downloadCount : 0
+         * clickCount : 0
+         * hotCount : 8
+         * nowTime : 1557719616374
+         * like : false
          */
 
-        private int id;
-        private String code;
-        private String title;
-        private String coverImg;
-        private String img;
-        private int generalize;
-        private int categoryId;
-        private String userCode;
-        private int click;
-        private int createAdminId;
-        private int updateId;
-        private long updateTime;
-        private long createTime;
+        private String showNo;
+        private UserInfoVOBean userInfoVO;
         private String content;
-        private Object likeCount;
-        private Object collectCount;
-        private Object hadLike;
-        private Object hadCollect;
+        private long publishTime;
+        private String publishTimeStr;
+        private int showType;
         private Object products;
-        private String userName;
-        private String userHeadImg;
-        private float coverImgHigh;
-        private float coverImgWide;
-        private float imgWide;
-        private float imgHigh;
-        private Object imgs;
-        private String time;
-        private String pureContent;
+        private int likesCount;
+        private int shareCount;
+        private int downloadCount;
+        private int clickCount;
+        private int hotCount;
+        private long nowTime;
+        private boolean like;
+        private List<ResourceBean> resource;
 
-        public int getId() {
-            return id;
+        public String getShowNo() {
+            return showNo;
         }
 
-        public void setId(int id) {
-            this.id = id;
+        public void setShowNo(String showNo) {
+            this.showNo = showNo;
         }
 
-        public String getCode() {
-            return code;
+        public UserInfoVOBean getUserInfoVO() {
+            return userInfoVO;
         }
 
-        public void setCode(String code) {
-            this.code = code;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public String getCoverImg() {
-            return coverImg;
-        }
-
-        public void setCoverImg(String coverImg) {
-            this.coverImg = coverImg;
-        }
-
-        public String getImg() {
-            return img;
-        }
-
-        public void setImg(String img) {
-            this.img = img;
-        }
-
-        public int getGeneralize() {
-            return generalize;
-        }
-
-        public void setGeneralize(int generalize) {
-            this.generalize = generalize;
-        }
-
-        public int getCategoryId() {
-            return categoryId;
-        }
-
-        public void setCategoryId(int categoryId) {
-            this.categoryId = categoryId;
-        }
-
-        public String getUserCode() {
-            return userCode;
-        }
-
-        public void setUserCode(String userCode) {
-            this.userCode = userCode;
-        }
-
-        public int getClick() {
-            return click;
-        }
-
-        public void setClick(int click) {
-            this.click = click;
-        }
-
-        public int getCreateAdminId() {
-            return createAdminId;
-        }
-
-        public void setCreateAdminId(int createAdminId) {
-            this.createAdminId = createAdminId;
-        }
-
-        public int getUpdateId() {
-            return updateId;
-        }
-
-        public void setUpdateId(int updateId) {
-            this.updateId = updateId;
-        }
-
-        public long getUpdateTime() {
-            return updateTime;
-        }
-
-        public void setUpdateTime(long updateTime) {
-            this.updateTime = updateTime;
-        }
-
-        public long getCreateTime() {
-            return createTime;
-        }
-
-        public void setCreateTime(long createTime) {
-            this.createTime = createTime;
+        public void setUserInfoVO(UserInfoVOBean userInfoVO) {
+            this.userInfoVO = userInfoVO;
         }
 
         public String getContent() {
@@ -252,36 +137,28 @@ public class NewestShowGroundBean {
             this.content = content;
         }
 
-        public Object getLikeCount() {
-            return likeCount;
+        public long getPublishTime() {
+            return publishTime;
         }
 
-        public void setLikeCount(Object likeCount) {
-            this.likeCount = likeCount;
+        public void setPublishTime(long publishTime) {
+            this.publishTime = publishTime;
         }
 
-        public Object getCollectCount() {
-            return collectCount;
+        public String getPublishTimeStr() {
+            return publishTimeStr;
         }
 
-        public void setCollectCount(Object collectCount) {
-            this.collectCount = collectCount;
+        public void setPublishTimeStr(String publishTimeStr) {
+            this.publishTimeStr = publishTimeStr;
         }
 
-        public Object getHadLike() {
-            return hadLike;
+        public int getShowType() {
+            return showType;
         }
 
-        public void setHadLike(Object hadLike) {
-            this.hadLike = hadLike;
-        }
-
-        public Object getHadCollect() {
-            return hadCollect;
-        }
-
-        public void setHadCollect(Object hadCollect) {
-            this.hadCollect = hadCollect;
+        public void setShowType(int showType) {
+            this.showType = showType;
         }
 
         public Object getProducts() {
@@ -292,76 +169,130 @@ public class NewestShowGroundBean {
             this.products = products;
         }
 
-        public String getUserName() {
-            return userName;
+        public int getLikesCount() {
+            return likesCount;
         }
 
-        public void setUserName(String userName) {
-            this.userName = userName;
+        public void setLikesCount(int likesCount) {
+            this.likesCount = likesCount;
         }
 
-        public String getUserHeadImg() {
-            return userHeadImg;
+        public int getShareCount() {
+            return shareCount;
         }
 
-        public void setUserHeadImg(String userHeadImg) {
-            this.userHeadImg = userHeadImg;
+        public void setShareCount(int shareCount) {
+            this.shareCount = shareCount;
         }
 
-        public float getCoverImgHigh() {
-            return coverImgHigh;
+        public int getDownloadCount() {
+            return downloadCount;
         }
 
-        public void setCoverImgHigh(float coverImgHigh) {
-            this.coverImgHigh = coverImgHigh;
+        public void setDownloadCount(int downloadCount) {
+            this.downloadCount = downloadCount;
         }
 
-        public float getCoverImgWide() {
-            return coverImgWide;
+        public int getClickCount() {
+            return clickCount;
         }
 
-        public void setCoverImgWide(float coverImgWide) {
-            this.coverImgWide = coverImgWide;
+        public void setClickCount(int clickCount) {
+            this.clickCount = clickCount;
         }
 
-        public float getImgWide() {
-            return imgWide;
+        public int getHotCount() {
+            return hotCount;
         }
 
-        public void setImgWide(float imgWide) {
-            this.imgWide = imgWide;
+        public void setHotCount(int hotCount) {
+            this.hotCount = hotCount;
         }
 
-        public float getImgHigh() {
-            return imgHigh;
+        public long getNowTime() {
+            return nowTime;
         }
 
-        public void setImgHigh(float imgHigh) {
-            this.imgHigh = imgHigh;
+        public void setNowTime(long nowTime) {
+            this.nowTime = nowTime;
         }
 
-        public Object getImgs() {
-            return imgs;
+        public boolean isLike() {
+            return like;
         }
 
-        public void setImgs(Object imgs) {
-            this.imgs = imgs;
+        public void setLike(boolean like) {
+            this.like = like;
         }
 
-        public String getTime() {
-            return time;
+        public List<ResourceBean> getResource() {
+            return resource;
         }
 
-        public void setTime(String time) {
-            this.time = time;
+        public void setResource(List<ResourceBean> resource) {
+            this.resource = resource;
         }
 
-        public String getPureContent() {
-            return pureContent;
+        public static class UserInfoVOBean {
+            /**
+             * userNo : 1000004
+             * userImg : https://testcdn.sharegoodsmall.com/sharegoods/da3a1f00cbc64733a0a8522ad7e3dbfe.png
+             * userName : 15755373887
+             */
+
+            private String userNo;
+            private String userImg;
+            private String userName;
+
+            public String getUserNo() {
+                return userNo;
+            }
+
+            public void setUserNo(String userNo) {
+                this.userNo = userNo;
+            }
+
+            public String getUserImg() {
+                return userImg;
+            }
+
+            public void setUserImg(String userImg) {
+                this.userImg = userImg;
+            }
+
+            public String getUserName() {
+                return userName;
+            }
+
+            public void setUserName(String userName) {
+                this.userName = userName;
+            }
         }
 
-        public void setPureContent(String pureContent) {
-            this.pureContent = pureContent;
+        public static class ResourceBean {
+            /**
+             * type : 2
+             * url : https://devcdn.sharegoodsmall.com/sharegoods/ff4647ea22dd4d14aad0adecb177b9f6.png
+             */
+
+            private int type;
+            private String url;
+
+            public int getType() {
+                return type;
+            }
+
+            public void setType(int type) {
+                this.type = type;
+            }
+
+            public String getUrl() {
+                return url;
+            }
+
+            public void setUrl(String url) {
+                this.url = url;
+            }
         }
     }
 }

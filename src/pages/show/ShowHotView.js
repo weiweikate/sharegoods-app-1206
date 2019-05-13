@@ -118,7 +118,7 @@ export default class ShowHotView extends React.Component {
                                        onStartRefresh={() => {
                                            this.loadData();
                                        }}
-                                       params={{ generalize: tag.Recommend + '',spreadPosition:'1'}}
+                                       params={{ spreadPosition: tag.Recommend + '' }}
                                        onStartScroll={() => {
                                            console.log('_onChoiceAction star');
                                            this.timer && clearTimeout(this.timer);

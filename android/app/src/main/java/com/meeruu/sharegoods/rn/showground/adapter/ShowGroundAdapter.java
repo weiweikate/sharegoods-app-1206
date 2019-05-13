@@ -35,7 +35,7 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
     protected void convert(BaseViewHolder helper, NewestShowGroundBean.DataBean item) {
         final SimpleDraweeView userIcon = helper.getView(R.id.showground_item_userIcon);
         String userTag = (String) userIcon.getTag();
-        String userUrl = item.getUserHeadImg();
+        String userUrl = item.getUserInfoVO().getUserImg();
         if (!TextUtils.equals(userUrl, userTag)) {
             ImageLoadUtils.loadCircleNetImage(userUrl, userIcon);
             userIcon.setTag(userUrl);
@@ -43,16 +43,19 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
         final SimpleDraweeView imageView = helper.getView(R.id.showground_item_image);
         float width = 1;
         float height = 1;
-        String imgUrl;
-        if (item.getGeneralize() == New || item.getGeneralize() == Recommend) {
-            width = item.getCoverImgWide();
-            height = item.getCoverImgHigh();
-            imgUrl = item.getCoverImg();
-        } else {
-            width = item.getImgWide();
-            height = item.getImgHigh();
-            imgUrl = item.getImg();
+        String imgUrl = null;
+        if(item.getResource() != null){
+            imgUrl = item.getResource().get(0).getUrl();
         }
+//        if (item.getGeneralize() == New || item.getGeneralize() == Recommend) {
+//            width = item.getCoverImgWide();
+//            height = item.getCoverImgHigh();
+//            imgUrl = item.getCoverImg();
+//        } else {
+//            width = item.getImgWide();
+//            height = item.getImgHigh();
+//            imgUrl = item.getImg();
+//        }
         if (TextUtils.isEmpty(imgUrl)) {
             imgUrl = "res://" + imageView.getContext().getPackageName() + "/" + R.drawable.bg_app_img;
         }
@@ -71,16 +74,16 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
             ImageLoadUtils.loadRoundNetImage(imgUrl, imageView, arr_raduis);
         }
         TextView name = helper.getView(R.id.showground_item_name);
-        name.setText(item.getUserName());
+        name.setText(item.getUserInfoVO().getUserName());
 
         TextView time = helper.getView(R.id.showground_item_time);
-        time.setText(item.getTime());
+        time.setText(item.getPublishTimeStr());
 
         TextView title = helper.getView(R.id.showground_item_title);
-        title.setText(item.getPureContent());
+        title.setText(item.getContent());
 
         TextView showTimes = helper.getView(R.id.showground_item_show_times);
-        int times = item.getClick();
+        int times = item.getClickCount();
         String seeTimes = "";
         if (times > 999999) {
             seeTimes = 999999 + "+";

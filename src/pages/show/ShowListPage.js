@@ -1,8 +1,17 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Image, BackHandler, InteractionManager ,DeviceEventEmitter} from 'react-native';
+import {
+    View,
+    StyleSheet,
+    TouchableOpacity,
+    Image,
+    BackHandler,
+    InteractionManager,
+    DeviceEventEmitter
+} from 'react-native';
 import BasePage from '../../BasePage';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 import ScreenUtils from '../../utils/ScreenUtils';
+
 const { px2dp } = ScreenUtils;
 import backIconImg from '../../comm/res/button/icon_header_back.png';
 import DesignRule from '../../constants/DesignRule';
@@ -21,6 +30,8 @@ import user from '../../model/user';
 import res from '../mine/res';
 import EmptyUtils from '../../utils/EmptyUtils';
 import MessageApi from '../message/api/MessageApi';
+import { tag } from './Show';
+
 const {
     mine_user_icon,
     mine_message_icon_gray
@@ -40,8 +51,8 @@ export default class ShowListPage extends BasePage {
         left: false,
         pageFocused: false,
         needsExpensive: false,
-        showEditorIcon:true,
-        hasMessage:false
+        showEditorIcon: true,
+        hasMessage: false
     };
 
     handleBackPress = () => {
@@ -53,12 +64,12 @@ export default class ShowListPage extends BasePage {
         }
     };
 
-    constructor(props){
+    constructor(props) {
         super(props);
         this.lastStopScrollTime = -1;
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.setState({ left: this.params.fromHome });
         this.didBlurSubscription = this.props.navigation.addListener(
             'willBlur',
@@ -90,8 +101,8 @@ export default class ShowListPage extends BasePage {
         this.setState({ needsExpensive: true });
 
         this.listener = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
-        this.publishListener = DeviceEventEmitter.addListener('PublishShowFinish', ()=>{
-            this._gotoPage(2)
+        this.publishListener = DeviceEventEmitter.addListener('PublishShowFinish', () => {
+            this._gotoPage(2);
         });
     }
 
@@ -101,7 +112,6 @@ export default class ShowListPage extends BasePage {
         this.listener && this.listener.remove();
         this.publishListener && this.publishListener.remove();
     }
-
 
 
     _gotoPage(number) {
@@ -147,7 +157,7 @@ export default class ShowListPage extends BasePage {
                     });
                 });
             });
-        }else {
+        } else {
             this.setState({
                 hasMessage: false
             });
@@ -185,7 +195,7 @@ export default class ShowListPage extends BasePage {
                 }}/> : null}
 
             </View>
-        )
+        );
         return <View style={styles.container}>
             <View style={styles.header}>
                 {
@@ -200,21 +210,23 @@ export default class ShowListPage extends BasePage {
                 <View style={[{ marginLeft: left ? px2dp(10) : px2dp(15) }]}>
                     {icon}
                 </View>
-                <View style={{flex:1}}/>
+                <View style={{ flex: 1 }}/>
                 <View style={styles.titleView}>
                     <TouchableOpacity style={styles.items} onPress={() => this._gotoPage(0)}>
                         <Text style={[page === 0 ? styles.activityIndex : styles.index]}
                               allowFontScaling={false}>推荐</Text>
                         {page === 0 ? <View style={styles.line}/> : null}
                     </TouchableOpacity>
-                    <View style={{ width: px2dp(20)}}/>
-                    <TouchableOpacity style={[{marginRight:px2dp(20)},styles.items]}onPress={() => this._gotoPage(1)}>
+                    <View style={{ width: px2dp(20) }}/>
+                    <TouchableOpacity style={[{ marginRight: px2dp(20) }, styles.items]}
+                                      onPress={() => this._gotoPage(1)}>
                         <Text style={page === 1 ? styles.activityIndex : styles.index}
                               allowFontScaling={false}>素材圈</Text>
                         {page === 1 ? <View style={styles.line}/> : null}
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={[styles.items,{marginRight:px2dp(20)}]} onPress={() => this._gotoPage(2)}>
+                    <TouchableOpacity style={[styles.items, { marginRight: px2dp(20) }]}
+                                      onPress={() => this._gotoPage(2)}>
                         <Text style={page === 2 ? styles.activityIndex : styles.index}
                               allowFontScaling={false}>发现</Text>
                         {page === 2 ? <View style={styles.line}/> : null}
@@ -226,8 +238,8 @@ export default class ShowListPage extends BasePage {
                         {page === 3 ? <View style={styles.line}/> : null}
                     </TouchableOpacity>
                 </View>
-                <View style={{flex:1}}/>
-                <View style={{marginRight:px2dp(15)}}>
+                <View style={{ flex: 1 }}/>
+                <View style={{ marginRight: px2dp(15) }}>
                     {message}
                 </View>
             </View>
@@ -258,8 +270,9 @@ export default class ShowListPage extends BasePage {
                                 ref={(ref) => {
                                     this.rightShowList = ref;
                                 }}
-                                style={{ flex: 1,margin:px2dp(10) }}
+                                style={{ flex: 1, margin: px2dp(10) }}
                                 uri={'/discover/query@GET'}
+                                params={{ spreadPosition: tag.Recommend + '' }}
                                 onNineClick={({ nativeEvent }) => {
                                     that.$navigate('show/ShowDetailImagePage', {
                                         imageUrls: nativeEvent.imageUrls,
@@ -289,6 +302,7 @@ export default class ShowListPage extends BasePage {
                                 }}
                                 style={{ flex: 1 }}
                                 uri={'/discover/query@GET'}
+                                params={{ spreadPosition: tag.Found+'' }}
                                 onNineClick={({ nativeEvent }) => {
                                     that.$navigate('show/ShowDetailImagePage', {
                                         imageUrls: nativeEvent.imageUrls,
@@ -318,7 +332,7 @@ export default class ShowListPage extends BasePage {
                                 ref={(ref) => {
                                     this.rightShowList = ref;
                                 }}
-                                style={{ flex: 1 ,marginHorizontal:px2dp(15),marginTop:px2dp(15)}}
+                                style={{ flex: 1, marginHorizontal: px2dp(15), marginTop: px2dp(15) }}
                                 uri={'/discover/query@GET'}
                                 onNineClick={({ nativeEvent }) => {
                                     that.$navigate('show/ShowDetailImagePage', {
@@ -346,7 +360,7 @@ export default class ShowListPage extends BasePage {
 
 let styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flex: 1
     },
     underline: {
         height: 0
@@ -380,21 +394,21 @@ let styles = StyleSheet.create({
     titleView: {
         flexDirection: 'row',
         alignItems: 'center',
-        alignSelf:'center',
+        alignSelf: 'center'
     },
     items: {
         alignItems: 'center',
-        justifyContent: 'flex-end',
+        justifyContent: 'flex-end'
     },
     index: {
         color: DesignRule.textColor_secondTitle,
         fontSize: px2dp(13),
-        fontWeight: '600',
+        fontWeight: '600'
     },
     activityIndex: {
         color: DesignRule.mainColor,
         fontSize: px2dp(15),
-        fontWeight: '600',
+        fontWeight: '600'
     },
     line: {
         backgroundColor: DesignRule.mainColor,
@@ -405,6 +419,6 @@ let styles = StyleSheet.create({
     userIcon: {
         width: px2dp(30),
         height: px2dp(30),
-        borderRadius: px2dp(15),
+        borderRadius: px2dp(15)
     }
 });
