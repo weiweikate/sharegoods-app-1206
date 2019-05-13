@@ -112,8 +112,16 @@
   NSMutableAttributedString * attriString =[[NSMutableAttributedString  alloc]initWithString:@"一键登录"];
   [ attriString  addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#4d4d4d"] range:NSMakeRange(0, 4)];
   mobileUIConfig.navText = attriString;
-//  https://h5.sharegoodsmall.com/static/protocol/service.html
+  //  https://h5.sharegoodsmall.com/static/protocol/service.html
   mobileUIConfig.appPrivacyOne = @[@"用户协议",@"https://h5.sharegoodsmall.com/static/protocol/service.html"];
+  mobileUIConfig.logoImg = [UIImage imageNamed:@"logo"];
+  mobileUIConfig.navReturnImg = [UIImage imageNamed:@"back"];
+  mobileUIConfig.logBtnImgs = @[[UIImage imageNamed:@"umcsdk_login_btn_normal"],
+                                [UIImage imageNamed:@"umcsdk_login_btn_unable"],
+                                [UIImage imageNamed:@"umcsdk_login_btn_press"],];
+   mobileUIConfig.appPrivacyColor = @[[UIColor colorWithHexString:@"#3d3d3d"], [UIColor colorWithHexString:@"#F00050"]];
+  mobileUIConfig.checkedImg = [UIImage imageNamed:@"umcsdk_check_image"];
+  mobileUIConfig.uncheckedImg = [UIImage imageNamed:@"umcsdk_uncheck_image"];
   /*
    mobileUIConfig.authPageBackgroundImage = [UIImage imageNamed:@"背景图"];
    mobileUIConfig.navColor = [UIColor redColor];
