@@ -4,10 +4,10 @@ import DesignRule from '../../../constants/DesignRule';
 import { MRText } from '../../../components/ui';
 import res from '../res/product';
 import { observer } from 'mobx-react';
-import * as math from 'mathjs';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import { navigate } from '../../../navigation/RouterMap';
+import StringUtils from '../../../utils/StringUtils';
 
 const { arrow_right_black } = res.button;
 
@@ -18,7 +18,7 @@ const { arrow_right_black } = res.button;
 export class ActivityWillBeginView extends Component {
     render() {
         const { productDetailModel } = this.props;
-        const { promotionPrice, showTimeText, singleActivity, prodCode } = productDetailModel;
+        const { promotionPrice, promotionAttentionNum, showTimeText, singleActivity, prodCode } = productDetailModel;
         const { extraProperty } = singleActivity;
         return (
             <NoMoreClick style={WillBeginStyles.bgView} onPress={() => {
@@ -32,6 +32,7 @@ export class ActivityWillBeginView extends Component {
                     <View style={WillBeginStyles.leftExplainView}>
                         <MRText style={WillBeginStyles.leftExplainText}>秒杀价</MRText>
                     </View>
+                    <MRText style={WillBeginStyles.numberText}>{`${promotionAttentionNum || 0}人已关注`}</MRText>
                 </View>
                 <View style={WillBeginStyles.rightView}>
                     <MRText style={WillBeginStyles.rightText}>{showTimeText}</MRText>
@@ -60,6 +61,10 @@ const WillBeginStyles = StyleSheet.create({
     leftExplainText: {
         fontSize: 11, color: DesignRule.white
     },
+    numberText: {
+        marginLeft: 10,
+        fontSize: 12, color: DesignRule.textColor_secondTitle
+    },
     rightView: {
         flexDirection: 'row', alignItems: 'center', marginRight: 15
     },
@@ -76,10 +81,9 @@ const WillBeginStyles = StyleSheet.create({
 export class ActivityDidBeginView extends Component {
     render() {
         const { productDetailModel } = this.props;
-        const { promotionPrice, originalPrice, promotionSaleNum, promotionStockNum, showTimeText, prodCode, singleActivity } = productDetailModel;
-        let total = math.eval(promotionSaleNum + promotionStockNum);
-        let progress = total == 0 ? 0 : math.eval(promotionStockNum / total);
+        const { promotionPrice, originalPrice, promotionSaleNum, promotionSaleRate, showTimeText, prodCode, singleActivity } = productDetailModel;
         const { extraProperty } = singleActivity;
+        const promotionSaleRateS = promotionSaleRate || 0;
         return (
             <NoMoreClick style={DidBeginViewStyles.bgView} onPress={() => {
                 extraProperty === 'toSpike' && navigate('HtmlPage', {
@@ -105,11 +109,11 @@ export class ActivityDidBeginView extends Component {
                     <View style={{ marginLeft: 13, marginRight: 8 }}>
                         <MRText style={DidBeginViewStyles.timeText}>{showTimeText}</MRText>
                         <View style={DidBeginViewStyles.leaveView}>
-                            <View style={[DidBeginViewStyles.progressView, { width: (1 - progress) * 90 }]}/>
+                            <View style={[DidBeginViewStyles.progressView, { width: promotionSaleRateS * 90 }]}/>
                             <View style={DidBeginViewStyles.leaveAmountView}>
                                 <View style={DidBeginViewStyles.textView}>
                                     <MRText
-                                        style={DidBeginViewStyles.leaveAmountText}>{progress == 0 ? '已抢完' : `还剩${promotionStockNum}件`}</MRText>
+                                        style={DidBeginViewStyles.leaveAmountText}>{promotionSaleRateS == 1 ? '已抢完' : `还剩${StringUtils.sub(1, promotionSaleRateS) * 100}%`}</MRText>
                                 </View>
                             </View>
                         </View>
