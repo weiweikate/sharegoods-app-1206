@@ -112,7 +112,8 @@
   NSMutableAttributedString * attriString =[[NSMutableAttributedString  alloc]initWithString:@"一键登录"];
   [ attriString  addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#4d4d4d"] range:NSMakeRange(0, 4)];
   mobileUIConfig.navText = attriString;
-  mobileUIConfig.appPrivacyOne = @[@"应用自定义服务条款1",@"https://www.jiguang.cn/about"];
+//  https://h5.sharegoodsmall.com/static/protocol/service.html
+  mobileUIConfig.appPrivacyOne = @[@"用户协议",@"https://h5.sharegoodsmall.com/static/protocol/service.html"];
   /*
    mobileUIConfig.authPageBackgroundImage = [UIImage imageNamed:@"背景图"];
    mobileUIConfig.navColor = [UIColor redColor];
