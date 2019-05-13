@@ -3,10 +3,12 @@ package com.meeruu.sharegoods.rn.showground;
 import android.content.Context;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,25 +22,41 @@ import com.facebook.react.uimanager.events.EventDispatcher;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.adapter.ProductsAdapter;
 import com.meeruu.sharegoods.rn.showground.adapter.ShowRecommendAdapter;
+import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
 import com.meeruu.sharegoods.rn.showground.bean.ShowRecommendBean;
 import com.meeruu.sharegoods.rn.showground.event.addCartEvent;
 import com.meeruu.sharegoods.rn.showground.event.onEndScrollEvent;
 import com.meeruu.sharegoods.rn.showground.event.onNineClickEvent;
 import com.meeruu.sharegoods.rn.showground.event.onScrollStateChangedEvent;
+import com.meeruu.sharegoods.rn.showground.event.onStartRefreshEvent;
 import com.meeruu.sharegoods.rn.showground.event.onStartScrollEvent;
+import com.meeruu.sharegoods.rn.showground.presenter.ShowgroundPresenter;
+import com.meeruu.sharegoods.rn.showground.view.IShowgroundView;
 import com.meeruu.sharegoods.rn.showground.widgets.CustomLoadMoreView;
 import com.meeruu.sharegoods.rn.showground.widgets.GridView.NineGridView;
 import com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-public class ShowRecommendView{
+public class ShowRecommendView  implements IShowgroundView, SwipeRefreshLayout.OnRefreshListener{
     private RnRecyclerView recyclerView;
     private ShowRecommendAdapter adapter;
     private EventDispatcher eventDispatcher;
     private onStartScrollEvent startScrollEvent;
     private onEndScrollEvent endScrollEvent;
+    private ShowgroundPresenter presenter;
+    private WeakReference<View> showgroundView;
+    private onStartRefreshEvent startRefreshEvent;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private Handler handler;
+    private View errView;
+    private View errImg;
+
+    private int page = 1;
+
     public ViewGroup getShowRecommendView(ReactContext reactContext) {
         eventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
 
@@ -51,6 +69,28 @@ public class ShowRecommendView{
     }
 
     public void initView(Context context, final View view) {
+        handler = new Handler();
+        errView = view.findViewById(R.id.err_view);
+        errImg = view.findViewById(R.id.errImg);
+        errImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                swipeRefreshLayout.setVisibility(View.VISIBLE);
+                errView.setVisibility(View.INVISIBLE);
+                swipeRefreshLayout.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefreshLayout.setRefreshing(true);
+                        onRefresh();
+                    }
+                }, 200);
+            }
+        });
+
+        errView.setVisibility(View.INVISIBLE);
+        showgroundView = new WeakReference<>(view);
+        startRefreshEvent = new onStartRefreshEvent();
+        swipeRefreshLayout = view.findViewById(R.id.refresh_control);
         final onNineClickEvent onNineClickEvent = new onNineClickEvent();
         final addCartEvent addCartEvent = new addCartEvent();
         final onScrollStateChangedEvent onScrollStateChangedEvent = new onScrollStateChangedEvent();
@@ -121,21 +161,106 @@ public class ShowRecommendView{
 
     private void initData() {
         ShowRecommendBean bean = new ShowRecommendBean();
-        List list = new ArrayList();
-        list.add(bean);
-        List<String> urls = new ArrayList<>();
-        urls.add("https://k.zol-img.com.cn/sjbbs/7692/a7691501_s.jpg");
-        urls.add("https://k.zol-img.com.cn/sjbbs/7692/a7691501_s.jpg");
-        urls.add("https://k.zol-img.com.cn/sjbbs/7692/a7691501_s.jpg");
-        urls.add("https://k.zol-img.com.cn/sjbbs/7692/a7691501_s.jpg");
-        urls.add("https://k.zol-img.com.cn/sjbbs/7692/a7691501_s.jpg");
-        urls.add("https://k.zol-img.com.cn/sjbbs/7692/a7691501_s.jpg");
-        urls.add("https://k.zol-img.com.cn/sjbbs/7692/a7691501_s.jpg");
-        bean.setImageUrls(urls);
-        list.add(bean);
-        list.add(bean);
-        list.add(bean);
-        adapter.setNewData(list);
+//        List list = new ArrayList();
+//        list.add(bean);
+//        List<String> urls = new ArrayList<>();
+//        urls.add("https://k.zol-img.com.cn/sjbbs/7692/a7691501_s.jpg");
+//        urls.add("https://k.zol-img.com.cn/sjbbs/7692/a7691501_s.jpg");
+//        urls.add("https://k.zol-img.com.cn/sjbbs/7692/a7691501_s.jpg");
+//        urls.add("https://k.zol-img.com.cn/sjbbs/7692/a7691501_s.jpg");
+//        urls.add("https://k.zol-img.com.cn/sjbbs/7692/a7691501_s.jpg");
+//        urls.add("https://k.zol-img.com.cn/sjbbs/7692/a7691501_s.jpg");
+//        urls.add("https://k.zol-img.com.cn/sjbbs/7692/a7691501_s.jpg");
+//        bean.setImageUrls(urls);
+//        list.add(bean);
+//        list.add(bean);
+//        list.add(bean);
+//        adapter.setNewData(list);
+        presenter = new ShowgroundPresenter(this);
+    }
+
+
+    @Override
+    public void onRefresh() {
+        if (eventDispatcher != null) {
+            View view = showgroundView.get();
+            if (view != null) {
+                startRefreshEvent.init(view.getId());
+                eventDispatcher.dispatchEvent(startRefreshEvent);
+            }
+        }
+        adapter.setEnableLoadMore(false);
+        page = 1;
+        presenter.getShowList(page);
+    }
+
+    @Override
+    public void loadMoreFail(final String code) {
+        swipeRefreshLayout.setRefreshing(false);
+        if (adapter != null) {
+            adapter.loadMoreFail();
+        }
+
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (TextUtils.equals(code, "9999") && page == 1) {
+                    errView.setVisibility(View.VISIBLE);
+                    swipeRefreshLayout.setVisibility(View.INVISIBLE);
+                } else {
+                    errView.setVisibility(View.INVISIBLE);
+                    swipeRefreshLayout.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void viewLoadMore(final List data) {
+        showList();
+        if (data != null) {
+            adapter.addData(data);
+        }
+    }
+
+    @Override
+    public void refreshShowground(final List data) {
+        if (adapter != null) {
+            adapter.setEnableLoadMore(true);
+            adapter.setNewData(data);
+            swipeRefreshLayout.setRefreshing(false);
+        }
+    }
+
+    @Override
+    public void loadMoreEnd() {
+        showList();
+        if (adapter != null) {
+            adapter.loadMoreEnd();
+        }
+    }
+
+    @Override
+    public void repelaceData(final int index, final int clickNum) {
+//        if (adapter != null) {
+//            final List<NewestShowGroundBean.DataBean> data = adapter.getData();
+//
+//            recyclerView.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    NewestShowGroundBean.DataBean bean = data.get(index);
+//                    bean.setClick(clickNum);
+//                    adapter.replaceData(data);
+//
+//                }
+//            }, 200);
+//        }
+    }
+
+    @Override
+    public void loadMoreComplete() {
+        showList();
+        adapter.loadMoreComplete();
     }
 
     public void addHeader(View view) {
@@ -147,4 +272,19 @@ public class ShowRecommendView{
         recyclerView.scrollToPosition(0);
     }
 
+    public void setParams(HashMap map) {
+        if (presenter != null) {
+            presenter.setParams(map);
+        }
+    }
+
+    private void showList() {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                errView.setVisibility(View.INVISIBLE);
+                swipeRefreshLayout.setVisibility(View.VISIBLE);
+            }
+        });
+    }
 }

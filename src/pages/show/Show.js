@@ -8,19 +8,19 @@ import {height} from './ShowBannerView';
 
 const { px2dp } = ScreenUtil;
 
-//推广 1：精选 2：热门 3：推荐 4：最新 全部则不传
+//1:推荐，2:素材圈，3:发现，4:活动
 export const tag = {
-    'Featured': 1,
-    'Hot': 2,
-    'Recommend': 3,
-    'New': 4
+    'Recommend': 1,
+    'Material': 2,
+    'Found': 3,
+    'Activity': 4
 };
 
 export const tagName = {
-    [tag.Featured]: '精选',
-    [tag.Hot]: '热门',
     [tag.Recommend]: '推荐',
-    [tag.New]: '最新'
+    [tag.Material]: '素材圈',
+    [tag.Found]: '发现',
+    [tag.Activity]: '活动'
 };
 
 

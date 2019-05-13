@@ -19,6 +19,8 @@ const api = {
     getShowBanner: ['/advertising/queryAdvertisingList', { method: 'post' }],
     //购物车列表
     carList: ["/user/shoppingcart/list",{ method: 'get', checkLogin: true}],
+    //添加文章
+    publishShow: ['/social/show/content/save',{method:'post',checkLogin:true}]
 };
 import ApiUtils from '../../api/network/ApiUtils';
 

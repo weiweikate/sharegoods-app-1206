@@ -23,6 +23,8 @@ import ImageLoad from '@mr/image-placeholder';
 import NoMoreClick from '../../components/ui/NoMoreClick';
 import UIImage from '../../components/ui/UIImage';
 import Emoticons, * as emoticons from '../../comm/components/emoticons';
+import EmptyUtils from '../../utils/EmptyUtils';
+import ShowApi from './ShowApi';
 
 const { addIcon, delIcon, iconShowDown, iconShowEmoji, addShowIcon } = res;
 
@@ -85,14 +87,28 @@ export default class ReleaseNotesPage extends BasePage {
     };
 
     _publish=()=>{
-        // if(EmptyUtils.isEmptyArr(this.state.imageArr)){
-        //     this.$toastShow('至少需要上传一张图片哦');
-        //     return;
-        // }
-
-        this.props.navigation.popToTop();
-        this.props.navigation.navigate('ShowListPage');
-        DeviceEventEmitter.emit('PublishShowFinish');
+        if(EmptyUtils.isEmptyArr(this.state.imageArr)){
+            this.$toastShow('至少需要上传一张图片哦');
+            return;
+        }
+        let content = this.state.text || '';
+        let products = this.state.products || [];
+        let images = this.state.imageArr;
+        let urls = images.map((value)=>{
+            return `${value.url}?width=${value.width}&height=${value.height}`;
+        })
+        let params = {
+            content,
+            images:urls,
+            products
+        }
+        ShowApi.publishShow(params).then((data)=>{
+            this.props.navigation.popToTop();
+            this.props.navigation.navigate('ShowListPage');
+            DeviceEventEmitter.emit('PublishShowFinish');
+        }).catch((error)=>{
+            this.$toastShow(error.msg || '网络错误');
+        })
     }
 
     choosePicker = () => {
@@ -102,7 +118,8 @@ export default class ReleaseNotesPage extends BasePage {
         }
         let num = 9 - imageArr.length;
         BusinessUtils.getImagePicker(callback => {
-            let result = imageArr.concat(callback.imageUrl);
+            // alert(JSON.stringify(callback))
+            let result = imageArr.concat(callback.images);
             this.setState({ imageArr: result });
         }, num, true);
     };
@@ -122,7 +139,7 @@ export default class ReleaseNotesPage extends BasePage {
             let left = index === 0 ? 0 : px2dp(15);
             return (
                 <View style={{ marginLeft: left }} key={index}>
-                    <ImageLoad style={styles.photo_item} source={{ uri: value }}/>
+                    <ImageLoad style={styles.photo_item} source={{ uri: value.url }}/>
                     <NoMoreClick style={styles.delete_btn} onPress={() => {
                         this.deletePic(index);
                     }}>

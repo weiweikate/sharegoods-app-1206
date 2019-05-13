@@ -4,12 +4,10 @@ import {
     Image,
     TouchableOpacity,
     View,
-    ActivityIndicator,
     StyleSheet,
     NativeModules,
     Alert
 } from 'react-native';
-import ShowImageView from './ShowImageView';
 import res from './res';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
@@ -21,7 +19,6 @@ import { observer } from 'mobx-react';
 import CommShareModal from '../../comm/components/CommShareModal';
 import user from '../../model/user';
 import apiEnvironment from '../../api/ApiEnvironment';
-import ImageLoad from '@mr/image-placeholder';
 import BasePage from '../../BasePage';
 import { PageLoadingState } from '../../components/pageDecorator/PageState';
 import {
@@ -34,16 +31,7 @@ import { TrackApi } from '../../utils/SensorsTrack';
 import {SmoothPushPreLoadHighComponent} from '../../comm/components/SmoothPushHighComponent'
 import ProductRowListView from './components/ProductRowListView';
 
-const Goods = ({ data, press }) => <TouchableOpacity style={styles.goodsItem} onPress={() => {
-    press && press();
-}}>
-    <ImageLoad style={styles.goodImg} source={{ uri: data.headImg ? data.headImg : '' }}/>
-    <View style={styles.goodDetail}>
-        <Text style={styles.name} allowFontScaling={false}>{data.name}</Text>
-        <View style={{ height: px2dp(4) }}/>
-        <Text style={styles.price} allowFontScaling={false}>￥ {data.price}起</Text>
-    </View>
-</TouchableOpacity>;
+
 @SmoothPushPreLoadHighComponent
 @observer
 export default class ShowRichTextDetailPage extends BasePage {
@@ -310,11 +298,10 @@ export default class ShowRichTextDetailPage extends BasePage {
             </View>
         }
 
-        let { detail, isCollecting } = this.showDetailModule;
+        let { detail } = this.showDetailModule;
         if (!detail) {
             detail = {imgs: '', products: [], click: 0, content: ''}
         }
-        let products = detail.products;
         let number = detail.click;
         if (!number) {
             number = 0;

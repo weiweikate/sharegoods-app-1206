@@ -66,6 +66,10 @@
             "wxAppletKey": "gh_aa91c3ea0f6c",
             "gongmao": "https://api.sharegoodsmall.com/gateway/gongmall/contract/reback"
         },
+        "wangyahui":{
+            "name": "王亚辉",
+            "host": "http://172.18.6.70:1080/gateway"
+        },
         "zhaoqiang": {
             "name": "赵强",
             "host": "http://172.18.6.243:9000/gateway"
