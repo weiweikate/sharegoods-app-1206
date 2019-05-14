@@ -7,11 +7,12 @@
  */
 import React from "react";
 import {
-    StyleSheet,
     View,
     Image,
     Linking,
-    ScrollView
+    ScrollView,
+    StyleSheet,
+    TouchableWithoutFeedback
 } from "react-native";
 import BasePage from "../../../../BasePage";
 import UIText from "../../../../components/ui/UIText";
@@ -23,6 +24,7 @@ import MineApi from "../../api/MineApi";
 import DesignRule from "../../../../constants/DesignRule";
 import res from "../../res";
 import { MRText as Text, NoMoreClick } from "../../../../components/ui";
+import LinearGradient from 'react-native-linear-gradient';
 
 const {
     // top_kefu,
@@ -40,6 +42,8 @@ import ImageLoad from "@mr/image-placeholder";
 import { beginChatType, QYChatTool } from "../../../../utils/QYModule/QYChatTool";
 import StringUtils from "../../../../utils/StringUtils";
 import { SmoothPushPreLoadHighComponentFirstDelay } from '../../../../comm/components/SmoothPushHighComponent';
+import CommModal from '../../../../comm/components/CommModal';
+import TimerMixin from 'react-timer-mixin';
 
 
 @SmoothPushPreLoadHighComponentFirstDelay
@@ -48,7 +52,8 @@ export default class MyHelperPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            typeList: []
+            typeList: [],
+            visible: false
         };
     }
 
@@ -141,53 +146,63 @@ export default class MyHelperPage extends BasePage {
                     </View>
                     <View style={{ height: 177, backgroundColor: DesignRule.bgColor }}/>
                 </ScrollView>
-                <View style={{
-                    flexDirection: "row", backgroundColor: "#fff", width: ScreenUtils.width,
-                    height: 80, position: "absolute", bottom: 0, alignItems: "center", zIndex: 21
-                }}>
-
-                    <NoMoreClick style={{
-                        width: 58,
-                        height: 54,
-                        alignItems: "center",
+                <View style={{alignItems: 'center'}}>
+                    <View style={{
                         flexDirection: "row",
-                        flex: 1,
-                        justifyContent: "center"
-                    }}
-                                 onPress={() => this.jumpQYIMPage()}>
-                        <Image source={icon_kefu} style={{ height: 23, width: 23 }} resizeMode={"contain"}/>
-                        <View style={{ marginLeft: 9, justifyContent: "center" }}>
-                            <Text style={{
-                                fontFamily: "PingFangSC-Regular",
-                                fontSize: 16,
-                                color: DesignRule.textColor_mainTitle_222
-                            }} allowFontScaling={false}>在线客服</Text>
-                            <Text style={styles.text2Style} allowFontScaling={false}>9:00-22:00</Text>
-                        </View>
-                    </NoMoreClick>
+                        width: ScreenUtils.width,
+                        justifyContent: 'space-between',
+                        paddingHorizontal: 15,
+                        zIndex: 21
+                    }}>
 
-                    <View style={{ width: 1, height: "50%", backgroundColor: DesignRule.lineColor_inColorBg }}/>
-
-                    <NoMoreClick
-                        style={{
-                            width: 58,
-                            height: 54,
-                            alignItems: "center",
-                            flexDirection: "row",
-                            justifyContent: "center",
-                            flex: 1
+                        <NoMoreClick style={{
+                            width: ScreenUtils.autoSizeWidth(165),
+                            height:  ScreenUtils.autoSizeWidth(40),
+                            borderRadius:  ScreenUtils.autoSizeWidth(20),
+                            overflow: 'hidden'
                         }}
-                        onPress={() => this.jump2Telephone()}>
-                        <Image source={icon_phone} style={{ height: 23, width: 24 }} resizeMode={"contain"}/>
-                        <View style={{ marginLeft: 9, justifyContent: "center" }}>
+                                     onPress={() => this.jumpQYIMPage()}>
+                            <LinearGradient start={{ x: 1, y: 0 }} end={{ 1: 0, y: 0 }}
+                                            colors={['#FC5D39', '#FF0050']}
+                                            style={{ alignItems: "center",
+                                                flexDirection: "row",
+                                                justifyContent: "center",
+                                                flex: 1}}
+                            >
+                                <Image source={icon_kefu} style={{ height: 23, width: 23 }} resizeMode={"contain"}/>
+
+                                <Text style={{
+                                    fontFamily: "PingFangSC-Regular",
+                                    fontSize: 13,
+                                    color: 'white',
+                                    marginLeft: 4
+                                }} allowFontScaling={false}>在线客服</Text>
+                            </LinearGradient>
+                        </NoMoreClick>
+                        <NoMoreClick
+                            style={{
+                                width: ScreenUtils.autoSizeWidth(165),
+                                height:  ScreenUtils.autoSizeWidth(40),
+                                alignItems: "center",
+                                flexDirection: "row",
+                                justifyContent: "center",
+                                borderRadius:  ScreenUtils.autoSizeWidth(20),
+                                overflow: 'hidden',
+                                borderColor: DesignRule.mainColor,
+                                borderWidth: 1
+
+                            }}
+                            onPress={() => this.showAlert()}>
+                            <Image source={icon_phone} style={{ height: 23, width: 24 }} resizeMode={"contain"}/>
                             <Text style={{
                                 fontFamily: "PingFangSC-Regular",
-                                fontSize: 16,
-                                color: DesignRule.textColor_mainTitle_222
+                                fontSize: 13,
+                                color: DesignRule.mainColor,
+                                marginLeft: 4
                             }} allowFontScaling={false}>客服电话</Text>
-                            <Text style={styles.text2Style} allowFontScaling={false}>400-9696-365</Text>
-                        </View>
-                    </NoMoreClick>
+                        </NoMoreClick>
+                    </View>
+                    <Text style={{fontSize: 10, color: DesignRule.textColor_secondTitle, marginTop: 5}}>服务时间：9：00-22：00</Text>
                 </View>
             </View>
         );
@@ -203,7 +218,6 @@ export default class MyHelperPage extends BasePage {
             chatType: beginChatType.BEGIN_FROM_OTHER,
             data: {}
         };
-
         QYChatTool.beginQYChat(params);
     };
 
@@ -211,6 +225,11 @@ export default class MyHelperPage extends BasePage {
         track(trackEvent.ClickPhoneCustomerService
             , { customerServiceModuleSource: 1 });
         Linking.openURL("tel:" + "400-9696-365").catch(e => console.log(e));
+        this.setState({visible: false});
+    }
+
+    showAlert() {
+        this.setState({visible: true});
     }
 
     orderListq(list) {
@@ -265,8 +284,102 @@ export default class MyHelperPage extends BasePage {
         return (
             <View style={styles.container}>
                 {this.renderBodyView()}
+                {this.renderAlert()}
             </View>
         );
+    }
+
+    renderAlert() {
+        return (
+            <CommModal
+                visible={this.state.visible}
+            >
+                <TouchableWithoutFeedback onPress={()=> {this.setState({visible: false})}}>
+                <View style={[DesignRule.style_absoluteFullParent,{justifyContent: 'flex-end'}]}>
+                    <View style={{marginBottom: ScreenUtils.safeBottom + 10,
+                        marginHorizontal: 15,
+                        backgroundColor: 'white',
+                        height: ScreenUtils.autoSizeWidth(154),
+                        borderRadius: 5,
+                        overflow: 'hidden',
+                    }}>
+                        <Text style={{fontSize: 16,
+                            fontWeight: '600',
+                            marginTop: 30,
+                            textAlign: 'center'
+                        }}>
+                            {'当前坐席繁忙, 可能需要等待较长时间\n推荐您选择在线客服为您服务'}
+                        </Text>
+                        <View style={{flex: 1,
+                            alignItems: 'flex-end',
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            paddingHorizontal: 15,
+                            paddingBottom: 10
+                        }}>
+                            <NoMoreClick
+                                style={{
+                                    width: ScreenUtils.autoSizeWidth(140),
+                                    height:  ScreenUtils.autoSizeWidth(40),
+                                    alignItems: "center",
+                                    flexDirection: "row",
+                                    justifyContent: "center",
+                                    borderRadius:  ScreenUtils.autoSizeWidth(20),
+                                    overflow: 'hidden',
+                                    borderColor: DesignRule.mainColor,
+                                    borderWidth: 1
+
+                                }}
+                                onPress={() => {
+                                    this.setState({ visible: false })
+                                    TimerMixin.setTimeout(() => {
+                                        this.jump2Telephone()
+                                    }, 300);
+                                }
+                                }>
+                                <Text style={{
+                                    fontFamily: "PingFangSC-Regular",
+                                    fontSize: 14,
+                                    color: DesignRule.mainColor,
+                                    marginLeft: 4
+                                }} allowFontScaling={false}>继续拨打热线</Text>
+                            </NoMoreClick>
+                            <NoMoreClick style={{
+                                width: ScreenUtils.autoSizeWidth(140),
+                                height:  ScreenUtils.autoSizeWidth(40),
+                                borderRadius:  ScreenUtils.autoSizeWidth(20),
+                                overflow: 'hidden'
+                            }}
+                                         onPress={() => {
+
+                                             this.setState({ visible: false })
+                                             TimerMixin.setTimeout(() => {
+                                                 this.jumpQYIMPage()
+                                             }, 300);
+                                         }
+                                         }>
+                                <LinearGradient start={{ x: 1, y: 0 }} end={{ 1: 0, y: 0 }}
+                                                colors={[ '#FC5D39','#FF0050']}
+                                                style={{ alignItems: "center",
+                                                    flexDirection: "row",
+                                                    justifyContent: "center",
+                                                    flex: 1}}
+                                >
+
+                                    <Text style={{
+                                        fontFamily: "PingFangSC-Regular",
+                                        fontSize: 14,
+                                        color: 'white',
+                                        marginLeft: 4
+                                    }} allowFontScaling={false}>在线客服(推荐)</Text>
+                                </LinearGradient>
+                            </NoMoreClick>
+                        </View>
+                    </View>
+                </View>
+                </TouchableWithoutFeedback>
+            </CommModal>
+        )
     }
 
 
