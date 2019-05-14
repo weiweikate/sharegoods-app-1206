@@ -77,13 +77,17 @@ const WillBeginStyles = StyleSheet.create({
 /*
 * 秒杀开始
 * */
+const progressWidth = 90;
+
 @observer
 export class ActivityDidBeginView extends Component {
     render() {
         const { productDetailModel } = this.props;
-        const { promotionPrice, originalPrice, promotionSaleNum, promotionSaleRate, showTimeText, prodCode, singleActivity } = productDetailModel;
+        const { promotionPrice, originalPrice, promotionSaleRate, showTimeText, prodCode, singleActivity } = productDetailModel;
         const { extraProperty } = singleActivity;
         const promotionSaleRateS = promotionSaleRate || 0;
+        let progressWidthS = promotionSaleRateS * progressWidth;
+        progressWidthS = progressWidthS > 0 && progressWidthS < 12 ? 12 : progressWidthS;
         return (
             <NoMoreClick style={DidBeginViewStyles.bgView} onPress={() => {
                 extraProperty === 'toSpike' && navigate('HtmlPage', {
@@ -92,24 +96,21 @@ export class ActivityDidBeginView extends Component {
             }}>
                 <View style={DidBeginViewStyles.leftView}>
                     <MRText style={DidBeginViewStyles.priceText}>¥<MRText
-                        style={{ fontSize: 36 }}>{promotionPrice}</MRText></MRText>
+                        style={{ fontSize: 36, fontWeight: 'bold' }}>{promotionPrice}</MRText></MRText>
                     <View style={{ flex: 1 }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 3 }}>
                             <View style={DidBeginViewStyles.skillView}>
                                 <MRText style={DidBeginViewStyles.skillText}>秒杀价</MRText>
                             </View>
-                            <MRText
-                                style={[DidBeginViewStyles.amountText, { textDecorationLine: 'line-through' }]}>¥{originalPrice}</MRText>
                         </View>
-                        <MRText
-                            style={[DidBeginViewStyles.amountText]}> 已抢{promotionSaleNum}件</MRText>
+                        <MRText style={[DidBeginViewStyles.amountText]}>原价¥{originalPrice}</MRText>
                     </View>
                 </View>
                 <View style={DidBeginViewStyles.rightView}>
                     <View style={{ marginLeft: 13, marginRight: 8 }}>
                         <MRText style={DidBeginViewStyles.timeText}>{showTimeText}</MRText>
                         <View style={DidBeginViewStyles.leaveView}>
-                            <View style={[DidBeginViewStyles.progressView, { width: promotionSaleRateS * 90 }]}/>
+                            <View style={[DidBeginViewStyles.progressView, { width: progressWidthS }]}/>
                             <View style={DidBeginViewStyles.leaveAmountView}>
                                 <View style={DidBeginViewStyles.textView}>
                                     <MRText
@@ -145,7 +146,7 @@ const DidBeginViewStyles = StyleSheet.create({
         fontSize: 11, color: DesignRule.white
     },
     amountText: {
-        fontSize: 12, color: DesignRule.white
+        fontSize: 12, color: DesignRule.white, textDecorationLine: 'line-through'
     },
 
     rightView: {
@@ -157,7 +158,7 @@ const DidBeginViewStyles = StyleSheet.create({
     },
     leaveView: {
         marginTop: 5,
-        backgroundColor: '#FFA186', borderRadius: 6, width: 90, height: 12
+        backgroundColor: '#FFA186', borderRadius: 6, width: progressWidth, height: 12
     },
     progressView: {
         backgroundColor: DesignRule.mainColor, borderRadius: 6, height: 12
