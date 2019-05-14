@@ -1,7 +1,7 @@
 const  helperAndCustomerService = {
     top_kefu:require('./bangzu_kefu.png'),
-    icon_phone:require('./shouhou_icon_dianhua.png'),
-    icon_kefu:require('./shouhou_icon_kefu.png'),
+    icon_phone:require('./kefu_icon_dianhua.png'),
+    icon_kefu:require('./kefu_icon_zaixian.png'),
     icon_camara:require('./shouhou_xiangji.png'),
     icon_delete:require('./deleteImage.png'),
     icon_tuikuan:require('./bangzu_tuikuan_icon.png'),
