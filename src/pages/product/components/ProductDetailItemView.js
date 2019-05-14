@@ -43,10 +43,12 @@ export class HeaderItemView extends Component {
                     /*值相等*/
                     minPrice == maxPrice
                         ?
-                        <Text style={styles.priceText}>¥<Text style={{ fontSize: 24 }}>{minPrice}</Text></Text>
+                        <Text style={styles.priceText}>¥<Text
+                            style={{ fontSize: 24, fontWeight: 'bold' }}>{minPrice}</Text></Text>
                         :
-                        <Text style={styles.priceText}>¥<Text style={{ fontSize: 24 }}>{minPrice}</Text>-¥<Text
-                            style={{ fontSize: 24 }}>{maxPrice}</Text></Text>
+                        <Text style={styles.priceText}>¥<Text
+                            style={{ fontSize: 24, fontWeight: 'bold' }}>{minPrice}</Text>-¥<Text
+                            style={{ fontSize: 24, fontWeight: 'bold' }}>{maxPrice}</Text></Text>
                 }
                 <Text style={styles.originalText}>¥{originalPrice}</Text>
                 <View style={styles.levelView}>
@@ -133,7 +135,7 @@ const styles = StyleSheet.create({
     },
     priceText: {
         paddingTop: (24 - 16) / 2.0,
-        color: DesignRule.textColor_redWarn, fontSize: 16, fontWeight: 'bold'
+        color: DesignRule.textColor_redWarn, fontSize: 16
     },
     originalText: {
         paddingHorizontal: 5,
@@ -169,7 +171,7 @@ const styles = StyleSheet.create({
     },
 
     nameText: {
-        marginHorizontal: 15, paddingVertical: 5,
+        marginHorizontal: 15, paddingBottom: 5, paddingTop: 10,
         color: DesignRule.textColor_mainTitle, fontSize: 16, fontWeight: 'bold'
     },
 
