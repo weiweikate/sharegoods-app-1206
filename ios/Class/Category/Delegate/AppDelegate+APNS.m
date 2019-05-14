@@ -163,7 +163,6 @@
   
   /*联通*/
   JVUnicomUIConfig *unicomUIConfig = [[JVUnicomUIConfig alloc] init];
-  unicomUIConfig.logoImg = [UIImage imageNamed:@"cmccLogo"];
   unicomUIConfig.navColor = [UIColor whiteColor];
   unicomUIConfig.navText = attriString;
   //  https://h5.sharegoodsmall.com/static/protocol/service.html
@@ -210,7 +209,6 @@
   
   /*电信*/
   JVTelecomUIConfig *telecomUIConfig = [[JVTelecomUIConfig alloc] init];
-  telecomUIConfig.logoImg = [UIImage imageNamed:@"ctccLogo"];
   telecomUIConfig.navColor = [UIColor whiteColor];
   telecomUIConfig.navText = attriString;
   //  https://h5.sharegoodsmall.com/static/protocol/service.html
