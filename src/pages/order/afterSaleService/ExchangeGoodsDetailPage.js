@@ -42,8 +42,6 @@ const {
 } = PageType;
 
 const {
-    STATUS_IN_REVIEW ,           //待审核
-    STATUS_SEND_BACK,            //待寄回
     STATUS_WAREHOUSE_CONFIRMED,  //待仓库确认
     STATUS_PLATFORM_PROCESSING, //待平台处理
     STATUS_SUCCESS,              //售后完成
@@ -51,9 +49,6 @@ const {
 } = AfterStatus;
 
 const {
-    REFUSE_REVOKED, //用户自己关闭
-    REFUSE_OVERTIME , //超时
-    REFUSE_APPLY, //拒绝售后申请
     REFUSE_AFTER      //拒绝售后
 } = SubStatus;
 
@@ -137,15 +132,15 @@ class ExchangeGoodsDetailPage extends BasePage {
             description,
             imgList,
             //用户地址
-            receiver,
-            receiverPhone,
-            province,
-            city,
-            area,
-            street,
-            address,
-            //寄回地址
-            refundAddress,
+            // receiver,
+            // receiverPhone,
+            // province,
+            // city,
+            // area,
+            // street,
+            // address,
+            // //寄回地址
+            // refundAddress,
             //商品info
             specImg,
             productName,
@@ -158,7 +153,6 @@ class ExchangeGoodsDetailPage extends BasePage {
         } = pageData;
 
         let pageType = type - 1;
-        let reject = this.afterSaleDetailModel.reject;
         let isShow_operationApplyView = status === 1;
 
         let isShow_refundDetailView =  false;
