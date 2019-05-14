@@ -145,12 +145,16 @@ export default class ProductDetailModel {
      * promotionPrice 现价
      * promotionSaleNum 已抢
      * promotionStockNum 还剩
+     * promotionAttentionNum 关注人数
+     * promotionSaleRate 进度条
      * */
     @observable promotionDecreaseAmount;
-
     @observable promotionPrice;
+
     @observable promotionSaleNum;
     @observable promotionStockNum;
+    @observable promotionAttentionNum;
+    @observable promotionSaleRate;
 
     @observable promotionMinPrice;
     @observable promotionMaxPrice;
@@ -295,7 +299,7 @@ export default class ProductDetailModel {
                 restrictions, paramList, comment, totalComment, overtimeComment,
                 prodCode, upTime, now, content,
                 promotionResult, promotionDecreaseAmount, promotionPrice, promotionLimitNum,
-                promotionSaleNum, promotionStockNum, promotionMinPrice, promotionMaxPrice
+                promotionSaleNum, promotionStockNum, promotionMinPrice, promotionMaxPrice, promotionAttentionNum, promotionSaleRate
             } = data || {};
 
             let contentArr = isNoEmpty(content) ? content.split(',') : [];
@@ -340,6 +344,8 @@ export default class ProductDetailModel {
             this.promotionStockNum = promotionStockNum;
             this.promotionMinPrice = promotionMinPrice;
             this.promotionMaxPrice = promotionMaxPrice;
+            this.promotionAttentionNum = promotionAttentionNum;
+            this.promotionSaleRate = promotionSaleRate;
 
             let typeT, endTimeT, startTimeT;
             if ((groupActivity || {}).type) {

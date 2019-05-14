@@ -4,10 +4,10 @@ import DesignRule from '../../../constants/DesignRule';
 import { MRText } from '../../../components/ui';
 import res from '../res/product';
 import { observer } from 'mobx-react';
-import * as math from 'mathjs';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import { navigate } from '../../../navigation/RouterMap';
+import StringUtils from '../../../utils/StringUtils';
 
 const { arrow_right_black } = res.button;
 
@@ -18,7 +18,7 @@ const { arrow_right_black } = res.button;
 export class ActivityWillBeginView extends Component {
     render() {
         const { productDetailModel } = this.props;
-        const { promotionPrice, showTimeText, singleActivity, prodCode } = productDetailModel;
+        const { promotionPrice, promotionAttentionNum, showTimeText, singleActivity, prodCode } = productDetailModel;
         const { extraProperty } = singleActivity;
         return (
             <NoMoreClick style={WillBeginStyles.bgView} onPress={() => {
@@ -32,6 +32,7 @@ export class ActivityWillBeginView extends Component {
                     <View style={WillBeginStyles.leftExplainView}>
                         <MRText style={WillBeginStyles.leftExplainText}>秒杀价</MRText>
                     </View>
+                    <MRText style={WillBeginStyles.numberText}>{`${promotionAttentionNum || 0}人已关注`}</MRText>
                 </View>
                 <View style={WillBeginStyles.rightView}>
                     <MRText style={WillBeginStyles.rightText}>{showTimeText}</MRText>
@@ -60,6 +61,10 @@ const WillBeginStyles = StyleSheet.create({
     leftExplainText: {
         fontSize: 11, color: DesignRule.white
     },
+    numberText: {
+        marginLeft: 10,
+        fontSize: 12, color: DesignRule.textColor_secondTitle
+    },
     rightView: {
         flexDirection: 'row', alignItems: 'center', marginRight: 15
     },
@@ -72,14 +77,17 @@ const WillBeginStyles = StyleSheet.create({
 /*
 * 秒杀开始
 * */
+const progressWidth = 90;
+
 @observer
 export class ActivityDidBeginView extends Component {
     render() {
         const { productDetailModel } = this.props;
-        const { promotionPrice, originalPrice, promotionSaleNum, promotionStockNum, showTimeText, prodCode, singleActivity } = productDetailModel;
-        let total = math.eval(promotionSaleNum + promotionStockNum);
-        let progress = total == 0 ? 0 : math.eval(promotionStockNum / total);
+        const { promotionPrice, originalPrice, promotionSaleRate, showTimeText, prodCode, singleActivity } = productDetailModel;
         const { extraProperty } = singleActivity;
+        const promotionSaleRateS = promotionSaleRate || 0;
+        let progressWidthS = promotionSaleRateS * progressWidth;
+        progressWidthS = progressWidthS > 0 && progressWidthS < 12 ? 12 : progressWidthS;
         return (
             <NoMoreClick style={DidBeginViewStyles.bgView} onPress={() => {
                 extraProperty === 'toSpike' && navigate('HtmlPage', {
@@ -88,27 +96,26 @@ export class ActivityDidBeginView extends Component {
             }}>
                 <View style={DidBeginViewStyles.leftView}>
                     <MRText style={DidBeginViewStyles.priceText}>¥<MRText
-                        style={{ fontSize: 36 }}>{promotionPrice}</MRText></MRText>
+                        style={{ fontSize: 36, fontWeight: 'bold' }}>{promotionPrice}</MRText></MRText>
                     <View style={{ flex: 1 }}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 3 }}>
                             <View style={DidBeginViewStyles.skillView}>
                                 <MRText style={DidBeginViewStyles.skillText}>秒杀价</MRText>
                             </View>
-                            <MRText
-                                style={[DidBeginViewStyles.amountText, { textDecorationLine: 'line-through' }]}>¥{originalPrice}</MRText>
                         </View>
-                        <MRText
-                            style={[DidBeginViewStyles.amountText]}> 已抢{promotionSaleNum}件</MRText>
+                        <MRText style={[DidBeginViewStyles.amountText]}>原价¥{originalPrice}</MRText>
                     </View>
                 </View>
                 <View style={DidBeginViewStyles.rightView}>
                     <View style={{ marginLeft: 13, marginRight: 8 }}>
                         <MRText style={DidBeginViewStyles.timeText}>{showTimeText}</MRText>
                         <View style={DidBeginViewStyles.leaveView}>
-                            <View style={[DidBeginViewStyles.progressView, { width: (1 - progress) * 90 }]}/>
+                            <View style={[DidBeginViewStyles.progressView, { width: progressWidthS }]}/>
                             <View style={DidBeginViewStyles.leaveAmountView}>
-                                <MRText
-                                    style={DidBeginViewStyles.leaveAmountText}>{progress == 0 ? '已抢完' : `还剩${promotionStockNum}件`}</MRText>
+                                <View style={DidBeginViewStyles.textView}>
+                                    <MRText
+                                        style={DidBeginViewStyles.leaveAmountText}>{promotionSaleRateS == 1 ? '已抢完' : `还剩${StringUtils.sub(1, promotionSaleRateS) * 100}%`}</MRText>
+                                </View>
                             </View>
                         </View>
                     </View>
@@ -132,14 +139,14 @@ const DidBeginViewStyles = StyleSheet.create({
         fontSize: 20, color: DesignRule.white
     },
     skillView: {
-        justifyContent: 'center', alignItems: 'center', marginBottom: 3, marginRight: 5,
+        justifyContent: 'center', alignItems: 'center', marginRight: 5,
         borderRadius: 2, backgroundColor: 'rgba(0,0,0,0.1)', width: 40, height: 16
     },
     skillText: {
         fontSize: 11, color: DesignRule.white
     },
     amountText: {
-        fontSize: 12, color: DesignRule.white
+        fontSize: 12, color: DesignRule.white, textDecorationLine: 'line-through'
     },
 
     rightView: {
@@ -151,14 +158,17 @@ const DidBeginViewStyles = StyleSheet.create({
     },
     leaveView: {
         marginTop: 5,
-        backgroundColor: '#FFA186', borderRadius: 6, width: 90, height: 12
+        backgroundColor: '#FFA186', borderRadius: 6, width: progressWidth, height: 12
     },
     progressView: {
         backgroundColor: DesignRule.mainColor, borderRadius: 6, height: 12
     },
     leaveAmountView: {
-        justifyContent: 'center', alignItems: 'center',
-        position: 'absolute', top: 0, bottom: 0, left: 0, right: 0
+        justifyContent: 'center',
+        position: 'absolute', top: 0, bottom: 0, left: 6, right: 0
+    },
+    textView: {
+        justifyContent: 'center', height: 14
     },
     leaveAmountText: {
         fontSize: 10, color: DesignRule.textColor_white

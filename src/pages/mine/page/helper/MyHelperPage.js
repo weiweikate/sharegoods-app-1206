@@ -39,8 +39,10 @@ import OssHelper from "../../../../utils/OssHelper";
 import ImageLoad from "@mr/image-placeholder";
 import { beginChatType, QYChatTool } from "../../../../utils/QYModule/QYChatTool";
 import StringUtils from "../../../../utils/StringUtils";
+import { SmoothPushPreLoadHighComponentFirstDelay } from '../../../../comm/components/SmoothPushHighComponent';
 
 
+@SmoothPushPreLoadHighComponentFirstDelay
 @observer
 export default class MyHelperPage extends BasePage {
     constructor(props) {

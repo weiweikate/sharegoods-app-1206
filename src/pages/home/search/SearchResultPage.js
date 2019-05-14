@@ -15,7 +15,7 @@ import ResultVerticalRow from './components/ResultVerticalRow';
 import RouterMap from '../../../navigation/RouterMap';
 import HomeAPI from '../api/HomeAPI';
 import DateUtils from '../../../utils/DateUtils';
-import SelectionPage from '../../product/SelectionPage';
+import SelectionPage, { sourceType } from '../../product/SelectionPage';
 import StringUtils from '../../../utils/StringUtils';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import ShopCartStore from '../../shopCart/model/ShopCartStore';
@@ -220,15 +220,17 @@ export default class SearchResultPage extends BasePage {
                 });
             }).catch((error) => {
                 this.setState({
-                    loadingMore: false,
+                    loadingMore: false
                 });
             });
         });
     };
-
     _storeProduct = (item) => {
         this.productItem = item;
-        this.SelectionPage.show(item, this._selectionViewConfirm, { needUpdate: true });
+        this.SelectionPage.show(item, this._selectionViewConfirm, {
+            needUpdate: true,
+            sourceType: this._itemIsActivity(item) ? sourceType.promotion : null
+        });
     };
 
     _changeLayout = () => {
@@ -400,6 +402,22 @@ export default class SearchResultPage extends BasePage {
         }
     });
 
+    _itemIsActivity = (item) => {
+        const { now, promotionResult } = item || {};
+        const { singleActivity, groupActivity } = promotionResult || {};
+        let endTimeT, startTimeT;
+        if ((groupActivity || {}).type) {
+            const { endTime, startTime } = groupActivity || {};
+            endTimeT = endTime;
+            startTimeT = startTime;
+        } else {
+            const { endTime, startTime } = singleActivity || {};
+            endTimeT = endTime;
+            startTimeT = startTime;
+        }
+        return now >= startTimeT && now < endTimeT;
+    };
+
     _rowRenderer = (type, data) => {
         switch (type) {
             case viewTypes.rowView:
@@ -407,15 +425,17 @@ export default class SearchResultPage extends BasePage {
                 return <View style={{ flexDirection: 'row', marginHorizontal: 15 }}>
                     {itemData[0] ?
                         <ResultHorizontalRow onPressAtIndex={this._onPressAtIndex} storeProduct={this._storeProduct}
-                                             itemData={itemData[0]}/> : null}
+                                             itemData={itemData[0]}
+                                             isActivity={this._itemIsActivity(itemData[0])}/> : null}
                     {itemData[1] ?
                         <ResultHorizontalRow style={{ marginLeft: 5 }} onPressAtIndex={this._onPressAtIndex}
                                              storeProduct={this._storeProduct}
-                                             itemData={itemData[1]}/> : null}
+                                             itemData={itemData[1]}
+                                             isActivity={this._itemIsActivity(itemData[1])}/> : null}
                 </View>;
             case viewTypes.rowView1:
                 return (<ResultVerticalRow onPressAtIndex={this._onPressAtIndex} storeProduct={this._storeProduct}
-                                           itemData={data}/>);
+                                           itemData={data} isActivity={this._itemIsActivity(data)}/>);
             default:
                 return null;
         }
