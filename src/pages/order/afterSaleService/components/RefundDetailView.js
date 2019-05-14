@@ -44,7 +44,7 @@ export default class  RefundDetailView extends React.Component {
   render() {
       let {refundCashAmount, refundAccountAmount, refundPrice} = this.props;
     return (
-        <View style={{marginBottom: 10, marginTop: 10}}>
+        <View style={{marginTop: 10}}>
             <UserSingleItem itemHeightStyle={{ height: 44 }} leftText={'退款金额'}
                             leftTextStyle={{
                                 color: DesignRule.textColor_mainTitle,
@@ -59,14 +59,14 @@ export default class  RefundDetailView extends React.Component {
                             isArrow={false} isLine={false}/>
             <View
                 style={{
-                    backgroundColor: DesignRule.bgColor,
+                    backgroundColor: 'white',
                     height: 40,
                     justifyContent: 'center',
                     paddingLeft: 15,
                     marginTop: 10
                 }}>
                 <UIText value={'退款明细'}
-                        style={{ color: DesignRule.textColor_instruction, fontSize: 13 }}/>
+                        style={{ color: DesignRule.textColor_mainTitle, fontSize: 13 }}/>
             </View>
             {/*<UserSingleItem itemHeightStyle={{ height: 44 }} leftText={'退回1元抵扣券'}*/}
                             {/*leftTextStyle={{*/}

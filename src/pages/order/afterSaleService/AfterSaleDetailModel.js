@@ -41,7 +41,7 @@ class AfterSaleDetailModel {
                     "supplierCode": "GYS00002",
                     "supplierName": "小米供应商",
                     "productName": "我是测试产品3.0",
-                    "type": 2,
+                    "type": 3,
                     "refundNum": 1,
                     "payAmount": 0.01,
                     "applyRefundAmount": 0.01,
@@ -54,8 +54,8 @@ class AfterSaleDetailModel {
                     "warehouseCode": null,
                     "sendWarehouseFeedback": null,
                     "refundWarehouseFeedback": null,
-                    "status": 1,
-                    "subStatus": 1,
+                    "status": 5,
+                    "subStatus": 2,
                     "cancelTime": 1557209035451,
                     "imgList": "",
                     "receiver": null,
@@ -92,11 +92,11 @@ class AfterSaleDetailModel {
                     "orderRefundExpress": null,
                     "sendExpressCode": null,
                     "sendExpressName": null,
-                    "sendExpressNo": null,
+                    "sendExpressNo": '21212',
                     "reject": "买家取消本次退款申请",
                     "headerTitle": "退款关闭",
                     "nowTime": 1557208035451,
-                    "refundStatus": null
+                    "refundStatus": 3
             };
             this.pageData = result.data || {};
             let status = this.pageData.status;

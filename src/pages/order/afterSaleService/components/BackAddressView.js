@@ -14,7 +14,8 @@ import React from 'react';
 
 import {
     StyleSheet,
-    View
+    View,
+    TouchableOpacity
 } from 'react-native';
 
 import {
@@ -43,6 +44,7 @@ export default class BackAddressView extends React.Component {
 
     render() {
         let refundAddress = this.props.refundAddress || {};
+        let {title,manyLogistics,onPress} = this.props;
         let {
             receiver,
             receiverPhone,
@@ -59,26 +61,47 @@ export default class BackAddressView extends React.Component {
         area = area || '';
         street = street || '';
         address = address || '';
-
+        province = 'XxXXXXXXXXXxxxxxxxxxxcvbcsdfghgfdsfghjgfdsfghjgfdsfghgfdsfghfdfgfdfgfdfg'
+        let detailAddress =   province + city + area + area + street + address +
+            '；收件人：' + receiver + '联系方式：' + receiverPhone;
+        // manyLogistics
+        let detail_num = null;
+        let detail_company = '';
+        if (manyLogistics === true){
+            detail_num = '该订 单被拆成N个包裹发出，点击“查看物流信息”查看详情'
+        } else {
+            detail_num = '物流单号：xxxx'
+            detail_company = '物流公司：xxxx'
+        }
         return (
             <View style={styles.container}>
-                <View style={styles.borderContainer}>
-                    <UIText value={'寄回\n地址'} style={{ fontSize: 12, color: DesignRule.mainColor }}/>
+                <View style = {styles.titleContainer}>
+                <UIText value={title} style={styles.title}/>
                 </View>
-                <View
-                    style={{ backgroundColor: DesignRule.lineColor_inColorBg, width: 1, height: 40, marginLeft: 10 }}/>
-                <AddressItem
-                             style={{
-                                 flex: 1,
-                                 flexDirection: 'row',
-                                 justifyContent: 'space-between',
-                                 alignItems: 'center',
-                                 backgroundColor: 'white'
-                             }}
-                             name={'收货人：' + receiver}
-                             phone={receiverPhone}
-                             address={province + city + area + street + address}
-                />
+                <View style={styles.detailContainer}>
+                  <UIText value={detail_num} style={styles.detail}/>
+                    {detail_company? <UIText value={detail_company} style={styles.detail}/> : null}
+                    <View style={{marginTop: 5, flexDirection: 'row'}}>
+                        <UIText value={'寄回信息：'} style={styles.title}/>
+                        <View style={{flex: 1, marginRight: 15}}>
+                            <UIText value={detailAddress} style={[styles.title,{marginLeft: 0}]}/>
+                        </View>
+                    </View>
+                </View>
+                <View style={{
+                    height: 50,
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>
+                    <TouchableOpacity onPress={onPress}
+                                      style={styles.borderButton}>
+                        <UIText value={'查看物流信息'}
+                                style={{
+                                    fontSize: 12,
+                                    color: DesignRule.textColor_instruction
+                                }}/>
+                    </TouchableOpacity>
+                </View>
             </View>
         );
     }
@@ -86,19 +109,38 @@ export default class BackAddressView extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: 'row',
-        minHeight: 82,
-        alignItems: 'center',
         backgroundColor: 'white',
-        marginBottom: 10
+        marginTop: 10
     },
-    borderContainer: {
-        width: 43,
-        height: 36,
-        borderColor: DesignRule.mainColor,
+    title: {
+        marginLeft: 15,
+        color: DesignRule.textColor_mainTitle,
+        fontSize: 13
+    },
+    titleContainer: {
+        height: 40,
+        justifyContent: 'center'
+    },
+    detailContainer: {
+        paddingVertical: 10,
+        borderBottomWidth: 1,
+        borderTopWidth: 1,
+        borderColor: DesignRule.bgColor
+    },
+    detail: {
+        marginLeft: 15,
+        color: DesignRule.textColor_mainTitle,
+        fontSize: 13,
+        marginTop: 5,
+    },
+    borderButton: {
         borderWidth: 0.5,
-        justifyContent: 'center',
+        borderColor: '#CCCCCC',
+        borderRadius: 14,
+        height: 28,
+        width: 100,
         alignItems: 'center',
-        marginLeft: 16
+        justifyContent: 'center'
     }
+
 });

@@ -24,22 +24,21 @@ import AfterSaleDetailModel from './AfterSaleDetailModel';
 import {
     AfterSaleInfoView,
     OperationApplyView,
-    TipView,
     HeaderView,
     RefundDetailView,
     StatusInfoView,
     BackAddressView,
-    ShippingAddressView,
-    LogisticsView,
     FillAddressView
 } from './components';
 import { observer } from 'mobx-react';
 import res from '../res';
 import RouterMap from '../../../navigation/RouterMap';
-import { PageType, isRefundFail, AfterStatus } from './AfterType';
+import { PageType, isRefundFail, AfterStatus, SubStatus } from './AfterType';
+import NavigatorBar from '../../../components/pageDecorator/NavigatorBar/NavigatorBar';
 const {
     PAGE_AREFUND,
     PAGE_SALES_RETURN,
+    PAGE_EXCHANGE
 } = PageType;
 
 const {
@@ -51,9 +50,17 @@ const {
     STATUS_FAIL
 } = AfterStatus;
 
+const {
+    REFUSE_REVOKED, //用户自己关闭
+    REFUSE_OVERTIME , //超时
+    REFUSE_APPLY, //拒绝售后申请
+    REFUSE_AFTER      //拒绝售后
+} = SubStatus;
+
 
 const netError = res.placeholder.netError;
 const arrow_right_black = res.button.arrow_right_black;
+const white_back = res.button.white_back;
 
 @observer
 class ExchangeGoodsDetailPage extends BasePage {
@@ -71,8 +78,8 @@ class ExchangeGoodsDetailPage extends BasePage {
     }
 
     $navigationBarOptions = {
-        show: true,// false则隐藏导航
-        title: '售后进度'
+        show: false,// false则隐藏导航
+        title: '售后进度',
     };
 
     $NavigationBarDefaultLeftPressed = () => {
@@ -156,26 +163,26 @@ class ExchangeGoodsDetailPage extends BasePage {
 
         let isShow_refundDetailView =  false;
         /** 退款成功、退货成功、换货变退款成功,退款没有失败*/
-        if ((pageType === PAGE_AREFUND || PageType === PAGE_SALES_RETURN) && status === STATUS_SUCCESS&&!isRefundFail(refundStatus)) {
+        if ((pageType === PAGE_AREFUND || pageType === PAGE_SALES_RETURN) && status === STATUS_SUCCESS&&!isRefundFail(refundStatus)) {
             isShow_refundDetailView = true;
         }
 
-        let isShow_afterInfo = true;
-        if (pageType === PAGE_AREFUND && status === STATUS_SUCCESS&&!isRefundFail(refundStatus)) {
-            isShow_afterInfo = false;
-        }
 
 
-        let isShow_shippingAddressView = false;
+        //平台物流有、且为换货，就展示
+        let isShow_shippingAddressView = !EmptyUtils.isEmpty(sendExpressNo) && pageType === PAGE_EXCHANGE;
         let isShow_backAddressView = false;
-        /** 退货 寄回地址在申请中，和关闭的情况不显示，收货人地址始终不显示*/
-        if (pageType === 1 && (status === 2 || status === 3 || status === 4 || status === 5)) {
-            isShow_backAddressView = true;
-            /** 退货 寄回地址、收货人地址在申请中，和关闭的情况不显示*/
-        } else if (pageType === 2 && (status === 2 || status === 3 || status === 4 || status === 5)) {
-            // isShow_shippingAddressView = true;
-            isShow_backAddressView = true;
+        if (pageType === PAGE_SALES_RETURN || pageType === PAGE_EXCHANGE){
+            if ([STATUS_WAREHOUSE_CONFIRMED,STATUS_PLATFORM_PROCESSING,STATUS_SUCCESS].indexOf(status) !== -1) {
+                isShow_backAddressView = true
+            }
+            if (status === STATUS_FAIL && subStatus === REFUSE_AFTER) {
+                isShow_backAddressView = true
+            }
+
         }
+
+        let isShow_afterInfo = !isShow_backAddressView;
         let logistics = [];
         /** 平台物流只有在换货， 4.待平台处理 5.售后完成才显示*/
         if (pageType === 2 && (status === 4 || status === 5)) {
@@ -232,6 +239,21 @@ class ExchangeGoodsDetailPage extends BasePage {
                         afterSaleDetailModel = {this.afterSaleDetailModel}
                         status={status}
                     />
+                    {isShow_shippingAddressView? <BackAddressView
+                        title={'平台寄回物流信息'}
+                        manyLogistics={true}
+                    />: null}
+                    {isShow_backAddressView? <BackAddressView
+                        title={'用户寄回物流信息'}
+                        manyLogistics={false}
+                    /> : null}
+                    {
+                        isShow_refundDetailView ?
+                            <RefundDetailView refundAccountAmount={refundAccountAmount}
+                                              refundCashAmount={refundCashAmount}
+                                              refundPrice={refundPrice}
+                            /> : null
+                    }
                     {
                         isShow_afterInfo?this.renderOrder():null
                     }
@@ -282,9 +304,26 @@ class ExchangeGoodsDetailPage extends BasePage {
                         <UIImage style={styles.item_arrow} source={arrow_right_black}/>
                     </TouchableOpacity>
                 </ScrollView>
+                <NavigatorBar headerStyle={{position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    backgroundColor: 'rgba(0,0,0,0)',
+                    borderBottomWidth: 0}}
+                              leftNavImage={white_back}
+                              leftImageStyle={{width: 9}}
+                              leftPressed={()=>{this.$navigateBack()}}
+                              title={'售后详情'}
+                              titleStyle={{color: 'white'}}
+                              rightNavImage={white_back}
+                              rightPressed={()=>{this.connetKefu()}}
+                />
             </View>
         );
     }
+
+    connetKefu = ()=>{}
+
 
     _renderEmptyView() {
         return (
@@ -303,6 +342,15 @@ class ExchangeGoodsDetailPage extends BasePage {
                             }}
                     />
                 </TouchableOpacity>
+                <NavigatorBar headerStyle={{position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    borderBottomWidth: 0}}
+                              leftPressed={()=>{this.$navigateBack()}}
+                              title={'售后详情'}
+
+                />
             </View>
         );
     }
@@ -450,12 +498,14 @@ class ExchangeGoodsDetailPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, backgroundColor: DesignRule.bgColor,
-        justifyContent: 'flex-end'
+        flex: 1,
+        backgroundColor: DesignRule.bgColor,
+
     },
     addressStyle: {},
     item_style: {
         height: 50,
+        marginTop: 10,
         paddingHorizontal: 15,
         flexDirection: 'row',
         alignItems: 'center',

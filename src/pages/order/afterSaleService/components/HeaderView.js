@@ -411,7 +411,7 @@ export default class HeaderView extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        height: autoSizeWidth(152),
+        height: autoSizeWidth(110) + ScreenUtils.headerHeight,
         width: autoSizeWidth(375),
         justifyContent: 'flex-end',
     },

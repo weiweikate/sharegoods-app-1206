@@ -40,8 +40,10 @@ const {
 } = AfterStatus;
 
 const {
-    REFUSE_REVOKED , //用户自己关闭
-    REFUSE_APPLY   , //拒绝售后申请
+    REFUSE_REVOKED, //用户自己关闭
+    REFUSE_OVERTIME , //超时
+    REFUSE_APPLY, //拒绝售后申请
+    REFUSE_AFTER      //拒绝售后
 } = SubStatus;
 
 
@@ -65,8 +67,8 @@ export default class StatusInfoView extends React.Component {
         const {titleStr, detialStr, remarkStr} = content;
         return (
             <View style={styles.container}>
-                    <UIText value={titleStr}
-                            style={styles.title}/>
+                <UIText value={titleStr}
+                        style={styles.title}/>
                 {
                     detialStr?<UIText value={detialStr}
                                       style={styles.detail}/>: null
@@ -102,7 +104,7 @@ export default class StatusInfoView extends React.Component {
                         titleStr: '售后已完成，退款失败',
                         detialStr: '若有疑问请联系客服',
                         remarkStr: remarks,
-                      }
+                    }
                 }
                 return{
                     titleStr: '售后已完成，退款成功',
@@ -130,10 +132,121 @@ export default class StatusInfoView extends React.Component {
     }
 
     getSalesReturnContent(status, subStatus, refundStatus, remarks){
+        switch (status) {
+            case STATUS_WAREHOUSE_CONFIRMED:
+                return{
+                    titleStr: '物流信息提交成功，请耐心等待平台处理',
+                }
+            case STATUS_PLATFORM_PROCESSING:
+
+                return{
+                    titleStr: '平台已同意您的售后申请',
+                }
+
+            case STATUS_SUCCESS:
+                if (isRefundFail(refundStatus)) {
+                    return{
+                        titleStr: '售后已完成，退款失败',
+                        detialStr: '若有疑问请联系客服',
+                        remarkStr: remarks,
+                    }
+                }
+                return{
+                    titleStr: '售后已完成，退款成功',
+                    remarkStr: remarks,
+                }
+            case STATUS_FAIL: {
+                if (subStatus === REFUSE_REVOKED){
+                    return{
+                        titleStr: '售后已关闭',
+                        detialStr: '您已经撤销售后申请',
+                    }
+                }
+                if (subStatus === REFUSE_APPLY){
+                    return{
+                        titleStr: '售后已关闭',
+                        detialStr: '平台已经拒绝售后申请',
+                        remarkStr: remarks,
+                    }
+                }
+                if (subStatus === REFUSE_OVERTIME){
+                    return{
+                        titleStr: '售后已关闭',
+                        detialStr: '您未在指定时间提交物流',
+                    }
+                }
+
+                if (subStatus === REFUSE_AFTER){
+                    return{
+                        titleStr: '售后已关闭',
+                        detialStr: '平台已经拒绝售后申请',
+                        remarkStr: remarks,
+                    }
+                }
+            }
+            default://待审核 待寄回不显
+                return null;
+
+        }
 
     }
     getExchangeContent(status, subStatus, refundStatus, remarks){
+        switch (status) {
+            case STATUS_WAREHOUSE_CONFIRMED:
+                return{
+                    titleStr: '物流信息提交成功，请耐心等待平台处理',
+                }
+            case STATUS_PLATFORM_PROCESSING:
 
+                return{
+                    titleStr: '平台已同意您的售后申请',
+                }
+
+            case STATUS_SUCCESS:
+                if (isRefundFail(refundStatus)) {
+                    return{
+                        titleStr: '售后已完成，退款失败',
+                        detialStr: '若有疑问请联系客服',
+                        remarkStr: remarks,
+                    }
+                }
+                return{
+                    titleStr: '售后已完成，换货成功',
+                    remarkStr: remarks,
+                }
+            case STATUS_FAIL: {
+                if (subStatus === REFUSE_REVOKED){
+                    return{
+                        titleStr: '售后已关闭',
+                        detialStr: '您已经撤销售后申请',
+                    }
+                }
+                if (subStatus === REFUSE_APPLY){
+                    return{
+                        titleStr: '售后已关闭',
+                        detialStr: '平台已经拒绝售后申请',
+                        remarkStr: remarks,
+                    }
+                }
+                if (subStatus === REFUSE_OVERTIME){
+                    return{
+                        titleStr: '售后已关闭',
+                        detialStr: '您未在指定时间提交物流',
+                    }
+                }
+
+                if (subStatus === REFUSE_AFTER){
+                    return{
+                        titleStr: '售后已关闭',
+                        detialStr: '平台已经拒绝售后申请',
+                        remarkStr: remarks,
+                    }
+                }
+            }
+            default://待审核 待寄回不显
+                return null;
+
+        }
     }
 }
 
@@ -142,7 +255,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         paddingLeft: 15,
         paddingRight: 15,
-        marginBottom: 10,
         paddingBottom: 10,
     },
     title:{
@@ -157,4 +269,4 @@ const styles = StyleSheet.create({
         marginTop: 4
     }
 
-    });
+});
