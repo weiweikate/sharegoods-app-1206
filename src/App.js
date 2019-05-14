@@ -107,7 +107,6 @@ class App extends Component {
                     loginModel.setAuthPhone(null);
                 })
 
-
                 geolocation.init({
                     ios: 'f85b644981f8642aef08e5a361e9ab6b',
                     android: '4a3ff7c2164aaf7d67a98fb9b88ae0e6'

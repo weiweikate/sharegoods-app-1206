@@ -11,6 +11,8 @@ import com.meeruu.commonlib.service.InitializeService;
 import com.meeruu.commonlib.utils.AppUtils;
 import com.meeruu.commonlib.utils.SensorsUtils;
 
+import cn.jiguang.verifysdk.api.JVerificationInterface;
+
 public class BaseApplication extends MultiDexApplication {
 
     private static BaseApplication instance;
@@ -53,6 +55,8 @@ public class BaseApplication extends MultiDexApplication {
         ForegroundCallbacks.init(this);
         // 神策初始化
         SensorsUtils.init(this);
+        // 初始化一键登录
+        JVerificationInterface.init(this);
         InitializeService.init(this);
     }
 
