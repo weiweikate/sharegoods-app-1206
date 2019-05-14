@@ -138,7 +138,6 @@ const wxLoginAction = (callBack) => {
                 callBack && callBack(error.code, data);
                 TrackApi.wxSignUpSuccess();
             }
-            alert(error.msg)
             bridge.$toast(data.msg);
         });
     });
