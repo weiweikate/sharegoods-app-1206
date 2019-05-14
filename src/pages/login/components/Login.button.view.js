@@ -27,7 +27,7 @@ const Styles = StyleSheet.create(
             fontSize: px2dp(17)
         },
         localTextView: {
-            color: DesignRule.color_fff,
+            color: DesignRule.textColor_instruction,
             fontSize: px2dp(17)
         },
         otherTextView: {
@@ -63,10 +63,11 @@ const Styles = StyleSheet.create(
             marginLeft: px2dp(30),
             width: width - px2dp(60),
             height: px2dp(40),
-            backgroundColor: DesignRule.mainColor,
+            // backgroundColor: DesignRule.mainColor,
             borderRadius: px2dp(20),
             borderWidth: px2dp(0.5),
-            borderColor: DesignRule.mainColor
+            // borderColor: DesignRule.mainColor
+            borderColor: DesignRule.textColor_instruction
         },
         touchableStyle: {
             flex: 1,

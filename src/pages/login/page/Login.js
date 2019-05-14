@@ -63,13 +63,7 @@ export default class Login extends BasePage {
                 </View>
                 {/*中部视图*/}
                 {
-                    loginModel.authPhone ? <View style={Styles.middleBgContent}>
-                        {
-                            createLoginButton(loginBtnType.localPhoneNumLoginType, "本机号码一键登录", () => {
-                                this._clickAction(loginBtnType.localPhoneNumLoginType);
-                            },true)
-                        }
-                    </View> : <View style={Styles.middleBgContent}>
+                    <View style={Styles.middleBgContent}>
                         {
                             createLoginButton(loginBtnType.wxLoginBtnType, "微信授权登录", () => {
                                 this._clickAction(loginBtnType.wxLoginBtnType);
@@ -82,20 +76,14 @@ export default class Login extends BasePage {
                 <View style={Styles.bottomBgContent}>
                     {
 
-                        loginModel.authPhone ?  createLoginButton(loginBtnType.wxLoginBtnType, "微信登录", () => {
-                            this._clickAction(loginBtnType.wxLoginBtnType);
-                        }) : null
+                       loginModel.authPhone? createLoginButton(loginBtnType.localPhoneNumLoginType, "一键登录", () => {
+                            this._clickAction(loginBtnType.localPhoneNumLoginType);
+                        },false):null
                     }
                     {
                         createLoginButton(loginBtnType.registerBtnType, "注册新账号", () => {
-                            // this._clickAction(loginBtnType.otherLoginBtnType);
-                            this.$navigate(RouterMap.InputPhoneNum);
-
-                            // if (text === "手动注册新账号") {
-                            //     this.$navigate(RouterMap.InputPhoneNum);
-                            // } else {
-                            //     this.$navigate(RouterMap.OtherLoginPage);
-                            // }
+                            this._clickAction(loginBtnType.registerBtnType);
+                            // this.$navigate(RouterMap.InputPhoneNum);
                         })
                     }
                     {
@@ -122,7 +110,9 @@ export default class Login extends BasePage {
             }).catch((error)=>{
                 this.$toastShow("认证失败,请选择其他登录方式");
             })
-        } else {
+        } else if(btnType === loginBtnType.registerBtnType) {
+            this.$navigate(RouterMap.InputPhoneNum);
+        }else {
             this.$navigate(RouterMap.OtherLoginPage);
         }
     };
