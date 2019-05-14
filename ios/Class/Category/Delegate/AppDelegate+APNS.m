@@ -163,7 +163,19 @@
   
   /*联通*/
   JVUnicomUIConfig *unicomUIConfig = [[JVUnicomUIConfig alloc] init];
-  unicomUIConfig.logoImg = [UIImage imageNamed:@"cuccLogo"];
+  unicomUIConfig.logoImg = [UIImage imageNamed:@"cmccLogo"];
+  unicomUIConfig.navColor = [UIColor whiteColor];
+  unicomUIConfig.navText = attriString;
+  //  https://h5.sharegoodsmall.com/static/protocol/service.html
+  unicomUIConfig.appPrivacyOne = @[@"用户协议",@"https://h5.sharegoodsmall.com/static/protocol/service.html"];
+  unicomUIConfig.logoImg = [UIImage imageNamed:@"logo"];
+  unicomUIConfig.navReturnImg = [UIImage imageNamed:@"back"];
+  unicomUIConfig.logBtnImgs = @[[UIImage imageNamed:@"umcsdk_login_btn_normal"],
+                                [UIImage imageNamed:@"umcsdk_login_btn_unable"],
+                                [UIImage imageNamed:@"umcsdk_login_btn_press"],];
+  unicomUIConfig.appPrivacyColor = @[[UIColor colorWithHexString:@"#3d3d3d"], [UIColor colorWithHexString:@"#F00050"]];
+  unicomUIConfig.checkedImg = [UIImage imageNamed:@"umcsdk_check_image"];
+  unicomUIConfig.uncheckedImg = [UIImage imageNamed:@"umcsdk_uncheck_image"];
   /*
    unicomUIConfig.authPageBackgroundImage = [UIImage imageNamed:@"背景图"];
    unicomUIConfig.navColor = [UIColor redColor];
@@ -199,6 +211,18 @@
   /*电信*/
   JVTelecomUIConfig *telecomUIConfig = [[JVTelecomUIConfig alloc] init];
   telecomUIConfig.logoImg = [UIImage imageNamed:@"ctccLogo"];
+  telecomUIConfig.navColor = [UIColor whiteColor];
+  telecomUIConfig.navText = attriString;
+  //  https://h5.sharegoodsmall.com/static/protocol/service.html
+  telecomUIConfig.appPrivacyOne = @[@"用户协议",@"https://h5.sharegoodsmall.com/static/protocol/service.html"];
+  telecomUIConfig.logoImg = [UIImage imageNamed:@"logo"];
+  telecomUIConfig.navReturnImg = [UIImage imageNamed:@"back"];
+  telecomUIConfig.logBtnImgs = @[[UIImage imageNamed:@"umcsdk_login_btn_normal"],
+                                [UIImage imageNamed:@"umcsdk_login_btn_unable"],
+                                [UIImage imageNamed:@"umcsdk_login_btn_press"],];
+  telecomUIConfig.appPrivacyColor = @[[UIColor colorWithHexString:@"#3d3d3d"], [UIColor colorWithHexString:@"#F00050"]];
+  telecomUIConfig.checkedImg = [UIImage imageNamed:@"umcsdk_check_image"];
+  telecomUIConfig.uncheckedImg = [UIImage imageNamed:@"umcsdk_uncheck_image"];
   /*
    telecomUIConfig.authPageBackgroundImage = [UIImage imageNamed:@"背景图"];
    telecomUIConfig.navColor = [UIColor redColor];

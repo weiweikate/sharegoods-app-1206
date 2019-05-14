@@ -22,11 +22,11 @@ import { track } from "../../../utils/SensorsTrack";
  * @param athenToken  ali 返回的校验token
  * @param navigation  导航器
  * @param successCallBack 登录成功后的回调
+ * hyf 后期更改去掉phone
  */
 const oneClickLoginValidation = (phone, authenToken, navigation, successCallBack) => {
     TrackApi.LoginButtonClick({"loginMethod":4})
     LoginAPI.oneClickLoginValidation({
-        phone: phone,
         token: authenToken
     }).then(result => {
         successCallBack && successCallBack();
