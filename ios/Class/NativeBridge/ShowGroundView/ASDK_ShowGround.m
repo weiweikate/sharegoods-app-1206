@@ -21,13 +21,14 @@
 #import <React/UIView+React.h>
 #import "ASCollectionNode+ReloadIndexPaths.h"
 #import <SDAutoLayout.h>
-
+#import <YYKit.h>
 
 #define kReuseIdentifier @"ShowCell"
 #define SystemUpgradeCode 9999
 @interface ASDK_ShowGround()<ASCollectionDataSourceInterop, ASCollectionDelegate, ASCollectionViewLayoutInspecting>
 @property (nonatomic, strong) ASCollectionNode * collectionNode;
 @property (nonatomic, strong)NSMutableArray<ShowQuery_dataModel *> *dataArr;
+@property (nonatomic, strong)NSMutableArray *callBackArr;
 @property (nonatomic, assign)NSInteger page;
 @property (nonatomic, strong)UIView *headerView;
 @property (nonatomic, assign)NSInteger errCode;
@@ -44,9 +45,9 @@
     [self setUI];
     [self setupRefresh];
     [self setupEmptyView];
-    
+
   }
-  
+
   return self;
 }
 
@@ -56,6 +57,7 @@
 - (void)initData
 {
   _dataArr = [NSMutableArray new];
+  _callBackArr = [NSMutableArray new];
 }
 
 /**
@@ -77,7 +79,7 @@
   [_collectionNode.view registerClass:[ShowCollectionReusableView class] forSupplementaryViewOfKind: UICollectionElementKindSectionHeader withReuseIdentifier:@"ShowCollectionReusableView"];
   [_collectionNode.view registerClass:[UICollectionReusableView  class] forSupplementaryViewOfKind: UICollectionElementKindSectionFooter withReuseIdentifier:@"UICollectionReusableView_footer"];
   [self addSubnode:_collectionNode];
-  
+
 }
 
 - (void)layoutSubviews
@@ -90,7 +92,7 @@
  * 刷新控件
  */
 - (void)setupRefresh{
-  
+
   MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refreshData)];
   [header setTitle:@"下拉刷新" forState:MJRefreshStateIdle];
   [header setTitle:@"松开刷新" forState:MJRefreshStatePulling];
@@ -100,7 +102,7 @@
   header.stateLabel.textColor = [UIColor colorWithRed:144/255.f green:144/255.f blue:144/255.f alpha:1.0f];
   self.collectionNode.view.mj_header = header;
   [self.collectionNode.view.mj_header beginRefreshing];
-  
+
   MJRefreshAutoNormalFooter *footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreData)];
   footer.triggerAutomaticallyRefreshPercent = -10;
   [footer setTitle:@"上拉加载" forState:MJRefreshStateIdle];
@@ -108,7 +110,7 @@
   [footer setTitle:@"我也是有底线" forState:MJRefreshStateNoMoreData];
   footer.stateLabel.font = [UIFont systemFontOfSize:11];
   footer.stateLabel.textColor = [UIColor colorWithRed:144/255.f green:144/255.f blue:144/255.f alpha:1.0f];
-  
+
   self.collectionNode.view.mj_footer = footer;
   self.collectionNode.view.mj_footer.hidden = YES;
 }
@@ -121,23 +123,23 @@
   [self addSubview:_emptyView];
   _emptyView.sd_layout.spaceToSuperView(UIEdgeInsetsZero);
   _emptyView.backgroundColor = [UIColor colorWithHexString:@"f5f5f5"];
-  
+
   UIImageView *imgView = [UIImageView new];
   imgView.image = [UIImage imageNamed:@"Systemupgrade"];
   [_emptyView addSubview:imgView];
-  
+
   imgView.sd_layout
   .centerXEqualToView(_emptyView)
   .centerYEqualToView(_emptyView)
   .widthIs(130)
   .heightIs(150);
-  
+
   _emptyLb = [UILabel new];
   _emptyLb.font = [UIFont systemFontOfSize:13];
   _emptyLb.textColor = [UIColor colorWithHexString:@"666666"];
   [_emptyView addSubview:_emptyLb];
   _emptyLb.textAlignment = 1;
-  
+
   _emptyLb.sd_layout
   .topSpaceToView(imgView, 10)
   .heightIs(20)
@@ -154,7 +156,7 @@
   _errCode = errCode;
   if (self.dataArr.count > 0) {
     _emptyView.hidden = YES;
-    
+
   }else{
     _emptyView.hidden = NO;
     if (errCode == SystemUpgradeCode) {
@@ -180,10 +182,15 @@
   }
   [dic addEntriesFromDictionary:@{@"page": [NSString stringWithFormat:@"%ld",self.page], @"size": @"20"}];
   __weak ASDK_ShowGround * weakSelf = self;
-  [NetWorkTool requestWithURL:self.uri params:dic  toModel:[ShowQueryModel class] success:^(ShowQueryModel* result) {
-    weakSelf.dataArr = [result.data mutableCopy];
+  [NetWorkTool requestWithURL:self.uri params:dic  toModel:nil success:^(NSDictionary* result) {
+    ShowQueryModel* model = [ShowQueryModel modelWithJSON:result];
+    weakSelf.dataArr = [model.data mutableCopy];
+    if(result&&[result valueForKey:@"data"]){
+      weakSelf.callBackArr = [[result valueForKey:@"data"] mutableCopy];
+    }
+    
     [weakSelf.collectionNode.view.mj_header endRefreshing];
-    if(result.data.count < 20){
+    if(model.data.count < 20){
       [weakSelf.collectionNode.view.mj_footer endRefreshingWithNoMoreData];
     }else{
       [weakSelf.collectionNode.view.mj_footer resetNoMoreData];
@@ -215,16 +222,23 @@
   }
   [dic addEntriesFromDictionary:@{@"page": [NSString stringWithFormat:@"%ld",self.page], @"size": @"20"}];
   __weak ASDK_ShowGround * weakSelf = self;
-  [NetWorkTool requestWithURL:self.uri params:dic toModel:[ShowQueryModel class] success:^(ShowQueryModel* result) {
-    [weakSelf.dataArr addObjectsFromArray:result.data];
+  [NetWorkTool requestWithURL:self.uri params:dic toModel:nil success:^(NSDictionary* result) {
+    
+    ShowQueryModel* model = [ShowQueryModel modelWithJSON:result];
+    [weakSelf.dataArr addObjectsFromArray:model.data];
+
+    if(result&&[result valueForKey:@"data"]){
+      [weakSelf.callBackArr addObjectsFromArray:model.data];
+    }
+
     NSMutableArray *indexPaths = [NSMutableArray new];
-    for (int i = 0; i<result.data.count; i++) {
+    for (int i = 0; i<model.data.count; i++) {
       NSIndexPath *indexPath = [NSIndexPath indexPathForRow:weakSelf.dataArr.count - 1 - i inSection:0];
       [indexPaths addObject:indexPath];
     }
     [weakSelf.collectionNode insertItemsAtIndexPaths:indexPaths];
     //    [weakSelf.collectionView.collectionViewLayout invalidateLayout];
-    if(result.data.count < 20){
+    if(model.data.count < 20){
       [weakSelf.collectionNode.view.mj_footer endRefreshingWithNoMoreData];
     }else{
       [weakSelf.collectionNode.view.mj_footer endRefreshing];
@@ -252,7 +266,7 @@
 {
   if (_onItemPress) {
     self.dataArr[indexPath.item].xg_index = indexPath.row;
-    _onItemPress([self.dataArr[indexPath.item] modelToJSONObject]);
+    _onItemPress(self.callBackArr[indexPath.item]);
 //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
 //       [_collectionNode reloadItemsAtIndexPaths:@[indexPath]];
 //    });
@@ -273,7 +287,7 @@
                      dispatch_get_main_queue(),
                      ^{
                        node.neverShowPlaceholders = NO;
-                       
+
                      });
     }else {
       node.neverShowPlaceholders = NO;
@@ -333,11 +347,11 @@
   //section header
   if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
     ShowCollectionReusableView * view = [collectionView dequeueReusableSupplementaryViewOfKind: UICollectionElementKindSectionHeader withReuseIdentifier:@"ShowCollectionReusableView" forIndexPath:indexPath];
-    
+
     //    view.backgroundColor = [UIColor redColor];
     [view removeAllSubviews];
     [view addSubview:self.headerView];
-    
+
     return view;
   }else{
     //section footer
@@ -379,7 +393,7 @@
            scrollView.bounces == NO){
     scrollView.bounces = YES;
   }
-  
+
 }
 
 - (void)setHeaderHeight:(NSInteger)headerHeight

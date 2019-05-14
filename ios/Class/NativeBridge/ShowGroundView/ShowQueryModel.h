@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-@class ShowQuery_dataModel;
+@class ShowQuery_dataModel,UserModel,ResourceModel,ProductsModel;
 typedef NS_ENUM(NSInteger, ShowType) {
   ShowTypeFeatured = 1, // '精选'
   ShowTypeHot,          // '热门'
@@ -41,13 +41,13 @@ NS_ASSUME_NONNULL_END
 @property (nonatomic, copy)NSString *createAdminId;
 @property (nonatomic, copy)NSString *updateId;
 @property (nonatomic, copy)NSString *updateTime;
-@property (nonatomic, copy)NSString *content;
-@property (nonatomic, copy)NSString *userHeadImg;
-@property (nonatomic, copy)NSString *userName;
 @property (nonatomic, copy)NSString *time;
 @property (nonatomic, assign)NSInteger click;
 @property (nonatomic, assign)NSInteger xg_index;
-
+@property (nonatomic, assign)NSInteger hotCount;
+@property (nonatomic, strong)UserModel * userInfoVO;
+@property (nonatomic,strong)NSArray<ProductsModel*> * products;
+@property (nonatomic,strong)NSArray<ResourceModel*> * resource;
 @property (nonatomic, assign)CGFloat coverImgWide;
 @property (nonatomic, assign)CGFloat coverImgHigh;
 @property (nonatomic, assign)CGFloat imgWide;
@@ -61,4 +61,33 @@ NS_ASSUME_NONNULL_END
  显示图片链接
  */
 @property (nonatomic, readonly, assign)NSString *showImage;
+
+@end
+
+@interface ResourceModel : NSObject
+@property (nonatomic,copy) NSString * url;
+@property (nonatomic,assign) NSInteger type;
+@end
+
+@interface ProductsModel : NSObject
+@property (nonatomic,copy) NSString * name;
+@property (nonatomic,copy) NSString * imgUrl;
+@property (nonatomic,assign) CGFloat originalPrice;
+@property (nonatomic,assign) CGFloat maxPrice;
+@property (nonatomic,assign) CGFloat minPrice;
+@property (nonatomic,assign) CGFloat promotionMaxPrice;
+@property (nonatomic,assign) CGFloat promotionMinPrice;
+@property (nonatomic,copy) NSString * secondName;
+@property (nonatomic,assign) CGFloat v0Price;
+@property (nonatomic,copy) NSString * productNo;
+@property (nonatomic,assign) CGFloat groupPrice;
+@property (nonatomic,copy) NSString * prodCode;
+
+@end
+
+@interface UserModel : NSObject
+@property (nonatomic,copy) NSString * userImg;
+@property (nonatomic,copy) NSString * userName;
+@property (nonatomic,copy) NSString * userNo;
+
 @end

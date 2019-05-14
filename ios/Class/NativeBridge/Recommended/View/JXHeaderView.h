@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface JXHeaderView : UIView
 
-@property(nonatomic,strong)NSDictionary* UserInfoModel;
+@property(nonatomic,strong)UserInfoModel* UserInfoModel;
 @property(nonatomic,copy)NSString* time;
 
 @end

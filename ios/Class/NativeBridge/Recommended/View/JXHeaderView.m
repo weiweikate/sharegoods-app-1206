@@ -115,15 +115,15 @@
   NSLog(@"tapGuanzhuBtn");
 }
 
--(void)setUserInfoModel:(NSDictionary *)UserInfoModel{
+-(void)setUserInfoModel:(UserInfoModel *)UserInfoModel{
     _UserInfoModel = UserInfoModel;
   
-    [self.headImg sd_setImageWithURL:[NSURL URLWithString:UserInfoModel[@"url"]] placeholderImage:[self createImageWithUIColor:[UIColor grayColor]]];
+    [self.headImg sd_setImageWithURL:[NSURL URLWithString:UserInfoModel.userImg] placeholderImage:[self createImageWithUIColor:[UIColor grayColor]]];
   
-    if([UserInfoModel[@"userName"] length]>13){
-        self.nameLab.text = [NSString stringWithFormat:@"%@...",[UserInfoModel[@"userName"] substringToIndex:13]];
+    if(UserInfoModel.userName.length>13){
+        self.nameLab.text = [NSString stringWithFormat:@"%@...",[UserInfoModel.userName substringToIndex:13]];
     }else{
-      self.nameLab.text = [UserInfoModel[@"userName"] length]>0? UserInfoModel[@"userName"]:@" ";
+      self.nameLab.text = UserInfoModel.userName.length>0? UserInfoModel.userName:@" ";
     }
 }
 

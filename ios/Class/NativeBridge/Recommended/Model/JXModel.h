@@ -62,7 +62,7 @@
 
 @interface UserInfoModel : NSObject
 @property (nonatomic,copy) NSString * userImg;
-@property (nonatomic,assign) NSInteger userName;
-@property (nonatomic,assign) NSInteger userNo;
+@property (nonatomic,copy) NSString * userName;
+@property (nonatomic,copy) NSString * userNo;
 
 @end

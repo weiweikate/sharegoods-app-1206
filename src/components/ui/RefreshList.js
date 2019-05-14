@@ -57,7 +57,7 @@ export default class RefreshList extends Component {
     };
 
     renderFooter = () => {
-        if (this.props.isHideFooter) {
+        if (this.props.isHideFooter || this.props.firstLoading === 1) {
             return <View/>;
         } else {
             if (this.state.isError) {
@@ -127,7 +127,11 @@ export default class RefreshList extends Component {
 
 
     render() {
-        const { data, headerData, renderItem, onRefresh, keyExtractor, onListViewScroll, isEmpty, extraData, progressViewOffset, topBtn, ...attributes} = this.props;
+        const { data, headerData, firstLoading, renderItem, onRefresh, keyExtractor, onListViewScroll, isEmpty, extraData, progressViewOffset, topBtn, ...attributes} = this.props;
+        let refreshingState = this.state.refreshing;
+        if(firstLoading){
+            refreshingState = firstLoading === 1 ? true : this.state.refreshing
+        }
         if (data.length > 0 || headerData) {
             return (
                 <View style={{flex:1}}>
@@ -143,7 +147,7 @@ export default class RefreshList extends Component {
                     ListFooterComponent={this.renderFooter}
                     ListHeaderComponent={this.props.ListHeaderComponent}
                     keyExtractor={keyExtractor ? keyExtractor : (item, index) => index.toString()}
-                    refreshControl={<RefreshControl refreshing={this.state.refreshing}
+                    refreshControl={<RefreshControl refreshing={refreshingState}
                                                     onRefresh={onRefresh ? this.refresh : null}
                                                     colors={[DesignRule.mainColor]}
                                                     progressViewOffset={progressViewOffset}/>}

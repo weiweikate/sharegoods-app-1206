@@ -13,12 +13,13 @@
 @property(nonatomic, strong)ASTextNode *titleNode;
 @property(nonatomic, strong)SGNetworkImageNode *headerNode;
 @property(nonatomic, strong)ASTextNode *userNameNode;
-@property(nonatomic, strong)ASTextNode *timeNode;
+@property(nonatomic, strong)ASTextNode *hotNumNode;
 @property(nonatomic, strong)ShowQuery_dataModel *model;
 @property(nonatomic, strong)ASImageNode *numIconNode;
 @property(nonatomic, strong)ASTextNode *numNode;
 @property(nonatomic, strong)ASImageNode *numBgNode;
 @property(nonatomic, strong)ASImageNode *hotNode;
+@property(nonatomic, strong)NSMutableDictionary *aspectRatioDic;
 @end
 @implementation ShowCellNode
 
@@ -31,11 +32,11 @@
     [self addSubnode:self.titleNode];
     [self addSubnode:self.userNameNode];
     [self addSubnode:self.headerNode];
-    [self addSubnode:self.timeNode];
-    [self addSubnode:self.numBgNode];
-    [self addSubnode:self.numNode];
-    [self addSubnode:self.numIconNode];
+//    [self addSubnode:self.numBgNode];
+//    [self addSubnode:self.numNode];
+//    [self addSubnode:self.numIconNode];
     [self addSubnode:self.hotNode];
+    [self addSubnode:self.hotNumNode];
     self.backgroundColor = [UIColor whiteColor];
   }
   return self;
@@ -44,9 +45,15 @@
 
 - (ASLayoutSpec *)layoutSpecThatFits:(ASSizeRange)constrainedSize
 {
-  
-  ASRatioLayoutSpec *ImageSpec = [ASRatioLayoutSpec ratioLayoutSpecWithRatio:1/_model.aspectRatio
+  CGFloat aspectRatio = 1;
+  if([self.aspectRatioDic valueForKey:@"width"]&&[self.aspectRatioDic valueForKey:@"height"]){
+    CGFloat width = [[self.aspectRatioDic valueForKey:@"width"] floatValue];
+    CGFloat height = [[self.aspectRatioDic valueForKey:@"height"] floatValue];
+    aspectRatio = height/width;
+  }
+  ASRatioLayoutSpec *ImageSpec = [ASRatioLayoutSpec ratioLayoutSpecWithRatio:aspectRatio
                                                                        child:_imageNode];
+  
 //  _numIconNode.style.spacingBefore = 10;
 //  ASStackLayoutSpec *hNumSpec = [ASStackLayoutSpec stackLayoutSpecWithDirection:ASStackLayoutDirectionHorizontal
 //                                                                        spacing:10
@@ -65,12 +72,12 @@
   _headerNode.style.spacingBefore = 10;
   _headerNode.style.preferredSize = CGSizeMake(30, 30);
   _headerNode.style.spacingAfter = 5;
-  _timeNode.style.spacingAfter = 10;
   _userNameNode.style.flexShrink = 1.0;
   _userNameNode.style.flexGrow = 1.0;
   _hotNode.style.preferredSize = CGSizeMake(15, 15);
   _hotNode.style.spacingAfter = 5;
-  
+  _hotNumNode.style.spacingAfter = 10;
+
   
   ASStackLayoutSpec *hSpec = [ASStackLayoutSpec stackLayoutSpecWithDirection:ASStackLayoutDirectionHorizontal
                                                                      spacing:0
@@ -78,17 +85,27 @@
                                                                     children:@[_headerNode,
                                                                                _userNameNode,
                                                                                _hotNode,
-                                                                               _timeNode                                                                ]];
+                                                                               _hotNumNode
+                                                                ]];
   hSpec.style.width = ASDimensionMake(constrainedSize.min.width);
-  ASStackLayoutSpec *vSpec = [ASStackLayoutSpec stackLayoutSpecWithDirection:ASStackLayoutDirectionVertical
+  if(_titleNode.attributedText.length>0){
+    ASStackLayoutSpec *vSpec = [ASStackLayoutSpec stackLayoutSpecWithDirection:ASStackLayoutDirectionVertical
                                                                      spacing:10
                                                               justifyContent:ASStackLayoutJustifyContentStart alignItems:ASStackLayoutAlignItemsStart
                                                                     children:@[ImageSpec,
                                                                                [ASInsetLayoutSpec insetLayoutSpecWithInsets:UIEdgeInsetsMake(0, 10, 0, 10) child:_titleNode],
                                                                                hSpec                                                                ]];
   
-  return [ASInsetLayoutSpec insetLayoutSpecWithInsets:UIEdgeInsetsMake(0, 0, 12, 0) child:vSpec];
+    return [ASInsetLayoutSpec insetLayoutSpecWithInsets:UIEdgeInsetsMake(0, 0, 12, 0) child:vSpec];
+  }
   
+  ASStackLayoutSpec *vSpec = [ASStackLayoutSpec stackLayoutSpecWithDirection:ASStackLayoutDirectionVertical
+                                                                     spacing:10
+                                                              justifyContent:ASStackLayoutJustifyContentStart alignItems:ASStackLayoutAlignItemsStart
+                                                                    children:@[ImageSpec,
+                                                                               hSpec                                                                ]];
+  
+  return [ASInsetLayoutSpec insetLayoutSpecWithInsets:UIEdgeInsetsMake(0, 0, 12, 0) child:vSpec];
 }
 
 
@@ -96,7 +113,13 @@
 {
   if (!_imageNode) {
     CGFloat itemWidth=  [UIScreen mainScreen].bounds.size.width / 2.0 * [UIScreen mainScreen].scale;
-    NSString * showImage = _model.showImage;
+    NSString * showImage = @"";
+    NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
+    if([_model.resource[0] valueForKey:@"url"]){
+       showImage = [_model.resource[0] valueForKey:@"url"];
+        self.aspectRatioDic = [self getURLParameters:showImage];
+    }
+    
     if ([showImage containsString:@"sharegoodsmall"]) {
       showImage = [NSString stringWithFormat:@"%@?x-oss-process=image/resize,m_lfit,w_%0.0lf,h_%0.0lf",showImage,itemWidth,itemWidth/_model.aspectRatio];
     }
@@ -115,10 +138,12 @@
   if (!_titleNode) {
     _titleNode = [ASTextNode new];
     _titleNode.maximumNumberOfLines = 2;
+    if(_model.pureContent_1){
     _titleNode.attributedText = [[NSAttributedString alloc]initWithString:_model.pureContent_1 attributes:@{
                                                                                                             NSFontAttributeName: [UIFont systemFontOfSize:12],
                                                                                                             NSForegroundColorAttributeName: [UIColor colorWithHexString:@"333333"]
                                                                                                             }];
+      }
   }
   return _titleNode;
 }
@@ -128,7 +153,9 @@
   if (!_headerNode) {
     _headerNode = [SGNetworkImageNode new];
     _headerNode.defaultImage = [UIImage imageNamed:@"default_avatar"];
-    _headerNode.URL = [NSURL URLWithString:_model.userHeadImg];
+    if(_model.userInfoVO && [_model.userInfoVO valueForKey:@"userImg"]){
+      _headerNode.URL = [NSURL URLWithString:[_model.userInfoVO valueForKey:@"userImg"]];
+    }
     _headerNode.cornerRadius = 15;
     _headerNode.clipsToBounds = YES;
   }
@@ -141,8 +168,8 @@
     _userNameNode = [ASTextNode new];
     _userNameNode.maximumNumberOfLines = 1;
     NSString * userName = @"";
-    if (_model.userName) {
-      userName = _model.userName;
+    if (_model.userInfoVO.userName) {
+      userName = _model.userInfoVO.userName;
     }
     _userNameNode.attributedText = [[NSAttributedString alloc]initWithString:userName
                                                                   attributes:@{
@@ -154,22 +181,29 @@
 }
 
 
-- (ASTextNode *)timeNode
+- (ASTextNode *)hotNumNode
+
 {
-  if (!_timeNode) {
-    _timeNode = [ASTextNode new];
-    _timeNode.maximumNumberOfLines = 1;
-    NSString * time = @"";
-    if (_model.time) {
-      time = _model.time;
+  if (!_hotNumNode) {
+    _hotNumNode = [ASTextNode new];
+    _hotNumNode.maximumNumberOfLines = 1;
+    NSString * num = @"";
+    if (_model.hotCount) {
+      if(_model.hotCount<999){
+        num = [NSString stringWithFormat:@"%ld",_model.hotCount];
+      }else if(_model.hotCount<100000){
+        num = @"999+";
+      }else{
+        num = @"10w+";
+      }
     }
-    _timeNode.attributedText = [[NSAttributedString alloc]initWithString:time
+    _hotNumNode.attributedText = [[NSAttributedString alloc]initWithString:num
                                                               attributes:@{
                                                                            NSFontAttributeName: [UIFont systemFontOfSize:11],
                                                                            NSForegroundColorAttributeName: [UIColor colorWithHexString:@"999999"]
                                                                            }];
   }
-  return _timeNode;
+  return _hotNumNode;
 }
 
 
@@ -218,5 +252,98 @@
   return _numNode;
 }
 
+
+-(NSMutableDictionary*)aspectRatioDic{
+  if(!_aspectRatioDic){
+    _aspectRatioDic = [NSMutableDictionary new];
+  }
+  return _aspectRatioDic;
+}
+
+/**
+ *  截取URL中的参数
+ *
+ *  @return NSMutableDictionary parameters
+ */
+- (NSMutableDictionary *)getURLParameters:(NSString *)urlStr {
+  
+  // 查找参数
+  NSRange range = [urlStr rangeOfString:@"?"];
+  if (range.location == NSNotFound) {
+    return nil;
+  }
+  
+  // 以字典形式将参数返回
+  NSMutableDictionary *params = [NSMutableDictionary dictionary];
+  
+  // 截取参数
+  NSString *parametersString = [urlStr substringFromIndex:range.location + 1];
+  
+  // 判断参数是单个参数还是多个参数
+  if ([parametersString containsString:@"&"]) {
+    
+    // 多个参数，分割参数
+    NSArray *urlComponents = [parametersString componentsSeparatedByString:@"&"];
+    
+    for (NSString *keyValuePair in urlComponents) {
+      // 生成Key/Value
+      NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+      NSString *key = [pairComponents.firstObject stringByRemovingPercentEncoding];
+      NSString *value = [pairComponents.lastObject stringByRemovingPercentEncoding];
+      
+      // Key不能为nil
+      if (key == nil || value == nil) {
+        continue;
+      }
+      
+      id existValue = [params valueForKey:key];
+      
+      if (existValue != nil) {
+        
+        // 已存在的值，生成数组
+        if ([existValue isKindOfClass:[NSArray class]]) {
+          // 已存在的值生成数组
+          NSMutableArray *items = [NSMutableArray arrayWithArray:existValue];
+          [items addObject:value];
+          
+          [params setValue:items forKey:key];
+        } else {
+          
+          // 非数组
+          [params setValue:@[existValue, value] forKey:key];
+        }
+        
+      } else {
+        
+        // 设置值
+        [params setValue:value forKey:key];
+      }
+    }
+  } else {
+    // 单个参数
+    
+    // 生成Key/Value
+    NSArray *pairComponents = [parametersString componentsSeparatedByString:@"="];
+    
+    // 只有一个参数，没有值
+    if (pairComponents.count == 1) {
+      return nil;
+    }
+    
+    // 分隔值
+    NSString *key = [pairComponents.firstObject stringByRemovingPercentEncoding];
+    NSString *value = [pairComponents.lastObject stringByRemovingPercentEncoding];
+    
+    // Key不能为nil
+    if (key == nil || value == nil) {
+      return nil;
+    }
+    
+    // 设置值
+    [params setValue:value forKey:key];
+  }
+  
+  return params;
+}
 
 @end

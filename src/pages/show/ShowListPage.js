@@ -301,8 +301,8 @@ export default class ShowListPage extends BasePage {
                                     this.rightShowList = ref;
                                 }}
                                 style={{ flex: 1 }}
-                                uri={'/discover/query@GET'}
-                                params={{ spreadPosition: tag.Found+'' }}
+                                uri={'/social/show/content/page/query@GET'}
+                                params={{ spreadPosition: 3 }}
                                 onNineClick={({ nativeEvent }) => {
                                     that.$navigate('show/ShowDetailImagePage', {
                                         imageUrls: nativeEvent.imageUrls,

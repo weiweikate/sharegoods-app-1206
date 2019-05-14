@@ -175,7 +175,7 @@
 
 -(void)setModel:(JXModelData *)model{
     _model = model;
-    self.headView.UserInfoModel =  (NSMutableDictionary*)model.userInfoVO;
+    self.headView.UserInfoModel = model.userInfoVO;
     self.headView.time = model.publishTimeStr;
     self.bodyView.sources = model.resource;
     self.contentLab.text = model.content;

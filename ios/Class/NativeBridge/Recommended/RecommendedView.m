@@ -19,6 +19,7 @@
 #import "MBProgressHUD+PD.h"
 #import <YYKit.h>
 
+#define SystemUpgradeCode 9999
 
 @interface RecommendedView()<RecTypeCellDelegate,JXCellDelegate,UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>
 @property (nonatomic, weak)UITableView *tableView;
@@ -26,7 +27,9 @@
 @property (nonatomic, strong)NSMutableArray *callBackArr;
 @property (nonatomic, assign)NSInteger page;
 @property (nonatomic, strong)UIView *headerView;
-
+@property (nonatomic, assign)NSInteger errCode;
+@property(nonatomic, strong)UILabel *emptyLb;
+@property (nonatomic, strong)UIView *emptyView;
 @end
 
 static NSString *ID = @"tabCell";
@@ -40,6 +43,7 @@ static NSString *IDType = @"TypeCell";
     [self initData];
     [self setUI];
     [self setupRefresh];
+    [self setupEmptyView];
   }
   return self;
 }
@@ -79,7 +83,7 @@ static NSString *IDType = @"TypeCell";
  * 刷新控件
  */
 - (void)setupRefresh{
-  
+
   MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refreshData)];
   [header setTitle:@"下拉刷新" forState:MJRefreshStateIdle];
   [header setTitle:@"松开刷新" forState:MJRefreshStatePulling];
@@ -89,7 +93,7 @@ static NSString *IDType = @"TypeCell";
   header.stateLabel.textColor = [UIColor colorWithRed:144/255.f green:144/255.f blue:144/255.f alpha:1.0f];
   self.tableView.mj_header = header;
   [self.tableView.mj_header beginRefreshing];
-  
+
   MJRefreshAutoNormalFooter *footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreData)];
   footer.triggerAutomaticallyRefreshPercent = -5;
   [footer setTitle:@"上拉加载" forState:MJRefreshStateIdle];
@@ -97,9 +101,61 @@ static NSString *IDType = @"TypeCell";
   [footer setTitle:@"我也是有底线" forState:MJRefreshStateNoMoreData];
   footer.stateLabel.font = [UIFont systemFontOfSize:11];
   footer.stateLabel.textColor = [UIColor colorWithRed:144/255.f green:144/255.f blue:144/255.f alpha:1.0f];
-  
+
   self.tableView.mj_footer = footer;
   self.tableView.mj_footer.hidden = YES;
+}
+
+/**
+ * 设置空白代理
+ */
+- (void)setupEmptyView{
+  _emptyView = [UIView new];
+  [self addSubview:_emptyView];
+  _emptyView.sd_layout.spaceToSuperView(UIEdgeInsetsZero);
+  _emptyView.backgroundColor = [UIColor colorWithHexString:@"f5f5f5"];
+
+  UIImageView *imgView = [UIImageView new];
+  imgView.image = [UIImage imageNamed:@"Systemupgrade"];
+  [_emptyView addSubview:imgView];
+
+  imgView.sd_layout
+  .centerXEqualToView(_emptyView)
+  .centerYEqualToView(_emptyView)
+  .widthIs(130)
+  .heightIs(150);
+
+  _emptyLb = [UILabel new];
+  _emptyLb.font = [UIFont systemFontOfSize:13];
+  _emptyLb.textColor = [UIColor colorWithHexString:@"666666"];
+  [_emptyView addSubview:_emptyLb];
+  _emptyLb.textAlignment = 1;
+
+  _emptyLb.sd_layout
+  .topSpaceToView(imgView, 10)
+  .heightIs(20)
+  .leftSpaceToView(_emptyLb, 0)
+  .rightSpaceToView(_emptyView, 0);
+  //点击刷新
+  UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(refreshData)];
+  [_emptyView addGestureRecognizer:tap];
+  _emptyView.hidden = YES;
+}
+
+- (void)setErrCode:(NSInteger)errCode
+{
+  _errCode = errCode;
+  if (self.dataArr.count > 0) {
+    _emptyView.hidden = YES;
+
+  }else{
+    _emptyView.hidden = NO;
+    if (errCode == SystemUpgradeCode) {
+      _emptyLb.text = @"系统维护升级中 ";
+    }else{
+      _emptyLb.text = @"暂无数据 ";
+    }
+  }
 }
 
 /**
@@ -117,12 +173,16 @@ static NSString *IDType = @"TypeCell";
   }
   [dic addEntriesFromDictionary:@{@"page": [NSString stringWithFormat:@"%ld",self.page], @"size": @"10"}];
   __weak RecommendedView * weakSelf = self;
-  [NetWorkTool requestWithURL:self.uri params:dic toModel:[JXModel class] success:^(JXModel * result) {
-    weakSelf.dataArr = [result.data mutableCopy];
-    weakSelf.callBackArr = [result.data mutableCopy];
+  [NetWorkTool requestWithURL:self.uri params:dic toModel:nil success:^(NSDictionary * result) {
+    
+    JXModel* model = [JXModel modelWithJSON:result];
+    weakSelf.dataArr = [model.data mutableCopy];
+    if(result&&[result valueForKey:@"data"]){
+      weakSelf.callBackArr = [[result valueForKey:@"data"] mutableCopy];
+    }
 
     [self.tableView.mj_header endRefreshing];
-    if(result.data.count < 10){
+    if(model.data.count < 10){
       [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
     }else{
       [weakSelf.tableView.mj_footer resetNoMoreData];
@@ -134,7 +194,9 @@ static NSString *IDType = @"TypeCell";
         self.tableView.mj_footer.hidden = NO;
       });
     }
+    weakSelf.errCode = 10000;
   } failure:^(NSString *msg, NSInteger code) {
+    weakSelf.errCode = code;
     [MBProgressHUD showSuccess:msg];
     [weakSelf.tableView.mj_header endRefreshing];
   } showLoading:nil];
@@ -152,17 +214,23 @@ static NSString *IDType = @"TypeCell";
   }
   [dic addEntriesFromDictionary:@{@"page": [NSString stringWithFormat:@"%ld",self.page], @"size": @"10"}];
     __weak  RecommendedView * weakSelf = self;
-    [NetWorkTool requestWithURL:self.uri params:dic toModel:[JXModel class] success:^(JXModel * result) {
-    [weakSelf.dataArr addObjectsFromArray:result.data];
-    [weakSelf.callBackArr addObjectsFromArray:result.data];
+    [NetWorkTool requestWithURL:self.uri params:dic toModel:nil success:^(NSDictionary * result) {
+      
+      JXModel* model = [JXModel modelWithJSON:result];
+      [weakSelf.dataArr addObjectsFromArray:model.data];
+      if(result&&[result valueForKey:@"data"]){
+        [weakSelf.callBackArr addObjectsFromArray:[result valueForKey:@"data"]];
+      }
     [weakSelf.tableView reloadData];
     //    [weakSelf.collectionView.collectionViewLayout invalidateLayout];
-      if(result.data.count < 10){
+      if(model.data.count < 10){
       [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
     }else{
       [weakSelf.tableView.mj_footer endRefreshing];
     }
+      weakSelf.errCode = 10000;
   } failure:^(NSString *msg, NSInteger code) {
+    weakSelf.errCode = code;
     [MBProgressHUD showSuccess:msg];
     [weakSelf.tableView.mj_footer endRefreshing];
   } showLoading:nil];
@@ -188,7 +256,7 @@ static NSString *IDType = @"TypeCell";
     cell.recTypeDelegate = self;
     cell.clipsToBounds = YES;
     return cell;
-    
+
   }
   RecommendedCell * cell = [tableView dequeueReusableCellWithIdentifier:ID];
   cell.model = model;
@@ -213,7 +281,7 @@ static NSString *IDType = @"TypeCell";
   JXModelData * model= [self.dataArr objectAtIndex:indexPath.row];
   if(model.showType&& model.showType == 2){
     if (_onItemPress) {
-      _onItemPress([self.callBackArr[indexPath.item] modelToJSONObject]);
+      _onItemPress(self.callBackArr[indexPath.item]);
     }
   }
 }
@@ -238,7 +306,7 @@ static NSString *IDType = @"TypeCell";
   NSLog(@"delegate 1");
   NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
   if (_onNineClick) {
-    _onNineClick([self.callBackArr[indexPath.item] modelToJSONObject]);
+    _onNineClick(self.callBackArr[indexPath.item]);
   }
 }
 
@@ -261,7 +329,7 @@ NSLog(@"delegate 2");
 -(void)labelClick:(RecommendedCell *)cell{
   NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
   if (_onItemPress) {
-//    _onItemPress([self.callBackArr[indexPath.item] modelToJSONObject]);
+//    _onItemPress(self.callBackArr[indexPath.item]);
     [self refreshData];
   }
 }
@@ -279,15 +347,15 @@ NSLog(@"delegate 2");
 #pragma mark - RecTypeCell-delegate
 
 -(void)zanBtnClick:(RecTypeCell *)cell{
-  
+
 }
 
 -(void)shareBtnClick:(RecTypeCell *)cell{
-  
+
 }
 
 -(void)clickLabel:(RecTypeCell *)cell{
-  
+
 }
 
 

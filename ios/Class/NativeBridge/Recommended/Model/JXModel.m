@@ -28,3 +28,15 @@
 }
 
 @end
+
+@implementation GoodsDataModel
+
+@end
+
+@implementation SourcesModel
+
+@end
+
+@implementation UserInfoModel
+
+@end

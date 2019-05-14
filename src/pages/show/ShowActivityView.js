@@ -13,7 +13,7 @@ import {
     TouchableWithoutFeedback,
     TouchableOpacity
 } from 'react-native';
-import { observer } from 'mobx-react';
+import {observer} from 'mobx-react';
 import RefreshList from '../../components/ui/RefreshList';
 import Toast from '../../utils/bridge';
 import res from './res';
@@ -27,9 +27,10 @@ export default class ShowActivityView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            viewData:[],
+            viewData: [],
             isEmpty: false,
             currentPage: 1,
+            firstLoading: 1, //1：加载动画 2 动画结束
             isError: false,
             errMsgText: '发生错误',
         };
@@ -42,13 +43,19 @@ export default class ShowActivityView extends Component {
     componentDidMount() {
         //网络请求，业务处理
         if (this.isFirst) {
-            this.getDataFromNetwork();
+            this.time = setTimeout(() => {
+                this.getDataFromNetwork();
+            }, 700);
         }
+    }
+
+    componentWillUnmount() {
+    this.time&&this.time.removeAll();
     }
 
     onLoadMore = () => {
         if (!this.noMoreData) {
-            console.log('onLoadMore',this.currentPage++);
+            console.log('onLoadMore', this.currentPage++);
             this.currentPage++;
             this.getDataFromNetwork();
         }
@@ -67,37 +74,34 @@ export default class ShowActivityView extends Component {
 
     getDataFromNetwork = () => {
         if (!this.isRefresh) {
-            Toast.showLoading('加载中...');
+            // Toast.showLoading('加载中...');
         }
-
-        ShowApi.showActivity({page:1, size:10, spreadPosition:4 }).then(result => {
-            console.log('showActivity',result);
-            if(result.code && result.code === 10000){
-                if( result.data && result.data.data){
-                    this.setState({viewData:result.data.data});
+            ShowApi.showActivity({page: this.currentPage, size: 10, spreadPosition: 4}).then(result => {
+                if (result.code && result.code === 10000) {
+                    if (result.data && result.data.data) {
+                        Toast.hiddenLoading();
+                        this.isFirst = false;
+                        this.setState({
+                            firstLoading: 2,
+                            viewData: result.data ? result.data.data : [],
+                            isEmpty: result.data.totalNum === 0, isError: false
+                        });
+                    }
                 }
-            }
-        }).catch(err=>{
-            console.log('showActivityError');
-
-        });
-
-        setTimeout(()=>{
-            this.isRefresh = false;
-            Toast.hiddenLoading();
-            this.isFirst = false;
-            this.setState({ isError: false });
-        },2000);
-
+            }).catch(err => {
+                Toast.hiddenLoading();
+                this.setState({isError: true, firstLoading: 2});
+                Toast.$toast(err.msg);
+            });
     };
 
 
     onListViewScroll = (event) => {
         let offsetY = event.nativeEvent.contentOffset.y;
         this.item0 && this.item0.measure((fx, fy, w, h, left, top) => {
-            if(offsetY > ScreenUtils.height - 100){
+            if (offsetY > ScreenUtils.height - 100) {
                 showActiveModules.setTopBtnHide(true);
-            }else {
+            } else {
                 showActiveModules.setTopBtnHide(false);
             }
         });
@@ -105,19 +109,24 @@ export default class ShowActivityView extends Component {
 
     render() {
         return (
-            <View style={styles.container} >
+            <View style={styles.container}>
                 {this.state.isError ? this.renderError() : <RefreshList
                     topBtn={showActiveModules.topBtnHide}
                     isHideFooter={false}
+                    firstLoading={this.state.firstLoading}
                     data={this.state.viewData}
+                    headerData={[0]}
                     renderItem={this.renderItem}
                     onRefresh={this.onRefresh}
                     onLoadMore={this.onLoadMore}
-                    onListViewScroll={(e)=>{this.onListViewScroll(e)}}
+                    onListViewScroll={(e) => {
+                        this.onListViewScroll(e)
+                    }}
                     extraData={this.state}
                     isEmpty={this.state.isEmpty}
+                    emptyTip={'暂无数据'}
                     initialNumToRender={5}
-                    ListHeaderComponent={<View style={{ height: 10 }}/>}
+                    ListHeaderComponent={<View style={{height: 10}}/>}
                 />}
             </View>
         );
@@ -127,16 +136,14 @@ export default class ShowActivityView extends Component {
         return (
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={styles.errContainer}>
-                    <Image source={res.placeholder.netError}
-                           style={{ width: DesignRule.autoSizeWidth(120), height: DesignRule.autoSizeWidth(120) }}
-                           resizeMode={'contain'}/>
-                    <Text style={styles.titleStyle} allowFontScaling={false}>
-                        {this.state.errMsgText}
-                    </Text>
-                    <TouchableOpacity activeOpacity={0.5} style={styles.btnStyle}
+                    <TouchableOpacity activeOpacity={0.5} style={{alignItems: 'center'}}
                                       onPress={() => this.getDataFromNetwork()}>
+                        <Image source={res.placeholder.no_data_img}
+                               style={{width: DesignRule.autoSizeWidth(120), height: DesignRule.autoSizeWidth(120)}}
+                               resizeMode={'contain'}/>
                         <Text style={{
-                            color: DesignRule.bgColor_btn,
+                            marginTop: 10,
+                            color: '#666666',
                             fontSize: DesignRule.fontSize_mediumBtnText
                         }} allowFontScaling={false}>
                             重新加载
@@ -148,25 +155,37 @@ export default class ShowActivityView extends Component {
         );
     }
 
-    renderItem = ({ item, index }) => {
+    renderItem = ({item, index}) => {
         console.log(item)
-        let imageUrl = item.resource && item.resource.map((images,index)=>{
-            if(item.type === 3) {return item.url;}
+        let imageUrl = item.resource && item.resource.map((images, index) => {
+            if (item.type === 3) {
+                return item.url;
+            }
         });
         console.log(imageUrl)
         return (
-            <TouchableOpacity ref={(ref)=>{this['item' + index] = ref}} key={'row' + index} onPress={()=>this.clickItem(index)}>
+            <TouchableOpacity ref={(ref) => {
+                this['item' + index] = ref
+            }} key={'row' + index} onPress={() => this.clickItem(index)}>
                 <View style={styles.itemBgStyle}>
                     <Image style={styles.itemImgStyle} source={{uri: '111.png'}}/>
                     <Text style={{marginLeft: 10, marginRight: 10, marginTop: 10}} numberOfLines={2}>
-                        {item['content']}
+                        {item.content}
                     </Text>
                     <View style={{flexDirection: 'row', alignItems: 'center', margin: 10}}>
-                        <Image style={{width: 24, height: 24, borderRadius: 12, overflow: 'hidden',backgroundColor:'#666a6d'}}
-                               source={{uri:item.userInfoVO.userImg}}/>
-                        <Text style={{flex: 1, marginLeft: 5}} numberOfLines={1}>{item.userInfoVO.userName}</Text>
+                        <Image style={{
+                            width: 24,
+                            height: 24,
+                            borderRadius: 12,
+                            overflow: 'hidden',
+                            backgroundColor: '#666a6d'
+                        }}
+                               source={{uri: item.userInfoVO && item.userInfoVO.userImg}}/>
+                        <Text style={{flex: 1, marginLeft: 5}}
+                              numberOfLines={1}>{item.userInfoVO && item.userInfoVO.userName}</Text>
                         <Image style={{width: 12, height: 16,}} source={res.hotIcon}/>
-                        <Text style={{marginLeft:8}}>{item.hotCount>999? item.hotCount>100000?'10w+':'999+':item.hotCount}</Text>
+                        <Text
+                            style={{marginLeft: 8}}>{item.hotCount ? item.hotCount > 999 ? item.hotCount > 100000 ? '10w+' : '999+' : item.hotCount : '0'}</Text>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -177,12 +196,13 @@ export default class ShowActivityView extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor:'#F7F7F7'
+        backgroundColor: '#F7F7F7'
     },
     errContainer: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: '#f5f5f5'
     },
     titleStyle: {
         fontSize: 15,
@@ -190,19 +210,19 @@ const styles = StyleSheet.create({
         marginTop: 10,
         textAlign: 'center'
     },
-    itemBgStyle:{
-        marginLeft:15,
-        marginTop:10,
-        marginRight:15,
-        backgroundColor:'white',
+    itemBgStyle: {
+        marginLeft: 15,
+        marginTop: 10,
+        marginRight: 15,
+        backgroundColor: 'white',
         // height:247,
         borderRadius: 5,
         overflow: 'hidden',
     },
-    itemImgStyle:{
+    itemImgStyle: {
         height: 160,
         width: ScreenUtils.width - 30,
-        backgroundColor:'#666a6d',
+        backgroundColor: '#666a6d',
         borderRadius: 5,
         overflow: 'hidden',
     },

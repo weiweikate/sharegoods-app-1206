@@ -107,7 +107,7 @@
   [_downloadBtn addTarget:self action:@selector(tapDownloadBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.downloadBtn.sd_layout.centerYEqualToView(self.zanNum)
   .leftSpaceToView(self.zanNum, 0)
-  .widthIs(25).heightIs(25);
+  .widthIs(22).heightIs(22);
     
   self.downLoadNUm.sd_layout.centerYEqualToView(self.downloadBtn)
   .leftSpaceToView(self.downloadBtn, 1)
@@ -195,7 +195,7 @@
         price.font = [UIFont systemFontOfSize:10];
         price.textColor = [UIColor lightGrayColor];
 //      if([self.products[i][@"price"] && self.products[i][@"originalPrice"]){
-        price.attributedText = [self getPriceAttribute:[self.products[i] valueForKey:@"price"] oldPrice:[self.products[i] valueForKey:@"originalPrice"]];
+        price.attributedText = [self getPriceAttribute:[self.products[i] valueForKey:@"groupPrice"] oldPrice:[self.products[i] valueForKey:@"originalPrice"]];
 //        }
       
         UIButton* shopCarBtn = [UIButton buttonWithType:UIButtonTypeCustom];
