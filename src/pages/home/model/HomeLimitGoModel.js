@@ -27,8 +27,9 @@ export class LimitGoModules {
         const len = (this.currentGoodsList && this.currentGoodsList.length) || 0;
         if (len > 0) {
             return px2dp(98) + len * px2dp(140) + (len - 1) * px2dp(10) + 0.8;
+        } else {
+            return px2dp(98) + 0.8;
         }
-        return 0;
     }
 
     @action loadLimitGo = flow(function* () {
@@ -41,12 +42,13 @@ export class LimitGoModules {
                 this.currentPage = -1;
                 throw new Error('不显示秒杀');
             } else {
+
                 const res = yield HomeApi.getLimitGo({
                     type: 0
                 });
                 const result = res.data || [];
-
                 let _spikeList = [];
+                let timeFormats = [];
 
                 let spikeTime = 0;     // 秒杀开始时间
                 let lastSeckills = 0;  // 最近的秒杀
@@ -105,11 +107,25 @@ export class LimitGoModules {
                         activityCode: (result[index] && result[index].simpleActivity.code) || '',
                         goods: (result[index] && result[index].productDetailList) || []
                     });
+                    timeFormats.push(timeFormat);
                 });
                 this.initialPage = _initialPage;
-                this.currentPage = _currentPage;
+
+                let currentTimeFormat = null;
+                //获取当前选中限时购的名称
+                if (this.currentPage > -1 && this.spikeList.length > this.currentPage) {
+                    currentTimeFormat = this.spikeList[this.currentPage].time;
+                }
+                // 选中限时购还在请求下来的数组中
+                if (currentTimeFormat && timeFormats.indexOf(currentTimeFormat) !== -1) {
+                    this.currentPage = timeFormats.indexOf(currentTimeFormat);
+                } else {
+                    //不然显示离当前时间最近的限时购
+                    this.currentPage = _currentPage;
+                }
+
                 this.spikeList = _spikeList;
-                this.currentGoodsList = (_spikeList[_currentPage] && _spikeList[_currentPage].goods) || [];
+                this.currentGoodsList = (_spikeList[this.currentPage] && _spikeList[this.currentPage].goods) || [];
                 homeModule.changeHomeList(homeType.limitGo);
             }
         } catch (error) {
