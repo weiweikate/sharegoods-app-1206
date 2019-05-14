@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {
     View,
     Image,
+    TouchableWithoutFeedback,
     StyleSheet,
     FlatList, Clipboard
 } from 'react-native';
@@ -114,7 +115,7 @@ export class HeaderItemView extends Component {
                 <View style={styles.freightMonthView}>
                     {/*值为0*/}
                     <Text style={styles.freightMonthText}>快递：{freight == 0 ? '包邮' : `${freight}元`}</Text>
-                    <Text style={styles.freightMonthText}>{`月销: ${monthSaleCount}`}</Text>
+                    <Text style={styles.freightMonthText}>{`近期销量: ${monthSaleCount}`}</Text>
                 </View>
             </View>
         );
@@ -189,7 +190,7 @@ const styles = StyleSheet.create({
 * */
 export class SuitItemView extends Component {
     _renderItem = ({ item }) => {
-        const { imgUrl, name, minPrice, prodCode, skuList } = item;
+        const { imgUrl, name, minPrice, skuList } = item;
 
         let decreaseList = (skuList || []).map((sku) => {
             return sku.promotionDecreaseAmount;
@@ -198,9 +199,7 @@ export class SuitItemView extends Component {
 
         return (
             <View style={SuitItemViewStyles.item}>
-                <NoMoreClick onPress={() => {
-                    navigate(RouterMap.ProductDetailPage, { productCode: prodCode });
-                }}>
+                <NoMoreClick onPress={this._goSuitPage}>
                     <UIImage style={SuitItemViewStyles.itemImg} source={{ uri: imgUrl }}>
                         <View style={SuitItemViewStyles.subView}>
                             <Text style={SuitItemViewStyles.subText}>立省{minDecrease}起</Text>
@@ -368,12 +367,12 @@ const PromoteItemViewStyles = StyleSheet.create({
 * 服务
 * */
 export class ServiceItemView extends Component {
-    _imgText(text) {
+    _imgText = (text) => {
         return <View style={ServiceItemViewStyles.itemView}>
             <Image source={service_true}/>
             <Text style={ServiceItemViewStyles.serviceValueText}>{text}</Text>
         </View>;
-    }
+    };
 
     render() {
         const { productDetailModel, serviceAction } = this.props;
@@ -467,11 +466,11 @@ export class ContentItemView extends Component {
         if (height === 0) {
             return null;
         }
-        return <NoMoreClick onPress={() => {
+        return <TouchableWithoutFeedback onPress={() => {
             navigate(RouterMap.CheckBigImagesView, { imageUrls: [item] });
         }}>
             <Image source={{ uri: item }} style={{ width, height }}/>
-        </NoMoreClick>;
+        </TouchableWithoutFeedback>;
     }
 }
 

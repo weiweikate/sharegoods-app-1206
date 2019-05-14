@@ -23,6 +23,7 @@ const button = {
     del_web: require('./del_web.png'),
     message_three: require('./tongyong_icon_more_nor.png'),
     down_icon: require('./down_icon.png'),
-    close_icon: require('./close_icon.png')
+    close_icon: require('./close_icon.png'),
+    kefu_icon: require('./me_bangzu_kefu_icon.png')
 };
 export default button;

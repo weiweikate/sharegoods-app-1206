@@ -16,11 +16,13 @@ const { statusBarHeight } = ScreenUtils;
 export default class ProductDetailNavView extends Component {
     render() {
         const { getAllGoodsClassNumber } = ShopCartStore;
-        /*showNavTextT显示文字(优先) showNavText nav渐变时*/
+        /*showNavTextT显示文字(优先,不是绝对定位)
+        *showNavText nav渐变时
+        * */
         const { showAction, productDetailModel, showNavTextT } = this.props;
         const { name, showNavText } = productDetailModel;
         return (
-            <View style={[styles.bgView, showNavTextT && { backgroundColor: 'white' }]}>
+            <View style={showNavTextT ? { backgroundColor: 'white' } : styles.bgView}>
                 <View style={styles.containerView}>
                     <View style={[styles.barItemContainer, { justifyContent: 'flex-start' }]}>
                         <NoMoreClick style={styles.btnContainer} onPress={() => {

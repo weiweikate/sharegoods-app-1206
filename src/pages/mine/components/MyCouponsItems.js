@@ -55,7 +55,7 @@ export default class MyCouponsItems extends Component {
     }
 
     fmtDate(obj) {
-        return formatDate(obj, 'yyyy.MM.dd');
+        return formatDate(obj, 'yyyy.MM.dd HH:mm');
     }
 
 

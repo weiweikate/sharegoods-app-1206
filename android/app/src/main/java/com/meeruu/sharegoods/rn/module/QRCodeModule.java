@@ -48,9 +48,13 @@ public class QRCodeModule extends ReactContextBaseJavaModule implements Activity
             boolean isSuccess = data.getBooleanExtra("isSuccess", false);
             if (isSuccess) {
                 String result = data.getStringExtra("ScanInfo");
-                scanSuccess.invoke(result);
+                if (scanSuccess != null) {
+                    scanSuccess.invoke(result);
+                }
             } else {
-                scanFail.invoke("权限不足！");
+                if (scanFail != null) {
+                    scanFail.invoke("权限不足！");
+                }
             }
         }
     }
