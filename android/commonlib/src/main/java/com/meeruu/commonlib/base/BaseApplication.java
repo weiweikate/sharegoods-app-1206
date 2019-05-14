@@ -7,9 +7,19 @@ import android.support.multidex.MultiDexApplication;
 
 import com.facebook.imagepipeline.core.ImagePipelineFactory;
 import com.meeruu.commonlib.callback.ForegroundCallbacks;
+import com.meeruu.commonlib.rn.QiyuImageLoader;
 import com.meeruu.commonlib.service.InitializeService;
+import com.meeruu.commonlib.service.QiyuUrlEvent;
 import com.meeruu.commonlib.utils.AppUtils;
 import com.meeruu.commonlib.utils.SensorsUtils;
+import com.meeruu.qiyu.activity.QiyuServiceMessageActivity;
+import com.qiyukf.unicorn.api.OnMessageItemClickListener;
+import com.qiyukf.unicorn.api.Unicorn;
+import com.qiyukf.unicorn.api.YSFOptions;
+
+import org.greenrobot.eventbus.EventBus;
+
+import static com.meeruu.commonlib.config.QiyuConfig.options;
 
 import cn.jiguang.verifysdk.api.JVerificationInterface;
 
@@ -55,8 +65,11 @@ public class BaseApplication extends MultiDexApplication {
         ForegroundCallbacks.init(this);
         // 神策初始化
         SensorsUtils.init(this);
-        // 初始化一键登录
-        JVerificationInterface.init(this);
+                // 初始化一键登录
+                JVerificationInterface.init(this);
+        // 七鱼初始化
+        Unicorn.init(getApplicationContext(), "b87fd67831699ca494a9d3de266cd3b0", QiYuOptions(),
+                new QiyuImageLoader());
         InitializeService.init(this);
     }
 
@@ -66,6 +79,21 @@ public class BaseApplication extends MultiDexApplication {
         MultiDex.install(this);
         // 修复部分手机GC超时
         AppUtils.daemonsFix();
+    }
+
+    private YSFOptions QiYuOptions() {
+        YSFOptions ysfOptions = options();
+        ysfOptions.onMessageItemClickListener = new OnMessageItemClickListener() {
+            // 响应 url 点击事件
+            @Override
+            public void onURLClicked(Context context, String url) {
+                ((QiyuServiceMessageActivity) context).finish();
+                QiyuUrlEvent event = new QiyuUrlEvent();
+                event.setUrl(url);
+                EventBus.getDefault().post(event);
+            }
+        };
+        return ysfOptions;
     }
 
     @Override

@@ -1,6 +1,6 @@
 {
     "showDebugPanel": true,
-    "envType": "李长辉",
+    "envType": "qa",
     "isDevHotUpdate": false,
     "__注释__": "[showDebugPanel]:是否显示调试面板   [envType]:决定网络启动后，默认的网络环境类型",
     "env": {
@@ -177,7 +177,7 @@
         },
         "姜振兴": {
             "name": "姜振兴",
-            "host": "http://172.18.6.39:9090/gateway"
+            "host": "http://172.18.6.166:9090/gateway"
         },
         "dev_new": {
             "name": "优惠券测试",

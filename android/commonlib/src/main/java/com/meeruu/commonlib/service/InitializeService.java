@@ -7,60 +7,31 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 
-import com.facebook.react.bridge.ReactContext;
-import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.meeruu.commonlib.callback.ForegroundCallbacks;
 import com.meeruu.commonlib.handler.CrashHandler;
-import com.meeruu.commonlib.handler.WeakHandler;
-import com.meeruu.commonlib.rn.QiyuImageLoader;
 import com.meeruu.commonlib.umeng.UApp;
 import com.meeruu.commonlib.umeng.UShare;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.Utils;
-import com.meeruu.qiyu.activity.QiyuServiceMessageActivity;
 import com.meituan.android.walle.WalleChannelReader;
-import com.qiyukf.unicorn.api.OnMessageItemClickListener;
-import com.qiyukf.unicorn.api.Unicorn;
-import com.qiyukf.unicorn.api.YSFOptions;
 import com.taobao.sophix.PatchStatus;
 import com.taobao.sophix.SophixManager;
 import com.taobao.sophix.listener.PatchLoadStatusListener;
 
-import org.greenrobot.eventbus.EventBus;
-
 import cn.jiguang.verifysdk.api.JVerificationInterface;
 import cn.jpush.android.api.JPushInterface;
-
-import static com.meeruu.commonlib.config.QiyuConfig.options;
 
 public class InitializeService extends IntentService {
 
     private int patchStatus;
-    private WeakHandler mHandler;
 
     @Override
     public void onCreate() {
         super.onCreate();
         startForeground();
-        mHandler = new WeakHandler(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message msg) {
-                switch (msg.what) {
-                    case ParameterUtils.QIYU_IMG:
-                        // 七鱼初始化
-                        Unicorn.init(getApplicationContext(), "b87fd67831699ca494a9d3de266cd3b0", QiYuOptions(),
-                                new QiyuImageLoader());
-                        break;
-                }
-                return false;
-            }
-        });
     }
 
     @Override
@@ -89,16 +60,9 @@ public class InitializeService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
-            final String action = intent.getAction();
-            // 延迟三方sdk初始化
-            initNow();
             initCallback();
             initDelay();
         }
-    }
-
-    private void initNow() {
-        mHandler.sendEmptyMessage(ParameterUtils.QIYU_IMG);
     }
 
     private void initDelay() {
@@ -177,28 +141,6 @@ public class InitializeService extends IntentService {
                     .build();
             startForeground(ParameterUtils.NOTIFY_ID_APP_INIT, notification);
         }
-    }
-
-    private YSFOptions QiYuOptions() {
-        YSFOptions ysfOptions = options();
-        ysfOptions.onMessageItemClickListener = new OnMessageItemClickListener() {
-            // 响应 url 点击事件
-            @Override
-            public void onURLClicked(Context context, String url) {
-                ((QiyuServiceMessageActivity) context).finish();
-                QiyuUrlEvent event = new QiyuUrlEvent();
-                event.setUrl(url);
-                EventBus.getDefault().post(event);
-            }
-        };
-        return ysfOptions;
-    }
-
-    private void sendEvent(ReactContext reactContext,
-                           String eventName,
-                           @Nullable WritableMap params) {
-        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                .emit(eventName, params);
     }
 
     @Override
