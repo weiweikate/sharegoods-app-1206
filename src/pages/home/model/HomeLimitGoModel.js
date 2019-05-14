@@ -6,6 +6,7 @@ import { homeModule } from './Modules';
 const { px2dp } = ScreenUtils;
 import HomeApi from '../api/HomeAPI';
 import { differenceInCalendarDays, format } from 'date-fns';
+import bridge from '../../../utils/bridge';
 
 export const limitStatus = {
     del: 0, //删除
@@ -101,6 +102,7 @@ export class LimitGoModules {
                         id: index,
                         time: timeFormat,
                         diff: diff,
+                        activityCode: (result[index] && result[index].simpleActivity.code) || '',
                         goods: (result[index] && result[index].productDetailList) || []
                     });
                 });
@@ -114,6 +116,17 @@ export class LimitGoModules {
             console.log(error);
         }
     });
+
+    @action followSpike(spu, code) {
+        HomeApi.followLimit({
+            spu,
+            activityCode: code
+        }).then(res => {
+            this.loadLimitGo();
+        }).catch(err => {
+            bridge.$toast(err.msg);
+        });
+    }
 
     @action changeLimitGo(index) {
         this.currentGoodsList = (this.spikeList[index] && this.spikeList[index].goods) || [];
