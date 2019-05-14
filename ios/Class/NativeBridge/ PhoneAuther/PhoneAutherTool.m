@@ -7,30 +7,73 @@
 //
 
 #import "PhoneAutherTool.h"
-#import <ATAuthSDK/ATAuthSDK.h>
+//#import <ATAuthSDK/ATAuthSDK.h>
+#import "UIViewController+Util.h"
+#import "JVERIFICATIONService.h"
+#import "NSObject+Util.h"
 @implementation PhoneAutherTool
-+(void)startPhoneAutherWithPhoneNum:(NSString *)phoneNum andFinshBlock:(void (^)(NSDictionary * _Nonnull))finshBlock{
-  /*
-   * 返回：字典形式
-   *      resultCode：6666-成功，5555-超时，4444-失败，3344-参数异常，2222-无网络，1111-无SIM卡
-   *      accessCode：预取的编码
-   *      msg：文案或错误提示
-   */
-  if ([TXCommonAuthHandler checkGatewayVerifyEnable:phoneNum]) {
-    [TXCommonAuthHandler getAccessCodeWithTimeout:4000 complete:^(NSDictionary * _Nonnull resultDic) {
-      if (finshBlock) {
-        finshBlock(resultDic);
++(void)startPhoneAutherWithPhoneNum:(NSString *)phoneNum andFinshBlock:(void (^)(NSString * _Nonnull))finshBlock{
+//  TXCustomModel *modelNew = [[TXCustomModel alloc] init];
+//  //modelNew.navColor = UIColor.orangeColor;
+//  modelNew.navTitle = [[NSAttributedString alloc] initWithString:@"一键登录" attributes:@{NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#333"],NSFontAttributeName: [UIFont systemFontOfSize:18.0]}];
+//  //modelNew.logoImage = [self imageWithColor:UIColor.orangeColor size:CGSizeMake(18 0.0, 180.0) isRoundedCorner:NO];
+//  modelNew.logoImage =[UIImage imageNamed:@"logo"];
+//  modelNew.logoIsHidden = NO;
+//  //modelNew.slogonColor = UIColor.orangeColor;
+//  //modelNew.numberColor = UIColor.orangeColor;
+//  //modelNew.numberSize = 20.0;
+//  modelNew.loginBtnBgColor = UIColor.orangeColor;
+//  //modelNew.loginBtnText = @"⼀一键登录";
+//  //modelNew.loginBtnTextColor = UIColor.whiteColor;
+//  modelNew.privacyOne = @[@"流量量App使⽤用⽅方法1",@"https://www.taobao.com/"]; modelNew.privacyTwo = @[@"流量量App使⽤用⽅方法2",@"https://www.baidu.com/"]; modelNew.privacyColor = UIColor.orangeColor;
+//  modelNew.changeBtnColor = UIColor.orangeColor;
+//  modelNew.changeBtnIsHidden = NO;
+//
+//  dispatch_async(dispatch_get_main_queue(), ^{
+//    UIViewController * currentVC = [UIApplication sharedApplication].delegate.window.rootViewController;
+//    if (currentVC && [currentVC isKindOfClass:[JRBaseNavVC class]]) {
+//      JRBaseNavVC * currentNav = (JRBaseNavVC * )currentVC;
+//      currentVC = currentNav.viewControllers.lastObject;
+//    }
+//    __weak UIViewController * weakVC = currentVC;
+//    [[TXCommonAuthHandler sharedInstance]getLoginTokenWithController:currentVC
+//                                                               model:modelNew
+//                                                             timeout:4000
+//                                                            complete:^(NSDictionary * _Nonnull resultDic)
+//    {
+//          NSString *code = [resultDic valueForKey:@"resultCode"];
+//          if ([code isEqualToString:TX_Auth_Result_Success]) {// 授权⻚页⾯面成功唤起
+//
+//          }else if ([code isEqualToString:TX_Login_SSO_Action]) { // 授权⻚页⾯面销毁
+//          [weakVC dismissViewControllerAnimated:YES completion:nil];
+//          NSString *token = [resultDic valueForKey:@"token"];
+//          if (finshBlock) {
+//                  finshBlock(token);
+//            }
+//        }
+//    }];
+//  });
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [JVERIFICATIONService getAuthorizationWithController:self.currentViewController_XG completion:^(NSDictionary *result) {
+      NSLog(@"一键登录 result:%@", result);
+      if ([result[@"code"] integerValue] == 6000) {
+        if (finshBlock) {
+          finshBlock(result[@"loginToken"]);
+        }
+      }else{
+        dispatch_async(dispatch_get_main_queue(), ^{
+          [JRLoadingAndToastTool showToast:result[@"content"] andDelyTime:0.5];
+        });
       }
     }];
-  }else{
-    finshBlock(@{@"resultCode":@(-1)});
-  }
- 
+  });
 }
-
 +(BOOL)isCanPhoneAuthen{
-               [TXCommonAuthHandler getVersion];
-  BOOL isCan = [TXCommonAuthHandler checkGatewayVerifyEnable:nil];
-  return isCan;
+  if(![JVERIFICATIONService checkVerifyEnable]) {
+    NSLog(@"当前网络环境不支持认证！");
+    return false;
+  }else{
+    return true;
+  }
 }
 @end

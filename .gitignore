@@ -23,6 +23,8 @@ DerivedData
 project.xcworkspace
 Pods/
 *.bundle
+!ATAuthSDK.bundle
+!JVerificationResource.bundle
 
 # Android/IntelliJ
 #

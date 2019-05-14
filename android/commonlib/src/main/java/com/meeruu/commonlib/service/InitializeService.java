@@ -115,8 +115,6 @@ public class InitializeService extends IntentService {
         UShare.init(getApplicationContext(), ParameterUtils.UM_KEY);
         // 初始化极光
         JPushInterface.init(getApplicationContext());
-        // 初始化一键登录
-        JVerificationInterface.init(getApplicationContext());
         if (Utils.isApkInDebug()) {
             // jpush debug
             JPushInterface.setDebugMode(true);

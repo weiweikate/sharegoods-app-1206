@@ -22,11 +22,11 @@ import { track } from "../../../utils/SensorsTrack";
  * @param athenToken  ali 返回的校验token
  * @param navigation  导航器
  * @param successCallBack 登录成功后的回调
+ * hyf 后期更改去掉phone
  */
 const oneClickLoginValidation = (phone, authenToken, navigation, successCallBack) => {
     TrackApi.LoginButtonClick({"loginMethod":4})
     LoginAPI.oneClickLoginValidation({
-        phone: phone,
         token: authenToken
     }).then(result => {
         successCallBack && successCallBack();
@@ -55,7 +55,7 @@ const gobackPage = (navigation) => {
     // //老用户登录成功后直接退出原界面
     try {
         let $routes = global.$routes || [];
-        let router = $routes[$routes.length - 2];
+        let router = $routes[$routes.length - 1];
         let routerKey = router.key;
         const backAction = NavigationActions.back({ key: routerKey });
         navigation.dispatch(backAction);
@@ -138,7 +138,6 @@ const wxLoginAction = (callBack) => {
                 callBack && callBack(error.code, data);
                 TrackApi.wxSignUpSuccess();
             }
-            alert(error.msg)
             bridge.$toast(data.msg);
         });
     });
