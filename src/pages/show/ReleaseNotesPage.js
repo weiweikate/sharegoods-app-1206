@@ -25,6 +25,7 @@ import UIImage from '../../components/ui/UIImage';
 import Emoticons, * as emoticons from '../../comm/components/emoticons';
 import EmptyUtils from '../../utils/EmptyUtils';
 import ShowApi from './ShowApi';
+import user from '../../model/user';
 
 const { addIcon, delIcon, iconShowDown, iconShowEmoji, addShowIcon } = res;
 
@@ -105,7 +106,16 @@ export default class ReleaseNotesPage extends BasePage {
         ShowApi.publishShow(params).then((data)=>{
             this.props.navigation.popToTop();
             this.props.navigation.navigate('ShowListPage');
-            DeviceEventEmitter.emit('PublishShowFinish');
+            let listItemData = params;
+            let name ;
+            if (EmptyUtils.isEmpty(user.nickname)) {
+                name = user.phone;
+            } else {
+                name = user.nickname;
+            }
+            listItemData.userIcon = user.headImg
+            listItemData.name = name;
+            DeviceEventEmitter.emit('PublishShowFinish',JSON.stringify(listItemData));
         }).catch((error)=>{
             this.$toastShow(error.msg || '网络错误');
         })

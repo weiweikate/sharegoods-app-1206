@@ -1,6 +1,7 @@
 package com.meeruu.sharegoods.rn.showground.adapter;
 
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -12,6 +13,11 @@ import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
+import com.meeruu.sharegoods.rn.showground.utils.NumUtils;
+import com.meeruu.sharegoods.rn.showground.utils.UrlUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.DataBean, BaseViewHolder> {
@@ -21,6 +27,8 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
     private static final int Recommend = 3;
     private static final int New = 4;
     private final int realWidth;
+    private final int maxHeight;
+    private final int minHeight;
 
 
     private final int radius = DensityUtils.dip2px(5);
@@ -29,6 +37,8 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
     public ShowGroundAdapter() {
         super(R.layout.item_showground);
         realWidth = (ScreenUtils.getScreenWidth() - 40) / 2;
+        minHeight = realWidth*120/167;
+        maxHeight = realWidth*240/167;
     }
 
     @Override
@@ -46,20 +56,25 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
         String imgUrl = null;
         if(item.getResource() != null){
             imgUrl = item.getResource().get(0).getUrl();
+            Map<String,String> map = UrlUtils.urlSplit(imgUrl);
+            if(map.containsKey("width")){
+                width = Float.valueOf(map.get("width"));
+            }
+            if(map.containsKey("height")){
+                height = Float.valueOf(map.get("height"));
+            }
         }
-//        if (item.getGeneralize() == New || item.getGeneralize() == Recommend) {
-//            width = item.getCoverImgWide();
-//            height = item.getCoverImgHigh();
-//            imgUrl = item.getCoverImg();
-//        } else {
-//            width = item.getImgWide();
-//            height = item.getImgHigh();
-//            imgUrl = item.getImg();
-//        }
+
         if (TextUtils.isEmpty(imgUrl)) {
             imgUrl = "res://" + imageView.getContext().getPackageName() + "/" + R.drawable.bg_app_img;
         }
         int realHeight = (int) ((height / width) * realWidth);
+        if(realHeight < minHeight){
+            realHeight = minHeight;
+        }
+        if(realHeight > maxHeight){
+            realHeight = maxHeight;
+        }
         if (realHeight <= 1) {
             realHeight = realWidth;
         }
@@ -76,20 +91,16 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
         TextView name = helper.getView(R.id.showground_item_name);
         name.setText(item.getUserInfoVO().getUserName());
 
-        TextView time = helper.getView(R.id.showground_item_time);
-        time.setText(item.getPublishTimeStr());
-
         TextView title = helper.getView(R.id.showground_item_title);
-        title.setText(item.getContent());
-
-        TextView showTimes = helper.getView(R.id.showground_item_show_times);
-        int times = item.getClickCount();
-        String seeTimes = "";
-        if (times > 999999) {
-            seeTimes = 999999 + "+";
-        } else {
-            seeTimes = times + "";
+        String titleStr = item.getContent();
+        if(titleStr != null && titleStr.trim().length() > 0){
+            title.setText(titleStr);
+        }else {
+            title.setVisibility(View.GONE);
         }
-        showTimes.setText(seeTimes);
+
+        TextView showTimes = helper.getView(R.id.showground_item_rqz);
+        int times = item.getClickCount();
+        showTimes.setText(NumUtils.formatShowNum(times));
     }
 }

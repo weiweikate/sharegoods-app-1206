@@ -23,6 +23,7 @@ import javax.annotation.Nonnull;
 public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> {
     private static final String COMPONENT_NAME = "ShowGroundView";
     public static final int REPLACE_DATA = 1;
+    public static final int ADD_DATA_TOP = 2;
 
     @Override
     public String getName() {
@@ -58,7 +59,7 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> {
     @javax.annotation.Nullable
     @Override
     public Map<String, Integer> getCommandsMap() {
-        return MapBuilder.of("replaceData", REPLACE_DATA);
+        return MapBuilder.of("replaceData", REPLACE_DATA,"addDataToTop",ADD_DATA_TOP);
     }
 
     @Override
@@ -71,7 +72,13 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> {
                 }
             }
             break;
-
+            case ADD_DATA_TOP:{
+                Object object = root.getTag();
+                if (object != null && object instanceof ShowGroundView) {
+                    ((ShowGroundView) object).addDataToTop(args.getString(0));
+                }
+            }
+            break;
         }
     }
 

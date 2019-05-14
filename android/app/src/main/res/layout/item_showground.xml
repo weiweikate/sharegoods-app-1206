@@ -12,35 +12,6 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_alignBottom="@+id/showground_item_image"
-        android:background="@drawable/showground_item_mask" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/showground_item_image"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="9dp"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="17dp"
-            android:layout_height="11dp"
-            android:src="@drawable/see_white" />
-
-        <TextView
-            android:id="@+id/showground_item_show_times"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:includeFontPadding="false"
-            android:textColor="#fff"
-            android:textSize="10sp" />
-    </LinearLayout>
 
     <TextView
         android:id="@+id/showground_item_title"
@@ -51,9 +22,8 @@
         android:includeFontPadding="false"
         android:maxLines="2"
         android:paddingLeft="10dp"
-        android:paddingTop="9dp"
+        android:paddingTop="10dp"
         android:paddingRight="15dp"
-        android:paddingBottom="12dp"
         android:textColor="#333333"
         android:textSize="12sp" />
 
@@ -61,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/showground_item_title"
-        android:layout_marginTop="-1dp"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:gravity="center|end"
         android:orientation="horizontal"
@@ -70,8 +40,8 @@
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/showground_item_userIcon"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             app:roundAsCircle="true" />
 
         <TextView
@@ -82,13 +52,16 @@
             android:layout_weight="1"
             android:ellipsize="end"
             android:includeFontPadding="false"
-            android:maxEms="5"
             android:singleLine="true"
             android:textColor="#666666"
             android:textSize="11sp" />
+        <ImageView android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/icon_fire"
+            android:layout_marginRight="5dp"/>
 
         <TextView
-            android:id="@+id/showground_item_time"
+            android:id="@+id/showground_item_rqz"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="right"

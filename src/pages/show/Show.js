@@ -287,6 +287,10 @@ export class ShowDetail {
         }
     });
 
+    @action setDetail = flow(function* (data) {
+        this.detail = data;
+    })
+
     @action showDetailCode = flow(function* (code) {
         try {
             const result = yield ShowApi.showDetailCode({ code: code });

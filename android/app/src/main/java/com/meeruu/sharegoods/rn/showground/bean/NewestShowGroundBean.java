@@ -1,8 +1,11 @@
 package com.meeruu.sharegoods.rn.showground.bean;
 
+import com.chad.library.adapter.base.entity.MultiItemEntity;
+
 import java.util.List;
 
 public class NewestShowGroundBean {
+
 
     /**
      * currentPage : 1
@@ -11,7 +14,7 @@ public class NewestShowGroundBean {
      * isMore : 0
      * totalPage : 1
      * startIndex : 0
-     * data : [{"showNo":"SHOW2019051311331980800003300000","userInfoVO":{"userNo":"1000004","userImg":"https://testcdn.sharegoodsmall.com/sharegoods/da3a1f00cbc64733a0a8522ad7e3dbfe.png","userName":"15755373887"},"content":"","publishTime":1557718399000,"publishTimeStr":"20分钟前","showType":1,"products":null,"resource":[{"type":2,"url":"https://devcdn.sharegoodsmall.com/sharegoods/ff4647ea22dd4d14aad0adecb177b9f6.png"}],"likesCount":0,"shareCount":0,"downloadCount":0,"clickCount":0,"hotCount":8,"nowTime":1557719616374,"like":false}]
+     * data : [{"showNo":"SHOW2019050716562296100003900000","userInfoVO":{"userNo":"111","userImg":"","userName":""},"content":"2121","publishTime":1557228931000,"publishTimeStr":"5.07 19:35","showType":1,"products":[{"promotionResult":null,"prodCode":"SPU00000233","name":"xiaomi小米 MIJIA/米家 米家恒温电热水壶智能家用烧水壶保温","secondName":"【12月12日 0点开抢】到手价179元","originalPrice":"17.9","groupPrice":"9.9","minPrice":"15.9","maxPrice":"15.9","promotionMinPrice":null,"promotionMaxPrice":null,"v0Price":null,"imgUrl":"https://testcdn.sharegoodsmall.com/sharegoods/3fd92ae923374453ad4a767170c0aa54.png"},{"promotionResult":null,"prodCode":"SPU00000233","name":"xiaomi小米 MIJIA/米家 米家恒温电热水壶智能家用烧水壶保温","secondName":"【12月12日 0点开抢】到手价179元","originalPrice":"17.9","groupPrice":"9.9","minPrice":"15.9","maxPrice":"15.9","promotionMinPrice":null,"promotionMaxPrice":null,"v0Price":null,"imgUrl":"https://testcdn.sharegoodsmall.com/sharegoods/3fd92ae923374453ad4a767170c0aa54.png"},{"promotionResult":null,"prodCode":"SPU00000233","name":"xiaomi小米 MIJIA/米家 米家恒温电热水壶智能家用烧水壶保温","secondName":"【12月12日 0点开抢】到手价179元","originalPrice":"17.9","groupPrice":"9.9","minPrice":"15.9","maxPrice":"15.9","promotionMinPrice":null,"promotionMaxPrice":null,"v0Price":null,"imgUrl":"https://testcdn.sharegoodsmall.com/sharegoods/3fd92ae923374453ad4a767170c0aa54.png"}],"resource":[{"type":2,"url":"https://devcdn.sharegoodsmall.com/sharegoods/ff4647ea22dd4d14aad0adecb177b9f6.png"}],"likesCount":1,"shareCount":0,"downloadCount":0,"clickCount":0,"hotCount":0,"nowTime":1557804063514,"like":false}]
      */
 
     private int currentPage;
@@ -78,22 +81,22 @@ public class NewestShowGroundBean {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements MultiItemEntity {
         /**
-         * showNo : SHOW2019051311331980800003300000
-         * userInfoVO : {"userNo":"1000004","userImg":"https://testcdn.sharegoodsmall.com/sharegoods/da3a1f00cbc64733a0a8522ad7e3dbfe.png","userName":"15755373887"}
-         * content :
-         * publishTime : 1557718399000
-         * publishTimeStr : 20分钟前
+         * showNo : SHOW2019050716562296100003900000
+         * userInfoVO : {"userNo":"111","userImg":"","userName":""}
+         * content : 2121
+         * publishTime : 1557228931000
+         * publishTimeStr : 5.07 19:35
          * showType : 1
-         * products : null
+         * products : [{"promotionResult":null,"prodCode":"SPU00000233","name":"xiaomi小米 MIJIA/米家 米家恒温电热水壶智能家用烧水壶保温","secondName":"【12月12日 0点开抢】到手价179元","originalPrice":"17.9","groupPrice":"9.9","minPrice":"15.9","maxPrice":"15.9","promotionMinPrice":null,"promotionMaxPrice":null,"v0Price":null,"imgUrl":"https://testcdn.sharegoodsmall.com/sharegoods/3fd92ae923374453ad4a767170c0aa54.png"},{"promotionResult":null,"prodCode":"SPU00000233","name":"xiaomi小米 MIJIA/米家 米家恒温电热水壶智能家用烧水壶保温","secondName":"【12月12日 0点开抢】到手价179元","originalPrice":"17.9","groupPrice":"9.9","minPrice":"15.9","maxPrice":"15.9","promotionMinPrice":null,"promotionMaxPrice":null,"v0Price":null,"imgUrl":"https://testcdn.sharegoodsmall.com/sharegoods/3fd92ae923374453ad4a767170c0aa54.png"},{"promotionResult":null,"prodCode":"SPU00000233","name":"xiaomi小米 MIJIA/米家 米家恒温电热水壶智能家用烧水壶保温","secondName":"【12月12日 0点开抢】到手价179元","originalPrice":"17.9","groupPrice":"9.9","minPrice":"15.9","maxPrice":"15.9","promotionMinPrice":null,"promotionMaxPrice":null,"v0Price":null,"imgUrl":"https://testcdn.sharegoodsmall.com/sharegoods/3fd92ae923374453ad4a767170c0aa54.png"}]
          * resource : [{"type":2,"url":"https://devcdn.sharegoodsmall.com/sharegoods/ff4647ea22dd4d14aad0adecb177b9f6.png"}]
-         * likesCount : 0
+         * likesCount : 1
          * shareCount : 0
          * downloadCount : 0
          * clickCount : 0
-         * hotCount : 8
-         * nowTime : 1557719616374
+         * hotCount : 0
+         * nowTime : 1557804063514
          * like : false
          */
 
@@ -103,7 +106,6 @@ public class NewestShowGroundBean {
         private long publishTime;
         private String publishTimeStr;
         private int showType;
-        private Object products;
         private int likesCount;
         private int shareCount;
         private int downloadCount;
@@ -111,6 +113,7 @@ public class NewestShowGroundBean {
         private int hotCount;
         private long nowTime;
         private boolean like;
+        private List<ProductsBean> products;
         private List<ResourceBean> resource;
 
         public String getShowNo() {
@@ -159,14 +162,6 @@ public class NewestShowGroundBean {
 
         public void setShowType(int showType) {
             this.showType = showType;
-        }
-
-        public Object getProducts() {
-            return products;
-        }
-
-        public void setProducts(Object products) {
-            this.products = products;
         }
 
         public int getLikesCount() {
@@ -225,6 +220,14 @@ public class NewestShowGroundBean {
             this.like = like;
         }
 
+        public List<ProductsBean> getProducts() {
+            return products;
+        }
+
+        public void setProducts(List<ProductsBean> products) {
+            this.products = products;
+        }
+
         public List<ResourceBean> getResource() {
             return resource;
         }
@@ -235,9 +238,9 @@ public class NewestShowGroundBean {
 
         public static class UserInfoVOBean {
             /**
-             * userNo : 1000004
-             * userImg : https://testcdn.sharegoodsmall.com/sharegoods/da3a1f00cbc64733a0a8522ad7e3dbfe.png
-             * userName : 15755373887
+             * userNo : 111
+             * userImg :
+             * userName :
              */
 
             private String userNo;
@@ -269,6 +272,132 @@ public class NewestShowGroundBean {
             }
         }
 
+        public static class ProductsBean {
+            /**
+             * promotionResult : null
+             * prodCode : SPU00000233
+             * name : xiaomi小米 MIJIA/米家 米家恒温电热水壶智能家用烧水壶保温
+             * secondName : 【12月12日 0点开抢】到手价179元
+             * originalPrice : 17.9
+             * groupPrice : 9.9
+             * minPrice : 15.9
+             * maxPrice : 15.9
+             * promotionMinPrice : null
+             * promotionMaxPrice : null
+             * v0Price : null
+             * imgUrl : https://testcdn.sharegoodsmall.com/sharegoods/3fd92ae923374453ad4a767170c0aa54.png
+             */
+
+            private Object promotionResult;
+            private String prodCode;
+            private String name;
+            private String secondName;
+            private String originalPrice;
+            private String groupPrice;
+            private String minPrice;
+            private String maxPrice;
+            private Object promotionMinPrice;
+            private Object promotionMaxPrice;
+            private Object v0Price;
+            private String imgUrl;
+
+            public Object getPromotionResult() {
+                return promotionResult;
+            }
+
+            public void setPromotionResult(Object promotionResult) {
+                this.promotionResult = promotionResult;
+            }
+
+            public String getProdCode() {
+                return prodCode;
+            }
+
+            public void setProdCode(String prodCode) {
+                this.prodCode = prodCode;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public String getSecondName() {
+                return secondName;
+            }
+
+            public void setSecondName(String secondName) {
+                this.secondName = secondName;
+            }
+
+            public String getOriginalPrice() {
+                return originalPrice;
+            }
+
+            public void setOriginalPrice(String originalPrice) {
+                this.originalPrice = originalPrice;
+            }
+
+            public String getGroupPrice() {
+                return groupPrice;
+            }
+
+            public void setGroupPrice(String groupPrice) {
+                this.groupPrice = groupPrice;
+            }
+
+            public String getMinPrice() {
+                return minPrice;
+            }
+
+            public void setMinPrice(String minPrice) {
+                this.minPrice = minPrice;
+            }
+
+            public String getMaxPrice() {
+                return maxPrice;
+            }
+
+            public void setMaxPrice(String maxPrice) {
+                this.maxPrice = maxPrice;
+            }
+
+            public Object getPromotionMinPrice() {
+                return promotionMinPrice;
+            }
+
+            public void setPromotionMinPrice(Object promotionMinPrice) {
+                this.promotionMinPrice = promotionMinPrice;
+            }
+
+            public Object getPromotionMaxPrice() {
+                return promotionMaxPrice;
+            }
+
+            public void setPromotionMaxPrice(Object promotionMaxPrice) {
+                this.promotionMaxPrice = promotionMaxPrice;
+            }
+
+            public Object getV0Price() {
+                return v0Price;
+            }
+
+            public void setV0Price(Object v0Price) {
+                this.v0Price = v0Price;
+            }
+
+            public String getImgUrl() {
+                return imgUrl;
+            }
+
+            public void setImgUrl(String imgUrl) {
+                this.imgUrl = imgUrl;
+            }
+        }
+
         public static class ResourceBean {
             /**
              * type : 2
@@ -293,6 +422,11 @@ public class NewestShowGroundBean {
             public void setUrl(String url) {
                 this.url = url;
             }
+        }
+
+        @Override
+        public int getItemType() {
+            return this.showType;
         }
     }
 }

@@ -33,12 +33,12 @@ export default class ProductRowListView extends PureComponent {
         }
         return (
             <View key={'product' + index} style={[{ width }, styles.itemWrapper]}>
-                <ImageLoad style={styles.productIcon}/>
+                <ImageLoad style={styles.productIcon} source={data.imgUrl}/>
                 <View style={styles.itemInfoWrapper}>
                     <MRText style={styles.nameText}
                             numberOfLines={1}
                             ellipsizeMode={'tail'}>
-                        1:32铝合金仿真宝马x6车模110玩仿真宝马x6车模110玩仿真宝马x6车模110玩具宝马模…
+                        {data.name}
                     </MRText>
 
                     <View style={styles.priceWrapper}>
@@ -109,7 +109,8 @@ var styles = StyleSheet.create({
     },
     nameText: {
         color: DesignRule.textColor_mainTitle,
-        fontSize: DesignRule.fontSize_24
+        fontSize: DesignRule.fontSize_24,
+        marginRight:DesignRule.margin_page
     },
     priceWrapper: {
         flexDirection: 'row',

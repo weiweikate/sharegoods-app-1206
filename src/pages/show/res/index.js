@@ -19,6 +19,12 @@ const index = {
     addShieldIcon:require('./icon_show_shield.png'),
     addShowIcon:require('./icon_show_add.png'),
     iconShowDown:require('./icon_show_down.png'),
-    iconShowEmoji:require('./icon_show_emoji.png')
+    iconShowEmoji:require('./icon_show_emoji.png'),
+    iconShowFire:require('./icon_show_fire.png'),
+    iconLike:require('./icon_like.png'),
+    iconNoLike:require('./icon_no_like.png'),
+    iconBuyBg:require('./icon_buy_bg.png'),
+    iconDownload:require('./icon_show_download.png')
+
 };
 export default index

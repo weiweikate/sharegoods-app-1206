@@ -4,14 +4,13 @@
     android:layout_height="wrap_content"
     android:background="@drawable/white_round_background"
     android:padding="10dp"
-    android:layout_marginBottom="10dp">
+    android:layout_marginTop="10dp">
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/user_icon"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:adjustViewBounds="true"
-        android:background="#444444" />
+        android:adjustViewBounds="true" />
 
     <TextView
         android:id="@+id/user_name"
@@ -21,7 +20,6 @@
         android:layout_marginLeft="5dp"
         android:layout_toRightOf="@+id/user_icon"
         android:includeFontPadding="false"
-        android:text="作者"
         android:textColor="@color/textColor_mainTitle"
         android:textSize="13sp"
         android:layout_marginStart="5dp"
@@ -35,7 +33,6 @@
         android:layout_marginLeft="5dp"
         android:layout_toRightOf="@+id/user_icon"
         android:includeFontPadding="false"
-        android:text="2小时前发布"
         android:textColor="@color/textColor_instruction"
         android:textSize="11sp"
         android:layout_toEndOf="@+id/user_icon" />
@@ -49,7 +46,6 @@
         android:layout_toRightOf="@id/user_icon"
         android:ellipsize="end"
         android:includeFontPadding="false"
-        android:text="@string/test"
         android:textColor="@color/textColor_mainTitle"
         android:layout_marginLeft="5dp"
         android:maxLines="3"
