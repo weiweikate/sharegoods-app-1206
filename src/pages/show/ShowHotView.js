@@ -111,7 +111,7 @@ export default class ShowHotView extends React.Component {
                     <ShowRecommendView style={{ flex: 1 }}
                                        uri={'/discover/query@GET'}
                                        ref={(ref) => {
-                                           this.rightShowList = ref;
+                                           this.RecommendShowList = ref;
                                        }}
                                        headerHeight={showBannerModules.bannerHeight + 20}
                                        renderHeader={Platform.OS === 'ios' ? this.renderHeader() : this.state.headerView}
@@ -132,12 +132,17 @@ export default class ShowHotView extends React.Component {
                                        }}
                                        onItemPress={({ nativeEvent }) => {
                                            const { navigate } = this.props;
-                                           navigate('show/ShowDetailPage', {
-                                               id: nativeEvent.id,
-                                               code: nativeEvent.code,
-                                               ref: this.rightShowList,
+                                           let params = {
+                                               data:nativeEvent,
+                                               ref: this.foundList,
                                                index: nativeEvent.index
-                                           });
+                                           };
+                                           if(nativeEvent.showType === 1){
+                                               navigate('show/ShowDetailPage', params);
+                                           }else {
+                                               navigate('show/ShowRichTextDetailPage', params);
+                                           }
+
                                        }}
                                        onNineClick={({ nativeEvent }) => {
                                            this.props.navigate('show/ShowDetailImagePage', {

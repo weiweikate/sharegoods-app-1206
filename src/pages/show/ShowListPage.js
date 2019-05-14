@@ -99,8 +99,9 @@ export default class ShowListPage extends BasePage {
         this.setState({ needsExpensive: true });
 
         this.listener = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
-        this.publishListener = DeviceEventEmitter.addListener('PublishShowFinish', () => {
+        this.publishListener = DeviceEventEmitter.addListener('PublishShowFinish', (value) => {
             this._gotoPage(2);
+            this.foundList && this.foundList.addDataToTop(value);
         });
     }
 
@@ -270,7 +271,7 @@ export default class ShowListPage extends BasePage {
                                 }}
                                 style={{ flex: 1, margin: px2dp(10) }}
                                 uri={'/discover/query@GET'}
-                                params={{ spreadPosition: tag.Recommend + '' }}
+                                params={{ spreadPosition: tag.Material + '' }}
                                 onNineClick={({ nativeEvent }) => {
                                     that.$navigate('show/ShowDetailImagePage', {
                                         imageUrls: nativeEvent.imageUrls,
@@ -296,7 +297,7 @@ export default class ShowListPage extends BasePage {
 
                             <ShowGroundView
                                 ref={(ref) => {
-                                    this.rightShowList = ref;
+                                    this.foundList = ref;
                                 }}
                                 style={{ flex: 1 }}
                                 uri={'/discover/query@GET'}
@@ -308,10 +309,9 @@ export default class ShowListPage extends BasePage {
                                     });
                                 }}
                                 onItemPress={({ nativeEvent }) => {
-                                    that.$navigate('show/ShowRichTextDetailPage', {
-                                        id: nativeEvent.id,
-                                        code: nativeEvent.code,
-                                        ref: this.rightShowList,
+                                    that.$navigate('show/ShowDetailPage', {
+                                        data:nativeEvent,
+                                        ref: this.foundList,
                                         index: nativeEvent.index
                                     });
                                 }}

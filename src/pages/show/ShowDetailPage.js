@@ -7,7 +7,8 @@ import {
     StyleSheet,
     NativeModules,
     Alert,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    ImageBackground
 } from 'react-native';
 import ShowImageView from './ShowImageView';
 import res from './res';
@@ -33,8 +34,8 @@ import { TrackApi } from '../../utils/SensorsTrack';
 import {SmoothPushPreLoadHighComponent} from '../../comm/components/SmoothPushHighComponent'
 import ProductRowListView from './components/ProductRowListView';
 import ProductListModal from './components/ProductListModal';
-
-
+import NumUtils from './utils/NumUtils';
+const {iconShowFire,iconBuyBg,iconLike,iconNoLike,iconDownload} = res;
 @SmoothPushPreLoadHighComponent
 @observer
 export default class ShowDetailPage extends BasePage {
@@ -88,9 +89,6 @@ export default class ShowDetailPage extends BasePage {
                             this.setState({
                                 pageState: PageLoadingState.success
                             });
-                            // this._whiteNavRef.setNativeProps({
-                            //     opacity: 0
-                            // });
                             Toast.hiddenLoading();
                         }).catch(error => {
                             this.setState({
@@ -100,7 +98,7 @@ export default class ShowDetailPage extends BasePage {
                             Toast.$toast(error.msg || '获取详情失败');
                             Toast.hiddenLoading();
                         });
-                    } else {
+                    } else if(this.params.id) {
                         Toast.showLoading();
                         this.showDetailModule.loadDetail(this.params.id).then(() => {
                             const { detail } = this.showDetailModule;
@@ -124,6 +122,12 @@ export default class ShowDetailPage extends BasePage {
                             Toast.$toast(error.msg || '获取详情失败');
                             Toast.hiddenLoading();
                         });
+                    }else {
+                        this.setState({
+                            pageState: PageLoadingState.success
+                        });
+                        Toast.hiddenLoading();
+                        this.showDetailModule.setDetail(this.params.data);
                     }
                 }
             }
@@ -265,16 +269,18 @@ export default class ShowDetailPage extends BasePage {
     };
 
     _bottomRender=()=>{
+        let { detail } = this.showDetailModule;
+
         return(
             <View style={styles.bottom}>
-                <Image style={styles.bottomIcon}/>
+                <Image style={styles.bottomIcon} source={detail.like ? iconLike:iconNoLike}/>
                 <Text style={styles.bottomNumText}>
-                    999+
+                    {NumUtils.formatShowNum(detail.likesCount)}
                 </Text>
                 <View style={{width:px2dp(24)}}/>
-                <Image style={styles.bottomIcon}/>
+                <Image source={iconDownload} style={styles.bottomIcon}/>
                 <Text style={styles.bottomNumText}>
-                    999+
+                    {NumUtils.formatShowNum(detail.downloadCount)}
                 </Text>
                 <View style={{flex:1}}/>
                 <TouchableWithoutFeedback onPress={()=>{
@@ -282,7 +288,11 @@ export default class ShowDetailPage extends BasePage {
                         productModalVisible:true
                     })
                 }}>
-                <View style={{width:90,height:34,backgroundColor:'red'}}/>
+                    <ImageBackground source={iconBuyBg} style={{width:px2dp(90),height:px2dp(34),alignItems:'center',justifyContent:'center'}}>
+                        <Text style={{color:DesignRule.white,fontSize:DesignRule.fontSize_threeTitle_28}}>
+                            立即购买
+                        </Text>
+                    </ImageBackground>
                 </TouchableWithoutFeedback>
             </View>
         )
@@ -290,14 +300,15 @@ export default class ShowDetailPage extends BasePage {
 
 
     _otherInfoRender=()=>{
+        let { detail } = this.showDetailModule;
         return(
             <View style={styles.otherInfoWrapper}>
                 <Text style={styles.timeTextStyle}>
-                    2小时前
+                    {detail.publishTimeStr}
                 </Text>
                 <View style={{flex:1}}/>
-                <View style={styles.fireIcon}/>
-                <Text style={styles.fireNumText}>999+</Text>
+                <Image style={styles.fireIcon} source={iconShowFire}/>
+                <Text style={styles.fireNumText}>{NumUtils.formatShowNum(detail.hotCount)}</Text>
             </View>
         )
     }
@@ -389,15 +400,15 @@ export default class ShowDetailPage extends BasePage {
             >
                 <View style={styles.virHeader}/>
                 {
-                    detail.imgs
+                    detail.resource
                         ?
-                        <ShowImageView items={detail.imgs.slice()}
+                        <ShowImageView items={detail.resource.slice()}
                                        onPress={(imgs, index) => this._showImagesPage(imgs, index)}/>
                         :
                         null
                 }
 
-                <ProductRowListView style={{ marginLeft: DesignRule.margin_page,marginVertical:px2dp(10)}} products={[1,2,3]}/>
+                <ProductRowListView style={{ marginLeft: DesignRule.margin_page,marginVertical:px2dp(10)}} products={detail.products}/>
 
 
                 <AutoHeightWebView source={{ html: html }}
@@ -708,10 +719,9 @@ let styles = StyleSheet.create({
         fontSize:DesignRule.fontSize_20
     },
     fireIcon:{
-        width:px2dp(13),
-        height:px2dp(17),
+        width:px2dp(20),
+        height:px2dp(20),
         marginRight:px2dp(8),
-        backgroundColor:'red'
     },
     fireNumText:{
         fontSize:DesignRule.fontSize_22,

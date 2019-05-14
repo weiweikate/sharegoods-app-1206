@@ -4,11 +4,12 @@
  */
 
 import React, { Component } from 'react';
-import { requireNativeComponent,findNodeHandle,UIManager } from 'react-native';
+import { requireNativeComponent, findNodeHandle, UIManager } from 'react-native';
 
 const RCTShowGroundView = requireNativeComponent('ShowGroundView', ShowGroundView);
-import NativeHeader from './ShowHeaderView'
-const RCT_SHOWGROUND_REF = 'showGroundViewRef'
+import NativeHeader from './ShowHeaderView';
+
+const RCT_SHOWGROUND_REF = 'showGroundViewRef';
 
 
 // public static final int SCROLL_STATE_IDLE = 0;//停止状态
@@ -20,8 +21,16 @@ export default class ShowGroundView extends Component {
         UIManager.dispatchViewManagerCommand(
             this.getHandle(),
             UIManager.ShowGroundView.Commands.replaceData,
-            [index,num]
-        );    };
+            [index, num]
+        );
+    };
+    addDataToTop = (data) => {
+        UIManager.dispatchViewManagerCommand(
+            this.getHandle(),
+            UIManager.ShowGroundView.Commands.addDataToTop,
+            [data]
+        );
+    };
 
     getHandle = () => {
         return findNodeHandle(this.refs[RCT_SHOWGROUND_REF]);

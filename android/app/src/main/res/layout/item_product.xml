@@ -7,12 +7,11 @@
         android:layout_width="50dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="5dp"
-        android:background="@color/ysf_red_9d3b39"
         android:id="@+id/product_img"/>
     <TextView
+        android:id="@+id/product_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/test"
         android:maxLines="1"
         android:ellipsize="end"
         android:includeFontPadding="false"
@@ -41,7 +40,6 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:includeFontPadding="false"
-            android:text="499"
             android:textSize="15sp"
             android:textColor="@color/mainColor"/>
         <TextView
@@ -49,7 +47,6 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:includeFontPadding="false"
-            android:text="￥999"
             android:textSize="10sp"
             android:textColor="@color/textColor_instruction"
             android:layout_marginLeft="5dp" />

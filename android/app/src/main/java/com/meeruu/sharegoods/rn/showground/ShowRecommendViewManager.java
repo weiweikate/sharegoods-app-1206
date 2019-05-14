@@ -37,8 +37,8 @@ public class ShowRecommendViewManager extends ViewGroupManager<ViewGroup> {
     @ReactProp(name = "params")
     public void setParams(View view, ReadableMap map) {
         Object object = view.getTag();
-        if (object != null && object instanceof ShowGroundView) {
-            ((ShowGroundView) object).setParams(map.toHashMap());
+        if (object != null && object instanceof ShowRecommendView) {
+            ((ShowRecommendView) object).setParams(map.toHashMap());
         }
     }
 

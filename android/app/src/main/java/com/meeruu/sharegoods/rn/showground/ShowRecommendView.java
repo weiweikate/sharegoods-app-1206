@@ -13,6 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableArray;
@@ -26,6 +29,7 @@ import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
 import com.meeruu.sharegoods.rn.showground.bean.ShowRecommendBean;
 import com.meeruu.sharegoods.rn.showground.event.addCartEvent;
 import com.meeruu.sharegoods.rn.showground.event.onEndScrollEvent;
+import com.meeruu.sharegoods.rn.showground.event.onItemPressEvent;
 import com.meeruu.sharegoods.rn.showground.event.onNineClickEvent;
 import com.meeruu.sharegoods.rn.showground.event.onScrollStateChangedEvent;
 import com.meeruu.sharegoods.rn.showground.event.onStartRefreshEvent;
@@ -40,6 +44,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ShowRecommendView  implements IShowgroundView, SwipeRefreshLayout.OnRefreshListener{
     private RnRecyclerView recyclerView;
@@ -50,6 +55,7 @@ public class ShowRecommendView  implements IShowgroundView, SwipeRefreshLayout.O
     private ShowgroundPresenter presenter;
     private WeakReference<View> showgroundView;
     private onStartRefreshEvent startRefreshEvent;
+    private onItemPressEvent itemPressEvent;
     private SwipeRefreshLayout swipeRefreshLayout;
     private Handler handler;
     private View errView;
@@ -91,12 +97,23 @@ public class ShowRecommendView  implements IShowgroundView, SwipeRefreshLayout.O
         showgroundView = new WeakReference<>(view);
         startRefreshEvent = new onStartRefreshEvent();
         swipeRefreshLayout = view.findViewById(R.id.refresh_control);
+        swipeRefreshLayout.setColorSchemeResources(R.color.app_main_color);
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(true);
+                onRefresh();
+            }
+        }, 200);
         final onNineClickEvent onNineClickEvent = new onNineClickEvent();
         final addCartEvent addCartEvent = new addCartEvent();
         final onScrollStateChangedEvent onScrollStateChangedEvent = new onScrollStateChangedEvent();
         recyclerView = view.findViewById(R.id.home_recycler_view);
         startScrollEvent = new onStartScrollEvent();
         endScrollEvent = new onEndScrollEvent();
+        itemPressEvent = new onItemPressEvent();
+
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -155,27 +172,37 @@ public class ShowRecommendView  implements IShowgroundView, SwipeRefreshLayout.O
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
         adapter.setEnableLoadMore(true);
+        adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                page++;
+                presenter.getShowList(page);
+            }
+        }, recyclerView);
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(final BaseQuickAdapter adapter, View view1, final int position) {
+                final List<NewestShowGroundBean.DataBean> data = adapter.getData();
+                if (data != null) {
+                    NewestShowGroundBean.DataBean item = data.get(position);
+                    String json = JSONObject.toJSONString(item);
+                    Map map = JSONObject.parseObject(json, new TypeReference<Map>() {
+                    });
+                    map.put("index", position);
+                    WritableMap realData = Arguments.makeNativeMap(map);
+                    if (eventDispatcher != null) {
+                        itemPressEvent.init(view.getId());
+                        itemPressEvent.setData(realData);
+                        eventDispatcher.dispatchEvent(itemPressEvent);
+                    }
+                }
+            }
+        });
         adapter.setLoadMoreView(new CustomLoadMoreView());
         recyclerView.setAdapter(adapter);
     }
 
     private void initData() {
-        ShowRecommendBean bean = new ShowRecommendBean();
-//        List list = new ArrayList();
-//        list.add(bean);
-//        List<String> urls = new ArrayList<>();
-//        urls.add("https://k.zol-img.com.cn/sjbbs/7692/a7691501_s.jpg");
-//        urls.add("https://k.zol-img.com.cn/sjbbs/7692/a7691501_s.jpg");
-//        urls.add("https://k.zol-img.com.cn/sjbbs/7692/a7691501_s.jpg");
-//        urls.add("https://k.zol-img.com.cn/sjbbs/7692/a7691501_s.jpg");
-//        urls.add("https://k.zol-img.com.cn/sjbbs/7692/a7691501_s.jpg");
-//        urls.add("https://k.zol-img.com.cn/sjbbs/7692/a7691501_s.jpg");
-//        urls.add("https://k.zol-img.com.cn/sjbbs/7692/a7691501_s.jpg");
-//        bean.setImageUrls(urls);
-//        list.add(bean);
-//        list.add(bean);
-//        list.add(bean);
-//        adapter.setNewData(list);
         presenter = new ShowgroundPresenter(this);
     }
 
@@ -221,6 +248,11 @@ public class ShowRecommendView  implements IShowgroundView, SwipeRefreshLayout.O
         if (data != null) {
             adapter.addData(data);
         }
+    }
+
+    @Override
+    public void addDataToTop(String s) {
+
     }
 
     @Override

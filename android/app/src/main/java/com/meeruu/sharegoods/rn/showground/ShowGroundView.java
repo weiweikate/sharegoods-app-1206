@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -32,6 +33,7 @@ import com.meeruu.sharegoods.rn.showground.widgets.CustomLoadMoreView;
 import com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -244,6 +246,34 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
                     bean.setClickCount(clickNum);
                     adapter.replaceData(data);
 
+                }
+            }, 200);
+        }
+    }
+
+    @Override
+    public void addDataToTop(String value) {
+        if (adapter != null && !TextUtils.isEmpty(value)) {
+            final List<NewestShowGroundBean.DataBean> data = adapter.getData();
+            final Map map = (Map) JSON.parse(value);
+            recyclerView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    NewestShowGroundBean.DataBean bean = new NewestShowGroundBean.DataBean();
+                    bean.setContent((String)map.get("content"));
+                    NewestShowGroundBean.DataBean.UserInfoVOBean userInfoVOBean = new NewestShowGroundBean.DataBean.UserInfoVOBean();
+                    userInfoVOBean.setUserImg((String)map.get("userIcon"));
+                    userInfoVOBean.setUserName((String)map.get("name"));
+                    bean.setUserInfoVO(userInfoVOBean);
+                    List<NewestShowGroundBean.DataBean.ResourceBean> list = new ArrayList<>();
+                    NewestShowGroundBean.DataBean.ResourceBean resourceBean = new NewestShowGroundBean.DataBean.ResourceBean();
+                    String url = ((List<String>)map.get("images")).get(0);
+                    resourceBean.setUrl(url);
+                    list.add(resourceBean);
+                    bean.setResource(list);
+                    bean.setClickCount(0);
+                    data.add(0,bean);
+                    adapter.replaceData(data);
                 }
             }, 200);
         }

@@ -96,7 +96,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                             Toast.$toast(error.msg || '获取详情失败');
                             Toast.hiddenLoading();
                         });
-                    } else {
+                    } else if(this.params.id){
                         Toast.showLoading();
                         this.showDetailModule.loadDetail(this.params.id).then(() => {
                             const { detail } = this.showDetailModule;
@@ -120,6 +120,12 @@ export default class ShowRichTextDetailPage extends BasePage {
                             Toast.$toast(error.msg || '获取详情失败');
                             Toast.hiddenLoading();
                         });
+                    }else {
+                        this.setState({
+                            pageState: PageLoadingState.success
+                        });
+                        Toast.hiddenLoading();
+                        this.showDetailModule.setDetail(this.params.data);
                     }
                 }
             }

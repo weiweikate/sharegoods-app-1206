@@ -19,7 +19,9 @@ export default class ShowImageView extends Component {
     constructor(props) {
         super(props)
         this.index = 0
-        this.state.items = this.props.items
+        this.state.items = this.props.items.map((value)=>{
+            return value.url;
+        })
     }
 
     componentWillReceiveProps(nextProps) {
