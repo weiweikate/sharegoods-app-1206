@@ -9,10 +9,6 @@
 * */
 // 基础模块
 import { TabNav } from './Tab';
-//  import  TabNav  from '../pages/mine/page/myaccount/SetPayPwdSuccessPage';
-//  import  TabNav  from './pages/home/product/ProductDetailPage';
-//   import  TabNav  from '../pages/order/afterSaleService/SelectLogisticsCompanyPage';
-//   import  TabNav  from './Dome';
 // 业务模块
 import debug from '../pages/debug';
 import home from '../pages/home';
@@ -31,7 +27,7 @@ import shareTask from '../pages/shareTask';
 
 import deepLinkPath from './DeepLinkPath';
 
- // import WithdrawalAgreementPage from '../pages/mine/page/bankCard/WithdrawalAgreementPage'
+// import WithdrawalAgreementPage from '../pages/mine/page/bankCard/WithdrawalAgreementPage'
 // import GongMallPage from '../pages/mine/page/userInformation/GongMallPage'
 
 const Router = {
@@ -72,12 +68,10 @@ function addSubModule(module, prefixPath) {
                 screen: item,
                 path: pathValue
             };
-
             PageKey[pageName] = path;
         }
     });
 }
-
 
 addSubModule(debug);
 addSubModule(login);
@@ -93,13 +87,14 @@ addSubModule(topic);
 addSubModule(payment);
 addSubModule(show);
 addSubModule(shareTask);
-console.log('Router', Object.keys(Router));
-console.log(Router);
-console.log('Path', Object.values(Router));
-Object.values(Router).map(value => {
-    console.log(value.path);
-});
+// console.log('Router', Object.keys(Router));
+// console.log(Router);
+// console.log('Path', Object.values(Router));
+// Object.values(Router).map(value => {
+//     console.log(value.path);
+// });
+console.log(Object.values(PageKey));
 
-console.log('PageKey', Object.keys(PageKey));
+
 export { PageKey };
 export default Router;
