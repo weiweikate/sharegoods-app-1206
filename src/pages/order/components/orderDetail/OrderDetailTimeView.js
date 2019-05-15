@@ -64,7 +64,7 @@ export default class OrderDetailTimeView extends Component {
                 shopId:this.data.shopId,
                 chatType: beginChatType.BEGIN_FROM_ORDER,
                 data: {
-                    title: orderDetailModel.getOrderNo(),
+                    title: '订单号:'+orderDetailModel.getOrderNo(),
                     desc,
                     pictureUrlString,
                     urlString:'/'+orderDetailModel.getOrderNo(),
