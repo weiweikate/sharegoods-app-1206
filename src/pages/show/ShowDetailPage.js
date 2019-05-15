@@ -30,7 +30,7 @@ import {
 import Toast from '../../utils/bridge';
 import { NetFailedView } from '../../components/pageDecorator/BaseView';
 import AvatarImage from '../../components/ui/AvatarImage';
-import { TrackApi } from '../../utils/SensorsTrack';
+import { track, TrackApi, trackEvent } from '../../utils/SensorsTrack';
 import { SmoothPushPreLoadHighComponent } from '../../comm/components/SmoothPushHighComponent';
 import ProductRowListView from './components/ProductRowListView';
 import ProductListModal from './components/ProductListModal';
@@ -38,6 +38,10 @@ import ShowUtils from './utils/ShowUtils';
 import EmptyUtils from '../../utils/EmptyUtils';
 import ShowApi from './ShowApi';
 import NoMoreClick from '../../components/ui/NoMoreClick';
+import AddCartModel from './model/AddCartModel';
+import { sourceType } from '../product/SelectionPage';
+import shopCartCacheTool from '../shopCart/model/ShopCartCacheTool';
+import SelectionPage from '../product/SelectionPage';
 
 const { iconShowFire, iconBuyBg, iconLike, iconNoLike, iconDownload } = res;
 @SmoothPushPreLoadHighComponent
@@ -133,7 +137,7 @@ export default class ShowDetailPage extends BasePage {
                         });
                         Toast.hiddenLoading();
                         let data = this.params.data;
-                        data.hotCount+=1;
+                        data.hotCount += 1;
                         this.showDetailModule.setDetail(data);
                         this.params.ref && this.params.ref.replaceData(this.params.index, data.hotCount);
 
@@ -145,6 +149,9 @@ export default class ShowDetailPage extends BasePage {
 
     componentWillUnmount() {
         this.willFocusSubscription && this.willFocusSubscription.remove();
+        // const { likesCount, downloadCount } = this.params.data;
+        // const { detail } = this.showDetailModule;
+        // if(likesCount !=detail.likesCount);
     }
 
     incrCountByType = (type) => {
@@ -307,7 +314,7 @@ export default class ShowDetailPage extends BasePage {
             let urls = detail.resource.map((value) => {
                 return value.url;
             });
-            ShowUtils.downloadShow(urls, detail.content).then(()=>{
+            ShowUtils.downloadShow(urls, detail.content).then(() => {
                 detail.downloadCount += 1;
                 this.showDetailModule.setDetail(detail);
             });
@@ -322,7 +329,7 @@ export default class ShowDetailPage extends BasePage {
             detail.likesCount -= 1;
             this.showDetailModule.setDetail(detail);
         } else {
-            this.incrCountByType(2);
+            this.incrCountByType(1);
             detail.like = true;
             detail.likesCount += 1;
             this.showDetailModule.setDetail(detail);
@@ -385,6 +392,31 @@ export default class ShowDetailPage extends BasePage {
                 <Text style={styles.fireNumText}>{ShowUtils.formatShowNum(detail.hotCount)}</Text>
             </View>
         );
+    };
+
+    addCart = (code) => {
+        let addCartModel = new AddCartModel();
+        addCartModel.requestProductDetail(code, (productIsPromotionPrice) => {
+            this.SelectionPage.show(addCartModel, (amount, skuCode) => {
+                const { prodCode, name, originalPrice } = addCartModel;
+                shopCartCacheTool.addGoodItem({
+                    'amount': amount,
+                    'skuCode': skuCode,
+                    'productCode': code
+                });
+                /*加入购物车埋点*/
+                track(trackEvent.AddToShoppingcart, {
+                    spuCode: prodCode,
+                    skuCode: skuCode,
+                    spuName: name,
+                    pricePerCommodity: originalPrice,
+                    spuAmount: amount,
+                    shoppingcartEntrance: 1
+                });
+            }, { sourceType: productIsPromotionPrice ? sourceType.promotion : null });
+        }, (error) => {
+            this.$toastShow(error.msg || '服务器繁忙');
+        });
     };
 
 
@@ -483,7 +515,9 @@ export default class ShowDetailPage extends BasePage {
                 }
 
                 <ProductRowListView style={{ marginLeft: DesignRule.margin_page, marginVertical: px2dp(10) }}
-                                    products={detail.products}/>
+                                    products={detail.products}
+                                    addCart={this.addCart}
+                />
 
 
                 <AutoHeightWebView source={{ html: html }}
@@ -536,6 +570,7 @@ export default class ShowDetailPage extends BasePage {
                     productModalVisible: false
                 });
             }}/>
+            <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             type={'miniProgram'}
                             trackEvent={'ArticleShare'}

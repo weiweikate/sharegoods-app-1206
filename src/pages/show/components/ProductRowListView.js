@@ -16,6 +16,7 @@ import DesignRule from '../../../constants/DesignRule';
 import ImageLoad from '@mr/image-placeholder';
 import { MRText } from '../../../components/ui';
 import res from '../res';
+import NoMoreClick from '../../../components/ui/NoMoreClick';
 
 const { px2dp } = ScreenUtils;
 const { addCarIcon } = res;
@@ -33,7 +34,7 @@ export default class ProductRowListView extends PureComponent {
         }
         return (
             <View key={'product' + index} style={[{ width }, styles.itemWrapper]}>
-                <ImageLoad style={styles.productIcon} source={data.imgUrl}/>
+                <ImageLoad style={styles.productIcon} source={{ uri: data.imgUrl }}/>
                 <View style={styles.itemInfoWrapper}>
                     <MRText style={styles.nameText}
                             numberOfLines={1}
@@ -49,7 +50,9 @@ export default class ProductRowListView extends PureComponent {
                             ￥499
                         </MRText>
                         <View style={{ flex: 1 }}/>
-                        <Image source={addCarIcon} style={styles.carIcon}/>
+                        <NoMoreClick onPress={()=>{this.props.addCart(data.prodCode)}}>
+                            <Image source={addCarIcon} style={styles.carIcon}/>
+                        </NoMoreClick>
                     </View>
                 </View>
             </View>
@@ -92,14 +95,14 @@ var styles = StyleSheet.create({
         borderRadius: 5,
         backgroundColor: DesignRule.bgColor,
         flexDirection: 'row',
-        marginRight:px2dp(10)
+        marginRight: px2dp(10)
     },
     productIcon: {
         width: px2dp(60),
         height: px2dp(60),
-        marginVertical:px2dp(5),
-        marginLeft:px2dp(5),
-        marginRight:px2dp(10)
+        marginVertical: px2dp(5),
+        marginLeft: px2dp(5),
+        marginRight: px2dp(10)
     },
     itemInfoWrapper: {
         paddingVertical: px2dp(5),
@@ -110,7 +113,7 @@ var styles = StyleSheet.create({
     nameText: {
         color: DesignRule.textColor_mainTitle,
         fontSize: DesignRule.fontSize_24,
-        marginRight:DesignRule.margin_page
+        marginRight: DesignRule.margin_page
     },
     priceWrapper: {
         flexDirection: 'row',
@@ -119,16 +122,16 @@ var styles = StyleSheet.create({
     carIcon: {
         width: px2dp(20),
         height: px2dp(20),
-        marginRight:px2dp(10)
+        marginRight: px2dp(10)
     },
-    curPrice:{
-        color:DesignRule.mainColor,
-        fontSize:px2dp(15)
+    curPrice: {
+        color: DesignRule.mainColor,
+        fontSize: px2dp(15)
     },
-    oriPrice:{
-        color:DesignRule.textColor_instruction,
-        fontSize:px2dp(10),
-        marginLeft:px2dp(5)
+    oriPrice: {
+        color: DesignRule.textColor_instruction,
+        fontSize: px2dp(10),
+        marginLeft: px2dp(5)
     }
 });
 

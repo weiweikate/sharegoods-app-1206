@@ -252,26 +252,13 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
     }
 
     @Override
-    public void addDataToTop(String value) {
+    public void addDataToTop(final String value) {
         if (adapter != null && !TextUtils.isEmpty(value)) {
             final List<NewestShowGroundBean.DataBean> data = adapter.getData();
-            final Map map = (Map) JSON.parse(value);
             recyclerView.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    NewestShowGroundBean.DataBean bean = new NewestShowGroundBean.DataBean();
-                    bean.setContent((String)map.get("content"));
-                    NewestShowGroundBean.DataBean.UserInfoVOBean userInfoVOBean = new NewestShowGroundBean.DataBean.UserInfoVOBean();
-                    userInfoVOBean.setUserImg((String)map.get("userIcon"));
-                    userInfoVOBean.setUserName((String)map.get("name"));
-                    bean.setUserInfoVO(userInfoVOBean);
-                    List<NewestShowGroundBean.DataBean.ResourceBean> list = new ArrayList<>();
-                    NewestShowGroundBean.DataBean.ResourceBean resourceBean = new NewestShowGroundBean.DataBean.ResourceBean();
-                    String url = ((List<String>)map.get("images")).get(0);
-                    resourceBean.setUrl(url);
-                    list.add(resourceBean);
-                    bean.setResource(list);
-                    bean.setClickCount(0);
+                    NewestShowGroundBean.DataBean bean =  JSON.parseObject(value, NewestShowGroundBean.DataBean.class);
                     data.add(0,bean);
                     adapter.replaceData(data);
                 }
