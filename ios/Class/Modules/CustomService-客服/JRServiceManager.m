@@ -139,16 +139,17 @@ SINGLETON_FOR_CLASS(JRServiceManager)
 
 -(void)initActionConfig{
   QYCustomActionConfig  * actionConfig = [[QYSDK sharedSDK] customActionConfig];
-  actionConfig.linkClickBlock = ^(NSString *linkAddress) {
+  void (^extractedExpr)(NSString *) = ^(NSString *linkAddress) {
     [self onBack:nil];
     NSDictionary *urlData;
     if ([linkAddress containsString:@"http"]) {
-       urlData = @{@"card_type":@(PRODUCT_CARD), @"linkUrl":linkAddress};
+      urlData = @{@"card_type":@(PRODUCT_CARD), @"linkUrl":linkAddress};
     }else{
-       urlData = @{@"card_type":@(ORDER_CARD), @"linkUrl":linkAddress};
+      urlData = @{@"card_type":@(ORDER_CARD), @"linkUrl":linkAddress};
     }
-     [[NSNotificationCenter defaultCenter]postNotificationName:QY_CARD_CLICK object:urlData];
+    [[NSNotificationCenter defaultCenter]postNotificationName:QY_CARD_CLICK object:urlData];
   };
+  actionConfig.linkClickBlock = extractedExpr;
 }
 
 /**
