@@ -103,14 +103,20 @@ class QYChatModel {
 
     cardClickHandle = (handleData) => {
         let productUrl = handleData && handleData.linkUrl ? handleData.linkUrl : "";
-        if (this.preProductUrl !== productUrl) {
+        if (this.preProductUrl !== productUrl  ) {
             let productSplitArr = productUrl.split("/");
             let productCode = productSplitArr.length > 0 ? productSplitArr[productSplitArr.length - 1] : "";
-            let card_type = handleData ? handleData.card_type : "";
+            let card_type = handleData ? handleData.card_type : -1;
             if (parseInt(card_type) === CARD_TYPE.PRODUCT_CARD) {
                 const navigationAction = NavigationActions.navigate({
                     routeName: RouterMap.ProductDetailPage,
                     params: { productCode: productCode }
+                });
+                global.$navigator.dispatch(navigationAction);
+            }else if(parseInt(card_type) === CARD_TYPE.ORDER_CARD) {
+                const navigationAction = NavigationActions.navigate({
+                    routeName: RouterMap.MyOrdersDetailPage,
+                    params: { orderNo: productCode }
                 });
                 global.$navigator.dispatch(navigationAction);
             }
