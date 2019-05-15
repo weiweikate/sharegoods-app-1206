@@ -22,7 +22,11 @@ const api = {
     //购物车列表
     carList: ["/user/shoppingcart/list",{ method: 'get', checkLogin: true}],
     //添加文章
-    publishShow: ['/social/show/content/save',{method:'post',checkLogin:true}]
+    publishShow: ['/social/show/content/save',{method:'post',checkLogin:true}],
+    //点赞/收藏/浏览量  1.点赞 2.收藏3.分享4.下载 5.浏览量 6.人气值
+    incrCountByType:['/social/show/count/incrCountByType',{method:'post'}],
+    //取消点赞/收藏 1.点赞 2.收藏3.分享4.下载 5.浏览量 6.人气值
+    reduceCountByType:['/social/show/count/reduceCountByType',{method:'post'}]
 };
 import ApiUtils from '../../api/network/ApiUtils';
 

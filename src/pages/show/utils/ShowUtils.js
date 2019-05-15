@@ -38,12 +38,12 @@ const downloadShow = (urls, content) => {
         });
     }
 
-    Promise.all(promises).then(res => {
+    return Promise.all(promises).then(res => {
         Toast.$toast('图片已下载到相册，文案已复制');
-
+        return Promise.resolve();
     }).catch(error => {
         Toast.$toast('保存失败');
-
+        return Promise.reject();
     });
 };
 

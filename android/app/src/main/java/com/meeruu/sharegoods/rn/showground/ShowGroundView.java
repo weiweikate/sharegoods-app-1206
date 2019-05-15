@@ -243,7 +243,7 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
                 @Override
                 public void run() {
                     NewestShowGroundBean.DataBean bean = data.get(index);
-                    bean.setClickCount(clickNum);
+                    bean.setHotCount(clickNum);
                     adapter.replaceData(data);
 
                 }

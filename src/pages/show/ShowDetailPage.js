@@ -36,6 +36,8 @@ import ProductRowListView from './components/ProductRowListView';
 import ProductListModal from './components/ProductListModal';
 import ShowUtils from './utils/ShowUtils';
 import EmptyUtils from '../../utils/EmptyUtils';
+import ShowApi from './ShowApi';
+import NoMoreClick from '../../components/ui/NoMoreClick';
 
 const { iconShowFire, iconBuyBg, iconLike, iconNoLike, iconDownload } = res;
 @SmoothPushPreLoadHighComponent
@@ -72,6 +74,7 @@ export default class ShowDetailPage extends BasePage {
                     this.noNeedRefresh = true;
                     return;
                 }
+                this.incrCountByType(6);
                 const { state } = payload;
                 if (state && state.routeName === 'show/ShowDetailPage') {
                     Toast.showLoading();
@@ -129,7 +132,11 @@ export default class ShowDetailPage extends BasePage {
                             pageState: PageLoadingState.success
                         });
                         Toast.hiddenLoading();
-                        this.showDetailModule.setDetail(this.params.data);
+                        let data = this.params.data;
+                        data.hotCount+=1;
+                        this.showDetailModule.setDetail(data);
+                        this.params.ref && this.params.ref.replaceData(this.params.index, data.hotCount);
+
                     }
                 }
             }
@@ -139,6 +146,30 @@ export default class ShowDetailPage extends BasePage {
     componentWillUnmount() {
         this.willFocusSubscription && this.willFocusSubscription.remove();
     }
+
+    incrCountByType = (type) => {
+        let showNo;
+        if (this.params.id) {
+            showNo = this.params.id;
+        } else if (this.params.code) {
+            showNo = this.params.code;
+        } else {
+            showNo = this.params.data.showNo;
+        }
+        ShowApi.incrCountByType({ showNo, type });
+    };
+
+    reduceCountByType = (type) => {
+        let showNo;
+        if (this.params.id) {
+            showNo = this.params.id;
+        } else if (this.params.code) {
+            showNo = this.params.code;
+        } else {
+            showNo = this.params.data.showNo;
+        }
+        ShowApi.reduceCountByType({ showNo, type });
+    };
 
 
     _goBack() {
@@ -272,11 +303,29 @@ export default class ShowDetailPage extends BasePage {
 
     _downloadShowContent = () => {
         let { detail } = this.showDetailModule;
-        if(!EmptyUtils.isEmptyArr(detail.resource)){
-            let urls = detail.resource.map((value)=>{
+        if (!EmptyUtils.isEmptyArr(detail.resource)) {
+            let urls = detail.resource.map((value) => {
                 return value.url;
-            })
-            ShowUtils.downloadShow(urls,detail.content);
+            });
+            ShowUtils.downloadShow(urls, detail.content).then(()=>{
+                detail.downloadCount += 1;
+                this.showDetailModule.setDetail(detail);
+            });
+        }
+    };
+
+    _clickLike = () => {
+        let { detail } = this.showDetailModule;
+        if (detail.like) {
+            this.reduceCountByType(1);
+            detail.like = false;
+            detail.likesCount -= 1;
+            this.showDetailModule.setDetail(detail);
+        } else {
+            this.incrCountByType(2);
+            detail.like = true;
+            detail.likesCount += 1;
+            this.showDetailModule.setDetail(detail);
         }
     };
 
@@ -285,17 +334,23 @@ export default class ShowDetailPage extends BasePage {
 
         return (
             <View style={styles.bottom}>
-                <Image style={styles.bottomIcon} source={detail.like ? iconLike : iconNoLike}/>
-                <Text style={styles.bottomNumText}>
-                    {ShowUtils.formatShowNum(detail.likesCount)}
-                </Text>
+                <NoMoreClick onPress={this._clickLike}>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Image style={styles.bottomIcon} source={detail.like ? iconLike : iconNoLike}/>
+                        <Text style={styles.bottomNumText}>
+                            {ShowUtils.formatShowNum(detail.likesCount)}
+                        </Text>
+                    </View>
+                </NoMoreClick>
                 <View style={{ width: px2dp(24) }}/>
-                <TouchableWithoutFeedback onPress={this._downloadShowContent}>
-                    <Image source={iconDownload} style={styles.bottomIcon}/>
-                </TouchableWithoutFeedback>
-                <Text style={styles.bottomNumText}>
-                    {ShowUtils.formatShowNum(detail.downloadCount)}
-                </Text>
+                <NoMoreClick onPress={this._downloadShowContent}>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Image source={iconDownload} style={styles.bottomIcon}/>
+                        <Text style={styles.bottomNumText}>
+                            {ShowUtils.formatShowNum(detail.downloadCount)}
+                        </Text>
+                    </View>
+                </NoMoreClick>
                 <View style={{ flex: 1 }}/>
                 <TouchableWithoutFeedback onPress={() => {
                     this.setState({
