@@ -23,7 +23,7 @@ import {
 } from '../../components/ui';
 import ShowGroundView from './components/ShowGroundView';
 import ShowRecommendView from './components/ShowRecommendView';
-import ShowActivityView from './components/ShowActivityView';
+// import ShowActivityView from './components/ShowActivityView';
 import ShowActivityViewIOS from './ShowActivityView';
 
 import user from '../../model/user';
@@ -272,7 +272,7 @@ export default class ShowListPage extends BasePage {
                                     this.rightShowList = ref;
                                 }}
                                 style={{ flex: 1, margin: px2dp(10) }}
-                                uri={'/discover/query@GET'}
+                                uri={'/social/show/content/page/query@GET'}
                                 params={{ spreadPosition: tag.Material + '' }}
                                 onNineClick={({ nativeEvent }) => {
                                     that.$navigate('show/ShowDetailImagePage', {
@@ -281,10 +281,10 @@ export default class ShowListPage extends BasePage {
                                     });
                                 }}
                                 onItemPress={({ nativeEvent }) => {
+                                    console.log('nativeEvent',nativeEvent)
                                     that.$navigate('show/ShowDetailPage', {
-                                        id: nativeEvent.id,
-                                        code: nativeEvent.code,
-                                        ref: this.rightShowList,
+                                        data:nativeEvent,
+                                        ref: this.foundList,
                                         index: nativeEvent.index
                                     });
                                 }}
@@ -311,6 +311,7 @@ export default class ShowListPage extends BasePage {
                                     });
                                 }}
                                 onItemPress={({ nativeEvent }) => {
+                                    console.log('nativeEvent',nativeEvent)
                                     that.$navigate('show/ShowDetailPage', {
                                         data:nativeEvent,
                                         ref: this.foundList,
@@ -327,28 +328,7 @@ export default class ShowListPage extends BasePage {
                     {
                         needsExpensive
                             ?
-                            !ScreenUtils.isIOS ?
-                            <ShowActivityView
-                                ref={(ref) => {
-                                    this.rightShowList = ref;
-                                }}
-                                style={{ flex: 1, marginHorizontal: px2dp(15), marginTop: px2dp(15) }}
-                                uri={'/discover/query@GET'}
-                                onNineClick={({ nativeEvent }) => {
-                                    that.$navigate('show/ShowDetailImagePage', {
-                                        imageUrls: nativeEvent.imageUrls,
-                                        index: nativeEvent.index
-                                    });
-                                }}
-                                onItemPress={({ nativeEvent }) => {
-                                    that.$navigate('show/ShowDetailPage', {
-                                        id: nativeEvent.id,
-                                        code: nativeEvent.code,
-                                        ref: this.rightShowList,
-                                        index: nativeEvent.index
-                                    });
-                                }}
-                            /> : <ShowActivityViewIOS />
+                            <ShowActivityViewIOS />
                             :
                             null
                     }

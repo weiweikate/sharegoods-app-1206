@@ -6,9 +6,9 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    Text,
     View,
     Image,
+    Text,
     Keyboard,
     TouchableWithoutFeedback,
     TouchableOpacity
@@ -19,8 +19,11 @@ import Toast from '../../utils/bridge';
 import res from './res';
 import DesignRule from '../../constants/DesignRule';
 import ScreenUtils from '../../utils/ScreenUtils';
-import {showActiveModules} from './Show'
-import ShowApi from './ShowApi'
+import {showActiveModules} from './Show';
+import ShowApi from './ShowApi';
+import PreLoadImage from '../../components/ui/preLoadImage/PreLoadImage';
+
+import {MRText} from '../../components/ui';
 
 @observer
 export default class ShowActivityView extends Component {
@@ -50,7 +53,7 @@ export default class ShowActivityView extends Component {
     }
 
     componentWillUnmount() {
-    this.time&&this.time.removeAll();
+    this.time && this.time.removeAll();
     }
 
     onLoadMore = () => {
@@ -68,8 +71,20 @@ export default class ShowActivityView extends Component {
         this.getDataFromNetwork();
     };
 
-    clickItem = (index) => {
-
+    clickItem = (item, index) => {
+        const { navigate } = this.props;
+        let params = {
+            data:item,
+        };
+        console.log(this.state.viewData)
+        let data = this.state.viewData;
+        data[index] = Number(data[index]['hotCount'])+1;
+        console.log(data);
+        if(item.showType === 1){
+            navigate('show/ShowDetailPage', params);
+        }else {
+            navigate('show/ShowRichTextDetailPage', params);
+        }
     };
 
     getDataFromNetwork = () => {
@@ -86,6 +101,8 @@ export default class ShowActivityView extends Component {
                             viewData: result.data ? result.data.data : [],
                             isEmpty: result.data.totalNum === 0, isError: false
                         });
+                    }else {
+                        this.setState({isError: true, firstLoading: 2});
                     }
                 }
             }).catch(err => {
@@ -166,26 +183,37 @@ export default class ShowActivityView extends Component {
         return (
             <TouchableOpacity ref={(ref) => {
                 this['item' + index] = ref
-            }} key={'row' + index} onPress={() => this.clickItem(index)}>
+            }} key={'row' + index} onPress={() => this.clickItem(item, index)}>
                 <View style={styles.itemBgStyle}>
-                    <Image style={styles.itemImgStyle} source={{uri: '111.png'}}/>
-                    <Text style={{marginLeft: 10, marginRight: 10, marginTop: 10}} numberOfLines={2}>
-                        {item.content}
-                    </Text>
+                    <Image style={styles.itemImgStyle} source={{uri:item.resource && item.resource[0].url ? item.resource[0].url : '111.png'}}/>
+                    {ScreenUtils.isIOS ?
+                        <Text style={styles.contentStyle}
+                                               numberOfLines={2}>
+                            {item.content}
+                        </Text> :
+                        <MRText style={styles.contentStyle}
+                                numberOfLines={2}>
+                            {item.content}
+                        </MRText>
+                    }
                     <View style={{flexDirection: 'row', alignItems: 'center', margin: 10}}>
-                        <Image style={{
-                            width: 24,
-                            height: 24,
-                            borderRadius: 12,
-                            overflow: 'hidden',
-                            backgroundColor: '#666a6d'
-                        }}
-                               source={{uri: item.userInfoVO && item.userInfoVO.userImg}}/>
-                        <Text style={{flex: 1, marginLeft: 5}}
-                              numberOfLines={1}>{item.userInfoVO && item.userInfoVO.userName}</Text>
-                        <Image style={{width: 12, height: 16,}} source={res.hotIcon}/>
-                        <Text
-                            style={{marginLeft: 8}}>{item.hotCount ? item.hotCount > 999 ? item.hotCount > 100000 ? '10w+' : '999+' : item.hotCount : '0'}</Text>
+                        <PreLoadImage
+                            imageUri={item.userInfoVO && item.userInfoVO.userImg}
+                            style={{
+                                width: 24,
+                                height: 24,
+                                borderRadius: 12
+                            }}
+                            defaultImage={res.placeholder.noHeadImage}
+                            errImage={res.placeholder.noHeadImage}
+                        />
+                        <Text style={{flex: 1, marginLeft: 5,color:'#666666',fontSize:DesignRule.fontSize_22}}
+                              numberOfLines={1}>{item.userInfoVO && item.userInfoVO.userName}
+                        </Text>
+                        <Image style={{width: 12, height: 16,marginLeft: 10}} source={res.hotIcon}/>
+                        <Text style={{marginLeft: 8,color:'#666666',fontSize:DesignRule.fontSize_22}}>
+                            {item.hotCount ? item.hotCount > 999 ? item.hotCount > 100000 ? '10w+' : '999+' : item.hotCount : '0'}
+                        </Text>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -222,7 +250,7 @@ const styles = StyleSheet.create({
     itemImgStyle: {
         height: 160,
         width: ScreenUtils.width - 30,
-        backgroundColor: '#666a6d',
+        backgroundColor: '#a5adb3',
         borderRadius: 5,
         overflow: 'hidden',
     },
@@ -240,5 +268,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: 20
+    },
+    contentStyle:{
+        flex:1,
+        marginLeft: 10,
+        marginRight: 10,
+        marginTop: 10,
+        fontSize:DesignRule.fontSize_24,
+        color:'#333333',
     }
 });

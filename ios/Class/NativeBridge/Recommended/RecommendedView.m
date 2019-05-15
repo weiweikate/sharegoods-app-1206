@@ -177,7 +177,7 @@ static NSString *IDType = @"TypeCell";
     
     JXModel* model = [JXModel modelWithJSON:result];
     weakSelf.dataArr = [model.data mutableCopy];
-    if(result&&[result valueForKey:@"data"]){
+    if([result valueForKey:@"data"]&&![[result valueForKey:@"data"] isKindOfClass:[NSNull class]]){
       weakSelf.callBackArr = [[result valueForKey:@"data"] mutableCopy];
     }
 
@@ -218,7 +218,7 @@ static NSString *IDType = @"TypeCell";
       
       JXModel* model = [JXModel modelWithJSON:result];
       [weakSelf.dataArr addObjectsFromArray:model.data];
-      if(result&&[result valueForKey:@"data"]){
+      if([result valueForKey:@"data"]&&![[result valueForKey:@"data"] isKindOfClass:[NSNull class]]){
         [weakSelf.callBackArr addObjectsFromArray:[result valueForKey:@"data"]];
       }
     [weakSelf.tableView reloadData];
@@ -303,19 +303,29 @@ static NSString *IDType = @"TypeCell";
 }
 
 -(void)imageClick:(RecommendedCell *)cell{
-  NSLog(@"delegate 1");
   NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
   if (_onNineClick) {
-    _onNineClick(self.callBackArr[indexPath.item]);
+    NSMutableArray * images = [NSMutableArray new];
+    for (NSDictionary* image in cell.model.resource) {
+      [images addObject:[image valueForKey:@"url"]];
+    }
+    NSDictionary * dic = [NSDictionary dictionaryWithObjectsAndKeys:
+                          images,@"imageUrls",
+                           indexPath.row,@"index",
+                          nil];
+    _onNineClick(dic);
   }
 }
 
 -(void)addCar:(RecommendedCell *)cell{
-  NSLog(@"delegate 2%@",cell);
+  NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
+  if(_onAddCartClick) {
+    _onAddCartClick(self.callBackArr[indexPath.item]);
+  }
 }
 
 -(void)zanClick:(RecommendedCell *)cell{
-NSLog(@"delegate 2");
+  NSLog(@"delegate 2");
 }
 
 -(void)downloadClick:(RecommendedCell *)cell{
@@ -329,7 +339,10 @@ NSLog(@"delegate 2");
 -(void)labelClick:(RecommendedCell *)cell{
   NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
   if (_onItemPress) {
-//    _onItemPress(self.callBackArr[indexPath.item]);
+    NSMutableDictionary * dic = [NSMutableDictionary dictionaryWithDictionary:self.callBackArr[indexPath.row]];
+    [dic setObject:[NSString stringWithFormat:@"%ld",indexPath.row] forKey:@"index"];
+    [self.callBackArr replaceObjectAtIndex:indexPath.row withObject:dic];
+    _onItemPress(self.callBackArr[indexPath.row]);
     [self refreshData];
   }
 }
@@ -379,4 +392,12 @@ NSLog(@"delegate 2");
     }
   }
 }
+
+-(void)replaceData:(NSInteger) index num:(NSInteger) num{
+  if (self.dataArr.count>index) {
+//    self.dataArr[index].click = num;
+//    [self.tableView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]]];
+  }
+}
+
 @end

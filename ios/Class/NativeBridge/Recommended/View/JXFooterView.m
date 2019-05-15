@@ -182,7 +182,7 @@
         //将多余的部分切掉
         goodsImg.layer.masksToBounds = YES;
         goodsImg.image = [UIImage imageNamed:@"welcome3"];
-        [goodsImg sd_setImageWithURL:[NSURL URLWithString:[self.products[0] valueForKey:@"imgUrl"]] placeholderImage:[self createImageWithUIColor:[UIColor grayColor]]];
+        [goodsImg sd_setImageWithURL:[NSURL URLWithString:[self.products[0] valueForKey:@"imgUrl"]] placeholderImage:[UIImage imageNamed:@"default_avatar"]];
       
       
         UILabel* titile = [[UILabel alloc]init];
@@ -234,14 +234,12 @@
 }
 
 -(void)tapZanBtn:(UIButton*)sender{
-  NSLog(@"tapZanBtn");
   if(self.zanBlock){
     self.zanBlock(@"");
   }
 }
 
 -(void)tapDownloadBtn:(UIButton*)sender{
-    NSLog(@"tapDownloadBtn");
   if(self.downloadBlock){
     self.downloadBlock(@"");
 
@@ -249,7 +247,6 @@
 }
 
 -(void)tapShareBtn:(UIButton*)sender{
-    NSLog(@"tapShareBtn");
   if(self.shareBlock){
     self.shareBlock(@"");
   }
@@ -284,16 +281,4 @@
   NSDecimalNumber *decNumber    = [NSDecimalNumber decimalNumberWithString:doubleString];
   return [decNumber stringValue];
 }
-
-- (UIImage *)createImageWithUIColor:(UIColor *)imageColor{
-  CGRect rect = CGRectMake(0, 0, 1.f, 1.f);
-  UIGraphicsBeginImageContext(rect.size);
-  CGContextRef context = UIGraphicsGetCurrentContext();
-  CGContextSetFillColorWithColor(context, [imageColor CGColor]);
-  CGContextFillRect(context, rect);
-  UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-  UIGraphicsEndImageContext();
-  return image;
-}
-
 @end

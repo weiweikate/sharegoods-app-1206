@@ -156,7 +156,7 @@
 
 -(void)setModel:(JXModelData *)model{
   _model = model;
-  self.headView.UserInfoModel = (NSDictionary*)model.userInfoVO;
+  self.headView.UserInfoModel = model.userInfoVO;
   if(model.like){
     [_zanBtn setBackgroundImage:[UIImage imageNamed:@"yizan"] forState:UIControlStateNormal];
     
@@ -164,21 +164,19 @@
     [_zanBtn setBackgroundImage:[UIImage imageNamed:@"zan"] forState:UIControlStateNormal];
   }
   _zanNum.text = [NSString stringWithFormat:@"%ld",model.likesCount];
-  [self.picImg sd_setImageWithURL:[NSURL URLWithString:[model.products[0] valueForKey: @"image"]] placeholderImage:[self createImageWithUIColor:[UIColor grayColor]]];
+  [self.picImg sd_setImageWithURL:[NSURL URLWithString:[model.products[0] valueForKey: @"image"]] placeholderImage:[UIImage imageNamed:@"default_avatar"]];
   self.contentLab.text = model.content;
   
 }
 
 
 -(void)tapZanBtn:(UIButton*)sender{
-  NSLog(@"tapZanBtn");
   if(self.recTypeDelegate){
     [self.recTypeDelegate zanBtnClick:self];
   }
 }
 
 -(void)tapShareBtn:(UIButton*)sender{
-  NSLog(@"tapShareBtn");
   if(self.recTypeDelegate){
     [self.recTypeDelegate shareBtnClick:self];
   }
@@ -201,14 +199,4 @@
     // Configure the view for the selected state
 }
 
-- (UIImage *)createImageWithUIColor:(UIColor *)imageColor{
-  CGRect rect = CGRectMake(0, 0, 1.f, 1.f);
-  UIGraphicsBeginImageContext(rect.size);
-  CGContextRef context = UIGraphicsGetCurrentContext();
-  CGContextSetFillColorWithColor(context, [imageColor CGColor]);
-  CGContextFillRect(context, rect);
-  UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-  UIGraphicsEndImageContext();
-  return image;
-}
 @end

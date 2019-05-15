@@ -185,7 +185,7 @@
   [NetWorkTool requestWithURL:self.uri params:dic  toModel:nil success:^(NSDictionary* result) {
     ShowQueryModel* model = [ShowQueryModel modelWithJSON:result];
     weakSelf.dataArr = [model.data mutableCopy];
-    if(result&&[result valueForKey:@"data"]){
+    if([result valueForKey:@"data"]&&![[result valueForKey:@"data"] isKindOfClass:[NSNull class]]){
       weakSelf.callBackArr = [[result valueForKey:@"data"] mutableCopy];
     }
     
@@ -227,7 +227,7 @@
     ShowQueryModel* model = [ShowQueryModel modelWithJSON:result];
     [weakSelf.dataArr addObjectsFromArray:model.data];
 
-    if(result&&[result valueForKey:@"data"]){
+    if([result valueForKey:@"data"]&&![[result valueForKey:@"data"] isKindOfClass:[NSNull class]]){
       [weakSelf.callBackArr addObjectsFromArray:model.data];
     }
 
@@ -265,8 +265,11 @@
 - (void)collectionNode:(ASCollectionNode *)collectionNode didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
   if (_onItemPress) {
-    self.dataArr[indexPath.item].xg_index = indexPath.row;
-    _onItemPress(self.callBackArr[indexPath.item]);
+    self.dataArr[indexPath.row].xg_index = indexPath.row;
+    NSMutableDictionary * dic = [NSMutableDictionary dictionaryWithDictionary:self.callBackArr[indexPath.row]];
+    [dic setObject:[NSString stringWithFormat:@"%ld",indexPath.row] forKey:@"index"];
+    [self.callBackArr replaceObjectAtIndex:indexPath.row withObject:dic];
+    _onItemPress(self.callBackArr[indexPath.row]);
 //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
 //       [_collectionNode reloadItemsAtIndexPaths:@[indexPath]];
 //    });
@@ -418,4 +421,14 @@
     [self.collectionNode reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]]];
   }
 }
+
+-(void)addDataToTopData:(NSDictionary*)data{
+  if (self.dataArr.count>0) {
+    ShowQuery_dataModel* model = [ShowQuery_dataModel modelWithJSON:data];
+    [self.dataArr insertObjects:model atIndex:0];
+    [self.callBackArr insertObjects:data atIndex:0];
+    [self.collectionNode reloadData];
+  }
+}
+
 @end
