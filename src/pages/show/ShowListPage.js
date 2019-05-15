@@ -23,7 +23,6 @@ import {
 } from '../../components/ui';
 import ShowGroundView from './components/ShowGroundView';
 import ShowRecommendView from './components/ShowRecommendView';
-// import ShowActivityView from './components/ShowActivityView';
 import ShowActivityViewIOS from './ShowActivityView';
 
 import user from '../../model/user';
@@ -303,7 +302,7 @@ export default class ShowListPage extends BasePage {
                                 }}
                                 style={{ flex: 1 }}
                                 uri={'/social/show/content/page/query@GET'}
-                                params={{ spreadPosition: 3 }}
+                                params={{ spreadPosition: tag.Found + '' }}
                                 onNineClick={({ nativeEvent }) => {
                                     that.$navigate('show/ShowDetailImagePage', {
                                         imageUrls: nativeEvent.imageUrls,
@@ -313,7 +312,7 @@ export default class ShowListPage extends BasePage {
                                 onItemPress={({ nativeEvent }) => {
                                     console.log('nativeEvent',nativeEvent)
                                     that.$navigate('show/ShowDetailPage', {
-                                        data:nativeEvent,
+                                        data: nativeEvent,
                                         ref: this.foundList,
                                         index: nativeEvent.index
                                     });
@@ -327,10 +326,7 @@ export default class ShowListPage extends BasePage {
                 <View key={4} style={styles.container} tabLabel="   ">
                     {
                         needsExpensive
-                            ?
-                            <ShowActivityViewIOS />
-                            :
-                            null
+                            ? <ShowActivityViewIOS/> : null
                     }
                 </View>
             </ScrollableTabView>
