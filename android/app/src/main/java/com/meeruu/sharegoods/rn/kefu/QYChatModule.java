@@ -209,11 +209,11 @@ public class QYChatModule extends ReactContextBaseJavaModule {
                     .setAlwaysSend(true)
                     .setActionText("发送宝贝")
                     .setActionTextColor(0xFFF00050)
-                    .setTitle(map.getString("title"))
-                    .setDesc(map.getString("desc"))
-                    .setPicture(map.getString("pictureUrlString"))
+                    .setTitle(map.hasKey("title") ? map.getString("title") : "")
+                    .setDesc(map.hasKey("desc") ? map.getString("desc") : "")
+                    .setPicture(map.hasKey("pictureUrlString") ? map.getString("pictureUrlString") : "")
                     .setUrl(map.getString("urlString"))
-                    .setNote(map.getString("note"))
+                    .setNote(map.hasKey("note") ? map.getString("note") : "")
                     .build();
             source.productDetail = productDetail;
         }
@@ -244,9 +244,9 @@ public class QYChatModule extends ReactContextBaseJavaModule {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onQiyuUrl(QiyuUrlEvent event) {
         WritableMap map = Arguments.createMap();
-        if( !TextUtils.isEmpty(event.getUrl())&&event.getUrl().contains("http")){
+        if (!TextUtils.isEmpty(event.getUrl()) && event.getUrl().contains("http")) {
             map.putInt("card_type", 0);
-        }else {
+        } else {
             map.putInt("card_type", 1);
         }
         map.putString("linkUrl", event.getUrl());
