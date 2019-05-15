@@ -74,8 +74,10 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
             public void onResult(int code, String token, String operator) {
                 if (code == 6000) {
                     callback.resolve(token);
+                } else if (code == 6002) {
+                    // do nothing
                 } else {
-                    ToastUtils.showToast("一键登录认证失败！");
+                    ToastUtils.showToast("一键登录认证失败");
                 }
             }
         });
