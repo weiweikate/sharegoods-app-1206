@@ -283,7 +283,6 @@ export default class ExpDetailPage extends BasePage {
                 isEmpty: data.data && data.data.length !== 0 ? false : true
             });
         }).catch(e => {
-            alert(e.message);
             this.setState({ loadingState: PageLoadingState.fail, netFailedInfo: e, viewData: arrData, isEmpty: true });
 
         });

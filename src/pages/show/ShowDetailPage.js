@@ -30,12 +30,20 @@ import {
 import Toast from '../../utils/bridge';
 import { NetFailedView } from '../../components/pageDecorator/BaseView';
 import AvatarImage from '../../components/ui/AvatarImage';
-import { TrackApi } from '../../utils/SensorsTrack';
-import {SmoothPushPreLoadHighComponent} from '../../comm/components/SmoothPushHighComponent'
+import { track, TrackApi, trackEvent } from '../../utils/SensorsTrack';
+import { SmoothPushPreLoadHighComponent } from '../../comm/components/SmoothPushHighComponent';
 import ProductRowListView from './components/ProductRowListView';
 import ProductListModal from './components/ProductListModal';
-import NumUtils from './utils/NumUtils';
-const {iconShowFire,iconBuyBg,iconLike,iconNoLike,iconDownload} = res;
+import ShowUtils from './utils/ShowUtils';
+import EmptyUtils from '../../utils/EmptyUtils';
+import ShowApi from './ShowApi';
+import NoMoreClick from '../../components/ui/NoMoreClick';
+import AddCartModel from './model/AddCartModel';
+import { sourceType } from '../product/SelectionPage';
+import shopCartCacheTool from '../shopCart/model/ShopCartCacheTool';
+import SelectionPage from '../product/SelectionPage';
+
+const { iconShowFire, iconBuyBg, iconLike, iconNoLike, iconDownload } = res;
 @SmoothPushPreLoadHighComponent
 @observer
 export default class ShowDetailPage extends BasePage {
@@ -52,7 +60,7 @@ export default class ShowDetailPage extends BasePage {
         this.state = {
             pageState: PageLoadingState.loading,
             errorMsg: '',
-            productModalVisible:false
+            productModalVisible: false
         };
         this.noNeedRefresh = false;
         TrackApi.xiuChangDetail();
@@ -70,6 +78,7 @@ export default class ShowDetailPage extends BasePage {
                     this.noNeedRefresh = true;
                     return;
                 }
+                this.incrCountByType(6);
                 const { state } = payload;
                 if (state && state.routeName === 'show/ShowDetailPage') {
                     Toast.showLoading();
@@ -81,10 +90,10 @@ export default class ShowDetailPage extends BasePage {
                                 author: detail.userName,
                                 collectionCount: detail.collectCount
                             });
-                            if(this.params.isFormHeader){
-                                this.params.ref && this.params.ref.setClick(detail.click)
-                            }else {
-                                this.params.ref && this.params.ref.replaceData(this.params.index,detail.click)
+                            if (this.params.isFormHeader) {
+                                this.params.ref && this.params.ref.setClick(detail.click);
+                            } else {
+                                this.params.ref && this.params.ref.replaceData(this.params.index, detail.click);
                             }
                             this.setState({
                                 pageState: PageLoadingState.success
@@ -98,7 +107,7 @@ export default class ShowDetailPage extends BasePage {
                             Toast.$toast(error.msg || '获取详情失败');
                             Toast.hiddenLoading();
                         });
-                    } else if(this.params.id) {
+                    } else if (this.params.id) {
                         Toast.showLoading();
                         this.showDetailModule.loadDetail(this.params.id).then(() => {
                             const { detail } = this.showDetailModule;
@@ -122,12 +131,16 @@ export default class ShowDetailPage extends BasePage {
                             Toast.$toast(error.msg || '获取详情失败');
                             Toast.hiddenLoading();
                         });
-                    }else {
+                    } else {
                         this.setState({
                             pageState: PageLoadingState.success
                         });
                         Toast.hiddenLoading();
-                        this.showDetailModule.setDetail(this.params.data);
+                        let data = this.params.data;
+                        data.hotCount += 1;
+                        this.showDetailModule.setDetail(data);
+                        this.params.ref && this.params.ref.replaceData(this.params.index, data.hotCount);
+
                     }
                 }
             }
@@ -136,7 +149,34 @@ export default class ShowDetailPage extends BasePage {
 
     componentWillUnmount() {
         this.willFocusSubscription && this.willFocusSubscription.remove();
+        // const { likesCount, downloadCount } = this.params.data;
+        // const { detail } = this.showDetailModule;
+        // if(likesCount !=detail.likesCount);
     }
+
+    incrCountByType = (type) => {
+        let showNo;
+        if (this.params.id) {
+            showNo = this.params.id;
+        } else if (this.params.code) {
+            showNo = this.params.code;
+        } else {
+            showNo = this.params.data.showNo;
+        }
+        ShowApi.incrCountByType({ showNo, type });
+    };
+
+    reduceCountByType = (type) => {
+        let showNo;
+        if (this.params.id) {
+            showNo = this.params.id;
+        } else if (this.params.code) {
+            showNo = this.params.code;
+        } else {
+            showNo = this.params.data.showNo;
+        }
+        ShowApi.reduceCountByType({ showNo, type });
+    };
 
 
     _goBack() {
@@ -174,7 +214,7 @@ export default class ShowDetailPage extends BasePage {
     _goToShare() {
         const { pageState } = this.state;
         if (pageState === PageLoadingState.fail) {
-            return
+            return;
         }
         this.shareModal && this.shareModal.open();
     }
@@ -201,9 +241,9 @@ export default class ShowDetailPage extends BasePage {
     _renderNormalTitle() {
         let { detail } = this.showDetailModule;
         if (!detail) {
-            detail = {imgs: '', products: [], click: 0, content: ''}
+            detail = { imgs: '', products: [], click: 0, content: '' };
         }
-        return(
+        return (
 
             <View style={styles.navTitle}>
                 <TouchableOpacity style={styles.backView} onPress={() => this._goBack()}>
@@ -225,12 +265,12 @@ export default class ShowDetailPage extends BasePage {
                     <Image source={res.more}/>
                 </TouchableOpacity>
             </View>
-        )
+        );
 
     }
 
-    _shieldRender=()=>{
-        return(
+    _shieldRender = () => {
+        return (
             <View style={styles.shieldWrapper}>
                 <View style={styles.shieldTextWrapper}>
                     <Text style={styles.shieldText}>
@@ -239,8 +279,8 @@ export default class ShowDetailPage extends BasePage {
                 </View>
                 <Image style={styles.shieldImage} source={res.addShieldIcon}/>
             </View>
-        )
-    }
+        );
+    };
 
     _showImagesPage(imgs, index) {
         this.noNeedRefresh = true;
@@ -268,50 +308,116 @@ export default class ShowDetailPage extends BasePage {
             }]);
     };
 
-    _bottomRender=()=>{
+    _downloadShowContent = () => {
+        let { detail } = this.showDetailModule;
+        if (!EmptyUtils.isEmptyArr(detail.resource)) {
+            let urls = detail.resource.map((value) => {
+                return value.url;
+            });
+            ShowUtils.downloadShow(urls, detail.content).then(() => {
+                detail.downloadCount += 1;
+                this.showDetailModule.setDetail(detail);
+            });
+        }
+    };
+
+    _clickLike = () => {
+        let { detail } = this.showDetailModule;
+        if (detail.like) {
+            this.reduceCountByType(1);
+            detail.like = false;
+            detail.likesCount -= 1;
+            this.showDetailModule.setDetail(detail);
+        } else {
+            this.incrCountByType(1);
+            detail.like = true;
+            detail.likesCount += 1;
+            this.showDetailModule.setDetail(detail);
+        }
+    };
+
+    _bottomRender = () => {
         let { detail } = this.showDetailModule;
 
-        return(
+        return (
             <View style={styles.bottom}>
-                <Image style={styles.bottomIcon} source={detail.like ? iconLike:iconNoLike}/>
-                <Text style={styles.bottomNumText}>
-                    {NumUtils.formatShowNum(detail.likesCount)}
-                </Text>
-                <View style={{width:px2dp(24)}}/>
-                <Image source={iconDownload} style={styles.bottomIcon}/>
-                <Text style={styles.bottomNumText}>
-                    {NumUtils.formatShowNum(detail.downloadCount)}
-                </Text>
-                <View style={{flex:1}}/>
-                <TouchableWithoutFeedback onPress={()=>{
+                <NoMoreClick onPress={this._clickLike}>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Image style={styles.bottomIcon} source={detail.like ? iconLike : iconNoLike}/>
+                        <Text style={styles.bottomNumText}>
+                            {ShowUtils.formatShowNum(detail.likesCount)}
+                        </Text>
+                    </View>
+                </NoMoreClick>
+                <View style={{ width: px2dp(24) }}/>
+                <NoMoreClick onPress={this._downloadShowContent}>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Image source={iconDownload} style={styles.bottomIcon}/>
+                        <Text style={styles.bottomNumText}>
+                            {ShowUtils.formatShowNum(detail.downloadCount)}
+                        </Text>
+                    </View>
+                </NoMoreClick>
+                <View style={{ flex: 1 }}/>
+                <TouchableWithoutFeedback onPress={() => {
                     this.setState({
-                        productModalVisible:true
-                    })
+                        productModalVisible: true
+                    });
                 }}>
-                    <ImageBackground source={iconBuyBg} style={{width:px2dp(90),height:px2dp(34),alignItems:'center',justifyContent:'center'}}>
-                        <Text style={{color:DesignRule.white,fontSize:DesignRule.fontSize_threeTitle_28}}>
+                    <ImageBackground source={iconBuyBg} style={{
+                        width: px2dp(90),
+                        height: px2dp(34),
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}>
+                        <Text style={{ color: DesignRule.white, fontSize: DesignRule.fontSize_threeTitle_28 }}>
                             立即购买
                         </Text>
                     </ImageBackground>
                 </TouchableWithoutFeedback>
             </View>
-        )
-    }
+        );
+    };
 
 
-    _otherInfoRender=()=>{
+    _otherInfoRender = () => {
         let { detail } = this.showDetailModule;
-        return(
+        return (
             <View style={styles.otherInfoWrapper}>
                 <Text style={styles.timeTextStyle}>
                     {detail.publishTimeStr}
                 </Text>
-                <View style={{flex:1}}/>
+                <View style={{ flex: 1 }}/>
                 <Image style={styles.fireIcon} source={iconShowFire}/>
-                <Text style={styles.fireNumText}>{NumUtils.formatShowNum(detail.hotCount)}</Text>
+                <Text style={styles.fireNumText}>{ShowUtils.formatShowNum(detail.hotCount)}</Text>
             </View>
-        )
-    }
+        );
+    };
+
+    addCart = (code) => {
+        let addCartModel = new AddCartModel();
+        addCartModel.requestProductDetail(code, (productIsPromotionPrice) => {
+            this.SelectionPage.show(addCartModel, (amount, skuCode) => {
+                const { prodCode, name, originalPrice } = addCartModel;
+                shopCartCacheTool.addGoodItem({
+                    'amount': amount,
+                    'skuCode': skuCode,
+                    'productCode': code
+                });
+                /*加入购物车埋点*/
+                track(trackEvent.AddToShoppingcart, {
+                    spuCode: prodCode,
+                    skuCode: skuCode,
+                    spuName: name,
+                    pricePerCommodity: originalPrice,
+                    spuAmount: amount,
+                    shoppingcartEntrance: 1
+                });
+            }, { sourceType: productIsPromotionPrice ? sourceType.promotion : null });
+        }, (error) => {
+            this.$toastShow(error.msg || '服务器繁忙');
+        });
+    };
 
 
     _render() {
@@ -319,17 +425,17 @@ export default class ShowDetailPage extends BasePage {
         if (pageState === PageLoadingState.fail) {
             return <View style={styles.container}>
                 <NetFailedView netFailedInfo={{ msg: this.state.errorMsg }}/>{this._renderNormalTitle()}
-                </View>;
+            </View>;
         }
         if (pageState === PageLoadingState.loading) {
-            return <View style={styles.container} >
+            return <View style={styles.container}>
                 {this._renderNormalTitle()}
-            </View>
+            </View>;
         }
 
         let { detail } = this.showDetailModule;
         if (!detail) {
-            detail = {imgs: '', products: [], click: 0, content: ''}
+            detail = { imgs: '', products: [], click: 0, content: '' };
         }
         // let products = detail.products;
         let number = detail.click;
@@ -408,7 +514,10 @@ export default class ShowDetailPage extends BasePage {
                         null
                 }
 
-                <ProductRowListView style={{ marginLeft: DesignRule.margin_page,marginVertical:px2dp(10)}} products={detail.products}/>
+                <ProductRowListView style={{ marginLeft: DesignRule.margin_page, marginVertical: px2dp(10) }}
+                                    products={detail.products}
+                                    addCart={this.addCart}
+                />
 
 
                 <AutoHeightWebView source={{ html: html }}
@@ -424,30 +533,30 @@ export default class ShowDetailPage extends BasePage {
 
                 />
                 {/*<View style={styles.goodsView}>*/}
-                    {/*{*/}
-                        {/*products.map((value, index) => {*/}
-                            {/*return <Goods key={index} data={value} press={() => {*/}
-                                {/*this._goToGoodsPage(value);*/}
-                            {/*}}/>;*/}
-                        {/*})*/}
-                    {/*}*/}
+                {/*{*/}
+                {/*products.map((value, index) => {*/}
+                {/*return <Goods key={index} data={value} press={() => {*/}
+                {/*this._goToGoodsPage(value);*/}
+                {/*}}/>;*/}
+                {/*})*/}
+                {/*}*/}
                 {/*</View>*/}
 
                 {this._otherInfoRender()}
 
                 {/*{*/}
-                    {/*isCollecting*/}
-                        {/*?*/}
-                        {/*<View style={[styles.bottomBtn]}>*/}
-                            {/*<ActivityIndicator style={styles.btnLoading} size='small'/>*/}
-                        {/*</View>*/}
-                        {/*:*/}
-                        {/*<TouchableOpacity style={styles.bottomBtn} onPress={() => this._collectAction()}>*/}
-                            {/*<Image style={styles.collectImg}*/}
-                                   {/*source={detail.hadCollect ? res.showFire : res.noShowFire}/>*/}
-                            {/*<Text style={styles.bottomText}*/}
-                                  {/*allowFontScaling={false}>{pageState === PageLoadingState.fail ? '' :'收藏'} · {detail.collectCount}</Text>*/}
-                        {/*</TouchableOpacity>*/}
+                {/*isCollecting*/}
+                {/*?*/}
+                {/*<View style={[styles.bottomBtn]}>*/}
+                {/*<ActivityIndicator style={styles.btnLoading} size='small'/>*/}
+                {/*</View>*/}
+                {/*:*/}
+                {/*<TouchableOpacity style={styles.bottomBtn} onPress={() => this._collectAction()}>*/}
+                {/*<Image style={styles.collectImg}*/}
+                {/*source={detail.hadCollect ? res.showFire : res.noShowFire}/>*/}
+                {/*<Text style={styles.bottomText}*/}
+                {/*allowFontScaling={false}>{pageState === PageLoadingState.fail ? '' :'收藏'} · {detail.collectCount}</Text>*/}
+                {/*</TouchableOpacity>*/}
                 {/*}*/}
             </ScrollView>
             {pageState === PageLoadingState.fail ? null :
@@ -456,11 +565,12 @@ export default class ShowDetailPage extends BasePage {
             <View style={styles.whiteNav}/>
             {this._renderNormalTitle()}
             {/*{this._shieldRender()}*/}
-            <ProductListModal visible={this.state.productModalVisible} products={[1,2]} requestClose={()=>{
+            <ProductListModal visible={this.state.productModalVisible} products={[1, 2]} requestClose={() => {
                 this.setState({
-                    productModalVisible:false
-                })
+                    productModalVisible: false
+                });
             }}/>
+            <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             type={'miniProgram'}
                             trackEvent={'ArticleShare'}
@@ -503,7 +613,7 @@ let styles = StyleSheet.create({
         alignItems: 'center',
         borderTopWidth: ScreenUtils.onePixel,
         borderTopColor: '#ddd',
-        paddingHorizontal:DesignRule.margin_page
+        paddingHorizontal: DesignRule.margin_page
     },
     goodsItem: {
         height: px2dp(66),
@@ -566,8 +676,8 @@ let styles = StyleSheet.create({
         height: px2dp(45),
         alignItems: 'center',
         flexDirection: 'row',
-        flex:1,
-        marginLeft:px2dp(5)
+        flex: 1,
+        marginLeft: px2dp(5)
     },
     portrait: {
         width: px2dp(36),
@@ -636,13 +746,13 @@ let styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         top: ScreenUtils.statusBarHeight,
-        position:'absolute',
-        left:0,
-        backgroundColor:DesignRule.white
+        position: 'absolute',
+        left: 0,
+        backgroundColor: DesignRule.white
     },
-    virHeader:{
+    virHeader: {
         height: px2dp(44),
-        marginTop:ScreenUtils.statusBarHeight
+        marginTop: ScreenUtils.statusBarHeight
     },
     backView: {
         width: px2dp(44),
@@ -675,57 +785,57 @@ let styles = StyleSheet.create({
         width: px2dp(20),
         height: px2dp(20)
     },
-    bottomIcon:{
-        width:px2dp(18),
-        height:px2dp(18)
+    bottomIcon: {
+        width: px2dp(18),
+        height: px2dp(18)
     },
-    bottomNumText:{
-        color:DesignRule.textColor_mainTitle,
-        fontSize:px2dp(11),
-        marginLeft:px2dp(5)
+    bottomNumText: {
+        color: DesignRule.textColor_mainTitle,
+        fontSize: px2dp(11),
+        marginLeft: px2dp(5)
     },
-    shieldWrapper:{
-        position:'absolute',
-        top:(ScreenUtils.statusBarHeight + px2dp(44)),
-        bottom:0,
-        left:0,
-        right:0,
-        backgroundColor:'rgba(255,255,255,0.7)'
+    shieldWrapper: {
+        position: 'absolute',
+        top: (ScreenUtils.statusBarHeight + px2dp(44)),
+        bottom: 0,
+        left: 0,
+        right: 0,
+        backgroundColor: 'rgba(255,255,255,0.7)'
     },
-    shieldTextWrapper:{
-        width:DesignRule.width,
-        backgroundColor:'black',
-        paddingHorizontal:DesignRule.margin_page,
-        paddingVertical:px2dp(6)
+    shieldTextWrapper: {
+        width: DesignRule.width,
+        backgroundColor: 'black',
+        paddingHorizontal: DesignRule.margin_page,
+        paddingVertical: px2dp(6)
     },
-    shieldText:{
-        color:DesignRule.white,
-        fontSize:DesignRule.fontSize_24
+    shieldText: {
+        color: DesignRule.white,
+        fontSize: DesignRule.fontSize_24
     },
-    shieldImage:{
-        width:px2dp(120),
-        height:px2dp(120),
-        marginTop:px2dp(50),
-        alignSelf:'center'
+    shieldImage: {
+        width: px2dp(120),
+        height: px2dp(120),
+        marginTop: px2dp(50),
+        alignSelf: 'center'
     },
-    otherInfoWrapper:{
-        flexDirection:'row',
-        alignItems:'center',
-        marginVertical:px2dp(18),
-        paddingHorizontal:DesignRule.margin_page
+    otherInfoWrapper: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: px2dp(18),
+        paddingHorizontal: DesignRule.margin_page
     },
-    timeTextStyle:{
-        color:DesignRule.textColor_instruction,
-        fontSize:DesignRule.fontSize_20
+    timeTextStyle: {
+        color: DesignRule.textColor_instruction,
+        fontSize: DesignRule.fontSize_20
     },
-    fireIcon:{
-        width:px2dp(20),
-        height:px2dp(20),
-        marginRight:px2dp(8),
+    fireIcon: {
+        width: px2dp(20),
+        height: px2dp(20),
+        marginRight: px2dp(8)
     },
-    fireNumText:{
-        fontSize:DesignRule.fontSize_22,
-        color:DesignRule.textColor_mainTitle
+    fireNumText: {
+        fontSize: DesignRule.fontSize_22,
+        color: DesignRule.textColor_mainTitle
     }
 
 });

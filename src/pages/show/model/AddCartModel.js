@@ -32,7 +32,6 @@ export default class AddCartModel {
     };
 
     productSuccess = (data) => {
-        return false;
         const { productStatus } = data || {};
         this.productStatus = productStatus;
         if (productStatus === product_status.delete) {

@@ -100,7 +100,7 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
         }
 
         TextView showTimes = helper.getView(R.id.showground_item_rqz);
-        int times = item.getClickCount();
+        int times = item.getHotCount();
         showTimes.setText(NumUtils.formatShowNum(times));
     }
 }

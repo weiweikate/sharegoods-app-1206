@@ -157,11 +157,16 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         linearLayoutManager.setOrientation(OrientationHelper.HORIZONTAL);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        ProductsAdapter productsAdapter = new ProductsAdapter(item.getProducts());
-        if (this.addCartListener != null) {
-            productsAdapter.setAddCartListener(addCartListener);
+        if(item.getProducts() != null){
+            ProductsAdapter productsAdapter = new ProductsAdapter(item.getProducts());
+            if (this.addCartListener != null) {
+                productsAdapter.setAddCartListener(addCartListener);
+            }
+            recyclerView.setAdapter(productsAdapter);
+        }else {
+            recyclerView.setVisibility(View.GONE);
         }
-        recyclerView.setAdapter(productsAdapter);
+
     }
 
 
