@@ -65,7 +65,7 @@ export default class DetailBottomView extends Component {
                     {
                         (showSellOut || stock === 0) ?
                             <View style={styles.outView}>
-                                <Text style={styles.outText}>{stock === 0 ? '已售罄~' : '已抢光~'}</Text>
+                                <Text style={styles.outText}>{stock === 0 ? '已售罄' : '已抢光'}</Text>
                             </View>
                             :
                             <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
