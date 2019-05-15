@@ -162,7 +162,7 @@ export default class MyHelperPage extends BasePage {
                             overflow: 'hidden'
                         }}
                                      onPress={() => this.jumpQYIMPage()}>
-                            <LinearGradient start={{ x: 1, y: 0 }} end={{ 1: 0, y: 0 }}
+                            <LinearGradient start={{ x: 1, y: 0 }} end={{ x: 0, y: 0 }}
                                             colors={['#FC5D39', '#FF0050']}
                                             style={{ alignItems: "center",
                                                 flexDirection: "row",
@@ -358,7 +358,7 @@ export default class MyHelperPage extends BasePage {
                                              }, 300);
                                          }
                                          }>
-                                <LinearGradient start={{ x: 1, y: 0 }} end={{ 1: 0, y: 0 }}
+                                <LinearGradient start={{ x: 1, y: 0 }} end={{ x: 0, y: 0 }}
                                                 colors={[ '#FC5D39','#FF0050']}
                                                 style={{ alignItems: "center",
                                                     flexDirection: "row",
