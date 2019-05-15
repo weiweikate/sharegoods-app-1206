@@ -179,7 +179,8 @@ export default class MyOrdersListView extends Component {
                 prodCode: item.prodCode,
                 skuCode: item.skuCode,
                 activityCodes:item.activityCodes,
-                afterSaleTime: item.afterSaleTime
+                afterSaleTime: item.afterSaleTime,
+                orderCustomerServiceInfoDTO: item.orderCustomerServiceInfoDTO
             });
         });
         return arrData;
