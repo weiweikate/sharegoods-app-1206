@@ -39,7 +39,9 @@ const api = {
     //是否显示秒杀
     isShowLimitGo: ['/advertising/timeLimitSecKill', { method: 'get' }],
     // 关注秒杀商品
-    followLimit: ['/promotion/attention', { method: 'post' }]
+    followLimit: ['/promotion/attention', { method: 'post' }],
+    // 取消关注秒杀商品
+    cancleFollow: ['/promotion/cancelAttention', { method: 'post' }]
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 

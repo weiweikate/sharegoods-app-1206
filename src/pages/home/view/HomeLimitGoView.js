@@ -199,7 +199,7 @@ const GoodsItemButton = ({ data, activityCode, navigate }) => {
     } else if (data.promotionStatus === limitStatus.noBegin) {
         return <NoMoreClick onPress={() => {
             if (user.isLogin) {
-                limitGoModule.followSpike(data.prodCode, activityCode);
+                data.promotionAttention ? limitGoModule.cancleFollow(data.prodCode, activityCode) : limitGoModule.followSpike(data.prodCode, activityCode);
             } else {
                 navigate(RouterMap.LoginPage);
             }
