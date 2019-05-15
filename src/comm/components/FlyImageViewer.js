@@ -790,11 +790,11 @@ export default class FlyImageViewer extends Component {
             <TouchableWithoutFeedback
                 onPress={() => this.handleLongPress(this.props.imageUrls[this.state.currentShowIndex])}>
                 <Image style={{
-                    width: 16,
-                    height: 16,
+                    width: 22,
+                    height: 22,
                     position: 'absolute',
-                    bottom: 17,
-                    right: 18
+                    bottom: 16+ScreenUtils.safeBottom,
+                    right: 16
                 }}
                        source={down_icon}/>
             </TouchableWithoutFeedback>
@@ -805,11 +805,11 @@ export default class FlyImageViewer extends Component {
         return (<TouchableWithoutFeedback
             onPress={() => this.handleCancel()}>
             <Image style={{
-                width: 18,
-                height: 18,
+                width: 22,
+                height: 22,
                 position: 'absolute',
-                top: 20+ScreenUtils.statusBarHeight,
-                left: 15
+                top: 16+ScreenUtils.statusBarHeight,
+                left: 16
             }}
                    source={close_icon}/>
         </TouchableWithoutFeedback>);
