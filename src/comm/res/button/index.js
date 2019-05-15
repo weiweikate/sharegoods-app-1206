@@ -24,6 +24,7 @@ const button = {
     message_three: require('./tongyong_icon_more_nor.png'),
     down_icon: require('./down_icon.png'),
     close_icon: require('./close_icon.png'),
-    kefu_icon: require('./me_bangzu_kefu_icon.png')
+    kefu_icon: require('./me_bangzu_kefu_icon.png'),
+    arrow_black_bottom: require('./arrow_black_bottom.png')
 };
 export default button;

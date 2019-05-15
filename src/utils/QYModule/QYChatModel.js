@@ -9,8 +9,8 @@ const { JRQYService } = NativeModules;
 const QYManagerEmitter = new NativeEventEmitter(JRQYService);
 
 const CARD_TYPE = {
-    PRODUCT_CARD: 0,
-    ORDER_CARD: 1
+    PRODUCT_CARD: 0,//商品卡片
+    ORDER_CARD: 1//订单卡片
 };
 
 const platformShopId = "hzmrwlyxgs";
