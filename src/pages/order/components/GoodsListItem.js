@@ -53,7 +53,7 @@ export default class GoodsListItem extends React.Component {
     }
 
     checkOrderAfterSaleService = (products = [], status, nowTime) => {
-        if (status === 1) {//待付款、无售后
+        if (status === 1 || status === 5) {//待付款、无售后
             return false;
         }
         let hasAfterSaleService = false;
@@ -65,7 +65,8 @@ export default class GoodsListItem extends React.Component {
                 return;
             }
             //商品售后已过期 无售后
-            if (status > 3 && nowTime && afterSaleTime && afterSaleTime < nowTime) {
+            let innerStatus = (product.orderCustomerServiceInfoDTO && products.orderCustomerServiceInfoDTO.status)
+            if (status > 3 && nowTime && afterSaleTime && afterSaleTime < nowTime && !(innerStatus<6 && innerStatus>=1)) {
                 return;
             }
 
