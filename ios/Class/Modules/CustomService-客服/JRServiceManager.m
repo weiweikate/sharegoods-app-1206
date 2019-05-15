@@ -142,7 +142,7 @@ SINGLETON_FOR_CLASS(JRServiceManager)
   actionConfig.linkClickBlock = ^(NSString *linkAddress) {
     [self onBack:nil];
     NSDictionary *urlData;
-    if (self.dataDic && [self.dataDic[@"chatType"] integerValue] == BEGIN_FROM_PRODUCT) {
+    if ([linkAddress containsString:@"http"]) {
        urlData = @{@"card_type":@(PRODUCT_CARD), @"linkUrl":linkAddress};
     }else{
        urlData = @{@"card_type":@(ORDER_CARD), @"linkUrl":linkAddress};
