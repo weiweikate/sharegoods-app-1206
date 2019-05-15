@@ -114,7 +114,7 @@ export class ActivityDidBeginView extends Component {
                             <View style={DidBeginViewStyles.leaveAmountView}>
                                 <View style={DidBeginViewStyles.textView}>
                                     <MRText
-                                        style={DidBeginViewStyles.leaveAmountText}>{promotionSaleRateS == 1 ? '已抢完' : `还剩${StringUtils.sub(1, promotionSaleRateS) * 100}%`}</MRText>
+                                        style={DidBeginViewStyles.leaveAmountText}>{promotionSaleRateS == 1 ? '已抢光' : `还剩${StringUtils.sub(1, promotionSaleRateS) * 100}%`}</MRText>
                                 </View>
                             </View>
                         </View>

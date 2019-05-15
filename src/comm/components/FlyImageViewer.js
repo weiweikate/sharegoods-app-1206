@@ -258,8 +258,8 @@ export default class FlyImageViewer extends Component {
         const imageSizes = [];
         nextProps.imageUrls.forEach(imageUrl => {
             imageSizes.push({
-                width: imageUrl.width || 0,
-                height: imageUrl.height || 0,
+                width: (imageUrl && imageUrl.width) || 0,
+                height: (imageUrl && imageUrl.height) || 0,
                 status: 'loading'
             });
         });
@@ -300,8 +300,8 @@ export default class FlyImageViewer extends Component {
         }
         this.loadedIndex.set(index, true);
 
-        const image = this.props.imageUrls[index];
-        let imageStatus = Object.assign({}, this.state.imageSizes[index]);
+        const image = this.props.imageUrls[index] || {};
+        let imageStatus = Object.assign({}, this.state.imageSizes[index]) || {};
 
         // 保存 imageSize
         const saveImageSize = () => {
@@ -323,7 +323,7 @@ export default class FlyImageViewer extends Component {
         }
 
         // 如果已经有宽高了，直接设置为 success
-        if (this.state.imageSizes[index].width > 0 && this.state.imageSizes[index].height > 0) {
+        if (this.state.imageSizes[index] && this.state.imageSizes[index].width > 0 && this.state.imageSizes[index].height > 0) {
             imageStatus.status = 'success';
             saveImageSize();
             return;
@@ -356,7 +356,7 @@ export default class FlyImageViewer extends Component {
                 sizeLoaded = true;
                 imageStatus.width = image.width;
                 imageStatus.height = image.height;
-                imageStatus = this.setImageWidthToScreenWidth(imageStatus);
+                imageStatus = this.setImageWidthToScreenWidth(imageStatus || {}) || {};
 
                 if (imageLoaded) {
                     imageStatus.status = 'success';
@@ -367,7 +367,7 @@ export default class FlyImageViewer extends Component {
                     sizeLoaded = true;
                     imageStatus.width = width;
                     imageStatus.height = height;
-                    imageStatus = this.setImageWidthToScreenWidth(imageStatus);
+                    imageStatus = this.setImageWidthToScreenWidth(imageStatus || {}) || {};
 
                     if (imageLoaded) {
                         imageStatus.status = 'success';
@@ -793,7 +793,7 @@ export default class FlyImageViewer extends Component {
                     width: 22,
                     height: 22,
                     position: 'absolute',
-                    bottom: 16+ScreenUtils.safeBottom,
+                    bottom: 16 + ScreenUtils.safeBottom,
                     right: 16
                 }}
                        source={down_icon}/>
@@ -808,7 +808,7 @@ export default class FlyImageViewer extends Component {
                 width: 22,
                 height: 22,
                 position: 'absolute',
-                top: 16+ScreenUtils.statusBarHeight,
+                top: 16 + ScreenUtils.statusBarHeight,
                 left: 16
             }}
                    source={close_icon}/>
