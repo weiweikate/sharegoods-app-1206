@@ -135,7 +135,7 @@ export default class SelectMentorPage extends BasePage {
 
                             }}
                         >
-                            跳过
+                            跳过,放弃好礼
                         </Text>
                     </View>
                 </View>
@@ -222,7 +222,7 @@ export default class SelectMentorPage extends BasePage {
                         this.$navigateBack();
                     }}
                 >
-                    填写会员号
+                    有认识的邀请人
                 </Text>
 
                 <TouchableOpacity>
