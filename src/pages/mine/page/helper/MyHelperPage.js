@@ -144,8 +144,8 @@ export default class MyHelperPage extends BasePage {
                             <Text style={styles.textFontstyle} allowFontScaling={false}>查看订单</Text>
                         </NoMoreClick>
                     </View>
-                    <View style={{ height: 177, backgroundColor: DesignRule.bgColor }}/>
                 </ScrollView>
+                <View style={{ height: 20, backgroundColor: DesignRule.bgColor }}/>
                 <View style={{alignItems: 'center'}}>
                     <View style={{
                         flexDirection: "row",
@@ -202,7 +202,7 @@ export default class MyHelperPage extends BasePage {
                             }} allowFontScaling={false}>客服电话</Text>
                         </NoMoreClick>
                     </View>
-                    <Text style={{fontSize: 10, color: DesignRule.textColor_secondTitle, marginTop: 5}}>服务时间：9：00-22：00</Text>
+                    <Text style={{fontSize: 10, color: DesignRule.textColor_secondTitle, marginVertical: 5}}>服务时间：9：00-22：00</Text>
                 </View>
             </View>
         );

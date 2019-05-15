@@ -45,6 +45,7 @@ export default class OrderDetailTimeView extends Component {
         let supplierCode = '';
         let desc = ''
         let pictureUrlString = '';
+        let num = ''
         if (orderDetailModel.warehouseOrderDTOList && orderDetailModel.warehouseOrderDTOList[0]){
             let item = orderDetailModel.warehouseOrderDTOList[0];
             supplierCode = item.supplierCode	|| '';
@@ -52,6 +53,7 @@ export default class OrderDetailTimeView extends Component {
                 let product = item.products[0];
                 desc = product.productName || '';
                 pictureUrlString = product.specImg || '';
+                num = '共'+product.quantity +'件商品';
             }
         }
         if (this.data){
@@ -65,8 +67,8 @@ export default class OrderDetailTimeView extends Component {
                     title: orderDetailModel.getOrderNo(),
                     desc,
                     pictureUrlString,
-                    urlString:'',
-                    note:'',
+                    urlString:'/'+orderDetailModel.getOrderNo(),
+                    note: num,
                 }}
             )
         } else {
@@ -82,8 +84,8 @@ export default class OrderDetailTimeView extends Component {
                         title: orderDetailModel.getOrderNo(),
                         desc,
                         pictureUrlString,
-                        urlString:'',
-                        note:'',
+                        urlString:'/'+orderDetailModel.getOrderNo(),
+                        note: num,
                     }}
                 )
             }).catch((e) => {
