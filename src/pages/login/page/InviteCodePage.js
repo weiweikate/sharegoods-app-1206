@@ -92,7 +92,7 @@ export default class InviteCodePage extends BasePage {
             <View style={styles.mainBgStyle}>
                 <View style={styles.contentStyle}>
                     <UIText
-                        value={"填输入邀请人会员号"}
+                        value={"输入邀请人会员号"}
                         style={{
                             marginTop: 80,
                             fontSize: 23
