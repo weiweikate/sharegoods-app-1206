@@ -61,9 +61,11 @@
           finshBlock(result[@"loginToken"]);
         }
       }else{
-        dispatch_async(dispatch_get_main_queue(), ^{
-          [JRLoadingAndToastTool showToast:result[@"content"] andDelyTime:0.5];
-        });
+        if ([result[@"code"] integerValue] != 6002) {
+          dispatch_async(dispatch_get_main_queue(), ^{
+            [JRLoadingAndToastTool showToast:@"一键登录失败" andDelyTime:0.5];
+          });
+        }
       }
     }];
   });
