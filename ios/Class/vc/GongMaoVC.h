@@ -6,7 +6,7 @@
 //  Copyright © 2019年 Facebook. All rights reserved.
 //
 
-#import "JRBaseVC.h"
+
 #import <React/RCTBridge.h>
 #import <React/RCTEventDispatcher.h>
 NS_ASSUME_NONNULL_BEGIN
