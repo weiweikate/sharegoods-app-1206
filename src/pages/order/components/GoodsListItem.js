@@ -17,6 +17,7 @@ import DateUtils from '../../../utils/DateUtils';
 import constants from '../../../constants/constants';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res'
+import ScreenUtils from '../../../utils/ScreenUtils';
 const arrow_black_bottom = res.button.arrow_black_bottom
 
 export default class GoodsListItem extends React.Component {
@@ -61,7 +62,7 @@ export default class GoodsListItem extends React.Component {
         products.forEach((product) => {
             let { activityCodes = [], afterSaleTime } = product
             //礼包产品3  经验值专区商品5 无售后
-            if (activityCodes && activityCodes.length > 0 && (activityCodes[0].orderType === 3 || activityCodes[0].orderType === 5)) {
+            if (activityCodes && activityCodes.length > 0 && (activityCodes[0].orderType === 3 || activityCodes[0].orderType === 5)&& status<=2) {
                 return;
             }
             //商品售后已过期 无售后
@@ -130,7 +131,7 @@ export default class GoodsListItem extends React.Component {
 
         return <View style={{
                 flexDirection: 'row',
-                height: 48,
+                height: ScreenUtils.autoSizeWidth(48),
                 width: '100%',
                 justifyContent: 'flex-end',
                 alignItems: 'center'
@@ -139,10 +140,11 @@ export default class GoodsListItem extends React.Component {
             {moreArr.length > 0?
                     <NoMoreClick
                         style={{
-                            height: 30,
-                            width: 68,
+                            height: ScreenUtils.autoSizeWidth(30),
+                            width: ScreenUtils.autoSizeWidth(68),
                             justifyContent: 'center',
                             alignItems: 'center',
+                            marginRight: -ScreenUtils.autoSizeWidth(10)
                         }}
                         onPress={() => {
                             this.setState({isShow: !this.state.isShow})
@@ -154,12 +156,12 @@ export default class GoodsListItem extends React.Component {
                             return <NoMoreClick key={i} style={{
                                 borderWidth: 1,
                                 borderColor: item.isRed ? DesignRule.mainColor : DesignRule.color_ddd,
-                                height: 30,
-                                borderRadius: 15,
-                                marginRight: 15,
+                                height: ScreenUtils.autoSizeWidth(30),
+                                borderRadius: ScreenUtils.autoSizeWidth(15),
+                                marginRight: ScreenUtils.autoSizeWidth(15),
                                 justifyContent: 'center',
                                 alignItems: 'center',
-                                width: 80
+                                width: ScreenUtils.autoSizeWidth(80)
                             }} onPress={() => {
                                 this.setState({isShow: false})
                                 operationMenuClick(item);
@@ -167,7 +169,7 @@ export default class GoodsListItem extends React.Component {
                                 <Text
                                     style={{
                                         color: item.isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle,
-                                        fontSize: 13
+                                        fontSize: ScreenUtils.autoSizeWidth(13)
                                     }}>{item.operation}</Text>
                             </NoMoreClick>;
 
@@ -176,14 +178,14 @@ export default class GoodsListItem extends React.Component {
                 </View>
             {
                 this.state.isShow ?
-                    <View style={{bottom: 40, right: 95*3, position: 'absolute',alignItems: 'center'}}>
+                    <View style={{bottom: ScreenUtils.autoSizeWidth(40), right: ScreenUtils.autoSizeWidth(95*3-10), position: 'absolute',alignItems: 'center'}}>
                         {moreArr.map((item, i) => {
                                 return <NoMoreClick key={i} style={{
                                     backgroundColor: '#999999',
-                                    height: 30,
+                                    height: ScreenUtils.autoSizeWidth(30),
                                     justifyContent: 'center',
                                     alignItems: 'center',
-                                    width: 68
+                                    width: ScreenUtils.autoSizeWidth(68)
                                 }} onPress={() => {
                                     this.setState({isShow: false})
                                     operationMenuClick(item);
@@ -191,7 +193,7 @@ export default class GoodsListItem extends React.Component {
                                     <Text
                                         style={{
                                             color: 'white',
-                                            fontSize: 13
+                                            fontSize: ScreenUtils.autoSizeWidth(13)
                                         }}>{item.operation}</Text>
                                 </NoMoreClick>;
 
