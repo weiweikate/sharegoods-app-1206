@@ -55,7 +55,7 @@ export default class MyCouponsItems extends Component {
     }
 
     fmtDate(obj) {
-        return formatDate(obj, 'yyyy.MM.dd');
+        return formatDate(obj, 'yyyy.MM.dd HH:mm');
     }
 
 
@@ -271,7 +271,7 @@ export default class MyCouponsItems extends Component {
                         bottom: 0, height: 48, borderTopColor: DesignRule.bgColor, borderTopWidth: 1
                     }}>
                         <TouchableOpacity style={styles.giveUpTouStyle} activeOpacity={1} onPress={() => {
-                            bridge.showLoading('加载中...');
+                            bridge.showLoading('加载中');
                             this.props.giveupUse();
                         }}>
                             <Text style={{

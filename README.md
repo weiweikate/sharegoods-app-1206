@@ -1,4 +1,14 @@
 # 秀购
+## 1.2.5
+- 增加相关埋点
+- 增加订单相关客服
+- 订单详情增加备注，列表中增加售后按钮
+- 商品详情相关界面调优
+- webview增加容器内部返回
+- 替换一键登录sdk
+- 增加神策机关id绑定
+- 增加订单客服卡片点击跳转
+
 ## 1.2.3版本
 ## 关于埋点
 在 util/TrackEvent/ 相关模块下编辑相关埋点事件
@@ -231,3 +241,5 @@ android开发人员在引入新的module包时，需要重新配置gradle文件�
     "bulid_path":"../node_nodules/module_name/android/build.gradle "
 }
 ```
+#### code push 登录
+   * 登录命令：code-push login https://codepush.sharegoodsmall.com/

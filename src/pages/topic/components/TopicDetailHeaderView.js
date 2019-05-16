@@ -51,7 +51,7 @@ export default class TopicDetailHeaderView extends Component {
     }
 
     updateTime(activityData, activityType, callBack) {
-        this.ActivityView.saveActivityViewData(activityData, activityType, callBack);
+        this.ActivityView && this.ActivityView.saveActivityViewData(activityData, activityType, callBack);
     }
 
     render() {
@@ -140,7 +140,7 @@ export default class TopicDetailHeaderView extends Component {
                                 color: DesignRule.textColor_instruction,
                                 fontSize: 11,
                                 marginLeft: ScreenUtils.autoSizeWidth(108)
-                            }} allowFontScaling={false}>{`月销售${isNoEmpty(monthSale) ? monthSale : 0}笔`}</Text>
+                            }} allowFontScaling={false}>{`近期销量: ${isNoEmpty(monthSale) ? monthSale : 0}`}</Text>
                         </View>
                     </View>
                 </View>

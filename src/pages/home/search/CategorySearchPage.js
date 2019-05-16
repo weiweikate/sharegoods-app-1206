@@ -37,7 +37,7 @@ export default class CategorySearchPage extends BasePage {
     };
 
     componentDidMount() {
-        this.$loadingShow('加载中...');
+        this.$loadingShow('加载中');
         // 分类列表
         HomeAPI.findNameList().then((response) => {
             this.$loadingDismiss();
@@ -217,7 +217,7 @@ export default class CategorySearchPage extends BasePage {
         });
         // 点击分类
         if (this.state.leftIndex !== index) {
-            bridge.showLoading('加载中...');
+            bridge.showLoading('加载中');
             // 先隐藏，后显示，起到刷新作用
             this.setState({
                 bannerData: [],

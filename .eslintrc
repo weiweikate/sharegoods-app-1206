@@ -335,7 +335,7 @@
         "no-mixed-spaces-and-tabs": 2,
         // disallow mixed spaces and tabs for indentation 禁止混用tab和空格
         "quotes": [
-            0,
+            1,
             "single"
         ],
         // specify whether double or single quotes should be used

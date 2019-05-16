@@ -62,6 +62,7 @@ export default class MyOrdersListView extends Component {
                 shutOffTime={item.cancelTime}
                 totalPrice={item.totalPrice}
                 quantity={item.quantity}
+                nowTime={item.nowTime}
                 orderCreateTime={item.createTime}
                 clickItem={() => {
                     this.clickItem(index);
@@ -177,7 +178,9 @@ export default class MyOrdersListView extends Component {
                 orderType: item.subStatus,
                 prodCode: item.prodCode,
                 skuCode: item.skuCode,
-                activityCodes:item.activityCodes
+                activityCodes:item.activityCodes,
+                afterSaleTime: item.afterSaleTime,
+                orderCustomerServiceInfoDTO: item.orderCustomerServiceInfoDTO
             });
         });
         return arrData;
@@ -240,7 +243,7 @@ export default class MyOrdersListView extends Component {
                             warehouseType:item.warehouseOrderDTOList[0].warehouseType,
                             totalPrice: resp.payAmount,
                             expList: resp.expList || [],
-                            nowTime: resp.nowTime,
+                            nowTime: item.nowTime,
                             unSendProductInfoList: resp.unSendProductInfoList || [],
                             outTradeNo: resp.outTradeNo,
                             commentStatus: resp.commentStatus,
@@ -325,7 +328,7 @@ export default class MyOrdersListView extends Component {
         console.log('orderlistrefresh');
         // userOrderNum.getUserOrderNum();
         if (!this.isRefresh) {
-            Toast.showLoading('加载中...');
+            Toast.showLoading('加载中');
         }
         this.isRefresh = false;
         if (this.props.orderNum) {
@@ -542,6 +545,9 @@ export default class MyOrdersListView extends Component {
                     Toast.$toast(e.msg);
                 });
                 break;
+            case 99:
+                this.clickItem(index)
+                break
         }
 
     };

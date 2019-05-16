@@ -171,7 +171,7 @@ export default class GuideModal extends React.Component {
             }
 
             if (step === 3) {
-                let ad = homeExpandBnnerModel.banner;
+                let ad = homeFocusAdModel.ad || [];
                 let top =  _categoryHeight + bannerHeight + ScreenUtils.headerHeight + (user.isLogin ? autoSizeWidth(44) : 0) - (ScreenUtils.isIphonex ? 10 : 0) + homeExpandBnnerModel.bannerHeight + (channelModules.channelList.length > 0? autoSizeWidth(90): 0);
                 if (ad.length > 0) {
                     data.image = ad[ad.length - 1].image || '';//获取最后一个图片地址

@@ -34,6 +34,20 @@ const EmptyUtils = {
             return false;
         }
         return true;
+    },
+
+    clearEmptyProperty: (obj: Object) => {
+        for (let name in obj) {
+            let value = obj[name]
+            if (value === undefined ||
+                value === null ||
+                value === 'null'){
+                delete obj[name]
+            }
+            if (typeof value === 'object') {
+                EmptyUtils.clearEmptyProperty(value)
+            }
+        }
     }
 }
 

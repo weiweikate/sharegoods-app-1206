@@ -87,6 +87,10 @@
   if (!result) {
     [[JRPay sharedPay] handleOpenUrl:url];
   }
+  
+  if ([[SensorsAnalyticsSDK sharedInstance] handleSchemeUrl:url]) {
+    return YES;
+  }
   result = [RCTLinkingManager application:application openURL:url
                         sourceApplication:nil annotation:nil];
   return YES;

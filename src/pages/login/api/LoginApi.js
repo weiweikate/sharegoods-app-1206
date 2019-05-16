@@ -33,7 +33,8 @@ const api = {
     //一键登录后去绑定微信操作
     phoneBindWx:['/user/userLogin/bindWeChat'],
     //一键登录校验token借口
-    oneClickLoginValidation:['/user/userLogin/autoLogin'],
+    // oneClickLoginValidation:['/user/userLogin/autoLogin'],
+    oneClickLoginValidation:['/user/userLogin/autoLoginByJiGuang'],
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 

@@ -1,7 +1,10 @@
 import { NavigationActions, StackNavigator } from 'react-navigation';
-import Router from './Stack';
 import { Platform, NativeModules } from 'react-native';
+/**
+ * 以下两个对象不可以颠倒引入，会导致全局路由RouterMap不可用
+ */
 import RouterMap from './RouterMap';
+import Router from './Stack';
 import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
 import Analytics from '../utils/AnalyticsUtil';
 import bridge from '../utils/bridge';

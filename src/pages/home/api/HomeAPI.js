@@ -37,7 +37,11 @@ const api = {
     //秒杀
     getLimitGo: ['/product/queryProductDetailByActivity', { method: 'post' }],
     //是否显示秒杀
-    isShowLimitGo: ['/advertising/timeLimitSecKill', { method: 'get' }]
+    isShowLimitGo: ['/advertising/timeLimitSecKill', { method: 'get' }],
+    // 关注秒杀商品
+    followLimit: ['/promotion/attention', { method: 'post' }],
+    // 取消关注秒杀商品
+    cancleFollow: ['/promotion/cancelAttention', { method: 'post' }]
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 

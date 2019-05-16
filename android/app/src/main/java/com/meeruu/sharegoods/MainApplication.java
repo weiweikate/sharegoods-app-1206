@@ -20,6 +20,7 @@ import com.meeruu.RNDeviceInfo.RNDeviceInfo;
 import com.meeruu.commonlib.base.BaseApplication;
 import com.meeruu.commonlib.config.FrescoImagePipelineConfig;
 import com.meeruu.commonlib.utils.AppUtils;
+import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.sharegoods.rn.MainReactPackage;
 import com.meeruu.sharegoods.rn.RNMRPackage;
 import com.meeruu.sharegoods.rn.lottie.LottiePackage;
@@ -37,6 +38,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
+import cn.jiguang.verifysdk.api.JVerificationInterface;
 
 /**
  * @author louis
@@ -106,7 +108,8 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     new RNSensorsAnalyticsPackage(),
                     new PickerPackage(),
                     new ExtraDimensionsPackage(),
-                    new CodePush(BuildConfig.CODEPUSH_KEY, MainApplication.this, BuildConfig.DEBUG),
+                    new CodePush(BuildConfig.CODEPUSH_KEY, MainApplication.this,
+                            BuildConfig.DEBUG, ParameterUtils.CODE_PUSH_SERVER),
                     new RNCWebViewPackage()
             );
         }

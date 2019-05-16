@@ -29,7 +29,7 @@ import userOrderNum from '../../../../model/userOrderNum';
 import apiEnvironment from '../../../../api/ApiEnvironment';
 import loginModel from '../../../login/model/LoginModel';
 import StringUtils from '../../../../utils/StringUtils';
-import { QYChatTool } from "../../../../utils/QYModule/QYChatTool";
+import { QYChatTool } from '../../../../utils/QYModule/QYChatTool';
 
 /**
  * @author luoyongming
@@ -77,7 +77,6 @@ class SettingPage extends BasePage {
             });
         }
     }
-
 
     //**********************************ViewPart******************************************
     _render = () => {
@@ -235,7 +234,7 @@ class SettingPage extends BasePage {
                         homeModule.loadHomeList();
                         MineApi.signOut();
                         // 退出七鱼
-                        QYChatTool.qiYULogout()
+                        QYChatTool.qiYULogout();
                         this.$loadingDismiss();
                         // 神策退出登录
                         logout();

@@ -272,7 +272,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                                        }}
                     />
                 </ScrollView>
-                <CustomerServiceView/>
+                <CustomerServiceView pageData={pageData}/>
             </View>
         );
     }

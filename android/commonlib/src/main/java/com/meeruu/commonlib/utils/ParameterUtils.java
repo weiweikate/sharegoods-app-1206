@@ -22,6 +22,7 @@ public class ParameterUtils {
     // 无网络连接错误码
     public static final String RESPONE_CODE_NETERR = "net_err";
     public static final String RN_MAIN_NAME = "sharegoods";
+    public static final String CODE_PUSH_SERVER = "https://codepush.sharegoodsmall.com/";
     /**
      * 标题
      */
@@ -64,6 +65,7 @@ public class ParameterUtils {
     public static final int REQUEST_CODE_GONGMAO = 47;  // 工猫签约
     public static final int REQUEST_CODE_WEBVIEW = 48;
     public static final int NOTIFY_ID_APP_INIT = 49;
+    public static final int REQUEST_CODE_PHONE = 50; //拍摄照片请求码
     /**
      * 异步初始化通知channnelId
      */

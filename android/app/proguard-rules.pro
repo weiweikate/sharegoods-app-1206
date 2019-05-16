@@ -442,11 +442,17 @@ public static final int *;
 -keep class * extends androidx.appcompat.app.ActionBar {*;}
 
 # number verify
--keep class android.support.v4.** { *;}
--keep class com.alibaba.fastjson.** {*;}
--keep class cn.com.chinatelecom.** {*;}
--keep class com.unicom.** {*;}
--keep class com.cmic.** {*;}
- -keep class com.alicom.phonenumberauthsdk.** {
-      *;
-  }
+-dontoptimize
+-dontpreverify
+
+-dontwarn cn.jpush.**
+-keep class cn.jpush.** { *; }
+-dontwarn cn.jiguang.**
+-keep class cn.jiguang.** { *; }
+-dontwarn com.cmic.**
+-keep class com.cmic.** { *; }
+-dontwarn com.unicom.**
+-keep class com.unicom.** { *; }
+
+-dontwarn cn.com.chinatelecom.**
+-keep class cn.com.chinatelecom.** { *; }

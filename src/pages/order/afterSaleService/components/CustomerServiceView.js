@@ -28,9 +28,11 @@ import {
 import DesignRule from '../../../../constants/DesignRule';
 import res from "../../res";
 import BusinessUtils from "../../../mine/components/BusinessUtils";
+import orderApi from '../../api/orderApi';
 // import QYChatUtil from "../../../mine/page/helper/QYChatModel";
 import { track, trackEvent } from '../../../../utils/SensorsTrack';
-import {  QYChatTool } from '../../../../utils/QYModule/QYChatTool';
+import { beginChatType, QYChatTool } from '../../../../utils/QYModule/QYChatTool';
+import bridge from '../../../../utils/bridge';
 
 const {
     afterSaleService: {
@@ -44,6 +46,7 @@ export default class CustomerServiceView extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
+        this.data=null;
     }
 
     /** 打电话*/
@@ -57,19 +60,47 @@ export default class CustomerServiceView extends React.Component {
     };
     /** 七鱼客服*/
     contactSeller = () => {
+        let pageData = this.props.pageData;
         track(trackEvent.ClickOnlineCustomerService, {customerServiceModuleSource: 4});
-         //QYChatUtil.qiYUChat();
-        // QYChatTool.beginQYChat({
-        //     routePath: '',
-        //     urlString: '',
-        //     title: '平台客服',
-        //     shopId: '',
-        //     chatType: beginChatType.BEGIN_FROM_ORDER,
-        //     data: {
-        //
-        //     }
-        // })
-        QYChatTool.beginQYChat();
+        let supplierCode = pageData.supplierCode	|| '';
+        if (this.data){
+            QYChatTool.beginQYChat({
+                routePath: '',
+                urlString: '',
+                title: this.data.title,
+                shopId:this.data.shopId,
+                chatType: beginChatType.BEGIN_FROM_ORDER,
+                data: {
+                    title: pageData.warehouseOrderNo,
+                    desc: pageData.productName,
+                    pictureUrlString: pageData.specImg,
+                    urlString:'',
+                    note:'',
+                }}
+            )
+        } else {
+            orderApi.getProductShopInfoBySupplierCode({ supplierCode }).then((data) => {
+                    this.data = data.data;
+                    QYChatTool.beginQYChat({
+                            routePath: '',
+                            urlString: '',
+                            title: this.data.title,
+                            shopId: this.data.shopId,
+                            chatType: beginChatType.BEGIN_FROM_ORDER,
+                            data: {
+                                title: pageData.warehouseOrderNo,
+                                desc: pageData.productName,
+                                pictureUrlString: pageData.specImg,
+                                urlString: '',
+                                note: '',
+                            }
+                        }
+                    )
+                }
+            ).catch((e) => {
+                bridge.$toast(e.msg)
+            })
+        }
     };
 
     render() {

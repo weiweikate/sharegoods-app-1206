@@ -38,6 +38,7 @@ import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import user from '../../../../model/user';
 import { trackEvent} from '../../../../utils/SensorsTrack';
+import { SmoothPushPreLoadHighComponentFirstDelay } from '../../../../comm/components/SmoothPushHighComponent';
 
 const {
     button: {
@@ -51,6 +52,7 @@ const {
 } = res;
 
 type Props = {};
+@SmoothPushPreLoadHighComponentFirstDelay
 export default class InviteFriendsPage extends BasePage<Props> {
     constructor(props) {
         super(props);
@@ -59,7 +61,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
             path: ''
         };
         this._bind();
-        this.linkUrl = `${apiEnvironment.getCurrentH5Url()}/register?upuserid=${user.code || ''}`;
+        this.linkUrl = `${apiEnvironment.getCurrentH5Url()}/register?upuserid=${user.code || ''}&signUpSource=fxhy`;
     }
 
     $navigationBarOptions = {
