@@ -75,11 +75,14 @@ export default class ShowActivityView extends Component {
         const { navigate } = this.props;
         let params = {
             data:item,
+            index:index,
+            relpaceActData:()=>{
+
+            }
         };
-        console.log(this.state.viewData)
+
         let data = this.state.viewData;
-        data[index] = Number(data[index]['hotCount'])+1;
-        console.log(data);
+        data[index] = Number(data[index].hotCount) + 1;
         if(item.showType === 1){
             navigate('show/ShowDetailPage', params);
         }else {
