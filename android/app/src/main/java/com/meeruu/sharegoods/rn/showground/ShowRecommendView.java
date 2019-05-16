@@ -35,6 +35,7 @@ import com.meeruu.sharegoods.rn.showground.event.onNineClickEvent;
 import com.meeruu.sharegoods.rn.showground.event.onScrollStateChangedEvent;
 import com.meeruu.sharegoods.rn.showground.event.onStartRefreshEvent;
 import com.meeruu.sharegoods.rn.showground.event.onStartScrollEvent;
+import com.meeruu.sharegoods.rn.showground.event.onZanPressEvent;
 import com.meeruu.sharegoods.rn.showground.presenter.ShowgroundPresenter;
 import com.meeruu.sharegoods.rn.showground.view.IShowgroundView;
 import com.meeruu.sharegoods.rn.showground.widgets.CustomLoadMoreView;
@@ -53,6 +54,7 @@ public class ShowRecommendView  implements IShowgroundView, SwipeRefreshLayout.O
     private EventDispatcher eventDispatcher;
     private onStartScrollEvent startScrollEvent;
     private onEndScrollEvent endScrollEvent;
+    private onZanPressEvent onZanPressEvent;
     private ShowgroundPresenter presenter;
     private WeakReference<View> showgroundView;
     private onStartRefreshEvent startRefreshEvent;
@@ -114,6 +116,7 @@ public class ShowRecommendView  implements IShowgroundView, SwipeRefreshLayout.O
         startScrollEvent = new onStartScrollEvent();
         endScrollEvent = new onEndScrollEvent();
         itemPressEvent = new onItemPressEvent();
+        onZanPressEvent = new onZanPressEvent();
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override

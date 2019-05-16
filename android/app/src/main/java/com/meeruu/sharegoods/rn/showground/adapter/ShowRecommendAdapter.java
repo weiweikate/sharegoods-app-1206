@@ -38,6 +38,7 @@ import java.util.List;
 public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGroundBean.DataBean, BaseViewHolder> {
     private NineGridView.clickL clickL;
     private ProductsAdapter.AddCartListener addCartListener;
+    private RecommendItemInterface recommendItemInterface;
 
     public ShowRecommendAdapter(NineGridView.clickL clickL, ProductsAdapter.AddCartListener addCartListener) {
 
@@ -169,5 +170,10 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
 
     }
 
+    public interface RecommendItemInterface{
+        void onZanListener();
+        void onDownloadListener();
+        void onShareListener();
+    }
 
 }
