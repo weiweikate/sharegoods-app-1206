@@ -112,13 +112,12 @@
 
 -(void)tapGuanzhuBtn:(UIButton*)sender{
   sender.selected = !sender.selected;
-  NSLog(@"tapGuanzhuBtn");
 }
 
 -(void)setUserInfoModel:(UserInfoModel *)UserInfoModel{
     _UserInfoModel = UserInfoModel;
   
-    [self.headImg sd_setImageWithURL:[NSURL URLWithString:UserInfoModel.userImg] placeholderImage:[self createImageWithUIColor:[UIColor grayColor]]];
+    [self.headImg sd_setImageWithURL:[NSURL URLWithString:UserInfoModel.userImg] placeholderImage:[UIImage imageNamed:@"default_avatar"]];
   
     if(UserInfoModel.userName.length>13){
         self.nameLab.text = [NSString stringWithFormat:@"%@...",[UserInfoModel.userName substringToIndex:13]];
@@ -130,17 +129,6 @@
 -(void)setTime:(NSString *)time{
   _time = time;
   self.timeLab.text = self.time;
-}
-
-- (UIImage *)createImageWithUIColor:(UIColor *)imageColor{
-  CGRect rect = CGRectMake(0, 0, 1.f, 1.f);
-  UIGraphicsBeginImageContext(rect.size);
-  CGContextRef context = UIGraphicsGetCurrentContext();
-  CGContextSetFillColorWithColor(context, [imageColor CGColor]);
-  CGContextFillRect(context, rect);
-  UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-  UIGraphicsEndImageContext();
-  return image;
 }
 
 @end

@@ -30,7 +30,7 @@ export default class ShowRecommendView extends Component {
     replaceItemData = (index,data)=>{
         UIManager.dispatchViewManagerCommand(
             this.getHandle(),
-            UIManager.ShowGroundView.Commands.replaceItemData,
+            UIManager.ShowRecommendView.Commands.replaceItemData,
             [index,data]
         );
     }

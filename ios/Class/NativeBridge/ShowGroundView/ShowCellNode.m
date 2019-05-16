@@ -88,24 +88,14 @@
                                                                                _hotNumNode
                                                                 ]];
   hSpec.style.width = ASDimensionMake(constrainedSize.min.width);
-  if(_titleNode.attributedText.length>0){
     ASStackLayoutSpec *vSpec = [ASStackLayoutSpec stackLayoutSpecWithDirection:ASStackLayoutDirectionVertical
-                                                                     spacing:10
-                                                              justifyContent:ASStackLayoutJustifyContentStart alignItems:ASStackLayoutAlignItemsStart
-                                                                    children:@[ImageSpec,
-                                                                               [ASInsetLayoutSpec insetLayoutSpecWithInsets:UIEdgeInsetsMake(0, 10, 0, 10) child:_titleNode],
-                                                                               hSpec                                                                ]];
+                                            spacing:_titleNode.attributedText.length>0?10:0
+                                      justifyContent:ASStackLayoutJustifyContentStart alignItems:ASStackLayoutAlignItemsStart
+                                            children:@[ImageSpec,
+                                                      [ASInsetLayoutSpec insetLayoutSpecWithInsets:UIEdgeInsetsMake(0, 10, 0, 10) child:_titleNode],
+                                                          hSpec                                                                ]];
   
     return [ASInsetLayoutSpec insetLayoutSpecWithInsets:UIEdgeInsetsMake(0, 0, 12, 0) child:vSpec];
-  }
-  
-  ASStackLayoutSpec *vSpec = [ASStackLayoutSpec stackLayoutSpecWithDirection:ASStackLayoutDirectionVertical
-                                                                     spacing:10
-                                                              justifyContent:ASStackLayoutJustifyContentStart alignItems:ASStackLayoutAlignItemsStart
-                                                                    children:@[ImageSpec,
-                                                                               hSpec                                                                ]];
-  
-  return [ASInsetLayoutSpec insetLayoutSpecWithInsets:UIEdgeInsetsMake(0, 0, 12, 0) child:vSpec];
 }
 
 

@@ -10,6 +10,7 @@
 #import "UIView+SDAutoLayout.h"
 #import "View/JXHeaderView.h"
 #import "UIImageView+WebCache.h"
+#import "UIButton+TimeInterval.h"
 
 @interface RecTypeCell()
 
@@ -67,6 +68,7 @@
 -(UIButton*)zanBtn{
   if(!_zanBtn){
     _zanBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    _zanBtn.timeInterval = 1.5;
     [_zanBtn setBackgroundImage:[UIImage imageNamed:@"zan"] forState:UIControlStateNormal];
     
   }
@@ -156,29 +158,35 @@
 
 -(void)setModel:(JXModelData *)model{
   _model = model;
-  self.headView.UserInfoModel = (NSDictionary*)model.userInfoVO;
+  self.headView.UserInfoModel = model.userInfoVO;
   if(model.like){
     [_zanBtn setBackgroundImage:[UIImage imageNamed:@"yizan"] forState:UIControlStateNormal];
     
   }else{
     [_zanBtn setBackgroundImage:[UIImage imageNamed:@"zan"] forState:UIControlStateNormal];
   }
-  _zanNum.text = [NSString stringWithFormat:@"%ld",model.likesCount];
-  [self.picImg sd_setImageWithURL:[NSURL URLWithString:[model.products[0] valueForKey: @"image"]] placeholderImage:[self createImageWithUIColor:[UIColor grayColor]]];
+  NSString * num = @"";
+    if(model.likesCount<999){
+      num = [NSString stringWithFormat:@"%ld",model.likesCount];
+    }else if(model.likesCount<100000){
+      num = @"999+";
+    }else{
+      num = @"10w+";
+    }
+  _zanNum.text = num;
+  [self.picImg sd_setImageWithURL:[NSURL URLWithString:[model.products[0] valueForKey: @"imgUrl"]] placeholderImage:[UIImage imageNamed:@"default_avatar"]];
   self.contentLab.text = model.content;
   
 }
 
 
 -(void)tapZanBtn:(UIButton*)sender{
-  NSLog(@"tapZanBtn");
   if(self.recTypeDelegate){
     [self.recTypeDelegate zanBtnClick:self];
   }
 }
 
 -(void)tapShareBtn:(UIButton*)sender{
-  NSLog(@"tapShareBtn");
   if(self.recTypeDelegate){
     [self.recTypeDelegate shareBtnClick:self];
   }
@@ -201,14 +209,4 @@
     // Configure the view for the selected state
 }
 
-- (UIImage *)createImageWithUIColor:(UIColor *)imageColor{
-  CGRect rect = CGRectMake(0, 0, 1.f, 1.f);
-  UIGraphicsBeginImageContext(rect.size);
-  CGContextRef context = UIGraphicsGetCurrentContext();
-  CGContextSetFillColorWithColor(context, [imageColor CGColor]);
-  CGContextFillRect(context, rect);
-  UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-  UIGraphicsEndImageContext();
-  return image;
-}
 @end

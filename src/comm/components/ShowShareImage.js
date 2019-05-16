@@ -9,6 +9,8 @@ import {
     StyleSheet,
     Text,
     View,} from 'react-native';
+import res from "../../pages/show/res";
+import PreLoadImage from '../../components/ui/preLoadImage/PreLoadImage';
 
 
 export default class ShowShareImage extends Component {
@@ -19,24 +21,33 @@ export default class ShowShareImage extends Component {
     render() {
         const {data} = this.props;
         if(data){
-            let name = data.titleStr;
+            let name = data.userName;
             let content = data.titleStr;
-            let headerImg = data.imageUrlStr;
+            let headerImg = data.headerImage;
             let goodsImg = data.imageUrlStr;
-
+            console.log(JSON.stringify(data))
             return (
                 <View style={styles.container}>
                     <Image style={{marginTop:10,marginLeft:5,width:230,height:258,borderRadius:5,overflow: 'hidden',}}
                            source={{uri:goodsImg}}/>
                     <View style={{flexDirection:'row',width:230,height:30,alignItems:'center',marginBottom:5,marginTop:5}}>
-                        <Image style={{backgroundColor:'red',width:20,height:20,borderRadius:10,overflow: 'hidden',}}
-                               source={{uri:headerImg}}/>
+                        <PreLoadImage
+                            imageUri={headerImg}
+                            style={{
+                                width: 20,
+                                height: 20,
+                                borderRadius: 10
+                            }}
+                            defaultImage={res.placeholder.noHeadImage}
+                            errImage={res.placeholder.noHeadImage}
+                        />
+
                         <Text style={{marginLeft:5,fontSize:13}}>{name ?
                             (name.length > 13 ? name.substr(0, 13) + '...' : name) : ''
                         }</Text>
                     </View>
                     <View style={{width:230}}>
-                        <Text style={{fontSize:13}} numberOfLines={2}>{content}就仨贷款卡了解了解阿萨德机器哦电脑就恼羞成怒今年世界看见阿森纳大家安静的擦加快农村</Text>
+                        <Text style={{fontSize:13}} numberOfLines={2}>{content}</Text>
                     </View>
                 </View>
             );

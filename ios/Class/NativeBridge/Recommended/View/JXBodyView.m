@@ -89,8 +89,8 @@
             long columnIndex = idx % perRowItemCount;
             long rowIndex = idx / perRowItemCount;
             UIImageView *imageView = [self->_imageViewsArray objectAtIndex:idx];
-            imageView.backgroundColor = [UIColor blueColor];
-            [imageView sd_setImageWithURL:[NSURL URLWithString:self.sources[idx][@"url"]] placeholderImage:[self createImageWithUIColor:[UIColor grayColor]]];
+            imageView.backgroundColor = [UIColor colorWithHexString:@"a5adb3"];
+            [imageView sd_setImageWithURL:[NSURL URLWithString:self.sources[idx][@"url"]] placeholderImage:[UIImage imageNamed:@"default_avatar"]];
           
             imageView.hidden = NO;
             imageView.frame = CGRectMake(columnIndex * (itemW + margin), rowIndex * (itemH + margin), itemW, itemH);
@@ -196,15 +196,5 @@
 //        [photoBrower present];
 //}
 //
-- (UIImage *)createImageWithUIColor:(UIColor *)imageColor{
-    CGRect rect = CGRectMake(0, 0, 1.f, 1.f);
-    UIGraphicsBeginImageContext(rect.size);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(context, [imageColor CGColor]);
-    CGContextFillRect(context, rect);
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return image;
-}
 
 @end

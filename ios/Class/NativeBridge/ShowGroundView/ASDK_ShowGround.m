@@ -32,9 +32,10 @@
 @property (nonatomic, assign)NSInteger page;
 @property (nonatomic, strong)UIView *headerView;
 @property (nonatomic, assign)NSInteger errCode;
-@property(nonatomic, strong)UILabel *emptyLb;
+@property (nonatomic, strong)UILabel *emptyLb;
 @property (nonatomic, strong)UIView *emptyView;
-@property(nonatomic, strong)MosaicCollectionLayoutDelegate *layoutDelegate;
+@property (nonatomic, strong)MosaicCollectionLayoutDelegate *layoutDelegate;
+@property (nonatomic, assign)BOOL isFinish;
 @end
 @implementation ASDK_ShowGround
 
@@ -45,9 +46,7 @@
     [self setUI];
     [self setupRefresh];
     [self setupEmptyView];
-
   }
-
   return self;
 }
 
@@ -185,10 +184,10 @@
   [NetWorkTool requestWithURL:self.uri params:dic  toModel:nil success:^(NSDictionary* result) {
     ShowQueryModel* model = [ShowQueryModel modelWithJSON:result];
     weakSelf.dataArr = [model.data mutableCopy];
-    if(result&&[result valueForKey:@"data"]){
+    if([result valueForKey:@"data"]&&![[result valueForKey:@"data"] isKindOfClass:[NSNull class]]){
       weakSelf.callBackArr = [[result valueForKey:@"data"] mutableCopy];
     }
-    
+
     [weakSelf.collectionNode.view.mj_header endRefreshing];
     if(model.data.count < 20){
       [weakSelf.collectionNode.view.mj_footer endRefreshingWithNoMoreData];
@@ -208,6 +207,7 @@
     [MBProgressHUD showSuccess:msg];
     [weakSelf.collectionNode.view.mj_header endRefreshing];
   } showLoading:nil];
+  self.isFinish = YES;
 }
 
 /**
@@ -223,12 +223,12 @@
   [dic addEntriesFromDictionary:@{@"page": [NSString stringWithFormat:@"%ld",self.page], @"size": @"20"}];
   __weak ASDK_ShowGround * weakSelf = self;
   [NetWorkTool requestWithURL:self.uri params:dic toModel:nil success:^(NSDictionary* result) {
-    
+
     ShowQueryModel* model = [ShowQueryModel modelWithJSON:result];
     [weakSelf.dataArr addObjectsFromArray:model.data];
 
-    if(result&&[result valueForKey:@"data"]){
-      [weakSelf.callBackArr addObjectsFromArray:model.data];
+    if([result valueForKey:@"data"]&&![[result valueForKey:@"data"] isKindOfClass:[NSNull class]]){
+      [weakSelf.callBackArr addObjectsFromArray:[result valueForKey:@"data"]];
     }
 
     NSMutableArray *indexPaths = [NSMutableArray new];
@@ -265,8 +265,11 @@
 - (void)collectionNode:(ASCollectionNode *)collectionNode didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
   if (_onItemPress) {
-    self.dataArr[indexPath.item].xg_index = indexPath.row;
-    _onItemPress(self.callBackArr[indexPath.item]);
+    self.dataArr[indexPath.row].xg_index = indexPath.row;
+    NSMutableDictionary * dic = [NSMutableDictionary dictionaryWithDictionary:self.callBackArr[indexPath.row]];
+    [dic setObject:[NSNumber numberWithInteger:indexPath.row] forKey:@"index"];
+    [self.callBackArr replaceObjectAtIndex:indexPath.row withObject:dic];
+    _onItemPress(self.callBackArr[indexPath.row]);
 //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
 //       [_collectionNode reloadItemsAtIndexPaths:@[indexPath]];
 //    });
@@ -418,4 +421,20 @@
     [self.collectionNode reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]]];
   }
 }
+
+// isFinish判断页面数据是否加载完成，未完成则不触发，防止崩溃
+-(void)addDataToTopData:(NSDictionary*)data{
+  if(self.isFinish){
+    ShowQuery_dataModel* model = [ShowQuery_dataModel modelWithJSON:data];
+    [self.dataArr insertObject:model atIndex:0];
+    [self.callBackArr insertObject:data atIndex:0];
+    [self.collectionNode reloadData];
+  }
+}
+
+
+-(void)replaceItemData:(NSInteger)index data:(NSDictionary *)data{
+  
+}
+
 @end

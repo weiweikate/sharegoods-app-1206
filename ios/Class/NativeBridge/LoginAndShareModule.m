@@ -195,7 +195,7 @@ RCT_EXPORT_METHOD(creatShowShareImage:(id) jsonParam
                   onError:(RCTResponseSenderBlock) onError){
   dispatch_async(dispatch_get_main_queue(), ^{
     ShowShareImgMakerModel * model = [ShowShareImgMakerModel modelWithJSON:jsonParam];
-    [[ShowShareImgMaker sharedInstance] creatShareImageWithShareImageMakerModel:model completion:^(NSString *paths, NSString *errorStr) {
+    [[ShowShareImgMaker sharedInstance] createShareImageWithShareImageMakerModel:model completion:^(NSString *paths, NSString *errorStr) {
       if (errorStr) {
         onError(@[errorStr]);
       }else{
@@ -243,5 +243,32 @@ RCT_EXPORT_METHOD(createPromotionShareImage:(NSString *) QRCodeStr
                                                                    }];
   });
 }
-              
+
+
+/**
+ @QRCodeStr  生成二维码并且下载到手机
+ onSuccess(NSSting) 成功的回调
+ onError(NSSting)   失败的回调
+ */
+RCT_EXPORT_METHOD(createQRToAlbum:(NSString *) QRCodeStr
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject){
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [[ShareImageMaker sharedInstance] creatQRCodeImageWithQRCodeStr:QRCodeStr completion:^(NSString *pathStr, NSString *errorStr) {
+      if (errorStr) {
+//        reject(nil,nil,errorStr);
+      }else{
+        dispatch_async(dispatch_get_main_queue(), ^{
+          UIImage * img = [UIImage imageWithContentsOfFile:pathStr];
+          if(img){
+            [[JRShareManager sharedInstance]saveImage:img];
+            resolve(@"0000");
+          } else{
+//            reject(nil,nil,errorStr);
+          }
+        });
+      }
+    }];
+  });
+}
 @end

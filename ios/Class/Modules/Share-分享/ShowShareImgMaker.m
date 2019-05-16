@@ -19,7 +19,7 @@
 
 SINGLETON_FOR_CLASS(ShowShareImgMaker)
 
-- (void)creatShareImageWithShareImageMakerModel:(ShowShareImgMakerModel *)model
+- (void)createShareImageWithShareImageMakerModel:(ShowShareImgMakerModel *)model
                                      completion:(ShowImageMakercompletionBlock)completion;
 {
   if (model.imageUrlStr == nil) {
@@ -36,8 +36,8 @@ SINGLETON_FOR_CLASS(ShowShareImgMaker)
   }
   __weak ShowShareImgMaker * weakSelf = self;
   
-  [self requestImageWithURLs:@[model.imageUrlStr] success:^(NSArray *images) {
-    NSString *path = [weakSelf ceratShareImageWithProductImage:images[0] headerImage:images[0] model:model];
+  [self requestImageWithURLs:@[model.imageUrlStr,model.headerImage] success:^(NSArray *images) {
+    NSString *path = [weakSelf ceratShareImageWithProductImage:images[0] headerImage:images[1] model:model];
     
     if (path == nil || path.length == 0) {
       completion(nil, @"ShareImageMaker：保存图片到本地失败");
@@ -52,7 +52,7 @@ SINGLETON_FOR_CLASS(ShowShareImgMaker)
   NSMutableArray * imagArr = [NSMutableArray arrayWithCapacity:urls.count];
   __block NSInteger item =  urls.count;
   for(int i=0;i<urls.count;i++){
-    [imagArr addObject:[UIImage imageNamed:@"logo.png"]];
+    i ==0 ? [imagArr addObject:[UIImage imageNamed:@"logo"]]:[imagArr addObject:[UIImage imageNamed:@"default_avatar"]];
     [[YYWebImageManager sharedManager] requestImageWithURL:[NSURL URLWithString:urls[i]]options:YYWebImageOptionShowNetworkActivity progress:^(NSInteger receivedSize, NSInteger expectedSize) {
       
     } transform:nil completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
@@ -73,7 +73,7 @@ SINGLETON_FOR_CLASS(ShowShareImgMaker)
                                         headerImage:(UIImage *)headerImage
                                         model:(ShowShareImgMakerModel *)model
 {
-  NSString *imageType = model.imageType;
+//  NSString *imageType = model.imageType;
   NSString *QRCodeStr = model.QRCodeStr;
   CGFloat i = 3;// 为了图片高清 图片尺寸375 * 667
   
@@ -81,7 +81,7 @@ SINGLETON_FOR_CLASS(ShowShareImgMaker)
   
     NSMutableArray *nodes = [NSMutableArray new];
     NSString *contentStr = model.titleStr;
-    NSString *nameStr = model.titleStr;
+    NSString *nameStr = model.userName;
   
     CGFloat sigle =  [self getStringHeightWithText:@"1" fontSize:13*i viewWidth:315*i];
     CGFloat height =  [self getStringHeightWithText:contentStr fontSize:13*i viewWidth:315*i];
