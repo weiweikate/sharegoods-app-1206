@@ -267,7 +267,7 @@
   if (_onItemPress) {
     self.dataArr[indexPath.row].xg_index = indexPath.row;
     NSMutableDictionary * dic = [NSMutableDictionary dictionaryWithDictionary:self.callBackArr[indexPath.row]];
-    [dic setObject:[NSNumber numberWithInt:indexPath.row] forKey:@"index"];
+    [dic setObject:[NSNumber numberWithInteger:indexPath.row] forKey:@"index"];
     [self.callBackArr replaceObjectAtIndex:indexPath.row withObject:dic];
     _onItemPress(self.callBackArr[indexPath.row]);
 //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{

@@ -9,6 +9,7 @@
 #import "JXFooterView.h"
 #import "UIView+SDAutoLayout.h"
 #import "UIImageView+WebCache.h"
+#import "UIButton+TimeInterval.h"
 
 #define SCREEN_WIDTH ([UIScreen mainScreen].bounds.size.width)
 
@@ -57,6 +58,7 @@
 -(UIButton*)zanBtn{
   if(!_zanBtn){
     _zanBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    _zanBtn.timeInterval = 2;
   }
   return _zanBtn;
 }

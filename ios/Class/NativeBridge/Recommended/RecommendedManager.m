@@ -49,5 +49,18 @@ RCT_EXPORT_METHOD(replaceData:(nonnull NSNumber *)reactTag
     }
   }];
 }
-\
+
+RCT_EXPORT_METHOD(replaceItemData:(nonnull NSNumber *)reactTag
+                  index:(NSInteger) index
+                  num:(NSInteger) num){
+  [self.bridge.uiManager addUIBlock:^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *, RecommendedView *> *viewRegistry) {
+    RecommendedView *view = viewRegistry[reactTag];
+    if (![view isKindOfClass:[RecommendedView class]]) {
+      RCTLogError(@"Invalid view returned from registry, expecting RNCUIWebView, got: %@", view);
+    } else {
+      [view replaceData:index num:num];
+    }
+  }];
+}
+
 @end
