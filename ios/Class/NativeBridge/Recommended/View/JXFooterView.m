@@ -51,7 +51,7 @@
         _downLoadNUm.textColor =[UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
     }
     return _downLoadNUm;
-    
+
 }
 
 -(UIButton*)zanBtn{
@@ -92,13 +92,13 @@
     [self addSubview:self.downloadBtn];
     [self addSubview:self.downLoadNUm];
     [self addSubview:self.shareBtn];
-    
+
   //点赞
   [_zanBtn addTarget:self action:@selector(tapZanBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.zanBtn.sd_layout.topSpaceToView(self.scrollView,10)
   .heightIs(25).widthIs(25)
   .leftSpaceToView(self, 30);
-    
+
   self.zanNum.sd_layout.centerYEqualToView(self.zanBtn)
   .leftSpaceToView(self.zanBtn, 1)
   .widthIs(40).heightIs(25);
@@ -108,7 +108,7 @@
   self.downloadBtn.sd_layout.centerYEqualToView(self.zanNum)
   .leftSpaceToView(self.zanNum, 0)
   .widthIs(22).heightIs(22);
-    
+
   self.downLoadNUm.sd_layout.centerYEqualToView(self.downloadBtn)
   .leftSpaceToView(self.downloadBtn, 1)
   .widthIs(40).heightIs(25);
@@ -118,28 +118,41 @@
   self.shareBtn.sd_layout.centerYEqualToView(self.zanBtn)
      .rightSpaceToView(self, 0)
      .widthIs(60).heightIs(25);
-    
+
   [self setupAutoHeightWithBottomView:self.zanBtn bottomMargin:0];
 
 
 }
 
 -(void)setProducts:(NSArray *)products{
-  if(products.count<=0){
-    return;
-  }
   _products = products;
   [self setGoodsView];
 }
 
 -(void)setDownloadCount:(NSInteger)downloadCount{
     _downloadCount = downloadCount;
-  self.downLoadNUm.text = [NSString stringWithFormat:@"%ld",downloadCount];
+  NSString * num = @"";
+    if(downloadCount<999){
+      num = [NSString stringWithFormat:@"%ld",downloadCount];
+    }else if(downloadCount<100000){
+      num = @"999+";
+    }else{
+      num = @"10w+";
+    }
+  self.downLoadNUm.text = num;
 }
 
 -(void)setLikesCount:(NSInteger)likesCount{
   _likesCount = likesCount;
-  self.zanNum.text = [NSString stringWithFormat:@"%ld",likesCount];
+  NSString * num = @"";
+    if(likesCount<999){
+      num = [NSString stringWithFormat:@"%ld",likesCount];
+    }else if(likesCount<100000){
+      num = @"999+";
+    }else{
+      num = @"10w+";
+    }
+  self.zanNum.text = num;
 }
 
 -(void)setIsLike:(BOOL)isLike{
@@ -154,18 +167,19 @@
 -(void)setGoodsView{
     NSInteger len = self.products.count;
     CGFloat width = len>0&&len<=1?(SCREEN_WIDTH-90):(SCREEN_WIDTH-110);
+  self.scrollView.sd_layout.heightIs(0);
   if(len>0){
     self.scrollView.sd_layout
     .topEqualToView(self)
     .leftEqualToView(self)
     .rightEqualToView(self)
     .heightIs(72);
-    
+
     //移除scrollview子视图
     for(UIView *view in [self.scrollView subviews]){
       [view removeFromSuperview];
     }
-    
+
       self.scrollView.contentSize = len>0&&len<=1?CGSizeMake(width*len+30, 70):CGSizeMake(width*len+10*len+30, 70);
     for (int i=0; i<len; i++) {
         UIView *bgView = [[UIView alloc] init];
@@ -183,21 +197,21 @@
         goodsImg.layer.masksToBounds = YES;
         goodsImg.image = [UIImage imageNamed:@"welcome3"];
         [goodsImg sd_setImageWithURL:[NSURL URLWithString:[self.products[0] valueForKey:@"imgUrl"]] placeholderImage:[UIImage imageNamed:@"default_avatar"]];
-      
-      
+
+
         UILabel* titile = [[UILabel alloc]init];
         titile.font = [UIFont systemFontOfSize:10];
         titile.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
         titile.text = [self.products[0] valueForKey:@"name"];
-    
-        
+
+
         UILabel* price = [[UILabel alloc]init];
         price.font = [UIFont systemFontOfSize:10];
         price.textColor = [UIColor lightGrayColor];
 //      if([self.products[i][@"price"] && self.products[i][@"originalPrice"]){
         price.attributedText = [self getPriceAttribute:[self.products[i] valueForKey:@"groupPrice"] oldPrice:[self.products[i] valueForKey:@"originalPrice"]];
 //        }
-      
+
         UIButton* shopCarBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         shopCarBtn.tag = i+1;
         shopCarBtn.titleLabel.font = [UIFont systemFontOfSize:12];
@@ -209,26 +223,26 @@
         goodsImg.sd_layout.topSpaceToView(bgView, 5)
         .leftSpaceToView(bgView, 5)
         .widthIs(60).heightIs(60);
-        
+
         //标题
         titile.sd_layout.topSpaceToView(bgView, 10)
         .leftSpaceToView(goodsImg, 10)
         .rightSpaceToView(bgView, 10)
         .heightIs(20);
-        
+
         //购物车
         shopCarBtn.sd_layout.bottomSpaceToView(bgView, 5)
         .rightSpaceToView(bgView, 10)
         .widthIs(20).heightIs(20);
-        
+
         //价格
         price.sd_layout.bottomEqualToView(goodsImg)
         .leftSpaceToView(goodsImg, 10)
         .rightSpaceToView(shopCarBtn, 1)
         .heightIs(21);
-        
+
         [_scrollView addSubview:bgView];
-        
+
     }
   }
 }
@@ -261,18 +275,18 @@
 -(NSMutableAttributedString *)getPriceAttribute:(NSString*)price oldPrice:(NSString*)oldPrice{
     CGFloat priceF = [price floatValue];
     CGFloat oldPriceF = [oldPrice floatValue];
-  
+
   NSString *str = [NSString stringWithFormat:@"¥%@",[self decimalNumberWithDouble: priceF]];
   NSString *oldStr = [NSString stringWithFormat:@"¥%@",[self decimalNumberWithDouble: oldPriceF]] ;
     NSInteger len = str.length;
     NSString * string = [NSString stringWithFormat:@"%@  %@",str,oldStr];
     NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc]
                                           initWithString:string];
-    
+
     [attrStr addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:NSMakeRange(0, len)];
     [attrStr addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:15] range:NSMakeRange(1, len)];
     [attrStr addAttribute:NSStrikethroughStyleAttributeName value:@(1) range:NSMakeRange(len+2, oldStr.length)];
-    
+
     return attrStr;
 }
 

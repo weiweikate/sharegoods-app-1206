@@ -63,6 +63,7 @@ static NSString *IDType = @"TypeCell";
   tableView.backgroundColor = [UIColor colorWithRed:247/255.0 green:247/255.0 blue:247/255.0 alpha:1.0];
   tableView.delegate = self;
   tableView.dataSource = self;
+  tableView.showsVerticalScrollIndicator = NO;
   [tableView registerClass:[RecommendedCell class] forCellReuseIdentifier:ID];
   [tableView registerClass:[RecTypeCell class] forCellReuseIdentifier:IDType];
     self.tableView =  tableView;
@@ -279,11 +280,11 @@ static NSString *IDType = @"TypeCell";
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
   JXModelData * model= [self.dataArr objectAtIndex:indexPath.row];
-  if(model.showType&& model.showType == 2){
+//  if(model.showType&& model.showType == 2){
     if (_onItemPress) {
       _onItemPress(self.callBackArr[indexPath.item]);
     }
-  }
+//  }
 }
 
 #pragma mark - 按钮点击代理
@@ -309,10 +310,7 @@ static NSString *IDType = @"TypeCell";
     for (NSDictionary* image in cell.model.resource) {
       [images addObject:[image valueForKey:@"url"]];
     }
-    NSDictionary * dic = [NSDictionary dictionaryWithObjectsAndKeys:
-                          images,@"imageUrls",
-                           indexPath.row,@"index",
-                          nil];
+    NSDictionary * dic = @{@"imageUrls":images,@"index":[NSNumber numberWithInteger:indexPath.row]};
     _onNineClick(dic);
   }
 }
@@ -395,8 +393,7 @@ static NSString *IDType = @"TypeCell";
 
 -(void)replaceData:(NSInteger) index num:(NSInteger) num{
   if (self.dataArr.count>index) {
-//    self.dataArr[index].click = num;
-//    [self.tableView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]]];
+
   }
 }
 

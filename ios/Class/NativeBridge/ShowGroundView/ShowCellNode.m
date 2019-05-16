@@ -89,7 +89,7 @@
                                                                 ]];
   hSpec.style.width = ASDimensionMake(constrainedSize.min.width);
     ASStackLayoutSpec *vSpec = [ASStackLayoutSpec stackLayoutSpecWithDirection:ASStackLayoutDirectionVertical
-                                            spacing:_titleNode.attributedText.length>0?10:5
+                                            spacing:_titleNode.attributedText.length>0?10:0
                                       justifyContent:ASStackLayoutJustifyContentStart alignItems:ASStackLayoutAlignItemsStart
                                             children:@[ImageSpec,
                                                       [ASInsetLayoutSpec insetLayoutSpecWithInsets:UIEdgeInsetsMake(0, 10, 0, 10) child:_titleNode],

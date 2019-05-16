@@ -89,7 +89,7 @@
             long columnIndex = idx % perRowItemCount;
             long rowIndex = idx / perRowItemCount;
             UIImageView *imageView = [self->_imageViewsArray objectAtIndex:idx];
-            imageView.backgroundColor = [UIColor blueColor];
+            imageView.backgroundColor = [UIColor colorWithHexString:@"a5adb3"];
             [imageView sd_setImageWithURL:[NSURL URLWithString:self.sources[idx][@"url"]] placeholderImage:[UIImage imageNamed:@"default_avatar"]];
           
             imageView.hidden = NO;

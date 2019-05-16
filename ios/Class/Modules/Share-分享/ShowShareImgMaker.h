@@ -10,6 +10,8 @@
 @interface ShowShareImgMakerModel : NSObject
 @property(nonatomic, copy)NSString * imageType;// image
 @property(nonatomic, copy)NSString * imageUrlStr;
+@property(nonatomic, copy)NSString * headerImage;
+@property(nonatomic, copy)NSString * userName;
 @property(nonatomic, copy)NSString * titleStr;
 @property(nonatomic, copy)NSString * priceType;
 @property(nonatomic, copy)NSString * priceStr;
@@ -25,7 +27,7 @@ SINGLETON_FOR_HEADER(ShowShareImgMaker)
 /**
  生成二维码分享的图片，保存在本地,商品详情里面
  */
-- (void)creatShareImageWithShareImageMakerModel:(ShowShareImgMakerModel *)model
+- (void)createShareImageWithShareImageMakerModel:(ShowShareImgMakerModel *)model
                                      completion:(ShowImageMakercompletionBlock) completion;
 
 @end

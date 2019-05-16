@@ -163,8 +163,16 @@
   }else{
     [_zanBtn setBackgroundImage:[UIImage imageNamed:@"zan"] forState:UIControlStateNormal];
   }
-  _zanNum.text = [NSString stringWithFormat:@"%ld",model.likesCount];
-  [self.picImg sd_setImageWithURL:[NSURL URLWithString:[model.products[0] valueForKey: @"image"]] placeholderImage:[UIImage imageNamed:@"default_avatar"]];
+  NSString * num = @"";
+    if(model.likesCount<999){
+      num = [NSString stringWithFormat:@"%ld",model.likesCount];
+    }else if(model.likesCount<100000){
+      num = @"999+";
+    }else{
+      num = @"10w+";
+    }
+  _zanNum.text = num;
+  [self.picImg sd_setImageWithURL:[NSURL URLWithString:[model.products[0] valueForKey: @"imgUrl"]] placeholderImage:[UIImage imageNamed:@"default_avatar"]];
   self.contentLab.text = model.content;
   
 }

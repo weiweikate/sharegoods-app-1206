@@ -31,7 +31,7 @@
         _contentLab.textColor = [UIColor colorWithRed:102/255.0 green:102/255.0 blue:102/255.0 alpha:1.0];
       _contentLab.userInteractionEnabled=YES;
       UITapGestureRecognizer *labelTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(labelTouchUpInside)];
-      
+
       [_contentLab addGestureRecognizer:labelTapGestureRecognizer];
     }
     return _contentLab;
@@ -113,13 +113,13 @@
 }
 
 -(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
-  
+
   if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     self.contentView.backgroundColor = [UIColor colorWithRed:247/255.0 green:247/255.0 blue:247/255.0 alpha:1.0];
     [self setUI];
   }
-  
+
   return self;
 }
 
@@ -128,47 +128,45 @@
     bgView.backgroundColor =  [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0];
   [bgView.layer setCornerRadius:4.0];
   [self.contentView addSubview:bgView];
-    
+
   [bgView addSubview:self.headView];
   [bgView addSubview:self.bodyView];
   [bgView addSubview:self.footerView];
   [bgView addSubview:self.contentLab];
   [bgView addSubview:self.foldLabel];
-  
+
     bgView.sd_layout
     .leftSpaceToView(self.contentView, 0)
     .rightSpaceToView(self.contentView, 0)
-    .topSpaceToView(self.contentView, 5)
-    .autoHeightRatio(0);
-  
+    .topSpaceToView(self.contentView, 5);
+
   self.headView.sd_layout
   .topSpaceToView(bgView, 9)
   .leftSpaceToView(bgView, 0)
   .rightSpaceToView(bgView, 5)
   .heightIs(34);
-  
+
     //内容
   self.contentLab.sd_layout.topSpaceToView(self.headView, 8)
   .leftSpaceToView(bgView, 45)
   .rightSpaceToView(bgView, 30)
   .autoHeightRatio(0);
-    
+
   self.foldLabel.sd_layout.topSpaceToView(self.contentLab, 5)
   .leftSpaceToView(bgView, 45)
   .widthIs(40)
   .heightIs(20);
-    
+
   self.bodyView.sd_layout
   .topSpaceToView(self.foldLabel, 5)
   .leftSpaceToView(bgView, 45);
-    
+
     //
   self.footerView.sd_layout
   .topSpaceToView(self.bodyView, 10)
   .leftSpaceToView(bgView, 15)
-  .rightSpaceToView(bgView, 15)
-  .heightIs(120);
-    
+  .rightSpaceToView(bgView, 15);
+
   [bgView setupAutoHeightWithBottomView:self.footerView bottomMargin:5];
   [self setupAutoHeightWithBottomView:bgView bottomMargin:5];
 }
@@ -179,14 +177,14 @@
     self.headView.time = model.publishTimeStr;
     self.bodyView.sources = model.resource;
     self.contentLab.text = model.content;
-    
+
     self.footerView.products = model.products;
     self.footerView.downloadCount = model.downloadCount;
     self.footerView.likesCount = model.likesCount;
     self.footerView.shareCount = model.shareCount;
     self.footerView.isLike = model.like;
 
-  
+
 //    if( model.content.length>60){
 //        self.foldLabel.hidden = NO;
 //        if (model.isOpening) {
@@ -213,9 +211,9 @@
  */
 - (void)foldNewsOrNoTap:(UITapGestureRecognizer *)recognizer{
     if(recognizer.state == UIGestureRecognizerStateEnded){
-        
+
         if (self.cellDelegate && [self.cellDelegate respondsToSelector:@selector(clickFoldLabel:)]) {
-            
+
             [self.cellDelegate clickFoldLabel:self];
         }
     }
