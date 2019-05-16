@@ -202,7 +202,7 @@ public static final int *;
 -keep class cn.jiguang.** { *; }
 
 #  huawei
--keepclasscom.huawei.hms.**{*;}
+-keep class com.huawei.hms.**{*;}
 -dontwarn com.huawei.**
 -keep public class * extends android.app.Activity
 -keep interface com.huawei.android.hms.agent.common.INoProguard {*;}
@@ -211,7 +211,7 @@ public static final int *;
 
 # xiaomi
 -dontwarncom.xiaomi.push.**
--keepclasscom.xiaomi.push.**{*;}
+-keep class com.xiaomi.push.**{*;}
 
 # oppo
 -dontwarn com.coloros.mcsdk.**

@@ -5,7 +5,6 @@
  * @org www.sharegoodsmall.com
  * @email luoyongming@meeruu.com
  */
-
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import {
@@ -14,25 +13,25 @@ import {
     View,
     InteractionManager
     // Image
-} from 'react-native';
-import { NavigationActions } from 'react-navigation';
+} from "react-native";
+import { NavigationActions } from "react-navigation";
+import DebugButton from "./components/debug/DebugButton";
+import { netStatus } from "./comm/components/NoNetHighComponent";
+import Navigator, { getCurrentRouteName } from "./navigation/Navigator";
+import { login, logout } from "./utils/SensorsTrack";
+import { SpellShopFlag } from "./navigation/Tab";
+import { checkInitResult } from "./pages/login/model/PhoneAuthenAction";
+import loginModel from "./pages/login/model/LoginModel";
 import RouterMap from './navigation/RouterMap';
 import user from '../src/model/user';
-import DebugButton from './components/debug/DebugButton';
 import apiEnvironment from './api/ApiEnvironment';
 import CONFIG from '../config';
-import { netStatus } from './comm/components/NoNetHighComponent';
 import bridge from './utils/bridge';
 import TimerMixin from 'react-timer-mixin';
-
 import geolocation from '@mr/rn-geolocation';
-import Navigator, { getCurrentRouteName } from './navigation/Navigator';
 import Storage from './utils/storage';
-import { login, logout } from './utils/SensorsTrack';
 import ScreenUtils from './utils/ScreenUtils';
 import codePush from 'react-native-code-push';
-
-import { SpellShopFlag } from './navigation/Tab';
 import chatModel from './utils/QYModule/QYChatModel';
 
 if (__DEV__) {
@@ -100,8 +99,13 @@ class App extends Component {
         codePush.allowRestart();
         //初始化init  定位存储  和app变活跃 会定位
         InteractionManager.runAfterInteractions(() => {
-
             TimerMixin.setTimeout(() => {
+                checkInitResult().then((data)=>{
+                    loginModel.setAuthPhone(data);
+                }).catch((erro)=>{
+                    loginModel.setAuthPhone(null);
+                })
+
                 geolocation.init({
                     ios: 'f85b644981f8642aef08e5a361e9ab6b',
                     android: '4a3ff7c2164aaf7d67a98fb9b88ae0e6'

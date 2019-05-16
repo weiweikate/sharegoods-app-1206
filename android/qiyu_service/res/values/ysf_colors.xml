@@ -35,6 +35,7 @@
     <color name="ysf_blue_61a7ea">#61a7ea</color>
     <color name="ysf_blue_81d4fa">#81d4fa</color>
     <color name="ysf_blue_bbd6f5">#bbd6f5</color>
+    <color name="ysf_blue_cbe0ff">#cbe0ff</color>
     <color name="ysf_white">@android:color/white</color>
     <color name="ysf_white_99FFFFFF">#99FFFFFF</color>
     <color name="ysf_black">@android:color/black</color>
@@ -45,6 +46,9 @@
     <color name="ysf_black_80000000">#80000000</color>
     <color name="ysf_black_30000000">#30000000</color>
     <color name="ysf_grey_b1b1b1">#b1b1b1</color>
+    <color name="ysf_blue_4F82AE">#4F82AE</color>
+    <color name="ysf_grey_E1E3E6">#E1E3E6</color>
+    <color name="ysf_grey_F5F6F7">#F5F6F7</color>
 
     <!-- title bar -->
     <color name="ysf_title_bar_title_color">@color/ysf_black</color>

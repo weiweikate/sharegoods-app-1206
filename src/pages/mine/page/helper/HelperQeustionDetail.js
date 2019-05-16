@@ -51,7 +51,7 @@ export default class HelperQuestionDetail extends BasePage {
     _render() {
         return (
             <View style={{ backgroundColor: DesignRule.bgColor, flex: 1 }}>
-                <ScrollView style={{ marginBottom: 209 }}>
+                <ScrollView showsVerticalScrollIndicator={false}>
                     {this.state.content ? <HTML html={this.state.content} imagesMaxWidth={ScreenUtils.width}
                                                 containerStyle={{
                                                     backgroundColor: DesignRule.bgColor,
@@ -61,10 +61,8 @@ export default class HelperQuestionDetail extends BasePage {
                 <View style={{
                     width: ScreenUtils.width,
                     height: 80,
-                    position: 'absolute',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    bottom: 109,
                     flexDirection: 'row',
                     paddingHorizontal: 33
                 }}>

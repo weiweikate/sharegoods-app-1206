@@ -61,7 +61,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
             path: ''
         };
         this._bind();
-        this.linkUrl = `${apiEnvironment.getCurrentH5Url()}/register?upuserid=${user.code || ''}`;
+        this.linkUrl = `${apiEnvironment.getCurrentH5Url()}/register?upuserid=${user.code || ''}&signUpSource=fxhy`;
     }
 
     $navigationBarOptions = {

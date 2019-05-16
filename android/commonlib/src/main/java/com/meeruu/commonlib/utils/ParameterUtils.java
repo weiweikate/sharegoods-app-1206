@@ -65,6 +65,7 @@ public class ParameterUtils {
     public static final int REQUEST_CODE_GONGMAO = 47;  // 工猫签约
     public static final int REQUEST_CODE_WEBVIEW = 48;
     public static final int NOTIFY_ID_APP_INIT = 49;
+    public static final int REQUEST_CODE_PHONE = 50; //拍摄照片请求码
     /**
      * 异步初始化通知channnelId
      */
