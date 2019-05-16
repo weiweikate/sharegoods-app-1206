@@ -20,7 +20,7 @@ public class ShowRecommendViewManager extends ViewGroupManager<ViewGroup> {
     public static final int REPLACE_DATA = 1;
     public static final int ADD_DATA_TOP = 2;
     public static final int REPLACE_ITEM_DATA = 3;
-
+    public static boolean isLogin = false;
     @Override
     public String getName() {
         return COMPONENT_NAME;
@@ -42,6 +42,16 @@ public class ShowRecommendViewManager extends ViewGroupManager<ViewGroup> {
         if (object != null && object instanceof ShowRecommendView) {
             ((ShowRecommendView) object).setParams(map.toHashMap());
         }
+    }
+
+    @ReactProp(name = "isLogin")
+    public void setParams(View view, boolean login) {
+       if(isLogin != login){
+           Object object = view.getTag();
+           if (object != null && object instanceof ShowRecommendView) {
+               ((ShowRecommendView) object).refresh();
+           }
+       }
     }
 
     @Override

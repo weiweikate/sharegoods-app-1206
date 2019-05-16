@@ -37,6 +37,7 @@
             android:textSize="10sp"
             android:textColor="@color/mainColor"/>
         <TextView
+            android:id="@+id/activityPrice"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:includeFontPadding="false"

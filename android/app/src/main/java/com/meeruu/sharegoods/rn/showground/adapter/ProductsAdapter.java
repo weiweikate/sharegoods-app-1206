@@ -25,12 +25,14 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.VH> {
 
     public static class VH extends RecyclerView.ViewHolder {
         public TextView originalPrice;
+        public TextView activityPrice;
         public ImageView cart;
         public TextView name;
         public SimpleDraweeView productImg;
         public VH(View v) {
             super(v);
             originalPrice = v.findViewById(R.id.originalPrice);
+            activityPrice=v.findViewById(R.id.activityPrice);
             name = v.findViewById(R.id.product_name);
             productImg = v.findViewById(R.id.product_img);
             originalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);

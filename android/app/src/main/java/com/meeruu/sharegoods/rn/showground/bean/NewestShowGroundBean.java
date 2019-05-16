@@ -296,9 +296,9 @@ public class NewestShowGroundBean {
             private String groupPrice;
             private String minPrice;
             private String maxPrice;
-            private Object promotionMinPrice;
-            private Object promotionMaxPrice;
-            private Object v0Price;
+            private String promotionMinPrice;
+            private String promotionMaxPrice;
+            private String v0Price;
             private String imgUrl;
 
             public Object getPromotionResult() {
@@ -369,7 +369,7 @@ public class NewestShowGroundBean {
                 return promotionMinPrice;
             }
 
-            public void setPromotionMinPrice(Object promotionMinPrice) {
+            public void setPromotionMinPrice(String promotionMinPrice) {
                 this.promotionMinPrice = promotionMinPrice;
             }
 
@@ -377,7 +377,7 @@ public class NewestShowGroundBean {
                 return promotionMaxPrice;
             }
 
-            public void setPromotionMaxPrice(Object promotionMaxPrice) {
+            public void setPromotionMaxPrice(String promotionMaxPrice) {
                 this.promotionMaxPrice = promotionMaxPrice;
             }
 
@@ -385,7 +385,7 @@ public class NewestShowGroundBean {
                 return v0Price;
             }
 
-            public void setV0Price(Object v0Price) {
+            public void setV0Price(String v0Price) {
                 this.v0Price = v0Price;
             }
 
@@ -395,6 +395,232 @@ public class NewestShowGroundBean {
 
             public void setImgUrl(String imgUrl) {
                 this.imgUrl = imgUrl;
+            }
+
+            public static class PromotionResultBean{
+                private GroupActivityBean groupActivity;
+                private int limitNum;
+                private SingleActivityBean singleActivity;
+                private List<String> tags;
+
+                public GroupActivityBean getGroupActivity() {
+                    return groupActivity;
+                }
+
+                public void setGroupActivity(GroupActivityBean groupActivity) {
+                    this.groupActivity = groupActivity;
+                }
+
+                public int getLimitNum() {
+                    return limitNum;
+                }
+
+                public void setLimitNum(int limitNum) {
+                    this.limitNum = limitNum;
+                }
+
+                public SingleActivityBean getSingleActivity() {
+                    return singleActivity;
+                }
+
+                public void setSingleActivity(SingleActivityBean singleActivity) {
+                    this.singleActivity = singleActivity;
+                }
+
+                public List<String> getTags() {
+                    return tags;
+                }
+
+                public void setTags(List<String> tags) {
+                    this.tags = tags;
+                }
+
+                public static class SingleActivityBean{
+                    private String code;
+                    private boolean couponLimit;
+                    private double currentTime;
+                    private double endTime;
+                    private String extraProperty;
+                    private String memo;
+                    private String name;
+                    private int status;
+                    private String tag;
+                    private String type;
+
+                    public String getCode() {
+                        return code;
+                    }
+
+                    public void setCode(String code) {
+                        this.code = code;
+                    }
+
+                    public boolean isCouponLimit() {
+                        return couponLimit;
+                    }
+
+                    public void setCouponLimit(boolean couponLimit) {
+                        this.couponLimit = couponLimit;
+                    }
+
+                    public double getCurrentTime() {
+                        return currentTime;
+                    }
+
+                    public void setCurrentTime(double currentTime) {
+                        this.currentTime = currentTime;
+                    }
+
+                    public double getEndTime() {
+                        return endTime;
+                    }
+
+                    public void setEndTime(double endTime) {
+                        this.endTime = endTime;
+                    }
+
+                    public String getExtraProperty() {
+                        return extraProperty;
+                    }
+
+                    public void setExtraProperty(String extraProperty) {
+                        this.extraProperty = extraProperty;
+                    }
+
+                    public String getMemo() {
+                        return memo;
+                    }
+
+                    public void setMemo(String memo) {
+                        this.memo = memo;
+                    }
+
+                    public String getName() {
+                        return name;
+                    }
+
+                    public void setName(String name) {
+                        this.name = name;
+                    }
+
+                    public int getStatus() {
+                        return status;
+                    }
+
+                    public void setStatus(int status) {
+                        this.status = status;
+                    }
+
+                    public String getTag() {
+                        return tag;
+                    }
+
+                    public void setTag(String tag) {
+                        this.tag = tag;
+                    }
+
+                    public String getType() {
+                        return type;
+                    }
+
+                    public void setType(String type) {
+                        this.type = type;
+                    }
+                }
+
+
+                public static class GroupActivityBean{
+                    private String code;
+                    private boolean couponLimit;
+                    private double currentTime;
+                    private double endTime;
+                    private String extraProperty;
+                    private String memo;
+                    private String name;
+                    private int status;
+                    private String tag;
+                    private String type;
+
+                    public String getCode() {
+                        return code;
+                    }
+
+                    public void setCode(String code) {
+                        this.code = code;
+                    }
+
+                    public boolean isCouponLimit() {
+                        return couponLimit;
+                    }
+
+                    public void setCouponLimit(boolean couponLimit) {
+                        this.couponLimit = couponLimit;
+                    }
+
+                    public double getCurrentTime() {
+                        return currentTime;
+                    }
+
+                    public void setCurrentTime(double currentTime) {
+                        this.currentTime = currentTime;
+                    }
+
+                    public double getEndTime() {
+                        return endTime;
+                    }
+
+                    public void setEndTime(double endTime) {
+                        this.endTime = endTime;
+                    }
+
+                    public String getExtraProperty() {
+                        return extraProperty;
+                    }
+
+                    public void setExtraProperty(String extraProperty) {
+                        this.extraProperty = extraProperty;
+                    }
+
+                    public String getMemo() {
+                        return memo;
+                    }
+
+                    public void setMemo(String memo) {
+                        this.memo = memo;
+                    }
+
+                    public String getName() {
+                        return name;
+                    }
+
+                    public void setName(String name) {
+                        this.name = name;
+                    }
+
+                    public int getStatus() {
+                        return status;
+                    }
+
+                    public void setStatus(int status) {
+                        this.status = status;
+                    }
+
+                    public String getTag() {
+                        return tag;
+                    }
+
+                    public void setTag(String tag) {
+                        this.tag = tag;
+                    }
+
+                    public String getType() {
+                        return type;
+                    }
+
+                    public void setType(String type) {
+                        this.type = type;
+                    }
+                }
             }
         }
 

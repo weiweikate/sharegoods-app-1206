@@ -101,6 +101,14 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
             simpleDraweeView.setVisibility(View.GONE);
         }
 
+        ImageView hand = helper.getView(R.id.icon_hand);
+        if(item.isLike()){
+            hand.setImageResource(R.drawable.icon_like);
+        }else {
+            hand.setImageResource(R.drawable.icon_hand);
+        }
+        helper.addOnClickListener(R.id.icon_hand,R.id.icon_share);
+
     }
 
     private void convertDynamic(final BaseViewHolder helper, final NewestShowGroundBean.DataBean item) {
@@ -130,6 +138,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         name.setText(item.getUserInfoVO().getUserName());
 
         TextView download = helper.getView(R.id.download_num);
+
         download.setText(item.getDownloadCount()+"");
 
         TextView like = helper.getView(R.id.like_num);
@@ -167,14 +176,15 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
             recyclerView.setVisibility(View.GONE);
         }
 
-        helper.addOnClickListener(R.id.icon_hand);
+        helper.addOnClickListener(R.id.icon_hand,R.id.icon_download,R.id.icon_share);
+
 
         ImageView hand = helper.getView(R.id.icon_hand);
-//        if(item.isLike()){
-//            hand.setImageDrawable(R.drawable.icon_hand);
-//        }else {
-//            hand.setImageDrawable(R.drawable.icon_hand);
-//        }
+        if(item.isLike()){
+            hand.setImageResource(R.drawable.icon_like);
+        }else {
+            hand.setImageResource(R.drawable.icon_hand);
+        }
 //        hand.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
