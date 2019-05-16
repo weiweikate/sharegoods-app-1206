@@ -2,10 +2,9 @@
  * 精选热门
  */
 import React from 'react';
-import { View, StyleSheet, Platform } from 'react-native';
-import ShowBannerView from './ShowBannerView';
+import { View, StyleSheet,  } from 'react-native';
 import { observer } from 'mobx-react';
-import { tag, showBannerModules, showChoiceModules } from './Show';
+import { tag } from './Show';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
 
@@ -22,7 +21,7 @@ import { track, trackEvent } from '../../utils/SensorsTrack';
 import bridge from '../../utils/bridge';
 
 @observer
-export default class ShowHotView extends React.Component {
+export default class ShowMaterialView extends React.Component {
 
     // state = {
     //     isEnd: false,
@@ -41,36 +40,8 @@ export default class ShowHotView extends React.Component {
 
     }
 
-    componentDidMount() {
-        if (this.firstLoad === true) {
-            console.log('ShowHotView firstLoad');
-            this.loadData();
-        }
-    }
 
-    refresh() {
-        console.log('ShowHotView refresh ');
-        if (this.firstLoad === true) {
-            return;
-        }
-        this.loadData();
-    }
 
-    loadData() {
-        showChoiceModules.loadChoiceList().then(data => {
-            if (Platform.OS !== 'ios' && data) {
-                this.setState({
-                    headerView: this.renderHeader()
-                });
-            }
-        });
-        showBannerModules.loadBannerList();
-    }
-
-    _gotoDetail(data) {
-        const { navigate } = this.props;
-        navigate('show/ShowDetailPage', { id: data.id, code: data.code });
-    }
 
     addCart = (code) => {
         let addCartModel = new AddCartModel();
@@ -97,12 +68,7 @@ export default class ShowHotView extends React.Component {
         })
     }
 
-    renderHeader = () => {
-        return (<View style={{ backgroundColor: DesignRule.bgColor, width: ScreenUtils.width - px2dp(30) }}>
-                <ShowBannerView navigate={this.props.navigate} pageFocused={this.props.pageFocus}/>
-            </View>
-        );
-    };
+
 
     render() {
         return (
@@ -111,30 +77,16 @@ export default class ShowHotView extends React.Component {
                     <ShowRecommendView style={{ flex: 1 }}
                                        uri={'/social/show/content/page/query@GET'}
                                        ref={(ref) => {
-                                           this.RecommendShowList = ref;
+                                           this.materialList = ref;
                                        }}
-                                       headerHeight={showBannerModules.bannerHeight + 20}
-                                       renderHeader={Platform.OS === 'ios' ? this.renderHeader() : this.state.headerView}
-                                       onStartRefresh={() => {
-                                           this.loadData();
-                                       }}
-                                       params={{ spreadPosition: tag.Recommend + '' }}
-                                       // onStartScroll={() => {
-                                       //     console.log('_onChoiceAction star');
-                                       //     this.timer && clearTimeout(this.timer);
-                                       //     this.choiceView && this.choiceView.changeIsScroll(true);
-                                       // }}
-                                       // onEndScroll={() => {
-                                       //     console.log('_onChoiceAction end1');
-                                       //     this.timer = setTimeout(() => {
-                                       //         this.choiceView && this.choiceView.changeIsScroll(false);
-                                       //     }, 500);
-                                       // }}
+
+                                       params={{ spreadPosition: tag.Material + '' }}
+
                                        onItemPress={({ nativeEvent }) => {
                                            const { navigate } = this.props;
                                            let params = {
                                                data:nativeEvent,
-                                               ref: this.RecommendShowList,
+                                               ref: this.foundList,
                                                index: nativeEvent.index
                                            };
                                            if(nativeEvent.showType === 1){

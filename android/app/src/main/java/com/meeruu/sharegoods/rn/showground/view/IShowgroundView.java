@@ -16,5 +16,9 @@ public interface IShowgroundView {
 
     void repelaceData(int index,int clickNum);
 
+    void repelaceItemData(int index,String value);
+
     void addDataToTop(String value);
+
+
 }

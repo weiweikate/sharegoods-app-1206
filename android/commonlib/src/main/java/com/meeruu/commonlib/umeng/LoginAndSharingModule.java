@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
+import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -11,6 +13,8 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.Shader;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
@@ -25,6 +29,7 @@ import com.facebook.imagepipeline.core.ImagePipelineFactory;
 import com.facebook.imagepipeline.listener.BaseRequestListener;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -51,6 +56,10 @@ import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
+
+import jp.wasabeef.blurry.Blurry;
+import jp.wasabeef.blurry.internal.Blur;
+import jp.wasabeef.blurry.internal.BlurFactor;
 
 public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     private ReactApplicationContext mContext;
@@ -166,6 +175,16 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         getBitmap(mContext, shareImageBean, success, fail);
     }
 
+    @ReactMethod
+    public void creatShowShareImage(ReadableMap json, Callback success, Callback fail){
+        ShareImageBean shareImageBean = parseParam(json);
+        if (shareImageBean == null) {
+            fail.invoke("参数出错");
+            return;
+        }
+
+        getShowBitmap(mContext, shareImageBean, success, fail);
+    }
 
     @ReactMethod
     public void createPromotionShareImage(String url, Callback success, Callback fail) {
@@ -180,6 +199,164 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             drawInviteFriendsImage(mContext, bitmap, url, success, fail);
         } else {
             downloadHeaderImg(mContext, headImg, url, success, fail);
+        }
+    }
+
+
+
+    public static void getShowBitmap(final Context context, final ShareImageBean shareImageBean, final Callback success, final Callback fail) {
+        if (Fresco.hasBeenInitialized()) {
+            ImageLoadUtils.preFetch(Uri.parse(shareImageBean.getImageUrlStr()), 0, 0, new BaseRequestListener() {
+                @Override
+                public void onRequestSuccess(ImageRequest request, String requestId, boolean isPrefetch) {
+                    super.onRequestSuccess(request, requestId, isPrefetch);
+                    CacheKey cacheKey = DefaultCacheKeyFactory.getInstance().getEncodedCacheKey(request, this);
+                    BinaryResource resource = ImagePipelineFactory.getInstance().getMainFileCache().getResource(cacheKey);
+                    if (resource == null) {
+                        fail.invoke("图片获取失败");
+                        return;
+                    }
+                    final File file = ((FileBinaryResource) resource).getFile();
+                    if (file == null) {
+                        fail.invoke("图片获取失败");
+                        return;
+                    }
+                    Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), BitmapUtils.getBitmapOption(2));
+                    if (bmp != null && !bmp.isRecycled()) {
+                        getShowHeaderBitmap(context,bmp,shareImageBean,success,fail);
+
+                    } else {
+                        fail.invoke("图片获取失败");
+                    }
+                }
+            });
+        }
+    }
+
+    public static void getShowHeaderBitmap(final Context context, final Bitmap mainBitmap, final ShareImageBean shareImageBean, final Callback success, final Callback fail){
+        if (Fresco.hasBeenInitialized()) {
+            if(TextUtils.isEmpty(shareImageBean.getHeaderImage())){
+                Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.bg_app_user);
+                drawShow(context,bitmap,mainBitmap,shareImageBean,success,fail);
+
+            }else {
+                ImageLoadUtils.preFetch(Uri.parse(shareImageBean.getHeaderImage()), 0, 0, new BaseRequestListener() {
+                    @Override
+                    public void onRequestSuccess(ImageRequest request, String requestId, boolean isPrefetch) {
+                        super.onRequestSuccess(request, requestId, isPrefetch);
+                        CacheKey cacheKey = DefaultCacheKeyFactory.getInstance().getEncodedCacheKey(request, this);
+                        BinaryResource resource = ImagePipelineFactory.getInstance().getMainFileCache().getResource(cacheKey);
+                        if (resource == null) {
+                            fail.invoke("图片获取失败");
+                            return;
+                        }
+                        final File file = ((FileBinaryResource) resource).getFile();
+                        if (file == null) {
+                            fail.invoke("图片获取失败");
+                            return;
+                        }
+                        Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), BitmapUtils.getBitmapOption(2));
+                        if (bmp != null && !bmp.isRecycled()) {
+                            drawShow(context,bmp,mainBitmap,shareImageBean,success,fail);
+                        } else {
+                            fail.invoke("图片获取失败");
+                        }
+                    }
+                });
+            }
+
+        }
+    }
+
+    private static void drawShow(Context context, Bitmap headBitmap,final Bitmap bitmap, ShareImageBean shareImageBean, Callback success, Callback fail){
+        String title = shareImageBean.getTitleStr();
+        boolean isTwoLine;
+        int titleSize = 26;
+
+        int titleCount = (int) ((440) / titleSize);
+
+        if (title.length() <= titleCount) {
+            isTwoLine = false;
+        } else {
+            isTwoLine = true;
+        }
+
+        Bitmap result = Bitmap.createBitmap(375,  667, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(result);
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        BlurFactor blurFactor = new BlurFactor();
+        blurFactor.width = bitmap.getWidth();
+        blurFactor.height = bitmap.getHeight();
+        Bitmap outBitmap = Blur.of(context,bitmap,blurFactor);
+        int outWidth = outBitmap.getWidth();
+        int outHeight = outBitmap.getHeight();
+        if(outWidth*1.0/outHeight > 375/667){
+            int height = outHeight;
+            int width =  (int)(height*(375/667.0));
+            Rect mSrcRect = new Rect((outWidth-width)/2,0,outWidth-(width/2),height);
+            Rect mDestRect = new Rect(0,0,375,667);
+            canvas.drawBitmap(outBitmap,mSrcRect,mDestRect,paint);
+        }else {
+            int width = outWidth;
+            int height = (int)(outWidth/(375*667.0));
+            Rect mSrcRect = new Rect(0,(outHeight-height)/2,0,outHeight-(height/2));
+            Rect mDestRect = new Rect(0,0,375,667);
+            canvas.drawBitmap(outBitmap,mSrcRect,mDestRect,paint);
+        }
+
+        paint.setColor(Color.WHITE);
+        RectF white = new RectF(15,42,360,514);
+        canvas.drawRoundRect(white, 5, 5, paint);
+
+        outWidth = bitmap.getWidth();
+        outHeight = bitmap.getHeight();
+        if(outWidth*1.0/outHeight > 315/345){
+            int height = outHeight;
+            int width =  (int)(height*(315/345.0));
+            Rect mSrcRect = new Rect((outWidth-width)/2,0,outWidth-(width/2),height);
+            Rect mDestRect = new Rect(30,57,345,402);
+            canvas.drawBitmap(bitmap,mSrcRect,mDestRect,paint);
+        }else {
+            int width = outWidth;
+            int height = (int)(outWidth/(315*345.0));
+            Rect mSrcRect = new Rect(0,(outHeight-height)/2,0,outHeight-(height/2));
+            Rect mDestRect = new Rect(30,57,345,402);
+            canvas.drawBitmap(bitmap,mSrcRect,mDestRect,paint);
+        }
+
+
+        //绘制头像
+
+        BitmapShader mShader = new BitmapShader(headBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+
+        int bitmapWidth = headBitmap.getWidth();
+        int bitmapHeight = headBitmap.getHeight();
+        float sx = 36 * 1.0f / bitmapWidth;
+        float sy = 36 * 1.0f / bitmapHeight;
+        float scale = Math.max(sx, sy);
+
+//        Matrix matrix = new Matrix();
+//        matrix.setScale(scale, scale);
+//        mShader.setLocalMatrix(matrix);
+//        paint.setShader(mShader);
+        canvas.drawCircle(48, 430, 18, paint);
+
+        String path = BitmapUtils.saveImageToCache(result, "shareShowImage.png", shareImageBean.toString());
+
+        if (!TextUtils.isEmpty(path)) {
+            success.invoke(path);
+        } else {
+            fail.invoke("图片生成失败");
+        }
+
+        if (outBitmap != null && !outBitmap.isRecycled()) {
+            outBitmap.recycle();
+            outBitmap = null;
+        }
+
+        if (result != null && !result.isRecycled()) {
+            result.recycle();
+            result = null;
         }
     }
 
@@ -755,7 +932,12 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     private ShareImageBean parseParam(ReadableMap map) {
         ShareImageBean shareImageBean = new ShareImageBean();
         if (map.hasKey("imageUrlStr")) {
-            shareImageBean.setImageUrlStr(map.getString("imageUrlStr"));
+            String imgurl = map.getString("imageUrlStr");
+
+            if(!TextUtils.isEmpty(imgurl)&& imgurl.contains("?")){
+                imgurl = imgurl.substring(0,imgurl.indexOf("?"));
+            }
+            shareImageBean.setImageUrlStr(imgurl);
         } else {
             return null;
         }
@@ -802,6 +984,17 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             shareImageBean.setPriceType(null);
         }
 
+        if(map.hasKey("headerImage")){
+            shareImageBean.setHeaderImage(map.getString("headerImage"));
+        }else {
+            shareImageBean.setHeaderImage(null);
+        }
+
+        if(map.hasKey("userName")){
+            shareImageBean.setUserName(map.getString("userName"));
+        }else {
+            shareImageBean.setUserName("");
+        }
 
         return shareImageBean;
     }
@@ -837,8 +1030,28 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             bitmap.recycle();
             bitmap = null;
         }
-
     }
+
+//    public void createQRToAlbum(String info, Promise promise){
+//        Bitmap bitmap = createQRImage(QRCodeStr, 300, 300);
+//        if (bitmap == null) {
+//            fail.invoke("二维码生成失败！");
+//            return;
+//        }
+//        String path = BitmapUtils.saveImageToCache(bitmap, "shareImage.png", QRCodeStr);
+//        if (TextUtils.isEmpty(path)) {
+//            fail.invoke("图片保存失败！");
+//        } else {
+//            success.invoke(path);
+//        }
+//
+//        if (bitmap != null && !bitmap.isRecycled()) {
+//            bitmap.recycle();
+//            bitmap = null;
+//        }
+//    }
+
+
 
     @ReactMethod
     public void saveScreen(ReadableMap params, Callback success, Callback fail) {
