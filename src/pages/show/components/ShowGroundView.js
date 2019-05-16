@@ -32,6 +32,15 @@ export default class ShowGroundView extends Component {
         );
     };
 
+    replaceItemData = (index,data)=>{
+        UIManager.dispatchViewManagerCommand(
+            this.getHandle(),
+            UIManager.ShowGroundView.Commands.replaceItemData,
+            [index,data]
+        );
+    }
+
+
     getHandle = () => {
         return findNodeHandle(this.refs[RCT_SHOWGROUND_REF]);
     };

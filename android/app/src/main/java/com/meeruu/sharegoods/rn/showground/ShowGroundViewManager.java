@@ -24,7 +24,7 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> {
     private static final String COMPONENT_NAME = "ShowGroundView";
     public static final int REPLACE_DATA = 1;
     public static final int ADD_DATA_TOP = 2;
-
+    public static final int REPLACE_ITEM_DATA = 3;
     @Override
     public String getName() {
         return COMPONENT_NAME;
@@ -59,7 +59,7 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> {
     @javax.annotation.Nullable
     @Override
     public Map<String, Integer> getCommandsMap() {
-        return MapBuilder.of("replaceData", REPLACE_DATA,"addDataToTop",ADD_DATA_TOP);
+        return MapBuilder.of("replaceData", REPLACE_DATA,"addDataToTop",ADD_DATA_TOP,"replaceItemData",REPLACE_ITEM_DATA);
     }
 
     @Override
@@ -76,6 +76,13 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> {
                 Object object = root.getTag();
                 if (object != null && object instanceof ShowGroundView) {
                     ((ShowGroundView) object).addDataToTop(args.getString(0));
+                }
+            }
+            break;
+            case REPLACE_ITEM_DATA:{
+                Object object = root.getTag();
+                if (object != null && object instanceof ShowGroundView) {
+                    ((ShowGroundView) object).repelaceItemData(args.getInt(0), args.getString(1));
                 }
             }
             break;

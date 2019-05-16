@@ -21,15 +21,14 @@ import {
     AvatarImage,
     UIImage
 } from '../../components/ui';
-import ShowGroundView from './components/ShowGroundView';
-import ShowRecommendView from './components/ShowRecommendView';
 import ShowActivityViewIOS from './ShowActivityView';
 
 import user from '../../model/user';
 import res from '../mine/res';
 import EmptyUtils from '../../utils/EmptyUtils';
 import MessageApi from '../message/api/MessageApi';
-import { tag } from './Show';
+import ShowFoundView from './ShowFoundView';
+import ShowMaterialView from './ShowMaterialView';
 
 const {
     mine_user_icon,
@@ -166,7 +165,6 @@ export default class ShowListPage extends BasePage {
 
 
     _render() {
-        let that = this;
         const { page, left, needsExpensive } = this.state;
 
         let HotView = null;
@@ -265,29 +263,7 @@ export default class ShowListPage extends BasePage {
                     {
                         needsExpensive
                             ?
-
-                            <ShowRecommendView
-                                ref={(ref) => {
-                                    this.rightShowList = ref;
-                                }}
-                                style={{ flex: 1, margin: px2dp(10) }}
-                                uri={'/social/show/content/page/query@GET'}
-                                params={{ spreadPosition: tag.Material + '' }}
-                                onNineClick={({ nativeEvent }) => {
-                                    that.$navigate('show/ShowDetailImagePage', {
-                                        imageUrls: nativeEvent.imageUrls,
-                                        index: nativeEvent.index
-                                    });
-                                }}
-                                onItemPress={({ nativeEvent }) => {
-                                    console.log('nativeEvent',nativeEvent)
-                                    that.$navigate('show/ShowDetailPage', {
-                                        data:nativeEvent,
-                                        ref: this.foundList,
-                                        index: nativeEvent.index
-                                    });
-                                }}
-                            /> : null
+                            <ShowMaterialView navigate={this.$navigate} /> : null
                     }
                 </View>
 
@@ -296,28 +272,7 @@ export default class ShowListPage extends BasePage {
                         needsExpensive
                             ?
 
-                            <ShowGroundView
-                                ref={(ref) => {
-                                    this.foundList = ref;
-                                }}
-                                style={{ flex: 1 }}
-                                uri={'/social/show/content/page/query@GET'}
-                                params={{ spreadPosition: tag.Found + '' }}
-                                onNineClick={({ nativeEvent }) => {
-                                    that.$navigate('show/ShowDetailImagePage', {
-                                        imageUrls: nativeEvent.imageUrls,
-                                        index: nativeEvent.index
-                                    });
-                                }}
-                                onItemPress={({ nativeEvent }) => {
-                                    console.log('nativeEvent',nativeEvent)
-                                    that.$navigate('show/ShowDetailPage', {
-                                        data: nativeEvent,
-                                        ref: this.foundList,
-                                        index: nativeEvent.index
-                                    });
-                                }}
-                            />
+                            <ShowFoundView navigate={this.$navigate} pageFocus={this.state.pageFocused}/>
                             :
                             null
                     }

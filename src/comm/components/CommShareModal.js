@@ -165,13 +165,13 @@ export default class CommShareModal extends React.Component {
                 }else if(type === 'Show'){
                     let url = params && params.imageUrlStr;
                     params && (params.imageUrlStr = getSource(url, this.imageWidth, this.imageHeight));
-                    bridge.createShowShareImage(params, (path) => {
-                        this.setState({ path: Platform.OS === 'android' ? 'file://' + path : '' + path }, () => {
-                            this.changeShareType(0);
-                            setTimeout(() => {
-                                this.startAnimated();
-                            }, 350);
-                        });
+                    bridge.creatShowShareImage(params, (path) => {
+                        // this.setState({ path: Platform.OS === 'android' ? 'file://' + path : '' + path }, () => {
+                        //     this.changeShareType(0);
+                        //     setTimeout(() => {
+                        //         this.startAnimated();
+                        //     }, 350);
+                        // });
                     });
                 }
 
@@ -305,7 +305,7 @@ export default class CommShareModal extends React.Component {
             }
         });
 
-        if (type === 'Image' || type === 'promotionShare') {
+        if (type === 'Image' || type === 'promotionShare' || type === 'Show') {
             if (shareType === 2 || shareType === 1) {
                 array.push({
                     image: res.share.copyURL, title: '复制链接', onPress: () => {
