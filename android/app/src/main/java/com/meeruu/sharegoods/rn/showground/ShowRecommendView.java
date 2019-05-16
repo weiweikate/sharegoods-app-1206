@@ -21,6 +21,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.UiThreadUtil;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.UIManagerModule;
@@ -52,7 +53,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ShowRecommendView  implements IShowgroundView, SwipeRefreshLayout.OnRefreshListener{
+public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.OnRefreshListener {
     private RnRecyclerView recyclerView;
     private ShowRecommendAdapter adapter;
     private EventDispatcher eventDispatcher;
@@ -123,7 +124,8 @@ public class ShowRecommendView  implements IShowgroundView, SwipeRefreshLayout.O
         endScrollEvent = new onEndScrollEvent();
         itemPressEvent = new onItemPressEvent();
         onZanPressEvent = new onZanPressEvent();
-
+        onDownloadPressEvent = new onDownloadPressEvent();
+        onSharePressEvent = new onSharePressEvent();
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -133,7 +135,7 @@ public class ShowRecommendView  implements IShowgroundView, SwipeRefreshLayout.O
                 super.onScrollStateChanged(recyclerView, newState);
                 onScrollStateChangedEvent.init(view.getId());
                 WritableMap map = Arguments.createMap();
-                map.putInt("state",newState);
+                map.putInt("state", newState);
                 onScrollStateChangedEvent.setData(map);
                 eventDispatcher.dispatchEvent(onScrollStateChangedEvent);
 
@@ -151,12 +153,12 @@ public class ShowRecommendView  implements IShowgroundView, SwipeRefreshLayout.O
                 }
             }
         });
-        ProductsAdapter.AddCartListener addCartListener =  new ProductsAdapter.AddCartListener() {
+        ProductsAdapter.AddCartListener addCartListener = new ProductsAdapter.AddCartListener() {
             @Override
             public void onAddCart(String code) {
                 addCartEvent.init(view.getId());
                 WritableMap map = Arguments.createMap();
-                map.putString("prodCode",code);
+                map.putString("prodCode", code);
                 addCartEvent.setData(map);
                 eventDispatcher.dispatchEvent(addCartEvent);
             }
@@ -168,15 +170,15 @@ public class ShowRecommendView  implements IShowgroundView, SwipeRefreshLayout.O
                 onNineClickEvent.init(view.getId());
                 WritableMap map = Arguments.createMap();
                 WritableArray array = Arguments.makeNativeArray(urls);
-                map.putArray("imageUrls",array);
-                map.putInt("index",index);
+                map.putArray("imageUrls", array);
+                map.putInt("index", index);
                 onNineClickEvent.setData(map);
                 eventDispatcher.dispatchEvent(onNineClickEvent);
             }
         };
 
 
-        adapter = new ShowRecommendAdapter(clickL,addCartListener);
+        adapter = new ShowRecommendAdapter(clickL, addCartListener);
         adapter.setPreLoadNumber(3);
         adapter.setHasStableIds(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
@@ -208,40 +210,92 @@ public class ShowRecommendView  implements IShowgroundView, SwipeRefreshLayout.O
                 }
             }
         });
-
-
         adapter.setLoadMoreView(new CustomLoadMoreView());
+        setRecyclerViewItemEvent(view);
+        recyclerView.setAdapter(adapter);
+    }
 
+
+    private void setRecyclerViewItemEvent(final View view) {
         recyclerView.addOnItemTouchListener(new OnItemChildClickListener() {
             @Override
-            public void onSimpleItemChildClick(final BaseQuickAdapter adapter, View view, final int position) {
-                Log.e("====",position+"");
+            public void onSimpleItemChildClick(final BaseQuickAdapter adapter, View itemview, final int position) {
                 final List<NewestShowGroundBean.DataBean> data = adapter.getData();
-                recyclerView.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        NewestShowGroundBean.DataBean bean = data.get(position);
-                        if(bean.isLike()){
-                            bean.setLike(false);
-                            if(bean.getClickCount() > 0){
-                                bean.setLikesCount(bean.getClickCount()-1);
+                final NewestShowGroundBean.DataBean bean = data.get(position);
+                int id = itemview.getId();
+                switch (id) {
+                    case R.id.icon_hand: {
+                        recyclerView.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (bean.isLike()) {
+                                    bean.setLike(false);
+                                    if (bean.getLikesCount() > 0) {
+                                        bean.setLikesCount(bean.getLikesCount() - 1);
+                                    }
+                                } else {
+                                    bean.setLike(true);
+                                    bean.setLikesCount(bean.getLikesCount() + 1);
+
+                                }
+                                if (eventDispatcher != null) {
+                                    onZanPressEvent.init(view.getId());
+                                    String jsonStr = JSON.toJSONString(bean);
+                                    Map map = JSONObject.parseObject(jsonStr, new TypeReference<Map>() {
+                                    });
+                                    Map result = new HashMap();
+                                    result.put("index",position);
+                                    result.put("detail",map);
+                                    WritableMap realData = Arguments.makeNativeMap(result);
+                                    onZanPressEvent.setData(realData);
+                                    eventDispatcher.dispatchEvent(onZanPressEvent);
+                                }
+                                data.set(position, bean);
+                                adapter.replaceData(data);
                             }
-                        }else {
-                            bean.setLike(true);
-                            bean.setLikesCount(bean.getClickCount()+1);
-
-                        }
-                        data.set(position,bean);
-
-                        adapter.replaceData(data);
+                        }, 200);
                     }
-                }, 200);
+                    break;
+                    case R.id.icon_download: {
+                        UiThreadUtil.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                onDownloadPressEvent.init(view.getId());
+                                String jsonStr = JSON.toJSONString(bean);
+                                Map map = JSONObject.parseObject(jsonStr, new TypeReference<Map>() {
+                                });
+                                Map result = new HashMap();
+                                result.put("index",position);
+                                result.put("detail",map);
+                                WritableMap realData = Arguments.makeNativeMap(result);
+                                onDownloadPressEvent.setData(realData);
+                                eventDispatcher.dispatchEvent(onDownloadPressEvent);
+                            }
+                        });
+
+                    }
+                    break;
+                    case R.id.icon_share:{
+                        onSharePressEvent.init(view.getId());
+                        String jsonStr = JSON.toJSONString(bean);
+                        Map map = JSONObject.parseObject(jsonStr, new TypeReference<Map>() {
+                        });
+                        Map result = new HashMap();
+                        result.put("index",position);
+                        result.put("detail",map);
+                        WritableMap realData = Arguments.makeNativeMap(result);
+                        onSharePressEvent.setData(realData);
+                        eventDispatcher.dispatchEvent(onSharePressEvent);
+                    }
+                    break;
+                    default:break;
+                }
+
 
             }
         });
-
-        recyclerView.setAdapter(adapter);
     }
+
 
     private void initData() {
         presenter = new ShowgroundPresenter(this);
@@ -303,8 +357,8 @@ public class ShowRecommendView  implements IShowgroundView, SwipeRefreshLayout.O
             recyclerView.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    NewestShowGroundBean.DataBean bean =  JSON.parseObject(value, NewestShowGroundBean.DataBean.class);
-                    data.set(index,bean);
+                    NewestShowGroundBean.DataBean bean = JSON.parseObject(value, NewestShowGroundBean.DataBean.class);
+                    data.set(index, bean);
                     adapter.replaceData(data);
                 }
             }, 200);
@@ -374,5 +428,9 @@ public class ShowRecommendView  implements IShowgroundView, SwipeRefreshLayout.O
                 swipeRefreshLayout.setVisibility(View.VISIBLE);
             }
         });
+    }
+
+    public void refresh(){
+        recyclerView.invalidate();
     }
 }

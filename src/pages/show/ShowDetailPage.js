@@ -336,7 +336,7 @@ export default class ShowDetailPage extends BasePage {
             Promise.all(promises);
         }
 
-        //
+
     };
 
     _clickLike = () => {

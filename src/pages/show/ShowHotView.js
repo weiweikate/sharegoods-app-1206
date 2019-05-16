@@ -20,6 +20,10 @@ import AddCartModel from './model/AddCartModel';
 import shopCartCacheTool from '../shopCart/model/ShopCartCacheTool';
 import { track, trackEvent } from '../../utils/SensorsTrack';
 import bridge from '../../utils/bridge';
+import ShowApi from './ShowApi';
+import EmptyUtils from '../../utils/EmptyUtils';
+import apiEnvironment from '../../api/ApiEnvironment';
+import ShowUtils from './utils/ShowUtils';
 
 @observer
 export default class ShowHotView extends React.Component {
@@ -150,10 +154,47 @@ export default class ShowHotView extends React.Component {
                                                index: nativeEvent.index
                                            });
                                        }}
+                                       isLogin={user.token ? true:false}
 
                                        onAddCartClick={({ nativeEvent }) => {
                                            // alert(nativeEvent.prodCode);
                                            this.addCart(nativeEvent.prodCode);
+                                       }}
+
+                                       onZanPress={({nativeEvent})=>{
+                                           ShowApi.incrCountByType({ showNo:nativeEvent.detail.showNo,  type:1});
+                                       }}
+
+                                       onDownloadPress={({nativeEvent})=>{
+                                           let {detail} = nativeEvent;
+                                           if (!EmptyUtils.isEmptyArr(detail.resource)) {
+                                               let urls = detail.resource.map((value) => {
+                                                   return value.url;
+                                               });
+                                               ShowUtils.downloadShow(urls, detail.content).then(() => {
+                                                   detail.downloadCount += 1;
+                                                   this.incrCountByType(4);
+                                                   this.RecommendShowList && this.RecommendShowList.replaceItemData(nativeEvent.index, JSON.stringify(detail));
+                                               });
+                                           }
+
+                                           let promises = [];
+                                           if(!EmptyUtils.isEmptyArr(detail.products)){
+                                               detail.products.map((value)=>{
+                                                   let promise = bridge.createQRToAlbum(`${apiEnvironment.getCurrentH5Url()}/product/99/${value.prodCode}?upuserid=${user.code || ''}`);
+                                                   promises.push(promise);
+                                               })
+                                           }
+                                           if(!EmptyUtils.isEmptyArr(promises)){
+                                               Promise.all(promises);
+                                           }
+
+                                       }}
+
+                                       onSharePress={({nativeEvent})=>{
+                                           this.shareModal && this.shareModal.open();
+                                           this.props.onShare(nativeEvent);
+
                                        }}
 
                                        onScrollStateChanged={({ nativeEvent }) => {

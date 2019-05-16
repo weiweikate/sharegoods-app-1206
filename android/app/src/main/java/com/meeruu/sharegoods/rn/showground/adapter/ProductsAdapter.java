@@ -16,6 +16,7 @@ import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.sharegoods.R;
+import com.meeruu.sharegoods.rn.showground.ShowRecommendViewManager;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
 
 import java.util.List;
@@ -25,12 +26,14 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.VH> {
 
     public static class VH extends RecyclerView.ViewHolder {
         public TextView originalPrice;
+        public TextView activityPrice;
         public ImageView cart;
         public TextView name;
         public SimpleDraweeView productImg;
         public VH(View v) {
             super(v);
             originalPrice = v.findViewById(R.id.originalPrice);
+            activityPrice=v.findViewById(R.id.activityPrice);
             name = v.findViewById(R.id.product_name);
             productImg = v.findViewById(R.id.product_img);
             originalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
@@ -67,6 +70,30 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.VH> {
                 }
             }
         });
+        vh.originalPrice.setText(bean.getOriginalPrice());
+        long currentTime = System.currentTimeMillis();
+        long startTime = 0,endTime = 0;
+        try {
+            if(bean.getPromotionResult() != null && bean.getPromotionResult().getGroupActivity() != null && TextUtils.isEmpty(bean.getPromotionResult().getGroupActivity().getType())){
+                startTime = bean.getPromotionResult().getGroupActivity().getStartTime();
+                endTime = bean.getPromotionResult().getGroupActivity().getEndTime();
+            }else {
+                startTime = bean.getPromotionResult().getSingleActivity().getStartTime();
+                endTime = bean.getPromotionResult().getSingleActivity().getEndTime();
+            }
+
+        }catch (Exception e){
+
+        }
+
+        if(currentTime > startTime && currentTime < endTime+500){
+            vh.activityPrice.setText(bean.getPromotionMinPrice());
+        }else if(!ShowRecommendViewManager.isLogin){
+            vh.activityPrice.setText(bean.getV0Price());
+        }else {
+            vh.activityPrice.setText(bean.getMinPrice());
+        }
+
     }
 
     @Override
