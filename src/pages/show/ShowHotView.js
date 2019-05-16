@@ -154,6 +154,7 @@ export default class ShowHotView extends React.Component {
                                                index: nativeEvent.index
                                            });
                                        }}
+                                       isLogin={user.token ? true:false}
 
                                        onAddCartClick={({ nativeEvent }) => {
                                            // alert(nativeEvent.prodCode);
@@ -191,7 +192,8 @@ export default class ShowHotView extends React.Component {
                                        }}
 
                                        onSharePress={({nativeEvent})=>{
-
+                                           this.shareModal && this.shareModal.open();
+                                           this.props.onShare(nativeEvent);
 
                                        }}
 

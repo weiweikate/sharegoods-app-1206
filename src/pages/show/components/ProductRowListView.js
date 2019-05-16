@@ -39,7 +39,7 @@ export default class ProductRowListView extends PureComponent {
         const { endTime: endTimeT, startTime: startTimeT, currentTime = this.props.now } = groupActivity.type ? groupActivity : singleActivity;
         if (currentTime > startTimeT && currentTime < endTimeT + 500) {
             showPrice = data.promotionMinPrice;
-        } else if (user.token) {
+        } else if (EmptyUtils.isEmpty(user.token)) {
             showPrice = data.v0Price;
         } else {
             showPrice = data.minPrice;

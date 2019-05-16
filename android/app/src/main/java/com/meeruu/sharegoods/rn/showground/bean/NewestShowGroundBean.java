@@ -288,7 +288,7 @@ public class NewestShowGroundBean {
              * imgUrl : https://testcdn.sharegoodsmall.com/sharegoods/3fd92ae923374453ad4a767170c0aa54.png
              */
 
-            private Object promotionResult;
+            private PromotionResultBean promotionResult;
             private String prodCode;
             private String name;
             private String secondName;
@@ -301,11 +301,11 @@ public class NewestShowGroundBean {
             private String v0Price;
             private String imgUrl;
 
-            public Object getPromotionResult() {
+            public PromotionResultBean getPromotionResult() {
                 return promotionResult;
             }
 
-            public void setPromotionResult(Object promotionResult) {
+            public void setPromotionResult(PromotionResultBean promotionResult) {
                 this.promotionResult = promotionResult;
             }
 
@@ -365,7 +365,7 @@ public class NewestShowGroundBean {
                 this.maxPrice = maxPrice;
             }
 
-            public Object getPromotionMinPrice() {
+            public String getPromotionMinPrice() {
                 return promotionMinPrice;
             }
 
@@ -381,7 +381,7 @@ public class NewestShowGroundBean {
                 this.promotionMaxPrice = promotionMaxPrice;
             }
 
-            public Object getV0Price() {
+            public String getV0Price() {
                 return v0Price;
             }
 
@@ -438,8 +438,8 @@ public class NewestShowGroundBean {
                 public static class SingleActivityBean{
                     private String code;
                     private boolean couponLimit;
-                    private double currentTime;
-                    private double endTime;
+                    private long startTime;
+                    private long endTime;
                     private String extraProperty;
                     private String memo;
                     private String name;
@@ -463,19 +463,19 @@ public class NewestShowGroundBean {
                         this.couponLimit = couponLimit;
                     }
 
-                    public double getCurrentTime() {
-                        return currentTime;
+                    public long getStartTime() {
+                        return startTime;
                     }
 
-                    public void setCurrentTime(double currentTime) {
-                        this.currentTime = currentTime;
+                    public void setStartTime(long currentTime) {
+                        this.startTime = currentTime;
                     }
 
-                    public double getEndTime() {
+                    public long getEndTime() {
                         return endTime;
                     }
 
-                    public void setEndTime(double endTime) {
+                    public void setEndTime(long endTime) {
                         this.endTime = endTime;
                     }
 
@@ -532,8 +532,8 @@ public class NewestShowGroundBean {
                 public static class GroupActivityBean{
                     private String code;
                     private boolean couponLimit;
-                    private double currentTime;
-                    private double endTime;
+                    private long startTime;
+                    private long endTime;
                     private String extraProperty;
                     private String memo;
                     private String name;
@@ -557,19 +557,19 @@ public class NewestShowGroundBean {
                         this.couponLimit = couponLimit;
                     }
 
-                    public double getCurrentTime() {
-                        return currentTime;
+                    public long getStartTime() {
+                        return startTime;
                     }
 
-                    public void setCurrentTime(double currentTime) {
-                        this.currentTime = currentTime;
+                    public void setStartTime(long currentTime) {
+                        this.startTime = currentTime;
                     }
 
-                    public double getEndTime() {
+                    public long getEndTime() {
                         return endTime;
                     }
 
-                    public void setEndTime(double endTime) {
+                    public void setEndTime(long endTime) {
                         this.endTime = endTime;
                     }
 

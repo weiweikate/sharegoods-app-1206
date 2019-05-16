@@ -27,9 +27,15 @@ import {
 import Toast from '../../utils/bridge';
 import { NetFailedView } from '../../components/pageDecorator/BaseView';
 import AvatarImage from '../../components/ui/AvatarImage';
-import { TrackApi } from '../../utils/SensorsTrack';
+import { track, TrackApi, trackEvent } from '../../utils/SensorsTrack';
 import {SmoothPushPreLoadHighComponent} from '../../comm/components/SmoothPushHighComponent'
 import ProductRowListView from './components/ProductRowListView';
+import ShowUtils from './utils/ShowUtils';
+import { sourceType } from '../product/SelectionPage';
+import AddCartModel from './model/AddCartModel';
+import shopCartCacheTool from '../shopCart/model/ShopCartCacheTool';
+const { iconShowFire } = res;
+
 
 
 @SmoothPushPreLoadHighComponent
@@ -249,18 +255,19 @@ export default class ShowRichTextDetailPage extends BasePage {
         });
     }
 
-    _otherInfoRender=()=>{
-        return(
+    _otherInfoRender = () => {
+        let { detail } = this.showDetailModule;
+        return (
             <View style={styles.otherInfoWrapper}>
                 <Text style={styles.timeTextStyle}>
-                    2小时前
+                    {detail.publishTimeStr}
                 </Text>
-                <View style={{flex:1}}/>
-                <View style={styles.fireIcon}/>
-                <Text style={styles.fireNumText}>999+</Text>
+                <View style={{ flex: 1 }}/>
+                <Image style={styles.fireIcon} source={iconShowFire}/>
+                <Text style={styles.fireNumText}>{ShowUtils.formatShowNum(detail.hotCount)}</Text>
             </View>
-        )
-    }
+        );
+    };
 
     _onLongClickImage = (event) => {
         let url = event.nativeEvent.url;
@@ -289,6 +296,32 @@ export default class ShowRichTextDetailPage extends BasePage {
             </View>
         )
     }
+
+    addCart = (code) => {
+        let addCartModel = new AddCartModel();
+        addCartModel.requestProductDetail(code, (productIsPromotionPrice) => {
+            this.SelectionPage.show(addCartModel, (amount, skuCode) => {
+                const { prodCode, name, originalPrice } = addCartModel;
+                shopCartCacheTool.addGoodItem({
+                    'amount': amount,
+                    'skuCode': skuCode,
+                    'productCode': code
+                });
+                /*加入购物车埋点*/
+                track(trackEvent.AddToShoppingcart, {
+                    spuCode: prodCode,
+                    skuCode: skuCode,
+                    spuName: name,
+                    pricePerCommodity: originalPrice,
+                    spuAmount: amount,
+                    shoppingcartEntrance: 1
+                });
+            }, { sourceType: productIsPromotionPrice ? sourceType.promotion : null });
+        }, (error) => {
+            this.$toastShow(error.msg || '服务器繁忙');
+        });
+    };
+
 
 
     _render() {
@@ -396,7 +429,10 @@ export default class ShowRichTextDetailPage extends BasePage {
 
                 />
 
-                <ProductRowListView style={{ marginLeft: DesignRule.margin_page,marginVertical:px2dp(10)}} products={[1,2,3]}/>
+                <ProductRowListView style={{ marginLeft: DesignRule.margin_page, marginVertical: px2dp(10) }}
+                                    products={detail.products}
+                                    addCart={this.addCart}
+                />
 
                 {this._otherInfoRender()}
 
@@ -422,6 +458,7 @@ export default class ShowRichTextDetailPage extends BasePage {
             <View style={styles.whiteNav}/>
             {this._renderNormalTitle()}
             {/*{this._shieldRender()}*/}
+            <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             type={'miniProgram'}
                             trackEvent={'ArticleShare'}
