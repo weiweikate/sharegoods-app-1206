@@ -21,7 +21,7 @@ import res from '../../res';
 import { MRText as Text } from '../../../../components/ui';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
 import StringUtils from '../../../../utils/StringUtils';
-import RouterMap from "../../../../navigation/RouterMap";
+import RouterMap from '../../../../navigation/RouterMap';
 
 const { px2dp } = ScreenUtils;
 
@@ -37,17 +37,17 @@ const lv_down = res.cashAccount.zhanghu_lv;
 const icon_invite = res.myData.icon_invite;
 
 const allKinds = {
-    1:{title:'注册赠送',img:singInImg},
-    2:{title:'活动赠送',img:taskImg},
-    3:{title:'其他',img:taskImg},
-    4:{title:'兑换1元现金券',img:yiyuanImg},
-    5:{title:'签到奖励',img:singInImg},
-    6:{title:'任务奖励',img:taskImg},
-    7:{title:'秀购奖励',img:zensong},
-    8:{title:'抽奖奖励',img:xiugou_reword},
-    9:{title:'秀购奖励',img:zensong},
-    10:{title:'邀请有礼奖励',img:icon_invite},
-}
+    1: { title: '注册赠送', img: singInImg },
+    2: { title: '活动赠送', img: taskImg },
+    3: { title: '其他', img: taskImg },
+    4: { title: '兑换1元现金券', img: yiyuanImg },
+    5: { title: '签到奖励', img: singInImg },
+    6: { title: '任务奖励', img: taskImg },
+    7: { title: '秀购奖励', img: zensong },
+    8: { title: '抽奖奖励', img: xiugou_reword },
+    9: { title: '秀购奖励', img: zensong },
+    10: { title: '邀请有礼奖励', img: icon_invite }
+};
 @observer
 export default class MyIntegralAccountPage extends BasePage {
     constructor(props) {
@@ -108,7 +108,7 @@ export default class MyIntegralAccountPage extends BasePage {
                                          this.$navigate(RouterMap.loginPage);
                                          return;
                                      }
-                                     this.$navigate('home/signIn/SignInPage')
+                                     this.$navigate('home/signIn/SignInPage');
                                  }}>
                         <Text style={{
                             fontSize: DesignRule.fontSize_threeTitle,
@@ -134,7 +134,12 @@ export default class MyIntegralAccountPage extends BasePage {
                     <TouchableWithoutFeedback onPress={() => {
                         this.$navigateBack();
                     }}>
-                        <View style={{ width: 60 }}>
+                        <View style={{
+                            width: 60,
+                            paddingLeft: DesignRule.margin_page,
+                            height: 40,
+                            justifyContent: 'center'
+                        }}>
                             <Image source={res.button.white_back}/>
                         </View>
                     </TouchableWithoutFeedback>
@@ -302,7 +307,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingHorizontal: DesignRule.margin_page,
+        paddingRight: DesignRule.margin_page,
         marginTop: ScreenUtils.statusBarHeight,
         height: 44
     }
