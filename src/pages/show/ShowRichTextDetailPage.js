@@ -6,7 +6,9 @@ import {
     View,
     StyleSheet,
     NativeModules,
-    Alert
+    Alert,
+    ImageBackground,
+    TouchableWithoutFeedback
 } from 'react-native';
 import res from './res';
 import ScreenUtils from '../../utils/ScreenUtils';
@@ -28,14 +30,19 @@ import Toast from '../../utils/bridge';
 import { NetFailedView } from '../../components/pageDecorator/BaseView';
 import AvatarImage from '../../components/ui/AvatarImage';
 import { track, TrackApi, trackEvent } from '../../utils/SensorsTrack';
-import {SmoothPushPreLoadHighComponent} from '../../comm/components/SmoothPushHighComponent'
+import { SmoothPushPreLoadHighComponent } from '../../comm/components/SmoothPushHighComponent';
 import ProductRowListView from './components/ProductRowListView';
 import ShowUtils from './utils/ShowUtils';
 import { sourceType } from '../product/SelectionPage';
 import AddCartModel from './model/AddCartModel';
 import shopCartCacheTool from '../shopCart/model/ShopCartCacheTool';
-const { iconShowFire } = res;
+import SelectionPage from '../product/SelectionPage';
+import EmptyUtils from '../../utils/EmptyUtils';
+import NoMoreClick from '../../components/ui/NoMoreClick';
+import ProductListModal from './components/ProductListModal';
+import RouterMap from '../../navigation/RouterMap';
 
+const { iconShowFire, iconLike, iconNoLike ,iconBuyBg} = res;
 
 
 @SmoothPushPreLoadHighComponent
@@ -53,7 +60,8 @@ export default class ShowRichTextDetailPage extends BasePage {
         this.showDetailModule = new ShowDetail();
         this.state = {
             pageState: PageLoadingState.loading,
-            errorMsg: ''
+            errorMsg: '',
+            productModalVisible:false
         };
         this.noNeedRefresh = false;
         TrackApi.xiuChangDetail();
@@ -82,10 +90,10 @@ export default class ShowRichTextDetailPage extends BasePage {
                                 author: detail.userName,
                                 collectionCount: detail.collectCount
                             });
-                            if(this.params.isFormHeader){
-                                this.params.ref && this.params.ref.setClick(detail.click)
-                            }else {
-                                this.params.ref && this.params.ref.replaceData(this.params.index,detail.click)
+                            if (this.params.isFormHeader) {
+                                this.params.ref && this.params.ref.setClick(detail.click);
+                            } else {
+                                this.params.ref && this.params.ref.replaceData(this.params.index, detail.click);
                             }
                             this.setState({
                                 pageState: PageLoadingState.success
@@ -102,7 +110,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                             Toast.$toast(error.msg || '获取详情失败');
                             Toast.hiddenLoading();
                         });
-                    } else if(this.params.id){
+                    } else if (this.params.id) {
                         Toast.showLoading();
                         this.showDetailModule.loadDetail(this.params.id).then(() => {
                             const { detail } = this.showDetailModule;
@@ -126,7 +134,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                             Toast.$toast(error.msg || '获取详情失败');
                             Toast.hiddenLoading();
                         });
-                    }else {
+                    } else {
                         this.setState({
                             pageState: PageLoadingState.success
                         });
@@ -140,6 +148,8 @@ export default class ShowRichTextDetailPage extends BasePage {
 
     componentWillUnmount() {
         this.willFocusSubscription && this.willFocusSubscription.remove();
+        let { detail } = this.showDetailModule;
+        this.params.ref && this.params.ref.replaceItemData(this.params.index, JSON.stringify(detail));
     }
 
 
@@ -178,8 +188,13 @@ export default class ShowRichTextDetailPage extends BasePage {
     _goToShare() {
         const { pageState } = this.state;
         if (pageState === PageLoadingState.fail) {
-            return
+            return;
         }
+        if (!user.isLogin) {
+            this.$navigate('login/login/LoginPage');
+            return;
+        }
+
         this.shareModal && this.shareModal.open();
     }
 
@@ -205,9 +220,9 @@ export default class ShowRichTextDetailPage extends BasePage {
     _renderNormalTitle() {
         let { detail } = this.showDetailModule;
         if (!detail) {
-            detail = {imgs: '', products: [], click: 0, content: ''}
+            detail = { imgs: '', products: [], click: 0, content: '' };
         }
-        return(
+        return (
 
             <View style={styles.navTitle}>
                 <TouchableOpacity style={styles.backView} onPress={() => this._goBack()}>
@@ -229,12 +244,12 @@ export default class ShowRichTextDetailPage extends BasePage {
                     <Image source={res.more}/>
                 </TouchableOpacity>
             </View>
-        )
+        );
 
     }
 
-    _shieldRender=()=>{
-        return(
+    _shieldRender = () => {
+        return (
             <View style={styles.shieldWrapper}>
                 <View style={styles.shieldTextWrapper}>
                     <Text style={styles.shieldText}>
@@ -243,8 +258,8 @@ export default class ShowRichTextDetailPage extends BasePage {
                 </View>
                 <Image style={styles.shieldImage} source={res.addShieldIcon}/>
             </View>
-        )
-    }
+        );
+    };
 
     _showImagesPage(imgs, index) {
         this.noNeedRefresh = true;
@@ -286,16 +301,70 @@ export default class ShowRichTextDetailPage extends BasePage {
             }]);
     };
 
-    _bottomRender=()=>{
-        return(
+    // _bottomRender = () => {
+    //     return (
+    //         <View style={styles.bottom}>
+    //             <Image style={styles.bottomIcon}/>
+    //             <Text style={styles.bottomNumText}>
+    //                 999+
+    //             </Text>
+    //         </View>
+    //     );
+    // };
+
+    _bottomRender = () => {
+        let { detail } = this.showDetailModule;
+        return (
             <View style={styles.bottom}>
-                <Image style={styles.bottomIcon}/>
-                <Text style={styles.bottomNumText}>
-                    999+
-                </Text>
+                <NoMoreClick onPress={this._clickLike}>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Image style={styles.bottomIcon} source={detail.like ? iconLike : iconNoLike}/>
+                        <Text style={styles.bottomNumText}>
+                            {ShowUtils.formatShowNum(detail.likesCount)}
+                        </Text>
+                    </View>
+                </NoMoreClick>
+                <View style={{ width: px2dp(24) }}/>
+
+                <View style={{ flex: 1 }}/>
+                {!EmptyUtils.isEmptyArr(detail.products) ? <TouchableWithoutFeedback onPress={() => {
+                    this.setState({
+                        productModalVisible: true
+                    });
+                }}>
+                    <View>
+                        <ImageBackground source={iconBuyBg} style={{
+                            width: px2dp(90),
+                            height: px2dp(34),
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}>
+                            <Text style={{ color: DesignRule.white, fontSize: DesignRule.fontSize_threeTitle_28 }}>
+                                立即购买
+                            </Text>
+                        </ImageBackground>
+                        <View style={{
+                            position:'absolute',
+                            top:px2dp(-5),
+                            right:px2dp(-5),
+                            width: px2dp(20),
+                            height: px2dp(20),
+                            borderRadius: px2dp(10),
+                            borderWidth:1,
+                            borderColor:DesignRule.white,
+                            backgroundColor: DesignRule.mainColor,
+                            justifyContent: 'center',
+                            alignItems: 'center'}}>
+                            <Text style={{color:DesignRule.white,fontSize:px2dp(12)}}>
+                                {detail.products.length}
+                            </Text>
+                        </View>
+                    </View>
+                </TouchableWithoutFeedback> : null}
+
             </View>
-        )
-    }
+        );
+    };
 
     addCart = (code) => {
         let addCartModel = new AddCartModel();
@@ -323,7 +392,6 @@ export default class ShowRichTextDetailPage extends BasePage {
     };
 
 
-
     _render() {
         const { pageState } = this.state;
         if (pageState === PageLoadingState.fail) {
@@ -332,14 +400,14 @@ export default class ShowRichTextDetailPage extends BasePage {
             </View>;
         }
         if (pageState === PageLoadingState.loading) {
-            return <View style={styles.container} >
+            return <View style={styles.container}>
                 {this._renderNormalTitle()}
-            </View>
+            </View>;
         }
 
         let { detail } = this.showDetailModule;
         if (!detail) {
-            detail = {imgs: '', products: [], click: 0, content: ''}
+            detail = { imgs: '', products: [], click: 0, content: '' };
         }
         let number = detail.click;
         if (!number) {
@@ -432,24 +500,27 @@ export default class ShowRichTextDetailPage extends BasePage {
                 <ProductRowListView style={{ marginLeft: DesignRule.margin_page, marginVertical: px2dp(10) }}
                                     products={detail.products}
                                     addCart={this.addCart}
+                                    pressProduct={(prodCode) => {
+                                        this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode });
+                                    }}
                 />
 
                 {this._otherInfoRender()}
 
 
                 {/*{*/}
-                    {/*isCollecting*/}
-                        {/*?*/}
-                        {/*<View style={[styles.bottomBtn]}>*/}
-                            {/*<ActivityIndicator style={styles.btnLoading} size='small'/>*/}
-                        {/*</View>*/}
-                        {/*:*/}
-                        {/*<TouchableOpacity style={styles.bottomBtn} onPress={() => this._collectAction()}>*/}
-                            {/*<Image style={styles.collectImg}*/}
-                                   {/*source={detail.hadCollect ? res.showFire : res.noShowFire}/>*/}
-                            {/*<Text style={styles.bottomText}*/}
-                                  {/*allowFontScaling={false}>{pageState === PageLoadingState.fail ? '' :'收藏'} · {detail.collectCount}</Text>*/}
-                        {/*</TouchableOpacity>*/}
+                {/*isCollecting*/}
+                {/*?*/}
+                {/*<View style={[styles.bottomBtn]}>*/}
+                {/*<ActivityIndicator style={styles.btnLoading} size='small'/>*/}
+                {/*</View>*/}
+                {/*:*/}
+                {/*<TouchableOpacity style={styles.bottomBtn} onPress={() => this._collectAction()}>*/}
+                {/*<Image style={styles.collectImg}*/}
+                {/*source={detail.hadCollect ? res.showFire : res.noShowFire}/>*/}
+                {/*<Text style={styles.bottomText}*/}
+                {/*allowFontScaling={false}>{pageState === PageLoadingState.fail ? '' :'收藏'} · {detail.collectCount}</Text>*/}
+                {/*</TouchableOpacity>*/}
                 {/*}*/}
             </ScrollView>
             {pageState === PageLoadingState.fail ? null :
@@ -458,6 +529,20 @@ export default class ShowRichTextDetailPage extends BasePage {
             <View style={styles.whiteNav}/>
             {this._renderNormalTitle()}
             {/*{this._shieldRender()}*/}
+            {detail.products ? <ProductListModal visible={this.state.productModalVisible}
+                                                 pressProduct={(prodCode) => {
+                                                     this.setState({
+                                                         productModalVisible: false
+                                                     });
+                                                     this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode });
+                                                 }}
+                                                 addCart={this.addCart}
+                                                 products={detail.products} requestClose={() => {
+                this.setState({
+                    productModalVisible: false
+                });
+            }}/> : null}
+
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             type={'miniProgram'}
@@ -483,7 +568,6 @@ let styles = StyleSheet.create({
     },
     loading: {
         flex: 1,
-        backgroundColor: 'red',
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -501,7 +585,7 @@ let styles = StyleSheet.create({
         alignItems: 'center',
         borderTopWidth: ScreenUtils.onePixel,
         borderTopColor: '#ddd',
-        paddingHorizontal:DesignRule.margin_page
+        paddingHorizontal: DesignRule.margin_page
     },
     goodsItem: {
         height: px2dp(66),
@@ -564,8 +648,8 @@ let styles = StyleSheet.create({
         height: px2dp(45),
         alignItems: 'center',
         flexDirection: 'row',
-        flex:1,
-        marginLeft:px2dp(5)
+        flex: 1,
+        marginLeft: px2dp(5)
     },
     portrait: {
         width: px2dp(36),
@@ -634,13 +718,13 @@ let styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         top: ScreenUtils.statusBarHeight,
-        position:'absolute',
-        left:0,
-        backgroundColor:DesignRule.white
+        position: 'absolute',
+        left: 0,
+        backgroundColor: DesignRule.white
     },
-    virHeader:{
+    virHeader: {
         height: px2dp(44),
-        marginTop:ScreenUtils.statusBarHeight
+        marginTop: ScreenUtils.statusBarHeight
     },
     backView: {
         width: px2dp(44),
@@ -673,67 +757,66 @@ let styles = StyleSheet.create({
         width: px2dp(20),
         height: px2dp(20)
     },
-    bottomIcon:{
-        width:px2dp(18),
-        height:px2dp(18)
+    bottomIcon: {
+        width: px2dp(18),
+        height: px2dp(18)
     },
-    bottomNumText:{
-        color:DesignRule.textColor_mainTitle,
-        fontSize:px2dp(11),
-        marginLeft:px2dp(5)
+    bottomNumText: {
+        color: DesignRule.textColor_mainTitle,
+        fontSize: px2dp(11),
+        marginLeft: px2dp(5)
     },
-    shieldWrapper:{
-        position:'absolute',
-        top:(ScreenUtils.statusBarHeight + px2dp(44)),
-        bottom:0,
-        left:0,
-        right:0,
-        backgroundColor:'rgba(255,255,255,0.7)'
+    shieldWrapper: {
+        position: 'absolute',
+        top: (ScreenUtils.statusBarHeight + px2dp(44)),
+        bottom: 0,
+        left: 0,
+        right: 0,
+        backgroundColor: 'rgba(255,255,255,0.7)'
     },
-    shieldTextWrapper:{
-        width:DesignRule.width,
-        backgroundColor:'black',
-        paddingHorizontal:DesignRule.margin_page,
-        paddingVertical:px2dp(6)
+    shieldTextWrapper: {
+        width: DesignRule.width,
+        backgroundColor: 'black',
+        paddingHorizontal: DesignRule.margin_page,
+        paddingVertical: px2dp(6)
     },
-    shieldText:{
-        color:DesignRule.white,
-        fontSize:DesignRule.fontSize_24
+    shieldText: {
+        color: DesignRule.white,
+        fontSize: DesignRule.fontSize_24
     },
-    shieldImage:{
-        width:px2dp(120),
-        height:px2dp(120),
-        marginTop:px2dp(50),
-        alignSelf:'center'
+    shieldImage: {
+        width: px2dp(120),
+        height: px2dp(120),
+        marginTop: px2dp(50),
+        alignSelf: 'center'
     },
-    otherInfoWrapper:{
-        flexDirection:'row',
-        alignItems:'center',
-        marginVertical:px2dp(18),
-        paddingHorizontal:DesignRule.margin_page
+    otherInfoWrapper: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: px2dp(18),
+        paddingHorizontal: DesignRule.margin_page
     },
-    timeTextStyle:{
-        color:DesignRule.textColor_instruction,
-        fontSize:DesignRule.fontSize_20
+    timeTextStyle: {
+        color: DesignRule.textColor_instruction,
+        fontSize: DesignRule.fontSize_20
     },
-    fireIcon:{
-        width:px2dp(13),
-        height:px2dp(17),
-        marginRight:px2dp(8),
-        backgroundColor:'red'
+    fireIcon: {
+        width: px2dp(13),
+        height: px2dp(17),
+        marginRight: px2dp(8)
     },
-    fireNumText:{
-        fontSize:DesignRule.fontSize_22,
-        color:DesignRule.textColor_mainTitle
+    fireNumText: {
+        fontSize: DesignRule.fontSize_22,
+        color: DesignRule.textColor_mainTitle
     },
-    titleStyle:{
-        alignSelf:'center',
-        marginHorizontal:DesignRule.margin_page,
-        color:DesignRule.textColor_mainTitle,
-        fontSize:DesignRule.fontSize_secondTitle,
-        marginTop:px2dp(10),
-        marginBottom:px2dp(13),
-        fontWeight:'bold'
+    titleStyle: {
+        alignSelf: 'center',
+        marginHorizontal: DesignRule.margin_page,
+        color: DesignRule.textColor_mainTitle,
+        fontSize: DesignRule.fontSize_secondTitle,
+        marginTop: px2dp(10),
+        marginBottom: px2dp(13),
+        fontWeight: 'bold'
     }
 });
 

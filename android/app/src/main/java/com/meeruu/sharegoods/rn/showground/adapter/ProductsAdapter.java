@@ -30,10 +30,13 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.VH> {
         public ImageView cart;
         public TextView name;
         public SimpleDraweeView productImg;
+        public TextView redRMB;
+
         public VH(View v) {
             super(v);
             originalPrice = v.findViewById(R.id.originalPrice);
-            activityPrice=v.findViewById(R.id.activityPrice);
+            redRMB = v.findViewById(R.id.red_rmb);
+            activityPrice = v.findViewById(R.id.activityPrice);
             name = v.findViewById(R.id.product_name);
             productImg = v.findViewById(R.id.product_img);
             originalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
@@ -59,7 +62,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.VH> {
         String url = bean.getImgUrl();
         String tag = (String) vh.productImg.getTag();
         if (!TextUtils.equals(url, tag)) {
-            ImageLoadUtils.loadRoundNetImage(url, vh.productImg,5);
+            ImageLoadUtils.loadRoundNetImage(url, vh.productImg, 5);
             vh.productImg.setTag(url);
         }
         vh.cart.setOnClickListener(new View.OnClickListener() {
@@ -72,26 +75,34 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.VH> {
         });
         vh.originalPrice.setText(bean.getOriginalPrice());
         long currentTime = System.currentTimeMillis();
-        long startTime = 0,endTime = 0;
+        long startTime = 0, endTime = 0;
         try {
-            if(bean.getPromotionResult() != null && bean.getPromotionResult().getGroupActivity() != null && TextUtils.isEmpty(bean.getPromotionResult().getGroupActivity().getType())){
+            if (bean.getPromotionResult() != null && bean.getPromotionResult().getGroupActivity() != null && TextUtils.isEmpty(bean.getPromotionResult().getGroupActivity().getType())) {
                 startTime = bean.getPromotionResult().getGroupActivity().getStartTime();
                 endTime = bean.getPromotionResult().getGroupActivity().getEndTime();
-            }else {
+            } else {
                 startTime = bean.getPromotionResult().getSingleActivity().getStartTime();
                 endTime = bean.getPromotionResult().getSingleActivity().getEndTime();
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
+        String showPrice = null;
+        if (currentTime > startTime && currentTime < endTime + 500) {
+            showPrice = bean.getPromotionMinPrice();
+        } else if (!ShowRecommendViewManager.isLogin) {
+            showPrice = bean.getV0Price();
+        } else {
+            showPrice = bean.getMinPrice();
+        }
 
-        if(currentTime > startTime && currentTime < endTime+500){
-            vh.activityPrice.setText(bean.getPromotionMinPrice());
-        }else if(!ShowRecommendViewManager.isLogin){
-            vh.activityPrice.setText(bean.getV0Price());
-        }else {
-            vh.activityPrice.setText(bean.getMinPrice());
+        if (TextUtils.isEmpty(showPrice)) {
+            vh.redRMB.setVisibility(View.GONE);
+            vh.activityPrice.setText("");
+        } else {
+            vh.redRMB.setVisibility(View.VISIBLE);
+            vh.activityPrice.setText(showPrice);
         }
 
     }

@@ -19,6 +19,7 @@ import EmptyUtils from '../../../utils/EmptyUtils';
 import res from '../res';
 import ImageLoad from '@mr/image-placeholder';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
+import user from '../../../model/user';
 
 const { addCarIcon ,button} = res;
 
@@ -29,31 +30,47 @@ export default class ProductListModal extends PureComponent {
         super(props);
     }
 
-    _renderItem = (value, index) => {
+    _renderItem = (data, index) => {
+        let showPrice = 0;
+        const { singleActivity = {}, groupActivity = {} } = data.promotionResult || {};
+        const { endTime: endTimeT, startTime: startTimeT, currentTime = this.props.now } = groupActivity.type ? groupActivity : singleActivity;
+        if (currentTime > startTimeT && currentTime < endTimeT + 500) {
+            showPrice = data.promotionMinPrice;
+        } else if (EmptyUtils.isEmpty(user.token)) {
+            showPrice = data.v0Price;
+        } else {
+            showPrice = data.minPrice;
+        }
         return (
+            <TouchableWithoutFeedback onPress={()=>{
+                this.props.pressProduct && this.props.pressProduct(data.prodCode);
+            }}>
             <View key={'product' + index} style={styles.itemWrapper}>
-                <ImageLoad style={styles.productIcon} source={{uri:value.imgUrl}}/>
+                <ImageLoad style={styles.productIcon} source={{uri:data.imgUrl}}/>
                 <View style={styles.itemInfoWrapper}>
                     <MRText style={styles.nameText}
                             numberOfLines={1}
                             ellipsizeMode={'tail'}>
-                        {value.name}
+                        {data.name}
                     </MRText>
 
                     <View style={styles.priceWrapper}>
-                        <MRText style={styles.curPrice}>
-                            ￥499
-                        </MRText>
+                        {showPrice?
+                            <MRText style={styles.curPrice}>
+                                ￥{showPrice}
+                            </MRText>:null}
+
                         <MRText style={styles.oriPrice}>
-                            ￥499
+                            ￥{data.originalPrice}
                         </MRText>
                         <View style={{ flex: 1 }}/>
-                        <NoMoreClick onPress={()=>{this.props.addCart(value.prodCode)}}>
+                        <NoMoreClick onPress={()=>{this.props.addCart(data.prodCode)}}>
                         <Image source={addCarIcon} style={styles.carIcon}/>
                         </NoMoreClick>
                     </View>
                 </View>
             </View>
+            </TouchableWithoutFeedback>
         );
     };
 
