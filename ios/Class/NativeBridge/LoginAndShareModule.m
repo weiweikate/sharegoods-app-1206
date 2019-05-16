@@ -190,7 +190,7 @@ RCT_EXPORT_METHOD(creatShareImage:(id) jsonParam
  onSuccess(NSSting) 成功的回调
  onError(NSSting)   失败的回调
  */
-RCT_EXPORT_METHOD(createShowShareImage:(id) jsonParam
+RCT_EXPORT_METHOD(creatShowShareImage:(id) jsonParam
                   onSuccess:(RCTResponseSenderBlock) onSuccess
                   onError:(RCTResponseSenderBlock) onError){
   dispatch_async(dispatch_get_main_queue(), ^{

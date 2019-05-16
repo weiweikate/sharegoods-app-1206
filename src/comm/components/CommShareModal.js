@@ -166,12 +166,12 @@ export default class CommShareModal extends React.Component {
                     let url = params && params.imageUrlStr;
                     params && (params.imageUrlStr = getSource(url, this.imageWidth, this.imageHeight));
                     bridge.creatShowShareImage(params, (path) => {
-                        // this.setState({ path: Platform.OS === 'android' ? 'file://' + path : '' + path }, () => {
-                        //     this.changeShareType(0);
-                        //     setTimeout(() => {
-                        //         this.startAnimated();
-                        //     }, 350);
-                        // });
+                        this.setState({ path: Platform.OS === 'android' ? 'file://' + path : '' + path }, () => {
+                            this.changeShareType(0);
+                            setTimeout(() => {
+                                this.startAnimated();
+                            }, 350);
+                        });
                     });
                 }
 
@@ -445,7 +445,7 @@ export default class CommShareModal extends React.Component {
                         </TouchableWithoutFeedback>
                     </Animated.View>
                     {
-                        this.props.type === 'promotionShare' || (this.props.type === 'Image' && this.state.showToastImage) ?
+                        this.props.type === 'promotionShare' || (this.props.type === 'Image' && this.state.showToastImage)||(this.props.type === 'Show' && this.state.showToastImage) ?
                             <Animated.View style={{
                                 height: this.imageHeight,
                                 width: this.imageWidth,

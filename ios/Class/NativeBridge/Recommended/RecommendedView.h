@@ -30,6 +30,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(void)replaceData:(NSInteger) index num:(NSInteger) num;
 
+-(void)replaceItemData:(NSInteger) index data:(NSDictionary*) data;
+
 @end
 
 NS_ASSUME_NONNULL_END

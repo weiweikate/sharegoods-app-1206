@@ -51,6 +51,20 @@ RCT_EXPORT_METHOD(addDataToTop:(nonnull NSNumber *)reactTag
   }];
 }
 
+RCT_EXPORT_METHOD(replaceItemData:(nonnull NSNumber *)reactTag
+                  index:(NSInteger) index
+                  data:(id) data){
+  [self.bridge.uiManager addUIBlock:^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *, ASDK_ShowGround *> *viewRegistry) {
+    ASDK_ShowGround *view = viewRegistry[reactTag];
+    if (![view isKindOfClass:[ASDK_ShowGround class]]) {
+      RCTLogError(@"Invalid view returned from registry, expecting RNCUIWebView, got: %@", view);
+    } else {
+      [view replaceItemData:index data:[self convertjsonStringToDict:data]];
+    }
+  }];
+}
+
+
 - (NSDictionary *)convertjsonStringToDict:(NSString *)jsonString{
   NSDictionary *retDict = nil;
   if ([jsonString isKindOfClass:[NSString class]]) {

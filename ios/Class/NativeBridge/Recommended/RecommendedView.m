@@ -431,4 +431,8 @@ static NSString *IDType = @"TypeCell";
   }
 }
 
+-(void)replaceItemData:(NSInteger)index data:(NSDictionary *)data{
+  
+}
+
 @end

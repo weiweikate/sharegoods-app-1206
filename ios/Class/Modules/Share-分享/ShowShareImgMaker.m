@@ -52,7 +52,7 @@ SINGLETON_FOR_CLASS(ShowShareImgMaker)
   NSMutableArray * imagArr = [NSMutableArray arrayWithCapacity:urls.count];
   __block NSInteger item =  urls.count;
   for(int i=0;i<urls.count;i++){
-    [imagArr addObject:[UIImage imageNamed:@"logo.png"]];
+    i ==0 ? [imagArr addObject:[UIImage imageNamed:@"logo"]]:[imagArr addObject:[UIImage imageNamed:@"default_avatar"]];
     [[YYWebImageManager sharedManager] requestImageWithURL:[NSURL URLWithString:urls[i]]options:YYWebImageOptionShowNetworkActivity progress:^(NSInteger receivedSize, NSInteger expectedSize) {
       
     } transform:nil completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {

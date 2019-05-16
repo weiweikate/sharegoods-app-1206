@@ -29,6 +29,7 @@ import EmptyUtils from '../../utils/EmptyUtils';
 import MessageApi from '../message/api/MessageApi';
 import ShowFoundView from './ShowFoundView';
 import ShowMaterialView from './ShowMaterialView';
+import bridge from "../../utils/bridge";
 
 const {
     mine_user_icon,
@@ -68,6 +69,7 @@ export default class ShowListPage extends BasePage {
     }
 
     componentDidMount() {
+        bridge.createQRToAlbum('http://www.baidu.com');
         this.setState({ left: this.params.fromHome });
         this.didBlurSubscription = this.props.navigation.addListener(
             'willBlur',
@@ -271,7 +273,6 @@ export default class ShowListPage extends BasePage {
                     {
                         needsExpensive
                             ?
-
                             <ShowFoundView navigate={this.$navigate} pageFocus={this.state.pageFocused}/>
                             :
                             null
