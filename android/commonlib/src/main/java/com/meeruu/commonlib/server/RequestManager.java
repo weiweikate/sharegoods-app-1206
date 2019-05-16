@@ -516,7 +516,7 @@ public class RequestManager {
     private Map<String, String> getHttpHeaderParams() {
         Map<String, String> params = new HashMap<>();
         String channel = WalleChannelReader.getChannel(BaseApplication.appContext, "guanwang");
-        params.put("device", DeviceUtils.getUniquePsuedoID());
+        params.put("device", DeviceUtils.getUniquePsuedoID(null));
         params.put("channel", channel);
         params.put("platform", "Android " + DeviceUtils.getSystemName());
         params.put("Security-Policy", "SIGNATURE");
