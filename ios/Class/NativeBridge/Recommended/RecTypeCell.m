@@ -174,7 +174,7 @@
       num = @"10w+";
     }
   _zanNum.text = num;
-  [self.picImg sd_setImageWithURL:[NSURL URLWithString:[model.products[0] valueForKey: @"imgUrl"]] placeholderImage:[UIImage imageNamed:@"default_avatar"]];
+  [self.picImg sd_setImageWithURL:[NSURL URLWithString:[model.resource[0] valueForKey: @"imgUrl"]] placeholderImage:[UIImage imageNamed:@"default_avatar"]];
   self.contentLab.text = model.content;
   
 }

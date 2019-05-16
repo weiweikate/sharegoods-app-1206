@@ -420,17 +420,24 @@ static NSString *IDType = @"TypeCell";
 
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-  if (self.onStartScroll) {
-    self.onStartScroll(@{});
+  if (self.onScrollStateChanged) {
+    self.onScrollStateChanged(@{@"state":[NSNumber numberWithInteger:1]});
   }
 }
 
+- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView{
+  if (self.onScrollStateChanged) {
+    self.onScrollStateChanged(@{@"state":[NSNumber numberWithInteger:1]});
+  }
+  
+}
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-  if (self.onEndScroll) {
-    self.onEndScroll(@{});
+  if (self.onScrollStateChanged) {
+    self.onScrollStateChanged(@{@"state":[NSNumber numberWithInteger:0]});
   }
 }
+
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
   if (decelerate==NO) {
