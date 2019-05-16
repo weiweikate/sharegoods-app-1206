@@ -1,41 +1,29 @@
 package com.meeruu.sharegoods.rn.module;
 
-import android.Manifest;
+import android.text.TextUtils;
 
-import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.Callback;
-import com.facebook.react.bridge.LifecycleEventListener;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.ReadableMap;
-import com.facebook.react.bridge.WritableMap;
 import com.meeruu.commonlib.utils.ParameterUtils;
-import com.meeruu.permissions.Permission;
-import com.meeruu.permissions.PermissionUtil;
-
-import java.util.Arrays;
+import com.meeruu.commonlib.utils.SPCacheUtils;
+import com.meeruu.commonlib.utils.ToastUtils;
+import com.meeruu.sharegoods.R;
 
 import cn.jiguang.verifysdk.api.JVerificationInterface;
+import cn.jiguang.verifysdk.api.JVerifyUIConfig;
 import cn.jiguang.verifysdk.api.VerifyListener;
 
-public class PhoneAuthenModule extends ReactContextBaseJavaModule implements LifecycleEventListener {
+public class PhoneAuthenModule extends ReactContextBaseJavaModule {
 
-
-    private static final int CODE_PERMISSION_GRANTED = 0;
-    private static final String MSG_PERMISSION_GRANTED = "Permission is granted";
-    private static final int ERR_CODE_PERMISSION = 1;
-    private static final String ERR_MSG_PERMISSION = "Permission not granted";
-
-    //"android.permission.READ_PHONE_STATE"
-    private static final String[] REQUIRED_PERMISSIONS = new String[]{Manifest.permission.READ_PHONE_STATE};
-
-    private boolean requestPermissionSended;
-    private Callback permissionCallback;
+    private ReactApplicationContext mContext;
 
     public PhoneAuthenModule(ReactApplicationContext reactContext) {
         super(reactContext);
-        reactContext.addLifecycleEventListener(this);
+        this.mContext = reactContext;
     }
 
     @Override
@@ -45,106 +33,54 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule implements Lif
 
     @Override
     public String getName() {
-        return "JVerificationModule";
-    }
-
-    @Override
-    public void initialize() {
-        super.initialize();
+        return "PhoneAuthenModule";
     }
 
     @ReactMethod
-    public void requestPermission(Callback permissionCallback) {
-        if (PermissionUtil.hasPermissions(getCurrentActivity(), REQUIRED_PERMISSIONS)) {
-            doCallback(permissionCallback, CODE_PERMISSION_GRANTED, MSG_PERMISSION_GRANTED);
-            return;
+    public void checkInitResult(Promise callback) {
+        String hostJson = (String) SPCacheUtils.get(ParameterUtils.API_SERVER, "");
+        String contractUrl = "";
+        String h5Url = "";
+        if (!TextUtils.isEmpty(hostJson)) {
+            JSONObject object = JSON.parseObject(hostJson);
+            h5Url = object.getString("h5");
+            if (TextUtils.isEmpty(h5Url)) {
+                h5Url = "https://h5.sharegoodsmall.com";
+            }
+            contractUrl = h5Url + "/static/protocol/service.html";
         }
-        this.permissionCallback = permissionCallback;
-        try {
-            PermissionUtil.requestPermissions(getCurrentActivity(), Permission.getPermissionContent(Arrays.asList(Permission.PHONE)),
-                    ParameterUtils.REQUEST_CODE_PHONE, Permission.PHONE);
-            requestPermissionSended = true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+        JVerifyUIConfig.Builder builder = new JVerifyUIConfig.Builder();
 
-    @ReactMethod
-    public void isCanPhoneAuthen(Callback callback) {
+        builder.setNavReturnImgPath("ic_go_back")
+                .setNavColor(mContext.getResources().getColor(R.color.white))
+                .setNavText("")
+                .setNavTextColor(mContext.getResources().getColor(R.color.app_main_text_color))
+                .setNumberColor(mContext.getResources().getColor(R.color.app_main_text_color))
+                .setSloganTextColor(mContext.getResources().getColor(R.color.app_ccc_text_color))
+                .setAppPrivacyColor(mContext.getResources().getColor(R.color.app_666_text_color),
+                        mContext.getResources().getColor(R.color.app_main_color));
+        if (!TextUtils.isEmpty(contractUrl)) {
+            builder.setAppPrivacyOne("《秀购用户协议》", contractUrl);
+        }
+        JVerificationInterface.setCustomUIWithConfig(builder.build());
         boolean isVerifyEnable = JVerificationInterface.checkVerifyEnable(getCurrentActivity());
-        WritableMap map = Arguments.createMap();
-        map.putBoolean("enable", isVerifyEnable);
-        callback.invoke(map);
+        callback.resolve(isVerifyEnable);
     }
 
     @ReactMethod
-    public void getToken(final Callback callback) {
-        JVerificationInterface.getToken(getCurrentActivity(), new VerifyListener() {
-            @Override
-            public void onResult(int code, String content, String operator) {
-                doCallback(callback, code, content, operator);
-            }
-        });
-    }
-
-    @ReactMethod
-    public void startPhoneAuthenWithPhoneNum(ReadableMap map, final Callback callback) {
-        String number = map.getString("number");
-        String token = map.getString("token");
-
-        JVerificationInterface.verifyNumber(getCurrentActivity(), token, number, new VerifyListener() {
-            @Override
-            public void onResult(int code, String content, String operator) {
-                doCallback(callback, code, content, operator);
-            }
-        });
-    }
-
-    @ReactMethod
-    public void loginAuth(final Callback callback) {
+    public void startLoginAuth(final Promise callback) {
         JVerificationInterface.loginAuth(getCurrentActivity(), new VerifyListener() {
             @Override
             public void onResult(int code, String token, String operator) {
-                doCallback(callback, code, token, operator);
+                if (code == 6000) {
+                    callback.resolve(token);
+                } else if (code == 6002) {
+                    // do nothing
+                } else {
+                    ToastUtils.showToast("一键登录认证失败");
+                }
             }
         });
-    }
-
-    @Override
-    public void onHostResume() {
-        if (requestPermissionSended) {
-            if (PermissionUtil.hasPermissions(getCurrentActivity(), REQUIRED_PERMISSIONS)) {
-                doCallback(permissionCallback, CODE_PERMISSION_GRANTED, MSG_PERMISSION_GRANTED);
-            } else {
-                doCallback(permissionCallback, ERR_CODE_PERMISSION, ERR_MSG_PERMISSION);
-            }
-        }
-        requestPermissionSended = false;
-    }
-
-    @Override
-    public void onHostPause() {
-
-    }
-
-    @Override
-    public void onHostDestroy() {
-
-    }
-
-    private void doCallback(Callback callback, int code, String content) {
-        WritableMap map = Arguments.createMap();
-        map.putInt("code", code);
-        map.putString("content", content);
-        callback.invoke(map);
-    }
-
-    private void doCallback(Callback callback, int code, String content, String operator) {
-        WritableMap map = Arguments.createMap();
-        map.putInt("code", code);
-        map.putString("content", content);
-        map.putString("operator", operator);
-        callback.invoke(map);
     }
 }
 

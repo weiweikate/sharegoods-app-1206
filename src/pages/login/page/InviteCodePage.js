@@ -92,7 +92,7 @@ export default class InviteCodePage extends BasePage {
             <View style={styles.mainBgStyle}>
                 <View style={styles.contentStyle}>
                     <UIText
-                        value={"填输入会员号"}
+                        value={"请输入邀请人会员号"}
                         style={{
                             marginTop: 80,
                             fontSize: 23
@@ -102,7 +102,7 @@ export default class InviteCodePage extends BasePage {
                         style={styles.inputTextStyle}
                         value={this.inviteModel.inviteCode}
                         onChangeText={text => this.inviteModel.saveInviteCode(text)}
-                        placeholder='请输入邀请人会员号'
+                        placeholder='请输人邀请人会员号可领超强礼包'
                         placeholderTextColor={DesignRule.textColor_placeholder}
                     />
                     <View style={styles.inputTextBottomLine}/>
@@ -143,7 +143,7 @@ export default class InviteCodePage extends BasePage {
                             style={styles.selectMentorBgStyle}
                         >
                             <UIText
-                                value={"秀购为您推荐顾问"}
+                                value={"我没有邀请人--为你推荐"}
                                 style={{
                                     color: DesignRule.textColor_instruction,
                                     fontSize: 13
@@ -152,17 +152,17 @@ export default class InviteCodePage extends BasePage {
                         </View>
                     </TouchableOpacity>
                     <UIText
-                        value={"跳过"}
+                        value={""}
                         style={{
                             marginTop: ScreenUtils.px2dp(10),
                             color: DesignRule.textColor_instruction,
                             fontSize: 12
                         }}
-                        onPress={
-                            () => {
-                                this._jump();
-                            }
-                        }
+                        // onPress={
+                        //     () => {
+                        //         this._jump();
+                        //     }
+                        // }
                     />
                 </View>
             </View>

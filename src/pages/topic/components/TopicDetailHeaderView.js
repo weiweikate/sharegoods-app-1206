@@ -51,7 +51,7 @@ export default class TopicDetailHeaderView extends Component {
     }
 
     updateTime(activityData, activityType, callBack) {
-        this.ActivityView.saveActivityViewData(activityData, activityType, callBack);
+        this.ActivityView && this.ActivityView.saveActivityViewData(activityData, activityType, callBack);
     }
 
     render() {

@@ -1,6 +1,6 @@
 {
     "showDebugPanel": true,
-    "envType": "qa",
+    "envType": "pre_release",
     "isDevHotUpdate": false,
     "__注释__": "[showDebugPanel]:是否显示调试面板   [envType]:决定网络启动后，默认的网络环境类型",
     "env": {
@@ -72,7 +72,7 @@
         },
         "吴承骏": {
             "name": "吴承骏",
-            "host": "http://172.18.6.40:8903/gateway"
+            "host": "http://172.18.7.77:8903/gateway"
         },
         "da_wei": {
             "name": "蒋大为",
@@ -139,6 +139,10 @@
             "name": "李俊",
             "host": "http://172.16.10.79:9090/gateway"
         },
+        "dengxuekai": {
+            "name": "邓学凯",
+            "host": "http://172.18.7.17:8903/gateway"
+        },
         "申xiangyu": {
             "name": "申xiangyu",
             "host": "http://172.16.10.91:18080/gateway"
@@ -182,6 +186,10 @@
             "h5": "http://testh51.sharegoodsmall.com",
             "wxAppletKey": "gh_aa91c3ea0f6c",
             "gongmao": "http://testsop.sharegoodsmall.com/gateway/gongmall/contract/reback"
+        },
+        "李长辉":{
+            "name":"李长辉",
+            "host":"http://172.18.6.38:9090/gateway"
         }
     }
 }

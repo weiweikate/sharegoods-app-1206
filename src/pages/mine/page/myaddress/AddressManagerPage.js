@@ -8,6 +8,7 @@ import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import { MRText as Text } from '../../../../components/ui';
 import RefreshFlatList from '../../../../comm/components/RefreshFlatList';
+import  SmoothPushHighComponent  from '../../../../comm/components/SmoothPushHighComponent';
 
 
 const addrBorderImgN = res.address.dizhi_img_nor;
@@ -25,6 +26,7 @@ const addr_del = res.address.addr_del;
  * @org www.sharegoodsmall.com
  * @email luoyongming@meeruu.com
  */
+@SmoothPushHighComponent
 export default class AddressManagerPage extends BasePage {
 
     initIndex = -10;

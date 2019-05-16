@@ -65,7 +65,7 @@ export default class DetailBottomView extends Component {
                     {
                         (showSellOut || stock === 0) ?
                             <View style={styles.outView}>
-                                <Text style={styles.outText}>{stock === 0 ? '已售罄~' : '已抢光~'}</Text>
+                                <Text style={styles.outText}>{stock === 0 ? '已售罄' : '已抢光'}</Text>
                             </View>
                             :
                             <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     leftBtn: {
-        justifyContent: 'center', alignItems: 'center', width: 54
+        justifyContent: 'center', alignItems: 'center', width: px2dp(54)
     },
     leftImage: {
         marginBottom: 1
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
 
     outView: {
         flex: 1, justifyContent: 'center', alignItems: 'center', marginRight: 15,
-        borderRadius: 17, height: 37, backgroundColor: DesignRule.bgColor_grayHeader
+        borderRadius: 20, height: 40, backgroundColor: DesignRule.bgColor_grayHeader
     },
     outText: {
         fontSize: 17, color: DesignRule.white
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
 
     btnView: {
         flexDirection: 'row', overflow: 'hidden',
-        marginRight: 15, height: 34, width: px2dp(260), borderRadius: 17
+        marginRight: 15, height: 40, width: px2dp(260), borderRadius: 20
     },
     btn: {
         flex: 1

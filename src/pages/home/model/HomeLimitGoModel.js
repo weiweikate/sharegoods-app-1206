@@ -144,6 +144,17 @@ export class LimitGoModules {
         });
     }
 
+    @action cancleFollow(spu, code) {
+        HomeApi.cancleFollow({
+            spu,
+            activityCode: code
+        }).then(res => {
+            this.loadLimitGo();
+        }).catch(err => {
+            bridge.$toast(err.msg);
+        });
+    }
+
     @action changeLimitGo(index) {
         this.currentGoodsList = (this.spikeList[index] && this.spikeList[index].goods) || [];
         this.currentPage = index;

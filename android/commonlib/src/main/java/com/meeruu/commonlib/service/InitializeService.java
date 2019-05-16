@@ -10,23 +10,17 @@ import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 
-import com.meeruu.commonlib.callback.ForegroundCallbacks;
 import com.meeruu.commonlib.handler.CrashHandler;
 import com.meeruu.commonlib.umeng.UApp;
 import com.meeruu.commonlib.umeng.UShare;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.Utils;
 import com.meituan.android.walle.WalleChannelReader;
-import com.taobao.sophix.PatchStatus;
-import com.taobao.sophix.SophixManager;
-import com.taobao.sophix.listener.PatchLoadStatusListener;
 
 import cn.jiguang.verifysdk.api.JVerificationInterface;
 import cn.jpush.android.api.JPushInterface;
 
 public class InitializeService extends IntentService {
-
-    private int patchStatus;
 
     @Override
     public void onCreate() {
@@ -60,7 +54,6 @@ public class InitializeService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
-            initCallback();
             initDelay();
         }
     }
@@ -79,8 +72,6 @@ public class InitializeService extends IntentService {
         UShare.init(getApplicationContext(), ParameterUtils.UM_KEY);
         // 初始化极光
         JPushInterface.init(getApplicationContext());
-        // 初始化一键登录
-        JVerificationInterface.init(getApplicationContext());
         if (Utils.isApkInDebug()) {
             // jpush debug
             JPushInterface.setDebugMode(true);
@@ -98,34 +89,6 @@ public class InitializeService extends IntentService {
             CrashHandler.getInstance().init(getApplicationContext());
         }
 
-    }
-
-    private void initCallback() {
-        final SophixManager instance = SophixManager.getInstance();
-        instance.setPatchLoadStatusStub(new PatchLoadStatusListener() {
-            @Override
-            public void onLoad(final int mode, final int code, final String info, final int handlePatchVersion) {
-                patchStatus = code;
-            }
-        });
-        ForegroundCallbacks.get().addListener(new ForegroundCallbacks.Listener() {
-            @Override
-            public void onBecameForeground() {
-                // 启动到前台时检测是否有新补丁
-                instance.queryAndLoadNewPatch();
-            }
-
-            @Override
-            public void onBecameBackground() {
-                // 应用处于后台，如果补丁存在应用结束掉，重启
-                if (patchStatus == PatchStatus.CODE_LOAD_RELAUNCH) {
-                    // 应用处于后台时结束程序
-                    if (ForegroundCallbacks.get().isBackground()) {
-                        instance.killProcessSafely();
-                    }
-                }
-            }
-        });
     }
 
     private void startForeground() {

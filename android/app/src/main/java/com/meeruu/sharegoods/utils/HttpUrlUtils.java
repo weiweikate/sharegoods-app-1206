@@ -27,6 +27,17 @@ public class HttpUrlUtils {
         return SERVER + url;
     }
 
+    /*********获取api接口url***********/
+    public static String getH5Url(String url) {
+        String SERVER = "https://h5.sharegoodsmall.com";
+        String jsonStr = (String) SPCacheUtils.get(ParameterUtils.API_SERVER, "");
+        if (!TextUtils.isEmpty(jsonStr)) {
+            JSONObject object = JSON.parseObject(jsonStr);
+            SERVER = object.getString("h5");
+        }
+        return SERVER + url;
+    }
+
     /*********获取工猫回调url***********/
     public static String getGongmaoUrl() {
         String SERVER = "https://api.sharegoodsmall.com/gateway/gongmall/contract/reback";

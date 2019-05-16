@@ -164,7 +164,7 @@ const GoodsItem = ({ item, activityCode, navigate }) => {
                         <View style={styles.leaveAmountView}>
                             <MRText
                                 style={styles.leaveAmountText}>{promotionSaleRateS === 1
-                                ? '已抢完' : `还剩${StringUtils.sub(1, promotionSaleRateS) * 100}%`}</MRText>
+                                ? '已抢光' : `还剩${StringUtils.sub(1, promotionSaleRateS) * 100}%`}</MRText>
                         </View>
                     </View>
             }
@@ -199,7 +199,7 @@ const GoodsItemButton = ({ data, activityCode, navigate }) => {
     } else if (data.promotionStatus === limitStatus.noBegin) {
         return <NoMoreClick onPress={() => {
             if (user.isLogin) {
-                limitGoModule.followSpike(data.prodCode, activityCode);
+                data.promotionAttention ? limitGoModule.cancleFollow(data.prodCode, activityCode) : limitGoModule.followSpike(data.prodCode, activityCode);
             } else {
                 navigate(RouterMap.LoginPage);
             }
@@ -211,7 +211,7 @@ const GoodsItemButton = ({ data, activityCode, navigate }) => {
     } else {
         return <View style={styles.disbutton}>
             <Text style={styles.disbuttonTitle}>
-                {data.promotionStatus === limitStatus.end ? '抢光了' : '已结束'}
+                {data.promotionStatus === limitStatus.end ? '已抢光' : '已结束'}
             </Text>
         </View>;
     }
