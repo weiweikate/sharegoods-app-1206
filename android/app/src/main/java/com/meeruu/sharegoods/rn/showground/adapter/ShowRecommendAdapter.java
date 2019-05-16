@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -38,7 +39,6 @@ import java.util.List;
 public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGroundBean.DataBean, BaseViewHolder> {
     private NineGridView.clickL clickL;
     private ProductsAdapter.AddCartListener addCartListener;
-    private RecommendItemInterface recommendItemInterface;
 
     public ShowRecommendAdapter(NineGridView.clickL clickL, ProductsAdapter.AddCartListener addCartListener) {
 
@@ -56,7 +56,6 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         addItemType(1, R.layout.item_showground_image_goods);
         addItemType(2, R.layout.item_show_img_text);
     }
-
 
     @Override
     protected void convert(final BaseViewHolder helper, final NewestShowGroundBean.DataBean item) {
@@ -168,12 +167,21 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
             recyclerView.setVisibility(View.GONE);
         }
 
+        helper.addOnClickListener(R.id.icon_hand);
+
+        ImageView hand = helper.getView(R.id.icon_hand);
+//        if(item.isLike()){
+//            hand.setImageDrawable(R.drawable.icon_hand);
+//        }else {
+//            hand.setImageDrawable(R.drawable.icon_hand);
+//        }
+//        hand.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Log.e("======",helper.getAdapterPosition()+"");
+//            }
+//        });
     }
 
-    public interface RecommendItemInterface{
-        void onZanListener();
-        void onDownloadListener();
-        void onShareListener();
-    }
 
 }

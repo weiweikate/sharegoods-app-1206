@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableArray;
@@ -29,10 +31,12 @@ import com.meeruu.sharegoods.rn.showground.adapter.ShowRecommendAdapter;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
 import com.meeruu.sharegoods.rn.showground.bean.ShowRecommendBean;
 import com.meeruu.sharegoods.rn.showground.event.addCartEvent;
+import com.meeruu.sharegoods.rn.showground.event.onDownloadPressEvent;
 import com.meeruu.sharegoods.rn.showground.event.onEndScrollEvent;
 import com.meeruu.sharegoods.rn.showground.event.onItemPressEvent;
 import com.meeruu.sharegoods.rn.showground.event.onNineClickEvent;
 import com.meeruu.sharegoods.rn.showground.event.onScrollStateChangedEvent;
+import com.meeruu.sharegoods.rn.showground.event.onSharePressEvent;
 import com.meeruu.sharegoods.rn.showground.event.onStartRefreshEvent;
 import com.meeruu.sharegoods.rn.showground.event.onStartScrollEvent;
 import com.meeruu.sharegoods.rn.showground.event.onZanPressEvent;
@@ -55,6 +59,8 @@ public class ShowRecommendView  implements IShowgroundView, SwipeRefreshLayout.O
     private onStartScrollEvent startScrollEvent;
     private onEndScrollEvent endScrollEvent;
     private onZanPressEvent onZanPressEvent;
+    private onSharePressEvent onSharePressEvent;
+    private onDownloadPressEvent onDownloadPressEvent;
     private ShowgroundPresenter presenter;
     private WeakReference<View> showgroundView;
     private onStartRefreshEvent startRefreshEvent;
@@ -202,7 +208,38 @@ public class ShowRecommendView  implements IShowgroundView, SwipeRefreshLayout.O
                 }
             }
         });
+
+
         adapter.setLoadMoreView(new CustomLoadMoreView());
+
+        recyclerView.addOnItemTouchListener(new OnItemChildClickListener() {
+            @Override
+            public void onSimpleItemChildClick(final BaseQuickAdapter adapter, View view, final int position) {
+                Log.e("====",position+"");
+                final List<NewestShowGroundBean.DataBean> data = adapter.getData();
+                recyclerView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        NewestShowGroundBean.DataBean bean = data.get(position);
+                        if(bean.isLike()){
+                            bean.setLike(false);
+                            if(bean.getClickCount() > 0){
+                                bean.setLikesCount(bean.getClickCount()-1);
+                            }
+                        }else {
+                            bean.setLike(true);
+                            bean.setLikesCount(bean.getClickCount()+1);
+
+                        }
+                        data.set(position,bean);
+
+                        adapter.replaceData(data);
+                    }
+                }, 200);
+
+            }
+        });
+
         recyclerView.setAdapter(adapter);
     }
 
