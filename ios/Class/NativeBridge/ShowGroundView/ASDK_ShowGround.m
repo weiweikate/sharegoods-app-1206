@@ -434,7 +434,12 @@
 
 
 -(void)replaceItemData:(NSInteger)index data:(NSDictionary *)data{
-  
+  if(data){
+    ShowQuery_dataModel* model = [ShowQuery_dataModel modelWithJSON:data];
+    [self.dataArr replaceObjectAtIndex:index withObject:model];
+    [self.callBackArr replaceObjectAtIndex:index withObject:data];
+    [self.collectionNode reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]]];
+  }
 }
 
 @end

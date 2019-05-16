@@ -175,7 +175,7 @@ static NSString *IDType = @"TypeCell";
   [dic addEntriesFromDictionary:@{@"page": [NSString stringWithFormat:@"%ld",self.page], @"size": @"10"}];
   __weak RecommendedView * weakSelf = self;
   [NetWorkTool requestWithURL:self.uri params:dic toModel:nil success:^(NSDictionary * result) {
-    
+
     JXModel* model = [JXModel modelWithJSON:result];
     weakSelf.dataArr = [model.data mutableCopy];
     if([result valueForKey:@"data"]&&![[result valueForKey:@"data"] isKindOfClass:[NSNull class]]){
@@ -216,7 +216,7 @@ static NSString *IDType = @"TypeCell";
   [dic addEntriesFromDictionary:@{@"page": [NSString stringWithFormat:@"%ld",self.page], @"size": @"10"}];
     __weak  RecommendedView * weakSelf = self;
     [NetWorkTool requestWithURL:self.uri params:dic toModel:nil success:^(NSDictionary * result) {
-      
+
       JXModel* model = [JXModel modelWithJSON:result];
       [weakSelf.dataArr addObjectsFromArray:model.data];
       if([result valueForKey:@"data"]&&![[result valueForKey:@"data"] isKindOfClass:[NSNull class]]){
@@ -321,28 +321,41 @@ static NSString *IDType = @"TypeCell";
 -(void)addCar:(RecommendedCell *)cell{
   NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
   if(_onAddCartClick) {
-    _onAddCartClick(self.callBackArr[indexPath.item]);
+    _onAddCartClick(@{
+                      @"detail":[NSNumber numberWithInteger:indexPath.row],
+                      @"index":self.callBackArr[indexPath.item]});
   }
 }
 
 -(void)zanClick:(RecommendedCell *)cell{
-  NSLog(@"delegate 2");
   NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
   JXModelData *model = self.dataArr[indexPath.row];
-  model.like = !model.like;
-  [self.tableView beginUpdates];
-  [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-  [self.tableView endUpdates];
-  if(_onZanPress) {
-    _onZanPress(self.callBackArr[indexPath.item]);
+  if(!model.like){
+    model.likesCount++;
+  }else{
+    model.likesCount--;
   }
+  model.like = !model.like;
+
+  NSMutableDictionary * dic = [NSMutableDictionary dictionaryWithDictionary:self.callBackArr[indexPath.row]];
+  [dic setObject:[NSNumber numberWithInteger:model.likesCount] forKey:@"likesCount"];
+  [dic setObject:@(model.like) forKey:@"like"];
+  [self.callBackArr replaceObjectAtIndex:indexPath.row withObject:dic];
+  if(_onZanPress) {
+    _onZanPress(@{
+                  @"detail":[NSNumber numberWithInteger:indexPath.row],
+                  @"index":self.callBackArr[indexPath.item]});
+  }
+  [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 -(void)downloadClick:(RecommendedCell *)cell{
   NSLog(@"delegate 3");
   NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
   if(_onDownloadPress) {
-    _onDownloadPress(self.callBackArr[indexPath.item]);
+    _onDownloadPress(@{
+                       @"detail":[NSNumber numberWithInteger:indexPath.row],
+                       @"index":self.callBackArr[indexPath.item]});
   }
 }
 
@@ -350,19 +363,20 @@ static NSString *IDType = @"TypeCell";
   NSLog(@"delegate 4");
   NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
   if(_onSharePress) {
-    _onSharePress(self.callBackArr[indexPath.item]);
+    _onSharePress(@{
+                    @"detail":[NSNumber numberWithInteger:indexPath.row],
+                    @"index":self.callBackArr[indexPath.item]});
   }
 }
 
 -(void)labelClick:(RecommendedCell *)cell{
-//  NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
-//  if (_onItemPress) {
-//    NSMutableDictionary * dic = [NSMutableDictionary dictionaryWithDictionary:self.callBackArr[indexPath.row]];
-//    [dic setObject:[NSNumber numberWithInteger:indexPath.row] forKey:@"index"];
-//    [self.callBackArr replaceObjectAtIndex:indexPath.row withObject:dic];
-//    _onItemPress(self.callBackArr[indexPath.row]);
-//    [self refreshData];
-//  }
+  NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
+  if (_onItemPress) {
+    NSMutableDictionary * dic = [NSMutableDictionary dictionaryWithDictionary:self.callBackArr[indexPath.row]];
+    [dic setObject:[NSNumber numberWithInteger:indexPath.row] forKey:@"index"];
+    [self.callBackArr replaceObjectAtIndex:indexPath.row withObject:dic];
+    _onItemPress(self.callBackArr[indexPath.row]);
+  }
 }
 
 - (void)didUpdateReactSubviews {
@@ -385,22 +399,23 @@ static NSString *IDType = @"TypeCell";
   [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
   [self.tableView endUpdates];
   if(_onZanPress) {
-    _onZanPress(self.callBackArr[indexPath.item]);
-  }
-  if(_onZanPress) {
-    _onZanPress(self.callBackArr[indexPath.item]);
+    _onZanPress(@{
+                  @"detail":[NSNumber numberWithInteger:indexPath.row],
+                  @"index":self.callBackArr[indexPath.item]});
   }
 }
 
 -(void)shareBtnClick:(RecTypeCell *)cell{
   NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
   if(_onSharePress) {
-    _onSharePress(self.callBackArr[indexPath.item]);
+    _onSharePress(@{
+                    @"detail":[NSNumber numberWithInteger:indexPath.row],
+                    @"index":self.callBackArr[indexPath.item]});
   }
 }
 
 -(void)clickLabel:(RecTypeCell *)cell{
-  
+
 }
 
 
@@ -432,7 +447,12 @@ static NSString *IDType = @"TypeCell";
 }
 
 -(void)replaceItemData:(NSInteger)index data:(NSDictionary *)data{
-  
+  if(data){
+    JXModelData* model = [JXModelData modelWithJSON:data];
+    [self.dataArr replaceObjectAtIndex:index withObject:model];
+    [self.callBackArr replaceObjectAtIndex:index withObject:data];
+  [self.tableView reloadRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] withRowAnimation:UITableViewRowAnimationNone];
+  }
 }
 
 @end
