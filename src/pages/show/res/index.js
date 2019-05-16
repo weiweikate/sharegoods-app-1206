@@ -14,7 +14,6 @@ const index = {
     delIcon:require('./icon_del.png'),
     addIcon:require('./icon_add.png'),
     hotIcon:require('./hot.png'),
-
     addCarIcon:require('./icon_add_car.png'),
     addShieldIcon:require('./icon_show_shield.png'),
     addShowIcon:require('./icon_show_add.png'),
@@ -25,6 +24,5 @@ const index = {
     iconNoLike:require('./icon_no_like.png'),
     iconBuyBg:require('./icon_buy_bg.png'),
     iconDownload:require('./icon_show_download.png')
-
 };
 export default index

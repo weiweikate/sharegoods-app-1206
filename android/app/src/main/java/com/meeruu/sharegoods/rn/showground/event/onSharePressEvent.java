@@ -6,7 +6,7 @@ import com.facebook.react.uimanager.events.RCTEventEmitter;
 
 public class onSharePressEvent extends Event<onSharePressEvent> {
     private WritableMap data;
-    private static final String EVENT_NAME = "MrZanPressEvent";
+    private static final String EVENT_NAME = "MrSharePress";
 
     public void setData(WritableMap data) {
         this.data = data;
