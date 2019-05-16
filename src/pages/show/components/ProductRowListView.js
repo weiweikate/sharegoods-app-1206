@@ -35,21 +35,15 @@ export default class ProductRowListView extends PureComponent {
             width = ScreenUtils.width - px2dp(30);
         }
         let showPrice = 0;
-
-        try {
-            const {singleActivity={},groupActivity={}}=data.promotionResult || {}
-            const {endTime: endTimeT,startTime:startTimeT,currentTime=this.props.now } = groupActivity.type ? groupActivity : singleActivity;
-            if(currentTime > startTimeT && currentTime < endTimeT+500){
-                showPrice = data.promotionMinPrice;
-            }else if(user.token){
-                showPrice = data.v0Price;
-            }else {
-                showPrice = data.minPrice;
-            }
-        }catch (e) {
-            alert(e.message);
+        const { singleActivity = {}, groupActivity = {} } = data.promotionResult || {};
+        const { endTime: endTimeT, startTime: startTimeT, currentTime = this.props.now } = groupActivity.type ? groupActivity : singleActivity;
+        if (currentTime > startTimeT && currentTime < endTimeT + 500) {
+            showPrice = data.promotionMinPrice;
+        } else if (user.token) {
+            showPrice = data.v0Price;
+        } else {
+            showPrice = data.minPrice;
         }
-
 
         return (
             <View key={'product' + index} style={[{ width }, styles.itemWrapper]}>
@@ -66,10 +60,12 @@ export default class ProductRowListView extends PureComponent {
                             ￥{showPrice}
                         </MRText>
                         <MRText style={styles.oriPrice}>
-                            ￥{data.oriPrice}
+                            ￥{data.originalPrice}
                         </MRText>
                         <View style={{ flex: 1 }}/>
-                        <NoMoreClick onPress={()=>{this.props.addCart(data.prodCode)}}>
+                        <NoMoreClick onPress={() => {
+                            this.props.addCart(data.prodCode);
+                        }}>
                             <Image source={addCarIcon} style={styles.carIcon}/>
                         </NoMoreClick>
                     </View>

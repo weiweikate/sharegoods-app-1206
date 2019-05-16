@@ -42,6 +42,7 @@ import AddCartModel from './model/AddCartModel';
 import { sourceType } from '../product/SelectionPage';
 import shopCartCacheTool from '../shopCart/model/ShopCartCacheTool';
 import SelectionPage from '../product/SelectionPage';
+import bridge from '../../utils/bridge';
 
 const { iconShowFire, iconBuyBg, iconLike, iconNoLike, iconDownload } = res;
 // @SmoothPushPreLoadHighComponent
@@ -319,16 +320,31 @@ export default class ShowDetailPage extends BasePage {
             });
             ShowUtils.downloadShow(urls, detail.content).then(() => {
                 detail.downloadCount += 1;
+                this.incrCountByType(4);
                 this.showDetailModule.setDetail(detail);
             });
         }
 
-        //${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}
+        let promises = [];
+        if(!EmptyUtils.isEmptyArr(detail.products)){
+            detail.products.map((value)=>{
+                let promise = bridge.createQRToAlbum(`${apiEnvironment.getCurrentH5Url()}/product/99/${value.prodCode}?upuserid=${user.code || ''}`);
+                promises.push(promise);
+            })
+        }
+        if(!EmptyUtils.isEmptyArr(promises)){
+            Promise.all(promises);
+        }
+
+        //
     };
 
     _clickLike = () => {
         let { detail } = this.showDetailModule;
         if (detail.like) {
+            if( detail.likesCount > 0 ){
+                return;
+            }
             this.reduceCountByType(1);
             detail.like = false;
             detail.likesCount -= 1;

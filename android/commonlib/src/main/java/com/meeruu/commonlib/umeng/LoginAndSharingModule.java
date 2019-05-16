@@ -1032,24 +1032,27 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         }
     }
 
-//    public void createQRToAlbum(String info, Promise promise){
-//        Bitmap bitmap = createQRImage(QRCodeStr, 300, 300);
-//        if (bitmap == null) {
-//            fail.invoke("二维码生成失败！");
-//            return;
-//        }
-//        String path = BitmapUtils.saveImageToCache(bitmap, "shareImage.png", QRCodeStr);
-//        if (TextUtils.isEmpty(path)) {
-//            fail.invoke("图片保存失败！");
-//        } else {
-//            success.invoke(path);
-//        }
-//
-//        if (bitmap != null && !bitmap.isRecycled()) {
-//            bitmap.recycle();
-//            bitmap = null;
-//        }
-//    }
+    @ReactMethod
+    public void createQRToAlbum(String info, Promise promise){
+        Bitmap bitmap = createQRImage(info, 300, 300);
+        if (bitmap == null) {
+            promise.reject("二维码生成失败！");
+            return;
+        }
+        String path = BitmapUtils.saveImageToCache(bitmap, "shareImage.png", info);
+        Uri uri = Uri.parse("file://"+path);
+        saveImageAndRefresh(uri);
+        if (TextUtils.isEmpty(path)) {
+            promise.reject("图片保存失败！");
+        } else {
+            promise.resolve(path);
+        }
+
+        if (bitmap != null && !bitmap.isRecycled()) {
+            bitmap.recycle();
+            bitmap = null;
+        }
+    }
 
 
 
