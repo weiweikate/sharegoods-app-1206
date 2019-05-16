@@ -18,6 +18,8 @@ import javax.annotation.Nonnull;
 public class ShowRecommendViewManager extends ViewGroupManager<ViewGroup> {
     private static final String COMPONENT_NAME = "ShowRecommendView";
     public static final int REPLACE_DATA = 1;
+    public static final int ADD_DATA_TOP = 2;
+    public static final int REPLACE_ITEM_DATA = 3;
 
     @Override
     public String getName() {
@@ -53,7 +55,7 @@ public class ShowRecommendViewManager extends ViewGroupManager<ViewGroup> {
     @javax.annotation.Nullable
     @Override
     public Map<String, Integer> getCommandsMap() {
-        return MapBuilder.of("replaceData", REPLACE_DATA);
+        return MapBuilder.of("replaceData", REPLACE_DATA,"replaceItemData",REPLACE_ITEM_DATA);
     }
 
     @Override
@@ -61,8 +63,15 @@ public class ShowRecommendViewManager extends ViewGroupManager<ViewGroup> {
         switch (commandId) {
             case REPLACE_DATA: {
                 Object object = root.getTag();
-                if (object != null && object instanceof ShowGroundView) {
-                    ((ShowGroundView) object).repelaceData(args.getInt(0), args.getInt(1));
+                if (object != null && object instanceof ShowRecommendView) {
+                    ((ShowRecommendView) object).repelaceData(args.getInt(0), args.getInt(1));
+                }
+            }
+            break;
+            case REPLACE_ITEM_DATA:{
+                Object object = root.getTag();
+                if (object != null && object instanceof ShowRecommendView) {
+                    ((ShowRecommendView) object).repelaceItemData(args.getInt(0), args.getString(1));
                 }
             }
             break;

@@ -18,10 +18,12 @@ import { MRText } from '../../../components/ui';
 import EmptyUtils from '../../../utils/EmptyUtils';
 import res from '../res';
 import ImageLoad from '@mr/image-placeholder';
+import NoMoreClick from '../../../components/ui/NoMoreClick';
 
-const { addCarIcon } = res;
+const { addCarIcon ,button} = res;
 
 const { px2dp } = ScreenUtils;
+
 export default class ProductListModal extends PureComponent {
     constructor(props) {
         super(props);
@@ -30,12 +32,12 @@ export default class ProductListModal extends PureComponent {
     _renderItem = (value, index) => {
         return (
             <View key={'product' + index} style={styles.itemWrapper}>
-                <ImageLoad style={styles.productIcon}/>
+                <ImageLoad style={styles.productIcon} source={{uri:value.imgUrl}}/>
                 <View style={styles.itemInfoWrapper}>
                     <MRText style={styles.nameText}
                             numberOfLines={1}
                             ellipsizeMode={'tail'}>
-                        1:32铝合金仿真宝马x6车模110玩仿真宝马x6车模110玩仿真宝马x6车模110玩具宝马模…
+                        {value.name}
                     </MRText>
 
                     <View style={styles.priceWrapper}>
@@ -46,7 +48,9 @@ export default class ProductListModal extends PureComponent {
                             ￥499
                         </MRText>
                         <View style={{ flex: 1 }}/>
+                        <NoMoreClick onPress={()=>{this.props.addCart(value.prodCode)}}>
                         <Image source={addCarIcon} style={styles.carIcon}/>
+                        </NoMoreClick>
                     </View>
                 </View>
             </View>
@@ -76,7 +80,7 @@ export default class ProductListModal extends PureComponent {
                         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }}>
                             <TouchableWithoutFeedback onPress={this.props.requestClose}>
                             <View style={styles.closeWrapper}>
-                                <View style={styles.closeIcon}/>
+                                <Image style={styles.closeIcon} source={button.close_icon}/>
                             </View>
                             </TouchableWithoutFeedback>
                         </View>
@@ -116,7 +120,6 @@ var styles = StyleSheet.create({
     closeIcon: {
         height: px2dp(11),
         width: px2dp(11),
-        backgroundColor: 'red'
     },
     itemWrapper: {
         height: px2dp(70),

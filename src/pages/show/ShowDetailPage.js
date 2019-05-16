@@ -31,7 +31,7 @@ import Toast from '../../utils/bridge';
 import { NetFailedView } from '../../components/pageDecorator/BaseView';
 import AvatarImage from '../../components/ui/AvatarImage';
 import { track, TrackApi, trackEvent } from '../../utils/SensorsTrack';
-import { SmoothPushPreLoadHighComponent } from '../../comm/components/SmoothPushHighComponent';
+// import { SmoothPushPreLoadHighComponent } from '../../comm/components/SmoothPushHighComponent';
 import ProductRowListView from './components/ProductRowListView';
 import ProductListModal from './components/ProductListModal';
 import ShowUtils from './utils/ShowUtils';
@@ -42,9 +42,10 @@ import AddCartModel from './model/AddCartModel';
 import { sourceType } from '../product/SelectionPage';
 import shopCartCacheTool from '../shopCart/model/ShopCartCacheTool';
 import SelectionPage from '../product/SelectionPage';
+import bridge from '../../utils/bridge';
 
 const { iconShowFire, iconBuyBg, iconLike, iconNoLike, iconDownload } = res;
-@SmoothPushPreLoadHighComponent
+// @SmoothPushPreLoadHighComponent
 @observer
 export default class ShowDetailPage extends BasePage {
 
@@ -152,6 +153,9 @@ export default class ShowDetailPage extends BasePage {
         // const { likesCount, downloadCount } = this.params.data;
         // const { detail } = this.showDetailModule;
         // if(likesCount !=detail.likesCount);
+        let { detail } = this.showDetailModule;
+
+        this.params.ref && this.params.ref.replaceItemData(this.params.index, JSON.stringify(detail));
     }
 
     incrCountByType = (type) => {
@@ -316,14 +320,31 @@ export default class ShowDetailPage extends BasePage {
             });
             ShowUtils.downloadShow(urls, detail.content).then(() => {
                 detail.downloadCount += 1;
+                this.incrCountByType(4);
                 this.showDetailModule.setDetail(detail);
             });
         }
+
+        let promises = [];
+        if(!EmptyUtils.isEmptyArr(detail.products)){
+            detail.products.map((value)=>{
+                let promise = bridge.createQRToAlbum(`${apiEnvironment.getCurrentH5Url()}/product/99/${value.prodCode}?upuserid=${user.code || ''}`);
+                promises.push(promise);
+            })
+        }
+        if(!EmptyUtils.isEmptyArr(promises)){
+            Promise.all(promises);
+        }
+
+        //
     };
 
     _clickLike = () => {
         let { detail } = this.showDetailModule;
         if (detail.like) {
+            if( detail.likesCount > 0 ){
+                return;
+            }
             this.reduceCountByType(1);
             detail.like = false;
             detail.likesCount -= 1;
@@ -338,7 +359,6 @@ export default class ShowDetailPage extends BasePage {
 
     _bottomRender = () => {
         let { detail } = this.showDetailModule;
-
         return (
             <View style={styles.bottom}>
                 <NoMoreClick onPress={this._clickLike}>
@@ -359,22 +379,41 @@ export default class ShowDetailPage extends BasePage {
                     </View>
                 </NoMoreClick>
                 <View style={{ flex: 1 }}/>
-                <TouchableWithoutFeedback onPress={() => {
+                {!EmptyUtils.isEmptyArr(detail.products) ? <TouchableWithoutFeedback onPress={() => {
                     this.setState({
                         productModalVisible: true
                     });
                 }}>
-                    <ImageBackground source={iconBuyBg} style={{
-                        width: px2dp(90),
-                        height: px2dp(34),
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }}>
-                        <Text style={{ color: DesignRule.white, fontSize: DesignRule.fontSize_threeTitle_28 }}>
-                            立即购买
-                        </Text>
-                    </ImageBackground>
-                </TouchableWithoutFeedback>
+                    <View>
+                        <ImageBackground source={iconBuyBg} style={{
+                            width: px2dp(90),
+                            height: px2dp(34),
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}>
+                            <Text style={{ color: DesignRule.white, fontSize: DesignRule.fontSize_threeTitle_28 }}>
+                                立即购买
+                            </Text>
+                        </ImageBackground>
+                        <View style={{
+                            position:'absolute',
+                            top:px2dp(-5),
+                            right:px2dp(-5),
+                            width: px2dp(20),
+                            height: px2dp(20),
+                            borderRadius: px2dp(10),
+                            borderWidth:1,
+                            borderColor:DesignRule.white,
+                            backgroundColor: DesignRule.mainColor,
+                            justifyContent: 'center',
+                            alignItems: 'center'}}>
+                            <Text style={{color:DesignRule.white,fontSize:px2dp(12)}}>
+                                {detail.products.length}
+                            </Text>
+                        </View>
+                    </View>
+                </TouchableWithoutFeedback> : null}
+
             </View>
         );
     };
@@ -491,7 +530,7 @@ export default class ShowDetailPage extends BasePage {
             + '</head>'
             + '<body onload="ResizeImages();">'
             + '<div>'
-            + detail.content
+            + detail.content ?  detail.content : ''
             + '</div>'
             + '</body></html>';
 
@@ -565,21 +604,31 @@ export default class ShowDetailPage extends BasePage {
             <View style={styles.whiteNav}/>
             {this._renderNormalTitle()}
             {/*{this._shieldRender()}*/}
-            <ProductListModal visible={this.state.productModalVisible} products={[1, 2]} requestClose={() => {
+            {detail.products ? <ProductListModal visible={this.state.productModalVisible}
+                                                 addCart={this.addCart}
+                                                 products={detail.products} requestClose={() => {
                 this.setState({
                     productModalVisible: false
                 });
-            }}/>
+            }}/> : null}
+
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
-                            type={'miniProgram'}
+                            type={'Show'}
                             trackEvent={'ArticleShare'}
                             trackParmas={{ articeCode: detail.code, articleTitle: detail.title }}
+                            imageJson={{
+                                imageUrlStr: detail.resource[0].url,
+                                titleStr: detail.content,
+                                QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
+                                headerImage:user.headImg,
+                                userName:detail.userName ? detail.userName : ''
+                            }}
                             miniProgramJson={{
                                 title: detail.title,
                                 dec: '分享小程序子标题',
                                 thumImage: 'logo.png',
-                                hdImageURL: detail.img,
+                                hdImageURL: detail.resource[0].url,
                                 linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/detail/${detail.id}?upuserid=${user.code || ''}`,
                                 miniProgramPath: `/pages/discover/discover-detail/discover-detail?articleId=${detail.id}&inviteId=${user.code || ''}`
                             }}

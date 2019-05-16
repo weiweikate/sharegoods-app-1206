@@ -6,7 +6,6 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    TouchableOpacity,
     ScrollView,
     Image,
     TouchableWithoutFeedback,
@@ -78,11 +77,11 @@ export default class ReleaseNotesPage extends BasePage {
 
     $NavBarRenderRightItem = () => {
         return (
-            <TouchableOpacity onPress={this._publish}>
+            <NoMoreClick onPress={this._publish}>
                 <MRText style={styles.publishTextStyle}>
                     发布
                 </MRText>
-            </TouchableOpacity>
+            </NoMoreClick>
         );
     };
 

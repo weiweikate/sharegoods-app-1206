@@ -11,7 +11,13 @@ const Utiles = {
      * callBack
      * @param callBack {ok: 是否上传成功，imageThumbUrl}
      */    //NativeModules.commModule.RN_ImageCompression(uri, response.fileSize, 1024 * 1024 * 3, () => {
-    getImagePicker: (callBack, num = 1, cropping = false) => {
+    getImagePicker: (callBack, num = 1, cropping = false, withSize = false) => {
+        let newCallback = (value) => {
+            let result = value.map((item) => {
+                return item.imgUrl;
+            });
+            callBack(result);
+        };
         if (Platform.OS === 'ios') {
             ActionSheetIOS.showActionSheetWithOptions({
                     options: ['取消', '拍照', '从相册选择'],
@@ -20,13 +26,30 @@ const Utiles = {
                 },
                 (buttonIndex) => {
                     if (buttonIndex === 1) {
-                        Utiles.pickSingleWithCamera(cropping, callBack);
+                        if (withSize) {
+                            Utiles.pickSingleWithCamera(cropping, callBack);
+                        } else {
+                            Utiles.pickSingleWithCamera(cropping, (value) => {
+                                let result = value.map((item) => {
+                                    return item.imgUrl;
+                                });
+                                callBack(result);
+                            });
+                        }
                     }
                     if (buttonIndex === 2) {
                         if (num > 1) {
-                            Utiles.pickMultiple(num, callBack);
+                            if (withSize) {
+                                Utiles.pickMultiple(num, callBack);
+                            } else {
+                                Utiles.pickMultiple(num, newCallback);
+                            }
                         } else {
-                            Utiles.pickSingle(cropping, false, callBack);
+                            if (withSize) {
+                                Utiles.pickSingle(cropping, false, callBack);
+                            } else {
+                                Utiles.pickSingle(cropping, false, newCallback);
+                            }
                         }
                     }
                 });
@@ -37,13 +60,32 @@ const Utiles = {
                 null,
                 [
                     { text: '取消', onPress: () => console.log('取消'), style: 'cancel' },
-                    { text: '拍照', onPress: () => Utiles.pickSingleWithCamera(cropping, callBack) },
+                    {
+                        text: '拍照', onPress: () => {
+                            if (withSize) {
+                                Utiles.pickSingleWithCamera(cropping, callBack);
+                            } else {
+                                Utiles.pickSingleWithCamera(cropping, newCallback());
+                            }
+                        }
+                    },
                     {
                         text: '从相册选择', onPress: () => {
                             if (num > 1) {
-                                Utiles.pickMultiple(num, callBack);
+                                if (withSize) {
+                                    Utiles.pickMultiple(num, callBack);
+
+                                } else {
+                                    Utiles.pickMultiple(num, newCallback);
+                                }
                             } else {
-                                Utiles.pickSingle(cropping, false, callBack);
+                                if (withSize) {
+                                    Utiles.pickSingle(cropping, false, callBack);
+
+                                } else {
+                                    Utiles.pickSingle(cropping, false, newCallback);
+
+                                }
                             }
                         }
                     }
@@ -69,10 +111,10 @@ const Utiles = {
             //     images: null
             // });
             let param = {
-                path:image.path,
-                width:image.width,
-                height:image.height
-        }
+                path: image.path,
+                width: image.width,
+                height: image.height
+            };
             Utiles.upload([param], [image.size + ''], callBack, true);
         }).catch(e => {
         });
@@ -100,7 +142,7 @@ const Utiles = {
             let path = image.path;
             let width = image.width;
             let height = image.height;
-            Utiles.upload([{width,height,path}], [image.size + ''], callBack);
+            Utiles.upload([{ width, height, path }], [image.size + ''], callBack);
         }).catch(e => {
             console.log(e);
         });
@@ -120,7 +162,7 @@ const Utiles = {
                 let path = item.path;
                 let width = item.width;
                 let height = item.height;
-                return {width,height,path};
+                return { width, height, path };
             }), images.map(item => item.size + ''), callBack);
         }).catch(e => {
         });
@@ -183,7 +225,7 @@ const Utiles = {
                 // });
                 callBack({
                     ok: true,
-                    images:res,
+                    images: res,
                     camera: camera
                 });
             }).catch(error => {
@@ -195,9 +237,9 @@ const Utiles = {
                 Toast.$toast('图片上传失败');
             });
         };
-        let paths = images.map((vale)=>{
+        let paths = images.map((vale) => {
             return vale.path;
-        })
+        });
         NativeModules.commModule.RN_ImageCompression(paths, sizes, 1024 * 1024 * 3, upload);
     },
     callPhone: (phoneNum) => {

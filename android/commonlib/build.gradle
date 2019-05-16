@@ -36,6 +36,7 @@ dependencies {
     api rootProject.ext.dependencies.recyclerview
     api rootProject.ext.dependencies.okhttp
     api rootProject.ext.dependencies.sensors
+    api 'jp.wasabeef:blurry:3.0.0'
     api(rootProject.ext.dependencies.sophix) {
         exclude(module: 'alicloud-android-utdid')
         exclude(module: 'alicloud-android-ut')

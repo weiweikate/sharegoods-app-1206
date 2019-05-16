@@ -25,6 +25,7 @@ import com.meeruu.sharegoods.rn.showground.adapter.ShowGroundAdapter;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
 import com.meeruu.sharegoods.rn.showground.event.onEndScrollEvent;
 import com.meeruu.sharegoods.rn.showground.event.onItemPressEvent;
+import com.meeruu.sharegoods.rn.showground.event.onScrollStateChangedEvent;
 import com.meeruu.sharegoods.rn.showground.event.onStartRefreshEvent;
 import com.meeruu.sharegoods.rn.showground.event.onStartScrollEvent;
 import com.meeruu.sharegoods.rn.showground.presenter.ShowgroundPresenter;
@@ -99,6 +100,7 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
         itemPressEvent = new onItemPressEvent();
         startRefreshEvent = new onStartRefreshEvent();
         startScrollEvent = new onStartScrollEvent();
+        final onScrollStateChangedEvent onScrollStateChangedEvent = new onScrollStateChangedEvent();
         endScrollEvent = new onEndScrollEvent();
         adapter = new ShowGroundAdapter();
         adapter.setPreLoadNumber(3);
@@ -160,6 +162,11 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
+                onScrollStateChangedEvent.init(view.getId());
+                WritableMap map = Arguments.createMap();
+                map.putInt("state",newState);
+                onScrollStateChangedEvent.setData(map);
+                eventDispatcher.dispatchEvent(onScrollStateChangedEvent);
                 StaggeredGridLayoutManager layoutManager = (StaggeredGridLayoutManager) recyclerView.getLayoutManager();
                 int[] first = new int[2];
                 layoutManager.findFirstCompletelyVisibleItemPositions(first);
@@ -260,6 +267,22 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
                 public void run() {
                     NewestShowGroundBean.DataBean bean =  JSON.parseObject(value, NewestShowGroundBean.DataBean.class);
                     data.add(0,bean);
+                    adapter.replaceData(data);
+                    recyclerView.scrollToPosition(0);
+                }
+            }, 200);
+        }
+    }
+
+    @Override
+    public void repelaceItemData(final int index, final String value) {
+        if (adapter != null && !TextUtils.isEmpty(value)) {
+            final List<NewestShowGroundBean.DataBean> data = adapter.getData();
+            recyclerView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    NewestShowGroundBean.DataBean bean =  JSON.parseObject(value, NewestShowGroundBean.DataBean.class);
+                    data.set(index,bean);
                     adapter.replaceData(data);
                 }
             }, 200);

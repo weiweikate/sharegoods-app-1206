@@ -17,11 +17,13 @@ import ImageLoad from '@mr/image-placeholder';
 import { MRText } from '../../../components/ui';
 import res from '../res';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
+import user from '../../../model/user';
+import { observer } from 'mobx-react';
 
 const { px2dp } = ScreenUtils;
 const { addCarIcon } = res;
 
-
+@observer
 export default class ProductRowListView extends PureComponent {
     constructor(props) {
         super(props);
@@ -32,6 +34,17 @@ export default class ProductRowListView extends PureComponent {
         if (fullWidth) {
             width = ScreenUtils.width - px2dp(30);
         }
+        let showPrice = 0;
+        const { singleActivity = {}, groupActivity = {} } = data.promotionResult || {};
+        const { endTime: endTimeT, startTime: startTimeT, currentTime = this.props.now } = groupActivity.type ? groupActivity : singleActivity;
+        if (currentTime > startTimeT && currentTime < endTimeT + 500) {
+            showPrice = data.promotionMinPrice;
+        } else if (user.token) {
+            showPrice = data.v0Price;
+        } else {
+            showPrice = data.minPrice;
+        }
+
         return (
             <View key={'product' + index} style={[{ width }, styles.itemWrapper]}>
                 <ImageLoad style={styles.productIcon} source={{ uri: data.imgUrl }}/>
@@ -44,13 +57,15 @@ export default class ProductRowListView extends PureComponent {
 
                     <View style={styles.priceWrapper}>
                         <MRText style={styles.curPrice}>
-                            ￥499
+                            ￥{showPrice}
                         </MRText>
                         <MRText style={styles.oriPrice}>
-                            ￥499
+                            ￥{data.originalPrice}
                         </MRText>
                         <View style={{ flex: 1 }}/>
-                        <NoMoreClick onPress={()=>{this.props.addCart(data.prodCode)}}>
+                        <NoMoreClick onPress={() => {
+                            this.props.addCart(data.prodCode);
+                        }}>
                             <Image source={addCarIcon} style={styles.carIcon}/>
                         </NoMoreClick>
                     </View>

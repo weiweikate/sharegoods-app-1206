@@ -27,6 +27,13 @@ export default class ShowRecommendView extends Component {
         return findNodeHandle(this.refs[RCT_SHOWGROUND_REF]);
     };
 
+    replaceItemData = (index,data)=>{
+        UIManager.dispatchViewManagerCommand(
+            this.getHandle(),
+            UIManager.ShowGroundView.Commands.replaceItemData,
+            [index,data]
+        );
+    }
     render() {
         return (
             <RCTShowRecommendView {...this.props}

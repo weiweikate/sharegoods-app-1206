@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -253,6 +254,21 @@ public class ShowRecommendView  implements IShowgroundView, SwipeRefreshLayout.O
     @Override
     public void addDataToTop(String s) {
 
+    }
+
+    @Override
+    public void repelaceItemData(final int index, final String value) {
+        if (adapter != null && !TextUtils.isEmpty(value)) {
+            final List<NewestShowGroundBean.DataBean> data = adapter.getData();
+            recyclerView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    NewestShowGroundBean.DataBean bean =  JSON.parseObject(value, NewestShowGroundBean.DataBean.class);
+                    data.set(index,bean);
+                    adapter.replaceData(data);
+                }
+            }, 200);
+        }
     }
 
     @Override
