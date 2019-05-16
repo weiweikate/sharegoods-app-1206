@@ -19,9 +19,9 @@ import com.qiyukf.unicorn.api.YSFOptions;
 
 import org.greenrobot.eventbus.EventBus;
 
-import static com.meeruu.commonlib.config.QiyuConfig.options;
-
 import cn.jiguang.verifysdk.api.JVerificationInterface;
+
+import static com.meeruu.commonlib.config.QiyuConfig.options;
 
 public class BaseApplication extends MultiDexApplication {
 
@@ -65,8 +65,8 @@ public class BaseApplication extends MultiDexApplication {
         ForegroundCallbacks.init(this);
         // 神策初始化
         SensorsUtils.init(this);
-                // 初始化一键登录
-                JVerificationInterface.init(this);
+        // 初始化一键登录
+        JVerificationInterface.init(this);
         // 七鱼初始化
         Unicorn.init(getApplicationContext(), "b87fd67831699ca494a9d3de266cd3b0", QiYuOptions(),
                 new QiyuImageLoader());

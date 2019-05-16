@@ -1,5 +1,6 @@
 package com.meeruu.commonlib.utils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
@@ -12,6 +13,10 @@ import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+
+import com.meeruu.commonlib.base.BaseApplication;
+import com.meeruu.permissions.Permission;
+import com.meeruu.permissions.PermissionUtil;
 
 import java.util.UUID;
 
@@ -44,25 +49,22 @@ public class DeviceUtils {
      *
      * @return
      */
-    public static String getUniquePsuedoID() {
-        String serial = null;
-        String m_szDevIDShort = "35" +
-                Build.BOARD.length() % 10 + Build.BRAND.length() % 10 +
-                Build.CPU_ABI.length() % 10 + Build.DEVICE.length() % 10 +
-                Build.DISPLAY.length() % 10 + Build.HOST.length() % 10 +
-                Build.ID.length() % 10 + Build.MANUFACTURER.length() % 10 +
-                Build.MODEL.length() % 10 + Build.PRODUCT.length() % 10 +
-                Build.TAGS.length() % 10 + Build.TYPE.length() % 10 +
-                Build.USER.length() % 10; //13 位
-        try {
-            serial = Build.class.getField("SERIAL").get(null).toString();
-            //API>=9 使用serial号
-            return new UUID(m_szDevIDShort.hashCode(), serial.hashCode()).toString();
-        } catch (Exception exception) {
-            //serial需要一个初始化
-            serial = "serial";
+    @SuppressLint("MissingPermission")
+    public static String getUniquePsuedoID(Context context) {
+        if (context == null) {
+            context = BaseApplication.appContext;
         }
-        return new UUID(m_szDevIDShort.hashCode(), serial.hashCode()).toString();
+        if (!PermissionUtil.hasPermissions(context, Permission.PHONE)) {
+            return "";
+        } else {
+            final TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+            final String tmDevice, tmSerial, androidId;
+            tmDevice = "" + tm.getDeviceId();
+            tmSerial = "" + tm.getSimSerialNumber();
+            androidId = "" + android.provider.Settings.Secure.getString(context.getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
+            UUID deviceUuid = new UUID(androidId.hashCode(), ((long) tmDevice.hashCode() << 32) | tmSerial.hashCode());
+            return deviceUuid.toString();
+        }
     }
 
     /**
@@ -154,14 +156,14 @@ public class DeviceUtils {
     /**
      * 判断是否显示虚拟按键
      */
-    private static final String NAVIGATION= "navigationBarBackground";
+    private static final String NAVIGATION = "navigationBarBackground";
 
-    public static boolean isNavigationBarExist(Activity activity){
+    public static boolean isNavigationBarExist(Activity activity) {
         ViewGroup vp = (ViewGroup) activity.getWindow().getDecorView();
         if (vp != null) {
             for (int i = 0; i < vp.getChildCount(); i++) {
                 vp.getChildAt(i).getContext().getPackageName();
-                if (vp.getChildAt(i).getId()!= View.NO_ID && NAVIGATION.equals(activity.getResources().getResourceEntryName(vp.getChildAt(i).getId()))) {
+                if (vp.getChildAt(i).getId() != View.NO_ID && NAVIGATION.equals(activity.getResources().getResourceEntryName(vp.getChildAt(i).getId()))) {
                     return true;
                 }
             }

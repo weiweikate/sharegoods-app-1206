@@ -36,6 +36,7 @@ import com.meeruu.sharegoods.ui.activity.MRWebviewActivity;
 import com.meeruu.sharegoods.ui.activity.MainRNActivity;
 import com.meeruu.sharegoods.utils.HttpUrlUtils;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -68,6 +69,7 @@ public class MainActivity extends BaseActivity {
         setChangeStatusTrans(true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        EventBus.getDefault().register(this);
         ReactNativePreLoader.preLoad(MainActivity.this, ParameterUtils.RN_MAIN_NAME);
         Log.d("is_phone", !Utils.isEmulator(getApplicationContext()) + "");
     }
@@ -130,6 +132,7 @@ public class MainActivity extends BaseActivity {
     protected void onDestroy() {
         releaseRes();
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     private void releaseRes() {

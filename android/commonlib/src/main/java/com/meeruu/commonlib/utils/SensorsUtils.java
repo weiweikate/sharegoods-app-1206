@@ -1,6 +1,7 @@
 package com.meeruu.commonlib.utils;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.webkit.WebView;
 
 import com.meituan.android.walle.WalleChannelReader;
@@ -41,14 +42,16 @@ public class SensorsUtils {
 
     private static void initReleaseMode(Context context, String channel) {
         // 初始化
-        SensorsDataAPI.sharedInstance(context, "https://track.sharegoodsmall.com/sa?project=production",
-                SensorsDataAPI.DebugMode.DEBUG_OFF);
+        SensorsDataAPI.sharedInstance(context, "https://track.sharegoodsmall.com/sa?project=production");
         initConfig(context, channel);
     }
 
     private static void initConfig(Context context, String channel) {
         // 设置匿名ID
-        SensorsDataAPI.sharedInstance().identify(DeviceUtils.getUniquePsuedoID());
+        String deviceId = DeviceUtils.getUniquePsuedoID(context);
+        if (!TextUtils.isEmpty(deviceId)) {
+            SensorsDataAPI.sharedInstance().identify(deviceId);
+        }
         try {
             // 初始化SDK后，获取应用名称设置为公共属性
             JSONObject obj_super = new JSONObject();
