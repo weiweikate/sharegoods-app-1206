@@ -31,6 +31,7 @@ const styles = StyleSheet.create(
             flex: 1,
             flexDirection:'column',
             justifyContent:'flex-end',
+            marginBottom:ScreenUtils.px2dp(13)
         },
         localNumBottomContent:{
             flex: 1,

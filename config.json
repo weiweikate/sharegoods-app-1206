@@ -45,8 +45,8 @@
         "common-dev": {
             "name": "common-dev",
             "host": "http://172.16.10.12:1080/gateway",
-            "h5": "https://testh5.sharegoodsmall.com",
-            "oss": "https://testcdn.sharegoodsmall.com",
+            "h5": "https://testh51.sharegoodsmall.com",
+            "oss": "https://devcdn.sharegoodsmall.com",
             "wxAppletKey": "gh_aa91c3ea0f6c",
             "gongmao": "http://testsop.sharegoodsmall.com/gateway/gongmall/contract/reback"
         },
@@ -149,6 +149,10 @@
             "name": "李俊",
             "host": "http://172.16.10.79:9090/gateway"
         },
+        "dengxuekai": {
+            "name": "邓学凯",
+            "host": "http://172.18.7.17:8903/gateway"
+        },
         "申xiangyu": {
             "name": "申xiangyu",
             "host": "http://172.16.10.91:18080/gateway"
@@ -193,9 +197,9 @@
             "wxAppletKey": "gh_aa91c3ea0f6c",
             "gongmao": "http://testsop.sharegoodsmall.com/gateway/gongmall/contract/reback"
         },
-        "王亚辉": {
-            "name": "王亚辉",
-            "host": "http://172.16.10.201:1080/gateway"
+        "李长辉":{
+            "name":"李长辉",
+            "host":"http://172.18.6.38:9090/gateway"
         }
     }
 

@@ -369,7 +369,7 @@ export default class GetRedpacketPage extends BasePage {
         this.$navigate('login/login/InviteCodePage');
     };
     redPacketClick = (redPacketIndex) => {
-        this.$loadingShow('加载中...');
+        this.$loadingShow('加载中');
         LoginAPI.userReceivePackage({
             type: 1
         }).then(result => {

@@ -38,6 +38,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
+import cn.jiguang.verifysdk.api.JVerificationInterface;
 
 /**
  * @author louis

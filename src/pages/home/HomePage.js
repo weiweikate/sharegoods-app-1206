@@ -153,7 +153,7 @@ class HomePage extends BasePage {
         InteractionManager.runAfterInteractions(() => {
             homeModule.loadHomeList(true);
         });
-        TrackApi.homePage();//埋点
+
     }
 
     componentDidMount() {
@@ -167,7 +167,9 @@ class HomePage extends BasePage {
                     homeModalManager.leaveHome();
                 }
                 BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+
             }
+
         );
 
         this.didFocusSubscription = this.props.navigation.addListener(
@@ -190,6 +192,7 @@ class HomePage extends BasePage {
                     homeModalManager.requestGuide();
                 }
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+                TrackApi.homePage();//埋点
             }
         );
         this.listener = DeviceEventEmitter.addListener('homePage_message', this.getMessageData);
@@ -214,7 +217,6 @@ class HomePage extends BasePage {
 
     componentWillUnmount() {
         this.willBlurSubscription && this.willBlurSubscription.remove();
-        this.willFocusSubscription && this.willFocusSubscription.remove();
         this.didFocusSubscription && this.didFocusSubscription.remove();
         this.listener && this.listener.remove();
         this.listenerMessage && this.listenerMessage.remove();

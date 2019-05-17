@@ -20,10 +20,12 @@ import { TrackApi } from '../../../../utils/SensorsTrack';
 import ToSearchComponent from './Component/ToSearchComponent';
 import RouterMap from '../../../../navigation/RouterMap';
 import res from '../../res'
+import { SmoothPushPreLoadHighComponentFirstDelay } from '../../../../comm/components/SmoothPushHighComponent';
 const { px2dp } = ScreenUtils;
 const {next_icon,icon_v1,icon_v2,icon_v3,icon_v4,icon_v5} = res.myData;
 
 type Props = {};
+@SmoothPushPreLoadHighComponentFirstDelay
 export default class MainShowFansPage extends BasePage<Props> {
     constructor(props) {
         super(props);

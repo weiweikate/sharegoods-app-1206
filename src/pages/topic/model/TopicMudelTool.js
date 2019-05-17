@@ -94,7 +94,7 @@ function getShowPrice(itemData) {
         `￥${StringUtils.isEmpty(itemData.promotionMinPrice) ? itemData[typeName[itemData.productType][itemData.status]] : itemData.promotionMinPrice}`
         // '¥' +  itemData[typeName[itemData.productType][itemData.status]]
         :
-        `￥${StringUtils.isEmpty(itemData.promotionMinPrice) ? itemData[typeName[itemData.productType]] : itemData.promotionMinPrice }`;
+        `￥${StringUtils.isEmpty(itemData.promotionMinPrice) ? (StringUtils.isEmpty(itemData[typeName[itemData.productType]]) ? itemData.originalPrice : itemData[typeName[itemData.productType]]) : itemData.promotionMinPrice }`;
     // '¥' + itemData[typeName[itemData.productType]];
     return showPrice;
 }

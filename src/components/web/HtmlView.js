@@ -5,7 +5,8 @@ import {
     View,
     Platform,
     Image,
-    TouchableOpacity
+    TouchableOpacity,
+    BackHandler
 } from 'react-native';
 import CommShareModal from '../../comm/components/CommShareModal';
 // import res from '../../comm/res';
@@ -15,13 +16,14 @@ import { autorun } from 'mobx';
 import user from '../../model/user';
 import { observer } from 'mobx-react';
 import DeviceInfo from 'react-native-device-info';
-import res from '../../comm/res'
+import res from '../../comm/res';
 import ScreenUtils from '../../utils/ScreenUtils';
-import Manager,{AdViewBindModal} from './WebModalManager'
+import Manager, { AdViewBindModal } from './WebModalManager';
 import SmoothPushHighComponent from '../../comm/components/SmoothPushHighComponent';
 import ShareUtil from '../../utils/ShareUtil';
 import { homeType } from '../../pages/home/HomeTypes';
 import LuckyIcon from '../../pages/guide/LuckyIcon';
+
 const moreIcon = res.button.message_three;
 
 @SmoothPushHighComponent
@@ -41,20 +43,20 @@ export default class RequestDetailPage extends BasePage {
         let realUri = '';
         let platform = Platform.OS;
         let app_version = DeviceInfo.getVersion();
-        let app_name =  DeviceInfo.getBundleId();
+        let app_name = DeviceInfo.getBundleId();
         let parmasString = 'platform=' + platform +
             '&app_version=' + app_version +
             '&app_name=' + app_name +
             '&ts=' + new Date().getTime();
-         //拼参数
+        //拼参数
         if (uri && uri.indexOf('?') > 0) {
-            if (uri.charAt(uri.length - 1,1) !== '?') {
-                realUri = uri + '&'
-            }else {
+            if (uri.charAt(uri.length - 1, 1) !== '?') {
+                realUri = uri + '&';
+            } else {
                 realUri = uri;
             }
         } else {
-            realUri = uri + '?'
+            realUri = uri + '?';
         }
         realUri = realUri + parmasString;
         //如果没有http，就加上当前h5的域名
@@ -66,19 +68,21 @@ export default class RequestDetailPage extends BasePage {
             title: title,
             uri: realUri,
             shareParmas: {},
-            hasRightItem: false,
+            hasRightItem: false
         };
-      this.manager = new Manager();
-      this.WebAdModal = observer(AdViewBindModal(this.manager))
+        this.manager = new Manager();
+        this.WebAdModal = observer(AdViewBindModal(this.manager));
     }
 
     $NavigationBarDefaultLeftPressed = () => {
         if (this.webType === 'exitShowAlert') {
-            this.manager.showAd(()=>this.$navigateBack())
-        }else {
-            this.$navigateBack();
+            this.manager.showAd(() => {
+                this.handleBackPress();
+            });
+        } else {
+            this.handleBackPress();
         }
-    }
+    };
 
     $NavBarRenderRightItem = () => {
         if (this.state.hasRightItem === true) {
@@ -92,41 +96,63 @@ export default class RequestDetailPage extends BasePage {
                     <Image source={moreIcon}/>
                 </TouchableOpacity>
             );
-        }else {
-        return <View />
-    }
+        } else {
+            return <View/>;
+        }
 
     };
-    showMore = ()=> {
-        this.webView && this.webView.sendToBridge(JSON.stringify({action: 'clickRightItem'}));
-    }
+    showMore = () => {
+        this.webView && this.webView.sendToBridge(JSON.stringify({ action: 'clickRightItem' }));
+    };
 
-    clickShareBtn = ()=>{
-        this.webView && this.webView.sendToBridge(JSON.stringify({action: 'clickShareBtn'}));
-    }
+    clickShareBtn = () => {
+        this.webView && this.webView.sendToBridge(JSON.stringify({ action: 'clickShareBtn' }));
+    };
 
     autoRun = autorun(() => {
-        user.token ? (this.webView && this.webView.reload()) : null
+        user.token ? (this.webView && this.webView.reload()) : null;
     });
 
     componentDidMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+        this.willBlurSubscription = this.props.navigation.addListener(
+            'willBlur',
+            payload => {
+                BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+            }
+        );
         this.$NavigationBarResetTitle(this.state.title || '加载中...');
+    }
+
+    handleBackPress = () => {
+        if (this.canGoBack) {
+            this.webView.goBack();
+        } else {
+            this.$navigateBack();
+        }
+        return true;
+    };
+
+    componentWillUnmount() {
+        this.willBlurSubscription && this.willBlurSubscription.remove();
     }
 
     _postMessage = (msg) => {
         if (msg.action === 'share') {
             // this.webJson = msg.shareParmas;
-            this.setState({ shareParmas: msg.shareParmas },()=>{this.shareModal && this.shareModal.open();});
+            this.setState({ shareParmas: msg.shareParmas }, () => {
+                this.shareModal && this.shareModal.open();
+            });
             return;
         }
 
         if (msg.action === 'onShare') {
-            let {data,api,trackParmas,trackEvent} = msg.onShareParmas || {}
-            ShareUtil.onShare(data,api,trackParmas,trackEvent,()=>{
+            let { data, api, trackParmas, trackEvent } = msg.onShareParmas || {};
+            ShareUtil.onShare(data, api, trackParmas, trackEvent, () => {
                 console.log('webView reload');
                 this.webView && this.webView.reload();
             });
-           return;
+            return;
         }
 
         if (msg.action === 'backToHome') {
@@ -143,13 +169,13 @@ export default class RequestDetailPage extends BasePage {
         if (msg.action === 'exitShowAlert') {
             this.webType = 'exitShowAlert';
             let parmas = msg.params || {};
-            this.manager.getAd(parmas.showPage, parmas.showPageValue,homeType.Alert);
+            this.manager.getAd(parmas.showPage, parmas.showPageValue, homeType.Alert);
             return;
         }
 
         if (msg.action === 'showFloat') {
             let parmas = msg.params || {};
-            this.luckyIcon && this.luckyIcon.getLucky(parmas.showPage, parmas.showPageValue)
+            this.luckyIcon && this.luckyIcon.getLucky(parmas.showPage, parmas.showPageValue);
             return;
         }
     };
@@ -180,13 +206,18 @@ export default class RequestDetailPage extends BasePage {
                         this.$NavigationBarResetTitle(this.state.title || event.title);
                     }}
                     onError={event => {
-                        this.canGoBack = event.canGoBack;
+                        if (event && event.nativeEvent) {
+                            this.canGoBack = event.nativeEvent.canGoBack;
+                        }
                         this.$NavigationBarResetTitle('加载失败');
                     }}
 
                     // onLoadStart={() => this._onLoadStart()}
                     onLoadEnd={(event) => {
-                        this.canGoBack = event.canGoBack;
+                        if (event && event.nativeEvent) {
+                            this.canGoBack = event.nativeEvent.canGoBack;
+                            this.$NavigationBarResetTitle(this.state.title || event.nativeEvent.title);
+                        }
                     }}
                     postMessage={msg => this._postMessage(msg)}
                 />
@@ -195,13 +226,15 @@ export default class RequestDetailPage extends BasePage {
                     reloadWeb={() => {
                         this.webView && this.webView.reload();
                     }}
-                    clickShareBtn={()=>{
-                        this.clickShareBtn && this.clickShareBtn()
+                    clickShareBtn={() => {
+                        this.clickShareBtn && this.clickShareBtn();
                     }}
                     {...this.state.shareParmas}
                 />
-                <WebAdModal />
-                <LuckyIcon ref={(ref)=>{this.luckyIcon = ref}} />
+                <WebAdModal/>
+                <LuckyIcon ref={(ref) => {
+                    this.luckyIcon = ref;
+                }}></LuckyIcon>
             </View>
         );
     }

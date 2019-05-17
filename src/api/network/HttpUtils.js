@@ -120,7 +120,7 @@ export default class HttpUtils {
             };
             return axios.get(url, config);
         }).then(response => {
-            console.log('get', url, response);
+            console.log('get—response', url, response);
             let data = response.data || {};
             if (EnvConfig.showDebugPanel) {
                 let history = createHistory(response || {}, timeLineStart);
@@ -166,7 +166,7 @@ export default class HttpUtils {
             };
             return axios.post(url, data, config);
         }).then(response => {
-            console.log('post', url, data, response);
+            console.log('post—response', url, data, response);
             let data = response.data || {};
             if (EnvConfig.showDebugPanel) {
                 let history = createHistory(response || {}, timeLineStart);

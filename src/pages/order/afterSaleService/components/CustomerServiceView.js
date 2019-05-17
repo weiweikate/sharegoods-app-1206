@@ -10,27 +10,29 @@
  */
 
 
-'use strict';
+"use strict";
 
-import React from 'react';
+import React from "react";
 
 import {
     StyleSheet,
     View,
     TouchableOpacity,
     NativeModules
-} from 'react-native';
+} from "react-native";
 
 import {
     UIText,
     UIImage
-} from '../../../../components/ui';
+} from "../../../../components/ui";
 import DesignRule from '../../../../constants/DesignRule';
-import res from '../../res';
-import BusinessUtils from '../../../mine/components/BusinessUtils';
+import res from "../../res";
+import BusinessUtils from "../../../mine/components/BusinessUtils";
+import orderApi from '../../api/orderApi';
 // import QYChatUtil from "../../../mine/page/helper/QYChatModel";
 import { track, trackEvent } from '../../../../utils/SensorsTrack';
-import {  QYChatTool } from '../../../../utils/QYModule/QYChatTool';
+import { beginChatType, QYChatTool } from '../../../../utils/QYModule/QYChatTool';
+import bridge from '../../../../utils/bridge';
 
 const {
     afterSaleService: {
@@ -44,46 +46,75 @@ export default class CustomerServiceView extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
+        this.data=null;
     }
 
     /** 打电话*/
     callPhone = () => {
         track(trackEvent.ClickPhoneCustomerService, {customerServiceModuleSource: 4});
-        if ('400-9696-365') {
-            BusinessUtils.callPhone('4009696365');
+        if ("400-9696-365") {
+            BusinessUtils.callPhone("4009696365");
         } else {
-            NativeModules.commModule.toast('电话号码不存在');
+            NativeModules.commModule.toast("电话号码不存在");
         }
     };
     /** 七鱼客服*/
     contactSeller = () => {
+        let pageData = this.props.pageData;
         track(trackEvent.ClickOnlineCustomerService, {customerServiceModuleSource: 4});
-         //QYChatUtil.qiYUChat();
-        // QYChatTool.beginQYChat({
-        //     routePath: '',
-        //     urlString: '',
-        //     title: '平台客服',
-        //     shopId: '',
-        //     chatType: beginChatType.BEGIN_FROM_ORDER,
-        //     data: {
-        //
-        //     }
-        // })
-        QYChatTool.beginQYChat();
+        let supplierCode = pageData.supplierCode	|| '';
+        if (this.data){
+            QYChatTool.beginQYChat({
+                routePath: '',
+                urlString: '',
+                title: this.data.title,
+                shopId:this.data.shopId,
+                chatType: beginChatType.BEGIN_FROM_ORDER,
+                data: {
+                    title: pageData.warehouseOrderNo,
+                    desc: pageData.productName,
+                    pictureUrlString: pageData.specImg,
+                    urlString:'',
+                    note:'',
+                }}
+            )
+        } else {
+            orderApi.getProductShopInfoBySupplierCode({ supplierCode }).then((data) => {
+                    this.data = data.data;
+                    QYChatTool.beginQYChat({
+                            routePath: '',
+                            urlString: '',
+                            title: this.data.title,
+                            shopId: this.data.shopId,
+                            chatType: beginChatType.BEGIN_FROM_ORDER,
+                            data: {
+                                title: pageData.warehouseOrderNo,
+                                desc: pageData.productName,
+                                pictureUrlString: pageData.specImg,
+                                urlString: '',
+                                note: '',
+                            }
+                        }
+                    )
+                }
+            ).catch((e) => {
+                bridge.$toast(e.msg)
+            })
+        }
     };
 
     render() {
         let data = [
             {
-                name: '在线客服',
+                name: "在线客服",
                 image: applyRefundMessage,
-                time: '9:00-22:00',
+                time: "9:00-22:00",
                 onPress: this.contactSeller
             },
             {
-                name: '客服电话',
+                name: "客服电话",
                 image: applyRefundPhone,
-                time: '9:00-22:00',
+                time: "9:00-22:00",
                 onPress: this.callPhone
             }
         ];
@@ -118,14 +149,14 @@ export default class CustomerServiceView extends React.Component {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: DesignRule.white,
-        flexDirection: 'row',
+        flexDirection: "row",
         height: DesignRule.autoSizeWidth(70),
         marginBottom: DesignRule.safeBottom
     },
     button: {
-        alignItems: 'center',
+        alignItems: "center",
         flex: 1,
-        flexDirection: 'row'
+        flexDirection: "row"
     },
     image: {
         marginLeft: DesignRule.autoSizeWidth(40),
@@ -146,7 +177,7 @@ const styles = StyleSheet.create({
         backgroundColor: DesignRule.lineColor_inWhiteBg,
         width: DesignRule.lineHeight,
         height: DesignRule.autoSizeWidth(30),
-        position: 'absolute',
+        position: "absolute",
         top: DesignRule.autoSizeWidth(20),
         left: DesignRule.width / 2
     }
