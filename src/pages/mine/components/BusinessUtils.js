@@ -13,10 +13,12 @@ const Utiles = {
      */    //NativeModules.commModule.RN_ImageCompression(uri, response.fileSize, 1024 * 1024 * 3, () => {
     getImagePicker: (callBack, num = 1, cropping = false, withSize = false) => {
         let newCallback = (value) => {
-            let result = value.map((item) => {
-                return item.imgUrl;
-            });
-            callBack(result);
+            if(value && value.ok){
+                let result = value.images.map((item) => {
+                    return item.url;
+                });
+                callBack({imageUrl:result,imageThumbUrl:result});
+            }
         };
         if (Platform.OS === 'ios') {
             ActionSheetIOS.showActionSheetWithOptions({
@@ -29,12 +31,7 @@ const Utiles = {
                         if (withSize) {
                             Utiles.pickSingleWithCamera(cropping, callBack);
                         } else {
-                            Utiles.pickSingleWithCamera(cropping, (value) => {
-                                let result = value.map((item) => {
-                                    return item.imgUrl;
-                                });
-                                callBack(result);
-                            });
+                            Utiles.pickSingleWithCamera(cropping, newCallback);
                         }
                     }
                     if (buttonIndex === 2) {
@@ -65,7 +62,7 @@ const Utiles = {
                             if (withSize) {
                                 Utiles.pickSingleWithCamera(cropping, callBack);
                             } else {
-                                Utiles.pickSingleWithCamera(cropping, newCallback());
+                                Utiles.pickSingleWithCamera(cropping, newCallback);
                             }
                         }
                     },
@@ -230,7 +227,6 @@ const Utiles = {
                 });
             }).catch(error => {
                 Toast.hiddenLoading();
-                console.log(error);
                 // callBack({ ok: false, msg: '上传图片失败' });
                 console.log(error);
                 console.warn('图片上传失败' + error.toString());

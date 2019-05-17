@@ -69,7 +69,8 @@
         },
         "kfkf":{
             "name": "开放开发",
-            "host": "http://172.16.10.201:1080/gateway"
+            "host": "http://172.16.10.201:1080/gateway",
+            "h5": "https://testh5.sharegoodsmall.com"
         },
         "wyh":{
             "name": "王亚辉",

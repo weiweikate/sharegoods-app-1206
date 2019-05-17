@@ -99,6 +99,7 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> {
                 .put("MrShowGroundOnEndScrollEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onEndScroll")))
                 .put("MrNineClickEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onNineClick")))
                 .put("MrShowScrollStateChangeEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onScrollStateChanged")))
+                .put("MrScrollY", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onScrollY")))
                 .build();
     }
 

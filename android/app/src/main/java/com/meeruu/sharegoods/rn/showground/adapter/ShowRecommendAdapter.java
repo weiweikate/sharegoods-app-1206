@@ -91,7 +91,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         like.setText(item.getLikesCount()+"");
 
         TextView title = helper.getView(R.id.title);
-        title.setText(item.getContent()+"");
+        title.setText(item.getTitle()+"");
 
         SimpleDraweeView simpleDraweeView = helper.getView(R.id.image);
         if (item.getResource() != null) {

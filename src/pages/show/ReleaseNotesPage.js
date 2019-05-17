@@ -151,10 +151,9 @@ export default class ReleaseNotesPage extends BasePage {
         }
         let num = 9 - imageArr.length;
         BusinessUtils.getImagePicker(callback => {
-            // alert(JSON.stringify(callback))
             let result = imageArr.concat(callback.images);
             this.setState({ imageArr: result });
-        }, num, true);
+        }, num, true,true);
     };
 
     deletePic = (index) => {

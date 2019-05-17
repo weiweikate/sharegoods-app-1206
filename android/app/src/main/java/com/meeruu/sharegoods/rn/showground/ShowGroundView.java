@@ -3,6 +3,7 @@ package com.meeruu.sharegoods.rn.showground;
 import android.content.Context;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -162,6 +163,8 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
+                int y = getScollYDistance(recyclerView);
+
                 onScrollStateChangedEvent.init(view.getId());
                 WritableMap map = Arguments.createMap();
                 map.putInt("state",newState);
@@ -176,6 +179,15 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
             }
         });
     }
+
+    public int getScollYDistance(RecyclerView recyclerView) {
+        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        int position = layoutManager.findFirstVisibleItemPosition();
+        View firstVisiableChildView = layoutManager.findViewByPosition(position);
+        int itemHeight = firstVisiableChildView.getHeight();
+        return (position) * itemHeight - firstVisiableChildView.getTop();
+    }
+
 
     private void initData() {
         presenter = new ShowgroundPresenter(this);

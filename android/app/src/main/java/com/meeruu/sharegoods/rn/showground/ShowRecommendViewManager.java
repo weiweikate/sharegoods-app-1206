@@ -102,6 +102,7 @@ public class ShowRecommendViewManager extends ViewGroupManager<ViewGroup> {
                 .put("MrDownloadPressEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onDownloadPress")))
                 .put("MrZanPressEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onZanPress")))
                 .put("MrSharePress", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onSharePress")))
+                .put("MrScrollY", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onScrollY")))
                 .build();
     }
 }
