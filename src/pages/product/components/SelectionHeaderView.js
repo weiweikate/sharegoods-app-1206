@@ -11,6 +11,8 @@ import res from '../res/product';
 import UIImage from '@mr/image-placeholder';
 import { MRText as Text } from '../../../components/ui/index';
 import { sourceType } from '../SelectionPage';
+import RouterMap, { navigate } from '../../../navigation/RouterMap';
+import NoMoreClick from '../../../components/ui/NoMoreClick';
 
 const { icon_close } = res;
 
@@ -31,6 +33,22 @@ export default class SelectionHeaderView extends Component {
         super(props);
         this.state = {};
     }
+
+    _seeBigImage = () => {
+        const { closeSelectionPage } = this.props;
+        const { imgUrl, skuList } = this.props.product || {};
+        let imageUrls = [];
+        for (const item of skuList || []) {
+            let tempUrl = StringUtils.isNoEmpty(item.specImg) ? item.specImg : imgUrl;
+            if (imageUrls.indexOf(tempUrl) == -1) {
+                imageUrls.push(tempUrl);
+            }
+        }
+        if (imageUrls.length > 0) {
+            closeSelectionPage();
+            navigate(RouterMap.CheckBigImagesView, { imageUrls: imageUrls });
+        }
+    };
 
     render() {
         const { imgUrl, minPrice, promotionMinPrice, stockSysConfig } = this.props.product || {};
@@ -59,7 +77,9 @@ export default class SelectionHeaderView extends Component {
 
         return (
             <View style={{ backgroundColor: 'transparent' }}>
-                <UIImage style={styles.headerImg} source={{ uri: specImg || imgUrl || '' }} borderRadius={5}/>
+                <NoMoreClick style={styles.headerImg} onPress={this._seeBigImage}>
+                    <UIImage style={styles.img} source={{ uri: specImg || imgUrl || '' }} borderRadius={5}/>
+                </NoMoreClick>
                 <View style={{ backgroundColor: 'white', marginTop: 20, height: 95 }}>
                     <View style={{ marginLeft: 132 }}>
                         <Text style={{
@@ -101,5 +121,9 @@ const styles = StyleSheet.create({
         top: 0,
         left: 15,
         zIndex: 1
+    },
+    img: {
+        height: 107,
+        width: 107
     }
 });

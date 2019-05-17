@@ -92,7 +92,7 @@ export default class MinePage extends BasePage {
             hasFans: false,
             modalId: false
         };
-        TrackApi.myPage();
+
     }
 
     $navigationBarOptions = {
@@ -126,6 +126,7 @@ export default class MinePage extends BasePage {
                     this.refresh();
                 }
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+                TrackApi.myPage();
             });
         this.listener = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
         // this.refresh();

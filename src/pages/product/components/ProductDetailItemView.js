@@ -43,10 +43,12 @@ export class HeaderItemView extends Component {
                     /*值相等*/
                     minPrice == maxPrice
                         ?
-                        <Text style={styles.priceText}>¥<Text style={{ fontSize: 24 }}>{minPrice}</Text></Text>
+                        <Text style={styles.priceText}>¥<Text
+                            style={{ fontSize: 24, fontWeight: 'bold' }}>{minPrice}</Text></Text>
                         :
-                        <Text style={styles.priceText}>¥<Text style={{ fontSize: 24 }}>{minPrice}</Text>-¥<Text
-                            style={{ fontSize: 24 }}>{maxPrice}</Text></Text>
+                        <Text style={styles.priceText}>¥<Text
+                            style={{ fontSize: 24, fontWeight: 'bold' }}>{minPrice}</Text>-¥<Text
+                            style={{ fontSize: 24, fontWeight: 'bold' }}>{maxPrice}</Text></Text>
                 }
                 <Text style={styles.originalText}>¥{originalPrice}</Text>
                 <View style={styles.levelView}>
@@ -140,10 +142,11 @@ const styles = StyleSheet.create({
         color: DesignRule.textColor_instruction, fontSize: 12, textDecorationLine: 'line-through'
     },
     levelView: {
-        borderRadius: 2, backgroundColor: 'rgba(255,0,80,0.1)'
+        justifyContent: 'center',
+        borderRadius: 2, backgroundColor: 'rgba(255,0,80,0.1)', height: 14
     },
     levelText: {
-        paddingHorizontal: 4, paddingVertical: 2,
+        paddingHorizontal: 4,
         color: DesignRule.textColor_redWarn, fontSize: 10
     },
 
@@ -154,7 +157,7 @@ const styles = StyleSheet.create({
     },
     shopText: {
         marginLeft: 10,
-        color: DesignRule.textColor_mainTitle, fontSize: 12
+        color: DesignRule.textColor_mainTitle, fontSize: 14
     },
     shopSubView: {
         flexDirection: 'row', alignItems: 'center', marginRight: 13
@@ -163,13 +166,13 @@ const styles = StyleSheet.create({
         height: 22, width: 1, backgroundColor: DesignRule.lineColor_inGrayBg
     },
     shopSubText: {
-        paddingLeft: 15, paddingRight: 5,
-        color: DesignRule.textColor_redWarn, fontSize: 12
+        paddingLeft: 15, paddingRight: 5, fontWeight: 'bold',
+        color: DesignRule.textColor_redWarn, fontSize: 14
     },
 
     nameText: {
-        marginHorizontal: 15, paddingVertical: 5,
-        color: DesignRule.textColor_mainTitle, fontSize: 15, fontWeight: 'bold'
+        marginHorizontal: 15, paddingBottom: 5, paddingTop: 10,
+        color: DesignRule.textColor_mainTitle, fontSize: 16, fontWeight: 'bold'
     },
 
     secondNameText: {
@@ -384,7 +387,8 @@ export class ServiceItemView extends Component {
                     {this._imgText('质量保障')}
                     {this._imgText('48小时发货')}
                     {(restrictions & 4) === 4 && this._imgText('7天退换')}
-                    {(restrictions & 8) === 8 && this._imgText('节假日发货')}
+                    {/*最多显示3条*/}
+                    {(restrictions & 8) === 8 && (restrictions & 4) !== 4 && this._imgText('节假日发货')}
                 </View>
                 <Image source={arrow_right_black}/>
             </NoMoreClick>
@@ -401,7 +405,7 @@ const ServiceItemViewStyles = StyleSheet.create({
         color: DesignRule.textColor_instruction, fontSize: 13
     },
     itemView: {
-        flexDirection: 'row', alignItems: 'center', marginLeft: 5
+        flexDirection: 'row', alignItems: 'center', marginLeft: 10
     },
     serviceValueText: {
         marginLeft: 5,
