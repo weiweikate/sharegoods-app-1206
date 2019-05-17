@@ -38,7 +38,7 @@ export default class ShowRecommendView extends Component {
     scrollToTop = ()=>{
         UIManager.dispatchViewManagerCommand(
             this.getHandle(),
-            UIManager.ShowGroundView.Commands.scrollToTop,
+            UIManager.ShowRecommendView.Commands.scrollToTop,
             []
         );
     }

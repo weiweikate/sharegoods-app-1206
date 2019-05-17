@@ -72,22 +72,20 @@ export default class ShowActivityView extends Component {
     };
 
     clickItem = (item, index) => {
-        const { navigate } = this.props;
-        let params = {
-            data:item,
-            index:index,
-            relpaceActData:()=>{
+        this.props.clickItem && this.props.clickItem(index,item);
+    };
 
-            }
-        };
+    replaceItemData=(index,data)=>{
+        let itemData = JSON.parse(data);
+        let dataSource = this.state.viewData;
+        dataSource[index] = itemData;
+        this.setState({
+            viewData:dataSource
+        })
+    };
 
-        let data = this.state.viewData;
-        data[index] = Number(data[index].hotCount) + 1;
-        if(item.showType === 1){
-            navigate('show/ShowDetailPage', params);
-        }else {
-            navigate('show/ShowRichTextDetailPage', params);
-        }
+    replaceData=(index,data)=>{
+
     };
 
     getDataFromNetwork = () => {

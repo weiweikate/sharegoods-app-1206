@@ -288,7 +288,21 @@ export default class ShowListPage extends BasePage {
                 <View key={4} style={styles.container} tabLabel="   ">
                     {
                         needsExpensive
-                            ? <ShowActivityViewIOS navigate={this.$navigate}/> : null
+                            ? <ShowActivityViewIOS    ref ={(ref)=>{this.activityList = ref}}
+                                                      clickItem={(index,data)=>{
+                                                          const  navigate  = this.$navigate;
+                                                          let params = {
+                                                              data,
+                                                              ref: this.activityList,
+                                                              index
+                                                          };
+                                                          if(data.showType === 1){
+                                                              navigate('show/ShowDetailPage', params);
+                                                          }else {
+                                                              navigate('show/ShowRichTextDetailPage', params);
+                                                          }
+                                                      }}
+                                                      navigate={this.$navigate}/> : null
                     }
                 </View>
             </ScrollableTabView>
