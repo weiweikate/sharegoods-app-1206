@@ -29,8 +29,6 @@ import java.util.UUID;
  */
 public class DeviceUtils {
 
-    protected static final String PREFS_FILE = "mr_device_id";
-
     protected static final String PREFS_DEVICE_ID = "device_id";
 
     private static String deviceType = "0";
