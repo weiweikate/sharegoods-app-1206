@@ -322,8 +322,8 @@ static NSString *IDType = @"TypeCell";
   NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
   if(_onAddCartClick) {
     _onAddCartClick(@{
-                      @"detail":[NSNumber numberWithInteger:indexPath.row],
-                      @"index":self.callBackArr[indexPath.item]});
+                      @"detail":self.callBackArr[indexPath.item],
+                      @"index":[NSNumber numberWithInteger:indexPath.row]});
   }
 }
 
@@ -343,8 +343,8 @@ static NSString *IDType = @"TypeCell";
   [self.callBackArr replaceObjectAtIndex:indexPath.row withObject:dic];
   if(_onZanPress) {
     _onZanPress(@{
-                  @"detail":[NSNumber numberWithInteger:indexPath.row],
-                  @"index":self.callBackArr[indexPath.item]});
+                  @"detail":self.callBackArr[indexPath.item],
+                  @"index":[NSNumber numberWithInteger:indexPath.row]});
   }
   [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
@@ -354,8 +354,8 @@ static NSString *IDType = @"TypeCell";
   NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
   if(_onDownloadPress) {
     _onDownloadPress(@{
-                       @"detail":[NSNumber numberWithInteger:indexPath.row],
-                       @"index":self.callBackArr[indexPath.item]});
+                       @"detail":self.callBackArr[indexPath.item],
+                       @"index":[NSNumber numberWithInteger:indexPath.row]});
   }
 }
 
@@ -364,8 +364,8 @@ static NSString *IDType = @"TypeCell";
   NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
   if(_onSharePress) {
     _onSharePress(@{
-                    @"detail":[NSNumber numberWithInteger:indexPath.row],
-                    @"index":self.callBackArr[indexPath.item]});
+                    @"detail":self.callBackArr[indexPath.item],
+                    @"index":[NSNumber numberWithInteger:indexPath.row]});
   }
 }
 
@@ -400,8 +400,8 @@ static NSString *IDType = @"TypeCell";
   [self.tableView endUpdates];
   if(_onZanPress) {
     _onZanPress(@{
-                  @"detail":[NSNumber numberWithInteger:indexPath.row],
-                  @"index":self.callBackArr[indexPath.item]});
+                  @"detail":self.callBackArr[indexPath.item],
+                  @"index":[NSNumber numberWithInteger:indexPath.row]});
   }
 }
 
@@ -409,8 +409,8 @@ static NSString *IDType = @"TypeCell";
   NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
   if(_onSharePress) {
     _onSharePress(@{
-                    @"detail":[NSNumber numberWithInteger:indexPath.row],
-                    @"index":self.callBackArr[indexPath.item]});
+                    @"detail":self.callBackArr[indexPath.item],
+                    @"index":[NSNumber numberWithInteger:indexPath.row]});
   }
 }
 
@@ -420,17 +420,24 @@ static NSString *IDType = @"TypeCell";
 
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-  if (self.onStartScroll) {
-    self.onStartScroll(@{});
+  if (self.onScrollStateChanged) {
+    self.onScrollStateChanged(@{@"state":[NSNumber numberWithInteger:1]});
   }
 }
 
+- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView{
+  if (self.onScrollStateChanged) {
+    self.onScrollStateChanged(@{@"state":[NSNumber numberWithInteger:1]});
+  }
+  
+}
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-  if (self.onEndScroll) {
-    self.onEndScroll(@{});
+  if (self.onScrollStateChanged) {
+    self.onScrollStateChanged(@{@"state":[NSNumber numberWithInteger:0]});
   }
 }
+
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
   if (decelerate==NO) {
