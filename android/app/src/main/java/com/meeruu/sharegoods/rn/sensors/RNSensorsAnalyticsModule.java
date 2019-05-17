@@ -219,7 +219,6 @@ public class RNSensorsAnalyticsModule extends ReactContextBaseJavaModule {
             SensorsDataAPI.sharedInstance().profilePushId("jgId",
                     JPushInterface.getRegistrationID(this.mContext));
         } catch (Exception e) {
-
         }
     }
 

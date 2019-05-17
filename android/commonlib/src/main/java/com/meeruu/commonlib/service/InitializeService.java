@@ -16,6 +16,7 @@ import com.meeruu.commonlib.umeng.UShare;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.Utils;
 import com.meituan.android.walle.WalleChannelReader;
+import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
 
 import cn.jiguang.verifysdk.api.JVerificationInterface;
 import cn.jpush.android.api.JPushInterface;
@@ -81,6 +82,8 @@ public class InitializeService extends IntentService {
             JPushInterface.stopCrashHandler(getApplicationContext());
             // 一键登录debug
             JVerificationInterface.setDebugMode(true);
+            // 神策
+            SensorsDataAPI.sharedInstance().enableLog(true);
         } else {
             JPushInterface.setDebugMode(false);
             JPushInterface.initCrashHandler(getApplicationContext());
