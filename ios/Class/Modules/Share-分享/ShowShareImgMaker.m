@@ -148,12 +148,15 @@ SINGLETON_FOR_CLASS(ShowShareImgMaker)
   //介绍
   NSArray * contentArr = [self getLinesArrayOfStringInLabel:contentStr font:[UIFont systemFontOfSize:13*i] andLableWidth:315*i];
   NSInteger len = 0;
-  NSMutableString* string = [NSMutableString stringWithFormat:@"%@",contentStr];
+  NSString* string = [NSString stringWithFormat:@"%@",contentStr];
   
   if(contentArr.count>2){
     len= [(NSString*)contentArr[0] length];
-    string = [[contentStr substringWithRange:NSMakeRange(0, len*2-1)] stringByAppendingString:@"..."];
+    string = [[contentStr substringWithRange:NSMakeRange(0, len*2-2)] stringByAppendingString:@"..."];
   }
+  string = [string stringByReplacingOccurrencesOfString:@" " withString:@""];
+  string = [string stringByReplacingOccurrencesOfString:@"\r" withString:@""];
+  string = [string stringByReplacingOccurrencesOfString:@"\n" withString:@""];
   NSMutableAttributedString *contentStrAttrStr = [[NSMutableAttributedString alloc]initWithString:string
                                                                                        attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:13*i], NSForegroundColorAttributeName: [UIColor colorWithHexString:@"333333"]}];
   
