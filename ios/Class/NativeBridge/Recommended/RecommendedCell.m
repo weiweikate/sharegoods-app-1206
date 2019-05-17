@@ -95,9 +95,9 @@
         [weakSelf.cellDelegate shareClick:weakSelf];
       }
     };
-    _footerView.addCarBlock = ^(NSString* a){
+    _footerView.addCarBlock = ^(GoodsDataModel* a){
       if (weakSelf.cellDelegate) {
-        [weakSelf.cellDelegate addCar:weakSelf];
+        [weakSelf.cellDelegate addCar:a];
       }
     };
   }
