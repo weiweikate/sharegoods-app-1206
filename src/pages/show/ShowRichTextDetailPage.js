@@ -41,8 +41,9 @@ import EmptyUtils from '../../utils/EmptyUtils';
 import NoMoreClick from '../../components/ui/NoMoreClick';
 import ProductListModal from './components/ProductListModal';
 import RouterMap from '../../navigation/RouterMap';
+import ShowApi from './ShowApi';
 
-const { iconShowFire, iconLike, iconNoLike ,iconBuyBg,iconShowShare} = res;
+const { iconShowFire, iconLike, iconNoLike, iconBuyBg, iconShowShare } = res;
 
 
 @SmoothPushPreLoadHighComponent
@@ -61,7 +62,7 @@ export default class ShowRichTextDetailPage extends BasePage {
         this.state = {
             pageState: PageLoadingState.loading,
             errorMsg: '',
-            productModalVisible:false
+            productModalVisible: false
         };
         this.noNeedRefresh = false;
         TrackApi.xiuChangDetail();
@@ -305,6 +306,46 @@ export default class ShowRichTextDetailPage extends BasePage {
     //         </View>
     //     );
     // };
+    reduceCountByType = (type) => {
+        let showNo;
+        if (this.params.id) {
+            showNo = this.params.id;
+        } else if (this.params.code) {
+            showNo = this.params.code;
+        } else {
+            showNo = this.params.data.showNo;
+        }
+        ShowApi.reduceCountByType({ showNo, type });
+    };
+    incrCountByType = (type) => {
+        let showNo;
+        if (this.params.id) {
+            showNo = this.params.id;
+        } else if (this.params.code) {
+            showNo = this.params.code;
+        } else {
+            showNo = this.params.data.showNo;
+        }
+        ShowApi.incrCountByType({ showNo, type });
+    };
+
+    _clickLike = () => {
+        let { detail } = this.showDetailModule;
+        if (detail.like) {
+            if (detail.likesCount > 0) {
+                return;
+            }
+            this.reduceCountByType(1);
+            detail.like = false;
+            detail.likesCount -= 1;
+            this.showDetailModule.setDetail(detail);
+        } else {
+            this.incrCountByType(1);
+            detail.like = true;
+            detail.likesCount += 1;
+            this.showDetailModule.setDetail(detail);
+        }
+    };
 
     _bottomRender = () => {
         let { detail } = this.showDetailModule;
@@ -338,18 +379,19 @@ export default class ShowRichTextDetailPage extends BasePage {
                             </Text>
                         </ImageBackground>
                         <View style={{
-                            position:'absolute',
-                            top:px2dp(-5),
-                            right:px2dp(-5),
+                            position: 'absolute',
+                            top: px2dp(-5),
+                            right: px2dp(-5),
                             width: px2dp(20),
                             height: px2dp(20),
                             borderRadius: px2dp(10),
-                            borderWidth:1,
-                            borderColor:DesignRule.white,
+                            borderWidth: 1,
+                            borderColor: DesignRule.white,
                             backgroundColor: DesignRule.mainColor,
                             justifyContent: 'center',
-                            alignItems: 'center'}}>
-                            <Text style={{color:DesignRule.white,fontSize:px2dp(12)}}>
+                            alignItems: 'center'
+                        }}>
+                            <Text style={{ color: DesignRule.white, fontSize: px2dp(12) }}>
                                 {detail.products.length}
                             </Text>
                         </View>
@@ -404,7 +446,7 @@ export default class ShowRichTextDetailPage extends BasePage {
             detail = { imgs: '', products: [], click: 0, content: '' };
         }
 
-        let content = detail.content ? detail.content: "";
+        let content = detail.content ? detail.content : '';
         let html = '<!DOCTYPE html><html>' +
             '<head>' +
             '<meta http-equiv="Content-type" content="text/html; charset=utf-8" />' +
@@ -449,7 +491,7 @@ export default class ShowRichTextDetailPage extends BasePage {
             + '</head>'
             + '<body onload="ResizeImages();">'
             + '<div>'
-            +  content
+            + content
             + '</div>'
             + '</body></html>';
 
