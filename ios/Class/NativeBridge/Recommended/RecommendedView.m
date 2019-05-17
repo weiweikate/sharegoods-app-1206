@@ -318,12 +318,10 @@ static NSString *IDType = @"TypeCell";
   }
 }
 
--(void)addCar:(RecommendedCell *)cell{
-  NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
+-(void)addCar:(GoodsDataModel *)model{
   if(_onAddCartClick) {
-    _onAddCartClick(@{
-                      @"detail":self.callBackArr[indexPath.item],
-                      @"index":[NSNumber numberWithInteger:indexPath.row]});
+    NSDictionary * dic = @{@"prodCode":model.prodCode};
+    _onAddCartClick(dic);
   }
 }
 

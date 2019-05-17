@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)zanClick:(RecommendedCell*)cell;
 -(void)downloadClick:(RecommendedCell*)cell;
 -(void)shareClick:(RecommendedCell*)cell;
--(void)addCar:(RecommendedCell*)cell;
+-(void)addCar:(GoodsDataModel*)goods;
 -(void)imageClick:(RecommendedCell*)cell;
 
 @end

@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic,copy)void (^zanBlock)(NSString*);
 @property(nonatomic,copy)void (^downloadBlock)(NSString*);
 @property(nonatomic,copy)void (^shareBlock)(NSString*);
-@property(nonatomic,copy)void (^addCarBlock)(NSString*);
+@property(nonatomic,copy)void (^addCarBlock)(GoodsDataModel*);
 
 @end
 
