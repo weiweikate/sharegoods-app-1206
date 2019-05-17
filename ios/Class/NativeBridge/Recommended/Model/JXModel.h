@@ -22,6 +22,8 @@
 @end
 
 @interface JXModelData : NSObject
+
+@property (nonatomic,copy) NSString * title;
 @property (nonatomic,copy) NSString * content;
 @property (nonatomic,assign) NSInteger downloadCount;
 @property (nonatomic,assign) NSInteger likesCount;

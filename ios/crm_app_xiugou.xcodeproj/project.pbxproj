@@ -24,9 +24,9 @@
 		012630E2228175A1008D4F7E /* ShowShareImgMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 012630E1228175A1008D4F7E /* ShowShareImgMaker.m */; };
 		012630E322826C0C008D4F7E /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0126302122815AEF008D4F7E /* Accelerate.framework */; };
 		0131F0A3228D414600A2026D /* UIButton+TimeInterval.m in Sources */ = {isa = PBXBuildFile; fileRef = 0131F0A2228D414600A2026D /* UIButton+TimeInterval.m */; };
+		0131F1B4228E57D200A2026D /* JXModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0131F1B3228E57D200A2026D /* JXModel.m */; };
 		014FF1C222708C30008B0094 /* JXBodyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 014FF1C122708C30008B0094 /* JXBodyView.m */; };
 		014FF20122708C57008B0094 /* JXFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 014FF20022708C57008B0094 /* JXFooterView.m */; };
-		017390C32270853700FD46DD /* JXModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 017390C22270853700FD46DD /* JXModel.m */; };
 		01E48F9422708B960038BEE6 /* JXHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E48F9322708B960038BEE6 /* JXHeaderView.m */; };
 		033C66B821927ACB00433026 /* MRBannerViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 033C66B721927ACB00433026 /* MRBannerViewManager.m */; };
 		0347BAD52237CD0A0011184A /* Lottie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0347BAC92237CC680011184A /* Lottie.framework */; };
@@ -684,12 +684,12 @@
 		012631F22282AB05008D4F7E /* libreact-native-blur.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libreact-native-blur.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0131F0A1228D414600A2026D /* UIButton+TimeInterval.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIButton+TimeInterval.h"; sourceTree = "<group>"; };
 		0131F0A2228D414600A2026D /* UIButton+TimeInterval.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIButton+TimeInterval.m"; sourceTree = "<group>"; };
+		0131F1B2228E57D100A2026D /* JXModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JXModel.h; sourceTree = "<group>"; };
+		0131F1B3228E57D200A2026D /* JXModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JXModel.m; sourceTree = "<group>"; };
 		014FF1C022708C30008B0094 /* JXBodyView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JXBodyView.h; sourceTree = "<group>"; };
 		014FF1C122708C30008B0094 /* JXBodyView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JXBodyView.m; sourceTree = "<group>"; };
 		014FF1FF22708C57008B0094 /* JXFooterView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JXFooterView.h; sourceTree = "<group>"; };
 		014FF20022708C57008B0094 /* JXFooterView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JXFooterView.m; sourceTree = "<group>"; };
-		017390852270853700FD46DD /* JXModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JXModel.h; sourceTree = "<group>"; };
-		017390C22270853700FD46DD /* JXModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JXModel.m; sourceTree = "<group>"; };
 		01E48F9222708B960038BEE6 /* JXHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JXHeaderView.h; sourceTree = "<group>"; };
 		01E48F9322708B960038BEE6 /* JXHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JXHeaderView.m; sourceTree = "<group>"; };
 		033C66B621927ACB00433026 /* MRBannerViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRBannerViewManager.h; sourceTree = "<group>"; };
@@ -1184,8 +1184,8 @@
 		0109161C227082F90043E997 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				017390852270853700FD46DD /* JXModel.h */,
-				017390C22270853700FD46DD /* JXModel.m */,
+				0131F1B2228E57D100A2026D /* JXModel.h */,
+				0131F1B3228E57D200A2026D /* JXModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -3048,8 +3048,8 @@
 				C4D4505A2249F6B800196E1B /* JRServiceManager+Util.m in Sources */,
 				5077FCE321A4FE37003B860D /* NSString+Base64.m in Sources */,
 				012630182281196A008D4F7E /* ActiveModel.m in Sources */,
+				0131F1B4228E57D200A2026D /* JXModel.m in Sources */,
 				CD5EAFA7221BFE89007AAEE0 /* ShowQueryModel.m in Sources */,
-				017390C32270853700FD46DD /* JXModel.m in Sources */,
 				5068363921379B78001AB175 /* SGQRCodeScanManager.m in Sources */,
 				C4F01EEF222D150E00ACA1B4 /* PhoneAuthenModule.m in Sources */,
 				5068363321379B78001AB175 /* LoginAndShareModule.m in Sources */,

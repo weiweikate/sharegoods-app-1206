@@ -146,9 +146,16 @@ SINGLETON_FOR_CLASS(ShowShareImgMaker)
   
   
   //介绍
-  NSMutableAttributedString *contentStrAttrStr = [[NSMutableAttributedString alloc]initWithString:contentStr
+  NSArray * contentArr = [self getLinesArrayOfStringInLabel:contentStr font:[UIFont systemFontOfSize:13*i] andLableWidth:315*i];
+  NSInteger len = 0;
+  NSMutableString* string = [NSMutableString stringWithFormat:@"%@",contentStr];
+  
+  if(contentArr.count>2){
+    len= [(NSString*)contentArr[0] length];
+    string = [[contentStr substringWithRange:NSMakeRange(0, len*2-1)] stringByAppendingString:@"..."];
+  }
+  NSMutableAttributedString *contentStrAttrStr = [[NSMutableAttributedString alloc]initWithString:string
                                                                                        attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:13*i], NSForegroundColorAttributeName: [UIColor colorWithHexString:@"333333"]}];
-  [contentStrAttrStr appendString:@""];
   
   [nodes addObject:@{
                      @"value": contentStrAttrStr,
@@ -164,14 +171,14 @@ SINGLETON_FOR_CLASS(ShowShareImgMaker)
      ];
   
   
-  //介绍
+  //loago
   NSMutableAttributedString *logpStrAttrStr = [[NSMutableAttributedString alloc]initWithString:@"秀一秀  赚到够"
                                                                                        attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:13*i], NSForegroundColorAttributeName: [UIColor colorWithHexString:@"FFFFFF"]}];
   
   [nodes addObject:@{
                      @"value": logpStrAttrStr,
                      @"locationType": @"rect",
-                     @"location": [NSValue valueWithCGRect:CGRectMake(30*i, 634*i, 80*i, height*1)]}
+                     @"location": [NSValue valueWithCGRect:CGRectMake(145*i, 634*i, 90*i, height*1)]}
    ];
   
   CGRect rect = CGRectMake(0.0f, 0.0f, 375*i, imageHeght);
@@ -316,6 +323,38 @@ SINGLETON_FOR_CLASS(ShowShareImgMaker)
   
   //    当你是把获得的高度来布局控件的View的高度的时候.size转化为ceilf(size.height)。
   return  ceilf(size.height);
+}
+
+/*
+ * 返回结果即为包含每行文字的数组，行数即为count数
+ * 该方法主要是预先的计算出文本在UIlable等控件中的显示情况，
+ */
+- (NSArray *)getLinesArrayOfStringInLabel:(NSString *)string font:(UIFont *)font andLableWidth:(CGFloat)lableWidth{
+  
+  CTFontRef myFont = CTFontCreateWithName(( CFStringRef)([font fontName]), [font pointSize], NULL);
+  NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:string];
+  [attStr addAttribute:(NSString *)kCTFontAttributeName value:(__bridge  id)myFont range:NSMakeRange(0, attStr.length)];
+  CFRelease(myFont);
+  CTFramesetterRef frameSetter = CTFramesetterCreateWithAttributedString(( CFAttributedStringRef)attStr);
+  CGMutablePathRef path = CGPathCreateMutable();
+  CGPathAddRect(path, NULL, CGRectMake(0,0,lableWidth,100000));
+  CTFrameRef frame = CTFramesetterCreateFrame(frameSetter, CFRangeMake(0, 0), path, NULL);
+  NSArray *lines = ( NSArray *)CTFrameGetLines(frame);
+  NSMutableArray *linesArray = [[NSMutableArray alloc]init];
+  for (id line in lines) {
+    CTLineRef lineRef = (__bridge  CTLineRef )line;
+    CFRange lineRange = CTLineGetStringRange(lineRef);
+    NSRange range = NSMakeRange(lineRange.location, lineRange.length);
+    NSString *lineString = [string substringWithRange:range];
+    CFAttributedStringSetAttribute((CFMutableAttributedStringRef)attStr, lineRange, kCTKernAttributeName, (CFTypeRef)([NSNumber numberWithFloat:0.0]));
+    CFAttributedStringSetAttribute((CFMutableAttributedStringRef)attStr, lineRange, kCTKernAttributeName, (CFTypeRef)([NSNumber numberWithInt:0.0]));
+    [linesArray addObject:lineString];
+  }
+  
+  CGPathRelease(path);
+  CFRelease( frame );
+  CFRelease(frameSetter);
+  return (NSArray *)linesArray;
 }
 
 -(UIImage *)creatRoundImagwwwe:(UIImage *)image{

@@ -100,7 +100,7 @@ export default class CommShareModal extends React.Component {
     constructor(props) {
         super(props);
         this._bind();
-        this.defaultShareType = (props.type === 'miniProgram' || props.type === 'task' || props.type === 'Image' || props.type === 'promotionShare' || props.type === 'miniProgramWithCopyUrl') ? 2 : 1;
+        this.defaultShareType = (props.type === 'miniProgram' || props.type === 'task' || props.type === 'Image' || props.type === 'Show' || props.type === 'promotionShare' || props.type === 'miniProgramWithCopyUrl') ? 2 : 1;
 
         this.state = {
             modalVisible: false,
@@ -118,7 +118,7 @@ export default class CommShareModal extends React.Component {
             user.userShare();
         }
         let props = this.props;
-        this.defaultShareType = (props.type === 'miniProgram' || props.type === 'task' || props.type === 'Image' || props.type === 'promotionShare' || props.type === 'miniProgramWithCopyUrl') ? 2 : 1;
+        this.defaultShareType = (props.type === 'miniProgram' || props.type === 'task' || props.type === 'Image' || props.type === 'Show' || props.type === 'promotionShare' || props.type === 'miniProgramWithCopyUrl') ? 2 : 1;
         this.setState({ modalVisible: true, shareType: this.defaultShareType, showToastImage: false });
         this.modal && this.modal.open();
         // this.state.y.setValue(autoSizeWidth(340));
@@ -445,7 +445,7 @@ export default class CommShareModal extends React.Component {
                         </TouchableWithoutFeedback>
                     </Animated.View>
                     {
-                        this.props.type === 'promotionShare' || (this.props.type === 'Image' && this.state.showToastImage)||(this.props.type === 'Show' && this.state.showToastImage) ?
+                        this.props.type === 'promotionShare' || (this.props.type === 'Image' && this.state.showToastImage) || (this.props.type === 'Show' && this.state.showToastImage) ?
                             <Animated.View style={{
                                 height: this.imageHeight,
                                 width: this.imageWidth,
