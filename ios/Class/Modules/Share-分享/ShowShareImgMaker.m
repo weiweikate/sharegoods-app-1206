@@ -163,6 +163,17 @@ SINGLETON_FOR_CLASS(ShowShareImgMaker)
                        @"location": [NSValue valueWithCGRect:CGRectMake(148*i, 544*i, 80*i, 80*i)]}
      ];
   
+  
+  //介绍
+  NSMutableAttributedString *logpStrAttrStr = [[NSMutableAttributedString alloc]initWithString:@"秀一秀  赚到够"
+                                                                                       attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:13*i], NSForegroundColorAttributeName: [UIColor colorWithHexString:@"FFFFFF"]}];
+  
+  [nodes addObject:@{
+                     @"value": logpStrAttrStr,
+                     @"locationType": @"rect",
+                     @"location": [NSValue valueWithCGRect:CGRectMake(30*i, 634*i, 80*i, height*1)]}
+   ];
+  
   CGRect rect = CGRectMake(0.0f, 0.0f, 375*i, imageHeght);
   UIGraphicsBeginImageContext(CGSizeMake(375*i, imageHeght));
   CGContextRef context = UIGraphicsGetCurrentContext();

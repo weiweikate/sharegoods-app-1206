@@ -258,17 +258,14 @@ RCT_EXPORT_METHOD(createQRToAlbum:(NSString *) QRCodeStr
       if (errorStr) {
 //        reject(nil,nil,errorStr);
       }else{
-        dispatch_async(dispatch_get_main_queue(), ^{
           UIImage * img = [UIImage imageWithContentsOfFile:pathStr];
           if(img){
             [[JRShareManager sharedInstance]saveImage:img];
             resolve(@"0000");
-          } else{
-//            reject(nil,nil,errorStr);
           }
-        });
       }
     }];
   });
 }
+
 @end

@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) RCTBubblingEventBlock onStartRefresh;
 @property (nonatomic, copy) RCTBubblingEventBlock onStartScroll;
 @property (nonatomic, copy) RCTBubblingEventBlock onEndScroll;
+@property (nonatomic, copy) RCTBubblingEventBlock onScrollStateChanged;
+
 @property (nonatomic, copy) NSString* uri;
 @property (nonatomic, strong) NSDictionary* params;
 @property (nonatomic, assign) NSInteger headerHeight;

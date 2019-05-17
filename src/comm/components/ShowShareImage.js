@@ -9,9 +9,11 @@ import {
     StyleSheet,
     Text,
     View,} from 'react-native';
-import res from "../../pages/show/res";
+import res from '../../pages/show/res';
 import PreLoadImage from '../../components/ui/preLoadImage/PreLoadImage';
+import ScreenUtils from '../../utils/ScreenUtils';
 
+const autoSizeWidth = ScreenUtils.autoSizeWidth;
 
 export default class ShowShareImage extends Component {
     constructor(props) {
@@ -28,26 +30,26 @@ export default class ShowShareImage extends Component {
             console.log(JSON.stringify(data))
             return (
                 <View style={styles.container}>
-                    <Image style={{marginTop:10,marginLeft:5,width:230,height:258,borderRadius:5,overflow: 'hidden',}}
+                    <Image style={styles.goodsImg}
                            source={{uri:goodsImg}}/>
-                    <View style={{flexDirection:'row',width:230,height:30,alignItems:'center',marginBottom:5,marginTop:5}}>
+                    <View style={{flexDirection:'row',width:autoSizeWidth(230),height:autoSizeWidth(30),alignItems:'center'}}>
                         <PreLoadImage
                             imageUri={headerImg}
                             style={{
-                                width: 20,
-                                height: 20,
+                                width: autoSizeWidth(20),
+                                height: autoSizeWidth(20),
                                 borderRadius: 10
                             }}
                             defaultImage={res.placeholder.noHeadImage}
                             errImage={res.placeholder.noHeadImage}
                         />
 
-                        <Text style={{marginLeft:5,fontSize:13}}>{name ?
+                        <Text style={{marginLeft:5,fontSize:15, color:'#333333'}}>{name ?
                             (name.length > 13 ? name.substr(0, 13) + '...' : name) : ''
                         }</Text>
                     </View>
-                    <View style={{width:230}}>
-                        <Text style={{fontSize:13}} numberOfLines={2}>{content}</Text>
+                    <View style={{width:autoSizeWidth(230)}}>
+                        <Text style={{fontSize:13,color:'#333333'}} numberOfLines={2}>{content}</Text>
                     </View>
                 </View>
             );
@@ -63,8 +65,8 @@ const styles = StyleSheet.create({
         backgroundColor:'white',
         // justifyContent: "center",
         alignItems: 'center',
-        width: 250,
-        height: 350,
+        width: autoSizeWidth(250),
+        height: autoSizeWidth(350),
     },
     absolute: {
         position: 'absolute',
@@ -78,7 +80,11 @@ const styles = StyleSheet.create({
 
     },
     goodsImg:{
-
+        marginTop:10,
+        width: autoSizeWidth(230),
+        height: autoSizeWidth(258),
+        borderRadius:5,
+        overflow: 'hidden',
     },
     headerImg:{
 
