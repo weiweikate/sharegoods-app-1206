@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)zanClick:(RecommendedCell*)cell;
 -(void)downloadClick:(RecommendedCell*)cell;
 -(void)shareClick:(RecommendedCell*)cell;
--(void)addCar:(RecommendedCell*)cell;
+-(void)addCar:(GoodsDataModel*)goods;
 -(void)imageClick:(RecommendedCell*)cell;
 
 @end
@@ -38,7 +38,6 @@ typedef void(^cellBlock)(RecommendedCell*);//block写法比较特殊，一般重
 @property (nonatomic,strong) JXModelData * model;
 @property (nonatomic,copy) cellBlock block;
 @property (nonatomic, weak) id<JXCellDelegate> cellDelegate;
-@property (nonatomic,assign) BOOL login;
 @end
 
 NS_ASSUME_NONNULL_END

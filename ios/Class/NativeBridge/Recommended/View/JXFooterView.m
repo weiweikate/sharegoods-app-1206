@@ -220,6 +220,7 @@
         [shopCarBtn setImage:[UIImage imageNamed:@"jiarugouwuche"] forState:UIControlStateNormal];
         //加入购物车
         [shopCarBtn addTarget:self action:@selector(addCarBtn:) forControlEvents:UIControlEventTouchUpInside];
+      
         [bgView sd_addSubviews:@[goodsImg,titile,price,shopCarBtn]];
         //商品图片
         goodsImg.sd_layout.topSpaceToView(bgView, 5)
@@ -270,7 +271,7 @@
 
 -(void)addCarBtn:(UIButton*)sender{
   if(self.addCarBlock){
-    self.addCarBlock(@"");
+    self.addCarBlock(self.products[sender.tag-1]);
   }
 }
 
@@ -308,12 +309,9 @@
     }else{
       selectModel=singleModel;
     }
-    if(([self getNowTimestamp]< [selectModel.endTime integerValue])&&([self getNowTimestamp]< [selectModel.startTime integerValue])){
+    if(([self getNowTimestamp]< [selectModel.endTime integerValue]+500)&&([self getNowTimestamp]< [selectModel.startTime integerValue])){
       return model.promotionMinPrice? [NSString stringWithFormat:@"%lf" ,model.promotionMinPrice]:@"0.00";
-    }else if(self.login){
-      return [NSString stringWithFormat:@"%lf" ,model.v0Price];
     }
-    
   }
   return [NSString stringWithFormat:@"%lf" ,model.minPrice];
 }

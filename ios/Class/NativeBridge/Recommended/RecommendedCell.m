@@ -95,9 +95,9 @@
         [weakSelf.cellDelegate shareClick:weakSelf];
       }
     };
-    _footerView.addCarBlock = ^(NSString* a){
+    _footerView.addCarBlock = ^(GoodsDataModel* a){
       if (weakSelf.cellDelegate) {
-        [weakSelf.cellDelegate addCar:weakSelf];
+        [weakSelf.cellDelegate addCar:a];
       }
     };
   }
@@ -183,7 +183,6 @@
     self.footerView.likesCount = model.likesCount;
     self.footerView.shareCount = model.shareCount;
     self.footerView.isLike = model.like;
-    self.footerView.login = self.login;
 
 
 //    if( model.content.length>60){

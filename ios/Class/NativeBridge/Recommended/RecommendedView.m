@@ -263,7 +263,6 @@ static NSString *IDType = @"TypeCell";
   cell.model = model;
   cell.cellDelegate = self;
   cell.clipsToBounds = YES;
-  cell.login = self.userIsLogin;
   return cell;
 }
 
@@ -319,12 +318,10 @@ static NSString *IDType = @"TypeCell";
   }
 }
 
--(void)addCar:(RecommendedCell *)cell{
-  NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
+-(void)addCar:(GoodsDataModel *)model{
   if(_onAddCartClick) {
-    _onAddCartClick(@{
-                      @"detail":self.callBackArr[indexPath.item],
-                      @"index":[NSNumber numberWithInteger:indexPath.row]});
+    NSDictionary * dic = @{@"prodCode":model.prodCode};
+    _onAddCartClick(dic);
   }
 }
 

@@ -28,7 +28,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString* uri;
 @property (nonatomic, strong) NSDictionary* params;
 @property (nonatomic, assign) NSInteger headerHeight;
-@property (nonatomic, assign) BOOL userIsLogin;
 
 -(void)replaceData:(NSInteger) index num:(NSInteger) num;
 

@@ -35,8 +35,8 @@ SINGLETON_FOR_CLASS(ShowShareImgMaker)
     return;
   }
   __weak ShowShareImgMaker * weakSelf = self;
-  
-  [self requestImageWithURLs:@[model.imageUrlStr,model.headerImage] success:^(NSArray *images) {
+  NSString * image =model.headerImage?model.headerImage:@"";
+  [self requestImageWithURLs:@[model.imageUrlStr,image] success:^(NSArray *images) {
     NSString *path = [weakSelf ceratShareImageWithProductImage:images[0] headerImage:images[1] model:model];
     
     if (path == nil || path.length == 0) {

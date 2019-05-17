@@ -21,13 +21,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,assign) NSInteger type; //事件类型
 @property (nonatomic,strong)NSArray * products;
 @property (nonatomic,assign) BOOL isLike;
-@property (nonatomic,assign) BOOL login;
-
 
 @property(nonatomic,copy)void (^zanBlock)(NSString*);
 @property(nonatomic,copy)void (^downloadBlock)(NSString*);
 @property(nonatomic,copy)void (^shareBlock)(NSString*);
-@property(nonatomic,copy)void (^addCarBlock)(NSString*);
+@property(nonatomic,copy)void (^addCarBlock)(GoodsDataModel*);
 
 @end
 
