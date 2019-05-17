@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) RCTBubblingEventBlock onStartScroll;
 @property (nonatomic, copy) RCTBubblingEventBlock onEndScroll;
 @property (nonatomic, copy) RCTBubblingEventBlock onScrollStateChanged;
+@property (nonatomic, copy) RCTBubblingEventBlock onScrollY;
 
 @property (nonatomic, copy) NSString* uri;
 @property (nonatomic, strong) NSDictionary* params;
@@ -24,6 +25,8 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)addDataToTopData:(NSDictionary*)data;
 
 -(void)replaceItemData:(NSInteger)index data:(NSDictionary *)data;
+-(void)scrollToTop;
+
 @end
 
 NS_ASSUME_NONNULL_END

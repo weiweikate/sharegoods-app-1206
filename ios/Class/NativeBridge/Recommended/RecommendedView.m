@@ -263,6 +263,7 @@ static NSString *IDType = @"TypeCell";
   cell.model = model;
   cell.cellDelegate = self;
   cell.clipsToBounds = YES;
+  cell.login = self.userIsLogin;
   return cell;
 }
 
@@ -419,6 +420,16 @@ static NSString *IDType = @"TypeCell";
 }
 
 
+#pragma mark - scrollView-delegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+  CGFloat Y = scrollView.contentOffset.y;
+  if(_onScrollY){
+    _onScrollY(@{@"YDistance":@(Y)});
+  }
+}
+
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
   if (self.onScrollStateChanged) {
     self.onScrollStateChanged(@{@"state":[NSNumber numberWithInteger:1]});
@@ -460,6 +471,10 @@ static NSString *IDType = @"TypeCell";
     [self.callBackArr replaceObjectAtIndex:index withObject:data];
   [self.tableView reloadRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] withRowAnimation:UITableViewRowAnimationNone];
   }
+}
+
+-(void)scrollToTop{
+  [self.tableView  scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
 }
 
 @end

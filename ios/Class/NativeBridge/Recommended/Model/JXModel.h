@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class JXModelData,GoodsDataModel,SourcesModel,UserInfoModel;
+@class JXModelData,GoodsDataModel,SourcesModel,UserInfoModel,promotionResultModel,ActityModel;
 
 @interface JXModel : NSObject
 @property (nonatomic, assign)NSInteger currentPage;
@@ -59,12 +59,24 @@
 @property (nonatomic,copy) NSString * productNo;
 @property (nonatomic,assign) CGFloat groupPrice;
 @property (nonatomic,copy) NSString * prodCode;
-
+@property (nonatomic, strong)promotionResultModel * promotionResult;
 @end
 
 @interface UserInfoModel : NSObject
 @property (nonatomic,copy) NSString * userImg;
 @property (nonatomic,copy) NSString * userName;
 @property (nonatomic,copy) NSString * userNo;
+
+@end
+
+@interface promotionResultModel : NSObject
+@property (nonatomic, strong)ActityModel *groupActivity;
+@property (nonatomic, strong)ActityModel *singleActivity;
+@end
+
+@interface ActityModel : NSObject
+@property (nonatomic,copy) NSString * endTime;
+@property (nonatomic,copy) NSString * startTime;
+@property (nonatomic,assign) NSInteger type;
 
 @end

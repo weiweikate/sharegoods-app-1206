@@ -24,10 +24,13 @@ RCT_EXPORT_VIEW_PROPERTY(onSharePress, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onAddCartClick, RCTBubblingEventBlock)
 
 RCT_EXPORT_VIEW_PROPERTY(onScrollStateChanged, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onScrollY, RCTBubblingEventBlock)
+
 RCT_EXPORT_VIEW_PROPERTY(onStartRefresh, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(uri, NSString)
 RCT_EXPORT_VIEW_PROPERTY(params, NSDictionary)
 RCT_EXPORT_VIEW_PROPERTY(headerHeight, NSInteger)
+RCT_EXPORT_VIEW_PROPERTY(userIsLogin, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(onStartScroll, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onEndScroll, RCTBubblingEventBlock)
 
@@ -73,6 +76,17 @@ RCT_EXPORT_METHOD(replaceItemData:(nonnull NSNumber *)reactTag
     return retDict;
   }
   
+}
+
+RCT_EXPORT_METHOD(scrollToTop:(nonnull NSNumber *)reactTag){
+  [self.bridge.uiManager addUIBlock:^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *, RecommendedView *> *viewRegistry) {
+    RecommendedView *view = viewRegistry[reactTag];
+    if (![view isKindOfClass:[RecommendedView class]]) {
+      RCTLogError(@"Invalid view returned from registry, expecting RNCUIWebView, got: %@", view);
+    } else {
+      [view scrollToTop];
+    }
+  }];
 }
 
 @end
