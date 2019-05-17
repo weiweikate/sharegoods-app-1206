@@ -174,7 +174,7 @@
     }
   _zanNum.text = num;
   [self.picImg sd_setImageWithURL:[NSURL URLWithString:[model.resource[0] valueForKey: @"url"]] placeholderImage:[UIImage imageNamed:@"default_avatar"]];
-  self.contentLab.text = model.content;
+  self.contentLab.text = model.title;
   
 }
 
