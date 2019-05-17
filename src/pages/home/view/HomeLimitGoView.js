@@ -10,7 +10,10 @@ import DesignRule from '../../../constants/DesignRule';
 import resHome from '../res';
 import { homeLinkType, homeRoute } from '../HomeTypes';
 import { MRText } from '../../../components/ui';
-import * as math from 'mathjs';
+import StringUtils from '../../../utils/StringUtils';
+import NoMoreClick from '../../../components/ui/NoMoreClick';
+import user from '../../../model/user';
+import RouterMap from '../../../navigation/RouterMap';
 
 const { px2dp } = ScreenUtils;
 
@@ -77,14 +80,15 @@ export default class HomeLimitGoView extends Component {
         this.props.navigate(homeRoute[homeLinkType.spike], { productCode: value.prodCode });
     }
 
-    _renderGoodsList(spikeGoods) {
+    _renderGoodsList(spikeGoods, activityCode) {
         let goodsItems = [];
         spikeGoods.map((data, index) => {
             goodsItems.push(
                 <TouchableWithoutFeedback key={index}
                                           onPress={() => this._goToDetail(data || {})}>
                     <View>
-                        <GoodsItem key={index} item={data || {}}/>
+                        <GoodsItem key={index} item={data || {}} activityCode={activityCode}
+                                   navigate={this.props.navigate}/>
                         {index === spikeGoods.length - 1 ? null : <View style={{ height: px2dp(10) }}/>}
                     </View>
                 </TouchableWithoutFeedback>
@@ -100,7 +104,7 @@ export default class HomeLimitGoView extends Component {
             viewItems.push(
                 <View key={index}
                       tabLabel={data.id}>
-                    {this._renderGoodsList((data.goods) || [])}
+                    {this._renderGoodsList((data.goods) || [], data.activityCode)}
                 </View>
             );
         });
@@ -135,9 +139,8 @@ export default class HomeLimitGoView extends Component {
     }
 }
 
-const GoodsItem = ({ item }) => {
-    let total = math.eval(item.promotionSaleNum + item.promotionStockNum);
-    let progress = total == 0 ? 0 : math.eval(item.promotionStockNum / total);
+const GoodsItem = ({ item, activityCode, navigate }) => {
+    const promotionSaleRateS = item.promotionSaleRate || 0;
     return <View style={styles.goodsItem}>
         <ImageLoader
             source={{ uri: item.imgUrl }}
@@ -152,13 +155,19 @@ const GoodsItem = ({ item }) => {
         <View style={styles.goodsContent}>
             <Text style={styles.goodsTitle} numberOfLines={2}>{item.name}</Text>
             <Text style={styles.text} numberOfLines={1}>{item.secondName}</Text>
-            <View style={styles.leaveView}>
-                <View style={[styles.progressView, { width: (1 - progress) * px2dp(120) }]}/>
-                <View style={styles.leaveAmountView}>
-                    <MRText
-                        style={styles.leaveAmountText}>{`还剩${item.promotionStockNum}件`}</MRText>
-                </View>
-            </View>
+            {
+                item.promotionStatus === limitStatus.noBegin ?
+                    <Text style={styles.text}>已有{item.promotionAttentionNum}人关注了</Text>
+                    :
+                    <View style={styles.leaveView}>
+                        <View style={[styles.progressView, { width: promotionSaleRateS * px2dp(120) }]}/>
+                        <View style={styles.leaveAmountView}>
+                            <MRText
+                                style={styles.leaveAmountText}>{promotionSaleRateS === 1
+                                ? '已抢光' : `还剩${StringUtils.sub(1, promotionSaleRateS) * 100}%`}</MRText>
+                        </View>
+                    </View>
+            }
             <View style={styles.moneyView}>
                 {
                     item.promotionPrice
@@ -171,13 +180,13 @@ const GoodsItem = ({ item }) => {
                         null
                 }
                 <View style={{ flex: 1 }}/>
-                <GoodsItemButton data={item}/>
+                <GoodsItemButton data={item} activityCode={activityCode} navigate={navigate}/>
             </View>
         </View>
     </View>;
 };
 
-const GoodsItemButton = ({ data }) => {
+const GoodsItemButton = ({ data, activityCode, navigate }) => {
     if (data.promotionStatus === limitStatus.doing) {
         return <LinearGradient style={styles.button}
                                start={{ x: 0, y: 0 }}
@@ -188,15 +197,21 @@ const GoodsItemButton = ({ data }) => {
             </Text>
         </LinearGradient>;
     } else if (data.promotionStatus === limitStatus.noBegin) {
-        return <View style={styles.buttonWill}>
-            <Text style={styles.buttonWillTitle}>
-                即将开抢
+        return <NoMoreClick onPress={() => {
+            if (user.isLogin) {
+                data.promotionAttention ? limitGoModule.cancleFollow(data.prodCode, activityCode) : limitGoModule.followSpike(data.prodCode, activityCode);
+            } else {
+                navigate(RouterMap.LoginPage);
+            }
+        }} style={styles.buttonWill}>
+            <Text ref={e => this.follow = e} style={styles.buttonWillTitle}>
+                {data.promotionAttention ? '已关注' : '提前关注'}
             </Text>
-        </View>;
+        </NoMoreClick>;
     } else {
         return <View style={styles.disbutton}>
             <Text style={styles.disbuttonTitle}>
-                {data.promotionStatus === limitStatus.end ? '抢光了' : '已结束'}
+                {data.promotionStatus === limitStatus.end ? '已抢光' : '已结束'}
             </Text>
         </View>;
     }

@@ -49,4 +49,7 @@
     <color name="textColor_instruction">#999999</color>
     <color name="mainColor">#F00050</color>
     <color name="textColor_secondTitle">#666666</color>
+    <color name="app_main_text_color">#333333</color>
+    <color name="app_ccc_text_color">#cccccc</color>
+    <color name="app_666_text_color">#666666</color>
 </resources>

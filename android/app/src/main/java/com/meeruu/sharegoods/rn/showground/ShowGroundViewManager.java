@@ -57,14 +57,14 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> {
         }
     }
 
-    @javax.annotation.Nullable
+    @Nullable
     @Override
     public Map<String, Integer> getCommandsMap() {
         return MapBuilder.of("replaceData", REPLACE_DATA,"addDataToTop",ADD_DATA_TOP,"replaceItemData",REPLACE_ITEM_DATA,"scrollToTop",SCROLL_TO_TOP);
     }
 
     @Override
-    public void receiveCommand(@Nonnull ViewGroup root, int commandId, @javax.annotation.Nullable ReadableArray args) {
+    public void receiveCommand(@Nonnull ViewGroup root, int commandId, @Nullable ReadableArray args) {
         switch (commandId) {
             case REPLACE_DATA: {
                 Object object = root.getTag();

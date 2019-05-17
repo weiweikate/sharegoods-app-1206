@@ -17,6 +17,13 @@ class LoginModel {
     haveClick = false;
     @observable
     isSelectProtocol = true;
+    @observable
+    authPhone = null;
+
+    @action
+    setAuthPhone(str){
+        this.authPhone = str;
+    }
 
     @action
     saveIsSelectProtocol(isSelect) {

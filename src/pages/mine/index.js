@@ -13,7 +13,6 @@ import bankCard from './page/bankCard';
 import InviteFriendsPage from './page/Invite/InviteFriendsPage';
 import promotion from './page/promotion';
 import MyMentorPage from './page/mentor/MyMentorPage';
-import MyShowFansPage from './page/showFans/MyShowFansPage';
 import SearchShowFansPage from './page/showFans/SearchShowFansPage';
 import GroupShowFansPage from './page/showFans/GroupShowFansPage';
 import MainShowFansPage from './page/showFans/MainShowFansPage';
@@ -38,7 +37,6 @@ export default {
         InviteFriendsPage,
         promotion,
         MyMentorPage,
-        MyShowFansPage,
         ExpDetailPage,
         SetMentorPage,
         MainShowFansPage,

@@ -19,6 +19,7 @@ import MineAPI from '../../api/MineApi';
 import res from '../../res';
 import AvatarImage from '../../../../components/ui/AvatarImage';
 import ToSearchComponent from './Component/ToSearchComponent';
+import SmoothPushHighComponent from '../../../../comm/components/SmoothPushHighComponent';
 const {px2dp} = ScreenUtils;
 const {
     bg_fans_item
@@ -32,6 +33,7 @@ const {
     icon_v5
 } = res.myData;
 type Props = {};
+@SmoothPushHighComponent
 export default class GroupShowFansPage extends BasePage<Props> {
     constructor(props) {
         super(props);

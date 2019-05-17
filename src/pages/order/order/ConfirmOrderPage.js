@@ -89,7 +89,7 @@ export default class ConfirmOrderPage extends BasePage {
     }
 
     componentDidMount() {
-        bridge.showLoading('加载中...');
+        bridge.showLoading('加载中');
         setTimeout(() => {
             this.loadPageData();
         }, 0);

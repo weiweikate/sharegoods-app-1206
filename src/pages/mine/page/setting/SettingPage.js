@@ -78,7 +78,6 @@ class SettingPage extends BasePage {
         }
     }
 
-
     //**********************************ViewPart******************************************
     _render = () => {
         return (
@@ -235,7 +234,7 @@ class SettingPage extends BasePage {
                         homeModule.loadHomeList();
                         MineApi.signOut();
                         // 退出七鱼
-                        QYChatTool.qiYULogout()
+                        QYChatTool.qiYULogout();
                         this.$loadingDismiss();
                         // 神策退出登录
                         logout();

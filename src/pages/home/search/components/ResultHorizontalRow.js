@@ -14,7 +14,6 @@ import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import UIImage from '@mr/image-placeholder';
 import { MRText as Text } from '../../../../components/ui';
-import StringUtils from '../../../../utils/StringUtils';
 
 const gwc = res.search.gwc;
 
@@ -34,7 +33,8 @@ export default class ResultHorizontalRow extends Component {
     }
 
     render() {
-        let { minPrice, name, imgUrl } = this.props.itemData || {};
+        const { isActivity } = this.props;
+        let { minPrice, promotionMinPrice, name, imgUrl } = this.props.itemData || {};
         return (
             <TouchableWithoutFeedback onPress={() => {
                 this.props.onPressAtIndex(this.props.itemData || {});
@@ -61,7 +61,7 @@ export default class ResultHorizontalRow extends Component {
                     }}>
                         <Text
                             style={{ color: DesignRule.mainColor, fontSize: 17 }}
-                            allowFontScaling={false}>{`￥${StringUtils.isNoEmpty(minPrice) ? minPrice : ''}起`}</Text>
+                            allowFontScaling={false}>{`￥${isActivity ? promotionMinPrice : minPrice}起`}</Text>
 
                         <TouchableWithoutFeedback onPress={() => {
                             this.props.storeProduct(this.props.itemData);

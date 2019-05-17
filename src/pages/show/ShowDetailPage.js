@@ -45,7 +45,7 @@ import SelectionPage from '../product/SelectionPage';
 import bridge from '../../utils/bridge';
 import RouterMap from '../../navigation/RouterMap';
 
-const { iconShowFire, iconBuyBg, iconLike, iconNoLike, iconDownload } = res;
+const { iconShowFire, iconBuyBg, iconLike, iconNoLike, iconDownload,iconShowShare } = res;
 // @SmoothPushPreLoadHighComponent
 @observer
 export default class ShowDetailPage extends BasePage {
@@ -270,7 +270,7 @@ export default class ShowDetailPage extends BasePage {
                 <TouchableOpacity style={styles.shareView} onPress={() => {
                     this._goToShare();
                 }}>
-                    <Image source={res.more}/>
+                    <Image source={iconShowShare}/>
                 </TouchableOpacity>
             </View>
         );

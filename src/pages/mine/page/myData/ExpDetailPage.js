@@ -48,7 +48,7 @@ const detailData = {
     20: { title: '秀购奖励', icon: res.cashAccount.zengsong_icon },
     30: { title: '30天未登录扣除', icon: res.cashAccount.jinggao_icon },
     31: { title: '周交易额未达标扣除', icon: res.cashAccount.jinggao_icon },
-    32: { title: '邀请有礼奖励', icon: res.myData.icon_invite },
+    32: { title: '邀请有礼奖励', icon: res.myData.icon_invite }
 };
 export default class ExpDetailPage extends BasePage {
     constructor(props) {
@@ -97,7 +97,14 @@ export default class ExpDetailPage extends BasePage {
                     <TouchableWithoutFeedback onPress={() => {
                         this.$navigateBack();
                     }}>
-                        <Image source={res.button.white_back}/>
+                        <View style={{
+                            width: 60,
+                            paddingLeft: DesignRule.margin_page,
+                            height: 40,
+                            justifyContent: 'center'
+                        }}>
+                            <Image source={res.button.white_back}/>
+                        </View>
                     </TouchableWithoutFeedback>
                 </View>
             </ImageBackground>
@@ -346,7 +353,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingHorizontal: DesignRule.margin_page,
+        paddingRight: DesignRule.margin_page,
         marginTop: ScreenUtils.statusBarHeight,
         height: 44
     }

@@ -61,6 +61,7 @@ const api = {
     return_express: '/after-sale/return-express',
     //获取个人信息
     getUser: ['/user/getUser', { method: 'get', checkLogin: true }],
+    getProductShopInfoBySupplierCode: ['/product/getProductShopInfoBySupplierCode',{method:'get'}],
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 

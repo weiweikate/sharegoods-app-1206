@@ -42,7 +42,7 @@ import NoMoreClick from '../../components/ui/NoMoreClick';
 import ProductListModal from './components/ProductListModal';
 import RouterMap from '../../navigation/RouterMap';
 
-const { iconShowFire, iconLike, iconNoLike ,iconBuyBg} = res;
+const { iconShowFire, iconLike, iconNoLike ,iconBuyBg,iconShowShare} = res;
 
 
 @SmoothPushPreLoadHighComponent
@@ -98,9 +98,6 @@ export default class ShowRichTextDetailPage extends BasePage {
                             this.setState({
                                 pageState: PageLoadingState.success
                             });
-                            // this._whiteNavRef.setNativeProps({
-                            //     opacity: 0
-                            // });
                             Toast.hiddenLoading();
                         }).catch(error => {
                             this.setState({
@@ -122,9 +119,6 @@ export default class ShowRichTextDetailPage extends BasePage {
                             this.setState({
                                 pageState: PageLoadingState.success
                             });
-                            // this._whiteNavRef.setNativeProps({
-                            //     opacity: 0
-                            // });
                             Toast.hiddenLoading();
                         }).catch(error => {
                             this.setState({
@@ -241,7 +235,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                 <TouchableOpacity style={styles.shareView} onPress={() => {
                     this._goToShare();
                 }}>
-                    <Image source={res.more}/>
+                    <Image source={iconShowShare}/>
                 </TouchableOpacity>
             </View>
         );
