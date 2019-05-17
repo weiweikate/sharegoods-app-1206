@@ -66,7 +66,7 @@ public class ShowRecommendViewManager extends ViewGroupManager<ViewGroup> {
     @javax.annotation.Nullable
     @Override
     public Map<String, Integer> getCommandsMap() {
-        return MapBuilder.of("replaceData", REPLACE_DATA,"replaceItemData",REPLACE_ITEM_DATA);
+        return MapBuilder.of("replaceData", REPLACE_DATA,"replaceItemData",REPLACE_ITEM_DATA,"scrollToTop",SCROLL_TO_TOP);
     }
 
     @Override
