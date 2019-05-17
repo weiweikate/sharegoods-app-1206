@@ -57,7 +57,6 @@ export default class ShowFoundView extends React.Component {
 
                                 }}
                                 onScrollY={({ nativeEvent }) => {
-                                    // alert(JSON.stringify(nativeEvent.YDistance)+ScreenH)
                                     this.setState({
                                         showToTop: nativeEvent.YDistance > ScreenUtils.height
                                     });
