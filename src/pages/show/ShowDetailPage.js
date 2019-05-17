@@ -550,7 +550,7 @@ export default class ShowDetailPage extends BasePage {
                 {
                     detail.resource
                         ?
-                        <ShowImageView items={detail.resource.slice()}
+                        <ShowImageView items={detail.resource}
                                        onPress={(imgs, index) => this._showImagesPage(imgs, index)}/>
                         :
                         null

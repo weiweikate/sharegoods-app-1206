@@ -46,9 +46,19 @@ const downloadShow = (urls, content) => {
         return Promise.reject();
     });
 };
+function getUrlVars(url) {
 
+    var vars = {};
+    if(url){
+        url.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+            vars[key] = value;
+        });
+    }
+    return vars;
+}
 
 export default {
     formatShowNum,
-    downloadShow
+    downloadShow,
+    getUrlVars
 };
