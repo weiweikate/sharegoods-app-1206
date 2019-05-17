@@ -122,7 +122,6 @@
 
   
   //图片
-  self.picImg.backgroundColor = [UIColor redColor];
   self.picImg.sd_layout.topSpaceToView(self.headView, 10)
   .leftSpaceToView(bgView, 45)
   .rightSpaceToView(bgView, 15)
@@ -174,7 +173,7 @@
       num = @"10w+";
     }
   _zanNum.text = num;
-  [self.picImg sd_setImageWithURL:[NSURL URLWithString:[model.resource[0] valueForKey: @"imgUrl"]] placeholderImage:[UIImage imageNamed:@"default_avatar"]];
+  [self.picImg sd_setImageWithURL:[NSURL URLWithString:[model.resource[0] valueForKey: @"url"]] placeholderImage:[UIImage imageNamed:@"default_avatar"]];
   self.contentLab.text = model.content;
   
 }
