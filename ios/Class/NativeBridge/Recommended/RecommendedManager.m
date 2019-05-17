@@ -30,7 +30,6 @@ RCT_EXPORT_VIEW_PROPERTY(onStartRefresh, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(uri, NSString)
 RCT_EXPORT_VIEW_PROPERTY(params, NSDictionary)
 RCT_EXPORT_VIEW_PROPERTY(headerHeight, NSInteger)
-RCT_EXPORT_VIEW_PROPERTY(userIsLogin, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(onStartScroll, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onEndScroll, RCTBubblingEventBlock)
 

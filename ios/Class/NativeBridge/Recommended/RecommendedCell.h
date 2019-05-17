@@ -38,7 +38,6 @@ typedef void(^cellBlock)(RecommendedCell*);//block写法比较特殊，一般重
 @property (nonatomic,strong) JXModelData * model;
 @property (nonatomic,copy) cellBlock block;
 @property (nonatomic, weak) id<JXCellDelegate> cellDelegate;
-@property (nonatomic,assign) BOOL login;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -183,7 +183,6 @@
     self.footerView.likesCount = model.likesCount;
     self.footerView.shareCount = model.shareCount;
     self.footerView.isLike = model.like;
-    self.footerView.login = self.login;
 
 
 //    if( model.content.length>60){

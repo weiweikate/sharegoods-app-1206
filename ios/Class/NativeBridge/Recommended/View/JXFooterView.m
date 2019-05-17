@@ -308,12 +308,9 @@
     }else{
       selectModel=singleModel;
     }
-    if(([self getNowTimestamp]< [selectModel.endTime integerValue])&&([self getNowTimestamp]< [selectModel.startTime integerValue])){
+    if(([self getNowTimestamp]< [selectModel.endTime integerValue]+500)&&([self getNowTimestamp]< [selectModel.startTime integerValue])){
       return model.promotionMinPrice? [NSString stringWithFormat:@"%lf" ,model.promotionMinPrice]:@"0.00";
-    }else if(self.login){
-      return [NSString stringWithFormat:@"%lf" ,model.v0Price];
     }
-    
   }
   return [NSString stringWithFormat:@"%lf" ,model.minPrice];
 }

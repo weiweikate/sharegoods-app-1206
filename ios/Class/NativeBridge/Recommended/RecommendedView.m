@@ -263,7 +263,6 @@ static NSString *IDType = @"TypeCell";
   cell.model = model;
   cell.cellDelegate = self;
   cell.clipsToBounds = YES;
-  cell.login = self.userIsLogin;
   return cell;
 }
 
