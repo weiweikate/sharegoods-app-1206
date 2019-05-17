@@ -2,7 +2,7 @@
  * 精选热门
  */
 import React from 'react';
-import { View, StyleSheet,  } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { observer } from 'mobx-react';
 import { tag } from './Show';
 import ScreenUtils from '../../utils/ScreenUtils';
@@ -23,6 +23,7 @@ import ShowApi from './ShowApi';
 import EmptyUtils from '../../utils/EmptyUtils';
 import apiEnvironment from '../../api/ApiEnvironment';
 import ShowUtils from './utils/ShowUtils';
+import ToTopButton from './components/ToTopButton';
 
 @observer
 export default class ShowMaterialView extends React.Component {
@@ -39,18 +40,17 @@ export default class ShowMaterialView extends React.Component {
         this.firstLoad = true;
         this.state = {
             headerView: null,
-            showEditorIcon: true
+            showEditorIcon: true,
+            showToTop: false
         };
 
     }
 
 
-
-
     addCart = (code) => {
         let addCartModel = new AddCartModel();
-        addCartModel.requestProductDetail(code,(productIsPromotionPrice)=>{
-            this.SelectionPage.show(addCartModel, (amount, skuCode)=>{
+        addCartModel.requestProductDetail(code, (productIsPromotionPrice) => {
+            this.SelectionPage.show(addCartModel, (amount, skuCode) => {
                 const { prodCode, name, originalPrice } = addCartModel;
                 shopCartCacheTool.addGoodItem({
                     'amount': amount,
@@ -67,11 +67,10 @@ export default class ShowMaterialView extends React.Component {
                     shoppingcartEntrance: 1
                 });
             }, { sourceType: productIsPromotionPrice ? sourceType.promotion : null });
-        },(error)=>{
+        }, (error) => {
             bridge.$toast(error.msg || '服务器繁忙');
-        })
-    }
-
+        });
+    };
 
 
     render() {
@@ -83,19 +82,18 @@ export default class ShowMaterialView extends React.Component {
                                        ref={(ref) => {
                                            this.materialList = ref;
                                        }}
-
                                        params={{ spreadPosition: tag.Material + '' }}
-
+                                       userIsLogin={user.token ? true : false}
                                        onItemPress={({ nativeEvent }) => {
                                            const { navigate } = this.props;
                                            let params = {
-                                               data:nativeEvent,
+                                               data: nativeEvent,
                                                ref: this.foundList,
                                                index: nativeEvent.index
                                            };
-                                           if(nativeEvent.showType === 1){
+                                           if (nativeEvent.showType === 1) {
                                                navigate('show/ShowDetailPage', params);
-                                           }else {
+                                           } else {
                                                navigate('show/ShowRichTextDetailPage', params);
                                            }
 
@@ -111,16 +109,16 @@ export default class ShowMaterialView extends React.Component {
                                            // alert(nativeEvent.prodCode);
                                            this.addCart(nativeEvent.prodCode);
                                        }}
-                                       onZanPress={({nativeEvent})=>{
-                                           ShowApi.incrCountByType({ showNo:nativeEvent.detail.showNo,  type:1});
+                                       onZanPress={({ nativeEvent }) => {
+                                           ShowApi.incrCountByType({ showNo: nativeEvent.detail.showNo, type: 1 });
                                        }}
 
-                                       onDownloadPress={({nativeEvent})=>{
+                                       onDownloadPress={({ nativeEvent }) => {
                                            if (!user.isLogin) {
                                                this.props.navigate('login/login/LoginPage');
                                                return;
                                            }
-                                           let {detail} = nativeEvent;
+                                           let { detail } = nativeEvent;
                                            if (!EmptyUtils.isEmptyArr(detail.resource)) {
                                                let urls = detail.resource.map((value) => {
                                                    return value.url;
@@ -133,19 +131,27 @@ export default class ShowMaterialView extends React.Component {
                                            }
 
                                            let promises = [];
-                                           if(!EmptyUtils.isEmptyArr(detail.products)){
-                                               detail.products.map((value)=>{
+                                           if (!EmptyUtils.isEmptyArr(detail.products)) {
+                                               detail.products.map((value) => {
                                                    let promise = bridge.createQRToAlbum(`${apiEnvironment.getCurrentH5Url()}/product/99/${value.prodCode}?upuserid=${user.code || ''}`);
                                                    promises.push(promise);
-                                               })
+                                               });
                                            }
-                                           if(!EmptyUtils.isEmptyArr(promises)){
+                                           if (!EmptyUtils.isEmptyArr(promises)) {
                                                Promise.all(promises);
                                            }
 
                                        }}
 
-                                       onSharePress={({nativeEvent})=>{
+                                       onScrollY={({ nativeEvent }) => {
+                                           // alert(JSON.stringify(nativeEvent.YDistance)+ScreenH)
+                                           this.setState({
+                                               showToTop: nativeEvent.YDistance > ScreenUtils.height
+                                           });
+                                       }}
+
+
+                                       onSharePress={({ nativeEvent }) => {
                                            if (!user.isLogin) {
                                                this.props.navigate('login/login/LoginPage');
                                                return;
@@ -194,6 +200,16 @@ export default class ShowMaterialView extends React.Component {
                                     this.props.navigate('show/ReleaseNotesPage');
                                 }}/> : null
                     }
+
+                    {this.state.showToTop ? <ToTopButton
+                        onPress={() => {
+                            this.materialList && this.materialList.scrollToTop();
+                        }}
+                        style={{
+                            position: 'absolute',
+                            right: 15,
+                            bottom: 70
+                        }}/> : null}
                 </View>
                 <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             </View>

@@ -24,6 +24,7 @@ import ShowApi from './ShowApi';
 import EmptyUtils from '../../utils/EmptyUtils';
 import apiEnvironment from '../../api/ApiEnvironment';
 import ShowUtils from './utils/ShowUtils';
+import ToTopButton from './components/ToTopButton';
 
 @observer
 export default class ShowHotView extends React.Component {
@@ -40,7 +41,8 @@ export default class ShowHotView extends React.Component {
         this.firstLoad = true;
         this.state = {
             headerView: null,
-            showEditorIcon: true
+            showEditorIcon: true,
+            showToTop:false
         };
 
     }
@@ -123,17 +125,6 @@ export default class ShowHotView extends React.Component {
                                            this.loadData();
                                        }}
                                        params={{ spreadPosition: tag.Recommend + '' }}
-                                       // onStartScroll={() => {
-                                       //     console.log('_onChoiceAction star');
-                                       //     this.timer && clearTimeout(this.timer);
-                                       //     this.choiceView && this.choiceView.changeIsScroll(true);
-                                       // }}
-                                       // onEndScroll={() => {
-                                       //     console.log('_onChoiceAction end1');
-                                       //     this.timer = setTimeout(() => {
-                                       //         this.choiceView && this.choiceView.changeIsScroll(false);
-                                       //     }, 500);
-                                       // }}
                                        onItemPress={({ nativeEvent }) => {
                                            const { navigate } = this.props;
                                            let params = {
@@ -154,10 +145,8 @@ export default class ShowHotView extends React.Component {
                                                index: nativeEvent.index
                                            });
                                        }}
-                                       isLogin={user.token ? true:false}
-
+                                       userIsLogin={user.token ? true:false}
                                        onAddCartClick={({ nativeEvent }) => {
-                                           // alert(nativeEvent.prodCode);
                                            this.addCart(nativeEvent.prodCode);
                                        }}
 
@@ -205,6 +194,13 @@ export default class ShowHotView extends React.Component {
 
                                        }}
 
+                                       onScrollY={({nativeEvent})=>{
+                                           this.setState({
+                                               showToTop:nativeEvent.YDistance > ScreenUtils.height
+                                           })
+                                       }}
+
+
                                        onScrollStateChanged={({ nativeEvent }) => {
                                            const { state } = nativeEvent;
                                            if (state === 0) {
@@ -245,6 +241,16 @@ export default class ShowHotView extends React.Component {
                                     this.props.navigate('show/ReleaseNotesPage');
                                 }}/> : null
                     }
+
+                    {this.state.showToTop ? <ToTopButton
+                        onPress={()=>{
+                            this.RecommendShowList && this.RecommendShowList.scrollToTop();
+                        }}
+                        style={{
+                        position: 'absolute',
+                        right: 15,
+                        bottom: 70,
+                    }}/> : null }
                 </View>
                 <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             </View>

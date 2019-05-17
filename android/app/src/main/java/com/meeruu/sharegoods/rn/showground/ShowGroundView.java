@@ -2,11 +2,13 @@ package com.meeruu.sharegoods.rn.showground;
 
 import android.content.Context;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,12 +22,14 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
+import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.adapter.ShowGroundAdapter;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
 import com.meeruu.sharegoods.rn.showground.event.onEndScrollEvent;
 import com.meeruu.sharegoods.rn.showground.event.onItemPressEvent;
 import com.meeruu.sharegoods.rn.showground.event.onScrollStateChangedEvent;
+import com.meeruu.sharegoods.rn.showground.event.onScrollYEvent;
 import com.meeruu.sharegoods.rn.showground.event.onStartRefreshEvent;
 import com.meeruu.sharegoods.rn.showground.event.onStartScrollEvent;
 import com.meeruu.sharegoods.rn.showground.presenter.ShowgroundPresenter;
@@ -34,7 +38,6 @@ import com.meeruu.sharegoods.rn.showground.widgets.CustomLoadMoreView;
 import com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +50,7 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
     private ShowgroundPresenter presenter;
     private EventDispatcher eventDispatcher;
     private onItemPressEvent itemPressEvent;
+    private onScrollYEvent onScrollYEvent;
     private onStartRefreshEvent startRefreshEvent;
     private onStartScrollEvent startScrollEvent;
     private onEndScrollEvent endScrollEvent;
@@ -100,7 +104,7 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
         itemPressEvent = new onItemPressEvent();
         startRefreshEvent = new onStartRefreshEvent();
         startScrollEvent = new onStartScrollEvent();
-        final onScrollStateChangedEvent onScrollStateChangedEvent = new onScrollStateChangedEvent();
+        onScrollYEvent = new onScrollYEvent();
         endScrollEvent = new onEndScrollEvent();
         adapter = new ShowGroundAdapter();
         adapter.setPreLoadNumber(3);
@@ -114,10 +118,12 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
                 super.onScrollStateChanged(recyclerView, newState);
                 switch (newState) {
                     case RecyclerView.SCROLL_STATE_IDLE:
+                        endScrollEvent = new onEndScrollEvent();
                         endScrollEvent.init(view.getId());
                         eventDispatcher.dispatchEvent(endScrollEvent);
                         break;
                     case RecyclerView.SCROLL_STATE_DRAGGING:
+                        startScrollEvent = new onStartScrollEvent();
                         startScrollEvent.init(view.getId());
                         eventDispatcher.dispatchEvent(startScrollEvent);
                         break;
@@ -148,6 +154,7 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
                     map.put("index", position);
                     WritableMap realData = Arguments.makeNativeMap(map);
                     if (eventDispatcher != null) {
+                        itemPressEvent = new onItemPressEvent();
                         itemPressEvent.init(view.getId());
                         itemPressEvent.setData(realData);
                         eventDispatcher.dispatchEvent(itemPressEvent);
@@ -160,13 +167,34 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
         ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (eventDispatcher != null) {
+                    StaggeredGridLayoutManager manager = (StaggeredGridLayoutManager) recyclerView.getLayoutManager();
+                    int position = manager.findFirstVisibleItemPositions(null)[0];
+                    View firstView = manager.findViewByPosition(position);
+                    int itemHeight = firstView.getHeight();
+                    int flag = (position) * itemHeight - firstView.getTop();
+                    onScrollYEvent = new onScrollYEvent();
+                    onScrollYEvent.init(view.getId());
+                    WritableMap ymap = Arguments.createMap();
+                    ymap.putInt("YDistance",  DensityUtils.px2dip(flag));
+                    onScrollYEvent.setData(ymap);
+                    eventDispatcher.dispatchEvent(onScrollYEvent);
+                }
+            }
+
+            @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                onScrollStateChangedEvent.init(view.getId());
-                WritableMap map = Arguments.createMap();
-                map.putInt("state",newState);
-                onScrollStateChangedEvent.setData(map);
-                eventDispatcher.dispatchEvent(onScrollStateChangedEvent);
+                if (eventDispatcher != null) {
+                    onScrollStateChangedEvent onScrollStateChangedEvent = new onScrollStateChangedEvent();
+                    onScrollStateChangedEvent.init(view.getId());
+                    WritableMap map = Arguments.createMap();
+                    map.putInt("state", newState);
+                    onScrollStateChangedEvent.setData(map);
+                    eventDispatcher.dispatchEvent(onScrollStateChangedEvent);
+                }
                 StaggeredGridLayoutManager layoutManager = (StaggeredGridLayoutManager) recyclerView.getLayoutManager();
                 int[] first = new int[2];
                 layoutManager.findFirstCompletelyVisibleItemPositions(first);
@@ -186,6 +214,7 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
         if (eventDispatcher != null) {
             View view = showgroundView.get();
             if (view != null) {
+                startRefreshEvent = new onStartRefreshEvent();
                 startRefreshEvent.init(view.getId());
                 eventDispatcher.dispatchEvent(startRefreshEvent);
             }
@@ -265,8 +294,8 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
             recyclerView.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    NewestShowGroundBean.DataBean bean =  JSON.parseObject(value, NewestShowGroundBean.DataBean.class);
-                    data.add(0,bean);
+                    NewestShowGroundBean.DataBean bean = JSON.parseObject(value, NewestShowGroundBean.DataBean.class);
+                    data.add(0, bean);
                     adapter.replaceData(data);
                     recyclerView.scrollToPosition(0);
                 }
@@ -281,11 +310,17 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
             recyclerView.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    NewestShowGroundBean.DataBean bean =  JSON.parseObject(value, NewestShowGroundBean.DataBean.class);
-                    data.set(index,bean);
+                    NewestShowGroundBean.DataBean bean = JSON.parseObject(value, NewestShowGroundBean.DataBean.class);
+                    data.set(index, bean);
                     adapter.replaceData(data);
                 }
             }, 200);
+        }
+    }
+
+    public void scrollIndex(int index){
+        if(recyclerView != null){
+            recyclerView.smoothScrollToPosition(index);
         }
     }
 

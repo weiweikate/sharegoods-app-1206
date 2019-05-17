@@ -20,6 +20,7 @@ public class ShowRecommendViewManager extends ViewGroupManager<ViewGroup> {
     public static final int REPLACE_DATA = 1;
     public static final int ADD_DATA_TOP = 2;
     public static final int REPLACE_ITEM_DATA = 3;
+    public static final int SCROLL_TO_TOP = 4;
     public static boolean isLogin = false;
     @Override
     public String getName() {
@@ -44,8 +45,8 @@ public class ShowRecommendViewManager extends ViewGroupManager<ViewGroup> {
         }
     }
 
-    @ReactProp(name = "isLogin")
-    public void setParams(View view, boolean login) {
+    @ReactProp(name = "userIsLogin")
+    public void setIsLogin(View view, boolean login) {
        if(isLogin != login){
            Object object = view.getTag();
            if (object != null && object instanceof ShowRecommendView) {
@@ -65,7 +66,7 @@ public class ShowRecommendViewManager extends ViewGroupManager<ViewGroup> {
     @javax.annotation.Nullable
     @Override
     public Map<String, Integer> getCommandsMap() {
-        return MapBuilder.of("replaceData", REPLACE_DATA,"replaceItemData",REPLACE_ITEM_DATA);
+        return MapBuilder.of("replaceData", REPLACE_DATA,"replaceItemData",REPLACE_ITEM_DATA,"scrollToTop",SCROLL_TO_TOP);
     }
 
     @Override
@@ -85,6 +86,14 @@ public class ShowRecommendViewManager extends ViewGroupManager<ViewGroup> {
                 }
             }
             break;
+            case SCROLL_TO_TOP:{
+                Object object = root.getTag();
+                if (object != null && object instanceof ShowRecommendView) {
+                    ((ShowRecommendView) object).scrollIndex(0);
+                }
+            }
+            break;
+
         }
     }
 
@@ -102,6 +111,7 @@ public class ShowRecommendViewManager extends ViewGroupManager<ViewGroup> {
                 .put("MrDownloadPressEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onDownloadPress")))
                 .put("MrZanPressEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onZanPress")))
                 .put("MrSharePress", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onSharePress")))
+                .put("MrScrollY", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onScrollY")))
                 .build();
     }
 }

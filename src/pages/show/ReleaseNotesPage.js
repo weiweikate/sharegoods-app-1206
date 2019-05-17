@@ -107,35 +107,6 @@ export default class ReleaseNotesPage extends BasePage {
         ShowApi.publishShow(params).then((data)=>{
             this.props.navigation.popToTop();
             this.props.navigation.navigate('ShowListPage');
-
-            // let name ;
-            // if (EmptyUtils.isEmpty(user.nickname)) {
-            //     name = user.phone;
-            // } else {
-            //     name = user.nickname;
-            // }
-            //
-            // let listItemData = {
-            //     userInfoVO:{
-            //         userImg:user.headImg,
-            //         userName:name
-            //     },
-            //     content,
-            //     like:false,
-            //     hotCount:0,
-            //     downloadCount:0,
-            //     publishTimeStr:'0分钟前',
-            //     likesCount:0,
-            //     products
-            // };
-            // listItemData.userIcon = user.headImg
-            // listItemData.name = name;
-            // listItemData.publishTimeStr = '0分钟前';
-            // listItemData.hotCount = 0;
-            // listItemData.downloadCount = 0;
-            // listItemData.like=false;
-            // listItemData.likesCount=false;
-            // listItemData.products = products;
             if(data.data){
                 DeviceEventEmitter.emit('PublishShowFinish',JSON.stringify(data.data));
             }
@@ -151,10 +122,9 @@ export default class ReleaseNotesPage extends BasePage {
         }
         let num = 9 - imageArr.length;
         BusinessUtils.getImagePicker(callback => {
-            // alert(JSON.stringify(callback))
             let result = imageArr.concat(callback.images);
             this.setState({ imageArr: result });
-        }, num, true);
+        }, num, true,true);
     };
 
     deletePic = (index) => {

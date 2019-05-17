@@ -101,6 +101,8 @@ public class NewestShowGroundBean {
          */
 
         private String showNo;
+        private String title;
+        private int status;
         private UserInfoVOBean userInfoVO;
         private String content;
         private long publishTime;
@@ -122,6 +124,22 @@ public class NewestShowGroundBean {
 
         public void setShowNo(String showNo) {
             this.showNo = showNo;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
         }
 
         public UserInfoVOBean getUserInfoVO() {
@@ -397,7 +415,7 @@ public class NewestShowGroundBean {
                 this.imgUrl = imgUrl;
             }
 
-            public static class PromotionResultBean{
+            public static class PromotionResultBean {
                 private GroupActivityBean groupActivity;
                 private int limitNum;
                 private SingleActivityBean singleActivity;
@@ -435,7 +453,7 @@ public class NewestShowGroundBean {
                     this.tags = tags;
                 }
 
-                public static class SingleActivityBean{
+                public static class SingleActivityBean {
                     private String code;
                     private boolean couponLimit;
                     private long startTime;
@@ -529,7 +547,7 @@ public class NewestShowGroundBean {
                 }
 
 
-                public static class GroupActivityBean{
+                public static class GroupActivityBean {
                     private String code;
                     private boolean couponLimit;
                     private long startTime;

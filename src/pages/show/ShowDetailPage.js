@@ -221,11 +221,10 @@ export default class ShowDetailPage extends BasePage {
         if (pageState === PageLoadingState.fail) {
             return;
         }
-
-        // if (!user.isLogin) {
-        //     this.$navigate('login/login/LoginPage');
-        //     return;
-        // }
+        if (!user.isLogin) {
+            this.$navigate('login/login/LoginPage');
+            return;
+        }
         this.shareModal && this.shareModal.open();
     }
 
@@ -487,15 +486,8 @@ export default class ShowDetailPage extends BasePage {
         if (!detail) {
             detail = { imgs: '', products: [], click: 0, content: '' };
         }
-        // let products = detail.products;
-        let number = detail.click;
-        if (!number) {
-            number = 0;
-        }
-        if (number > 999999) {
-            number = 999999 + '+';
-        }
 
+        let content = detail.content ? detail.content: "";
 
         let html = '<!DOCTYPE html><html>' +
         '<head>' +
@@ -541,9 +533,9 @@ export default class ShowDetailPage extends BasePage {
         + '</head>'
         + '<body onload="ResizeImages();">'
         + '<div>'
-        + detail.content ? detail.content : ''
-            + '</div>'
-            + '</body></html>';
+        + content
+        + '</div>'
+        + '</body></html>';
 
         return <View style={styles.container}>
             <ScrollView
@@ -628,10 +620,11 @@ export default class ShowDetailPage extends BasePage {
                                 dec: '分享小程序子标题',
                                 thumImage: 'logo.png',
                                 hdImageURL: detail.resource[0].url,
-                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/detail/${detail.id}?upuserid=${user.code || ''}`,
+                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
                                 miniProgramPath: `/pages/discover/discover-detail/discover-detail?articleId=${detail.id}&inviteId=${user.code || ''}`
                             }}
             />
+            {detail.status !== 1 ? this._shieldRender() : null}
         </View>;
     }
 }
