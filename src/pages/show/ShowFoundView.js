@@ -14,6 +14,7 @@ import ReleaseButton from './components/ReleaseButton';
 import user from '../../model/user';
 import ShowGroundView from './components/ShowGroundView';
 import ToTopButton from './components/ToTopButton';
+
 @observer
 export default class ShowFoundView extends React.Component {
 
@@ -22,10 +23,14 @@ export default class ShowFoundView extends React.Component {
         this.firstLoad = true;
         this.state = {
             showEditorIcon: true,
-            showToTop:false
+            showToTop: false
         };
 
     }
+
+    addDataToTop = (value) => {
+        this.foundList && this.foundList.addDataToTop(value);
+    };
 
     render() {
         return (
@@ -51,11 +56,11 @@ export default class ShowFoundView extends React.Component {
                                     }
 
                                 }}
-                                onScrollY={({nativeEvent})=>{
+                                onScrollY={({ nativeEvent }) => {
                                     // alert(JSON.stringify(nativeEvent.YDistance)+ScreenH)
                                     this.setState({
-                                        showToTop:nativeEvent.YDistance > ScreenUtils.height
-                                    })
+                                        showToTop: nativeEvent.YDistance > ScreenUtils.height
+                                    });
                                 }}
 
                                 onScrollStateChanged={({ nativeEvent }) => {
@@ -99,14 +104,14 @@ export default class ShowFoundView extends React.Component {
                             }}/> : null
                 }
                 {this.state.showToTop ? <ToTopButton
-                    onPress={()=>{
+                    onPress={() => {
                         this.foundList && this.foundList.scrollToTop();
                     }}
                     style={{
-                    position: 'absolute',
-                    right: 15,
-                    bottom: 70,
-                }}/> : null }
+                        position: 'absolute',
+                        right: 15,
+                        bottom: 70
+                    }}/> : null}
             </View>
         );
     }

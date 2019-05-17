@@ -409,15 +409,8 @@ export default class ShowRichTextDetailPage extends BasePage {
         if (!detail) {
             detail = { imgs: '', products: [], click: 0, content: '' };
         }
-        let number = detail.click;
-        if (!number) {
-            number = 0;
-        }
-        if (number > 999999) {
-            number = 999999 + '+';
-        }
 
-
+        let content = detail.content ? detail.content: "";
         let html = '<!DOCTYPE html><html>' +
             '<head>' +
             '<meta http-equiv="Content-type" content="text/html; charset=utf-8" />' +
@@ -462,7 +455,7 @@ export default class ShowRichTextDetailPage extends BasePage {
             + '</head>'
             + '<body onload="ResizeImages();">'
             + '<div>'
-            + detail.content
+            +  content
             + '</div>'
             + '</body></html>';
 
@@ -528,7 +521,6 @@ export default class ShowRichTextDetailPage extends BasePage {
             }
             <View style={styles.whiteNav}/>
             {this._renderNormalTitle()}
-            {/*{this._shieldRender()}*/}
             {detail.products ? <ProductListModal visible={this.state.productModalVisible}
                                                  pressProduct={(prodCode) => {
                                                      this.setState({
@@ -542,18 +534,25 @@ export default class ShowRichTextDetailPage extends BasePage {
                     productModalVisible: false
                 });
             }}/> : null}
-
+            {detail.status !== 1 ? this._shieldRender() : null}
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             type={'miniProgram'}
                             trackEvent={'ArticleShare'}
                             trackParmas={{ articeCode: detail.code, articleTitle: detail.title }}
+                            imageJson={{
+                                imageUrlStr: detail.resource[0].url,
+                                titleStr: detail.content,
+                                QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
+                                headerImage: user.headImg,
+                                userName: detail.userName ? detail.userName : ''
+                            }}
                             miniProgramJson={{
                                 title: detail.title,
                                 dec: '分享小程序子标题',
                                 thumImage: 'logo.png',
                                 hdImageURL: detail.img,
-                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/detail/${detail.id}?upuserid=${user.code || ''}`,
+                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
                                 miniProgramPath: `/pages/discover/discover-detail/discover-detail?articleId=${detail.id}&inviteId=${user.code || ''}`
                             }}
             />

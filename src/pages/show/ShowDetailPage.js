@@ -486,15 +486,8 @@ export default class ShowDetailPage extends BasePage {
         if (!detail) {
             detail = { imgs: '', products: [], click: 0, content: '' };
         }
-        // let products = detail.products;
-        let number = detail.click;
-        if (!number) {
-            number = 0;
-        }
-        if (number > 999999) {
-            number = 999999 + '+';
-        }
 
+        let content = detail.content ? detail.content: "";
 
         let html = '<!DOCTYPE html><html>' +
         '<head>' +
@@ -540,9 +533,9 @@ export default class ShowDetailPage extends BasePage {
         + '</head>'
         + '<body onload="ResizeImages();">'
         + '<div>'
-        + detail.content ? detail.content : ''
-            + '</div>'
-            + '</body></html>';
+        + content
+        + '</div>'
+        + '</body></html>';
 
         return <View style={styles.container}>
             <ScrollView
@@ -631,6 +624,7 @@ export default class ShowDetailPage extends BasePage {
                                 miniProgramPath: `/pages/discover/discover-detail/discover-detail?articleId=${detail.id}&inviteId=${user.code || ''}`
                             }}
             />
+            {detail.status !== 1 ? this._shieldRender() : null}
         </View>;
     }
 }

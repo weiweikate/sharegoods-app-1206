@@ -279,7 +279,7 @@ export default class ShowListPage extends BasePage {
                     {
                         needsExpensive
                             ?
-                            <ShowFoundView navigate={this.$navigate} pageFocus={this.state.pageFocused}/>
+                            <ShowFoundView ref={(ref)=>{this.foundList = ref}} navigate={this.$navigate} pageFocus={this.state.pageFocused}/>
                             :
                             null
                     }
