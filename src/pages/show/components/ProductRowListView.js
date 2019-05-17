@@ -8,7 +8,8 @@ import {
     StyleSheet,
     View,
     ScrollView,
-    Image
+    Image,
+    TouchableWithoutFeedback
 } from 'react-native';
 import EmptyUtils from '../../../utils/EmptyUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -46,6 +47,9 @@ export default class ProductRowListView extends PureComponent {
         }
 
         return (
+            <TouchableWithoutFeedback onPress={()=>{
+                this.props.pressProduct && this.props.pressProduct(data.prodCode);
+            }}>
             <View key={'product' + index} style={[{ width }, styles.itemWrapper]}>
                 <ImageLoad style={styles.productIcon} source={{ uri: data.imgUrl }}/>
                 <View style={styles.itemInfoWrapper}>
@@ -56,9 +60,10 @@ export default class ProductRowListView extends PureComponent {
                     </MRText>
 
                     <View style={styles.priceWrapper}>
-                        <MRText style={styles.curPrice}>
+                        {showPrice ? <MRText style={styles.curPrice}>
                             ￥{showPrice}
-                        </MRText>
+                        </MRText> : null}
+
                         <MRText style={styles.oriPrice}>
                             ￥{data.originalPrice}
                         </MRText>
@@ -71,6 +76,7 @@ export default class ProductRowListView extends PureComponent {
                     </View>
                 </View>
             </View>
+            </TouchableWithoutFeedback>
         );
     };
 

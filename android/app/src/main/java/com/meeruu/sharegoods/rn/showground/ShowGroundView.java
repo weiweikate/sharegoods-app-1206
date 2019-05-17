@@ -155,7 +155,7 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
                 }
             }
         });
-        recyclerView.addItemDecoration(new SpaceItemDecoration(10));
+        recyclerView.addItemDecoration(new SpaceItemDecoration(15));
         recyclerView.setAdapter(adapter);
         ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {

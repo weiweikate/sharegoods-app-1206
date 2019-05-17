@@ -166,6 +166,10 @@ export default class ShowHotView extends React.Component {
                                        }}
 
                                        onDownloadPress={({nativeEvent})=>{
+                                           if (!user.isLogin) {
+                                               this.props.navigate('login/login/LoginPage');
+                                               return;
+                                           }
                                            let {detail} = nativeEvent;
                                            if (!EmptyUtils.isEmptyArr(detail.resource)) {
                                                let urls = detail.resource.map((value) => {
@@ -192,6 +196,10 @@ export default class ShowHotView extends React.Component {
                                        }}
 
                                        onSharePress={({nativeEvent})=>{
+                                           if (!user.isLogin) {
+                                               this.props.navigate('login/login/LoginPage');
+                                               return;
+                                           }
                                            this.shareModal && this.shareModal.open();
                                            this.props.onShare(nativeEvent);
 

@@ -43,6 +43,7 @@ import { sourceType } from '../product/SelectionPage';
 import shopCartCacheTool from '../shopCart/model/ShopCartCacheTool';
 import SelectionPage from '../product/SelectionPage';
 import bridge from '../../utils/bridge';
+import RouterMap from '../../navigation/RouterMap';
 
 const { iconShowFire, iconBuyBg, iconLike, iconNoLike, iconDownload } = res;
 // @SmoothPushPreLoadHighComponent
@@ -220,6 +221,11 @@ export default class ShowDetailPage extends BasePage {
         if (pageState === PageLoadingState.fail) {
             return;
         }
+
+        // if (!user.isLogin) {
+        //     this.$navigate('login/login/LoginPage');
+        //     return;
+        // }
         this.shareModal && this.shareModal.open();
     }
 
@@ -240,7 +246,6 @@ export default class ShowDetailPage extends BasePage {
             opacity: 1 - shadowOpacity
         });
     };
-
 
     _renderNormalTitle() {
         let { detail } = this.showDetailModule;
@@ -313,6 +318,11 @@ export default class ShowDetailPage extends BasePage {
     };
 
     _downloadShowContent = () => {
+        if (!user.isLogin) {
+            this.$navigate('login/login/LoginPage');
+            return;
+        }
+
         let { detail } = this.showDetailModule;
         if (!EmptyUtils.isEmptyArr(detail.resource)) {
             let urls = detail.resource.map((value) => {
@@ -326,13 +336,13 @@ export default class ShowDetailPage extends BasePage {
         }
 
         let promises = [];
-        if(!EmptyUtils.isEmptyArr(detail.products)){
-            detail.products.map((value)=>{
+        if (!EmptyUtils.isEmptyArr(detail.products)) {
+            detail.products.map((value) => {
                 let promise = bridge.createQRToAlbum(`${apiEnvironment.getCurrentH5Url()}/product/99/${value.prodCode}?upuserid=${user.code || ''}`);
                 promises.push(promise);
-            })
+            });
         }
-        if(!EmptyUtils.isEmptyArr(promises)){
+        if (!EmptyUtils.isEmptyArr(promises)) {
             Promise.all(promises);
         }
 
@@ -342,7 +352,7 @@ export default class ShowDetailPage extends BasePage {
     _clickLike = () => {
         let { detail } = this.showDetailModule;
         if (detail.like) {
-            if( detail.likesCount > 0 ){
+            if (detail.likesCount > 0) {
                 return;
             }
             this.reduceCountByType(1);
@@ -396,18 +406,19 @@ export default class ShowDetailPage extends BasePage {
                             </Text>
                         </ImageBackground>
                         <View style={{
-                            position:'absolute',
-                            top:px2dp(-5),
-                            right:px2dp(-5),
+                            position: 'absolute',
+                            top: px2dp(-5),
+                            right: px2dp(-5),
                             width: px2dp(20),
                             height: px2dp(20),
                             borderRadius: px2dp(10),
-                            borderWidth:1,
-                            borderColor:DesignRule.white,
+                            borderWidth: 1,
+                            borderColor: DesignRule.white,
                             backgroundColor: DesignRule.mainColor,
                             justifyContent: 'center',
-                            alignItems: 'center'}}>
-                            <Text style={{color:DesignRule.white,fontSize:px2dp(12)}}>
+                            alignItems: 'center'
+                        }}>
+                            <Text style={{ color: DesignRule.white, fontSize: px2dp(12) }}>
                                 {detail.products.length}
                             </Text>
                         </View>
@@ -487,50 +498,50 @@ export default class ShowDetailPage extends BasePage {
 
 
         let html = '<!DOCTYPE html><html>' +
-            '<head>' +
-            '<meta http-equiv="Content-type" content="text/html; charset=utf-8" />' +
-            //'<meta content="m.007fenqi.com" name="author"/>' +
-            '<meta content="yes" name="apple-mobile-web-app-capable"/>' +
-            '<meta content="yes" name="apple-touch-fullscreen"/>' +
-            '<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />' +
-            '<meta http-equiv="Expires" content="-1"/>' +
-            '<meta http-equiv="Cache-Control" content="no-cache">' +
-            '<meta http-equiv="Pragma" content="no-cache">'
-            // + '<link rel="stylesheet" href="http://m.007fenqi.com/app/app.css" type="text/css"/>'
-            + '<style type="text/css">' + 'html, body, p, embed, iframe, div ,video {'
-            + 'position:relative;width:100%;margin:0;padding:0;background-color:#ffffff' + ';line-height:28px;box-sizing:border-box;display:block;font-size:'
-            + 13
-            + 'px;'
-            + '}'
-            + 'p {word-break:break-all;}'
-            + 'table { border-collapse:collapse;}'
-            + 'table, td, th {border:1px solid #ddd;}'
-            + 'blockquote { display: block;' +
-            '    background: #f9f9f9;' +
-            '    border-left: 10px solid #ccc;' +
-            '    margin: 10px;' +
-            '    padding: 0px;' +
-            '    position: relative;' +
-            '    box-sizing: border-box;}'
-            //  + Utils.NVL(this.props.webviewStyle, '')
-            + '</style>'
-            + '<script type="text/javascript">'
-            + 'function ResizeImages() {'
-            + 'var myimg,oldwidth;'
-            + 'var maxwidth = document.body.clientWidth;'
-            + 'for(i=0;i <document.images.length;i++){'
-            + 'myimg = document.images[i];'
-            + 'if(myimg.width > maxwidth){'
-            + 'oldwidth = myimg.width;'
-            + 'myimg.width = maxwidth;'
-            + '}'
-            + '}'
-            + '}'
-            + '</script>'
-            + '</head>'
-            + '<body onload="ResizeImages();">'
-            + '<div>'
-            + detail.content ?  detail.content : ''
+        '<head>' +
+        '<meta http-equiv="Content-type" content="text/html; charset=utf-8" />' +
+        //'<meta content="m.007fenqi.com" name="author"/>' +
+        '<meta content="yes" name="apple-mobile-web-app-capable"/>' +
+        '<meta content="yes" name="apple-touch-fullscreen"/>' +
+        '<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />' +
+        '<meta http-equiv="Expires" content="-1"/>' +
+        '<meta http-equiv="Cache-Control" content="no-cache">' +
+        '<meta http-equiv="Pragma" content="no-cache">'
+        // + '<link rel="stylesheet" href="http://m.007fenqi.com/app/app.css" type="text/css"/>'
+        + '<style type="text/css">' + 'html, body, p, embed, iframe, div ,video {'
+        + 'position:relative;width:100%;margin:0;padding:0;background-color:#ffffff' + ';line-height:28px;box-sizing:border-box;display:block;font-size:'
+        + 13
+        + 'px;'
+        + '}'
+        + 'p {word-break:break-all;}'
+        + 'table { border-collapse:collapse;}'
+        + 'table, td, th {border:1px solid #ddd;}'
+        + 'blockquote { display: block;' +
+        '    background: #f9f9f9;' +
+        '    border-left: 10px solid #ccc;' +
+        '    margin: 10px;' +
+        '    padding: 0px;' +
+        '    position: relative;' +
+        '    box-sizing: border-box;}'
+        //  + Utils.NVL(this.props.webviewStyle, '')
+        + '</style>'
+        + '<script type="text/javascript">'
+        + 'function ResizeImages() {'
+        + 'var myimg,oldwidth;'
+        + 'var maxwidth = document.body.clientWidth;'
+        + 'for(i=0;i <document.images.length;i++){'
+        + 'myimg = document.images[i];'
+        + 'if(myimg.width > maxwidth){'
+        + 'oldwidth = myimg.width;'
+        + 'myimg.width = maxwidth;'
+        + '}'
+        + '}'
+        + '}'
+        + '</script>'
+        + '</head>'
+        + '<body onload="ResizeImages();">'
+        + '<div>'
+        + detail.content ? detail.content : ''
             + '</div>'
             + '</body></html>';
 
@@ -556,6 +567,12 @@ export default class ShowDetailPage extends BasePage {
                 <ProductRowListView style={{ marginLeft: DesignRule.margin_page, marginVertical: px2dp(10) }}
                                     products={detail.products}
                                     addCart={this.addCart}
+                                    pressProduct={(prodCode) => {
+                                        this.setState({
+                                            productModalVisible: false
+                                        });
+                                        this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode });
+                                    }}
                 />
 
 
@@ -571,40 +588,22 @@ export default class ShowDetailPage extends BasePage {
                                    showsVerticalScrollIndicator={false}
 
                 />
-                {/*<View style={styles.goodsView}>*/}
-                {/*{*/}
-                {/*products.map((value, index) => {*/}
-                {/*return <Goods key={index} data={value} press={() => {*/}
-                {/*this._goToGoodsPage(value);*/}
-                {/*}}/>;*/}
-                {/*})*/}
-                {/*}*/}
-                {/*</View>*/}
 
                 {this._otherInfoRender()}
 
-                {/*{*/}
-                {/*isCollecting*/}
-                {/*?*/}
-                {/*<View style={[styles.bottomBtn]}>*/}
-                {/*<ActivityIndicator style={styles.btnLoading} size='small'/>*/}
-                {/*</View>*/}
-                {/*:*/}
-                {/*<TouchableOpacity style={styles.bottomBtn} onPress={() => this._collectAction()}>*/}
-                {/*<Image style={styles.collectImg}*/}
-                {/*source={detail.hadCollect ? res.showFire : res.noShowFire}/>*/}
-                {/*<Text style={styles.bottomText}*/}
-                {/*allowFontScaling={false}>{pageState === PageLoadingState.fail ? '' :'收藏'} · {detail.collectCount}</Text>*/}
-                {/*</TouchableOpacity>*/}
-                {/*}*/}
             </ScrollView>
             {pageState === PageLoadingState.fail ? null :
                 (this._bottomRender())
             }
             <View style={styles.whiteNav}/>
             {this._renderNormalTitle()}
-            {/*{this._shieldRender()}*/}
             {detail.products ? <ProductListModal visible={this.state.productModalVisible}
+                                                 pressProduct={(prodCode) => {
+                                                     this.setState({
+                                                         productModalVisible: false
+                                                     });
+                                                     this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode });
+                                                 }}
                                                  addCart={this.addCart}
                                                  products={detail.products} requestClose={() => {
                 this.setState({
@@ -621,8 +620,8 @@ export default class ShowDetailPage extends BasePage {
                                 imageUrlStr: detail.resource[0].url,
                                 titleStr: detail.content,
                                 QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
-                                headerImage:user.headImg,
-                                userName:detail.userName ? detail.userName : ''
+                                headerImage: user.headImg,
+                                userName: detail.userName ? detail.userName : ''
                             }}
                             miniProgramJson={{
                                 title: detail.title,

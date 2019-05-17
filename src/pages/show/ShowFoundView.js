@@ -2,33 +2,20 @@
  * 精选热门
  */
 import React from 'react';
-import { View, StyleSheet,  } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { observer } from 'mobx-react';
-import { tag,  } from './Show';
+import { tag } from './Show';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
 
 const { px2dp } = ScreenUtils;
 import TimerMixin from 'react-timer-mixin';
 import ReleaseButton from './components/ReleaseButton';
-
 import user from '../../model/user';
-import SelectionPage, { sourceType } from '../product/SelectionPage';
-import AddCartModel from './model/AddCartModel';
-import shopCartCacheTool from '../shopCart/model/ShopCartCacheTool';
-import { track, trackEvent } from '../../utils/SensorsTrack';
-import bridge from '../../utils/bridge';
 import ShowGroundView from './components/ShowGroundView';
 
 @observer
 export default class ShowFoundView extends React.Component {
-
-    // state = {
-    //     isEnd: false,
-    //     isFetching: false,
-    //     hasRecommend: false,
-    //     isScroll: false,
-    // };
 
     constructor(props) {
         super(props);
@@ -39,107 +26,72 @@ export default class ShowFoundView extends React.Component {
 
     }
 
-
-
-
-
-    addCart = (code) => {
-        let addCartModel = new AddCartModel();
-        addCartModel.requestProductDetail(code,(productIsPromotionPrice)=>{
-            this.SelectionPage.show(addCartModel, (amount, skuCode)=>{
-                const { prodCode, name, originalPrice } = addCartModel;
-                shopCartCacheTool.addGoodItem({
-                    'amount': amount,
-                    'skuCode': skuCode,
-                    'productCode': code
-                });
-                /*加入购物车埋点*/
-                track(trackEvent.AddToShoppingcart, {
-                    spuCode: prodCode,
-                    skuCode: skuCode,
-                    spuName: name,
-                    pricePerCommodity: originalPrice,
-                    spuAmount: amount,
-                    shoppingcartEntrance: 1
-                });
-            }, { sourceType: productIsPromotionPrice ? sourceType.promotion : null });
-        },(error)=>{
-            bridge.$toast(error.msg || '服务器繁忙');
-        })
-    }
-
-
-
     render() {
         return (
             <View style={styles.container}>
-                <View style={{ flex: 1, paddingHorizontal: 15 }}>
-                    <ShowGroundView style={{ flex: 1 }}
-                                       ref={(ref) => {
-                                           this.foundList = ref;
-                                       }}
-                                       uri={'/social/show/content/page/query@GET'}
-                                       params={{ spreadPosition: tag.Found + '' }}
-
-                                       onItemPress={({ nativeEvent }) => {
-                                           const { navigate } = this.props;
-                                           let params = {
-                                               data:nativeEvent,
-                                               ref: this.foundList,
-                                               index: nativeEvent.index
-                                           };
-                                           if(nativeEvent.showType === 1){
-                                               navigate('show/ShowDetailPage', params);
-                                           }else {
-                                               navigate('show/ShowRichTextDetailPage', params);
-                                           }
-
-                                       }}
-
-
-
-                                       onScrollStateChanged={({ nativeEvent }) => {
-                                           const { state } = nativeEvent;
-                                           if (state === 0) {
-                                               this.lastStopScrollTime = (new Date()).getTime();
-                                               TimerMixin.setTimeout(() => {
-                                                   if (this.lastStopScrollTime === -1) {
-                                                       return;
-                                                   }
-                                                   let currentTime = (new Date()).getTime();
-                                                   if ((currentTime - this.lastStopScrollTime) < 3000) {
-                                                       return;
-                                                   }
-                                                   this.setState({
-                                                       showEditorIcon: true
-                                                   });
-                                               }, 3000);
-                                           } else {
-                                               this.lastStopScrollTime = -1;
-                                               this.setState({
-                                                   showEditorIcon: false
-                                               });
-                                           }
-                                       }}
-                    />
-                    {
-                        this.state.showEditorIcon ?
-                            <ReleaseButton
-                                style={{
-                                    position: 'absolute',
-                                    right: 15,
-                                    bottom: 118
+                <ShowGroundView style={{ flex: 1 }}
+                                ref={(ref) => {
+                                    this.foundList = ref;
                                 }}
-                                onPress={() => {
-                                    if (!user.isLogin) {
-                                        this.props.navigate('login/login/LoginPage');
-                                        return;
+                                uri={'/social/show/content/page/query@GET'}
+                                params={{ spreadPosition: tag.Found + '' }}
+
+                                onItemPress={({ nativeEvent }) => {
+                                    const { navigate } = this.props;
+                                    let params = {
+                                        data: nativeEvent,
+                                        ref: this.foundList,
+                                        index: nativeEvent.index
+                                    };
+                                    if (nativeEvent.showType === 1) {
+                                        navigate('show/ShowDetailPage', params);
+                                    } else {
+                                        navigate('show/ShowRichTextDetailPage', params);
                                     }
-                                    this.props.navigate('show/ReleaseNotesPage');
-                                }}/> : null
-                    }
-                </View>
-                <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
+
+                                }}
+
+
+                                onScrollStateChanged={({ nativeEvent }) => {
+                                    const { state } = nativeEvent;
+                                    if (state === 0) {
+                                        this.lastStopScrollTime = (new Date()).getTime();
+                                        TimerMixin.setTimeout(() => {
+                                            if (this.lastStopScrollTime === -1) {
+                                                return;
+                                            }
+                                            let currentTime = (new Date()).getTime();
+                                            if ((currentTime - this.lastStopScrollTime) < 3000) {
+                                                return;
+                                            }
+                                            this.setState({
+                                                showEditorIcon: true
+                                            });
+                                        }, 3000);
+                                    } else {
+                                        this.lastStopScrollTime = -1;
+                                        this.setState({
+                                            showEditorIcon: false
+                                        });
+                                    }
+                                }}
+                />
+                {
+                    this.state.showEditorIcon ?
+                        <ReleaseButton
+                            style={{
+                                position: 'absolute',
+                                right: 15,
+                                bottom: 118
+                            }}
+                            onPress={() => {
+                                if (!user.isLogin) {
+                                    this.props.navigate('login/login/LoginPage');
+                                    return;
+                                }
+                                this.props.navigate('show/ReleaseNotesPage');
+                            }}/> : null
+                }
             </View>
         );
     }

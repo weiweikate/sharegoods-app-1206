@@ -335,11 +335,49 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         float sy = 36 * 1.0f / bitmapHeight;
         float scale = Math.max(sx, sy);
 
-//        Matrix matrix = new Matrix();
-//        matrix.setScale(scale, scale);
-//        mShader.setLocalMatrix(matrix);
-//        paint.setShader(mShader);
+        Matrix matrix = new Matrix();
+        matrix.setScale(scale, scale);
+        mShader.setLocalMatrix(matrix);
+        paint.setShader(mShader);
         canvas.drawCircle(48, 430, 18, paint);
+        String name = shareImageBean.getUserName();
+        name = "ssss";
+        if(!TextUtils.isEmpty(name)){
+            paint.setColor(Color.parseColor("#333333"));
+            paint.setTextSize(15);
+            Rect bounds = new Rect();
+            paint.getTextBounds(name, 0, name.length(), bounds);
+            canvas.drawText(name, 75, 419, paint);
+        }
+
+        String content = shareImageBean.getTitleStr();
+        if(!TextUtils.isEmpty(content)){
+            paint.setColor(Color.parseColor("#333333"));
+            paint.setTextSize(13);
+            Rect bounds = new Rect();
+            paint.getTextBounds(content, 0, content.length(), bounds);
+            canvas.drawText(content, 30, 457, paint);
+        }
+
+        String url = shareImageBean.getQRCodeStr();
+        if(!TextUtils.isEmpty(url)){
+            paint.setColor(Color.WHITE);
+            RectF qrBg = new RectF(148,544,228,624);
+            canvas.drawRoundRect(white, 5, 5, paint);
+            Bitmap qrBitmap = createQRImage(url, 80, 80);
+            canvas.drawBitmap(qrBitmap, 148, 544, paint);
+            if (qrBitmap != null && !qrBitmap.isRecycled()) {
+                qrBitmap.recycle();
+                qrBitmap = null;
+            }
+        }
+
+        String tip = "秀一秀 赚到够";
+        paint.setColor(Color.parseColor("#333333"));
+        paint.setTextSize(13);
+        Rect bounds = new Rect();
+        paint.getTextBounds(tip, 0, tip.length(), bounds);
+        canvas.drawText(tip, 75, 419, paint);
 
         String path = BitmapUtils.saveImageToCache(result, "shareShowImage.png", shareImageBean.toString());
 
@@ -353,6 +391,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             outBitmap.recycle();
             outBitmap = null;
         }
+
 
         if (result != null && !result.isRecycled()) {
             result.recycle();
