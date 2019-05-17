@@ -406,7 +406,7 @@ class User {
 
     @action clearToken() {
         this.token = null;
-        AsyncStorage.removeItem(USERTOKEN);
+        AsyncStorage.setItem(USERTOKEN,'');
     }
 
     // 清空离线购物车信息
