@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,assign) NSInteger type; //事件类型
 @property (nonatomic,strong)NSArray * products;
 @property (nonatomic,assign) BOOL isLike;
+@property (nonatomic,assign) BOOL login;
 
 
 @property(nonatomic,copy)void (^zanBlock)(NSString*);

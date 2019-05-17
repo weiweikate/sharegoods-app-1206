@@ -40,3 +40,11 @@
 @implementation UserInfoModel
 
 @end
+
+@implementation promotionResultModel
+
+@end
+
+@implementation ActityModel
+
+@end

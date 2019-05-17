@@ -21,17 +21,20 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 @property (nonatomic, copy) RCTBubblingEventBlock onScrollStateChanged;
+@property (nonatomic, copy) RCTBubblingEventBlock onScrollY;
 @property (nonatomic, copy) RCTBubblingEventBlock onStartRefresh;
 @property (nonatomic, copy) RCTBubblingEventBlock onStartScroll;
 @property (nonatomic, copy) RCTBubblingEventBlock onEndScroll;
 @property (nonatomic, copy) NSString* uri;
 @property (nonatomic, strong) NSDictionary* params;
 @property (nonatomic, assign) NSInteger headerHeight;
+@property (nonatomic, assign) BOOL userIsLogin;
 
 -(void)replaceData:(NSInteger) index num:(NSInteger) num;
 
 -(void)replaceItemData:(NSInteger) index data:(NSDictionary*) data;
 
+-(void)scrollToTop;
 @end
 
 NS_ASSUME_NONNULL_END

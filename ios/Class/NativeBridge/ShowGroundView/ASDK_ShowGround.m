@@ -394,6 +394,9 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
   CGFloat Y = scrollView.contentOffset.y;
+  if(_onScrollY){
+    _onScrollY(@{@"YDistance":@(Y)});
+  }
   if (Y> self.height &&
       scrollView.bounces == YES &&
       scrollView.mj_footer.state != MJRefreshStateNoMoreData) {
@@ -448,4 +451,7 @@
   }
 }
 
+-(void)scrollToTop{
+  [self.collectionNode scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
+}
 @end

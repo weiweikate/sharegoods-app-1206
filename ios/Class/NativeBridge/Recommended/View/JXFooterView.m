@@ -211,7 +211,7 @@
         price.font = [UIFont systemFontOfSize:10];
         price.textColor = [UIColor lightGrayColor];
 //      if([self.products[i][@"price"] && self.products[i][@"originalPrice"]){
-        price.attributedText = [self getPriceAttribute:[self.products[i] valueForKey:@"groupPrice"] oldPrice:[self.products[i] valueForKey:@"originalPrice"]];
+      price.attributedText = [self getPriceAttribute:[self getCurrentPrice:self.products[i]] oldPrice:[self.products[i] valueForKey:@"originalPrice"]];
 //        }
 
         UIButton* shopCarBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -296,5 +296,50 @@
   NSString *doubleString        = [NSString stringWithFormat:@"%.2lf", conversionValue];
   NSDecimalNumber *decNumber    = [NSDecimalNumber decimalNumberWithString:doubleString];
   return [decNumber stringValue];
+}
+
+-(NSString*)getCurrentPrice:(GoodsDataModel*)model{
+  if(model.promotionResult){
+    ActityModel* groupModel =  model.promotionResult.groupActivity;
+    ActityModel* singleModel =  model.promotionResult.singleActivity;
+    ActityModel* selectModel = [ActityModel new];
+    if(groupModel.type){
+      selectModel=groupModel;
+    }else{
+      selectModel=singleModel;
+    }
+    if(([self getNowTimestamp]< [selectModel.endTime integerValue])&&([self getNowTimestamp]< [selectModel.startTime integerValue])){
+      return model.promotionMinPrice? [NSString stringWithFormat:@"%lf" ,model.promotionMinPrice]:@"0.00";
+    }else if(self.login){
+      return [NSString stringWithFormat:@"%lf" ,model.v0Price];
+    }
+    
+  }
+  return [NSString stringWithFormat:@"%lf" ,model.minPrice];
+}
+
+-(NSInteger)getNowTimestamp{
+  
+  NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+  
+  [formatter setDateStyle:NSDateFormatterMediumStyle];
+  
+  [formatter setTimeStyle:NSDateFormatterShortStyle];
+  
+  [formatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"]; // ----------设置你想要的格式,hh与HH的区别:分别表示12小时制,24小时制
+  
+  //设置时区,这个对于时间的处理有时很重要
+  
+  NSTimeZone* timeZone = [NSTimeZone timeZoneWithName:@"Asia/Beijing"];
+  
+  [formatter setTimeZone:timeZone];
+  
+  NSDate *datenow = [NSDate date];//现在时间
+  
+  //时间转时间戳的方法:
+  NSInteger timeSp = [[NSNumber numberWithDouble:[datenow timeIntervalSince1970]] integerValue];
+  
+  return timeSp;
+  
 }
 @end
