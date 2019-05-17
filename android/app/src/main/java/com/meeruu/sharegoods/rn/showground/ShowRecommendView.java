@@ -225,6 +225,9 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
                     LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
                     int position = manager.findFirstVisibleItemPosition();
                     View firstView = manager.findViewByPosition(position);
+                    if(firstView == null){
+                        return;
+                    }
                     int itemHeight = firstView.getHeight();
                     int flag = (position) * itemHeight - firstView.getTop();
                     onScrollYEvent = new onScrollYEvent();
