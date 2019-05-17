@@ -173,6 +173,9 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
                     StaggeredGridLayoutManager manager = (StaggeredGridLayoutManager) recyclerView.getLayoutManager();
                     int position = manager.findFirstVisibleItemPositions(null)[0];
                     View firstView = manager.findViewByPosition(position);
+                    if(firstView == null){
+                        return;
+                    }
                     int itemHeight = firstView.getHeight();
                     int flag = (position) * itemHeight - firstView.getTop();
                     onScrollYEvent = new onScrollYEvent();
