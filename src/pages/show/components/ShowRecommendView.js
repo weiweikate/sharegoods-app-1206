@@ -34,6 +34,15 @@ export default class ShowRecommendView extends Component {
             [index,data]
         );
     }
+
+    scrollToTop = ()=>{
+        UIManager.dispatchViewManagerCommand(
+            this.getHandle(),
+            UIManager.ShowGroundView.Commands.scrollToTop,
+            []
+        );
+    }
+
     render() {
         return (
             <RCTShowRecommendView {...this.props}

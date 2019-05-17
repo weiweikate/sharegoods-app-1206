@@ -23,6 +23,7 @@ import ShowApi from './ShowApi';
 import EmptyUtils from '../../utils/EmptyUtils';
 import apiEnvironment from '../../api/ApiEnvironment';
 import ShowUtils from './utils/ShowUtils';
+import ToTopButton from './components/ToTopButton';
 
 @observer
 export default class ShowMaterialView extends React.Component {
@@ -39,7 +40,8 @@ export default class ShowMaterialView extends React.Component {
         this.firstLoad = true;
         this.state = {
             headerView: null,
-            showEditorIcon: true
+            showEditorIcon: true,
+            showToTop:false
         };
 
     }
@@ -145,6 +147,14 @@ export default class ShowMaterialView extends React.Component {
 
                                        }}
 
+                                       onScrollY={({nativeEvent})=>{
+                                           // alert(JSON.stringify(nativeEvent.YDistance)+ScreenH)
+                                           this.setState({
+                                               showToTop:nativeEvent.YDistance > ScreenUtils.height
+                                           })
+                                       }}
+
+
                                        onSharePress={({nativeEvent})=>{
                                            if (!user.isLogin) {
                                                this.props.navigate('login/login/LoginPage');
@@ -194,6 +204,16 @@ export default class ShowMaterialView extends React.Component {
                                     this.props.navigate('show/ReleaseNotesPage');
                                 }}/> : null
                     }
+
+                    {this.state.showToTop ? <ToTopButton
+                        onPress={()=>{
+                            this.materialList && this.materialList.scrollToTop();
+                        }}
+                        style={{
+                        position: 'absolute',
+                        right: 15,
+                        bottom: 70,
+                    }}/> : null }
                 </View>
                 <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             </View>

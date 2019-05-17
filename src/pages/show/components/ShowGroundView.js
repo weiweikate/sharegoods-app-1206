@@ -40,6 +40,14 @@ export default class ShowGroundView extends Component {
         );
     }
 
+    scrollToTop = ()=>{
+        UIManager.dispatchViewManagerCommand(
+            this.getHandle(),
+            UIManager.ShowGroundView.Commands.scrollToTop,
+            []
+        );
+    }
+
 
     getHandle = () => {
         return findNodeHandle(this.refs[RCT_SHOWGROUND_REF]);

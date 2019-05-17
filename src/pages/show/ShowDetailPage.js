@@ -221,11 +221,10 @@ export default class ShowDetailPage extends BasePage {
         if (pageState === PageLoadingState.fail) {
             return;
         }
-
-        // if (!user.isLogin) {
-        //     this.$navigate('login/login/LoginPage');
-        //     return;
-        // }
+        if (!user.isLogin) {
+            this.$navigate('login/login/LoginPage');
+            return;
+        }
         this.shareModal && this.shareModal.open();
     }
 

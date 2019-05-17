@@ -26,6 +26,7 @@ import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
+import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.adapter.ProductsAdapter;
 import com.meeruu.sharegoods.rn.showground.adapter.ShowRecommendAdapter;
@@ -37,6 +38,7 @@ import com.meeruu.sharegoods.rn.showground.event.onEndScrollEvent;
 import com.meeruu.sharegoods.rn.showground.event.onItemPressEvent;
 import com.meeruu.sharegoods.rn.showground.event.onNineClickEvent;
 import com.meeruu.sharegoods.rn.showground.event.onScrollStateChangedEvent;
+import com.meeruu.sharegoods.rn.showground.event.onScrollYEvent;
 import com.meeruu.sharegoods.rn.showground.event.onSharePressEvent;
 import com.meeruu.sharegoods.rn.showground.event.onStartRefreshEvent;
 import com.meeruu.sharegoods.rn.showground.event.onStartScrollEvent;
@@ -62,6 +64,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
     private onZanPressEvent onZanPressEvent;
     private onSharePressEvent onSharePressEvent;
     private onDownloadPressEvent onDownloadPressEvent;
+    private onScrollYEvent onScrollYEvent;
     private ShowgroundPresenter presenter;
     private WeakReference<View> showgroundView;
     private onStartRefreshEvent startRefreshEvent;
@@ -213,6 +216,27 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         adapter.setLoadMoreView(new CustomLoadMoreView());
         setRecyclerViewItemEvent(view);
         recyclerView.setAdapter(adapter);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (eventDispatcher != null) {
+                    LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                    int position = manager.findFirstVisibleItemPosition();
+                    View firstView = manager.findViewByPosition(position);
+                    int itemHeight = firstView.getHeight();
+                    int flag = (position) * itemHeight - firstView.getTop();
+                    onScrollYEvent = new onScrollYEvent();
+                    onScrollYEvent.init(view.getId());
+                    WritableMap ymap = Arguments.createMap();
+                    ymap.putInt("YDistance",  DensityUtils.px2dip(flag));
+                    onScrollYEvent.setData(ymap);
+                    eventDispatcher.dispatchEvent(onScrollYEvent);
+                }
+            }
+
+        });
     }
 
 
@@ -384,19 +408,12 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
 
     @Override
     public void repelaceData(final int index, final int clickNum) {
-//        if (adapter != null) {
-//            final List<NewestShowGroundBean.DataBean> data = adapter.getData();
-//
-//            recyclerView.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    NewestShowGroundBean.DataBean bean = data.get(index);
-//                    bean.setClick(clickNum);
-//                    adapter.replaceData(data);
-//
-//                }
-//            }, 200);
-//        }
+
+    }
+    public void scrollIndex(int index){
+        if(recyclerView != null){
+            recyclerView.smoothScrollToPosition(index);
+        }
     }
 
     @Override

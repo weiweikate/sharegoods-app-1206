@@ -25,6 +25,7 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> {
     public static final int REPLACE_DATA = 1;
     public static final int ADD_DATA_TOP = 2;
     public static final int REPLACE_ITEM_DATA = 3;
+    public static final int SCROLL_TO_TOP = 4;
     @Override
     public String getName() {
         return COMPONENT_NAME;
@@ -59,7 +60,7 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> {
     @javax.annotation.Nullable
     @Override
     public Map<String, Integer> getCommandsMap() {
-        return MapBuilder.of("replaceData", REPLACE_DATA,"addDataToTop",ADD_DATA_TOP,"replaceItemData",REPLACE_ITEM_DATA);
+        return MapBuilder.of("replaceData", REPLACE_DATA,"addDataToTop",ADD_DATA_TOP,"replaceItemData",REPLACE_ITEM_DATA,"scrollToTop",SCROLL_TO_TOP);
     }
 
     @Override
@@ -83,6 +84,13 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> {
                 Object object = root.getTag();
                 if (object != null && object instanceof ShowGroundView) {
                     ((ShowGroundView) object).repelaceItemData(args.getInt(0), args.getString(1));
+                }
+            }
+            break;
+            case SCROLL_TO_TOP:{
+                Object object = root.getTag();
+                if (object != null && object instanceof ShowGroundView) {
+                    ((ShowGroundView) object).scrollIndex(0);
                 }
             }
             break;

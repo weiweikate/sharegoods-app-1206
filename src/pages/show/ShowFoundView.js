@@ -13,7 +13,7 @@ import TimerMixin from 'react-timer-mixin';
 import ReleaseButton from './components/ReleaseButton';
 import user from '../../model/user';
 import ShowGroundView from './components/ShowGroundView';
-
+import ToTopButton from './components/ToTopButton';
 @observer
 export default class ShowFoundView extends React.Component {
 
@@ -21,7 +21,8 @@ export default class ShowFoundView extends React.Component {
         super(props);
         this.firstLoad = true;
         this.state = {
-            showEditorIcon: true
+            showEditorIcon: true,
+            showToTop:false
         };
 
     }
@@ -50,7 +51,12 @@ export default class ShowFoundView extends React.Component {
                                     }
 
                                 }}
-
+                                onScrollY={({nativeEvent})=>{
+                                    // alert(JSON.stringify(nativeEvent.YDistance)+ScreenH)
+                                    this.setState({
+                                        showToTop:nativeEvent.YDistance > ScreenUtils.height
+                                    })
+                                }}
 
                                 onScrollStateChanged={({ nativeEvent }) => {
                                     const { state } = nativeEvent;
@@ -92,6 +98,15 @@ export default class ShowFoundView extends React.Component {
                                 this.props.navigate('show/ReleaseNotesPage');
                             }}/> : null
                 }
+                {this.state.showToTop ? <ToTopButton
+                    onPress={()=>{
+                        this.foundList && this.foundList.scrollToTop();
+                    }}
+                    style={{
+                    position: 'absolute',
+                    right: 15,
+                    bottom: 70,
+                }}/> : null }
             </View>
         );
     }
