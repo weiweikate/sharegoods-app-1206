@@ -91,8 +91,6 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.VH> {
         String showPrice = null;
         if (currentTime > startTime && currentTime < endTime + 500) {
             showPrice = bean.getPromotionMinPrice();
-        } else if (!ShowRecommendViewManager.isLogin) {
-            showPrice = bean.getV0Price();
         } else {
             showPrice = bean.getMinPrice();
         }

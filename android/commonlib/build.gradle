@@ -36,11 +36,6 @@ dependencies {
     api rootProject.ext.dependencies.recyclerview
     api rootProject.ext.dependencies.okhttp
     api rootProject.ext.dependencies.sensors
-    api 'jp.wasabeef:blurry:3.0.0'
-    api(rootProject.ext.dependencies.sophix) {
-        exclude(module: 'alicloud-android-utdid')
-        exclude(module: 'alicloud-android-ut')
-    }
     // From node_modules
     api(rootProject.ext.dependencies.rn) {
         exclude group: 'com.android.support'
@@ -70,4 +65,5 @@ dependencies {
     //此版本插件仅支持JPushSDK3.1.8及以上版本
     //    api 'cn.jiguang.sdk.plugin:vivo:3.2.0'//此版本插件仅支持JPushSDK3.2.0及以上版本
     api files('libs/jverification-android-release-2.1.1.jar')
+    api 'jp.wasabeef:blurry:3.0.0'
 }

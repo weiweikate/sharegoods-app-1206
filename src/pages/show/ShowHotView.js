@@ -145,7 +145,6 @@ export default class ShowHotView extends React.Component {
                                                index: nativeEvent.index
                                            });
                                        }}
-                                       userIsLogin={user.token ? true:false}
                                        onAddCartClick={({ nativeEvent }) => {
                                            this.addCart(nativeEvent.prodCode);
                                        }}

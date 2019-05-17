@@ -21,7 +21,7 @@ public class ShowRecommendViewManager extends ViewGroupManager<ViewGroup> {
     public static final int ADD_DATA_TOP = 2;
     public static final int REPLACE_ITEM_DATA = 3;
     public static final int SCROLL_TO_TOP = 4;
-    public static boolean isLogin = false;
+
     @Override
     public String getName() {
         return COMPONENT_NAME;
@@ -45,15 +45,6 @@ public class ShowRecommendViewManager extends ViewGroupManager<ViewGroup> {
         }
     }
 
-    @ReactProp(name = "userIsLogin")
-    public void setIsLogin(View view, boolean login) {
-       if(isLogin != login){
-           Object object = view.getTag();
-           if (object != null && object instanceof ShowRecommendView) {
-               ((ShowRecommendView) object).refresh();
-           }
-       }
-    }
 
     @Override
     public void addView(ViewGroup parent, View child, int index) {

@@ -18,7 +18,6 @@ import ImageLoad from '@mr/image-placeholder';
 import { MRText } from '../../../components/ui';
 import res from '../res';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
-import user from '../../../model/user';
 import { observer } from 'mobx-react';
 
 const { px2dp } = ScreenUtils;
@@ -40,8 +39,6 @@ export default class ProductRowListView extends PureComponent {
         const { endTime: endTimeT, startTime: startTimeT, currentTime = this.props.now } = groupActivity.type ? groupActivity : singleActivity;
         if (currentTime > startTimeT && currentTime < endTimeT + 500) {
             showPrice = data.promotionMinPrice;
-        } else if (EmptyUtils.isEmpty(user.token)) {
-            showPrice = data.v0Price;
         } else {
             showPrice = data.minPrice;
         }
