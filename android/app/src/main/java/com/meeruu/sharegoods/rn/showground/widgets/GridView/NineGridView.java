@@ -72,7 +72,6 @@ public class NineGridView extends ViewGroup {
             if (mImageInfo.size() == 1) {
                 gridWidth = (totalWidth - 2*gridSpacing)/3*2+ gridSpacing;
                 gridHeight = gridWidth*12/19;
-                Log.d("yzpzz","wid  "+gridWidth+ "height   "+gridHeight);
             } else {
                 //按照有几列 来计算每张图片的宽度和高度
                 //gridWidth 、gridHeight表示每张图片占据的宽、高
