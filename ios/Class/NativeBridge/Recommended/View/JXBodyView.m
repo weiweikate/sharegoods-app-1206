@@ -47,13 +47,13 @@
         UIImageView *imageView = [UIImageView new];
         [self addSubview:imageView];
         imageView.userInteractionEnabled = YES;
-        imageView.tag = i;
         //设置圆角
         imageView.layer.cornerRadius = 5;
         //将多余的部分切掉
         imageView.layer.masksToBounds = YES;
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapImageView:)];
         [imageView addGestureRecognizer:tap];
+        tap.view.tag = i;
         [temp addObject:imageView];
     }
     
@@ -63,18 +63,25 @@
 
 
 -(void)setSources:(NSArray<SourcesModel *> *)sources{
-    _sources = sources;
     for (long i=sources.count; i<self.imageViewsArray.count; i++) {
         UIImageView *imageView = [self.imageViewsArray objectAtIndex:i];
         imageView.hidden = YES;
     }
-    
-    if (_sources.count == 0) {
-        self.height_sd = 0;
-        self.fixedHeight = @(0);
-        return;
+  
+  NSMutableArray * arr = [NSMutableArray new];
+  for(int i=0;i<sources.count;i++){
+    if(sources[i].type==2){
+      if(arr.count>9) return;
+      [arr addObject:sources[i]];
     }
-    
+  }
+  _sources = arr;
+    if (_sources.count == 0) {
+      self.height_sd = 0;
+      self.fixedHeight = @(0);
+      return;
+    }
+  
         CGFloat itemW = [self itemWidthForPicPathArray:_sources];
         CGFloat itemH = 0;
         if (_sources.count < 3) {
@@ -90,7 +97,7 @@
             long rowIndex = idx / perRowItemCount;
             UIImageView *imageView = [self->_imageViewsArray objectAtIndex:idx];
             imageView.backgroundColor = [UIColor colorWithHexString:@"a5adb3"];
-            [imageView sd_setImageWithURL:[NSURL URLWithString:self.sources[idx][@"url"]] placeholderImage:[UIImage imageNamed:@"default_avatar"]];
+          [imageView sd_setImageWithURL:[NSURL URLWithString:_sources[idx].url] placeholderImage:[UIImage imageNamed:@"default_avatar"]];
           
             imageView.hidden = NO;
             imageView.frame = CGRectMake(columnIndex * (itemW + margin), rowIndex * (itemH + margin), itemW, itemH);
@@ -113,7 +120,7 @@
 - (void)tapImageView:(UITapGestureRecognizer *)tap
 {
   if(self.imgBlock){
-    self.imgBlock(@"");
+    self.imgBlock(tap.view.tag);
   }
     
 }
