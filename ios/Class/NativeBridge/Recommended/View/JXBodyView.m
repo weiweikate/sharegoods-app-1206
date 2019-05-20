@@ -74,7 +74,11 @@
         self.fixedHeight = @(0);
         return;
     }
-    
+  
+    if(_sources.count>9){
+      _sources = [sources subarrayWithRange:NSMakeRange(0, 8)];
+    }
+  
         CGFloat itemW = [self itemWidthForPicPathArray:_sources];
         CGFloat itemH = 0;
         if (_sources.count < 3) {
@@ -86,6 +90,7 @@
         CGFloat margin = 5;
         
         [_sources enumerateObjectsUsingBlock:^(SourcesModel *  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+         
             long columnIndex = idx % perRowItemCount;
             long rowIndex = idx / perRowItemCount;
             UIImageView *imageView = [self->_imageViewsArray objectAtIndex:idx];
