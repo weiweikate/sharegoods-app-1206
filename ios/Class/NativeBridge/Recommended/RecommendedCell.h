@@ -23,11 +23,12 @@ NS_ASSUME_NONNULL_BEGIN
 
   //点击回调
 - (void)labelClick:(RecommendedCell*)cell;
+-(void)clickGood:(GoodsDataModel*)goods;
 -(void)zanClick:(RecommendedCell*)cell;
 -(void)downloadClick:(RecommendedCell*)cell;
 -(void)shareClick:(RecommendedCell*)cell;
 -(void)addCar:(GoodsDataModel*)goods;
--(void)imageClick:(RecommendedCell*)cell;
+-(void)imageClick:(RecommendedCell*)cell tag:(NSInteger)tag;
 
 @end
 

@@ -62,11 +62,11 @@
   if (!_bodyView) {
     _bodyView = [[JXBodyView alloc] init];
     __weak RecommendedCell *weakSelf = self;
-    _bodyView.imgBlock =  ^(NSString* a){
+    _bodyView.imgBlock =  ^(NSInteger tag){
       NSLog(@"imgBlock");
       __strong RecommendedCell *strongSelf = weakSelf;
       if (strongSelf.cellDelegate) {
-          [strongSelf.cellDelegate imageClick:strongSelf];
+          [strongSelf.cellDelegate imageClick:strongSelf tag:tag];
       }
     };
   }
@@ -77,6 +77,12 @@
   if (!_footerView) {
     _footerView = [[JXFooterView alloc] init];
     __weak RecommendedCell *weakSelf = self;
+    _footerView.clickGoods = ^(GoodsDataModel* goods){
+      if (weakSelf.cellDelegate) {
+        [weakSelf.cellDelegate clickGood:goods];
+      }
+    };
+    
     _footerView.zanBlock =  ^(NSString* a){
       NSLog(@"zanClick");
       if (weakSelf.cellDelegate) {

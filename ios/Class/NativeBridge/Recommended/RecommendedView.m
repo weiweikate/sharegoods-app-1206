@@ -306,15 +306,21 @@ static NSString *IDType = @"TypeCell";
     [self.tableView endUpdates];
 }
 
--(void)imageClick:(RecommendedCell *)cell{
-  NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
+-(void)imageClick:(RecommendedCell *)cell tag:(NSInteger)tag{
   if (_onNineClick) {
     NSMutableArray * images = [NSMutableArray new];
     for (NSDictionary* image in cell.model.resource) {
       [images addObject:[image valueForKey:@"url"]];
     }
-    NSDictionary * dic = @{@"imageUrls":images,@"index":[NSNumber numberWithInteger:indexPath.row]};
+    NSDictionary * dic = @{@"imageUrls":images,@"index":[NSNumber numberWithInteger:tag]};
     _onNineClick(dic);
+  }
+}
+
+-(void)clickGood:(GoodsDataModel *)goods{
+  if(_onPressProduct) {
+    NSDictionary * dic = @{@"prodCode":goods.prodCode};
+    _onPressProduct(dic);
   }
 }
 

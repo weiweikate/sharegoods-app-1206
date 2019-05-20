@@ -22,6 +22,7 @@ RCT_EXPORT_VIEW_PROPERTY(onZanPress, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onDownloadPress, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onSharePress, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onAddCartClick, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onPressProduct, RCTBubblingEventBlock)
 
 RCT_EXPORT_VIEW_PROPERTY(onScrollStateChanged, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onScrollY, RCTBubblingEventBlock)

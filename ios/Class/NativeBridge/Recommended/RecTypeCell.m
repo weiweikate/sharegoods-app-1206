@@ -173,7 +173,14 @@
       num = @"10w+";
     }
   _zanNum.text = num;
-  [self.picImg sd_setImageWithURL:[NSURL URLWithString:[model.resource[0] valueForKey: @"url"]] placeholderImage:[UIImage imageNamed:@"default_avatar"]];
+  NSString* imageUrl = [[NSString alloc]init];
+  for(SourcesModel *obj in model.resource){
+    if(obj.type==1){
+      imageUrl= [obj valueForKey: @"url"];
+    }
+  }
+ 
+  [self.picImg sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"default_avatar"]];
   self.contentLab.text = model.title;
   
 }

@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong)NSArray * products;
 @property (nonatomic,assign) BOOL isLike;
 
+@property(nonatomic,copy)void (^clickGoods)(GoodsDataModel*);
 @property(nonatomic,copy)void (^zanBlock)(NSString*);
 @property(nonatomic,copy)void (^downloadBlock)(NSString*);
 @property(nonatomic,copy)void (^shareBlock)(NSString*);

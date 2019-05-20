@@ -330,6 +330,7 @@ export default class ReleaseNotesPage extends BasePage {
                     <ScrollView showsVerticalScrollIndicator={false}>
                         <View style={styles.noteContain}>
                             <TextInput style={styles.textInputStyle}
+                                       multiline
                                        allowFontScaling={false}
                                        ref={(ref) => {
                                            this.textinput = ref;
