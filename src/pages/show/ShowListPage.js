@@ -169,7 +169,6 @@ export default class ShowListPage extends BasePage {
 
     _render() {
         const { page, left, needsExpensive,detail } = this.state;
-
         let HotView = null;
         if (needsExpensive) {
             HotView = require('./ShowHotView').default;
@@ -178,7 +177,6 @@ export default class ShowListPage extends BasePage {
             <AvatarImage source={{ uri: user.headImg }} style={styles.userIcon}
                          borderRadius={px2dp(15)}/> : <Image source={mine_user_icon} style={styles.userIcon}
                                                              borderRadius={px2dp(15)}/>;
-
 
         let message = (
             <View>
@@ -322,14 +320,14 @@ export default class ShowListPage extends BasePage {
                                 trackParmas={{ articeCode: detail.code, articleTitle: detail.title }}
                                 imageJson={{
                                     imageUrlStr: detail.resource[0]?detail.resource[0].url:null,
-                                    titleStr: detail.content,
+                                    titleStr: detail.showType === 1 ? detail.content : detail.title,
                                     QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
                                     headerImage: user.headImg,
                                     userName: detail.userName ? detail.userName : ''
                                 }}
                                 webJson={{
-                                    title:detail.title,//分享标题(当为图文分享时候使用)
-                                    dec:'logo.png',//内容(当为图文分享时候使用)
+                                    title:detail.showType === 1 ? detail.content : detail.title,//分享标题(当为图文分享时候使用)
+                                    // dec:'logo.png',//内容(当为图文分享时候使用)
                                     linkUrl:`${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
                                     thumImage:''//(分享图标小图(https链接)图文分享使用)
                                 }}
