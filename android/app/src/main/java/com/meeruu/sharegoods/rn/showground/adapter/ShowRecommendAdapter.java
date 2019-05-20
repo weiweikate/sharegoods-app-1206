@@ -39,8 +39,8 @@ import java.util.List;
 public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGroundBean.DataBean, BaseViewHolder> {
     private NineGridView.clickL clickL;
     private ProductsAdapter.AddCartListener addCartListener;
-
-    public ShowRecommendAdapter(NineGridView.clickL clickL, ProductsAdapter.AddCartListener addCartListener) {
+    private ProductsAdapter.PressProductListener pressProductListener;
+    public ShowRecommendAdapter(NineGridView.clickL clickL, ProductsAdapter.AddCartListener addCartListener, ProductsAdapter.PressProductListener pressProductListener) {
 
 //        super(R.layout.item_showground_image_goods);
 
@@ -55,6 +55,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         this.addCartListener = addCartListener;
         addItemType(1, R.layout.item_showground_image_goods);
         addItemType(2, R.layout.item_show_img_text);
+        this.pressProductListener = pressProductListener;
     }
 
     @Override
@@ -81,6 +82,10 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
             ImageLoadUtils.loadCircleNetImage(userUrl, userIcon);
             userIcon.setTag(userUrl);
         }
+
+        TextView name = helper.getView(R.id.user_name);
+        name.setText(item.getUserInfoVO().getUserName());
+
 
         if (!TextUtils.isEmpty(item.getPublishTimeStr())) {
             TextView publishTime = helper.getView(R.id.publish_time);
@@ -148,10 +153,12 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         List<ImageInfo> imageInfoList = new ArrayList<>();
         if (item.getResource() != null) {
             for (int i = 0; i < item.getResource().size(); i++) {
-                String url = item.getResource().get(i).getUrl();
-                ImageInfo info = new ImageInfo();
-                info.setImageUrl(url);
-                imageInfoList.add(info);
+                if(item.getResource().get(i).getType() == 2){
+                    String url = item.getResource().get(i).getUrl();
+                    ImageInfo info = new ImageInfo();
+                    info.setImageUrl(url);
+                    imageInfoList.add(info);
+                }
             }
         }
 
@@ -168,9 +175,14 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
 
         if(item.getProducts() != null){
             ProductsAdapter productsAdapter = new ProductsAdapter(item.getProducts());
+
             if (this.addCartListener != null) {
                 productsAdapter.setAddCartListener(addCartListener);
             }
+            if(this.pressProductListener != null){
+                productsAdapter.setPressProductListener(this.pressProductListener);
+            }
+            recyclerView.setVisibility(View.VISIBLE);
             recyclerView.setAdapter(productsAdapter);
         }else {
             recyclerView.setVisibility(View.GONE);
@@ -185,12 +197,6 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         }else {
             hand.setImageResource(R.drawable.icon_hand);
         }
-//        hand.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Log.e("======",helper.getAdapterPosition()+"");
-//            }
-//        });
     }
 
 

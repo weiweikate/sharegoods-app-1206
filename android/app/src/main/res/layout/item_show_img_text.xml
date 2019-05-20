@@ -10,6 +10,7 @@
         android:id="@+id/user_icon"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:background="@drawable/bg_app_user"
         android:adjustViewBounds="true" />
 
     <TextView

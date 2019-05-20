@@ -25,6 +25,7 @@ import EmptyUtils from '../../utils/EmptyUtils';
 import apiEnvironment from '../../api/ApiEnvironment';
 import ShowUtils from './utils/ShowUtils';
 import ToTopButton from './components/ToTopButton';
+import RouterMap from '../../navigation/RouterMap';
 
 @observer
 export default class ShowHotView extends React.Component {
@@ -150,6 +151,10 @@ export default class ShowHotView extends React.Component {
                                            this.addCart(nativeEvent.prodCode);
                                        }}
 
+                                       onPressProduct={({nativeEvent})=>{
+                                           this.props.navigate(RouterMap.ProductDetailPage, { productCode: nativeEvent.prodCode });
+                                       }}
+
                                        onZanPress={({nativeEvent})=>{
                                            ShowApi.incrCountByType({ showNo:nativeEvent.detail.showNo,  type:1});
                                        }}
@@ -226,7 +231,7 @@ export default class ShowHotView extends React.Component {
                                        }}
                     />
                     {
-                        this.state.showEditorIcon ?
+                        this.state.showEditorIcon && user.token?
                             <ReleaseButton
                                 style={{
                                     position: 'absolute',

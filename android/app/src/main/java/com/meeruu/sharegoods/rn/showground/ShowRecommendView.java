@@ -37,6 +37,7 @@ import com.meeruu.sharegoods.rn.showground.event.onDownloadPressEvent;
 import com.meeruu.sharegoods.rn.showground.event.onEndScrollEvent;
 import com.meeruu.sharegoods.rn.showground.event.onItemPressEvent;
 import com.meeruu.sharegoods.rn.showground.event.onNineClickEvent;
+import com.meeruu.sharegoods.rn.showground.event.onPressProductEvent;
 import com.meeruu.sharegoods.rn.showground.event.onScrollStateChangedEvent;
 import com.meeruu.sharegoods.rn.showground.event.onScrollYEvent;
 import com.meeruu.sharegoods.rn.showground.event.onSharePressEvent;
@@ -167,6 +168,18 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
             }
         };
 
+        ProductsAdapter.PressProductListener pressProductListener = new ProductsAdapter.PressProductListener() {
+            @Override
+            public void onPressProduct(String code) {
+                onPressProductEvent onPressProductEvent = new onPressProductEvent();
+                onPressProductEvent.init(view.getId());
+                WritableMap writableMap = Arguments.createMap();
+                writableMap.putString("prodCode",code);
+                onPressProductEvent.setData(writableMap);
+                eventDispatcher.dispatchEvent(onPressProductEvent);
+            }
+        };
+
         NineGridView.clickL clickL = new NineGridView.clickL() {
             @Override
             public void imageClick(List urls, int index) {
@@ -181,7 +194,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         };
 
 
-        adapter = new ShowRecommendAdapter(clickL, addCartListener);
+        adapter = new ShowRecommendAdapter(clickL, addCartListener,pressProductListener);
         adapter.setPreLoadNumber(3);
         adapter.setHasStableIds(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);

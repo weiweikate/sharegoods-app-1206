@@ -217,6 +217,10 @@ export default class ShowRichTextDetailPage extends BasePage {
         if (!detail) {
             detail = { imgs: '', products: [], click: 0, content: '' };
         }
+
+        let userImage =  (detail.userInfoVO && detail.userInfoVO.userImg) ? detail.userInfoVO.userImg : '';
+        let userName = (detail.userInfoVO && detail.userInfoVO.userName) ? detail.userInfoVO.userName : '';
+
         return (
 
             <View style={styles.navTitle}>
@@ -226,9 +230,9 @@ export default class ShowRichTextDetailPage extends BasePage {
                 <View style={styles.profileRow}>
                     <View style={styles.profileLeft}>
                         <AvatarImage borderRadius={px2dp(18)} style={styles.portrait}
-                                     source={{ uri: detail.userHeadImg ? detail.userHeadImg : '' }}/>
+                                     source={{ uri: userImage}}/>
                         <Text style={styles.showName}
-                              allowFontScaling={false}>{detail.userName ? detail.userName : ''}</Text>
+                              allowFontScaling={false}>{userName}</Text>
                     </View>
 
                 </View>
@@ -510,7 +514,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                 <Text style={styles.titleStyle}
                       numberOfLines={2}
                       ellipsizeMode={'tail'}>
-                    这是一段关于人工智能的标题这是一段关于人工智能的标题这是一段
+                    {detail.title}
                 </Text>
 
                 <AutoHeightWebView source={{ html: html }}
