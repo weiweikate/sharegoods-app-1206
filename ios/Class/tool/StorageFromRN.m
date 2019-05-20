@@ -63,9 +63,7 @@ static NSString *RCTGetStorageDirectory()
   if (token) {
     return token;
   }
-  
   return @"";
-  
 }
 
 +(NSString *)getGongMao
