@@ -164,7 +164,7 @@ const GoodsItem = ({ item, activityCode, navigate }) => {
                         <View style={styles.leaveAmountView}>
                             <MRText
                                 style={styles.leaveAmountText}>{promotionSaleRateS === 1
-                                ? '已抢光' : `还剩${StringUtils.sub(1, promotionSaleRateS) * 100}%`}</MRText>
+                                ? '已抢光' : `还剩${StringUtils.mul(StringUtils.sub(1, promotionSaleRateS), 100)}%`}</MRText>
                         </View>
                     </View>
             }

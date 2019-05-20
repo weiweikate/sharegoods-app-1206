@@ -190,6 +190,7 @@ export default class ExpDetailPage extends BasePage {
         return (
             <View style={styles.contentStyle}>
                 {this.renderHeader()}
+                {this.state.viewData && this.state.viewData.length > 0 ? null : this.renderReHeader()}
                 <RefreshList
                     data={this.state.viewData}
                     ListHeaderComponent={this.renderReHeader}

@@ -8,7 +8,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.NetworkInfo.State;
 import android.os.Build;
+import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import com.meeruu.commonlib.base.BaseApplication;
 import com.meeruu.permissions.Permission;
 import com.meeruu.permissions.PermissionUtil;
 
+import java.io.UnsupportedEncodingException;
 import java.util.UUID;
 
 /**
@@ -25,6 +28,16 @@ import java.util.UUID;
  * Created by louis on 2017/3/4.
  */
 public class DeviceUtils {
+
+    protected static final String PREFS_DEVICE_ID = "device_id";
+
+    private static String deviceType = "0";
+
+    private static final String TYPE_ANDROID_ID = "1";
+
+    private static final String TYPE_DEVICE_ID = "2";
+
+    private static final String TYPE_RANDOM_UUID = "3";
 
     /**
      * 获取系统版本号
@@ -49,22 +62,43 @@ public class DeviceUtils {
      *
      * @return
      */
-    @SuppressLint("MissingPermission")
     public static String getUniquePsuedoID(Context context) {
         if (context == null) {
             context = BaseApplication.appContext;
         }
-        if (!PermissionUtil.hasPermissions(context, Permission.PHONE)) {
-            return "";
-        } else {
-            final TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-            final String tmDevice, tmSerial, androidId;
-            tmDevice = "" + tm.getDeviceId();
-            tmSerial = "" + tm.getSimSerialNumber();
-            androidId = "" + android.provider.Settings.Secure.getString(context.getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
-            UUID deviceUuid = new UUID(androidId.hashCode(), ((long) tmDevice.hashCode() << 32) | tmSerial.hashCode());
-            return deviceUuid.toString();
+        String uuid = (String) SPCacheUtils.get(PREFS_DEVICE_ID, null);
+        if (TextUtils.isEmpty(uuid)) {
+            final String androidId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+            try {
+                if (!"9774d56d682e549c".equals(androidId)) {
+                    deviceType = TYPE_ANDROID_ID;
+                    uuid = UUID.nameUUIDFromBytes(androidId.getBytes("utf8")).toString();
+                } else {
+                    if (PermissionUtil.hasPermissions(context, Permission.PHONE)) {
+                        @SuppressLint("MissingPermission") final String deviceId = ((TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
+                        if (deviceId != null
+                                && !"0123456789abcdef".equals(deviceId.toLowerCase())
+                                && !"000000000000000".equals(deviceId.toLowerCase())) {
+                            deviceType = TYPE_DEVICE_ID;
+                            uuid = UUID.nameUUIDFromBytes(deviceId.getBytes("utf8")).toString();
+                        } else {
+                            deviceType = TYPE_RANDOM_UUID;
+                            uuid = UUID.randomUUID().toString();
+                        }
+                    } else {
+                        deviceType = TYPE_RANDOM_UUID;
+                        uuid = UUID.randomUUID().toString();
+                    }
+                }
+            } catch (UnsupportedEncodingException e) {
+                deviceType = TYPE_RANDOM_UUID;
+                uuid = UUID.randomUUID().toString();
+            } finally {
+                uuid = UUID.fromString(deviceType + uuid).toString();
+            }
+            SPCacheUtils.put(PREFS_DEVICE_ID, uuid);
         }
+        return uuid;
     }
 
     /**
