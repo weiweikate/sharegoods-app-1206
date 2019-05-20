@@ -306,26 +306,26 @@ static NSString *IDType = @"TypeCell";
     [self.tableView endUpdates];
 }
 
--(void)imageClick:(RecommendedCell *)cell tag:(NSInteger)tag{
+-(void)imageClick:(NSArray *)images tag:(NSInteger)tag{
   if (_onNineClick) {
-    NSMutableArray * images = [NSMutableArray new];
-    for (NSDictionary* image in cell.model.resource) {
-      [images addObject:[image valueForKey:@"url"]];
+    NSMutableArray * imagesArr = [NSMutableArray new];
+    for (SourcesModel* image in images) {
+      [imagesArr addObject:[image valueForKey:@"url"]];
     }
-    NSDictionary * dic = @{@"imageUrls":images,@"index":[NSNumber numberWithInteger:tag]};
-    _onNineClick(dic);
+    NSDictionary * dic = @{@"imageUrls":imagesArr,@"index":[NSNumber numberWithInteger:tag]};
+    if(imagesArr.count>0)_onNineClick(dic);
   }
 }
 
 -(void)clickGood:(GoodsDataModel *)goods{
-  if(_onPressProduct) {
+  if(_onPressProduct&&goods.prodCode) {
     NSDictionary * dic = @{@"prodCode":goods.prodCode};
     _onPressProduct(dic);
   }
 }
 
 -(void)addCar:(GoodsDataModel *)model{
-  if(_onAddCartClick) {
+  if(_onAddCartClick&&model.prodCode) {
     NSDictionary * dic = @{@"prodCode":model.prodCode};
     _onAddCartClick(dic);
   }

@@ -62,11 +62,11 @@
   if (!_bodyView) {
     _bodyView = [[JXBodyView alloc] init];
     __weak RecommendedCell *weakSelf = self;
-    _bodyView.imgBlock =  ^(NSInteger tag){
+    _bodyView.imgBlock =  ^(NSArray* image,NSInteger tag){
       NSLog(@"imgBlock");
       __strong RecommendedCell *strongSelf = weakSelf;
       if (strongSelf.cellDelegate) {
-          [strongSelf.cellDelegate imageClick:strongSelf tag:tag];
+          [strongSelf.cellDelegate imageClick:image tag:tag];
       }
     };
   }
