@@ -63,10 +63,6 @@
 
 
 -(void)setSources:(NSArray<SourcesModel *> *)sources{
-    for (long i=sources.count; i<self.imageViewsArray.count; i++) {
-        UIImageView *imageView = [self.imageViewsArray objectAtIndex:i];
-        imageView.hidden = YES;
-    }
   
   NSMutableArray * arr = [NSMutableArray new];
   for(int i=0;i<sources.count;i++){
@@ -76,6 +72,10 @@
     }
   }
   _sources = arr;
+  for (long i=_sources.count; i<self.imageViewsArray.count; i++) {
+    UIImageView *imageView = [self.imageViewsArray objectAtIndex:i];
+    imageView.hidden = YES;
+  }
     if (_sources.count == 0) {
       self.height_sd = 0;
       self.fixedHeight = @(0);
@@ -120,7 +120,7 @@
 - (void)tapImageView:(UITapGestureRecognizer *)tap
 {
   if(self.imgBlock){
-    self.imgBlock(tap.view.tag);
+    self.imgBlock(self.sources,tap.view.tag);
   }
     
 }

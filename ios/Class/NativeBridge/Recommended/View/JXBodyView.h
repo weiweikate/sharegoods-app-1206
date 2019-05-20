@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef void(^imgBlock)(NSInteger);//block写法比较特殊，一般重命名一下
+typedef void(^imgBlock)(NSArray*,NSInteger);//block写法比较特殊，一般重命名一下
 
 @interface JXBodyView : UIView
 
