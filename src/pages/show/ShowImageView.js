@@ -9,8 +9,9 @@ import {
     MRText as Text
 } from '../../components/ui';
 import ShowUtils from './utils/ShowUtils';
-const maxHeight = ScreenUtils.height*0.72;
-const minHeight = ScreenUtils.height*0.36;
+
+const maxHeight = ScreenUtils.height * 0.72;
+const minHeight = ScreenUtils.height * 0.36;
 export default class ShowImageView extends Component {
 
     state = {
@@ -23,8 +24,10 @@ export default class ShowImageView extends Component {
         this.imageHeight = width;
         this.heights = [];
         let changeHeight = true;
-        this.state.items = this.props.items.map((value) => {
-            if(value.type === 2){
+        this.state.items = []
+        for(let i = 0;i<this.props.items.length;i++){
+            let value = this.props.items[i];
+            if (value.type === 2) {
                 if (value.url.indexOf('?') === -1) {
                     changeHeight = false;
                 } else {
@@ -37,14 +40,13 @@ export default class ShowImageView extends Component {
                         changeHeight = false;
                     }
                 }
-                return value.url;
+                this.state.items.push(value.url);
             }
 
-        });
-
-        if(changeHeight){
-            this.heights.sort((a,b)=>{
-                return a-b;
+        }
+        if (changeHeight) {
+            this.heights.sort((a, b) => {
+                return a - b;
             });
 
             this.imageHeight = this.heights[0];
@@ -60,18 +62,6 @@ export default class ShowImageView extends Component {
         this.heights.push(h);
     };
 
-
-    // componentWillReceiveProps(nextProps) {
-    //     const { items } = nextProps;
-    //     if (items && items.length !== this.state.items.length) {
-    //         this.state.items = items.map((value)=>{
-    //             if(value.type === 2){
-    //                 return value;
-    //             }
-    //         });
-    //     }
-    // }
-
     _renderPagination(index, total) {
         this.index = index;
         return <View style={styles.indexView}>
@@ -82,7 +72,7 @@ export default class ShowImageView extends Component {
     _renderViewPageItem(item) {
         return <TouchableWithoutFeedback onPress={() => this.props.onPress(this.state.items, this.index)}>
             <View>
-                <ImageLoad style={ {
+                <ImageLoad style={{
                     width: width,
                     height: this.imageHeight
                 }} source={{ uri: item }} resizeMode='contain'/>
@@ -103,7 +93,7 @@ export default class ShowImageView extends Component {
                 swiperShow={true}
                 arrayData={items}
                 renderItem={this._renderViewPageItem.bind(this)}
-                autoplay={true}
+                autoplay={false}
                 loop={false}
                 height={this.imageHeight}
                 renderPagination={this._renderPagination.bind(this)}
