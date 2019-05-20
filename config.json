@@ -74,7 +74,7 @@
         },
         "wyh":{
             "name": "王亚辉",
-            "host": "http://172.18.6.70:1080/gateway"
+            "host": "http://172.18.5.89:1080/gateway"
         },
         "zhaoqiang": {
             "name": "赵强",

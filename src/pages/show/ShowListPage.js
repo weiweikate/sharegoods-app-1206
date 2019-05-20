@@ -327,6 +327,12 @@ export default class ShowListPage extends BasePage {
                                     headerImage: user.headImg,
                                     userName: detail.userName ? detail.userName : ''
                                 }}
+                                webJson={{
+                                    title:detail.title,//分享标题(当为图文分享时候使用)
+                                    dec:'logo.png',//内容(当为图文分享时候使用)
+                                    linkUrl:`${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
+                                    thumImage:''//(分享图标小图(https链接)图文分享使用)
+                                }}
                                 miniProgramJson={{
                                     title: detail.title,
                                     dec: '分享小程序子标题',

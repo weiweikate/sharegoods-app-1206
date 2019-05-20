@@ -169,7 +169,7 @@ export default class ShowProductListPage extends BasePage {
         return (
             <View style={styles.header}>
                 <View style={styles.flex}>
-                    <TouchableOpacity style={styles.backImg} onPress={() => this._onLeftPressed()}>
+                    <TouchableOpacity style={styles.backImg} onPress={() => this.$navigateBack()}>
                         <Image source={backIconImg} style={styles.img}/>
                     </TouchableOpacity>
                 </View>

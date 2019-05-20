@@ -315,6 +315,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         }
 
         paint.reset();
+        Paint headerPaint = new Paint();
         BitmapShader mShader = new BitmapShader(headBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
         int bitmapWidth = headBitmap.getWidth();
         int bitmapHeight = headBitmap.getHeight();
@@ -323,10 +324,10 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         float scale = Math.max(sx, sy);
 
         Matrix matrix = new Matrix();
-//        matrix.setScale(scale, scale);
-//        mShader.setLocalMatrix(matrix);
-        paint.setShader(mShader);
-        canvas.drawCircle(48, 430, 18, paint);
+        matrix.setScale(scale, scale);
+        mShader.setLocalMatrix(matrix);
+        headerPaint.setShader(mShader);
+        canvas.drawCircle(48, 430, 18, headerPaint);
 
         Paint textPaint = new Paint();
         textPaint.setAntiAlias(true);

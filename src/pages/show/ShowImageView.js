@@ -24,19 +24,22 @@ export default class ShowImageView extends Component {
         this.heights = [];
         let changeHeight = true;
         this.state.items = this.props.items.map((value) => {
-            if (value.url.indexOf('?') === -1) {
-                changeHeight = false;
-            } else {
-                let params = ShowUtils.getUrlVars(value.url);
-                let height = params.height;
-                let width = params.width;
-                if (height && width) {
-                    this.getHeightWithSize(width, height);
-                } else {
+            if(value.type === 2){
+                if (value.url.indexOf('?') === -1) {
                     changeHeight = false;
+                } else {
+                    let params = ShowUtils.getUrlVars(value.url);
+                    let height = params.height;
+                    let width = params.width;
+                    if (height && width) {
+                        this.getHeightWithSize(width, height);
+                    } else {
+                        changeHeight = false;
+                    }
                 }
+                return value.url;
             }
-            return value.url;
+
         });
 
         if(changeHeight){
@@ -58,12 +61,16 @@ export default class ShowImageView extends Component {
     };
 
 
-    componentWillReceiveProps(nextProps) {
-        const { items } = nextProps;
-        if (items && items.length !== this.state.items.length) {
-            this.state.items = items;
-        }
-    }
+    // componentWillReceiveProps(nextProps) {
+    //     const { items } = nextProps;
+    //     if (items && items.length !== this.state.items.length) {
+    //         this.state.items = items.map((value)=>{
+    //             if(value.type === 2){
+    //                 return value;
+    //             }
+    //         });
+    //     }
+    // }
 
     _renderPagination(index, total) {
         this.index = index;

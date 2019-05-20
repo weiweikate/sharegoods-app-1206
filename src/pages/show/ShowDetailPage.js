@@ -251,6 +251,10 @@ export default class ShowDetailPage extends BasePage {
         if (!detail) {
             detail = { imgs: '', products: [], click: 0, content: '' };
         }
+
+        let userImage =  (detail.userInfoVO && detail.userInfoVO.userImg) ? detail.userInfoVO.userImg : '';
+        let userName = (detail.userInfoVO && detail.userInfoVO.userName) ? detail.userInfoVO.userName : '';
+
         return (
 
             <View style={styles.navTitle}>
@@ -260,9 +264,9 @@ export default class ShowDetailPage extends BasePage {
                 <View style={styles.profileRow}>
                     <View style={styles.profileLeft}>
                         <AvatarImage borderRadius={px2dp(18)} style={styles.portrait}
-                                     source={{ uri: detail.userHeadImg ? detail.userHeadImg : '' }}/>
+                                     source={{ uri: userImage}}/>
                         <Text style={styles.showName}
-                              allowFontScaling={false}>{detail.userName ? detail.userName : ''}</Text>
+                              allowFontScaling={false}>{userName}</Text>
                     </View>
 
                 </View>

@@ -185,7 +185,7 @@ export default class ShowMaterialView extends React.Component {
                                        }}
                     />
                     {
-                        this.state.showEditorIcon ?
+                        this.state.showEditorIcon  && user.token?
                             <ReleaseButton
                                 style={{
                                     position: 'absolute',

@@ -177,7 +177,8 @@ var styles = StyleSheet.create({
     oriPrice: {
         color: DesignRule.textColor_instruction,
         fontSize: px2dp(10),
-        marginLeft: px2dp(5)
+        marginLeft: px2dp(5),
+        textDecorationLine:'line-through'
     },
     titleTextStyle:{
         color:DesignRule.textColor_instruction,

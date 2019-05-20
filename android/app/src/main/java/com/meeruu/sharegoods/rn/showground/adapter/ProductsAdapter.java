@@ -12,17 +12,22 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.uimanager.events.EventDispatcher;
 import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.ShowRecommendViewManager;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
+import com.meeruu.sharegoods.rn.showground.event.onPressProductEvent;
 
 import java.util.List;
 
 public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.VH> {
     private AddCartListener addCartListener;
+    private PressProductListener pressProductListener;
 
     public static class VH extends RecyclerView.ViewHolder {
         public TextView originalPrice;
@@ -31,9 +36,11 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.VH> {
         public TextView name;
         public SimpleDraweeView productImg;
         public TextView redRMB;
+        public View parent;
 
         public VH(View v) {
             super(v);
+            parent = v;
             originalPrice = v.findViewById(R.id.originalPrice);
             redRMB = v.findViewById(R.id.red_rmb);
             activityPrice = v.findViewById(R.id.activityPrice);
@@ -48,14 +55,19 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.VH> {
 
     public ProductsAdapter(List<NewestShowGroundBean.DataBean.ProductsBean> data) {
         this.mDatas = data;
+
     }
 
     public void setAddCartListener(AddCartListener addCartListener) {
         this.addCartListener = addCartListener;
     }
 
+    public void setPressProductListener(PressProductListener pressProductListener) {
+        this.pressProductListener = pressProductListener;
+    }
+
     @Override
-    public void onBindViewHolder(@NonNull VH vh, int i) {
+    public void onBindViewHolder(@NonNull final VH vh, int i) {
         final AddCartListener addCartListener = this.addCartListener;
         final NewestShowGroundBean.DataBean.ProductsBean bean = this.mDatas.get(i);
         vh.name.setText(bean.getName());
@@ -103,6 +115,16 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.VH> {
             vh.activityPrice.setText(showPrice);
         }
 
+
+        vh.parent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(pressProductListener != null){
+                    pressProductListener.onPressProduct(bean.getProdCode());
+                }
+            }
+        });
+
     }
 
     @Override
@@ -128,5 +150,9 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.VH> {
 
     public interface AddCartListener {
         void onAddCart(String code);
+    }
+
+    public interface PressProductListener {
+        void onPressProduct(String code);
     }
 }
