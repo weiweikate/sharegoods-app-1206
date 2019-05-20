@@ -121,7 +121,6 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         }, 200);
         final onNineClickEvent onNineClickEvent = new onNineClickEvent();
         final addCartEvent addCartEvent = new addCartEvent();
-        final onScrollStateChangedEvent onScrollStateChangedEvent = new onScrollStateChangedEvent();
         recyclerView = view.findViewById(R.id.home_recycler_view);
         startScrollEvent = new onStartScrollEvent();
         endScrollEvent = new onEndScrollEvent();
@@ -136,6 +135,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
 //                public static final int SCROLL_STATE_DRAGGING = 1;
 //                public static final int SCROLL_STATE_SETTLING = 2;
                 super.onScrollStateChanged(recyclerView, newState);
+                final onScrollStateChangedEvent onScrollStateChangedEvent = new onScrollStateChangedEvent();
                 onScrollStateChangedEvent.init(view.getId());
                 WritableMap map = Arguments.createMap();
                 map.putInt("state", newState);
@@ -206,6 +206,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
                     map.put("index", position);
                     WritableMap realData = Arguments.makeNativeMap(map);
                     if (eventDispatcher != null) {
+                        itemPressEvent = new onItemPressEvent();
                         itemPressEvent.init(view.getId());
                         itemPressEvent.setData(realData);
                         eventDispatcher.dispatchEvent(itemPressEvent);

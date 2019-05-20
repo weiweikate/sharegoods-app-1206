@@ -271,7 +271,16 @@ export default class ShowListPage extends BasePage {
                     {
                         needsExpensive
                             ?
-                            <ShowMaterialView navigate={this.$navigate} /> : null
+                            <ShowMaterialView navigate={this.$navigate}
+                                              onShare={(item)=>{
+                                this.setState({detail:item.detail},()=>{
+                                    this.shareModal && this.shareModal.open();
+                                });
+
+                            }}/>
+                            :
+                            null
+
                     }
                 </View>
 
@@ -306,26 +315,27 @@ export default class ShowListPage extends BasePage {
                     }
                 </View>
             </ScrollableTabView>
-            {detail ?  <CommShareModal ref={(ref) => this.shareModal = ref}
-                                       type={'Show'}
-                                       trackEvent={'ArticleShare'}
-                                       trackParmas={{ articeCode: detail.code, articleTitle: detail.title }}
-                                       imageJson={{
-                                           imageUrlStr: detail.resource[0].url,
-                                           titleStr: detail.content,
-                                           QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
-                                           headerImage:user.headImg,
-                                           userName:detail.userName ? detail.userName : ''
-                                       }}
-                                       miniProgramJson={{
-                                           title: detail.title,
-                                           dec: '分享小程序子标题',
-                                           thumImage: 'logo.png',
-                                           hdImageURL: detail.resource[0].url,
-                                           linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/detail/${detail.id}?upuserid=${user.code || ''}`,
-                                           miniProgramPath: `/pages/discover/discover-detail/discover-detail?articleId=${detail.id}&inviteId=${user.code || ''}`
-                                       }}
-            />:null}
+            {detail ?
+                <CommShareModal ref={(ref) => this.shareModal = ref}
+                                type={'Show'}
+                                trackEvent={'ArticleShare'}
+                                trackParmas={{ articeCode: detail.code, articleTitle: detail.title }}
+                                imageJson={{
+                                    imageUrlStr: detail.resource[0]?detail.resource[0].url:null,
+                                    titleStr: detail.content,
+                                    QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
+                                    headerImage: user.headImg,
+                                    userName: detail.userName ? detail.userName : ''
+                                }}
+                                miniProgramJson={{
+                                    title: detail.title,
+                                    dec: '分享小程序子标题',
+                                    thumImage: 'logo.png',
+                                    hdImageURL: detail.resource[0]?detail.resource[0].url : null,
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
+                                    miniProgramPath: `/pages/discover/discover-detail/discover-detail?articleId=${detail.id}&inviteId=${user.code || ''}`
+                                }}
+                /> :null}
 
         </View>;
     }

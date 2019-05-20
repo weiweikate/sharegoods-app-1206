@@ -185,6 +185,7 @@
       self.scrollView.contentSize = len>0&&len<=1?CGSizeMake(width*len+30, 70):CGSizeMake(width*len+10*len+30, 70);
     for (int i=0; i<len; i++) {
         UIView *bgView = [[UIView alloc] init];
+        bgView.userInteractionEnabled = YES;
         //设置圆角
         bgView.layer.cornerRadius = 5;
         //将多余的部分切掉
@@ -192,19 +193,22 @@
         CGFloat spaceWith = i==0 ? 30:30+10*i;
         bgView.frame = CGRectMake((width)*i+spaceWith, 0, width, 70);
         bgView.backgroundColor = [UIColor colorWithRed:247/255.0 green:247/255.0 blue:247/255.0 alpha:1.0];
+      UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickGoods:)];
+      [bgView addGestureRecognizer:tapGesture];
+      tapGesture.view.tag = 10+i;
         UIImageView* goodsImg = [[UIImageView alloc] init];
         //设置圆角
         goodsImg.layer.cornerRadius = 5;
         //将多余的部分切掉
         goodsImg.layer.masksToBounds = YES;
         goodsImg.image = [UIImage imageNamed:@"welcome3"];
-        [goodsImg sd_setImageWithURL:[NSURL URLWithString:[self.products[0] valueForKey:@"imgUrl"]] placeholderImage:[UIImage imageNamed:@"default_avatar"]];
+        [goodsImg sd_setImageWithURL:[NSURL URLWithString:[self.products[i] valueForKey:@"imgUrl"]] placeholderImage:[UIImage imageNamed:@"default_avatar"]];
 
 
         UILabel* titile = [[UILabel alloc]init];
         titile.font = [UIFont systemFontOfSize:10];
         titile.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
-        titile.text = [self.products[0] valueForKey:@"name"];
+        titile.text = [self.products[i] valueForKey:@"name"];
 
 
         UILabel* price = [[UILabel alloc]init];
@@ -247,6 +251,12 @@
         [_scrollView addSubview:bgView];
 
     }
+  }
+}
+
+-(void)clickGoods:(UITapGestureRecognizer*)tag{
+  if(self.clickGoods){
+    self.clickGoods(self.products[tag.view.tag-10]);
   }
 }
 

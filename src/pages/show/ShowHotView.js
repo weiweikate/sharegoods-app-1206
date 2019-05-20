@@ -126,17 +126,18 @@ export default class ShowHotView extends React.Component {
                                        }}
                                        params={{ spreadPosition: tag.Recommend + '' }}
                                        onItemPress={({ nativeEvent }) => {
-                                           const { navigate } = this.props;
-                                           let params = {
-                                               data:nativeEvent,
-                                               ref: this.RecommendShowList,
-                                               index: nativeEvent.index
-                                           };
-                                           if(nativeEvent.showType === 1){
-                                               navigate('show/ShowDetailPage', params);
-                                           }else {
-                                               navigate('show/ShowRichTextDetailPage', params);
-                                           }
+
+                                               const { navigate } = this.props;
+                                               let params = {
+                                                   data:nativeEvent,
+                                                   ref: this.RecommendShowList,
+                                                   index: nativeEvent.index
+                                               };
+                                               if(nativeEvent.showType === 1){
+                                                   navigate('show/ShowDetailPage', params);
+                                               }else {
+                                                   navigate('show/ShowRichTextDetailPage', params);
+                                               }
 
                                        }}
                                        onNineClick={({ nativeEvent }) => {
