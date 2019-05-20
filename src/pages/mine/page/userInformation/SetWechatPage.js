@@ -11,8 +11,8 @@ import {
 import BasePage from '../../../../BasePage';
 import {UIButton, MRTextInput as RNTextInput, MRText} from '../../../../components/ui';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import MineAPI from '../../api/MineApi';
-import user from '../../../../model/user';
+// import MineAPI from '../../api/MineApi';
+// import user from '../../../../model/user';
 import DesignRule from '../../../../constants/DesignRule';
 
 export default class SetWechatPage extends BasePage {
