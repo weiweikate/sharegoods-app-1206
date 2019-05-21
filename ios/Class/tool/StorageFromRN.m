@@ -58,6 +58,14 @@ static NSString *RCTGetStorageDirectory()
   return path;
 }
 
++(NSString *)getSG_Token{
+  NSString * token = [StorageFromRN getItem:@"USERTOKEN"];
+  if (token) {
+    return token;
+  }
+  return @"";
+}
+
 +(NSString *)getGongMao
 {
   NSDictionary *dic = [self configDic];
