@@ -118,7 +118,7 @@ export default class OrderDetailBottomButtonView extends Component {
         switch (menu.id) {
             case 1:
                 if (assistDetailModel.cancelArr.length > 0) {
-                    assistDetailModel.setIsShowSingleSelctionModal(true);
+                    this.props.openCancelModal&&this.props.openCancelModal();
                 } else {
                     Toast.$toast("无取消类型！");
                 }

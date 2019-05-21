@@ -214,6 +214,7 @@ export default class MyOrdersDetailPage extends BasePage {
                         />
                     </ScrollView>
                     <OrderDetailBottomButtonView
+                        openCancelModal = {()=>{this.cancelModal&&this.cancelModal.open()}}
                         goBack={() => this.$navigateBack()}
                         nav={this.$navigate}
                         switchButton={() => {
@@ -319,28 +320,24 @@ export default class MyOrdersDetailPage extends BasePage {
                     closeWindow={() => this.setState({ isShowShowMessageModal: false })}
                 />
                 <SingleSelectionModal
-                    isShow={assistDetailModel.isShowSingleSelctionModal}
                     ref={(ref) => {
                         this.cancelModal = ref;
                     }}
                     detail={assistDetailModel.cancelArr}
-                    closeWindow={() => {
-                        assistDetailModel.setIsShowSingleSelctionModal(false);
-                    }}
                     commit={(index) => {
-                        assistDetailModel.setIsShowSingleSelctionModal(false);
-                        Toast.showLoading();
-                        OrderApi.cancelOrder({
-                            cancelReason: assistDetailModel.cancelArr[index],
-                            orderNo: orderDetailModel.getOrderNo(),
-                            cancelType: 2,
-                            platformRemarks: null
-                        }).then((response) => {
-                            this.goTobackNav();
-                        }).catch(e => {
-                            Toast.hiddenLoading();
-                            Toast.$toast(e.msg);
-                        });
+                        //取消订单
+                        // Toast.showLoading();
+                        // OrderApi.cancelOrder({
+                        //     cancelReason: assistDetailModel.cancelArr[index],
+                        //     orderNo: orderDetailModel.getOrderNo(),
+                        //     cancelType: 2,
+                        //     platformRemarks: null
+                        // }).then((response) => {
+                        //     this.goTobackNav();
+                        // }).catch(e => {
+                        //     Toast.hiddenLoading();
+                        //     Toast.$toast(e.msg);
+                        // });
                     }}
                 />
             </View>

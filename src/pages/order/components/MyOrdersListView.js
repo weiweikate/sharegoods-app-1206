@@ -34,19 +34,16 @@ export default class MyOrdersListView extends Component {
             pageStatus: this.props.pageStatus,
             isEmpty: false,
             currentPage: 1,
-            isShowDeleteOrderModal: false,
-            isShowSingleSelctionModal: false,
-            isShowReceiveGoodsModal: false,
-            menu: {},
-            index: -1,
             isError: false,
             errMsgText: '发生错误',
             allData: []
         };
+        this.itemIndex = -1; //用于
         this.currentPage = 1;
         this.noMoreData = false;
         this.isFirst = true;
         this.isRefresh = false;
+
     }
 
     renderItem = ({ item, index }) => {
@@ -123,18 +120,12 @@ export default class MyOrdersListView extends Component {
 
     renderModal = () => {
         return (
-            <View>
                 <SingleSelectionModal
-                    isShow={this.state.isShowSingleSelctionModal}
                     ref={(ref) => {
                         this.cancelModal = ref;
                     }}
                     detail={this.props.cancelReasons}
-                    closeWindow={() => {
-                        this.setState({ isShowSingleSelctionModal: false });
-                    }}
                     commit={(index) => {
-                        this.setState({ isShowSingleSelctionModal: false });
                         Toast.showLoading();
                         OrderApi.cancelOrder({
                             cancelReason: this.props.cancelReasons[index],
@@ -155,10 +146,13 @@ export default class MyOrdersListView extends Component {
                         });
                     }}
                 />
-            </View>
 
         );
     };
+
+    cancelOrder = () => {
+
+    }
     //多商品订单列表 maybe
     getOrderProduct = (list) => {
         let arrData = [];
@@ -375,14 +369,10 @@ export default class MyOrdersListView extends Component {
          * 再次购买                 ->  8
          * 删除订单(已关闭(取消))    ->  9
          * */
-        console.log(menu);
-        this.setState({ menu: menu, index: index });
         let data = this.state.viewData[index] || {};
-        console.log('view data platformOrderNo', data);
         switch (menu.id) {
             case 1:
                 if (this.props.cancelReasons.length > 0) {
-                    this.setState({ isShowSingleSelctionModal: true });
                     this.cancelModal && this.cancelModal.open();
                 } else {
                     Toast.$toast('无取消理由');

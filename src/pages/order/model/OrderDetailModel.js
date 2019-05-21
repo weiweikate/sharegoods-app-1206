@@ -228,18 +228,12 @@ export const orderDetailAfterServiceModel = new OrderDetailAfterServiceModel();
 
 class AssistDetailModel{
     @observable
-    isShowSingleSelctionModal=false;
-    @observable
     isShowShowMessageModal=false;
     @observable
     orderId=null;
     @observable
     cancelArr=[];
 
-    @action
-    setIsShowSingleSelctionModal(bool){
-        this.isShowSingleSelctionModal = bool
-    }
     @action
     setIsShowShowMessageModal(bool){
         this.isShowShowMessageModal = bool;

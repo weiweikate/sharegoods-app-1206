@@ -22,13 +22,18 @@ export default class BottomSingleSelectModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentSelect: -1
+            currentSelect: -1,
+            visible: false
         };
     }
 
     open = () => {
-        this.modal && this.modal.open();
+        this.setState({visible: true});
     };
+
+    close = () => {
+       this.setState({visible: false, currentSelect: -1});
+    }
 
     render() {
         return (
@@ -38,8 +43,9 @@ export default class BottomSingleSelectModal extends Component {
                     this.modal = ref;
                 }}
                 onRequestClose={() => {
+                    this.close();
                 }}
-                visible={this.props.isShow}>
+                visible={this.state.visible}>
                 <View style={styles.modalStyle}>
                     {this.renderContent()}
                 </View>
@@ -77,7 +83,7 @@ export default class BottomSingleSelectModal extends Component {
             NativeModules.commModule.toast('请先勾选');
         } else {
             this.props.commit(this.state.currentSelect);
-            this.setState({currentSelect:-1})
+            this.close();
         }
     };
 
@@ -105,7 +111,7 @@ export default class BottomSingleSelectModal extends Component {
                         </TouchableOpacity>
                         <UIText value={'请选择'}/>
                         <TouchableOpacity style={{ paddingLeft: 17, width: 50 }}
-                                          onPress={() => {this.props.closeWindow(),this.setState({currentSelect: -1})}}>
+                                          onPress={() => {this.close()}}>
                             <UIText value={'x'} style={{ color: DesignRule.textColor_hint, fontSize: 24 }}/>
                         </TouchableOpacity>
                     </View>

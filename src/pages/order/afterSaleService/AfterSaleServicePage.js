@@ -41,7 +41,6 @@ class AfterSaleServicePage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            isShowSingleSelctionModal: false,
             pageType: this.params.pageType || 0, //  0(退款),1(退货退款),2(换货)
             activeProduct: ['', '退回商品需由买家承担运费，请确保商品不影响二次销售', '仅可更换同规格的商品，请确保退换商品不影响二次销售'],
             reason: ['退款原因', '退货原因', '换货原因'],
@@ -346,16 +345,11 @@ class AfterSaleServicePage extends BasePage {
         return (
             <View>
                 <BottomSingleSelectModal
-                    isShow={this.state.isShowSingleSelctionModal}
                     detail={returnReasons}
                     ref={(ref) => {
                         this.cancelModal = ref;
                     }}
-                    closeWindow={() => {
-                        this.setState({ isShowSingleSelctionModal: false });
-                    }}
                     commit={(index) => {
-                        this.setState({ isShowSingleSelctionModal: false });
                         this.setState({ returnReason: returnReasons[index] });
                     }}
                 />
@@ -424,9 +418,6 @@ class AfterSaleServicePage extends BasePage {
 
     //**********************************BusinessPart******************************************
     showRefundReason = () => {
-        this.setState({
-            isShowSingleSelctionModal: true
-        });
         this.cancelModal && this.cancelModal.open();
     };
     exchangeType = () => {
