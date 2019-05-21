@@ -302,14 +302,13 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         if(outWidth*1.0/outHeight > 315/345){
             int height = outHeight;
             int width =  (int)(height*(315/345.0));
-            Rect mSrcRect = new Rect((outWidth-width)/2,0,outWidth-(width/2),height);
+            Rect mSrcRect = new Rect((outWidth-width)/2,0,(outWidth+width)/2,height);
             Rect mDestRect = new Rect(30,57,345,402);
-
             canvas.drawBitmap(bitmap,mSrcRect,mDestRect,paint);
         }else {
             int width = outWidth;
             int height = (int)(outWidth/(315*345.0));
-            Rect mSrcRect = new Rect(0,(outHeight-height)/2,0,outHeight-(height/2));
+            Rect mSrcRect = new Rect(0,(outHeight-height)/2,0,(outHeight+height)/2);
             Rect mDestRect = new Rect(30,57,345,402);
             canvas.drawBitmap(bitmap,mSrcRect,mDestRect,paint);
         }

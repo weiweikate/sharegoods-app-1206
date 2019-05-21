@@ -70,7 +70,7 @@ public class NineGridView extends ViewGroup {
         if (mImageInfo != null && mImageInfo.size() > 0) {
             //只有1张图时 图片宽度即是总宽度  高度等于宽度
             if (mImageInfo.size() == 1) {
-                gridWidth = (totalWidth - 2*gridSpacing)/3*2+ gridSpacing;
+                gridWidth = (int)(totalWidth*0.8);
                 gridHeight = gridWidth*12/19;
             } else {
                 //按照有几列 来计算每张图片的宽度和高度
