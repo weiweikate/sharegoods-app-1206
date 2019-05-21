@@ -18,20 +18,24 @@
 @property (nonatomic,strong)JXHeaderView* headView;
 @property (nonatomic,strong)JXBodyView* bodyView;
 @property (nonatomic,strong)JXFooterView* footerView;
-@property (nonatomic,strong) UILabel * contentLab;
+@property (nonatomic,strong) YYLabel * contentLab;
 @property (nonatomic, strong) UILabel *foldLabel;       // 展开按钮
 
 @end
 
 @implementation RecommendedCell
 
--(UILabel *)contentLab{
+-(YYLabel *)contentLab{
     if(!_contentLab){
-        _contentLab = [[UILabel alloc]init];
+        _contentLab = [[YYLabel alloc]init];
         _contentLab.font = [UIFont systemFontOfSize:13];
         _contentLab.textColor = [UIColor colorWithRed:102/255.0 green:102/255.0 blue:102/255.0 alpha:1.0];
+      _contentLab.textVerticalAlignment = YYTextVerticalAlignmentTop;
       _contentLab.userInteractionEnabled=YES;
+      _contentLab.numberOfLines = 3;
+      _contentLab.truncationToken = [[NSAttributedString alloc]initWithString:@"...全文" attributes:@{}];
       UITapGestureRecognizer *labelTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(labelTouchUpInside)];
+      [_contentLab sizeToFit];
 
       [_contentLab addGestureRecognizer:labelTapGestureRecognizer];
     }
@@ -136,45 +140,48 @@
   [bgView.layer setCornerRadius:4.0];
   [self.contentView addSubview:bgView];
 
-  [bgView addSubview:self.headView];
-  [bgView addSubview:self.bodyView];
-  [bgView addSubview:self.footerView];
+//  [bgView addSubview:self.headView];
+//  [bgView addSubview:self.bodyView];
+//  [bgView addSubview:self.footerView];
   [bgView addSubview:self.contentLab];
-  [bgView addSubview:self.foldLabel];
+//  [bgView addSubview:self.foldLabel];
 
     bgView.sd_layout
     .leftSpaceToView(self.contentView, 0)
     .rightSpaceToView(self.contentView, 0)
-    .topSpaceToView(self.contentView, 5);
-
-  self.headView.sd_layout
-  .topSpaceToView(bgView, 9)
-  .leftSpaceToView(bgView, 0)
-  .rightSpaceToView(bgView, 5)
-  .heightIs(34);
-
-    //内容
-  self.contentLab.sd_layout.topSpaceToView(self.headView, 8)
-  .leftSpaceToView(bgView, 45)
-  .rightSpaceToView(bgView, 30)
-  .autoHeightRatio(0);
-
-  self.foldLabel.sd_layout.topSpaceToView(self.contentLab, 5)
-  .leftSpaceToView(bgView, 45)
-  .widthIs(40)
-  .heightIs(20);
-
-  self.bodyView.sd_layout
-  .topSpaceToView(self.foldLabel, 5)
-  .leftSpaceToView(bgView, 45);
-
-    //
-  self.footerView.sd_layout
-  .topSpaceToView(self.bodyView, 10)
-  .leftSpaceToView(bgView, 15)
-  .rightSpaceToView(bgView, 15);
-
-  [bgView setupAutoHeightWithBottomView:self.footerView bottomMargin:5];
+    .topSpaceToView(self.contentView, 5)
+    .heightIs(200);
+  
+  self.contentLab.frame = CGRectMake(0, 0, 200, 100);
+  self.contentLab.backgroundColor = [UIColor redColor];
+  
+//  self.headView.sd_layout
+//  .topSpaceToView(bgView, 9)
+//  .leftSpaceToView(bgView, 0)
+//  .rightSpaceToView(bgView, 5)
+//  .heightIs(34);
+//
+//    //内容
+//  self.contentLab.sd_layout.topSpaceToView(self.headView, 8)
+//  .leftSpaceToView(bgView, 45)
+//  .rightSpaceToView(bgView, 30);
+//
+//  self.foldLabel.sd_layout.topSpaceToView(self.contentLab, 5)
+//  .leftSpaceToView(bgView, 45)
+//  .widthIs(40)
+//  .heightIs(20);
+//
+//  self.bodyView.sd_layout
+//  .topSpaceToView(self.foldLabel, 5)
+//  .leftSpaceToView(bgView, 45);
+//
+//    //
+//  self.footerView.sd_layout
+//  .topSpaceToView(self.bodyView, 10)
+//  .leftSpaceToView(bgView, 15)
+//  .rightSpaceToView(bgView, 15);
+//
+//  [bgView setupAutoHeightWithBottomView:self.footerView bottomMargin:5];
   [self setupAutoHeightWithBottomView:bgView bottomMargin:5];
 }
 
@@ -185,16 +192,17 @@
   self.bodyView.sources = model.resource;
   
   self.contentLab.text = model.content;
-  NSArray *array = [self getSeparatedLinesFromLabel:self.contentLab.text font:[UIFont systemFontOfSize:13] andLableWidth:SCREEN_WIDTH-105];
-  //组合需要显示的文本
-  if(array.count>3){
-    NSString *line3String = array[2];
-    NSString *showText = [NSString stringWithFormat:@"%@%@%@...全文", array[0], array[1],[line3String substringToIndex:line3String.length-7]];
-    //设置label的attributedText
-    NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:showText attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13.0], NSForegroundColorAttributeName:[UIColor colorWithRed:102/255.0 green:102/255.0 blue:102/255.0 alpha:1.0]}];
-    [attStr addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13.0], NSForegroundColorAttributeName:[UIColor redColor]} range:NSMakeRange(showText.length-2, 2)];
-    self.contentLab.attributedText = attStr;
-  }
+  [_contentLab sizeToFit];
+//  NSArray *array = [self getSeparatedLinesFromLabel:self.contentLab.text font:[UIFont systemFontOfSize:13] andLableWidth:SCREEN_WIDTH-105];
+//  //组合需要显示的文本
+//  if(array.count>3){
+//    NSString *line3String = array[2];
+//    NSString *showText = [NSString stringWithFormat:@"%@%@%@...全文", array[0], array[1],[line3String substringToIndex:line3String.length-7]];
+//    //设置label的attributedText
+//    NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:showText attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13.0], NSForegroundColorAttributeName:[UIColor colorWithRed:102/255.0 green:102/255.0 blue:102/255.0 alpha:1.0]}];
+//    [attStr addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13.0], NSForegroundColorAttributeName:[UIColor redColor]} range:NSMakeRange(showText.length-2, 2)];
+//    self.contentLab.attributedText = attStr;
+//  }
   
     self.footerView.products = model.products;
     self.footerView.downloadCount = model.downloadCount;
@@ -215,7 +223,7 @@
 //            self.foldLabel.text = @"展开";
 //        }
 //    }else{
-        [self.contentLab setMaxNumberOfLinesToShow:3];
+//        [self.contentLab setMaxNumberOfLinesToShow:3];
         self.foldLabel.sd_layout.heightIs(0);
         self.foldLabel.hidden = YES;
 

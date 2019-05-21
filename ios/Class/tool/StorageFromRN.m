@@ -60,7 +60,6 @@ static NSString *RCTGetStorageDirectory()
 
 +(NSString *)getSG_Token{
    NSString * token = [StorageFromRN getItem:@"USERTOKEN"];
-  NSString * token = [StorageFromRN getItem:@"USERTOKEN"];
   if (token) {
     return token;
   }
