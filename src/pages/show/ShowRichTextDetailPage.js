@@ -577,14 +577,14 @@ export default class ShowRichTextDetailPage extends BasePage {
             {detail.status !== 1 ? this._shieldRender() : null}
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
-                            type={'miniProgram'}
+                            type={'Show'}
                             trackEvent={'ArticleShare'}
                             trackParmas={{ articeCode: detail.code, articleTitle: detail.title }}
                             imageJson={{
                                 imageUrlStr: detail.resource[0].url,
-                                titleStr: detail.content,
+                                titleStr: detail.title,
                                 QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
-                                headerImage: user.headImg,
+                                headerImage: (detail.userInfoVO && detail.userInfoVO.userImg)? detail.userInfoVO.userImg: null,
                                 userName: (detail.userInfoVO && detail.userInfoVO.userName)? detail.userInfoVO.userName: ''
                             }}
                             webJson={{

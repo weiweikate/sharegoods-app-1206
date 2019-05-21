@@ -268,7 +268,8 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     }
 
     private static void drawShow(Context context, Bitmap headBitmap, final Bitmap bitmap, ShareImageBean shareImageBean, Callback success, Callback fail) {
-        Bitmap result = Bitmap.createBitmap(375, 667, Bitmap.Config.ARGB_8888);
+        int precision = 2;
+        Bitmap result = Bitmap.createBitmap(375 * precision, 667 * precision, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(result);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         BlurFactor blurFactor = new BlurFactor();
@@ -281,43 +282,42 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             int height = outHeight;
             int width = (int) (height * (375 / 667.0));
             Rect mSrcRect = new Rect((outWidth - width) / 2, 0, outWidth - (width / 2), height);
-            Rect mDestRect = new Rect(0, 0, 375, 667);
+            Rect mDestRect = new Rect(0, 0, 375 * precision, 667 * precision);
             canvas.drawBitmap(outBitmap, mSrcRect, mDestRect, paint);
         } else {
             int width = outWidth;
             int height = (int) (outWidth / (375 * 667.0));
             Rect mSrcRect = new Rect(0, (outHeight - height) / 2, 0, outHeight - (height / 2));
-            Rect mDestRect = new Rect(0, 0, 375, 667);
+            Rect mDestRect = new Rect(0, 0, 375 * precision, 667 * precision);
             canvas.drawBitmap(outBitmap, mSrcRect, mDestRect, paint);
         }
 
         paint.setColor(Color.WHITE);
-        RectF white = new RectF(15, 42, 360, 514);
-        canvas.drawRoundRect(white, 5, 5, paint);
+        RectF white = new RectF(15 * precision, 42 * precision, 360 * precision, 514 * precision);
+        canvas.drawRoundRect(white, 5 * precision, 5 * precision, paint);
 
         outWidth = bitmap.getWidth();
         outHeight = bitmap.getHeight();
         paint.reset();
-        paint.setDither(true);
         if (outWidth * 1.0 / outHeight > 315 / 345) {
             int height = outHeight;
             int width = (int) (height * (315 / 345.0));
             Rect mSrcRect = new Rect((outWidth - width) / 2, 0, (outWidth + width) / 2, height);
-            Rect mDestRect = new Rect(30, 57, 345, 402);
+            Rect mDestRect = new Rect(30 * precision, 57 * precision, 345 * precision, 402 * precision);
             canvas.drawBitmap(bitmap, mSrcRect, mDestRect, paint);
         } else {
             int width = outWidth;
             int height = (int) (outWidth / (315 * 345.0));
             Rect mSrcRect = new Rect(0, (outHeight - height) / 2, 0, (outHeight + height) / 2);
-            Rect mDestRect = new Rect(30, 57, 345, 402);
+            Rect mDestRect = new Rect(30 * precision, 57 * precision, 345 * precision, 402 * precision);
             canvas.drawBitmap(bitmap, mSrcRect, mDestRect, paint);
         }
 
         paint.reset();
         Paint headerPaint = new Paint();
         headerPaint.setDither(true);
-        Bitmap header = getCirleHeaderBitmap(headBitmap);
-        canvas.drawBitmap(header, 30, 412, headerPaint);
+        Bitmap header = getCircleHeaderBitmap(headBitmap, precision);
+        canvas.drawBitmap(header, 30 * precision, 412 * precision, headerPaint);
 
         Paint textPaint = new Paint();
         textPaint.setAntiAlias(true);
@@ -326,10 +326,10 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             textPaint.reset();
             textPaint.setAntiAlias(true);
             textPaint.setColor(Color.parseColor("#333333"));
-            textPaint.setTextSize(15);
+            textPaint.setTextSize(15 * precision);
             Rect bounds = new Rect();
             textPaint.getTextBounds(name, 0, name.length(), bounds);
-            canvas.drawText(name, 75, 435, textPaint);
+            canvas.drawText(name, 75 * precision, 435 * precision, textPaint);
         }
 
         String content = shareImageBean.getTitleStr();
@@ -337,29 +337,29 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             textPaint.reset();
             textPaint.setAntiAlias(true);
             textPaint.setColor(Color.parseColor("#333333"));
-            int titleSize = 13;
-            int titleCount = 315 / titleSize;
+            int titleSize = 13 * precision;
+            int titleCount = (315 * precision )/ titleSize;
+            textPaint.setTextSize(titleSize);
             Rect bounds = new Rect();
             if (content.length() <= titleCount) {
-                textPaint.setTextSize(titleSize);
                 textPaint.getTextBounds(content, 0, content.length(), bounds);
-                canvas.drawText(content, 30, 468, textPaint);
+                canvas.drawText(content, 30 * precision, 468 * precision, textPaint);
             } else if (content.length() <= titleCount * 2 && content.length() > titleCount) {
                 String s = content.substring(0, titleCount);
                 //获取文字的字宽高以便把文字与图片中心对齐
                 paint.getTextBounds(s, 0, titleCount, bounds);
                 //画文字的时候高度需要注意文字大小以及文字行间距
-                canvas.drawText(s, 30, 468, paint);
+                canvas.drawText(s, 30 * precision, 468 * precision, paint);
                 String s1 = content.substring(titleCount, content.length());
-                canvas.drawText(s1, 30, 468 + 5 + titleSize + bounds.height() / 2, paint);
+                canvas.drawText(s1, 30 * precision, (468 + 5 + titleSize + bounds.height() / 2) * precision, paint);
             } else {
                 String s = content.substring(0, titleCount);
                 //获取文字的字宽高以便把文字与图片中心对齐
                 paint.getTextBounds(s, 0, titleCount, bounds);
                 //画文字的时候高度需要注意文字大小以及文字行间距
-                canvas.drawText(s, 30, 468, paint);
+                canvas.drawText(s, 30 * precision, 468 * precision, paint);
                 String s1 = content.substring(titleCount, titleCount * 2 - 2) + "...";
-                canvas.drawText(s1, 30, 468 + 5 + titleSize + bounds.height() / 2, paint);
+                canvas.drawText(s1, 30 * precision, (468 + 5 + titleSize + bounds.height() / 2) * precision, paint);
             }
         }
 
@@ -367,10 +367,10 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         if (!TextUtils.isEmpty(url)) {
             Paint qrPaint = new Paint();
             qrPaint.setColor(Color.WHITE);
-            RectF qrBg = new RectF(148, 544, 228, 624);
+            RectF qrBg = new RectF(148 * precision, 544 * precision, 228 * precision, 624 * precision);
             canvas.drawRoundRect(qrBg, 5, 5, qrPaint);
-            Bitmap qrBitmap = createQRImage(url, 80, 80);
-            canvas.drawBitmap(qrBitmap, 148, 544, qrPaint);
+            Bitmap qrBitmap = createQRImage(url, 80 * precision, 80 * precision);
+            canvas.drawBitmap(qrBitmap, 148 * precision, 544 * precision, qrPaint);
             if (qrBitmap != null && !qrBitmap.isRecycled()) {
                 qrBitmap.recycle();
                 qrBitmap = null;
@@ -380,10 +380,10 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         String tip = "秀一秀 赚到够";
         textPaint.setAntiAlias(true);
         textPaint.setColor(Color.WHITE);
-        textPaint.setTextSize(13);
+        textPaint.setTextSize(13 * precision);
         Rect bounds = new Rect();
         textPaint.getTextBounds(tip, 0, tip.length(), bounds);
-        canvas.drawText(tip, (375 - bounds.width()) / 2, 640, textPaint);
+        canvas.drawText(tip, ((375 * precision - bounds.width()) / 2), 640 * precision, textPaint);
 
         String path = BitmapUtils.saveImageToCache(result, "shareShowImage.png", shareImageBean.toString());
 
@@ -407,20 +407,19 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         }
     }
 
-    public static Bitmap getCirleHeaderBitmap(Bitmap bmp) {
+    public static Bitmap getCircleHeaderBitmap(Bitmap bmp, int precision) {
         //获取bmp的宽高 小的一个做为圆的直径r
         int w = bmp.getWidth();
         int h = bmp.getHeight();
         int r = Math.min(w, h);
-        float sx = 36 * 1.0f / w;
-        float sy = 36 * 1.0f / h;
+        float sx = 36 * precision * 1.0f / w;
+        float sy = 36 * precision * 1.0f / h;
         float scale = Math.max(sx, sy);
 
         //创建一个paint
         Paint paint = new Paint();
-        paint.setAntiAlias(true);
 
-        Bitmap newBitmap = Bitmap.createBitmap(r, r, Bitmap.Config.ARGB_8888);
+        Bitmap newBitmap = Bitmap.createBitmap(36 * precision, 36 * precision, Bitmap.Config.ARGB_8888);
 
         Canvas canvas = new Canvas(newBitmap);
 
@@ -432,7 +431,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         paint.setShader(bitmapShader);
 
 
-        canvas.drawCircle(18, 18, 18, paint);
+        canvas.drawCircle(18 * precision, 18 * precision, 18 * precision, paint);
 
         return newBitmap;
 

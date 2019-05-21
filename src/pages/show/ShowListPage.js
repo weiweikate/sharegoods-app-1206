@@ -167,6 +167,19 @@ export default class ShowListPage extends BasePage {
     };
 
 
+    _setDetail=(detail)=>{
+
+
+        this.setState({detail:null},()=>{
+            this.setState({
+                detail
+            },()=>{
+                this.shareModal && this.shareModal.open();
+            })
+        })
+    }
+
+
     _render() {
         const { page, left, needsExpensive,detail } = this.state;
         let HotView = null;
@@ -256,10 +269,7 @@ export default class ShowListPage extends BasePage {
                         needsExpensive
                             ?
                             <HotView navigate={this.$navigate} pageFocus={this.state.pageFocused} onShare={(item)=>{
-                                this.setState({detail:item.detail},()=>{
-                                    this.shareModal && this.shareModal.open();
-                                });
-
+                                this._setDetail(item.detail);
                             }}/>
                             :
                             null
