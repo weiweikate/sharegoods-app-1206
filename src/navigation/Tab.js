@@ -197,12 +197,12 @@ export const TabNav = TabNavigator(
                                                   activeSource={res.tab.mine_s} title={'我的'}/>,
                 tabBarOnPress: (tab) => {
                     const { jumpToIndex, scene } = tab;
-                    // if (user && user.isLogin) {
+                    if (user && user.isLogin) {
                         jumpToIndex(scene.index);
-                    // } else {
-                    //     // alert(RouterMap.LoginPage);
-                    //     navigation.navigate('login/login/LoginPage');
-                    // }
+                    } else {
+                        // alert(RouterMap.LoginPage);
+                        navigation.navigate('login/login/LoginPage');
+                    }
                 }
             })
         }
