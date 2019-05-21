@@ -73,7 +73,7 @@
 {
   WelcomeView * welcomeView = [[WelcomeView alloc]initWithData:@[@"welcome_bg1",@"welcome_bg2",@"welcome_bg3",@"welcome_bg4"]];
   welcomeView.frame = self.window.bounds;
-  [self.window addSubview:welcomeView];
+    [self.window addSubview:welcomeView];
 }
 
 - (void)removeLaunch
