@@ -29,6 +29,7 @@ import com.meeruu.sharegoods.rn.showground.SpaceItemDecoration;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
 import com.meeruu.sharegoods.rn.showground.bean.ShowRecommendBean;
 import com.meeruu.sharegoods.rn.showground.event.onNineClickEvent;
+import com.meeruu.sharegoods.rn.showground.widgets.FolderTextView;
 import com.meeruu.sharegoods.rn.showground.widgets.GridView.ImageInfo;
 import com.meeruu.sharegoods.rn.showground.widgets.GridView.NineGridView;
 import com.meeruu.sharegoods.rn.showground.widgets.GridView.NineGridViewAdapter;
@@ -117,7 +118,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
     }
 
     private void convertDynamic(final BaseViewHolder helper, final NewestShowGroundBean.DataBean item) {
-        final TextView content = helper.getView(R.id.content);
+        final FolderTextView content = helper.getView(R.id.content);
 
         final SimpleDraweeView userIcon = helper.getView(R.id.user_icon);
         String userTag = (String) userIcon.getTag();

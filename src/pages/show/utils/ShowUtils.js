@@ -3,7 +3,7 @@
  * @date 2019/5/14
  */
 import StringUtils from '../../../utils/StringUtils';
-import { NativeModules } from 'react-native';
+import { NativeModules ,Platform} from 'react-native';
 import Toast from '../../../utils/bridge';
 
 const formatShowNum = (num) => {
@@ -39,7 +39,9 @@ const downloadShow = (urls, content) => {
     }
 
     return Promise.all(promises).then(res => {
-        Toast.$toast('图片已下载到相册，文案已复制');
+        if(Platform.OS === 'android'){
+            Toast.$toast('图片已下载到相册，文案已复制');
+        }
         return Promise.resolve();
     }).catch(error => {
         Toast.$toast('保存失败');
