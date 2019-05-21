@@ -11,13 +11,11 @@ import {
     ScrollView
 } from 'react-native';
 import BasePage from '../../../BasePage';
-import GoodsItem from '../components/GoodsGrayItem';
 import {
     UIText,
     UIImage,
     MRTextInput as TextInput
 } from '../../../components/ui';
-import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import EmptyUtils from '../../../utils/EmptyUtils';
 import bridge from '../../../utils/bridge';
@@ -59,27 +57,41 @@ export default class FillReturnLogisticsPage extends BasePage {
     };
 
     _render() {
+        let {refundAddress={}} = this.params.pageData || {};
+        let {
+            receiver = '',
+            receiverPhone = '',
+            province = '',
+            city = '',
+            area = '',
+            street = '',
+            address = ''} = refundAddress;
+
         return (
             <View style={styles.container}>
                 <ScrollView>
-                    <GoodsItem
-                        uri={this.state.pageData.specImg}
-                        goodsName={this.state.pageData.productName}
-                        salePrice={StringUtils.formatMoneyString(this.state.pageData.unitPrice)}
-                        category={this.state.pageData.spec}
-                        goodsNum={this.state.pageData.quantity}
-                        // onPress={() => this.jumpToProductDetailPage(this.state.pageData.list[this.state.index].productId)}
-                    />
-                    <TouchableWithoutFeedback onPress={this.selectLogisticsCompany}>
-                        <View style={styles.item_container}>
+                    <View style={styles.item_container}>
+                        <UIText style={styles.item_title}
+                                value={'退换货寄回信息'}/>
+                    </View>
+                    <View style={{backgroundColor: 'white', paddingVertical: 10}}>
+                        <View style={{arginTop: 5, flexDirection: 'row'}}>
                             <UIText style={styles.item_title}
-                                    value={'物流公司'}/>
-                            <UIText
-                                style={this.state.logisticsCompanyName ? styles.item_detail : styles.item_placeholder}
-                                value={this.state.logisticsCompanyName || '请选择物流公司'}/>
-                            <UIImage source={arrow_right} style={{ height: 9, width: 9, marginRight: 20 }}/>
+                                    value={'退换货地址：' }/>
+                            <View style={{flex: 1, marginRight: 10}}>
+                            <UIText style={[styles.item_title,{marginLeft: 0}]}
+                                    value={ province + city + area + street + address}/>
+                            </View>
                         </View>
-                    </TouchableWithoutFeedback>
+                        <UIText style={[styles.item_title, {marginTop: 5}]}
+                                value={'收件人：' + receiver}/>
+                        <UIText style={[styles.item_title, {marginTop: 5}]}
+                                value={'联系方式：' + receiverPhone}/>
+                    </View>
+                    <View style={[styles.item_container, {marginTop: 10}]}>
+                        <UIText style={styles.item_title}
+                                value={'请填写退换货物流信息'}/>
+                    </View>
                     <View style={styles.item_container}>
                         <UIText style={styles.item_title}
                                 value={'物流单号'}/>
@@ -98,6 +110,16 @@ export default class FillReturnLogisticsPage extends BasePage {
                             <UIImage source={sao_yi_sao} style={{ height: 22, width: 22, marginRight: 20 }}/>
                         </TouchableWithoutFeedback>
                     </View>
+                    <TouchableWithoutFeedback onPress={this.selectLogisticsCompany}>
+                        <View style={styles.item_container}>
+                            <UIText style={styles.item_title}
+                                    value={'物流公司'}/>
+                            <UIText
+                                style={this.state.logisticsCompanyName ? styles.item_detail : styles.item_placeholder}
+                                value={this.state.logisticsCompanyName || '请选择物流公司'}/>
+                            <UIImage source={arrow_right} style={{ height: 9, width: 9, marginRight: 20 }}/>
+                        </View>
+                    </TouchableWithoutFeedback>
                 </ScrollView>
                 <TouchableWithoutFeedback onPress={this.submit}>
                     <View style={{
@@ -171,9 +193,10 @@ const styles = StyleSheet.create({
         item_container: {
             backgroundColor: 'white',
             flexDirection: 'row',
-            height: 44,
-            marginBottom: 10,
-            alignItems: 'center'
+            height: 40,
+            alignItems: 'center',
+            borderBottomWidth: 1,
+            borderBottomColor: DesignRule.bgColor
         },
         item_title: {
             color: DesignRule.textColor_mainTitle,

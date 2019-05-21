@@ -1,5 +1,4 @@
 import { action, observable } from 'mobx';
-import orderApi from '../api/orderApi';
 // import TimerMixin from 'react-timer-mixin';
 import { DeviceEventEmitter } from 'react-native';
 import {AfterStatus, SubStatus} from './AfterType'
@@ -54,7 +53,7 @@ class AfterSaleDetailModel {
                     "warehouseCode": null,
                     "sendWarehouseFeedback": null,
                     "refundWarehouseFeedback": null,
-                    "status": 5,
+                    "status": 2,
                     "subStatus": 2,
                     "cancelTime": 1557209035451,
                     "imgList": "",

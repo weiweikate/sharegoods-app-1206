@@ -14,7 +14,6 @@ import OrderApi from '../api/orderApi';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 // import userOrderNum from '../../../manager/userOrderNum';
 import DesignRule from '../../../constants/DesignRule';
-import MineApi from '../../mine/api/MineApi';
 import res from '../res';
 import {
     MRText as Text
@@ -40,7 +39,6 @@ export default class MyOrdersListView extends Component {
             isShowReceiveGoodsModal: false,
             menu: {},
             index: -1,
-            CONFIG: [],
             isError: false,
             errMsgText: '发生错误',
             allData: []
@@ -131,7 +129,7 @@ export default class MyOrdersListView extends Component {
                     ref={(ref) => {
                         this.cancelModal = ref;
                     }}
-                    detail={this.state.CONFIG}
+                    detail={this.props.cancelReasons}
                     closeWindow={() => {
                         this.setState({ isShowSingleSelctionModal: false });
                     }}
@@ -139,7 +137,7 @@ export default class MyOrdersListView extends Component {
                         this.setState({ isShowSingleSelctionModal: false });
                         Toast.showLoading();
                         OrderApi.cancelOrder({
-                            cancelReason: this.state.CONFIG[index],
+                            cancelReason: this.props.cancelReasons[index],
                             orderNo: (this.state.viewData[this.state.index] || {}).orderNo,
                             cancelType: 2,
                             platformRemarks: null
@@ -147,7 +145,6 @@ export default class MyOrdersListView extends Component {
                             Toast.hiddenLoading();
                             if (response.code === 10000) {
                                 Toast.$toast('订单已取消');
-                                index = -1;
                                 this.onRefresh();
                             } else {
                                 Toast.$toast(response.msg);
@@ -272,29 +269,7 @@ export default class MyOrdersListView extends Component {
         if (this.isFirst) {
             this.getDataFromNetwork();
         }
-        this.getCancelOrder();
     }
-
-    getCancelOrder() {
-        let arrs = [];
-        MineApi.queryDictionaryTypeList({ code: 'QXDD' }).then(resp => {
-            if (resp.code === 10000 && StringUtils.isNoEmpty(resp.data)) {
-                resp.data.map((item, i) => {
-                    arrs.push(item.value);
-                });
-                this.setState({
-                    CONFIG: arrs
-                });
-            }
-        }).catch(err => {
-            console.log(err);
-        });
-    }
-
-    // componentWillUnmount() {
-    //     this.interval && clearInterval(this.interval);
-    //     DeviceEventEmitter.removeAllListeners("OrderNeedRefresh");
-    // }
 
     handleDatas() {
         let params = {
@@ -406,7 +381,7 @@ export default class MyOrdersListView extends Component {
         console.log('view data platformOrderNo', data);
         switch (menu.id) {
             case 1:
-                if (this.state.CONFIG.length > 0) {
+                if (this.props.cancelReasons.length > 0) {
                     this.setState({ isShowSingleSelctionModal: true });
                     this.cancelModal && this.cancelModal.open();
                 } else {

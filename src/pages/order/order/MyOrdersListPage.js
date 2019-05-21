@@ -1,11 +1,13 @@
 import React from 'react';
-import { StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Image, TouchableOpacity, DeviceEventEmitter } from 'react-native';
 import BasePage from '../../../BasePage';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 import MyOrdersListView from './../components/MyOrdersListView';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
+import MineApi from '../../mine/api/MineApi';
+import StringUtils from '../../../utils/StringUtils';
 
 const { search } = res;
 
@@ -19,10 +21,11 @@ const { search } = res;
 class MyOrdersListPage extends BasePage {
     constructor(props) {
         super(props);
+        let index = this.params.index ? this.params.index : 0;
         this.state = {
-            index: this.params.index ? this.params.index : 0,
-            selectTab: 10,
-            resume: false
+            index: index,    //默认第一页
+            selectTab: index,//当前选中的
+            cancelReasons: []
         };
     }
 
@@ -48,26 +51,29 @@ class MyOrdersListPage extends BasePage {
     };
 
     componentWillUnmount() {
-        this.didFocusSubscription && this.didFocusSubscription.remove();
+        this.listener && this.listener.remove();
     }
 
     componentDidMount() {
-        this.firstLoad = true;
-        this.didFocusSubscription = this.props.navigation.addListener(
-            'didFocus',
-            payload => {
-                const { state } = payload;
-                console.log('willFocusSubscriptionOrdersList', payload);
-                if (state && state.routeName === 'order/order/MyOrdersListPage' && !this.firstLoad) {
-                    this.reLoads && this.reLoads.onRefresh();
-                }
-                this.firstLoad = false;
-            });
-        if (this.firstLoad) {
-            setTimeout(() => {
-                this.reLoads && this.reLoads.onRefresh();
-            }, 500);
-        }
+        //接收刷新的通知
+        this.listener = DeviceEventEmitter.addListener('REFRESH_ORDER', ()=> {
+            this.reLoads && this.reLoads.onRefresh();
+        })
+        this.getCancelReasons();
+
+    }
+    //获取取消订单理由
+    getCancelReasons = () => {
+        MineApi.queryDictionaryTypeList({ code: 'QXDD' }).then(resp => {
+            if (resp.code === 10000 && StringUtils.isNoEmpty(resp.data)) {
+                let arrs = resp.data.map((item) => {
+                    return item.value
+                });
+                this.setState({
+                    cancelReasons: arrs
+                });
+            }
+        })
     }
 
     _render() {
@@ -81,42 +87,32 @@ class MyOrdersListPage extends BasePage {
                 renderTabBar={this._renderTabBar}
                 //进界面的时候打算进第几个
                 initialPage={parseInt(this.state.index)}>
-                <MyOrdersListView
-                    tabLabel={'全部'} pageStatus={0} selectTab={this.state.selectTab} ref={(e) => this.reLoads = e}
-                    nav={this.$navigate}
-                    navigation={this.props.navigation}
-                />
-                <MyOrdersListView
-                    tabLabel={'待付款'} pageStatus={1} selectTab={this.state.selectTab} ref={(e) => this.reLoads = e}
-                    nav={this.$navigate}
-                    navigation={this.props.navigation}
-                />
-                <MyOrdersListView
-                    tabLabel={'待发货'} pageStatus={2} selectTab={this.state.selectTab} ref={(e) => this.reLoads = e}
-                    nav={this.$navigate}
-                    navigation={this.props.navigation}
-                />
-                <MyOrdersListView
-                    tabLabel={'待收货'} pageStatus={3} selectTab={this.state.selectTab} ref={(e) => this.reLoads = e}
-                    nav={this.$navigate}
-                    navigation={this.props.navigation}/>
-                <MyOrdersListView
-                    tabLabel={'待晒单'} pageStatus={4} selectTab={this.state.selectTab} ref={(e) => this.reLoads = e}
-                    nav={this.$navigate}
-                    navigation={this.props.navigation}/>
+                {
+                    ['全部', '待付款', '待发货', '待收货','待晒单'].map((item, index) => {
+                        return  <MyOrdersListView
+                            tabLabel = {item}
+                            pageStatus = {index}
+                            selectTab = {this.state.selectTab}
+                            ref = {(e) => this.reLoads = e}
+                            nav = {this.$navigate}
+                            navigation = {this.props.navigation}
+                            cancelReasons = {this.state.cancelReasons}
+                        />
+                    })
+                }
             </ScrollableTabView>
         );
     }
 
     _renderTabBar = () => {
         return <DefaultTabBar
-            backgroundColor={'white'}
-            activeTextColor={DesignRule.mainColor}
-            inactiveTextColor={DesignRule.textColor_instruction}
-            textStyle={styles.tabBarText}
-            underlineStyle={styles.tabBarUnderline}
-            style={styles.tabBar}
-            tabStyle={styles.tab}
+            backgroundColor = {'white'}
+            activeTextColor = {DesignRule.mainColor}
+            inactiveTextColor = {DesignRule.textColor_instruction}
+            textStyle = {styles.tabBarText}
+            underlineStyle = {styles.tabBarUnderline}
+            style = {styles.tabBar}
+            tabStyle = {styles.tab}
         />;
     };
 }
