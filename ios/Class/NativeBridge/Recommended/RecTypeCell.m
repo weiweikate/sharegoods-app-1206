@@ -133,7 +133,7 @@
   .leftSpaceToView(bgView, 45)
   .rightSpaceToView(bgView, 30)
   .autoHeightRatio(0);
-  [self.contentLab setMaxNumberOfLinesToShow:2];
+  [self.contentLab setMaxNumberOfLinesToShow:1];
   
   //点赞
   [_zanBtn addTarget:self action:@selector(tapZanBtn:) forControlEvents:UIControlEventTouchUpInside];
