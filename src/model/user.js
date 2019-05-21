@@ -182,7 +182,7 @@ class User {
         } else {
             return AsyncStorage.getItem(USERTOKEN).then(token => {
                 this.token = token;
-                AsyncStorage.setItem(USERTOKEN, token);
+                AsyncStorage.setItem(USERTOKEN, String(token));
                 return Promise.resolve(token);
             });
         }
