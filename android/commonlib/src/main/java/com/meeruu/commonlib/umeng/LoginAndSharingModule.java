@@ -176,7 +176,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void creatShowShareImage(ReadableMap json, Callback success, Callback fail){
+    public void creatShowShareImage(ReadableMap json, Callback success, Callback fail) {
         ShareImageBean shareImageBean = parseParam(json);
         if (shareImageBean == null) {
             fail.invoke("参数出错");
@@ -203,7 +203,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     }
 
 
-
     public static void getShowBitmap(final Context context, final ShareImageBean shareImageBean, final Callback success, final Callback fail) {
         if (Fresco.hasBeenInitialized()) {
             ImageLoadUtils.preFetch(Uri.parse(shareImageBean.getImageUrlStr()), 0, 0, new BaseRequestListener() {
@@ -223,7 +222,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                     }
                     Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), BitmapUtils.getBitmapOption(2));
                     if (bmp != null && !bmp.isRecycled()) {
-                        getShowHeaderBitmap(context,bmp,shareImageBean,success,fail);
+                        getShowHeaderBitmap(context, bmp, shareImageBean, success, fail);
 
                     } else {
                         fail.invoke("图片获取失败");
@@ -233,13 +232,13 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         }
     }
 
-    public static void getShowHeaderBitmap(final Context context, final Bitmap mainBitmap, final ShareImageBean shareImageBean, final Callback success, final Callback fail){
+    public static void getShowHeaderBitmap(final Context context, final Bitmap mainBitmap, final ShareImageBean shareImageBean, final Callback success, final Callback fail) {
         if (Fresco.hasBeenInitialized()) {
-            if(TextUtils.isEmpty(shareImageBean.getHeaderImage())){
+            if (TextUtils.isEmpty(shareImageBean.getHeaderImage())) {
                 Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.bg_app_user);
-                drawShow(context,bitmap,mainBitmap,shareImageBean,success,fail);
+                drawShow(context, bitmap, mainBitmap, shareImageBean, success, fail);
 
-            }else {
+            } else {
                 ImageLoadUtils.preFetch(Uri.parse(shareImageBean.getHeaderImage()), 0, 0, new BaseRequestListener() {
                     @Override
                     public void onRequestSuccess(ImageRequest request, String requestId, boolean isPrefetch) {
@@ -257,7 +256,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                         }
                         Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), BitmapUtils.getBitmapOption(2));
                         if (bmp != null && !bmp.isRecycled()) {
-                            drawShow(context,bmp,mainBitmap,shareImageBean,success,fail);
+                            drawShow(context, bmp, mainBitmap, shareImageBean, success, fail);
                         } else {
                             fail.invoke("图片获取失败");
                         }
@@ -268,93 +267,107 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         }
     }
 
-    private static void drawShow(Context context, Bitmap headBitmap,final Bitmap bitmap, ShareImageBean shareImageBean, Callback success, Callback fail){
-        Bitmap result = Bitmap.createBitmap(375,  667, Bitmap.Config.ARGB_8888);
+    private static void drawShow(Context context, Bitmap headBitmap, final Bitmap bitmap, ShareImageBean shareImageBean, Callback success, Callback fail) {
+        Bitmap result = Bitmap.createBitmap(375, 667, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(result);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         BlurFactor blurFactor = new BlurFactor();
         blurFactor.width = bitmap.getWidth();
         blurFactor.height = bitmap.getHeight();
-        Bitmap outBitmap = Blur.of(context,bitmap,blurFactor);
+        Bitmap outBitmap = Blur.of(context, bitmap, blurFactor);
         int outWidth = outBitmap.getWidth();
         int outHeight = outBitmap.getHeight();
-        if(outWidth*1.0/outHeight > 375/667){
+        if (outWidth * 1.0 / outHeight > 375 / 667) {
             int height = outHeight;
-            int width =  (int)(height*(375/667.0));
-            Rect mSrcRect = new Rect((outWidth-width)/2,0,outWidth-(width/2),height);
-            Rect mDestRect = new Rect(0,0,375,667);
-            canvas.drawBitmap(outBitmap,mSrcRect,mDestRect,paint);
-        }else {
+            int width = (int) (height * (375 / 667.0));
+            Rect mSrcRect = new Rect((outWidth - width) / 2, 0, outWidth - (width / 2), height);
+            Rect mDestRect = new Rect(0, 0, 375, 667);
+            canvas.drawBitmap(outBitmap, mSrcRect, mDestRect, paint);
+        } else {
             int width = outWidth;
-            int height = (int)(outWidth/(375*667.0));
-            Rect mSrcRect = new Rect(0,(outHeight-height)/2,0,outHeight-(height/2));
-            Rect mDestRect = new Rect(0,0,375,667);
-            canvas.drawBitmap(outBitmap,mSrcRect,mDestRect,paint);
+            int height = (int) (outWidth / (375 * 667.0));
+            Rect mSrcRect = new Rect(0, (outHeight - height) / 2, 0, outHeight - (height / 2));
+            Rect mDestRect = new Rect(0, 0, 375, 667);
+            canvas.drawBitmap(outBitmap, mSrcRect, mDestRect, paint);
         }
 
         paint.setColor(Color.WHITE);
-        RectF white = new RectF(15,42,360,514);
+        RectF white = new RectF(15, 42, 360, 514);
         canvas.drawRoundRect(white, 5, 5, paint);
 
         outWidth = bitmap.getWidth();
         outHeight = bitmap.getHeight();
         paint.reset();
-        if(outWidth*1.0/outHeight > 315/345){
+        paint.setDither(true);
+        if (outWidth * 1.0 / outHeight > 315 / 345) {
             int height = outHeight;
-            int width =  (int)(height*(315/345.0));
-            Rect mSrcRect = new Rect((outWidth-width)/2,0,(outWidth+width)/2,height);
-            Rect mDestRect = new Rect(30,57,345,402);
-            canvas.drawBitmap(bitmap,mSrcRect,mDestRect,paint);
-        }else {
+            int width = (int) (height * (315 / 345.0));
+            Rect mSrcRect = new Rect((outWidth - width) / 2, 0, (outWidth + width) / 2, height);
+            Rect mDestRect = new Rect(30, 57, 345, 402);
+            canvas.drawBitmap(bitmap, mSrcRect, mDestRect, paint);
+        } else {
             int width = outWidth;
-            int height = (int)(outWidth/(315*345.0));
-            Rect mSrcRect = new Rect(0,(outHeight-height)/2,0,(outHeight+height)/2);
-            Rect mDestRect = new Rect(30,57,345,402);
-            canvas.drawBitmap(bitmap,mSrcRect,mDestRect,paint);
+            int height = (int) (outWidth / (315 * 345.0));
+            Rect mSrcRect = new Rect(0, (outHeight - height) / 2, 0, (outHeight + height) / 2);
+            Rect mDestRect = new Rect(30, 57, 345, 402);
+            canvas.drawBitmap(bitmap, mSrcRect, mDestRect, paint);
         }
 
         paint.reset();
         Paint headerPaint = new Paint();
-        BitmapShader mShader = new BitmapShader(headBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
-        int bitmapWidth = headBitmap.getWidth();
-        int bitmapHeight = headBitmap.getHeight();
-        float sx = 36 * 1.0f / bitmapWidth;
-        float sy = 36 * 1.0f / bitmapHeight;
-        float scale = Math.max(sx, sy);
-
-        Matrix matrix = new Matrix();
-        matrix.setScale(scale, scale);
-        mShader.setLocalMatrix(matrix);
-        headerPaint.setShader(mShader);
-        canvas.drawCircle(48, 430, 18, headerPaint);
+        headerPaint.setDither(true);
+        Bitmap header = getCirleHeaderBitmap(headBitmap);
+        canvas.drawBitmap(header, 30, 412, headerPaint);
 
         Paint textPaint = new Paint();
         textPaint.setAntiAlias(true);
         String name = shareImageBean.getUserName();
-        if(!TextUtils.isEmpty(name)){
+        if (!TextUtils.isEmpty(name)) {
             textPaint.reset();
+            textPaint.setAntiAlias(true);
             textPaint.setColor(Color.parseColor("#333333"));
             textPaint.setTextSize(15);
             Rect bounds = new Rect();
             textPaint.getTextBounds(name, 0, name.length(), bounds);
-            canvas.drawText(name, 75, 419, textPaint);
+            canvas.drawText(name, 75, 435, textPaint);
         }
 
         String content = shareImageBean.getTitleStr();
-        if(!TextUtils.isEmpty(content)){
+        if (!TextUtils.isEmpty(content)) {
             textPaint.reset();
+            textPaint.setAntiAlias(true);
             textPaint.setColor(Color.parseColor("#333333"));
-            textPaint.setTextSize(13);
+            int titleSize = 13;
+            int titleCount = 315 / titleSize;
             Rect bounds = new Rect();
-            textPaint.getTextBounds(content, 0, content.length(), bounds);
-            canvas.drawText(content, 30, 457, textPaint);
+            if (content.length() <= titleCount) {
+                textPaint.setTextSize(titleSize);
+                textPaint.getTextBounds(content, 0, content.length(), bounds);
+                canvas.drawText(content, 30, 468, textPaint);
+            } else if (content.length() <= titleCount * 2 && content.length() > titleCount) {
+                String s = content.substring(0, titleCount);
+                //获取文字的字宽高以便把文字与图片中心对齐
+                paint.getTextBounds(s, 0, titleCount, bounds);
+                //画文字的时候高度需要注意文字大小以及文字行间距
+                canvas.drawText(s, 30, 468, paint);
+                String s1 = content.substring(titleCount, content.length());
+                canvas.drawText(s1, 30, 468 + 5 + titleSize + bounds.height() / 2, paint);
+            } else {
+                String s = content.substring(0, titleCount);
+                //获取文字的字宽高以便把文字与图片中心对齐
+                paint.getTextBounds(s, 0, titleCount, bounds);
+                //画文字的时候高度需要注意文字大小以及文字行间距
+                canvas.drawText(s, 30, 468, paint);
+                String s1 = content.substring(titleCount, titleCount * 2 - 2) + "...";
+                canvas.drawText(s1, 30, 468 + 5 + titleSize + bounds.height() / 2, paint);
+            }
         }
 
         String url = shareImageBean.getQRCodeStr();
-        if(!TextUtils.isEmpty(url)){
+        if (!TextUtils.isEmpty(url)) {
             Paint qrPaint = new Paint();
             qrPaint.setColor(Color.WHITE);
-            RectF qrBg = new RectF(148,544,228,624);
+            RectF qrBg = new RectF(148, 544, 228, 624);
             canvas.drawRoundRect(qrBg, 5, 5, qrPaint);
             Bitmap qrBitmap = createQRImage(url, 80, 80);
             canvas.drawBitmap(qrBitmap, 148, 544, qrPaint);
@@ -365,12 +378,12 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         }
 
         String tip = "秀一秀 赚到够";
-
+        textPaint.setAntiAlias(true);
         textPaint.setColor(Color.WHITE);
         textPaint.setTextSize(13);
         Rect bounds = new Rect();
         textPaint.getTextBounds(tip, 0, tip.length(), bounds);
-        canvas.drawText(tip, (375-bounds.width())/2, 640, textPaint);
+        canvas.drawText(tip, (375 - bounds.width()) / 2, 640, textPaint);
 
         String path = BitmapUtils.saveImageToCache(result, "shareShowImage.png", shareImageBean.toString());
 
@@ -384,12 +397,45 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             outBitmap.recycle();
             outBitmap = null;
         }
-
-
         if (result != null && !result.isRecycled()) {
             result.recycle();
             result = null;
         }
+        if (header != null && !header.isRecycled()) {
+            header.recycle();
+            header = null;
+        }
+    }
+
+    public static Bitmap getCirleHeaderBitmap(Bitmap bmp) {
+        //获取bmp的宽高 小的一个做为圆的直径r
+        int w = bmp.getWidth();
+        int h = bmp.getHeight();
+        int r = Math.min(w, h);
+        float sx = 36 * 1.0f / w;
+        float sy = 36 * 1.0f / h;
+        float scale = Math.max(sx, sy);
+
+        //创建一个paint
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+
+        Bitmap newBitmap = Bitmap.createBitmap(r, r, Bitmap.Config.ARGB_8888);
+
+        Canvas canvas = new Canvas(newBitmap);
+
+        //创建一个BitmapShader对象 使用传递过来的原Bitmap对象bmp
+        BitmapShader bitmapShader = new BitmapShader(bmp, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        Matrix matrix = new Matrix();
+        matrix.setScale(scale, scale);
+        bitmapShader.setLocalMatrix(matrix);
+        paint.setShader(bitmapShader);
+
+
+        canvas.drawCircle(18, 18, 18, paint);
+
+        return newBitmap;
+
     }
 
     private void downloadHeaderImg(final Context context, final String headImg, final String url, final Callback success, final Callback fail) {
@@ -441,8 +487,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     //    shopPerson: `店主: ${manager.nickname || ''}`,
     //    codeString: this.state.codeString,
     //    wxTip: this.state.wxTip
-    public void drawShopInviteFriendsImage(final Context context, final ReadableMap map,
-                                           final Callback success, final Callback fail) {
+    public void drawShopInviteFriendsImage(final Context context, final ReadableMap map, final Callback success, final Callback fail) {
         if (Fresco.hasBeenInitialized()) {
             String headerImgUrl = map.getString("headerImg");
             ImageLoadUtils.preFetch(Uri.parse(headerImgUrl), 0, 0, new BaseRequestListener() {
@@ -911,7 +956,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         paint.setTextSize(20);
         canvas.drawText(price, market.right + 30, isTwoLine ? 610 : 585, paint);
         String retailStr = "V1价： ";
-        if(TextUtils.equals("mr_skill",shareImageBean.priceType)){
+        if (TextUtils.equals("mr_skill", shareImageBean.priceType)) {
             retailStr = "秒杀价： ";
         }
         paint.setColor(Color.parseColor("#333333"));
@@ -966,8 +1011,8 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         if (map.hasKey("imageUrlStr")) {
             String imgurl = map.getString("imageUrlStr");
 
-            if(!TextUtils.isEmpty(imgurl)&& imgurl.contains("?")){
-                imgurl = imgurl.substring(0,imgurl.indexOf("?"));
+            if (!TextUtils.isEmpty(imgurl) && imgurl.contains("?")) {
+                imgurl = imgurl.substring(0, imgurl.indexOf("?"));
             }
             shareImageBean.setImageUrlStr(imgurl);
         } else {
@@ -1016,15 +1061,15 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             shareImageBean.setPriceType(null);
         }
 
-        if(map.hasKey("headerImage")){
+        if (map.hasKey("headerImage")) {
             shareImageBean.setHeaderImage(map.getString("headerImage"));
-        }else {
+        } else {
             shareImageBean.setHeaderImage(null);
         }
 
-        if(map.hasKey("userName")){
+        if (map.hasKey("userName")) {
             shareImageBean.setUserName(map.getString("userName"));
-        }else {
+        } else {
             shareImageBean.setUserName("");
         }
 
@@ -1065,14 +1110,14 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void createQRToAlbum(String info, Promise promise){
+    public void createQRToAlbum(String info, Promise promise) {
         Bitmap bitmap = createQRImage(info, 300, 300);
         if (bitmap == null) {
             promise.reject("二维码生成失败！");
             return;
         }
         String path = BitmapUtils.saveImageToCache(bitmap, "shareImage.png", info);
-        Uri uri = Uri.parse("file://"+path);
+        Uri uri = Uri.parse("file://" + path);
         saveImageAndRefresh(uri);
         if (TextUtils.isEmpty(path)) {
             promise.reject("图片保存失败！");
@@ -1085,7 +1130,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             bitmap = null;
         }
     }
-
 
 
     @ReactMethod

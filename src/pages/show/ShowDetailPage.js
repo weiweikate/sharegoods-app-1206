@@ -616,7 +616,7 @@ export default class ShowDetailPage extends BasePage {
                                 imageUrlStr: detail.resource[0].url,
                                 titleStr: detail.content,
                                 QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
-                                headerImage: user.headImg,
+                                headerImage: (detail.userInfoVO && detail.userInfoVO.userImg)? detail.userInfoVO.userImg: null,
                                 userName: (detail.userInfoVO && detail.userInfoVO.userName)? detail.userInfoVO.userName: ''
                             }}
                             webJson={{
