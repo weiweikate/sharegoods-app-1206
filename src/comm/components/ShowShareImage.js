@@ -12,6 +12,7 @@ import {
 import res from '../../pages/show/res';
 import PreLoadImage from '../../components/ui/preLoadImage/PreLoadImage';
 import ScreenUtils from '../../utils/ScreenUtils';
+import {MRText} from '../../components/ui';
 
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 
@@ -48,8 +49,17 @@ export default class ShowShareImage extends Component {
                             (name.length > 13 ? name.substr(0, 13) + '...' : name) : ''
                         }</Text>
                     </View>
-                    <View style={{width:autoSizeWidth(230)}}>
-                        <Text style={{fontSize:13,color:'#333333'}} numberOfLines={2}>{content}</Text>
+                    <View style={{width: autoSizeWidth(230)}}>
+                        {ScreenUtils.isIOS ?
+                            <Text style={{fontSize: 13, color: '#333333'}}
+                                  numberOfLines={2}>
+                                {content}
+                            </Text> :
+                            <MRText style={{fontSize: 13, color: '#333333'}}
+                                    numberOfLines={2}>
+                                {content}
+                            </MRText>
+                        }
                     </View>
                 </View>
             );

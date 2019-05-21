@@ -12,6 +12,7 @@
 #import "View/JXBodyView.h"
 #import "View/JXFooterView.h"
 
+#define SCREEN_WIDTH ([UIScreen mainScreen].bounds.size.width)
 
 @interface RecommendedCell()
 @property (nonatomic,strong)JXHeaderView* headView;
@@ -178,12 +179,23 @@
 }
 
 -(void)setModel:(JXModelData *)model{
-    _model = model;
-    self.headView.UserInfoModel = model.userInfoVO;
-    self.headView.time = model.publishTimeStr;
-    self.bodyView.sources = model.resource;
-    self.contentLab.text = model.content;
-
+  _model = model;
+  self.headView.UserInfoModel = model.userInfoVO;
+  self.headView.time = model.publishTimeStr;
+  self.bodyView.sources = model.resource;
+  
+  self.contentLab.text = model.content;
+  NSArray *array = [self getSeparatedLinesFromLabel:self.contentLab.text font:[UIFont systemFontOfSize:13] andLableWidth:SCREEN_WIDTH-105];
+  //组合需要显示的文本
+  if(array.count>3){
+    NSString *line3String = array[2];
+    NSString *showText = [NSString stringWithFormat:@"%@%@%@...全文", array[0], array[1],[line3String substringToIndex:line3String.length-7]];
+    //设置label的attributedText
+    NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:showText attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13.0], NSForegroundColorAttributeName:[UIColor colorWithRed:102/255.0 green:102/255.0 blue:102/255.0 alpha:1.0]}];
+    [attStr addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13.0], NSForegroundColorAttributeName:[UIColor redColor]} range:NSMakeRange(showText.length-2, 2)];
+    self.contentLab.attributedText = attStr;
+  }
+  
     self.footerView.products = model.products;
     self.footerView.downloadCount = model.downloadCount;
     self.footerView.likesCount = model.likesCount;
@@ -230,5 +242,34 @@
     [self.cellDelegate labelClick:self];
   }
 }
-
+/*
+ * 返回结果即为包含每行文字的数组，行数即为count数
+ * 该方法主要是预先的计算出文本在UIlable等控件中的显示情况，
+ */
+- (NSArray *)getSeparatedLinesFromLabel:(NSString *)string font:(UIFont *)font andLableWidth:(CGFloat)lableWidth{
+  CTFontRef myFont = CTFontCreateWithName(( CFStringRef)([font fontName]), [font pointSize], NULL);
+  NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:string];
+  [attStr addAttribute:(NSString *)kCTFontAttributeName value:(__bridge  id)myFont range:NSMakeRange(0, attStr.length)];
+  CFRelease(myFont);
+  CTFramesetterRef frameSetter = CTFramesetterCreateWithAttributedString(( CFAttributedStringRef)attStr);
+  CGMutablePathRef path = CGPathCreateMutable();
+  CGPathAddRect(path, NULL, CGRectMake(0,0,lableWidth,100000));
+  CTFrameRef frame = CTFramesetterCreateFrame(frameSetter, CFRangeMake(0, 0), path, NULL);
+  NSArray *lines = ( NSArray *)CTFrameGetLines(frame);
+  NSMutableArray *linesArray = [[NSMutableArray alloc]init];
+  for (id line in lines) {
+    CTLineRef lineRef = (__bridge  CTLineRef )line;
+    CFRange lineRange = CTLineGetStringRange(lineRef);
+    NSRange range = NSMakeRange(lineRange.location, lineRange.length);
+    NSString *lineString = [string substringWithRange:range];
+    CFAttributedStringSetAttribute((CFMutableAttributedStringRef)attStr, lineRange, kCTKernAttributeName, (CFTypeRef)([NSNumber numberWithFloat:0.0]));
+    CFAttributedStringSetAttribute((CFMutableAttributedStringRef)attStr, lineRange, kCTKernAttributeName, (CFTypeRef)([NSNumber numberWithInt:0.0]));
+    [linesArray addObject:lineString];
+  }
+  
+  CGPathRelease(path);
+  CFRelease( frame );
+  CFRelease(frameSetter);
+  return (NSArray *)linesArray;
+}
 @end

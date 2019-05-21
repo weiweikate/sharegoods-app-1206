@@ -67,6 +67,7 @@
 {
   NSString * path = [StorageFromRN getHost];
   [[self manager].requestSerializer setValue:[StorageFromRN getSG_Token] forHTTPHeaderField:@"sg-token"];
+  [[self manager].requestSerializer setValue:[StorageFromRN getSG_Token]  forHTTPHeaderField:@"sg-token"];
     NSArray<NSString *> * arr = [url componentsSeparatedByString:@"@"];
     NSString * URL = [NSString stringWithFormat:@"%@%@",path,arr.firstObject];
     if ([[arr.lastObject uppercaseString] isEqualToString:@"GET"]) {

@@ -110,7 +110,14 @@ export default class ShowMaterialView extends React.Component {
                                            this.addCart(nativeEvent.prodCode);
                                        }}
                                        onZanPress={({ nativeEvent }) => {
-                                           ShowApi.incrCountByType({ showNo: nativeEvent.detail.showNo, type: 1 });
+                                           if (nativeEvent.detail.like) {
+                                               ShowApi.reduceCountByType({
+                                                   showNo: nativeEvent.detail.showNo,
+                                                   type: 1
+                                               });
+                                           } else {
+                                               ShowApi.incrCountByType({ showNo: nativeEvent.detail.showNo, type: 1 });
+                                           }
                                        }}
 
                                        onDownloadPress={({ nativeEvent }) => {
@@ -185,7 +192,7 @@ export default class ShowMaterialView extends React.Component {
                                        }}
                     />
                     {
-                        this.state.showEditorIcon  && user.token?
+                        this.state.showEditorIcon && user.token ?
                             <ReleaseButton
                                 style={{
                                     position: 'absolute',

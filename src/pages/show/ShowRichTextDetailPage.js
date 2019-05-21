@@ -585,7 +585,12 @@ export default class ShowRichTextDetailPage extends BasePage {
                                 titleStr: detail.content,
                                 QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
                                 headerImage: user.headImg,
-                                userName: detail.userName ? detail.userName : ''
+                                userName: (detail.userInfoVO && detail.userInfoVO.userName)? detail.userInfoVO.userName: ''
+                            }}
+                            webJson={{
+                                title:detail.showType === 1 ? detail.content : detail.title,//分享标题(当为图文分享时候使用)
+                                linkUrl:`${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
+                                thumImage:''//(分享图标小图(https链接)图文分享使用)
                             }}
                             miniProgramJson={{
                                 title: detail.title,

@@ -43,7 +43,7 @@ export default class ShowHotView extends React.Component {
         this.state = {
             headerView: null,
             showEditorIcon: true,
-            showToTop:false
+            showToTop: false
         };
 
     }
@@ -81,8 +81,8 @@ export default class ShowHotView extends React.Component {
 
     addCart = (code) => {
         let addCartModel = new AddCartModel();
-        addCartModel.requestProductDetail(code,(productIsPromotionPrice)=>{
-            this.SelectionPage.show(addCartModel, (amount, skuCode)=>{
+        addCartModel.requestProductDetail(code, (productIsPromotionPrice) => {
+            this.SelectionPage.show(addCartModel, (amount, skuCode) => {
                 const { prodCode, name, originalPrice } = addCartModel;
                 shopCartCacheTool.addGoodItem({
                     'amount': amount,
@@ -99,10 +99,10 @@ export default class ShowHotView extends React.Component {
                     shoppingcartEntrance: 1
                 });
             }, { sourceType: productIsPromotionPrice ? sourceType.promotion : null });
-        },(error)=>{
+        }, (error) => {
             bridge.$toast(error.msg || '服务器繁忙');
-        })
-    }
+        });
+    };
 
     renderHeader = () => {
         return (<View style={{ backgroundColor: DesignRule.bgColor, width: ScreenUtils.width - px2dp(30) }}>
@@ -128,17 +128,17 @@ export default class ShowHotView extends React.Component {
                                        params={{ spreadPosition: tag.Recommend + '' }}
                                        onItemPress={({ nativeEvent }) => {
 
-                                               const { navigate } = this.props;
-                                               let params = {
-                                                   data:nativeEvent,
-                                                   ref: this.RecommendShowList,
-                                                   index: nativeEvent.index
-                                               };
-                                               if(nativeEvent.showType === 1){
-                                                   navigate('show/ShowDetailPage', params);
-                                               }else {
-                                                   navigate('show/ShowRichTextDetailPage', params);
-                                               }
+                                           const { navigate } = this.props;
+                                           let params = {
+                                               data: nativeEvent,
+                                               ref: this.RecommendShowList,
+                                               index: nativeEvent.index
+                                           };
+                                           if (nativeEvent.showType === 1) {
+                                               navigate('show/ShowDetailPage', params);
+                                           } else {
+                                               navigate('show/ShowRichTextDetailPage', params);
+                                           }
 
                                        }}
                                        onNineClick={({ nativeEvent }) => {
@@ -151,20 +151,28 @@ export default class ShowHotView extends React.Component {
                                            this.addCart(nativeEvent.prodCode);
                                        }}
 
-                                       onPressProduct={({nativeEvent})=>{
+                                       onPressProduct={({ nativeEvent }) => {
                                            this.props.navigate(RouterMap.ProductDetailPage, { productCode: nativeEvent.prodCode });
                                        }}
 
-                                       onZanPress={({nativeEvent})=>{
-                                           ShowApi.incrCountByType({ showNo:nativeEvent.detail.showNo,  type:1});
+                                       onZanPress={({ nativeEvent }) => {
+                                           //app native层提前修改了数据
+                                           if (!nativeEvent.detail.like) {
+                                               ShowApi.reduceCountByType({
+                                                   showNo: nativeEvent.detail.showNo,
+                                                   type: 1
+                                               });
+                                           } else {
+                                               ShowApi.incrCountByType({ showNo: nativeEvent.detail.showNo, type: 1 });
+                                           }
                                        }}
 
-                                       onDownloadPress={({nativeEvent})=>{
+                                       onDownloadPress={({ nativeEvent }) => {
                                            if (!user.isLogin) {
                                                this.props.navigate('login/login/LoginPage');
                                                return;
                                            }
-                                           let {detail} = nativeEvent;
+                                           let { detail } = nativeEvent;
                                            if (!EmptyUtils.isEmptyArr(detail.resource)) {
                                                let urls = detail.resource.map((value) => {
                                                    return value.url;
@@ -177,19 +185,19 @@ export default class ShowHotView extends React.Component {
                                            }
 
                                            let promises = [];
-                                           if(!EmptyUtils.isEmptyArr(detail.products)){
-                                               detail.products.map((value)=>{
+                                           if (!EmptyUtils.isEmptyArr(detail.products)) {
+                                               detail.products.map((value) => {
                                                    let promise = bridge.createQRToAlbum(`${apiEnvironment.getCurrentH5Url()}/product/99/${value.prodCode}?upuserid=${user.code || ''}`);
                                                    promises.push(promise);
-                                               })
+                                               });
                                            }
-                                           if(!EmptyUtils.isEmptyArr(promises)){
+                                           if (!EmptyUtils.isEmptyArr(promises)) {
                                                Promise.all(promises);
                                            }
 
                                        }}
 
-                                       onSharePress={({nativeEvent})=>{
+                                       onSharePress={({ nativeEvent }) => {
                                            if (!user.isLogin) {
                                                this.props.navigate('login/login/LoginPage');
                                                return;
@@ -199,10 +207,10 @@ export default class ShowHotView extends React.Component {
 
                                        }}
 
-                                       onScrollY={({nativeEvent})=>{
+                                       onScrollY={({ nativeEvent }) => {
                                            this.setState({
-                                               showToTop:nativeEvent.YDistance > ScreenUtils.height
-                                           })
+                                               showToTop: nativeEvent.YDistance > ScreenUtils.height
+                                           });
                                        }}
 
 
@@ -231,7 +239,7 @@ export default class ShowHotView extends React.Component {
                                        }}
                     />
                     {
-                        this.state.showEditorIcon && user.token?
+                        this.state.showEditorIcon && user.token ?
                             <ReleaseButton
                                 style={{
                                     position: 'absolute',
@@ -248,14 +256,14 @@ export default class ShowHotView extends React.Component {
                     }
 
                     {this.state.showToTop ? <ToTopButton
-                        onPress={()=>{
+                        onPress={() => {
                             this.RecommendShowList && this.RecommendShowList.scrollToTop();
                         }}
                         style={{
-                        position: 'absolute',
-                        right: 15,
-                        bottom: 70,
-                    }}/> : null }
+                            position: 'absolute',
+                            right: 15,
+                            bottom: 70
+                        }}/> : null}
                 </View>
                 <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             </View>
