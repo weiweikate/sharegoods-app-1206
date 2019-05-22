@@ -14,7 +14,7 @@ import ShowImageView from './ShowImageView';
 import res from './res';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
-import AutoHeightWebView from '@mr/react-native-autoheight-webview';
+// import AutoHeightWebView from '@mr/react-native-autoheight-webview';
 
 const { px2dp } = ScreenUtils;
 import { ShowDetail } from './Show';
@@ -493,53 +493,53 @@ export default class ShowDetailPage extends BasePage {
 
         let content = detail.content ? detail.content: "";
 
-        let html = '<!DOCTYPE html><html>' +
-        '<head>' +
-        '<meta http-equiv="Content-type" content="text/html; charset=utf-8" />' +
-        //'<meta content="m.007fenqi.com" name="author"/>' +
-        '<meta content="yes" name="apple-mobile-web-app-capable"/>' +
-        '<meta content="yes" name="apple-touch-fullscreen"/>' +
-        '<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />' +
-        '<meta http-equiv="Expires" content="-1"/>' +
-        '<meta http-equiv="Cache-Control" content="no-cache">' +
-        '<meta http-equiv="Pragma" content="no-cache">'
-        // + '<link rel="stylesheet" href="http://m.007fenqi.com/app/app.css" type="text/css"/>'
-        + '<style type="text/css">' + 'html, body, p, embed, iframe, div ,video {'
-        + 'position:relative;width:100%;margin:0;padding:0;background-color:#ffffff' + ';line-height:28px;box-sizing:border-box;display:block;font-size:'
-        + 13
-        + 'px;'
-        + '}'
-        + 'p {word-break:break-all;}'
-        + 'table { border-collapse:collapse;}'
-        + 'table, td, th {border:1px solid #ddd;}'
-        + 'blockquote { display: block;' +
-        '    background: #f9f9f9;' +
-        '    border-left: 10px solid #ccc;' +
-        '    margin: 10px;' +
-        '    padding: 0px;' +
-        '    position: relative;' +
-        '    box-sizing: border-box;}'
-        //  + Utils.NVL(this.props.webviewStyle, '')
-        + '</style>'
-        + '<script type="text/javascript">'
-        + 'function ResizeImages() {'
-        + 'var myimg,oldwidth;'
-        + 'var maxwidth = document.body.clientWidth;'
-        + 'for(i=0;i <document.images.length;i++){'
-        + 'myimg = document.images[i];'
-        + 'if(myimg.width > maxwidth){'
-        + 'oldwidth = myimg.width;'
-        + 'myimg.width = maxwidth;'
-        + '}'
-        + '}'
-        + '}'
-        + '</script>'
-        + '</head>'
-        + '<body onload="ResizeImages();">'
-        + '<div>'
-        + content
-        + '</div>'
-        + '</body></html>';
+        // let html = '<!DOCTYPE html><html>' +
+        // '<head>' +
+        // '<meta http-equiv="Content-type" content="text/html; charset=utf-8" />' +
+        // //'<meta content="m.007fenqi.com" name="author"/>' +
+        // '<meta content="yes" name="apple-mobile-web-app-capable"/>' +
+        // '<meta content="yes" name="apple-touch-fullscreen"/>' +
+        // '<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />' +
+        // '<meta http-equiv="Expires" content="-1"/>' +
+        // '<meta http-equiv="Cache-Control" content="no-cache">' +
+        // '<meta http-equiv="Pragma" content="no-cache">'
+        // // + '<link rel="stylesheet" href="http://m.007fenqi.com/app/app.css" type="text/css"/>'
+        // + '<style type="text/css">' + 'html, body, p, embed, iframe, div ,video {'
+        // + 'position:relative;width:100%;margin:0;padding:0;background-color:#ffffff' + ';line-height:28px;box-sizing:border-box;display:block;font-size:'
+        // + 13
+        // + 'px;'
+        // + '}'
+        // + 'p {word-break:break-all;}'
+        // + 'table { border-collapse:collapse;}'
+        // + 'table, td, th {border:1px solid #ddd;}'
+        // + 'blockquote { display: block;' +
+        // '    background: #f9f9f9;' +
+        // '    border-left: 10px solid #ccc;' +
+        // '    margin: 10px;' +
+        // '    padding: 0px;' +
+        // '    position: relative;' +
+        // '    box-sizing: border-box;}'
+        // //  + Utils.NVL(this.props.webviewStyle, '')
+        // + '</style>'
+        // + '<script type="text/javascript">'
+        // + 'function ResizeImages() {'
+        // + 'var myimg,oldwidth;'
+        // + 'var maxwidth = document.body.clientWidth;'
+        // + 'for(i=0;i <document.images.length;i++){'
+        // + 'myimg = document.images[i];'
+        // + 'if(myimg.width > maxwidth){'
+        // + 'oldwidth = myimg.width;'
+        // + 'myimg.width = maxwidth;'
+        // + '}'
+        // + '}'
+        // + '}'
+        // + '</script>'
+        // + '</head>'
+        // + '<body onload="ResizeImages();">'
+        // + '<div>'
+        // + content
+        // + '</div>'
+        // + '</body></html>';
 
         return <View style={styles.container}>
             <ScrollView
@@ -560,7 +560,7 @@ export default class ShowDetailPage extends BasePage {
                         null
                 }
 
-                <ProductRowListView style={{ marginLeft: DesignRule.margin_page, marginVertical: px2dp(10) }}
+                <ProductRowListView style={{ marginLeft: DesignRule.margin_page, marginTop: px2dp(10) }}
                                     products={detail.products}
                                     addCart={this.addCart}
                                     pressProduct={(prodCode) => {
@@ -572,18 +572,25 @@ export default class ShowDetailPage extends BasePage {
                 />
 
 
-                <AutoHeightWebView source={{ html: html }}
-                                   style={{ width: DesignRule.width - 30, alignSelf: 'center' }}
-                                   scalesPageToFit={true}
-                                   javaScriptEnabled={true}
-                                   cacheEnabled={true}
-                                   domStorageEnabled={true}
-                                   mixedContentMode={'always'}
-                                   onLongClickImage={this._onLongClickImage}
-                                   showsHorizontalScrollIndicator={false}
-                                   showsVerticalScrollIndicator={false}
+                {/*<AutoHeightWebView source={{ html: html }}*/}
+                                   {/*style={{ width: DesignRule.width - 30, alignSelf: 'center' }}*/}
+                                   {/*scalesPageToFit={true}*/}
+                                   {/*javaScriptEnabled={true}*/}
+                                   {/*cacheEnabled={true}*/}
+                                   {/*domStorageEnabled={true}*/}
+                                   {/*mixedContentMode={'always'}*/}
+                                   {/*onLongClickImage={this._onLongClickImage}*/}
+                                   {/*showsHorizontalScrollIndicator={false}*/}
+                                   {/*showsVerticalScrollIndicator={false}*/}
 
-                />
+                {/*/>*/}
+
+                <Text style={{
+                    color:'#333333',
+                    fontSize:DesignRule.fontSize_threeTitle,
+                    paddingHorizontal:DesignRule.margin_page,
+                    marginTop:px2dp(10),
+                }}>{content}</Text>
 
                 {this._otherInfoRender()}
 

@@ -5,7 +5,7 @@ import React from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
 import ShowBannerView from './ShowBannerView';
 import { observer } from 'mobx-react';
-import { tag, showBannerModules, showChoiceModules } from './Show';
+import { tag, showBannerModules } from './Show';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
 
@@ -65,19 +65,21 @@ export default class ShowHotView extends React.Component {
 
 
     loadData() {
-        showChoiceModules.loadChoiceList().then(data => {
-            if (Platform.OS !== 'ios' && data) {
-                this.setState({
-                    headerView: this.renderHeader()
-                });
-            }
-        });
-        showBannerModules.loadBannerList();
-    }
+        // showChoiceModules.loadChoiceList().then(data => {
+        //     if (Platform.OS !== 'ios' && data) {
+        //         this.setState({
+        //             headerView: this.renderHeader()
+        //         });
+        //     }
+        // });
 
-    _gotoDetail(data) {
-        const { navigate } = this.props;
-        navigate('show/ShowDetailPage', { id: data.id, code: data.code });
+        showBannerModules.loadBannerList(()=>{
+                if (Platform.OS !== 'ios') {
+                    this.setState({
+                        headerView: this.renderHeader()
+                    });
+                }
+        });
     }
 
     addCart = (code) => {

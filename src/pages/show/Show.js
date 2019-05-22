@@ -77,10 +77,11 @@ class ShowBannerModules {
         return this.bannerList.length > 0 ? height : 0;
     }
 
-    @action loadBannerList = () => {
-        ShowApi.getShowBanner({ type: homeType.discover }).then(res => {
+    @action loadBannerList = (callback) => {
+         ShowApi.getShowBanner({ type: homeType.discover }).then(res => {
             if (res.code === 10000) {
                 this.bannerList = res.data || [];
+                callback && callback();
             }
         });
     };
