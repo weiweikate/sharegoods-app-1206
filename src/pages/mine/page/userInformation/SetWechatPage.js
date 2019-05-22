@@ -11,15 +11,16 @@ import {
 import BasePage from '../../../../BasePage';
 import {UIButton, MRTextInput as RNTextInput, MRText} from '../../../../components/ui';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-// import MineAPI from '../../api/MineApi';
-// import user from '../../../../model/user';
+import MineAPI from '../../api/MineApi';
+import user from '../../../../model/user';
 import DesignRule from '../../../../constants/DesignRule';
 
 export default class SetWechatPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            wechatID: this.props.navigation.state.params.wechatID,
+            weChatNumber: this.props.navigation.state.params.weChatNumber,
+            error:''
         };
     }
 
@@ -35,14 +36,15 @@ export default class SetWechatPage extends BasePage {
                 {this.renderWideLine()}
                 <View style={{ backgroundColor: 'white' }}>
                     <RNTextInput
+                        autoCapitalize={'none'}
                         style={styles.inputTextStyle}
-                        onChangeText={text => this.setState({ wechatID: text })}
-                        placeholder={this.state.wechatID?this.state.wechatID:'请输入您的微信号，便于顾问/秀迷联系您'}
-                        value={this.state.wechatID}
+                        onChangeText={text => this.setState({ weChatNumber: text ,error:''})}
+                        placeholder={this.state.weChatNumber?this.state.weChatNumber:'请输入您的微信号，便于顾问/秀迷联系您'}
+                        value={this.state.weChatNumber}
                     />
                 </View>
                 {this.renderWideLine()}
-                <MRText style={{marginLeft:15, color:'#FF0050'}}>999999</MRText>
+                {this.state.error.length>0?<MRText style={{marginLeft:15, color:'#FF0050'}}>{this.state.error}</MRText>:null}
                 {this.renderWideLine()}
                 <UIButton
                     value={'保存'}
@@ -66,26 +68,31 @@ export default class SetWechatPage extends BasePage {
         );
     };
     save = () => {
-        // let length = this.state.wechatName.trim().length;
-        // console.log('nickname', this.state.wechatName, length);
-        // if (length < 2 || length > 8) {
-        //     this.$toastShow('昵称长度位2-8位');
-        //     return;
-        // }
-        // MineAPI.updateUserById({ type: 2, nickname: this.state.nickName }).then(res => {
-        //
-        //     // let containSpecial = RegExp(/[(\ )(\~)(\!)(\@)(\#)(\$)(\%)(\^)(\&)(\*)(\()(\))(\-)(\_)(\+)(\=)(\[)(\])(\{)(\})(\|)(\\)(\;)(\:)(\')(\")(\,)(\.)(\/)(\<)(\>)(\?)(\)]+/);
-        //     // if (containSpecial.test(this.state.nickName)) {
-        //     //     this.$toastShow('昵称不能包含特殊字符');
-        //     //     return;
-        //     // }
-        //     user.nickname = this.state.nickName;
-        //     track(trackEvent.ModifyNickNameSuccess, {});
-        //     this.$navigateBack();
-        // }).catch(err => {
-        //     this.$toastShow(err.msg);
-        // });
-                };
+        let length = this.state.weChatNumber?this.state.weChatNumber.trim().length:0;
+        if (length < 6 || length > 20) {
+            this.setState({
+                error:'请填写正确的微信号'
+            })
+            this.$toastShow('微信长度为6-20位');
+            return;
+        }
+
+        let containSpecial = RegExp(/^[a-zA-Z]{1}[-_a-zA-Z0-9]{5,19}$/);
+        if (!containSpecial.test(this.state.weChatNumber)) {
+            this.setState({
+                error:'请填写正确的微信号'
+            })
+            this.$toastShow('字母、数字、下划线和减号，不支持设置中文');
+            return;
+        }
+
+        MineAPI.updateUserById({ type: 7, weChatNumber: this.state.weChatNumber }).then(res => {
+            user.weChatNumber = this.state.weChatNumber;
+            this.$navigateBack();
+        }).catch(err => {
+            this.$toastShow(err.msg);
+        });
+    };
 }
 
 const styles = StyleSheet.create({

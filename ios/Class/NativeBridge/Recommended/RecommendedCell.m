@@ -158,7 +158,8 @@
     //内容
   self.contentLab.sd_layout.topSpaceToView(self.headView, 8)
   .leftSpaceToView(bgView, 45)
-  .rightSpaceToView(bgView, 30);
+  .rightSpaceToView(bgView, 30)
+  .autoHeightRatio(0);
 
   self.foldLabel.sd_layout.topSpaceToView(self.contentLab, 5)
   .leftSpaceToView(bgView, 45)

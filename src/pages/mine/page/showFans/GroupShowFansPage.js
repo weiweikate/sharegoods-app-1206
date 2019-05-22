@@ -53,7 +53,7 @@ export default class GroupShowFansPage extends BasePage<Props> {
 
     _listItemRender = ({ item }) => {
         const uri = { uri: item.headImg };
-        let name = '123456789009876543'.substring(13);
+        let name = item.nickname.substring(0,13);
         return (
             <ImageBackground resizeMode={'stretch'} source={bg_fans_item} style={styles.itemWrapper}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
