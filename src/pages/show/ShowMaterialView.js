@@ -132,8 +132,8 @@ export default class ShowMaterialView extends React.Component {
                                                });
                                                ShowUtils.downloadShow(urls, detail.content).then(() => {
                                                    detail.downloadCount += 1;
-                                                   this.incrCountByType(4);
-                                                   this.RecommendShowList && this.RecommendShowList.replaceItemData(nativeEvent.index, JSON.stringify(detail));
+                                                   ShowApi.incrCountByType({ showNo: nativeEvent.detail.showNo, type: 4 });
+                                                   this.materialList && this.materialList.replaceItemData(nativeEvent.index, JSON.stringify(detail));
                                                });
                                            }
 

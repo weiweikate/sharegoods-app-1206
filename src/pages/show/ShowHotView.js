@@ -63,6 +63,7 @@ export default class ShowHotView extends React.Component {
         this.loadData();
     }
 
+
     loadData() {
         showChoiceModules.loadChoiceList().then(data => {
             if (Platform.OS !== 'ios' && data) {
@@ -179,7 +180,7 @@ export default class ShowHotView extends React.Component {
                                                });
                                                ShowUtils.downloadShow(urls, detail.content).then(() => {
                                                    detail.downloadCount += 1;
-                                                   this.incrCountByType(4);
+                                                   ShowApi.incrCountByType({ showNo: nativeEvent.detail.showNo, type: 4 });
                                                    this.RecommendShowList && this.RecommendShowList.replaceItemData(nativeEvent.index, JSON.stringify(detail));
                                                });
                                            }
