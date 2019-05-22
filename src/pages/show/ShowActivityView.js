@@ -181,7 +181,7 @@ export default class ShowActivityView extends Component {
         for(let i = 0;i < len;i++){
             if (item.resource[i].type === 3) {
                 imageUrl= item.resource[i].url;
-                return;
+                break;
             }
         }
         console.log(imageUrl)

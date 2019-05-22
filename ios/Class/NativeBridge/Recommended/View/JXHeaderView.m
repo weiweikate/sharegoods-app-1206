@@ -28,7 +28,7 @@
     _headImg = [[UIImageView alloc] init];
 //    _headImg.image = [UIImage imageNamed:@"welcome3"];
     _headImg.layer.masksToBounds = YES;
-    
+
   }
   return _headImg;
 }
@@ -80,7 +80,7 @@
   [self addSubview:self.nameLab];
 //  [self addSubview:self.guanBtn];
   [self addSubview:self.timeLab];
-  
+
   //头像
   self.headImg.sd_layout.leftSpaceToView(self, 10)
   .topSpaceToView(self, 0)
@@ -90,7 +90,7 @@
   //昵称
   self.nameLab.sd_layout.leftSpaceToView(_headImg, 5)
   .heightIs(15).topEqualToView(_headImg);
-  [_nameLab setSingleLineAutoResizeWithMaxWidth:100];
+  [_nameLab setSingleLineAutoResizeWithMaxWidth:200];
 
   //关注
 //  [_guanBtn setTitle:@"+关注" forState:UIControlStateNormal];
@@ -101,7 +101,7 @@
 //  .rightSpaceToView(self, 20)
 //  .heightIs(20)
 //  .widthIs(50);
-  
+
   //发布时间
   self.timeLab.sd_layout.leftSpaceToView(_headImg, 5)
     .topSpaceToView(self.nameLab, 2)
@@ -116,14 +116,10 @@
 
 -(void)setUserInfoModel:(UserInfoModel *)UserInfoModel{
     _UserInfoModel = UserInfoModel;
-  
+
     [self.headImg sd_setImageWithURL:[NSURL URLWithString:UserInfoModel.userImg] placeholderImage:[UIImage imageNamed:@"default_avatar"]];
-  
-    if(UserInfoModel.userName.length>13){
-        self.nameLab.text = [NSString stringWithFormat:@"%@...",[UserInfoModel.userName substringToIndex:13]];
-    }else{
+
       self.nameLab.text = UserInfoModel.userName.length>0? UserInfoModel.userName:@" ";
-    }
 }
 
 -(void)setTime:(NSString *)time{
