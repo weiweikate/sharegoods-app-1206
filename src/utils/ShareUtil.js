@@ -4,9 +4,9 @@
  */
 
 import bridge from './bridge';
-import user from "../model/user";
-import EmptyUtils from "./EmptyUtils";
-import HttpUtils from "../api/network/HttpUtils";
+import user from '../model/user';
+import EmptyUtils from './EmptyUtils';
+import HttpUtils from '../api/network/HttpUtils';
 import apiEnvironment from '../api/ApiEnvironment';
 import { track } from './SensorsTrack';
 
@@ -27,6 +27,11 @@ const onShare = (data, api, trackParmas,trackEvent, callback = () => {}, luckyDr
     if (data.shareType === 2) {
         params.userName = data.userName || apiEnvironment.getCurrentWxAppletKey();
         params.miniProgramType = apiEnvironment.getMiniProgramType();
+    }
+    console.log(data)
+    if(params.linkUrl){
+        let  addData = {pageSource:params.platformType?params.platformType+1:0};
+        console.log(queryString(params.linkUrl,addData));
     }
     if (trackEvent) {
         let p = trackParmas || {};
@@ -70,6 +75,26 @@ const shareSucceedCallBlack = (api, sucCallback = () => {}) => {
     }
 };
 
+const queryString = (url, params) => {
+    if (params) {
+        const paramsArray = [];
+        Object.keys(params).forEach(key =>
+            paramsArray.push(key + '=' + params[key])
+        );
+        if (url.search(/\?/) === -1) {
+            url += '?' + paramsArray.join('&');
+        } else {
+            let arr = url.split('?');
+            if(arr.length>2){
+                url += '&' + paramsArray.join('&');
+            }else {
+                url += paramsArray.join('&');
+
+            }
+        }
+    }
+    return url;
+};
 
 export default {
     onShare
