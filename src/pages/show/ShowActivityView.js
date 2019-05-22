@@ -24,6 +24,7 @@ import ShowApi from './ShowApi';
 import PreLoadImage from '../../components/ui/preLoadImage/PreLoadImage';
 
 import {MRText} from '../../components/ui';
+import EmptyUtils from "../../utils/EmptyUtils";
 
 @observer
 export default class ShowActivityView extends Component {
@@ -175,26 +176,29 @@ export default class ShowActivityView extends Component {
 
     renderItem = ({item, index}) => {
         console.log(item)
-        let imageUrl = item.resource && item.resource.map((images, index) => {
-            if (item.type === 3) {
-                return item.url;
+        let imageUrl = '';
+        let len = EmptyUtils.isEmptyArr(item.resource)?item.resource.length:0;
+        for(let i = 0;i < len;i++){
+            if (item.resource[i].type === 3) {
+                imageUrl= item.resource[i].url;
+                return;
             }
-        });
+        }
         console.log(imageUrl)
         return (
             <TouchableOpacity ref={(ref) => {
                 this['item' + index] = ref
             }} key={'row' + index} onPress={() => this.clickItem(item, index)}>
                 <View style={styles.itemBgStyle}>
-                    <Image style={styles.itemImgStyle} source={{uri:item.resource && item.resource[0].url ? item.resource[0].url : '111.png'}}/>
+                    <Image style={styles.itemImgStyle} source={{uri:imageUrl.length>0 ?imageUrl : '111.png'}}/>
                     {ScreenUtils.isIOS ?
                         <Text style={styles.contentStyle}
                                                numberOfLines={2}>
-                            {item.content}
+                            {item.title}
                         </Text> :
                         <MRText style={styles.contentStyle}
                                 numberOfLines={2}>
-                            {item.content}
+                            {item.title}
                         </MRText>
                     }
                     <View style={{flexDirection: 'row', alignItems: 'center', margin: 10}}>
