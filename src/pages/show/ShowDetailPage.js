@@ -355,7 +355,7 @@ export default class ShowDetailPage extends BasePage {
     _clickLike = () => {
         let { detail } = this.showDetailModule;
         if (detail.like) {
-            if (detail.likesCount > 0) {
+            if (detail.likesCount <= 0) {
                 return;
             }
             this.reduceCountByType(1);
