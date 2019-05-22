@@ -179,9 +179,9 @@ export default class ShowActivityView extends Component {
         let imageUrl = '';
         let len = EmptyUtils.isEmptyArr(item.resource)?0:item.resource.length;
         for(let i = 0;i < len;i++){
-            if (item.resource[i].type === 3) {
+            if (item.resource[i].type === 1) {
                 imageUrl= item.resource[i].url;
-                return;
+                break;
             }
         }
         console.log(imageUrl)
