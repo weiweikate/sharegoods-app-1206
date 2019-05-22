@@ -244,7 +244,7 @@ public class QYChatModule extends ReactContextBaseJavaModule {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onQiyuUrl(QiyuUrlEvent event) {
         WritableMap map = Arguments.createMap();
-        if( !TextUtils.isEmpty(event.getUrl())&& !event.getUrl().contains("http:///")){
+        if (!TextUtils.isEmpty(event.getUrl()) && !event.getUrl().contains("http:///")) {
             map.putInt("card_type", 0);
         } else {
             map.putInt("card_type", 1);

@@ -328,7 +328,7 @@ export default class MyOrdersListView extends Component {
         console.log('orderlistrefresh');
         // userOrderNum.getUserOrderNum();
         if (!this.isRefresh) {
-            Toast.showLoading('加载中...');
+            Toast.showLoading('加载中');
         }
         this.isRefresh = false;
         if (this.props.orderNum) {

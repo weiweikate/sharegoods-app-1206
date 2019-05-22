@@ -110,7 +110,12 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                     <TouchableWithoutFeedback onPress={() => {
                         this.$navigateBack();
                     }}>
-                        <View style={{ width: 60 }}>
+                        <View style={{
+                            width: 60,
+                            paddingLeft: DesignRule.margin_page,
+                            height: 40,
+                            justifyContent: 'center'
+                        }}>
                             <Image source={res.button.white_back}/>
                         </View>
                     </TouchableWithoutFeedback>
@@ -376,7 +381,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingHorizontal: DesignRule.margin_page,
+        paddingRight: DesignRule.margin_page,
         marginTop: ScreenUtils.statusBarHeight,
         height: 44
     }

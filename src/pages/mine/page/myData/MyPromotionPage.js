@@ -16,11 +16,11 @@ import HTML from 'react-native-render-html';
 // 图片资源
 import DesignRule from '../../../../constants/DesignRule';
 import BasePage from '../../../../BasePage';
-import { UIImage,
-   NoMoreClick
+import {
+    NoMoreClick
 } from '../../../../components/ui';
 import { NavigationActions } from 'react-navigation';
-import ScreenUtils from '../../../../utils/ScreenUtils'
+import ScreenUtils from '../../../../utils/ScreenUtils';
 import res from '../../res';
 // import ImageLoad from '@mr/image-placeholder';
 import AvatarImage from '../../../../components/ui/AvatarImage';
@@ -31,9 +31,9 @@ const HeaderBarBgImg = res.homeBaseImg.home_jingshenqingk_bg;
 const iconbg = res.homeBaseImg.home_jingshnegqingk_icon;
 const CCZImg = res.myData.ccz_03;
 const ProgressImg = res.myData.jdt_05;
-const arrowRightImg= res.myData.black_right_arrow
+const arrowRightImg = res.myData.black_right_arrow;
 import LinearGradient from 'react-native-linear-gradient';
-import StringUtils from "../../../../utils/StringUtils";
+import StringUtils from '../../../../utils/StringUtils';
 import { SmoothPushPreLoadHighComponent } from '../../../../comm/components/SmoothPushHighComponent';
 
 const { px2dp } = ScreenUtils;
@@ -142,25 +142,39 @@ export default class MyPromotionPage extends BasePage {
 
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 25, marginBottom: 40 }}>
                     <AvatarImage style={{ width: headerWidth, height: headerWidth, borderRadius: headerWidth / 2 }}
-                               borderRadius={headerWidth / 2}
-                               source={{ uri: this.state.headImg }}/>
+                                 borderRadius={headerWidth / 2}
+                                 source={{ uri: this.state.headImg }}/>
                     <View style={{
                         justifyContent: 'center',
                         marginLeft: 10
                     }}>
-                        <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between',width:ScreenUtils.width-130}}>
+                        <View style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            width: ScreenUtils.width - 130
+                        }}>
                             <Text style={{
                                 fontSize: 15,
                                 color: 'white'
-                            }} allowFontScaling={false}>{this.state.levelName ? `${this.state.levelName}品鉴官` : ''}</Text>
-                                <NoMoreClick style={{backgroundColor:'white',width:65,height:19,borderRadius:9,alignItems:'center',justifyContent:'center',flexDirection:'row'}}
-                                             onPress={()=>this.$navigate('mine/ExpDetailPage',{
-                                                 experience:this.state.experience,
-                                                 levelExperience:this.state.levelExperience
-                                             })}>
-                                    <Text style={{fontSize:10,color:"#000000",marginRight:4}}>经验明细</Text>
-                                    <Image source={arrowRightImg}/>
-                                </NoMoreClick>
+                            }}
+                                  allowFontScaling={false}>{this.state.levelName ? `${this.state.levelName}品鉴官` : ''}</Text>
+                            <NoMoreClick style={{
+                                backgroundColor: 'white',
+                                width: 65,
+                                height: 19,
+                                borderRadius: 9,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                flexDirection: 'row'
+                            }}
+                                         onPress={() => this.$navigate('mine/ExpDetailPage', {
+                                             experience: this.state.experience,
+                                             levelExperience: this.state.levelExperience
+                                         })}>
+                                <Text style={{ fontSize: 10, color: '#000000', marginRight: 4 }}>经验明细</Text>
+                                <Image source={arrowRightImg}/>
+                            </NoMoreClick>
                         </View>
 
                         <ImageBackground style={{
@@ -224,7 +238,7 @@ export default class MyPromotionPage extends BasePage {
                             color: DesignRule.textColor_mainTitle,
                             fontSize: 12
                         }}>
-                            {(parseFloat(this.state.levelExperience) - parseFloat(this.state.experience)) > 0 ? `${StringUtils.formatDecimal(this.state.levelExperience-this.state.experience)}Exp` : '0Exp'}
+                            {(parseFloat(this.state.levelExperience) - parseFloat(this.state.experience)) > 0 ? `${StringUtils.formatDecimal(this.state.levelExperience - this.state.experience)}Exp` : '0Exp'}
                         </Text>
                         {(this.state.levelExperience - this.state.experience) > 0 ? null :
                             <Text style={{ color: DesignRule.mainColor, fontSize: 11 }}
@@ -325,12 +339,21 @@ export default class MyPromotionPage extends BasePage {
                     top: 0,
                     opacity: this.state.loadingState === PageLoadingState.fail ? 1 : 0
                 }}/>
-                <View style={{ flex: 1 }}>
-                    <UIImage source={res.button.white_back}
-                             style={{ width: 10, height: 18, marginLeft: 15 }}
-                             onPress={() => this.$navigateBack()}/>
+                <TouchableWithoutFeedback onPress={() => {
+                    this.$navigateBack();
+                }}>
+                    <View style={{
+                        width: 60,
+                        paddingLeft: DesignRule.margin_page,
+                        height: 40,
+                        justifyContent: 'center'
+                    }}>
+                        <Image source={res.button.white_back}/>
+                    </View>
+                </TouchableWithoutFeedback>
+                <View style={{ width: SCREEN_WIDTH - 120, justifyContent: 'center' }}>
+                    {title}
                 </View>
-                {title}
                 <View style={{ flex: 1 }}/>
             </View>
         );
@@ -341,6 +364,7 @@ export default class MyPromotionPage extends BasePage {
         return (
             <ScrollView
                 showsVerticalScrollIndicator={false}
+                scrollEventThrottle={200}
                 onScroll={this._onScroll.bind(this)}
                 refreshControl={<RefreshControl
                     refreshing={this.state.refreshing}

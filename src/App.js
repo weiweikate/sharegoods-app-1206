@@ -13,15 +13,14 @@ import {
     View,
     InteractionManager
     // Image
-} from "react-native";
-import { NavigationActions } from "react-navigation";
-import DebugButton from "./components/debug/DebugButton";
-import { netStatus } from "./comm/components/NoNetHighComponent";
-import Navigator, { getCurrentRouteName } from "./navigation/Navigator";
-import { login, logout } from "./utils/SensorsTrack";
-import { SpellShopFlag } from "./navigation/Tab";
-import { checkInitResult } from "./pages/login/model/PhoneAuthenAction";
-import loginModel from "./pages/login/model/LoginModel";
+} from 'react-native';
+import { NavigationActions } from 'react-navigation';
+import DebugButton from './components/debug/DebugButton';
+import { netStatus } from './comm/components/NoNetHighComponent';
+import Navigator, { getCurrentRouteName } from './navigation/Navigator';
+import { SpellShopFlag } from './navigation/Tab';
+import { checkInitResult } from './pages/login/model/PhoneAuthenAction';
+import loginModel from './pages/login/model/LoginModel';
 import RouterMap from './navigation/RouterMap';
 import user from '../src/model/user';
 import apiEnvironment from './api/ApiEnvironment';
@@ -62,19 +61,15 @@ let codePushOptions = {
 class App extends Component {
     constructor(props) {
         super(props);
+        // 移除启动页
+        bridge.removeLaunch();
+        // 初始化chat
         chatModel;
-
         this.state = {
             load: false,
             showOldBtn: false,
             isShowShopFlag: true
         };
-        user.readToken();
-        if (user.isLogin) {
-            // 启动时埋点关联登录用户,先取消关联，再重新关联
-            logout();
-            login(user.code);
-        }
     }
 
     async componentWillMount() {
@@ -100,11 +95,11 @@ class App extends Component {
         //初始化init  定位存储  和app变活跃 会定位
         InteractionManager.runAfterInteractions(() => {
             TimerMixin.setTimeout(() => {
-                checkInitResult().then((data)=>{
+                checkInitResult().then((data) => {
                     loginModel.setAuthPhone(data);
-                }).catch((erro)=>{
+                }).catch((erro) => {
                     loginModel.setAuthPhone(null);
-                })
+                });
 
                 geolocation.init({
                     ios: 'f85b644981f8642aef08e5a361e9ab6b',
@@ -127,8 +122,6 @@ class App extends Component {
 
             }, 3000);
         });
-        // 移除启动页
-        bridge.removeLaunch();
     }
 
     render() {
