@@ -24,9 +24,9 @@ class MyOrdersListPage extends BasePage {
         let index = this.params.index ? this.params.index : 0;
         this.state = {
             index: index,    //默认第一页
-            selectTab: index,//当前选中的
             cancelReasons: []
         };
+        this.selectTab = index;
     }
 
     $navigationBarOptions = {
@@ -57,7 +57,8 @@ class MyOrdersListPage extends BasePage {
     componentDidMount() {
         //接收刷新的通知
         this.listener = DeviceEventEmitter.addListener('REFRESH_ORDER', ()=> {
-            this.reLoads && this.reLoads.onRefresh();
+           let ref = this['reLoads_'+this.selectTab];
+           ref && ref.onRefresh();
         })
         this.getCancelReasons();
 
@@ -80,7 +81,9 @@ class MyOrdersListPage extends BasePage {
         return (
             <ScrollableTabView
                 onChangeTab={(obj) => {
-                    this.setState({ selectTab: obj.i });
+                    this.selectTab = obj.i
+                    let ref = this['reLoads_'+ this.selectTab];
+                    ref && ref.onRefresh();
                 }}
                 style={styles.container}
                 scrollWithoutAnimation={true}
@@ -92,8 +95,7 @@ class MyOrdersListPage extends BasePage {
                         return  <MyOrdersListView
                             tabLabel = {item}
                             pageStatus = {index}
-                            selectTab = {this.state.selectTab}
-                            ref = {(e) => this.reLoads = e}
+                            ref = {(e) => this['reLoads_'+index] = e}
                             nav = {this.$navigate}
                             navigation = {this.props.navigation}
                             cancelReasons = {this.state.cancelReasons}
