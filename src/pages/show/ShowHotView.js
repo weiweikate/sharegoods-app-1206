@@ -5,7 +5,7 @@ import React from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
 import ShowBannerView from './ShowBannerView';
 import { observer } from 'mobx-react';
-import { tag, showBannerModules, showChoiceModules } from './Show';
+import { tag, showBannerModules } from './Show';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
 
@@ -63,20 +63,23 @@ export default class ShowHotView extends React.Component {
         this.loadData();
     }
 
-    loadData() {
-        showChoiceModules.loadChoiceList().then(data => {
-            if (Platform.OS !== 'ios' && data) {
-                this.setState({
-                    headerView: this.renderHeader()
-                });
-            }
-        });
-        showBannerModules.loadBannerList();
-    }
 
-    _gotoDetail(data) {
-        const { navigate } = this.props;
-        navigate('show/ShowDetailPage', { id: data.id, code: data.code });
+    loadData() {
+        // showChoiceModules.loadChoiceList().then(data => {
+        //     if (Platform.OS !== 'ios' && data) {
+        //         this.setState({
+        //             headerView: this.renderHeader()
+        //         });
+        //     }
+        // });
+
+        showBannerModules.loadBannerList(()=>{
+                if (Platform.OS !== 'ios') {
+                    this.setState({
+                        headerView: this.renderHeader()
+                    });
+                }
+        });
     }
 
     addCart = (code) => {
@@ -179,7 +182,7 @@ export default class ShowHotView extends React.Component {
                                                });
                                                ShowUtils.downloadShow(urls, detail.content).then(() => {
                                                    detail.downloadCount += 1;
-                                                   this.incrCountByType(4);
+                                                   ShowApi.incrCountByType({ showNo: nativeEvent.detail.showNo, type: 4 });
                                                    this.RecommendShowList && this.RecommendShowList.replaceItemData(nativeEvent.index, JSON.stringify(detail));
                                                });
                                            }
