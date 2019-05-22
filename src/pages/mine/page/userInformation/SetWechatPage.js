@@ -82,7 +82,7 @@ export default class SetWechatPage extends BasePage {
             this.setState({
                 error:'请填写正确的微信号'
             })
-            this.$toastShow('字母、数字、下划线和减号，不支持设置中文');
+            this.$toastShow('首字母、数字、下划线和减号，不支持设置中文');
             return;
         }
 

@@ -61,18 +61,20 @@ export default class GroupShowFansPage extends BasePage<Props> {
                         <AvatarImage style={styles.fansIcon} source={uri}/>
                     </View>
                     <View style={{flex: 1}}>
-                        <Text style={styles.fansNameStyle}>{name}</Text>
-                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                            <Text style={styles.fansNameStyle}>ksjjkajksd</Text>
-                            <TouchableWithoutFeedback onPress={() => {
-                                Clipboard.setString('123456');
-                                bridge.$toast('复制到剪切版');
-                            }}>
-                                <View style={styles.copyViewStyle}>
-                                    <Text style={styles.copyTextStyle}>复制</Text>
-                                </View>
-                            </TouchableWithoutFeedback>
-                        </View>
+                        <Text style={styles.fansNameStyle} numberOfLines={1}>{name}</Text>
+                        {item.weChatNumber ?
+                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                <Text style={styles.fansNameStyle} numberOfLines={1}>{item.weChatNumber}</Text>
+                                <TouchableWithoutFeedback onPress={() => {
+                                    Clipboard.setString(item.weChatNumber);
+                                    bridge.$toast('复制到剪切版');
+                                }}>
+                                    <View style={styles.copyViewStyle}>
+                                        <Text style={styles.copyTextStyle} >复制</Text>
+                                    </View>
+                                </TouchableWithoutFeedback>
+                            </View> : null
+                        }
                     </View>
 
                     <TouchableWithoutFeedback onPress={() => {

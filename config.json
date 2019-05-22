@@ -81,8 +81,12 @@
             "host": "http://172.18.6.243:9000/gateway"
         },
         "吴承骏": {
-            "name": "倪",
-            "host": "http://172.18.6.94:8903/gateway"
+            "name": "吴承骏",
+            "host": "http://172.18.7.77:8903/gateway"
+        },
+        "倪显晶": {
+            "name": "倪显晶",
+            "host": "http://172.16.10.198:8903/gateway"
         },
         "da_wei": {
             "name": "蒋大为",
