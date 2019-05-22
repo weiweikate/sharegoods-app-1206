@@ -31,7 +31,7 @@ const { px2dp } = ScreenUtils;
 
 export default class ReleaseNotesPage extends BasePage {
     $navigationBarOptions = {
-        title: '发布心得',
+        title: '发布动态',
         show: true
     };
 

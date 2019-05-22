@@ -5,6 +5,7 @@ import UserApi from './userApi';
 import bridge from '../utils/bridge';
 import { QYChatTool } from '../utils/QYModule/QYChatTool';
 import { login, logout } from '../utils/SensorsTrack';
+import StringUtils from '../utils/StringUtils';
 
 
 const USERINFOCACHEKEY = 'UserInfo';
@@ -15,11 +16,12 @@ class User {
 
     @computed
     get isLogin() {
-        return this.token;
+        return  StringUtils.isNoEmpty(this.token);
     }
 
     @computed
     get isRealNameRegistration() {
+
         return (this.realnameStatus + '') === '1';
     }
 
@@ -464,8 +466,12 @@ class User {
 }
 
 const user = new User();
+
+autorun(()=>{
+    user.isLogin ? shopCartCacheTool.synchronousData() : null;
+});
+
 autorun(() => {
-    user.token ? shopCartCacheTool.synchronousData() : null;
     if (user.code) {
         // 启动时埋点关联登录用户,先取消关联，再重新关联
         logout();
