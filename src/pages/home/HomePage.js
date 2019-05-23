@@ -169,7 +169,6 @@ class HomePage extends BasePage {
                 BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
 
             }
-
         );
 
         this.didFocusSubscription = this.props.navigation.addListener(
@@ -190,7 +189,9 @@ class HomePage extends BasePage {
                     homeModule.homeFocused(true);
                     homeModalManager.entryHome();
                     homeModalManager.requestGuide();
-                    limitGoModule.loadLimitGo();
+                    if (!homeModule.firstLoad) {
+                        limitGoModule.loadLimitGo();
+                    }
                 }
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
                 TrackApi.homePage();//埋点
