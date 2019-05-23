@@ -181,6 +181,10 @@ export default class ReleaseNotesPage extends BasePage {
     };
 
     _addProductButton = () => {
+        if(this.state.products.length >= 5){
+            return null;
+        }
+
         let spus = this.state.products.map((value) => {
             return value.spuCode;
         });
@@ -275,7 +279,7 @@ export default class ReleaseNotesPage extends BasePage {
                             {item.productName ? item.productName : ''}
                         </MRText>
                         <View style={{ flex: 1 }}/>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' ,marginLeft:px2dp(10)}}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' ,marginLeft:px2dp(10),marginBottom:px2dp(5)}}>
                             <MRText style={{ fontSize: px2dp(10), color: DesignRule.mainColor }}>￥</MRText>
                             <MRText style={styles.priceText}>
                                 {item.showPrice ? item.showPrice : item.price}
@@ -454,7 +458,8 @@ var styles = StyleSheet.create({
         marginBottom: px2dp(10),
         padding: px2dp(5),
         marginHorizontal: DesignRule.margin_page,
-        width: (DesignRule.width - DesignRule.margin_page * 2)
+        width: (DesignRule.width - DesignRule.margin_page * 2),
+        height:px2dp(70)
     },
     validProductImg: {
         width: px2dp(60),
@@ -462,8 +467,9 @@ var styles = StyleSheet.create({
     },
     itemTitle: {
         color: DesignRule.textColor_mainTitle,
-        fontSize: DesignRule.fontSize_mediumBtnText,
-        width: DesignRule.width - px2dp(115)
+        fontSize: DesignRule.fontSize_24,
+        width: DesignRule.width - px2dp(115),
+        marginLeft:px2dp(10)
     },
     contentStyle: {
         color: DesignRule.textColor_instruction,

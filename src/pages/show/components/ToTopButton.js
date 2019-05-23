@@ -29,8 +29,8 @@ export default class ToTopButton extends PureComponent {
 
 var styles = StyleSheet.create({
     wrapper: {
-        width: px2dp(36),
-        height: px2dp(36)
+        width: px2dp(45),
+        height: px2dp(45)
     }
 
 });
