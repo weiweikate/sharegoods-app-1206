@@ -44,7 +44,8 @@ export default class SetWechatPage extends BasePage {
                     />
                 </View>
                 {this.renderWideLine()}
-                {this.state.error.length>0?<MRText style={{marginLeft:15, color:'#FF0050'}}>{this.state.error}</MRText>:null}
+                {this.state.error.length>0?<MRText style={{marginLeft:15, color:'#FF0050'}}>{this.state.error}</MRText>:<View
+                    style={{height:15}}/>}
                 {this.renderWideLine()}
                 <UIButton
                     value={'保存'}

@@ -53,7 +53,7 @@ export default class GroupShowFansPage extends BasePage<Props> {
 
     _listItemRender = ({ item }) => {
         const uri = { uri: item.headImg };
-        let name = item.nickname.substring(0,13);
+        let name = item.nickname.substring(0,28);
         return (
             <ImageBackground resizeMode={'stretch'} source={bg_fans_item} style={styles.itemWrapper}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -78,13 +78,13 @@ export default class GroupShowFansPage extends BasePage<Props> {
                     </View>
 
                     <TouchableWithoutFeedback onPress={() => {
-                        Linking.openURL("tel:10086")
+                        Linking.openURL(`tel:${'11'}`)
                     }}>
                         <Image style={[styles.btnIcon, {marginRight: 25}]} source={res.showFans.phoneIcon}/>
                     </TouchableWithoutFeedback>
 
                     <TouchableWithoutFeedback onPress={() => {
-                        Linking.openURL("sms:10086")
+                        Linking.openURL(`sms:${'123'}`)
                     }}>
                         <Image style={[styles.btnIcon, {marginRight: 32}]} source={res.showFans.messageIcon}/>
                     </TouchableWithoutFeedback>
@@ -172,7 +172,6 @@ const styles = StyleSheet.create({
         backgroundColor:'rgba(255,0,80,0.1)',
         alignItems:'center',
         justifyContent:'center',
-        marginLeft: 10,
     },
     copyTextStyle: {
         color: '#FF0050',
