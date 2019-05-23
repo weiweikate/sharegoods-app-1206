@@ -4,6 +4,7 @@ import shopCartCacheTool from '../pages/shopCart/model/ShopCartCacheTool';
 import UserApi from './userApi';
 import bridge from '../utils/bridge';
 import { QYChatTool } from '../utils/QYModule/QYChatTool';
+import { login, logout } from '../utils/SensorsTrack';
 
 
 const USERINFOCACHEKEY = 'UserInfo';
@@ -181,6 +182,7 @@ class User {
         } else {
             return AsyncStorage.getItem(USERTOKEN).then(token => {
                 this.token = token;
+                AsyncStorage.setItem(USERTOKEN, String(token));
                 return Promise.resolve(token);
             });
         }
@@ -197,15 +199,6 @@ class User {
             } else {
                 bridge.clearCookies();
             }
-        }).catch(err => {
-            console.warn('Error: user.readUserInfoFromDisk()\n' + err.toString());
-        });
-    }
-
-    @action
-    async readToken() {
-        AsyncStorage.getItem(USERTOKEN).then(token => {
-            this.token = token;
         }).catch(err => {
             console.warn('Error: user.readUserInfoFromDisk()\n' + err.toString());
         });
@@ -414,7 +407,7 @@ class User {
 
     @action clearToken() {
         this.token = null;
-        AsyncStorage.removeItem(USERTOKEN);
+        AsyncStorage.setItem(USERTOKEN, '');
     }
 
     // 清空离线购物车信息
@@ -468,5 +461,10 @@ class User {
 const user = new User();
 autorun(() => {
     user.token ? shopCartCacheTool.synchronousData() : null;
+    if (user.code) {
+        // 启动时埋点关联登录用户,先取消关联，再重新关联
+        logout();
+        login(user.code);
+    }
 });
 export default user;

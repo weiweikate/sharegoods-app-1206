@@ -81,6 +81,8 @@ public class InitializeService extends IntentService {
             JPushInterface.stopCrashHandler(getApplicationContext());
             // 一键登录debug
             JVerificationInterface.setDebugMode(true);
+            // 神策
+//            SensorsDataAPI.sharedInstance().enableLog(true);
         } else {
             JPushInterface.setDebugMode(false);
             JPushInterface.initCrashHandler(getApplicationContext());

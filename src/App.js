@@ -18,7 +18,6 @@ import { NavigationActions } from 'react-navigation';
 import DebugButton from './components/debug/DebugButton';
 import { netStatus } from './comm/components/NoNetHighComponent';
 import Navigator, { getCurrentRouteName } from './navigation/Navigator';
-import { login, logout } from './utils/SensorsTrack';
 import { SpellShopFlag } from './navigation/Tab';
 import { checkInitResult } from './pages/login/model/PhoneAuthenAction';
 import loginModel from './pages/login/model/LoginModel';
@@ -71,12 +70,6 @@ class App extends Component {
             showOldBtn: false,
             isShowShopFlag: true
         };
-        user.readToken();
-        if (user.isLogin) {
-            // 启动时埋点关联登录用户,先取消关联，再重新关联
-            logout();
-            login(user.code);
-        }
     }
 
     async componentWillMount() {

@@ -231,6 +231,9 @@ class HomePage extends BasePage {
                         'type': 10,
                         'userName': ':**ush:'
                     }];
+                    if (!homeModule.firstLoad) {
+                        limitGoModule.loadLimitGo();
+                    }
                 }
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
                 TrackApi.homePage();//埋点
