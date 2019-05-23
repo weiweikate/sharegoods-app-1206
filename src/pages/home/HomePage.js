@@ -8,7 +8,6 @@ import {
     NativeModules
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
-import ShareTaskIcon from '../shareTask/components/ShareTaskIcon';
 import { observer } from 'mobx-react';
 import { homeModule } from './model/Modules';
 import { homeType } from './HomeTypes';
@@ -65,6 +64,8 @@ const { px2dp, height, headerHeight } = ScreenUtils;
 const scrollDist = height / 2 - headerHeight;
 import BasePage from '../../BasePage';
 import { TrackApi } from '../../utils/SensorsTrack';
+import taskModel from './model/TaskModel';
+import TaskVIew from './view/TaskVIew';
 
 const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
     <Text style={styles.text}
@@ -103,6 +104,9 @@ class HomePage extends BasePage {
                 break;
             case homeType.user:
                 dim.height = user.isLogin ? (bannerModule.bannerList.length > 0 ? px2dp(44) : px2dp(31)) : 0;
+                break;
+            case homeType.task:
+                dim.height = taskModel.homeHeight;
                 break;
             case homeType.channel:
                 dim.height = channelModules.channelList.length > 0 ? px2dp(90) : 0;
@@ -265,6 +269,8 @@ class HomePage extends BasePage {
             return <HomeBannerView navigate={this.$navigate}/>;
         } else if (type === homeType.user) {
             return <HomeUserView navigate={this.$navigate}/>;
+        }  else if (type === homeType.user) {
+            return <TaskVIew type={'home'}/>;
         } else if (type === homeType.channel) {
             return <HomeChannelView navigate={this.$navigate}/>;
         } else if (type === homeType.expandBanner) {
@@ -348,7 +354,6 @@ class HomePage extends BasePage {
                         isEnd={homeModule.isEnd}/>
                     }
                 />
-                <ShareTaskIcon style={{ position: 'absolute', right: 0, top: px2dp(220) - 40 }}/>
                 <LuckyIcon ref={(ref) => {
                     this.luckyIcon = ref;
                 }}/>

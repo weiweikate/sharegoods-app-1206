@@ -10,44 +10,74 @@
  */
 'use strict';
 
-import React from 'react';
+import { observable, action } from 'mobx';
+// import HomeApi from '../api/HomeAPI';
 
-import {
-  StyleSheet,
-  View,
-  TouchableOpacity
-} from 'react-native';
+import ScreenUtil from '../../../utils/ScreenUtils';
 
-import {
-  UIText,
-  UIImage
-} from '../../../components/ui';
-import DesignRule from 'DesignRule';
+const { px2dp } = ScreenUtil;
 
-export default class TaskModel extends React.Component {
-
-  constructor(props) {
-    super(props);
-
-    this._bind();
-
-    this.state = {};
-  }
-
-  _bind() {
-
-  }
-
-  componentDidMount() {
-  }
+import { homeModule } from './Modules';
 
 
-  render() {
-    return (
-      <View>
-      </View>
-    );
-  }
+
+ class TaskModel  {
+     @observable
+     show = false
+     @observable
+     observable = 50
+     @observable
+     tasks = []
+     homeHeight = 0 //
+     @observable
+     homeExpanded = false
+     @observable
+     mineExpanded = false
+
+     @action
+     getData(){
+        this.tasks = [{name: '50', status: 1},
+            {name: '50', status: 1},
+            {name: '50', status: 1},
+            {name: '50', status: 0},
+            {name: '50', status: 0}];
+        this.show = true;
+        this.calculateHomeHeight();
+     }
+
+
+     @action
+     expandedClick(type)
+     {
+         if (type === 'home') {
+             this.homeExpanded = !this.homeExpanded;
+             this.calculateHomeHeight();
+         }else if (type === 'mine'){
+             this.mineExpanded = !this.mineExpanded;
+         }
+     }
+
+    @action
+    calculateHomeHeight(){
+         let homeHeight = 0;
+        if (!this.show){
+           homeHeight = 0;
+        } else {
+            if (this.homeExpanded){
+                homeHeight = px2dp(48+382);
+            } else {
+                homeHeight = px2dp(48+83);
+            }
+        }
+        if (homeHeight !== this.homeHeight){
+            this.homeHeight = homeHeight;
+            homeModule.changeHomeList();
+        }
+   }
+
+
 }
 
-const styles = StyleSheet.create({});
+const taskModel = new TaskModel();
+
+export default taskModel;

@@ -13,16 +13,16 @@
 import React from 'react';
 
 import {
-  StyleSheet,
+  // StyleSheet,
   View,
-  TouchableOpacity
+  // TouchableOpacity
 } from 'react-native';
 
-import {
-  UIText,
-  UIImage
-} from '../../../components/ui';
-import DesignRule from 'DesignRule';
+// import {
+//   UIText,
+//   UIImage
+// } from '../../../components/ui';
+
 
 export default class TaskVIew extends React.Component {
 
@@ -50,4 +50,4 @@ export default class TaskVIew extends React.Component {
   }
 }
 
-const styles = StyleSheet.create({});
+// const styles = StyleSheet.create({});

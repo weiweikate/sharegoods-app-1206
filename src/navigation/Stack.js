@@ -23,7 +23,6 @@ import htmlView from '../components/web/HtmlView';
 import message from '../pages/message';
 import topic from '../pages/topic';
 import show from '../pages/show/Index';
-import shareTask from '../pages/shareTask';
 
 import deepLinkPath from './DeepLinkPath';
 
@@ -86,7 +85,6 @@ addSubModule(message);
 addSubModule(topic);
 addSubModule(payment);
 addSubModule(show);
-addSubModule(shareTask);
 // console.log('Router', Object.keys(Router));
 // console.log(Router);
 // console.log('Path', Object.values(Router));
