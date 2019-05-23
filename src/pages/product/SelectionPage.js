@@ -150,7 +150,7 @@ export default class SelectionPage extends Component {
         let stock = 0;
         this.state.selectSpecList.forEach((item) => {
             //总库存库存遍历相加
-            stock = stock + this.state.source_Type === sourceType.promotion ? item.promotionStockNum : item.sellStock;
+            stock = stock + (this.state.source_Type === sourceType.promotion ? item.promotionStockNum : item.sellStock);
         });
         this.state.maxStock = stock;
     };
