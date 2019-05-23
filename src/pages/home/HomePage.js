@@ -190,6 +190,9 @@ class HomePage extends BasePage {
                     homeModule.homeFocused(true);
                     homeModalManager.entryHome();
                     homeModalManager.requestGuide();
+                    if (!homeModule.firstLoad) {
+                        limitGoModule.loadLimitGo();
+                    }
                 }
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
                 TrackApi.homePage();//埋点

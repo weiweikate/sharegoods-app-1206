@@ -30,11 +30,11 @@ export default class DetailBottomView extends Component {
     render() {
         let { pData } = this.props;
         //productStatus  1正常  2下架  3当前时间不能买
-        let { productStatus, skuList, showSellOut } = pData || {};
+        let { productStatus, skuList, showSellOut, productIsPromotionPrice } = pData || {};
         //总库存
         let stock = 0;
         (skuList || []).forEach((item) => {
-            stock = stock + item.sellStock;
+            stock = stock + productIsPromotionPrice ? item.promotionStockNum : item.sellStock;
         });
         //提示消息样式
         let isDown = productStatus === product_status.down;
@@ -65,7 +65,7 @@ export default class DetailBottomView extends Component {
                     {
                         (showSellOut || stock === 0) ?
                             <View style={styles.outView}>
-                                <Text style={styles.outText}>{stock === 0 ? '已售罄' : '已抢光'}</Text>
+                                <Text style={styles.outText}>{showSellOut ? '已抢光' : '已售罄'}</Text>
                             </View>
                             :
                             <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
