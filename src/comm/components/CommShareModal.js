@@ -99,8 +99,7 @@ export default class CommShareModal extends React.Component {
     constructor(props) {
         super(props);
         this._bind();
-        this.defaultShareType = (props.type === 'miniProgram' || props.type === 'task' || props.type === 'Image' || props.type === 'promotionShare' || props.type === 'miniProgramWithCopyUrl') ? 2 : 1;
-
+        this.defaultShareType = (props.type === 'miniProgram' ) ? 2 : 1;
         this.state = {
             modalVisible: false,
             shareType: this.defaultShareType, //如果是type小程序分享，默认分享方式是小程序分享。其余的type，默认分享类型是web图文
@@ -117,7 +116,7 @@ export default class CommShareModal extends React.Component {
             user.userShare();
         }
         let props = this.props;
-        this.defaultShareType = (props.type === 'miniProgram' || props.type === 'task' || props.type === 'Image' || props.type === 'promotionShare' || props.type === 'miniProgramWithCopyUrl') ? 2 : 1;
+        this.defaultShareType = (props.type === 'miniProgram' ) ? 2 : 1;
         this.setState({ modalVisible: true, shareType: this.defaultShareType, showToastImage: false });
         this.modal && this.modal.open();
         // this.state.y.setValue(autoSizeWidth(340));
