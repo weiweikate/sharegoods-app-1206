@@ -3,7 +3,7 @@ import { Animated, StyleSheet, Image } from 'react-native';
 import UIImage from '@mr/image-placeholder';
 import NoMoreClick from '../../components/ui/NoMoreClick';
 import ScreenUtils from '../../utils/ScreenUtils';
-import { observable, action, computed, autorun } from 'mobx';
+import { observable, action, autorun } from 'mobx';
 import { observer } from 'mobx-react';
 import { MRText } from '../../components/ui';
 import res from '../res';

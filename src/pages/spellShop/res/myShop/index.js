@@ -28,5 +28,7 @@ const index = {
     shop_box_25: require('./shop_box_25.png'),
     shop_box_75: require('./shop_box_75.png'),
     shop_box_100: require('./shop_box_100.png'),
+    shopProduct: require('./shopProduct.png'),
+    shopProductShare: require('./shopProductShare.png'),
 };
 export default index;
