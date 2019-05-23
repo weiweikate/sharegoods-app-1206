@@ -132,7 +132,7 @@ export default class CouponsDetailPage extends BasePage {
     };
 
     fmtDate(obj) {
-        return formatDate(obj, 'yyyy.MM.dd HH:mm');
+        return formatDate(obj, 'yyyy.MM.dd');
     }
 
     toExtendData = (item) => {

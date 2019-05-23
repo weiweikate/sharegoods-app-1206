@@ -182,6 +182,7 @@ class User {
         } else {
             return AsyncStorage.getItem(USERTOKEN).then(token => {
                 this.token = token;
+                AsyncStorage.setItem(USERTOKEN, String(token));
                 return Promise.resolve(token);
             });
         }
@@ -406,7 +407,7 @@ class User {
 
     @action clearToken() {
         this.token = null;
-        AsyncStorage.removeItem(USERTOKEN);
+        AsyncStorage.setItem(USERTOKEN, '');
     }
 
     // 清空离线购物车信息
