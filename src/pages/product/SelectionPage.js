@@ -53,7 +53,7 @@ export default class SelectionPage extends Component {
         const { specifyList, skuList, promotionLimitNum } = data;
         this.state.source_Type = propData.sourceType;
         this.state.unShowAmount = propData.unShowAmount;
-        this.state.promotionLimit = promotionLimitNum;
+        this.state.promotionLimit = this.state.source_Type === sourceType.promotion ? promotionLimitNum : null;
 
         let specMapTemp = JSON.parse(JSON.stringify(specifyList || []));
         let priceListTemp = JSON.parse(JSON.stringify(skuList || []));
@@ -150,7 +150,7 @@ export default class SelectionPage extends Component {
         let stock = 0;
         this.state.selectSpecList.forEach((item) => {
             //总库存库存遍历相加
-            stock = stock + item.sellStock;
+            stock = stock + this.state.source_Type === sourceType.promotion ? item.promotionStockNum : item.sellStock;
         });
         this.state.maxStock = stock;
     };
