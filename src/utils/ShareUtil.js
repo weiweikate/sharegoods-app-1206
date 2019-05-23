@@ -43,13 +43,13 @@ const onShare = (data, api, trackParmas,trackEvent, callback = () => {}, luckyDr
                 user.luckyDraw();
             }
             shareSucceedCallBlack(api, callback);
+            callback('shareSuccess'); //提示分享成功
         }, (errorStr) => {
 
         });
 };
 
 const shareSucceedCallBlack = (api, sucCallback = () => {}) => {
-    console.log('分享成功后调用分享方法',api);
     if (EmptyUtils.isEmpty(api)) {
         return;
     }
@@ -61,14 +61,14 @@ const shareSucceedCallBlack = (api, sucCallback = () => {}) => {
         HttpUtils.get(url, false, params).then(() => {
             if (refresh === true) {
                 // this.props.reloadWeb && this.props.reloadWeb();
-                sucCallback();
+                sucCallback('reload');//分享成功后刷新操作
             }
         });
     } else {
         HttpUtils.post(url, false, params, {}).then(() => {
             if (refresh === true) {
                 // this.props.reloadWeb && this.props.reloadWeb();
-                sucCallback();
+                sucCallback('reload');
             }
         }).catch(() => {
         });
@@ -85,7 +85,7 @@ const queryString = (url, params) => {
             url += '?' + paramsArray.join('&');
         } else {
             let arr = url.split('?');
-            if(arr.length>2){
+            if(arr.length>1&&arr[1].length>0){
                 url += '&' + paramsArray.join('&');
             }else {
                 url += paramsArray.join('&');
@@ -97,5 +97,6 @@ const queryString = (url, params) => {
 };
 
 export default {
-    onShare
+    onShare,
+    queryString
 }

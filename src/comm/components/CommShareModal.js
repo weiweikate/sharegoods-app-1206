@@ -228,10 +228,7 @@ export default class CommShareModal extends React.Component {
             platformType: platformType
         };
 
-        ShareUtil.onShare(params, that.props.api, trackParmas,trackEvent , () => {
-            console.log('分享成功结束后回调');
-            this.props.reloadWeb && this.props.reloadWeb();
-        }, that.props.luckyDraw);
+        ShareUtil.onShare(params, that.props.api, trackParmas,trackEvent ,this.props.successCallBack, that.props.luckyDraw);
     }
 
     saveImage(path) {
@@ -246,7 +243,7 @@ export default class CommShareModal extends React.Component {
         if (this.props.trackEvent) {
             track(this.props.trackEvent, { shareType: TrackShareType.copyLink, ...this.props.trackParmas });
         }
-        Clipboard.setString(this.props.webJson.linkUrl);
+        Clipboard.setString(ShareUtil.queryString(this.props.webJson.linkUrl,{pageSource:6}));
         NativeModules.commModule.toast('复制链接成功');
     }
 

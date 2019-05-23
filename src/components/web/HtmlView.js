@@ -137,6 +137,15 @@ export default class RequestDetailPage extends BasePage {
         this.willBlurSubscription && this.willBlurSubscription.remove();
     }
 
+    successCallBack = (type)=>{
+        if(type === 'reload'){
+            this.webView && this.webView.reload();
+        }
+        if(type === 'shareSuccess'){
+            // this.webView && this.webView.sendToBridge(JSON.stringify({ action: 'clickShareBtn' }));
+        }
+    };
+
     _postMessage = (msg) => {
         if (msg.action === 'share') {
             // this.webJson = msg.shareParmas;
@@ -148,10 +157,7 @@ export default class RequestDetailPage extends BasePage {
 
         if (msg.action === 'onShare') {
             let { data, api, trackParmas, trackEvent } = msg.onShareParmas || {};
-            ShareUtil.onShare(data, api, trackParmas, trackEvent, () => {
-                console.log('webView reload');
-                this.webView && this.webView.reload();
-            });
+            ShareUtil.onShare(data, api, trackParmas, trackEvent, this.successCallBack);
             return;
         }
 
@@ -223,9 +229,7 @@ export default class RequestDetailPage extends BasePage {
                 />
                 <CommShareModal
                     ref={(ref) => this.shareModal = ref}
-                    reloadWeb={() => {
-                        this.webView && this.webView.reload();
-                    }}
+                    successCallBack={this.successCallBack}
                     clickShareBtn={() => {
                         this.clickShareBtn && this.clickShareBtn();
                     }}
@@ -234,7 +238,7 @@ export default class RequestDetailPage extends BasePage {
                 <WebAdModal/>
                 <LuckyIcon ref={(ref) => {
                     this.luckyIcon = ref;
-                }}></LuckyIcon>
+                }} />
             </View>
         );
     }
