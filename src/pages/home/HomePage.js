@@ -190,47 +190,7 @@ class HomePage extends BasePage {
                     homeModule.homeFocused(true);
                     homeModalManager.entryHome();
                     homeModalManager.requestGuide();
-                    intervalMsgModel.msgList = [{
-                        'content': ':**ush:创建拼店成功',
-                        'forwardType': 23,
-                        'headImg': 'https://testcdn.sharegoodsmall.com/sharegoods/8c63c8c7e0e74dbf8239eeafaf60fa81.png',
-                        'keyCode': 'store1234',
-                        'needForward': true,
-                        'type': 10,
-                        'userName': ':**ush:'
-                    }, {
-                        'content': ':**ush:创建拼店成功',
-                        'forwardType': 23,
-                        'headImg': 'https://testcdn.sharegoodsmall.com/sharegoods/8c63c8c7e0e74dbf8239eeafaf60fa81.png',
-                        'keyCode': 'store1234',
-                        'needForward': true,
-                        'type': 10,
-                        'userName': ':**ush:'
-                    }, {
-                        'content': ':**ush:创建拼店成功',
-                        'forwardType': 23,
-                        'headImg': 'https://testcdn.sharegoodsmall.com/sharegoods/8c63c8c7e0e74dbf8239eeafaf60fa81.png',
-                        'keyCode': 'store1234',
-                        'needForward': true,
-                        'type': 10,
-                        'userName': ':**ush:'
-                    }, {
-                        'content': ':**ush:创建拼店成功',
-                        'forwardType': 23,
-                        'headImg': 'https://testcdn.sharegoodsmall.com/sharegoods/8c63c8c7e0e74dbf8239eeafaf60fa81.png',
-                        'keyCode': 'store1234',
-                        'needForward': true,
-                        'type': 10,
-                        'userName': ':**ush:'
-                    }, {
-                        'content': ':**ush:创建拼店成功',
-                        'forwardType': 23,
-                        'headImg': 'https://testcdn.sharegoodsmall.com/sharegoods/8c63c8c7e0e74dbf8239eeafaf60fa81.png',
-                        'keyCode': 'store1234',
-                        'needForward': true,
-                        'type': 10,
-                        'userName': ':**ush:'
-                    }];
+                    intervalMsgModel.msgList = [];
                     if (!homeModule.firstLoad) {
                         limitGoModule.loadLimitGo();
                     }

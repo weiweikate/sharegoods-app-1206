@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, StyleSheet, Image } from 'react-native';
+import { Animated, StyleSheet, Image,InteractionManager } from 'react-native';
 import UIImage from '@mr/image-placeholder';
 import NoMoreClick from '../../components/ui/NoMoreClick';
 import ScreenUtils from '../../utils/ScreenUtils';
@@ -11,8 +11,8 @@ import DesignRule from '../../constants/DesignRule';
 import StringUtils from '../../utils/StringUtils';
 
 const { white_go } = res.button;
-const { headerHeight } = ScreenUtils;
-const maxTextWidth = 100;
+const { headerHeight, px2dp } = ScreenUtils;
+const maxTextWidth = px2dp(120);
 const { isEmpty } = StringUtils;
 const maxY = maxTextWidth + 15 + 50;
 
@@ -35,7 +35,7 @@ export class IntervalMsgView extends React.Component {
     render() {
         const { translateX, opacity, showItem } = this.IntervalMsgModel;
         const { style } = this.props;
-        const { headImg, content, needForward, type } = showItem || {};
+        const { headImg, content, needForward, type } = showItem;
         if (isEmpty(type)) {
             return null;
         }
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
         height: 20, borderRadius: 10, backgroundColor: 'rgba(0,0,0,0.5)'
     },
     image: {
-        marginRight: 5,
+        marginRight: 5, overflow: 'hidden',
         width: 20, height: 20, borderRadius: 10
     },
     text: {
@@ -78,8 +78,9 @@ const styles = StyleSheet.create({
 });
 
 class IntervalMsgViewModel {
-    @observable translateX = new Animated.Value(-maxY);
-    @observable opacity = new Animated.Value(1);
+    showItems = intervalMsgModel.msgList;
+    needUpdate = false;
+    isAnimated = false;
     /*
     *{
     * content  ush:发布了新动态
@@ -91,44 +92,52 @@ class IntervalMsgViewModel {
     * userName
     *}
     * */
-    @observable showItems = intervalMsgModel.msgList;
-    @observable showIndex = 0;
     @observable showItem = {};
+    @observable translateX = new Animated.Value(-maxY);
+    @observable opacity = new Animated.Value(1);
 
-    @action startAnimated = () => {
-        this.opacity = new Animated.Value(1);
-        const item = this.showItems[this.showIndex];
-        this.showItem = item;
-        const { type } = item || {};
+    @action startAnimated = (index) => {
+        this.isAnimated = true;
+        if (this.needUpdate) {
+            this.needUpdate = false;
+            index = 0;
+        }
+
+        this.showItem = this.showItems[index] || {};
+        const { type } = this.showItem;
         if (isEmpty(type)) {
+            this.isAnimated = false;
             return;
         }
-        setTimeout(() => {
-            this.showIndex++;
+        Animated.sequence([
+            Animated.delay(5000),
             Animated.timing(
                 this.translateX,
                 { toValue: 0, duration: 500, useNativeDriver: true }
-            ).start(
-                () => {
-                    setTimeout(() => {
-                        Animated.timing(
-                            this.opacity,
-                            { toValue: 0, duration: 500, useNativeDriver: true }
-                        ).start(
-                            () => {
-                                this.startAnimated();
-                                this.translateX = new Animated.Value(-maxY);
-                            }
-                        );
-                    }, 5000);
-                }
-            );
-        }, 5000);
+            ),
+            Animated.delay(5000),
+            Animated.timing(
+                this.opacity,
+                { toValue: 0, duration: 1000, useNativeDriver: true }
+            )
+        ]).start(
+            () => {
+                /*复原*/
+                this.translateX = new Animated.Value(-maxY);
+                this.opacity = new Animated.Value(1);
+                /*循环,准备下一位贵宾*/
+                this.startAnimated(++index);
+            }
+        );
     };
 
     autorun = autorun(() => {
-        this.showItems = intervalMsgModel.msgList;
-        this.showIndex = 0;
-        this.startAnimated();
+        /*有新数据*/
+        this.showItems = intervalMsgModel.msgList || [];
+        this.needUpdate = true;
+        /*没有进行中的动画启动*/
+        InteractionManager.runAfterInteractions(() => {
+            !this.isAnimated && this.startAnimated(0);
+        });
     });
 }
