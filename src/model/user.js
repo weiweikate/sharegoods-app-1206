@@ -177,6 +177,9 @@ class User {
     @observable
     perfectNumberCode = null;
 
+    //用户微信号
+    @observable
+    weChatNumber = null;
 
     @action getToken = () => {
         if (this.token) {
@@ -285,6 +288,8 @@ class User {
         this.upCode = info.upCode;
         //用户靓号
         this.perfectNumberCode = info.perfectNumberCode;
+        this.weChatNumber = info.weChatNumber; //微信号
+
         if (saveToDisk) {
             AsyncStorage.setItem(USERINFOCACHEKEY, JSON.stringify(info)).catch(e => {
             });
