@@ -31,6 +31,7 @@ import ShowFoundView from './ShowFoundView';
 import ShowMaterialView from './ShowMaterialView';
 import apiEnvironment from '../../api/ApiEnvironment';
 import CommShareModal from '../../comm/components/CommShareModal';
+import WhiteModel from './model/WhiteModel';
 
 const {
     mine_user_icon,
@@ -90,6 +91,9 @@ export default class ShowListPage extends BasePage {
         this.didFocusSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
+                if(user.isLogin){
+                    WhiteModel.saveWhiteType();
+                }
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
                 const { state } = payload;
                 if (state && (state.routeName === 'ShowListPage' || state.routeName === 'show/ShowListPage')) {
@@ -135,14 +139,6 @@ export default class ShowListPage extends BasePage {
         }
         this.$navigate('message/MessageCenterPage');
     };
-
-
-    // _press = ({ nativeEvent }) => {
-    //     let data = nativeEvent;
-    //     // data.click = data.click + 1;
-    //     // this.recommendModules.recommendList.replace
-    //     this.$navigate('show/ShowDetailPage', { id: data.id, code: data.code });
-    // };
 
     loadMessageCount = () => {
         if (user.token) {
@@ -208,6 +204,7 @@ export default class ShowListPage extends BasePage {
 
             </View>
         );
+
         return <View style={styles.container}>
             <View style={styles.header}>
                 {
@@ -390,11 +387,12 @@ let styles = StyleSheet.create({
     titleView: {
         flexDirection: 'row',
         alignItems: 'center',
-        alignSelf: 'center'
+        alignSelf: 'center',
     },
     items: {
         alignItems: 'center',
-        justifyContent: 'flex-end'
+        justifyContent: 'center',
+        height:44
     },
     index: {
         color: DesignRule.textColor_secondTitle,
@@ -410,7 +408,9 @@ let styles = StyleSheet.create({
         backgroundColor: DesignRule.mainColor,
         width: 20,
         height: 2,
-        borderRadius: 1
+        borderRadius: 1,
+        position:'absolute',
+        bottom:0
     },
     userIcon: {
         width: px2dp(30),
