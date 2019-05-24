@@ -43,6 +43,7 @@ import resCommon from '../../../comm/res';
 import LinearGradient from 'react-native-linear-gradient';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { ShopBottomBannerView, ShopProductItemView } from './components/ShopDetailItemView';
+import MyShopDetailModel from './MyShopDetailModel';
 
 const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
 const NavLeft = resCommon.button.white_back;
@@ -72,6 +73,8 @@ export default class MyShopPage extends BasePage {
             isLike: false
         };
     }
+
+    MyShopDetailModel = new MyShopDetailModel();
 
     // 导航配置
     $navigationBarOptions = {
@@ -163,6 +166,8 @@ export default class MyShopPage extends BasePage {
 
     _loadPageData = () => {
         this._requestGetById();
+        this.MyShopDetailModel.requestShopBanner();
+        this.MyShopDetailModel.requestShopProducts();
         //非首页时请求
         if (!this.props.leftNavItemHidden) {
             this._requestGetByStoreId();
@@ -475,7 +480,7 @@ export default class MyShopPage extends BasePage {
                             colors={[DesignRule.mainColor]}
                         />}>
                 <ShopHeader onPressShopAnnouncement={this._clickShopAnnouncement} item={this.state.storeData}/>
-                <ShopProductItemView/>
+                {userStatus === 1 && <ShopProductItemView MyShopDetailModel={this.MyShopDetailModel}/>}
                 {userStatus === 1 ? <ShopHeaderBonus storeData={this.state.storeData}/> : null}
                 <MembersRow storeUserList={storeUserList || []}
                             userCount={userCount}
@@ -483,7 +488,7 @@ export default class MyShopPage extends BasePage {
                             onPressAllMembers={this._clickAllMembers}
                             onPressMemberItem={this._clickItemMembers}/>
                 {this._renderBottom()}
-                <ShopBottomBannerView/>
+                {userStatus === 1 && <ShopBottomBannerView MyShopDetailModel={this.MyShopDetailModel}/>}
                 {this._renderJoinBtn()}
             </ScrollView>
         );

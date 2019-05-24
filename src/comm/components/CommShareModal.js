@@ -330,7 +330,7 @@ export default class CommShareModal extends React.Component {
         const { shareMoney } = this.props.imageJson || {};
         let shareMoneyText = (shareMoney && shareMoney !== '?') ? `${shareMoney.split('-').shift()}` : '';
         //值相等  不要使用===  0的时候不显示
-        if (shareMoneyText === 0) {
+        if (shareMoneyText == 0) {
             shareMoneyText = null;
         }
 
