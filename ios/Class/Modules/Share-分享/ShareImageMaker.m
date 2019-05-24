@@ -9,10 +9,12 @@
 #import "ShareImageMaker.h"
 #import <CoreImage/CoreImage.h>
 #import <AssetsLibrary/AssetsLibrary.h>
+#import "NSString+UrlAddParams.h"
 
 @implementation ShareImageMakerModel
 
 @end
+
 @implementation ShareImageMaker
 SINGLETON_FOR_CLASS(ShareImageMaker)
 - (void)creatShareImageWithShareImageMakerModel:(ShareImageMakerModel *)model
@@ -59,7 +61,8 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
                                         model:(ShareImageMakerModel *)model
 {
   NSString *imageType = model.imageType;
-  NSString *QRCodeStr = model.QRCodeStr;
+  NSString *QRCodeStr = model.QRCodeStr ;
+  
   CGFloat i = 3;// 为了图片高清 图片尺寸250 * 340
   
   CGFloat imageHeght = 340*i;
@@ -201,7 +204,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
   CIFilter *filter = [CIFilter filterWithName:@"CIQRCodeGenerator"];
   [filter setDefaults];
   //存放的信息
-  NSString *info = str;
+  NSString *info = [str urlAddCompnentForValue:@"7" key:@"pageSource"];
   //把信息转化为NSData
   NSData *infoData = [info dataUsingEncoding:NSUTF8StringEncoding];
   //滤镜对象kvc存值
