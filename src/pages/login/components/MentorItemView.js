@@ -63,7 +63,7 @@ export default class MentorItemView extends Component {
         // const ImageWidth = this.state.isSelect ? ScreenUtils.width / 5 : ScreenUtils.width / 5 - 20;
         // const ImageWidth = ScreenUtils.width / 4 - 20;
         const ImageContentWith = px2dp(60);
-        console.log("this.props.itemData.headImg", this.props.itemData.headImg);
+        // console.log("this.props.itemData.headImg", this.props.itemData.headImg);
         return (
             <View
                 style={[styles.mainBgStyle,
