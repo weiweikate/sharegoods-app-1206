@@ -12,7 +12,7 @@ const ShowModular = {
     },
     "WatchXiuChang":{
         "des":'浏览秀场-精选热门/最新秀场',
-        "name":"WatchXiuChang",
+        "name":"ViewXiuChang",
         "params":{}
     },
     "XiuChangDetails":{
