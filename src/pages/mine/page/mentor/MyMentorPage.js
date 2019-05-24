@@ -37,7 +37,8 @@ export default class MyMentorPage extends BasePage {
             levelName: '',
             code: '',
             phone: '',
-            profile: ''
+            profile: '',
+            weChatNumber:null,
         };
     }
 
@@ -59,7 +60,7 @@ export default class MyMentorPage extends BasePage {
             let info = data.data;
             if (info) {
                 this.setState({
-                    // headImg: info.headImg,
+                    weChatNumber: info.weChatNumber,
                     nickName: info.nickname,
                     levelName: `${info.levelName}品鉴官`,
                     code: info.code,
@@ -135,16 +136,16 @@ export default class MyMentorPage extends BasePage {
 
          let bgImage =  this.state.headImg ? {uri: this.state.headImg} : homeRes.mentor.mentor_no_header_icon;
             return (
-            <ImageBackground source={bgImage} style={styles.headerWrapper} blurRadius={ScreenUtils.isIOS ? px2dp(20) : px2dp(15)}>
+            <ImageBackground source={bgImage} style={styles.headerWrapper} blurRadius={ScreenUtils.isIOS ? px2dp(100) : px2dp(15)}>
                     {image}
                 <Text style={[styles.itemTextStyle,{marginLeft: 20, marginRight:20}]}>
                     {this.state.nickName?this.state.nickName:''}
                 </Text>
-                {true ?
+                {this.state.weChatNumber ?
                     <View style={{flexDirection: 'row', alignItems: 'center',marginLeft: 20, marginRight:20}}>
-                        <Text style={styles.weChatStyle} numberOfLines={1}>微信号：{}</Text>
+                        <Text style={styles.weChatStyle} numberOfLines={1}>微信号：{this.state.weChatNumber}</Text>
                         <TouchableWithoutFeedback onPress={() => {
-                            Clipboard.setString('123123');
+                            this.state.weChatNumber&&Clipboard.setString(this.state.weChatNumber);
                             bridge.$toast('复制到剪切版');
                         }}>
                             <View style={styles.copyViewStyle}>
@@ -211,7 +212,7 @@ export default class MyMentorPage extends BasePage {
                     </Text>
                 </View>
                 <Text style={styles.profileTextStyle}>
-                    {profile}就啊健康今年年初健康卡是几年你擦家具第九十九卡就彻底解决啊嫁鸡随鸡初见端倪
+                    {profile}
                 </Text>
             </View>
         );
