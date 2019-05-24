@@ -42,7 +42,7 @@ export default class RegistPage extends BasePage {
         this.state = {
             gouxuan: true
         };
-        TrackApi.registerPage()
+        TrackApi.registerPage();
     }
 
     $isMonitorNetworkStatus() {
