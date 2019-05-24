@@ -22,9 +22,9 @@ const index = {
     iconShowFire:require('./icon_show_fire.png'),
     iconLike:require('./icon_like.png'),
     iconNoLike:require('./icon_no_like.png'),
-    iconBuyBg:require('./icon_buy_bg.png'),
     iconDownload:require('./icon_show_download.png'),
     iconToTop:require('./icon_to_top.png'),
-    iconShowShare:require('./icon_show_share.png')
+    iconShowShare:require('./icon_show_share.png'),
+    showCartNoneBg:require('./show_cart_none_bg.png')
 };
 export default index

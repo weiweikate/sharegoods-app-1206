@@ -8,13 +8,13 @@ import {
     NativeModules,
     Alert,
     TouchableWithoutFeedback,
-    ImageBackground
 } from 'react-native';
 import ShowImageView from './ShowImageView';
 import res from './res';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
 // import AutoHeightWebView from '@mr/react-native-autoheight-webview';
+import LinearGradient from 'react-native-linear-gradient';
 
 const { px2dp } = ScreenUtils;
 import { ShowDetail } from './Show';
@@ -45,7 +45,7 @@ import SelectionPage from '../product/SelectionPage';
 import bridge from '../../utils/bridge';
 import RouterMap from '../../navigation/RouterMap';
 
-const { iconShowFire, iconBuyBg, iconLike, iconNoLike, iconDownload,iconShowShare } = res;
+const { iconShowFire, iconLike, iconNoLike, iconDownload, iconShowShare } = res;
 // @SmoothPushPreLoadHighComponent
 @observer
 export default class ShowDetailPage extends BasePage {
@@ -252,7 +252,7 @@ export default class ShowDetailPage extends BasePage {
             detail = { imgs: '', products: [], click: 0, content: '' };
         }
 
-        let userImage =  (detail.userInfoVO && detail.userInfoVO.userImg) ? detail.userInfoVO.userImg : '';
+        let userImage = (detail.userInfoVO && detail.userInfoVO.userImg) ? detail.userInfoVO.userImg : '';
         let userName = (detail.userInfoVO && detail.userInfoVO.userName) ? detail.userInfoVO.userName : '';
 
         return (
@@ -264,7 +264,7 @@ export default class ShowDetailPage extends BasePage {
                 <View style={styles.profileRow}>
                     <View style={styles.profileLeft}>
                         <AvatarImage borderRadius={px2dp(18)} style={styles.portrait}
-                                     source={{ uri: userImage}}/>
+                                     source={{ uri: userImage }}/>
                         <Text style={styles.showName}
                               allowFontScaling={false}>{userName}</Text>
                     </View>
@@ -398,16 +398,20 @@ export default class ShowDetailPage extends BasePage {
                     });
                 }}>
                     <View>
-                        <ImageBackground source={iconBuyBg} style={{
-                            width: px2dp(90),
-                            height: px2dp(34),
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}>
+                        <LinearGradient start={{ x: 1, y: 0 }} end={{ x: 0, y: 0 }}
+                                        colors={['#FFCB02', '#FF9502']}
+                                        style={{
+                                            width: px2dp(90),
+                                            height: px2dp(34),
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            borderRadius:px2dp(17)
+                                        }}
+                        >
                             <Text style={{ color: DesignRule.white, fontSize: DesignRule.fontSize_threeTitle_28 }}>
                                 立即购买
                             </Text>
-                        </ImageBackground>
+                        </LinearGradient>
                         <View style={{
                             position: 'absolute',
                             top: px2dp(-5),
@@ -491,7 +495,7 @@ export default class ShowDetailPage extends BasePage {
             detail = { imgs: '', products: [], click: 0, content: '' };
         }
 
-        let content = detail.content ? detail.content: "";
+        let content = detail.content ? detail.content : '';
 
         // let html = '<!DOCTYPE html><html>' +
         // '<head>' +
@@ -573,23 +577,23 @@ export default class ShowDetailPage extends BasePage {
 
 
                 {/*<AutoHeightWebView source={{ html: html }}*/}
-                                   {/*style={{ width: DesignRule.width - 30, alignSelf: 'center' }}*/}
-                                   {/*scalesPageToFit={true}*/}
-                                   {/*javaScriptEnabled={true}*/}
-                                   {/*cacheEnabled={true}*/}
-                                   {/*domStorageEnabled={true}*/}
-                                   {/*mixedContentMode={'always'}*/}
-                                   {/*onLongClickImage={this._onLongClickImage}*/}
-                                   {/*showsHorizontalScrollIndicator={false}*/}
-                                   {/*showsVerticalScrollIndicator={false}*/}
+                {/*style={{ width: DesignRule.width - 30, alignSelf: 'center' }}*/}
+                {/*scalesPageToFit={true}*/}
+                {/*javaScriptEnabled={true}*/}
+                {/*cacheEnabled={true}*/}
+                {/*domStorageEnabled={true}*/}
+                {/*mixedContentMode={'always'}*/}
+                {/*onLongClickImage={this._onLongClickImage}*/}
+                {/*showsHorizontalScrollIndicator={false}*/}
+                {/*showsVerticalScrollIndicator={false}*/}
 
                 {/*/>*/}
 
                 <Text style={{
-                    color:'#333333',
-                    fontSize:DesignRule.fontSize_threeTitle,
-                    paddingHorizontal:DesignRule.margin_page,
-                    marginTop:px2dp(10),
+                    color: '#333333',
+                    fontSize: DesignRule.fontSize_threeTitle,
+                    paddingHorizontal: DesignRule.margin_page,
+                    marginTop: px2dp(10)
                 }}>{content}</Text>
 
                 {this._otherInfoRender()}
@@ -623,13 +627,13 @@ export default class ShowDetailPage extends BasePage {
                                 imageUrlStr: detail.resource[0].url,
                                 titleStr: detail.content,
                                 QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
-                                headerImage: (detail.userInfoVO && detail.userInfoVO.userImg)? detail.userInfoVO.userImg: null,
-                                userName: (detail.userInfoVO && detail.userInfoVO.userName)? detail.userInfoVO.userName: ''
+                                headerImage: (detail.userInfoVO && detail.userInfoVO.userImg) ? detail.userInfoVO.userImg : null,
+                                userName: (detail.userInfoVO && detail.userInfoVO.userName) ? detail.userInfoVO.userName : ''
                             }}
                             webJson={{
-                                title:detail.showType === 1 ? detail.content : detail.title,//分享标题(当为图文分享时候使用)
-                                linkUrl:`${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
-                                thumImage:''//(分享图标小图(https链接)图文分享使用)
+                                title: detail.showType === 1 ? detail.content : detail.title,//分享标题(当为图文分享时候使用)
+                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
+                                thumImage: ''//(分享图标小图(https链接)图文分享使用)
                             }}
                             miniProgramJson={{
                                 title: detail.title,

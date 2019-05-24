@@ -21,7 +21,8 @@ import { MRText, UIImage } from '../../components/ui';
 import DesignRule from '../../constants/DesignRule';
 import ShowApi from './ShowApi';
 import EmptyUtils from '../../utils/EmptyUtils';
-
+import res from './res'
+const {showCartNoneBg} = res;
 const { px2dp } = ScreenUtils;
 
 export default class ShowProductListPage extends BasePage {
@@ -143,7 +144,7 @@ export default class ShowProductListPage extends BasePage {
         const { statusBarHeight } = ScreenUtils;
         let content;
         if (EmptyUtils.isEmptyArr(this.state.catData)) {
-            content = <View style={{ width: 100, height: 100, backgroundColor: 'red',alignSelf:'center',marginTop:ScreenUtils.height*0.3 }}/>;
+            content = <Image source={showCartNoneBg} style={{ width: 267, height: 154,alignSelf:'center',marginTop:ScreenUtils.height*0.3 }}/>;
         } else {
             content = <FlatList style={styles.container}
                                 renderItem={this._listItemRender}
