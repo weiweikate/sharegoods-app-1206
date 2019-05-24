@@ -59,6 +59,9 @@
   if(!_zanBtn){
     _zanBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _zanBtn.timeInterval = 2;
+    [_zanBtn setBackgroundImage:[UIImage imageNamed:@"zan"] forState:UIControlStateNormal];
+    [_zanBtn setBackgroundImage:[UIImage imageNamed:@"yizan"] forState:UIControlStateSelected];
+
   }
   return _zanBtn;
 }
@@ -135,7 +138,7 @@
     _downloadCount = downloadCount;
   NSString * num = @"";
     if(downloadCount<999){
-      num = [NSString stringWithFormat:@"%ld",downloadCount];
+      num = [NSString stringWithFormat:@"%ld",downloadCount>0?downloadCount:0];
     }else if(downloadCount<100000){
       num = @"999+";
     }else{
@@ -148,7 +151,7 @@
   _likesCount = likesCount;
   NSString * num = @"";
     if(likesCount<999){
-      num = [NSString stringWithFormat:@"%ld",likesCount];
+      num = [NSString stringWithFormat:@"%ld",likesCount>0?likesCount:0];
     }else if(likesCount<100000){
       num = @"999+";
     }else{
@@ -158,12 +161,7 @@
 }
 
 -(void)setIsLike:(BOOL)isLike{
-  if(isLike){
-    [_zanBtn setBackgroundImage:[UIImage imageNamed:@"yizan"] forState:UIControlStateNormal];
-
-  }else{
-    [_zanBtn setBackgroundImage:[UIImage imageNamed:@"zan"] forState:UIControlStateNormal];
-  }
+  self.zanBtn.selected = isLike;
 }
 
 -(void)setGoodsView{
@@ -260,7 +258,7 @@
   }
 }
 
--(void)tapZanBtn:(UIButton*)sender{
+-(void)tapZanBtn:(NSString*)sender{
   if(self.zanBlock){
     self.zanBlock(@"");
   }

@@ -47,6 +47,8 @@
         UIImageView *imageView = [UIImageView new];
         [self addSubview:imageView];
         imageView.userInteractionEnabled = YES;
+        imageView.clipsToBounds = YES;
+        imageView.contentMode = UIViewContentModeScaleAspectFill;
         //设置圆角
         imageView.layer.cornerRadius = 5;
         //将多余的部分切掉

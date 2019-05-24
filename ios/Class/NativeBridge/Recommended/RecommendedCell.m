@@ -29,7 +29,7 @@
     if(!_contentLab){
         _contentLab = [[UILabel alloc]init];
         _contentLab.font = [UIFont systemFontOfSize:13];
-        _contentLab.textColor = [UIColor colorWithRed:102/255.0 green:102/255.0 blue:102/255.0 alpha:1.0];
+        _contentLab.textColor = [UIColor colorWithHexString:@"666666"];;
       _contentLab.userInteractionEnabled=YES;
       UITapGestureRecognizer *labelTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(labelTouchUpInside)];
 
@@ -89,12 +89,16 @@
       if (weakSelf.cellDelegate) {
         [weakSelf.cellDelegate zanClick:weakSelf];
       }
+      weakSelf.footerView.isLike = weakSelf.model.like;
+      weakSelf.footerView.likesCount = weakSelf.model.likesCount;
     };
     _footerView.downloadBlock =  ^(NSString* a){
       NSLog(@"downloadClick");
       if (weakSelf.cellDelegate) {
         [weakSelf.cellDelegate downloadClick:weakSelf];
       }
+      weakSelf.footerView.downloadCount = weakSelf.model.downloadCount;
+
     };
     _footerView.shareBlock =  ^(NSString* a){
       NSLog(@"shareClick");
