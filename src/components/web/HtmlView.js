@@ -142,14 +142,14 @@ export default class RequestDetailPage extends BasePage {
             this.webView && this.webView.reload();
         }
         if(type === 'shareSuccess'){
-            // this.webView && this.webView.sendToBridge(JSON.stringify({ action: 'clickShareBtn' }));
+            this.webView && this.webView.sendToBridge(JSON.stringify({ action: 'shareSuccess' }));
         }
     };
 
     _postMessage = (msg) => {
         if (msg.action === 'share') {
             // this.webJson = msg.shareParmas;
-            this.setState({ shareParmas: msg.shareParmas }, () => {
+            this.setState({ shareParmas:msg.shareParams || msg.shareParmas }, () => {
                 this.shareModal && this.shareModal.open();
             });
             return;
