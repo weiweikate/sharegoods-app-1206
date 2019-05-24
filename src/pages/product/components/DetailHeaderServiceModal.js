@@ -97,9 +97,9 @@ export default class DetailHeaderServiceModal extends Component {
 
         if ((restrictions & 1) !== 1) {
             sectionListData.push({
-                headerTittle: `不支持使用优惠券`,
+                headerTittle: '不支持使用优惠券',
                 headerImg: bounus,
-                data: [{ content: `该商品不支持使用优惠券使用优惠券` }]
+                data: [{ content: '该商品不支持使用优惠券使用优惠券' }]
             });
         }
 

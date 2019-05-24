@@ -3,7 +3,7 @@ import React from 'react';
 import {
     View,
     FlatList, RefreshControl , Alert
-} from "react-native";
+} from 'react-native';
 import BasePage from '../../../BasePage';
 import AnnouncementRow from './components/AnnouncementRow';
 import ConfirmAlert from '../../../components/ui/ConfirmAlert';
@@ -12,7 +12,7 @@ import SpellShopApi from '../api/SpellShopApi';
 import bridge from '../../../utils/bridge';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
-import DesignRule from "../../../constants/DesignRule";
+import DesignRule from '../../../constants/DesignRule';
 // 是否显示删除按钮
 
 @observer

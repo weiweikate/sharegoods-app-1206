@@ -1,8 +1,8 @@
 import { observable, action, computed } from 'mobx'
 import OrderApi from '../api/orderApi'
-import StringUtils from "../../../utils/StringUtils";
-import Toast from "../../../utils/bridge";
-import { PageLoadingState } from "../../../components/pageDecorator/PageState";
+import StringUtils from '../../../utils/StringUtils';
+import Toast from '../../../utils/bridge';
+import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 
 export const orderStatus = {
     prePayment: 1,
@@ -65,14 +65,14 @@ class OrderDetailModel {
 
 
     @action loadDetailInfo(orderNo) {
-        this.deleteInfo=false
+        this.deleteInfo = false
         orderDetailAfterServiceModel.addAfterServiceList();
         return OrderApi.lookDetail({
             orderNo:orderNo
         }).then(rep => {
             this.detail = rep.data
-            this.expList = rep.data.warehouseOrderDTOList[0].expList||[]
-            this.unSendProductInfoList= rep.data.warehouseOrderDTOList[0].unSendProductInfoList||[]
+            this.expList = rep.data.warehouseOrderDTOList[0].expList || []
+            this.unSendProductInfoList = rep.data.warehouseOrderDTOList[0].unSendProductInfoList || []
             orderStatusModel.statusMsg = orderStatusMessage[rep.data.status]
             orderDetailModel.giftCouponDTOList = rep.data.giftCouponDTOList || []
             orderDetailModel.orderSubType = rep.data.orderSubType
@@ -92,15 +92,15 @@ class OrderDetailModel {
             this.status = rep.data.warehouseOrderDTOList[0].status
             orderDetailModel.payAmount = rep.data.payAmount
             // orderDetailModel.loading=false
-            orderDetailModel.loadingState=PageLoadingState.success
+            orderDetailModel.loadingState = PageLoadingState.success
 
             return rep
         }).catch(err=>{
-                if(err.code===47002){
-                    this.deleteInfo=true
+                if(err.code === 47002){
+                    this.deleteInfo = true
                 }else{
-                    orderDetailModel.netFailedInfo=err
-                    orderDetailModel.loadingState=PageLoadingState.fail
+                    orderDetailModel.netFailedInfo = err
+                    orderDetailModel.loadingState = PageLoadingState.fail
                 }
                 // orderDetailModel.netFailedInfo=err
                 // orderDetailModel.loadingState=PageLoadingState.fail
@@ -113,7 +113,7 @@ class OrderDetailModel {
 
     @computed
     get upDateOrderProductList(){
-      let k=  this.warehouseOrderDTOList.length;
+      let k =  this.warehouseOrderDTOList.length;
       console.log('upDateOrderProductList',k);
         // return this.orderProductList.length;
     }

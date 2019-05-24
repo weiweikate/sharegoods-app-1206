@@ -1,23 +1,23 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
     StyleSheet,
     View,
     Alert
-} from "react-native";
-import ScreenUtils from "../../../../utils/ScreenUtils";
-import DesignRule from "../../../../constants/DesignRule";
-import { orderDetailAfterServiceModel, orderDetailModel, assistDetailModel } from "../../model/OrderDetailModel";
-import OrderApi from "../../api/orderApi";
-import Toast from "../../../../utils/bridge";
-import shopCartCacheTool from "../../../shopCart/model/ShopCartCacheTool";
-import { observer } from "mobx-react/native";
-import RouterMap from "../../../../navigation/RouterMap";
-import { payStatus, payment, payStatusMsg } from "../../../payment/Payment";
-import { NavigationActions } from "react-navigation";
-import { track, trackEvent } from "../../../../utils/SensorsTrack";
+} from 'react-native';
+import ScreenUtils from '../../../../utils/ScreenUtils';
+import DesignRule from '../../../../constants/DesignRule';
+import { orderDetailAfterServiceModel, orderDetailModel, assistDetailModel } from '../../model/OrderDetailModel';
+import OrderApi from '../../api/orderApi';
+import Toast from '../../../../utils/bridge';
+import shopCartCacheTool from '../../../shopCart/model/ShopCartCacheTool';
+import { observer } from 'mobx-react/native';
+import RouterMap from '../../../../navigation/RouterMap';
+import { payStatus, payment, payStatusMsg } from '../../../payment/Payment';
+import { NavigationActions } from 'react-navigation';
+import { track, trackEvent } from '../../../../utils/SensorsTrack';
 
 const { px2dp } = ScreenUtils;
-import { MRText as Text, NoMoreClick, UIText } from "../../../../components/ui";
+import { MRText as Text, NoMoreClick, UIText } from '../../../../components/ui';
 
 @observer
 export default class OrderDetailBottomButtonView extends Component {
@@ -38,10 +38,10 @@ export default class OrderDetailBottomButtonView extends Component {
                         <View style={{
                             height: px2dp(48),
                             marginRight: 6,
-                            alignItems: "center",
-                            justifyContent: "center",
+                            alignItems: 'center',
+                            justifyContent: 'center',
                         }}>
-                            <UIText value={"更多"} style={{ color: DesignRule.textColor_secondTitle, fontSize: 13 }}
+                            <UIText value={'更多'} style={{ color: DesignRule.textColor_secondTitle, fontSize: 13 }}
                                     onPress={
                                        this.props.switchButton
                                     }/>
@@ -60,25 +60,25 @@ export default class OrderDetailBottomButtonView extends Component {
                     </View>
                 );
             } else {
-                let datas=[];
+                let datas = [];
                 if (orderDetailModel.status === 4) {
-                   datas=[
+                   datas = [
                     {
                         id: 7,
-                            operation: "删除订单",
+                            operation: '删除订单',
                         isRed: false
                     },{
                            id: 5,
-                           operation: "查看物流",
+                           operation: '查看物流',
                            isRed: false
                        }, {
                         id: 8,
-                            operation: "再次购买",
+                            operation: '再次购买',
                             isRed: true
                     }
                     ]
                 }else {
-                    datas=nameArr;
+                    datas = nameArr;
                 }
                 return (
                     <View style={styles.containerStyle}>
@@ -120,7 +120,7 @@ export default class OrderDetailBottomButtonView extends Component {
                 if (assistDetailModel.cancelArr.length > 0) {
                     assistDetailModel.setIsShowSingleSelctionModal(true);
                 } else {
-                    Toast.$toast("无取消类型！");
+                    Toast.$toast('无取消类型！');
                 }
 
                 break;
@@ -134,43 +134,43 @@ export default class OrderDetailBottomButtonView extends Component {
                 break;
             case 5:
                 if (!orderDetailModel.warehouseOrderDTOList[0].expList) {
-                    Toast.$toast("当前物流信息不存在！");
+                    Toast.$toast('当前物流信息不存在！');
                     return;
                 }
                 if (orderDetailModel.warehouseOrderDTOList[0].expList.length === 0) {
-                    Toast.$toast("当前物流信息不存在！");
+                    Toast.$toast('当前物流信息不存在！');
                 }
                 if (orderDetailModel.warehouseOrderDTOList[0].expList.length === 1 && orderDetailModel.warehouseOrderDTOList[0].unSendProductInfoList.length === 0) {
-                    this.props.nav("order/logistics/LogisticsDetailsPage", {
+                    this.props.nav('order/logistics/LogisticsDetailsPage', {
                         expressNo: orderDetailModel.warehouseOrderDTOList[0].expList[0].expNO
                     });
                 } else {
-                    this.props.nav("order/logistics/CheckLogisticsPage", {
+                    this.props.nav('order/logistics/CheckLogisticsPage', {
                         expressList: orderDetailModel.warehouseOrderDTOList[0].expList,
                         unSendProductInfoList: orderDetailModel.warehouseOrderDTOList[0].unSendProductInfoList
                     });
                 }
                 break;
             case 6:
-                let content = "确定收到货了吗?";
+                let content = '确定收到货了吗?';
                 orderDetailModel.warehouseOrderDTOList[0].products.map((value) => {
                     if (value.status < 3) {
-                        content = "您还有商品未发货，确认收货吗？";
+                        content = '您还有商品未发货，确认收货吗？';
                     }
                 });
 
-                Alert.alert("", `${content}`, [
+                Alert.alert('', `${content}`, [
                     {
-                        text: `取消`, onPress: () => {
+                        text: '取消', onPress: () => {
                         }
                     },
                     {
-                        text: `确定`, onPress: () => {
+                        text: '确定', onPress: () => {
                             Toast.showLoading();
                             OrderApi.confirmReceipt({ orderNo: orderDetailModel.getOrderNo() }).then((response) => {
                                 Toast.hiddenLoading();
-                                Toast.$toast("确认收货成功");
-                                this.props.nav("order/order/ConfirmReceiveGoodsPage", {
+                                Toast.$toast('确认收货成功');
+                                this.props.nav('order/order/ConfirmReceiveGoodsPage', {
                                     orderNo: orderDetailModel.getOrderNo(),
                                     callBack: this.props.loadPageData
                                 });
@@ -186,17 +186,17 @@ export default class OrderDetailBottomButtonView extends Component {
             case 7:
                 // this.setState({ isShowDeleteOrderModal: true });
                 // this.deleteModal && this.deleteModal.open();
-                Alert.alert("", `确定删除此订单吗?`, [
+                Alert.alert('', '确定删除此订单吗?', [
                     {
-                        text: `取消`, onPress: () => {
+                        text: '取消', onPress: () => {
                         }
                     },
                     {
-                        text: `确定`, onPress: () => {
+                        text: '确定', onPress: () => {
                             Toast.showLoading();
                             OrderApi.deleteOrder({ orderNo: orderDetailModel.getOrderNo() }).then((response) => {
                                 Toast.hiddenLoading();
-                                Toast.$toast("订单已删除");
+                                Toast.$toast('订单已删除');
                                 this.props.goBack();
                                 this.props.callBack();
                             }).catch(e => {
@@ -223,22 +223,22 @@ export default class OrderDetailBottomButtonView extends Component {
                     orderId: orderDetailModel.getOrderNo()
                 });
                 shopCartCacheTool.addGoodItem(cartData);
-                this.props.nav("shopCart/ShopCart", { hiddeLeft: false });
+                this.props.nav('shopCart/ShopCart', { hiddeLeft: false });
                 break;
             case 9:
                 // this.setState({ isShowDeleteOrderModal: true });
                 // this.deleteModal && this.deleteModal.open();
-                Alert.alert("", `确定删除此订单吗?`, [
+                Alert.alert('', '确定删除此订单吗?', [
                     {
-                        text: `取消`, onPress: () => {
+                        text: '取消', onPress: () => {
                         }
                     },
                     {
-                        text: `确定`, onPress: () => {
+                        text: '确定', onPress: () => {
                             Toast.showLoading();
                             OrderApi.deleteOrder({ orderNo: orderDetailModel.getOrderNo() }).then((response) => {
                                 Toast.hiddenLoading();
-                                Toast.$toast("订单已删除");
+                                Toast.$toast('订单已删除');
                                 this.props.goBack();
                                 this.props.callBack();
                             }).catch(e => {
@@ -274,7 +274,7 @@ export default class OrderDetailBottomButtonView extends Component {
         const {payAmount,platformOrderNo} = orderDetailModel
         let result = await payment.checkOrderStatus(platformOrderNo,0,0,payAmount,'')
         if (result.code === payStatus.payNo) {
-            this.props.nav("payment/PaymentPage", {
+            this.props.nav('payment/PaymentPage', {
                 orderNum: orderDetailModel.warehouseOrderDTOList[0].outTradeNo,
                 amounts: orderDetailModel.payAmount,
                 platformOrderNo: orderDetailModel.platformOrderNo,
@@ -302,15 +302,15 @@ export default class OrderDetailBottomButtonView extends Component {
 }
 const styles = StyleSheet.create({
     containerStyle: {
-        height: px2dp(48), flexDirection: "row", alignItems: "center",
-        justifyContent: "flex-end", backgroundColor: "white", marginTop: 1
+        height: px2dp(48), flexDirection: 'row', alignItems: 'center',
+        justifyContent: 'flex-end', backgroundColor: 'white', marginTop: 1
     },
     touchableStyle: {
         borderWidth: 1,
         height: px2dp(30),
         borderRadius: px2dp(15),
         marginRight: px2dp(15),
-        justifyContent: "center",
+        justifyContent: 'center',
         paddingLeft: px2dp(20),
         paddingRight: px2dp(20)
     }

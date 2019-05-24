@@ -97,7 +97,7 @@ export default class ShowChoiceView extends Component {
         if (this.isScroll === true) {
             return
         }
-        navigate('show/ShowDetailPage', {id: item.id, code: item.code,ref:this['card'+index],isFormHeader:true})
+        navigate('show/ShowDetailPage', {id: item.id, code: item.code,ref:this['card' + index],isFormHeader:true})
     }
 
     render() {
@@ -108,7 +108,7 @@ export default class ShowChoiceView extends Component {
         }
         choiceList.map((item, index) => {
             items.push(<Card ref={(ref)=>{
-                this['card'+index] = ref;
+                this['card' + index] = ref;
             }} key={index} item={item} press={()=>this._onChoiceAction(item,index)}/>)
         })
         return <View>

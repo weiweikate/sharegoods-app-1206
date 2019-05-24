@@ -7,26 +7,28 @@
 //
 
 #import "BGKeychainTool.h"
+#import <RNDeviceInfo/DeviceUID.h>
 
 NSString * const KEY_UDID_INSTEAD = @"com.myapp.udid.test";
 
 @implementation BGKeychainTool
 
 +(NSString *)getDeviceIDInKeychain {
-  NSString *getUDIDInKeychain = (NSString *)[BGKeychainTool load:KEY_UDID_INSTEAD];
-  NSLog(@"从keychain中获取到的 UDID_INSTEAD %@",getUDIDInKeychain);
-  if (!getUDIDInKeychain ||[getUDIDInKeychain isEqualToString:@""]||[getUDIDInKeychain isKindOfClass:[NSNull class]]) {
-    CFUUIDRef puuid = CFUUIDCreate( nil );
-    CFStringRef uuidString = CFUUIDCreateString( nil, puuid );
-    NSString * result = (NSString *)CFBridgingRelease(CFStringCreateCopy( NULL, uuidString));
-    CFRelease(puuid);
-    CFRelease(uuidString);
-    NSLog(@"\n \n \n _____重新存储 UUID _____\n \n \n  %@",result);
-    [BGKeychainTool save:KEY_UDID_INSTEAD data:result];
-    getUDIDInKeychain = (NSString *)[BGKeychainTool load:KEY_UDID_INSTEAD];
-  }
-  NSLog(@"最终 ———— UDID_INSTEAD %@",getUDIDInKeychain);
-  return getUDIDInKeychain;
+  return [DeviceUID uid];
+//  NSString *getUDIDInKeychain = (NSString *)[BGKeychainTool load:KEY_UDID_INSTEAD];
+//  NSLog(@"从keychain中获取到的 UDID_INSTEAD %@",getUDIDInKeychain);
+//  if (!getUDIDInKeychain ||[getUDIDInKeychain isEqualToString:@""]||[getUDIDInKeychain isKindOfClass:[NSNull class]]) {
+//    CFUUIDRef puuid = CFUUIDCreate( nil );
+//    CFStringRef uuidString = CFUUIDCreateString( nil, puuid );
+//    NSString * result = (NSString *)CFBridgingRelease(CFStringCreateCopy( NULL, uuidString));
+//    CFRelease(puuid);
+//    CFRelease(uuidString);
+//    NSLog(@"\n \n \n _____重新存储 UUID _____\n \n \n  %@",result);
+//    [BGKeychainTool save:KEY_UDID_INSTEAD data:result];
+//    getUDIDInKeychain = (NSString *)[BGKeychainTool load:KEY_UDID_INSTEAD];
+//  }
+//  NSLog(@"最终 ———— UDID_INSTEAD %@",getUDIDInKeychain);
+//  return getUDIDInKeychain;
 }
 
 + (NSMutableDictionary *)getKeychainQuery:(NSString *)service {

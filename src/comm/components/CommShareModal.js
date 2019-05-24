@@ -59,6 +59,7 @@ import {
     Linking,
     ActivityIndicator
 } from 'react-native';
+import ShowShareImage from './ShowShareImage';
 
 import {
     UIText,
@@ -139,10 +140,11 @@ export default class CommShareModal extends React.Component {
      */
     showImage() {
         let type = this.props.type;
-        if (type === 'promotionShare' || type === 'Image') {
+        let params = this.props.imageJson || {};
+        if (type === 'promotionShare' || type === 'Image' || type === 'Show') {
             if (this.state.path.length === 0) {
                 if (type === 'promotionShare') {
-                    bridge.createPromotionShareImage(this.props.webJson.linkUrl, (path) => {
+                    bridge.createPromotionShareImage(params.webJson.linkUrl, (path) => {
                         this.setState({ path: Platform.OS === 'android' ? 'file://' + path : '' + path }, () => {
                             setTimeout(() => {
                                 this.startAnimated();
@@ -150,9 +152,20 @@ export default class CommShareModal extends React.Component {
                         });
                     });
                 } else if (type === 'Image') {
-                    let url = this.props.imageJson && this.props.imageJson.imageUrlStr;
-                    this.props.imageJson && (this.props.imageJson.imageUrlStr = getSource(url, this.imageWidth, this.imageHeight));
-                    bridge.creatShareImage(this.props.imageJson, (path) => {
+                    let url = params && params.imageUrlStr;
+                    this.props.imageJson && (params.imageUrlStr = getSource(url, this.imageWidth, this.imageHeight));
+                    bridge.creatShareImage(params, (path) => {
+                        this.setState({ path: Platform.OS === 'android' ? 'file://' + path : '' + path }, () => {
+                            this.changeShareType(0);
+                            setTimeout(() => {
+                                this.startAnimated();
+                            }, 350);
+                        });
+                    });
+                }else if(type === 'Show'){
+                    let url = params && params.imageUrlStr;
+                    params && (params.imageUrlStr = getSource(url, this.imageWidth, this.imageHeight));
+                    bridge.creatShowShareImage(params, (path) => {
                         this.setState({ path: Platform.OS === 'android' ? 'file://' + path : '' + path }, () => {
                             this.changeShareType(0);
                             setTimeout(() => {
@@ -161,8 +174,9 @@ export default class CommShareModal extends React.Component {
                         });
                     });
                 }
+
             } else {//已经有图片就直接展示
-                 this.changeShareType(0);
+                this.changeShareType(0);
                  this.startAnimated();
             }
         }
@@ -258,6 +272,7 @@ export default class CommShareModal extends React.Component {
 
         this.imageHeight = autoSizeWidth(350);
         this.imageWidth = autoSizeWidth(250);
+
         if (this.props.type === 'promotionShare') {
             this.imageHeight = autoSizeWidth(348);
             this.imageWidth = autoSizeWidth(279);
@@ -290,7 +305,7 @@ export default class CommShareModal extends React.Component {
             }
         });
 
-        if (type === 'Image' || type === 'promotionShare') {
+        if (type === 'Image' || type === 'promotionShare' || type === 'Show') {
             if (shareType === 2 || shareType === 1) {
                 array.push({
                     image: res.share.copyURL, title: '复制链接', onPress: () => {
@@ -373,7 +388,7 @@ export default class CommShareModal extends React.Component {
                                             color: DesignRule.textColor_secondTitle,
                                             fontSize: autoSizeWidth(17),
                                             marginHorizontal: 7
-                                        }}>{`分享秀一秀 `}<MRText
+                                        }}>{'分享秀一秀 '}<MRText
                                             style={{ color: DesignRule.mainColor }}>{shareMoneyText || ''}</MRText>{shareMoneyText ? '起' : ''}
                                         </MRText>
                                         :
@@ -430,7 +445,7 @@ export default class CommShareModal extends React.Component {
                         </TouchableWithoutFeedback>
                     </Animated.View>
                     {
-                        this.props.type === 'promotionShare' || (this.props.type === 'Image' && this.state.showToastImage) ?
+                        this.props.type === 'promotionShare' || (this.props.type === 'Image' && this.state.showToastImage) || (this.props.type === 'Show' && this.state.showToastImage) ?
                             <Animated.View style={{
                                 height: this.imageHeight,
                                 width: this.imageWidth,
@@ -446,6 +461,7 @@ export default class CommShareModal extends React.Component {
                                 transform: [{ scale: this.state.scale }]
 
                             }}>
+                                {this.props.type === 'Image' ?
                                 <TouchableWithoutFeedback onLongPress={() => {
                                     if (this.props.type === 'promotionShare') {
                                         Linking.openURL(this.props.webJson.linkUrl);
@@ -457,7 +473,11 @@ export default class CommShareModal extends React.Component {
                                                width: this.imageWidth,
                                                backgroundColor: 'white'
                                            }}/>
-                                </TouchableWithoutFeedback>
+                                </TouchableWithoutFeedback> : null
+                                }
+                                {this.props.type === 'Show' ?
+                                <ShowShareImage data={this.props.imageJson} /> : null
+                                }
                                 {
                                     this.state.path === '' ? <ActivityIndicator
                                         color="#aaaaaa"

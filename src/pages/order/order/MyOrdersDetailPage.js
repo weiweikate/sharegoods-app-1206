@@ -158,13 +158,13 @@ export default class MyOrdersDetailPage extends BasePage {
     };
 
     operationDelete() {
-        Alert.alert('', `确定删除此订单吗?`, [
+        Alert.alert('', '确定删除此订单吗?', [
             {
-                text: `取消`, onPress: () => {
+                text: '取消', onPress: () => {
                 }
             },
             {
-                text: `确定`, onPress: () => {
+                text: '确定', onPress: () => {
                     Toast.showLoading();
                     OrderApi.deleteOrder({ orderNo: orderDetailModel.getOrderNo() }).then((response) => {
                         Toast.hiddenLoading();

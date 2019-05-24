@@ -381,4 +381,27 @@ RCT_EXPORT_METHOD(goGongmallPage: (NSString *)url
   });
 }
 
+/**
+ @QRCodeStr  保存图片
+ onSuccess(NSSting) 成功的回调
+ onError(NSSting)   失败的回调
+ */
+RCT_EXPORT_METHOD(saveImageToPhotoAlbumWithUrl:(NSString *) url
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject){
+  
+  [[YYWebImageManager sharedManager] requestImageWithURL:[NSURL URLWithString: url]options:YYWebImageOptionShowNetworkActivity progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+    
+  } transform:nil completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+      if (!error) {//如果加载网络图片失败，就用默认图
+        [[JRShareManager sharedInstance]saveImage:image];
+        resolve(@"0000");
+      }
+    });
+  }];
+  
+  
+}
+
 @end

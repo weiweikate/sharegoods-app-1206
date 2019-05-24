@@ -16,8 +16,8 @@ import DesignRule from '../../../constants/DesignRule';
 import { MRText as Text } from '../../../components/ui/index';
 import ImageLoad from '@mr/image-placeholder';
 import { homeModule } from '../model/Modules';
-import RouterMap from "../../../navigation/RouterMap";
-import user from "../../../model/user";
+import RouterMap from '../../../navigation/RouterMap';
+import user from '../../../model/user';
 
 
 const { px2dp } = ScreenUtils;

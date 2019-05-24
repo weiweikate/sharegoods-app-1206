@@ -1,16 +1,16 @@
 /**
  * Created by zhanglei on 2018/6/13.
  */
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
     StyleSheet,
     Text,
     View,
     DeviceEventEmitter
-} from "react-native";
+} from 'react-native';
 
-import StringUtils from "../../utils/StringUtils";
-import DesignRule from "../../constants/DesignRule";
+import StringUtils from '../../utils/StringUtils';
+import DesignRule from '../../constants/DesignRule';
 
 /**
  * 最近搜索view
@@ -45,7 +45,7 @@ class HotSearch extends Component {
                 tagList.push(
                     <View style={styles.tagText} key={index}>
                         <Text onPress={() =>
-                            DeviceEventEmitter.emit("inputText", this.props.recentData[index])}
+                            DeviceEventEmitter.emit('inputText', this.props.recentData[index])}
                               key={index}>{StringUtils.formatString(this.props.recentData[index])}</Text>
                     </View>
                 );
@@ -53,7 +53,7 @@ class HotSearch extends Component {
             return tagList;
 
         } else {
-            return <Text style={{ flex: 1, backgroundColor: "white", marginRight: 15 }}>no data</Text>;
+            return <Text style={{ flex: 1, backgroundColor: 'white', marginRight: 15 }}>no data</Text>;
         }
     };
 }
@@ -61,30 +61,30 @@ class HotSearch extends Component {
 const styles = StyleSheet.create(
     {
         top: {
-            flexDirection: "row",   // 水平排布
+            flexDirection: 'row',   // 水平排布
             paddingLeft: 20,
             paddingRight: 20,
             paddingTop: 15,
-            justifyContent: "space-between",
-            alignItems: "center" //元素垂直居中排布
+            justifyContent: 'space-between',
+            alignItems: 'center' //元素垂直居中排布
         },
         image: {
             width: 14,
             height: 14,
-            alignItems: "flex-end"
+            alignItems: 'flex-end'
         },
         tagView: {
-            flexDirection: "row",   // 水平排布
+            flexDirection: 'row',   // 水平排布
             paddingLeft: 20,
             paddingRight: 20,
             paddingTop: 10,
-            flexWrap: "wrap",
-            alignItems: "center"
+            flexWrap: 'wrap',
+            alignItems: 'center'
         },
         tagText: {
-            backgroundColor: "#DFDFDF",
+            backgroundColor: '#DFDFDF',
             borderWidth: 1,
-            borderColor: "#DFDFDF",
+            borderColor: '#DFDFDF',
             borderRadius: 4,
             paddingLeft: 8,
             paddingRight: 8,

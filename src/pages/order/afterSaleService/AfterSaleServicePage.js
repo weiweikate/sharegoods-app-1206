@@ -413,7 +413,7 @@ class AfterSaleServicePage extends BasePage {
         if (fah === false) {
             pageType = 3;
         }
-        ;
+
         let that = this;
         OrderApi.getReturnReason({ code: ['JTK', 'THTK', 'HH', 'WFH'][pageType] }).then((result) => {
             that.setState({ returnReasons: result.data || [] });
@@ -522,7 +522,7 @@ class AfterSaleServicePage extends BasePage {
         }
         let text = ['退款', '退货', '换货'][pageType];
         if (StringUtils.isEmpty(returnReason)) {
-            NativeModules.commModule.toast('请选择'+ text +  '原因');
+            NativeModules.commModule.toast('请选择' + text +  '原因');
             return;
         }
 

@@ -4,24 +4,34 @@ import Toast from '../../utils/bridge';
 import ScreenUtil from '../../utils/ScreenUtils';
 import { TrackApi } from '../../utils/SensorsTrack';
 import { homeType } from '../home/HomeTypes';
+import {height} from './ShowBannerView';
 
 const { px2dp } = ScreenUtil;
 
-//推广 1：精选 2：热门 3：推荐 4：最新 全部则不传
+//1:推荐，2:素材圈，3:发现，4:活动
 export const tag = {
-    'Featured': 1,
-    'Hot': 2,
-    'Recommend': 3,
-    'New': 4
+    'Recommend': 1,
+    'Material': 2,
+    'Found': 3,
+    'Activity': 4
 };
 
 export const tagName = {
-    [tag.Featured]: '精选',
-    [tag.Hot]: '热门',
     [tag.Recommend]: '推荐',
-    [tag.New]: '最新'
+    [tag.Material]: '素材圈',
+    [tag.Found]: '发现',
+    [tag.Activity]: '活动'
 };
 
+
+class ShowActiveModules {
+    @observable topBtnHide;
+    @action setTopBtnHide = (state) => {
+        this.topBtnHide = state;
+
+    };
+}
+export const showActiveModules = new ShowActiveModules();
 
 export class HomeShowModules {
     @observable showList = [];
@@ -64,13 +74,14 @@ class ShowBannerModules {
     @observable type = showTypes.banner;
 
     @computed get bannerHeight() {
-        return this.bannerList.length > 0 ? px2dp(210) : 0;
+        return this.bannerList.length > 0 ? height : 0;
     }
 
-    @action loadBannerList = () => {
-        ShowApi.getShowBanner({ type: homeType.discover }).then(res => {
+    @action loadBannerList = (callback) => {
+         ShowApi.getShowBanner({ type: homeType.discover }).then(res => {
             if (res.code === 10000) {
                 this.bannerList = res.data || [];
+                callback && callback();
             }
         });
     };
@@ -277,6 +288,10 @@ export class ShowDetail {
         }
     });
 
+    @action setDetail = flow(function* (data) {
+        this.detail = data;
+    })
+
     @action showDetailCode = flow(function* (code) {
         try {
             const result = yield ShowApi.showDetailCode({ code: code });
@@ -351,3 +366,5 @@ export class ShowDetail {
     });
 
 }
+
+
