@@ -10,6 +10,7 @@
 #import <CoreImage/CoreImage.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <Accelerate/Accelerate.h>
+#import "NSString+UrlAddParams.h"
 
 @implementation ShowShareImgMakerModel
 
@@ -232,7 +233,7 @@ SINGLETON_FOR_CLASS(ShowShareImgMaker)
   CIFilter *filter = [CIFilter filterWithName:@"CIQRCodeGenerator"];
   [filter setDefaults];
   //存放的信息
-  NSString *info = str;
+  NSString *info = [str urlAddCompnentForValue:@"7" key:@"pageSource"];
   //把信息转化为NSData
   NSData *infoData = [info dataUsingEncoding:NSUTF8StringEncoding];
   //滤镜对象kvc存值
