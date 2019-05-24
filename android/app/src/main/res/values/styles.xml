@@ -6,6 +6,8 @@
         <!--<item name="android:windowBackground">@null</item>-->
         <item name="android:editTextStyle">@style/AppEditTextStyle</item>
         <item name="editTextStyle">@style/AppEditTextStyle</item>
+        <item name="android:windowBackground">@drawable/img_splash</item>
+        <item name="android:windowIsTranslucent">true</item>
     </style>
 
     <style name="AppSplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
