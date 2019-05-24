@@ -22,38 +22,61 @@ import { homeModule } from './Modules';
 
 
  class TaskModel  {
+     type = 'home'
      @observable
      show = false
      @observable
-     observable = 50
+     progress = 40
      @observable
-     tasks = []
+     boxs = []
+     @observable
      homeHeight = 0 //
      @observable
-     homeExpanded = false
+     expanded = false;
      @observable
-     mineExpanded = false
+     tasks = []
+
 
      @action
      getData(){
-        this.tasks = [{name: '50', status: 1},
-            {name: '50', status: 1},
+        this.boxs = [{name: '50', status: 2},
+            {name: '50', status: 2},
             {name: '50', status: 1},
             {name: '50', status: 0},
             {name: '50', status: 0}];
         this.show = true;
-        this.calculateHomeHeight();
+        this.tasks = [{name:'分享飞机撒了房间（2/3）',  integral: 30, status: 0,
+            subTasks:[{name:'分享飞机撒了房间1',  integral: 30, status: 0},
+                      {name:'分享飞机撒了房间2',  integral: 30, status: 1},
+                      {name:'分享飞机撒了房间3',  integral: 30, status: 2}
+            ]},
+            {name:'分享飞机撒了房间',  integral: 40, status: 1, subTasks:[]},
+            {name:'分享飞机撒了房间',  integral: 40, status: 2, subTasks:[]}
+        ]
+         if (this.type === 'home') {
+             this.calculateHomeHeight();
+         }
+         setTimeout(()=>{
+             this.tasks = [{name:'分享飞机撒了房间（2/3）',  integral: 30, status: 0,
+                 subTasks:[{name:'分享飞机撒了房间1',  integral: 30, status: 0},
+                     {name:'分享飞机撒了房间2',  integral: 30, status: 1},
+                     {name:'分享飞机撒了房间3',  integral: 30, status: 2}
+                 ]},
+                 {name:'分享飞机撒了房间',  integral: 40, status: 1, subTasks:[]},
+                 {name:'分享飞机撒了房间',  integral: 40, status: 2, subTasks:[]},
+                 {name:'分享飞机撒了房间',  integral: 40, status: 1, subTasks:[]},
+                 {name:'分享飞机撒了房间',  integral: 40, status: 2, subTasks:[]}
+             ]
+         },5000)
      }
 
 
      @action
-     expandedClick(type)
+     expandedClick()
      {
-         if (type === 'home') {
-             this.homeExpanded = !this.homeExpanded;
+         this.expanded = !this.expanded;
+         if (this.type === 'home') {
              this.calculateHomeHeight();
-         }else if (type === 'mine'){
-             this.mineExpanded = !this.mineExpanded;
          }
      }
 
@@ -63,8 +86,8 @@ import { homeModule } from './Modules';
         if (!this.show){
            homeHeight = 0;
         } else {
-            if (this.homeExpanded){
-                homeHeight = px2dp(48+382);
+            if (this.expanded){
+                homeHeight = px2dp(48+383);
             } else {
                 homeHeight = px2dp(48+83);
             }
@@ -79,5 +102,8 @@ import { homeModule } from './Modules';
 }
 
 const taskModel = new TaskModel();
+const mineTaskModel = new TaskModel();
+mineTaskModel.type = 'mine';
 
 export default taskModel;
+export {mineTaskModel};

@@ -25,6 +25,10 @@ const button = {
     down_icon: require('./down_icon.png'),
     close_icon: require('./close_icon.png'),
     kefu_icon: require('./me_bangzu_kefu_icon.png'),
-    arrow_black_bottom: require('./arrow_black_bottom.png')
+    arrow_black_bottom: require('./arrow_black_bottom.png'),
+    arrow_red_top: require('./arrow_red_top.png'),
+    arrow_red_bottom: require('./arrow_red_bottom.png'),
+    expanded_bottom: require('./expanded_bottom.png'),
+    expanded_right: require('./expanded_right.png'),
 };
 export default button;
