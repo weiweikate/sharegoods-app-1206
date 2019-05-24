@@ -196,8 +196,8 @@ export default class ShowMaterialView extends React.Component {
                             <ReleaseButton
                                 style={{
                                     position: 'absolute',
-                                    right: 15,
-                                    bottom: 118
+                                    right: px2dp(15),
+                                    bottom: px2dp(118)
                                 }}
                                 onPress={() => {
                                     if (!user.isLogin) {
@@ -214,8 +214,8 @@ export default class ShowMaterialView extends React.Component {
                         }}
                         style={{
                             position: 'absolute',
-                            right: 15,
-                            bottom: 70
+                            right: px2dp(15),
+                            bottom: px2dp(60)
                         }}/> : null}
                 </View>
                 <SelectionPage ref={(ref) => this.SelectionPage = ref}/>

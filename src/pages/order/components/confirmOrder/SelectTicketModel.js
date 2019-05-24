@@ -106,7 +106,7 @@ export default class SelectTicketModel extends React.Component {
     }
 
     fmtDate(obj) {
-        return formatDate(obj, 'yyyy.MM.dd HH:mm');
+        return formatDate(obj, 'yyyy.MM.dd');
     }
 
     clickItem = (item) => {

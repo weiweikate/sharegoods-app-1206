@@ -50,6 +50,9 @@
   if(!_picImg){
     _picImg = [[UIImageView alloc] init];
     _picImg.layer.masksToBounds = YES;
+    _picImg.clipsToBounds = YES;
+    _picImg.contentMode = UIViewContentModeScaleAspectFill;
+
 
   }
   return _picImg;

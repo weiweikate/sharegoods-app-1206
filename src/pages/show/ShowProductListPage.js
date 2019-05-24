@@ -104,12 +104,12 @@ export default class ShowProductListPage extends BasePage {
 
     _listItemRender = ({ item }) => {
         return (
-            <TouchableWithoutFeedback onPress={()=>{
+            <TouchableWithoutFeedback onPress={() => {
                 let spus = this.params.spus;
-                if(!EmptyUtils.isEmptyArr(spus)){
-                    if(spus.indexOf(item.spuCode) !== -1){
-                        this.$toastShow('这个商品已经选过了哦')
-                        return
+                if (!EmptyUtils.isEmptyArr(spus)) {
+                    if (spus.indexOf(item.spuCode) !== -1) {
+                        this.$toastShow('这个商品已经选过了哦');
+                        return;
                     }
                 }
 
@@ -120,14 +120,14 @@ export default class ShowProductListPage extends BasePage {
                 <View style={styles.itemWrapper}>
                     <UIImage source={{ uri: item.imgUrl ? item.imgUrl : '' }}
                              style={[styles.validProductImg]}/>
-                    <View style={{ height: px2dp(70) }}>
+                    <View style={{ height: px2dp(80) }}>
                         <MRText numberOfLines={1}
                                 style={styles.itemTitle}
                                 ellipsizeMode={'tail'}>
                             {item.productName ? item.productName : ''}
                         </MRText>
                         <View style={{ flex: 1 }}/>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' ,marginLeft:px2dp(10)}}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: px2dp(10) }}>
                             <MRText style={{ fontSize: px2dp(10), color: DesignRule.mainColor }}>￥</MRText>
                             <MRText style={styles.priceText}>
                                 {item.showPrice ? item.showPrice : item.price}
@@ -141,26 +141,32 @@ export default class ShowProductListPage extends BasePage {
 
     _renderCar = () => {
         const { statusBarHeight } = ScreenUtils;
+        let content;
+        if (EmptyUtils.isEmptyArr(this.state.catData)) {
+            content = <View style={{ width: 100, height: 100, backgroundColor: 'red',alignSelf:'center',marginTop:ScreenUtils.height*0.3 }}/>;
+        } else {
+            content = <FlatList style={styles.container}
+                                renderItem={this._listItemRender}
+                                data={this.state.catData}
+                                refreshControl={
+                                    <RefreshControl
+                                        refreshing={this.state.isRefresh}
+                                        onRefresh={() => {
+                                            this._loadCatData();
+                                        }}
+                                        progressViewOffset={statusBarHeight + 44}
+                                        colors={[DesignRule.mainColor]}
+                                        title="下拉刷新"
+                                        tintColor={DesignRule.textColor_instruction}
+                                        titleColor={DesignRule.textColor_instruction}
+                                    />
+                                }
+            />;
+        }
 
         return (
             <View style={styles.listBackground}>
-                <FlatList style={styles.container}
-                          renderItem={this._listItemRender}
-                          data={this.state.catData}
-                          refreshControl={
-                              <RefreshControl
-                                  refreshing={this.state.isRefresh}
-                                  onRefresh={() => {
-                                      this._loadCatData();
-                                  }}
-                                  progressViewOffset={statusBarHeight + 44}
-                                  colors={[DesignRule.mainColor]}
-                                  title="下拉刷新"
-                                  tintColor={DesignRule.textColor_instruction}
-                                  titleColor={DesignRule.textColor_instruction}
-                              />
-                          }
-                />
+                {content}
             </View>
         );
     };
@@ -273,13 +279,14 @@ var styles = StyleSheet.create({
         width: (DesignRule.width - DesignRule.margin_page * 2)
     },
     validProductImg: {
-        width: px2dp(60),
-        height: px2dp(60)
+        width: px2dp(80),
+        height: px2dp(80)
     },
     itemTitle: {
         color: DesignRule.textColor_mainTitle,
         fontSize: DesignRule.fontSize_mediumBtnText,
-        width: DesignRule.width - px2dp(115)
+        width: DesignRule.width - px2dp(135),
+        marginHorizontal: px2dp(10)
     },
     contentStyle: {
         color: DesignRule.textColor_instruction,
@@ -287,11 +294,11 @@ var styles = StyleSheet.create({
     },
     priceText: {
         color: DesignRule.mainColor,
-        fontSize: px2dp(18),
+        fontSize: px2dp(18)
     },
-    titleText:{
-        color:DesignRule.textColor_mainTitle,
-        fontSize:DesignRule.fontSize_mainTitle
+    titleText: {
+        color: DesignRule.textColor_mainTitle,
+        fontSize: DesignRule.fontSize_mainTitle
     }
 });
 
