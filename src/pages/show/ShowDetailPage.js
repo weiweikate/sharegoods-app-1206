@@ -560,7 +560,7 @@ export default class ShowDetailPage extends BasePage {
                         null
                 }
 
-                <ProductRowListView style={{ marginLeft: DesignRule.margin_page, marginTop: px2dp(10) }}
+                <ProductRowListView style={{ marginTop: px2dp(10) }}
                                     products={detail.products}
                                     addCart={this.addCart}
                                     pressProduct={(prodCode) => {

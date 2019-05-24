@@ -83,7 +83,7 @@ export default class ProductRowListView extends PureComponent {
         }
 
         if (this.props.products.length === 1) {
-            return (<View style={this.props.style}>
+            return (<View style={[this.props.style,{marginLeft:DesignRule.margin_page}]}>
                 {this.renderItem(this.props.products[0], 0, true)}
             </View>);
         }
@@ -92,6 +92,7 @@ export default class ProductRowListView extends PureComponent {
             <View style={this.props.style}>
                 <ScrollView showsHorizontalScrollIndicator={false}
                             horizontal={true}>
+                    <View style={{width:DesignRule.margin_page}}/>
                     {this.props.products.map((data, index) => {
                         return this.renderItem(data, index);
                     })}

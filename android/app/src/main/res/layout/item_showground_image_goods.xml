@@ -48,7 +48,7 @@
         android:layout_toRightOf="@id/user_icon"
         android:ellipsize="end"
         android:includeFontPadding="false"
-        android:textColor="@color/textColor_mainTitle"
+        android:textColor="@color/textColor_secondTitle"
         android:layout_marginLeft="5dp"
         android:textSize="13sp"
         app:foldLine="3"
