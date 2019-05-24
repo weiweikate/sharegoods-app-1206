@@ -34,7 +34,7 @@
   [[NSNotificationCenter defaultCenter]postNotificationName:@"HOME_CUSTOM_MSG" object:nil];
   NSString *typeString = userInfo[@"content_type"];
   
-  if ([typeString isEqualToString:@"HomeRefresh"]) {
+  if (typeString && [typeString isEqualToString:@"HomeRefresh"]) {
     NSString *homeTypeStr = userInfo[@"content"];
     NSDictionary * dic = [self dictionaryWithJsonString:homeTypeStr];
     [[NSNotificationCenter defaultCenter]postNotificationName:@"HOME_CUSTOM_MSG" object:dic[@"homeType"]];
