@@ -692,7 +692,9 @@ export default class TopicDetailPage extends BasePage {
                                                this.$navigate('home/search/SearchPage');
                                                break;
                                            case 2:
-                                               this.shareModal && this.shareModal.open();
+                                               setTimeout(() => {
+                                                   this.shareModal && this.shareModal.open();
+                                               }, 200);
                                                break;
                                            case 3:
                                                if (!user.isLogin) {
