@@ -51,6 +51,7 @@ const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
 
 const HOME_REFRESH = 'homeRefresh';
+const HOME_SKIP = 'activitySkip';
 
 /**
  * @author zhangjian
@@ -116,10 +117,10 @@ class HomePage extends BasePage {
                 dim.height = homeExpandBnnerModel.bannerHeight;
                 break;
             case homeType.focusGrid:
-                dim.height = foucusHeight > 0 ? foucusHeight + (homeExpandBnnerModel.banner.length > 0 ? px2dp(20) : px2dp(10)) : 0;
+                dim.height = foucusHeight > 0 ? (foucusHeight + (homeExpandBnnerModel.banner.length > 0 ? px2dp(20) : px2dp(10))) : 0;
                 break;
             case homeType.limitGo:
-                dim.height = limitGoModule.limitHeight;
+                dim.height = limitGoModule.spikeList.length > 0 ? limitGoModule.limitHeight : 0;
                 break;
             case homeType.today:
                 dim.height = todayList.length > 0 ? todayHeight : 0;
@@ -208,6 +209,7 @@ class HomePage extends BasePage {
         this.listenerLogout = DeviceEventEmitter.addListener('login_out', this.loadMessageCount);
         this.listenerRetouchHome = DeviceEventEmitter.addListener('retouch_home', this.retouchHome);
         this.listenerHomeRefresh = JSManagerEmitter.addListener(HOME_REFRESH, this.homeTypeRefresh);
+        this.listenerSkip = JSManagerEmitter.addListener(HOME_SKIP, this.homeSkip);
 
         InteractionManager.runAfterInteractions(() => {
             user.getToken().then(() => {//让user初始化完成
@@ -222,6 +224,11 @@ class HomePage extends BasePage {
         homeModule.refreshHome(type);
     };
 
+    homeSkip = (data) => {
+        // 跳标
+        // let tagArr = JSON.parse(data) || [];
+    };
+
     componentWillUnmount() {
         this.willBlurSubscription && this.willBlurSubscription.remove();
         this.didFocusSubscription && this.didFocusSubscription.remove();
@@ -230,6 +237,7 @@ class HomePage extends BasePage {
         this.listenerLogout && this.listenerLogout.remove();
         this.listenerRetouchHome && this.listenerRetouchHome.remove();
         this.listenerHomeRefresh && this.listenerHomeRefresh.remove();
+        this.listenerSkip && this.listenerSkip.remove();
     }
 
     retouchHome = () => {

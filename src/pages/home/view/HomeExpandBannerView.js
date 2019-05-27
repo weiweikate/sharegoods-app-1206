@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
+import { StyleSheet, TouchableWithoutFeedback, View, Image } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { homeModule } from '../model/Modules';
 import { homeExpandBnnerModel } from '../model/HomeExpandBnnerModel';
