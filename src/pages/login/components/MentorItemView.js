@@ -10,26 +10,26 @@
  */
 
 
-'use strict';
+"use strict";
 
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 import {
     View,
     TouchableOpacity,
     StyleSheet
-} from 'react-native';
-import { MRText as Text } from '../../../components/ui';
+} from "react-native";
+import { MRText as Text } from "../../../components/ui";
 // import {
 //   UIText,
 //   UIImage,
 // } from '../../../components/ui';
-import DesignRule from '../../../constants/DesignRule';
-import ScreenUtils from '../../../utils/ScreenUtils';
+import DesignRule from "../../../constants/DesignRule";
+import ScreenUtils from "../../../utils/ScreenUtils";
 // import ImageLoad from '@mr/image-placeholder'
 // import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
 
-import ImageLoad from '@mr/image-placeholder';
+import ImageLoad from "@mr/image-placeholder";
 // import PropTypes from 'prop-types';
 const { px2dp } = ScreenUtils;
 
@@ -63,7 +63,7 @@ export default class MentorItemView extends Component {
         // const ImageWidth = this.state.isSelect ? ScreenUtils.width / 5 : ScreenUtils.width / 5 - 20;
         // const ImageWidth = ScreenUtils.width / 4 - 20;
         const ImageContentWith = px2dp(60);
-        console.log('this.props.itemData.headImg', this.props.itemData.headImg);
+        // console.log("this.props.itemData.headImg", this.props.itemData.headImg);
         return (
             <View
                 style={[styles.mainBgStyle,
@@ -75,15 +75,15 @@ export default class MentorItemView extends Component {
                     <View style={{
                         width: ImageContentWith,
                         height: ImageContentWith,
-                        alignItems: 'center',
-                        justifyContent: 'center',
+                        alignItems: "center",
+                        justifyContent: "center",
                         borderWidth: px2dp(3),
                         borderColor:DesignRule.color_fff,
-                        borderRadius:ImageContentWith / 2,
+                        borderRadius:ImageContentWith/2,
                     }}>
                         <ImageLoad
                             style={{ width: ImageContentWith - px2dp(6), height: ImageContentWith - px2dp(6)}}
-                            source={{ uri: this.state.itemData.headImg ? this.state.itemData.headImg : '' }}
+                            source={{ uri: this.state.itemData.headImg ? this.state.itemData.headImg : "" }}
                             isAvatar={true}
                             height={ImageContentWith - px2dp(6) }
                             width={ImageContentWith - px2dp(6)}
@@ -100,7 +100,7 @@ export default class MentorItemView extends Component {
                         color: DesignRule.textColor_mainTitle
                     }}
                 >
-                    {this.state.itemData.nickname ? this.state.itemData.nickname : '暂无昵称~'}
+                    {this.state.itemData.nickname ? this.state.itemData.nickname : "暂无昵称~"}
                 </Text>
             </View>
         );
@@ -112,8 +112,8 @@ const styles = StyleSheet.create(
         mainBgStyle: {
             width: ScreenUtils.width / 4,
             height: 100,
-            alignItems: 'center',
-            justifyContent: 'center'
+            alignItems: "center",
+            justifyContent: "center"
         }
     }
 );

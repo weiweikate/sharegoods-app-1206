@@ -8,19 +8,21 @@
  * Created by huyufeng on 2019/1/3.
  *
  */
-'use strict';
-import React, { Component } from 'react';
-import DesignRule from '../../../constants/DesignRule';
-import ScreenUtils from '../../../utils/ScreenUtils';
-import res from '../res';
-import shopCartStore from '../model/ShopCartStore';
-import { View, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import { UIText } from '../../../components/ui/index';
-import PropTypes from 'prop-types';
-import user from '../../../model/user';
-import RouterMap from '../../../navigation/RouterMap';
-import bridge from '../../../utils/bridge';
-import LinearGradient from 'react-native-linear-gradient';
+
+"use strict";
+import React, { Component } from "react";
+import DesignRule from "../../../constants/DesignRule";
+import ScreenUtils from "../../../utils/ScreenUtils";
+import res from "../res";
+import shopCartStore from "../model/ShopCartStore";
+import { View, TouchableOpacity, StyleSheet, Image } from "react-native";
+import { UIText } from "../../../components/ui/index";
+import PropTypes from "prop-types";
+import user from "../../../model/user";
+import RouterMap from "../../../navigation/RouterMap";
+import bridge from "../../../utils/bridge";
+import LinearGradient from "react-native-linear-gradient";
+import { TrackApi } from '../../../utils/SensorsTrack';
 
 const dismissKeyboard = require('dismissKeyboard');
 const { px2dp } = ScreenUtils;
@@ -108,6 +110,7 @@ export default class BottomMenu extends Component {
     _toBuyImmediately = () => {
         dismissKeyboard();
         const { navigate } = this.props;
+        TrackApi.CartCheckoutClick();
         if (!user.isLogin) {
             navigate(RouterMap.LoginPage);
             return;

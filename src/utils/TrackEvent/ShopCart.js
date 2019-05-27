@@ -5,9 +5,9 @@ const  shopCartModular = {
         'params': {}
     },
     'CartCheckoutClick':{
-        'des': '购物车点击结算',
-        'name': 'ViewShoppingcart',//  提交订单
-        'params': {}
+        "des": "购物车点击结算",
+        "name": "CartCheckoutClick",//  提交订单
+        "params": {}
     },
 
 }
