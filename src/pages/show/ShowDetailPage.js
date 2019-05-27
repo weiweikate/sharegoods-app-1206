@@ -85,54 +85,9 @@ export default class ShowDetailPage extends BasePage {
                 if (state && state.routeName === 'show/ShowDetailPage') {
                     Toast.showLoading();
                     if (this.params.code) {
-                        this.showDetailModule.showDetailCode(this.params.code || this.params.id).then(() => {
-                            const { detail } = this.showDetailModule;
-                            TrackApi.XiuChangDetails({
-                                articleCode: detail.code,
-                                author: detail.userName,
-                                collectionCount: detail.collectCount
-                            });
-                            if (this.params.isFormHeader) {
-                                this.params.ref && this.params.ref.setClick(detail.click);
-                            } else {
-                                this.params.ref && this.params.ref.replaceData(this.params.index, detail.click);
-                            }
-                            this.setState({
-                                pageState: PageLoadingState.success
-                            });
-                            Toast.hiddenLoading();
-                        }).catch(error => {
-                            this.setState({
-                                pageState: PageLoadingState.fail,
-                                errorMsg: error.msg || '获取详情失败'
-                            });
-                            Toast.$toast(error.msg || '获取详情失败');
-                            Toast.hiddenLoading();
-                        });
+                        this.getDetailByIdOrCode(this.params.code);
                     } else if (this.params.id) {
-                        Toast.showLoading();
-                        this.showDetailModule.loadDetail(this.params.id).then(() => {
-                            const { detail } = this.showDetailModule;
-                            TrackApi.XiuChangDetails({
-                                articleCode: detail.code,
-                                author: detail.userName,
-                                collectionCount: detail.collectCount
-                            });
-                            this.setState({
-                                pageState: PageLoadingState.success
-                            });
-                            // this._whiteNavRef.setNativeProps({
-                            //     opacity: 0
-                            // });
-                            Toast.hiddenLoading();
-                        }).catch(error => {
-                            this.setState({
-                                pageState: PageLoadingState.fail,
-                                errorMsg: error.msg || '获取详情失败'
-                            });
-                            Toast.$toast(error.msg || '获取详情失败');
-                            Toast.hiddenLoading();
-                        });
+                        this.getDetailByIdOrCode(this.params.id);
                     } else {
                         this.setState({
                             pageState: PageLoadingState.success
@@ -151,12 +106,36 @@ export default class ShowDetailPage extends BasePage {
 
     componentWillUnmount() {
         this.willFocusSubscription && this.willFocusSubscription.remove();
-        // const { likesCount, downloadCount } = this.params.data;
-        // const { detail } = this.showDetailModule;
-        // if(likesCount !=detail.likesCount);
         let { detail } = this.showDetailModule;
-
         this.params.ref && this.params.ref.replaceItemData(this.params.index, JSON.stringify(detail));
+    }
+
+    getDetailByIdOrCode=(code)=>{
+        Toast.showLoading();
+        this.showDetailModule.showDetailCode(code).then(() => {
+            const { detail } = this.showDetailModule;
+            TrackApi.XiuChangDetails({
+                articleCode: detail.code,
+                author: detail.userName,
+                collectionCount: detail.collectCount
+            });
+            if (this.params.isFormHeader) {
+                this.params.ref && this.params.ref.setClick(detail.click);
+            } else {
+                this.params.ref && this.params.ref.replaceData(this.params.index, detail.click);
+            }
+            this.setState({
+                pageState: PageLoadingState.success
+            });
+            Toast.hiddenLoading();
+        }).catch(error => {
+            this.setState({
+                pageState: PageLoadingState.fail,
+                errorMsg: error.msg || '获取详情失败'
+            });
+            Toast.$toast(error.msg || '获取详情失败');
+            Toast.hiddenLoading();
+        });
     }
 
     incrCountByType = (type) => {
@@ -453,8 +432,13 @@ export default class ShowDetailPage extends BasePage {
 
     addCart = (code) => {
         let addCartModel = new AddCartModel();
+
         addCartModel.requestProductDetail(code, (productIsPromotionPrice) => {
+            this.setState({
+                productModalVisible:false
+            });
             this.SelectionPage.show(addCartModel, (amount, skuCode) => {
+                this.setState({productModalVisible:true})
                 const { prodCode, name, originalPrice } = addCartModel;
                 shopCartCacheTool.addGoodItem({
                     'amount': amount,
@@ -472,6 +456,7 @@ export default class ShowDetailPage extends BasePage {
                 });
             }, { sourceType: productIsPromotionPrice ? sourceType.promotion : null });
         }, (error) => {
+            this.setState({productModalVisible:true})
             this.$toastShow(error.msg || '服务器繁忙');
         });
     };
@@ -497,53 +482,7 @@ export default class ShowDetailPage extends BasePage {
 
         let content = detail.content ? detail.content : '';
 
-        // let html = '<!DOCTYPE html><html>' +
-        // '<head>' +
-        // '<meta http-equiv="Content-type" content="text/html; charset=utf-8" />' +
-        // //'<meta content="m.007fenqi.com" name="author"/>' +
-        // '<meta content="yes" name="apple-mobile-web-app-capable"/>' +
-        // '<meta content="yes" name="apple-touch-fullscreen"/>' +
-        // '<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />' +
-        // '<meta http-equiv="Expires" content="-1"/>' +
-        // '<meta http-equiv="Cache-Control" content="no-cache">' +
-        // '<meta http-equiv="Pragma" content="no-cache">'
-        // // + '<link rel="stylesheet" href="http://m.007fenqi.com/app/app.css" type="text/css"/>'
-        // + '<style type="text/css">' + 'html, body, p, embed, iframe, div ,video {'
-        // + 'position:relative;width:100%;margin:0;padding:0;background-color:#ffffff' + ';line-height:28px;box-sizing:border-box;display:block;font-size:'
-        // + 13
-        // + 'px;'
-        // + '}'
-        // + 'p {word-break:break-all;}'
-        // + 'table { border-collapse:collapse;}'
-        // + 'table, td, th {border:1px solid #ddd;}'
-        // + 'blockquote { display: block;' +
-        // '    background: #f9f9f9;' +
-        // '    border-left: 10px solid #ccc;' +
-        // '    margin: 10px;' +
-        // '    padding: 0px;' +
-        // '    position: relative;' +
-        // '    box-sizing: border-box;}'
-        // //  + Utils.NVL(this.props.webviewStyle, '')
-        // + '</style>'
-        // + '<script type="text/javascript">'
-        // + 'function ResizeImages() {'
-        // + 'var myimg,oldwidth;'
-        // + 'var maxwidth = document.body.clientWidth;'
-        // + 'for(i=0;i <document.images.length;i++){'
-        // + 'myimg = document.images[i];'
-        // + 'if(myimg.width > maxwidth){'
-        // + 'oldwidth = myimg.width;'
-        // + 'myimg.width = maxwidth;'
-        // + '}'
-        // + '}'
-        // + '}'
-        // + '</script>'
-        // + '</head>'
-        // + '<body onload="ResizeImages();">'
-        // + '<div>'
-        // + content
-        // + '</div>'
-        // + '</body></html>';
+
 
         return <View style={styles.container}>
             <ScrollView
@@ -574,21 +513,6 @@ export default class ShowDetailPage extends BasePage {
                                         this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode });
                                     }}
                 />
-
-
-                {/*<AutoHeightWebView source={{ html: html }}*/}
-                {/*style={{ width: DesignRule.width - 30, alignSelf: 'center' }}*/}
-                {/*scalesPageToFit={true}*/}
-                {/*javaScriptEnabled={true}*/}
-                {/*cacheEnabled={true}*/}
-                {/*domStorageEnabled={true}*/}
-                {/*mixedContentMode={'always'}*/}
-                {/*onLongClickImage={this._onLongClickImage}*/}
-                {/*showsHorizontalScrollIndicator={false}*/}
-                {/*showsVerticalScrollIndicator={false}*/}
-
-                {/*/>*/}
-
                 <Text style={{
                     color: '#333333',
                     fontSize: DesignRule.fontSize_threeTitle,
@@ -618,7 +542,7 @@ export default class ShowDetailPage extends BasePage {
                 });
             }}/> : null}
 
-            <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
+            <SelectionPage ref={(ref) => this.SelectionPage = ref} closeCallBack={()=>{this.setState({productModalVisible:true})}}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             type={'Show'}
                             trackEvent={'ArticleShare'}

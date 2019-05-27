@@ -4,9 +4,9 @@ const api = {
     //活动
     showActivity: ['/social/show/content/page/query', { method: 'get' }],
     // 发现详情
-    showDetail: ['/discover/getById', { method: 'get' }],
+    showDetail: ['/social/show/content/queryByContentNo', { method: 'get' }],
     // 发现详情
-    showDetailCode: ['/discover/getByCode', { method: 'get' }],
+    showDetailCode: ['/social/show/content/queryByContentNo', { method: 'get' }],
     // 点赞
     showGood: '/discover/count/save',
     // 取消点赞:

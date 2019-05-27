@@ -194,7 +194,6 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
                 snapHelper.attachToRecyclerView(recyclerView);
                 recyclerView.setTag(Boolean.TRUE);
             }
-
         }else {
             recyclerView.setVisibility(View.GONE);
         }

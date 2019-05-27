@@ -10,9 +10,7 @@ import DesignRule from '../../constants/DesignRule';
 
 const { px2dp } = ScreenUtils;
 import ShowRecommendView from './components/ShowRecommendView';
-import TimerMixin from 'react-timer-mixin';
 import ReleaseButton from './components/ReleaseButton';
-
 import user from '../../model/user';
 import SelectionPage, { sourceType } from '../product/SelectionPage';
 import AddCartModel from './model/AddCartModel';
@@ -40,7 +38,8 @@ export default class ShowMaterialView extends React.Component {
         this.state = {
             headerView: null,
             showEditorIcon: true,
-            showToTop: false
+            showToTop: false,
+            rightValue: new Animated.Value(1)
         };
 
     }
@@ -100,6 +99,10 @@ export default class ShowMaterialView extends React.Component {
 
 
     render() {
+        const right = this.state.rightValue.interpolate({
+            inputRange: [0, 1],
+            outputRange: [-px2dp(22), px2dp(15)]
+        });
         return (
             <View style={styles.container}>
                 <View style={{ flex: 1, paddingHorizontal: 15 }}>
@@ -196,42 +199,29 @@ export default class ShowMaterialView extends React.Component {
                                        onScrollStateChanged={({ nativeEvent }) => {
                                            const { state } = nativeEvent;
                                            if (state === 0) {
-                                               this.lastStopScrollTime = (new Date()).getTime();
-                                               TimerMixin.setTimeout(() => {
-                                                   if (this.lastStopScrollTime === -1) {
-                                                       return;
-                                                   }
-                                                   let currentTime = (new Date()).getTime();
-                                                   if ((currentTime - this.lastStopScrollTime) < 3000) {
-                                                       return;
-                                                   }
-                                                   this.setState({
-                                                       showEditorIcon: true
-                                                   });
-                                               }, 3000);
+                                               this.releaseButtonShow();
                                            } else {
-                                               this.lastStopScrollTime = -1;
-                                               this.setState({
-                                                   showEditorIcon: false
-                                               });
+                                               this.releaseButtonHidden();
                                            }
                                        }}
                     />
                     {
-                        this.state.showEditorIcon && user.token ?
-                            <ReleaseButton
-                                style={{
-                                    position: 'absolute',
-                                    right: px2dp(15),
-                                    bottom: px2dp(118)
-                                }}
-                                onPress={() => {
-                                    if (!user.isLogin) {
-                                        this.props.navigate('login/login/LoginPage');
-                                        return;
-                                    }
-                                    this.props.navigate('show/ReleaseNotesPage');
-                                }}/> : null
+                        user.token ?
+                            <Animated.View style={{
+                                position: 'absolute',
+                                right: right,
+                                bottom: px2dp(118)
+                            }}>
+                                <ReleaseButton
+
+                                    onPress={() => {
+                                        if (!user.isLogin) {
+                                            this.props.navigate('login/login/LoginPage');
+                                            return;
+                                        }
+                                        this.props.navigate('show/ReleaseNotesPage');
+                                    }}/>
+                            </Animated.View> : null
                     }
                 </View>
                 <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
