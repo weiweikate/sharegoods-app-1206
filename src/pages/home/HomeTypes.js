@@ -16,6 +16,7 @@ export const homeType = {
     classify: 'classify',
     category: 'category',
     goodsTitle: 'goodsTitle',
+    task: 'task',
     user: 'user',
     show: 11,            //秀场
     banner: 14,
