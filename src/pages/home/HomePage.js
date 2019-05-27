@@ -65,6 +65,7 @@ const { px2dp, height, headerHeight } = ScreenUtils;
 const scrollDist = height / 2 - headerHeight;
 import BasePage from '../../BasePage';
 import { TrackApi } from '../../utils/SensorsTrack';
+import intervalMsgModel, { IntervalMsgView } from '../../comm/components/IntervalMsgView';
 
 const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
     <Text style={styles.text}
@@ -189,6 +190,7 @@ class HomePage extends BasePage {
                     homeModule.homeFocused(true);
                     homeModalManager.entryHome();
                     homeModalManager.requestGuide();
+                    intervalMsgModel.msgList = [];
                     if (!homeModule.firstLoad) {
                         limitGoModule.loadLimitGo();
                     }
@@ -353,6 +355,7 @@ class HomePage extends BasePage {
                 <LuckyIcon ref={(ref) => {
                     this.luckyIcon = ref;
                 }}/>
+                <IntervalMsgView/>
                 <HomeAdModal/>
                 <HomeMessageModalView/>
                 <GuideModal onShow={() => {

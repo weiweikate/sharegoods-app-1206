@@ -692,7 +692,9 @@ export default class TopicDetailPage extends BasePage {
                                                this.$navigate('home/search/SearchPage');
                                                break;
                                            case 2:
-                                               this.shareModal && this.shareModal.open();
+                                               setTimeout(() => {
+                                                   this.shareModal && this.shareModal.open();
+                                               }, 300);
                                                break;
                                            case 3:
                                                if (!user.isLogin) {
@@ -749,7 +751,8 @@ export default class TopicDetailPage extends BasePage {
                         height: 20,
                         backgroundColor: 'rgba(0,0,0,0.5)'
                     }}>
-                        <Text style={{ color: DesignRule.white, fontSize: 13 }} allowFontScaling={false}>商品已经下架啦~</Text>
+                        <Text style={{ color: DesignRule.white, fontSize: 13 }}
+                              allowFontScaling={false}>商品已经下架啦~</Text>
                     </View> : null}
                     {/*正常购买按钮 colorType === 2红  1蓝  0灰*/}
                     <TouchableOpacity style={{

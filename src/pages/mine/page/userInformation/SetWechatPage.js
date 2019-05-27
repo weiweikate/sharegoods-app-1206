@@ -25,7 +25,7 @@ export default class SetWechatPage extends BasePage {
     }
 
     $navigationBarOptions = {
-        title: '个人资料',
+        title: '设置微信号',
         show: true // false则隐藏导航
     };
 
@@ -39,12 +39,12 @@ export default class SetWechatPage extends BasePage {
                         autoCapitalize={'none'}
                         style={styles.inputTextStyle}
                         onChangeText={text => this.setState({ weChatNumber: text ,error:''})}
-                        placeholder={this.state.weChatNumber?this.state.weChatNumber:'请输入您的微信号，便于顾问/秀迷联系您'}
+                        placeholder={this.state.weChatNumber ? this.state.weChatNumber : '请输入您的微信号，便于顾问/秀迷联系您'}
                         value={this.state.weChatNumber}
                     />
                 </View>
                 {this.renderWideLine()}
-                {this.state.error.length>0?<MRText style={{marginLeft:15, color:'#FF0050'}}>{this.state.error}</MRText>:<View
+                {this.state.error.length > 0 ? <MRText style={{marginLeft:15, color:'#FF0050'}}>{this.state.error}</MRText> : <View
                     style={{height:15}}/>}
                 {this.renderWideLine()}
                 <UIButton
@@ -69,25 +69,27 @@ export default class SetWechatPage extends BasePage {
         );
     };
     save = () => {
-        let length = this.state.weChatNumber?this.state.weChatNumber.trim().length:0;
-        if (length < 6 || length > 20) {
-            this.setState({
-                error:'请填写正确的微信号'
-            })
-            this.$toastShow('微信长度为6-20位');
-            return;
+        let length = this.state.weChatNumber ? this.state.weChatNumber.trim().length : 0;
+        if (length !== 0) {
+            if (length > 0 && (length < 6 || length > 20)) {
+                this.setState({
+                    error: '请填写正确的微信号'
+                })
+                this.$toastShow('微信长度为6-20位');
+                return;
+            }
+
+            let containSpecial = RegExp(/^[a-zA-Z]{1}[-_a-zA-Z0-9]{5,19}$/);
+            if (!containSpecial.test(this.state.weChatNumber)) {
+                this.setState({
+                    error: '请填写正确的微信号'
+                })
+                this.$toastShow('首字母、数字、下划线和减号，不支持设置中文');
+                return;
+            }
         }
 
-        let containSpecial = RegExp(/^[a-zA-Z]{1}[-_a-zA-Z0-9]{5,19}$/);
-        if (!containSpecial.test(this.state.weChatNumber)) {
-            this.setState({
-                error:'请填写正确的微信号'
-            })
-            this.$toastShow('首字母、数字、下划线和减号，不支持设置中文');
-            return;
-        }
-
-        MineAPI.updateUserById({ type: 7, weChatNumber: this.state.weChatNumber }).then(res => {
+        MineAPI.updateUserById({ type: 7, weChatNumber: length !== 0 ? this.state.weChatNumber : ''}).then(res => {
             user.weChatNumber = this.state.weChatNumber;
             this.$navigateBack();
         }).catch(err => {

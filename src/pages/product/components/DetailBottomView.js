@@ -34,7 +34,7 @@ export default class DetailBottomView extends Component {
         //总库存
         let stock = 0;
         (skuList || []).forEach((item) => {
-            stock = stock + productIsPromotionPrice ? item.promotionStockNum : item.sellStock;
+            stock = stock + (productIsPromotionPrice ? item.promotionStockNum : item.sellStock);
         });
         //提示消息样式
         let isDown = productStatus === product_status.down;

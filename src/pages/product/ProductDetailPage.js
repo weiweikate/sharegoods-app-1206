@@ -2,8 +2,7 @@ import React from 'react';
 import {
     View,
     StyleSheet,
-    SectionList,
-    Alert
+    SectionList
 } from 'react-native';
 import BasePage from '../../BasePage';
 import DetailBottomView from './components/DetailBottomView';
@@ -105,24 +104,7 @@ export default class ProductDetailPage extends BasePage {
         const { productIsPromotionPrice } = this.productDetailModel;
         switch (type) {
             case 'jlj':
-                if (!user.isLogin) {
-                    Alert.alert('提示', '登录后分享才能获取奖励',
-                        [
-                            {
-                                text: '取消', onPress: () => {
-                                    this.shareModal && this.shareModal.open();
-                                }
-                            },
-                            {
-                                text: '去登录', onPress: () => {
-                                    this.$navigate(RouterMap.LoginPage);
-                                }
-                            }
-                        ]
-                    );
-                } else {
-                    this.shareModal && this.shareModal.open();
-                }
+                this.shareModal && this.shareModal.open();
                 break;
             case 'keFu':
                 if (!user.isLogin) {

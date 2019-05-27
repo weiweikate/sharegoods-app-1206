@@ -51,9 +51,11 @@ export class HeaderItemView extends Component {
                             style={{ fontSize: 24, fontWeight: 'bold' }}>{maxPrice}</Text></Text>
                 }
                 <Text style={styles.originalText}>¥{originalPrice}</Text>
-                <View style={styles.levelView}>
-                    <Text style={styles.levelText}>{levelText}</Text>
-                </View>
+                {
+                    isNoEmpty(levelText) ? <View style={styles.levelView}>
+                        <Text style={styles.levelText}>{levelText}</Text>
+                    </View> : null
+                }
             </View>
         );
     };

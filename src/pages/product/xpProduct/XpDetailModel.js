@@ -1,6 +1,5 @@
 import { observable, action, computed } from 'mobx';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
-import user from '../../../model/user';
 import EmptyUtils from '../../../utils/EmptyUtils';
 import MessageApi from '../../message/api/MessageApi';
 import ProductApi from '../api/ProductApi';
@@ -110,7 +109,7 @@ class XpDetailModel {
 
     @computed get pPriceType() {
         let priceType = this.pData.priceType;
-        return priceType === 2 ? '拼店价' : priceType === 3 ? `${user.levelRemark}价` : 'V1价';
+        return priceType === 2 ? '拼店价' : '';
     }
 
     @computed get pCantBuy() {
