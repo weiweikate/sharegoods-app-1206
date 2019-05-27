@@ -64,7 +64,7 @@ export default class GroupShowFansPage extends BasePage<Props> {
                         <Text style={styles.fansNameStyle} numberOfLines={1}>{name}</Text>
                         {item.weChatNumber ?
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                <Text style={styles.fansNameStyle} numberOfLines={1}>{item.weChatNumber}</Text>
+                                <Text style={[styles.fansNameStyle,{width:100}]} numberOfLines={1}>{item.weChatNumber}</Text>
                                 <TouchableWithoutFeedback onPress={() => {
                                     Clipboard.setString(item.weChatNumber);
                                     bridge.$toast('复制到剪切版');

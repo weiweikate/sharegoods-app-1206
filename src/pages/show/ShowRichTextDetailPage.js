@@ -84,51 +84,9 @@ export default class ShowRichTextDetailPage extends BasePage {
                 if (state && state.routeName === 'show/ShowRichTextDetailPage') {
                     Toast.showLoading();
                     if (this.params.code) {
-                        this.showDetailModule.showDetailCode(this.params.code || this.params.id).then(() => {
-                            const { detail } = this.showDetailModule;
-                            TrackApi.XiuChangDetails({
-                                articleCode: detail.code,
-                                author: detail.userName,
-                                collectionCount: detail.collectCount
-                            });
-                            if (this.params.isFormHeader) {
-                                this.params.ref && this.params.ref.setClick(detail.click);
-                            } else {
-                                this.params.ref && this.params.ref.replaceData(this.params.index, detail.click);
-                            }
-                            this.setState({
-                                pageState: PageLoadingState.success
-                            });
-                            Toast.hiddenLoading();
-                        }).catch(error => {
-                            this.setState({
-                                pageState: PageLoadingState.fail,
-                                errorMsg: error.msg || '获取详情失败'
-                            });
-                            Toast.$toast(error.msg || '获取详情失败');
-                            Toast.hiddenLoading();
-                        });
+                        this.getDetailByIdOrCode(this.params.code);
                     } else if (this.params.id) {
-                        Toast.showLoading();
-                        this.showDetailModule.loadDetail(this.params.id).then(() => {
-                            const { detail } = this.showDetailModule;
-                            TrackApi.XiuChangDetails({
-                                articleCode: detail.code,
-                                author: detail.userName,
-                                collectionCount: detail.collectCount
-                            });
-                            this.setState({
-                                pageState: PageLoadingState.success
-                            });
-                            Toast.hiddenLoading();
-                        }).catch(error => {
-                            this.setState({
-                                pageState: PageLoadingState.fail,
-                                errorMsg: error.msg || '获取详情失败'
-                            });
-                            Toast.$toast(error.msg || '获取详情失败');
-                            Toast.hiddenLoading();
-                        });
+                        this.getDetailByIdOrCode(this.params.id);
                     } else {
                         this.setState({
                             pageState: PageLoadingState.success
@@ -145,6 +103,33 @@ export default class ShowRichTextDetailPage extends BasePage {
         this.willFocusSubscription && this.willFocusSubscription.remove();
         let { detail } = this.showDetailModule;
         this.params.ref && this.params.ref.replaceItemData(this.params.index, JSON.stringify(detail));
+    }
+
+    getDetailByIdOrCode=(code)=>{
+        this.showDetailModule.showDetailCode(code).then(() => {
+            const { detail } = this.showDetailModule;
+            TrackApi.XiuChangDetails({
+                articleCode: detail.code,
+                author: detail.userName,
+                collectionCount: detail.collectCount
+            });
+            if (this.params.isFormHeader) {
+                this.params.ref && this.params.ref.setClick(detail.click);
+            } else {
+                this.params.ref && this.params.ref.replaceData(this.params.index, detail.click);
+            }
+            this.setState({
+                pageState: PageLoadingState.success
+            });
+            Toast.hiddenLoading();
+        }).catch(error => {
+            this.setState({
+                pageState: PageLoadingState.fail,
+                errorMsg: error.msg || '获取详情失败'
+            });
+            Toast.$toast(error.msg || '获取详情失败');
+            Toast.hiddenLoading();
+        });
     }
 
 
@@ -413,7 +398,11 @@ export default class ShowRichTextDetailPage extends BasePage {
     addCart = (code) => {
         let addCartModel = new AddCartModel();
         addCartModel.requestProductDetail(code, (productIsPromotionPrice) => {
+            this.setState({
+                productModalVisible:false
+            });
             this.SelectionPage.show(addCartModel, (amount, skuCode) => {
+                this.setState({productModalVisible:true})
                 const { prodCode, name, originalPrice } = addCartModel;
                 shopCartCacheTool.addGoodItem({
                     'amount': amount,
@@ -431,6 +420,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                 });
             }, { sourceType: productIsPromotionPrice ? sourceType.promotion : null });
         }, (error) => {
+            this.setState({productModalVisible:true})
             this.$toastShow(error.msg || '服务器繁忙');
         });
     };
@@ -579,7 +569,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                 });
             }}/> : null}
             {detail.status !== 1 ? this._shieldRender() : null}
-            <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
+            <SelectionPage ref={(ref) => this.SelectionPage = ref}  closeCallBack={()=>{this.setState({productModalVisible:true})}}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             type={'Show'}
                             trackEvent={'ArticleShare'}

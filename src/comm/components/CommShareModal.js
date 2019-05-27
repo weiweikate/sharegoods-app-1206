@@ -129,6 +129,7 @@ export default class CommShareModal extends React.Component {
                             navigate(RouterMap.LoginPage);
                         }
                     }]);
+            return;
         }
         let props = this.props;
         this.defaultShareType = (props.type === 'miniProgram' ) ? 2 : 1;

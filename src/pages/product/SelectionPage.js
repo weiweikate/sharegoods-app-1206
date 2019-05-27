@@ -257,7 +257,9 @@ export default class SelectionPage extends Component {
                 ref={(ref) => this.modal = ref}
                 animationType="none"
                 visible={this.state.modalVisible}
-                onRequestClose={() => this.setState({ modalVisible: false })}>
+                onRequestClose={() => {this.setState({ modalVisible: false });
+                        this.props.closeCallBack &&  this.props.closeCallBack();
+                }}>
                 <View style={styles.container}>
                     <TouchableWithoutFeedback onPress={() => this.setState({ modalVisible: false })}>
                         <View style={{ height: ScreenUtils.autoSizeHeight(175) }}/>

@@ -53,7 +53,7 @@ public class MRJPushReceiver extends BroadcastReceiver {
             String type = bundle.getString(JPushInterface.EXTRA_CONTENT_TYPE);
             receiveMsg(context, content, type, objExtra);
         } else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
-            Log.d(TAG, "[MyReceiver] 接收到推送下来的通知");
+            Log.d(TAG, "[MyReceiver] 接收到推送下来的通知" + bundle.toString());
             int notifactionId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
             Log.d(TAG, "[MyReceiver] 接收到推送下来的通知的ID: " + notifactionId);
             receiveNotify(objExtra);

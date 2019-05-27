@@ -5,6 +5,7 @@ import Comm from './Comm';
 import Order from './Order';
 import Mine from './Mine';
 import PageModula from './Page';
+import PaymentPoint from './PaymentPoint'
 
 const Event = {
     ...LoginModula,
@@ -13,6 +14,7 @@ const Event = {
     ...Comm,
     ...Order,
     ...Mine,
-    ...PageModula
+    ...PageModula,
+    ...PaymentPoint
 };
 export default Event;
