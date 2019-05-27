@@ -79,7 +79,22 @@ public class MRJPushReceiver extends BroadcastReceiver {
                 // 刷新首页
                 try {
                     JSONObject object = new JSONObject(content);
-                    EventBus.getDefault().post(new Event.MRHomeRefreshEvent(object.getInt("homeType")));
+                    if (object != null) {
+                        EventBus.getDefault().post(new Event.MRHomeRefreshEvent(object.getInt("homeType")));
+                    }
+                } catch (JSONException e) {
+                }
+                break;
+            case "ActivitySkip":
+                // 跳标
+                try {
+                    JSONObject object = new JSONObject(content);
+                    if (object != null) {
+                        JSONObject params = object.getJSONObject("params");
+                        if (params != null) {
+                            EventBus.getDefault().post(new Event.MRNativeTagEvent(params.getString("floatMsgs")));
+                        }
+                    }
                 } catch (JSONException e) {
                 }
                 break;

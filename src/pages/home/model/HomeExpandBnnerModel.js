@@ -3,10 +3,12 @@ import HomeApi from '../api/HomeAPI';
 import { homeType } from '../HomeTypes';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { Image } from 'react-native';
+import { homeModule } from './Modules';
+import { get, save } from '@mr/rn-store';
 
 const { px2dp } = ScreenUtils;
 const bannerWidth = ScreenUtils.width;
-import {homeModule} from './Modules'
+const kHomeExpandStore = '@home/kHomeExpandStore';
 
 class HomeExpandBnnerModel {
     @observable banner = [];
@@ -26,14 +28,22 @@ class HomeExpandBnnerModel {
             h -= px2dp(15);
         }
         this.bannerHeight = h;
-        homeModule.changeHomeList(homeType.expandBanner)
+        homeModule.changeHomeList(homeType.expandBanner);
     }
 
-    @action loadBannerList = flow(function* () {
+    @action loadBannerList = flow(function* (isCache) {
         try {
+            if (isCache) {
+                const storeRes = yield get(kHomeExpandStore);
+                if (storeRes) {
+                    this.banner = storeRes || [];
+                    this.handleExpnadHeight();
+                }
+            }
             const bannerRes = yield HomeApi.getHomeData({ type: homeType.expandBanner });
             this.banner = bannerRes.data || [];
             this.handleExpnadHeight();
+            save(kHomeExpandStore, this.banner);
         } catch (error) {
             console.log(error);
         }

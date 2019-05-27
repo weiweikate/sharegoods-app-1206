@@ -112,7 +112,7 @@ class HomeModule {
         // 首页频道类目
         channelModules.loadChannel(this.firstLoad);
         // 首页通栏
-        homeExpandBnnerModel.loadBannerList();
+        homeExpandBnnerModel.loadBannerList(this.firstLoad);
         // 首焦点广告
         homeFocusAdModel.loadAdList();
         // 首页限时秒杀
