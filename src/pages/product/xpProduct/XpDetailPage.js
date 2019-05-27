@@ -71,7 +71,9 @@ export class XpDetailPage extends BasePage {
                     this.$navigate('home/search/SearchPage');
                     break;
                 case 2:
-                    this.shareModal && this.shareModal.open();
+                    setTimeout(() => {
+                        this.shareModal && this.shareModal.open();
+                    }, 300);
                     break;
                 case 4:
                     this.$navigateBackToHome();

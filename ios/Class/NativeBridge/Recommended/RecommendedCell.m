@@ -32,6 +32,7 @@
         _contentLab.textColor = [UIColor colorWithHexString:@"666666"];;
       _contentLab.userInteractionEnabled=YES;
       UITapGestureRecognizer *labelTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(labelTouchUpInside)];
+      [_contentLab sizeToFit];
 
       [_contentLab addGestureRecognizer:labelTapGestureRecognizer];
     }
@@ -149,8 +150,9 @@
     bgView.sd_layout
     .leftSpaceToView(self.contentView, 0)
     .rightSpaceToView(self.contentView, 0)
-    .topSpaceToView(self.contentView, 5);
-
+    .topSpaceToView(self.contentView, 5)
+    .heightIs(200);
+  
   self.headView.sd_layout
   .topSpaceToView(bgView, 9)
   .leftSpaceToView(bgView, 0)

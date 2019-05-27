@@ -16,6 +16,7 @@ import Toast from '../../utils/bridge';
 import { NavigationActions } from 'react-navigation';
 import RouterMap from '../../navigation/RouterMap';
 import StringUtils from '../../utils/StringUtils';
+import { TrackApi } from '../../utils/SensorsTrack';
 
 @observer
 export default class PaymentPage extends BasePage {
@@ -44,6 +45,11 @@ export default class PaymentPage extends BasePage {
         payment.bizType = this.params.bizType ? this.params.bizType : 0;
         payment.oneCoupon = this.params.oneCoupon ? this.params.oneCoupon : 0;
         user.updateUserData();
+        //埋点
+        TrackApi.ViewOrderPayPage({
+            orderId:payment.orderNo,
+            totalPayAmount:payment.amounts
+        })
     }
 
     $NavBarLeftPressed = () => {

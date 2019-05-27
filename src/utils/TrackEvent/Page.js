@@ -9,11 +9,6 @@ const  pageModular = {
         'name': 'ViewShoppingcart',//  提交订单
         'params': {}
     },
-    'CartCheckoutClick':{
-        'des': '购物车点击结算',
-        'name': 'ViewShoppingcart',//  提交订单
-        'params': {}
-    },
     'specialTopicPage':{
         'des': '专题页预览',
         'name':'ViewSpecialTopicPage',
