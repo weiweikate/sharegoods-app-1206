@@ -1,4 +1,4 @@
-package com.meeruu.commonlib.service;
+package com.meeruu.commonlib.event;
 
 public class QiyuUrlEvent {
     private String url;
