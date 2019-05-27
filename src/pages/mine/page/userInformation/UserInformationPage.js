@@ -29,7 +29,7 @@ import { track, trackEvent } from '../../../../utils/SensorsTrack';
 export default class UserInformationPage extends BasePage {
 
     $navigationBarOptions = {
-        title: '修改微信号',
+        title: '个人资料',
         show: true // false则隐藏导航
         // hiddenNav:false
     };
