@@ -2,7 +2,7 @@
  * 精选热门
  */
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet,Animated } from 'react-native';
 import { observer } from 'mobx-react';
 import { tag } from './Show';
 import ScreenUtils from '../../utils/ScreenUtils';
@@ -50,6 +50,27 @@ export default class ShowMaterialView extends React.Component {
             this.materialList && this.materialList.scrollToTop();
         }
     }
+
+
+    releaseButtonShow = () => {
+        Animated.timing(
+            this.state.rightValue,
+            {
+                toValue: 1,
+                duration: 300
+            }
+        ).start();
+    };
+
+    releaseButtonHidden = () => {
+        Animated.timing(
+            this.state.rightValue,
+            {
+                toValue: 0,
+                duration: 300
+            }
+        ).start();
+    };
 
 
     addCart = (code) => {
