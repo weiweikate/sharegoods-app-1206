@@ -111,10 +111,10 @@ class HomePage extends BasePage {
                 dim.height = homeExpandBnnerModel.bannerHeight;
                 break;
             case homeType.focusGrid:
-                dim.height = foucusHeight > 0 ? foucusHeight + (homeExpandBnnerModel.banner.length > 0 ? px2dp(20) : px2dp(10)) : 0;
+                dim.height = foucusHeight > 0 ? (foucusHeight + (homeExpandBnnerModel.banner.length > 0 ? px2dp(20) : px2dp(10))) : 0;
                 break;
             case homeType.limitGo:
-                dim.height = limitGoModule.limitHeight;
+                dim.height = limitGoModule.spikeList.length > 0 ? limitGoModule.limitHeight : 0;
                 break;
             case homeType.today:
                 dim.height = todayList.length > 0 ? todayHeight : 0;

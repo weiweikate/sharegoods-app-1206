@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Image, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
+import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { homeModule } from '../model/Modules';
 import { homeExpandBnnerModel } from '../model/HomeExpandBnnerModel';
 import { observer } from 'mobx-react';
 import bridge from '../../../utils/bridge';
+import ImageLoad from '@mr/image-placeholder';
 
 const { px2dp } = ScreenUtils;
 
@@ -36,7 +37,7 @@ export default class HomeExpandBannerView extends Component {
             if (imgHeight) {
                 items.push(
                     <TouchableWithoutFeedback onPress={() => this._adAction(val)} key={'banner' + index}>
-                        <Image
+                        <ImageLoad
                             style={[styles.bannerImage, { height: imgHeight }]}
                             source={{ uri: url }}/>
                     </TouchableWithoutFeedback>
