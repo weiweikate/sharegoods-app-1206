@@ -480,7 +480,7 @@ export default class MyShopPage extends BasePage {
                             colors={[DesignRule.mainColor]}
                         />}>
                 <ShopHeader onPressShopAnnouncement={this._clickShopAnnouncement} item={this.state.storeData}/>
-                {userStatus === 1 && <ShopProductItemView MyShopDetailModel={this.MyShopDetailModel}/>}
+                <ShopProductItemView MyShopDetailModel={this.MyShopDetailModel}/>
                 {userStatus === 1 ? <ShopHeaderBonus storeData={this.state.storeData}/> : null}
                 <MembersRow storeUserList={storeUserList || []}
                             userCount={userCount}
@@ -488,7 +488,7 @@ export default class MyShopPage extends BasePage {
                             onPressAllMembers={this._clickAllMembers}
                             onPressMemberItem={this._clickItemMembers}/>
                 {this._renderBottom()}
-                {userStatus === 1 && <ShopBottomBannerView MyShopDetailModel={this.MyShopDetailModel}/>}
+                <ShopBottomBannerView MyShopDetailModel={this.MyShopDetailModel}/>
                 {this._renderJoinBtn()}
             </ScrollView>
         );
