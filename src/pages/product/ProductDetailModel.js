@@ -247,7 +247,7 @@ export default class ProductDetailModel {
         if (activityStatus === activity_status.inSell && activityType === activity_type.verDown) {
             return this.tags[0];
         }
-        return priceType === 2 ? '拼店价' : priceType === 3 ? `${user.levelRemark}价` : 'V1价';
+        return priceType === 2 ? '拼店价' : '';
     }
 
     @computed get sectionDataList() {
