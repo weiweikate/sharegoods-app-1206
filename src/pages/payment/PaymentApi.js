@@ -20,7 +20,12 @@ const api = {
     // alipay: ['/payV2/alipay'],
     alipay: ['/pay/pay/payment'],
     //微信支付v2
-    wechatPay: ['/payV2/wxpay']
+    wechatPay: ['/payV2/wxpay'],
+
+    //支付成功后的相关接口 参数 popupBoxType: 2
+    getUserPopupBoxByType:['/popup/getPopupBoxByType',{method:'get'}],
+
+    getUserCouponAmount:['/user/coupon/getUserCouponAmount',{method:'get'}],
 };
 import ApiUtils from '../../api/network/ApiUtils';
 

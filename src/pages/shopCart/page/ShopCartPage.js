@@ -103,12 +103,7 @@ export default class ShopCartPage extends BasePage {
 
     _renderEmptyView = () => {
         return (
-            <ShopCartEmptyView
-                // navigateToHome={this.$navigateBackToHome}
-                navigateToHome={()=>{
-                    this.$navigate(RouterMap.PaymentFinshPage);
-                }}
-            />
+            <ShopCartEmptyView navigateToHome={this.$navigateBackToHome}/>
         );
     };
     _renderListView = () => {

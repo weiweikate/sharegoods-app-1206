@@ -12,6 +12,7 @@ import ScreenUtils from '../../utils/ScreenUtils';
 import res from './res';
 import { MRText } from '../../components/ui';
 import LinearGradient from 'react-native-linear-gradient'
+import { NavigationActions } from 'react-navigation';
 
 const { px2dp } = ScreenUtils;
 const {
@@ -21,7 +22,6 @@ const {
     share_to_friend_circle,
     share_to_wx
 } = res;
-
 
 const RenderSeparator = ({ title }) => <View
     style={{ height: 20, width: ScreenUtils.width, flexDirection: 'row', marginTop: px2dp(20) }}>
@@ -45,11 +45,15 @@ export default class PaymentFinshPage extends BasePage {
     $navigationBarOptions = {
         title: '订单完成'
     };
-
     constructor(props) {
         super(props);
+        this.state={
+            showShareView:false,
+        }
     }
+    componentDidMount(){
 
+    }
     _render() {
         return (
             <ScrollView style={Styles.contentStyle}>
@@ -57,11 +61,10 @@ export default class PaymentFinshPage extends BasePage {
                 <RenderSeparator title={'你还有兑换券即将过期，快来使用吧'}/>
                 {this._renderCouponItem()}
                 {this._renderCouponItem()}
-                {this._renderShareView()}
+                {this.state.showShareView? this._renderShareView():null}
             </ScrollView>
         );
     }
-
     /**
      * 渲染头部成功标识
      * @returns {*}
@@ -69,7 +72,7 @@ export default class PaymentFinshPage extends BasePage {
     renderTopSuccessView = () => {
         return (
             <View style={Styles.topSuccessBgStyle}>
-                <View style={{ justifyContent: 'center', alignItems: 'center', height: px2dp(190) }}>
+                <View style={{ justifyContent: 'center', alignItems: 'center', height: px2dp(180) }}>
                     <Image source={pay_success_icon} style={{ height: px2dp(72), width: px2dp(72) }}/>
                     <MRText style={{
                         fontSize: px2dp(23),
@@ -145,7 +148,7 @@ export default class PaymentFinshPage extends BasePage {
                         </MRText>
                     </View>
                     <View style={{width:px2dp(90),alignItems:'center',justifyContent:'center'}}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={()=>{this._couponItemClick(itemData)}}>
                             <LinearGradient colors={["#FC5D39", "#FF0050"]}
                                             style={{height:px2dp(26),width:px2dp(75),alignItems:'center',justifyContent:'center',borderRadius:px2dp(13)}}
                                             start={{ x: 0, y: 0 }}
@@ -160,6 +163,11 @@ export default class PaymentFinshPage extends BasePage {
             </View>
         );
     };
+    /**
+     * 分享相关View
+     * @returns {*}
+     * @private
+     */
     _renderShareView=()=>{
         return(
             <View style={{alignItems:'center',justifyContent:'center'}}>
@@ -188,9 +196,25 @@ export default class PaymentFinshPage extends BasePage {
             </View>
         )
     }
+    /**
+     * 去订单页面事件
+     */
     _toOrder = () => {
-
+        let replace = NavigationActions.replace({
+            key: this.props.navigation.state.key,
+            type: "ReplacePayScreen",
+            routeName: "order/order/MyOrdersListPage",
+            params: { index: 2 }
+        });
+        this.props.navigation.dispatch(replace);
     };
+    /**
+     * 优惠券Item点击
+     * @param couponItem
+     */
+    _couponItemClick=(couponItem)=>{
+
+    }
 }
 
 const Styles = StyleSheet.create({
