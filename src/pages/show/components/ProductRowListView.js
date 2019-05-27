@@ -44,35 +44,35 @@ export default class ProductRowListView extends PureComponent {
         }
 
         return (
-            <TouchableWithoutFeedback onPress={()=>{
+            <TouchableWithoutFeedback onPress={() => {
                 this.props.pressProduct && this.props.pressProduct(data.prodCode);
             }}>
-            <View key={'product' + index} style={[{ width }, styles.itemWrapper]}>
-                <ImageLoad style={styles.productIcon} source={{ uri: data.imgUrl }}/>
-                <View style={styles.itemInfoWrapper}>
-                    <MRText style={styles.nameText}
-                            numberOfLines={1}
-                            ellipsizeMode={'tail'}>
-                        {data.name}
-                    </MRText>
-
-                    <View style={styles.priceWrapper}>
-                        {showPrice ? <MRText style={styles.curPrice}>
-                            ￥{showPrice}
-                        </MRText> : null}
-
-                        <MRText style={styles.oriPrice}>
-                            ￥{data.originalPrice}
+                <View key={'product' + index} style={[{ width }, styles.itemWrapper]}>
+                    <ImageLoad style={styles.productIcon} source={{ uri: data.imgUrl }}/>
+                    <View style={styles.itemInfoWrapper}>
+                        <MRText style={styles.nameText}
+                                numberOfLines={1}
+                                ellipsizeMode={'tail'}>
+                            {data.name}
                         </MRText>
-                        <View style={{ flex: 1 }}/>
-                        <NoMoreClick onPress={() => {
-                            this.props.addCart(data.prodCode);
-                        }}>
-                            <Image source={addCarIcon} style={styles.carIcon}/>
-                        </NoMoreClick>
+
+                        <View style={styles.priceWrapper}>
+                            {showPrice ? <MRText style={styles.curPrice}>
+                                ￥{showPrice}
+                            </MRText> : null}
+
+                            <MRText style={styles.oriPrice}>
+                                ￥{data.originalPrice}
+                            </MRText>
+                            <View style={{ flex: 1 }}/>
+                            <NoMoreClick onPress={() => {
+                                this.props.addCart(data.prodCode);
+                            }}>
+                                <Image source={addCarIcon} style={styles.carIcon}/>
+                            </NoMoreClick>
+                        </View>
                     </View>
                 </View>
-            </View>
             </TouchableWithoutFeedback>
         );
     };
@@ -83,16 +83,34 @@ export default class ProductRowListView extends PureComponent {
         }
 
         if (this.props.products.length === 1) {
-            return (<View style={[this.props.style,{marginLeft:DesignRule.margin_page}]}>
+            return (<View style={[this.props.style, { marginLeft: DesignRule.margin_page }]}>
                 {this.renderItem(this.props.products[0], 0, true)}
             </View>);
+        }
+
+        let itemWidth = ScreenUtils.width - px2dp(55);
+        let length = this.props.products.length;
+        let totalWidth = itemWidth * length + px2dp(10) * (length - 1) + DesignRule.margin_page * 2;
+
+        let snapArr = [];
+        for (let i = 0; i < length; i++) {
+            if (i === 0) {
+                snapArr.push(0);
+            }else if (i === length - 1) {
+                snapArr.push(totalWidth - ScreenUtils.width);
+            }else {
+                let width = DesignRule.margin_page+px2dp(10)*(i-1)+itemWidth*i-((ScreenUtils.width-itemWidth)/2)+px2dp(10);
+                snapArr.push(width);
+            }
         }
 
         return (
             <View style={this.props.style}>
                 <ScrollView showsHorizontalScrollIndicator={false}
-                            horizontal={true}>
-                    <View style={{width:DesignRule.margin_page}}/>
+                            horizontal={true}
+                            snapToOffsets={snapArr}
+                >
+                    <View style={{ width: DesignRule.margin_page }}/>
                     {this.props.products.map((data, index) => {
                         return this.renderItem(data, index);
                     })}
@@ -151,7 +169,7 @@ var styles = StyleSheet.create({
         color: DesignRule.textColor_instruction,
         fontSize: px2dp(10),
         marginLeft: px2dp(5),
-        textDecorationLine:'line-through'
+        textDecorationLine: 'line-through'
     }
 });
 
