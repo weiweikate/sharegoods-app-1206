@@ -24,7 +24,6 @@ import ShowApi from './ShowApi';
 import EmptyUtils from '../../utils/EmptyUtils';
 import apiEnvironment from '../../api/ApiEnvironment';
 import ShowUtils from './utils/ShowUtils';
-import ToTopButton from './components/ToTopButton';
 import RouterMap from '../../navigation/RouterMap';
 
 @observer
@@ -113,6 +112,12 @@ export default class ShowHotView extends React.Component {
             </View>
         );
     };
+
+    scrollToTop=()=>{
+        if(this.state.showToTop){
+            this.RecommendShowList && this.RecommendShowList.scrollToTop();
+        }
+    }
 
     render() {
         return (
@@ -257,16 +262,6 @@ export default class ShowHotView extends React.Component {
                                     this.props.navigate('show/ReleaseNotesPage');
                                 }}/> : null
                     }
-
-                    {this.state.showToTop ? <ToTopButton
-                        onPress={() => {
-                            this.RecommendShowList && this.RecommendShowList.scrollToTop();
-                        }}
-                        style={{
-                            position: 'absolute',
-                            right: px2dp(15),
-                            bottom: px2dp(60)
-                        }}/> : null}
                 </View>
                 <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             </View>

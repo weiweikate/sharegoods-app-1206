@@ -23,7 +23,6 @@ import ShowApi from './ShowApi';
 import EmptyUtils from '../../utils/EmptyUtils';
 import apiEnvironment from '../../api/ApiEnvironment';
 import ShowUtils from './utils/ShowUtils';
-import ToTopButton from './components/ToTopButton';
 
 @observer
 export default class ShowMaterialView extends React.Component {
@@ -44,6 +43,12 @@ export default class ShowMaterialView extends React.Component {
             showToTop: false
         };
 
+    }
+
+    scrollToTop=()=>{
+        if(this.state.showToTop){
+            this.materialList && this.materialList.scrollToTop();
+        }
     }
 
 
@@ -207,16 +212,6 @@ export default class ShowMaterialView extends React.Component {
                                     this.props.navigate('show/ReleaseNotesPage');
                                 }}/> : null
                     }
-
-                    {this.state.showToTop ? <ToTopButton
-                        onPress={() => {
-                            this.materialList && this.materialList.scrollToTop();
-                        }}
-                        style={{
-                            position: 'absolute',
-                            right: px2dp(15),
-                            bottom: px2dp(60)
-                        }}/> : null}
                 </View>
                 <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             </View>

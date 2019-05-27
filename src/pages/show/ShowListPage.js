@@ -110,6 +110,9 @@ export default class ShowListPage extends BasePage {
             this._gotoPage(2);
             this.foundList && this.foundList.addDataToTop(value);
         });
+
+        this.listenerRetouchShow = DeviceEventEmitter.addListener('retouch_show', this.retouchShow);
+
     }
 
     componentWillUnmount() {
@@ -117,6 +120,23 @@ export default class ShowListPage extends BasePage {
         this.didFocusSubscription && this.didFocusSubscription.remove();
         this.listener && this.listener.remove();
         this.publishListener && this.publishListener.remove();
+    }
+
+    retouchShow=()=>{
+        switch (this.state.page){
+            case 0:
+                this.hotList && this.hotList.scrollToTop();
+                break;
+            case 1:
+                this.materialList && this.materialList.scrollToTop();
+                break;
+            case 2:
+                this.foundList && this.foundList.scrollToTop();
+                break
+            case 3:
+                this.activityList && this.activityList.scrollToTop();
+                break
+        }
     }
 
 
@@ -265,7 +285,8 @@ export default class ShowListPage extends BasePage {
                     {
                         needsExpensive
                             ?
-                            <HotView navigate={this.$navigate} pageFocus={this.state.pageFocused} onShare={(item)=>{
+                            <HotView ref={(ref)=>{this.hotList = ref}}
+                                     navigate={this.$navigate} pageFocus={this.state.pageFocused} onShare={(item)=>{
                                 this._setDetail(item.detail);
                             }}/>
                             :
@@ -276,7 +297,9 @@ export default class ShowListPage extends BasePage {
                     {
                         needsExpensive
                             ?
-                            <ShowMaterialView navigate={this.$navigate}
+                            <ShowMaterialView
+                                ref={(ref)=>{this.materialList = ref}}
+                                navigate={this.$navigate}
                                               onShare={(item)=>{
                                 this.setState({detail:item.detail},()=>{
                                     this.shareModal && this.shareModal.open();

@@ -170,6 +170,8 @@ export const TabNav = TabNavigator(
                     if (previousScene.key !== 'ShowListPage') {
                         jumpToIndex(scene.index);
                         TrackApi.WatchXiuChang({ xiuChangModuleSource: 1 });
+                    }else {
+                        DeviceEventEmitter.emit('retouch_show');
                     }
                 }
             }

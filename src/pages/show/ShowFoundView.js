@@ -13,7 +13,6 @@ import TimerMixin from 'react-timer-mixin';
 import ReleaseButton from './components/ReleaseButton';
 import user from '../../model/user';
 import ShowGroundView from './components/ShowGroundView';
-import ToTopButton from './components/ToTopButton';
 
 @observer
 export default class ShowFoundView extends React.Component {
@@ -31,6 +30,12 @@ export default class ShowFoundView extends React.Component {
     addDataToTop = (value) => {
         this.foundList && this.foundList.addDataToTop(value);
     };
+
+    scrollToTop=()=>{
+        if(this.state.showToTop){
+            this.foundList && this.foundList.scrollToTop();
+        }
+    }
 
     render() {
         return (
@@ -102,15 +107,6 @@ export default class ShowFoundView extends React.Component {
                                 this.props.navigate('show/ReleaseNotesPage');
                             }}/> : null
                 }
-                {this.state.showToTop ? <ToTopButton
-                    onPress={() => {
-                        this.foundList && this.foundList.scrollToTop();
-                    }}
-                    style={{
-                        position: 'absolute',
-                        right: px2dp(15),
-                        bottom: px2dp(60)
-                    }}/> : null}
             </View>
         );
     }
