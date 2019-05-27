@@ -52,7 +52,7 @@ export default class JudgePhonePage extends BasePage {
                         {StringUtils.encryptPhone(phoneNum)}
                     </Text>
 
-                    <View style={{ alignItems: "center" }}>
+                    <View style={{ alignItems: 'center' }}>
                         <VerifyCodeInput onChangeText={
                             (text) => {
                                 this._toNext(text);
@@ -60,7 +60,7 @@ export default class JudgePhonePage extends BasePage {
                         } verifyCodeLength={4}
                         />
 
-                        <View style={{ marginTop: px2dp(10), flexDirection: "row" }}>
+                        <View style={{ marginTop: px2dp(10), flexDirection: 'row' }}>
                             {this.state.downTime > 0 ?
                                 <Text style={Styles.authHaveSendCodeBtnStyle}>
                                     {this.state.downTime}s后可点击
@@ -72,7 +72,7 @@ export default class JudgePhonePage extends BasePage {
                                 style={{
                                     paddingTop: px2dp(0),
                                     marginLeft: px2dp(5),
-                                    justifyContent: "center"
+                                    justifyContent: 'center'
                                 }}
                                 onPress={() => {
                                     this._onGetCode();
@@ -80,7 +80,7 @@ export default class JudgePhonePage extends BasePage {
                             >
                                 <Text
                                     style={this.state.downTime > 0 ?
-                                        [Styles.authHaveSendCodeBtnStyle, { textDecorationLine: "underline" }]
+                                        [Styles.authHaveSendCodeBtnStyle, { textDecorationLine: 'underline' }]
                                         : [Styles.authReSendCodeStyle]}
                                 >
                                     重新发送

@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
     View,
     Image,
     StyleSheet
-} from "react-native";
-import SearchIcon from "./ss_03.png";
+} from 'react-native';
+import SearchIcon from './ss_03.png';
 import { MRTextInput as TextInput} from '../../../components/ui/UIText';
 
 export default class SearchBar extends Component {
@@ -31,11 +31,11 @@ const styles = StyleSheet.create({
     container: {
         height: 42,
         borderRadius: 10,
-        backgroundColor: "#FFFFFF",
-        borderStyle: "solid",
+        backgroundColor: '#FFFFFF',
+        borderStyle: 'solid',
         borderWidth: 1,
-        borderColor: "#dddddd",
-        shadowColor: "rgba(0, 0, 0, 0.1)",
+        borderColor: '#dddddd',
+        shadowColor: 'rgba(0, 0, 0, 0.1)',
         shadowOffset: {
             width: 0,
             height: 0
@@ -43,9 +43,9 @@ const styles = StyleSheet.create({
         shadowRadius: 10,
         shadowOpacity: 1,
         marginHorizontal: 15,
-        flexDirection: "row",
+        flexDirection: 'row',
         marginVertical: 10,
-        alignItems: "center"
+        alignItems: 'center'
     },
     icon: {
         marginLeft: 16,
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     },
     desc: {
         fontSize: 14,
-        color: "#333",
+        color: '#333',
         flex: 1,
         height: 40,
         marginRight: 16

@@ -632,9 +632,8 @@ export default class MinePage extends BasePage {
     renderMoreMoney = () => {
         return (
             <TouchableWithoutFeedback onPress={() => {
-                this.$navigate(RouterMap.ShowDetailPage, { fromHome: false, id: 1 });
+                this.$navigate(RouterMap.ShowRichTextDetailPage, { fromHome: false, code: 'SHOW2019052714482778300000600000' });
                 TrackApi.ViewHowTo();
-
             }}>
                 <UIImage style={styles.makeMoneyMoreBackground} resizeMode={'stretch'} source={profile_banner}/>
             </TouchableWithoutFeedback>

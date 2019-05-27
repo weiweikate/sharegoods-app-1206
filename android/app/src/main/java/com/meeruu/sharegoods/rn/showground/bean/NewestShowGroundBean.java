@@ -1,5 +1,7 @@
 package com.meeruu.sharegoods.rn.showground.bean;
 
+import com.chad.library.adapter.base.entity.MultiItemEntity;
+
 import java.util.List;
 
 public class NewestShowGroundBean {
@@ -7,12 +9,12 @@ public class NewestShowGroundBean {
 
     /**
      * currentPage : 1
-     * pageSize : 1
-     * totalNum : 59
+     * pageSize : 10
+     * totalNum : 1
      * isMore : 0
-     * totalPage : 59
+     * totalPage : 1
      * startIndex : 0
-     * data : [{"id":118,"code":"FX190218000001","title":"初谜暖绒谜情系列内衣，女神必备","coverImg":"https://cdn.sharegoodsmall.com/sharegoods/4084dce12ea54f4a87662379b454f00a.png","img":"https://cdn.sharegoodsmall.com/sharegoods/bedde64946ce48628a9c5b51b11cb93e.png","generalize":3,"categoryId":4,"userCode":"1566565","click":190,"createAdminId":21,"updateId":21,"updateTime":1550479659000,"createTime":1550458794000,"content":"<p>有些女孩子，表面光鲜亮丽！其实里头的内衣又土又旧！<\/p><p><img src=\"https://cdn.sharegoodsmall.com/sharegoods/378d73a1437f4408bfc0e0590999c7ea.jpg\"><\/p><p>妆容再精致、发型再女神、穿的再光鲜靓丽又有什么用？关键时刻还不是不敢一把将男神推到？<\/p><p><img src=\"https://cdn.sharegoodsmall.com/sharegoods/d74d4ac70f3841778c3f20f890cc9e16.jpg\"><\/p><p>呐~听我一句劝，家里的内衣可以换一换啦！推荐你们入手初谜的暖绒谜情系列内衣，4大技术研发，用科技探索内衣新发现！轻薄透气，在材质与质感上首先就秒杀了市场上一堆鱼龙混杂的内衣牌子。女人的贴身衣服阿，质量必须经得起推敲呀！<\/p><p><img src=\"https://cdn.sharegoodsmall.com/sharegoods/98a860b5edce4d6f915d51ce7eebcb56.png\"><\/p><p>不过我最喜欢的还是他们家的内衣都是无钢圈的，0压力，保护乳腺健康！而罩杯又很立体，不会因为没有钢圈就下垂啥的，完全不用担心！<\/p><p><img src=\"https://cdn.sharegoodsmall.com/sharegoods/c5ea7f8b0e004b2d9db06ff9504e4c36.png\"><\/p><p>罩杯下扒位增加了按摩凸点设计，按摩胸部，并且下扒位设计出空气导流槽的设计，更舒适透气。还有聚拢效果哦，像我这样胸小的妹纸，挤挤还是很重要的~<\/p><p>俗话说的好，乳沟就像时间，挤挤就有了！除了聚拢效果，对于副乳的提拉、上托效果也是非常明显的哦！<\/p><p><img src=\"https://cdn.sharegoodsmall.com/sharegoods/3f0f9d12307d4e3b96997f744d84c2f7.jpg\"><\/p><p>说了那么多，还是要着重介绍一下它的美观程度！整体简约大气，不会花里胡哨显得庸俗，但中间又带有精美的刺绣作为点缀，在简洁优雅中又不失一点诱人的轻奢风情！最适合性感女人啦！<\/p><p><img src=\"https://cdn.sharegoodsmall.com/sharegoods/7d545e3fb14b4e5c95bf020d8ef68f6f.png\"><\/p><p>作为一个精致的仙女，美就得从里到外！时刻准备着，穿上\u201c初迷战衣\u201d分分钟搞定男神！<\/p><p>问我哪里有的卖？上秀购超品日呀！2.19号！等你抢购！<\/p><p><img src=\"https://cdn.sharegoodsmall.com/sharegoods/586212d299ac49a5aad4b240319b4804.jpg\"><\/p>","likeCount":null,"collectCount":null,"hadLike":null,"hadCollect":null,"products":null,"userName":"派大金Jocelyn","userHeadImg":"https://thirdwx.qlogo.cn/mmopen/vi_32/OxB7iaDnibrsqkjicytNjZkicScTKmriaRv317onLkQt5eANfJFicRZ6ymwaGhAPWKibcEGc8IwgzR6Z7BvwshoIlUDSg/132","coverImgHigh":"251","coverImgWide":"335","imgWide":"750","imgHigh":"750","imgs":null,"time":"5小时前","pureContent":"有些女孩子，表面光鲜亮丽！其实里头的内衣又土又旧！妆容再精致、发型再女神、穿的再光鲜靓丽又有什么用？关键时刻还不是不敢一把将男神推到？呐~听我一句劝，家里的内衣可以换一换啦！推荐你们入手初谜的暖绒谜情系列内衣，4大技术研发，用科技探索内衣新发现！轻薄透气，在材质与质感上首先就秒杀了市场上一堆鱼龙混杂的内衣牌子。女人的贴身衣服阿，质量必须经得起推敲呀！不过我最喜欢的还是他们家的内衣都是无钢圈的，0压力，保护乳腺健康！而罩杯又很立体，不会因为没有钢圈就下垂啥的，完全不用担心！罩杯下扒位增加了按摩凸点设计，按摩胸部，并且下扒位设计出空气导流槽的设计，更舒适透气。还有聚拢效果哦，像我这样胸小的妹纸，挤挤还是很重要的~俗话说的好，乳沟就像时间，挤挤就有了！除了聚拢效果，对于副乳的提拉、上托效果也是非常明显的哦！说了那么多，还是要着重介绍一下它的美观程度！整体简约大气，不会花里胡哨显得庸俗，但中间又带有精美的刺绣作为点缀，在简洁优雅中又不失一点诱人的轻奢风情！最适合性感女人啦！作为一个精致的仙女，美就得从里到外！时刻准备着，穿上\u201c初迷战衣\u201d分分钟搞定男神！问我哪里有的卖？上秀购超品日呀！2.19号！等你抢购！"}]
+     * data : [{"showNo":"SHOW2019050716562296100003900000","userInfoVO":{"userNo":"111","userImg":"","userName":""},"content":"2121","publishTime":1557228931000,"publishTimeStr":"5.07 19:35","showType":1,"products":[{"promotionResult":null,"prodCode":"SPU00000233","name":"xiaomi小米 MIJIA/米家 米家恒温电热水壶智能家用烧水壶保温","secondName":"【12月12日 0点开抢】到手价179元","originalPrice":"17.9","groupPrice":"9.9","minPrice":"15.9","maxPrice":"15.9","promotionMinPrice":null,"promotionMaxPrice":null,"v0Price":null,"imgUrl":"https://testcdn.sharegoodsmall.com/sharegoods/3fd92ae923374453ad4a767170c0aa54.png"},{"promotionResult":null,"prodCode":"SPU00000233","name":"xiaomi小米 MIJIA/米家 米家恒温电热水壶智能家用烧水壶保温","secondName":"【12月12日 0点开抢】到手价179元","originalPrice":"17.9","groupPrice":"9.9","minPrice":"15.9","maxPrice":"15.9","promotionMinPrice":null,"promotionMaxPrice":null,"v0Price":null,"imgUrl":"https://testcdn.sharegoodsmall.com/sharegoods/3fd92ae923374453ad4a767170c0aa54.png"},{"promotionResult":null,"prodCode":"SPU00000233","name":"xiaomi小米 MIJIA/米家 米家恒温电热水壶智能家用烧水壶保温","secondName":"【12月12日 0点开抢】到手价179元","originalPrice":"17.9","groupPrice":"9.9","minPrice":"15.9","maxPrice":"15.9","promotionMinPrice":null,"promotionMaxPrice":null,"v0Price":null,"imgUrl":"https://testcdn.sharegoodsmall.com/sharegoods/3fd92ae923374453ad4a767170c0aa54.png"}],"resource":[{"type":2,"url":"https://devcdn.sharegoodsmall.com/sharegoods/ff4647ea22dd4d14aad0adecb177b9f6.png"}],"likesCount":1,"shareCount":0,"downloadCount":0,"clickCount":0,"hotCount":0,"nowTime":1557804063514,"like":false}]
      */
 
     private int currentPage;
@@ -79,81 +81,49 @@ public class NewestShowGroundBean {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements MultiItemEntity {
         /**
-         * id : 118
-         * code : FX190218000001
-         * title : 初谜暖绒谜情系列内衣，女神必备
-         * coverImg : https://cdn.sharegoodsmall.com/sharegoods/4084dce12ea54f4a87662379b454f00a.png
-         * img : https://cdn.sharegoodsmall.com/sharegoods/bedde64946ce48628a9c5b51b11cb93e.png
-         * generalize : 3
-         * categoryId : 4
-         * userCode : 1566565
-         * click : 190
-         * createAdminId : 21
-         * updateId : 21
-         * updateTime : 1550479659000
-         * createTime : 1550458794000
-         * content : <p>有些女孩子，表面光鲜亮丽！其实里头的内衣又土又旧！</p><p><img src="https://cdn.sharegoodsmall.com/sharegoods/378d73a1437f4408bfc0e0590999c7ea.jpg"></p><p>妆容再精致、发型再女神、穿的再光鲜靓丽又有什么用？关键时刻还不是不敢一把将男神推到？</p><p><img src="https://cdn.sharegoodsmall.com/sharegoods/d74d4ac70f3841778c3f20f890cc9e16.jpg"></p><p>呐~听我一句劝，家里的内衣可以换一换啦！推荐你们入手初谜的暖绒谜情系列内衣，4大技术研发，用科技探索内衣新发现！轻薄透气，在材质与质感上首先就秒杀了市场上一堆鱼龙混杂的内衣牌子。女人的贴身衣服阿，质量必须经得起推敲呀！</p><p><img src="https://cdn.sharegoodsmall.com/sharegoods/98a860b5edce4d6f915d51ce7eebcb56.png"></p><p>不过我最喜欢的还是他们家的内衣都是无钢圈的，0压力，保护乳腺健康！而罩杯又很立体，不会因为没有钢圈就下垂啥的，完全不用担心！</p><p><img src="https://cdn.sharegoodsmall.com/sharegoods/c5ea7f8b0e004b2d9db06ff9504e4c36.png"></p><p>罩杯下扒位增加了按摩凸点设计，按摩胸部，并且下扒位设计出空气导流槽的设计，更舒适透气。还有聚拢效果哦，像我这样胸小的妹纸，挤挤还是很重要的~</p><p>俗话说的好，乳沟就像时间，挤挤就有了！除了聚拢效果，对于副乳的提拉、上托效果也是非常明显的哦！</p><p><img src="https://cdn.sharegoodsmall.com/sharegoods/3f0f9d12307d4e3b96997f744d84c2f7.jpg"></p><p>说了那么多，还是要着重介绍一下它的美观程度！整体简约大气，不会花里胡哨显得庸俗，但中间又带有精美的刺绣作为点缀，在简洁优雅中又不失一点诱人的轻奢风情！最适合性感女人啦！</p><p><img src="https://cdn.sharegoodsmall.com/sharegoods/7d545e3fb14b4e5c95bf020d8ef68f6f.png"></p><p>作为一个精致的仙女，美就得从里到外！时刻准备着，穿上“初迷战衣”分分钟搞定男神！</p><p>问我哪里有的卖？上秀购超品日呀！2.19号！等你抢购！</p><p><img src="https://cdn.sharegoodsmall.com/sharegoods/586212d299ac49a5aad4b240319b4804.jpg"></p>
-         * likeCount : null
-         * collectCount : null
-         * hadLike : null
-         * hadCollect : null
-         * products : null
-         * userName : 派大金Jocelyn
-         * userHeadImg : https://thirdwx.qlogo.cn/mmopen/vi_32/OxB7iaDnibrsqkjicytNjZkicScTKmriaRv317onLkQt5eANfJFicRZ6ymwaGhAPWKibcEGc8IwgzR6Z7BvwshoIlUDSg/132
-         * coverImgHigh : 251
-         * coverImgWide : 335
-         * imgWide : 750
-         * imgHigh : 750
-         * imgs : null
-         * time : 5小时前
-         * pureContent : 有些女孩子，表面光鲜亮丽！其实里头的内衣又土又旧！妆容再精致、发型再女神、穿的再光鲜靓丽又有什么用？关键时刻还不是不敢一把将男神推到？呐~听我一句劝，家里的内衣可以换一换啦！推荐你们入手初谜的暖绒谜情系列内衣，4大技术研发，用科技探索内衣新发现！轻薄透气，在材质与质感上首先就秒杀了市场上一堆鱼龙混杂的内衣牌子。女人的贴身衣服阿，质量必须经得起推敲呀！不过我最喜欢的还是他们家的内衣都是无钢圈的，0压力，保护乳腺健康！而罩杯又很立体，不会因为没有钢圈就下垂啥的，完全不用担心！罩杯下扒位增加了按摩凸点设计，按摩胸部，并且下扒位设计出空气导流槽的设计，更舒适透气。还有聚拢效果哦，像我这样胸小的妹纸，挤挤还是很重要的~俗话说的好，乳沟就像时间，挤挤就有了！除了聚拢效果，对于副乳的提拉、上托效果也是非常明显的哦！说了那么多，还是要着重介绍一下它的美观程度！整体简约大气，不会花里胡哨显得庸俗，但中间又带有精美的刺绣作为点缀，在简洁优雅中又不失一点诱人的轻奢风情！最适合性感女人啦！作为一个精致的仙女，美就得从里到外！时刻准备着，穿上“初迷战衣”分分钟搞定男神！问我哪里有的卖？上秀购超品日呀！2.19号！等你抢购！
+         * showNo : SHOW2019050716562296100003900000
+         * userInfoVO : {"userNo":"111","userImg":"","userName":""}
+         * content : 2121
+         * publishTime : 1557228931000
+         * publishTimeStr : 5.07 19:35
+         * showType : 1
+         * products : [{"promotionResult":null,"prodCode":"SPU00000233","name":"xiaomi小米 MIJIA/米家 米家恒温电热水壶智能家用烧水壶保温","secondName":"【12月12日 0点开抢】到手价179元","originalPrice":"17.9","groupPrice":"9.9","minPrice":"15.9","maxPrice":"15.9","promotionMinPrice":null,"promotionMaxPrice":null,"v0Price":null,"imgUrl":"https://testcdn.sharegoodsmall.com/sharegoods/3fd92ae923374453ad4a767170c0aa54.png"},{"promotionResult":null,"prodCode":"SPU00000233","name":"xiaomi小米 MIJIA/米家 米家恒温电热水壶智能家用烧水壶保温","secondName":"【12月12日 0点开抢】到手价179元","originalPrice":"17.9","groupPrice":"9.9","minPrice":"15.9","maxPrice":"15.9","promotionMinPrice":null,"promotionMaxPrice":null,"v0Price":null,"imgUrl":"https://testcdn.sharegoodsmall.com/sharegoods/3fd92ae923374453ad4a767170c0aa54.png"},{"promotionResult":null,"prodCode":"SPU00000233","name":"xiaomi小米 MIJIA/米家 米家恒温电热水壶智能家用烧水壶保温","secondName":"【12月12日 0点开抢】到手价179元","originalPrice":"17.9","groupPrice":"9.9","minPrice":"15.9","maxPrice":"15.9","promotionMinPrice":null,"promotionMaxPrice":null,"v0Price":null,"imgUrl":"https://testcdn.sharegoodsmall.com/sharegoods/3fd92ae923374453ad4a767170c0aa54.png"}]
+         * resource : [{"type":2,"url":"https://devcdn.sharegoodsmall.com/sharegoods/ff4647ea22dd4d14aad0adecb177b9f6.png"}]
+         * likesCount : 1
+         * shareCount : 0
+         * downloadCount : 0
+         * clickCount : 0
+         * hotCount : 0
+         * nowTime : 1557804063514
+         * like : false
          */
 
-        private int id;
-        private String code;
+        private String showNo;
         private String title;
-        private String coverImg;
-        private String img;
-        private int generalize;
-        private int categoryId;
-        private String userCode;
-        private int click;
-        private int createAdminId;
-        private int updateId;
-        private long updateTime;
-        private long createTime;
+        private int status;
+        private UserInfoVOBean userInfoVO;
         private String content;
-        private Object likeCount;
-        private Object collectCount;
-        private Object hadLike;
-        private Object hadCollect;
-        private Object products;
-        private String userName;
-        private String userHeadImg;
-        private float coverImgHigh;
-        private float coverImgWide;
-        private float imgWide;
-        private float imgHigh;
-        private Object imgs;
-        private String time;
-        private String pureContent;
+        private long publishTime;
+        private String publishTimeStr;
+        private int showType;
+        private int likesCount;
+        private int shareCount;
+        private int downloadCount;
+        private int clickCount;
+        private int hotCount;
+        private long nowTime;
+        private boolean like;
+        private List<ProductsBean> products;
+        private List<ResourceBean> resource;
 
-        public int getId() {
-            return id;
+        public String getShowNo() {
+            return showNo;
         }
 
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public void setCode(String code) {
-            this.code = code;
+        public void setShowNo(String showNo) {
+            this.showNo = showNo;
         }
 
         public String getTitle() {
@@ -164,84 +134,20 @@ public class NewestShowGroundBean {
             this.title = title;
         }
 
-        public String getCoverImg() {
-            return coverImg;
+        public int getStatus() {
+            return status;
         }
 
-        public void setCoverImg(String coverImg) {
-            this.coverImg = coverImg;
+        public void setStatus(int status) {
+            this.status = status;
         }
 
-        public String getImg() {
-            return img;
+        public UserInfoVOBean getUserInfoVO() {
+            return userInfoVO;
         }
 
-        public void setImg(String img) {
-            this.img = img;
-        }
-
-        public int getGeneralize() {
-            return generalize;
-        }
-
-        public void setGeneralize(int generalize) {
-            this.generalize = generalize;
-        }
-
-        public int getCategoryId() {
-            return categoryId;
-        }
-
-        public void setCategoryId(int categoryId) {
-            this.categoryId = categoryId;
-        }
-
-        public String getUserCode() {
-            return userCode;
-        }
-
-        public void setUserCode(String userCode) {
-            this.userCode = userCode;
-        }
-
-        public int getClick() {
-            return click;
-        }
-
-        public void setClick(int click) {
-            this.click = click;
-        }
-
-        public int getCreateAdminId() {
-            return createAdminId;
-        }
-
-        public void setCreateAdminId(int createAdminId) {
-            this.createAdminId = createAdminId;
-        }
-
-        public int getUpdateId() {
-            return updateId;
-        }
-
-        public void setUpdateId(int updateId) {
-            this.updateId = updateId;
-        }
-
-        public long getUpdateTime() {
-            return updateTime;
-        }
-
-        public void setUpdateTime(long updateTime) {
-            this.updateTime = updateTime;
-        }
-
-        public long getCreateTime() {
-            return createTime;
-        }
-
-        public void setCreateTime(long createTime) {
-            this.createTime = createTime;
+        public void setUserInfoVO(UserInfoVOBean userInfoVO) {
+            this.userInfoVO = userInfoVO;
         }
 
         public String getContent() {
@@ -252,116 +158,519 @@ public class NewestShowGroundBean {
             this.content = content;
         }
 
-        public Object getLikeCount() {
-            return likeCount;
+        public long getPublishTime() {
+            return publishTime;
         }
 
-        public void setLikeCount(Object likeCount) {
-            this.likeCount = likeCount;
+        public void setPublishTime(long publishTime) {
+            this.publishTime = publishTime;
         }
 
-        public Object getCollectCount() {
-            return collectCount;
+        public String getPublishTimeStr() {
+            return publishTimeStr;
         }
 
-        public void setCollectCount(Object collectCount) {
-            this.collectCount = collectCount;
+        public void setPublishTimeStr(String publishTimeStr) {
+            this.publishTimeStr = publishTimeStr;
         }
 
-        public Object getHadLike() {
-            return hadLike;
+        public int getShowType() {
+            return showType;
         }
 
-        public void setHadLike(Object hadLike) {
-            this.hadLike = hadLike;
+        public void setShowType(int showType) {
+            this.showType = showType;
         }
 
-        public Object getHadCollect() {
-            return hadCollect;
+        public int getLikesCount() {
+            return likesCount;
         }
 
-        public void setHadCollect(Object hadCollect) {
-            this.hadCollect = hadCollect;
+        public void setLikesCount(int likesCount) {
+            this.likesCount = likesCount;
         }
 
-        public Object getProducts() {
+        public int getShareCount() {
+            return shareCount;
+        }
+
+        public void setShareCount(int shareCount) {
+            this.shareCount = shareCount;
+        }
+
+        public int getDownloadCount() {
+            return downloadCount;
+        }
+
+        public void setDownloadCount(int downloadCount) {
+            this.downloadCount = downloadCount;
+        }
+
+        public int getClickCount() {
+            return clickCount;
+        }
+
+        public void setClickCount(int clickCount) {
+            this.clickCount = clickCount;
+        }
+
+        public int getHotCount() {
+            return hotCount;
+        }
+
+        public void setHotCount(int hotCount) {
+            this.hotCount = hotCount;
+        }
+
+        public long getNowTime() {
+            return nowTime;
+        }
+
+        public void setNowTime(long nowTime) {
+            this.nowTime = nowTime;
+        }
+
+        public boolean isLike() {
+            return like;
+        }
+
+        public void setLike(boolean like) {
+            this.like = like;
+        }
+
+        public List<ProductsBean> getProducts() {
             return products;
         }
 
-        public void setProducts(Object products) {
+        public void setProducts(List<ProductsBean> products) {
             this.products = products;
         }
 
-        public String getUserName() {
-            return userName;
+        public List<ResourceBean> getResource() {
+            return resource;
         }
 
-        public void setUserName(String userName) {
-            this.userName = userName;
+        public void setResource(List<ResourceBean> resource) {
+            this.resource = resource;
         }
 
-        public String getUserHeadImg() {
-            return userHeadImg;
+        public static class UserInfoVOBean {
+            /**
+             * userNo : 111
+             * userImg :
+             * userName :
+             */
+
+            private String userNo;
+            private String userImg;
+            private String userName;
+
+            public String getUserNo() {
+                return userNo;
+            }
+
+            public void setUserNo(String userNo) {
+                this.userNo = userNo;
+            }
+
+            public String getUserImg() {
+                return userImg;
+            }
+
+            public void setUserImg(String userImg) {
+                this.userImg = userImg;
+            }
+
+            public String getUserName() {
+                return userName;
+            }
+
+            public void setUserName(String userName) {
+                this.userName = userName;
+            }
         }
 
-        public void setUserHeadImg(String userHeadImg) {
-            this.userHeadImg = userHeadImg;
+        public static class ProductsBean {
+            /**
+             * promotionResult : null
+             * prodCode : SPU00000233
+             * name : xiaomi小米 MIJIA/米家 米家恒温电热水壶智能家用烧水壶保温
+             * secondName : 【12月12日 0点开抢】到手价179元
+             * originalPrice : 17.9
+             * groupPrice : 9.9
+             * minPrice : 15.9
+             * maxPrice : 15.9
+             * promotionMinPrice : null
+             * promotionMaxPrice : null
+             * v0Price : null
+             * imgUrl : https://testcdn.sharegoodsmall.com/sharegoods/3fd92ae923374453ad4a767170c0aa54.png
+             */
+
+            private PromotionResultBean promotionResult;
+            private String prodCode;
+            private String name;
+            private String secondName;
+            private String originalPrice;
+            private String groupPrice;
+            private String minPrice;
+            private String maxPrice;
+            private String promotionMinPrice;
+            private String promotionMaxPrice;
+            private String v0Price;
+            private String imgUrl;
+
+            public PromotionResultBean getPromotionResult() {
+                return promotionResult;
+            }
+
+            public void setPromotionResult(PromotionResultBean promotionResult) {
+                this.promotionResult = promotionResult;
+            }
+
+            public String getProdCode() {
+                return prodCode;
+            }
+
+            public void setProdCode(String prodCode) {
+                this.prodCode = prodCode;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public String getSecondName() {
+                return secondName;
+            }
+
+            public void setSecondName(String secondName) {
+                this.secondName = secondName;
+            }
+
+            public String getOriginalPrice() {
+                return originalPrice;
+            }
+
+            public void setOriginalPrice(String originalPrice) {
+                this.originalPrice = originalPrice;
+            }
+
+            public String getGroupPrice() {
+                return groupPrice;
+            }
+
+            public void setGroupPrice(String groupPrice) {
+                this.groupPrice = groupPrice;
+            }
+
+            public String getMinPrice() {
+                return minPrice;
+            }
+
+            public void setMinPrice(String minPrice) {
+                this.minPrice = minPrice;
+            }
+
+            public String getMaxPrice() {
+                return maxPrice;
+            }
+
+            public void setMaxPrice(String maxPrice) {
+                this.maxPrice = maxPrice;
+            }
+
+            public String getPromotionMinPrice() {
+                return promotionMinPrice;
+            }
+
+            public void setPromotionMinPrice(String promotionMinPrice) {
+                this.promotionMinPrice = promotionMinPrice;
+            }
+
+            public Object getPromotionMaxPrice() {
+                return promotionMaxPrice;
+            }
+
+            public void setPromotionMaxPrice(String promotionMaxPrice) {
+                this.promotionMaxPrice = promotionMaxPrice;
+            }
+
+            public String getV0Price() {
+                return v0Price;
+            }
+
+            public void setV0Price(String v0Price) {
+                this.v0Price = v0Price;
+            }
+
+            public String getImgUrl() {
+                return imgUrl;
+            }
+
+            public void setImgUrl(String imgUrl) {
+                this.imgUrl = imgUrl;
+            }
+
+            public static class PromotionResultBean {
+                private GroupActivityBean groupActivity;
+                private int limitNum;
+                private SingleActivityBean singleActivity;
+                private List<String> tags;
+
+                public GroupActivityBean getGroupActivity() {
+                    return groupActivity;
+                }
+
+                public void setGroupActivity(GroupActivityBean groupActivity) {
+                    this.groupActivity = groupActivity;
+                }
+
+                public int getLimitNum() {
+                    return limitNum;
+                }
+
+                public void setLimitNum(int limitNum) {
+                    this.limitNum = limitNum;
+                }
+
+                public SingleActivityBean getSingleActivity() {
+                    return singleActivity;
+                }
+
+                public void setSingleActivity(SingleActivityBean singleActivity) {
+                    this.singleActivity = singleActivity;
+                }
+
+                public List<String> getTags() {
+                    return tags;
+                }
+
+                public void setTags(List<String> tags) {
+                    this.tags = tags;
+                }
+
+                public static class SingleActivityBean {
+                    private String code;
+                    private boolean couponLimit;
+                    private long startTime;
+                    private long endTime;
+                    private String extraProperty;
+                    private String memo;
+                    private String name;
+                    private int status;
+                    private String tag;
+                    private String type;
+
+                    public String getCode() {
+                        return code;
+                    }
+
+                    public void setCode(String code) {
+                        this.code = code;
+                    }
+
+                    public boolean isCouponLimit() {
+                        return couponLimit;
+                    }
+
+                    public void setCouponLimit(boolean couponLimit) {
+                        this.couponLimit = couponLimit;
+                    }
+
+                    public long getStartTime() {
+                        return startTime;
+                    }
+
+                    public void setStartTime(long currentTime) {
+                        this.startTime = currentTime;
+                    }
+
+                    public long getEndTime() {
+                        return endTime;
+                    }
+
+                    public void setEndTime(long endTime) {
+                        this.endTime = endTime;
+                    }
+
+                    public String getExtraProperty() {
+                        return extraProperty;
+                    }
+
+                    public void setExtraProperty(String extraProperty) {
+                        this.extraProperty = extraProperty;
+                    }
+
+                    public String getMemo() {
+                        return memo;
+                    }
+
+                    public void setMemo(String memo) {
+                        this.memo = memo;
+                    }
+
+                    public String getName() {
+                        return name;
+                    }
+
+                    public void setName(String name) {
+                        this.name = name;
+                    }
+
+                    public int getStatus() {
+                        return status;
+                    }
+
+                    public void setStatus(int status) {
+                        this.status = status;
+                    }
+
+                    public String getTag() {
+                        return tag;
+                    }
+
+                    public void setTag(String tag) {
+                        this.tag = tag;
+                    }
+
+                    public String getType() {
+                        return type;
+                    }
+
+                    public void setType(String type) {
+                        this.type = type;
+                    }
+                }
+
+
+                public static class GroupActivityBean {
+                    private String code;
+                    private boolean couponLimit;
+                    private long startTime;
+                    private long endTime;
+                    private String extraProperty;
+                    private String memo;
+                    private String name;
+                    private int status;
+                    private String tag;
+                    private String type;
+
+                    public String getCode() {
+                        return code;
+                    }
+
+                    public void setCode(String code) {
+                        this.code = code;
+                    }
+
+                    public boolean isCouponLimit() {
+                        return couponLimit;
+                    }
+
+                    public void setCouponLimit(boolean couponLimit) {
+                        this.couponLimit = couponLimit;
+                    }
+
+                    public long getStartTime() {
+                        return startTime;
+                    }
+
+                    public void setStartTime(long currentTime) {
+                        this.startTime = currentTime;
+                    }
+
+                    public long getEndTime() {
+                        return endTime;
+                    }
+
+                    public void setEndTime(long endTime) {
+                        this.endTime = endTime;
+                    }
+
+                    public String getExtraProperty() {
+                        return extraProperty;
+                    }
+
+                    public void setExtraProperty(String extraProperty) {
+                        this.extraProperty = extraProperty;
+                    }
+
+                    public String getMemo() {
+                        return memo;
+                    }
+
+                    public void setMemo(String memo) {
+                        this.memo = memo;
+                    }
+
+                    public String getName() {
+                        return name;
+                    }
+
+                    public void setName(String name) {
+                        this.name = name;
+                    }
+
+                    public int getStatus() {
+                        return status;
+                    }
+
+                    public void setStatus(int status) {
+                        this.status = status;
+                    }
+
+                    public String getTag() {
+                        return tag;
+                    }
+
+                    public void setTag(String tag) {
+                        this.tag = tag;
+                    }
+
+                    public String getType() {
+                        return type;
+                    }
+
+                    public void setType(String type) {
+                        this.type = type;
+                    }
+                }
+            }
         }
 
-        public float getCoverImgHigh() {
-            return coverImgHigh;
+        public static class ResourceBean {
+            /**
+             * type : 2
+             * url : https://devcdn.sharegoodsmall.com/sharegoods/ff4647ea22dd4d14aad0adecb177b9f6.png
+             */
+
+            private int type;
+            private String url;
+
+            public int getType() {
+                return type;
+            }
+
+            public void setType(int type) {
+                this.type = type;
+            }
+
+            public String getUrl() {
+                return url;
+            }
+
+            public void setUrl(String url) {
+                this.url = url;
+            }
         }
 
-        public void setCoverImgHigh(float coverImgHigh) {
-            this.coverImgHigh = coverImgHigh;
-        }
-
-        public float getCoverImgWide() {
-            return coverImgWide;
-        }
-
-        public void setCoverImgWide(float coverImgWide) {
-            this.coverImgWide = coverImgWide;
-        }
-
-        public float getImgWide() {
-            return imgWide;
-        }
-
-        public void setImgWide(float imgWide) {
-            this.imgWide = imgWide;
-        }
-
-        public float getImgHigh() {
-            return imgHigh;
-        }
-
-        public void setImgHigh(float imgHigh) {
-            this.imgHigh = imgHigh;
-        }
-
-        public Object getImgs() {
-            return imgs;
-        }
-
-        public void setImgs(Object imgs) {
-            this.imgs = imgs;
-        }
-
-        public String getTime() {
-            return time;
-        }
-
-        public void setTime(String time) {
-            this.time = time;
-        }
-
-        public String getPureContent() {
-            return pureContent;
-        }
-
-        public void setPureContent(String pureContent) {
-            this.pureContent = pureContent;
+        @Override
+        public int getItemType() {
+            return this.showType;
         }
     }
 }

@@ -8,6 +8,7 @@
  * Created by huyufeng on 2019/1/3.
  *
  */
+
 "use strict";
 import React, { Component } from "react";
 import DesignRule from "../../../constants/DesignRule";
@@ -21,8 +22,9 @@ import user from "../../../model/user";
 import RouterMap from "../../../navigation/RouterMap";
 import bridge from "../../../utils/bridge";
 import LinearGradient from "react-native-linear-gradient";
+import { TrackApi } from '../../../utils/SensorsTrack';
 
-const dismissKeyboard = require("dismissKeyboard");
+const dismissKeyboard = require('dismissKeyboard');
 const { px2dp } = ScreenUtils;
 
 
@@ -61,22 +63,22 @@ export default class BottomMenu extends Component {
                             source={shopCartStore.computedSelect ? res.button.selected_circle_red : res.button.unselected_circle}
                             style={{ width: 22, height: 22 }}/>
                         <UIText
-                            value={"全选"}
+                            value={'全选'}
                             style={styles.selectText}/>
                     </TouchableOpacity>
-                    <View style={{ flexDirection: "row", alignItems: "center", paddingRight: px2dp(10) }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', paddingRight: px2dp(10) }}>
                         <View>
-                            <View style={{ flexDirection: "row" }}>
+                            <View style={{ flexDirection: 'row' }}>
                                 <UIText
-                                    value={"合计:"}
+                                    value={'合计:'}
                                     style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}/>
                                 <UIText
-                                    value={"¥" + shopCartStore.getTotalMoney}
+                                    value={'¥' + shopCartStore.getTotalMoney}
                                     style={styles.totalPrice}/>
                             </View>
-                            <View style={{ justifyContent: "flex-end", flexDirection: "row", marginRight: px2dp(10) }}>
+                            <View style={{ justifyContent: 'flex-end', flexDirection: 'row', marginRight: px2dp(10) }}>
                                 <UIText
-                                    value={"不含运费"}
+                                    value={'不含运费'}
                                     style={styles.shippingText}/>
                             </View>
 
@@ -84,13 +86,13 @@ export default class BottomMenu extends Component {
 
 
                         <TouchableOpacity onPress={() => this._toBuyImmediately()}>
-                            <LinearGradient colors={["rgba(255, 0, 80, 1)", "rgba(252, 93, 57, 1)"]}
+                            <LinearGradient colors={['rgba(255, 0, 80, 1)', 'rgba(252, 93, 57, 1)']}
                                             style={styles.selectGoodsNum}
                                             start={{ x: 0, y: 0 }}
                                             end={{ x: 1, y: 1 }}>
                                 <UIText
                                     value={`去结算(${shopCartStore.getTotalSelectGoodsNum})`}
-                                    style={{ color: "white", fontSize: 16 }}
+                                    style={{ color: 'white', fontSize: 16 }}
                                 />
 
                             </LinearGradient>
@@ -108,13 +110,20 @@ export default class BottomMenu extends Component {
     _toBuyImmediately = () => {
         dismissKeyboard();
         const { navigate } = this.props;
+
         if (!user.isLogin) {
             navigate(RouterMap.LoginPage);
+            TrackApi.CartCheckoutClick({
+                cartCheckoutBtnActive:false
+            });
             return;
         }
         let [...selectArr] = shopCartStore.startSettlement();
         if (selectArr.length <= 0) {
-            bridge.$toast("请先选择结算商品~");
+            bridge.$toast('请先选择结算商品~');
+            TrackApi.CartCheckoutClick({
+                cartCheckoutBtnActive:false
+            });
             return;
         }
         let isCanSettlement = true;
@@ -134,11 +143,17 @@ export default class BottomMenu extends Component {
         });
 
         if (haveNaNGood) {
-            bridge.$toast("存在选中商品数量为空,或存在正在编辑的商品,请确认~");
+            bridge.$toast('存在选中商品数量为空,或存在正在编辑的商品,请确认~');
+            TrackApi.CartCheckoutClick({
+                cartCheckoutBtnActive:false
+            });
             return;
         }
         if (!isCanSettlement) {
-            bridge.$toast("商品库存不足请确认~");
+            bridge.$toast('商品库存不足请确认~');
+            TrackApi.CartCheckoutClick({
+                cartCheckoutBtnActive:false
+            });
             return;
         }
         if (isCanSettlement && !haveNaNGood) {
@@ -148,17 +163,21 @@ export default class BottomMenu extends Component {
                     skuCode: goods.skuCode,
                     quantity: goods.amount,
                     productCode: goods.spuCode,
-                    batchNo: "1",
+                    batchNo: '1',
                     shoppingCartId: goods.id,
                     activityCode: goods.activityCode
                 });
             });
-            navigate("order/order/ConfirOrderPage", {
+            navigate('order/order/ConfirOrderPage', {
                 orderParamVO: {
                     orderType: 99,
                     orderProducts: buyGoodsArr,
                     source: 1
                 }
+            });
+
+            TrackApi.CartCheckoutClick({
+                cartCheckoutBtnActive:true
             });
         }
     };
@@ -168,7 +187,7 @@ const styles = StyleSheet.create({
     mainBgView: {
         height: 49,
         width: ScreenUtils.width,
-        backgroundColor: "white",
+        backgroundColor: 'white',
         zIndex: 20
     },
     totalPrice: {
@@ -177,7 +196,7 @@ const styles = StyleSheet.create({
         marginLeft: px2dp(10),
         marginRight: px2dp(10)
     },
-    touchableOpacity:{ flexDirection: "row", paddingLeft: 19, alignItems: "center" },
+    touchableOpacity:{ flexDirection: 'row', paddingLeft: 19, alignItems: 'center' },
     selectImg:{ width: px2dp(22), height: px2dp(22) },
     selectText:{ fontSize: px2dp(13), color: DesignRule.textColor_instruction, marginLeft: px2dp(10)  },
     selectGoodsNum: {
@@ -185,16 +204,16 @@ const styles = StyleSheet.create({
         height: px2dp(34),
         borderRadius: px2dp(17),
         backgroundColor: DesignRule.mainColor,
-        justifyContent: "center",
-        alignItems: "center"
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     CartBottomContainer: {
         width: ScreenUtils.width,
         height: px2dp(47.5),
-        backgroundColor: "white",
-        justifyContent: "space-between",
-        flexDirection: "row",
-        alignItems: "center"
+        backgroundColor: 'white',
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        alignItems: 'center'
     },
     shippingText: {
         color: DesignRule.textColor_mainTitle,

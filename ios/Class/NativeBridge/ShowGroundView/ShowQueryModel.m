@@ -15,11 +15,32 @@
 }
 @end
 
+@implementation UserModel
+
+@end
+
+@implementation ResourceModel
+
+@end
+
+@implementation ProductsModel
+
+@end
 
 @implementation ShowQuery_dataModel
 + (nullable NSDictionary<NSString *, id> *)modelCustomPropertyMapper
 {
-  return  @{@"ID": @"id", @"pureContent_1": @"pureContent", @"xg_index": @"index"};
+  return  @{@"ID": @"id",
+            @"pureContent_1": @"content",
+            @"xg_index": @"index",
+            };
+}
+
++ (nullable NSDictionary<NSString *, id> *)modelContainerPropertyGenericClass{
+  return @{
+           @"products" : @"ProductsModel",
+           @"sources" : @"ResourceModel",
+           };
 }
 
 - (CGFloat)aspectRatio

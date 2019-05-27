@@ -55,8 +55,8 @@ let screenW = Dimensions.get('window').width;
 const r2 = 2;
 const w2 = 750 / r2;
 
-var isNavigationBarShow = true;
-var hasNotchScreen = false;
+let isNavigationBarShow = true;
+let hasNotchScreen = false;
 
 function setBarShow(isShow) {
     isNavigationBarShow = isShow;
@@ -145,7 +145,7 @@ export default {
     isIphoneMax: __ISIPHONEXSMAX__,
     isIphonex: __ISIPHONEX__,
     // saveMarginBottom: Platform.OS === 'ios' && (Dimensions.get('window').height === 812 || Dimensions.get('window').height === 736) ? 34 : 0
-    isAllScreenDevice:Platform.OS === 'ios' ? false:RNDeviceInfo.isAllScreenDevice,
+    isAllScreenDevice:Platform.OS === 'ios' ? false : RNDeviceInfo.isAllScreenDevice,
     // isNavigationBarShow:Platform.OS === 'ios' ? false:RNDeviceInfo.isNavigationBarShow,
-    isAnroidNotchScreen:Platform.OS === 'ios' ? false:RNDeviceInfo.isAnroidNotchScreen,
+    isAnroidNotchScreen:Platform.OS === 'ios' ? false : RNDeviceInfo.isAnroidNotchScreen,
 };

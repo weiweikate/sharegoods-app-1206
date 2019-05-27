@@ -25,13 +25,13 @@ export default class Login extends BasePage {
 
     constructor(props) {
         super(props);
+        TrackApi.loginPage();
         this.state = {
             canPhoneAuthen: false,//是否可以本地号码一键登录 默认不可以
             isSelectProtocol: true,
             tempPhone:"",
             authenToken: ""
         };
-        TrackApi.loginPage();
     }
     // 导航配置
     $navigationBarOptions = {
@@ -111,6 +111,7 @@ export default class Login extends BasePage {
                 this.$toastShow("认证失败,请选择其他登录方式");
             })
         } else if(btnType === loginBtnType.registerBtnType) {
+            TrackApi.LoginClick();
             this.$navigate(RouterMap.InputPhoneNum);
         }else {
             this.$navigate(RouterMap.OtherLoginPage);

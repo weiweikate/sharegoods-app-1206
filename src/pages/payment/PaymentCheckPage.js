@@ -1,19 +1,19 @@
-import React from "react";
+import React from 'react';
 import {
     View,
     Text,
     StyleSheet,
     Image
-} from "react-native";
-import BasePage from "../../BasePage";
-import { payment, paymentTrack, payStatus } from "./Payment";
-import DesignRule from "../../constants/DesignRule";
-import ScreenUtils from "../../utils/ScreenUtils";
-import res from "./res";
-import { track, TrackApi, trackEvent } from "../../utils/SensorsTrack";
-import { PaymentResult } from "./PaymentResultPage";
-import { NavigationActions } from "react-navigation";
-import RouterMap from "../../navigation/RouterMap";
+} from 'react-native';
+import BasePage from '../../BasePage';
+import { payment, paymentTrack, payStatus } from './Payment';
+import DesignRule from '../../constants/DesignRule';
+import ScreenUtils from '../../utils/ScreenUtils';
+import res from './res';
+import { track, TrackApi, trackEvent } from '../../utils/SensorsTrack';
+import { PaymentResult } from './PaymentResultPage';
+import { NavigationActions } from 'react-navigation';
+import RouterMap from '../../navigation/RouterMap';
 
 const { px2dp } = ScreenUtils;
 
@@ -23,13 +23,13 @@ export default class PaymentCheckPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            msg: " 支付返回结果等待中..."
+            msg: ' 支付返回结果等待中...'
         };
         payment.checking = true;
     }
 
     $navigationBarOptions = {
-        title: "支付订单"
+        title: '支付订单'
     };
 
     componentWillUnmount(){
@@ -75,9 +75,9 @@ export default class PaymentCheckPage extends BasePage {
      */
     _checkStatues = () => {
         let time = (new Date().getTime()) / 1000;
-        track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: "checking" });
+        track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: 'checking' });
         if (time - this.orderTime > 5) {
-            track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: "checkOut" });
+            track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: 'checkOut' });
             if (payment.checking) {
                 this._goToOrder(1);
             }
@@ -113,7 +113,7 @@ export default class PaymentCheckPage extends BasePage {
                     let replace = NavigationActions.replace({
                         key: this.props.navigation.state.key,
                         routeName: RouterMap.PaymentResultPage,
-                        params: { payResult: PaymentResult.fail, payMsg: "支付关闭" }
+                        params: { payResult: PaymentResult.fail, payMsg: '支付关闭' }
                     });
                     this.props.navigation.dispatch(replace);
                 } else {
@@ -143,8 +143,8 @@ export default class PaymentCheckPage extends BasePage {
         } else {
             this.props.navigation.dispatch({
                 key: this.props.navigation.state.key,
-                type: "ReplacePayScreen",
-                routeName: "order/order/MyOrdersListPage",
+                type: 'ReplacePayScreen',
+                routeName: 'order/order/MyOrdersListPage',
                 params: { index: index ? index : 1 }
             });
         }
@@ -158,10 +158,10 @@ const styles = StyleSheet.create({
         marginTop: -2,
         backgroundColor: DesignRule.bgColor
     },
-    waitContentTopView: { alignItems: "center", justifyContent: "center", marginTop: px2dp(137) },
+    waitContentTopView: { alignItems: 'center', justifyContent: 'center', marginTop: px2dp(137) },
     waitContentTopImage: { height: px2dp(72), width: px2dp(72) },
     waitContentTopText: { marginTop: px2dp(22), fontSize: px2dp(13), color: DesignRule.textColor_instruction },
-    waitContentBottomView: { marginTop: px2dp(150), alignItems: "center", justifyContent: "center" },
+    waitContentBottomView: { marginTop: px2dp(150), alignItems: 'center', justifyContent: 'center' },
     waitContentBottomTip: { color: DesignRule.mainColor, fontSize: px2dp(13) },
     waitContentBottomWaitingText: { marginTop: px2dp(5), color: DesignRule.textColor_instruction, fontSize: px2dp(13) }
 });

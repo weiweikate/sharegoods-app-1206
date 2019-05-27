@@ -8,22 +8,22 @@
  * Created by huchao on 2018/10/16.
  *
  */
-"use strict";
+'use strict';
 
-import React from "react";
+import React from 'react';
 
 import {
     StyleSheet,
     View,
     TouchableWithoutFeedback
-} from "react-native";
+} from 'react-native';
 
 import {
     UIText,
     MRText as Text
-} from "../../../components/ui";
-import UIImage from "@mr/image-placeholder";
-import DesignRule from "../../../constants/DesignRule";
+} from '../../../components/ui';
+import UIImage from '@mr/image-placeholder';
+import DesignRule from '../../../constants/DesignRule';
 
 export default class GoodsGrayItem extends React.Component {
 
@@ -35,7 +35,7 @@ export default class GoodsGrayItem extends React.Component {
 
 
     _renderTips(tips){
-        if (tips&&tips.length>0 ) {
+        if (tips && tips.length > 0 ) {
             return(
                 <View style={{flexDirection: 'row', flexWrap: 'wrap', marginTop: 4, marginBottom: 10}}>
                     {
@@ -78,20 +78,20 @@ export default class GoodsGrayItem extends React.Component {
                 <View style={[styles.container, this.props.style]}>
                     <UIImage source={{ uri: uri }} style={styles.image}/>
                     <View style={{ marginHorizontal: 10, flex: 1, minHeight: 100 }}>
-                        <View style={{ flexDirection: "row", marginTop: 5 }}>
-                            <View style={{ flex: 1, flexDirection: "row", marginRight: 10}}>
+                        <View style={{ flexDirection: 'row', marginTop: 5 }}>
+                            <View style={{ flex: 1, flexDirection: 'row', marginRight: 10}}>
                                 <Text numberOfLines={2}>
                                     <Text style={[styles.title]}>{goodsName}</Text>
                                 </Text>
                             </View>
                             <UIText value={salePrice} style={[styles.title, { marginRight: 4, marginTop: 0 }]}/>
                         </View>
-                        <View style={{ marginTop: 10, marginRight: 5, flexDirection: "row" }}>
-                            <View style={{ flex: 1, flexDirection: "row", marginRight: 10, alignItems: "center" }}>
+                        <View style={{ marginTop: 10, marginRight: 5, flexDirection: 'row' }}>
+                            <View style={{ flex: 1, flexDirection: 'row', marginRight: 10, alignItems: 'center' }}>
                                 <UIText value={category}
-                                        style={[styles.detail, { textAlign: "left" }]} numberOfLines={3}/>
+                                        style={[styles.detail, { textAlign: 'left' }]} numberOfLines={3}/>
                             </View>
-                            <UIText value={"x" + goodsNum} style={styles.detail}/>
+                            <UIText value={'x' + goodsNum} style={styles.detail}/>
                         </View>
                         {this._renderTips(tips)}
                     </View>
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     container: {
         minHeight: 100,
         backgroundColor: DesignRule.bgColor,
-        flexDirection: "row",
+        flexDirection: 'row',
         paddingTop: 10,
     },
     image: {
@@ -121,6 +121,6 @@ const styles = StyleSheet.create({
     detail: {
         fontSize: 10,
         color: DesignRule.textColor_instruction,
-        textAlign: "right"
+        textAlign: 'right'
     }
 });

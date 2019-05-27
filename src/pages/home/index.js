@@ -1,5 +1,5 @@
 
-import HomePage from "./HomePage";
+import HomePage from './HomePage';
 import search from './search'
 import signIn from './signIn'
 import './Mediator'

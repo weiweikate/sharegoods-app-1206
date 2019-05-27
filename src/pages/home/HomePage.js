@@ -66,6 +66,7 @@ import BasePage from '../../BasePage';
 import { TrackApi } from '../../utils/SensorsTrack';
 import taskModel from './model/TaskModel';
 import TaskVIew from './view/TaskVIew';
+import intervalMsgModel, { IntervalMsgView } from '../../comm/components/IntervalMsgView';
 
 const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
     <Text style={styles.text}
@@ -173,7 +174,6 @@ class HomePage extends BasePage {
                 BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
 
             }
-
         );
 
         this.didFocusSubscription = this.props.navigation.addListener(
@@ -193,8 +193,11 @@ class HomePage extends BasePage {
                     homeTabManager.setHomeFocus(true);
                     homeModule.homeFocused(true);
                     homeModalManager.entryHome();
-                    limitGoModule.loadLimitGo();
                     homeModalManager.refreshPrize();
+                    intervalMsgModel.msgList = [];
+                    if (!homeModule.firstLoad) {
+                        limitGoModule.loadLimitGo();
+                    }
                 }
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
                 TrackApi.homePage();//埋点
@@ -358,6 +361,7 @@ class HomePage extends BasePage {
                 }}/>
                 <PraiseModel />
                 <GiftModal />
+                <IntervalMsgView/>
                 <HomeAdModal/>
                 <HomeMessageModalView/>
                 <VersionUpdateModalView/>

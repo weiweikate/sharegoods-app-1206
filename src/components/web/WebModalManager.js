@@ -1,4 +1,4 @@
-import { action, observable } from "mobx";
+import { action, observable } from 'mobx';
 import { AsyncStorage } from 'react-native';
 import HomeAPI from '../../pages/home/api/HomeAPI';
 import { AdViewBindModal } from '../../pages/home/view/HomeMessageModalView';
@@ -24,10 +24,10 @@ class Manager {
     @action
     getAd(showPage,showPageValue,type) { //获取数据
         let currStr = new Date().toDateString();
-        let _showPageValue = showPageValue|| ""
-        let _showPage = showPage|| ""
+        let _showPageValue = showPageValue || ''
+        let _showPage = showPage || ''
         //将showPage，showPageValue作为本地缓存的key，取上次打开时间，如果不是同一天就请求接口
-        this.type = "web__storage_"+_showPage+'_'+_showPageValue+'_'+type;
+        this.type = 'web__storage_' + _showPage + '_' + _showPageValue + '_' + type;
         AsyncStorage.getItem(this.type).then((value) => {
             if (value == null || currStr !== value) {
                 HomeAPI.getHomeData({showPage, showPageValue, type}).then(resp => {
@@ -50,9 +50,9 @@ class Manager {
     @action
     showAd(callBack){//展示广告
         if (this.needShowAd === true){
-            this.isShowAd= true
+            this.isShowAd = true
         }else {
-            callBack&&callBack();
+            callBack && callBack();
         }
 
     }

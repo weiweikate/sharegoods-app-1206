@@ -42,6 +42,8 @@ import user from '../../../model/user';
 import resCommon from '../../../comm/res';
 import LinearGradient from 'react-native-linear-gradient';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
+import { ShopBottomBannerView, ShopProductItemView } from './components/ShopDetailItemView';
+import MyShopDetailModel from './MyShopDetailModel';
 
 const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
 const NavLeft = resCommon.button.white_back;
@@ -71,6 +73,8 @@ export default class MyShopPage extends BasePage {
             isLike: false
         };
     }
+
+    MyShopDetailModel = new MyShopDetailModel();
 
     // 导航配置
     $navigationBarOptions = {
@@ -162,6 +166,8 @@ export default class MyShopPage extends BasePage {
 
     _loadPageData = () => {
         this._requestGetById();
+        this.MyShopDetailModel.requestShopBanner();
+        this.MyShopDetailModel.requestShopProducts();
         //非首页时请求
         if (!this.props.leftNavItemHidden) {
             this._requestGetByStoreId();
@@ -376,7 +382,7 @@ export default class MyShopPage extends BasePage {
         const { totalBonusMoney } = manager;
         if (userStatus === 1) {
             return (
-                <View style={{ marginBottom: 30 }}>
+                <View style={{ marginBottom: 10 }}>
                     <View style={{ height: 10 }}/>
                     {this._renderRow(RmbIcon, '店铺已完成奖励总额', `¥${((totalTradeBalance - tradeBalance) || 0).toFixed(2)}`)}
                     {this.renderSepLine()}
@@ -390,7 +396,7 @@ export default class MyShopPage extends BasePage {
             );
         } else {
             return (
-                <View>
+                <View style={{ marginBottom: 10 }}>
                     <View style={{ height: 10 }}/>
                     {this._renderRow(RmbIcon, '店铺已完成奖励总额', `¥${((totalTradeBalance - tradeBalance) || 0).toFixed(2)}`)}
                     <View style={{ height: 10 }}/>
@@ -474,6 +480,7 @@ export default class MyShopPage extends BasePage {
                             colors={[DesignRule.mainColor]}
                         />}>
                 <ShopHeader onPressShopAnnouncement={this._clickShopAnnouncement} item={this.state.storeData}/>
+                <ShopProductItemView MyShopDetailModel={this.MyShopDetailModel}/>
                 {userStatus === 1 ? <ShopHeaderBonus storeData={this.state.storeData}/> : null}
                 <MembersRow storeUserList={storeUserList || []}
                             userCount={userCount}
@@ -481,6 +488,7 @@ export default class MyShopPage extends BasePage {
                             onPressAllMembers={this._clickAllMembers}
                             onPressMemberItem={this._clickItemMembers}/>
                 {this._renderBottom()}
+                <ShopBottomBannerView MyShopDetailModel={this.MyShopDetailModel}/>
                 {this._renderJoinBtn()}
             </ScrollView>
         );

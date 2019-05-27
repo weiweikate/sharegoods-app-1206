@@ -37,7 +37,8 @@ const Router = {
         })
     },
     HtmlPage: {
-        screen: htmlView
+        screen: htmlView,
+        path:'path/HtmlPage/:uri'
     }
 };
 const PageKey = {};
@@ -63,6 +64,7 @@ function addSubModule(module, prefixPath) {
         } else if (typeof item === 'function') {
             const path = `${p}/${pageName}`;
             let pathValue = getPathWithPageName(pageName);
+
             Router[path] = {
                 screen: item,
                 path: pathValue

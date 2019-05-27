@@ -7,13 +7,13 @@ import {
     TouchableWithoutFeedback
 } from 'react-native'
 import ScreenUtils from '../../utils/ScreenUtils'
-import StringUtils from "../../utils/StringUtils";
+import StringUtils from '../../utils/StringUtils';
 import DateUtils from '../../utils/DateUtils';
 import BasePage from '../../BasePage';
-import {RefreshList} from "../../components/ui";
+import {RefreshList} from '../../components/ui';
 import MessageAPI from '../message/api/MessageApi';
 import Toast from '../../utils/bridge';
-import EmptyUtils from "../../utils/EmptyUtils";
+import EmptyUtils from '../../utils/EmptyUtils';
 const { px2dp } = ScreenUtils;
 import CommonUtils from '../../utils/CommonUtils'
 import MessageUtils from './utils/MessageUtils'
@@ -53,7 +53,7 @@ export default class MessageGatherPage extends BasePage {
     loadPageData =()=> {
         Toast.showLoading()
         MessageAPI.queryMessage({page: 1, pageSize: 10, type:100}).then(res => {
-            DeviceEventEmitter.emit("contentViewed");
+            DeviceEventEmitter.emit('contentViewed');
             Toast.hiddenLoading()
             if(StringUtils.isNoEmpty(res.data.data)){
                 let arrData = [];
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
         height: 49,
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: "white"
+        backgroundColor: 'white'
     },
     typeContentstyle:{
         height: 80,
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
     },
     bottomlookstyle:{
         height: 41,
-        flexDirection: "row",
+        flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center'
     },

@@ -1,25 +1,19 @@
 package com.meeruu.sharegoods;
 
 import android.content.Context;
-import android.os.Build;
-import android.text.TextUtils;
-import android.webkit.WebView;
 
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.brentvatne.react.ReactVideoPackage;
-import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainPackageConfig;
-import com.facebook.soloader.SoLoader;
 import com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage;
 import com.horcrux.svg.SvgPackage;
 import com.meeruu.RNDeviceInfo.RNDeviceInfo;
 import com.meeruu.commonlib.base.BaseApplication;
 import com.meeruu.commonlib.config.FrescoImagePipelineConfig;
-import com.meeruu.commonlib.utils.AppUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.sharegoods.rn.MainReactPackage;
 import com.meeruu.sharegoods.rn.RNMRPackage;
@@ -38,7 +32,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
-import cn.jiguang.verifysdk.api.JVerificationInterface;
 
 /**
  * @author louis
@@ -49,29 +42,16 @@ import cn.jiguang.verifysdk.api.JVerificationInterface;
  */
 public class MainApplication extends BaseApplication implements ReactApplication {
 
-    private String packageName = "";
-
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        if (TextUtils.isEmpty(packageName)) {
-            packageName = AppUtils.getProcessName(this);
-        }
     }
 
     @Override
     public void onCreate() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            WebView.setDataDirectorySuffix("com.meeruu." + packageName);
-        }
-        if (packageName.equals(getPackageName())) {
-            SoLoader.init(getApplicationContext(), /* native exopackage */ false);
-            Fresco.initialize(getApplicationContext(),
-                    FrescoImagePipelineConfig.getDefaultImagePipelineConfig(getApplicationContext()));
-            super.onCreate();
-            // 检测内存泄漏
-            LeakCanary.install(this);
-        }
+        super.onCreate();
+        // 检测内存泄漏
+        LeakCanary.install(this);
     }
 
     private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
