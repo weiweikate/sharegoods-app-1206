@@ -188,7 +188,7 @@ export default class ConfirmOrderPage extends BasePage {
             track(trackEvent.ViewCoupon,{couponModuleSource:3});
             this.ticketModel && this.ticketModel.open(confirmOrderModel.orderParamVO, (data) => {
                 console.log('CouponsPage', data);
-                confirmOrderModel.couponData=data;
+                confirmOrderModel.couponData = data;
                 if (data && data.id) {
                     let params = {
                         userCouponCode: data.code,
@@ -203,7 +203,7 @@ export default class ConfirmOrderPage extends BasePage {
                         this.loadPageData(params);
                     }, 0);
                 } else if (data === 'giveUp') {
-                    confirmOrderModel.giveUpCou= true;
+                    confirmOrderModel.giveUpCou = true;
                     confirmOrderModel.userCouponCode = null;
                     confirmOrderModel.couponName = null;
                     // confirmOrderModel.tokenCoin = 0;

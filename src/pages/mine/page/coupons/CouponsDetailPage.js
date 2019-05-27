@@ -109,7 +109,7 @@ export default class CouponsDetailPage extends BasePage {
             return `限品类：限${result[0]}品类可用`;
         }
         else if ((cat1.length + cat2.length + cat3.length) > 1) {
-            return `限品类：限指定品类商品可用`;
+            return '限品类：限指定品类商品可用';
         } else {
             return '全品类：全场通用券（特殊商品除外）';
         }

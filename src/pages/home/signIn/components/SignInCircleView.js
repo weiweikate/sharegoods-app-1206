@@ -11,7 +11,7 @@ import {
     View,
     Image
 } from 'react-native';
-import ScreenUtils from "../../../../utils/ScreenUtils";
+import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import res from  '../../res';
 import {MRText as Text} from '../../../../components/ui';

@@ -26,9 +26,9 @@ import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import PropTypes from 'prop-types';
 import shopCartCacheTool from '../model/ShopCartCacheTool';
-import RouterMap from "../../../navigation/RouterMap";
-import StringUtils from "../../../utils/StringUtils";
-import bridge from "../../../utils/bridge";
+import RouterMap from '../../../navigation/RouterMap';
+import StringUtils from '../../../utils/StringUtils';
+import bridge from '../../../utils/bridge';
 
 const {px2dp} = ScreenUtils
 
@@ -96,8 +96,7 @@ export default class SectionHeaderView extends Component {
                 {/*底部分割线*/}
                 <View
                     style={styles.bottomLineStyle}
-                >
-                </View>
+                 />
             </View>
         );
 
@@ -148,8 +147,7 @@ export default class SectionHeaderView extends Component {
                 {/*底部分割线*/}
                 <View
                     style={styles.bottomLineStyle}
-                >
-                </View>
+                 />
             </View>
         );
     };
@@ -189,7 +187,7 @@ export default class SectionHeaderView extends Component {
                     activityCode: sectionData.activityCode
                 });
             } else {
-                bridge.$toast("活动不存在");
+                bridge.$toast('活动不存在');
             }
     };
 }

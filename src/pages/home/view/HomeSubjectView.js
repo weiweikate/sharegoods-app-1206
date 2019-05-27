@@ -26,7 +26,7 @@ const MoneyItems = ({ money }) => {
     }
     let unitStr = '￥';
     let moneyStr = '';
-    let index = money.indexOf("￥");
+    let index = money.indexOf('￥');
     if (index !== -1) {
         moneyStr = money.substring(index + 1, money.length);
     }

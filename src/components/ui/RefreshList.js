@@ -20,11 +20,13 @@ const defaultPageSize = 10;
 export default class RefreshList extends Component {
     static defaultProps = {
         data: [],
-        isHideFooter: true
+        isHideFooter: true,
+        topBtn:false,
     };
 
     static propTypes = {
-        emptyIcon: PropTypes.any
+        emptyIcon: PropTypes.any,
+        topBtn: PropTypes.bool,
     };
 
     constructor(props) {
@@ -55,7 +57,7 @@ export default class RefreshList extends Component {
     };
 
     renderFooter = () => {
-        if (this.props.isHideFooter) {
+        if (this.props.isHideFooter || this.props.firstLoading === 1) {
             return <View/>;
         } else {
             if (this.state.isError) {
@@ -71,7 +73,7 @@ export default class RefreshList extends Component {
                 if (this.isEnd()) {
                     return (
                         <View style={styles.footer_container}>
-                            <Text style={styles.footer_text}>No More</Text>
+                            <Text style={styles.footer_text}>我也是有底线</Text>
                         </View>
                     );
                 } else {
@@ -125,9 +127,14 @@ export default class RefreshList extends Component {
 
 
     render() {
-        const { data, headerData, renderItem, onRefresh, keyExtractor, isEmpty, extraData, progressViewOffset, ...attributes } = this.props;
+        const { data, headerData, firstLoading, renderItem, onRefresh, keyExtractor, onListViewScroll, isEmpty, extraData, progressViewOffset, topBtn, ...attributes} = this.props;
+        let refreshingState = this.state.refreshing;
+        if(firstLoading){
+            refreshingState = firstLoading === 1 ? true : this.state.refreshing
+        }
         if (data.length > 0 || headerData) {
             return (
+                <View style={{flex:1}}>
                 <FlatList
                     style={[{ width: ScreenUtils.width, flex: 1 }, this.props.style && this.props.style]}
                     data={data}
@@ -136,16 +143,26 @@ export default class RefreshList extends Component {
                     onEndReached={this.props.onLoadMore ? this.onEndReached : null}
                     extraData={extraData}
                     onEndReachedThreshold={0.1}
+                    onScroll={(e)=>{onListViewScroll && onListViewScroll(e)}}
                     ListFooterComponent={this.renderFooter}
                     ListHeaderComponent={this.props.ListHeaderComponent}
                     keyExtractor={keyExtractor ? keyExtractor : (item, index) => index.toString()}
-                    refreshControl={<RefreshControl refreshing={this.state.refreshing}
+                    refreshControl={<RefreshControl refreshing={refreshingState}
                                                     onRefresh={onRefresh ? this.refresh : null}
                                                     colors={[DesignRule.mainColor]}
                                                     progressViewOffset={progressViewOffset}/>}
                     ref={'flatlist'}
                     {...attributes}
                 />
+                    {topBtn ?
+                        <View style={styles.topbtnStyle}>
+                            <TouchableOpacity onPress={()=>this.scrollToIndex({viewPosition: 0, index: 0 })}>
+                                <Image source={res.other.top_Icon} style={{width:36, height:36,backgroundColor:'white'}} />
+                            </TouchableOpacity>
+                        </View>
+                        : null
+                    }
+                </View>
             );
 
         } else {
@@ -172,8 +189,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 20,
+        margin: 10,
         height: 44
+    },
+    topbtnStyle:{
+        position: 'absolute',
+        right: 14,
+        bottom: 50,
     }
 });
 

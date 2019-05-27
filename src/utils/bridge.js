@@ -77,6 +77,10 @@ export default {
     }) {
         NativeModules.LoginAndShareModule.creatShareImage(jsonParam, onSuccess, onError);
     },
+    creatShowShareImage(jsonParam, onSuccess, onError = (errorStr) => {
+    }) {
+        NativeModules.LoginAndShareModule.creatShowShareImage(jsonParam, onSuccess, onError);
+    },
     createPromotionShareImage(qrString, onSuccess, onError = (errorStr) => {
     }) {
         NativeModules.LoginAndShareModule.createPromotionShareImage(qrString, onSuccess, onError);
@@ -117,6 +121,9 @@ export default {
     creatQRCodeImage(QRCodeStr, onSuccess, onError = (errorStr) => {
     }) {
         NativeModules.LoginAndShareModule.creatQRCodeImage(QRCodeStr, onSuccess, onError);
+    },
+    createQRToAlbum(info){
+        return NativeModules.LoginAndShareModule.createQRToAlbum(info);
     },
     saveInviteFriendsImage(QRString, logoStr, onSuccess, onError = (errorStr) => {
     }) {

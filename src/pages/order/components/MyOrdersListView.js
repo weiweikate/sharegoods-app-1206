@@ -440,7 +440,7 @@ export default class MyOrdersListView extends Component {
                 break;
             case 6:
                 console.log(data);
-                let content = `确定收到货了吗?`;
+                let content = '确定收到货了吗?';
                 data.orderProduct.map((value) => {
                     if (value.status < 3) {
                         content = '您还有商品未发货，确认收货吗？';
@@ -448,11 +448,11 @@ export default class MyOrdersListView extends Component {
                 });
                 Alert.alert('', `${content}`, [
                     {
-                        text: `取消`, onPress: () => {
+                        text: '取消', onPress: () => {
                         }
                     },
                     {
-                        text: `确定`, onPress: () => {
+                        text: '确定', onPress: () => {
                             Toast.showLoading();
                             OrderApi.confirmReceipt({ orderNo: data.orderNo }).then((response) => {
                                 Toast.hiddenLoading();
@@ -470,13 +470,13 @@ export default class MyOrdersListView extends Component {
                 ], { cancelable: true });
                 break;
             case 7:
-                Alert.alert('', `确定删除此订单？`, [
+                Alert.alert('', '确定删除此订单？', [
                     {
-                        text: `取消`, onPress: () => {
+                        text: '取消', onPress: () => {
                         }
                     },
                     {
-                        text: `确定`, onPress: () => {
+                        text: '确定', onPress: () => {
                             console.log(this.state.menu);
                             Toast.showLoading();
                             OrderApi.deleteOrder({ orderNo: data.orderNo }).then((response) => {
@@ -508,13 +508,13 @@ export default class MyOrdersListView extends Component {
                 this.props.nav('shopCart/ShopCart', { hiddeLeft: false });
                 break;
             case 9:
-                Alert.alert('', `确定删除此订单？`, [
+                Alert.alert('', '确定删除此订单？', [
                     {
-                        text: `取消`, onPress: () => {
+                        text: '取消', onPress: () => {
                         }
                     },
                     {
-                        text: `确定`, onPress: () => {
+                        text: '确定', onPress: () => {
                             console.log(this.state.menu);
                             Toast.showLoading();
                             OrderApi.deleteOrder({ orderNo: data.orderNo }).then((response) => {

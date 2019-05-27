@@ -1,11 +1,11 @@
-import React from "react";
-import { StyleSheet, TouchableOpacity, View, Image, ScrollView } from "react-native";
-import BasePage from "../../../BasePage";
-import { MRText as Text } from "../../../components/ui";
-import ScreenUtils from "../../../utils/ScreenUtils";
-import DesignRule from "../../../constants/DesignRule";
-import res from "../res";
-import GoodsGrayItem from "../components/GoodsGrayItem";
+import React from 'react';
+import { StyleSheet, TouchableOpacity, View, Image, ScrollView } from 'react-native';
+import BasePage from '../../../BasePage';
+import { MRText as Text } from '../../../components/ui';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import DesignRule from '../../../constants/DesignRule';
+import res from '../res';
+import GoodsGrayItem from '../components/GoodsGrayItem';
 
 export default class CheckLogisticsPage extends BasePage {
     constructor(props) {
@@ -13,12 +13,12 @@ export default class CheckLogisticsPage extends BasePage {
     }
 
     $navigationBarOptions = {
-        title: "查看物流",
+        title: '查看物流',
         show: true// false则隐藏导航
     };
 
     show(expressNo) {
-        this.$navigate("order/logistics/LogisticsDetailsPage", {
+        this.$navigate('order/logistics/LogisticsDetailsPage', {
             expressNo: expressNo
         });
     }
@@ -36,13 +36,13 @@ export default class CheckLogisticsPage extends BasePage {
                     <Text style={{
                         fontSize: 12,
                         color: DesignRule.textColor_instruction
-                    }}>{`——— 以下商品被拆分成多个包裹 ————`}</Text>
+                    }}>{'——— 以下商品被拆分成多个包裹 ————'}</Text>
                 </View>
                 {this.params.expressList.map((item) => {
                     return (
                         <View>
                             <TouchableOpacity
-                                style={{ height: 40, backgroundColor: DesignRule.white, justifyContent: "center" }}
+                                style={{ height: 40, backgroundColor: DesignRule.white, justifyContent: 'center' }}
                                 onPress={() => {
                                     this.show(item.expNO);
                                 }}>
@@ -54,7 +54,7 @@ export default class CheckLogisticsPage extends BasePage {
                                     <Image source={res.button.arrow_right_black}/>
                                 </View>
                             </TouchableOpacity>
-                            <View style={{ backgroundColor: "#E4E4E4", height: 0.5, width: ScreenUtils.width }}/>
+                            <View style={{ backgroundColor: '#E4E4E4', height: 0.5, width: ScreenUtils.width }}/>
                             {item.list && item.list.map((data) => {
                                 return <GoodsGrayItem
                                     uri={data.specImg}
@@ -62,7 +62,7 @@ export default class CheckLogisticsPage extends BasePage {
                                     salePrice={data.unitPrice}
                                     category={data.spec}
                                     goodsNum={data.quantity}
-                                    style={{ backgroundColor: "white" }}
+                                    style={{ backgroundColor: 'white' }}
                                 />;
                             })}
                             <View
@@ -74,7 +74,7 @@ export default class CheckLogisticsPage extends BasePage {
                     return (
                         <View>
                             <TouchableOpacity
-                                style={{ height: 40, backgroundColor: DesignRule.white, justifyContent: "center" }}>
+                                style={{ height: 40, backgroundColor: DesignRule.white, justifyContent: 'center' }}>
                                 <View style={styles.expStyle}>
                                     <Text style={{
                                         fontSize: 12,
@@ -83,14 +83,14 @@ export default class CheckLogisticsPage extends BasePage {
                                     <View style={{ width: 10, height: 10 }}/>
                                 </View>
                             </TouchableOpacity>
-                            <View style={{ backgroundColor: "#E4E4E4", height: 0.5, width: ScreenUtils.width }}/>
+                            <View style={{ backgroundColor: '#E4E4E4', height: 0.5, width: ScreenUtils.width }}/>
                             <GoodsGrayItem
                                 uri={item.specImg}
                                 goodsName={item.productName}
                                 salePrice={item.unitPrice}
                                 category={item.spec}
                                 goodsNum={item.quantity}
-                                style={{ backgroundColor: "white" }}
+                                style={{ backgroundColor: 'white' }}
                             />
                             <View
                                 style={{ backgroundColor: DesignRule.bgColor, height: 10, width: ScreenUtils.width }}/>
@@ -111,20 +111,20 @@ const styles = StyleSheet.create({
         height: 20,
         width: ScreenUtils.width,
         backgroundColor: DesignRule.mainColor,
-        alignItems: "center",
-        justifyContent: "center"
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     ViewSecStyle:{
-        alignItems: "center",
+        alignItems: 'center',
         marginTop: 8,
         marginBottom: 8,
         height: 17,
-        justifyContent: "center"
+        justifyContent: 'center'
     },
     expStyle:{
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
         paddingLeft: 15,
         paddingRight: 15
     }

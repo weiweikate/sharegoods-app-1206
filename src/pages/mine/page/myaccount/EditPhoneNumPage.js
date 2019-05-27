@@ -50,7 +50,7 @@ export default class EditPhoneNumPage extends BasePage {
         const { oldNum } = this.props.navigation.state.params;
         let show_num = oldNum;
         if (oldNum.length === 11){
-            show_num = oldNum.slice(0, 3) + "****" + oldNum.slice(7, 11);
+            show_num = oldNum.slice(0, 3) + '****' + oldNum.slice(7, 11);
         }
 
         let show_num_str = '修改手机号需要验证： ' + show_num + '手机号';
@@ -96,7 +96,7 @@ export default class EditPhoneNumPage extends BasePage {
                     }}/>
             <TouchableOpacity style={{
                 marginTop: 42,
-                backgroundColor: this.state.code.length === 0 ? '#E3E3E3' :DesignRule.mainColor,
+                backgroundColor: this.state.code.length === 0 ? '#E3E3E3' : DesignRule.mainColor,
                 width: ScreenUtils.width - 84,
                 height: 50,
                 marginLeft: 42,

@@ -69,11 +69,11 @@ export default class XpDetailActivityInfoModal extends Component {
         const { value, type } = item.coupon || {};
         if (type === 4) {
             return <View style={styles.bgTopValueView}>
-                <Text style={styles.bgTopValueLText}>{`商品\n兑换`}</Text>
+                <Text style={styles.bgTopValueLText}>{'商品\n兑换'}</Text>
             </View>;
         } else if (type === 5) {
             return <View style={styles.bgTopValueView}>
-                <Text style={styles.bgTopValueLText}>{`兑换`}</Text>
+                <Text style={styles.bgTopValueLText}>{'兑换'}</Text>
             </View>;
         } else if (type === 3) {
             return <View style={styles.bgTopValueView}>
@@ -95,23 +95,23 @@ export default class XpDetailActivityInfoModal extends Component {
         switch (type) {
             case 1:
                 nameType = '满减券';
-                valueType = useConditions > 0 ? `满${useConditions || ''}可用` : `无金额门槛`;
+                valueType = useConditions > 0 ? `满${useConditions || ''}可用` : '无金额门槛';
                 break;
             case 2:
                 nameType = '抵价券';
-                valueType = `无金额门槛`;
+                valueType = '无金额门槛';
                 break;
             case 3:
                 nameType = '折扣券';
-                valueType = useConditions > 0 ? `满${useConditions || ''}可用` : `无金额门槛`;
+                valueType = useConditions > 0 ? `满${useConditions || ''}可用` : '无金额门槛';
                 break;
             case 4:
                 nameType = '抵扣券';
-                valueType = `限指定商品可用`;
+                valueType = '限指定商品可用';
                 break;
             case 5:
                 nameType = '兑换券';
-                valueType = `限指定商品可用`;
+                valueType = '限指定商品可用';
                 break;
             default:
                 nameType = '';

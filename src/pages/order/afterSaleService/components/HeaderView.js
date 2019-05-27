@@ -8,22 +8,22 @@
  * Created by huchao on 2018/11/27.
  *
  */
-"use strict";
+'use strict';
 
-import React from "react";
+import React from 'react';
 
 import {
     StyleSheet,
     View
-} from "react-native";
+} from 'react-native';
 
 import {
     UIText, UIImage
-} from "../../../../components/ui";
+} from '../../../../components/ui';
 // import DesignRule from 'DesignRule';
-import ScreenUtils from "../../../../utils/ScreenUtils";
+import ScreenUtils from '../../../../utils/ScreenUtils';
 // import DateUtils from '../../../../utils/DateUtils';
-import res from "../../res";
+import res from '../../res';
 
 const {
     afterSaleService: {
@@ -69,13 +69,13 @@ export default class HeaderView extends React.Component {
 
         return (
             <View>
-                <View style={{ position: "absolute", height: 100, width: ScreenUtils.width }}>
+                <View style={{ position: 'absolute', height: 100, width: ScreenUtils.width }}>
                     <UIImage source={exchangeGoodsDetailBg} style={{ height: 100, width: ScreenUtils.width }}/>
                 </View>
                 <View style={{
                     height: 100,
-                    alignItems: "center",
-                    flexDirection: "row",
+                    alignItems: 'center',
+                    flexDirection: 'row',
                     width: ScreenUtils.width
                 }}>
                     {/*{imageCommpent()}*/}
@@ -93,11 +93,11 @@ export default class HeaderView extends React.Component {
 const styles = StyleSheet.create({
     header_title: {
         fontSize: 18,
-        color: "white"
+        color: 'white'
     },
     header_detail: {
         fontSize: 12,
-        color: "white",
+        color: 'white',
         marginTop: 3
     }
 });

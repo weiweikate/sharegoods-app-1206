@@ -179,8 +179,7 @@ function AdViewBindModal(modal) {
                                        source={{ uri: image }}
                                        resizeMode={'contain'}
                                        showPlaceholder={false}
-                            >
-                            </ImageLoad>
+                             />
                         </TouchableOpacity>
                         <View style={{ flex: 1 }}>
                             <TouchableOpacity onPress={() => {

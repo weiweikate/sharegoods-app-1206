@@ -4,9 +4,9 @@
  */
 
 import bridge from './bridge';
-import user from "../model/user";
-import EmptyUtils from "./EmptyUtils";
-import HttpUtils from "../api/network/HttpUtils";
+import user from '../model/user';
+import EmptyUtils from './EmptyUtils';
+import HttpUtils from '../api/network/HttpUtils';
 import apiEnvironment from '../api/ApiEnvironment';
 import { track } from './SensorsTrack';
 
