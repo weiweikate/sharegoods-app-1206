@@ -30,7 +30,7 @@
       _scrollView = [[UIScrollView alloc] init];
       _scrollView.showsHorizontalScrollIndicator = NO;//不显示水平拖地的条
       _scrollView.showsVerticalScrollIndicator=NO;//不显示垂直拖动的条
-//      _scrollView.pagingEnabled = YES;//允许分页滑动
+      _scrollView.pagingEnabled = YES;//允许分页滑动
       _scrollView.bounces = NO;//到边了就不能再拖地
     }
     return _scrollView;
