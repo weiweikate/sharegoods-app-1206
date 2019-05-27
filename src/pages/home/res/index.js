@@ -20,6 +20,9 @@ const resHome = {
     spike: require('./spike.png'),
     home_right: require('./home_right.png'),
     home_sallout: require('./home_pic_qiangguang.png'),
+    btn_bg:require('./btn_bg.png'),
+    unwin:require('./unwin.png'),
+    win:require('./win.png'),
     signIn: {
         ...signIn
     },

@@ -37,15 +37,15 @@ import { recommendModule } from './model/HomeRecommendModel';
 import { subjectModule } from './model/HomeSubjectModel';
 import { homeExpandBnnerModel } from './model/HomeExpandBnnerModel';
 import HomeTitleView from './view/HomeTitleView';
-import GuideModal from '../guide/GuideModal';
 import LuckyIcon from '../guide/LuckyIcon';
-import HomeMessageModalView, { HomeAdModal } from './view/HomeMessageModalView';
+import HomeMessageModalView, { HomeAdModal, GiftModal } from './view/HomeMessageModalView';
 import { channelModules } from './model/HomeChannelModel';
 import { bannerModule } from './model/HomeBannerModel';
 import HomeLimitGoView from './view/HomeLimitGoView';
 import { limitGoModule } from './model/HomeLimitGoModel';
 import HomeExpandBannerView from './view/HomeExpandBannerView';
 import HomeFocusAdView from './view/HomeFocusAdView';
+import PraiseModel from './view/PraiseModel'
 
 const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
@@ -193,8 +193,8 @@ class HomePage extends BasePage {
                     homeTabManager.setHomeFocus(true);
                     homeModule.homeFocused(true);
                     homeModalManager.entryHome();
-                    homeModalManager.requestGuide();
                     limitGoModule.loadLimitGo();
+                    homeModalManager.refreshPrize();
                 }
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
                 TrackApi.homePage();//埋点
@@ -209,7 +209,6 @@ class HomePage extends BasePage {
         InteractionManager.runAfterInteractions(() => {
             user.getToken().then(() => {//让user初始化完成
                 this.luckyIcon && this.luckyIcon.getLucky(1, '');
-                homeModalManager.requestGuide();
                 homeModalManager.requestData();
                 this.loadMessageCount();
             });
@@ -357,11 +356,10 @@ class HomePage extends BasePage {
                 <LuckyIcon ref={(ref) => {
                     this.luckyIcon = ref;
                 }}/>
+                <PraiseModel />
+                <GiftModal />
                 <HomeAdModal/>
                 <HomeMessageModalView/>
-                <GuideModal onShow={() => {
-                    this.recyclerListView.scrollToTop();
-                }}/>
                 <VersionUpdateModalView/>
             </View>
         );
