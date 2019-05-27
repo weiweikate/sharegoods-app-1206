@@ -11,7 +11,7 @@ class WhiteModel {
     @action
     saveWhiteType(){
         ShowApi.getWhiteList().then((data)=>{
-            this.userStatus = data.date.status;
+            this.userStatus = data.data.status;
         }).catch((error)=>{
             this.userStatus = 0;
         })
