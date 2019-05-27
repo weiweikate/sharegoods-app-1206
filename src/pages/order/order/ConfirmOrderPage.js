@@ -16,7 +16,7 @@ import ConfirmAddressView from '../components/confirmOrder/ConfirmAddressView';
 import ConfirmPriceView from '../components/confirmOrder/ConfirmPriceView';
 import ConfirmBottomView from '../components/confirmOrder/ConfirmBottomView';
 // import { renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
-import { track, trackEvent } from '../../../utils/SensorsTrack';
+import {track, trackEvent} from '../../../utils/SensorsTrack';
 import SelectOneTicketModel from '../components/confirmOrder/SelectOneTicketModel';
 import SelectTicketModel from '../components/confirmOrder/SelectTicketModel';
 
@@ -78,6 +78,7 @@ export default class ConfirmOrderPage extends BasePage {
     componentWillUnmount() {
         confirmOrderModel.clearData();
         clearTimeout();
+        this.didFocusSubscription && this.didFocusSubscription.remove();
     }
 
     _render() {
@@ -93,6 +94,12 @@ export default class ConfirmOrderPage extends BasePage {
         setTimeout(() => {
             this.loadPageData();
         }, 0);
+        this.didFocusSubscription = this.props.navigation.addListener(
+            'didFocus',
+            payload => {
+                    track(trackEvent.ViewOrderConfirmPage,{})
+            }
+        );
     }
 
     loadPageData = (params) => {
