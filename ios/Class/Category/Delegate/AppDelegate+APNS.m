@@ -31,13 +31,20 @@
 // 自定义消息 回调
 - (void)networkDidReceiveMessage:(NSNotification *)notification {
   NSDictionary * userInfo = [notification userInfo];
-  [[NSNotificationCenter defaultCenter]postNotificationName:@"HOME_CUSTOM_MSG" object:nil];
+ 
   NSString *typeString = userInfo[@"content_type"];
-  
   if (typeString && [typeString isEqualToString:@"HomeRefresh"]) {
     NSString *homeTypeStr = userInfo[@"content"];
     NSDictionary * dic = [self dictionaryWithJsonString:homeTypeStr];
     [[NSNotificationCenter defaultCenter]postNotificationName:@"HOME_CUSTOM_MSG" object:dic[@"homeType"]];
+  }else if (typeString && [@"ActivitySkip" isEqualToString:typeString]){
+     NSDictionary *homeTypeDic = userInfo[@"content"];
+    if (homeTypeDic) {
+      NSDictionary * params = homeTypeDic[@"params"];
+      if (params) {
+         [[NSNotificationCenter defaultCenter]postNotificationName:@"HOME_CUSTOM_SKIP" object:nil];
+      }
+    }
   }
 }
 -(NSDictionary *)dictionaryWithJsonString:(NSString *)jsonString
