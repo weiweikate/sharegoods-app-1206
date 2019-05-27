@@ -124,6 +124,7 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
             if (popupWindow.isShowing()) {
                 popupWindow.dismiss();
             }
+            popupWindow = null;
             // We need to remove the mHostView from the parent
             // It is possible we are dismissing this dialog and reattaching the hostView to another
             ViewGroup parent = (ViewGroup) mHostView.getParent();
@@ -132,6 +133,7 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
             }
         }
     }
+
 
     @Override
     public void onHostResume() {

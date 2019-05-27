@@ -2,16 +2,22 @@ package com.meeruu.commonlib.base;
 
 import android.content.ComponentCallbacks2;
 import android.content.Context;
+import android.os.Build;
 import android.os.Looper;
 import android.os.MessageQueue;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
+import android.text.TextUtils;
+import android.webkit.WebView;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineFactory;
+import com.facebook.soloader.SoLoader;
 import com.meeruu.commonlib.callback.ForegroundCallbacks;
+import com.meeruu.commonlib.config.FrescoImagePipelineConfig;
+import com.meeruu.commonlib.event.QiyuUrlEvent;
 import com.meeruu.commonlib.handler.CrashHandler;
 import com.meeruu.commonlib.rn.QiyuImageLoader;
-import com.meeruu.commonlib.event.QiyuUrlEvent;
 import com.meeruu.commonlib.umeng.UApp;
 import com.meeruu.commonlib.umeng.UShare;
 import com.meeruu.commonlib.utils.AppUtils;
@@ -37,6 +43,7 @@ public class BaseApplication extends MultiDexApplication {
     public static Context appContext;
     private boolean isDownload = false;
     private String downLoadUrl;
+    private String packageName = "";
 
     public boolean isDownload() {
         return isDownload;
@@ -69,17 +76,25 @@ public class BaseApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         appContext = this;
-        // 拿到主线程的MessageQueue
-        Looper.myQueue().addIdleHandler(new MessageQueue.IdleHandler() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            WebView.setDataDirectorySuffix("com.meeruu." + packageName);
+        }
+        if (packageName.equals(getPackageName())) {
+            SoLoader.init(getApplicationContext(), /* native exopackage */ false);
+            Fresco.initialize(getApplicationContext(),
+                    FrescoImagePipelineConfig.getDefaultImagePipelineConfig(getApplicationContext()));
+            // 拿到主线程的MessageQueue
+            Looper.myQueue().addIdleHandler(new MessageQueue.IdleHandler() {
 
-            @Override
-            public boolean queueIdle() {
-                // 在这里去处理你想延时加载的东西
-                delayLoad();
-                // 最后返回false，后续不用再监听了。
-                return false;
-            }
-        });
+                @Override
+                public boolean queueIdle() {
+                    // 在这里去处理你想延时加载的东西
+                    delayLoad();
+                    // 最后返回false，后续不用再监听了。
+                    return false;
+                }
+            });
+        }
     }
 
     @Override
@@ -88,6 +103,9 @@ public class BaseApplication extends MultiDexApplication {
         MultiDex.install(this);
         // 修复部分手机GC超时
         AppUtils.daemonsFix();
+        if (TextUtils.isEmpty(packageName)) {
+            packageName = AppUtils.getProcessName(this);
+        }
     }
 
     private void delayLoad() {
