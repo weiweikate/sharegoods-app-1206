@@ -694,7 +694,7 @@ export default class TopicDetailPage extends BasePage {
                                            case 2:
                                                setTimeout(() => {
                                                    this.shareModal && this.shareModal.open();
-                                               }, 200);
+                                               }, 300);
                                                break;
                                            case 3:
                                                if (!user.isLogin) {
