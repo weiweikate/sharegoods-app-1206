@@ -23,13 +23,14 @@ import { getTopicJumpPageParam } from './model/TopicMudelTool';
 import CommShareModal from '../../comm/components/CommShareModal';
 import apiEnvironment from '../../api/ApiEnvironment';
 import user from '../../model/user';
-import Manager,{AdViewBindModal} from '../../components/web/WebModalManager'
+import Manager, { AdViewBindModal } from '../../components/web/WebModalManager';
 
 import res from '../../comm/res';
 import { TrackApi } from '../../utils/SensorsTrack';
 import LuckyIcon from '../guide/LuckyIcon';
 import { homeType } from '../home/HomeTypes';
-import ImageLoad from '@mr/image-placeholder'
+import ImageLoad from '@mr/image-placeholder';
+import { homeModule } from '../home/model/Modules';
 
 const {
     button: {
@@ -37,7 +38,7 @@ const {
     }
 } = res;
 
-const { statusBarHeight,px2dp,tabBarHeight } = ScreenUtils;
+const { statusBarHeight, px2dp, tabBarHeight } = ScreenUtils;
 @observer
 export default class DownPricePage extends BasePage {
 
@@ -62,19 +63,19 @@ export default class DownPricePage extends BasePage {
 
         //获取弹出框的信息
         this.manager = new Manager();
-        this.AdModal = observer(AdViewBindModal(this.manager))
-        this.manager.getAd(4,this.params.linkTypeCode,homeType.Alert);
+        this.AdModal = observer(AdViewBindModal(this.manager));
+        this.manager.getAd(4, this.params.linkTypeCode, homeType.Alert);
     }
 
     $NavigationBarDefaultLeftPressed = () => {
-        this.manager.showAd(()=>this.$navigateBack())
-    }
+        this.manager.showAd(() => this.$navigateBack());
+    };
 
     $NavBarRenderRightItem = () => {
         return (
 
             <TouchableOpacity
-                style={{flex:1,justifyContent:'center'}}
+                style={{ flex: 1, justifyContent: 'center' }}
                 onPress={() => {
                     this.shareModal && this.shareModal.open();
                 }}
@@ -92,11 +93,16 @@ export default class DownPricePage extends BasePage {
                 console.log('-----' + linkTypeCode);
                 setTimeout(() => {
                     this.dataModel.loadTopicData(linkTypeCode);
-                    this.luckyIcon && this.luckyIcon.getLucky(4,linkTypeCode)
+                    this.dataModel.getAdvertisingList({
+                        type: homeType.float,
+                        showPage: 4,
+                        showPageValue: linkTypeCode
+                    });
+                    this.luckyIcon && this.luckyIcon.getLucky(4, linkTypeCode);
                 });
             }
         );
-        TrackApi.specialTopicPage({'specialTopicId':linkTypeCode});
+        TrackApi.specialTopicPage({ 'specialTopicId': linkTypeCode });
     }
 
     componentWillUnmount() {
@@ -210,7 +216,7 @@ export default class DownPricePage extends BasePage {
         this.$NavigationBarResetTitle(this.dataModel.name);
         const AdModal = this.AdModal;
         return (
-            <View style={{flex: 1}}>
+            <View style={{ flex: 1 }}>
                 <ScrollView
                     alwaysBounceVertical={true}
                     contentContainerStyle={Styles.list}
@@ -282,23 +288,43 @@ export default class DownPricePage extends BasePage {
                                     }}
                     />
                 </ScrollView>
-                <AdModal />
-                <LuckyIcon ref={(ref)=>{this.luckyIcon = ref}} />
-                <View style={{
-                    backgroundColor:'red',
-                    height:px2dp(40)+tabBarHeight - px2dp(49),
-                }}>
-                    <TouchableOpacity>
-                        <ImageLoad
-                            style={{ flex:1, backgroundColor:'green' }}
-                        />
-                    </TouchableOpacity>
-
-                </View>
+                <AdModal/>
+                <LuckyIcon ref={(ref) => {
+                    this.luckyIcon = ref;
+                }}/>
+                {
+                    this.dataModel.advertisingData.length > 0 ?
+                        <View style={{
+                            backgroundColor: 'red',
+                            height: px2dp(40) + tabBarHeight - px2dp(49)
+                        }}>
+                            <TouchableOpacity onPress={() => {
+                                this.gotoAdverPage();
+                            }
+                            }>
+                                <ImageLoad
+                                    style={{ flex: 1, backgroundColor: 'green' }}
+                                    source={this.dataModel.advertisingData.length > 0 ? this.dataModel.advertisingData[0].image : null}
+                                />
+                            </TouchableOpacity>
+                        </View> :
+                        null
+                }
             </View>
         );
     }
 
+    gotoAdverPage = () => {
+        if (this.dataModel.advertisingData > 0) {
+            const advData = this.dataModel.advertisingData[0];
+            const { linkTypeCode } = this.params;
+            const router = homeModule.homeNavigate(advData.linkType, linkTypeCode);
+            let params = homeModule.paramsNavigate(advData);
+            if (router) {
+                this.$navigate(router, params);
+            }
+        }
+    };
     /**
      * 获取类型
      * 0 普通专题
