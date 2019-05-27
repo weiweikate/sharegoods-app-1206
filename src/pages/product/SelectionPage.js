@@ -257,11 +257,15 @@ export default class SelectionPage extends Component {
                 ref={(ref) => this.modal = ref}
                 animationType="none"
                 visible={this.state.modalVisible}
-                onRequestClose={() => {this.setState({ modalVisible: false });
-                        this.props.closeCallBack &&  this.props.closeCallBack();
+                onRequestClose={() => {
+                    this.setState({ modalVisible: false }, () => {
+                        this.props.closeCallBack && this.props.closeCallBack();
+                    });
                 }}>
                 <View style={styles.container}>
-                    <TouchableWithoutFeedback onPress={() => this.setState({ modalVisible: false })}>
+                    <TouchableWithoutFeedback onPress={() => this.setState({ modalVisible: false }, () => {
+                        this.props.closeCallBack && this.props.closeCallBack();
+                    })}>
                         <View style={{ height: ScreenUtils.autoSizeHeight(175) }}/>
                     </TouchableWithoutFeedback>
                     <View style={{ flex: 1 }}>
@@ -269,7 +273,9 @@ export default class SelectionPage extends Component {
                                              sourceType={this.state.source_Type}
                                              selectStrList={this.state.selectStrList}
                                              selectSpecList={this.state.selectSpecList}
-                                             closeSelectionPage={() => this.setState({ modalVisible: false })}/>
+                                             closeSelectionPage={() => this.setState({ modalVisible: false }, () => {
+                                                 this.props.closeCallBack && this.props.closeCallBack();
+                                             })}/>
                         <View style={{ flex: 1, backgroundColor: 'white' }}>
                             <ScrollView>
                                 {this._addSelectionSectionView()}
