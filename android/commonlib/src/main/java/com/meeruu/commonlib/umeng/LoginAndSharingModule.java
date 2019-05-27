@@ -1188,6 +1188,14 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             if (url == null || "".equals(url) || url.length() < 1) {
                 return null;
             }
+            if(url.contains("http")){
+                if(url.contains("?")){
+                    url = url+"&pageSource=7";
+                }else {
+                    url = url+"?pageSource=7";
+                }
+            }
+
             Hashtable<EncodeHintType, Object> hints = new Hashtable<>();
             hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
             hints.put(EncodeHintType.MARGIN, 0);

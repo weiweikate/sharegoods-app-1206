@@ -350,7 +350,6 @@ static NSString *IDType = @"TypeCell";
                   @"detail":self.callBackArr[indexPath.item],
                   @"index":[NSNumber numberWithInteger:indexPath.row]});
   }
-  [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 -(void)downloadClick:(RecommendedCell *)cell{
@@ -398,10 +397,17 @@ static NSString *IDType = @"TypeCell";
 -(void)zanBtnClick:(RecTypeCell *)cell{
   NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
   JXModelData *model = self.dataArr[indexPath.row];
+  if(!model.like){
+    model.likesCount++;
+  }else{
+    model.likesCount--;
+  }
   model.like = !model.like;
-  [self.tableView beginUpdates];
-  [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-  [self.tableView endUpdates];
+  NSMutableDictionary * dic = [NSMutableDictionary dictionaryWithDictionary:self.callBackArr[indexPath.row]];
+  [dic setObject:[NSNumber numberWithInteger:model.likesCount] forKey:@"likesCount"];
+  [dic setObject:@(model.like) forKey:@"like"];
+  [self.callBackArr replaceObjectAtIndex:indexPath.row withObject:dic];
+  
   if(_onZanPress) {
     _onZanPress(@{
                   @"detail":self.callBackArr[indexPath.item],

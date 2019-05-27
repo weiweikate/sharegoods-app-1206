@@ -180,7 +180,7 @@
     NSString * num = @"";
     if (_model.hotCount) {
       if(_model.hotCount<999){
-        num = [NSString stringWithFormat:@"%ld",_model.hotCount];
+        num = [NSString stringWithFormat:@"%ld",_model.hotCount>0?_model.hotCount:0];
       }else if(_model.hotCount<100000){
         num = @"999+";
       }else{

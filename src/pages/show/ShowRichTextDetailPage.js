@@ -7,7 +7,6 @@ import {
     StyleSheet,
     NativeModules,
     Alert,
-    ImageBackground,
     TouchableWithoutFeedback
 } from 'react-native';
 import res from './res';
@@ -42,8 +41,9 @@ import NoMoreClick from '../../components/ui/NoMoreClick';
 import ProductListModal from './components/ProductListModal';
 import RouterMap from '../../navigation/RouterMap';
 import ShowApi from './ShowApi';
+import LinearGradient from 'react-native-linear-gradient';
 
-const { iconShowFire, iconLike, iconNoLike, iconBuyBg, iconShowShare } = res;
+const { iconShowFire, iconLike, iconNoLike, iconShowShare } = res;
 
 
 @SmoothPushPreLoadHighComponent
@@ -372,16 +372,20 @@ export default class ShowRichTextDetailPage extends BasePage {
                     });
                 }}>
                     <View>
-                        <ImageBackground source={iconBuyBg} style={{
-                            width: px2dp(90),
-                            height: px2dp(34),
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}>
+                        <LinearGradient start={{ x: 1, y: 0 }} end={{ x: 0, y: 0 }}
+                                        colors={['#FFCB02', '#FF9502']}
+                                        style={{
+                                            width: px2dp(90),
+                                            height: px2dp(34),
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            borderRadius:px2dp(17)
+                                        }}
+                        >
                             <Text style={{ color: DesignRule.white, fontSize: DesignRule.fontSize_threeTitle_28 }}>
                                 立即购买
                             </Text>
-                        </ImageBackground>
+                        </LinearGradient>
                         <View style={{
                             position: 'absolute',
                             top: px2dp(-5),
@@ -530,7 +534,7 @@ export default class ShowRichTextDetailPage extends BasePage {
 
                 />
 
-                <ProductRowListView style={{ marginLeft: DesignRule.margin_page, marginVertical: px2dp(10) }}
+                <ProductRowListView style={{ marginVertical: px2dp(10) }}
                                     products={detail.products}
                                     addCart={this.addCart}
                                     pressProduct={(prodCode) => {

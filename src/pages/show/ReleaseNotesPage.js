@@ -257,7 +257,8 @@ export default class ReleaseNotesPage extends BasePage {
                 Keyboard.dismiss();
                 this.setState({
                     showEmoji:false,
-                    keyBoardHeight:0
+                    keyBoardHeight:0,
+                    showEmojiButton:false
                 })
             }}>
                 <Image source={iconShowDown} style={styles.closeKeyboard}/>
