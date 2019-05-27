@@ -61,10 +61,11 @@ export default class PaymentPage extends BasePage {
                 //是否选择余额
                 const { selectedBalace } = payment;
                 if (!selectedBalace && oneCoupon <= 0) {
-                    this.$navigate("payment/ChannelPage",{
-                        bizType:bizType,
-                        modeType:modeType
-                    });
+                    this.$navigate(RouterMap.PaymentFinshPage,{payResult: PaymentResult.success})
+                    // this.$navigate("payment/ChannelPage",{
+                    //     bizType:bizType,
+                    //     modeType:modeType
+                    // });
                     return;
                 }
                 //用户设置过交易密码
