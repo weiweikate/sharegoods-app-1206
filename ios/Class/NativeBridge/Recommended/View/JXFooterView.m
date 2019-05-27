@@ -171,8 +171,8 @@
   if(len>0){
     self.scrollView.sd_layout
     .topEqualToView(self)
-    .leftEqualToView(self)
-    .rightEqualToView(self)
+    .leftSpaceToView(self, 30)
+    .rightSpaceToView(self, 0)
     .heightIs(72);
 
     //移除scrollview子视图
@@ -180,7 +180,7 @@
       [view removeFromSuperview];
     }
 
-      self.scrollView.contentSize = len>0&&len<=1?CGSizeMake(width*len+30, 70):CGSizeMake(width*len+10*len+30, 70);
+      self.scrollView.contentSize = len>0&&len<=1?CGSizeMake(width*len, 70):CGSizeMake(width*len+10*len, 70);
     for (int i=0; i<len; i++) {
         UIView *bgView = [[UIView alloc] init];
         bgView.userInteractionEnabled = YES;
@@ -188,7 +188,7 @@
         bgView.layer.cornerRadius = 5;
         //将多余的部分切掉
         bgView.layer.masksToBounds = YES;
-        CGFloat spaceWith = i==0 ? 30:30+10*i;
+        CGFloat spaceWith = 10*i;
         bgView.frame = CGRectMake((width)*i+spaceWith, 0, width, 70);
         bgView.backgroundColor = [UIColor colorWithRed:247/255.0 green:247/255.0 blue:247/255.0 alpha:1.0];
       UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickGoods:)];
@@ -222,7 +222,7 @@
         [shopCarBtn setImage:[UIImage imageNamed:@"jiarugouwuche"] forState:UIControlStateNormal];
         //加入购物车
         [shopCarBtn addTarget:self action:@selector(addCarBtn:) forControlEvents:UIControlEventTouchUpInside];
-      
+
         [bgView sd_addSubviews:@[goodsImg,titile,price,shopCarBtn]];
         //商品图片
         goodsImg.sd_layout.topSpaceToView(bgView, 5)
@@ -325,27 +325,27 @@
 }
 
 -(NSInteger)getNowTimestamp{
-  
+
   NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-  
+
   [formatter setDateStyle:NSDateFormatterMediumStyle];
-  
+
   [formatter setTimeStyle:NSDateFormatterShortStyle];
-  
+
   [formatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"]; // ----------设置你想要的格式,hh与HH的区别:分别表示12小时制,24小时制
-  
+
   //设置时区,这个对于时间的处理有时很重要
-  
+
   NSTimeZone* timeZone = [NSTimeZone timeZoneWithName:@"Asia/Beijing"];
-  
+
   [formatter setTimeZone:timeZone];
-  
+
   NSDate *datenow = [NSDate date];//现在时间
-  
+
   //时间转时间戳的方法:
   NSInteger timeSp = [[NSNumber numberWithDouble:[datenow timeIntervalSince1970]] integerValue];
-  
+
   return timeSp;
-  
+
 }
 @end
