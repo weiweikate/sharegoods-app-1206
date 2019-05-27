@@ -29,6 +29,7 @@ import res from '../../comm/res';
 import { TrackApi } from '../../utils/SensorsTrack';
 import LuckyIcon from '../guide/LuckyIcon';
 import { homeType } from '../home/HomeTypes';
+import ImageLoad from '@mr/image-placeholder'
 
 const {
     button: {
@@ -36,7 +37,7 @@ const {
     }
 } = res;
 
-const { statusBarHeight } = ScreenUtils;
+const { statusBarHeight,px2dp,tabBarHeight } = ScreenUtils;
 @observer
 export default class DownPricePage extends BasePage {
 
@@ -58,6 +59,7 @@ export default class DownPricePage extends BasePage {
                 this.dataModel.isShowLoading = false;
             }
         });
+
         //获取弹出框的信息
         this.manager = new Manager();
         this.AdModal = observer(AdViewBindModal(this.manager))
@@ -282,6 +284,17 @@ export default class DownPricePage extends BasePage {
                 </ScrollView>
                 <AdModal />
                 <LuckyIcon ref={(ref)=>{this.luckyIcon = ref}} />
+                <View style={{
+                    backgroundColor:'red',
+                    height:px2dp(40)+tabBarHeight - px2dp(49),
+                }}>
+                    <TouchableOpacity>
+                        <ImageLoad
+                            style={{ flex:1, backgroundColor:'green' }}
+                        />
+                    </TouchableOpacity>
+
+                </View>
             </View>
         );
     }
