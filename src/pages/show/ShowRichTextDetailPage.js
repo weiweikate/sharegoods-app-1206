@@ -466,7 +466,7 @@ export default class ShowRichTextDetailPage extends BasePage {
             + 'table, td, th {border:1px solid #ddd;}'
             + 'blockquote { display: block;' +
             '    background: #f9f9f9;' +
-            '    border-left: 10px solid #ccc;' +
+            '    border-left: 10px;' +
             '    margin: 10px;' +
             '    padding: 0px;' +
             '    position: relative;' +
