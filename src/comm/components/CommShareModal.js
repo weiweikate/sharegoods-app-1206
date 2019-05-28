@@ -165,7 +165,7 @@ export default class CommShareModal extends React.Component {
                             }, 350);
                         });
                     });
-                } else if (type === 'Image') {
+                } else if (type === 'Image' || type === 'Show') {
                     let url = params && params.imageUrlStr;
                     this.props.imageJson && (params.imageUrlStr = getSource(url, this.imageWidth, this.imageHeight));
                     bridge.creatShareImage(params, (path) => {
@@ -176,19 +176,7 @@ export default class CommShareModal extends React.Component {
                             }, 350);
                         });
                     });
-                }else if(type === 'Show'){
-                    let url = params && params.imageUrlStr;
-                    params && (params.imageUrlStr = getSource(url, this.imageWidth, this.imageHeight));
-                    bridge.creatShowShareImage(params, (path) => {
-                        this.setState({ path: Platform.OS === 'android' ? 'file://' + path : '' + path }, () => {
-                            this.changeShareType(0);
-                            setTimeout(() => {
-                                this.startAnimated();
-                            }, 350);
-                        });
-                    });
                 }
-
             } else {//已经有图片就直接展示
                 this.changeShareType(0);
                  this.startAnimated();

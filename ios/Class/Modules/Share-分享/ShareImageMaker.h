@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 @interface ShareImageMakerModel : NSObject
-@property(nonatomic, copy)NSString * imageType;// product\web
+@property(nonatomic, copy)NSString * imageType;// product\web\show
 @property(nonatomic, copy)NSString * imageUrlStr;
 @property(nonatomic, copy)NSString * titleStr;
 @property(nonatomic, copy)NSString * priceType;
@@ -16,7 +16,11 @@
 @property(nonatomic, copy)NSString * retailPrice;
 @property(nonatomic, copy)NSString * spellPrice;
 @property(nonatomic, copy)NSString * QRCodeStr;
+
+@property(nonatomic, copy)NSString * headerImage;
+@property(nonatomic, copy)NSString * userName;
 @end
+
 typedef  void(^ShareImageMakercompletionBlock)(NSString * pathStr, NSString *errorStr);
 typedef  void(^completionBlock)(BOOL success);
 @interface ShareImageMaker : NSObject

@@ -7,28 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
-@interface ShowShareImgMakerModel : NSObject
-@property(nonatomic, copy)NSString * imageType;// image
-@property(nonatomic, copy)NSString * imageUrlStr;
-@property(nonatomic, copy)NSString * headerImage;
-@property(nonatomic, copy)NSString * userName;
-@property(nonatomic, copy)NSString * titleStr;
-@property(nonatomic, copy)NSString * priceType;
-@property(nonatomic, copy)NSString * priceStr;
-@property(nonatomic, copy)NSString * retailPrice;
-@property(nonatomic, copy)NSString * spellPrice;
-@property(nonatomic, copy)NSString * QRCodeStr;
-@end
-typedef  void(^ShowImageMakercompletionBlock)(NSString * paths, NSString *errorStr);
-typedef  void(^completionBlock)(BOOL success);
-
+#import "ShareImageMaker.h"
 @interface ShowShareImgMaker : NSObject
-SINGLETON_FOR_HEADER(ShowShareImgMaker)
+
 /**
- 生成二维码分享的图片，保存在本地,商品详情里面
+返回true合法
  */
-- (void)createShareImageWithShareImageMakerModel:(ShowShareImgMakerModel *)model
-                                     completion:(ShowImageMakercompletionBlock) completion;
++(BOOL)checkLegalWithShareImageMakerModel:(ShareImageMakerModel *)model
+                                     completion:(ShareImageMakercompletionBlock) completion;
+
++ (NSDictionary *)getParamsWithImages:(NSArray<UIImage *> *)images
+                                model:(ShareImageMakerModel *)model;
 
 @end
 
