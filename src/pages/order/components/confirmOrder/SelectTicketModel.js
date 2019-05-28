@@ -90,8 +90,8 @@ export default class SelectTicketModel extends React.Component {
             id: item.id,
             status: item.status,
             name: item.name,
-            timeStr: item.startTime&&item.expireTime?this.fmtDate(item.startTime||0) + "-" + this.fmtDate(item.expireTime||0):null,
-            value: item.type === 3 ? (item.value / 10) : (item.type === 4 ? "商品\n兑换" : (item.type === 5 ? "兑换" : item.value)),
+            timeStr: item.startTime && item.expireTime ? this.fmtDate(item.startTime || 0) + '-' + this.fmtDate(item.expireTime || 0) : null,
+            value: item.type === 3 ? (item.value / 10) : (item.type === 4 ? '商品\n兑换' : (item.type === 5 ? '兑换' : item.value)),
             limit: this.parseCoupon(item),
             couponConfigId: item.couponConfigId,
             remarks: item.remarks,
@@ -106,7 +106,7 @@ export default class SelectTicketModel extends React.Component {
     }
 
     fmtDate(obj) {
-        return formatDate(obj, 'yyyy.MM.dd HH:mm');
+        return formatDate(obj, 'yyyy.MM.dd');
     }
 
     clickItem = (item) => {
@@ -118,19 +118,19 @@ export default class SelectTicketModel extends React.Component {
         let products = item.products || [], cat1 = item.cat1 || [], cat2 = item.cat2 || [], cat3 = item.cat3 || [];
         let result = null;
         if(item.type === 5){
-            return "限商品：限指定商品可用";
+            return '限商品：限指定商品可用';
         }
         if (products.length) {
             if ((cat1.length || cat2.length || cat3.length)) {
-                return "限商品：限指定商品可用";
+                return '限商品：限指定商品可用';
             }
             if (products.length > 1) {
-                return "限商品：限指定商品可用";
+                return '限商品：限指定商品可用';
             }
             if (products.length === 1) {
                 let productStr = products[0];
                 if (productStr.length > 15) {
-                    productStr = productStr.substring(0, 15) + "...";
+                    productStr = productStr.substring(0, 15) + '...';
                 }
                 return `限商品：限${productStr}商品可用`;
             }
@@ -140,9 +140,9 @@ export default class SelectTicketModel extends React.Component {
             return `限品类：限${result[0]}品类可用`;
         }
         else if ((cat1.length + cat2.length + cat3.length) > 1) {
-            return `限品类：限指定品类商品可用`;
+            return '限品类：限指定品类商品可用';
         } else {
-            return "全品类：全场通用券（特殊商品除外）";
+            return '全品类：全场通用券（特殊商品除外）';
         }
     };
 
@@ -182,7 +182,7 @@ export default class SelectTicketModel extends React.Component {
                                          renderItem={this.renderItem}
                                          renderEmpty={()=> {
                                              return(
-                                                 <View style={{height: autoSizeWidth(480-95), alignItems: 'center', justifyContent: 'center'}}>
+                                                 <View style={{height: autoSizeWidth(480 - 95), alignItems: 'center', justifyContent: 'center'}}>
                                                      <Image source={emptyIcon} style={{height: autoSizeWidth(140), width: autoSizeWidth(244)}}/>
                                                      <Text style={{color: '#666666', fontSize: autoSizeWidth(13)}}>无可用券</Text>
                                                  </View>
@@ -191,7 +191,7 @@ export default class SelectTicketModel extends React.Component {
                         />
                         <View style={{height: autoSizeWidth(50) + safeBottom}}>
                             <TouchableOpacity style={[DesignRule.style_bigRedBorderBtn,{height: autoSizeWidth(40), borderColor: DesignRule.textColor_instruction,  borderRadius: autoSizeWidth(20),}]}
-                                              onPress={()=>{this.close(); this.callBack&&this.callBack('giveUp')}}
+                                              onPress={()=>{this.close(); this.callBack && this.callBack('giveUp')}}
                             >
                                 <Text style={[DesignRule.style_btnWhiteText, {color: DesignRule.textColor_instruction}]}>不使用优惠券</Text>
                             </TouchableOpacity>

@@ -34,6 +34,10 @@ static  NSString * constTile = @"公猫认证";
   NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL URLWithString:self.url]];
   [self.webView loadRequest:request];
 }
+- (void)viewWillAppear:(BOOL)animated{
+  [super viewWillAppear:animated];
+  [self.navigationController setNavigationBarHidden:NO animated:YES];
+}
 /** 添加返回按钮*/
 - (void)addBackBtn
 {

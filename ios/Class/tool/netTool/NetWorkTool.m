@@ -21,41 +21,41 @@
     static AFHTTPSessionManager *manager;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        
+
         manager=[AFHTTPSessionManager manager];
         manager.responseSerializer.acceptableContentTypes =[NSSet setWithObjects:@"application/json",@"text/json",@"text/javascript",@"text/html",@"text/plain",nil];
-        
+
         [manager.requestSerializer willChangeValueForKey:@"timeoutInterval"];
-        
+
         manager.requestSerializer.timeoutInterval = kTimeOutInterval;
-        
+
         [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
-      
+
       NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
       // app版本
       NSString *app_Version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
       NSString *systemVersion = [UIDevice currentDevice].systemVersion;
       manager.requestSerializer = [AFJSONRequestSerializer serializer];
-      
+
       [manager.requestSerializer setValue:@"appstore"
                        forHTTPHeaderField:@"channel"];
-      
+
       [manager.requestSerializer setValue:[NSString stringWithFormat:@"ios%@",systemVersion]
                        forHTTPHeaderField:@"platform"];
-      
+
       [manager.requestSerializer setValue:app_Version
                        forHTTPHeaderField:@"version"];
-      
+
       [manager.requestSerializer setValue:@"SIGNATURE"
                        forHTTPHeaderField:@"Security-Policy"];
-      
+
       [manager.requestSerializer setValue:[BGKeychainTool getDeviceIDInKeychain]
                        forHTTPHeaderField:@"device"];
-      
+
     });
-    
+
     return manager;
-    
+
 }
 
 + (void)requestWithURL:(NSString *)url
@@ -66,7 +66,7 @@
            showLoading:(NSString *)showLoading
 {
   NSString * path = [StorageFromRN getHost];
-  [[self manager].requestSerializer setValue:@"" forHTTPHeaderField:@"sg-token"];
+  [[self manager].requestSerializer setValue:[StorageFromRN getSG_Token] forHTTPHeaderField:@"sg-token"];
     NSArray<NSString *> * arr = [url componentsSeparatedByString:@"@"];
     NSString * URL = [NSString stringWithFormat:@"%@%@",path,arr.firstObject];
     if ([[arr.lastObject uppercaseString] isEqualToString:@"GET"]) {
@@ -173,13 +173,13 @@
 //                errorBlock(responseObject[@"msg"], code);
 //                break;
 //            }
-                
+
             default:///其他情况返回error
                 NSLog(@"请求结果：\n%@",responseObject[@"msg"]);
                 errorBlock(responseObject[@"msg"], code);
                 break;
         }
-        
+
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         if (showLoading) {
             [hub hideAnimated:YES];

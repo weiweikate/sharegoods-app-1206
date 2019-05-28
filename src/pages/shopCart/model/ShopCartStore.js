@@ -1,10 +1,10 @@
-import { observable, action, computed } from "mobx";
-import ShopCartAPI from "../api/ShopCartApi";
-import bridge from "../../../utils/bridge";
-import MineApi from "../../mine/api/MineApi";
-import user from "../../../model/user";
-import shopCartCacheTool from "./ShopCartCacheTool";
-import { QYChatTool } from "../../../utils/QYModule/QYChatTool";
+import { observable, action, computed } from 'mobx';
+import ShopCartAPI from '../api/ShopCartApi';
+import bridge from '../../../utils/bridge';
+import MineApi from '../../mine/api/MineApi';
+import user from '../../../model/user';
+import shopCartCacheTool from './ShopCartCacheTool';
+import { QYChatTool } from '../../../utils/QYModule/QYChatTool';
 
 // import testData from './testData';
 class ShopCartStore {
@@ -35,7 +35,7 @@ class ShopCartStore {
         if (this.isCanAddItem()) {
             this.data.push(item);
         } else {
-            bridge.$toast("购物车数量已达最大数量");
+            bridge.$toast('购物车数量已达最大数量');
         }
     }
 
@@ -156,7 +156,7 @@ class ShopCartStore {
             effectiveArr.map((itemObj, index) => {
                 //增加两个字段
                 itemObj.type = itemObj.activityType;//当前分组类型
-                itemObj.middleTitle = "";
+                itemObj.middleTitle = '';
                 itemObj.key = index;
                 itemObj.data = itemObj.products;
                 itemObj.data.map((goodItem, goodItemIndex) => {
@@ -169,12 +169,12 @@ class ShopCartStore {
                     goodItem.activityCode = itemObj.activityCode;
                     goodItem.topSpace = itemObj.activityType == 8 ? 0 : 10;
 
-                    let tempSpecContent = "规格:";
+                    let tempSpecContent = '规格:';
                     goodItem.specifies.map((specify, specifyIndex) => {
                         if (specifyIndex === 0) {
                             tempSpecContent += specify.paramValue;
                         } else {
-                            tempSpecContent += "-" + specify.paramValue;
+                            tempSpecContent += '-' + specify.paramValue;
                         }
                     });
                     goodItem.specifyContent = tempSpecContent;
@@ -212,21 +212,21 @@ class ShopCartStore {
         if (InvalidArr && InvalidArr instanceof Array && InvalidArr.length > 0) {
             let invalidObj = {};
             invalidObj.type = -1;            //当前分组为失效商品
-            invalidObj.middleTitle = "1111";
+            invalidObj.middleTitle = '1111';
             invalidObj.key = tempAllData.length;
             invalidObj.data = InvalidArr[0].products;
             invalidObj.data.map((goodItem, goodItemIndex) => {
                 goodItem.isSelected = false;
-                goodItem.key = "" + tempAllData.length + goodItemIndex;
+                goodItem.key = '' + tempAllData.length + goodItemIndex;
                 goodItem.topSpace = 0;
                 // 有一个showPrice 搞活动显示的价格，有就重置掉price，没有你就老实的用原来的 OJBK?
                 goodItem.price = goodItem.showPrice ? goodItem.showPrice : goodItem.price;
-                let tempSpecContent = "规格:";
+                let tempSpecContent = '规格:';
                 goodItem.specifies.map((specify, specifyIndex) => {
                     if (specifyIndex === 0) {
                         tempSpecContent += specify.paramValue;
                     } else {
-                        tempSpecContent += "-" + specify.paramValue;
+                        tempSpecContent += '-' + specify.paramValue;
                     }
                 });
                 goodItem.specifyContent = tempSpecContent;
@@ -292,7 +292,7 @@ class ShopCartStore {
             if (items.type === 8) {
                 //所选商品总金额
                 let totalSelectMoney = 0;
-                let middleTitleTip = "";
+                let middleTitleTip = '';
                 items.data.map((itemGood, itemGoodIndex) => {
                     if (itemGood.isSelected) {
                         totalSelectMoney += itemGood.price * itemGood.amount;
@@ -300,7 +300,7 @@ class ShopCartStore {
                 });
                 if (items.rules instanceof Array && items.rules.length > 0) {
                     if (totalSelectMoney === 0) {
-                        middleTitleTip = "购买满" + items.rules[0].startPrice + "元,经验值翻" + items.rules[0].rate + "倍";
+                        middleTitleTip = '购买满' + items.rules[0].startPrice + '元,经验值翻' + items.rules[0].rate + '倍';
                         // + (isNaN(parseInt(items.startCount))?0:items.startCount)  + '张优惠券';
                         items.middleTitle = middleTitleTip;
                     } else {
@@ -313,7 +313,7 @@ class ShopCartStore {
                                 achieveRuleIndex = ruleIndex;
                             }
                         });
-                        middleTitleTip = "购买满" + items.rules[achieveRuleIndex].startPrice + "元,经验值翻" + items.rules[achieveRuleIndex].rate + "倍,";
+                        middleTitleTip = '购买满' + items.rules[achieveRuleIndex].startPrice + '元,经验值翻' + items.rules[achieveRuleIndex].rate + '倍,';
                         //计算优惠券
                         // let totalYouHuiJuan = items.rules[achieveRuleIndex].startPrice / items.startPrice;
                         let totalYouHuiJuan = items.startCount;
@@ -330,12 +330,12 @@ class ShopCartStore {
                         }
                         // middleTitleTip = middleTitleTip + '送' + (isNaN(parseInt(totalYouHuiJuan))?0:totalYouHuiJuan)  + '张优惠券';
                         if (totalSelectMoney - items.rules[achieveRuleIndex].startPrice < 0) {
-                            middleTitleTip = middleTitleTip + "还差" + (items.rules[achieveRuleIndex].startPrice - totalSelectMoney).toFixed(2) + "元";
+                            middleTitleTip = middleTitleTip + '还差' + (items.rules[achieveRuleIndex].startPrice - totalSelectMoney).toFixed(2) + '元';
                         }
                         items.middleTitle = middleTitleTip;
                     }
                 } else {
-                    items.middleTitle = "";
+                    items.middleTitle = '';
                 }
             }
         });
@@ -363,7 +363,7 @@ class ShopCartStore {
     judgeIsCanSettlement = (callBack) => {
         let [...selectArr] = shopCartStore.startSettlement();
         if (selectArr.length <= 0) {
-            bridge.$toast("请先选择结算商品~");
+            bridge.$toast('请先选择结算商品~');
             callBack(false, []);
             return;
         }
@@ -384,11 +384,11 @@ class ShopCartStore {
         });
 
         if (haveNaNGood) {
-            bridge.$toast("存在选中商品数量为空,或存在正在编辑的商品,请确认~");
+            bridge.$toast('存在选中商品数量为空,或存在正在编辑的商品,请确认~');
             return;
         }
         if (!isCanSettlement) {
-            bridge.$toast("商品库存不足请确认~");
+            bridge.$toast('商品库存不足请确认~');
             return;
         }
         if (isCanSettlement && !haveNaNGood) {
@@ -520,10 +520,10 @@ class ShopCartStore {
                 }
             ).then((res) => {
                 bridge.hiddenLoading();
-                bridge.$toast("加入购物车成功");
+                bridge.$toast('加入购物车成功');
                 this.getShopCartListData();
             }).catch((error) => {
-                bridge.$toast(error.msg || "加入购物车失败");
+                bridge.$toast(error.msg || '加入购物车失败');
                 if (error.code === 10009) {
                     user.clearUserInfo();
                     user.clearToken();
@@ -538,7 +538,7 @@ class ShopCartStore {
                 bridge.hiddenLoading();
             });
         } else {
-            bridge.$toast("添加商品不能为空");
+            bridge.$toast('添加商品不能为空');
         }
     }
 
@@ -558,7 +558,7 @@ class ShopCartStore {
                 // bridge.$toast('加入购物车成功');
                 this.getShopCartListData();
             }).catch((error) => {
-                bridge.$toast(error.msg || "加入购物车失败");
+                bridge.$toast(error.msg || '加入购物车失败');
                 if (error.code === 10009) {
                     // user.clearUserInfo();
                     // user.clearToken();
@@ -588,9 +588,9 @@ class ShopCartStore {
     deleteItemWithIndex(skuCodes) {
         if (skuCodes) {
             ShopCartAPI.deleteItem({
-                "skuCodes": skuCodes
+                'skuCodes': skuCodes
             }).then(res => {
-                bridge.$toast("删除成功");
+                bridge.$toast('删除成功');
                 this.packingShopCartGoodsData(res.data);
             }).catch(error => {
                 bridge.$toast(error.msg);

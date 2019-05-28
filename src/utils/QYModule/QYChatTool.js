@@ -3,7 +3,7 @@ import {
 } from 'react-native';
 import user from '../../model/user';
 import DeviceInfo from 'react-native-device-info/deviceinfo';
-import chatModel from "./QYChatModel";
+import chatModel from './QYChatModel';
 
 const { JRQYService } = NativeModules;
 
@@ -63,7 +63,7 @@ const QYChatTool = {
         chatType: beginChatType.BEGIN_FROM_OTHER,
         data: {}
     }) {
-        if (params.data &&params.data.urlString && params.data.urlString.length > 0){
+        if (params.data && params.data.urlString && params.data.urlString.length > 0){
             chatModel.preProductUrl = params.data.urlString;
         } else {
             chatModel.preProductUrl = '';

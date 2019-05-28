@@ -8,7 +8,9 @@ const api = {
     //查看礼包详情 杨小猛
     findActivityPackageDetail:['/operator/activitypackage/findActivityPackageDetail',{method:'get'}],
     //订阅或不订阅
-    followAction: '/activity/activitySubscribe/addActivitySubscribe'
+    followAction: ['/activity/activitySubscribe/addActivitySubscribe',{method:'post'}],
+    //获取广告位信息
+    getQueryAdvertisingList:['/advertising/queryAdvertisingList',{method:'post'}]
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 

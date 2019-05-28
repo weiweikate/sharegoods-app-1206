@@ -52,7 +52,7 @@ export default class DebugPanelPage extends BasePage {
     onClickChange = async envType => {
         const host = apiEnvironment.isHostExistWithEnvType(envType);
         if (!host) {
-            alert(`当前环境host暂未配置~\n暂不支持设置`);
+            alert('当前环境host暂未配置~\n暂不支持设置');
             return;
         }
         await user.clearUserInfo();

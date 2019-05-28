@@ -3,45 +3,81 @@ import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 
 const { width, px2dp } = ScreenUtils;
-const imageHeight = width;
 import ViewPager from '../../components/ui/ViewPager';
-import ImageLoad from '@mr/image-placeholder'
+import ImageLoad from '@mr/image-placeholder';
 import {
-    MRText as Text,
+    MRText as Text
 } from '../../components/ui';
+import ShowUtils from './utils/ShowUtils';
 
+const maxHeight = ScreenUtils.height * 0.72;
+const minHeight = ScreenUtils.height * 0.36;
 export default class ShowImageView extends Component {
 
     state = {
-        items:[]
+        items: []
     };
 
     constructor(props) {
-        super(props)
-        this.index = 0
-        this.state.items = this.props.items
-    }
+        super(props);
+        this.index = 0;
+        this.imageHeight = width;
+        this.heights = [];
+        let changeHeight = true;
+        this.state.items = []
+        for(let i = 0;i<this.props.items.length;i++){
+            let value = this.props.items[i];
+            if (value.type === 2) {
+                if (value.url.indexOf('?') === -1) {
+                    changeHeight = false;
+                } else {
+                    let params = ShowUtils.getUrlVars(value.url);
+                    let height = params.height;
+                    let width = params.width;
+                    if (height && width) {
+                        this.getHeightWithSize(width, height);
+                    } else {
+                        changeHeight = false;
+                    }
+                }
+                this.state.items.push(value.url);
+            }
 
-    componentWillReceiveProps(nextProps) {
-        const {items} = nextProps
-        if (items && items.length !== this.state.items.length) {
-            this.state.items = items
+        }
+        if (changeHeight) {
+            this.heights.sort((a, b) => {
+                return a - b;
+            });
+
+            this.imageHeight = this.heights[0];
+
         }
     }
+
+
+    getHeightWithSize = (width, height) => {
+        let h = height * ScreenUtils.width / width;
+        h = h < minHeight ? minHeight : h;
+        h = h > maxHeight ? maxHeight : h;
+        this.heights.push(h);
+    };
 
     _renderPagination(index, total) {
         this.index = index;
         return <View style={styles.indexView}>
             <Text style={styles.text} allowFontScaling={false}>{index + 1} / {total}</Text>
-        </View>
+        </View>;
     }
 
     _renderViewPageItem(item) {
-        return <TouchableWithoutFeedback onPress={()=> this.props.onPress(this.state.items, this.index)}>
+        return <TouchableWithoutFeedback onPress={() => this.props.onPress(this.state.items, this.index)}>
             <View>
-            <ImageLoad style={styles.image} source={{ uri: item }} resizeMode='contain'/>
+                <ImageLoad style={{
+                    width: width,
+                    height: this.imageHeight
+                }} source={{ uri: item }} resizeMode='contain'/>
             </View>
-        </TouchableWithoutFeedback>
+        </TouchableWithoutFeedback>;
     }
 
     render() {
@@ -49,14 +85,17 @@ export default class ShowImageView extends Component {
         if (!items) {
             return <View/>;
         }
-        return <View style={styles.wrapper}>
+        return <View style={{
+            width: width,
+            height: this.imageHeight
+        }}>
             <ViewPager
                 swiperShow={true}
                 arrayData={items}
                 renderItem={this._renderViewPageItem.bind(this)}
-                autoplay={true}
+                autoplay={false}
                 loop={false}
-                height={imageHeight}
+                height={this.imageHeight}
                 renderPagination={this._renderPagination.bind(this)}
                 index={0}
                 scrollsToTop={true}
@@ -66,14 +105,6 @@ export default class ShowImageView extends Component {
 }
 
 let styles = StyleSheet.create({
-    wrapper: {
-        width: width,
-        height: imageHeight
-    },
-    image: {
-        width: width,
-        height: imageHeight
-    },
     indexView: {
         width: px2dp(43),
         height: px2dp(20),

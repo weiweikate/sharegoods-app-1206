@@ -37,4 +37,16 @@
         <attr name="wlv_titleCenterStrokeColor" format="color" />
         <attr name="wlv_titleCenterStrokeWidth" format="dimension" />
     </declare-styleable>
+    <declare-styleable name="NineGridView">
+        <attr name="ngv_gridSpacing" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="FolderTextView">
+        <attr name="foldText" format="string"/>
+        <attr name="unFoldText" format="string"/>
+        <attr name="foldLine" format="integer"/>
+        <attr name="tailTextColor" format="color"/>
+        <attr name="canFoldAgain" format="boolean"/>
+        <attr name="canClickTail" format="boolean"/>
+    </declare-styleable>
 </resources>

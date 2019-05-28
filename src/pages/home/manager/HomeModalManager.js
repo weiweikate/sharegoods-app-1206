@@ -9,11 +9,8 @@ import DeviceInfo from 'react-native-device-info/deviceinfo';
 import MineApi from '../../mine/api/MineApi';
 import HomeAPI from '../api/HomeAPI';
 import { homeType } from '../HomeTypes';
-import GuideApi from '../../guide/GuideApi';
 import { AsyncStorage } from 'react-native';
 import MessageApi from '../../message/api/MessageApi';
-import user from '../../../model/user';
-import { homeFocusAdModel } from '../model/HomeFocusAdModel';
 
 const requsetCount = 4;
 
@@ -21,17 +18,6 @@ class HomeModalManager {
     /** 控制升级框*/
     @observable
     isShowUpdate = false;
-    @observable
-    versionData = null;
-    /** 控制新手引导*/
-    @observable
-    isShowGuide = false;
-    needShowGuide = false;
-    @observable
-    step = 0;
-    /** 新手引导第几步*/
-    @observable
-    guideData = {};
     /** 控制公告*/
     @observable
     isShowNotice = false;
@@ -44,6 +30,20 @@ class HomeModalManager {
     needShowAd = false;
     @observable
     AdData = null;
+
+    /** 控制首页新手礼包*/
+    @observable
+    isShowGift = false;
+    needShowGift = false;
+    @observable
+    giftData = null;
+
+    /** 控制首页中奖*/
+    @observable
+    isShowPrize  = false;
+    needShowPrize  = false;
+    @observable
+    prizeData = null;
     /** 是否在首页*/
     @observable
     isHome = false;
@@ -63,43 +63,12 @@ class HomeModalManager {
     }
 
     @action
-    guideNextAction() {
-        if (this.step === 2 && homeFocusAdModel.foucusHeight === 0) {
-            this.step = this.step + 2;
-        } else {
-            this.step++;
-        }
-        if (this.step === 5) {
-            GuideApi.registerSend({});//完成了新手引导
-            user.finishGiudeAction();//防止请求失败，重复调用新手引导
-        }
-    }
-
-    @action
-    requestGuide() {
-        if (this.finishCount !== requsetCount) {
-            return;
-        }
-        GuideApi.getUserRecord().then((data) => {
-            if (data.data === true) {
-                if (user.finishGuide === true) {
-                    GuideApi.registerSend({});
-                } else {
-                    this.isShowGuide = true;
-                    this.getRewardzInfo();
-                }
-            }
-        }).catch(() => {
-        });
-    }
-
-    @action
     requestData() {
         this.finishCount = 0;
         this.getVersion();
         this.getMessage();
         this.getAd();
-        this.getUserRecord();
+        this.getPrize();
     }
 
     @action
@@ -109,12 +78,12 @@ class HomeModalManager {
         }
         this.isShowUpdate = false;
         this.versionData = null;
-        if (this.needShowGuide === true) {
-            this.isShowGuide = true;
-        } else if (this.needShowNotice === true) {
+        if (this.needShowNotice === true) {
             this.isShowNotice = true;
         } else if (this.needShowAd === true) {
             this.isShowAd = true;
+        }else if (this.needShowGift === true) {
+            this.isShowGift = true;
         }
     }
 
@@ -125,19 +94,13 @@ class HomeModalManager {
         this.isShowNotice = false;
         this.needShowNotice = false;
         this.noticeData = null;
-    }
-
-    @action
-    closeGuide() {
-        this.isShowGuide = false;
-        this.needShowGuide = false;
-        this.guideData = {};
-        if (this.needShowNotice === true) {
-            this.isShowNotice = true;
-        } else if (this.needShowAd === true) {
-            this.isShowAd = true;
+        if (this.needShowGift === true) {
+            this.isShowGift = true;
+        }else if (this.needShowPrize === true) {
+            this.isShowPrize = true;
         }
     }
+
 
     @action
     closeAd() {
@@ -146,6 +109,33 @@ class HomeModalManager {
         this.isShowAd = false;
         this.needShowAd = false;
         this.AdData = null;
+        if (this.needShowGift === true) {
+            this.isShowGift = true;
+        }else if (this.needShowPrize === true) {
+            this.isShowPrize = true;
+        }
+    }
+
+    @action
+    closePrize() {
+        this.isShowPrize = false;
+        this.needShowPrize  = false;
+        this.prizeData = null;
+        //关闭抽奖结果的弹框，如果可以有新手的弹框，就显示
+        if (this.needShowGift === true){
+            this.isShowGift = true;
+        }
+    }
+
+    @action
+    closeGift() {
+        this.isShowGift = false;
+        this.needShowGift  = false;
+        this.giftData = null;
+        //关闭新手的弹框的，如果可以有抽奖结果，就显示
+        if (this.needShowPrize === true){
+            this.isShowPrize = true;
+        }
     }
 
     @action
@@ -160,13 +150,15 @@ class HomeModalManager {
                 }
             }
             if (this.isShowUpdate === false) {
-                if (this.needShowGuide === true) {
-                    this.isShowGuide = true;
-                } else if (this.needShowNotice === true) {
+                 if (this.needShowNotice === true) {
                     this.isShowNotice = true;
                 } else if (this.needShowAd === true) {
                     this.isShowAd = true;
-                }
+                }else if (this.needShowGift === true) {
+                     this.isShowGift = true;
+                 }else if (this.needShowPrize === true) {
+                     this.isShowPrize = true;
+                 }
             }
         } catch (error) {
             console.log(error);
@@ -183,31 +175,7 @@ class HomeModalManager {
             this.actionFinish();
         });
     };
-    @action
-    getUserRecord = () => {
-        GuideApi.getUserRecord().then((data) => {
-            if (data.data === true) {
-                if (user.finishGuide === true) {
-                    GuideApi.registerSend({});
-                } else {
-                    this.needShowGuide = true;
-                    this.getRewardzInfo();
-                }
-            }
-            this.actionFinish();
-        }).catch(() => {
-            this.actionFinish();
-        });
-    };
 
-    getRewardzInfo = () => {
-        HomeAPI.getHomeData({ type: homeType.guideInfo }).then((data) => {
-            data = data.data || [];
-            if (data.length > 0) {
-                this.guideData = data[0];
-            }
-        });
-    };
 
 //一天弹一次 公告与广告不共存
     @action
@@ -254,6 +222,54 @@ class HomeModalManager {
             this.actionFinish();
         });
     }
+
+    @action
+    getPrize() {
+        HomeAPI.getWinningInfo({}).then(data => {
+            if (data.data){
+                this.needShowPrize = true;
+                this.prizeData = data;
+            }
+            this.actionFinish();
+        }).catch(() => {
+            this.actionFinish();
+        })
+    }
+
+    @action
+    refreshPrize() {
+        if (this.finishCount !== requsetCount) {
+            return;
+        }
+        HomeAPI.getWinningInfo({}).then(data => {
+            if (data.data && data.data.popUp === true){
+                this.needShowPrize = true;
+                this.prizeData = data;
+            }
+            if (!this.isShowUpdate && !this.isShowNotice && !this.isShowAd && !this.isShowGift){
+                this.isShowPrize = true;
+            }
+
+        }).catch(() => {
+
+        })
+    }
+
+
+    @action
+    getGift() {
+        HomeAPI.getPopupBox({popupBoxType: 1}).then(data => {
+            if (data.data && data.data.length > 0){
+                this.needShowGift = true;
+                this.giftData = data;
+            }
+            if (!this.isShowUpdate && !this.isShowNotice && !this.isShowAd && !this.isShowPrize){
+                this.isShowGift = true;
+            }
+        }).catch(() => {
+        })
+    }
+
 
     actionFinish() {
         this.finishCount++;

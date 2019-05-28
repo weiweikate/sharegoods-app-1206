@@ -5,17 +5,17 @@
  * @org www.sharegoodsmall.com
  * @email huyufeng@meeruu.com
  */
-import LoginAPI from "../api/LoginApi";
-import bridge from "../../../utils/bridge";
-import { homeModule } from "../../home/model/Modules";
-import UserModel from "../../../model/user";
-import { login, TrackApi } from "../../../utils/SensorsTrack";
-import JPushUtils from "../../../utils/JPushUtils";
-import DeviceInfo from "react-native-device-info/deviceinfo";
-import { DeviceEventEmitter } from "react-native";
-import RouterMap from "../../../navigation/RouterMap";
-import { NavigationActions } from "react-navigation";
-import { track } from "../../../utils/SensorsTrack";
+import LoginAPI from '../api/LoginApi';
+import bridge from '../../../utils/bridge';
+import { homeModule } from '../../home/model/Modules';
+import UserModel from '../../../model/user';
+import { login, TrackApi } from '../../../utils/SensorsTrack';
+import JPushUtils from '../../../utils/JPushUtils';
+import DeviceInfo from 'react-native-device-info/deviceinfo';
+import { DeviceEventEmitter } from 'react-native';
+import RouterMap from '../../../navigation/RouterMap';
+import { NavigationActions } from 'react-navigation';
+import { track } from '../../../utils/SensorsTrack';
 
 /**
  * @param phone 校验手机号
@@ -25,12 +25,12 @@ import { track } from "../../../utils/SensorsTrack";
  * hyf 后期更改去掉phone
  */
 const oneClickLoginValidation = (phone, authenToken, navigation, successCallBack) => {
-    TrackApi.LoginButtonClick({"loginMethod":4})
+    TrackApi.LoginButtonClick({'loginMethod':4})
     LoginAPI.oneClickLoginValidation({
         token: authenToken
     }).then(result => {
         successCallBack && successCallBack();
-        TrackApi.localPhoneNumLogin({"loginMethod":4})
+        TrackApi.localPhoneNumLogin({'loginMethod':4})
         if (result.unionid == null) {
             //未绑定微信
             phoneBindWx();
@@ -103,21 +103,21 @@ const getWxUserInfo = (callback) => {
  * @param callBack
  */
 const wxLoginAction = (callBack) => {
-    TrackApi.LoginButtonClick({"loginMethod":1})
+    TrackApi.LoginButtonClick({'loginMethod':1})
     getWxUserInfo((data) => {
         LoginAPI.appWechatLogin({
             device: data.device,
-            encryptedData: "",
+            encryptedData: '',
             headImg: data.headerImg,
-            iv: "",
+            iv: '',
             nickname: data.nickName,
             appOpenid: data.appOpenid,
             systemVersion: data.systemVersion,
-            wechatVersion: "",
+            wechatVersion: '',
             unionid: data.unionid
         }).then((res) => {
             if (res.code === 34005) {
-                data.title = "绑定手机号";
+                data.title = '绑定手机号';
                 callBack && callBack(res.code, data);
                 TrackApi.wxSignUpSuccess()
             } else if (res.code === 10000) {
@@ -125,7 +125,7 @@ const wxLoginAction = (callBack) => {
                 UserModel.saveUserInfo(res.data);
                 UserModel.saveToken(res.data.token);
                 TrackApi.wxLoginSuccess();
-                bridge.$toast("登录成功");
+                bridge.$toast('登录成功');
                 console.log(UserModel);
                 homeModule.loadHomeList();
                 bridge.setCookies(res.data);
@@ -134,7 +134,7 @@ const wxLoginAction = (callBack) => {
             }
         }).catch((error) => {
             if (error.code === 34005) {
-                data.title = "绑定手机号";
+                data.title = '绑定手机号';
                 callBack && callBack(error.code, data);
                 TrackApi.wxSignUpSuccess();
             }
@@ -148,26 +148,26 @@ const wxLoginAction = (callBack) => {
  * @param callBack
  */
 const codeLoginAction = (LoginParam, callBack) => {
-    TrackApi.LoginButtonClick({"loginMethod":2})
+    TrackApi.LoginButtonClick({'loginMethod':2})
     LoginAPI.codeLogin({
-        authcode: "",
+        authcode: '',
         code: LoginParam.code,
-        device: DeviceInfo.getDeviceName() + "",
+        device: DeviceInfo.getDeviceName() + '',
         password: LoginParam.password,
         phone: LoginParam.phoneNumber,
-        systemVersion: (DeviceInfo.getSystemVersion() + "").length > 0 ? DeviceInfo.getSystemVersion() : "暂无",
-        username: "",
-        wechatCode: "",
-        wechatVersion: ""
+        systemVersion: (DeviceInfo.getSystemVersion() + '').length > 0 ? DeviceInfo.getSystemVersion() : '暂无',
+        username: '',
+        wechatCode: '',
+        wechatVersion: ''
     }).then((data) => {
         callBack(data);
         UserModel.saveUserInfo(data.data);
         UserModel.saveToken(data.data.token);
         TrackApi.codeLoginSuccess();
         bridge.setCookies(data.data);
-        DeviceEventEmitter.emit("homePage_message", null);
-        DeviceEventEmitter.emit("contentViewed", null);
-        bridge.$toast("登录成功");
+        DeviceEventEmitter.emit('homePage_message', null);
+        DeviceEventEmitter.emit('contentViewed', null);
+        bridge.$toast('登录成功');
         homeModule.loadHomeList();
         //推送
         JPushUtils.updatePushTags();
@@ -183,25 +183,25 @@ const codeLoginAction = (LoginParam, callBack) => {
  * @param callBack
  */
 const pwdLoginAction = (LoginParam, callBack) => {
-    TrackApi.LoginButtonClick({"loginMethod":3})
+    TrackApi.LoginButtonClick({'loginMethod':3})
     LoginAPI.passwordLogin({
-        authcode: "22",
+        authcode: '22',
         code: LoginParam.code,
-        device: DeviceInfo.getDeviceName() + "",
+        device: DeviceInfo.getDeviceName() + '',
         password: LoginParam.password,
         phone: LoginParam.phoneNumber,
-        systemVersion: (DeviceInfo.getSystemVersion() + "").length > 0 ? DeviceInfo.getSystemVersion() + "" : "22",
-        username: "",
-        wechatCode: "11",
-        wechatVersion: "11"
+        systemVersion: (DeviceInfo.getSystemVersion() + '').length > 0 ? DeviceInfo.getSystemVersion() + '' : '22',
+        username: '',
+        wechatCode: '11',
+        wechatVersion: '11'
     }).then((data) => {
         callBack(data);
         UserModel.saveUserInfo(data.data);
         UserModel.saveToken(data.data.token);
         TrackApi.pwdLoginSuccess();
         bridge.setCookies(data.data);
-        DeviceEventEmitter.emit("homePage_message", null);
-        DeviceEventEmitter.emit("contentViewed", null);
+        DeviceEventEmitter.emit('homePage_message', null);
+        DeviceEventEmitter.emit('contentViewed', null);
         homeModule.loadHomeList();
         //推送
         JPushUtils.updatePushTags();
@@ -219,11 +219,11 @@ const pwdLoginAction = (LoginParam, callBack) => {
 const registAction = (params, callback) => {
     LoginAPI.findMemberByPhone({
         ...params,
-        device: (this.params && this.params.device) ? this.params.device : "",
-        inviteId: "",//邀请id
-        appOpenid: (this.params && this.params.appOpenid) ? this.params.appOpenid : "",
-        systemVersion: DeviceInfo.getSystemVersion() + "",
-        wechatVersion: ""
+        device: (this.params && this.params.device) ? this.params.device : '',
+        inviteId: '',//邀请id
+        appOpenid: (this.params && this.params.appOpenid) ? this.params.appOpenid : '',
+        systemVersion: DeviceInfo.getSystemVersion() + '',
+        wechatVersion: ''
     }).then((data) => {
         if (data.code === 10000) {
             callback(data);
@@ -233,10 +233,10 @@ const registAction = (params, callback) => {
             UserModel.saveUserInfo(data.data);
             UserModel.saveToken(data.data.token);
             homeModule.loadHomeList();
-            track("SignUpSuccess", { "signUpMethod": 2, "signUpPhone": params.phone, "signUpPlatform": 1 });
+            track('SignUpSuccess', { 'signUpMethod': 2, 'signUpPhone': params.phone, 'signUpPlatform': 1 });
             bridge.setCookies(data.data);
-            DeviceEventEmitter.emit("homePage_message", null);
-            DeviceEventEmitter.emit("contentViewed", null);
+            DeviceEventEmitter.emit('homePage_message', null);
+            DeviceEventEmitter.emit('contentViewed', null);
         } else {
             callback(data);
         }

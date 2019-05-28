@@ -141,7 +141,7 @@ class ExchangeGoodsDetailPage extends BasePage {
         let reject = this.afterSaleDetailModel.reject;
         let isShow_operationApplyView = status === 1;
         /** 退款成功、退货成功、换货变退款成功, (!refundStatus|| refundStatus === 3|| refundStatus === 4)退款没有失败*/
-        let isShow_refundDetailView = ((pageType === 0 && status === 5) || (pageType === 1 && status === 5)) &&((!refundStatus|| (refundStatus !== 3 && refundStatus !== 4)));
+        let isShow_refundDetailView = ((pageType === 0 && status === 5) || (pageType === 1 && status === 5)) && ((!refundStatus || (refundStatus !== 3 && refundStatus !== 4)));
 
         let isShow_refuseReasonView = false;
         let refuseReasonViewType = 0;
@@ -350,7 +350,7 @@ class ExchangeGoodsDetailPage extends BasePage {
 
     logisticsDetailsPage = (expressNo) => {
         OrderApi.return_express({serviceNo: this.params.serviceNo}).then((data)=>{
-            if (data.data&&data.data.length>1){//有多个物流
+            if (data.data && data.data.length > 1){//有多个物流
                 this.$navigate(RouterMap.AfterLogisticsListView, {
                     serviceNo: this.params.serviceNo
                 });

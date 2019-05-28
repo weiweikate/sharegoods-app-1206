@@ -1,16 +1,16 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
     View,
     TouchableOpacity,
     StyleSheet,
     Image,
     Text
-} from "react-native";
-import ScreenUtils from "../../../utils/ScreenUtils";
-import DesignRule from "../../../constants/DesignRule";
-import res from "../res";
-import apiEnvironment from "../../../api/ApiEnvironment";
-import PropTypes from "prop-types";
+} from 'react-native';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import DesignRule from '../../../constants/DesignRule';
+import res from '../res';
+import apiEnvironment from '../../../api/ApiEnvironment';
+import PropTypes from 'prop-types';
 
 const { px2dp } = ScreenUtils;
 const {
@@ -20,8 +20,8 @@ const {
 
 const ProtocolViewStyle = StyleSheet.create({
     bgContent: {
-        flexDirection: "row",
-        justifyContent: "center",
+        flexDirection: 'row',
+        justifyContent: 'center',
         marginTop: px2dp(20),
         height: px2dp(50),
         width: ScreenUtils.width,
@@ -40,7 +40,7 @@ export default class ProtocolView extends Component {
 
     render() {
         const { selectImageClick, textClick } = this.props;
-        const htmlUrl = apiEnvironment.getCurrentH5Url() + "/static/protocol/service.html";
+        const htmlUrl = apiEnvironment.getCurrentH5Url() + '/static/protocol/service.html';
         return (
             <View style={
                 ProtocolViewStyle.bgContent

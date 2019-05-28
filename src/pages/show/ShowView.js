@@ -11,7 +11,7 @@ import {
     MRText as Text,
 } from '../../components/ui';
 import res from './res'
-import { TrackApi } from "../../utils/SensorsTrack";
+import { TrackApi } from '../../utils/SensorsTrack';
 const homeShowImg = res.other.home_show;
 const TagView = ({ text }) => <View style={styles.tagView}>
     <Text style={styles.tag} allowFontScaling={false}>{text}</Text>

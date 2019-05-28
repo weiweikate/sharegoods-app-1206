@@ -139,11 +139,12 @@ export default class HomeMessageModalView extends React.Component {
 }
 
 
-function AdViewBindModal(modal) {
+function AdViewBindModal(modal,dataName = 'AdData', visibleName = 'isShowAd') {
     return (
     class HomeAdModal extends React.Component {
         state = {
-            messageIndex: 0
+            messageIndex: 0,
+            backgroundColor: '#f5f5f5'
         };
 
         constructor(props) {
@@ -162,25 +163,25 @@ function AdViewBindModal(modal) {
         };
 
         render() {
-            let AdData = modal.AdData || {};
+            let AdData = modal[dataName] || {};
             let image = AdData.image || '';
             return (
                 <CommModal ref={(ref) => {
                     this.messageModal = ref;
                 }}
                            onRequestClose={() => modal.closeAd()}
-                           visible={modal.isShowAd && modal.isHome}>
+                           visible={modal[visibleName] && modal.isHome}>
                     <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center' }}>
                         <View style={{ flex: 1 }}/>
                         <TouchableOpacity onPress={() => {
                             this.gotoPage();
                         }}>
-                            <ImageLoad style={{ width: autoSizeWidth(310), height: autoSizeWidth(410), backgroundColor: '#f5f5f5' }}
+                            <ImageLoad style={{ width: autoSizeWidth(310), height: autoSizeWidth(410), backgroundColor:this.state.backgroundColor}}
+                                       onLoadEnd={()=>{this.setState({backgroundColor: null})}}
                                        source={{ uri: image }}
                                        resizeMode={'contain'}
                                        showPlaceholder={false}
-                            >
-                            </ImageLoad>
+                             />
                         </TouchableOpacity>
                         <View style={{ flex: 1 }}>
                             <TouchableOpacity onPress={() => {
@@ -199,7 +200,8 @@ function AdViewBindModal(modal) {
 }
 
 let HomeAdModal = observer(AdViewBindModal(HomeModalManager));
-export{HomeAdModal, AdViewBindModal}
+let GiftModal = observer(AdViewBindModal(HomeModalManager), 'giftData' ,'isShowGift');
+export{HomeAdModal, AdViewBindModal, GiftModal}
 
 
 const styles = StyleSheet.create({

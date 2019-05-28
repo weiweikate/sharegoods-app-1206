@@ -32,6 +32,8 @@ import { MRText as Text, AvatarImage } from '../../../components/ui';
 import LoginAPI from '../../login/api/LoginApi';
 import CommModal from '../../../comm/components/CommModal';
 import { track, TrackApi, trackEvent } from '../../../utils/SensorsTrack';
+import TaskVIew from '../../home/view/TaskVIew';
+import { mineTaskModel } from '../../home/model/TaskModel';
 
 
 const {
@@ -127,6 +129,7 @@ export default class MinePage extends BasePage {
                 }
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
                 TrackApi.myPage();
+                mineTaskModel.getData();
             });
         this.listener = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
         // this.refresh();
@@ -452,7 +455,7 @@ export default class MinePage extends BasePage {
     accountRender = () => {
         return (
             <ImageBackground source={mine_account_bg} style={{
-                marginTop: px2dp(41),
+                marginTop: px2dp(5),
                 marginHorizontal: px2dp(15),
                 borderRadius: px2dp(10),
                 overflow: 'hidden'
@@ -618,9 +621,10 @@ export default class MinePage extends BasePage {
             >
                 {this.renderUserHead()}
                 {this.accountRender()}
+                <TaskVIew type={'mine'} style={{marginTop: 10}}/>
                 {this.orderRender()}
                 {this.utilsRender()}
-                {this.renderMoreMoney()}
+                {/*{this.renderMoreMoney()}*/}
             </ScrollView>
         );
     };
@@ -628,9 +632,8 @@ export default class MinePage extends BasePage {
     renderMoreMoney = () => {
         return (
             <TouchableWithoutFeedback onPress={() => {
-                this.$navigate(RouterMap.ShowDetailPage, { fromHome: false, id: 1 });
+                this.$navigate(RouterMap.ShowRichTextDetailPage, { fromHome: false, code: 'SHOW2019052714482778300000600000' });
                 TrackApi.ViewHowTo();
-
             }}>
                 <UIImage style={styles.makeMoneyMoreBackground} resizeMode={'stretch'} source={profile_banner}/>
             </TouchableWithoutFeedback>

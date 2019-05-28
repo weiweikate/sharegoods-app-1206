@@ -104,8 +104,8 @@ const items = [
             firstCategoryId: 106,
             firstCategoryName: null,
             id: 55,
-            imgUrl: "https://mr-test-sg.oss-cn-hangzhou.aliyuncs.com/sharegoods/58537d88Nc15f021d.jpg",
-            name: "海天 生抽酱油 1.9L",
+            imgUrl: 'https://mr-test-sg.oss-cn-hangzhou.aliyuncs.com/sharegoods/58537d88Nc15f021d.jpg',
+            name: '海天 生抽酱油 1.9L',
             secCategoryId: 109,
             secCategoryName: null,
             sendMode: 2,
@@ -113,7 +113,7 @@ const items = [
             supplierName: null,
             thirdCategoryId: 110,
             thirdCategoryName: null,
-            videoUrl: ""
+            videoUrl: ''
         }
     },
     {
@@ -135,8 +135,8 @@ const items = [
             firstCategoryId: 106,
             firstCategoryName: null,
             id: 55,
-            imgUrl: "https://mr-test-sg.oss-cn-hangzhou.aliyuncs.com/sharegoods/58537d88Nc15f021d.jpg",
-            name: "海天 生抽酱油 1.9L",
+            imgUrl: 'https://mr-test-sg.oss-cn-hangzhou.aliyuncs.com/sharegoods/58537d88Nc15f021d.jpg',
+            name: '海天 生抽酱油 1.9L',
             secCategoryId: 109,
             secCategoryName: null,
             sendMode: 2,
@@ -144,7 +144,7 @@ const items = [
             supplierName: null,
             thirdCategoryId: 110,
             thirdCategoryName: null,
-            videoUrl: ""
+            videoUrl: ''
         }
     }],
     [{
@@ -166,8 +166,8 @@ const items = [
             firstCategoryId: 106,
             firstCategoryName: null,
             id: 55,
-            imgUrl: "https://mr-test-sg.oss-cn-hangzhou.aliyuncs.com/sharegoods/58537d88Nc15f021d.jpg",
-            name: "海天 生抽酱油 1.9L",
+            imgUrl: 'https://mr-test-sg.oss-cn-hangzhou.aliyuncs.com/sharegoods/58537d88Nc15f021d.jpg',
+            name: '海天 生抽酱油 1.9L',
             secCategoryId: 109,
             secCategoryName: null,
             sendMode: 2,
@@ -175,7 +175,7 @@ const items = [
             supplierName: null,
             thirdCategoryId: 110,
             thirdCategoryName: null,
-            videoUrl: ""
+            videoUrl: ''
         }
     },
     {
@@ -197,8 +197,8 @@ const items = [
             firstCategoryId: 106,
             firstCategoryName: null,
             id: 55,
-            imgUrl: "https://mr-test-sg.oss-cn-hangzhou.aliyuncs.com/sharegoods/58537d88Nc15f021d.jpg",
-            name: "海天 生抽酱油 1.9L",
+            imgUrl: 'https://mr-test-sg.oss-cn-hangzhou.aliyuncs.com/sharegoods/58537d88Nc15f021d.jpg',
+            name: '海天 生抽酱油 1.9L',
             secCategoryId: 109,
             secCategoryName: null,
             sendMode: 2,
@@ -206,7 +206,7 @@ const items = [
             supplierName: null,
             thirdCategoryId: 110,
             thirdCategoryName: null,
-            videoUrl: ""
+            videoUrl: ''
         }
     }],
     [{
@@ -228,8 +228,8 @@ const items = [
             firstCategoryId: 106,
             firstCategoryName: null,
             id: 55,
-            imgUrl: "https://mr-test-sg.oss-cn-hangzhou.aliyuncs.com/sharegoods/58537d88Nc15f021d.jpg",
-            name: "海天 生抽酱油 1.9L",
+            imgUrl: 'https://mr-test-sg.oss-cn-hangzhou.aliyuncs.com/sharegoods/58537d88Nc15f021d.jpg',
+            name: '海天 生抽酱油 1.9L',
             secCategoryId: 109,
             secCategoryName: null,
             sendMode: 2,
@@ -237,7 +237,7 @@ const items = [
             supplierName: null,
             thirdCategoryId: 110,
             thirdCategoryName: null,
-            videoUrl: ""
+            videoUrl: ''
         }
     }]
 ]

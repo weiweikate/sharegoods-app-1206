@@ -10,6 +10,7 @@ import { subjectModule } from './HomeSubjectModel';
 import { recommendModule } from './HomeRecommendModel';
 import { categoryModule } from './HomeCategoryModel';
 import { limitGoModule } from './HomeLimitGoModel';
+import taskModel from './TaskModel';
 
 //首页modules
 class HomeModule {
@@ -112,7 +113,7 @@ class HomeModule {
         // 首页频道类目
         channelModules.loadChannel(this.firstLoad);
         // 首页通栏
-        homeExpandBnnerModel.loadBannerList();
+        homeExpandBnnerModel.loadBannerList(this.firstLoad);
         // 首焦点广告
         homeFocusAdModel.loadAdList();
         // 首页限时秒杀
@@ -123,6 +124,8 @@ class HomeModule {
         recommendModule.loadRecommendList(this.firstLoad);
         // 超值热卖
         subjectModule.loadSubjectList(this.firstLoad);
+
+        taskModel.getData();
 
         this.page = 1;
         this.isEnd = false;
@@ -136,6 +139,10 @@ class HomeModule {
             id: 2,
             type: homeType.user
         }, {
+            id: 11,
+            type: homeType.task
+        }
+        , {
             id: 3,
             type: homeType.channel
         }, {

@@ -25,6 +25,7 @@
 -(NSArray<NSString *> *)supportedEvents{
   return @[
            HOME_REFRESH,
+           HOME_CUSTOM_RN_SKIP
            ];
 }
 RCT_EXPORT_MODULE(JSPushBridge)

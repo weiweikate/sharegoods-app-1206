@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react';
 import {
     StyleSheet,
     View
-} from "react-native";
-import BasePage from "../../../BasePage";
-import MyOrdersListView from "./../components/MyOrdersListView";
-import DesignRule from "../../../constants/DesignRule";
+} from 'react-native';
+import BasePage from '../../../BasePage';
+import MyOrdersListView from './../components/MyOrdersListView';
+import DesignRule from '../../../constants/DesignRule';
 
 export default class OrderSearchResultPage extends BasePage {
     constructor(props) {
@@ -17,7 +17,7 @@ export default class OrderSearchResultPage extends BasePage {
     }
 
     $navigationBarOptions = {
-        title: "搜索结果",
+        title: '搜索结果',
         show: true// false则隐藏导航
     };
 
@@ -47,7 +47,7 @@ export default class OrderSearchResultPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, backgroundColor: "white"
+        flex: 1, backgroundColor: 'white'
     },
     wideStyle: {
         height: 10,

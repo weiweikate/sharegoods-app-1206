@@ -16,13 +16,16 @@ export const homeType = {
     classify: 'classify',
     category: 'category',
     goodsTitle: 'goodsTitle',
+    task: 'task',
     user: 'user',
     show: 11,            //秀场
     banner: 14,
     limitGo: 300,   //限时秒杀
     windowAlert: 1, //首页弹框
     guideInfo: 17,
-    Alert: 21//退出的弹窗
+    Alert: 21,//退出的弹窗
+    shopProducts: 22,//拼店详情商品列表
+    shopBanner: 23//拼店详情底部banner
 };
 
 

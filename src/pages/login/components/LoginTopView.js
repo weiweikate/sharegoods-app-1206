@@ -1,29 +1,29 @@
-import React, { Component } from "react";
-import { observer } from "mobx-react";
+import React, { Component } from 'react';
+import { observer } from 'mobx-react';
 import {
     View,
     TouchableOpacity,
     StyleSheet,
     Image
-} from "react-native";
-import CommSpaceLine from "../../../comm/components/CommSpaceLine";
-import StringUtils from "../../../utils/StringUtils";
-import bridge from "../../../utils/bridge";
-import ScreenUtils from "../../../utils/ScreenUtils";
-import { TimeDownUtils } from "../../../utils/TimeDownUtils";
-import SMSTool from "../../../utils/SMSTool";
-import { netStatusTool } from "../../../api/network/NetStatusTool";
-import DesignRule from "../../../constants/DesignRule";
-import res from "../res";
-import UIText from "../../../components/ui/UIText";
-import { MRTextInput as TextInput } from "../../../components/ui";
-import loginModel from "../model/LoginModel";
+} from 'react-native';
+import CommSpaceLine from '../../../comm/components/CommSpaceLine';
+import StringUtils from '../../../utils/StringUtils';
+import bridge from '../../../utils/bridge';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import { TimeDownUtils } from '../../../utils/TimeDownUtils';
+import SMSTool from '../../../utils/SMSTool';
+import { netStatusTool } from '../../../api/network/NetStatusTool';
+import DesignRule from '../../../constants/DesignRule';
+import res from '../res';
+import UIText from '../../../components/ui/UIText';
+import { MRTextInput as TextInput } from '../../../components/ui';
+import loginModel from '../model/LoginModel';
 
 const {
     close_eye,
     open_eye
 } = res;
-const dismissKeyboard = require("dismissKeyboard");
+const dismissKeyboard = require('dismissKeyboard');
 
 @observer
 export default class LoginTopView extends Component {
@@ -41,9 +41,8 @@ export default class LoginTopView extends Component {
                         this.switchBtnClick(0);
                     }}>
                         <UIText
-                            value={"验证码登录"}
-                            style={[Styles.switchBtnStyle, loginModel.selectIndex ? { color: DesignRule.textColor_secondTitle } : { color: DesignRule.mainColor }]}>
-                        </UIText>
+                            value={'验证码登录'}
+                            style={[Styles.switchBtnStyle, loginModel.selectIndex ? { color: DesignRule.textColor_secondTitle } : { color: DesignRule.mainColor }]} />
                         <View
                             style={loginModel.selectIndex ? Styles.btnBottomLineNonStyle : Styles.btnBottomLineStyle}/>
                     </TouchableOpacity>
@@ -51,10 +50,8 @@ export default class LoginTopView extends Component {
                         this.switchBtnClick(1);
                     }}>
                         <UIText
-                            value={"密码登录"}
-                            style={[Styles.switchBtnStyle, loginModel.selectIndex ? { color: DesignRule.mainColor } : { color: DesignRule.textColor_secondTitle }]}>
-
-                        </UIText>
+                            value={'密码登录'}
+                            style={[Styles.switchBtnStyle, loginModel.selectIndex ? { color: DesignRule.mainColor } : { color: DesignRule.textColor_secondTitle }]} />
                         <View
                             style={loginModel.selectIndex ? Styles.btnBottomLineStyle : Styles.btnBottomLineNonStyle}/>
                     </TouchableOpacity>
@@ -71,10 +68,10 @@ export default class LoginTopView extends Component {
                         maxLength={11}
                         onEndEditing={() => {
                             if (StringUtils.isEmpty(loginModel.phoneNumber.trim())) {
-                                bridge.$toast("请输入手机号");
+                                bridge.$toast('请输入手机号');
                             } else {
                                 if (!StringUtils.checkPhone(loginModel.phoneNumber)) {
-                                    bridge.$toast("手机号格式不对");
+                                    bridge.$toast('手机号格式不对');
                                 }
                             }
                         }}
@@ -91,10 +88,8 @@ export default class LoginTopView extends Component {
                         style={[Styles.loginBtnStyle, loginModel.isCanClick ? { backgroundColor: DesignRule.mainColor } : { backgroundColor: DesignRule.bgColor_grayHeader }]}>
 
                         <UIText style={Styles.loginBtnTextStyle}
-                                value={"登录"}
-                        >
-
-                        </UIText>
+                                value={'登录'}
+                         />
 
                     </View>
                 </TouchableOpacity>
@@ -125,9 +120,8 @@ export default class LoginTopView extends Component {
                         activeOpacity={1}
                     >
                         <UIText style={Styles.codeTextStyle}
-                                value={loginModel.dowTime > 0 ? `${loginModel.dowTime}秒后重新获取` : "获取验证码"}
-                        >
-                        </UIText>
+                                value={loginModel.dowTime > 0 ? `${loginModel.dowTime}秒后重新获取` : '获取验证码'}
+                         />
                     </TouchableOpacity>
                 </View>
                 <CommSpaceLine style={Styles.lineStyle}/>
@@ -139,11 +133,11 @@ export default class LoginTopView extends Component {
             return;
         }
         if (!netStatusTool.isConnected) {
-            bridge.$toast("请检查网络是否连接");
+            bridge.$toast('请检查网络是否连接');
             return;
         }
         if (StringUtils.isEmpty(loginModel.phoneNumber.trim())) {
-            bridge.$toast("请输入手机号");
+            bridge.$toast('请输入手机号');
             return;
         }
         if (StringUtils.checkPhone(loginModel.phoneNumber)) {
@@ -151,12 +145,12 @@ export default class LoginTopView extends Component {
                 bridge.$toast(error.msg);
             });
             loginModel.dowTime = 60;
-            bridge.$toast("验证码发送成功,注意查收");
+            bridge.$toast('验证码发送成功,注意查收');
             (new TimeDownUtils()).startDown((time) => {
                 loginModel.dowTime = time;
             });
         } else {
-            bridge.$toast("手机格式不对");
+            bridge.$toast('手机格式不对');
         }
     };
     renderPasswordLogin = () => {
@@ -173,7 +167,7 @@ export default class LoginTopView extends Component {
                         secureTextEntry={loginModel.isSecuret}
                         placeholderTextColor={DesignRule.textColor_placeholder}
                     />
-                    <View style={{ flexDirection: "row" }}>
+                    <View style={{ flexDirection: 'row' }}>
                         <TouchableOpacity onPress={() => {
                             dismissKeyboard();
                             loginModel.isSecuret = !loginModel.isSecuret;
@@ -184,9 +178,8 @@ export default class LoginTopView extends Component {
                         <CommSpaceLine style={{ marginLeft: 10, width: 1, marginTop: 35, height: 20 }}/>
                         <TouchableOpacity onPress={this.props.forgetPasswordClick}>
                             <UIText style={Styles.codeTextStyle}
-                                    value={"忘记密码"}
-                            >
-                            </UIText>
+                                    value={'忘记密码'}
+                             />
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -214,11 +207,11 @@ export default class LoginTopView extends Component {
                         password: loginModel.password
                     });
                 } else {
-                    bridge.$toast("需数字、字母组合");
+                    bridge.$toast('需数字、字母组合');
                 }
             }
         } else {
-            bridge.$toast("手机格式不对");
+            bridge.$toast('手机格式不对');
         }
 
     };
@@ -230,18 +223,18 @@ const Styles = StyleSheet.create(
             margin: 50,
             marginRight: 20,
             marginLeft: 20,
-            backgroundColor: "#fff"
+            backgroundColor: '#fff'
         },
         switchBgStyle: {
-            flexDirection: "row",
-            justifyContent: "center"
+            flexDirection: 'row',
+            justifyContent: 'center'
         },
         switchBtnStyle: {
             fontSize: 18,
             color: DesignRule.mainColor,
             paddingLeft: 20,
             paddingRight: 20,
-            fontWeight: "600"
+            fontWeight: '600'
         },
         btnBottomLineStyle: {
             height: 2,
@@ -257,7 +250,7 @@ const Styles = StyleSheet.create(
             width: ScreenUtils.width - 40,
             height: 40,
             fontSize: 14,
-            fontWeight: "400"
+            fontWeight: '400'
         },
         inputTextStyle: {
             flex: 1,
@@ -265,7 +258,7 @@ const Styles = StyleSheet.create(
             marginLeft: 20,
             height: 40,
             fontSize: 14,
-            fontWeight: "400"
+            fontWeight: '400'
         },
         lineStyle: {
             marginLeft: 20,
@@ -273,11 +266,11 @@ const Styles = StyleSheet.create(
             marginTop: 6
         },
         textBgViewStyle: {
-            flexDirection: "row",
-            justifyContent: "space-between"
+            flexDirection: 'row',
+            justifyContent: 'space-between'
         },
         codeTextStyle: {
-            textAlign: "center",
+            textAlign: 'center',
             color: DesignRule.mainColor,
             marginTop: 40,
             marginRight: 20,
@@ -291,23 +284,23 @@ const Styles = StyleSheet.create(
             width: ScreenUtils.width - 70,
             borderRadius: 25,
             backgroundColor: DesignRule.mainColor,
-            justifyContent: "center",
-            alignItems: "center"
+            justifyContent: 'center',
+            alignItems: 'center'
         },
         loginBtnTextStyle: {
             // paddingTop: 16,
-            color: "#fff",
+            color: '#fff',
             // height:,
             margin: 0,
-            alignItems: "center",
-            textAlign: "center",
+            alignItems: 'center',
+            textAlign: 'center',
             fontSize: 17
         },
         oldUserLoginBgStyle: {
             marginTop: 30,
             // flexDirection: 'row-reverse',
-            alignItems: "center",
-            justifyContent: "center"
+            alignItems: 'center',
+            justifyContent: 'center'
             // height:200,
         },
         oldUserLoginBtn: {
@@ -315,7 +308,7 @@ const Styles = StyleSheet.create(
             marginTop: 8,
             height: 35,
             color: DesignRule.textColor_mainTitle,
-            textAlign: "center",
+            textAlign: 'center',
             marginRight: 0,
             fontSize: 13
         },
