@@ -44,19 +44,19 @@
 //  NSString *imageType = model.imageType;
   NSString *QRCodeStr = model.QRCodeStr;
   CGFloat i = 3;// 为了图片高清 图片尺寸375 * 667
-  
+
   CGFloat imageHeght = 667*i;
-  
+
     NSMutableArray *nodes = [NSMutableArray new];
     NSString *contentStr = model.titleStr;
     NSString *nameStr = model.userName;
-  
+
     CGFloat sigle =  [@"1" getStringHeightWithfontSize:13*i viewWidth:315*i];
     CGFloat height =  [contentStr getStringHeightWithfontSize:13*i viewWidth:315*i];
     if (height > sigle*2) {
       height= sigle*2+1;
     }
-    
+
     if (height > sigle) {
       imageHeght = 687*i;
     }
@@ -66,8 +66,8 @@
                        @"locationType": @"rect",
                        @"location": [NSValue valueWithCGRect:CGRectMake(0, 0, 375*i, 667*i)]}
      ];
-  
-  
+
+
   //模糊图片
   UIImage * bgImg = [UIImage imageWithColor:[[UIColor grayColor] colorWithAlphaComponent:0.5]];
 
@@ -76,16 +76,16 @@
                      @"locationType": @"rect",
                      @"location": [NSValue valueWithCGRect:CGRectMake(0, 0, 375*i, 667*i)]}
    ];
-  
+
   //白色背景
   UIImage * whiteBgImg = [UIImage imageWithColor:[UIColor whiteColor]];
-  
+
   [nodes addObject:@{
                      @"value": [whiteBgImg  creatRoundImagWithRadius:0.01 width:(375-30)*i height:472*i],
                      @"locationType": @"rect",
                      @"location": [NSValue valueWithCGRect:CGRectMake(15*i, 42*i, (375-30)*i, 472*i)]}
    ];
-  
+
   //商品
   [nodes addObject:@{
                      @"value": [images[0] creatRoundImagWithRadius:0.02 width:(375-60)*i height:345*i],
@@ -99,25 +99,25 @@
                      @"locationType": @"rect",
                      @"location": [NSValue valueWithCGRect:CGRectMake(30*i, 412*i, 35*i, 35*i)]}
    ];
-  
+
     //昵称
     NSMutableParagraphStyle *style = [NSMutableParagraphStyle new];
     style.lineBreakMode = NSLineBreakByTruncatingTail;
     NSAttributedString *nameAttrStr = [[NSAttributedString alloc]initWithString:nameStr
                                                                       attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:15*i], NSForegroundColorAttributeName: [UIColor colorWithHexString:@"333333"]}];
-  
+
     [nodes addObject:@{
                        @"value": nameAttrStr,
                        @"locationType": @"rect",
                        @"location": [NSValue valueWithCGRect:CGRectMake(75*i, 419*i, 220*i, height)]}
      ];
-  
-  
+
+
   //介绍
   NSArray * contentArr = [contentStr getLinesArrayWithfont:[UIFont systemFontOfSize:13*i] andLableWidth:315*i];
   NSInteger len = 0;
   NSString* string = [NSString stringWithFormat:@"%@",contentStr];
-  
+
   if(contentArr.count>2){
     len= [(NSString*)contentArr[0] length];
     string = [[contentStr substringWithRange:NSMakeRange(0, len*2-2)] stringByAppendingString:@"..."];
@@ -127,32 +127,131 @@
   string = [string stringByReplacingOccurrencesOfString:@"\n" withString:@""];
   NSMutableAttributedString *contentStrAttrStr = [[NSMutableAttributedString alloc]initWithString:string
                                                                                        attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:13*i], NSForegroundColorAttributeName: [UIColor colorWithHexString:@"333333"]}];
-  
+
   [nodes addObject:@{
                      @"value": contentStrAttrStr,
                      @"locationType": @"rect",
                      @"location": [NSValue valueWithCGRect:CGRectMake(30*i, 457*i, 315*i, height*2)]}
    ];
-  
+
 //    //二维码
     UIImage *QRCodeImage = [UIImage QRCodeWithStr:QRCodeStr];
     [nodes addObject:@{@"value": QRCodeImage,
                        @"locationType": @"rect",
                        @"location": [NSValue valueWithCGRect:CGRectMake(148*i, 544*i, 80*i, 80*i)]}
      ];
-  
-  
+
+
   //loago
   NSMutableAttributedString *logpStrAttrStr = [[NSMutableAttributedString alloc]initWithString:@"秀一秀  赚到够"
                                                                                        attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:13*i], NSForegroundColorAttributeName: [UIColor colorWithHexString:@"FFFFFF"]}];
-  
+
   [nodes addObject:@{
                      @"value": logpStrAttrStr,
                      @"locationType": @"rect",
                      @"location": [NSValue valueWithCGRect:CGRectMake(145*i, 634*i, 90*i, height*1)]}
    ];
-  
+
   return @{@"width": @(375*i), @"height": @(imageHeght), @"nodes": nodes};
 }
+
++ (NSDictionary *)getParamsWithWEBImages:(NSArray<UIImage *> *)images
+                                        model:(ShareImageMakerModel *)model
+{
+//  NSString *imageType = model.imageType;
+  NSString *QRCodeStr = model.QRCodeStr;
+  CGFloat i = 3;// 为了图片高清 图片尺寸375 * 667
+
+  CGFloat imageHeght = 667*i;
+
+    NSMutableArray *nodes = [NSMutableArray new];
+    NSString *contentStr = model.titleStr;
+    NSString *nameStr = model.userName;
+
+    CGFloat sigle =  [@"1" getStringHeightWithfontSize:13*i viewWidth:315*i];
+    CGFloat height =  [contentStr getStringHeightWithfontSize:13*i viewWidth:315*i];
+    if (height > sigle*2) {
+      height= sigle*2+1;
+    }
+
+    if (height > sigle) {
+      imageHeght = 687*i;
+    }
+    //底图片
+    [nodes addObject:@{
+                       @"value": [images[0] boxblurWithBlurNumber:0.9] ,
+                       @"locationType": @"rect",
+                       @"location": [NSValue valueWithCGRect:CGRectMake(0, 0, 375*i, 667*i)]}
+     ];
+
+
+  //模糊图片
+  UIImage * bgImg = [UIImage imageWithColor:[[UIColor grayColor] colorWithAlphaComponent:0.6]];
+
+  [nodes addObject:@{
+                     @"value": bgImg,
+                     @"locationType": @"rect",
+                     @"location": [NSValue valueWithCGRect:CGRectMake(0, 0, 375*i, 667*i)]}
+   ];
+
+
+  //商品
+  [nodes addObject:@{
+                     @"value": [images[0] creatRoundImagWithRadius:0.02 width:(375-60)*i height:410*i],
+                     @"locationType": @"rect",
+                     @"location": [NSValue valueWithCGRect:CGRectMake(33*i, 57*i, (375-66)*i, 410*i)]}
+   ];
+
+  //头像
+  [nodes addObject:@{
+                     @"value": [images[1] creatRoundImagWithRadius:0.5 width:25*i height:25*i],
+                     @"locationType": @"rect",
+                     @"location": [NSValue valueWithCGRect:CGRectMake(64*i, 422*i, 25*i, 25*i)]}
+   ];
+
+    //昵称+数额
+    NSString * text = [NSString stringWithFormat:@"%@ %@",nameStr,contentStr];
+    NSMutableParagraphStyle *style = [NSMutableParagraphStyle new];
+    style.lineBreakMode = NSLineBreakByTruncatingTail;
+    NSAttributedString *nameAttrStr = [[NSAttributedString alloc]initWithString:text
+                                                                      attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:15*i], NSForegroundColorAttributeName: [UIColor colorWithHexString:@"FFFFFF"]}];
+
+    [nodes addObject:@{
+                       @"value": nameAttrStr,
+                       @"locationType": @"rect",
+                       @"location": [NSValue valueWithCGRect:CGRectMake(99*i, 424*i, 220*i, height)]}
+     ];
+
+
+    //白色背景
+    UIImage * whiteBgImg = [UIImage imageWithColor:[UIColor whiteColor]];
+
+    [nodes addObject:@{
+                       @"value": [whiteBgImg  creatRoundImagWithRadius:0.1 width:80*i height:80*i],
+                       @"locationType": @"rect",
+                       @"location": [NSValue valueWithCGRect:CGRectMake(146*i, 519*i, 80*i, 80*i)]}
+     ];
+
+//    //二维码
+    UIImage *QRCodeImage = [UIImage QRCodeWithStr:QRCodeStr];
+    [nodes addObject:@{@"value": QRCodeImage,
+                       @"locationType": @"rect",
+                       @"location": [NSValue valueWithCGRect:CGRectMake(154*i, 526*i, 66*i, 66*i)]}
+     ];
+
+
+  //loago
+  NSMutableAttributedString *logpStrAttrStr = [[NSMutableAttributedString alloc]initWithString:@"扫一扫，免费领钻石"
+                                                                                       attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:13*i], NSForegroundColorAttributeName: [UIColor colorWithHexString:@"FFFFFF"]}];
+
+  [nodes addObject:@{
+                     @"value": logpStrAttrStr,
+                     @"locationType": @"rect",
+                     @"location": [NSValue valueWithCGRect:CGRectMake(129*i, 634*i, 150*i, height*1)]}
+   ];
+
+  return @{@"width": @(375*i), @"height": @(imageHeght), @"nodes": nodes};
+}
+
 @end
 

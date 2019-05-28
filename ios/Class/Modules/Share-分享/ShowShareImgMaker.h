@@ -19,5 +19,8 @@
 + (NSDictionary *)getParamsWithImages:(NSArray<UIImage *> *)images
                                 model:(ShareImageMakerModel *)model;
 
++ (NSDictionary *)getParamsWithWEBImages:(NSArray<UIImage *> *)images
+                                model:(ShareImageMakerModel *)model;
+
 @end
 
