@@ -20,6 +20,23 @@ const maxY = maxTextWidth + 15 + 50;
 /*跳标全局数据*/
 class IntervalMsgModel {
     @observable msgList = [];
+    @observable pageType = undefined;
+    @observable messageIndex = 0;
+
+    @action setMsgData(content) {
+        const { params, pageType } = content || {};
+        const { floatMsgs } = params || {};
+        /*
+        * {
+        * pageType
+        * params floatMsgs
+        *
+        * }
+        * */
+        console.log(content);
+        this.pageType = pageType;
+        this.msgList = floatMsgs || [];
+    }
 }
 
 const intervalMsgModel = new IntervalMsgModel();
@@ -30,6 +47,9 @@ export default intervalMsgModel;
 export class IntervalMsgView extends React.Component {
 
     IntervalMsgModel = new IntervalMsgViewModel();
+
+    componentDidMount() {
+    }
 
     _onPress = (showItem) => {
         const { needForward, forwardType, keyCode } = showItem;
@@ -130,19 +150,21 @@ class IntervalMsgViewModel {
     @observable translateX = new Animated.Value(-maxY);
     @observable opacity = new Animated.Value(1);
 
-    @action startAnimated = (index) => {
+    @action startAnimated = () => {
         this.isAnimated = true;
+
         if (this.needUpdate) {
             this.needUpdate = false;
-            index = 0;
+            intervalMsgModel.messageIndex = 0;
         }
 
-        this.showItem = this.showItems[index] || {};
+        this.showItem = this.showItems[intervalMsgModel.messageIndex] || {};
         const { type } = this.showItem;
         if (isEmpty(type)) {
             this.isAnimated = false;
             return;
         }
+
         Animated.sequence([
             Animated.delay(5000),
             Animated.timing(
@@ -160,7 +182,8 @@ class IntervalMsgViewModel {
                 this.translateX = new Animated.Value(-maxY);
                 this.opacity = new Animated.Value(1);
                 /*循环,准备下一位贵宾*/
-                this.startAnimated(++index);
+                intervalMsgModel.messageIndex++;
+                this.startAnimated();
             }
         );
     };
@@ -168,10 +191,10 @@ class IntervalMsgViewModel {
     autorun = autorun(() => {
         /*有新数据*/
         this.showItems = intervalMsgModel.msgList || [];
-        this.needUpdate = true;
         /*没有进行中的动画启动*/
+        this.needUpdate = true;
         InteractionManager.runAfterInteractions(() => {
-            !this.isAnimated && this.startAnimated(0);
+            !this.isAnimated && this.startAnimated();
         });
     });
 }
