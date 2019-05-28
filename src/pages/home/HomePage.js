@@ -45,7 +45,7 @@ import HomeLimitGoView from './view/HomeLimitGoView';
 import { limitGoModule } from './model/HomeLimitGoModel';
 import HomeExpandBannerView from './view/HomeExpandBannerView';
 import HomeFocusAdView from './view/HomeFocusAdView';
-import PraiseModel from './view/PraiseModel'
+import PraiseModel from './view/PraiseModel';
 
 const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
@@ -195,7 +195,6 @@ class HomePage extends BasePage {
                     homeModule.homeFocused(true);
                     homeModalManager.entryHome();
                     homeModalManager.refreshPrize();
-                    intervalMsgModel.msgList = [];
                     if (!homeModule.firstLoad) {
                         limitGoModule.loadLimitGo();
                     }
@@ -226,7 +225,8 @@ class HomePage extends BasePage {
 
     homeSkip = (data) => {
         // 跳标
-        // let tagArr = JSON.parse(data) || [];
+        let tagArr = JSON.parse(data) || [];
+        intervalMsgModel.msgList = tagArr;
     };
 
     componentWillUnmount() {
@@ -279,7 +279,7 @@ class HomePage extends BasePage {
             return <HomeBannerView navigate={this.$navigate}/>;
         } else if (type === homeType.user) {
             return <HomeUserView navigate={this.$navigate}/>;
-        }  else if (type === homeType.task) {
+        } else if (type === homeType.task) {
             return <TaskVIew type={'home'}/>;
         } else if (type === homeType.channel) {
             return <HomeChannelView navigate={this.$navigate}/>;
@@ -367,8 +367,8 @@ class HomePage extends BasePage {
                 <LuckyIcon ref={(ref) => {
                     this.luckyIcon = ref;
                 }}/>
-                <PraiseModel />
-                <GiftModal />
+                <PraiseModel/>
+                <GiftModal/>
                 <IntervalMsgView/>
                 <HomeAdModal/>
                 <HomeMessageModalView/>
