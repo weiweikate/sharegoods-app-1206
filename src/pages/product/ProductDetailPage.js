@@ -37,6 +37,7 @@ import DetailHeaderScoreView from './components/DetailHeaderScoreView';
 import DetailParamsModal from './components/DetailParamsModal';
 import { ContentSectionView, SectionLineView, SectionNullView } from './components/ProductDetailSectionView';
 import ProductDetailNavView from './components/ProductDetailNavView';
+import { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
 
 /**
  * @author chenyangjun
@@ -297,7 +298,7 @@ export default class ProductDetailPage extends BasePage {
                               pData={this.productDetailModel}/>
             <ShowTopView productDetailModel={this.productDetailModel}
                          toTopAction={this._onPressToTop}/>
-
+            <IntervalMsgView pageType={IntervalType.productDetail}/>
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             trackParmas={{

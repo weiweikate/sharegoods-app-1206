@@ -67,7 +67,7 @@ import BasePage from '../../BasePage';
 import { TrackApi } from '../../utils/SensorsTrack';
 import taskModel from './model/TaskModel';
 import TaskVIew from './view/TaskVIew';
-import intervalMsgModel, { IntervalMsgView } from '../../comm/components/IntervalMsgView';
+import intervalMsgModel, { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
 
 const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
     <Text style={styles.text}
@@ -369,7 +369,7 @@ class HomePage extends BasePage {
                 }}/>
                 <PraiseModel/>
                 <GiftModal/>
-                <IntervalMsgView/>
+                <IntervalMsgView pageType = {IntervalType.home}/>
                 <HomeAdModal/>
                 <HomeMessageModalView/>
                 <VersionUpdateModalView/>
