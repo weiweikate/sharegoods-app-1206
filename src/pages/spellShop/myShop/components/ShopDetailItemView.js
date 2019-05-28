@@ -14,7 +14,6 @@ import NoMoreClick from '../../../../components/ui/NoMoreClick';
 import CommShareModal from '../../../../comm/components/CommShareModal';
 import user from '../../../../model/user';
 import apiEnvironment from '../../../../api/ApiEnvironment';
-import RouterMap from '../../../../navigation/RouterMap';
 
 const { myShop } = shopRes;
 const { shopProduct, shopProductShare } = myShop;
@@ -26,7 +25,7 @@ const progressWidth = px2dp(60);
 export class ShopProductItemView extends Component {
 
     _renderItem = ({ item, index }) => {
-        const { image, title, content, shareMoney, promotionMinPrice, price, progressBar, salesVolume, linkTypeCode } = item || {};
+        const { image, title, content, shareMoney, promotionMinPrice, price, progressBar, salesVolume, linkTypeCode, linkType } = item || {};
         /*进度条显示*/
         let salesVolumeS = (salesVolume || 0) / 100;
         if (salesVolumeS > 1) {
@@ -44,7 +43,11 @@ export class ShopProductItemView extends Component {
         return (
             <NoMoreClick style={[ProductItemViewStyles.itemView, { marginLeft: index === 0 ? 15 : 10 }]} onPress={
                 () => {
-                    navigate(RouterMap.ProductDetailPage, { productCode: linkTypeCode });
+                    const router = homeModule.homeNavigate(linkType, linkTypeCode);
+                    let params = homeModule.paramsNavigate(item);
+                    if (router) {
+                        navigate(router, params);
+                    }
                 }
             }>
                 <UIImage source={{ uri: image || '' }}
