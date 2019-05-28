@@ -3,7 +3,9 @@ package com.meeruu.sharegoods.rn.showground.adapter;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
+import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SnapHelper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -187,6 +189,11 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
             }
             recyclerView.setVisibility(View.VISIBLE);
             recyclerView.setAdapter(productsAdapter);
+            if(!Boolean.TRUE.equals( recyclerView.getTag())){
+                SnapHelper snapHelper = new PagerSnapHelper();
+                snapHelper.attachToRecyclerView(recyclerView);
+                recyclerView.setTag(Boolean.TRUE);
+            }
         }else {
             recyclerView.setVisibility(View.GONE);
         }

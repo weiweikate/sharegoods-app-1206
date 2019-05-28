@@ -157,7 +157,10 @@ export default class RefreshList extends Component {
                     {topBtn ?
                         <View style={styles.topbtnStyle}>
                             <TouchableOpacity onPress={()=>this.scrollToIndex({viewPosition: 0, index: 0 })}>
-                                <Image source={res.other.top_Icon} style={{width:36, height:36,backgroundColor:'white'}} />
+                                <Image source={res.other.top_Icon}
+                                       style={{width: ScreenUtils.px2dp(45),
+                                           height: ScreenUtils.px2dp(45),
+                                       }} />
                             </TouchableOpacity>
                         </View>
                         : null

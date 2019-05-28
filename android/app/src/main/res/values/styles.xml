@@ -10,7 +10,8 @@
 
     <style name="AppSplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- 透明背景，可解决启动黑屏的问题. -->
-        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@drawable/img_splash</item>
+        <item name="android:windowFullscreen">true</item>
     </style>
 
     <style name="AppEditTextStyle" parent="@style/Widget.AppCompat.EditText">

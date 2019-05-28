@@ -126,11 +126,17 @@ export default class ShowActivityView extends Component {
         });
     };
 
+    scrollToTop = ()=>{
+        if(showActiveModules.topBtnHide){
+            this.List.scrollToIndex({viewPosition: 0, index: 0 });
+        }
+    }
+
     render() {
         return (
             <View style={styles.container}>
                 {this.state.isError ? this.renderError() : <RefreshList
-                    topBtn={showActiveModules.topBtnHide}
+                    ref={(ref)=>{this.List=ref}}
                     isHideFooter={false}
                     firstLoading={this.state.firstLoading}
                     data={this.state.viewData}

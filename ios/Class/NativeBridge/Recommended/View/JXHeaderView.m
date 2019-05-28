@@ -118,8 +118,8 @@
     _UserInfoModel = UserInfoModel;
 
     [self.headImg sd_setImageWithURL:[NSURL URLWithString:UserInfoModel.userImg] placeholderImage:[UIImage imageNamed:@"default_avatar"]];
-
-      self.nameLab.text = UserInfoModel.userName.length>0? UserInfoModel.userName:@" ";
+  
+    self.nameLab.text = UserInfoModel.userName.length>0? UserInfoModel.userName:@" ";
 }
 
 -(void)setTime:(NSString *)time{

@@ -12,21 +12,16 @@ import {
 } from 'react-native';
 
 import ScreenUtil from '../../../utils/ScreenUtils';
-import ShowWhite from '../ShowWhite.json';
+import { observer } from 'mobx-react';
+
 const { px2dp } = ScreenUtil;
 import res from './../res'
-import apiEnvironment from '../../../api/ApiEnvironment';
-import user from '../../../model/user';
+import WhiteModel from '../model/WhiteModel';
 const {showReleaseIcon} = res;
+@observer
 export default class ReleaseButton extends PureComponent {
-
     render() {
-        let ids = ShowWhite.onlineIds;
-        if (apiEnvironment.envType !== 'online') {
-            ids = ShowWhite.debugIds;
-        }
-        this.showRelease = ids.indexOf(user.code) > -1;
-        if(!this.showRelease){
+        if(WhiteModel.userStatus !== 2){
             return null;
         }
         return (

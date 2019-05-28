@@ -294,7 +294,7 @@ export class ShowDetail {
 
     @action showDetailCode = flow(function* (code) {
         try {
-            const result = yield ShowApi.showDetailCode({ code: code });
+            const result = yield ShowApi.showDetailCode({ contentNo: code });
             this.detail = result.data;
             return result.data;
         } catch (error) {

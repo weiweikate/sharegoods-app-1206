@@ -110,14 +110,20 @@ export default class BottomMenu extends Component {
     _toBuyImmediately = () => {
         dismissKeyboard();
         const { navigate } = this.props;
-        TrackApi.CartCheckoutClick();
+
         if (!user.isLogin) {
             navigate(RouterMap.LoginPage);
+            TrackApi.CartCheckoutClick({
+                cartCheckoutBtnActive:false
+            });
             return;
         }
         let [...selectArr] = shopCartStore.startSettlement();
         if (selectArr.length <= 0) {
             bridge.$toast('请先选择结算商品~');
+            TrackApi.CartCheckoutClick({
+                cartCheckoutBtnActive:false
+            });
             return;
         }
         let isCanSettlement = true;
@@ -138,10 +144,16 @@ export default class BottomMenu extends Component {
 
         if (haveNaNGood) {
             bridge.$toast('存在选中商品数量为空,或存在正在编辑的商品,请确认~');
+            TrackApi.CartCheckoutClick({
+                cartCheckoutBtnActive:false
+            });
             return;
         }
         if (!isCanSettlement) {
             bridge.$toast('商品库存不足请确认~');
+            TrackApi.CartCheckoutClick({
+                cartCheckoutBtnActive:false
+            });
             return;
         }
         if (isCanSettlement && !haveNaNGood) {
@@ -162,6 +174,10 @@ export default class BottomMenu extends Component {
                     orderProducts: buyGoodsArr,
                     source: 1
                 }
+            });
+
+            TrackApi.CartCheckoutClick({
+                cartCheckoutBtnActive:true
             });
         }
     };

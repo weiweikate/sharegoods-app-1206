@@ -1,7 +1,6 @@
 {
-    "showDebugPanel": false,
     "showDebugPanel": true,
-    "envType": "dev_new",
+    "envType": "online",
     "isDevHotUpdate": false,
     "__注释__": "[showDebugPanel]:是否显示调试面板   [envType]:决定网络启动后，默认的网络环境类型",
     "env": {
@@ -83,6 +82,10 @@
         "吴承骏": {
             "name": "吴承骏",
             "host": "http://172.18.6.40:8903/gateway"
+        },
+        "倪显晶": {
+            "name": "倪显晶",
+            "host": "http://172.18.6.94:8903/gateway"
         },
         "da_wei": {
             "name": "蒋大为",

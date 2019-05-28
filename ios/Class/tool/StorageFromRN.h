@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 +(NSString *)getHost;
 +(NSString *)getSG_Token;
 
++(NSString *)getSG_Token;
 /**
  公猫返回的key
  */

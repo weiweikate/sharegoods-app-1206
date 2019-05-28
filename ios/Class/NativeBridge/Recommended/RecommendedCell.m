@@ -29,9 +29,10 @@
     if(!_contentLab){
         _contentLab = [[UILabel alloc]init];
         _contentLab.font = [UIFont systemFontOfSize:13];
-        _contentLab.textColor = [UIColor colorWithRed:102/255.0 green:102/255.0 blue:102/255.0 alpha:1.0];
+        _contentLab.textColor = [UIColor colorWithHexString:@"666666"];;
       _contentLab.userInteractionEnabled=YES;
       UITapGestureRecognizer *labelTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(labelTouchUpInside)];
+      [_contentLab sizeToFit];
 
       [_contentLab addGestureRecognizer:labelTapGestureRecognizer];
     }
@@ -89,12 +90,16 @@
       if (weakSelf.cellDelegate) {
         [weakSelf.cellDelegate zanClick:weakSelf];
       }
+      weakSelf.footerView.isLike = weakSelf.model.like;
+      weakSelf.footerView.likesCount = weakSelf.model.likesCount;
     };
     _footerView.downloadBlock =  ^(NSString* a){
       NSLog(@"downloadClick");
       if (weakSelf.cellDelegate) {
         [weakSelf.cellDelegate downloadClick:weakSelf];
       }
+      weakSelf.footerView.downloadCount = weakSelf.model.downloadCount;
+
     };
     _footerView.shareBlock =  ^(NSString* a){
       NSLog(@"shareClick");
@@ -145,8 +150,9 @@
     bgView.sd_layout
     .leftSpaceToView(self.contentView, 0)
     .rightSpaceToView(self.contentView, 0)
-    .topSpaceToView(self.contentView, 5);
-
+    .topSpaceToView(self.contentView, 5)
+    .heightIs(200);
+  
   self.headView.sd_layout
   .topSpaceToView(bgView, 9)
   .leftSpaceToView(bgView, 0)
@@ -189,7 +195,11 @@
   //组合需要显示的文本
   if(array.count>3){
     NSString *line3String = array[2];
-    NSString *showText = [NSString stringWithFormat:@"%@%@%@...全文", array[0], array[1],[line3String substringToIndex:line3String.length-7]];
+    NSString *arr2Str = line3String.length<=18?line3String:[line3String substringToIndex:line3String.length-7];
+    arr2Str = [arr2Str stringByReplacingOccurrencesOfString:@" " withString:@""];
+    arr2Str = [arr2Str stringByReplacingOccurrencesOfString:@"\r" withString:@""];
+    arr2Str = [arr2Str stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+    NSString *showText = [NSString stringWithFormat:@"%@%@%@...全文", array[0], array[1],arr2Str];
     //设置label的attributedText
     NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:showText attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13.0], NSForegroundColorAttributeName:[UIColor colorWithRed:102/255.0 green:102/255.0 blue:102/255.0 alpha:1.0]}];
     [attStr addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13.0], NSForegroundColorAttributeName:[UIColor redColor]} range:NSMakeRange(showText.length-2, 2)];

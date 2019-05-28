@@ -2,7 +2,7 @@
  * 精选热门
  */
 import React from 'react';
-import { View, StyleSheet, Platform } from 'react-native';
+import { View, StyleSheet, Platform, Animated } from 'react-native';
 import ShowBannerView from './ShowBannerView';
 import { observer } from 'mobx-react';
 import { tag, showBannerModules } from './Show';
@@ -11,7 +11,6 @@ import DesignRule from '../../constants/DesignRule';
 
 const { px2dp } = ScreenUtils;
 import ShowRecommendView from './components/ShowRecommendView';
-import TimerMixin from 'react-timer-mixin';
 import ReleaseButton from './components/ReleaseButton';
 
 import user from '../../model/user';
@@ -24,7 +23,6 @@ import ShowApi from './ShowApi';
 import EmptyUtils from '../../utils/EmptyUtils';
 import apiEnvironment from '../../api/ApiEnvironment';
 import ShowUtils from './utils/ShowUtils';
-import ToTopButton from './components/ToTopButton';
 import RouterMap from '../../navigation/RouterMap';
 
 @observer
@@ -42,8 +40,8 @@ export default class ShowHotView extends React.Component {
         this.firstLoad = true;
         this.state = {
             headerView: null,
-            showEditorIcon: true,
-            showToTop: false
+            showToTop: false,
+            rightValue: new Animated.Value(1)
         };
 
     }
@@ -65,20 +63,12 @@ export default class ShowHotView extends React.Component {
 
 
     loadData() {
-        // showChoiceModules.loadChoiceList().then(data => {
-        //     if (Platform.OS !== 'ios' && data) {
-        //         this.setState({
-        //             headerView: this.renderHeader()
-        //         });
-        //     }
-        // });
-
-        showBannerModules.loadBannerList(()=>{
-                if (Platform.OS !== 'ios') {
-                    this.setState({
-                        headerView: this.renderHeader()
-                    });
-                }
+        showBannerModules.loadBannerList(() => {
+            if (Platform.OS !== 'ios') {
+                this.setState({
+                    headerView: this.renderHeader()
+                });
+            }
         });
     }
 
@@ -107,6 +97,26 @@ export default class ShowHotView extends React.Component {
         });
     };
 
+    releaseButtonShow = () => {
+        Animated.timing(
+            this.state.rightValue,
+            {
+                toValue: 1,
+                duration: 300
+            }
+        ).start();
+    };
+
+    releaseButtonHidden = () => {
+        Animated.timing(
+            this.state.rightValue,
+            {
+                toValue: 0,
+                duration: 300
+            }
+        ).start();
+    };
+
     renderHeader = () => {
         return (<View style={{ backgroundColor: DesignRule.bgColor, width: ScreenUtils.width - px2dp(30) }}>
                 <ShowBannerView navigate={this.props.navigate} pageFocused={this.props.pageFocus}/>
@@ -114,7 +124,18 @@ export default class ShowHotView extends React.Component {
         );
     };
 
+    scrollToTop = () => {
+        if (this.state.showToTop) {
+            this.RecommendShowList && this.RecommendShowList.scrollToTop();
+        }
+    };
+
     render() {
+        const right = this.state.rightValue.interpolate({
+            inputRange: [0, 1],
+            outputRange: [-px2dp(22), px2dp(15)]
+        });
+
         return (
             <View style={styles.container}>
                 <View style={{ flex: 1, paddingHorizontal: 15 }}>
@@ -182,7 +203,10 @@ export default class ShowHotView extends React.Component {
                                                });
                                                ShowUtils.downloadShow(urls, detail.content).then(() => {
                                                    detail.downloadCount += 1;
-                                                   ShowApi.incrCountByType({ showNo: nativeEvent.detail.showNo, type: 4 });
+                                                   ShowApi.incrCountByType({
+                                                       showNo: nativeEvent.detail.showNo,
+                                                       type: 4
+                                                   });
                                                    this.RecommendShowList && this.RecommendShowList.replaceItemData(nativeEvent.index, JSON.stringify(detail));
                                                });
                                            }
@@ -220,53 +244,30 @@ export default class ShowHotView extends React.Component {
                                        onScrollStateChanged={({ nativeEvent }) => {
                                            const { state } = nativeEvent;
                                            if (state === 0) {
-                                               this.lastStopScrollTime = (new Date()).getTime();
-                                               TimerMixin.setTimeout(() => {
-                                                   if (this.lastStopScrollTime === -1) {
-                                                       return;
-                                                   }
-                                                   let currentTime = (new Date()).getTime();
-                                                   if ((currentTime - this.lastStopScrollTime) < 3000) {
-                                                       return;
-                                                   }
-                                                   this.setState({
-                                                       showEditorIcon: true
-                                                   });
-                                               }, 3000);
+                                               this.releaseButtonShow();
                                            } else {
-                                               this.lastStopScrollTime = -1;
-                                               this.setState({
-                                                   showEditorIcon: false
-                                               });
+                                               this.releaseButtonHidden();
                                            }
                                        }}
                     />
                     {
-                        this.state.showEditorIcon && user.token ?
-                            <ReleaseButton
-                                style={{
-                                    position: 'absolute',
-                                    right: px2dp(15),
-                                    bottom: px2dp(118)
-                                }}
-                                onPress={() => {
-                                    if (!user.isLogin) {
-                                        this.props.navigate('login/login/LoginPage');
-                                        return;
-                                    }
-                                    this.props.navigate('show/ReleaseNotesPage');
-                                }}/> : null
-                    }
+                        user.token ?
+                            <Animated.View style={{
+                                position: 'absolute',
+                                right: right,
+                                bottom: px2dp(118)
+                            }}>
+                                <ReleaseButton
 
-                    {this.state.showToTop ? <ToTopButton
-                        onPress={() => {
-                            this.RecommendShowList && this.RecommendShowList.scrollToTop();
-                        }}
-                        style={{
-                            position: 'absolute',
-                            right: px2dp(15),
-                            bottom: px2dp(60)
-                        }}/> : null}
+                                    onPress={() => {
+                                        if (!user.isLogin) {
+                                            this.props.navigate('login/login/LoginPage');
+                                            return;
+                                        }
+                                        this.props.navigate('show/ReleaseNotesPage');
+                                    }}/>
+                            </Animated.View> : null
+                    }
                 </View>
                 <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             </View>

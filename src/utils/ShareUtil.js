@@ -28,6 +28,11 @@ const onShare = (data, api, trackParmas,trackEvent, callback = () => {}, luckyDr
         params.userName = data.userName || apiEnvironment.getCurrentWxAppletKey();
         params.miniProgramType = apiEnvironment.getMiniProgramType();
     }
+    console.log(data)
+    if(params.linkUrl){
+        let  addData = {pageSource:params.platformType?params.platformType+1:0};
+        console.log(queryString(params.linkUrl,addData));
+    }
     if (trackEvent) {
         let p = trackParmas || {};
         let shareType = [TrackShareType.wx, TrackShareType.wxTimeline, TrackShareType.qq, TrackShareType.qqSpace, TrackShareType.weibo][data.platformType];
@@ -38,13 +43,13 @@ const onShare = (data, api, trackParmas,trackEvent, callback = () => {}, luckyDr
                 user.luckyDraw();
             }
             shareSucceedCallBlack(api, callback);
+            callback('shareSuccess'); //提示分享成功
         }, (errorStr) => {
 
         });
 };
 
 const shareSucceedCallBlack = (api, sucCallback = () => {}) => {
-    console.log('分享成功后调用分享方法',api);
     if (EmptyUtils.isEmpty(api)) {
         return;
     }
@@ -56,21 +61,42 @@ const shareSucceedCallBlack = (api, sucCallback = () => {}) => {
         HttpUtils.get(url, false, params).then(() => {
             if (refresh === true) {
                 // this.props.reloadWeb && this.props.reloadWeb();
-                sucCallback();
+                sucCallback('reload');//分享成功后刷新操作
             }
         });
     } else {
         HttpUtils.post(url, false, params, {}).then(() => {
             if (refresh === true) {
                 // this.props.reloadWeb && this.props.reloadWeb();
-                sucCallback();
+                sucCallback('reload');
             }
         }).catch(() => {
         });
     }
 };
 
+const queryString = (url, params) => {
+    if (params) {
+        const paramsArray = [];
+        Object.keys(params).forEach(key =>
+            paramsArray.push(key + '=' + params[key])
+        );
+        if (url.search(/\?/) === -1) {
+            url += '?' + paramsArray.join('&');
+        } else {
+            let arr = url.split('?');
+            if(arr.length>1&&arr[1].length>0){
+                url += '&' + paramsArray.join('&');
+            }else {
+                url += paramsArray.join('&');
+
+            }
+        }
+    }
+    return url;
+};
 
 export default {
-    onShare
+    onShare,
+    queryString
 }

@@ -4,9 +4,9 @@ const api = {
     //活动
     showActivity: ['/social/show/content/page/query', { method: 'get' }],
     // 发现详情
-    showDetail: ['/discover/getById', { method: 'get' }],
+    showDetail: ['/social/show/content/queryByContentNo', { method: 'get' }],
     // 发现详情
-    showDetailCode: ['/discover/getByCode', { method: 'get' }],
+    showDetailCode: ['/social/show/content/queryByContentNo', { method: 'get' }],
     // 点赞
     showGood: '/discover/count/save',
     // 取消点赞:
@@ -26,7 +26,9 @@ const api = {
     //点赞/收藏/浏览量  1.点赞 2.收藏3.分享4.下载 5.浏览量 6.人气值
     incrCountByType:['/social/show/count/incrCountByType',{method:'post'}],
     //取消点赞/收藏 1.点赞 2.收藏3.分享4.下载 5.浏览量 6.人气值
-    reduceCountByType:['/social/show/count/reduceCountByType',{method:'post'}]
+    reduceCountByType:['/social/show/count/reduceCountByType',{method:'post'}],
+    //判断用户类型
+    getWhiteList:['/social/show/user/query',{method:'get'}]
 };
 import ApiUtils from '../../api/network/ApiUtils';
 

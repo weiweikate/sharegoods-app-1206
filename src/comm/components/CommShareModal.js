@@ -57,7 +57,8 @@ import {
     Clipboard,
     NativeModules,
     Linking,
-    ActivityIndicator
+    ActivityIndicator,
+    Alert
 } from 'react-native';
 import ShowShareImage from './ShowShareImage';
 
@@ -78,6 +79,8 @@ import { track } from '../../utils/SensorsTrack';
 import user from '../../model/user';
 import { getSource } from '@mr/image-placeholder/oos';
 import ShareUtil from '../../utils/ShareUtil';
+import {navigate} from "../../navigation/RouterMap";
+import RouterMap from "../../navigation/RouterMap";
 
 // 0：未知
 // 1：微信好友2：微信朋友圈3：qq好友4：qq空间5：微博6：复制链接7：分享图片
@@ -115,6 +118,18 @@ export default class CommShareModal extends React.Component {
     open() {
         if (user.isLogin) {
             user.userShare();
+        }else {
+            Alert.alert('', '为了给您提供更完整的服务，\n请登录后操作',
+                [{
+                        text: '继续浏览', onPress: () => {
+                        }
+                    },
+                    {
+                        text: '马上登录', onPress: () => {
+                            navigate(RouterMap.LoginPage);
+                        }
+                    }]);
+            return;
         }
         let props = this.props;
         this.defaultShareType = (props.type === 'miniProgram' ) ? 2 : 1;
@@ -227,10 +242,7 @@ export default class CommShareModal extends React.Component {
             platformType: platformType
         };
 
-        ShareUtil.onShare(params, that.props.api, trackParmas,trackEvent , () => {
-            console.log('分享成功结束后回调');
-            this.props.reloadWeb && this.props.reloadWeb();
-        }, that.props.luckyDraw);
+        ShareUtil.onShare(params, that.props.api, trackParmas,trackEvent ,this.props.successCallBack, that.props.luckyDraw);
     }
 
     saveImage(path) {
@@ -245,7 +257,7 @@ export default class CommShareModal extends React.Component {
         if (this.props.trackEvent) {
             track(this.props.trackEvent, { shareType: TrackShareType.copyLink, ...this.props.trackParmas });
         }
-        Clipboard.setString(this.props.webJson.linkUrl);
+        Clipboard.setString(ShareUtil.queryString(this.props.webJson.linkUrl,{pageSource:6}));
         NativeModules.commModule.toast('复制链接成功');
     }
 

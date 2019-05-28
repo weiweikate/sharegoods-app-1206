@@ -8,7 +8,10 @@ import {
     StyleSheet,
     View,
     ImageBackground,
-    Image
+    Image,
+    TouchableWithoutFeedback,
+    Linking,
+    Clipboard
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import { MRText as Text } from '../../../../components/ui';
@@ -20,6 +23,7 @@ import res from '../../res';
 import AvatarImage from '../../../../components/ui/AvatarImage';
 import ToSearchComponent from './Component/ToSearchComponent';
 import SmoothPushHighComponent from '../../../../comm/components/SmoothPushHighComponent';
+import bridge from "../../../../utils/bridge";
 const {px2dp} = ScreenUtils;
 const {
     bg_fans_item
@@ -47,18 +51,47 @@ export default class GroupShowFansPage extends BasePage<Props> {
         show: true
     };
 
-    _listItemRender = ({ item }) => {
+    _listItemRender = ({ item,index }) => {
         const uri = { uri: item.headImg };
+        let name = item.nickname.substring(0,28);
         return (
-            <ImageBackground resizeMode={'stretch'} source={bg_fans_item} style={styles.itemWrapper}>
-                <View style={[styles.fansIcon, { overflow: 'hidden' }]}>
-                    <AvatarImage style={styles.fansIcon} source={uri}/>
+            <ImageBackground key={index+'showFans'} resizeMode={'stretch'} source={bg_fans_item} style={styles.itemWrapper}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={[styles.fansIcon, {overflow: 'hidden'}]}>
+                        <AvatarImage style={styles.fansIcon} source={uri}/>
+                    </View>
+                    <View style={{flex: 1}}>
+                        <Text style={styles.fansNameStyle} numberOfLines={1}>{name}</Text>
+                        {item.weChatNumber ?
+                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                <Text style={[styles.fansNameStyle,{width:100}]} numberOfLines={1}>{item.weChatNumber}</Text>
+                                <TouchableWithoutFeedback onPress={() => {
+                                    Clipboard.setString(item.weChatNumber);
+                                    bridge.$toast('复制到剪切版');
+                                }}>
+                                    <View style={styles.copyViewStyle}>
+                                        <Text style={styles.copyTextStyle} >复制</Text>
+                                    </View>
+                                </TouchableWithoutFeedback>
+                            </View> : null
+                        }
+                    </View>
+
+                    <TouchableWithoutFeedback onPress={() => {
+                        item.phone&&Linking.openURL(`tel:${item.phone}`)
+                    }}>
+                        <Image style={[styles.btnIcon, {marginRight: 25}]} source={res.showFans.phoneIcon}/>
+                    </TouchableWithoutFeedback>
+
+                    <TouchableWithoutFeedback onPress={() => {
+                        item.phone&&Linking.openURL(`sms:${item.phone}`)
+                    }}>
+                        <Image style={[styles.btnIcon, {marginRight: 32}]} source={res.showFans.messageIcon}/>
+                    </TouchableWithoutFeedback>
                 </View>
-                <Text style={styles.fansNameStyle}>
-                    {item.nickname}
-                </Text>
             </ImageBackground>
         );
+
     };
 
     _headerRender = () => {
@@ -127,10 +160,22 @@ const styles = StyleSheet.create({
         borderRadius: 20
     },
     fansNameStyle: {
-        color: DesignRule.textColor_mainTitle_222,
-        fontSize: DesignRule.fontSize_mainTitle,
+        color: '#2C2C2C',
+        fontSize: DesignRule.fontSize_threeTitle,
         marginLeft: 8,
-        paddingVertical: 5
+    },
+    copyViewStyle:{
+        width:px2dp(32),
+        height:px2dp(18),
+        borderRadius:px2dp(12),
+        marginLeft:10,
+        backgroundColor:'rgba(255,0,80,0.1)',
+        alignItems:'center',
+        justifyContent:'center',
+    },
+    copyTextStyle: {
+        color: '#FF0050',
+        fontSize: DesignRule.fontSize_20,
     },
     typeWrapper: {
         width: 55,
@@ -208,5 +253,10 @@ const styles = StyleSheet.create({
     levelNameText:{
         color:DesignRule.textColor_mainTitle,
         fontSize:px2dp(13)
+    },
+    btnIcon:{
+        width:px2dp(28),
+        height:px2dp(28),
     }
+
 });
