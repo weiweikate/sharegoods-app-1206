@@ -158,9 +158,13 @@ function AdViewBindModal(modal,dataName = 'AdData', visibleName = 'isShowAd' , c
             if (router) {
                 navigate(router, params);
             }
-            modal[closeFunc]&&modal[closeFunc]();
+           this.close();
             //页面跳转
         };
+
+        close(){
+            modal[closeFunc]&&modal[closeFunc]();
+        }
 
         render() {
             let AdData = modal[dataName] || {};
@@ -169,7 +173,7 @@ function AdViewBindModal(modal,dataName = 'AdData', visibleName = 'isShowAd' , c
                 <CommModal ref={(ref) => {
                     this.messageModal = ref;
                 }}
-                           onRequestClose={() => modal.closeAd()}
+                           onRequestClose={() =>  {this.close()}}
                            visible={modal[visibleName] && modal.isHome}>
                     <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center' }}>
                         <View style={{ flex: 1 }}/>
@@ -185,7 +189,7 @@ function AdViewBindModal(modal,dataName = 'AdData', visibleName = 'isShowAd' , c
                         </TouchableOpacity>
                         <View style={{ flex: 1 }}>
                             <TouchableOpacity onPress={() => {
-                                modal.closeAd();
+                                this.close();
                             }} style={{ marginTop: autoSizeWidth(25) }}>
                                 <Image source={closeImg} style={{ height: autoSizeWidth(24), width: autoSizeWidth(24) }}
                                        resizeMode={'stretch'}/>
@@ -200,7 +204,7 @@ function AdViewBindModal(modal,dataName = 'AdData', visibleName = 'isShowAd' , c
 }
 
 let HomeAdModal = observer(AdViewBindModal(HomeModalManager));
-let GiftModal = observer(AdViewBindModal(HomeModalManager), 'giftData' ,'isShowGift', 'closeGift');
+let GiftModal = observer(AdViewBindModal(HomeModalManager, 'giftData' ,'isShowGift', 'closeGift'));
 export{HomeAdModal, AdViewBindModal, GiftModal}
 
 
