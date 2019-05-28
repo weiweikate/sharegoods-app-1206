@@ -586,14 +586,6 @@ export default class ShowRichTextDetailPage extends BasePage {
                                 linkUrl:`${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
                                 thumImage:''//(分享图标小图(https链接)图文分享使用)
                             }}
-                            miniProgramJson={{
-                                title: detail.title,
-                                dec: '分享小程序子标题',
-                                thumImage: 'logo.png',
-                                hdImageURL: detail.img,
-                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
-                                miniProgramPath: `/pages/discover/discover-detail/discover-detail?articleId=${detail.id}&inviteId=${user.code || ''}`
-                            }}
             />
         </View>;
     }
