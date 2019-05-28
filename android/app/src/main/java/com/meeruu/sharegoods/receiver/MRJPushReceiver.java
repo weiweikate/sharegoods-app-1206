@@ -79,9 +79,15 @@ public class MRJPushReceiver extends BroadcastReceiver {
                 // 刷新首页
                 try {
                     JSONObject object = new JSONObject(content);
-                    EventBus.getDefault().post(new Event.MRHomeRefreshEvent(object.getInt("homeType")));
+                    if (object != null) {
+                        EventBus.getDefault().post(new Event.MRHomeRefreshEvent(object.getInt("homeType")));
+                    }
                 } catch (JSONException e) {
                 }
+                break;
+            case "ActivitySkip":
+                // 跳标
+                EventBus.getDefault().post(new Event.MRNativeTagEvent(content));
                 break;
             default:
                 break;

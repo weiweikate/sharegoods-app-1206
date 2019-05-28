@@ -14,7 +14,8 @@ import NoMoreClick from '../../../../components/ui/NoMoreClick';
 import CommShareModal from '../../../../comm/components/CommShareModal';
 import user from '../../../../model/user';
 import apiEnvironment from '../../../../api/ApiEnvironment';
-import RouterMap from '../../../../navigation/RouterMap';
+import spellStatusModel from '../../model/SpellStatusModel';
+import bridge from '../../../../utils/bridge';
 
 const { myShop } = shopRes;
 const { shopProduct, shopProductShare } = myShop;
@@ -26,7 +27,7 @@ const progressWidth = px2dp(60);
 export class ShopProductItemView extends Component {
 
     _renderItem = ({ item, index }) => {
-        const { image, title, content, shareMoney, promotionMinPrice, price, progressBar, salesVolume, linkTypeCode } = item || {};
+        const { image, title, content, shareMoney, promotionMinPrice, price, progressBar, salesVolume, linkTypeCode, linkType } = item || {};
         /*进度条显示*/
         let salesVolumeS = (salesVolume || 0) / 100;
         if (salesVolumeS > 1) {
@@ -44,7 +45,15 @@ export class ShopProductItemView extends Component {
         return (
             <NoMoreClick style={[ProductItemViewStyles.itemView, { marginLeft: index === 0 ? 15 : 10 }]} onPress={
                 () => {
-                    navigate(RouterMap.ProductDetailPage, { productCode: linkTypeCode });
+                    if (!spellStatusModel.hasStore) {
+                        bridge.$toast('只有拼店用户才能进行分享操作哦~');
+                        return;
+                    }
+                    const router = homeModule.homeNavigate(linkType, linkTypeCode);
+                    let params = homeModule.paramsNavigate(item);
+                    if (router) {
+                        navigate(router, params);
+                    }
                 }
             }>
                 <UIImage source={{ uri: image || '' }}
@@ -77,6 +86,10 @@ export class ShopProductItemView extends Component {
                         </View>}
                     </View>
                     <NoMoreClick onPress={() => {
+                        if (!spellStatusModel.hasStore) {
+                            bridge.$toast('只有拼店用户才能进行分享操作哦~');
+                            return;
+                        }
                         this.shareModal.open();
                     }}>
                         <Image style={ProductItemViewStyles.shareImg} source={shopProductShare}/>
@@ -193,6 +206,25 @@ const ProductItemViewStyles = StyleSheet.create({
 @observer
 export class ShopBottomBannerView extends Component {
 
+    state = {
+        index: 0
+    };
+
+    _renderStyleOne = (arrLen) => {
+        const { index } = this.state;
+        let items = [];
+        for (let i = 0; i < arrLen; i++) {
+            if (index === i) {
+                items.push(<View key={i} style={bottomBannerStyles.activityIndex}/>);
+            } else {
+                items.push(<View key={i} style={bottomBannerStyles.index}/>);
+            }
+        }
+        return <View style={bottomBannerStyles.indexView}>
+            {items}
+        </View>;
+    };
+
     render() {
         const { MyShopDetailModel } = this.props;
         const { bottomBannerList } = MyShopDetailModel;
@@ -216,8 +248,11 @@ export class ShopBottomBannerView extends Component {
                                   navigate(router, params);
                               }
                           }}
-                          onDidScrollToIndex={() => {
+                          onDidScrollToIndex={(e) => {
+                              const index = e.nativeEvent.index;
+                              this.setState({ index });
                           }} autoLoop={bottomBannerList.length !== 1}>
+                {this._renderStyleOne(images.length)}
             </MRBannerView>
         );
     }
@@ -227,5 +262,29 @@ const bottomBannerStyles = StyleSheet.create({
     banner: {
         alignSelf: 'center', overflow: 'hidden',
         width: px2dp(345), height: px2dp(120), borderRadius: 7
+    },
+    indexView: {
+        position: 'absolute',
+        bottom: 5,
+        left: 0,
+        width: ScreenUtils.width - px2dp(30),
+        flexDirection: 'row',
+        justifyContent: 'center'
+    },
+    activityIndex: {
+        width: px2dp(14),
+        height: px2dp(3),
+        borderRadius: px2dp(1.5),
+        backgroundColor: DesignRule.mainColor,
+        marginLeft: 2,
+        marginRight: 2
+    },
+    index: {
+        width: px2dp(5),
+        height: px2dp(3),
+        borderRadius: px2dp(1.5),
+        backgroundColor: DesignRule.lineColor_inWhiteBg,
+        marginLeft: 2,
+        marginRight: 2
     }
 });

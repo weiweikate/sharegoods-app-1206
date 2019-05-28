@@ -45,12 +45,13 @@ import HomeLimitGoView from './view/HomeLimitGoView';
 import { limitGoModule } from './model/HomeLimitGoModel';
 import HomeExpandBannerView from './view/HomeExpandBannerView';
 import HomeFocusAdView from './view/HomeFocusAdView';
-import PraiseModel from './view/PraiseModel'
+import PraiseModel from './view/PraiseModel';
 
 const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
 
 const HOME_REFRESH = 'homeRefresh';
+const HOME_SKIP = 'activitySkip';
 
 /**
  * @author zhangjian
@@ -116,10 +117,10 @@ class HomePage extends BasePage {
                 dim.height = homeExpandBnnerModel.bannerHeight;
                 break;
             case homeType.focusGrid:
-                dim.height = foucusHeight > 0 ? foucusHeight + (homeExpandBnnerModel.banner.length > 0 ? px2dp(20) : px2dp(10)) : 0;
+                dim.height = foucusHeight > 0 ? (foucusHeight + (homeExpandBnnerModel.banner.length > 0 ? px2dp(20) : px2dp(10))) : 0;
                 break;
             case homeType.limitGo:
-                dim.height = limitGoModule.limitHeight;
+                dim.height = limitGoModule.spikeList.length > 0 ? limitGoModule.limitHeight : 0;
                 break;
             case homeType.today:
                 dim.height = todayList.length > 0 ? todayHeight : 0;
@@ -194,7 +195,7 @@ class HomePage extends BasePage {
                     homeModule.homeFocused(true);
                     homeModalManager.entryHome();
                     homeModalManager.refreshPrize();
-                    intervalMsgModel.msgList = [];
+                    taskModel.getData();
                     if (!homeModule.firstLoad) {
                         limitGoModule.loadLimitGo();
                     }
@@ -208,18 +209,26 @@ class HomePage extends BasePage {
         this.listenerLogout = DeviceEventEmitter.addListener('login_out', this.loadMessageCount);
         this.listenerRetouchHome = DeviceEventEmitter.addListener('retouch_home', this.retouchHome);
         this.listenerHomeRefresh = JSManagerEmitter.addListener(HOME_REFRESH, this.homeTypeRefresh);
+        this.listenerSkip = JSManagerEmitter.addListener(HOME_SKIP, this.homeSkip);
 
         InteractionManager.runAfterInteractions(() => {
             user.getToken().then(() => {//让user初始化完成
                 this.luckyIcon && this.luckyIcon.getLucky(1, '');
                 homeModalManager.requestData();
                 this.loadMessageCount();
+                taskModel.getData();
             });
         });
     }
 
     homeTypeRefresh = (type) => {
         homeModule.refreshHome(type);
+    };
+
+    homeSkip = (data) => {
+        // 跳标
+        let tagArr = JSON.parse(data) || [];
+        intervalMsgModel.msgList = tagArr;
     };
 
     componentWillUnmount() {
@@ -230,6 +239,7 @@ class HomePage extends BasePage {
         this.listenerLogout && this.listenerLogout.remove();
         this.listenerRetouchHome && this.listenerRetouchHome.remove();
         this.listenerHomeRefresh && this.listenerHomeRefresh.remove();
+        this.listenerSkip && this.listenerSkip.remove();
     }
 
     retouchHome = () => {
@@ -271,7 +281,7 @@ class HomePage extends BasePage {
             return <HomeBannerView navigate={this.$navigate}/>;
         } else if (type === homeType.user) {
             return <HomeUserView navigate={this.$navigate}/>;
-        }  else if (type === homeType.task) {
+        } else if (type === homeType.task) {
             return <TaskVIew type={'home'}/>;
         } else if (type === homeType.channel) {
             return <HomeChannelView navigate={this.$navigate}/>;
@@ -307,6 +317,7 @@ class HomePage extends BasePage {
 
     _onRefresh() {
         homeModule.loadHomeList(true);
+        taskModel.getData();
         this.luckyIcon && this.luckyIcon.getLucky(1, '');
     }
 
@@ -359,8 +370,8 @@ class HomePage extends BasePage {
                 <LuckyIcon ref={(ref) => {
                     this.luckyIcon = ref;
                 }}/>
-                <PraiseModel />
-                <GiftModal />
+                <PraiseModel/>
+                <GiftModal/>
                 <IntervalMsgView/>
                 <HomeAdModal/>
                 <HomeMessageModalView/>
