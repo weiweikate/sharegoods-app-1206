@@ -5,6 +5,8 @@ const api = {
 
     // 查询用户个人信息
     getUser: ['/user/getUser', { method: 'get', checkLogin: true }],
+    // 查询消息
+    floatMsg: ['/floatMsg/get', { method: 'get' }],
 
     // 查询首页推荐店铺
     queryHomeStore: ['/user/store/queryHomeStore', { method: 'get' }],
@@ -102,7 +104,7 @@ const api = {
     store_record: ['/user/store/record', { method: 'get' }],
 
     //去支付测试
-    user_pay: ['/user/pay', { method: 'get' }],
+    user_pay: ['/user/pay', { method: 'get' }]
 };
 const SpellShopApi = ApiUtils(api);
 export default SpellShopApi;
