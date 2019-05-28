@@ -16,6 +16,7 @@
 
 #define KQiYuKey         @"b87fd67831699ca494a9d3de266cd3b0" //七鱼key
 #define KJSPushKey       @"7fde54543daf045a209a7abf"  //极光appkey
+#define KDEBUGJSPushKey  @"3288c3f3feb6c119e3d88049" //极光测试key
 
 #define KWechatAppKey    @"wx401bc973f010eece"  //微信key
 #define KWechatAppSecret @"405dede82bb1c57e0b63056c8d2274c1"  //微信secret
