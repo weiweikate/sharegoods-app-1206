@@ -139,7 +139,7 @@ export default class HomeMessageModalView extends React.Component {
 }
 
 
-function AdViewBindModal(modal,dataName = 'AdData', visibleName = 'isShowAd') {
+function AdViewBindModal(modal,dataName = 'AdData', visibleName = 'isShowAd' , closeFunc = 'closeAd') {
     return (
     class HomeAdModal extends React.Component {
         state = {
@@ -158,9 +158,13 @@ function AdViewBindModal(modal,dataName = 'AdData', visibleName = 'isShowAd') {
             if (router) {
                 navigate(router, params);
             }
-            modal.closeAd();
+           this.close();
             //页面跳转
         };
+
+        close(){
+            modal[closeFunc]&&modal[closeFunc]();
+        }
 
         render() {
             let AdData = modal[dataName] || {};
@@ -169,7 +173,7 @@ function AdViewBindModal(modal,dataName = 'AdData', visibleName = 'isShowAd') {
                 <CommModal ref={(ref) => {
                     this.messageModal = ref;
                 }}
-                           onRequestClose={() => modal.closeAd()}
+                           onRequestClose={() =>  {this.close()}}
                            visible={modal[visibleName] && modal.isHome}>
                     <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center' }}>
                         <View style={{ flex: 1 }}/>
@@ -185,7 +189,7 @@ function AdViewBindModal(modal,dataName = 'AdData', visibleName = 'isShowAd') {
                         </TouchableOpacity>
                         <View style={{ flex: 1 }}>
                             <TouchableOpacity onPress={() => {
-                                modal.closeAd();
+                                this.close();
                             }} style={{ marginTop: autoSizeWidth(25) }}>
                                 <Image source={closeImg} style={{ height: autoSizeWidth(24), width: autoSizeWidth(24) }}
                                        resizeMode={'stretch'}/>
@@ -200,7 +204,7 @@ function AdViewBindModal(modal,dataName = 'AdData', visibleName = 'isShowAd') {
 }
 
 let HomeAdModal = observer(AdViewBindModal(HomeModalManager));
-let GiftModal = observer(AdViewBindModal(HomeModalManager), 'giftData' ,'isShowGift');
+let GiftModal = observer(AdViewBindModal(HomeModalManager, 'giftData' ,'isShowGift', 'closeGift'));
 export{HomeAdModal, AdViewBindModal, GiftModal}
 
 

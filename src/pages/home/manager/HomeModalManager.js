@@ -3,6 +3,7 @@
  * @date 2018/11/20
  */
 
+
 'use strict';
 import { action, observable, flow } from 'mobx';
 import DeviceInfo from 'react-native-device-info/deviceinfo';
@@ -11,6 +12,7 @@ import HomeAPI from '../api/HomeAPI';
 import { homeType } from '../HomeTypes';
 import { AsyncStorage } from 'react-native';
 import MessageApi from '../../message/api/MessageApi';
+import { track, trackEvent } from '../../../utils/SensorsTrack';
 
 const requsetCount = 4;
 
@@ -84,6 +86,7 @@ class HomeModalManager {
             this.isShowAd = true;
         }else if (this.needShowGift === true) {
             this.isShowGift = true;
+            track(trackEvent.NewUserGuideShow, {})
         }
     }
 
@@ -96,6 +99,7 @@ class HomeModalManager {
         this.noticeData = null;
         if (this.needShowGift === true) {
             this.isShowGift = true;
+            track(trackEvent.NewUserGuideShow, {})
         }else if (this.needShowPrize === true) {
             this.isShowPrize = true;
         }
@@ -111,6 +115,7 @@ class HomeModalManager {
         this.AdData = null;
         if (this.needShowGift === true) {
             this.isShowGift = true;
+            track(trackEvent.NewUserGuideShow, {})
         }else if (this.needShowPrize === true) {
             this.isShowPrize = true;
         }
@@ -124,6 +129,7 @@ class HomeModalManager {
         //关闭抽奖结果的弹框，如果可以有新手的弹框，就显示
         if (this.needShowGift === true){
             this.isShowGift = true;
+            track(trackEvent.NewUserGuideShow, {})
         }
     }
 
@@ -156,6 +162,7 @@ class HomeModalManager {
                     this.isShowAd = true;
                 }else if (this.needShowGift === true) {
                      this.isShowGift = true;
+                     track(trackEvent.NewUserGuideShow, {})
                  }else if (this.needShowPrize === true) {
                      this.isShowPrize = true;
                  }
@@ -265,6 +272,7 @@ class HomeModalManager {
             }
             if (!this.isShowUpdate && !this.isShowNotice && !this.isShowAd && !this.isShowPrize){
                 this.isShowGift = true;
+                track(trackEvent.NewUserGuideShow, {})
             }
         }).catch(() => {
         })

@@ -32,6 +32,7 @@ import ShowMaterialView from './ShowMaterialView';
 import apiEnvironment from '../../api/ApiEnvironment';
 import CommShareModal from '../../comm/components/CommShareModal';
 import WhiteModel from './model/WhiteModel';
+import { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
 
 const {
     mine_user_icon,
@@ -343,6 +344,7 @@ export default class ShowListPage extends BasePage {
                     }
                 </View>
             </ScrollableTabView>
+            <IntervalMsgView pageType = {IntervalType.xiuChang}/>
             {detail ?
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 type={'Show'}

@@ -44,6 +44,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { ShopBottomBannerView, ShopProductItemView } from './components/ShopDetailItemView';
 import MyShopDetailModel from './MyShopDetailModel';
+import { IntervalMsgView, IntervalType } from '../../../comm/components/IntervalMsgView';
 
 const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
 const NavLeft = resCommon.button.white_back;
@@ -137,6 +138,8 @@ export default class MyShopPage extends BasePage {
 
     componentWillUnmount() {
         this.willFocusSubscription && this.willFocusSubscription.remove();
+        this.willBlurSubscription && this.willBlurSubscription.remove();
+        this.timeInterval && clearInterval(this.timeInterval);
     }
 
     componentDidMount() {
@@ -147,11 +150,26 @@ export default class MyShopPage extends BasePage {
                 console.log('willFocus', state);
                 if (state && state.routeName === 'MyShop_RecruitPage') {//tab出现的时候
                     this._loadPageData();
+                    this.timeInterval = setInterval(() => {
+                        this.MyShopDetailModel.questShopMsg(this.state.storeCode);
+                    }, 1000 * 30);
+                }
+            }
+        );
+        this.willBlurSubscription = this.props.navigation.addListener(
+            'willBlur',
+            payload => {
+                const { state } = payload;
+                if (state && state.routeName === 'MyShop_RecruitPage') {
+                    this.timeInterval && clearInterval(this.timeInterval);
                 }
             }
         );
         /*上面的方法第一次_loadPageData不会执行  page已经出现了*/
         this._loadPageData();
+        this.timeInterval = setInterval(() => {
+            this.MyShopDetailModel.questShopMsg(this.state.storeCode);
+        }, 1000 * 30);
     }
 
 
@@ -520,6 +538,7 @@ export default class MyShopPage extends BasePage {
                                 style={styles.LinearGradient}/>
                 {this._NavBarRender()}
                 {this.renderBodyView()}
+                <IntervalMsgView pageType={IntervalType.shopDetail}/>
                 <ActionSheetView ref={ref => {
                     this.actionSheetRef = ref;
                 }}/>

@@ -67,7 +67,7 @@ import BasePage from '../../BasePage';
 import { TrackApi } from '../../utils/SensorsTrack';
 import taskModel from './model/TaskModel';
 import TaskVIew from './view/TaskVIew';
-import intervalMsgModel, { IntervalMsgView } from '../../comm/components/IntervalMsgView';
+import intervalMsgModel, { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
 
 const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
     <Text style={styles.text}
@@ -195,6 +195,7 @@ class HomePage extends BasePage {
                     homeModule.homeFocused(true);
                     homeModalManager.entryHome();
                     homeModalManager.refreshPrize();
+                    taskModel.getData();
                     if (!homeModule.firstLoad) {
                         limitGoModule.loadLimitGo();
                     }
@@ -215,6 +216,7 @@ class HomePage extends BasePage {
                 this.luckyIcon && this.luckyIcon.getLucky(1, '');
                 homeModalManager.requestData();
                 this.loadMessageCount();
+                taskModel.getData();
             });
         });
     }
@@ -315,6 +317,7 @@ class HomePage extends BasePage {
 
     _onRefresh() {
         homeModule.loadHomeList(true);
+        taskModel.getData();
         this.luckyIcon && this.luckyIcon.getLucky(1, '');
     }
 
@@ -369,7 +372,7 @@ class HomePage extends BasePage {
                 }}/>
                 <PraiseModel/>
                 <GiftModal/>
-                <IntervalMsgView/>
+                <IntervalMsgView pageType = {IntervalType.home}/>
                 <HomeAdModal/>
                 <HomeMessageModalView/>
                 <VersionUpdateModalView/>
