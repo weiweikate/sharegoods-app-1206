@@ -172,7 +172,12 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             fail.invoke("参数出错");
             return;
         }
-        getBitmap(mContext, shareImageBean, success, fail);
+        if("Show".equals(shareImageBean.getImageType())){
+
+        }else {
+            getBitmap(mContext, shareImageBean, success, fail);
+        }
+
     }
 
     @ReactMethod
