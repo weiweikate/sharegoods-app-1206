@@ -10,43 +10,35 @@
 #import <CoreImage/CoreImage.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "NSString+UrlAddParams.h"
-
+#import "UIImage+Util.h"
+#import "NSString+UrlAddParams.h"
+#import "ShowShareImgMaker.h"
 @implementation ShareImageMakerModel
 
 @end
-
 @implementation ShareImageMaker
 SINGLETON_FOR_CLASS(ShareImageMaker)
 - (void)creatShareImageWithShareImageMakerModel:(ShareImageMakerModel *)model
-                                     completion:(ShareImageMakercompletionBlock) completion;
-{
-  if (model.imageUrlStr == nil) {
-    completion(nil, @"商品图片URL（imageUrlStr）不能为nil");
+                                     completion:(ShareImageMakercompletionBlock) completion{
+  if(![self checkLegalWithShareImageMakerModel:model completion:completion]){
     return;
   }
-  if (model.titleStr == nil) {
-    completion(nil, @"商品标题（titleStr）不能为nil");
-    return;
-  }
-  if (model.priceStr == nil) {
-    completion(nil, @"价钱（priceStr）不能为nil");
-    return;
-  }
-  if (model.QRCodeStr == nil) {
-    completion(nil, @"二维码字符（QRCodeStr）不能为nil");
-    return;
-  }
+  NSString *imageType = model.imageType;
+  NSArray * URLs = @[];
+  NSArray * defaultImages = @[];
   __weak ShareImageMaker * weakSelf = self;
-  NSString *imgUrl = [model.imageUrlStr  stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-  [[YYWebImageManager sharedManager] requestImageWithURL:[NSURL URLWithString:imgUrl] options:YYWebImageOptionShowNetworkActivity progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-    
-  } transform:nil completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
+  
+  if ([imageType isEqualToString:@"show"]) {
+    URLs = @[model.imageUrlStr,model.headerImage];
+    defaultImages = @[[UIImage imageNamed:@"logo.png"], [UIImage imageNamed:@"default_avatar.png"]];
+  }else{//web or  produce or nil
+    URLs = @[model.imageUrlStr];
+    defaultImages = @[[UIImage imageNamed:@"logo.png"]];
+  }
+  [self requestImageWithURLs:URLs defaultImage:defaultImages success:^(NSArray *images) {
     dispatch_async(dispatch_get_main_queue(), ^{
-      UIImage * image2 = image;
-      if (error) {//如果加载网络图片失败，就用默认图
-        image2 = [UIImage imageNamed:@"logo.png"];
-      }
-      NSString *path = [weakSelf ceratShareImageWithProductImage:image2
+     
+      NSString *path = [weakSelf ceratShareImageWithImages:images
                                                            model: model];
       if (path == nil || path.length == 0) {
         completion(nil, @"ShareImageMaker：保存图片到本地失败");
@@ -57,7 +49,34 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
   }];
 }
 
-- (NSString* )ceratShareImageWithProductImage:(UIImage *)productImage
+-(BOOL)checkLegalWithShareImageMakerModel:(ShareImageMakerModel *)model
+                               completion:(ShareImageMakercompletionBlock) completion{
+   NSString *imageType = model.imageType;
+  if ([imageType isEqualToString:@"show"]) {
+   return [ShowShareImgMaker checkLegalWithShareImageMakerModel:model completion:completion];
+  }
+  
+  if (model.imageUrlStr == nil) {
+    completion(nil, @"商品图片URL（imageUrlStr）不能为nil");
+    return NO;
+  }
+  if (model.titleStr == nil) {
+    completion(nil, @"商品标题（titleStr）不能为nil");
+    return NO;
+  }
+  if (model.priceStr == nil) {
+    completion(nil, @"价钱（priceStr）不能为nil");
+    return NO;
+  }
+  if (model.QRCodeStr == nil) {
+    completion(nil, @"二维码字符（QRCodeStr）不能为nil");
+    return NO;
+  }
+  return YES;
+  
+}
+
+- (NSString* )ceratShareImageWithImages:(NSArray *)images
                                         model:(ShareImageMakerModel *)model
 {
   NSString *imageType = model.imageType;
@@ -66,22 +85,33 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
   CGFloat i = 3;// 为了图片高清 图片尺寸250 * 340
   
   CGFloat imageHeght = 340*i;
+  CGFloat imageWidth =  250*i;
   
   NSMutableArray *nodes = [NSMutableArray new];
   
   if ([imageType isEqualToString:@"web"]) {
+    
     //主图图片
     [nodes addObject:@{
-                       @"value": productImage,
+                       @"value": images[0],
                        @"locationType": @"rect",
                        @"location": [NSValue valueWithCGRect:CGRectMake(0, 0, 250*i, 340*i)]}
      ];
     //二维码
-    UIImage *QRCodeImage = [self QRCodeWithStr:QRCodeStr];
+    UIImage *QRCodeImage = [UIImage QRCodeWithStr:QRCodeStr];
     [nodes addObject:@{@"value": QRCodeImage,
                        @"locationType": @"rect",
                        @"location": [NSValue valueWithCGRect:CGRectMake(195*i, 285*i, 45*i, 45*i)]}
      ];
+  }else if ([imageType isEqualToString:@"show"]){
+   NSDictionary * dataDic = [ShowShareImgMaker getParamsWithImages:images
+                                     model:model];
+    nodes = dataDic[@"nodes"];
+    NSNumber* height = dataDic[@"height"];
+    imageHeght = height.floatValue;
+    NSNumber* width = dataDic[@"width"];
+    imageWidth = width.floatValue;
+    
   }else{
     NSString *titleStr = model.titleStr;
     NSString *priceStr = model.priceStr;
@@ -95,8 +125,8 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     }
     spellPrice = [NSString stringWithFormat:@"拼店价：%@",spellPrice];
     
-    CGFloat sigle =  [self getStringHeightWithText:@"1" fontSize:13*i viewWidth:220*i];
-    CGFloat height =  [self getStringHeightWithText:titleStr fontSize:13*i viewWidth:220*i];
+    CGFloat sigle =  [@"1" getStringHeightWithfontSize:13*i viewWidth:220*i];
+    CGFloat height =  [titleStr getStringHeightWithfontSize:13*i viewWidth:220*i];
     if (height > sigle*2) {
       height= sigle*2+1;
     }
@@ -106,7 +136,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     }
     //主图图片
     [nodes addObject:@{
-                       @"value": productImage,
+                       @"value": images[0],
                        @"locationType": @"rect",
                        @"location": [NSValue valueWithCGRect:CGRectMake(0, 0, 250*i, 250*i)]}
      ];
@@ -150,15 +180,15 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
                      @"location": [NSValue valueWithCGPoint:CGPointMake(15*i, 253*i+height+10*i + 15*i*2)]}
    ];
   //二维码
-  UIImage *QRCodeImage = [self QRCodeWithStr:QRCodeStr];
+  UIImage *QRCodeImage = [UIImage QRCodeWithStr:QRCodeStr];
   [nodes addObject:@{@"value": QRCodeImage,
                      @"locationType": @"rect",
                      @"location": [NSValue valueWithCGRect:CGRectMake(180*i, 253*i+height+10*i, 48*i, 48*i)]}
    ];
   }
   
-  CGRect rect = CGRectMake(0.0f, 0.0f, 250*i, imageHeght);
-  UIGraphicsBeginImageContext(CGSizeMake(250*i, imageHeght));
+  CGRect rect = CGRectMake(0.0f, 0.0f, imageWidth, imageHeght);
+  UIGraphicsBeginImageContext(CGSizeMake(imageWidth, imageHeght));
   CGContextRef context = UIGraphicsGetCurrentContext();
   CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
   CGContextFillRect(context, rect);
@@ -197,37 +227,11 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
   return @"";
 }
 
-/**
- 绘制二维码
- */
-- (UIImage *)QRCodeWithStr:(NSString *)str{
-  CIFilter *filter = [CIFilter filterWithName:@"CIQRCodeGenerator"];
-  [filter setDefaults];
-  //存放的信息
-  NSString *info = [str urlAddCompnentForValue:@"7" key:@"pageSource"];
-  //把信息转化为NSData
-  NSData *infoData = [info dataUsingEncoding:NSUTF8StringEncoding];
-  //滤镜对象kvc存值
-  [filter setValue:infoData forKeyPath:@"inputMessage"];
-  [filter setValue:@"H" forKey:@"inputCorrectionLevel"];
-  CIImage *outImage = [filter outputImage];
-  
-  return [self createNonInterpolatedUIImageFormCIImage:outImage withSize:360];
-}
+
 
 - (void)QRCodeWithStr:(NSString *)str imageStr:(NSString *)logoStr com:(void(^)(UIImage * image))com{
-  CIFilter *filter = [CIFilter filterWithName:@"CIQRCodeGenerator"];
-  [filter setDefaults];
-  //存放的信息
-  NSString *info = str;
-  //把信息转化为NSData
-  NSData *infoData = [info dataUsingEncoding:NSUTF8StringEncoding];
-  //滤镜对象kvc存值
-  [filter setValue:infoData forKeyPath:@"inputMessage"];
-  [filter setValue:@"H" forKey:@"inputCorrectionLevel"];
-  CIImage *outImage = [filter outputImage];
   
-  UIImage * qrImage = [self createNonInterpolatedUIImageFormCIImage:outImage withSize:360];
+  UIImage * qrImage = [UIImage QRCodeWithStr:str];
   if ([logoStr hasPrefix:@"http"]) {
     [[YYWebImageManager sharedManager] requestImageWithURL:[NSURL URLWithString:logoStr] options:YYWebImageOptionShowNetworkActivity progress:^(NSInteger receivedSize, NSInteger expectedSize) {
       
@@ -247,63 +251,11 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     [self QRCode:qrImage image:[UIImage imageNamed:logoStr] com:com];
   }
 }
-
-- (void)QRCode:(UIImage *)str image:(UIImage *)image com:(void(^)(UIImage * image))com{
-  CGRect rect = CGRectMake(0.0f, 0.0f, 360 , 350);
-  UIGraphicsBeginImageContext(CGSizeMake(360, 360));
-  [str drawInRect:rect];
-  image = [self creatRoundImagwwwe: image];
-  [image drawInRect:CGRectMake(140, 140, 80, 80)];
-  UIImage *image2 = UIGraphicsGetImageFromCurrentImageContext();
-  UIGraphicsEndImageContext();
-  com(image2);
-}
-
-/**
- 处理绘制的二维码模糊的问题
- */
-- (UIImage *)createNonInterpolatedUIImageFormCIImage:(CIImage *)image withSize:(CGFloat) size
-{
-  CGRect extent = CGRectIntegral(image.extent);
-  CGFloat scale = MIN(size/CGRectGetWidth(extent), size/CGRectGetHeight(extent));
-  
-  //1.创建bitmap;
-  size_t width = CGRectGetWidth(extent) * scale;
-  size_t height = CGRectGetHeight(extent) * scale;
-  CGColorSpaceRef cs = CGColorSpaceCreateDeviceGray();
-  CGContextRef bitmapRef = CGBitmapContextCreate(nil, width, height, 8, 0, cs, (CGBitmapInfo)kCGImageAlphaNone);
-  CIContext *context = [CIContext contextWithOptions:nil];
-  CGImageRef bitmapImage = [context createCGImage:image fromRect:extent];
-  CGContextSetInterpolationQuality(bitmapRef, kCGInterpolationNone);
-  CGContextScaleCTM(bitmapRef, scale, scale);
-  CGContextDrawImage(bitmapRef, extent, bitmapImage);
-  
-  //2.保存bitmap到图片
-  CGImageRef scaledImage = CGBitmapContextCreateImage(bitmapRef);
-  CGContextRelease(bitmapRef);
-  CGImageRelease(bitmapImage);
-  return [UIImage imageWithCGImage:scaledImage];
-}
-
-- (void)creatQRCodeImageWithQRCodeStr:(NSString *)QRCodeStr
-                           completion:(ShareImageMakercompletionBlock) completion{
-  if (QRCodeStr.length == 0 || QRCodeStr == nil) {
-    completion(nil,@"生成二维码的字符串不能为空");
-    return;
-  }
-  UIImage *QRCodeImage =  [self QRCodeWithStr:QRCodeStr];
-  NSString *path = [self save:QRCodeImage withPath:[NSString stringWithFormat:@"/Documents/InviteFriendsQRCode%@.png", QRCodeStr.md5String]];
-  if (path.length == 0 || path == nil) {
-    completion(nil,@"保存二维码失败");
-  }else{
-    completion(path,nil);
-  }
-}
-
+#pragma mark-推广相关-目前废弃
 - (void)createPromotionShareImageWithQRString:(NSString *)QRString
                                    completion:(ShareImageMakercompletionBlock) completion{
   UIImage *bgImage = [UIImage imageNamed:@"promotionBg"];
-  UIImage *QRCodeImage =  [self QRCodeWithStr:QRString];
+  UIImage *QRCodeImage =  [UIImage QRCodeWithStr:QRString];
   
   CGRect rect = CGRectMake(0.0f, 0.0f, 280, 380);
   UIGraphicsBeginImageContext(CGSizeMake(280, 380));
@@ -328,6 +280,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
   }
 }
 
+#pragma mark- 邀请好友相关
 - (void)saveInviteFriendsImage:(NSString*)QRString
                      logoImage:(NSString*)logoImage
                     completion:(completionBlock) completion
@@ -393,7 +346,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
       
       [shopPerson drawInRect:CGRectMake(textLeft, 34*2 + 16 + 28 + 16 + 26, textWidth, textHeight) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:26], NSForegroundColorAttributeName: [UIColor blackColor]}];
       
-      UIImage *QRCodeImage =  [self QRCodeWithStr:codeString];
+      UIImage *QRCodeImage =  [UIImage QRCodeWithStr:codeString];
       [QRCodeImage drawInRect:CGRectMake(189, (130+ 20)*2, 136*2, 136*2)];
       
       [wxTip drawInRect:CGRectMake((650-207*2)/2.0, (130+ 20)*2 + 136*2 + 54, 207*2, textHeight) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:26], NSForegroundColorAttributeName: [UIColor colorWithRed:85/255.0 green:85/255.0 blue:85/255.0 alpha:1]}];
@@ -427,33 +380,54 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     }
   }];
 }
-
-
--(CGFloat)getStringHeightWithText:(NSString *)text fontSize:(CGFloat)fontSize viewWidth:(CGFloat)width
-{
-  // 设置文字属性 要和label的一致
-  NSDictionary *attrs = @{NSFontAttributeName : [UIFont systemFontOfSize:fontSize]};
-  CGSize maxSize = CGSizeMake(width, MAXFLOAT);
-  
-  NSStringDrawingOptions options = NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading;
-  
-  // 计算文字占据的高度
-  CGSize size = [text boundingRectWithSize:maxSize options:options attributes:attrs context:nil].size;
-  
-  //    当你是把获得的高度来布局控件的View的高度的时候.size转化为ceilf(size.height)。
-  return  ceilf(size.height);
-}
-
--(UIImage *)creatRoundImagwwwe:(UIImage *)image{
-  CGRect rect = CGRectMake(0.0f, 0.0f, 60 , 60);
-  UIGraphicsBeginImageContext(CGSizeMake(60, 60));
-  CGContextRef ctx = UIGraphicsGetCurrentContext();
-  CGContextAddEllipseInRect(ctx, rect);
-  CGContextClip(ctx);
-  [image drawInRect:rect];
+#pragma mark-公用部分
+- (void)QRCode:(UIImage *)str image:(UIImage *)image com:(void(^)(UIImage * image))com{
+  CGRect rect = CGRectMake(0.0f, 0.0f, 360 , 350);
+  UIGraphicsBeginImageContext(CGSizeMake(360, 360));
+  [str drawInRect:rect];
+  image = [image creatRoundImagWithRadius:1 width:60 height:60];
+  [image drawInRect:CGRectMake(140, 140, 80, 80)];
   UIImage *image2 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
-  return image2;
+  com(image2);
 }
 
+//生产二维码，并返回路径，通用
+- (void)creatQRCodeImageWithQRCodeStr:(NSString *)QRCodeStr
+                           completion:(ShareImageMakercompletionBlock) completion{
+  if (QRCodeStr.length == 0 || QRCodeStr == nil) {
+    completion(nil,@"生成二维码的字符串不能为空");
+    return;
+  }
+  UIImage *QRCodeImage =  [UIImage QRCodeWithStr:QRCodeStr];
+  NSString *path = [self save:QRCodeImage withPath:[NSString stringWithFormat:@"/Documents/InviteFriendsQRCode%@.png", QRCodeStr.md5String]];
+  if (path.length == 0 || path == nil) {
+    completion(nil,@"保存二维码失败");
+  }else{
+    completion(path,nil);
+  }
+}
+
+
+-(void)requestImageWithURLs:(NSArray*) urls defaultImage:(NSArray *)defaultImages success:(void(^)(NSArray* images))success {
+  NSAssert(urls.count == defaultImages.count, @"数量要一样多少");
+  NSMutableArray * imagArr = [defaultImages mutableCopy];
+  __block NSInteger item =  urls.count;
+  for(int i=0;i<urls.count;i++){
+      NSString *imgUrl = [urls[i]  stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    [[YYWebImageManager sharedManager] requestImageWithURL:[NSURL URLWithString:imgUrl]options:YYWebImageOptionShowNetworkActivity progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+      
+    } transform:nil completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
+      dispatch_async(dispatch_get_main_queue(), ^{
+        if (!error) {//如果加载网络图片失败，就用默认图
+          imagArr[i]= image;
+        }
+        item -- ;
+        if (item<=0) {
+          success(imagArr);
+        }
+      });
+    }];
+  }
+}
 @end
