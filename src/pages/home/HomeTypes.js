@@ -12,12 +12,12 @@ export const homeType = {
     pinShop: 12,          // 拼店banner
     discover: 13,          // 发现banner
     signIn: 19,          // 签到弹窗
-    other: 'other',
-    classify: 'classify',
-    category: 'category',
-    goodsTitle: 'goodsTitle',
-    task: 'task',
-    user: 'user',
+    other: "other",
+    classify: "classify",
+    category: "category",
+    goodsTitle: "goodsTitle",
+    task: "task",
+    user: "user",
     show: 11,            //秀场
     banner: 14,
     limitGo: 300,   //限时秒杀
@@ -47,20 +47,20 @@ export const homeLinkType = {
 };
 
 export const homeRoute = {
-    [homeLinkType.good]: 'product/ProductDetailPage',
-    [homeLinkType.subject]: 'topic/DownPricePage',
-    [homeLinkType.down]: 'topic/TopicDetailPage',
-    [homeLinkType.spike]: 'product/ProductDetailPage',
-    [homeLinkType.package]: 'topic/TopicDetailPage',
-    [homeLinkType.store]: 'spellShop/MyShop_RecruitPage',
-    [homeLinkType.link]: 'HtmlPage',
-    [homeLinkType.lottery]: 'HtmlPage',
-    [homeLinkType.customTopic]: 'HtmlPage',
-    [homeLinkType.discover]: 'show/ShowDetailPage',
-    [homeLinkType.exp]: 'product/xpProduct/XpDetailPage',
-    [homeLinkType.classify]: 'home/search/SearchResultPage',
-    [homeLinkType.nothing]: '',  // 不做跳转
-    [homeLinkType.page]: ''      // 跳转到页面
+    [homeLinkType.good]: "product/ProductDetailPage",
+    [homeLinkType.subject]: "topic/DownPricePage",
+    [homeLinkType.down]: "topic/TopicDetailPage",
+    [homeLinkType.spike]: "product/ProductDetailPage",
+    [homeLinkType.package]: "topic/TopicDetailPage",
+    [homeLinkType.store]: "spellShop/MyShop_RecruitPage",
+    [homeLinkType.link]: "HtmlPage",
+    [homeLinkType.lottery]: "HtmlPage",
+    [homeLinkType.customTopic]: "HtmlPage",
+    [homeLinkType.discover]: "show/ShowDetailPage",
+    [homeLinkType.exp]: "product/xpProduct/XpDetailPage",
+    [homeLinkType.classify]: "home/search/SearchResultPage",
+    [homeLinkType.nothing]: "",  // 不做跳转
+    [homeLinkType.page]: ""      // 跳转到页面
 };
 
 //埋点
@@ -72,11 +72,11 @@ export const homePoint = {
     homeToday: 4, //4:app首页今日榜单广告位
     homeRecommad: 5, //5：app首页精品推荐广告位
     homeSubject: 6,//6：app首页超值热卖专题广告位
-    homeForyou: 7 //7：app首页为你推荐广告位
+    homeForyou: 7, //7：app首页为你推荐广告位
 // 8：app首页右下角浮动广告位
-// 9：app通用广告位
+    homeExpand: 9,// app通用广告位
 // 21：拼店首页banner推荐位
-// 31：类目搜索banner广告位
+    homeCategory: 31// 类目搜索banner广告位
 // 32：秀场banner推荐
 // 41：签到广告位
 // 51：登录/注册页面广告位

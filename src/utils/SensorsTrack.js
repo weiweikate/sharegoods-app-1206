@@ -30,7 +30,9 @@ const productTrack = {
     ProductDetail:'ProductDetail',//浏览商品详情页,
     AddToShoppingcart:'AddToShoppingcart',//加入购物车
     Share:'Share',//分享商品
-    CategoryClick:'CategoryClick',//一级类目
+    SpikeTimeClick:'FlashSaleTimeRangeClick',// 限时购tab
+    SpikeProdClick:'FlashSaleProductClick',// 限时购商品
+    homeTopicProdClick:'SpecialTopicProductClick',// 专题商品
 }
 /** 订单相关的埋点事件名称*/
 const inviteEvent = {

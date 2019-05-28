@@ -1,11 +1,13 @@
-import React, { Component } from 'react';
-import { View, StyleSheet, TouchableWithoutFeedback, Text, ScrollView } from 'react-native';
-import ScreenUtils from '../../../utils/ScreenUtils';
-import { observer } from 'mobx-react';
-import { categoryModule } from '../model/HomeCategoryModel';
+import React, { Component } from "react";
+import { View, StyleSheet, TouchableWithoutFeedback, Text, ScrollView } from "react-native";
+import ScreenUtils from "../../../utils/ScreenUtils";
+import { observer } from "mobx-react";
+import { categoryModule } from "../model/HomeCategoryModel";
 // import DesignRule from '../../../constants/DesignRule';
-import bridge from '../../../utils/bridge';
-import {track, trackEvent} from "../../../utils/SensorsTrack";
+import bridge from "../../../utils/bridge";
+import { track, trackEvent } from "../../../utils/SensorsTrack";
+import { homeModule } from "../model/Modules";
+import { homePoint } from "../HomeTypes";
 
 const { px2dp } = ScreenUtils;
 
@@ -20,17 +22,12 @@ const CategoryItem = ({ text, press, left }) => <TouchableWithoutFeedback onPres
 @observer
 export default class HomeCategoryView extends Component {
 
-    _adAction(data,index) {
+    _adAction(data, index) {
         if (!data) {
-            bridge.$toast('数据加载失败！');
+            bridge.$toast("数据加载失败！");
             return;
         }
-        track(trackEvent.CategoryClick,
-            {   'categoryCode':data.id,
-                'categoryName':data.name,
-                'categoryLevel':data.level,
-                'categoryIndex':index+1,
-            });
+        track(trackEvent.bannerClick, homeModule.bannerPoint(data, homePoint.homeCategory));
         const { navigate } = this.props;
         navigate(data.route, {
             fromHome: true,
@@ -57,28 +54,28 @@ export default class HomeCategoryView extends Component {
         for (let i = 0; i < len; i++) {
             i === 0 ? itemAll.push(
                 <CategoryItem
-                    text={categoryList[i] ? (categoryList[i].secondName ? categoryList[i].secondName : categoryList[i].name) : ' '}
-                    key={'category' + i}
+                    text={categoryList[i] ? (categoryList[i].secondName ? categoryList[i].secondName : categoryList[i].name) : " "}
+                    key={"category" + i}
                     left={0}
                     press={() => {
-                        this._adAction(categoryList[i],i);
+                        this._adAction(categoryList[i], i);
                     }}
                 />
                 ) :
-            itemsArr.push(
-                <CategoryItem
-                    text={categoryList[i] ? (categoryList[i].secondName ? categoryList[i].secondName : categoryList[i].name) : ' '}
-                    key={'category' + i}
-                    left={i === 0 ? 0 : px2dp(10)}
-                    press={() => {
-                        this._adAction(categoryList[i],i);
-                    }}
-                />
-            );
+                itemsArr.push(
+                    <CategoryItem
+                        text={categoryList[i] ? (categoryList[i].secondName ? categoryList[i].secondName : categoryList[i].name) : " "}
+                        key={"category" + i}
+                        left={i === 0 ? 0 : px2dp(10)}
+                        press={() => {
+                            this._adAction(categoryList[i], i);
+                        }}
+                    />
+                );
         }
         return <View style={styles.container}>
-            <View style={{height: px2dp(20),}}>
-            {itemAll}
+            <View style={{ height: px2dp(20) }}>
+                {itemAll}
             </View>
             <ScrollView horizontal
                         showsHorizontalScrollIndicator={false}
@@ -91,27 +88,27 @@ export default class HomeCategoryView extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'white',
+        backgroundColor: "white",
         // paddingTop: px2dp(12),
         // paddingBottom: px2dp(12),
         paddingLeft: px2dp(15),
         paddingRight: px2dp(15),
         width: ScreenUtils.width,
-        flexDirection: 'row',
+        flexDirection: "row",
         height: categoryHeight,
-        alignItems: 'center',
-        justifyContent: 'space-between'
+        alignItems: "center",
+        justifyContent: "space-between"
     },
     item: {
         flex: 1,
         height: px2dp(20),
         borderRadius: px2dp(10),
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'rgba(254,170,95,0.1)'
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "rgba(254,170,95,0.1)"
     },
     text: {
-        color: '#FF0050',
+        color: "#FF0050",
         fontSize: px2dp(12),
         paddingLeft: px2dp(12),
         paddingRight: px2dp(12)

@@ -225,8 +225,8 @@ class HomePage extends BasePage {
 
     homeSkip = (data) => {
         // 跳标
-        let tagArr = JSON.parse(data) || [];
-        intervalMsgModel.msgList = tagArr;
+        const content = JSON.parse(data) || {};
+        intervalMsgModel.setMsgData(content);
     };
 
     componentWillUnmount() {
