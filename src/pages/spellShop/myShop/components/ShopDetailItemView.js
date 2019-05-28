@@ -14,6 +14,8 @@ import NoMoreClick from '../../../../components/ui/NoMoreClick';
 import CommShareModal from '../../../../comm/components/CommShareModal';
 import user from '../../../../model/user';
 import apiEnvironment from '../../../../api/ApiEnvironment';
+import spellStatusModel from '../../model/SpellStatusModel';
+import bridge from '../../../../utils/bridge';
 
 const { myShop } = shopRes;
 const { shopProduct, shopProductShare } = myShop;
@@ -43,6 +45,10 @@ export class ShopProductItemView extends Component {
         return (
             <NoMoreClick style={[ProductItemViewStyles.itemView, { marginLeft: index === 0 ? 15 : 10 }]} onPress={
                 () => {
+                    if (!spellStatusModel.hasStore) {
+                        bridge.$toast('只有拼店用户才能进行分享操作哦~');
+                        return;
+                    }
                     const router = homeModule.homeNavigate(linkType, linkTypeCode);
                     let params = homeModule.paramsNavigate(item);
                     if (router) {
@@ -80,6 +86,10 @@ export class ShopProductItemView extends Component {
                         </View>}
                     </View>
                     <NoMoreClick onPress={() => {
+                        if (!spellStatusModel.hasStore) {
+                            bridge.$toast('只有拼店用户才能进行分享操作哦~');
+                            return;
+                        }
                         this.shareModal.open();
                     }}>
                         <Image style={ProductItemViewStyles.shareImg} source={shopProductShare}/>

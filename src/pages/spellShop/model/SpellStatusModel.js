@@ -17,9 +17,9 @@ class SpellStatusModel {
     @observable
     allowGroupStore = null;       //能否看到拼店推荐页面1允许 2不允许
     @observable
-    storeCode = null;//是否有店
+    storeCode = null;//店铺code
     @observable
-    storeStatus = null;//店铺状态	integer($int32)状态 0-关闭 1-正常 2-已缴纳保证金 3-招募中
+    storeStatus = null;//店铺状态	 integer($int32)状态 0-关闭 1-正常 2-已缴纳保证金 3-招募中
 
     @observable hasAlertErr = false;//有无定位弹框
 
@@ -33,6 +33,11 @@ class SpellStatusModel {
     @computed//可以看到拼店推荐页面
     get canSeeGroupStore() {
         return this.allowGroupStore && this.allowGroupStore === 1;
+    }
+
+    /*用户有店铺*/
+    @computed get hasStore() {
+        return this.storeCode && this.storeStatus === 1;
     }
 
     /******************************【action】******************************************/
