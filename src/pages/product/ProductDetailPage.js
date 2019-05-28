@@ -305,10 +305,9 @@ export default class ProductDetailPage extends BasePage {
                                 spuName: name
                             }}
                             trackEvent={trackEvent.Share}
-                            type={'Show'}
+                            type={'Image'}
                             imageJson={{
                                 imageUrlStr: imgUrl,
-                                imageType: 'show',
                                 titleStr: `${name}`,
                                 priceType: isSkillIn ? 'mr_skill' : '',
                                 priceStr: `￥${originalPrice}`,

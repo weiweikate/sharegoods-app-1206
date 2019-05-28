@@ -33,7 +33,7 @@ const onShare = (data, api, trackParmas,trackEvent, callback = () => {}, luckyDr
         let  addData = {pageSource: params.platformType >= 0 ? params.platformType + 1 : 0};
         params.linkUrl = queryString(params.linkUrl,addData);
     }
-    
+
     if(params.platformType === 1 || params.platformType === 4){
         params.title = params.dec.length > 0 ? params.title + ',' + params.dec : params.title + '!';
     }
