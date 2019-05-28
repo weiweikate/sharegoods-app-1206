@@ -195,6 +195,7 @@ class HomePage extends BasePage {
                     homeModule.homeFocused(true);
                     homeModalManager.entryHome();
                     homeModalManager.refreshPrize();
+                    taskModel.getData();
                     if (!homeModule.firstLoad) {
                         limitGoModule.loadLimitGo();
                     }
@@ -215,6 +216,7 @@ class HomePage extends BasePage {
                 this.luckyIcon && this.luckyIcon.getLucky(1, '');
                 homeModalManager.requestData();
                 this.loadMessageCount();
+                taskModel.getData();
             });
         });
     }
@@ -315,6 +317,7 @@ class HomePage extends BasePage {
 
     _onRefresh() {
         homeModule.loadHomeList(true);
+        taskModel.getData();
         this.luckyIcon && this.luckyIcon.getLucky(1, '');
     }
 
