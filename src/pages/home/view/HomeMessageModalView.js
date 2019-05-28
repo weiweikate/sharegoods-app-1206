@@ -139,7 +139,7 @@ export default class HomeMessageModalView extends React.Component {
 }
 
 
-function AdViewBindModal(modal,dataName = 'AdData', visibleName = 'isShowAd') {
+function AdViewBindModal(modal,dataName = 'AdData', visibleName = 'isShowAd' , closeFunc = 'closeAd') {
     return (
     class HomeAdModal extends React.Component {
         state = {
@@ -158,7 +158,7 @@ function AdViewBindModal(modal,dataName = 'AdData', visibleName = 'isShowAd') {
             if (router) {
                 navigate(router, params);
             }
-            modal.closeAd();
+            modal[closeFunc]&&modal[closeFunc]();
             //页面跳转
         };
 
@@ -200,7 +200,7 @@ function AdViewBindModal(modal,dataName = 'AdData', visibleName = 'isShowAd') {
 }
 
 let HomeAdModal = observer(AdViewBindModal(HomeModalManager));
-let GiftModal = observer(AdViewBindModal(HomeModalManager), 'giftData' ,'isShowGift');
+let GiftModal = observer(AdViewBindModal(HomeModalManager), 'giftData' ,'isShowGift', 'closeGift');
 export{HomeAdModal, AdViewBindModal, GiftModal}
 
 
