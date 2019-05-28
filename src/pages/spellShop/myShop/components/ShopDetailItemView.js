@@ -206,6 +206,25 @@ const ProductItemViewStyles = StyleSheet.create({
 @observer
 export class ShopBottomBannerView extends Component {
 
+    state = {
+        index: 0
+    };
+
+    _renderStyleOne = (arrLen) => {
+        const { index } = this.state;
+        let items = [];
+        for (let i = 0; i < arrLen; i++) {
+            if (index === i) {
+                items.push(<View key={i} style={bottomBannerStyles.activityIndex}/>);
+            } else {
+                items.push(<View key={i} style={bottomBannerStyles.index}/>);
+            }
+        }
+        return <View style={bottomBannerStyles.indexView}>
+            {items}
+        </View>;
+    };
+
     render() {
         const { MyShopDetailModel } = this.props;
         const { bottomBannerList } = MyShopDetailModel;
@@ -229,8 +248,11 @@ export class ShopBottomBannerView extends Component {
                                   navigate(router, params);
                               }
                           }}
-                          onDidScrollToIndex={() => {
+                          onDidScrollToIndex={(e) => {
+                              const index = e.nativeEvent.index;
+                              this.setState({ index });
                           }} autoLoop={bottomBannerList.length !== 1}>
+                {this._renderStyleOne(images.length)}
             </MRBannerView>
         );
     }
@@ -240,5 +262,29 @@ const bottomBannerStyles = StyleSheet.create({
     banner: {
         alignSelf: 'center', overflow: 'hidden',
         width: px2dp(345), height: px2dp(120), borderRadius: 7
+    },
+    indexView: {
+        position: 'absolute',
+        bottom: 5,
+        left: 0,
+        width: ScreenUtils.width - px2dp(30),
+        flexDirection: 'row',
+        justifyContent: 'center'
+    },
+    activityIndex: {
+        width: px2dp(14),
+        height: px2dp(3),
+        borderRadius: px2dp(1.5),
+        backgroundColor: DesignRule.mainColor,
+        marginLeft: 2,
+        marginRight: 2
+    },
+    index: {
+        width: px2dp(5),
+        height: px2dp(3),
+        borderRadius: px2dp(1.5),
+        backgroundColor: DesignRule.lineColor_inWhiteBg,
+        marginLeft: 2,
+        marginRight: 2
     }
 });
