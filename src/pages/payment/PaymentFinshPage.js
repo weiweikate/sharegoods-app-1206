@@ -13,6 +13,7 @@ import res from './res';
 import { MRText } from '../../components/ui';
 import LinearGradient from 'react-native-linear-gradient'
 import { NavigationActions } from 'react-navigation';
+import { TrackApi } from '../../utils/SensorsTrack';
 
 const { px2dp } = ScreenUtils;
 const {
@@ -50,6 +51,8 @@ export default class PaymentFinshPage extends BasePage {
         this.state={
             showShareView:false,
         }
+        //orderPayResultPageType 有券无劵
+        TrackApi.ViewOrderPayPage({orderPayType:2,orderPayResultPageType:2});
     }
     componentDidMount(){
 
@@ -83,7 +86,8 @@ export default class PaymentFinshPage extends BasePage {
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
                     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                         <TouchableOpacity style={{ width: px2dp(100), height: px2dp(34) }} onPress={() => {
-                            this.$navigateBackToHome();
+
+                           this._gotoHome();
                         }}>
                             <View style={{
                                 borderWidth: px2dp(0.5),
@@ -125,6 +129,35 @@ export default class PaymentFinshPage extends BasePage {
             </View>
         );
     };
+    /**
+     * 去首页
+     * @private
+     */
+    _gotoHome=()=>{
+        TrackApi.OrderPayResultBtnClick({
+            orderPayResultPageType:0,
+            orderPayType:2,
+            orderPayResultBtnType:1
+        })
+        this.$navigateBackToHome();
+    }
+    /**
+     * 去订单页面事件
+     */
+    _toOrder = () => {
+        TrackApi.OrderPayResultBtnClick({
+            orderPayResultPageType:0,
+            orderPayType:2,
+            orderPayResultBtnType:2
+        });
+        let replace = NavigationActions.replace({
+            key: this.props.navigation.state.key,
+            type: "ReplacePayScreen",
+            routeName: "order/order/MyOrdersListPage",
+            params: { index: 2 }
+        });
+        this.props.navigation.dispatch(replace);
+    };
 
     /**
      * 渲染优惠券Items
@@ -164,6 +197,17 @@ export default class PaymentFinshPage extends BasePage {
         );
     };
     /**
+     * 优惠券Item点击
+     * @param couponItem
+     */
+    _couponItemClick=(couponItem)=>{
+        TrackApi.OrderPayResultBtnClick({
+            orderPayResultPageType:0,
+            orderPayType:2,
+            orderPayResultBtnType:5
+        });
+    }
+    /**
      * 分享相关View
      * @returns {*}
      * @private
@@ -173,7 +217,7 @@ export default class PaymentFinshPage extends BasePage {
             <View style={{alignItems:'center',justifyContent:'center'}}>
                 <RenderSeparator title={'分享给好友，即可获得三张券'}/>
                 <MRText style={{color:'#AD4604',SizeSize:px2dp(14),marginTop:px2dp(10)}}>立即分享至</MRText>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=>{this._shareToWX()}}>
                     <LinearGradient colors={["#FF2100", "#FF6947","#FF2100"]}
                                     style={{height:px2dp(40),width:ScreenUtils.width - px2dp(90),alignItems:'center',justifyContent:'center',borderRadius:px2dp(20),flexDirection:'row',marginTop:px2dp(10)}}
                                     start={{ x: 0, y: 0 }}
@@ -185,7 +229,7 @@ export default class PaymentFinshPage extends BasePage {
                     </LinearGradient>
                 </TouchableOpacity>
 
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=>{this._shareToFriendCircle()}}>
                     <View style={{height:px2dp(40),width:ScreenUtils.width - px2dp(90),alignItems:'center',justifyContent:'center',borderRadius:px2dp(20),flexDirection:'row',marginTop:px2dp(10)}}>
                         <Image source={share_to_friend_circle} style={{height:px2dp(20),width:px2dp(24)}}/>
                         <MRText style={{color:'#AD4604',fontSize:px2dp(14),marginLeft:px2dp(10)}}>
@@ -197,24 +241,29 @@ export default class PaymentFinshPage extends BasePage {
         )
     }
     /**
-     * 去订单页面事件
+     * 分享到微信
+     * @private
      */
-    _toOrder = () => {
-        let replace = NavigationActions.replace({
-            key: this.props.navigation.state.key,
-            type: "ReplacePayScreen",
-            routeName: "order/order/MyOrdersListPage",
-            params: { index: 2 }
+    _shareToWX=()=>{
+        TrackApi.OrderPayResultBtnClick({
+            orderPayResultPageType:0,
+            orderPayType:2,
+            orderPayResultBtnType:3
         });
-        this.props.navigation.dispatch(replace);
-    };
-    /**
-     * 优惠券Item点击
-     * @param couponItem
-     */
-    _couponItemClick=(couponItem)=>{
 
     }
+    /**
+     * 分享到朋友圈
+     * @private
+     */
+    _shareToFriendCircle=()=>{
+        TrackApi.OrderPayResultBtnClick({
+            orderPayResultPageType:0,
+            orderPayType:2,
+            orderPayResultBtnType:4
+        });
+    }
+
 }
 
 const Styles = StyleSheet.create({

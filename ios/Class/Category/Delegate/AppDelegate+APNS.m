@@ -85,14 +85,17 @@
   [JPUSHService registerForRemoteNotificationConfig:entity delegate:weakSelf];
   
   BOOL isProduction = NO;
+  NSString * appKey ;
   
 #if DEBUG
   isProduction = NO;
+  appKey = KDEBUGJSPushKey;
 #else
   isProduction = YES;
+  appKey = KJSPushKey;
 #endif
   [JPUSHService setupWithOption:launchOptions
-                         appKey:KJSPushKey
+                         appKey:appKey
                         channel:@"App Store"
                apsForProduction:isProduction
           advertisingIdentifier:nil];
