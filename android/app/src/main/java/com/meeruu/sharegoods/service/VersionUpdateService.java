@@ -12,7 +12,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.provider.Settings;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
@@ -27,7 +26,6 @@ import com.meeruu.commonlib.utils.AppUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.SDCardUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
-import com.meeruu.commonlib.utils.Utils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.ui.activity.MainRNActivity;
 import com.meeruu.sharegoods.utils.AppContants;
@@ -125,7 +123,6 @@ public class VersionUpdateService extends Service {
                         // 下载完毕
                         // 取消通知
                         mNotificationManager.cancel(NOTIFY_ID);
-                        handleInstallApk();
                         break;
                     default:
                         break;
@@ -258,30 +255,13 @@ public class VersionUpdateService extends Service {
                             }
                         } else if (flag == ParameterUtils.FLAG_UPDATE) {
                             mHandler.sendEmptyMessage(ParameterUtils.MSG_WHAT_FINISH);
+                            if (onProgressListener != null) {
+                                onProgressListener.onFinish(apk_path);
+                            }
                         }
                         // 下载完了，cancelled也要设置
                         canceled = true;
                     }
                 });
-    }
-
-    private void handleInstallApk() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            boolean hasInstallPermission = getPackageManager().canRequestPackageInstalls();
-            if (hasInstallPermission) {
-                Utils.installApk(getApplicationContext(), apk_path);
-            } else {
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        ToastUtils.showToast(getString(R.string.install_allow));
-                        Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES);
-                        startActivity(intent);
-                    }
-                });
-            }
-        } else {
-            Utils.installApk(getApplicationContext(), apk_path);
-        }
     }
 }

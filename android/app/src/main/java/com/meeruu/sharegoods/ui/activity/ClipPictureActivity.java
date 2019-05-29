@@ -45,9 +45,9 @@ public class ClipPictureActivity extends BaseActivity {
         topdefault_centertitle.setText(getString(R.string.move_and_zoom));
         Intent intent = getIntent();
         String type = intent.getStringExtra("clipType");
-        if (type.equals(CIRCLE)) {
+        if (CIRCLE.equals(type)) {
             mClipImageLayout = (ClipImageLayout) findViewById(R.id.id_clipImageLayout_circle);
-        } else if (type.equals(SQUARE)) {
+        } else if (SQUARE.equals(type)) {
             mClipImageLayout = (ClipImageLayout) findViewById(R.id.id_clipImageLayout_square);
         }
         mClipImageLayout.setVisibility(VISIBLE);

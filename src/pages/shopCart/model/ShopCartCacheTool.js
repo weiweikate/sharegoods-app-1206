@@ -4,10 +4,11 @@ import bridge from '../../../utils/bridge';
 import user from '../../../model/user';
 import shopCartStore from './ShopCartStore';
 import Storage from '../../../utils/storage';
+import apiEnvironment from '../../../api/ApiEnvironment';
 
 class ShopCartCacheTool {
 
-    static  shopCartLocalStorageKey = 'shopCartLocalStorageKey';
+    static  shopCartLocalStorageKey = apiEnvironment.getCurrentHostName() +'shopCartLocalStorageKey';
 
 
     // isSynchronousData() {
