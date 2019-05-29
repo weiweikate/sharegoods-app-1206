@@ -208,6 +208,7 @@ public class VersionUpdateService extends Service {
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
         mNotification.setContentIntent(contentIntent);
+        mNotification.setPriority(NotificationCompat.PRIORITY_HIGH);
         mNotificationManager.notify(NOTIFY_ID, mNotification.build());
     }
 
