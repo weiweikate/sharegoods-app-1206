@@ -26,6 +26,10 @@ const progressWidth = px2dp(60);
 @observer
 export class ShopProductItemView extends Component {
 
+    state = {
+        selectedItem: {}
+    };
+
     _renderItem = ({ item, index }) => {
         const { image, title, content, shareMoney, promotionMinPrice, price, progressBar, salesVolume, linkTypeCode, linkType } = item || {};
         /*进度条显示*/
@@ -90,20 +94,15 @@ export class ShopProductItemView extends Component {
                             bridge.$toast('只有拼店用户才能进行分享操作哦~');
                             return;
                         }
-                        this.shareModal.open();
+                        this.setState({
+                            selectedItem: item
+                        }, () => {
+                            this.shareModal.open();
+                        });
                     }}>
                         <Image style={ProductItemViewStyles.shareImg} source={shopProductShare}/>
                     </NoMoreClick>
                 </View>
-
-                <CommShareModal ref={(ref) => this.shareModal = ref}
-                                type={'miniProgramWithCopyUrl'}
-                                webJson={{
-                                    title: title,
-                                    dec: '商品详情',
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${linkTypeCode}?upuserid=${user.code || ''}`,
-                                    thumImage: image
-                                }}/>
             </NoMoreClick>
         );
     };
@@ -112,8 +111,10 @@ export class ShopProductItemView extends Component {
     };
 
     render() {
+        const { image, title, linkTypeCode } = this.state.selectedItem || {};
         const { MyShopDetailModel } = this.props;
         const { productList } = MyShopDetailModel;
+        console.log(linkTypeCode);
         if (!productList || productList.length === 0) {
             return null;
         }
@@ -128,6 +129,14 @@ export class ShopProductItemView extends Component {
                           keyExtractor={this._keyExtractor}
                           horizontal={true}
                           showsHorizontalScrollIndicator={false}/>
+                <CommShareModal ref={(ref) => this.shareModal = ref}
+                                type={'miniProgramWithCopyUrl'}
+                                webJson={{
+                                    title: title,
+                                    dec: '商品详情',
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${linkTypeCode}?upuserid=${user.code || ''}`,
+                                    thumImage: image
+                                }}/>
             </View>
         );
     }
