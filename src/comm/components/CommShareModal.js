@@ -271,8 +271,8 @@ export default class CommShareModal extends React.Component {
         const { type } = this.props;
         const { shareType } = this.state;
         let scale = ScreenUtils.height/ScreenUtils.width
-        this.imageHeight = autoSizeWidth((ScreenUtils.width-93)*scale);
-        this.imageWidth = autoSizeWidth(ScreenUtils.width-60);
+        this.imageHeight = (ScreenUtils.width-93)*scale;
+        this.imageWidth = ScreenUtils.width-60;
 
         if (this.props.type === 'promotionShare') {
             this.imageHeight = autoSizeWidth((ScreenUtils.width-93)*scale);
