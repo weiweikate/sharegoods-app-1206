@@ -111,13 +111,18 @@ export class ShopProductItemView extends Component {
     };
 
     render() {
-        const { image, title, linkTypeCode } = this.state.selectedItem || {};
+        const { image, title, linkTypeCode, linkType } = this.state.selectedItem || {};
         const { MyShopDetailModel } = this.props;
         const { productList } = MyShopDetailModel;
         console.log(linkTypeCode);
         if (!productList || productList.length === 0) {
             return null;
         }
+        let linkUrl = `${apiEnvironment.getCurrentH5Url()}/product/99/${linkTypeCode}?upuserid=${user.code || ''}`;
+        if (linkType === 5) {
+            linkUrl = `${apiEnvironment.getCurrentH5Url()}/product/3/${linkTypeCode}?upuserid=${user.code || ''}`;
+        }
+
         return (
             <View style={ProductItemViewStyles.container}>
                 <View style={ProductItemViewStyles.headerView}>
@@ -134,7 +139,7 @@ export class ShopProductItemView extends Component {
                                 webJson={{
                                     title: title,
                                     dec: '商品详情',
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${linkTypeCode}?upuserid=${user.code || ''}`,
+                                    linkUrl: linkUrl,
                                     thumImage: image
                                 }}/>
             </View>
