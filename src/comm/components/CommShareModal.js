@@ -453,7 +453,7 @@ export default class CommShareModal extends React.Component {
                                 width: this.imageWidth,
                                 position: 'absolute',
                                 top: 33,
-                                left: (ScreenUtils.width-this.imageWidth)/2,
+                                left: (ScreenUtils.width - this.imageWidth) / 2,
                                 borderRadius: 10,
                                 borderColor: DesignRule.textColor_placeholder,
                                 shadowOpacity: 0.3,
@@ -479,10 +479,11 @@ export default class CommShareModal extends React.Component {
                                 </TouchableWithoutFeedback>  : null
                                 }
                                 {this.props.type === 'Show' ?
-                                <ShowShareImage data={this.props.imageJson} modal={this.modal}/> : null
+                                <ShowShareImage modalWidth={this.imageWidth} modalHeight={this.imageHeight*2/3}
+                                                data={this.props.imageJson} modal={this.modal}/> : null
                                 }
                                 {
-                                    this.state.path === '' ? <ActivityIndicator
+                                    this.state.path === ''&&!this.props.type === 'Show' ? <ActivityIndicator
                                         color="#aaaaaa"
                                         style={{
                                             position: 'absolute',
