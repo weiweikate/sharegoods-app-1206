@@ -400,8 +400,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
                 @Override
                 public void run() {
                     NewestShowGroundBean.DataBean bean = JSON.parseObject(value, NewestShowGroundBean.DataBean.class);
-                    data.set(index, bean);
-                    adapter.replaceData(data);
+                    adapter.setData(index,bean);
                 }
             }, 200);
         }

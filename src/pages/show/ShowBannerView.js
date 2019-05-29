@@ -212,7 +212,7 @@ let styles = StyleSheet.create({
         width: 10,
         height: 4,
         borderRadius: 2,
-        backgroundColor: DesignRule.textColor_mainTitle,
+        backgroundColor: DesignRule.mainColor,
         margin: 5
     },
     index: {
@@ -220,6 +220,6 @@ let styles = StyleSheet.create({
         height: 4,
         borderRadius: 2,
         backgroundColor: 'white',
-        margin: 5
+        margin: 5,
     }
 });
