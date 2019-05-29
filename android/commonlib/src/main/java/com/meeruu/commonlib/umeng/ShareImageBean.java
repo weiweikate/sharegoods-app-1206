@@ -7,9 +7,19 @@ public class ShareImageBean {
     public String QRCodeStr;
     public String retail;
     public String spell;
+    public String discount;
+
     public String imageType;
     public String headerImage;
     public String userName;
+
+    public String getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(String discount) {
+        this.discount = discount;
+    }
 
     public String getHeaderImage() {
         return headerImage;
