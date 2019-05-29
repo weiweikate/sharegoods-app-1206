@@ -575,6 +575,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                             trackEvent={'ArticleShare'}
                             trackParmas={{ articeCode: detail.code, articleTitle: detail.title }}
                             imageJson={{
+                                imageType:'show',
                                 imageUrlStr: detail.resource[0].url,
                                 titleStr: detail.title,
                                 QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,

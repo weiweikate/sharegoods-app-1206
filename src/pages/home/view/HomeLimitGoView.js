@@ -1,19 +1,20 @@
-import React, { Component } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, Image } from 'react-native';
-import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view';
-import ScreenUtils from '../../../utils/ScreenUtils';
-import LinearGradient from 'react-native-linear-gradient';
-import HomeTitleView from './HomeTitleView';
-import ImageLoader from '@mr/image-placeholder';
-import { limitGoModule, limitStatus } from '../model/HomeLimitGoModel';
-import DesignRule from '../../../constants/DesignRule';
-import resHome from '../res';
-import { homeLinkType, homeRoute } from '../HomeTypes';
-import { MRText } from '../../../components/ui';
-import StringUtils from '../../../utils/StringUtils';
-import NoMoreClick from '../../../components/ui/NoMoreClick';
-import user from '../../../model/user';
-import RouterMap from '../../../navigation/RouterMap';
+import React, { Component } from "react";
+import { View, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, Image } from "react-native";
+import ScrollableTabView, { ScrollableTabBar } from "react-native-scrollable-tab-view";
+import ScreenUtils from "../../../utils/ScreenUtils";
+import LinearGradient from "react-native-linear-gradient";
+import HomeTitleView from "./HomeTitleView";
+import ImageLoader from "@mr/image-placeholder";
+import { limitGoModule, limitStatus } from "../model/HomeLimitGoModel";
+import DesignRule from "../../../constants/DesignRule";
+import resHome from "../res";
+import { homeLinkType, homeRoute } from "../HomeTypes";
+import { MRText } from "../../../components/ui";
+import StringUtils from "../../../utils/StringUtils";
+import NoMoreClick from "../../../components/ui/NoMoreClick";
+import user from "../../../model/user";
+import RouterMap from "../../../navigation/RouterMap";
+import { track, trackEvent } from "../../../utils/SensorsTrack";
 
 const { px2dp } = ScreenUtils;
 
@@ -28,11 +29,18 @@ export default class HomeLimitGoView extends Component {
         let limit = limitGoModule.spikeList[index];
         if (limit) {
             limitGoModule.changeLimitGo(number);
+            // 限时购tab点击埋点
+            track(trackEvent.SpikeTimeClick,
+                {
+                    "timeRangeId": limit.activityCode,
+                    "timeRange": limit.time,
+                    "timeRangeStatus": limit.title
+                });
         }
     }
 
     _renderTab(name, page, isTabActive, onPressHandler, onLayoutHandler) {
-        const textColor = isTabActive ? '#FC533B' : '#333';
+        const textColor = isTabActive ? "#FC533B" : "#333";
         const selectedValue = (value) => value.id === name;
         const selectedModels = limitGoModule.spikeList.filter(selectedValue);
         let selected = null;
@@ -58,7 +66,7 @@ export default class HomeLimitGoView extends Component {
                         <LinearGradient style={styles.active}
                                         start={{ x: 0, y: 0 }}
                                         end={{ x: 1, y: 0 }}
-                                        colors={['#FF0050', '#FC5D39']}
+                                        colors={["#FF0050", "#FC5D39"]}
                         >
                             <Text style={styles.activeTitle}>
                                 {title}
@@ -76,20 +84,37 @@ export default class HomeLimitGoView extends Component {
         </TouchableOpacity>;
     }
 
-    _goToDetail(value) {
+    _goToDetail(index, value, activityData) {
         this.props.navigate(homeRoute[homeLinkType.spike], { productCode: value.prodCode });
+        // 限时购商品点击埋点
+        track(trackEvent.SpikeProdClick,
+            {
+                "timeRangeId": activityData.activityCode,
+                "timeRange": activityData.time,
+                "timeRangeStatus": activityData.title,
+                "supCode": value.prodCode,
+                "spuName": value.name,
+                "spuComment": value.promotionStatus === limitStatus.doing
+                    ? "马上抢" :
+                    (value.promotionStatus === limitStatus.noBegin
+                        ? (value.promotionAttention ? "已关注" : "提前关注") :
+                        (value.promotionStatus === limitStatus.end
+                            ? "已抢光" : "已结束")),
+                "productIndex": index
+            });
     }
 
-    _renderGoodsList(spikeGoods, activityCode) {
+    _renderGoodsList(activityData) {
         let goodsItems = [];
-        spikeGoods.map((data, index) => {
+        let goods = activityData.goods || [];
+        goods.map((data, index) => {
             goodsItems.push(
                 <TouchableWithoutFeedback key={index}
-                                          onPress={() => this._goToDetail(data || {})}>
+                                          onPress={() => this._goToDetail(index, data || {}, activityData)}>
                     <View>
-                        <GoodsItem key={index} item={data || {}} activityCode={activityCode}
+                        <GoodsItem key={index} item={data || {}} activityCode={activityData.activityCode}
                                    navigate={this.props.navigate}/>
-                        {index === spikeGoods.length - 1 ? null : <View style={{ height: px2dp(10) }}/>}
+                        {index === goods.length - 1 ? null : <View style={{ height: px2dp(10) }}/>}
                     </View>
                 </TouchableWithoutFeedback>
             );
@@ -104,7 +129,7 @@ export default class HomeLimitGoView extends Component {
             viewItems.push(
                 <View key={index}
                       tabLabel={data.id}>
-                    {this._renderGoodsList((data.goods) || [], data.activityCode)}
+                    {this._renderGoodsList(data || {})}
                 </View>
             );
         });
@@ -116,7 +141,7 @@ export default class HomeLimitGoView extends Component {
         return (
             <View style={styles.container}>
                 <View style={{ paddingLeft: px2dp(15) }}>
-                    <HomeTitleView title={'限时购'}/>
+                    <HomeTitleView title={"限时购"}/>
                 </View>
                 <ScrollableTabView
                     ref={ref => {
@@ -164,7 +189,7 @@ const GoodsItem = ({ item, activityCode, navigate }) => {
                         <View style={styles.leaveAmountView}>
                             <MRText
                                 style={styles.leaveAmountText}>{promotionSaleRateS === 1
-                                ? '已抢光' : `还剩${StringUtils.mul(StringUtils.sub(1, promotionSaleRateS), 100)}%`}</MRText>
+                                ? "已抢光" : `还剩${StringUtils.mul(StringUtils.sub(1, promotionSaleRateS), 100)}%`}</MRText>
                         </View>
                     </View>
             }
@@ -173,7 +198,7 @@ const GoodsItem = ({ item, activityCode, navigate }) => {
                     item.promotionPrice
                         ?
                         <Text style={styles.money}>¥<Text
-                            style={styles.moneyText}>{item.promotionPrice + ' '}</Text>
+                            style={styles.moneyText}>{item.promotionPrice + " "}</Text>
                             <Text style={styles.originMoneyText}>¥{item.originalPrice}</Text>
                         </Text>
                         :
@@ -191,7 +216,7 @@ const GoodsItemButton = ({ data, activityCode, navigate }) => {
         return <LinearGradient style={styles.button}
                                start={{ x: 0, y: 0 }}
                                end={{ x: 1, y: 0 }}
-                               colors={['#FF0050', '#FC5D39']}>
+                               colors={["#FF0050", "#FC5D39"]}>
             <Text style={styles.buttonTitle}>
                 马上抢
             </Text>
@@ -205,13 +230,13 @@ const GoodsItemButton = ({ data, activityCode, navigate }) => {
             }
         }} style={styles.buttonWill}>
             <Text ref={e => this.follow = e} style={styles.buttonWillTitle}>
-                {data.promotionAttention ? '已关注' : '提前关注'}
+                {data.promotionAttention ? "已关注" : "提前关注"}
             </Text>
         </NoMoreClick>;
     } else {
         return <View style={styles.disbutton}>
             <Text style={styles.disbuttonTitle}>
-                {data.promotionStatus === limitStatus.end ? '已抢光' : '已结束'}
+                {data.promotionStatus === limitStatus.end ? "已抢光" : "已结束"}
             </Text>
         </View>;
     }
@@ -225,7 +250,7 @@ const styles = StyleSheet.create({
     },
     tab: {
         minWidth: px2dp(60),
-        alignItems: 'center'
+        alignItems: "center"
     },
     tabBar: {
         width: ScreenUtils.width,
@@ -235,33 +260,33 @@ const styles = StyleSheet.create({
         height: 0
     },
     time: {
-        color: '#FC533B',
-        fontWeight: '600',
+        color: "#FC533B",
+        fontWeight: "600",
         fontSize: px2dp(15)
 
     },
     normal: {
-        alignItems: 'center',
-        justifyContent: 'center',
+        alignItems: "center",
+        justifyContent: "center",
         width: px2dp(60),
         height: px2dp(20),
         marginTop: px2dp(3),
         borderRadius: px2dp(10)
     },
     normalTitle: {
-        color: '#333',
+        color: "#333",
         fontSize: px2dp(12)
     },
     active: {
-        alignItems: 'center',
-        justifyContent: 'center',
+        alignItems: "center",
+        justifyContent: "center",
         width: px2dp(60),
         height: px2dp(20),
         marginTop: px2dp(3),
         borderRadius: px2dp(10)
     },
     activeTitle: {
-        color: '#fff',
+        color: "#fff",
         fontSize: px2dp(12)
     },
     scrollTab: {
@@ -273,19 +298,19 @@ const styles = StyleSheet.create({
         marginRight: px2dp(15),
         borderRadius: px2dp(5),
         height: px2dp(140),
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'white'
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "white"
     },
     goodsImage: {
         width: px2dp(120),
         height: px2dp(120),
         borderRadius: px2dp(5),
         marginLeft: px2dp(10),
-        justifyContent: 'center',
-        alignItems: 'center',
-        overflow: 'hidden'
+        justifyContent: "center",
+        alignItems: "center",
+        overflow: "hidden"
     },
     goodsTag: {
         width: px2dp(80),
@@ -298,20 +323,20 @@ const styles = StyleSheet.create({
         flex: 1
     },
     text: {
-        color: '#999',
+        color: "#999",
         fontSize: px2dp(12),
         lineHeight: 20
     },
     goodsTitle: {
-        color: '#333',
+        color: "#333",
         fontSize: px2dp(14),
         marginRight: px2dp(10),
         lineHeight: 20
     },
     moneyView: {
         flex: 1,
-        flexDirection: 'row',
-        alignItems: 'flex-end',
+        flexDirection: "row",
+        alignItems: "flex-end",
         paddingRight: px2dp(5)
     },
     money: {
@@ -326,25 +351,25 @@ const styles = StyleSheet.create({
     originMoneyText: {
         fontSize: px2dp(12),
         color: DesignRule.textColor_instruction,
-        textDecorationLine: 'line-through'
+        textDecorationLine: "line-through"
     },
     button: {
         width: px2dp(82),
         height: px2dp(28),
         borderRadius: px2dp(14),
-        alignItems: 'center',
-        justifyContent: 'center'
+        alignItems: "center",
+        justifyContent: "center"
     },
     buttonTitle: {
-        color: '#fff',
+        color: "#fff",
         fontSize: px2dp(14)
     },
     buttonWill: {
         width: px2dp(82),
         height: px2dp(28),
         borderRadius: px2dp(14),
-        alignItems: 'center',
-        justifyContent: 'center',
+        alignItems: "center",
+        justifyContent: "center",
         borderWidth: ScreenUtils.onePixel,
         borderColor: DesignRule.mainColor
     },
@@ -356,24 +381,24 @@ const styles = StyleSheet.create({
         width: px2dp(82),
         height: px2dp(28),
         borderRadius: px2dp(14),
-        alignItems: 'center',
-        justifyContent: 'center',
+        alignItems: "center",
+        justifyContent: "center",
         backgroundColor: DesignRule.textColor_placeholder
     },
     disbuttonTitle: {
-        color: 'white',
+        color: "white",
         fontSize: px2dp(14)
     },
     leaveView: {
         marginTop: px2dp(5),
-        backgroundColor: 'rgba(255,0,80,0.1)', borderRadius: px2dp(6), width: px2dp(120), height: px2dp(12)
+        backgroundColor: "rgba(255,0,80,0.1)", borderRadius: px2dp(6), width: px2dp(120), height: px2dp(12)
     },
     progressView: {
         backgroundColor: DesignRule.mainColor, borderRadius: px2dp(6), height: px2dp(12)
     },
     leaveAmountView: {
-        justifyContent: 'center', marginLeft: px2dp(8),
-        position: 'absolute', top: 0, bottom: 0, left: 0, right: 0
+        justifyContent: "center", marginLeft: px2dp(8),
+        position: "absolute", top: 0, bottom: 0, left: 0, right: 0
     },
     leaveAmountText: {
         fontSize: 10, color: DesignRule.textColor_white

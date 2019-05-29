@@ -32,6 +32,7 @@ import ShowMaterialView from './ShowMaterialView';
 import apiEnvironment from '../../api/ApiEnvironment';
 import CommShareModal from '../../comm/components/CommShareModal';
 import WhiteModel from './model/WhiteModel';
+import { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
 
 const {
     mine_user_icon,
@@ -343,12 +344,14 @@ export default class ShowListPage extends BasePage {
                     }
                 </View>
             </ScrollableTabView>
+            <IntervalMsgView pageType = {IntervalType.xiuChang}/>
             {detail ?
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 type={'Show'}
                                 trackEvent={'ArticleShare'}
                                 trackParmas={{ articeCode: detail.code, articleTitle: detail.title }}
                                 imageJson={{
+                                    imageType:'show',
                                     imageUrlStr: detail.resource[0]?detail.resource[0].url:null,
                                     titleStr: detail.showType === 1 ? detail.content : detail.title,
                                     QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,

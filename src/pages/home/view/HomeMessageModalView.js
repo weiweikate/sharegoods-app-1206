@@ -139,11 +139,12 @@ export default class HomeMessageModalView extends React.Component {
 }
 
 
-function AdViewBindModal(modal) {
+function AdViewBindModal(modal,dataName = 'AdData', visibleName = 'isShowAd' , closeFunc = 'closeAd') {
     return (
     class HomeAdModal extends React.Component {
         state = {
-            messageIndex: 0
+            messageIndex: 0,
+            backgroundColor: '#f5f5f5'
         };
 
         constructor(props) {
@@ -151,31 +152,36 @@ function AdViewBindModal(modal) {
         }
 
         gotoPage = () => {
-            let data = modal.AdData || {};
+            let data = modal[dataName] || {};
             const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
             let params = homeModule.paramsNavigate(data);
             if (router) {
                 navigate(router, params);
             }
-            modal.closeAd();
+           this.close();
             //页面跳转
         };
 
+        close(){
+            modal[closeFunc]&&modal[closeFunc]();
+        }
+
         render() {
-            let AdData = modal.AdData || {};
+            let AdData = modal[dataName] || {};
             let image = AdData.image || '';
             return (
                 <CommModal ref={(ref) => {
                     this.messageModal = ref;
                 }}
-                           onRequestClose={() => modal.closeAd()}
-                           visible={modal.isShowAd && modal.isHome}>
+                           onRequestClose={() =>  {this.close()}}
+                           visible={modal[visibleName] && modal.isHome}>
                     <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center' }}>
                         <View style={{ flex: 1 }}/>
                         <TouchableOpacity onPress={() => {
                             this.gotoPage();
                         }}>
-                            <ImageLoad style={{ width: autoSizeWidth(310), height: autoSizeWidth(410), backgroundColor: '#f5f5f5' }}
+                            <ImageLoad style={{ width: autoSizeWidth(310), height: autoSizeWidth(410), backgroundColor:this.state.backgroundColor}}
+                                       onLoadEnd={()=>{this.setState({backgroundColor: null})}}
                                        source={{ uri: image }}
                                        resizeMode={'contain'}
                                        showPlaceholder={false}
@@ -183,7 +189,7 @@ function AdViewBindModal(modal) {
                         </TouchableOpacity>
                         <View style={{ flex: 1 }}>
                             <TouchableOpacity onPress={() => {
-                                modal.closeAd();
+                                this.close();
                             }} style={{ marginTop: autoSizeWidth(25) }}>
                                 <Image source={closeImg} style={{ height: autoSizeWidth(24), width: autoSizeWidth(24) }}
                                        resizeMode={'stretch'}/>
@@ -198,7 +204,8 @@ function AdViewBindModal(modal) {
 }
 
 let HomeAdModal = observer(AdViewBindModal(HomeModalManager));
-export{HomeAdModal, AdViewBindModal}
+let GiftModal = observer(AdViewBindModal(HomeModalManager, 'giftData' ,'isShowGift', 'closeGift'));
+export{HomeAdModal, AdViewBindModal, GiftModal}
 
 
 const styles = StyleSheet.create({

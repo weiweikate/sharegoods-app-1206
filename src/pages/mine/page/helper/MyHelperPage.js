@@ -32,7 +32,6 @@ const {
     icon_tuikuan,
     icon_feedback,
     icon_auto_feedback,
-    icon_phone,
     icon_kefu
 } = res.helperAndCustomerService;
 import user from "../../../../model/user";
@@ -148,7 +147,6 @@ export default class MyHelperPage extends BasePage {
                 <View style={{ height: 20, backgroundColor: DesignRule.bgColor }}/>
                 <View style={{alignItems: 'center'}}>
                     <View style={{
-                        flexDirection: "row",
                         width: ScreenUtils.width,
                         justifyContent: 'space-between',
                         paddingHorizontal: 15,
@@ -156,13 +154,12 @@ export default class MyHelperPage extends BasePage {
                     }}>
 
                         <NoMoreClick style={{
-                            width: ScreenUtils.autoSizeWidth(165),
                             height:  ScreenUtils.autoSizeWidth(40),
                             borderRadius:  ScreenUtils.autoSizeWidth(20),
                             overflow: 'hidden'
                         }}
                                      onPress={() => this.jumpQYIMPage()}>
-                            <LinearGradient start={{ x: 1, y: 0 }} end={{ x: 0, y: 0 }}
+                            <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
                                             colors={['#FC5D39', '#FF0050']}
                                             style={{ alignItems: "center",
                                                 flexDirection: "row",
@@ -179,30 +176,8 @@ export default class MyHelperPage extends BasePage {
                                 }} allowFontScaling={false}>在线客服</Text>
                             </LinearGradient>
                         </NoMoreClick>
-                        <NoMoreClick
-                            style={{
-                                width: ScreenUtils.autoSizeWidth(165),
-                                height:  ScreenUtils.autoSizeWidth(40),
-                                alignItems: "center",
-                                flexDirection: "row",
-                                justifyContent: "center",
-                                borderRadius:  ScreenUtils.autoSizeWidth(20),
-                                overflow: 'hidden',
-                                borderColor: DesignRule.mainColor,
-                                borderWidth: 1
-
-                            }}
-                            onPress={() => this.showAlert()}>
-                            <Image source={icon_phone} style={{ height: 23, width: 24 }} resizeMode={"contain"}/>
-                            <Text style={{
-                                fontFamily: "PingFangSC-Regular",
-                                fontSize: 13,
-                                color: DesignRule.mainColor,
-                                marginLeft: 4
-                            }} allowFontScaling={false}>客服电话</Text>
-                        </NoMoreClick>
                     </View>
-                    <Text style={{fontSize: 10, color: DesignRule.textColor_secondTitle, marginVertical: 5}}>服务时间：9：00-22：00</Text>
+                    <Text style={{fontSize: 10, color: DesignRule.textColor_secondTitle, marginVertical: 5}}>服务时间：9:00-22:00</Text>
                 </View>
             </View>
         );

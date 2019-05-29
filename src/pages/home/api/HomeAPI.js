@@ -41,7 +41,11 @@ const api = {
     // 关注秒杀商品
     followLimit: ['/promotion/attention', { method: 'post' }],
     // 取消关注秒杀商品
-    cancleFollow: ['/promotion/cancelAttention', { method: 'post' }]
+    cancleFollow: ['/promotion/cancelAttention', { method: 'post' }],
+    //新手礼包
+    getPopupBox: ['/popup/getPopupBoxByType', {method: 'get'}],
+    //开奖结果
+    getWinningInfo: ['/welfare/getWinningInfo', {method: 'get'}]
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 

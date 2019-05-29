@@ -31,13 +31,16 @@
 // 自定义消息 回调
 - (void)networkDidReceiveMessage:(NSNotification *)notification {
   NSDictionary * userInfo = [notification userInfo];
-  [[NSNotificationCenter defaultCenter]postNotificationName:@"HOME_CUSTOM_MSG" object:nil];
   NSString *typeString = userInfo[@"content_type"];
-  
   if (typeString && [typeString isEqualToString:@"HomeRefresh"]) {
     NSString *homeTypeStr = userInfo[@"content"];
     NSDictionary * dic = [self dictionaryWithJsonString:homeTypeStr];
     [[NSNotificationCenter defaultCenter]postNotificationName:@"HOME_CUSTOM_MSG" object:dic[@"homeType"]];
+  }else if (typeString && [@"ActivitySkip" isEqualToString:typeString]){
+     NSDictionary *homeTypeDic = userInfo[@"content"];
+    if (homeTypeDic) {
+         [[NSNotificationCenter defaultCenter]postNotificationName:@"HOME_CUSTOM_SKIP" object:homeTypeDic];
+    }
   }
 }
 -(NSDictionary *)dictionaryWithJsonString:(NSString *)jsonString
@@ -82,14 +85,17 @@
   [JPUSHService registerForRemoteNotificationConfig:entity delegate:weakSelf];
   
   BOOL isProduction = NO;
+  NSString * appKey ;
   
 #if DEBUG
   isProduction = NO;
+  appKey = KDEBUGJSPushKey;
 #else
   isProduction = YES;
+  appKey = KJSPushKey;
 #endif
   [JPUSHService setupWithOption:launchOptions
-                         appKey:KJSPushKey
+                         appKey:appKey
                         channel:@"App Store"
                apsForProduction:isProduction
           advertisingIdentifier:nil];

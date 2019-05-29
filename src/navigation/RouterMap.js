@@ -54,6 +54,11 @@ function navigate(routeName, params) {
 
 }
 
+function backToHome() {
+    global.$navigator.popToTop();
+    global.$navigator.navigate(RouterMap.HomePage);
+}
+
 function navigateBack(step) {
     let $routes = global.$routes || [];
     let routerKey = null;
@@ -81,6 +86,6 @@ function navigateBack(step) {
 }
 
 export default RouterMap;
-export { navigate, navigateBack };
+export { navigate, navigateBack, backToHome };
 
 

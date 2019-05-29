@@ -44,9 +44,7 @@ export default class DownPricePage extends BasePage {
 
     $navigationBarOptions = {
         show: true
-
     };
-
     constructor(props) {
         super(props);
         this.dataModel = new TotalTopicDataModel();

@@ -363,7 +363,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             textPaint.setTextSize(12 * precision);
             Rect bounds = new Rect();
             textPaint.getTextBounds(name, 0, name.length(), bounds);
-            canvas.drawText(name+" 已累计"+0+"克拉", 105 * precision, 446 * precision, textPaint);
+            canvas.drawText(name+" "+shareImageBean.getDiamondNum(), 105 * precision, 446 * precision, textPaint);
         }
 
         String url = shareImageBean.getQRCodeStr();
@@ -1232,6 +1232,12 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             shareImageBean.setUserName(map.getString("userName"));
         } else {
             shareImageBean.setUserName("");
+        }
+
+        if (map.hasKey("diamondNum")) {
+            shareImageBean.setDiamondNum(map.getString("diamondNum"));
+        } else {
+            shareImageBean.setDiamondNum("");
         }
 
         return shareImageBean;

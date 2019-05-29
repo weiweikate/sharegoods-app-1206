@@ -10,6 +10,7 @@ import { subjectModule } from './HomeSubjectModel';
 import { recommendModule } from './HomeRecommendModel';
 import { categoryModule } from './HomeCategoryModel';
 import { limitGoModule } from './HomeLimitGoModel';
+import taskModel from './TaskModel';
 
 //首页modules
 class HomeModule {
@@ -17,6 +18,7 @@ class HomeModule {
     @observable selectedTypeCode = null;
     @observable isRefreshing = false;
     @observable isFocused = false;
+    @observable goodsOtherLen = 0;
     lastGoods = null;
     isFetching = false;
     isEnd = false;
@@ -112,7 +114,7 @@ class HomeModule {
         // 首页频道类目
         channelModules.loadChannel(this.firstLoad);
         // 首页通栏
-        homeExpandBnnerModel.loadBannerList();
+        homeExpandBnnerModel.loadBannerList(this.firstLoad);
         // 首焦点广告
         homeFocusAdModel.loadAdList();
         // 首页限时秒杀
@@ -123,6 +125,8 @@ class HomeModule {
         recommendModule.loadRecommendList(this.firstLoad);
         // 超值热卖
         subjectModule.loadSubjectList(this.firstLoad);
+
+        taskModel.getData();
 
         this.page = 1;
         this.isEnd = false;
@@ -135,6 +139,9 @@ class HomeModule {
         }, {
             id: 2,
             type: homeType.user
+        }, {
+            id: 11,
+            type: homeType.task
         }, {
             id: 3,
             type: homeType.channel
@@ -199,6 +206,7 @@ class HomeModule {
                     id: 'goods'
                 });
             }
+            this.goodsOtherLen = this.homeList.length;
             this.homeList = [...this.homeList, ...home];
             this.isFetching = false;
             this.isRefreshing = false;
@@ -269,10 +277,10 @@ class HomeModule {
 
     });
 
-    bannerPoint = (item, location) => ({
+    bannerPoint = (item, location, index) => ({
         bannerName: item.imgUrl || '',
         bannerId: item.id,
-        bannerRank: item.rank,
+        bannerRank: index,
         bannerType: item.linkType,
         bannerContent: item.linkTypeCode,
         bannerLocation: location ? location : 0
