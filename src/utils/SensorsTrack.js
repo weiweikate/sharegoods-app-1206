@@ -33,6 +33,8 @@ const productTrack = {
     SpikeTimeClick:'FlashSaleTimeRangeClick',// 限时购tab
     SpikeProdClick:'FlashSaleProductClick',// 限时购商品
     homeTopicProdClick:'SpecialTopicProductClick',// 专题商品
+    NewUserGuideShow: 'NewUserGuideShow',//显示新手礼包
+    NewUserGuideBtnClick: 'NewUserGuideBtnClick',//新手礼包按钮点击
 }
 /** 订单相关的埋点事件名称*/
 const inviteEvent = {
@@ -63,7 +65,7 @@ const trackEvent = {
     submitOrderDetail: 'SubmitOrderDetail',//提交订单详情
     // payOrder: 'PayOrder',//支付订单
     payOrderDetail: 'PayOrderDetail',//支付订单详情
-    cancelPayOrder: 'CancelPayOrder',//取消订单
+    // cancelPayOrder: 'CancelPayOrder',//取消订单
     applyReturn: 'ApplyReturn',//申请退货
     receiveDiscount: 'ReceiveCoupons',//领取优惠券
     receiveOneyuan: 'ReceiveOneyuan',//领一元券

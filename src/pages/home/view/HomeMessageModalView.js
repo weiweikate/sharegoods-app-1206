@@ -152,7 +152,7 @@ function AdViewBindModal(modal,dataName = 'AdData', visibleName = 'isShowAd' , c
         }
 
         gotoPage = () => {
-            let data = modal.AdData || {};
+            let data = modal[dataName] || {};
             const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
             let params = homeModule.paramsNavigate(data);
             if (router) {
