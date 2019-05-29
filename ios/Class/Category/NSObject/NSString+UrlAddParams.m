@@ -90,4 +90,19 @@
   return  ceilf(size.height);
 }
 
+-(CGFloat)getWithStringSizeWidthfontSize:(CGFloat)fontSize viewWidth:(CGFloat)width{
+  
+  // 设置文字属性 要和label的一致
+  NSDictionary *attrs = @{NSFontAttributeName : [UIFont systemFontOfSize:fontSize]};
+  CGSize maxSize = CGSizeMake(width, MAXFLOAT);
+  
+  NSStringDrawingOptions options = NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading;
+  
+  // 计算文字占据的高度
+  CGSize size = [self boundingRectWithSize:maxSize options:options attributes:attrs context:nil].size;
+  
+  //    当你是把获得的高度来布局控件的View的高度的时候.size转化为ceilf(size.height)。
+  return  ceilf(size.width);
+}
+
 @end
