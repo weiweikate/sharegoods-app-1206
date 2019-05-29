@@ -122,16 +122,17 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     NSString *titleStr = model.titleStr;
     NSString *priceStr = model.priceStr;
     NSString *retailPrice = model.retailPrice;
-    NSString *spellPrice = model.spellPrice;
-    NSString *shareMoneyPrice = [NSString stringWithFormat:@"扫码购 立省%@元起",model.shareMoney?model.shareMoney:@""];
+    NSString *retailString = @"";
+    NSString *shareMoneyPrice = [NSString stringWithFormat:@"立省%@元起",model.shareMoney?model.shareMoney:@""];
 
     priceStr = [NSString stringWithFormat:@"市场价：%@",priceStr];
     if ([model.priceType isEqualToString:@"mr_skill"]) {
-      retailPrice = [NSString stringWithFormat:@"秒杀价：%@",retailPrice];
+      retailPrice = [NSString stringWithFormat:@"%@",retailPrice];
+      retailString = [NSString stringWithFormat:@"秒杀价"];
     }else{
-      retailPrice = [NSString stringWithFormat:@"销售价：%@",retailPrice];
+      retailPrice = [NSString stringWithFormat:@"%@",retailPrice];
+      retailString = [NSString stringWithFormat:@"零售价"];
     }
-    spellPrice = [NSString stringWithFormat:@"%@",spellPrice];
 
     CGFloat sigle =  [@"1" getStringHeightWithfontSize:18*i viewWidth:315*i];
     CGFloat height =  [titleStr getStringHeightWithfontSize:18*i viewWidth:315*i];
@@ -179,40 +180,29 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
    ];
 
     //拼店价格()
-    NSMutableAttributedString *spellPriceAttrStr = [[NSMutableAttributedString alloc]initWithString:spellPrice
-                                                                                         attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:18*i], NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#FF0050"]}];
+    NSMutableAttributedString *retailPriceAttrStr = [[NSMutableAttributedString alloc]initWithString:retailPrice
+                                                                                         attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:22*i], NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#FF0050"]}];
 //    [spellPriceAttrStr addAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:13*i]}
 //                               range:NSMakeRange(0, 1)];
 //    [spellPriceAttrStr addAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:13*i]}
 //                               range:NSMakeRange(spellPrice.length-2, 2)];
     [nodes addObject:@{
-                       @"value": spellPriceAttrStr,
+                       @"value": retailPriceAttrStr,
                        @"location": [NSValue valueWithCGPoint:CGPointMake(18*i, 460*i+height+13*i)]}
      ];
 
-    CGFloat spellPriceWidth = [spellPrice getWidthStringfontSize:13 viewWidth:200];
+    CGFloat spellPriceWidth = [retailPrice getWidthStringfontSize:22 viewWidth:200];
 
     //拼店文字
 
-    NSMutableAttributedString *pindian = [[NSMutableAttributedString alloc]initWithString:@" 拼店价 "
+    NSMutableAttributedString *pindian = [[NSMutableAttributedString alloc]initWithString:[NSString stringWithFormat:@" %@ ",retailString]
                                                                                          attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:13*i],
                                                                                           NSBackgroundColorAttributeName:[UIColor colorWithRed:255/255.0 green:0/255.0 blue:80/255.0 alpha:0.1],
                                                                                                   NSForegroundColorAttributeName: [UIColor colorWithHexString:@"FF0050"]}];
     [nodes addObject:@{
                        @"value": pindian,
-                       @"location": [NSValue valueWithCGPoint:CGPointMake((spellPriceWidth+38)*i, 460*i+height+17*i)]}
+                       @"location": [NSValue valueWithCGPoint:CGPointMake((spellPriceWidth+38)*i, 460*i+height+19*i)]}
      ];
-
-  //v1价格
-  NSMutableAttributedString *retailPriceAttrStr = [[NSMutableAttributedString alloc]initWithString:retailPrice
-                                                                                        attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:13*i],
-                                                                  NSStrikethroughStyleAttributeName: @1,                NSForegroundColorAttributeName: [UIColor colorWithHexString:@"333333"],}];
-//  [retailPriceAttrStr addAttributes:@{ NSForegroundColorAttributeName: [UIColor colorWithHexString:@"333333"]}
-//                              range:NSMakeRange(0, retailPrice.length - model.retailPrice.length)];
-  [nodes addObject:@{
-                     @"value": retailPriceAttrStr,
-                     @"location": [NSValue valueWithCGPoint:CGPointMake(18*i, 460*i+height+15*i*2+9*i)]}
-   ];
 
     //价格
     NSMutableAttributedString *priceAttrStr = [[NSMutableAttributedString alloc]initWithString:priceStr
@@ -220,7 +210,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
 
     [nodes addObject:@{
                        @"value": priceAttrStr,
-                       @"location": [NSValue valueWithCGPoint:CGPointMake(18*i, 460*i+height+15*i*3+9*i*2)]}
+                       @"location": [NSValue valueWithCGPoint:CGPointMake(18*i, 460*i+height+18*i*2+9*i)]}
      ];
 
   //二维码
@@ -230,7 +220,17 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
                      @"location": [NSValue valueWithCGRect:CGRectMake(268*i, 457*i+height+13*i, 77*i, 77*i)]}
    ];
 
-    //扫码购
+    //扫码购 扫码购
+    CGFloat tempStrwidth = [@"扫码购" getWidthStringfontSize:13 viewWidth:150];
+    NSMutableAttributedString * tempStrAttrStr = [[NSMutableAttributedString alloc]initWithString:@"扫码购"
+                                                                                         attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:13*i],
+                                                                                                      NSForegroundColorAttributeName: [UIColor colorWithHexString:@"FF0050"],}];
+    
+    [nodes addObject:@{
+                       @"value": tempStrAttrStr,
+                       @"location": [NSValue valueWithCGPoint:CGPointMake(268*i+38*i-(tempStrwidth*i)/2, 457*i+height+13*i+80*i)]}
+     ];
+
     CGFloat shareMoneywidth = [shareMoneyPrice getWidthStringfontSize:13 viewWidth:150];
     NSMutableAttributedString *shareMoneyAttrStr = [[NSMutableAttributedString alloc]initWithString:shareMoneyPrice
                                                                                           attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:13*i],
@@ -238,7 +238,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
 
     [nodes addObject:@{
                        @"value": shareMoneyAttrStr,
-                       @"location": [NSValue valueWithCGPoint:CGPointMake(268*i+38*i-(shareMoneywidth*i)/2, 457*i+height+13*i+88*i)]}
+                       @"location": [NSValue valueWithCGPoint:CGPointMake(268*i+38*i-(shareMoneywidth*i)/2, 457*i+height+13*i*2+88*i)]}
      ];
 
   }
