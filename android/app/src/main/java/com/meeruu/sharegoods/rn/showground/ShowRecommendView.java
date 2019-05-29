@@ -291,7 +291,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
                                     onZanPressEvent.setData(realData);
                                     eventDispatcher.dispatchEvent(onZanPressEvent);
                                 }
-                                data.set(position, bean);
+//                                data.set(position, bean);
 //                                adapter.replaceData(data);
                                 adapter.setData(position,bean);
                             }
