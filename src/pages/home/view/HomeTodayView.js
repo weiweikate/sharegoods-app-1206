@@ -29,7 +29,7 @@ export default class HomeTodayView extends Component {
         const { todayList } = todayModule;
         let item = todayList[index];
         if (item) {
-            track(trackEvent.bannerClick, homeModule.bannerPoint(item, homePoint.homeToday));
+            track(trackEvent.bannerClick, homeModule.bannerPoint(item, homePoint.homeToday, index));
             let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
             const { navigate } = this.props;
             let params = homeModule.paramsNavigate(item);

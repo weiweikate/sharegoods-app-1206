@@ -27,7 +27,7 @@ export default class HomeCategoryView extends Component {
             bridge.$toast('数据加载失败！');
             return;
         }
-        track(trackEvent.bannerClick, homeModule.bannerPoint(data, homePoint.homeCategory));
+        track(trackEvent.bannerClick, homeModule.bannerPoint(data, homePoint.homeCategory, index));
         const { navigate } = this.props;
         navigate(data.route, {
             fromHome: true,

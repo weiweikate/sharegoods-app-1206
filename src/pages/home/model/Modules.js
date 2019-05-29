@@ -18,6 +18,7 @@ class HomeModule {
     @observable selectedTypeCode = null;
     @observable isRefreshing = false;
     @observable isFocused = false;
+    @observable goodsOtherLen = 0;
     lastGoods = null;
     isFetching = false;
     isEnd = false;
@@ -141,8 +142,7 @@ class HomeModule {
         }, {
             id: 11,
             type: homeType.task
-        }
-        , {
+        }, {
             id: 3,
             type: homeType.channel
         }, {
@@ -206,6 +206,7 @@ class HomeModule {
                     id: 'goods'
                 });
             }
+            this.goodsOtherLen = this.homeList.length;
             this.homeList = [...this.homeList, ...home];
             this.isFetching = false;
             this.isRefreshing = false;
@@ -276,10 +277,10 @@ class HomeModule {
 
     });
 
-    bannerPoint = (item, location) => ({
+    bannerPoint = (item, location, index) => ({
         bannerName: item.imgUrl || '',
         bannerId: item.id,
-        bannerRank: item.rank,
+        bannerRank: index,
         bannerType: item.linkType,
         bannerContent: item.linkTypeCode,
         bannerLocation: location ? location : 0

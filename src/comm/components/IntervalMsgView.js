@@ -109,14 +109,14 @@ const styles = StyleSheet.create({
     },
     btn: {
         flexDirection: 'row', alignItems: 'center',
-        height: px2dp(24), borderRadius: px2dp(12), backgroundColor: 'rgba(0,0,0,0.6)'
+        height: px2dp(22), borderRadius: px2dp(11), backgroundColor: 'rgba(0,0,0,0.6)'
     },
     image: {
         marginRight: px2dp(6), overflow: 'hidden',
-        width: px2dp(24), height: px2dp(24), borderRadius: px2dp(12)
+        width: px2dp(22), height: px2dp(22), borderRadius: px2dp(11)
     },
     text: {
-        marginRight: 3, maxWidth: maxTextWidth,
+        marginRight: px2dp(4), maxWidth: maxTextWidth,
         fontSize: 10, color: DesignRule.white
     },
     arrow: {
