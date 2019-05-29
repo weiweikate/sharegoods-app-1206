@@ -26,6 +26,10 @@ const progressWidth = px2dp(60);
 @observer
 export class ShopProductItemView extends Component {
 
+    state = {
+        selectedItem: {}
+    };
+
     _renderItem = ({ item, index }) => {
         const { image, title, content, shareMoney, promotionMinPrice, price, progressBar, salesVolume, linkTypeCode, linkType } = item || {};
         /*进度条显示*/
@@ -90,20 +94,15 @@ export class ShopProductItemView extends Component {
                             bridge.$toast('只有拼店用户才能进行分享操作哦~');
                             return;
                         }
-                        this.shareModal.open();
+                        this.setState({
+                            selectedItem: item
+                        }, () => {
+                            this.shareModal.open();
+                        });
                     }}>
                         <Image style={ProductItemViewStyles.shareImg} source={shopProductShare}/>
                     </NoMoreClick>
                 </View>
-
-                <CommShareModal ref={(ref) => this.shareModal = ref}
-                                type={'miniProgramWithCopyUrl'}
-                                webJson={{
-                                    title: title,
-                                    dec: '商品详情',
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${linkTypeCode}?upuserid=${user.code || ''}`,
-                                    thumImage: image
-                                }}/>
             </NoMoreClick>
         );
     };
@@ -112,8 +111,10 @@ export class ShopProductItemView extends Component {
     };
 
     render() {
+        const { image, title, linkTypeCode } = this.state.selectedItem || {};
         const { MyShopDetailModel } = this.props;
         const { productList } = MyShopDetailModel;
+        console.log(linkTypeCode);
         if (!productList || productList.length === 0) {
             return null;
         }
@@ -128,6 +129,14 @@ export class ShopProductItemView extends Component {
                           keyExtractor={this._keyExtractor}
                           horizontal={true}
                           showsHorizontalScrollIndicator={false}/>
+                <CommShareModal ref={(ref) => this.shareModal = ref}
+                                type={'miniProgramWithCopyUrl'}
+                                webJson={{
+                                    title: title,
+                                    dec: '商品详情',
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${linkTypeCode}?upuserid=${user.code || ''}`,
+                                    thumImage: image
+                                }}/>
             </View>
         );
     }
@@ -236,32 +245,35 @@ export class ShopBottomBannerView extends Component {
             return item.image;
         });
         return (
-            <MRBannerView style={bottomBannerStyles.banner}
-                          imgUrlArray={images}
-                          onDidSelectItemAtIndex={(e) => {
-                              const index = e.nativeEvent.index;
-                              const selectedItem = bottomBannerList[index];
-                              const { linkType, linkTypeCode } = selectedItem;
-                              const router = homeModule.homeNavigate(linkType, linkTypeCode);
-                              let params = homeModule.paramsNavigate(selectedItem);
-                              if (router) {
-                                  navigate(router, params);
-                              }
-                          }}
-                          onDidScrollToIndex={(e) => {
-                              const index = e.nativeEvent.index;
-                              this.setState({ index });
-                          }} autoLoop={bottomBannerList.length !== 1}>
+            <View style={{ marginLeft: DesignRule.margin_page}}>
+                <MRBannerView style={bottomBannerStyles.banner}
+                              imgUrlArray={images}
+                              itemWidth={px2dp(345)}
+                              onDidSelectItemAtIndex={(e) => {
+                                  const index = e.nativeEvent.index;
+                                  const selectedItem = bottomBannerList[index];
+                                  const { linkType, linkTypeCode } = selectedItem;
+                                  const router = homeModule.homeNavigate(linkType, linkTypeCode);
+                                  let params = homeModule.paramsNavigate(selectedItem);
+                                  if (router) {
+                                      navigate(router, params);
+                                  }
+                              }}
+                              itemRadius={5}
+                              onDidScrollToIndex={(e) => {
+                                  const index = e.nativeEvent.index;
+                                  this.setState({ index });
+                              }} autoLoop={bottomBannerList.length !== 1}/>
+
                 {this._renderStyleOne(images.length)}
-            </MRBannerView>
+            </View>
         );
     }
 }
 
 const bottomBannerStyles = StyleSheet.create({
     banner: {
-        alignSelf: 'center', overflow: 'hidden',
-        width: px2dp(345), height: px2dp(120), borderRadius: 7
+        width:px2dp(345), height: px2dp(120)
     },
     indexView: {
         position: 'absolute',

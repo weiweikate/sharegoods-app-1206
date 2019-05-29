@@ -67,7 +67,7 @@ import BasePage from '../../BasePage';
 import { TrackApi } from '../../utils/SensorsTrack';
 import taskModel from './model/TaskModel';
 import TaskVIew from './view/TaskVIew';
-import intervalMsgModel, { IntervalMsgView } from '../../comm/components/IntervalMsgView';
+import intervalMsgModel, { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
 
 const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
     <Text style={styles.text}
@@ -227,8 +227,8 @@ class HomePage extends BasePage {
 
     homeSkip = (data) => {
         // 跳标
-        let tagArr = JSON.parse(data) || [];
-        intervalMsgModel.msgList = tagArr;
+        const content = JSON.parse(data) || {};
+        intervalMsgModel.setMsgData(content);
     };
 
     componentWillUnmount() {
@@ -372,7 +372,7 @@ class HomePage extends BasePage {
                 }}/>
                 <PraiseModel/>
                 <GiftModal/>
-                <IntervalMsgView/>
+                <IntervalMsgView pageType = {IntervalType.home}/>
                 <HomeAdModal/>
                 <HomeMessageModalView/>
                 <VersionUpdateModalView/>

@@ -5,6 +5,8 @@ import { homeModule } from '../model/Modules';
 import { homeExpandBnnerModel } from '../model/HomeExpandBnnerModel';
 import { observer } from 'mobx-react';
 import bridge from '../../../utils/bridge';
+import { track, trackEvent } from "../../../utils/SensorsTrack";
+import { homePoint } from "../HomeTypes";
 
 const { px2dp } = ScreenUtils;
 
@@ -18,6 +20,7 @@ export default class HomeExpandBannerView extends Component {
             bridge.$toast('获取数据失败！');
             return;
         }
+        track(trackEvent.bannerClick, homeModule.bannerPoint(value, homePoint.homeExpand));
         const router = homeModule.homeNavigate(value.linkType, value.linkTypeCode);
         const { navigate } = this.props;
         const params = homeModule.paramsNavigate(value);

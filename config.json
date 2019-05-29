@@ -44,7 +44,15 @@
         "common-dev": {
             "name": "common-dev",
             "host": "http://172.16.10.12:1080/gateway",
-            "h5": "https://testh51.sharegoodsmall.com",
+            "h5": "https://testh5.sharegoodsmall.com",
+            "oss": "https://devcdn.sharegoodsmall.com",
+            "wxAppletKey": "gh_aa91c3ea0f6c",
+            "gongmao": "http://testsop.sharegoodsmall.com/gateway/gongmall/contract/reback"
+        },
+        "dev-gateway": {
+            "name": "devH5-gateway",
+            "host": "http://172.16.10.13:1080/gateway",
+            "h5": "http://devh5-gateway.sharegoodsmall.com",
             "oss": "https://devcdn.sharegoodsmall.com",
             "wxAppletKey": "gh_aa91c3ea0f6c",
             "gongmao": "http://testsop.sharegoodsmall.com/gateway/gongmall/contract/reback"
@@ -127,7 +135,7 @@
         },
         "杨飞": {
             "name": "杨飞",
-            "host": "http://172.16.10.48:18096/gateway",
+            "host": "http://172.18.7.123:18096/gateway",
             "h5": "https://uath5.sharegoodsmall.com"
         },
         "顾嘉豪": {
@@ -196,7 +204,7 @@
             "name": "优惠券测试",
             "host": "http://172.16.10.12:1080/gateway",
             "oss": "https://devcdn.sharegoodsmall.com",
-            "h5": "http://testh51.sharegoodsmall.com",
+            "h5": "http://testh5.sharegoodsmall.com",
             "wxAppletKey": "gh_aa91c3ea0f6c",
             "gongmao": "http://testsop.sharegoodsmall.com/gateway/gongmall/contract/reback"
         },
