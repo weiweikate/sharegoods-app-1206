@@ -11,9 +11,12 @@ import DesignRule from '../../constants/DesignRule';
 import ScreenUtils from '../../utils/ScreenUtils';
 import res from './res';
 import { MRText } from '../../components/ui';
-import LinearGradient from 'react-native-linear-gradient'
+import LinearGradient from 'react-native-linear-gradient';
 import { NavigationActions } from 'react-navigation';
 import { TrackApi } from '../../utils/SensorsTrack';
+import ShareUtil from '../../utils/ShareUtil';
+import user from '../../model/user';
+// import PaymentApi from './PaymentApi';
 
 const { px2dp } = ScreenUtils;
 const {
@@ -46,28 +49,52 @@ export default class PaymentFinshPage extends BasePage {
     $navigationBarOptions = {
         title: '订单完成'
     };
+
     constructor(props) {
         super(props);
-        this.state={
-            showShareView:false,
-        }
+        this.state = {
+            showShareView: false,
+            couponIdList: [1, 2, 3,4,5,6]
+        };
         //orderPayResultPageType 有券无劵
-        TrackApi.ViewOrderPayPage({orderPayType:2,orderPayResultPageType:2});
+        TrackApi.ViewOrderPayPage({ orderPayType: 2, orderPayResultPageType: 2 });
     }
-    componentDidMount(){
 
+    componentDidMount() {
+        // PaymentApi.judgeShare().then(result=>{
+        //
+        // }).catch(err=>{
+        //
+        // })
+
+        setTimeout(() => {
+            this.setState({
+                showShareView: true
+            });
+        }, 2000);
     }
+
     _render() {
         return (
             <ScrollView style={Styles.contentStyle}>
                 {this.renderTopSuccessView()}
                 <RenderSeparator title={'你还有兑换券即将过期，快来使用吧'}/>
-                {this._renderCouponItem()}
-                {this._renderCouponItem()}
-                {this.state.showShareView? this._renderShareView():null}
+                {this.renderCouponList()}
+                {this.state.showShareView ? this._renderShareView() : null}
             </ScrollView>
         );
     }
+
+    renderCouponList = () => {
+        const { couponIdList } = this.state;
+        let couponItemViewList = [];
+        if (Array.isArray(couponIdList) && couponIdList.length > 0) {
+            couponItemViewList = couponIdList.map((couponItem) => {
+                return this._renderCouponItem(couponItem);
+            });
+            return couponItemViewList;
+        }
+    };
     /**
      * 渲染头部成功标识
      * @returns {*}
@@ -87,7 +114,7 @@ export default class PaymentFinshPage extends BasePage {
                     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                         <TouchableOpacity style={{ width: px2dp(100), height: px2dp(34) }} onPress={() => {
 
-                           this._gotoHome();
+                            this._gotoHome();
                         }}>
                             <View style={{
                                 borderWidth: px2dp(0.5),
@@ -133,27 +160,27 @@ export default class PaymentFinshPage extends BasePage {
      * 去首页
      * @private
      */
-    _gotoHome=()=>{
+    _gotoHome = () => {
         TrackApi.OrderPayResultBtnClick({
-            orderPayResultPageType:0,
-            orderPayType:2,
-            orderPayResultBtnType:1
-        })
+            orderPayResultPageType: 0,
+            orderPayType: 2,
+            orderPayResultBtnType: 1
+        });
         this.$navigateBackToHome();
-    }
+    };
     /**
      * 去订单页面事件
      */
     _toOrder = () => {
         TrackApi.OrderPayResultBtnClick({
-            orderPayResultPageType:0,
-            orderPayType:2,
-            orderPayResultBtnType:2
+            orderPayResultPageType: 0,
+            orderPayType: 2,
+            orderPayResultBtnType: 2
         });
         let replace = NavigationActions.replace({
             key: this.props.navigation.state.key,
-            type: "ReplacePayScreen",
-            routeName: "order/order/MyOrdersListPage",
+            type: 'ReplacePayScreen',
+            routeName: 'order/order/MyOrdersListPage',
             params: { index: 2 }
         });
         this.props.navigation.dispatch(replace);
@@ -167,26 +194,34 @@ export default class PaymentFinshPage extends BasePage {
      */
     _renderCouponItem = (itemData) => {
         return (
-            <View style={{ height: px2dp(95), justifyContent: 'center', alignItems: 'center' ,marginTop:px2dp(10)}}>
+            <View style={{ height: px2dp(95), justifyContent: 'center', alignItems: 'center', marginTop: px2dp(10) }}>
                 <View style={Styles.couponItemBgStyle}>
-                    <View style={{width:px2dp(70),alignItems:'center',justifyContent:'center'}}>
-                        <Image source={coupon_bg} style={{width:px2dp(65),height:px2dp(65)}}/>
+                    <View style={{ width: px2dp(70), alignItems: 'center', justifyContent: 'center' }}>
+                        <Image source={coupon_bg} style={{ width: px2dp(65), height: px2dp(65) }}/>
                     </View>
-                    <View style={{flex:1,justifyContent:'center'}}>
-                        <MRText style={{color:'#AD4604',fontSize:px2dp(16)}}>
+                    <View style={{ flex: 1, justifyContent: 'center' }}>
+                        <MRText style={{ color: '#AD4604', fontSize: px2dp(16) }}>
                             商品兑换券
                         </MRText>
-                        <MRText style={{color:'#B4B4B4',fontSize:px2dp(12),marginTop:px2dp(3)}}>
+                        <MRText style={{ color: '#B4B4B4', fontSize: px2dp(12), marginTop: px2dp(3) }}>
                             有效期：2019.05.12
                         </MRText>
                     </View>
-                    <View style={{width:px2dp(90),alignItems:'center',justifyContent:'center'}}>
-                        <TouchableOpacity onPress={()=>{this._couponItemClick(itemData)}}>
-                            <LinearGradient colors={["#FC5D39", "#FF0050"]}
-                                            style={{height:px2dp(26),width:px2dp(75),alignItems:'center',justifyContent:'center',borderRadius:px2dp(13)}}
+                    <View style={{ width: px2dp(90), alignItems: 'center', justifyContent: 'center' }}>
+                        <TouchableOpacity onPress={() => {
+                            this._couponItemClick(itemData);
+                        }}>
+                            <LinearGradient colors={['#FC5D39', '#FF0050']}
+                                            style={{
+                                                height: px2dp(26),
+                                                width: px2dp(75),
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                borderRadius: px2dp(13)
+                                            }}
                                             start={{ x: 0, y: 0 }}
                                             end={{ x: 1, y: 1 }}>
-                                <MRText style={{color:DesignRule.color_fff,fontSize:px2dp(13)}}>
+                                <MRText style={{ color: DesignRule.color_fff, fontSize: px2dp(13) }}>
                                     立即使用
                                 </MRText>
                             </LinearGradient>
@@ -200,69 +235,98 @@ export default class PaymentFinshPage extends BasePage {
      * 优惠券Item点击
      * @param couponItem
      */
-    _couponItemClick=(couponItem)=>{
+    _couponItemClick = (couponItem) => {
         TrackApi.OrderPayResultBtnClick({
-            orderPayResultPageType:0,
-            orderPayType:2,
-            orderPayResultBtnType:5
+            orderPayResultPageType: 0,
+            orderPayType: 2,
+            orderPayResultBtnType: 5
         });
-    }
+    };
     /**
      * 分享相关View
      * @returns {*}
      * @private
      */
-    _renderShareView=()=>{
-        return(
-            <View style={{alignItems:'center',justifyContent:'center'}}>
+    _renderShareView = () => {
+        return (
+            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                 <RenderSeparator title={'分享给好友，即可获得三张券'}/>
-                <MRText style={{color:'#AD4604',SizeSize:px2dp(14),marginTop:px2dp(10)}}>立即分享至</MRText>
-                <TouchableOpacity onPress={()=>{this._shareToWX()}}>
-                    <LinearGradient colors={["#FF2100", "#FF6947","#FF2100"]}
-                                    style={{height:px2dp(40),width:ScreenUtils.width - px2dp(90),alignItems:'center',justifyContent:'center',borderRadius:px2dp(20),flexDirection:'row',marginTop:px2dp(10)}}
+                <MRText style={{ color: '#AD4604', SizeSize: px2dp(14), marginTop: px2dp(10) }}>立即分享至</MRText>
+                <TouchableOpacity onPress={() => {
+                    this._shareToWX();
+                }}>
+                    <LinearGradient colors={['#FF2100', '#FF6947', '#FF2100']}
+                                    style={{
+                                        height: px2dp(40),
+                                        width: ScreenUtils.width - px2dp(90),
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        borderRadius: px2dp(20),
+                                        flexDirection: 'row',
+                                        marginTop: px2dp(10)
+                                    }}
                                     start={{ x: 0, y: 0 }}
                                     end={{ x: 1, y: 1 }}>
-                        <Image source={share_to_wx} style={{height:px2dp(20),width:px2dp(24)}}/>
-                        <MRText style={{color:DesignRule.color_fff,fontSize:px2dp(14),marginLeft:px2dp(10)}}>
+                        <Image source={share_to_wx} style={{ height: px2dp(20), width: px2dp(24) }}/>
+                        <MRText style={{ color: DesignRule.color_fff, fontSize: px2dp(14), marginLeft: px2dp(10) }}>
                             分享微信好友
                         </MRText>
                     </LinearGradient>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={()=>{this._shareToFriendCircle()}}>
-                    <View style={{height:px2dp(40),width:ScreenUtils.width - px2dp(90),alignItems:'center',justifyContent:'center',borderRadius:px2dp(20),flexDirection:'row',marginTop:px2dp(10)}}>
-                        <Image source={share_to_friend_circle} style={{height:px2dp(20),width:px2dp(24)}}/>
-                        <MRText style={{color:'#AD4604',fontSize:px2dp(14),marginLeft:px2dp(10)}}>
+                <TouchableOpacity onPress={() => {
+                    this._shareToFriendCircle();
+                }}>
+                    <View style={{
+                        height: px2dp(40),
+                        width: ScreenUtils.width - px2dp(90),
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: px2dp(20),
+                        flexDirection: 'row',
+                        marginTop: px2dp(10)
+                    }}>
+                        <Image source={share_to_friend_circle} style={{ height: px2dp(20), width: px2dp(24) }}/>
+                        <MRText style={{ color: '#AD4604', fontSize: px2dp(14), marginLeft: px2dp(10) }}>
                             分享到朋友圈
                         </MRText>
                     </View>
                 </TouchableOpacity>
             </View>
-        )
-    }
+        );
+    };
     /**
      * 分享到微信
      * @private
      */
-    _shareToWX=()=>{
+    _shareToWX = () => {
         TrackApi.OrderPayResultBtnClick({
-            orderPayResultPageType:0,
-            orderPayType:2,
-            orderPayResultBtnType:3
+            orderPayResultPageType: 0,
+            orderPayType: 2,
+            orderPayResultBtnType: 3
         });
 
-    }
+        ShareUtil.onShare({
+            shareType: 1,
+            pplatformType: 0,
+            title: '【秀购】发现一个很给力的活动,快去看看~',
+            dec: '',
+            thumImage: user.headImg,
+            linkUrl: 'https://www.baidu.com'
+        });
+
+    };
     /**
      * 分享到朋友圈
      * @private
      */
-    _shareToFriendCircle=()=>{
+    _shareToFriendCircle = () => {
         TrackApi.OrderPayResultBtnClick({
-            orderPayResultPageType:0,
-            orderPayType:2,
-            orderPayResultBtnType:4
+            orderPayResultPageType: 0,
+            orderPayType: 2,
+            orderPayResultBtnType: 4
         });
-    }
+    };
 
 }
 
@@ -284,7 +348,7 @@ const Styles = StyleSheet.create({
         height: px2dp(80),
         width: ScreenUtils.width - px2dp(60),
         backgroundColor: DesignRule.color_fff,
-        borderRadius:px2dp(3),
-        flexDirection:'row'
-    },
+        borderRadius: px2dp(3),
+        flexDirection: 'row'
+    }
 });
