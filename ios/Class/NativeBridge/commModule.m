@@ -12,6 +12,7 @@
 #import "JSPushManager.h"
 #import "RSAManager.h"
 #import "GongMaoVC.h"
+#import "CommentTool.h"
 
 #define AppVersion [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]
 
@@ -119,8 +120,12 @@ RCT_EXPORT_METHOD(clearCookie:(NSString *)url){
     }
   }
 }
-
-
+#pragma arguments 检测是否可以评论
+RCT_EXPORT_METHOD(checkIsCanComment){
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [[CommentTool sharedInstance]checkIsCanComment];
+  });
+}
 #pragma mark - 打开沙河预览工具
 RCT_EXPORT_METHOD(openSandBoxPreview){
   dispatch_async(dispatch_get_main_queue(), ^{
@@ -400,8 +405,6 @@ RCT_EXPORT_METHOD(saveImageToPhotoAlbumWithUrl:(NSString *) url
       }
     });
   }];
-  
-  
 }
 
 @end
