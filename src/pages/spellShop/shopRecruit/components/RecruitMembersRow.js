@@ -69,7 +69,7 @@ export default class AssistantRow extends Component {
 
 const styles = StyleSheet.create({
     row: {
-        backgroundColor: 'white'
+        backgroundColor: 'white', marginBottom: 20
     },
     topRow: {
         height: 40,
