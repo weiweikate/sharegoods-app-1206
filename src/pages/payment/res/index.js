@@ -15,6 +15,12 @@ const index = {
     pay_result_loading: require('./pay_result_loading.png'),
     pay_result_success: require('./pay_result_success.png'),
     pay_result_timeout: require('./pay_result_timeout.png'),
-    pay_check_statue:require('./tongyong_icon_dengdai_nor.png')
+    pay_check_statue:require('./tongyong_icon_dengdai_nor.png'),
+    slice_point:require('./slice_point.png'),
+    coupon_bg:require('./coupon_bg.png'),
+    share_to_friend_circle:require('./share_to_friends_circle.png'),
+    pay_success_icon:require('./pay_success_icon.png'),
+    share_to_wx:require('./share_to_wx.png')
+
 };
 export default index;

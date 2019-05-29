@@ -19,6 +19,7 @@ import { TimeDownUtils } from '../../../utils/TimeDownUtils';
 import SMSTool from '../../../utils/SMSTool';
 import { registAction } from '../model/LoginActionModel';
 import { track, TrackApi } from '../../../utils/SensorsTrack';
+import { mediatorCallFunc } from '../../../SGMediator';
 // import CustomNumKeyBoard from '../../../comm/components/CustomNumKeyBoard'
 
 const { px2dp } = ScreenUtils;
@@ -150,6 +151,7 @@ export default class InputCode extends BasePage {
                     // user.untiedWechat(nickName,this.params.appOpenid,this.params.unionid)
                     this.$navigate(RouterMap.InviteCodePage);
                     TrackApi.phoneSignUpSuccess({ 'signUpPhone': phoneNum });
+                    mediatorCallFunc('RequestNoviceGift')
                 } else {
                     this.$toastShow(res.msg);
                 }

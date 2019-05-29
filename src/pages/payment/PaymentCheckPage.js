@@ -26,6 +26,8 @@ export default class PaymentCheckPage extends BasePage {
             msg: ' 支付返回结果等待中...'
         };
         payment.checking = true;
+        //埋点
+        TrackApi.ViewOrderPayPage({orderPayType:1,orderPayResultPageType:0});
     }
 
     $navigationBarOptions = {
@@ -120,7 +122,7 @@ export default class PaymentCheckPage extends BasePage {
                     this._goToOrder();
                 }
                 payment.resetPayment();
-                TrackApi.orderPayResultPage({isPaySuccess:false})
+                TrackApi.ViewOrderPayPage({orderPayType:3})
             } else {
                 setTimeout(() => {
                     this._checkStatues();

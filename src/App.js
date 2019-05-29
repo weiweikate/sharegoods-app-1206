@@ -65,6 +65,7 @@ class App extends Component {
         bridge.removeLaunch();
         // 初始化chat
         chatModel;
+
         this.state = {
             load: false,
             showOldBtn: false,
@@ -80,13 +81,13 @@ class App extends Component {
             updateDialog: false,
             installMode: codePush.InstallMode.ON_NEXT_RESUME
         });
-
         netStatus.startMonitorNetworkStatus();
-
         // 环境配置
         await apiEnvironment.loadLastApiSettingFromDiskCache();
         await user.readUserInfoFromDisk();
         global.$routes = [];
+        //暂加入，测试
+        bridge.$checkIsCanComment();
     }
 
     componentDidMount() {

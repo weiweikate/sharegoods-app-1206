@@ -106,15 +106,15 @@ const ActivityItem = ({ data, press, goodsPress }) => {
 
 @observer
 export default class HomeSubjectView extends Component {
-    _subjectActions(item) {
-        track(trackEvent.bannerClick, homeModule.bannerPoint(item, homePoint.homeSubject));
+    _subjectActions(item, index) {
+        track(trackEvent.bannerClick, homeModule.bannerPoint(item, homePoint.homeSubject, index));
         const { navigate } = this.props;
         let params = homeModule.paramsNavigate(item);
         const router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
         navigate(router, params);
     }
 
-    _goodAction(good, item) {
+    _goodAction(good, item, index) {
         const { navigate } = this.props;
         if (item.linkType === homeLinkType.exp) {
             if (good.endTime >= good.currTime) {
@@ -128,6 +128,13 @@ export default class HomeSubjectView extends Component {
             const pageObj = getTopicJumpPageParam(good);
             navigate(pageObj.pageRoute, { ...pageObj.params });
         }
+        // 首页超值热卖商品点击
+        track(trackEvent.homeTopicProdClick, {
+            'specialTopicId': item.linkTypeCode,
+            'productIndex': index,
+            'spuCode': good.prodCode,
+            'spuName': good.productName
+        });
     }
 
     render() {
@@ -140,9 +147,9 @@ export default class HomeSubjectView extends Component {
         }
         let items = [];
         subjectList.map((item, index) => {
-            items.push(<ActivityItem data={item} key={index} press={() => this._subjectActions(item)}
+            items.push(<ActivityItem data={item} key={index} press={() => this._subjectActions(item, index)}
                                      goodsPress={(good) => {
-                                         this._goodAction(good, item);
+                                         this._goodAction(good, item, index);
                                      }}/>);
         });
         if (items.length === 0) {

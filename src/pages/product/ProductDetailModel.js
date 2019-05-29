@@ -159,6 +159,10 @@ export default class ProductDetailModel {
     @observable promotionMinPrice;
     @observable promotionMaxPrice;
 
+    @computed get nameShareText() {
+        return `${this.monthSaleCount >= 1000 ? `[明星爆款]` : (this.monthSaleCount >= 500 ? '[人气爆款]' : '[爆款新品]')}${this.name}`;
+    }
+
     /*产品当前页是否使用活动价格  (直降 秒杀)进行中*/
     @computed get productIsPromotionPrice() {
         const { activityType, activityStatus } = this;

@@ -44,6 +44,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { ShopBottomBannerView, ShopProductItemView } from './components/ShopDetailItemView';
 import MyShopDetailModel from './MyShopDetailModel';
+import { IntervalMsgView, IntervalType } from '../../../comm/components/IntervalMsgView';
 
 const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
 const NavLeft = resCommon.button.white_back;
@@ -69,7 +70,7 @@ export default class MyShopPage extends BasePage {
             tittle: '店铺详情',
 
             storeData: {},
-            storeCode: this.props.storeCode,
+            storeCode: this.props.storeCode || user.storeCode,
             isLike: false
         };
     }
@@ -137,7 +138,19 @@ export default class MyShopPage extends BasePage {
 
     componentWillUnmount() {
         this.willFocusSubscription && this.willFocusSubscription.remove();
+        this.willBlurSubscription && this.willBlurSubscription.remove();
+        this.timeInterval && clearInterval(this.timeInterval);
     }
+
+    requestShopMsg = () => {
+        this.MyShopDetailModel.questShopMsg(this.state.storeCode);
+    };
+
+    requestPageData = () => {
+        this._loadPageData();
+        this.requestShopMsg();
+        this.timeInterval = setInterval(this.requestShopMsg, 1000 * 30);
+    };
 
     componentDidMount() {
         this.willFocusSubscription = this.props.navigation.addListener(
@@ -146,12 +159,21 @@ export default class MyShopPage extends BasePage {
                 const { state } = payload;
                 console.log('willFocus', state);
                 if (state && state.routeName === 'MyShop_RecruitPage') {//tab出现的时候
-                    this._loadPageData();
+                    this.requestPageData();
+                }
+            }
+        );
+        this.willBlurSubscription = this.props.navigation.addListener(
+            'willBlur',
+            payload => {
+                const { state } = payload;
+                if (state && state.routeName === 'MyShop_RecruitPage') {
+                    this.timeInterval && clearInterval(this.timeInterval);
                 }
             }
         );
         /*上面的方法第一次_loadPageData不会执行  page已经出现了*/
-        this._loadPageData();
+        this.requestPageData();
     }
 
 
@@ -480,7 +502,7 @@ export default class MyShopPage extends BasePage {
                             colors={[DesignRule.mainColor]}
                         />}>
                 <ShopHeader onPressShopAnnouncement={this._clickShopAnnouncement} item={this.state.storeData}/>
-                {userStatus === 1 && <ShopProductItemView MyShopDetailModel={this.MyShopDetailModel}/>}
+                <ShopProductItemView MyShopDetailModel={this.MyShopDetailModel}/>
                 {userStatus === 1 ? <ShopHeaderBonus storeData={this.state.storeData}/> : null}
                 <MembersRow storeUserList={storeUserList || []}
                             userCount={userCount}
@@ -488,7 +510,7 @@ export default class MyShopPage extends BasePage {
                             onPressAllMembers={this._clickAllMembers}
                             onPressMemberItem={this._clickItemMembers}/>
                 {this._renderBottom()}
-                {userStatus === 1 && <ShopBottomBannerView MyShopDetailModel={this.MyShopDetailModel}/>}
+                <ShopBottomBannerView MyShopDetailModel={this.MyShopDetailModel}/>
                 {this._renderJoinBtn()}
             </ScrollView>
         );
@@ -520,6 +542,7 @@ export default class MyShopPage extends BasePage {
                                 style={styles.LinearGradient}/>
                 {this._NavBarRender()}
                 {this.renderBodyView()}
+                <IntervalMsgView pageType={IntervalType.shopDetail}/>
                 <ActionSheetView ref={ref => {
                     this.actionSheetRef = ref;
                 }}/>

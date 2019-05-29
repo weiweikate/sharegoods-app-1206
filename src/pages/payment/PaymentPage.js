@@ -67,7 +67,8 @@ export default class PaymentPage extends BasePage {
                 //是否选择余额
                 const { selectedBalace } = payment;
                 if (!selectedBalace && oneCoupon <= 0) {
-                    this.$navigate('payment/ChannelPage',{
+                    // this.$navigate(RouterMap.PaymentFinshPage,{payResult: PaymentResult.success})
+                    this.$navigate("payment/ChannelPage",{
                         bizType:bizType,
                         modeType:modeType
                     });

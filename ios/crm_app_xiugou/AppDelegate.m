@@ -16,6 +16,7 @@
  */
 
 #import "AppDelegate.h"
+#import "CommentTool.h"
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
@@ -41,6 +42,9 @@
   }
   [self configureUserAgent];
   [self getAd];
+  
+//  [[CommentTool sharedInstance]checkIsCanComment];
+
   return YES;
 }
 
