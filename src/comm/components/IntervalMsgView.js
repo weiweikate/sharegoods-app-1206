@@ -21,10 +21,8 @@ const maxY = maxTextWidth + 15 + 50;
 class IntervalMsgModel {
     @observable msgList = [];
     @observable pageType = undefined;
-    @observable messageIndex = 0;
 
     @action setMsgData(content) {
-        console.log(content);
         const { params, pageType } = content || {};
         const { floatMsgs } = params || {};
         /*
@@ -40,7 +38,7 @@ class IntervalMsgModel {
         } else {
             this.msgList = JSON.parse(floatMsgs) || [];
         }
-        console.log(this.msgList);
+        console.log(pageType, this.msgList);
     }
 }
 
@@ -71,12 +69,14 @@ export class IntervalMsgView extends React.Component {
                 navigate(router, {
                     productCode: keyCode,
                     storeCode: keyCode,
-                    orderNo: keyCode
+                    orderNo: keyCode,
+                    code: keyCode,
+                    id: keyCode
                 });
             } else {
-                navigate('HtmlPage', {
-                    uri: keyCode
-                });
+                // navigate('HtmlPage', {
+                //     uri: keyCode
+                // });
             }
         }
     };
@@ -128,6 +128,7 @@ const styles = StyleSheet.create({
 /*跳标数据模型*/
 class IntervalMsgViewModel {
     showItems = intervalMsgModel.msgList;
+    messageIndex = 0;
     needUpdate = false;
     isAnimated = false;
     pageType = undefined;
@@ -151,10 +152,15 @@ class IntervalMsgViewModel {
 
         if (this.needUpdate) {
             this.needUpdate = false;
-            intervalMsgModel.messageIndex = 0;
+            this.messageIndex = 0;
         }
 
-        this.showItem = this.showItems[intervalMsgModel.messageIndex] || {};
+        if (this.messageIndex >= this.showItems.length) {
+            this.isAnimated = false;
+            return;
+        }
+
+        this.showItem = this.showItems[this.messageIndex] || {};
         const { content } = this.showItem;
         if (isEmpty(content)) {
             this.isAnimated = false;
@@ -178,7 +184,7 @@ class IntervalMsgViewModel {
                 this.translateX = new Animated.Value(-maxY);
                 this.opacity = new Animated.Value(1);
                 /*循环,准备下一位贵宾*/
-                intervalMsgModel.messageIndex++;
+                this.messageIndex++;
                 this.startAnimated();
             }
         );
@@ -186,7 +192,8 @@ class IntervalMsgViewModel {
 
     autorun = autorun(() => {
         /*有当前页面的新数据*/
-        if (intervalMsgModel.pageType === this.pageType) {
+        const list = intervalMsgModel.msgList;
+        if (list.length > 0 && intervalMsgModel.pageType === this.pageType) {
             this.showItems = intervalMsgModel.msgList || [];
             /*没有进行中的动画启动*/
             this.needUpdate = true;
@@ -220,6 +227,7 @@ const IntervalMsgType = {
     showReleaseNotes: 15,      //秀场发布动态
     productDetail: 19,      //商品详情
     orderDetail: 20,      //订单
+    showDetail: 22,      //秀场动态
     shopDetail: 23      //拼店店铺详情页
 
     // page: 8,      //新人专享
@@ -230,7 +238,6 @@ const IntervalMsgType = {
     // page: 16,      //奖池
     // page: 17,      //发起拼团
     // page: 18,      //发起助力砍价
-    // page: 22,      //秀场动态
 };
 
 const IntervalMsgRouter = {
@@ -248,5 +255,6 @@ const IntervalMsgRouter = {
 
     [IntervalMsgType.productDetail]: 'product/ProductDetailPage',
     [IntervalMsgType.orderDetail]: 'order/order/MyOrdersDetailPage',
-    [IntervalMsgType.shopDetail]: 'spellShop/MyShop_RecruitPage'
+    [IntervalMsgType.shopDetail]: 'spellShop/MyShop_RecruitPage',
+    [IntervalMsgType.showDetail]: 'show/ShowDetailPage'
 };

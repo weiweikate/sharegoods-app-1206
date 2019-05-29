@@ -70,7 +70,7 @@ export default class MyShopPage extends BasePage {
             tittle: '店铺详情',
 
             storeData: {},
-            storeCode: this.props.storeCode,
+            storeCode: this.props.storeCode || user.storeCode,
             isLike: false
         };
     }
@@ -142,6 +142,16 @@ export default class MyShopPage extends BasePage {
         this.timeInterval && clearInterval(this.timeInterval);
     }
 
+    requestShopMsg = () => {
+        this.MyShopDetailModel.questShopMsg(this.state.storeCode);
+    };
+
+    requestPageData = () => {
+        this._loadPageData();
+        this.requestShopMsg();
+        this.timeInterval = setInterval(this.requestShopMsg, 1000 * 30);
+    };
+
     componentDidMount() {
         this.willFocusSubscription = this.props.navigation.addListener(
             'didFocus',
@@ -149,10 +159,7 @@ export default class MyShopPage extends BasePage {
                 const { state } = payload;
                 console.log('willFocus', state);
                 if (state && state.routeName === 'MyShop_RecruitPage') {//tab出现的时候
-                    this._loadPageData();
-                    this.timeInterval = setInterval(() => {
-                        this.MyShopDetailModel.questShopMsg(this.state.storeCode);
-                    }, 1000 * 30);
+                    this.requestPageData();
                 }
             }
         );
@@ -166,10 +173,7 @@ export default class MyShopPage extends BasePage {
             }
         );
         /*上面的方法第一次_loadPageData不会执行  page已经出现了*/
-        this._loadPageData();
-        this.timeInterval = setInterval(() => {
-            this.MyShopDetailModel.questShopMsg(this.state.storeCode);
-        }, 1000 * 30);
+        this.requestPageData();
     }
 
 
