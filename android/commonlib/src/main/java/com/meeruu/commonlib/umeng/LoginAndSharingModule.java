@@ -1065,6 +1065,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 //        }
 //    }
 
+    //商品分享图片
     public static void draw(Context context, Bitmap bitmap, ShareImageBean shareImageBean, Callback success, Callback fail) {
 
         String title = shareImageBean.getTitleStr();
@@ -1072,9 +1073,9 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         String info = shareImageBean.getQRCodeStr();
         String retailPrice = shareImageBean.getRetail();
         String spellPrice = shareImageBean.getSpell();
-
-        int titleSize = 26;
-        int titleCount = (int) ((440) / titleSize);
+        int ratio = 2;
+        int titleSize = 18*ratio;
+        int titleCount = (int) ((340*ratio) / titleSize);
         boolean isTwoLine;
         if (title.length() <= titleCount) {
             isTwoLine = false;
@@ -1084,23 +1085,25 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 //        height: autoSizeWidth(650 / 2), width: autoSizeWidth(250)
 
         //680 708
-        Bitmap result = isTwoLine ? Bitmap.createBitmap(500, (int) (708), Bitmap.Config.ARGB_8888) : Bitmap.createBitmap(500, (int) (680), Bitmap.Config.ARGB_8888);
-
+     //   Bitmap result = isTwoLine ? Bitmap.createBitmap(500, (int) (708), Bitmap.Config.ARGB_8888) : Bitmap.createBitmap(500, (int) (680), Bitmap.Config.ARGB_8888);
+        Bitmap result = Bitmap.createBitmap(375*ratio,667*ratio,Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(result);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+
+        paint.setColor(Color.WHITE);
+        canvas.drawRect(0, 0, 375*ratio, 667*ratio, paint);
+        Bitmap logo = BitmapFactory.decodeResource(context.getResources(), R.drawable.sharelogo);
+        Rect mSrcRect = new Rect(0, 0, logo.getWidth(), logo.getHeight());
+        Rect mDestRect = new Rect(104 * ratio, 46 * ratio, 141 * ratio, 83 * ratio);
+        canvas.drawBitmap(bitmap, mSrcRect, mDestRect, paint);
+
 
         bitmap = Bitmap.createScaledBitmap(bitmap, 500, 500, true);
         canvas.drawBitmap(bitmap, 0, 0, paint);
 
         //在图片下边画一个白色矩形块用来放文字，防止文字是透明背景，在有些情况下保存到本地后看不出来
 
-        paint.setColor(Color.WHITE);
-        if (isTwoLine) {
-            canvas.drawRect(0, 500, 500, 708, paint);
-
-        } else {
-            canvas.drawRect(0, 500, 500, 680, paint);
-        }
 
         //绘制文字
         paint.setColor(Color.parseColor("#666666"));
