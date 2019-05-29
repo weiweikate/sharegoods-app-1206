@@ -277,7 +277,7 @@ export default class ProductDetailPage extends BasePage {
     }
 
     _renderContent = () => {
-        const { name, imgUrl, prodCode, originalPrice, groupPrice, v0Price, promotionPrice, shareMoney, sectionDataList, isSkillIn } = this.productDetailModel;
+        const { imgUrl, prodCode, originalPrice, groupPrice, v0Price, promotionPrice, shareMoney, sectionDataList, isSkillIn, nameShareText } = this.productDetailModel;
         return <View style={styles.container}>
             <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
             <ProductDetailNavView productDetailModel={this.productDetailModel}
@@ -303,13 +303,13 @@ export default class ProductDetailPage extends BasePage {
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             trackParmas={{
                                 spuCode: prodCode,
-                                spuName: name
+                                spuName: nameShareText
                             }}
                             trackEvent={trackEvent.Share}
                             type={'Image'}
                             imageJson={{
                                 imageUrlStr: imgUrl,
-                                titleStr: `${name}`,
+                                titleStr: `${nameShareText}`,
                                 priceType: isSkillIn ? 'mr_skill' : '',
                                 priceStr: `￥${originalPrice}`,
                                 retailPrice: `￥${isSkillIn ? promotionPrice : v0Price}`,
@@ -318,13 +318,13 @@ export default class ProductDetailPage extends BasePage {
                                 QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`
                             }}
                             webJson={{
-                                title: isSkillIn ? '超值秒杀!' : `${name}`,
+                                title: isSkillIn ? '超值秒杀!' : `${nameShareText}`,
                                 dec: isSkillIn ? '[秀购]发现一个很给力的活动,快去看看!' : '商品详情',
                                 linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`,
                                 thumImage: imgUrl
                             }}
                             miniProgramJson={{
-                                title: isSkillIn ? '超值秒杀!' : `${name}`,
+                                title: isSkillIn ? '超值秒杀!' : `${nameShareText}`,
                                 dec: isSkillIn ? '[秀购]发现一个很给力的活动,快去看看!' : '商品详情',
                                 thumImage: 'logo.png',
                                 hdImageURL: imgUrl,
