@@ -33,6 +33,8 @@ const productTrack = {
     SpikeTimeClick:'FlashSaleTimeRangeClick',// 限时购tab
     SpikeProdClick:'FlashSaleProductClick',// 限时购商品
     homeTopicProdClick:'SpecialTopicProductClick',// 专题商品
+    NewUserGuideShow: 'NewUserGuideShow',//显示新手礼包
+    NewUserGuideBtnClick: 'NewUserGuideBtnClick',//新手礼包按钮点击
 }
 /** 订单相关的埋点事件名称*/
 const inviteEvent = {

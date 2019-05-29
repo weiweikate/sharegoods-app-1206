@@ -9,7 +9,7 @@ import { action, observable, flow } from 'mobx';
 import DeviceInfo from 'react-native-device-info/deviceinfo';
 import MineApi from '../../mine/api/MineApi';
 import HomeAPI from '../api/HomeAPI';
-import { homeType } from '../HomeTypes';
+import { homeLinkType, homeType } from '../HomeTypes';
 import { AsyncStorage } from 'react-native';
 import MessageApi from '../../message/api/MessageApi';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
@@ -138,6 +138,7 @@ class HomeModalManager {
         this.isShowGift = false;
         this.needShowGift  = false;
         this.giftData = null;
+        track(trackEvent.NewUserGuideBtnClick, {})
         //关闭新手的弹框的，如果可以有抽奖结果，就显示
         if (this.needShowPrize === true){
             this.isShowPrize = true;
@@ -235,7 +236,7 @@ class HomeModalManager {
         HomeAPI.getWinningInfo({}).then(data => {
             if (data.data){
                 this.needShowPrize = true;
-                this.prizeData = data;
+                this.prizeData = data.data;
             }
             this.actionFinish();
         }).catch(() => {
@@ -249,9 +250,9 @@ class HomeModalManager {
             return;
         }
         HomeAPI.getWinningInfo({}).then(data => {
-            if (data.data && data.data.popUp === true){
+            if (data.data){
                 this.needShowPrize = true;
-                this.prizeData = data;
+                this.prizeData = data.data;
                 if (!this.isShowUpdate && !this.isShowNotice && !this.isShowAd && !this.isShowGift){
                     this.isShowPrize = true;
                 }
@@ -267,8 +268,9 @@ class HomeModalManager {
     getGift() {
         HomeAPI.getPopupBox({popupBoxType: 1}).then(data => {
             if (data.data && data.data.length > 0){
+                let item = data.data[0];
                 this.needShowGift = true;
-                this.giftData = data;
+                this.giftData = {image: item.imgUrl, linkTypeCode: item.linkTypeCode, linkType: homeLinkType.link};
             }
             if (!this.isShowUpdate && !this.isShowNotice && !this.isShowAd && !this.isShowPrize){
                 this.isShowGift = true;
