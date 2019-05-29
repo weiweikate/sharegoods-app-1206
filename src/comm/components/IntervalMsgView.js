@@ -109,11 +109,11 @@ const styles = StyleSheet.create({
     },
     btn: {
         flexDirection: 'row', alignItems: 'center',
-        height: px2dp(20), borderRadius: px2dp(10), backgroundColor: 'rgba(0,0,0,0.5)'
+        height: px2dp(24), borderRadius: px2dp(12), backgroundColor: 'rgba(0,0,0,0.6)'
     },
     image: {
         marginRight: px2dp(6), overflow: 'hidden',
-        width: px2dp(20), height: px2dp(20), borderRadius: px2dp(10)
+        width: px2dp(24), height: px2dp(24), borderRadius: px2dp(12)
     },
     text: {
         marginRight: 3, maxWidth: maxTextWidth,
