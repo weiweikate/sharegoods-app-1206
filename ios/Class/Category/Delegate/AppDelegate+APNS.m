@@ -92,7 +92,7 @@
   appKey = KDEBUGJSPushKey;
 #else
   isProduction = YES;
-  appKey = KJSPushKey;
+  appKey = KDEBUGJSPushKey;
 #endif
   [JPUSHService setupWithOption:launchOptions
                          appKey:appKey
