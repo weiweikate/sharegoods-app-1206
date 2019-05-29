@@ -13,7 +13,7 @@ import { navigate, backToHome } from '../../navigation/RouterMap';
 import { track, trackEvent } from '../../utils/SensorsTrack';
 
 const { white_go } = res.button;
-const { headerHeight, width } = ScreenUtils;
+const { headerHeight, width, px2dp } = ScreenUtils;
 const maxTextWidth = width - (15 - 50) * 2;
 const { isEmpty } = StringUtils;
 const maxY = maxTextWidth + 15 + 50;
