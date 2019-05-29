@@ -34,11 +34,15 @@ import user from '../../../model/user';
 import LinearGradient from 'react-native-linear-gradient';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
+import MyShopDetailModel from '../myShop/MyShopDetailModel';
+import { observer } from 'mobx-react';
+import { ShopBottomBannerView } from '../myShop/components/ShopDetailItemView';
 
 const NavLeft = resCommon.button.white_back;
 const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
 const icons9_shop = res.shopRecruit.icons9_shop;
 
+@observer
 export default class ShopRecruitPage extends BasePage {
 
     $navigationBarOptions = {
@@ -86,6 +90,8 @@ export default class ShopRecruitPage extends BasePage {
         };
     }
 
+    MyShopDetailModel = new MyShopDetailModel();
+
     $getPageStateOptions = () => {
         return {
             loadingState: this.state.loadingState,
@@ -125,6 +131,8 @@ export default class ShopRecruitPage extends BasePage {
     };
 
     _loadPageData = () => {
+        this.MyShopDetailModel.requestShopBanner();
+
         SpellShopApi.getById({ storeCode: this.state.storeCode }).then((data) => {
             let dataTemp = data.data || {};
             const { userCount, storeNumber, maxUser } = dataTemp;
@@ -304,7 +312,7 @@ export default class ShopRecruitPage extends BasePage {
                 <View style={{
                     flexDirection: 'row',
                     justifyContent: 'center',
-                    marginTop: ScreenUtils.autoSizeHeight(76),
+                    marginTop: 20,
                     marginBottom: 30
                 }}>
                     <TouchableOpacity onPress={this._closeStore}
@@ -388,6 +396,7 @@ export default class ShopRecruitPage extends BasePage {
                                     colors={[DesignRule.mainColor]}/>}>
                     {this.renderHeader()}
                     {this.renderMembers()}
+                    <ShopBottomBannerView MyShopDetailModel={this.MyShopDetailModel}/>
                     {this.renderOpenShopSetting()}
                 </ScrollView>
                 <ActionSheetView ref={ref => {
