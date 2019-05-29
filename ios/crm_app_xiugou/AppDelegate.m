@@ -43,7 +43,7 @@
   [self configureUserAgent];
   [self getAd];
   
-  [[CommentTool sharedInstance]checkIsCanComment];
+//  [[CommentTool sharedInstance]checkIsCanComment];
 
   return YES;
 }

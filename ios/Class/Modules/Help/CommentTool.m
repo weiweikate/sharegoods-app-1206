@@ -32,8 +32,7 @@ SINGLETON_FOR_CLASS(CommentTool)
     }
   }else{
     //第一次没有
-    [[NSUserDefaults standardUserDefaults]setObject:[self getNowTimeStamp] forKey:LASTCOMMENT_TIME_STAMP];
-    [self saveNewTimeInterval:0];
+    [self showAlterWith:0];
   }
 }
 
@@ -42,9 +41,9 @@ SINGLETON_FOR_CLASS(CommentTool)
  */
 -(void)showAlterWith:(NSInteger)timeInterval{
   UIAlertController *alterController = [UIAlertController alertControllerWithTitle:@"温馨提示"
-                                                                           message:@"亲爱的秀宝宝您已经用了一段时间小秀了，可否来个好评~"
+                                                                           message:@"为秀购点个赞，鼓励鼓励我们的小伙伴"
                                                                     preferredStyle:UIAlertControllerStyleAlert];
-  UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"没时间"
+  UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"算了"
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * _Nonnull action) {
                                                          [self saveNewTimeInterval:timeInterval];
@@ -53,6 +52,8 @@ SINGLETON_FOR_CLASS(CommentTool)
   UIAlertAction *actionSubmit = [UIAlertAction actionWithTitle:@"好嘞"
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * _Nonnull action) {
+                                                         
+                                                         [self saveNewTimeInterval:32];
                                                          [self goToAppStore];
                                                        }];
   
@@ -66,6 +67,7 @@ SINGLETON_FOR_CLASS(CommentTool)
   [[UIApplication sharedApplication] openURL:[NSURL URLWithString:itunesurl]];
 }
 -(void)saveNewTimeInterval:(NSInteger)timeInterval{
+  [[NSUserDefaults standardUserDefaults]setObject:[self getNowTimeStamp] forKey:LASTCOMMENT_TIME_STAMP];
   if (timeInterval && timeInterval <= 0) {
     [[NSUserDefaults standardUserDefaults]setObject:@"2" forKey:COMMENT_INTERVAL];
     [[NSUserDefaults standardUserDefaults]synchronize];
