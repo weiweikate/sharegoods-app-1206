@@ -252,9 +252,9 @@ class HomeModalManager {
             if (data.data && data.data.popUp === true){
                 this.needShowPrize = true;
                 this.prizeData = data;
-            }
-            if (!this.isShowUpdate && !this.isShowNotice && !this.isShowAd && !this.isShowGift){
-                this.isShowPrize = true;
+                if (!this.isShowUpdate && !this.isShowNotice && !this.isShowAd && !this.isShowGift){
+                    this.isShowPrize = true;
+                }
             }
 
         }).catch(() => {

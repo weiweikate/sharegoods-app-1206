@@ -79,9 +79,7 @@ export default class PraiseModel extends React.Component {
                 HomeModalManager.closePrize()
             }}
             visible={HomeModalManager.isShowPrize && HomeModalManager.isHome}>
-            <View style={styles.modalStyle}>
                 {this.renderContent()}
-            </View>
         </Modal>
     );
   }
