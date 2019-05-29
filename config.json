@@ -44,7 +44,7 @@
         "common-dev": {
             "name": "common-dev",
             "host": "http://172.16.10.12:1080/gateway",
-            "h5": "https://testh51.sharegoodsmall.com",
+            "h5": "https://testh5.sharegoodsmall.com",
             "oss": "https://devcdn.sharegoodsmall.com",
             "wxAppletKey": "gh_aa91c3ea0f6c",
             "gongmao": "http://testsop.sharegoodsmall.com/gateway/gongmall/contract/reback"
@@ -204,7 +204,7 @@
             "name": "优惠券测试",
             "host": "http://172.16.10.12:1080/gateway",
             "oss": "https://devcdn.sharegoodsmall.com",
-            "h5": "http://testh51.sharegoodsmall.com",
+            "h5": "http://testh5.sharegoodsmall.com",
             "wxAppletKey": "gh_aa91c3ea0f6c",
             "gongmao": "http://testsop.sharegoodsmall.com/gateway/gongmall/contract/reback"
         },

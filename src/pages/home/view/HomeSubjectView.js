@@ -2,31 +2,31 @@
  * 超值热卖
  */
 
-import React, { Component } from 'react';
-import { View, ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Image } from 'react-native';
-import ScreenUtil from '../../../utils/ScreenUtils';
-import { track, trackEvent } from '../../../utils/SensorsTrack';
+import React, { Component } from "react";
+import { View, ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Image } from "react-native";
+import ScreenUtil from "../../../utils/ScreenUtils";
+import { track, trackEvent } from "../../../utils/SensorsTrack";
 
 const { px2dp, onePixel } = ScreenUtil;
-import { observer } from 'mobx-react';
-import { homeModule } from '../model/Modules';
-import { homeLinkType, homeRoute, homePoint } from '../HomeTypes';
-import { subjectModule } from '../model/HomeSubjectModel';
-import DesignRule from '../../../constants/DesignRule';
-import { getShowPrice, getTopicJumpPageParam } from '../../topic/model/TopicMudelTool';
-import ImageLoad from '@mr/image-placeholder';
-import EmptyUtils from '../../../utils/EmptyUtils';
-import { MRText as Text } from '../../../components/ui/index';
-import HomeTitleView from './HomeTitleView';
-import res from '../res/index';
+import { observer } from "mobx-react";
+import { homeModule } from "../model/Modules";
+import { homeLinkType, homeRoute, homePoint } from "../HomeTypes";
+import { subjectModule } from "../model/HomeSubjectModel";
+import DesignRule from "../../../constants/DesignRule";
+import { getShowPrice, getTopicJumpPageParam } from "../../topic/model/TopicMudelTool";
+import ImageLoad from "@mr/image-placeholder";
+import EmptyUtils from "../../../utils/EmptyUtils";
+import { MRText as Text } from "../../../components/ui/index";
+import HomeTitleView from "./HomeTitleView";
+import res from "../res/index";
 
 const MoneyItems = ({ money }) => {
     if (EmptyUtils.isEmpty(money)) {
         return null;
     }
-    let unitStr = '￥';
-    let moneyStr = '';
-    let index = money.indexOf('￥');
+    let unitStr = "￥";
+    let moneyStr = "";
+    let index = money.indexOf("￥");
     if (index !== -1) {
         moneyStr = money.substring(index + 1, money.length);
     }
@@ -38,7 +38,7 @@ const GoodItems = ({ img, title, money, press }) => {
         press && press();
     }}>
         <View style={styles.goodsView}>
-            <ImageLoad style={styles.goodImg} source={{ uri: img ? encodeURI(img) : '' }}/>
+            <ImageLoad style={styles.goodImg} source={{ uri: img ? encodeURI(img) : "" }}/>
             <Text style={styles.goodsTitle} numberOfLines={2} allowFontScaling={false}>{title}</Text>
             <View style={{ flex: 1 }}/>
             <MoneyItems money={money}/>
@@ -67,7 +67,7 @@ const ActivityItem = ({ data, press, goodsPress }) => {
                 key={index}
                 title={value.productName}
                 money={price}
-                img={value.specImg ? value.specImg : ''}
+                img={value.specImg ? value.specImg : ""}
                 press={() => {
                     goodsPress && goodsPress(value);
                 }}
@@ -80,7 +80,7 @@ const ActivityItem = ({ data, press, goodsPress }) => {
         }}>
             <View style={styles.bannerView}>
                 <ImageLoad style={styles.banner}
-                           source={{ uri: image ? encodeURI(image) : '' }}/>
+                           source={{ uri: image ? encodeURI(image) : "" }}/>
             </View>
         </TouchableWithoutFeedback>
         {
@@ -114,7 +114,7 @@ export default class HomeSubjectView extends Component {
         navigate(router, params);
     }
 
-    _goodAction(good, item) {
+    _goodAction(good, item, index) {
         const { navigate } = this.props;
         if (item.linkType === homeLinkType.exp) {
             if (good.endTime >= good.currTime) {
@@ -128,6 +128,13 @@ export default class HomeSubjectView extends Component {
             const pageObj = getTopicJumpPageParam(good);
             navigate(pageObj.pageRoute, { ...pageObj.params });
         }
+        // 首页超值热卖商品点击
+        track(trackEvent.homeTopicProdClick, {
+            "specialTopicId": item.linkTypeCode,
+            "productIndex": index,
+            "spuCode": good.prodCode,
+            "spuName": good.productName
+        });
     }
 
     render() {
@@ -142,14 +149,14 @@ export default class HomeSubjectView extends Component {
         subjectList.map((item, index) => {
             items.push(<ActivityItem data={item} key={index} press={() => this._subjectActions(item)}
                                      goodsPress={(good) => {
-                                         this._goodAction(good, item);
+                                         this._goodAction(good, item, index);
                                      }}/>);
         });
         if (items.length === 0) {
             return null;
         }
         return <View style={styles.container}>
-            <HomeTitleView title={'超值热卖'}/>
+            <HomeTitleView title={"超值热卖"}/>
             {items}
         </View>;
     }
@@ -160,7 +167,7 @@ const bannerHeight = bannerWidth * (240 / 650);
 
 let styles = StyleSheet.create({
     container: {
-        backgroundColor: '#fff',
+        backgroundColor: "#fff",
         marginTop: px2dp(15),
         width: ScreenUtil.width - px2dp(30),
         marginLeft: px2dp(15),
@@ -171,7 +178,7 @@ let styles = StyleSheet.create({
         marginLeft: px2dp(10),
         marginRight: px2dp(10),
         borderRadius: px2dp(5),
-        overflow: 'hidden'
+        overflow: "hidden"
     },
     banner: {
         width: bannerWidth,
@@ -200,7 +207,7 @@ let styles = StyleSheet.create({
     },
     money: {
         fontSize: px2dp(16),
-        fontWeight: '600'
+        fontWeight: "600"
     },
     unit: {
         marginHorizontal: px2dp(2.5),
@@ -211,8 +218,8 @@ let styles = StyleSheet.create({
     moreView: {
         width: px2dp(100),
         height: px2dp(170),
-        alignItems: 'center',
-        justifyContent: 'center',
+        alignItems: "center",
+        justifyContent: "center",
         marginLeft: px2dp(5),
         backgroundColor: DesignRule.bgColor,
         borderRadius: (5),
@@ -229,7 +236,7 @@ let styles = StyleSheet.create({
     line: {
         height: onePixel,
         width: px2dp(43),
-        backgroundColor: '#e3e3e3',
+        backgroundColor: "#e3e3e3",
         margin: px2dp(2.5)
     }
 });

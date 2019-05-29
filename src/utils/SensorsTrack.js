@@ -30,7 +30,9 @@ const productTrack = {
     ProductDetail:'ProductDetail',//浏览商品详情页,
     AddToShoppingcart:'AddToShoppingcart',//加入购物车
     Share:'Share',//分享商品
-    CategoryClick:'CategoryClick',//一级类目
+    SpikeTimeClick:'FlashSaleTimeRangeClick',// 限时购tab
+    SpikeProdClick:'FlashSaleProductClick',// 限时购商品
+    homeTopicProdClick:'SpecialTopicProductClick',// 专题商品
 }
 /** 订单相关的埋点事件名称*/
 const inviteEvent = {
@@ -59,7 +61,7 @@ const trackEvent = {
     signUp: 'SignUp',//注册
     search: 'Search',//商品搜索
     submitOrderDetail: 'SubmitOrderDetail',//提交订单详情
-    payOrder: 'PayOrder',//支付订单
+    // payOrder: 'PayOrder',//支付订单
     payOrderDetail: 'PayOrderDetail',//支付订单详情
     cancelPayOrder: 'CancelPayOrder',//取消订单
     applyReturn: 'ApplyReturn',//申请退货
@@ -96,6 +98,9 @@ const trackEvent = {
 };
 
 function track(event_name,parmas) {
+    if (!event_name || event_name.length === 0){
+        return;
+    }
     //不为线上环境就，不上传埋点数据
     if (apiEnvironment.envType !== 'online') {
         return;

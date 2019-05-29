@@ -197,13 +197,13 @@ export default class TaskVIew extends React.Component {
     renderProgressView() {
         return(
             <View style={{height: autoSizeWidth(60), alignItems: 'center'}}>
-                <View style={{height: autoSizeWidth(40), justifyContent: 'center'}}>
+                <View style={{height: autoSizeWidth(40), justifyContent: 'center',marginTop: autoSizeWidth(5)}}>
                     <View style={{width: autoSizeWidth(290),
                         backgroundColor: '#f5f5f5',
                         height: autoSizeWidth(8),
                         borderWidth: 1,
                         borderColor: '#eeeeee'}}>
-                        <View style={{height: autoSizeWidth(8),
+                        <View style={{height: autoSizeWidth(6),
                             width: autoSizeWidth(290)/100*this.model.progress,
                             borderRadius: autoSizeWidth(4),
                             overflow: 'hidden'}}>
@@ -215,7 +215,7 @@ export default class TaskVIew extends React.Component {
                                 alignItems: 'center',
                                 justifyContent: 'space-between',
                                 left: -10,
-                                right: -10
+                                right: -10,
                             }]}>
                             {
                                 this.model.boxs.map((item)=> {
@@ -249,8 +249,10 @@ export default class TaskVIew extends React.Component {
                 break
         }
         return(
-            <View style={{width: autoSizeWidth(32), height: autoSizeWidth(80), justifyContent: 'center'}}>
-                <UIImage source={icon} style={{width: autoSizeWidth(31), height: autoSizeWidth(31)}}/>
+            <View style={{width: autoSizeWidth(32), height: autoSizeWidth(70), justifyContent: 'center'}}>
+                <UIImage source={icon} style={{width: autoSizeWidth(31),
+                    height: autoSizeWidth(31),
+                    marginBottom: data.status === BoxStatusOpen? autoSizeWidth(9): autoSizeWidth(5)}}/>
                 <MRText style={{fontSize: autoSizeWidth(12),
                     color: data.status === BoxStatusOpen? DesignRule.mainColor:'#666666',
                     bottom: 0,
