@@ -50,9 +50,9 @@
             "gongmao": "http://testsop.sharegoodsmall.com/gateway/gongmall/contract/reback"
         },
         "dev-gateway": {
-            "name": "dev-gateway",
+            "name": "devH5-gateway",
             "host": "http://172.16.10.13:1080/gateway",
-            "h5": "https://testh51.sharegoodsmall.com",
+            "h5": "http://devh5-gateway.sharegoodsmall.com",
             "oss": "https://devcdn.sharegoodsmall.com",
             "wxAppletKey": "gh_aa91c3ea0f6c",
             "gongmao": "http://testsop.sharegoodsmall.com/gateway/gongmall/contract/reback"
@@ -162,7 +162,7 @@
         },
         "dengxuekai": {
             "name": "邓学凯",
-            "host": "http://172.18.7.17:8903/gateway"
+            "host": "http://172.16.10.13:1080/gateway"
         },
         "申xiangyu": {
             "name": "申xiangyu",
