@@ -90,7 +90,7 @@
   return  ceilf(size.height);
 }
 
--(CGFloat)getWithStringSizeWidthfontSize:(CGFloat)fontSize viewWidth:(CGFloat)width{
+-(CGFloat)getWidthStringfontSize:(CGFloat)fontSize viewWidth:(CGFloat)width{
   
   // 设置文字属性 要和label的一致
   NSDictionary *attrs = @{NSFontAttributeName : [UIFont systemFontOfSize:fontSize]};

@@ -240,6 +240,13 @@
      ];
 
 
+  //箭头jiantou
+  UIImage * jiantouImage = [UIImage imageNamed:@"jiantou.png"];
+  [nodes addObject:@{@"value": jiantouImage,
+                     @"locationType": @"rect",
+                     @"location": [NSValue valueWithCGRect:CGRectMake(176*i, 609*i, 20*i, 20*i)]}
+   ];
+  
   //loago
   NSMutableAttributedString *logpStrAttrStr = [[NSMutableAttributedString alloc]initWithString:@"扫一扫，免费领钻石"
                                                                                        attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:13*i], NSForegroundColorAttributeName: [UIColor colorWithHexString:@"FFFFFF"]}];
