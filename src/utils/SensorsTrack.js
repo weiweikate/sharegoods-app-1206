@@ -63,7 +63,7 @@ const trackEvent = {
     submitOrderDetail: 'SubmitOrderDetail',//提交订单详情
     // payOrder: 'PayOrder',//支付订单
     payOrderDetail: 'PayOrderDetail',//支付订单详情
-    cancelPayOrder: 'CancelPayOrder',//取消订单
+    // cancelPayOrder: 'CancelPayOrder',//取消订单
     applyReturn: 'ApplyReturn',//申请退货
     receiveDiscount: 'ReceiveCoupons',//领取优惠券
     receiveOneyuan: 'ReceiveOneyuan',//领一元券
