@@ -23,6 +23,10 @@ const spellShopTrack = {
     SeePingdian:'SeePingdian',//查看拼店
 }
 
+const commonEvent = {
+    SkipMarkClick:'SkipMarkClick',//跳标埋点
+}
+
 const productTrack = {
     CategorySearchBannerClick:'CategorySearchBannerClick',//类目搜索banner广告位
     ProductListClick:'ProductListClick',//搜索页-商品列表页点击
@@ -97,6 +101,7 @@ const trackEvent = {
     ...inviteEvent,
     ...mineEvent,
     ...afterEvent,
+    ...commonEvent
 };
 
 function track(event_name,parmas) {

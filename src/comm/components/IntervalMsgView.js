@@ -10,6 +10,7 @@ import res from '../res';
 import DesignRule from '../../constants/DesignRule';
 import StringUtils from '../../utils/StringUtils';
 import { navigate, backToHome } from '../../navigation/RouterMap';
+import { track, trackEvent } from '../../utils/SensorsTrack';
 
 const { white_go } = res.button;
 const { headerHeight, px2dp } = ScreenUtils;
@@ -56,7 +57,7 @@ export class IntervalMsgView extends React.Component {
     }
 
     _onPress = (showItem) => {
-        const { needForward, forwardType, keyCode } = showItem;
+        const { needForward, forwardType, keyCode, content } = showItem;
         if (!needForward || !forwardType) {
             return;
         }
@@ -79,6 +80,13 @@ export class IntervalMsgView extends React.Component {
                 // });
             }
         }
+
+        track(trackEvent.SkipMarkClick, {
+            belongsPage: this.IntervalMsgModel.pageType,
+            pageAttributeCode: keyCode,
+            skipMarkType: forwardType,
+            skipMarkContent: content
+        });
     };
 
     render() {
