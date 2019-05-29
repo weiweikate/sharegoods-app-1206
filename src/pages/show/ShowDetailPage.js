@@ -548,6 +548,7 @@ export default class ShowDetailPage extends BasePage {
                             trackEvent={'ArticleShare'}
                             trackParmas={{ articeCode: detail.code, articleTitle: detail.title }}
                             imageJson={{
+                                imageType:'show',
                                 imageUrlStr: detail.resource[0].url,
                                 titleStr: detail.content,
                                 QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
@@ -558,14 +559,6 @@ export default class ShowDetailPage extends BasePage {
                                 title: detail.showType === 1 ? detail.content : detail.title,//分享标题(当为图文分享时候使用)
                                 linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
                                 thumImage: ''//(分享图标小图(https链接)图文分享使用)
-                            }}
-                            miniProgramJson={{
-                                title: detail.title,
-                                dec: '分享小程序子标题',
-                                thumImage: 'logo.png',
-                                hdImageURL: detail.resource[0].url,
-                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
-                                miniProgramPath: `/pages/discover/discover-detail/discover-detail?articleId=${detail.id}&inviteId=${user.code || ''}`
                             }}
             />
             {detail.status !== 1 ? this._shieldRender() : null}

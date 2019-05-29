@@ -190,20 +190,6 @@ RCT_EXPORT_METHOD(creatShareImage:(id) jsonParam
  onSuccess(NSSting) 成功的回调
  onError(NSSting)   失败的回调
  */
-RCT_EXPORT_METHOD(creatShowShareImage:(id) jsonParam
-                  onSuccess:(RCTResponseSenderBlock) onSuccess
-                  onError:(RCTResponseSenderBlock) onError){
-  dispatch_async(dispatch_get_main_queue(), ^{
-    ShowShareImgMakerModel * model = [ShowShareImgMakerModel modelWithJSON:jsonParam];
-    [[ShowShareImgMaker sharedInstance] createShareImageWithShareImageMakerModel:model completion:^(NSString *paths, NSString *errorStr) {
-      if (errorStr) {
-        onError(@[errorStr]);
-      }else{
-        onSuccess(@[paths]);
-      }
-    }];
-  });
-}
 
 /**
 @QRCodeStr  二维码字符串

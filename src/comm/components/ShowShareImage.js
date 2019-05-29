@@ -8,8 +8,9 @@ import {
     Image,
     StyleSheet,
     Text,
-    View,} from 'react-native';
-import res from '../../pages/show/res';
+    View,
+    TouchableWithoutFeedback} from 'react-native';
+import res from '../../comm/res';
 import PreLoadImage from '../../components/ui/preLoadImage/PreLoadImage';
 import ScreenUtils from '../../utils/ScreenUtils';
 import {MRText} from '../../components/ui';
@@ -22,18 +23,21 @@ export default class ShowShareImage extends Component {
     }
 
     render() {
-        const {data} = this.props;
+        const {data, modal} = this.props;
         if(data){
             let name = data.userName;
             let content = data.titleStr;
             let headerImg = data.headerImage;
             let goodsImg = data.imageUrlStr;
             console.log(JSON.stringify(data))
+            let scale = ScreenUtils.height/ScreenUtils.width
+            this.imageHeight = autoSizeWidth((200)*scale);
+            this.imageWidth = autoSizeWidth(ScreenUtils.width-60);
             return (
                 <View style={styles.container}>
-                    <Image style={styles.goodsImg}
+                    <Image style={[styles.goodsImg,{width:autoSizeWidth(this.imageWidth-20),height:autoSizeWidth(this.imageHeight)}]}
                            source={{uri:goodsImg}}/>
-                    <View style={{flexDirection:'row',width:autoSizeWidth(230),height:autoSizeWidth(30),alignItems:'center'}}>
+                    <View style={{flexDirection:'row',width:autoSizeWidth(this.imageWidth-20),height:autoSizeWidth(30),alignItems:'center'}}>
                         <PreLoadImage
                             imageUri={headerImg}
                             style={{
@@ -49,7 +53,7 @@ export default class ShowShareImage extends Component {
                             (name.length > 13 ? name.substr(0, 13) + '...' : name) : ''
                         }</Text>
                     </View>
-                    <View style={{width: autoSizeWidth(230)}}>
+                    <View style={{width: autoSizeWidth(this.imageWidth-20)}}>
                         {ScreenUtils.isIOS ?
                             <Text style={{fontSize: 13, color: '#333333'}}
                                   numberOfLines={2}>
@@ -61,6 +65,10 @@ export default class ShowShareImage extends Component {
                             </MRText>
                         }
                     </View>
+                    <TouchableWithoutFeedback onPress={()=>{modal&&modal.close()}}>
+                    <Image style={styles.closeImgStyle}
+                           source={res.share.close_black}/>
+                    </TouchableWithoutFeedback>
                 </View>
             );
         }
@@ -73,10 +81,11 @@ export default class ShowShareImage extends Component {
 const styles = StyleSheet.create({
     container: {
         backgroundColor:'white',
-        // justifyContent: "center",
+        justifyContent: "center",
         alignItems: 'center',
-        width: autoSizeWidth(250),
-        height: autoSizeWidth(350),
+        // width: autoSizeWidth(250),
+        // height: autoSizeWidth(350),
+        flex:1
     },
     absolute: {
         position: 'absolute',
@@ -91,12 +100,15 @@ const styles = StyleSheet.create({
     },
     goodsImg:{
         marginTop:10,
-        width: autoSizeWidth(230),
-        height: autoSizeWidth(258),
         borderRadius:5,
         overflow: 'hidden',
     },
-    headerImg:{
+    closeImgStyle:{
+        position: 'absolute',
+        top: 10,
+        right:10,
+        width: autoSizeWidth(18),
+        height: autoSizeWidth(18),
 
     },
     nameText:{

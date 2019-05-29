@@ -26,6 +26,8 @@ const api = {
     getUserPopupBoxByType:['/popup/getPopupBoxByType',{method:'get'}],
 
     getUserCouponAmount:['/user/coupon/getUserCouponAmount',{method:'get'}],
+    //支付成功后判断是否可以分享
+    judgeShare: ['user/share/judgeShare'],
 };
 import ApiUtils from '../../api/network/ApiUtils';
 

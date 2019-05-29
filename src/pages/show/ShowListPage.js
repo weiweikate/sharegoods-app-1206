@@ -351,24 +351,17 @@ export default class ShowListPage extends BasePage {
                                 trackEvent={'ArticleShare'}
                                 trackParmas={{ articeCode: detail.code, articleTitle: detail.title }}
                                 imageJson={{
+                                    imageType:'show',
                                     imageUrlStr: detail.resource[0]?detail.resource[0].url:null,
                                     titleStr: detail.showType === 1 ? detail.content : detail.title,
                                     QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
-                                    headerImage: user.headImg,
+                                    headerImage: (detail.userInfoVO && detail.userInfoVO.userImg) ? detail.userInfoVO.userImg : null,
                                     userName: (detail.userInfoVO && detail.userInfoVO.userName)? detail.userInfoVO.userName: ''
                                 }}
                                 webJson={{
                                     title:detail.showType === 1 ? detail.content : detail.title,//分享标题(当为图文分享时候使用)
                                     linkUrl:`${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
                                     thumImage:''//(分享图标小图(https链接)图文分享使用)
-                                }}
-                                miniProgramJson={{
-                                    title: detail.title,
-                                    dec: '分享小程序子标题',
-                                    thumImage: 'logo.png',
-                                    hdImageURL: detail.resource[0]?detail.resource[0].url : null,
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
-                                    miniProgramPath: `/pages/discover/discover-detail/discover-detail?articleId=${detail.id}&inviteId=${user.code || ''}`
                                 }}
                 /> :null}
 

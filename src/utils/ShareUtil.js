@@ -30,9 +30,14 @@ const onShare = (data, api, trackParmas,trackEvent, callback = () => {}, luckyDr
     }
     console.log(data)
     if(params.linkUrl){
-        let  addData = {pageSource:params.platformType?params.platformType+1:0};
-        console.log(queryString(params.linkUrl,addData));
+        let  addData = {pageSource: params.platformType >= 0 ? params.platformType + 1 : 0};
+        params.linkUrl = queryString(params.linkUrl,addData);
     }
+
+    if(params.platformType === 1 || params.platformType === 4){
+        params.title = params.dec.length > 0 ? params.title + ',' + params.dec : params.title + '!';
+    }
+
     if (trackEvent) {
         let p = trackParmas || {};
         let shareType = [TrackShareType.wx, TrackShareType.wxTimeline, TrackShareType.qq, TrackShareType.qqSpace, TrackShareType.weibo][data.platformType];
@@ -85,7 +90,7 @@ const queryString = (url, params) => {
             url += '?' + paramsArray.join('&');
         } else {
             let arr = url.split('?');
-            if(arr.length>1&&arr[1].length>0){
+            if(arr.length > 1 && arr[1].length > 0){
                 url += '&' + paramsArray.join('&');
             }else {
                 url += paramsArray.join('&');

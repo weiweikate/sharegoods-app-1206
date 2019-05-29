@@ -466,7 +466,7 @@ export default class ShowRichTextDetailPage extends BasePage {
             + 'table, td, th {border:1px solid #ddd;}'
             + 'blockquote { display: block;' +
             '    background: #f9f9f9;' +
-            '    border-left: 10px solid #ccc;' +
+            '    border-left: 10px;' +
             '    margin: 10px;' +
             '    padding: 0px;' +
             '    position: relative;' +
@@ -575,6 +575,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                             trackEvent={'ArticleShare'}
                             trackParmas={{ articeCode: detail.code, articleTitle: detail.title }}
                             imageJson={{
+                                imageType:'show',
                                 imageUrlStr: detail.resource[0].url,
                                 titleStr: detail.title,
                                 QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
@@ -585,14 +586,6 @@ export default class ShowRichTextDetailPage extends BasePage {
                                 title:detail.showType === 1 ? detail.content : detail.title,//分享标题(当为图文分享时候使用)
                                 linkUrl:`${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
                                 thumImage:''//(分享图标小图(https链接)图文分享使用)
-                            }}
-                            miniProgramJson={{
-                                title: detail.title,
-                                dec: '分享小程序子标题',
-                                thumImage: 'logo.png',
-                                hdImageURL: detail.img,
-                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
-                                miniProgramPath: `/pages/discover/discover-detail/discover-detail?articleId=${detail.id}&inviteId=${user.code || ''}`
                             }}
             />
         </View>;

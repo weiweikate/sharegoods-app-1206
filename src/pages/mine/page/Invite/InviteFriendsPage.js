@@ -233,8 +233,8 @@ export default class InviteFriendsPage extends BasePage<Props> {
                     //      QRCodeStr: '分享的链接'
                     //  }}
                                 webJson={{
-                                    title: '分享好友免费领取福利',
-                                    dec: '属你的惊喜福利活动\n数量有限赶快参与吧～',
+                                    title: '新人免费领好物',
+                                    dec: '礼物区又上新啦，海量好礼免费领!',
                                     linkUrl: this.linkUrl,
                                     thumImage: 'logo.png'
                                 }}
