@@ -16,6 +16,7 @@
 @property(nonatomic, copy)NSString * retailPrice;
 @property(nonatomic, copy)NSString * spellPrice;
 @property(nonatomic, copy)NSString * QRCodeStr;
+@property(nonatomic, copy)NSString * shareMoney;
 
 @property(nonatomic, copy)NSString * headerImage;
 @property(nonatomic, copy)NSString * userName;

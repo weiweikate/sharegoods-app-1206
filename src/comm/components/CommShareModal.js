@@ -80,8 +80,8 @@ import { track } from '../../utils/SensorsTrack';
 import user from '../../model/user';
 import { getSource } from '@mr/image-placeholder/oos';
 import ShareUtil from '../../utils/ShareUtil';
-import {navigate} from "../../navigation/RouterMap";
-import RouterMap from "../../navigation/RouterMap";
+import {navigate} from '../../navigation/RouterMap';
+import RouterMap from '../../navigation/RouterMap';
 
 // 0：未知
 // 1：微信好友2：微信朋友圈3：qq好友4：qq空间5：微博6：复制链接7：分享图片
@@ -270,13 +270,19 @@ export default class CommShareModal extends React.Component {
     render() {
         const { type } = this.props;
         const { shareType } = this.state;
-        let scale = ScreenUtils.height/ScreenUtils.width
-        this.imageHeight = (ScreenUtils.width-93)*scale;
-        this.imageWidth = ScreenUtils.width-60;
+        let scale = 667 / 375;
+        this.imageWidth = ScreenUtils.width - 60;
+        this.imageHeight = (ScreenUtils.width - 93) * scale;
+        if(this.imageWidth * scale >= (ScreenUtils.height - 151)){
+            this.imageHeight = (ScreenUtils.height - 151);
+            this.imageWidth = this.imageHeight / scale;
+        }else {
+            this.imageHeight = (ScreenUtils.width -33) * scale;
+        }
 
         if (this.props.type === 'promotionShare') {
-            this.imageHeight = autoSizeWidth(348);
-            this.imageWidth = autoSizeWidth(279);
+            this.imageHeight = ((ScreenUtils.width - 93) * scale);
+            this.imageWidth = ScreenUtils.width - 60;
         }
 
         let array = [];
@@ -447,7 +453,7 @@ export default class CommShareModal extends React.Component {
                                 width: this.imageWidth,
                                 position: 'absolute',
                                 top: 33,
-                                left: 30,
+                                left: (ScreenUtils.width-this.imageWidth)/2,
                                 borderRadius: 10,
                                 borderColor: DesignRule.textColor_placeholder,
                                 shadowOpacity: 0.3,

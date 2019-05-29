@@ -20,6 +20,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 -(CGFloat)getStringHeightWithfontSize:(CGFloat)fontSize viewWidth:(CGFloat)width;
+
+
+-(CGFloat)getWidthStringfontSize:(CGFloat)fontSize viewWidth:(CGFloat)width;
 @end
 
 NS_ASSUME_NONNULL_END
