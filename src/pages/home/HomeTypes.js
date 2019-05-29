@@ -12,12 +12,12 @@ export const homeType = {
     pinShop: 12,          // 拼店banner
     discover: 13,          // 发现banner
     signIn: 19,          // 签到弹窗
-    other: "other",
-    classify: "classify",
-    category: "category",
-    goodsTitle: "goodsTitle",
-    task: "task",
-    user: "user",
+    other: 'other',
+    classify: 'classify',
+    category: 'category',
+    goodsTitle: 'goodsTitle',
+    task: 'task',
+    user: 'user',
     show: 11,            //秀场
     banner: 14,
     limitGo: 300,   //限时秒杀
@@ -47,20 +47,20 @@ export const homeLinkType = {
 };
 
 export const homeRoute = {
-    [homeLinkType.good]: "product/ProductDetailPage",
-    [homeLinkType.subject]: "topic/DownPricePage",
-    [homeLinkType.down]: "topic/TopicDetailPage",
-    [homeLinkType.spike]: "product/ProductDetailPage",
-    [homeLinkType.package]: "topic/TopicDetailPage",
-    [homeLinkType.store]: "spellShop/MyShop_RecruitPage",
-    [homeLinkType.link]: "HtmlPage",
-    [homeLinkType.lottery]: "HtmlPage",
-    [homeLinkType.customTopic]: "HtmlPage",
-    [homeLinkType.discover]: "show/ShowDetailPage",
-    [homeLinkType.exp]: "product/xpProduct/XpDetailPage",
-    [homeLinkType.classify]: "home/search/SearchResultPage",
-    [homeLinkType.nothing]: "",  // 不做跳转
-    [homeLinkType.page]: ""      // 跳转到页面
+    [homeLinkType.good]: 'product/ProductDetailPage',
+    [homeLinkType.subject]: 'topic/DownPricePage',
+    [homeLinkType.down]: 'topic/TopicDetailPage',
+    [homeLinkType.spike]: 'product/ProductDetailPage',
+    [homeLinkType.package]: 'topic/TopicDetailPage',
+    [homeLinkType.store]: 'spellShop/MyShop_RecruitPage',
+    [homeLinkType.link]: 'HtmlPage',
+    [homeLinkType.lottery]: 'HtmlPage',
+    [homeLinkType.customTopic]: 'HtmlPage',
+    [homeLinkType.discover]: 'show/ShowDetailPage',
+    [homeLinkType.exp]: 'product/xpProduct/XpDetailPage',
+    [homeLinkType.classify]: 'home/search/SearchResultPage',
+    [homeLinkType.nothing]: '',  // 不做跳转
+    [homeLinkType.page]: ''      // 跳转到页面
 };
 
 //埋点

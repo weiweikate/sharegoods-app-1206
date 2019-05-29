@@ -109,19 +109,19 @@ const styles = StyleSheet.create({
     },
     btn: {
         flexDirection: 'row', alignItems: 'center',
-        height: 20, borderRadius: 10, backgroundColor: 'rgba(0,0,0,0.5)'
+        height: px2dp(20), borderRadius: px2dp(10), backgroundColor: 'rgba(0,0,0,0.5)'
     },
     image: {
-        marginRight: 5, overflow: 'hidden',
-        width: 20, height: 20, borderRadius: 10
+        marginRight: px2dp(6), overflow: 'hidden',
+        width: px2dp(20), height: px2dp(20), borderRadius: px2dp(10)
     },
     text: {
         marginRight: 3, maxWidth: maxTextWidth,
         fontSize: 10, color: DesignRule.white
     },
     arrow: {
-        marginRight: 5.5,
-        width: 10, height: 10
+        marginRight: px2dp(7),
+        width: px2dp(4), height: px2dp(8)
     }
 });
 
