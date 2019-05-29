@@ -5,6 +5,7 @@ import UserApi from './userApi';
 import bridge from '../utils/bridge';
 import { QYChatTool } from '../utils/QYModule/QYChatTool';
 import { login, logout } from '../utils/SensorsTrack';
+import JPushUtils from '../utils/JPushUtils';
 
 
 const USERINFOCACHEKEY = 'UserInfo';
@@ -465,6 +466,8 @@ autorun(() => {
         // 启动时埋点关联登录用户,先取消关联，再重新关联
         logout();
         login(user.code);
+        JPushUtils.updatePushTags();
+        JPushUtils.updatePushAlias();
     }
 });
 export default user;
