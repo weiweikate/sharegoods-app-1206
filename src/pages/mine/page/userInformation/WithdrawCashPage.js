@@ -110,7 +110,9 @@ export default class WithdrawCashPage extends BasePage {
             endDay: null,
             balance: null,
             multiple: null,
-            errorTip: null
+            errorTip: null,
+            withdrawApplyConfigVOList:[],
+            count:null
         };
         this.rate = null;
         this.minCount = null;
@@ -232,7 +234,9 @@ export default class WithdrawCashPage extends BasePage {
                 startDay: data.data.startDay,
                 endDay: data.data.endDay,
                 balance: data.data.balance,
-                multiple: data.data.multiple
+                multiple: data.data.multiple,
+                count:data.data.count,
+                withdrawApplyConfigVOList:data.data.withdrawApplyConfigVOList
             });
 
             if (this.getLastBankInfoSuccess && this.getRateSuccess) {
@@ -320,34 +324,67 @@ export default class WithdrawCashPage extends BasePage {
 
     renderTip = () => {
 
-        let tip3Index = 1;
+        let tip2index = 1,tip3Index = 1,tip4Index = 1;
         if (this.state.balance !== null) {
+            tip4Index++;
             tip3Index++;
         }
         if (this.state.startDay !== null && this.state.endDay !== null) {
-            tip3Index++;
+            tip4Index++;
         }
         let multipleTip = this.state.multiple ? `以及￥${this.state.minCount}的倍数` : '';
+
+        let dateTip = null;
+
+        if(!EmptyUtils.isEmptyArr(this.state.withdrawApplyConfigVOList)){
+            let dataArr = this.state.withdrawApplyConfigVOList.map((value)=>{
+                if(value.from === value.to){
+                    return `${value.from}号`;
+                }else {
+                    return `${value.to}--${value.from}号`;
+                }
+            })
+            dateTip = `1.提现申请时间为每月${dataArr.join('、')}；`
+        }
+
+        if(this.state.count){
+            if(dateTip){
+                dateTip+=`\n每月只能提现${this.state.count}次`
+            }else {
+                dateTip=`\n1:每月只能提现${this.state.count}次`
+            }
+        }
+
+        if(dateTip){
+            tip4Index++;
+            tip3Index++;
+            tip2index++;
+        }
+
+
 
         return (
             <View style={{ flexDirection: 'row', marginLeft: DesignRule.margin_page, marginTop: 5 }}>
 
                 {
-                    (this.state.balance === null && this.state.startDay === null && this.state.endDay === null) ? null :
+                    (this.state.balance === null && this.state.startDay === null && this.state.endDay === null && dateTip) ? null :
                         <MRText style={styles.tipTextStyle}>
                             {'提示: '}
                         </MRText>
                 }
 
                 <View>
+                    {dateTip !== null ? <MRText style={styles.tipTextStyle}>
+                        {dateTip}
+                    </MRText> : null}
                     {this.state.balance !== null ? <MRText style={styles.tipTextStyle}>
-                        {`1.本月剩余提现额度￥${this.state.balance}`}
+                        {`${tip2index}.本月剩余提现额度￥${this.state.balance}`}
                     </MRText> : null}
                     {(this.state.startDay !== null && this.state.endDay !== null) ? <MRText style={styles.tipTextStyle}>
-                        {`${this.state.balance === null ? 1 : 2}.每月${this.state.endDay}号重置提现额度`}
+                        {`${tip3Index}.每月${this.state.endDay}号重置提现额度`}
                     </MRText> : null}
                     {this.state.minCount ? <MRText style={styles.tipTextStyle}>
-                        {`${tip3Index}.提现为￥${this.state.minCount}起${multipleTip}`}
+                        {`${tip4Index}.提现为￥${this.state.minCount}起${multipleTip}`}
                     </MRText> : null}
                 </View>
             </View>
