@@ -6,7 +6,7 @@ import Order from './Order';
 import Mine from './Mine';
 import PageModula from './Page';
 import PaymentPoint from './PaymentPoint';
-import shopCartModular from './shopCartModular';
+import shopCartModular from './ShopCart';
 
 const Event = {
     ...LoginModula,
