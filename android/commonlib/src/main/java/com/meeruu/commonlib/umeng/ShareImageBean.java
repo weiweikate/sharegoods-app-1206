@@ -12,6 +12,15 @@ public class ShareImageBean {
     public String imageType;
     public String headerImage;
     public String userName;
+    public String diamondNum;
+
+    public String getDiamondNum() {
+        return diamondNum;
+    }
+
+    public void setDiamondNum(String diamondNum) {
+        this.diamondNum = diamondNum;
+    }
 
     public String getDiscount() {
         return discount;

@@ -349,6 +349,7 @@ export default class ShowListPage extends BasePage {
                                 trackEvent={'ArticleShare'}
                                 trackParmas={{ articeCode: detail.code, articleTitle: detail.title }}
                                 imageJson={{
+                                    imageType:'show',
                                     imageUrlStr: detail.resource[0]?detail.resource[0].url:null,
                                     titleStr: detail.showType === 1 ? detail.content : detail.title,
                                     QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,

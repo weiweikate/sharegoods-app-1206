@@ -117,7 +117,7 @@ export default class ShowMaterialView extends React.Component {
                                            const { navigate } = this.props;
                                            let params = {
                                                data: nativeEvent,
-                                               ref: this.foundList,
+                                               ref: this.materialList,
                                                index: nativeEvent.index
                                            };
                                            if (nativeEvent.showType === 1) {
