@@ -214,17 +214,19 @@ let styles = StyleSheet.create({
         marginTop: -px2dp(10)
     },
     activityIndex: {
-        width: 10,
-        height: 4,
-        borderRadius: 2,
+        width: px2dp(14),
+        height: px2dp(3),
+        borderRadius: px2dp(1.5),
         backgroundColor: DesignRule.mainColor,
-        margin: 5
+        marginLeft: 2,
+        marginRight: 2
     },
     index: {
-        width: 10,
-        height: 4,
-        borderRadius: 2,
-        backgroundColor: 'white',
-        margin: 5,
+        width: px2dp(5),
+        height: px2dp(3),
+        borderRadius: px2dp(1.5),
+        backgroundColor: DesignRule.lineColor_inWhiteBg,
+        marginLeft: 2,
+        marginRight: 2
     }
 });
