@@ -190,7 +190,7 @@
   self.headView.time = model.publishTimeStr;
   self.bodyView.sources = model.resource;
   
-  self.contentLab.text = model.content;
+  self.contentLab.text = model.title;
   NSArray *array = [self getSeparatedLinesFromLabel:self.contentLab.text font:[UIFont systemFontOfSize:13] andLableWidth:SCREEN_WIDTH-105];
   //组合需要显示的文本
   if(array.count>3){

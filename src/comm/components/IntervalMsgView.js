@@ -61,25 +61,7 @@ export class IntervalMsgView extends React.Component {
         if (!needForward || !forwardType) {
             return;
         }
-        if (forwardType === IntervalMsgType.home) {
-            backToHome();
-        } else if (forwardType === IntervalMsgType.alert) {
-        } else {
-            const router = IntervalMsgRouter[forwardType];
-            if (router) {
-                navigate(router, {
-                    productCode: keyCode,
-                    storeCode: keyCode,
-                    orderNo: keyCode,
-                    code: keyCode,
-                    id: keyCode
-                });
-            } else {
-                // navigate('HtmlPage', {
-                //     uri: keyCode
-                // });
-            }
-        }
+        IntervalMsgNavigate(forwardType, keyCode);
 
         track(trackEvent.SkipMarkClick, {
             belongsPage: this.IntervalMsgModel.pageType,
@@ -219,6 +201,28 @@ export const IntervalType = {
     shopHome: 4,//拼店首页
     shopDetail: 5//拼店详情
 };
+
+export function IntervalMsgNavigate(forwardType, keyCode) {
+    if (forwardType === IntervalMsgType.home) {
+        backToHome();
+    } else if (forwardType === IntervalMsgType.alert) {
+    } else {
+        const router = IntervalMsgRouter[forwardType];
+        if (router) {
+            navigate(router, {
+                productCode: keyCode,
+                storeCode: keyCode,
+                orderNo: keyCode,
+                code: keyCode,
+                id: keyCode
+            });
+        } else {
+            // navigate('HtmlPage', {
+            //     uri: keyCode
+            // });
+        }
+    }
+}
 
 const IntervalMsgType = {
     home: 1,      //首页

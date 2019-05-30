@@ -12,12 +12,14 @@
 
 'use strict';
 
+import RouterMap ,{navigate} from '../../../navigation/RouterMap';
+
 const BoxStatusClose = 0;
 const BoxStatusCanOpen = 1;
 const BoxStatusOpen = 2;
 
 const TaskStatusUndone = 0;
-// const TaskStatusWaitFinish = 1;
+const TaskStatusWaitFinish = 1;
 const TaskStatusFinish = 2;
 
 import React from 'react';
@@ -39,6 +41,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import taskModel, { mineTaskModel } from '../model/TaskModel';
+import { mediatorCallFunc } from '../../../SGMediator';
 const { autoSizeWidth } = ScreenUtils;
 const {arrow_red_bottom,
     arrow_red_top,
@@ -54,6 +57,27 @@ const {task_progress,
     task_finish
 } = res.task;
 
+
+// type	string
+// example: 1
+// 分享类型
+//
+// url
+
+function getParams(interactiveCode,interactiveValue) {
+    let routerNames = {'10': RouterMap.ProductDetailPage}
+    let data = {};
+    data.routerName = routerNames[interactiveCode];
+    data.params = {shareNotifyParam: {}}
+    switch (interactiveCode) {
+        case '10':
+            data.params = {productCode: interactiveValue, shareNotifyParam: {code: interactiveCode, data: interactiveValue}};
+            break
+    }
+
+    return data;
+}
+
 class TaskItem extends React.Component {
     constructor(props) {
         super(props);
@@ -64,6 +88,7 @@ class TaskItem extends React.Component {
     }
 
     renderItem(item,expanded ,subTask = false){
+        let {complete, prizeDesc,name, total, memo} = item;
         return(
             <View >
                 {subTask?<View style={styles.lineOne}/>: null}
@@ -76,11 +101,11 @@ class TaskItem extends React.Component {
                         borderRadius:  autoSizeWidth(31/2),
                         overflow: 'hidden'
                     }}>
-                        <MRText style={{fontSize: autoSizeWidth(12), color: '#333333'}}>{'+'+item.integral}</MRText>
+                        <MRText style={{fontSize: autoSizeWidth(11), color: '#333333'}}>{'+'+item.prizeValue}</MRText>
                     </View> : null
                     }
-                    <MRText style={{fontSize: autoSizeWidth(14), color: '#333333', marginLeft: 10, flex: 1}}>{item.name}</MRText>
-                    {this.renderBtn(item)}
+                    <MRText style={{fontSize: autoSizeWidth(14), color: '#333333', marginLeft: 10, flex: 1}}>{name+'('+complete+'/'+ total+')'}</MRText>
+                    {this.renderBtn(item, subTask)}
                     {subTask === false?
                         <TouchableOpacity style={{height: autoSizeWidth(50),
                             width: autoSizeWidth(20),
@@ -97,8 +122,8 @@ class TaskItem extends React.Component {
                 {
                     expanded === true?
                         <View style={{paddingBottom: 5, paddingLeft: subTask? 20: 10}}>
-                            <MRText style={{fontSize: autoSizeWidth(10), color: '#666666'}}>就是老地方见啊剪短发啦德弗里斯风景</MRText>
-                            <MRText style={{fontSize: autoSizeWidth(10), color: '#666666',marginTop: 5}}>就是老地方见啊剪短发啦德弗里斯风景</MRText>
+                            <MRText style={{fontSize: autoSizeWidth(10), color: '#666666'}}>{memo}</MRText>
+                            <MRText style={{fontSize: autoSizeWidth(10), color: '#666666',marginTop: 5}}>{prizeDesc}</MRText>
                         </View>
                         :null
                 }
@@ -106,46 +131,69 @@ class TaskItem extends React.Component {
         )
     }
 
-    renderBtn(item){
+    renderBtn(item, subTask){
 
         if(item.status === TaskStatusFinish){
             return <UIImage source={task_finish} style={{height: autoSizeWidth(40),width: autoSizeWidth(55)}}/>
-        }else {
-            let colors = item.status === TaskStatusUndone ? ['#FC5D39','#FF0050']:['#FFCB02', '#FF9502']
-            let title = item.status === TaskStatusUndone ? '前往': '领奖'
-            return(
-                <TouchableOpacity style={{
-                    width: ScreenUtils.autoSizeWidth(60),
-                    height:  ScreenUtils.autoSizeWidth(24),
-                    borderRadius:  ScreenUtils.autoSizeWidth(12),
-                    overflow: 'hidden'
-                }}
-                                  onPress={() => {}}>
-                    <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
-                                    colors={colors}
-                                    style={{ alignItems: "center",
-                                        justifyContent: "center",
-                                        flex: 1}}
-                    >
-                        <MRText style={{
-                            fontSize: autoSizeWidth(13),
-                            color: 'white',
-                        }} allowFontScaling={false}>{title}</MRText>
-                    </LinearGradient>
-                </TouchableOpacity>
-            )
-        }
-
+        }else if(item.status === TaskStatusUndone && item.type === 2 &&!subTask) {
+            return null;
+        } else {
+                let colors = item.status === TaskStatusUndone ? ['#FC5D39','#FF0050']:['#FFCB02', '#FF9502']
+                let title = item.status === TaskStatusUndone ? '前往': '领奖'
+                return(
+                    <TouchableOpacity style={{
+                        width: ScreenUtils.autoSizeWidth(60),
+                        height:  ScreenUtils.autoSizeWidth(24),
+                        borderRadius:  ScreenUtils.autoSizeWidth(12),
+                        overflow: 'hidden'
+                    }}
+                                      onPress={() => {this.btnClick(item, subTask)}}>
+                        <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+                                        colors={colors}
+                                        style={{ alignItems: "center",
+                                            justifyContent: "center",
+                                            flex: 1}}
+                        >
+                            <MRText style={{
+                                fontSize: autoSizeWidth(13),
+                                color: 'white',
+                            }} allowFontScaling={false}>{title}</MRText>
+                        </LinearGradient>
+                    </TouchableOpacity>
+                )
+            }
 
     }
 
+    btnClick(item, subTask){
+        if (item.status === TaskStatusWaitFinish ) {
+            this.props.model.getMissionPrize(item, subTask)
+        }else if (item.status === TaskStatusUndone ) {
+            let {interactiveCode, interactiveValue} = item
+            let data =  getParams(interactiveCode,interactiveValue)
+            navigate(data.routerName, data.params)
+            mediatorCallFunc('Home_ShareNotify',{...data.params.shareNotifyParam, type: 1, uri: ''})
+        }
+    }
+
     render(){
-        let data = this.props.data;
+        let data = this.props.data || {};
         let expanded = this.state.expanded;
+        let subMissions = data.subMissions || []
+        if (this.props.model.hideFinishTask) {
+            subMissions = subMissions.filter((item) => {
+                return item.status !== TaskStatusFinish
+            });
+        }
+
+        if (data.status === TaskStatusFinish && subMissions.length === 0 && this.props.model.hideFinishTask){
+            return null;
+        }
+
         return (
             <View>
                 {this.renderItem(data,expanded)}
-                {expanded?data.subTasks.map((item)=>{
+                {expanded?subMissions.map((item)=>{
                     return this.renderItem(item,expanded,true)
                 }): null}
                 <View style={styles.lineOne}/>
@@ -175,8 +223,8 @@ export default class TaskVIew extends React.Component {
         return(
             <View style={styles.header}>
                 <View style={styles.redLine}/>
-                <MRText style={{fontSize: autoSizeWidth(16), color: '#666666', fontWeight: '600', marginLeft: 5}}>主线任务</MRText>
-                <MRText style={{fontSize: autoSizeWidth(10), color: '#999999', marginLeft: 5}}>{'最高可获得'+'奖励'}</MRText>
+                <MRText style={{fontSize: autoSizeWidth(16), color: '#666666', fontWeight: '600', marginLeft: 5}}>{this.model.name}</MRText>
+                <MRText style={{fontSize: autoSizeWidth(10), color: '#999999', marginLeft: 5}}>{this.model.advMsg}</MRText>
             </View>
         )
     }
@@ -187,48 +235,50 @@ export default class TaskVIew extends React.Component {
         }
         return(
             <View style={[styles.header, {height: autoSizeWidth(40), paddingHorizontal: 15}]}>
-                <MRText style={{fontSize: autoSizeWidth(13), color: '#666666', fontWeight: '600'}}>日常任务</MRText>
+                <MRText style={{fontSize: autoSizeWidth(13), color: '#666666', fontWeight: '600'}}>{this.model.name}</MRText>
                 <View style={{flex: 1}}/>
-                <MRText style={{fontSize: autoSizeWidth(10), color: '#999999', marginLeft: 5}}>{'最高可获得'+'奖励'}</MRText>
+                <MRText style={{fontSize: autoSizeWidth(10), color: '#999999', marginLeft: 5}}>{this.model.advMsg}</MRText>
             </View>
         )
     }
 
     renderProgressView() {
+       let progress = this.model.progress/this.model.totalProgress > 1 ? 1: this.model.progress/this.model.totalProgress;
         return(
             <View style={{height: autoSizeWidth(60), alignItems: 'center'}}>
                 <View style={{height: autoSizeWidth(40), justifyContent: 'center',marginTop: autoSizeWidth(5)}}>
                     <View style={{width: autoSizeWidth(290),
                         backgroundColor: '#f5f5f5',
                         height: autoSizeWidth(8),
+                        borderRadius: autoSizeWidth(4),
+                        overflow: 'hidden',
                         borderWidth: 1,
                         borderColor: '#eeeeee'}}>
                         <View style={{height: autoSizeWidth(6),
-                            width: autoSizeWidth(290)/100*this.model.progress,
+                            width:  autoSizeWidth(290)*progress,
                             borderRadius: autoSizeWidth(4),
                             overflow: 'hidden'}}>
                             <UIImage source={task_progress}
                                      style={{ width: autoSizeWidth(290),height: autoSizeWidth(8)}}/>
                         </View>
-                        <View style={[DesignRule.style_absoluteFullParent,
-                            {flexDirection: 'row',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                                left: -10,
-                                right: -10,
-                            }]}>
-                            {
-                                this.model.boxs.map((item)=> {
-                                    return(
-                                        this.renderBox(item)
-                                    )
-                                })
-                            }
-                        </View>
-                        <UIImage source={task_run_people}
-                                 style={{position: 'absolute', left: this.model.progress/100*autoSizeWidth(290) - autoSizeWidth(15), width: autoSizeWidth(22), height:autoSizeWidth(15),top: -15}}
-                        />
                     </View>
+                    <View style={[DesignRule.style_absoluteFullParent,
+                        {flexDirection: 'row',
+                            alignItems: 'center',
+                            left: -10,
+                            right: -10,
+                        }]}>
+                        {
+                            this.model.boxs.map((item)=> {
+                                return(
+                                    this.renderBox(item)
+                                )
+                            })
+                        }
+                    </View>
+                    <UIImage source={task_run_people}
+                             style={{position: 'absolute', left: progress*autoSizeWidth(290) - autoSizeWidth(15), width: autoSizeWidth(22), height:autoSizeWidth(15),top: 0}}
+                    />
                 </View>
 
             </View>
@@ -237,7 +287,7 @@ export default class TaskVIew extends React.Component {
 
     renderBox(data){
         let icon = null;
-        switch (data.status){
+        switch (data.prizeStatus){
             case BoxStatusClose:
                 icon = task_box_close
                 break
@@ -249,21 +299,29 @@ export default class TaskVIew extends React.Component {
                 break
         }
         return(
-            <View style={{width: autoSizeWidth(32), height: autoSizeWidth(70), justifyContent: 'center'}}>
+            <TouchableOpacity style={{width: autoSizeWidth(32),
+                height: autoSizeWidth(70),
+                justifyContent: 'center',
+                left: autoSizeWidth(290 - 32 + 20)/this.model.totalProgress*data.value,
+                position: 'absolute'
+            }}
+                               disabled={data.prizeStatus !== BoxStatusCanOpen}
+                              onPress={()=> {this.model.boxClick(data)}}
+            >
                 <UIImage source={icon} style={{width: autoSizeWidth(31),
                     height: autoSizeWidth(31),
                     marginBottom: data.status === BoxStatusOpen? autoSizeWidth(9): autoSizeWidth(5)}}/>
                 <MRText style={{fontSize: autoSizeWidth(12),
                     color: data.status === BoxStatusOpen? DesignRule.mainColor:'#666666',
                     bottom: 0,
-                    left:0,
-                    right: 0,
+                    left:-30,
+                    right: -30,
                     textAlign: 'center',
                     position: 'absolute'
                 }}>
-                    {data.name}
+                    {data.value + '活跃'}
                 </MRText>
-            </View>
+            </TouchableOpacity>
         )
     }
 
@@ -293,16 +351,21 @@ export default class TaskVIew extends React.Component {
         return(
             <View style={{ height:  autoSizeWidth(300)}}>
                 <View style={{backgroundColor: 'white', borderRadius: 5, marginTop: 10, overflow: 'hidden',flex: 1, marginHorizontal: 15}}>
-                    <ScrollView>
+                    <ScrollView
+                        showsVerticalScrollIndicator={false}
+                    >
                         {
                             this.model.tasks.map((item, index) => {
-                                return <TaskItem key={'TaskItem_'+index} data = {item}/>
+                                return <TaskItem key={'TaskItem_'+item.no} data = {item} model={this.model}/>
                             })
                         }
 
                     </ScrollView>
-                    <TouchableOpacity style={{height: 40, justifyContent: 'center', alignItems: 'center'}}>
-                        <MRText style={{fontSize: autoSizeWidth(12), color: '#999999'}}>已隐藏完成的任务</MRText>
+                    <TouchableOpacity style={{height: 40, justifyContent: 'center', alignItems: 'center'}}
+                                      onPress={()=> this.model.hideFinishTaskClick()}
+                    >
+                        <MRText style={{fontSize: autoSizeWidth(12), color: '#999999'}}>{this.model.hideFinishTask?
+                            '已隐藏完成的任务' : '隐藏完成的任务'}</MRText>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -331,6 +394,7 @@ export default class TaskVIew extends React.Component {
         );
     }
 }
+
 const styles = StyleSheet.create({
     header: {
         height:  autoSizeWidth(48),

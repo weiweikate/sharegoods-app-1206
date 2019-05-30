@@ -2,13 +2,13 @@ const Mediator = {
 
 }
 
-function mediatorAddFunc(name,callBack) {
+function mediatorAddFunc(name, callBack) {
     Mediator[name] = callBack;
 }
 
-function mediatorCallFunc(name) {
+function mediatorCallFunc(name, params = {}) {
    if ( typeof Mediator[name] ==='function') {
-       Mediator[name]();
+       Mediator[name](params);
     }
 
 }

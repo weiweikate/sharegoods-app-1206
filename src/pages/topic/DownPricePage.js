@@ -199,6 +199,16 @@ export default class DownPricePage extends BasePage {
      * @private
      */
     _itemActionClick = (itemData) => {
+
+        console.log(itemData);
+
+        const { linkTypeCode } = this.params;
+        TrackApi.SpecialTopicPagelistClick({
+            specialTopicId:linkTypeCode||'',
+            productIndex:'',
+            spuCode:itemData.prodCode||'',
+
+        })
         const pageObj = getTopicJumpPageParam(itemData);
         this.$navigate(pageObj.pageRoute, pageObj.params);
     };

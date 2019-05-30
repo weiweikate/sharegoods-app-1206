@@ -151,7 +151,7 @@ export default class InputCode extends BasePage {
                     // user.untiedWechat(nickName,this.params.appOpenid,this.params.unionid)
                     this.$navigate(RouterMap.InviteCodePage);
                     TrackApi.phoneSignUpSuccess({ 'signUpPhone': phoneNum });
-                    mediatorCallFunc('RequestNoviceGift')
+                    mediatorCallFunc('Home_RequestNoviceGift')
                 } else {
                     this.$toastShow(res.msg);
                 }
