@@ -24,6 +24,16 @@ export const productItemType = {
     priceExplain: 'priceExplain'
 };
 
+export const sectionType = {
+    sectionHeader: 'section0',
+    sectionSuit: 'section1',
+    sectionPromotion: 'section2',
+    sectionSetting: 'section3',
+    sectionScore: 'section4',
+    sectionContent: 'section5',
+    sectionExPlain: 'section6'
+};
+
 /**价格类型 2拼店价 3会员价**/
 export const price_type = {
     level: 3,
@@ -267,32 +277,40 @@ export default class ProductDetailModel {
 
     @computed get sectionDataList() {
         const { promoteInfoVOList, contentArr, groupActivity, activityStatus, paramList } = this;
-
+        /*头部*/
         let sectionArr = [
-            { key: productItemType.headerView, data: [productItemType.headerView] }
+            { key: sectionType.sectionHeader, data: [{ itemKey: productItemType.headerView }] }
         ];
+        /*优惠套餐*/
         if (activityStatus === activity_status.inSell && (groupActivity.subProductList || []).length > 0) {
             sectionArr.push(
-                { key: productItemType.suit, data: [productItemType.suit] }
+                { key: sectionType.sectionSuit, data: [{ itemKey: productItemType.suit }] }
             );
         }
+        /*优惠券,促销*/
         if (promoteInfoVOList.length !== 0) {
             sectionArr.push(
-                { key: productItemType.promote, data: [productItemType.promote] }
+                { key: sectionType.sectionPromotion, data: [{ itemKey: productItemType.promote }] }
             );
         }
-        sectionArr.push(
-            { key: productItemType.service, data: [productItemType.service] }
-        );
+        /*服务,参数,选择地址*/
         if (paramList.length !== 0) {
             sectionArr.push(
-                { key: productItemType.param, data: [productItemType.param] }
+                {
+                    key: sectionType.sectionSetting,
+                    data: [{ itemKey: productItemType.service }, { itemKey: productItemType.param }]
+                }
+            );
+        } else {
+            sectionArr.push(
+                { key: sectionType.sectionSetting, data: [{ itemKey: productItemType.service }] }
             );
         }
+        /*晒单,*/
         sectionArr.push(
-            { key: productItemType.comment, data: [productItemType.comment] },
-            { key: productItemType.content, data: contentArr.slice() },
-            { key: productItemType.priceExplain, data: [productItemType.priceExplain] }
+            { key: sectionType.sectionScore, data: [{ itemKey: productItemType.comment }] },
+            { key: sectionType.sectionContent, data: contentArr.slice() },
+            { key: sectionType.sectionExPlain, data: [{ itemKey: productItemType.priceExplain }] }
         );
         return sectionArr;
     }

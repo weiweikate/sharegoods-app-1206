@@ -342,7 +342,7 @@ export class PromoteItemView extends Component {
 
 const PromoteItemViewStyles = StyleSheet.create({
     promotionView: {
-        flexDirection: 'row', alignItems: 'center', paddingHorizontal: 15, marginTop: 10,
+        flexDirection: 'row', alignItems: 'center', paddingHorizontal: 15,
         backgroundColor: 'white'
     },
     promotionItemsView: {

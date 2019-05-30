@@ -23,7 +23,7 @@ import { beginChatType, QYChatTool } from '../../utils/QYModule/QYChatTool';
 // import bridge from '../../../utils/bridge';
 
 // const redEnvelopeBg = res.other.red_big_envelope;
-import ProductDetailModel, { productItemType } from './ProductDetailModel';
+import ProductDetailModel, { productItemType, sectionType } from './ProductDetailModel';
 import { observer } from 'mobx-react';
 import RouterMap from '../../navigation/RouterMap';
 import {
@@ -181,14 +181,11 @@ export default class ProductDetailPage extends BasePage {
 
     _renderSectionHeader = ({ section: { key } }) => {
         switch (key) {
-            case productItemType.headerView: {
+            case sectionType.sectionHeader:
+            case sectionType.sectionExPlain:
                 return null;
-            }
-            case productItemType.content: {
+            case sectionType.sectionContent: {
                 return <ContentSectionView/>;
-            }
-            case productItemType.param: {
-                return <SectionLineView/>;
             }
             default: {
                 return <SectionNullView/>;
@@ -197,7 +194,11 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _renderItem = ({ item, index, section: { key } }) => {
-        switch (key) {
+        if (key === sectionType.sectionContent) {
+            return <ContentItemView item={item}/>;
+        }
+        const { itemKey } = item;
+        switch (itemKey) {
             case productItemType.headerView: {
                 return <HeaderItemView productDetailModel={this.productDetailModel}
                                        navigation={this.props.navigation}
@@ -228,9 +229,6 @@ export default class ProductDetailPage extends BasePage {
             case productItemType.comment: {
                 return <DetailHeaderScoreView pData={this.productDetailModel}
                                               navigation={this.props.navigation}/>;
-            }
-            case productItemType.content: {
-                return <ContentItemView item={item}/>;
             }
             case productItemType.priceExplain: {
                 return <PriceExplain/>;
@@ -293,6 +291,9 @@ export default class ProductDetailPage extends BasePage {
                          }}
                          sections={sectionDataList}
                          scrollEventThrottle={10}
+                         ItemSeparatorComponent={() => {
+                             return <SectionLineView/>;
+                         }}
                          showsVerticalScrollIndicator={false}/>
             <DetailBottomView bottomViewAction={this._bottomViewAction}
                               pData={this.productDetailModel}/>
