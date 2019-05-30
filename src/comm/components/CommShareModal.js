@@ -303,18 +303,6 @@ export default class CommShareModal extends React.Component {
                     }
                 });
             }
-        } else if (type === 'miniProgramWithCopyUrl') {
-            array.push({
-                image: res.share.copyURL, title: '复制链接', onPress: () => {
-                    this.copyUrl();
-                }
-            });
-        } else if (type === 'task') {
-            array = [{
-                image: res.share.weiXin, title: '微信好友', onPress: () => {
-                    this.share(0);
-                }
-            }];
         }
         array.push({
             image: res.share.wechat, title: '微信好友', onPress: () => {
@@ -342,12 +330,21 @@ export default class CommShareModal extends React.Component {
             }
         });
 
-        array.push({
-            image: res.share.copyURL, title: '复制链接', onPress: () => {
-                this.copyUrl();
-            }
-        });
+        if ((type === 'miniProgramWithCopyUrl'||type === 'Image' || type === 'promotionShare' || type === 'Show')&&shareType != 0) {
+            array.push({
+                image: res.share.copyURL, title: '复制链接', onPress: () => {
+                    this.copyUrl();
+                }
+            });
+        }
 
+        if (type === 'task') {
+            array = [{
+                image: res.share.weiXin, title: '微信好友', onPress: () => {
+                    this.share(0);
+                }
+            }];
+        }
         //shareMoney 4.0 - 5.0
         const { shareMoney } = this.props.imageJson || {};
         let shareMoneyText = (shareMoney && shareMoney !== '?') ? `${shareMoney.split('-').shift()}` : '';
@@ -452,7 +449,7 @@ export default class CommShareModal extends React.Component {
                                 width: this.imageWidth,
                                 position: 'absolute',
                                 top: 33,
-                                left: (ScreenUtils.width-this.imageWidth)/2,
+                                left: (ScreenUtils.width - this.imageWidth) / 2,
                                 borderRadius: 10,
                                 borderColor: DesignRule.textColor_placeholder,
                                 shadowOpacity: 0.3,
@@ -478,10 +475,11 @@ export default class CommShareModal extends React.Component {
                                 </TouchableWithoutFeedback>  : null
                                 }
                                 {this.props.type === 'Show' ?
-                                <ShowShareImage data={this.props.imageJson} modal={this.modal}/> : null
+                                <ShowShareImage modalWidth={this.imageWidth} modalHeight={this.imageHeight*2/3}
+                                                data={this.props.imageJson} modal={this.modal}/> : null
                                 }
                                 {
-                                    this.state.path === '' ? <ActivityIndicator
+                                    this.state.path === ''&&!this.props.type === 'Show' ? <ActivityIndicator
                                         color="#aaaaaa"
                                         style={{
                                             position: 'absolute',
