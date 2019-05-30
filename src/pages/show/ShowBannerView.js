@@ -26,7 +26,7 @@ const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
 
 const HOME_REFRESH = 'homeRefresh';
-const width =  ScreenUtils.width - px2dp(30);
+const width = ScreenUtils.width - px2dp(30);
 const height = width * 120 / 345;
 @observer
 export default class ShowBannerView extends Component {
@@ -40,7 +40,7 @@ export default class ShowBannerView extends Component {
         </View>;
     };
 
-    _onPressRowWithItem=(item)=> {
+    _onPressRowWithItem = (item) => {
         let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode) || '';
         let params = homeModule.paramsNavigate(item);
         const { navigate } = this.props;
@@ -55,9 +55,9 @@ export default class ShowBannerView extends Component {
         });
 
         navigate(router, { ...params });
-    }
+    };
 
-    _onPressRow=(e)=> {
+    _onPressRow = (e) => {
         let index = e.nativeEvent.index;
         const { bannerList } = showBannerModules;
         let item = bannerList[index];
@@ -75,7 +75,7 @@ export default class ShowBannerView extends Component {
             });
             navigate(router, { ...params });
         }
-    }
+    };
 
     renderIndexView() {
         const { index } = this.state;
@@ -121,12 +121,17 @@ export default class ShowBannerView extends Component {
             items.push(value.image);
         });
 
-        return <View style={{height,marginVertical:px2dp(10)}}>
+        return <View style={{ height, marginVertical: px2dp(10) }}>
             {
                 bannerList.length === 1
                     ?
                     <TouchableWithoutFeedback onPress={() => this._onPressRowWithItem(bannerList[0])}>
-                        <View style={{ justifyContent: 'center', alignItems: 'center',borderRadius:px2dp(5),overflow:'hidden' }}>
+                        <View style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderRadius: px2dp(5),
+                            overflow: 'hidden'
+                        }}>
                             {this.renderRow(bannerList[0])}
                         </View>
                     </TouchableWithoutFeedback>
@@ -135,10 +140,10 @@ export default class ShowBannerView extends Component {
                     <MRBannerView
                         style={{
                             height: height,
-                            width: width,
-                            alignSelf:'center',
+                            width: width + 0.5,
+                            alignSelf: 'center'
                         }}
-                        itemWidth={width}
+                        itemWidth={width + 0.5}
                         autoInterval={5}
                         itemSpace={0}
                         itemRadius={5}
@@ -158,7 +163,7 @@ export default class ShowBannerView extends Component {
     }
 }
 
-export {width,height}
+export { width, height };
 
 let styles = StyleSheet.create({
     scroll: {
