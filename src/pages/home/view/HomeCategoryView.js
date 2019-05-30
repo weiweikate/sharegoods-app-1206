@@ -31,16 +31,17 @@ export default class HomeCategoryView extends Component {
             {   'categoryCode':data.id,
                 'categoryName':data.name,
                 'categoryLevel':data.level,
-                'categoryIndex':index+1,
+                'categoryIndex':index,
             });
         const { navigate } = this.props;
         navigate(data.route, {
+            searchType:11,
             fromHome: true,
             id: 1,
             linkTypeCode: data.linkTypeCode,
             code: data.linkTypeCode,
             keywords: data.name,
-            categoryId: data.id,
+            categoryId: data.id ,
             activityCode: data.linkTypeCode
         });
     }

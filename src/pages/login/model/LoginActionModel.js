@@ -149,6 +149,7 @@ const wxLoginAction = (callBack) => {
  */
 const codeLoginAction = (LoginParam, callBack) => {
     TrackApi.LoginButtonClick({'loginMethod':2})
+
     LoginAPI.codeLogin({
         authcode: '',
         code: LoginParam.code,
@@ -163,11 +164,11 @@ const codeLoginAction = (LoginParam, callBack) => {
         callBack(data);
         UserModel.saveUserInfo(data.data);
         UserModel.saveToken(data.data.token);
-        TrackApi.codeLoginSuccess();
         bridge.setCookies(data.data);
         DeviceEventEmitter.emit('homePage_message', null);
         DeviceEventEmitter.emit('contentViewed', null);
         bridge.$toast('登录成功');
+        TrackApi.codeLoginSuccess();
         homeModule.loadHomeList();
         //推送
         JPushUtils.updatePushTags();
