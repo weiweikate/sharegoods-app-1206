@@ -56,9 +56,17 @@ SINGLETON_FOR_CLASS(CommentTool)
                                                          [self saveNewTimeInterval:32];
                                                          [self goToAppStore];
                                                        }];
+  UIAlertAction *actionSubmit2 = [UIAlertAction actionWithTitle:@"无星好评"
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction * _Nonnull action) {
+                                                         
+                                                         [self saveNewTimeInterval:32];
+                                                         [self goToAppStore];
+                                                       }];
   
   [alterController addAction:actionCancel];
   [alterController addAction:actionSubmit];
+  [alterController addAction:actionSubmit2];
   [self.currentViewController_XG presentViewController:alterController animated:YES completion:^{}];
 }
 -(void)goToAppStore{
