@@ -359,6 +359,11 @@ export default class ShowListPage extends BasePage {
                                     userName: (detail.userInfoVO && detail.userInfoVO.userName)? detail.userInfoVO.userName: '',
                                     dec:''
                                 }}
+                                taskShareParams={{
+                                    uri: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
+                                    code: 22,
+                                    data: detail.showNo
+                                }}
                                 webJson={{
                                     title:detail.showType === 1 ? detail.content : detail.title,//分享标题(当为图文分享时候使用)
                                     linkUrl:`${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
