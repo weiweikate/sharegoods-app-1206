@@ -92,8 +92,12 @@ export default class ShowRichTextDetailPage extends BasePage {
                             pageState: PageLoadingState.success
                         });
                         Toast.hiddenLoading();
-                        this.showDetailModule.setDetail(this.params.data);
+                        let data = this.params.data;
+                        data.hotCount += 1;
+                        this.showDetailModule.setDetail(data);
+                        this.params.ref && this.params.ref.replaceData(this.params.index, data.hotCount);
                     }
+                    this.incrCountByType(6);
                 }
             }
         );

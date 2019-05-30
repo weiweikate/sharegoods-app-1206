@@ -87,13 +87,13 @@ export default class ProductListModal extends PureComponent {
                 <View style={styles.contain}>
                     <View style={styles.headerWrapper}>
                         <View style={{ flex: 1 }}/>
-                        <MRText>
+                        <MRText style={styles.modalTitle}>
                             {`共${this.props.products.length}个商品`}
                         </MRText>
                         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }}>
                             <TouchableWithoutFeedback onPress={this.props.requestClose}>
                             <View style={styles.closeWrapper}>
-                                <Image style={styles.closeIcon} source={button.close_icon}/>
+                                <Image resizeMode={'stretch'} style={styles.closeIcon} source={button.close_icon}/>
                             </View>
                             </TouchableWithoutFeedback>
                         </View>
@@ -181,6 +181,10 @@ var styles = StyleSheet.create({
         textDecorationLine:'line-through'
     },
     titleTextStyle:{
+        color:DesignRule.textColor_instruction,
+        fontSize:DesignRule.fontSize_secondTitle
+    },
+    modalTitle:{
         color:DesignRule.textColor_instruction,
         fontSize:DesignRule.fontSize_secondTitle
     }

@@ -80,7 +80,6 @@ export default class ShowDetailPage extends BasePage {
                     this.noNeedRefresh = true;
                     return;
                 }
-                this.incrCountByType(6);
                 const { state } = payload;
                 if (state && state.routeName === 'show/ShowDetailPage') {
                     Toast.showLoading();
@@ -99,6 +98,7 @@ export default class ShowDetailPage extends BasePage {
                         this.params.ref && this.params.ref.replaceData(this.params.index, data.hotCount);
 
                     }
+                    this.incrCountByType(6);
                 }
             }
         );
