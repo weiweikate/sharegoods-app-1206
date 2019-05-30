@@ -7,7 +7,7 @@ import {
     StyleSheet,
     NativeModules,
     Alert,
-    TouchableWithoutFeedback,
+    TouchableWithoutFeedback
 } from 'react-native';
 import ShowImageView from './ShowImageView';
 import res from './res';
@@ -80,7 +80,6 @@ export default class ShowDetailPage extends BasePage {
                     this.noNeedRefresh = true;
                     return;
                 }
-                this.incrCountByType(6);
                 const { state } = payload;
                 if (state && state.routeName === 'show/ShowDetailPage') {
                     Toast.showLoading();
@@ -99,6 +98,7 @@ export default class ShowDetailPage extends BasePage {
                         this.params.ref && this.params.ref.replaceData(this.params.index, data.hotCount);
 
                     }
+                    this.incrCountByType(6);
                 }
             }
         );
@@ -110,7 +110,7 @@ export default class ShowDetailPage extends BasePage {
         this.params.ref && this.params.ref.replaceItemData(this.params.index, JSON.stringify(detail));
     }
 
-    getDetailByIdOrCode=(code)=>{
+    getDetailByIdOrCode = (code) => {
         Toast.showLoading();
         this.showDetailModule.showDetailCode(code).then(() => {
             const { detail } = this.showDetailModule;
@@ -136,7 +136,7 @@ export default class ShowDetailPage extends BasePage {
             Toast.$toast(error.msg || '获取详情失败');
             Toast.hiddenLoading();
         });
-    }
+    };
 
     incrCountByType = (type) => {
         let showNo;
@@ -198,10 +198,6 @@ export default class ShowDetailPage extends BasePage {
     _goToShare() {
         const { pageState } = this.state;
         if (pageState === PageLoadingState.fail) {
-            return;
-        }
-        if (!user.isLogin) {
-            this.$navigate('login/login/LoginPage');
             return;
         }
         this.shareModal && this.shareModal.open();
@@ -384,7 +380,7 @@ export default class ShowDetailPage extends BasePage {
                                             height: px2dp(34),
                                             alignItems: 'center',
                                             justifyContent: 'center',
-                                            borderRadius:px2dp(17)
+                                            borderRadius: px2dp(17)
                                         }}
                         >
                             <Text style={{ color: DesignRule.white, fontSize: DesignRule.fontSize_threeTitle_28 }}>
@@ -435,10 +431,9 @@ export default class ShowDetailPage extends BasePage {
 
         addCartModel.requestProductDetail(code, (productIsPromotionPrice) => {
             this.setState({
-                productModalVisible:false
+                productModalVisible: false
             });
             this.SelectionPage.show(addCartModel, (amount, skuCode) => {
-                this.setState({productModalVisible:true})
                 const { prodCode, name, originalPrice } = addCartModel;
                 shopCartCacheTool.addGoodItem({
                     'amount': amount,
@@ -456,7 +451,6 @@ export default class ShowDetailPage extends BasePage {
                 });
             }, { sourceType: productIsPromotionPrice ? sourceType.promotion : null });
         }, (error) => {
-            this.setState({productModalVisible:true})
             this.$toastShow(error.msg || '服务器繁忙');
         });
     };
@@ -481,7 +475,6 @@ export default class ShowDetailPage extends BasePage {
         }
 
         let content = detail.content ? detail.content : '';
-
 
 
         return <View style={styles.container}>
@@ -517,7 +510,8 @@ export default class ShowDetailPage extends BasePage {
                     color: '#333333',
                     fontSize: DesignRule.fontSize_threeTitle,
                     paddingHorizontal: DesignRule.margin_page,
-                    marginTop: px2dp(10)
+                    marginTop: px2dp(10),
+                    letterSpacing: 1.5
                 }}>{content}</Text>
 
                 {this._otherInfoRender()}
@@ -542,23 +536,29 @@ export default class ShowDetailPage extends BasePage {
                 });
             }}/> : null}
 
-            <SelectionPage ref={(ref) => this.SelectionPage = ref} closeCallBack={()=>{this.setState({productModalVisible:true})}}/>
+            <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             type={'Show'}
                             trackEvent={'ArticleShare'}
                             trackParmas={{ articeCode: detail.code, articleTitle: detail.title }}
                             imageJson={{
-                                imageType:'show',
-                                imageUrlStr: detail.resource[0].url,
-                                titleStr: detail.content,
+                                imageType: 'show',
+                                imageUrlStr: detail.resource ? detail.resource[0].url : '', titleStr: detail.content,
                                 QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
                                 headerImage: (detail.userInfoVO && detail.userInfoVO.userImg) ? detail.userInfoVO.userImg : null,
-                                userName: (detail.userInfoVO && detail.userInfoVO.userName) ? detail.userInfoVO.userName : ''
+                                userName: (detail.userInfoVO && detail.userInfoVO.userName) ? detail.userInfoVO.userName : '',
+                                dec: ''
+                            }}
+                            taskShareParams={{
+                                uri: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
+                                code: 22,
+                                data: detail.showNo
                             }}
                             webJson={{
                                 title: detail.showType === 1 ? detail.content : detail.title,//分享标题(当为图文分享时候使用)
                                 linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
-                                thumImage: ''//(分享图标小图(https链接)图文分享使用)
+                                thumImage: '',//(分享图标小图(https链接)图文分享使用)
+                                dec: ''
                             }}
             />
             {detail.status !== 1 ? this._shieldRender() : null}

@@ -128,8 +128,8 @@
   if (!_titleNode) {
     _titleNode = [ASTextNode new];
     _titleNode.maximumNumberOfLines = 2;
-    if(_model.pureContent_1){
-    _titleNode.attributedText = [[NSAttributedString alloc]initWithString:_model.pureContent_1 attributes:@{
+    if(_model.title){
+    _titleNode.attributedText = [[NSAttributedString alloc]initWithString:_model.title attributes:@{
                                                                                                             NSFontAttributeName: [UIFont systemFontOfSize:12],
                                                                                                             NSForegroundColorAttributeName: [UIColor colorWithHexString:@"333333"]
                                                                                                             }];

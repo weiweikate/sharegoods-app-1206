@@ -84,7 +84,7 @@ export class IntervalMsgView extends React.Component {
                 <NoMoreClick style={styles.btn} onPress={() => this._onPress(showItem)}>
                     <UIImage style={styles.image} source={{ uri: headImg }}
                              isAvatar={true}/>
-                    <MRText style={styles.text}
+                    <MRText style={[styles.text, { marginRight: needForward ? px2dp(4) : px2dp(7) }]}
                             numberOfLines={1}>{content || ''}</MRText>
                     {needForward && <Image style={styles.arrow} source={white_go}/>}
                 </NoMoreClick>
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
         width: px2dp(22), height: px2dp(22), borderRadius: px2dp(11)
     },
     text: {
-        marginRight: px2dp(4), maxWidth: maxTextWidth,
+        maxWidth: maxTextWidth,
         fontSize: 10, color: DesignRule.white
     },
     arrow: {
