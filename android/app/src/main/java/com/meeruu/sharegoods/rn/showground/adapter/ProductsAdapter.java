@@ -46,7 +46,6 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.VH> {
             activityPrice = v.findViewById(R.id.activityPrice);
             name = v.findViewById(R.id.product_name);
             productImg = v.findViewById(R.id.product_img);
-            originalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
             cart = v.findViewById(R.id.cart);
         }
     }
@@ -85,7 +84,6 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.VH> {
                 }
             }
         });
-        vh.originalPrice.setText(bean.getOriginalPrice());
         long currentTime = System.currentTimeMillis();
         long startTime = 0, endTime = 0;
         try {
@@ -107,12 +105,15 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.VH> {
             showPrice = bean.getMinPrice();
         }
 
+        vh.originalPrice.setText(bean.getOriginalPrice());
         if (TextUtils.isEmpty(showPrice)) {
             vh.redRMB.setVisibility(View.GONE);
             vh.activityPrice.setText("");
+            vh.originalPrice.getPaint().setFlags(Paint.ANTI_ALIAS_FLAG);
         } else {
             vh.redRMB.setVisibility(View.VISIBLE);
             vh.activityPrice.setText(showPrice);
+            vh.originalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
         }
 
 

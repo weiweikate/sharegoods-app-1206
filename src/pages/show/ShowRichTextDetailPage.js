@@ -92,8 +92,12 @@ export default class ShowRichTextDetailPage extends BasePage {
                             pageState: PageLoadingState.success
                         });
                         Toast.hiddenLoading();
-                        this.showDetailModule.setDetail(this.params.data);
+                        let data = this.params.data;
+                        data.hotCount += 1;
+                        this.showDetailModule.setDetail(data);
+                        this.params.ref && this.params.ref.replaceData(this.params.index, data.hotCount);
                     }
+                    this.incrCountByType(6);
                 }
             }
         );
@@ -170,11 +174,6 @@ export default class ShowRichTextDetailPage extends BasePage {
         if (pageState === PageLoadingState.fail) {
             return;
         }
-        if (!user.isLogin) {
-            this.$navigate('login/login/LoginPage');
-            return;
-        }
-
         this.shareModal && this.shareModal.open();
     }
 
@@ -285,16 +284,6 @@ export default class ShowRichTextDetailPage extends BasePage {
             }]);
     };
 
-    // _bottomRender = () => {
-    //     return (
-    //         <View style={styles.bottom}>
-    //             <Image style={styles.bottomIcon}/>
-    //             <Text style={styles.bottomNumText}>
-    //                 999+
-    //             </Text>
-    //         </View>
-    //     );
-    // };
     reduceCountByType = (type) => {
         let showNo;
         if (this.params.id) {
@@ -402,7 +391,6 @@ export default class ShowRichTextDetailPage extends BasePage {
                 productModalVisible:false
             });
             this.SelectionPage.show(addCartModel, (amount, skuCode) => {
-                this.setState({productModalVisible:true})
                 const { prodCode, name, originalPrice } = addCartModel;
                 shopCartCacheTool.addGoodItem({
                     'amount': amount,
@@ -420,7 +408,6 @@ export default class ShowRichTextDetailPage extends BasePage {
                 });
             }, { sourceType: productIsPromotionPrice ? sourceType.promotion : null });
         }, (error) => {
-            this.setState({productModalVisible:true})
             this.$toastShow(error.msg || '服务器繁忙');
         });
     };
@@ -569,23 +556,25 @@ export default class ShowRichTextDetailPage extends BasePage {
                 });
             }}/> : null}
             {detail.status !== 1 ? this._shieldRender() : null}
-            <SelectionPage ref={(ref) => this.SelectionPage = ref}  closeCallBack={()=>{this.setState({productModalVisible:true})}}/>
+            <SelectionPage ref={(ref) => this.SelectionPage = ref} />
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             type={'Show'}
                             trackEvent={'ArticleShare'}
                             trackParmas={{ articeCode: detail.code, articleTitle: detail.title }}
                             imageJson={{
                                 imageType:'show',
-                                imageUrlStr: detail.resource[0].url,
+                                imageUrlStr: detail.resource ? detail.resource[0].url:"",
                                 titleStr: detail.title,
                                 QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
                                 headerImage: (detail.userInfoVO && detail.userInfoVO.userImg)? detail.userInfoVO.userImg: null,
-                                userName: (detail.userInfoVO && detail.userInfoVO.userName)? detail.userInfoVO.userName: ''
+                                userName: (detail.userInfoVO && detail.userInfoVO.userName)? detail.userInfoVO.userName: '',
+                                dec:''
                             }}
                             webJson={{
                                 title:detail.showType === 1 ? detail.content : detail.title,//分享标题(当为图文分享时候使用)
                                 linkUrl:`${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
-                                thumImage:''//(分享图标小图(https链接)图文分享使用)
+                                thumImage:'',//(分享图标小图(https链接)图文分享使用)
+                                dec:''
                             }}
             />
         </View>;

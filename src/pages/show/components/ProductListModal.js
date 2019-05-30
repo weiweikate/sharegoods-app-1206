@@ -31,7 +31,7 @@ export default class ProductListModal extends PureComponent {
     _renderItem = (data, index) => {
         let showPrice = 0;
         const { singleActivity = {}, groupActivity = {} } = data.promotionResult || {};
-        const { endTime: endTimeT, startTime: startTimeT, currentTime = this.props.now } = groupActivity && groupActivity.type ? groupActivity : singleActivity;
+        const { endTime: endTimeT, startTime: startTimeT, currentTime =  Date.parse( new Date()) } = groupActivity && groupActivity.type ? groupActivity : singleActivity;
         if (currentTime > startTimeT && currentTime < endTimeT + 500) {
             showPrice = data.promotionMinPrice;
         } else {
@@ -87,13 +87,13 @@ export default class ProductListModal extends PureComponent {
                 <View style={styles.contain}>
                     <View style={styles.headerWrapper}>
                         <View style={{ flex: 1 }}/>
-                        <MRText>
+                        <MRText style={styles.modalTitle}>
                             {`共${this.props.products.length}个商品`}
                         </MRText>
                         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }}>
                             <TouchableWithoutFeedback onPress={this.props.requestClose}>
                             <View style={styles.closeWrapper}>
-                                <Image style={styles.closeIcon} source={button.close_icon}/>
+                                <Image resizeMode={'stretch'} style={styles.closeIcon} source={button.close_icon}/>
                             </View>
                             </TouchableWithoutFeedback>
                         </View>
@@ -181,6 +181,10 @@ var styles = StyleSheet.create({
         textDecorationLine:'line-through'
     },
     titleTextStyle:{
+        color:DesignRule.textColor_instruction,
+        fontSize:DesignRule.fontSize_secondTitle
+    },
+    modalTitle:{
         color:DesignRule.textColor_instruction,
         fontSize:DesignRule.fontSize_secondTitle
     }

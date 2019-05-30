@@ -345,7 +345,7 @@
   //时间转时间戳的方法:
   NSInteger timeSp = [[NSNumber numberWithDouble:[datenow timeIntervalSince1970]] integerValue];
 
-  return timeSp;
+  return timeSp*1000;
 
 }
 @end
