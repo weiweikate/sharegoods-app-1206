@@ -286,18 +286,18 @@
 -(NSMutableAttributedString *)getPriceAttribute:(NSString*)price oldPrice:(NSString*)oldPrice{
     CGFloat priceF = [price floatValue];
     CGFloat oldPriceF = [oldPrice floatValue];
-
-  NSString *str = [NSString stringWithFormat:@"¥%@",[self decimalNumberWithDouble: priceF]];
+  NSString *str = price.length>0?[NSString stringWithFormat:@"¥%@",[self decimalNumberWithDouble: priceF]]:@"";
   NSString *oldStr = [NSString stringWithFormat:@"¥%@",[self decimalNumberWithDouble: oldPriceF]] ;
     NSInteger len = str.length;
     NSString * string = [NSString stringWithFormat:@"%@  %@",str,oldStr];
     NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc]
                                           initWithString:string];
 
+  if(price.length>0){
     [attrStr addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:NSMakeRange(0, len)];
     [attrStr addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:15] range:NSMakeRange(1, len)];
     [attrStr addAttribute:NSStrikethroughStyleAttributeName value:@(1) range:NSMakeRange(len+2, oldStr.length)];
-
+  }
     return attrStr;
 }
 
@@ -317,11 +317,11 @@
     }else{
       selectModel=singleModel;
     }
-    if(([self getNowTimestamp]< [selectModel.endTime integerValue]+500)&&([self getNowTimestamp]< [selectModel.startTime integerValue])){
-      return model.promotionMinPrice? [NSString stringWithFormat:@"%lf" ,model.promotionMinPrice]:@"0.00";
+    if(([self getNowTimestamp]< [selectModel.endTime integerValue]+500)&&([self getNowTimestamp]>[selectModel.startTime integerValue])){
+      return model.promotionMinPrice>0? [NSString stringWithFormat:@"%lf" ,model.promotionMinPrice]:@"";
     }
   }
-  return [NSString stringWithFormat:@"%lf" ,model.minPrice];
+  return model.minPrice>0?[NSString stringWithFormat:@"%lf" ,model.minPrice]:@"";
 }
 
 -(NSInteger)getNowTimestamp{
