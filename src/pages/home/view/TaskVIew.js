@@ -12,8 +12,6 @@
 
 'use strict';
 
-import RouterMap ,{navigate} from '../../../navigation/RouterMap';
-
 const BoxStatusClose = 0;
 const BoxStatusCanOpen = 1;
 const BoxStatusOpen = 2;
@@ -41,7 +39,8 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import taskModel, { mineTaskModel } from '../model/TaskModel';
-import { mediatorCallFunc } from '../../../SGMediator';
+import TaskModalView from './TaskModalView';
+import { IntervalMsgNavigate } from '../../../comm/components/IntervalMsgView';
 const { autoSizeWidth } = ScreenUtils;
 const {arrow_red_bottom,
     arrow_red_top,
@@ -63,20 +62,6 @@ const {task_progress,
 // 分享类型
 //
 // url
-
-function getParams(interactiveCode,interactiveValue) {
-    let routerNames = {'10': RouterMap.ProductDetailPage}
-    let data = {};
-    data.routerName = routerNames[interactiveCode];
-    data.params = {shareNotifyParam: {}}
-    switch (interactiveCode) {
-        case '10':
-            data.params = {productCode: interactiveValue, shareNotifyParam: {code: interactiveCode, data: interactiveValue}};
-            break
-    }
-
-    return data;
-}
 
 class TaskItem extends React.Component {
     constructor(props) {
@@ -170,9 +155,7 @@ class TaskItem extends React.Component {
             this.props.model.getMissionPrize(item, subTask)
         }else if (item.status === TaskStatusUndone ) {
             let {interactiveCode, interactiveValue} = item
-            let data =  getParams(interactiveCode,interactiveValue)
-            navigate(data.routerName, data.params)
-            mediatorCallFunc('Home_ShareNotify',{...data.params.shareNotifyParam, type: 1, uri: ''})
+            IntervalMsgNavigate(parseInt(interactiveCode), interactiveValue);
         }
     }
 
@@ -390,6 +373,7 @@ export default class TaskVIew extends React.Component {
                     />
                 </View>
                 {this.renderBtn()}
+                <TaskModalView type = {type}/>
             </View>
         );
     }

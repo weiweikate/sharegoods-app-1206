@@ -250,7 +250,7 @@ class HomeModalManager {
             return;
         }
         HomeAPI.getWinningInfo({}).then(data => {
-            if (data.data){
+            if (data.data && data.data.popUp){
                 this.needShowPrize = true;
                 this.prizeData = data.data;
                 if (!this.isShowUpdate && !this.isShowNotice && !this.isShowAd && !this.isShowGift){
@@ -267,8 +267,8 @@ class HomeModalManager {
     @action
     getGift() {
         HomeAPI.getPopupBox({popupBoxType: 1}).then(data => {
-            if (data.data && data.data.length > 0){
-                let item = data.data[0];
+            if (data.data){
+                let item = data.data;
                 this.needShowGift = true;
                 this.giftData = {image: item.imgUrl, linkTypeCode: item.linkTypeCode, linkType: homeLinkType.link};
             }
