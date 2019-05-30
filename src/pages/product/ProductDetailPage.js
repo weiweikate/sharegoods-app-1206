@@ -37,7 +37,7 @@ import DetailHeaderScoreView from './components/DetailHeaderScoreView';
 import DetailParamsModal from './components/DetailParamsModal';
 import { ContentSectionView, SectionLineView, SectionNullView } from './components/ProductDetailSectionView';
 import ProductDetailNavView from './components/ProductDetailNavView';
-import { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
+import { IntervalMsgView, IntervalType, IntervalMsgType} from '../../comm/components/IntervalMsgView';
 
 /**
  * @author chenyangjun
@@ -323,13 +323,10 @@ export default class ProductDetailPage extends BasePage {
                                 linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`,
                                 thumImage: imgUrl
                             }}
-                            miniProgramJson={{
-                                title: isSkillIn ? '超值秒杀!' : `${nameShareText}`,
-                                dec: isSkillIn ? '[秀购]发现一个很给力的活动,快去看看!' : '商品详情',
-                                thumImage: 'logo.png',
-                                hdImageURL: imgUrl,
-                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`,
-                                miniProgramPath: `/pages/index/index?type=99&id=${prodCode}&inviteId=${user.code || ''}`
+                            taskShareParams={{
+                                uri: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`,
+                                code: IntervalMsgType.productDetail,
+                                data: prodCode
                             }}/>
             <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
             <DetailHeaderServiceModal ref={(ref) => this.DetailHeaderServiceModal = ref}/>
