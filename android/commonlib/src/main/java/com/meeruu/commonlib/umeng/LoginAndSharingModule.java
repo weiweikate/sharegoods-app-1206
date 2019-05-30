@@ -1234,8 +1234,8 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             shareImageBean.setUserName("");
         }
 
-        if (map.hasKey("diamondNum")) {
-            shareImageBean.setDiamondNum(map.getString("diamondNum"));
+        if (map.hasKey("other")) {
+            shareImageBean.setDiamondNum(map.getString("other"));
         } else {
             shareImageBean.setDiamondNum("");
         }
