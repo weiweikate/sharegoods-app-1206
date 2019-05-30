@@ -45,7 +45,16 @@ const api = {
     //新手礼包
     getPopupBox: ['/popup/getPopupBoxByType', {method: 'get'}],
     //开奖结果
-    getWinningInfo: ['/welfare/getWinningInfo', {method: 'get'}]
+    getWinningInfo: ['/welfare/getWinningInfo', {method: 'get'}],
+    /** 任务相关接口*/
+    // 领取活动奖励(activityNo,ruleId必填)
+    getActivityPrize: ['/mission/getActivityPrize', { method: 'post' }],
+    //获取用户任务活动页相关数据(用户任务活动列表页数据查询)
+    getMissionActivity: ['/mission/getMissionActivity', { method: 'get' }],
+    //领取任务奖励(missionNo,missionType必填)
+    getMissionPrize: ['/mission/getMissionPrize', {method: 'post'}],
+    //统一分享通知
+    shareNotify: ['/mission/shareNotify', {method: 'post'}]
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 

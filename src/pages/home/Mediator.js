@@ -1,6 +1,12 @@
 import { mediatorAddFunc } from '../../SGMediator';
+import homeApi from './api/HomeAPI'
 import homeModalManager from './manager/HomeModalManager'
-mediatorAddFunc('RequestNoviceGift',()=>{
+//请求新手福利接口
+mediatorAddFunc('Home_RequestNoviceGift',()=>{
     homeModalManager.getGift();
+})
+//分享完成，调用接口告诉后台分享完成
+mediatorAddFunc('Home_ShareNotify', (p) => {
+    homeApi.shareNotify({from: 1, ...p});
 })
 

@@ -8,83 +8,167 @@
  * Created by huchao on 2019/5/23.
  *
  */
+
 'use strict';
 
 import { observable, action } from 'mobx';
-// import HomeApi from '../api/HomeAPI';
+import HomeApi from '../api/HomeAPI';
 
 import ScreenUtil from '../../../utils/ScreenUtils';
 
 const { px2dp } = ScreenUtil;
 
 import { homeModule } from './Modules';
+import bridge from '../../../utils/bridge';
+
+const activity_mission_main_no = 'activity_mission_main_no'    // 主线任务
+const activity_mission_daily_no = 'activity_mission_daily_no'     // 日常任务
+
+class TaskModel  {
+    type = 'home'
+    @observable
+    show = false
+    @observable
+    progress = 0;
+    @observable
+    totalProgress = 10;
+    @observable
+    boxs = []
+    @observable
+    homeHeight = 0 //
+    @observable
+    expanded = false;
+    @observable
+    tasks = []
+    @observable
+    hideFinishTask = true;
+    @observable
+    advMsg = ''
+    @observable
+    name = ''
+    activityNo = ''
+
+    @action
+    getData(){
+        HomeApi.getMissionActivity({activityType: this.type === 'home'? activity_mission_main_no: activity_mission_daily_no}).then((result)=> {
+            let data = result.data || {};
+            this.progress = data.activityValue || 0;
+            this.boxs = data.ruleList || [];
+            let tasks = data.missionList || [];
+            this.tasks = this.sort(tasks)
+            this.name = data.name;
+            this.advMsg = data.advMsg
+            if (result.data) {
+                this.show = true;
+            }else {
+                this.show = false;
+            }
+            this.activityNo = data.no;
+            //取数组里面最后面的value为进度条的总值
+            let length = data.ruleList.length;
+            if (length > 0 && data.ruleList[length-1].value >  this.progress) {
+                this.totalProgress = data.ruleList[length-1].value;
+            }
+            if (this.type === 'home') {
+                this.calculateHomeHeight();
+            }
+        })
+    }
+
+    sort(data){
+        if (data.length < 2){
+            return data;
+        }
+        let finishData = [];
+        let unData = [];
+        for (let i = 0; i< data.length; i++){
+            let item = data[i]
+            if (item.status === 2){
+                let subMissions = item.subMissions || [];
+                subMissions = subMissions.filter((item) => {
+                    return item.status !== 2
+                });
+                if (subMissions.length === 0){
+                    finishData.push(item);
+                    continue
+                }
+            }
+            unData.push(item);
+        }
+        return [...unData, ...finishData];
+    }
 
 
+    @action
+    expandedClick() {
+        this.expanded = !this.expanded;
+        if (this.type === 'home') {
+            this.calculateHomeHeight();
+        }
+    }
 
- class TaskModel  {
-     type = 'home'
-     @observable
-     show = false
-     @observable
-     progress = 40
-     @observable
-     boxs = []
-     @observable
-     homeHeight = 0 //
-     @observable
-     expanded = false;
-     @observable
-     tasks = []
+    @action
+    hideFinishTaskClick(){
+        this.hideFinishTask =  !this.hideFinishTask;
+    }
 
+    @action
+    boxClick(box) {
+        bridge.showLoading();
+        HomeApi.getActivityPrize({activityNo: this.activityNo, ruleId: box.id}).then(data=> {
+            this.boxs = this.boxs.map((item) => {
+                if(item.id === box.id){
+                    item.prizeStatus = 2
+                }
+                return item
+            })
+            alert(JSON.stringify(data.data));
+            bridge.hiddenLoading();
+        }).catch(err => {
+            bridge.$toast(err.msg)
+            bridge.hiddenLoading();
+        })
+    }
+    @action
+    getMissionPrize(item,isSubTask){
+        bridge.showLoading();
+        HomeApi.getMissionPrize({activityNo: this.activityNo, missionNo: item.no, missionType: item.type}).then(data=> {
+            bridge.hiddenLoading();
+            this.tasks = this.tasks.map((tasks) => {
+                if (!isSubTask) {
+                    if (tasks.no === item.no){
+                        tasks.status = 2
+                    }
+                }else if (tasks.subMissions) {
+                    tasks.subMissions = tasks.subMissions.map(subTask => {
+                        if (subTask.no === item.no){
+                            subTask.status = 2
+                        }
+                        return subTask
+                    })
+                }
+                return tasks;
+            })
+            this.progress = this.progress + item.prizeValue;
+            this.boxs =  this.boxs.map(box => {
+                if (this.progress >= box.value &&  box.prizeStatus === 0){
+                    box.prizeStatus = 1;
+                }
+                return box;
+            })
+            alert(JSON.stringify(data.data));
+        }).catch(err => {
+            bridge.$toast(err.msg)
+            bridge.hiddenLoading();
+        })
 
-     @action
-     getData(){
-        this.boxs = [{name: '50', status: 2},
-            {name: '50', status: 2},
-            {name: '50', status: 1},
-            {name: '50', status: 0},
-            {name: '50', status: 0}];
-        this.show = true;
-        this.tasks = [{name:'分享飞机撒了房间（2/3）',  integral: 30, status: 0,
-            subTasks:[{name:'分享飞机撒了房间1',  integral: 30, status: 0},
-                      {name:'分享飞机撒了房间2',  integral: 30, status: 1},
-                      {name:'分享飞机撒了房间3',  integral: 30, status: 2}
-            ]},
-            {name:'分享飞机撒了房间',  integral: 40, status: 1, subTasks:[]},
-            {name:'分享飞机撒了房间',  integral: 40, status: 2, subTasks:[]}
-        ]
-         if (this.type === 'home') {
-             this.calculateHomeHeight();
-         }
-         setTimeout(()=>{
-             this.tasks = [{name:'分享飞机撒了房间（2/3）',  integral: 30, status: 0,
-                 subTasks:[{name:'分享飞机撒了房间1',  integral: 30, status: 0},
-                     {name:'分享飞机撒了房间2',  integral: 30, status: 1},
-                     {name:'分享飞机撒了房间3',  integral: 30, status: 2}
-                 ]},
-                 {name:'分享飞机撒了房间',  integral: 40, status: 1, subTasks:[]},
-                 {name:'分享飞机撒了房间',  integral: 40, status: 2, subTasks:[]},
-                 {name:'分享飞机撒了房间',  integral: 40, status: 1, subTasks:[]},
-                 {name:'分享飞机撒了房间',  integral: 40, status: 2, subTasks:[]}
-             ]
-         },5000)
-     }
-
-
-     @action
-     expandedClick()
-     {
-         this.expanded = !this.expanded;
-         if (this.type === 'home') {
-             this.calculateHomeHeight();
-         }
-     }
+    }
 
     @action
     calculateHomeHeight(){
-         let homeHeight = 0;
+        let homeHeight = 0;
         if (!this.show){
-           homeHeight = 0;
+            homeHeight = 0;
         } else {
             if (this.expanded){
                 homeHeight = px2dp(48+383);
@@ -96,7 +180,7 @@ import { homeModule } from './Modules';
             this.homeHeight = homeHeight;
             homeModule.changeHomeList();
         }
-   }
+    }
 
 
 }

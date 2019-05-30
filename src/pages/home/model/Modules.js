@@ -139,10 +139,9 @@ class HomeModule {
             id: 2,
             type: homeType.user
         }, {
-            id: 11,
+            id: 12,
             type: homeType.task
-        }
-        , {
+        }, {
             id: 3,
             type: homeType.channel
         }, {
