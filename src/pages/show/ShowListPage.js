@@ -356,12 +356,14 @@ export default class ShowListPage extends BasePage {
                                     titleStr: detail.showType === 1 ? detail.content : detail.title,
                                     QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
                                     headerImage: (detail.userInfoVO && detail.userInfoVO.userImg) ? detail.userInfoVO.userImg : null,
-                                    userName: (detail.userInfoVO && detail.userInfoVO.userName)? detail.userInfoVO.userName: ''
+                                    userName: (detail.userInfoVO && detail.userInfoVO.userName)? detail.userInfoVO.userName: '',
+                                    dec:''
                                 }}
                                 webJson={{
                                     title:detail.showType === 1 ? detail.content : detail.title,//分享标题(当为图文分享时候使用)
                                     linkUrl:`${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
-                                    thumImage:''//(分享图标小图(https链接)图文分享使用)
+                                    thumImage:'',//(分享图标小图(https链接)图文分享使用)
+                                    dec:''
                                 }}
                 /> :null}
 

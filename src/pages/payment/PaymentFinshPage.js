@@ -16,6 +16,7 @@ import { NavigationActions } from 'react-navigation';
 import { TrackApi } from '../../utils/SensorsTrack';
 import ShareUtil from '../../utils/ShareUtil';
 import user from '../../model/user';
+import PaymentApi from './PaymentApi';
 // import PaymentApi from './PaymentApi';
 
 const { px2dp } = ScreenUtils;
@@ -66,6 +67,14 @@ export default class PaymentFinshPage extends BasePage {
         // }).catch(err=>{
         //
         // })
+
+        PaymentApi.getUserCouponAmount(
+            {
+                couponIdList:81
+            }
+        ).then(result=>{
+            console.log(result);
+        });
 
         setTimeout(() => {
             this.setState({

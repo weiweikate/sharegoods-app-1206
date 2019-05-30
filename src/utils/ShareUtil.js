@@ -35,7 +35,7 @@ const onShare = (data, api, trackParmas,trackEvent, callback = () => {}, luckyDr
     }
 
     if(params.platformType === 1 || params.platformType === 4){
-        params.title = params.dec.length > 0 ? params.title + ',' + params.dec : params.title + '!';
+        params.title = params.dec&&params.dec.length > 0 ? params.title + ',' + params.dec : params.title;
     }
 
     if (trackEvent) {

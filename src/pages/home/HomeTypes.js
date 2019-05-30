@@ -1,3 +1,4 @@
+
 export const homeType = {
     swiper: 2,           // 首页顶部轮播
     expandBanner: 3,     // 首页通栏广告位
@@ -56,7 +57,7 @@ export const homeRoute = {
     [homeLinkType.link]: 'HtmlPage',
     [homeLinkType.lottery]: 'HtmlPage',
     [homeLinkType.customTopic]: 'HtmlPage',
-    [homeLinkType.discover]: 'show/ShowDetailPage',
+    [homeLinkType.discover]: 'show/ShowRichTextDetailPage',
     [homeLinkType.exp]: 'product/xpProduct/XpDetailPage',
     [homeLinkType.classify]: 'home/search/SearchResultPage',
     [homeLinkType.nothing]: '',  // 不做跳转
