@@ -95,6 +95,7 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
         String titleStr = item.getContent();
         if(titleStr != null && titleStr.trim().length() > 0){
             title.setText(titleStr);
+            title.setVisibility(View.VISIBLE);
         }else {
             title.setVisibility(View.GONE);
         }

@@ -20,6 +20,7 @@ const { px2dp } = ScreenUtil;
 
 import { homeModule } from './Modules';
 import bridge from '../../../utils/bridge';
+import { get, save } from '@mr/rn-store';
 
 const activity_mission_main_no = 'activity_mission_main_no'    // 主线任务
 const activity_mission_daily_no = 'activity_mission_daily_no'     // 日常任务
@@ -47,6 +48,23 @@ class TaskModel  {
     @observable
     name = ''
     activityNo = ''
+    @observable
+    openAlert = false;
+    @observable
+    alertData = [];
+
+  @action
+  getLocationExpanded() {
+      get("task_expanded_").then((data) => {
+          // alert(data)
+          if (data) {
+              this.expanded = data.expanded;
+          }
+      })
+      if (this.type === 'home') {
+          this.calculateHomeHeight();
+      }
+  }
 
     @action
     getData(){
@@ -102,6 +120,7 @@ class TaskModel  {
     @action
     expandedClick() {
         this.expanded = !this.expanded;
+        save("task_expanded_"+ this.type,{expanded: this.expanded});
         if (this.type === 'home') {
             this.calculateHomeHeight();
         }
@@ -110,6 +129,12 @@ class TaskModel  {
     @action
     hideFinishTaskClick(){
         this.hideFinishTask =  !this.hideFinishTask;
+    }
+
+    @action
+    closeAlert(){
+        this.openAlert = false;
+        this.alertData = [];
     }
 
     @action
@@ -122,7 +147,8 @@ class TaskModel  {
                 }
                 return item
             })
-            alert(JSON.stringify(data.data));
+            this.openAlert = true;
+            this.alertData = data.data.prizeList || [];
             bridge.hiddenLoading();
         }).catch(err => {
             bridge.$toast(err.msg)
@@ -143,6 +169,10 @@ class TaskModel  {
                     tasks.subMissions = tasks.subMissions.map(subTask => {
                         if (subTask.no === item.no){
                             subTask.status = 2
+                            tasks.complete ++;
+                            if (tasks.complete === tasks.total){
+                                tasks.status = 2
+                            }
                         }
                         return subTask
                     })
@@ -156,7 +186,8 @@ class TaskModel  {
                 }
                 return box;
             })
-            alert(JSON.stringify(data.data));
+            this.openAlert = true;
+            this.alertData = data.data.prizeList || [];
         }).catch(err => {
             bridge.$toast(err.msg)
             bridge.hiddenLoading();
@@ -186,8 +217,10 @@ class TaskModel  {
 }
 
 const taskModel = new TaskModel();
+taskModel.getLocationExpanded();
 const mineTaskModel = new TaskModel();
 mineTaskModel.type = 'mine';
+mineTaskModel.getLocationExpanded();
 
 export default taskModel;
 export {mineTaskModel};

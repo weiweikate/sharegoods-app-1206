@@ -551,8 +551,7 @@ class AfterSaleServicePage extends BasePage {
             });
         } else {
             track(trackEvent.ApplyReturn, {
-                applicationCode: this.state.productData.warehouseOrderNo,//申请单号
-                orderId: orderProductNo, //订单id
+                orderId: this.state.productData.warehouseOrderNo, //订单id
                 returnType: pageType + 1,//退款类型
                 actualPaymentAmount:  payAmount,// 用户实际支付金额
             });

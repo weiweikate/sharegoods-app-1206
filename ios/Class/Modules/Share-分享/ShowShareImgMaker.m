@@ -165,7 +165,7 @@
   CGFloat imageHeght = 667*i;
 
     NSMutableArray *nodes = [NSMutableArray new];
-    NSString *contentStr = model.titleStr;
+    NSString *contentStr = model.other;
     NSString *nameStr = model.userName;
 
     CGFloat sigle =  [@"1" getStringHeightWithfontSize:13*i viewWidth:315*i];
@@ -179,14 +179,14 @@
     }
     //底图片
     [nodes addObject:@{
-                       @"value": [images[0] boxblurWithBlurNumber:0.9] ,
+                       @"value": [images[0] boxblurWithBlurNumber:0.5] ,
                        @"locationType": @"rect",
                        @"location": [NSValue valueWithCGRect:CGRectMake(0, 0, 375*i, 667*i)]}
      ];
 
 
   //模糊图片
-  UIImage * bgImg = [UIImage imageWithColor:[[UIColor grayColor] colorWithAlphaComponent:0.6]];
+  UIImage * bgImg = [UIImage imageWithColor:[[UIColor whiteColor] colorWithAlphaComponent:0.3]];
 
   [nodes addObject:@{
                      @"value": bgImg,

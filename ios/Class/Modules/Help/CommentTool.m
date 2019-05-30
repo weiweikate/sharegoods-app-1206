@@ -40,16 +40,23 @@ SINGLETON_FOR_CLASS(CommentTool)
  @param timeInterval 间隔天数
  */
 -(void)showAlterWith:(NSInteger)timeInterval{
-  UIAlertController *alterController = [UIAlertController alertControllerWithTitle:@"温馨提示"
-                                                                           message:@"为秀购点个赞，鼓励鼓励我们的小伙伴"
+  UIAlertController *alterController = [UIAlertController alertControllerWithTitle:@"五星鼓励"
+                                                                           message:@"给个评论吧，您的反馈将是我们前进的动力"
                                                                     preferredStyle:UIAlertControllerStyleAlert];
-  UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"算了"
+  UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"在逛一会"
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * _Nonnull action) {
                                                          [self saveNewTimeInterval:timeInterval];
                                                        }];
   
-  UIAlertAction *actionSubmit = [UIAlertAction actionWithTitle:@"好嘞"
+  UIAlertAction *actionSubmit = [UIAlertAction actionWithTitle:@"我要吐槽"
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction * _Nonnull action) {
+                                                         
+                                                         [self saveNewTimeInterval:32];
+                                                         [self goToAppStore];
+                                                       }];
+  UIAlertAction *actionSubmit2 = [UIAlertAction actionWithTitle:@"无星好评"
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * _Nonnull action) {
                                                          
@@ -59,6 +66,7 @@ SINGLETON_FOR_CLASS(CommentTool)
   
   [alterController addAction:actionCancel];
   [alterController addAction:actionSubmit];
+  [alterController addAction:actionSubmit2];
   [self.currentViewController_XG presentViewController:alterController animated:YES completion:^{}];
 }
 -(void)goToAppStore{

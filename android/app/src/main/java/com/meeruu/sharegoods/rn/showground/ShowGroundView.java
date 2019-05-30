@@ -134,6 +134,10 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
             }
         });
         adapter.setEnableLoadMore(true);
+        View emptyView=LayoutInflater.from(context).inflate(R.layout.show_empty_view, null);
+        emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+        adapter.setEmptyView(emptyView);
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
@@ -283,8 +287,8 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
                 public void run() {
                     NewestShowGroundBean.DataBean bean = data.get(index);
                     bean.setHotCount(clickNum);
-//                    adapter.replaceData(data);
-                    adapter.setData(index,bean);
+                    adapter.replaceData(data);
+//                    adapter.setData(index,bean);
 
                 }
             }, 200);
@@ -316,8 +320,8 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
                 public void run() {
                     NewestShowGroundBean.DataBean bean = JSON.parseObject(value, NewestShowGroundBean.DataBean.class);
                     data.set(index, bean);
-//                    adapter.replaceData(data);
-                    adapter.setData(index,bean);
+                    adapter.replaceData(data);
+//                    adapter.setData(index,bean);
                 }
             }, 200);
         }

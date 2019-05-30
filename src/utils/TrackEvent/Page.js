@@ -14,6 +14,11 @@ const  pageModular = {
         'name':'ViewSpecialTopicPage',
         'params':{}
     },
+    'SpecialTopicPagelistClick':{
+        'des':'专题列表item的点击',
+        'name':'SpecialTopicPagelistClick',
+        'params':{}
+    },
     'xiuChang':{
         'des': '秀场页面预览',
         'name':'ViewXiuChang',

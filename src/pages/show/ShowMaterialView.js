@@ -21,6 +21,7 @@ import ShowApi from './ShowApi';
 import EmptyUtils from '../../utils/EmptyUtils';
 import apiEnvironment from '../../api/ApiEnvironment';
 import ShowUtils from './utils/ShowUtils';
+import RouterMap from '../../navigation/RouterMap';
 
 @observer
 export default class ShowMaterialView extends React.Component {
@@ -133,6 +134,9 @@ export default class ShowMaterialView extends React.Component {
                                                index: nativeEvent.index
                                            });
                                        }}
+                                       onPressProduct={({ nativeEvent }) => {
+                                           this.props.navigate(RouterMap.ProductDetailPage, { productCode: nativeEvent.prodCode });
+                                       }}
 
                                        onAddCartClick={({ nativeEvent }) => {
                                            // alert(nativeEvent.prodCode);
@@ -188,10 +192,6 @@ export default class ShowMaterialView extends React.Component {
 
 
                                        onSharePress={({ nativeEvent }) => {
-                                           if (!user.isLogin) {
-                                               this.props.navigate('login/login/LoginPage');
-                                               return;
-                                           }
                                            this.shareModal && this.shareModal.open();
                                            this.props.onShare(nativeEvent);
 

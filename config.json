@@ -135,7 +135,7 @@
         },
         "杨飞": {
             "name": "杨飞",
-            "host": "http://172.18.7.123:18096/gateway",
+            "host": "http://172.18.6.113:18096/gateway",
             "h5": "https://uath5.sharegoodsmall.com"
         },
         "顾嘉豪": {
@@ -217,7 +217,7 @@
             "host": "http://172.18.6.62:8903/gateway",
             "oss": "https://testh5.sharegoodsmall.com",
             "h5": "http://testh5.sharegoodsmall.com",
-            "wxAppletKey": "gh_aa91c3ea0f6c",
+            "wxAppletKey": "gh_aa91c3ea0f6c"
         }
     }
 
