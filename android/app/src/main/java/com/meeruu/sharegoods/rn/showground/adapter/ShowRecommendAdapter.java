@@ -43,6 +43,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
     private NineGridView.clickL clickL;
     private ProductsAdapter.AddCartListener addCartListener;
     private ProductsAdapter.PressProductListener pressProductListener;
+
     public ShowRecommendAdapter(NineGridView.clickL clickL, ProductsAdapter.AddCartListener addCartListener, ProductsAdapter.PressProductListener pressProductListener) {
 
 //        super(R.layout.item_showground_image_goods);
@@ -81,6 +82,9 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         final SimpleDraweeView userIcon = helper.getView(R.id.user_icon);
         String userTag = (String) userIcon.getTag();
         String userUrl = item.getUserInfoVO().getUserImg();
+        if (TextUtils.isEmpty(userUrl)) {
+            userUrl = "res://" + userIcon.getContext().getPackageName() + "/" + R.drawable.bg_app_img;
+        }
         if (!TextUtils.equals(userUrl, userTag)) {
             ImageLoadUtils.loadCircleNetImage(userUrl, userIcon);
             userIcon.setTag(userUrl);
@@ -89,35 +93,37 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         TextView name = helper.getView(R.id.user_name);
         name.setText(item.getUserInfoVO().getUserName());
 
-
+        TextView publishTime = helper.getView(R.id.publish_time);
         if (!TextUtils.isEmpty(item.getPublishTimeStr())) {
-            TextView publishTime = helper.getView(R.id.publish_time);
             publishTime.setText(item.getPublishTimeStr());
+        }else {
+            publishTime.setText("");
         }
 
         TextView like = helper.getView(R.id.like_num);
-        like.setText(item.getLikesCount()+"");
+        like.setText(item.getLikesCount() + "");
 
         TextView title = helper.getView(R.id.title);
-        title.setText(item.getTitle()+"");
+        title.setText(item.getTitle() + "");
 
         SimpleDraweeView simpleDraweeView = helper.getView(R.id.image);
         if (item.getResource() != null) {
             String url = item.getResource().get(0).getUrl();
-            ImageLoadUtils.loadRoundNetImage(url, simpleDraweeView,5);
-        }else {
+            ImageLoadUtils.loadRoundNetImage(url, simpleDraweeView, 5);
+            simpleDraweeView.setVisibility(View.VISIBLE);
+        } else {
             simpleDraweeView.setVisibility(View.GONE);
         }
 
         ImageView hand = helper.getView(R.id.icon_hand);
-        if(item.isLike()){
+        if (item.isLike()) {
             hand.setImageResource(R.drawable.icon_like);
-        }else {
+        } else {
             hand.setImageResource(R.drawable.icon_hand);
         }
-        helper.addOnClickListener(R.id.icon_hand,R.id.icon_share);
-
+        helper.addOnClickListener(R.id.icon_hand, R.id.icon_share);
     }
+
 
     private void convertDynamic(final BaseViewHolder helper, final NewestShowGroundBean.DataBean item) {
         final FolderTextView content = helper.getView(R.id.content);
@@ -125,19 +131,25 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         final SimpleDraweeView userIcon = helper.getView(R.id.user_icon);
         String userTag = (String) userIcon.getTag();
         String userUrl = item.getUserInfoVO().getUserImg();
+        if (TextUtils.isEmpty(userUrl)) {
+            userUrl = "res://" + userIcon.getContext().getPackageName() + "/" + R.drawable.bg_app_img;
+        }
         if (!TextUtils.equals(userUrl, userTag)) {
             ImageLoadUtils.loadCircleNetImage(userUrl, userIcon);
             userIcon.setTag(userUrl);
         }
 
+        TextView publishTime = helper.getView(R.id.publish_time);
         if (!TextUtils.isEmpty(item.getPublishTimeStr())) {
-            TextView publishTime = helper.getView(R.id.publish_time);
             publishTime.setText(item.getPublishTimeStr());
+        } else {
+            publishTime.setText("");
         }
 
         String titleStr = item.getContent();
         if (titleStr != null && titleStr.trim().length() > 0) {
             content.setText(titleStr);
+            content.setVisibility(View.VISIBLE);
         } else {
             content.setVisibility(View.GONE);
         }
@@ -147,18 +159,20 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
 
         TextView download = helper.getView(R.id.download_num);
 
-        download.setText(item.getDownloadCount()+"");
+        download.setText(item.getDownloadCount() + "");
 
         TextView like = helper.getView(R.id.like_num);
-        like.setText(item.getLikesCount()+"");
+        like.setText(item.getLikesCount() + "");
 
         NineGridView nineGridView = helper.getView(R.id.nine_grid);
-        nineGridView.setSingleImageRatio((float)( 19/12.0));
-        nineGridView.setSingleImageRatio(ScreenUtils.getScreenWidth()-DensityUtils.px2dip(185));
+
+
+        nineGridView.setSingleImageRatio((float) (19 / 12.0));
+        nineGridView.setSingleImageRatio(ScreenUtils.getScreenWidth() - DensityUtils.px2dip(185));
         List<ImageInfo> imageInfoList = new ArrayList<>();
         if (item.getResource() != null) {
             for (int i = 0; i < item.getResource().size(); i++) {
-                if(item.getResource().get(i).getType() == 2){
+                if (item.getResource().get(i).getType() == 2) {
                     String url = item.getResource().get(i).getUrl();
                     ImageInfo info = new ImageInfo();
                     info.setImageUrl(url);
@@ -169,42 +183,54 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
 
         if (this.clickL != null) {
             nineGridView.setClick(clickL);
+        } else {
+            nineGridView.setClick(null);
         }
-        NineGridViewAdapter adapter = new NineGridViewAdapter(mContext, imageInfoList);
-        nineGridView.setAdapter(adapter);
+
+        if (imageInfoList.size() > 0) {
+            NineGridViewAdapter adapter = new NineGridViewAdapter(mContext, imageInfoList);
+            nineGridView.setAdapter(adapter);
+            nineGridView.setVisibility(View.VISIBLE);
+        }else {
+            nineGridView.setVisibility(View.GONE);
+        }
 
         RecyclerView recyclerView = helper.getView(R.id.product_list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(OrientationHelper.HORIZONTAL);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        if(item.getProducts() != null){
+        if (item.getProducts() != null) {
             ProductsAdapter productsAdapter = new ProductsAdapter(item.getProducts());
 
             if (this.addCartListener != null) {
                 productsAdapter.setAddCartListener(addCartListener);
+            }else {
+                productsAdapter.setAddCartListener(null);
             }
-            if(this.pressProductListener != null){
+            if (this.pressProductListener != null) {
                 productsAdapter.setPressProductListener(this.pressProductListener);
+            }else {
+                productsAdapter.setPressProductListener(null);
             }
             recyclerView.setVisibility(View.VISIBLE);
             recyclerView.setAdapter(productsAdapter);
-            if(!Boolean.TRUE.equals( recyclerView.getTag())){
+            if (!Boolean.TRUE.equals(recyclerView.getTag())) {
                 SnapHelper snapHelper = new PagerSnapHelper();
                 snapHelper.attachToRecyclerView(recyclerView);
                 recyclerView.setTag(Boolean.TRUE);
             }
-        }else {
+        } else {
             recyclerView.setVisibility(View.GONE);
         }
 
-        helper.addOnClickListener(R.id.icon_hand,R.id.icon_download,R.id.icon_share);
+        helper.addOnClickListener(R.id.icon_hand, R.id.icon_download, R.id.icon_share);
 
 
         ImageView hand = helper.getView(R.id.icon_hand);
-        if(item.isLike()){
+        if (item.isLike()) {
             hand.setImageResource(R.drawable.icon_like);
-        }else {
+        } else {
             hand.setImageResource(R.drawable.icon_hand);
         }
     }

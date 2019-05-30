@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -174,7 +176,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
                 onPressProductEvent onPressProductEvent = new onPressProductEvent();
                 onPressProductEvent.init(view.getId());
                 WritableMap writableMap = Arguments.createMap();
-                writableMap.putString("prodCode",code);
+                writableMap.putString("prodCode", code);
                 onPressProductEvent.setData(writableMap);
                 eventDispatcher.dispatchEvent(onPressProductEvent);
             }
@@ -194,7 +196,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         };
 
 
-        adapter = new ShowRecommendAdapter(clickL, addCartListener,pressProductListener);
+        adapter = new ShowRecommendAdapter(clickL, addCartListener, pressProductListener);
         adapter.setPreLoadNumber(3);
         adapter.setHasStableIds(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
@@ -239,7 +241,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
                     LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
                     int position = manager.findFirstVisibleItemPosition();
                     View firstView = manager.findViewByPosition(position);
-                    if(firstView == null){
+                    if (firstView == null) {
                         return;
                     }
                     int itemHeight = firstView.getHeight();
@@ -247,7 +249,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
                     onScrollYEvent = new onScrollYEvent();
                     onScrollYEvent.init(view.getId());
                     WritableMap ymap = Arguments.createMap();
-                    ymap.putInt("YDistance",  DensityUtils.px2dip(flag));
+                    ymap.putInt("YDistance", DensityUtils.px2dip(flag));
                     onScrollYEvent.setData(ymap);
                     eventDispatcher.dispatchEvent(onScrollYEvent);
                 }
@@ -277,7 +279,6 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
                                 } else {
                                     bean.setLike(true);
                                     bean.setLikesCount(bean.getLikesCount() + 1);
-
                                 }
                                 if (eventDispatcher != null) {
                                     onZanPressEvent.init(view.getId());
@@ -285,15 +286,15 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
                                     Map map = JSONObject.parseObject(jsonStr, new TypeReference<Map>() {
                                     });
                                     Map result = new HashMap();
-                                    result.put("index",position);
-                                    result.put("detail",map);
+                                    result.put("index", position);
+                                    result.put("detail", map);
                                     WritableMap realData = Arguments.makeNativeMap(result);
                                     onZanPressEvent.setData(realData);
                                     eventDispatcher.dispatchEvent(onZanPressEvent);
                                 }
-//                                data.set(position, bean);
-//                                adapter.replaceData(data);
-                                adapter.setData(position,bean);
+                                data.set(position, bean);
+                                adapter.replaceData(data);
+//                                adapter.setData(position,bean);
                             }
                         }, 200);
                     }
@@ -307,8 +308,8 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
                                 Map map = JSONObject.parseObject(jsonStr, new TypeReference<Map>() {
                                 });
                                 Map result = new HashMap();
-                                result.put("index",position);
-                                result.put("detail",map);
+                                result.put("index", position);
+                                result.put("detail", map);
                                 WritableMap realData = Arguments.makeNativeMap(result);
                                 onDownloadPressEvent.setData(realData);
                                 eventDispatcher.dispatchEvent(onDownloadPressEvent);
@@ -317,20 +318,21 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
 
                     }
                     break;
-                    case R.id.icon_share:{
+                    case R.id.icon_share: {
                         onSharePressEvent.init(view.getId());
                         String jsonStr = JSON.toJSONString(bean);
                         Map map = JSONObject.parseObject(jsonStr, new TypeReference<Map>() {
                         });
                         Map result = new HashMap();
-                        result.put("index",position);
-                        result.put("detail",map);
+                        result.put("index", position);
+                        result.put("detail", map);
                         WritableMap realData = Arguments.makeNativeMap(result);
                         onSharePressEvent.setData(realData);
                         eventDispatcher.dispatchEvent(onSharePressEvent);
                     }
                     break;
-                    default:break;
+                    default:
+                        break;
                 }
 
 
@@ -400,7 +402,10 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
                 @Override
                 public void run() {
                     NewestShowGroundBean.DataBean bean = JSON.parseObject(value, NewestShowGroundBean.DataBean.class);
-                    adapter.setData(index,bean);
+                    data.set(index, bean);
+                    adapter.replaceData(data);
+
+//                    adapter.setData(index,bean);
                 }
             }, 200);
         }
@@ -427,8 +432,9 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
     public void repelaceData(final int index, final int clickNum) {
 
     }
-    public void scrollIndex(int index){
-        if(recyclerView != null){
+
+    public void scrollIndex(int index) {
+        if (recyclerView != null) {
             recyclerView.smoothScrollToPosition(index);
         }
     }
@@ -464,7 +470,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         });
     }
 
-    public void refresh(){
+    public void refresh() {
         recyclerView.invalidate();
     }
 }

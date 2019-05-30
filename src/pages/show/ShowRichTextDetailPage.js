@@ -402,7 +402,6 @@ export default class ShowRichTextDetailPage extends BasePage {
                 productModalVisible:false
             });
             this.SelectionPage.show(addCartModel, (amount, skuCode) => {
-                this.setState({productModalVisible:true})
                 const { prodCode, name, originalPrice } = addCartModel;
                 shopCartCacheTool.addGoodItem({
                     'amount': amount,
@@ -420,7 +419,6 @@ export default class ShowRichTextDetailPage extends BasePage {
                 });
             }, { sourceType: productIsPromotionPrice ? sourceType.promotion : null });
         }, (error) => {
-            this.setState({productModalVisible:true})
             this.$toastShow(error.msg || '服务器繁忙');
         });
     };
@@ -569,7 +567,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                 });
             }}/> : null}
             {detail.status !== 1 ? this._shieldRender() : null}
-            <SelectionPage ref={(ref) => this.SelectionPage = ref}  closeCallBack={()=>{this.setState({productModalVisible:true})}}/>
+            <SelectionPage ref={(ref) => this.SelectionPage = ref} />
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             type={'Show'}
                             trackEvent={'ArticleShare'}

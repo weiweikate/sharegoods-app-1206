@@ -283,8 +283,8 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
                 public void run() {
                     NewestShowGroundBean.DataBean bean = data.get(index);
                     bean.setHotCount(clickNum);
-//                    adapter.replaceData(data);
-                    adapter.setData(index,bean);
+                    adapter.replaceData(data);
+//                    adapter.setData(index,bean);
 
                 }
             }, 200);
@@ -316,8 +316,8 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
                 public void run() {
                     NewestShowGroundBean.DataBean bean = JSON.parseObject(value, NewestShowGroundBean.DataBean.class);
                     data.set(index, bean);
-//                    adapter.replaceData(data);
-                    adapter.setData(index,bean);
+                    adapter.replaceData(data);
+//                    adapter.setData(index,bean);
                 }
             }, 200);
         }
