@@ -70,9 +70,11 @@ export default class PaymentFinshPage extends BasePage {
 
         PaymentApi.getUserCouponAmount(
             {
-
+                couponIdList:81
             }
-        )
+        ).then(result=>{
+            console.log(result);
+        });
 
         setTimeout(() => {
             this.setState({

@@ -172,7 +172,7 @@ export default class DownPricePage extends BasePage {
                                     key={itemIndex}
                                     itemData={itemData}
                                     itemClick={(itemData) => {
-                                        this._itemActionClick(itemData);
+                                        this._itemActionClick(itemData,itemIndex);
                                     }
                                     }
                                 />
@@ -183,7 +183,7 @@ export default class DownPricePage extends BasePage {
                                     numOfColum={this._getColumNum()}
                                     itemClickAction={
                                         () => {
-                                            this._itemActionClick(itemData);
+                                            this._itemActionClick(itemData,itemIndex);
                                         }
                                     }
                                 />
@@ -198,14 +198,12 @@ export default class DownPricePage extends BasePage {
      * @param itemData
      * @private
      */
-    _itemActionClick = (itemData) => {
-
+    _itemActionClick = (itemData,itemIndex) => {
         console.log(itemData);
-
         const { linkTypeCode } = this.params;
         TrackApi.SpecialTopicPagelistClick({
             specialTopicId:linkTypeCode||'',
-            productIndex:'',
+            productIndex:itemIndex,
             spuCode:itemData.prodCode||'',
 
         })

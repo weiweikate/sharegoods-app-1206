@@ -62,8 +62,6 @@ export default class ChannelPage extends BasePage {
         payment.bizType = this.params.bizType || 0;
         payment.modeType = this.params.modeType || 0;
         this.canShowAlter = true;
-
-
     }
 
     componentDidMount() {
