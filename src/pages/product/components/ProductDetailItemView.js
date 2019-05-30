@@ -314,8 +314,8 @@ export class PromoteItemView extends Component {
                             if (index > 1) {
                                 return null;
                             }
-                            return <View
-                                style={[PromoteItemViewStyles.promotionItemView, { marginTop: index === 0 ? 10 : 0 }]}>
+                            return <View key={index}
+                                         style={[PromoteItemViewStyles.promotionItemView, { marginTop: index === 0 ? 10 : 0 }]}>
                                 <Text
                                     style={PromoteItemViewStyles.promotionItemNameText}>{index === 0 ? '促销' : ''}</Text>
                                 {typeText ?

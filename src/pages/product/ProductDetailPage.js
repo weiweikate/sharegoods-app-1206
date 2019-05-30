@@ -20,9 +20,6 @@ import NavigatorBar from '../../components/pageDecorator/NavigatorBar/NavigatorB
 import DetailHeaderServiceModal from './components/DetailHeaderServiceModal';
 import DetailPromoteModal from './components/DetailPromoteModal';
 import { beginChatType, QYChatTool } from '../../utils/QYModule/QYChatTool';
-// import bridge from '../../../utils/bridge';
-
-// const redEnvelopeBg = res.other.red_big_envelope;
 import ProductDetailModel, { productItemType, sectionType } from './ProductDetailModel';
 import { observer } from 'mobx-react';
 import RouterMap from '../../navigation/RouterMap';
@@ -37,7 +34,8 @@ import DetailHeaderScoreView from './components/DetailHeaderScoreView';
 import DetailParamsModal from './components/DetailParamsModal';
 import { ContentSectionView, SectionLineView, SectionNullView } from './components/ProductDetailSectionView';
 import ProductDetailNavView from './components/ProductDetailNavView';
-import { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
+import { IntervalMsgType, IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
+import ProductDetailCouponsView, { ProductDetailCouponsWindowView } from './components/ProductDetailCouponsView';
 
 /**
  * @author chenyangjun
@@ -209,6 +207,11 @@ export default class ProductDetailPage extends BasePage {
             case productItemType.suit: {
                 return <SuitItemView productDetailModel={this.productDetailModel}/>;
             }
+            case productItemType.coupons: {
+                return <ProductDetailCouponsView onPress={() => {
+                    this.ProductDetailCouponsWindowView.showWindowView();
+                }}/>;
+            }
             case productItemType.promote: {
                 return <PromoteItemView productDetailModel={this.productDetailModel}
                                         promotionViewAction={() => {
@@ -300,6 +303,7 @@ export default class ProductDetailPage extends BasePage {
             <ShowTopView productDetailModel={this.productDetailModel}
                          toTopAction={this._onPressToTop}/>
             <IntervalMsgView pageType={IntervalType.productDetail}/>
+            <ProductDetailCouponsWindowView ref={(ref) => this.ProductDetailCouponsWindowView = ref}/>
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             trackParmas={{
@@ -324,13 +328,10 @@ export default class ProductDetailPage extends BasePage {
                                 linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`,
                                 thumImage: imgUrl
                             }}
-                            miniProgramJson={{
-                                title: isSkillIn ? '超值秒杀!' : `${nameShareText}`,
-                                dec: isSkillIn ? '[秀购]发现一个很给力的活动,快去看看!' : '商品详情',
-                                thumImage: 'logo.png',
-                                hdImageURL: imgUrl,
-                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`,
-                                miniProgramPath: `/pages/index/index?type=99&id=${prodCode}&inviteId=${user.code || ''}`
+                            taskShareParams={{
+                                uri: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`,
+                                code: IntervalMsgType.productDetail,
+                                data: prodCode
                             }}/>
             <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
             <DetailHeaderServiceModal ref={(ref) => this.DetailHeaderServiceModal = ref}/>

@@ -224,7 +224,7 @@ export function IntervalMsgNavigate(forwardType, keyCode) {
     }
 }
 
-const IntervalMsgType = {
+export const IntervalMsgType = {
     home: 1,      //首页
     alert: 21,      //弹框系统 开启通知
 

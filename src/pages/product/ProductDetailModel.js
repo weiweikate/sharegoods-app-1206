@@ -7,6 +7,7 @@ import StringUtils from '../../utils/StringUtils';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DateUtils from '../../utils/DateUtils';
 import TopicAPI from '../topic/api/TopicApi';
+import { ProductDetailCouponsViewModel } from './components/ProductDetailCouponsView';
 
 const { width, height } = ScreenUtils;
 const { isNoEmpty } = StringUtils;
@@ -16,6 +17,7 @@ export const contentImgWidth = width;
 export const productItemType = {
     headerView: 'headerView',
     suit: 'suit',
+    coupons: 'coupons',
     promote: 'promote',
     service: 'service',
     param: 'param',
@@ -62,6 +64,8 @@ export const activity_type = {
 };
 
 export default class ProductDetailModel {
+
+    ProductDetailCouponsViewModel = new ProductDetailCouponsViewModel();
 
     @observable prodCode;
     @observable loadingState = PageLoadingState.loading;
@@ -276,7 +280,8 @@ export default class ProductDetailModel {
     }
 
     @computed get sectionDataList() {
-        const { promoteInfoVOList, contentArr, groupActivity, activityStatus, paramList } = this;
+        const { promoteInfoVOList, contentArr, groupActivity, activityStatus, paramList, ProductDetailCouponsViewModel } = this;
+        const { couponsList } = ProductDetailCouponsViewModel;
         /*头部*/
         let sectionArr = [
             { key: sectionType.sectionHeader, data: [{ itemKey: productItemType.headerView }] }
@@ -288,11 +293,15 @@ export default class ProductDetailModel {
             );
         }
         /*优惠券,促销*/
-        if (promoteInfoVOList.length !== 0) {
-            sectionArr.push(
-                { key: sectionType.sectionPromotion, data: [{ itemKey: productItemType.promote }] }
-            );
-        }
+        let promoteItemList = [];
+        couponsList.length !== 0 && promoteItemList.push({ itemKey: productItemType.coupons });
+        promoteInfoVOList.length !== 0 && promoteItemList.push({ itemKey: productItemType.promote });
+        promoteItemList.length !== 0 && sectionArr.push({
+                key: sectionType.sectionPromotion,
+                data: promoteItemList
+            }
+        );
+
         /*服务,参数,选择地址*/
         if (paramList.length !== 0) {
             sectionArr.push(
@@ -422,7 +431,7 @@ export default class ProductDetailModel {
                 spuCode: prodCode,
                 spuName: name,
                 priceShareStore: groupPrice,
-                pricePerCommodity: minPrice !== maxPrice ? `￥${minPrice}-￥${maxPrice}` : `￥${minPrice}`,
+                priceShow: this.activityStatus === activity_status.inSell ? promotionMinPrice : minPrice,
                 priceType: priceType === price_type.shop ? 100 : user.levelRemark
             });
         }
@@ -484,6 +493,7 @@ export default class ProductDetailModel {
             let tempData = data.data || {};
             this.productSuccess(tempData);
             this.requestShopInfo(tempData.supplierCode);
+            this.ProductDetailCouponsViewModel.requestListProdCoupon(this.prodCode);
         }).catch((e) => {
             this.productError(e);
         });
