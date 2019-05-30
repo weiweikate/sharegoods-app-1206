@@ -62,8 +62,6 @@ export default class ChannelPage extends BasePage {
         payment.bizType = this.params.bizType || 0;
         payment.modeType = this.params.modeType || 0;
         this.canShowAlter = true;
-
-        TrackApi.orderPayChannelPage();
     }
 
     componentDidMount() {
@@ -73,7 +71,14 @@ export default class ChannelPage extends BasePage {
             this.setState({
                 remainMoney:Math.floor(StringUtils.mul(result.unpaidAmount , 100))  / 100
             });
+            //埋点
+            TrackApi.orderPayChannelPage({
+                orderId:platformOrderNo,
+                payAmount:Math.floor(StringUtils.mul(result.unpaidAmount , 100))  / 100,
+            });
         });
+
+
     }
 
     componentWillUnmount() {

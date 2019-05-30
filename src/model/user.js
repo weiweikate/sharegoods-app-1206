@@ -6,6 +6,7 @@ import bridge from '../utils/bridge';
 import { QYChatTool } from '../utils/QYModule/QYChatTool';
 import { login, logout } from '../utils/SensorsTrack';
 import StringUtils from '../utils/StringUtils';
+import JPushUtils from '../utils/JPushUtils';
 
 
 const USERINFOCACHEKEY = 'UserInfo';
@@ -16,7 +17,7 @@ class User {
 
     @computed
     get isLogin() {
-        return  StringUtils.isNoEmpty(this.token);
+        return StringUtils.isNoEmpty(this.token);
     }
 
     @computed
@@ -467,7 +468,7 @@ class User {
 
 const user = new User();
 
-autorun(()=>{
+autorun(() => {
     user.isLogin ? shopCartCacheTool.synchronousData() : null;
 });
 
@@ -476,6 +477,8 @@ autorun(() => {
         // 启动时埋点关联登录用户,先取消关联，再重新关联
         logout();
         login(user.code);
+        JPushUtils.updatePushAlias();
+        JPushUtils.updatePushTags();
     }
 });
 export default user;

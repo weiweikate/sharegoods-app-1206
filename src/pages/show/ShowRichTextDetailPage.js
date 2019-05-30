@@ -92,8 +92,12 @@ export default class ShowRichTextDetailPage extends BasePage {
                             pageState: PageLoadingState.success
                         });
                         Toast.hiddenLoading();
-                        this.showDetailModule.setDetail(this.params.data);
+                        let data = this.params.data;
+                        data.hotCount += 1;
+                        this.showDetailModule.setDetail(data);
+                        this.params.ref && this.params.ref.replaceData(this.params.index, data.hotCount);
                     }
+                    this.incrCountByType(6);
                 }
             }
         );
@@ -387,7 +391,6 @@ export default class ShowRichTextDetailPage extends BasePage {
                 productModalVisible:false
             });
             this.SelectionPage.show(addCartModel, (amount, skuCode) => {
-                this.setState({productModalVisible:true})
                 const { prodCode, name, originalPrice } = addCartModel;
                 shopCartCacheTool.addGoodItem({
                     'amount': amount,
@@ -405,7 +408,6 @@ export default class ShowRichTextDetailPage extends BasePage {
                 });
             }, { sourceType: productIsPromotionPrice ? sourceType.promotion : null });
         }, (error) => {
-            this.setState({productModalVisible:true})
             this.$toastShow(error.msg || '服务器繁忙');
         });
     };
@@ -554,14 +556,14 @@ export default class ShowRichTextDetailPage extends BasePage {
                 });
             }}/> : null}
             {detail.status !== 1 ? this._shieldRender() : null}
-            <SelectionPage ref={(ref) => this.SelectionPage = ref}  closeCallBack={()=>{this.setState({productModalVisible:true})}}/>
+            <SelectionPage ref={(ref) => this.SelectionPage = ref} />
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             type={'Show'}
                             trackEvent={'ArticleShare'}
                             trackParmas={{ articeCode: detail.code, articleTitle: detail.title }}
                             imageJson={{
                                 imageType:'show',
-                                imageUrlStr: detail.resource[0].url,
+                                imageUrlStr: detail.resource ? detail.resource[0].url:"",
                                 titleStr: detail.title,
                                 QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
                                 headerImage: (detail.userInfoVO && detail.userInfoVO.userImg)? detail.userInfoVO.userImg: null,

@@ -18,7 +18,6 @@ class CategoryModules {
                 });
                 this.categoryList = resClassifys;
                 homeModule.changeHomeList(homeType.category)
-
             }
         }).catch(error => {
             console.log(error);
