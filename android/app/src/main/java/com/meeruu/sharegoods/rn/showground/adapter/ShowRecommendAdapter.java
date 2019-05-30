@@ -147,12 +147,17 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         }
 
         String titleStr = item.getContent();
-        if (titleStr != null && titleStr.trim().length() > 0) {
-            content.setText(titleStr);
-            content.setVisibility(View.VISIBLE);
-        } else {
-            content.setVisibility(View.GONE);
+        if(!TextUtils.equals(titleStr,(String)content.getTag())){
+            if (titleStr != null && titleStr.trim().length() > 0) {
+                content.setText(titleStr);
+                content.setTag(titleStr);
+                content.setVisibility(View.VISIBLE);
+            } else {
+                content.setVisibility(View.GONE);
+                content.setTag(titleStr);
+            }
         }
+
 
         TextView name = helper.getView(R.id.user_name);
         name.setText(item.getUserInfoVO().getUserName());
