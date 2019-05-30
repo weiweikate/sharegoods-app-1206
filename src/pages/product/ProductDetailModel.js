@@ -76,6 +76,8 @@ export default class ProductDetailModel {
     /*分享显示的零售价*/
     @observable v0Price;
     @observable shareMoney;
+    /*自返金额*/
+    @observable selfReturning;
     /*原价*/
     @observable originalPrice;
     /*价格类型 2拼店价 3会员价*/
@@ -113,6 +115,8 @@ export default class ProductDetailModel {
     /*商品详情图片*/
     @observable contentArr = [];
     @observable now;
+    /*开售时间*/
+    @observable upTime;
 
     /**七鱼相关**/
     @observable shopId;
@@ -305,7 +309,7 @@ export default class ProductDetailModel {
             const {
                 videoUrl, imgUrl, imgFileList, minPrice, maxPrice,
                 originalPrice, priceType, name, secondName, freight,
-                groupPrice, v0Price, shareMoney,
+                groupPrice, v0Price, shareMoney, selfReturning,
                 monthSaleCount, skuList, specifyList, stockSysConfig, promoteInfoVOList,
                 restrictions, paramList, comment, totalComment, overtimeComment,
                 prodCode, upTime, now, content,
@@ -324,6 +328,7 @@ export default class ProductDetailModel {
             this.groupPrice = groupPrice;
             this.v0Price = v0Price;
             this.shareMoney = shareMoney;
+            this.selfReturning = selfReturning;
             this.originalPrice = originalPrice;
             this.priceType = priceType;
             this.name = name;
@@ -342,6 +347,7 @@ export default class ProductDetailModel {
             this.totalComment = totalComment;
             this.contentArr = contentArr;
             this.now = now;
+            this.upTime = upTime;
 
             const { singleActivity, groupActivity, tags } = promotionResult || {};
             this.singleActivity = singleActivity || {};
