@@ -60,10 +60,10 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
       completion(nil, @"图片URL（imageUrlStr）不能为nil");
       return NO;
     }
-//    if (model.titleStr == nil) {
-//      completion(nil, @"商品标题（titleStr）不能为nil");
-//      return NO;
-//    }
+    if (model.QRCodeStr == nil) {
+      completion(nil, @"二维码字符（QRCodeStr）不能为nil");
+      return NO;
+    }
     return YES;
   }
   
@@ -470,7 +470,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
   NSMutableArray * imagArr = [defaultImages mutableCopy];
   __block NSInteger item =  urls.count;
   for(int i=0;i<urls.count;i++){
-      NSString *imgUrl = [urls[i]  stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    NSString *imgUrl =[urls[i]  stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     [[YYWebImageManager sharedManager] requestImageWithURL:[NSURL URLWithString:imgUrl]options:YYWebImageOptionShowNetworkActivity progress:^(NSInteger receivedSize, NSInteger expectedSize) {
       
     } transform:nil completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
