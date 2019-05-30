@@ -379,7 +379,7 @@ export default class TaskVIew extends React.Component {
         }
         let type = this.props.type;
         return (
-            <View style={[{paddingHorizontal: 15},this.props.style]}>
+            <View style={[{paddingHorizontal: 15, width: ScreenUtils.width},this.props.style]}>
                 {this.renderHeader(type)}
                 <View style={styles.bg}>
                     {this.renderTitle(type)}
