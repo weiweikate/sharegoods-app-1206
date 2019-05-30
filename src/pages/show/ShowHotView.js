@@ -225,10 +225,6 @@ export default class ShowHotView extends React.Component {
                                        }}
 
                                        onSharePress={({ nativeEvent }) => {
-                                           if (!user.isLogin) {
-                                               this.props.navigate('login/login/LoginPage');
-                                               return;
-                                           }
                                            this.shareModal && this.shareModal.open();
                                            this.props.onShare(nativeEvent);
 
