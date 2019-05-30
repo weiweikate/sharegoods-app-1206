@@ -95,7 +95,8 @@ export default class PaymentCheckPage extends BasePage {
                 if (bizType !== 1) {
                     replace = NavigationActions.replace({
                         key: this.props.navigation.state.key,
-                        routeName: RouterMap.PaymentResultPage,
+                        // routeName: RouterMap.PaymentResultPage,
+                        routeName:RouterMap.PaymentFinshPage,
                         params: { payResult: PaymentResult.success }
                     });
                 } else {
@@ -115,6 +116,7 @@ export default class PaymentCheckPage extends BasePage {
                     let replace = NavigationActions.replace({
                         key: this.props.navigation.state.key,
                         routeName: RouterMap.PaymentResultPage,
+                        // routeName:RouterMap.PaymentFinshPage,
                         params: { payResult: PaymentResult.fail, payMsg: '支付关闭' }
                     });
                     this.props.navigation.dispatch(replace);
