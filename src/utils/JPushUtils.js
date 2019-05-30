@@ -4,7 +4,6 @@ import deviceInfo from 'react-native-device-info';
 import {
     NativeModules
 } from 'react-native';
-import ScreenUtils from './ScreenUtils';
 
 export default {
     /**
@@ -60,11 +59,7 @@ export default {
          */
         let version = deviceInfo.getVersion();
         temObj.version = version;
-        if (ScreenUtils.isIOS) {
-            NativeModules.commModule.updatePushTags(temObj);
-        }else {
-            NativeModules.commModule.updatePushTags(temObj);
-        }
+        NativeModules.commModule.updatePushTags(temObj);
     },
     /**
      * 更新别名 一个设备只能有一个别名
@@ -78,11 +73,7 @@ export default {
             let tempObj = {
                 userId: userModel.code + ''
             };
-            if (ScreenUtils.isIOS) {
-                NativeModules.commModule.updatePushAlias(tempObj);
-            }else {
-                NativeModules.commModule.updatePushAlias(tempObj);
-            }
+            NativeModules.commModule.updatePushAlias(tempObj);
         }
     }
 };

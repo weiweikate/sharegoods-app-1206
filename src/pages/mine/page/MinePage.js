@@ -402,7 +402,7 @@ export default class MinePage extends BasePage {
                                   }}/>
                         <TouchableWithoutFeedback onPress={() => {
                             this.$navigate(RouterMap.MyPromotionPage);
-                            TrackApi.ViewLevelInterest({ levelInterestModuleSource: 2 });
+                            TrackApi.ViewLevelInterest({ moduleSource: 2 });
                         }}>
                             <View style={{
                                 justifyContent: 'space-between',

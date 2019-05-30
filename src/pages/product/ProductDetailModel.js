@@ -160,7 +160,14 @@ export default class ProductDetailModel {
     @observable promotionMaxPrice;
 
     @computed get nameShareText() {
-        return `${this.monthSaleCount >= 1000 ? `[明星爆款]` : (this.monthSaleCount >= 500 ? '[人气爆款]' : '[爆款新品]')}${this.name}`;
+        const { activityType, activityStatus } = this;
+        if (activityType === activity_type.skill && activityStatus === activity_status.inSell) {
+            return `工厂价秒杀，不足24小时！${this.name}`;
+        } else if (activityType === activity_type.verDown && activityStatus === activity_status.inSell) {
+            return `直降，实惠仅此一次！${this.name}`;
+        } else {
+            return `${this.monthSaleCount >= 1000 ? `[明星爆款]` : (this.monthSaleCount >= 500 ? '[人气爆款]' : '[爆款新品]')}${this.name}`;
+        }
     }
 
     /*产品当前页是否使用活动价格  (直降 秒杀)进行中*/

@@ -10,10 +10,11 @@ import res from '../res';
 import DesignRule from '../../constants/DesignRule';
 import StringUtils from '../../utils/StringUtils';
 import { navigate, backToHome } from '../../navigation/RouterMap';
+import { track, trackEvent } from '../../utils/SensorsTrack';
 
 const { white_go } = res.button;
-const { headerHeight, px2dp } = ScreenUtils;
-const maxTextWidth = px2dp(120);
+const { headerHeight, width, px2dp } = ScreenUtils;
+const maxTextWidth = width - (15 - 50) * 2;
 const { isEmpty } = StringUtils;
 const maxY = maxTextWidth + 15 + 50;
 
@@ -56,7 +57,7 @@ export class IntervalMsgView extends React.Component {
     }
 
     _onPress = (showItem) => {
-        const { needForward, forwardType, keyCode } = showItem;
+        const { needForward, forwardType, keyCode, content } = showItem;
         if (!needForward || !forwardType) {
             return;
         }
@@ -79,6 +80,13 @@ export class IntervalMsgView extends React.Component {
                 // });
             }
         }
+
+        track(trackEvent.SkipMarkClick, {
+            belongsPage: this.IntervalMsgModel.pageType,
+            pageAttributeCode: keyCode,
+            skipMarkType: forwardType,
+            skipMarkContent: content
+        });
     };
 
     render() {
@@ -109,14 +117,14 @@ const styles = StyleSheet.create({
     },
     btn: {
         flexDirection: 'row', alignItems: 'center',
-        height: px2dp(24), borderRadius: px2dp(12), backgroundColor: 'rgba(0,0,0,0.6)'
+        height: px2dp(22), borderRadius: px2dp(11), backgroundColor: 'rgba(0,0,0,0.6)'
     },
     image: {
         marginRight: px2dp(6), overflow: 'hidden',
-        width: px2dp(24), height: px2dp(24), borderRadius: px2dp(12)
+        width: px2dp(22), height: px2dp(22), borderRadius: px2dp(11)
     },
     text: {
-        marginRight: 3, maxWidth: maxTextWidth,
+        marginRight: px2dp(4), maxWidth: maxTextWidth,
         fontSize: 10, color: DesignRule.white
     },
     arrow: {

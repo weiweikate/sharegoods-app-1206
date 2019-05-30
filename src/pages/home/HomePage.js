@@ -273,7 +273,7 @@ class HomePage extends BasePage {
 
     _keyExtractor = (item, index) => item.id + '';
 
-    _renderItem = (type, item) => {
+    _renderItem = (type, item, index) => {
         let data = item;
         if (type === homeType.category) {
             return <HomeCategoryView navigate={this.$navigate}/>;
@@ -298,7 +298,8 @@ class HomePage extends BasePage {
         } else if (type === homeType.homeHot) {
             return <HomeSubjectView navigate={this.$navigate}/>;
         } else if (type === homeType.goods) {
-            return <GoodsCell data={data} navigate={this.$navigate}/>;
+            return <GoodsCell data={data} goodsRowIndex={index} otherLen={homeModule.goodsOtherLen}
+                              navigate={this.$navigate}/>;
         } else if (type === homeType.goodsTitle) {
             return <View style={styles.titleView}
                          ref={e => this.toGoods = e}
@@ -372,7 +373,7 @@ class HomePage extends BasePage {
                 }}/>
                 <PraiseModel/>
                 <GiftModal/>
-                <IntervalMsgView pageType = {IntervalType.home}/>
+                <IntervalMsgView pageType={IntervalType.home}/>
                 <HomeAdModal/>
                 <HomeMessageModalView/>
                 <VersionUpdateModalView/>

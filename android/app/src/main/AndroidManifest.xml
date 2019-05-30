@@ -147,6 +147,7 @@
             android:name=".MainActivity"
             android:hardwareAccelerated="true"
             android:resizeableActivity="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppSplashTheme"
             android:windowSoftInputMode="adjustNothing|stateAlwaysHidden">
             <intent-filter>
