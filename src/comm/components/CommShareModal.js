@@ -39,6 +39,11 @@
  trackParmas={}埋点
  trackEvent= ''
  gh_a7c8f565ea2e uat  gh_aa91c3ea0f6c 测试
+ taskShareParams: { //分享完成后，请求后台
+ uri
+ code:
+ data:
+ }
  */
 
 
@@ -231,7 +236,7 @@ export default class CommShareModal extends React.Component {
             platformType: platformType
         };
 
-        ShareUtil.onShare(params, that.props.api, trackParmas,trackEvent ,this.props.successCallBack, that.props.luckyDraw);
+        ShareUtil.onShare(params, that.props.api, trackParmas,trackEvent ,this.props.successCallBack, that.props.luckyDraw,this.props.taskShareParams);
     }
 
     saveImage(path) {
