@@ -59,6 +59,9 @@ export default class RequestDetailPage extends BasePage {
             realUri = uri + '?';
         }
         realUri = realUri + parmasString;
+        if (realUri.indexOf('http') === -1 && realUri.charAt(0) !== '/'){
+            realUri = '/'+ realUri ;
+        }
         //如果没有http，就加上当前h5的域名
         if (realUri.indexOf('http') === -1) {
             realUri = apiEnvironment.getCurrentH5Url() + realUri;

@@ -17,6 +17,8 @@ import { TrackApi } from '../../utils/SensorsTrack';
 import ShareUtil from '../../utils/ShareUtil';
 import user from '../../model/user';
 import PaymentApi from './PaymentApi';
+// import RouterMap from '../../navigation/RouterMap';
+import apiEnvironment from '../../api/ApiEnvironment';
 // import PaymentApi from './PaymentApi';
 
 const { px2dp } = ScreenUtils;
@@ -55,27 +57,56 @@ export default class PaymentFinshPage extends BasePage {
         super(props);
         this.state = {
             showShareView: false,
-            couponIdList: [1, 2, 3,4,5,6]
+            couponIdList: [],
+            shareCode:''
         };
         //orderPayResultPageType 有券无劵
         TrackApi.ViewOrderPayPage({ orderPayType: 2, orderPayResultPageType: 2 });
     }
 
     componentDidMount() {
-        // PaymentApi.judgeShare().then(result=>{
-        //
-        // }).catch(err=>{
-        //
-        // })
-
         PaymentApi.getUserCouponAmount(
             {
                 couponIdList:81
             }
         ).then(result=>{
             console.log(result);
+            this.setState({
+                couponIdList:result.data || [],
+            })
+            this.setState({
+                couponIdList: [
+                    {
+                        "id": 976323,
+                        "name": "H5新注册兑换券",
+                        "code": "1559117839071000001",
+                        "remarks": null,
+                        "type": 5,
+                        "value": 0,
+                        "useConditions": 0,
+                        "startTime": 1559117839000,
+                        "expireTime": 1559377039000,
+                        "status": 0,
+                        "count": 1,
+                        "url": "/cycle-coupon"
+                    }
+                ]
+            })
         });
+        PaymentApi.judgeShare().then(result=>{
+            console.log(result);
 
+            let isShare = result.data && result.data.isShare;
+            let  shareCode = result.data && result.data.shareCode;
+            this.setState({
+                showShareView:isShare,
+                shareCode:shareCode,
+            })
+        }).catch(error=>{
+            this.setState({
+                showShareView:false
+            })
+        })
         setTimeout(() => {
             this.setState({
                 showShareView: true
@@ -87,7 +118,7 @@ export default class PaymentFinshPage extends BasePage {
         return (
             <ScrollView style={Styles.contentStyle}>
                 {this.renderTopSuccessView()}
-                <RenderSeparator title={'你还有兑换券即将过期，快来使用吧'}/>
+                {/*<RenderSeparator title={'你还有兑换券即将过期，快来使用吧'}/>*/}
                 {this.renderCouponList()}
                 {this.state.showShareView ? this._renderShareView() : null}
             </ScrollView>
@@ -98,9 +129,11 @@ export default class PaymentFinshPage extends BasePage {
         const { couponIdList } = this.state;
         let couponItemViewList = [];
         if (Array.isArray(couponIdList) && couponIdList.length > 0) {
+
             couponItemViewList = couponIdList.map((couponItem) => {
                 return this._renderCouponItem(couponItem);
             });
+            couponItemViewList.unshift(<RenderSeparator title={'你还有兑换券即将过期，快来使用吧'}/>);
             return couponItemViewList;
         }
     };
@@ -213,7 +246,7 @@ export default class PaymentFinshPage extends BasePage {
                             商品兑换券
                         </MRText>
                         <MRText style={{ color: '#B4B4B4', fontSize: px2dp(12), marginTop: px2dp(3) }}>
-                            有效期：2019.05.12
+                            有效期：{this.format(itemData.expireTime) }
                         </MRText>
                     </View>
                     <View style={{ width: px2dp(90), alignItems: 'center', justifyContent: 'center' }}>
@@ -249,6 +282,10 @@ export default class PaymentFinshPage extends BasePage {
             orderPayResultPageType: 0,
             orderPayType: 2,
             orderPayResultBtnType: 5
+        });
+
+        this.$navigate('HtmlPage',{
+            uri:apiEnvironment.getCurrentH5Url() + couponItem.url
         });
     };
     /**
@@ -321,9 +358,8 @@ export default class PaymentFinshPage extends BasePage {
             title: '【秀购】发现一个很给力的活动,快去看看~',
             dec: '',
             thumImage: user.headImg,
-            linkUrl: 'https://www.baidu.com'
+            linkUrl: `${apiEnvironment.getCurrentH5Url()}/activity/drawShare/${this.state.shareCode}`
         });
-
     };
     /**
      * 分享到朋友圈
@@ -335,6 +371,31 @@ export default class PaymentFinshPage extends BasePage {
             orderPayType: 2,
             orderPayResultBtnType: 4
         });
+
+        ShareUtil.onShare({
+            shareType: 2,
+            pplatformType: 0,
+            title: '【秀购】发现一个很给力的活动,快去看看~',
+            dec: '',
+            thumImage: user.headImg,
+            linkUrl: `${apiEnvironment.getCurrentH5Url()}/activity/drawShare/${this.state.shareCode}`
+        });
+    };
+
+    format = (timeStamp) => {
+        let newShijianchuo = timeStamp + '';
+        while (newShijianchuo.length < 13) {
+            newShijianchuo = newShijianchuo + '0';
+        }
+        let time = new Date(parseInt(newShijianchuo));
+        let y = time.getFullYear();
+        let m = time.getMonth() + 1;
+        let d = time.getDate();
+        // let h = time.getHours();
+        // let mm = time.getMinutes();
+
+        return y+'.'+m+'.'+d;
+
     };
 
 }
