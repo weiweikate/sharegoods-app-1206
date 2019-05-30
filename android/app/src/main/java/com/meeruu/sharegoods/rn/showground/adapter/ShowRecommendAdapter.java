@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -193,11 +194,16 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         }
 
         if (imageInfoList.size() > 0) {
-            NineGridViewAdapter adapter = new NineGridViewAdapter(mContext, imageInfoList);
-            nineGridView.setAdapter(adapter);
-            nineGridView.setVisibility(View.VISIBLE);
+            String tag = (String) nineGridView.getTag();
+            if(!TextUtils.equals(tag,JSONObject.toJSONString(imageInfoList))){
+                NineGridViewAdapter adapter = new NineGridViewAdapter(mContext, imageInfoList);
+                nineGridView.setAdapter(adapter);
+                nineGridView.setVisibility(View.VISIBLE);
+                nineGridView.setTag(JSONObject.toJSONString(imageInfoList));
+            }
         }else {
             nineGridView.setVisibility(View.GONE);
+            nineGridView.setTag(null);
         }
 
         RecyclerView recyclerView = helper.getView(R.id.product_list);

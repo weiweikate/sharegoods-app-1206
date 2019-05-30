@@ -1,5 +1,6 @@
 package com.meeruu.sharegoods.rn.showground;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -197,6 +198,11 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
 
 
         adapter = new ShowRecommendAdapter(clickL, addCartListener, pressProductListener);
+
+        View emptyView=LayoutInflater.from(context).inflate(R.layout.show_empty_view, null);
+        emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+        adapter.setEmptyView(emptyView);
         adapter.setPreLoadNumber(3);
         adapter.setHasStableIds(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
