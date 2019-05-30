@@ -18,6 +18,7 @@ import ImageLoad from '@mr/image-placeholder';
 import { homeModule } from '../model/Modules';
 import RouterMap from '../../../navigation/RouterMap';
 import user from '../../../model/user';
+import { TrackApi } from '../../../utils/SensorsTrack';
 
 
 const { px2dp } = ScreenUtils;
@@ -57,8 +58,13 @@ export default class HomeChannelView extends Component {
         }
     }
 
-    _onItemPress = (data) => {
+    _onItemPress = (data,index) => {
         // const { navigate } = this.props;
+        TrackApi.homeIconClick({
+            iconTitle:data.title,
+            iconIndex:index,
+            iconContent:data.linkTypeCode
+        });
         let router = homeModule.homeNavigate(data.linkType, data.linkTypeCode) || '';
         let params = homeModule.paramsNavigate(data);
         params.fromHome = true;
@@ -75,7 +81,7 @@ export default class HomeChannelView extends Component {
         // 5个
         channelList.slice(0, 5).map((value, index) => {
             itemViews.push(<Item key={index} data={value} onPress={(data) => {
-                this._onItemPress(data);
+                this._onItemPress(data,index);
             }}/>);
         });
         return itemViews;

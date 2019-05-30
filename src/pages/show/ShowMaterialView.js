@@ -21,6 +21,7 @@ import ShowApi from './ShowApi';
 import EmptyUtils from '../../utils/EmptyUtils';
 import apiEnvironment from '../../api/ApiEnvironment';
 import ShowUtils from './utils/ShowUtils';
+import RouterMap from '../../navigation/RouterMap';
 
 @observer
 export default class ShowMaterialView extends React.Component {
@@ -132,6 +133,9 @@ export default class ShowMaterialView extends React.Component {
                                                imageUrls: nativeEvent.imageUrls,
                                                index: nativeEvent.index
                                            });
+                                       }}
+                                       onPressProduct={({ nativeEvent }) => {
+                                           this.props.navigate(RouterMap.ProductDetailPage, { productCode: nativeEvent.prodCode });
                                        }}
 
                                        onAddCartClick={({ nativeEvent }) => {

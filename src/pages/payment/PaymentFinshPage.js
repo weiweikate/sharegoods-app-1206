@@ -208,7 +208,8 @@ export default class PaymentFinshPage extends BasePage {
             orderPayType: 2,
             orderPayResultBtnType: 1
         });
-        this.$navigateBackToHome();
+        // this.$navigateBackToHome();
+        this.$navigateReset();
     };
     /**
      * 去订单页面事件
@@ -285,7 +286,7 @@ export default class PaymentFinshPage extends BasePage {
         });
 
         this.$navigate('HtmlPage',{
-            uri:apiEnvironment.getCurrentH5Url() + couponItem.url
+            uri:couponItem.url
         });
     };
     /**
@@ -354,7 +355,7 @@ export default class PaymentFinshPage extends BasePage {
 
         ShareUtil.onShare({
             shareType: 1,
-            pplatformType: 0,
+            platformType: 0,
             title: '【秀购】发现一个很给力的活动,快去看看~',
             dec: '',
             thumImage: user.headImg,
@@ -374,7 +375,7 @@ export default class PaymentFinshPage extends BasePage {
 
         ShareUtil.onShare({
             shareType: 2,
-            pplatformType: 0,
+            platformType: 0,
             title: '【秀购】发现一个很给力的活动,快去看看~',
             dec: '',
             thumImage: user.headImg,
