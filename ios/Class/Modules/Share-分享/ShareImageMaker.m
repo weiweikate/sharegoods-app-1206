@@ -27,10 +27,13 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
   NSArray * defaultImages = @[];
   __weak ShareImageMaker * weakSelf = self;
   
-  if ([imageType isEqualToString:@"show"]||[imageType isEqualToString:@"web"]) {
+  if ([imageType isEqualToString:@"show"]||[imageType isEqualToString:@"webActivity"]) {
     URLs = @[model.imageUrlStr,model.headerImage];
     defaultImages = @[[UIImage imageNamed:@"logo.png"], [UIImage imageNamed:@"default_avatar.png"]];
-  }else{//web or  produce or nil
+  }else if ([imageType isEqualToString:@"web"]){
+    URLs = @[model.imageUrlStr];
+    defaultImages = @[[UIImage imageNamed:@"logo.png"]];
+  } else{//web or  produce or nil
     URLs = @[model.imageUrlStr];
     defaultImages = @[[UIImage imageNamed:@"logo.png"]];
   }
@@ -100,7 +103,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
   
   NSMutableArray *nodes = [NSMutableArray new];
   
-  if ([imageType isEqualToString:@"web"]) {
+  if ([imageType isEqualToString:@"webActivity"]) {
     NSDictionary * dataDic = [ShowShareImgMaker getParamsWithWEBImages:images
                                                               model:model];
     nodes = dataDic[@"nodes"];
@@ -109,7 +112,21 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     NSNumber* width = dataDic[@"width"];
     imageWidth = width.floatValue;
     
-  }else if ([imageType isEqualToString:@"show"]){
+  }else if([imageType isEqualToString:@"web"]){
+    //主图图片
+    [nodes addObject:@{
+                       @"value": images[0],
+                       @"locationType": @"rect",
+                       @"location": [NSValue valueWithCGRect:CGRectMake(0, 0, 375*i, 667*i)]}
+     ];
+    //二维码
+    UIImage *QRCodeImage = [UIImage QRCodeWithStr:QRCodeStr];
+    [nodes addObject:@{@"value": QRCodeImage,
+                       @"locationType": @"rect",
+                       @"location": [NSValue valueWithCGRect:CGRectMake(320*i, 610*i, 45*i, 45*i)]}
+     ];
+    
+  } else if ([imageType isEqualToString:@"show"]){
    NSDictionary * dataDic = [ShowShareImgMaker getParamsWithImages:images
                                      model:model];
     nodes = dataDic[@"nodes"];
