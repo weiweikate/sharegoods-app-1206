@@ -25,7 +25,7 @@ SINGLETON_FOR_CLASS(CommentTool)
     NSInteger savedTimeStamp_integer = [savedTimeStamp integerValue];
     NSInteger commentInterval_integer = [commentInterval integerValue];
     NSLog(@"保存的时间戳%ld,保存的时间间隔%ld",savedTimeStamp_integer,commentInterval_integer);
-    if ((savedTimeStamp_integer + commentInterval_integer * 24 * 60) < [[self getNowTimeStamp] integerValue]) {
+    if ((savedTimeStamp_integer + commentInterval_integer) < [[self getNowTimeStamp] integerValue]) {
       //超过间隔时间可以弹出评论
       [self showAlterWith:commentInterval_integer];
       [[NSUserDefaults standardUserDefaults]setObject:[self getNowTimeStamp] forKey:LASTCOMMENT_TIME_STAMP];
@@ -67,19 +67,21 @@ SINGLETON_FOR_CLASS(CommentTool)
 }
 -(void)saveNewTimeInterval:(NSInteger)timeInterval{
   [[NSUserDefaults standardUserDefaults]setObject:[self getNowTimeStamp] forKey:LASTCOMMENT_TIME_STAMP];
-  if (timeInterval && timeInterval <= 0) {
-    [[NSUserDefaults standardUserDefaults]setObject:@"2" forKey:COMMENT_INTERVAL];
-    [[NSUserDefaults standardUserDefaults]synchronize];
-  }else{
-    if (timeInterval >= 32) {
-       [[NSUserDefaults standardUserDefaults]setObject:@"32" forKey:COMMENT_INTERVAL];
-      [[NSUserDefaults standardUserDefaults]synchronize];
-    }else{
-      NSString * newTimeInterval = [NSString stringWithFormat:@"%ld",timeInterval * 2];
-      [[NSUserDefaults standardUserDefaults]setObject:newTimeInterval forKey:COMMENT_INTERVAL];
-      [[NSUserDefaults standardUserDefaults]synchronize];
-    }
-  }
+  [[NSUserDefaults standardUserDefaults]setObject:@"300" forKey:COMMENT_INTERVAL];
+  [[NSUserDefaults standardUserDefaults]synchronize];
+//  if (timeInterval && timeInterval <= 0) {
+//    [[NSUserDefaults standardUserDefaults]setObject:@"2" forKey:COMMENT_INTERVAL];
+//    [[NSUserDefaults standardUserDefaults]synchronize];
+//  }else{
+//    if (timeInterval >= 32) {
+//       [[NSUserDefaults standardUserDefaults]setObject:@"32" forKey:COMMENT_INTERVAL];
+//      [[NSUserDefaults standardUserDefaults]synchronize];
+//    }else{
+//      NSString * newTimeInterval = [NSString stringWithFormat:@"%ld",timeInterval * 2];
+//      [[NSUserDefaults standardUserDefaults]setObject:newTimeInterval forKey:COMMENT_INTERVAL];
+//      [[NSUserDefaults standardUserDefaults]synchronize];
+//    }
+//  }
 }
 /**
  获取当前时间戳
