@@ -279,7 +279,7 @@ export default class ProductDetailPage extends BasePage {
     }
 
     _renderContent = () => {
-        const { imgUrl, prodCode, originalPrice, groupPrice, v0Price, promotionPrice, shareMoney, sectionDataList, isSkillIn, nameShareText } = this.productDetailModel;
+        const { name, imgUrl, prodCode, originalPrice, groupPrice, v0Price, promotionPrice, shareMoney, sectionDataList, isSkillIn, nameShareText } = this.productDetailModel;
         return <View style={styles.container}>
             <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
             <ProductDetailNavView productDetailModel={this.productDetailModel}
@@ -310,13 +310,13 @@ export default class ProductDetailPage extends BasePage {
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             trackParmas={{
                                 spuCode: prodCode,
-                                spuName: nameShareText
+                                spuName: name
                             }}
                             trackEvent={trackEvent.Share}
                             type={'Image'}
                             imageJson={{
                                 imageUrlStr: imgUrl,
-                                titleStr: `${nameShareText}`,
+                                titleStr: `${name}`,
                                 priceType: isSkillIn ? 'mr_skill' : '',
                                 priceStr: `￥${originalPrice}`,
                                 retailPrice: `￥${isSkillIn ? promotionPrice : v0Price}`,
@@ -325,8 +325,8 @@ export default class ProductDetailPage extends BasePage {
                                 QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`
                             }}
                             webJson={{
-                                title: isSkillIn ? '超值秒杀!' : `${nameShareText}`,
-                                dec: isSkillIn ? '[秀购]发现一个很给力的活动,快去看看!' : '商品详情',
+                                title: nameShareText.name,
+                                dec: nameShareText.desc,
                                 linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`,
                                 thumImage: imgUrl
                             }}
