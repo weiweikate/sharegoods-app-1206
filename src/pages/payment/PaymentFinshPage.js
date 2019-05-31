@@ -364,6 +364,14 @@ export default class PaymentFinshPage extends BasePage {
             thumImage: user.headImg,
             linkUrl: `${apiEnvironment.getCurrentH5Url()}/activity/drawShare/${this.state.shareCode}`
         });
+
+        PaymentApi.shareCallback({
+            source:'app',
+            shareUrl:`${apiEnvironment.getCurrentH5Url()}/activity/drawShare/${this.state.shareCode}`,
+            shareCode:this.state.shareCode
+        }).then(result=>{
+
+        }).catch(error=>{});
     };
     /**
      * 分享到朋友圈
@@ -386,6 +394,14 @@ export default class PaymentFinshPage extends BasePage {
             dec: '',
             linkUrl: `${apiEnvironment.getCurrentH5Url()}/activity/drawShare/${this.state.shareCode}`
         });
+
+        PaymentApi.shareCallback({
+            source:'app',
+            shareUrl:`${apiEnvironment.getCurrentH5Url()}/activity/drawShare/${this.state.shareCode}`,
+            shareCode:this.state.shareCode
+        }).then(result=>{
+
+        }).catch(error=>{});
     };
 
     format = (timeStamp) => {

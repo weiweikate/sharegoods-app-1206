@@ -27,6 +27,8 @@ const api = {
     getUserCouponAmount:['/user/coupon/getUserCouponAmount',{method:'get'}],
     //支付成功后判断是否可以分享
     judgeShare: ['/user/share/judgeShare'],
+    //分享后的回调
+    shareCallback: ['/user/share/shareCallback'],
 };
 import ApiUtils from '../../api/network/ApiUtils';
 
