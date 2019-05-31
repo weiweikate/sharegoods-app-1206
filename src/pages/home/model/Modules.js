@@ -90,7 +90,7 @@ class HomeModule {
                 recommendModule.loadRecommendList(this.firstLoad);
                 break;
             case homeType.limitGo:
-                limitGoModule.loadLimitGo();
+                limitGoModule.loadLimitGo(false);
                 break;
             case homeType.homeHot:
                 subjectModule.loadSubjectList(this.firstLoad);
@@ -118,7 +118,7 @@ class HomeModule {
         // 首焦点广告
         homeFocusAdModel.loadAdList();
         // 首页限时秒杀
-        limitGoModule.loadLimitGo();
+        limitGoModule.loadLimitGo(true);
         // 首页今日榜单
         todayModule.loadTodayList(this.firstLoad);
         // 首页精品推荐

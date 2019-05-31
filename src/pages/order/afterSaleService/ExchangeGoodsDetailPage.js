@@ -110,6 +110,7 @@ class ExchangeGoodsDetailPage extends BasePage {
             //平台物流
             sendExpressName,
             sendExpressNo,
+            sendExpressCode,
             //退款信息
             reason,
             description,
@@ -178,6 +179,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                     value: sendExpressName,
                     placeholder: '',
                     expressNo: sendExpressNo,
+                    expressCode: sendExpressCode,
                     onPress: this.shopLogists
                 });
             }
@@ -191,6 +193,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                 value: orderRefundExpress.expressName,
                 placeholder: '请填写寄回物流信息',
                 expressNo: orderRefundExpress.expressNo,
+                expressCode: orderRefundExpress.expressCode,
                 onPress: this.returnLogists
             });
         }
@@ -325,7 +328,7 @@ class ExchangeGoodsDetailPage extends BasePage {
         );
     };
 
-    returnLogists = (expressNo) => {
+    returnLogists = (expressNo, expressCode) => {
         if (EmptyUtils.isEmpty(expressNo)) {
             this.$navigate('order/afterSaleService/FillReturnLogisticsPage', {
                 pageData: this.afterSaleDetailModel.pageData,
@@ -335,20 +338,21 @@ class ExchangeGoodsDetailPage extends BasePage {
             });
         } else {
             this.$navigate('order/logistics/LogisticsDetailsPage', {
-                expressNo: expressNo
+                expressNo: expressNo,
+                expressCode: expressCode
             });
         }
     };
 
-    shopLogists = (expressNo) => {
+    shopLogists = (expressNo, expressCode) => {
         if (EmptyUtils.isEmpty(expressNo)) {
             this.$toastShow('请填写完整的退货物流信息\n才可以查看商家的物流信息');
             return;
         }
-        this.logisticsDetailsPage(expressNo)
+        this.logisticsDetailsPage(expressNo, expressCode)
     };
 
-    logisticsDetailsPage = (expressNo) => {
+    logisticsDetailsPage = (expressNo, expressCode) => {
         OrderApi.return_express({serviceNo: this.params.serviceNo}).then((data)=>{
             if (data.data && data.data.length > 1){//有多个物流
                 this.$navigate(RouterMap.AfterLogisticsListView, {
@@ -356,7 +360,8 @@ class ExchangeGoodsDetailPage extends BasePage {
                 });
             }else {
                 this.$navigate('order/logistics/LogisticsDetailsPage', {
-                    expressNo: expressNo
+                    expressNo: expressNo,
+                    expressCode: expressCode
                 });
             }
         }).catch(err=>{

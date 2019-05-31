@@ -88,9 +88,9 @@ export default class DetailBottomView extends Component {
                                                         colors={['#FFCB02', '#FF9502']}>
                                             <Text style={[styles.btnText, {
                                                 color: cantBuy ? DesignRule.textColor_instruction : DesignRule.white,
-                                                fontSize: isNoEmpty(selfReturning) ? 14 : 17
+                                                fontSize: (isNoEmpty(selfReturning) && selfReturning > 0) ? 14 : 17
                                             }]}>{buyText}</Text>
-                                            {isNoEmpty(selfReturning) && < Text style={{
+                                            {(isNoEmpty(selfReturning) && selfReturning > 0) && < Text style={{
                                                 fontSize: 11, color: 'white', marginTop: -2
                                             }}>返{selfReturning}</Text>}
                                         </LinearGradient>

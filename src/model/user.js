@@ -103,6 +103,8 @@ class User {
     @observable
     tokenCoin = null;       //一元券数量
     @observable
+    blockedTokenCoin = null;       //待激活一元券数量
+    @observable
     blockedCoin = null;     //冻结代币
     @observable
     userScore = null;       //积分
@@ -260,6 +262,7 @@ class User {
         this.availableBalance = info.availableBalance;//可提现金额
         this.blockedBalance = info.blockedBalance; //冻结金额
         this.tokenCoin = info.tokenCoin;            //一元券数量
+        this.blockedTokenCoin = info.blockedTokenCoin;            //待激活一元券数量
         this.blockedCoin = info.blockedCoin;        //冻结代币
         this.userScore = info.userScore;            //积分
         this.password = info.password;              //密码
@@ -384,6 +387,7 @@ class User {
         this.availableBalance = null;//可提现金额
         this.blockedBalance = null; //冻结金额
         this.tokenCoin = null;       //代币金额
+        this.blockedTokenCoin = null;       //待激活代币金额
         this.blockedCoin = null;     //冻结代币
         this.userScore = null;       //积分
         this.password = null;        //密码

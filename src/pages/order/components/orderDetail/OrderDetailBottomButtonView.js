@@ -142,7 +142,9 @@ export default class OrderDetailBottomButtonView extends Component {
                 }
                 if (orderDetailModel.warehouseOrderDTOList[0].expList.length === 1 && orderDetailModel.warehouseOrderDTOList[0].unSendProductInfoList.length === 0) {
                     this.props.nav('order/logistics/LogisticsDetailsPage', {
-                        expressNo: orderDetailModel.warehouseOrderDTOList[0].expList[0].expNO
+                        expressNo: orderDetailModel.warehouseOrderDTOList[0].expList[0].expNO,
+                        expressCode: orderDetailModel.warehouseOrderDTOList[0].expList[0].expressCode,
+
                     });
                 } else {
                     this.props.nav('order/logistics/CheckLogisticsPage', {
