@@ -163,9 +163,11 @@ export default class PaymentPage extends BasePage {
             } else {
                 replace = NavigationActions.replace({
                     key: this.props.navigation.state.key,
-                    routeName: 'payment/PaymentResultPage',
+                    // routeName: 'payment/PaymentResultPage',
+                    routeName:RouterMap.PaymentFinshPage,
                     params: { payResult: PaymentResult.success }
                 });
+
             }
             this.props.navigation.dispatch(replace);
             payment.resetPayment();
