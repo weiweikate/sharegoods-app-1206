@@ -158,8 +158,9 @@ export default class CommShareModal extends React.Component {
      * 显示图片,如果是分享商品，分享推广，下载图片展示图片动画
      */
     showImage() {
-        let type = this.props.type;
-        let params = this.props.imageJson || {};
+        const {type,imageJson} = this.props;
+        let params = {...(imageJson || {})};
+        params.shareMoney && (params.shareMoney = this.getMoneyText());
         params = {headerImage:user.headImg, userName: user.nickname, ...params};
         if (type === 'promotionShare' || type === 'Image' || type === 'Show') {
             if (this.state.path.length === 0) {
@@ -271,6 +272,16 @@ export default class CommShareModal extends React.Component {
         // ).start();
     }
 
+    getMoneyText = (shareMoney)=>{
+        //shareMoney 4.0 - 5.0
+        let shareMoneyText = (shareMoney && shareMoney !== '?') ? `${shareMoney.split('-').shift()}` : '';
+        //值相等  不要使用===  0,0.0的时候不显示
+        if (shareMoneyText == 0) {
+            shareMoneyText = null;
+        }
+        return shareMoneyText
+    }
+
     render() {
         const { type } = this.props;
         const { shareType } = this.state;
@@ -350,13 +361,8 @@ export default class CommShareModal extends React.Component {
                 }
             }];
         }
-        //shareMoney 4.0 - 5.0
         const { shareMoney } = this.props.imageJson || {};
-        let shareMoneyText = (shareMoney && shareMoney !== '?') ? `${shareMoney.split('-').shift()}` : '';
-        //值相等  不要使用===  0的时候不显示
-        if (shareMoneyText == 0) {
-            shareMoneyText = null;
-        }
+        const shareMoneyText = this.getMoneyText(shareMoney);
 
         return (
             <CommModal onRequestClose={this.close}
