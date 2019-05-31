@@ -70,6 +70,18 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     return YES;
   }
   
+  if ([imageType isEqualToString:@"webActivity"]) {
+    if (model.imageUrlStr == nil) {
+      completion(nil, @"图片URL（imageUrlStr）不能为nil");
+      return NO;
+    }
+    if (model.QRCodeStr == nil) {
+      completion(nil, @"二维码字符（QRCodeStr）不能为nil");
+      return NO;
+    }
+    return YES;
+  }
+  
   if (model.imageUrlStr == nil) {
     completion(nil, @"商品图片URL（imageUrlStr）不能为nil");
     return NO;
