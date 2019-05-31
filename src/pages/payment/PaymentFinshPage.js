@@ -19,6 +19,7 @@ import user from '../../model/user';
 import PaymentApi from './PaymentApi';
 // import RouterMap from '../../navigation/RouterMap';
 import apiEnvironment from '../../api/ApiEnvironment';
+import bridge from '../../utils/bridge';
 // import PaymentApi from './PaymentApi';
 
 const { px2dp } = ScreenUtils;
@@ -62,6 +63,8 @@ export default class PaymentFinshPage extends BasePage {
         };
         //orderPayResultPageType 有券无劵
         TrackApi.ViewOrderPayPage({ orderPayType: 2, orderPayResultPageType: 2 });
+        //暂加入，测试
+        bridge.$checkIsCanComment();
     }
 
     componentDidMount() {

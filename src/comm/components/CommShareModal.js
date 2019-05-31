@@ -285,14 +285,14 @@ export default class CommShareModal extends React.Component {
     render() {
         const { type } = this.props;
         const { shareType } = this.state;
-        let scale = 667 / 375;
+        let scale = this.props.type === 'web' ?  517 / 315:667 / 375 ;
         this.imageWidth = ScreenUtils.width - 60;
         this.imageHeight = (ScreenUtils.width - 93) * scale;
         if(this.imageWidth * scale >= (ScreenUtils.height - 151)){
             this.imageHeight = (ScreenUtils.height - 151);
             this.imageWidth = this.imageHeight / scale;
         }else {
-            this.imageHeight = (ScreenUtils.width -33) * scale;
+            this.imageHeight = (ScreenUtils.width - 33) * scale;
         }
 
         if (this.props.type === 'promotionShare') {
@@ -346,7 +346,7 @@ export default class CommShareModal extends React.Component {
             }
         });
 
-        if ((type === 'miniProgramWithCopyUrl'||type === 'Image' || type === 'promotionShare' || type === 'Show')&&shareType != 0) {
+        if ((type === 'miniProgramWithCopyUrl' || type === 'Image' || type === 'promotionShare' || type === 'Show') && shareType != 0) {
             array.push({
                 image: res.share.copyURL, title: '复制链接', onPress: () => {
                     this.copyUrl();
@@ -459,7 +459,7 @@ export default class CommShareModal extends React.Component {
                                 height: this.imageHeight,
                                 width: this.imageWidth,
                                 position: 'absolute',
-                                top: 33,
+                                bottom: 117,
                                 left: (ScreenUtils.width - this.imageWidth) / 2,
                                 borderRadius: 10,
                                 borderColor: DesignRule.textColor_placeholder,
@@ -477,7 +477,7 @@ export default class CommShareModal extends React.Component {
                                     }
                                 }}>
                                     <Image source={{ uri: this.state.path }}
-                                           resizeMode={'contain'}
+                                           resizeMode={'center'}
                                            style={{
                                                height: this.imageHeight,
                                                width: this.imageWidth,
@@ -486,11 +486,11 @@ export default class CommShareModal extends React.Component {
                                 </TouchableWithoutFeedback>  : null
                                 }
                                 {this.props.type === 'Show' ?
-                                <ShowShareImage modalWidth={this.imageWidth} modalHeight={this.imageHeight*2/3}
+                                <ShowShareImage modalWidth={this.imageWidth} modalHeight={this.imageHeight * 2 / 3}
                                                 data={this.props.imageJson} modal={this.modal}/> : null
                                 }
                                 {
-                                    this.state.path === ''&&!this.props.type === 'Show' ? <ActivityIndicator
+                                    this.state.path === '' && !this.props.type === 'Show' ? <ActivityIndicator
                                         color="#aaaaaa"
                                         style={{
                                             position: 'absolute',

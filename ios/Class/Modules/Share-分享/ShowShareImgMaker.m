@@ -165,8 +165,8 @@
   CGFloat imageHeght = 667*i;
 
     NSMutableArray *nodes = [NSMutableArray new];
-    NSString *contentStr = model.other;
-    NSString *nameStr = model.userName;
+  NSString *contentStr = model.other? model.other:@"";
+  NSString *nameStr = model.userName?model.userName:@"";
 
     CGFloat sigle =  [@"1" getStringHeightWithfontSize:13*i viewWidth:315*i];
     CGFloat height =  [contentStr getStringHeightWithfontSize:13*i viewWidth:315*i];
