@@ -302,6 +302,9 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
   return [self save:image withPath:[NSString stringWithFormat:@"/Documents/QRCode%@.png",[model modelToJSONString].md5String]];
 }
 
+
+
+
 /**
  保存图片到本地，并返回路径
  */
@@ -467,6 +470,36 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     }
   }];
 }
+
+#pragma mark-二维码和商品绘制图形
+-(void)creatQRCodeImageAndProductModel:(ShareImageMakerModel *)model completion:(ShareImageMakercompletionBlock)completion{
+  
+  if (model.imageUrlStr == nil) {
+    completion(nil, @"图片URL（imageUrlStr）不能为nil");
+    return;
+  }
+  if (model.QRCodeStr == nil) {
+    completion(nil, @"二维码字符（QRCodeStr）不能为nil");
+    return;
+  }
+  
+  NSArray * URLs = @[];
+  NSArray * defaultImages = @[];
+    URLs = @[model.imageUrlStr];
+    defaultImages = @[[UIImage imageNamed:@"logo.png"]];
+  [self requestImageWithURLs:URLs defaultImage:defaultImages success:^(NSArray *images) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+      
+      NSString *path = [ShowShareImgMaker getShowProductImageModelImages:images model:model];
+      if (path == nil || path.length == 0) {
+        completion(nil, @"ShareImageMaker：保存图片到本地失败");
+      }else{
+        completion(path, nil);
+      }
+    });
+  }];
+}
+
 #pragma mark-公用部分
 - (void)QRCode:(UIImage *)str image:(UIImage *)image com:(void(^)(UIImage * image))com{
   CGRect rect = CGRectMake(0.0f, 0.0f, 360 , 350);
