@@ -48,15 +48,7 @@ SINGLETON_FOR_CLASS(CommentTool)
                                                        handler:^(UIAlertAction * _Nonnull action) {
                                                          [self saveNewTimeInterval:timeInterval];
                                                        }];
-  
-  UIAlertAction *actionSubmit = [UIAlertAction actionWithTitle:@"我要吐槽"
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction * _Nonnull action) {
-                                                         
-                                                         [self saveNewTimeInterval:32];
-                                                         [self goToAppStore];
-                                                       }];
-  UIAlertAction *actionSubmit2 = [UIAlertAction actionWithTitle:@"无星好评"
+  UIAlertAction *actionSubmit = [UIAlertAction actionWithTitle:@"五星好评"
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * _Nonnull action) {
                                                          
@@ -66,7 +58,6 @@ SINGLETON_FOR_CLASS(CommentTool)
   
   [alterController addAction:actionCancel];
   [alterController addAction:actionSubmit];
-  [alterController addAction:actionSubmit2];
   [self.currentViewController_XG presentViewController:alterController animated:YES completion:^{}];
 }
 -(void)goToAppStore{
