@@ -399,7 +399,7 @@ export default class CommShareModal extends React.Component {
                                     backgroundColor: DesignRule.lineColor_inColorBg
                                 }}/>
                                 {
-                                    this.props.type === 'Image' ?
+                                    shareMoneyText ?
                                         <MRText style={{
                                             color: DesignRule.textColor_mainTitle,
                                             fontSize: autoSizeWidth(15),
