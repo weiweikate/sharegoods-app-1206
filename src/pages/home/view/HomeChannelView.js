@@ -47,23 +47,21 @@ class Item extends Component {
 export default class HomeChannelView extends Component {
 
 
-
-    _filterNav=(router,params)=>{
+    _filterNav = (router, params) => {
         const { navigate } = this.props;
-        if (router === 'home/signIn/SignInPage' && !user.isLogin){
+        if (router === 'home/signIn/SignInPage' && !user.isLogin) {
             navigate(RouterMap.LoginPage);
         } else {
             navigate(router, { ...params });
         }
-    }
+    };
 
     _onItemPress = (data) => {
         // const { navigate } = this.props;
         let router = homeModule.homeNavigate(data.linkType, data.linkTypeCode) || '';
         let params = homeModule.paramsNavigate(data);
         params.fromHome = true;
-        this._filterNav(router,{...params})
-        // navigate(router, { ...params });
+        this._filterNav(router, { ...params });
     };
 
     renderItems = () => {

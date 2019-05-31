@@ -72,7 +72,6 @@ export default class MyCouponsItems extends Component {
                 <CouponNormalItem item={item} index={index} clickItem={() => this.clickItem(index, item)}/>
             );
         }
-
     };
     onRequestClose = () => {
         this.setState({ showDialogModal: false });
