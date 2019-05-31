@@ -245,17 +245,17 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
         String info = shareImageBean.getQRCodeStr();
         int ratio = 3;
-        Bitmap result = Bitmap.createBitmap(375*ratio, 667*ratio, Bitmap.Config.ARGB_8888);
+        Bitmap result = Bitmap.createBitmap(250*ratio, 340*ratio, Bitmap.Config.ARGB_8888);
 
         Canvas canvas = new Canvas(result);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-        bitmap = Bitmap.createScaledBitmap(bitmap, 375*ratio, 667*ratio, true);
+        bitmap = Bitmap.createScaledBitmap(bitmap, 250*ratio, 340*ratio, true);
         canvas.drawBitmap(bitmap, 0, 0, paint);
 
 
-        Bitmap qrBitmap = createQRImage(info, 90*ratio, 90*ratio);
-        canvas.drawBitmap(qrBitmap, 275*ratio, 567*ratio, paint);
+        Bitmap qrBitmap = createQRImage(info, 45*ratio, 45*ratio);
+        canvas.drawBitmap(qrBitmap, 190*ratio, 285*ratio, paint);
 
         String path = BitmapUtils.saveImageToCache(result, "shareImage.png", shareImageBean.toString());
         if (!TextUtils.isEmpty(path)) {
