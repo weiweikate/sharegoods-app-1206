@@ -214,7 +214,15 @@ export default class ShowHotView extends React.Component {
                                            let promises = [];
                                            if (!EmptyUtils.isEmptyArr(detail.products)) {
                                                detail.products.map((value) => {
-                                                   let promise = bridge.createQRToAlbum(`${apiEnvironment.getCurrentH5Url()}/product/99/${value.prodCode}?upuserid=${user.code || ''}`);
+                                                   let data = {
+                                                       imageUrl:value.imgUrl,
+                                                       title:value.name,
+                                                       linkUrl:`${apiEnvironment.getCurrentH5Url()}/product/99/${value.prodCode}?upuserid=${user.code || ''}`,
+                                                       originalPrice:'100',
+                                                       currentPrice:'99'
+                                                   }
+                                                   let promise = bridge.createShowProductImage(JSON.stringify(data));
+
                                                    promises.push(promise);
                                                });
                                            }

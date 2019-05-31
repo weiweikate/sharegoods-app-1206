@@ -22,8 +22,9 @@ const maxY = maxTextWidth + 15 + 50;
 class IntervalMsgModel {
     @observable msgList = [];
     @observable pageType = undefined;
+    @observable shopCode = undefined;
 
-    @action setMsgData(content) {
+    @action setMsgData(content, shopCode) {
         const { params, pageType } = content || {};
         const { floatMsgs } = params || {};
         /*
@@ -34,6 +35,7 @@ class IntervalMsgModel {
         * }
         * */
         this.pageType = pageType;
+        this.shopCode = shopCode;
         if (pageType === IntervalType.shopDetail) {
             this.msgList = floatMsgs || [];
         } else {
@@ -54,6 +56,7 @@ export class IntervalMsgView extends React.Component {
 
     componentDidMount() {
         this.IntervalMsgModel.pageType = this.props.pageType;
+        this.IntervalMsgModel.shopCode = this.props.shopCode;
     }
 
     _onPress = (showItem) => {
@@ -117,11 +120,12 @@ const styles = StyleSheet.create({
 
 /*跳标数据模型*/
 class IntervalMsgViewModel {
-    showItems = intervalMsgModel.msgList;
+    showItems = [];
     messageIndex = 0;
     needUpdate = false;
     isAnimated = false;
     pageType = undefined;
+    shopCode = undefined;
     /*
     *{
     * content  ush:发布了新动态
@@ -181,11 +185,26 @@ class IntervalMsgViewModel {
     };
 
     autorun = autorun(() => {
-        /*有当前页面的新数据*/
         const list = intervalMsgModel.msgList;
+        /*有当前页面类型的新数据*/
         if (list.length > 0 && intervalMsgModel.pageType === this.pageType) {
-            this.showItems = intervalMsgModel.msgList || [];
+            //是店铺消息&&不是当前店铺页面的消息 不显示
+            if (this.shopCode && this.shopCode !== intervalMsgModel.shopCode) {
+                return;
+            }
+            //取新数据第一条匹配上一批消息 一样不显示
+            if (this.showItems.length > 0) {
+                const firstItem = list[0];
+                const { content } = firstItem || {};
+                const filterList = this.showItems.filter((item) => {
+                    return (item || {}).content === content;
+                });
+                if (filterList.length > 0) {
+                    return;
+                }
+            }
             /*没有进行中的动画启动*/
+            this.showItems = list;
             this.needUpdate = true;
             setTimeout(() => {
                 !this.isAnimated && this.startAnimated();
@@ -215,7 +234,7 @@ export function IntervalMsgNavigate(forwardType, keyCode) {
                 orderNo: keyCode,
                 code: keyCode,
                 id: keyCode,
-                uri: keyCode,
+                uri: keyCode
             });
         } else {
             // navigate('HtmlPage', {
@@ -243,7 +262,7 @@ export const IntervalMsgType = {
     shopDetail: 23,     //拼店店铺详情页
     sign: 24, //签到
     mineShare: 10,      //分享好友
-    web: 99, //网页
+    web: 99 //网页
     /** 下面都是网页*/
     // page: 8,      //新人专享
     // page: 9,      //免费兑换
@@ -273,5 +292,5 @@ const IntervalMsgRouter = {
     [IntervalMsgType.showDetail]: 'show/ShowDetailPage',
     [IntervalMsgType.sign]: 'home/signIn/SignInPage',
     [IntervalMsgType.web]: 'HtmlPage',
-    [IntervalMsgType.mineShare]: 'mine/InviteFriendsPage',
+    [IntervalMsgType.mineShare]: 'mine/InviteFriendsPage'
 };

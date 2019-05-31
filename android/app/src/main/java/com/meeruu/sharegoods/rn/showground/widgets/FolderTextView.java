@@ -348,7 +348,7 @@ public class FolderTextView extends AppCompatTextView {
         }
 
         updateText(spanStr);
-        setMovementMethod(LinkMovementMethod.getInstance());
+//        setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     /**

@@ -178,13 +178,22 @@ export default class ProductDetailModel {
     @observable promotionMaxPrice;
 
     @computed get nameShareText() {
-        const { activityType, activityStatus } = this;
+        const { activityType, activityStatus, promotionDecreaseAmount } = this;
         if (activityType === activity_type.skill && activityStatus === activity_status.inSell) {
-            return `工厂价秒杀，不足24小时！${this.name}`;
+            return {
+                name: `工厂价秒杀，不足24小时！${this.name}`,
+                desc: `击穿工厂价，实惠仅此一次！`
+            };
         } else if (activityType === activity_type.verDown && activityStatus === activity_status.inSell) {
-            return `直降，实惠仅此一次！${this.name}`;
+            return {
+                name: `直降${promotionDecreaseAmount}元，实惠仅此一次！${this.name}`,
+                desc: `击穿工厂价，实惠仅此一次！`
+            };
         } else {
-            return `${this.monthSaleCount >= 1000 ? `[明星爆款]` : (this.monthSaleCount >= 500 ? '[人气爆款]' : '[爆款新品]')}${this.name}`;
+            return {
+                name: `${this.monthSaleCount >= 1000 ? `[明星爆款]` : (this.monthSaleCount >= 500 ? '[人气爆款]' : '[爆款新品]')}${this.name}`,
+                desc: `商品详情`
+            };
         }
     }
 

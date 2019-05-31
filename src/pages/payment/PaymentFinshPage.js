@@ -63,8 +63,11 @@ export default class PaymentFinshPage extends BasePage {
         };
         //orderPayResultPageType 有券无劵
         TrackApi.ViewOrderPayPage({ orderPayType: 2, orderPayResultPageType: 2 });
-        //暂加入，测试
-        bridge.$checkIsCanComment();
+        //
+        setTimeout(()=>{
+            bridge.$checkIsCanComment();
+        },2000);
+
     }
 
     componentDidMount() {
@@ -364,6 +367,14 @@ export default class PaymentFinshPage extends BasePage {
             thumImage: user.headImg,
             linkUrl: `${apiEnvironment.getCurrentH5Url()}/activity/drawShare/${this.state.shareCode}`
         });
+
+        PaymentApi.shareCallback({
+            source:'app',
+            shareUrl:`${apiEnvironment.getCurrentH5Url()}/activity/drawShare/${this.state.shareCode}`,
+            shareCode:this.state.shareCode
+        }).then(result=>{
+
+        }).catch(error=>{});
     };
     /**
      * 分享到朋友圈
@@ -386,6 +397,14 @@ export default class PaymentFinshPage extends BasePage {
             dec: '',
             linkUrl: `${apiEnvironment.getCurrentH5Url()}/activity/drawShare/${this.state.shareCode}`
         });
+
+        PaymentApi.shareCallback({
+            source:'app',
+            shareUrl:`${apiEnvironment.getCurrentH5Url()}/activity/drawShare/${this.state.shareCode}`,
+            shareCode:this.state.shareCode
+        }).then(result=>{
+
+        }).catch(error=>{});
     };
 
     format = (timeStamp) => {
