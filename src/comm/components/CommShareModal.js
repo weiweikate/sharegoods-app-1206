@@ -158,8 +158,9 @@ export default class CommShareModal extends React.Component {
      * 显示图片,如果是分享商品，分享推广，下载图片展示图片动画
      */
     showImage() {
-        let type = this.props.type;
-        let params = this.props.imageJson || {};
+        const {type,imageJson} = this.props;
+        let params = {...(imageJson || {})};
+        params.shareMoney && (params.shareMoney = this.getMoneyText());
         params = {headerImage:user.headImg, userName: user.nickname, ...params};
         if (type === 'promotionShare' || type === 'Image' || type === 'Show') {
             if (this.state.path.length === 0) {
@@ -271,17 +272,27 @@ export default class CommShareModal extends React.Component {
         // ).start();
     }
 
+    getMoneyText = (shareMoney)=>{
+        //shareMoney 4.0 - 5.0
+        let shareMoneyText = (shareMoney && shareMoney !== '?') ? `${shareMoney.split('-').shift()}` : '';
+        //值相等  不要使用===  0,0.0的时候不显示
+        if (shareMoneyText == 0) {
+            shareMoneyText = null;
+        }
+        return shareMoneyText
+    }
+
     render() {
         const { type } = this.props;
         const { shareType } = this.state;
-        let scale = 667 / 375;
+        let scale = this.props.type === 'web' ?  517 / 315:667 / 375 ;
         this.imageWidth = ScreenUtils.width - 60;
         this.imageHeight = (ScreenUtils.width - 93) * scale;
         if(this.imageWidth * scale >= (ScreenUtils.height - 151)){
             this.imageHeight = (ScreenUtils.height - 151);
             this.imageWidth = this.imageHeight / scale;
         }else {
-            this.imageHeight = (ScreenUtils.width -33) * scale;
+            this.imageHeight = (ScreenUtils.width - 33) * scale;
         }
 
         if (this.props.type === 'promotionShare') {
@@ -335,7 +346,7 @@ export default class CommShareModal extends React.Component {
             }
         });
 
-        if ((type === 'miniProgramWithCopyUrl'||type === 'Image' || type === 'promotionShare' || type === 'Show')&&shareType != 0) {
+        if ((type === 'miniProgramWithCopyUrl' || type === 'Image' || type === 'promotionShare' || type === 'Show') && shareType != 0) {
             array.push({
                 image: res.share.copyURL, title: '复制链接', onPress: () => {
                     this.copyUrl();
@@ -350,13 +361,8 @@ export default class CommShareModal extends React.Component {
                 }
             }];
         }
-        //shareMoney 4.0 - 5.0
         const { shareMoney } = this.props.imageJson || {};
-        let shareMoneyText = (shareMoney && shareMoney !== '?') ? `${shareMoney.split('-').shift()}` : '';
-        //值相等  不要使用===  0的时候不显示
-        if (shareMoneyText == 0) {
-            shareMoneyText = null;
-        }
+        const shareMoneyText = this.getMoneyText(shareMoney);
 
         return (
             <CommModal onRequestClose={this.close}
@@ -393,7 +399,7 @@ export default class CommShareModal extends React.Component {
                                     backgroundColor: DesignRule.lineColor_inColorBg
                                 }}/>
                                 {
-                                    this.props.type === 'Image' ?
+                                    shareMoneyText ?
                                         <MRText style={{
                                             color: DesignRule.textColor_mainTitle,
                                             fontSize: autoSizeWidth(15),
@@ -453,7 +459,7 @@ export default class CommShareModal extends React.Component {
                                 height: this.imageHeight,
                                 width: this.imageWidth,
                                 position: 'absolute',
-                                top: 33,
+                                bottom: 117,
                                 left: (ScreenUtils.width - this.imageWidth) / 2,
                                 borderRadius: 10,
                                 borderColor: DesignRule.textColor_placeholder,
@@ -471,7 +477,7 @@ export default class CommShareModal extends React.Component {
                                     }
                                 }}>
                                     <Image source={{ uri: this.state.path }}
-                                           resizeMode={'contain'}
+                                           resizeMode={'center'}
                                            style={{
                                                height: this.imageHeight,
                                                width: this.imageWidth,
@@ -480,11 +486,11 @@ export default class CommShareModal extends React.Component {
                                 </TouchableWithoutFeedback>  : null
                                 }
                                 {this.props.type === 'Show' ?
-                                <ShowShareImage modalWidth={this.imageWidth} modalHeight={this.imageHeight*2/3}
+                                <ShowShareImage modalWidth={this.imageWidth} modalHeight={this.imageHeight * 2 / 3}
                                                 data={this.props.imageJson} modal={this.modal}/> : null
                                 }
                                 {
-                                    this.state.path === ''&&!this.props.type === 'Show' ? <ActivityIndicator
+                                    this.state.path === '' && !this.props.type === 'Show' ? <ActivityIndicator
                                         color="#aaaaaa"
                                         style={{
                                             position: 'absolute',

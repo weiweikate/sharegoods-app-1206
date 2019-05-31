@@ -7,6 +7,7 @@ import StringUtils from '../../utils/StringUtils';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DateUtils from '../../utils/DateUtils';
 import TopicAPI from '../topic/api/TopicApi';
+import { ProductDetailCouponsViewModel } from './components/ProductDetailCouponsView';
 
 const { width, height } = ScreenUtils;
 const { isNoEmpty } = StringUtils;
@@ -16,12 +17,23 @@ export const contentImgWidth = width;
 export const productItemType = {
     headerView: 'headerView',
     suit: 'suit',
+    coupons: 'coupons',
     promote: 'promote',
     service: 'service',
     param: 'param',
     comment: 'comment',
     content: 'content',
     priceExplain: 'priceExplain'
+};
+
+export const sectionType = {
+    sectionHeader: 'section0',
+    sectionSuit: 'section1',
+    sectionPromotion: 'section2',
+    sectionSetting: 'section3',
+    sectionScore: 'section4',
+    sectionContent: 'section5',
+    sectionExPlain: 'section6'
 };
 
 /**价格类型 2拼店价 3会员价**/
@@ -53,6 +65,8 @@ export const activity_type = {
 
 export default class ProductDetailModel {
 
+    productDetailCouponsViewModel = new ProductDetailCouponsViewModel();
+
     @observable prodCode;
     @observable loadingState = PageLoadingState.loading;
     @observable netFailedInfo = {};
@@ -76,6 +90,8 @@ export default class ProductDetailModel {
     /*分享显示的零售价*/
     @observable v0Price;
     @observable shareMoney;
+    /*自返金额*/
+    @observable selfReturning;
     /*原价*/
     @observable originalPrice;
     /*价格类型 2拼店价 3会员价*/
@@ -113,6 +129,8 @@ export default class ProductDetailModel {
     /*商品详情图片*/
     @observable contentArr = [];
     @observable now;
+    /*开售时间*/
+    @observable upTime;
 
     /**七鱼相关**/
     @observable shopId;
@@ -160,13 +178,22 @@ export default class ProductDetailModel {
     @observable promotionMaxPrice;
 
     @computed get nameShareText() {
-        const { activityType, activityStatus } = this;
+        const { activityType, activityStatus, promotionDecreaseAmount } = this;
         if (activityType === activity_type.skill && activityStatus === activity_status.inSell) {
-            return `工厂价秒杀，不足24小时！${this.name}`;
+            return {
+                name: `工厂价秒杀，不足24小时！${this.name}`,
+                desc: `击穿工厂价，实惠仅此一次！`
+            };
         } else if (activityType === activity_type.verDown && activityStatus === activity_status.inSell) {
-            return `直降，实惠仅此一次！${this.name}`;
+            return {
+                name: `直降${promotionDecreaseAmount}元，实惠仅此一次！${this.name}`,
+                desc: `击穿工厂价，实惠仅此一次！`
+            };
         } else {
-            return `${this.monthSaleCount >= 1000 ? `[明星爆款]` : (this.monthSaleCount >= 500 ? '[人气爆款]' : '[爆款新品]')}${this.name}`;
+            return {
+                name: `${this.monthSaleCount >= 1000 ? `[明星爆款]` : (this.monthSaleCount >= 500 ? '[人气爆款]' : '[爆款新品]')}${this.name}`,
+                desc: `商品详情`
+            };
         }
     }
 
@@ -262,33 +289,46 @@ export default class ProductDetailModel {
     }
 
     @computed get sectionDataList() {
-        const { promoteInfoVOList, contentArr, groupActivity, activityStatus, paramList } = this;
-
+        const { promoteInfoVOList, contentArr, groupActivity, activityStatus, paramList, productDetailCouponsViewModel } = this;
+        const { couponsList } = productDetailCouponsViewModel;
+        /*头部*/
         let sectionArr = [
-            { key: productItemType.headerView, data: [productItemType.headerView] }
+            { key: sectionType.sectionHeader, data: [{ itemKey: productItemType.headerView }] }
         ];
+        /*优惠套餐*/
         if (activityStatus === activity_status.inSell && (groupActivity.subProductList || []).length > 0) {
             sectionArr.push(
-                { key: productItemType.suit, data: [productItemType.suit] }
+                { key: sectionType.sectionSuit, data: [{ itemKey: productItemType.suit }] }
             );
         }
-        if (promoteInfoVOList.length !== 0) {
-            sectionArr.push(
-                { key: productItemType.promote, data: [productItemType.promote] }
-            );
-        }
-        sectionArr.push(
-            { key: productItemType.service, data: [productItemType.service] }
+        /*优惠券,促销*/
+        let promoteItemList = [];
+        couponsList.length !== 0 && promoteItemList.push({ itemKey: productItemType.coupons });
+        promoteInfoVOList.length !== 0 && promoteItemList.push({ itemKey: productItemType.promote });
+        promoteItemList.length !== 0 && sectionArr.push({
+                key: sectionType.sectionPromotion,
+                data: promoteItemList
+            }
         );
+
+        /*服务,参数,选择地址*/
         if (paramList.length !== 0) {
             sectionArr.push(
-                { key: productItemType.param, data: [productItemType.param] }
+                {
+                    key: sectionType.sectionSetting,
+                    data: [{ itemKey: productItemType.service }, { itemKey: productItemType.param }]
+                }
+            );
+        } else {
+            sectionArr.push(
+                { key: sectionType.sectionSetting, data: [{ itemKey: productItemType.service }] }
             );
         }
+        /*晒单,*/
         sectionArr.push(
-            { key: productItemType.comment, data: [productItemType.comment] },
-            { key: productItemType.content, data: contentArr.slice() },
-            { key: productItemType.priceExplain, data: [productItemType.priceExplain] }
+            { key: sectionType.sectionScore, data: [{ itemKey: productItemType.comment }] },
+            { key: sectionType.sectionContent, data: contentArr.slice() },
+            { key: sectionType.sectionExPlain, data: [{ itemKey: productItemType.priceExplain }] }
         );
         return sectionArr;
     }
@@ -305,7 +345,7 @@ export default class ProductDetailModel {
             const {
                 videoUrl, imgUrl, imgFileList, minPrice, maxPrice,
                 originalPrice, priceType, name, secondName, freight,
-                groupPrice, v0Price, shareMoney,
+                groupPrice, v0Price, shareMoney, selfReturning,
                 monthSaleCount, skuList, specifyList, stockSysConfig, promoteInfoVOList,
                 restrictions, paramList, comment, totalComment, overtimeComment,
                 prodCode, upTime, now, content,
@@ -324,6 +364,7 @@ export default class ProductDetailModel {
             this.groupPrice = groupPrice;
             this.v0Price = v0Price;
             this.shareMoney = shareMoney;
+            this.selfReturning = selfReturning;
             this.originalPrice = originalPrice;
             this.priceType = priceType;
             this.name = name;
@@ -342,6 +383,7 @@ export default class ProductDetailModel {
             this.totalComment = totalComment;
             this.contentArr = contentArr;
             this.now = now;
+            this.upTime = upTime;
 
             const { singleActivity, groupActivity, tags } = promotionResult || {};
             this.singleActivity = singleActivity || {};
@@ -398,7 +440,7 @@ export default class ProductDetailModel {
                 spuCode: prodCode,
                 spuName: name,
                 priceShareStore: groupPrice,
-                pricePerCommodity: minPrice !== maxPrice ? `￥${minPrice}-￥${maxPrice}` : `￥${minPrice}`,
+                priceShow: this.activityStatus === activity_status.inSell ? promotionMinPrice : minPrice,
                 priceType: priceType === price_type.shop ? 100 : user.levelRemark
             });
         }
@@ -460,6 +502,7 @@ export default class ProductDetailModel {
             let tempData = data.data || {};
             this.productSuccess(tempData);
             this.requestShopInfo(tempData.supplierCode);
+            this.productDetailCouponsViewModel.requestListProdCoupon(this.prodCode);
         }).catch((e) => {
             this.productError(e);
         });

@@ -10,7 +10,6 @@ import {
 import { UIImage } from '../../../components/ui';
 import Modal from '../../../comm/components/CommModal';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import { formatDate } from '../../../utils/DateUtils';
 import API from '../../../api';
 import bridge from '../../../utils/bridge';
 import { observer } from 'mobx-react';
@@ -54,11 +53,6 @@ export default class MyCouponsItems extends Component {
         this.onRefresh();
     }
 
-    fmtDate(obj) {
-        return formatDate(obj, 'yyyy.MM.dd');
-    }
-
-
     renderItem = ({ item, index }) => {
         // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
         if (item.remarks) {
@@ -72,7 +66,6 @@ export default class MyCouponsItems extends Component {
                 <CouponNormalItem item={item} index={index} clickItem={() => this.clickItem(index, item)}/>
             );
         }
-
     };
     onRequestClose = () => {
         this.setState({ showDialogModal: false });
@@ -385,7 +378,7 @@ export default class MyCouponsItems extends Component {
                 id: item.id,
                 status: item.status,
                 name: item.name,
-                timeStr: '使用有效期：' + item.startTime && item.expireTime ? this.fmtDate(item.startTime || 0) + '-' + this.fmtDate(item.expireTime || 0) : null,
+                timeStr: '使用有效期：' + item.couponTime,
                 value: item.type === 3 ? (item.value / 10) : (item.type === 4 ? '商品\n兑换' : (item.type === 5 ? '兑换' : item.value)),
                 limit: this.parseCoupon(item),
                 couponConfigId: item.couponConfigId,
@@ -472,8 +465,7 @@ export default class MyCouponsItems extends Component {
             bridge.hiddenLoading();
             let dataList = [];
             this.parseData(dataList);
-        }
-        else {
+        } else {
             API.userCouponList({
                 page: this.currentPage,
                 status,

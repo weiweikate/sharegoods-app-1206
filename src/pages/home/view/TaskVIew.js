@@ -334,6 +334,7 @@ export default class TaskVIew extends React.Component {
             <View style={{ height:  autoSizeWidth(300)}}>
                 <View style={{backgroundColor: 'white', borderRadius: 5, marginTop: 10, overflow: 'hidden',flex: 1, marginHorizontal: 15}}>
                     <ScrollView
+                        nestedScrollEnabled={true}
                         showsVerticalScrollIndicator={false}
                     >
                         {

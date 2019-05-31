@@ -159,7 +159,8 @@ const codeLoginAction = (LoginParam, callBack) => {
         systemVersion: (DeviceInfo.getSystemVersion() + '').length > 0 ? DeviceInfo.getSystemVersion() : '暂无',
         username: '',
         wechatCode: '',
-        wechatVersion: ''
+        wechatVersion: '',
+        popupBoxType:1,//0:全部 1:app 2:h5 3:小程序
     }).then((data) => {
         callBack(data);
         UserModel.saveUserInfo(data.data);
@@ -224,7 +225,8 @@ const registAction = (params, callback) => {
         inviteId: '',//邀请id
         appOpenid: (this.params && this.params.appOpenid) ? this.params.appOpenid : '',
         systemVersion: DeviceInfo.getSystemVersion() + '',
-        wechatVersion: ''
+        wechatVersion: '',
+        popupBoxType:1,
     }).then((data) => {
         if (data.code === 10000) {
             callback(data);

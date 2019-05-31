@@ -138,18 +138,11 @@ export default class MyShopPage extends BasePage {
 
     componentWillUnmount() {
         this.willFocusSubscription && this.willFocusSubscription.remove();
-        this.willBlurSubscription && this.willBlurSubscription.remove();
         this.timeInterval && clearInterval(this.timeInterval);
     }
 
     requestShopMsg = () => {
         this.MyShopDetailModel.questShopMsg(this.state.storeCode);
-    };
-
-    requestPageData = () => {
-        this._loadPageData();
-        this.requestShopMsg();
-        this.timeInterval = setInterval(this.requestShopMsg, 1000 * 30);
     };
 
     componentDidMount() {
@@ -159,21 +152,14 @@ export default class MyShopPage extends BasePage {
                 const { state } = payload;
                 console.log('willFocus', state);
                 if (state && state.routeName === 'MyShop_RecruitPage') {//tab出现的时候
-                    this.requestPageData();
-                }
-            }
-        );
-        this.willBlurSubscription = this.props.navigation.addListener(
-            'willBlur',
-            payload => {
-                const { state } = payload;
-                if (state && state.routeName === 'MyShop_RecruitPage') {
-                    this.timeInterval && clearInterval(this.timeInterval);
+                    this._loadPageData();
                 }
             }
         );
         /*上面的方法第一次_loadPageData不会执行  page已经出现了*/
-        this.requestPageData();
+        this._loadPageData();
+        this.requestShopMsg();
+        this.timeInterval = setInterval(this.requestShopMsg, 1000 * 30);
     }
 
 
@@ -542,7 +528,7 @@ export default class MyShopPage extends BasePage {
                                 style={styles.LinearGradient}/>
                 {this._NavBarRender()}
                 {this.renderBodyView()}
-                <IntervalMsgView pageType={IntervalType.shopDetail}/>
+                <IntervalMsgView pageType={IntervalType.shopDetail} storeCode={this.state.storeCode}/>
                 <ActionSheetView ref={ref => {
                     this.actionSheetRef = ref;
                 }}/>

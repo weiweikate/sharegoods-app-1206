@@ -1,6 +1,6 @@
 import { TabNavigator } from 'react-navigation';
 import React, { Component } from 'react';
-import { DeviceEventEmitter, Text, View } from 'react-native';
+import { DeviceEventEmitter, Text, View, TouchableWithoutFeedback } from 'react-native';
 import Home from '../pages/home/HomePage';
 import Mine from '../pages/mine/page/MinePage';
 import ShopCart from '../pages/shopCart/page/ShopCartPage';
@@ -40,30 +40,6 @@ const Tab = ({ focused, activeSource, normalSource, title }) => {
 };
 
 @observer
-class SpellShopTab extends Component {
-    render() {
-        const { focused, normalSource, activeSource } = this.props;
-        if (!user) {
-            return <Tab focused={focused} normalSource={normalSource} activeSource={activeSource} title={'拼店'}/>;
-        }
-
-        if (!user.isLogin) {
-            return <Tab focused={focused} normalSource={normalSource} activeSource={activeSource} title={'拼店'}/>;
-        }
-
-        if (user.levelRemark >= 'V2' && !user.storeCode) {
-            return <Image style={styles.store} source={res.tab.home_store}/>;
-        }
-
-        if (user.storeCode && user.levelRemark >= 'V2' && user.storeStatus === 0) {
-            return <Image style={styles.store} source={res.tab.home_store}/>;
-        }
-
-        return <Tab focused={focused} normalSource={normalSource} activeSource={activeSource} title={'拼店'}/>;
-    }
-}
-
-@observer
 class HomeTab extends Component {
 
     render() {
@@ -95,10 +71,20 @@ class HomeTab extends Component {
     }
 }
 
-const ShowFlag = () => <View style={styles.shopFlag}>
-    <ImageBackground style={styles.flagBg} source={res.tab.home_store_flag}>
-        <Text style={styles.flagText}>快享拼店价</Text>
-    </ImageBackground>
+const ShowFlag = () => <View>
+    <TouchableWithoutFeedback >
+        <Animation
+            style={styles.shopFlag}
+            loop={true}
+            autoPlay={true}
+            source={require('./pindian_flag.json')}/>
+    </TouchableWithoutFeedback>
+    {/*<View style={styles.home}>*/}
+        {/*<Animation*/}
+            {/*loop={true}*/}
+            {/*autoPlay={true}*/}
+            {/*source={require('./pin_tab.json')}/>;*/}
+    {/*</View>*/}
 </View>;
 
 @observer
@@ -145,8 +131,7 @@ export const TabNav = TabNavigator(
             screen: Home,
             navigationOptions: {
                 tabBarIcon: ({ focused }) => <HomeTab normalSource={res.tab.home_n}
-                                                      title={'首页'}
-                                                      focus={focused}/>,
+                                                      title={'首页'} focus={focused}/>,
                 tabBarOnPress: (tab) => {
                     const { jumpToIndex, scene, previousScene } = tab;
                     if (previousScene.key !== 'HomePage') {
@@ -156,8 +141,6 @@ export const TabNav = TabNavigator(
                     }
                 }
             }
-
-
         },
         ShowListPage: {
             screen: ShowListPage,
@@ -170,7 +153,7 @@ export const TabNav = TabNavigator(
                     if (previousScene.key !== 'ShowListPage') {
                         jumpToIndex(scene.index);
                         TrackApi.WatchXiuChang({ xiuChangModuleSource: 1 });
-                    }else {
+                    } else {
                         DeviceEventEmitter.emit('retouch_show');
                     }
                 }
@@ -180,8 +163,8 @@ export const TabNav = TabNavigator(
             screen: MyShop_RecruitPage,
             navigationOptions: {
                 tabBarIcon: ({ focused }) => {
-                    return <SpellShopTab focused={focused} normalSource={res.tab.group_n}
-                                         activeSource={res.tab.group_s}/>;
+                    return <Tab focused={focused} normalSource={res.tab.group_n} activeSource={res.tab.group_s}
+                                title={'拼店'}/>;
                 }
             }
         },
@@ -277,20 +260,7 @@ const styles = StyleSheet.create({
     },
     shopFlag: {
         position: 'absolute',
-        bottom: 45 + ScreenUtils.safeBottom,
-        left: (ScreenUtils.width - 76) / 2,
-        width: 76,
-        height: 23
-    },
-    flagBg: {
-        width: 76,
-        height: 23,
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingBottom: 4
-    },
-    flagText: {
-        color: '#fff',
-        fontSize: 12
+        bottom: 23 + ScreenUtils.safeBottom,
+        width: ScreenUtils.width
     }
 });

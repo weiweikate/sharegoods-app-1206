@@ -29,7 +29,7 @@ export default class MyShopDetailModel {
                 return;
             }
             const content = { pageType: IntervalType.shopDetail, params: { floatMsgs: dataList } };
-            intervalMsgModel.setMsgData(content);
+            intervalMsgModel.setMsgData(content, shopCode);
         });
     }
 }

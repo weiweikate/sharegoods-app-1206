@@ -86,8 +86,7 @@ class App extends Component {
         await apiEnvironment.loadLastApiSettingFromDiskCache();
         await user.readUserInfoFromDisk();
         global.$routes = [];
-        //暂加入，测试
-        bridge.$checkIsCanComment();
+
     }
 
     componentDidMount() {

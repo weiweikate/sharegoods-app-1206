@@ -6,12 +6,14 @@ import {
     View,
     TouchableOpacity
 } from 'react-native';
-import {  UIText ,NoMoreClick, MRText as Text,} from '../../../components/ui';
+import { UIText, NoMoreClick, MRText as Text } from '../../../components/ui';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
 import user from '../../../model/user';
 import { observer } from 'mobx-react';
 import res from '../res';
+import StringUtils from '../../../utils/StringUtils';
+
 const { px2dp } = ScreenUtils;
 const unUsedBgex = res.couponsImg.youhuiquan_bg_unUsedBg_ex;
 const unUsedBgExd = res.couponsImg.youhuiquan_bg_unUsedBg_exd;
@@ -21,11 +23,11 @@ const itemUp = res.couponsImg.youhuiquan_icon_smallUp;
 const itemDown = res.couponsImg.youhuiquan_icon_smallDown;
 
 @observer
-export  default class CouponExplainItem extends Component{
+export default class CouponExplainItem extends Component {
 
-    render(){
-      let  {item,index} = this.props;
-        return(
+    render() {
+        let { item, index } = this.props;
+        return (
             <TouchableOpacity
                 style={{ backgroundColor: DesignRule.bgColor, marginBottom: 5, justifyContent: 'center' }}
                 onPress={() => this.props.clickItem(index, item)}>
@@ -52,7 +54,7 @@ export  default class CouponExplainItem extends Component{
                                 <View>
                                     <Text style={{
                                         fontSize: item.type === 4 ? 20 : (item.value && item.value.length < 3 ? 33 : 26),
-                                        color: item.status === 0 ? (item.levelimit ? DesignRule.textColor_mainTitle : DesignRule.mainColor) : DesignRule.textColor_mainTitle,
+                                        color: item.status === 0 ? (item.levelimit ? DesignRule.textColor_mainTitle : DesignRule.mainColor) : DesignRule.textColor_mainTitle
                                     }} allowFontScaling={false}>{item.value}</Text>
                                 </View>
                                 {
@@ -100,8 +102,20 @@ export  default class CouponExplainItem extends Component{
                         {item.status === 0 ?
                             (
                                 item.type === 99 ?
-                                    <UIText value={'x' + user.tokenCoin}
-                                            style={styles.xNumStyle}/> : (item.levelimit ?
+                                    <View style={{ alignItems: 'center', marginRight: 10 }}>
+                                        <UIText style={[styles.xNumStyle, { marginRight: 0 }]}
+                                                value={'x' + user.tokenCoin}/>
+                                        {!StringUtils.isEmpty(user.blockedTokenCoin) && user.blockedTokenCoin !== 0 ?
+                                            <Text style={{
+                                                fontSize: 11,
+                                                color: DesignRule.textColor_secondTitle
+                                            }}>{'待激活：'}
+                                                <UIText style={[styles.xNumStyle, { marginRight: 0 }]}
+                                                        value={'x' + user.blockedTokenCoin}/>
+                                            </Text>
+                                            : null}
+                                    </View>
+                                    : (item.levelimit ?
                                     <View
                                         style={{ marginRight: 15, justifyContent: 'center', alignItems: 'center' }}>
                                         {item.count > 1 ? <UIText value={'x' + item.count}
@@ -109,11 +123,11 @@ export  default class CouponExplainItem extends Component{
                                         <UIText value={'等级受限'}
                                                 style={{
                                                     fontSize: 13,
-                                                    color: DesignRule.textColor_instruction,
+                                                    color: DesignRule.textColor_instruction
                                                 }}/>
                                     </View>
                                     : (item.count > 1 ? <UIText value={'x' + item.count}
-                                                            style={styles.xNumsStyle}/> : null)))
+                                                                style={styles.xNumsStyle}/> : null)))
 
                             : <View style={{ marginRight: 15, justifyContent: 'center', alignItems: 'center' }}>
                                 {item.count > 1 ? <UIText value={'x' + item.count}
@@ -129,7 +143,7 @@ export  default class CouponExplainItem extends Component{
                     {!item.tobeextend ?
                         <NoMoreClick style={{ height: px2dp(24), justifyContent: 'center', alignItems: 'center' }}
                                      onPress={() => this.props.pickUpData(item)}><Image style={{ width: 14, height: 7 }}
-                                                                                  source={itemDown}/>
+                                                                                        source={itemDown}/>
                         </NoMoreClick> : null}
                 </ImageBackground>
                 {item.tobeextend ?
@@ -152,12 +166,13 @@ export  default class CouponExplainItem extends Component{
                             }} allowFontScaling={false}>{item.remarks}</Text>
                         </View>
                         <NoMoreClick style={{ height: px2dp(24), justifyContent: 'center', alignItems: 'center' }}
-                                     onPress={() => this.props.toExtendData(item)}><Image style={{ width: 14, height: 7 }}
-                                                                                    source={itemUp}/>
+                                     onPress={() => this.props.toExtendData(item)}><Image
+                            style={{ width: 14, height: 7 }}
+                            source={itemUp}/>
                         </NoMoreClick>
                     </View> : null}
             </TouchableOpacity>
-        )
+        );
     }
 }
 
@@ -179,5 +194,5 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         width: px2dp(80)
-    },
-})
+    }
+});

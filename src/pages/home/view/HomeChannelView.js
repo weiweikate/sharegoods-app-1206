@@ -48,28 +48,26 @@ class Item extends Component {
 export default class HomeChannelView extends Component {
 
 
-
-    _filterNav=(router,params)=>{
+    _filterNav = (router, params) => {
         const { navigate } = this.props;
-        if (router === 'home/signIn/SignInPage' && !user.isLogin){
+        if (router === 'home/signIn/SignInPage' && !user.isLogin) {
             navigate(RouterMap.LoginPage);
         } else {
             navigate(router, { ...params });
         }
-    }
+    };
 
-    _onItemPress = (data,index) => {
+    _onItemPress = (data, index) => {
         // const { navigate } = this.props;
         TrackApi.homeIconClick({
-            iconTitle:data.title,
-            iconIndex:index,
-            iconContent:data.linkTypeCode
+            iconTitle: data.title,
+            iconIndex: index,
+            iconContent: data.linkTypeCode
         });
         let router = homeModule.homeNavigate(data.linkType, data.linkTypeCode) || '';
         let params = homeModule.paramsNavigate(data);
         params.fromHome = true;
-        this._filterNav(router,{...params})
-        // navigate(router, { ...params });
+        this._filterNav(router, { ...params });
     };
 
     renderItems = () => {
@@ -81,7 +79,7 @@ export default class HomeChannelView extends Component {
         // 5个
         channelList.slice(0, 5).map((value, index) => {
             itemViews.push(<Item key={index} data={value} onPress={(data) => {
-                this._onItemPress(data,index);
+                this._onItemPress(data, index);
             }}/>);
         });
         return itemViews;

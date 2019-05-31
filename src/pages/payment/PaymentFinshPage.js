@@ -19,6 +19,7 @@ import user from '../../model/user';
 import PaymentApi from './PaymentApi';
 // import RouterMap from '../../navigation/RouterMap';
 import apiEnvironment from '../../api/ApiEnvironment';
+import bridge from '../../utils/bridge';
 // import PaymentApi from './PaymentApi';
 
 const { px2dp } = ScreenUtils;
@@ -62,6 +63,11 @@ export default class PaymentFinshPage extends BasePage {
         };
         //orderPayResultPageType 有券无劵
         TrackApi.ViewOrderPayPage({ orderPayType: 2, orderPayResultPageType: 2 });
+        //
+        setTimeout(()=>{
+            bridge.$checkIsCanComment();
+        },2000);
+
     }
 
     componentDidMount() {
@@ -74,24 +80,24 @@ export default class PaymentFinshPage extends BasePage {
             this.setState({
                 couponIdList:result.data || [],
             })
-            this.setState({
-                couponIdList: [
-                    {
-                        "id": 976323,
-                        "name": "H5新注册兑换券",
-                        "code": "1559117839071000001",
-                        "remarks": null,
-                        "type": 5,
-                        "value": 0,
-                        "useConditions": 0,
-                        "startTime": 1559117839000,
-                        "expireTime": 1559377039000,
-                        "status": 0,
-                        "count": 1,
-                        "url": "/cycle-coupon"
-                    }
-                ]
-            })
+            // this.setState({
+            //     couponIdList: [
+            //         {
+            //             "id": 976323,
+            //             "name": "H5新注册兑换券",
+            //             "code": "1559117839071000001",
+            //             "remarks": null,
+            //             "type": 5,
+            //             "value": 0,
+            //             "useConditions": 0,
+            //             "startTime": 1559117839000,
+            //             "expireTime": 1559377039000,
+            //             "status": 0,
+            //             "count": 1,
+            //             "url": "/cycle-coupon"
+            //         }
+            //     ]
+            // })
         });
         PaymentApi.judgeShare().then(result=>{
             console.log(result);
@@ -107,11 +113,11 @@ export default class PaymentFinshPage extends BasePage {
                 showShareView:false
             })
         })
-        setTimeout(() => {
-            this.setState({
-                showShareView: true
-            });
-        }, 2000);
+        // setTimeout(() => {
+        //     this.setState({
+        //         showShareView: true
+        //     });
+        // }, 2000);
     }
 
     _render() {
@@ -361,6 +367,14 @@ export default class PaymentFinshPage extends BasePage {
             thumImage: user.headImg,
             linkUrl: `${apiEnvironment.getCurrentH5Url()}/activity/drawShare/${this.state.shareCode}`
         });
+
+        PaymentApi.shareCallback({
+            source:'app',
+            shareUrl:`${apiEnvironment.getCurrentH5Url()}/activity/drawShare/${this.state.shareCode}`,
+            shareCode:this.state.shareCode
+        }).then(result=>{
+
+        }).catch(error=>{});
     };
     /**
      * 分享到朋友圈
@@ -374,13 +388,23 @@ export default class PaymentFinshPage extends BasePage {
         });
 
         ShareUtil.onShare({
-            shareType: 2,
-            platformType: 0,
+            hdImageURL:user.headImg,
+            imageUrl:user.headImg,
+            shareType: 1,
+            platformType: 1,
+            thumImage:user.headImg,
             title: '【秀购】发现一个很给力的活动,快去看看~',
             dec: '',
-            thumImage: user.headImg,
             linkUrl: `${apiEnvironment.getCurrentH5Url()}/activity/drawShare/${this.state.shareCode}`
         });
+
+        PaymentApi.shareCallback({
+            source:'app',
+            shareUrl:`${apiEnvironment.getCurrentH5Url()}/activity/drawShare/${this.state.shareCode}`,
+            shareCode:this.state.shareCode
+        }).then(result=>{
+
+        }).catch(error=>{});
     };
 
     format = (timeStamp) => {
@@ -394,11 +418,8 @@ export default class PaymentFinshPage extends BasePage {
         let d = time.getDate();
         // let h = time.getHours();
         // let mm = time.getMinutes();
-
         return y+'.'+m+'.'+d;
-
     };
-
 }
 
 const Styles = StyleSheet.create({
