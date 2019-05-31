@@ -7,6 +7,7 @@ import { QYChatTool } from '../utils/QYModule/QYChatTool';
 import { login, logout } from '../utils/SensorsTrack';
 import StringUtils from '../utils/StringUtils';
 import JPushUtils from '../utils/JPushUtils';
+import { mediatorCallFunc } from '../SGMediator';
 
 
 const USERINFOCACHEKEY = 'UserInfo';
@@ -295,7 +296,8 @@ class User {
         this.weChatNumber = info.weChatNumber; //微信号
 
         if (this.levelRemark  && this.levelRemark !== info.levelRemark){
-
+            // mediatorCallFunc()
+            mediatorCallFunc(info.levelRemark);
         }
         this.levelRemark = info.levelRemark;
 
