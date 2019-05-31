@@ -15,8 +15,6 @@ import PreLoadImage from '../../components/ui/preLoadImage/PreLoadImage';
 import ScreenUtils from '../../utils/ScreenUtils';
 import {MRText} from '../../components/ui';
 
-const autoSizeWidth = ScreenUtils.autoSizeWidth;
-
 export default class ShowShareImage extends Component {
     constructor(props) {
         super(props);
@@ -34,14 +32,14 @@ export default class ShowShareImage extends Component {
             this.imageWidth = modalWidth;
             return (
                 <View style={styles.container}>
-                    <Image style={[styles.goodsImg,{width:autoSizeWidth(this.imageWidth - 20),height:autoSizeWidth(this.imageHeight)}]}
+                    <Image style={[styles.goodsImg,{width:this.imageWidth - 20,height:(this.imageHeight)}]}
                            source={{uri:goodsImg}}/>
-                    <View style={{flexDirection:'row',width:autoSizeWidth(this.imageWidth - 20),height:autoSizeWidth(30),alignItems:'center'}}>
+                    <View style={{flexDirection:'row',width:this.imageWidth - 20,height:30,alignItems:'center'}}>
                         <PreLoadImage
                             imageUri={headerImg}
                             style={{
-                                width: autoSizeWidth(20),
-                                height: autoSizeWidth(20),
+                                width: 20,
+                                height: 20,
                                 borderRadius: 10
                             }}
                             defaultImage={res.placeholder.noHeadImage}
@@ -52,7 +50,7 @@ export default class ShowShareImage extends Component {
                             (name.length > 13 ? name.substr(0, 13) + '...' : name) : ''
                         }</Text>
                     </View>
-                    <View style={{width: autoSizeWidth(this.imageWidth - 20)}}>
+                    <View style={{width: this.imageWidth - 20}}>
                         {ScreenUtils.isIOS ?
                             <Text style={{fontSize: 13, color: '#333333'}}
                                   numberOfLines={2}>
@@ -106,8 +104,8 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 10,
         right:10,
-        width: autoSizeWidth(18),
-        height: autoSizeWidth(18),
+        width: 18,
+        height: 18,
 
     },
     nameText:{
