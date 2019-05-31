@@ -528,7 +528,7 @@ export default class MyShopPage extends BasePage {
                                 style={styles.LinearGradient}/>
                 {this._NavBarRender()}
                 {this.renderBodyView()}
-                <IntervalMsgView pageType={IntervalType.shopDetail}/>
+                <IntervalMsgView pageType={IntervalType.shopDetail} storeCode={this.state.storeCode}/>
                 <ActionSheetView ref={ref => {
                     this.actionSheetRef = ref;
                 }}/>
