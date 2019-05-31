@@ -71,21 +71,30 @@ class HomeTab extends Component {
     }
 }
 
-const ShowFlag = () => <View>
-    <TouchableWithoutFeedback >
-        <Animation
-            style={styles.shopFlag}
-            loop={true}
-            autoPlay={true}
-            source={require('./pindian_flag.json')}/>
-    </TouchableWithoutFeedback>
-    {/*<View style={styles.home}>*/}
-        {/*<Animation*/}
-            {/*loop={true}*/}
-            {/*autoPlay={true}*/}
-            {/*source={require('./pin_tab.json')}/>;*/}
-    {/*</View>*/}
-</View>;
+const gotoMyShop = () => {
+    global.$navigator && global.$navigator._navigation.popToTop();
+    global.$navigator && global.$navigator._navigation.navigate('MyShop_RecruitPage');
+};
+
+const ShowFlag = () =>
+
+    <TouchableWithoutFeedback onPress={() => {
+        gotoMyShop();
+    }}>
+        <View style={{
+            position: 'absolute',
+            width: ScreenUtils.width,
+            height: ScreenUtils.width * 34 / 75,
+            bottom: ScreenUtils.safeBottom + 46
+        }}>
+            <Animation
+                style={styles.shopFlag}
+                loop={true}
+                autoPlay={true}
+                source={require('./pindian_flag.json')}
+            />
+        </View>
+    </TouchableWithoutFeedback>;
 
 @observer
 export class SpellShopFlag extends Component {
@@ -115,10 +124,71 @@ export class SpellShopFlag extends Component {
             return null;
         }
         if (user.levelRemark >= 'V2' && !user.storeCode) {
-            return <ShowFlag/>;
+            return <ShowFlag navigation={this.props.navigation}/>;
         }
         if (user.storeCode && user.levelRemark >= 'V2' && user.storeStatus === 0) {
-            return <ShowFlag/>;
+            return <ShowFlag navigation={this.props.navigation}/>;
+        }
+
+        return null;
+    }
+}
+
+const ShowTab = () =>
+    <TouchableWithoutFeedback onPress={() => {
+        gotoMyShop();
+    }}>
+        <View style={{
+            position: 'absolute',
+            width: 44,
+            height: 44,
+            left: (ScreenUtils.width / 2) - 22,
+            bottom: ScreenUtils.safeBottom - 2
+            // backgroundColor: 'red',
+        }}>
+            <Animation
+                style={styles.shopTab}
+                loop={true}
+                autoPlay={true}
+                source={require('./pin_tab.json')}/>
+
+        </View>
+
+
+    </TouchableWithoutFeedback>;
+
+@observer
+export class SpellShopTab extends Component {
+    state = {
+        isFlag: true
+    };
+
+    componentWillReceiveProps(nextProps) {
+        const { isShow } = nextProps;
+        if (isShow) {
+            setTimeout(() => {
+                this.setState({ isFlag: isShow });
+            }, 400);
+        } else {
+            this.setState({ isFlag: isShow });
+        }
+    }
+
+    render() {
+        if (!this.state.isFlag) {
+            return null;
+        }
+        if (!user) {
+            return null;
+        }
+        if (!user.isLogin) {
+            return null;
+        }
+        if (user.levelRemark >= 'V2' && !user.storeCode) {
+            return <ShowTab/>;
+        }
+        if (user.storeCode && user.levelRemark >= 'V2' && user.storeStatus === 0) {
+            return <ShowTab/>;
         }
 
         return null;
@@ -206,7 +276,6 @@ export const TabNav = TabNavigator(
             //tab bar的样式
             style: {
                 backgroundColor: '#fff',
-                paddingBottom: ScreenUtils.safeBottomMax + 1,
                 height: 48,
                 borderTopWidth: 0.2,
                 borderTopColor: '#ccc'
@@ -259,8 +328,9 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     shopFlag: {
-        position: 'absolute',
-        bottom: 23 + ScreenUtils.safeBottom,
-        width: ScreenUtils.width
+        flex: 1
+    },
+    shopTab: {
+        flex: 1
     }
 });

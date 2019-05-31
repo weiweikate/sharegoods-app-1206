@@ -18,7 +18,7 @@ import { NavigationActions } from 'react-navigation';
 import DebugButton from './components/debug/DebugButton';
 import { netStatus } from './comm/components/NoNetHighComponent';
 import Navigator, { getCurrentRouteName } from './navigation/Navigator';
-import { SpellShopFlag } from './navigation/Tab';
+import { SpellShopFlag, SpellShopTab } from './navigation/Tab';
 import { checkInitResult } from './pages/login/model/PhoneAuthenAction';
 import loginModel from './pages/login/model/LoginModel';
 import RouterMap from './navigation/RouterMap';
@@ -32,6 +32,7 @@ import Storage from './utils/storage';
 import ScreenUtils from './utils/ScreenUtils';
 import codePush from 'react-native-code-push';
 import chatModel from './utils/QYModule/QYChatModel';
+import showPinFlagModel from './model/ShowPinFlag';
 
 if (__DEV__) {
     const modules = require.getModules();
@@ -65,11 +66,9 @@ class App extends Component {
         bridge.removeLaunch();
         // 初始化chat
         chatModel;
-
         this.state = {
             load: false,
             showOldBtn: false,
-            isShowShopFlag: true
         };
     }
 
@@ -126,8 +125,8 @@ class App extends Component {
 
     render() {
         const prefix = 'meeruu://';
-        const { isShowShopFlag } = this.state;
         const showDebugPanel = String(CONFIG.showDebugPanel);
+
         return (
             <View style={styles.container}>
                 <Navigator
@@ -140,10 +139,11 @@ class App extends Component {
                         let curRouteName = getCurrentRouteName(currentState);
                         // 拦截当前router的名称
                         global.$routes = currentState.routes;
-                        this.setState({ curRouteName, isShowShopFlag: currentState.routes.length === 1 });
+                        this.setState({ curRouteName});
                     }}
                 />
-                <SpellShopFlag isShow={isShowShopFlag}/>
+                { showPinFlagModel.showFlag?<SpellShopFlag isShow={showPinFlagModel.showFlag} navigation={this.props.navigation}/>:null}
+                {showPinFlagModel.showFlag?<SpellShopTab isShow={showPinFlagModel.showFlag}/>:null}
                 {
                     showDebugPanel === 'true' ?
                         <DebugButton onPress={this.showDebugPage} style={{ backgroundColor: 'red' }}><Text
