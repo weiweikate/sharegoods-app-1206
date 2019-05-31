@@ -102,10 +102,7 @@ Navigator.router.getStateForAction = (action, state) => {
         };
     }
 
-
-
     //页面埋点
-
     if (state && action.type === NavigationActions.NAVIGATE || action.type === NavigationActions.BACK){
         const currentPage = getCurrentRouteName(state);
         console.log(`当前页面${currentPage}`);
