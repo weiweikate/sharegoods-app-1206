@@ -68,6 +68,13 @@ Navigator.router.getStateForAction = (action, state) => {
         let length = state.routes.length;
         let currentRoute = state.routes[length - 1];
         let nextRoute = action.routeName;
+        // 拼店显示flag逻辑
+        if (nextRoute === 'HomePage' || nextRoute === 'ShowListPage'
+            || nextRoute === 'ShopCartPage' || nextRoute === 'MinePage') {
+            showPinFlagModel.saveShowFlag(true);
+        } else {
+            showPinFlagModel.saveShowFlag(false);
+        }
         if (currentRoute
             && nextRoute === RouterMap.LoginPage
             && currentRoute.routeName === RouterMap.LoginPage) {
@@ -75,19 +82,26 @@ Navigator.router.getStateForAction = (action, state) => {
         }
     }
 
-    if (action.type === NavigationActions.INIT) {
+    if (state && action.type === NavigationActions.INIT) {
         const currentPage = 'HomePage';
         Analytics.onPageStart(currentPage);
     }
 
-    if (action.type === NavigationActions.NAVIGATE || action.type === NavigationActions.BACK) {
+    if (state && action.type === NavigationActions.NAVIGATE || action.type === NavigationActions.BACK) {
         const currentPage = getCurrentRouteName(state);
         console.log('getStateForAction currentpage end', currentPage);
         Analytics.onPageEnd(currentPage);
     }
 
-    if (action.type === 'Navigation/COMPLETE_TRANSITION') {
+    if (state && action.type === 'Navigation/COMPLETE_TRANSITION') {
         const currentPage = getCurrentRouteName(state);
+        // 拼店显示flag逻辑
+        if (currentPage === 'HomePage' || currentPage === 'ShowListPage'
+            || currentPage === 'ShopCartPage' || currentPage === 'MinePage') {
+            showPinFlagModel.saveShowFlag(true);
+        } else {
+            showPinFlagModel.saveShowFlag(false);
+        }
         console.log('getStateForAction currentpage start', currentPage);
         Analytics.onPageStart(currentPage);
     }
@@ -114,16 +128,6 @@ Navigator.router.getStateForAction = (action, state) => {
         };
     }
 
-
-    //页面埋点
-
-    if (state && action.type === NavigationActions.NAVIGATE || action.type === NavigationActions.BACK) {
-        const currentPage = getCurrentRouteName(state);
-        console.log(`当前页面${currentPage}`);
-    }
-
-
-    // console.log('getStateForAction', action, state)
     return defaultStateAction(action, state);
 };
 
