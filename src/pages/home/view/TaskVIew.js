@@ -311,9 +311,8 @@ export default class TaskVIew extends React.Component {
     renderBtn(){
         let expanded  = this.model.expanded;
         return(
-            <TouchableOpacity style={{height: autoSizeWidth(16),
-                backgroundColor: '#FFF4EC',
-                width: autoSizeWidth(20),
+            <TouchableOpacity style={{height: autoSizeWidth(13),
+                width: autoSizeWidth(40),
                 alignSelf:'center'
 
             }}

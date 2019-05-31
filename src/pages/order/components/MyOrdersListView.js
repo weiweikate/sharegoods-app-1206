@@ -429,7 +429,8 @@ export default class MyOrdersListView extends Component {
                 }
                 else if (data.expList.length === 1 && data.unSendProductInfoList.length === 0) {
                     this.props.nav('order/logistics/LogisticsDetailsPage', {
-                        expressNo: data.expList[0].expNO
+                        expressNo: data.expList[0].expNO,
+                        expressCode: data.expList[0].expressCode
                     });
                 } else {
                     this.props.nav('order/logistics/CheckLogisticsPage', {
