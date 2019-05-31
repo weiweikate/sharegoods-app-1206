@@ -31,7 +31,6 @@ import res1 from '../../res'
 import RefreshFlatList from '../../../../comm/components/RefreshFlatList';
 import CouponNormalItem from '../../../mine/components/CouponNormalItem';
 import API from '../../../../api';
-import { formatDate } from '../../../../utils/DateUtils';
 import { OrderType } from '../../../../utils/EnumUtil';
 const emptyIcon = res1.empty_icon;
 let {autoSizeWidth, safeBottom} = ScreenUtils
@@ -90,7 +89,7 @@ export default class SelectTicketModel extends React.Component {
             id: item.id,
             status: item.status,
             name: item.name,
-            timeStr: item.startTime && item.expireTime ? this.fmtDate(item.startTime || 0) + '-' + this.fmtDate(item.expireTime || 0) : null,
+            timeStr: '使用有效期：'+item.couponTime,
             value: item.type === 3 ? (item.value / 10) : (item.type === 4 ? '商品\n兑换' : (item.type === 5 ? '兑换' : item.value)),
             limit: this.parseCoupon(item),
             couponConfigId: item.couponConfigId,
@@ -103,10 +102,6 @@ export default class SelectTicketModel extends React.Component {
             <View style={{alignItems: 'center'}}>
                 <CouponNormalItem item={item} index={index} clickItem={()=> {this.clickItem(item)}}/>
             </View>)
-    }
-
-    fmtDate(obj) {
-        return formatDate(obj, 'yyyy.MM.dd');
     }
 
     clickItem = (item) => {

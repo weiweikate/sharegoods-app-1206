@@ -17,9 +17,10 @@ export default class CheckLogisticsPage extends BasePage {
         show: true// false则隐藏导航
     };
 
-    show(expressNo) {
+    show(expressNo, expressCode) {
         this.$navigate('order/logistics/LogisticsDetailsPage', {
-            expressNo: expressNo
+            expressNo: expressNo,
+            expressCode: expressCode
         });
     }
 //{this.params.expressList.length + this.params.unSendProductInfoList.length}
@@ -44,7 +45,7 @@ export default class CheckLogisticsPage extends BasePage {
                             <TouchableOpacity
                                 style={{ height: 40, backgroundColor: DesignRule.white, justifyContent: 'center' }}
                                 onPress={() => {
-                                    this.show(item.expNO);
+                                    this.show(item.expNO, item.expressCode);
                                 }}>
                                 <View style={styles.expStyle}>
                                     <Text style={{

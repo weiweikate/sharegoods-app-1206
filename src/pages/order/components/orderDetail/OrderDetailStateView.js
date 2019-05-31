@@ -31,7 +31,8 @@ export default class OrderDetailStateView extends Component {
             // orderDetailAfterServiceModel.totalAsList.sellerState='';
         }else if( orderDetailModel.expList.length === 1 && orderDetailModel.unSendProductInfoList.length === 0){
             this.props.nav('order/logistics/LogisticsDetailsPage', {
-                expressNo: orderDetailModel.expList[0].expNO
+                expressNo: orderDetailModel.expList[0].expNO,
+                expressCode: orderDetailModel.expList[0].expressCode
             })
         }else {
             this.props.nav('order/logistics/CheckLogisticsPage', {

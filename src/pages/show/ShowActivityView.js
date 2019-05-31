@@ -54,7 +54,7 @@ export default class ShowActivityView extends Component {
     }
 
     componentWillUnmount() {
-    this.time && this.time.removeAll();
+    this.time && clearTimeout(this.time);
     }
 
     onLoadMore = () => {
