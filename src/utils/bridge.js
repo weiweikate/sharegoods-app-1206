@@ -128,6 +128,9 @@ export default {
     createQRToAlbum(info){
         return NativeModules.LoginAndShareModule.createQRToAlbum(info);
     },
+    createShowProductImage(info){
+        return NativeModules.LoginAndShareModule.createShowProductImage(info);
+    },
     saveInviteFriendsImage(QRString, logoStr, onSuccess, onError = (errorStr) => {
     }) {
         NativeModules.LoginAndShareModule.saveInviteFriendsImage(QRString, logoStr, onSuccess, onError);
