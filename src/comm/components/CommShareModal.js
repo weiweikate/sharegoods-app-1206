@@ -39,6 +39,11 @@
  trackParmas={}埋点
  trackEvent= ''
  gh_a7c8f565ea2e uat  gh_aa91c3ea0f6c 测试
+ taskShareParams: { //分享完成后，请求后台
+ uri
+ code:
+ data:
+ }
  */
 
 
@@ -153,8 +158,9 @@ export default class CommShareModal extends React.Component {
      * 显示图片,如果是分享商品，分享推广，下载图片展示图片动画
      */
     showImage() {
-        let type = this.props.type;
-        let params = this.props.imageJson || {};
+        const {type,imageJson} = this.props;
+        let params = {...(imageJson || {})};
+        params.shareMoney && (params.shareMoney = this.getMoneyText());
         params = {headerImage:user.headImg, userName: user.nickname, ...params};
         if (type === 'promotionShare' || type === 'Image' || type === 'Show') {
             if (this.state.path.length === 0) {
@@ -231,7 +237,7 @@ export default class CommShareModal extends React.Component {
             platformType: platformType
         };
 
-        ShareUtil.onShare(params, that.props.api, trackParmas,trackEvent ,this.props.successCallBack, that.props.luckyDraw);
+        ShareUtil.onShare(params, that.props.api, trackParmas,trackEvent ,this.props.successCallBack, that.props.luckyDraw,this.props.taskShareParams);
     }
 
     saveImage(path) {
@@ -264,6 +270,16 @@ export default class CommShareModal extends React.Component {
         //         duration: 500
         //     }
         // ).start();
+    }
+
+    getMoneyText = (shareMoney)=>{
+        //shareMoney 4.0 - 5.0
+        let shareMoneyText = (shareMoney && shareMoney !== '?') ? `${shareMoney.split('-').shift()}` : '';
+        //值相等  不要使用===  0,0.0的时候不显示
+        if (shareMoneyText == 0) {
+            shareMoneyText = null;
+        }
+        return shareMoneyText
     }
 
     render() {
@@ -303,18 +319,6 @@ export default class CommShareModal extends React.Component {
                     }
                 });
             }
-        } else if (type === 'miniProgramWithCopyUrl') {
-            array.push({
-                image: res.share.copyURL, title: '复制链接', onPress: () => {
-                    this.copyUrl();
-                }
-            });
-        } else if (type === 'task') {
-            array = [{
-                image: res.share.weiXin, title: '微信好友', onPress: () => {
-                    this.share(0);
-                }
-            }];
         }
         array.push({
             image: res.share.wechat, title: '微信好友', onPress: () => {
@@ -342,19 +346,23 @@ export default class CommShareModal extends React.Component {
             }
         });
 
-        array.push({
-            image: res.share.copyURL, title: '复制链接', onPress: () => {
-                this.copyUrl();
-            }
-        });
-
-        //shareMoney 4.0 - 5.0
-        const { shareMoney } = this.props.imageJson || {};
-        let shareMoneyText = (shareMoney && shareMoney !== '?') ? `${shareMoney.split('-').shift()}` : '';
-        //值相等  不要使用===  0的时候不显示
-        if (shareMoneyText == 0) {
-            shareMoneyText = null;
+        if ((type === 'miniProgramWithCopyUrl'||type === 'Image' || type === 'promotionShare' || type === 'Show')&&shareType != 0) {
+            array.push({
+                image: res.share.copyURL, title: '复制链接', onPress: () => {
+                    this.copyUrl();
+                }
+            });
         }
+
+        if (type === 'task') {
+            array = [{
+                image: res.share.weiXin, title: '微信好友', onPress: () => {
+                    this.share(0);
+                }
+            }];
+        }
+        const { shareMoney } = this.props.imageJson || {};
+        const shareMoneyText = this.getMoneyText(shareMoney);
 
         return (
             <CommModal onRequestClose={this.close}

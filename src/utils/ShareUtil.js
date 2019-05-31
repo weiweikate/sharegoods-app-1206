@@ -9,6 +9,7 @@ import EmptyUtils from './EmptyUtils';
 import HttpUtils from '../api/network/HttpUtils';
 import apiEnvironment from '../api/ApiEnvironment';
 import { track } from './SensorsTrack';
+import {mediatorCallFunc} from '../SGMediator';
 
 const TrackShareType = {
     unknown: 0,
@@ -22,7 +23,7 @@ const TrackShareType = {
     other: 100//其他
 };
 
-const onShare = (data, api, trackParmas,trackEvent, callback = () => {}, luckyDraw) => {
+const onShare = (data, api, trackParmas,trackEvent, callback = () => {}, luckyDraw, taskShareParams) => {
     let params = data;
     if (data.shareType === 2) {
         params.userName = data.userName || apiEnvironment.getCurrentWxAppletKey();
@@ -35,7 +36,7 @@ const onShare = (data, api, trackParmas,trackEvent, callback = () => {}, luckyDr
     }
 
     if(params.platformType === 1 || params.platformType === 4){
-        params.title = params.dec.length > 0 ? params.title + ',' + params.dec : params.title + '!';
+        params.title = params.dec && params.dec.length > 0 ? params.title + ',' + params.dec : params.title;
     }
 
     if (trackEvent) {
@@ -49,6 +50,8 @@ const onShare = (data, api, trackParmas,trackEvent, callback = () => {}, luckyDr
             }
             shareSucceedCallBlack(api, callback);
             callback('shareSuccess'); //提示分享成功
+
+        taskShareParams && mediatorCallFunc('Home_ShareNotify',{ type: params.platformType + 1,...taskShareParams})
         }, (errorStr) => {
 
         });

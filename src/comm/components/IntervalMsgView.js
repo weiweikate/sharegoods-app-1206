@@ -214,7 +214,8 @@ export function IntervalMsgNavigate(forwardType, keyCode) {
                 storeCode: keyCode,
                 orderNo: keyCode,
                 code: keyCode,
-                id: keyCode
+                id: keyCode,
+                uri: keyCode,
             });
         } else {
             // navigate('HtmlPage', {
@@ -224,10 +225,9 @@ export function IntervalMsgNavigate(forwardType, keyCode) {
     }
 }
 
-const IntervalMsgType = {
+export const IntervalMsgType = {
     home: 1,      //首页
     alert: 21,      //弹框系统 开启通知
-
     userInfo: 2,   //个人资料
     setting: 3,      //账号安全
     mine: 4,     //我的
@@ -240,11 +240,13 @@ const IntervalMsgType = {
     productDetail: 19,      //商品详情
     orderDetail: 20,      //订单
     showDetail: 22,      //秀场动态
-    shopDetail: 23      //拼店店铺详情页
-
+    shopDetail: 23,     //拼店店铺详情页
+    sign: 24, //签到
+    mineShare: 10,      //分享好友
+    web: 99, //网页
+    /** 下面都是网页*/
     // page: 8,      //新人专享
     // page: 9,      //免费兑换
-    // page: 10,      //分享好友
     // page: 11,      //秒杀专场
     // page: 13,      //超品活动
     // page: 16,      //奖池
@@ -268,5 +270,8 @@ const IntervalMsgRouter = {
     [IntervalMsgType.productDetail]: 'product/ProductDetailPage',
     [IntervalMsgType.orderDetail]: 'order/order/MyOrdersDetailPage',
     [IntervalMsgType.shopDetail]: 'spellShop/MyShop_RecruitPage',
-    [IntervalMsgType.showDetail]: 'show/ShowDetailPage'
+    [IntervalMsgType.showDetail]: 'show/ShowDetailPage',
+    [IntervalMsgType.sign]: 'home/signIn/SignInPage',
+    [IntervalMsgType.web]: 'HtmlPage',
+    [IntervalMsgType.mineShare]: 'mine/InviteFriendsPage',
 };

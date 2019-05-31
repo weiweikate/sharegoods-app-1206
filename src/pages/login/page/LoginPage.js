@@ -13,7 +13,7 @@ import LoginAPI from '../api/LoginApi';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
-import { track, TrackApi, trackEvent } from '../../../utils/SensorsTrack';
+import { TrackApi } from '../../../utils/SensorsTrack';
 import RouterMap from '../../../navigation/RouterMap';
 import { wxLoginAction, codeLoginAction, pwdLoginAction } from '../model/LoginActionModel';
 import ProtocolView from '../components/Login.protocol.view';
@@ -145,7 +145,7 @@ export default class LoginPage extends BasePage {
     };
     /*微信登陆*/
     weChatLoginClick = () => {
-        track(trackEvent.login, { loginMethod: '微信登录用' });
+        // track(trackEvent.login, { loginMethod: '微信登录用' });
         wxLoginAction((code, data) => {
             if (code === 10000) {
                 this.params.callback && this.params.callBack();
@@ -161,7 +161,7 @@ export default class LoginPage extends BasePage {
     /*登陆*/
     loginClick = (loginType, LoginParam) => {
         if (loginType === 0) {
-            track(trackEvent.login, { loginMethod: '验证码登录' });
+            // track(trackEvent.login, { loginMethod: '验证码登录' });
             codeLoginAction(LoginParam, (data) => {
                 if (data.code === 10000) {
                     this.$toastShow('登录成功');
@@ -180,7 +180,7 @@ export default class LoginPage extends BasePage {
                 }
             });
         } else {
-            track(trackEvent.login, { loginMethod: '密码登录' });
+            // track(trackEvent.login, { loginMethod: '密码登录' });
             pwdLoginAction(LoginParam, (data) => {
                 if (data.code === 10000) {
                     this.$toastShow('登录成功');

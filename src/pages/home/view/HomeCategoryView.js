@@ -6,8 +6,8 @@ import { categoryModule } from '../model/HomeCategoryModel';
 // import DesignRule from '../../../constants/DesignRule';
 import bridge from '../../../utils/bridge';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
-import { homeModule } from '../model/Modules';
-import { homePoint } from '../HomeTypes';
+// import { homeModule } from '../model/Modules';
+// import { homePoint } from '../HomeTypes';
 
 const { px2dp } = ScreenUtils;
 
@@ -27,15 +27,21 @@ export default class HomeCategoryView extends Component {
             bridge.$toast('数据加载失败！');
             return;
         }
-        track(trackEvent.bannerClick, homeModule.bannerPoint(data, homePoint.homeCategory, index));
+        track(trackEvent.CategoryClick,
+            {   'categoryCode':data.id,
+                'categoryName':data.name,
+                'categoryLevel':data.level,
+                'categoryIndex':index,
+            });
         const { navigate } = this.props;
         navigate(data.route, {
+            searchType:11,
             fromHome: true,
             id: 1,
             linkTypeCode: data.linkTypeCode,
             code: data.linkTypeCode,
             keywords: data.name,
-            categoryId: data.id,
+            categoryId: data.id ,
             activityCode: data.linkTypeCode
         });
     }

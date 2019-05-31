@@ -22,12 +22,13 @@
 		012630182281196A008D4F7E /* ActiveModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 012630172281196A008D4F7E /* ActiveModel.m */; };
 		0126301D22811AB1008D4F7E /* ActivityCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0126301C22811AB1008D4F7E /* ActivityCell.m */; };
 		0126302022811B3E008D4F7E /* ActivetyViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0126301F22811B3D008D4F7E /* ActivetyViewManager.m */; };
-		012630E2228175A1008D4F7E /* ShowShareImgMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 012630E1228175A1008D4F7E /* ShowShareImgMaker.m */; };
 		012630E322826C0C008D4F7E /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0126302122815AEF008D4F7E /* Accelerate.framework */; };
 		0131F0A3228D414600A2026D /* UIButton+TimeInterval.m in Sources */ = {isa = PBXBuildFile; fileRef = 0131F0A2228D414600A2026D /* UIButton+TimeInterval.m */; };
 		0131F1B4228E57D200A2026D /* JXModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0131F1B3228E57D200A2026D /* JXModel.m */; };
 		014FF1C222708C30008B0094 /* JXBodyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 014FF1C122708C30008B0094 /* JXBodyView.m */; };
 		014FF20122708C57008B0094 /* JXFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 014FF20022708C57008B0094 /* JXFooterView.m */; };
+		015D5AB4229F8EBE00EA9ED0 /* ShareImageMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 015D5AB2229F8EBE00EA9ED0 /* ShareImageMaker.m */; };
+		015D5AB7229F93E100EA9ED0 /* ShowShareImgMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 015D5AB6229F93E100EA9ED0 /* ShowShareImgMaker.m */; };
 		01E48F9422708B960038BEE6 /* JXHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E48F9322708B960038BEE6 /* JXHeaderView.m */; };
 		033C66B821927ACB00433026 /* MRBannerViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 033C66B721927ACB00433026 /* MRBannerViewManager.m */; };
 		0347BAD52237CD0A0011184A /* Lottie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0347BAC92237CC680011184A /* Lottie.framework */; };
@@ -169,7 +170,6 @@
 		CD908FAB2253492700E348B4 /* UINavigationController+Autorotate.m in Sources */ = {isa = PBXBuildFile; fileRef = CD908FAA2253492700E348B4 /* UINavigationController+Autorotate.m */; };
 		CDA2F5322171D8D2005FD4B3 /* UIViewController+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA2F5312171D8D2005FD4B3 /* UIViewController+Util.m */; };
 		CDA2F5352171D90E005FD4B3 /* NSObject+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA2F5342171D90E005FD4B3 /* NSObject+Util.m */; };
-		CDA2F57821744443005FD4B3 /* ShareImageMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA2F57721744443005FD4B3 /* ShareImageMaker.m */; };
 		CDAB6D1F219AC5F800DE6716 /* MRWaveViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CDAB6D1A219AC5F800DE6716 /* MRWaveViewManager.m */; };
 		CDAB6D20219AC5F800DE6716 /* TYWaveProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = CDAB6D1B219AC5F800DE6716 /* TYWaveProgressView.m */; };
 		CDAB6D21219AC5F800DE6716 /* TYWaterWaveView.m in Sources */ = {isa = PBXBuildFile; fileRef = CDAB6D1C219AC5F800DE6716 /* TYWaterWaveView.m */; };
@@ -679,8 +679,6 @@
 		0126301E22811B3D008D4F7E /* ActivetyViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivetyViewManager.h; sourceTree = "<group>"; };
 		0126301F22811B3D008D4F7E /* ActivetyViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivetyViewManager.m; sourceTree = "<group>"; };
 		0126302122815AEF008D4F7E /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
-		012630E0228175A1008D4F7E /* ShowShareImgMaker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShowShareImgMaker.h; sourceTree = "<group>"; };
-		012630E1228175A1008D4F7E /* ShowShareImgMaker.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShowShareImgMaker.m; sourceTree = "<group>"; };
 		012631F22282AB05008D4F7E /* libreact-native-blur.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libreact-native-blur.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0131F0A1228D414600A2026D /* UIButton+TimeInterval.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIButton+TimeInterval.h"; sourceTree = "<group>"; };
 		0131F0A2228D414600A2026D /* UIButton+TimeInterval.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIButton+TimeInterval.m"; sourceTree = "<group>"; };
@@ -690,6 +688,10 @@
 		014FF1C122708C30008B0094 /* JXBodyView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JXBodyView.m; sourceTree = "<group>"; };
 		014FF1FF22708C57008B0094 /* JXFooterView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JXFooterView.h; sourceTree = "<group>"; };
 		014FF20022708C57008B0094 /* JXFooterView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JXFooterView.m; sourceTree = "<group>"; };
+		015D5AB2229F8EBE00EA9ED0 /* ShareImageMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareImageMaker.m; sourceTree = "<group>"; };
+		015D5AB3229F8EBE00EA9ED0 /* ShareImageMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareImageMaker.h; sourceTree = "<group>"; };
+		015D5AB5229F93E100EA9ED0 /* ShowShareImgMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShowShareImgMaker.h; sourceTree = "<group>"; };
+		015D5AB6229F93E100EA9ED0 /* ShowShareImgMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShowShareImgMaker.m; sourceTree = "<group>"; };
 		01E48F9222708B960038BEE6 /* JXHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JXHeaderView.h; sourceTree = "<group>"; };
 		01E48F9322708B960038BEE6 /* JXHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JXHeaderView.m; sourceTree = "<group>"; };
 		033C66B621927ACB00433026 /* MRBannerViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRBannerViewManager.h; sourceTree = "<group>"; };
@@ -989,8 +991,6 @@
 		CDA2F5312171D8D2005FD4B3 /* UIViewController+Util.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Util.m"; sourceTree = "<group>"; };
 		CDA2F5332171D90E005FD4B3 /* NSObject+Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+Util.h"; sourceTree = "<group>"; };
 		CDA2F5342171D90E005FD4B3 /* NSObject+Util.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Util.m"; sourceTree = "<group>"; };
-		CDA2F57621744443005FD4B3 /* ShareImageMaker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShareImageMaker.h; sourceTree = "<group>"; };
-		CDA2F57721744443005FD4B3 /* ShareImageMaker.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShareImageMaker.m; sourceTree = "<group>"; };
 		CDAB6D19219AC5F800DE6716 /* TYWaterWaveView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TYWaterWaveView.h; sourceTree = "<group>"; };
 		CDAB6D1A219AC5F800DE6716 /* MRWaveViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRWaveViewManager.m; sourceTree = "<group>"; };
 		CDAB6D1B219AC5F800DE6716 /* TYWaveProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TYWaveProgressView.m; sourceTree = "<group>"; };
@@ -1600,10 +1600,10 @@
 			children = (
 				506835C221379B78001AB175 /* JRShareManager.h */,
 				506835C321379B78001AB175 /* JRShareManager.m */,
-				CDA2F57621744443005FD4B3 /* ShareImageMaker.h */,
-				CDA2F57721744443005FD4B3 /* ShareImageMaker.m */,
-				012630E0228175A1008D4F7E /* ShowShareImgMaker.h */,
-				012630E1228175A1008D4F7E /* ShowShareImgMaker.m */,
+				015D5AB3229F8EBE00EA9ED0 /* ShareImageMaker.h */,
+				015D5AB2229F8EBE00EA9ED0 /* ShareImageMaker.m */,
+				015D5AB5229F93E100EA9ED0 /* ShowShareImgMaker.h */,
+				015D5AB6229F93E100EA9ED0 /* ShowShareImgMaker.m */,
 			);
 			path = "Share-分享";
 			sourceTree = "<group>";
@@ -2999,14 +2999,12 @@
 				5068363521379B78001AB175 /* RCTPayTool.m in Sources */,
 				C4F01EEC222D141200ACA1B4 /* PhoneAutherTool.m in Sources */,
 				5068362E21379B78001AB175 /* JRLoadingAndToastTool.m in Sources */,
-				012630E2228175A1008D4F7E /* ShowShareImgMaker.m in Sources */,
 				5077FC8221A4F987003B860D /* HBRSAHandler.m in Sources */,
 				5068361221379B78001AB175 /* UIView+captureSceen.m in Sources */,
 				CD3A8A0A21F05E17003B9803 /* MRLoadingViewManager.m in Sources */,
 				CD24240F21F837A9008C7FF4 /* NSDictionary+Util.m in Sources */,
 				5068363821379B78001AB175 /* SGQRCodeHelperTool.m in Sources */,
 				5068361021379B78001AB175 /* AppDelegate+ConfigLib.m in Sources */,
-				CDA2F57821744443005FD4B3 /* ShareImageMaker.m in Sources */,
 				5077FCE621A504C5003B860D /* RSAManager.m in Sources */,
 				CD5EAF9D221BFB5E007AAEE0 /* ShowGroundViewManager.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
@@ -3026,6 +3024,7 @@
 				CDA2F5322171D8D2005FD4B3 /* UIViewController+Util.m in Sources */,
 				CDA2F5352171D90E005FD4B3 /* NSObject+Util.m in Sources */,
 				CD89B1CD224B1010006CCEF7 /* MosaicCollectionLayoutInfo.m in Sources */,
+				015D5AB7229F93E100EA9ED0 /* ShowShareImgMaker.m in Sources */,
 				5068361121379B78001AB175 /* AppDelegate+ConfigVC.m in Sources */,
 				5068363621379B78001AB175 /* JRAddressPickView.m in Sources */,
 				CDAB6D21219AC5F800DE6716 /* TYWaterWaveView.m in Sources */,
@@ -3056,6 +3055,7 @@
 				01091615227053800043E997 /* RecommendedManager.m in Sources */,
 				C43AE8FF2240C567003CC51F /* JRServiceBridge.m in Sources */,
 				5068363121379B78001AB175 /* commModule.m in Sources */,
+				015D5AB4229F8EBE00EA9ED0 /* ShareImageMaker.m in Sources */,
 				5068362F21379B78001AB175 /* JRShareManager.m in Sources */,
 				CD5EB082221D46E3007AAEE0 /* ShowCell.m in Sources */,
 				CD89B1CE224B1010006CCEF7 /* MosaicCollectionLayoutDelegate.m in Sources */,

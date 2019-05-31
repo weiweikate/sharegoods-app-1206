@@ -8,6 +8,11 @@ const CommModular = {
         'des': '签到成功反馈',
         'name': 'SignUpFeedback',
         'params': {}
+    },
+    'homeIconClick':{
+        'des':'首页分类的埋点',
+        'name':'IconClick',
+        'params':{}
     }
 };
 
