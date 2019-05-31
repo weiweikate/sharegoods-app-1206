@@ -208,9 +208,10 @@ export default class ProductDetailPage extends BasePage {
                 return <SuitItemView productDetailModel={this.productDetailModel}/>;
             }
             case productItemType.coupons: {
-                return <ProductDetailCouponsView onPress={() => {
-                    this.ProductDetailCouponsWindowView.showWindowView();
-                }}/>;
+                return <ProductDetailCouponsView productDetailModel={this.productDetailModel}
+                                                 onPress={() => {
+                                                     this.ProductDetailCouponsWindowView.showWindowView();
+                                                 }}/>;
             }
             case productItemType.promote: {
                 return <PromoteItemView productDetailModel={this.productDetailModel}
@@ -303,7 +304,8 @@ export default class ProductDetailPage extends BasePage {
             <ShowTopView productDetailModel={this.productDetailModel}
                          toTopAction={this._onPressToTop}/>
             <IntervalMsgView pageType={IntervalType.productDetail}/>
-            <ProductDetailCouponsWindowView ref={(ref) => this.ProductDetailCouponsWindowView = ref}/>
+            <ProductDetailCouponsWindowView ref={(ref) => this.ProductDetailCouponsWindowView = ref}
+                                            productDetailModel={this.productDetailModel}/>
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             trackParmas={{

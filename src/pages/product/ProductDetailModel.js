@@ -65,7 +65,7 @@ export const activity_type = {
 
 export default class ProductDetailModel {
 
-    ProductDetailCouponsViewModel = new ProductDetailCouponsViewModel();
+    productDetailCouponsViewModel = new ProductDetailCouponsViewModel();
 
     @observable prodCode;
     @observable loadingState = PageLoadingState.loading;
@@ -280,8 +280,8 @@ export default class ProductDetailModel {
     }
 
     @computed get sectionDataList() {
-        const { promoteInfoVOList, contentArr, groupActivity, activityStatus, paramList, ProductDetailCouponsViewModel } = this;
-        const { couponsList } = ProductDetailCouponsViewModel;
+        const { promoteInfoVOList, contentArr, groupActivity, activityStatus, paramList, productDetailCouponsViewModel } = this;
+        const { couponsList } = productDetailCouponsViewModel;
         /*头部*/
         let sectionArr = [
             { key: sectionType.sectionHeader, data: [{ itemKey: productItemType.headerView }] }
@@ -493,7 +493,7 @@ export default class ProductDetailModel {
             let tempData = data.data || {};
             this.productSuccess(tempData);
             this.requestShopInfo(tempData.supplierCode);
-            this.ProductDetailCouponsViewModel.requestListProdCoupon(this.prodCode);
+            this.productDetailCouponsViewModel.requestListProdCoupon(this.prodCode);
         }).catch((e) => {
             this.productError(e);
         });

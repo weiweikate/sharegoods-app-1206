@@ -8,18 +8,22 @@ import bridge from '../../../utils/bridge';
 import res from '../res/product';
 import { MRText } from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
+import { observer } from 'mobx-react';
 
 const { arrow_right_black } = res.button;
 const { width, height } = ScreenUtils;
 
+@observer
 export default class ProductDetailCouponsView extends React.Component {
 
     render() {
-        const { onPress } = this.props;
+        const { onPress, productDetailModel } = this.props;
+        const { productDetailCouponsViewModel } = productDetailModel;
+        const { couponsList } = productDetailCouponsViewModel;
         return (
             <NoMoreClick style={styles.container} onPress={onPress}>
                 <View>
-                    <MRText style={styles.leftText}>优惠</MRText>
+                    <MRText style={styles.leftText}>优惠{couponsList.length}</MRText>
                 </View>
                 <Image source={arrow_right_black}/>
             </NoMoreClick>
@@ -60,7 +64,7 @@ export class ProductDetailCouponsViewModel {
     };
 }
 
-
+@observer
 export class ProductDetailCouponsWindowView extends React.Component {
     state = {
         hidden: true
@@ -73,6 +77,9 @@ export class ProductDetailCouponsWindowView extends React.Component {
     };
 
     render() {
+        const { productDetailModel } = this.props;
+        const { productDetailCouponsViewModel } = productDetailModel;
+        const { couponsList } = productDetailCouponsViewModel;
         const { hidden } = this.state;
         if (hidden) {
             return null;
@@ -81,7 +88,7 @@ export class ProductDetailCouponsWindowView extends React.Component {
             <NoMoreClick style={windowStyles.container} onPress={() => {
                 this.setState({ hidden: true });
             }}>
-
+                <MRText>{couponsList.length}</MRText>
             </NoMoreClick>
         );
     }
