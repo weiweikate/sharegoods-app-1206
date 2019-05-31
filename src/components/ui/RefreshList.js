@@ -73,7 +73,7 @@ export default class RefreshList extends Component {
                 if (this.isEnd()) {
                     return (
                         <View style={styles.footer_container}>
-                            <Text style={styles.footer_text}>我也是有底线</Text>
+                            <Text style={styles.footer_text}>我也是有底线的</Text>
                         </View>
                     );
                 } else {
@@ -183,8 +183,8 @@ export default class RefreshList extends Component {
 
 const styles = StyleSheet.create({
     footer_text: {
-        fontSize: 14,
-        color: '#555555',
+        fontSize: 11,
+        color: '#a5adb3',
         marginLeft: 10
     },
     footer_container: {
