@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.SnapHelper;
 import android.text.TextUtils;
 import android.util.Log;
@@ -207,6 +208,8 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         }
 
         RecyclerView recyclerView = helper.getView(R.id.product_list);
+        ((SimpleItemAnimator) recyclerView.getItemAnimator())
+                .setSupportsChangeAnimations(false);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(OrientationHelper.HORIZONTAL);
         recyclerView.setLayoutManager(linearLayoutManager);
