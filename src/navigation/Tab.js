@@ -1,6 +1,6 @@
 import { TabNavigator } from 'react-navigation';
 import React, { Component } from 'react';
-import { DeviceEventEmitter, Text, View } from 'react-native';
+import { DeviceEventEmitter, Text, View, TouchableWithoutFeedback } from 'react-native';
 import Home from '../pages/home/HomePage';
 import Mine from '../pages/mine/page/MinePage';
 import ShopCart from '../pages/shopCart/page/ShopCartPage';
@@ -72,11 +72,19 @@ class HomeTab extends Component {
 }
 
 const ShowFlag = () => <View>
-    <Animation
-        style={styles.shopFlag}
-        loop={true}
-        autoPlay={true}
-        source={require('./pindian_flag.json')}/>
+    <TouchableWithoutFeedback >
+        <Animation
+            style={styles.shopFlag}
+            loop={true}
+            autoPlay={true}
+            source={require('./pindian_flag.json')}/>
+    </TouchableWithoutFeedback>
+    {/*<View style={styles.home}>*/}
+        {/*<Animation*/}
+            {/*loop={true}*/}
+            {/*autoPlay={true}*/}
+            {/*source={require('./pin_tab.json')}/>;*/}
+    {/*</View>*/}
 </View>;
 
 @observer
