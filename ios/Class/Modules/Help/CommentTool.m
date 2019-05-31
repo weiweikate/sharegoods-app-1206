@@ -46,7 +46,7 @@ SINGLETON_FOR_CLASS(CommentTool)
   UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"在逛一会"
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * _Nonnull action) {
-                                                         [self saveNewTimeInterval:timeInterval];
+                                                         [self saveNewTimeInterval:32];
                                                        }];
   UIAlertAction *actionSubmit = [UIAlertAction actionWithTitle:@"五星好评"
                                                          style:UIAlertActionStyleDefault
