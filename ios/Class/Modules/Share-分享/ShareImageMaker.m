@@ -125,17 +125,19 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     imageWidth = width.floatValue;
     
   }else if([imageType isEqualToString:@"web"]){
+    imageHeght = 340*i;
+    imageWidth =  250*i;
     //主图图片
     [nodes addObject:@{
                        @"value": images[0],
                        @"locationType": @"rect",
-                       @"location": [NSValue valueWithCGRect:CGRectMake(0, 0, 375*i, 667*i)]}
+                       @"location": [NSValue valueWithCGRect:CGRectMake(0, 0, 250*i, 340*i)]}
      ];
     //二维码
     UIImage *QRCodeImage = [UIImage QRCodeWithStr:QRCodeStr];
     [nodes addObject:@{@"value": QRCodeImage,
                        @"locationType": @"rect",
-                       @"location": [NSValue valueWithCGRect:CGRectMake(320*i, 610*i, 45*i, 45*i)]}
+                       @"location": [NSValue valueWithCGRect:CGRectMake(195*i, 285*i, 45*i, 45*i)]}
      ];
     
   } else if ([imageType isEqualToString:@"show"]){
