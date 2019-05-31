@@ -111,7 +111,7 @@ export class ShopProductItemView extends Component {
     };
 
     render() {
-        const { image, title, linkTypeCode, linkType } = this.state.selectedItem || {};
+        const { image, title, linkTypeCode, linkType, shareMoney } = this.state.selectedItem || {};
         const { MyShopDetailModel } = this.props;
         const { productList } = MyShopDetailModel;
         console.log(linkTypeCode);
@@ -136,6 +136,9 @@ export class ShopProductItemView extends Component {
                           showsHorizontalScrollIndicator={false}/>
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 type={'miniProgramWithCopyUrl'}
+                                imageJson={{
+                                    shareMoney: shareMoney
+                                }}
                                 webJson={{
                                     title: title,
                                     dec: '商品详情',
@@ -250,7 +253,7 @@ export class ShopBottomBannerView extends Component {
             return item.image;
         });
         return (
-            <View style={{ marginLeft: DesignRule.margin_page}}>
+            <View style={{ marginLeft: DesignRule.margin_page }}>
                 <MRBannerView style={bottomBannerStyles.banner}
                               imgUrlArray={images}
                               itemWidth={px2dp(345)}
@@ -278,7 +281,7 @@ export class ShopBottomBannerView extends Component {
 
 const bottomBannerStyles = StyleSheet.create({
     banner: {
-        width:px2dp(345), height: px2dp(120)
+        width: px2dp(345), height: px2dp(120)
     },
     indexView: {
         position: 'absolute',

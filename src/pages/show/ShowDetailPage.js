@@ -42,8 +42,8 @@ import AddCartModel from './model/AddCartModel';
 import { sourceType } from '../product/SelectionPage';
 import shopCartCacheTool from '../shopCart/model/ShopCartCacheTool';
 import SelectionPage from '../product/SelectionPage';
-import bridge from '../../utils/bridge';
 import RouterMap from '../../navigation/RouterMap';
+import DownloadUtils from './utils/DownloadUtils';
 
 const { iconShowFire, iconLike, iconNoLike, iconDownload, iconShowShare } = res;
 // @SmoothPushPreLoadHighComponent
@@ -301,6 +301,7 @@ export default class ShowDetailPage extends BasePage {
             return;
         }
 
+
         let { detail } = this.showDetailModule;
         if (!EmptyUtils.isEmptyArr(detail.resource)) {
             let urls = detail.resource.map((value) => {
@@ -313,16 +314,8 @@ export default class ShowDetailPage extends BasePage {
             });
         }
 
-        let promises = [];
-        if (!EmptyUtils.isEmptyArr(detail.products)) {
-            detail.products.map((value) => {
-                let promise = bridge.createQRToAlbum(`${apiEnvironment.getCurrentH5Url()}/product/99/${value.prodCode}?upuserid=${user.code || ''}`);
-                promises.push(promise);
-            });
-        }
-        if (!EmptyUtils.isEmptyArr(promises)) {
-            Promise.all(promises);
-        }
+        DownloadUtils.downloadProduct({detail});
+
 
 
     };
@@ -543,11 +536,12 @@ export default class ShowDetailPage extends BasePage {
                             trackParmas={{ articeCode: detail.code, articleTitle: detail.title }}
                             imageJson={{
                                 imageType: 'show',
-                                imageUrlStr: detail.resource ? detail.resource[0].url : '', titleStr: detail.content,
+                                imageUrlStr: detail.resource ? detail.resource[0].url : '',
+                                titleStr: detail.content,
                                 QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
                                 headerImage: (detail.userInfoVO && detail.userInfoVO.userImg) ? detail.userInfoVO.userImg : null,
                                 userName: (detail.userInfoVO && detail.userInfoVO.userName) ? detail.userInfoVO.userName : '',
-                                dec: ''
+                                dec: '好物不独享，内有惊喜福利~'
                             }}
                             taskShareParams={{
                                 uri: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
@@ -555,10 +549,10 @@ export default class ShowDetailPage extends BasePage {
                                 data: detail.showNo
                             }}
                             webJson={{
-                                title: detail.showType === 1 ? detail.content : detail.title,//分享标题(当为图文分享时候使用)
+                                title: (detail.showType === 1 ? detail.content : detail.title)|| '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
                                 linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
-                                thumImage: '',//(分享图标小图(https链接)图文分享使用)
-                                dec: ''
+                                thumImage: detail.resource ? detail.resource[0].url : '', //(分享图标小图(https链接)图文分享使用)
+                                dec: '好物不独享，内有惊喜福利~'
                             }}
             />
             {detail.status !== 1 ? this._shieldRender() : null}

@@ -357,7 +357,7 @@ export default class ShowListPage extends BasePage {
                                     QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
                                     headerImage: (detail.userInfoVO && detail.userInfoVO.userImg) ? detail.userInfoVO.userImg : null,
                                     userName: (detail.userInfoVO && detail.userInfoVO.userName)? detail.userInfoVO.userName: '',
-                                    dec:''
+                                    dec:'好物不独享，内有惊喜福利~'
                                 }}
                                 taskShareParams={{
                                     uri: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
@@ -365,10 +365,10 @@ export default class ShowListPage extends BasePage {
                                     data: detail.showNo
                                 }}
                                 webJson={{
-                                    title:detail.showType === 1 ? detail.content : detail.title,//分享标题(当为图文分享时候使用)
+                                    title:(detail.showType === 1 ? detail.content : detail.title)|| '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
                                     linkUrl:`${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
-                                    thumImage:'',//(分享图标小图(https链接)图文分享使用)
-                                    dec:''
+                                    thumImage:detail.resource ? detail.resource[0].url : '',//(分享图标小图(https链接)图文分享使用)
+                                    dec:'好物不独享，内有惊喜福利~'
                                 }}
                 /> :null}
 

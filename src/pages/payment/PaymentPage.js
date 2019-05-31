@@ -106,7 +106,7 @@ export default class PaymentPage extends BasePage {
     }
     _platformPay(password) {
         let selectBance = payment.selectedBalace;
-        let { availableBalance } = user;//去出用余额
+        let { availableBalance } = user;//去除用余额
         let channelAmount = parseFloat(payment.amounts); //需要支付的金额
         let { fundsTradingNo, oneCoupon, bizType,modeType } = payment;
         let detailList = [];
@@ -163,9 +163,11 @@ export default class PaymentPage extends BasePage {
             } else {
                 replace = NavigationActions.replace({
                     key: this.props.navigation.state.key,
-                    routeName: 'payment/PaymentResultPage',
+                    // routeName: 'payment/PaymentResultPage',
+                    routeName:RouterMap.PaymentFinshPage,
                     params: { payResult: PaymentResult.success }
                 });
+
             }
             this.props.navigation.dispatch(replace);
             payment.resetPayment();

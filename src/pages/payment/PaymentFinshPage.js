@@ -19,6 +19,7 @@ import user from '../../model/user';
 import PaymentApi from './PaymentApi';
 // import RouterMap from '../../navigation/RouterMap';
 import apiEnvironment from '../../api/ApiEnvironment';
+import bridge from '../../utils/bridge';
 // import PaymentApi from './PaymentApi';
 
 const { px2dp } = ScreenUtils;
@@ -62,6 +63,11 @@ export default class PaymentFinshPage extends BasePage {
         };
         //orderPayResultPageType 有券无劵
         TrackApi.ViewOrderPayPage({ orderPayType: 2, orderPayResultPageType: 2 });
+        //
+        setTimeout(()=>{
+            bridge.$checkIsCanComment();
+        },2000);
+
     }
 
     componentDidMount() {
@@ -361,6 +367,14 @@ export default class PaymentFinshPage extends BasePage {
             thumImage: user.headImg,
             linkUrl: `${apiEnvironment.getCurrentH5Url()}/activity/drawShare/${this.state.shareCode}`
         });
+
+        PaymentApi.shareCallback({
+            source:'app',
+            shareUrl:`${apiEnvironment.getCurrentH5Url()}/activity/drawShare/${this.state.shareCode}`,
+            shareCode:this.state.shareCode
+        }).then(result=>{
+
+        }).catch(error=>{});
     };
     /**
      * 分享到朋友圈
@@ -383,6 +397,14 @@ export default class PaymentFinshPage extends BasePage {
             dec: '',
             linkUrl: `${apiEnvironment.getCurrentH5Url()}/activity/drawShare/${this.state.shareCode}`
         });
+
+        PaymentApi.shareCallback({
+            source:'app',
+            shareUrl:`${apiEnvironment.getCurrentH5Url()}/activity/drawShare/${this.state.shareCode}`,
+            shareCode:this.state.shareCode
+        }).then(result=>{
+
+        }).catch(error=>{});
     };
 
     format = (timeStamp) => {

@@ -225,7 +225,8 @@ const registAction = (params, callback) => {
         inviteId: '',//邀请id
         appOpenid: (this.params && this.params.appOpenid) ? this.params.appOpenid : '',
         systemVersion: DeviceInfo.getSystemVersion() + '',
-        wechatVersion: ''
+        wechatVersion: '',
+        popupBoxType:1,
     }).then((data) => {
         if (data.code === 10000) {
             callback(data);
