@@ -21,9 +21,9 @@ import { track, trackEvent } from '../../utils/SensorsTrack';
 import bridge from '../../utils/bridge';
 import ShowApi from './ShowApi';
 import EmptyUtils from '../../utils/EmptyUtils';
-import apiEnvironment from '../../api/ApiEnvironment';
 import ShowUtils from './utils/ShowUtils';
 import RouterMap from '../../navigation/RouterMap';
+import DownloadUtils from './utils/DownloadUtils';
 
 @observer
 export default class ShowHotView extends React.Component {
@@ -211,25 +211,7 @@ export default class ShowHotView extends React.Component {
                                                });
                                            }
 
-                                           let promises = [];
-                                           if (!EmptyUtils.isEmptyArr(detail.products)) {
-                                               detail.products.map((value) => {
-                                                   let data = {
-                                                       imageUrl:value.imgUrl,
-                                                       title:value.name,
-                                                       linkUrl:`${apiEnvironment.getCurrentH5Url()}/product/99/${value.prodCode}?upuserid=${user.code || ''}`,
-                                                       originalPrice:'100',
-                                                       currentPrice:'99'
-                                                   }
-                                                   let promise = bridge.createShowProductImage(JSON.stringify(data));
-
-                                                   promises.push(promise);
-                                               });
-                                           }
-                                           if (!EmptyUtils.isEmptyArr(promises)) {
-                                               Promise.all(promises);
-                                           }
-
+                                           DownloadUtils.downloadProduct(nativeEvent);
                                        }}
 
                                        onSharePress={({ nativeEvent }) => {

@@ -63,9 +63,9 @@ import jp.wasabeef.blurry.internal.BlurFactor;
 import static com.meeruu.commonlib.utils.BitmapFillet.CORNER_ALL;
 
 public class LoginAndSharingModule extends ReactContextBaseJavaModule {
-    private static final String imageUrlKey = "imageUrl";
-    private static final String titleKey = "title";
-    private static final String linkUrlKey = "linkUrl";
+    private static final String imageUrlKey = "imageUrlStr";
+    private static final String titleKey = "titleStr";
+    private static final String linkUrlKey = "QRCodeStr";
     private static final String originalPriceKey = "originalPrice";
     private static final String currentPriceKey = "currentPrice";
 
