@@ -10,3 +10,8 @@ mediatorAddFunc('Home_ShareNotify', (p) => {
     homeApi.shareNotify({from: 1, ...p});
 })
 
+//用户登记改变调用，
+mediatorAddFunc('Home_UserLeverUpdate', (p) => {
+    homeModalManager.userLevelUpdate(p);
+})
+
