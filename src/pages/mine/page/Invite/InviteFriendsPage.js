@@ -247,6 +247,11 @@ export default class InviteFriendsPage extends BasePage<Props> {
                     //     miniProgramPath: 'pages/index/index'}}
                                 trackParmas={{ QrCodeID: this.linkUrl }}
                                 trackEvent={trackEvent.QrCodeShareto}
+                                taskShareParams = {{ //分享完成后，请求后台
+                                    uri: this.linkUrl,
+                                    code: 10,
+                                    data: ''
+                                }}
                                 // luckyDraw={true}
                 />
             </View>
