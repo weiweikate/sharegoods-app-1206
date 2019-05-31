@@ -197,7 +197,7 @@ class HomePage extends BasePage {
                     homeModalManager.refreshPrize();
                     taskModel.getData();
                     if (!homeModule.firstLoad) {
-                        limitGoModule.loadLimitGo();
+                        limitGoModule.loadLimitGo(false);
                     }
                 }
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);

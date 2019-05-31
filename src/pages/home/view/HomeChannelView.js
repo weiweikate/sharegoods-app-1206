@@ -57,12 +57,12 @@ export default class HomeChannelView extends Component {
         }
     };
 
-    _onItemPress = (data,index) => {
+    _onItemPress = (data, index) => {
         // const { navigate } = this.props;
         TrackApi.homeIconClick({
-            iconTitle:data.title,
-            iconIndex:index,
-            iconContent:data.linkTypeCode
+            iconTitle: data.title,
+            iconIndex: index,
+            iconContent: data.linkTypeCode
         });
         let router = homeModule.homeNavigate(data.linkType, data.linkTypeCode) || '';
         let params = homeModule.paramsNavigate(data);
@@ -79,7 +79,7 @@ export default class HomeChannelView extends Component {
         // 5个
         channelList.slice(0, 5).map((value, index) => {
             itemViews.push(<Item key={index} data={value} onPress={(data) => {
-                this._onItemPress(data,index);
+                this._onItemPress(data, index);
             }}/>);
         });
         return itemViews;
