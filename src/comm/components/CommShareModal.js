@@ -459,7 +459,7 @@ export default class CommShareModal extends React.Component {
                                 height: this.imageHeight,
                                 width: this.imageWidth,
                                 position: 'absolute',
-                                bottom: 117,
+                                bottom:  117 + ScreenUtils.safeBottom,
                                 left: (ScreenUtils.width - this.imageWidth) / 2,
                                 borderRadius: 10,
                                 borderColor: DesignRule.textColor_placeholder,
