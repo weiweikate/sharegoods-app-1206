@@ -4,7 +4,7 @@ import {
     ImageBackground,
     StyleSheet,
     View,
-    TouchableOpacity
+    TouchableOpacity,
 } from 'react-native';
 import { UIText, NoMoreClick, MRText as Text } from '../../../components/ui';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -13,12 +13,12 @@ import user from '../../../model/user';
 import { observer } from 'mobx-react';
 import res from '../res';
 import StringUtils from '../../../utils/StringUtils';
-
+import LinearGradient from 'react-native-linear-gradient';
 const { px2dp } = ScreenUtils;
 const unUsedBgex = res.couponsImg.youhuiquan_bg_unUsedBg_ex;
 const unUsedBgExd = res.couponsImg.youhuiquan_bg_unUsedBg_exd;
-const usedBgex = res.couponsImg.youhuiquan_bg_usedBg_ex;
-const useBgexd = res.couponsImg.youhuiquan_bg_usedBg_exd;
+// const usedBgex = res.couponsImg.youhuiquan_bg_usedBg_ex;
+// const useBgexd = res.couponsImg.youhuiquan_bg_usedBg_exd;
 const itemUp = res.couponsImg.youhuiquan_icon_smallUp;
 const itemDown = res.couponsImg.youhuiquan_icon_smallDown;
 
@@ -27,18 +27,22 @@ export default class CouponExplainItem extends Component {
 
     render() {
         let { item, index } = this.props;
+        let stateImg = item.status === 1 ? res.couponsImg.youhuiquan_icon_yishiyong :
+            (item.status === 2 ? res.couponsImg.youhuiquan_icon_yishixiao : res.couponsImg.youhuiquan_icon_daijihuo);
+
         return (
             <TouchableOpacity
                 style={{ backgroundColor: DesignRule.bgColor, marginBottom: 5, justifyContent: 'center' }}
                 onPress={() => this.props.clickItem(index, item)}>
                 <ImageBackground style={{
                     width: ScreenUtils.width - px2dp(30),
-                    height: item.tobeextend ? px2dp(94) : px2dp(118),
-                    margin: 2
+                    height: item.tobeextend ? px2dp(109) : px2dp(130),
+                    margin: 2,
                 }}
-                                 source={item.status === 0 ? (item.levelimit ? (item.tobeextend ? useBgexd : usedBgex) : (item.tobeextend ? unUsedBgExd : unUsedBgex)) : (item.tobeextend ? useBgexd : usedBgex)}
+                                 // source={item.status === 0 ? (item.levelimit ? (item.tobeextend ? useBgexd : usedBgex) : (item.tobeextend ? unUsedBgExd : unUsedBgex)) : (item.tobeextend ? useBgexd : usedBgex)}
+                                 source={ item.status === 0 ?(item.tobeextend ? unUsedBgExd : unUsedBgex):item.tobeextend ? unUsedBgExd : unUsedBgex}
                                  resizeMode='stretch'>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', height: px2dp(94) }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', height: px2dp(109) }}>
                         <View style={styles.itemFirStyle}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 {
@@ -47,14 +51,14 @@ export default class CouponExplainItem extends Component {
                                             <Text
                                                 style={{
                                                     fontSize: 14,
-                                                    color: item.status === 0 ? (item.levelimit ? DesignRule.textColor_mainTitle : DesignRule.mainColor) : DesignRule.textColor_mainTitle,
+                                                    color: item.status === 0 ? (item.levelimit ? DesignRule.textColor_mainTitle : DesignRule.mainColor) : '#FF80A7',
                                                     marginBottom: 4
                                                 }} allowFontScaling={false}>￥</Text>
                                         </View>}
                                 <View>
                                     <Text style={{
                                         fontSize: item.type === 4 ? 20 : (item.value && item.value.length < 3 ? 33 : 26),
-                                        color: item.status === 0 ? (item.levelimit ? DesignRule.textColor_mainTitle : DesignRule.mainColor) : DesignRule.textColor_mainTitle
+                                        color: item.status === 0 ? (item.levelimit ? DesignRule.textColor_mainTitle : DesignRule.mainColor) : '#FF80A7'
                                     }} allowFontScaling={false}>{item.value}</Text>
                                 </View>
                                 {
@@ -71,7 +75,7 @@ export default class CouponExplainItem extends Component {
                         </View>
 
                         <View style={{
-                            flex: 1,
+                            flex: 2,
                             alignItems: 'flex-start',
                             marginLeft: 10,
                             justifyContent: 'space-between'
@@ -79,13 +83,10 @@ export default class CouponExplainItem extends Component {
                             <View style={{ flexDirection: 'row' }}>
                                 <Text style={{
                                     fontSize: 15,
-                                    color: DesignRule.textColor_mainTitle,
+                                    color: item.status === 0 ? DesignRule.textColor_mainTitle : DesignRule.textColor_instruction,
                                     marginRight: 10
-                                }} allowFontScaling={false}>
-                                    {item.name}{item.type !== 99 ? null : <UIText value={'（可叠加使用）'} style={{
-                                    fontSize: 11,
-                                    color: DesignRule.textColor_instruction
-                                }}/>}</Text>
+                                }} allowFontScaling={false} numberOfLines={1}>
+                                    {item.name}</Text>
                                 {item.type === 12 ? <UIText value={'x' + item.number} style={{
                                     fontSize: 15,
                                     color: DesignRule.textColor_mainTitle
@@ -94,51 +95,77 @@ export default class CouponExplainItem extends Component {
                             {item.timeStr ? <Text style={{
                                 fontSize: 11,
                                 color: DesignRule.textColor_instruction,
-                                marginTop: 6
+                                marginTop: 1
                             }} allowFontScaling={false}>{item.timeStr}</Text> : null}
-                            <UIText style={{ fontSize: 11, color: DesignRule.textColor_instruction, marginTop: 6 }}
+                            <UIText style={{ fontSize: 11, color: DesignRule.textColor_instruction, marginTop: 1 }}
                                     value={item.limit}/>
                         </View>
-                        {item.status === 0 ?
-                            (
-                                item.type === 99 ?
-                                    <View style={{ alignItems: 'center', marginRight: 10 }}>
-                                        <UIText style={[styles.xNumStyle, { marginRight: 0 }]}
-                                                value={'x' + user.tokenCoin}/>
-                                        {!StringUtils.isEmpty(user.blockedTokenCoin) && user.blockedTokenCoin !== 0 ?
-                                            <Text style={{
-                                                fontSize: 11,
-                                                color: DesignRule.textColor_secondTitle
-                                            }}>{'待激活：'}
-                                                <UIText style={[styles.xNumStyle, { marginRight: 0 }]}
-                                                        value={'x' + user.blockedTokenCoin}/>
-                                            </Text>
-                                            : null}
-                                    </View>
-                                    : (item.levelimit ?
-                                    <View
-                                        style={{ marginRight: 15, justifyContent: 'center', alignItems: 'center' }}>
-                                        {item.count > 1 ? <UIText value={'x' + item.count}
-                                                                  style={styles.xNumsStyle}/> : null}
-                                        <UIText value={'等级受限'}
-                                                style={{
-                                                    fontSize: 13,
-                                                    color: DesignRule.textColor_instruction
-                                                }}/>
-                                    </View>
-                                    : (item.count > 1 ? <UIText value={'x' + item.count}
-                                                                style={styles.xNumsStyle}/> : null)))
+                        <View style={{
+                            width: 80,
+                            alignItems: 'flex-start',
+                            marginLeft: 10,
+                            justifyContent: 'center',
+                            height: px2dp(109)}}>
+                            {item.status === 0 ?
+                                (
+                                    item.type === 99 ?
+                                        <View style={{alignItems: 'center', marginRight: 10}}>
+                                            <UIText style={[styles.xNumStyle, {marginRight: 0}]}
+                                                    value={'x' + user.tokenCoin}/>
+                                            {!StringUtils.isEmpty(user.blockedTokenCoin) && user.blockedTokenCoin !== 0 ?
+                                                <Text style={{
+                                                    fontSize: 11,
+                                                    color: DesignRule.textColor_secondTitle
+                                                }}>{'待激活：'}
+                                                    <UIText style={[styles.xNumStyle, {marginRight: 0}]}
+                                                            value={'x' + user.blockedTokenCoin}/>
+                                                </Text>
+                                                : null}
+                                        </View>
+                                        : (item.levelimit ?
+                                        <View
+                                            style={{marginRight: 15, justifyContent: 'center', alignItems: 'center'}}>
+                                            {item.count > 1 ? <UIText value={'x' + item.count}
+                                                                      style={styles.xNumsStyle}/> : null}
+                                            <UIText value={'等级受限'}
+                                                    style={{
+                                                        fontSize: 13,
+                                                        color: DesignRule.textColor_instruction
+                                                    }}/>
+                                        </View>
+                                        : (item.count > 1 ? <UIText value={'x' + item.count}
+                                                                    style={styles.xNumsStyle}/> :
+                                            <NoMoreClick style={{
+                                                height: ScreenUtils.autoSizeWidth(27),
+                                                width: ScreenUtils.autoSizeWidth(60),
+                                                borderRadius: ScreenUtils.autoSizeWidth(14),
+                                                overflow: 'hidden'
+                                            }}
+                                                         onPress={() => {
+                                                         }}>
+                                                <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}}
+                                                                colors={['#FC5D39', '#FF0050']}
+                                                                style={{
+                                                                    alignItems: 'center',
+                                                                    flexDirection: 'row',
+                                                                    justifyContent: 'center',
+                                                                    flex: 1
+                                                                }}
+                                                >
+                                                    <Text style={{
+                                                        fontSize: 12,
+                                                        color: 'white',
+                                                    }} allowFontScaling={false}>去使用</Text>
+                                                </LinearGradient>
+                                            </NoMoreClick>)))
 
-                            : <View style={{ marginRight: 15, justifyContent: 'center', alignItems: 'center' }}>
-                                {item.count > 1 ? <UIText value={'x' + item.count}
-                                                          style={styles.xNumsStyle}/> : null}
-                                <UIText value={`${item.status === 1 ? '已使用' : (item.status === 2 ? '已失效' : '待激活')}`}
-                                        style={{
-                                            fontSize: 13,
-                                            color: DesignRule.textColor_instruction,
-                                            marginRight: 15
-                                        }}/>
-                            </View>}
+                                : <View style={{marginRight: 15, justifyContent: 'center', alignItems: 'center'}}>
+                                    <Image style={{width: 55, height: 55}}
+                                           source={stateImg}/>
+                                    {item.count > 1 ? <UIText value={'x' + item.count}
+                                                              style={styles.xNumsStyle}/> : null}
+                                </View>}
+                        </View>
                     </View>
                     {!item.tobeextend ?
                         <NoMoreClick style={{ height: px2dp(24), justifyContent: 'center', alignItems: 'center' }}
@@ -148,20 +175,18 @@ export default class CouponExplainItem extends Component {
                 </ImageBackground>
                 {item.tobeextend ?
                     <View style={{
-                        backgroundColor: item.status === 0 ? (item.levelimit ? DesignRule.color_ddd : DesignRule.white) : DesignRule.color_ddd,
+                        backgroundColor: item.status === 0 ? (item.levelimit ? DesignRule.white : DesignRule.white) : DesignRule.white,
                         width: ScreenUtils.width - px2dp(30),
                         marginLeft: 1,
                         borderRadius: 5,
                         marginTop: -2
                     }}>
                         <View style={{ marginTop: 10, marginLeft: 10 }}>
-                            <Text style={{ marginTop: 5, color: DesignRule.textColor_mainTitle }}
-                                  allowFontScaling={false}>使用说明:</Text>
                             <Text style={{
                                 marginTop: 5,
-                                color: DesignRule.textColor_secondTitle,
+                                color: item.status === 0 ?DesignRule.textColor_secondTitle:DesignRule.textColor_secondTitle,
                                 lineHeight: 25,
-                                fontSize: 12
+                                fontSize: 10
 
                             }} allowFontScaling={false}>{item.remarks}</Text>
                         </View>
@@ -184,8 +209,8 @@ const styles = StyleSheet.create({
         color: DesignRule.textColor_mainTitle
     },
     xNumsStyle: {
-        marginRight: 15,
-        marginBottom: 5,
+        // marginRight: 15,
+        // marginBottom: 5,
         fontSize: 13,
         color: DesignRule.textColor_mainTitle_222
     },

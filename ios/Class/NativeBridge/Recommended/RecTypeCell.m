@@ -147,17 +147,17 @@
   [_zanBtn addTarget:self action:@selector(tapZanBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.zanBtn.sd_layout.topSpaceToView(contentLabView,10)
   .leftSpaceToView(bgView, 45)
-   .widthIs(25).heightIs(25);
+   .widthIs(25).heightIs(26);
 
   self.zanNum.sd_layout.centerYEqualToView(self.zanBtn)
   .leftSpaceToView(self.zanBtn, 1)
-  .widthIs(40).heightIs(25);
+  .widthIs(40).heightIs(26);
   
   //分享/转发
   [_shareBtn addTarget:self action:@selector(tapShareBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.shareBtn.sd_layout.centerYEqualToView(self.zanBtn)
   .rightSpaceToView(bgView,15)
-  .widthIs(60).heightIs(25);
+  .widthIs(70).heightIs(26);
   
   [bgView setupAutoHeightWithBottomView:self.shareBtn bottomMargin:5];
   [self setupAutoHeightWithBottomView:bgView bottomMargin:5];

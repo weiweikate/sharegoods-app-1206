@@ -325,9 +325,9 @@ export default class MyCouponsItems extends Component {
                 arrData.push({
                     status: 0,
                     name: '1元现金券',
-                    timeStr: '使用有效期：无时间限制',
+                    timeStr: '无时间限制',
                     value: 1,
-                    limit: '全品类：无金额门槛',
+                    limit: '无金额门槛\n任意商品可用\n可叠加使用',
                     remarks: '1.全场均可使用此优惠券\n2.礼包优惠券在激活有效期内可以购买指定商品',
                     type: 99, //以type=99表示1元券
                     levelimit: false
@@ -345,7 +345,7 @@ export default class MyCouponsItems extends Component {
                             name: item.name,
                             timeStr: '使用有效期：敬请期待',
                             value: item.type === 11 ? item.value : '拼店',
-                            limit: item.type === 11 ? '兑换券：靓号代金券' : '全场券：全场通用券（特殊商品除外）',
+                            limit: item.type === 11 ? '靓号代金券' : '全场通用券（特殊商品除外）',
                             remarks: item.remarks,
                             type: item.type, //以type=99表示1元券
                             levelimit: false,
@@ -378,8 +378,8 @@ export default class MyCouponsItems extends Component {
                 id: item.id,
                 status: item.status,
                 name: item.name,
-                timeStr: '使用有效期：' + item.couponTime,
-                value: item.type === 3 ? (item.value / 10) : (item.type === 4 ? '商品\n兑换' : (item.type === 5 ? '兑换' : item.value)),
+                timeStr: item.couponTime,
+                value: item.type === 3 ? '折' : (item.type === 2 || item.type === 4 ? '抵' : (item.type === 5 ? '兑' : item.value)),
                 limit: this.parseCoupon(item),
                 couponConfigId: item.couponConfigId,
                 remarks: item.remarks,
@@ -451,11 +451,11 @@ export default class MyCouponsItems extends Component {
                 arrData.push({
                     status: 0,
                     name: '1元现金券',
-                    timeStr: '使用有效期：无时间限制',
+                    timeStr: '无时间限制',
                     value: 1,
-                    limit: '全品类：无金额门槛',
+                    limit: '无金额门槛\n任意商品可用\n可叠加使用',
                     remarks: '1.全场均可使用此优惠券\n2.礼包优惠券在激活有效期内可以购买指定商品',
-                    type: 99,//以type=99表示1元券
+                    type: 99, //以type=99表示1元券
                     levelimit: false
                 });
             }

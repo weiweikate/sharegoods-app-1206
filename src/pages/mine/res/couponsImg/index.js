@@ -12,5 +12,10 @@ const couponsImg = {
     youhuiquan_icon_topArrowed: require('./youhuiquan_icon_shouhui_nor.png'),
     youhuiquan_icon_smallUp: require('./tongyong_icon_jinru_blackup.png'),
     youhuiquan_icon_smallDown: require('./tongyong_icon_zhankai_black.png'),
+    youhuiquan_icon_daijihuo: require('./youhuiquan_pic_daijihuo.png'),
+    youhuiquan_icon_yilingqu: require('./youhuiquan_pic_yilingqu.png'),
+    youhuiquan_icon_yishixiao: require('./youhuiquan_pic_yishixiao.png'),
+    youhuiquan_icon_yishiyong: require('./youhuiquan_pic_yishiyong.png'),
+
 };
 export default couponsImg;

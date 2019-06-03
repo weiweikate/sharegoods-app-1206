@@ -154,7 +154,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     NSString *priceStr = model.priceStr;
     NSString *retailPrice = model.retailPrice;
     NSString *retailString = @"";
-    NSString *shareMoneyPrice = [NSString stringWithFormat:@"立省%@元起",model.shareMoney?model.shareMoney:@""];
+    NSString *shareMoneyPrice = [NSString stringWithFormat:@"立省%@元起",model.shareMoney?model.shareMoney:@"xx"];
 
     priceStr = [NSString stringWithFormat:@"市场价：%@",priceStr];
     if ([model.priceType isEqualToString:@"mr_skill"]) {
@@ -185,7 +185,8 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
 
     //标语
     NSMutableAttributedString *logoTitle = [[NSMutableAttributedString alloc]initWithString:@"秀一秀 赚到够"
-                                                                                    attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:18*i], NSForegroundColorAttributeName: [UIColor colorWithHexString:@"FF0050"]}];
+                                                                                    attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:18*i],
+                                                                                                 NSFontAttributeName: [UIFont boldSystemFontOfSize:18*i],                                  NSForegroundColorAttributeName: [UIColor colorWithHexString:@"FF0050"]}];
     [nodes addObject:@{
                        @"value": logoTitle,
                        @"location": [NSValue valueWithCGPoint:CGPointMake(152*i, 55*i)]}
