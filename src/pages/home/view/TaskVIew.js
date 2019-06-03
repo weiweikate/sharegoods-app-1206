@@ -142,6 +142,7 @@ class TaskItem extends React.Component {
                             <MRText style={{
                                 fontSize: autoSizeWidth(13),
                                 color: 'white',
+                                marginTop: 1
                             }} allowFontScaling={false}>{title}</MRText>
                         </LinearGradient>
                     </TouchableOpacity>
@@ -291,16 +292,16 @@ export default class TaskVIew extends React.Component {
                                disabled={data.prizeStatus !== BoxStatusCanOpen}
                               onPress={()=> {this.model.boxClick(data)}}
             >
-                <UIImage source={icon} style={{width: autoSizeWidth(31),
-                    height: autoSizeWidth(31),
-                    marginBottom: data.status === BoxStatusOpen? autoSizeWidth(9): autoSizeWidth(5)}}/>
+                <UIImage source={icon} style={{width: autoSizeWidth(40),
+                    height: autoSizeWidth(40),
+                    marginBottom: autoSizeWidth(5)}}/>
                 <MRText style={{fontSize: autoSizeWidth(12),
                     color: data.status === BoxStatusOpen? DesignRule.mainColor:'#666666',
                     bottom: 0,
                     left:-30,
                     right: -30,
                     textAlign: 'center',
-                    position: 'absolute'
+                    position: 'absolute',
                 }}>
                     {data.value + '活跃'}
                 </MRText>
@@ -311,18 +312,19 @@ export default class TaskVIew extends React.Component {
     renderBtn(){
         let expanded  = this.model.expanded;
         return(
-            <TouchableOpacity style={{height: autoSizeWidth(13),
+            <TouchableOpacity   onPress={()=>{this.model.expandedClick()}}>
+            <View style={{height: autoSizeWidth(13),
                 width: autoSizeWidth(40),
                 alignSelf:'center'
 
             }}
-                              onPress={()=>{this.model.expandedClick()}}
             >
                 <ImageBackground source={task_bottom_btn}
                                  style={[DesignRule.style_absoluteFullParent,{ alignItems: 'center'}]}
                 >
                     <UIImage source={expanded? arrow_red_top: arrow_red_bottom} style={{height: autoSizeWidth(6),width: autoSizeWidth(11)}}/>
                 </ImageBackground>
+            </View>
             </TouchableOpacity>
         )
     }
@@ -348,7 +350,7 @@ export default class TaskVIew extends React.Component {
                                       onPress={()=> this.model.hideFinishTaskClick()}
                     >
                         <MRText style={{fontSize: autoSizeWidth(12), color: '#999999'}}>{this.model.hideFinishTask?
-                            '已隐藏完成的任务' : '隐藏完成的任务'}</MRText>
+                            '显示已完成任务' : '隐藏已完成任务 '}</MRText>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -362,7 +364,7 @@ export default class TaskVIew extends React.Component {
         }
         let type = this.props.type;
         return (
-            <View style={[{paddingHorizontal: 15, width: ScreenUtils.width},this.props.style]}>
+            <View style={[{paddingHorizontal: 15, width: ScreenUtils.width, backgroundColor: 'white'},this.props.style]}>
                 {this.renderHeader(type)}
                 <View style={styles.bg}>
                     {this.renderTitle(type)}
@@ -397,8 +399,8 @@ const styles = StyleSheet.create({
     },
     lineOne:{
         height:0,
-        borderWidth:0.8,
-        borderColor:'#E4E4E4',
+        borderWidth:0.7,
+        borderColor: '#E4E4E4',
         borderStyle:'dashed',
         borderRadius:0.1,
     }
