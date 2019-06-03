@@ -37,12 +37,14 @@ const {
     taskModal_dou,
     taskModal_btn,
     taskModal_exp,
+    taskModal_chou,
     taskModal_h,
     taskModal_header,
     taskModal_wa,
     dou_bg,
     h_bg,
-    exp_bg
+    exp_bg,
+    chou_bg
 } = res.task;
 const GiftType = {
     exp: 1,
@@ -68,14 +70,14 @@ export default class TaskModalView extends React.Component {
     renderContent() {
 
         let alertData = this.model.alertData || []
-        let images = [taskModal_exp,taskModal_dou,taskModal_h];
-        let bgs = [exp_bg, dou_bg, h_bg]
+        let images = [taskModal_exp,taskModal_dou,taskModal_h, taskModal_chou];
+        let bgs = [exp_bg, dou_bg, h_bg, chou_bg]
         let lottery = null;
         alertData = alertData.filter((item) => {
             if (GiftType[item.code]){
                 if (GiftType[item.code] === GiftType.lottery) {
                     lottery = item;
-                    return false;
+                    return true;
                 }
                 return true;
             }
