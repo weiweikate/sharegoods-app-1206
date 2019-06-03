@@ -2,6 +2,7 @@ package com.meeruu.sharegoods.rn.showground;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -240,6 +241,8 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         });
         adapter.setLoadMoreView(new CustomLoadMoreView());
         setRecyclerViewItemEvent(view);
+        adapter.setHasStableIds(true);
+        adapter.setHeaderAndEmpty(false);
         recyclerView.setAdapter(adapter);
         ((DefaultItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {

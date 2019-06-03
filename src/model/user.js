@@ -297,7 +297,7 @@ class User {
 
         if (this.levelRemark  && this.levelRemark !== info.levelRemark){
             // mediatorCallFunc()
-            mediatorCallFunc(info.levelRemark);
+            mediatorCallFunc('Home_UserLevelUpdate',info.levelRemark);
         }
         this.levelRemark = info.levelRemark;
 
