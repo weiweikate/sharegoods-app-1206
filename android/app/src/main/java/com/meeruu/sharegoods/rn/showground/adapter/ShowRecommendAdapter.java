@@ -25,6 +25,7 @@ import com.meeruu.sharegoods.rn.showground.widgets.FolderTextView;
 import com.meeruu.sharegoods.rn.showground.widgets.GridView.ImageInfo;
 import com.meeruu.sharegoods.rn.showground.widgets.GridView.NineGridView;
 import com.meeruu.sharegoods.rn.showground.widgets.GridView.NineGridViewAdapter;
+import com.reactnative.ivpusic.imagepicker.ImagesUtils;
 
 import java.util.ArrayList;
 import java.util.List;

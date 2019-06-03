@@ -14,6 +14,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
@@ -1356,6 +1357,8 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         canvas.drawBitmap(qrBitmap, 268 * ratio, bottom - titleSize - 6 * ratio, paint);
 
         if (!TextUtils.isEmpty(discountPrice)) {
+            Typeface font = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD);
+            paint.setTypeface(font);
             String tip2 = "扫码购";
             paint.setStrikeThruText(false);
             paint.setColor(Color.parseColor("#FF0050"));
