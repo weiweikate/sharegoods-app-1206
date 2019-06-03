@@ -211,6 +211,10 @@ export default class ProductDetailPage extends BasePage {
             case productItemType.coupons: {
                 return <ProductDetailCouponsView productDetailCouponsViewModel={productDetailCouponsViewModel}
                                                  onPress={() => {
+                                                     if (!user.isLogin) {
+                                                         this.$navigate(RouterMap.LoginPage);
+                                                         return;
+                                                     }
                                                      this.ProductDetailCouponsWindowView.showWindowView();
                                                  }}/>;
             }
