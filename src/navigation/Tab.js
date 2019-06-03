@@ -94,6 +94,7 @@ const ShowFlag = () =>
             <Animation
                 style={styles.shopTab}
                 autoPlay={true}
+                imageAssetsFolder={'lottie/pinFlag'}
                 hardwareAccelerationAndroid={true}
                 source={require('./pin_flag.json')}/>
         </View>

@@ -59,8 +59,10 @@ Navigator.router.getStateForAction = (action, state) => {
         if (action.routeName === 'HomePage' || action.routeName === 'ShowListPage'
             || action.routeName === 'ShopCartPage' || action.routeName === 'MinePage') {
             showPinFlagModel.saveShowFlag(true);
+            showPinFlagModel.saveShowTab(true);
         } else {
             showPinFlagModel.saveShowFlag(false);
+            showPinFlagModel.saveShowTab(false);
         }
     }
 
@@ -72,8 +74,10 @@ Navigator.router.getStateForAction = (action, state) => {
         if (nextRoute === 'HomePage' || nextRoute === 'ShowListPage'
             || nextRoute === 'ShopCartPage' || nextRoute === 'MinePage') {
             showPinFlagModel.saveShowFlag(true);
+            showPinFlagModel.saveShowTab(true);
         } else {
             showPinFlagModel.saveShowFlag(false);
+            showPinFlagModel.saveShowTab(false);
         }
         if (currentRoute
             && nextRoute === RouterMap.LoginPage
@@ -99,8 +103,10 @@ Navigator.router.getStateForAction = (action, state) => {
         if (currentPage === 'HomePage' || currentPage === 'ShowListPage'
             || currentPage === 'ShopCartPage' || currentPage === 'MinePage') {
             showPinFlagModel.saveShowFlag(true);
+            showPinFlagModel.saveShowTab(true);
         } else {
             showPinFlagModel.saveShowFlag(false);
+            showPinFlagModel.saveShowTab(false);
         }
         console.log('getStateForAction currentpage start', currentPage);
         Analytics.onPageStart(currentPage);

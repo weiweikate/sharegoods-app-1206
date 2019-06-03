@@ -142,8 +142,8 @@ class App extends Component {
                         this.setState({ curRouteName });
                     }}
                 />
-                {showPinFlagModel.showFlag ? <SpellShopTab/> : null}
                 {showPinFlagModel.showFlag ? <SpellShopFlag/> : null}
+                {showPinFlagModel.showTab ? <SpellShopTab/> : null}
                 {
                     showDebugPanel === 'true' ?
                         <DebugButton onPress={this.showDebugPage} style={{ backgroundColor: 'red' }}><Text
