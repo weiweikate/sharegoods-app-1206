@@ -1,4 +1,4 @@
-import { NativeModules, Dimensions, Platform, PixelRatio  } from 'react-native';
+import { NativeModules, Dimensions, Platform, PixelRatio } from 'react-native';
 
 const { RNDeviceInfo } = NativeModules;
 
@@ -66,11 +66,12 @@ function getBarShow() {
     return isNavigationBarShow;
 }
 
-function isNavigationBarExist(callback = ()=>{}) {
-    if(Platform.OS === 'ios'){
+function isNavigationBarExist(callback = () => {
+}) {
+    if (Platform.OS === 'ios') {
         return;
     }
-    RNDeviceInfo.isNavigationBarExist(callback)
+    RNDeviceInfo.isNavigationBarExist(callback);
 }
 
 function setHasNotchScreen(isNotch) {
@@ -81,8 +82,9 @@ function getHasNotchScreen() {
     return hasNotchScreen;
 }
 
-function checkhasNotchScreen(callback = ()=>{}) {
-    if(Platform.OS === 'ios'){
+function checkhasNotchScreen(callback = () => {
+}) {
+    if (Platform.OS === 'ios') {
         return;
     }
     RNDeviceInfo.hasNotchScreen(callback);
@@ -139,13 +141,11 @@ export default {
     isIOSNomarl: Platform.OS === 'ios' && Dimensions.get('window').height === 667,// phone6,phone7,phone8
     isIOSP: Platform.OS === 'ios' && Dimensions.get('window').height === 736,//phone6p,phone7p,phone8p
     isIOSX: Platform.OS === 'ios' && Dimensions.get('window').height === 812,
-    safeBottomMax: Platform.OS === 'ios' ? (__ISIPHONEXSMAX__ ? 37 : 0) : 0,
-    safeBottomX: Platform.OS === 'ios' ? (__ISIPHONEX__ ? 37 : 0) : 0,
-    safeBottom: Platform.OS === 'ios' ? (__ISIPHONEX__ || __ISIPHONEXSMAX__ ? 37 : 0) : 0,
+    safeBottom: Platform.OS === 'ios' ? (__ISIPHONEX__ || __ISIPHONEXSMAX__ ? 36 : 0) : 0,
     isIphoneMax: __ISIPHONEXSMAX__,
     isIphonex: __ISIPHONEX__,
     // saveMarginBottom: Platform.OS === 'ios' && (Dimensions.get('window').height === 812 || Dimensions.get('window').height === 736) ? 34 : 0
-    isAllScreenDevice:Platform.OS === 'ios' ? false : RNDeviceInfo.isAllScreenDevice,
+    isAllScreenDevice: Platform.OS === 'ios' ? false : RNDeviceInfo.isAllScreenDevice,
     // isNavigationBarShow:Platform.OS === 'ios' ? false:RNDeviceInfo.isNavigationBarShow,
-    isAnroidNotchScreen:Platform.OS === 'ios' ? false : RNDeviceInfo.isAnroidNotchScreen,
+    isAnroidNotchScreen: Platform.OS === 'ios' ? false : RNDeviceInfo.isAnroidNotchScreen
 };
