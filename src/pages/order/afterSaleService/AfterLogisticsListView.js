@@ -40,7 +40,7 @@ export default class AfterLogisticsListView extends BasePage {
     };
 
     renderItem = ({ item }) => {
-        let { quantity, product, expNO, expName } = item;
+        let { quantity, product, expNO, expName, expressCode } = item;
         let { productName, specImg, payAmount, spec } = product;
         return (
             <View style={{ paddingBottom: 10 }}>
@@ -48,7 +48,8 @@ export default class AfterLogisticsListView extends BasePage {
                     style={{ height: 40, backgroundColor: DesignRule.white, justifyContent: 'center', marginBottom: 1 }}
                     onPress={() => {
                         this.$navigate('order/logistics/LogisticsDetailsPage', {
-                            expressNo: expNO
+                            expressNo: expNO,
+                            expressCode: expressCode
                         });
                     }}>
                     <View style={styles.expStyle}>
@@ -68,7 +69,8 @@ export default class AfterLogisticsListView extends BasePage {
                     style={{ backgroundColor: DesignRule.white }}
                     onPress={() => {
                         this.$navigate('order/logistics/LogisticsDetailsPage', {
-                            expressNo: expNO
+                            expressNo: expNO,
+                            expressCode: expressCode
                         });
                     }}
                 />

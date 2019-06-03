@@ -27,10 +27,13 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
   NSArray * defaultImages = @[];
   __weak ShareImageMaker * weakSelf = self;
   
-  if ([imageType isEqualToString:@"show"]||[imageType isEqualToString:@"web"]) {
+  if ([imageType isEqualToString:@"show"]||[imageType isEqualToString:@"webActivity"]) {
     URLs = @[model.imageUrlStr,model.headerImage];
     defaultImages = @[[UIImage imageNamed:@"logo.png"], [UIImage imageNamed:@"default_avatar.png"]];
-  }else{//web or  produce or nil
+  }else if ([imageType isEqualToString:@"web"]){
+    URLs = @[model.imageUrlStr];
+    defaultImages = @[[UIImage imageNamed:@"logo.png"]];
+  } else{//web or  produce or nil
     URLs = @[model.imageUrlStr];
     defaultImages = @[[UIImage imageNamed:@"logo.png"]];
   }
@@ -56,6 +59,18 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
   }
   
   if ([imageType isEqualToString:@"web"]) {
+    if (model.imageUrlStr == nil) {
+      completion(nil, @"图片URL（imageUrlStr）不能为nil");
+      return NO;
+    }
+    if (model.QRCodeStr == nil) {
+      completion(nil, @"二维码字符（QRCodeStr）不能为nil");
+      return NO;
+    }
+    return YES;
+  }
+  
+  if ([imageType isEqualToString:@"webActivity"]) {
     if (model.imageUrlStr == nil) {
       completion(nil, @"图片URL（imageUrlStr）不能为nil");
       return NO;
@@ -100,7 +115,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
   
   NSMutableArray *nodes = [NSMutableArray new];
   
-  if ([imageType isEqualToString:@"web"]) {
+  if ([imageType isEqualToString:@"webActivity"]) {
     NSDictionary * dataDic = [ShowShareImgMaker getParamsWithWEBImages:images
                                                               model:model];
     nodes = dataDic[@"nodes"];
@@ -109,7 +124,23 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     NSNumber* width = dataDic[@"width"];
     imageWidth = width.floatValue;
     
-  }else if ([imageType isEqualToString:@"show"]){
+  }else if([imageType isEqualToString:@"web"]){
+    imageHeght = 340*i;
+    imageWidth =  250*i;
+    //主图图片
+    [nodes addObject:@{
+                       @"value": images[0],
+                       @"locationType": @"rect",
+                       @"location": [NSValue valueWithCGRect:CGRectMake(0, 0, 250*i, 340*i)]}
+     ];
+    //二维码
+    UIImage *QRCodeImage = [UIImage QRCodeWithStr:QRCodeStr];
+    [nodes addObject:@{@"value": QRCodeImage,
+                       @"locationType": @"rect",
+                       @"location": [NSValue valueWithCGRect:CGRectMake(195*i, 285*i, 45*i, 45*i)]}
+     ];
+    
+  } else if ([imageType isEqualToString:@"show"]){
    NSDictionary * dataDic = [ShowShareImgMaker getParamsWithImages:images
                                      model:model];
     nodes = dataDic[@"nodes"];
@@ -270,6 +301,9 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
   UIGraphicsEndImageContext();
   return [self save:image withPath:[NSString stringWithFormat:@"/Documents/QRCode%@.png",[model modelToJSONString].md5String]];
 }
+
+
+
 
 /**
  保存图片到本地，并返回路径
@@ -436,6 +470,36 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     }
   }];
 }
+
+#pragma mark-二维码和商品绘制图形
+-(void)creatQRCodeImageAndProductModel:(ShareImageMakerModel *)model completion:(ShareImageMakercompletionBlock)completion{
+  
+  if (model.imageUrlStr == nil) {
+    completion(nil, @"图片URL（imageUrlStr）不能为nil");
+    return;
+  }
+  if (model.QRCodeStr == nil) {
+    completion(nil, @"二维码字符（QRCodeStr）不能为nil");
+    return;
+  }
+  
+  NSArray * URLs = @[];
+  NSArray * defaultImages = @[];
+    URLs = @[model.imageUrlStr];
+    defaultImages = @[[UIImage imageNamed:@"logo.png"]];
+  [self requestImageWithURLs:URLs defaultImage:defaultImages success:^(NSArray *images) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+      
+      NSString *path = [ShowShareImgMaker getShowProductImageModelImages:images model:model];
+      if (path == nil || path.length == 0) {
+        completion(nil, @"ShareImageMaker：保存图片到本地失败");
+      }else{
+        completion(path, nil);
+      }
+    });
+  }];
+}
+
 #pragma mark-公用部分
 - (void)QRCode:(UIImage *)str image:(UIImage *)image com:(void(^)(UIImage * image))com{
   CGRect rect = CGRectMake(0.0f, 0.0f, 360 , 350);

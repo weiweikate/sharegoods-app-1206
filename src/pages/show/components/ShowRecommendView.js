@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from 'react';
-import { requireNativeComponent,findNodeHandle,UIManager } from 'react-native';
+import { requireNativeComponent,findNodeHandle,UIManager} from 'react-native';
 
 const RCTShowRecommendView = requireNativeComponent('ShowRecommendView', ShowRecommendView);
 import NativeHeader from './ShowHeaderView'
@@ -48,6 +48,7 @@ export default class ShowRecommendView extends Component {
             <RCTShowRecommendView {...this.props}
                                ref={RCT_SHOWGROUND_REF}
             >
+
                 {this.props.renderHeader &&
                 <NativeHeader>
                     {this.props.renderHeader}

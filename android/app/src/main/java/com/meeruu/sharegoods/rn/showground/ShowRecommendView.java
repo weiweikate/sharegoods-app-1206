@@ -2,9 +2,11 @@ package com.meeruu.sharegoods.rn.showground;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
@@ -196,17 +198,19 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
             }
         };
 
-
         adapter = new ShowRecommendAdapter(clickL, addCartListener, pressProductListener);
-
         View emptyView=LayoutInflater.from(context).inflate(R.layout.show_empty_view, null);
         emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
+
+
         adapter.setEmptyView(emptyView);
         adapter.setPreLoadNumber(3);
         adapter.setHasStableIds(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
+        ((SimpleItemAnimator) recyclerView.getItemAnimator())
+                .setSupportsChangeAnimations(false);
         adapter.setEnableLoadMore(true);
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
@@ -237,8 +241,10 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         });
         adapter.setLoadMoreView(new CustomLoadMoreView());
         setRecyclerViewItemEvent(view);
+        adapter.setHasStableIds(true);
+        adapter.setHeaderAndEmpty(false);
         recyclerView.setAdapter(adapter);
-
+        ((DefaultItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -300,7 +306,6 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
                                 }
                                 data.set(position, bean);
                                 adapter.replaceData(data);
-//                                adapter.setData(position,bean);
                             }
                         }, 200);
                     }
@@ -452,11 +457,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
     }
 
     public void addHeader(View view) {
-        int i = adapter.getHeaderLayoutCount();
-        if (i != 0) {
-            adapter.removeAllHeaderView();
-        }
-        adapter.addHeaderView(view);
+        adapter.setHeaderView(view);
         recyclerView.scrollToPosition(0);
     }
 

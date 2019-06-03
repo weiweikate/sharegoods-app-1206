@@ -23,12 +23,11 @@
 		0126301D22811AB1008D4F7E /* ActivityCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0126301C22811AB1008D4F7E /* ActivityCell.m */; };
 		0126302022811B3E008D4F7E /* ActivetyViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0126301F22811B3D008D4F7E /* ActivetyViewManager.m */; };
 		012630E322826C0C008D4F7E /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0126302122815AEF008D4F7E /* Accelerate.framework */; };
-		0131F0A3228D414600A2026D /* UIButton+TimeInterval.m in Sources */ = {isa = PBXBuildFile; fileRef = 0131F0A2228D414600A2026D /* UIButton+TimeInterval.m */; };
 		0131F1B4228E57D200A2026D /* JXModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0131F1B3228E57D200A2026D /* JXModel.m */; };
 		014FF1C222708C30008B0094 /* JXBodyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 014FF1C122708C30008B0094 /* JXBodyView.m */; };
 		014FF20122708C57008B0094 /* JXFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 014FF20022708C57008B0094 /* JXFooterView.m */; };
-		015D5AB4229F8EBE00EA9ED0 /* ShareImageMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 015D5AB2229F8EBE00EA9ED0 /* ShareImageMaker.m */; };
-		015D5AB7229F93E100EA9ED0 /* ShowShareImgMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 015D5AB6229F93E100EA9ED0 /* ShowShareImgMaker.m */; };
+		0153BAB122A1078A00BFD8AC /* ShowShareImgMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0153BAB022A1078A00BFD8AC /* ShowShareImgMaker.m */; };
+		0153BAB422A110AF00BFD8AC /* ShareImageMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0153BAB222A110AF00BFD8AC /* ShareImageMaker.m */; };
 		01E48F9422708B960038BEE6 /* JXHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E48F9322708B960038BEE6 /* JXHeaderView.m */; };
 		033C66B821927ACB00433026 /* MRBannerViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 033C66B721927ACB00433026 /* MRBannerViewManager.m */; };
 		0347BAD52237CD0A0011184A /* Lottie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0347BAC92237CC680011184A /* Lottie.framework */; };
@@ -542,13 +541,6 @@
 			remoteGlobalIDString = 358F4ED71D1E81A9004DF814;
 			remoteInfo = RCTBlob;
 		};
-		BF2CCE9A229F6D0500A5AD0D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0347BAC12237CC670011184A /* Lottie.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 6445B0D5207E0D4D00D84F6A;
-			remoteInfo = LottieLibraryMacOS;
-		};
 		BF6EE5F2214F89C2007C1185 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BF6EE5ED214F89C2007C1185 /* BVLinearGradient.xcodeproj */;
@@ -680,18 +672,16 @@
 		0126301F22811B3D008D4F7E /* ActivetyViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivetyViewManager.m; sourceTree = "<group>"; };
 		0126302122815AEF008D4F7E /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		012631F22282AB05008D4F7E /* libreact-native-blur.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libreact-native-blur.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		0131F0A1228D414600A2026D /* UIButton+TimeInterval.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIButton+TimeInterval.h"; sourceTree = "<group>"; };
-		0131F0A2228D414600A2026D /* UIButton+TimeInterval.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIButton+TimeInterval.m"; sourceTree = "<group>"; };
 		0131F1B2228E57D100A2026D /* JXModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JXModel.h; sourceTree = "<group>"; };
 		0131F1B3228E57D200A2026D /* JXModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JXModel.m; sourceTree = "<group>"; };
 		014FF1C022708C30008B0094 /* JXBodyView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JXBodyView.h; sourceTree = "<group>"; };
 		014FF1C122708C30008B0094 /* JXBodyView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JXBodyView.m; sourceTree = "<group>"; };
 		014FF1FF22708C57008B0094 /* JXFooterView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JXFooterView.h; sourceTree = "<group>"; };
 		014FF20022708C57008B0094 /* JXFooterView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JXFooterView.m; sourceTree = "<group>"; };
-		015D5AB2229F8EBE00EA9ED0 /* ShareImageMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareImageMaker.m; sourceTree = "<group>"; };
-		015D5AB3229F8EBE00EA9ED0 /* ShareImageMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareImageMaker.h; sourceTree = "<group>"; };
-		015D5AB5229F93E100EA9ED0 /* ShowShareImgMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShowShareImgMaker.h; sourceTree = "<group>"; };
-		015D5AB6229F93E100EA9ED0 /* ShowShareImgMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShowShareImgMaker.m; sourceTree = "<group>"; };
+		0153BAAF22A1078900BFD8AC /* ShowShareImgMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShowShareImgMaker.h; sourceTree = "<group>"; };
+		0153BAB022A1078A00BFD8AC /* ShowShareImgMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShowShareImgMaker.m; sourceTree = "<group>"; };
+		0153BAB222A110AF00BFD8AC /* ShareImageMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareImageMaker.m; sourceTree = "<group>"; };
+		0153BAB322A110AF00BFD8AC /* ShareImageMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareImageMaker.h; sourceTree = "<group>"; };
 		01E48F9222708B960038BEE6 /* JXHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JXHeaderView.h; sourceTree = "<group>"; };
 		01E48F9322708B960038BEE6 /* JXHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JXHeaderView.m; sourceTree = "<group>"; };
 		033C66B621927ACB00433026 /* MRBannerViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRBannerViewManager.h; sourceTree = "<group>"; };
@@ -1240,7 +1230,6 @@
 				0347BACB2237CC680011184A /* Lottie.framework */,
 				0347BACD2237CC680011184A /* Lottie.framework */,
 				0347BACF2237CC680011184A /* libLottie.a */,
-				BF2CCE9B229F6D0500A5AD0D /* libLottie.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1514,8 +1503,6 @@
 				5068357821379B78001AB175 /* UIView+captureSceen.m */,
 				CDCB5BD82196DF71006B5F4E /* UIImage+Util.h */,
 				CDCB5BD92196DF71006B5F4E /* UIImage+Util.m */,
-				0131F0A1228D414600A2026D /* UIButton+TimeInterval.h */,
-				0131F0A2228D414600A2026D /* UIButton+TimeInterval.m */,
 			);
 			path = UIView;
 			sourceTree = "<group>";
@@ -1600,10 +1587,10 @@
 			children = (
 				506835C221379B78001AB175 /* JRShareManager.h */,
 				506835C321379B78001AB175 /* JRShareManager.m */,
-				015D5AB3229F8EBE00EA9ED0 /* ShareImageMaker.h */,
-				015D5AB2229F8EBE00EA9ED0 /* ShareImageMaker.m */,
-				015D5AB5229F93E100EA9ED0 /* ShowShareImgMaker.h */,
-				015D5AB6229F93E100EA9ED0 /* ShowShareImgMaker.m */,
+				0153BAB322A110AF00BFD8AC /* ShareImageMaker.h */,
+				0153BAB222A110AF00BFD8AC /* ShareImageMaker.m */,
+				0153BAAF22A1078900BFD8AC /* ShowShareImgMaker.h */,
+				0153BAB022A1078A00BFD8AC /* ShowShareImgMaker.m */,
 			);
 			path = "Share-分享";
 			sourceTree = "<group>";
@@ -2763,13 +2750,6 @@
 			remoteRef = ADBDB9261DFEBF0700ED6528 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		BF2CCE9B229F6D0500A5AD0D /* libLottie.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libLottie.a;
-			remoteRef = BF2CCE9A229F6D0500A5AD0D /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		BF6EE5F3214F89C2007C1185 /* libBVLinearGradient.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -3024,7 +3004,7 @@
 				CDA2F5322171D8D2005FD4B3 /* UIViewController+Util.m in Sources */,
 				CDA2F5352171D90E005FD4B3 /* NSObject+Util.m in Sources */,
 				CD89B1CD224B1010006CCEF7 /* MosaicCollectionLayoutInfo.m in Sources */,
-				015D5AB7229F93E100EA9ED0 /* ShowShareImgMaker.m in Sources */,
+				0153BAB122A1078A00BFD8AC /* ShowShareImgMaker.m in Sources */,
 				5068361121379B78001AB175 /* AppDelegate+ConfigVC.m in Sources */,
 				5068363621379B78001AB175 /* JRAddressPickView.m in Sources */,
 				CDAB6D21219AC5F800DE6716 /* TYWaterWaveView.m in Sources */,
@@ -3055,7 +3035,7 @@
 				01091615227053800043E997 /* RecommendedManager.m in Sources */,
 				C43AE8FF2240C567003CC51F /* JRServiceBridge.m in Sources */,
 				5068363121379B78001AB175 /* commModule.m in Sources */,
-				015D5AB4229F8EBE00EA9ED0 /* ShareImageMaker.m in Sources */,
+				0153BAB422A110AF00BFD8AC /* ShareImageMaker.m in Sources */,
 				5068362F21379B78001AB175 /* JRShareManager.m in Sources */,
 				CD5EB082221D46E3007AAEE0 /* ShowCell.m in Sources */,
 				CD89B1CE224B1010006CCEF7 /* MosaicCollectionLayoutDelegate.m in Sources */,
@@ -3067,7 +3047,6 @@
 				CD3A8A0721F05DF3003B9803 /* MRLoadingView.m in Sources */,
 				0126302022811B3E008D4F7E /* ActivetyViewManager.m in Sources */,
 				CD5EB143221E9AB3007AAEE0 /* ShowHeaderView.m in Sources */,
-				0131F0A3228D414600A2026D /* UIButton+TimeInterval.m in Sources */,
 				0109161B227053D30043E997 /* RecommendedCell.m in Sources */,
 				CDAB6D20219AC5F800DE6716 /* TYWaveProgressView.m in Sources */,
 				CD5EB146221EA148007AAEE0 /* WHCWaterfallFlowLayout.m in Sources */,

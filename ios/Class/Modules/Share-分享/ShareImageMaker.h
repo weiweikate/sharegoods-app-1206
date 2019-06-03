@@ -18,6 +18,8 @@
 @property(nonatomic, copy)NSString * QRCodeStr;
 @property(nonatomic, copy)NSString * shareMoney;
 
+@property(nonatomic, copy)NSString * originalPrice;
+@property(nonatomic, copy)NSString * currentPrice;
 
 @property(nonatomic, copy)NSString * other;
 @property(nonatomic, copy)NSString * headerImage;
@@ -33,6 +35,14 @@ SINGLETON_FOR_HEADER(ShareImageMaker)
  */
 - (void)creatShareImageWithShareImageMakerModel:(ShareImageMakerModel *)model
                                     completion:(ShareImageMakercompletionBlock) completion;
+
+/**
+ 生成二维码和商品分享的图片，保存在本地
+ */
+
+- (void)creatQRCodeImageAndProductModel:(ShareImageMakerModel *)model
+                           completion:(ShareImageMakercompletionBlock) completion;
+
 /**
  邀请好友返回二维码
  */

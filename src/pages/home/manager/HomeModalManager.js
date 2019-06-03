@@ -20,12 +20,13 @@ class HomeModalManager {
     /** 控制升级框*/
     @observable
     isShowUpdate = false;
+    needShowUpdate = false;
     /** 控制公告*/
     @observable
     isShowNotice = false;
     needShowNotice = false;
     @observable
-    noticeData = null;
+    homeMessage = null;
     /** 控制首页广告*/
     @observable
     isShowAd = false;
@@ -47,6 +48,11 @@ class HomeModalManager {
     @observable
     prizeData = null;
     /** 是否在首页*/
+    /** 控制用户升级弹窗*/
+    @observable
+    isShowUser  = false;
+    needShowUser  = false;
+    Userdata = null;
     @observable
     isHome = false;
 
@@ -74,20 +80,39 @@ class HomeModalManager {
     }
 
     @action
-    closeUpdate(skip) {
-        if (skip) {
-            AsyncStorage.setItem('isToUpdate', String(this.versionData.version));
-        }
-        this.isShowUpdate = false;
-        this.versionData = null;
-        if (this.needShowNotice === true) {
+    openNext(){
+        if (this.isShowUpdate ||
+            this.isShowNotice ||
+            this.isShowAd||
+            this.isShowGift ||
+            this.isShowPrize ||
+            this.isShowUser
+        ) {return;} // 如果有页面展示
+
+        if (this.needShowUpdate === true) {
+            this.isShowUpdate = true;
+        } else if (this.needShowNotice === true) {
             this.isShowNotice = true;
         } else if (this.needShowAd === true) {
             this.isShowAd = true;
         }else if (this.needShowGift === true) {
             this.isShowGift = true;
             track(trackEvent.NewUserGuideShow, {})
+        }else if (this.needShowPrize === true) {
+            this.isShowPrize = true;
+        } else if (this.needShowUser === true){
+            this.isShowUser = true;
         }
+    }
+
+    @action
+    closeUpdate(skip) {
+        if (skip) {
+            AsyncStorage.setItem('isToUpdate', String(this.versionData.version));
+        }
+        this.isShowUpdate = false;
+        this.versionData = null;
+        this.openNext();
     }
 
     @action
@@ -96,13 +121,11 @@ class HomeModalManager {
         AsyncStorage.setItem('lastMessageTime', String(currStr));
         this.isShowNotice = false;
         this.needShowNotice = false;
-        this.noticeData = null;
-        if (this.needShowGift === true) {
-            this.isShowGift = true;
-            track(trackEvent.NewUserGuideShow, {})
-        }else if (this.needShowPrize === true) {
-            this.isShowPrize = true;
-        }
+        this.homeMessage = null;
+
+        this.isShowAd = false;
+        this.needShowAd = false;
+        this.openNext();
     }
 
 
@@ -113,12 +136,10 @@ class HomeModalManager {
         this.isShowAd = false;
         this.needShowAd = false;
         this.AdData = null;
-        if (this.needShowGift === true) {
-            this.isShowGift = true;
-            track(trackEvent.NewUserGuideShow, {})
-        }else if (this.needShowPrize === true) {
-            this.isShowPrize = true;
-        }
+
+        this.isShowNotice = false;
+        this.needShowNotice = false;
+        this.openNext();
     }
 
     @action
@@ -126,11 +147,7 @@ class HomeModalManager {
         this.isShowPrize = false;
         this.needShowPrize  = false;
         this.prizeData = null;
-        //关闭抽奖结果的弹框，如果可以有新手的弹框，就显示
-        if (this.needShowGift === true){
-            this.isShowGift = true;
-            track(trackEvent.NewUserGuideShow, {})
-        }
+        this.openNext();
     }
 
     @action
@@ -139,10 +156,14 @@ class HomeModalManager {
         this.needShowGift  = false;
         this.giftData = null;
         track(trackEvent.NewUserGuideBtnClick, {})
-        //关闭新手的弹框的，如果可以有抽奖结果，就显示
-        if (this.needShowPrize === true){
-            this.isShowPrize = true;
-        }
+        this.openNext();
+    }
+
+    @action
+    closeUserLevel(){
+        this.isShowUser = false;
+        this.needShowUser = false;
+        this.openNext();
     }
 
     @action
@@ -153,21 +174,10 @@ class HomeModalManager {
             if (this.versionData && upgrade === 1) {
                 let storage_version = yield AsyncStorage.getItem('isToUpdate');
                 if (storage_version !== version || forceUpdate === 1) {
-                    this.isShowUpdate = true;
+                    this.needShowUpdate = true;
                 }
             }
-            if (this.isShowUpdate === false) {
-                 if (this.needShowNotice === true) {
-                    this.isShowNotice = true;
-                } else if (this.needShowAd === true) {
-                    this.isShowAd = true;
-                }else if (this.needShowGift === true) {
-                     this.isShowGift = true;
-                     track(trackEvent.NewUserGuideShow, {})
-                 }else if (this.needShowPrize === true) {
-                     this.isShowPrize = true;
-                 }
-            }
+            this.openNext();
         } catch (error) {
             console.log(error);
             throw error;
@@ -253,9 +263,7 @@ class HomeModalManager {
             if (data.data && data.data.popUp){
                 this.needShowPrize = true;
                 this.prizeData = data.data;
-                if (!this.isShowUpdate && !this.isShowNotice && !this.isShowAd && !this.isShowGift){
-                    this.isShowPrize = true;
-                }
+                this.openNext();
             }
 
         }).catch(() => {
@@ -272,12 +280,16 @@ class HomeModalManager {
                 this.needShowGift = true;
                 this.giftData = {image: item.imgUrl, linkTypeCode: item.linkTypeCode, linkType: homeLinkType.link};
             }
-            if (!this.isShowUpdate && !this.isShowNotice && !this.isShowAd && !this.isShowPrize){
-                this.isShowGift = true;
-                track(trackEvent.NewUserGuideShow, {})
-            }
+           this.openNext();
         }).catch(() => {
         })
+    }
+
+    @action
+    userLevelUpdate(level){
+        this.needShowUser = true;
+        this.Userdata = level;
+        this.openNext();
     }
 
 

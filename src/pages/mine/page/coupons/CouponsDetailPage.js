@@ -11,7 +11,6 @@ import API from '../../../../api';
 // import StringUtils from "../../../../utils/StringUtils";
 import bridge from '../../../../utils/bridge';
 import user from '../../../../model/user';
-import { formatDate } from '../../../../utils/DateUtils';
 import CouponExplainItem from '../../components/CouponExplainItem';
 import CouponNormalItem from '../../components/CouponNormalItem';
 
@@ -131,10 +130,6 @@ export default class CouponsDetailPage extends BasePage {
 
     };
 
-    fmtDate(obj) {
-        return formatDate(obj, 'yyyy.MM.dd');
-    }
-
     toExtendData = (item) => {
         let index = this.state.viewData.indexOf(item);
         let viewData = this.state.viewData;
@@ -168,7 +163,7 @@ export default class CouponsDetailPage extends BasePage {
                 id: item.id,
                 status: item.status,
                 name: item.name,
-                timeStr: '使用有效期：' + item.startTime && item.expireTime ? this.fmtDate(item.startTime || 0) + '-' + this.fmtDate(item.expireTime || 0) : null,
+                timeStr: '使用有效期：' + item.couponTime,
                 value: item.type === 3 ? (item.value / 10) : (item.type === 4 ? '商品\n兑换' : (item.type === 5 ? '兑换' : item.value)),
                 limit: this.parseCoupon(item),
                 couponConfigId: item.couponConfigId,

@@ -95,8 +95,8 @@ const Utiles = {
     pickSingleWithCamera(cropping, callBack) {
         ImagePicker.openCamera({
             cropping: cropping,
-            width: 300,
-            height: 300,
+            width: 600,
+            height: 600,
             includeExif: true,
             cropperCancelText: '取消',
             cropperChooseText: '选取',

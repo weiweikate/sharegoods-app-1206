@@ -26,23 +26,25 @@ import {
     MRText,
 } from '../../../components/ui';
 import Modal from '../../../comm/components/CommModal';
-import HomeModalManager from '../manager/HomeModalManager';
 import { observer } from 'mobx-react';
 import res from '../res';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
 import taskModel, { mineTaskModel } from '../model/TaskModel';
 import LinearGradient from 'react-native-linear-gradient';
+import HomeModalManager from '../manager/HomeModalManager';
 const {
     taskModal_dou,
     taskModal_btn,
     taskModal_exp,
+    taskModal_chou,
     taskModal_h,
     taskModal_header,
     taskModal_wa,
     dou_bg,
     h_bg,
-    exp_bg
+    exp_bg,
+    chou_bg
 } = res.task;
 const GiftType = {
     exp: 1,
@@ -68,14 +70,14 @@ export default class TaskModalView extends React.Component {
     renderContent() {
 
         let alertData = this.model.alertData || []
-        let images = [taskModal_exp,taskModal_dou,taskModal_h];
-        let bgs = [exp_bg, dou_bg, h_bg]
+        let images = [taskModal_exp,taskModal_dou,taskModal_h, taskModal_chou];
+        let bgs = [exp_bg, dou_bg, h_bg, chou_bg]
         let lottery = null;
         alertData = alertData.filter((item) => {
             if (GiftType[item.code]){
                 if (GiftType[item.code] === GiftType.lottery) {
                     lottery = item;
-                    return false;
+                    return true;
                 }
                 return true;
             }
@@ -147,9 +149,61 @@ export default class TaskModalView extends React.Component {
                     this.modal = ref;
                 }}
                 onRequestClose={() => {
-                    HomeModalManager.closePrize()
+                    this.model.closeAlert()
                 }}
                 visible={this.model.openAlert === true}>
+                {this.renderContent()}
+            </Modal>
+        );
+    }
+}
+
+
+@observer
+export class UserLevelModalView extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {};
+
+    }
+
+    renderContent() {
+        return(
+            <View style={styles.modal}>
+                <TouchableOpacity style={{width: ScreenUtils.width, alignItems: 'center'}} onPress={()=> {this.onPress()}} >
+                        <Image source={res.button.cancel_white_circle} style={{
+                            width: ScreenUtils.autoSizeWidth(31),
+                            height: ScreenUtils.autoSizeWidth(31),
+                            marginRight: ScreenUtils.autoSizeWidth(30),
+                            marginBottom: ScreenUtils.autoSizeWidth(30),
+                            alignSelf: 'flex-end'
+                        }} />
+                    <Image source={taskModal_header} style={{
+                        width: ScreenUtils.autoSizeWidth(250),
+                        height: ScreenUtils.autoSizeWidth(250),}}/>
+                    <MRText>{HomeModalManager.Userdata}</MRText>
+                </TouchableOpacity>
+            </View>
+        )
+    }
+
+    onPress(){
+        HomeModalManager.closeUserLevel()
+    }
+
+    render() {
+        return (
+            <Modal
+                animationType='slide'
+                ref={(ref) => {
+                    this.modal = ref;
+                }}
+                onRequestClose={() => {
+                    HomeModalManager.closeUserLevel()
+                }}
+                visible={HomeModalManager.isShowUser && HomeModalManager.isHome}>
                 {this.renderContent()}
             </Modal>
         );

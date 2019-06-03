@@ -33,7 +33,7 @@
 
     <!-- 全局标准对话框 -->
     <style name="appBasicDialog" parent="Theme.AppCompat.Light.Dialog">
-        <item name="android:background">#00000000</item>
+        <item name="android:background">@android:color/transparent</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
