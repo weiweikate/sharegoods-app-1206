@@ -78,10 +78,18 @@ class TaskItem extends React.Component {
             <View >
                 {subTask?<View style={styles.lineOne}/>: null}
                 <View style={{paddingHorizontal:10, flexDirection: 'row', alignItems: 'center', height: autoSizeWidth(50), width: ScreenUtils.width - 60}}>
-                    <View style={{flexDirection: 'row', alignItems: 'center',flex: 1}}>
-                    <MRText style={{fontSize: autoSizeWidth(14), color: '#333333', marginLeft: 10,maxWidth: ScreenUtils.width - 60 - autoSizeWidth(180)}} numberOfLines={1}>{name+'('+complete+'/'+ total+')'} </MRText>
-                        {prizeValue? <MRText style={{fontSize: autoSizeWidth(9), color: DesignRule.mainColor, marginLeft: 5,backgroundColor:'rgba(255,0,80,0.05)'}}>{' +'+prizeValue+'活跃值 '}</MRText>: null}
-                    </View>
+                    {prizeValue? <View style={{alignItems: 'center',
+                        justifyContent: 'center',
+                        backgroundColor: '#FFD8BC',
+                        height: autoSizeWidth(31),
+                        width: autoSizeWidth(31),
+                        borderRadius:  autoSizeWidth(31/2),
+                        overflow: 'hidden'
+                    }}>
+                        <MRText style={{fontSize: autoSizeWidth(11), color: '#333333'}}>{'+'+prizeValue}</MRText>
+                    </View> : null
+                    }
+                    <MRText style={{fontSize: autoSizeWidth(14), color: '#333333', marginLeft: 10, flex: 1}} numberOfLines={1}>{name+'('+complete+'/'+ total+')'}</MRText>
                     {this.renderBtn(item, subTask)}
                     {subTask === false?
                         <TouchableOpacity style={{height: autoSizeWidth(50),
