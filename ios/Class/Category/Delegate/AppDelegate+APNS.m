@@ -91,8 +91,8 @@
   isProduction = NO;
   appKey = KDEBUGJSPushKey;
 #else
-  isProduction = NO;
-  appKey = KDEBUGJSPushKey;
+  isProduction = YES;
+  appKey = KJSPushKey;
 #endif
   [JPUSHService setupWithOption:launchOptions
                          appKey:appKey
