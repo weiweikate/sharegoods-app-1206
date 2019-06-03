@@ -69,7 +69,6 @@ import taskModel from './model/TaskModel';
 import TaskVIew from './view/TaskVIew';
 import intervalMsgModel, { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
 import { UserLevelModalView } from './view/TaskModalView';
-import showPinFlagModel from '../../model/ShowPinFlag';
 
 const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
     <Text style={styles.text}
@@ -200,10 +199,6 @@ class HomePage extends BasePage {
                     taskModel.getData();
                     if (!homeModule.firstLoad) {
                         limitGoModule.loadLimitGo(false);
-                    }
-                    if (showPinFlagModel.isFirstLoad) {
-                        showPinFlagModel.saveShowFlag(true);
-                        showPinFlagModel.saveShowTab(true);
                     }
                 }
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
