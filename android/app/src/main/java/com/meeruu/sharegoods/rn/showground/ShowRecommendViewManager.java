@@ -49,7 +49,6 @@ public class ShowRecommendViewManager extends ViewGroupManager<ViewGroup> {
     @Override
     public void addView(ViewGroup parent, final View child, int index) {
         final Object object = parent.getTag();
-
         if (object != null && object instanceof ShowRecommendView) {
             ((ShowRecommendView) object).addHeader(child);
         }
