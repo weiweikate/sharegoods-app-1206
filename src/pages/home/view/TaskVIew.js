@@ -73,12 +73,12 @@ class TaskItem extends React.Component {
     }
 
     renderItem(item,expanded ,subTask = false){
-        let {complete, prizeDesc,name, total, memo} = item;
+        let {complete, prizeDesc,name, total, memo, prizeValue} = item;
         return(
             <View >
                 {subTask?<View style={styles.lineOne}/>: null}
-                <View style={{paddingHorizontal:10, flexDirection: 'row', alignItems: 'center', height: autoSizeWidth(50)}}>
-                    {subTask === false? <View style={{alignItems: 'center',
+                <View style={{paddingHorizontal:10, flexDirection: 'row', alignItems: 'center', height: autoSizeWidth(50), width: ScreenUtils.width - 60}}>
+                    {prizeValue? <View style={{alignItems: 'center',
                         justifyContent: 'center',
                         backgroundColor: '#FFD8BC',
                         height: autoSizeWidth(31),
@@ -86,10 +86,10 @@ class TaskItem extends React.Component {
                         borderRadius:  autoSizeWidth(31/2),
                         overflow: 'hidden'
                     }}>
-                        <MRText style={{fontSize: autoSizeWidth(11), color: '#333333'}}>{'+'+item.prizeValue}</MRText>
+                        <MRText style={{fontSize: autoSizeWidth(11), color: '#333333'}}>{'+'+prizeValue}</MRText>
                     </View> : null
                     }
-                    <MRText style={{fontSize: autoSizeWidth(14), color: '#333333', marginLeft: 10, flex: 1}}>{name+'('+complete+'/'+ total+')'}</MRText>
+                    <MRText style={{fontSize: autoSizeWidth(14), color: '#333333', marginLeft: 10, flex: 1}} numberOfLines={1}>{name+'('+complete+'/'+ total+')'}</MRText>
                     {this.renderBtn(item, subTask)}
                     {subTask === false?
                         <TouchableOpacity style={{height: autoSizeWidth(50),

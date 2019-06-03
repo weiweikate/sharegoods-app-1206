@@ -185,8 +185,6 @@ export default class ShowListPage extends BasePage {
 
 
     _setDetail=(detail)=>{
-
-
         this.setState({detail:null},()=>{
             this.setState({
                 detail

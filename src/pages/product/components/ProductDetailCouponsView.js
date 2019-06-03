@@ -15,50 +15,17 @@ const { product_coupon } = res;
 const { arrow_right_black } = res.button;
 const { width, height, autoSizeHeight, safeBottom, px2dp } = ScreenUtils;
 
-@observer
-export default class ProductDetailCouponsView extends React.Component {
-
-    render() {
-        const { onPress } = this.props;
-        // const { onPress, productDetailCouponsViewModel } = this.props;
-        // const { couponsList } = productDetailCouponsViewModel;
-        return (
-            <NoMoreClick style={styles.container} onPress={onPress}>
-                <View>
-                    <MRText style={styles.leftText}>优惠</MRText>
-                </View>
-                <Image source={arrow_right_black}/>
-            </NoMoreClick>
-        );
-    }
-}
-
-const styles = StyleSheet.create({
-    container: {
-        flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 15,
-        height: 44, backgroundColor: 'white'
-    },
-    leftText: {
-        color: DesignRule.textColor_instruction, fontSize: 13
-    }
-});
-
 export const couponType = {
     couponSub: 1,//满减券
     couponDiJia: 2,//抵价券
     couponZeKou: 3,//折扣券
     couponDiKou: 4,//抵扣券
-    couponDuiHuang: 5,//兑换券
-    couponGoodNumber: 7,//靓号
-    couponOneValue: 99//一元券
-};
+    couponDuiHuang: 5,//兑换券 周期券
 
-export const couponShow = {
-    [couponType.couponDiJia]: '抵',
-    [couponType.couponZeKou]: '折',
-    [couponType.couponDiKou]: '抵',
-    [couponType.couponDuiHuang]: '兑',
-    [couponType.couponGoodNumber]: '靓'
+    /*不是优惠券列表接口*/
+    couponGoodNumber: 11,//靓号
+    couponShop: 12,//拼店券
+    couponOneValue: 99//一元券
 };
 
 export function couponCategoryShow(item) {
@@ -92,42 +59,103 @@ export function couponCategoryShow(item) {
     return '全品类：全场通用券（特殊商品除外）';
 }
 
+/**商品详情页优惠券item**/
+@observer
+export default class ProductDetailCouponsView extends React.Component {
+
+    render() {
+        const { onPress, productDetailCouponsViewModel } = this.props;
+        const { couponsList } = productDetailCouponsViewModel;
+        return (
+            <NoMoreClick style={styles.container} onPress={onPress}>
+                <View style={styles.nameView}>
+                    <MRText style={styles.leftText}>优惠</MRText>
+                    {
+                        (couponsList || []).map((item, index) => {
+                            if (index >= 2) {
+                                return null;
+                            }
+                            return <View style={[styles.nameRedView, { marginLeft: index === 0 ? 10 : 5 }]} key={index}>
+                                <MRText style={styles.nameRedText} numberOfLines={1}>{item.name}</MRText>
+                            </View>;
+                        })
+                    }
+                </View>
+                <Image source={arrow_right_black}/>
+            </NoMoreClick>
+        );
+    }
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 15,
+        height: 44, backgroundColor: 'white'
+    },
+    leftText: {
+        color: DesignRule.textColor_instruction, fontSize: 13
+    },
+    nameView: {
+        alignItems: 'center', flexDirection: 'row'
+    },
+    nameRedView: {
+        borderRadius: 3, backgroundColor: '#FF00501A'
+    },
+    nameRedText: {
+        paddingHorizontal: 4, paddingVertical: 2, maxWidth: px2dp(130),
+        color: DesignRule.textColor_redWarn, fontSize: 10
+    }
+});
+
+/**弹框列表内item**/
 @observer
 class ProductDetailCouponsWindowViewItem extends React.Component {
     render() {
         const { productDetailCouponsViewModel, item } = this.props;
         const { requestGetProdCoupon } = productDetailCouponsViewModel;
-        const { type, value, name, useConditions, couponTime, getStatus } = item || {};
+        const { type, value, name, couponTime, getStatus } = item || {};
+        /*name颜色*/
         const nameTextColor = !getStatus ? DesignRule.textColor_mainTitle : DesignRule.textColor_instruction;
+        /*其他文字*/
         const subTextColor = !getStatus ? DesignRule.textColor_secondTitle : DesignRule.textColor_placeholder;
+        /*限制*/
         const categoryShow = couponCategoryShow(item);
-        console.log(ProductDetailCouponsWindowViewItem);
+        const showZheKou = type === couponType.couponZeKou;
+        const showMoney = type === couponType.couponSub || type === couponType.couponDiJia;
+        let valueS;
+        switch (type) {
+            case couponType.couponSub:
+            case couponType.couponDiJia:
+                valueS = value;
+                break;
+            case couponType.couponZeKou:
+                valueS = value / 10;
+                break;
+            case couponType.couponDiKou:
+                valueS = '抵';
+                break;
+            case couponType.couponDuiHuang:
+                valueS = '兑';
+                break;
+            default:
+                valueS = '';
+        }
         return (
             <View style={windowStyles.itemView}>
                 <View style={windowStyles.itemContainerView}>
-                    {
-                        couponShow[type] ? <View style={windowStyles.moneyView}>
-                                <MRText style={{ fontSize: 34, color: DesignRule.mainColor }}>{couponShow[type]}</MRText>
-                            </View>
-                            :
-                            <View style={windowStyles.moneyView}>
-                                <MRText style={{ fontSize: 16, color: DesignRule.mainColor, paddingTop: 9 }}
-                                        numberOfLines={1}>￥</MRText>
-                                <MRText style={{ fontSize: 34, color: DesignRule.mainColor }}>{value}</MRText>
-                            </View>
-                    }
-
+                    <View style={windowStyles.moneyView}>
+                        {showMoney &&
+                        <MRText style={{ fontSize: 16, color: DesignRule.mainColor, paddingTop: 9 }}>￥</MRText>
+                        }
+                        <MRText style={{ fontSize: 34, color: DesignRule.mainColor }}>{valueS}</MRText>
+                        {showZheKou &&
+                        <MRText style={{ fontSize: 16, color: DesignRule.mainColor, paddingTop: 9 }}>折</MRText>
+                        }
+                    </View>
                     <View style={{ flex: 1 }}>
                         <MRText style={{ fontSize: 16, color: nameTextColor }}>{name || ''}</MRText>
-                        <MRText style={{
-                            fontSize: 10,
-                            color: subTextColor
-                        }}>{useConditions > 0 ? `满${useConditions}可用` : '无金额门槛'}</MRText>
                         <MRText style={{ fontSize: 10, color: subTextColor }}>{categoryShow}</MRText>
-                        <MRText style={{
-                            fontSize: 10,
-                            color: subTextColor
-                        }}>限{couponTime}使用</MRText>
+                        <MRText style={{ fontSize: 10, color: subTextColor }}>限{couponTime}使用</MRText>
                     </View>
                     <View style={windowStyles.imgView}>
                         {
@@ -151,6 +179,7 @@ class ProductDetailCouponsWindowViewItem extends React.Component {
     }
 }
 
+/**全屏弹框**/
 @observer
 export class ProductDetailCouponsWindowView extends React.Component {
     state = {
@@ -238,12 +267,12 @@ const windowStyles = StyleSheet.create({
         borderRadius: 3, backgroundColor: 'white'
     },
     itemContainerView: {
-        marginVertical: 15, marginLeft: 24, marginRight: 15,
+        marginVertical: 15, marginRight: 15,
         flexDirection: 'row', alignItems: 'center'
     },
     moneyView: {
-        flexDirection: 'row', alignItems: 'center',
-        width: 70
+        flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
+        minWidth: px2dp(95)
     },
     imgView: {
         height: 60, width: 60, justifyContent: 'center', alignItems: 'center'
@@ -261,6 +290,7 @@ const windowStyles = StyleSheet.create({
     }
 });
 
+/**网络数据  优惠券列表 model**/
 export class ProductDetailCouponsViewModel {
     /**
      * 主键id
@@ -283,8 +313,9 @@ export class ProductDetailCouponsViewModel {
     };
 
     requestGetProdCoupon = (item) => {
-        const { code } = item || {};
-        ProductApi.getProdCoupon({ couponId: code }).then(() => {
+        const { id } = item || {};
+        ProductApi.getProdCoupon({ couponId: id }).then(() => {
+            /*本地改变成领取*/
             item.getStatus = 1;
             bridge.$toast('领取成功');
         }).catch((e) => {
