@@ -76,7 +76,7 @@ export default class ProductDetailCouponsView extends React.Component {
                                 return null;
                             }
                             return <View style={[styles.nameRedView, { marginLeft: index === 0 ? 10 : 5 }]} key={index}>
-                                <MRText style={styles.nameRedText}>{item.name}</MRText>
+                                <MRText style={styles.nameRedText} numberOfLines={1}>{item.name}</MRText>
                             </View>;
                         })
                     }
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
         borderRadius: 3, backgroundColor: '#FF00501A'
     },
     nameRedText: {
-        paddingHorizontal: 4, paddingVertical: 2,
+        paddingHorizontal: 4, paddingVertical: 2, maxWidth: px2dp(130),
         color: DesignRule.textColor_redWarn, fontSize: 10
     }
 });
