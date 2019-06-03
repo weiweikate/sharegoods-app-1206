@@ -11,7 +11,7 @@ mediatorAddFunc('Home_ShareNotify', (p) => {
 })
 
 //用户登记改变调用，
-mediatorAddFunc('Home_UserLeverUpdate', (p) => {
+mediatorAddFunc('Home_UserLevelUpdate', (p) => {
     homeModalManager.userLevelUpdate(p);
 })
 
