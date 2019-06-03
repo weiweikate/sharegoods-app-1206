@@ -10,7 +10,6 @@
 #import "UIView+SDAutoLayout.h"
 #import "View/JXHeaderView.h"
 #import "UIImageView+WebCache.h"
-#import "UIButton+TimeInterval.h"
 
 @interface RecTypeCell()
 
@@ -72,7 +71,6 @@
 -(UIButton*)zanBtn{
   if(!_zanBtn){
     _zanBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _zanBtn.timeInterval = 1.5;
     [_zanBtn setBackgroundImage:[UIImage imageNamed:@"zan"] forState:UIControlStateNormal];
     [_zanBtn setBackgroundImage:[UIImage imageNamed:@"yizan"] forState:UIControlStateSelected];
   }

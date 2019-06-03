@@ -192,6 +192,7 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _renderItem = ({ item, index, section: { key } }) => {
+        const { productDetailCouponsViewModel } = this.productDetailModel;
         if (key === sectionType.sectionContent) {
             return <ContentItemView item={item}/>;
         }
@@ -208,7 +209,7 @@ export default class ProductDetailPage extends BasePage {
                 return <SuitItemView productDetailModel={this.productDetailModel}/>;
             }
             case productItemType.coupons: {
-                return <ProductDetailCouponsView productDetailModel={this.productDetailModel}
+                return <ProductDetailCouponsView productDetailCouponsViewModel={productDetailCouponsViewModel}
                                                  onPress={() => {
                                                      this.ProductDetailCouponsWindowView.showWindowView();
                                                  }}/>;
@@ -279,7 +280,10 @@ export default class ProductDetailPage extends BasePage {
     }
 
     _renderContent = () => {
-        const { name, imgUrl, prodCode, originalPrice, groupPrice, v0Price, promotionPrice, shareMoney, sectionDataList, isSkillIn, nameShareText } = this.productDetailModel;
+        const {
+            name, imgUrl, prodCode, originalPrice, groupPrice, v0Price, promotionPrice,
+            shareMoney, sectionDataList, isSkillIn, nameShareText, productDetailCouponsViewModel
+        } = this.productDetailModel;
         return <View style={styles.container}>
             <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
             <ProductDetailNavView productDetailModel={this.productDetailModel}
@@ -305,7 +309,7 @@ export default class ProductDetailPage extends BasePage {
                          toTopAction={this._onPressToTop}/>
             <IntervalMsgView pageType={IntervalType.productDetail}/>
             <ProductDetailCouponsWindowView ref={(ref) => this.ProductDetailCouponsWindowView = ref}
-                                            productDetailModel={this.productDetailModel}/>
+                                            productDetailCouponsViewModel={productDetailCouponsViewModel}/>
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             trackParmas={{
