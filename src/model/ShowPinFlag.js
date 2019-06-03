@@ -4,17 +4,25 @@ import { action, observable } from 'mobx';
 class ShowPinFlag {
     @observable showFlag = false;
     @observable showTab = false;
+    @observable isFirstLoad = true;
 
     @action saveShowFlag(isShow) {
         if (isShow === this.showFlag) {
             return;
         }
-        if (isShow) {
+        if (this.isFirstLoad) {
             setTimeout(() => {
                 this.showFlag = isShow;
-            }, 300);
+            }, 400);
+            this.isFirstLoad = false;
         } else {
-            this.showFlag = isShow;
+            if (isShow) {
+                setTimeout(() => {
+                    this.showFlag = isShow;
+                }, 200);
+            } else {
+                this.showFlag = isShow;
+            }
         }
     }
 
@@ -22,13 +30,10 @@ class ShowPinFlag {
         if (isShow === this.showTab) {
             return;
         }
-        if (isShow) {
-            setTimeout(() => {
-                this.showTab = isShow;
-            }, 100);
-        } else {
-            this.showTab = isShow;
+        if (!isShow) {
+            clearTimeout();
         }
+        this.showTab = isShow;
     }
 }
 

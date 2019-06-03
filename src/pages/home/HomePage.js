@@ -201,8 +201,10 @@ class HomePage extends BasePage {
                     if (!homeModule.firstLoad) {
                         limitGoModule.loadLimitGo(false);
                     }
-                    showPinFlagModel.saveShowTab(true);
-                    showPinFlagModel.saveShowFlag(true);
+                    if (showPinFlagModel.isFirstLoad) {
+                        showPinFlagModel.saveShowFlag(true);
+                        showPinFlagModel.saveShowTab(true);
+                    }
                 }
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
                 TrackApi.homePage();//埋点
