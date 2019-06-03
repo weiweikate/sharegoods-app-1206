@@ -76,8 +76,11 @@ export class ShopProductItemView extends Component {
                         numberOfLines={1}>{content || ''}</MRText>
                 <View style={ProductItemViewStyles.bottomView}>
                     <View>
-                        <MRText style={ProductItemViewStyles.itemPrice}
-                                numberOfLines={1}>¥{promotionMinPrice || price || ''}</MRText>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <MRText style={{ fontSize: 10, color: DesignRule.mainColor, paddingTop: 1 }}>¥</MRText>
+                            <MRText style={ProductItemViewStyles.itemPrice}
+                                    numberOfLines={1}>{promotionMinPrice || price || ''}</MRText>
+                        </View>
                         {progressBar === 1 && <View style={ProductItemViewStyles.progressBgView}>
                             <LinearGradient
                                 style={[ProductItemViewStyles.progressView, { width: salesVolumeS }]}
@@ -197,7 +200,7 @@ const ProductItemViewStyles = StyleSheet.create({
     },
 
     itemPrice: {
-        fontSize: 10, color: DesignRule.mainColor, fontWeight: 'bold'
+        fontSize: 12, color: DesignRule.mainColor, fontWeight: 'bold'
     },
     /*进度条*/
     progressBgView: {
@@ -253,7 +256,7 @@ export class ShopBottomBannerView extends Component {
             return item.image;
         });
         return (
-            <View style={{ marginLeft: DesignRule.margin_page }}>
+            <View style={{ marginLeft: DesignRule.margin_page, marginBottom: 20 }}>
                 <MRBannerView style={bottomBannerStyles.banner}
                               imgUrlArray={images}
                               itemWidth={px2dp(345)}

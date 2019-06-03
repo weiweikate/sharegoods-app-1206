@@ -13,11 +13,11 @@ const Utiles = {
      */    //NativeModules.commModule.RN_ImageCompression(uri, response.fileSize, 1024 * 1024 * 3, () => {
     getImagePicker: (callBack, num = 1, cropping = false, withSize = false) => {
         let newCallback = (value) => {
-            if(value && value.ok){
+            if (value && value.ok) {
                 let result = value.images.map((item) => {
                     return item.url;
                 });
-                callBack({imageUrl:result,imageThumbUrl:result});
+                callBack({ imageUrl: result, imageThumbUrl: result });
             }
         };
         if (Platform.OS === 'ios') {
@@ -211,6 +211,9 @@ const Utiles = {
             Promise.all(promises).then(res => {
                 console.log(res);
                 Toast.hiddenLoading();
+                const imgUrls = res.map((item) => {
+                    return item.url;
+                });
                 // alert(JSON.stringify(res))
                 // callBack({
                 //     ok: true,
@@ -222,6 +225,8 @@ const Utiles = {
                 // });
                 callBack({
                     ok: true,
+                    imageUrl: imgUrls,
+                    imageThumbUrl: imgUrls,
                     images: res,
                     camera: camera
                 });
