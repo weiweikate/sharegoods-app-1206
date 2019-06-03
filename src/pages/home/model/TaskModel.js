@@ -179,7 +179,9 @@ class TaskModel  {
                 }
                 return tasks;
             })
-            this.progress = this.progress + item.prizeValue;
+            if (item.prizeValue) {
+                this.progress = this.progress + item.prizeValue;
+            }
             this.boxs =  this.boxs.map(box => {
                 if (this.progress >= box.value &&  box.prizeStatus === 0){
                     box.prizeStatus = 1;
@@ -202,9 +204,9 @@ class TaskModel  {
             homeHeight = 0;
         } else {
             if (this.expanded){
-                homeHeight = px2dp(48+383);
+                homeHeight = px2dp(48+383+10);
             } else {
-                homeHeight = px2dp(48+83);
+                homeHeight = px2dp(48+83+10);
             }
         }
         if (homeHeight !== this.homeHeight){

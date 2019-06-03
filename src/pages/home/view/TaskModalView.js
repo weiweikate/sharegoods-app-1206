@@ -12,7 +12,7 @@
 'use strict';
 
 import React from 'react';
-import {navigate} from '../../../navigation/RouterMap';
+import {navigate, navigateBackToStore} from '../../../navigation/RouterMap';
 
 import {
     StyleSheet,
@@ -37,12 +37,18 @@ const {
     taskModal_dou,
     taskModal_btn,
     taskModal_exp,
+    taskModal_chou,
     taskModal_h,
     taskModal_header,
     taskModal_wa,
     dou_bg,
     h_bg,
-    exp_bg
+    exp_bg,
+    chou_bg,
+    V2,
+    V3,
+    V4,
+    V5,
 } = res.task;
 const GiftType = {
     exp: 1,
@@ -68,14 +74,14 @@ export default class TaskModalView extends React.Component {
     renderContent() {
 
         let alertData = this.model.alertData || []
-        let images = [taskModal_exp,taskModal_dou,taskModal_h];
-        let bgs = [exp_bg, dou_bg, h_bg]
+        let images = [taskModal_exp,taskModal_dou,taskModal_h, taskModal_chou];
+        let bgs = [exp_bg, dou_bg, h_bg, chou_bg]
         let lottery = null;
         alertData = alertData.filter((item) => {
             if (GiftType[item.code]){
                 if (GiftType[item.code] === GiftType.lottery) {
                     lottery = item;
-                    return false;
+                    return true;
                 }
                 return true;
             }
@@ -85,10 +91,10 @@ export default class TaskModalView extends React.Component {
             <View style={styles.modal}>
                 <View style={{borderRadius: 10, overflow: 'hidden'}}>
                     <Image source={taskModal_header} style={styles.header}/>
-                        <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }}
-                                        colors={[ '#FFC664','#FF914A']}
-                                        style={{ alignItems: "center"}}
-                        >
+                    <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }}
+                                    colors={[ '#FFC664','#FF914A']}
+                                    style={{ alignItems: "center"}}
+                    >
                         <Image source={taskModal_wa} style={{
                             width: ScreenUtils.autoSizeWidth(185),
                             height: ScreenUtils.autoSizeWidth(30),
@@ -126,16 +132,16 @@ export default class TaskModalView extends React.Component {
                                 <MRText style={styles.btnText}>{lottery?'去抽奖': '确定'}</MRText>
                             </ImageBackground>
                         </TouchableOpacity>
-                        </LinearGradient>
+                    </LinearGradient>
                 </View>
             </View>
         )
     }
 
     onPress(lottery){
-       if (lottery)  {
-           navigate('HtmlPage', {uri: lottery.parameter})
-       }
+        if (lottery)  {
+            navigate('HtmlPage', {uri: lottery.parameter})
+        }
         this.model.closeAlert()
     }
 
@@ -168,27 +174,32 @@ export class UserLevelModalView extends React.Component {
     }
 
     renderContent() {
+        let imgs = {V2, V3, V4, V5}
         return(
             <View style={styles.modal}>
-                <TouchableOpacity style={{width: ScreenUtils.width, alignItems: 'center'}} onPress={()=> {this.onPress()}} >
+                <TouchableOpacity style={{width: ScreenUtils.width, alignItems: 'center'}} onPress={()=> {this.onPress(HomeModalManager.Userdata)}} >
+                    <TouchableOpacity onPress={()=> {this.onPress()}}
+                                      style={{alignSelf: 'flex-end',
+                                          marginRight: ScreenUtils.autoSizeWidth(30),
+                                          marginBottom: ScreenUtils.autoSizeWidth(0),}}>
                         <Image source={res.button.cancel_white_circle} style={{
-                            width: ScreenUtils.autoSizeWidth(31),
-                            height: ScreenUtils.autoSizeWidth(31),
-                            marginRight: ScreenUtils.autoSizeWidth(30),
-                            marginBottom: ScreenUtils.autoSizeWidth(30),
-                            alignSelf: 'flex-end'
+                            width: ScreenUtils.autoSizeWidth(25),
+                            height: ScreenUtils.autoSizeWidth(25),
                         }} />
-                    <Image source={taskModal_header} style={{
+                    </TouchableOpacity>
+                    <Image source={imgs[HomeModalManager.Userdata]} style={{
                         width: ScreenUtils.autoSizeWidth(250),
-                        height: ScreenUtils.autoSizeWidth(250),}}/>
-                    <MRText>{HomeModalManager.Userdata}</MRText>
+                        height: ScreenUtils.autoSizeWidth(250)}}/>
                 </TouchableOpacity>
             </View>
         )
     }
 
-    onPress(){
-        HomeModalManager.closeUserLevel()
+    onPress(v){
+        HomeModalManager.closeUserLevel();
+        if (v === 'V2') {
+            navigateBackToStore()
+        }
     }
 
     render() {

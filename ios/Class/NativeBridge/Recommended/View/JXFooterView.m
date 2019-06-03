@@ -9,7 +9,6 @@
 #import "JXFooterView.h"
 #import "UIView+SDAutoLayout.h"
 #import "UIImageView+WebCache.h"
-#import "UIButton+TimeInterval.h"
 
 #define SCREEN_WIDTH ([UIScreen mainScreen].bounds.size.width)
 
@@ -58,7 +57,6 @@
 -(UIButton*)zanBtn{
   if(!_zanBtn){
     _zanBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _zanBtn.timeInterval = 2;
     [_zanBtn setBackgroundImage:[UIImage imageNamed:@"zan"] forState:UIControlStateNormal];
     [_zanBtn setBackgroundImage:[UIImage imageNamed:@"yizan"] forState:UIControlStateSelected];
 
@@ -101,28 +99,28 @@
   //点赞
   [_zanBtn addTarget:self action:@selector(tapZanBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.zanBtn.sd_layout.topSpaceToView(self.scrollView,10)
-  .heightIs(25).widthIs(25)
+  .heightIs(28).widthIs(28)
   .leftSpaceToView(self, 30);
 
   self.zanNum.sd_layout.centerYEqualToView(self.zanBtn)
   .leftSpaceToView(self.zanBtn, 1)
-  .widthIs(40).heightIs(25);
+  .widthIs(40).heightIs(28);
 
   //下载
   [_downloadBtn addTarget:self action:@selector(tapDownloadBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.downloadBtn.sd_layout.centerYEqualToView(self.zanNum)
   .leftSpaceToView(self.zanNum, 0)
-  .widthIs(22).heightIs(22);
+  .widthIs(28).heightIs(28);
 
   self.downLoadNUm.sd_layout.centerYEqualToView(self.downloadBtn)
   .leftSpaceToView(self.downloadBtn, 1)
-  .widthIs(40).heightIs(25);
+  .widthIs(40).heightIs(28);
 
   //分享/转发
   [_shareBtn addTarget:self action:@selector(tapShareBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.shareBtn.sd_layout.centerYEqualToView(self.zanBtn)
      .rightSpaceToView(self, 0)
-     .widthIs(60).heightIs(25);
+     .widthIs(70).heightIs(28);
 
   [self setupAutoHeightWithBottomView:self.zanBtn bottomMargin:0];
 

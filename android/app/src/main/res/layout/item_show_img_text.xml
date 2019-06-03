@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="10dp"
@@ -10,8 +11,7 @@
         android:id="@+id/user_icon"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:background="@drawable/bg_app_user"
-        android:adjustViewBounds="true" />
+        app:roundAsCircle="true" />
 
     <TextView
         android:id="@+id/user_name"
@@ -39,7 +39,6 @@
         android:textSize="11sp" />
 
     <LinearLayout
-        android:orientation="vertical"
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -47,20 +46,21 @@
         android:layout_marginLeft="5dp"
         android:layout_marginTop="10dp"
         android:layout_toRightOf="@id/user_icon"
-        android:background="@drawable/bg_show_image_text">
+        android:background="@drawable/bg_show_image_text"
+        android:orientation="vertical">
 
         <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/image"
             android:layout_width="match_parent"
-            android:layout_height="160dp"
-            android:id="@+id/image"/>
+            android:layout_height="160dp" />
 
         <TextView
+            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/title"
             android:layout_margin="10dp"
-            android:maxLines="1"
-            android:ellipsize="end"/>
+            android:ellipsize="end"
+            android:maxLines="1" />
 
     </LinearLayout>
 
@@ -90,8 +90,8 @@
 
     <ImageView
         android:id="@+id/icon_share"
-        android:layout_width="60dp"
-        android:layout_height="24dp"
+        android:layout_width="70dp"
+        android:layout_height="28dp"
         android:layout_below="@id/content"
         android:layout_alignParentRight="true"
         android:layout_marginTop="15dp"

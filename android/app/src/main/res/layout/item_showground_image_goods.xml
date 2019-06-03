@@ -3,29 +3,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
     android:background="@drawable/white_round_background"
-    android:padding="10dp"
-    android:layout_marginTop="10dp">
+    android:padding="10dp">
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/user_icon"
-        android:background="@drawable/bg_app_user"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:adjustViewBounds="true" />
+        app:roundAsCircle="true" />
 
     <TextView
         android:id="@+id/user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/user_icon"
+        android:layout_marginStart="5dp"
         android:layout_marginLeft="5dp"
+        android:layout_toEndOf="@+id/user_icon"
         android:layout_toRightOf="@+id/user_icon"
         android:includeFontPadding="false"
         android:textColor="@color/textColor_mainTitle"
-        android:textSize="13sp"
-        android:layout_marginStart="5dp"
-        android:layout_toEndOf="@+id/user_icon" />
+        android:textSize="13sp" />
 
     <TextView
         android:id="@+id/publish_time"
@@ -33,31 +32,29 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/user_icon"
         android:layout_marginLeft="5dp"
+        android:layout_toEndOf="@+id/user_icon"
         android:layout_toRightOf="@+id/user_icon"
         android:includeFontPadding="false"
         android:textColor="@color/textColor_instruction"
-        android:textSize="11sp"
-        android:layout_toEndOf="@+id/user_icon" />
+        android:textSize="11sp" />
 
     <com.meeruu.sharegoods.rn.showground.widgets.FolderTextView
         android:id="@+id/content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/user_icon"
+        android:layout_marginLeft="5dp"
         android:layout_marginTop="10dp"
         android:layout_toRightOf="@id/user_icon"
         android:ellipsize="end"
         android:includeFontPadding="false"
         android:textColor="@color/textColor_secondTitle"
-        android:layout_marginLeft="5dp"
         android:textSize="13sp"
-        app:foldLine="3"
-        app:canFoldAgain="false"
-        app:unFoldText="全文"
-        app:tailTextColor="@color/app_main_color"
         app:canClickTail="false"
-        />
-
+        app:canFoldAgain="false"
+        app:foldLine="3"
+        app:tailTextColor="@color/app_main_color"
+        app:unFoldText="全文" />
 
 
     <com.meeruu.sharegoods.rn.showground.widgets.GridView.NineGridView
@@ -65,8 +62,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/content"
-        android:layout_marginTop="10dp"
         android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
         android:layout_toRightOf="@id/user_icon" />
 
     <com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView
@@ -74,8 +71,8 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_below="@+id/nine_grid"
-        android:layout_marginTop="10dp"
         android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
         android:layout_toRightOf="@id/user_icon" />
 
 
@@ -89,17 +86,17 @@
         android:layout_marginLeft="5dp"
         android:id="@+id/icon_hand"/>
     <TextView
-        android:textColor="@color/textColor_mainTitle"
-        android:layout_toRightOf="@+id/icon_hand"
-        android:textSize="10sp"
-        android:layout_marginLeft="5dp"
-        android:layout_height="23dp"
+        android:id="@+id/like_num"
         android:layout_width="wrap_content"
+        android:layout_height="23dp"
         android:layout_alignTop="@+id/icon_hand"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/icon_hand"
         android:gravity="center_vertical"
-        android:id="@+id/like_num"
-        android:text="22"/>
+        android:text="22"
+        android:textColor="@color/textColor_mainTitle"
+        android:textSize="10sp" />
 
     <ImageView
         android:layout_width="28dp"
@@ -111,26 +108,25 @@
         android:id="@+id/icon_download"
         android:layout_marginLeft="24dp"/>
     <TextView
-        android:textColor="@color/textColor_mainTitle"
-        android:layout_toRightOf="@+id/icon_download"
-        android:textSize="10sp"
-        android:layout_marginLeft="5dp"
-        android:layout_height="23dp"
+        android:id="@+id/download_num"
         android:layout_width="wrap_content"
+        android:layout_height="23dp"
         android:layout_alignTop="@+id/icon_download"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/icon_download"
         android:gravity="center_vertical"
-        android:id="@+id/download_num"
-        android:text="22"/>
-
+        android:text="22"
+        android:textColor="@color/textColor_mainTitle"
+        android:textSize="10sp" />
 
 
     <ImageView
         android:layout_width="70dp"
         android:layout_height="28dp"
         android:layout_below="@id/product_list"
-        android:layout_marginTop="15dp"
         android:layout_alignParentRight="true"
+        android:layout_marginTop="15dp"
         android:src="@drawable/show_release_icon"
         android:id="@+id/icon_share"
         android:layout_marginRight="10dp"/>
