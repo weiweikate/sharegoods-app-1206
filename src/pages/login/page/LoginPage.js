@@ -191,7 +191,7 @@ export default class LoginPage extends BasePage {
                     this.$navigateBack(-2);
                 } else {
                     this.$loadingDismiss();
-                    this.$toastShow(data.msg);
+                    // this.$toastShow(data.msg);
                 }
             });
         }
