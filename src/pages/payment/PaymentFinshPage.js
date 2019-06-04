@@ -362,9 +362,9 @@ export default class PaymentFinshPage extends BasePage {
         ShareUtil.onShare({
             shareType: 1,
             platformType: 0,
-            title: '【秀购】发现一个很给力的活动,快去看看~',
-            dec: '',
-            thumImage: user.headImg,
+            title: user.nickname+'送你一个免费大礼',
+            dec: '秀购专享福利 海量商品免费送～立即领取',
+            thumImage: `${apiEnvironment.getCurrentOssHost()}/sharegoods/h5/resource/icon/shareIcon.png`,
             linkUrl: `${apiEnvironment.getCurrentH5Url()}/activity/drawShare/${this.state.shareCode}`
         });
 
@@ -392,8 +392,8 @@ export default class PaymentFinshPage extends BasePage {
             imageUrl:user.headImg,
             shareType: 1,
             platformType: 1,
-            thumImage:user.headImg,
-            title: '【秀购】发现一个很给力的活动,快去看看~',
+            thumImage:`${apiEnvironment.getCurrentOssHost()}/sharegoods/h5/resource/icon/shareIcon.png`,
+            title:user.nickname+'送你一个免费大礼，秀购专享福利 海量商品免费送～',
             dec: '',
             linkUrl: `${apiEnvironment.getCurrentH5Url()}/activity/drawShare/${this.state.shareCode}`
         });
