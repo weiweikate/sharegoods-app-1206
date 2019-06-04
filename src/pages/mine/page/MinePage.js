@@ -620,8 +620,8 @@ export default class MinePage extends BasePage {
                             />}
             >
                 {this.renderUserHead()}
-                {this.accountRender()}
-                <TaskVIew type={'mine'} style={{marginTop: 10}}/>
+                <View style={{ backgroundColor: 'white' }}>{this.accountRender()}</View>
+                <TaskVIew type={'mine'} style={{ paddingTop: 10 }}/>
                 {this.orderRender()}
                 {this.utilsRender()}
                 {/*{this.renderMoreMoney()}*/}
@@ -632,7 +632,10 @@ export default class MinePage extends BasePage {
     renderMoreMoney = () => {
         return (
             <TouchableWithoutFeedback onPress={() => {
-                this.$navigate(RouterMap.ShowRichTextDetailPage, { fromHome: false, code: 'SHOW2019052714482778300000600000' });
+                this.$navigate(RouterMap.ShowRichTextDetailPage, {
+                    fromHome: false,
+                    code: 'SHOW2019052714482778300000600000'
+                });
                 TrackApi.ViewHowTo();
             }}>
                 <UIImage style={styles.makeMoneyMoreBackground} resizeMode={'stretch'} source={profile_banner}/>

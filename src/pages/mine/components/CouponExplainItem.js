@@ -104,7 +104,7 @@ export default class CouponExplainItem extends Component {
                                 item.type === 99 ?
                                     <View style={{ alignItems: 'center', marginRight: 10 }}>
                                         <UIText style={[styles.xNumStyle, { marginRight: 0 }]}
-                                                value={'x' + user.tokenCoin}/>
+                                                value={!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 ? 'x' + user.tokenCoin : ''}/>
                                         {!StringUtils.isEmpty(user.blockedTokenCoin) && user.blockedTokenCoin !== 0 ?
                                             <Text style={{
                                                 fontSize: 11,
