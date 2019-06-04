@@ -146,7 +146,7 @@ static NSString *IDType = @"TypeCell";
 - (void)setErrCode:(NSInteger)errCode
 {
   _errCode = errCode;
-  if (self.dataArr.count > 0) {
+  if (self.dataArr.count > 0||self.tableView.tableHeaderView) {
     _emptyView.hidden = YES;
 
   }else{

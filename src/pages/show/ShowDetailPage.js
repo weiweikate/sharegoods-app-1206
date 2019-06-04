@@ -140,10 +140,10 @@ export default class ShowDetailPage extends BasePage {
 
     incrCountByType = (type) => {
         let showNo;
-        if (this.params.id) {
-            showNo = this.params.id;
-        } else if (this.params.code) {
+        if (this.params.code) {
             showNo = this.params.code;
+        } else if (this.params.id) {
+            showNo = this.params.id;
         } else {
             showNo = this.params.data.showNo;
         }
@@ -152,10 +152,10 @@ export default class ShowDetailPage extends BasePage {
 
     reduceCountByType = (type) => {
         let showNo;
-        if (this.params.id) {
-            showNo = this.params.id;
-        } else if (this.params.code) {
+        if (this.params.code) {
             showNo = this.params.code;
+        } else if (this.params.id) {
+            showNo = this.params.id;
         } else {
             showNo = this.params.data.showNo;
         }
