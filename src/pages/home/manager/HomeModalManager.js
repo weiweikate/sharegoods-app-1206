@@ -13,11 +13,14 @@ import { homeLinkType, homeType } from '../HomeTypes';
 import { AsyncStorage } from 'react-native';
 import MessageApi from '../../message/api/MessageApi';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
+import StringUtils from '../../../utils/StringUtils';
 
 const requsetCount = 4;
 
 class HomeModalManager {
     /** 控制升级框*/
+    @observable
+    versionData = {};
     @observable
     isShowUpdate = false;
     needShowUpdate = false;
@@ -43,15 +46,15 @@ class HomeModalManager {
 
     /** 控制首页中奖*/
     @observable
-    isShowPrize  = false;
-    needShowPrize  = false;
+    isShowPrize = false;
+    needShowPrize = false;
     @observable
     prizeData = null;
     /** 是否在首页*/
     /** 控制用户升级弹窗*/
     @observable
-    isShowUser  = false;
-    needShowUser  = false;
+    isShowUser = false;
+    needShowUser = false;
     Userdata = null;
     @observable
     isHome = false;
@@ -80,14 +83,16 @@ class HomeModalManager {
     }
 
     @action
-    openNext(){
+    openNext() {
         if (this.isShowUpdate ||
             this.isShowNotice ||
-            this.isShowAd||
+            this.isShowAd ||
             this.isShowGift ||
             this.isShowPrize ||
             this.isShowUser
-        ) {return;} // 如果有页面展示
+        ) {
+            return;
+        } // 如果有页面展示
 
         if (this.needShowUpdate === true) {
             this.isShowUpdate = true;
@@ -95,12 +100,12 @@ class HomeModalManager {
             this.isShowNotice = true;
         } else if (this.needShowAd === true) {
             this.isShowAd = true;
-        }else if (this.needShowGift === true) {
+        } else if (this.needShowGift === true) {
             this.isShowGift = true;
-            track(trackEvent.NewUserGuideShow, {})
-        }else if (this.needShowPrize === true) {
+            track(trackEvent.NewUserGuideShow, {});
+        } else if (this.needShowPrize === true) {
             this.isShowPrize = true;
-        } else if (this.needShowUser === true){
+        } else if (this.needShowUser === true) {
             this.isShowUser = true;
         }
     }
@@ -108,11 +113,14 @@ class HomeModalManager {
     @action
     closeUpdate(skip) {
         if (skip) {
-            AsyncStorage.setItem('isToUpdate', String(this.versionData.version));
+            if (!StringUtils.isEmpty(this.versionData)) {
+                AsyncStorage.setItem('isToUpdate', String(this.versionData.version), () => {
+                    this.versionData = null;
+                });
+            }
         }
         this.isShowUpdate = false;
         this.needShowUpdate = false;
-        this.versionData = null;
         this.openNext();
     }
 
@@ -146,7 +154,7 @@ class HomeModalManager {
     @action
     closePrize() {
         this.isShowPrize = false;
-        this.needShowPrize  = false;
+        this.needShowPrize = false;
         this.prizeData = null;
         this.openNext();
     }
@@ -154,14 +162,14 @@ class HomeModalManager {
     @action
     closeGift() {
         this.isShowGift = false;
-        this.needShowGift  = false;
+        this.needShowGift = false;
         this.giftData = null;
-        track(trackEvent.NewUserGuideBtnClick, {})
+        track(trackEvent.NewUserGuideBtnClick, {});
         this.openNext();
     }
 
     @action
-    closeUserLevel(){
+    closeUserLevel() {
         this.isShowUser = false;
         this.needShowUser = false;
         this.openNext();
@@ -188,7 +196,7 @@ class HomeModalManager {
     @action
     getVersion = () => {
         return MineApi.getVersion({ version: DeviceInfo.getVersion() }).then((resp) => {
-            this.versionData = resp.data;
+            this.versionData = resp.data || {};
             this.actionFinish();
         }).catch(() => {
             this.actionFinish();
@@ -245,14 +253,14 @@ class HomeModalManager {
     @action
     getPrize() {
         HomeAPI.getWinningInfo({}).then(data => {
-            if (data.data){
+            if (data.data) {
                 this.needShowPrize = true;
                 this.prizeData = data.data;
             }
             this.actionFinish();
         }).catch(() => {
             this.actionFinish();
-        })
+        });
     }
 
     @action
@@ -261,7 +269,7 @@ class HomeModalManager {
             return;
         }
         HomeAPI.getWinningInfo({}).then(data => {
-            if (data.data && data.data.popUp){
+            if (data.data && data.data.popUp) {
                 this.needShowPrize = true;
                 this.prizeData = data.data;
                 this.openNext();
@@ -269,25 +277,25 @@ class HomeModalManager {
 
         }).catch(() => {
 
-        })
+        });
     }
 
 
     @action
     getGift() {
-        HomeAPI.getPopupBox({popupBoxType: 1}).then(data => {
-            if (data.data){
+        HomeAPI.getPopupBox({ popupBoxType: 1 }).then(data => {
+            if (data.data) {
                 let item = data.data;
                 this.needShowGift = true;
-                this.giftData = {image: item.imgUrl, linkTypeCode: item.linkTypeCode, linkType: homeLinkType.link};
+                this.giftData = { image: item.imgUrl, linkTypeCode: item.linkTypeCode, linkType: homeLinkType.link };
             }
-           this.openNext();
+            this.openNext();
         }).catch(() => {
-        })
+        });
     }
 
     @action
-    userLevelUpdate(level){
+    userLevelUpdate(level) {
         this.needShowUser = true;
         this.Userdata = level;
         this.openNext();
