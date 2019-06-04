@@ -122,9 +122,6 @@
 		BF2CCECE229F6D1600A5AD0D /* libRNCWebView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0409D91E222F7706003A53EC /* libRNCWebView.a */; };
 		BF2CCF8C22A5160500A5AD0D /* home_tab_1.png in Resources */ = {isa = PBXBuildFile; fileRef = BF2CCF8A22A5160500A5AD0D /* home_tab_1.png */; };
 		BF2CCF8D22A5160500A5AD0D /* home_tab_0.png in Resources */ = {isa = PBXBuildFile; fileRef = BF2CCF8B22A5160500A5AD0D /* home_tab_0.png */; };
-		BF2CCF9922A51C3200A5AD0D /* pin_tab_1.png in Resources */ = {isa = PBXBuildFile; fileRef = BF2CCF9122A51C3100A5AD0D /* pin_tab_1.png */; };
-		BF2CCF9A22A51C3200A5AD0D /* pin_tab_2.png in Resources */ = {isa = PBXBuildFile; fileRef = BF2CCF9222A51C3100A5AD0D /* pin_tab_2.png */; };
-		BF2CCF9C22A51C3200A5AD0D /* pin_tab_0.png in Resources */ = {isa = PBXBuildFile; fileRef = BF2CCF9422A51C3100A5AD0D /* pin_tab_0.png */; };
 		BF6EE61B214F8AF3007C1185 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF6EE5F3214F89C2007C1185 /* libBVLinearGradient.a */; };
 		C43AE8FF2240C567003CC51F /* JRServiceBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = C43AE8FE2240C567003CC51F /* JRServiceBridge.m */; };
 		C44F2CDA2252483B00334776 /* SuspensionBtn.m in Sources */ = {isa = PBXBuildFile; fileRef = C44F2CD92252483B00334776 /* SuspensionBtn.m */; };
@@ -909,9 +906,6 @@
 		BC4C1D05C5514093933F2341 /* RNGeolocation.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNGeolocation.xcodeproj; path = "../node_modules/@mr/rn-geolocation/ios/RNGeolocation.xcodeproj"; sourceTree = "<group>"; };
 		BF2CCF8A22A5160500A5AD0D /* home_tab_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home_tab_1.png; sourceTree = "<group>"; };
 		BF2CCF8B22A5160500A5AD0D /* home_tab_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home_tab_0.png; sourceTree = "<group>"; };
-		BF2CCF9122A51C3100A5AD0D /* pin_tab_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pin_tab_1.png; sourceTree = "<group>"; };
-		BF2CCF9222A51C3100A5AD0D /* pin_tab_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pin_tab_2.png; sourceTree = "<group>"; };
-		BF2CCF9422A51C3100A5AD0D /* pin_tab_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pin_tab_0.png; sourceTree = "<group>"; };
 		BF6EE5ED214F89C2007C1185 /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
 		C43AE8FD2240C567003CC51F /* JRServiceBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JRServiceBridge.h; sourceTree = "<group>"; };
 		C43AE8FE2240C567003CC51F /* JRServiceBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JRServiceBridge.m; sourceTree = "<group>"; };
@@ -1251,9 +1245,6 @@
 		037DBA7C21B0CCD30003DA18 /* animationRes */ = {
 			isa = PBXGroup;
 			children = (
-				BF2CCF9422A51C3100A5AD0D /* pin_tab_0.png */,
-				BF2CCF9122A51C3100A5AD0D /* pin_tab_1.png */,
-				BF2CCF9222A51C3100A5AD0D /* pin_tab_2.png */,
 				BF2CCF8B22A5160500A5AD0D /* home_tab_0.png */,
 				BF2CCF8A22A5160500A5AD0D /* home_tab_1.png */,
 				037DBABC21B0E3030003DA18 /* money_0.png */,
@@ -2872,7 +2863,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF2CCF9A22A51C3200A5AD0D /* pin_tab_2.png in Resources */,
 				037DBABF21B0E3030003DA18 /* money_1.png in Resources */,
 				5068361321379B78001AB175 /* AlipaySDK.bundle in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
@@ -2880,10 +2870,8 @@
 				BF2CCF8C22A5160500A5AD0D /* home_tab_1.png in Resources */,
 				BF2CCF8D22A5160500A5AD0D /* home_tab_0.png in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				BF2CCF9C22A51C3200A5AD0D /* pin_tab_0.png in Resources */,
 				5068363D21379B78001AB175 /* SGQRCode.bundle in Resources */,
 				5077FCE121A4FE37003B860D /* LICENSE in Resources */,
-				BF2CCF9922A51C3200A5AD0D /* pin_tab_1.png in Resources */,
 				037DBABE21B0E3030003DA18 /* money_0.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
