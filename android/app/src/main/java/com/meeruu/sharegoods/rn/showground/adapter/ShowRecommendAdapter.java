@@ -97,7 +97,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         SimpleDraweeView simpleDraweeView = helper.getView(R.id.image);
         if (item.getResource() != null) {
             String url = item.getResource().get(0).getUrl();
-            ImageLoadUtils.loadRoundNetImage(url, simpleDraweeView, 5);
+            ImageLoadUtils.loadRoundNetImage(url, simpleDraweeView, DensityUtils.dip2px(5));
             simpleDraweeView.setVisibility(View.VISIBLE);
         } else {
             simpleDraweeView.setVisibility(View.GONE);
