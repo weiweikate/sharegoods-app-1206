@@ -240,7 +240,7 @@ export default class WithdrawCashPage extends BasePage {
                 balance: data.data.balance,
                 multiple: data.data.multiple,
                 count:data.data.count,
-                withdrawApplyConfigVOList:data.data.withdrawApplyConfigVOList,
+                withdrawApplyConfigVOList:data.data.withdrawApplyConfigVOList || [],
                 currentTime:data.data.nowTime
             });
 
