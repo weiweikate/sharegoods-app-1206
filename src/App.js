@@ -143,7 +143,7 @@ class App extends Component {
                     }}
                 />
                 <SpellShopFlag isShowFlag={showPinFlagModel.showFlag}/>
-                <SpellShopTab isShowTab={showPinFlagModel.showTab}/>
+                <SpellShopTab isShowTab={showPinFlagModel.showFlag}/>
                 {
                     showDebugPanel === 'true' ?
                         <DebugButton onPress={this.showDebugPage} style={{ backgroundColor: 'red' }}><Text
