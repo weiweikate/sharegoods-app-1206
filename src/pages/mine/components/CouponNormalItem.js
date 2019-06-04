@@ -24,7 +24,7 @@ export default class CouponNormalItem extends Component{
     render(){
         let {item,index} = this.props;
         let stateImg = item.status === 1 ? res.couponsImg.youhuiquan_icon_yishiyong :
-            (item.status === 2 ? res.couponsImg.youhuiquan_icon_yishixiao : item.status === 3?(res.couponsImg.youhuiquan_icon_daijihuo):null);
+            (item.status === 2 ? res.couponsImg.youhuiquan_icon_yishixiao : item.status === 3 ? (res.couponsImg.youhuiquan_icon_daijihuo) : null);
 
         return(
             <TouchableOpacity style={{ backgroundColor: DesignRule.bgColor, marginBottom: 5 }}
@@ -33,36 +33,25 @@ export default class CouponNormalItem extends Component{
                     width: ScreenUtils.width - px2dp(30),
                     height: px2dp(109),
                     margin: 2,
-                }} source={item.status === 0 ? (item.levelimit ? unUsedBg : usedBg) : usedBg} resizeMode='stretch'>
+                }} source={item.status === 0 ? (item.levelimit ? usedBg : unUsedBg) : usedBg} resizeMode='stretch'>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <View style={styles.itemFirStyle}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 {
-                                    item.type === 3 || item.type === 4 ||  item.type === 5 || item.type === 12 ? null :
+                                    item.type === 2 || item.type === 3 || item.type === 4 ||  item.type === 5 || item.type === 12 ? null :
                                         <View style={{ alignSelf: 'flex-end', marginBottom: 2 }}>
                                             <Text
                                                 style={{
                                                     fontSize: 14,
                                                     color: item.status === 0 ? (item.levelimit ? DesignRule.textColor_mainTitle : DesignRule.mainColor) : '#FF80A7',
-                                                    marginBottom: 4
                                                 }} allowFontScaling={false}>￥</Text>
                                         </View>}
                                 <View>
                                     <Text style={{
-                                        fontSize: item.type === 4 ? 20 : (item.value && item.value.length < 3 ? 33 : 26),
+                                        fontSize: (item.value && item.value.length < 3 ? 34 : 20),
                                         color: item.status === 0 ? (item.levelimit ? DesignRule.textColor_mainTitle : DesignRule.mainColor) : '#FF80A7',
                                     }} allowFontScaling={false}>{item.value}</Text>
                                 </View>
-                                {
-                                    item.type === 3 ?
-                                        <View style={{ alignSelf: 'flex-end', marginBottom: 2 }}>
-                                            <Text
-                                                style={{
-                                                    fontSize: 14,
-                                                    color: item.status === 0 ? (item.levelimit ? DesignRule.textColor_mainTitle : DesignRule.mainColor) : DesignRule.textColor_mainTitle,
-                                                    marginBottom: 4
-                                                }} allowFontScaling={false}>折</Text>
-                                        </View> : null}
                             </View>
                         </View>
 
@@ -135,13 +124,13 @@ export default class CouponNormalItem extends Component{
                                             </LinearGradient>
                                         </NoMoreClick>
                                 )) :
-                                stateImg?<View style={{marginRight: 15, justifyContent: 'center', alignItems: 'center'}}>
+                                stateImg ? <View style={{marginRight: 15, justifyContent: 'center', alignItems: 'center'}}>
                                     <Image style={{width: 55, height: 55}}
                                            source={stateImg}/>
                                     {item.count > 1 ? <UIText value={'x' + item.count}
                                                               style={styles.xNumsStyle}/> : null}
 
-                                </View>:null}
+                                </View> : null}
                         </View>
                     </View>
                 </ImageBackground>

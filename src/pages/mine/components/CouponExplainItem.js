@@ -41,23 +41,22 @@ export default class CouponExplainItem extends Component {
                 onPress={() => this.props.clickItem(index, item)}>
                 <ImageBackground style={{
                     width: ScreenUtils.width - px2dp(30),
-                    height: item.tobeextend ? px2dp(109) : px2dp(130),
+                    // height: item.tobeextend ? px2dp(109) : px2dp(130),
                     marginTop: 2, marginLeft: 2, marginRight: 2,
                 }}
                                  // source={item.status === 0 ? (item.levelimit ? (item.tobeextend ? useBgexd : usedBgex) : (item.tobeextend ? unUsedBgExd : unUsedBgex)) : (item.tobeextend ? useBgexd : usedBgex)}
-                                 source={ item.status === 0 ?(item.tobeextend ? dropUnuser : unUsedBg):item.tobeextend ? dropUser : dropUser}
+                                 source={ item.status === 0 ? (item.tobeextend ? dropUnuser : unUsedBg) : item.tobeextend ? dropUser : dropUser}
                                  resizeMode='stretch'>
                     <View style={{ flexDirection: 'row', alignItems: 'center', height: px2dp(109) }}>
                         <View style={styles.itemFirStyle}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 {
-                                    item.type === 3 || item.type === 4 || item.type === 5 || item.type === 12 ? null :
+                                    item.type === 2 || item.type === 3 || item.type === 4 || item.type === 5 || item.type === 12 ? null :
                                         <View style={{ alignSelf: 'flex-end', marginBottom: 2 }}>
                                             <Text
                                                 style={{
                                                     fontSize: 14,
                                                     color: item.status === 0 ? (item.levelimit ? DesignRule.textColor_mainTitle : DesignRule.mainColor) : '#FF80A7',
-                                                    marginBottom: 4
                                                 }} allowFontScaling={false}>￥</Text>
                                         </View>}
                                 <View>
@@ -66,16 +65,6 @@ export default class CouponExplainItem extends Component {
                                         color: item.status === 0 ? (item.levelimit ? DesignRule.textColor_mainTitle : DesignRule.mainColor) : '#FF80A7'
                                     }} allowFontScaling={false}>{item.value}</Text>
                                 </View>
-                                {
-                                    item.type === 3 ?
-                                        <View style={{ alignSelf: 'flex-end', marginBottom: 2 }}>
-                                            <Text
-                                                style={{
-                                                    fontSize: 14,
-                                                    color: item.status === 0 ? (item.levelimit ? DesignRule.textColor_mainTitle : DesignRule.mainColor) : DesignRule.textColor_mainTitle,
-                                                    marginBottom: 4
-                                                }} allowFontScaling={false}>折</Text>
-                                        </View> : null}
                             </View>
                         </View>
 
@@ -175,7 +164,7 @@ export default class CouponExplainItem extends Component {
                     {!item.tobeextend ?
                         <View style={{ flexDirection: 'row',width: ScreenUtils.width - px2dp(46),marginLeft:8}}>
                             <DashLine style={{flex:1}} lineWidth={1} color={'#E4E4E4'} />
-                        </View>:null}
+                        </View> : null}
                     {!item.tobeextend ?
                         <NoMoreClick style={{ height: px2dp(24), alignItems: 'center',backgroundColor:'#F9F9F9' }}
                                      onPress={() => this.props.pickUpData(item)}>
@@ -193,7 +182,7 @@ export default class CouponExplainItem extends Component {
                 {item.tobeextend ?
                     <View style={{ flexDirection: 'row',width: ScreenUtils.width - px2dp(46),marginLeft:8}}>
                         <DashLine style={{flex:1}} lineWidth={1} color={'#E4E4E4'} />
-                    </View>:null}
+                    </View> : null}
                 {item.tobeextend ?
                     <ImageBackground style={{
                         width: ScreenUtils.width - px2dp(30),
@@ -203,7 +192,7 @@ export default class CouponExplainItem extends Component {
                         <View style={{ marginTop: 10, marginLeft: 10, }}>
                             <Text style={{
                                 marginTop: 5,
-                                color: item.status === 0 ?DesignRule.textColor_secondTitle:DesignRule.textColor_secondTitle,
+                                color: item.status === 0 ? DesignRule.textColor_secondTitle : DesignRule.textColor_secondTitle,
                                 lineHeight: 25,
                                 fontSize: 10
 

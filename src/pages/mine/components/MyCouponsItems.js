@@ -290,31 +290,31 @@ export default class MyCouponsItems extends Component {
         let products = item.products || [], cat1 = item.cat1 || [], cat2 = item.cat2 || [], cat3 = item.cat3 || [];
         let result = null;
         if (item.type === 5) {
-            return '限商品：限指定商品可用';
+            return '限指定商品可用';
         }
         if (products.length) {
             if ((cat1.length || cat2.length || cat3.length)) {
-                return '限商品：限指定商品可用';
+                return '限指定商品可用';
             }
             if (products.length > 1) {
-                return '限商品：限指定商品可用';
+                return '限指定商品可用';
             }
             if (products.length === 1) {
                 let productStr = products[0];
                 if (productStr.length > 15) {
                     productStr = productStr.substring(0, 15) + '...';
                 }
-                return `限商品：限${productStr}商品可用`;
+                return `限${productStr}商品可用`;
             }
         }
         else if ((cat1.length + cat2.length + cat3.length) === 1) {
             result = [...cat1, ...cat2, ...cat3];
-            return `限品类：限${result[0]}品类可用`;
+            return `限${result[0]}品类可用`;
         }
         else if ((cat1.length + cat2.length + cat3.length) > 1) {
-            return '限品类：限指定品类商品可用';
+            return '限指定品类商品可用';
         } else {
-            return '全品类：全场通用券（特殊商品除外）';
+            return '全场通用券（特殊商品除外）';
         }
     };
     parseData = (dataList) => {
