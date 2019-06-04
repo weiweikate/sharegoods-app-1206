@@ -158,20 +158,8 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
 
         NineGridView nineGridView = helper.getView(R.id.nine_grid);
 
-
-//        nineGridView.setSingleImageRatio((float) (19 / 12.0));
-        nineGridView.setSingleImageRatio(ScreenUtils.getScreenWidth() - DensityUtils.px2dip(185));
+        nineGridView.setSingleImageRatio(ScreenUtils.getScreenWidth() - DensityUtils.dip2px(185));
         List<ImageInfo> imageInfoList = item.getNineImageInfos();
-//        if (item.getResource() != null) {
-//            for (int i = 0; i < item.getResource().size(); i++) {
-//                if (item.getResource().get(i).getType() == 2) {
-//                    String url = item.getResource().get(i).getUrl();
-//                    ImageInfo info = new ImageInfo();
-//                    info.setImageUrl(url);
-//                    imageInfoList.add(info);
-//                }
-//            }
-//        }
 
         if (this.clickL != null) {
             nineGridView.setClick(clickL);
