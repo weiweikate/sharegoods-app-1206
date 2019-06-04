@@ -102,7 +102,11 @@ const ShowFlag = () =>
 
 @observer
 export class SpellShopFlag extends Component {
+
     render() {
+        if (!this.props.isShowFlag) {
+            return null;
+        }
         if (!user) {
             return null;
         }
@@ -144,6 +148,9 @@ const ShowTab = () =>
 @observer
 export class SpellShopTab extends Component {
     render() {
+        if (!this.props.isShowTab) {
+            return null;
+        }
         if (!user) {
             return null;
         }

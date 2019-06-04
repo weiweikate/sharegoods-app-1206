@@ -69,7 +69,6 @@ import taskModel from './model/TaskModel';
 import TaskVIew from './view/TaskVIew';
 import intervalMsgModel, { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
 import { UserLevelModalView } from './view/TaskModalView';
-import showPinFlagModel from '../../model/ShowPinFlag';
 
 const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
     <Text style={styles.text}
@@ -201,8 +200,6 @@ class HomePage extends BasePage {
                     if (!homeModule.firstLoad) {
                         limitGoModule.loadLimitGo(false);
                     }
-                    showPinFlagModel.saveShowTab(true);
-                    showPinFlagModel.saveShowFlag(true);
                 }
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
                 TrackApi.homePage();//埋点
