@@ -19,6 +19,8 @@
 @property (nonatomic,strong) UIButton * shareBtn;
 @property (nonatomic,strong) UILabel * zanNum;
 @property (nonatomic,strong) UIImageView * picImg;
+@property (nonatomic,strong) UIView * contentLabView;
+
 
 @end
 
@@ -101,18 +103,18 @@
   bgView.backgroundColor =  [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0];
   [bgView.layer setCornerRadius:4.0];
   
-  UIView*  contentLabView = [[UIView alloc] init];
-  contentLabView.backgroundColor = [UIColor colorWithHexString:@"F7F7F7"];
+  self.contentLabView = [[UIView alloc] init];
+  self.contentLabView.backgroundColor = [UIColor colorWithHexString:@"F7F7F7"];
   [bgView.layer setCornerRadius:4.0];
   [self.contentView addSubview:bgView];
   
   [bgView addSubview:self.headView];
-  [bgView addSubview:contentLabView];
+  [bgView addSubview:self.contentLabView];
   [bgView addSubview:self.zanBtn];
   [bgView addSubview:self.zanNum];
   [bgView addSubview:self.shareBtn];
-  [contentLabView addSubview:self.picImg];
-  [contentLabView addSubview:self.contentLab];
+  [self.contentLabView addSubview:self.picImg];
+  [self.contentLabView addSubview:self.contentLab];
 
   bgView.sd_layout
   .leftSpaceToView(self.contentView, 0)
@@ -127,37 +129,37 @@
   .heightIs(34);
   
   //内容背景
-  contentLabView.sd_layout.topSpaceToView(self.headView,10 )
+  self.contentLabView.sd_layout.topSpaceToView(self.headView,10 )
   .leftSpaceToView(bgView, 45)
   .rightSpaceToView(bgView, 10)
   .heightIs(200);
   
   //图片
-  self.picImg.sd_layout.topSpaceToView(contentLabView, 0)
-  .leftSpaceToView(contentLabView, 0)
-  .rightSpaceToView(contentLabView, 0)
+  self.picImg.sd_layout.topSpaceToView(self.contentLabView, 0)
+  .leftSpaceToView(self.contentLabView, 0)
+  .rightSpaceToView(self.contentLabView, 0)
   .heightIs(160);
   self.picImg.layer.cornerRadius = 5;
   
   self.contentLab.sd_layout.topSpaceToView(self.picImg,10)
-  .leftSpaceToView(contentLabView, 10).rightSpaceToView(contentLabView, 10)
+  .leftSpaceToView(self.contentLabView, 10).rightSpaceToView(self.contentLabView, 10)
   .heightIs(20);
   
   //点赞
   [_zanBtn addTarget:self action:@selector(tapZanBtn:) forControlEvents:UIControlEventTouchUpInside];
-  self.zanBtn.sd_layout.topSpaceToView(contentLabView,10)
+  self.zanBtn.sd_layout.topSpaceToView(self.contentLabView,10)
   .leftSpaceToView(bgView, 45)
-   .widthIs(28).heightIs(28);
+   .widthIs(26).heightIs(26);
 
   self.zanNum.sd_layout.centerYEqualToView(self.zanBtn)
   .leftSpaceToView(self.zanBtn, 1)
-  .widthIs(40).heightIs(28);
+  .widthIs(40).heightIs(26);
   
   //分享/转发
   [_shareBtn addTarget:self action:@selector(tapShareBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.shareBtn.sd_layout.centerYEqualToView(self.zanBtn)
   .rightSpaceToView(bgView,15)
-  .widthIs(70).heightIs(28);
+  .widthIs(70).heightIs(26);
   
   [bgView setupAutoHeightWithBottomView:self.shareBtn bottomMargin:5];
   [self setupAutoHeightWithBottomView:bgView bottomMargin:5];
@@ -175,10 +177,18 @@
       imageUrl= [obj valueForKey: @"url"];
     }
   }
- 
-  [self.picImg sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"default_avatar"]];
-  self.contentLab.text = model.title;
-  
+  if(imageUrl.length>0){
+    self.contentLabView.sd_layout.heightIs(200);
+    self.picImg.sd_layout.heightIs(160);
+  [self.picImg sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"f5f5f5"]]];
+    self.contentLab.sd_layout.topSpaceToView(self.picImg,10);
+    self.contentLab.text = model.title;
+  }else{
+    self.contentLabView.sd_layout.heightIs(20);
+    self.contentLab.sd_layout.topSpaceToView(self.contentLabView,0);
+    self.picImg.sd_layout.heightIs(0);
+    self.contentLab.text = model.title;
+  }
 }
 
 
