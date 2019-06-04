@@ -25,7 +25,6 @@ import com.meeruu.sharegoods.rn.showground.widgets.FolderTextView;
 import com.meeruu.sharegoods.rn.showground.widgets.GridView.ImageInfo;
 import com.meeruu.sharegoods.rn.showground.widgets.GridView.NineGridView;
 import com.meeruu.sharegoods.rn.showground.widgets.GridView.NineGridViewAdapter;
-import com.reactnative.ivpusic.imagepicker.ImagesUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,7 +115,6 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
 
     private void convertDynamic(final BaseViewHolder helper, final NewestShowGroundBean.DataBean item) {
         final FolderTextView content = helper.getView(R.id.content);
-
         final SimpleDraweeView userIcon = helper.getView(R.id.user_icon);
         String userTag = (String) userIcon.getTag();
         String userUrl = item.getUserInfoVO().getUserImg();
@@ -147,7 +145,6 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
                 content.setTag(titleStr);
             }
         }
-
 
         TextView name = helper.getView(R.id.user_name);
         name.setText(item.getUserInfoVO().getUserName());
@@ -204,7 +201,6 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
 
         if (item.getProducts() != null) {
             ProductsAdapter productsAdapter = new ProductsAdapter(item.getProducts());
-
             if (this.addCartListener != null) {
                 productsAdapter.setAddCartListener(addCartListener);
             } else {
@@ -225,10 +221,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         } else {
             recyclerView.setVisibility(View.GONE);
         }
-
         helper.addOnClickListener(R.id.icon_hand, R.id.icon_download, R.id.icon_share);
-
-
         ImageView hand = helper.getView(R.id.icon_hand);
         if (item.isLike()) {
             hand.setImageResource(R.drawable.icon_like);
@@ -236,6 +229,4 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
             hand.setImageResource(R.drawable.icon_hand);
         }
     }
-
-
 }

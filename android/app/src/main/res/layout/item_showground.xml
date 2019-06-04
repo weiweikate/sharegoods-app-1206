@@ -9,8 +9,7 @@
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/showground_item_image"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true" />
+        android:layout_height="wrap_content" />
 
 
     <TextView

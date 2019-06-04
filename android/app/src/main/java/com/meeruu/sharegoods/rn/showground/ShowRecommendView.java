@@ -139,9 +139,6 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-//                public static final int SCROLL_STATE_IDLE = 0;
-//                public static final int SCROLL_STATE_DRAGGING = 1;
-//                public static final int SCROLL_STATE_SETTLING = 2;
                 super.onScrollStateChanged(recyclerView, newState);
                 final onScrollStateChangedEvent onScrollStateChangedEvent = new onScrollStateChangedEvent();
                 onScrollStateChangedEvent.init(view.getId());
