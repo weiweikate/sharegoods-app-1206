@@ -490,7 +490,7 @@ export default class CommShareModal extends React.Component {
                                                 data={this.props.imageJson} modal={this.modal}/> : null
                                 }
                                 {
-                                    this.state.path === '' && !this.props.type === 'Show' ? <ActivityIndicator
+                                    this.state.path === '' && this.props.type !== 'Show' ? <ActivityIndicator
                                         color="#aaaaaa"
                                         style={{
                                             position: 'absolute',
