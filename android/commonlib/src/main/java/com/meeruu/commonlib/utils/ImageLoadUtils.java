@@ -368,7 +368,6 @@ public class ImageLoadUtils {
                 new GenericDraweeHierarchyBuilder(BaseApplication.appContext.getResources())
                         .setFadeDuration(300)
                         .setRoundingParams(RoundingParams.fromCornersRadii(radius))
-                        .setPlaceholderImage(R.drawable.bg_app_img)
                         .setPlaceholderImageScaleType(ScalingUtils.ScaleType.CENTER_CROP)
                         .setActualImageScaleType(ScalingUtils.ScaleType.CENTER_CROP);
         if (needPlace) {
