@@ -31,10 +31,9 @@ export default class CouponNormalItem extends Component{
                               onPress={() => this.props.clickItem(index, item)}>
                 <ImageBackground style={{
                     width: ScreenUtils.width - px2dp(30),
-                    height: px2dp(109),
                     margin: 2,
                 }} source={item.status === 0 ? (item.levelimit ? usedBg : unUsedBg) : usedBg} resizeMode='stretch'>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={{display:'flex', flexDirection: 'row', alignItems: 'center' }}>
                         <View style={styles.itemFirStyle}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 {
@@ -60,7 +59,8 @@ export default class CouponNormalItem extends Component{
                             alignItems: 'flex-start',
                             marginLeft: 10,
                             justifyContent: 'center',
-                            height: px2dp(109)
+                            marginTop: 15,
+                            marginBottom: 15
                         }}>
                             <View style={{ flexDirection: 'row' }}>
                                 <Text style={{
@@ -86,8 +86,7 @@ export default class CouponNormalItem extends Component{
                             width: 80,
                             alignItems: 'flex-start',
                             marginLeft: 10,
-                            justifyContent: 'center',
-                            height: px2dp(109)}}>
+                            justifyContent: 'center',}}>
                             {item.status === 0 ? (item.levelimit ?
                                 <View style={{marginRight: 15, justifyContent: 'center', alignItems: 'center'}}>
                                     <UIText value={'等级受限'}

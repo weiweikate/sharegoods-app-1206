@@ -14,7 +14,6 @@ import { observer } from 'mobx-react';
 import res from '../res';
 import StringUtils from '../../../utils/StringUtils';
 import LinearGradient from 'react-native-linear-gradient';
-import DashLine from './DashLine';
 
 const { px2dp } = ScreenUtils;
 const unUsedBg = res.couponsImg.youhuiquan_bg_unUseBg;
@@ -47,7 +46,7 @@ export default class CouponExplainItem extends Component {
                                  // source={item.status === 0 ? (item.levelimit ? (item.tobeextend ? useBgexd : usedBgex) : (item.tobeextend ? unUsedBgExd : unUsedBgex)) : (item.tobeextend ? useBgexd : usedBgex)}
                                  source={ item.status === 0 ? (item.tobeextend ? dropUnuser : unUsedBg) : item.tobeextend ? dropUser : dropUser}
                                  resizeMode='stretch'>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', height: px2dp(109) }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', display:'flex' }}>
                         <View style={styles.itemFirStyle}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 {
@@ -61,7 +60,7 @@ export default class CouponExplainItem extends Component {
                                         </View>}
                                 <View>
                                     <Text style={{
-                                        fontSize: item.type === 4 ? 20 : (item.value && item.value.length < 3 ? 33 : 26),
+                                        fontSize: item.type === 4 ? 20 : (item.value && item.value.length < 3 ? 33 : 20),
                                         color: item.status === 0 ? (item.levelimit ? DesignRule.textColor_mainTitle : DesignRule.mainColor) : '#FF80A7'
                                     }} allowFontScaling={false}>{item.value}</Text>
                                 </View>
@@ -72,7 +71,9 @@ export default class CouponExplainItem extends Component {
                             flex: 2,
                             alignItems: 'flex-start',
                             marginLeft: 10,
-                            justifyContent: 'space-between'
+                            justifyContent: 'space-between',
+                            marginTop: 15,
+                            marginBottom: 15
                         }}>
                             <View style={{ flexDirection: 'row' }}>
                                 <Text style={{
@@ -98,8 +99,7 @@ export default class CouponExplainItem extends Component {
                             width: 80,
                             alignItems: 'flex-start',
                             marginLeft: 10,
-                            justifyContent: 'center',
-                            height: px2dp(109)}}>
+                            justifyContent: 'center'}}>
                             {item.status === 0 ?
                                 (
                                     item.type === 99 ?
@@ -161,10 +161,7 @@ export default class CouponExplainItem extends Component {
                                 </View>}
                         </View>
                     </View>
-                    {!item.tobeextend ?
-                        <View style={{ flexDirection: 'row',width: ScreenUtils.width - px2dp(46),marginLeft:8}}>
-                            <DashLine style={{flex:1}} lineWidth={1} color={'#E4E4E4'} />
-                        </View> : null}
+
                     {!item.tobeextend ?
                         <NoMoreClick style={{ height: px2dp(24), alignItems: 'center',backgroundColor:'#F9F9F9' }}
                                      onPress={() => this.props.pickUpData(item)}>
@@ -179,10 +176,7 @@ export default class CouponExplainItem extends Component {
                             </ImageBackground>
                         </NoMoreClick> : null}
                 </ImageBackground>
-                {item.tobeextend ?
-                    <View style={{ flexDirection: 'row',width: ScreenUtils.width - px2dp(46),marginLeft:8}}>
-                        <DashLine style={{flex:1}} lineWidth={1} color={'#E4E4E4'} />
-                    </View> : null}
+
                 {item.tobeextend ?
                     <ImageBackground style={{
                         width: ScreenUtils.width - px2dp(30),
