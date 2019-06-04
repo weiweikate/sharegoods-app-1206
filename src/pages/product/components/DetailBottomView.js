@@ -12,9 +12,11 @@ import res from '../res/product';
 import { MRText as Text } from '../../../components/ui/index';
 import { product_status } from '../ProductDetailModel';
 import LinearGradient from 'react-native-linear-gradient';
+import StringUtils from '../../../utils/StringUtils';
 
 const { xiangqing_btn_gouwuche_nor, jiarugouwuche_no, me_bangzu_kefu_icon } = res;
 const { px2dp } = ScreenUtils;
+const { isNoEmpty } = StringUtils;
 
 export default class DetailBottomView extends Component {
 
@@ -30,11 +32,11 @@ export default class DetailBottomView extends Component {
     render() {
         let { pData } = this.props;
         //productStatus  1正常  2下架  3当前时间不能买
-        let { productStatus, skuList, showSellOut, productIsPromotionPrice } = pData || {};
+        let { productStatus, skuList, showSellOut, productIsPromotionPrice, selfReturning } = pData || {};
         //总库存
         let stock = 0;
         (skuList || []).forEach((item) => {
-            stock = stock + productIsPromotionPrice ? item.promotionStockNum : item.sellStock;
+            stock = stock + (productIsPromotionPrice ? item.promotionStockNum : item.sellStock);
         });
         //提示消息样式
         let isDown = productStatus === product_status.down;
@@ -85,8 +87,12 @@ export default class DetailBottomView extends Component {
                                                         end={{ x: 1, y: 0 }}
                                                         colors={['#FFCB02', '#FF9502']}>
                                             <Text style={[styles.btnText, {
-                                                color: cantBuy ? DesignRule.textColor_instruction : DesignRule.white
+                                                color: cantBuy ? DesignRule.textColor_instruction : DesignRule.white,
+                                                fontSize: (isNoEmpty(selfReturning) && selfReturning > 0) ? 14 : 17
                                             }]}>{buyText}</Text>
+                                            {(isNoEmpty(selfReturning) && selfReturning > 0) && < Text style={{
+                                                fontSize: 11, color: 'white', marginTop: -2
+                                            }}>返{selfReturning}</Text>}
                                         </LinearGradient>
                                     </TouchableOpacity>
                                     <TouchableOpacity style={[styles.btn, { backgroundColor: '#FBBB50' }]}

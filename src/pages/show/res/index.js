@@ -9,6 +9,22 @@ const index = {
     showFire:require('./show_fire.png'),
     noShowFire:require('./no_show_fire.png'),
     grayMore:require('./gray_more.png'),
-    likeIcon:require('./like_icon.png')
+    likeIcon:require('./like_icon.png'),
+    showReleaseIcon:require('./icon_release.png'),
+    delIcon:require('./icon_del.png'),
+    addIcon:require('./icon_add.png'),
+    hotIcon:require('./hot.png'),
+    addCarIcon:require('./icon_add_car.png'),
+    addShieldIcon:require('./icon_show_shield.png'),
+    addShowIcon:require('./icon_show_add.png'),
+    iconShowDown:require('./icon_show_down.png'),
+    iconShowEmoji:require('./icon_show_emoji.png'),
+    iconShowFire:require('./icon_show_fire.png'),
+    iconLike:require('./icon_like.png'),
+    iconNoLike:require('./icon_no_like.png'),
+    iconDownload:require('./icon_show_download.png'),
+    iconToTop:require('./icon_to_top.png'),
+    iconShowShare:require('./icon_show_share.png'),
+    showCartNoneBg:require('./show_cart_none_bg.png')
 };
 export default index

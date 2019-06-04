@@ -8,7 +8,6 @@ import {
     NativeModules
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
-import ShareTaskIcon from '../shareTask/components/ShareTaskIcon';
 import { observer } from 'mobx-react';
 import { homeModule } from './model/Modules';
 import { homeType } from './HomeTypes';
@@ -38,15 +37,15 @@ import { recommendModule } from './model/HomeRecommendModel';
 import { subjectModule } from './model/HomeSubjectModel';
 import { homeExpandBnnerModel } from './model/HomeExpandBnnerModel';
 import HomeTitleView from './view/HomeTitleView';
-import GuideModal from '../guide/GuideModal';
 import LuckyIcon from '../guide/LuckyIcon';
-import HomeMessageModalView, { HomeAdModal } from './view/HomeMessageModalView';
+import HomeMessageModalView, { HomeAdModal, GiftModal } from './view/HomeMessageModalView';
 import { channelModules } from './model/HomeChannelModel';
 import { bannerModule } from './model/HomeBannerModel';
 import HomeLimitGoView from './view/HomeLimitGoView';
 import { limitGoModule } from './model/HomeLimitGoModel';
 import HomeExpandBannerView from './view/HomeExpandBannerView';
 import HomeFocusAdView from './view/HomeFocusAdView';
+import PraiseModel from './view/PraiseModel';
 
 const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
@@ -66,6 +65,10 @@ const { px2dp, height, headerHeight } = ScreenUtils;
 const scrollDist = height / 2 - headerHeight;
 import BasePage from '../../BasePage';
 import { TrackApi } from '../../utils/SensorsTrack';
+import taskModel from './model/TaskModel';
+import TaskVIew from './view/TaskVIew';
+import intervalMsgModel, { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
+import { UserLevelModalView } from './view/TaskModalView';
 
 const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
     <Text style={styles.text}
@@ -104,6 +107,9 @@ class HomePage extends BasePage {
                 break;
             case homeType.user:
                 dim.height = user.isLogin ? (bannerModule.bannerList.length > 0 ? px2dp(44) : px2dp(31)) : 0;
+                break;
+            case homeType.task:
+                dim.height = taskModel.homeHeight;
                 break;
             case homeType.channel:
                 dim.height = channelModules.channelList.length > 0 ? px2dp(90) : 0;
@@ -189,9 +195,10 @@ class HomePage extends BasePage {
                     homeTabManager.setHomeFocus(true);
                     homeModule.homeFocused(true);
                     homeModalManager.entryHome();
-                    homeModalManager.requestGuide();
+                    homeModalManager.refreshPrize();
+                    taskModel.getData();
                     if (!homeModule.firstLoad) {
-                        limitGoModule.loadLimitGo();
+                        limitGoModule.loadLimitGo(false);
                     }
                 }
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
@@ -208,9 +215,9 @@ class HomePage extends BasePage {
         InteractionManager.runAfterInteractions(() => {
             user.getToken().then(() => {//让user初始化完成
                 this.luckyIcon && this.luckyIcon.getLucky(1, '');
-                homeModalManager.requestGuide();
                 homeModalManager.requestData();
                 this.loadMessageCount();
+                taskModel.getData();
             });
         });
     }
@@ -221,7 +228,8 @@ class HomePage extends BasePage {
 
     homeSkip = (data) => {
         // 跳标
-        // let tagArr = JSON.parse(data) || [];
+        const content = JSON.parse(data) || {};
+        intervalMsgModel.setMsgData(content);
     };
 
     componentWillUnmount() {
@@ -266,7 +274,7 @@ class HomePage extends BasePage {
 
     _keyExtractor = (item, index) => item.id + '';
 
-    _renderItem = (type, item) => {
+    _renderItem = (type, item, index) => {
         let data = item;
         if (type === homeType.category) {
             return <HomeCategoryView navigate={this.$navigate}/>;
@@ -274,6 +282,8 @@ class HomePage extends BasePage {
             return <HomeBannerView navigate={this.$navigate}/>;
         } else if (type === homeType.user) {
             return <HomeUserView navigate={this.$navigate}/>;
+        } else if (type === homeType.task) {
+            return <TaskVIew type={'home'}/>;
         } else if (type === homeType.channel) {
             return <HomeChannelView navigate={this.$navigate}/>;
         } else if (type === homeType.expandBanner) {
@@ -289,7 +299,8 @@ class HomePage extends BasePage {
         } else if (type === homeType.homeHot) {
             return <HomeSubjectView navigate={this.$navigate}/>;
         } else if (type === homeType.goods) {
-            return <GoodsCell data={data} navigate={this.$navigate}/>;
+            return <GoodsCell data={data} goodsRowIndex={index} otherLen={homeModule.goodsOtherLen}
+                              navigate={this.$navigate}/>;
         } else if (type === homeType.goodsTitle) {
             return <View style={styles.titleView}
                          ref={e => this.toGoods = e}
@@ -308,6 +319,7 @@ class HomePage extends BasePage {
 
     _onRefresh() {
         homeModule.loadHomeList(true);
+        taskModel.getData();
         this.luckyIcon && this.luckyIcon.getLucky(1, '');
     }
 
@@ -357,15 +369,15 @@ class HomePage extends BasePage {
                         isEnd={homeModule.isEnd}/>
                     }
                 />
-                <ShareTaskIcon style={{ position: 'absolute', right: 0, top: px2dp(220) - 40 }}/>
                 <LuckyIcon ref={(ref) => {
                     this.luckyIcon = ref;
                 }}/>
+                <PraiseModel/>
+                <GiftModal/>
+                <UserLevelModalView/>
+                <IntervalMsgView pageType={IntervalType.home}/>
                 <HomeAdModal/>
                 <HomeMessageModalView/>
-                <GuideModal onShow={() => {
-                    this.recyclerListView.scrollToTop();
-                }}/>
                 <VersionUpdateModalView/>
             </View>
         );

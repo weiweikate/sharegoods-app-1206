@@ -18,7 +18,7 @@ import { NavigationActions } from 'react-navigation';
 import DebugButton from './components/debug/DebugButton';
 import { netStatus } from './comm/components/NoNetHighComponent';
 import Navigator, { getCurrentRouteName } from './navigation/Navigator';
-import { SpellShopFlag } from './navigation/Tab';
+import { SpellShopFlag, SpellShopTab } from './navigation/Tab';
 import { checkInitResult } from './pages/login/model/PhoneAuthenAction';
 import loginModel from './pages/login/model/LoginModel';
 import RouterMap from './navigation/RouterMap';
@@ -32,6 +32,7 @@ import Storage from './utils/storage';
 import ScreenUtils from './utils/ScreenUtils';
 import codePush from 'react-native-code-push';
 import chatModel from './utils/QYModule/QYChatModel';
+import showPinFlagModel from './model/ShowPinFlag';
 
 if (__DEV__) {
     const modules = require.getModules();
@@ -67,8 +68,7 @@ class App extends Component {
         chatModel;
         this.state = {
             load: false,
-            showOldBtn: false,
-            isShowShopFlag: true
+            showOldBtn: false
         };
     }
 
@@ -80,13 +80,12 @@ class App extends Component {
             updateDialog: false,
             installMode: codePush.InstallMode.ON_NEXT_RESUME
         });
-
         netStatus.startMonitorNetworkStatus();
-
         // 环境配置
         await apiEnvironment.loadLastApiSettingFromDiskCache();
         await user.readUserInfoFromDisk();
         global.$routes = [];
+
     }
 
     componentDidMount() {
@@ -126,8 +125,8 @@ class App extends Component {
 
     render() {
         const prefix = 'meeruu://';
-        const { isShowShopFlag } = this.state;
         const showDebugPanel = String(CONFIG.showDebugPanel);
+
         return (
             <View style={styles.container}>
                 <Navigator
@@ -140,30 +139,19 @@ class App extends Component {
                         let curRouteName = getCurrentRouteName(currentState);
                         // 拦截当前router的名称
                         global.$routes = currentState.routes;
-                        this.setState({ curRouteName, isShowShopFlag: currentState.routes.length === 1 });
+                        this.setState({ curRouteName });
                     }}
                 />
-                <SpellShopFlag isShow={isShowShopFlag}/>
+                <SpellShopFlag isShowFlag={showPinFlagModel.showFlag}/>
+                <SpellShopTab isShowTab={showPinFlagModel.showFlag}/>
                 {
                     showDebugPanel === 'true' ?
                         <DebugButton onPress={this.showDebugPage} style={{ backgroundColor: 'red' }}><Text
                             style={{ color: 'white' }}>调试页</Text></DebugButton> : null
                 }
-                {/*{*/}
-                {/*<DebugButton onPress={this.lianjie111} style={{ backgroundColor: "red" }}><Text*/}
-                {/*style={{ color: "white" }}>客服</Text></DebugButton>*/}
-                {/*}*/}
             </View>
         );
     }
-
-    // lianjie111 = () => {
-    //     // const navigationAction = NavigationActions.navigate({
-    //     //     routeName: 'payment/TextWxPay'
-    //     // });
-    //     // global.$navigator.dispatch(navigationAction);
-    // };
-
 
     showDebugPage = () => {
         const navigationAction = NavigationActions.navigate({

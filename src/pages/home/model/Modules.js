@@ -10,6 +10,7 @@ import { subjectModule } from './HomeSubjectModel';
 import { recommendModule } from './HomeRecommendModel';
 import { categoryModule } from './HomeCategoryModel';
 import { limitGoModule } from './HomeLimitGoModel';
+import taskModel from './TaskModel';
 
 //首页modules
 class HomeModule {
@@ -17,6 +18,7 @@ class HomeModule {
     @observable selectedTypeCode = null;
     @observable isRefreshing = false;
     @observable isFocused = false;
+    @observable goodsOtherLen = 0;
     lastGoods = null;
     isFetching = false;
     isEnd = false;
@@ -88,7 +90,7 @@ class HomeModule {
                 recommendModule.loadRecommendList(this.firstLoad);
                 break;
             case homeType.limitGo:
-                limitGoModule.loadLimitGo();
+                limitGoModule.loadLimitGo(false);
                 break;
             case homeType.homeHot:
                 subjectModule.loadSubjectList(this.firstLoad);
@@ -116,13 +118,15 @@ class HomeModule {
         // 首焦点广告
         homeFocusAdModel.loadAdList();
         // 首页限时秒杀
-        limitGoModule.loadLimitGo();
+        limitGoModule.loadLimitGo(true);
         // 首页今日榜单
         todayModule.loadTodayList(this.firstLoad);
         // 首页精品推荐
         recommendModule.loadRecommendList(this.firstLoad);
         // 超值热卖
         subjectModule.loadSubjectList(this.firstLoad);
+
+        taskModel.getData();
 
         this.page = 1;
         this.isEnd = false;
@@ -135,6 +139,9 @@ class HomeModule {
         }, {
             id: 2,
             type: homeType.user
+        }, {
+            id: 12,
+            type: homeType.task
         }, {
             id: 3,
             type: homeType.channel
@@ -199,6 +206,7 @@ class HomeModule {
                     id: 'goods'
                 });
             }
+            this.goodsOtherLen = this.homeList.length;
             this.homeList = [...this.homeList, ...home];
             this.isFetching = false;
             this.isRefreshing = false;
@@ -269,10 +277,10 @@ class HomeModule {
 
     });
 
-    bannerPoint = (item, location) => ({
+    bannerPoint = (item, location, index) => ({
         bannerName: item.imgUrl || '',
         bannerId: item.id,
-        bannerRank: item.rank,
+        bannerRank: index,
         bannerType: item.linkType,
         bannerContent: item.linkTypeCode,
         bannerLocation: location ? location : 0

@@ -8,6 +8,8 @@ import IDVertify2Page from './IDVertify2Page';
 import WaitingForWithdrawCashPage from './WaitingForWithdrawCashPage';
 import ProfileEditPage from './ProfileEditPage';
 import GongMallContractPage from './GongMallContractPage';
+import SetWechatPage from './SetWechatPage';
+
 
 
 
@@ -22,6 +24,7 @@ export default {
         IDVertify2Page,
         WaitingForWithdrawCashPage,
         ProfileEditPage,
-        GongMallContractPage
+        GongMallContractPage,
+        SetWechatPage
     }
 };

@@ -5,7 +5,7 @@ class CouponsModel {
     params = {name:'全部',type:null};
 
     @action changeType(item){
-        this.params=item
+        this.params = item
     }
     @action clearData(){
         this.params = {name:'全部',type:null};

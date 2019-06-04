@@ -59,6 +59,9 @@ export default class RequestDetailPage extends BasePage {
             realUri = uri + '?';
         }
         realUri = realUri + parmasString;
+        if (realUri.indexOf('http') === -1 && realUri.charAt(0) !== '/'){
+            realUri = '/'+ realUri ;
+        }
         //如果没有http，就加上当前h5的域名
         if (realUri.indexOf('http') === -1) {
             realUri = apiEnvironment.getCurrentH5Url() + realUri;
@@ -137,10 +140,19 @@ export default class RequestDetailPage extends BasePage {
         this.willBlurSubscription && this.willBlurSubscription.remove();
     }
 
+    successCallBack = (type)=>{
+        if(type === 'reload'){
+            this.webView && this.webView.reload();
+        }
+        if(type === 'shareSuccess'){
+            this.webView && this.webView.sendToBridge(JSON.stringify({ action: 'shareSuccess' }));
+        }
+    };
+
     _postMessage = (msg) => {
         if (msg.action === 'share') {
             // this.webJson = msg.shareParmas;
-            this.setState({ shareParmas: msg.shareParmas }, () => {
+            this.setState({ shareParmas:msg.shareParams || msg.shareParmas }, () => {
                 this.shareModal && this.shareModal.open();
             });
             return;
@@ -148,10 +160,7 @@ export default class RequestDetailPage extends BasePage {
 
         if (msg.action === 'onShare') {
             let { data, api, trackParmas, trackEvent } = msg.onShareParmas || {};
-            ShareUtil.onShare(data, api, trackParmas, trackEvent, () => {
-                console.log('webView reload');
-                this.webView && this.webView.reload();
-            });
+            ShareUtil.onShare(data, api, trackParmas, trackEvent, this.successCallBack);
             return;
         }
 
@@ -223,9 +232,7 @@ export default class RequestDetailPage extends BasePage {
                 />
                 <CommShareModal
                     ref={(ref) => this.shareModal = ref}
-                    reloadWeb={() => {
-                        this.webView && this.webView.reload();
-                    }}
+                    successCallBack={this.successCallBack}
                     clickShareBtn={() => {
                         this.clickShareBtn && this.clickShareBtn();
                     }}
@@ -234,7 +241,7 @@ export default class RequestDetailPage extends BasePage {
                 <WebAdModal/>
                 <LuckyIcon ref={(ref) => {
                     this.luckyIcon = ref;
-                }}></LuckyIcon>
+                }} />
             </View>
         );
     }

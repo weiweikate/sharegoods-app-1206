@@ -29,7 +29,7 @@ export default class GongMallContractPage  extends BasePage<Props> {
   _render() {
     return (
       <View style={styles.container}>
-          <WebView source={{ uri: 'http://'+this.params.url }}
+          <WebView source={{ uri: 'http://' + this.params.url }}
                    javaScriptEnabled={true}
                    domStorageEnabled={true}
                    scalesPageToFit={true}

@@ -54,6 +54,11 @@ function navigate(routeName, params) {
 
 }
 
+function backToHome() {
+    global.$navigator && global.$navigator._navigation.popToTop();
+    global.$navigator && global.$navigator._navigation.navigate(RouterMap.HomePage);
+}
+
 function navigateBack(step) {
     let $routes = global.$routes || [];
     let routerKey = null;
@@ -80,7 +85,13 @@ function navigateBack(step) {
     }
 }
 
+function navigateBackToStore() {
+    global.$navigator && global.$navigator._navigation.popToTop();
+    global.$navigator && global.$navigator._navigation.navigate('MyShop_RecruitPage');
+};
+
+
 export default RouterMap;
-export { navigate, navigateBack };
+export { navigate, navigateBack, backToHome, navigateBackToStore };
 
 

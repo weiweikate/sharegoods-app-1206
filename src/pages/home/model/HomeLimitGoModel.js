@@ -32,7 +32,7 @@ export class LimitGoModules {
         }
     }
 
-    @action loadLimitGo = flow(function* () {
+    @action loadLimitGo = flow(function* (change) {
         try {
             const isShowResult = yield HomeApi.isShowLimitGo();
             if (!isShowResult.data) {
@@ -117,7 +117,7 @@ export class LimitGoModules {
                     currentTimeFormat = this.spikeList[this.currentPage].time;
                 }
                 // 选中限时购还在请求下来的数组中
-                if (currentTimeFormat && timeFormats.indexOf(currentTimeFormat) !== -1) {
+                if (currentTimeFormat && timeFormats.indexOf(currentTimeFormat) !== -1 && !change) {
                     this.currentPage = timeFormats.indexOf(currentTimeFormat);
                 } else {
                     //不然显示离当前时间最近的限时购
@@ -138,7 +138,7 @@ export class LimitGoModules {
             spu,
             activityCode: code
         }).then(res => {
-            this.loadLimitGo();
+            this.loadLimitGo(false);
         }).catch(err => {
             bridge.$toast(err.msg);
         });
@@ -149,7 +149,7 @@ export class LimitGoModules {
             spu,
             activityCode: code
         }).then(res => {
-            this.loadLimitGo();
+            this.loadLimitGo(false);
         }).catch(err => {
             bridge.$toast(err.msg);
         });

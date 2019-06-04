@@ -104,10 +104,10 @@ export default class MyShop_RecruitPage extends Component {
         let leave4 = Math.floor(leave3 % 1000 / 10);
 
         hours = days * 24 + hours;
-        hours = hours >= 10 ? hours : hours === 0 ? `00` : `0${hours}`;
-        minutes = minutes >= 10 ? minutes : minutes === 0 ? `00` : `0${minutes}`;
-        second = second >= 10 ? second : second === 0 ? `00` : `0${second}`;
-        leave4 = leave4 >= 10 ? leave4 : leave4 === 0 ? `00` : `0${leave4}`;
+        hours = hours >= 10 ? hours : hours === 0 ? '00' : `0${hours}`;
+        minutes = minutes >= 10 ? minutes : minutes === 0 ? '00' : `0${minutes}`;
+        second = second >= 10 ? second : second === 0 ? '00' : `0${second}`;
+        leave4 = leave4 >= 10 ? leave4 : leave4 === 0 ? '00' : `0${leave4}`;
 
         let time = `${hours}:${minutes}:${second}:${leave4}`;
         return time;
@@ -147,9 +147,9 @@ export default class MyShop_RecruitPage extends Component {
                 }
             } else {
                 price = markdownPrice;
-                two = `当前价`;
+                two = '当前价';
                 three = (markdownPrice === floorPrice || status === 3) ? `距结束 ${this._timeDif(this.state.countTime) || ''}` : `距下次降价 ${this._timeDif(this.state.countTime) || ''}`;
-                four = `${surplusNumber === 0 ? `已拍完` : `仅剩${surplusNumber}件`}`;
+                four = `${surplusNumber === 0 ? '已拍完' : `仅剩${surplusNumber}件`}`;
             }
         } else {
             const { originalPrice, seckillPrice = '', reseCount = '' } = this.props.activityData;
@@ -168,7 +168,7 @@ export default class MyShop_RecruitPage extends Component {
             } else {
                 two = `${totalNumber - surplusNumber !== 0 ? `已抢${totalNumber - surplusNumber}件` : '秒杀价'}`;
                 three = `距结束 ${this._timeDif(this.state.countTime) || ''}`;
-                four = `${surplusNumber === 0 ? `已抢完` : `仅剩${surplusNumber}件`}`;
+                four = `${surplusNumber === 0 ? '已抢完' : `仅剩${surplusNumber}件`}`;
             }
         }
 

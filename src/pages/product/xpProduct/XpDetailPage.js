@@ -71,7 +71,9 @@ export class XpDetailPage extends BasePage {
                     this.$navigate('home/search/SearchPage');
                     break;
                 case 2:
-                    this.shareModal && this.shareModal.open();
+                    setTimeout(() => {
+                        this.shareModal && this.shareModal.open();
+                    }, 300);
                     break;
                 case 4:
                     this.$navigateBackToHome();
@@ -303,14 +305,14 @@ export class XpDetailPage extends BasePage {
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 type={'miniProgramWithCopyUrl'}
                                 webJson={{
-                                    title: `经验值大礼包`,
-                                    dec: `快速升级会员等级,更多权益享不停!`,
+                                    title: '经验值大礼包',
+                                    dec: '快速升级会员等级,更多权益享不停!',
                                     thumImage: `${bannerUrl}`,
                                     linkUrl: `${apiEnvironment.getCurrentH5Url()}/experience?activityCode=${activityCode}&upuserid=${user.code || ''}`
                                 }}
                                 miniProgramJson={{
-                                    title: `经验值大礼包`,
-                                    dec: `快速升级会员等级,更多权益享不停!`,
+                                    title: '经验值大礼包',
+                                    dec: '快速升级会员等级,更多权益享不停!',
                                     hdImageURL: `${bannerUrl}`,
                                     thumImage: 'logo.png',
                                     linkUrl: `${apiEnvironment.getCurrentH5Url()}/experience?activityCode=${activityCode}&&upuserid=${user.code || ''}`,

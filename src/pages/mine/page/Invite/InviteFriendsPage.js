@@ -121,9 +121,9 @@ export default class InviteFriendsPage extends BasePage<Props> {
             height = ExtraDimensions.get('REAL_WINDOW_HEIGHT')
         }else if(ScreenUtils.isAllScreenDevice && ScreenUtils.getBarShow()){
             if(ScreenUtils.getHasNotchScreen()){
-                height = ExtraDimensions.get('REAL_WINDOW_HEIGHT')-ExtraDimensions.get('SOFT_MENU_BAR_HEIGHT')+ExtraDimensions.get('STATUS_BAR_HEIGHT')
+                height = ExtraDimensions.get('REAL_WINDOW_HEIGHT') - ExtraDimensions.get('SOFT_MENU_BAR_HEIGHT') + ExtraDimensions.get('STATUS_BAR_HEIGHT')
             }else {
-                height = ExtraDimensions.get('REAL_WINDOW_HEIGHT')-ExtraDimensions.get('SOFT_MENU_BAR_HEIGHT')
+                height = ExtraDimensions.get('REAL_WINDOW_HEIGHT') - ExtraDimensions.get('SOFT_MENU_BAR_HEIGHT')
             }
         }
 
@@ -233,8 +233,8 @@ export default class InviteFriendsPage extends BasePage<Props> {
                     //      QRCodeStr: '分享的链接'
                     //  }}
                                 webJson={{
-                                    title: '分享好友免费领取福利',
-                                    dec: '属你的惊喜福利活动\n数量有限赶快参与吧～',
+                                    title: '新人免费领好物',
+                                    dec: '礼物区又上新啦，海量好礼免费领!',
                                     linkUrl: this.linkUrl,
                                     thumImage: 'logo.png'
                                 }}
@@ -247,6 +247,11 @@ export default class InviteFriendsPage extends BasePage<Props> {
                     //     miniProgramPath: 'pages/index/index'}}
                                 trackParmas={{ QrCodeID: this.linkUrl }}
                                 trackEvent={trackEvent.QrCodeShareto}
+                                taskShareParams = {{ //分享完成后，请求后台
+                                    uri: this.linkUrl,
+                                    code: 10,
+                                    data: ''
+                                }}
                                 // luckyDraw={true}
                 />
             </View>
