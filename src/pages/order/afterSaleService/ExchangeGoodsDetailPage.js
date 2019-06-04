@@ -35,6 +35,7 @@ import res from '../res';
 import RouterMap from '../../../navigation/RouterMap';
 import { PageType, isRefundFail, AfterStatus, SubStatus } from './AfterType';
 import NavigatorBar from '../../../components/pageDecorator/NavigatorBar/NavigatorBar';
+import ScreenUtils from '../../../utils/ScreenUtils';
 const {
     PAGE_AREFUND,
     PAGE_SALES_RETURN,
@@ -56,6 +57,7 @@ const {
 const netError = res.placeholder.netError;
 const arrow_right_black = res.button.arrow_right_black;
 const white_back = res.button.white_back;
+const tongyong_icon_kefu_white = res.afterSaleService.tongyong_icon_kefu_white
 
 @observer
 class ExchangeGoodsDetailPage extends BasePage {
@@ -64,9 +66,9 @@ class ExchangeGoodsDetailPage extends BasePage {
         this.state = {};
 
         this._bindFunc();
+        this.params = {serviceNo: '3181211103905510116081'}
         this.afterSaleDetailModel = new AfterSaleDetailModel();
         this.afterSaleDetailModel.serviceNo = this.params.serviceNo;
-        // this.afterSaleDetailModel.serviceNo = '2018170912071644346885712';
         this.afterSaleDetailModel.loadingShow = this.$loadingShow;
         this.afterSaleDetailModel.loadingDismiss = this.$loadingDismiss;
         this.afterSaleDetailModel.toastShow = this.$toastShow;
@@ -115,56 +117,42 @@ class ExchangeGoodsDetailPage extends BasePage {
 
         let pageData = this.afterSaleDetailModel.pageData;
         let {
-            type,
-            status,// 1.待审核 2.待寄回 3.待仓库确认 4.待平台处理 5.售后完成 6.售后关闭
-            subStatus,  // REVOKED(1, "手动撤销"),OVERTIME(2, "超时关闭"),(3, "拒绝关闭");
-            refundStatus,//退款状态: 1.待退款 2.退款成功 3.三方退款失败 4.平台退款失败 5.取消退款(关闭)
-            // orderProductNo,
-            refundPrice,
-            refundAccountAmount,
-            refundCashAmount,
-            payAmount,
-            //平台物流
-            sendExpressName,
-            sendExpressNo,
-            //退款信息
-            reason,
-            description,
-            imgList,
-            //用户地址
-            // receiver,
-            // receiverPhone,
-            // province,
-            // city,
-            // area,
-            // street,
-            // address,
-            // //寄回地址
-            // refundAddress,
-            //商品info
-            specImg,
-            productName,
-            unitPrice,
-            spec,
-            quantity,
-            remarks,
-            //寄回物流
-            orderRefundExpress = {}
+            exchangeExpress={},
+            service: {
+                status,
+                subStatus,
+                type,
+                remarks,
+                reason,
+                applyRefundAmount,
+                description,
+                imgList,
+            },
+            refundInfo,
+            product: {
+                specImg,
+                productName,
+                unitPrice,
+                spec,
+                quantity,
+                payAmount,
+            },
+            refundAddress,
         } = pageData;
 
-        let pageType = type - 1;
+        let pageType = type;
         let isShow_operationApplyView = status === 1;
 
         let isShow_refundDetailView =  false;
         /** 退款成功、退货成功、换货变退款成功,退款没有失败*/
-        if ((pageType === PAGE_AREFUND || pageType === PAGE_SALES_RETURN) && status === STATUS_SUCCESS&&!isRefundFail(refundStatus)) {
+        if ((pageType === PAGE_AREFUND || pageType === PAGE_SALES_RETURN) && status === STATUS_SUCCESS&&!isRefundFail(refundInfo.status)) {
             isShow_refundDetailView = true;
         }
 
 
 
         //平台物流有、且为换货，就展示
-        let isShow_shippingAddressView = !EmptyUtils.isEmpty(sendExpressNo) && pageType === PAGE_EXCHANGE;
+        let isShow_shippingAddressView = !EmptyUtils.isEmpty(exchangeExpress) && pageType === PAGE_EXCHANGE;
         let isShow_backAddressView = false;
         if (pageType === PAGE_SALES_RETURN || pageType === PAGE_EXCHANGE){
             if ([STATUS_WAREHOUSE_CONFIRMED,STATUS_PLATFORM_PROCESSING,STATUS_SUCCESS].indexOf(status) !== -1) {
@@ -177,31 +165,6 @@ class ExchangeGoodsDetailPage extends BasePage {
         }
 
         let isShow_afterInfo = !isShow_backAddressView;
-        let logistics = [];
-        /** 平台物流只有在换货， 4.待平台处理 5.售后完成才显示*/
-        if (pageType === 2 && (status === 4 || status === 5)) {
-            if (sendExpressNo) {
-                logistics.push({
-                    title: '平台换货物流',
-                    value: sendExpressName,
-                    placeholder: '',
-                    expressNo: sendExpressNo,
-                    onPress: this.shopLogists
-                });
-            }
-        }
-        /** 寄回物流在换货、退货，  2.待寄回 3.待仓库确认 4.待平台处理 5.售后完成才显示*/
-        if ((pageType === 1 || pageType === 2) &&
-            (status === 2 || status === 3 || status === 4 || status === 5)) {
-            orderRefundExpress = orderRefundExpress || {};
-            logistics.push({
-                title: '用户寄回物流',
-                value: orderRefundExpress.expressName,
-                placeholder: '请填写寄回物流信息',
-                expressNo: orderRefundExpress.expressNo,
-                onPress: this.returnLogists
-            });
-        }
         return (
             <View style={styles.container}>
                 <ScrollView showsVerticalScrollIndicator={false}
@@ -217,7 +180,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                     <HeaderView pageType={pageType}
                                 status={status}
                                 subStatus={subStatus}
-                                refundStatus={refundStatus}
+                                refundStatus={refundInfo.status}
                     />
                     {isShow_operationApplyView ?
                         <OperationApplyView pageType={pageType}
@@ -227,7 +190,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                                     status={status}
                                     subStatus={subStatus}
                                     remarks={remarks}
-                                    refundStatus={refundStatus}
+                                    refundStatus={refundInfo.status}
                     />
                     <FillAddressView
                         afterSaleDetailModel = {this.afterSaleDetailModel}
@@ -235,17 +198,17 @@ class ExchangeGoodsDetailPage extends BasePage {
                     />
                     {isShow_shippingAddressView? <BackAddressView
                         title={'平台寄回物流信息'}
-                        manyLogistics={true}
+                        data={exchangeExpress}
+                        onPress={this.shopLogists}
                     />: null}
                     {isShow_backAddressView? <BackAddressView
                         title={'用户寄回物流信息'}
-                        manyLogistics={false}
+                        data={refundAddress}
+                        onPress={this.returnLogists}
                     /> : null}
                     {
                         isShow_refundDetailView ?
-                            <RefundDetailView refundAccountAmount={refundAccountAmount}
-                                              refundCashAmount={refundCashAmount}
-                                              refundPrice={refundPrice}
+                            <RefundDetailView refundInfo={refundInfo}
                             /> : null
                     }
                     {
@@ -286,7 +249,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                                                                  reason,
                                                                  description,
                                                                  imgList,
-                                                                 refundPrice,
+                                                                 refundPrice: applyRefundAmount,
                                                                  quantity
                                                              }}
                         />:null
@@ -297,6 +260,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                         <MRText style={styles.item_text}>协商记录</MRText>
                         <UIImage style={styles.item_arrow} source={arrow_right_black}/>
                     </TouchableOpacity>
+                    <View style={{height: ScreenUtils.safeBottom}}/>
                 </ScrollView>
                 <NavigatorBar headerStyle={{position: 'absolute',
                     top: 0,
@@ -309,7 +273,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                               leftPressed={()=>{this.$navigateBack()}}
                               title={'售后详情'}
                               titleStyle={{color: 'white'}}
-                              rightNavImage={white_back}
+                              rightNavImage={tongyong_icon_kefu_white}
                               rightPressed={()=>{this.connetKefu()}}
                 />
             </View>
@@ -350,6 +314,7 @@ class ExchangeGoodsDetailPage extends BasePage {
     }
 
     gotoNegotiateHistory(){
+        this.$navigate(RouterMap.NegotiationHistoryPage, {serviceNo: this.params.serviceNo})
 
     }
     //取消申请
@@ -378,44 +343,38 @@ class ExchangeGoodsDetailPage extends BasePage {
         );
     };
 
-    returnLogists = (expressNo) => {
+    returnLogists = (expressNo, expressCode, manyLogistics) => {
         if (EmptyUtils.isEmpty(expressNo)) {
             this.$navigate('order/afterSaleService/FillReturnLogisticsPage', {
-                pageData: this.afterSaleDetailModel.pageData,
+                pageData: {productOrderNo: this.afterSaleDetailModel.pageData.product.productOrderNo},
                 callBack: () => {
                     this.afterSaleDetailModel.loadPageData();
                 }
             });
         } else {
             this.$navigate('order/logistics/LogisticsDetailsPage', {
-                expressNo: expressNo
+                expressNo: expressNo,
+                expressCode: expressCode
             });
         }
     };
 
-    shopLogists = (expressNo) => {
-        if (EmptyUtils.isEmpty(expressNo)) {
-            this.$toastShow('请填写完整的退货物流信息\n才可以查看商家的物流信息');
-            return;
-        }
-        this.logisticsDetailsPage(expressNo)
+    shopLogists = (expressNo, expressCode, manyLogistics) => {
+        // if (EmptyUtils.isEmpty(expressNo)) {
+        //     this.$toastShow('请填写完整的退货物流信息\n才可以查看商家的物流信息');
+        //     return;
+        // }
+       if (manyLogistics) {
+           this.$navigate(RouterMap.AfterLogisticsListView, {
+               serviceNo: this.params.serviceNo
+           });
+       }else {
+           this.$navigate('order/logistics/LogisticsDetailsPage', {
+               expressNo: expressNo,
+               expressCode: expressCode
+           });
+       }
     };
-
-    logisticsDetailsPage = (expressNo) => {
-        OrderApi.return_express({serviceNo: this.params.serviceNo}).then((data)=>{
-            if (data.data&&data.data.length>1){//有多个物流
-                this.$navigate(RouterMap.AfterLogisticsListView, {
-                    serviceNo: this.params.serviceNo
-                });
-            }else {
-                this.$navigate('order/logistics/LogisticsDetailsPage', {
-                    expressNo: expressNo
-                });
-            }
-        }).catch(err=>{
-            this.$toastShow(err.msg);
-        });
-    }
 
     /**
      * 撤销、修改
@@ -424,8 +383,8 @@ class ExchangeGoodsDetailPage extends BasePage {
     onPressOperationApply(cancel) {
         let that = this;
         // pageType 0 退款详情  1 退货详情   2 换货详情
-        let pageType = this.afterSaleDetailModel.pageData.type - 1;
-        let num = this.afterSaleDetailModel.pageData.maxRevokeTimes - this.afterSaleDetailModel.pageData.hadRevokeTimes || 0;
+        let pageType = this.afterSaleDetailModel.pageData.service.type - 1;
+        let num = this.afterSaleDetailModel.pageData.service.maxRevokeTimes - this.afterSaleDetailModel.pageData.service.hadRevokeTimes || 0;
         if (cancel) {
             let tips = ['确认撤销本次退款申请？您最多只能发起' + num + '次',
                 '确认撤销本次退货退款申请？您最多只能发起' + num + '次',

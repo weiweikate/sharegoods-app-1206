@@ -10,7 +10,6 @@ import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import { confirmOrderModel } from '../../model/ConfirmOrderModel';
-import bridge from '../../../../utils/bridge';
 import { observer } from 'mobx-react/native';
 
 @observer
@@ -34,10 +33,7 @@ export default class ConfirmBottomView extends Component {
                     <NoMoreClick
                         style={[styles.commitTouStyle,{backgroundColor: StringUtils.isEmpty(confirmOrderModel.err)?DesignRule.mainColor:DesignRule.textColor_placeholder}]}
                         onPress={() => {
-                            bridge.showLoading('提交中...');
-                            setTimeout(() => {
                                 this.props.commitOrder();
-                            }, 200);
                         }}>
                         <UIText value={'提交订单'}
                                 style={{

@@ -1,7 +1,7 @@
 export const PageType = {
-    PAGE_AREFUND:      0, //退款
-    PAGE_SALES_RETURN: 1, //退货
-    PAGE_EXCHANGE:     2, //换货
+    PAGE_AREFUND:      1, //退款
+    PAGE_SALES_RETURN: 2, //退货
+    PAGE_EXCHANGE:     3, //换货
 }
 
 export const AfterStatus = {
@@ -14,10 +14,14 @@ export const AfterStatus = {
 }
 
 export const SubStatus = {
+    /**拒绝的子状态 */
     REFUSE_REVOKED:   1, //用户自己关闭
     REFUSE_OVERTIME:  2, //超时
     REFUSE_APPLY:     3, //拒绝售后申请
     REFUSE_AFTER:     4, //拒绝售后
+    /**待平台处理子状态 */
+    WAIT_AUDIT:       8, //等待管理员处理
+    WAIT_SENDBACK:    9, //理员审核，等待寄回
 }
 
 export const RefundStatus = {

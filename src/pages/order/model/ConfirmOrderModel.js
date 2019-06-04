@@ -42,8 +42,6 @@ class ConfirmOrderModel {
     @observable
     orderParamVO = {};
     @observable
-    canCommit = true;
-    @observable
     loadingState = PageLoadingState.success;
     @observable
     giveUpCou = false;
@@ -76,7 +74,6 @@ class ConfirmOrderModel {
         this.message = '';
         this.addressId = null;
         this.orderParamVO = {};
-        this.canCommit = true;
         this.giveUpCou= false;
         this.couponCount=0;
         this.couponData={};
@@ -125,15 +122,21 @@ class ConfirmOrderModel {
                 break;
             default://其他
                 OrderApi.makeSureOrder({
-                    orderType: 1,//1.普通订单 2.活动订单  -- 下单必传
-                    // orderSubType:  "",//1.秒杀 2.降价拍 3.升级礼包 4.普通礼包
-                    source: orderParamVO.source,//1.购物车 2.直接下单
-                    sgAppVersion:310,
-                    couponsId: orderParamVO.couponsId,
-                    // source: 4,//1.购物车 2.直接下单,4 周期券
-                    channel: 2,//1.小程序 2.APP 3.H5
-                    orderProductList: orderParamVO.orderProducts,
-                    ...params
+                    couponInfo:{ //券信息
+                        couponCodes:[this.userCouponCode], //List<string> 本次下单使用的优惠券code
+                        tokenCoin: params.tokenCoin//BigDecimal 一元券抵扣金额
+                    },
+                    receiveInfo:{
+                        id: params.addressId //int 收货地址ID
+                    },
+                    productList: orderParamVO.orderProducts,
+                    invokeInfo: { //接口请求信息
+                        source: orderParamVO.source,  //int 订单来源: 1.购物车 2.直接下单
+                        channel:  2//int 渠道来源: 1.小程序 2.APP 3.H5
+                    },
+                    ext:{ //扩展信息
+                        userMessage: this.message// string 买家留言
+                    }
                 }).then(response => {
                     this.handleNetData(response.data);
                 }).catch(err => {
@@ -147,7 +150,6 @@ class ConfirmOrderModel {
 
     disPoseErr = (err, orderParamVO, params) => {
         bridge.hiddenLoading();
-        this.canCommit = true;
         this.err=err;
         if (err.code === 10003 && err.msg.indexOf('不在限制的购买时间') !== -1) {
             Alert.alert('提示', err.msg, [
@@ -169,7 +171,6 @@ class ConfirmOrderModel {
     handleNetData = (data) => {
         this.err=null;
         bridge.hiddenLoading();
-        this.canCommit = true;
         this.loadingState = PageLoadingState.success;
         this.orderProductList = data.orderProductList;
         this.addressData = data.userAddressDTO || data.userAddress || {};
@@ -262,7 +263,6 @@ class ConfirmOrderModel {
                 OrderApi.DepreciateSubmitOrder(needParams2).then((response) => {
                     bridge.hiddenLoading();
                     let data = response.data;
-                    this.canCommit = true;
                     callback(data);
                     shopCartCacheTool.getShopCartGoodsListData();
                     track(trackEvent.submitOrder, {
@@ -270,7 +270,6 @@ class ConfirmOrderModel {
                         orderSubmitPage: 1
                     });
                 }).catch(err => {
-                    this.canCommit = true;
                     bridge.hiddenLoading();
                     bridge.$toast(err.msg);
                 });
@@ -290,7 +289,6 @@ class ConfirmOrderModel {
                 OrderApi.PackageSubmitOrder(params).then((response) => {
                     bridge.hiddenLoading();
                     let data = response.data;
-                    this.canCommit = true;
                     callback(data);
                     shopCartCacheTool.getShopCartGoodsListData();
                     track(trackEvent.submitOrder, {
@@ -298,7 +296,6 @@ class ConfirmOrderModel {
                         orderSubmitPage: 1
                     });
                 }).catch(err => {
-                    this.canCommit = true;
                     bridge.hiddenLoading();
                     bridge.$toast(err.msg);
                 });
@@ -317,7 +314,6 @@ class ConfirmOrderModel {
                 OrderApi.submitOrder(paramsnor).then((response) => {
                     bridge.hiddenLoading();
                     let data = response.data;
-                    this.canCommit = true;
                     shopCartCacheTool.getShopCartGoodsListData();
                     callback(data);
                     shopCartCacheTool.getShopCartGoodsListData();
@@ -326,7 +322,6 @@ class ConfirmOrderModel {
                         orderSubmitPage:orderParamVO.source==1?11:1
                     });
                 }).catch(err => {
-                    this.canCommit = true;
                     bridge.hiddenLoading();
                     bridge.$toast(err.msg);
                 });

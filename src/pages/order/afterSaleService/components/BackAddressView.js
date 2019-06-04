@@ -22,7 +22,6 @@ import {
     UIText
 } from '../../../../components/ui';
 import DesignRule from '../../../../constants/DesignRule';
-import AddressItem from '../../components/AddressItem';
 
 export default class BackAddressView extends React.Component {
 
@@ -43,35 +42,23 @@ export default class BackAddressView extends React.Component {
 
 
     render() {
-        let refundAddress = this.props.refundAddress || {};
-        let {title,manyLogistics,onPress} = this.props;
-        let {
-            receiver,
-            receiverPhone,
-            province,
-            city,
-            area ,
-            street ,
-            address
-        } = refundAddress;
-        receiver = receiver || '';
-        receiverPhone = receiverPhone || '';
-        province = province || '';
-        city = city || '';
-        area = area || '';
-        street = street || '';
-        address = address || '';
-        province = 'XxXXXXXXXXXxxxxxxxxxxcvbcsdfghgfdsfghjgfdsfghjgfdsfghgfdsfghfdfgfdfgfdfg'
-        let detailAddress =   province + city + area + area + street + address +
+        let {title,onPress, data} = this.props;
+        let {receiverPhone, receiver, receiverAddress, express, expressNo, expressCode, expressName} = data || {}
+        let detailAddress =   receiverAddress
             '；收件人：' + receiver + '联系方式：' + receiverPhone;
-        // manyLogistics
+        let manyLogistics = express && express.length > 1;
+        if (express && express.length > 0) {
+            expressNo = express[0].expressNo;
+            expressCode = express[0].expressCode;
+            expressName = express[0].expressName;
+        }
         let detail_num = null;
         let detail_company = '';
-        if (manyLogistics === true){
-            detail_num = '该订 单被拆成N个包裹发出，点击“查看物流信息”查看详情'
+        if (manyLogistics){
+            detail_num = '该订单被拆成'+ express.length +'个包裹发出，点击“查看物流信息”查看详情'
         } else {
-            detail_num = '物流单号：xxxx'
-            detail_company = '物流公司：xxxx'
+                detail_num = '物流单号：'+expressNo
+                detail_company = '物流公司：'+expressName
         }
         return (
             <View style={styles.container}>
@@ -93,7 +80,7 @@ export default class BackAddressView extends React.Component {
                     justifyContent: 'center',
                     alignItems: 'center'
                 }}>
-                    <TouchableOpacity onPress={onPress}
+                    <TouchableOpacity onPress={()=> {onPress(expressNo, expressCode, manyLogistics)}}
                                       style={styles.borderButton}>
                         <UIText value={'查看物流信息'}
                                 style={{

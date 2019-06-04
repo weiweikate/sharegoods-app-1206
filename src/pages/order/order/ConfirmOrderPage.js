@@ -123,11 +123,7 @@ export default class ConfirmOrderPage extends BasePage {
 
     // 提交订单
     commitOrder = () => {
-        if (!confirmOrderModel.canCommit) {
-            bridge.hiddenLoading();
-            return;
-        }
-        confirmOrderModel.canCommit = false;
+        bridge.showLoading('提交中...');
         confirmOrderModel.submitProduct(this.params.orderParamVO, {
 
             callback: (data) => {

@@ -65,7 +65,9 @@ class AfterSaleServicePage extends BasePage {
     }
 
     componentDidMount() {
-        this.loadPageData();
+       setTimeout(()=>{
+           this.loadPageData();
+       },1000)
     }
 
     $isMonitorNetworkStatus() {
@@ -95,7 +97,7 @@ class AfterSaleServicePage extends BasePage {
     renderOrderNum = () => {
         return (
             <View style={{ height: 40, backgroundColor: 'white', justifyContent: 'center' }}>
-                <UIText value={'订单编号：' + this.state.productData.warehouseOrderNo}
+                <UIText value={'订单编号：' + this.state.productData.productOrderNo}
                         style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>
             </View>
         );
@@ -403,7 +405,7 @@ class AfterSaleServicePage extends BasePage {
     };
 
     _getReturnReason(fah) {//是否发货
-        let pageType = this.params.pageType;
+        let pageType = this.params.pageType || 0;
         if (fah === false) {
             pageType = 3;
         }
@@ -436,7 +438,8 @@ class AfterSaleServicePage extends BasePage {
     loadPageData() {
         let that = this;
         this.$loadingShow();
-        OrderApi.subOrder({ orderProductNo: this.params.orderProductNo + '' }).then((result) => {
+        this.params.orderProductNo = 'G181211102809000001';
+        OrderApi.afterSaleProduceDetail({ productOrderNo: this.params.orderProductNo + '' }).then((result) => {
             that.$loadingDismiss();
             let productData = result.data || {};
             let status = productData.status;
@@ -497,7 +500,7 @@ class AfterSaleServicePage extends BasePage {
                 // smallImgUrls = ',' + this.state.imageArr[i].imageThumbUrl;
             }
         }
-        let { orderProductNo, pageType, serviceNo } = this.params;
+        let { orderProductNo, pageType = 0, serviceNo } = this.params;
         let { applyRefundAmount } = this.state;
         let { remark, returnReason } = this.state;
         let params = {
@@ -548,7 +551,7 @@ class AfterSaleServicePage extends BasePage {
                 actualPaymentAmount:  payAmount,// 用户实际支付金额
             });
             /** 提交申请、提交申请成功要通知订单刷新*/
-            params.orderProductNo = orderProductNo;
+            params.productOrderNo = orderProductNo;
             this.$loadingShow();
             OrderApi.afterSaleApply(params).then((response) => {
                 this.$loadingDismiss();

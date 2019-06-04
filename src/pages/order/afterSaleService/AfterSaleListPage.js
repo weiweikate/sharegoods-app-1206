@@ -86,16 +86,26 @@ export default class AfterSaleListPage extends BasePage<Props> {
         // alert(this.list)
         //  this.list._onRefresh && this.list._onRefresh();
     }
-
+  //1.售前仅退款 2.退货退款 3.换货
     renderItem({ item }) {
+        let {status,
+            specImg,
+            productName,
+            unitPrice,
+            spec,
+            refundNum,
+            type,
+            serviceNo,
+            productOrderNo
+        } = item;
         return (
             <View style={{ height: 160, marginBottom: 10 }}>
                 <GoodsGrayItem
-                    uri={item.specImg}
-                    goodsName={item.productName}
-                    salePrice={StringUtils.formatMoneyString(item.unitPrice)}
-                    category={item.spec}
-                    goodsNum={item.quantity}
+                    uri={specImg}
+                    goodsName={productName}
+                    salePrice={StringUtils.formatMoneyString(unitPrice)}
+                    category={spec}
+                    goodsNum={refundNum}
                     style={{ backgroundColor: DesignRule.white }}
                     // onPress={() => this.jumpToProductDetailPage()}
                 />
@@ -107,22 +117,34 @@ export default class AfterSaleListPage extends BasePage<Props> {
                     borderTopWidth: 0.5,
                     borderTopColor: DesignRule.textColor_placeholder
                 }}>
-                    <UIImage source={[icon_refund, icon_return_goods, icon_exchange][item.type - 1]}
+                    <UIImage source={[icon_refund, icon_return_goods, icon_exchange][type - 1]}
                              style={styles.image}
                     />
-                    <UIText value={['仅退款', '退货退款', '换货'][item.type - 1]}
+                    <UIText value={['仅退款', '退货退款', '换货'][type - 1]}
                             style={styles.text}
                     />
                     <UIText value={this.getStatusText(item)}
                             style={[styles.text, { marginLeft: 35, flex: 1 }]}
                     />
                     <TouchableOpacity onPress={() => {
+                        if (status === 2) {
+                            this.$navigate('order/afterSaleService/FillReturnLogisticsPage', {
+                                pageData: {
+                                    serviceNo,
+                                    productOrderNo
+                                },
+                                callBack: () => {
+                                    this.list&&this.list.onRefresh();
+                                }
+                            });
+                            return;
+                        }
                         this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
-                            serviceNo: item.serviceNo
+                            serviceNo: serviceNo
                         });
-                    }} style={styles.btnContainer}>
-                        <UIText value={'查看详情'}
-                                style={styles.btnText}
+                    }} style={[styles.btnContainer,{borderColor: status === 2? DesignRule.mainColor: DesignRule.lineColor_inGrayBg}]}>
+                        <UIText value={status === 2 ? '填写物流' : '查看详情'}
+                                style={[styles.btnText, {color: status === 2? DesignRule.mainColor: DesignRule.textColor_instruction}]}
                         />
                     </TouchableOpacity>
                 </View>
@@ -131,14 +153,18 @@ export default class AfterSaleListPage extends BasePage<Props> {
         );
     }
 
-    getStatusText(item) {//1.待审核 2.待寄回 3.待仓库确认 4.待平台处理 5.售后完成 6.售后关闭|否|
+    getStatusText(item) {//1.待审核 2.待寄回 3.待仓库确认 4.待平台处理 5.售后完成 6.售后关闭|否| 7, "待商家取消发货"
         let typeStr = ['仅退款', '退货退款', '换货'][item.type - 1];
         switch (item.status) {
             case 1:
+            case 7://在c端，7、1都是待审核
+                return '待审核';
             case 2:
+                return '待寄回';
             case 3:
+                return '待平台确认';
             case 4:
-                return typeStr + '中';
+                return '待平台处理';
             case 5:
                 return typeStr + '完成';
             case 6:
@@ -167,9 +193,9 @@ export default class AfterSaleListPage extends BasePage<Props> {
                         return result.data.isMore ? 10 : 0;
                     }}
                     handleRequestResult={(result) => {
-                        return result.data.list;
+                        return result.data.data;
                     }}
-                    // ref={(ref) => {this.list = ref}}
+                     ref={(ref) => {this.list = ref}}
                 />
             </View>
         );
@@ -196,7 +222,7 @@ const styles = StyleSheet.create({
         marginRight: 15
     },
     btnText: {
-        color: DesignRule.textColor_secondTitle,
+        color: DesignRule.textColor_placeholder,
         fontSize: 13
     },
     image: {

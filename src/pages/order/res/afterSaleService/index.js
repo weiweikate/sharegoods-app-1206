@@ -10,6 +10,7 @@ const afterSaleService = {
     applyRefundPhone: require('./applyRefundPhone.png'),
     exchangeGoodsDetailBg: require('./exchangeGoodsDetailBg.png'),
     white_triangular: require('./white_triangular.png'),
+    tongyong_icon_kefu_white: require('./tongyong_icon_kefu_white.png'),
 };
 
 export default afterSaleService;

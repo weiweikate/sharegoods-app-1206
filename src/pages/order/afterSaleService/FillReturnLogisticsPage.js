@@ -34,13 +34,12 @@ export default class FillReturnLogisticsPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            //商品、订单等信息
-            pageData: this.params.pageData || {},
             //物流公司名称
             logisticsCompanyName: null,
             //物流单号
             logisticsNum: '',
             code: 0,
+            pageData:{}
         };
         this._bindFunc();
     }
@@ -51,21 +50,22 @@ export default class FillReturnLogisticsPage extends BasePage {
         this.submit = this.submit.bind(this);
     }
 
+    componentDidMount() {
+        OrderApi.return_address({productOrderNo: this.params.pageData.productOrderNo }).then((data)=> {
+            this.setState({pageData: data.data})
+        })
+    }
+
     $navigationBarOptions = {
         title: '填写退货物流',
         show: true// false则隐藏导航
     };
 
     _render() {
-        let {refundAddress={}} = this.params.pageData || {};
-        let {
-            receiver = '',
+        let { receiver = '',
             receiverPhone = '',
-            province = '',
-            city = '',
-            area = '',
-            street = '',
-            address = ''} = refundAddress;
+            returnAddress = ''} = this.state.pageData || {};
+
 
         return (
             <View style={styles.container}>
@@ -80,7 +80,7 @@ export default class FillReturnLogisticsPage extends BasePage {
                                     value={'退换货地址：' }/>
                             <View style={{flex: 1, marginRight: 10}}>
                             <UIText style={[styles.item_title,{marginLeft: 0}]}
-                                    value={ province + city + area + street + address}/>
+                                    value={ returnAddress }/>
                             </View>
                         </View>
                         <UIText style={[styles.item_title, {marginTop: 5}]}

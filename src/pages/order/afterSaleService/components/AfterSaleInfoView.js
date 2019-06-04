@@ -16,10 +16,10 @@ import {
 } from "react-native";
 import {
     UIText,
-    UIImage
 } from "../../../../components/ui";
 import DesignRule from '../../../../constants/DesignRule';
 import EmptyUtils from "../../../../utils/EmptyUtils";
+import ImageLoader from '@mr/image-placeholder';
 import { PageType } from '../AfterType';
 const {
     PAGE_AREFUND,
@@ -41,7 +41,7 @@ export default class AfterSaleInfoView extends React.Component {
         for (let i = 0; i < imgList.length; i++) {
             if (imgList[i].length > 0){
                 arr.push(
-                    <UIImage source={{ uri: imgList[i] }}
+                    <ImageLoader source={{ uri: imgList[i] }}
                              style={{
                                  height: 83,
                                  width: 83,
