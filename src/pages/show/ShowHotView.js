@@ -118,6 +118,10 @@ export default class ShowHotView extends React.Component {
     };
 
     renderHeader = () => {
+        const { bannerList } = showBannerModules;
+        if (!bannerList || bannerList.length <= 0) {
+            return null;
+        }
         return (<View style={{ backgroundColor: DesignRule.bgColor, width: ScreenUtils.width - px2dp(30) }}>
                 <ShowBannerView navigate={this.props.navigate} pageFocused={this.props.pageFocus}/>
             </View>
