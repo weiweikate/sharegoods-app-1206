@@ -39,7 +39,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         NineGridView.setImageLoader(new NineGridView.ImageLoader() {
             @Override
             public void onDisplayImage(Context context, SimpleDraweeView imageView, String url) {
-                ImageLoadUtils.loadRoundNetImage(url, imageView, 5);
+                ImageLoadUtils.loadRoundNetImage(url, imageView, DensityUtils.dip2px(5));
             }
         });
         this.clickL = clickL;
@@ -158,19 +158,20 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
 
         NineGridView nineGridView = helper.getView(R.id.nine_grid);
 
-        nineGridView.setSingleImageRatio((float) (19 / 12.0));
+
+//        nineGridView.setSingleImageRatio((float) (19 / 12.0));
         nineGridView.setSingleImageRatio(ScreenUtils.getScreenWidth() - DensityUtils.px2dip(185));
-        List<ImageInfo> imageInfoList = new ArrayList<>();
-        if (item.getResource() != null) {
-            for (int i = 0; i < item.getResource().size(); i++) {
-                if (item.getResource().get(i).getType() == 2) {
-                    String url = item.getResource().get(i).getUrl();
-                    ImageInfo info = new ImageInfo();
-                    info.setImageUrl(url);
-                    imageInfoList.add(info);
-                }
-            }
-        }
+        List<ImageInfo> imageInfoList = item.getNineImageInfos();
+//        if (item.getResource() != null) {
+//            for (int i = 0; i < item.getResource().size(); i++) {
+//                if (item.getResource().get(i).getType() == 2) {
+//                    String url = item.getResource().get(i).getUrl();
+//                    ImageInfo info = new ImageInfo();
+//                    info.setImageUrl(url);
+//                    imageInfoList.add(info);
+//                }
+//            }
+//        }
 
         if (this.clickL != null) {
             nineGridView.setClick(clickL);
@@ -178,7 +179,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
             nineGridView.setClick(null);
         }
 
-        if (imageInfoList.size() > 0) {
+        if (imageInfoList != null && imageInfoList.size() > 0) {
             String tag = (String) nineGridView.getTag();
             if (!TextUtils.equals(tag, JSONObject.toJSONString(imageInfoList))) {
                 NineGridViewAdapter adapter = new NineGridViewAdapter(mContext, imageInfoList);
