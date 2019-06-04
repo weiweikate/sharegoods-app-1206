@@ -261,7 +261,7 @@ const styles = StyleSheet.create({
     itemImgStyle: {
         height: 160,
         width: ScreenUtils.width - 30,
-        backgroundColor: '#a5adb3',
+        backgroundColor: '#f5f5f5',
         borderRadius: 5,
         overflow: 'hidden',
     },
