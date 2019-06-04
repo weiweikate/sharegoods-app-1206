@@ -121,7 +121,7 @@ export default class ShowBannerView extends Component {
             items.push(value.image);
         });
 
-        return <View style={{ height, marginVertical: px2dp(10) }}>
+        return <View style={{ height, marginTop: px2dp(10) ,marginBottom:px2dp(ScreenUtils.isIOS ? 5:0)}}>
             {
                 bannerList.length === 1
                     ?
