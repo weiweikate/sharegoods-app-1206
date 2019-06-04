@@ -136,9 +136,6 @@ public class MainActivity extends BaseActivity {
     }
 
     private void releaseRes() {
-        if (mHandler != null) {
-            mHandler = null;
-        }
         if (countDownTimer != null) {
             countDownTimer.onFinish();
             countDownTimer = null;
