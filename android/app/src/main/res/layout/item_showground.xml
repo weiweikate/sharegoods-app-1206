@@ -54,10 +54,12 @@
             android:singleLine="true"
             android:textColor="#666666"
             android:textSize="11sp" />
-        <ImageView android:layout_width="20dp"
+
+        <ImageView
+            android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/icon_fire"
-            android:layout_marginRight="5dp"/>
+            android:layout_marginRight="2dp"
+            android:src="@drawable/icon_fire" />
 
         <TextView
             android:id="@+id/showground_item_rqz"
