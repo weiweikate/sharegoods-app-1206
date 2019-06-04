@@ -374,7 +374,7 @@ class HomePage extends BasePage {
                 }}/>
                 <PraiseModel/>
                 <GiftModal/>
-                <UserLevelModalView />
+                <UserLevelModalView/>
                 <IntervalMsgView pageType={IntervalType.home}/>
                 <HomeAdModal/>
                 <HomeMessageModalView/>
