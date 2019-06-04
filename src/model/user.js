@@ -5,7 +5,9 @@ import UserApi from './userApi';
 import bridge from '../utils/bridge';
 import { QYChatTool } from '../utils/QYModule/QYChatTool';
 import { login, logout } from '../utils/SensorsTrack';
+import StringUtils from '../utils/StringUtils';
 import JPushUtils from '../utils/JPushUtils';
+import { mediatorCallFunc } from '../SGMediator';
 
 
 const USERINFOCACHEKEY = 'UserInfo';
@@ -16,11 +18,12 @@ class User {
 
     @computed
     get isLogin() {
-        return this.token;
+        return StringUtils.isNoEmpty(this.token);
     }
 
     @computed
     get isRealNameRegistration() {
+
         return (this.realnameStatus + '') === '1';
     }
 
@@ -101,6 +104,8 @@ class User {
     @observable
     tokenCoin = null;       //一元券数量
     @observable
+    blockedTokenCoin = null;       //待激活一元券数量
+    @observable
     blockedCoin = null;     //冻结代币
     @observable
     userScore = null;       //积分
@@ -176,6 +181,9 @@ class User {
     @observable
     perfectNumberCode = null;
 
+    //用户微信号
+    @observable
+    weChatNumber = null;
 
     @action getToken = () => {
         if (this.token) {
@@ -255,6 +263,7 @@ class User {
         this.availableBalance = info.availableBalance;//可提现金额
         this.blockedBalance = info.blockedBalance; //冻结金额
         this.tokenCoin = info.tokenCoin;            //一元券数量
+        this.blockedTokenCoin = info.blockedTokenCoin;            //待激活一元券数量
         this.blockedCoin = info.blockedCoin;        //冻结代币
         this.userScore = info.userScore;            //积分
         this.password = info.password;              //密码
@@ -266,7 +275,7 @@ class User {
         this.roleType = info.roleType;              //
         this.level = info.level;                    //
         this.levelName = info.levelName;            //
-        this.levelRemark = info.levelRemark;
+
         this.experience = info.experience;
         this.salePsw = info.salePsw;                //
         this.hadSalePassword = info.hadSalePassword; // 是否设置过交易密码
@@ -284,6 +293,16 @@ class User {
         this.upCode = info.upCode;
         //用户靓号
         this.perfectNumberCode = info.perfectNumberCode;
+        this.weChatNumber = info.weChatNumber; //微信号
+
+        if (this.levelRemark  && this.levelRemark !== info.levelRemark){
+            // mediatorCallFunc()
+            mediatorCallFunc('Home_UserLevelUpdate',info.levelRemark);
+        }
+        this.levelRemark = info.levelRemark;
+
+
+
         if (saveToDisk) {
             AsyncStorage.setItem(USERINFOCACHEKEY, JSON.stringify(info)).catch(e => {
             });
@@ -370,6 +389,7 @@ class User {
         this.availableBalance = null;//可提现金额
         this.blockedBalance = null; //冻结金额
         this.tokenCoin = null;       //代币金额
+        this.blockedTokenCoin = null;       //待激活代币金额
         this.blockedCoin = null;     //冻结代币
         this.userScore = null;       //积分
         this.password = null;        //密码
@@ -460,14 +480,18 @@ class User {
 }
 
 const user = new User();
+
 autorun(() => {
-    user.token ? shopCartCacheTool.synchronousData() : null;
+    user.isLogin ? shopCartCacheTool.synchronousData() : null;
+});
+
+autorun(() => {
     if (user.code) {
         // 启动时埋点关联登录用户,先取消关联，再重新关联
         logout();
         login(user.code);
-        JPushUtils.updatePushTags();
         JPushUtils.updatePushAlias();
+        JPushUtils.updatePushTags();
     }
 });
 export default user;

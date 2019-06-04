@@ -10,7 +10,6 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainPackageConfig;
 import com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage;
-import com.horcrux.svg.SvgPackage;
 import com.meeruu.RNDeviceInfo.RNDeviceInfo;
 import com.meeruu.commonlib.base.BaseApplication;
 import com.meeruu.commonlib.config.FrescoImagePipelineConfig;
@@ -20,7 +19,6 @@ import com.meeruu.sharegoods.rn.RNMRPackage;
 import com.meeruu.sharegoods.rn.lottie.LottiePackage;
 import com.meeruu.sharegoods.rn.sensors.RNSensorsAnalyticsPackage;
 import com.microsoft.codepush.react.CodePush;
-import com.oblador.vectoricons.VectorIconsPackage;
 import com.psykar.cookiemanager.CookieManagerPackage;
 import com.reactlibrary.RNGeolocationPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
@@ -75,8 +73,6 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     new RNMRPackage(),
                     new MainReactPackage(builder.build()),
                     new ReactVideoPackage(),
-                    new VectorIconsPackage(),
-                    new SvgPackage(),
                     new RNDeviceInfo(),
                     new RNGeolocationPackage(),
                     new LinearGradientPackage(),

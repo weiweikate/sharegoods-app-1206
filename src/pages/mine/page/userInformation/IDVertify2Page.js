@@ -10,18 +10,18 @@ import {
 import BasePage from '../../../../BasePage';
 import {
     UIText, TakePhotoModal, NoMoreClick, UIImage
-} from "../../../../components/ui";
-import ImageLoad from "@mr/image-placeholder";
-import StringUtils from "../../../../utils/StringUtils";
-import ScreenUtils from "../../../../utils/ScreenUtils";
-import UserSingleItem from "../../components/UserSingleItem";
-import BusinessUtils from "../../components/BusinessUtils";
-import user from "../../../../model/user";
-import MineApi from "../../api/MineApi";
+} from '../../../../components/ui';
+import ImageLoad from '@mr/image-placeholder';
+import StringUtils from '../../../../utils/StringUtils';
+import ScreenUtils from '../../../../utils/ScreenUtils';
+import UserSingleItem from '../../components/UserSingleItem';
+import BusinessUtils from '../../components/BusinessUtils';
+import user from '../../../../model/user';
+import MineApi from '../../api/MineApi';
 import DesignRule from '../../../../constants/DesignRule';
-import res from "../../res";
+import res from '../../res';
 import {MRText as Text, MRTextInput as RNTextInput} from '../../../../components/ui'
-import apiEnvironment from "../../../../api/ApiEnvironment";
+import apiEnvironment from '../../../../api/ApiEnvironment';
 import { track, trackEvent } from '../../../../utils/SensorsTrack';
 
 const IDcard_country = res.userInfoImg.IDcard_country;

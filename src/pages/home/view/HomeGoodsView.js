@@ -46,8 +46,8 @@ export const Goods = ({ goods, press }) => <TouchableWithoutFeedback onPress={()
 </TouchableWithoutFeedback>;
 
 export default class GoodsCell extends Component {
-    _goodsAction(data) {
-        track(trackEvent.bannerClick, homeModule.bannerPoint(data, homePoint.homeForyou));
+    _goodsAction(data, index) {
+        track(trackEvent.bannerClick, homeModule.bannerPoint(data, homePoint.homeForyou, index));
         let route = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
         const { navigate } = this.props;
         let params = homeModule.paramsNavigate(data);
@@ -55,18 +55,19 @@ export default class GoodsCell extends Component {
     }
 
     render() {
-        const { data } = this.props;
+        const { data, goodsRowIndex, otherLen } = this.props;
         const { itemData } = data;
         if (!data || data.length === 0) {
             return null;
         }
+        let index = goodsRowIndex - otherLen;
         return <View style={[styles.cell]}>
-            <Goods goods={itemData[0]} press={() => this._goodsAction(itemData[0])}/>
+            <Goods goods={itemData[0]} press={() => this._goodsAction(itemData[0], 2 * index - 1)}/>
             <View style={{ width: px2dp(5) }}/>
             {
                 itemData[1]
                     ?
-                    <Goods goods={itemData[1]} press={() => this._goodsAction(itemData[1])}/>
+                    <Goods goods={itemData[1]} press={() => this._goodsAction(itemData[1], 2 * index)}/>
                     :
                     <View style={[styles.container, { backgroundColor: '' }]}/>
             }

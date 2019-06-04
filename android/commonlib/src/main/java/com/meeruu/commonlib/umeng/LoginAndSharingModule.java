@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -11,6 +12,9 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.Shader;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
@@ -25,6 +29,7 @@ import com.facebook.imagepipeline.core.ImagePipelineFactory;
 import com.facebook.imagepipeline.listener.BaseRequestListener;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -37,6 +42,7 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.meeruu.commonlib.R;
 import com.meeruu.commonlib.bean.WXLoginBean;
+import com.meeruu.commonlib.utils.BitmapFillet;
 import com.meeruu.commonlib.utils.BitmapUtils;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.commonlib.utils.LogUtils;
@@ -52,7 +58,18 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
+import jp.wasabeef.blurry.internal.Blur;
+import jp.wasabeef.blurry.internal.BlurFactor;
+
+import static com.meeruu.commonlib.utils.BitmapFillet.CORNER_ALL;
+
 public class LoginAndSharingModule extends ReactContextBaseJavaModule {
+    private static final String imageUrlKey = "imageUrlStr";
+    private static final String titleKey = "titleStr";
+    private static final String linkUrlKey = "QRCodeStr";
+    private static final String originalPriceKey = "originalPrice";
+    private static final String currentPriceKey = "currentPrice";
+
     private ReactApplicationContext mContext;
     public static final String MODULE_NAME = "LoginAndShareModule";
 
@@ -163,13 +180,215 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             fail.invoke("参数出错");
             return;
         }
-        getBitmap(mContext, shareImageBean, success, fail);
+
+        if ("show".equals(shareImageBean.getImageType())) {
+            getShowBitmap(mContext, shareImageBean, success, fail);
+        } else if ("web".equals(shareImageBean.getImageType())) {
+            getWebBitmap(mContext, shareImageBean, success, fail);
+        } else if ("webActivity".equals(shareImageBean.getImageType())) {
+            getWebActivityBitmap(mContext, shareImageBean, success, fail);
+        } else {
+            getBitmap(mContext, shareImageBean, success, fail);
+        }
+
     }
 
+    @ReactMethod
+    public void creatShowShareImage(ReadableMap json, Callback success, Callback fail) {
+        ShareImageBean shareImageBean = parseParam(json);
+        if (shareImageBean == null) {
+            fail.invoke("参数出错");
+            return;
+        }
+
+        getShowBitmap(mContext, shareImageBean, success, fail);
+    }
 
     @ReactMethod
     public void createPromotionShareImage(String url, Callback success, Callback fail) {
         drawPromotionShare(mContext, url, success, fail);
+    }
+
+
+    //秀场下载时获取商品分享图片
+    @ReactMethod
+    public void createShowProductImage(String info, final Promise promise) {
+
+        if (TextUtils.isEmpty(info)) {
+            promise.reject("info为空");
+            return;
+        }
+
+
+        final Map data = (Map) JSON.parseObject(info);
+        if (!data.containsKey(imageUrlKey) && !data.containsKey(titleKey) && !data.containsKey(linkUrlKey)) {
+            promise.reject("数据问题");
+            return;
+        }
+
+
+        if (Fresco.hasBeenInitialized()) {
+            ImageLoadUtils.preFetch(Uri.parse((String) data.get(imageUrlKey)), 0, 0, new BaseRequestListener() {
+                @Override
+                public void onRequestSuccess(ImageRequest request, String requestId, boolean isPrefetch) {
+                    super.onRequestSuccess(request, requestId, isPrefetch);
+                    CacheKey cacheKey = DefaultCacheKeyFactory.getInstance().getEncodedCacheKey(request, this);
+                    BinaryResource resource = ImagePipelineFactory.getInstance().getMainFileCache().getResource(cacheKey);
+                    if (resource == null) {
+                        promise.reject("图片获取失败");
+                        return;
+                    }
+                    final File file = ((FileBinaryResource) resource).getFile();
+                    if (file == null) {
+                        promise.reject("图片获取失败");
+                        return;
+                    }
+                    Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), BitmapUtils.getBitmapOption(2));
+                    if (bmp != null && !bmp.isRecycled()) {
+                        drawShowProduct(mContext,data, bmp, promise);
+                    } else {
+                        promise.reject("图片获取失败");
+                    }
+                }
+            });
+        } else {
+            promise.reject("Fresco.hasBeenInitialized == false");
+            return;
+        }
+    }
+
+
+    private void drawShowProduct(Context context,Map data, Bitmap bitmap, Promise promise) {
+        String title = (String) data.get(titleKey);
+        String price = (String) data.get(originalPriceKey);
+        String info =(String) data.get(linkUrlKey);
+        String currentPrice =(String) data.get(currentPriceKey);
+
+        int ratio = 2;
+        int titleSize = 18 * ratio;
+        int titleCount = (int) ((340 * ratio) / titleSize);
+        boolean isTwoLine;
+        if (title.length() <= titleCount) {
+            isTwoLine = false;
+        } else {
+            isTwoLine = true;
+        }
+
+        Bitmap result = Bitmap.createBitmap(375 * ratio, 667 * ratio, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(result);
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+
+        paint.setColor(Color.WHITE);
+        canvas.drawRect(0, 0, 375 * ratio, 667 * ratio, paint);
+
+        Bitmap logo = BitmapFactory.decodeResource(context.getResources(), R.drawable.sharelogo);
+        Rect mSrcRect = new Rect(0, 0, logo.getWidth(), logo.getHeight());
+        Rect mDestRect = new Rect(104 * ratio, 46 * ratio, 141 * ratio, 83 * ratio);
+        canvas.drawBitmap(logo, mSrcRect, mDestRect, paint);
+
+        paint.setColor(Color.parseColor("#FF0050"));
+        paint.setTextSize(17 * ratio);
+        canvas.drawText("秀一秀 赚到够", 152 * ratio, 72 * ratio, paint);
+
+
+        Bitmap bitmapCenter = Bitmap.createScaledBitmap(bitmap, 339 * ratio, 339 * ratio, true);
+        Bitmap bitmapCenter1 = BitmapFillet.fillet(bitmapCenter, 5 * ratio, CORNER_ALL);
+
+        canvas.drawBitmap(bitmapCenter1, 18 * ratio, 100 * ratio, paint);
+
+        //绘制文字
+        paint.setColor(Color.parseColor("#333333"));
+        paint.setTextSize(titleSize);
+        Rect bounds = new Rect();
+        if (title.length() <= titleCount) {
+            String s = title.substring(0, title.length());
+            //获取文字的字宽高以便把文字与图片中心对齐
+            paint.getTextBounds(s, 0, s.length(), bounds);
+            //画文字的时候高度需要注意文字大小以及文字行间距
+            canvas.drawText(s, 18 * ratio, (457 + titleSize / 2) * ratio, paint);
+        }
+        if (title.length() <= titleCount * 2 && title.length() > titleCount) {
+            String s = title.substring(0, titleCount);
+            //获取文字的字宽高以便把文字与图片中心对齐
+            paint.getTextBounds(s, 0, titleCount, bounds);
+            //画文字的时候高度需要注意文字大小以及文字行间距
+            canvas.drawText(s, 18 * ratio, (457 + titleSize / 2) * ratio, paint);
+            s = title.substring(titleCount, title.length());
+            canvas.drawText(s, 18 * ratio, (457 + titleSize / 2) * ratio + titleSize + bounds.height() / 2, paint);
+        }
+
+        if (title.length() > titleCount * 2) {
+            String s = title.substring(0, titleCount);
+            //获取文字的字宽高以便把文字与图片中心对齐
+            paint.getTextBounds(s, 0, titleCount, bounds);
+            //画文字的时候高度需要注意文字大小以及文字行间距
+            canvas.drawText(s, 18 * ratio, (457 + titleSize / 2) * ratio, paint);
+            s = title.substring(titleCount, titleCount * 2 - 2) + "...";
+            canvas.drawText(s, 18 * ratio, (457 + titleSize / 2) * ratio + titleSize + bounds.height() / 2, paint);
+        }
+
+
+        paint.setColor(Color.parseColor("#FF0050"));
+        paint.setTextSize(22 * ratio);
+        paint.setFakeBoldText(true);
+        String pdj = currentPrice;
+        paint.getTextBounds(pdj, 0, pdj.length(), bounds);
+        canvas.drawText(pdj, 18 * ratio, isTwoLine ? (470 + titleSize) * ratio + titleSize + bounds.height() / 2 : (470 + titleSize) * ratio, paint);
+
+        int left = bounds.width() + 31 * ratio;
+        int top = isTwoLine ? (453 + titleSize) * ratio + titleSize + bounds.height() / 2 : (453 + titleSize) * ratio;
+        int bottom = top + 18 * ratio;
+
+
+
+
+
+
+
+        paint.setStrikeThruText(true);
+        paint.setTextSize(13 * ratio);
+        paint.setColor(Color.parseColor("#999999"));
+        String marketStr = price;
+        canvas.drawText(marketStr, 18 * ratio, bottom + 25 * ratio, paint);
+
+        Bitmap qrBitmap = createQRImage(info, 77 * ratio, 77 * ratio);
+        canvas.drawBitmap(qrBitmap, 268 * ratio, bottom - titleSize - 6 * ratio, paint);
+
+
+        String path = BitmapUtils.saveImageToCache(result, "shareImage.png", JSON.toJSONString(data));
+        if (!TextUtils.isEmpty(path)) {
+            Uri uri = Uri.parse("file://" + path);
+            saveImageAndRefresh(uri);
+            promise.resolve(path);
+        } else {
+            promise.reject("图片生成失败");
+        }
+
+        if (qrBitmap != null && !qrBitmap.isRecycled()) {
+            qrBitmap.recycle();
+            qrBitmap = null;
+        }
+
+        if (result != null && !result.isRecycled()) {
+            result.recycle();
+            result = null;
+        }
+
+        if (logo != null && !logo.isRecycled()) {
+            logo.recycle();
+            logo = null;
+        }
+
+        if (bitmapCenter != null && !bitmapCenter.isRecycled()) {
+            bitmapCenter.recycle();
+            bitmapCenter = null;
+        }
+
+        if (bitmapCenter1 != null && !bitmapCenter1.isRecycled()) {
+            bitmapCenter1.recycle();
+            bitmapCenter1 = null;
+        }
     }
 
     @ReactMethod
@@ -181,6 +400,450 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         } else {
             downloadHeaderImg(mContext, headImg, url, success, fail);
         }
+    }
+
+    public static void getWebBitmap(final Context context, final ShareImageBean shareImageBean, final Callback success, final Callback fail) {
+        if (Fresco.hasBeenInitialized()) {
+            ImageLoadUtils.preFetch(Uri.parse(shareImageBean.getImageUrlStr()), 0, 0, new BaseRequestListener() {
+                @Override
+                public void onRequestSuccess(ImageRequest request, String requestId, boolean isPrefetch) {
+                    super.onRequestSuccess(request, requestId, isPrefetch);
+                    CacheKey cacheKey = DefaultCacheKeyFactory.getInstance().getEncodedCacheKey(request, this);
+                    BinaryResource resource = ImagePipelineFactory.getInstance().getMainFileCache().getResource(cacheKey);
+                    if (resource == null) {
+                        fail.invoke("图片获取失败");
+                        return;
+                    }
+                    final File file = ((FileBinaryResource) resource).getFile();
+                    if (file == null) {
+                        fail.invoke("图片获取失败");
+                        return;
+                    }
+                    Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), BitmapUtils.getBitmapOption(2));
+                    if (bmp != null && !bmp.isRecycled()) {
+                        drawWeb(context, bmp, shareImageBean, success, fail);
+                    } else {
+                        fail.invoke("图片获取失败");
+                    }
+                }
+            });
+        }
+    }
+
+    public static void drawWeb(Context context, Bitmap bitmap, ShareImageBean shareImageBean, Callback success, Callback fail) {
+
+        String info = shareImageBean.getQRCodeStr();
+        int ratio = 3;
+        Bitmap result = Bitmap.createBitmap(250 * ratio, 340 * ratio, Bitmap.Config.ARGB_8888);
+
+        Canvas canvas = new Canvas(result);
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+        bitmap = Bitmap.createScaledBitmap(bitmap, 250 * ratio, 340 * ratio, true);
+        canvas.drawBitmap(bitmap, 0, 0, paint);
+
+
+        Bitmap qrBitmap = createQRImage(info, 45 * ratio, 45 * ratio);
+        canvas.drawBitmap(qrBitmap, 190 * ratio, 285 * ratio, paint);
+
+        String path = BitmapUtils.saveImageToCache(result, "shareImage.png", shareImageBean.toString());
+        if (!TextUtils.isEmpty(path)) {
+            success.invoke(path);
+        } else {
+            fail.invoke("图片生成失败");
+        }
+
+        if (qrBitmap != null && !qrBitmap.isRecycled()) {
+            qrBitmap.recycle();
+            qrBitmap = null;
+        }
+    }
+
+
+    public static void getShowBitmap(final Context context, final ShareImageBean shareImageBean, final Callback success, final Callback fail) {
+        if (Fresco.hasBeenInitialized()) {
+            ImageLoadUtils.preFetch(Uri.parse(shareImageBean.getImageUrlStr()), 0, 0, new BaseRequestListener() {
+                @Override
+                public void onRequestSuccess(ImageRequest request, String requestId, boolean isPrefetch) {
+                    super.onRequestSuccess(request, requestId, isPrefetch);
+                    CacheKey cacheKey = DefaultCacheKeyFactory.getInstance().getEncodedCacheKey(request, this);
+                    BinaryResource resource = ImagePipelineFactory.getInstance().getMainFileCache().getResource(cacheKey);
+                    if (resource == null) {
+                        fail.invoke("图片获取失败");
+                        return;
+                    }
+                    final File file = ((FileBinaryResource) resource).getFile();
+                    if (file == null) {
+                        fail.invoke("图片获取失败");
+                        return;
+                    }
+                    Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), BitmapUtils.getBitmapOption(2));
+                    if (bmp != null && !bmp.isRecycled()) {
+                        getShowHeaderBitmap(context, bmp, shareImageBean, success, fail);
+
+                    } else {
+                        fail.invoke("图片获取失败");
+                    }
+                }
+            });
+        }
+    }
+
+    public static void getWebActivityBitmap(final Context context, final ShareImageBean shareImageBean, final Callback success, final Callback fail) {
+        if (Fresco.hasBeenInitialized()) {
+            ImageLoadUtils.preFetch(Uri.parse(shareImageBean.getImageUrlStr()), 0, 0, new BaseRequestListener() {
+                @Override
+                public void onRequestSuccess(ImageRequest request, String requestId, boolean isPrefetch) {
+                    super.onRequestSuccess(request, requestId, isPrefetch);
+                    CacheKey cacheKey = DefaultCacheKeyFactory.getInstance().getEncodedCacheKey(request, this);
+                    BinaryResource resource = ImagePipelineFactory.getInstance().getMainFileCache().getResource(cacheKey);
+                    if (resource == null) {
+                        fail.invoke("图片获取失败");
+                        return;
+                    }
+                    final File file = ((FileBinaryResource) resource).getFile();
+                    if (file == null) {
+                        fail.invoke("图片获取失败");
+                        return;
+                    }
+                    Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), BitmapUtils.getBitmapOption(2));
+                    if (bmp != null && !bmp.isRecycled()) {
+                        getShowHeaderBitmap(context, bmp, shareImageBean, success, fail);
+
+                    } else {
+                        fail.invoke("图片获取失败");
+                    }
+                }
+            });
+        }
+    }
+
+
+    public static void getShowHeaderBitmap(final Context context, final Bitmap mainBitmap, final ShareImageBean shareImageBean, final Callback success, final Callback fail) {
+        if (Fresco.hasBeenInitialized()) {
+            if (TextUtils.isEmpty(shareImageBean.getHeaderImage())) {
+                Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.bg_app_user);
+                if ("show".equals(shareImageBean.getImageType())) {
+                    drawShow(context, bitmap, mainBitmap, shareImageBean, success, fail);
+                } else if ("webActivity".equals(shareImageBean.getImageType())) {
+                    drawWebActivity(context, bitmap, mainBitmap, shareImageBean, success, fail);
+                } else if ("web".equals(shareImageBean.getImageType())) {
+
+                }
+            } else {
+                ImageLoadUtils.preFetch(Uri.parse(shareImageBean.getHeaderImage()), 0, 0, new BaseRequestListener() {
+                    @Override
+                    public void onRequestSuccess(ImageRequest request, String requestId, boolean isPrefetch) {
+                        super.onRequestSuccess(request, requestId, isPrefetch);
+                        CacheKey cacheKey = DefaultCacheKeyFactory.getInstance().getEncodedCacheKey(request, this);
+                        BinaryResource resource = ImagePipelineFactory.getInstance().getMainFileCache().getResource(cacheKey);
+                        if (resource == null) {
+                            fail.invoke("图片获取失败");
+                            return;
+                        }
+                        final File file = ((FileBinaryResource) resource).getFile();
+                        if (file == null) {
+                            fail.invoke("图片获取失败");
+                            return;
+                        }
+                        Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), BitmapUtils.getBitmapOption(2));
+
+                        if (bmp != null && !bmp.isRecycled()) {
+                            if ("show".equals(shareImageBean.getImageType())) {
+                                drawShow(context, bmp, mainBitmap, shareImageBean, success, fail);
+                            } else if ("webActivity".equals(shareImageBean.getImageType())) {
+                                drawWebActivity(context, bmp, mainBitmap, shareImageBean, success, fail);
+                            } else if ("web".equals(shareImageBean.getImageType())) {
+
+                            }
+                        } else {
+                            fail.invoke("图片获取失败");
+                        }
+                    }
+                });
+            }
+
+        }
+    }
+
+    private static void drawWebActivity(Context context, Bitmap headBitmap, final Bitmap bitmap, ShareImageBean shareImageBean, Callback success, Callback fail) {
+        int precision = 2;
+        Bitmap result = Bitmap.createBitmap(375 * precision, 667 * precision, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(result);
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        BlurFactor blurFactor = new BlurFactor();
+        blurFactor.width = bitmap.getWidth();
+        blurFactor.height = bitmap.getHeight();
+        Bitmap outBitmap = Blur.of(context, bitmap, blurFactor);
+        int outWidth = outBitmap.getWidth();
+        int outHeight = outBitmap.getHeight();
+        if (outWidth * 1.0 / outHeight > 375 / 667) {
+            int height = outHeight;
+            int width = (int) (height * (375 / 667.0));
+            Rect mSrcRect = new Rect((outWidth - width) / 2, 0, outWidth - (width / 2), height);
+            Rect mDestRect = new Rect(0, 0, 375 * precision, 667 * precision);
+            canvas.drawBitmap(outBitmap, mSrcRect, mDestRect, paint);
+        } else {
+            int width = outWidth;
+            int height = (int) (outWidth / (375 * 667.0));
+            Rect mSrcRect = new Rect(0, (outHeight - height) / 2, 0, outHeight - (height / 2));
+            Rect mDestRect = new Rect(0, 0, 375 * precision, 667 * precision);
+            canvas.drawBitmap(outBitmap, mSrcRect, mDestRect, paint);
+        }
+        paint.reset();
+        Bitmap bitmapCenter = Bitmap.createScaledBitmap(bitmap, 310 * precision, 410 * precision, true);
+        Bitmap bitmapCenter1 = BitmapFillet.fillet(bitmapCenter, 5 * precision, CORNER_ALL);
+        canvas.drawBitmap(bitmapCenter1, 33 * precision, 65 * precision, paint);
+
+        paint.reset();
+        Paint headerPaint = new Paint();
+        headerPaint.setDither(true);
+        Bitmap header = getCircleHeaderBitmap(headBitmap, precision);
+        canvas.drawBitmap(header, 64 * precision, 425 * precision, headerPaint);
+
+        Paint textPaint = new Paint();
+        textPaint.setAntiAlias(true);
+        String name = shareImageBean.getUserName();
+        if (!TextUtils.isEmpty(name)) {
+            textPaint.reset();
+            textPaint.setAntiAlias(true);
+            textPaint.setColor(Color.parseColor("#ffffff"));
+            textPaint.setTextSize(12 * precision);
+            Rect bounds = new Rect();
+            textPaint.getTextBounds(name, 0, name.length(), bounds);
+            canvas.drawText(name + " " + shareImageBean.getDiamondNum(), 105 * precision, 446 * precision, textPaint);
+        }
+
+        String url = shareImageBean.getQRCodeStr();
+        if (!TextUtils.isEmpty(url)) {
+            Paint qrPaint = new Paint();
+            qrPaint.setColor(Color.WHITE);
+            RectF qrBg = new RectF(148 * precision, 519 * precision, 228 * precision, 599 * precision);
+            canvas.drawRoundRect(qrBg, 5, 5, qrPaint);
+            Bitmap qrBitmap = createQRImage(url, 80 * precision, 80 * precision);
+            canvas.drawBitmap(qrBitmap, 148 * precision, 519 * precision, qrPaint);
+            if (qrBitmap != null && !qrBitmap.isRecycled()) {
+                qrBitmap.recycle();
+                qrBitmap = null;
+            }
+        }
+
+        Bitmap arrows = BitmapFactory.decodeResource(context.getResources(), R.drawable.icon_arrows);
+        Rect mSrcRect = new Rect(0, 0, arrows.getWidth(), arrows.getHeight());
+        Rect mDestRect = new Rect(177 * precision, 609 * precision, 197 * precision, 629 * precision);
+        canvas.drawBitmap(arrows, mSrcRect, mDestRect, paint);
+
+
+        String tip = "扫一扫，免费领钻石";
+        textPaint.setAntiAlias(true);
+        textPaint.setColor(Color.WHITE);
+        textPaint.setTextSize(13 * precision);
+        Rect bounds = new Rect();
+        textPaint.getTextBounds(tip, 0, tip.length(), bounds);
+        canvas.drawText(tip, ((375 * precision - bounds.width()) / 2), 647 * precision, textPaint);
+
+        String path = BitmapUtils.saveImageToCache(result, "shareShowImage.png", shareImageBean.toString());
+
+        if (!TextUtils.isEmpty(path)) {
+            success.invoke(path);
+        } else {
+            fail.invoke("图片生成失败");
+        }
+
+        if (outBitmap != null && !outBitmap.isRecycled()) {
+            outBitmap.recycle();
+            outBitmap = null;
+        }
+        if (result != null && !result.isRecycled()) {
+            result.recycle();
+            result = null;
+        }
+        if (header != null && !header.isRecycled()) {
+            header.recycle();
+            header = null;
+        }
+        if (bitmapCenter != null && !bitmapCenter.isRecycled()) {
+            bitmapCenter.recycle();
+            bitmapCenter = null;
+        }
+
+        if (bitmapCenter1 != null && !bitmapCenter1.isRecycled()) {
+            bitmapCenter1.recycle();
+            bitmapCenter1 = null;
+        }
+    }
+
+
+    private static void drawShow(Context context, Bitmap headBitmap, final Bitmap bitmap, ShareImageBean shareImageBean, Callback success, Callback fail) {
+        int precision = 2;
+        Bitmap result = Bitmap.createBitmap(375 * precision, 667 * precision, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(result);
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        BlurFactor blurFactor = new BlurFactor();
+        blurFactor.width = bitmap.getWidth();
+        blurFactor.height = bitmap.getHeight();
+        Bitmap outBitmap = Blur.of(context, bitmap, blurFactor);
+        int outWidth = outBitmap.getWidth();
+        int outHeight = outBitmap.getHeight();
+        if (outWidth * 1.0 / outHeight > 375 / 667) {
+            int height = outHeight;
+            int width = (int) (height * (375 / 667.0));
+            Rect mSrcRect = new Rect((outWidth - width) / 2, 0, outWidth - (width / 2), height);
+            Rect mDestRect = new Rect(0, 0, 375 * precision, 667 * precision);
+            canvas.drawBitmap(outBitmap, mSrcRect, mDestRect, paint);
+        } else {
+            int width = outWidth;
+            int height = (int) (outWidth / (375 * 667.0));
+            Rect mSrcRect = new Rect(0, (outHeight - height) / 2, 0, outHeight - (height / 2));
+            Rect mDestRect = new Rect(0, 0, 375 * precision, 667 * precision);
+            canvas.drawBitmap(outBitmap, mSrcRect, mDestRect, paint);
+        }
+
+        paint.setColor(Color.WHITE);
+        RectF white = new RectF(15 * precision, 42 * precision, 360 * precision, 514 * precision);
+        canvas.drawRoundRect(white, 5 * precision, 5 * precision, paint);
+
+        outWidth = bitmap.getWidth();
+        outHeight = bitmap.getHeight();
+        paint.reset();
+        if (outWidth * 1.0 / outHeight > 315 / 345) {
+            int height = outHeight;
+            int width = (int) (height * (315 / 345.0));
+            Rect mSrcRect = new Rect((outWidth - width) / 2, 0, (outWidth + width) / 2, height);
+            Rect mDestRect = new Rect(30 * precision, 57 * precision, 345 * precision, 402 * precision);
+            canvas.drawBitmap(bitmap, mSrcRect, mDestRect, paint);
+        } else {
+            int width = outWidth;
+            int height = (int) (outWidth / (315 * 345.0));
+            Rect mSrcRect = new Rect(0, (outHeight - height) / 2, 0, (outHeight + height) / 2);
+            Rect mDestRect = new Rect(30 * precision, 57 * precision, 345 * precision, 402 * precision);
+            canvas.drawBitmap(bitmap, mSrcRect, mDestRect, paint);
+        }
+
+        paint.reset();
+        Paint headerPaint = new Paint();
+        headerPaint.setDither(true);
+        Bitmap header = getCircleHeaderBitmap(headBitmap, precision);
+        canvas.drawBitmap(header, 30 * precision, 412 * precision, headerPaint);
+
+        Paint textPaint = new Paint();
+        textPaint.setAntiAlias(true);
+        String name = shareImageBean.getUserName();
+        if (!TextUtils.isEmpty(name)) {
+            textPaint.reset();
+            textPaint.setAntiAlias(true);
+            textPaint.setColor(Color.parseColor("#333333"));
+            textPaint.setTextSize(15 * precision);
+            Rect bounds = new Rect();
+            textPaint.getTextBounds(name, 0, name.length(), bounds);
+            canvas.drawText(name, 75 * precision, 435 * precision, textPaint);
+        }
+
+        String content = shareImageBean.getTitleStr();
+        if (!TextUtils.isEmpty(content)) {
+            textPaint.reset();
+            textPaint.setAntiAlias(true);
+            textPaint.setColor(Color.parseColor("#333333"));
+            int titleSize = 13 * precision;
+            int titleCount = (315 * precision) / titleSize;
+            textPaint.setTextSize(titleSize);
+            Rect bounds = new Rect();
+            if (content.length() <= titleCount) {
+                textPaint.getTextBounds(content, 0, content.length(), bounds);
+                canvas.drawText(content, 30 * precision, 468 * precision, textPaint);
+            } else if (content.length() <= titleCount * 2 && content.length() > titleCount) {
+                String s = content.substring(0, titleCount);
+                //获取文字的字宽高以便把文字与图片中心对齐
+                paint.getTextBounds(s, 0, titleCount, bounds);
+                //画文字的时候高度需要注意文字大小以及文字行间距
+                canvas.drawText(s, 30 * precision, 468 * precision, paint);
+                String s1 = content.substring(titleCount, content.length());
+                canvas.drawText(s1, 30 * precision, (468 + 5 + titleSize + bounds.height() / 2) * precision, paint);
+            } else {
+                String s = content.substring(0, titleCount);
+                //获取文字的字宽高以便把文字与图片中心对齐
+                paint.getTextBounds(s, 0, titleCount, bounds);
+                //画文字的时候高度需要注意文字大小以及文字行间距
+                canvas.drawText(s, 30 * precision, 468 * precision, paint);
+                String s1 = content.substring(titleCount, titleCount * 2 - 2) + "...";
+                canvas.drawText(s1, 30 * precision, (468 + 5 + titleSize + bounds.height() / 2) * precision, paint);
+            }
+        }
+
+        String url = shareImageBean.getQRCodeStr();
+        if (!TextUtils.isEmpty(url)) {
+            Paint qrPaint = new Paint();
+            qrPaint.setColor(Color.WHITE);
+            RectF qrBg = new RectF(148 * precision, 544 * precision, 228 * precision, 624 * precision);
+            canvas.drawRoundRect(qrBg, 5, 5, qrPaint);
+            Bitmap qrBitmap = createQRImage(url, 80 * precision, 80 * precision);
+            canvas.drawBitmap(qrBitmap, 148 * precision, 544 * precision, qrPaint);
+            if (qrBitmap != null && !qrBitmap.isRecycled()) {
+                qrBitmap.recycle();
+                qrBitmap = null;
+            }
+        }
+
+        String tip = "秀一秀 赚到够";
+        Typeface font = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD);
+        paint.setTypeface(font);
+        textPaint.setAntiAlias(true);
+        textPaint.setColor(Color.WHITE);
+        textPaint.setTextSize(13 * precision);
+        Rect bounds = new Rect();
+        textPaint.getTextBounds(tip, 0, tip.length(), bounds);
+        canvas.drawText(tip, ((375 * precision - bounds.width()) / 2), 640 * precision, textPaint);
+        paint.setTypeface(null);
+        String path = BitmapUtils.saveImageToCache(result, "shareShowImage.png", shareImageBean.toString());
+
+        if (!TextUtils.isEmpty(path)) {
+            success.invoke(path);
+        } else {
+            fail.invoke("图片生成失败");
+        }
+
+        if (outBitmap != null && !outBitmap.isRecycled()) {
+            outBitmap.recycle();
+            outBitmap = null;
+        }
+        if (result != null && !result.isRecycled()) {
+            result.recycle();
+            result = null;
+        }
+        if (header != null && !header.isRecycled()) {
+            header.recycle();
+            header = null;
+        }
+    }
+
+    public static Bitmap getCircleHeaderBitmap(Bitmap bmp, int precision) {
+        //获取bmp的宽高 小的一个做为圆的直径r
+        int w = bmp.getWidth();
+        int h = bmp.getHeight();
+        int r = Math.min(w, h);
+        float sx = 36 * precision * 1.0f / w;
+        float sy = 36 * precision * 1.0f / h;
+        float scale = Math.max(sx, sy);
+
+        //创建一个paint
+        Paint paint = new Paint();
+
+        Bitmap newBitmap = Bitmap.createBitmap(36 * precision, 36 * precision, Bitmap.Config.ARGB_8888);
+
+        Canvas canvas = new Canvas(newBitmap);
+
+        //创建一个BitmapShader对象 使用传递过来的原Bitmap对象bmp
+        BitmapShader bitmapShader = new BitmapShader(bmp, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        Matrix matrix = new Matrix();
+        matrix.setScale(scale, scale);
+        bitmapShader.setLocalMatrix(matrix);
+        paint.setShader(bitmapShader);
+
+
+        canvas.drawCircle(18 * precision, 18 * precision, 18 * precision, paint);
+
+        return newBitmap;
+
     }
 
     private void downloadHeaderImg(final Context context, final String headImg, final String url, final Callback success, final Callback fail) {
@@ -232,8 +895,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     //    shopPerson: `店主: ${manager.nickname || ''}`,
     //    codeString: this.state.codeString,
     //    wxTip: this.state.wxTip
-    public void drawShopInviteFriendsImage(final Context context, final ReadableMap map,
-                                           final Callback success, final Callback fail) {
+    public void drawShopInviteFriendsImage(final Context context, final ReadableMap map, final Callback success, final Callback fail) {
         if (Fresco.hasBeenInitialized()) {
             String headerImgUrl = map.getString("headerImg");
             ImageLoadUtils.preFetch(Uri.parse(headerImgUrl), 0, 0, new BaseRequestListener() {
@@ -576,11 +1238,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                     }
                     Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), BitmapUtils.getBitmapOption(2));
                     if (bmp != null && !bmp.isRecycled()) {
-                        if (TextUtils.equals(shareImageBean.getImageType(), "web")) {
-                            drawWeb(context, bmp, shareImageBean, success, fail);
-                        } else {
-                            draw(context, bmp, shareImageBean, success, fail);
-                        }
+                        draw(context, bmp, shareImageBean, success, fail);
                     } else {
                         fail.invoke("图片获取失败");
                     }
@@ -589,35 +1247,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         }
     }
 
-
-    public static void drawWeb(Context context, Bitmap bitmap, ShareImageBean shareImageBean, Callback success, Callback fail) {
-
-        String info = shareImageBean.getQRCodeStr();
-        Bitmap result = Bitmap.createBitmap(250, 340, Bitmap.Config.ARGB_8888);
-
-        Canvas canvas = new Canvas(result);
-        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-
-        bitmap = Bitmap.createScaledBitmap(bitmap, 250, 340, true);
-        canvas.drawBitmap(bitmap, 0, 0, paint);
-
-
-        Bitmap qrBitmap = createQRImage(info, 45, 45);
-        canvas.drawBitmap(qrBitmap, 190, 285, paint);
-
-        String path = BitmapUtils.saveImageToCache(result, "shareImage.png", shareImageBean.toString());
-        if (!TextUtils.isEmpty(path)) {
-            success.invoke(path);
-        } else {
-            fail.invoke("图片生成失败");
-        }
-
-        if (qrBitmap != null && !qrBitmap.isRecycled()) {
-            qrBitmap.recycle();
-            qrBitmap = null;
-        }
-    }
-
+    //商品分享图片
     public static void draw(Context context, Bitmap bitmap, ShareImageBean shareImageBean, Callback success, Callback fail) {
 
         String title = shareImageBean.getTitleStr();
@@ -625,38 +1255,44 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         String info = shareImageBean.getQRCodeStr();
         String retailPrice = shareImageBean.getRetail();
         String spellPrice = shareImageBean.getSpell();
-
-        int titleSize = 26;
-        int titleCount = (int) ((440) / titleSize);
+        String discountPrice = shareImageBean.getDiscount();
+        int ratio = 2;
+        int titleSize = 18 * ratio;
+        int titleCount = (int) ((340 * ratio) / titleSize);
         boolean isTwoLine;
         if (title.length() <= titleCount) {
             isTwoLine = false;
         } else {
             isTwoLine = true;
         }
-//        height: autoSizeWidth(650 / 2), width: autoSizeWidth(250)
 
-        //680 708
-        Bitmap result = isTwoLine ? Bitmap.createBitmap(500, (int) (708), Bitmap.Config.ARGB_8888) : Bitmap.createBitmap(500, (int) (680), Bitmap.Config.ARGB_8888);
-
+        Bitmap result = Bitmap.createBitmap(375 * ratio, 667 * ratio, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(result);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-        bitmap = Bitmap.createScaledBitmap(bitmap, 500, 500, true);
-        canvas.drawBitmap(bitmap, 0, 0, paint);
-
-        //在图片下边画一个白色矩形块用来放文字，防止文字是透明背景，在有些情况下保存到本地后看不出来
 
         paint.setColor(Color.WHITE);
-        if (isTwoLine) {
-            canvas.drawRect(0, 500, 500, 708, paint);
+        canvas.drawRect(0, 0, 375 * ratio, 667 * ratio, paint);
 
-        } else {
-            canvas.drawRect(0, 500, 500, 680, paint);
-        }
+        Bitmap logo = BitmapFactory.decodeResource(context.getResources(), R.drawable.sharelogo);
+        Rect mSrcRect = new Rect(0, 0, logo.getWidth(), logo.getHeight());
+        Rect mDestRect = new Rect(104 * ratio, 46 * ratio, 141 * ratio, 83 * ratio);
+        canvas.drawBitmap(logo, mSrcRect, mDestRect, paint);
+
+        paint.setColor(Color.parseColor("#FF0050"));
+        paint.setTextSize(17 * ratio);
+        Typeface font = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD);
+        paint.setTypeface(font);
+        canvas.drawText("秀一秀 赚到够", 152 * ratio, 72 * ratio, paint);
+        paint.setTypeface(null);
+
+        Bitmap bitmapCenter = Bitmap.createScaledBitmap(bitmap, 339 * ratio, 339 * ratio, true);
+        Bitmap bitmapCenter1 = BitmapFillet.fillet(bitmapCenter, 5 * ratio, CORNER_ALL);
+
+        canvas.drawBitmap(bitmapCenter1, 18 * ratio, 100 * ratio, paint);
 
         //绘制文字
-        paint.setColor(Color.parseColor("#666666"));
+        paint.setColor(Color.parseColor("#333333"));
         paint.setTextSize(titleSize);
         Rect bounds = new Rect();
         if (title.length() <= titleCount) {
@@ -664,18 +1300,16 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             //获取文字的字宽高以便把文字与图片中心对齐
             paint.getTextBounds(s, 0, s.length(), bounds);
             //画文字的时候高度需要注意文字大小以及文字行间距
-            canvas.drawText(s, 30, 500 + 30, paint);
+            canvas.drawText(s, 18 * ratio, (457 + titleSize / 2) * ratio, paint);
         }
         if (title.length() <= titleCount * 2 && title.length() > titleCount) {
             String s = title.substring(0, titleCount);
             //获取文字的字宽高以便把文字与图片中心对齐
             paint.getTextBounds(s, 0, titleCount, bounds);
             //画文字的时候高度需要注意文字大小以及文字行间距
-            canvas.drawText(s, 30, 500 + 30, paint);
-
+            canvas.drawText(s, 18 * ratio, (457 + titleSize / 2) * ratio, paint);
             s = title.substring(titleCount, title.length());
-
-            canvas.drawText(s, 30, 500 + 30 + titleSize + bounds.height() / 2, paint);
+            canvas.drawText(s, 18 * ratio, (457 + titleSize / 2) * ratio + titleSize + bounds.height() / 2, paint);
         }
 
         if (title.length() > titleCount * 2) {
@@ -683,59 +1317,62 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             //获取文字的字宽高以便把文字与图片中心对齐
             paint.getTextBounds(s, 0, titleCount, bounds);
             //画文字的时候高度需要注意文字大小以及文字行间距
-            canvas.drawText(s, 30, 500 + 30, paint);
-
+            canvas.drawText(s, 18 * ratio, (457 + titleSize / 2) * ratio, paint);
             s = title.substring(titleCount, titleCount * 2 - 2) + "...";
-
-            canvas.drawText(s, 30, 500 + 30 + titleSize + bounds.height() / 2, paint);
+            canvas.drawText(s, 18 * ratio, (457 + titleSize / 2) * ratio + titleSize + bounds.height() / 2, paint);
         }
 
 
-        String marketStr = "市场价： ";
-        paint.setColor(Color.parseColor("#333333"));
-        paint.setTextSize(20);
-        Rect market = new Rect();
-        paint.getTextBounds(marketStr, 0, marketStr.length(), market);
-        canvas.drawText(marketStr, 30, isTwoLine ? 610 : 585, paint);
+        paint.setColor(Color.parseColor("#FF0050"));
+        paint.setTextSize(22 * ratio);
+        paint.setFakeBoldText(true);
+        String pdj = retailPrice;
+        paint.getTextBounds(pdj, 0, pdj.length(), bounds);
+        canvas.drawText(pdj, 18 * ratio, isTwoLine ? (470 + titleSize) * ratio + titleSize + bounds.height() / 2 : (470 + titleSize) * ratio, paint);
+
+        paint.setColor(Color.parseColor("#F8E4EC"));
+        int left = bounds.width() + 31 * ratio;
+        int top = isTwoLine ? (453 + titleSize) * ratio + titleSize + bounds.height() / 2 : (453 + titleSize) * ratio;
+        int right = left + 48 * ratio;
+        int bottom = top + 18 * ratio;
+        RectF rectF = new RectF(left, top, right, bottom);
+        canvas.drawRoundRect(rectF, 3, 3, paint);
+
+
+        paint.setColor(Color.parseColor("#FF0050"));
+        paint.setTextSize(12 * ratio);
+        String tip = "零售价";
+        if (TextUtils.equals("mr_skill", shareImageBean.priceType)) {
+            tip = "秒杀价";
+        }
+        paint.setFakeBoldText(false);
+        paint.getTextBounds(tip, 0, tip.length(), bounds);
+        canvas.drawText(tip, (48 * ratio - bounds.width()) / 2 + left, (top + bottom) / 2 + 5 * ratio, paint);
+
 
         paint.setStrikeThruText(true);
-        paint.setTextSize(20);
-        canvas.drawText(price, market.right + 30, isTwoLine ? 610 : 585, paint);
-        String retailStr = "V1价： ";
-        if(TextUtils.equals("mr_skill",shareImageBean.priceType)){
-            retailStr = "秒杀价： ";
-        }
-        paint.setColor(Color.parseColor("#333333"));
-        paint.setStrikeThruText(false);
+        paint.setTextSize(13 * ratio);
+        paint.setColor(Color.parseColor("#999999"));
+        String marketStr = "市场价： ";
+        marketStr += price;
+        canvas.drawText(marketStr, 18 * ratio, bottom + 25 * ratio, paint);
 
-        paint.setTextSize(22);
-        Rect retail = new Rect();
-        paint.getTextBounds(retailStr, 0, retailStr.length(), retail);
-        canvas.drawText(retailStr, 30, isTwoLine ? 640 : 615, paint);
+        Bitmap qrBitmap = createQRImage(info, 77 * ratio, 77 * ratio);
+        canvas.drawBitmap(qrBitmap, 268 * ratio, bottom - titleSize - 6 * ratio, paint);
 
-        paint.setTextSize(22);
-        paint.setColor(Color.parseColor("#F00050"));
-        canvas.drawText(retailPrice, retail.right + 30, isTwoLine ? 640 : 615, paint);
-
-
-        String spellStr = "拼店价：";
-        paint.setColor(Color.parseColor("#333333"));
-        paint.setStrikeThruText(false);
-
-        paint.setTextSize(22);
-        Rect spell = new Rect();
-        paint.getTextBounds(spellStr, 0, spellStr.length(), spell);
-        canvas.drawText(spellStr, 30, isTwoLine ? 670 : 645, paint);
-
-        paint.setTextSize(22);
-        paint.setColor(Color.parseColor("#F00050"));
-        canvas.drawText(spellPrice, spell.right + 30, isTwoLine ? 670 : 645, paint);
-
-        Bitmap qrBitmap = createQRImage(info, 100, 100);
-        if (isTwoLine) {
-            canvas.drawBitmap(qrBitmap, 370, 590, paint);
-        } else {
-            canvas.drawBitmap(qrBitmap, 370, 565, paint);
+        if (!TextUtils.isEmpty(discountPrice)) {
+            String tip2 = "扫码购";
+            paint.setStrikeThruText(false);
+            paint.setColor(Color.parseColor("#FF0050"));
+            paint.setTextSize(12 * ratio);
+            paint.getTextBounds(tip2, 0, tip2.length(), bounds);
+            canvas.drawText(tip2, 307 * ratio - bounds.width() / 2, bottom - titleSize + 89 * ratio, paint);
+            String tip3 = "立省" + discountPrice + "元起";
+            paint.setStrikeThruText(false);
+            paint.setColor(Color.parseColor("#FF0050"));
+            paint.setTextSize(12 * ratio);
+            paint.getTextBounds(tip3, 0, tip3.length(), bounds);
+            canvas.drawText(tip3, 307 * ratio - bounds.width() / 2, bottom - titleSize + 104 * ratio, paint);
         }
 
 
@@ -750,12 +1387,37 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             qrBitmap.recycle();
             qrBitmap = null;
         }
+
+        if (result != null && !result.isRecycled()) {
+            result.recycle();
+            result = null;
+        }
+
+        if (logo != null && !logo.isRecycled()) {
+            logo.recycle();
+            logo = null;
+        }
+
+        if (bitmapCenter != null && !bitmapCenter.isRecycled()) {
+            bitmapCenter.recycle();
+            bitmapCenter = null;
+        }
+
+        if (bitmapCenter1 != null && !bitmapCenter1.isRecycled()) {
+            bitmapCenter1.recycle();
+            bitmapCenter1 = null;
+        }
     }
 
     private ShareImageBean parseParam(ReadableMap map) {
         ShareImageBean shareImageBean = new ShareImageBean();
         if (map.hasKey("imageUrlStr")) {
-            shareImageBean.setImageUrlStr(map.getString("imageUrlStr"));
+            String imgurl = map.getString("imageUrlStr");
+
+            if (!TextUtils.isEmpty(imgurl) && imgurl.contains("?")) {
+                imgurl = imgurl.substring(0, imgurl.indexOf("?"));
+            }
+            shareImageBean.setImageUrlStr(imgurl);
         } else {
             return null;
         }
@@ -790,6 +1452,14 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             shareImageBean.setSpell("");
         }
 
+
+        if (map.hasKey("shareMoney")) {
+            shareImageBean.setDiscount(map.getString("shareMoney"));
+        } else {
+            shareImageBean.setDiscount("");
+        }
+
+
         if (map.hasKey("imageType")) {
             shareImageBean.setImageType(map.getString("imageType"));
         } else {
@@ -802,6 +1472,23 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             shareImageBean.setPriceType(null);
         }
 
+        if (map.hasKey("headerImage")) {
+            shareImageBean.setHeaderImage(map.getString("headerImage"));
+        } else {
+            shareImageBean.setHeaderImage(null);
+        }
+
+        if (map.hasKey("userName")) {
+            shareImageBean.setUserName(map.getString("userName"));
+        } else {
+            shareImageBean.setUserName("");
+        }
+
+        if (map.hasKey("other")) {
+            shareImageBean.setDiamondNum(map.getString("other"));
+        } else {
+            shareImageBean.setDiamondNum("");
+        }
 
         return shareImageBean;
     }
@@ -837,8 +1524,30 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             bitmap.recycle();
             bitmap = null;
         }
-
     }
+
+    @ReactMethod
+    public void createQRToAlbum(String info, Promise promise) {
+        Bitmap bitmap = createQRImage(info, 300, 300);
+        if (bitmap == null) {
+            promise.reject("二维码生成失败！");
+            return;
+        }
+        String path = BitmapUtils.saveImageToCache(bitmap, "shareImage.png", info);
+        Uri uri = Uri.parse("file://" + path);
+        saveImageAndRefresh(uri);
+        if (TextUtils.isEmpty(path)) {
+            promise.reject("图片保存失败！");
+        } else {
+            promise.resolve(path);
+        }
+
+        if (bitmap != null && !bitmap.isRecycled()) {
+            bitmap.recycle();
+            bitmap = null;
+        }
+    }
+
 
     @ReactMethod
     public void saveScreen(ReadableMap params, Callback success, Callback fail) {
@@ -897,6 +1606,14 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             if (url == null || "".equals(url) || url.length() < 1) {
                 return null;
             }
+            if (url.contains("http")) {
+                if (url.contains("?")) {
+                    url = url + "&pageSource=7";
+                } else {
+                    url = url + "?pageSource=7";
+                }
+            }
+
             Hashtable<EncodeHintType, Object> hints = new Hashtable<>();
             hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
             hints.put(EncodeHintType.MARGIN, 0);

@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react';
 import {
     StyleSheet,
     View,
-} from "react-native";
+} from 'react-native';
 
-import FlyImageViewer from "../../comm/components/FlyImageViewer";
-import BasePage from "../../BasePage";
+import FlyImageViewer from '../../comm/components/FlyImageViewer';
+import BasePage from '../../BasePage';
 
 export default class CheckBigImagesView extends BasePage {
     $navigationBarOptions = {
@@ -40,7 +40,7 @@ export default class CheckBigImagesView extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: "center"
+        justifyContent: 'center'
     }
 });
 

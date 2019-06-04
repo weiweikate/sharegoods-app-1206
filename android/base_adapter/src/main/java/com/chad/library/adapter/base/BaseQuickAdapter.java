@@ -1173,6 +1173,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
             int position = getHeaderViewPosition();
             if (position != -1) {
                 notifyItemInserted(position);
+                notifyItemRangeChanged(0,mData == null ? 1:mData.size());
             }
         }
         return mIndex;

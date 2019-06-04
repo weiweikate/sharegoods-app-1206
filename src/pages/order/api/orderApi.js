@@ -57,8 +57,8 @@ const api = {
     afterSaleFillExpress: '/after-sale/express',//填写物流
     subOrder: '/after-sale/order-detail',//子订单
     afterSaleList: '/after-sale/list',//列表
-    checkInfo: ["/appraise/checkCommentStatus",{method:'get'}],//校验是否可晒单
-    return_express: "/after-sale/return-express",
+    checkInfo: ['/appraise/checkCommentStatus',{method:'get'}],//校验是否可晒单
+    return_express: '/after-sale/return-express',
     //获取个人信息
     getUser: ['/user/getUser', { method: 'get', checkLogin: true }],
     getProductShopInfoBySupplierCode: ['/product/getProductShopInfoBySupplierCode',{method:'get'}],

@@ -3,17 +3,16 @@
  * @date 2018/11/20
  */
 
+
 'use strict';
 import { action, observable, flow } from 'mobx';
 import DeviceInfo from 'react-native-device-info/deviceinfo';
 import MineApi from '../../mine/api/MineApi';
 import HomeAPI from '../api/HomeAPI';
-import { homeType } from '../HomeTypes';
-import GuideApi from '../../guide/GuideApi';
+import { homeLinkType, homeType } from '../HomeTypes';
 import { AsyncStorage } from 'react-native';
 import MessageApi from '../../message/api/MessageApi';
-import user from '../../../model/user';
-import { homeFocusAdModel } from '../model/HomeFocusAdModel';
+import { track, trackEvent } from '../../../utils/SensorsTrack';
 
 const requsetCount = 4;
 
@@ -21,30 +20,39 @@ class HomeModalManager {
     /** 控制升级框*/
     @observable
     isShowUpdate = false;
-    @observable
-    versionData = null;
-    /** 控制新手引导*/
-    @observable
-    isShowGuide = false;
-    needShowGuide = false;
-    @observable
-    step = 0;
-    /** 新手引导第几步*/
-    @observable
-    guideData = {};
+    needShowUpdate = false;
     /** 控制公告*/
     @observable
     isShowNotice = false;
     needShowNotice = false;
     @observable
-    noticeData = null;
+    homeMessage = null;
     /** 控制首页广告*/
     @observable
     isShowAd = false;
     needShowAd = false;
     @observable
     AdData = null;
+
+    /** 控制首页新手礼包*/
+    @observable
+    isShowGift = false;
+    needShowGift = false;
+    @observable
+    giftData = null;
+
+    /** 控制首页中奖*/
+    @observable
+    isShowPrize  = false;
+    needShowPrize  = false;
+    @observable
+    prizeData = null;
     /** 是否在首页*/
+    /** 控制用户升级弹窗*/
+    @observable
+    isShowUser  = false;
+    needShowUser  = false;
+    Userdata = null;
     @observable
     isHome = false;
 
@@ -63,43 +71,38 @@ class HomeModalManager {
     }
 
     @action
-    guideNextAction() {
-        if (this.step === 2 && homeFocusAdModel.foucusHeight === 0) {
-            this.step = this.step + 2;
-        } else {
-            this.step++;
-        }
-        if (this.step === 5) {
-            GuideApi.registerSend({});//完成了新手引导
-            user.finishGiudeAction();//防止请求失败，重复调用新手引导
-        }
-    }
-
-    @action
-    requestGuide() {
-        if (this.finishCount !== requsetCount) {
-            return;
-        }
-        GuideApi.getUserRecord().then((data) => {
-            if (data.data === true) {
-                if (user.finishGuide === true) {
-                    GuideApi.registerSend({});
-                } else {
-                    this.isShowGuide = true;
-                    this.getRewardzInfo();
-                }
-            }
-        }).catch(() => {
-        });
-    }
-
-    @action
     requestData() {
         this.finishCount = 0;
         this.getVersion();
         this.getMessage();
         this.getAd();
-        this.getUserRecord();
+        this.getPrize();
+    }
+
+    @action
+    openNext(){
+        if (this.isShowUpdate ||
+            this.isShowNotice ||
+            this.isShowAd||
+            this.isShowGift ||
+            this.isShowPrize ||
+            this.isShowUser
+        ) {return;} // 如果有页面展示
+
+        if (this.needShowUpdate === true) {
+            this.isShowUpdate = true;
+        } else if (this.needShowNotice === true) {
+            this.isShowNotice = true;
+        } else if (this.needShowAd === true) {
+            this.isShowAd = true;
+        }else if (this.needShowGift === true) {
+            this.isShowGift = true;
+            track(trackEvent.NewUserGuideShow, {})
+        }else if (this.needShowPrize === true) {
+            this.isShowPrize = true;
+        } else if (this.needShowUser === true){
+            this.isShowUser = true;
+        }
     }
 
     @action
@@ -109,13 +112,7 @@ class HomeModalManager {
         }
         this.isShowUpdate = false;
         this.versionData = null;
-        if (this.needShowGuide === true) {
-            this.isShowGuide = true;
-        } else if (this.needShowNotice === true) {
-            this.isShowNotice = true;
-        } else if (this.needShowAd === true) {
-            this.isShowAd = true;
-        }
+        this.openNext();
     }
 
     @action
@@ -124,20 +121,13 @@ class HomeModalManager {
         AsyncStorage.setItem('lastMessageTime', String(currStr));
         this.isShowNotice = false;
         this.needShowNotice = false;
-        this.noticeData = null;
+        this.homeMessage = null;
+
+        this.isShowAd = false;
+        this.needShowAd = false;
+        this.openNext();
     }
 
-    @action
-    closeGuide() {
-        this.isShowGuide = false;
-        this.needShowGuide = false;
-        this.guideData = {};
-        if (this.needShowNotice === true) {
-            this.isShowNotice = true;
-        } else if (this.needShowAd === true) {
-            this.isShowAd = true;
-        }
-    }
 
     @action
     closeAd() {
@@ -146,6 +136,34 @@ class HomeModalManager {
         this.isShowAd = false;
         this.needShowAd = false;
         this.AdData = null;
+
+        this.isShowNotice = false;
+        this.needShowNotice = false;
+        this.openNext();
+    }
+
+    @action
+    closePrize() {
+        this.isShowPrize = false;
+        this.needShowPrize  = false;
+        this.prizeData = null;
+        this.openNext();
+    }
+
+    @action
+    closeGift() {
+        this.isShowGift = false;
+        this.needShowGift  = false;
+        this.giftData = null;
+        track(trackEvent.NewUserGuideBtnClick, {})
+        this.openNext();
+    }
+
+    @action
+    closeUserLevel(){
+        this.isShowUser = false;
+        this.needShowUser = false;
+        this.openNext();
     }
 
     @action
@@ -156,18 +174,10 @@ class HomeModalManager {
             if (this.versionData && upgrade === 1) {
                 let storage_version = yield AsyncStorage.getItem('isToUpdate');
                 if (storage_version !== version || forceUpdate === 1) {
-                    this.isShowUpdate = true;
+                    this.needShowUpdate = true;
                 }
             }
-            if (this.isShowUpdate === false) {
-                if (this.needShowGuide === true) {
-                    this.isShowGuide = true;
-                } else if (this.needShowNotice === true) {
-                    this.isShowNotice = true;
-                } else if (this.needShowAd === true) {
-                    this.isShowAd = true;
-                }
-            }
+            this.openNext();
         } catch (error) {
             console.log(error);
             throw error;
@@ -183,31 +193,7 @@ class HomeModalManager {
             this.actionFinish();
         });
     };
-    @action
-    getUserRecord = () => {
-        GuideApi.getUserRecord().then((data) => {
-            if (data.data === true) {
-                if (user.finishGuide === true) {
-                    GuideApi.registerSend({});
-                } else {
-                    this.needShowGuide = true;
-                    this.getRewardzInfo();
-                }
-            }
-            this.actionFinish();
-        }).catch(() => {
-            this.actionFinish();
-        });
-    };
 
-    getRewardzInfo = () => {
-        HomeAPI.getHomeData({ type: homeType.guideInfo }).then((data) => {
-            data = data.data || [];
-            if (data.length > 0) {
-                this.guideData = data[0];
-            }
-        });
-    };
 
 //一天弹一次 公告与广告不共存
     @action
@@ -254,6 +240,58 @@ class HomeModalManager {
             this.actionFinish();
         });
     }
+
+    @action
+    getPrize() {
+        HomeAPI.getWinningInfo({}).then(data => {
+            if (data.data){
+                this.needShowPrize = true;
+                this.prizeData = data.data;
+            }
+            this.actionFinish();
+        }).catch(() => {
+            this.actionFinish();
+        })
+    }
+
+    @action
+    refreshPrize() {
+        if (this.finishCount !== requsetCount) {
+            return;
+        }
+        HomeAPI.getWinningInfo({}).then(data => {
+            if (data.data && data.data.popUp){
+                this.needShowPrize = true;
+                this.prizeData = data.data;
+                this.openNext();
+            }
+
+        }).catch(() => {
+
+        })
+    }
+
+
+    @action
+    getGift() {
+        HomeAPI.getPopupBox({popupBoxType: 1}).then(data => {
+            if (data.data){
+                let item = data.data;
+                this.needShowGift = true;
+                this.giftData = {image: item.imgUrl, linkTypeCode: item.linkTypeCode, linkType: homeLinkType.link};
+            }
+           this.openNext();
+        }).catch(() => {
+        })
+    }
+
+    @action
+    userLevelUpdate(level){
+        this.needShowUser = true;
+        this.Userdata = level;
+        this.openNext();
+    }
+
 
     actionFinish() {
         this.finishCount++;

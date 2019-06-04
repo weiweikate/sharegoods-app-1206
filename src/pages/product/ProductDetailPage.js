@@ -2,8 +2,7 @@ import React from 'react';
 import {
     View,
     StyleSheet,
-    SectionList,
-    Alert
+    SectionList
 } from 'react-native';
 import BasePage from '../../BasePage';
 import DetailBottomView from './components/DetailBottomView';
@@ -21,10 +20,7 @@ import NavigatorBar from '../../components/pageDecorator/NavigatorBar/NavigatorB
 import DetailHeaderServiceModal from './components/DetailHeaderServiceModal';
 import DetailPromoteModal from './components/DetailPromoteModal';
 import { beginChatType, QYChatTool } from '../../utils/QYModule/QYChatTool';
-// import bridge from '../../../utils/bridge';
-
-// const redEnvelopeBg = res.other.red_big_envelope;
-import ProductDetailModel, { productItemType } from './ProductDetailModel';
+import ProductDetailModel, { productItemType, sectionType } from './ProductDetailModel';
 import { observer } from 'mobx-react';
 import RouterMap from '../../navigation/RouterMap';
 import {
@@ -38,6 +34,8 @@ import DetailHeaderScoreView from './components/DetailHeaderScoreView';
 import DetailParamsModal from './components/DetailParamsModal';
 import { ContentSectionView, SectionLineView, SectionNullView } from './components/ProductDetailSectionView';
 import ProductDetailNavView from './components/ProductDetailNavView';
+import { IntervalMsgType, IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
+import ProductDetailCouponsView, { ProductDetailCouponsWindowView } from './components/ProductDetailCouponsView';
 
 /**
  * @author chenyangjun
@@ -105,24 +103,7 @@ export default class ProductDetailPage extends BasePage {
         const { productIsPromotionPrice } = this.productDetailModel;
         switch (type) {
             case 'jlj':
-                if (!user.isLogin) {
-                    Alert.alert('提示', '登录后分享才能获取奖励',
-                        [
-                            {
-                                text: '取消', onPress: () => {
-                                    this.shareModal && this.shareModal.open();
-                                }
-                            },
-                            {
-                                text: '去登录', onPress: () => {
-                                    this.$navigate(RouterMap.LoginPage);
-                                }
-                            }
-                        ]
-                    );
-                } else {
-                    this.shareModal && this.shareModal.open();
-                }
+                this.shareModal && this.shareModal.open();
                 break;
             case 'keFu':
                 if (!user.isLogin) {
@@ -198,14 +179,11 @@ export default class ProductDetailPage extends BasePage {
 
     _renderSectionHeader = ({ section: { key } }) => {
         switch (key) {
-            case productItemType.headerView: {
+            case sectionType.sectionHeader:
+            case sectionType.sectionExPlain:
                 return null;
-            }
-            case productItemType.content: {
+            case sectionType.sectionContent: {
                 return <ContentSectionView/>;
-            }
-            case productItemType.param: {
-                return <SectionLineView/>;
             }
             default: {
                 return <SectionNullView/>;
@@ -214,7 +192,12 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _renderItem = ({ item, index, section: { key } }) => {
-        switch (key) {
+        const { productDetailCouponsViewModel } = this.productDetailModel;
+        if (key === sectionType.sectionContent) {
+            return <ContentItemView item={item}/>;
+        }
+        const { itemKey } = item;
+        switch (itemKey) {
             case productItemType.headerView: {
                 return <HeaderItemView productDetailModel={this.productDetailModel}
                                        navigation={this.props.navigation}
@@ -224,6 +207,16 @@ export default class ProductDetailPage extends BasePage {
             }
             case productItemType.suit: {
                 return <SuitItemView productDetailModel={this.productDetailModel}/>;
+            }
+            case productItemType.coupons: {
+                return <ProductDetailCouponsView productDetailCouponsViewModel={productDetailCouponsViewModel}
+                                                 onPress={() => {
+                                                     if (!user.isLogin) {
+                                                         this.$navigate(RouterMap.LoginPage);
+                                                         return;
+                                                     }
+                                                     this.ProductDetailCouponsWindowView.showWindowView();
+                                                 }}/>;
             }
             case productItemType.promote: {
                 return <PromoteItemView productDetailModel={this.productDetailModel}
@@ -245,9 +238,6 @@ export default class ProductDetailPage extends BasePage {
             case productItemType.comment: {
                 return <DetailHeaderScoreView pData={this.productDetailModel}
                                               navigation={this.props.navigation}/>;
-            }
-            case productItemType.content: {
-                return <ContentItemView item={item}/>;
             }
             case productItemType.priceExplain: {
                 return <PriceExplain/>;
@@ -294,7 +284,10 @@ export default class ProductDetailPage extends BasePage {
     }
 
     _renderContent = () => {
-        const { name, imgUrl, prodCode, originalPrice, groupPrice, v0Price, promotionPrice, shareMoney, sectionDataList, isSkillIn } = this.productDetailModel;
+        const {
+            name, imgUrl, prodCode, originalPrice, groupPrice, v0Price, promotionPrice,
+            shareMoney, sectionDataList, isSkillIn, nameShareText, productDetailCouponsViewModel
+        } = this.productDetailModel;
         return <View style={styles.container}>
             <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
             <ProductDetailNavView productDetailModel={this.productDetailModel}
@@ -310,12 +303,17 @@ export default class ProductDetailPage extends BasePage {
                          }}
                          sections={sectionDataList}
                          scrollEventThrottle={10}
+                         ItemSeparatorComponent={() => {
+                             return <SectionLineView/>;
+                         }}
                          showsVerticalScrollIndicator={false}/>
             <DetailBottomView bottomViewAction={this._bottomViewAction}
                               pData={this.productDetailModel}/>
             <ShowTopView productDetailModel={this.productDetailModel}
                          toTopAction={this._onPressToTop}/>
-
+            <IntervalMsgView pageType={IntervalType.productDetail}/>
+            <ProductDetailCouponsWindowView ref={(ref) => this.ProductDetailCouponsWindowView = ref}
+                                            productDetailCouponsViewModel={productDetailCouponsViewModel}/>
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             trackParmas={{
@@ -335,18 +333,15 @@ export default class ProductDetailPage extends BasePage {
                                 QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`
                             }}
                             webJson={{
-                                title: isSkillIn ? '超值秒杀!' : `${name}`,
-                                dec: isSkillIn ? '[秀购]发现一个很给力的活动,快去看看!' : '商品详情',
+                                title: nameShareText.name,
+                                dec: nameShareText.desc,
                                 linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`,
                                 thumImage: imgUrl
                             }}
-                            miniProgramJson={{
-                                title: isSkillIn ? '超值秒杀!' : `${name}`,
-                                dec: isSkillIn ? '[秀购]发现一个很给力的活动,快去看看!' : '商品详情',
-                                thumImage: 'logo.png',
-                                hdImageURL: imgUrl,
-                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`,
-                                miniProgramPath: `/pages/index/index?type=99&id=${prodCode}&inviteId=${user.code || ''}`
+                            taskShareParams={{
+                                uri: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`,
+                                code: IntervalMsgType.productDetail,
+                                data: prodCode
                             }}/>
             <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
             <DetailHeaderServiceModal ref={(ref) => this.DetailHeaderServiceModal = ref}/>

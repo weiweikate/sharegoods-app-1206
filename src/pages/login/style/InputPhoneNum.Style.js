@@ -1,8 +1,8 @@
 import {
     StyleSheet
-} from "react-native";
-import ScreenUtils from "../../../utils/ScreenUtils";
-import DesignRule from "../../../constants/DesignRule";
+} from 'react-native';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import DesignRule from '../../../constants/DesignRule';
 
 const { px2dp, width } = ScreenUtils;
 const styles = StyleSheet.create(
@@ -14,7 +14,7 @@ const styles = StyleSheet.create(
         },
         contentStyle: {
             marginTop: 84,
-            alignItems: "center"
+            alignItems: 'center'
         },
         topTitleStyle: {
             marginTop: px2dp(15),
@@ -36,8 +36,8 @@ const styles = StyleSheet.create(
             borderRadius: 20,
             backgroundColor: DesignRule.bgColor_btnSelect,
             height: px2dp(40),
-            justifyContent: "center",
-            alignItems: "center"
+            justifyContent: 'center',
+            alignItems: 'center'
         },
         btnNoCanClickBgStyle: {
             marginTop: px2dp(64),
@@ -45,13 +45,13 @@ const styles = StyleSheet.create(
             borderRadius: 20,
             backgroundColor: DesignRule.bgColor_grayHeader,
             height: px2dp(40),
-            justifyContent: "center",
-            alignItems: "center"
+            justifyContent: 'center',
+            alignItems: 'center'
         },
         authReSendCodeStyle: {
             marginTop: px2dp(15),
             fontSize: px2dp(15),
-            color: "#4A90E2"
+            color: '#4A90E2'
         },
         authHaveSendCodeStyle: {
             marginTop: px2dp(15),

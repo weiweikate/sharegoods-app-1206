@@ -87,16 +87,7 @@ public class MRJPushReceiver extends BroadcastReceiver {
                 break;
             case "ActivitySkip":
                 // 跳标
-                try {
-                    JSONObject object = new JSONObject(content);
-                    if (object != null) {
-                        JSONObject params = object.getJSONObject("params");
-                        if (params != null) {
-                            EventBus.getDefault().post(new Event.MRNativeTagEvent(params.getString("floatMsgs")));
-                        }
-                    }
-                } catch (JSONException e) {
-                }
+                EventBus.getDefault().post(new Event.MRNativeTagEvent(content));
                 break;
             default:
                 break;

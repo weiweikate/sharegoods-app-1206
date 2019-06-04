@@ -64,7 +64,7 @@ export default class LogisticsView extends React.Component {
                     data.map((item, index) => {
                         let isValue = !EmptyUtils.isEmpty(item.value);
                        return(
-                           <TouchableOpacity style={styles.item} key={index} onPress={()=>{item.onPress(item.expressNo)}}>
+                           <TouchableOpacity style={styles.item} key={index} onPress={()=>{item.onPress(item.expressNo, item.expressCode)}}>
                                <UIText value={item.title} style={styles.title}/>
                                <UIText value={isValue ? item.value : item.placeholder} style={isValue ? styles.vlaue : styles.placeholder}/>
                                <UIImage source={right_arrow} style={{ height: 10, width: 7 }}/>

@@ -44,7 +44,7 @@ const leadingZeros = (num, length = null) => {
     }
     num_ = String(num_);
     while (num_.length < length_) {
-        num_ = "0" + num_;
+        num_ = '0' + num_;
     }
     return num_;
 };

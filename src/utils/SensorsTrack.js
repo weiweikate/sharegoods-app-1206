@@ -23,6 +23,10 @@ const spellShopTrack = {
     SeePingdian:'SeePingdian',//查看拼店
 }
 
+const commonEvent = {
+    SkipMarkClick:'SkipMarkClick',//跳标埋点
+}
+
 const productTrack = {
     CategorySearchBannerClick:'CategorySearchBannerClick',//类目搜索banner广告位
     ProductListClick:'ProductListClick',//搜索页-商品列表页点击
@@ -30,7 +34,11 @@ const productTrack = {
     ProductDetail:'ProductDetail',//浏览商品详情页,
     AddToShoppingcart:'AddToShoppingcart',//加入购物车
     Share:'Share',//分享商品
-    CategoryClick:'CategoryClick',//一级类目
+    SpikeTimeClick:'FlashSaleTimeRangeClick',// 限时购tab
+    SpikeProdClick:'FlashSaleProductClick',// 限时购商品
+    homeTopicProdClick:'SpecialTopicProductClick',// 专题商品
+    NewUserGuideShow: 'NewUserGuideShow',//显示新手礼包
+    NewUserGuideBtnClick: 'NewUserGuideBtnClick',//新手礼包按钮点击
 }
 /** 订单相关的埋点事件名称*/
 const inviteEvent = {
@@ -54,14 +62,15 @@ const afterEvent = {
     ApplyReturn: 'ApplyReturn' // 0：未知 1：仅退款 2：退货退款 3：换货
 }
 const trackEvent = {
+    CategoryClick:'CategoryClick',
     bannerClick: 'BannerClick',
     login: 'Login',//登录
     signUp: 'SignUp',//注册
     search: 'Search',//商品搜索
     submitOrderDetail: 'SubmitOrderDetail',//提交订单详情
-    payOrder: 'PayOrder',//支付订单
+    // payOrder: 'PayOrder',//支付订单
     payOrderDetail: 'PayOrderDetail',//支付订单详情
-    cancelPayOrder: 'CancelPayOrder',//取消订单
+    // cancelPayOrder: 'CancelPayOrder',//取消订单
     applyReturn: 'ApplyReturn',//申请退货
     receiveDiscount: 'ReceiveCoupons',//领取优惠券
     receiveOneyuan: 'ReceiveOneyuan',//领一元券
@@ -93,9 +102,13 @@ const trackEvent = {
     ...inviteEvent,
     ...mineEvent,
     ...afterEvent,
+    ...commonEvent
 };
 
 function track(event_name,parmas) {
+    if (!event_name || event_name.length === 0){
+        return;
+    }
     //不为线上环境就，不上传埋点数据
     if (apiEnvironment.envType !== 'online') {
         return;

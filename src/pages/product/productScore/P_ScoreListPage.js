@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, FlatList, Image, Alert } from 'react-native';
+import { View, StyleSheet, FlatList, Image } from 'react-native';
 import { MRText as Text } from '../../../components/ui/index';
 import BasePage from '../../../BasePage';
 import P_ScoreListItemView from './components/P_ScoreListItemView';
@@ -173,24 +173,7 @@ export default class P_ScoreListPage extends BasePage {
         const { pData } = this.params;
         switch (type) {
             case 'jlj':
-                if (!user.isLogin) {
-                    Alert.alert('提示', '登录后分享才能获取奖励',
-                        [
-                            {
-                                text: '取消', onPress: () => {
-                                    this.shareModal && this.shareModal.open();
-                                }
-                            },
-                            {
-                                text: '去登录', onPress: () => {
-                                    this.$navigate('login/login/LoginPage');
-                                }
-                            }
-                        ]
-                    );
-                } else {
-                    this.shareModal && this.shareModal.open();
-                }
+                this.shareModal && this.shareModal.open();
                 break;
             case 'keFu':
                 if (!user.isLogin) {

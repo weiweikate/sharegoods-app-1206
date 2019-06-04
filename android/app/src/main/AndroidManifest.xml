@@ -147,6 +147,7 @@
             android:name=".MainActivity"
             android:hardwareAccelerated="true"
             android:resizeableActivity="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppSplashTheme"
             android:windowSoftInputMode="adjustNothing|stateAlwaysHidden">
             <intent-filter>
@@ -174,7 +175,7 @@
             android:launchMode="singleTop"
             android:resizeableActivity="true"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustNothing|stateAlwaysHidden"
+            android:windowSoftInputMode="stateAlwaysHidden"
             tools:targetApi="n">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
