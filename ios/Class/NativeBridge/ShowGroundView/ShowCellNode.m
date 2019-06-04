@@ -114,7 +114,7 @@
       showImage = [NSString stringWithFormat:@"%@?x-oss-process=image/resize,m_lfit,w_%0.0lf,h_%0.0lf",showImage,itemWidth,itemWidth/_model.aspectRatio];
     }
     _imageNode = [SGNetworkImageNode new];
-    _imageNode.placeholderColor = [UIColor colorWithHexString:@"f5f5f5"];
+    _imageNode.defaultImage = [UIImage imageWithColor:[UIColor colorWithHexString:@"f5f5f5"]];
     _imageNode.URL = [NSURL URLWithString:showImage];
     _imageNode.cornerRadius = 5;
     _imageNode.clipsToBounds = YES;
