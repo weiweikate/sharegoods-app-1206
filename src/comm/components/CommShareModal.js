@@ -285,7 +285,7 @@ export default class CommShareModal extends React.Component {
     render() {
         const { type } = this.props;
         const { shareType } = this.state;
-        let scale = this.props.type === 'web' ?  517 / 315:667 / 375 ;
+        let scale = this.props.type === 'web' ?  517 / 315 : 667 / 375 ;
         this.imageWidth = ScreenUtils.width - 60;
         this.imageHeight = (ScreenUtils.width - 93) * scale;
         if(this.imageWidth * scale >= (ScreenUtils.height - 151)){
@@ -477,7 +477,7 @@ export default class CommShareModal extends React.Component {
                                     }
                                 }}>
                                     <Image source={{ uri: this.state.path }}
-                                           resizeMode={'center'}
+                                           resizeMode={this.props.type === 'web' ? 'center' : 'contain'}
                                            style={{
                                                height: this.imageHeight,
                                                width: this.imageWidth,
