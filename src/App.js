@@ -68,7 +68,7 @@ class App extends Component {
         chatModel;
         this.state = {
             load: false,
-            showOldBtn: false,
+            showOldBtn: false
         };
     }
 
@@ -139,31 +139,19 @@ class App extends Component {
                         let curRouteName = getCurrentRouteName(currentState);
                         // 拦截当前router的名称
                         global.$routes = currentState.routes;
-                        this.setState({ curRouteName});
+                        this.setState({ curRouteName });
                     }}
                 />
-                { showPinFlagModel.showFlag?<SpellShopFlag isShow={showPinFlagModel.showFlag} navigation={this.props.navigation}/>:null}
-                {showPinFlagModel.showFlag?<SpellShopTab isShow={showPinFlagModel.showFlag}/>:null}
+                <SpellShopFlag isShowFlag={showPinFlagModel.showFlag}/>
+                <SpellShopTab isShowTab={showPinFlagModel.showFlag}/>
                 {
                     showDebugPanel === 'true' ?
                         <DebugButton onPress={this.showDebugPage} style={{ backgroundColor: 'red' }}><Text
                             style={{ color: 'white' }}>调试页</Text></DebugButton> : null
                 }
-                {/*{*/}
-                {/*<DebugButton onPress={this.lianjie111} style={{ backgroundColor: "red" }}><Text*/}
-                {/*style={{ color: "white" }}>客服</Text></DebugButton>*/}
-                {/*}*/}
             </View>
         );
     }
-
-    // lianjie111 = () => {
-    //     // const navigationAction = NavigationActions.navigate({
-    //     //     routeName: 'payment/TextWxPay'
-    //     // });
-    //     // global.$navigator.dispatch(navigationAction);
-    // };
-
 
     showDebugPage = () => {
         const navigationAction = NavigationActions.navigate({

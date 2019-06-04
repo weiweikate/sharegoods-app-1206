@@ -33,8 +33,6 @@
 		0347BAD52237CD0A0011184A /* Lottie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0347BAC92237CC680011184A /* Lottie.framework */; };
 		0347BAD62237CD0A0011184A /* Lottie.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0347BAC92237CC680011184A /* Lottie.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0347BAD92237CD120011184A /* libLottieReactNative.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0347BAC02237CC490011184A /* libLottieReactNative.a */; };
-		0347BB6C2237D1590011184A /* img_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 0347BB312237D1590011184A /* img_1.png */; };
-		0347BB6D2237D1590011184A /* img_0.png in Resources */ = {isa = PBXBuildFile; fileRef = 0347BB6B2237D1590011184A /* img_0.png */; };
 		037DBABE21B0E3030003DA18 /* money_0.png in Resources */ = {isa = PBXBuildFile; fileRef = 037DBABC21B0E3030003DA18 /* money_0.png */; };
 		037DBABF21B0E3030003DA18 /* money_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 037DBABD21B0E3030003DA18 /* money_1.png */; };
 		0386E930218C59D900697612 /* libbz2.1.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0386E92F218C59D900697612 /* libbz2.1.0.tbd */; };
@@ -122,6 +120,8 @@
 		8FEF9F2832D98C9091C3A80D /* libPods-crm_app_xiugou.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2067021C430F882483438A36 /* libPods-crm_app_xiugou.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		BF2CCECE229F6D1600A5AD0D /* libRNCWebView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0409D91E222F7706003A53EC /* libRNCWebView.a */; };
+		BF2CCF8C22A5160500A5AD0D /* home_tab_1.png in Resources */ = {isa = PBXBuildFile; fileRef = BF2CCF8A22A5160500A5AD0D /* home_tab_1.png */; };
+		BF2CCF8D22A5160500A5AD0D /* home_tab_0.png in Resources */ = {isa = PBXBuildFile; fileRef = BF2CCF8B22A5160500A5AD0D /* home_tab_0.png */; };
 		BF6EE61B214F8AF3007C1185 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF6EE5F3214F89C2007C1185 /* libBVLinearGradient.a */; };
 		C43AE8FF2240C567003CC51F /* JRServiceBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = C43AE8FE2240C567003CC51F /* JRServiceBridge.m */; };
 		C44F2CDA2252483B00334776 /* SuspensionBtn.m in Sources */ = {isa = PBXBuildFile; fileRef = C44F2CD92252483B00334776 /* SuspensionBtn.m */; };
@@ -541,6 +541,13 @@
 			remoteGlobalIDString = 358F4ED71D1E81A9004DF814;
 			remoteInfo = RCTBlob;
 		};
+		BF2CCF5622A515F200A5AD0D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0347BAC12237CC670011184A /* Lottie.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6445B0D5207E0D4D00D84F6A;
+			remoteInfo = LottieLibraryMacOS;
+		};
 		BF6EE5F2214F89C2007C1185 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BF6EE5ED214F89C2007C1185 /* BVLinearGradient.xcodeproj */;
@@ -688,8 +695,6 @@
 		033C66B721927ACB00433026 /* MRBannerViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRBannerViewManager.m; sourceTree = "<group>"; };
 		0347BABB2237CC480011184A /* LottieReactNative.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LottieReactNative.xcodeproj; path = "../node_modules/lottie-react-native/src/ios/LottieReactNative.xcodeproj"; sourceTree = "<group>"; };
 		0347BAC12237CC670011184A /* Lottie.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Lottie.xcodeproj; path = "../node_modules/lottie-ios/Lottie.xcodeproj"; sourceTree = "<group>"; };
-		0347BB312237D1590011184A /* img_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_1.png; sourceTree = "<group>"; };
-		0347BB6B2237D1590011184A /* img_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_0.png; sourceTree = "<group>"; };
 		037DBABC21B0E3030003DA18 /* money_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = money_0.png; sourceTree = "<group>"; };
 		037DBABD21B0E3030003DA18 /* money_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = money_1.png; sourceTree = "<group>"; };
 		0386E92D218C59CA00697612 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
@@ -899,6 +904,8 @@
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		BBA2B7A1D54FA53B49740582 /* Pods-crm_app_xiugou.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-crm_app_xiugou.release.xcconfig"; path = "Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou.release.xcconfig"; sourceTree = "<group>"; };
 		BC4C1D05C5514093933F2341 /* RNGeolocation.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNGeolocation.xcodeproj; path = "../node_modules/@mr/rn-geolocation/ios/RNGeolocation.xcodeproj"; sourceTree = "<group>"; };
+		BF2CCF8A22A5160500A5AD0D /* home_tab_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home_tab_1.png; sourceTree = "<group>"; };
+		BF2CCF8B22A5160500A5AD0D /* home_tab_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home_tab_0.png; sourceTree = "<group>"; };
 		BF6EE5ED214F89C2007C1185 /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
 		C43AE8FD2240C567003CC51F /* JRServiceBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JRServiceBridge.h; sourceTree = "<group>"; };
 		C43AE8FE2240C567003CC51F /* JRServiceBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JRServiceBridge.m; sourceTree = "<group>"; };
@@ -1230,6 +1237,7 @@
 				0347BACB2237CC680011184A /* Lottie.framework */,
 				0347BACD2237CC680011184A /* Lottie.framework */,
 				0347BACF2237CC680011184A /* libLottie.a */,
+				BF2CCF5722A515F200A5AD0D /* libLottie.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1237,8 +1245,8 @@
 		037DBA7C21B0CCD30003DA18 /* animationRes */ = {
 			isa = PBXGroup;
 			children = (
-				0347BB6B2237D1590011184A /* img_0.png */,
-				0347BB312237D1590011184A /* img_1.png */,
+				BF2CCF8B22A5160500A5AD0D /* home_tab_0.png */,
+				BF2CCF8A22A5160500A5AD0D /* home_tab_1.png */,
 				037DBABC21B0E3030003DA18 /* money_0.png */,
 				037DBABD21B0E3030003DA18 /* money_1.png */,
 			);
@@ -2750,6 +2758,13 @@
 			remoteRef = ADBDB9261DFEBF0700ED6528 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		BF2CCF5722A515F200A5AD0D /* libLottie.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLottie.a;
+			remoteRef = BF2CCF5622A515F200A5AD0D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		BF6EE5F3214F89C2007C1185 /* libBVLinearGradient.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -2848,16 +2863,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0347BB6D2237D1590011184A /* img_0.png in Resources */,
 				037DBABF21B0E3030003DA18 /* money_1.png in Resources */,
 				5068361321379B78001AB175 /* AlipaySDK.bundle in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				C4F2915522891134006C168C /* JVerificationResource.bundle in Resources */,
+				BF2CCF8C22A5160500A5AD0D /* home_tab_1.png in Resources */,
+				BF2CCF8D22A5160500A5AD0D /* home_tab_0.png in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				5068363D21379B78001AB175 /* SGQRCode.bundle in Resources */,
 				5077FCE121A4FE37003B860D /* LICENSE in Resources */,
 				037DBABE21B0E3030003DA18 /* money_0.png in Resources */,
-				0347BB6C2237D1590011184A /* img_1.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -46,20 +46,27 @@ export class ShopProductItemView extends Component {
         if (shareMoneyS == 0) {
             shareMoneyS = null;
         }
+        const { MyShopDetailModel } = this.props;
+        const { productList } = MyShopDetailModel;
         return (
-            <NoMoreClick style={[ProductItemViewStyles.itemView, { marginLeft: index === 0 ? 15 : 10 }]} onPress={
-                () => {
-                    if (!spellStatusModel.hasStore) {
-                        bridge.$toast('只有拼店用户才能进行分享操作哦~');
-                        return;
+            <NoMoreClick
+                style={[ProductItemViewStyles.itemView, {
+                    marginLeft: index === 0 ? 15 : 10,
+                    marginRight: (productList.length - 1 === index) ? 15 : 0
+                }]}
+                onPress={
+                    () => {
+                        if (!spellStatusModel.hasStore) {
+                            bridge.$toast('只有拼店用户才能进行分享操作哦~');
+                            return;
+                        }
+                        const router = homeModule.homeNavigate(linkType, linkTypeCode);
+                        let params = homeModule.paramsNavigate(item);
+                        if (router) {
+                            navigate(router, params);
+                        }
                     }
-                    const router = homeModule.homeNavigate(linkType, linkTypeCode);
-                    let params = homeModule.paramsNavigate(item);
-                    if (router) {
-                        navigate(router, params);
-                    }
-                }
-            }>
+                }>
                 <UIImage source={{ uri: image || '' }}
                          style={ProductItemViewStyles.itemImg}>
                     <LinearGradient style={ProductItemViewStyles.LinearGradient}
@@ -76,8 +83,11 @@ export class ShopProductItemView extends Component {
                         numberOfLines={1}>{content || ''}</MRText>
                 <View style={ProductItemViewStyles.bottomView}>
                     <View>
-                        <MRText style={ProductItemViewStyles.itemPrice}
-                                numberOfLines={1}>¥{promotionMinPrice || price || ''}</MRText>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <MRText style={{ fontSize: 10, color: DesignRule.mainColor, paddingTop: 1 }}>¥</MRText>
+                            <MRText style={ProductItemViewStyles.itemPrice}
+                                    numberOfLines={1}>{promotionMinPrice || price || ''}</MRText>
+                        </View>
                         {progressBar === 1 && <View style={ProductItemViewStyles.progressBgView}>
                             <LinearGradient
                                 style={[ProductItemViewStyles.progressView, { width: salesVolumeS }]}
@@ -197,7 +207,7 @@ const ProductItemViewStyles = StyleSheet.create({
     },
 
     itemPrice: {
-        fontSize: 10, color: DesignRule.mainColor, fontWeight: 'bold'
+        fontSize: 12, color: DesignRule.mainColor, fontWeight: 'bold'
     },
     /*进度条*/
     progressBgView: {
@@ -253,7 +263,7 @@ export class ShopBottomBannerView extends Component {
             return item.image;
         });
         return (
-            <View style={{ marginLeft: DesignRule.margin_page }}>
+            <View style={{ marginLeft: DesignRule.margin_page, marginBottom: 20 }}>
                 <MRBannerView style={bottomBannerStyles.banner}
                               imgUrlArray={images}
                               itemWidth={px2dp(345)}
