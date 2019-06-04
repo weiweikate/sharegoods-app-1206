@@ -46,20 +46,27 @@ export class ShopProductItemView extends Component {
         if (shareMoneyS == 0) {
             shareMoneyS = null;
         }
+        const { MyShopDetailModel } = this.props;
+        const { productList } = MyShopDetailModel;
         return (
-            <NoMoreClick style={[ProductItemViewStyles.itemView, { marginLeft: index === 0 ? 15 : 10 }]} onPress={
-                () => {
-                    if (!spellStatusModel.hasStore) {
-                        bridge.$toast('只有拼店用户才能进行分享操作哦~');
-                        return;
+            <NoMoreClick
+                style={[ProductItemViewStyles.itemView, {
+                    marginLeft: index === 0 ? 15 : 10,
+                    marginRight: (productList.length - 1 === index) ? 15 : 0
+                }]}
+                onPress={
+                    () => {
+                        if (!spellStatusModel.hasStore) {
+                            bridge.$toast('只有拼店用户才能进行分享操作哦~');
+                            return;
+                        }
+                        const router = homeModule.homeNavigate(linkType, linkTypeCode);
+                        let params = homeModule.paramsNavigate(item);
+                        if (router) {
+                            navigate(router, params);
+                        }
                     }
-                    const router = homeModule.homeNavigate(linkType, linkTypeCode);
-                    let params = homeModule.paramsNavigate(item);
-                    if (router) {
-                        navigate(router, params);
-                    }
-                }
-            }>
+                }>
                 <UIImage source={{ uri: image || '' }}
                          style={ProductItemViewStyles.itemImg}>
                     <LinearGradient style={ProductItemViewStyles.LinearGradient}
