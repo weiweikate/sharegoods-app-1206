@@ -111,6 +111,7 @@ class HomeModalManager {
             AsyncStorage.setItem('isToUpdate', String(this.versionData.version));
         }
         this.isShowUpdate = false;
+        this.needShowUpdate = false;
         this.versionData = null;
         this.openNext();
     }
