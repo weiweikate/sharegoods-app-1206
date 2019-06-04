@@ -151,7 +151,7 @@ export default class ShowActivityView extends Component {
                     isEmpty={this.state.isEmpty}
                     emptyTip={'暂无数据'}
                     initialNumToRender={5}
-                    ListHeaderComponent={<View style={{height: 10}}/>}
+                    ListHeaderComponent={<View style={{height: 0}}/>}
                 />}
             </View>
         );
