@@ -166,7 +166,7 @@ class TaskItem extends React.Component {
                         <MRText style={{
                             fontSize: autoSizeWidth(13),
                             color: 'white',
-                            marginTop: 1
+                            marginBottom: 0.5
                         }} allowFontScaling={false}>{title}</MRText>
                     </LinearGradient>
                 </TouchableOpacity>
