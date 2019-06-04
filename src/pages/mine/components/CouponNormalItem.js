@@ -5,21 +5,22 @@ import {
     View,
     TouchableOpacity
 } from 'react-native';
-import {   MRText as Text,UIText} from '../../../components/ui';
+import { MRText as Text, UIText } from '../../../components/ui';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
+
 const { px2dp } = ScreenUtils;
 const unUsedBg = res.couponsImg.youhuiquan_bg_unUsedBg;
 const usedBg = res.couponsImg.youhuiquan_bg_usedBg;
 
 
-export default class CouponNormalItem extends Component{
+export default class CouponNormalItem extends Component {
 
 
-    render(){
-        let {item,index} = this.props;
-        return(
+    render() {
+        let { item, index } = this.props;
+        return (
             <TouchableOpacity style={{ backgroundColor: DesignRule.bgColor, marginBottom: 5 }}
                               onPress={() => this.props.clickItem(index, item)}>
                 <ImageBackground style={{
@@ -31,7 +32,7 @@ export default class CouponNormalItem extends Component{
                         <View style={styles.itemFirStyle}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 {
-                                    item.type === 3 || item.type === 4 ||  item.type === 5 || item.type === 12 ? null :
+                                    item.type === 3 || item.type === 4 || item.type === 5 || item.type === 12 ? null :
                                         <View style={{ alignSelf: 'flex-end', marginBottom: 2 }}>
                                             <Text
                                                 style={{
@@ -43,7 +44,7 @@ export default class CouponNormalItem extends Component{
                                 <View>
                                     <Text style={{
                                         fontSize: item.type === 4 ? 20 : (item.value && item.value.length < 3 ? 33 : 26),
-                                        color: item.status === 0 ? (item.levelimit ? DesignRule.textColor_mainTitle : DesignRule.mainColor) : DesignRule.textColor_mainTitle,
+                                        color: item.status === 0 ? (item.levelimit ? DesignRule.textColor_mainTitle : DesignRule.mainColor) : DesignRule.textColor_mainTitle
                                     }} allowFontScaling={false}>{item.value}</Text>
                                 </View>
                                 {
@@ -72,10 +73,7 @@ export default class CouponNormalItem extends Component{
                                     color: DesignRule.textColor_mainTitle,
                                     marginRight: 10
                                 }} allowFontScaling={false}>
-                                    {item.name}{item.type !== 99 ? null : <UIText value={'（可叠加使用）'} style={{
-                                    fontSize: 11,
-                                    color: DesignRule.textColor_instruction
-                                }}/>}</Text>
+                                    {item.name}</Text>
                                 {item.type === 12 ? <UIText value={'x' + item.number} style={{
                                     fontSize: 15,
                                     color: DesignRule.textColor_mainTitle
@@ -100,7 +98,7 @@ export default class CouponNormalItem extends Component{
                                             marginRight: 15
                                         }}/>
                             </View> : (item.count > 1 ? <UIText value={'x' + item.count}
-                                                            style={styles.xNumsStyle}/> : null)) :
+                                                                style={styles.xNumsStyle}/> : null)) :
                             <View style={{ marginRight: 15, justifyContent: 'center', alignItems: 'center' }}>
                                 {item.count > 1 ? <UIText value={'x' + item.count}
                                                           style={styles.xNumsStyle}/> : null}
@@ -114,7 +112,7 @@ export default class CouponNormalItem extends Component{
                     </View>
                 </ImageBackground>
             </TouchableOpacity>
-        )
+        );
     }
 }
 const styles = StyleSheet.create({
@@ -129,5 +127,5 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         width: px2dp(80)
-    },
-})
+    }
+});

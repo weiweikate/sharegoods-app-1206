@@ -785,13 +785,15 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         }
 
         String tip = "秀一秀 赚到够";
+        Typeface font = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD);
+        paint.setTypeface(font);
         textPaint.setAntiAlias(true);
         textPaint.setColor(Color.WHITE);
         textPaint.setTextSize(13 * precision);
         Rect bounds = new Rect();
         textPaint.getTextBounds(tip, 0, tip.length(), bounds);
         canvas.drawText(tip, ((375 * precision - bounds.width()) / 2), 640 * precision, textPaint);
-
+        paint.setTypeface(null);
         String path = BitmapUtils.saveImageToCache(result, "shareShowImage.png", shareImageBean.toString());
 
         if (!TextUtils.isEmpty(path)) {
@@ -1279,8 +1281,10 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
         paint.setColor(Color.parseColor("#FF0050"));
         paint.setTextSize(17 * ratio);
+        Typeface font = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD);
+        paint.setTypeface(font);
         canvas.drawText("秀一秀 赚到够", 152 * ratio, 72 * ratio, paint);
-
+        paint.setTypeface(null);
 
         Bitmap bitmapCenter = Bitmap.createScaledBitmap(bitmap, 339 * ratio, 339 * ratio, true);
         Bitmap bitmapCenter1 = BitmapFillet.fillet(bitmapCenter, 5 * ratio, CORNER_ALL);
@@ -1357,8 +1361,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         canvas.drawBitmap(qrBitmap, 268 * ratio, bottom - titleSize - 6 * ratio, paint);
 
         if (!TextUtils.isEmpty(discountPrice)) {
-            Typeface font = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD);
-            paint.setTypeface(font);
             String tip2 = "扫码购";
             paint.setStrikeThruText(false);
             paint.setColor(Color.parseColor("#FF0050"));

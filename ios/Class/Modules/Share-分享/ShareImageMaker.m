@@ -154,7 +154,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     NSString *priceStr = model.priceStr;
     NSString *retailPrice = model.retailPrice;
     NSString *retailString = @"";
-    NSString *shareMoneyPrice = [NSString stringWithFormat:@"立省%@元起",model.shareMoney?model.shareMoney:@"xx"];
+    NSString *shareMoneyPrice = model.shareMoney?[NSString stringWithFormat:@"立省%@元起",model.shareMoney]:@"";
 
     priceStr = [NSString stringWithFormat:@"市场价：%@",priceStr];
     if ([model.priceType isEqualToString:@"mr_skill"]) {
@@ -253,7 +253,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
 
     //扫码购 扫码购
     CGFloat tempStrwidth = [@"扫码购" getWidthStringfontSize:13 viewWidth:150];
-    NSMutableAttributedString * tempStrAttrStr = [[NSMutableAttributedString alloc]initWithString:@"扫码购"
+    NSMutableAttributedString * tempStrAttrStr = [[NSMutableAttributedString alloc]initWithString:model.shareMoney?@"扫码购":@""
                                                                                          attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:13*i],
                                                                                                       NSForegroundColorAttributeName: [UIColor colorWithHexString:@"FF0050"],}];
     
