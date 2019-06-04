@@ -36,9 +36,6 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
     private ProductsAdapter.PressProductListener pressProductListener;
 
     public ShowRecommendAdapter(NineGridView.clickL clickL, ProductsAdapter.AddCartListener addCartListener, ProductsAdapter.PressProductListener pressProductListener) {
-
-//        super(R.layout.item_showground_image_goods);
-
         super(new ArrayList<NewestShowGroundBean.DataBean>());
         NineGridView.setImageLoader(new NineGridView.ImageLoader() {
             @Override
@@ -167,17 +164,17 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
 
         nineGridView.setSingleImageRatio((float) (19 / 12.0));
         nineGridView.setSingleImageRatio(ScreenUtils.getScreenWidth() - DensityUtils.px2dip(185));
-        List<ImageInfo> imageInfoList = new ArrayList<>();
-        if (item.getResource() != null) {
-            for (int i = 0; i < item.getResource().size(); i++) {
-                if (item.getResource().get(i).getType() == 2) {
-                    String url = item.getResource().get(i).getUrl();
-                    ImageInfo info = new ImageInfo();
-                    info.setImageUrl(url);
-                    imageInfoList.add(info);
-                }
-            }
-        }
+        List<ImageInfo> imageInfoList = item.getNineImageInfos();
+//        if (item.getResource() != null) {
+//            for (int i = 0; i < item.getResource().size(); i++) {
+//                if (item.getResource().get(i).getType() == 2) {
+//                    String url = item.getResource().get(i).getUrl();
+//                    ImageInfo info = new ImageInfo();
+//                    info.setImageUrl(url);
+//                    imageInfoList.add(info);
+//                }
+//            }
+//        }
 
         if (this.clickL != null) {
             nineGridView.setClick(clickL);
@@ -185,7 +182,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
             nineGridView.setClick(null);
         }
 
-        if (imageInfoList.size() > 0) {
+        if (imageInfoList != null && imageInfoList.size() > 0) {
             String tag = (String) nineGridView.getTag();
             if (!TextUtils.equals(tag, JSONObject.toJSONString(imageInfoList))) {
                 NineGridViewAdapter adapter = new NineGridViewAdapter(mContext, imageInfoList);
