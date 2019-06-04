@@ -236,11 +236,11 @@ export default class MyIntegralAccountPage extends BasePage {
                 let data = response.data;
                 data.data.map((item, index) => {
                     arrData.push({
-                        type: allKinds[item.useType].title,
+                        type: allKinds[item.useType] ? allKinds[item.useType].title : '其他',
                         time: DataUtils.getFormatDate(item.createTime / 1000),
                         serialNumber: item.serialNo || '',
                         capital: use_type_symbol[item.usType] + (item.userScore ? item.userScore : 0),
-                        iconImage: allKinds[item.useType].img,
+                        iconImage: allKinds[item.useType] ? allKinds[item.useType].img : taskImg,
                         capitalRed: use_type_symbol[item.usType] === '+'
 
 
