@@ -16,7 +16,6 @@ import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
 import com.meeruu.sharegoods.rn.showground.utils.NumUtils;
 import com.meeruu.sharegoods.rn.showground.utils.UrlUtils;
 
-import java.util.HashMap;
 import java.util.Map;
 
 
@@ -37,8 +36,8 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
     public ShowGroundAdapter() {
         super(R.layout.item_showground);
         realWidth = (ScreenUtils.getScreenWidth() - 40) / 2;
-        minHeight = realWidth*120/167;
-        maxHeight = realWidth*240/167;
+        minHeight = realWidth * 120 / 167;
+        maxHeight = realWidth * 240 / 167;
     }
 
     @Override
@@ -54,13 +53,13 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
         float width = 1;
         float height = 1;
         String imgUrl = null;
-        if(item.getResource() != null){
+        if (item.getResource() != null) {
             imgUrl = item.getResource().get(0).getUrl();
-            Map<String,String> map = UrlUtils.urlSplit(imgUrl);
-            if(map.containsKey("width")){
+            Map<String, String> map = UrlUtils.urlSplit(imgUrl);
+            if (map.containsKey("width")) {
                 width = Float.valueOf(map.get("width"));
             }
-            if(map.containsKey("height")){
+            if (map.containsKey("height")) {
                 height = Float.valueOf(map.get("height"));
             }
         }
@@ -69,10 +68,10 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
             imgUrl = "res://" + imageView.getContext().getPackageName() + "/" + R.drawable.bg_app_img;
         }
         int realHeight = (int) ((height / width) * realWidth);
-        if(realHeight < minHeight){
+        if (realHeight < minHeight) {
             realHeight = minHeight;
         }
-        if(realHeight > maxHeight){
+        if (realHeight > maxHeight) {
             realHeight = maxHeight;
         }
         if (realHeight <= 1) {
@@ -93,10 +92,10 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
 
         TextView title = helper.getView(R.id.showground_item_title);
         String titleStr = item.getContent();
-        if(titleStr != null && titleStr.trim().length() > 0){
+        if (titleStr != null && titleStr.trim().length() > 0) {
             title.setText(titleStr);
             title.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             title.setVisibility(View.GONE);
         }
 

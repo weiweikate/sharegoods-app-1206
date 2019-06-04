@@ -162,7 +162,7 @@ public class ImageLoadUtils {
                         }
                     }
                     Uri uri = Uri.parse(newUrl);
-                    loadRoundImage(uri, view, radius);
+                    loadRoundImage(uri, view, radius, false);
                     view.getViewTreeObserver().removeOnPreDrawListener(this);
                     hasMeasured = true;
                 }
@@ -340,6 +340,45 @@ public class ImageLoadUtils {
                 .setOldController(view.getController())
                 .build();
         view.setHierarchy(hierarchy);
+        view.setController(controller);
+    }
+
+    /**
+     * 加载图片为圆角图片
+     *
+     * @param uri    图片的uri
+     * @param view   要加载的视图
+     * @param radius 圆角
+     */
+    private static void loadRoundImage(Uri uri, SimpleDraweeView view, float[] radius, boolean needPlace) {
+        ImageRequestBuilder requestBuilder = ImageRequestBuilder.newBuilderWithSource(uri)
+                //缩放,在解码前修改内存中的图片大小, 配合Downsampling可以处理所有图片,否则只能处理jpg,
+                // 开启Downsampling:在初始化时设置.setDownsampleEnabled(true)
+                .setProgressiveRenderingEnabled(true)//支持图片渐进式加载
+                .setRotationOptions(RotationOptions.autoRotate()); //如果图片是侧着,可以自动旋转
+        int width = view.getMeasuredWidth();
+        int height = view.getMeasuredHeight();
+        if (width > 0) {
+            requestBuilder.setResizeOptions(new ResizeOptions(width, height));
+        } else {
+            requestBuilder.setResizeOptions(new ResizeOptions(ScreenUtils.getScreenWidth(), ScreenUtils.getScreenHeight() / 2));
+        }
+        ImageRequest request = requestBuilder.build();
+        GenericDraweeHierarchyBuilder builder =
+                new GenericDraweeHierarchyBuilder(BaseApplication.appContext.getResources())
+                        .setFadeDuration(300)
+                        .setRoundingParams(RoundingParams.fromCornersRadii(radius))
+                        .setPlaceholderImage(R.drawable.bg_app_img)
+                        .setPlaceholderImageScaleType(ScalingUtils.ScaleType.CENTER_CROP)
+                        .setActualImageScaleType(ScalingUtils.ScaleType.CENTER_CROP);
+        if (needPlace) {
+            builder.setPlaceholderImage(R.drawable.bg_app_img);
+        }
+        DraweeController controller = Fresco.newDraweeControllerBuilder()
+                .setImageRequest(request)
+                .setOldController(view.getController())
+                .build();
+        view.setHierarchy(builder.build());
         view.setController(controller);
     }
 
