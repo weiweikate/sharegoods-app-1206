@@ -12,16 +12,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.uimanager.events.EventDispatcher;
 import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.sharegoods.R;
-import com.meeruu.sharegoods.rn.showground.ShowRecommendViewManager;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
-import com.meeruu.sharegoods.rn.showground.event.onPressProductEvent;
 
 import java.util.List;
 
@@ -73,7 +68,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.VH> {
         String url = bean.getImgUrl();
         String tag = (String) vh.productImg.getTag();
         if (!TextUtils.equals(url, tag)) {
-            ImageLoadUtils.loadRoundNetImage(url, vh.productImg, 5);
+            ImageLoadUtils.loadRoundNetImage(url, vh.productImg, DensityUtils.dip2px(5));
             vh.productImg.setTag(url);
         }
         vh.cart.setOnClickListener(new View.OnClickListener() {
@@ -120,7 +115,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.VH> {
         vh.parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(pressProductListener != null){
+                if (pressProductListener != null) {
                     pressProductListener.onPressProduct(bean.getProdCode());
                 }
             }
@@ -139,7 +134,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.VH> {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_product, viewGroup, false);
         if (getItemCount() > 1) {
             int width = ScreenUtils.getScreenWidth() - DensityUtils.dip2px(110);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width, DensityUtils.dip2px(70));
             if (i != mDatas.size() - 1) {
                 lp.setMargins(0, 0, 10, 0);
             }
