@@ -40,7 +40,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         NineGridView.setImageLoader(new NineGridView.ImageLoader() {
             @Override
             public void onDisplayImage(Context context, SimpleDraweeView imageView, String url) {
-                ImageLoadUtils.loadRoundNetImage(url, imageView, 5);
+                ImageLoadUtils.loadRoundNetImage(url, imageView, DensityUtils.dip2px(5));
             }
         });
         this.clickL = clickL;
@@ -162,7 +162,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         NineGridView nineGridView = helper.getView(R.id.nine_grid);
 
 
-        nineGridView.setSingleImageRatio((float) (19 / 12.0));
+//        nineGridView.setSingleImageRatio((float) (19 / 12.0));
         nineGridView.setSingleImageRatio(ScreenUtils.getScreenWidth() - DensityUtils.px2dip(185));
         List<ImageInfo> imageInfoList = item.getNineImageInfos();
 //        if (item.getResource() != null) {
