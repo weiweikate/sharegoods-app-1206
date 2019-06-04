@@ -90,6 +90,11 @@ class TaskModel  {
             if (this.type === 'home') {
                 this.calculateHomeHeight();
             }
+        }).catch(()=> {
+            this.show = false;
+            if (this.type === 'home') {
+                this.calculateHomeHeight();
+            }
         })
     }
 
