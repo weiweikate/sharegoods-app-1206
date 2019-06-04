@@ -72,8 +72,10 @@ class HomeTab extends Component {
 }
 
 const gotoMyShop = () => {
-    global.$navigator && global.$navigator._navigation.popToTop();
-    global.$navigator && global.$navigator._navigation.navigate('MyShop_RecruitPage');
+    if (global.$navigator) {
+        global.$navigator._navigation.popToTop();
+        global.$navigator._navigation.navigate('MyShop_RecruitPage');
+    }
 };
 
 const ShowFlag = () =>
@@ -81,40 +83,26 @@ const ShowFlag = () =>
     <TouchableWithoutFeedback onPress={() => {
         gotoMyShop();
     }}>
-        <View style={{
-            position: 'absolute',
-            width: ScreenUtils.width,
-            height: ScreenUtils.width * 34 / 75,
-            bottom: ScreenUtils.safeBottom + 46
-        }}>
+        <View
+            style={{
+                position: 'absolute',
+                width: ScreenUtils.width,
+                height: ScreenUtils.width * 254 / 559,
+                bottom: ScreenUtils.safeBottom + 46
+            }}>
             <Animation
                 style={styles.shopFlag}
-                loop={true}
                 autoPlay={true}
-                source={require('./pindian_flag.json')}
-            />
+                hardwareAccelerationAndroid={true}
+                source={require('./pin_flag.json')}/>
         </View>
     </TouchableWithoutFeedback>;
 
 @observer
 export class SpellShopFlag extends Component {
-    state = {
-        isFlag: true
-    };
-
-    componentWillReceiveProps(nextProps) {
-        const { isShow } = nextProps;
-        if (isShow) {
-            setTimeout(() => {
-                this.setState({ isFlag: isShow });
-            }, 400);
-        } else {
-            this.setState({ isFlag: isShow });
-        }
-    }
 
     render() {
-        if (!this.state.isFlag) {
+        if (!this.props.isShowFlag) {
             return null;
         }
         if (!user) {
@@ -124,12 +112,11 @@ export class SpellShopFlag extends Component {
             return null;
         }
         if (user.levelRemark >= 'V2' && !user.storeCode) {
-            return <ShowFlag navigation={this.props.navigation}/>;
+            return <ShowFlag/>;
         }
         if (user.storeCode && user.levelRemark >= 'V2' && user.storeStatus === 0) {
-            return <ShowFlag navigation={this.props.navigation}/>;
+            return <ShowFlag/>;
         }
-
         return null;
     }
 }
@@ -138,44 +125,15 @@ const ShowTab = () =>
     <TouchableWithoutFeedback onPress={() => {
         gotoMyShop();
     }}>
-        <View style={{
-            position: 'absolute',
-            width: 44,
-            height: 44,
-            left: (ScreenUtils.width / 2) - 22,
-            bottom: ScreenUtils.safeBottom - 2
-            // backgroundColor: 'red',
-        }}>
-            <Animation
-                style={styles.shopTab}
-                loop={true}
-                autoPlay={true}
-                source={require('./pin_tab.json')}/>
-
-        </View>
-
-
+        <Image
+            style={styles.shopTab}
+            source={require('./pin_tab.png')}/>
     </TouchableWithoutFeedback>;
 
 @observer
 export class SpellShopTab extends Component {
-    state = {
-        isFlag: true
-    };
-
-    componentWillReceiveProps(nextProps) {
-        const { isShow } = nextProps;
-        if (isShow) {
-            setTimeout(() => {
-                this.setState({ isFlag: isShow });
-            }, 400);
-        } else {
-            this.setState({ isFlag: isShow });
-        }
-    }
-
     render() {
-        if (!this.state.isFlag) {
+        if (!this.props.isShowTab) {
             return null;
         }
         if (!user) {
@@ -331,6 +289,10 @@ const styles = StyleSheet.create({
         flex: 1
     },
     shopTab: {
-        flex: 1
+        position: 'absolute',
+        width: 44,
+        height: 44,
+        left: (ScreenUtils.width / 2) - 22,
+        bottom: ScreenUtils.safeBottom
     }
 });

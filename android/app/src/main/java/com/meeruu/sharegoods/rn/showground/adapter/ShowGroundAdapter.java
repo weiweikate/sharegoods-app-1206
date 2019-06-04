@@ -46,6 +46,9 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
         final SimpleDraweeView userIcon = helper.getView(R.id.showground_item_userIcon);
         String userTag = (String) userIcon.getTag();
         String userUrl = item.getUserInfoVO().getUserImg();
+        if(TextUtils.isEmpty(userUrl)){
+            userUrl = "res://" + userIcon.getContext().getPackageName() + "/" + R.drawable.bg_app_user;
+        }
         if (!TextUtils.equals(userUrl, userTag)) {
             ImageLoadUtils.loadCircleNetImage(userUrl, userIcon);
             userIcon.setTag(userUrl);

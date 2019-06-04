@@ -13,6 +13,7 @@
 'use strict';
 
 import React from 'react';
+import {navigate} from '../../../navigation/RouterMap';
 
 import {
   StyleSheet,
@@ -57,7 +58,10 @@ export default class PraiseModel extends React.Component {
           <View style={styles.modal}>
               <ImageBackground source={image} style={styles.bg}>
                   <MRText style={styles.title}>{title}</MRText>
-                  <TouchableOpacity onPress={()=> {HomeModalManager.closePrize()}}>
+                  <TouchableOpacity onPress={()=> {
+                      navigate('HtmlPage',{uri: '/awardPool'});
+                      HomeModalManager.closePrize()}
+                  }>
                       <ImageBackground source={btn_bg} style={styles.btn}>
                           <MRText style={styles.btnText}>确认</MRText>
                       </ImageBackground>

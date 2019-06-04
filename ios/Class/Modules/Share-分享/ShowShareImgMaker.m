@@ -294,7 +294,7 @@
   
   //标语
   NSMutableAttributedString *logoTitle = [[NSMutableAttributedString alloc]initWithString:@"秀一秀 赚到够"
-                                                                               attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:18*i], NSForegroundColorAttributeName: [UIColor colorWithHexString:@"FF0050"]}];
+                                                                               attributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:18*i], NSForegroundColorAttributeName: [UIColor colorWithHexString:@"FF0050"]}];
   [nodes addObject:@{
                      @"value": logoTitle,
                      @"location": [NSValue valueWithCGPoint:CGPointMake(152*i, 55*i)]}

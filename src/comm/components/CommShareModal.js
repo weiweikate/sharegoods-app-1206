@@ -160,7 +160,7 @@ export default class CommShareModal extends React.Component {
     showImage() {
         const {type,imageJson} = this.props;
         let params = {...(imageJson || {})};
-        params.shareMoney && (params.shareMoney = this.getMoneyText());
+        params.shareMoney && (params.shareMoney = this.getMoneyText(params.shareMoney));
         params = {headerImage:user.headImg, userName: user.nickname, ...params};
         if (type === 'promotionShare' || type === 'Image' || type === 'Show') {
             if (this.state.path.length === 0) {
@@ -285,7 +285,7 @@ export default class CommShareModal extends React.Component {
     render() {
         const { type } = this.props;
         const { shareType } = this.state;
-        let scale = this.props.type === 'web' ?  517 / 315:667 / 375 ;
+        let scale = this.props.type === 'web' ?  517 / 315 : 667 / 375 ;
         this.imageWidth = ScreenUtils.width - 60;
         this.imageHeight = (ScreenUtils.width - 93) * scale;
         if(this.imageWidth * scale >= (ScreenUtils.height - 151)){
@@ -459,7 +459,7 @@ export default class CommShareModal extends React.Component {
                                 height: this.imageHeight,
                                 width: this.imageWidth,
                                 position: 'absolute',
-                                bottom: 117,
+                                bottom:  117 + ScreenUtils.safeBottom,
                                 left: (ScreenUtils.width - this.imageWidth) / 2,
                                 borderRadius: 10,
                                 borderColor: DesignRule.textColor_placeholder,
@@ -477,7 +477,7 @@ export default class CommShareModal extends React.Component {
                                     }
                                 }}>
                                     <Image source={{ uri: this.state.path }}
-                                           resizeMode={'center'}
+                                           resizeMode={this.props.type === 'web' ? 'center' : 'contain'}
                                            style={{
                                                height: this.imageHeight,
                                                width: this.imageWidth,
@@ -490,7 +490,7 @@ export default class CommShareModal extends React.Component {
                                                 data={this.props.imageJson} modal={this.modal}/> : null
                                 }
                                 {
-                                    this.state.path === '' && !this.props.type === 'Show' ? <ActivityIndicator
+                                    this.state.path === '' && this.props.type !== 'Show' ? <ActivityIndicator
                                         color="#aaaaaa"
                                         style={{
                                             position: 'absolute',

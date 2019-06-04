@@ -321,7 +321,11 @@ export default class MyCouponsItems extends Component {
         let arrData = [];
         console.log('parseData', this.dataSel, couponsModel.params);
         if (this.currentPage === 1) {//refresh
-            if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && this.state.pageStatus === 0 && !this.props.fromOrder && !couponsModel.params.type) {
+            if ((!StringUtils.isEmpty(user.tokenCoin) || !StringUtils.isEmpty(user.blockedTokenCoin))
+                && (user.tokenCoin !== 0 || user.blockedTokenCoin !== 0)
+                && this.state.pageStatus === 0
+                && !this.props.fromOrder
+                && !couponsModel.params.type) {
                 arrData.push({
                     status: 0,
                     name: '1元现金券',
@@ -447,7 +451,9 @@ export default class MyCouponsItems extends Component {
         } else if (this.props.justOne && status === 0 || this.dataSel.type === 99) {
             let arrData = [];
             bridge.hiddenLoading();
-            if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && status === 0) {
+            if ((!StringUtils.isEmpty(user.tokenCoin) || !StringUtils.isEmpty(user.blockedTokenCoin))
+                && (user.tokenCoin !== 0 || user.blockedTokenCoin !== 0)
+                && status === 0) {
                 arrData.push({
                     status: 0,
                     name: '1元现金券',

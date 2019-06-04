@@ -17,5 +17,9 @@ const task = {
     taskModal_h:require('./taskModal_h.png'),
     taskModal_header:require('./taskModal_header.png'),
     taskModal_wa:require('./taskModal_wa.png'),
+    V2:require('./V2.png'),
+    V3:require('./V3.png'),
+    V4:require('./V4.png'),
+    V5:require('./V5.png'),
 };
 export default task;
