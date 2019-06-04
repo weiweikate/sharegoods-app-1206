@@ -14,8 +14,8 @@ import LinearGradient from 'react-native-linear-gradient';
 
 
 const { px2dp } = ScreenUtils;
-const unUsedBg = res.couponsImg.youhuiquan_bg_unUsedBg;
-// const usedBg = res.couponsImg.youhuiquan_bg_usedBg;
+const unUsedBg = res.couponsImg.youhuiquan_bg_unUseBg;
+const usedBg = res.couponsImg.youhuiquan_bg_usedBg;
 
 
 export default class CouponNormalItem extends Component{
@@ -33,7 +33,7 @@ export default class CouponNormalItem extends Component{
                     width: ScreenUtils.width - px2dp(30),
                     height: px2dp(109),
                     margin: 2,
-                }} source={item.status === 0 ? (item.levelimit ? unUsedBg : unUsedBg) : unUsedBg} resizeMode='stretch'>
+                }} source={item.status === 0 ? (item.levelimit ? unUsedBg : usedBg) : usedBg} resizeMode='stretch'>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <View style={styles.itemFirStyle}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -101,14 +101,14 @@ export default class CouponNormalItem extends Component{
                             height: px2dp(109)}}>
                             {item.status === 0 ? (item.levelimit ?
                                 <View style={{marginRight: 15, justifyContent: 'center', alignItems: 'center'}}>
-                                    {item.count > 1 ? <UIText value={'x' + item.count}
-                                                              style={styles.xNumsStyle}/> : null}
                                     <UIText value={'等级受限'}
                                             style={{
                                                 fontSize: 13,
                                                 color: DesignRule.textColor_instruction,
                                                 marginRight: 15
                                             }}/>
+                                    {item.count > 1 ? <UIText value={'x' + item.count}
+                                                              style={styles.xNumsStyle}/> : null}
                                 </View> : (item.count > 1 ? <UIText value={'x' + item.count}
                                                                     style={styles.xNumsStyle}/> :
                                         <NoMoreClick style={{

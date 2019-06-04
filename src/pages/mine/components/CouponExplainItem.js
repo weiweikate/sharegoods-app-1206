@@ -14,11 +14,16 @@ import { observer } from 'mobx-react';
 import res from '../res';
 import StringUtils from '../../../utils/StringUtils';
 import LinearGradient from 'react-native-linear-gradient';
+import DashLine from './DashLine';
+
 const { px2dp } = ScreenUtils;
-const unUsedBgex = res.couponsImg.youhuiquan_bg_unUsedBg_ex;
-const unUsedBgExd = res.couponsImg.youhuiquan_bg_unUsedBg_exd;
-// const usedBgex = res.couponsImg.youhuiquan_bg_usedBg_ex;
-// const useBgexd = res.couponsImg.youhuiquan_bg_usedBg_exd;
+const unUsedBg = res.couponsImg.youhuiquan_bg_unUseBg;
+// const usedBg = res.couponsImg.youhuiquan_bg_usedBg;
+const dropImg = res.couponsImg.youhuiquan_bg_drop;
+const remark = res.couponsImg.youhuiquan_bg_remark;
+const dropUnuser = res.couponsImg.youhuiquan_bg_drop_unUser;
+const dropUser = res.couponsImg.youhuiquan_bg_drop_user;
+
 const itemUp = res.couponsImg.youhuiquan_icon_smallUp;
 const itemDown = res.couponsImg.youhuiquan_icon_smallDown;
 
@@ -37,10 +42,10 @@ export default class CouponExplainItem extends Component {
                 <ImageBackground style={{
                     width: ScreenUtils.width - px2dp(30),
                     height: item.tobeextend ? px2dp(109) : px2dp(130),
-                    margin: 2,
+                    marginTop: 2, marginLeft: 2, marginRight: 2,
                 }}
                                  // source={item.status === 0 ? (item.levelimit ? (item.tobeextend ? useBgexd : usedBgex) : (item.tobeextend ? unUsedBgExd : unUsedBgex)) : (item.tobeextend ? useBgexd : usedBgex)}
-                                 source={ item.status === 0 ?(item.tobeextend ? unUsedBgExd : unUsedBgex):item.tobeextend ? unUsedBgExd : unUsedBgex}
+                                 source={ item.status === 0 ?(item.tobeextend ? dropUnuser : unUsedBg):item.tobeextend ? dropUser : dropUser}
                                  resizeMode='stretch'>
                     <View style={{ flexDirection: 'row', alignItems: 'center', height: px2dp(109) }}>
                         <View style={styles.itemFirStyle}>
@@ -110,8 +115,6 @@ export default class CouponExplainItem extends Component {
                                 (
                                     item.type === 99 ?
                                         <View style={{alignItems: 'center', marginRight: 10}}>
-                                            <UIText style={[styles.xNumStyle, {marginRight: 0}]}
-                                                    value={'x' + user.tokenCoin}/>
                                             {!StringUtils.isEmpty(user.blockedTokenCoin) && user.blockedTokenCoin !== 0 ?
                                                 <Text style={{
                                                     fontSize: 11,
@@ -121,17 +124,19 @@ export default class CouponExplainItem extends Component {
                                                             value={'x' + user.blockedTokenCoin}/>
                                                 </Text>
                                                 : null}
+                                            <UIText style={[styles.xNumStyle, {marginRight: 0}]}
+                                                    value={'x' + user.tokenCoin}/>
                                         </View>
                                         : (item.levelimit ?
                                         <View
                                             style={{marginRight: 15, justifyContent: 'center', alignItems: 'center'}}>
-                                            {item.count > 1 ? <UIText value={'x' + item.count}
-                                                                      style={styles.xNumsStyle}/> : null}
                                             <UIText value={'等级受限'}
                                                     style={{
                                                         fontSize: 13,
                                                         color: DesignRule.textColor_instruction
                                                     }}/>
+                                            {item.count > 1 ? <UIText value={'x' + item.count}
+                                                                      style={styles.xNumsStyle}/> : null}
                                         </View>
                                         : (item.count > 1 ? <UIText value={'x' + item.count}
                                                                     style={styles.xNumsStyle}/> :
@@ -168,20 +173,34 @@ export default class CouponExplainItem extends Component {
                         </View>
                     </View>
                     {!item.tobeextend ?
-                        <NoMoreClick style={{ height: px2dp(24), justifyContent: 'center', alignItems: 'center' }}
-                                     onPress={() => this.props.pickUpData(item)}><Image style={{ width: 14, height: 7 }}
-                                                                                        source={itemDown}/>
+                        <View style={{ flexDirection: 'row',width: ScreenUtils.width - px2dp(46),marginLeft:8}}>
+                            <DashLine style={{flex:1}} lineWidth={1} color={'#E4E4E4'} />
+                        </View>:null}
+                    {!item.tobeextend ?
+                        <NoMoreClick style={{ height: px2dp(24), alignItems: 'center',backgroundColor:'#F9F9F9' }}
+                                     onPress={() => this.props.pickUpData(item)}>
+                            <ImageBackground style={{
+                                width: ScreenUtils.width - px2dp(30),
+                                height: px2dp(24),
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }} source={dropImg} resizeMode='stretch'>
+                            <Image style={{ width: 14, height: 7 }}
+                                   source={itemDown}/>
+                            </ImageBackground>
                         </NoMoreClick> : null}
                 </ImageBackground>
                 {item.tobeextend ?
-                    <View style={{
-                        backgroundColor: item.status === 0 ? (item.levelimit ? DesignRule.white : DesignRule.white) : DesignRule.white,
+                    <View style={{ flexDirection: 'row',width: ScreenUtils.width - px2dp(46),marginLeft:8}}>
+                        <DashLine style={{flex:1}} lineWidth={1} color={'#E4E4E4'} />
+                    </View>:null}
+                {item.tobeextend ?
+                    <ImageBackground style={{
                         width: ScreenUtils.width - px2dp(30),
                         marginLeft: 1,
                         borderRadius: 5,
-                        marginTop: -2
-                    }}>
-                        <View style={{ marginTop: 10, marginLeft: 10 }}>
+                    }} source={remark} resizeMode='stretch'>
+                        <View style={{ marginTop: 10, marginLeft: 10, }}>
                             <Text style={{
                                 marginTop: 5,
                                 color: item.status === 0 ?DesignRule.textColor_secondTitle:DesignRule.textColor_secondTitle,
@@ -190,12 +209,12 @@ export default class CouponExplainItem extends Component {
 
                             }} allowFontScaling={false}>{item.remarks}</Text>
                         </View>
-                        <NoMoreClick style={{ height: px2dp(24), justifyContent: 'center', alignItems: 'center' }}
+                        <NoMoreClick style={{ height: px2dp(24), justifyContent: 'center', alignItems: 'center',marginBottom:3 }}
                                      onPress={() => this.props.toExtendData(item)}><Image
                             style={{ width: 14, height: 7 }}
                             source={itemUp}/>
                         </NoMoreClick>
-                    </View> : null}
+                    </ImageBackground> : null}
             </TouchableOpacity>
         );
     }
