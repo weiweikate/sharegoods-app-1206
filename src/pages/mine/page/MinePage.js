@@ -52,7 +52,7 @@ const {
     mine_icon_help_service,
     mine_icon_address,
     // mine_icon_mission,
-    mine_icon_discollect,
+    // mine_icon_discollect,
     mine_message_icon_white,
     mine_setting_icon_white,
     profile_banner,
@@ -753,15 +753,15 @@ export default class MinePage extends BasePage {
                 this.$navigate(RouterMap.AddressManagerPage);
             }
         };
-        let collect = {
-            text: '秀场收藏',
-            icon: mine_icon_discollect,
-            onPress: () => {
-                TrackApi.ViewMyXiuCollection();
-                TrackApi.WatchXiuChang({ xiuChangModuleSource: 3 });
-                this.$navigate(RouterMap.ShowConnectPage);
-            }
-        };
+        // let collect = {
+        //     text: '秀场收藏',
+        //     icon: mine_icon_discollect,
+        //     onPress: () => {
+        //         TrackApi.ViewMyXiuCollection();
+        //         TrackApi.WatchXiuChang({ xiuChangModuleSource: 3 });
+        //         this.$navigate(RouterMap.ShowConnectPage);
+        //     }
+        // };
         let fans = {
             text: '我的秀迷',
             icon: mine_icon_fans,
@@ -799,7 +799,7 @@ export default class MinePage extends BasePage {
             }
         };
 
-        let menu = [invite, message, coupon, data, shop, service, address, collect];
+        let menu = [invite, message, coupon, data, shop, service, address];
 
         if (this.state.hasFans) {
             menu.push(fans);
