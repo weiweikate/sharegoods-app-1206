@@ -160,7 +160,7 @@ export default class CommShareModal extends React.Component {
     showImage() {
         const {type,imageJson} = this.props;
         let params = {...(imageJson || {})};
-        params.shareMoney && (params.shareMoney = this.getMoneyText());
+        params.shareMoney && (params.shareMoney = this.getMoneyText(params.shareMoney));
         params = {headerImage:user.headImg, userName: user.nickname, ...params};
         if (type === 'promotionShare' || type === 'Image' || type === 'Show') {
             if (this.state.path.length === 0) {
