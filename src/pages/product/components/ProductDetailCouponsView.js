@@ -10,10 +10,12 @@ import { MRText } from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
 import { observer } from 'mobx-react';
 import LinearGradient from 'react-native-linear-gradient';
+import StringUtils from '../../../utils/StringUtils';
 
-const { product_coupon } = res;
+const { product_coupon ,couponRemarkHide,couponRemarkShow} = res;
 const { arrow_right_black } = res.button;
 const { width, height, autoSizeHeight, safeBottom, px2dp } = ScreenUtils;
+const {isNoEmpty} = StringUtils
 
 export const couponType = {
     couponSub: 1,//满减券
@@ -110,10 +112,13 @@ const styles = StyleSheet.create({
 /**弹框列表内item**/
 @observer
 class ProductDetailCouponsWindowViewItem extends React.Component {
+    state = {
+        isHide:true
+    }
     render() {
         const { productDetailCouponsViewModel, item } = this.props;
         const { requestGetProdCoupon } = productDetailCouponsViewModel;
-        const { type, value, name, couponTime, getStatus } = item || {};
+        const { type, value, name, couponTime, getStatus,remarks } = item || {};
         /*name颜色*/
         const nameTextColor = !getStatus ? DesignRule.textColor_mainTitle : DesignRule.textColor_instruction;
         /*其他文字*/
@@ -140,6 +145,7 @@ class ProductDetailCouponsWindowViewItem extends React.Component {
             default:
                 valueS = '';
         }
+        const{isHide} = this.state;
         return (
             <View style={windowStyles.itemView}>
                 <View style={windowStyles.itemContainerView}>
@@ -174,6 +180,16 @@ class ProductDetailCouponsWindowViewItem extends React.Component {
                         }
                     </View>
                 </View>
+                {isNoEmpty(remarks) && <NoMoreClick style = {{backgroundColor:'#FAFAFA'}} activeOpacity = {1} onPress = {()=>{
+                    this.setState({
+                        isHide:!isHide
+                    })
+                }}>
+                {!isHide && <MRText style={windowStyles.remarkText}>{remarks}</MRText>}
+                <View style = {windowStyles.remarkView}>
+                <Image style = {windowStyles.remarkImage} source = {isHide ? couponRemarkHide : couponRemarkShow}/>
+                </View>
+                </NoMoreClick>}
             </View>
         );
     }
@@ -287,6 +303,17 @@ const windowStyles = StyleSheet.create({
     },
     bottomText: {
         fontSize: 17, color: 'white'
+    },
+    remarkView:{
+        justifyContent:'center',alignItems:'center',
+        height:22,borderRadius:3,
+    },
+    remarkText:{
+        paddingHorizontal:15,paddingVertical:8,
+        fontSize: 10, color: DesignRule.textColor_secondTitle,
+    },
+    remarkImage:{
+        width:8,height:4
     }
 });
 
