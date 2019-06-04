@@ -41,8 +41,7 @@
             android:id="@+id/showground_item_userIcon"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            app:roundAsCircle="true"
-            android:background="@drawable/bg_app_user"/>
+            app:roundAsCircle="true" />
 
         <TextView
             android:id="@+id/showground_item_name"
