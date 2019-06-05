@@ -221,7 +221,14 @@
         },
         "刘可君": {
             "name": "刘可君",
-            "host": "http://172.18.7.178:8903/gateway",
+            "host": "http://172.16.10.11:1080/gateway",
+            "oss": "https://testh5.sharegoodsmall.com",
+            "h5": "http://testh5.sharegoodsmall.com",
+            "wxAppletKey": "gh_aa91c3ea0f6c"
+        },
+        "活动-用的开发环境": {
+            "name": "活动-用的开发环境",
+            "host": "http://172.16.10.11:1080/gateway",
             "oss": "https://testh5.sharegoodsmall.com",
             "h5": "http://testh5.sharegoodsmall.com",
             "wxAppletKey": "gh_aa91c3ea0f6c"

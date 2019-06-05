@@ -483,6 +483,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
     public void addHeader(View view) {
         adapter.setHeaderAndEmpty(true);
         adapter.setHeaderView(view);
+        adapter.setEmptyView(new View(view.getContext()));
         recyclerView.scrollToPosition(0);
     }
 

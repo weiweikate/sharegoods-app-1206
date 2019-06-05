@@ -10,6 +10,7 @@ import android.support.v7.widget.SnapHelper;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
@@ -97,7 +98,13 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         SimpleDraweeView simpleDraweeView = helper.getView(R.id.image);
         if (item.getResource() != null) {
             String url = item.getResource().get(0).getUrl();
-            ImageLoadUtils.loadRoundNetImage(url, simpleDraweeView, 5);
+            int width = ScreenUtils.getScreenWidth() - DensityUtils.dip2px(85);
+            int height = width/29*16;
+            LinearLayout.LayoutParams linearParams = (LinearLayout.LayoutParams) simpleDraweeView.getLayoutParams();
+            linearParams.height = height;
+            linearParams.width = width;
+            simpleDraweeView.setLayoutParams(linearParams);
+            ImageLoadUtils.loadRoundNetImage(url, simpleDraweeView, DensityUtils.dip2px(5));
             simpleDraweeView.setVisibility(View.VISIBLE);
         } else {
             simpleDraweeView.setVisibility(View.GONE);

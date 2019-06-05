@@ -382,9 +382,15 @@ static NSString *IDType = @"TypeCell";
   }
 }
 
+- (void)setHeaderHeight:(NSInteger)headerHeight
+{
+  _headerHeight  = headerHeight;
+}
+
 - (void)didUpdateReactSubviews {
   for (UIView *view in self.reactSubviews) {
     if ([view isKindOfClass:[ShowHeaderView class]]) {
+      view.frame = CGRectMake(0, 0, self.width, self.headerHeight);
       self.tableView.tableHeaderView = view;
       [self.tableView reloadData];
     }
