@@ -16,6 +16,7 @@ const couponsImg = {
     youhuiquan_icon_yilingqu: require('./youhuiquan_pic_yilingqu.png'),
     youhuiquan_icon_yishixiao: require('./youhuiquan_pic_yishixiao.png'),
     youhuiquan_icon_yishiyong: require('./youhuiquan_pic_yishiyong.png'),
+    youhuiquan_icon_dashLine: require('./DashLine.png'),
 
 };
 export default couponsImg;

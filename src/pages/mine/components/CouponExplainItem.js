@@ -25,6 +25,7 @@ const dropUser = res.couponsImg.youhuiquan_bg_drop_user;
 
 const itemUp = res.couponsImg.youhuiquan_icon_smallUp;
 const itemDown = res.couponsImg.youhuiquan_icon_smallDown;
+const dashLine = res.couponsImg.youhuiquan_icon_dashLine;
 
 @observer
 export default class CouponExplainItem extends Component {
@@ -162,6 +163,8 @@ export default class CouponExplainItem extends Component {
                         </View>
                     </View>
 
+                    <Image style={{ width: ScreenUtils.width - px2dp(38), height: 1,marginLeft:4 }}
+                                              source={dashLine}/>
                     {!item.tobeextend ?
                         <NoMoreClick style={{ height: px2dp(24), alignItems: 'center',backgroundColor:'#F9F9F9' }}
                                      onPress={() => this.props.pickUpData(item)}>
@@ -176,7 +179,6 @@ export default class CouponExplainItem extends Component {
                             </ImageBackground>
                         </NoMoreClick> : null}
                 </ImageBackground>
-
                 {item.tobeextend ?
                     <ImageBackground style={{
                         width: ScreenUtils.width - px2dp(30),
