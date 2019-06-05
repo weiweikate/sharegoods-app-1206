@@ -143,7 +143,7 @@ export default class ShowMaterialView extends React.Component {
                                            this.addCart(nativeEvent.prodCode);
                                        }}
                                        onZanPress={({ nativeEvent }) => {
-                                           if (nativeEvent.detail.like) {
+                                           if (!nativeEvent.detail.like) {
                                                ShowApi.reduceCountByType({
                                                    showNo: nativeEvent.detail.showNo,
                                                    type: 1
