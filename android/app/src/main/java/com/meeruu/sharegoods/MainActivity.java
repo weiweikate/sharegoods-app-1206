@@ -136,9 +136,6 @@ public class MainActivity extends BaseActivity {
     }
 
     private void releaseRes() {
-        if (mHandler != null) {
-            mHandler = null;
-        }
         if (countDownTimer != null) {
             countDownTimer.onFinish();
             countDownTimer = null;
@@ -163,7 +160,6 @@ public class MainActivity extends BaseActivity {
                 ImageLoadUtils.loadScaleTypeNetImage(url, ivAdv,
                         ScalingUtils.ScaleType.FIT_CENTER);
             }
-            findViewById(R.id.iv_splash).setVisibility(View.GONE);
             initAdvEvent();
             startTimer();
         }

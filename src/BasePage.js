@@ -238,12 +238,10 @@ export default class BasePage extends Component {
             console.warn(`js_navigate error: ${e.toString()}`);
         }
     };
-
     $navigateBackToHome = () => {
         this.props.navigation.popToTop();
         this.props.navigation.navigate('HomePage');
     };
-
     //返回拼店
     $navigateBackToStore = () => {
         this.props.navigation.popToTop();

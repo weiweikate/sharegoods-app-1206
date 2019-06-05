@@ -44,7 +44,15 @@
         "common-dev": {
             "name": "common-dev",
             "host": "http://172.16.10.12:1080/gateway",
-            "h5": "https://testh51.sharegoodsmall.com",
+            "h5": "https://testh5.sharegoodsmall.com",
+            "oss": "https://devcdn.sharegoodsmall.com",
+            "wxAppletKey": "gh_aa91c3ea0f6c",
+            "gongmao": "http://testsop.sharegoodsmall.com/gateway/gongmall/contract/reback"
+        },
+        "dev-gateway": {
+            "name": "devH5-gateway",
+            "host": "http://172.16.10.13:1080/gateway",
+            "h5": "http://devh5-gateway.sharegoodsmall.com",
             "oss": "https://devcdn.sharegoodsmall.com",
             "wxAppletKey": "gh_aa91c3ea0f6c",
             "gongmao": "http://testsop.sharegoodsmall.com/gateway/gongmall/contract/reback"
@@ -66,13 +74,26 @@
             "wxAppletKey": "gh_aa91c3ea0f6c",
             "gongmao": "https://api.sharegoodsmall.com/gateway/gongmall/contract/reback"
         },
+        "kfkf": {
+            "name": "开放开发",
+            "host": "http://172.16.10.201:1080/gateway",
+            "h5": "https://testh5.sharegoodsmall.com"
+        },
+        "wyh": {
+            "name": "王亚辉",
+            "host": "http://172.18.5.89:1080/gateway"
+        },
         "zhaoqiang": {
             "name": "赵强",
             "host": "http://172.18.6.243:9000/gateway"
         },
         "吴承骏": {
             "name": "吴承骏",
-            "host": "http://172.18.7.77:8903/gateway"
+            "host": "http://172.16.10.13:1080/gateway"
+        },
+        "倪显晶": {
+            "name": "倪显晶",
+            "host": "http://172.18.6.94:8903/gateway"
         },
         "da_wei": {
             "name": "蒋大为",
@@ -84,7 +105,7 @@
         },
         "zhou_hao": {
             "name": "测试_周浩",
-            "host": "http://172.16.10.64:9090/gateway",
+            "host": "http://172.18.6.241:9090/gateway",
             "oss": "https://devcdn.sharegoodsmall.com"
         },
         "shen_yaoxing": {
@@ -114,7 +135,7 @@
         },
         "杨飞": {
             "name": "杨飞",
-            "host": "http://172.16.10.48:18096/gateway",
+            "host": "http://172.18.6.113:18096/gateway",
             "h5": "https://uath5.sharegoodsmall.com"
         },
         "顾嘉豪": {
@@ -141,7 +162,7 @@
         },
         "dengxuekai": {
             "name": "邓学凯",
-            "host": "http://172.18.7.17:8903/gateway"
+            "host": "http://172.16.10.13:1080/gateway"
         },
         "申xiangyu": {
             "name": "申xiangyu",
@@ -173,7 +194,7 @@
         },
         "潘红亮": {
             "name": "潘红亮",
-            "host": "http://172.18.6.109:9090/gateway"
+            "host": "http://172.18.6.27:9090/gateway"
         },
         "姜振兴": {
             "name": "姜振兴",
@@ -183,13 +204,34 @@
             "name": "优惠券测试",
             "host": "http://172.16.10.12:1080/gateway",
             "oss": "https://devcdn.sharegoodsmall.com",
-            "h5": "http://testh51.sharegoodsmall.com",
+            "h5": "http://testh5.sharegoodsmall.com",
             "wxAppletKey": "gh_aa91c3ea0f6c",
             "gongmao": "http://testsop.sharegoodsmall.com/gateway/gongmall/contract/reback"
         },
         "李长辉": {
             "name": "李长辉",
             "host": "http://172.18.6.38:9090/gateway"
+        },
+        "康节": {
+            "name": "康杰",
+            "host": "http://172.18.6.62:8903/gateway",
+            "oss": "https://testh5.sharegoodsmall.com",
+            "h5": "http://testh5.sharegoodsmall.com",
+            "wxAppletKey": "gh_aa91c3ea0f6c"
+        },
+        "刘可君": {
+            "name": "刘可君",
+            "host": "http://172.16.10.11:1080/gateway",
+            "oss": "https://testh5.sharegoodsmall.com",
+            "h5": "http://testh5.sharegoodsmall.com",
+            "wxAppletKey": "gh_aa91c3ea0f6c"
+        },
+        "活动-用的开发环境": {
+            "name": "活动-用的开发环境",
+            "host": "http://172.16.10.11:1080/gateway",
+            "oss": "https://testh5.sharegoodsmall.com",
+            "h5": "http://testh5.sharegoodsmall.com",
+            "wxAppletKey": "gh_aa91c3ea0f6c"
         }
     }
 }

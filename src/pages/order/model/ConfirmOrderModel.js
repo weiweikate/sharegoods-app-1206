@@ -6,8 +6,8 @@ import bridge from '../../../utils/bridge';
 import API from '../../../api';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { Alert } from 'react-native';
-import shopCartCacheTool from "../../shopCart/model/ShopCartCacheTool";
-import { navigateBack } from "../../../navigation/RouterMap";
+import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
+import { navigateBack } from '../../../navigation/RouterMap';
 import { OrderType } from '../../../utils/EnumUtil';
 
 class ConfirmOrderModel {
@@ -77,18 +77,18 @@ class ConfirmOrderModel {
         this.addressId = null;
         this.orderParamVO = {};
         this.canCommit = true;
-        this.giveUpCou= false;
-        this.couponCount=0;
-        this.couponData={};
-        this.err=null;
+        this.giveUpCou = false;
+        this.couponCount = 0;
+        this.couponData = {};
+        this.err = null;
         this.allProductPrice = 0;
-        this.couponAmount=0
-        this.promotionAmount='';
+        this.couponAmount = 0
+        this.promotionAmount = '';
     }
 
     @action makeSureProduct(orderParamVO, params = {}) {
         this.orderParamVO = orderParamVO;
-        this.err=null;
+        this.err = null;
         switch (orderParamVO.orderType) {
             case OrderType.depreciate_old:// 2.降价拍
                 return OrderApi.DepreciateMakeSureOrder({
@@ -148,7 +148,7 @@ class ConfirmOrderModel {
     disPoseErr = (err, orderParamVO, params) => {
         bridge.hiddenLoading();
         this.canCommit = true;
-        this.err=err;
+        this.err = err;
         if (err.code === 10003 && err.msg.indexOf('不在限制的购买时间') !== -1) {
             Alert.alert('提示', err.msg, [
                 {
@@ -167,7 +167,7 @@ class ConfirmOrderModel {
     };
 
     handleNetData = (data) => {
-        this.err=null;
+        this.err = null;
         bridge.hiddenLoading();
         this.canCommit = true;
         this.loadingState = PageLoadingState.success;
@@ -177,7 +177,7 @@ class ConfirmOrderModel {
         this.payAmount = data.payAmount;
         this.totalFreightFee = data.totalFreightFee ? data.totalFreightFee : 0;
         this.couponList = data.couponList ? data.couponList : null;
-        this.couponCount=data.couponCount;
+        this.couponCount = data.couponCount;
         this.allProductPrice = data.totalAmount;
         this.promotionAmount = data.promotionAmount;
         this.couponAmount = data.couponAmount;
@@ -323,7 +323,7 @@ class ConfirmOrderModel {
                     shopCartCacheTool.getShopCartGoodsListData();
                     track(trackEvent.submitOrder, {
                         orderId: data.orderNo,
-                        orderSubmitPage:orderParamVO.source==1?11:1
+                        orderSubmitPage:orderParamVO.source == 1 ? 11 : 1
                     });
                 }).catch(err => {
                     this.canCommit = true;

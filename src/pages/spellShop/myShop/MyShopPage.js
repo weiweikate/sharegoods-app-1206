@@ -42,6 +42,9 @@ import user from '../../../model/user';
 import resCommon from '../../../comm/res';
 import LinearGradient from 'react-native-linear-gradient';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
+import { ShopBottomBannerView, ShopProductItemView } from './components/ShopDetailItemView';
+import MyShopDetailModel from './MyShopDetailModel';
+import { IntervalMsgView, IntervalType } from '../../../comm/components/IntervalMsgView';
 
 const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
 const NavLeft = resCommon.button.white_back;
@@ -67,10 +70,12 @@ export default class MyShopPage extends BasePage {
             tittle: '店铺详情',
 
             storeData: {},
-            storeCode: this.props.storeCode,
+            storeCode: this.props.storeCode || user.storeCode,
             isLike: false
         };
     }
+
+    MyShopDetailModel = new MyShopDetailModel();
 
     // 导航配置
     $navigationBarOptions = {
@@ -133,7 +138,12 @@ export default class MyShopPage extends BasePage {
 
     componentWillUnmount() {
         this.willFocusSubscription && this.willFocusSubscription.remove();
+        this.timeInterval && clearInterval(this.timeInterval);
     }
+
+    requestShopMsg = () => {
+        this.MyShopDetailModel.questShopMsg(this.state.storeCode);
+    };
 
     componentDidMount() {
         this.willFocusSubscription = this.props.navigation.addListener(
@@ -148,6 +158,8 @@ export default class MyShopPage extends BasePage {
         );
         /*上面的方法第一次_loadPageData不会执行  page已经出现了*/
         this._loadPageData();
+        this.requestShopMsg();
+        this.timeInterval = setInterval(this.requestShopMsg, 1000 * 30);
     }
 
 
@@ -162,6 +174,8 @@ export default class MyShopPage extends BasePage {
 
     _loadPageData = () => {
         this._requestGetById();
+        this.MyShopDetailModel.requestShopBanner();
+        this.MyShopDetailModel.requestShopProducts();
         //非首页时请求
         if (!this.props.leftNavItemHidden) {
             this._requestGetByStoreId();
@@ -376,7 +390,7 @@ export default class MyShopPage extends BasePage {
         const { totalBonusMoney } = manager;
         if (userStatus === 1) {
             return (
-                <View style={{ marginBottom: 30 }}>
+                <View style={{ marginBottom: 10 }}>
                     <View style={{ height: 10 }}/>
                     {this._renderRow(RmbIcon, '店铺已完成奖励总额', `¥${((totalTradeBalance - tradeBalance) || 0).toFixed(2)}`)}
                     {this.renderSepLine()}
@@ -390,7 +404,7 @@ export default class MyShopPage extends BasePage {
             );
         } else {
             return (
-                <View>
+                <View style={{ marginBottom: 10 }}>
                     <View style={{ height: 10 }}/>
                     {this._renderRow(RmbIcon, '店铺已完成奖励总额', `¥${((totalTradeBalance - tradeBalance) || 0).toFixed(2)}`)}
                     <View style={{ height: 10 }}/>
@@ -474,6 +488,7 @@ export default class MyShopPage extends BasePage {
                             colors={[DesignRule.mainColor]}
                         />}>
                 <ShopHeader onPressShopAnnouncement={this._clickShopAnnouncement} item={this.state.storeData}/>
+                <ShopProductItemView MyShopDetailModel={this.MyShopDetailModel}/>
                 {userStatus === 1 ? <ShopHeaderBonus storeData={this.state.storeData}/> : null}
                 <MembersRow storeUserList={storeUserList || []}
                             userCount={userCount}
@@ -481,6 +496,7 @@ export default class MyShopPage extends BasePage {
                             onPressAllMembers={this._clickAllMembers}
                             onPressMemberItem={this._clickItemMembers}/>
                 {this._renderBottom()}
+                <ShopBottomBannerView MyShopDetailModel={this.MyShopDetailModel}/>
                 {this._renderJoinBtn()}
             </ScrollView>
         );
@@ -512,6 +528,7 @@ export default class MyShopPage extends BasePage {
                                 style={styles.LinearGradient}/>
                 {this._NavBarRender()}
                 {this.renderBodyView()}
+                <IntervalMsgView pageType={IntervalType.shopDetail} storeCode={this.state.storeCode}/>
                 <ActionSheetView ref={ref => {
                     this.actionSheetRef = ref;
                 }}/>

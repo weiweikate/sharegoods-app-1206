@@ -10,7 +10,6 @@ import {
 import { UIImage } from '../../../components/ui';
 import Modal from '../../../comm/components/CommModal';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import { formatDate } from '../../../utils/DateUtils';
 import API from '../../../api';
 import bridge from '../../../utils/bridge';
 import { observer } from 'mobx-react';
@@ -54,11 +53,6 @@ export default class MyCouponsItems extends Component {
         this.onRefresh();
     }
 
-    fmtDate(obj) {
-        return formatDate(obj, 'yyyy.MM.dd HH:mm');
-    }
-
-
     renderItem = ({ item, index }) => {
         // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
         if (item.remarks) {
@@ -72,7 +66,6 @@ export default class MyCouponsItems extends Component {
                 <CouponNormalItem item={item} index={index} clickItem={() => this.clickItem(index, item)}/>
             );
         }
-
     };
     onRequestClose = () => {
         this.setState({ showDialogModal: false });
@@ -154,7 +147,7 @@ export default class MyCouponsItems extends Component {
     };
     commitTokenCoin = () => {
         bridge.showLoading();
-        this.props.useCoupons(this.state.tokenCoinNum||0);
+        this.props.useCoupons(this.state.tokenCoinNum || 0);
         this.setState({ showDialogModal: false });
     };
     reduceTokenCoin = () => {
@@ -178,7 +171,7 @@ export default class MyCouponsItems extends Component {
             this.setState({ tokenCoinNum: '' });
         }
         if (parseInt(num) > parseInt(this.props.justOne) || parseInt(num) > user.tokenCoin) {
-            bridge.$toast(`1元券超出使用张数~`);
+            bridge.$toast('1元券超出使用张数~');
             this.setState({ tokenCoinNum: Math.min(parseInt(this.props.justOne), user.tokenCoin) });
         }
     };
@@ -319,7 +312,7 @@ export default class MyCouponsItems extends Component {
             return `限品类：限${result[0]}品类可用`;
         }
         else if ((cat1.length + cat2.length + cat3.length) > 1) {
-            return `限品类：限指定品类商品可用`;
+            return '限品类：限指定品类商品可用';
         } else {
             return '全品类：全场通用券（特殊商品除外）';
         }
@@ -328,7 +321,11 @@ export default class MyCouponsItems extends Component {
         let arrData = [];
         console.log('parseData', this.dataSel, couponsModel.params);
         if (this.currentPage === 1) {//refresh
-            if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && this.state.pageStatus === 0 && !this.props.fromOrder && !couponsModel.params.type) {
+            if ((!StringUtils.isEmpty(user.tokenCoin) || !StringUtils.isEmpty(user.blockedTokenCoin))
+                && (user.tokenCoin !== 0 || user.blockedTokenCoin !== 0)
+                && this.state.pageStatus === 0
+                && !this.props.fromOrder
+                && !couponsModel.params.type) {
                 arrData.push({
                     status: 0,
                     name: '1元现金券',
@@ -385,7 +382,7 @@ export default class MyCouponsItems extends Component {
                 id: item.id,
                 status: item.status,
                 name: item.name,
-                timeStr: '使用有效期：'+item.startTime && item.expireTime ? this.fmtDate(item.startTime || 0) + '-' + this.fmtDate(item.expireTime || 0) : null,
+                timeStr: '使用有效期：' + item.couponTime,
                 value: item.type === 3 ? (item.value / 10) : (item.type === 4 ? '商品\n兑换' : (item.type === 5 ? '兑换' : item.value)),
                 limit: this.parseCoupon(item),
                 couponConfigId: item.couponConfigId,
@@ -454,7 +451,9 @@ export default class MyCouponsItems extends Component {
         } else if (this.props.justOne && status === 0 || this.dataSel.type === 99) {
             let arrData = [];
             bridge.hiddenLoading();
-            if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && status === 0) {
+            if ((!StringUtils.isEmpty(user.tokenCoin) || !StringUtils.isEmpty(user.blockedTokenCoin))
+                && (user.tokenCoin !== 0 || user.blockedTokenCoin !== 0)
+                && status === 0) {
                 arrData.push({
                     status: 0,
                     name: '1元现金券',
@@ -472,8 +471,7 @@ export default class MyCouponsItems extends Component {
             bridge.hiddenLoading();
             let dataList = [];
             this.parseData(dataList);
-        }
-        else {
+        } else {
             API.userCouponList({
                 page: this.currentPage,
                 status,

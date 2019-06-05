@@ -16,7 +16,7 @@ import DesignRule from '../../../constants/DesignRule';
 import { homeModule } from '../../home/model/Modules';
 import res from '../res';
 import JPushUtils from '../../../utils/JPushUtils';
-import { login, track, TrackApi, trackEvent } from "../../../utils/SensorsTrack";
+import { login, track, TrackApi, trackEvent } from '../../../utils/SensorsTrack';
 import { MRText as Text } from '../../../components/ui';
 import apiEnvironment from '../../../api/ApiEnvironment';
 
@@ -42,7 +42,7 @@ export default class RegistPage extends BasePage {
         this.state = {
             gouxuan: true
         };
-        TrackApi.registerPage()
+        TrackApi.registerPage();
     }
 
     $isMonitorNetworkStatus() {

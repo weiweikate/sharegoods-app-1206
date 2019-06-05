@@ -1,6 +1,7 @@
 // 原生桥接接口函数请使用'$'开头
 import {
-    NativeModules
+    NativeModules,
+    Platform
 } from 'react-native';
 import ScreenUtils from './ScreenUtils';
 import StringUtils from './StringUtils';
@@ -9,6 +10,12 @@ import { setCookieToken, setCookies, clearCookies } from '@mr/webview';
 import apiEnvironment from '../api/ApiEnvironment';
 
 export default {
+    $checkIsCanComment(){
+        if(Platform.OS === 'ios'){
+            NativeModules.commModule.checkIsCanComment();
+        }
+    },
+
     $toast(msg) {
         if (!StringUtils.isEmpty(msg)) {
             NativeModules.commModule.toast(msg);
@@ -117,6 +124,12 @@ export default {
     creatQRCodeImage(QRCodeStr, onSuccess, onError = (errorStr) => {
     }) {
         NativeModules.LoginAndShareModule.creatQRCodeImage(QRCodeStr, onSuccess, onError);
+    },
+    createQRToAlbum(info){
+        return NativeModules.LoginAndShareModule.createQRToAlbum(info);
+    },
+    createShowProductImage(info){
+        return NativeModules.LoginAndShareModule.createShowProductImage(info);
     },
     saveInviteFriendsImage(QRString, logoStr, onSuccess, onError = (errorStr) => {
     }) {

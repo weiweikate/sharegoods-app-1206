@@ -44,7 +44,7 @@ axios.interceptors.response.use((response) => {
     return Promise.reject(error);
 });
 
-axios.defaults.timeout = 20000;
+axios.defaults.timeout = 120000;
 
 // 记录日志
 function createHistory(response, requestStamp) {

@@ -51,9 +51,11 @@ export class HeaderItemView extends Component {
                             style={{ fontSize: 24, fontWeight: 'bold' }}>{maxPrice}</Text></Text>
                 }
                 <Text style={styles.originalText}>¥{originalPrice}</Text>
-                <View style={styles.levelView}>
-                    <Text style={styles.levelText}>{levelText}</Text>
-                </View>
+                {
+                    isNoEmpty(levelText) ? <View style={styles.levelView}>
+                        <Text style={styles.levelText}>{levelText}</Text>
+                    </View> : null
+                }
             </View>
         );
     };
@@ -312,8 +314,8 @@ export class PromoteItemView extends Component {
                             if (index > 1) {
                                 return null;
                             }
-                            return <View
-                                style={[PromoteItemViewStyles.promotionItemView, { marginTop: index === 0 ? 10 : 0 }]}>
+                            return <View key={index}
+                                         style={[PromoteItemViewStyles.promotionItemView, { marginTop: index === 0 ? 10 : 0 }]}>
                                 <Text
                                     style={PromoteItemViewStyles.promotionItemNameText}>{index === 0 ? '促销' : ''}</Text>
                                 {typeText ?
@@ -340,7 +342,7 @@ export class PromoteItemView extends Component {
 
 const PromoteItemViewStyles = StyleSheet.create({
     promotionView: {
-        flexDirection: 'row', alignItems: 'center', paddingHorizontal: 15, marginTop: 10,
+        flexDirection: 'row', alignItems: 'center', paddingHorizontal: 15,
         backgroundColor: 'white'
     },
     promotionItemsView: {

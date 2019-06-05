@@ -42,10 +42,10 @@ export default class ConfirmPriceView extends Component {
         //优惠券文案处理
         let couponAmount = confirmOrderModel.couponAmount
         let couponCount = confirmOrderModel.couponCount || 0;
-        if (couponAmount!= undefined){//有优惠金额显示金额
-            couponAmount = couponAmount == 0? '请选择优惠券':'-¥'+couponAmount
+        if (couponAmount != undefined){//有优惠金额显示金额
+            couponAmount = couponAmount == 0 ? '请选择优惠券' : '-¥' + couponAmount
         } else {//无优惠金额显示优惠卷名称
-            couponAmount = couponCount > 0?(confirmOrderModel.couponName+(couponCount>1?'x'+couponCount: '')):'请选择优惠券'
+            couponAmount = couponCount > 0 ? (confirmOrderModel.couponName + (couponCount > 1 ? 'x' + couponCount : '')) : '请选择优惠券'
         }
         if (!confirmOrderModel.canUseCou) {
             couponAmount = '不支持使用优惠券'
@@ -54,13 +54,13 @@ export default class ConfirmPriceView extends Component {
 
             <View style={{ backgroundColor: 'white' }}>
                 <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
-                {confirmOrderModel.allProductPrice != undefined? < View style={styles.couponsStyle}>
+                {confirmOrderModel.allProductPrice != undefined ? < View style={styles.couponsStyle}>
                     <UIText value={'商品金额'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText value={`¥${confirmOrderModel.allProductPrice}`}
                                 style={[styles.grayText]}/>
                     </View>
-                </View>: null
+                </View> : null
                 }
                 {this.renderLine()}
                 <View style={[styles.couponsStyle,]}>
@@ -79,7 +79,7 @@ export default class ConfirmPriceView extends Component {
                     {this.renderLine()}
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
-                            value={promotionAmount>0?('-¥'+promotionAmount):('+¥'+ Math.abs(promotionAmount))}
+                            value={promotionAmount > 0 ? ('-¥' + promotionAmount) : ('+¥' + Math.abs(promotionAmount))}
                             style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(15) }]}/>
                         <Image source={arrow_right}/>
                     </View>
@@ -142,7 +142,7 @@ export default class ConfirmPriceView extends Component {
                             {index === 0 ? <Image source={couponIcon} style={styles.couponIconStyle}/> : null}
                             <View style={styles.couponsOutStyle}>
                                 <UIText style={styles.couponsTextStyle} value={item.couponName}/>
-                                <UIText style={styles.couponsNumStyle} value={`x1`}/>
+                                <UIText style={styles.couponsNumStyle} value={'x1'}/>
                             </View>
                             <View style={styles.couponsLineStyle}/>
                         </View>;

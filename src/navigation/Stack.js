@@ -23,7 +23,6 @@ import htmlView from '../components/web/HtmlView';
 import message from '../pages/message';
 import topic from '../pages/topic';
 import show from '../pages/show/Index';
-import shareTask from '../pages/shareTask';
 
 import deepLinkPath from './DeepLinkPath';
 
@@ -38,7 +37,8 @@ const Router = {
         })
     },
     HtmlPage: {
-        screen: htmlView
+        screen: htmlView,
+        path:'path/HtmlPage/:uri'
     }
 };
 const PageKey = {};
@@ -64,6 +64,7 @@ function addSubModule(module, prefixPath) {
         } else if (typeof item === 'function') {
             const path = `${p}/${pageName}`;
             let pathValue = getPathWithPageName(pageName);
+
             Router[path] = {
                 screen: item,
                 path: pathValue
@@ -86,7 +87,6 @@ addSubModule(message);
 addSubModule(topic);
 addSubModule(payment);
 addSubModule(show);
-addSubModule(shareTask);
 // console.log('Router', Object.keys(Router));
 // console.log(Router);
 // console.log('Path', Object.values(Router));

@@ -26,6 +26,9 @@ import RouterMap from '../../../../navigation/RouterMap';
 const { px2dp } = ScreenUtils;
 
 const singInImg = res.cashAccount.qiandao_icon;
+const fenxiang_icon = res.cashAccount.fenxiang_icon;
+const tuiguang_icon = res.cashAccount.tuiguang_icon;
+const zengsong_icon = res.cashAccount.zengsong_icon;
 const taskImg = res.cashAccount.renwu_icon;
 const yiyuanImg = res.cashAccount.quan_icon;
 const zensong = res.cashAccount.zengsong_icon;
@@ -46,7 +49,10 @@ const allKinds = {
     7: { title: '秀购奖励', img: zensong },
     8: { title: '抽奖奖励', img: xiugou_reword },
     9: { title: '秀购奖励', img: zensong },
-    10: { title: '邀请有礼奖励', img: icon_invite }
+    10: { title: '邀请有礼奖励', img: icon_invite },
+    11: { title: '分享奖励', img: fenxiang_icon },
+    12: { title: '奖池投奖', img: tuiguang_icon },
+    13: { title: '奖池奖励', img: zengsong_icon },
 };
 @observer
 export default class MyIntegralAccountPage extends BasePage {
@@ -230,11 +236,11 @@ export default class MyIntegralAccountPage extends BasePage {
                 let data = response.data;
                 data.data.map((item, index) => {
                     arrData.push({
-                        type: allKinds[item.useType].title,
+                        type: allKinds[item.useType] ? allKinds[item.useType].title : '其他',
                         time: DataUtils.getFormatDate(item.createTime / 1000),
                         serialNumber: item.serialNo || '',
                         capital: use_type_symbol[item.usType] + (item.userScore ? item.userScore : 0),
-                        iconImage: allKinds[item.useType].img,
+                        iconImage: allKinds[item.useType] ? allKinds[item.useType].img : taskImg,
                         capitalRed: use_type_symbol[item.usType] === '+'
 
 

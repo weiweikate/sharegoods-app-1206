@@ -8,7 +8,7 @@ class CategoryModules {
     @action loadCategoryList = () => {
        return HomeApi.classify().then(resData => {
             if (resData.code === 10000 && resData.data) {
-                let resClassifys = resData.data ||[];
+                let resClassifys = resData.data || [];
                 resClassifys.map((data) => {
                     if (data.name === '全部分类') {
                         data.route = 'home/search/CategorySearchPage';
@@ -18,7 +18,6 @@ class CategoryModules {
                 });
                 this.categoryList = resClassifys;
                 homeModule.changeHomeList(homeType.category)
-
             }
         }).catch(error => {
             console.log(error);
