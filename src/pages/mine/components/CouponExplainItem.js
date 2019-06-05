@@ -38,7 +38,7 @@ export default class CouponExplainItem extends Component {
         return (
             <TouchableOpacity
                 style={{ backgroundColor: DesignRule.bgColor, marginBottom: 5, justifyContent: 'center' }}
-                onPress={() => this.props.clickItem(index, item)}>
+                onPress={() => {}}>
                 <ImageBackground style={{
                     width: ScreenUtils.width - px2dp(30),
                     // height: item.tobeextend ? px2dp(109) : px2dp(130),
@@ -131,14 +131,13 @@ export default class CouponExplainItem extends Component {
                                         </View>
                                         : (item.count > 1 ? <UIText value={'x' + item.count}
                                                                     style={styles.xNumsStyle}/> :
+                                            (item.redirectType && item.redirectType!=0?
                                             <NoMoreClick style={{
                                                 height: ScreenUtils.autoSizeWidth(27),
                                                 width: ScreenUtils.autoSizeWidth(60),
                                                 borderRadius: ScreenUtils.autoSizeWidth(14),
                                                 overflow: 'hidden'
-                                            }}
-                                                         onPress={() => {
-                                                         }}>
+                                            }} onPress={() => {this.props.clickItem(index, item);}}>
                                                 <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}}
                                                                 colors={['#FC5D39', '#FF0050']}
                                                                 style={{
@@ -153,7 +152,7 @@ export default class CouponExplainItem extends Component {
                                                         color: 'white',
                                                     }} allowFontScaling={false}>去使用</Text>
                                                 </LinearGradient>
-                                            </NoMoreClick>)))
+                                            </NoMoreClick>:null))))
 
                                 : <View style={{marginRight: 15, justifyContent: 'center', alignItems: 'center'}}>
                                     <Image style={{width: 55, height: 55}}
@@ -183,10 +182,10 @@ export default class CouponExplainItem extends Component {
                 {item.tobeextend ?
                     <ImageBackground style={{
                         width: ScreenUtils.width - px2dp(30),
-                        marginLeft: 1,
+                        marginLeft: 2,
                         borderRadius: 5,
                     }} source={remark} resizeMode='stretch'>
-                        <View style={{ marginTop: 10, marginLeft: 10, }}>
+                        <View style={{ marginTop: 10, marginLeft: 20, }}>
                             <Text style={{
                                 marginTop: 5,
                                 color: item.status === 0 ? DesignRule.textColor_secondTitle : DesignRule.textColor_secondTitle,

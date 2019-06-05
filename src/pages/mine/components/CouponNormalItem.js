@@ -29,7 +29,7 @@ export default class CouponNormalItem extends Component{
 
         return(
             <TouchableOpacity style={{ backgroundColor: DesignRule.bgColor, marginBottom: 5 }}
-                              onPress={() => this.props.clickItem(index, item)}>
+                              onPress={() =>{}}>
                 <ImageBackground style={{
                     width: ScreenUtils.width - px2dp(30),
                     margin: 2,
@@ -101,14 +101,13 @@ export default class CouponNormalItem extends Component{
                                                               style={styles.xNumsStyle}/> : null}
                                 </View> : (item.count > 1 ? <UIText value={'x' + item.count}
                                                                     style={styles.xNumsStyle}/> :
-                                        <NoMoreClick style={{
+                                    (item.redirectType && item.redirectType!=0?
+                                            <NoMoreClick style={{
                                             height: ScreenUtils.autoSizeWidth(27),
                                             width: ScreenUtils.autoSizeWidth(60),
                                             borderRadius: ScreenUtils.autoSizeWidth(14),
                                             overflow: 'hidden'
-                                        }}
-                                                     onPress={() => {
-                                                     }}>
+                                        }} onPress={() => { this.props.clickItem(index, item)}}>
                                             <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}}
                                                             colors={['#FC5D39', '#FF0050']}
                                                             style={{
@@ -123,7 +122,7 @@ export default class CouponNormalItem extends Component{
                                                     color: 'white',
                                                 }} allowFontScaling={false}>去使用</Text>
                                             </LinearGradient>
-                                        </NoMoreClick>
+                                        </NoMoreClick>:null)
                                 )) :
                                 stateImg ? <View style={{marginRight: 15, justifyContent: 'center', alignItems: 'center'}}>
                                     <Image style={{width: 55, height: 55}}

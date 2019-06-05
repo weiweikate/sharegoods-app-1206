@@ -330,7 +330,9 @@ export default class MyCouponsItems extends Component {
                     limit: '无金额门槛\n任意商品可用\n可叠加使用',
                     remarks: '1.全场均可使用此优惠券\n2.礼包优惠券在激活有效期内可以购买指定商品',
                     type: 99, //以type=99表示1元券
-                    levelimit: false
+                    levelimit: false,
+                    redirectType: 0,
+                    redirectUrl: null
                 });
             }
             if (!this.props.fromOrder && ((couponsModel.params.type || 0) > 6) || (!this.props.fromOrder && couponsModel.params.type === null)) {
@@ -349,7 +351,9 @@ export default class MyCouponsItems extends Component {
                             remarks: item.remarks,
                             type: item.type, //以type=99表示1元券
                             levelimit: false,
-                            count: item.number || 0
+                            count: item.number || 0,
+                            redirectType: item.type === 11 ? 0:item.redirectType,
+                            redirectUrl: item.type === 11 ? null: item.redirectUrl
 
                         });
                     });
@@ -385,7 +389,9 @@ export default class MyCouponsItems extends Component {
                 remarks: item.remarks,
                 type: item.type,
                 levelimit: item.levels ? (item.levels.indexOf(user.levelId) !== -1 ? false : true) : false,
-                count: item.count || 0
+                count: item.count || 0,
+                redirectType: item.redirectType,
+                redirectUrl: item.redirectUrl
             });
         });
     };
@@ -456,7 +462,9 @@ export default class MyCouponsItems extends Component {
                     limit: '无金额门槛\n任意商品可用\n可叠加使用',
                     remarks: '1.全场均可使用此优惠券\n2.礼包优惠券在激活有效期内可以购买指定商品',
                     type: 99, //以type=99表示1元券
-                    levelimit: false
+                    levelimit: false,
+                    redirectType: 0,
+                    redirectUrl: null
                 });
             }
             this.setState({ viewData: arrData });
@@ -530,20 +538,23 @@ export default class MyCouponsItems extends Component {
 
     clickItem = (index, item) => {
         // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
-        if (this.props.fromOrder) {
-            bridge.showLoading();
-            this.props.useCoupons(item);
-        } else if (this.props.justOne) {
-            this.setState({ showDialogModal: true });
-        } else {
-            if (item.type < 99 && item.count > 1) {
-                this.props.nav.navigate('mine/coupons/CouponsDetailPage', {
-                    couponIds: [item.couponConfigId],
-                    status: item.status
-                });
-            }
-
+        console.log(item);
+        if(item.redirectType&&(item.redirectType == 1||item.redirectType == 10||item.redirectType == 11||item.redirectType == 12||item.redirectType == 13||item.redirectType == 14)) {
+            this.props.nav.navigate('HtmlPage', {uri: item.redirectUrl});
         }
+        // if (this.props.fromOrder) {
+        //     bridge.showLoading();
+        //     this.props.useCoupons(item);
+        // } else if (this.props.justOne) {
+        //     this.setState({ showDialogModal: true });
+        // } else {
+        //     if (item.type < 99 && item.count > 1) {
+        //         this.props.nav.navigate('mine/coupons/CouponsDetailPage', {
+        //             couponIds: [item.couponConfigId],
+        //             status: item.status
+        //         });
+        //     }
+        // }
     };
 }
 
