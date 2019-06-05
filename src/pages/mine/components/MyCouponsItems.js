@@ -387,7 +387,7 @@ export default class MyCouponsItems extends Component {
                 status: item.status,
                 name: item.name,
                 timeStr: item.couponTime,
-                value: item.type === 3 ? '折' : (item.type === 2 || item.type === 4 ? '抵' : (item.type === 5 ? '兑' : item.value)),
+                value: item.type === 3 ? '折' : ( item.type === 4 ? '抵' : (item.type === 5 ? '兑' : item.value)),
                 limit: this.parseCoupon(item),
                 couponConfigId: item.couponConfigId,
                 remarks: item.remarks,

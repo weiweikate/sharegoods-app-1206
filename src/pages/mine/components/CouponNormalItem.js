@@ -37,19 +37,19 @@ export default class CouponNormalItem extends Component {
                         <View style={styles.itemFirStyle}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 {
-                                    item.type === 2 || item.type === 3 || item.type === 4 ||  item.type === 5 || item.type === 12 ? null :
+                                    item.type === 3 || item.type === 4 ||  item.type === 5 || item.type === 12 ? null :
                                         <View style={{ alignSelf: 'flex-end', marginBottom: 2 }}>
                                             <Text
                                                 style={{
                                                     fontSize: 14,
-                                                    color: item.status === 0 ? (item.levelimit ? DesignRule.textColor_mainTitle : DesignRule.mainColor) : '#FF80A7',
+                                                    color: item.status === 0 ? (item.levelimit ? '#FF80A7' : '#FF0050') : '#FF80A7',
                                                 }} allowFontScaling={false}>￥</Text>
                                         </View>}
                                 <View>
                                     <Text style={{
                                         fontSize: (item.value && item.value.length < 3 ? 34 : 20),
                                         fontWeight:'bold',
-                                        color: item.status === 0 ? (item.levelimit ? DesignRule.textColor_mainTitle : DesignRule.mainColor) : '#FF80A7',
+                                        color: item.status === 0 ? (item.levelimit ? '#FF80A7' : '#FF0050') : '#FF80A7',
                                     }} allowFontScaling={false}>{item.value}</Text>
                                 </View>
                             </View>
@@ -67,21 +67,21 @@ export default class CouponNormalItem extends Component {
                                 <Text style={{
                                     fontSize: 15,
                                     color: item.status === 0 ? DesignRule.textColor_mainTitle : DesignRule.textColor_instruction,
-                                    marginRight: 10
-                                }} allowFontScaling={false} numberOfLines={1}>
+                                }} allowFontScaling={false} numberOfLines={0}>
                                     {item.name}</Text>
                                 {item.type === 12 ? <UIText value={'x' + item.number} style={{
                                     fontSize: 15,
                                     color: DesignRule.textColor_mainTitle
                                 }}/> : null}
                             </View>
+                            <UIText style={{ fontSize: 11, color: DesignRule.textColor_placeholder, marginTop: 1 }}
+                                    value={item.limit}/>
                             {item.timeStr ? <Text style={{
                                 fontSize: 11,
-                                color: DesignRule.textColor_instruction,
+                                color: DesignRule.textColor_placeholder,
                                 marginTop: 1
-                            }} allowFontScaling={false}>{item.timeStr}</Text> : null}
-                            <UIText style={{ fontSize: 11, color: DesignRule.textColor_instruction, marginTop: 1 }}
-                                    value={item.limit}/>
+                            }} allowFontScaling={false}>限{item.timeStr}使用</Text> : null}
+
                         </View>
                         <View style={{
                             flex: 1,
@@ -124,13 +124,13 @@ export default class CouponNormalItem extends Component {
                                             </LinearGradient>
                                         </NoMoreClick> : null)
                                 )) :
-                                stateImg ? <View style={{marginRight: 15, justifyContent: 'center', alignItems: 'center'}}>
+                                (stateImg ? <View style={{marginRight: 15, justifyContent: 'center', alignItems: 'center'}}>
                                     <Image style={{width: 55, height: 55}}
                                            source={stateImg}/>
                                     {item.count > 1 ? <UIText value={'x' + item.count}
                                                               style={styles.xNumsStyle}/> : null}
 
-                                </View> : null}
+                                </View> : null)}
                         </View>
                     </View>
                 </ImageBackground>
