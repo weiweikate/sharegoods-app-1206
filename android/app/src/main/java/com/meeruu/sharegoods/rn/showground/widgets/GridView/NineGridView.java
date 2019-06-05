@@ -9,7 +9,6 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.meeruu.sharegoods.R;
@@ -175,14 +174,6 @@ public class NineGridView extends ViewGroup {
                 }
             }
         }
-        //修改最后一个条目，决定是否显示更多
-        /*if (adapter.getImageInfo().size() > maxImageSize) {
-            View child = getChildAt(maxImageSize - 1);
-            if (child instanceof NineGridViewWrapper) {
-                NineGridViewWrapper imageView = (NineGridViewWrapper) child;
-                imageView.setMoreNum(adapter.getImageInfo().size() - maxImageSize);
-            }
-        }*/
         //将传过来的imageInfo信息赋给mImageInfo 用于判断下次是否需要全部创建
         mImageInfo = imageInfo;
         requestLayout();
@@ -200,7 +191,6 @@ public class NineGridView extends ViewGroup {
             imageView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //  mAdapter.onImageItemClick(getContext(), NineGridView.this, position, mAdapter.getImageInfo());
                     if (click != null && mImageInfo != null) {
                         List<String> list = new ArrayList<>();
                         for (int i = 0; i < mImageInfo.size(); i++) {
