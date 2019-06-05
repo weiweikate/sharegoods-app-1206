@@ -9,7 +9,6 @@ import {
 import { MRText as Text } from '../../../components/ui';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
 import BasePage from '../../../BasePage';
-import LoginAPI from '../api/LoginApi';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
@@ -69,10 +68,6 @@ const rendOtherLoginView = (isShow, wxLoginClick, protocolClick) => {
 export default class LoginPage extends BasePage {
     constructor(props) {
         super(props);
-        this.state = {
-            showWxLoginBtn: false,
-            isCanClick: true
-        };
         TrackApi.passLoginPage();
     }
 
@@ -98,15 +93,6 @@ export default class LoginPage extends BasePage {
     }
 
     componentDidMount() {
-        LoginAPI.oldUserActivateJudge().then((res) => {
-            console.log('是还是非-------', res);
-            this.setState({
-                showWxLoginBtn: res.data
-            });
-        }).catch((error) => {
-
-        });
-
         TrackApi.passLoginPage();
     }
 
@@ -126,7 +112,6 @@ export default class LoginPage extends BasePage {
                             this.loginClick(loginType, LoginParam);
                         }, 0);
                     }}
-                    showOldLogin={this.state.showWxLoginBtn}
                 />
 
                 {
@@ -140,6 +125,7 @@ export default class LoginPage extends BasePage {
             </View>
         );
     }
+
     /*忘记密码*/
     forgetPasswordClick = () => {
         this.$navigate('login/login/ForgetPasswordPage');
@@ -165,8 +151,8 @@ export default class LoginPage extends BasePage {
         //     campaignType: this.state.campaignType,
         //         spm: this.state.spm
         // }
-        const {campaignType,spm} = this.params;
-        const h5Param = {...LoginParam,campaignType,spm};
+        const { campaignType, spm } = this.params;
+        const h5Param = { ...LoginParam, campaignType, spm };
         if (loginType === 0) {
             // track(trackEvent.login, { loginMethod: '验证码登录' });
             codeLoginAction(h5Param, (data) => {
@@ -176,10 +162,10 @@ export default class LoginPage extends BasePage {
                     this.$loadingDismiss();
                     //走了注册
                     if (data.data.withRegister) {
-                        mediatorCallFunc('Home_RequestNoviceGift')
+                        mediatorCallFunc('Home_RequestNoviceGift');
                         this.$navigate(RouterMap.InviteCodePage);
                         // TrackApi.phoneSignUpSuccess({ 'signUpPhone': phoneNum });
-                    }else {
+                    } else {
                         this.$navigateBack(-2);
                     }
                 } else {

@@ -26,8 +26,6 @@ const api = {
     mentorBind:  ['/user/userSign/mentorBind',{method:'get'}],
     //选择导师跳过调用接口
     givePackage:['/user/userSign/givePackage',{method:'get'}],
-    //老用户激活日期校验
-    oldUserActivateJudge:['/user/userSign/oldUserActivateJudge',{method:'get'}],
     //是否有秀迷
     queryShowFansStatus:['/user/queryShowFansStatus',{method:'post'}],
     //一键登录后去绑定微信操作
