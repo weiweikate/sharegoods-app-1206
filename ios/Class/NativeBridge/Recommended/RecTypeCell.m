@@ -131,14 +131,15 @@
   //内容背景
   self.contentLabView.sd_layout.topSpaceToView(self.headView,10 )
   .leftSpaceToView(bgView, 45)
-  .rightSpaceToView(bgView, 10)
-  .heightIs(200);
+  .rightSpaceToView(bgView, 10);
+  
+  [self.contentLabView setupAutoHeightWithBottomView:_contentLab bottomMargin:10];
   
   //图片
   self.picImg.sd_layout.topSpaceToView(self.contentLabView, 0)
   .leftSpaceToView(self.contentLabView, 0)
   .rightSpaceToView(self.contentLabView, 0)
-  .heightIs(160);
+  .autoHeightRatio(0.56);
   self.picImg.layer.cornerRadius = 5;
   
   self.contentLab.sd_layout.topSpaceToView(self.picImg,10)
@@ -178,15 +179,11 @@
     }
   }
   if(imageUrl.length>0){
-    self.contentLabView.sd_layout.heightIs(200);
-    self.picImg.sd_layout.heightIs(160);
+  
   [self.picImg sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"f5f5f5"]]];
-    self.contentLab.sd_layout.topSpaceToView(self.picImg,10);
     self.contentLab.text = model.title;
   }else{
-    self.contentLabView.sd_layout.heightIs(20);
-    self.contentLab.sd_layout.topSpaceToView(self.contentLabView,0);
-    self.picImg.sd_layout.heightIs(0);
+    self.picImg.sd_layout.autoHeightRatio(0);
     self.contentLab.text = model.title;
   }
 }
