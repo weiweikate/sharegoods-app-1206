@@ -23,6 +23,7 @@ export default class CouponNormalItem extends Component{
 
     render(){
         let {item,index} = this.props;
+        console.log('item',item)
         let stateImg = item.status === 1 ? res.couponsImg.youhuiquan_icon_yishiyong :
             (item.status === 2 ? res.couponsImg.youhuiquan_icon_yishixiao : item.status === 3 ? (res.couponsImg.youhuiquan_icon_daijihuo) : null);
 
@@ -48,6 +49,7 @@ export default class CouponNormalItem extends Component{
                                 <View>
                                     <Text style={{
                                         fontSize: (item.value && item.value.length < 3 ? 34 : 20),
+                                        fontWeight:'bold',
                                         color: item.status === 0 ? (item.levelimit ? DesignRule.textColor_mainTitle : DesignRule.mainColor) : '#FF80A7',
                                     }} allowFontScaling={false}>{item.value}</Text>
                                 </View>

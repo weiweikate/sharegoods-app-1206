@@ -62,6 +62,7 @@ export default class CouponExplainItem extends Component {
                                 <View>
                                     <Text style={{
                                         fontSize: item.type === 4 ? 20 : (item.value && item.value.length < 3 ? 33 : 20),
+                                        fontWeight:'bold',
                                         color: item.status === 0 ? (item.levelimit ? DesignRule.textColor_mainTitle : DesignRule.mainColor) : '#FF80A7'
                                     }} allowFontScaling={false}>{item.value}</Text>
                                 </View>
