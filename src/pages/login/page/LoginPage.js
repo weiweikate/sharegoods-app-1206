@@ -161,9 +161,15 @@ export default class LoginPage extends BasePage {
     };
     /*登陆*/
     loginClick = (loginType, LoginParam) => {
+        // {
+        //     campaignType: this.state.campaignType,
+        //         spm: this.state.spm
+        // }
+        const {campaignType,spm} = this.params;
+        const h5Param = {...LoginParam,campaignType,spm};
         if (loginType === 0) {
             // track(trackEvent.login, { loginMethod: '验证码登录' });
-            codeLoginAction(LoginParam, (data) => {
+            codeLoginAction(h5Param, (data) => {
                 if (data.code === 10000) {
                     this.$toastShow('登录成功');
                     this.params.callback && this.params.callback();
