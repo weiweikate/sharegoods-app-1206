@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     },
     itemImgStyle: {
-        height: 160,
+        height: (ScreenUtils.width - 30)*160/290,
         width: ScreenUtils.width - 30,
         backgroundColor: '#a5adb3',
         borderRadius: 5,

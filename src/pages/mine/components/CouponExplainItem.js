@@ -38,7 +38,7 @@ export default class CouponExplainItem extends Component {
         return (
             <TouchableOpacity
                 style={{ backgroundColor: DesignRule.bgColor, marginBottom: 5, justifyContent: 'center' }}
-                onPress={() => {}}>
+                onPress={() => {console.log('item',item)}}>
                 <ImageBackground style={{
                     width: ScreenUtils.width - px2dp(30),
                     // height: item.tobeextend ? px2dp(109) : px2dp(130),
@@ -98,22 +98,26 @@ export default class CouponExplainItem extends Component {
                                     value={item.limit}/>
                         </View>
                         <View style={{
-                            width: 80,
-                            alignItems: 'flex-start',
-                            marginLeft: 10,
+                            flex: 1,
+                            alignItems: 'center',
+                            marginLeft: 5,
+                            marginRight: 10,
                             justifyContent: 'center'}}>
                             {item.status === 0 ?
                                 (
                                     item.type === 99 ?
                                         <View style={{alignItems: 'center', marginRight: 10}}>
                                             {!StringUtils.isEmpty(user.blockedTokenCoin) && user.blockedTokenCoin !== 0 ?
-                                                <Text style={{
-                                                    fontSize: 11,
-                                                    color: DesignRule.textColor_secondTitle
-                                                }}>{'待激活：'}
-                                                    <UIText style={[styles.xNumStyle, {marginRight: 0}]}
-                                                            value={'x' + user.blockedTokenCoin}/>
-                                                </Text>
+                                                <View style={{
+                                                    marginRight: 15,
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center'
+                                                }}>
+                                                    <Image style={{width: 55, height: 55}}
+                                                           source={stateImg}/>
+                                                    <UIText value={'x' + user.blockedTokenCoin}
+                                                            style={styles.xNumsStyle}/>
+                                                </View>
                                                 : null}
                                             <UIText style={[styles.xNumStyle, {marginRight: 0}]}
                                                     value={'x' + user.tokenCoin}/>
@@ -185,7 +189,7 @@ export default class CouponExplainItem extends Component {
                         marginLeft: 2,
                         borderRadius: 5,
                     }} source={remark} resizeMode='stretch'>
-                        <View style={{ marginTop: 10, marginLeft: 20, }}>
+                        <View style={{ marginLeft: 20, }}>
                             <Text style={{
                                 marginTop: 5,
                                 color: item.status === 0 ? DesignRule.textColor_secondTitle : DesignRule.textColor_secondTitle,

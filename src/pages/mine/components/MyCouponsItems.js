@@ -538,7 +538,6 @@ export default class MyCouponsItems extends Component {
 
     clickItem = (index, item) => {
         // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
-        console.log(item);
         if(item.redirectType&&(item.redirectType == 1||item.redirectType == 10||item.redirectType == 11||item.redirectType == 12||item.redirectType == 13||item.redirectType == 14)) {
             this.props.nav.navigate('HtmlPage', {uri: item.redirectUrl});
         }
