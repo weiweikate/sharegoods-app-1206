@@ -18,6 +18,7 @@ import RouterMap from '../../../navigation/RouterMap';
 import { wxLoginAction, codeLoginAction, pwdLoginAction } from '../model/LoginActionModel';
 import ProtocolView from '../components/Login.protocol.view';
 import loginModel from '../model/LoginModel';
+import { mediatorCallFunc } from '../../../SGMediator';
 
 const {
     share: {
@@ -169,6 +170,7 @@ export default class LoginPage extends BasePage {
                     this.$loadingDismiss();
                     //走了注册
                     if (data.data.withRegister) {
+                        mediatorCallFunc('Home_RequestNoviceGift')
                         this.$navigate(RouterMap.InviteCodePage);
                         // TrackApi.phoneSignUpSuccess({ 'signUpPhone': phoneNum });
                     }else {
@@ -189,7 +191,7 @@ export default class LoginPage extends BasePage {
                     this.$navigateBack(-2);
                 } else {
                     this.$loadingDismiss();
-                    this.$toastShow(data.msg);
+                    // this.$toastShow(data.msg);
                 }
             });
         }

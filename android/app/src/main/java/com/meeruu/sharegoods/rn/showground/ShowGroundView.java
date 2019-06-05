@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -134,7 +133,7 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
             }
         });
         adapter.setEnableLoadMore(true);
-        View emptyView=LayoutInflater.from(context).inflate(R.layout.show_empty_view, null);
+        View emptyView = LayoutInflater.from(context).inflate(R.layout.show_empty_view, null);
         emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
         adapter.setEmptyView(emptyView);
@@ -166,7 +165,7 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
                 }
             }
         });
-        recyclerView.addItemDecoration(new SpaceItemDecoration(15));
+        recyclerView.addItemDecoration(new SpaceItemDecoration(10));
         recyclerView.setAdapter(adapter);
         ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -177,7 +176,7 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
                     StaggeredGridLayoutManager manager = (StaggeredGridLayoutManager) recyclerView.getLayoutManager();
                     int position = manager.findFirstVisibleItemPositions(null)[0];
                     View firstView = manager.findViewByPosition(position);
-                    if(firstView == null){
+                    if (firstView == null) {
                         return;
                     }
                     int itemHeight = firstView.getHeight();
@@ -185,7 +184,7 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
                     onScrollYEvent = new onScrollYEvent();
                     onScrollYEvent.init(view.getId());
                     WritableMap ymap = Arguments.createMap();
-                    ymap.putInt("YDistance",  DensityUtils.px2dip(flag));
+                    ymap.putInt("YDistance", DensityUtils.px2dip(flag));
                     onScrollYEvent.setData(ymap);
                     eventDispatcher.dispatchEvent(onScrollYEvent);
                 }
@@ -321,14 +320,13 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
                     NewestShowGroundBean.DataBean bean = JSON.parseObject(value, NewestShowGroundBean.DataBean.class);
                     data.set(index, bean);
                     adapter.replaceData(data);
-//                    adapter.setData(index,bean);
                 }
             }, 200);
         }
     }
 
-    public void scrollIndex(int index){
-        if(recyclerView != null){
+    public void scrollIndex(int index) {
+        if (recyclerView != null) {
             recyclerView.smoothScrollToPosition(index);
         }
     }

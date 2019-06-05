@@ -106,7 +106,7 @@ export default class ShowMaterialView extends React.Component {
         });
         return (
             <View style={styles.container}>
-                <View style={{ flex: 1, paddingHorizontal: 15 }}>
+                <View style={{ flex: 1, paddingHorizontal: 15,paddingTop: ScreenUtils.isIOS ? 5 : 0 }}>
                     <ShowRecommendView style={{ flex: 1 }}
                                        uri={'/social/show/content/page/query@GET'}
                                        ref={(ref) => {
@@ -143,7 +143,7 @@ export default class ShowMaterialView extends React.Component {
                                            this.addCart(nativeEvent.prodCode);
                                        }}
                                        onZanPress={({ nativeEvent }) => {
-                                           if (nativeEvent.detail.like) {
+                                           if (!nativeEvent.detail.like) {
                                                ShowApi.reduceCountByType({
                                                    showNo: nativeEvent.detail.showNo,
                                                    type: 1

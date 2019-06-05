@@ -86,7 +86,7 @@
   
         CGFloat itemW = [self itemWidthForPicPathArray:_sources];
         CGFloat itemH = 0;
-        if (_sources.count < 3) {
+        if (_sources.count < 2) {
             itemH = 140;
         } else {
             itemH = itemW;
@@ -100,7 +100,7 @@
             long rowIndex = idx / perRowItemCount;
             UIImageView *imageView = [self->_imageViewsArray objectAtIndex:idx];
             imageView.backgroundColor = [UIColor colorWithHexString:@"a5adb3"];
-          [imageView sd_setImageWithURL:[NSURL URLWithString:_sources[idx].url] placeholderImage:[UIImage imageNamed:@"default_avatar"]];
+          [imageView sd_setImageWithURL:[NSURL URLWithString:_sources[idx].url] placeholderImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"f5f5f5"]]];
           
             imageView.hidden = NO;
             imageView.frame = CGRectMake(columnIndex * (itemW + margin), rowIndex * (itemH + margin), itemW, itemH);

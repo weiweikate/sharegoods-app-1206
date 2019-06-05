@@ -213,7 +213,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                 </TouchableOpacity>
                 <View style={styles.profileRow}>
                     <View style={styles.profileLeft}>
-                        <AvatarImage borderRadius={px2dp(18)} style={styles.portrait}
+                        <AvatarImage borderRadius={px2dp(15)} style={styles.portrait}
                                      source={{ uri: userImage}}/>
                         <Text style={styles.showName}
                               allowFontScaling={false}>{userName}</Text>
@@ -286,10 +286,10 @@ export default class ShowRichTextDetailPage extends BasePage {
 
     reduceCountByType = (type) => {
         let showNo;
-        if (this.params.id) {
-            showNo = this.params.id;
-        } else if (this.params.code) {
+        if (this.params.code) {
             showNo = this.params.code;
+        } else if (this.params.id) {
+            showNo = this.params.id;
         } else {
             showNo = this.params.data.showNo;
         }
@@ -297,10 +297,10 @@ export default class ShowRichTextDetailPage extends BasePage {
     };
     incrCountByType = (type) => {
         let showNo;
-        if (this.params.id) {
-            showNo = this.params.id;
-        } else if (this.params.code) {
+        if (this.params.code) {
             showNo = this.params.code;
+        } else if (this.params.id) {
+            showNo = this.params.id;
         } else {
             showNo = this.params.data.showNo;
         }
@@ -677,9 +677,9 @@ let styles = StyleSheet.create({
         marginLeft: px2dp(5)
     },
     portrait: {
-        width: px2dp(36),
-        height: px2dp(36),
-        borderRadius: px2dp(18)
+        width: px2dp(30),
+        height: px2dp(30),
+        borderRadius: px2dp(15)
     },
     showName: {
         color: DesignRule.textColor_mainTitle,

@@ -17,15 +17,13 @@
 SINGLETON_FOR_CLASS(CommentTool)
 
 -(void)checkIsCanComment{
-//  [self showAlter];
-//  return;
    NSString *savedTimeStamp = [[NSUserDefaults standardUserDefaults] objectForKey:LASTCOMMENT_TIME_STAMP];
    NSString *commentInterval = [[NSUserDefaults standardUserDefaults]objectForKey:COMMENT_INTERVAL];
   if (savedTimeStamp && commentInterval ) {
     NSInteger savedTimeStamp_integer = [savedTimeStamp integerValue];
     NSInteger commentInterval_integer = [commentInterval integerValue];
     NSLog(@"保存的时间戳%ld,保存的时间间隔%ld",savedTimeStamp_integer,commentInterval_integer);
-    if ((savedTimeStamp_integer + commentInterval_integer) < [[self getNowTimeStamp] integerValue]) {
+    if ((savedTimeStamp_integer + commentInterval_integer * 24 * 3600) < [[self getNowTimeStamp] integerValue]) {
       //超过间隔时间可以弹出评论
       [self showAlterWith:commentInterval_integer];
       [[NSUserDefaults standardUserDefaults]setObject:[self getNowTimeStamp] forKey:LASTCOMMENT_TIME_STAMP];
@@ -35,7 +33,6 @@ SINGLETON_FOR_CLASS(CommentTool)
     [self showAlterWith:0];
   }
 }
-
 /**
  @param timeInterval 间隔天数
  */
@@ -55,7 +52,6 @@ SINGLETON_FOR_CLASS(CommentTool)
                                                          [self saveNewTimeInterval:32];
                                                          [self goToAppStore];
                                                        }];
-  
   [alterController addAction:actionCancel];
   [alterController addAction:actionSubmit];
   [self.currentViewController_XG presentViewController:alterController animated:YES completion:^{}];
@@ -67,25 +63,22 @@ SINGLETON_FOR_CLASS(CommentTool)
 }
 -(void)saveNewTimeInterval:(NSInteger)timeInterval{
   [[NSUserDefaults standardUserDefaults]setObject:[self getNowTimeStamp] forKey:LASTCOMMENT_TIME_STAMP];
-  [[NSUserDefaults standardUserDefaults]setObject:@"300" forKey:COMMENT_INTERVAL];
-  [[NSUserDefaults standardUserDefaults]synchronize];
-//  if (timeInterval && timeInterval <= 0) {
-//    [[NSUserDefaults standardUserDefaults]setObject:@"2" forKey:COMMENT_INTERVAL];
-//    [[NSUserDefaults standardUserDefaults]synchronize];
-//  }else{
-//    if (timeInterval >= 32) {
-//       [[NSUserDefaults standardUserDefaults]setObject:@"32" forKey:COMMENT_INTERVAL];
-//      [[NSUserDefaults standardUserDefaults]synchronize];
-//    }else{
-//      NSString * newTimeInterval = [NSString stringWithFormat:@"%ld",timeInterval * 2];
-//      [[NSUserDefaults standardUserDefaults]setObject:newTimeInterval forKey:COMMENT_INTERVAL];
-//      [[NSUserDefaults standardUserDefaults]synchronize];
-//    }
-//  }
+  if (timeInterval && timeInterval <= 0) {
+    [[NSUserDefaults standardUserDefaults]setObject:@"2" forKey:COMMENT_INTERVAL];
+    [[NSUserDefaults standardUserDefaults]synchronize];
+  }else{
+    if (timeInterval >= 32) {
+       [[NSUserDefaults standardUserDefaults]setObject:@"32" forKey:COMMENT_INTERVAL];
+      [[NSUserDefaults standardUserDefaults]synchronize];
+    }else{
+      NSString * newTimeInterval = [NSString stringWithFormat:@"%ld",timeInterval * 2];
+      [[NSUserDefaults standardUserDefaults]setObject:newTimeInterval forKey:COMMENT_INTERVAL];
+      [[NSUserDefaults standardUserDefaults]synchronize];
+    }
+  }
 }
 /**
  获取当前时间戳
-
  @return 时间戳String类型
  */
 -(NSString *)getNowTimeStamp{

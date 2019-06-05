@@ -12,13 +12,12 @@ import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import LinearGradient from 'react-native-linear-gradient';
 
-
 const { px2dp } = ScreenUtils;
 const unUsedBg = res.couponsImg.youhuiquan_bg_unUseBg;
 const usedBg = res.couponsImg.youhuiquan_bg_usedBg;
 
 
-export default class CouponNormalItem extends Component{
+export default class CouponNormalItem extends Component {
 
 
     render(){
@@ -136,7 +135,7 @@ export default class CouponNormalItem extends Component{
                     </View>
                 </ImageBackground>
             </TouchableOpacity>
-        )
+        );
     }
 }
 const styles = StyleSheet.create({
@@ -151,5 +150,5 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         width: px2dp(80)
-    },
-})
+    }
+});

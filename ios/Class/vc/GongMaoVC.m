@@ -11,7 +11,7 @@
 #import <SDAutoLayout.h>
 #import "MBProgressHUD+PD.h"
 #import "StorageFromRN.h"
-static  NSString * constTile = @"公猫认证";
+static  NSString * constTile = @"工猫认证";
 //static  NSString * web_back_mark = @"/gongmall/contract/notify";
 @interface GongMaoVC ()<WKNavigationDelegate>
 @property(nonatomic, strong)WKWebView *webView;

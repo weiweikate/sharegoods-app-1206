@@ -63,12 +63,13 @@ export default class RefuseReasonView extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        height: 44,
+        minHeight: 44,
         backgroundColor: 'white',
         flexDirection: 'row',
         alignItems: 'center',
         paddingLeft: 15,
         paddingRight: 15,
-        marginBottom: 10
+        marginBottom: 10,
+        paddingVertical: 10,
     }
     });

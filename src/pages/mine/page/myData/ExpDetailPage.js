@@ -273,10 +273,10 @@ export default class ExpDetailPage extends BasePage {
             let data = response.data;
             data.data.map((item, index) => {
                 arrData.push({
-                    type: detailData[item.sourceCode] && detailData[item.sourceCode].title,
+                    type: detailData[item.sourceCode] ? detailData[item.sourceCode].title : '其他',
                     time: item.createTime,
                     capital: `${parseInt(item.sourceType) === 1 ? "+" : "-"}${item.experience}`,
-                    iconImage: detailData[item.sourceCode].icon,
+                    iconImage: detailData[item.sourceCode] ? detailData[item.sourceCode].icon : res.cashAccount.other_icon,
                     capitalRed: parseInt(item.sourceType) === 1
 
                 });

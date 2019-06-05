@@ -1,6 +1,6 @@
 {
     "showDebugPanel": true,
-    "envType": "qa",
+    "envType": "online",
     "isDevHotUpdate": false,
     "__注释__": "[showDebugPanel]:是否显示调试面板   [envType]:决定网络启动后，默认的网络环境类型",
     "env": {
@@ -74,12 +74,12 @@
             "wxAppletKey": "gh_aa91c3ea0f6c",
             "gongmao": "https://api.sharegoodsmall.com/gateway/gongmall/contract/reback"
         },
-        "kfkf":{
+        "kfkf": {
             "name": "开放开发",
             "host": "http://172.16.10.201:1080/gateway",
             "h5": "https://testh5.sharegoodsmall.com"
         },
-        "wyh":{
+        "wyh": {
             "name": "王亚辉",
             "host": "http://172.18.5.89:1080/gateway"
         },
@@ -221,11 +221,17 @@
         },
         "刘可君": {
             "name": "刘可君",
-            "host": "http://172.18.7.178:8903/gateway",
+            "host": "http://172.16.10.11:1080/gateway",
+            "oss": "https://testh5.sharegoodsmall.com",
+            "h5": "http://testh5.sharegoodsmall.com",
+            "wxAppletKey": "gh_aa91c3ea0f6c"
+        },
+        "活动-用的开发环境": {
+            "name": "活动-用的开发环境",
+            "host": "http://172.16.10.11:1080/gateway",
             "oss": "https://testh5.sharegoodsmall.com",
             "h5": "http://testh5.sharegoodsmall.com",
             "wxAppletKey": "gh_aa91c3ea0f6c"
         }
     }
-
 }

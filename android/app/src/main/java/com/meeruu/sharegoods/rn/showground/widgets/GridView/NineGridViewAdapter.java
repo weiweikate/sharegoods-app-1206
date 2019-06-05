@@ -38,7 +38,6 @@ public class NineGridViewAdapter implements Serializable {
     protected SimpleDraweeView generateImageView(Context context) {
         SimpleDraweeView imageView = new SimpleDraweeView(context);
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        //imageView.setImageResource(R.drawable.ic);
         return imageView;
     }
 

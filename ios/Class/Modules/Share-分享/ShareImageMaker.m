@@ -26,7 +26,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
   NSArray * URLs = @[];
   NSArray * defaultImages = @[];
   __weak ShareImageMaker * weakSelf = self;
-  
+
   if ([imageType isEqualToString:@"show"]||[imageType isEqualToString:@"webActivity"]) {
     URLs = @[model.imageUrlStr,model.headerImage];
     defaultImages = @[[UIImage imageNamed:@"logo.png"], [UIImage imageNamed:@"default_avatar.png"]];
@@ -39,7 +39,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
   }
   [self requestImageWithURLs:URLs defaultImage:defaultImages success:^(NSArray *images) {
     dispatch_async(dispatch_get_main_queue(), ^{
-     
+
       NSString *path = [weakSelf ceratShareImageWithImages:images
                                                            model: model];
       if (path == nil || path.length == 0) {
@@ -57,7 +57,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
   if ([imageType isEqualToString:@"show"]) {
    return [ShowShareImgMaker checkLegalWithShareImageMakerModel:model completion:completion];
   }
-  
+
   if ([imageType isEqualToString:@"web"]) {
     if (model.imageUrlStr == nil) {
       completion(nil, @"图片URL（imageUrlStr）不能为nil");
@@ -69,7 +69,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     }
     return YES;
   }
-  
+
   if ([imageType isEqualToString:@"webActivity"]) {
     if (model.imageUrlStr == nil) {
       completion(nil, @"图片URL（imageUrlStr）不能为nil");
@@ -81,7 +81,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     }
     return YES;
   }
-  
+
   if (model.imageUrlStr == nil) {
     completion(nil, @"商品图片URL（imageUrlStr）不能为nil");
     return NO;
@@ -99,7 +99,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     return NO;
   }
   return YES;
-  
+
 }
 
 - (NSString* )ceratShareImageWithImages:(NSArray *)images
@@ -107,14 +107,14 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
 {
   NSString *imageType = model.imageType;
   NSString *QRCodeStr = model.QRCodeStr ;
-  
+
   CGFloat i = 3;// 为了图片高清 图片尺寸250 * 340
-  
+
   CGFloat imageHeght = 667*i;
   CGFloat imageWidth =  375*i;
-  
+
   NSMutableArray *nodes = [NSMutableArray new];
-  
+
   if ([imageType isEqualToString:@"webActivity"]) {
     NSDictionary * dataDic = [ShowShareImgMaker getParamsWithWEBImages:images
                                                               model:model];
@@ -123,7 +123,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     imageHeght = height.floatValue;
     NSNumber* width = dataDic[@"width"];
     imageWidth = width.floatValue;
-    
+
   }else if([imageType isEqualToString:@"web"]){
     imageHeght = 340*i;
     imageWidth =  250*i;
@@ -139,7 +139,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
                        @"locationType": @"rect",
                        @"location": [NSValue valueWithCGRect:CGRectMake(195*i, 285*i, 45*i, 45*i)]}
      ];
-    
+
   } else if ([imageType isEqualToString:@"show"]){
    NSDictionary * dataDic = [ShowShareImgMaker getParamsWithImages:images
                                      model:model];
@@ -154,7 +154,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     NSString *priceStr = model.priceStr;
     NSString *retailPrice = model.retailPrice;
     NSString *retailString = @"";
-    NSString *shareMoneyPrice = [NSString stringWithFormat:@"立省%@元起",model.shareMoney?model.shareMoney:@"xx"];
+    NSString *shareMoneyPrice = model.shareMoney?[NSString stringWithFormat:@"立省%@元起",model.shareMoney]:@"";
 
     priceStr = [NSString stringWithFormat:@"市场价：%@",priceStr];
     if ([model.priceType isEqualToString:@"mr_skill"]) {
@@ -185,8 +185,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
 
     //标语
     NSMutableAttributedString *logoTitle = [[NSMutableAttributedString alloc]initWithString:@"秀一秀 赚到够"
-                                                                                    attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:18*i],
-                                                                                                 NSFontAttributeName: [UIFont boldSystemFontOfSize:18*i],                                  NSForegroundColorAttributeName: [UIColor colorWithHexString:@"FF0050"]}];
+                                                                                    attributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:18*i], NSForegroundColorAttributeName: [UIColor colorWithHexString:@"FF0050"]}];
     [nodes addObject:@{
                        @"value": logoTitle,
                        @"location": [NSValue valueWithCGPoint:CGPointMake(152*i, 55*i)]}
@@ -254,10 +253,10 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
 
     //扫码购 扫码购
     CGFloat tempStrwidth = [@"扫码购" getWidthStringfontSize:13 viewWidth:150];
-    NSMutableAttributedString * tempStrAttrStr = [[NSMutableAttributedString alloc]initWithString:@"扫码购"
+    NSMutableAttributedString * tempStrAttrStr = [[NSMutableAttributedString alloc]initWithString:model.shareMoney?@"扫码购":@""
                                                                                          attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:13*i],
                                                                                                       NSForegroundColorAttributeName: [UIColor colorWithHexString:@"FF0050"],}];
-    
+
     [nodes addObject:@{
                        @"value": tempStrAttrStr,
                        @"location": [NSValue valueWithCGPoint:CGPointMake(268*i+38*i-(tempStrwidth*i)/2, 457*i+height+13*i+80*i)]}
@@ -280,7 +279,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
   CGContextRef context = UIGraphicsGetCurrentContext();
   CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
   CGContextFillRect(context, rect);
-  
+
   for (int i = 0 ; i < nodes.count; i++) {
     NSDictionary *node = nodes[i];
     NSValue *location = node[@"location"];
@@ -295,9 +294,9 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
         [str drawAtPoint:[location CGPointValue]];
       }
     }
-    
+
   }
-  
+
   UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   return [self save:image withPath:[NSString stringWithFormat:@"/Documents/QRCode%@.png",[model modelToJSONString].md5String]];
@@ -321,11 +320,11 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
 
 
 - (void)QRCodeWithStr:(NSString *)str imageStr:(NSString *)logoStr com:(void(^)(UIImage * image))com{
-  
+
   UIImage * qrImage = [UIImage QRCodeWithStr:str];
   if ([logoStr hasPrefix:@"http"]) {
     [[YYWebImageManager sharedManager] requestImageWithURL:[NSURL URLWithString:logoStr] options:YYWebImageOptionShowNetworkActivity progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-      
+
     } transform:nil completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
       dispatch_async(dispatch_get_main_queue(), ^{
         if (image) {
@@ -347,7 +346,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
                                    completion:(ShareImageMakercompletionBlock) completion{
   UIImage *bgImage = [UIImage imageNamed:@"promotionBg"];
   UIImage *QRCodeImage =  [UIImage QRCodeWithStr:QRString];
-  
+
   CGRect rect = CGRectMake(0.0f, 0.0f, 280, 380);
   UIGraphicsBeginImageContext(CGSizeMake(280, 380));
   CGContextRef context = UIGraphicsGetCurrentContext();
@@ -399,7 +398,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
       completion(NO);
     }
   }];
-  
+
 }
 
 - (void)saveShopInviteFriendsImage:(NSDictionary*)dic completion:(completionBlock) completion{
@@ -421,37 +420,37 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
       [image drawInRect:rect];
       UIImage * headerImage = UIGraphicsGetImageFromCurrentImageContext();
       UIGraphicsEndImageContext();
-      
+
       UIGraphicsBeginImageContext(CGSizeMake(650, 760));
       UIImage *contentImage = [UIImage imageNamed:@"shop_invite_friends_content"];
       [contentImage drawInRect:CGRectMake(0, 0, 650, 760)];
       //头像
       [headerImage drawInRect:CGRectMake((26+14.5)*2, 31*2, 68*2,68*2)];
-      
+
       CGFloat textLeft = (14.5+105)*2;
       CGFloat textWidth = 180*2;
       CGFloat textHeight = 14*2;
       [shopName drawInRect:CGRectMake(textLeft, 34*2, textWidth, textHeight) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:28], NSForegroundColorAttributeName: [UIColor blackColor]}];
-      
+
       [shopId drawInRect:CGRectMake(textLeft, 34*2 + 16 + 28, textWidth, textHeight) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:26], NSForegroundColorAttributeName: [UIColor blackColor]}];
-      
+
       [shopPerson drawInRect:CGRectMake(textLeft, 34*2 + 16 + 28 + 16 + 26, textWidth, textHeight) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:26], NSForegroundColorAttributeName: [UIColor blackColor]}];
-      
+
       UIImage *QRCodeImage =  [UIImage QRCodeWithStr:codeString];
       [QRCodeImage drawInRect:CGRectMake(189, (130+ 20)*2, 136*2, 136*2)];
-      
+
       [wxTip drawInRect:CGRectMake((650-207*2)/2.0, (130+ 20)*2 + 136*2 + 54, 207*2, textHeight) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:26], NSForegroundColorAttributeName: [UIColor colorWithRed:85/255.0 green:85/255.0 blue:85/255.0 alpha:1]}];
-      
+
       UIImage *imageContent = UIGraphicsGetImageFromCurrentImageContext();
       UIGraphicsEndImageContext();
-      
+
       UIGraphicsBeginImageContext(CGSizeMake(750, 1334));
       UIImage *bgImage = [UIImage imageNamed:@"shop_invite_friends_bg"];
       [bgImage drawInRect:CGRectMake(0, 0, 750, 1334)];
       [imageContent drawInRect:CGRectMake(50, 171*2, 650, 760)];
       UIImage *imageResult = UIGraphicsGetImageFromCurrentImageContext();
       UIGraphicsEndImageContext();
-      
+
       if(imageResult){
         __block ALAssetsLibrary *lib = [[ALAssetsLibrary alloc] init];
         [lib writeImageToSavedPhotosAlbum:imageResult.CGImage metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
@@ -474,7 +473,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
 
 #pragma mark-二维码和商品绘制图形
 -(void)creatQRCodeImageAndProductModel:(ShareImageMakerModel *)model completion:(ShareImageMakercompletionBlock)completion{
-  
+
   if (model.imageUrlStr == nil) {
     completion(nil, @"图片URL（imageUrlStr）不能为nil");
     return;
@@ -483,14 +482,14 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     completion(nil, @"二维码字符（QRCodeStr）不能为nil");
     return;
   }
-  
+
   NSArray * URLs = @[];
   NSArray * defaultImages = @[];
     URLs = @[model.imageUrlStr];
     defaultImages = @[[UIImage imageNamed:@"logo.png"]];
   [self requestImageWithURLs:URLs defaultImage:defaultImages success:^(NSArray *images) {
     dispatch_async(dispatch_get_main_queue(), ^{
-      
+
       NSString *path = [ShowShareImgMaker getShowProductImageModelImages:images model:model];
       if (path == nil || path.length == 0) {
         completion(nil, @"ShareImageMaker：保存图片到本地失败");
@@ -537,7 +536,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
   for(int i=0;i<urls.count;i++){
     NSString *imgUrl =[urls[i]  stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     [[YYWebImageManager sharedManager] requestImageWithURL:[NSURL URLWithString:imgUrl]options:YYWebImageOptionShowNetworkActivity progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-      
+
     } transform:nil completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
       dispatch_async(dispatch_get_main_queue(), ^{
         if (!error) {//如果加载网络图片失败，就用默认图

@@ -9,8 +9,7 @@
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/showground_item_image"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true" />
+        android:layout_height="wrap_content" />
 
 
     <TextView
@@ -42,8 +41,7 @@
             android:id="@+id/showground_item_userIcon"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            app:roundAsCircle="true"
-            android:background="@drawable/bg_app_user"/>
+            app:roundAsCircle="true" />
 
         <TextView
             android:id="@+id/showground_item_name"
@@ -56,10 +54,12 @@
             android:singleLine="true"
             android:textColor="#666666"
             android:textSize="11sp" />
-        <ImageView android:layout_width="20dp"
+
+        <ImageView
+            android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/icon_fire"
-            android:layout_marginRight="5dp"/>
+            android:layout_marginRight="2dp"
+            android:src="@drawable/icon_fire" />
 
         <TextView
             android:id="@+id/showground_item_rqz"
