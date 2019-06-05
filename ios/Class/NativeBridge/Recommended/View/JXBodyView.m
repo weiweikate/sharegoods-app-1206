@@ -86,7 +86,7 @@
   
         CGFloat itemW = [self itemWidthForPicPathArray:_sources];
         CGFloat itemH = 0;
-        if (_sources.count < 3) {
+        if (_sources.count < 2) {
             itemH = 140;
         } else {
             itemH = itemW;
