@@ -99,28 +99,28 @@
   //点赞
   [_zanBtn addTarget:self action:@selector(tapZanBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.zanBtn.sd_layout.topSpaceToView(self.scrollView,10)
-  .heightIs(28).widthIs(28)
+  .heightIs(26).widthIs(26)
   .leftSpaceToView(self, 30);
 
   self.zanNum.sd_layout.centerYEqualToView(self.zanBtn)
   .leftSpaceToView(self.zanBtn, 1)
-  .widthIs(40).heightIs(28);
+  .widthIs(40).heightIs(26);
 
   //下载
   [_downloadBtn addTarget:self action:@selector(tapDownloadBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.downloadBtn.sd_layout.centerYEqualToView(self.zanNum)
   .leftSpaceToView(self.zanNum, 0)
-  .widthIs(28).heightIs(28);
+  .widthIs(26).heightIs(26);
 
   self.downLoadNUm.sd_layout.centerYEqualToView(self.downloadBtn)
   .leftSpaceToView(self.downloadBtn, 1)
-  .widthIs(40).heightIs(28);
+  .widthIs(40).heightIs(26);
 
   //分享/转发
   [_shareBtn addTarget:self action:@selector(tapShareBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.shareBtn.sd_layout.centerYEqualToView(self.zanBtn)
      .rightSpaceToView(self, 0)
-     .widthIs(70).heightIs(28);
+     .widthIs(70).heightIs(26);
 
   [self setupAutoHeightWithBottomView:self.zanBtn bottomMargin:0];
 
@@ -198,7 +198,7 @@
         //将多余的部分切掉
         goodsImg.layer.masksToBounds = YES;
         goodsImg.image = [UIImage imageNamed:@"welcome3"];
-        [goodsImg sd_setImageWithURL:[NSURL URLWithString:[self.products[i] valueForKey:@"imgUrl"]] placeholderImage:[UIImage imageNamed:@"default_avatar"]];
+        [goodsImg sd_setImageWithURL:[NSURL URLWithString:[self.products[i] valueForKey:@"imgUrl"]] placeholderImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"f5f5f5"]]];
 
 
         UILabel* titile = [[UILabel alloc]init];

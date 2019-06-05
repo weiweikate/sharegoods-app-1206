@@ -151,7 +151,7 @@ export default class ShowActivityView extends Component {
                     isEmpty={this.state.isEmpty}
                     emptyTip={'暂无数据'}
                     initialNumToRender={5}
-                    ListHeaderComponent={<View style={{height: 10}}/>}
+                    ListHeaderComponent={<View style={{height: 0}}/>}
                 />}
             </View>
         );
@@ -261,7 +261,7 @@ const styles = StyleSheet.create({
     itemImgStyle: {
         height: 160,
         width: ScreenUtils.width - 30,
-        backgroundColor: '#a5adb3',
+        backgroundColor: '#f5f5f5',
         borderRadius: 5,
         overflow: 'hidden',
     },

@@ -25,7 +25,6 @@ import com.meeruu.sharegoods.rn.showground.widgets.FolderTextView;
 import com.meeruu.sharegoods.rn.showground.widgets.GridView.ImageInfo;
 import com.meeruu.sharegoods.rn.showground.widgets.GridView.NineGridView;
 import com.meeruu.sharegoods.rn.showground.widgets.GridView.NineGridViewAdapter;
-import com.reactnative.ivpusic.imagepicker.ImagesUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,14 +35,11 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
     private ProductsAdapter.PressProductListener pressProductListener;
 
     public ShowRecommendAdapter(NineGridView.clickL clickL, ProductsAdapter.AddCartListener addCartListener, ProductsAdapter.PressProductListener pressProductListener) {
-
-//        super(R.layout.item_showground_image_goods);
-
         super(new ArrayList<NewestShowGroundBean.DataBean>());
         NineGridView.setImageLoader(new NineGridView.ImageLoader() {
             @Override
             public void onDisplayImage(Context context, SimpleDraweeView imageView, String url) {
-                ImageLoadUtils.loadRoundNetImage(url, imageView, 5);
+                ImageLoadUtils.loadRoundNetImage(url, imageView, DensityUtils.dip2px(5));
             }
         });
         this.clickL = clickL;
@@ -101,7 +97,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         SimpleDraweeView simpleDraweeView = helper.getView(R.id.image);
         if (item.getResource() != null) {
             String url = item.getResource().get(0).getUrl();
-            ImageLoadUtils.loadRoundNetImage(url, simpleDraweeView, 5);
+            ImageLoadUtils.loadRoundNetImage(url, simpleDraweeView, DensityUtils.dip2px(5));
             simpleDraweeView.setVisibility(View.VISIBLE);
         } else {
             simpleDraweeView.setVisibility(View.GONE);
@@ -119,7 +115,6 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
 
     private void convertDynamic(final BaseViewHolder helper, final NewestShowGroundBean.DataBean item) {
         final FolderTextView content = helper.getView(R.id.content);
-
         final SimpleDraweeView userIcon = helper.getView(R.id.user_icon);
         String userTag = (String) userIcon.getTag();
         String userUrl = item.getUserInfoVO().getUserImg();
@@ -151,7 +146,6 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
             }
         }
 
-
         TextView name = helper.getView(R.id.user_name);
         name.setText(item.getUserInfoVO().getUserName());
 
@@ -164,20 +158,8 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
 
         NineGridView nineGridView = helper.getView(R.id.nine_grid);
 
-
-        nineGridView.setSingleImageRatio((float) (19 / 12.0));
-        nineGridView.setSingleImageRatio(ScreenUtils.getScreenWidth() - DensityUtils.px2dip(185));
-        List<ImageInfo> imageInfoList = new ArrayList<>();
-        if (item.getResource() != null) {
-            for (int i = 0; i < item.getResource().size(); i++) {
-                if (item.getResource().get(i).getType() == 2) {
-                    String url = item.getResource().get(i).getUrl();
-                    ImageInfo info = new ImageInfo();
-                    info.setImageUrl(url);
-                    imageInfoList.add(info);
-                }
-            }
-        }
+        nineGridView.setSingleImageRatio(ScreenUtils.getScreenWidth() - DensityUtils.dip2px(185));
+        List<ImageInfo> imageInfoList = item.getNineImageInfos();
 
         if (this.clickL != null) {
             nineGridView.setClick(clickL);
@@ -185,7 +167,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
             nineGridView.setClick(null);
         }
 
-        if (imageInfoList.size() > 0) {
+        if (imageInfoList != null && imageInfoList.size() > 0) {
             String tag = (String) nineGridView.getTag();
             if (!TextUtils.equals(tag, JSONObject.toJSONString(imageInfoList))) {
                 NineGridViewAdapter adapter = new NineGridViewAdapter(mContext, imageInfoList);
@@ -207,7 +189,6 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
 
         if (item.getProducts() != null) {
             ProductsAdapter productsAdapter = new ProductsAdapter(item.getProducts());
-
             if (this.addCartListener != null) {
                 productsAdapter.setAddCartListener(addCartListener);
             } else {
@@ -228,10 +209,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         } else {
             recyclerView.setVisibility(View.GONE);
         }
-
         helper.addOnClickListener(R.id.icon_hand, R.id.icon_download, R.id.icon_share);
-
-
         ImageView hand = helper.getView(R.id.icon_hand);
         if (item.isLike()) {
             hand.setImageResource(R.drawable.icon_like);
@@ -239,6 +217,4 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
             hand.setImageResource(R.drawable.icon_hand);
         }
     }
-
-
 }

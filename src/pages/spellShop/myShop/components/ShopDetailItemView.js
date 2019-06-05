@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { View, Image, FlatList, StyleSheet } from 'react-native';
+import { View, Image, FlatList, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import { MRText } from '../../../../components/ui';
 import UIImage from '@mr/image-placeholder';
 import DesignRule from '../../../../constants/DesignRule';
 import shopRes from '../../res';
 import LinearGradient from 'react-native-linear-gradient';
-import MRBannerView from '../../../../components/ui/bannerView/MRBannerView';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import { observer } from 'mobx-react';
 import { navigate } from '../../../../navigation/RouterMap';
@@ -19,7 +18,7 @@ import bridge from '../../../../utils/bridge';
 
 const { myShop } = shopRes;
 const { shopProduct, shopProductShare } = myShop;
-const { px2dp } = ScreenUtils;
+const { px2dp, width } = ScreenUtils;
 const itemImgSize = px2dp(100);
 const progressWidth = px2dp(60);
 
@@ -233,88 +232,61 @@ const ProductItemViewStyles = StyleSheet.create({
 @observer
 export class ShopBottomBannerView extends Component {
 
-    state = {
-        index: 0
-    };
-
-    _renderStyleOne = (arrLen) => {
-        const { index } = this.state;
-        let items = [];
-        for (let i = 0; i < arrLen; i++) {
-            if (index === i) {
-                items.push(<View key={i} style={bottomBannerStyles.activityIndex}/>);
-            } else {
-                items.push(<View key={i} style={bottomBannerStyles.index}/>);
-            }
-        }
-        return <View style={bottomBannerStyles.indexView}>
-            {items}
-        </View>;
-    };
-
     render() {
         const { MyShopDetailModel } = this.props;
         const { bottomBannerList } = MyShopDetailModel;
         if (!bottomBannerList || bottomBannerList.length === 0) {
             return null;
         }
-
-        const images = bottomBannerList.map((item) => {
-            return item.image;
-        });
         return (
-            <View style={{ marginLeft: DesignRule.margin_page, marginBottom: 20 }}>
-                <MRBannerView style={bottomBannerStyles.banner}
-                              imgUrlArray={images}
-                              itemWidth={px2dp(345)}
-                              onDidSelectItemAtIndex={(e) => {
-                                  const index = e.nativeEvent.index;
-                                  const selectedItem = bottomBannerList[index];
-                                  const { linkType, linkTypeCode } = selectedItem;
-                                  const router = homeModule.homeNavigate(linkType, linkTypeCode);
-                                  let params = homeModule.paramsNavigate(selectedItem);
-                                  if (router) {
-                                      navigate(router, params);
-                                  }
-                              }}
-                              itemRadius={5}
-                              onDidScrollToIndex={(e) => {
-                                  const index = e.nativeEvent.index;
-                                  this.setState({ index });
-                              }} autoLoop={bottomBannerList.length !== 1}/>
-
-                {this._renderStyleOne(images.length)}
+            <View style={{ marginBottom: 20 }}>
+                {
+                    bottomBannerList.map((item, index) => {
+                        return <ShopDetailImageView key={index} item={item.image} onPress={() => {
+                            const { linkType, linkTypeCode } = item;
+                            const router = homeModule.homeNavigate(linkType, linkTypeCode);
+                            let params = homeModule.paramsNavigate(item);
+                            if (router) {
+                                navigate(router, params);
+                            }
+                        }}/>;
+                    })
+                }
             </View>
         );
     }
 }
 
-const bottomBannerStyles = StyleSheet.create({
-    banner: {
-        width: px2dp(345), height: px2dp(120)
-    },
-    indexView: {
-        position: 'absolute',
-        bottom: 5,
-        left: 0,
-        width: ScreenUtils.width - px2dp(30),
-        flexDirection: 'row',
-        justifyContent: 'center'
-    },
-    activityIndex: {
-        width: px2dp(14),
-        height: px2dp(3),
-        borderRadius: px2dp(1.5),
-        backgroundColor: DesignRule.mainColor,
-        marginLeft: 2,
-        marginRight: 2
-    },
-    index: {
-        width: px2dp(5),
-        height: px2dp(3),
-        borderRadius: px2dp(1.5),
-        backgroundColor: DesignRule.lineColor_inWhiteBg,
-        marginLeft: 2,
-        marginRight: 2
+class ShopDetailImageView extends Component {
+    state = {
+        height: 0
+    };
+
+    shouldComponentUpdate(nextProps) {
+        if (this.state.height === 0 || this.props.item !== nextProps.item) {
+            return true;
+        }
+        return false;
     }
-});
+
+    componentDidMount() {
+        const { item } = this.props;
+        Image.getSize(item, (widths, height) => {
+            height = height / widths * width;
+            this.setState({
+                height
+            });
+        });
+    }
+
+    render() {
+        const { item, onPress } = this.props;
+        const { height } = this.state;
+        if (height === 0) {
+            return null;
+        }
+        return <TouchableWithoutFeedback onPress={onPress}>
+            <Image source={{ uri: item }} style={{ width, height }}/>
+        </TouchableWithoutFeedback>;
+    }
+}
