@@ -20,12 +20,14 @@ android {
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
     // From node_modules
-    implementation ('com.github.yalantis:ucrop:2.2.2-native'){
+//    implementation ('com.github.yalantis:ucrop:2.2.2-native'){
+//        exclude group: 'com.squareup.okhttp3', module: 'okhttp'
+//    }
+    implementation 'id.zelory:compressor:2.1.0'
+    api ('com.github.LuckSiege.PictureSelector:picture_library:v2.2.3'){
         exclude group: 'com.squareup.okhttp3', module: 'okhttp'
     }
-    implementation 'id.zelory:compressor:2.1.0'
     api rootProject.ext.dependencies.support
-    api 'com.android.support:recyclerview-v7:28.0.0'
     // From node_modules
     api(rootProject.ext.dependencies.rn) {
         exclude group: 'com.android.support'
