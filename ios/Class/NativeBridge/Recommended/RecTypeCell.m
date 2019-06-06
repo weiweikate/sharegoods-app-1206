@@ -169,6 +169,7 @@
 -(void)setModel:(JXModelData *)model{
   _model = model;
   self.headView.UserInfoModel = model.userInfoVO;
+  _headView.time = model.publishTimeStr;
   _zanBtn.selected = model.like;
   _zanNum.text =  [self zanNumWithFormat:self.model.likesCount];
 

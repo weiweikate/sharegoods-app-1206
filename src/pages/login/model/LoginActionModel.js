@@ -16,6 +16,7 @@ import { DeviceEventEmitter } from 'react-native';
 import RouterMap from '../../../navigation/RouterMap';
 import { NavigationActions } from 'react-navigation';
 import { track } from '../../../utils/SensorsTrack';
+import StringUtils from '../../../utils/StringUtils';
 
 /**
  * @param phone 校验手机号
@@ -25,12 +26,12 @@ import { track } from '../../../utils/SensorsTrack';
  * hyf 后期更改去掉phone
  */
 const oneClickLoginValidation = (phone, authenToken, navigation, successCallBack) => {
-    TrackApi.LoginButtonClick({'loginMethod':4})
+    TrackApi.LoginButtonClick({ 'loginMethod': 4 });
     LoginAPI.oneClickLoginValidation({
         token: authenToken
     }).then(result => {
         successCallBack && successCallBack();
-        TrackApi.localPhoneNumLogin({'loginMethod':4})
+        TrackApi.localPhoneNumLogin({ 'loginMethod': 4 });
         if (result.data.unionid == null) {
             //未绑定微信
             phoneBindWx();
@@ -103,7 +104,7 @@ const getWxUserInfo = (callback) => {
  * @param callBack
  */
 const wxLoginAction = (callBack) => {
-    TrackApi.LoginButtonClick({'loginMethod':1})
+    TrackApi.LoginButtonClick({ 'loginMethod': 1 });
     getWxUserInfo((data) => {
         LoginAPI.appWechatLogin({
             device: data.device,
@@ -119,7 +120,7 @@ const wxLoginAction = (callBack) => {
             if (res.code === 34005) {
                 data.title = '绑定手机号';
                 callBack && callBack(res.code, data);
-                TrackApi.wxSignUpSuccess()
+                TrackApi.wxSignUpSuccess();
             } else if (res.code === 10000) {
                 callBack && callBack(res.code, data);
                 UserModel.saveUserInfo(res.data);
@@ -148,9 +149,10 @@ const wxLoginAction = (callBack) => {
  * @param callBack
  */
 const codeLoginAction = (LoginParam, callBack) => {
-    TrackApi.LoginButtonClick({'loginMethod':2})
+    TrackApi.LoginButtonClick({ 'loginMethod': 2 });
 
-    LoginAPI.codeLogin({
+    let requestParams = {
+        ...LoginParam,
         authcode: '',
         code: LoginParam.code,
         device: DeviceInfo.getDeviceName() + '',
@@ -159,9 +161,14 @@ const codeLoginAction = (LoginParam, callBack) => {
         systemVersion: (DeviceInfo.getSystemVersion() + '').length > 0 ? DeviceInfo.getSystemVersion() : '暂无',
         username: '',
         wechatCode: '',
-        wechatVersion: '',
-        popupBoxType:1,//0:全部 1:app 2:h5 3:小程序
-    }).then((data) => {
+        wechatVersion: ''
+    };
+
+    if (StringUtils.isEmpty(LoginParam.spm) && !StringUtils.isEmpty(LoginParam.campaignType)) {
+        requestParams.popupBoxType = 1;//0:全部 1:app 2:h5 3:小程序
+    }
+
+    LoginAPI.codeLogin(requestParams).then((data) => {
         callBack(data);
         UserModel.saveUserInfo(data.data);
         UserModel.saveToken(data.data.token);
@@ -185,7 +192,7 @@ const codeLoginAction = (LoginParam, callBack) => {
  * @param callBack
  */
 const pwdLoginAction = (LoginParam, callBack) => {
-    TrackApi.LoginButtonClick({'loginMethod':3})
+    TrackApi.LoginButtonClick({ 'loginMethod': 3 });
     LoginAPI.passwordLogin({
         authcode: '22',
         code: LoginParam.code,
@@ -219,15 +226,19 @@ const pwdLoginAction = (LoginParam, callBack) => {
  * @param callback
  */
 const registAction = (params, callback) => {
-    LoginAPI.findMemberByPhone({
+
+    let requestParams = {
         ...params,
         device: (this.params && this.params.device) ? this.params.device : '',
         inviteId: '',//邀请id
         appOpenid: (this.params && this.params.appOpenid) ? this.params.appOpenid : '',
         systemVersion: DeviceInfo.getSystemVersion() + '',
-        wechatVersion: '',
-        popupBoxType:1,
-    }).then((data) => {
+        wechatVersion: ''
+    };
+    if (StringUtils.isEmpty(params.spm) && StringUtils.isEmpty(params.campaignType)) {
+        requestParams.popupBoxType = 1;//0:全部 1:app 2:h5 3:小程序
+    }
+    LoginAPI.findMemberByPhone(requestParams).then((data) => {
         if (data.code === 10000) {
             callback(data);
             //推送

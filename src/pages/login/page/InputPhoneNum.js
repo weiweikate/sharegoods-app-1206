@@ -120,9 +120,12 @@ export default class InputPhoneNum extends BasePage {
         //发送验证码
         SMSTool.sendVerificationCode(1, this.state.phoneNum)
             .then((resp) => {
+                const {campaignType,spm} = this.params;
                 let params = {
+                    campaignType,
+                    spm,
                     ...this.params,
-                    phoneNum: this.state.phoneNum
+                    phoneNum: this.state.phoneNum,
                 };
                 this.$navigate(RouterMap.InputCode, params);
             })
