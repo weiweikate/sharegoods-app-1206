@@ -12,10 +12,8 @@ const api = {
     passwordLogin: ['/user/userLogin/passwordLogin', { isRSA: true }],
     //app微信登陆
     appWechatLogin: '/user/userLogin/appWechatLogin',
-    //老用户激活注册
+    //检测用户是否存在注册
     existedUserLogin: '/user/userLogin/existedUserLogin',
-    //老用户验证
-    existedUserVerify: '/user/userLogin/existedUserVerify',
     //注册领红包
     userReceivePackage: ['/promotion/promotionPromoter/userReceivePackage', { method: 'get' }],
     //填写授权码
