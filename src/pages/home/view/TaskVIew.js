@@ -217,7 +217,6 @@ export default class TaskVIew extends React.Component {
     constructor(props) {
         super(props);
 
-
         this.state = {};
         this.model = this.props.type === 'home' ? taskModel : mineTaskModel;
     }
