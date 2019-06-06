@@ -91,15 +91,9 @@ export default class LoginPage extends BasePage {
     $isMonitorNetworkStatus() {
         return false;
     }
-
-    componentDidMount() {
-        TrackApi.passLoginPage();
-    }
-
     $NavBarLeftPressed = () => {
         this.$navigateBack();
     };
-
     _render() {
         return (
             <View style={Styles.contentStyle}>
@@ -113,7 +107,6 @@ export default class LoginPage extends BasePage {
                         }, 0);
                     }}
                 />
-
                 {
                     rendOtherLoginView(true, () => {
                         this.weChatLoginClick();
@@ -147,10 +140,6 @@ export default class LoginPage extends BasePage {
     };
     /*登陆*/
     loginClick = (loginType, LoginParam) => {
-        // {
-        //     campaignType: this.state.campaignType,
-        //         spm: this.state.spm
-        // }
         const { campaignType, spm } = this.params;
         const h5Param = { ...LoginParam, campaignType, spm };
         if (loginType === 0) {
