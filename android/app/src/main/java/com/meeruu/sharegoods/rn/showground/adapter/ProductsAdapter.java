@@ -68,8 +68,8 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.VH> {
         String url = bean.getImgUrl();
         String tag = (String) vh.productImg.getTag();
         if (!TextUtils.equals(url, tag)) {
-            ImageLoadUtils.loadRoundNetImage(url, vh.productImg, DensityUtils.dip2px(5));
             vh.productImg.setTag(url);
+            ImageLoadUtils.loadRoundNetImage(url, vh.productImg, DensityUtils.dip2px(5));
         }
         vh.cart.setOnClickListener(new View.OnClickListener() {
             @Override
