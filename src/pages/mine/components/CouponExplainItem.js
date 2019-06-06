@@ -82,10 +82,10 @@ export default class CouponExplainItem extends Component {
                                     color: item.status === 0 ? DesignRule.textColor_mainTitle : DesignRule.textColor_instruction,
                                 }} allowFontScaling={false} numberOfLines={0}>
                                     {item.name}</Text>
-                                {item.type === 12 ? <UIText value={'x' + item.number} style={{
-                                    fontSize: 15,
-                                    color: DesignRule.textColor_mainTitle
-                                }}/> : null}
+                                {/*{item.type === 12 ? <UIText value={'x' + item.number} style={{*/}
+                                    {/*fontSize: 15,*/}
+                                    {/*color: DesignRule.textColor_mainTitle*/}
+                                {/*}}/> : null}*/}
                             </View>
                             <UIText style={{ fontSize: 11, color: DesignRule.textColor_placeholder, marginTop: 1 }}
                                     value={item.limit}/>
@@ -131,8 +131,7 @@ export default class CouponExplainItem extends Component {
                                             {item.count > 1 ? <UIText value={'x' + item.count}
                                                                       style={styles.xNumsStyle}/> : null}
                                         </View>
-                                        : (item.count > 1 ? <UIText value={'x' + item.count}
-                                                                    style={styles.xNumsStyle}/> :
+                                        :
                                             (item.redirectType && item.redirectType!=0?
                                             <NoMoreClick style={{
                                                 height: ScreenUtils.autoSizeWidth(27),
@@ -154,9 +153,9 @@ export default class CouponExplainItem extends Component {
                                                         color: 'white',
                                                     }} allowFontScaling={false}>去使用</Text>
                                                 </LinearGradient>
-                                            </NoMoreClick>:null))))
+                                            </NoMoreClick>:null)))
 
-                                : <View style={{marginRight: 15, justifyContent: 'center', alignItems: 'center'}}>
+                                : <View style={{justifyContent: 'center', alignItems: 'center'}}>
                                     <Image style={{width: 55, height: 55}}
                                            source={stateImg}/>
                                     {item.count > 1 ? <UIText value={'x' + item.count}
