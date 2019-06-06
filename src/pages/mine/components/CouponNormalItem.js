@@ -87,7 +87,6 @@ export default class CouponNormalItem extends Component {
                             flex: 1,
                             alignItems: 'center',
                             marginLeft: 5,
-                            marginRight: 10,
                             justifyContent: 'center',}}>
                             {item.status === 0 ? (item.levelimit ?
                                 <View style={{marginRight: 15, justifyContent: 'center', alignItems: 'center'}}>

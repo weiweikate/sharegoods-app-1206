@@ -99,7 +99,6 @@ export default class CouponExplainItem extends Component {
                             flex: 1,
                             alignItems: 'center',
                             marginLeft: 5,
-                            marginRight: 10,
                             justifyContent: 'center'}}>
                             {item.status === 0 ?
                                 (

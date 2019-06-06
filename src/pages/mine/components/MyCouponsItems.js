@@ -22,6 +22,7 @@ import { MRText as Text, MRTextInput as TextInput } from '../../../components/ui
 import couponsModel from '../model/CouponsModel';
 import CouponExplainItem from './CouponExplainItem';
 import CouponNormalItem from './CouponNormalItem';
+import RouterMap from "../../../navigation/RouterMap";
 
 const NoMessage = res.couponsImg.coupons_no_data;
 const plusIcon = res.couponsImg.youhuiquan_icon_jia_nor;
@@ -356,8 +357,8 @@ export default class MyCouponsItems extends Component {
                             type: item.type, //以type=99表示1元券
                             levelimit: false,
                             count: item.number || 0,
-                            redirectType: item.type === 11 ? 0:item.redirectType,
-                            redirectUrl: item.type === 11 ? null: item.redirectUrl
+                            redirectType: item.type === 11 ? 0 : item.redirectType,
+                            redirectUrl: item.type === 11 ? null : item.redirectUrl
 
                         });
                     });
@@ -543,23 +544,30 @@ export default class MyCouponsItems extends Component {
     };
 
     clickItem = (index, item) => {
-        // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
-        if(item.redirectType&&(item.redirectType == 1||item.redirectType == 10||item.redirectType == 11||item.redirectType == 12||item.redirectType == 13||item.redirectType == 14)) {
+        //礼包
+        if(item.redirectType && item.redirectType === 10){
+            this.props.nav.navigate(RouterMap.TopicDetailPage, {activityType:3});
+        }
+
+        //专题(老版)
+        if(item.redirectType && item.redirectType === 11){
+            this.props.nav.navigate(RouterMap.DownPricePage, {linkTypeCode:item.redirectUrl});
+        }
+
+        //商品
+        if(item.redirectType && item.redirectType === 12){
+            this.props.nav.navigate(RouterMap.ProductDetailPage , {productCode:item.redirectUrl});
+        }
+
+        //秀场
+        if(item.redirectType && item.redirectType === 13){
+            this.props.nav.navigate(RouterMap.ShowRichTextDetailPage, {code:item.redirectUrl});
+        }
+
+        //h5链接
+        if(item.redirectType && item.redirectType === 14){
             this.props.nav.navigate('HtmlPage', {uri: item.redirectUrl});
         }
-        // if (this.props.fromOrder) {
-        //     bridge.showLoading();
-        //     this.props.useCoupons(item);
-        // } else if (this.props.justOne) {
-        //     this.setState({ showDialogModal: true });
-        // } else {
-        //     if (item.type < 99 && item.count > 1) {
-        //         this.props.nav.navigate('mine/coupons/CouponsDetailPage', {
-        //             couponIds: [item.couponConfigId],
-        //             status: item.status
-        //         });
-        //     }
-        // }
     };
 }
 
