@@ -314,8 +314,7 @@ export default class ShowDetailPage extends BasePage {
             });
         }
 
-        DownloadUtils.downloadProduct({detail});
-
+        DownloadUtils.downloadProduct({ detail });
 
 
     };
@@ -549,9 +548,10 @@ export default class ShowDetailPage extends BasePage {
                                 data: detail.showNo
                             }}
                             webJson={{
-                                title: (detail.showType === 1 ? detail.content : detail.title)|| '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
+                                title: (detail.showType === 1 ? detail.content : detail.title) || '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
                                 linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
-                                thumImage: detail.resource ? detail.resource[0].url : '', //(分享图标小图(https链接)图文分享使用)
+                                thumImage: detail.resource && detail.resource[0] && detail.resource[0].url
+                                    ? detail.resource[0].url.substring(0, detail.resource[0].url.indexOf('?')) : '', //(分享图标小图(https链接)图文分享使用)
                                 dec: '好物不独享，内有惊喜福利~'
                             }}
             />
