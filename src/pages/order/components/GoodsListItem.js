@@ -14,17 +14,17 @@ import {
 import GoodsGrayItem from './GoodsGrayItem';
 import StringUtils from '../../../utils/StringUtils';
 import DateUtils from '../../../utils/DateUtils';
-import constants from '../../../constants/constants';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res'
 import ScreenUtils from '../../../utils/ScreenUtils';
+import { GetViewOrderStatus, checkOrderAfterSaleService } from '../order/OrderType';
 const arrow_black_bottom = res.button.arrow_black_bottom
 
 export default class GoodsListItem extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isShow: false
+            isShow: false //用于控制更多按钮的弹出框
         };
     }
 
@@ -53,44 +53,18 @@ export default class GoodsListItem extends React.Component {
         )
     }
 
-    checkOrderAfterSaleService = (products = [], status, nowTime) => {
-        if (status === 1 || status === 5) {//待付款、无售后
-            return false;
-        }
-        let hasAfterSaleService = false;
-
-        products.forEach((product) => {
-            let { activityCodes = [], afterSaleTime } = product
-            //礼包产品3  经验值专区商品5 无售后
-            if (activityCodes && activityCodes.length > 0 && (activityCodes[0].orderType === 3 || activityCodes[0].orderType === 5)&& status<=2) {
-                return;
-            }
-            //商品售后已过期 无售后
-            let innerStatus = (product.orderCustomerServiceInfoDTO && products.orderCustomerServiceInfoDTO.status)
-            if (status > 3 && nowTime && afterSaleTime && afterSaleTime < nowTime && !(innerStatus<6 && innerStatus>=1)) {
-                return;
-            }
-
-            hasAfterSaleService = true;
-        })
-
-
-        return hasAfterSaleService
-
-    }
 
     renderMenu = () => {
         const {
-            orderStatus,
-            orderProduct,
-            nowTime,
+            baseInfo,
+            merchantOrder,
             operationMenuClick,
-            commentStatus
-        } = this.props;
 
-        let nameArr = [...constants.viewOrderStatus[orderStatus].menuData];
-        let hasAfterSaleService = this.checkOrderAfterSaleService(orderProduct, orderStatus, nowTime)
-            if (orderStatus === 4 && commentStatus) {
+        } = this.props;
+        let orderStatus = merchantOrder.status;
+        let nameArr = [...GetViewOrderStatus(orderStatus).menuData];
+        let hasAfterSaleService = checkOrderAfterSaleService(merchantOrder.productOrderList, orderStatus, baseInfo.nowTime)
+            if (orderStatus === 4 && merchantOrder.commentStatus) {
                 nameArr = [{
                     id: 7,
                     operation: '删除订单',
@@ -209,42 +183,38 @@ export default class GoodsListItem extends React.Component {
 
         renderGoodsList = () => {
             const {
-                orderProduct,
+                merchantOrder,
                 goodsItemClick
             } = this.props;
-            let itemArr = [];
-            for (let i = 0; i < orderProduct.length; i++) {
-                itemArr.push(
-                    <GoodsGrayItem
-                        key={i}
-                        style={{ backgroundColor: 'white' }}
-                        uri={orderProduct[i].imgUrl || ''}
-                        goodsName={orderProduct[i].productName}
-                        salePrice={orderProduct[i].price}
-                        category={orderProduct[i].spec}
-                        goodsNum={orderProduct[i].num}
-                        onPress={(data)=> {goodsItemClick(data); this.setState({isShow: false})}}
-                        activityCodes={orderProduct[i].activityCodes}
-                    />
-                );
-            }
-            return itemArr;
+            let orderProduct = merchantOrder.productOrderList || []
+           return orderProduct.map((item, index) => {
+                return(
+                <GoodsGrayItem
+                    key={index}
+                    style={{ backgroundColor: 'white' }}
+                    uri={item.specImg || ''}
+                    goodsName={item.productName}
+                    salePrice={item.unitPrice}
+                    category={item.spec}
+                    goodsNum={item.quantity}
+                    onPress={()=> {goodsItemClick(); this.setState({isShow: false})}}
+                    activityCodes={[]}
+                />)
+            })
         };
 
         renderOrderNum = () => {
             const {
-                orderStatus,
-                orderCreateTime,
-                warehouseType,
-                subStatus
+                baseInfo,
+                merchantOrder
             } = this.props;
             return (
                 <View style={{ height: 44, justifyContent: 'center' }}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <UIText value={'订单提交时间：' + DateUtils.getFormatDate(orderCreateTime / 1000)}
+                        <UIText value={'订单提交时间：' + DateUtils.getFormatDate(baseInfo.orderTime / 1000)}
                                 style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 18 }}/>
                         <UIText
-                            value={warehouseType !== 2 && orderStatus === 3 && subStatus === 3 ? '部分发货' : constants.viewOrderStatus[orderStatus].orderStatus}
+                            value={ GetViewOrderStatus(merchantOrder.status).status}
                             style={{ fontSize: 13, color: DesignRule.mainColor, marginRight: 13 }}/>
                     </View>
                 </View>
@@ -254,9 +224,9 @@ export default class GoodsListItem extends React.Component {
 
         renderCalculate = () => {
             const {
-                orderStatus,
-                quantity,
-                totalPrice,
+                merchantOrder,
+                payInfo,
+                baseInfo
             } = this.props;
             return (
                 <View style={{
@@ -267,10 +237,10 @@ export default class GoodsListItem extends React.Component {
                     flexDirection: 'row',
                     paddingRight: 16
                 }}>
-                    <UIText value={`共${quantity}件商品  ${orderStatus < 2 ? '需付款: ' : '实付款: '}`}
+                    <UIText value={`共${baseInfo.productQuantity}件商品  ${merchantOrder.status < 2 ? '需付款: ' : '实付款: '}`}
 
                             style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}/>
-                    <UIText value={StringUtils.formatMoneyString(totalPrice)}
+                    <UIText value={StringUtils.formatMoneyString(payInfo.orderAmount)}
                             style={{ fontSize: 13, color: DesignRule.mainColor }}/>
                     {/*<UIText value={'（含运费' + StringUtils.formatMoneyString(freightPrice, false) + '）'}*/}
                     {/*style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}/>*/}

@@ -123,17 +123,8 @@ export default class MyOrdersDetailPage extends BasePage {
     };
 
     componentDidMount() {
-        // DeviceEventEmitter.addListener("OrderNeedRefresh", () => this.loadPageData());
-        this.didFocusSubscription = this.props.navigation.addListener(
-            'willFocus',
-            payload => {
-                const { state } = payload;
-                console.log('willFocusSubscriptionMyOrdersDetailPage', payload);
-                if (state && state.routeName === 'order/order/MyOrdersDetailPage') {
-                    this.loadPageData();
 
-                }
-            });
+        this.loadPageData();
         this.getCancelOrder();
 
     }
@@ -326,18 +317,16 @@ export default class MyOrdersDetailPage extends BasePage {
                     detail={assistDetailModel.cancelArr}
                     commit={(index) => {
                         //取消订单
-                        // Toast.showLoading();
-                        // OrderApi.cancelOrder({
-                        //     cancelReason: assistDetailModel.cancelArr[index],
-                        //     orderNo: orderDetailModel.getOrderNo(),
-                        //     cancelType: 2,
-                        //     platformRemarks: null
-                        // }).then((response) => {
-                        //     this.goTobackNav();
-                        // }).catch(e => {
-                        //     Toast.hiddenLoading();
-                        //     Toast.$toast(e.msg);
-                        // });
+                        Toast.showLoading();
+                        OrderApi.cancelOrder({
+                            cancelReason: assistDetailModel.cancelArr[index],
+                            orderNo: orderDetailModel.getOrderNo(),
+                        }).then((response) => {
+                            this.goTobackNav();
+                        }).catch(e => {
+                            Toast.hiddenLoading();
+                            Toast.$toast(e.msg);
+                        });
                     }}
                 />
             </View>
@@ -479,8 +468,7 @@ export default class MyOrdersDetailPage extends BasePage {
     async loadPageData() {
         this.stop();
         Toast.showLoading();
-        let result = await orderDetailModel.loadDetailInfo(this.params.orderNo) || {};
-        console.log('loadPageData', result);
+         await orderDetailModel.loadDetailInfo(this.params.orderNo) || {};
         Toast.hiddenLoading();
         let dataArr = [];
         let pageStateString = orderDetailAfterServiceModel.AfterServiceList[parseInt(orderDetailModel.warehouseOrderDTOList[0].status)];
@@ -598,7 +586,7 @@ export default class MyOrdersDetailPage extends BasePage {
         }
         orderDetailAfterServiceModel.totalAsList = pageStateString;
     }
-
+    //去商品详情
     clickItem = (index, item) => {
         console.log('clickItem', index, item);
         switch (orderDetailModel.productsList()[index].orderSubType) {
@@ -621,6 +609,7 @@ export default class MyOrdersDetailPage extends BasePage {
                 break;
         }
     };
+    //点击售后按钮的处理
     afterSaleServiceClick = (menu, index) => {
         console.log(menu, index);
         let products = orderDetailModel.warehouseOrderDTOList[0].products[index];

@@ -11,6 +11,7 @@ export const AfterStatus = {
     STATUS_PLATFORM_PROCESSING: 4, //待平台处理
     STATUS_SUCCESS:             5, //售后完成
     STATUS_FAIL:                6,
+    WAIT_SUPPLIER_CANCLE_DEVLIER: 7, //"待商家取消发货"
 }
 
 export const SubStatus = {

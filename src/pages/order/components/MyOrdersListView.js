@@ -11,13 +11,11 @@ import { track, trackEvent } from '../../../utils/SensorsTrack';
 import Toast from '../../../utils/bridge';
 import OrderApi from '../api/orderApi';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
-// import userOrderNum from '../../../manager/userOrderNum';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import {
     MRText as Text
 } from '../../../components/ui';
-// import user from '../../../manager/user';
 import RouterMap from '../../../navigation/RouterMap';
 import { payStatus, payment, payStatusMsg } from '../../payment/Payment';
 import { NavigationActions } from 'react-navigation';
@@ -33,9 +31,12 @@ export default class MyOrdersListView extends Component {
             timeOff: [],//待付款时间
             pageStatus: this.props.pageStatus,
         };
-        this.itemIndex = -1; //用于
         this.item = {};
 
+    }
+
+    onRefresh = () => {
+        this.list && this.list.onRefresh();
     }
 
     render() {
@@ -57,7 +58,10 @@ export default class MyOrdersListView extends Component {
                     defaultEmptyImage={emptyIcon}
                     defaultEmptyText={'暂无订单'}
                     renderHeader={()=>{return <View style={{ height: 10 }}/>}}
-                    handleRequestResult={(data)=>{return this.getList(data.data)}}
+                    handleRequestResult={(data)=>{return this.handleRequestResult(data)}}
+                    totalPageNum={(result) => {
+                        return result.data.isMore ? 10 : 0;
+                    }}
                     onStartRefresh={()=> {Toast.showLoading()}}
                     onEndRefresh={() => {Toast.hiddenLoading()}}
                 />
@@ -65,31 +69,28 @@ export default class MyOrdersListView extends Component {
             </View>
         );
     }
-
-    onRefresh = () => {
-        this.list && this.list.onRefresh();
+    //对数据进行排空处理
+    handleRequestResult = (result) => {
+        let data = result.data.data || [];
+        return data.map(item => {
+            item.baseInfo = item.baseInfo || {};
+            item.merchantOrder = item.merchantOrder || {};
+            item.merchantOrder.productOrderList = item.merchantOrder.productOrderList||[];
+            item.payInfo = item.payInfo || {};
+            item.receiveInfo = item.receiveInfo || {};
+            return item;
+        })
     }
 
     renderItem = ({ item, index }) => {
         return (
             <GoodsListItem
-                orderNum={item.orderNo}
-                orderStatus={item.orderStatus}
-                warehouseType={item.warehouseType}
-                subStatus={item.subStatus}
-                orderProduct={item.orderProduct}
-                shutOffTime={item.cancelTime}
-                totalPrice={item.totalPrice}
-                quantity={item.quantity}
-                nowTime={item.nowTime}
-                orderCreateTime={item.createTime}
+                {...item}
                 clickItem={() => {
                     this.clickItem(item);
                 }}
-                commentStatus={item.commentStatus || false}
                 goodsItemClick={() => this.clickItem(item)}
                 operationMenuClick={(menu) => this.operationMenuClick(menu, index, item)}
-                status={item.status}
                 callBack={() => {
                     // this.onRefresh();
                 }}
@@ -130,128 +131,33 @@ export default class MyOrdersListView extends Component {
                 }}
                 detail={this.props.cancelReasons}
                 commit={(index) => {
-                    Toast.showLoading();
-                    OrderApi.cancelOrder({
-                        cancelReason: this.props.cancelReasons[index],
-                        orderNo: this.item.orderNo,
-                        cancelType: 2,
-                        platformRemarks: null
-                    }).then((response) => {
-                        Toast.hiddenLoading();
-                        if (response.code === 10000) {
-                            Toast.$toast('订单已取消');
-                            this.onRefresh();
-                        } else {
-                            Toast.$toast(response.msg);
-                        }
-                    }).catch(e => {
-                        Toast.hiddenLoading();
-                        Toast.$toast(e.msg);
-                    });
+                    this.cancelOrder(index)
                 }}
             />
 
         );
     };
 
-    cancelOrder = () => {
+    cancelOrder = (index) => {
+        Toast.showLoading();
+        OrderApi.cancelOrder({
+            cancelReason: this.props.cancelReasons[index],
+            platformOrderNo: this.item.baseInfo.platformOrderNo,
+        }).then((response) => {
+            Toast.hiddenLoading();
+            if (response.code === 10000) {
+                Toast.$toast('订单已取消');
+                this.onRefresh();
+            } else {
+                Toast.$toast(response.msg);
+            }
+        }).catch(e => {
+            Toast.hiddenLoading();
+            Toast.$toast(e.msg);
+        });
 
     }
-    //多商品订单列表 maybe
-    getOrderProduct = (list) => {
-        let arrData = [];
-        list.map((item, index) => {
-            arrData.push({
-                id: item.id,
-                productId: item.prodCode,
-                productName: item.productName,
-                spec: item.spec,
-                imgUrl: item.specImg,
-                price: StringUtils.formatMoneyString(item.unitPrice),
-                num: item.quantity,
-                status: item.status,
-                orderType: item.subStatus,
-                prodCode: item.prodCode,
-                skuCode: item.skuCode,
-                activityCodes:item.activityCodes,
-                afterSaleTime: item.afterSaleTime,
-                orderCustomerServiceInfoDTO: item.orderCustomerServiceInfoDTO
-            });
-        });
-        return arrData;
-    };
-    getPlatformProduct = (list) => {
-        let arrData = [];
-        list.map((unit, index) => {
-            unit.products.map((item) => {
-                arrData.push({
-                    id: item.id,
-                    productId: item.prodCode,
-                    productName: item.productName,
-                    spec: item.spec,
-                    imgUrl: item.specImg,
-                    price: StringUtils.formatMoneyString(item.unitPrice),
-                    num: item.quantity,
-                    status: item.status,
-                    orderType: item.subStatus,
-                    prodCode: item.prodCode,
-                    skuCode: item.skuCode,
-                    activityCodes:item.activityCodes
-                });
-            });
-        });
-        return arrData;
-    };
-    getList = (data) => {
-        let arrData = [];
-        if (StringUtils.isNoEmpty(data) && StringUtils.isNoEmpty(data.data)) {
-            data.data.map((item, index) => {
-                if (item.warehouseOrderDTOList[0].status === 1) {//未付款的
-                    arrData.push({
-                        orderProduct: this.getPlatformProduct(item.warehouseOrderDTOList),
-                        orderNo: item.platformOrderNo,
-                        quantity: item.quantity,
-                        orderStatus: 1,
-                        subStatus:item.warehouseOrderDTOList[0].subStatus,
-                        warehouseType:item.warehouseOrderDTOList[0].warehouseType,
-                        totalPrice: item.payAmount,
-                        nowTime: item.nowTime,
-                        cancelTime: item.warehouseOrderDTOList[0].cancelTime,
-                        createTime: item.warehouseOrderDTOList[0].createTime,
-                        outTradeNo: item.warehouseOrderDTOList[0].outTradeNo,
-                        orderAmount: item.orderAmount,
-                        commentStatus: item.commentStatus,
-                        platformOrderNo: item.platformOrderNo
-                    });
 
-                } else {
-                    item.warehouseOrderDTOList.map((resp, index1) => {
-                        arrData.push({
-                            orderProduct: this.getOrderProduct(resp.products),
-                            orderNo: resp.warehouseOrderNo,
-                            cancelTime: resp.cancelTime,
-                            createTime: resp.createTime,
-                            quantity: this.totalAmount(resp.products),
-                            orderType: resp.subStatus,
-                            orderStatus: resp.status,
-                            subStatus:item.warehouseOrderDTOList[0].subStatus,
-                            warehouseType:item.warehouseOrderDTOList[0].warehouseType,
-                            totalPrice: resp.payAmount,
-                            expList: resp.expList || [],
-                            nowTime: item.nowTime,
-                            unSendProductInfoList: resp.unSendProductInfoList || [],
-                            outTradeNo: resp.outTradeNo,
-                            commentStatus: resp.commentStatus,
-                            platformOrderNo: item.platformOrderNo
-                        });
-                    });
-                }
-
-            });
-        }
-
-        return arrData;
-    };
 
     totalAmount(data) {
         let num = 0;
@@ -288,8 +194,9 @@ export default class MyOrdersListView extends Component {
          * 再次购买                 ->  8
          * 删除订单(已关闭(取消))    ->  9
          * */
-        this.itemIndex = index;
         this.item = data;
+        let orderProduct = data.merchantOrder.productOrderList || [];
+        let merchantOrderNo = data.merchantOrder.merchantOrderNo;
         switch (menu.id) {
             case 1:
                 if (this.props.cancelReasons.length > 0) {
@@ -326,7 +233,7 @@ export default class MyOrdersListView extends Component {
             case 6:
                 console.log(data);
                 let content = `确定收到货了吗?`;
-                data.orderProduct.map((value) => {
+                orderProduct.map((value) => {
                     if (value.status < 3) {
                         content = '您还有商品未发货，确认收货吗？';
                     }
@@ -339,10 +246,10 @@ export default class MyOrdersListView extends Component {
                     {
                         text: `确定`, onPress: () => {
                             Toast.showLoading();
-                            OrderApi.confirmReceipt({ orderNo: data.orderNo }).then((response) => {
+                            OrderApi.confirmReceipt({ merchantOrderNo: merchantOrderNo}).then((response) => {
                                 Toast.hiddenLoading();
                                 this.props.nav('order/order/ConfirmReceiveGoodsPage', {
-                                    orderNo: data.orderNo
+                                    merchantOrderNo: merchantOrderNo
                                 });
                                 Toast.$toast('确认收货成功');
                             }).catch(e => {
@@ -355,6 +262,7 @@ export default class MyOrdersListView extends Component {
                 ], { cancelable: true });
                 break;
             case 7:
+            case 9:
                 Alert.alert('', `确定删除此订单？`, [
                     {
                         text: `取消`, onPress: () => {
@@ -362,9 +270,8 @@ export default class MyOrdersListView extends Component {
                     },
                     {
                         text: `确定`, onPress: () => {
-                            console.log(this.state.menu);
                             Toast.showLoading();
-                            OrderApi.deleteOrder({ orderNo: data.orderNo }).then((response) => {
+                            OrderApi.deleteOrder({ merchantOrderNo: merchantOrderNo}).then((response) => {
                                 Toast.hiddenLoading();
                                 Toast.$toast('订单已删除！');
                                 this.onRefresh();
@@ -379,7 +286,7 @@ export default class MyOrdersListView extends Component {
                 break;
             case 8:
                 let cartData = [];
-                data.orderProduct.map((item, index) => {
+                orderProduct.map((item, index) => {
                     cartData.push({
                         productCode: item.prodCode,
                         skuCode: item.skuCode,
@@ -391,29 +298,6 @@ export default class MyOrdersListView extends Component {
                     orderId:data.orderNo, })
                 shopCartCacheTool.addGoodItem(cartData);
                 this.props.nav('shopCart/ShopCart', { hiddeLeft: false });
-                break;
-            case 9:
-                Alert.alert('', `确定删除此订单？`, [
-                    {
-                        text: `取消`, onPress: () => {
-                        }
-                    },
-                    {
-                        text: `确定`, onPress: () => {
-                            console.log(this.state.menu);
-                            Toast.showLoading();
-                            OrderApi.deleteOrder({ orderNo: data.orderNo }).then((response) => {
-                                Toast.hiddenLoading();
-                                Toast.$toast('订单已删除！');
-                                this.onRefresh();
-                            }).catch(e => {
-                                Toast.hiddenLoading();
-                                Toast.$toast(e.msg);
-                            });
-                        }
-                    }
-
-                ], { cancelable: true });
                 break;
             case 10:
                 OrderApi.checkInfo({ warehouseOrderNo: data.orderNo }).then(res => {

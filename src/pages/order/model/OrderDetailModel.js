@@ -1,8 +1,9 @@
-import { observable, action, computed } from 'mobx'
+import { observable, action } from 'mobx'
 import OrderApi from '../api/orderApi'
-import StringUtils from "../../../utils/StringUtils";
+// import StringUtils from "../../../utils/StringUtils";
 import Toast from "../../../utils/bridge";
 import { PageLoadingState } from "../../../components/pageDecorator/PageState";
+import { OrderType } from '../order/OrderType';
 
 export const orderStatus = {
     prePayment: 1,
@@ -31,92 +32,83 @@ class OrderDetailModel {
     @observable status=null
     @observable deleteInfo=false
 
-    @action  getOrderNo(){
-     return   this.status > 1 ? this.warehouseOrderDTOList[0].warehouseOrderNo : this.warehouseOrderDTOList[0].platformOrderNo
-    }
+    @observable menu = []
+    @observable moreDetail = '';
+    @observable sellerState = '';
+    @observable buyState = '';
 
-    @action  productsList() {
-        let dataArr = []
-        this.warehouseOrderDTOList.map((value) => {
-            value.products.map((item)=>{
-                dataArr.push({
-                    productId: item.id,
-                    uri: item.specImg,
-                    goodsName: item.productName,
-                    salePrice: StringUtils.isNoEmpty(item.payAmount) ? item.payAmount : 0,
-                    category: item.specValues,
-                    goodsNum: item.quantity,
-                    // afterSaleService: this.getAfterSaleService(item, index),
-                    // returnProductStatus: item.returnProductStatus,
-                    // returnType: item.returnType,
-                    status: item.status,
-                    activityCode: item.activityCode,
-                    orderProductNo:item.orderProductNo,
-                    orderCustomerServiceInfoDTO:item.orderCustomerServiceInfoDTO,
-                    afterSaleTime:item.afterSaleTime,
-                    orderSubType:item.orderSubType,
-                    prodCode:item.prodCode
+    @observable baseInfo = {};
+    @observable merchantOrder = {};
+    @observable payInfo = {};
+    @observable receiveInfo = {};
 
-                })
-            })
-        })
-        return dataArr
+    productsList() {
+        return this.merchantOrder.productOrderList || []
     }
 
 
-    @action loadDetailInfo(orderNo) {
+    @action loadDetailInfo(merchantOrderNo) {
         this.deleteInfo=false
-        orderDetailAfterServiceModel.addAfterServiceList();
         return OrderApi.lookDetail({
-            orderNo:orderNo
+            merchantOrderNo:merchantOrderNo
         }).then(rep => {
-            this.detail = rep.data
-            this.expList = rep.data.warehouseOrderDTOList[0].expList||[]
-            this.unSendProductInfoList= rep.data.warehouseOrderDTOList[0].unSendProductInfoList||[]
-            orderStatusModel.statusMsg = orderStatusMessage[rep.data.status]
-            orderDetailModel.giftCouponDTOList = rep.data.giftCouponDTOList || []
-            orderDetailModel.orderSubType = rep.data.orderSubType
-            this.warehouseOrderDTOList = rep.data.warehouseOrderDTOList
-            orderDetailModel.receiverPhone = rep.data.receiverPhone
-            orderDetailModel.receiver = rep.data.receiver
-            orderDetailModel.tokenCoinAmount = rep.data.tokenCoinAmount
-            orderDetailModel.platformOrderNo = rep.data.platformOrderNo
-            orderDetailModel.source = rep.data.source
-            orderDetailModel.channel = rep.data.channel
-            orderDetailModel.quantity = rep.data.quantity
-            orderDetailModel.province = rep.data.province
-            orderDetailModel.street = rep.data.street
-            orderDetailModel.city = rep.data.city
-            orderDetailModel.area = rep.data.area
-            orderDetailModel.address = rep.data.address
-            this.status = rep.data.warehouseOrderDTOList[0].status
-            orderDetailModel.payAmount = rep.data.payAmount
-            // orderDetailModel.loading=false
-            orderDetailModel.loadingState=PageLoadingState.success
-
-            return rep
+            this.handleData(rep)
         }).catch(err=>{
-                if(err.code===47002){
-                    this.deleteInfo=true
-                }else{
-                    orderDetailModel.netFailedInfo=err
-                    orderDetailModel.loadingState=PageLoadingState.fail
-                }
-                // orderDetailModel.netFailedInfo=err
-                // orderDetailModel.loadingState=PageLoadingState.fail
+            if(err.code===47002){
+                this.deleteInfo=true
+            }else{
+                orderDetailModel.netFailedInfo=err
+                orderDetailModel.loadingState=PageLoadingState.fail
+            }
             Toast.hiddenLoading();
             Toast.$toast(err.msg);
-            console.log(err);
         })
     }
+    @action handleData(rep){
+        //判空
+        let data = rep.data || {};
+        this.baseInfo = data.baseInfo || {}
+        this.merchantOrder = data.merchantOrder || {}
+        this.payInfo = data.payInfo || {}
+        this.receiveInfo = data.receiveInfo || {}
 
-
-    @computed
-    get upDateOrderProductList(){
-      let k=  this.warehouseOrderDTOList.length;
-      console.log('upDateOrderProductList',k);
-        // return this.orderProductList.length;
+        orderDetailModel.loadingState=PageLoadingState.success
+        let menu = [];
+        switch (this.merchantOrder.status) {
+            case OrderType.WAIT_PAY:
+            {
+                menu = [{ id:1, operation:'取消订单', isRed:false, },
+                       { id:2, operation:'去支付', isRed:true, }]
+                this.moreDetail = '';
+                this.sellerState = '';
+                this.buyState = '';
+                break;
+            }
+            case OrderType.WAIT_DELIVER:
+            {
+                break;
+            }
+            case OrderType.DELIVERED:
+            {
+                break;
+            }
+            case OrderType.COMPLETED:
+            {
+                break;
+            }
+            case OrderType.CLOSED:
+            {
+                break;
+            }
+            default:
+                this.moreDetail = '';
+                this.sellerState = '';
+                this.buyState = '';
+                break;
+        }
+        this.menu = menu;
     }
+
 
 }
 export  const orderDetailModel = new OrderDetailModel();

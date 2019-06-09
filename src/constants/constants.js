@@ -67,11 +67,6 @@ let constants = {
                 operation:'去支付',
                 isRed:true,
             },
-            //     {
-            //     id:3,
-            //     operation:'继续支付',
-            //     isRed:true,
-            // }
             ],
             menuData2:[]
         },{
@@ -371,6 +366,8 @@ let constants = {
         },
     ]
 };
+
+
 export default constants;
 
 

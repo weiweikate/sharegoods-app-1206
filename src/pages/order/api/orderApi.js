@@ -4,15 +4,13 @@ const api = {
     //order/submitOrder提交订单
     submitOrder: ['/order/submitV2',{ isRSA: true }],
     //订单列表  订单状态（1：待支付 2：待发货 3：待收货 4：确认收货 5：已完成 6：退货关闭 7：用户关闭 8：超时关闭）
-    queryPage: ['/order/list',{method:'get'}],
-    //订单搜索
-    orderSearch:['/order/search',{method:'get'}],
+    queryPage: ['/orderV2/list',{method:'get'}],
     // 用户预支付
     prePay: '/order/prePay',
     //支付成功回调
     paySuccess: '/order/paySuccess',
     // （陈帅）订单详情
-    lookDetail: '/order/detail',
+    lookDetail: '/orderV2/detail',
     // 加入购物车
     addItem: '/user/shoppingcart/addItem',
     //删除已关闭订单
@@ -22,7 +20,7 @@ const api = {
     //订单物流信息
     orderDeliverInfo:'./order/deliverInfo',
     //确认收货
-    confirmReceipt: '/order/confirm-receipt',
+    confirmReceipt: '/order/confirmReceipt',
     //取消订单
     cancelOrder: '/order/cancel',
     //继续支付

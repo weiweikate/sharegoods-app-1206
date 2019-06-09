@@ -48,10 +48,10 @@ export default class ConfirmReceiveGoodsPage extends BasePage {
 
     };
     showOrderPage = () => {
-        OrderApi.checkInfo({warehouseOrderNo:this.params.orderNo}).then(res => {
+        OrderApi.checkInfo({merchantOrderNo:this.params.merchantOrderNo}).then(res => {
             if(res.data){
                 this.$navigate(RouterMap.P_ScorePublishPage, {
-                    orderNo: this.params.orderNo
+                    merchantOrderNo: this.params.merchantOrderNo
                 });
             }else{
                 Toast.$toast('该商品已晒过单！');
