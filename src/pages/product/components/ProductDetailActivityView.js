@@ -7,7 +7,6 @@ import { observer } from 'mobx-react';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import { navigate } from '../../../navigation/RouterMap';
-import StringUtils from '../../../utils/StringUtils';
 
 const { arrow_right_black } = res.button;
 
@@ -86,6 +85,8 @@ export class ActivityDidBeginView extends Component {
         const { promotionPrice, originalPrice, promotionSaleRate, showTimeText, prodCode, singleActivity } = productDetailModel;
         const { extraProperty } = singleActivity;
         const promotionSaleRateS = promotionSaleRate || 0;
+        let ratePercentText = promotionSaleRateS > 0.9 ? '即将售罄' : `还剩${Math.ceil((1 - promotionSaleRateS) * 100)}%`;
+        ratePercentText = promotionSaleRateS >= 1 ? '已抢光' : ratePercentText;
         let progressWidthS = promotionSaleRateS * progressWidth;
         progressWidthS = progressWidthS < 12 ? 12 : progressWidthS;
         return (
@@ -113,8 +114,7 @@ export class ActivityDidBeginView extends Component {
                             <View style={[DidBeginViewStyles.progressView, { width: progressWidthS }]}/>
                             <View style={DidBeginViewStyles.leaveAmountView}>
                                 <View style={DidBeginViewStyles.textView}>
-                                    <MRText
-                                        style={DidBeginViewStyles.leaveAmountText}>{promotionSaleRateS == 1 ? '已抢光' : `还剩${Math.ceil(StringUtils.mul(StringUtils.sub(1, promotionSaleRateS), 100))}%`}</MRText>
+                                    <MRText style={DidBeginViewStyles.leaveAmountText}>{ratePercentText}</MRText>
                                 </View>
                             </View>
                         </View>
