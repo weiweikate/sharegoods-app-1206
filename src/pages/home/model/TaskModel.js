@@ -174,10 +174,6 @@ class TaskModel  {
                     tasks.subMissions = tasks.subMissions.map(subTask => {
                         if (subTask.no === item.no){
                             subTask.status = 2
-                            tasks.complete ++;
-                            if (tasks.complete === tasks.total){
-                                tasks.status = 2
-                            }
                         }
                         return subTask
                     })
