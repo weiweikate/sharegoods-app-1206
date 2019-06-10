@@ -35,6 +35,59 @@ const account_bg = res.bankCard.account_bg;
 const account_bg_white = res.bankCard.account_bg_white;
 const red_up = res.cashAccount.zhanghu_red;
 const lv_down = res.cashAccount.zhanghu_lv;
+const writer = res.cashAccount.writer_icon;
+
+const allType = {
+    1: {
+        title: '其他',
+        icon: renwu
+    },
+    2: {
+        title: '提现支出',
+        icon: tixiang
+    },
+    3: {
+        title: '消费支出',
+        icon: xiaofei
+    },
+    4: {
+        title: '导师管理费',
+        icon: daoshi
+    },
+    5: {
+        title: '额外品牌分红奖励',
+        icon: fenhong
+    },
+    6: {
+        title: '品牌推广奖励金',
+        icon: tuiguang
+    },
+    7: {
+        title: '其他',
+        icon: hongbao
+    },
+    8: {
+        title: '任务奖励',
+        icon: renwu
+    },
+    9: {
+        title: '消费退款',
+        icon: xiaofeitk
+    },
+    10: {
+        title: '提现退款',
+        icon: tixiantk
+    },
+    11: {
+        title: '自返奖励',
+        icon: hongbao
+    },
+    12: {
+        title: '写手奖励',
+        icon: writer
+    }
+
+};
 
 @observer
 export default class MyCashAccountPage extends BasePage {
@@ -273,9 +326,7 @@ export default class MyCashAccountPage extends BasePage {
     };
 
     getDataFromNetwork = () => {
-        let use_type = ['', '其他', '提现支出', '消费支出', '导师管理费', '额外品牌分红奖励', '品牌推广奖励金', '其他', '任务奖励', '消费退款', '提现退款'];
         let use_type_symbol = ['', '+', '-'];
-        let useLeftImg = ['', renwu, tixiang, xiaofei, daoshi, fenhong, tuiguang, hongbao, renwu, xiaofeitk, tixiantk];
         if (this.currentPage > 1) {
             Toast.showLoading();
         }
@@ -289,11 +340,11 @@ export default class MyCashAccountPage extends BasePage {
                 if (data.data instanceof Array) {
                     data.data.map((item, index) => {
                         arrData.push({
-                            type: use_type[item.useType],
+                            type: allType[item.useType] ? allType[item.useType].title : '其他',
                             time: DataUtils.getFormatDate(item.createTime / 1000),
                             serialNumber: item.serialNo,
                             capital: use_type_symbol[item.biType] + (item.balance ? item.balance : 0.00),
-                            iconImage: useLeftImg[item.useType],
+                            iconImage: allType[item.useType] ? allType[item.useType].icon : renwu,
                             capitalRed: use_type_symbol[item.biType] === '-'
                         });
                     });
