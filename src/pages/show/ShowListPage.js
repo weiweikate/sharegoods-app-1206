@@ -55,7 +55,7 @@ export default class ShowListPage extends BasePage {
         needsExpensive: false,
         showEditorIcon: true,
         hasMessage: false,
-        detail:null
+        detail: null
     };
 
     handleBackPress = () => {
@@ -92,7 +92,7 @@ export default class ShowListPage extends BasePage {
         this.didFocusSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
-                if(user.isLogin){
+                if (user.isLogin) {
                     WhiteModel.saveWhiteType();
                 }
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
@@ -123,8 +123,8 @@ export default class ShowListPage extends BasePage {
         this.publishListener && this.publishListener.remove();
     }
 
-    retouchShow=()=>{
-        switch (this.state.page){
+    retouchShow = () => {
+        switch (this.state.page) {
             case 0:
                 this.hotList && this.hotList.scrollToTop();
                 break;
@@ -133,12 +133,12 @@ export default class ShowListPage extends BasePage {
                 break;
             case 2:
                 this.foundList && this.foundList.scrollToTop();
-                break
+                break;
             case 3:
                 this.activityList && this.activityList.scrollToTop();
-                break
+                break;
         }
-    }
+    };
 
 
     _gotoPage(number) {
@@ -184,19 +184,19 @@ export default class ShowListPage extends BasePage {
     };
 
 
-    _setDetail=(detail)=>{
-        this.setState({detail:null},()=>{
+    _setDetail = (detail) => {
+        this.setState({ detail: null }, () => {
             this.setState({
                 detail
-            },()=>{
+            }, () => {
                 this.shareModal && this.shareModal.open();
-            })
-        })
-    }
+            });
+        });
+    };
 
 
     _render() {
-        const { page, left, needsExpensive,detail } = this.state;
+        const { page, left, needsExpensive, detail } = this.state;
         let HotView = null;
         if (needsExpensive) {
             HotView = require('./ShowHotView').default;
@@ -284,8 +284,10 @@ export default class ShowListPage extends BasePage {
                     {
                         needsExpensive
                             ?
-                            <HotView ref={(ref)=>{this.hotList = ref}}
-                                     navigate={this.$navigate} pageFocus={this.state.pageFocused} onShare={(item)=>{
+                            <HotView ref={(ref) => {
+                                this.hotList = ref;
+                            }}
+                                     navigate={this.$navigate} pageFocus={this.state.pageFocused} onShare={(item) => {
                                 this._setDetail(item.detail);
                             }}/>
                             :
@@ -297,14 +299,16 @@ export default class ShowListPage extends BasePage {
                         needsExpensive
                             ?
                             <ShowMaterialView
-                                ref={(ref)=>{this.materialList = ref}}
+                                ref={(ref) => {
+                                    this.materialList = ref;
+                                }}
                                 navigate={this.$navigate}
-                                              onShare={(item)=>{
-                                this.setState({detail:item.detail},()=>{
-                                    this.shareModal && this.shareModal.open();
-                                });
+                                onShare={(item) => {
+                                    this.setState({ detail: item.detail }, () => {
+                                        this.shareModal && this.shareModal.open();
+                                    });
 
-                            }}/>
+                                }}/>
                             :
                             null
 
@@ -315,7 +319,9 @@ export default class ShowListPage extends BasePage {
                     {
                         needsExpensive
                             ?
-                            <ShowFoundView ref={(ref)=>{this.foundList = ref}} navigate={this.$navigate} pageFocus={this.state.pageFocused}/>
+                            <ShowFoundView ref={(ref) => {
+                                this.foundList = ref;
+                            }} navigate={this.$navigate} pageFocus={this.state.pageFocused}/>
                             :
                             null
                     }
@@ -324,38 +330,40 @@ export default class ShowListPage extends BasePage {
                 <View key={4} style={styles.container} tabLabel="   ">
                     {
                         needsExpensive
-                            ? <ShowActivityViewIOS    ref ={(ref)=>{this.activityList = ref}}
-                                                      clickItem={(index,data)=>{
-                                                          const  navigate  = this.$navigate;
-                                                          let params = {
-                                                              data,
-                                                              ref: this.activityList,
-                                                              index
-                                                          };
-                                                          if(data.showType === 1){
-                                                              navigate('show/ShowDetailPage', params);
-                                                          }else {
-                                                              navigate('show/ShowRichTextDetailPage', params);
-                                                          }
-                                                      }}
-                                                      navigate={this.$navigate}/> : null
+                            ? <ShowActivityViewIOS ref={(ref) => {
+                                this.activityList = ref;
+                            }}
+                                                   clickItem={(index, data) => {
+                                                       const navigate = this.$navigate;
+                                                       let params = {
+                                                           data,
+                                                           ref: this.activityList,
+                                                           index
+                                                       };
+                                                       if (data.showType === 1) {
+                                                           navigate('show/ShowDetailPage', params);
+                                                       } else {
+                                                           navigate('show/ShowRichTextDetailPage', params);
+                                                       }
+                                                   }}
+                                                   navigate={this.$navigate}/> : null
                     }
                 </View>
             </ScrollableTabView>
-            <IntervalMsgView pageType = {IntervalType.xiuChang}/>
+            <IntervalMsgView pageType={IntervalType.xiuChang}/>
             {detail ?
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 type={'Show'}
                                 trackEvent={'ArticleShare'}
                                 trackParmas={{ articeCode: detail.code, articleTitle: detail.title }}
                                 imageJson={{
-                                    imageType:'show',
-                                    imageUrlStr: detail.resource[0]?detail.resource[0].url:'',
+                                    imageType: 'show',
+                                    imageUrlStr: detail.resource[0] ? detail.resource[0].url : '',
                                     titleStr: detail.showType === 1 ? detail.content : detail.title,
                                     QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
                                     headerImage: (detail.userInfoVO && detail.userInfoVO.userImg) ? detail.userInfoVO.userImg : null,
-                                    userName: (detail.userInfoVO && detail.userInfoVO.userName)? detail.userInfoVO.userName: '',
-                                    dec:'好物不独享，内有惊喜福利~'
+                                    userName: (detail.userInfoVO && detail.userInfoVO.userName) ? detail.userInfoVO.userName : '',
+                                    dec: '好物不独享，内有惊喜福利~'
                                 }}
                                 taskShareParams={{
                                     uri: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
@@ -363,12 +371,13 @@ export default class ShowListPage extends BasePage {
                                     data: detail.showNo
                                 }}
                                 webJson={{
-                                    title:(detail.showType === 1 ? detail.content : detail.title)|| '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
-                                    linkUrl:`${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
-                                    thumImage:detail.resource ? detail.resource[0].url : '',//(分享图标小图(https链接)图文分享使用)
-                                    dec:'好物不独享，内有惊喜福利~'
+                                    title: (detail.showType === 1 ? detail.content : detail.title) || '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
+                                    thumImage: detail.resource && detail.resource[0] && detail.resource[0].url
+                                        ? detail.resource[0].url : '',//(分享图标小图(https链接)图文分享使用)
+                                    dec: '好物不独享，内有惊喜福利~'
                                 }}
-                /> :null}
+                /> : null}
 
         </View>;
     }
@@ -410,12 +419,12 @@ let styles = StyleSheet.create({
     titleView: {
         flexDirection: 'row',
         alignItems: 'center',
-        alignSelf: 'center',
+        alignSelf: 'center'
     },
     items: {
         alignItems: 'center',
         justifyContent: 'center',
-        height:44
+        height: 44
     },
     index: {
         color: DesignRule.textColor_secondTitle,
@@ -432,8 +441,8 @@ let styles = StyleSheet.create({
         width: 20,
         height: 2,
         borderRadius: 1,
-        position:'absolute',
-        bottom:0
+        position: 'absolute',
+        bottom: 0
     },
     userIcon: {
         width: px2dp(30),

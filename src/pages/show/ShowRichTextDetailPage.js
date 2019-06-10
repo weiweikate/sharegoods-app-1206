@@ -109,7 +109,7 @@ export default class ShowRichTextDetailPage extends BasePage {
         this.params.ref && this.params.ref.replaceItemData(this.params.index, JSON.stringify(detail));
     }
 
-    getDetailByIdOrCode=(code)=>{
+    getDetailByIdOrCode = (code) => {
         this.showDetailModule.showDetailCode(code).then(() => {
             const { detail } = this.showDetailModule;
             TrackApi.XiuChangDetails({
@@ -134,7 +134,7 @@ export default class ShowRichTextDetailPage extends BasePage {
             Toast.$toast(error.msg || '获取详情失败');
             Toast.hiddenLoading();
         });
-    }
+    };
 
 
     _goBack() {
@@ -202,7 +202,7 @@ export default class ShowRichTextDetailPage extends BasePage {
             detail = { imgs: '', products: [], click: 0, content: '' };
         }
 
-        let userImage =  (detail.userInfoVO && detail.userInfoVO.userImg) ? detail.userInfoVO.userImg : '';
+        let userImage = (detail.userInfoVO && detail.userInfoVO.userImg) ? detail.userInfoVO.userImg : '';
         let userName = (detail.userInfoVO && detail.userInfoVO.userName) ? detail.userInfoVO.userName : '';
 
         return (
@@ -214,7 +214,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                 <View style={styles.profileRow}>
                     <View style={styles.profileLeft}>
                         <AvatarImage borderRadius={px2dp(15)} style={styles.portrait}
-                                     source={{ uri: userImage}}/>
+                                     source={{ uri: userImage }}/>
                         <Text style={styles.showName}
                               allowFontScaling={false}>{userName}</Text>
                     </View>
@@ -353,7 +353,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                                             height: px2dp(34),
                                             alignItems: 'center',
                                             justifyContent: 'center',
-                                            borderRadius:px2dp(17)
+                                            borderRadius: px2dp(17)
                                         }}
                         >
                             <Text style={{ color: DesignRule.white, fontSize: DesignRule.fontSize_threeTitle_28 }}>
@@ -388,7 +388,7 @@ export default class ShowRichTextDetailPage extends BasePage {
         let addCartModel = new AddCartModel();
         addCartModel.requestProductDetail(code, (productIsPromotionPrice) => {
             this.setState({
-                productModalVisible:false
+                productModalVisible: false
             });
             this.SelectionPage.show(addCartModel, (amount, skuCode) => {
                 const { prodCode, name, originalPrice } = addCartModel;
@@ -556,19 +556,19 @@ export default class ShowRichTextDetailPage extends BasePage {
                 });
             }}/> : null}
             {detail.status !== 1 ? this._shieldRender() : null}
-            <SelectionPage ref={(ref) => this.SelectionPage = ref} />
+            <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             type={'Show'}
                             trackEvent={'ArticleShare'}
                             trackParmas={{ articeCode: detail.code, articleTitle: detail.title }}
                             imageJson={{
-                                imageType:'show',
-                                imageUrlStr: detail.resource ? detail.resource[0].url:"",
+                                imageType: 'show',
+                                imageUrlStr: detail.resource ? detail.resource[0].url : '',
                                 titleStr: detail.title,
                                 QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
-                                headerImage: (detail.userInfoVO && detail.userInfoVO.userImg)? detail.userInfoVO.userImg: null,
-                                userName: (detail.userInfoVO && detail.userInfoVO.userName)? detail.userInfoVO.userName: '',
-                                dec:'好物不独享，内有惊喜福利~'
+                                headerImage: (detail.userInfoVO && detail.userInfoVO.userImg) ? detail.userInfoVO.userImg : null,
+                                userName: (detail.userInfoVO && detail.userInfoVO.userName) ? detail.userInfoVO.userName : '',
+                                dec: '好物不独享，内有惊喜福利~'
                             }}
                             taskShareParams={{
                                 uri: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
@@ -576,10 +576,10 @@ export default class ShowRichTextDetailPage extends BasePage {
                                 data: detail.showNo
                             }}
                             webJson={{
-                                title:(detail.showType === 1 ? detail.content : detail.title)||'秀一秀 赚到够',//分享标题(当为图文分享时候使用)
-                                linkUrl:`${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
-                                thumImage:detail.resource ? detail.resource[0].url:"",//(分享图标小图(https链接)图文分享使用)
-                                dec:'好物不独享，内有惊喜福利~'
+                                title: (detail.showType === 1 ? detail.content : detail.title) || '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
+                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
+                                thumImage: detail.resource && detail.resource[0] ? detail.resource[0].url : '',//(分享图标小图(https链接)图文分享使用)
+                                dec: '好物不独享，内有惊喜福利~'
                             }}
             />
         </View>;

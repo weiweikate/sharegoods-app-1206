@@ -138,8 +138,10 @@ export default class InputCode extends BasePage {
 
     _finshInputCode = (text) => {
         if (text.length === 4) {
-            const { phoneNum, nickName, headerImg } = this.params;
+            const { phoneNum, nickName, headerImg,campaignType,spm } = this.params;
             let params = {
+                campaignType,
+                spm,
                 ...this.params,
                 code: text,
                 phone: phoneNum,
