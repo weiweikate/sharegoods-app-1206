@@ -87,7 +87,7 @@ export class ActivityDidBeginView extends Component {
         const { extraProperty } = singleActivity;
         const promotionSaleRateS = promotionSaleRate || 0;
         let progressWidthS = promotionSaleRateS * progressWidth;
-        progressWidthS = progressWidthS > 0 && progressWidthS < 12 ? 12 : progressWidthS;
+        progressWidthS = progressWidthS < 12 ? 12 : progressWidthS;
         return (
             <NoMoreClick style={DidBeginViewStyles.bgView} onPress={() => {
                 extraProperty === 'toSpike' && navigate('HtmlPage', {
