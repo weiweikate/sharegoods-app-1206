@@ -166,6 +166,8 @@ export default class HomeLimitGoView extends Component {
 
 const GoodsItem = ({ item, activityCode, navigate }) => {
     const promotionSaleRateS = item.promotionSaleRate || 0;
+    let progressWidthS = promotionSaleRateS * px2dp(120);
+    progressWidthS = progressWidthS < px2dp(12) ? px2dp(12) : progressWidthS;
     return <View style={styles.goodsItem}>
         <ImageLoader
             source={{ uri: item.imgUrl }}
@@ -185,7 +187,7 @@ const GoodsItem = ({ item, activityCode, navigate }) => {
                     <Text style={styles.text}>已有{item.promotionAttentionNum}人关注了</Text>
                     :
                     <View style={styles.leaveView}>
-                        <View style={[styles.progressView, { width: promotionSaleRateS * px2dp(120) }]}/>
+                        <View style={[styles.progressView, { width: progressWidthS }]}/>
                         <View style={styles.leaveAmountView}>
                             <MRText
                                 style={styles.leaveAmountText}>{promotionSaleRateS === 1

@@ -78,6 +78,7 @@ class TaskItem extends React.Component {
 
     renderItem(item, expanded, subTask = false) {
         let { complete, prizeDesc, name, total, memo, prizeValue } = item;
+        let progrossTitle = total ? (complete + '/' + total) : '无上限';
         return (
             <View>
                 {subTask ? <View style={styles.lineOne}/> : null}
@@ -101,7 +102,7 @@ class TaskItem extends React.Component {
                     </View> : null
                     }
                     <MRText style={{ fontSize: autoSizeWidth(14), color: '#333333', marginLeft: 10, flex: 1 }}
-                            numberOfLines={1}>{name + '(' + complete + '/' + total + ')'}</MRText>
+                            numberOfLines={1}>{name + '(' + progrossTitle + ')'}</MRText>
                     {this.renderBtn(item, subTask)}
                     {subTask === false ?
                         <TouchableOpacity style={{
@@ -467,8 +468,9 @@ const styles = StyleSheet.create({
     },
     redLine: {
         backgroundColor: DesignRule.mainColor,
-        height: 10,
-        width: 4
+        width: ScreenUtils.px2dp(2),
+        height: ScreenUtils.px2dp(8),
+        borderRadius: ScreenUtils.px2dp(1)
     },
     bg: {
         backgroundColor: '#FFF4EC',

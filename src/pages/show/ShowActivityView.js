@@ -192,10 +192,12 @@ export default class ShowActivityView extends Component {
         }
         console.log(imageUrl)
         return (
-            <TouchableOpacity ref={(ref) => {
-                this['item' + index] = ref
-            }} key={'row' + index} onPress={() => this.clickItem(item, index)}>
-                <View style={styles.itemBgStyle}>
+            <TouchableWithoutFeedback  key={'row' + index} onPress={() => this.clickItem(item, index)}>
+                <View style={styles.itemBgStyle}
+                      ref={(ref) => {
+                          this['item' + index] = ref
+                      }}
+                >
                     <Image style={styles.itemImgStyle} source={{uri:imageUrl.length>0 ?imageUrl : '111.png'}}/>
                     {ScreenUtils.isIOS ?
                         <Text style={styles.contentStyle}
@@ -227,7 +229,7 @@ export default class ShowActivityView extends Component {
                         </Text>
                     </View>
                 </View>
-            </TouchableOpacity>
+            </TouchableWithoutFeedback>
         );
     };
 }
@@ -259,7 +261,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     },
     itemImgStyle: {
-        height: 160,
+        height: (ScreenUtils.width - 30)*190/345,
         width: ScreenUtils.width - 30,
         backgroundColor: '#f5f5f5',
         borderRadius: 5,
