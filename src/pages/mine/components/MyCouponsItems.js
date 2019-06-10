@@ -458,8 +458,8 @@ export default class MyCouponsItems extends Component {
         } else if (this.props.justOne && status === 0 || this.dataSel.type === 99) {
             let arrData = [];
             bridge.hiddenLoading();
-            if ((!StringUtils.isEmpty(user.tokenCoin) || !StringUtils.isEmpty(user.blockedTokenCoin))
-                && (user.tokenCoin !== 0 || user.blockedTokenCoin !== 0)
+            if (((!StringUtils.isEmpty(user.tokenCoin) && (user.tokenCoin !== 0))
+                || (!StringUtils.isEmpty(user.blockedTokenCoin) && (user.blockedTokenCoin !== 0)))
                 && status === 0) {
                 arrData.push({
                     status: 0,

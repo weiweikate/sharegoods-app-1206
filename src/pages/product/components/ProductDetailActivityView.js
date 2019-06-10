@@ -87,7 +87,7 @@ export class ActivityDidBeginView extends Component {
         const { extraProperty } = singleActivity;
         const promotionSaleRateS = promotionSaleRate || 0;
         let progressWidthS = promotionSaleRateS * progressWidth;
-        progressWidthS = progressWidthS > 0 && progressWidthS < 12 ? 12 : progressWidthS;
+        progressWidthS = progressWidthS < 12 ? 12 : progressWidthS;
         return (
             <NoMoreClick style={DidBeginViewStyles.bgView} onPress={() => {
                 extraProperty === 'toSpike' && navigate('HtmlPage', {
@@ -114,7 +114,7 @@ export class ActivityDidBeginView extends Component {
                             <View style={DidBeginViewStyles.leaveAmountView}>
                                 <View style={DidBeginViewStyles.textView}>
                                     <MRText
-                                        style={DidBeginViewStyles.leaveAmountText}>{promotionSaleRateS == 1 ? '已抢光' : `还剩${StringUtils.mul(StringUtils.sub(1, promotionSaleRateS), 100)}%`}</MRText>
+                                        style={DidBeginViewStyles.leaveAmountText}>{promotionSaleRateS == 1 ? '已抢光' : `还剩${Math.ceil(StringUtils.mul(StringUtils.sub(1, promotionSaleRateS), 100))}%`}</MRText>
                                 </View>
                             </View>
                         </View>
