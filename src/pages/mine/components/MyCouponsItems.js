@@ -566,7 +566,7 @@ export default class MyCouponsItems extends Component {
     clickItem = (index, item) => {
         //礼包
         if(item.redirectType && item.redirectType === 10){
-            this.props.nav.navigate(RouterMap.TopicDetailPage, {activityType:3});
+            this.props.nav.navigate(RouterMap.TopicDetailPage, {activityType:3,activityCode:item.redirectUrl});
         }
 
         //专题(老版)
