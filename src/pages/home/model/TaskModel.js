@@ -84,7 +84,7 @@ class TaskModel  {
             this.activityNo = data.no;
             //取数组里面最后面的value为进度条的总值
             let length = data.ruleList.length;
-            if (length > 0 && data.ruleList[length-1].value >  this.progress) {
+            if (length > 0) {
                 this.totalProgress = data.ruleList[length-1].value;
             }
             if (this.type === 'home') {
@@ -174,10 +174,6 @@ class TaskModel  {
                     tasks.subMissions = tasks.subMissions.map(subTask => {
                         if (subTask.no === item.no){
                             subTask.status = 2
-                            tasks.complete ++;
-                            if (tasks.complete === tasks.total){
-                                tasks.status = 2
-                            }
                         }
                         return subTask
                     })
