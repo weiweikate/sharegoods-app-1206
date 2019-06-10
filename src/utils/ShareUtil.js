@@ -9,7 +9,7 @@ import EmptyUtils from './EmptyUtils';
 import HttpUtils from '../api/network/HttpUtils';
 import apiEnvironment from '../api/ApiEnvironment';
 import { track } from './SensorsTrack';
-import {mediatorCallFunc} from '../SGMediator';
+import { mediatorCallFunc } from '../SGMediator';
 
 const TrackShareType = {
     unknown: 0,
@@ -23,19 +23,23 @@ const TrackShareType = {
     other: 100//其他
 };
 
-const onShare = (data, api, trackParmas,trackEvent, callback = () => {}, luckyDraw, taskShareParams) => {
-    let params = data;
+const onShare = (data, api, trackParmas, trackEvent, callback = () => {
+}, luckyDraw, taskShareParams) => {
+    let params = data || {};
+    if (data.thumImage && data.thumImage.indexOf('?') > -1) {
+        params.thumImage = data.thumImage && data.thumImage.substring(0, data.thumImage.indexOf('?'));
+    }
     if (data.shareType === 2) {
         params.userName = data.userName || apiEnvironment.getCurrentWxAppletKey();
         params.miniProgramType = apiEnvironment.getMiniProgramType();
     }
-    console.log(data)
-    if(params.linkUrl){
-        let  addData = {pageSource: params.platformType >= 0 ? params.platformType + 1 : 0};
-        params.linkUrl = queryString(params.linkUrl,addData);
+    console.log(data);
+    if (params.linkUrl) {
+        let addData = { pageSource: params.platformType >= 0 ? params.platformType + 1 : 0 };
+        params.linkUrl = queryString(params.linkUrl, addData);
     }
 
-    if(params.platformType === 1 || params.platformType === 4){
+    if (params.platformType === 1 || params.platformType === 4) {
         params.title = params.dec && params.dec.length > 0 ? params.title + ',' + params.dec : params.title;
     }
 
@@ -45,23 +49,23 @@ const onShare = (data, api, trackParmas,trackEvent, callback = () => {}, luckyDr
         track(trackEvent, { shareType, ...p });
     }
     bridge.share(params, () => {
-            if (user.isLogin && luckyDraw === true) {
-                user.luckyDraw();
-            }
-            shareSucceedCallBlack(api, callback);
-            callback('shareSuccess'); //提示分享成功
+        if (user.isLogin && luckyDraw === true) {
+            user.luckyDraw();
+        }
+        shareSucceedCallBlack(api, callback);
+        callback('shareSuccess'); //提示分享成功
 
-        taskShareParams && mediatorCallFunc('Home_ShareNotify',{ type: params.platformType + 1,...taskShareParams})
-        }, (errorStr) => {
-
-        });
+        taskShareParams && mediatorCallFunc('Home_ShareNotify', { type: params.platformType + 1, ...taskShareParams });
+    }, (errorStr) => {
+    });
 };
 
-const shareSucceedCallBlack = (api, sucCallback = () => {}) => {
+const shareSucceedCallBlack = (api, sucCallback = () => {
+}) => {
     if (EmptyUtils.isEmpty(api)) {
         return;
     }
-    let {url, methods, params, refresh} = api;
+    let { url, methods, params, refresh } = api;
     if (EmptyUtils.isEmpty(url)) {
         return;
     }
@@ -93,9 +97,9 @@ const queryString = (url, params) => {
             url += '?' + paramsArray.join('&');
         } else {
             let arr = url.split('?');
-            if(arr.length > 1 && arr[1].length > 0){
+            if (arr.length > 1 && arr[1].length > 0) {
                 url += '&' + paramsArray.join('&');
-            }else {
+            } else {
                 url += paramsArray.join('&');
 
             }
@@ -107,4 +111,4 @@ const queryString = (url, params) => {
 export default {
     onShare,
     queryString
-}
+};
