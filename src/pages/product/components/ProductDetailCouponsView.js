@@ -11,6 +11,7 @@ import DesignRule from '../../../constants/DesignRule';
 import { observer } from 'mobx-react';
 import LinearGradient from 'react-native-linear-gradient';
 import StringUtils from '../../../utils/StringUtils';
+import CommModal from '../../../comm/components/CommModal';
 
 const { product_coupon ,couponRemarkHide,couponRemarkShow} = res;
 const { arrow_right_black } = res.button;
@@ -226,10 +227,8 @@ export class ProductDetailCouponsWindowView extends React.Component {
         const { productDetailCouponsViewModel } = this.props;
         const { couponsList } = productDetailCouponsViewModel;
         const { hidden } = this.state;
-        if (hidden) {
-            return null;
-        }
         return (
+            <CommModal onRequestClose={this._hiddenWindowView} visible={!hidden} transparent={true}>
             <View style={windowStyles.container}>
                 <NoMoreClick style={{ flex: 1 }} onPress={this._hiddenWindowView}/>
                 <View style={windowStyles.contentView}>
@@ -248,13 +247,13 @@ export class ProductDetailCouponsWindowView extends React.Component {
                     </View>
                 </View>
             </View>
+            </CommModal>
         );
     }
 }
 
 const windowStyles = StyleSheet.create({
     container: {
-        zIndex: 2000,
         position: 'absolute', width, height, left: 0, top: 0,
         backgroundColor: 'rgba(0,0,0,0.5)'
     },
