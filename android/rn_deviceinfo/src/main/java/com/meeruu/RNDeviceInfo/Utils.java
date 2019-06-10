@@ -1,9 +1,13 @@
 package com.meeruu.RNDeviceInfo;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
 import android.os.Build;
+import android.provider.Settings;
+import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.view.Display;
 import android.view.DisplayCutout;
 import android.view.View;
@@ -11,11 +15,27 @@ import android.view.ViewGroup;
 import android.view.WindowInsets;
 import android.view.WindowManager;
 
+import com.meeruu.commonlib.base.BaseApplication;
+import com.meeruu.commonlib.utils.SPCacheUtils;
+import com.meeruu.permissions.Permission;
+import com.meeruu.permissions.PermissionUtil;
+
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.UUID;
 
 public class Utils {
+
+    protected static final String PREFS_DEVICE_ID = "device_id";
+
+    private static String deviceType = "0";
+
+    private static final String TYPE_ANDROID_ID = "1";
+
+    private static final String TYPE_DEVICE_ID = "2";
+
+    private static final String TYPE_RANDOM_UUID = "3";
 
     /**
      * 获得状态栏的高度
@@ -215,38 +235,56 @@ public class Utils {
      *
      * @return
      */
-    public static String getUniquePsuedoID() {
-        String serial = null;
-        String m_szDevIDShort = "35" +
-                Build.BOARD.length() % 10 + Build.BRAND.length() % 10 +
-                Build.CPU_ABI.length() % 10 + Build.DEVICE.length() % 10 +
-                Build.DISPLAY.length() % 10 + Build.HOST.length() % 10 +
-                Build.ID.length() % 10 + Build.MANUFACTURER.length() % 10 +
-                Build.MODEL.length() % 10 + Build.PRODUCT.length() % 10 +
-                Build.TAGS.length() % 10 + Build.TYPE.length() % 10 +
-                Build.USER.length() % 10; //13 位
-        try {
-            serial = Build.class.getField("SERIAL").get(null).toString();
-            //API>=9 使用serial号
-            return new UUID(m_szDevIDShort.hashCode(), serial.hashCode()).toString();
-        } catch (Exception exception) {
-            //serial需要一个初始化
-            serial = "serial";
+    public static String getUniquePsuedoID(Context context) {
+        if (context == null) {
+            context = BaseApplication.appContext;
         }
-        return new UUID(m_szDevIDShort.hashCode(), serial.hashCode()).toString();
+        String uuid = (String) SPCacheUtils.get(PREFS_DEVICE_ID, null);
+        if (TextUtils.isEmpty(uuid)) {
+            final String androidId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+            try {
+                if (!"9774d56d682e549c".equals(androidId)) {
+                    deviceType = TYPE_ANDROID_ID;
+                    uuid = UUID.nameUUIDFromBytes(androidId.getBytes("utf8")).toString();
+                } else {
+                    if (PermissionUtil.hasPermissions(context, Permission.PHONE)) {
+                        @SuppressLint("MissingPermission") final String deviceId = ((TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
+                        if (deviceId != null
+                                && !"0123456789abcdef".equals(deviceId.toLowerCase())
+                                && !"000000000000000".equals(deviceId.toLowerCase())) {
+                            deviceType = TYPE_DEVICE_ID;
+                            uuid = UUID.nameUUIDFromBytes(deviceId.getBytes("utf8")).toString();
+                        } else {
+                            deviceType = TYPE_RANDOM_UUID;
+                            uuid = UUID.randomUUID().toString();
+                        }
+                    } else {
+                        deviceType = TYPE_RANDOM_UUID;
+                        uuid = UUID.randomUUID().toString();
+                    }
+                }
+            } catch (UnsupportedEncodingException e) {
+                deviceType = TYPE_RANDOM_UUID;
+                uuid = UUID.randomUUID().toString();
+            } finally {
+                uuid = UUID.fromString(deviceType + uuid).toString();
+            }
+            SPCacheUtils.put(PREFS_DEVICE_ID, uuid);
+        }
+        return uuid;
     }
 
     /**
      * 判断是否显示虚拟按键
      */
-    private static final String NAVIGATION= "navigationBarBackground";
+    private static final String NAVIGATION = "navigationBarBackground";
 
-    public static boolean isNavigationBarExist(Activity activity){
+    public static boolean isNavigationBarExist(Activity activity) {
         ViewGroup vp = (ViewGroup) activity.getWindow().getDecorView();
         if (vp != null) {
             for (int i = 0; i < vp.getChildCount(); i++) {
                 vp.getChildAt(i).getContext().getPackageName();
-                if (vp.getChildAt(i).getId()!= View.NO_ID && NAVIGATION.equals(activity.getResources().getResourceEntryName(vp.getChildAt(i).getId()))) {
+                if (vp.getChildAt(i).getId() != View.NO_ID && NAVIGATION.equals(activity.getResources().getResourceEntryName(vp.getChildAt(i).getId()))) {
                     return true;
                 }
             }

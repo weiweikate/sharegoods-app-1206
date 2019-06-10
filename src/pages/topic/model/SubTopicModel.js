@@ -33,7 +33,9 @@ class TotalTopicresultDataModel {
     /*不同导航下的数据*/
     @observable
     sectionDataList = [];
-
+    //专题列表底部广告位数据
+    @observable
+    advertisingData = [];
     @computed
     get topicTitle() {
         return this.name || '专题';
@@ -43,6 +45,15 @@ class TotalTopicresultDataModel {
         this.isRefresh = statues
     }
 
+    @action
+    getAdvertisingList(params){
+        TopicAPI.getQueryAdvertisingList(params).then(result=>{
+           if ( typeof result.data === 'Array'){
+               this.advertisingData = result.data || [];
+           }
+        }).catch(error=>{
+        })
+    }
     /**
      * 存储专题数据
      * @param resultData

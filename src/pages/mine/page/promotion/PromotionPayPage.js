@@ -10,22 +10,22 @@
  */
 
 
-"use strict";
-import React from "react";
+'use strict';
+import React from 'react';
 import {
     StyleSheet,
     View,
     TouchableOpacity,
     Image
-} from "react-native";
-import BasePage from "../../../../BasePage";
-import ScreenUtils from "../../../../utils/ScreenUtils";
+} from 'react-native';
+import BasePage from '../../../../BasePage';
+import ScreenUtils from '../../../../utils/ScreenUtils';
 const { px2dp } = ScreenUtils;
-import UIText from "../../../../components/ui/UIText";
+import UIText from '../../../../components/ui/UIText';
 import res from '../../res';
 const icon = res.button.selected_circle_red;
 import DesignRule from '../../../../constants/DesignRule';
-import StringUtils from "../../../../utils/StringUtils";
+import StringUtils from '../../../../utils/StringUtils';
 // import icon from '../../../../comm/res/button/selected_circle_red.png'
 
 type Props = {};
@@ -39,7 +39,7 @@ export default class PromotionPayPage extends BasePage<Props> {
     }
 
     $navigationBarOptions = {
-        title: "邀请推广",
+        title: '邀请推广',
         show: true// false则隐藏导航
     };
 

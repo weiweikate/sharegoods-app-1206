@@ -20,6 +20,9 @@ const product = {
     me_bangzu_kefu_icon: require('./me_bangzu_kefu_icon.png'),
     product_icon_home: require('./product_icon_home.png'),
     arrow_right_red: require('./arrow_right_red.png'),
+    product_coupon: require('./product_coupon.png'),
+    couponRemarkHide: require('./couponRemarkHide.png'),
+    couponRemarkShow: require('./couponRemarkShow.png'),
     detailNavView: {
         ...detailNavView
     },

@@ -82,13 +82,13 @@ const getSelectImage = (itemData) => {
 };
 
 
-function add0(m){return m<10?'0'+m:m }
-const formatTime =(updateTime)=>
+function add0(m){return m < 10 ? '0' + m : m }
+const formatTime = (updateTime)=>
 {
     let time = new Date(updateTime);
-    let m = time.getMonth()+1;
+    let m = time.getMonth() + 1;
     let d = time.getDate();
-    return add0(m)+'月-'+add0(d)+'日 开售';
+    return add0(m) + '月-' + add0(d) + '日 开售';
 }
 /**
  * 获取购物车列表商品状态提示语

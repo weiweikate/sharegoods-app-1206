@@ -77,7 +77,8 @@ export default class CommModal extends PureComponent {
                     visible={this.state.visible}// 是否可见
                     transparent
                 >
-                    <View style={[styles.container,{ backgroundColor: this.props.transparent ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 0.5)' }]}>
+                    <View
+                        style={[styles.container, { backgroundColor: this.props.transparent ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 0.5)' }]}>
                         {this.props.children}
                     </View>
                 </Modal>
@@ -85,7 +86,7 @@ export default class CommModal extends PureComponent {
         }
         return (
             <NativeModalAndroid
-                focusable={this.props.focusable === false ? false : true}
+                focusable={this.props.focusable !== false}
                 style={{ width: 0, height: 0 }}//避免显示空白
                 ref={(modalAndroid) => {
                     this.modalAndroid = modalAndroid;
@@ -100,7 +101,7 @@ export default class CommModal extends PureComponent {
                 >
                     <View
                         style={[styles.container, { backgroundColor: this.props.transparent ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 0.5)' }]}>
-                        {this.state.visible?this.props.children:null}
+                        {this.state.visible ? this.props.children : null}
                     </View>
                 </TouchableOpacity>
             </NativeModalAndroid>

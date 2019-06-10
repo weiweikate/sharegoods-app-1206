@@ -51,7 +51,7 @@ export default class PasswordInputText extends React.PureComponent {
           <TextInput
               style={styles.textInput}
               placeholder={placeholder} placeholderTextColor={DesignRule.textColor_placeholder}
-              onChangeText={(text) => {this.setState({ text: text }); onChangeText&&onChangeText(text)}}
+              onChangeText={(text) => {this.setState({ text: text }); onChangeText && onChangeText(text)}}
               value={text}
               keyboardType={'default'}
               secureTextEntry={secureTextEntry}/>

@@ -29,7 +29,7 @@ export default class HomeRecommendView extends Component {
         const { recommendList } = recommendModule;
         let item = recommendList[index];
         if (item) {
-            track(trackEvent.bannerClick, homeModule.bannerPoint(item, homePoint.homeRecommad));
+            track(trackEvent.bannerClick, homeModule.bannerPoint(item, homePoint.homeRecommad, index));
             let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
             const { navigate } = this.props;
             let params = homeModule.paramsNavigate(item);

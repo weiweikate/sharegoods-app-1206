@@ -3,46 +3,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:id="@+id/err_view"
-        >
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <ImageView
+            android:id="@+id/errImg"
             android:layout_width="131dp"
             android:layout_height="149dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="140dp"
-            android:src="@drawable/request_err"
-            android:id="@+id/errImg"/>
-        <TextView android:layout_below="@+id/errImg"
-            android:layout_height="wrap_content"
+            android:src="@drawable/request_err" />
+
+        <TextView
             android:layout_width="wrap_content"
-            android:text="系统维护升级中"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/errImg"
             android:layout_centerHorizontal="true"
-            android:includeFontPadding="false"
             android:layout_marginTop="25dp"
-            android:textSize="13sp"
-            android:textColor="#999999"/>
+            android:includeFontPadding="false"
+            android:text="系统维护升级中"
+            android:textColor="#999999"
+            android:textSize="13sp" />
     </RelativeLayout>
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/refresh_control"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:descendantFocusability="blocksDescendants"
-        >
+        android:descendantFocusability="blocksDescendants">
 
         <com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView
             android:id="@+id/home_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:background="#f5f5f5"
-            android:overScrollMode="never"
-            />
+            android:overScrollMode="never" />
 
     </android.support.v4.widget.SwipeRefreshLayout>
-
-
 
 </RelativeLayout>

@@ -171,17 +171,17 @@ export default class HelperFeedbackPage extends BasePage {
                             <UIImage source={rightIcon} style={{ width: 70, height: 70 }}/>
                             <UIText value={'提交成功！'}
                                     style={{ fontSize: 15, color: DesignRule.textColor_mainTitle, marginTop: 10 }}/>
-                            <UIText value={`您的反馈我们会认真查看`} style={{
+                            <UIText value={'您的反馈我们会认真查看'} style={{
                                 fontSize: 11,
                                 color: '#c6c6c6',
                                 marginTop: 10
                             }}/>
-                            <UIText value={`    并尽量修复及完善`} style={{
+                            <UIText value={'    并尽量修复及完善'} style={{
                                 fontSize: 11,
                                 color: '#c6c6c6',
                                 marginTop: 3
                             }}/>
-                            <UIText value={`感谢您的一如既往的支持`} style={{
+                            <UIText value={'感谢您的一如既往的支持'} style={{
                                 fontSize: 11,
                                 color: '#c6c6c6',
                                 marginTop: 3

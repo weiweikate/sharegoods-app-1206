@@ -3,7 +3,12 @@ import ApiUtils from '../../../api/network/ApiUtils';
 const api = {
     //新接口商品详情
     getProductDetailByCodeV2: ['/product/getProductDetailByCodeV2', { method: 'get' }],
+    /*供应商*/
     getProductShopInfoBySupplierCode: ['/product/getProductShopInfoBySupplierCode', { method: 'get' }],
+    /*获取优惠券列表*/
+    listProdCoupon: ['/Coupon/listProdCoupon', { method: 'get' }],
+    /*领取优惠券*/
+    getProdCoupon: ['/Coupon/getProdCoupon', { method: 'get' }],
     // 获取产品规格信息
     getProductSpec: ['/product/getProductSpec', { method: 'get' }],
     /**评论**/

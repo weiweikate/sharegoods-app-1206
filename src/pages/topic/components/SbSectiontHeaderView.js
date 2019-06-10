@@ -115,7 +115,7 @@ class TopBannerView extends Component {
 
     //当接收到新的props时候，而且imageUrl存在再去调用计算
     componentWillReceiveProps(props) {
-        if ((props.imageUrl+'').indexOf('http')!==-1) {
+        if ((props.imageUrl + '').indexOf('http') !== -1) {
             Image.getSize(props.imageUrl,(width,heigth)=>{
                 this.setState({
                     ratio:heigth / width

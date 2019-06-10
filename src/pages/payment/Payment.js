@@ -1,9 +1,9 @@
-import { observable, action, flow } from "mobx";
-import PaymentApi from "./PaymentApi";
-import Toast from "../../utils/bridge";
-import PayUtil from "./PayUtil";
-import user from "../../model/user";
-import { track, trackEvent } from "../../utils/SensorsTrack";
+import { observable, action, flow } from 'mobx';
+import PaymentApi from './PaymentApi';
+import Toast from '../../utils/bridge';
+import PayUtil from './PayUtil';
+import user from '../../model/user';
+import { track, trackEvent } from '../../utils/SensorsTrack';
 
 
 export const paymentType = {
@@ -41,42 +41,42 @@ export const payStatus = {
 };
 
 export const payStatusMsg = {
-    [payStatus.payNo]: "订单未支付",
-    [payStatus.payClose]: "该订单已关闭，请重拍",
-    [payStatus.payfail]: "支付失败",
-    [payStatus.payNeedThrid]: "平台支付成功,需要三方支付",
-    [payStatus.PayError]: "订单状态异常",
-    [payStatus.payOut]: "该订单已支付成功，请勿重拍"
+    [payStatus.payNo]: '订单未支付',
+    [payStatus.payClose]: '该订单已关闭，请重拍',
+    [payStatus.payfail]: '支付失败',
+    [payStatus.payNeedThrid]: '平台支付成功,需要三方支付',
+    [payStatus.PayError]: '订单状态异常',
+    [payStatus.payOut]: '该订单已支付成功，请勿重拍'
 };
 
 
 export let paymentTrack = {
-    orderId: "",
-    orderAmount: "",
-    paymentMethod: "",
-    pinId: user.storeCode ? user.storeCode : ""
+    orderId: '',
+    orderAmount: '',
+    paymentMethod: '',
+    pinId: user.storeCode ? user.storeCode : ''
 };
 
 export class Payment {
-    @observable orderName = "";
+    @observable orderName = '';
     @observable selctedPayType = paymentType.none;
     @observable selectedBalace = false;
-    @observable orderNo = "";
-    @observable platformOrderNo = "";
+    @observable orderNo = '';
+    @observable platformOrderNo = '';
     @observable isGoToPay = false;
     @observable amounts = 0;
     //后期更改支付时需要的收单号
-    @observable fundsTradingNo = "";
+    @observable fundsTradingNo = '';
     @observable bizType = 0;
     @observable modeType = 0;
     @observable oneCoupon = 0;//一元劵使用个数
 
     @action resetPayment = () => {
-        this.orderName = "";
+        this.orderName = '';
         this.selctedPayType = paymentType.none;
         this.selectedBalace = false;
         this.isGoToPay = false;
-        this.fundsTradingNo = "";
+        this.fundsTradingNo = '';
         this.bizType = 0;
         this.modeType = 0;
         this.oneCoupon = 0;
@@ -109,9 +109,9 @@ export class Payment {
      ]
      * remark 备注信息
      */
-    @action platformPay = flow(function* (password, fundsTradingNo, detailList, remark = "") {
-        paymentTrack.paymentMethod = "balance";
-        let trackPoint = { ...paymentTrack, paymentProgress: "start" };
+    @action platformPay = flow(function* (password, fundsTradingNo, detailList, remark = '') {
+        paymentTrack.paymentMethod = 'balance';
+        let trackPoint = { ...paymentTrack, paymentProgress: 'start' };
         track(trackEvent.payOrder, trackPoint);
         try {
             Toast.showLoading();
@@ -124,20 +124,20 @@ export class Payment {
             const result = yield PaymentApi.platformPay(payParams);
             this.updateUserData();
             Toast.hiddenLoading();
-            track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: "success" });
+            track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: 'success' });
             return result.data;
         } catch (error) {
             if (error.code === payStatus.payBalanceChange) {
                 payment.updateUserData();
             }
             Toast.hiddenLoading();
-            track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: "errorCause", errorCause: error.msg });
+            track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: 'errorCause', errorCause: error.msg });
             throw error;
         }
     });
 
     //检查订单状态
-    @action checkOrderStatus = flow(function* (pOrderNo, bizType = 0, modeType = 0, payAmount, tradeDesc = "APP支付") {
+    @action checkOrderStatus = flow(function* (pOrderNo, bizType = 0, modeType = 0, payAmount, tradeDesc = 'APP支付') {
         try {
             Toast.showLoading();
             let checkParams = {
@@ -148,11 +148,11 @@ export class Payment {
                 payAmount: payAmount,
                 tradeDesc: tradeDesc
             };
-            console.log("checkParams" + checkParams);
+            console.log('checkParams' + checkParams);
             const result = yield PaymentApi.check(checkParams);
             Toast.hiddenLoading();
             // 将下单号保存起来
-            this.fundsTradingNo = result.data && result.data.fundsTradingNo || "";
+            this.fundsTradingNo = result.data && result.data.fundsTradingNo || '';
             //外部订单号
             this.platformOrderNo = result.data && result.data.outTradeNo;
 
@@ -165,8 +165,8 @@ export class Payment {
 
     //支付宝支付
     @action alipay = flow(function* (payResult) {
-        paymentTrack.paymentMethod = "alipay";
-        track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: "start" });
+        paymentTrack.paymentMethod = 'alipay';
+        track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: 'start' });
         try {
             this.isGoToPay = true;
             const resultStr = yield PayUtil.appAliPay(payResult);
@@ -179,7 +179,7 @@ export class Payment {
             Toast.hiddenLoading();
             track(trackEvent.payOrder, {
                 ...paymentTrack,
-                paymentProgress: "error",
+                paymentProgress: 'error',
                 errorCause: error.msg || error.message
             });
             throw error;
@@ -188,8 +188,8 @@ export class Payment {
 
     //微信支付
     @action appWXPay = flow(function* (result) {
-        paymentTrack.paymentMethod = "wxpay";
-        track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: "start" });
+        paymentTrack.paymentMethod = 'wxpay';
+        track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: 'start' });
 
         try {
             Toast.showLoading();
@@ -214,7 +214,7 @@ export class Payment {
         } catch (error) {
             track(trackEvent.payOrder, {
                 ...paymentTrack,
-                paymentProgress: "error",
+                paymentProgress: 'error',
                 errorCause: error.msg || error.message
             });
             Toast.hiddenLoading();

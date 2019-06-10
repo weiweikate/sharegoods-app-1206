@@ -9,7 +9,7 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import StringUtils from '../../../../utils/StringUtils';
-import { MRTextInput as TextInput } from '../../../../components/ui';
+import { MRTextInputWithCancel } from '../../../../components/ui/UIText';
 
 const {
     button: {
@@ -64,14 +64,14 @@ export default class ResultSearchNav extends Component {
                         <Image source={navBack}/>
                     </TouchableOpacity>
                     <View style={styles.inputView}>
-                        <TextInput style={{ marginLeft: 24, padding: 0, color: '#212121' }}
-                                   keyboardType='web-search'
-                                   placeholder={'请输入关键词搜索'}
-                                   placeholderTextColor={DesignRule.textColor_hint}
-                                   value={this.state.inputText}
-                                   onChangeText={this.onChangeText}
-                                   onSubmitEditing={(event) => this.onSubmitEditing(event.nativeEvent.text)}
-                                   onFocus={this.props.onFocus}
+                        <MRTextInputWithCancel style={{ paddingHorizontal: 16 }}
+                                               keyboardType='web-search'
+                                               placeholder={'请输入关键词搜索'}
+                                               placeholderTextColor={DesignRule.textColor_hint}
+                                               value={this.state.inputText}
+                                               onChangeText={this.onChangeText}
+                                               onSubmitEditing={(event) => this.onSubmitEditing(event.nativeEvent.text)}
+                                               onFocus={this.props.onFocus}
                         />
                     </View>
                     <TouchableOpacity style={styles.styleTypeBtn} onPress={this.props.changeLayout}>

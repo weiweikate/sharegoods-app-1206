@@ -8,10 +8,10 @@
  * Created by xzm on 2018/10/25.
  *
  */
-"use strict";
-import { action, observable } from "mobx";
+'use strict';
+import { action, observable } from 'mobx';
 
-import UserApi from "./userApi";
+import UserApi from './userApi';
 
 class UserOrderNum {
     @observable

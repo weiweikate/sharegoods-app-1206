@@ -9,20 +9,20 @@
  *
  */
 
-"use strict";
-import React from "react";
+'use strict';
+import React from 'react';
 import {
     StyleSheet,
     View,
     Image,
     TouchableOpacity
-} from "react-native";
-import BasePage from "../../BasePage";
-import DesignRule from "../../constants/DesignRule";
-import res from "./res";
-import { NavigationActions } from "react-navigation";
-import ScreenUtils from "../../utils/ScreenUtils";
-import { MRText as Text } from "../../components/ui";
+} from 'react-native';
+import BasePage from '../../BasePage';
+import DesignRule from '../../constants/DesignRule';
+import res from './res';
+import { NavigationActions } from 'react-navigation';
+import ScreenUtils from '../../utils/ScreenUtils';
+import { MRText as Text } from '../../components/ui';
 
 const { autoSizeWidth } = ScreenUtils;
 const {
@@ -43,12 +43,12 @@ export default class PaymentResultPage extends BasePage {
         super(props);
         this.state = {
             payResult: this.params.payResult,
-            payMsg: this.params.payMsg || ""
+            payMsg: this.params.payMsg || ''
         };
     }
 
     $navigationBarOptions = {
-        title: "订单支付",
+        title: '订单支付',
         show: true// false则隐藏导航
     };
 
@@ -56,7 +56,7 @@ export default class PaymentResultPage extends BasePage {
     goToOrder = () => {
         let replace = NavigationActions.replace({
             key: this.props.navigation.state.key,
-            routeName: "order/order/MyOrdersListPage",
+            routeName: 'order/order/MyOrdersListPage',
             params: { index: 2 }
         });
         this.props.navigation.dispatch(replace);
@@ -92,12 +92,12 @@ export default class PaymentResultPage extends BasePage {
             }
             /** 成功*/
             case PaymentResult.success: {
-                this.$NavigationBarResetTitle("订单完成");
+                this.$NavigationBarResetTitle('订单完成');
                 return (
                     <View style={styles.content}>
                         <Image source={pay_result_success} style={styles.image}/>
                         <Text style={styles.title}>支付成功</Text>
-                        <View style={{ marginTop: autoSizeWidth(50), flexDirection: "row" }}>
+                        <View style={{ marginTop: autoSizeWidth(50), flexDirection: 'row' }}>
                             <View style={{ flex: 1 }}/>
                             <TouchableOpacity style={styles.gary_border} onPress={() => {
                                 this.$navigateBackToHome();
@@ -123,7 +123,7 @@ export default class PaymentResultPage extends BasePage {
                         <Text style={styles.title}>支付失败</Text>
                         <Text
                             style={[styles.detail_66, { marginTop: autoSizeWidth(10) }]}>{`原因: ${this.state.payMsg}`}</Text>
-                        <View style={{ marginTop: autoSizeWidth(50), flexDirection: "row" }}>
+                        <View style={{ marginTop: autoSizeWidth(50), flexDirection: 'row' }}>
                             <TouchableOpacity style={styles.red_border} onPress={() => {
                                 this.payAgain();
                             }}>
@@ -139,7 +139,7 @@ export default class PaymentResultPage extends BasePage {
                     <View style={styles.content}>
                         <Image source={pay_result_timeout} style={styles.image}/>
                         <Text style={styles.detail_33}>订单支付超时，下单金额已原路返回</Text>
-                        <View style={{ marginTop: autoSizeWidth(50), flexDirection: "row" }}>
+                        <View style={{ marginTop: autoSizeWidth(50), flexDirection: 'row' }}>
                             <View style={{ flex: 1 }}/>
                             <TouchableOpacity style={styles.gary_border} onPress={() => {
                                 this.$navigateBackToHome();
@@ -177,7 +177,7 @@ export default class PaymentResultPage extends BasePage {
 const styles = StyleSheet.create({
     content: {
         flex: 1,
-        alignItems: "center"
+        alignItems: 'center'
     },
     image: {
         height: autoSizeWidth(100),
@@ -209,11 +209,11 @@ const styles = StyleSheet.create({
     gary_border: {
         borderWidth: DesignRule.lineHeight,
         borderRadius: autoSizeWidth(17),
-        borderColor: "#CCCCCC",
+        borderColor: '#CCCCCC',
         height: autoSizeWidth(34),
         width: autoSizeWidth(100),
-        alignItems: "center",
-        justifyContent: "center"
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     red_btn_text: {
         color: DesignRule.mainColor,
@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
         borderColor: DesignRule.mainColor,
         height: autoSizeWidth(34),
         width: autoSizeWidth(100),
-        alignItems: "center",
-        justifyContent: "center"
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 });

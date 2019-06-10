@@ -17,11 +17,11 @@ export class BannerModules {
             if (isCache) {
                 const storeRes = yield get(kHomeTopBannerStore);
                 if (storeRes) {
-                    this.bannerList = storeRes||[];
+                    this.bannerList = storeRes || [];
                 }
             }
             const res = yield HomeApi.getHomeData({ type: homeType.swiper });
-            this.bannerList = res.data||[];
+            this.bannerList = res.data || [];
             homeModule.changeHomeList(homeType.swiper)
             save(kHomeTopBannerStore, res.data);
         } catch (error) {

@@ -49,6 +49,7 @@ export default class LuckyIcon extends React.Component {
             if (data.data && data.data.length > 0){
                 this.setState({show: true});
                 this.setState({data: data.data[0]})
+
             } else {
                 this.setState({show: false});
             }

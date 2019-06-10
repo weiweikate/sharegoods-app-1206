@@ -364,6 +364,7 @@ export default class MyPromotionPage extends BasePage {
         return (
             <ScrollView
                 showsVerticalScrollIndicator={false}
+                scrollEventThrottle={200}
                 onScroll={this._onScroll.bind(this)}
                 refreshControl={<RefreshControl
                     refreshing={this.state.refreshing}

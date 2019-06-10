@@ -1,4 +1,4 @@
-import ShopCart from "./page/ShopCartPage";
+import ShopCart from './page/ShopCartPage';
 
 export default {
     moduleName: 'shopCart',    //模块名称

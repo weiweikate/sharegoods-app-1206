@@ -23,12 +23,14 @@ import { getTopicJumpPageParam } from './model/TopicMudelTool';
 import CommShareModal from '../../comm/components/CommShareModal';
 import apiEnvironment from '../../api/ApiEnvironment';
 import user from '../../model/user';
-import Manager,{AdViewBindModal} from '../../components/web/WebModalManager'
+import Manager, { AdViewBindModal } from '../../components/web/WebModalManager';
 
 import res from '../../comm/res';
-import { TrackApi } from "../../utils/SensorsTrack";
+import { TrackApi } from '../../utils/SensorsTrack';
 import LuckyIcon from '../guide/LuckyIcon';
 import { homeType } from '../home/HomeTypes';
+import ImageLoad from '@mr/image-placeholder';
+import { homeModule } from '../home/model/Modules';
 
 const {
     button: {
@@ -36,15 +38,13 @@ const {
     }
 } = res;
 
-const { statusBarHeight } = ScreenUtils;
+const { statusBarHeight, px2dp, tabBarHeight } = ScreenUtils;
 @observer
 export default class DownPricePage extends BasePage {
 
     $navigationBarOptions = {
         show: true
-
     };
-
     constructor(props) {
         super(props);
         this.dataModel = new TotalTopicDataModel();
@@ -58,21 +58,22 @@ export default class DownPricePage extends BasePage {
                 this.dataModel.isShowLoading = false;
             }
         });
+
         //获取弹出框的信息
         this.manager = new Manager();
-        this.AdModal = observer(AdViewBindModal(this.manager))
-        this.manager.getAd(4,this.params.linkTypeCode,homeType.Alert);
+        this.AdModal = observer(AdViewBindModal(this.manager));
+        this.manager.getAd(4, this.params.linkTypeCode, homeType.Alert);
     }
 
     $NavigationBarDefaultLeftPressed = () => {
-        this.manager.showAd(()=>this.$navigateBack())
-    }
+        this.manager.showAd(() => this.$navigateBack());
+    };
 
     $NavBarRenderRightItem = () => {
         return (
 
             <TouchableOpacity
-                style={{flex:1,justifyContent:'center'}}
+                style={{ flex: 1, justifyContent: 'center' }}
                 onPress={() => {
                     this.shareModal && this.shareModal.open();
                 }}
@@ -90,11 +91,16 @@ export default class DownPricePage extends BasePage {
                 console.log('-----' + linkTypeCode);
                 setTimeout(() => {
                     this.dataModel.loadTopicData(linkTypeCode);
-                    this.luckyIcon&&this.luckyIcon.getLucky(4,linkTypeCode)
+                    this.dataModel.getAdvertisingList({
+                        type: homeType.float,
+                        showPage: 4,
+                        showPageValue: linkTypeCode
+                    });
+                    this.luckyIcon && this.luckyIcon.getLucky(4, linkTypeCode);
                 });
             }
         );
-        TrackApi.specialTopicPage({"specialTopicId":linkTypeCode});
+        TrackApi.specialTopicPage({ 'specialTopicId': linkTypeCode });
     }
 
     componentWillUnmount() {
@@ -166,7 +172,7 @@ export default class DownPricePage extends BasePage {
                                     key={itemIndex}
                                     itemData={itemData}
                                     itemClick={(itemData) => {
-                                        this._itemActionClick(itemData);
+                                        this._itemActionClick(itemData,itemIndex);
                                     }
                                     }
                                 />
@@ -177,7 +183,7 @@ export default class DownPricePage extends BasePage {
                                     numOfColum={this._getColumNum()}
                                     itemClickAction={
                                         () => {
-                                            this._itemActionClick(itemData);
+                                            this._itemActionClick(itemData,itemIndex);
                                         }
                                     }
                                 />
@@ -192,7 +198,15 @@ export default class DownPricePage extends BasePage {
      * @param itemData
      * @private
      */
-    _itemActionClick = (itemData) => {
+    _itemActionClick = (itemData,itemIndex) => {
+        console.log(itemData);
+        const { linkTypeCode } = this.params;
+        TrackApi.SpecialTopicPagelistClick({
+            specialTopicId:linkTypeCode||'',
+            productIndex:itemIndex,
+            spuCode:itemData.prodCode||'',
+
+        })
         const pageObj = getTopicJumpPageParam(itemData);
         this.$navigate(pageObj.pageRoute, pageObj.params);
     };
@@ -208,13 +222,13 @@ export default class DownPricePage extends BasePage {
         this.$NavigationBarResetTitle(this.dataModel.name);
         const AdModal = this.AdModal;
         return (
-            <View style={{flex: 1}}>
+            <View style={{ flex: 1 }}>
                 <ScrollView
                     alwaysBounceVertical={true}
                     contentContainerStyle={Styles.list}
                     showsVerticalScrollIndicator={false}
                     onScrollBeginDrag={() => {
-                        this.luckyIcon&&this.luckyIcon.close();
+                        this.luckyIcon && this.luckyIcon.close();
                     }}
                     style={{
                         width: ScreenUtils.width,
@@ -265,27 +279,58 @@ export default class DownPricePage extends BasePage {
                                     type={'miniProgramWithCopyUrl'}
                                     webJson={{
                                         hdImageURL: this.dataModel.imgUrl || '',
-                                        title: '秀一秀，赚到够',
-                                        dec: '[秀购]发现一个很给力的活动快去看看',
+                                        title: '超值热卖',
+                                        dec: '秀购甄选好物，超值热卖中，立戳进入>',
                                         linkUrl: `${apiEnvironment.getCurrentH5Url()}/subject/${linkTypeCode}?upuserid=${user.code || ''}`,
                                         thumImage: 'logo.png'
                                     }}
                                     miniProgramJson={{
                                         hdImageURL: this.dataModel.imgUrl || '',
-                                        title: '秀一秀，赚到够',
-                                        dec: '[秀购]发现一个很给力的活动快去看看',
+                                        title: '超值热卖',
+                                        dec: '秀购甄选好物，超值热卖中，立戳进入>',
                                         thumImage: 'logo.png',
                                         linkUrl: `${apiEnvironment.getCurrentH5Url()}/subject/${linkTypeCode}?upuserid=${user.code || ''}`,
                                         miniProgramPath: `/pages/index/index?type=5&id=${linkTypeCode}&inviteId=${user.code || ''}`
                                     }}
                     />
                 </ScrollView>
-                <AdModal />
-                <LuckyIcon ref={(ref)=>{this.luckyIcon = ref}}></LuckyIcon>
+                <AdModal/>
+                <LuckyIcon ref={(ref) => {
+                    this.luckyIcon = ref;
+                }}/>
+                {
+                    this.dataModel.advertisingData.length > 0 ?
+                        <View style={{
+                            backgroundColor: 'red',
+                            height: px2dp(40) + tabBarHeight - px2dp(49)
+                        }}>
+                            <TouchableOpacity onPress={() => {
+                                this.gotoAdverPage();
+                            }
+                            }>
+                                <ImageLoad
+                                    style={{ flex: 1, backgroundColor: 'green' }}
+                                    source={this.dataModel.advertisingData.length > 0 ? this.dataModel.advertisingData[0].image : null}
+                                />
+                            </TouchableOpacity>
+                        </View> :
+                        null
+                }
             </View>
         );
     }
 
+    gotoAdverPage = () => {
+        if (this.dataModel.advertisingData > 0) {
+            const advData = this.dataModel.advertisingData[0];
+            const { linkTypeCode } = this.params;
+            const router = homeModule.homeNavigate(advData.linkType, linkTypeCode);
+            let params = homeModule.paramsNavigate(advData);
+            if (router) {
+                this.$navigate(router, params);
+            }
+        }
+    };
     /**
      * 获取类型
      * 0 普通专题

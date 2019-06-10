@@ -1,15 +1,15 @@
 //公告详情页面
-import React from "react";
+import React from 'react';
 import {
     View,
     Dimensions,
     StyleSheet,
     ScrollView,
     ImageBackground
-} from "react-native";
-import BasePage from "../../../BasePage";
+} from 'react-native';
+import BasePage from '../../../BasePage';
 import DesignRule from '../../../constants/DesignRule';
-import res from "../res";
+import res from '../res';
 import {
     MRText as Text
 } from '../../../components/ui';
@@ -19,7 +19,7 @@ const Banner = res.shopSetting.banner_02;
 export default class AnnouncementDetailPage extends BasePage {
 
     $navigationBarOptions = {
-        title: "公告详情"
+        title: '公告详情'
     };
 
     _render() {
@@ -28,11 +28,11 @@ export default class AnnouncementDetailPage extends BasePage {
             <ScrollView showsVerticalScrollIndicator={false}
                         style={styles.container}>
                 <ImageBackground style={styles.banner} source={Banner}>
-                    <Text style={styles.title} allowFontScaling={false}>{title || " "}</Text>
+                    <Text style={styles.title} allowFontScaling={false}>{title || ' '}</Text>
                 </ImageBackground>
                 <View style={styles.bgContainer}>
                     <Text style={styles.content} allowFontScaling={false}>
-                        {content || " "}
+                        {content || ' '}
                     </Text>
                 </View>
                 <View style={styles.gap}/>
@@ -48,18 +48,18 @@ const styles = StyleSheet.create({
     },
     title: {
         marginTop: 27,
-        fontWeight: "bold",
+        fontWeight: 'bold',
         fontSize: 18,
-        color: "white"
+        color: 'white'
     },
     bgContainer: {
         flex: 1,
-        alignItems: "center"
+        alignItems: 'center'
     },
     banner: {
-        alignItems: "center",
-        width: Dimensions.get("window").width,
-        height: 150 / 375 * Dimensions.get("window").width
+        alignItems: 'center',
+        width: Dimensions.get('window').width,
+        height: 150 / 375 * Dimensions.get('window').width
     },
     content: {
         fontSize: 13,

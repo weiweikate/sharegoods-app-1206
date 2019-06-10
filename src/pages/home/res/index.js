@@ -1,6 +1,7 @@
 import res from '../../../comm/res';
 import signIn from './signIn';
 import search from './search';
+import task from './task'
 
 const resHome = {
     arrowRight: require('./arrow_right.png'),
@@ -19,11 +20,17 @@ const resHome = {
     spike: require('./spike.png'),
     home_right: require('./home_right.png'),
     home_sallout: require('./home_pic_qiangguang.png'),
+    btn_bg:require('./btn_bg.png'),
+    unwin:require('./unwin.png'),
+    win:require('./win.png'),
     signIn: {
         ...signIn
     },
     search: {
         ...search
+    },
+    task: {
+        ...task
     },
     ...res
 };

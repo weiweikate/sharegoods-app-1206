@@ -3,11 +3,11 @@
  * @date 2018/11/23
  */
 
-import React, { PureComponent } from "react";
+import React, { PureComponent } from 'react';
 import {
   View,
-} from "react-native";
-import ScreenUtils from "../../../../utils/ScreenUtils";
+} from 'react-native';
+import ScreenUtils from '../../../../utils/ScreenUtils';
 const {px2dp} = ScreenUtils;
 import DesignRule from '../../../../constants/DesignRule';
 import {MRText as Text} from '../../../../components/ui'
@@ -41,13 +41,13 @@ export  default class CountDownView extends PureComponent {
         let m = Math.floor(sec / 60 % 60);
         let s = Math.floor(sec % 60);
         if(s < 10) {
-            s = "0" + s;
+            s = '0' + s;
         }
         if(m < 10) {
-            m = "0" + m;
+            m = '0' + m;
         }
         if(h < 10) {
-            h = "0" + h;
+            h = '0' + h;
         }
         return `${days}天${h}:${m}:${s}`;
     }

@@ -8,7 +8,6 @@ import {
     NativeModules
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
-import ShareTaskIcon from '../shareTask/components/ShareTaskIcon';
 import { observer } from 'mobx-react';
 import { homeModule } from './model/Modules';
 import { homeType } from './HomeTypes';
@@ -38,20 +37,21 @@ import { recommendModule } from './model/HomeRecommendModel';
 import { subjectModule } from './model/HomeSubjectModel';
 import { homeExpandBnnerModel } from './model/HomeExpandBnnerModel';
 import HomeTitleView from './view/HomeTitleView';
-import GuideModal from '../guide/GuideModal';
 import LuckyIcon from '../guide/LuckyIcon';
-import HomeMessageModalView, { HomeAdModal } from './view/HomeMessageModalView';
+import HomeMessageModalView, { HomeAdModal, GiftModal } from './view/HomeMessageModalView';
 import { channelModules } from './model/HomeChannelModel';
 import { bannerModule } from './model/HomeBannerModel';
 import HomeLimitGoView from './view/HomeLimitGoView';
 import { limitGoModule } from './model/HomeLimitGoModel';
 import HomeExpandBannerView from './view/HomeExpandBannerView';
 import HomeFocusAdView from './view/HomeFocusAdView';
+import PraiseModel from './view/PraiseModel';
 
 const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
 
 const HOME_REFRESH = 'homeRefresh';
+const HOME_SKIP = 'activitySkip';
 
 /**
  * @author zhangjian
@@ -65,6 +65,10 @@ const { px2dp, height, headerHeight } = ScreenUtils;
 const scrollDist = height / 2 - headerHeight;
 import BasePage from '../../BasePage';
 import { TrackApi } from '../../utils/SensorsTrack';
+import taskModel from './model/TaskModel';
+import TaskVIew from './view/TaskVIew';
+import intervalMsgModel, { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
+import { UserLevelModalView } from './view/TaskModalView';
 
 const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
     <Text style={styles.text}
@@ -104,6 +108,9 @@ class HomePage extends BasePage {
             case homeType.user:
                 dim.height = user.isLogin ? (bannerModule.bannerList.length > 0 ? px2dp(44) : px2dp(31)) : 0;
                 break;
+            case homeType.task:
+                dim.height = taskModel.homeHeight;
+                break;
             case homeType.channel:
                 dim.height = channelModules.channelList.length > 0 ? px2dp(90) : 0;
                 break;
@@ -111,10 +118,10 @@ class HomePage extends BasePage {
                 dim.height = homeExpandBnnerModel.bannerHeight;
                 break;
             case homeType.focusGrid:
-                dim.height = foucusHeight > 0 ? foucusHeight + (homeExpandBnnerModel.banner.length > 0 ? px2dp(20) : px2dp(10)) : 0;
+                dim.height = foucusHeight > 0 ? (foucusHeight + (homeExpandBnnerModel.banner.length > 0 ? px2dp(20) : px2dp(10))) : 0;
                 break;
             case homeType.limitGo:
-                dim.height = limitGoModule.limitHeight;
+                dim.height = limitGoModule.spikeList.length > 0 ? limitGoModule.limitHeight : 0;
                 break;
             case homeType.today:
                 dim.height = todayList.length > 0 ? todayHeight : 0;
@@ -169,7 +176,6 @@ class HomePage extends BasePage {
                 BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
 
             }
-
         );
 
         this.didFocusSubscription = this.props.navigation.addListener(
@@ -189,7 +195,11 @@ class HomePage extends BasePage {
                     homeTabManager.setHomeFocus(true);
                     homeModule.homeFocused(true);
                     homeModalManager.entryHome();
-                    homeModalManager.requestGuide();
+                    homeModalManager.refreshPrize();
+                    taskModel.getData();
+                    if (!homeModule.firstLoad) {
+                        limitGoModule.loadLimitGo(false);
+                    }
                 }
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
                 TrackApi.homePage();//埋点
@@ -200,19 +210,26 @@ class HomePage extends BasePage {
         this.listenerLogout = DeviceEventEmitter.addListener('login_out', this.loadMessageCount);
         this.listenerRetouchHome = DeviceEventEmitter.addListener('retouch_home', this.retouchHome);
         this.listenerHomeRefresh = JSManagerEmitter.addListener(HOME_REFRESH, this.homeTypeRefresh);
+        this.listenerSkip = JSManagerEmitter.addListener(HOME_SKIP, this.homeSkip);
 
         InteractionManager.runAfterInteractions(() => {
             user.getToken().then(() => {//让user初始化完成
                 this.luckyIcon && this.luckyIcon.getLucky(1, '');
-                homeModalManager.requestGuide();
                 homeModalManager.requestData();
                 this.loadMessageCount();
+                taskModel.getData();
             });
         });
     }
 
     homeTypeRefresh = (type) => {
         homeModule.refreshHome(type);
+    };
+
+    homeSkip = (data) => {
+        // 跳标
+        const content = JSON.parse(data) || {};
+        intervalMsgModel.setMsgData(content);
     };
 
     componentWillUnmount() {
@@ -223,6 +240,7 @@ class HomePage extends BasePage {
         this.listenerLogout && this.listenerLogout.remove();
         this.listenerRetouchHome && this.listenerRetouchHome.remove();
         this.listenerHomeRefresh && this.listenerHomeRefresh.remove();
+        this.listenerSkip && this.listenerSkip.remove();
     }
 
     retouchHome = () => {
@@ -256,7 +274,7 @@ class HomePage extends BasePage {
 
     _keyExtractor = (item, index) => item.id + '';
 
-    _renderItem = (type, item) => {
+    _renderItem = (type, item, index) => {
         let data = item;
         if (type === homeType.category) {
             return <HomeCategoryView navigate={this.$navigate}/>;
@@ -264,6 +282,8 @@ class HomePage extends BasePage {
             return <HomeBannerView navigate={this.$navigate}/>;
         } else if (type === homeType.user) {
             return <HomeUserView navigate={this.$navigate}/>;
+        } else if (type === homeType.task) {
+            return <TaskVIew type={'home'}/>;
         } else if (type === homeType.channel) {
             return <HomeChannelView navigate={this.$navigate}/>;
         } else if (type === homeType.expandBanner) {
@@ -279,7 +299,8 @@ class HomePage extends BasePage {
         } else if (type === homeType.homeHot) {
             return <HomeSubjectView navigate={this.$navigate}/>;
         } else if (type === homeType.goods) {
-            return <GoodsCell data={data} navigate={this.$navigate}/>;
+            return <GoodsCell data={data} goodsRowIndex={index} otherLen={homeModule.goodsOtherLen}
+                              navigate={this.$navigate}/>;
         } else if (type === homeType.goodsTitle) {
             return <View style={styles.titleView}
                          ref={e => this.toGoods = e}
@@ -298,6 +319,7 @@ class HomePage extends BasePage {
 
     _onRefresh() {
         homeModule.loadHomeList(true);
+        taskModel.getData();
         this.luckyIcon && this.luckyIcon.getLucky(1, '');
     }
 
@@ -347,15 +369,15 @@ class HomePage extends BasePage {
                         isEnd={homeModule.isEnd}/>
                     }
                 />
-                <ShareTaskIcon style={{ position: 'absolute', right: 0, top: px2dp(220) - 40 }}/>
                 <LuckyIcon ref={(ref) => {
                     this.luckyIcon = ref;
                 }}/>
+                <PraiseModel/>
+                <GiftModal/>
+                <UserLevelModalView/>
+                <IntervalMsgView pageType={IntervalType.home}/>
                 <HomeAdModal/>
                 <HomeMessageModalView/>
-                <GuideModal onShow={() => {
-                    this.recyclerListView.scrollToTop();
-                }}/>
                 <VersionUpdateModalView/>
             </View>
         );

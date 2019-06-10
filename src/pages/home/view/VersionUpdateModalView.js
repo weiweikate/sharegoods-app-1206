@@ -38,13 +38,13 @@ export default class VersionUpdateModalView extends React.Component {
                 bridge.isApkExist(versionData.version).then((isExist) => {
                     this.setState({
                         positiveTxt: isExist ? '立即安装' : '立即更新',
-                        updateContent: isExist ? '是否安装V' + versionData.version + '版本？' : '是否更新为V' + versionData.version + '版本？'
+                        updateContent: versionData.description
                     });
                 });
             } else {
                 this.setState({
                     positiveTxt: '立即更新',
-                    updateContent: '是否更新为V' + versionData.version + '版本？'
+                    updateContent: versionData.description
                 });
             }
         }
@@ -64,7 +64,7 @@ export default class VersionUpdateModalView extends React.Component {
                 this.setState({
                     progress: this.currProgress,
                     positiveTxt: '立即安装',
-                    updateContent: '是否安装V' + HomeModalManager.versionData.version + '版本？'
+                    updateContent: HomeModalManager.versionData.description
                 });
             });
         }
@@ -94,6 +94,8 @@ export default class VersionUpdateModalView extends React.Component {
                             color: DesignRule.textColor_mainTitle,
                             marginTop: 40,
                             marginBottom: 40,
+                            marginLeft: 10,
+                            marginRight: 10,
                             alignSelf: 'center'
                         }}/> :
                 <View style={{ flexDirection: 'column', justifyContent: 'center', borderRadius: 2 }}>
@@ -168,7 +170,7 @@ export default class VersionUpdateModalView extends React.Component {
                         this.setState({
                             showBtn: false,
                             positiveTxt: exist ? '立即安装' : '立即更新',
-                            updateContent: exist ? '是否安装V' + updateData.version + '版本？' : '是否更新为V' + updateData.version + '版本？'
+                            updateContent: updateData.description
                         });
                     }
                 });

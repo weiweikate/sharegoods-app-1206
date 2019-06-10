@@ -22,9 +22,7 @@
  @return 返回QYUserInfo 对象
  */
 -(QYUserInfo *)packingUserInfo:(id)jsonData{
-  
   NSDictionary *jsonDic = jsonData;
-  
   QYUserInfo *userInfo = [[QYUserInfo alloc] init];
   userInfo.userId = jsonDic[@"userId"];
   NSMutableArray *array = [NSMutableArray new];

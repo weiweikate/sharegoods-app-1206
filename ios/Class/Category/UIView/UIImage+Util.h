@@ -11,8 +11,33 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface UIImage (Util)
+
+/**
+ 获取启动图
+ */
 + (UIImage *)getLaunchImage;
+
+/**
+ 图片压缩
+ */
 -(NSData *)compressWithMaxLength:(NSUInteger)maxLength;
+
+/**
+ 生成圆角图片
+ */
+-(UIImage *)creatRoundImagWithRadius:(CGFloat)radius width:(CGFloat)width height:(CGFloat)height;
+/**
+ 高斯模糊
+ */
+-(UIImage *)boxblurWithBlurNumber:(CGFloat)blur;
+/**
+ 修改透明度
+ */
+-(UIImage *)imageByApplyingAlpha:(CGFloat )alpha;
+/**
+ 绘制二维码
+ */
++ (UIImage *)QRCodeWithStr:(NSString *)str;
 @end
 
 NS_ASSUME_NONNULL_END

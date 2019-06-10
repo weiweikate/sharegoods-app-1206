@@ -23,7 +23,9 @@ import javax.annotation.Nonnull;
 public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> {
     private static final String COMPONENT_NAME = "ShowGroundView";
     public static final int REPLACE_DATA = 1;
-
+    public static final int ADD_DATA_TOP = 2;
+    public static final int REPLACE_ITEM_DATA = 3;
+    public static final int SCROLL_TO_TOP = 4;
     @Override
     public String getName() {
         return COMPONENT_NAME;
@@ -58,7 +60,7 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> {
     @Nullable
     @Override
     public Map<String, Integer> getCommandsMap() {
-        return MapBuilder.of("replaceData", REPLACE_DATA);
+        return MapBuilder.of("replaceData", REPLACE_DATA,"addDataToTop",ADD_DATA_TOP,"replaceItemData",REPLACE_ITEM_DATA,"scrollToTop",SCROLL_TO_TOP);
     }
 
     @Override
@@ -71,14 +73,42 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> {
                 }
             }
             break;
-
+            case ADD_DATA_TOP:{
+                Object object = root.getTag();
+                if (object != null && object instanceof ShowGroundView) {
+                    ((ShowGroundView) object).addDataToTop(args.getString(0));
+                }
+            }
+            break;
+            case REPLACE_ITEM_DATA:{
+                Object object = root.getTag();
+                if (object != null && object instanceof ShowGroundView) {
+                    ((ShowGroundView) object).repelaceItemData(args.getInt(0), args.getString(1));
+                }
+            }
+            break;
+            case SCROLL_TO_TOP:{
+                Object object = root.getTag();
+                if (object != null && object instanceof ShowGroundView) {
+                    ((ShowGroundView) object).scrollIndex(0);
+                }
+            }
+            break;
         }
     }
 
     @Nullable
     @Override
     public Map<String, Object> getExportedCustomBubblingEventTypeConstants() {
-        return MapBuilder.<String, Object>builder().put("MrShowGroundOnItemPressEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onItemPress"))).put("MrShowGroundOnStartRefreshEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onStartRefresh"))).put("MrShowGroundOnStartScrollEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onStartScroll"))).put("MrShowGroundOnEndScrollEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onEndScroll"))).build();
+        return MapBuilder.<String, Object>builder()
+                .put("MrShowGroundOnItemPressEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onItemPress")))
+                .put("MrShowGroundOnStartRefreshEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onStartRefresh")))
+                .put("MrShowGroundOnStartScrollEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onStartScroll")))
+                .put("MrShowGroundOnEndScrollEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onEndScroll")))
+                .put("MrNineClickEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onNineClick")))
+                .put("MrShowScrollStateChangeEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onScrollStateChanged")))
+                .put("MrScrollY", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onScrollY")))
+                .build();
     }
 
 }

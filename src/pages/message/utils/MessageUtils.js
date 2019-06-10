@@ -11,15 +11,15 @@ const MessageUtils = {
         switch (type) {
             case 100://支付成功
                 pagParams = JSON.parse(params);
-                pagParams.type = "pay_success";
+                pagParams.type = 'pay_success';
                 pagParams.time = time;
-                navigation("message/PayMessagePage", pagParams);
+                navigation('message/PayMessagePage', pagParams);
                 break;
             case 101://支付失败
                 pagParams = JSON.parse(params);
-                pagParams.type = "pay_refund";
+                pagParams.type = 'pay_refund';
                 pagParams.time = time;
-                navigation("message/PayMessagePage", pagParams);
+                navigation('message/PayMessagePage', pagParams);
                 break;
             case 105://优惠劵
                 navigation(RouterMap.CouponsPage);
@@ -31,7 +31,7 @@ const MessageUtils = {
                 });
                 break;
             case 108://降价拍
-                navigation("topic/TopicDetailPage", {
+                navigation('topic/TopicDetailPage', {
                     activityCode: params,
                     activityType: 2
                 });
@@ -75,7 +75,7 @@ const MessageUtils = {
             case 207://申请的店铺拒绝了您
             case 212://招募
                 pagParams = {storeCode:params};
-                navigation("spellShop/MyShop_RecruitPage", pagParams);
+                navigation('spellShop/MyShop_RecruitPage', pagParams);
                 break;
             case 300://工猫合同详情
                 pagParams = {url:params};

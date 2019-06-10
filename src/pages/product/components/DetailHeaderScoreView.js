@@ -49,7 +49,7 @@ export class DetailHeaderScoreView extends Component {
                             return;
                         }
                         let leftValue = index === 0 || index === 3 ? 0 : px2dp(8);
-                        return <NoMoreClick onPress={() => this._action(index)}>
+                        return <NoMoreClick onPress={() => this._action(index)} key={index}>
                             {
                                 index === 0 && this.hasVideo ? <Image key={index + value}
                                                                       style={[styles.contentImg, { marginLeft: leftValue }]}

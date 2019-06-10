@@ -8,6 +8,7 @@ import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -224,14 +225,14 @@ public class MainRNActivity extends ReactActivity {
                     // 开始下载
                     isBinded = true;
                     binder.start(updateType);
-                    if (updateType == ParameterUtils.FLAG_UPDATE_NOW) {
-                        binder.setOnProgressListener(new OnProgressListener() {
-                            @Override
-                            public void onStart() {
-                            }
+                    binder.setOnProgressListener(new OnProgressListener() {
+                        @Override
+                        public void onStart() {
+                        }
 
-                            @Override
-                            public void onProgress(int progress) {
+                        @Override
+                        public void onProgress(int progress) {
+                            if (updateType == ParameterUtils.FLAG_UPDATE_NOW) {
                                 if (progress < 100) {
                                     Message msg = Message.obtain();
                                     msg.what = ParameterUtils.FLAG_UPDATE;
@@ -239,17 +240,21 @@ public class MainRNActivity extends ReactActivity {
                                     myHandler.sendMessage(msg);
                                 }
                             }
+                        }
 
-                            @Override
-                            public void onFinish(final String path) {
-                                apkPath = path;
+                        @Override
+                        public void onFinish(final String path) {
+                            apkPath = path;
+                            if (updateType == ParameterUtils.FLAG_UPDATE_NOW) {
                                 Message msg = Message.obtain();
                                 msg.what = ParameterUtils.FLAG_UPDATE;
                                 msg.arg1 = 100;
                                 myHandler.sendMessage(msg);
+                            } else if (updateType == ParameterUtils.FLAG_UPDATE) {
+                                handleInstallApk();
                             }
-                        });
-                    }
+                        }
+                    });
                 }
             };
         }
@@ -328,7 +333,9 @@ public class MainRNActivity extends ReactActivity {
                     Utils.installApk(getApplicationContext(), apkPath);
                 } else {
                     ToastUtils.showToast(getString(R.string.install_allow));
-                    Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES);
+
+                    Uri packageURI = Uri.parse("package:" + getPackageName());
+                    Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, packageURI);
                     startActivityForResult(intent, ParameterUtils.REQUEST_CODE_MANAGE_APP_SOURCE);
                 }
                 break;

@@ -15,4 +15,10 @@ public interface IShowgroundView {
     void viewLoadMore(List data);
 
     void repelaceData(int index,int clickNum);
+
+    void repelaceItemData(int index,String value);
+
+    void addDataToTop(String value);
+
+
 }

@@ -4,11 +4,12 @@
  */
 
 import bridge from './bridge';
-import user from "../model/user";
-import EmptyUtils from "./EmptyUtils";
-import HttpUtils from "../api/network/HttpUtils";
+import user from '../model/user';
+import EmptyUtils from './EmptyUtils';
+import HttpUtils from '../api/network/HttpUtils';
 import apiEnvironment from '../api/ApiEnvironment';
 import { track } from './SensorsTrack';
+import { mediatorCallFunc } from '../SGMediator';
 
 const TrackShareType = {
     unknown: 0,
@@ -22,33 +23,49 @@ const TrackShareType = {
     other: 100//其他
 };
 
-const onShare = (data, api, trackParmas,trackEvent, callback = () => {}, luckyDraw) => {
-    let params = data;
+const onShare = (data, api, trackParmas, trackEvent, callback = () => {
+}, luckyDraw, taskShareParams) => {
+    let params = data || {};
+    if (data.thumImage && data.thumImage.indexOf('?') > -1) {
+        params.thumImage = data.thumImage && data.thumImage.substring(0, data.thumImage.indexOf('?'));
+    }
     if (data.shareType === 2) {
         params.userName = data.userName || apiEnvironment.getCurrentWxAppletKey();
         params.miniProgramType = apiEnvironment.getMiniProgramType();
     }
+    console.log(data);
+    if (params.linkUrl) {
+        let addData = { pageSource: params.platformType >= 0 ? params.platformType + 1 : 0 };
+        params.linkUrl = queryString(params.linkUrl, addData);
+    }
+
+    if (params.platformType === 1 || params.platformType === 4) {
+        params.title = params.dec && params.dec.length > 0 ? params.title + ',' + params.dec : params.title;
+    }
+
     if (trackEvent) {
         let p = trackParmas || {};
         let shareType = [TrackShareType.wx, TrackShareType.wxTimeline, TrackShareType.qq, TrackShareType.qqSpace, TrackShareType.weibo][data.platformType];
         track(trackEvent, { shareType, ...p });
     }
     bridge.share(params, () => {
-            if (user.isLogin && luckyDraw === true) {
-                user.luckyDraw();
-            }
-            shareSucceedCallBlack(api, callback);
-        }, (errorStr) => {
+        if (user.isLogin && luckyDraw === true) {
+            user.luckyDraw();
+        }
+        shareSucceedCallBlack(api, callback);
+        callback('shareSuccess'); //提示分享成功
 
-        });
+        taskShareParams && mediatorCallFunc('Home_ShareNotify', { type: params.platformType + 1, ...taskShareParams });
+    }, (errorStr) => {
+    });
 };
 
-const shareSucceedCallBlack = (api, sucCallback = () => {}) => {
-    console.log('分享成功后调用分享方法',api);
+const shareSucceedCallBlack = (api, sucCallback = () => {
+}) => {
     if (EmptyUtils.isEmpty(api)) {
         return;
     }
-    let {url, methods, params, refresh} = api;
+    let { url, methods, params, refresh } = api;
     if (EmptyUtils.isEmpty(url)) {
         return;
     }
@@ -56,21 +73,42 @@ const shareSucceedCallBlack = (api, sucCallback = () => {}) => {
         HttpUtils.get(url, false, params).then(() => {
             if (refresh === true) {
                 // this.props.reloadWeb && this.props.reloadWeb();
-                sucCallback();
+                sucCallback('reload');//分享成功后刷新操作
             }
         });
     } else {
         HttpUtils.post(url, false, params, {}).then(() => {
             if (refresh === true) {
                 // this.props.reloadWeb && this.props.reloadWeb();
-                sucCallback();
+                sucCallback('reload');
             }
         }).catch(() => {
         });
     }
 };
 
+const queryString = (url, params) => {
+    if (params) {
+        const paramsArray = [];
+        Object.keys(params).forEach(key =>
+            paramsArray.push(key + '=' + params[key])
+        );
+        if (url.search(/\?/) === -1) {
+            url += '?' + paramsArray.join('&');
+        } else {
+            let arr = url.split('?');
+            if (arr.length > 1 && arr[1].length > 0) {
+                url += '&' + paramsArray.join('&');
+            } else {
+                url += paramsArray.join('&');
+
+            }
+        }
+    }
+    return url;
+};
 
 export default {
-    onShare
-}
+    onShare,
+    queryString
+};

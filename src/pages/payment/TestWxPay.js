@@ -1,21 +1,21 @@
-import React from "react";
-import BasePage from "../../BasePage";
+import React from 'react';
+import BasePage from '../../BasePage';
 import {
     View,
     TextInput,
     TouchableOpacity,
     Text
-} from "react-native";
-import ScreenUtils from "../../utils/ScreenUtils";
-import DesignRule from "../../constants/DesignRule";
-import Toast from "../../utils/bridge";
-import PayUtil from "./PayUtil";
+} from 'react-native';
+import ScreenUtils from '../../utils/ScreenUtils';
+import DesignRule from '../../constants/DesignRule';
+import Toast from '../../utils/bridge';
+import PayUtil from './PayUtil';
 
 export default class TestWxPay extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            jsonValue: ""
+            jsonValue: ''
         };
     }
 
@@ -30,12 +30,12 @@ export default class TestWxPay extends BasePage {
                 flex: 1
             }}>
                 <View style={{
-                    backgroundColor: "#fff",
+                    backgroundColor: '#fff',
                     height: 120,
                     width: ScreenUtils.width,
 
-                    alignItems: "center",
-                    justifyContent: "center"
+                    alignItems: 'center',
+                    justifyContent: 'center'
 
                 }}>
                     <TextInput
@@ -54,7 +54,7 @@ export default class TestWxPay extends BasePage {
                 </View>
 
                 <TouchableOpacity onPress={() => {this._beginPay()}}>
-                    <View style={{ alignItems: "center", justifyContent: "center",marginTop:30,width:ScreenUtils.width - 100,marginLeft:50,height:50 ,
+                    <View style={{ alignItems: 'center', justifyContent: 'center',marginTop:30,width:ScreenUtils.width - 100,marginLeft:50,height:50 ,
                     borderRadius:25,backgroundColor:DesignRule.mainColor}}>
                         <Text style={{fontSize:20,color:'#fff'}}>开始请求</Text>
                     </View>
@@ -67,7 +67,7 @@ export default class TestWxPay extends BasePage {
     _beginPay = (paramsJson) => {
 
         if (this.state.jsonValue.length > 0){
-            console.log("开始支付");
+            console.log('开始支付');
             try {
                 Toast.showLoading();
                 const payInfo = JSON.parse(this.state.jsonValue);

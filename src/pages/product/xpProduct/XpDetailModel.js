@@ -1,9 +1,9 @@
 import { observable, action, computed } from 'mobx';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
-import user from '../../../model/user';
 import EmptyUtils from '../../../utils/EmptyUtils';
 import MessageApi from '../../message/api/MessageApi';
 import ProductApi from '../api/ProductApi';
+import user from '../../../model/user';
 
 class XpDetailModel {
     @observable showUpSelectList = false;

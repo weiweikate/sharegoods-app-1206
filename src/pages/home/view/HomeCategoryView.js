@@ -5,6 +5,9 @@ import { observer } from 'mobx-react';
 import { categoryModule } from '../model/HomeCategoryModel';
 // import DesignRule from '../../../constants/DesignRule';
 import bridge from '../../../utils/bridge';
+import { track, trackEvent } from '../../../utils/SensorsTrack';
+// import { homeModule } from '../model/Modules';
+// import { homePoint } from '../HomeTypes';
 
 const { px2dp } = ScreenUtils;
 
@@ -19,19 +22,26 @@ const CategoryItem = ({ text, press, left }) => <TouchableWithoutFeedback onPres
 @observer
 export default class HomeCategoryView extends Component {
 
-    _adAction(data) {
+    _adAction(data, index) {
         if (!data) {
             bridge.$toast('数据加载失败！');
             return;
         }
+        track(trackEvent.CategoryClick,
+            {   'categoryCode':data.id,
+                'categoryName':data.name,
+                'categoryLevel':data.level,
+                'categoryIndex':index,
+            });
         const { navigate } = this.props;
         navigate(data.route, {
+            searchType:11,
             fromHome: true,
             id: 1,
             linkTypeCode: data.linkTypeCode,
             code: data.linkTypeCode,
             keywords: data.name,
-            categoryId: data.id,
+            categoryId: data.id ,
             activityCode: data.linkTypeCode
         });
     }
@@ -54,24 +64,24 @@ export default class HomeCategoryView extends Component {
                     key={'category' + i}
                     left={0}
                     press={() => {
-                        this._adAction(categoryList[i]);
+                        this._adAction(categoryList[i], i);
                     }}
                 />
                 ) :
-            itemsArr.push(
-                <CategoryItem
-                    text={categoryList[i] ? (categoryList[i].secondName ? categoryList[i].secondName : categoryList[i].name) : ' '}
-                    key={'category' + i}
-                    left={i === 0 ? 0 : px2dp(10)}
-                    press={() => {
-                        this._adAction(categoryList[i]);
-                    }}
-                />
-            );
+                itemsArr.push(
+                    <CategoryItem
+                        text={categoryList[i] ? (categoryList[i].secondName ? categoryList[i].secondName : categoryList[i].name) : ' '}
+                        key={'category' + i}
+                        left={i === 0 ? 0 : px2dp(10)}
+                        press={() => {
+                            this._adAction(categoryList[i], i);
+                        }}
+                    />
+                );
         }
         return <View style={styles.container}>
-            <View style={{height: px2dp(20),}}>
-            {itemAll}
+            <View style={{ height: px2dp(20) }}>
+                {itemAll}
             </View>
             <ScrollView horizontal
                         showsHorizontalScrollIndicator={false}

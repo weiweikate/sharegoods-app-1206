@@ -30,6 +30,7 @@ import apiEnvironment from '../../../../api/ApiEnvironment';
 import loginModel from '../../../login/model/LoginModel';
 import StringUtils from '../../../../utils/StringUtils';
 import { QYChatTool } from '../../../../utils/QYModule/QYChatTool';
+import WhiteModel from '../../../show/model/WhiteModel';
 
 /**
  * @author luoyongming
@@ -236,6 +237,7 @@ class SettingPage extends BasePage {
                         // 退出七鱼
                         QYChatTool.qiYULogout();
                         this.$loadingDismiss();
+                        WhiteModel.clearStatus();
                         // 神策退出登录
                         logout();
                     }

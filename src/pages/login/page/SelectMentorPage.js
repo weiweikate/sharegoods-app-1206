@@ -10,27 +10,27 @@
  */
 
 
-"use strict";
-import React from "react";
+'use strict';
+import React from 'react';
 import {
     StyleSheet,
     View,
     TouchableOpacity,
     Image,
     ScrollView
-} from "react-native";
-import BasePage from "../../../BasePage";
-import DesignRule from "../../../constants/DesignRule";
-import MentorItemView from "../components/MentorItemView";
-import ScreenUtils from "../../../utils/ScreenUtils";
-import res from "../res";
-import LoginAPI from "../api/LoginApi";
-import bridge from "../../../utils/bridge";
-import UIText from "../../../components/ui/UIText";
-import Styles from "../style/SelectMentorPage.style";
-import { homeRegisterFirstManager } from "../../home/manager/HomeRegisterFirstManager";
-import { MRText as Text } from "../../../components/ui";
-import { TrackApi } from "../../../utils/SensorsTrack";
+} from 'react-native';
+import BasePage from '../../../BasePage';
+import DesignRule from '../../../constants/DesignRule';
+import MentorItemView from '../components/MentorItemView';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import res from '../res';
+import LoginAPI from '../api/LoginApi';
+import bridge from '../../../utils/bridge';
+import UIText from '../../../components/ui/UIText';
+import Styles from '../style/SelectMentorPage.style';
+import { homeRegisterFirstManager } from '../../home/manager/HomeRegisterFirstManager';
+import { MRText as Text } from '../../../components/ui';
+import { TrackApi } from '../../../utils/SensorsTrack';
 
 const { px2dp } = ScreenUtils;
 const {
@@ -55,14 +55,14 @@ export default class SelectMentorPage extends BasePage {
         gesturesEnabled: false
     };
     $navigationBarOptions = {
-        title: "",
+        title: '',
         show: true// false则隐藏导航
     };
     /**
      * 跳过函数
      */
     jump = () => {
-        bridge.$toast("注册成功");
+        bridge.$toast('注册成功');
         LoginAPI.givePackage().then(result => {
             homeRegisterFirstManager.setShowRegisterModalUrl(result.data.give);
             this.$navigateBackToHome();
@@ -119,8 +119,8 @@ export default class SelectMentorPage extends BasePage {
                     <View
                         style={{
                             height: 20,
-                            alignItems: "center",
-                            justifyContent: "center",
+                            alignItems: 'center',
+                            justifyContent: 'center',
                             width: 100,
                             borderColor: DesignRule.textColor_instruction
                         }}
@@ -130,7 +130,7 @@ export default class SelectMentorPage extends BasePage {
                                 () => this.jump()
                             }
                             style={{
-                                color: "#979797",
+                                color: '#979797',
                                 fontSize: 13
 
                             }}
@@ -146,8 +146,8 @@ export default class SelectMentorPage extends BasePage {
         return (
             <View
                 style={{
-                    alignItems: "center",
-                    justifyContent: "center",
+                    alignItems: 'center',
+                    justifyContent: 'center',
                 }}
             >
                 {
@@ -172,8 +172,8 @@ export default class SelectMentorPage extends BasePage {
                             [{
                                 height: 40,
                                 width: ScreenUtils.width - 80,
-                                justifyContent: "center",
-                                alignItems: "center",
+                                justifyContent: 'center',
+                                alignItems: 'center',
                                 borderRadius: 20
                             },
                                 this.state.selectIndex !== -1 ?
@@ -204,10 +204,10 @@ export default class SelectMentorPage extends BasePage {
         return (
             <View
                 style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
                     marginTop: px2dp(20),
-                    alignItems: "center",
+                    alignItems: 'center',
                     width: ScreenUtils.width - px2dp(100),
                     marginLeft: px2dp(50)
                 }}
@@ -216,7 +216,7 @@ export default class SelectMentorPage extends BasePage {
                     style={{
                         fontSize: 13,
                         color: DesignRule.textColor_instruction,
-                        justifyContent: "center"
+                        justifyContent: 'center'
                     }}
                     onPress={() => {
                         this.$navigateBack();
@@ -228,9 +228,9 @@ export default class SelectMentorPage extends BasePage {
                 <TouchableOpacity>
                     <View
                         style={{
-                            flexDirection: "row",
-                            justifyContent: "center",
-                            alignItems: "center",
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center',
                             marginRight: 15
                         }}
                     >
@@ -267,8 +267,8 @@ export default class SelectMentorPage extends BasePage {
                         marginTop: 80,
                         width: ScreenUtils.width,
                         height: 90,
-                        alignItems: "center",
-                        justifyContent: "center"
+                        alignItems: 'center',
+                        justifyContent: 'center'
                     }
                 }
             >
@@ -277,7 +277,7 @@ export default class SelectMentorPage extends BasePage {
                         fontSize: 13,
                         color: DesignRule.textColor_placeholder
                     }}
-                    value={"暂无顾问"}
+                    value={'暂无顾问'}
                 />
                 <UIText
                     style={{
@@ -285,7 +285,7 @@ export default class SelectMentorPage extends BasePage {
                         fontSize: 13,
                         color: DesignRule.textColor_placeholder
                     }}
-                    value={"请填写会员号 或 跳过"}
+                    value={'请填写会员号 或 跳过'}
                 />
             </View>
         );
@@ -400,7 +400,7 @@ export default class SelectMentorPage extends BasePage {
             LoginAPI.mentorBind({
                 code: mentorData.perfectNumberCode
             }).then(res => {
-                bridge.$toast("选择成功");
+                bridge.$toast('选择成功');
                 homeRegisterFirstManager.setShowRegisterModalUrl(res.data.give);
                 this.$navigateBackToHome();
             }).catch(error => {
@@ -411,10 +411,10 @@ export default class SelectMentorPage extends BasePage {
 
     };
     jumpToWriteCodePage = () => {
-        this.$navigate("login/login/InviteCodePage");
+        this.$navigate('login/login/InviteCodePage');
     };
     _createItemView = () => {
-        console.log("选中索引" + this.state.selectIndex);
+        console.log('选中索引' + this.state.selectIndex);
         this.itemViewArr = [];
         this.itemRefArr = [];
         this.state.mentorData.map((item, index) => {
@@ -447,7 +447,7 @@ export default class SelectMentorPage extends BasePage {
         });
     };
     _toDetailPage = (itemData) => {
-        this.$navigate("login/login/MentorDetailPage", {
+        this.$navigate('login/login/MentorDetailPage', {
             itemData: itemData,
             give: this.params.give
         });
@@ -456,10 +456,10 @@ export default class SelectMentorPage extends BasePage {
         return (
             <View
                 style={{
-                    flexDirection: "row",
-                    justifyContent: "center",
+                    flexDirection: 'row',
+                    justifyContent: 'center',
                     marginTop: px2dp(80),
-                    alignItems: "center"
+                    alignItems: 'center'
                 }}
             >
                 <Text
@@ -467,7 +467,7 @@ export default class SelectMentorPage extends BasePage {
                         fontSize: 23,
                         color: DesignRule.textColor_mainTitle,
                         marginLeft: 15,
-                        justifyContent: "center"
+                        justifyContent: 'center'
                     }}
                 >
                     请选择一个服务顾问
@@ -516,7 +516,7 @@ const SwichStyles = StyleSheet.create({
     bgStyle: {
         color: DesignRule.textColor_white,
         // justifyContent:'center'
-        alignItems: "center"
+        alignItems: 'center'
         // paddingLeft:ScreenUtils.width/5 * 2
     }
 

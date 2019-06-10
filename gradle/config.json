@@ -27,14 +27,6 @@
         "content": "apply from: '../../../android/rn-gradient.gradle'",
         "bulid_path": "../node_modules/react-native-linear-gradient/android/build.gradle"
     },
-    "svg": {
-        "content": "apply from: '../../../android/rn-svg.gradle'",
-        "bulid_path": "../node_modules/react-native-svg/android/build.gradle"
-    },
-    "icons": {
-        "content": "apply from: '../../../android/rn-vector-icons.gradle'",
-        "bulid_path": "../node_modules/react-native-vector-icons/android/build.gradle"
-    },
     "video": {
         "content": "apply from: '../../../android/rn-video.gradle'",
         "bulid_path": "../node_modules/react-native-video/android-exoplayer/build.gradle"

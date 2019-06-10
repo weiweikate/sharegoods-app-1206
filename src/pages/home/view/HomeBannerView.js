@@ -29,7 +29,7 @@ export default class HomeBannerView extends Component {
             let params = homeModule.paramsNavigate(data);
             const { navigate } = this.props;
 
-            track(trackEvent.bannerClick, homeModule.bannerPoint(data, homePoint.homeBanner));
+            track(trackEvent.bannerClick, homeModule.bannerPoint(data, homePoint.homeBanner, index));
             navigate(router, { ...params });
         }
     };

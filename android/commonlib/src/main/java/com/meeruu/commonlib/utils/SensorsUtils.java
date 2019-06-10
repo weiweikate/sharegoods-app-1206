@@ -89,8 +89,6 @@ public class SensorsUtils {
         }
         // rn
         SensorsDataAPI.sharedInstance().enableReactNativeAutoTrack();
-        // crash
-        SensorsDataAPI.sharedInstance().trackAppCrash();
     }
 
     public static void trackLogin(String userId) {

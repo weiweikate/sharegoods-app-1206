@@ -11,6 +11,8 @@ import userInfoImg from './userInfoImg';
 import collectShop from './collectShop';
 import mentor from './mentor';
 import cashAccount from './userInfoImg/cashAccountImg';
+import showFans from './showFans';
+
 const index = {
     collectShop: {
         ...collectShop
@@ -47,6 +49,9 @@ const index = {
     },
     cashAccount:{
         ...cashAccount
+    },
+    showFans:{
+        ...showFans
     },
     ...res
 };

@@ -16,7 +16,7 @@ class HomeFocusAdModel {
         try {
             const res = yield HomeApi.getHomeData({ type: homeType.focusGrid });
             this.ad = res.data || [];
-            this.foucusHeight = this.ad.length > 0 ? kAdHeight * 2 - 0.5 : 0;
+            this.foucusHeight = this.ad.length > 0 ? (kAdHeight * 2 - 0.5) : 0;
             homeModule.changeHomeList(homeType.focusGrid);
         } catch (error) {
             console.log(error);

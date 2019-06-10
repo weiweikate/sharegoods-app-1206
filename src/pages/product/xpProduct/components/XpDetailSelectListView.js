@@ -50,7 +50,7 @@ export class XpDetailSelectListView extends Component {
 
     _scrollToIndex = (index) => {
         this.flatList && this.flatList.scrollToIndex({
-            viewPosition: Platform.OS === 'ios'? 0.5 : 0,//ios可以弹性拉伸停驻点在中间，android不可弹性拉伸停驻点在起点。这个比较好看
+            viewPosition: Platform.OS === 'ios' ? 0.5 : 0,//ios可以弹性拉伸停驻点在中间，android不可弹性拉伸停驻点在起点。这个比较好看
             animated: true,
             index: index
         });

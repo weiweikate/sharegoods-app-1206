@@ -1,107 +1,107 @@
 const  pageModular = {
     'homePage':{
-        "des":'首页浏览',
-        "name":"ViewHomePage",
-        "params":{}
+        'des':'首页浏览',
+        'name':'ViewHomePage',
+        'params':{}
     },
     'ViewShoppingcart':{
-        "des": "浏览购物车页面",
-        "name": "ViewShoppingcart",//  提交订单
-        "params": {}
-    },
-    'CartCheckoutClick':{
-        "des": "购物车点击结算",
-        "name": "ViewShoppingcart",//  提交订单
-        "params": {}
+        'des': '浏览购物车页面',
+        'name': 'ViewShoppingcart',//  提交订单
+        'params': {}
     },
     'specialTopicPage':{
-        "des": "专题页预览",
-        "name":"ViewSpecialTopicPage",
-        "params":{}
+        'des': '专题页预览',
+        'name':'ViewSpecialTopicPage',
+        'params':{}
     },
-    "xiuChang":{
-        "des": "秀场页面预览",
-        "name":"ViewXiuChang",
-        "params":{}
+    'SpecialTopicPagelistClick':{
+        'des':'专题列表item的点击',
+        'name':'SpecialTopicPagelistClick',
+        'params':{}
     },
-    "xiuChangDetail":{
-        "des": "秀场详情页面预览",
-        "name":"XiuChangDetails",
-        "params":{}
+    'xiuChang':{
+        'des': '秀场页面预览',
+        'name':'ViewXiuChang',
+        'params':{}
     },
-    "pinShop":{
-        "des": "拼店",
-        "name":"ViewPinShop",
-        "params":{}
+    'xiuChangDetail':{
+        'des': '秀场详情页面预览',
+        'name':'XiuChangDetails',
+        'params':{}
     },
-    "shoppingcart":{
-        "des": "购物车页面",
-        "name":"ViewShoppingcart",
-        "params":{}
+    'pinShop':{
+        'des': '拼店',
+        'name':'ViewPinShop',
+        'params':{}
     },
-    "myPage":{
-        "des": "我的页面",
-        "name":"ViewMyPage",
-        "params":{}
+    'shoppingcart':{
+        'des': '购物车页面',
+        'name':'ViewShoppingcart',
+        'params':{}
     },
-    "loginPage":{
-        "des": "登录页面",
-        "name":"LoginPage",
-        "params":{}
+    'myPage':{
+        'des': '我的页面',
+        'name':'ViewMyPage',
+        'params':{}
     },
-    "registerPage":{
-        "des":"注册页浏览",
-        "name":"RegisterPage",
-        "params":{}
+    'loginPage':{
+        'des': '登录页面',
+        'name':'LoginPage',
+        'params':{}
     },
-    "oneKeyLoginPage":{
-        "des": "一键登录页面",
-        "name":"OnKeyLoginPage",
-        "params":{}
+    'registerPage':{
+        'des':'注册页浏览',
+        'name':'RegisterPage',
+        'params':{}
     },
-    "passLoginPage":{
-        "des": "一键登录页面",
-        "name":"PassLoginPage",
-        "params":{}
+    'oneKeyLoginPage':{
+        'des': '一键登录页面',
+        'name':'OnKeyLoginPage',
+        'params':{}
     },
-    "verifySMSPage":{
-        "des":"浏览短信注册码页",
-        "name":"VerifySMSPage",
-        "params":{}
+    'passLoginPage':{
+        'des': '一键登录页面',
+        'name':'PassLoginPage',
+        'params':{}
     },
-    "fillInviterPage":{
-        "des":"浏览填写邀请人页",
-        "name":"FillInviterPage",
-        "params":{}
+    'verifySMSPage':{
+        'des':'浏览短信注册码页',
+        'name':'VerifySMSPage',
+        'params':{}
     },
-    "adviserSelectPage":{
-        "des":"浏览顾问选择页",
-        "name":"AdviserSelectPage",
-        "params":{}
+    'fillInviterPage':{
+        'des':'浏览填写邀请人页',
+        'name':'FillInviterPage',
+        'params':{}
     },
-    "productDetailPage":{
-        "des":"浏览商品详情",
-        "name":"productDetail",
-        "params":{}
+    'adviserSelectPage':{
+        'des':'浏览顾问选择页',
+        'name':'AdviserSelectPage',
+        'params':{}
     },
-    "orderConfirmPage":{
-        "des":"浏览确认订单页",
-        "name":"ViewOrderConfirmPage"
+    'productDetailPage':{
+        'des':'浏览商品详情',
+        'name':'productDetail',
+        'params':{}
     },
-    "orderPayPage":{
-        "des":"浏览订单支付页",
-        "name":"ViewOrderPayPage",
-        "params":{}
+    'orderConfirmPage':{
+        'des':'浏览确认订单页',
+        'name':'ViewOrderConfirmPage'
     },
-    "orderPayChannelPage":{
-        "des":"订单支付页-三方",
-        "name":"ViewOrderPayChannelPage",
-        "params":{}
+    'orderPayPage':{
+        'des':'浏览订单支付页',
+        'name':'ViewOrderPayPage',
+        'params':{}
     },
-    "orderPayResultPage":{
-        "des":"支付结果页",
-        "name":"ViewOrderPayResultPage",
-        "params":{}
+    'orderPayChannelPage':{
+        'des':'订单支付页-三方',
+        'name':'ViewOrderPayChannelPage',
+        'params':{}
+    },
+    'orderPayResultPage':{
+        'des':'支付结果页',
+        'name':'ViewOrderPayResultPage',
+        'params':{}
     }
 
 }

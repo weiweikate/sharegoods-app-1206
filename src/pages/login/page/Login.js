@@ -1,18 +1,18 @@
-import React, {} from "react";
+import React, {} from 'react';
 import {
     View,
-    Image,
-} from "react-native";
-import BasePage from "../../../BasePage";
-import Styles from "../style/Login.style";
-import { createLoginButton, loginBtnType } from "../components/Login.button.view";
-import res from "../res";
-import RouterMap from "../../../navigation/RouterMap";
+    Image
+} from 'react-native';
+import BasePage from '../../../BasePage';
+import Styles from '../style/Login.style';
+import { createLoginButton, loginBtnType } from '../components/Login.button.view';
+import res from '../res';
+import RouterMap from '../../../navigation/RouterMap';
 import { oneClickLoginValidation, wxLoginAction } from '../model/LoginActionModel';
-import { TrackApi } from "../../../utils/SensorsTrack";
-import { startLoginAuth } from "../model/PhoneAuthenAction";
-import { observer } from "mobx-react";
-import loginModel from "../model/LoginModel";
+import { TrackApi } from '../../../utils/SensorsTrack';
+import { startLoginAuth } from '../model/PhoneAuthenAction';
+import { observer } from 'mobx-react';
+import loginModel from '../model/LoginModel';
 
 const {
     other: {
@@ -25,14 +25,15 @@ export default class Login extends BasePage {
 
     constructor(props) {
         super(props);
-        this.state = {
-            canPhoneAuthen: false,//是否可以本地号码一键登录 默认不可以
-            isSelectProtocol: true,
-            tempPhone:"",
-            authenToken: ""
-        };
         TrackApi.loginPage();
+        this.state = {
+            isSelectProtocol: true,
+            //如果从app内部h5过来登录的，可能存在此字段
+            campaignType: this.params.campaignType ? this.params.campaignType : null,
+            spm: this.params.spm ? this.params.spm : null
+        };
     }
+
     // 导航配置
     $navigationBarOptions = {
         gesturesEnabled: false
@@ -43,10 +44,7 @@ export default class Login extends BasePage {
     }
 
     componentDidMount() {
-            //ios平台主动开启
-            this.setState({
-                canPhoneAuthen: true
-            });
+
     }
 
     _render() {
@@ -65,9 +63,9 @@ export default class Login extends BasePage {
                 {
                     <View style={Styles.middleBgContent}>
                         {
-                            createLoginButton(loginBtnType.wxLoginBtnType, "微信授权登录", () => {
+                            createLoginButton(loginBtnType.wxLoginBtnType, '微信授权登录', () => {
                                 this._clickAction(loginBtnType.wxLoginBtnType);
-                            },true)
+                            }, true)
                         }
                     </View>
 
@@ -76,18 +74,18 @@ export default class Login extends BasePage {
                 <View style={Styles.bottomBgContent}>
                     {
 
-                       loginModel.authPhone? createLoginButton(loginBtnType.localPhoneNumLoginType, "一键登录", () => {
+                        loginModel.authPhone ? createLoginButton(loginBtnType.localPhoneNumLoginType, '一键登录', () => {
                             this._clickAction(loginBtnType.localPhoneNumLoginType);
-                        },false):null
+                        }, false) : null
                     }
                     {
-                        createLoginButton(loginBtnType.registerBtnType, "注册新账号", () => {
+                        createLoginButton(loginBtnType.registerBtnType, '注册新账号', () => {
                             this._clickAction(loginBtnType.registerBtnType);
                             // this.$navigate(RouterMap.InputPhoneNum);
                         })
                     }
                     {
-                        createLoginButton(loginBtnType.otherLoginBtnType, "其他登录方式", () => {
+                        createLoginButton(loginBtnType.otherLoginBtnType, '其他登录方式', () => {
                             this._clickAction(loginBtnType.otherLoginBtnType);
                         })
                     }
@@ -98,29 +96,39 @@ export default class Login extends BasePage {
 
     _clickAction = (btnType) => {
         if (!this.state.isSelectProtocol) {
-            this.$toastShow("请先勾选用户协议");
+            this.$toastShow('请先勾选用户协议');
             return;
         }
         if (btnType === loginBtnType.wxLoginBtnType) {
             this._wxLogin();
         } else if (btnType === loginBtnType.localPhoneNumLoginType) {
-            startLoginAuth().then((data)=>{
+            startLoginAuth().then((data) => {
                 let { navigation } = this.props;
                 oneClickLoginValidation(loginModel.authPhone, data, navigation);
-            }).catch((error)=>{
-                this.$toastShow("认证失败,请选择其他登录方式");
-            })
-        } else if(btnType === loginBtnType.registerBtnType) {
-            this.$navigate(RouterMap.InputPhoneNum);
-        }else {
-            this.$navigate(RouterMap.OtherLoginPage);
+            }).catch((error) => {
+                this.$toastShow('认证失败,请选择其他登录方式');
+            });
+        } else if (btnType === loginBtnType.registerBtnType) {
+            TrackApi.LoginClick();
+            this.$navigate(RouterMap.InputPhoneNum,
+                {
+                    campaignType: this.state.campaignType,
+                    spm:this.state.spm
+
+                });
+        } else {
+            this.$navigate(RouterMap.OtherLoginPage,
+                {
+                    campaignType: this.state.campaignType,
+                    spm: this.state.spm
+                });
         }
     };
     _wxLogin = () => {
         wxLoginAction((code, data) => {
             if (code === 10000) {
                 this.$navigateBack(-1);
-                this.params.callback &&  this.params.callback();
+                this.params.callback && this.params.callback();
             } else if (code === 34005) {
                 //绑定手机号
                 this.$navigate(RouterMap.InputPhoneNum, data);

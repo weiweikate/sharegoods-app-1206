@@ -13,7 +13,7 @@ const CommonUtils = {
      */
     deepClone: function(obj) {
         // Handle the 3 simple types, and null or undefined
-        if (obj == null || typeof obj !== "object")
+        if (obj == null || typeof obj !== 'object')
             {return obj;}
 
         // Handle Date

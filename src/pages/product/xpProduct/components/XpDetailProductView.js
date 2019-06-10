@@ -9,6 +9,7 @@ import { formatDate } from '../../../../utils/DateUtils';
 import StringUtils from '../../../../utils/StringUtils';
 
 const { px2dp } = ScreenUtils;
+const { isNoEmpty } = StringUtils;
 
 @observer
 export class XpDetailProductView extends Component {
@@ -29,9 +30,11 @@ export class XpDetailProductView extends Component {
                     </View>
                 </TouchableWithoutFeedback>
                 <View style={styles.levelPriceView}>
-                    <View style={styles.levelView}>
-                        <Text style={styles.levelText}>{pPriceType}</Text>
-                    </View>
+                    {
+                        isNoEmpty(pPriceType) ? <View style={styles.levelView}>
+                            <Text style={styles.levelText}>{pPriceType}</Text>
+                        </View> : null
+                    }
                     <View style={styles.priceView}>
                         <Text style={styles.priceText}>¥<Text
                             style={styles.priceTextNum}>{pPrice}</Text></Text>

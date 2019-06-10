@@ -295,9 +295,9 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
         ReactContext context = mContext.get();
         if (context != null) {
             FrameLayout frameLayout = new FrameLayout(context);
+            frameLayout.removeView(mHostView);
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
             frameLayout.setLayoutParams(params);
-            frameLayout.removeView(mHostView);
             frameLayout.addView(mHostView);
             frameLayout.setFocusable(true);
             frameLayout.setFocusableInTouchMode(true);

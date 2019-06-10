@@ -20,7 +20,15 @@ const api = {
     // alipay: ['/payV2/alipay'],
     alipay: ['/pay/pay/payment'],
     //微信支付v2
-    wechatPay: ['/payV2/wxpay']
+    wechatPay: ['/payV2/wxpay'],
+    //支付成功后的相关接口 参数 popupBoxType: 2
+    getUserPopupBoxByType:['/popup/getPopupBoxByType',{method:'get'}],
+
+    getUserCouponAmount:['/user/coupon/getUserCouponAmount',{method:'get'}],
+    //支付成功后判断是否可以分享
+    judgeShare: ['/user/share/judgeShare'],
+    //分享后的回调
+    shareCallback: ['/user/share/shareCallback'],
 };
 import ApiUtils from '../../api/network/ApiUtils';
 

@@ -50,7 +50,7 @@ public class WaveLoadingView extends View {
     private static final int DEFAULT_WAVE_PROGRESS_VALUE = 0;
     private static final int DEFAULT_WAVE_COLOR = Color.parseColor("#212121");
     private static final int DEFAULT_WAVE_LIGHT_COLOR = Color.parseColor("#b2000000");
-    private static final int DEFAULT_WAVE_BACKGROUND_COLOR = Color.parseColor("#00000000");
+    private static final int DEFAULT_WAVE_BACKGROUND_COLOR = android.R.color.transparent;
     private static final int DEFAULT_TITLE_COLOR = Color.parseColor("#212121");
     private static final int DEFAULT_STROKE_COLOR = Color.TRANSPARENT;
     private static final float DEFAULT_BORDER_WIDTH = 0;

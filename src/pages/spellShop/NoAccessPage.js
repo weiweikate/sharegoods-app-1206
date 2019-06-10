@@ -3,7 +3,7 @@ import {
     View, ScrollView,
     Image,
     RefreshControl, ImageBackground,
-    StyleSheet
+    StyleSheet, TouchableWithoutFeedback
 } from 'react-native';
 import SpellStatusModel from './model/SpellStatusModel';
 import ScreenUtils from '../../utils/ScreenUtils';
@@ -11,6 +11,8 @@ import NavigatorBar from '../../components/pageDecorator/NavigatorBar/NavigatorB
 import DesignRule from '../../constants/DesignRule';
 import res from './res';
 import OssHelper from '../../utils/OssHelper';
+import { navigate } from '../../navigation/RouterMap';
+import apiEnvironment from '../../api/ApiEnvironment';
 
 const {
     pindianzhaojilingbgd,
@@ -46,20 +48,26 @@ export default class NoAccessPage extends Component {
                     <View style={{ flex: 1 }}>
                         <ImageBackground style={[styles.bgImg, { width: imgWidth, height: imgHeight }]}
                                          source={imgError ? pindianzhaojilingbgd : { uri: OssHelper('/app/pindianzhaojilingbgd.png') }}
-                                         onError = {()=>{
+                                         onError={() => {
                                              this.setState({
                                                  imgError: true
-                                             })
+                                             });
                                          }}
                                          resizeMode='stretch'>
-                            <Image style={{ width: imgWidth, height: imgHeight }}
-                                   source={imgError ? pindianzhaojiling : { uri: OssHelper('/app/pindianzhaojiling.png') }}
-                                   onError = {()=>{
-                                       this.setState({
-                                           imgError: true
-                                       })
-                                   }}
-                                   resizeMode='contain'/>
+                            <TouchableWithoutFeedback onPress={() => {
+                                navigate('HtmlPage', {
+                                    uri: `${apiEnvironment.getCurrentH5Url()}/topic/temp/ST20190084`
+                                });
+                            }}>
+                                <Image style={{ width: imgWidth, height: imgHeight }}
+                                       source={imgError ? pindianzhaojiling : { uri: OssHelper('/app/pindianzhaojiling.png') }}
+                                       onError={() => {
+                                           this.setState({
+                                               imgError: true
+                                           });
+                                       }}
+                                       resizeMode='contain'/>
+                            </TouchableWithoutFeedback>
                         </ImageBackground>
                     </View>
                 </ScrollView>

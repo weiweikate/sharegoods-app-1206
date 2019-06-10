@@ -53,7 +53,7 @@ export default class SelectionPage extends Component {
         const { specifyList, skuList, promotionLimitNum } = data;
         this.state.source_Type = propData.sourceType;
         this.state.unShowAmount = propData.unShowAmount;
-        this.state.promotionLimit = promotionLimitNum;
+        this.state.promotionLimit = this.state.source_Type === sourceType.promotion ? promotionLimitNum : null;
 
         let specMapTemp = JSON.parse(JSON.stringify(specifyList || []));
         let priceListTemp = JSON.parse(JSON.stringify(skuList || []));
@@ -150,7 +150,7 @@ export default class SelectionPage extends Component {
         let stock = 0;
         this.state.selectSpecList.forEach((item) => {
             //总库存库存遍历相加
-            stock = stock + item.sellStock;
+            stock = stock + (this.state.source_Type === sourceType.promotion ? item.promotionStockNum : item.sellStock);
         });
         this.state.maxStock = stock;
     };
@@ -257,9 +257,15 @@ export default class SelectionPage extends Component {
                 ref={(ref) => this.modal = ref}
                 animationType="none"
                 visible={this.state.modalVisible}
-                onRequestClose={() => this.setState({ modalVisible: false })}>
+                onRequestClose={() => {
+                    this.setState({ modalVisible: false }, () => {
+                        this.props.closeCallBack && this.props.closeCallBack();
+                    });
+                }}>
                 <View style={styles.container}>
-                    <TouchableWithoutFeedback onPress={() => this.setState({ modalVisible: false })}>
+                    <TouchableWithoutFeedback onPress={() => this.setState({ modalVisible: false }, () => {
+                        this.props.closeCallBack && this.props.closeCallBack();
+                    })}>
                         <View style={{ height: ScreenUtils.autoSizeHeight(175) }}/>
                     </TouchableWithoutFeedback>
                     <View style={{ flex: 1 }}>
@@ -267,7 +273,9 @@ export default class SelectionPage extends Component {
                                              sourceType={this.state.source_Type}
                                              selectStrList={this.state.selectStrList}
                                              selectSpecList={this.state.selectSpecList}
-                                             closeSelectionPage={() => this.setState({ modalVisible: false })}/>
+                                             closeSelectionPage={() => this.setState({ modalVisible: false }, () => {
+                                                 this.props.closeCallBack && this.props.closeCallBack();
+                                             })}/>
                         <View style={{ flex: 1, backgroundColor: 'white' }}>
                             <ScrollView>
                                 {this._addSelectionSectionView()}

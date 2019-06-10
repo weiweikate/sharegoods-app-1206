@@ -9,6 +9,8 @@
 #import "LoginAndShareModule.h"
 #import "UIView+captureSceen.h"
 #import "ShareImageMaker.h"
+#import "ShowShareImgMaker.h"
+
 #import <AssetsLibrary/AssetsLibrary.h>
 
 @implementation LoginAndShareModule
@@ -174,6 +176,21 @@ RCT_EXPORT_METHOD(creatShareImage:(id) jsonParam
                                                                }];
   });
 }
+
+/**
+ 
+ 
+ @param id
+ {
+ imageUrlStr: NSString,
+ titleStr: NSString,
+ priceStr: NSString,
+ QRCodeStr: NSString,
+ }
+ onSuccess(NSSting) 成功的回调
+ onError(NSSting)   失败的回调
+ */
+
 /**
 @QRCodeStr  二维码字符串
 onSuccess(NSSting) 成功的回调
@@ -212,5 +229,55 @@ RCT_EXPORT_METHOD(createPromotionShareImage:(NSString *) QRCodeStr
                                                                    }];
   });
 }
-              
+
+
+/**
+ @QRCodeStr  生成二维码并且下载到手机
+ onSuccess(NSSting) 成功的回调
+ onError(NSSting)   失败的回调
+ */
+RCT_EXPORT_METHOD(createQRToAlbum:(NSString *) QRCodeStr
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject){
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [[ShareImageMaker sharedInstance] creatQRCodeImageWithQRCodeStr:QRCodeStr completion:^(NSString *pathStr, NSString *errorStr) {
+      if (errorStr) {
+//        reject(nil,nil,errorStr);
+      }else{
+          UIImage * img = [UIImage imageWithContentsOfFile:pathStr];
+          if(img){
+            [[JRShareManager sharedInstance]saveImage:img];
+            resolve(@"0000");
+          }
+      }
+    }];
+  });
+}
+
+/**
+ @QRCodeStr  生成二维码和商品并且下载到手机
+ onSuccess(NSSting) 成功的回调
+ onError(NSSting)   失败的回调
+ */
+RCT_EXPORT_METHOD(createShowProductImage:(id) jsonParam
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject){
+  dispatch_async(dispatch_get_main_queue(), ^{
+    ShareImageMakerModel * model = [ShareImageMakerModel modelWithJSON:jsonParam];
+    
+    [[ShareImageMaker sharedInstance]creatQRCodeImageAndProductModel:model completion:^(NSString *pathStr, NSString *errorStr) {
+      if (errorStr) {
+                //        reject(nil,nil,errorStr);
+              }else{
+                UIImage * img = [UIImage imageWithContentsOfFile:pathStr];
+                if(img){
+                  [[JRShareManager sharedInstance]saveImage:img];
+                  resolve(@"0000");
+                }
+              }
+    }];
+  });
+}
+
+
 @end

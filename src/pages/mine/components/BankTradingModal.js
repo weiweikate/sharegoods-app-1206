@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import { StyleSheet, View, TouchableOpacity, Image ,Keyboard} from "react-native";
+import React, { Component } from 'react';
+import { StyleSheet, View, TouchableOpacity, Image ,Keyboard} from 'react-native';
 // import { UIText, UIImage } from '../../components/ui'
-import PasswordInput from "./PasswordInput";
-import ScreenUtils from "../../../utils/ScreenUtils";
+import PasswordInput from './PasswordInput';
+import ScreenUtils from '../../../utils/ScreenUtils';
 
 const { px2dp } = ScreenUtils;
-import PropTypes from "prop-types";
-import res from "./../../payment/res";
+import PropTypes from 'prop-types';
+import res from './../../payment/res';
 import Modal from '../../../comm/components/CommModal';
-import DesignRule from "../../../constants/DesignRule";
+import DesignRule from '../../../constants/DesignRule';
 import {MRText as Text} from '../../../components/ui'
 const closeImg = res.close;
 
@@ -108,49 +108,49 @@ const styles = StyleSheet.create({
         width:ScreenUtils.width
     },
     password: {
-        width: ScreenUtils.width-px2dp(24),
+        width: ScreenUtils.width - px2dp(24),
         height: px2dp(57),
         marginTop:px2dp(19)
     },
     keyboard: {
         height: 0,
-        backgroundColor: "#f00"
+        backgroundColor: '#f00'
     },
     form: {
         height: px2dp(492),
         width: ScreenUtils.width,
-        backgroundColor: "#fff",
-        alignItems: "center"
+        backgroundColor: '#fff',
+        alignItems: 'center'
     },
     passwordForm: {
-        justifyContent: "center",
-        alignItems: "center",
+        justifyContent: 'center',
+        alignItems: 'center',
         height: px2dp(492)
     },
     header: {
         height: px2dp(45),
-        flexDirection: "row",
-        alignItems: "center"
+        flexDirection: 'row',
+        alignItems: 'center'
     },
     title: {
-        color: "#222",
+        color: '#222',
         fontSize: px2dp(18)
     },
     closeButton: {
         height: px2dp(47),
         width: px2dp(47),
-        alignItems: "center",
-        justifyContent: "center"
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     titleView: {
         flex: 1,
-        alignItems: "center",
-        justifyContent: "center"
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     line: {
-        backgroundColor: "#ddd",
+        backgroundColor: '#ddd',
         height: ScreenUtils.onePixel,
-        width: ScreenUtils.width-2*px2dp(15)
+        width: ScreenUtils.width - 2 * px2dp(15)
     },
     input: {
         color: DesignRule.textColor_mainTitle,
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
         marginRight:px2dp(18)
     },
     forgetText: {
-        color: "#4A90E2",
+        color: '#4A90E2',
         fontSize: px2dp(16)
     },
     msgStyle:{

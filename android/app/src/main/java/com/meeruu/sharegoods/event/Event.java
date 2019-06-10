@@ -13,4 +13,17 @@ public class Event {
             return homeType;
         }
     }
+
+    public static class MRNativeTagEvent {
+        private String data;
+
+        public MRNativeTagEvent(String data) {
+            this.data = data;
+        }
+
+        public String getData() {
+            return data;
+        }
+    }
+
 }

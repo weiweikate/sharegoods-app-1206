@@ -14,6 +14,7 @@ import com.meeruu.commonlib.utils.DeviceUtils;
 import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.SDCardUtils;
+import com.meeruu.commonlib.utils.SPCacheUtils;
 import com.meeruu.commonlib.utils.Utils;
 import com.meituan.android.walle.WalleChannelReader;
 
@@ -517,10 +518,11 @@ public class RequestManager {
         Map<String, String> params = new HashMap<>();
         String channel = WalleChannelReader.getChannel(BaseApplication.appContext, "guanwang");
         params.put("device", DeviceUtils.getUniquePsuedoID(null));
-        params.put("channel", channel);
+        params.put("channel", channel + "");
         params.put("platform", "Android " + DeviceUtils.getSystemName());
         params.put("Security-Policy", "SIGNATURE");
-        params.put("version", AppUtils.getVersionName());
+        params.put("sg-token", SPCacheUtils.get(ParameterUtils.LOGIN_TOKEN, "") + "");
+        params.put("version", AppUtils.getVersionName() + "");
         return params;
     }
 

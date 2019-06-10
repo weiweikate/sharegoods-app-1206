@@ -27,6 +27,7 @@ repositories {
 
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
+    api project(':commonlib')
     api rootProject.ext.dependencies.support
     // From node_modules
     api(rootProject.ext.dependencies.rn) {

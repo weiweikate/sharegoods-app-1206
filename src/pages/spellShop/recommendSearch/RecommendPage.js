@@ -31,6 +31,7 @@ import { TrackApi } from '../../../utils/SensorsTrack';
 import { homeType } from '../../home/HomeTypes';
 import { homeModule } from '../../home/model/Modules';
 import { bannerModule } from './PinShopBannerModel';
+import { IntervalMsgView, IntervalType } from '../../../comm/components/IntervalMsgView';
 
 const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
@@ -327,6 +328,7 @@ export default class RecommendPage extends BasePage {
                              renderItem={this._renderItem}
                              sections={[{ data: this.state.dataList }]}
                              initialNumToRender={5}/>
+                <IntervalMsgView pageType = {IntervalType.shopHome}/>
             </View>
         );
     }

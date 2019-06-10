@@ -21,8 +21,8 @@ android {
         applicationId rootProject.ext.android.applicationId
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
-        versionCode 1205
-        versionName "1.2.5"
+        versionCode 1300
+        versionName "1.3.0"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -77,10 +77,8 @@ android {
             buildConfigField "String", "CODEPUSH_KEY", '""'
             manifestPlaceholders = [
                     JPUSH_PKGNAME: "com.meeruu.sharegoods",
-                    // 生产环境
-                    JPUSH_APPKEY  : "7fde54543daf045a209a7abf",
                     // 开发环境
-//                    JPUSH_APPKEY : "3288c3f3feb6c119e3d88049",
+                    JPUSH_APPKEY : "3288c3f3feb6c119e3d88049",
                     JPUSH_CHANNEL: "guanwang", //暂时填写默认值即可.
                     XIAOMI_APPKEY : "",//小米平台注册的appkey
                     XIAOMI_APPID  : "",//小米平台注册的appid
@@ -185,8 +183,6 @@ dependencies {
 
     api(name: 'alipaySdk-15.5.9-20181123210657-noUtdid', ext: 'aar')
     api project(':react-native-video')
-    api project(':react-native-vector-icons')
-    api project(':react-native-svg')
     api project(':react-native-linear-gradient')
     api project(':react-native-fetch-blob')
     api project(':rn-image-crop-picker')

@@ -30,12 +30,12 @@ export default class HomeFocusAdView extends Component {
         ];
     }
 
-    _adAction(value) {
+    _adAction(value, index) {
         if (!value) {
             bridge.$toast('获取数据失败！');
             return;
         }
-        track(trackEvent.bannerClick, homeModule.bannerPoint(value, homePoint.homeAd));
+        track(trackEvent.bannerClick, homeModule.bannerPoint(value, homePoint.homeAd, index));
         const router = homeModule.homeNavigate(value.linkType, value.linkTypeCode);
         const { navigate } = this.props;
         const params = homeModule.paramsNavigate(value);
@@ -48,7 +48,7 @@ export default class HomeFocusAdView extends Component {
         let len = ad.length > 4 ? 4 : ad.length;
         let items = [];
         for (let i = 0; i < len; i++) {
-            items.push(<TouchableWithoutFeedback key={i} onPress={() => this._adAction(ad[i])}>
+            items.push(<TouchableWithoutFeedback key={i} onPress={() => this._adAction(ad[i], i)}>
                 <View
                     style={[styles.ad, { marginTop: homeExpandBnnerModel.banner.length === 0 ? px2dp(5) : ((i === 0 || i === 1) ? px2dp(15) : px2dp(5)) }, this.adRadius[i]]}>
                     <ImageLoad source={{ uri: ad[i] ? ad[i].image : '' }}

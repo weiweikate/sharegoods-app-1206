@@ -7,7 +7,44 @@ public class ShareImageBean {
     public String QRCodeStr;
     public String retail;
     public String spell;
+    public String discount;
+
     public String imageType;
+    public String headerImage;
+    public String userName;
+    public String diamondNum;
+
+    public String getDiamondNum() {
+        return diamondNum;
+    }
+
+    public void setDiamondNum(String diamondNum) {
+        this.diamondNum = diamondNum;
+    }
+
+    public String getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(String discount) {
+        this.discount = discount;
+    }
+
+    public String getHeaderImage() {
+        return headerImage;
+    }
+
+    public void setHeaderImage(String headerImage) {
+        this.headerImage = headerImage;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
     public String getPriceType() {
         return priceType;
@@ -34,6 +71,7 @@ public class ShareImageBean {
     public void setRetail(String retail) {
         this.retail = retail;
     }
+
 
     public String getSpell() {
         return spell;
@@ -78,6 +116,6 @@ public class ShareImageBean {
 
     @Override
     public String toString() {
-        return "ShareImageBean{" + "imageUrlStr='" + imageUrlStr + '\'' + ", titleStr='" + titleStr + '\'' + ", priceStr='" + priceStr + '\'' + ", QRCodeStr='" + QRCodeStr + '\'' + ", retail='" + retail + '\'' + ", spell='" + spell + '\'' + ", imageType='" + imageType + '\'' + ", priceType='" + priceType + '\'' + '}';
+        return "ShareImageBean{" + "imageUrlStr='" + imageUrlStr + '\'' + ", titleStr='" + titleStr + '\'' + ", priceStr='" + priceStr + '\'' + ", QRCodeStr='" + QRCodeStr + '\'' + ", retail='" + retail + '\'' + ", spell='" + spell + '\'' + ", imageType='" + imageType + '\'' + ", headerImage='" + headerImage + '\'' + ", userName='" + userName + '\'' + ", priceType='" + priceType + '\'' + '}';
     }
 }

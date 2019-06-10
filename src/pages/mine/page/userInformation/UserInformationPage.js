@@ -54,6 +54,7 @@ export default class UserInformationPage extends BasePage {
         if (user.isLogin) {
             MineApi.getUser().then(res => {
                 let data = res.data;
+                console.log('data',data);
                 user.saveUserInfo(data);
             }).catch(err => {
                 this.$toastShow(err.msg);
@@ -162,6 +163,9 @@ export default class UserInformationPage extends BasePage {
                 }}/>
                 <UserSingleItem leftText={'手机号'} rightText={user.phone} rightTextStyle={styles.grayText}
                                 leftTextStyle={styles.blackText} isArrow={false} isLine={false}/>
+                <UserSingleItem leftText={'微信号'} rightText={user.weChatNumber?user.weChatNumber:'设置微信号'} rightTextStyle={styles.grayText}
+                                leftTextStyle={styles.blackText} isLine={false} isArrow={true}
+                                onPress={() => this.jumpToSetWechatPage()}/>
                 {this.renderWideLine()}
                 <UserSingleItem leftText={'所在区域'}
                                 rightText={user.area ? user.province + user.city + user.area : ''}
@@ -225,6 +229,11 @@ export default class UserInformationPage extends BasePage {
         track(trackEvent.ClickModifyNickName, {});
         this.$navigate('mine/userInformation/NickNameModifyPage', { oldNickName: user.nickname });
     };
+
+    jumpToSetWechatPage = () => {
+        this.$navigate('mine/userInformation/SetWechatPage', { weChatNumber: user.weChatNumber });
+    };
+
     renderGetCityPicker = () => {
         dismissKeyboard();
         this.$navigate('mine/address/SelectAreaPage', {

@@ -34,4 +34,10 @@ public class JPushModule extends ReactContextBaseJavaModule {
         this.mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit("homeRefresh", event.getHomeType());
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onNativeTag(Event.MRNativeTagEvent event) {
+        this.mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit("activitySkip", event.getData());
+    }
 }

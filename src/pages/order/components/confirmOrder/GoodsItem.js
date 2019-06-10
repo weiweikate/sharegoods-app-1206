@@ -1,13 +1,13 @@
-import React from "react";
-import { View, TouchableOpacity } from "react-native";
+import React from 'react';
+import { View, TouchableOpacity } from 'react-native';
 import {
     UIText, MRText as Text
-} from "../../../../components/ui";
-import UIImage from "@mr/image-placeholder";
-import ScreenUtils from "../../../../utils/ScreenUtils";
-import DesignRule from "../../../../constants/DesignRule";
+} from '../../../../components/ui';
+import UIImage from '@mr/image-placeholder';
+import ScreenUtils from '../../../../utils/ScreenUtils';
+import DesignRule from '../../../../constants/DesignRule';
 function _renderTips(tips){
-    if (tips&&tips.length>0 ) {
+    if (tips && tips.length > 0 ) {
         return(
             <View style={{flexDirection: 'row', flexWrap: 'wrap', marginTop: 4, marginLeft: 10}}>
                 {
@@ -35,12 +35,12 @@ function _renderTips(tips){
 }
 const GoodsItem = props => {
     let {
-        uri = "",
-        goodsName = "",
-        salePrice = "",
+        uri = '',
+        goodsName = '',
+        salePrice = '',
         // originalPrice='',
-        category = "",
-        goodsNum = "",
+        category = '',
+        goodsNum = '',
         onPress,
         activityCodes = []
     } = props;
@@ -64,19 +64,19 @@ const GoodsItem = props => {
 
     return (
         <TouchableOpacity style={{
-            flexDirection: "row",
+            flexDirection: 'row',
             minHeight: 100,
             paddingVertical: 10,
             width: ScreenUtils.width,
-            backgroundColor: "white"
+            backgroundColor: 'white'
         }} onPress={() => onPress()}>
             <View style={{ height: 80, width: 80, marginLeft: 15 }}>
                 <UIImage style={{ height: 80, width: 80 }} source={{ uri: uri }}/>
             </View>
-            <View style={{ justifyContent: "space-between", flex: 1 }}>
-                <View style={{ height: 30, justifyContent: "center" }}>
+            <View style={{ justifyContent: 'space-between', flex: 1 }}>
+                <View style={{ height: 30, justifyContent: 'center' }}>
                     <Text style={{
-                        flexWrap: "wrap",
+                        flexWrap: 'wrap',
                         color: DesignRule.textColor_mainTitle,
                         fontSize: 13,
                         marginLeft: 10,
@@ -86,8 +86,8 @@ const GoodsItem = props => {
                     marginTop: 5,
                     marginLeft: 10,
                     marginRight: 20,
-                    flexDirection: "row",
-                    justifyContent: "space-between" }}>
+                    flexDirection: 'row',
+                    justifyContent: 'space-between' }}>
                     <UIText value={`${category}`}
                             style={{ color: DesignRule.textColor_instruction, fontSize: 13, marginRight: 20 }}/>
                     <UIText value={goodsNum} style={{ color: DesignRule.textColor_instruction, fontSize: 13 }}/>
@@ -96,7 +96,7 @@ const GoodsItem = props => {
                 <View style={{
                     marginLeft: 10,
                     marginTop: 10,
-                    flexDirection: "row",
+                    flexDirection: 'row',
                     alignItems: 'flex-end'
                 }}>
                     <Text style={{ color: DesignRule.mainColor, fontSize: 18, fontWeight: '600' }}>

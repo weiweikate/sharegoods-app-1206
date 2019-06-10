@@ -16,7 +16,7 @@ import {
 } from 'react-native';
 import DesignRule from '../../../constants/DesignRule';
 // import res from '../../../comm/res';
-import UIImage from "@mr/image-placeholder";
+import UIImage from '@mr/image-placeholder';
 import MRLoadingView from '../../../comm/components/MRLoadingView';
 
 // const { loading_bar } = res.other;

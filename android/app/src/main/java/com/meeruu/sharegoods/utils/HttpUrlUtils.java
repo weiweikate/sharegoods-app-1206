@@ -11,7 +11,7 @@ import com.meeruu.commonlib.utils.SPCacheUtils;
 public class HttpUrlUtils {
 
     /**************************** api ***************************/
-    public static final String URL_SHOWLIST = "/discover/query"; //秀场列表
+    public static final String URL_SHOWLIST = "/social/show/content/page/query"; //秀场列表
     public static final String URL_START_AD = "/advertising/queryAdvertisingList"; //秀场列表
     public static final String URL_GONGMAO = "/gongmall/contract/notify"; //签约回调
 

@@ -300,7 +300,7 @@ export default class FlyImageViewer extends Component {
         }
         this.loadedIndex.set(index, true);
 
-        const image = this.props.imageUrls[index] || {};
+        const image = this.props.imageUrls && this.props.imageUrls[index] || {};
         let imageStatus = Object.assign({}, this.state.imageSizes[index]) || {};
 
         // 保存 imageSize

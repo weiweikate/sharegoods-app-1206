@@ -32,6 +32,8 @@ import { MRText as Text, AvatarImage } from '../../../components/ui';
 import LoginAPI from '../../login/api/LoginApi';
 import CommModal from '../../../comm/components/CommModal';
 import { track, TrackApi, trackEvent } from '../../../utils/SensorsTrack';
+import TaskVIew from '../../home/view/TaskVIew';
+import { mineTaskModel } from '../../home/model/TaskModel';
 
 
 const {
@@ -50,7 +52,7 @@ const {
     mine_icon_help_service,
     mine_icon_address,
     // mine_icon_mission,
-    mine_icon_discollect,
+    // mine_icon_discollect,
     mine_message_icon_white,
     mine_setting_icon_white,
     profile_banner,
@@ -127,6 +129,7 @@ export default class MinePage extends BasePage {
                 }
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
                 TrackApi.myPage();
+                mineTaskModel.getData();
             });
         this.listener = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
         // this.refresh();
@@ -399,7 +402,7 @@ export default class MinePage extends BasePage {
                                   }}/>
                         <TouchableWithoutFeedback onPress={() => {
                             this.$navigate(RouterMap.MyPromotionPage);
-                            TrackApi.ViewLevelInterest({ levelInterestModuleSource: 2 });
+                            TrackApi.ViewLevelInterest({ moduleSource: 2 });
                         }}>
                             <View style={{
                                 justifyContent: 'space-between',
@@ -452,7 +455,7 @@ export default class MinePage extends BasePage {
     accountRender = () => {
         return (
             <ImageBackground source={mine_account_bg} style={{
-                marginTop: px2dp(41),
+                marginTop: px2dp(5),
                 marginHorizontal: px2dp(15),
                 borderRadius: px2dp(10),
                 overflow: 'hidden'
@@ -617,10 +620,11 @@ export default class MinePage extends BasePage {
                             />}
             >
                 {this.renderUserHead()}
-                {this.accountRender()}
+                <View style={{ backgroundColor: 'white' }}>{this.accountRender()}</View>
+                <TaskVIew type={'mine'} style={{ paddingTop: 10 }}/>
                 {this.orderRender()}
                 {this.utilsRender()}
-                {this.renderMoreMoney()}
+                {/*{this.renderMoreMoney()}*/}
             </ScrollView>
         );
     };
@@ -628,9 +632,11 @@ export default class MinePage extends BasePage {
     renderMoreMoney = () => {
         return (
             <TouchableWithoutFeedback onPress={() => {
-                this.$navigate(RouterMap.ShowDetailPage, { fromHome: false, id: 1 });
+                this.$navigate(RouterMap.ShowRichTextDetailPage, {
+                    fromHome: false,
+                    code: 'SHOW2019052714482778300000600000'
+                });
                 TrackApi.ViewHowTo();
-
             }}>
                 <UIImage style={styles.makeMoneyMoreBackground} resizeMode={'stretch'} source={profile_banner}/>
             </TouchableWithoutFeedback>
@@ -747,15 +753,15 @@ export default class MinePage extends BasePage {
                 this.$navigate(RouterMap.AddressManagerPage);
             }
         };
-        let collect = {
-            text: '秀场收藏',
-            icon: mine_icon_discollect,
-            onPress: () => {
-                TrackApi.ViewMyXiuCollection();
-                TrackApi.WatchXiuChang({ xiuChangModuleSource: 3 });
-                this.$navigate(RouterMap.ShowConnectPage);
-            }
-        };
+        // let collect = {
+        //     text: '秀场收藏',
+        //     icon: mine_icon_discollect,
+        //     onPress: () => {
+        //         TrackApi.ViewMyXiuCollection();
+        //         TrackApi.WatchXiuChang({ xiuChangModuleSource: 3 });
+        //         this.$navigate(RouterMap.ShowConnectPage);
+        //     }
+        // };
         let fans = {
             text: '我的秀迷',
             icon: mine_icon_fans,
@@ -793,7 +799,7 @@ export default class MinePage extends BasePage {
             }
         };
 
-        let menu = [invite, message, coupon, data, shop, service, address, collect];
+        let menu = [invite, message, coupon, data, shop, service, address];
 
         if (this.state.hasFans) {
             menu.push(fans);

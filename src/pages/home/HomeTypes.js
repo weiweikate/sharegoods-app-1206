@@ -1,3 +1,4 @@
+
 export const homeType = {
     swiper: 2,           // 首页顶部轮播
     expandBanner: 3,     // 首页通栏广告位
@@ -16,13 +17,16 @@ export const homeType = {
     classify: 'classify',
     category: 'category',
     goodsTitle: 'goodsTitle',
+    task: 'task',
     user: 'user',
     show: 11,            //秀场
     banner: 14,
     limitGo: 300,   //限时秒杀
     windowAlert: 1, //首页弹框
     guideInfo: 17,
-    Alert: 21//退出的弹窗
+    Alert: 21,//退出的弹窗
+    shopProducts: 22,//拼店详情商品列表
+    shopBanner: 23//拼店详情底部banner
 };
 
 
@@ -53,7 +57,7 @@ export const homeRoute = {
     [homeLinkType.link]: 'HtmlPage',
     [homeLinkType.lottery]: 'HtmlPage',
     [homeLinkType.customTopic]: 'HtmlPage',
-    [homeLinkType.discover]: 'show/ShowDetailPage',
+    [homeLinkType.discover]: 'show/ShowRichTextDetailPage',
     [homeLinkType.exp]: 'product/xpProduct/XpDetailPage',
     [homeLinkType.classify]: 'home/search/SearchResultPage',
     [homeLinkType.nothing]: '',  // 不做跳转
@@ -69,11 +73,11 @@ export const homePoint = {
     homeToday: 4, //4:app首页今日榜单广告位
     homeRecommad: 5, //5：app首页精品推荐广告位
     homeSubject: 6,//6：app首页超值热卖专题广告位
-    homeForyou: 7 //7：app首页为你推荐广告位
+    homeForyou: 7, //7：app首页为你推荐广告位
 // 8：app首页右下角浮动广告位
-// 9：app通用广告位
+    homeExpand: 9,// app通用广告位
 // 21：拼店首页banner推荐位
-// 31：类目搜索banner广告位
+    homeCategory: 31// 类目搜索banner广告位
 // 32：秀场banner推荐
 // 41：签到广告位
 // 51：登录/注册页面广告位

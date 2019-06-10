@@ -81,7 +81,7 @@ export default class OpenShopExplainPage extends BasePage {
             return;
         }
 
-        Alert.alert('提示', `请您确认是否创建拼店，创建拼店后则进入店铺招募同时无法加入其他拼店，需关闭招募店铺才可以加入其他拼店`,
+        Alert.alert('提示', '请您确认是否创建拼店，创建拼店后则进入店铺招募同时无法加入其他拼店，需关闭招募店铺才可以加入其他拼店',
             [
                 {
                     text: '确认开店', onPress: () => {

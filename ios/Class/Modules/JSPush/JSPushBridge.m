@@ -10,7 +10,11 @@
 #import <React/RCTBridge.h>
 
 #define HOME_REFRESH @"homeRefresh"
+#define HOME_CUSTOM_RN_SKIP @"activitySkip"
 #define HOME_CUSTOM_MSG @"HOME_CUSTOM_MSG"
+#define HOME_CUSTOM_SKIP @"HOME_CUSTOM_SKIP"
+
+
 
 @implementation JSPushBridge
 {
@@ -21,6 +25,7 @@
 -(NSArray<NSString *> *)supportedEvents{
   return @[
            HOME_REFRESH,
+           HOME_CUSTOM_RN_SKIP
            ];
 }
 RCT_EXPORT_MODULE(JSPushBridge)
@@ -33,11 +38,21 @@ RCT_EXPORT_MODULE(JSPushBridge)
                                            selector:@selector(toHomePageCustomMsg:)
                                                name:HOME_CUSTOM_MSG
                                              object:nil];
+  
+  [[NSNotificationCenter defaultCenter]addObserver:self
+                                          selector:@selector(toHomeSkip:) name:HOME_CUSTOM_SKIP object:nil];
 }
 -(void)toHomePageCustomMsg:(NSNotification *)noti{
   if (noti.object) {
     dispatch_async(dispatch_get_main_queue(), ^{
       [self sendEventWithName:HOME_REFRESH body:noti.object];
+    });
+  }
+}
+-(void)toHomeSkip:(NSNotification *)noti{
+  if (noti.object) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [self sendEventWithName:HOME_CUSTOM_RN_SKIP body:noti.object];
     });
   }
 }

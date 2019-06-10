@@ -8,7 +8,8 @@ import {
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import StringUtils from '../../../../utils/StringUtils';
-import { MRText as Text, MRTextInput as TextInput } from '../../../../components/ui';
+import { MRText as Text } from '../../../../components/ui';
+import { MRTextInputWithCancel } from '../../../../components/ui/UIText';
 
 
 export default class SearchBar extends Component {
@@ -56,13 +57,13 @@ export default class SearchBar extends Component {
             <View style={[styles.container, this.props.style]}>
                 <View style={styles.contentView}>
                     <View style={styles.inputView}>
-                        <TextInput style={{ marginLeft: 16, padding: 0, paddingRight: 16 }}
-                                   keyboardType='web-search'
-                                   placeholder={this.props.placeholder}
-                                   placeholderTextColor={DesignRule.textColor_hint}
-                                   value={this.state.inputText}
-                                   onChangeText={(text) => this.onChangeText(text)}
-                                   onSubmitEditing={(event) => this.onSubmitEditing(event.nativeEvent.text)}/>
+                        <MRTextInputWithCancel style={{ paddingHorizontal: 16 }}
+                                               keyboardType='web-search'
+                                               placeholder={this.props.placeholder}
+                                               placeholderTextColor={DesignRule.textColor_hint}
+                                               value={this.state.inputText}
+                                               onChangeText={(text) => this.onChangeText(text)}
+                                               onSubmitEditing={(event) => this.onSubmitEditing(event.nativeEvent.text)}/>
 
                     </View>
                     <TouchableOpacity onPress={this.props.cancel}>

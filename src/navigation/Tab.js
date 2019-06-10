@@ -1,6 +1,6 @@
 import { TabNavigator } from 'react-navigation';
 import React, { Component } from 'react';
-import { DeviceEventEmitter, Text, View } from 'react-native';
+import { DeviceEventEmitter, Text, View, TouchableWithoutFeedback } from 'react-native';
 import Home from '../pages/home/HomePage';
 import Mine from '../pages/mine/page/MinePage';
 import ShopCart from '../pages/shopCart/page/ShopCartPage';
@@ -40,30 +40,6 @@ const Tab = ({ focused, activeSource, normalSource, title }) => {
 };
 
 @observer
-class SpellShopTab extends Component {
-    render() {
-        const { focused, normalSource, activeSource } = this.props;
-        if (!user) {
-            return <Tab focused={focused} normalSource={normalSource} activeSource={activeSource} title={'拼店'}/>;
-        }
-
-        if (!user.isLogin) {
-            return <Tab focused={focused} normalSource={normalSource} activeSource={activeSource} title={'拼店'}/>;
-        }
-
-        if (user.levelRemark >= 'V2' && !user.storeCode) {
-            return <Image style={styles.store} source={res.tab.home_store}/>;
-        }
-
-        if (user.storeCode && user.levelRemark >= 'V2' && user.storeStatus === 0) {
-            return <Image style={styles.store} source={res.tab.home_store}/>;
-        }
-
-        return <Tab focused={focused} normalSource={normalSource} activeSource={activeSource} title={'拼店'}/>;
-    }
-}
-
-@observer
 class HomeTab extends Component {
 
     render() {
@@ -95,31 +71,39 @@ class HomeTab extends Component {
     }
 }
 
-const ShowFlag = () => <View style={styles.shopFlag}>
-    <ImageBackground style={styles.flagBg} source={res.tab.home_store_flag}>
-        <Text style={styles.flagText}>快享拼店价</Text>
-    </ImageBackground>
-</View>;
+const gotoMyShop = () => {
+    if (global.$navigator) {
+        global.$navigator._navigation.popToTop();
+        global.$navigator._navigation.navigate('MyShop_RecruitPage');
+    }
+};
+
+const ShowFlag = () =>
+
+    <TouchableWithoutFeedback onPress={() => {
+        gotoMyShop();
+    }}>
+        <View
+            style={{
+                position: 'absolute',
+                width: ScreenUtils.width,
+                height: ScreenUtils.width * 254 / 559,
+                bottom: ScreenUtils.safeBottom + 46
+            }}>
+            <Animation
+                style={styles.shopFlag}
+                autoPlay={true}
+                loop={true}
+                hardwareAccelerationAndroid={true}
+                source={require('./pin_flag.json')}/>
+        </View>
+    </TouchableWithoutFeedback>;
 
 @observer
 export class SpellShopFlag extends Component {
-    state = {
-        isFlag: true
-    };
-
-    componentWillReceiveProps(nextProps) {
-        const { isShow } = nextProps;
-        if (isShow) {
-            setTimeout(() => {
-                this.setState({ isFlag: isShow });
-            }, 400);
-        } else {
-            this.setState({ isFlag: isShow });
-        }
-    }
 
     render() {
-        if (!this.state.isFlag) {
+        if (!this.props.isShowFlag) {
             return null;
         }
         if (!user) {
@@ -134,6 +118,37 @@ export class SpellShopFlag extends Component {
         if (user.storeCode && user.levelRemark >= 'V2' && user.storeStatus === 0) {
             return <ShowFlag/>;
         }
+        return null;
+    }
+}
+
+const ShowTab = () =>
+    <TouchableWithoutFeedback onPress={() => {
+        gotoMyShop();
+    }}>
+        <Image
+            style={styles.shopTab}
+            source={require('./pin_tab.png')}/>
+    </TouchableWithoutFeedback>;
+
+@observer
+export class SpellShopTab extends Component {
+    render() {
+        if (!this.props.isShowTab) {
+            return null;
+        }
+        if (!user) {
+            return null;
+        }
+        if (!user.isLogin) {
+            return null;
+        }
+        if (user.levelRemark >= 'V2' && !user.storeCode) {
+            return <ShowTab/>;
+        }
+        if (user.storeCode && user.levelRemark >= 'V2' && user.storeStatus === 0) {
+            return <ShowTab/>;
+        }
 
         return null;
     }
@@ -145,8 +160,7 @@ export const TabNav = TabNavigator(
             screen: Home,
             navigationOptions: {
                 tabBarIcon: ({ focused }) => <HomeTab normalSource={res.tab.home_n}
-                                                      title={'首页'}
-                                                      focus={focused}/>,
+                                                      title={'首页'} focus={focused}/>,
                 tabBarOnPress: (tab) => {
                     const { jumpToIndex, scene, previousScene } = tab;
                     if (previousScene.key !== 'HomePage') {
@@ -156,8 +170,6 @@ export const TabNav = TabNavigator(
                     }
                 }
             }
-
-
         },
         ShowListPage: {
             screen: ShowListPage,
@@ -170,6 +182,8 @@ export const TabNav = TabNavigator(
                     if (previousScene.key !== 'ShowListPage') {
                         jumpToIndex(scene.index);
                         TrackApi.WatchXiuChang({ xiuChangModuleSource: 1 });
+                    } else {
+                        DeviceEventEmitter.emit('retouch_show');
                     }
                 }
             }
@@ -178,8 +192,8 @@ export const TabNav = TabNavigator(
             screen: MyShop_RecruitPage,
             navigationOptions: {
                 tabBarIcon: ({ focused }) => {
-                    return <SpellShopTab focused={focused} normalSource={res.tab.group_n}
-                                         activeSource={res.tab.group_s}/>;
+                    return <Tab focused={focused} normalSource={res.tab.group_n} activeSource={res.tab.group_s}
+                                title={'拼店'}/>;
                 }
             }
         },
@@ -221,7 +235,6 @@ export const TabNav = TabNavigator(
             //tab bar的样式
             style: {
                 backgroundColor: '#fff',
-                paddingBottom: ScreenUtils.safeBottomMax + 1,
                 height: 48,
                 borderTopWidth: 0.2,
                 borderTopColor: '#ccc'
@@ -274,21 +287,13 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     shopFlag: {
+        flex: 1
+    },
+    shopTab: {
         position: 'absolute',
-        bottom: 45 + ScreenUtils.safeBottom,
-        left: (ScreenUtils.width - 76) / 2,
-        width: 76,
-        height: 23
-    },
-    flagBg: {
-        width: 76,
-        height: 23,
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingBottom: 4
-    },
-    flagText: {
-        color: '#fff',
-        fontSize: 12
+        width: 44,
+        height: 44,
+        left: (ScreenUtils.width / 2) - 22,
+        bottom: ScreenUtils.safeBottom
     }
 });

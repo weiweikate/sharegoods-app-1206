@@ -32,7 +32,7 @@ import {MRText as Text} from '../../../../components/ui';
 const { px2dp } = ScreenUtils;
 // const url = '/static/protocol/extensionExplain.html'
 import apiEnvironment from '../../../../api/ApiEnvironment';
-import StringUtils from "../../../../utils/StringUtils";
+import StringUtils from '../../../../utils/StringUtils';
 
 type Props = {};
 export default class UserPromotionPage extends BasePage<Props> {
@@ -76,7 +76,7 @@ export default class UserPromotionPage extends BasePage<Props> {
     };
 
     componentDidMount() {
-        this.listener = DeviceEventEmitter.addListener("payPromotionSuccess",()=>{
+        this.listener = DeviceEventEmitter.addListener('payPromotionSuccess',()=>{
             this.onRefresh();
         })
         // if(this.params.callback && this.params.callback.reload){

@@ -225,6 +225,11 @@ public class MRAsyncStorageModule
                             SPCacheUtils.put(ParameterUtils.API_SERVER,
                                     keyValueArray.getArray(idx).getString(1));
                         }
+                        // 登录token
+                        if ("USERTOKEN".equals(keyValueArray.getArray(idx).getString(0))) {
+                            SPCacheUtils.put(ParameterUtils.LOGIN_TOKEN,
+                                    keyValueArray.getArray(idx).getString(1));
+                        }
                         statement.clearBindings();
                         statement.bindString(1, keyValueArray.getArray(idx).getString(0));
                         statement.bindString(2, keyValueArray.getArray(idx).getString(1));

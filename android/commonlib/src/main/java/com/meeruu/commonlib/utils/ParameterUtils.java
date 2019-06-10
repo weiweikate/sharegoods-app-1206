@@ -35,6 +35,7 @@ public class ParameterUtils {
      * webview参数传递key
      */
     public static final String WEBVIEW_ACTION = "url_action";
+    public static final String LOGIN_TOKEN = "login_token";
     // 应用更新
     public static final int FLAG_UPDATE = 1;
     // 应用强制更新

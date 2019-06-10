@@ -1,7 +1,5 @@
 
 const api = {
-    getUserRecord: ['/user/getUserRecord', { method: 'post', checkLogin: true }],
-    registerSend: ['/user/registerSend' , { method: 'get', checkLogin: true }],
     getLucky: ['/config/advertisement/findByUserLevel' , { method: 'post', checkLogin: true }],
 }
 

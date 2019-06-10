@@ -8,6 +8,7 @@ import { observer } from 'mobx-react';
 import res from '../res/index';
 import { MRText as Text } from '../../../components/ui/index';
 import { bannerModule } from '../model/HomeBannerModel';
+import { TrackApi } from '../../../utils/SensorsTrack';
 
 @observer
 export default class HomeUserView extends Component {
@@ -15,6 +16,7 @@ export default class HomeUserView extends Component {
     _goToPromotionPage() {
         const { navigate } = this.props;
         navigate('mine/userInformation/WaitingForWithdrawCashPage');
+        TrackApi.ViewLevelInterest({ moduleSource: 1 });
     }
 
     render() {

@@ -38,7 +38,7 @@ class HomeRegisterFirstManager {
      */
     @action
     setShowRegisterModalUrl(giveNumber) {
-        console.log('礼包nuber'+giveNumber);
+        console.log('礼包nuber' + giveNumber);
         console.log(imgLink[giveNumber])
         this.showRegisterModalUrl = imgLink[giveNumber];
     }

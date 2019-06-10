@@ -1,6 +1,6 @@
 // https://github.com/reactjs/react-docgen/blob/master/example/generateMarkdown.js
 
-"use strict";
+'use strict';
 
 function stringOfLength(string, length) {
   let newString = '';

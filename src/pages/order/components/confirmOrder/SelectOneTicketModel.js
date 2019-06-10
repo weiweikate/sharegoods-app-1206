@@ -127,7 +127,7 @@ export default class SelectOneTicketModel extends React.Component {
                             marginRight: autoSizeWidth(15),
                             fontSize: autoSizeWidth(13),
                             color: '#333333'}}>
-                            {'x'+this.state.tokenCoin}
+                            {'x' + this.state.tokenCoin}
                         </Text>
                     </ImageBackground>
                     <View style={{marginTop: autoSizeWidth(20), alignItems: 'center', flexDirection: 'row' , width: autoSizeWidth(345)}}>
@@ -136,11 +136,11 @@ export default class SelectOneTicketModel extends React.Component {
                         <View style={{borderRadius: 5, borderColor: '#E4E4E4', borderWidth: 1, width: autoSizeWidth(105), height: autoSizeWidth(30),flexDirection: 'row'}}>
                             <TouchableOpacity style={{flex: 3, alignItems: 'center', justifyContent: 'center',borderRightColor: '#E4E4E4', borderRightWidth: 1}}
                                               disabled={this.state.num <= 0 }
-                                              onPress={()=>{this.setState({num: this.state.num-1})}}
+                                              onPress={()=>{this.setState({num: this.state.num - 1})}}
                             >
                                 <Text style={{
                                     fontSize: autoSizeWidth(15),
-                                    color: this.state.num <= 0 ? '#CCCCCC': '#666666'}}>
+                                    color: this.state.num <= 0 ? '#CCCCCC' : '#666666'}}>
                                    -
                                 </Text>
                             </TouchableOpacity>
@@ -153,11 +153,11 @@ export default class SelectOneTicketModel extends React.Component {
                             </View>
                             <TouchableOpacity style={{flex: 3, alignItems: 'center', justifyContent: 'center',borderLeftColor: '#E4E4E4', borderLeftWidth: 1}}
                                               disabled={this.state.num >= this.state.max}
-                                              onPress={()=>{this.setState({num: this.state.num+1})}}
+                                              onPress={()=>{this.setState({num: this.state.num + 1})}}
                             >
                                 <Text style={{
                                     fontSize: autoSizeWidth(15),
-                                    color: this.state.num >= this.state.max ? '#CCCCCC': '#666666'}}>
+                                    color: this.state.num >= this.state.max ? '#CCCCCC' : '#666666'}}>
                                     +
                                 </Text>
                             </TouchableOpacity>

@@ -31,7 +31,7 @@ const { px2dp } = ScreenUtils;
 type Props = {};
 import CommShareModal from '../../../../comm/components/CommShareModal'
 import { PageLoadingState } from '../../../../components/pageDecorator/PageState';
-import CountDownView from "./CountDownView";
+import CountDownView from './CountDownView';
 import user from '../../../../model/user';
 
 export default class PromotionDetailPage extends BasePage<Props> {
@@ -191,7 +191,7 @@ export default class PromotionDetailPage extends BasePage<Props> {
                                     thumImage: 'logo.png',
                                 }}
                                 miniProgramJson={{
-                                    title: `分享好友免费领取福利`,
+                                    title: '分享好友免费领取福利',
                                     dec:'属你的惊喜福利活动\n数量有限赶快参与吧～',
                                     thumImage: 'logo.png',
                                     hdImageURL: '',

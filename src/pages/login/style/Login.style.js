@@ -1,8 +1,8 @@
 import {
     StyleSheet
-} from "react-native";
-import ScreenUtils from "../../../utils/ScreenUtils";
-import DesignRule from "../../../constants/DesignRule";
+} from 'react-native';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import DesignRule from '../../../constants/DesignRule';
 
 const styles = StyleSheet.create(
     {
@@ -10,14 +10,14 @@ const styles = StyleSheet.create(
             marginTop: ScreenUtils.px2dp(-2),
             flex: 1,
             backgroundColor: DesignRule.color_fff,
-            justifyContent: "space-between"
+            justifyContent: 'space-between'
         },
         topBgContent: {
             flex: 1
         },
         topImageBgView: {
-            justifyContent: "center",
-            alignItems: "center"
+            justifyContent: 'center',
+            alignItems: 'center'
         },
         topImageView: {
             marginTop:ScreenUtils.px2dp(20),

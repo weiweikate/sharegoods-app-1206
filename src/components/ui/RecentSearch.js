@@ -8,7 +8,7 @@ import {
     // NativeModules
 } from 'react-native';
 import StringUtils from '../../utils/StringUtils';
-import DesignRule from "../../constants/DesignRule";
+import DesignRule from '../../constants/DesignRule';
 import {MRText as Text}from './UIText';
 
 /**
