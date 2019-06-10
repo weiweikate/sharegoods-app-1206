@@ -8,7 +8,7 @@
 *import TabNav from './pages/shareTask/page/ShareTaskIntroducePage'
 * */
 // 基础模块
-// import { TabNav } from './Tab';
+import { TabNav } from './Tab';
 // 业务模块
 import debug from '../pages/debug';
 import home from '../pages/home';
@@ -27,11 +27,11 @@ import show from '../pages/show/Index';
 import deepLinkPath from './DeepLinkPath';
 
 // import WithdrawalAgreementPage from '../pages/mine/page/bankCard/WithdrawalAgreementPage'
-import MyOrdersListPage from '../pages/order/order/MyOrdersListPage';
+// import MyOrdersListPage from '../pages/order/order/MyOrdersListPage';
 
 const Router = {
     Tab: {
-        screen: MyOrdersListPage,
+        screen: TabNav,
         navigationOptions: ({ navigation }) => ({
             header: null
         })
