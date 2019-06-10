@@ -100,11 +100,12 @@ export default class CouponExplainItem extends Component {
                             alignItems: 'center',
                             marginLeft: 5,
                             justifyContent: 'center'}}>
-                            {item.status === 0 ?
+                            {item.status === 0 || (item.status === 3 && item.type === 99)?
                                 (
                                     item.type === 99 ?
                                         <View style={{alignItems: 'center', marginRight: 10}}>
-                                            {!StringUtils.isEmpty(user.blockedTokenCoin) && user.blockedTokenCoin !== 0 ?
+                                            {item.status === 3 ?
+                                                (!StringUtils.isEmpty(user.blockedTokenCoin) && user.blockedTokenCoin !== 0 ?
                                                 <View style={{
                                                     marginRight: 15,
                                                     justifyContent: 'center',
@@ -115,9 +116,10 @@ export default class CouponExplainItem extends Component {
                                                     <UIText value={'x' + user.blockedTokenCoin}
                                                             style={styles.xNumsStyle}/>
                                                 </View>
-                                                : null}
-                                            <UIText style={[styles.xNumStyle, {marginRight: 0}]}
-                                                    value={'x' + user.tokenCoin}/>
+                                                : null)
+                                                :<UIText style={[styles.xNumStyle, {marginRight: 0}]}
+                                                value={'x' + user.tokenCoin}/>
+                                            }
                                         </View>
                                         : (item.levelimit ?
                                         <View
@@ -152,7 +154,8 @@ export default class CouponExplainItem extends Component {
                                                         color: 'white',
                                                     }} allowFontScaling={false}>去使用</Text>
                                                 </LinearGradient>
-                                            </NoMoreClick>:null)))
+                                            </NoMoreClick> : (item.count > 1 ? <UIText value={'x' + item.count}
+                                                                                     style={styles.xNumsStyle}/> : null))))
 
                                 : <View style={{justifyContent: 'center', alignItems: 'center'}}>
                                     <Image style={{width: 55, height: 55}}

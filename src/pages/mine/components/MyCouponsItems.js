@@ -22,7 +22,7 @@ import { MRText as Text, MRTextInput as TextInput } from '../../../components/ui
 import couponsModel from '../model/CouponsModel';
 import CouponExplainItem from './CouponExplainItem';
 import CouponNormalItem from './CouponNormalItem';
-import RouterMap from "../../../navigation/RouterMap";
+import RouterMap from '../../../navigation/RouterMap';
 
 const NoMessage = res.couponsImg.coupons_no_data;
 const plusIcon = res.couponsImg.youhuiquan_icon_jia_nor;
@@ -42,11 +42,12 @@ export default class MyCouponsItems extends Component {
             explainList: [],
             showDialogModal: false,
             tokenCoinNum: this.props.justOne,
-            isFirstLoad: true
+            isFirstLoad: true,
         };
         this.currentPage = 0;
         this.isLoadMore = false;
         this.isEnd = false;
+        this.addData = true
         this.dataSel = {};
     }
 
@@ -519,6 +520,7 @@ export default class MyCouponsItems extends Component {
         this.dataSel = couponsModel.params || {};
         console.log('refresh');
         this.isEnd = false;
+        this.addData = true
         this.currentPage = 1;
         if (user.isLogin) {
             this.getUserInfo();
@@ -540,6 +542,24 @@ export default class MyCouponsItems extends Component {
         if (!this.isLoadMore && !this.isEnd && !this.state.isFirstLoad) {
             this.currentPage++;
             this.getDataFromNetwork(this.dataSel);
+        }else if(this.state.pageStatus === 0 && this.addData && (this.dataSel.type === 99 || !this.dataSel.type)) {
+            if ((!StringUtils.isEmpty(user.blockedTokenCoin) && (user.blockedTokenCoin !== 0))) {
+                let arrData = this.state.viewData;
+                arrData.push({
+                    status: 3,
+                    name: '1元现金券',
+                    timeStr: '无时间限制',
+                    value: 1,
+                    limit: '无金额门槛\n任意商品可用\n可叠加使用',
+                    remarks: '1.全场均可使用此优惠券\n2.礼包优惠券在激活有效期内可以购买指定商品',
+                    type: 99, //以type=99表示1元券
+                    levelimit: false,
+                    redirectType: 0,
+                    redirectUrl: null
+                });
+                this.addData = false;
+                this.setState({viewData: arrData,});
+            }
         }
     };
 

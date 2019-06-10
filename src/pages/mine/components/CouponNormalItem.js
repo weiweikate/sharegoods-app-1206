@@ -120,7 +120,8 @@ export default class CouponNormalItem extends Component {
                                                     color: 'white',
                                                 }} allowFontScaling={false}>去使用</Text>
                                             </LinearGradient>
-                                        </NoMoreClick> : null)
+                                        </NoMoreClick> : (item.count > 1 ? <UIText value={'x' + item.count}
+                                                                                   style={styles.xNumsStyle}/>:null))
                                 ) :
                                 (stateImg ? <View style={{justifyContent: 'center', alignItems: 'center'}}>
                                     <Image style={{width: 55, height: 55}}
