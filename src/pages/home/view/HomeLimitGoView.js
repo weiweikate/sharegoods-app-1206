@@ -166,6 +166,11 @@ export default class HomeLimitGoView extends Component {
 
 const GoodsItem = ({ item, activityCode, navigate }) => {
     const promotionSaleRateS = item.promotionSaleRate || 0;
+    const ratePercent = Math.ceil(StringUtils.mul(StringUtils.sub(1, promotionSaleRateS), 100));
+    let ratePercentText = ratePercent < 10 ? '即将售罄' : `还剩${ratePercent}%`;
+    ratePercentText = ratePercent <= 0 ? '已抢光' : ratePercentText;
+    let progressWidthS = promotionSaleRateS * px2dp(120);
+    progressWidthS = progressWidthS < px2dp(12) ? px2dp(12) : progressWidthS;
     return <View style={styles.goodsItem}>
         <ImageLoader
             source={{ uri: item.imgUrl }}
@@ -185,11 +190,9 @@ const GoodsItem = ({ item, activityCode, navigate }) => {
                     <Text style={styles.text}>已有{item.promotionAttentionNum}人关注了</Text>
                     :
                     <View style={styles.leaveView}>
-                        <View style={[styles.progressView, { width: promotionSaleRateS * px2dp(120) }]}/>
+                        <View style={[styles.progressView, { width: progressWidthS }]}/>
                         <View style={styles.leaveAmountView}>
-                            <MRText
-                                style={styles.leaveAmountText}>{promotionSaleRateS === 1
-                                ? "已抢光" : `还剩${StringUtils.mul(StringUtils.sub(1, promotionSaleRateS), 100)}%`}</MRText>
+                            <MRText style={styles.leaveAmountText}>{ratePercentText}</MRText>
                         </View>
                     </View>
             }

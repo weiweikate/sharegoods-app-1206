@@ -321,21 +321,22 @@ export default class MyCouponsItems extends Component {
         let arrData = [];
         console.log('parseData', this.dataSel, couponsModel.params);
         if (this.currentPage === 1) {//refresh
-            if ((!StringUtils.isEmpty(user.tokenCoin) || !StringUtils.isEmpty(user.blockedTokenCoin))
-                && (user.tokenCoin !== 0 || user.blockedTokenCoin !== 0)
-                && this.state.pageStatus === 0
-                && !this.props.fromOrder
-                && !couponsModel.params.type) {
-                arrData.push({
-                    status: 0,
-                    name: '1元现金券',
-                    timeStr: '使用有效期：无时间限制',
-                    value: 1,
-                    limit: '全品类：无金额门槛',
-                    remarks: '1.全场均可使用此优惠券\n2.礼包优惠券在激活有效期内可以购买指定商品',
-                    type: 99, //以type=99表示1元券
-                    levelimit: false
-                });
+            if (((!StringUtils.isEmpty(user.tokenCoin) && (user.tokenCoin !== 0))
+                || (!StringUtils.isEmpty(user.blockedTokenCoin) && (user.blockedTokenCoin !== 0)))) {
+                if (this.state.pageStatus === 0
+                    && !this.props.fromOrder
+                    && !couponsModel.params.type) {
+                    arrData.push({
+                        status: 0,
+                        name: '1元现金券',
+                        timeStr: '使用有效期：无时间限制',
+                        value: 1,
+                        limit: '全品类：无金额门槛',
+                        remarks: '1.全场均可使用此优惠券\n2.礼包优惠券在激活有效期内可以购买指定商品',
+                        type: 99, //以type=99表示1元券
+                        levelimit: false
+                    });
+                }
             }
             if (!this.props.fromOrder && ((couponsModel.params.type || 0) > 6) || (!this.props.fromOrder && couponsModel.params.type === null)) {
                 API.queryCoupons({
@@ -451,8 +452,8 @@ export default class MyCouponsItems extends Component {
         } else if (this.props.justOne && status === 0 || this.dataSel.type === 99) {
             let arrData = [];
             bridge.hiddenLoading();
-            if ((!StringUtils.isEmpty(user.tokenCoin) || !StringUtils.isEmpty(user.blockedTokenCoin))
-                && (user.tokenCoin !== 0 || user.blockedTokenCoin !== 0)
+            if (((!StringUtils.isEmpty(user.tokenCoin) && (user.tokenCoin !== 0))
+                || (!StringUtils.isEmpty(user.blockedTokenCoin) && (user.blockedTokenCoin !== 0)))
                 && status === 0) {
                 arrData.push({
                     status: 0,
