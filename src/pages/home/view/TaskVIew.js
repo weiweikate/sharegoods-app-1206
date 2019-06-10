@@ -78,7 +78,7 @@ class TaskItem extends React.Component {
 
     renderItem(item, expanded, subTask = false) {
         let { complete, prizeDesc, name, total, memo, prizeValue } = item;
-        let progrossTitle = total?(complete + '/' + total) : '无上限';
+        let progrossTitle = complete + '/' + (total?total:'无上限') ;
         return (
             <View>
                 {subTask ? <View style={styles.lineOne}/> : null}
