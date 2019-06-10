@@ -438,7 +438,6 @@ class AfterSaleServicePage extends BasePage {
     loadPageData() {
         let that = this;
         this.$loadingShow();
-        this.params.orderProductNo = 'G181211102809000001';
         OrderApi.afterSaleProduceDetail({ productOrderNo: this.params.orderProductNo + '' }).then((result) => {
             that.$loadingDismiss();
             let productData = result.data || {};

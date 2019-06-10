@@ -1,8 +1,8 @@
 const api = {
     // 确认订单
-    makeSureOrder: ['/order/confirm',{ isRSA: true }],
+    makeSureOrder: ['/orderV2/confirm',{ isRSA: true }],
     //order/submitOrder提交订单
-    submitOrder: ['/order/submitV2',{ isRSA: true }],
+    submitOrder: ['/orderV2/submit',{ isRSA: true }],
     //订单列表  订单状态（1：待支付 2：待发货 3：待收货 4：确认收货 5：已完成 6：退货关闭 7：用户关闭 8：超时关闭）
     queryPage: ['/orderV2/list',{method:'get'}],
     // 用户预支付
@@ -10,7 +10,7 @@ const api = {
     //支付成功回调
     paySuccess: '/order/paySuccess',
     // （陈帅）订单详情
-    lookDetail: '/orderV2/detail',
+    lookDetail: ['/orderV2/detail',{method:'get'}],
     // 加入购物车
     addItem: '/user/shoppingcart/addItem',
     //删除已关闭订单
@@ -29,18 +29,6 @@ const api = {
     continueToPay:['/order/payRecord/continueToPay',{method:'get'}],
     // 查看物流详情
     findLogisticsDetail:'/order/deliverInfo',
-    //降价拍的确认订单
-    DepreciateMakeSureOrder:['/operator/activityDepreciate/submit',{ isRSA: true }],
-    //降价拍的提交订单 沈耀鑫
-    DepreciateSubmitOrder:['/operator/activityDepreciate/submit',{ isRSA: true }],
-    //秒杀的确认订单
-    SeckillMakeSureOrder:['/operator/seckill/submit',{ isRSA: true }],
-    //秒杀的提交订单
-    SeckillSubmitOrder:['/operator/seckill/submit',{ isRSA: true }],
-    //礼包的确认订单
-    PackageMakeSureOrder:['/operator/activitypackage/submit',{ isRSA: true }],
-    //礼包的提交订单
-    PackageSubmitOrder:['/operator/activitypackage/submit',{ isRSA: true }],
     //（陈帅）再来一单
     againOrder:'/order/buy-again',
     checkInfo: ["/appraise/checkCommentStatus",{method:'get'}],//校验是否可晒单

@@ -7,7 +7,7 @@ import {
     ScrollView, Text, Alert
 } from 'react-native';
 import BasePage from '../../../BasePage';
-import { RefreshList, NoMoreClick, UIText } from '../../../components/ui';
+import { NoMoreClick, UIText } from '../../../components/ui';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import GoodsDetailItem from '../components/GoodsDetailItem';
@@ -20,7 +20,7 @@ import { PageLoadingState, renderViewByLoadingState } from '../../../components/
 import { NavigationActions } from 'react-navigation';
 import DesignRule from '../../../constants/DesignRule';
 import MineApi from '../../mine/api/MineApi';
-import { getDateData, leadingZeros } from '../components/orderDetail/OrderCutDown';
+// import { getDateData, leadingZeros } from '../components/orderDetail/OrderCutDown';
 import res from '../res';
 import OrderDetailStatusView from '../components/orderDetail/OrderDetailStatusView';
 // import OrderDetailStateView from "../components/orderDetail/OrderDetailStateView";
@@ -32,6 +32,7 @@ import { orderDetailModel, orderDetailAfterServiceModel, assistDetailModel } fro
 import { observer } from 'mobx-react/native';
 import GiftHeaderView from '../components/orderDetail/GiftHeaderView';
 import { SmoothPushPreLoadHighComponent } from '../../../comm/components/SmoothPushHighComponent';
+import { GetAfterBtns, checkOrderAfterSaleService } from './OrderType';
 
 const buyerHasPay = res.buyerHasPay;
 const productDetailHome = res.productDetailHome;
@@ -53,12 +54,8 @@ export default class MyOrdersDetailPage extends BasePage {
         this.state = {
             isShowSingleSelctionModal: false,
             isShowShowMessageModal: false,
-            expressNo: '',
-            viewData: {},
-            menu: {},
-            giftBagCoupons: []
         };
-        orderDetailAfterServiceModel.menu = [];
+        this.params = {merchantOrderNo: 'SJSO190608215603010000'}
     }
 
     $navigationBarOptions = {
@@ -111,22 +108,17 @@ export default class MyOrdersDetailPage extends BasePage {
         return (
             <View style={{ marginBottom: px2dp(10) }}>
                 <OrderDetailStatusView
-                    leftTopIcon={leftIconArr[orderDetailModel.status]}
+                    leftTopIcon={leftIconArr[orderDetailModel.merchantOrder.status]}
                 />
                 <DetailAddressView/>
-                {/*<OrderDetailStateView*/}
-                {/*nav={this.$navigate}*/}
-                {/*/>*/}
             </View>
 
         );
     };
 
     componentDidMount() {
-
         this.loadPageData();
         this.getCancelOrder();
-
     }
 
 
@@ -157,7 +149,7 @@ export default class MyOrdersDetailPage extends BasePage {
             {
                 text: `确定`, onPress: () => {
                     Toast.showLoading();
-                    OrderApi.deleteOrder({ orderNo: orderDetailModel.getOrderNo() }).then((response) => {
+                    OrderApi.deleteOrder({ merchantOrderNo: orderDetailModel.merchantOrderNo}).then((response) => {
                         Toast.hiddenLoading();
                         Toast.$toast('订单已删除');
                         this.$navigateBack();
@@ -191,18 +183,9 @@ export default class MyOrdersDetailPage extends BasePage {
             return (
                 <View style={{ flex: 1 }}>
                     <ScrollView showsVerticalScrollIndicator={false}>
-                        <RefreshList
-                            ListHeaderComponent={this.renderHeader}
-                            ListFooterComponent={this.renderFooter}
-                            data={this.state.viewData}
-                            renderItem={this.renderItem}
-                            onRefresh={this.onRefresh}
-                            onLoadMore={this.onLoadMore}
-                            extraData={this.state}
-                            isEmpty={this.state.isEmpty}
-
-                            emptyTip={'暂无数据！'}
-                        />
+                        {this.renderHeader()}
+                        {orderDetailModel.productsList().map((item, index ) => {return this.renderItem(item, index )})}
+                        {this.renderFooter()}
                     </ScrollView>
                     <OrderDetailBottomButtonView
                         openCancelModal = {()=>{this.cancelModal&&this.cancelModal.open()}}
@@ -243,21 +226,21 @@ export default class MyOrdersDetailPage extends BasePage {
             </View>
         );
     };
-    renderItem = ({ item, index }) => {
+    renderItem = (item, index ) => {
         return (
             <GoodsDetailItem
-                uri={item.uri}
-                goodsName={item.goodsName}
-                salePrice={'￥' + StringUtils.formatMoneyString(item.salePrice, false)}
-                category={item.category}
-                goodsNum={item.goodsNum}
-                activityCodes={item.activityCodes}
+                uri={item.specImg}
+                goodsName={item.productName}
+                salePrice={'￥' + StringUtils.formatMoneyString(item.unitPrice, false)}
+                category={item.spec}
+                goodsNum={item.quantity}
+                activityCodes={item.activityList || []}
                 style={{ backgroundColor: 'white' }}
                 clickItem={() => {
                     this.clickItem(index, item);
                 }}
-                afterSaleService={item.afterSaleService}
-                afterSaleServiceClick={(menu) => this.afterSaleServiceClick(menu, index)}
+                afterSaleService={GetAfterBtns(item)}
+                afterSaleServiceClick={(menu) => this.afterSaleServiceClick(menu, item)}
             />
         );
 
@@ -266,7 +249,6 @@ export default class MyOrdersDetailPage extends BasePage {
         return (
             <View>
                 {this.renderState()}
-                {/*{orderDetailModel.status > 1 &&orderDetailModel.status<5? <DetailAddressView/> : null}*/}
                 <GiftHeaderView/>
             </View>
         );
@@ -274,8 +256,7 @@ export default class MyOrdersDetailPage extends BasePage {
     renderFooter = () => {
         return (
             <View>
-                <OrderDetailPriceView
-                    giftBagCoupons={this.state.giftBagCoupons}/>
+                <OrderDetailPriceView/>
                 <OrderDetailTimeView/>
             </View>
         );
@@ -320,7 +301,7 @@ export default class MyOrdersDetailPage extends BasePage {
                         Toast.showLoading();
                         OrderApi.cancelOrder({
                             cancelReason: assistDetailModel.cancelArr[index],
-                            orderNo: orderDetailModel.getOrderNo(),
+                            platformOrderNo: orderDetailModel.platformOrderNo,
                         }).then((response) => {
                             this.goTobackNav();
                         }).catch(e => {
@@ -350,31 +331,30 @@ export default class MyOrdersDetailPage extends BasePage {
         );
     };
 
-
-    settimer(overtimeClosedTime) {
-        let autoConfirmTime = Math.round((overtimeClosedTime - orderDetailModel.warehouseOrderDTOList[0].nowTime) / 1000);
-        if (autoConfirmTime < 0) {
-            orderDetailAfterServiceModel.moreDetail = '';
-            return;
-        }
-        let closeTime = autoConfirmTime + Date.parse(new Date()) / 1000;
-        this.interval = setInterval(() => {
-            let time = getDateData(closeTime);
-            if (time.sec >= 0) {
-                if (orderDetailModel.status === 1) {
-                    orderDetailAfterServiceModel.moreDetail = leadingZeros(time.hours) + ':' + leadingZeros(time.min) + ':' + leadingZeros(time.sec) + '后自动取消订单';
-                } else if (orderDetailModel.status === 3) {
-                    orderDetailAfterServiceModel.moreDetail = time.days + '天' + leadingZeros(time.hours) + ':' + leadingZeros(time.min) + ':' + leadingZeros(time.sec) + '后自动确认收货';
-                }
-            } else {
-                orderDetailAfterServiceModel.moreDetail = '';
-                this.loadPageData();
-            }
-        }, 1000);
-    }
+    //
+    // settimer(overtimeClosedTime) {
+    //     let autoConfirmTime = Math.round((overtimeClosedTime - orderDetailModel.warehouseOrderDTOList[0].nowTime) / 1000);
+    //     if (autoConfirmTime < 0) {
+    //         orderDetailAfterServiceModel.moreDetail = '';
+    //         return;
+    //     }
+    //     let closeTime = autoConfirmTime + Date.parse(new Date()) / 1000;
+    //     this.interval = setInterval(() => {
+    //         let time = getDateData(closeTime);
+    //         if (time.sec >= 0) {
+    //             if (orderDetailModel.status === 1) {
+    //                 orderDetailAfterServiceModel.moreDetail = leadingZeros(time.hours) + ':' + leadingZeros(time.min) + ':' + leadingZeros(time.sec) + '后自动取消订单';
+    //             } else if (orderDetailModel.status === 3) {
+    //                 orderDetailAfterServiceModel.moreDetail = time.days + '天' + leadingZeros(time.hours) + ':' + leadingZeros(time.min) + ':' + leadingZeros(time.sec) + '后自动确认收货';
+    //             }
+    //         } else {
+    //             orderDetailAfterServiceModel.moreDetail = '';
+    //             this.loadPageData();
+    //         }
+    //     }, 1000);
+    // }
 
     stop() {
-        orderDetailAfterServiceModel.moreDetail = '';
         this.interval && clearInterval(this.interval);
     }
 
@@ -465,126 +445,8 @@ export default class MyOrdersDetailPage extends BasePage {
         return orderDetailAfterServiceModel.currentAsList = afterSaleService;
     };
 
-    async loadPageData() {
-        this.stop();
-        Toast.showLoading();
-         await orderDetailModel.loadDetailInfo(this.params.orderNo) || {};
-        Toast.hiddenLoading();
-        let dataArr = [];
-        let pageStateString = orderDetailAfterServiceModel.AfterServiceList[parseInt(orderDetailModel.warehouseOrderDTOList[0].status)];
-        orderDetailModel.warehouseOrderDTOList.map((resp, index1) => {
-            resp.products.map((item, index) => {
-                dataArr.push({
-                    productId: item.id,
-                    uri: item.specImg,
-                    goodsName: item.productName,
-                    salePrice: StringUtils.isNoEmpty(item.unitPrice) ? item.unitPrice : 0,
-                    category: item.spec,
-                    goodsNum: item.quantity,
-                    afterSaleService: this.getAfterSaleService(item, index),
-                    status: item.status,
-                    activityCode: orderDetailModel.warehouseOrderDTOList[0].status === 1 ? item.activityCode : item.skuCode,
-                    activityCodes: item.activityCodes
-                });
-            });
-        });
-        this.setState({ viewData: dataArr });
-        /*
-         * operationMenuCheckList
-         * 去支付                 ->  1
-         * 待发货                   ->  2
-         * 已发货                 ->  3
-         * 交易完成                 ->  4
-         * 交易关闭                 ->  5
-         * */
-        switch (parseInt(orderDetailModel.warehouseOrderDTOList[0].status)) {
-            case 1:
-                this.stop();
-                this.settimer(orderDetailModel.warehouseOrderDTOList[0].cancelTime);
-                orderDetailAfterServiceModel.menu = [{
-                    id: 1,
-                    operation: '取消订单',
-                    isRed: false
-                }, {
-                    id: 2,
-                    operation: '去支付',
-                    isRed: true
-                }];
-                break;
-            case 2:
-                orderDetailAfterServiceModel.moreDetail = '';
-                orderDetailAfterServiceModel.menu = [];
-                break;
-            case 3:
-                this.stop();
-                this.settimer(orderDetailModel.warehouseOrderDTOList[0].autoReceiveTime);
-                orderDetailAfterServiceModel.menu = [
-                    {
-                        id: 5,
-                        operation: '查看物流',
-                        isRed: false
-                    }, {
-                        id: 6,
-                        operation: '确认收货',
-                        isRed: true
-                    }
-                ];
-                if (orderDetailModel.expList.length === 0) {
-                    pageStateString.sellerState = '等待平台发货';
-                } else if (orderDetailModel.expList.length === 1 && orderDetailModel.unSendProductInfoList.length === 0) {
-                    OrderApi.findLogisticsDetail({ expressNo: orderDetailModel.expList[0].expNO }).then((response) => {
-                        console.log(response);
-                        pageStateString.sellerState = response.data.list[0].status || '等待平台发货';
-                    }).catch(e => {
-                        pageStateString.sellerState = '等待平台发货';
-                    });
-                } else {
-                    pageStateString.sellerState = `该订单已拆成${orderDetailModel.expList.length + (orderDetailModel.unSendProductInfoList.length >= 1 ? 1 : 0)}个包裹发出，点击"查看物流"可查看详情`;
-                }
-
-                break;
-            case 4:
-                this.stop();
-                pageStateString.sellerState = '已签收';
-                orderDetailAfterServiceModel.moreDetail = '';
-                orderDetailAfterServiceModel.menu = [
-                    {
-                        id: 5,
-                        operation: '查看物流',
-                        isRed: false
-                    }, {
-                        id: 8,
-                        operation: '再次购买',
-                        isRed: true
-                    }
-                ];
-                if (orderDetailModel.warehouseOrderDTOList[0].commentStatus) {
-                    orderDetailAfterServiceModel.menu.push({
-                        id: 10,
-                        operation: '晒单',
-                        isRed: true
-                    });
-                }
-                pageStateString.logisticsTime = orderDetailModel.warehouseOrderDTOList[0].deliverTime ? orderDetailModel.warehouseOrderDTOList[0].deliverTime : orderDetailModel.warehouseOrderDTOList[0].autoReceiveTime;
-                break;
-            case 5:
-                this.stop();
-                orderDetailAfterServiceModel.menu = [
-                    {
-                        id: 7,
-                        operation: '删除订单',
-                        isRed: false
-                    }, {
-                        id: 8,
-                        operation: '再次购买',
-                        isRed: true
-                    }],
-                    orderDetailAfterServiceModel.moreDetail = orderDetailModel.warehouseOrderDTOList[0].cancelReason;
-                pageStateString.logisticsTime = orderDetailModel.warehouseOrderDTOList[0].cancelTime;
-                break;
-
-        }
-        orderDetailAfterServiceModel.totalAsList = pageStateString;
+     loadPageData() {
+       orderDetailModel.loadDetailInfo(this.params.merchantOrderNo) || {};
     }
     //去商品详情
     clickItem = (index, item) => {
@@ -610,53 +472,27 @@ export default class MyOrdersDetailPage extends BasePage {
         }
     };
     //点击售后按钮的处理
-    afterSaleServiceClick = (menu, index) => {
-        console.log(menu, index);
-        let products = orderDetailModel.warehouseOrderDTOList[0].products[index];
-        let innerStatus = (products.orderCustomerServiceInfoDTO && products.orderCustomerServiceInfoDTO.status) || null;
-        if (!StringUtils.isEmpty(products.activityCodes) && products.activityCodes[0].orderType === 3 && orderDetailModel.status === 2) {
-            Toast.$toast('该商品属于升级礼包产品，不能退款');
-            return;
-        } else if (!StringUtils.isEmpty(products.activityCodes) && products.activityCodes[0].orderType === 5 && orderDetailModel.status === 2) {//products.activityCodes[0].orderType=== 5
-            Toast.$toast('该商品属于经验值专区商品，不能退款');
-            return;
-        } else if (orderDetailModel.status > 3 && products.afterSaleTime < orderDetailModel.warehouseOrderDTOList[0].nowTime && orderDetailModel.warehouseOrderDTOList[0].nowTime
-            && !(innerStatus < 6 && innerStatus >= 1)) {
-            Toast.$toast('该商品售后已过期');
+    afterSaleServiceClick = (menu, item) => {
+        if (!checkOrderAfterSaleService([item],item.status,orderDetailModel.baseInfo.nowTime,true)){
             return;
         }
-
-
         switch (menu.id) {
-            case 0:
+            case 1:
                 this.$navigate('order/afterSaleService/AfterSaleServicePage', {
                     pageType: 0,
-                    orderProductNo: products.orderProductNo
+                    orderProductNo: item.productOrderNo
                 });
 
                 break;
-            case 1:
-                this.$navigate('order/afterSaleService/AfterSaleServiceHomePage', {
-                    pageData: {
-                        ...products,
-                        orderSubType: StringUtils.isEmpty(products.activityCodes) ? -1 : products.activityCodes[0].orderType
-                    }
-                    //-1代表普通商品
-                });
-                break;
             case 2:
-                this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
-                    serviceNo: products.orderCustomerServiceInfoDTO.serviceNo
+                this.$navigate('order/afterSaleService/AfterSaleServiceHomePage', {
+                    pageData: item
+                    //-1代表普通商品
                 });
                 break;
             case 3:
                 this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
-                    serviceNo: products.orderCustomerServiceInfoDTO.serviceNo
-                });
-                break;
-            case 6:
-                this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
-                    serviceNo: products.orderCustomerServiceInfoDTO.serviceNo
+                    serviceNo: item.afterSale.serviceNo
                 });
                 break;
         }

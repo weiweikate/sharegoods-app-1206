@@ -6,7 +6,7 @@ import {
 } from "react-native";
 import ScreenUtils from "../../../../utils/ScreenUtils";
 import DesignRule from "../../../../constants/DesignRule";
-import { orderDetailAfterServiceModel, orderDetailModel, assistDetailModel } from "../../model/OrderDetailModel";
+import { orderDetailModel, assistDetailModel } from "../../model/OrderDetailModel";
 import OrderApi from "../../api/orderApi";
 import Toast from "../../../../utils/bridge";
 import shopCartCacheTool from "../../../shopCart/model/ShopCartCacheTool";
@@ -30,7 +30,7 @@ export default class OrderDetailBottomButtonView extends Component {
     };
 
     render() {
-        let nameArr = orderDetailAfterServiceModel.menu;
+        let nameArr = orderDetailModel.menu;
         if (nameArr.length > 0) {
             if (nameArr.length === 3) {
                 return (
@@ -167,11 +167,11 @@ export default class OrderDetailBottomButtonView extends Component {
                     {
                         text: `确定`, onPress: () => {
                             Toast.showLoading();
-                            OrderApi.confirmReceipt({ orderNo: orderDetailModel.getOrderNo() }).then((response) => {
+                            OrderApi.confirmReceipt({ merchantOrderNo: orderDetailModel.merchantOrderNo }).then((response) => {
                                 Toast.hiddenLoading();
                                 Toast.$toast("确认收货成功");
                                 this.props.nav("order/order/ConfirmReceiveGoodsPage", {
-                                    orderNo: orderDetailModel.getOrderNo(),
+                                    merchantOrderNo: orderDetailModel.merchantOrderNo,
                                     callBack: this.props.loadPageData
                                 });
                             }).catch(e => {
@@ -194,7 +194,7 @@ export default class OrderDetailBottomButtonView extends Component {
                     {
                         text: `确定`, onPress: () => {
                             Toast.showLoading();
-                            OrderApi.deleteOrder({ orderNo: orderDetailModel.getOrderNo() }).then((response) => {
+                            OrderApi.deleteOrder({ merchantOrderNo: orderDetailModel.merchantOrderNo }).then((response) => {
                                 Toast.hiddenLoading();
                                 Toast.$toast("订单已删除");
                                 this.props.goBack();
@@ -220,7 +220,7 @@ export default class OrderDetailBottomButtonView extends Component {
                     });
                 });
                 track(trackEvent.OrderAgain, {
-                    orderId: orderDetailModel.getOrderNo()
+                    orderId: orderDetailModel.merchantOrderNo
                 });
                 shopCartCacheTool.addGoodItem(cartData);
                 this.props.nav("shopCart/ShopCart", { hiddeLeft: false });
@@ -236,7 +236,7 @@ export default class OrderDetailBottomButtonView extends Component {
                     {
                         text: `确定`, onPress: () => {
                             Toast.showLoading();
-                            OrderApi.deleteOrder({ orderNo: orderDetailModel.getOrderNo() }).then((response) => {
+                            OrderApi.deleteOrder({ merchantOrderNo: orderDetailModel.merchantOrderNo }).then((response) => {
                                 Toast.hiddenLoading();
                                 Toast.$toast("订单已删除");
                                 this.props.goBack();
@@ -252,10 +252,10 @@ export default class OrderDetailBottomButtonView extends Component {
                 ], { cancelable: true });
                 break;
             case 10:
-                OrderApi.checkInfo({warehouseOrderNo:orderDetailModel.getOrderNo()}).then(res => {
+                OrderApi.checkInfo({merchantOrderNo:orderDetailModel.merchantOrderNo}).then(res => {
                     if(res.data){
                         this.props.nav(RouterMap.P_ScorePublishPage, {
-                            orderNo:  orderDetailModel.getOrderNo()
+                            merchantOrderNo:  orderDetailModel.merchantOrderNo
                         });
                     }else{
                         Toast.$toast('该商品已晒过单！');

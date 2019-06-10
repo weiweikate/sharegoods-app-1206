@@ -10,7 +10,7 @@ import StringUtils from "../../../../utils/StringUtils";
 import DateUtils from "../../../../utils/DateUtils";
 import DesignRule from '../../../../constants/DesignRule';
 import res from "../../res";
-import {  orderDetailAfterServiceModel, orderDetailModel } from "../../model/OrderDetailModel";
+import { orderDetailModel } from "../../model/OrderDetailModel";
 import { observer } from 'mobx-react/native';
 const arrow_right = res.arrow_right;
 const logisticCar = res.car;
@@ -79,18 +79,18 @@ export default class OrderDetailStateView extends Component {
                                  style={{ height: px2dp(19), width: px2dp(19), marginLeft: px2dp(21) }}/>
                         <View style={{ justifyContent: "center", flex: 1 }}>
                             <View style={{ marginLeft: px2dp(10) }}>
-                                <UIText value={orderDetailAfterServiceModel.totalAsList.sellerState} style={{
+                                <UIText value={orderDetailModel.sellerState} style={{
                                     color: DesignRule.textColor_mainTitle,
                                     fontSize: px2dp(15),
                                     marginRight: px2dp(10)
                                 }}/>
-                                {StringUtils.isNoEmpty(orderDetailAfterServiceModel.totalAsList.logisticsTime) ?
+                                {StringUtils.isNoEmpty(orderDetailModel.logisticsTime) ?
                                     <UIText style={{
                                         color: DesignRule.textColor_instruction,
                                         fontSize: px2dp(15),
                                         marginTop: px2dp(3)
                                     }}
-                                    value={DateUtils.getFormatDate(orderDetailAfterServiceModel.totalAsList.logisticsTime / 1000)}/> : null}
+                                    value={DateUtils.getFormatDate(orderDetailModel.logisticsTime / 1000)}/> : null}
                             </View>
                             <View />
                         </View>

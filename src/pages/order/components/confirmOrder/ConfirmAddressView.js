@@ -35,8 +35,22 @@ export default class ConfirmAddressView extends Component {
     }
 
     renderAddress = () => {
-        console.log('renderAddress');
-        return (StringUtils.isNoEmpty(confirmOrderModel.addressId) ?
+
+      let {receiver,
+          receiverPhone,
+          province,
+          city,
+          area,
+          street,
+          address,
+          id
+      } =  confirmOrderModel.receiveInfo;
+        province = province || '';
+        city = city || '';
+        area = area || '';
+        street = street || '';
+        address = address || '';
+        return (StringUtils.isNoEmpty(id) ?
                 <TouchableOpacity
                     style={styles.addressSelectStyle}
                     onPress={this.props.selectAddress}>
@@ -53,16 +67,17 @@ export default class ConfirmAddressView extends Component {
                     }}>
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={[styles.commonTextStyle, { flex: 1 }]}
-                                  allowFontScaling={false}>收货人：{confirmOrderModel.addressData.receiver}</Text>
+                                  allowFontScaling={false}>收货人：{receiver}</Text>
                             <Text style={styles.commonTextStyle}
-                                  allowFontScaling={false}>{confirmOrderModel.addressData.receiverPhone}</Text>
+                                  allowFontScaling={false}>{receiverPhone}</Text>
                         </View>
                         <UIText
                             value={
-                                '收货地址：' + confirmOrderModel.addressData.province
-                                + confirmOrderModel.addressData.city
-                                + confirmOrderModel.addressData.area
-                                + confirmOrderModel.addressData.address
+                                '收货地址：' + province
+                                + city
+                                + area
+                                + street
+                                + address
                             }
                             style={styles.receiverAddressStyle}/>
                     </View>

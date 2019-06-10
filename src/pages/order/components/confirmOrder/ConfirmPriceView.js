@@ -16,7 +16,6 @@ import { confirmOrderModel } from '../../model/ConfirmOrderModel';
 import res from '../../res';
 
 const arrow_right = res.arrow_right;
-const couponIcon = res.coupons_icon;
 
 @observer
 export default class ConfirmPriceView extends Component {
@@ -25,7 +24,6 @@ export default class ConfirmPriceView extends Component {
         return (
             <View style={{ marginBottom: 250 }}>
                 {this.renderLine()}
-                {/*{this.renderCouponsPackage()}*/}
                 {this.renderPriceView()}
             </View>
         );
@@ -37,43 +35,50 @@ export default class ConfirmPriceView extends Component {
         );
     };
     renderPriceView = () => {
-        let promotionAmount = confirmOrderModel.promotionAmount || 0;
-        promotionAmount = parseFloat(promotionAmount);
-        //优惠券文案处理
-        let couponAmount = confirmOrderModel.couponAmount
-        let couponCount = confirmOrderModel.couponCount || 0;
-        if (couponAmount!= undefined){//有优惠金额显示金额
-            couponAmount = couponAmount == 0? '请选择优惠券':'-¥'+couponAmount
-        } else {//无优惠金额显示优惠卷名称
-            couponAmount = couponCount > 0?(confirmOrderModel.couponName+(couponCount>1?'x'+couponCount: '')):'请选择优惠券'
-        }
-        if (!confirmOrderModel.canUseCou) {
-            couponAmount = '不支持使用优惠券'
-        }
+        // let promotionAmount = confirmOrderModel.promotionAmount || 0;
+        // promotionAmount = parseFloat(promotionAmount);
+        // //优惠券文案处理
+        // let couponAmount = confirmOrderModel.couponAmount
+        // let couponCount = confirmOrderModel.couponCount || 0;
+        // if (couponAmount!= undefined){//有优惠金额显示金额
+        //     couponAmount = couponAmount == 0? '请选择优惠券':'-¥'+couponAmount
+        // } else {//无优惠金额显示优惠卷名称
+        //     couponAmount = couponCount > 0?(confirmOrderModel.couponName+(couponCount>1?'x'+couponCount: '')):'请选择优惠券'
+        // }
+        // if (!confirmOrderModel.canUseCou) {
+        //     couponAmount = '不支持使用优惠券'
+        // }
+        // "totalFreightFee":, //BigDecimal 总运费
+        // "totalAmount":, //BigDecimal 应付金额 总金额(运费+总金额=其他金额之和)
+        // "payAmount":, //BigDecimal 用户需要支付的金额
+        // "couponAmount":, //BigDecimal 优惠券金额
+        // "promotionAmount":, //BigDecimal 促销金额
+        // "tokenCoinAmount":, //BigDecimal 一元券抵扣金额
+        // "couponCount":, //int 优惠券数量
+
+        let {totalFreightFee = 0, totalAmount = 0, couponAmount = 0, promotionAmount = 0, tokenCoinAmount = 0} = confirmOrderModel.payInfo;
         return (
 
             <View style={{ backgroundColor: 'white' }}>
                 <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
-                {confirmOrderModel.allProductPrice != undefined? < View style={styles.couponsStyle}>
+                 < View style={styles.couponsStyle}>
                     <UIText value={'商品金额'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <UIText value={`¥${confirmOrderModel.allProductPrice}`}
+                        <UIText value={`¥${totalAmount}`}
                                 style={[styles.grayText]}/>
                     </View>
-                </View>: null
-                }
+                </View>
                 {this.renderLine()}
                 <View style={[styles.couponsStyle,]}>
                     <UIText value={'运费'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <UIText value={`¥${confirmOrderModel.totalFreightFee}`}
+                        <UIText value={`¥${totalFreightFee}`}
                                 style={[styles.grayText]}/>
                     </View>
                 </View>
                 <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
-                {promotionAmount !== 0 ? <View style={styles.couponsStyle}
+                {promotionAmount ? <View style={styles.couponsStyle}
                                                activeOpacity={0.5}
-                                               disabled={!confirmOrderModel.canUseCou}
                                                onPress={this.props.jumpToCouponsPage}>
                     <UIText value={'组合优惠'} style={styles.blackText}/>
                     {this.renderLine()}
@@ -92,7 +97,7 @@ export default class ConfirmPriceView extends Component {
                     <UIText value={'优惠券'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
-                            value={couponAmount}
+                            value={couponAmount?'-¥'+couponAmount :'请选择优惠券'}
                             style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(15) }]}/>
                         <Image source={arrow_right}/>
                     </View>
@@ -104,7 +109,7 @@ export default class ConfirmPriceView extends Component {
                     <UIText value={'1元现金券'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
-                            value={confirmOrderModel.tokenCoin ? confirmOrderModel.tokenCoinText : '选择1元现金券'}
+                            value={tokenCoinAmount ? '-¥'+tokenCoinAmount : '选择1元现金券'}
                             style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(15) }]}/>
                         <Image source={arrow_right}/>
                     </View>
@@ -130,25 +135,6 @@ export default class ConfirmPriceView extends Component {
                 </TouchableOpacity>
                 {this.renderLine()}
 
-            </View>
-        );
-    };
-    renderCouponsPackage = () => {
-        return (
-            <View style={{ borderTopColor: DesignRule.lineColor_inWhiteBg, borderTopWidth: 0.5 }}>
-                {confirmOrderModel.couponList ?
-                    confirmOrderModel.couponList.map((item, index) => {
-                        return <View style={{ backgroundColor: 'white' }} key={index}>
-                            {index === 0 ? <Image source={couponIcon} style={styles.couponIconStyle}/> : null}
-                            <View style={styles.couponsOutStyle}>
-                                <UIText style={styles.couponsTextStyle} value={item.couponName}/>
-                                <UIText style={styles.couponsNumStyle} value={`x1`}/>
-                            </View>
-                            <View style={styles.couponsLineStyle}/>
-                        </View>;
-                    })
-                    :
-                    null}
             </View>
         );
     };

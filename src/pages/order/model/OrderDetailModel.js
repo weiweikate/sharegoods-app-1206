@@ -3,7 +3,7 @@ import OrderApi from '../api/orderApi'
 // import StringUtils from "../../../utils/StringUtils";
 import Toast from "../../../utils/bridge";
 import { PageLoadingState } from "../../../components/pageDecorator/PageState";
-import { OrderType } from '../order/OrderType';
+import { GetViewOrderStatus, OrderType } from '../order/OrderType';
 
 export const orderStatus = {
     prePayment: 1,
@@ -41,6 +41,8 @@ class OrderDetailModel {
     @observable merchantOrder = {};
     @observable payInfo = {};
     @observable receiveInfo = {};
+    @observable merchantOrderNo = ''
+    @observable platformOrderNo = ''
 
     productsList() {
         return this.merchantOrder.productOrderList || []
@@ -48,6 +50,7 @@ class OrderDetailModel {
 
 
     @action loadDetailInfo(merchantOrderNo) {
+        this.merchantOrderNo = merchantOrderNo;
         this.deleteInfo=false
         return OrderApi.lookDetail({
             merchantOrderNo:merchantOrderNo
@@ -73,12 +76,11 @@ class OrderDetailModel {
         this.receiveInfo = data.receiveInfo || {}
 
         orderDetailModel.loadingState=PageLoadingState.success
-        let menu = [];
+        this.platformOrderNo = this.merchantOrder.platformOrderNo || '';
+        let menu =  GetViewOrderStatus(this.merchantOrder.status).menu_orderDetail;
         switch (this.merchantOrder.status) {
             case OrderType.WAIT_PAY:
             {
-                menu = [{ id:1, operation:'取消订单', isRed:false, },
-                       { id:2, operation:'去支付', isRed:true, }]
                 this.moreDetail = '';
                 this.sellerState = '';
                 this.buyState = '';
@@ -90,10 +92,18 @@ class OrderDetailModel {
             }
             case OrderType.DELIVERED:
             {
+
                 break;
             }
             case OrderType.COMPLETED:
             {
+                if (this.merchantOrder.commentStatus){
+                    menu.push({
+                        id: 10,
+                        operation: '晒单',
+                        isRed: true
+                    })
+                }
                 break;
             }
             case OrderType.CLOSED:
@@ -112,111 +122,6 @@ class OrderDetailModel {
 
 }
 export  const orderDetailModel = new OrderDetailModel();
-
-
-
-class OrderDetailAfterServiceModel{
-
-    @observable
-    AfterServiceList=[];
-    @observable
-    currentAsList=[];
-    @observable
-    buyState:'';
-    @observable
-    moreDetail:'';
-    @observable
-    sellerState:'';
-    @observable
-    totalAsList={};
-    @observable
-    menu=[]
-    @observable
-    sellerState=''
-
-    @action
-    addAfterServiceList=()=>{
-        this.AfterServiceList = [ {
-
-        }, {
-            index:1,
-            buyState:'等待买家付款',
-            menu:[
-                {
-                    id:1,
-                    operation:'取消订单',
-                    isRed:false,
-                },{
-                    id:2,
-                    operation:'去支付',
-                    isRed:true,
-                },
-            ],
-        }, {
-            index:2,
-            buyState:'买家已付款',
-            moreDetail:'',
-            sellerState:'订单正在处理中...',
-            menu:[
-                {
-                    id:4,
-                    operation:'订单退款',
-                    isRed:false,
-                }
-            ],
-        },{
-            index:3,
-            buyState:'卖家已发货',
-            moreDetail:'',
-            sellerState:'等待平台发货',
-            menu:[
-                {
-                    id:5,
-                    operation:'查看物流',
-                    isRed:false,
-                },{
-                    id:6,
-                    operation:'确认收货',
-                    isRed:true,
-                },
-            ],
-        },{
-            index:4,
-            buyState:'订单已完成',
-            moreDetail:'',
-            sellerState:'已签收',
-            menu:[
-                {
-                    id:7,
-                    operation:'删除订单',
-                    isRed:false,
-                },{
-                    id:8,
-                    operation:'再次购买',
-                    isRed:true,
-                },
-            ],
-        },{
-            index:5,
-            buyState:'交易关闭',
-            moreDetail:'',
-            sellerState:'已关闭',
-            menu:[
-                {
-                    id:7,
-                    operation:'删除订单',
-                    isRed:false,
-                },{
-                    id:8,
-                    operation:'再次购买',
-                    isRed:true,
-                },
-            ],
-        },]
-    }
-
-}
-export const orderDetailAfterServiceModel = new OrderDetailAfterServiceModel();
 
 class AssistDetailModel{
     @observable

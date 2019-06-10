@@ -34,18 +34,6 @@ class AfterSaleServiceHomePage extends BasePage {
              * index 表示当前退的哪一个商品，如果没有index，说明退的是礼包，那么默认取orderProductList第一个来显示就行
              */
         };
-        this.params.pageData = this.params.pageData ||
-            {
-                specImg: '',
-                productName: 'productName',
-                restrictions: 0,
-                quantity: 1,
-                specValues: 'specValues',
-                unitPrice: 'unitPrice',
-                warehouseOrderNo: 'warehouseOrderNo',
-                createTime: '111111',
-                orderProductNo: 'O1166141'
-            };
         this.jumpToProductDetailPage = this.jumpToProductDetailPage.bind(this);
     }
 
@@ -81,7 +69,7 @@ class AfterSaleServiceHomePage extends BasePage {
     renderOrderNum = () => {
         return (
             <View style={{ height: 40, backgroundColor: 'white', justifyContent: 'center' }}>
-                <UIText value={'订单编号：' + this.params.pageData.warehouseOrderNo}
+                <UIText value={'订单编号：' + this.params.pageData.productOrderNo}
                         style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>
             </View>
         );
@@ -95,17 +83,14 @@ class AfterSaleServiceHomePage extends BasePage {
         );
     };
     renderSelect = () => {
-        let orderSubType = this.params.pageData.orderSubType;
-        console.log('renderSelect',this.params.pageData);
+        let activityList = this.params.pageData.activityList || [];
+        activityList = activityList.map((item) => {return item.activityType})
         let image = [refund, return_goods, exchange];
         let title = ['退款', '退货退款', '换货'];
         let content = ['未收到货', '已收到货，需要退换已收到的货物', '需要更换货'];
-        // 1 2 4 8 16 分别代表不支持优惠券、一元、换货、退货
-        // let status = [4, 16, 8];
-        // let productData = this.params.pageData || {}
         let arr = [];
         for (let i = 0; i < image.length; i++) {
-            if ((orderSubType === 3 || orderSubType === 5) && i < 2) {
+            if ((activityList.indexOf(3) !== -1 || activityList.indexOf(5) !== -1) && i < 2) {
                 continue;//升级礼包     //经验值专区的商品
             }
             // if ((productData.restrictions & status[i]) !== status[i]) {

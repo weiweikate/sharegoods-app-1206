@@ -1,3 +1,5 @@
+import { AfterStatus, PageType } from '../afterSaleService/AfterType';
+import bridge from '../../../utils/bridge';
 
 const OrderType = {
     DELETED:     0, // "已删除"
@@ -30,40 +32,81 @@ const ViewOrderStatus = {
         status: '待付款',
         menuData:[{ id:1, operation:'取消订单', isRed:false},
                   { id:2, operation:'去支付'  , isRed:true, }],
+        menu_orderDetail: [{ id:1, operation:'取消订单', isRed:false, },
+                           { id:2, operation:'去支付', isRed:true, }]
     },
     2:  {
         status: '待发货',
         menuData:[{ id:1, operation:'取消订单', isRed:false}],
+        menu_orderDetail: [{ id:1, operation:'取消订单', isRed:false, }]
     },
     3:  {
         status: '已发货',
         menuData:[{ id:5, operation:'查看物流', isRed:false, },
                   { id:6, operation:'确认收货', isRed:true, }],
+        menu_orderDetail: [{ id: 5, operation: '查看物流', isRed: false },
+                           { id: 6, operation: '确认收货', isRed: true }]
     },
     4:  {
         status: '交易完成',
         menuData:[{ id:7, operation:'删除订单', isRed:false, },
                   { id:8, operation:'再次购买', isRed:true, }],
+        menu_orderDetail: [{ id:7, operation:'删除订单', isRed:false, },
+                           { id:5, operation: '查看物流', isRed: false },
+                           { id:8, operation:'再次购买', isRed:true, }],
     },
     5:  {
         status: '交易关闭',
         menuData:[{ id:7, operation:'删除订单', isRed:false, },
                   { id:8, operation:'再次购买', isRed:true, }],
+        menu_orderDetail: [{ id:7, operation:'删除订单', isRed:false, },
+                           { id:8, operation:'再次购买', isRed:true, }],
     },
     6:  {
         status: '已付款',
         menuData:[{ id:1, operation:'取消订单', isRed:false}],
+        menu_orderDetail: []
     },
+}
+
+function GetAfterBtns(product) {
+    if (product.status === OrderType.WAIT_PAY ||
+        product.status === OrderType.DELETED ||
+        product.status === OrderType.CLOSED
+    ) {
+        return [];
+    }
+    let afterSale = product.afterSale || {}
+    let {type, status} = afterSale;
+    if (!type){
+        if (product.status === OrderType.WAIT_DELIVER) {
+           return [{ id:1, operation:'退款', isRed:false}]
+        }else {
+            return [{ id:2, operation:'退换', isRed:false}]
+        }
+    }
+    if(status === AfterStatus.STATUS_SUCCESS){
+        return [{ id:3, operation:'售后完成', isRed:false}]
+    }
+
+    switch (type) {
+        case  PageType.PAGE_AREFUND:
+            return [{ id:3, operation:'退款中', isRed:false}]
+        case  PageType.PAGE_SALES_RETURN:
+            return [{ id:3, operation:'退货中', isRed:false}]
+        case  PageType.PAGE_EXCHANGE:
+            return [{ id:3, operation:'换货中', isRed:false}]
+    }
 }
 
 function GetViewOrderStatus(status) {
     if (status){
-        return ViewOrderStatus[status] || {menuData:[]}
+        return ViewOrderStatus[status] || {menuData:[], menu_orderDetail:[]}
     }
-    return {menuData:[]}
+    return {menuData:[], menu_orderDetail:[]}
 }
 
-function checkOrderAfterSaleService(products = [], status, nowTime) {
+function checkOrderAfterSaleService(products = [], status, nowTime, isShowToast) {
     if (status === OrderType.WAIT_PAY ||
         status === OrderType.DELETED ||
         status === OrderType.CLOSED
@@ -73,19 +116,30 @@ function checkOrderAfterSaleService(products = [], status, nowTime) {
     let hasAfterSaleService = false;
 
     products.forEach((product) => {
-        let { activityList, afterSaleEndTime ,status: afterStaus} = product
+        let { activityList, afterSaleEndTime ,afterSale } = product
         activityList = activityList || [];
+        afterSale = afterSale || {};
+        let afterStaus = afterSale.afterStaus;
         let activityTypes = activityList.map((item) => {
             return item.activityType;
         });
-        //礼包产品3  经验值专区商品5 只支持换
+        //礼包产品3  经验值专区商品5 只支持退换，不支持退款
         if (activityTypes.indexOf(ActivityTypes.LEVELUP_PACKAGE) !== -1 || activityTypes.indexOf(ActivityTypes.ORDINARY_PACKAGE) !== -1) {
             if (status === OrderType.WAIT_DELIVER || status === OrderType.PAID){
+                if (isShowToast){
+                    if (activityTypes.indexOf(ActivityTypes.LEVELUP_PACKAGE) !== -1 ) {
+                        bridge.$toast('该商品属于升级礼包产品，不能退款');
+                    }else {
+                        bridge.$toast('该商品属于经验值专区商品，不能退款');
+                    }
+                }
                 return;
             }
         }
-
         if (status === OrderType.COMPLETED && nowTime && afterSaleEndTime && afterSaleEndTime < nowTime && !(afterStaus<7 && afterStaus>=1)) {
+            if (isShowToast){
+                bridge.$toast('该商品售后已过期');
+            }
             return;
         }
 
@@ -98,4 +152,4 @@ function checkOrderAfterSaleService(products = [], status, nowTime) {
 }
 
 
-export {OrderType, GetViewOrderStatus, checkOrderAfterSaleService};
+export {OrderType, GetViewOrderStatus, checkOrderAfterSaleService, GetAfterBtns};

@@ -177,7 +177,7 @@ export default class MyOrdersListView extends Component {
             Toast.$toast('订单已结束');
         } else {
             this.props.nav('order/order/MyOrdersDetailPage', {
-                orderNo: data.orderNo
+                merchantOrderNo: data.merchantOrder.merchantOrderNo
             });
         }
     };

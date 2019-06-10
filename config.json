@@ -1,6 +1,6 @@
 {
     "showDebugPanel": true,
-    "envType": "qa",
+    "envType": "xx",
     "isDevHotUpdate": false,
     "__注释__": "[showDebugPanel]:是否显示调试面板   [envType]:决定网络启动后，默认的网络环境类型",
     "env": {
@@ -193,7 +193,7 @@
         },
         "xx": {
             "name": "张帅",
-            "host": "http://172.16.10.10:1080/gateway"
+            "host": "http://172.18.7.197:1080/gateway"
         },
         "xxx": {
             "name": "潘红亮",

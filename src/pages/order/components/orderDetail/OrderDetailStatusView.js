@@ -9,7 +9,7 @@ import {
 } from '../../../../components/ui';
 import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import { orderDetailAfterServiceModel } from '../../model/OrderDetailModel';
+import { orderDetailModel } from '../../model/OrderDetailModel';
 import { observer } from 'mobx-react/native';
 import res from '../../res';
 const productDetailImg = res.productDetailImg;
@@ -27,9 +27,9 @@ export default class OrderDetailStatusView extends Component{
                 <ImageBackground style={styles.redRectangle} source={productDetailImg}>
                     <UIImage source={this.props.leftTopIcon} style={{ height: px2dp(25), width:px2dp(25), marginTop: px2dp(-22) }}/>
                     <View style={{ marginTop:px2dp(-22)}}>
-                        <UIText value={orderDetailAfterServiceModel.totalAsList.buyState} style={styles.textStyle}/>
-                        {StringUtils.isNoEmpty(orderDetailAfterServiceModel.moreDetail) ?
-                            <UIText value={orderDetailAfterServiceModel.moreDetail}
+                        <UIText value={orderDetailModel.buyState} style={styles.textStyle}/>
+                        {StringUtils.isNoEmpty(orderDetailModel.moreDetail) ?
+                            <UIText value={orderDetailModel.moreDetail}
                                     style={{ color: 'white', fontSize: px2dp(13), marginLeft: px2dp(10) }}/> : null
                         }
                     </View>
