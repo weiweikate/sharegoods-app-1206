@@ -278,37 +278,6 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
                 final NewestShowGroundBean.DataBean bean = data.get(position);
                 int id = itemview.getId();
                 switch (id) {
-                    case R.id.icon_hand: {
-                        recyclerView.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (bean.isLike()) {
-                                    bean.setLike(false);
-                                    if (bean.getLikesCount() > 0) {
-                                        bean.setLikesCount(bean.getLikesCount() - 1);
-                                    }
-                                } else {
-                                    bean.setLike(true);
-                                    bean.setLikesCount(bean.getLikesCount() + 1);
-                                }
-                                if (eventDispatcher != null) {
-                                    onZanPressEvent.init(view.getId());
-                                    String jsonStr = JSON.toJSONString(bean);
-                                    Map map = JSONObject.parseObject(jsonStr, new TypeReference<Map>() {
-                                    });
-                                    Map result = new HashMap();
-                                    result.put("index", position);
-                                    result.put("detail", map);
-                                    WritableMap realData = Arguments.makeNativeMap(result);
-                                    onZanPressEvent.setData(realData);
-                                    eventDispatcher.dispatchEvent(onZanPressEvent);
-                                }
-                                data.set(position, bean);
-                                adapter.replaceData(data);
-                            }
-                        }, 200);
-                    }
-                    break;
                     case R.id.icon_download: {
                         UiThreadUtil.runOnUiThread(new Runnable() {
                             @Override

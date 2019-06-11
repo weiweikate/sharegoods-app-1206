@@ -22,6 +22,7 @@ import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
+import com.meeruu.sharegoods.rn.showground.utils.NumUtils;
 import com.meeruu.sharegoods.rn.showground.widgets.FolderTextView;
 import com.meeruu.sharegoods.rn.showground.widgets.GridView.ImageInfo;
 import com.meeruu.sharegoods.rn.showground.widgets.GridView.NineGridView;
@@ -95,7 +96,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         }
 
         TextView like = helper.getView(R.id.like_num);
-        like.setText(item.getLikesCount() + "");
+        like.setText(NumUtils.formatShowNum(item.getHotCount()));
 
         TextView title = helper.getView(R.id.title);
         title.setText(item.getTitle() + "");
@@ -119,13 +120,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
             simpleDraweeView.setVisibility(View.GONE);
         }
 
-        ImageView hand = helper.getView(R.id.icon_hand);
-        if (item.isLike()) {
-            hand.setImageResource(R.drawable.icon_like);
-        } else {
-            hand.setImageResource(R.drawable.icon_hand);
-        }
-        helper.addOnClickListener(R.id.icon_hand, R.id.icon_share);
+        helper.addOnClickListener(R.id.icon_share);
     }
 
 
@@ -170,7 +165,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         download.setText(item.getDownloadCount() + "");
 
         TextView like = helper.getView(R.id.like_num);
-        like.setText(item.getLikesCount() + "");
+        like.setText(NumUtils.formatShowNum(item.getHotCount()));
 
         NineGridView nineGridView = helper.getView(R.id.nine_grid);
 
@@ -232,12 +227,6 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
             recyclerView.setVisibility(View.GONE);
             recyclerView.setTag(null);
         }
-        helper.addOnClickListener(R.id.icon_hand, R.id.icon_download, R.id.icon_share);
-        ImageView hand = helper.getView(R.id.icon_hand);
-        if (item.isLike()) {
-            hand.setImageResource(R.drawable.icon_like);
-        } else {
-            hand.setImageResource(R.drawable.icon_hand);
-        }
+        helper.addOnClickListener( R.id.icon_download, R.id.icon_share);
     }
 }
