@@ -104,17 +104,17 @@
   if (!_imageNode) {
     CGFloat itemWidth=  [UIScreen mainScreen].bounds.size.width / 2.0 * [UIScreen mainScreen].scale;
     NSString * showImage = @"";
-    NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
     if([_model.resource[0] valueForKey:@"url"]){
        showImage = [_model.resource[0] valueForKey:@"url"];
         self.aspectRatioDic = [self getURLParameters:showImage];
     }
     
     if ([showImage containsString:@"sharegoodsmall"]) {
+      showImage = [showImage componentsSeparatedByString:@"?"].firstObject;
       showImage = [NSString stringWithFormat:@"%@?x-oss-process=image/resize,m_lfit,w_%0.0lf,h_%0.0lf",showImage,itemWidth,itemWidth/_model.aspectRatio];
     }
     _imageNode = [SGNetworkImageNode new];
-    _imageNode.defaultImage = [UIImage imageWithColor:[UIColor colorWithHexString:@"f5f5f5"]];
+    _imageNode.defaultImage = [UIImage imageWithColor:[UIColor whiteColor]];
     _imageNode.URL = [NSURL URLWithString:showImage];
     _imageNode.cornerRadius = 5;
     _imageNode.clipsToBounds = YES;

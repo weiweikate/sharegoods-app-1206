@@ -67,6 +67,8 @@ public class ParameterUtils {
     public static final int REQUEST_CODE_WEBVIEW = 48;
     public static final int NOTIFY_ID_APP_INIT = 49;
     public static final int REQUEST_CODE_PHONE = 50; //拍摄照片请求码
+    public static final int REQUEST_DELAY = 51; //秀场延迟请求
+    public static final int SHOW_REPLACE_DELAY = 52; //秀场延迟替换item
     /**
      * 异步初始化通知channnelId
      */
@@ -78,10 +80,10 @@ public class ParameterUtils {
     /**
      * 一般图片url宽高
      */
-    public static final String IMG_URL_WH = "%1$s?x-oss-process=image/resize,m_lfit,w_%2$s,h_%3$s";
+    public static final String IMG_URL_WH = "%1$s?x-oss-process=image/resize,m_lfit,w_%2$s,h_%3$s/quality,Q_80";
     /**
      * 圆形图片url宽高
      */
-    public static final String CIRCLE_IMG_URL_WH = "%1$s?x-oss-process=image/resize,m_pad,w_%2$s,h_%3$s";
+    public static final String CIRCLE_IMG_URL_WH = "%1$s?x-oss-process=image/resize,m_pad,w_%2$s,h_%3$s/quality,Q_80";
 
 }
