@@ -23,6 +23,7 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.meeruu.commonlib.utils.DensityUtils;
+import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.adapter.ShowGroundAdapter;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
@@ -58,6 +59,7 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
     private WeakReference<View> showgroundView;
     private Handler handler;
     private View errImg;
+    private boolean sIsScrolling;
 
     public ViewGroup getShowGroundView(ReactContext reactContext) {
         eventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
@@ -193,6 +195,15 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_DRAGGING || newState == RecyclerView.SCROLL_STATE_SETTLING) {
+                    sIsScrolling = true;
+                    ImageLoadUtils.pauseLoadImage();
+                } else if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (sIsScrolling == true) {
+                        ImageLoadUtils.resumeLoadImage();
+                    }
+                    sIsScrolling = false;
+                }
                 if (eventDispatcher != null) {
                     onScrollStateChangedEvent onScrollStateChangedEvent = new onScrollStateChangedEvent();
                     onScrollStateChangedEvent.init(view.getId());
