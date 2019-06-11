@@ -46,7 +46,6 @@
         android:layout_marginLeft="5dp"
         android:layout_marginTop="10dp"
         android:layout_toRightOf="@id/user_icon"
-        android:clickable="false"
         android:includeFontPadding="false"
         android:textColor="@color/textColor_secondTitle"
         android:textSize="13sp"

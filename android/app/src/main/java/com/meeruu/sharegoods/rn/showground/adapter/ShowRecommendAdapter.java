@@ -156,6 +156,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
             if (!TextUtils.equals(titleStr, (String) content.getTag())) {
                 content.updateForRecyclerView(titleStr, maxWidth);
                 content.setTag(titleStr);
+                content.setExpandListener(null);
                 content.setVisibility(View.VISIBLE);
             }
         } else {
