@@ -344,6 +344,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         swipeRefreshLayout.setRefreshing(false);
         if (adapter != null) {
             adapter.loadMoreFail();
+            setEmptyText();
         }
 
         handler.post(new Runnable() {
@@ -396,6 +397,19 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
             adapter.setEnableLoadMore(true);
             adapter.setNewData(resolveData(data));
             swipeRefreshLayout.setRefreshing(false);
+           setEmptyText();
+        }
+    }
+
+    private void setEmptyText(){
+        if(adapter == null){
+            return;
+        }
+        List list = adapter.getData();
+        if(list == null || list.size() == 0){
+            View view = adapter.getEmptyView();
+            TextView textView = view.findViewById(R.id.empty_tv);
+            textView.setText("暂无数据");
         }
     }
 

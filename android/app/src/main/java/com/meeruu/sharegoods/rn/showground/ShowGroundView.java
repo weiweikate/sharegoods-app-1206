@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -134,8 +135,7 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
         });
         adapter.setEnableLoadMore(true);
         View emptyView = LayoutInflater.from(context).inflate(R.layout.show_empty_view, null);
-        emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT));
+        emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         adapter.setEmptyView(emptyView);
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
@@ -215,6 +215,18 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
         presenter = new ShowgroundPresenter(this);
     }
 
+    private void setEmptyText() {
+        if (adapter == null) {
+            return;
+        }
+        List list = adapter.getData();
+        if (list == null || list.size() == 0) {
+            View view = adapter.getEmptyView();
+            TextView textView = view.findViewById(R.id.empty_tv);
+            textView.setText("暂无数据");
+        }
+    }
+
     @Override
     public void onRefresh() {
         if (eventDispatcher != null) {
@@ -235,6 +247,7 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
         swipeRefreshLayout.setRefreshing(false);
         if (adapter != null) {
             adapter.loadMoreFail();
+            setEmptyText();
         }
 
         handler.post(new Runnable() {
@@ -265,6 +278,7 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
             adapter.setEnableLoadMore(true);
             adapter.setNewData(data);
             swipeRefreshLayout.setRefreshing(false);
+            setEmptyText();
         }
     }
 
