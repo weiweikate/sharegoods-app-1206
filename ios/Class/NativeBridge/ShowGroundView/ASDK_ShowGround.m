@@ -22,6 +22,7 @@
 #import "ASCollectionNode+ReloadIndexPaths.h"
 #import <SDAutoLayout.h>
 #import <YYKit.h>
+#import "ShowCellASImageNode.h"
 
 #define kReuseIdentifier @"ShowCell"
 #define SystemUpgradeCode 9999
@@ -302,6 +303,12 @@
 - (ASCellNodeBlock)js_collectionNode:(ASCollectionNode *)collectionNode nodeBlockForItemAtIndexPath:(NSIndexPath *)indexPath
 {
   ShowQuery_dataModel *model = self.dataArr[indexPath.item];
+  if (indexPath.row > 6) {
+    return ^{
+      ShowCellASImageNode *node = [[ShowCellASImageNode alloc]initWithModel:model];
+      return node;
+    };
+  }
   return ^{
     ShowCellNode *node = [[ShowCellNode alloc]initWithModel:model];
     return node;
