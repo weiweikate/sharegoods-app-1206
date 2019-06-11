@@ -39,7 +39,7 @@ public class ExpandableTextView extends AppCompatTextView {
     private static final int TO_SHRINK_HINT_COLOR = 0xFFE74C3C;
     private static final int TO_EXPAND_HINT_COLOR_BG_PRESSED = 0x55999999;
     private static final int TO_SHRINK_HINT_COLOR_BG_PRESSED = 0x55999999;
-    private static final boolean TOGGLE_ENABLE = true;
+    private static final boolean TOGGLE_ENABLE = false;
     private static final boolean SHOW_TO_EXPAND_HINT = true;
     private static final boolean SHOW_TO_SHRINK_HINT = true;
 
@@ -152,16 +152,18 @@ public class ExpandableTextView extends AppCompatTextView {
             mExpandableClickListener = new ExpandableClickListener();
             setOnClickListener(mExpandableClickListener);
         }
-        getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            boolean hasMeasured = false;
+
             @Override
-            public void onGlobalLayout() {
-                ViewTreeObserver obs = getViewTreeObserver();
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    obs.removeOnGlobalLayoutListener(this);
-                } else {
-                    obs.removeGlobalOnLayoutListener(this);
+            public boolean onPreDraw() {
+                if (!hasMeasured) {
+                    getViewTreeObserver().removeOnPreDrawListener(this);
+                    hasMeasured = true;
+
+                    setTextInternal(getNewTextByConfig(), mBufferType);
                 }
-                setTextInternal(getNewTextByConfig(), mBufferType);
+                return true;
             }
         });
     }
@@ -445,7 +447,9 @@ public class ExpandableTextView extends AppCompatTextView {
             if (hasOnClickListeners()
                     && (getOnClickListener(ExpandableTextView.this) instanceof ExpandableClickListener)) {
             } else {
-                toggle();
+                if (mToggleEnable) {
+                    toggle();
+                }
             }
         }
 

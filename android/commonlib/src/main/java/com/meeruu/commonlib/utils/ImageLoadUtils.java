@@ -627,4 +627,12 @@ public class ImageLoadUtils {
         Uri uri = Uri.parse(url);
         clearCache(uri);
     }
+
+    public static void pauseLoadImage() {
+        Fresco.getImagePipeline().pause();
+    }
+
+    public static void resumeLoadImage() {
+        Fresco.getImagePipeline().resume();
+    }
 }
