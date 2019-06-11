@@ -292,7 +292,7 @@ const IntervalMsgRouter = {
     [IntervalMsgType.productDetail]: 'product/ProductDetailPage',
     [IntervalMsgType.orderDetail]: 'order/order/MyOrdersDetailPage',
     [IntervalMsgType.shopDetail]: 'spellShop/MyShop_RecruitPage',
-    [IntervalMsgType.showDetail]: 'show/ShowDetailPage',
+    [IntervalMsgType.showDetail]: 'show/ShowRichTextDetailPage',
     [IntervalMsgType.sign]: 'home/signIn/SignInPage',
     [IntervalMsgType.web]: 'HtmlPage',
     [IntervalMsgType.mineShare]: 'mine/InviteFriendsPage'
