@@ -22,6 +22,7 @@ import { MRText as Text, MRTextInput as TextInput } from '../../../components/ui
 import couponsModel from '../model/CouponsModel';
 import CouponExplainItem from './CouponExplainItem';
 import CouponNormalItem from './CouponNormalItem';
+import RouterMap from '../../../navigation/RouterMap';
 
 const NoMessage = res.couponsImg.coupons_no_data;
 const plusIcon = res.couponsImg.youhuiquan_icon_jia_nor;
@@ -46,6 +47,7 @@ export default class MyCouponsItems extends Component {
         this.currentPage = 0;
         this.isLoadMore = false;
         this.isEnd = false;
+        this.addData = true;
         this.dataSel = {};
     }
 
@@ -290,51 +292,53 @@ export default class MyCouponsItems extends Component {
         let products = item.products || [], cat1 = item.cat1 || [], cat2 = item.cat2 || [], cat3 = item.cat3 || [];
         let result = null;
         if (item.type === 5) {
-            return '限商品：限指定商品可用';
+            return '限指定商品可用';
         }
         if (products.length) {
             if ((cat1.length || cat2.length || cat3.length)) {
-                return '限商品：限指定商品可用';
+                return '限指定商品可用';
             }
             if (products.length > 1) {
-                return '限商品：限指定商品可用';
+                return '限指定商品可用';
             }
             if (products.length === 1) {
                 let productStr = products[0];
                 if (productStr.length > 15) {
                     productStr = productStr.substring(0, 15) + '...';
                 }
-                return `限商品：限${productStr}商品可用`;
+                return `限${productStr}商品可用`;
             }
         }
         else if ((cat1.length + cat2.length + cat3.length) === 1) {
             result = [...cat1, ...cat2, ...cat3];
-            return `限品类：限${result[0]}品类可用`;
+            return `限${result[0]}品类可用`;
         }
         else if ((cat1.length + cat2.length + cat3.length) > 1) {
-            return '限品类：限指定品类商品可用';
+            return '限指定品类商品可用';
         } else {
-            return '全品类：全场通用券（特殊商品除外）';
+            return '全场通用券（特殊商品除外）';
         }
     };
     parseData = (dataList) => {
         let arrData = [];
         console.log('parseData', this.dataSel, couponsModel.params);
         if (this.currentPage === 1) {//refresh
-            if ((!StringUtils.isEmpty(user.tokenCoin) || !StringUtils.isEmpty(user.blockedTokenCoin))
-                && (user.tokenCoin !== 0 || user.blockedTokenCoin !== 0)
+            if (!StringUtils.isEmpty(user.tokenCoin)
+                && (user.tokenCoin !== 0)
                 && this.state.pageStatus === 0
                 && !this.props.fromOrder
                 && !couponsModel.params.type) {
                 arrData.push({
                     status: 0,
                     name: '1元现金券',
-                    timeStr: '使用有效期：无时间限制',
+                    timeStr: '无时间限制',
                     value: 1,
-                    limit: '全品类：无金额门槛',
+                    limit: '无金额门槛\n任意商品可用\n可叠加使用',
                     remarks: '1.全场均可使用此优惠券\n2.礼包优惠券在激活有效期内可以购买指定商品',
                     type: 99, //以type=99表示1元券
-                    levelimit: false
+                    levelimit: false,
+                    redirectType: 0,
+                    redirectUrl: null
                 });
             }
             if (!this.props.fromOrder && ((couponsModel.params.type || 0) > 6) || (!this.props.fromOrder && couponsModel.params.type === null)) {
@@ -349,11 +353,13 @@ export default class MyCouponsItems extends Component {
                             name: item.name,
                             timeStr: '使用有效期：敬请期待',
                             value: item.type === 11 ? item.value : '拼店',
-                            limit: item.type === 11 ? '兑换券：靓号代金券' : '全场券：全场通用券（特殊商品除外）',
+                            limit: item.type === 11 ? '靓号代金券' : '全场通用券（特殊商品除外）',
                             remarks: item.remarks,
                             type: item.type, //以type=99表示1元券
                             levelimit: false,
-                            count: item.number || 0
+                            count: item.number || 0,
+                            redirectType: item.type === 11 ? 0 : item.redirectType,
+                            redirectUrl: item.type === 11 ? null : item.redirectUrl
 
                         });
                     });
@@ -382,14 +388,16 @@ export default class MyCouponsItems extends Component {
                 id: item.id,
                 status: item.status,
                 name: item.name,
-                timeStr: '使用有效期：' + item.couponTime,
-                value: item.type === 3 ? (item.value / 10) : (item.type === 4 ? '商品\n兑换' : (item.type === 5 ? '兑换' : item.value)),
+                timeStr: item.couponTime,
+                value: item.type === 3 ? '折' : (item.type === 4 ? '抵' : (item.type === 5 ? '兑' : item.value)),
                 limit: this.parseCoupon(item),
                 couponConfigId: item.couponConfigId,
                 remarks: item.remarks,
                 type: item.type,
                 levelimit: item.levels ? (item.levels.indexOf(user.levelId) !== -1 ? false : true) : false,
-                count: item.count || 0
+                count: item.count || 0,
+                redirectType: item.redirectType,
+                redirectUrl: item.redirectUrl
             });
         });
     };
@@ -451,18 +459,19 @@ export default class MyCouponsItems extends Component {
         } else if (this.props.justOne && status === 0 || this.dataSel.type === 99) {
             let arrData = [];
             bridge.hiddenLoading();
-            if ((!StringUtils.isEmpty(user.tokenCoin) || !StringUtils.isEmpty(user.blockedTokenCoin))
-                && (user.tokenCoin !== 0 || user.blockedTokenCoin !== 0)
+            if (!StringUtils.isEmpty(user.tokenCoin) && (user.tokenCoin !== 0)
                 && status === 0) {
                 arrData.push({
                     status: 0,
                     name: '1元现金券',
-                    timeStr: '使用有效期：无时间限制',
+                    timeStr: '无时间限制',
                     value: 1,
-                    limit: '全品类：无金额门槛',
+                    limit: '无金额门槛\n任意商品可用\n可叠加使用',
                     remarks: '1.全场均可使用此优惠券\n2.礼包优惠券在激活有效期内可以购买指定商品',
-                    type: 99,//以type=99表示1元券
-                    levelimit: false
+                    type: 99, //以type=99表示1元券
+                    levelimit: false,
+                    redirectType: 0,
+                    redirectUrl: null
                 });
             }
             this.setState({ viewData: arrData });
@@ -510,6 +519,7 @@ export default class MyCouponsItems extends Component {
         this.dataSel = couponsModel.params || {};
         console.log('refresh');
         this.isEnd = false;
+        this.addData = true;
         this.currentPage = 1;
         if (user.isLogin) {
             this.getUserInfo();
@@ -531,24 +541,51 @@ export default class MyCouponsItems extends Component {
         if (!this.isLoadMore && !this.isEnd && !this.state.isFirstLoad) {
             this.currentPage++;
             this.getDataFromNetwork(this.dataSel);
+        } else if (this.state.pageStatus === 0 && this.addData && (this.dataSel.type === 99 || !this.dataSel.type)) {
+            if (!StringUtils.isEmpty(user.blockedTokenCoin) && (user.blockedTokenCoin !== 0)) {
+                let arrData = this.state.viewData;
+                arrData.push({
+                    status: 3,
+                    name: '1元现金券',
+                    timeStr: '无时间限制',
+                    value: 1,
+                    limit: '无金额门槛\n任意商品可用\n可叠加使用',
+                    remarks: '1.全场均可使用此优惠券\n2.礼包优惠券在激活有效期内可以购买指定商品',
+                    type: 99, //以type=99表示1元券
+                    levelimit: false,
+                    redirectType: 0,
+                    redirectUrl: null
+                });
+                this.addData = false;
+                this.setState({ viewData: arrData });
+            }
         }
     };
 
     clickItem = (index, item) => {
-        // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
-        if (this.props.fromOrder) {
-            bridge.showLoading();
-            this.props.useCoupons(item);
-        } else if (this.props.justOne) {
-            this.setState({ showDialogModal: true });
-        } else {
-            if (item.type < 99 && item.count > 1) {
-                this.props.nav.navigate('mine/coupons/CouponsDetailPage', {
-                    couponIds: [item.couponConfigId],
-                    status: item.status
-                });
-            }
+        //礼包
+        if (item.redirectType && item.redirectType === 10) {
+            this.props.nav.navigate(RouterMap.TopicDetailPage, { activityType: 3, activityCode: item.redirectUrl });
+        }
 
+        //专题(老版)
+        if (item.redirectType && item.redirectType === 11) {
+            this.props.nav.navigate(RouterMap.DownPricePage, { linkTypeCode: item.redirectUrl });
+        }
+
+        //商品
+        if (item.redirectType && item.redirectType === 12) {
+            this.props.nav.navigate(RouterMap.ProductDetailPage, { productCode: item.redirectUrl });
+        }
+
+        //秀场
+        if (item.redirectType && item.redirectType === 13) {
+            this.props.nav.navigate(RouterMap.ShowRichTextDetailPage, { code: item.redirectUrl });
+        }
+
+        //h5链接
+        if (item.redirectType && item.redirectType === 14) {
+            this.props.nav.navigate('HtmlPage', { uri: item.redirectUrl });
         }
     };
 }

@@ -6,6 +6,7 @@
 import { PageKey } from './Stack';
 import { NavigationActions } from 'react-navigation';
 import apiEnvironment from '../api/ApiEnvironment';
+import bridge from '../utils/bridge';
 
 let timeStamp = null;
 let errWebtimeStamp = null;
@@ -55,8 +56,37 @@ function navigate(routeName, params) {
 }
 
 function backToHome() {
+    let $routes = global.$routes || [];
+   if ( $routes.length === 0){
+       bridge.$toast('下滑页面，查看更多');
+       return;
+   }
+   if ($routes.length === 1) {
+       let route = $routes[0]
+       if (route.routeName === 'Tab' && route.index === 0){
+           bridge.$toast('下滑页面，查看更多');
+           return;
+       }
+   }
     global.$navigator && global.$navigator._navigation.popToTop();
-    global.$navigator && global.$navigator._navigation.navigate(RouterMap.HomePage);
+    global.$navigator && global.$navigator._navigation.navigate('HomePage');
+
+}
+
+function GoToTabItem(index) {
+    let $routes = global.$routes || [];
+    if (index>4){
+        return;
+    }
+    if ($routes.length === 1) {
+        let route = $routes[0]
+        if (route.routeName === 'Tab' && route.index === index){
+            return;
+        }
+    }
+    global.$navigator && global.$navigator._navigation.popToTop();
+    global.$navigator && global.$navigator._navigation.navigate(['HomePage','ShowListPage','MyShop_RecruitPage','ShopCartPage','MinePage'][index]);
+
 }
 
 function navigateBack(step) {
@@ -92,6 +122,6 @@ function navigateBackToStore() {
 
 
 export default RouterMap;
-export { navigate, navigateBack, backToHome, navigateBackToStore };
+export { navigate, navigateBack, backToHome, navigateBackToStore, GoToTabItem};
 
 

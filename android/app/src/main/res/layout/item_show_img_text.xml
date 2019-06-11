@@ -52,7 +52,7 @@
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/image"
             android:layout_width="match_parent"
-            android:layout_height="160dp" />
+            android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/title"
@@ -66,7 +66,7 @@
 
 
     <ImageView
-        android:id="@+id/icon_hand"
+        android:id="@+id/icon_fire"
         android:layout_width="28dp"
         android:layout_height="28dp"
         android:layout_below="@id/content"
@@ -74,15 +74,15 @@
         android:layout_marginTop="15dp"
         android:layout_toRightOf="@id/user_icon"
         android:padding="2dp"
-        android:src="@drawable/icon_hand" />
+        android:src="@drawable/icon_fire" />
 
     <TextView
         android:id="@+id/like_num"
         android:layout_width="wrap_content"
         android:layout_height="28dp"
-        android:layout_alignTop="@+id/icon_hand"
+        android:layout_alignTop="@+id/icon_fire"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/icon_hand"
+        android:layout_toRightOf="@+id/icon_fire"
         android:gravity="center_vertical"
         android:text="22"
         android:textColor="@color/textColor_mainTitle"

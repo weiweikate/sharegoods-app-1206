@@ -93,6 +93,7 @@ const ShowFlag = () =>
             <Animation
                 style={styles.shopFlag}
                 autoPlay={true}
+                loop={true}
                 hardwareAccelerationAndroid={true}
                 source={require('./pin_flag.json')}/>
         </View>

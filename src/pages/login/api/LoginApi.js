@@ -12,10 +12,8 @@ const api = {
     passwordLogin: ['/user/userLogin/passwordLogin', { isRSA: true }],
     //app微信登陆
     appWechatLogin: '/user/userLogin/appWechatLogin',
-    //老用户激活注册
+    //检测用户是否存在注册
     existedUserLogin: '/user/userLogin/existedUserLogin',
-    //老用户验证
-    existedUserVerify: '/user/userLogin/existedUserVerify',
     //注册领红包
     userReceivePackage: ['/promotion/promotionPromoter/userReceivePackage', { method: 'get' }],
     //填写授权码
@@ -26,8 +24,6 @@ const api = {
     mentorBind:  ['/user/userSign/mentorBind',{method:'get'}],
     //选择导师跳过调用接口
     givePackage:['/user/userSign/givePackage',{method:'get'}],
-    //老用户激活日期校验
-    oldUserActivateJudge:['/user/userSign/oldUserActivateJudge',{method:'get'}],
     //是否有秀迷
     queryShowFansStatus:['/user/queryShowFansStatus',{method:'post'}],
     //一键登录后去绑定微信操作

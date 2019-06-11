@@ -10,18 +10,20 @@ import android.support.v7.widget.SnapHelper;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.meeruu.commonlib.customview.ExpandableTextView;
 import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
-import com.meeruu.sharegoods.rn.showground.widgets.FolderTextView;
+import com.meeruu.sharegoods.rn.showground.utils.NumUtils;
 import com.meeruu.sharegoods.rn.showground.widgets.GridView.ImageInfo;
 import com.meeruu.sharegoods.rn.showground.widgets.GridView.NineGridView;
 import com.meeruu.sharegoods.rn.showground.widgets.GridView.NineGridViewAdapter;
@@ -33,13 +35,19 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
     private NineGridView.clickL clickL;
     private ProductsAdapter.AddCartListener addCartListener;
     private ProductsAdapter.PressProductListener pressProductListener;
+    private static int maxWidth = ScreenUtils.getScreenWidth() - DensityUtils.dip2px(90);
 
     public ShowRecommendAdapter(NineGridView.clickL clickL, ProductsAdapter.AddCartListener addCartListener, ProductsAdapter.PressProductListener pressProductListener) {
         super(new ArrayList<NewestShowGroundBean.DataBean>());
+        final int radius = DensityUtils.dip2px(5);
         NineGridView.setImageLoader(new NineGridView.ImageLoader() {
             @Override
             public void onDisplayImage(Context context, SimpleDraweeView imageView, String url) {
-                ImageLoadUtils.loadRoundNetImage(url, imageView, DensityUtils.dip2px(5));
+                String tag = (String) imageView.getTag();
+                if (!TextUtils.equals(tag, url)) {
+                    imageView.setTag(url);
+                    ImageLoadUtils.loadRoundNetImage(url, imageView, radius);
+                }
             }
         });
         this.clickL = clickL;
@@ -89,32 +97,36 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         }
 
         TextView like = helper.getView(R.id.like_num);
-        like.setText(item.getLikesCount() + "");
+        like.setText(NumUtils.formatShowNum(item.getHotCount()));
 
         TextView title = helper.getView(R.id.title);
         title.setText(item.getTitle() + "");
 
         SimpleDraweeView simpleDraweeView = helper.getView(R.id.image);
         if (item.getResource() != null) {
+            String tag = (String) simpleDraweeView.getTag();
             String url = item.getResource().get(0).getUrl();
-            ImageLoadUtils.loadRoundNetImage(url, simpleDraweeView, DensityUtils.dip2px(5));
-            simpleDraweeView.setVisibility(View.VISIBLE);
+            if (!TextUtils.equals(url, tag)) {
+                simpleDraweeView.setTag(url);
+                int width = ScreenUtils.getScreenWidth() - DensityUtils.dip2px(85);
+                int height = width / 29 * 16;
+                LinearLayout.LayoutParams linearParams = (LinearLayout.LayoutParams) simpleDraweeView.getLayoutParams();
+                linearParams.height = height;
+                linearParams.width = width;
+                simpleDraweeView.setLayoutParams(linearParams);
+                ImageLoadUtils.loadRoundNetImage(url, simpleDraweeView, DensityUtils.dip2px(5));
+                simpleDraweeView.setVisibility(View.VISIBLE);
+            }
         } else {
             simpleDraweeView.setVisibility(View.GONE);
         }
 
-        ImageView hand = helper.getView(R.id.icon_hand);
-        if (item.isLike()) {
-            hand.setImageResource(R.drawable.icon_like);
-        } else {
-            hand.setImageResource(R.drawable.icon_hand);
-        }
-        helper.addOnClickListener(R.id.icon_hand, R.id.icon_share);
+        helper.addOnClickListener(R.id.icon_share);
     }
 
 
     private void convertDynamic(final BaseViewHolder helper, final NewestShowGroundBean.DataBean item) {
-        final FolderTextView content = helper.getView(R.id.content);
+        final ExpandableTextView content = helper.getView(R.id.content);
         final SimpleDraweeView userIcon = helper.getView(R.id.user_icon);
         String userTag = (String) userIcon.getTag();
         String userUrl = item.getUserInfoVO().getUserImg();
@@ -135,15 +147,16 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         }
 
         String titleStr = item.getContent();
-        if (!TextUtils.equals(titleStr, (String) content.getTag())) {
-            if (titleStr != null && titleStr.trim().length() > 0) {
-                content.setText(titleStr);
+        if (titleStr != null && titleStr.trim().length() > 0) {
+            if (!TextUtils.equals(titleStr, (String) content.getTag())) {
+                content.updateForRecyclerView(titleStr, maxWidth);
                 content.setTag(titleStr);
+                content.setExpandListener(null);
                 content.setVisibility(View.VISIBLE);
-            } else {
-                content.setVisibility(View.GONE);
-                content.setTag(titleStr);
             }
+        } else {
+            content.setVisibility(View.GONE);
+            content.setTag(titleStr);
         }
 
         TextView name = helper.getView(R.id.user_name);
@@ -154,7 +167,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         download.setText(item.getDownloadCount() + "");
 
         TextView like = helper.getView(R.id.like_num);
-        like.setText(item.getLikesCount() + "");
+        like.setText(NumUtils.formatShowNum(item.getHotCount()));
 
         NineGridView nineGridView = helper.getView(R.id.nine_grid);
 
@@ -169,11 +182,12 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
 
         if (imageInfoList != null && imageInfoList.size() > 0) {
             String tag = (String) nineGridView.getTag();
-            if (!TextUtils.equals(tag, JSONObject.toJSONString(imageInfoList))) {
+            String data = JSONObject.toJSONString(imageInfoList);
+            if (!TextUtils.equals(tag, data)) {
+                nineGridView.setTag(data);
                 NineGridViewAdapter adapter = new NineGridViewAdapter(mContext, imageInfoList);
                 nineGridView.setAdapter(adapter);
                 nineGridView.setVisibility(View.VISIBLE);
-                nineGridView.setTag(JSONObject.toJSONString(imageInfoList));
             }
         } else {
             nineGridView.setVisibility(View.GONE);
@@ -181,40 +195,40 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         }
 
         RecyclerView recyclerView = helper.getView(R.id.product_list);
-        ((SimpleItemAnimator) recyclerView.getItemAnimator())
-                .setSupportsChangeAnimations(false);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
-        linearLayoutManager.setOrientation(OrientationHelper.HORIZONTAL);
-        recyclerView.setLayoutManager(linearLayoutManager);
 
-        if (item.getProducts() != null) {
-            ProductsAdapter productsAdapter = new ProductsAdapter(item.getProducts());
-            if (this.addCartListener != null) {
-                productsAdapter.setAddCartListener(addCartListener);
-            } else {
-                productsAdapter.setAddCartListener(null);
-            }
-            if (this.pressProductListener != null) {
-                productsAdapter.setPressProductListener(this.pressProductListener);
-            } else {
-                productsAdapter.setPressProductListener(null);
-            }
-            recyclerView.setVisibility(View.VISIBLE);
-            recyclerView.setAdapter(productsAdapter);
-            if (!Boolean.TRUE.equals(recyclerView.getTag())) {
-                SnapHelper snapHelper = new PagerSnapHelper();
-                snapHelper.attachToRecyclerView(recyclerView);
-                recyclerView.setTag(Boolean.TRUE);
+        if (item.getProducts() != null && item.getProducts().size() > 0) {
+            String tag = (String) recyclerView.getTag(R.id.mr_show_product);
+            String data = JSONObject.toJSONString(item.getProducts());
+            if (!TextUtils.equals(tag, data)) {
+                recyclerView.setTag(R.id.mr_show_product, data);
+                ((SimpleItemAnimator) recyclerView.getItemAnimator())
+                        .setSupportsChangeAnimations(false);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
+                linearLayoutManager.setOrientation(OrientationHelper.HORIZONTAL);
+                recyclerView.setLayoutManager(linearLayoutManager);
+                ProductsAdapter productsAdapter = new ProductsAdapter(item.getProducts());
+                if (this.addCartListener != null) {
+                    productsAdapter.setAddCartListener(addCartListener);
+                } else {
+                    productsAdapter.setAddCartListener(null);
+                }
+                if (this.pressProductListener != null) {
+                    productsAdapter.setPressProductListener(this.pressProductListener);
+                } else {
+                    productsAdapter.setPressProductListener(null);
+                }
+                recyclerView.setVisibility(View.VISIBLE);
+                recyclerView.setAdapter(productsAdapter);
+                if (!Boolean.TRUE.equals(recyclerView.getTag(R.id.mr_show_snap))) {
+                    SnapHelper snapHelper = new PagerSnapHelper();
+                    snapHelper.attachToRecyclerView(recyclerView);
+                    recyclerView.setTag(R.id.mr_show_snap, Boolean.TRUE);
+                }
             }
         } else {
             recyclerView.setVisibility(View.GONE);
+            recyclerView.setTag(null);
         }
-        helper.addOnClickListener(R.id.icon_hand, R.id.icon_download, R.id.icon_share);
-        ImageView hand = helper.getView(R.id.icon_hand);
-        if (item.isLike()) {
-            hand.setImageResource(R.drawable.icon_like);
-        } else {
-            hand.setImageResource(R.drawable.icon_hand);
-        }
+        helper.addOnClickListener( R.id.icon_download, R.id.icon_share);
     }
 }
