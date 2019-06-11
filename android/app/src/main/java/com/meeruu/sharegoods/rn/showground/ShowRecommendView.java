@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -371,6 +372,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         swipeRefreshLayout.setRefreshing(false);
         if (adapter != null) {
             adapter.loadMoreFail();
+            setEmptyText();
         }
         if (TextUtils.equals(code, "9999") && page == 1) {
             errView.setVisibility(View.VISIBLE);
@@ -411,6 +413,19 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         if (adapter != null) {
             adapter.setEnableLoadMore(true);
             adapter.setNewData(resolveData(data));
+           setEmptyText();
+        }
+    }
+
+    private void setEmptyText(){
+        if(adapter == null){
+            return;
+        }
+        List list = adapter.getData();
+        if(list == null || list.size() == 0){
+            View view = adapter.getEmptyView();
+            TextView textView = view.findViewById(R.id.empty_tv);
+            textView.setText("暂无数据");
         }
     }
 
