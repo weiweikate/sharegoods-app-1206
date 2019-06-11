@@ -60,20 +60,30 @@ public class ImageLoadUtils {
         if (TextUtils.isEmpty(url)) {
             return;
         }
-        view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            boolean hasMeasured = false;
+
             @Override
-            public void onGlobalLayout() {
-                view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                int width = view.getWidth();
-                int height = view.getHeight();
-                String newUrl = url;
-                if (width != 0 || height != 0) {
-                    if (!TextUtils.isEmpty(newUrl)) {
-                        newUrl = String.format(ParameterUtils.IMG_URL_WH, url, width, height);
+            public boolean onPreDraw() {
+                if (!hasMeasured) {
+                    view.getViewTreeObserver().removeOnPreDrawListener(this);
+                    hasMeasured = true;
+
+                    int width = view.getMeasuredWidth();
+                    int height = view.getMeasuredHeight();
+                    String newUrl = url;
+                    if (width != 0 || height != 0) {
+                        if (!TextUtils.isEmpty(newUrl)) {
+                            if (newUrl.contains("?")) {
+                                newUrl.substring(0, newUrl.indexOf("?"));
+                            }
+                            newUrl = String.format(ParameterUtils.IMG_URL_WH, url, width, height);
+                        }
                     }
+                    Uri uri = Uri.parse(newUrl);
+                    loadImage(uri, view);
                 }
-                Uri uri = Uri.parse(newUrl);
-                loadImage(uri, view);
+                return true;
             }
         });
     }
@@ -83,20 +93,30 @@ public class ImageLoadUtils {
         if (TextUtils.isEmpty(url)) {
             return;
         }
-        view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            boolean hasMeasured = false;
+
             @Override
-            public void onGlobalLayout() {
-                view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                int width = view.getWidth();
-                int height = view.getHeight();
-                String newUrl = url;
-                if (width != 0 || height != 0) {
-                    if (!TextUtils.isEmpty(newUrl)) {
-                        newUrl = String.format(ParameterUtils.IMG_URL_WH, url, width, height);
+            public boolean onPreDraw() {
+                if (!hasMeasured) {
+                    view.getViewTreeObserver().removeOnPreDrawListener(this);
+                    hasMeasured = true;
+
+                    int width = view.getMeasuredWidth();
+                    int height = view.getMeasuredHeight();
+                    String newUrl = url;
+                    if (width != 0 || height != 0) {
+                        if (!TextUtils.isEmpty(newUrl)) {
+                            if (newUrl.contains("?")) {
+                                newUrl.substring(0, newUrl.indexOf("?"));
+                            }
+                            newUrl = String.format(ParameterUtils.IMG_URL_WH, url, width, height);
+                        }
                     }
+                    Uri uri = Uri.parse(newUrl);
+                    loadImage(uri, view, scaleType);
                 }
-                Uri uri = Uri.parse(newUrl);
-                loadImage(uri, view, scaleType);
+                return true;
             }
         });
     }
@@ -106,20 +126,30 @@ public class ImageLoadUtils {
         if (TextUtils.isEmpty(url)) {
             return;
         }
-        view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            boolean hasMeasured = false;
+
             @Override
-            public void onGlobalLayout() {
-                view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                int width = view.getWidth();
-                int height = view.getHeight();
-                String newUrl = url;
-                if (width != 0 || height != 0) {
-                    if (!TextUtils.isEmpty(newUrl)) {
-                        newUrl = String.format(ParameterUtils.IMG_URL_WH, url, width, height);
+            public boolean onPreDraw() {
+                if (!hasMeasured) {
+                    view.getViewTreeObserver().removeOnPreDrawListener(this);
+                    hasMeasured = true;
+
+                    int width = view.getMeasuredWidth();
+                    int height = view.getMeasuredHeight();
+                    String newUrl = url;
+                    if (width != 0 || height != 0) {
+                        if (!TextUtils.isEmpty(newUrl)) {
+                            if (newUrl.contains("?")) {
+                                newUrl.substring(0, newUrl.indexOf("?"));
+                            }
+                            newUrl = String.format(ParameterUtils.IMG_URL_WH, url, width, height);
+                        }
                     }
+                    Uri uri = Uri.parse(newUrl);
+                    loadRoundImage(uri, view, radius);
                 }
-                Uri uri = Uri.parse(newUrl);
-                loadRoundImage(uri, view, radius);
+                return true;
             }
         });
     }
@@ -129,20 +159,30 @@ public class ImageLoadUtils {
         if (TextUtils.isEmpty(url)) {
             return;
         }
-        view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            boolean hasMeasured = false;
+
             @Override
-            public void onGlobalLayout() {
-                view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                int width = view.getWidth();
-                int height = view.getHeight();
-                String newUrl = url;
-                if (width != 0 || height != 0) {
-                    if (!TextUtils.isEmpty(newUrl)) {
-                        newUrl = String.format(ParameterUtils.IMG_URL_WH, url, width, height);
+            public boolean onPreDraw() {
+                if (!hasMeasured) {
+                    view.getViewTreeObserver().removeOnPreDrawListener(this);
+                    hasMeasured = true;
+
+                    int width = view.getMeasuredWidth();
+                    int height = view.getMeasuredHeight();
+                    String newUrl = url;
+                    if (width != 0 || height != 0) {
+                        if (!TextUtils.isEmpty(newUrl)) {
+                            if (newUrl.contains("?")) {
+                                newUrl.substring(0, newUrl.indexOf("?"));
+                            }
+                            newUrl = String.format(ParameterUtils.IMG_URL_WH, url, width, height);
+                        }
                     }
+                    Uri uri = Uri.parse(newUrl);
+                    loadRoundImage(uri, view, radius, false);
                 }
-                Uri uri = Uri.parse(newUrl);
-                loadRoundImage(uri, view, radius, false);
+                return true;
             }
         });
     }
@@ -151,20 +191,30 @@ public class ImageLoadUtils {
         if (TextUtils.isEmpty(url)) {
             return;
         }
-        view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            boolean hasMeasured = false;
+
             @Override
-            public void onGlobalLayout() {
-                view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                int width = view.getWidth();
-                int height = view.getHeight();
-                String newUrl = url;
-                if (width != 0 || height != 0) {
-                    if (!TextUtils.isEmpty(newUrl)) {
-                        newUrl = String.format(ParameterUtils.IMG_URL_WH, url, width, height);
+            public boolean onPreDraw() {
+                if (!hasMeasured) {
+                    view.getViewTreeObserver().removeOnPreDrawListener(this);
+                    hasMeasured = true;
+
+                    int width = view.getMeasuredWidth();
+                    int height = view.getMeasuredHeight();
+                    String newUrl = url;
+                    if (width != 0 || height != 0) {
+                        if (!TextUtils.isEmpty(newUrl)) {
+                            if (newUrl.contains("?")) {
+                                newUrl.substring(0, newUrl.indexOf("?"));
+                            }
+                            newUrl = String.format(ParameterUtils.IMG_URL_WH, url, width, height);
+                        }
                     }
+                    Uri uri = Uri.parse(newUrl);
+                    loadImageAsCircle(uri, view);
                 }
-                Uri uri = Uri.parse(newUrl);
-                loadImageAsCircle(uri, view);
+                return true;
             }
         });
     }

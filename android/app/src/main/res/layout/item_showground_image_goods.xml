@@ -51,10 +51,12 @@
         android:textColor="@color/textColor_secondTitle"
         android:textSize="13sp"
         app:etv_EllipsisHint="..."
+        app:etv_EnableToggle="false"
         app:etv_InitState="shrink"
         app:etv_MaxLinesOnShrink="3"
         app:etv_ToExpandHint="全文"
-        app:etv_ToExpandHintColor="@color/app_main_color" />
+        app:etv_ToExpandHintColor="@color/app_main_color"
+        app:etv_ToShrinkHintColor="@color/app_main_color" />
 
 
     <com.meeruu.sharegoods.rn.showground.widgets.GridView.NineGridView
