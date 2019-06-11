@@ -73,9 +73,9 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
     private onStartRefreshEvent startRefreshEvent;
     private onItemPressEvent itemPressEvent;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private WeakHandler mHandler;
     private View errView;
     private View errImg;
-    private WeakHandler mHandler;
 
     private int page = 1;
 
@@ -86,6 +86,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         View view = inflater.inflate(R.layout.view_showground, null);
         initView(reactContext, view);
         initData();
+
         return (ViewGroup) view;
     }
 
@@ -351,6 +352,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         adapter.replaceData(data);
     }
 
+
     private void delayDownload(View view, int position, NewestShowGroundBean.DataBean bean) {
         onDownloadPressEvent.init(view.getId());
         String jsonStr = JSON.toJSONString(bean);
@@ -390,6 +392,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
 
     @Override
     public void addDataToTop(String s) {
+
     }
 
     @Override

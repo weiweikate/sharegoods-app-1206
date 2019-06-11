@@ -46,7 +46,6 @@
         android:layout_marginLeft="5dp"
         android:layout_marginTop="10dp"
         android:layout_toRightOf="@id/user_icon"
-        android:includeFontPadding="false"
         android:textColor="@color/textColor_secondTitle"
         android:textSize="13sp"
         app:etv_EllipsisHint="..."
@@ -86,7 +85,7 @@
         android:layout_marginTop="15dp"
         android:layout_toRightOf="@id/user_icon"
         android:padding="2dp"
-        android:src="@drawable/icon_hand" />
+        android:src="@drawable/icon_fire" />
 
     <TextView
         android:id="@+id/like_num"

@@ -78,7 +78,7 @@ class TaskItem extends React.Component {
 
     renderItem(item, expanded, subTask = false) {
         let { complete, prizeDesc, name, total, memo, prizeValue } = item;
-        let progrossTitle = total ? (complete + '/' + total) : '无上限';
+        let progrossTitle = complete + '/' + (total?total:'无上限') ;
         return (
             <View>
                 {subTask ? <View style={styles.lineOne}/> : null}
@@ -467,9 +467,8 @@ const styles = StyleSheet.create({
     },
     redLine: {
         backgroundColor: DesignRule.mainColor,
-        width: ScreenUtils.px2dp(2),
-        height: ScreenUtils.px2dp(8),
-        borderRadius: ScreenUtils.px2dp(1)
+        height: 10,
+        width: 4
     },
     bg: {
         backgroundColor: '#FFF4EC',
