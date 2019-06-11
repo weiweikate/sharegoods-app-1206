@@ -29,6 +29,7 @@
 		0153BAB122A1078A00BFD8AC /* ShowShareImgMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0153BAB022A1078A00BFD8AC /* ShowShareImgMaker.m */; };
 		0153BAB422A110AF00BFD8AC /* ShareImageMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0153BAB222A110AF00BFD8AC /* ShareImageMaker.m */; };
 		01E48F9422708B960038BEE6 /* JXHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E48F9322708B960038BEE6 /* JXHeaderView.m */; };
+		0326049522AFAC020052D229 /* ShowCellASImageNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 0326049422AFAC010052D229 /* ShowCellASImageNode.m */; };
 		033C66B821927ACB00433026 /* MRBannerViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 033C66B721927ACB00433026 /* MRBannerViewManager.m */; };
 		0347BAD52237CD0A0011184A /* Lottie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0347BAC92237CC680011184A /* Lottie.framework */; };
 		0347BAD62237CD0A0011184A /* Lottie.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0347BAC92237CC680011184A /* Lottie.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -691,6 +692,8 @@
 		0153BAB322A110AF00BFD8AC /* ShareImageMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareImageMaker.h; sourceTree = "<group>"; };
 		01E48F9222708B960038BEE6 /* JXHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JXHeaderView.h; sourceTree = "<group>"; };
 		01E48F9322708B960038BEE6 /* JXHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JXHeaderView.m; sourceTree = "<group>"; };
+		0326049322AFAC010052D229 /* ShowCellASImageNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShowCellASImageNode.h; sourceTree = "<group>"; };
+		0326049422AFAC010052D229 /* ShowCellASImageNode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShowCellASImageNode.m; sourceTree = "<group>"; };
 		033C66B621927ACB00433026 /* MRBannerViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRBannerViewManager.h; sourceTree = "<group>"; };
 		033C66B721927ACB00433026 /* MRBannerViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRBannerViewManager.m; sourceTree = "<group>"; };
 		0347BABB2237CC480011184A /* LottieReactNative.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LottieReactNative.xcodeproj; path = "../node_modules/lottie-react-native/src/ios/LottieReactNative.xcodeproj"; sourceTree = "<group>"; };
@@ -2081,6 +2084,8 @@
 				CD89B18B224B0FCD006CCEF7 /* ASDK_ShowGround.m */,
 				CD89B1CF224B1A30006CCEF7 /* ShowCellNode.h */,
 				CD89B1D0224B1A30006CCEF7 /* ShowCellNode.m */,
+				0326049322AFAC010052D229 /* ShowCellASImageNode.h */,
+				0326049422AFAC010052D229 /* ShowCellASImageNode.m */,
 				CD5EAFA5221BFE89007AAEE0 /* ShowQueryModel.h */,
 				CD5EAFA6221BFE89007AAEE0 /* ShowQueryModel.m */,
 				CD5EB080221D46E3007AAEE0 /* ShowCell.h */,
@@ -3041,6 +3046,7 @@
 				5077FC2721A401E3003B860D /* RSAEncryptor.m in Sources */,
 				CDAB6D1F219AC5F800DE6716 /* MRWaveViewManager.m in Sources */,
 				01091618227053B00043E997 /* RecommendedView.m in Sources */,
+				0326049522AFAC020052D229 /* ShowCellASImageNode.m in Sources */,
 				CD89B18C224B0FCD006CCEF7 /* ASDK_ShowGround.m in Sources */,
 				014FF1C222708C30008B0094 /* JXBodyView.m in Sources */,
 				5068363B21379B78001AB175 /* WCQRCodeScanningVC.m in Sources */,
