@@ -38,7 +38,7 @@
         android:textColor="@color/textColor_instruction"
         android:textSize="11sp" />
 
-    <com.meeruu.sharegoods.rn.showground.widgets.FolderTextView
+    <com.meeruu.commonlib.customview.ExpandableTextView
         android:id="@+id/content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -46,15 +46,15 @@
         android:layout_marginLeft="5dp"
         android:layout_marginTop="10dp"
         android:layout_toRightOf="@id/user_icon"
-        android:ellipsize="end"
+        android:clickable="false"
         android:includeFontPadding="false"
         android:textColor="@color/textColor_secondTitle"
         android:textSize="13sp"
-        app:canClickTail="false"
-        app:canFoldAgain="false"
-        app:foldLine="3"
-        app:tailTextColor="@color/app_main_color"
-        app:unFoldText="全文" />
+        app:etv_EllipsisHint="..."
+        app:etv_InitState="shrink"
+        app:etv_MaxLinesOnShrink="3"
+        app:etv_ToExpandHint="全文"
+        app:etv_ToExpandHintColor="@color/app_main_color" />
 
 
     <com.meeruu.sharegoods.rn.showground.widgets.GridView.NineGridView
