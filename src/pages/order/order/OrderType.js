@@ -37,8 +37,8 @@ const ViewOrderStatus = {
     },
     2:  {
         status: '待发货',
-        menuData:[{ id:1, operation:'取消订单', isRed:false}],
-        menu_orderDetail: [{ id:1, operation:'取消订单', isRed:false, }]
+        menuData:[],
+        menu_orderDetail: []
     },
     3:  {
         status: '已发货',
@@ -69,6 +69,7 @@ const ViewOrderStatus = {
     },
 }
 
+// 返回订单详情售后按钮list
 function GetAfterBtns(product) {
     if (product.status === OrderType.WAIT_PAY ||
         product.status === OrderType.DELETED ||
@@ -106,6 +107,7 @@ function GetViewOrderStatus(status) {
     return {menuData:[], menu_orderDetail:[]}
 }
 
+//判断商品List是否支持售后
 function checkOrderAfterSaleService(products = [], status, nowTime, isShowToast) {
     if (status === OrderType.WAIT_PAY ||
         status === OrderType.DELETED ||
@@ -146,10 +148,25 @@ function checkOrderAfterSaleService(products = [], status, nowTime, isShowToast)
         hasAfterSaleService = true;
     })
 
-
     return hasAfterSaleService
 
 }
+//判断商品是否包含某些活动,并返回对应活动的数据
+function judgeProduceIsContainActivityTypes(product, containActivitys = []) {
+    let activityList = product.activityList || [];
+    let activityTypes = activityList.map((item) => {
+        return item.activityType;
+    });
+    //判断是否有2数组是否有交集
+    for (let i = 0; i< activityTypes.length; i++){
+        for (let j = 0; j < containActivitys.length; j ++){
+            if (activityTypes[i] === containActivitys[j]) {
+                return activityList[i];
+            }
+        }
+    }
+    return null;
+}
 
 
-export {OrderType, GetViewOrderStatus, checkOrderAfterSaleService, GetAfterBtns};
+export {OrderType, GetViewOrderStatus, checkOrderAfterSaleService, GetAfterBtns, judgeProduceIsContainActivityTypes};

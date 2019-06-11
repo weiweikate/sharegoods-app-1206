@@ -55,7 +55,7 @@ class OrderDetailModel {
         return OrderApi.lookDetail({
             merchantOrderNo:merchantOrderNo
         }).then(rep => {
-            this.handleData(rep)
+            this.handleData(rep.data || {})
         }).catch(err=>{
             if(err.code===47002){
                 this.deleteInfo=true
@@ -67,9 +67,8 @@ class OrderDetailModel {
             Toast.$toast(err.msg);
         })
     }
-    @action handleData(rep){
+    @action handleData(data){
         //判空
-        let data = rep.data || {};
         this.baseInfo = data.baseInfo || {}
         this.merchantOrder = data.merchantOrder || {}
         this.payInfo = data.payInfo || {}

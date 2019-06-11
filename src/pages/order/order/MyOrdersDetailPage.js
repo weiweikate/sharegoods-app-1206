@@ -16,7 +16,7 @@ import ShowMessageModal from '../components/ShowMessageModal';
 import Toast from '../../../utils/bridge';
 // import GoodsGrayItem from "../components/GoodsGrayItem";
 import OrderApi from '../api/orderApi';
-import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
+import { renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
 import { NavigationActions } from 'react-navigation';
 import DesignRule from '../../../constants/DesignRule';
 import MineApi from '../../mine/api/MineApi';
@@ -28,11 +28,12 @@ import DetailAddressView from '../components/orderDetail/DetailAddressView';
 import OrderDetailPriceView from '../components/orderDetail/OrderDetailPriceView';
 import OrderDetailTimeView from '../components/orderDetail/OrderDetailTimeView';
 import OrderDetailBottomButtonView from '../components/orderDetail/OrderDetailBottomButtonView';
-import { orderDetailModel, orderDetailAfterServiceModel, assistDetailModel } from '../model/OrderDetailModel';
+import { orderDetailModel, assistDetailModel } from '../model/OrderDetailModel';
 import { observer } from 'mobx-react/native';
 import GiftHeaderView from '../components/orderDetail/GiftHeaderView';
 import { SmoothPushPreLoadHighComponent } from '../../../comm/components/SmoothPushHighComponent';
-import { GetAfterBtns, checkOrderAfterSaleService } from './OrderType';
+import { GetAfterBtns, checkOrderAfterSaleService, judgeProduceIsContainActivityTypes } from './OrderType';
+import CancelProdectsModal from '../components/orderDetail/CancelProdectsModal';
 
 const buyerHasPay = res.buyerHasPay;
 const productDetailHome = res.productDetailHome;
@@ -55,7 +56,6 @@ export default class MyOrdersDetailPage extends BasePage {
             isShowSingleSelctionModal: false,
             isShowShowMessageModal: false,
         };
-        this.params = {merchantOrderNo: 'SJSO190608215603010000'}
     }
 
     $navigationBarOptions = {
@@ -73,8 +73,8 @@ export default class MyOrdersDetailPage extends BasePage {
     };
 
     _reload = () => {
-        orderDetailModel.netFailedInfo = null;
-        orderDetailModel.netFailedInfo = PageLoadingState.loading;
+        // orderDetailModel.netFailedInfo = null;
+        // orderDetailModel.netFailedInfo = PageLoadingState.loading;
         this.loadPageData();
     };
 
@@ -95,7 +95,6 @@ export default class MyOrdersDetailPage extends BasePage {
     componentWillUnmount() {
         this.didFocusSubscription && this.didFocusSubscription.remove();
         // DeviceEventEmitter.removeAllListeners("OrderNeedRefresh");
-        this.stop();
     }
 
     showMore = () => {
@@ -188,7 +187,7 @@ export default class MyOrdersDetailPage extends BasePage {
                         {this.renderFooter()}
                     </ScrollView>
                     <OrderDetailBottomButtonView
-                        openCancelModal = {()=>{this.cancelModal&&this.cancelModal.open()}}
+                        openCancelModal = {()=>{this.cancelProdectsModal&&this.cancelProdectsModal.open(orderDetailModel.platformOrderNo)}}
                         goBack={() => this.$navigateBack()}
                         nav={this.$navigate}
                         switchButton={() => {
@@ -237,7 +236,7 @@ export default class MyOrdersDetailPage extends BasePage {
                 activityCodes={item.activityList || []}
                 style={{ backgroundColor: 'white' }}
                 clickItem={() => {
-                    this.clickItem(index, item);
+                    this.clickItem(item);
                 }}
                 afterSaleService={GetAfterBtns(item)}
                 afterSaleServiceClick={(menu) => this.afterSaleServiceClick(menu, item)}
@@ -303,6 +302,7 @@ export default class MyOrdersDetailPage extends BasePage {
                             cancelReason: assistDetailModel.cancelArr[index],
                             platformOrderNo: orderDetailModel.platformOrderNo,
                         }).then((response) => {
+                            Toast.hiddenLoading();
                             this.goTobackNav();
                         }).catch(e => {
                             Toast.hiddenLoading();
@@ -310,12 +310,16 @@ export default class MyOrdersDetailPage extends BasePage {
                         });
                     }}
                 />
+                <CancelProdectsModal ref={(ref) => {
+                    this.cancelProdectsModal = ref;
+                }}
+                                     clickSure={()=>{ this.cancelModal&&this.cancelModal.open()}}
+                />
             </View>
 
         );
     };
     goTobackNav = () => {
-        Toast.hiddenLoading();
         this.params.callBack && this.params.callBack();
         this.$navigateBack();
     };
@@ -331,145 +335,23 @@ export default class MyOrdersDetailPage extends BasePage {
         );
     };
 
-    //
-    // settimer(overtimeClosedTime) {
-    //     let autoConfirmTime = Math.round((overtimeClosedTime - orderDetailModel.warehouseOrderDTOList[0].nowTime) / 1000);
-    //     if (autoConfirmTime < 0) {
-    //         orderDetailAfterServiceModel.moreDetail = '';
-    //         return;
-    //     }
-    //     let closeTime = autoConfirmTime + Date.parse(new Date()) / 1000;
-    //     this.interval = setInterval(() => {
-    //         let time = getDateData(closeTime);
-    //         if (time.sec >= 0) {
-    //             if (orderDetailModel.status === 1) {
-    //                 orderDetailAfterServiceModel.moreDetail = leadingZeros(time.hours) + ':' + leadingZeros(time.min) + ':' + leadingZeros(time.sec) + '后自动取消订单';
-    //             } else if (orderDetailModel.status === 3) {
-    //                 orderDetailAfterServiceModel.moreDetail = time.days + '天' + leadingZeros(time.hours) + ':' + leadingZeros(time.min) + ':' + leadingZeros(time.sec) + '后自动确认收货';
-    //             }
-    //         } else {
-    //             orderDetailAfterServiceModel.moreDetail = '';
-    //             this.loadPageData();
-    //         }
-    //     }, 1000);
-    // }
-
-    stop() {
-        this.interval && clearInterval(this.interval);
-    }
-
-    //**********************************BusinessPart******************************************
-    getAfterSaleService = (data, index) => {
-        //售后状态
-        let afterSaleService = [];
-        let outStatus = orderDetailModel.status;
-        let condition = (data.orderCustomerServiceInfoDTO && data.orderCustomerServiceInfoDTO.type) || null;
-        let innerStatus = (data.orderCustomerServiceInfoDTO && data.orderCustomerServiceInfoDTO.status) || null;
-        switch (outStatus) {
-            case 2:
-                if (innerStatus === 5 && condition) {
-                    afterSaleService.push({
-                        id: 2,
-                        operation: '退款成功',
-                        isRed: false
-                    });
-                } else if (innerStatus >= 1 && innerStatus <= 4) {
-                    afterSaleService.push({
-                        id: 2,
-                        operation: '退款中',
-                        isRed: false
-                    });
-                } else {
-                    afterSaleService.push({
-                        id: 0,
-                        operation: '退款',
-                        isRed: false
-                    });
-                }
-
-                break;
-
-            case 3:
-            case 4:
-                console.log('data.orderCustomerServiceInfoVO', data.orderCustomerServiceInfoDTO);
-                if (innerStatus === 6) {
-                    afterSaleService.push({
-                        id: 1,
-                        operation: '退换',
-                        isRed: false
-                    });
-                    return orderDetailAfterServiceModel.currentAsList = afterSaleService;
-                }
-                switch (condition) {
-                    case 1://申请退款
-                        afterSaleService.push({
-                            id: 2,
-                            operation: innerStatus === 5 ? '退款成功' : '退款中',
-                            isRed: false
-                        });
-                        break;
-                    case 2://申请退货
-                        afterSaleService.push({
-                            id: 3,
-                            operation: innerStatus === 5 ? '售后完成' : '退货中',
-                            isRed: false
-                        });
-                        break;
-                    case 3://申请换货
-                        afterSaleService.push({
-                            id: 6,
-                            operation: innerStatus === 5 ? '售后完成' : '换货中',
-                            isRed: false
-                        });
-                        break;
-                    default:
-                        afterSaleService.push({
-                            id: 1,
-                            operation: '退换',
-                            isRed: false
-                        });
-                }
-                break;
-            case 5:
-                if (condition > 0) {
-                    afterSaleService.push({
-                        id: 6,
-                        operation: innerStatus > 5 ? '售后关闭' : '售后完成',
-                        isRed: false
-                    });
-                } else {
-                    afterSaleService.push();
-                }
-                break;
-        }
-        return orderDetailAfterServiceModel.currentAsList = afterSaleService;
-    };
 
      loadPageData() {
        orderDetailModel.loadDetailInfo(this.params.merchantOrderNo) || {};
     }
     //去商品详情
-    clickItem = (index, item) => {
-        console.log('clickItem', index, item);
-        switch (orderDetailModel.productsList()[index].orderSubType) {
-            case 1://秒杀
-            case 2://降价拍
-                this.$navigate('product/ProductDetailPage', {
-                    activityType: orderDetailModel.productsList()[index].orderSubType,
-                    activityCode: orderDetailModel.productsList()[index].activityCode//
-                });
-                break;
-            case 3://
-            case 4:
-                this.$navigate('topic/TopicDetailPage', {
-                    activityType: orderDetailModel.productsList()[index].orderSubType,
-                    activityCode: orderDetailModel.productsList()[index].activityCode
-                });
-                break;
-            default://普通商品
-                this.$navigate('product/ProductDetailPage', { productCode: orderDetailModel.productsList()[index].prodCode });
-                break;
-        }
+    clickItem = (item) => {
+        // 2://降价拍
+        // 3://礼包
+        let activityData = judgeProduceIsContainActivityTypes(item, [2, 3])
+         if (activityData) {
+             this.$navigate('topic/TopicDetailPage', {
+                 activityType: activityData.activityType,
+                 activityCode: activityData.activityCode
+             });
+         }else {
+             this.$navigate('product/ProductDetailPage', { productCode: item.prodCode });
+         }
     };
     //点击售后按钮的处理
     afterSaleServiceClick = (menu, item) => {

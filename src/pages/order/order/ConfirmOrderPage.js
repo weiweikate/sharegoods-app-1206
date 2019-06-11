@@ -90,9 +90,7 @@ export default class ConfirmOrderPage extends BasePage {
     }
 
     componentDidMount() {
-        setTimeout(() => {
             this.loadPageData();
-        }, 1000);
     }
 
     loadPageData = (params) => {
@@ -144,59 +142,19 @@ export default class ConfirmOrderPage extends BasePage {
             this.oneTicketModel && this.oneTicketModel.open(orderAmount, (data) => {
                 //选择完以后回调
                 data = parseInt(data);
-                if (data >= 0) {
-                    let params = {
-                        tokenCoin: data,
-                        userCouponCode: confirmOrderModel.userCouponCode,
-                        addressId: confirmOrderModel.addressId
-                    };
-                    confirmOrderModel.tokenCoin = data;
-                    confirmOrderModel.tokenCoinText = data !== 0 ? '-¥' + data : '选择使用1元券';
-                    setTimeout(() => {
-                        this.loadPageData(params);
-                    }, 0);
-                }
+                confirmOrderModel.selecttokenCoin(data);
             })
         } else {
-            track(trackEvent.ViewCoupon,{couponModuleSource:3});
+            track(trackEvent.ViewCoupon, { couponModuleSource: 3 });
             this.ticketModel && this.ticketModel.open(confirmOrderModel.orderParamVO, (data) => {
-                console.log('CouponsPage', data);
-                confirmOrderModel.couponData=data;
-                if (data && data.id) {
-                    let params = {
-                        userCouponCode: data.code,
-                        tokenCoin: 0,
-                        addressId: confirmOrderModel.addressId
-                    };
-                    confirmOrderModel.userCouponCode = data.code;
-                    confirmOrderModel.couponName = data.name;
-                    confirmOrderModel.tokenCoin = 0;
-                    confirmOrderModel.tokenCoinText = '选择使用1元券';
-                    setTimeout(() => {
-                        this.loadPageData(params);
-                    }, 0);
+                if (data.code) {
+                    confirmOrderModel.selectUserCoupon(data.code)
                 } else if (data === 'giveUp') {
-                    confirmOrderModel.giveUpCou= true;
-                    confirmOrderModel.userCouponCode = null;
-                    confirmOrderModel.couponName = null;
-                    // confirmOrderModel.tokenCoin = 0;
-                    // confirmOrderModel.tokenCoinText = '选择使用1元券';
-                    setTimeout(() => {
-                        this.loadPageData({
-                            userCouponCode: null,
-                            tokenCoin: confirmOrderModel.tokenCoin ,
-                            addressId: confirmOrderModel.addressId
-                        });
-                    }, 0);
+                    confirmOrderModel.selectUserCoupon('')
                 }
-            });
-            return;
-            // this.$navigate('mine/coupons/CouponsPage', {
-            //     fromOrder: 1,
-            //     orderParam: confirmOrderModel.orderParamVO, callBack:
-            // });
+            })
         }
-    };
+    }
 }
 
 const styles = StyleSheet.create({

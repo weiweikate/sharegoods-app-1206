@@ -9,15 +9,14 @@ import DesignRule from "../../../../constants/DesignRule";
 import { orderDetailModel, assistDetailModel } from "../../model/OrderDetailModel";
 import OrderApi from "../../api/orderApi";
 import Toast from "../../../../utils/bridge";
-import shopCartCacheTool from "../../../shopCart/model/ShopCartCacheTool";
 import { observer } from "mobx-react/native";
 import RouterMap from "../../../../navigation/RouterMap";
 import { payStatus, payment, payStatusMsg } from "../../../payment/Payment";
 import { NavigationActions } from "react-navigation";
-import { track, trackEvent } from "../../../../utils/SensorsTrack";
 
 const { px2dp } = ScreenUtils;
 import { MRText as Text, NoMoreClick, UIText } from "../../../../components/ui";
+import { clickOrderAgain, clickOrderConfirmReceipt, clickOrderLogistics } from '../../order/CommonOrderHandle';
 
 @observer
 export default class OrderDetailBottomButtonView extends Component {
@@ -133,59 +132,12 @@ export default class OrderDetailBottomButtonView extends Component {
             case 4:
                 break;
             case 5:
-                if (!orderDetailModel.warehouseOrderDTOList[0].expList) {
-                    Toast.$toast("当前物流信息不存在！");
-                    return;
-                }
-                if (orderDetailModel.warehouseOrderDTOList[0].expList.length === 0) {
-                    Toast.$toast("当前物流信息不存在！");
-                }
-                if (orderDetailModel.warehouseOrderDTOList[0].expList.length === 1 && orderDetailModel.warehouseOrderDTOList[0].unSendProductInfoList.length === 0) {
-                    this.props.nav("order/logistics/LogisticsDetailsPage", {
-                        expressNo: orderDetailModel.warehouseOrderDTOList[0].expList[0].expNO
-                    });
-                } else {
-                    this.props.nav("order/logistics/CheckLogisticsPage", {
-                        expressList: orderDetailModel.warehouseOrderDTOList[0].expList,
-                        unSendProductInfoList: orderDetailModel.warehouseOrderDTOList[0].unSendProductInfoList
-                    });
-                }
+                clickOrderLogistics(orderDetailModel.merchantOrderNo)
                 break;
             case 6:
-                let content = "确定收到货了吗?";
-                orderDetailModel.warehouseOrderDTOList[0].products.map((value) => {
-                    if (value.status < 3) {
-                        content = "您还有商品未发货，确认收货吗？";
-                    }
-                });
-
-                Alert.alert("", `${content}`, [
-                    {
-                        text: `取消`, onPress: () => {
-                        }
-                    },
-                    {
-                        text: `确定`, onPress: () => {
-                            Toast.showLoading();
-                            OrderApi.confirmReceipt({ merchantOrderNo: orderDetailModel.merchantOrderNo }).then((response) => {
-                                Toast.hiddenLoading();
-                                Toast.$toast("确认收货成功");
-                                this.props.nav("order/order/ConfirmReceiveGoodsPage", {
-                                    merchantOrderNo: orderDetailModel.merchantOrderNo,
-                                    callBack: this.props.loadPageData
-                                });
-                            }).catch(e => {
-                                Toast.hiddenLoading();
-                                Toast.$toast(e.msg);
-                            });
-                        }
-                    }
-
-                ], { cancelable: true });
+                clickOrderConfirmReceipt(orderDetailModel.merchantOrderNo,orderDetailModel.productsList(),this.props.loadPageData)
                 break;
             case 7:
-                // this.setState({ isShowDeleteOrderModal: true });
-                // this.deleteModal && this.deleteModal.open();
                 Alert.alert("", `确定删除此订单吗?`, [
                     {
                         text: `取消`, onPress: () => {
@@ -210,24 +162,9 @@ export default class OrderDetailBottomButtonView extends Component {
                 ], { cancelable: true });
                 break;
             case 8:
-                let cartData = [];
-                orderDetailModel.warehouseOrderDTOList[0].products.map((item, index) => {
-                    cartData.push({
-                        spuCode: item.prodCode,
-                        productCode: item.prodCode,
-                        skuCode: item.skuCode,
-                        amount: item.quantity
-                    });
-                });
-                track(trackEvent.OrderAgain, {
-                    orderId: orderDetailModel.merchantOrderNo
-                });
-                shopCartCacheTool.addGoodItem(cartData);
-                this.props.nav("shopCart/ShopCart", { hiddeLeft: false });
+                clickOrderAgain(orderDetailModel.merchantOrderNo, orderDetailModel.productsList());
                 break;
             case 9:
-                // this.setState({ isShowDeleteOrderModal: true });
-                // this.deleteModal && this.deleteModal.open();
                 Alert.alert("", `确定删除此订单吗?`, [
                     {
                         text: `取消`, onPress: () => {
@@ -245,7 +182,6 @@ export default class OrderDetailBottomButtonView extends Component {
                                 Toast.hiddenLoading();
                                 Toast.$toast(e.msg);
                             });
-
                         }
                     }
 

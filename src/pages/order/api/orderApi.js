@@ -14,24 +14,24 @@ const api = {
     // 加入购物车
     addItem: '/user/shoppingcart/addItem',
     //删除已关闭订单
-    deleteOrder: '/order/delete',
+    deleteOrder: '/orderV2/delete',
     //删除已完成订单
     // deleteCompletedOrder:'/order/delete',
-    //订单物流信息
-    orderDeliverInfo:'./order/deliverInfo',
     //确认收货
-    confirmReceipt: '/order/confirmReceipt',
+    confirmReceipt: '/orderV2/confirmReceipt',
     //取消订单
-    cancelOrder: '/order/cancel',
+    cancelOrder: '/orderV2/cancel',
+    getAllProductOrder: ['/orderV2/getAllProductOrder',{method:'get'}],//查询平台订单下所有商品订单
     //继续支付
     continuePay:'/order/payRecord/continuePay',
     //继续去支付
     continueToPay:['/order/payRecord/continueToPay',{method:'get'}],
     // 查看物流详情
-    findLogisticsDetail:'/order/deliverInfo',
+    findLogisticsDetail:['/orderV2/logisticsInfo',{method:'get'}],
     //（陈帅）再来一单
     againOrder:'/order/buy-again',
     checkInfo: ["/appraise/checkCommentStatus",{method:'get'}],//校验是否可晒单
+    getExpressPackageDetail: ['/orderV2/getExpressPackageDetail',{method:'get'}],//查询商家订单物流包裹详情
     /**  售后模块相关接口 huchao */
 
     findAllExpress: ['/express/query', {method: 'get'}],

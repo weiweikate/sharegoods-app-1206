@@ -1,6 +1,6 @@
 {
     "showDebugPanel": true,
-    "envType": "xx",
+    "envType": "zhou_hao",
     "isDevHotUpdate": false,
     "__注释__": "[showDebugPanel]:是否显示调试面板   [envType]:决定网络启动后，默认的网络环境类型",
     "env": {
@@ -84,7 +84,7 @@
         },
         "zhou_hao": {
             "name": "测试_周浩",
-            "host": "http://172.18.7.199:1080/gateway",
+            "host": "http://172.18.5.82:1080/gateway",
             "oss": "https://devcdn.sharegoodsmall.com"
         },
         "shen_yaoxing": {

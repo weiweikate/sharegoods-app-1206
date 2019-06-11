@@ -66,7 +66,6 @@ class ExchangeGoodsDetailPage extends BasePage {
         this.state = {};
 
         this._bindFunc();
-        this.params = {serviceNo: '3181211103905510116081'}
         this.afterSaleDetailModel = new AfterSaleDetailModel();
         this.afterSaleDetailModel.serviceNo = this.params.serviceNo;
         this.afterSaleDetailModel.loadingShow = this.$loadingShow;

@@ -15,6 +15,7 @@ const Navigator = StackNavigator(Router,
         initialRouteName: 'Tab',
         initialRouteParams: {},
         headerMode: 'none',
+        useNativeAnimations: true,
         // mode: 'modal',
         navigationOptions: {
             gesturesEnabled: true

@@ -54,6 +54,7 @@ class ConfirmOrderModel {
 
     }
 
+    @action
     selectAddressId(addressId){
         this.addressId = addressId;
         this.tokenCoin = 0;
@@ -64,6 +65,12 @@ class ConfirmOrderModel {
     selecttokenCoin(num){
         this.tokenCoin = num;
         this.makeSureProduct()
+    }
+    @action
+    selectUserCoupon(userCouponCode){
+        this.tokenCoin = 0;
+        this.userCouponCode = userCouponCode;
+        this.makeSureProduct();
     }
 
     getParams(){

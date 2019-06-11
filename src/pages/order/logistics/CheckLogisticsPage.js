@@ -45,18 +45,18 @@ export default class CheckLogisticsPage extends BasePage {
                             <TouchableOpacity
                                 style={{ height: 40, backgroundColor: DesignRule.white, justifyContent: 'center' }}
                                 onPress={() => {
-                                    this.show(item.expNO, item.expressCode);
+                                    this.show(item.expressNo, item.expressCode);
                                 }}>
                                 <View style={styles.expStyle}>
                                     <Text style={{
                                         fontSize: 12,
                                         color: DesignRule.textColor_mainTitle
-                                    }}>{`${item.expName}: ${item.expNO}`}</Text>
+                                    }}>{`${item.expressName}: ${item.expressNo}`}</Text>
                                     <Image source={res.button.arrow_right_black}/>
                                 </View>
                             </TouchableOpacity>
                             <View style={{ backgroundColor: '#E4E4E4', height: 0.5, width: ScreenUtils.width }}/>
-                            {item.list && item.list.map((data) => {
+                            {item.productList && item.productList.map((data) => {
                                 return <GoodsGrayItem
                                     uri={data.specImg}
                                     goodsName={data.productName}
