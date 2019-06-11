@@ -124,7 +124,7 @@ export default class ReleaseNotesPage extends BasePage {
         BusinessUtils.getImagePicker(callback => {
             let result = imageArr.concat(callback.images);
             this.setState({ imageArr: result });
-        }, num, true,true);
+        }, num, true,true,true);
     };
 
     deletePic = (index) => {

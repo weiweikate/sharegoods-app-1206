@@ -11,7 +11,7 @@ const Utiles = {
      * callBack
      * @param callBack {ok: 是否上传成功，imageThumbUrl}
      */    //NativeModules.commModule.RN_ImageCompression(uri, response.fileSize, 1024 * 1024 * 3, () => {
-    getImagePicker: (callBack, num = 1, cropping = false, withSize = false) => {
+    getImagePicker: (callBack, num = 1, cropping = false, withSize = false,edit=false) => {
         let newCallback = (value) => {
             if (value && value.ok) {
                 let result = value.images.map((item) => {
@@ -29,7 +29,7 @@ const Utiles = {
                 (buttonIndex) => {
                     if (buttonIndex === 1) {
                         if (withSize) {
-                            Utiles.pickSingleWithCamera(cropping, callBack);
+                            Utiles.pickSingleWithCamera(cropping, callBack,edit);
                         } else {
                             Utiles.pickSingleWithCamera(cropping, newCallback);
                         }
@@ -60,7 +60,7 @@ const Utiles = {
                     {
                         text: '拍照', onPress: () => {
                             if (withSize) {
-                                Utiles.pickSingleWithCamera(cropping, callBack);
+                                Utiles.pickSingleWithCamera(cropping, callBack,edit);
                             } else {
                                 Utiles.pickSingleWithCamera(cropping, newCallback);
                             }
@@ -92,11 +92,12 @@ const Utiles = {
             );
         }
     },
-    pickSingleWithCamera(cropping, callBack) {
+    pickSingleWithCamera(cropping, callBack,edit) {
         ImagePicker.openCamera({
             cropping: cropping,
             width: 600,
             height: 600,
+            edit,
             includeExif: true,
             cropperCancelText: '取消',
             cropperChooseText: '选取',
