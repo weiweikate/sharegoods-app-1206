@@ -4,7 +4,7 @@ import {
     ImageBackground,
     StyleSheet,
     View,
-    TouchableOpacity
+    TouchableOpacity,
 } from 'react-native';
 import { UIText, NoMoreClick, MRText as Text } from '../../../components/ui';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -13,32 +13,40 @@ import user from '../../../model/user';
 import { observer } from 'mobx-react';
 import res from '../res';
 import StringUtils from '../../../utils/StringUtils';
+import LinearGradient from 'react-native-linear-gradient';
 
 const { px2dp } = ScreenUtils;
-const unUsedBgex = res.couponsImg.youhuiquan_bg_unUsedBg_ex;
-const unUsedBgExd = res.couponsImg.youhuiquan_bg_unUsedBg_exd;
-const usedBgex = res.couponsImg.youhuiquan_bg_usedBg_ex;
-const useBgexd = res.couponsImg.youhuiquan_bg_usedBg_exd;
+const unUsedBg = res.couponsImg.youhuiquan_bg_unUseBg;
+// const usedBg = res.couponsImg.youhuiquan_bg_usedBg;
+const dropImg = res.couponsImg.youhuiquan_bg_drop;
+const remark = res.couponsImg.youhuiquan_bg_remark;
+const dropUnuser = res.couponsImg.youhuiquan_bg_drop_unUser;
+const dropUser = res.couponsImg.youhuiquan_bg_drop_user;
+
 const itemUp = res.couponsImg.youhuiquan_icon_smallUp;
 const itemDown = res.couponsImg.youhuiquan_icon_smallDown;
+const dashLine = res.couponsImg.youhuiquan_icon_dashLine;
 
 @observer
 export default class CouponExplainItem extends Component {
 
     render() {
         let { item, index } = this.props;
+        let stateImg = item.status === 1 ? res.couponsImg.youhuiquan_icon_yishiyong :
+            (item.status === 2 ? res.couponsImg.youhuiquan_icon_yishixiao : res.couponsImg.youhuiquan_icon_daijihuo);
+
         return (
             <TouchableOpacity
                 style={{ backgroundColor: DesignRule.bgColor, marginBottom: 5, justifyContent: 'center' }}
-                onPress={() => this.props.clickItem(index, item)}>
+                onPress={() => {console.log('item',item)}}>
                 <ImageBackground style={{
                     width: ScreenUtils.width - px2dp(30),
-                    height: item.tobeextend ? px2dp(94) : px2dp(118),
-                    margin: 2
+                    marginTop: 2, marginLeft: 2, marginRight: 2,
                 }}
-                                 source={item.status === 0 ? (item.levelimit ? (item.tobeextend ? useBgexd : usedBgex) : (item.tobeextend ? unUsedBgExd : unUsedBgex)) : (item.tobeextend ? useBgexd : usedBgex)}
+                                 // source={item.status === 0 ? (item.levelimit ? (item.tobeextend ? useBgexd : usedBgex) : (item.tobeextend ? unUsedBgExd : unUsedBgex)) : (item.tobeextend ? useBgexd : usedBgex)}
+                                 source={ item.status === 0 ? (item.tobeextend ? dropUnuser : unUsedBg) : item.tobeextend ? dropUser : dropUser}
                                  resizeMode='stretch'>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', height: px2dp(94) }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', display:'flex' }}>
                         <View style={styles.itemFirStyle}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 {
@@ -47,130 +55,153 @@ export default class CouponExplainItem extends Component {
                                             <Text
                                                 style={{
                                                     fontSize: 14,
-                                                    color: item.status === 0 ? (item.levelimit ? DesignRule.textColor_mainTitle : DesignRule.mainColor) : DesignRule.textColor_mainTitle,
-                                                    marginBottom: 4
+                                                    color: item.status === 0 ? (item.levelimit ? '#FF80A7' : '#FF0050') : '#FF80A7',
                                                 }} allowFontScaling={false}>￥</Text>
                                         </View>}
                                 <View>
                                     <Text style={{
-                                        fontSize: item.type === 4 ? 20 : (item.value && item.value.length < 3 ? 33 : 26),
-                                        color: item.status === 0 ? (item.levelimit ? DesignRule.textColor_mainTitle : DesignRule.mainColor) : DesignRule.textColor_mainTitle
+                                        fontSize: item.type === 4 ? 20 : (item.value && item.value.length < 3 ? 33 : 20),
+                                        fontWeight:'bold',
+                                        color: item.status === 0 ? (item.levelimit ? '#FF80A7' : '#FF0050') : '#FF80A7',
                                     }} allowFontScaling={false}>{item.value}</Text>
                                 </View>
-                                {
-                                    item.type === 3 ?
-                                        <View style={{ alignSelf: 'flex-end', marginBottom: 2 }}>
-                                            <Text
-                                                style={{
-                                                    fontSize: 14,
-                                                    color: item.status === 0 ? (item.levelimit ? DesignRule.textColor_mainTitle : DesignRule.mainColor) : DesignRule.textColor_mainTitle,
-                                                    marginBottom: 4
-                                                }} allowFontScaling={false}>折</Text>
-                                        </View> : null}
                             </View>
                         </View>
 
                         <View style={{
-                            flex: 1,
+                            flex: 2,
                             alignItems: 'flex-start',
                             marginLeft: 10,
-                            justifyContent: 'space-between'
+                            justifyContent: 'space-between',
+                            marginTop: 15,
+                            marginBottom: 15
                         }}>
                             <View style={{ flexDirection: 'row' }}>
                                 <Text style={{
                                     fontSize: 15,
-                                    color: DesignRule.textColor_mainTitle,
-                                    marginRight: 10
-                                }} allowFontScaling={false}>
-                                    {item.name}{item.type !== 99 ? null : <UIText value={'（可叠加使用）'} style={{
-                                    fontSize: 11,
-                                    color: DesignRule.textColor_instruction
-                                }}/>}</Text>
-                                {item.type === 12 ? <UIText value={'x' + item.number} style={{
-                                    fontSize: 15,
-                                    color: DesignRule.textColor_mainTitle
-                                }}/> : null}
+                                    color: item.status === 0 ? DesignRule.textColor_mainTitle : DesignRule.textColor_instruction,
+                                }} allowFontScaling={false} numberOfLines={0}>
+                                    {item.name}</Text>
+                                {/*{item.type === 12 ? <UIText value={'x' + item.number} style={{*/}
+                                    {/*fontSize: 15,*/}
+                                    {/*color: DesignRule.textColor_mainTitle*/}
+                                {/*}}/> : null}*/}
                             </View>
+                            <UIText style={{ fontSize: 11, color: DesignRule.textColor_placeholder, marginTop: 1 }}
+                                    value={item.limit}/>
                             {item.timeStr ? <Text style={{
                                 fontSize: 11,
-                                color: DesignRule.textColor_instruction,
-                                marginTop: 6
-                            }} allowFontScaling={false}>{item.timeStr}</Text> : null}
-                            <UIText style={{ fontSize: 11, color: DesignRule.textColor_instruction, marginTop: 6 }}
-                                    value={item.limit}/>
+                                color: DesignRule.textColor_placeholder,
+                                marginTop: 1
+                            }} allowFontScaling={false}>限{item.timeStr}使用</Text> : null}
                         </View>
-                        {item.status === 0 ?
-                            (
-                                item.type === 99 ?
-                                    <View style={{ alignItems: 'center', marginRight: 10 }}>
-                                        <UIText style={[styles.xNumStyle, { marginRight: 0 }]}
-                                                value={!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 ? 'x' + user.tokenCoin : ''}/>
-                                        {!StringUtils.isEmpty(user.blockedTokenCoin) && user.blockedTokenCoin !== 0 ?
-                                            <Text style={{
-                                                fontSize: 11,
-                                                color: DesignRule.textColor_secondTitle
-                                            }}>{'待激活：'}
-                                                <UIText style={[styles.xNumStyle, { marginRight: 0 }]}
-                                                        value={'x' + user.blockedTokenCoin}/>
-                                            </Text>
-                                            : null}
-                                    </View>
-                                    : (item.levelimit ?
-                                    <View
-                                        style={{ marginRight: 15, justifyContent: 'center', alignItems: 'center' }}>
-                                        {item.count > 1 ? <UIText value={'x' + item.count}
-                                                                  style={styles.xNumsStyle}/> : null}
-                                        <UIText value={'等级受限'}
-                                                style={{
-                                                    fontSize: 13,
-                                                    color: DesignRule.textColor_instruction
-                                                }}/>
-                                    </View>
-                                    : (item.count > 1 ? <UIText value={'x' + item.count}
-                                                                style={styles.xNumsStyle}/> : null)))
+                        <View style={{
+                            flex: 1,
+                            alignItems: 'center',
+                            marginLeft: 5,
+                            justifyContent: 'center'}}>
+                            {item.status === 0 || (item.status === 3 && item.type === 99)?
+                                (
+                                    item.type === 99 ?
+                                        <View style={{alignItems: 'center', marginRight: 10}}>
+                                            {item.status === 3 ?
+                                                (!StringUtils.isEmpty(user.blockedTokenCoin) && user.blockedTokenCoin !== 0 ?
+                                                <View style={{
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center'
+                                                }}>
+                                                    <Image style={{width: 55, height: 55}}
+                                                           source={res.couponsImg.youhuiquan_icon_daijihuo}/>
+                                                    <UIText value={'x' + user.blockedTokenCoin}
+                                                            style={styles.xNumsStyle}/>
+                                                </View>
+                                                : null)
+                                                :<UIText style={[styles.xNumStyle, {marginRight: 0}]}
+                                                value={'x' + user.tokenCoin}/>
+                                            }
+                                        </View>
+                                        : (item.levelimit ?
+                                        <View
+                                            style={{marginRight: 15, justifyContent: 'center', alignItems: 'center'}}>
+                                            <UIText value={'等级受限'}
+                                                    style={{
+                                                        fontSize: 13,
+                                                        color: DesignRule.textColor_instruction
+                                                    }}/>
+                                            {item.count > 1 ? <UIText value={'x' + item.count}
+                                                                      style={styles.xNumsStyle}/> : null}
+                                        </View>
+                                        :
+                                            (item.redirectType && item.redirectType!=0?
+                                            <NoMoreClick style={{
+                                                height: ScreenUtils.autoSizeWidth(27),
+                                                width: ScreenUtils.autoSizeWidth(60),
+                                                borderRadius: ScreenUtils.autoSizeWidth(14),
+                                                overflow: 'hidden'
+                                            }} onPress={() => {this.props.clickItem(index, item);}}>
+                                                <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}}
+                                                                colors={['#FC5D39', '#FF0050']}
+                                                                style={{
+                                                                    alignItems: 'center',
+                                                                    flexDirection: 'row',
+                                                                    justifyContent: 'center',
+                                                                    flex: 1
+                                                                }}
+                                                >
+                                                    <Text style={{
+                                                        fontSize: 12,
+                                                        color: 'white',
+                                                    }} allowFontScaling={false}>去使用</Text>
+                                                </LinearGradient>
+                                            </NoMoreClick> : (item.count > 1 ? <UIText value={'x' + item.count}
+                                                                                     style={styles.xNumsStyle}/> : null))))
 
-                            : <View style={{ marginRight: 15, justifyContent: 'center', alignItems: 'center' }}>
-                                {item.count > 1 ? <UIText value={'x' + item.count}
-                                                          style={styles.xNumsStyle}/> : null}
-                                <UIText value={`${item.status === 1 ? '已使用' : (item.status === 2 ? '已失效' : '待激活')}`}
-                                        style={{
-                                            fontSize: 13,
-                                            color: DesignRule.textColor_instruction,
-                                            marginRight: 15
-                                        }}/>
-                            </View>}
+                                : <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                                    <Image style={{width: 55, height: 55}}
+                                           source={stateImg}/>
+                                    {item.count > 1 ? <UIText value={'x' + item.count}
+                                                              style={styles.xNumsStyle}/> : null}
+                                </View>}
+                        </View>
                     </View>
+
+                    <Image style={{ width: ScreenUtils.width - px2dp(38), height: 1,marginLeft:4 }}
+                                              source={dashLine}/>
                     {!item.tobeextend ?
-                        <NoMoreClick style={{ height: px2dp(24), justifyContent: 'center', alignItems: 'center' }}
-                                     onPress={() => this.props.pickUpData(item)}><Image style={{ width: 14, height: 7 }}
-                                                                                        source={itemDown}/>
+                        <NoMoreClick style={{ height: px2dp(24), alignItems: 'center',backgroundColor:'#F9F9F9' }}
+                                     onPress={() => this.props.pickUpData(item)}>
+                            <ImageBackground style={{
+                                width: ScreenUtils.width - px2dp(30),
+                                height: px2dp(24),
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }} source={dropImg} resizeMode='stretch'>
+                            <Image style={{ width: 14, height: 7 }}
+                                   source={itemDown}/>
+                            </ImageBackground>
                         </NoMoreClick> : null}
                 </ImageBackground>
                 {item.tobeextend ?
-                    <View style={{
-                        backgroundColor: item.status === 0 ? (item.levelimit ? DesignRule.color_ddd : DesignRule.white) : DesignRule.color_ddd,
+                    <ImageBackground style={{
                         width: ScreenUtils.width - px2dp(30),
-                        marginLeft: 1,
+                        marginLeft: 2,
                         borderRadius: 5,
-                        marginTop: -2
-                    }}>
-                        <View style={{ marginTop: 10, marginLeft: 10 }}>
-                            <Text style={{ marginTop: 5, color: DesignRule.textColor_mainTitle }}
-                                  allowFontScaling={false}>使用说明:</Text>
+                    }} source={remark} resizeMode='stretch'>
+                        <View style={{ marginLeft: 20, }}>
                             <Text style={{
                                 marginTop: 5,
-                                color: DesignRule.textColor_secondTitle,
+                                color: item.status === 0 ? DesignRule.textColor_secondTitle : DesignRule.textColor_secondTitle,
                                 lineHeight: 25,
-                                fontSize: 12
+                                fontSize: 10
 
                             }} allowFontScaling={false}>{item.remarks}</Text>
                         </View>
-                        <NoMoreClick style={{ height: px2dp(24), justifyContent: 'center', alignItems: 'center' }}
+                        <NoMoreClick style={{ height: px2dp(24), justifyContent: 'center', alignItems: 'center',marginBottom:3 }}
                                      onPress={() => this.props.toExtendData(item)}><Image
                             style={{ width: 14, height: 7 }}
                             source={itemUp}/>
                         </NoMoreClick>
-                    </View> : null}
+                    </ImageBackground> : null}
             </TouchableOpacity>
         );
     }
@@ -184,8 +215,8 @@ const styles = StyleSheet.create({
         color: DesignRule.textColor_mainTitle
     },
     xNumsStyle: {
-        marginRight: 15,
-        marginBottom: 5,
+        // marginRight: 15,
+        // marginBottom: 5,
         fontSize: 13,
         color: DesignRule.textColor_mainTitle_222
     },

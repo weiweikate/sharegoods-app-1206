@@ -73,6 +73,22 @@ function backToHome() {
 
 }
 
+function GoToTabItem(index) {
+    let $routes = global.$routes || [];
+    if (index>4){
+        return;
+    }
+    if ($routes.length === 1) {
+        let route = $routes[0]
+        if (route.routeName === 'Tab' && route.index === index){
+            return;
+        }
+    }
+    global.$navigator && global.$navigator._navigation.popToTop();
+    global.$navigator && global.$navigator._navigation.navigate(['HomePage','ShowListPage','MyShop_RecruitPage','ShopCartPage','MinePage'][index]);
+
+}
+
 function navigateBack(step) {
     let $routes = global.$routes || [];
     let routerKey = null;
@@ -106,6 +122,6 @@ function navigateBackToStore() {
 
 
 export default RouterMap;
-export { navigate, navigateBack, backToHome, navigateBackToStore };
+export { navigate, navigateBack, backToHome, navigateBackToStore, GoToTabItem};
 
 

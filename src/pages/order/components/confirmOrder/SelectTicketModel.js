@@ -89,8 +89,8 @@ export default class SelectTicketModel extends React.Component {
             id: item.id,
             status: item.status,
             name: item.name,
-            timeStr: '使用有效期：'+item.couponTime,
-            value: item.type === 3 ? (item.value / 10) : (item.type === 4 ? '商品\n兑换' : (item.type === 5 ? '兑换' : item.value)),
+            timeStr: item.couponTime,
+            value: item.type === 3 ? '折' : ( item.type === 4 ? '抵' : (item.type === 5 ? '兑' : item.value)),
             limit: this.parseCoupon(item),
             couponConfigId: item.couponConfigId,
             remarks: item.remarks,
@@ -100,7 +100,7 @@ export default class SelectTicketModel extends React.Component {
         }
         return (
             <View style={{alignItems: 'center'}}>
-                <CouponNormalItem item={item} index={index} clickItem={()=> {this.clickItem(item)}}/>
+                <CouponNormalItem item={item} index={index} ticketClickItem={()=> {this.clickItem(item)}}/>
             </View>)
     }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Image, FlatList, ImageBackground } from 'react-native';
+import { View, StyleSheet, Image, FlatList, ImageBackground ,TouchableWithoutFeedback} from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import ProductApi from '../api/ProductApi';
@@ -148,6 +148,7 @@ class ProductDetailCouponsWindowViewItem extends React.Component {
         }
         const{isHide} = this.state;
         return (
+            <TouchableWithoutFeedback>
             <View style={windowStyles.itemView}>
                 <View style={windowStyles.itemContainerView}>
                     <View style={windowStyles.moneyView}>
@@ -192,6 +193,7 @@ class ProductDetailCouponsWindowViewItem extends React.Component {
                 </View>
                 </NoMoreClick>}
             </View>
+            </TouchableWithoutFeedback>
         );
     }
 }
