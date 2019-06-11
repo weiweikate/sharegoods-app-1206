@@ -47,6 +47,7 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
     private int page = 1;
     private SwipeRefreshLayout swipeRefreshLayout;
     private RnRecyclerView recyclerView;
+    private StaggeredGridLayoutManager layoutManager;
     private ShowGroundAdapter adapter;
     private ShowgroundPresenter presenter;
     private EventDispatcher eventDispatcher;
@@ -111,30 +112,9 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
         adapter = new ShowGroundAdapter();
         adapter.setPreLoadNumber(3);
         adapter.setHasStableIds(true);
-        final StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                switch (newState) {
-                    case RecyclerView.SCROLL_STATE_IDLE:
-                        endScrollEvent = new onEndScrollEvent();
-                        endScrollEvent.init(view.getId());
-                        eventDispatcher.dispatchEvent(endScrollEvent);
-                        break;
-                    case RecyclerView.SCROLL_STATE_DRAGGING:
-                        startScrollEvent = new onStartScrollEvent();
-                        startScrollEvent.init(view.getId());
-                        eventDispatcher.dispatchEvent(startScrollEvent);
-                        break;
-                    default:
-                        break;
-                }
-
-            }
-        });
         adapter.setEnableLoadMore(true);
         View emptyView = LayoutInflater.from(context).inflate(R.layout.show_empty_view, null);
         emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -175,9 +155,8 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 if (eventDispatcher != null) {
-                    StaggeredGridLayoutManager manager = (StaggeredGridLayoutManager) recyclerView.getLayoutManager();
-                    int position = manager.findFirstVisibleItemPositions(null)[0];
-                    View firstView = manager.findViewByPosition(position);
+                    int position = layoutManager.findFirstVisibleItemPositions(null)[0];
+                    View firstView = layoutManager.findViewByPosition(position);
                     if (firstView == null) {
                         return;
                     }
@@ -195,6 +174,20 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
+                switch (newState) {
+                    case RecyclerView.SCROLL_STATE_IDLE:
+                        endScrollEvent = new onEndScrollEvent();
+                        endScrollEvent.init(view.getId());
+                        eventDispatcher.dispatchEvent(endScrollEvent);
+                        break;
+                    case RecyclerView.SCROLL_STATE_DRAGGING:
+                        startScrollEvent = new onStartScrollEvent();
+                        startScrollEvent.init(view.getId());
+                        eventDispatcher.dispatchEvent(startScrollEvent);
+                        break;
+                    default:
+                        break;
+                }
                 if (newState == RecyclerView.SCROLL_STATE_DRAGGING || newState == RecyclerView.SCROLL_STATE_SETTLING) {
                     sIsScrolling = true;
                     ImageLoadUtils.pauseLoadImage();
@@ -212,7 +205,6 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
                     onScrollStateChangedEvent.setData(map);
                     eventDispatcher.dispatchEvent(onScrollStateChangedEvent);
                 }
-                StaggeredGridLayoutManager layoutManager = (StaggeredGridLayoutManager) recyclerView.getLayoutManager();
                 int[] first = new int[2];
                 layoutManager.findFirstCompletelyVisibleItemPositions(first);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && (first[0] == 1 || first[1] == 1)) {
@@ -312,7 +304,6 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
                     NewestShowGroundBean.DataBean bean = data.get(index);
                     bean.setHotCount(clickNum);
                     adapter.replaceData(data);
-//                    adapter.setData(index,bean);
 
                 }
             }, 200);
@@ -352,7 +343,7 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
 
     public void scrollIndex(int index) {
         if (recyclerView != null) {
-            recyclerView.smoothScrollToPosition(index);
+            recyclerView.scrollToPosition(0);
         }
     }
 

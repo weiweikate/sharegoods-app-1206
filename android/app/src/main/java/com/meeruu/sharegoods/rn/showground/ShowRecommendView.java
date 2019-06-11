@@ -27,6 +27,7 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.meeruu.commonlib.handler.WeakHandler;
+import com.meeruu.commonlib.tool.FastScrollLinearLayoutManager;
 import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
@@ -188,7 +189,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         adapter.setEmptyView(emptyView);
         adapter.setPreLoadNumber(3);
         adapter.setHasStableIds(true);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+        FastScrollLinearLayoutManager layoutManager = new FastScrollLinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
         ((SimpleItemAnimator) recyclerView.getItemAnimator())
                 .setSupportsChangeAnimations(false);
@@ -480,7 +481,6 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
 
     @Override
     public void repelaceData(final int index, final int clickNum) {
-
     }
 
     public void scrollIndex(int index) {
