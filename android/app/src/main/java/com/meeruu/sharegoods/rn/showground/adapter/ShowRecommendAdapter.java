@@ -17,13 +17,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.meeruu.commonlib.customview.ExpandableTextView;
 import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
 import com.meeruu.sharegoods.rn.showground.utils.NumUtils;
-import com.meeruu.sharegoods.rn.showground.widgets.FolderTextView;
 import com.meeruu.sharegoods.rn.showground.widgets.GridView.ImageInfo;
 import com.meeruu.sharegoods.rn.showground.widgets.GridView.NineGridView;
 import com.meeruu.sharegoods.rn.showground.widgets.GridView.NineGridViewAdapter;
@@ -35,6 +35,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
     private NineGridView.clickL clickL;
     private ProductsAdapter.AddCartListener addCartListener;
     private ProductsAdapter.PressProductListener pressProductListener;
+    private static int maxWidth = ScreenUtils.getScreenWidth() - DensityUtils.dip2px(90);
 
     public ShowRecommendAdapter(NineGridView.clickL clickL, ProductsAdapter.AddCartListener addCartListener, ProductsAdapter.PressProductListener pressProductListener) {
         super(new ArrayList<NewestShowGroundBean.DataBean>());
@@ -125,7 +126,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
 
 
     private void convertDynamic(final BaseViewHolder helper, final NewestShowGroundBean.DataBean item) {
-        final FolderTextView content = helper.getView(R.id.content);
+        final ExpandableTextView content = helper.getView(R.id.content);
         final SimpleDraweeView userIcon = helper.getView(R.id.user_icon);
         String userTag = (String) userIcon.getTag();
         String userUrl = item.getUserInfoVO().getUserImg();
@@ -146,15 +147,16 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         }
 
         String titleStr = item.getContent();
-        if (!TextUtils.equals(titleStr, (String) content.getTag())) {
-            if (titleStr != null && titleStr.trim().length() > 0) {
-                content.setText(titleStr);
+        if (titleStr != null && titleStr.trim().length() > 0) {
+            if (!TextUtils.equals(titleStr, (String) content.getTag())) {
+                content.updateForRecyclerView(titleStr, maxWidth);
                 content.setTag(titleStr);
+                content.setExpandListener(null);
                 content.setVisibility(View.VISIBLE);
-            } else {
-                content.setVisibility(View.GONE);
-                content.setTag(titleStr);
             }
+        } else {
+            content.setVisibility(View.GONE);
+            content.setTag(titleStr);
         }
 
         TextView name = helper.getView(R.id.user_name);
