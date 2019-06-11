@@ -70,6 +70,10 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
         if (TextUtils.isEmpty(imgUrl)) {
             imgUrl = "res://" + imageView.getContext().getPackageName() + "/" + R.drawable.bg_app_img;
         }
+
+        if(imgUrl.contains("?")){
+            imgUrl = imgUrl.substring(0,imgUrl.indexOf("?"));
+        }
         int realHeight = (int) ((height / width) * realWidth);
         if (realHeight < minHeight) {
             realHeight = minHeight;
