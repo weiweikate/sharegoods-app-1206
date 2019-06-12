@@ -304,10 +304,7 @@ export default class ShowListPage extends BasePage {
                                 }}
                                 navigate={this.$navigate}
                                 onShare={(item) => {
-                                    this.setState({ detail: item.detail }, () => {
-                                        this.shareModal && this.shareModal.open();
-                                    });
-
+                                    this._setDetail(item.detail);
                                 }}/>
                             :
                             null
@@ -367,7 +364,7 @@ export default class ShowListPage extends BasePage {
                                 }}
                                 taskShareParams={{
                                     uri: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
-                                    code: 22,
+                                    code: detail.showType === 1 ? 22: 25,
                                     data: detail.showNo
                                 }}
                                 webJson={{
