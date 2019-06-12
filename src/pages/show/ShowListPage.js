@@ -364,7 +364,7 @@ export default class ShowListPage extends BasePage {
                                 }}
                                 taskShareParams={{
                                     uri: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
-                                    code: 22,
+                                    code: detail.showType === 1 ? 22: 25,
                                     data: detail.showNo
                                 }}
                                 webJson={{

@@ -572,7 +572,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                             }}
                             taskShareParams={{
                                 uri: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
-                                code: 22,
+                                code: 25,
                                 data: detail.showNo
                             }}
                             webJson={{
