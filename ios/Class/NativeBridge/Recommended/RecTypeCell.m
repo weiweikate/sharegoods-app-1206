@@ -181,7 +181,7 @@
   }
   if(imageUrl.length>0){
 
-  [self.picImg sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"f5f5f5"]]];
+    [self.picImg setImageWithURL:[NSURL URLWithString:imageUrl] placeholder:[UIImage imageWithColor:[UIColor colorWithHexString:@"f5f5f5"]]];
     self.contentLab.text = model.title;
   }else{
     self.picImg.sd_layout.autoHeightRatio(0);
