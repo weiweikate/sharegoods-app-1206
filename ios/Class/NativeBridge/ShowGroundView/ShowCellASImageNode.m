@@ -1,19 +1,18 @@
 //
-//  ShowCellNode.m
+//  ShowCellASImageNode.m
 //  crm_app_xiugou
 //
-//  Created by 胡胡超 on 2019/3/27.
-//  Copyright © 2019年 Facebook. All rights reserved.
+//  Created by slardar chen on 2019/6/11.
+//  Copyright © 2019 Facebook. All rights reserved.
 //
 
-#import "ShowCellNode.h"
-#import "SGNetworkImageNode.h"
+#import "ShowCellASImageNode.h"
 #import "NSString+UrlAddParams.h"
 
-@interface ShowCellNode()
-@property(nonatomic, strong)SGNetworkImageNode *imageNode;
+@interface ShowCellASImageNode()
+@property(nonatomic, strong)ASNetworkImageNode *imageNode;
 @property(nonatomic, strong)ASTextNode *titleNode;
-@property(nonatomic, strong)SGNetworkImageNode *headerNode;
+@property(nonatomic, strong)ASNetworkImageNode *headerNode;
 @property(nonatomic, strong)ASTextNode *userNameNode;
 @property(nonatomic, strong)ASTextNode *hotNumNode;
 @property(nonatomic, strong)ShowQuery_dataModel *model;
@@ -23,7 +22,7 @@
 @property(nonatomic, strong)ASImageNode *hotNode;
 @property(nonatomic, strong)NSMutableDictionary *aspectRatioDic;
 @end
-@implementation ShowCellNode
+@implementation ShowCellASImageNode
 
 -(instancetype)initWithModel:(ShowQuery_dataModel *)model
 {
@@ -34,9 +33,9 @@
     [self addSubnode:self.titleNode];
     [self addSubnode:self.userNameNode];
     [self addSubnode:self.headerNode];
-//    [self addSubnode:self.numBgNode];
-//    [self addSubnode:self.numNode];
-//    [self addSubnode:self.numIconNode];
+    //    [self addSubnode:self.numBgNode];
+    //    [self addSubnode:self.numNode];
+    //    [self addSubnode:self.numIconNode];
     [self addSubnode:self.hotNode];
     [self addSubnode:self.hotNumNode];
     self.backgroundColor = [UIColor whiteColor];
@@ -56,21 +55,21 @@
   ASRatioLayoutSpec *ImageSpec = [ASRatioLayoutSpec ratioLayoutSpecWithRatio:aspectRatio
                                                                        child:_imageNode];
   
-//  _numIconNode.style.spacingBefore = 10;
-//  ASStackLayoutSpec *hNumSpec = [ASStackLayoutSpec stackLayoutSpecWithDirection:ASStackLayoutDirectionHorizontal
-//                                                                        spacing:10
-//                                                                 justifyContent:ASStackLayoutJustifyContentStart alignItems:ASStackLayoutAlignItemsCenter
-//                                                                       children:@[_numIconNode,
-//                                                                                  _numNode
-//                                                                                  ]];
-//  _numBgNode.style.preferredSize = CGSizeMake(constrainedSize.min.width, 30);
-//  hNumSpec.style.preferredSize = CGSizeMake(constrainedSize.min.width, 30);
-//  ASOverlayLayoutSpec * overSpec1 =  [ASOverlayLayoutSpec overlayLayoutSpecWithChild:_numBgNode overlay: hNumSpec];
+  //  _numIconNode.style.spacingBefore = 10;
+  //  ASStackLayoutSpec *hNumSpec = [ASStackLayoutSpec stackLayoutSpecWithDirection:ASStackLayoutDirectionHorizontal
+  //                                                                        spacing:10
+  //                                                                 justifyContent:ASStackLayoutJustifyContentStart alignItems:ASStackLayoutAlignItemsCenter
+  //                                                                       children:@[_numIconNode,
+  //                                                                                  _numNode
+  //                                                                                  ]];
+  //  _numBgNode.style.preferredSize = CGSizeMake(constrainedSize.min.width, 30);
+  //  hNumSpec.style.preferredSize = CGSizeMake(constrainedSize.min.width, 30);
+  //  ASOverlayLayoutSpec * overSpec1 =  [ASOverlayLayoutSpec overlayLayoutSpecWithChild:_numBgNode overlay: hNumSpec];
   //  ASAbsoluteLayoutSpec * overSpec1  = [ASAbsoluteLayoutSpec absoluteLayoutSpecWithChildren:@[_numBgNode, hNumSpec]];
   //  overSpec1.style.height = ASDimensionMake(30);
-//  UIEdgeInsets insets = UIEdgeInsetsMake(INFINITY,0,0,0);
-//  ASInsetLayoutSpec * numBgNode = [ASInsetLayoutSpec insetLayoutSpecWithInsets:insets child:overSpec1];
-//  ASOverlayLayoutSpec * overSpec =  [ASOverlayLayoutSpec overlayLayoutSpecWithChild:ImageSpec overlay: numBgNode];
+  //  UIEdgeInsets insets = UIEdgeInsetsMake(INFINITY,0,0,0);
+  //  ASInsetLayoutSpec * numBgNode = [ASInsetLayoutSpec insetLayoutSpecWithInsets:insets child:overSpec1];
+  //  ASOverlayLayoutSpec * overSpec =  [ASOverlayLayoutSpec overlayLayoutSpecWithChild:ImageSpec overlay: numBgNode];
   _headerNode.style.spacingBefore = 10;
   _headerNode.style.preferredSize = CGSizeMake(30, 30);
   _headerNode.style.spacingAfter = 5;
@@ -79,7 +78,7 @@
   _hotNode.style.preferredSize = CGSizeMake(15, 15);
   _hotNode.style.spacingAfter = 5;
   _hotNumNode.style.spacingAfter = 10;
-
+  
   
   ASStackLayoutSpec *hSpec = [ASStackLayoutSpec stackLayoutSpecWithDirection:ASStackLayoutDirectionHorizontal
                                                                      spacing:0
@@ -88,27 +87,27 @@
                                                                                _userNameNode,
                                                                                _hotNode,
                                                                                _hotNumNode
-                                                                ]];
+                                                                               ]];
   hSpec.style.width = ASDimensionMake(constrainedSize.min.width);
-    ASStackLayoutSpec *vSpec = [ASStackLayoutSpec stackLayoutSpecWithDirection:ASStackLayoutDirectionVertical
-                                            spacing:_titleNode.attributedText.length>0?10:0
-                                      justifyContent:ASStackLayoutJustifyContentStart alignItems:ASStackLayoutAlignItemsStart
-                                            children:@[ImageSpec,
-                                                      [ASInsetLayoutSpec insetLayoutSpecWithInsets:UIEdgeInsetsMake(0, 10, 0, 10) child:_titleNode],
-                                                          hSpec                                                                ]];
+  ASStackLayoutSpec *vSpec = [ASStackLayoutSpec stackLayoutSpecWithDirection:ASStackLayoutDirectionVertical
+                                                                     spacing:_titleNode.attributedText.length>0?10:0
+                                                              justifyContent:ASStackLayoutJustifyContentStart alignItems:ASStackLayoutAlignItemsStart
+                                                                    children:@[ImageSpec,
+                                                                               [ASInsetLayoutSpec insetLayoutSpecWithInsets:UIEdgeInsetsMake(0, 10, 0, 10) child:_titleNode],
+                                                                               hSpec                                                                ]];
   
-    return [ASInsetLayoutSpec insetLayoutSpecWithInsets:UIEdgeInsetsMake(0, 0, 12, 0) child:vSpec];
+  return [ASInsetLayoutSpec insetLayoutSpecWithInsets:UIEdgeInsetsMake(0, 0, 12, 0) child:vSpec];
 }
 
 
-- (SGNetworkImageNode *)imageNode
+- (ASNetworkImageNode *)imageNode
 {
   if (!_imageNode) {
     CGFloat itemWidth=  [UIScreen mainScreen].bounds.size.width / 2.0;
     NSString * showImage = @"";
     if([_model.resource[0] valueForKey:@"url"]){
-       showImage = [_model.resource[0] valueForKey:@"url"];
-        self.aspectRatioDic = [self getURLParameters:showImage];
+      showImage = [_model.resource[0] valueForKey:@"url"];
+      self.aspectRatioDic = [self getURLParameters:showImage];
     }
     
     if ([showImage containsString:@"sharegoodsmall"]) {
@@ -117,12 +116,12 @@
       CGFloat aspectRatio = height/width;
       showImage = [showImage getUrlAndWidth:itemWidth height:itemWidth*aspectRatio];
     }
-    _imageNode = [SGNetworkImageNode new];
+    _imageNode = [ASNetworkImageNode new];
     _imageNode.defaultImage = [UIImage imageWithColor:[UIColor whiteColor]];
     _imageNode.URL = [NSURL URLWithString:showImage];
     _imageNode.cornerRadius = 5;
     _imageNode.clipsToBounds = YES;
-
+    
   }
   return _imageNode;
 }
@@ -133,24 +132,23 @@
     _titleNode = [ASTextNode new];
     _titleNode.maximumNumberOfLines = 2;
     if(_model.title){
-    _titleNode.attributedText = [[NSAttributedString alloc]initWithString:_model.title attributes:@{
-                                                                                                            NSFontAttributeName: [UIFont systemFontOfSize:12],
-                                                                                                            NSForegroundColorAttributeName: [UIColor colorWithHexString:@"333333"]
-                                                                                                            }];
-      }
+      _titleNode.attributedText = [[NSAttributedString alloc]initWithString:_model.title attributes:@{
+                                                                                                      NSFontAttributeName: [UIFont systemFontOfSize:12],
+                                                                                                      NSForegroundColorAttributeName: [UIColor colorWithHexString:@"333333"]
+                                                                                                      }];
+    }
   }
   return _titleNode;
 }
 
-- (SGNetworkImageNode *)headerNode
+- (ASNetworkImageNode *)headerNode
 {
   if (!_headerNode) {
-    _headerNode = [SGNetworkImageNode new];
+    _headerNode = [ASNetworkImageNode new];
     _headerNode.defaultImage = [UIImage imageNamed:@"default_avatar"];
     if(_model.userInfoVO && [_model.userInfoVO valueForKey:@"userImg"]){
       NSString* url = [[_model.userInfoVO valueForKey:@"userImg"] getUrlAndWidth:30 height:30];
       _headerNode.URL = [NSURL URLWithString:url];
-      
     }
     _headerNode.cornerRadius = 15;
     _headerNode.clipsToBounds = YES;
@@ -194,10 +192,10 @@
       }
     }
     _hotNumNode.attributedText = [[NSAttributedString alloc]initWithString:num
-                                                              attributes:@{
-                                                                           NSFontAttributeName: [UIFont systemFontOfSize:11],
-                                                                           NSForegroundColorAttributeName: [UIColor colorWithHexString:@"999999"]
-                                                                           }];
+                                                                attributes:@{
+                                                                             NSFontAttributeName: [UIFont systemFontOfSize:11],
+                                                                             NSForegroundColorAttributeName: [UIColor colorWithHexString:@"999999"]
+                                                                             }];
   }
   return _hotNumNode;
 }

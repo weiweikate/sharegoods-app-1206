@@ -57,8 +57,8 @@
 -(UIButton*)zanBtn{
   if(!_zanBtn){
     _zanBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_zanBtn setBackgroundImage:[UIImage imageNamed:@"zan"] forState:UIControlStateNormal];
-    [_zanBtn setBackgroundImage:[UIImage imageNamed:@"yizan"] forState:UIControlStateSelected];
+    [_zanBtn setBackgroundImage:[UIImage imageNamed:@"hot"] forState:UIControlStateNormal];
+    [_zanBtn setBackgroundImage:[UIImage imageNamed:@"hot"] forState:UIControlStateSelected];
 
   }
   return _zanBtn;
@@ -99,7 +99,7 @@
   //点赞
   [_zanBtn addTarget:self action:@selector(tapZanBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.zanBtn.sd_layout.topSpaceToView(self.scrollView,10)
-  .heightIs(26).widthIs(26)
+  .heightIs(24).widthIs(24)
   .leftSpaceToView(self, 30);
 
   self.zanNum.sd_layout.centerYEqualToView(self.zanBtn)
@@ -110,7 +110,7 @@
   [_downloadBtn addTarget:self action:@selector(tapDownloadBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.downloadBtn.sd_layout.centerYEqualToView(self.zanNum)
   .leftSpaceToView(self.zanNum, 0)
-  .widthIs(26).heightIs(26);
+  .widthIs(24).heightIs(24);
 
   self.downLoadNUm.sd_layout.centerYEqualToView(self.downloadBtn)
   .leftSpaceToView(self.downloadBtn, 1)
@@ -120,7 +120,7 @@
   [_shareBtn addTarget:self action:@selector(tapShareBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.shareBtn.sd_layout.centerYEqualToView(self.zanBtn)
      .rightSpaceToView(self, 0)
-     .widthIs(70).heightIs(26);
+     .widthIs(70).heightIs(30);
 
   [self setupAutoHeightWithBottomView:self.zanBtn bottomMargin:0];
 
@@ -148,9 +148,9 @@
 -(void)setLikesCount:(NSInteger)likesCount{
   _likesCount = likesCount;
   NSString * num = @"";
-    if(likesCount<999){
+    if(likesCount<=999){
       num = [NSString stringWithFormat:@"%ld",likesCount>0?likesCount:0];
-    }else if(likesCount<100000){
+    }else if(likesCount<=100000){
       num = @"999+";
     }else{
       num = @"10w+";
@@ -257,9 +257,9 @@
 }
 
 -(void)tapZanBtn:(NSString*)sender{
-  if(self.zanBlock){
-    self.zanBlock(@"");
-  }
+//  if(self.zanBlock){
+//    self.zanBlock(@"");
+//  }
 }
 
 -(void)tapDownloadBtn:(UIButton*)sender{
