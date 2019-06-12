@@ -190,7 +190,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         } else {
             getBitmap(mContext, shareImageBean, success, fail);
         }
-
     }
 
     @ReactMethod
@@ -219,13 +218,11 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             return;
         }
 
-
         final Map data = (Map) JSON.parseObject(info);
         if (!data.containsKey(imageUrlKey) && !data.containsKey(titleKey) && !data.containsKey(linkUrlKey)) {
             promise.reject("数据问题");
             return;
         }
-
 
         if (Fresco.hasBeenInitialized()) {
             ImageLoadUtils.preFetch(Uri.parse((String) data.get(imageUrlKey)), 0, 0, new BaseRequestListener() {
@@ -340,12 +337,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         int top = isTwoLine ? (453 + titleSize) * ratio + titleSize + bounds.height() / 2 : (453 + titleSize) * ratio;
         int bottom = top + 18 * ratio;
 
-
-
-
-
-
-
         paint.setStrikeThruText(true);
         paint.setTextSize(13 * ratio);
         paint.setColor(Color.parseColor("#999999"));
@@ -354,7 +345,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
         Bitmap qrBitmap = createQRImage(info, 77 * ratio, 77 * ratio);
         canvas.drawBitmap(qrBitmap, 268 * ratio, bottom - titleSize - 6 * ratio, paint);
-
 
         String path = BitmapUtils.saveImageToCache(result, "shareImage.png", JSON.toJSONString(data));
         if (!TextUtils.isEmpty(path)) {
@@ -584,7 +574,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             Rect mDestRect = new Rect(0, 0, 375 * precision, 667 * precision);
             canvas.drawBitmap(outBitmap, mSrcRect, mDestRect, paint);
         } else {
-            int width = outWidth;
             int height = (int) (outWidth / (375 * 667.0));
             Rect mSrcRect = new Rect(0, (outHeight - height) / 2, 0, outHeight - (height / 2));
             Rect mDestRect = new Rect(0, 0, 375 * precision, 667 * precision);
@@ -632,7 +621,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         Rect mSrcRect = new Rect(0, 0, arrows.getWidth(), arrows.getHeight());
         Rect mDestRect = new Rect(177 * precision, 609 * precision, 197 * precision, 629 * precision);
         canvas.drawBitmap(arrows, mSrcRect, mDestRect, paint);
-
 
         String tip = "扫一扫，免费领钻石";
         textPaint.setAntiAlias(true);
@@ -713,7 +701,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             Rect mDestRect = new Rect(30 * precision, 57 * precision, 345 * precision, 402 * precision);
             canvas.drawBitmap(bitmap, mSrcRect, mDestRect, paint);
         } else {
-            int width = outWidth;
+            paint.setAntiAlias(true);
             int height = (int) (outWidth / (315 * 345.0));
             Rect mSrcRect = new Rect(0, (outHeight - height) / 2, 0, (outHeight + height) / 2);
             Rect mDestRect = new Rect(30 * precision, 57 * precision, 345 * precision, 402 * precision);
@@ -839,11 +827,9 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         bitmapShader.setLocalMatrix(matrix);
         paint.setShader(bitmapShader);
 
-
         canvas.drawCircle(18 * precision, 18 * precision, 18 * precision, paint);
 
         return newBitmap;
-
     }
 
     private void downloadHeaderImg(final Context context, final String headImg, final String url, final Callback success, final Callback fail) {
@@ -948,7 +934,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         float scaleWidth = ((float) newWidth) / width;
         float scaleHeight = ((float) newHeight) / height;
 
-
         Bitmap whiteBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.yqhy_03);
 
         int whiteWidth = whiteBitmap.getWidth();
@@ -957,7 +942,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         int newWhiteHeight = 380;
         float scaleWidthWhite = ((float) newWhiteWidth) / whiteWidth;
         float scaleHeightWhite = ((float) newWhiteHeight) / whiteHeight;
-
 
         //获取想要缩放的matrix
         Matrix matrix = new Matrix();
@@ -970,7 +954,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         whiteBitmap = Bitmap.createBitmap(whiteBitmap, 0, 0, whiteWidth, whiteHeight, whiteMatrix, true);
         canvas.drawBitmap(whiteBitmap, 24, 164, paint);
 
-
         //头像
         int headerW = headerBitmap.getWidth();
         int headerH = headerBitmap.getHeight();
@@ -981,11 +964,9 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         Matrix headerMatrix = new Matrix();
         headerMatrix.postScale(scaleHeader, scaleHeader);
 
-
         Bitmap header = Bitmap.createBitmap(headerBitmap, 0, 0, headerW, headerH, headerMatrix, true);
         header = createCircleImage(header, newHeaderLength);
         canvas.drawBitmap(header, 70, 195, paint);
-
 
         String shopName = map.getString("shopName");
         paint.setColor(Color.BLACK);
@@ -1006,10 +987,8 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         paint.getTextBounds(shopPerson, 0, shopPerson.length(), bounds);
         canvas.drawText(shopPerson, 150, 255, paint);
 
-
         Bitmap qrBitmap = createQRImage(map.getString("codeString"), 135, 135);
         canvas.drawBitmap(qrBitmap, 120, 310, paint);
-
 
         String wxTip = map.getString("wxTip");
         paint.setTextSize(13);
@@ -1025,7 +1004,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         Uri uri = Uri.parse(path);
         saveImageAndRefresh(uri);
 
-
         if (bitmap != null && !bitmap.isRecycled()) {
             bitmap.recycle();
             bitmap = null;
@@ -1039,7 +1017,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             qrBitmap = null;
         }
         success.invoke();
-
     }
 
     /**
