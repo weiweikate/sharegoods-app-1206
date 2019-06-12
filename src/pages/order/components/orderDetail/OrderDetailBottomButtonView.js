@@ -188,10 +188,10 @@ export default class OrderDetailBottomButtonView extends Component {
                 ], { cancelable: true });
                 break;
             case 10:
-                OrderApi.checkInfo({merchantOrderNo:orderDetailModel.merchantOrderNo}).then(res => {
+                OrderApi.checkInfo({warehouseOrderNo:orderDetailModel.merchantOrderNo}).then(res => {
                     if(res.data){
                         this.props.nav(RouterMap.P_ScorePublishPage, {
-                            merchantOrderNo:  orderDetailModel.merchantOrderNo
+                            orderNo:  orderDetailModel.merchantOrderNo
                         });
                     }else{
                         Toast.$toast('该商品已晒过单！');
@@ -207,21 +207,24 @@ export default class OrderDetailBottomButtonView extends Component {
     };
 
     async _goToPay() {
-        const {payAmount,platformOrderNo} = orderDetailModel
+        let orderProductList = orderDetailModel.productsList();
+        let platformOrderNo = orderDetailModel.platformOrderNo
+        let merchantOrderNo = orderDetailModel.merchantOrderNo
+        let payAmount = orderDetailModel.payInfo.payAmount;
         let result = await payment.checkOrderStatus(platformOrderNo,0,0,payAmount,'')
         if (result.code === payStatus.payNo) {
             this.props.nav("payment/PaymentPage", {
-                orderNum: orderDetailModel.warehouseOrderDTOList[0].outTradeNo,
-                amounts: orderDetailModel.payAmount,
-                platformOrderNo: orderDetailModel.platformOrderNo,
-                orderProductList: orderDetailModel.warehouseOrderDTOList[0].products
+                orderNum: merchantOrderNo,
+                amounts: payAmount,
+                platformOrderNo: platformOrderNo,
+                orderProductList: orderProductList
             });
         } else if (result.code === payStatus.payNeedThrid) {
             this.props.nav('payment/ChannelPage', {
                 remainMoney: Math.floor(result.unpaidAmount * 100) / 100,
-                orderProductList: orderDetailModel.warehouseOrderDTOList[0].products,
-                orderNum: orderDetailModel.warehouseOrderDTOList[0].outTradeNo,
-                platformOrderNo: orderDetailModel.platformOrderNo,
+                orderProductList: orderProductList,
+                orderNum: payAmount,
+                platformOrderNo: platformOrderNo,
             })
         } else if (result.code === payStatus.payOut) {
             Toast.$toast(payStatusMsg[result.code])

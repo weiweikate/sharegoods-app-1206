@@ -2,7 +2,8 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    ScrollView
+    ScrollView,
+    KeyboardAvoidingView
 } from 'react-native';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -49,11 +50,12 @@ export default class ConfirmOrderPage extends BasePage {
                             return this._renderItem(item, index)
                         })
                     }
+                    <KeyboardAvoidingView>
                     <ConfirmPriceView
                     jumpToCouponsPage={(params) => this.jumpToCouponsPage(params)}
                     inputFocus={() => {
-                        this.listView.scrollToEnd();
                     }}/>
+                    </KeyboardAvoidingView>
                 </ScrollView>
                 <ConfirmBottomView commitOrder={() => this.commitOrder()}/>
                 <SelectOneTicketModel ref={(ref)=>{this.oneTicketModel = ref}}/>
@@ -131,10 +133,10 @@ export default class ConfirmOrderPage extends BasePage {
     // 选择优惠券
     jumpToCouponsPage = (params) => {
         if (params === 'justOne') {//一元券
-            let payAmount = parseInt(confirmOrderModel.payAmount); //要实付钱
+            let payAmount = parseInt(confirmOrderModel.payInfo.payAmount); //要实付钱
             let tokenCoin =  parseInt(confirmOrderModel.tokenCoin);//一元优惠的券
             let orderAmount = payAmount + tokenCoin;
-            if (orderAmount < 1){//订单总价格要大于1
+            if (orderAmount < 1 || orderAmount.isNaN){//订单总价格要大于1
                 this.$toastShow('订单价格大于1元才可使用一元优惠');
                 return;
             }

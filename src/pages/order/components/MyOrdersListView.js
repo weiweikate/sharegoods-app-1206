@@ -199,13 +199,13 @@ export default class MyOrdersListView extends Component {
 
                 break;
             case 2:
-                this._goToPay(index);
+                this._goToPay(data);
                 break;
             case 3:
-                this._goToPay(index);
+                this._goToPay(data);
                 break;
             case 4:
-                this._goToPay(index);
+                this._goToPay(data);
                 break;
             case 5:
                 clickOrderLogistics(merchantOrderNo)
@@ -240,10 +240,10 @@ export default class MyOrdersListView extends Component {
                 clickOrderAgain(merchantOrderNo, orderProduct)
                 break;
             case 10:
-                OrderApi.checkInfo({ warehouseOrderNo: data.orderNo }).then(res => {
+                OrderApi.checkInfo({ warehouseOrderNo: merchantOrderNo}).then(res => {
                     if (res.data) {
                         this.props.nav(RouterMap.P_ScorePublishPage, {
-                            orderNo: data.orderNo
+                            orderNo: merchantOrderNo
                         });
                     } else {
                         Toast.$toast('该商品已晒过单！');
@@ -261,17 +261,17 @@ export default class MyOrdersListView extends Component {
 
     };
 
-    async _goToPay(index) {
-        let payData = this.state.viewData[index];
-        const { platformOrderNo, orderNo, totalPrice, orderProduct } = payData;
-        const {productName} = orderProduct;
-        console.log('_goToPay', payData);
+    async _goToPay(data) {
+        let orderProduct = data.merchantOrder.productOrderList || [];
+        let merchantOrderNo = data.merchantOrder.merchantOrderNo;
+        let platformOrderNo = data.merchantOrder.platformOrderNo;
+        let totalPrice = data.payInfo.payAmount;
         //从订单发起的都是普通支付
-        let result = await payment.checkOrderStatus(platformOrderNo,0,0,totalPrice,productName);
+        let result = await payment.checkOrderStatus(platformOrderNo,0,0,totalPrice,'');
         // return;
         if (result.code === payStatus.payNo) {
             this.props.nav('payment/PaymentPage', {
-                orderNum: orderNo,
+                orderNum: merchantOrderNo,
                 amounts: totalPrice,
                 platformOrderNo: platformOrderNo,
                 orderProductList: orderProduct
@@ -279,7 +279,7 @@ export default class MyOrdersListView extends Component {
         } else if (result.code === payStatus.payNeedThrid) {
             this.props.nav('payment/ChannelPage', {
                 remainMoney: Math.floor(result.unpaidAmount * 100) / 100,
-                orderNum: orderNo,
+                orderNum: merchantOrderNo,
                 platformOrderNo: platformOrderNo,
                 orderProductList: orderProduct
             });

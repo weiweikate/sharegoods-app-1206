@@ -46,22 +46,20 @@ export default class OrderDetailTimeView extends Component {
         let desc = ''
         let pictureUrlString = '';
         let num = ''
-        if (orderDetailModel.warehouseOrderDTOList && orderDetailModel.warehouseOrderDTOList[0]){
-            let item = orderDetailModel.warehouseOrderDTOList[0];
-            supplierCode = item.supplierCode	|| '';
-            if (item.products && item.products[0]){
-                let product = item.products[0];
-                desc = product.productName || '';
-                pictureUrlString = product.specImg || '';
-                num = '共'+product.quantity +'件商品';
-            }
+        if (orderDetailModel.productsList().length > 0){
+            let item = orderDetailModel.productsList()[0];
+               supplierCode = item.supplierCode	|| '';
+                desc = item.productName || '';
+                pictureUrlString = item.specImg || '';
+                num = '共'+item.quantity +'件商品';
+
         }
         if (this.data){
             QYChatTool.beginQYChat({
                 routePath: '',
                 urlString: '',
-                title:this.data.title,
-                shopId:this.data.shopId,
+                title:this.data.title || '',
+                shopId:this.data.shopId || '',
                 chatType: beginChatType.BEGIN_FROM_ORDER,
                 data: {
                     title: '订单号:'+orderDetailModel.merchantOrderNo,
@@ -77,8 +75,8 @@ export default class OrderDetailTimeView extends Component {
                 QYChatTool.beginQYChat({
                     routePath: '',
                     urlString: '',
-                    title: this.data.title,
-                    shopId: this.data.shopId,
+                    title: this.data.title || '',
+                    shopId: this.data.shopId || '',
                     chatType: beginChatType.BEGIN_FROM_ORDER,
                     data: {
                         title: orderDetailModel.merchantOrderNo,

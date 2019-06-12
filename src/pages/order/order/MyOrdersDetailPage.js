@@ -337,7 +337,7 @@ export default class MyOrdersDetailPage extends BasePage {
 
 
      loadPageData() {
-       orderDetailModel.loadDetailInfo(this.params.merchantOrderNo) || {};
+       orderDetailModel.loadDetailInfo(this.params.merchantOrderNo);
     }
     //去商品详情
     clickItem = (item) => {

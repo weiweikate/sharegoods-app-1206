@@ -15,7 +15,7 @@ class ConfirmOrderModel {
     @observable
     err=null
     @observable
-    canUseCou = false;
+    canUseCou = true;
 
     addressId =  310;
     orderParamVO = {};
