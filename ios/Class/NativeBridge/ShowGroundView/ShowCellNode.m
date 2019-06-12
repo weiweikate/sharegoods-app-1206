@@ -52,10 +52,21 @@
     CGFloat width = [[self.aspectRatioDic valueForKey:@"width"] floatValue];
     CGFloat height = [[self.aspectRatioDic valueForKey:@"height"] floatValue];
     aspectRatio = height/width;
+   CGFloat minRatio = 120 / 167.0;
+   CGFloat maxRatio = 240 / 167.0;
+    if (aspectRatio < minRatio) {
+      aspectRatio = minRatio;
+    }
+    
+    if (maxRatio > maxRatio) {
+      aspectRatio = maxRatio;
+    }
+    
+    
   }
   ASRatioLayoutSpec *ImageSpec = [ASRatioLayoutSpec ratioLayoutSpecWithRatio:aspectRatio
                                                                        child:_imageNode];
-  
+
 //  _numIconNode.style.spacingBefore = 10;
 //  ASStackLayoutSpec *hNumSpec = [ASStackLayoutSpec stackLayoutSpecWithDirection:ASStackLayoutDirectionHorizontal
 //                                                                        spacing:10
