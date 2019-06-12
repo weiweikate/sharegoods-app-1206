@@ -40,7 +40,7 @@ SINGLETON_FOR_CLASS(CommentTool)
   UIAlertController *alterController = [UIAlertController alertControllerWithTitle:@"五星鼓励"
                                                                            message:@"给个评论吧，您的反馈将是我们前进的动力"
                                                                     preferredStyle:UIAlertControllerStyleAlert];
-  UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"在逛一会"
+  UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"再逛一会"
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * _Nonnull action) {
                                                          [self saveNewTimeInterval:32];

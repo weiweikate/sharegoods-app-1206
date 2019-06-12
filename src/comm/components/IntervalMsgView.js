@@ -9,7 +9,7 @@ import { MRText } from '../../components/ui';
 import res from '../res';
 import DesignRule from '../../constants/DesignRule';
 import StringUtils from '../../utils/StringUtils';
-import { navigate, backToHome } from '../../navigation/RouterMap';
+import { navigate, backToHome, GoToTabItem} from '../../navigation/RouterMap';
 import { track, trackEvent } from '../../utils/SensorsTrack';
 
 const { white_go } = res.button;
@@ -224,8 +224,11 @@ export const IntervalType = {
 export function IntervalMsgNavigate(forwardType, keyCode) {
     if (forwardType === IntervalMsgType.home) {
         backToHome();
-    } else if (forwardType === IntervalMsgType.alert) {
-    } else {
+    } else if (forwardType === IntervalMsgType.showList) {
+        GoToTabItem(1)
+    }  else if (forwardType === IntervalMsgType.alert) {
+    }
+    else {
         const router = IntervalMsgRouter[forwardType];
         if (router) {
             navigate(router, {
@@ -259,6 +262,7 @@ export const IntervalMsgType = {
     productDetail: 19,      //商品详情
     orderDetail: 20,      //订单
     showDetail: 22,      //秀场动态
+    richShowDetail: 25, //新秀场详情
     shopDetail: 23,     //拼店店铺详情页
     sign: 24, //签到
     mineShare: 10,      //分享好友
@@ -290,6 +294,7 @@ const IntervalMsgRouter = {
     [IntervalMsgType.orderDetail]: 'order/order/MyOrdersDetailPage',
     [IntervalMsgType.shopDetail]: 'spellShop/MyShop_RecruitPage',
     [IntervalMsgType.showDetail]: 'show/ShowDetailPage',
+    [IntervalMsgType.richShowDetail]: 'show/ShowRichTextDetailPage',
     [IntervalMsgType.sign]: 'home/signIn/SignInPage',
     [IntervalMsgType.web]: 'HtmlPage',
     [IntervalMsgType.mineShare]: 'mine/InviteFriendsPage'

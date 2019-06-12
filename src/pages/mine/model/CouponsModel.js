@@ -2,13 +2,14 @@ import { observable, action } from 'mobx';
 
 class CouponsModel {
     @observable
-    params = {name:'全部',type:null};
+    params = { name: '全部', type: null };
 
-    @action changeType(item){
-        this.params = item
+    @action changeType(item) {
+        this.params = item;
     }
-    @action clearData(){
-        this.params = {name:'全部',type:null};
+
+    @action clearData() {
+        this.params = { name: '全部', type: null };
     }
 }
 
