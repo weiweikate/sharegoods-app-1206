@@ -60,8 +60,8 @@ export default class OrderDetailTimeView extends Component {
             QYChatTool.beginQYChat({
                 routePath: '',
                 urlString: '',
-                title:this.data.title,
-                shopId:this.data.shopId,
+                title:this.data.title || '',
+                shopId:this.data.shopId || '',
                 chatType: beginChatType.BEGIN_FROM_ORDER,
                 data: {
                     title: '订单号:'+orderDetailModel.getOrderNo(),
@@ -73,12 +73,12 @@ export default class OrderDetailTimeView extends Component {
             )
         } else {
             orderApi.getProductShopInfoBySupplierCode({supplierCode}).then((data)=> {
-                this.data = data.data;
+                this.data = data.data || {};
                 QYChatTool.beginQYChat({
                     routePath: '',
                     urlString: '',
-                    title: this.data.title,
-                    shopId: this.data.shopId,
+                    title: this.data.title || '',
+                    shopId: this.data.shopId || '',
                     chatType: beginChatType.BEGIN_FROM_ORDER,
                     data: {
                         title: orderDetailModel.getOrderNo(),
