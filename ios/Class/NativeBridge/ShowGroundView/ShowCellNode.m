@@ -104,7 +104,7 @@
 - (SGNetworkImageNode *)imageNode
 {
   if (!_imageNode) {
-    CGFloat itemWidth=  [UIScreen mainScreen].bounds.size.width / 2.0 * [UIScreen mainScreen].scale;
+    CGFloat itemWidth=  [UIScreen mainScreen].bounds.size.width / 2.0;
     NSString * showImage = @"";
     if([_model.resource[0] valueForKey:@"url"]){
        showImage = [_model.resource[0] valueForKey:@"url"];
@@ -112,7 +112,10 @@
     }
     
     if ([showImage containsString:@"sharegoodsmall"]) {
-      showImage = [showImage getUrlAndWidth:itemWidth height:itemWidth/_model.aspectRatio];
+      CGFloat width = [[self.aspectRatioDic valueForKey:@"width"] floatValue];
+      CGFloat height = [[self.aspectRatioDic valueForKey:@"height"] floatValue];
+      CGFloat aspectRatio = height/width;
+      showImage = [showImage getUrlAndWidth:itemWidth height:itemWidth*aspectRatio];
     }
     _imageNode = [SGNetworkImageNode new];
     _imageNode.defaultImage = [UIImage imageWithColor:[UIColor whiteColor]];
