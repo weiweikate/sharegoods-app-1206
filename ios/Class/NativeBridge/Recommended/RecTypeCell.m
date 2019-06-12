@@ -73,8 +73,8 @@
 -(UIButton*)zanBtn{
   if(!_zanBtn){
     _zanBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_zanBtn setBackgroundImage:[UIImage imageNamed:@"zan"] forState:UIControlStateNormal];
-    [_zanBtn setBackgroundImage:[UIImage imageNamed:@"yizan"] forState:UIControlStateSelected];
+    [_zanBtn setBackgroundImage:[UIImage imageNamed:@"hot"] forState:UIControlStateNormal];
+    [_zanBtn setBackgroundImage:[UIImage imageNamed:@"hot"] forState:UIControlStateSelected];
   }
   return _zanBtn;
 }
@@ -150,7 +150,7 @@
   [_zanBtn addTarget:self action:@selector(tapZanBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.zanBtn.sd_layout.topSpaceToView(self.contentLabView,10)
   .leftSpaceToView(bgView, 45)
-   .widthIs(26).heightIs(26);
+   .widthIs(24).heightIs(24);
 
   self.zanNum.sd_layout.centerYEqualToView(self.zanBtn)
   .leftSpaceToView(self.zanBtn, 1)
@@ -160,7 +160,7 @@
   [_shareBtn addTarget:self action:@selector(tapShareBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.shareBtn.sd_layout.centerYEqualToView(self.zanBtn)
   .rightSpaceToView(bgView,15)
-  .widthIs(70).heightIs(26);
+  .widthIs(70).heightIs(30);
 
   [bgView setupAutoHeightWithBottomView:self.shareBtn bottomMargin:5];
   [self setupAutoHeightWithBottomView:bgView bottomMargin:5];
@@ -171,7 +171,7 @@
   self.headView.UserInfoModel = model.userInfoVO;
   _headView.time = model.publishTimeStr;
   _zanBtn.selected = model.like;
-  _zanNum.text =  [self zanNumWithFormat:self.model.likesCount];
+  _zanNum.text =  [self zanNumWithFormat:self.model.hotCount];
 
   NSString* imageUrl = [[NSString alloc]init];
   for(SourcesModel *obj in model.resource){
@@ -191,11 +191,11 @@
 
 
 -(void)tapZanBtn:(UIButton*)sender{
-  if(self.recTypeDelegate){
-    [self.recTypeDelegate zanBtnClick:self];
-  }
-  self.zanBtn.selected = !self.zanBtn.selected;
-  self.zanNum.text = [self zanNumWithFormat:self.model.likesCount];
+//  if(self.recTypeDelegate){
+//    [self.recTypeDelegate zanBtnClick:self];
+//  }
+//  self.zanBtn.selected = !self.zanBtn.selected;
+//  self.zanNum.text = [self zanNumWithFormat:self.model.likesCount];
 }
 
 -(void)tapShareBtn:(UIButton*)sender{
@@ -212,9 +212,9 @@
 
 -(NSString*)zanNumWithFormat:(NSInteger)count{
   NSString * num = @"";
-  if(count<999){
+  if(count<=999){
     num = [NSString stringWithFormat:@"%ld",count>0?count:0];
-  }else if(count<100000){
+  }else if(count<=100000){
     num = @"999+";
   }else{
     num = @"10w+";
