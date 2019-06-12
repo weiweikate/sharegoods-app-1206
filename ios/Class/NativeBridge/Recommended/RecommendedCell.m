@@ -190,8 +190,8 @@
   self.headView.time = model.publishTimeStr;
   self.bodyView.sources = model.resource;
   
-  self.contentLab.text = model.title;
-  NSArray *array = [self getSeparatedLinesFromLabel:self.contentLab.text font:[UIFont systemFontOfSize:13] andLableWidth:SCREEN_WIDTH-105];
+    NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:model.title attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13.0], NSForegroundColorAttributeName:[UIColor colorWithRed:102/255.0 green:102/255.0 blue:102/255.0 alpha:1.0]}];
+    NSArray *array = [self getSeparatedLinesFromLabel:model.title font:[UIFont systemFontOfSize:13] andLableWidth:SCREEN_WIDTH-105];
   //组合需要显示的文本
   if(array.count>3){
     NSString *line3String = array[2];
@@ -204,6 +204,8 @@
     NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:showText attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13.0], NSForegroundColorAttributeName:[UIColor colorWithRed:102/255.0 green:102/255.0 blue:102/255.0 alpha:1.0]}];
     [attStr addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13.0], NSForegroundColorAttributeName:[UIColor redColor]} range:NSMakeRange(showText.length-2, 2)];
     self.contentLab.attributedText = attStr;
+  }else{
+      self.contentLab.attributedText = title;
   }
   
     self.footerView.products = model.products;
