@@ -181,6 +181,7 @@ class HomePage extends BasePage {
         this.didFocusSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
+                BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
                 if (user.token) {
                     this.loadMessageCount();
                 } else {
@@ -201,7 +202,6 @@ class HomePage extends BasePage {
                         limitGoModule.loadLimitGo(false);
                     }
                 }
-                BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
                 TrackApi.homePage();//埋点
             }
         );
