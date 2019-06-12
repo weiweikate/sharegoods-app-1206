@@ -23,4 +23,5 @@ dependencies {
     api(rootProject.ext.dependencies.rn) {
         exclude group: 'com.android.support'
     }
+    implementation rootProject.ext.dependencies.sensors
 }
