@@ -36,17 +36,18 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
     private ProductsAdapter.AddCartListener addCartListener;
     private ProductsAdapter.PressProductListener pressProductListener;
     private static int maxWidth = ScreenUtils.getScreenWidth() - DensityUtils.dip2px(90);
+    private static int radius_5 = DensityUtils.dip2px(5);
+    private static int imgWidth = ScreenUtils.getScreenWidth() - DensityUtils.dip2px(85);
 
     public ShowRecommendAdapter(NineGridView.clickL clickL, ProductsAdapter.AddCartListener addCartListener, ProductsAdapter.PressProductListener pressProductListener) {
         super(new ArrayList<NewestShowGroundBean.DataBean>());
-        final int radius = DensityUtils.dip2px(5);
         NineGridView.setImageLoader(new NineGridView.ImageLoader() {
             @Override
             public void onDisplayImage(Context context, SimpleDraweeView imageView, String url) {
                 String tag = (String) imageView.getTag();
                 if (!TextUtils.equals(tag, url)) {
                     imageView.setTag(url);
-                    ImageLoadUtils.loadRoundNetImage(url, imageView, radius);
+                    ImageLoadUtils.loadRoundNetImage(url, imageView, radius_5);
                 }
             }
         });
@@ -108,13 +109,13 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
             String url = item.getResource().get(0).getUrl();
             if (!TextUtils.equals(url, tag)) {
                 simpleDraweeView.setTag(url);
-                int width = ScreenUtils.getScreenWidth() - DensityUtils.dip2px(85);
+                int width = imgWidth;
                 int height = width / 29 * 16;
                 LinearLayout.LayoutParams linearParams = (LinearLayout.LayoutParams) simpleDraweeView.getLayoutParams();
                 linearParams.height = height;
                 linearParams.width = width;
                 simpleDraweeView.setLayoutParams(linearParams);
-                ImageLoadUtils.loadRoundNetImage(url, simpleDraweeView, DensityUtils.dip2px(5));
+                ImageLoadUtils.loadRoundNetImage(url, simpleDraweeView, radius_5);
                 simpleDraweeView.setVisibility(View.VISIBLE);
             }
         } else {
@@ -170,8 +171,6 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         like.setText(NumUtils.formatShowNum(item.getHotCount()));
 
         NineGridView nineGridView = helper.getView(R.id.nine_grid);
-
-        nineGridView.setSingleImageRatio(ScreenUtils.getScreenWidth() - DensityUtils.dip2px(185));
         List<ImageInfo> imageInfoList = item.getNineImageInfos();
 
         if (this.clickL != null) {
@@ -229,6 +228,6 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
             recyclerView.setVisibility(View.GONE);
             recyclerView.setTag(null);
         }
-        helper.addOnClickListener( R.id.icon_download, R.id.icon_share);
+        helper.addOnClickListener(R.id.icon_download, R.id.icon_share);
     }
 }
