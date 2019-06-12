@@ -57,7 +57,7 @@ public class ShowRecommendViewManager extends ViewGroupManager<ViewGroup> {
     @javax.annotation.Nullable
     @Override
     public Map<String, Integer> getCommandsMap() {
-        return MapBuilder.of("replaceData", REPLACE_DATA,"replaceItemData",REPLACE_ITEM_DATA,"scrollToTop",SCROLL_TO_TOP);
+        return MapBuilder.of("replaceData", REPLACE_DATA, "replaceItemData", REPLACE_ITEM_DATA, "scrollToTop", SCROLL_TO_TOP);
     }
 
     @Override
@@ -70,14 +70,14 @@ public class ShowRecommendViewManager extends ViewGroupManager<ViewGroup> {
                 }
             }
             break;
-            case REPLACE_ITEM_DATA:{
+            case REPLACE_ITEM_DATA: {
                 Object object = root.getTag();
                 if (object != null && object instanceof ShowRecommendView) {
                     ((ShowRecommendView) object).repelaceItemData(args.getInt(0), args.getString(1));
                 }
             }
             break;
-            case SCROLL_TO_TOP:{
+            case SCROLL_TO_TOP: {
                 Object object = root.getTag();
                 if (object != null && object instanceof ShowRecommendView) {
                     ((ShowRecommendView) object).scrollIndex(0);

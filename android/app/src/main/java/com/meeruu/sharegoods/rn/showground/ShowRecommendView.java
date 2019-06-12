@@ -27,7 +27,9 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.meeruu.commonlib.handler.WeakHandler;
+import com.meeruu.commonlib.tool.FastScrollLinearLayoutManager;
 import com.meeruu.commonlib.utils.DensityUtils;
+import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.sharegoods.R;
@@ -77,6 +79,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
     private WeakHandler mHandler;
     private View errView;
     private View errImg;
+    private boolean sIsScrolling;
 
     private int page = 1;
 
@@ -186,7 +189,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         adapter.setEmptyView(emptyView);
         adapter.setPreLoadNumber(3);
         adapter.setHasStableIds(true);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+        FastScrollLinearLayoutManager layoutManager = new FastScrollLinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
         ((SimpleItemAnimator) recyclerView.getItemAnimator())
                 .setSupportsChangeAnimations(false);
@@ -246,6 +249,19 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
                 }
             }
 
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+
+                if (newState == RecyclerView.SCROLL_STATE_DRAGGING || newState == RecyclerView.SCROLL_STATE_SETTLING) {
+                    sIsScrolling = true;
+                    ImageLoadUtils.pauseLoadImage();
+                } else if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (sIsScrolling == true) {
+                        ImageLoadUtils.resumeLoadImage();
+                    }
+                    sIsScrolling = false;
+                }
+            }
         });
     }
 
@@ -293,7 +309,6 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
                 public boolean handleMessage(Message msg) {
                     switch (msg.what) {
                         case ParameterUtils.REQUEST_DELAY:
-                            swipeRefreshLayout.setRefreshing(true);
                             page = 1;
                             presenter.getShowList(page);
                             break;
@@ -323,6 +338,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
             }
         }
         adapter.setEnableLoadMore(false);
+        swipeRefreshLayout.setRefreshing(true);
         mHandler.sendEmptyMessageDelayed(ParameterUtils.REQUEST_DELAY, 200);
     }
 
@@ -401,6 +417,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
     public void repelaceItemData(final int index, final String value) {
         if (adapter != null && !TextUtils.isEmpty(value)) {
             Message msg = Message.obtain();
+            msg.what = ParameterUtils.SHOW_REPLACE_DELAY;
             msg.arg1 = index;
             msg.obj = value;
             mHandler.sendMessageDelayed(msg, 60);
@@ -413,16 +430,16 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         if (adapter != null) {
             adapter.setEnableLoadMore(true);
             adapter.setNewData(resolveData(data));
-           setEmptyText();
+            setEmptyText();
         }
     }
 
-    private void setEmptyText(){
-        if(adapter == null){
+    private void setEmptyText() {
+        if (adapter == null) {
             return;
         }
         List list = adapter.getData();
-        if(list == null || list.size() == 0){
+        if (list == null || list.size() == 0) {
             View view = adapter.getEmptyView();
             TextView textView = view.findViewById(R.id.empty_tv);
             textView.setText("暂无数据");
@@ -464,7 +481,6 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
 
     @Override
     public void repelaceData(final int index, final int clickNum) {
-
     }
 
     public void scrollIndex(int index) {

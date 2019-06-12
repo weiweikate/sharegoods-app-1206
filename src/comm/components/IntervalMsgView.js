@@ -262,6 +262,7 @@ export const IntervalMsgType = {
     productDetail: 19,      //商品详情
     orderDetail: 20,      //订单
     showDetail: 22,      //秀场动态
+    richShowDetail: 25, //新秀场详情
     shopDetail: 23,     //拼店店铺详情页
     sign: 24, //签到
     mineShare: 10,      //分享好友
@@ -293,6 +294,7 @@ const IntervalMsgRouter = {
     [IntervalMsgType.orderDetail]: 'order/order/MyOrdersDetailPage',
     [IntervalMsgType.shopDetail]: 'spellShop/MyShop_RecruitPage',
     [IntervalMsgType.showDetail]: 'show/ShowDetailPage',
+    [IntervalMsgType.richShowDetail]: 'show/ShowRichTextDetailPage',
     [IntervalMsgType.sign]: 'home/signIn/SignInPage',
     [IntervalMsgType.web]: 'HtmlPage',
     [IntervalMsgType.mineShare]: 'mine/InviteFriendsPage'

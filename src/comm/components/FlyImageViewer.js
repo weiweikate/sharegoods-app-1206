@@ -605,20 +605,20 @@ export default class FlyImageViewer extends Component {
             let height = this.state.imageSizes[index] && this.state.imageSizes[index].height;
             const imageInfo = this.state.imageSizes[index];
 
-            // 如果宽大于屏幕宽度,整体缩放到宽度是屏幕宽度
-            if (width > screenWidth) {
-                const widthPixel = screenWidth / width;
-                width *= widthPixel;
-                height *= widthPixel;
+            let r = width / height;
+            if (width > height) {
+                // 如果宽大于屏幕宽度,整体缩放到宽度是屏幕宽度
+                if (width > screenWidth) {
+                    width = screenWidth;
+                    height = width / r;
+                }
+            } else {
+                // 如果高大于屏幕高度,整体缩放到高度是屏幕高度
+                if (height > screenHeight) {
+                    height = screenHeight;
+                    width = height * r;
+                }
             }
-
-            // 如果此时高度还大于屏幕高度,整体缩放到高度是屏幕高度
-            if (height > screenHeight) {
-                const HeightPixel = screenHeight / height;
-                width *= HeightPixel;
-                height *= HeightPixel;
-            }
-
             if (imageInfo.status === 'success' && this.props.enableImageZoom) {
 
                 return (
