@@ -117,17 +117,20 @@ export default class RequestDetailPage extends BasePage {
     });
 
     componentDidMount() {
-        BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+        let isFirst = true;
         this.willFocusSubscription = this.props.navigation.addListener(
-            'willFocus',
+            'didFocus',
             payload => {
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
-                this.webView && this.webView.sendToBridge(JSON.stringify({ action: 'entry' }));
+                if (!isFirst){
+                    this.webView && this.webView.sendToBridge(JSON.stringify({ action: 'entry' }));
+                }
+                isFirst = false;
             }
         );
 
         this.willBlurSubscription = this.props.navigation.addListener(
-            'willBlur',
+            'didBlur',
             payload => {
                 BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
             }
