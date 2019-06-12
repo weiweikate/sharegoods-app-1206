@@ -304,10 +304,7 @@ export default class ShowListPage extends BasePage {
                                 }}
                                 navigate={this.$navigate}
                                 onShare={(item) => {
-                                    this.setState({ detail: item.detail }, () => {
-                                        this.shareModal && this.shareModal.open();
-                                    });
-
+                                    this._setDetail(item.detail);
                                 }}/>
                             :
                             null
