@@ -8,6 +8,7 @@ import android.text.TextUtils;
 
 import com.facebook.react.bridge.Callback;
 import com.meeruu.commonlib.R;
+import com.meeruu.commonlib.utils.FileUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
@@ -18,7 +19,6 @@ import com.umeng.socialize.media.UMWeb;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
-import java.net.URI;
 import java.util.Map;
 
 
@@ -91,7 +91,6 @@ public class UMShareUtils {
                         .share();
                 break;
             case 1:
-
                 if (params.containsKey("hdImageURL")) {
                     image = fixThumImage(mContext, params.get("hdImageURL") + "");
                 } else {
@@ -152,7 +151,6 @@ public class UMShareUtils {
 
         @Override
         public void onStart(SHARE_MEDIA share_media) {
-
         }
 
         @Override
@@ -189,18 +187,15 @@ public class UMShareUtils {
         } else if (url.startsWith("file") || url.startsWith("content")) {
             try {
                 Uri uri = Uri.parse(url);
-                File file = new File(new URI(uri.toString()));
+                String filePath = FileUtils.getFilePathByUri(mContext, uri);
+                File file = new File(filePath);
                 return new UMImage(mContext, file);
             } catch (Exception e) {
-
             }
-
             return new UMImage(mContext, R.mipmap.ic_launcher);
-
-
         } else {
             if (url.endsWith(".png") || url.endsWith(".jpg")) {
-                url = url.substring(0, url.length() - 4);
+                url.substring(0, url.length() - 4);
             }
             int res = getRes(mContext, url);
             if (res == 0) {
@@ -213,7 +208,6 @@ public class UMShareUtils {
 
     public static int getRes(Activity mContext, String name) {
         ApplicationInfo appInfo = mContext.getApplicationInfo();
-        int resID = mContext.getResources().getIdentifier(name, "drawable", appInfo.packageName);
-        return resID;
+        return mContext.getResources().getIdentifier(name, "drawable", appInfo.packageName);
     }
 }
