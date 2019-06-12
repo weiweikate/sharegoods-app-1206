@@ -118,11 +118,18 @@ export default class RequestDetailPage extends BasePage {
 
     componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
-        this.willBlurSubscription = this.props.navigation.addListener(
+        this.willFocusSubscription = this.props.navigation.addListener(
             'willFocus',
             payload => {
+                BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+                this.webView && this.webView.sendToBridge(JSON.stringify({ action: 'entry' }));
+            }
+        );
+
+        this.willBlurSubscription = this.props.navigation.addListener(
+            'willBlur',
+            payload => {
                 BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
-                    this.webView && this.webView.sendToBridge(JSON.stringify({ action: 'entry' }));
             }
         );
         this.$NavigationBarResetTitle(this.state.title || '加载中...');
@@ -139,6 +146,7 @@ export default class RequestDetailPage extends BasePage {
 
     componentWillUnmount() {
         this.willBlurSubscription && this.willBlurSubscription.remove();
+        this.willFocusSubscription && this.willFocusSubscription.remove();
     }
 
     successCallBack = (type)=>{
