@@ -10,6 +10,7 @@
 #import "UIView+SDAutoLayout.h"
 //#import "KNPhotoBrowser.h"
 #import "UIImageView+WebCache.h"
+#import "NSString+UrlAddParams.h"
 
 #define SCREEN_WIDTH ([UIScreen mainScreen].bounds.size.width)
 
@@ -96,16 +97,13 @@
         
         [_sources enumerateObjectsUsingBlock:^(SourcesModel *  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
          
-            CGFloat scale = [UIScreen mainScreen].scale;
             long columnIndex = idx % perRowItemCount;
             long rowIndex = idx / perRowItemCount;
             UIImageView *imageView = [self->_imageViewsArray objectAtIndex:idx];
             imageView.backgroundColor = [UIColor colorWithHexString:@"f5f5f5"];
           
           NSString * showImage = _sources[idx].url?_sources[idx].url:@"";
-          showImage = [showImage componentsSeparatedByString:@"?"].firstObject;
-          showImage = [NSString stringWithFormat:@"%@?x-oss-process=image/resize,m_lfit,w_%0.0lf,h_%0.0lf",showImage,itemW*scale,itemH*scale];
-          [imageView setImageWithURL:[NSURL URLWithString:showImage] placeholder:[UIImage imageWithColor:[UIColor colorWithHexString:@"f5f5f5"]]];
+          [imageView setImageWithURL:[NSURL URLWithString:[showImage getUrlAndWidth:itemW height:itemH]] placeholder:[UIImage imageWithColor:[UIColor colorWithHexString:@"f5f5f5"]]];
           
             imageView.hidden = NO;
             imageView.frame = CGRectMake(columnIndex * (itemW + margin), rowIndex * (itemH + margin), itemW, itemH);

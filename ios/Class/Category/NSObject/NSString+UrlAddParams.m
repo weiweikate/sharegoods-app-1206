@@ -105,4 +105,14 @@
   return  ceilf(size.width);
 }
 
+-(NSString*)getUrlAndWidth:(CGFloat)width height:(CGFloat)height{
+  if(self){
+    CGFloat scale = [UIScreen mainScreen].scale;
+    NSString* showImage = [self componentsSeparatedByString:@"?"].firstObject;
+    showImage = [NSString stringWithFormat:@"%@?x-oss-process=image/resize,m_lfit,w_%0.0lf,h_%0.0lf/quality,Q_80",showImage,width*scale,height*scale];
+    return showImage;
+  }
+  return nil;
+}
+
 @end

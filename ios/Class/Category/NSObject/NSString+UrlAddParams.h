@@ -11,6 +11,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface NSString (UrlAddParams)
+-(NSString*)getUrlAndWidth:(CGFloat)width height:(CGFloat)height;
+
 -(NSString *)urlAddCompnentForValue:(NSString *)value key:(NSString *)key;
 /*
  * 返回结果即为包含每行文字的数组，行数即为count数
@@ -23,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 -(CGFloat)getWidthStringfontSize:(CGFloat)fontSize viewWidth:(CGFloat)width;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -7,6 +7,8 @@
 //
 
 #import "ShowCellASImageNode.h"
+#import "NSString+UrlAddParams.h"
+
 @interface ShowCellASImageNode()
 @property(nonatomic, strong)ASNetworkImageNode *imageNode;
 @property(nonatomic, strong)ASTextNode *titleNode;
@@ -101,7 +103,7 @@
 - (ASNetworkImageNode *)imageNode
 {
   if (!_imageNode) {
-    CGFloat itemWidth=  [UIScreen mainScreen].bounds.size.width / 2.0 * [UIScreen mainScreen].scale;
+    CGFloat itemWidth=  [UIScreen mainScreen].bounds.size.width / 2.0;
     NSString * showImage = @"";
     if([_model.resource[0] valueForKey:@"url"]){
       showImage = [_model.resource[0] valueForKey:@"url"];
@@ -109,8 +111,10 @@
     }
     
     if ([showImage containsString:@"sharegoodsmall"]) {
-      showImage = [showImage componentsSeparatedByString:@"?"].firstObject;
-      showImage = [NSString stringWithFormat:@"%@?x-oss-process=image/resize,m_lfit,w_%0.0lf,h_%0.0lf",showImage,itemWidth,itemWidth/_model.aspectRatio];
+      CGFloat width = [[self.aspectRatioDic valueForKey:@"width"] floatValue];
+      CGFloat height = [[self.aspectRatioDic valueForKey:@"height"] floatValue];
+      CGFloat aspectRatio = height/width;
+      showImage = [showImage getUrlAndWidth:itemWidth height:itemWidth*aspectRatio];
     }
     _imageNode = [ASNetworkImageNode new];
     _imageNode.defaultImage = [UIImage imageWithColor:[UIColor whiteColor]];
@@ -143,7 +147,8 @@
     _headerNode = [ASNetworkImageNode new];
     _headerNode.defaultImage = [UIImage imageNamed:@"default_avatar"];
     if(_model.userInfoVO && [_model.userInfoVO valueForKey:@"userImg"]){
-      _headerNode.URL = [NSURL URLWithString:[_model.userInfoVO valueForKey:@"userImg"]];
+      NSString* url = [[_model.userInfoVO valueForKey:@"userImg"] getUrlAndWidth:30 height:30];
+      _headerNode.URL = [NSURL URLWithString:url];
     }
     _headerNode.cornerRadius = 15;
     _headerNode.clipsToBounds = YES;
