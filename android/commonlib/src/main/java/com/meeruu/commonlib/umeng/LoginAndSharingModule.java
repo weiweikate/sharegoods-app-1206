@@ -756,17 +756,17 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                 //获取文字的字宽高以便把文字与图片中心对齐
                 paint.getTextBounds(s, 0, titleCount, bounds);
                 //画文字的时候高度需要注意文字大小以及文字行间距
-                canvas.drawText(s, 30 * precision, 468 * precision, paint);
+                canvas.drawText(s, 30 * precision, 468 * precision, textPaint);
                 String s1 = content.substring(titleCount, content.length());
-                canvas.drawText(s1, 30 * precision, (468 + 5 + titleSize + bounds.height() / 2) * precision, paint);
+                canvas.drawText(s1, 30 * precision, (468 + 5 + titleSize/2) * precision, textPaint);
             } else {
                 String s = content.substring(0, titleCount);
                 //获取文字的字宽高以便把文字与图片中心对齐
                 paint.getTextBounds(s, 0, titleCount, bounds);
                 //画文字的时候高度需要注意文字大小以及文字行间距
-                canvas.drawText(s, 30 * precision, 468 * precision, paint);
+                canvas.drawText(s, 30 * precision, 468 * precision, textPaint);
                 String s1 = content.substring(titleCount, titleCount * 2 - 2) + "...";
-                canvas.drawText(s1, 30 * precision, (468 + 5 + titleSize + bounds.height() / 2) * precision, paint);
+                canvas.drawText(s1, 30 * precision, (468 + 5  + titleSize/2) * precision, textPaint);
             }
         }
 
