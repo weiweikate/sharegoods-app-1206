@@ -117,16 +117,12 @@ export default class RequestDetailPage extends BasePage {
     });
 
     componentDidMount() {
-        let first = true;
         BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
         this.willBlurSubscription = this.props.navigation.addListener(
-            'willBlur',
+            'willFocus',
             payload => {
                 BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
-                if (!first){
                     this.webView && this.webView.sendToBridge(JSON.stringify({ action: 'entry' }));
-                }
-                first = false;
             }
         );
         this.$NavigationBarResetTitle(this.state.title || '加载中...');
