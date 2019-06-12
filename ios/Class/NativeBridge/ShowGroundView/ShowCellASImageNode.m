@@ -113,7 +113,7 @@
     if ([showImage containsString:@"sharegoodsmall"]) {
       CGFloat width = [[self.aspectRatioDic valueForKey:@"width"] floatValue];
       CGFloat height = [[self.aspectRatioDic valueForKey:@"height"] floatValue];
-      CGFloat aspectRatio = height/width;
+      CGFloat aspectRatio = height&&width ? height/width:1;
       showImage = [showImage getUrlAndWidth:itemWidth height:itemWidth*aspectRatio];
     }
     _imageNode = [ASNetworkImageNode new];
