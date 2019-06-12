@@ -70,15 +70,14 @@ const Utiles = {
                         text: '从相册选择', onPress: () => {
                             if (num > 1) {
                                 if (withSize) {
-                                    Utiles.pickMultiple(num, callBack);
+                                    Utiles.pickMultiple(num, callBack,edit);
 
                                 } else {
-                                    Utiles.pickMultiple(num, newCallback);
+                                    Utiles.pickMultiple(num, newCallback,edit);
                                 }
                             } else {
                                 if (withSize) {
                                     Utiles.pickSingle(cropping, false, callBack);
-
                                 } else {
                                     Utiles.pickSingle(cropping, false, newCallback);
 
@@ -146,8 +145,9 @@ const Utiles = {
         });
     },
 
-    pickMultiple: (num, callBack) => {
+    pickMultiple: (num, callBack,edit) => {
         ImagePicker.openPicker({
+            edit,
             multiple: true,
             waitAnimationEnd: false,
             includeExif: true,
