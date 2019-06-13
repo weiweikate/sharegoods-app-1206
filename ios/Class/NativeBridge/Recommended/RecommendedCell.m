@@ -31,7 +31,6 @@
         _contentLab.font = [UIFont systemFontOfSize:13];
         _contentLab.textColor = [UIColor colorWithHexString:@"666666"];;
       _contentLab.userInteractionEnabled=YES;
-      _contentLab.isAttributedContent = YES;
       UITapGestureRecognizer *labelTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(labelTouchUpInside)];
       [_contentLab sizeToFit];
 
