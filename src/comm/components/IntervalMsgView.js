@@ -162,6 +162,7 @@ class IntervalMsgViewModel {
         }
 
         Animated.sequence([
+            Animated.delay(2000),
             Animated.timing(
                 this.translateX,
                 { toValue: 0, duration: 500, useNativeDriver: true }
@@ -171,7 +172,7 @@ class IntervalMsgViewModel {
                 this.opacity,
                 { toValue: 0, duration: 1000, useNativeDriver: true }
             ),
-            Animated.delay(5000)
+            Animated.delay(3000)
         ]).start(
             () => {
                 /*复原*/
