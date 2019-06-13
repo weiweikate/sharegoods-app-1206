@@ -20,6 +20,10 @@
 #import "JVERIFICATIONService.h"
 #import <SensorsAnalyticsSDK.h>
 
+@interface AppDelegate (APNS)<JPUSHRegisterDelegate>
+
+@end
+
 @implementation AppDelegate (APNS)
 
 -(void)JR_ConfigAPNS:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
@@ -291,8 +295,24 @@
       [SensorsAnalyticsSDK.sharedInstance profilePushKey:@"jgId" pushId:registrationID];
     }
   }];
+}
+//增加神策通知埋点
+-(void)jpushNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler
+{
+  // Required
+  NSDictionary * userInfo = response.notification.request.content.userInfo;
+  if([response.notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
+    [JPUSHService handleRemoteNotification:userInfo];
+  }
+  // 用户点击通知栏打开消息，使用神策分析记录 "App 打开消息" 事件
+  [[SensorsAnalyticsSDK sharedInstance] track:@"AppOpenNotification" withProperties:@{
+                                                                                      @"msg_title":[NSString stringWithFormat:@"%@",userInfo[@"aps"][@"alert"]],
+                                                                                      @"msg_id":[NSString stringWithFormat:@"%@",userInfo[@"_j_msgid"]]
+                                                                                      }];
   
-
+  // 直接上报数据
+  [[SensorsAnalyticsSDK sharedInstance] flush];
+  completionHandler();  // 系统要求执行这个方法
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo

@@ -219,12 +219,6 @@ export default class MyCollectPage extends BasePage {
 
     }
     componentDidMount() {
-        this.willBlurSubscription = this.props.navigation.addListener(
-            'willBlur',
-            payload => {
-                // BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
-            }
-        );
         this.didFocusSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
@@ -237,7 +231,6 @@ export default class MyCollectPage extends BasePage {
     }
     componentWillUnmount() {
         this.didFocusSubscription && this.didFocusSubscription.remove();
-        this.willBlurSubscription && this.willBlurSubscription.remove();
     }
 
     getDataFromNetwork = () => {

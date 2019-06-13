@@ -275,25 +275,22 @@ export default class BasePage extends Component {
 
     // 返回
     $navigateBack = (step) => {
-        // navigateBack(step);
-        // return;
         try {
             console.log('step', step);
             let $routes = global.$routes || [];
-            let routerKey = null;
+            let routerKey = '';
             if (typeof step === 'number') {
                 let router = $routes[$routes.length + step];
                 routerKey = router.key;
             } else if (typeof step === 'string') {
                 for (let i = 0; i < $routes.length - 1; i++) {
-
                     if (step === $routes[i].routeName) {
                         routerKey = $routes[i + 1].key;
                         break;
                     }
                 }
             }
-            if (routerKey) {
+            if (!StringUtils.isEmpty(routerKey)) {
                 const backAction = NavigationActions.back({ key: routerKey });
                 this.props.navigation.dispatch(backAction);
             } else {
