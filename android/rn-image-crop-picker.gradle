@@ -31,6 +31,7 @@ dependencies {
     api rootProject.ext.dependencies.recyclerview
     api "com.github.bumptech.glide:glide:4.5.0"
     api project(':ucrop')
+    api project(':camera')
     api "io.reactivex.rxjava2:rxjava:2.0.5"
     api "io.reactivex.rxjava2:rxandroid:2.0.1"
 //    api 'com.github.yalantis:ucrop:2.2.3-native'

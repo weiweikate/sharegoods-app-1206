@@ -60,7 +60,8 @@ const Utiles = {
                     {
                         text: '拍照', onPress: () => {
                             if (withSize) {
-                                Utiles.pickSingleWithCamera(cropping, callBack,edit);
+                                // Utiles.pickSingleWithCamera(cropping, callBack,edit);
+                                Utiles.openCameraAndRecord(callBack,edit);
                             } else {
                                 Utiles.pickSingleWithCamera(cropping, newCallback);
                             }
@@ -107,6 +108,26 @@ const Utiles = {
             //     image: {uri: image.path, width: image.width, height: image.height},
             //     images: null
             // });
+            let param = {
+                path: image.path,
+                width: image.width,
+                height: image.height
+            };
+            Utiles.upload([param], [image.size + ''], callBack, true);
+        }).catch(e => {
+        });
+    },
+
+    openCameraAndRecord(callBack,edit) {
+        ImagePicker.openCameraAndRecord({
+            width: 600,
+            height: 600,
+            edit,
+            includeExif: true,
+            cropperCancelText: '取消',
+            cropperChooseText: '选取',
+            loadingLabelText: '处理中...'
+        }).then(image => {
             let param = {
                 path: image.path,
                 width: image.width,
