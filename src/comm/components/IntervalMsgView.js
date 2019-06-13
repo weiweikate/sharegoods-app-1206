@@ -9,7 +9,7 @@ import { MRText } from '../../components/ui';
 import res from '../res';
 import DesignRule from '../../constants/DesignRule';
 import StringUtils from '../../utils/StringUtils';
-import { navigate, backToHome, GoToTabItem} from '../../navigation/RouterMap';
+import { navigate, backToHome, GoToTabItem } from '../../navigation/RouterMap';
 import { track, trackEvent } from '../../utils/SensorsTrack';
 
 const { white_go } = res.button;
@@ -226,8 +226,8 @@ export function IntervalMsgNavigate(forwardType, keyCode) {
     if (forwardType === IntervalMsgType.home) {
         backToHome();
     } else if (forwardType === IntervalMsgType.showList) {
-        GoToTabItem(1)
-    }  else if (forwardType === IntervalMsgType.alert) {
+        GoToTabItem(1);
+    } else if (forwardType === IntervalMsgType.alert) {
     }
     else {
         const router = IntervalMsgRouter[forwardType];
