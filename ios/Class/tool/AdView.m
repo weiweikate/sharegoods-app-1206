@@ -329,10 +329,11 @@ completion:(YYWebImageCompletionBlock)completion
   if (_linkTypeCode && _linkTypeCode.length > 0) {
     self.isPlayAd = YES;
     self.isLoadJS = YES;
-    GongMaoVC *vc = [GongMaoVC new];
-    vc.url = _linkTypeCode;
-    vc.webConstTitle = @"";
-    [self.currentViewController_XG.navigationController pushViewController:vc animated: NO];
+//    GongMaoVC *vc = [GongMaoVC new];
+//    vc.url = _linkTypeCode;
+//    vc.webConstTitle = @"";
+//    [self.currentViewController_XG.navigationController pushViewController:vc animated: NO];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"EventToRN" object:@{@"uri": _linkTypeCode}];
   }
 }
 

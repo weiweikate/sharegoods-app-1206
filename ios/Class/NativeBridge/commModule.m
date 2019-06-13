@@ -28,6 +28,26 @@
 
 RCT_EXPORT_MODULE()
 
+-(instancetype)init {
+  self = [super init];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(receiveSalesNotifaction:)
+                                               name:@"EventToRN"
+                                             object:nil];
+  
+  return self;
+  
+}
+
+-(void)receiveSalesNotifaction:(NSNotification *)notify
+{
+  [self.bridge.eventDispatcher sendAppEventWithName:@"Event_navigateHtmlPage" body:notify.object];
+}
+
+- (void)dealloc{
+  [[NSNotificationCenter defaultCenter]  removeObserver:self];
+}
+
 
 RCT_EXPORT_METHOD(captureScreenImage:(NSDictionary *)info and:(RCTResponseSenderBlock)callback){
 

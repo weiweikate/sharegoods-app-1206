@@ -5,7 +5,8 @@ import {
     DeviceEventEmitter, InteractionManager,
     RefreshControl, BackHandler,
     NativeEventEmitter,
-    NativeModules
+    NativeModules,
+    NativeAppEventEmitter
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import { observer } from 'mobx-react';
@@ -164,6 +165,15 @@ class HomePage extends BasePage {
     }
 
     componentDidMount() {
+        this.subscription = NativeAppEventEmitter.addListener(
+            'Event_navigateHtmlPage',
+            (reminder) => {
+                setTimeout(()=> {
+                    this.$navigate('HtmlPage2', {uri: reminder.uri})
+                }, 1000)
+            }
+
+        );
         this.willBlurSubscription = this.props.navigation.addListener(
             'willBlur',
             payload => {
@@ -241,6 +251,7 @@ class HomePage extends BasePage {
         this.listenerRetouchHome && this.listenerRetouchHome.remove();
         this.listenerHomeRefresh && this.listenerHomeRefresh.remove();
         this.listenerSkip && this.listenerSkip.remove();
+        this.subscription && this.subscription.remove();
     }
 
     retouchHome = () => {
