@@ -86,7 +86,7 @@ export default class GroupShowFansPage extends BasePage<Props> {
                     <TouchableWithoutFeedback onPress={() => {
                         item.phone&&Linking.openURL(`sms:${item.phone}`)
                     }}>
-                        <Image style={[styles.btnIcon, {marginRight: 32}]} source={res.showFans.messageIcon}/>
+                        <Image style={[styles.btnIcon, {marginRight: 5}]} source={res.showFans.messageIcon}/>
                     </TouchableWithoutFeedback>
                 </View>
             </ImageBackground>
