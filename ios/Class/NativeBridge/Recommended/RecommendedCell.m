@@ -84,7 +84,7 @@
         [weakSelf.cellDelegate clickGood:goods];
       }
     };
-    
+
     _footerView.zanBlock =  ^(NSString* a){
       NSLog(@"zanClick");
       if (weakSelf.cellDelegate) {
@@ -152,7 +152,7 @@
     .rightSpaceToView(self.contentView, 0)
     .topSpaceToView(self.contentView, 5)
     .heightIs(200);
-  
+
   self.headView.sd_layout
   .topSpaceToView(bgView, 9)
   .leftSpaceToView(bgView, 0)
@@ -164,6 +164,8 @@
   .leftSpaceToView(bgView, 45)
   .rightSpaceToView(bgView, 30)
   .autoHeightRatio(0);
+  [self.contentLab setMaxNumberOfLinesToShow:3];
+   self.contentLab.isAttributedContent = YES;
 
   self.foldLabel.sd_layout.topSpaceToView(self.contentLab, 5)
   .leftSpaceToView(bgView, 45)
@@ -189,7 +191,7 @@
   self.headView.UserInfoModel = model.userInfoVO;
   self.headView.time = model.publishTimeStr;
   self.bodyView.sources = model.resource;
-  
+
     NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:model.title attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13.0], NSForegroundColorAttributeName:[UIColor colorWithRed:102/255.0 green:102/255.0 blue:102/255.0 alpha:1.0]}];
     NSArray *array = [self getSeparatedLinesFromLabel:model.title font:[UIFont systemFontOfSize:13] andLableWidth:SCREEN_WIDTH-105];
   //组合需要显示的文本
@@ -207,7 +209,7 @@
   }else{
       self.contentLab.attributedText = title;
   }
-  
+
     self.footerView.products = model.products;
     self.footerView.downloadCount = model.downloadCount;
     self.footerView.likesCount = model.hotCount;
@@ -227,7 +229,6 @@
 //            self.foldLabel.text = @"展开";
 //        }
 //    }else{
-        [self.contentLab setMaxNumberOfLinesToShow:3];
         self.foldLabel.sd_layout.heightIs(0);
         self.foldLabel.hidden = YES;
 
@@ -278,7 +279,7 @@
     CFAttributedStringSetAttribute((CFMutableAttributedStringRef)attStr, lineRange, kCTKernAttributeName, (CFTypeRef)([NSNumber numberWithInt:0.0]));
     [linesArray addObject:lineString];
   }
-  
+
   CGPathRelease(path);
   CFRelease( frame );
   CFRelease(frameSetter);
