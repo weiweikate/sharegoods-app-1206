@@ -17,7 +17,8 @@ import {
     Platform,
     StyleSheet,
     ActionSheetIOS,
-    Alert
+    Alert,
+    ActivityIndicator
 } from 'react-native';
 //import * as typings from './image-viewer.type'
 // import {TransmitTransparently} from 'nt-transmit-transparently'
@@ -175,7 +176,7 @@ export default class FlyImageViewer extends Component {
         },
 
         loadingRender: () => {
-            return null;
+            return <ActivityIndicator animating={true}/>;
         },
 
         onSaveToCamera: () => {
@@ -592,6 +593,8 @@ export default class FlyImageViewer extends Component {
         this.jumpToCurrentImage();
     }
 
+
+
     /**
      * 获得整体内容
      */
@@ -636,7 +639,8 @@ export default class FlyImageViewer extends Component {
                                onClick={this.handleClick.bind(this)}
                                onDoubleClick={this.handleDoubleClick.bind(this)}>
                         <ImageLoad style={[this.styles.imageStyle, { width: width, height: height }]}
-                                   source={{ uri: image }}/>
+                                   source={{ uri: image }}
+                        />
                     </ImageZoom>
                 );
             } else {
@@ -647,7 +651,7 @@ export default class FlyImageViewer extends Component {
                                                 onPress={this.handleClick.bind(this)}
                                                 style={this.styles.loadingTouchable}>
                                 <View style={this.styles.loadingContainer}>
-                                    {this.props.loadingRender()}
+                                    <ActivityIndicator animating={true} size={'large'}/>
                                 </View>
                             </TouchableHighlight>
                         );
