@@ -54,7 +54,7 @@ export default class MyShop_RecruitPage extends BasePage {
         if (nextAppState === 'active') {
             //初始化init和app变活跃 会定位存储
             geolocation.getLastLocation().then(result => {
-                save('storage_MrLocation', result);
+                save('@mr/storage_MrLocation', result);
             }).catch((error) => {
                 }
             );

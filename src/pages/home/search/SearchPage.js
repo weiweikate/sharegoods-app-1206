@@ -17,7 +17,7 @@ import StringUtils from '../../../utils/StringUtils';
 import DesignRule from '../../../constants/DesignRule';
 import { MRText as Text } from '../../../components/ui';
 
-const recentDataKey = 'recentDataKey';
+const recentDataKey = '@mr/recentDataKey';
 export default class SearchPage extends BasePage {
 
     $navigationBarOptions = {
