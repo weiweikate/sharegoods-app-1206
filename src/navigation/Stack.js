@@ -39,13 +39,6 @@ const Router = {
     HtmlPage: {
         screen: htmlView,
         path:'path/HtmlPage/:uri'
-    },
-    HtmlPage2: {
-        screen: htmlView,
-        navigationOptions: ({ navigation }) => ({
-            header: null,
-        }),
-        mode: 'modal'
     }
 };
 const PageKey = {};

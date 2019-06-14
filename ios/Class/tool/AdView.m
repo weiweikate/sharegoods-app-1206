@@ -113,6 +113,7 @@
 @property (nonatomic, strong)UIImage *adImg;
 @property (nonatomic, strong)UIImage *bgImg;
 @property(nonatomic, strong)NSString *linkTypeCode;
+@property(nonatomic, assign)BOOL tap;
 @end
 @implementation AdView
 
@@ -326,13 +327,14 @@ completion:(YYWebImageCompletionBlock)completion
 
 - (void)AdTap
 {
-  if (_linkTypeCode && _linkTypeCode.length > 0) {
+  if (_linkTypeCode && _linkTypeCode.length > 0 && !_tap) {
     self.isPlayAd = YES;
-    self.isLoadJS = YES;
+//    self.isLoadJS = YES;
 //    GongMaoVC *vc = [GongMaoVC new];
 //    vc.url = _linkTypeCode;
 //    vc.webConstTitle = @"";
 //    [self.currentViewController_XG.navigationController pushViewController:vc animated: NO];
+    _tap = YES;
     [[NSNotificationCenter defaultCenter] postNotificationName:@"EventToRN" object:@{@"uri": _linkTypeCode}];
   }
 }

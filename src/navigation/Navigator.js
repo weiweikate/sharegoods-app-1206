@@ -22,7 +22,19 @@ const Navigator = StackNavigator(Router,
         },
         transitionConfig: (transitionProps, prevTransitionProps, isModal) => {
             return ({
-                screenInterpolator: CardStackStyleInterpolator.forHorizontal
+                screenInterpolator: (sceneProps) => {
+                    const { scene } = sceneProps;
+                    const { route } = scene;
+                    const params = route.params || {};
+                    const isModal = params.isModal;
+                    if (isModal){
+                        //当为`true`时，采用`modal`效果
+                        return CardStackStyleInterpolator.forVertical(sceneProps);
+                    }else {
+                        return CardStackStyleInterpolator.forHorizontal(sceneProps);
+                    }
+                }
+
             });
         }
     }
