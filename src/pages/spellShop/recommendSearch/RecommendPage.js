@@ -26,7 +26,7 @@ import DesignRule from '../../../constants/DesignRule';
 import RecommendBanner from './components/RecommendBanner';
 import res from '../res';
 import geolocation from '@mr/rn-geolocation';
-import Storage from '../../../utils/storage';
+import { get, save } from '@mr/rn-store';
 import { TrackApi } from '../../../utils/SensorsTrack';
 import { homeType } from '../../home/HomeTypes';
 import { homeModule } from '../../home/model/Modules';
@@ -120,7 +120,7 @@ export default class RecommendPage extends BasePage {
     };
 
     _verifyLocation = () => {
-        Storage.get('storage_MrLocation', {}).then((value) => {
+        get('@mr/storage_MrLocation', {}).then((value) => {
                 //有缓存加载缓存
                 if (value && StringUtils.isNoEmpty(value.latitude)) {
                     this.state.locationResult = value;
@@ -129,7 +129,7 @@ export default class RecommendPage extends BasePage {
                 //更新定位数据  没缓存的话加载数据
                 geolocation.getLastLocation().then(result => {
                     this.state.locationResult = result;
-                    Storage.set('storage_MrLocation', result);
+                    save('@mr/storage_MrLocation', result);
                     if (!value.latitude) {
                         this._loadPageData();
                     }

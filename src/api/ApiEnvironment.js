@@ -3,12 +3,12 @@
  * Api HOST配置
  * 支持动态切换
  */
-import { AsyncStorage } from 'react-native';
+import { get, save } from '@mr/rn-store';
 import config from '../../config';
 // 磁盘缓存key
-const KEY_ApiEnvironment = 'ApiEnvironment';
-const KEY_HostJson = 'HostJson';
-const KEY_DefaultFetchTimeout = 'DefaultFetchTimeout';
+const KEY_ApiEnvironment = '@mr/ApiEnvironment';
+const KEY_HostJson = '@mr/HostJson';
+const KEY_DefaultFetchTimeout = '@mr/DefaultFetchTimeout';
 // HOST配置
 const ApiConfig = config.env;
 
@@ -70,11 +70,11 @@ class ApiEnvironment {
      */
     async loadLastApiSettingFromDiskCache() {
         try {
-            const [[, envType], [, defaultTimeout]] = await AsyncStorage.multiGet([KEY_ApiEnvironment, KEY_DefaultFetchTimeout]);
+            const [[, envType], [, defaultTimeout]] = await get([KEY_ApiEnvironment, KEY_DefaultFetchTimeout]);
             if (envType && Object.keys(ApiConfig).indexOf(envType) >= 0) {
                 this.envType = envType;
                 if (ApiConfig[envType]) {
-                    await AsyncStorage.setItem(KEY_HostJson, JSON.stringify(ApiConfig[envType]));
+                    await save(KEY_HostJson, JSON.stringify(ApiConfig[envType]));
                 }
             } else {
                 this.saveEnv(this.envType);
@@ -95,9 +95,9 @@ class ApiEnvironment {
     async saveEnv(envType) {
         try {
             if (envType && Object.keys(ApiConfig).indexOf(envType) >= 0) {
-                await AsyncStorage.setItem(KEY_ApiEnvironment, String(envType));
+                await save(KEY_ApiEnvironment, String(envType));
                 if (ApiConfig[envType]) {
-                    await AsyncStorage.setItem(KEY_HostJson, JSON.stringify(ApiConfig[envType]));
+                    await save(KEY_HostJson, JSON.stringify(ApiConfig[envType]));
                 }
                 this.envType = envType;
             } else {
@@ -117,7 +117,7 @@ class ApiEnvironment {
         if (timeout && typeof timeout === 'number' && timeout <= 60 && timeout > 0) {
             this.defaultTimeout = timeout;
             // 磁盘缓存超时时间
-            timeout && AsyncStorage.setItem(KEY_DefaultFetchTimeout, String(timeout)).catch((error) => {
+            timeout && save(KEY_DefaultFetchTimeout, String(timeout)).catch((error) => {
                 console.warn(`setTimeOut error: ${error.toString()}`);
             });
         } else {

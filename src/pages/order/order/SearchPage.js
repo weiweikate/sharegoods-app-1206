@@ -8,13 +8,13 @@ import {
 import BasePage from '../../../BasePage';
 import {  RecentSearch} from './../../../components/ui';
 import StringUtils from '../../../utils/StringUtils';
-import Storage from '../../../utils/storage';
+import { get, save } from '@mr/rn-store';
 import SearchNav from '../../home/search/components/SearchNav';
 import DesignRule from '../../../constants/DesignRule';
 const dismissKeyboard = require('dismissKeyboard');
 //全局变量，历史搜索记录,因为是递加的
 let array = [];
-const recentDataKey = 'orderRecentDataKey';
+const recentDataKey = '@mr/orderRecentDataKey';
 export default class SearchPage extends BasePage {
     constructor(props) {
         super(props);
@@ -81,7 +81,7 @@ export default class SearchPage extends BasePage {
 
     //从本地拿到最近搜索记录
     getRecentSearch = () => {
-        Storage.get(recentDataKey, []).then((value) => {
+        get(recentDataKey, []).then((value) => {
                 this.setState({
                     recentData: value
                 });
@@ -97,7 +97,7 @@ export default class SearchPage extends BasePage {
                     this.setState({
                         recentData: []
                     }, () => {
-                        Storage.set(recentDataKey, this.state.recentData);
+                        save(recentDataKey, this.state.recentData);
                     });
                 }}/>
             );
@@ -117,7 +117,7 @@ export default class SearchPage extends BasePage {
             let setArr = new Set(this.state.recentData)
             this.state.recentData = [...setArr]
             console.log('最近搜索记录=' + array);
-            Storage.set(recentDataKey, this.state.recentData);
+            save(recentDataKey, this.state.recentData);
             this.getRecentSearch();
         }
         //

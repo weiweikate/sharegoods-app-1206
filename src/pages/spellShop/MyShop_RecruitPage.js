@@ -18,7 +18,7 @@ import spellStatusModel from './model/SpellStatusModel';
 import NoAccessPage from './NoAccessPage';
 import NavigatorBar from '../../components/pageDecorator/NavigatorBar';
 import user from '../../model/user';
-import Storage from '../../utils/storage';
+import { save } from '@mr/rn-store';
 import geolocation from '@mr/rn-geolocation';
 
 @observer
@@ -54,7 +54,7 @@ export default class MyShop_RecruitPage extends BasePage {
         if (nextAppState === 'active') {
             //初始化init和app变活跃 会定位存储
             geolocation.getLastLocation().then(result => {
-                Storage.set('storage_MrLocation', result);
+                save('storage_MrLocation', result);
             }).catch((error) => {
                 }
             );
@@ -84,7 +84,7 @@ export default class MyShop_RecruitPage extends BasePage {
                     if (isConnected) {
                         // 请求定位
                         geolocation.getLastLocation().then(result => {
-                            Storage.set('storage_MrLocation', result);
+                            save('storage_MrLocation', result);
                         }).catch((error) => {
                                 spellStatusModel.alertAction(error, () => {
                                     this.$navigateBackToHome();

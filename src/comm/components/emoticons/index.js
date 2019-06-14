@@ -6,7 +6,6 @@ import {
     Animated,
     Image,
     TouchableHighlight,
-    AsyncStorage,
     Platform
 } from 'react-native';
 import styles from './style';
@@ -17,9 +16,10 @@ import TabBar from './tab';
 import TabBarDot from './tabDot';
 import stringify from './stringify';
 import parse from './parse';
-import splitter from './grapheme-splitter';
 import PropTypes from 'prop-types';
 import ViewPropTypes from './viewproptypes';
+import splitter from './grapheme-splitter';
+import { get, save } from '@mr/rn-store';
 
 require('string.fromcodepoint');
 
@@ -40,7 +40,7 @@ const choicenessAndroid = ['grinning', 'grin', 'joy', 'sweat_smile', 'laughing',
     'earth_asia', 'cherry_blossom', 'sunny', 'thunder_cloud_and_rain', 'zap', 'snowflake', 'birthday', 'lollipop',
     'beers', 'soccer', 'airplane', 'iphone', 'tada', 'heart', 'broken_heart', 'flag_us', 'flag_cn'];
 
-const HISTORY_STORAGE = 'history_storage';
+const HISTORY_STORAGE = '@mr/history_storage';
 const HISTORY_TYPE = 'history_type';
 
 class Emoticons extends React.Component {
@@ -70,7 +70,7 @@ class Emoticons extends React.Component {
     };
 
     componentDidMount() {
-        AsyncStorage.getItem(HISTORY_STORAGE, (err, result) => {
+        get(HISTORY_STORAGE, (err, result) => {
             if (result) {
                 console.log('start===' + result);
                 this.setState({ history: JSON.parse(result) });
@@ -93,7 +93,7 @@ class Emoticons extends React.Component {
 
     componentWillUnmount() {
         let result = this.state.history;
-        AsyncStorage.setItem(HISTORY_STORAGE, JSON.stringify(result));
+        save(HISTORY_STORAGE, JSON.stringify(result));
     }
 
     // componentDidUpdate() {
@@ -253,8 +253,6 @@ class Emoticons extends React.Component {
     render() {
 
 
-
-
         let groupsView = [];
         const plusButton = <View
             tabLabel={'plus'}
@@ -384,4 +382,4 @@ export {
     stringify as stringify,
     parse as parse,
     splitter as splitter
-}
+};

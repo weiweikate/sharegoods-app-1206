@@ -1,4 +1,4 @@
-import { AsyncStorage } from 'react-native';
+import { get, save, deleted } from '@mr/rn-store';
 import { action, computed, observable, autorun } from 'mobx';
 import shopCartCacheTool from '../pages/shopCart/model/ShopCartCacheTool';
 import UserApi from './userApi';
@@ -10,9 +10,9 @@ import JPushUtils from '../utils/JPushUtils';
 import { mediatorCallFunc } from '../SGMediator';
 
 
-const USERINFOCACHEKEY = 'UserInfo';
-const CARTDATA = 'cartData';
-const USERTOKEN = 'USERTOKEN';
+const USERINFOCACHEKEY = '@mr/UserInfo';
+const CARTDATA = '@mr/cartData';
+const USERTOKEN = '@mr/USERTOKEN';
 
 class User {
 
@@ -189,9 +189,9 @@ class User {
         if (this.token) {
             return Promise.resolve(this.token);
         } else {
-            return AsyncStorage.getItem(USERTOKEN).then(token => {
+            return get(USERTOKEN).then(token => {
                 this.token = token;
-                AsyncStorage.setItem(USERTOKEN, String(token));
+                save(USERTOKEN, String(token));
                 return Promise.resolve(token);
             });
         }
@@ -199,7 +199,7 @@ class User {
 
     // 从缓存磁盘读取用户上一次使用的信息记录
     async readUserInfoFromDisk() {
-        AsyncStorage.getItem(USERINFOCACHEKEY).then(infoStr => {
+        get(USERINFOCACHEKEY).then(infoStr => {
             if (infoStr && typeof infoStr === 'string') {
                 const info = JSON.parse(infoStr);
                 console.log('readUserInfoFromDisk', info);
@@ -219,7 +219,7 @@ class User {
             return;
         }
         this.token = token;
-        AsyncStorage.setItem(USERTOKEN, String(token)).catch(e => {
+        save(USERTOKEN, String(token)).catch(e => {
         });
     }
 
@@ -295,16 +295,15 @@ class User {
         this.perfectNumberCode = info.perfectNumberCode;
         this.weChatNumber = info.weChatNumber; //微信号
 
-        if (this.levelRemark  && this.levelRemark !== info.levelRemark){
+        if (this.levelRemark && this.levelRemark !== info.levelRemark) {
             // mediatorCallFunc()
-            mediatorCallFunc('Home_UserLevelUpdate',info.levelRemark);
+            mediatorCallFunc('Home_UserLevelUpdate', info.levelRemark);
         }
         this.levelRemark = info.levelRemark;
 
 
-
         if (saveToDisk) {
-            AsyncStorage.setItem(USERINFOCACHEKEY, JSON.stringify(info)).catch(e => {
+            save(USERINFOCACHEKEY, JSON.stringify(info)).catch(e => {
             });
         }
         QYChatTool.initQYChat();
@@ -332,7 +331,7 @@ class User {
         }
         this.cartData = cartData;
         if (saveToDisk) {
-            AsyncStorage.setItem(CARTDATA, JSON.stringify(cartData)).catch(e => {
+            save(CARTDATA, JSON.stringify(cartData)).catch(e => {
             });
         }
     }
@@ -417,25 +416,21 @@ class User {
         this.profile = null; //简介
         this.upCode = null;
         this.finishGuide = false;
-        // todo 清空cookie
-        //NativeModules.commModule.clearCookie(apiEnvironment.getCurrentHostUrl());
-        // AsyncStorage.removeItem(LASTSHOWPROMOTIONTIME).catch(e => {
-        // });
 
-        return AsyncStorage.removeItem(USERINFOCACHEKEY).catch(e => {
+        return deleted(USERINFOCACHEKEY).catch(e => {
         });
     }
 
     @action clearToken() {
         this.token = null;
-        AsyncStorage.setItem(USERTOKEN, '');
+        save(USERTOKEN, '');
     }
 
     // 清空离线购物车信息
     @action
     clearCartDatarInfo() {
         this.cartData = [];
-        return AsyncStorage.removeItem(CARTDATA).catch(e => {
+        return deleted(CARTDATA).catch(e => {
         });
     }
 

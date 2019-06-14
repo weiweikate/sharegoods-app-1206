@@ -31,5 +31,5 @@ dependencies {
     api(rootProject.ext.dependencies.rn) {
         exclude group: 'com.android.support'
     }
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.3.21"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.3.30"
 }

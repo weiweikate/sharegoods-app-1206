@@ -28,7 +28,7 @@ import CONFIG from '../config';
 import bridge from './utils/bridge';
 import TimerMixin from 'react-timer-mixin';
 import geolocation from '@mr/rn-geolocation';
-import Storage from './utils/storage';
+import { save } from '@mr/rn-store';
 import ScreenUtils from './utils/ScreenUtils';
 import codePush from 'react-native-code-push';
 import chatModel from './utils/QYModule/QYChatModel';
@@ -106,7 +106,7 @@ class App extends Component {
                 }).then(() => {
                     return geolocation.getLastLocation();
                 }).then(result => {
-                    Storage.set('storage_MrLocation', result);
+                    save('@mr/storage_MrLocation', result);
                 }).catch((error) => {
                 });
             }, 200);
