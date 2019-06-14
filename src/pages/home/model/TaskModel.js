@@ -55,7 +55,7 @@ class TaskModel {
 
     @action
     getLocationExpanded() {
-        get('task_expanded_').then((data) => {
+        get('@mr/task_expanded_').then((data) => {
             // alert(data)
             if (data) {
                 this.expanded = data.expanded;
@@ -129,7 +129,7 @@ class TaskModel {
     @action
     expandedClick() {
         this.expanded = !this.expanded;
-        save('task_expanded_' + this.type, { expanded: this.expanded });
+        save('@mr/task_expanded_' + this.type, { expanded: this.expanded });
         if (this.type === 'home') {
             this.calculateHomeHeight();
         }

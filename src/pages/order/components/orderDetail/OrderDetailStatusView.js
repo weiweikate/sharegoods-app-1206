@@ -10,7 +10,7 @@ import {
 import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import { orderDetailAfterServiceModel } from '../../model/OrderDetailModel';
-import { observer } from 'mobx-react/native';
+import { observer } from 'mobx-react';
 import res from '../../res';
 const productDetailImg = res.productDetailImg;
 const {px2dp} = ScreenUtils;

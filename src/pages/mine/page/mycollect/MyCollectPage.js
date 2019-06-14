@@ -18,7 +18,7 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import { SwipeListView } from '../../../../components/ui/react-native-swipe-list-view';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
-import { observer } from 'mobx-react/native';
+import { observer } from 'mobx-react';
 import DesignRule from '../../../../constants/DesignRule';
 import UIImage from '@mr/image-placeholder';
 import {MRText as Text,NoMoreClick,AvatarImage} from '../../../../components/ui'

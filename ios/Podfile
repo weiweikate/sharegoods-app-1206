@@ -47,8 +47,7 @@ pod 'Texture'
 #pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 #  pod 'lottie-react-native', :path => '../node_modules/lottie-react-native'
 
-
- #  pod 'react-native-webview', :path => '../node_modules/@mr/react-native-webview'
+#  pod 'react-native-webview', :path => '../node_modules/@mr/react-native-webview'
 
 end
 
