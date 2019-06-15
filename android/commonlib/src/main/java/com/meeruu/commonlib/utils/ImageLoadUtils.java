@@ -75,9 +75,9 @@ public class ImageLoadUtils {
                     if (width != 0 || height != 0) {
                         if (!TextUtils.isEmpty(newUrl)) {
                             if (newUrl.contains("?")) {
-                                newUrl.substring(0, newUrl.indexOf("?"));
+                                newUrl = newUrl.substring(0, newUrl.indexOf("?"));
                             }
-                            newUrl = String.format(ParameterUtils.IMG_URL_WH, url, width, height);
+                            newUrl = String.format(ParameterUtils.IMG_URL_WH, newUrl, width, height);
                         }
                     }
                     Uri uri = Uri.parse(newUrl);
@@ -108,9 +108,9 @@ public class ImageLoadUtils {
                     if (width != 0 || height != 0) {
                         if (!TextUtils.isEmpty(newUrl)) {
                             if (newUrl.contains("?")) {
-                                newUrl.substring(0, newUrl.indexOf("?"));
+                                newUrl = newUrl.substring(0, newUrl.indexOf("?"));
                             }
-                            newUrl = String.format(ParameterUtils.IMG_URL_WH, url, width, height);
+                            newUrl = String.format(ParameterUtils.IMG_URL_WH, newUrl, width, height);
                         }
                     }
                     Uri uri = Uri.parse(newUrl);
@@ -141,9 +141,9 @@ public class ImageLoadUtils {
                     if (width != 0 || height != 0) {
                         if (!TextUtils.isEmpty(newUrl)) {
                             if (newUrl.contains("?")) {
-                                newUrl.substring(0, newUrl.indexOf("?"));
+                                newUrl = newUrl.substring(0, newUrl.indexOf("?"));
                             }
-                            newUrl = String.format(ParameterUtils.IMG_URL_WH, url, width, height);
+                            newUrl = String.format(ParameterUtils.IMG_URL_WH, newUrl, width, height);
                         }
                     }
                     Uri uri = Uri.parse(newUrl);
@@ -174,9 +174,9 @@ public class ImageLoadUtils {
                     if (width != 0 || height != 0) {
                         if (!TextUtils.isEmpty(newUrl)) {
                             if (newUrl.contains("?")) {
-                                newUrl.substring(0, newUrl.indexOf("?"));
+                                newUrl = newUrl.substring(0, newUrl.indexOf("?"));
                             }
-                            newUrl = String.format(ParameterUtils.IMG_URL_WH, url, width, height);
+                            newUrl = String.format(ParameterUtils.IMG_URL_WH, newUrl, width, height);
                         }
                     }
                     Uri uri = Uri.parse(newUrl);
@@ -206,9 +206,9 @@ public class ImageLoadUtils {
                     if (width != 0 || height != 0) {
                         if (!TextUtils.isEmpty(newUrl)) {
                             if (newUrl.contains("?")) {
-                                newUrl.substring(0, newUrl.indexOf("?"));
+                                newUrl = newUrl.substring(0, newUrl.indexOf("?"));
                             }
-                            newUrl = String.format(ParameterUtils.IMG_URL_WH, url, width, height);
+                            newUrl = String.format(ParameterUtils.IMG_URL_WH, newUrl, width, height);
                         }
                     }
                     Uri uri = Uri.parse(newUrl);
