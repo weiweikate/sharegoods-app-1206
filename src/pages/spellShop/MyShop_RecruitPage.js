@@ -83,7 +83,7 @@ export default class MyShop_RecruitPage extends BasePage {
                     if (isConnected) {
                         // 请求定位
                         geolocation.getLastLocation().then(result => {
-                            store.save('storage_MrLocation', result);
+                            store.save('@mr/storage_MrLocation', result);
                         }).catch((error) => {
                                 spellStatusModel.alertAction(error, () => {
                                     this.$navigateBackToHome();

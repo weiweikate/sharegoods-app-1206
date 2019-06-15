@@ -22,7 +22,7 @@ class Manager {
     // TOPIC(4, "专题"),app
     // CUSTOMTOPIC(5, "自定义专题"）web
     @action
-    async getAd(showPage, showPageValue, type) { //获取数据
+    getAd(showPage, showPageValue, type) { //获取数据
         let currStr = new Date().toDateString();
         let _showPageValue = showPageValue || '';
         let _showPage = showPage || '';
