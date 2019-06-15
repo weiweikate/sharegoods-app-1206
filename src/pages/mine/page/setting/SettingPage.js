@@ -31,7 +31,7 @@ import loginModel from '../../../login/model/LoginModel';
 import StringUtils from '../../../../utils/StringUtils';
 import { QYChatTool } from '../../../../utils/QYModule/QYChatTool';
 import WhiteModel from '../../../show/model/WhiteModel';
-import { deleted } from '@mr/rn-store';
+import store from '@mr/rn-store';
 
 /**
  * @author luoyongming
@@ -220,7 +220,7 @@ class SettingPage extends BasePage {
                 },
                 {
                     text: '确认', onPress: () => {
-                        deleted('@mr/lastMessageTime').catch(e => {
+                        store.deleted('@mr/lastMessageTime').catch(e => {
                         });
                         // this.$loadingShow();
                         // 正常退出，或者登录超时，都去清空数据

@@ -19,7 +19,7 @@ import parse from './parse';
 import PropTypes from 'prop-types';
 import ViewPropTypes from './viewproptypes';
 import splitter from './grapheme-splitter';
-import { get, save } from '@mr/rn-store';
+import store from '@mr/rn-store';
 
 require('string.fromcodepoint');
 
@@ -70,11 +70,8 @@ class Emoticons extends React.Component {
     };
 
     componentDidMount() {
-        get(HISTORY_STORAGE, (err, result) => {
-            if (result) {
-                console.log('start===' + result);
-                this.setState({ history: JSON.parse(result) });
-            }
+        store.get(HISTORY_STORAGE).then((result)=>{
+            this.setState({ history: JSON.parse(result) });
         });
     }
 
@@ -93,25 +90,8 @@ class Emoticons extends React.Component {
 
     componentWillUnmount() {
         let result = this.state.history;
-        save(HISTORY_STORAGE, JSON.stringify(result));
+        store.save(HISTORY_STORAGE, result);
     }
-
-    // componentDidUpdate() {
-    //     Animated.timing(
-    //         this.state.position,
-    //         {
-    //             duration: 300,
-    //             toValue: this.props.show ? 0 : -300
-    //         }
-    //     ).start();
-    //     Animated.timing(
-    //         this.state.wvPosition,
-    //         {
-    //             duration: 300,
-    //             toValue: this.state.showWV ? 0 : -height
-    //         }
-    //     ).start();
-    // }
 
     _charFromCode(utf16) {
         return String.fromCodePoint(...utf16.split('-').map(u => '0x' + u));

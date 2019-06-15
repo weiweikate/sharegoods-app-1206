@@ -1,4 +1,4 @@
-import { get, save, deleted } from '@mr/rn-store';
+import store from '@mr/rn-store';
 import { action, computed, observable, autorun } from 'mobx';
 import shopCartCacheTool from '../pages/shopCart/model/ShopCartCacheTool';
 import UserApi from './userApi';
@@ -10,9 +10,9 @@ import JPushUtils from '../utils/JPushUtils';
 import { mediatorCallFunc } from '../SGMediator';
 
 
-const USERINFOCACHEKEY = '@mr/UserInfo';
+const USERINFOCACHEKEY = '@mr/userInfo';
 const CARTDATA = '@mr/cartData';
-const USERTOKEN = '@mr/USERTOKEN';
+const USERTOKEN = '@mr/userToken';
 
 class User {
 
@@ -189,17 +189,17 @@ class User {
         if (this.token) {
             return Promise.resolve(this.token);
         } else {
-            return get(USERTOKEN).then(token => {
+            return store.get(USERTOKEN).then(token => {
                 this.token = token;
-                save(USERTOKEN, String(token));
+                store.save(USERTOKEN, token);
                 return Promise.resolve(token);
             });
         }
     };
 
     // 从缓存磁盘读取用户上一次使用的信息记录
-    async readUserInfoFromDisk() {
-        get(USERINFOCACHEKEY).then(infoStr => {
+    readUserInfoFromDisk() {
+        store.get(USERINFOCACHEKEY).then((infoStr) => {
             if (infoStr && typeof infoStr === 'string') {
                 const info = JSON.parse(infoStr);
                 console.log('readUserInfoFromDisk', info);
@@ -208,8 +208,8 @@ class User {
             } else {
                 bridge.clearCookies();
             }
-        }).catch(err => {
-            console.warn('Error: user.readUserInfoFromDisk()\n' + err.toString());
+        }).catch(e => {
+            console.warn('Error: user.readUserInfoFromDisk()\n' + e.toString());
         });
     }
 
@@ -219,7 +219,7 @@ class User {
             return;
         }
         this.token = token;
-        save(USERTOKEN, String(token)).catch(e => {
+        store.save(USERTOKEN, token).catch(e => {
         });
     }
 
@@ -303,7 +303,7 @@ class User {
 
 
         if (saveToDisk) {
-            save(USERINFOCACHEKEY, JSON.stringify(info)).catch(e => {
+            store.save(USERINFOCACHEKEY, info).catch(e => {
             });
         }
         QYChatTool.initQYChat();
@@ -331,7 +331,7 @@ class User {
         }
         this.cartData = cartData;
         if (saveToDisk) {
-            save(CARTDATA, JSON.stringify(cartData)).catch(e => {
+            store.save(CARTDATA, cartData).catch(e => {
             });
         }
     }
@@ -417,20 +417,20 @@ class User {
         this.upCode = null;
         this.finishGuide = false;
 
-        return deleted(USERINFOCACHEKEY).catch(e => {
+        return store.deleted(USERINFOCACHEKEY).catch(e => {
         });
     }
 
     @action clearToken() {
         this.token = null;
-        save(USERTOKEN, '');
+        store.save(USERTOKEN, '');
     }
 
     // 清空离线购物车信息
     @action
     clearCartDatarInfo() {
         this.cartData = [];
-        return deleted(CARTDATA).catch(e => {
+        return store.deleted(CARTDATA).catch(e => {
         });
     }
 

@@ -2,26 +2,25 @@ import ShopCartAPI from '../api/ShopCartApi';
 import bridge from '../../../utils/bridge';
 import user from '../../../model/user';
 import shopCartStore from './ShopCartStore';
-import { get, save, deleted } from '@mr/rn-store';
+import store from '@mr/rn-store';
 import apiEnvironment from '../../../api/ApiEnvironment';
 
 class ShopCartCacheTool {
 
-    static  shopCartLocalStorageKey = '@mr/' + apiEnvironment.getCurrentHostName() + 'shopCartLocalStorageKey';
+    static  shopCartLocalStorageKey = '@mr/' + apiEnvironment.getCurrentHostUrl() + 'shopCartLocalStorageKey';
 
     /**
      * 删除本地数据
      */
     deleteAllLocalData() {
-        deleted(ShopCartCacheTool.shopCartLocalStorageKey).then(() => {
-        }).catch(() => {
-        });
+        store.deleted(ShopCartCacheTool.shopCartLocalStorageKey);
     }
 
     /*同步购物车商品*/
     synchronousData() {
         //用户非登入状态
-        get(ShopCartCacheTool.shopCartLocalStorageKey).then(res => {
+        store.get(ShopCartCacheTool.shopCartLocalStorageKey).then(res => {
+            res = res ? res : [];
             let [...localValue] = res;
             if (localValue && (localValue instanceof Array && localValue.length > 0)) {
                 ShopCartAPI.addItem(
@@ -57,7 +56,8 @@ class ShopCartCacheTool {
             shopCartStore.deleteItemWithIndex(skuCodes);
         } else {
             //从本地拿出数据删除掉
-            get(ShopCartCacheTool.shopCartLocalStorageKey, []).then(res => {
+            store.get(ShopCartCacheTool.shopCartLocalStorageKey).then(res => {
+                res = res ? res : [];
                 let [...localValue] = res;
                 if (localValue && (localValue instanceof Array)) {
                     localValue.map((itemData) => {
@@ -69,7 +69,7 @@ class ShopCartCacheTool {
                     });
                 }
                 //再存入本地
-                save(ShopCartCacheTool.shopCartLocalStorageKey, localValue).then(() => {
+                store.save(ShopCartCacheTool.shopCartLocalStorageKey, localValue).then(() => {
                     //拉取刷新
                     shopCartStore.getShopCartListWithNoLogin(localValue);
                 }).catch(error => {
@@ -105,9 +105,10 @@ class ShopCartCacheTool {
                 shopCartStore.addItemToShopCart(goodsItem);
             } else {
                 //缓存本地
-                get(ShopCartCacheTool.shopCartLocalStorageKey, []).then(res => {
+                store.get(ShopCartCacheTool.shopCartLocalStorageKey).then(res => {
                     //为商品添加spuCode
                     goodsItem.spuCode = goodsItem.productCode;
+                    res = res ? res : [];
                     let [...localValue] = res;
                     if (localValue && (localValue instanceof Array) && localValue.length > 0) {
                         //检测购物车数量是否已够80
@@ -136,7 +137,7 @@ class ShopCartCacheTool {
                         localValue = [];
                         localValue.push(goodsItem);
                     }
-                    save(ShopCartCacheTool.shopCartLocalStorageKey, localValue).then(() => {
+                    store.save(ShopCartCacheTool.shopCartLocalStorageKey, localValue).then(() => {
                         //存入成功后,从后台拉取详细信息
                         shopCartStore.getShopCartListWithNoLogin(localValue);
                     }).catch(() => {
@@ -157,11 +158,13 @@ class ShopCartCacheTool {
             shopCartStore.getShopCartListData();
         } else {
             //用户非登入状态
-            get(ShopCartCacheTool.shopCartLocalStorageKey, []).then(res => {
+            store.get(ShopCartCacheTool.shopCartLocalStorageKey).then(res => {
                 //拿到数据后拉去详情
+                res = res ? res : [];
                 let [...localValue] = res;
                 shopCartStore.getShopCartListWithNoLogin(localValue);
             }).catch(error => {
+                alert(error);
                 bridge.$toast('读取本地数据异常');
             });
         }
@@ -183,7 +186,8 @@ class ShopCartCacheTool {
             shopCartStore.updateCartItem(itemData, rowId);
         } else {
             /*未登录状态登录状态更新本地*/
-            get(ShopCartCacheTool.shopCartLocalStorageKey, []).then(res => {
+            store.get(ShopCartCacheTool.shopCartLocalStorageKey).then(res => {
+                res = res ? res : [];
                 let [...localValue] = res;
                 if (localValue instanceof Array && localValue.length > 0) {
                     localValue.map((localItemGood, indexPath) => {
@@ -194,7 +198,7 @@ class ShopCartCacheTool {
                     });
                 }
                 //重新缓存
-                save(ShopCartCacheTool.shopCartLocalStorageKey, localValue).then(() => {
+                store.save(ShopCartCacheTool.shopCartLocalStorageKey, localValue).then(() => {
                     //重新拉去数据
                     shopCartStore.getShopCartListWithNoLogin(localValue);
                 }).catch(() => {
