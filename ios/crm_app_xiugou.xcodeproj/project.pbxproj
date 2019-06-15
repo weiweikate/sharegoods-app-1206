@@ -1869,7 +1869,6 @@
 			isa = PBXGroup;
 			children = (
 				BF2C34F922B3B5B0008A9D6E /* RNCAsyncStorage.xcodeproj */,
-				BF2C354322B3E3A8008A9D6E /* crm_app_xiugou.xcworkspace */,
 				104548412239FB4800E73EF8 /* CodePush.xcodeproj */,
 				0347BAC12237CC670011184A /* Lottie.xcodeproj */,
 				0347BABB2237CC480011184A /* LottieReactNative.xcodeproj */,
