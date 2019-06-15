@@ -1,9 +1,11 @@
 apply plugin: 'com.android.library'
 
-buildscript {
-    repositories {
-        jcenter()
-    }
+long dbSizeInMB = 6L
+
+def newDbSize = rootProject.properties['AsyncStorage_db_size_in_MB']
+
+if( newDbSize != null && newDbSize.isLong()) {
+    dbSizeInMB = newDbSize.toLong()
 }
 
 android {
@@ -13,25 +15,20 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
+        buildConfigField "Long", "AsyncStorage_db_size", "${dbSizeInMB}L"
     }
     lintOptions {
         abortOnError false
+        warning 'InvalidPackage'
     }
     buildTypes {
-
         releaseStaging {}
     }
 }
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
-    api fileTree(include: ['*.jar'], dir: 'libs')
-    api rootProject.ext.dependencies.support
-    // From node_modules
     api(rootProject.ext.dependencies.rn) {
         exclude group: 'com.android.support'
     }
+    api rootProject.ext.dependencies.support
 }

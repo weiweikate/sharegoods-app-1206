@@ -9,12 +9,12 @@ import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainPackageConfig;
+import com.facebook.react.shell.MainReactPackage;
 import com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage;
 import com.meeruu.RNDeviceInfo.RNDeviceInfo;
 import com.meeruu.commonlib.base.BaseApplication;
 import com.meeruu.commonlib.config.FrescoImagePipelineConfig;
 import com.meeruu.commonlib.utils.ParameterUtils;
-import com.meeruu.sharegoods.rn.MainReactPackage;
 import com.meeruu.sharegoods.rn.RNMRPackage;
 import com.meeruu.sharegoods.rn.lottie.LottiePackage;
 import com.meeruu.sharegoods.rn.sensors.RNSensorsAnalyticsPackage;
@@ -22,6 +22,7 @@ import com.microsoft.codepush.react.CodePush;
 import com.psykar.cookiemanager.CookieManagerPackage;
 import com.reactlibrary.RNGeolocationPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
+import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.request.MRNetStatePackage;
 import com.squareup.leakcanary.LeakCanary;
@@ -73,9 +74,9 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     new RNMRPackage(),
                     new MainReactPackage(builder.build()),
                     new ReactVideoPackage(),
-                    new RNDeviceInfo(),
                     new RNGeolocationPackage(),
                     new LinearGradientPackage(),
+                    new RNDeviceInfo(),
                     new RNFetchBlobPackage(),
                     new CookieManagerPackage(),
                     new WebViewBridgePackage(),
@@ -86,7 +87,8 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     new ExtraDimensionsPackage(),
                     new CodePush(BuildConfig.CODEPUSH_KEY, MainApplication.this,
                             BuildConfig.DEBUG, ParameterUtils.CODE_PUSH_SERVER),
-                    new RNCWebViewPackage()
+                    new RNCWebViewPackage(),
+                    new AsyncStoragePackage()
             );
         }
 

@@ -5,7 +5,7 @@ import {
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
 import user from '../../../../model/user';
-import { observer } from 'mobx-react/native';
+import { observer } from 'mobx-react';
 import MineAPI from '../../api/MineApi';
 import bridge from '../../../../utils/bridge';
 import StringUtils from '../../../../utils/StringUtils';

@@ -12,7 +12,7 @@ import NavigatorBar from '../../../../components/pageDecorator/NavigatorBar/Navi
 import Modal from '../../../../comm/components/CommModal';
 import { MRText as Text, NoMoreClick } from '../../../../components/ui';
 import res from './../../res';
-import { observer } from 'mobx-react/native';
+import { observer } from 'mobx-react';
 import couponsModel from './../../model/CouponsModel';
 import bridge from '../../../../utils/bridge';
 

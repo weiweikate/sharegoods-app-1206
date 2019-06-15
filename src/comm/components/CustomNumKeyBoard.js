@@ -92,10 +92,6 @@ export default class CustomNumKeyBoard extends Component {
         }
     }
 
-    // shouldComponentUpdate(){
-    //     return false;
-    // }
-
     _closeNumKeyBoard = () => {
         const { closeAction } = this.props
         closeAction && closeAction();
