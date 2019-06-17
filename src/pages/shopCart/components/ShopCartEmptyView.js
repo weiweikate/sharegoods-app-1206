@@ -31,7 +31,23 @@ export default class ShopCartEmptyView extends Component {
                 <Image source={res.kongShopCartImg} style={styles.imgStyle} resizeMode={'contain'}/>
                 <UIText value={'去添加点什么吧'} style={styles.addSomethingTipStyle}/>
                 <UIText value={'快去商城逛逛吧~'} style={styles.topTextStyle}/>
-                <TouchableOpacity onPress={navigateToHome}>
+                <TouchableOpacity onPress={
+                    navigateToHome
+                    // ()=>{
+                    //     let orderProducts = [{
+                    //         skuCode: "SKU000000890001",
+                    //         quantity: 1,
+                    //         productCode: 'SPU00000089'
+                    //     }];
+                    //     navigateToHome('order/order/ConfirOrderPage', {
+                    //         orderParamVO: {
+                    //             orderType: 99,
+                    //             orderProducts: orderProducts,
+                    //             source: 2,
+                    //         }
+                    //     });
+                    // }
+                }>
                     <View style={styles.bottomTextBgViewStyle}>
                         <UIText value={'去逛逛'} style={styles.bottomTextStyle}/>
                     </View>
