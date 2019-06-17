@@ -564,6 +564,5 @@ public class CommModule extends ReactContextBaseJavaModule {
         map.putString("uri", event.getUrl());
         this.mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit("Event_navigateHtmlPage", map);
-        LogUtils.d("**********");
     }
 }
