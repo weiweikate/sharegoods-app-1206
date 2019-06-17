@@ -55,7 +55,9 @@ class TaskModel {
     @action
     getLocationExpanded() {
         store.get('@mr/taskExpanded' + this.type).then((data) => {
-            this.expanded = data.expanded;
+            if (data) {
+                this.expanded = data.expanded;
+            }
             if (this.type === 'home') {
                 this.calculateHomeHeight();
             }
