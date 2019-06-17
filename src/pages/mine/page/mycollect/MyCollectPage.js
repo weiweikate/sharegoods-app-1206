@@ -18,7 +18,7 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import { SwipeListView } from '../../../../components/ui/react-native-swipe-list-view';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
-import { observer } from 'mobx-react/native';
+import { observer } from 'mobx-react';
 import DesignRule from '../../../../constants/DesignRule';
 import UIImage from '@mr/image-placeholder';
 import {MRText as Text,NoMoreClick,AvatarImage} from '../../../../components/ui'
@@ -219,12 +219,6 @@ export default class MyCollectPage extends BasePage {
 
     }
     componentDidMount() {
-        this.willBlurSubscription = this.props.navigation.addListener(
-            'willBlur',
-            payload => {
-                // BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
-            }
-        );
         this.didFocusSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
@@ -237,7 +231,6 @@ export default class MyCollectPage extends BasePage {
     }
     componentWillUnmount() {
         this.didFocusSubscription && this.didFocusSubscription.remove();
-        this.willBlurSubscription && this.willBlurSubscription.remove();
     }
 
     getDataFromNetwork = () => {

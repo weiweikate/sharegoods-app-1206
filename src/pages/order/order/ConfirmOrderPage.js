@@ -9,7 +9,7 @@ import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import GoodsItem from '../components/confirmOrder/GoodsItem';
 import { confirmOrderModel } from '../model/ConfirmOrderModel';
-import { observer } from 'mobx-react/native';
+import { observer } from 'mobx-react';
 import BasePage from '../../../BasePage';
 import { NavigationActions } from 'react-navigation';
 import DesignRule from '../../../constants/DesignRule';

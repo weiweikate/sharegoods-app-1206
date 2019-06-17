@@ -1,63 +1,40 @@
-
 import ShopCartAPI from '../api/ShopCartApi';
 import bridge from '../../../utils/bridge';
 import user from '../../../model/user';
 import shopCartStore from './ShopCartStore';
-import Storage from '../../../utils/storage';
+import store from '@mr/rn-store';
 import apiEnvironment from '../../../api/ApiEnvironment';
 
 class ShopCartCacheTool {
 
-    static  shopCartLocalStorageKey = apiEnvironment.getCurrentHostName() +'shopCartLocalStorageKey';
-
-
-    // isSynchronousData() {
-    //      //是否登录
-    //      if (user.isLogin) {
-    //          //登录同步数据
-    //          this.synchronousData();
-    //      }
-    //      return (!!(user.id));
-    //  }
+    static  shopCartLocalStorageKey = '@mr/' + apiEnvironment.getCurrentHostUrl() + 'shopCartLocalStorageKey';
 
     /**
      * 删除本地数据
      */
-
     deleteAllLocalData() {
-        Storage.remove(ShopCartCacheTool.shopCartLocalStorageKey).then(() => {
-
-        }).catch(() => {
-
-        });
+        store.deleted(ShopCartCacheTool.shopCartLocalStorageKey);
     }
 
     /*同步购物车商品*/
     synchronousData() {
         //用户非登入状态
-        Storage.get(ShopCartCacheTool.shopCartLocalStorageKey).then(res => {
+        store.get(ShopCartCacheTool.shopCartLocalStorageKey).then(res => {
+            res = res ? res : [];
             let [...localValue] = res;
             if (localValue && (localValue instanceof Array && localValue.length > 0)) {
-                // bridge.showLoading('正在同步本地购物车数据');
-                //存在本地缓存
-                // {
-                //     'cacheList': localValue
-                // }
                 ShopCartAPI.addItem(
-                {
-                    shoppingCartParamList: localValue
-                }
+                    {
+                        shoppingCartParamList: localValue
+                    }
                 ).then(res => {
                     bridge.hiddenLoading();
                     //同步完数据组装
                     shopCartStore.packingShopCartGoodsData(res.data);
-                    // shopCartStore.getShopCartListData();
                     //同步成功删除本地数据
                     this.deleteAllLocalData();
                 }).catch(error => {
                     bridge.hiddenLoading();
-                    // bridge.$toast(error);
-                    // bridge.$toast(error.msg);
                 });
             } else {
                 //不存在本地缓存 但他妈的也得拉一下数据老铁
@@ -79,19 +56,20 @@ class ShopCartCacheTool {
             shopCartStore.deleteItemWithIndex(skuCodes);
         } else {
             //从本地拿出数据删除掉
-            Storage.get(ShopCartCacheTool.shopCartLocalStorageKey, []).then(res => {
+            store.get(ShopCartCacheTool.shopCartLocalStorageKey).then(res => {
+                res = res ? res : [];
                 let [...localValue] = res;
                 if (localValue && (localValue instanceof Array)) {
                     localValue.map((itemData) => {
-                        skuCodes.map(skuCode=>{
-                           if(skuCode.skuCode === itemData.skuCode) {
-                               localValue.splice(localValue.indexOf(itemData), 1);
-                           }
-                        })
+                        skuCodes.map(skuCode => {
+                            if (skuCode.skuCode === itemData.skuCode) {
+                                localValue.splice(localValue.indexOf(itemData), 1);
+                            }
+                        });
                     });
                 }
                 //再存入本地
-                Storage.set(ShopCartCacheTool.shopCartLocalStorageKey, localValue).then(() => {
+                store.save(ShopCartCacheTool.shopCartLocalStorageKey, localValue).then(() => {
                     //拉取刷新
                     shopCartStore.getShopCartListWithNoLogin(localValue);
                 }).catch(error => {
@@ -127,9 +105,10 @@ class ShopCartCacheTool {
                 shopCartStore.addItemToShopCart(goodsItem);
             } else {
                 //缓存本地
-                Storage.get(ShopCartCacheTool.shopCartLocalStorageKey, []).then(res => {
+                store.get(ShopCartCacheTool.shopCartLocalStorageKey).then(res => {
                     //为商品添加spuCode
                     goodsItem.spuCode = goodsItem.productCode;
+                    res = res ? res : [];
                     let [...localValue] = res;
                     if (localValue && (localValue instanceof Array) && localValue.length > 0) {
                         //检测购物车数量是否已够80
@@ -158,15 +137,9 @@ class ShopCartCacheTool {
                         localValue = [];
                         localValue.push(goodsItem);
                     }
-                    Storage.set(ShopCartCacheTool.shopCartLocalStorageKey, localValue).then(() => {
-                        // bridge.$toast('加入购物车成功');
+                    store.save(ShopCartCacheTool.shopCartLocalStorageKey, localValue).then(() => {
                         //存入成功后,从后台拉取详细信息
                         shopCartStore.getShopCartListWithNoLogin(localValue);
-                        // Storage.get(ShopCartCacheTool.shopCartLocalStorageKey, []).then(res => {
-                        //
-                        // }).catch(error => {
-                        //
-                        // });
                     }).catch(() => {
                         bridge.$toast('本地加入购物车失败');
                     });
@@ -177,20 +150,21 @@ class ShopCartCacheTool {
         }
 
     }
+
     /*获取购物车数据 总入口*/
     getShopCartGoodsListData() {
-        // shopCartStore.getShopCartListData();
-        // return;
         if (user.isLogin) {
             //用户登录状态
             shopCartStore.getShopCartListData();
         } else {
             //用户非登入状态
-            Storage.get(ShopCartCacheTool.shopCartLocalStorageKey, []).then(res => {
+            store.get(ShopCartCacheTool.shopCartLocalStorageKey).then(res => {
                 //拿到数据后拉去详情
+                res = res ? res : [];
                 let [...localValue] = res;
                 shopCartStore.getShopCartListWithNoLogin(localValue);
             }).catch(error => {
+                alert(error);
                 bridge.$toast('读取本地数据异常');
             });
         }
@@ -198,7 +172,6 @@ class ShopCartCacheTool {
 
     /*更新购物车数据*/
     updateShopCartDataLocalOrService(itemData, rowId) {
-        // if (shopCartStore.data.splice().length > rowId) {
         //判断商品是否有效
         if (itemData.status === 0) {
             bridge.$toast('此商品已下架~');
@@ -213,7 +186,8 @@ class ShopCartCacheTool {
             shopCartStore.updateCartItem(itemData, rowId);
         } else {
             /*未登录状态登录状态更新本地*/
-            Storage.get(ShopCartCacheTool.shopCartLocalStorageKey, []).then(res => {
+            store.get(ShopCartCacheTool.shopCartLocalStorageKey).then(res => {
+                res = res ? res : [];
                 let [...localValue] = res;
                 if (localValue instanceof Array && localValue.length > 0) {
                     localValue.map((localItemGood, indexPath) => {
@@ -224,12 +198,8 @@ class ShopCartCacheTool {
                     });
                 }
                 //重新缓存
-                Storage.set(ShopCartCacheTool.shopCartLocalStorageKey, localValue).then(() => {
+                store.save(ShopCartCacheTool.shopCartLocalStorageKey, localValue).then(() => {
                     //重新拉去数据
-                    // let [...tempArr] = shopCartStore.data.slice();
-                    // tempArr[rowId] = itemData;
-                    // shopCartStore.data = tempArr;
-                    // this.getShopCartGoodsListData()
                     shopCartStore.getShopCartListWithNoLogin(localValue);
                 }).catch(() => {
                     console.warn('缓存本地购物车数据异常');
@@ -239,8 +209,6 @@ class ShopCartCacheTool {
             });
         }
     }
-
-    // }
 }
 
 const shopCartCacheTool = new ShopCartCacheTool();

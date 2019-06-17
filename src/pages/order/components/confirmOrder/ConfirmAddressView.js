@@ -11,7 +11,7 @@ import {
 } from '../../../../components/ui';
 import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import { observer } from 'mobx-react/native';
+import { observer } from 'mobx-react';
 import { confirmOrderModel } from '../../model/ConfirmOrderModel';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';

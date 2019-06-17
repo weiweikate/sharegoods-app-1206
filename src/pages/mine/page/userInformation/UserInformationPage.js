@@ -7,7 +7,7 @@ import DesignRule from '../../../../constants/DesignRule';
 import BasePage from '../../../../BasePage';
 import UserSingleItem from '../../components/UserSingleItem';
 import user from '../../../../model/user';
-import { observer } from 'mobx-react/native';
+import { observer } from 'mobx-react';
 import BusinessUtils from '../../components/BusinessUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 

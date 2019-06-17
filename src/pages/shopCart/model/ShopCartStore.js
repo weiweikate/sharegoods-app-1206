@@ -5,6 +5,9 @@ import MineApi from '../../mine/api/MineApi';
 import user from '../../../model/user';
 import shopCartCacheTool from './ShopCartCacheTool';
 import { QYChatTool } from '../../../utils/QYModule/QYChatTool';
+import {
+    InteractionManager
+} from 'react-native';
 
 // import testData from './testData';
 class ShopCartStore {
@@ -587,13 +590,15 @@ class ShopCartStore {
     /*删除购物车商品*/
     deleteItemWithIndex(skuCodes) {
         if (skuCodes) {
-            ShopCartAPI.deleteItem({
-                'skuCodes': skuCodes
-            }).then(res => {
-                bridge.$toast('删除成功');
-                this.packingShopCartGoodsData(res.data);
-            }).catch(error => {
-                bridge.$toast(error.msg);
+            InteractionManager.runAfterInteractions(() => {
+                ShopCartAPI.deleteItem({
+                    'skuCodes': skuCodes
+                }).then(res => {
+                    bridge.$toast('删除成功');
+                    this.packingShopCartGoodsData(res.data);
+                }).catch(error => {
+                    bridge.$toast(error.msg);
+                });
             });
         }
     }

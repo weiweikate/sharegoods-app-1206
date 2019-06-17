@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, Image, TouchableWithoutFeedback, Alert } from 'react-native';
 import res from './res';
 import BasePage from '../../BasePage';
-import { observer } from 'mobx-react/native';
+import { observer } from 'mobx-react';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
 import { MRText as Text } from '../../components/ui';

@@ -10,7 +10,7 @@ import DeviceInfo from 'react-native-device-info/deviceinfo';
 import MineApi from '../../mine/api/MineApi';
 import HomeAPI from '../api/HomeAPI';
 import { homeLinkType, homeType } from '../HomeTypes';
-import { AsyncStorage } from 'react-native';
+import { get, save } from '@mr/rn-store';
 import MessageApi from '../../message/api/MessageApi';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import StringUtils from '../../../utils/StringUtils';
@@ -114,7 +114,7 @@ class HomeModalManager {
     closeUpdate(skip) {
         if (skip) {
             if (!StringUtils.isEmpty(this.versionData)) {
-                AsyncStorage.setItem('isToUpdate', String(this.versionData.version), () => {
+                save('@mr/isToUpdate', String(this.versionData.version), () => {
                     this.versionData = null;
                 });
             }
@@ -127,7 +127,7 @@ class HomeModalManager {
     @action
     closeMessage() {
         let currStr = new Date().getTime();
-        AsyncStorage.setItem('lastMessageTime', String(currStr));
+        save('@mr/lastMessageTime', String(currStr));
         this.isShowNotice = false;
         this.needShowNotice = false;
         this.homeMessage = null;
@@ -141,7 +141,7 @@ class HomeModalManager {
     @action
     closeAd() {
         let currStr = new Date().getTime();
-        AsyncStorage.setItem('home_lastAdTime', String(currStr));
+        save('@mr/home_lastAdTime', String(currStr));
         this.isShowAd = false;
         this.needShowAd = false;
         this.AdData = null;
@@ -181,7 +181,7 @@ class HomeModalManager {
             let versionData = this.versionData || {};
             let { forceUpdate, version, upgrade } = versionData;
             if (this.versionData && upgrade === 1) {
-                let storage_version = yield AsyncStorage.getItem('isToUpdate');
+                let storage_version = yield get('@mr/isToUpdate');
                 if (storage_version !== version || forceUpdate === 1) {
                     this.needShowUpdate = true;
                 }
@@ -208,7 +208,7 @@ class HomeModalManager {
     @action
     getMessage() {
         let currStr = new Date().getTime() + '';
-        AsyncStorage.getItem('lastMessageTime').then((value) => {
+        get('@mr/lastMessageTime').then((value) => {
             if (value == null || parseInt(currStr) - parseInt(value) > 24 * 60 * 60 * 1000) {
                 MessageApi.queryNotice({ pageSize: 10, type: 100 }).then(resp => {
                     this.homeMessage = resp.data.data;
@@ -231,7 +231,7 @@ class HomeModalManager {
     @action
     getAd() {
         let currStr = new Date().getTime() + '';
-        AsyncStorage.getItem('home_lastAdTime').then((value) => {
+        get('@mr/home_lastAdTime').then((value) => {
             if (value == null || parseInt(currStr) - parseInt(value) > 24 * 60 * 60 * 1000) {
                 HomeAPI.getHomeData({ type: homeType.windowAlert }).then(resp => {
                     if (resp.data && resp.data.length > 0) {

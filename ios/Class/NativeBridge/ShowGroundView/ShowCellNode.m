@@ -8,6 +8,8 @@
 
 #import "ShowCellNode.h"
 #import "SGNetworkImageNode.h"
+#import "NSString+UrlAddParams.h"
+
 @interface ShowCellNode()
 @property(nonatomic, strong)SGNetworkImageNode *imageNode;
 @property(nonatomic, strong)ASTextNode *titleNode;
@@ -50,10 +52,21 @@
     CGFloat width = [[self.aspectRatioDic valueForKey:@"width"] floatValue];
     CGFloat height = [[self.aspectRatioDic valueForKey:@"height"] floatValue];
     aspectRatio = height/width;
+   CGFloat minRatio = 120 / 167.0;
+   CGFloat maxRatio = 240 / 167.0;
+    if (aspectRatio < minRatio) {
+      aspectRatio = minRatio;
+    }
+    
+    if (maxRatio > maxRatio) {
+      aspectRatio = maxRatio;
+    }
+    
+    
   }
   ASRatioLayoutSpec *ImageSpec = [ASRatioLayoutSpec ratioLayoutSpecWithRatio:aspectRatio
                                                                        child:_imageNode];
-  
+
 //  _numIconNode.style.spacingBefore = 10;
 //  ASStackLayoutSpec *hNumSpec = [ASStackLayoutSpec stackLayoutSpecWithDirection:ASStackLayoutDirectionHorizontal
 //                                                                        spacing:10
@@ -102,19 +115,21 @@
 - (SGNetworkImageNode *)imageNode
 {
   if (!_imageNode) {
-    CGFloat itemWidth=  [UIScreen mainScreen].bounds.size.width / 2.0 * [UIScreen mainScreen].scale;
+    CGFloat itemWidth=  [UIScreen mainScreen].bounds.size.width / 2.0;
     NSString * showImage = @"";
-    NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
     if([_model.resource[0] valueForKey:@"url"]){
        showImage = [_model.resource[0] valueForKey:@"url"];
         self.aspectRatioDic = [self getURLParameters:showImage];
     }
     
     if ([showImage containsString:@"sharegoodsmall"]) {
-      showImage = [NSString stringWithFormat:@"%@?x-oss-process=image/resize,m_lfit,w_%0.0lf,h_%0.0lf",showImage,itemWidth,itemWidth/_model.aspectRatio];
+      CGFloat width = [[self.aspectRatioDic valueForKey:@"width"] floatValue];
+      CGFloat height = [[self.aspectRatioDic valueForKey:@"height"] floatValue];
+      CGFloat aspectRatio = height&&width ? height/width:1;
+      showImage = [showImage getUrlAndWidth:itemWidth height:itemWidth*aspectRatio];
     }
     _imageNode = [SGNetworkImageNode new];
-    _imageNode.defaultImage = [UIImage imageWithColor:[UIColor colorWithHexString:@"f5f5f5"]];
+    _imageNode.defaultImage = [UIImage imageWithColor:[UIColor whiteColor]];
     _imageNode.URL = [NSURL URLWithString:showImage];
     _imageNode.cornerRadius = 5;
     _imageNode.clipsToBounds = YES;
@@ -144,7 +159,9 @@
     _headerNode = [SGNetworkImageNode new];
     _headerNode.defaultImage = [UIImage imageNamed:@"default_avatar"];
     if(_model.userInfoVO && [_model.userInfoVO valueForKey:@"userImg"]){
-      _headerNode.URL = [NSURL URLWithString:[_model.userInfoVO valueForKey:@"userImg"]];
+      NSString* url = [[_model.userInfoVO valueForKey:@"userImg"] getUrlAndWidth:30 height:30];
+      _headerNode.URL = [NSURL URLWithString:url];
+      
     }
     _headerNode.cornerRadius = 15;
     _headerNode.clipsToBounds = YES;

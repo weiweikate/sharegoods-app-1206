@@ -1,22 +1,18 @@
 package com.meeruu.sharegoods.rn.showground;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -26,17 +22,20 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
-import com.facebook.react.bridge.UiThreadUtil;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
+import com.meeruu.commonlib.handler.WeakHandler;
+import com.meeruu.commonlib.tool.FastScrollLinearLayoutManager;
 import com.meeruu.commonlib.utils.DensityUtils;
+import com.meeruu.commonlib.utils.ImageLoadUtils;
+import com.meeruu.commonlib.utils.ParameterUtils;
+import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.adapter.ProductsAdapter;
 import com.meeruu.sharegoods.rn.showground.adapter.ShowRecommendAdapter;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
-import com.meeruu.sharegoods.rn.showground.bean.ShowRecommendBean;
 import com.meeruu.sharegoods.rn.showground.event.addCartEvent;
 import com.meeruu.sharegoods.rn.showground.event.onDownloadPressEvent;
 import com.meeruu.sharegoods.rn.showground.event.onEndScrollEvent;
@@ -58,7 +57,6 @@ import com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -78,9 +76,10 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
     private onStartRefreshEvent startRefreshEvent;
     private onItemPressEvent itemPressEvent;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private Handler handler;
+    private WeakHandler mHandler;
     private View errView;
     private View errImg;
+    private boolean sIsScrolling;
 
     private int page = 1;
 
@@ -96,7 +95,6 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
     }
 
     public void initView(Context context, final View view) {
-        handler = new Handler();
         errView = view.findViewById(R.id.err_view);
         errImg = view.findViewById(R.id.errImg);
         errImg.setOnClickListener(new View.OnClickListener() {
@@ -104,13 +102,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
             public void onClick(View v) {
                 swipeRefreshLayout.setVisibility(View.VISIBLE);
                 errView.setVisibility(View.INVISIBLE);
-                swipeRefreshLayout.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeRefreshLayout.setRefreshing(true);
-                        onRefresh();
-                    }
-                }, 200);
+                onRefresh();
             }
         });
 
@@ -120,13 +112,6 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         swipeRefreshLayout = view.findViewById(R.id.refresh_control);
         swipeRefreshLayout.setColorSchemeResources(R.color.app_main_color);
         swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                swipeRefreshLayout.setRefreshing(true);
-                onRefresh();
-            }
-        }, 200);
         final onNineClickEvent onNineClickEvent = new onNineClickEvent();
         final addCartEvent addCartEvent = new addCartEvent();
         recyclerView = view.findViewById(R.id.home_recycler_view);
@@ -198,15 +183,13 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         };
 
         adapter = new ShowRecommendAdapter(clickL, addCartListener, pressProductListener);
-        View emptyView=LayoutInflater.from(context).inflate(R.layout.show_empty_view, null);
+        View emptyView = LayoutInflater.from(recyclerView.getContext()).inflate(R.layout.show_empty_view, null);
         emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
-
-
         adapter.setEmptyView(emptyView);
         adapter.setPreLoadNumber(3);
         adapter.setHasStableIds(true);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+        FastScrollLinearLayoutManager layoutManager = new FastScrollLinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
         ((SimpleItemAnimator) recyclerView.getItemAnimator())
                 .setSupportsChangeAnimations(false);
@@ -266,6 +249,19 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
                 }
             }
 
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+
+                if (newState == RecyclerView.SCROLL_STATE_DRAGGING || newState == RecyclerView.SCROLL_STATE_SETTLING) {
+                    sIsScrolling = true;
+                    ImageLoadUtils.pauseLoadImage();
+                } else if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (sIsScrolling == true) {
+                        ImageLoadUtils.resumeLoadImage();
+                    }
+                    sIsScrolling = false;
+                }
+            }
         });
     }
 
@@ -278,56 +274,13 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
                 final NewestShowGroundBean.DataBean bean = data.get(position);
                 int id = itemview.getId();
                 switch (id) {
-                    case R.id.icon_hand: {
-                        recyclerView.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (bean.isLike()) {
-                                    bean.setLike(false);
-                                    if (bean.getLikesCount() > 0) {
-                                        bean.setLikesCount(bean.getLikesCount() - 1);
-                                    }
-                                } else {
-                                    bean.setLike(true);
-                                    bean.setLikesCount(bean.getLikesCount() + 1);
-                                }
-                                if (eventDispatcher != null) {
-                                    onZanPressEvent.init(view.getId());
-                                    String jsonStr = JSON.toJSONString(bean);
-                                    Map map = JSONObject.parseObject(jsonStr, new TypeReference<Map>() {
-                                    });
-                                    Map result = new HashMap();
-                                    result.put("index", position);
-                                    result.put("detail", map);
-                                    WritableMap realData = Arguments.makeNativeMap(result);
-                                    onZanPressEvent.setData(realData);
-                                    eventDispatcher.dispatchEvent(onZanPressEvent);
-                                }
-                                data.set(position, bean);
-                                adapter.replaceData(data);
-                            }
-                        }, 200);
-                    }
-                    break;
-                    case R.id.icon_download: {
-                        UiThreadUtil.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                onDownloadPressEvent.init(view.getId());
-                                String jsonStr = JSON.toJSONString(bean);
-                                Map map = JSONObject.parseObject(jsonStr, new TypeReference<Map>() {
-                                });
-                                Map result = new HashMap();
-                                result.put("index", position);
-                                result.put("detail", map);
-                                WritableMap realData = Arguments.makeNativeMap(result);
-                                onDownloadPressEvent.setData(realData);
-                                eventDispatcher.dispatchEvent(onDownloadPressEvent);
-                            }
-                        });
+                    case R.id.icon_hand:
+                        delayHandle(bean, view, position, data);
 
-                    }
-                    break;
+                        break;
+                    case R.id.icon_download:
+                        delayDownload(view, position, bean);
+                        break;
                     case R.id.icon_share: {
                         onSharePressEvent.init(view.getId());
                         String jsonStr = JSON.toJSONString(bean);
@@ -344,17 +297,36 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
                     default:
                         break;
                 }
-
-
             }
         });
     }
 
-
     private void initData() {
         presenter = new ShowgroundPresenter(this);
+        if (mHandler == null) {
+            mHandler = new WeakHandler(new Handler.Callback() {
+                @Override
+                public boolean handleMessage(Message msg) {
+                    switch (msg.what) {
+                        case ParameterUtils.REQUEST_DELAY:
+                            page = 1;
+                            presenter.getShowList(page);
+                            break;
+                        case ParameterUtils.SHOW_REPLACE_DELAY:
+                            final List<NewestShowGroundBean.DataBean> data = adapter.getData();
+                            NewestShowGroundBean.DataBean bean = JSON.parseObject((String) msg.obj, NewestShowGroundBean.DataBean.class);
+                            data.set(msg.arg1, bean);
+                            adapter.replaceData(data);
+                            break;
+                        default:
+                            break;
+                    }
+                    return false;
+                }
+            });
+        }
+        onRefresh();
     }
-
 
     @Override
     public void onRefresh() {
@@ -366,8 +338,49 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
             }
         }
         adapter.setEnableLoadMore(false);
-        page = 1;
-        presenter.getShowList(page);
+        swipeRefreshLayout.setRefreshing(true);
+        mHandler.sendEmptyMessageDelayed(ParameterUtils.REQUEST_DELAY, 200);
+    }
+
+    private void delayHandle(NewestShowGroundBean.DataBean bean, View view, int position,
+                             List<NewestShowGroundBean.DataBean> data) {
+        if (bean.isLike()) {
+            bean.setLike(false);
+            if (bean.getLikesCount() > 0) {
+                bean.setLikesCount(bean.getLikesCount() - 1);
+            }
+        } else {
+            bean.setLike(true);
+            bean.setLikesCount(bean.getLikesCount() + 1);
+        }
+        if (eventDispatcher != null) {
+            onZanPressEvent.init(view.getId());
+            String jsonStr = JSON.toJSONString(bean);
+            Map map = JSONObject.parseObject(jsonStr, new TypeReference<Map>() {
+            });
+            Map result = new HashMap();
+            result.put("index", position);
+            result.put("detail", map);
+            WritableMap realData = Arguments.makeNativeMap(result);
+            onZanPressEvent.setData(realData);
+            eventDispatcher.dispatchEvent(onZanPressEvent);
+        }
+        data.set(position, bean);
+        adapter.replaceData(data);
+    }
+
+
+    private void delayDownload(View view, int position, NewestShowGroundBean.DataBean bean) {
+        onDownloadPressEvent.init(view.getId());
+        String jsonStr = JSON.toJSONString(bean);
+        Map map = JSONObject.parseObject(jsonStr, new TypeReference<Map>() {
+        });
+        Map result = new HashMap();
+        result.put("index", position);
+        result.put("detail", map);
+        WritableMap realData = Arguments.makeNativeMap(result);
+        onDownloadPressEvent.setData(realData);
+        eventDispatcher.dispatchEvent(onDownloadPressEvent);
     }
 
     @Override
@@ -375,24 +388,20 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         swipeRefreshLayout.setRefreshing(false);
         if (adapter != null) {
             adapter.loadMoreFail();
+            setEmptyText();
         }
-
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                if (TextUtils.equals(code, "9999") && page == 1) {
-                    errView.setVisibility(View.VISIBLE);
-                    swipeRefreshLayout.setVisibility(View.INVISIBLE);
-                } else {
-                    errView.setVisibility(View.INVISIBLE);
-                    swipeRefreshLayout.setVisibility(View.VISIBLE);
-                }
-            }
-        });
+        if (TextUtils.equals(code, "9999") && page == 1) {
+            errView.setVisibility(View.VISIBLE);
+            swipeRefreshLayout.setVisibility(View.INVISIBLE);
+        } else {
+            errView.setVisibility(View.INVISIBLE);
+            swipeRefreshLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     public void viewLoadMore(final List data) {
+        swipeRefreshLayout.setRefreshing(false);
         showList();
         if (data != null) {
             adapter.addData(resolveData(data));
@@ -407,40 +416,47 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
     @Override
     public void repelaceItemData(final int index, final String value) {
         if (adapter != null && !TextUtils.isEmpty(value)) {
-            final List<NewestShowGroundBean.DataBean> data = adapter.getData();
-            recyclerView.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    NewestShowGroundBean.DataBean bean = JSON.parseObject(value, NewestShowGroundBean.DataBean.class);
-                    data.set(index, bean);
-                    adapter.replaceData(data);
-
-//                    adapter.setData(index,bean);
-                }
-            }, 200);
+            Message msg = Message.obtain();
+            msg.what = ParameterUtils.SHOW_REPLACE_DELAY;
+            msg.arg1 = index;
+            msg.obj = value;
+            mHandler.sendMessageDelayed(msg, 60);
         }
     }
 
     @Override
     public void refreshShowground(final List data) {
+        swipeRefreshLayout.setRefreshing(false);
         if (adapter != null) {
             adapter.setEnableLoadMore(true);
             adapter.setNewData(resolveData(data));
-            swipeRefreshLayout.setRefreshing(false);
+            setEmptyText();
         }
     }
 
-    private List resolveData (List data){
-        if(data != null){
-            for(int i = 0;i<data.size();i++){
-                NewestShowGroundBean.DataBean bean = (NewestShowGroundBean.DataBean)data.get(i);
-                if(bean.getItemType() == 1){
+    private void setEmptyText() {
+        if (adapter == null) {
+            return;
+        }
+        List list = adapter.getData();
+        if (list == null || list.size() == 0) {
+            View view = adapter.getEmptyView();
+            TextView textView = view.findViewById(R.id.empty_tv);
+            textView.setText("暂无数据");
+        }
+    }
+
+    private List resolveData(List data) {
+        if (data != null) {
+            for (int i = 0; i < data.size(); i++) {
+                NewestShowGroundBean.DataBean bean = (NewestShowGroundBean.DataBean) data.get(i);
+                if (bean.getItemType() == 1) {
                     List<NewestShowGroundBean.DataBean.ResourceBean> resource = bean.getResource();
                     List<ImageInfo> resolveResource = new ArrayList<>();
-                    if(resource != null){
-                        for(int j = 0;j<resource.size();j++){
+                    if (resource != null) {
+                        for (int j = 0; j < resource.size(); j++) {
                             NewestShowGroundBean.DataBean.ResourceBean resourceBean = resource.get(j);
-                            if(resourceBean.getType() == 2){
+                            if (resourceBean.getType() == 2) {
                                 ImageInfo imageInfo = new ImageInfo();
                                 imageInfo.setImageUrl(resourceBean.getUrl());
                                 resolveResource.add(imageInfo);
@@ -448,7 +464,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
                         }
                         bean.setNineImageInfos(resolveResource);
                     }
-                    data.set(i,bean);
+                    data.set(i, bean);
                 }
             }
         }
@@ -465,7 +481,6 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
 
     @Override
     public void repelaceData(final int index, final int clickNum) {
-
     }
 
     public void scrollIndex(int index) {
@@ -480,10 +495,15 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         adapter.loadMoreComplete();
     }
 
-    public void addHeader(View view) {
+    public void addHeader(final View view) {
         adapter.setHeaderAndEmpty(true);
         adapter.setHeaderView(view);
-        adapter.setEmptyView(new View(view.getContext()));
+        View emptyView = adapter.getEmptyView();
+        final ViewGroup.LayoutParams lp = emptyView.getLayoutParams();
+        if (lp != null) {
+            lp.height = ScreenUtils.getScreenHeight() - DensityUtils.dip2px(400);
+        }
+        emptyView.setLayoutParams(lp);
         recyclerView.scrollToPosition(0);
     }
 
@@ -494,16 +514,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
     }
 
     private void showList() {
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                errView.setVisibility(View.INVISIBLE);
-                swipeRefreshLayout.setVisibility(View.VISIBLE);
-            }
-        });
-    }
-
-    public void refresh() {
-        recyclerView.invalidate();
+        errView.setVisibility(View.INVISIBLE);
+        swipeRefreshLayout.setVisibility(View.VISIBLE);
     }
 }

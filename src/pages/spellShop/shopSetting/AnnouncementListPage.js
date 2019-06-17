@@ -7,7 +7,7 @@ import {
 import BasePage from '../../../BasePage';
 import AnnouncementRow from './components/AnnouncementRow';
 import ConfirmAlert from '../../../components/ui/ConfirmAlert';
-import { observer } from 'mobx-react/native';
+import { observer } from 'mobx-react';
 import SpellShopApi from '../api/SpellShopApi';
 import bridge from '../../../utils/bridge';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';

@@ -8,7 +8,7 @@ import {
 } from '../../../../components/ui';
 import DesignRule from '../../../../constants/DesignRule';
 import ScreenUtil from '../../../../utils/ScreenUtils';
-import { observer } from 'mobx-react/native';
+import { observer } from 'mobx-react';
 import { orderDetailModel } from '../../model/OrderDetailModel';
 import {MRText as Text} from '../../../../components/ui';
 const {px2dp} = ScreenUtil;

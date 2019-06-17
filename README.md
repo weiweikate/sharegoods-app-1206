@@ -243,3 +243,7 @@ android开发人员在引入新的module包时，需要重新配置gradle文件�
 ```
 #### code push 登录
    * 登录命令：code-push login https://codepush.sharegoodsmall.com/
+   * 查看补丁命令：code-push deployment ls sharegoods-android -k
+   * 打包发布补丁命令：code-push release-react sharegoods-android android --dev false --d Production
+   * 补丁回滚：code-push rollback sharegoods-android Production --targetRelease v4(codepush服务部署的版本号)
+   * 清楚历史记录：code-push deployment clear sharegoods-android Production or Staging

@@ -43,7 +43,7 @@ import taskModel, { mineTaskModel } from '../model/TaskModel';
 import TaskModalView from './TaskModalView';
 import { IntervalMsgNavigate } from '../../../comm/components/IntervalMsgView';
 
-const { autoSizeWidth } = ScreenUtils;
+const { autoSizeWidth, px2dp } = ScreenUtils;
 const {
     arrow_red_bottom,
     arrow_red_top,
@@ -78,7 +78,7 @@ class TaskItem extends React.Component {
 
     renderItem(item, expanded, subTask = false) {
         let { complete, prizeDesc, name, total, memo, prizeValue } = item;
-        let progrossTitle = total ? (complete + '/' + total) : '无上限';
+        let progrossTitle = complete + '/' + (total ? total : '无上限');
         return (
             <View>
                 {subTask ? <View style={styles.lineOne}/> : null}
@@ -217,7 +217,6 @@ export default class TaskVIew extends React.Component {
     constructor(props) {
         super(props);
 
-
         this.state = {};
         this.model = this.props.type === 'home' ? taskModel : mineTaskModel;
     }
@@ -233,10 +232,10 @@ export default class TaskVIew extends React.Component {
             <View style={styles.header}>
                 <View style={styles.redLine}/>
                 <MRText style={{
-                    fontSize: autoSizeWidth(16),
-                    color: '#666666',
+                    fontSize: px2dp(16),
+                    color: DesignRule.textColor_secondTitle,
                     fontWeight: '600',
-                    marginLeft: 5
+                    marginLeft: px2dp(10)
                 }}>{this.model.name}</MRText>
                 <MRText style={{
                     fontSize: autoSizeWidth(10),
@@ -468,9 +467,9 @@ const styles = StyleSheet.create({
     },
     redLine: {
         backgroundColor: DesignRule.mainColor,
-        width: ScreenUtils.px2dp(2),
-        height: ScreenUtils.px2dp(8),
-        borderRadius: ScreenUtils.px2dp(1)
+        width: px2dp(2),
+        height: px2dp(8),
+        borderRadius: px2dp(1)
     },
     bg: {
         backgroundColor: '#FFF4EC',

@@ -28,7 +28,7 @@ import CONFIG from '../config';
 import bridge from './utils/bridge';
 import TimerMixin from 'react-timer-mixin';
 import geolocation from '@mr/rn-geolocation';
-import Storage from './utils/storage';
+import store from '@mr/rn-store';
 import ScreenUtils from './utils/ScreenUtils';
 import codePush from 'react-native-code-push';
 import chatModel from './utils/QYModule/QYChatModel';
@@ -83,8 +83,8 @@ class App extends Component {
         });
         netStatus.startMonitorNetworkStatus();
         // 环境配置
-        await apiEnvironment.loadLastApiSettingFromDiskCache();
-        await user.readUserInfoFromDisk();
+        apiEnvironment.loadLastApiSettingFromDiskCache();
+        user.readUserInfoFromDisk();
         global.$routes = [];
 
     }
@@ -120,7 +120,7 @@ class App extends Component {
                 }).then(() => {
                     return geolocation.getLastLocation();
                 }).then(result => {
-                    Storage.set('storage_MrLocation', result);
+                    store.save('@mr/storage_MrLocation', result);
                 }).catch((error) => {
                 });
             }, 200);
@@ -140,7 +140,6 @@ class App extends Component {
     render() {
         const prefix = 'meeruu://';
         const showDebugPanel = String(CONFIG.showDebugPanel);
-
         return (
             <View style={styles.container}>
                 <Navigator

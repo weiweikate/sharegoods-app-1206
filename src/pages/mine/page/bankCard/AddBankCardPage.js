@@ -17,7 +17,7 @@ import MineApi from '../../api/MineApi';
 import Toast from '../../../../utils/bridge';
 import user from '../../../../model/user';
 import DesignRule from '../../../../constants/DesignRule';
-import { observer } from 'mobx-react/native';
+import { observer } from 'mobx-react';
 
 let lastcommit = null;
 

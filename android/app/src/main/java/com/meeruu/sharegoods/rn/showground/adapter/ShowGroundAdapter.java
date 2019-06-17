@@ -35,7 +35,7 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
 
     public ShowGroundAdapter() {
         super(R.layout.item_showground);
-        realWidth = (ScreenUtils.getScreenWidth() - 40) / 2;
+        realWidth = (ScreenUtils.getScreenWidth() - DensityUtils.dip2px(40)) / 2;
         minHeight = realWidth * 120 / 167;
         maxHeight = realWidth * 240 / 167;
     }
@@ -45,7 +45,7 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
         final SimpleDraweeView userIcon = helper.getView(R.id.showground_item_userIcon);
         String userTag = (String) userIcon.getTag();
         String userUrl = item.getUserInfoVO().getUserImg();
-        if(TextUtils.isEmpty(userUrl)){
+        if (TextUtils.isEmpty(userUrl)) {
             userUrl = "res://" + userIcon.getContext().getPackageName() + "/" + R.drawable.bg_app_user;
         }
         if (!TextUtils.equals(userUrl, userTag)) {
@@ -70,6 +70,7 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
         if (TextUtils.isEmpty(imgUrl)) {
             imgUrl = "res://" + imageView.getContext().getPackageName() + "/" + R.drawable.bg_app_img;
         }
+
         int realHeight = (int) ((height / width) * realWidth);
         if (realHeight < minHeight) {
             realHeight = minHeight;
