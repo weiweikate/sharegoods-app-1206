@@ -24,16 +24,15 @@ import com.meeruu.commonlib.config.BaseRequestConfig;
 import com.meeruu.commonlib.handler.WeakHandler;
 import com.meeruu.commonlib.server.RequestManager;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
-import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.SPCacheUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.commonlib.utils.Utils;
+import com.meeruu.sharegoods.event.Event;
 import com.meeruu.sharegoods.event.HideSplashEvent;
 import com.meeruu.sharegoods.rn.preload.ReactNativePreLoader;
 import com.meeruu.sharegoods.ui.activity.GuideActivity;
-import com.meeruu.sharegoods.ui.activity.MRWebviewActivity;
 import com.meeruu.sharegoods.ui.activity.MainRNActivity;
 import com.meeruu.sharegoods.utils.HttpUrlUtils;
 
@@ -43,9 +42,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.meeruu.commonlib.utils.ParameterUtils.WEBVIEW_ACTION;
-import static com.meeruu.commonlib.utils.ParameterUtils.WEBVIEW_URL;
 
 /**
  * @author louis
@@ -204,9 +200,8 @@ public class MainActivity extends BaseActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 if (!TextUtils.isEmpty(adUrl)) {
                     hasGo = true;
-                    startActivityForResult(new Intent(MainActivity.this, MRWebviewActivity.class)
-                            .putExtra(WEBVIEW_URL, adUrl)
-                            .putExtra(WEBVIEW_ACTION, "get"), ParameterUtils.REQUEST_CODE_WEBVIEW);
+                    goIndex();
+                    EventBus.getDefault().post(new Event.MR2HTMLEvent(adUrl));
                 }
                 return false;
             }

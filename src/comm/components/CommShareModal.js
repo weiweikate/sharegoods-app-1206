@@ -161,7 +161,7 @@ export default class CommShareModal extends React.Component {
         const { type, imageJson } = this.props;
         let params = { ...(imageJson || {}) };
         params.shareMoney && (params.shareMoney = this.getMoneyText(params.shareMoney));
-        params = { headerImage: user.headImg||'', userName: user.nickname||'', ...params };
+        params = { headerImage: user.headImg || '', userName: user.nickname || '', ...params };
         if (type === 'promotionShare' || type === 'Image' || type === 'Show') {
             if (this.state.path.length === 0) {
                 if (type === 'promotionShare') {
@@ -326,11 +326,13 @@ export default class CommShareModal extends React.Component {
                 this.share(0);
             }
         });
-        array.push({
-            image: res.share.weiXinTimeLine, title: '朋友圈', onPress: () => {
-                this.share(1);
-            }
-        });
+        if (shareType === 0) {
+            array.push({
+                image: res.share.weiXinTimeLine, title: '朋友圈', onPress: () => {
+                    this.share(1);
+                }
+            });
+        }
         array.push({
             image: res.share.QQ, title: 'QQ好友', onPress: () => {
                 this.share(2);

@@ -16,7 +16,8 @@ class ApiEnvironment {
 
     constructor() {
         const envType = config.envType;
-        this.envType = envType && Object.keys(ApiConfig).indexOf(envType) >= 0 ? envType : 'dev';
+        this.envType = envType && Object.keys(ApiConfig).indexOf(envType) >= 0 ? envType : 'online';
+        store.save(KEY_ApiEnvironment, this.envType);
         //预上上线直接使用release
         // this.envType =  "pre_release"
         this.defaultTimeout = 15; // 请求默认超时时间 单位秒
@@ -68,24 +69,27 @@ class ApiEnvironment {
      * 从磁盘加载最近一次设置的HOST地址和网络超时时间
      * @returns {Promise<void>}
      */
-    async loadLastApiSettingFromDiskCache() {
-        try {
-            const envType = await store.get(KEY_ApiEnvironment);
+    loadLastApiSettingFromDiskCache() {
+        store.get(KEY_ApiEnvironment).then(envType => {
             if (envType && Object.keys(ApiConfig).indexOf(envType) >= 0) {
                 this.envType = envType;
                 if (ApiConfig[envType]) {
-                    await store.save(KEY_HostJson, ApiConfig[envType]);
+                    store.save(KEY_HostJson, ApiConfig[envType]);
                 }
             } else {
                 this.saveEnv(this.envType);
             }
-            const defaultTimeout = await store.get(KEY_DefaultFetchTimeout);
+        }).catch(e => {
+            console.log('获取环境配置失败！');
+        });
+
+        store.get(KEY_DefaultFetchTimeout).then(defaultTimeout => {
             if (defaultTimeout && Number(defaultTimeout) <= 60 && Number(defaultTimeout) > 0) {
                 this.defaultTimeout = Number(defaultTimeout);
             }
-        } catch (err) {
-            __DEV__ && console.error(`加载api-host或请求默认超时时间的配置时出错了:${err.toString()}`);
-        }
+        }).catch(e => {
+            console.log('获取连接超时配置失败！');
+        });
     }
 
     /**
@@ -93,12 +97,12 @@ class ApiEnvironment {
      * @param envType               不能传不被支持的类型
      * @returns {Promise<void>}
      */
-    async saveEnv(envType) {
+    saveEnv(envType) {
         try {
             if (envType && Object.keys(ApiConfig).indexOf(envType) >= 0) {
-                await store.save(KEY_ApiEnvironment, envType);
+                store.save(KEY_ApiEnvironment, envType);
                 if (ApiConfig[envType]) {
-                    await store.save(KEY_HostJson, ApiConfig[envType]);
+                    store.save(KEY_HostJson, ApiConfig[envType]);
                 }
                 this.envType = envType;
             } else {

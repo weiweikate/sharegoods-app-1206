@@ -52,7 +52,7 @@ export default class VersionUpdateModalView extends React.Component {
 
     componentWillMount() {
         if (Platform.OS !== 'ios') {
-            DeviceEventEmitter.addListener('UpdateEvent', (progress) => {
+            this.updateEvent = DeviceEventEmitter.addListener('UpdateEvent', (progress) => {
                 if (progress < 100) {
                     this.currProgress = progress;
                 } else {
