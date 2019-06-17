@@ -51,6 +51,20 @@ if (__DEV__) {
         'waiting:',
         waitingModuleNames.length
     );
+} else {
+    // 非开发环境，屏蔽所有console
+    global.console = {
+        info: () => {
+        },
+        log: () => {
+        },
+        warn: () => {
+        },
+        debug: () => {
+        },
+        error: () => {
+        }
+    };
 }
 
 

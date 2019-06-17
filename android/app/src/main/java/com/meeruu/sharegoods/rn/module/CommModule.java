@@ -34,6 +34,8 @@ import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.UiThreadUtil;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeMap;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.meeruu.commonlib.utils.AppUtils;
 import com.meeruu.commonlib.utils.BitmapUtils;
 import com.meeruu.commonlib.utils.FileUtils;
@@ -45,6 +47,7 @@ import com.meeruu.commonlib.utils.SDCardUtils;
 import com.meeruu.commonlib.utils.SecurityUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.sharegoods.bean.NetCommonParamsBean;
+import com.meeruu.sharegoods.event.Event;
 import com.meeruu.sharegoods.event.HideSplashEvent;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
 import com.meeruu.sharegoods.event.VersionUpdateEvent;
@@ -54,6 +57,8 @@ import com.meituan.android.walle.WalleChannelReader;
 import com.qiyukf.unicorn.api.Unicorn;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.util.HashSet;
@@ -76,6 +81,9 @@ public class CommModule extends ReactContextBaseJavaModule {
     public CommModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.mContext = reactContext;
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         this.mContext.addActivityEventListener(new ActivityEventListener() {
             @Override
             public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
@@ -548,5 +556,14 @@ public class CommModule extends ReactContextBaseJavaModule {
         intent.putExtra("web_url", url);
         intent.putExtra("url_action", "get");
         getCurrentActivity().startActivityForResult(intent, ParameterUtils.REQUEST_CODE_GONGMAO);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void event2RNHtmlPage(Event.MR2HTMLEvent event) {
+        WritableMap map = new WritableNativeMap();
+        map.putString("uri", event.getUrl());
+        this.mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit("Event_navigateHtmlPage", map);
+        LogUtils.d("**********");
     }
 }
