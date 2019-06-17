@@ -17,7 +17,7 @@ class ConfirmOrderModel {
     @observable
     canUseCou = true;
 
-    addressId =  310;
+    addressId =  '';
     orderParamVO = {};
     tokenCoin = 0
     userCouponCode = '';

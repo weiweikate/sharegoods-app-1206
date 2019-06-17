@@ -25,11 +25,13 @@ import SelectTicketModel from '../components/confirmOrder/SelectTicketModel';
 export default class ConfirmOrderPage extends BasePage {
     constructor(props) {
         super(props);
-        this.params.orderParamVO = {orderProducts: [{ skuCode: 'SKU000000890001', //string 平台skuCode
-                                        quantity: 1, //int 购买数量
-                activityCode: '', //string 活动code
-                batchNo: 1}],source : 1}
+        // this.params.orderParamVO = {orderProducts: [{ skuCode: 'SKU000000890001', //string 平台skuCode
+        //                                 quantity: 1, //int 购买数量
+        //         activityCode: '', //string 活动code
+        //         batchNo: 1}],source : 1}
         confirmOrderModel.orderParamVO = this.params.orderParamVO;
+        confirmOrderModel.couponsId = this.params.orderParamVO.couponsId;
+
     }
 
     $navigationBarOptions = {
