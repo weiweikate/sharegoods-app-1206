@@ -17,7 +17,8 @@ import {
     Platform,
     StyleSheet,
     ActionSheetIOS,
-    Alert
+    Alert,
+    ActivityIndicator
 } from 'react-native';
 //import * as typings from './image-viewer.type'
 // import {TransmitTransparently} from 'nt-transmit-transparently'
@@ -175,7 +176,7 @@ export default class FlyImageViewer extends Component {
         },
 
         loadingRender: () => {
-            return null;
+            return <ActivityIndicator animating={true}/>;
         },
 
         onSaveToCamera: () => {
@@ -592,6 +593,8 @@ export default class FlyImageViewer extends Component {
         this.jumpToCurrentImage();
     }
 
+
+
     /**
      * 获得整体内容
      */
@@ -605,20 +608,20 @@ export default class FlyImageViewer extends Component {
             let height = this.state.imageSizes[index] && this.state.imageSizes[index].height;
             const imageInfo = this.state.imageSizes[index];
 
-            let r = width / height;
-            if (width > height) {
-                // 如果宽大于屏幕宽度,整体缩放到宽度是屏幕宽度
-                if (width > screenWidth) {
-                    width = screenWidth;
-                    height = width / r;
-                }
-            } else {
-                // 如果高大于屏幕高度,整体缩放到高度是屏幕高度
-                if (height > screenHeight) {
-                    height = screenHeight;
-                    width = height * r;
-                }
+            // 如果宽大于屏幕宽度,整体缩放到宽度是屏幕宽度
+            if (width > screenWidth) {
+                const widthPixel = screenWidth / width;
+                width *= widthPixel;
+                height *= widthPixel;
             }
+
+            // 如果此时高度还大于屏幕高度,整体缩放到高度是屏幕高度
+            if (height > screenHeight) {
+                const HeightPixel = screenHeight / height;
+                width *= HeightPixel;
+                height *= HeightPixel;
+            }
+
             if (imageInfo.status === 'success' && this.props.enableImageZoom) {
 
                 return (
@@ -636,7 +639,8 @@ export default class FlyImageViewer extends Component {
                                onClick={this.handleClick.bind(this)}
                                onDoubleClick={this.handleDoubleClick.bind(this)}>
                         <ImageLoad style={[this.styles.imageStyle, { width: width, height: height }]}
-                                   source={{ uri: image }}/>
+                                   source={{ uri: image }}
+                        />
                     </ImageZoom>
                 );
             } else {
@@ -647,7 +651,7 @@ export default class FlyImageViewer extends Component {
                                                 onPress={this.handleClick.bind(this)}
                                                 style={this.styles.loadingTouchable}>
                                 <View style={this.styles.loadingContainer}>
-                                    {this.props.loadingRender()}
+                                    <ActivityIndicator animating={true} size={'large'}/>
                                 </View>
                             </TouchableHighlight>
                         );

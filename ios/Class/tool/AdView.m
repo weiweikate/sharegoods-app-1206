@@ -31,21 +31,21 @@
 {
   if (self = [super init]) {
     self.num = num;
-//    self.shapeLayer2 = [CAShapeLayer new];
-//    _shapeLayer2.lineWidth = 3;
-//    _shapeLayer2.strokeColor = [[UIColor colorWithHexString:@"aaaaaa"]colorWithAlphaComponent:0.5] .CGColor;
-//    _shapeLayer2.fillColor = [UIColor clearColor].CGColor;
-//    _shapeLayer2.strokeStart = 0;
-//    _shapeLayer2.strokeEnd = 1;
-//    [self.layer addSublayer:_shapeLayer2];
+    //    self.shapeLayer2 = [CAShapeLayer new];
+    //    _shapeLayer2.lineWidth = 3;
+    //    _shapeLayer2.strokeColor = [[UIColor colorWithHexString:@"aaaaaa"]colorWithAlphaComponent:0.5] .CGColor;
+    //    _shapeLayer2.fillColor = [UIColor clearColor].CGColor;
+    //    _shapeLayer2.strokeStart = 0;
+    //    _shapeLayer2.strokeEnd = 1;
+    //    [self.layer addSublayer:_shapeLayer2];
     
     self.shapeLayer = [CAShapeLayer new];
-//    _shapeLayer.lineWidth = 3;
-//    _shapeLayer.strokeColor = [UIColor redColor].CGColor;
-//    _shapeLayer.fillColor = [UIColor clearColor].CGColor;
-//    _shapeLayer.strokeStart = 0;
-//    _shapeLayer.strokeEnd = 1;
-//    [self.layer addSublayer:_shapeLayer];
+    //    _shapeLayer.lineWidth = 3;
+    //    _shapeLayer.strokeColor = [UIColor redColor].CGColor;
+    //    _shapeLayer.fillColor = [UIColor clearColor].CGColor;
+    //    _shapeLayer.strokeStart = 0;
+    //    _shapeLayer.strokeEnd = 1;
+    //    [self.layer addSublayer:_shapeLayer];
     
     self.label = [UILabel new];
     [self addSubview:self.label];
@@ -54,21 +54,21 @@
     self.label.textColor = [UIColor whiteColor];
     self.label.font = [UIFont systemFontOfSize:10];
     self.label.backgroundColor = [[UIColor colorWithHexString:@"000000"]colorWithAlphaComponent:0.2];
-//    self.label.layer.borderWidth = 2;
+    //    self.label.layer.borderWidth = 2;
     self.label.clipsToBounds = YES;
     self.label.text = [NSString stringWithFormat:@"跳过%lds",num];
-
+    
   }
   return self;
 }
 -(void)start{
-//  CABasicAnimation *an = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-//  an.fromValue = @1;
-//  an.toValue = @0;
-//  an.duration = self.num;
-//  an.fillMode = kCAFillModeForwards;
-//  an.removedOnCompletion = NO;
-//  [self.shapeLayer addAnimation:an forKey:nil];
+  //  CABasicAnimation *an = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+  //  an.fromValue = @1;
+  //  an.toValue = @0;
+  //  an.duration = self.num;
+  //  an.fillMode = kCAFillModeForwards;
+  //  an.removedOnCompletion = NO;
+  //  [self.shapeLayer addAnimation:an forKey:nil];
   NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(handleTimer:) userInfo:nil repeats:YES];
   [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
   [timer fire];
@@ -93,14 +93,14 @@
 - (void)layoutSubviews
 {
   [super layoutSubviews];
-//  self.shapeLayer.frame = self.bounds;
-//  self.shapeLayer2.frame = self.bounds;
+  //  self.shapeLayer.frame = self.bounds;
+  //  self.shapeLayer2.frame = self.bounds;
   self.label.frame = self.bounds;;
-//  UIBezierPath *path = [UIBezierPath new];
-//  //  [path moveToPoint:CGPointMake(self.width/2.0, 2)];
-//  [path addArcWithCenter:CGPointMake(self.width/2.0, self.height/2.0) radius:self.width/2.0-2 startAngle:M_PI_2*3 endAngle:M_PI_2*3+0.0001  clockwise:NO];
-//  _shapeLayer.path = path.CGPath;
-//  self.shapeLayer2.path = path.CGPath;
+  //  UIBezierPath *path = [UIBezierPath new];
+  //  //  [path moveToPoint:CGPointMake(self.width/2.0, 2)];
+  //  [path addArcWithCenter:CGPointMake(self.width/2.0, self.height/2.0) radius:self.width/2.0-2 startAngle:M_PI_2*3 endAngle:M_PI_2*3+0.0001  clockwise:NO];
+  //  _shapeLayer.path = path.CGPath;
+  //  self.shapeLayer2.path = path.CGPath;
 }
 @end
 @interface AdView()
@@ -113,6 +113,7 @@
 @property (nonatomic, strong)UIImage *adImg;
 @property (nonatomic, strong)UIImage *bgImg;
 @property(nonatomic, strong)NSString *linkTypeCode;
+@property(nonatomic, assign)BOOL tap;
 @end
 @implementation AdView
 
@@ -160,17 +161,17 @@
     self.isPlayAd = YES;
     return;
   }
-
-//  [self requestImageWithPath:[NSString stringWithFormat:@"%@",bgPath] completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
-//     dispatch_async(dispatch_get_main_queue(), ^{
-//       if (image) {
-//         self.bgImg = image;
-//       }else{
-//         //无广告
-//         self.isPlayAd = YES;
-//       }
-//     });
-//  }];
+  
+  //  [self requestImageWithPath:[NSString stringWithFormat:@"%@",bgPath] completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
+  //     dispatch_async(dispatch_get_main_queue(), ^{
+  //       if (image) {
+  //         self.bgImg = image;
+  //       }else{
+  //         //无广告
+  //         self.isPlayAd = YES;
+  //       }
+  //     });
+  //  }];
   UIImage* tmp = nil;
   
   if (imagePath) {
@@ -179,25 +180,25 @@
   }
   tmp = [[YYWebImageManager sharedManager].cache getImageForKey:bgPath];
   if (tmp) {
-     self.bgImg = tmp;
+    self.bgImg = tmp;
   }else{
     //无广告
     self.isPlayAd = YES;
     return;
   }
   
-
   
-//  [self requestImageWithPath:[NSString stringWithFormat:@"%@",imagePath] completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//      if (image) {
-//        self.adImg = image;
-//      }else{
-//        //无广告
-//        self.isPlayAd = YES;
-//      }
-//    });
-//  }];
+  
+  //  [self requestImageWithPath:[NSString stringWithFormat:@"%@",imagePath] completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
+  //    dispatch_async(dispatch_get_main_queue(), ^{
+  //      if (image) {
+  //        self.adImg = image;
+  //      }else{
+  //        //无广告
+  //        self.isPlayAd = YES;
+  //      }
+  //    });
+  //  }];
   
   
 }
@@ -210,11 +211,11 @@
   } transform:^UIImage * _Nullable(UIImage * _Nonnull image, NSURL * _Nonnull url) {
     return image;
   } completion:nil];
-
+  
 }
 
 - (void)requestImageWithPath: (NSString *)str
-completion:(YYWebImageCompletionBlock)completion
+                  completion:(YYWebImageCompletionBlock)completion
 {
   YYWebImageManager * imageManager =  [YYWebImageManager sharedManager];
   imageManager.cache.diskCache.ageLimit = 60*60*24*7;
@@ -248,7 +249,7 @@ completion:(YYWebImageCompletionBlock)completion
 - (void)setBgImg:(UIImage *)bgImg
 {
   _bgImg = bgImg;
-   [self showAd];
+  [self showAd];
 }
 
 - (void)showAd{
@@ -279,7 +280,7 @@ completion:(YYWebImageCompletionBlock)completion
       self.alpha = 0;
       self.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1.1, 1.1);
     } completion:^(BOOL finished) {
-//      [self removeFromSuperview];
+      //      [self removeFromSuperview];
     }];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -326,13 +327,15 @@ completion:(YYWebImageCompletionBlock)completion
 
 - (void)AdTap
 {
-  if (_linkTypeCode && _linkTypeCode.length > 0) {
+  if (_linkTypeCode && _linkTypeCode.length > 0 && !_tap) {
     self.isPlayAd = YES;
-    self.isLoadJS = YES;
-    GongMaoVC *vc = [GongMaoVC new];
-    vc.url = _linkTypeCode;
-    vc.webConstTitle = @"";
-    [self.currentViewController_XG.navigationController pushViewController:vc animated: NO];
+    //    self.isLoadJS = YES;
+    //    GongMaoVC *vc = [GongMaoVC new];
+    //    vc.url = _linkTypeCode;
+    //    vc.webConstTitle = @"";
+    //    [self.currentViewController_XG.navigationController pushViewController:vc animated: NO];
+    _tap = YES;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"EventToRN" object:@{@"uri": _linkTypeCode}];
   }
 }
 
@@ -342,7 +345,7 @@ completion:(YYWebImageCompletionBlock)completion
     _bgView = [UIImageView new];
     _bgView.clipsToBounds = YES;
     _bgView.contentMode = UIViewContentModeScaleAspectFill;
-     [self addSubview:_bgView];
+    [self addSubview:_bgView];
   }
   return _bgView;
 }

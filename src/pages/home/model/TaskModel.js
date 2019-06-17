@@ -187,9 +187,6 @@ class TaskModel {
                 }
                 return tasks;
             });
-            if (item.prizeValue) {
-                this.progress = this.progress + item.prizeValue;
-            }
             this.boxs = this.boxs.map(box => {
                 if (this.progress >= box.value && box.prizeStatus === 0) {
                     box.prizeStatus = 1;
