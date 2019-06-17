@@ -3,7 +3,7 @@ import {
     View,
 } from "react-native";
 import { orderDetailModel } from "../../model/OrderDetailModel";
-import { observer } from "mobx-react/native";
+import { observer } from "mobx-react";
 import StringUtils from "../../../../utils/StringUtils";
 import UserSingleItem from "../UserSingleItem";
 import DesignRule from '../../../../constants/DesignRule';

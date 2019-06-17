@@ -9,7 +9,7 @@ import DesignRule from "../../../../constants/DesignRule";
 import { orderDetailModel, assistDetailModel } from "../../model/OrderDetailModel";
 import OrderApi from "../../api/orderApi";
 import Toast from "../../../../utils/bridge";
-import { observer } from "mobx-react/native";
+import { observer } from "mobx-react";
 import RouterMap from "../../../../navigation/RouterMap";
 import { payStatus, payment, payStatusMsg } from "../../../payment/Payment";
 import { NavigationActions } from "react-navigation";

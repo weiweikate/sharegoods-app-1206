@@ -8,6 +8,7 @@
 
 #import "StorageFromRN.h"
 #import "NSDictionary+Util.h"
+#import <RNCAsyncStorage/RNCAsyncStorage.h>
 
 static NSString *const RCTStorageDirectory = @"RCTAsyncLocalStorage_V1";
 static NSString *const RCTManifestFileName = @"manifest.json";
@@ -40,7 +41,7 @@ static NSString *RCTGetStorageDirectory()
 
 + (NSDictionary *)configDic
 {
-  NSString * HostJson = [StorageFromRN getItem:@"HostJson"];
+  NSString * HostJson = [StorageFromRN getItem:@"@mr/hostJson"];
   NSDictionary *dic = @{};
   if (HostJson) {
     dic =  [NSDictionary dictionaryWithJsonString:HostJson];
@@ -59,7 +60,7 @@ static NSString *RCTGetStorageDirectory()
 }
 
 +(NSString *)getSG_Token{
-   NSString * token = [StorageFromRN getItem:@"USERTOKEN"];
+   NSString * token = [StorageFromRN getItem:@"@mr/userToken"];
   if (token) {
     return token;
   }
