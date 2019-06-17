@@ -1,7 +1,7 @@
 import { observable, flow, action } from 'mobx';
 import HomeApi from '../api/HomeAPI';
 import { homeType } from '../HomeTypes';
-import { get, save } from '@mr/rn-store';
+import store from '@mr/rn-store';
 
 const kHomeHotStore = '@home/kHomeHotStore';
 import ScreenUtil from '../../../utils/ScreenUtils';
@@ -21,7 +21,7 @@ class SubjectModule {
     loadSubjectList = flow(function* (isCache) {
         try {
             if (isCache) {
-                const storeRes = yield get(kHomeHotStore);
+                const storeRes = yield store.get(kHomeHotStore);
                 if (storeRes) {
                     this.computeHeight(storeRes);
                     this.subjectList = storeRes || [];
@@ -32,7 +32,7 @@ class SubjectModule {
             this.computeHeight(list);
             this.subjectList = list;
             homeModule.changeHomeList(homeType.homeHot);
-            save(kHomeHotStore, res.data);
+            store.save(kHomeHotStore, res.data);
         } catch (error) {
             console.log(error);
         }
