@@ -24,6 +24,7 @@ import com.meeruu.commonlib.config.BaseRequestConfig;
 import com.meeruu.commonlib.handler.WeakHandler;
 import com.meeruu.commonlib.server.RequestManager;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
+import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.SPCacheUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
@@ -158,7 +159,7 @@ public class MainActivity extends BaseActivity {
             ImageLoadUtils.loadNetImage(imgUrl, iv_adv_bg);
             if (!TextUtils.isEmpty(url)) {
                 ImageLoadUtils.loadScaleTypeNetImage(url, ivAdv,
-                        ScalingUtils.ScaleType.FIT_CENTER);
+                        ScalingUtils.ScaleType.FIT_CENTER, true);
             }
             initAdvEvent();
             startTimer();

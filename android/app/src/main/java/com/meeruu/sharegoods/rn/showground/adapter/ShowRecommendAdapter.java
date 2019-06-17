@@ -9,7 +9,6 @@ import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.SnapHelper;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -43,11 +42,13 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         super(new ArrayList<NewestShowGroundBean.DataBean>());
         NineGridView.setImageLoader(new NineGridView.ImageLoader() {
             @Override
-            public void onDisplayImage(Context context, SimpleDraweeView imageView, String url) {
+            public void onDisplayImage(Context context, SimpleDraweeView imageView, ImageInfo imageInfo) {
+                String url = imageInfo.getImageUrl();
                 String tag = (String) imageView.getTag();
                 if (!TextUtils.equals(tag, url)) {
                     imageView.setTag(url);
-                    ImageLoadUtils.loadRoundNetImage(url, imageView, radius_5);
+                    ImageLoadUtils.loadRoundNetImage(url, imageView, imageInfo.getImageViewWidth(),
+                            imageInfo.getImageViewHeight(), radius_5);
                 }
             }
         });
