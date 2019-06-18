@@ -3318,6 +3318,7 @@
 					"$(PROJECT_DIR)/Class/Modules/RSA/HBRSAHandler/openssl/include",
 					"$(PROJECT_DIR)/Class/openssl/include",
 					"$(PROJECT_DIR)/Class/libs/QIYU_iOS_SDK/SDK",
+					"\"$(SRCROOT)/../node_modules/@mr/rn-webview-bridge/ios/React-Native-Webview-Bridge\"",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
@@ -3474,6 +3475,7 @@
 					"$(PROJECT_DIR)/Class/Modules/RSA/HBRSAHandler/openssl/include",
 					"$(PROJECT_DIR)/Class/openssl/include",
 					"$(PROJECT_DIR)/Class/libs/QIYU_iOS_SDK/SDK",
+					"\"$(SRCROOT)/../node_modules/@mr/rn-webview-bridge/ios/React-Native-Webview-Bridge\"",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
@@ -3530,6 +3532,7 @@
 					"$(PROJECT_DIR)/Class/Modules/RSA/HBRSAHandler/openssl/include",
 					"$(PROJECT_DIR)/Class/openssl/include",
 					"$(PROJECT_DIR)/Class/libs/QIYU_iOS_SDK/SDK",
+					"\"$(SRCROOT)/../node_modules/@mr/rn-webview-bridge/ios/React-Native-Webview-Bridge\"",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
