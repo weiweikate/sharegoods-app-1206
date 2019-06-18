@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 15,
-        fontWeight: '400',
+        fontWeight: '500',
         color: DesignRule.mainColor
     },
     contentContainer: {

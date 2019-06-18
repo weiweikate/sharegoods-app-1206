@@ -613,7 +613,7 @@ let styles = StyleSheet.create({
     name: {
         fontSize: px2dp(13),
         color: DesignRule.textColor_mainTitle,
-        fontWeight: '400'
+        fontWeight: '600'
     },
     price: {
         fontSize: px2dp(13),

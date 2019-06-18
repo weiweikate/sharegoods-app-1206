@@ -168,13 +168,13 @@ const styles = StyleSheet.create({
         height: 22, width: 1, backgroundColor: DesignRule.lineColor_inGrayBg
     },
     shopSubText: {
-        paddingLeft: 15, paddingRight: 5, fontWeight: '400',
+        paddingLeft: 15, paddingRight: 5, fontWeight: '500',
         color: DesignRule.textColor_redWarn, fontSize: 14
     },
 
     nameText: {
         marginHorizontal: 15, paddingBottom: 5, paddingTop: 10,
-        color: DesignRule.textColor_mainTitle, fontSize: 16, fontWeight: '400'
+        color: DesignRule.textColor_mainTitle, fontSize: 16, fontWeight: '500'
     },
 
     secondNameText: {
@@ -258,7 +258,7 @@ const SuitItemViewStyles = StyleSheet.create({
         height: 40
     },
     LeftText: {
-        color: DesignRule.textColor_mainTitle, fontSize: 15, fontWeight: '400'
+        color: DesignRule.textColor_mainTitle, fontSize: 15, fontWeight: '500'
     },
     rightView: {
         flexDirection: 'row', alignItems: 'center'

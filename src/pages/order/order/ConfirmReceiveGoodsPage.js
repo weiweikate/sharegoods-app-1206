@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     firstTextStyle: {
         color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(20),
-        fontWeight: '400',
+        fontWeight: '600',
         marginTop: px2dp(10)
     },
     secTextStyle: { color: DesignRule.textColor_instruction, fontSize: px2dp(13), marginTop: px2dp(10) },

@@ -234,7 +234,7 @@ const Styles = StyleSheet.create(
             color: DesignRule.mainColor,
             paddingLeft: 20,
             paddingRight: 20,
-            fontWeight: '400'
+            fontWeight: '600'
         },
         btnBottomLineStyle: {
             height: 2,
@@ -250,7 +250,7 @@ const Styles = StyleSheet.create(
             width: ScreenUtils.width - 40,
             height: 40,
             fontSize: 14,
-            fontWeight: '400'
+            fontWeight: '600'
         },
         inputTextStyle: {
             flex: 1,
@@ -258,7 +258,7 @@ const Styles = StyleSheet.create(
             marginLeft: 20,
             height: 40,
             fontSize: 14,
-            fontWeight: '400'
+            fontWeight: '600'
         },
         lineStyle: {
             marginLeft: 20,

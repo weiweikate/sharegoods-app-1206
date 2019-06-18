@@ -207,7 +207,7 @@ let styles = StyleSheet.create({
     },
     money: {
         fontSize: px2dp(16),
-        fontWeight: '400'
+        fontWeight: '500'
     },
     unit: {
         marginHorizontal: px2dp(2.5),

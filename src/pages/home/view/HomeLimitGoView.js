@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
     },
     time: {
         color: '#FC533B',
-        fontWeight: '400',
+        fontWeight: '500',
         fontSize: px2dp(15)
 
     },
