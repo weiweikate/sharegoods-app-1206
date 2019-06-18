@@ -145,11 +145,11 @@ export default class MyPromotionPage extends BasePage {
 
         return(
             <Carousel
-                data={[1,2,3,4,5]}
+                data={[1,2,3,4,5,6]}
                 renderItem={this.renderLevelCard}
                 sliderWidth={ScreenUtils.width}
-                itemWidth={300}
-                inactiveSlideScale={0.90}
+                itemWidth={ScreenUtils.width-22}
+                inactiveSlideScale={1}
                 inactiveSlideOpacity={1}
                 enableMomentum={true}
                 activeSlideAlignment={'center'}
@@ -159,15 +159,25 @@ export default class MyPromotionPage extends BasePage {
         )
     };
 
-    renderLevelCard = ()=>{
-
+    renderLevelCard = ({ item, index })=>{
         return (
-            <ImageBackground source={HeaderBarBgImg} style={{
-                width: 290, height: px2dp(182) + ScreenUtils.statusBarHeight + 30,
-                flexDirection: 'row', paddingTop: ScreenUtils.statusBarHeight
-            }}>
-                <Text>123123123</Text>
-            </ImageBackground>
+            <View style={{alignItems:'center'}}>
+                <ImageBackground source={HeaderBarBgImg} style={{
+                    width: ScreenUtils.width-30, height: px2dp(182) + ScreenUtils.statusBarHeight + 30,
+                    flexDirection: 'row', paddingTop: ScreenUtils.statusBarHeight
+                }}>
+                    <Text>123123123</Text>
+                </ImageBackground>
+                <View style={{flex: 1, flexDirection: 'row', height: 16, alignItems: 'center'}}>
+                    {index !== 0 ? <View style={{width: 10, height: 10, borderRadius: 5, backgroundColor: 'red'}}/> :
+                        <View style={{width: 10,height: 10,}}/>}
+                    {index !== 0 ? <View style={{flex: 1, height: 4, marginLeft:10,marginRight:10, borderRadius: 5, backgroundColor: 'red'}}/> :
+                        <View style={{flex: 1, height: 4, marginLeft:10,marginRight:10}}/>}
+                    <View style={{width: 10, height: 10, borderRadius: 5, backgroundColor: 'red'}}/>
+                    {index !== 5 ? <View style={{flex: 1, height: 4, marginLeft:10,marginRight:10, borderRadius: 5, backgroundColor: 'red'}}/> :
+                        <View style={{flex: 1, height: 4, marginLeft:10,marginRight:10}}/>}
+                </View>
+            </View>
         )
     }
 
