@@ -96,12 +96,12 @@ class ApiEnvironment {
      * @param envType               不能传不被支持的类型
      * @returns {Promise<void>}
      */
-    saveEnv(envType) {
+    async saveEnv(envType) {
         try {
             if (envType && Object.keys(ApiConfig).indexOf(envType) >= 0) {
-                store.save(KEY_ApiEnvironment, envType);
+                await store.save(KEY_ApiEnvironment, envType);
                 if (ApiConfig[envType]) {
-                    store.save(KEY_HostJson, ApiConfig[envType]);
+                    await store.save(KEY_HostJson, ApiConfig[envType]);
                 }
                 this.envType = envType;
             } else {
