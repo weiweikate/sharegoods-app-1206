@@ -26,6 +26,6 @@ const styles = StyleSheet.create({
         color: DesignRule.textColor_secondTitle,
         fontSize: px2dp(16),
         marginLeft: px2dp(10),
-        fontWeight: '600'
+        fontWeight: '400'
     }
 });

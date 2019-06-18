@@ -219,7 +219,7 @@ export default class CommRegistView extends Component {
                         <Text style={{
                             fontSize: 17,
                             color: 'white',
-                            fontWeight: '600'
+                            fontWeight: '400'
                         }}>
                             {this.state.viewType ? '完成' : '下一步'}
                         </Text>

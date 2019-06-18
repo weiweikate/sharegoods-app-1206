@@ -38,7 +38,7 @@ const ui = {
         goodsListCurrentPrice: {
             fontSize: 14,
             color: '#EB2224',
-            fontWeight: 'bold'
+            fontWeight: '400'
         },
         goodsListOriginalPrice: {
             fontSize: 10,
@@ -843,10 +843,10 @@ const ui = {
                 lineHeight: 20
             },
             name_text: {
-                fontWeight: 'bold'
+                fontWeight: '400'
             },
             phone_text: {
-                fontWeight: 'bold',
+                fontWeight: '400',
                 fontSize: 12,
                 marginLeft: 30,
                 lineHeight: 20

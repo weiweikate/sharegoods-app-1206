@@ -76,7 +76,7 @@ let styles = StyleSheet.create({
     text: {
         color: '#333',
         fontSize: px2dp(14),
-        fontWeight: '600'
+        fontWeight: '400'
     },
     see: {
         color: '#666',

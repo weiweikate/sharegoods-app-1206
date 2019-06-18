@@ -234,7 +234,7 @@ export default class TaskVIew extends React.Component {
                 <MRText style={{
                     fontSize: px2dp(16),
                     color: DesignRule.textColor_secondTitle,
-                    fontWeight: '600',
+                    fontWeight: '400',
                     marginLeft: px2dp(10)
                 }}>{this.model.name}</MRText>
                 <MRText style={{
@@ -255,7 +255,7 @@ export default class TaskVIew extends React.Component {
                 <MRText style={{
                     fontSize: autoSizeWidth(13),
                     color: '#666666',
-                    fontWeight: '600'
+                    fontWeight: '400'
                 }}>{this.model.name}</MRText>
                 <View style={{ flex: 1 }}/>
                 <MRText style={{

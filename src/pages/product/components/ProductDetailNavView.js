@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
         flex: 1, justifyContent: 'center', alignItems: 'center', height: 44
     },
     centerText: {
-        color: DesignRule.textColor_mainTitle, fontSize: 14, fontWeight: 'bold'
+        color: DesignRule.textColor_mainTitle, fontSize: 14, fontWeight: '400'
     },
     amountView: {
         position: 'absolute', top: 4, right: 8, height: 16,

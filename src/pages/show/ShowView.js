@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     title: {
         color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(14),
-        fontWeight: '600',
+        fontWeight: '400',
         width: px2dp(33)
     },
     tagView: {

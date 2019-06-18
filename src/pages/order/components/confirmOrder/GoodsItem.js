@@ -99,7 +99,7 @@ const GoodsItem = props => {
                     flexDirection: 'row',
                     alignItems: 'flex-end'
                 }}>
-                    <Text style={{ color: DesignRule.mainColor, fontSize: 18, fontWeight: '600' }}>
+                    <Text style={{ color: DesignRule.mainColor, fontSize: 18, fontWeight: '400' }}>
                         <Text style={{ color: DesignRule.mainColor, fontSize: 13 ,marginBottom: 3}}>
                             {'¥'}
                         </Text>

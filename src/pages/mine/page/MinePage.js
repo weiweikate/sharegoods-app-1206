@@ -464,7 +464,7 @@ export default class MinePage extends BasePage {
                     <Text style={{
                         fontSize: DesignRule.fontSize_threeTitle,
                         color: DesignRule.white,
-                        fontWeight: 'bold'
+                        fontWeight: '400'
                     }}>
                         我的账户
                     </Text>
@@ -545,7 +545,7 @@ export default class MinePage extends BasePage {
                                 style={{
                                     fontSize: DesignRule.fontSize_threeTitle,
                                     color: DesignRule.textColor_mainTitle,
-                                    fontWeight: 'bold'
+                                    fontWeight: '400'
                                 }}/>
                     </View>
                     <TouchableWithoutFeedback onPress={this.jumpToAllOrder}>
@@ -592,7 +592,7 @@ export default class MinePage extends BasePage {
                             includeFontPadding: false,
                             fontSize: DesignRule.fontSize_threeTitle,
                             color: DesignRule.textColor_mainTitle,
-                            fontWeight: 'bold',
+                            fontWeight: '400',
                             width: ScreenUtils.width - DesignRule.margin_page * 2
                         }}>
                         常用工具

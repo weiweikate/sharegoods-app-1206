@@ -234,7 +234,7 @@ const Styles = StyleSheet.create(
             color: DesignRule.mainColor,
             paddingLeft: 20,
             paddingRight: 20,
-            fontWeight: '600'
+            fontWeight: '400'
         },
         btnBottomLineStyle: {
             height: 2,

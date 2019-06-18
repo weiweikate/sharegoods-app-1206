@@ -44,11 +44,11 @@ export class HeaderItemView extends Component {
                     minPrice == maxPrice
                         ?
                         <Text style={styles.priceText}>¥<Text
-                            style={{ fontSize: 24, fontWeight: 'bold' }}>{minPrice}</Text></Text>
+                            style={{ fontSize: 24, fontWeight: '400' }}>{minPrice}</Text></Text>
                         :
                         <Text style={styles.priceText}>¥<Text
-                            style={{ fontSize: 24, fontWeight: 'bold' }}>{minPrice}</Text>-¥<Text
-                            style={{ fontSize: 24, fontWeight: 'bold' }}>{maxPrice}</Text></Text>
+                            style={{ fontSize: 24, fontWeight: '400' }}>{minPrice}</Text>-¥<Text
+                            style={{ fontSize: 24, fontWeight: '400' }}>{maxPrice}</Text></Text>
                 }
                 <Text style={styles.originalText}>¥{originalPrice}</Text>
                 {
@@ -168,13 +168,13 @@ const styles = StyleSheet.create({
         height: 22, width: 1, backgroundColor: DesignRule.lineColor_inGrayBg
     },
     shopSubText: {
-        paddingLeft: 15, paddingRight: 5, fontWeight: 'bold',
+        paddingLeft: 15, paddingRight: 5, fontWeight: '400',
         color: DesignRule.textColor_redWarn, fontSize: 14
     },
 
     nameText: {
         marginHorizontal: 15, paddingBottom: 5, paddingTop: 10,
-        color: DesignRule.textColor_mainTitle, fontSize: 16, fontWeight: 'bold'
+        color: DesignRule.textColor_mainTitle, fontSize: 16, fontWeight: '400'
     },
 
     secondNameText: {
@@ -258,7 +258,7 @@ const SuitItemViewStyles = StyleSheet.create({
         height: 40
     },
     LeftText: {
-        color: DesignRule.textColor_mainTitle, fontSize: 15, fontWeight: 'bold'
+        color: DesignRule.textColor_mainTitle, fontSize: 15, fontWeight: '400'
     },
     rightView: {
         flexDirection: 'row', alignItems: 'center'

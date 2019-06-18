@@ -166,6 +166,6 @@ let styles = StyleSheet.create({
     },
     money: {
         fontSize: px2dp(16),
-        fontWeight: '600'
+        fontWeight: '400'
     }
 });

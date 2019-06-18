@@ -48,7 +48,7 @@ export default class CouponNormalItem extends Component {
                                 <View>
                                     <Text style={{
                                         fontSize: (item.value && item.value.length < 3 ? 34 : 20),
-                                        fontWeight:'bold',
+                                        fontWeight:'400',
                                         color: item.status === 0 ? (item.levelimit ? '#FF80A7' : '#FF0050') : '#FF80A7',
                                     }} allowFontScaling={false}>{item.value}</Text>
                                 </View>

@@ -274,7 +274,7 @@ let styles = StyleSheet.create({
     recTitle: {
         color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(19),
-        fontWeight: '600'
+        fontWeight: '400'
     },
     text: {
         color: '#999',
