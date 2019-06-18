@@ -200,11 +200,8 @@ class User {
     // 从缓存磁盘读取用户上一次使用的信息记录
     readUserInfoFromDisk() {
         store.get(USERINFOCACHEKEY).then((infoStr) => {
-            if (infoStr && typeof infoStr === 'string') {
-                const info = JSON.parse(infoStr);
-                console.log('readUserInfoFromDisk', info);
-                // bridge.setCookies(info);
-                this.saveUserInfo(info, false);
+            if (infoStr) {
+                this.saveUserInfo(infoStr, false);
             } else {
                 bridge.clearCookies();
             }
