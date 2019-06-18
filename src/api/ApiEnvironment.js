@@ -6,9 +6,9 @@
 import store from '@mr/rn-store';
 import config from '../../config';
 // 磁盘缓存key
-const KEY_ApiEnvironment = '@mr/ApiEnvironment';
+const KEY_ApiEnvironment = '@mr/apiEnvironment';
 const KEY_HostJson = '@mr/hostJson';
-const KEY_DefaultFetchTimeout = '@mr/DefaultFetchTimeout';
+const KEY_DefaultFetchTimeout = '@mr/defaultFetchTimeout';
 // HOST配置
 const ApiConfig = config.env;
 
@@ -17,7 +17,6 @@ class ApiEnvironment {
     constructor() {
         const envType = config.envType;
         this.envType = envType && Object.keys(ApiConfig).indexOf(envType) >= 0 ? envType : 'online';
-        store.save(KEY_ApiEnvironment, this.envType);
         //预上上线直接使用release
         // this.envType =  "pre_release"
         this.defaultTimeout = 15; // 请求默认超时时间 单位秒
