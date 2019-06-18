@@ -407,7 +407,7 @@ export default class CommShareModal extends React.Component {
                                             color: DesignRule.textColor_mainTitle,
                                             fontSize: autoSizeWidth(15),
                                             marginHorizontal: 7,
-                                            fontWeight: 'bold'
+                                            fontWeight: '600'
                                         }}>{'分享秀一秀 '}<MRText
                                             style={{ color: DesignRule.mainColor }}>{shareMoneyText || ''}</MRText>{shareMoneyText ? '起' : ''}
                                         </MRText>
@@ -416,7 +416,7 @@ export default class CommShareModal extends React.Component {
                                             color: DesignRule.textColor_mainTitle,
                                             fontSize: autoSizeWidth(15),
                                             marginHorizontal: 7,
-                                            fontWeight: 'bold'
+                                            fontWeight: '600'
                                         }}>分享到</MRText>
                                 }
                                 <View style={{

@@ -638,7 +638,7 @@ let styles = StyleSheet.create({
     name: {
         fontSize: px2dp(13),
         color: DesignRule.textColor_mainTitle,
-        fontWeight: '600'
+        fontWeight: '400'
     },
     price: {
         fontSize: px2dp(13),
@@ -841,7 +841,7 @@ let styles = StyleSheet.create({
         fontSize: DesignRule.fontSize_secondTitle,
         marginTop: px2dp(10),
         marginBottom: px2dp(13),
-        fontWeight: 'bold'
+        fontWeight: '400'
     }
 });
 

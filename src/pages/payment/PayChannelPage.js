@@ -415,7 +415,7 @@ const styles = StyleSheet.create({
         marginTop: px2dp(10),
         color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(30),
-        fontWeight: '600'
+        fontWeight: '400'
     },
     needView: {
         height: px2dp(110),

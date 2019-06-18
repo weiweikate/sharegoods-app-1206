@@ -279,7 +279,7 @@ export default class MyHelperPage extends BasePage {
                         overflow: 'hidden',
                     }}>
                         <Text style={{fontSize: 16,
-                            fontWeight: '600',
+                            fontWeight: '400',
                             marginTop: 30,
                             textAlign: 'center'
                         }}>

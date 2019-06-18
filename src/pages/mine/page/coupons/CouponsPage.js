@@ -74,8 +74,7 @@ export default class CouponsPage extends BasePage {
                 animationType='fade'
                 onRequestClose={() => {
                 }}
-                style={{ flex: 1 }}
-                ref="modal">
+                style={{ flex: 1 }}>
                 <NoMoreClick onPress={() => {
                     this.setState({ modalVisible: false });
                 }} activeOpacity={1}>

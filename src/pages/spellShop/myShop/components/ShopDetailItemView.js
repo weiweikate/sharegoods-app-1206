@@ -206,7 +206,7 @@ const ProductItemViewStyles = StyleSheet.create({
     },
 
     itemPrice: {
-        fontSize: 12, color: DesignRule.mainColor, fontWeight: 'bold'
+        fontSize: 12, color: DesignRule.mainColor, fontWeight: '600'
     },
     /*进度条*/
     progressBgView: {

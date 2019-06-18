@@ -229,6 +229,6 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
             recyclerView.setVisibility(View.GONE);
             recyclerView.setTag(null);
         }
-        helper.addOnClickListener(R.id.icon_download, R.id.icon_share);
+        helper.addOnClickListener(R.id.icon_download, R.id.icon_share, R.id.content);
     }
 }
