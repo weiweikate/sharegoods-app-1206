@@ -277,8 +277,9 @@
 
 - (void)AdTap
 {
+  self.isPlayAd = YES;
+  [self removeFromWindow];
   if (_linkTypeCode && _linkTypeCode.length > 0 && !_tap) {
-    self.isPlayAd = YES;
     _tap = YES;
     [[NSNotificationCenter defaultCenter] postNotificationName:@"EventToRN" object:@{@"uri": _linkTypeCode}];
   }
