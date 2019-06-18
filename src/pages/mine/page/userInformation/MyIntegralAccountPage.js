@@ -5,11 +5,12 @@ import {
     View,
     ImageBackground,
     TouchableWithoutFeedback,
-    Image
+    Image,
+    Animated
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import { RefreshList } from '../../../../components/ui';
-// import AccountItem from '../../components/AccountItem';
+import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DataUtils from '../../../../utils/DateUtils';
 import user from '../../../../model/user';
@@ -22,6 +23,7 @@ import { MRText as Text } from '../../../../components/ui';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
 import StringUtils from '../../../../utils/StringUtils';
 import RouterMap from '../../../../navigation/RouterMap';
+import StickyHeader from '../../components/StickyHeader'
 
 const { px2dp } = ScreenUtils;
 
@@ -61,8 +63,10 @@ export default class MyIntegralAccountPage extends BasePage {
         this.state = {
             viewData: [],
             currentPage: 1,
-            isEmpty: false
-        };
+            isEmpty: false,
+            scrollY: new Animated.Value(0)
+
+    };
         this.currentPage = 1;
     }
 
@@ -76,19 +80,36 @@ export default class MyIntegralAccountPage extends BasePage {
         return (
             <View style={styles.mainContainer}>
                 {this.renderHeader()}
-                {this.state.viewData && this.state.viewData.length > 0 ? null : this.renderReHeader()}
-                <RefreshList
-                    ListHeaderComponent={this.renderReHeader}
-                    data={this.state.viewData}
-                    renderItem={this.renderItem}
-                    onRefresh={this.onRefresh}
-                    onLoadMore={this.onLoadMore}
-                    extraData={this.state}
-                    progressViewOffset={30}
-                    isEmpty={this.state.isEmpty}
-                    emptyTip={'暂无明细数据～'}
-                />
-                {this._accountInfoRender()}
+                <Animated.ScrollView
+                    onScroll={Animated.event([{
+                        nativeEvent: { contentOffset: { y: this.state.scrollY, } }
+                    }], { useNativeDriver: true })}
+                    scrollEventThrottle={1}
+                    bounces={false}
+                    showsVerticalScrollIndicator={false}
+                    style={{backgroundColor:'white'}}
+                >
+                    <ImageBackground resizeMode={'stretch'} source={account_bg}
+                                     style={{marginBottom:40,height:px2dp(160),width:ScreenUtils.width}}>
+                    {this._accountInfoRender()}
+                    </ImageBackground>
+                    <StickyHeader
+                        stickyHeaderY={px2dp(202)} // 滑动到多少悬浮
+                        stickyScrollY={this.state.scrollY}
+                    >
+                        {this.renderReHeader()}
+                    </StickyHeader>
+                    <RefreshList
+                        data={this.state.viewData}
+                        renderItem={this.renderItem}
+                        onRefresh={this.onRefresh}
+                        onLoadMore={this.onLoadMore}
+                        extraData={this.state}
+                        progressViewOffset={30}
+                        isEmpty={this.state.isEmpty}
+                        emptyTip={'暂无明细数据～'}
+                    />
+                </Animated.ScrollView>
             </View>
         );
     }
@@ -97,8 +118,8 @@ export default class MyIntegralAccountPage extends BasePage {
         return (
             <ImageBackground source={account_bg_white} resizeMode={'stretch'} style={{
                 position: 'absolute',
-                top: px2dp(80),
-                height: px2dp(140),
+                top: px2dp(10),
+                height: px2dp(174),
                 width: ScreenUtils.width,
                 left: 0,
                 paddingHorizontal: DesignRule.margin_page
@@ -126,8 +147,6 @@ export default class MyIntegralAccountPage extends BasePage {
                     color: DesignRule.textColor_mainTitle,
                     fontSize: 48,
                     marginLeft: DesignRule.margin_page,
-                    marginTop: px2dp(15),
-                    marginBottom: px2dp(30)
                 }}>{user.userScore ? user.userScore : 0}</Text>
             </ImageBackground>
         );
@@ -135,7 +154,7 @@ export default class MyIntegralAccountPage extends BasePage {
 
     renderHeader = () => {
         return (
-            <ImageBackground resizeMode={'stretch'} source={account_bg} style={styles.container}>
+            <ImageBackground resizeMode={'stretch'} source={account_bg} style={{width:ScreenUtils.width}}>
                 <View style={styles.headerWrapper}>
                     <TouchableWithoutFeedback onPress={() => {
                         this.$navigateBack();
@@ -161,7 +180,8 @@ export default class MyIntegralAccountPage extends BasePage {
                 flexDirection: 'row',
                 alignItems: 'center',
                 width: ScreenUtils.width,
-                paddingBottom: 20,
+                paddingBottom: 10,
+                paddingTop: 10,
                 backgroundColor: 'white'
             }}>
                 <Image source={item.iconImage} style={{ marginLeft: 15, width: 40, height: 40 }}/>
@@ -191,29 +211,41 @@ export default class MyIntegralAccountPage extends BasePage {
             </View>
         );
     };
+
     renderReHeader = () => {
         return (
-            <View
-                style={{
-                    backgroundColor: 'white',
-                    paddingLeft: 15,
-                    paddingTop: 52,
-                    paddingBottom: 20,
-                    flexDirection: 'row',
-                    alignItems: 'center'
-                }}>
-                <View style={{
-                    backgroundColor: DesignRule.mainColor,
-                    width: 2,
-                    height: 8,
-                    borderRadius: 1,
-                    marginRight: 5
-                }}/>
-                <Text style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}>账户明细</Text>
+            <View style={{flex: 1, backgroundColor: 'white'}}>
+                <ScrollableTabView
+                    onChangeTab={(obj) => {}}
+                    style={{flex: 1, width: ScreenUtils.width*2/3, marginBottom: ScreenUtils.safeBottom}}
+                    scrollWithoutAnimation={true}
+                    renderTabBar={this._renderTabBar}
+                    //进界面的时候打算进第几个
+                    initialPage={0}
+                >
+                    <View tabLabel={'全部'}/>
+                    <View tabLabel={'收入'}/>
+                    <View tabLabel={'支出'}/>
+                    <View tabLabel={'待入账'}/>
+                </ScrollableTabView>
             </View>
+
         );
     };
 
+    _renderTabBar = () => {
+        return (
+            <DefaultTabBar
+                backgroundColor={'white'}
+                activeTextColor={DesignRule.mainColor}
+                inactiveTextColor={DesignRule.textColor_instruction}
+                textStyle={styles.tabBarText}
+                underlineStyle={styles.tabBarUnderline}
+                style={styles.tabBar}
+                tabStyle={styles.tab}
+            />
+        )
+    };
     //**********************************BusinessPart******************************************
     componentDidMount() {
         this.onRefresh();
@@ -283,7 +315,25 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: DesignRule.bgColor
     },
-
+    tabBar: {
+        width: ScreenUtils.width*2/3,
+        height: 40,
+        borderWidth: 0,
+        borderColor: DesignRule.lineColor_inWhiteBg
+    },
+    tab: {
+        paddingBottom: 0
+    },
+    tabBarText: {
+        fontSize: 15
+    },
+    tabBarUnderline: {
+        width: 10,
+        height: 2,
+        marginHorizontal: (ScreenUtils.width*2/3 - 10 * 4) / 8,
+        backgroundColor: DesignRule.mainColor,
+        borderRadius: 1
+    },
     container: {
         height: px2dp(188),
         width: ScreenUtils.width
@@ -315,7 +365,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingRight: DesignRule.margin_page,
         marginTop: ScreenUtils.statusBarHeight,
-        height: 44
+        height: 44,
+        width: ScreenUtils.width
     }
 });
 
