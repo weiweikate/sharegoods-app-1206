@@ -662,7 +662,7 @@ export default class MinePage extends BasePage {
                                     marginLeft: 10,
                                     fontSize: DesignRule.fontSize_threeTitle,
                                     color: DesignRule.textColor_mainTitle,
-                                    fontWeight: 'bold'
+                                    fontWeight: '600'
                                 }}/>
                     </View>
                     <TouchableWithoutFeedback onPress={this.jumpToAllOrder}>
@@ -710,8 +710,8 @@ export default class MinePage extends BasePage {
                             includeFontPadding: false,
                             fontSize: DesignRule.fontSize_threeTitle,
                             color: DesignRule.textColor_mainTitle,
-                            fontWeight: 'bold',
                             marginLeft: 10,
+                            fontWeight: '600',
                             width: ScreenUtils.width - DesignRule.margin_page * 2
                         }}>
                         常用工具

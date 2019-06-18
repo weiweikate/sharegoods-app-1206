@@ -97,7 +97,7 @@ export class ActivityDidBeginView extends Component {
             }}>
                 <View style={DidBeginViewStyles.leftView}>
                     <MRText style={DidBeginViewStyles.priceText}>¥<MRText
-                        style={{ fontSize: 36, fontWeight: 'bold' }}>{promotionPrice}</MRText></MRText>
+                        style={{ fontSize: 36, fontWeight: '400' }}>{promotionPrice}</MRText></MRText>
                     <View style={{ flex: 1 }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 3 }}>
                             <View style={DidBeginViewStyles.skillView}>
