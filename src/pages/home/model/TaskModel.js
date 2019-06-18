@@ -26,7 +26,6 @@ const activity_mission_main_no = 'activity_mission_main_no';    // 主线任务
 const activity_mission_daily_no = 'activity_mission_daily_no';     // 日常任务
 
 class TaskModel {
-    type = 'home';
     @observable
     show = false;
     @observable
@@ -38,7 +37,7 @@ class TaskModel {
     @observable
     homeHeight = 0; //
     @observable
-    expanded = false;
+    expanded = true;
     @observable
     tasks = [];
     @observable
@@ -56,7 +55,9 @@ class TaskModel {
     @action
     getLocationExpanded() {
         store.get('@mr/taskExpanded' + this.type).then((data) => {
-            this.expanded = data.expanded;
+            if (data) {
+                this.expanded = data.expanded;
+            }
             if (this.type === 'home') {
                 this.calculateHomeHeight();
             }
@@ -186,9 +187,6 @@ class TaskModel {
                 }
                 return tasks;
             });
-            if (item.prizeValue) {
-                this.progress = this.progress + item.prizeValue;
-            }
             this.boxs = this.boxs.map(box => {
                 if (this.progress >= box.value && box.prizeStatus === 0) {
                     box.prizeStatus = 1;
@@ -226,6 +224,7 @@ class TaskModel {
 }
 
 const taskModel = new TaskModel();
+taskModel.type = 'home';
 taskModel.getLocationExpanded();
 const mineTaskModel = new TaskModel();
 mineTaskModel.type = 'mine';

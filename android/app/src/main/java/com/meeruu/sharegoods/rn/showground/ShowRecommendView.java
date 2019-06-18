@@ -204,21 +204,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(final BaseQuickAdapter adapter, View view1, final int position) {
-                final List<NewestShowGroundBean.DataBean> data = adapter.getData();
-                if (data != null) {
-                    NewestShowGroundBean.DataBean item = data.get(position);
-                    String json = JSONObject.toJSONString(item);
-                    Map map = JSONObject.parseObject(json, new TypeReference<Map>() {
-                    });
-                    map.put("index", position);
-                    WritableMap realData = Arguments.makeNativeMap(map);
-                    if (eventDispatcher != null) {
-                        itemPressEvent = new onItemPressEvent();
-                        itemPressEvent.init(view.getId());
-                        itemPressEvent.setData(realData);
-                        eventDispatcher.dispatchEvent(itemPressEvent);
-                    }
-                }
+                toDetail(position, view);
             }
         });
         adapter.setLoadMoreView(new CustomLoadMoreView());
@@ -265,6 +251,23 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         });
     }
 
+    private void toDetail(int position, View view) {
+        final List<NewestShowGroundBean.DataBean> data = adapter.getData();
+        if (data != null) {
+            NewestShowGroundBean.DataBean item = data.get(position);
+            String json = JSONObject.toJSONString(item);
+            Map map = JSONObject.parseObject(json, new TypeReference<Map>() {
+            });
+            map.put("index", position);
+            WritableMap realData = Arguments.makeNativeMap(map);
+            if (eventDispatcher != null) {
+                itemPressEvent = new onItemPressEvent();
+                itemPressEvent.init(view.getId());
+                itemPressEvent.setData(realData);
+                eventDispatcher.dispatchEvent(itemPressEvent);
+            }
+        }
+    }
 
     private void setRecyclerViewItemEvent(final View view) {
         recyclerView.addOnItemTouchListener(new OnItemChildClickListener() {
@@ -276,12 +279,11 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
                 switch (id) {
                     case R.id.icon_hand:
                         delayHandle(bean, view, position, data);
-
                         break;
                     case R.id.icon_download:
                         delayDownload(view, position, bean);
                         break;
-                    case R.id.icon_share: {
+                    case R.id.icon_share:
                         onSharePressEvent.init(view.getId());
                         String jsonStr = JSON.toJSONString(bean);
                         Map map = JSONObject.parseObject(jsonStr, new TypeReference<Map>() {
@@ -292,8 +294,10 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
                         WritableMap realData = Arguments.makeNativeMap(result);
                         onSharePressEvent.setData(realData);
                         eventDispatcher.dispatchEvent(onSharePressEvent);
-                    }
-                    break;
+                        break;
+                    case R.id.content:
+                        toDetail(position, view);
+                        break;
                     default:
                         break;
                 }

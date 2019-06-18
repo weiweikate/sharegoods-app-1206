@@ -115,7 +115,7 @@
     .widthIs(15)
     .leftSpaceToView(self.imageView, 10)
     .bottomSpaceToView(self.imageView, 10);
-    
+
     _numLb = [UILabel new];
     _numLb.textColor = [UIColor colorWithHexString:@"FFFFFF"];
     _numLb.font = [UIFont systemFontOfSize:10];
@@ -135,7 +135,7 @@
   CGFloat itemWidth=  [UIScreen mainScreen].bounds.size.width / 2.0 * [UIScreen mainScreen].scale;
   NSString * showImage = model.showImage;
   if ([showImage containsString:@"sharegoodsmall"]) {
-    showImage = [NSString stringWithFormat:@"%@?x-oss-process=image/resize,m_lfit,w_%0.0lf,h_%0.0lf",showImage,itemWidth,itemWidth/model.aspectRatio];
+    showImage = [NSString stringWithFormat:@"%@?x-oss-process=image/resize,m_lfit,w_%0.0lf,h_%0.0lf/quality,Q_80/format,jpg",showImage,itemWidth,itemWidth/model.aspectRatio];
   }
   [self.imageView setImageWithURL:[NSURL URLWithString:showImage]
                       placeholder:[UIImage imageNamed:@"default_img"]];

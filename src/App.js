@@ -11,7 +11,8 @@ import {
     StyleSheet,
     Text,
     View,
-    InteractionManager
+    InteractionManager,
+    NativeAppEventEmitter
     // Image
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
@@ -21,7 +22,7 @@ import Navigator, { getCurrentRouteName } from './navigation/Navigator';
 import { SpellShopFlag, SpellShopTab } from './navigation/Tab';
 import { checkInitResult } from './pages/login/model/PhoneAuthenAction';
 import loginModel from './pages/login/model/LoginModel';
-import RouterMap from './navigation/RouterMap';
+import RouterMap, { navigate } from './navigation/RouterMap';
 import user from '../src/model/user';
 import apiEnvironment from './api/ApiEnvironment';
 import CONFIG from '../config';
@@ -51,6 +52,20 @@ if (__DEV__) {
         'waiting:',
         waitingModuleNames.length
     );
+} else {
+    // 非开发环境，屏蔽所有console
+    global.console = {
+        info: () => {
+        },
+        log: () => {
+        },
+        warn: () => {
+        },
+        debug: () => {
+        },
+        error: () => {
+        }
+    };
 }
 
 
@@ -75,6 +90,7 @@ class App extends Component {
     async componentWillMount() {
         // 禁止重启
         codePush.disallowRestart();
+        this.subscription && this.subscription.remove();
         // code push
         codePush.sync({
             updateDialog: false,
@@ -89,6 +105,17 @@ class App extends Component {
     }
 
     componentDidMount() {
+        this.subscription = NativeAppEventEmitter.addListener(
+            'Event_navigateHtmlPage',
+            (reminder) => {
+                this.timer = setInterval(()=>{
+                    if (global.$navigator){
+                        navigate('HtmlPage', {uri: reminder.uri})
+                        clearInterval(this.timer)
+                    }
+                },100)
+            }
+        );
         // 在加载完了，允许重启
         codePush.allowRestart();
         //初始化init  定位存储  和app变活跃 会定位

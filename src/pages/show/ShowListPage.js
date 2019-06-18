@@ -424,7 +424,7 @@ let styles = StyleSheet.create({
     index: {
         color: DesignRule.textColor_secondTitle,
         fontSize: px2dp(13),
-        fontWeight: '600'
+        fontWeight: '500'
     },
     activityIndex: {
         color: DesignRule.mainColor,
