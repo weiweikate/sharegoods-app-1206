@@ -271,11 +271,6 @@ let styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-    recTitle: {
-        color: DesignRule.textColor_mainTitle,
-        fontSize: px2dp(19),
-        fontWeight: '600'
-    },
     text: {
         color: '#999',
         fontSize: px2dp(11),

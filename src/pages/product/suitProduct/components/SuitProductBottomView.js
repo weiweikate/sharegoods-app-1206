@@ -65,6 +65,6 @@ const styles = StyleSheet.create({
         height: 34, width: ScreenUtils.px2dp(100), borderRadius: 17
     },
     rightText: {
-        fontSize: 14, color: DesignRule.white, fontWeight: 'bold'
+        fontSize: 14, color: DesignRule.white, fontWeight: '600'
     }
 });

@@ -192,7 +192,7 @@ export default class CategorySearchPage extends BasePage {
                 }}>
                     <Text style={{
                         fontSize: 13,
-                        fontWeight: item.index === this.state.leftIndex ? 'bold' : 'normal',
+                        fontWeight: item.index === this.state.leftIndex ? '600' : 'normal',
                         color: DesignRule.textColor_mainTitle
                     }} allowFontScaling={false}>
                         {item.item.name.length > 4 ? item.item.name.substr(0, 4) + '...' : item.item.name}
@@ -307,7 +307,7 @@ export default class CategorySearchPage extends BasePage {
         return (
             <UIText value={section && section.title}
                     style={{
-                        fontWeight: 'bold',
+                        fontWeight: '600',
                         fontSize: 13,
                         width: ScreenUtils.width - 110,
                         color: DesignRule.textColor_mainTitle,

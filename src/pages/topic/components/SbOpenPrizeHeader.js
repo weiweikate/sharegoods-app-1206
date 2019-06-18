@@ -204,7 +204,7 @@ const itemViewStyle = StyleSheet.create({
         // marginTop: 5,
         color: DesignRule.textColor_mainTitle,
         textAlign: 'center',
-        fontWeight: '800',
+        fontWeight: '400',
         fontSize: 17
     },
     itemBottomTextStyle: {
@@ -212,7 +212,7 @@ const itemViewStyle = StyleSheet.create({
         zIndex: 20,
         color: DesignRule.textColor_instruction,
         textAlign: 'center',
-        fontWeight: '500',
+        fontWeight: '300',
         fontSize: 12
     }
 });

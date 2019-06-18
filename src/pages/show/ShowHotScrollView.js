@@ -113,7 +113,7 @@ let styles = StyleSheet.create({
     title: {
         color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(19),
-        fontWeight: '600'
+        fontWeight: '400'
     },
     scroll: {
         height: px2dp(175)

@@ -219,7 +219,7 @@ export default class CommRegistView extends Component {
                         <Text style={{
                             fontSize: 17,
                             color: 'white',
-                            fontWeight: '600'
+                            fontWeight: '500'
                         }}>
                             {this.state.viewType ? '完成' : '下一步'}
                         </Text>
@@ -303,7 +303,7 @@ const Styles = StyleSheet.create(
         inputTextStyle: {
             flex: 1,
             fontSize: 14,
-            fontWeight: '400'
+            fontWeight: '600'
         }
     }
 );
