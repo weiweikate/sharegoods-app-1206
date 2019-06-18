@@ -24,8 +24,10 @@ import UIImage from '../../components/ui/UIImage';
 import Emoticons, * as emoticons from '../../comm/components/emoticons';
 import EmptyUtils from '../../utils/EmptyUtils';
 import ShowApi from './ShowApi';
+import RouterMap from '../../navigation/RouterMap';
 
-const { addIcon, delIcon, iconShowDown, iconShowEmoji, addShowIcon } = res;
+const { addIcon, delIcon, iconShowDown, iconShowEmoji, addShowIcon, showTagIcon } = res;
+const { arrow_right_black } = res.button;
 
 const { px2dp } = ScreenUtils;
 
@@ -42,6 +44,7 @@ export default class ReleaseNotesPage extends BasePage {
             showEmoji: false,
             showEmojiButton: false,
             text: '',
+            titleText: '',
             keyBoardHeight: 0,
             products: []
         };
@@ -85,35 +88,35 @@ export default class ReleaseNotesPage extends BasePage {
         );
     };
 
-    _publish=()=>{
-        if(EmptyUtils.isEmptyArr(this.state.imageArr)){
+    _publish = () => {
+        if (EmptyUtils.isEmptyArr(this.state.imageArr)) {
             this.$toastShow('至少需要上传一张图片哦');
             return;
         }
         let content = this.state.text || '';
         let products = this.state.products || [];
         let images = this.state.imageArr;
-        let urls = images.map((value)=>{
+        let urls = images.map((value) => {
             return `${value.url}?width=${value.width}&height=${value.height}`;
-        })
-        let productsPar = products.map((value)=>{
+        });
+        let productsPar = products.map((value) => {
             return value.spuCode;
-        })
+        });
         let params = {
             content,
-            images:urls,
-            products:productsPar
-        }
-        ShowApi.publishShow(params).then((data)=>{
+            images: urls,
+            products: productsPar
+        };
+        ShowApi.publishShow(params).then((data) => {
             this.props.navigation.popToTop();
             this.props.navigation.navigate('ShowListPage');
-            if(data.data){
-                DeviceEventEmitter.emit('PublishShowFinish',JSON.stringify(data.data));
+            if (data.data) {
+                DeviceEventEmitter.emit('PublishShowFinish', JSON.stringify(data.data));
             }
-        }).catch((error)=>{
+        }).catch((error) => {
             this.$toastShow(error.msg || '网络错误');
-        })
-    }
+        });
+    };
 
     choosePicker = () => {
         let imageArr = this.state.imageArr;
@@ -124,7 +127,7 @@ export default class ReleaseNotesPage extends BasePage {
         BusinessUtils.getImagePicker(callback => {
             let result = imageArr.concat(callback.images);
             this.setState({ imageArr: result });
-        }, num, true,true,true);
+        }, num, true, true, true);
     };
 
     deletePic = (index) => {
@@ -181,7 +184,7 @@ export default class ReleaseNotesPage extends BasePage {
     };
 
     _addProductButton = () => {
-        if(this.state.products.length >= 5){
+        if (this.state.products.length >= 5) {
             return null;
         }
 
@@ -256,10 +259,10 @@ export default class ReleaseNotesPage extends BasePage {
             <TouchableWithoutFeedback onPress={() => {
                 Keyboard.dismiss();
                 this.setState({
-                    showEmoji:false,
-                    keyBoardHeight:0,
-                    showEmojiButton:false
-                })
+                    showEmoji: false,
+                    keyBoardHeight: 0,
+                    showEmojiButton: false
+                });
             }}>
                 <Image source={iconShowDown} style={styles.closeKeyboard}/>
             </TouchableWithoutFeedback>
@@ -280,7 +283,12 @@ export default class ReleaseNotesPage extends BasePage {
                             {item.productName ? item.productName : ''}
                         </MRText>
                         <View style={{ flex: 1 }}/>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' ,marginLeft:px2dp(10),marginBottom:px2dp(5)}}>
+                        <View style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            marginLeft: px2dp(10),
+                            marginBottom: px2dp(5)
+                        }}>
                             <MRText style={{ fontSize: px2dp(10), color: DesignRule.mainColor }}>￥</MRText>
                             <MRText style={styles.priceText}>
                                 {item.showPrice ? item.showPrice : item.price}
@@ -298,6 +306,43 @@ export default class ReleaseNotesPage extends BasePage {
                 </TouchableWithoutFeedback>
             </View>);
         });
+    };
+
+    _renderTitleInput = () => {
+        return (
+            <View style={styles.titleInputWrapper}>
+                <TextInput
+                    style={{ flex: 1 }}
+                    allowFontScaling={false}
+                    onChangeText={(text) => {
+                        this.setState({
+                            titleText: text
+                        });
+                    }}
+                    placeholder={'请输入活动标题（选填）'}
+                    maxLength={23}
+                    value={this.state.titleText}/>
+                <MRText style={styles.numLimitTextStyle}>
+                    {`${this.state.titleText ? this.state.titleText.length : 0}/23`}
+                </MRText>
+            </View>
+        );
+    };
+
+    tagRender = () => {
+        return (
+            <TouchableWithoutFeedback onPress={()=>{
+                this.$navigate(RouterMap.TagSelectorPage);
+            }}>
+                <View style={styles.tagWrapper}>
+                    <Image style={{ width: px2dp(18), height: px2dp(18) }} source={showTagIcon}/>
+                    <MRText style={styles.tagPlaceholder}>
+                        添加活动 获得更多曝光
+                    </MRText>
+                    <Image source={arrow_right_black} style={{ width: px2dp(10), height: px2dp(16) }}/>
+                </View>
+            </TouchableWithoutFeedback>
+        );
     };
 
     _render() {
@@ -334,23 +379,35 @@ export default class ReleaseNotesPage extends BasePage {
                 <View style={{ flex: 1 }}>
                     <ScrollView showsVerticalScrollIndicator={false}>
                         <View style={styles.noteContain}>
-                            <TextInput style={styles.textInputStyle}
-                                       multiline
-                                       allowFontScaling={false}
-                                       ref={(ref) => {
-                                           this.textinput = ref;
-                                       }}
-                                       onChangeText={(text) => {
-                                           this.setState({
-                                               text: text
-                                           });
-                                       }}
-                                       placeholder={'可分享购物心得，生活感悟......'}
-                                       maxLength={1000}
-                                       value={this.state.text}
-                            />
+                            {this._renderTitleInput()}
+
+                            <View style={{ width: DesignRule.width }}>
+                                <TextInput style={styles.textInputStyle}
+                                           multiline
+                                           allowFontScaling={false}
+                                           ref={(ref) => {
+                                               this.textinput = ref;
+                                           }}
+                                           onChangeText={(text) => {
+                                               this.setState({
+                                                   text: text
+                                               });
+                                           }}
+                                           placeholder={'可分享购物心得，生活感悟......'}
+                                           maxLength={1000}
+                                           value={this.state.text}
+                                />
+                                <MRText style={[styles.numLimitTextStyle, {
+                                    bottom: px2dp(5),
+                                    right: px2dp(15),
+                                    position: 'absolute'
+                                }]}>
+                                    {`${this.state.text ? this.state.text.length : 0}/1000`}
+                                </MRText>
+                            </View>
                             <View style={styles.lineStyle}/>
                             {this._imageRender()}
+                            {this.tagRender()}
                         </View>
                         {this._addProductButton()}
                         {this._productsRender()}
@@ -460,7 +517,7 @@ var styles = StyleSheet.create({
         padding: px2dp(5),
         marginHorizontal: DesignRule.margin_page,
         width: (DesignRule.width - DesignRule.margin_page * 2),
-        height:px2dp(70)
+        height: px2dp(70)
     },
     validProductImg: {
         width: px2dp(60),
@@ -470,7 +527,7 @@ var styles = StyleSheet.create({
         color: DesignRule.textColor_mainTitle,
         fontSize: DesignRule.fontSize_24,
         width: DesignRule.width - px2dp(115),
-        marginLeft:px2dp(10)
+        marginLeft: px2dp(10)
     },
     contentStyle: {
         color: DesignRule.textColor_instruction,
@@ -484,6 +541,34 @@ var styles = StyleSheet.create({
         width: px2dp(18),
         height: px2dp(18),
         marginRight: px2dp(8)
+    },
+    titleInputWrapper: {
+        height: px2dp(50),
+        alignItems: 'center',
+        flexDirection: 'row',
+        paddingHorizontal: DesignRule.margin_page,
+        borderBottomWidth: 1,
+        borderBottomColor: 'rgba(0,0,0,0.1)'
+    },
+    numLimitTextStyle: {
+        color: '#cccccc',
+        fontSize: DesignRule.fontSize_threeTitle
+    },
+    tagWrapper: {
+        height: px2dp(50),
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: DesignRule.margin_page,
+        borderBottomWidth: 1,
+        borderBottomColor: 'rgba(0,0,0,0.1)',
+        borderTopWidth: 1,
+        borderTopColor: 'rgba(0,0,0,0.1)'
+    },
+    tagPlaceholder: {
+        color: DesignRule.textColor_instruction,
+        fontSize: DesignRule.fontSize_threeTitle,
+        flex: 1,
+        marginLeft: px2dp(8)
     }
 });
 
