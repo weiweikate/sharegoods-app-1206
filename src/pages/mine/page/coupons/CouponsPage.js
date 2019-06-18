@@ -12,7 +12,7 @@ import NavigatorBar from '../../../../components/pageDecorator/NavigatorBar/Navi
 import Modal from '../../../../comm/components/CommModal';
 import { MRText as Text, NoMoreClick } from '../../../../components/ui';
 import res from './../../res';
-import { observer } from 'mobx-react/native';
+import { observer } from 'mobx-react';
 import couponsModel from './../../model/CouponsModel';
 import bridge from '../../../../utils/bridge';
 
@@ -26,7 +26,7 @@ export default class CouponsPage extends BasePage {
         this.state = {
             modalVisible: false,
             titleName: '我的优惠券',
-            CONFIG: [{ name: '全部', type: null }, { name: '1元代金券', type: 99 }, { name: '满减券', type: 1 },
+            CONFIG: [{ name: '全部', type: null }, { name: '1元现金券', type: 99 }, { name: '满减券', type: 1 },
                 { name: '抵价券', type: 2 }, { name: '折扣券', type: 3 }, { name: '抵扣券', type: 4 },
                 { name: '兑换券', type: 5 }, { name: '靓号券', type: 7 }],
             selectIndex: 0,

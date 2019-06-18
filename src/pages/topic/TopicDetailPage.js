@@ -3,12 +3,7 @@ import {
     View,
     StyleSheet,
     SectionList,
-    // Image,
-    FlatList,
-    // TouchableWithoutFeedback,
     TouchableOpacity
-    // AsyncStorage,
-    // ImageBackground
 } from 'react-native';
 import BasePage from '../../BasePage';
 import TopicDetailHeaderView from './components/TopicDetailHeaderView';
@@ -29,17 +24,9 @@ import {
     MRText as Text
 } from '../../components/ui';
 
-// const { px2dp } = ScreenUtils;
 import EmptyUtils from '../../utils/EmptyUtils';
-// import StringUtils from '../../utils/StringUtils';
-// import CommModal from 'CommModal';
 import DetailNavView from '../product/components/DetailNavView';
 
-// const LASTSHOWPROMOTIONTIME = 'LASTSHOWPROMOTIONTIME';
-// import res from './res';
-
-// const redEnvelopeBg = res.other.red_big_envelope;
-// const tongyong_btn_close_white = res.button.tongyong_btn_close_white;
 import { PageLoadingState, renderViewByLoadingState } from '../../components/pageDecorator/PageState';
 import NavigatorBar from '../../components/pageDecorator/NavigatorBar/NavigatorBar';
 import MessageAPI from '../message/api/MessageApi';
@@ -96,7 +83,6 @@ export default class TopicDetailPage extends BasePage {
 
 
     componentDidMount() {
-        // this.getPromotion();
         this.willFocusSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
@@ -110,54 +96,10 @@ export default class TopicDetailPage extends BasePage {
         );
     }
 
-    // getPromotion = async () => {
-    //     try {
-    //         const value = await AsyncStorage.getItem(LASTSHOWPROMOTIONTIME);
-    //         var currStr = new Date().getTime() + '';
-    //         if (value == null || parseInt(currStr) - parseInt(value) > 24 * 60 * 60 * 1000) {
-    //             if (user.isLogin && EmptyUtils.isEmpty(user.upUserid)) {
-    //                 HomeAPI.getReceivePackage({ type: 2 }).then((data) => {
-    //                     if (!EmptyUtils.isEmpty(data.data)) {
-    //                         this.setState({
-    //                             canGetCoupon: true,
-    //                             couponData: data.data
-    //                         });
-    //                         this.couponId = data.data.id;
-    //                         AsyncStorage.setItem(LASTSHOWPROMOTIONTIME, currStr);
-    //                     }
-    //                 });
-    //             }
-    //         }
-    //     } catch (error) {
-    //     }
-    // };
-
     componentWillUnmount() {
         this.willFocusSubscription && this.willFocusSubscription.remove();
         this.__timer__ && clearInterval(this.__timer__);
     }
-
-    // getCoupon = () => {
-    //     if (EmptyUtils.isEmpty(this.couponId)) {
-    //         this.setState({
-    //             canGetCoupon: false
-    //         });
-    //         this.$toastShow('领取失败！');
-    //     } else {
-    //         HomeAPI.givingPackageToUser({ id: this.couponId }).then((data) => {
-    //             this.setState({
-    //                 hasGetCoupon: true
-    //             });
-    //         }).catch((error) => {
-    //             this.setState({
-    //                 canGetCoupon: false
-    //             });
-    //             this.$toastShow(error.msg);
-    //         });
-    //
-    //     }
-    // };
-
 
     //数据
     _getActivityData = () => {

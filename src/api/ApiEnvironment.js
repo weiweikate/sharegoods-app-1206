@@ -3,12 +3,12 @@
  * Api HOST配置
  * 支持动态切换
  */
-import { AsyncStorage } from 'react-native';
+import store from '@mr/rn-store';
 import config from '../../config';
 // 磁盘缓存key
-const KEY_ApiEnvironment = 'ApiEnvironment';
-const KEY_HostJson = 'HostJson';
-const KEY_DefaultFetchTimeout = 'DefaultFetchTimeout';
+const KEY_ApiEnvironment = '@mr/ApiEnvironment';
+const KEY_HostJson = '@mr/hostJson';
+const KEY_DefaultFetchTimeout = '@mr/DefaultFetchTimeout';
 // HOST配置
 const ApiConfig = config.env;
 
@@ -70,15 +70,16 @@ class ApiEnvironment {
      */
     async loadLastApiSettingFromDiskCache() {
         try {
-            const [[, envType], [, defaultTimeout]] = await AsyncStorage.multiGet([KEY_ApiEnvironment, KEY_DefaultFetchTimeout]);
+            const envType = await store.get(KEY_ApiEnvironment);
             if (envType && Object.keys(ApiConfig).indexOf(envType) >= 0) {
                 this.envType = envType;
                 if (ApiConfig[envType]) {
-                    await AsyncStorage.setItem(KEY_HostJson, JSON.stringify(ApiConfig[envType]));
+                    await store.save(KEY_HostJson, ApiConfig[envType]);
                 }
             } else {
                 this.saveEnv(this.envType);
             }
+            const defaultTimeout = await store.get(KEY_DefaultFetchTimeout);
             if (defaultTimeout && Number(defaultTimeout) <= 60 && Number(defaultTimeout) > 0) {
                 this.defaultTimeout = Number(defaultTimeout);
             }
@@ -95,9 +96,9 @@ class ApiEnvironment {
     async saveEnv(envType) {
         try {
             if (envType && Object.keys(ApiConfig).indexOf(envType) >= 0) {
-                await AsyncStorage.setItem(KEY_ApiEnvironment, String(envType));
+                await store.save(KEY_ApiEnvironment, envType);
                 if (ApiConfig[envType]) {
-                    await AsyncStorage.setItem(KEY_HostJson, JSON.stringify(ApiConfig[envType]));
+                    await store.save(KEY_HostJson, ApiConfig[envType]);
                 }
                 this.envType = envType;
             } else {
@@ -117,14 +118,13 @@ class ApiEnvironment {
         if (timeout && typeof timeout === 'number' && timeout <= 60 && timeout > 0) {
             this.defaultTimeout = timeout;
             // 磁盘缓存超时时间
-            timeout && AsyncStorage.setItem(KEY_DefaultFetchTimeout, String(timeout)).catch((error) => {
+            timeout && store.save(KEY_DefaultFetchTimeout, timeout).catch((error) => {
                 console.warn(`setTimeOut error: ${error.toString()}`);
             });
         } else {
             console.warn(`timeout: ${timeout} value not support`);
         }
     }
-
 }
 
 const apiEnvironment = new ApiEnvironment();

@@ -79,7 +79,6 @@ export default class ShowListPage extends BasePage {
             payload => {
                 BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
 
-                this.pageFocused = false;
                 const { state } = payload;
                 if (state && state.routeName === 'HomePage') {
                     this.setState({ isShow: false });
@@ -92,10 +91,10 @@ export default class ShowListPage extends BasePage {
         this.didFocusSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
+                BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
                 if (user.isLogin) {
                     WhiteModel.saveWhiteType();
                 }
-                BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
                 const { state } = payload;
                 if (state && (state.routeName === 'ShowListPage' || state.routeName === 'show/ShowListPage')) {
                     this.setState({
@@ -111,9 +110,7 @@ export default class ShowListPage extends BasePage {
             this._gotoPage(2);
             this.foundList && this.foundList.addDataToTop(value);
         });
-
         this.listenerRetouchShow = DeviceEventEmitter.addListener('retouch_show', this.retouchShow);
-
     }
 
     componentWillUnmount() {
@@ -121,6 +118,7 @@ export default class ShowListPage extends BasePage {
         this.didFocusSubscription && this.didFocusSubscription.remove();
         this.listener && this.listener.remove();
         this.publishListener && this.publishListener.remove();
+        this.listenerRetouchShow && this.listenerRetouchShow.remove();
     }
 
     retouchShow = () => {
@@ -304,10 +302,7 @@ export default class ShowListPage extends BasePage {
                                 }}
                                 navigate={this.$navigate}
                                 onShare={(item) => {
-                                    this.setState({ detail: item.detail }, () => {
-                                        this.shareModal && this.shareModal.open();
-                                    });
-
+                                    this._setDetail(item.detail);
                                 }}/>
                             :
                             null
@@ -367,7 +362,7 @@ export default class ShowListPage extends BasePage {
                                 }}
                                 taskShareParams={{
                                     uri: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
-                                    code: 22,
+                                    code: detail.showType === 1 ? 22 : 25,
                                     data: detail.showNo
                                 }}
                                 webJson={{

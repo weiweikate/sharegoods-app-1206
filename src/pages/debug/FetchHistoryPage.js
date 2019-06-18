@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import fetchHistory from '../../model/FetchHistory';
 import { PageLoadingState } from '../../components/pageDecorator/PageState';
-import { observer } from 'mobx-react/native';
+import { observer } from 'mobx-react';
 import { formatDate } from '../../utils/DateUtils';
 import BasePage from '../../BasePage';
 

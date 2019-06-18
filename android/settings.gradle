@@ -1,26 +1,28 @@
 rootProject.name = 'sharegoods'
+include ':@mr_mr-rn-storage'
+project(':@mr_mr-rn-storage').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/mr-rn-storage/android')
+include ':@mr_rn-webview-bridge'
+project(':@mr_rn-webview-bridge').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/rn-webview-bridge/android')
+include ':@mr_rn-request'
+project(':@mr_rn-request').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/rn-request/android')
+include ':@mr_rn-image-crop-picker'
+project(':@mr_rn-image-crop-picker').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/rn-image-crop-picker/android')
+include ':@mr_rn-geolocation'
+project(':@mr_rn-geolocation').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/rn-geolocation/android')
+include ':@mr_react-native-webview'
+project(':@mr_react-native-webview').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/react-native-webview/android')
+include ':@mr_cookies'
+project(':@mr_cookies').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/cookies/android')
 include ':react-native-code-push', ':statusbar'
 project(':react-native-code-push').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-code-push/android/app')
-include ':react-native-webview'
-project(':react-native-webview').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/react-native-webview/android')
 include ':react-native-extra-dimensions-android'
 project(':react-native-extra-dimensions-android').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-extra-dimensions-android/android')
 include ':react-native-linear-gradient'
 project(':react-native-linear-gradient').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-linear-gradient/android')
 include ':react-native-fetch-blob'
 project(':react-native-fetch-blob').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/rn-fetch-blob/android')
-include ':rn-webview-bridge'
-project(':rn-webview-bridge').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/rn-webview-bridge/android')
 include ':react-native-video'
 project(':react-native-video').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-video/android-exoplayer')
-include ':rn-request'
-project(':rn-request').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/rn-request/android')
-include ':cookies'
-project(':cookies').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/cookies/android')
-include ':rn-geolocation'
-project(':rn-geolocation').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/rn-geolocation/android')
-include ':rn-image-crop-picker'
-project(':rn-image-crop-picker').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/rn-image-crop-picker/android')
 include ':app'
 include ':commonlib'
 include ':rn_deviceinfo'

@@ -18,7 +18,7 @@ import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import user from '../../../model/user';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import MineApi from '../api/MineApi';
-import { observer } from 'mobx-react/native';
+import { observer } from 'mobx-react';
 import userOrderNum from '../../../model/userOrderNum';
 import RouterMap from '../../../navigation/RouterMap';
 import DesignRule from '../../../constants/DesignRule';
@@ -120,6 +120,7 @@ export default class MinePage extends BasePage {
         this.didFocusSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
+                BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
                 const { state } = payload;
                 this.loadMessageCount();
                 this._needShowFans();
@@ -127,7 +128,6 @@ export default class MinePage extends BasePage {
                 if (state && state.routeName === 'MinePage') {
                     this.refresh();
                 }
-                BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
                 TrackApi.myPage();
                 mineTaskModel.getData();
             });

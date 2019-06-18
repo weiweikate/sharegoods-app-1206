@@ -9,6 +9,7 @@
 #import "JXHeaderView.h"
 #import "UIView+SDAutoLayout.h"
 #import "UIImageView+WebCache.h"
+#import "NSString+UrlAddParams.h"
 
 #define SCREEN_WIDTH ([UIScreen mainScreen].bounds.size.width)
 
@@ -117,7 +118,7 @@
 -(void)setUserInfoModel:(UserInfoModel *)UserInfoModel{
     _UserInfoModel = UserInfoModel;
 
-    [self.headImg sd_setImageWithURL:[NSURL URLWithString:UserInfoModel.userImg] placeholderImage:[UIImage imageNamed:@"default_avatar"]];
+    [self.headImg sd_setImageWithURL:[NSURL URLWithString:[UserInfoModel.userImg getUrlAndWidth:30 height:30]] placeholderImage:[UIImage imageNamed:@"default_avatar"]];
   
     self.nameLab.text = UserInfoModel.userName.length>0? UserInfoModel.userName:@" ";
 }

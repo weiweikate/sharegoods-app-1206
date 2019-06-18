@@ -21,7 +21,7 @@ import HomeAPI from '../api/HomeAPI';
 import { homeType } from '../HomeTypes';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import user from '../../../model/user';
-import { observer } from 'mobx-react/native';
+import { observer } from 'mobx-react';
 import EmptyUtils from '../../../utils/EmptyUtils';
 import MineApi from '../../mine/api/MineApi';
 import DesignRule from '../../../constants/DesignRule';

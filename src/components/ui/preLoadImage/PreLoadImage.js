@@ -34,10 +34,6 @@ export default class PreLoadImage extends Component {
         }
     }
 
-    // shouldComponentUpdate(nextProps, nextState) {
-    // return (nextProps.imageUri !== this.props.imageUri);
-    // }
-
     render() {
         const { imageUri, style, errImage, onClickAction, defaultImage, ...props } = this.props;
         let source;

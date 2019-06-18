@@ -20,7 +20,7 @@ const { px2dp } = ScreenUtil;
 
 import { homeModule } from './Modules';
 import bridge from '../../../utils/bridge';
-import { get, save } from '@mr/rn-store';
+import store from '@mr/rn-store';
 
 const activity_mission_main_no = 'activity_mission_main_no';    // 主线任务
 const activity_mission_daily_no = 'activity_mission_daily_no';     // 日常任务
@@ -55,15 +55,12 @@ class TaskModel {
 
     @action
     getLocationExpanded() {
-        get('task_expanded_').then((data) => {
-            // alert(data)
-            if (data) {
-                this.expanded = data.expanded;
+        store.get('@mr/taskExpanded' + this.type).then((data) => {
+            this.expanded = data.expanded;
+            if (this.type === 'home') {
+                this.calculateHomeHeight();
             }
         });
-        if (this.type === 'home') {
-            this.calculateHomeHeight();
-        }
     }
 
     @action
@@ -129,7 +126,7 @@ class TaskModel {
     @action
     expandedClick() {
         this.expanded = !this.expanded;
-        save('task_expanded_' + this.type, { expanded: this.expanded });
+        store.save('@mr/taskExpanded' + this.type, { expanded: this.expanded });
         if (this.type === 'home') {
             this.calculateHomeHeight();
         }

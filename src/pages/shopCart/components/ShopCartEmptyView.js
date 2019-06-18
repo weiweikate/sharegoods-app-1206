@@ -9,72 +9,82 @@
  *
  */
 
+
 'use strict';
 
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
-import { StyleSheet, View,  RefreshControl} from 'react-native';
+import { StyleSheet, View,Image } from 'react-native';
 // import { UIText } from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
 // import res from '../res';
 import PropTypes from 'prop-types';
-import { RecyclerListView, LayoutProvider, DataProvider } from 'recyclerlistview';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import { homeModule } from '../../home/model/Modules';
-import shopCartEmptyModel from '../model/ShopCartEmptyModel';
+import {shopCartEmptyModel} from '../model/ShopCartEmptyModel'
+import Waterfall from '@mr/react-native-waterfall'
+// import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
+import { MRText } from '../../../components/ui';
+import ShopCartEmptyCell from './ShopCartEmptyCell';
+import res from '../res'
 
+const {px2dp} = ScreenUtils;
+const { shopCartNoGoods } = res
 @observer
 export default class ShopCartEmptyView extends Component {
-    st = 0;
-    dataProvider = new DataProvider((r1, r2) => {
-        return r1 !== r2;
-    });
-    layoutProvider = new LayoutProvider((i)=>{
-        console.log('购物车空视图，布局layout类型索引'+i);
-        return this.dataProvider.getDataForIndex(i).type || 0;
-    },(type, dim)=>{
-        switch (type){
-
-
-        }
-    })
 
     constructor(props) {
         super(props);
     }
 
+    componentDidMount(){
+        this.waterfall && this.waterfall.addItems(shopCartEmptyModel.emptyViewList);
+    }
+    _renderItem = (itemData) => {
+        return(<ShopCartEmptyCell itemData={itemData}/>)
+    };
+    _onRefresh=()=>{
+
+    }
+    _keyExtractor=(dataItem)=>{
+        return dataItem.id;
+    }
+    refreshing=()=>{
+
+    }
+    infiniting=()=>{
+
+    }
+
+    _renderHeaderView=()=>{
+        return(
+            <View style={{width:ScreenUtils.width,height:350,paddingLeft:px2dp(15),paddingRight:px2dp(15)}}>
+              <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
+               <Image source={shopCartNoGoods} style={{width:px2dp(244),height:px2dp(140)}}></Image>
+                  <MRText style={{fontSize:px2dp(13),color:'rgba(153, 153, 153, 1)',marginTop:px2dp(5)}}>暂无商品</MRText>
+              </View>
+                <View style={{width:ScreenUtils.width,height:px2dp(50),flexDirection:'row',alignItems:'center'}}>
+                    <View style={{width:px2dp(2),height:px2dp(8),backgroundColor:'#FF0050'}}/>
+                    <MRText style={{marginLeft:px2dp(5), fontSize:px2dp(16)}}>为你推荐</MRText>
+                </View>
+            </View>
+        )
+    }
+
     render() {
-        // const { navigateToHome } = this.props;
-        const {emptyViewList}  = shopCartEmptyModel
-       this.dataProvider =  this.dataProvider.cloneWithRows(emptyViewList);
         return (
             <View style={styles.bgViewStyle}>
-                {/*<Image source={res.kongShopCartImg} style={styles.imgStyle} resizeMode={'contain'}/>*/}
-                {/*<UIText value={'去添加点什么吧'} style={styles.addSomethingTipStyle}/>*/}
-                {/*<UIText value={'快去商城逛逛吧~'} style={styles.topTextStyle}/>*/}
-                {/*<TouchableOpacity onPress={navigateToHome}>*/}
-                    {/*<View style={styles.bottomTextBgViewStyle}>*/}
-                        {/*<UIText value={'去逛逛'} style={styles.bottomTextStyle}/>*/}
-                    {/*</View>*/}
-                {/*</TouchableOpacity>*/}
-                <RecyclerListView
-                    ref={(ref) => {
-                        this.recyclerListView = ref;
-                    }}
-                    style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1 }}
-                    refreshControl={<RefreshControl refreshing={homeModule.isRefreshing}
-                                                    onRefresh={this._onRefresh.bind(this)}
-                                                    colors={[DesignRule.mainColor]}/>}
-                    onEndReached={()=>{}}
-                    onEndReachedThreshold={ScreenUtils.height / 3}
-                    dataProvider={this.dataProvider}
-                    rowRenderer={this._renderItem.bind(this)}
-                    layoutProvider={this.layoutProvider}
-                    onScrollBeginDrag={() => {}}
-                    showsVerticalScrollIndicator={false}
-                    onScroll={()=>{}}
-                    renderFooter={() => {return null}
-                    }
+                <Waterfall
+                    space={3}
+                    ref={(ref)=>{this.waterfall = ref}}
+                    renderHeader={()=>{return this._renderHeaderView()}}
+                    columns={2}
+                    infinite={true}
+                    hasMore={false}
+                    renderItem={item => this._renderItem(item)}
+                    style={{flex:1}}
+                    // containerStyle={{marginLeft: 15, marginRight: 15}}
+                    keyExtractor={(data) => this._keyExtractor(data)}
+                    // infiniting={(done)=>this.infiniting(done)}
                 />
             </View>
         );
@@ -89,9 +99,6 @@ const styles = StyleSheet.create({
     bgViewStyle: {
         backgroundColor: DesignRule.bgColor,
         flex: 1,
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center'
     },
     imgStyle: {
         height: 115,

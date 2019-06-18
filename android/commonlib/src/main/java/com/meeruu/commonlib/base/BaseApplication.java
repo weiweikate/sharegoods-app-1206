@@ -2,12 +2,14 @@ package com.meeruu.commonlib.base;
 
 import android.content.ComponentCallbacks2;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Looper;
 import android.os.MessageQueue;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
+import android.util.Log;
 import android.webkit.WebView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -21,6 +23,7 @@ import com.meeruu.commonlib.rn.QiyuImageLoader;
 import com.meeruu.commonlib.umeng.UApp;
 import com.meeruu.commonlib.umeng.UShare;
 import com.meeruu.commonlib.utils.AppUtils;
+import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.SensorsUtils;
 import com.meeruu.commonlib.utils.Utils;
@@ -149,13 +152,25 @@ public class BaseApplication extends MultiDexApplication {
     private YSFOptions QiYuOptions() {
         YSFOptions ysfOptions = options();
         ysfOptions.onMessageItemClickListener = new OnMessageItemClickListener() {
-            // 响应 url 点击事件
+            // 响应url点击事件
             @Override
             public void onURLClicked(Context context, String url) {
-                ((QiyuServiceMessageActivity) context).finish();
-                QiyuUrlEvent event = new QiyuUrlEvent();
-                event.setUrl(url);
-                EventBus.getDefault().post(event);
+                // 商品卡片，订单卡片
+                if (url.contains("h5.sharegoodsmall.com/product") || url.contains("http:///")) {
+                    ((QiyuServiceMessageActivity) context).finish();
+                    QiyuUrlEvent event = new QiyuUrlEvent();
+                    event.setUrl(url);
+                    EventBus.getDefault().post(event);
+                } else {
+                    Intent toWeb = new Intent();
+                    try {
+                        toWeb.setClass(appContext, Class.forName("com.meeruu.sharegoods.ui.activity.MRWebviewActivity"));
+                    } catch (ClassNotFoundException e) {
+                    }
+                    toWeb.putExtra("web_url", url);
+                    toWeb.putExtra("url_action", "get");
+                    startActivity(toWeb);
+                }
             }
         };
         return ysfOptions;
