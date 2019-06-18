@@ -61,7 +61,7 @@ export default class SearchPage extends BasePage {
 
     //从本地拿到最近搜索记录;
     async getRecentSearch() {
-        let value = await store.get(recentDataKey, []);
+        let value = await store.get(recentDataKey);
         this.setState({
             recentData: value || []
         });

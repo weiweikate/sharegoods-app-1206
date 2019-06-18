@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
     time: {
         color: '#FC533B',
         fontWeight: '500',
-        fontSize: px2dp(15)
+        fontSize: 15
 
     },
     normal: {

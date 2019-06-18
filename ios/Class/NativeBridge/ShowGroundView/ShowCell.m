@@ -135,7 +135,7 @@
   CGFloat itemWidth=  [UIScreen mainScreen].bounds.size.width / 2.0 * [UIScreen mainScreen].scale;
   NSString * showImage = model.showImage;
   if ([showImage containsString:@"sharegoodsmall"]) {
-    showImage = [NSString stringWithFormat:@"%@?x-oss-process=image/resize,m_lfit,w_%0.0lf,h_%0.0lf/quality,Q_80/format,jpg",showImage,itemWidth,itemWidth/model.aspectRatio];
+    showImage = [NSString stringWithFormat:@"%@?x-oss-process=image/resize,m_lfit,w_%0.0lf,h_%0.0lf/quality,Q_80/format,webp",showImage,itemWidth,itemWidth/model.aspectRatio];
   }
   [self.imageView setImageWithURL:[NSURL URLWithString:showImage]
                       placeholder:[UIImage imageNamed:@"default_img"]];
