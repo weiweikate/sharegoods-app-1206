@@ -17,7 +17,7 @@ import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import user from '../../../model/user';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import MineApi from '../api/MineApi';
-import { observer } from 'mobx-react/native';
+import { observer } from 'mobx-react';
 import userOrderNum from '../../../model/userOrderNum';
 import RouterMap from '../../../navigation/RouterMap';
 import DesignRule from '../../../constants/DesignRule';

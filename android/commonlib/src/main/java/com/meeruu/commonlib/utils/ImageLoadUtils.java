@@ -75,9 +75,9 @@ public class ImageLoadUtils {
                     if (width != 0 || height != 0) {
                         if (!TextUtils.isEmpty(newUrl)) {
                             if (newUrl.contains("?")) {
-                                newUrl.substring(0, newUrl.indexOf("?"));
+                                newUrl = newUrl.substring(0, newUrl.indexOf("?"));
                             }
-                            newUrl = String.format(ParameterUtils.IMG_URL_WH, url, width, height);
+                            newUrl = String.format(ParameterUtils.IMG_URL_WH, newUrl, width, height);
                         }
                     }
                     Uri uri = Uri.parse(newUrl);
@@ -89,7 +89,7 @@ public class ImageLoadUtils {
     }
 
     public static void loadScaleTypeNetImage(final String url, final SimpleDraweeView view,
-                                             final ScalingUtils.ScaleType scaleType) {
+                                             final ScalingUtils.ScaleType scaleType, final boolean useWebp) {
         if (TextUtils.isEmpty(url)) {
             return;
         }
@@ -108,9 +108,12 @@ public class ImageLoadUtils {
                     if (width != 0 || height != 0) {
                         if (!TextUtils.isEmpty(newUrl)) {
                             if (newUrl.contains("?")) {
-                                newUrl.substring(0, newUrl.indexOf("?"));
+                                newUrl = newUrl.substring(0, newUrl.indexOf("?"));
                             }
-                            newUrl = String.format(ParameterUtils.IMG_URL_WH, url, width, height);
+                            newUrl = String.format(ParameterUtils.IMG_URL_WH, newUrl, width, height);
+                            if (useWebp) {
+                                newUrl = newUrl.substring(0, newUrl.lastIndexOf("/")) + "/format,webp";
+                            }
                         }
                     }
                     Uri uri = Uri.parse(newUrl);
@@ -119,6 +122,24 @@ public class ImageLoadUtils {
                 return true;
             }
         });
+    }
+
+    public static void loadRoundNetImage(final String url, final SimpleDraweeView view, int width, int height,
+                                         final int radius) {
+        if (TextUtils.isEmpty(url)) {
+            return;
+        }
+        String newUrl = url;
+        if (width != 0 || height != 0) {
+            if (!TextUtils.isEmpty(newUrl)) {
+                if (newUrl.contains("?")) {
+                    newUrl = newUrl.substring(0, newUrl.indexOf("?"));
+                }
+                newUrl = String.format(ParameterUtils.IMG_URL_WH, newUrl, width, height);
+            }
+        }
+        Uri uri = Uri.parse(newUrl);
+        loadRoundImage(uri, view, radius);
     }
 
     public static void loadRoundNetImage(final String url, final SimpleDraweeView view,
@@ -141,9 +162,9 @@ public class ImageLoadUtils {
                     if (width != 0 || height != 0) {
                         if (!TextUtils.isEmpty(newUrl)) {
                             if (newUrl.contains("?")) {
-                                newUrl.substring(0, newUrl.indexOf("?"));
+                                newUrl = newUrl.substring(0, newUrl.indexOf("?"));
                             }
-                            newUrl = String.format(ParameterUtils.IMG_URL_WH, url, width, height);
+                            newUrl = String.format(ParameterUtils.IMG_URL_WH, newUrl, width, height);
                         }
                     }
                     Uri uri = Uri.parse(newUrl);
@@ -174,9 +195,9 @@ public class ImageLoadUtils {
                     if (width != 0 || height != 0) {
                         if (!TextUtils.isEmpty(newUrl)) {
                             if (newUrl.contains("?")) {
-                                newUrl.substring(0, newUrl.indexOf("?"));
+                                newUrl = newUrl.substring(0, newUrl.indexOf("?"));
                             }
-                            newUrl = String.format(ParameterUtils.IMG_URL_WH, url, width, height);
+                            newUrl = String.format(ParameterUtils.IMG_URL_WH, newUrl, width, height);
                         }
                     }
                     Uri uri = Uri.parse(newUrl);
@@ -206,9 +227,9 @@ public class ImageLoadUtils {
                     if (width != 0 || height != 0) {
                         if (!TextUtils.isEmpty(newUrl)) {
                             if (newUrl.contains("?")) {
-                                newUrl.substring(0, newUrl.indexOf("?"));
+                                newUrl = newUrl.substring(0, newUrl.indexOf("?"));
                             }
-                            newUrl = String.format(ParameterUtils.IMG_URL_WH, url, width, height);
+                            newUrl = String.format(ParameterUtils.IMG_URL_WH, newUrl, width, height);
                         }
                     }
                     Uri uri = Uri.parse(newUrl);

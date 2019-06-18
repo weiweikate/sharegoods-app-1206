@@ -29,7 +29,7 @@ import OrderDetailPriceView from '../components/orderDetail/OrderDetailPriceView
 import OrderDetailTimeView from '../components/orderDetail/OrderDetailTimeView';
 import OrderDetailBottomButtonView from '../components/orderDetail/OrderDetailBottomButtonView';
 import { orderDetailModel, orderDetailAfterServiceModel, assistDetailModel } from '../model/OrderDetailModel';
-import { observer } from 'mobx-react/native';
+import { observer } from 'mobx-react';
 import GiftHeaderView from '../components/orderDetail/GiftHeaderView';
 import { SmoothPushPreLoadHighComponent } from '../../../comm/components/SmoothPushHighComponent';
 

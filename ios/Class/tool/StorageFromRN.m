@@ -51,7 +51,7 @@ static NSString *RCTGetStorageDirectory()
 +(NSString *)getHost
 {
   NSDictionary *dic = [self configDic];
-  NSString * path = dic[@"host"];
+  NSString * path = dic[@"@mr/hostJson"];
   if (path==nil || path.length == 0) {
     path = @"https://api.sharegoodsmall.com/gateway";
   }
@@ -59,7 +59,7 @@ static NSString *RCTGetStorageDirectory()
 }
 
 +(NSString *)getSG_Token{
-   NSString * token = [StorageFromRN getItem:@"USERTOKEN"];
+   NSString * token = [StorageFromRN getItem:@"@mr/userToken"];
   if (token) {
     return token;
   }

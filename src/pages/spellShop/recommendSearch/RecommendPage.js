@@ -26,7 +26,7 @@ import DesignRule from '../../../constants/DesignRule';
 import RecommendBanner from './components/RecommendBanner';
 import res from '../res';
 import geolocation from '@mr/rn-geolocation';
-import Storage from '../../../utils/storage';
+import store from '@mr/rn-store';
 import { TrackApi } from '../../../utils/SensorsTrack';
 import { homeType } from '../../home/HomeTypes';
 import { homeModule } from '../../home/model/Modules';
@@ -119,30 +119,29 @@ export default class RecommendPage extends BasePage {
         return segmentIndex === 1 ? 10 : 10;
     };
 
-    _verifyLocation = () => {
-        Storage.get('storage_MrLocation', {}).then((value) => {
-                //有缓存加载缓存
-                if (value && StringUtils.isNoEmpty(value.latitude)) {
-                    this.state.locationResult = value;
+    _verifyLocation() {
+        store.get('@mr/storage_MrLocation').then((value) => {
+            //有缓存加载缓存
+            if (value && StringUtils.isNoEmpty(value.latitude)) {
+                this.state.locationResult = value;
+                this._loadPageData();
+            }
+            //更新定位数据  没缓存的话加载数据
+            geolocation.getLastLocation().then(result => {
+                this.state.locationResult = result;
+                store.save('@mr/storage_MrLocation', result);
+                if (!value.latitude) {
                     this._loadPageData();
                 }
-                //更新定位数据  没缓存的话加载数据
-                geolocation.getLastLocation().then(result => {
-                    this.state.locationResult = result;
-                    Storage.set('storage_MrLocation', result);
-                    if (!value.latitude) {
-                        this._loadPageData();
-                    }
-                }).catch((error) => {
-                        SpellStatusModel.alertAction(error, () => {
-                            this.$navigateBackToHome();
-                        }, () => {
-                            this.$navigateBackToHome();
-                        });
-                    }
-                );
-            }
-        );
+            }).catch((error) => {
+                    SpellStatusModel.alertAction(error, () => {
+                        this.$navigateBackToHome();
+                    }, () => {
+                        this.$navigateBackToHome();
+                    });
+                }
+            );
+        });
     };
 
     _refreshing = () => {
@@ -328,7 +327,7 @@ export default class RecommendPage extends BasePage {
                              renderItem={this._renderItem}
                              sections={[{ data: this.state.dataList }]}
                              initialNumToRender={5}/>
-                <IntervalMsgView pageType = {IntervalType.shopHome}/>
+                <IntervalMsgView pageType={IntervalType.shopHome}/>
             </View>
         );
     }
