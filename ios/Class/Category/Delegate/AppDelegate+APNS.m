@@ -19,6 +19,7 @@
 #import <AdSupport/AdSupport.h>
 #import "JVERIFICATIONService.h"
 #import <SensorsAnalyticsSDK.h>
+#define NotificationStatusTime @"NotificationStatusTime"
 
 @interface AppDelegate (APNS)<JPUSHRegisterDelegate>
 
@@ -28,6 +29,7 @@
 
 -(void)JR_ConfigAPNS:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
   [self configAPNSWithOption:launchOptions];
+  [self checkCurrentNotificationStatus];
   
   NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
   [defaultCenter addObserver:self selector:@selector(networkDidReceiveMessage:) name:kJPFNetworkDidReceiveMessageNotification object:nil];
@@ -328,5 +330,86 @@
   {
     
   }
+}
+
+
+-(void) checkCurrentNotificationStatus
+{
+  if (@available(iOS 10 , *))
+  {
+    [[UNUserNotificationCenter currentNotificationCenter] getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
+      
+      if (settings.authorizationStatus == UNAuthorizationStatusDenied)
+      {
+        // 没权限
+         [self showAlrtToSetting];
+      }else{
+       
+        NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+      [userDefaults removeObjectForKey: NotificationStatusTime];
+      }
+      
+    }];
+  }
+  else if (@available(iOS 8 , *))
+  {
+    UIUserNotificationSettings * setting = [[UIApplication sharedApplication] currentUserNotificationSettings];
+    
+    if (setting.types == UIUserNotificationTypeNone) {
+      // 没权限
+       [self showAlrtToSetting];
+    }else{
+      NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+      
+      [userDefaults removeObjectForKey: NotificationStatusTime];
+    }
+  }
+  else
+  {
+    UIRemoteNotificationType type = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
+    if (type == UIUserNotificationTypeNone)
+    {
+      // 没权限
+      [self showAlrtToSetting];
+    }else{
+       NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+      [userDefaults removeObjectForKey: NotificationStatusTime];
+    }
+  }
+}
+
+
+#pragma mark 没权限的弹窗
+-(void) showAlrtToSetting
+{
+  NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+  NSDate *date = [userDefaults objectForKey: NotificationStatusTime];
+  if (!date) {
+    [userDefaults setObject:[NSDate new] forKey: NotificationStatusTime];
+    return;
+  }
+  if ( [[date dateByAddingSeconds: 30] compare:[NSDate new]] == NSOrderedDescending)  {
+    return;
+  }
+    [userDefaults setObject:[NSDate new] forKey: NotificationStatusTime];
+  UIAlertController * alert = [UIAlertController alertControllerWithTitle:@"" message:@"开启消息通知，获取秀购最新资讯" preferredStyle:UIAlertControllerStyleAlert];
+  
+  UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    
+  }];
+  UIAlertAction * setAction = [UIAlertAction actionWithTitle:@"去设置" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    NSURL * url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+    dispatch_async(dispatch_get_main_queue(), ^{
+      if ([[UIApplication sharedApplication] canOpenURL:url]) {
+        [[UIApplication sharedApplication] openURL:url];
+      }
+    });
+    
+  }];
+  
+  [alert addAction:cancelAction];
+  [alert addAction:setAction];
+  
+  [self.currentViewController_XG  presentViewController:alert animated:YES completion:nil];
 }
 @end
