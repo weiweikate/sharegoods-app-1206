@@ -70,8 +70,8 @@ class Emoticons extends React.Component {
     };
 
     componentDidMount() {
-        store.get(HISTORY_STORAGE).then((result)=>{
-            this.setState({ history: JSON.parse(result) });
+        store.get(HISTORY_STORAGE).then((result) => {
+            this.setState({ history: result });
         });
     }
 
