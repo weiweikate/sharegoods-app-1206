@@ -117,7 +117,7 @@ export default class ExpDetailPage extends BasePage {
                         fontSize: px2dp(17),
                         includeFontPadding: false
                     }}>
-                        {this.st<0.7 ? '' : '我的经验'}
+                        {this.st < 0.7 ? '' : '我的经验'}
                     </Text>
                     <View style={{flex:1}}/>
                 </View>
@@ -127,7 +127,7 @@ export default class ExpDetailPage extends BasePage {
 
     _accountInfoRender() {
         const progress = this.state.experience / this.state.levelExperience;
-        const marginLeft = ScreenUtils.px2dp(315) * progress;
+        const marginLeft = progress ? ScreenUtils.px2dp(315) * progress : 0;
         return (
             <ImageBackground source={account_bg_white} resizeMode={'stretch'} style={{
                 position: 'absolute',

@@ -244,10 +244,10 @@ export default class MinePage extends BasePage {
     //**********************************ViewPart******************************************
     _render() {
         return (
-            <View style={{flex: 1,}}>
+            <View style={{flex: 1}}>
                 <PullView
                     bounces={false}
-                    // contentBackgroundColor={'F7F7F7'}
+                    contentBackgroundColor={'F7F7F7'}
                     backgroundColor={'#F7F7F7'}
                     renderForeground={this.renderUserHead}
                     renderStickyHeader={this.renderLevelNameNav}
