@@ -99,10 +99,15 @@ public class NineGridView extends ViewGroup {
             int bottom = top + gridHeight;
             Log.d("yyy", "left  " + left + "right " + right + "top " + top + "bottom  " + bottom);
             childrenView.layout(left, top, right, bottom);
+            ImageInfo imageInfo = mImageInfo.get(i);
+            if (imageInfo != null) {
+                imageInfo.setImageViewWidth(gridWidth);
+                imageInfo.setImageViewHeight(gridHeight);
+            }
             //imageloader是接口，调用接口中的onDisplayImage方法绘制imageview 。在使用的地方调用setImageLoader方法
             //重写接口中的方法，可以使用不同的图片框架显示图片 如Glide Piccasso等
             if (mImageLoader != null) {
-                mImageLoader.onDisplayImage(getContext(), childrenView, mImageInfo.get(i).imageUrl);
+                mImageLoader.onDisplayImage(getContext(), childrenView, imageInfo);
             }
         }
     }
@@ -252,9 +257,9 @@ public class NineGridView extends ViewGroup {
          *
          * @param context   上下文
          * @param imageView 需要展示图片的ImageView
-         * @param url       图片地址
+         * @param imageInfo 图片对象
          */
-        void onDisplayImage(Context context, SimpleDraweeView imageView, String url);
+        void onDisplayImage(Context context, SimpleDraweeView imageView, ImageInfo imageInfo);
 
         /*  *//**
          * @param url 图片的地址

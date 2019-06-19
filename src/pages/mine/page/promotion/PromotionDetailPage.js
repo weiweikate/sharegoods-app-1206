@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
     blackTextStyle: {
         color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(16),
-        fontWeight: 'bold'
+        fontWeight: '400'
     },
     grayTextStyle: {
         color: DesignRule.textColor_instruction,

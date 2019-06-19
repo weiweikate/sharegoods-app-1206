@@ -26,4 +26,16 @@ public class Event {
         }
     }
 
+    public static class MR2HTMLEvent {
+        private String url;
+
+        public MR2HTMLEvent(String url) {
+            this.url = url;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+    }
+
 }

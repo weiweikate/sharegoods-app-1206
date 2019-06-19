@@ -6,15 +6,16 @@ import {
     DeviceEventEmitter
 } from 'react-native';
 import BasePage from '../../../BasePage';
-import {  RecentSearch} from './../../../components/ui';
+import { RecentSearch } from './../../../components/ui';
 import StringUtils from '../../../utils/StringUtils';
-import Storage from '../../../utils/storage';
+import store from '@mr/rn-store';
 import SearchNav from '../../home/search/components/SearchNav';
 import DesignRule from '../../../constants/DesignRule';
+
 const dismissKeyboard = require('dismissKeyboard');
 //全局变量，历史搜索记录,因为是递加的
 let array = [];
-const recentDataKey = 'orderRecentDataKey';
+const recentDataKey = '@mr/orderRecentDataKey';
 export default class SearchPage extends BasePage {
     constructor(props) {
         super(props);
@@ -40,16 +41,22 @@ export default class SearchPage extends BasePage {
     $navigationBarOptions = {
         show: false// false则隐藏导航
     };
-    componentDidMount(){
+
+    componentDidMount() {
         this.loadPageData();
-        DeviceEventEmitter.addListener('inputText', (inputText) => { this.setState({ inputText: inputText }), this.startSearch(inputText)});
+        DeviceEventEmitter.addListener('inputText', (inputText) => {
+            this.setState({ inputText: inputText }), this.startSearch(inputText);
+        });
     }
-    componentWillUnmount(){
+
+    componentWillUnmount() {
         DeviceEventEmitter.removeAllListeners('inputText');
     }
+
     loadPageData() {
         this.getRecentSearch();
     }
+
     onChangeText = (inputText) => {
         this.setState({ inputText: inputText });
     };
@@ -61,14 +68,14 @@ export default class SearchPage extends BasePage {
     _render() {
         // console.log("从上个页面传过来的inputText=" + this.params.inputText)
         return (
-                <View style={styles.container}>
-                    <SearchNav placeholder={'请输入关键词搜索'} onSubmitEditing={(inputText) => {
-                        this.setState({ inputText: inputText }), this.startSearch(inputText);
-                    }} cancel={this._cancel}
-                               onChangeText={this.onChangeText}/>
-                    <View style={{ height: 1 }}/>
-                    {this.renderRecentSearch()}
-                </View>
+            <View style={styles.container}>
+                <SearchNav placeholder={'请输入关键词搜索'} onSubmitEditing={(inputText) => {
+                    this.setState({ inputText: inputText }), this.startSearch(inputText);
+                }} cancel={this._cancel}
+                           onChangeText={this.onChangeText}/>
+                <View style={{ height: 1 }}/>
+                {this.renderRecentSearch()}
+            </View>
         );
     }
 
@@ -80,14 +87,13 @@ export default class SearchPage extends BasePage {
     };
 
     //从本地拿到最近搜索记录
-    getRecentSearch = () => {
-        Storage.get(recentDataKey, []).then((value) => {
-                this.setState({
-                    recentData: value
-                });
-            }
-        );
+    async getRecentSearch() {
+        let value = await store.get(recentDataKey);
+        this.setState({
+            recentData: value || []
+        });
     };
+
     //根据是否有历史搜索数据展示历史搜索布局
     renderRecentSearch = () => {
         if (this.state.recentData.length > 0) {
@@ -97,7 +103,7 @@ export default class SearchPage extends BasePage {
                     this.setState({
                         recentData: []
                     }, () => {
-                        Storage.set(recentDataKey, this.state.recentData);
+                        store.save(recentDataKey, this.state.recentData);
                     });
                 }}/>
             );
@@ -112,12 +118,12 @@ export default class SearchPage extends BasePage {
         }
         //把搜索框里的值存起来
         if (StringUtils.isNoEmpty(inputText)) {
-            this.state.recentData.length === 10 ? this.state.recentData.splice(9, 1) : this.state.recentData
-            this.state.recentData.unshift(inputText)
-            let setArr = new Set(this.state.recentData)
-            this.state.recentData = [...setArr]
+            this.state.recentData.length === 10 ? this.state.recentData.splice(9, 1) : this.state.recentData;
+            this.state.recentData.unshift(inputText);
+            let setArr = new Set(this.state.recentData);
+            this.state.recentData = [...setArr];
             console.log('最近搜索记录=' + array);
-            Storage.set(recentDataKey, this.state.recentData);
+            store.save(recentDataKey, this.state.recentData);
             this.getRecentSearch();
         }
         //

@@ -35,7 +35,7 @@ const {
     icon_kefu
 } = res.helperAndCustomerService;
 import user from "../../../../model/user";
-import { observer } from "mobx-react/native";
+import { observer } from "mobx-react";
 import OssHelper from "../../../../utils/OssHelper";
 import ImageLoad from "@mr/image-placeholder";
 import { beginChatType, QYChatTool } from "../../../../utils/QYModule/QYChatTool";
@@ -279,7 +279,7 @@ export default class MyHelperPage extends BasePage {
                         overflow: 'hidden',
                     }}>
                         <Text style={{fontSize: 16,
-                            fontWeight: '600',
+                            fontWeight: '400',
                             marginTop: 30,
                             textAlign: 'center'
                         }}>

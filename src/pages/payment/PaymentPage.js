@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, Image, TouchableWithoutFeedback, Alert } from 'react-native';
 import res from './res';
 import BasePage from '../../BasePage';
-import { observer } from 'mobx-react/native';
+import { observer } from 'mobx-react';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
 import { MRText as Text } from '../../components/ui';
@@ -370,7 +370,7 @@ const styles = StyleSheet.create({
         marginTop: px2dp(10),
         color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(30),
-        fontWeight: '600'
+        fontWeight: '400'
     },
     needView: {
         flex: 1,

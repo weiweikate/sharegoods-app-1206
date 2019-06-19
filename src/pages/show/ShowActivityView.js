@@ -58,11 +58,8 @@ export default class ShowActivityView extends Component {
     }
 
     onLoadMore = () => {
-        if (!this.noMoreData) {
-            console.log('onLoadMore', this.currentPage++);
-            this.currentPage++;
-            this.getDataFromNetwork();
-        }
+        this.currentPage++;
+        this.getDataFromNetwork();
     };
 
     onRefresh = () => {
@@ -98,13 +95,17 @@ export default class ShowActivityView extends Component {
                     if (result.data && result.data.data) {
                         Toast.hiddenLoading();
                         this.isFirst = false;
+                        let arrs = this.currentPage === 1 ? [] : this.state.viewData;
+                        if(!EmptyUtils.isEmptyArr(result.data.data)){
+                            result.data.data.map((item, index) => {
+                                arrs.push(item);
+                            });
+                        }
                         this.setState({
                             firstLoading: 2,
-                            viewData: result.data ? result.data.data : [],
+                            viewData: arrs,
                             isEmpty: result.data.totalNum === 0, isError: false
                         });
-                    }else {
-                        this.setState({isError: true, firstLoading: 2});
                     }
                 }
             }).catch(err => {
@@ -162,7 +163,7 @@ export default class ShowActivityView extends Component {
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={styles.errContainer}>
                     <TouchableOpacity activeOpacity={0.5} style={{alignItems: 'center'}}
-                                      onPress={() => this.getDataFromNetwork()}>
+                                      onPress={() => {this.currentPage = 1;this.getDataFromNetwork()}}>
                         <Image source={res.placeholder.no_data_img}
                                style={{width: DesignRule.autoSizeWidth(120), height: DesignRule.autoSizeWidth(120)}}
                                resizeMode={'contain'}/>

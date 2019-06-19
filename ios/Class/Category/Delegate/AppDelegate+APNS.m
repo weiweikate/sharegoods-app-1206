@@ -19,11 +19,17 @@
 #import <AdSupport/AdSupport.h>
 #import "JVERIFICATIONService.h"
 #import <SensorsAnalyticsSDK.h>
+#define NotificationStatusTime @"NotificationStatusTime"
+
+@interface AppDelegate (APNS)<JPUSHRegisterDelegate>
+
+@end
 
 @implementation AppDelegate (APNS)
 
 -(void)JR_ConfigAPNS:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
   [self configAPNSWithOption:launchOptions];
+  [self checkCurrentNotificationStatus];
   
   NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
   [defaultCenter addObserver:self selector:@selector(networkDidReceiveMessage:) name:kJPFNetworkDidReceiveMessageNotification object:nil];
@@ -291,8 +297,24 @@
       [SensorsAnalyticsSDK.sharedInstance profilePushKey:@"jgId" pushId:registrationID];
     }
   }];
+}
+//增加神策通知埋点
+-(void)jpushNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler
+{
+  // Required
+  NSDictionary * userInfo = response.notification.request.content.userInfo;
+  if([response.notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
+    [JPUSHService handleRemoteNotification:userInfo];
+  }
+  // 用户点击通知栏打开消息，使用神策分析记录 "App 打开消息" 事件
+  [[SensorsAnalyticsSDK sharedInstance] track:@"AppOpenNotification" withProperties:@{
+                                                                                      @"msg_title":[NSString stringWithFormat:@"%@",userInfo[@"aps"][@"alert"]],
+                                                                                      @"msg_id":[NSString stringWithFormat:@"%@",userInfo[@"_j_msgid"]]
+                                                                                      }];
   
-
+  // 直接上报数据
+  [[SensorsAnalyticsSDK sharedInstance] flush];
+  completionHandler();  // 系统要求执行这个方法
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
@@ -308,5 +330,86 @@
   {
     
   }
+}
+
+
+-(void) checkCurrentNotificationStatus
+{
+  if (@available(iOS 10 , *))
+  {
+    [[UNUserNotificationCenter currentNotificationCenter] getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
+      
+      if (settings.authorizationStatus == UNAuthorizationStatusDenied)
+      {
+        // 没权限
+         [self showAlrtToSetting];
+      }else{
+       
+        NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+      [userDefaults removeObjectForKey: NotificationStatusTime];
+      }
+      
+    }];
+  }
+  else if (@available(iOS 8 , *))
+  {
+    UIUserNotificationSettings * setting = [[UIApplication sharedApplication] currentUserNotificationSettings];
+    
+    if (setting.types == UIUserNotificationTypeNone) {
+      // 没权限
+       [self showAlrtToSetting];
+    }else{
+      NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+      
+      [userDefaults removeObjectForKey: NotificationStatusTime];
+    }
+  }
+  else
+  {
+    UIRemoteNotificationType type = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
+    if (type == UIUserNotificationTypeNone)
+    {
+      // 没权限
+      [self showAlrtToSetting];
+    }else{
+       NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+      [userDefaults removeObjectForKey: NotificationStatusTime];
+    }
+  }
+}
+
+
+#pragma mark 没权限的弹窗
+-(void) showAlrtToSetting
+{
+  NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+  NSDate *date = [userDefaults objectForKey: NotificationStatusTime];
+  if (!date) {
+    [userDefaults setObject:[NSDate new] forKey: NotificationStatusTime];
+    return;
+  }
+  if ( [[date dateByAddingSeconds: 30] compare:[NSDate new]] == NSOrderedDescending)  {
+    return;
+  }
+    [userDefaults setObject:[NSDate new] forKey: NotificationStatusTime];
+  UIAlertController * alert = [UIAlertController alertControllerWithTitle:@"" message:@"开启消息通知，获取秀购最新资讯" preferredStyle:UIAlertControllerStyleAlert];
+  
+  UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    
+  }];
+  UIAlertAction * setAction = [UIAlertAction actionWithTitle:@"去设置" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    NSURL * url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+    dispatch_async(dispatch_get_main_queue(), ^{
+      if ([[UIApplication sharedApplication] canOpenURL:url]) {
+        [[UIApplication sharedApplication] openURL:url];
+      }
+    });
+    
+  }];
+  
+  [alert addAction:cancelAction];
+  [alert addAction:setAction];
+  
+  [self.currentViewController_XG  presentViewController:alert animated:YES completion:nil];
 }
 @end

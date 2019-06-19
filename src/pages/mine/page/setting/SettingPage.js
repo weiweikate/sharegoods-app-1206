@@ -4,7 +4,7 @@ import {
     View,
     Image,
     NativeModules,
-    TouchableOpacity, Alert, Switch, Platform, AsyncStorage,
+    TouchableOpacity, Alert, Switch, Platform,
     Linking,
     DeviceEventEmitter
 } from 'react-native';
@@ -31,6 +31,7 @@ import loginModel from '../../../login/model/LoginModel';
 import StringUtils from '../../../../utils/StringUtils';
 import { QYChatTool } from '../../../../utils/QYModule/QYChatTool';
 import WhiteModel from '../../../show/model/WhiteModel';
+import store from '@mr/rn-store';
 
 /**
  * @author luoyongming
@@ -219,7 +220,7 @@ class SettingPage extends BasePage {
                 },
                 {
                     text: '确认', onPress: () => {
-                        AsyncStorage.removeItem('lastMessageTime').catch(e => {
+                        store.deleted('@mr/lastMessageTime').catch(e => {
                         });
                         // this.$loadingShow();
                         // 正常退出，或者登录超时，都去清空数据

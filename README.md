@@ -214,7 +214,7 @@ emptyProps
 * react-native三方库模块gradle文件配置请在android工程目录下找对应的gradle引入即可,例如：apply from: '../../../android/rn-vector-icons.gradle'
 * npm run gradle 可以自动配置android gradle
 
-### 关于多渠道打包
+#### 关于多渠道打包
   * 构建基准包：运行 assembleRelease task 构建基准包
   * 打包工具：walle gradle接入方式（也可采用命令行的方式）
   * 打包命令：上传360或爱加密等进行加固，获取未签名包
@@ -245,3 +245,8 @@ android开发人员在引入新的module包时，需要重新配置gradle文件�
    * 登录命令：code-push login https://codepush.sharegoodsmall.com/
    * 查看补丁命令：code-push deployment ls sharegoods-android -k
    * 打包发布补丁命令：code-push release-react sharegoods-android android --dev false --d Production
+   * 补丁回滚：code-push rollback sharegoods-android Production --targetRelease v4(codepush服务部署的版本号)
+   * 清楚历史记录：code-push deployment clear sharegoods-android Production or Staging
+   
+#### 清除npm缓存
+   * react-native start --reset-cache   

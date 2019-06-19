@@ -1,4 +1,4 @@
-import { AsyncStorage } from 'react-native';
+import store from '@mr/rn-store';
 import { action, computed, observable, autorun } from 'mobx';
 import shopCartCacheTool from '../pages/shopCart/model/ShopCartCacheTool';
 import UserApi from './userApi';
@@ -10,9 +10,9 @@ import JPushUtils from '../utils/JPushUtils';
 import { mediatorCallFunc } from '../SGMediator';
 
 
-const USERINFOCACHEKEY = 'UserInfo';
-const CARTDATA = 'cartData';
-const USERTOKEN = 'USERTOKEN';
+const USERINFOCACHEKEY = '@mr/userInfo';
+const CARTDATA = '@mr/cartData';
+const USERTOKEN = '@mr/userToken';
 
 class User {
 
@@ -189,27 +189,24 @@ class User {
         if (this.token) {
             return Promise.resolve(this.token);
         } else {
-            return AsyncStorage.getItem(USERTOKEN).then(token => {
+            return store.get(USERTOKEN).then(token => {
                 this.token = token;
-                AsyncStorage.setItem(USERTOKEN, String(token));
+                store.save(USERTOKEN, token);
                 return Promise.resolve(token);
             });
         }
     };
 
     // 从缓存磁盘读取用户上一次使用的信息记录
-    async readUserInfoFromDisk() {
-        AsyncStorage.getItem(USERINFOCACHEKEY).then(infoStr => {
-            if (infoStr && typeof infoStr === 'string') {
-                const info = JSON.parse(infoStr);
-                console.log('readUserInfoFromDisk', info);
-                // bridge.setCookies(info);
-                this.saveUserInfo(info, false);
+    readUserInfoFromDisk() {
+        store.get(USERINFOCACHEKEY).then((infoStr) => {
+            if (infoStr) {
+                this.saveUserInfo(infoStr, false);
             } else {
                 bridge.clearCookies();
             }
-        }).catch(err => {
-            console.warn('Error: user.readUserInfoFromDisk()\n' + err.toString());
+        }).catch(e => {
+            console.warn('Error: user.readUserInfoFromDisk()\n' + e.toString());
         });
     }
 
@@ -219,7 +216,7 @@ class User {
             return;
         }
         this.token = token;
-        AsyncStorage.setItem(USERTOKEN, String(token)).catch(e => {
+        store.save(USERTOKEN, token).catch(e => {
         });
     }
 
@@ -295,16 +292,15 @@ class User {
         this.perfectNumberCode = info.perfectNumberCode;
         this.weChatNumber = info.weChatNumber; //微信号
 
-        if (this.levelRemark  && this.levelRemark !== info.levelRemark){
+        if (this.levelRemark && this.levelRemark !== info.levelRemark) {
             // mediatorCallFunc()
-            mediatorCallFunc('Home_UserLevelUpdate',info.levelRemark);
+            mediatorCallFunc('Home_UserLevelUpdate', info.levelRemark);
         }
         this.levelRemark = info.levelRemark;
 
 
-
         if (saveToDisk) {
-            AsyncStorage.setItem(USERINFOCACHEKEY, JSON.stringify(info)).catch(e => {
+            store.save(USERINFOCACHEKEY, info).catch(e => {
             });
         }
         QYChatTool.initQYChat();
@@ -332,7 +328,7 @@ class User {
         }
         this.cartData = cartData;
         if (saveToDisk) {
-            AsyncStorage.setItem(CARTDATA, JSON.stringify(cartData)).catch(e => {
+            store.save(CARTDATA, cartData).catch(e => {
             });
         }
     }
@@ -417,25 +413,21 @@ class User {
         this.profile = null; //简介
         this.upCode = null;
         this.finishGuide = false;
-        // todo 清空cookie
-        //NativeModules.commModule.clearCookie(apiEnvironment.getCurrentHostUrl());
-        // AsyncStorage.removeItem(LASTSHOWPROMOTIONTIME).catch(e => {
-        // });
 
-        return AsyncStorage.removeItem(USERINFOCACHEKEY).catch(e => {
+        return store.deleted(USERINFOCACHEKEY).catch(e => {
         });
     }
 
     @action clearToken() {
         this.token = null;
-        AsyncStorage.setItem(USERTOKEN, '');
+        store.save(USERTOKEN, '');
     }
 
     // 清空离线购物车信息
     @action
     clearCartDatarInfo() {
         this.cartData = [];
-        return AsyncStorage.removeItem(CARTDATA).catch(e => {
+        return store.deleted(CARTDATA).catch(e => {
         });
     }
 
