@@ -40,6 +40,7 @@ const account_bg_white = res.bankCard.account_bg_white;
 const red_up = res.cashAccount.zhanghu_red;
 const lv_down = res.cashAccount.zhanghu_lv;
 const icon_invite = res.myData.icon_invite;
+const cash_noData = res.cashAccount.cash_noData;
 
 const allKinds = {
     1: { title: '注册赠送', img: singInImg },
@@ -108,6 +109,8 @@ export default class MyIntegralAccountPage extends BasePage {
                         progressViewOffset={30}
                         isEmpty={this.state.isEmpty}
                         emptyTip={'暂无明细数据～'}
+                        emptyIcon={cash_noData}
+
                     />
                 </Animated.ScrollView>
             </View>

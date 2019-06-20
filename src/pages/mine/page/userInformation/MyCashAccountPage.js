@@ -39,6 +39,7 @@ const account_bg_white = res.bankCard.account_bg_white;
 const red_up = res.cashAccount.zhanghu_red;
 const lv_down = res.cashAccount.zhanghu_lv;
 const writer = res.cashAccount.writer_icon;
+const cash_noData = res.cashAccount.cash_noData;
 
 const allType = {
     1: {
@@ -153,6 +154,7 @@ export default class MyCashAccountPage extends BasePage {
                         progressViewOffset={30}
                         isEmpty={this.state.isEmpty}
                         emptyTip={'暂无明细数据～'}
+                        emptyIcon={cash_noData}
                     />
 
                 </Animated.ScrollView>

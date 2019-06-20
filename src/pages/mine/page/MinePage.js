@@ -47,7 +47,7 @@ const {
     mine_wait_send_icon,
     mine_wait_receive_icon,
     mine_after_buy_icon,
-    mine_friendsHelp,
+    // mine_friendsHelp,
     mine_invite,
     mine_moreMoney,
     // mine_icon_favorite_shop,
@@ -61,7 +61,7 @@ const {
     mine_icon_mentor,
     mine_user_icon,
     mine_icon_fans,
-    // mine_icon_message,
+    // mine_levelBg,
     mine_showOrder
 } = res.homeBaseImg;
 
@@ -192,7 +192,7 @@ export default class MinePage extends BasePage {
 
     _onScroll = (event) => {
         let Y = event.nativeEvent.contentOffset.y;
-        if (Y < 0) {
+        if (Y <= 0) {
             this.setState({
                 changeHeader: true
             });
@@ -263,7 +263,7 @@ export default class MinePage extends BasePage {
             <View style={{flex: 1}}>
                 <PullView
                     bounces={false}
-                    contentBackgroundColor={'F7F7F7'}
+                    contentBackgroundColor={'#F7F7F7'}
                     backgroundColor={'#F7F7F7'}
                     renderForeground={this.renderUserHead}
                     renderStickyHeader={this.renderLevelNameNav}
@@ -354,6 +354,14 @@ export default class MinePage extends BasePage {
             </TouchableWithoutFeedback>
         ) : null;
 
+        let levelArr = ['V0','V1','V2','V3','V4','V5']
+        let index = 10;
+        for(let i = 0;i < levelArr.length;i++){
+            if(levelArr[i] === user.levelRemark){
+                index = i;
+            }
+        }
+
         let name = '';
 
         if (EmptyUtils.isEmpty(user.nickname)) {
@@ -412,14 +420,12 @@ export default class MinePage extends BasePage {
                     {this.accountRender()}
                 </View>
                 {this.copyModalRender()}
-                {this.renderLevelName()}
+                {this.renderLevelName(index)}
             </View>
         );
     };
 
-
-    renderLevelName =()=>{
-        let index = 2;
+    renderLevelName =(index)=>{
         return(
             <ImageBackground style={{
                 alignSelf: 'center',
@@ -428,7 +434,7 @@ export default class MinePage extends BasePage {
                 height: 37,
                 width: 345,
                 borderRadius: 10,
-            }} source={vipBg[index]}>
+            }} source={index !== 10 ? vipBg[index] : vipBg[2]}>
                 <View style={{
                     flexDirection: 'row',
                     justifyContent: 'center',
@@ -441,7 +447,7 @@ export default class MinePage extends BasePage {
                         fontSize: DesignRule.fontSize_threeTitle,
                         fontWeight: '600'
                     }}>
-                        {user.token ? `V${index}${user.levelName ? user.levelName : ''}品鉴官` : ''}
+                        {user.token ? index !== 10 ? `V${index}${user.levelName ? user.levelName : ''}品鉴官` : '' : ''}
                     </Text>
                     <TouchableWithoutFeedback onPress={() => {
                         this.$navigate(RouterMap.MyPromotionPage);
@@ -580,47 +586,36 @@ export default class MinePage extends BasePage {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 marginTop: 15,
-                marginLeft: 15,
-                marginRight: 15
+                marginLeft: px2dp(15),
+                marginRight: px2dp(15)
             }}>
                 <TouchableWithoutFeedback onPress={() => {
                     this.$navigate(RouterMap.InviteFriendsPage);
                 }}>
                     <View>
-                        <ImageBackground style={{
+                        <Image resizeMode={'contain'}
+                            style={{
                             height: px2dp(70),
-                            width: (ScreenUtils.width - 45) / 2
-                        }} source={mine_invite}>
-                            <View style={{flex: 1, justifyContent: 'center', marginLeft: 15}}>
-                                <Text style={{fontSize: 14, color: '#333333', fontWeight: '600', marginBottom: 5}}>
-                                    邀请好友赚钱</Text>
-
-                                <ImageBackground style={{width: 65, height: 26, alignItems: 'center'}}
-                                                 source={res.homeBaseImg.mine_btn_red}>
-                                    <Text style={{fontSize: 10, color: 'white'}}>立即邀请</Text>
-                                </ImageBackground>
-                            </View>
-                        </ImageBackground>
+                            width: (ScreenUtils.width - 30)
+                        }} source={mine_invite}/>
                     </View>
                 </TouchableWithoutFeedback>
-
-
-                <TouchableWithoutFeedback onPress={() => {
-                    this.$navigate('HtmlPage', { uri: '/activity/freeOrder' });
-                }}>
-                    <View>
-                        <ImageBackground style={{
-                            height: px2dp(70),
-                            width: (ScreenUtils.width - 45) / 2
-                        }} source={mine_friendsHelp}>
-                            <View style={{flex: 1, justifyContent: 'center', marginLeft: 15}}>
-                                <Text style={{fontSize: 14, color: '#333333', fontWeight: '600', marginBottom: 5}}>
-                                    助力减</Text>
-                                <Text style={{height: 26, fontSize: 10, color: '#999999'}}>好友助力减到底</Text>
-                            </View>
-                        </ImageBackground>
-                    </View>
-                </TouchableWithoutFeedback>
+                {/*<TouchableWithoutFeedback onPress={() => {*/}
+                    {/*this.$navigate('HtmlPage', { uri: '/activity/freeOrder' });*/}
+                {/*}}>*/}
+                    {/*<View>*/}
+                        {/*<ImageBackground style={{*/}
+                            {/*height: px2dp(70),*/}
+                            {/*width: (ScreenUtils.width - 45) / 2*/}
+                        {/*}} source={mine_friendsHelp}>*/}
+                            {/*<View style={{flex: 1, justifyContent: 'center', marginLeft: 15}}>*/}
+                                {/*<Text style={{fontSize: 14, color: '#333333', fontWeight: '600', marginBottom: 5}}>*/}
+                                    {/*助力减</Text>*/}
+                                {/*<Text style={{height: 26, fontSize: 10, color: '#999999'}}>好友助力减到底</Text>*/}
+                            {/*</View>*/}
+                        {/*</ImageBackground>*/}
+                    {/*</View>*/}
+                {/*</TouchableWithoutFeedback>*/}
             </View>
         )
     };
@@ -680,7 +675,6 @@ export default class MinePage extends BasePage {
         return (
             <View style={{
                 backgroundColor: 'white',
-                marginTop: DesignRule.margin_listGroup,
                 marginHorizontal: DesignRule.margin_page,
                 borderRadius: px2dp(10)
             }}>
@@ -761,7 +755,7 @@ export default class MinePage extends BasePage {
     renderBodyView = () => {
         return (
             <View style={{flex:1,backgroundColor:'#F7F7F7'}}>
-                <TaskVIew type={'mine'} style={{ marginTop: 10, paddingTop: 5 }}/>
+                <TaskVIew type={'mine'} style={{backgroundColor: '#F7F7F7', paddingBottom: 0 }}/>
                 {this.orderRender()}
                 {this.activeRender()}
                 {this.utilsRender()}

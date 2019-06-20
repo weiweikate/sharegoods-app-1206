@@ -3,7 +3,6 @@ import React from 'react';
 import {
     View,
     // Image,
-    Dimensions,
     StyleSheet,
     ScrollView,
     RefreshControl,
@@ -14,6 +13,7 @@ import {
 import { PageLoadingState, renderViewByLoadingState } from '../../../../components/pageDecorator/PageState';
 import MineApi from '../../api/MineApi';
 import HTML from 'react-native-render-html';
+import LinearGradient from 'react-native-linear-gradient';
 // 图片资源
 import DesignRule from '../../../../constants/DesignRule';
 import BasePage from '../../../../BasePage';
@@ -26,7 +26,7 @@ import res from '../../res';
 // import ImageLoad from '@mr/image-placeholder';
 import AvatarImage from '../../../../components/ui/AvatarImage';
 import { MRText as Text } from '../../../../components/ui';
-import Carousel from 'react-native-snap-carousel';
+// import Carousel from 'react-native-snap-carousel';
 
 // 常量
 // const iconbg = res.homeBaseImg.home_jingshnegqingk_icon;
@@ -36,6 +36,7 @@ import Carousel from 'react-native-snap-carousel';
 // import LinearGradient from 'react-native-linear-gradient';
 // import StringUtils from '../../../../utils/StringUtils';
 import { SmoothPushPreLoadHighComponent } from '../../../../comm/components/SmoothPushHighComponent';
+import StringUtils from '../../../../utils/StringUtils';
 
 const { px2dp } = ScreenUtils;
 
@@ -160,39 +161,41 @@ export default class MyPromotionPage extends BasePage {
         }
 
         return(
-            <View>
-                <Carousel
-                    data={levelName}
-                    renderItem={this.renderLevelCard}
-                    sliderWidth={ScreenUtils.width}
-                    itemWidth={px2dp(345)}
-                    inactiveSlideScale={1}
-                    inactiveSlideOpacity={1}
-                    enableMomentum={true}
-                    activeSlideAlignment={'center'}
-                    containerCustomStyle={styles.slider}
-                    contentContainerCustomStyle={styles.sliderContentContainer}
-                    onSnapToItem={(index) => {
-                        this.setState({slider1ActiveSlide:index});
-                        this.carousel.snapToItem( index,true)}
-                    }
-                />
-                <Carousel
-                    ref = {(c)=> { this.carousel  = c }}
-                    data={levelName}
-                    renderItem={this.progressView}
-                    sliderWidth={ScreenUtils.isIOS ? 0.1 : 1}
-                    itemWidth={ScreenUtils.width}
-                    inactiveSlideScale={1}
-                    inactiveSlideOpacity={1}
-                    enableMomentum={true}
-                    activeSlideAlignment={'start'}
-                    containerCustomStyle={[styles.slider,{ marginTop: -10}]}
-                    contentContainerCustomStyle={styles.sliderContentContainer}
-                />
+            <View style={{marginTop: 10}}>
+                {/*<Carousel*/}
+                    {/*data={levelName}*/}
+                    {/*renderItem={this.renderLevelCard}*/}
+                    {/*sliderWidth={ScreenUtils.width}*/}
+                    {/*itemWidth={px2dp(345)}*/}
+                    {/*inactiveSlideScale={1}*/}
+                    {/*inactiveSlideOpacity={1}*/}
+                    {/*enableMomentum={true}*/}
+                    {/*activeSlideAlignment={'center'}*/}
+                    {/*containerCustomStyle={styles.slider}*/}
+                    {/*contentContainerCustomStyle={styles.sliderContentContainer}*/}
+                    {/*onSnapToItem={(index) => {*/}
+                        {/*this.setState({slider1ActiveSlide:index});*/}
+                        {/*this.carousel.snapToItem( index,true)}*/}
+                    {/*}*/}
+                {/*/>*/}
+                {/*<Carousel*/}
+                    {/*ref = {(c)=> { this.carousel  = c }}*/}
+                    {/*data={levelName}*/}
+                    {/*renderItem={this.progressView}*/}
+                    {/*sliderWidth={ScreenUtils.isIOS ? 0.1 : 1}*/}
+                    {/*itemWidth={ScreenUtils.width}*/}
+                    {/*inactiveSlideScale={1}*/}
+                    {/*inactiveSlideOpacity={1}*/}
+                    {/*enableMomentum={true}*/}
+                    {/*activeSlideAlignment={'start'}*/}
+                    {/*containerCustomStyle={[styles.slider,{ marginTop: -10}]}*/}
+                    {/*contentContainerCustomStyle={styles.sliderContentContainer}*/}
+                {/*/>*/}
+                {this.renderLevelCard(userLevel)}
+                {this.progressView(userLevel)}
                 <View style={{flex:1, height:30,alignItems:'center',justifyContent:'center'}}>
                     <Text style={{color:'#999999',fontSize:10}}>距下一等级还差
-                        <Text style={{color:'#333333',fontSize:16}}> {EXPNum} </Text>
+                        <Text style={{color:'#333333',fontSize:16}}> {EXPNum >= 0 ? EXPNum : 0} </Text>
                         经验值
                     </Text>
                 </View>
@@ -200,7 +203,7 @@ export default class MyPromotionPage extends BasePage {
         )
     };
 
-    renderLevelCard = ({ item, index })=>{
+    renderLevelCard = (index)=>{
         let color = index === 2 || index === 4 || index === 5 ? '#FFE6B1' : DesignRule.textColor_mainTitle;
 
         let icon = (this.state.headImg && this.state.headImg.length > 0) ?
@@ -225,7 +228,7 @@ export default class MyPromotionPage extends BasePage {
                                     position: 'absolute',
                                     bottom: -4.5,
                                 }}>
-                                    {`${item.name}评鉴官`}
+                                    {this.state.levelName ? `${this.state.levelName}品鉴官` : ''}
                                 </Text>
                             </View>
                         </View>
@@ -233,9 +236,9 @@ export default class MyPromotionPage extends BasePage {
                             marginTop: px2dp(10),
                             marginLeft: px2dp(20),
                             fontSize: DesignRule.fontSize_22,
-                            color: DesignRule.textColor_mainTitle
+                            color: color
                         }}>
-                            {`经验值${parseInt(this.state.levelExperience)}`}
+                            {`${StringUtils.roundFun(this.state.experience ,2)}/ ${StringUtils.roundFun(this.state.levelExperience,2)}`}
                         </Text>
                         <View style={{flex: 1, flexDirection: 'row', alignItems: 'flex-end'}}>
                             <View style={{flexDirection: 'row', marginBottom: 20, alignItems: 'center'}}>
@@ -247,7 +250,7 @@ export default class MyPromotionPage extends BasePage {
                                 <Text style={{
                                     marginLeft: 10,
                                     fontSize: DesignRule.fontSize_24,
-                                    color: DesignRule.textColor_mainTitle}}>
+                                    color: color}}>
                                     {this.state.realName && this.state.realName.length > 0 ? this.state.realName : ''}
                                 </Text>
                             </View>
@@ -273,17 +276,38 @@ export default class MyPromotionPage extends BasePage {
         )
     }
 
-    progressView = ({item,index}) => {
+    progressView = (index) => {
         let num = 1;
         const progress = index < userLevel ? 100 : index > userLevel ? 0 :
             (this.state.experience / this.state.levelExperience) < 1 ? (this.state.experience / this.state.levelExperience) * 100 : 100;
-        // console.log(progress);
+        // return (
+        //     <View key={index + 'progressView'}
+        //         style={{flex: 1, flexDirection: 'row', height: 16, alignItems: 'center',marginLeft:10,marginRight:10}}>
+        //
+        //         {index > 0 ? <Image source={dotArr[this.state.slider1ActiveSlide - num]} style={{width:10, height:10}}/>
+        //             : <View style={{width:10, height:10}}/>}
+        //         {index > 0 ?
+        //             <View style={{flex: 1, height: 4, backgroundColor: 'rgba(0,0,0,0.1)', marginLeft: 20, marginRight: 20, borderRadius: 6}}>
+        //                 <View style={{flex: 1, width: index == 5 ? `${progress}%` : index > userLevel ? '0%' : '100%',
+        //                     height: 4, backgroundColor: '#FFD57D', borderRadius: 6}}/>
+        //             </View>
+        //             : <View style={{flex:1, height:4}}/>}
+        //         <Image source={dotArr[this.state.slider1ActiveSlide]} style={{width:10, height:10}}/>
+        //         {index < 5 ?
+        //             <View style={{flex: 1, height: 4, backgroundColor: 'rgba(0,0,0,0.1)', marginLeft: 20, marginRight: 20, borderRadius: 6}}>
+        //                 <View style={{flex: 1, width:`${progress}%`,height: 4, backgroundColor: '#FFD57D', borderRadius: 6}}/>
+        //             </View>
+        //             : <View style={{flex:1, height:4}}/>}
+        //         {index < 5 ? <Image source={dotArr[this.state.slider1ActiveSlide + num]} style={{width:10, height:10}}/>
+        //             : <View style={{width:10, height:10}}/>}
+        //     </View>
+        // )
 
-        return (
+        return(
             <View key={index + 'progressView'}
-                style={{flex: 1, flexDirection: 'row', height: 16, alignItems: 'center',marginLeft:10,marginRight:10}}>
+                style={{flex: 1, flexDirection: 'row', height: 16, alignItems: 'center',marginTop:10, marginLeft:10,marginRight:10}}>
 
-                {index > 0 ? <Image source={dotArr[this.state.slider1ActiveSlide - num]} style={{width:10, height:10}}/>
+                {index > 0 ? <Image source={dotArr[index - num]} style={{width:10, height:10}}/>
                     : <View style={{width:10, height:10}}/>}
                 {index > 0 ?
                     <View style={{flex: 1, height: 4, backgroundColor: 'rgba(0,0,0,0.1)', marginLeft: 20, marginRight: 20, borderRadius: 6}}>
@@ -291,13 +315,13 @@ export default class MyPromotionPage extends BasePage {
                             height: 4, backgroundColor: '#FFD57D', borderRadius: 6}}/>
                     </View>
                     : <View style={{flex:1, height:4}}/>}
-                <Image source={dotArr[this.state.slider1ActiveSlide]} style={{width:10, height:10}}/>
+                <Image source={dotArr[index]} style={{width:10, height:10}}/>
                 {index < 5 ?
                     <View style={{flex: 1, height: 4, backgroundColor: 'rgba(0,0,0,0.1)', marginLeft: 20, marginRight: 20, borderRadius: 6}}>
                         <View style={{flex: 1, width:`${progress}%`,height: 4, backgroundColor: '#FFD57D', borderRadius: 6}}/>
                     </View>
                     : <View style={{flex:1, height:4}}/>}
-                {index < 5 ? <Image source={dotArr[this.state.slider1ActiveSlide + num]} style={{width:10, height:10}}/>
+                {index < 5 ? <Image source={dotArr[index + num]} style={{width:10, height:10}}/>
                     : <View style={{width:10, height:10}}/>}
             </View>
         )
@@ -429,38 +453,48 @@ export default class MyPromotionPage extends BasePage {
 
     renderFooter() {
         return (
-            <View style={{ flexDirection: 'column', height: 48.5 }}>
-                <View
-                    style={{ height: 0.5, width: ScreenUtils.width, backgroundColor: DesignRule.lineColor_inGrayBg }}/>
-                <View style={{
-                    width: Dimensions.get('window').width, height: 48, position: 'absolute', bottom: 0,
-                    alignItems: 'center', justifyContent: 'center', flexDirection: 'row'
-                }}>
+            <View style={{
+                width: ScreenUtils.width, height: 100, position: 'absolute', bottom: 0,
+                alignItems: 'center', justifyContent: 'center',}}>
+            {/*<View style={{ flexDirection: 'column'}}>*/}
+                {/*<View*/}
+                    {/*// style={{ height: 0.5, width: ScreenUtils.width, backgroundColor: DesignRule.lineColor_inGrayBg }}/>*/}
                     <TouchableWithoutFeedback onPress={this._onPressInvite}>
-                        <View style={{
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            flex: 1,
-                            backgroundColor: '#fff',
-                            height: 48
-                        }}>
-                            <Text style={{ fontSize: 14, color: '#000' }} allowFontScaling={false}>分享好友</Text>
-                        </View>
+                        <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}}
+                                        colors={['#FC5D39', '#FF0050']}
+                                        style={{
+                                            alignItems: 'center',
+                                            flexDirection: 'row',
+                                            justifyContent: 'center',
+                                            width:ScreenUtils.width - 60,
+                                            height: 40,
+                                            borderRadius:24
+                                        }}
+                        >
+                            <Text style={{
+                                fontSize: 18,
+                                color: 'white',
+                            }} allowFontScaling={false}>邀请好友
+                            </Text>
+                        </LinearGradient>
                     </TouchableWithoutFeedback>
+                <Text style={{ fontSize: 11, color: '#666666',marginTop: 15, marginBottom: 11 }} allowFontScaling={false}>
+                    注：任务奖励金系统会不定时触发
+                </Text>
 
-                    <TouchableWithoutFeedback onPress={this._onGoShop}>
-                        <View style={{
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            backgroundColor: DesignRule.mainColor,
-                            flex: 1,
-                            height: 48
-                        }}>
-                            <Text style={{ fontSize: 14, color: '#fff' }} allowFontScaling={false}>浏览秀购</Text>
-                        </View>
-                    </TouchableWithoutFeedback>
-                </View>
-            </View>
+                    {/*<TouchableWithoutFeedback onPress={this._onGoShop}>*/}
+                        {/*<View style={{*/}
+                            {/*alignItems: 'center',*/}
+                            {/*justifyContent: 'center',*/}
+                            {/*backgroundColor: DesignRule.mainColor,*/}
+                            {/*flex: 1,*/}
+                            {/*height: 48*/}
+                        {/*}}>*/}
+                            {/*<Text style={{ fontSize: 14, color: '#fff' }} allowFontScaling={false}>浏览秀购</Text>*/}
+                        {/*</View>*/}
+                    {/*</TouchableWithoutFeedback>*/}
+                {/*</View>*/}
+             </View>
         );
     }
 }
