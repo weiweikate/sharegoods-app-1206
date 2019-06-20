@@ -21,7 +21,7 @@ import Navigator, { getCurrentRouteName } from './navigation/Navigator';
 import { SpellShopFlag, SpellShopTab } from './navigation/Tab';
 import { checkInitResult } from './pages/login/model/PhoneAuthenAction';
 import loginModel from './pages/login/model/LoginModel';
-import RouterMap, { navigate } from './navigation/RouterMap';
+import RouterMap, { routeNavigate, routePush } from './navigation/RouterMap';
 import user from '../src/model/user';
 import apiEnvironment from './api/ApiEnvironment';
 import CONFIG from '../config';
@@ -109,7 +109,7 @@ class App extends Component {
             (reminder) => {
                 this.timer = setInterval(() => {
                     if (global.$navigator) {
-                        navigate('HtmlPage', { uri: reminder.uri });
+                        routePush('HtmlPage', { uri: reminder.uri });
                         clearInterval(this.timer);
                     }
                 }, 100);
@@ -179,7 +179,7 @@ class App extends Component {
     }
 
     showDebugPage = () => {
-        navigate(RouterMap.DebugPanelPage, {});
+        routeNavigate(RouterMap.DebugPanelPage, {});
     };
 }
 

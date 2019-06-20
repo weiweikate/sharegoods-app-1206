@@ -12,7 +12,7 @@ import { homeLinkType, homeRoute } from '../HomeTypes';
 import { MRText } from '../../../components/ui';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import user from '../../../model/user';
-import RouterMap, { routeNavigate } from '../../../navigation/RouterMap';
+import RouterMap, { routePush } from '../../../navigation/RouterMap';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 
 const { px2dp } = ScreenUtils;
@@ -84,7 +84,7 @@ export default class HomeLimitGoView extends Component {
     }
 
     _goToDetail(index, value, activityData) {
-        routeNavigate(homeRoute[homeLinkType.spike], { productCode: value.prodCode });
+        routePush(homeRoute[homeLinkType.spike], { productCode: value.prodCode });
         // 限时购商品点击埋点
         track(trackEvent.SpikeProdClick,
             {

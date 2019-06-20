@@ -20,7 +20,7 @@ import bridge from '../../utils/bridge';
 import ShowApi from './ShowApi';
 import EmptyUtils from '../../utils/EmptyUtils';
 import ShowUtils from './utils/ShowUtils';
-import RouterMap, { routeNavigate } from '../../navigation/RouterMap';
+import RouterMap, { routeNavigate, routePush } from '../../navigation/RouterMap';
 import DownloadUtils from './utils/DownloadUtils';
 
 @observer
@@ -129,13 +129,13 @@ export default class ShowMaterialView extends React.Component {
 
                                        }}
                                        onNineClick={({ nativeEvent }) => {
-                                           routeNavigate('show/ShowDetailImagePage', {
+                                           routeNavigate(RouterMap.ShowDetailImagePage, {
                                                imageUrls: nativeEvent.imageUrls,
                                                index: nativeEvent.index
                                            });
                                        }}
                                        onPressProduct={({ nativeEvent }) => {
-                                           routeNavigate(RouterMap.ProductDetailPage, { productCode: nativeEvent.prodCode });
+                                           routePush(RouterMap.ProductDetailPage, { productCode: nativeEvent.prodCode });
                                        }}
 
                                        onAddCartClick={({ nativeEvent }) => {
@@ -155,7 +155,7 @@ export default class ShowMaterialView extends React.Component {
 
                                        onDownloadPress={({ nativeEvent }) => {
                                            if (!user.isLogin) {
-                                               routeNavigate('login/login/LoginPage');
+                                               routeNavigate(RouterMap.LoginPage);
                                                return;
                                            }
                                            let { detail } = nativeEvent;
@@ -210,10 +210,10 @@ export default class ShowMaterialView extends React.Component {
 
                                     onPress={() => {
                                         if (!user.isLogin) {
-                                            routeNavigate('login/login/LoginPage');
+                                            routeNavigate(RouterMap.LoginPage);
                                             return;
                                         }
-                                        routeNavigate('show/ReleaseNotesPage');
+                                        routeNavigate(RouterMap.ReleaseNotesPage);
                                     }}/>
                             </Animated.View> : null
                     }

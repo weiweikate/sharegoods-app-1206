@@ -22,7 +22,7 @@ import { MRText as Text, MRTextInput as TextInput } from '../../../components/ui
 import couponsModel from '../model/CouponsModel';
 import CouponExplainItem from './CouponExplainItem';
 import CouponNormalItem from './CouponNormalItem';
-import RouterMap, { backToHome, routeNavigate } from '../../../navigation/RouterMap';
+import RouterMap, { backToHome, routePush } from '../../../navigation/RouterMap';
 
 const NoMessage = res.couponsImg.coupons_no_data;
 const plusIcon = res.couponsImg.youhuiquan_icon_jia_nor;
@@ -564,27 +564,27 @@ export default class MyCouponsItems extends Component {
     clickItem = (index, item) => {
         //礼包
         if (item.redirectType && item.redirectType === 10) {
-            routeNavigate(RouterMap.TopicDetailPage, { activityType: 3, activityCode: item.redirectUrl });
+            routePush(RouterMap.TopicDetailPage, { activityType: 3, activityCode: item.redirectUrl });
         }
 
         //专题(老版)
         if (item.redirectType && item.redirectType === 11) {
-            routeNavigate(RouterMap.DownPricePage, { linkTypeCode: item.redirectUrl });
+            routePush(RouterMap.DownPricePage, { linkTypeCode: item.redirectUrl });
         }
 
         //商品
         if (item.redirectType && item.redirectType === 12) {
-            routeNavigate(RouterMap.ProductDetailPage, { productCode: item.redirectUrl });
+            routePush(RouterMap.ProductDetailPage, { productCode: item.redirectUrl });
         }
 
         //秀场
         if (item.redirectType && item.redirectType === 13) {
-            routeNavigate(RouterMap.ShowRichTextDetailPage, { code: item.redirectUrl });
+            routePush(RouterMap.ShowRichTextDetailPage, { code: item.redirectUrl });
         }
 
         //h5链接
         if (item.redirectType && item.redirectType === 14) {
-            routeNavigate('HtmlPage', { uri: item.redirectUrl });
+            routePush('HtmlPage', { uri: item.redirectUrl });
         }
     };
 }

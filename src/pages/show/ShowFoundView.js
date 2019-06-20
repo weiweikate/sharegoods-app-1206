@@ -12,7 +12,8 @@ const { px2dp } = ScreenUtils;
 import ReleaseButton from './components/ReleaseButton';
 import user from '../../model/user';
 import ShowGroundView from './components/ShowGroundView';
-import { routeNavigate } from '../../navigation/RouterMap';
+import { routeNavigate, routePush } from '../../navigation/RouterMap';
+import RouterMap from '../../navigation/RouterMap';
 
 @observer
 export default class ShowFoundView extends React.Component {
@@ -113,10 +114,10 @@ export default class ShowFoundView extends React.Component {
 
                                 onPress={() => {
                                     if (!user.isLogin) {
-                                        routeNavigate('login/login/LoginPage');
+                                        routeNavigate(RouterMap.LoginPage);
                                         return;
                                     }
-                                    routeNavigate('show/ReleaseNotesPage');
+                                    routePush(RouterMap.ReleaseNotesPage);
                                 }}/>
                         </Animated.View> : null
                 }

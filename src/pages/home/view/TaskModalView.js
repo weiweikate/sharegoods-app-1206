@@ -9,10 +9,11 @@
  *
  */
 
+
 'use strict';
 
 import React from 'react';
-import {navigate, navigateBackToStore} from '../../../navigation/RouterMap';
+import { navigateBackToStore, routePush } from '../../../navigation/RouterMap';
 
 import {
     StyleSheet,
@@ -23,7 +24,7 @@ import {
 } from 'react-native';
 
 import {
-    MRText,
+    MRText
 } from '../../../components/ui';
 import Modal from '../../../comm/components/CommModal';
 import { observer } from 'mobx-react';
@@ -33,6 +34,7 @@ import DesignRule from '../../../constants/DesignRule';
 import taskModel, { mineTaskModel } from '../model/TaskModel';
 import LinearGradient from 'react-native-linear-gradient';
 import HomeModalManager from '../manager/HomeModalManager';
+
 const {
     taskModal_dou,
     taskModal_btn,
@@ -48,14 +50,14 @@ const {
     V2,
     V3,
     V4,
-    V5,
+    V5
 } = res.task;
 const GiftType = {
     exp: 1,
     xiudou: 2,
     coupon: 3,
     lottery: 4
-}
+};
 @observer
 export default class TaskModalView extends React.Component {
 
@@ -63,7 +65,7 @@ export default class TaskModalView extends React.Component {
         super(props);
 
         this.state = {};
-        this.model = this.props.type === 'home'? taskModel : mineTaskModel
+        this.model = this.props.type === 'home' ? taskModel : mineTaskModel;
 
     }
 
@@ -73,12 +75,12 @@ export default class TaskModalView extends React.Component {
 
     renderContent() {
 
-        let alertData = this.model.alertData || []
-        let images = [taskModal_exp,taskModal_dou,taskModal_h, taskModal_chou];
-        let bgs = [exp_bg, dou_bg, h_bg, chou_bg]
+        let alertData = this.model.alertData || [];
+        let images = [taskModal_exp, taskModal_dou, taskModal_h, taskModal_chou];
+        let bgs = [exp_bg, dou_bg, h_bg, chou_bg];
         let lottery = null;
         alertData = alertData.filter((item) => {
-            if (GiftType[item.code]){
+            if (GiftType[item.code]) {
                 if (GiftType[item.code] === GiftType.lottery) {
                     lottery = item;
                     return true;
@@ -86,32 +88,32 @@ export default class TaskModalView extends React.Component {
                 return true;
             }
             return false;
-        })
-        return(
+        });
+        return (
             <View style={styles.modal}>
-                <View style={{borderRadius: 10, overflow: 'hidden'}}>
+                <View style={{ borderRadius: 10, overflow: 'hidden' }}>
                     <Image source={taskModal_header} style={styles.header}/>
                     <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }}
-                                    colors={[ '#FFC664','#FF914A']}
-                                    style={{ alignItems: "center"}}
+                                    colors={['#FFC664', '#FF914A']}
+                                    style={{ alignItems: 'center' }}
                     >
                         <Image source={taskModal_wa} style={{
                             width: ScreenUtils.autoSizeWidth(185),
                             height: ScreenUtils.autoSizeWidth(30),
-                            marginBottom: ScreenUtils.autoSizeWidth(10),
+                            marginBottom: ScreenUtils.autoSizeWidth(10)
                         }}/>
                         {
                             alertData.map((item) => {
-                                let {total, code, unit = '', name} = item;
-                                return(
-                                    <ImageBackground source={bgs[GiftType[code]-1]} style={{
+                                let { total, code, unit = '', name } = item;
+                                return (
+                                    <ImageBackground source={bgs[GiftType[code] - 1]} style={{
                                         height: ScreenUtils.autoSizeWidth(51),
                                         width: ScreenUtils.autoSizeWidth(170),
                                         marginTop: ScreenUtils.autoSizeWidth(8),
                                         alignItems: 'center',
                                         flexDirection: 'row'
                                     }}>
-                                        <Image source={images[GiftType[code]-1]} style={{
+                                        <Image source={images[GiftType[code] - 1]} style={{
                                             width: ScreenUtils.autoSizeWidth(45),
                                             height: ScreenUtils.autoSizeWidth(45),
                                             marginLeft: ScreenUtils.autoSizeWidth(10)
@@ -119,30 +121,38 @@ export default class TaskModalView extends React.Component {
                                         <View style={{
                                             marginLeft: ScreenUtils.autoSizeWidth(10)
                                         }}>
-                                            <MRText style={{fontSize: ScreenUtils.autoSizeWidth(14), color: DesignRule.mainColor}}>{item.name}</MRText>
-                                            <MRText style={{fontSize: ScreenUtils.autoSizeWidth(11), color: '#999999'}}>{total + unit + name}</MRText>
+                                            <MRText style={{
+                                                fontSize: ScreenUtils.autoSizeWidth(14),
+                                                color: DesignRule.mainColor
+                                            }}>{item.name}</MRText>
+                                            <MRText style={{
+                                                fontSize: ScreenUtils.autoSizeWidth(11),
+                                                color: '#999999'
+                                            }}>{total + unit + name}</MRText>
                                         </View>
 
                                     </ImageBackground>
-                                )
+                                );
                             })
                         }
-                        <TouchableOpacity onPress={()=> {this.onPress(lottery)}}>
+                        <TouchableOpacity onPress={() => {
+                            this.onPress(lottery);
+                        }}>
                             <ImageBackground source={taskModal_btn} style={styles.btn}>
-                                <MRText style={styles.btnText}>{lottery?'去抽奖': '确定'}</MRText>
+                                <MRText style={styles.btnText}>{lottery ? '去抽奖' : '确定'}</MRText>
                             </ImageBackground>
                         </TouchableOpacity>
                     </LinearGradient>
                 </View>
             </View>
-        )
+        );
     }
 
-    onPress(lottery){
-        if (lottery)  {
-            navigate('HtmlPage', {uri: lottery.parameter})
+    onPress(lottery) {
+        if (lottery) {
+            routePush('HtmlPage', { uri: lottery.parameter });
         }
-        this.model.closeAlert()
+        this.model.closeAlert();
     }
 
     render() {
@@ -153,7 +163,7 @@ export default class TaskModalView extends React.Component {
                     this.modal = ref;
                 }}
                 onRequestClose={() => {
-                    this.model.closeAlert()
+                    this.model.closeAlert();
                 }}
                 visible={this.model.openAlert === true}>
                 {this.renderContent()}
@@ -174,31 +184,38 @@ export class UserLevelModalView extends React.Component {
     }
 
     renderContent() {
-        let imgs = {V2, V3, V4, V5}
-        return(
+        let imgs = { V2, V3, V4, V5 };
+        return (
             <View style={styles.modal}>
-                <TouchableOpacity style={{width: ScreenUtils.width, alignItems: 'center'}} onPress={()=> {this.onPress(HomeModalManager.Userdata)}} >
-                    <TouchableOpacity onPress={()=> {this.onPress()}}
-                                      style={{alignSelf: 'flex-end',
+                <TouchableOpacity style={{ width: ScreenUtils.width, alignItems: 'center' }} onPress={() => {
+                    this.onPress(HomeModalManager.Userdata);
+                }}>
+                    <TouchableOpacity onPress={() => {
+                        this.onPress();
+                    }}
+                                      style={{
+                                          alignSelf: 'flex-end',
                                           marginRight: ScreenUtils.autoSizeWidth(30),
-                                          marginBottom: ScreenUtils.autoSizeWidth(0),}}>
+                                          marginBottom: ScreenUtils.autoSizeWidth(0)
+                                      }}>
                         <Image source={res.button.cancel_white_circle} style={{
                             width: ScreenUtils.autoSizeWidth(25),
-                            height: ScreenUtils.autoSizeWidth(25),
-                        }} />
+                            height: ScreenUtils.autoSizeWidth(25)
+                        }}/>
                     </TouchableOpacity>
                     <Image source={imgs[HomeModalManager.Userdata]} style={{
                         width: ScreenUtils.autoSizeWidth(250),
-                        height: ScreenUtils.autoSizeWidth(250)}}/>
+                        height: ScreenUtils.autoSizeWidth(250)
+                    }}/>
                 </TouchableOpacity>
             </View>
-        )
+        );
     }
 
-    onPress(v){
+    onPress(v) {
         HomeModalManager.closeUserLevel();
         if (v === 'V2') {
-            navigateBackToStore()
+            navigateBackToStore();
         }
     }
 
@@ -210,7 +227,7 @@ export class UserLevelModalView extends React.Component {
                     this.modal = ref;
                 }}
                 onRequestClose={() => {
-                    HomeModalManager.closeUserLevel()
+                    HomeModalManager.closeUserLevel();
                 }}
                 visible={HomeModalManager.isShowUser && HomeModalManager.isHome}>
                 {this.renderContent()}
@@ -220,7 +237,7 @@ export class UserLevelModalView extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    modal:{
+    modal: {
         position: 'absolute',
         top: 0,
         left: 0,
@@ -228,23 +245,23 @@ const styles = StyleSheet.create({
         bottom: 0,
         backgroundColor: 'rgba(0,0,0,0.3)',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'center'
 
     },
     header: {
         width: ScreenUtils.autoSizeWidth(250),
-        height: ScreenUtils.autoSizeWidth(50),
+        height: ScreenUtils.autoSizeWidth(50)
     },
     btn: {
         height: ScreenUtils.autoSizeWidth(51),
         width: ScreenUtils.autoSizeWidth(170),
         alignItems: 'center',
-        justifyContent: 'center' ,
+        justifyContent: 'center',
         marginBottom: ScreenUtils.autoSizeWidth(23),
-        marginTop: ScreenUtils.autoSizeWidth(10),
+        marginTop: ScreenUtils.autoSizeWidth(10)
     },
     btnText: {
         fontSize: 18,
         color: '#D75A26'
-    },
+    }
 });

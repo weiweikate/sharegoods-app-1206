@@ -7,7 +7,7 @@ import AvatarImage from '../../../../components/ui/AvatarImage';
 import UIImage from '@mr/image-placeholder';
 import pRes from '../../res/product';
 import DateUtils from '../../../../utils/DateUtils';
-import RouterMap, { routeNavigate } from '../../../../navigation/RouterMap';
+import RouterMap, { routePush } from '../../../../navigation/RouterMap';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
 import StringUtils from '../../../../utils/StringUtils';
 
@@ -65,7 +65,7 @@ export class P_ScoreListItemView extends Component {
         if (StringUtils.isNoEmpty(imgUrl)) {
             images = imgUrl.split('$');
         }
-        routeNavigate(RouterMap.P_ScoreSwiperPage, {
+        routePush(RouterMap.P_ScoreSwiperPage, {
             video: videoUrl,
             videoImg: videoImgPath,
             images: images,

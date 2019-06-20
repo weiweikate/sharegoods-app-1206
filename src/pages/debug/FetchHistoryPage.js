@@ -15,6 +15,7 @@ import { observer } from 'mobx-react';
 import { formatDate } from '../../utils/DateUtils';
 import BasePage from '../../BasePage';
 import { routeNavigate } from '../../navigation/RouterMap';
+import RouterMap from '../../navigation/RouterMap';
 
 
 @observer
@@ -37,7 +38,7 @@ export default class FetchHistoryPage extends BasePage {
 
     // 查看具体请求详细数据
     _clickRequestDetail = (item) => {
-        routeNavigate('debug/RequestDetailPage', {
+        routeNavigate(RouterMap.RequestDetailPage, {
             request: item,
             preRouteName: this.props.navigation.state.routeName
         });

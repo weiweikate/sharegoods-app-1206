@@ -14,7 +14,6 @@ import {
 } from 'react-native';
 import GeneralButton from '../../components/pageDecorator/BaseView/GeneralButton';
 
-//const {commModule} = NativeModules;
 import user from '../../model/user';
 import apiEnvironment from '../../api/ApiEnvironment';
 import { observer } from 'mobx-react';

@@ -252,8 +252,8 @@ export default class BasePage extends Component {
         const resetAction = StackActions.reset({
             index: 1,
             actions: [
-                NavigationActions.navigate({ routeName: 'Tab' }),
-                NavigationActions.navigate({ routeName: 'login/login/LoginPage' })
+                NavigationActions.navigate({ routeName: RouterMap.Tab }),
+                NavigationActions.navigate({ routeName: RouterMap.LoginPage })
             ]
         });
         this.props.navigation.dispatch(resetAction);

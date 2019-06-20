@@ -12,7 +12,8 @@ import {
 } from '../../components/ui';
 import res from './res';
 import { TrackApi } from '../../utils/SensorsTrack';
-import { routeNavigate } from '../../navigation/RouterMap';
+import { routePush } from '../../navigation/RouterMap';
+import RouterMap from '../../navigation/RouterMap';
 
 const homeShowImg = res.other.home_show;
 const TagView = ({ text }) => <View style={styles.tagView}>
@@ -36,11 +37,11 @@ export default class ShowView extends Component {
     }
 
     _goToShow() {
-        routeNavigate('show/ShowListPage', { fromHome: true });
+        routePush(RouterMap.ShowListPage, { fromHome: true });
     }
 
     _goToDetail() {
-        routeNavigate('show/ShowDetailPage', { id: this.showModules.firstId });
+        routePush(RouterMap.ShowDetailPage, { id: this.showModules.firstId });
     }
 
     _showEnd() {

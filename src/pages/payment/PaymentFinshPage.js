@@ -16,11 +16,9 @@ import { TrackApi } from '../../utils/SensorsTrack';
 import ShareUtil from '../../utils/ShareUtil';
 import user from '../../model/user';
 import PaymentApi from './PaymentApi';
-// import RouterMap from '../../navigation/RouterMap';
 import apiEnvironment from '../../api/ApiEnvironment';
 import bridge from '../../utils/bridge';
 import { replaceRoute } from '../../navigation/RouterMap';
-// import PaymentApi from './PaymentApi';
 
 const { px2dp } = ScreenUtils;
 const {

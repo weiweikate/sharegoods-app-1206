@@ -1,7 +1,8 @@
 import HttpUtils from './HttpUtils';
 import User from '../../model/user';
 import apiEnvironment from '../ApiEnvironment';
-import { navigate, routeNavigate } from '../../navigation/RouterMap';
+import { routeNavigate, routePush } from '../../navigation/RouterMap';
+import RouterMap from '../../navigation/RouterMap';
 
 export default function ApiUtils(Urls) {
     let result = {}, list = [];
@@ -25,7 +26,7 @@ export default function ApiUtils(Urls) {
             filter = item.filter, checkLogin = item.checkLogin || false;
         result[name] = async function(params, config = {}) {
             if (checkLogin === true && !User.isLogin) {
-                routeNavigate('login/login/LoginPage', {
+                routeNavigate(RouterMap.LoginPage, {
                     callback: config.callback
                 });
                 return Promise.reject({
@@ -43,13 +44,13 @@ export default function ApiUtils(Urls) {
                 if (response.code === 10009) {
                     User.clearUserInfo();
                     User.clearToken();
-                    routeNavigate('login/login/LoginPage', {
+                    routeNavigate(RouterMap.LoginPage, {
                         callback: config.callback
                     });
                 }
                 //系统升级中跳转错误网页
                 if (response.code === 9999) {
-                    navigate('HtmlPage', { uri: apiEnvironment.getCurrentH5Url() + '/system-maintenance' });
+                    routePush('HtmlPage', { uri: apiEnvironment.getCurrentH5Url() + '/system-maintenance' });
                 }
                 return Promise.reject(response);
             }

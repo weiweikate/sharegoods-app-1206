@@ -18,7 +18,8 @@ import TimerMixin from 'react-timer-mixin';
 import {
     MRText as Text
 } from '../../components/ui';
-import { routeNavigate } from '../../navigation/RouterMap';
+import { routePush } from '../../navigation/RouterMap';
+import RouterMap from '../../navigation/RouterMap';
 
 class HotItem extends Component {
     state = {
@@ -73,7 +74,7 @@ class HotItem extends Component {
 export default class ShowHotScrollView extends Component {
 
     _hotItemAction(item) {
-        routeNavigate('show/ShowDetailPage', { id: item.id, code: item.code });
+        routePush(RouterMap.ShowDetailPage, { id: item.id, code: item.code });
     }
 
     render() {

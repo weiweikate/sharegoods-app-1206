@@ -1,6 +1,6 @@
 import { NativeEventEmitter, NativeModules } from 'react-native';
 import { observable, computed, action } from 'mobx';
-import RouterMap, { navigate } from '../../navigation/RouterMap';
+import RouterMap, { routePush } from '../../navigation/RouterMap';
 
 const QY_MSG_CHANGE = 'QY_MSG_CHANGE';
 const QY_CARD_CLICK = 'QY_CARD_CLICK';
@@ -107,9 +107,9 @@ class QYChatModel {
             let productCode = productSplitArr.length > 0 ? productSplitArr[productSplitArr.length - 1] : '';
             let card_type = handleData ? handleData.card_type : -1;
             if (parseInt(card_type) === CARD_TYPE.PRODUCT_CARD) {
-                navigate(RouterMap.ProductDetailPage, { productCode: productCode });
+                routePush(RouterMap.ProductDetailPage, { productCode: productCode });
             } else if (parseInt(card_type) === CARD_TYPE.ORDER_CARD) {
-                navigate(RouterMap.MyOrdersDetailPage, { orderNo: productCode });
+                routePush(RouterMap.MyOrdersDetailPage, { orderNo: productCode });
             }
         }
     };

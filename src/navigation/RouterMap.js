@@ -10,6 +10,7 @@ import StringUtils from '../utils/StringUtils';
 
 let timeStamp = null;
 let errWebtimeStamp = null;
+let perRouteName = null;
 
 console.log(PageKey);
 
@@ -24,7 +25,7 @@ const RouterMap = {
     ...PageKey
 };
 
-// 跳转到某个页面，如果页面存在，不会重新创建
+// 跳转到某个页面，如果页面存在，不会重新创建,适用于静态页面，例如login
 function routeNavigate(routeName, params) {
     if (StringUtils.isEmpty(routeName)) {
         return;
@@ -39,7 +40,7 @@ function routeNavigate(routeName, params) {
     global.$navigator && global.$navigator._navigation.navigate(routeName, params);
 }
 
-// 重新创建页面，跳转到该页面
+// 重新创建页面，跳转到该页面，适用于根据网络请求来加载展现的页面
 function routePush(routeName, params) {
     if (StringUtils.isEmpty(routeName)) {
         return;
@@ -51,9 +52,14 @@ function routePush(routeName, params) {
         }
         errWebtimeStamp = new Date().getTime();
     }
-    let time = new Date().getTime();
-    if (timeStamp && time - timeStamp < 600) {
-        return;
+    if (perRouteName !== routeName) {
+        // 前一个页面和当前页面一样
+        perRouteName = routeName;
+    } else {
+        let time = new Date().getTime();
+        if (timeStamp && time - timeStamp < 600) {
+            return;
+        }
     }
     timeStamp = new Date().getTime();
     global.$navigator && global.$navigator._navigation.push(routeName, params);

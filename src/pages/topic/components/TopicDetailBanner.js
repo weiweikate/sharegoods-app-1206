@@ -10,6 +10,7 @@ import {
     MRText as Text
 } from '../../../components/ui';
 import { routeNavigate } from '../../../navigation/RouterMap';
+import RouterMap from '../../../navigation/RouterMap';
 
 export class TopicDetailBanner extends Component {
     constructor(props) {
@@ -61,7 +62,7 @@ export class TopicDetailBanner extends Component {
             return (
                 <TouchableWithoutFeedback onPress={() => {
                     const params = { imageUrls: imgList, index: this.state.haveVideo ? index - 1 : index };
-                    routeNavigate('product/CheckBigImagesView', params);
+                    routeNavigate(RouterMap.CheckBigImagesView, params);
                 }}>
                     <View>
                         <ImageLoad source={{ uri: originalImg }}
