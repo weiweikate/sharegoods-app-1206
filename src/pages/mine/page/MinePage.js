@@ -2,7 +2,6 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    ScrollView,
     ImageBackground,
     // RefreshControl,
     TouchableWithoutFeedback,
@@ -417,36 +416,38 @@ export default class MinePage extends BasePage {
                 alignItems: 'center',
                 height: 37,
                 width: 345,
-                backgroundColor: '#efcd97',
                 borderRadius: 10,
             }} source={vipBg[index]}>
-                <TouchableWithoutFeedback onPress={() => {
-                    this.$navigate(RouterMap.MyPromotionPage);
-                    TrackApi.ViewLevelInterest({ moduleSource: 2 });
+                <View style={{
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    marginLeft: 20,
+                    marginRight: 20
                 }}>
-                    <View style={{
-                        flexDirection:'row',
-                        justifyContent: 'center',
-                        marginLeft: 20,
-                        marginRight: 20
+                    <Text style={{
+                        flex: 1,
+                        color: index === 2 || index === 4 || index === 5 ? '#FFE6B1' : DesignRule.textColor_mainTitle,
+                        fontSize: DesignRule.fontSize_threeTitle,
+                        fontWeight: '600'
                     }}>
-                        <Text style={{
-                            flex:1,
-                            color: index === 2 || index === 4 || index === 5 ? '#FFE6B1' : DesignRule.textColor_mainTitle,
-                            fontSize: DesignRule.fontSize_threeTitle,
-                            fontWeight: 600
-                        }}>
-                            {user.token ? `V${index}${user.levelName ? user.levelName : ''}品鉴官` : ''}
-                        </Text>
-                        <ImageBackground style={{
-                            height: 20, width: 73,justifyContent:'center',
-                            alignItems: 'center',}} source={res.homeBaseImg.mine_btn_yellow}>
-                        <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: DesignRule.fontSize_22 }}>
-                            查看权益>
-                        </Text>
-                        </ImageBackground>
-                    </View>
-                </TouchableWithoutFeedback>
+                        {user.token ? `V${index}${user.levelName ? user.levelName : ''}品鉴官` : ''}
+                    </Text>
+                    <TouchableWithoutFeedback onPress={() => {
+                        this.$navigate(RouterMap.MyPromotionPage);
+                        TrackApi.ViewLevelInterest({moduleSource: 2});
+                    }}>
+                        <View>
+                            <ImageBackground style={{
+                                height: 20, width: 73, justifyContent: 'center',
+                                alignItems: 'center',
+                            }} source={res.homeBaseImg.mine_btn_yellow}>
+                                <Text style={{color: DesignRule.textColor_mainTitle, fontSize: DesignRule.fontSize_22}}>
+                                    查看权益>
+                                </Text>
+                            </ImageBackground>
+                        </View>
+                    </TouchableWithoutFeedback>
+                </View>
             </ImageBackground>
         );
     }
@@ -497,7 +498,7 @@ export default class MinePage extends BasePage {
                         height: 24, width: 85,justifyContent:'center',
                         alignItems: 'center',marginRight:15}} source={res.homeBaseImg.mine_btn_yellow}>
                         <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: DesignRule.fontSize_22 }}>
-                            {user.token ? `${user.levelName ? user.levelName : ''}品鉴官` : ''}
+                            {user.token ? `${user.levelName ? user.levelName : ''}品鉴官>` : ''}
                         </Text>
                     </ImageBackground>
                 </TouchableWithoutFeedback>
@@ -535,6 +536,7 @@ export default class MinePage extends BasePage {
             <View style={{
                 marginTop: px2dp(5),
                 marginHorizontal: px2dp(15),
+                justifyContent: 'center'
             }}>
                 <View style={{
                     flexDirection: 'row',
@@ -570,36 +572,43 @@ export default class MinePage extends BasePage {
                 marginLeft: 15,
                 marginRight: 15
             }}>
-                <ImageBackground style={{
-                    height: px2dp(70),
-                    width: px2dp((ScreenUtils.width - 45) / 2)
-                }} source={mine_invite}>
-                    <View style={{flex: 1, justifyContent: 'center', marginLeft: 15}}>
-                        <Text style={{fontSize: 14, color: '#333333', fontWeight: 600, marginBottom: 5}}>
-                            邀请好友赚钱</Text>
-                        <TouchableWithoutFeedback onPress={() => {
-                            this.$navigate(RouterMap.InviteFriendsPage);
-                        }}>
-                            <ImageBackground style={{width: 65, height: 26, alignItems: 'center'}}
-                                             source={res.homeBaseImg.mine_btn_red}>
-                                <Text style={{fontSize: 10, color: 'white'}}>立即邀请</Text>
-                            </ImageBackground>
-                        </TouchableWithoutFeedback>
+                <TouchableWithoutFeedback onPress={() => {
+                    this.$navigate(RouterMap.InviteFriendsPage);
+                }}>
+                    <View>
+                        <ImageBackground style={{
+                            height: px2dp(70),
+                            width: (ScreenUtils.width - 45) / 2
+                        }} source={mine_invite}>
+                            <View style={{flex: 1, justifyContent: 'center', marginLeft: 15}}>
+                                <Text style={{fontSize: 14, color: '#333333', fontWeight: '600', marginBottom: 5}}>
+                                    邀请好友赚钱</Text>
+
+                                <ImageBackground style={{width: 65, height: 26, alignItems: 'center'}}
+                                                 source={res.homeBaseImg.mine_btn_red}>
+                                    <Text style={{fontSize: 10, color: 'white'}}>立即邀请</Text>
+                                </ImageBackground>
+                            </View>
+                        </ImageBackground>
                     </View>
-                </ImageBackground>
+                </TouchableWithoutFeedback>
+
 
                 <TouchableWithoutFeedback onPress={() => {
+                    this.$navigate('HtmlPage', { uri: '/activity/freeOrder' });
                 }}>
-                    <ImageBackground style={{
-                        height: px2dp(70),
-                        width: px2dp((ScreenUtils.width - 45) / 2)
-                    }} source={mine_friendsHelp}>
-                        <View style={{flex: 1, justifyContent: 'center', marginLeft: 15}}>
-                            <Text style={{fontSize: 14, color: '#333333', fontWeight: 600, marginBottom: 5}}>
-                                助力减</Text>
-                            <Text style={{height: 26, fontSize: 10, color: '#999999'}}>好友助力减到底</Text>
-                        </View>
-                    </ImageBackground>
+                    <View>
+                        <ImageBackground style={{
+                            height: px2dp(70),
+                            width: (ScreenUtils.width - 45) / 2
+                        }} source={mine_friendsHelp}>
+                            <View style={{flex: 1, justifyContent: 'center', marginLeft: 15}}>
+                                <Text style={{fontSize: 14, color: '#333333', fontWeight: '600', marginBottom: 5}}>
+                                    助力减</Text>
+                                <Text style={{height: 26, fontSize: 10, color: '#999999'}}>好友助力减到底</Text>
+                            </View>
+                        </ImageBackground>
+                    </View>
                 </TouchableWithoutFeedback>
             </View>
         )
@@ -621,16 +630,33 @@ export default class MinePage extends BasePage {
                     marginTop: px2dp(10),
                     marginBottom: px2dp(15)
                 }}>
-                    <Text allowFontScaling={true} style={{
-                        textAlign: 'center',
-                        color: '#333333',
-                        includeFontPadding: false,
-                        width: 80,
-                        height: 22,
-                        fontSize: this.getAdjustsFontSize(num)
-                    }}>
-                        {num}
-                    </Text>
+                    <View style={{flexDirection:'row'}}>
+                        <Text allowFontScaling={true} style={{
+                            textAlign: 'center',
+                            color: '#333333',
+                            includeFontPadding: false,
+                            width: 80,
+                            height: 22,
+                            fontSize: this.getAdjustsFontSize(num)
+                        }}>
+                            {num}
+                        </Text>
+                        <View style={{
+                            width: 14,
+                            height: 10,
+                            borderRadius: 8,
+                            backgroundColor: DesignRule.mainColor,
+                            position: 'absolute',
+                            top: 0,
+                            right: 0,
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}>
+                            <Text style={{
+                                color: DesignRule.white,
+                            }}>…</Text>
+                        </View>
+                    </View>
                     <View style={{ height: 9 }}/>
                     <Text style={{ color: '#999999', fontSize: px2dp(12) }}>
                         {text}
@@ -677,12 +703,12 @@ export default class MinePage extends BasePage {
                         </View>
                     </TouchableWithoutFeedback>
                 </View>
-                <ScrollView style={{ width: DesignRule.width - DesignRule.margin_page * 2 }} horizontal={true}
-                            showsHorizontalScrollIndicator={false}>
+                {/*<ScrollView style={{ width: DesignRule.width - DesignRule.margin_page * 2 }} horizontal={true}*/}
+                            {/*showsHorizontalScrollIndicator={false}>*/}
                     <View style={{ flex: 1, flexDirection: 'row', paddingBottom: px2dp(15) }}>
                         {this.renderOrderStates()}
                     </View>
-                </ScrollView>
+                {/*</ScrollView>*/}
             </View>
 
         );
@@ -725,7 +751,7 @@ export default class MinePage extends BasePage {
     renderBodyView = () => {
         return (
             <View style={{flex:1,backgroundColor:'#F7F7F7'}}>
-                <TaskVIew type={'mine'} style={{ paddingTop: 10 }}/>
+                <TaskVIew type={'mine'} style={{ marginTop: 10, paddingTop: 5 }}/>
                 {this.orderRender()}
                 {this.activeRender()}
                 {this.utilsRender()}
@@ -751,7 +777,7 @@ export default class MinePage extends BasePage {
     renderOrderStates = () => {
         let statesImage = [mine_wait_pay_icon, mine_wait_send_icon, mine_wait_receive_icon, mine_showOrder, mine_after_buy_icon];
         let statesText = ['待付款', '待发货', '待收货', '待晒单', '售后/退款'];
-        let width = (DesignRule.width - DesignRule.margin_page * 2) / 4.5;
+        let width = (DesignRule.width - DesignRule.margin_page * 2) / 5;
         let arr = [];
         for (let i = 0; i < statesImage.length; i++) {
             let num = this.getOrderNum(i);
@@ -908,7 +934,6 @@ export default class MinePage extends BasePage {
         let setting = {
             text: '设置',
             icon: mine_setting_icon_gray,
-            num: this.state.hasMessageNum,
             onPress: () => {
                 this.jumpToSettingPage()
             }
@@ -1060,7 +1085,7 @@ const styles = StyleSheet.create({
     headerBgStyle: {
         width: ScreenUtils.width,
         height: ScreenUtils.getImgHeightWithWidth(headerBgSize),
-        paddingTop: ScreenUtils.statusBarHeight + 24,
+        paddingTop: ScreenUtils.statusBarHeight + 10,
         backgroundColor: 'white'
     },
     userIconStyle: {
