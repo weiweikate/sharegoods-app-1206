@@ -11,7 +11,7 @@ import {
     Image,
     PixelRatio,
     TouchableWithoutFeedback,
-    TouchableOpacity
+    TouchableOpacity, Clipboard, Linking
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import { MRText as Text, MRTextInput as TextInput } from '../../../../components/ui';
@@ -21,6 +21,7 @@ import DesignRule from '../../../../constants/DesignRule';
 import MineAPI from '../../api/MineApi';
 import AvatarImage from '../../../../components/ui/AvatarImage';
 import res from '../../res';
+import bridge from "../../../../utils/bridge";
 
 const { icon_search, icon_clean } = res.myData;
 const { px2dp } = ScreenUtils;
@@ -43,20 +44,44 @@ export default class SearchShowFansPage extends BasePage<Props> {
     };
 
 
-    _listItemRender = ({ item }) => {
+    _listItemRender = ({ item, index }) => {
         const uri = { uri: item.headImg };
+        let name = item.nickname.substring(0,28);
         return (
-            <ImageBackground resizeMode={'stretch'} source={bg_fans_item} style={styles.itemWrapper}>
-                <View style={[styles.fansIcon, { overflow: 'hidden' }]}>
-                    <AvatarImage style={styles.fansIcon} source={uri}/>
-                </View>
-                <Text style={styles.fansNameStyle}>
-                    {item.nickname}
-                </Text>
-                <View style={styles.levelWrapper}>
-                    <Text style={styles.levelTextStyle}>
-                        {`V${item.level ? item.level : 0}`}
-                    </Text>
+            <ImageBackground key={index+'showFans'} resizeMode={'stretch'} source={bg_fans_item} style={styles.itemWrapper}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={[styles.fansIcon, {overflow: 'hidden'}]}>
+                        <AvatarImage style={styles.fansIcon} source={uri}/>
+                    </View>
+                    <View style={{flex: 1}}>
+                        <Text style={styles.fansNameStyle} numberOfLines={1}>{name}</Text>
+                        {item.weChatNumber ?
+                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                <Text style={[styles.fansNameStyle,{width:100}]} numberOfLines={1}>{item.weChatNumber}</Text>
+                                <TouchableWithoutFeedback onPress={() => {
+                                    Clipboard.setString(item.weChatNumber);
+                                    bridge.$toast('复制到剪切版');
+                                }}>
+                                    <View style={styles.copyViewStyle}>
+                                        <Text style={styles.copyTextStyle} >复制</Text>
+                                    </View>
+                                </TouchableWithoutFeedback>
+                            </View> : null
+                        }
+                    </View>
+
+                    {item.weChatNumber ?<TouchableWithoutFeedback onPress={() => {
+                        Clipboard.setString(item.weChatNumber);
+                        bridge.$toast('复制到剪切版');
+                    }}>
+                        <Image style={[styles.btnIcon, {marginRight: 25}]} source={res.showFans.fans_WXChat}/>
+                    </TouchableWithoutFeedback>:null}
+
+                    <TouchableWithoutFeedback onPress={() => {
+                        item.phone&&Linking.openURL(`sms:${item.phone}`)
+                    }}>
+                        <Image style={[styles.btnIcon, {marginRight: 5}]} source={res.showFans.messageIcon}/>
+                    </TouchableWithoutFeedback>
                 </View>
             </ImageBackground>
         );
@@ -143,10 +168,9 @@ const styles = StyleSheet.create({
         borderRadius: 20
     },
     fansNameStyle: {
-        color: DesignRule.textColor_mainTitle_222,
-        fontSize: DesignRule.fontSize_mainTitle,
+        color: '#2C2C2C',
+        fontSize: DesignRule.fontSize_threeTitle,
         marginLeft: 8,
-        paddingVertical: 5
     },
     typeWrapper: {
         width: 55,

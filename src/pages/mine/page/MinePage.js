@@ -6,7 +6,7 @@ import {
     // RefreshControl,
     TouchableWithoutFeedback,
     DeviceEventEmitter, TouchableOpacity,
-    Image, BackHandler, Clipboard
+    Image, BackHandler, Clipboard, NativeModules, NativeEventEmitter
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import UIText from '../../../components/ui/UIText';
@@ -33,6 +33,10 @@ import { track, TrackApi, trackEvent } from '../../../utils/SensorsTrack';
 import TaskVIew from '../../home/view/TaskVIew';
 import { mineTaskModel } from '../../home/model/TaskModel';
 import PullView from '../components/pulltorefreshlayout'
+
+
+const { JSPushBridge } = NativeModules;
+const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
 
 const {
     // mine_header_bg,
@@ -136,6 +140,8 @@ export default class MinePage extends BasePage {
                 mineTaskModel.getData();
             });
         this.listener = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
+        this.listenerJSMessage = JSManagerEmitter.addListener('MINE_NATIVE_TO_RN_MSG', this.setMessageData);
+
         // this.refresh();
     }
 
@@ -143,7 +149,12 @@ export default class MinePage extends BasePage {
         this.didFocusSubscription && this.didFocusSubscription.remove();
         this.willBlurSubscription && this.willBlurSubscription.remove();
         this.listener && this.listener.remove();
+        this.listenerJSMessage && this.listenerJSMessage.remove();
     }
+
+    setMessageData = ()=>{
+
+    };
 
     handleBackPress = () => {
         this.$navigate('HomePage');
@@ -630,12 +641,11 @@ export default class MinePage extends BasePage {
                     marginTop: px2dp(10),
                     marginBottom: px2dp(15)
                 }}>
-                    <View style={{flexDirection:'row'}}>
+                    <View style={{flexDirection:'row',justifyContent:'center'}}>
                         <Text allowFontScaling={true} style={{
                             textAlign: 'center',
                             color: '#333333',
                             includeFontPadding: false,
-                            width: 80,
                             height: 22,
                             fontSize: this.getAdjustsFontSize(num)
                         }}>
@@ -646,9 +656,9 @@ export default class MinePage extends BasePage {
                             height: 10,
                             borderRadius: 8,
                             backgroundColor: DesignRule.mainColor,
-                            position: 'absolute',
+                            position: 'relative',
                             top: 0,
-                            right: 0,
+                            right: 5,
                             alignItems: 'center',
                             justifyContent: 'center'
                         }}>
@@ -942,15 +952,18 @@ export default class MinePage extends BasePage {
 
         let menu = [service, address, message, setting];
 
+
+        if (this.state.hasFans) {
+            menu.unshift(fans);
+        }
+
         if (user.upUserCode) {
             menu.unshift(mentor);
         } else {
             menu.unshift(mentorSet);
         }
 
-        if (this.state.hasFans) {
-            menu.unshift(fans);
-        }
+
 
         let arr = [];
         for (let i = 0; i < menu.length; i++) {

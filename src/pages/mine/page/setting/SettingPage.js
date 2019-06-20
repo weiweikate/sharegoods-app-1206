@@ -71,6 +71,8 @@ class SettingPage extends BasePage {
     //CachesModule
     componentDidMount() {
         this.getAllCachesSize();
+        this.getMessageSetting();
+
         if (Platform.OS === 'android') {
             bridge.isPushStopped((value) => {
                 this.setState({
@@ -135,6 +137,24 @@ class SettingPage extends BasePage {
                         <UIText value={'当前版本v' + this.state.version}
                                 style={{ fontSize: 13, color: DesignRule.textColor_secondTitle }}/>
                     </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.viewStyle}>
+                        <UIText value={'通过短信联系我'} style={styles.blackText}/>
+                        <Switch value={this.state.value}
+                                onTintColor={'#00D914'}
+                                thumbTintColor={Platform.OS === 'android' ? 'white' : ''}
+                                tintColor={DesignRule.textColor_hint}
+                                onValueChange={(value) => {}}/>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.viewStyle}>
+                        <UIText value={'展示微信号'} style={styles.blackText}/>
+                        <Switch value={this.state.value}
+                                onTintColor={'#00D914'}
+                                thumbTintColor={Platform.OS === 'android' ? 'white' : ''}
+                                tintColor={DesignRule.textColor_hint}
+                                onValueChange={(value) => {}}/>
+                    </TouchableOpacity>
                 </View>
                 <TouchableOpacity style={{
                     marginTop: 42,
@@ -194,6 +214,11 @@ class SettingPage extends BasePage {
             });
         }
     };
+
+    getMessageSetting = ()=>{
+
+    };
+
     renderWideLine = () => {
         return (
             <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>

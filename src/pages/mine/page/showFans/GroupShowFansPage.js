@@ -30,12 +30,13 @@ const {
 } = res.homeBaseImg;
 
 const {
-    icon_v1,
-    icon_v2,
-    icon_v3,
-    icon_v4,
-    icon_v5
-} = res.myData;
+    fans_icon_v1,
+    fans_icon_v2,
+    fans_icon_v3,
+    fans_icon_v4,
+    fans_icon_v5,
+    fans_WXChat
+} = res.showFans;
 type Props = {};
 @SmoothPushHighComponent
 export default class GroupShowFansPage extends BasePage<Props> {
@@ -77,11 +78,12 @@ export default class GroupShowFansPage extends BasePage<Props> {
                         }
                     </View>
 
-                    <TouchableWithoutFeedback onPress={() => {
-                        item.phone&&Linking.openURL(`tel:${item.phone}`)
+                    {item.weChatNumber ?<TouchableWithoutFeedback onPress={() => {
+                        Clipboard.setString(item.weChatNumber);
+                        bridge.$toast('复制到剪切版');
                     }}>
-                        <Image style={[styles.btnIcon, {marginRight: 25}]} source={res.showFans.phoneIcon}/>
-                    </TouchableWithoutFeedback>
+                        <Image style={[styles.btnIcon, {marginRight: 25}]} source={fans_WXChat}/>
+                    </TouchableWithoutFeedback>:null}
 
                     <TouchableWithoutFeedback onPress={() => {
                         item.phone&&Linking.openURL(`sms:${item.phone}`)
@@ -97,19 +99,19 @@ export default class GroupShowFansPage extends BasePage<Props> {
     _headerRender = () => {
         let levelIcon ;
         if(this.params.vname === 'v1'){
-            levelIcon = icon_v1
+            levelIcon = fans_icon_v1
         }
         if(this.params.vname === 'v2'){
-            levelIcon = icon_v2
+            levelIcon = fans_icon_v2
         }
         if(this.params.vname === 'v3'){
-            levelIcon = icon_v3
+            levelIcon = fans_icon_v3
         }
         if(this.params.vname === 'v4'){
-            levelIcon = icon_v4
+            levelIcon = fans_icon_v4
         }
         if(this.params.vname === 'v5'){
-            levelIcon = icon_v5
+            levelIcon = fans_icon_v5
         }
        return(
            <View style={styles.headerWrapper}>
