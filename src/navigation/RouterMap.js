@@ -11,10 +11,6 @@ import StringUtils from '../utils/StringUtils';
 let timeStamp = null;
 let errWebtimeStamp = null;
 
-
-// alert(PageKey)
-// alert(typeof PageKey);
-// console.log(Object.values(PageKey));
 console.log(PageKey);
 
 const RouterMap = {
@@ -40,7 +36,7 @@ function routeNavigate(routeName, params) {
         }
         errWebtimeStamp = new Date().getTime();
     }
-    global.$navigator._navigation.navigate({ routeName, params });
+    global.$navigator && global.$navigator._navigation.navigate(routeName, params);
 }
 
 // 重新创建页面，跳转到该页面
@@ -60,7 +56,7 @@ function routePush(routeName, params) {
         return;
     }
     timeStamp = new Date().getTime();
-    global.$navigator._navigation.push({ routeName, params });
+    global.$navigator && global.$navigator._navigation.push(routeName, params);
 }
 
 // 新页面直接替换当前页面
@@ -73,7 +69,7 @@ function replaceRoute(routeName, params) {
         routeName,
         params
     });
-    global.$navigator.dispatch(resetAction);
+    global.$navigator && global.$navigator.dispatch(resetAction);
 }
 
 // 清空并重新加载首页
@@ -82,12 +78,17 @@ function forceToHome() {
         index: 0,
         actions: [NavigationActions.navigate({ routeName: 'Tab' })]
     });
-    global.$navigator.dispatch(resetAction);
+    global.$navigator && global.$navigator.dispatch(resetAction);
 }
 
 // 跳转到首页tab
 function backToHome() {
     GoToTabItem(0);
+}
+
+// 跳转到秀场tab
+function backToShow() {
+    GoToTabItem(1);
 }
 
 // 跳转到拼店tab
@@ -134,7 +135,7 @@ function navigateBack(step) {
 
     if (routerKey) {
         const backAction = NavigationActions.back({ key: routerKey });//routerKey代表从哪个返回
-        global.$navigator.dispatch(backAction);
+        global.$navigator && global.$navigator.dispatch(backAction);
     }
 }
 
@@ -146,13 +147,14 @@ function routePop(n) {
     const popAction = StackActions.pop({
         n
     });
-    global.$navigator.dispatch(popAction);
+    global.$navigator && global.$navigator.dispatch(popAction);
 }
 
 export default RouterMap;
 export {
     navigateBack,
     backToHome,
+    backToShow,
     navigateBackToStore,
     GoToTabItem,
     forceToHome,

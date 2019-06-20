@@ -16,6 +16,7 @@ import { observer } from 'mobx-react';
 import { autorun } from 'mobx';
 import Animation from 'lottie-react-native';
 import { TrackApi } from '../utils/SensorsTrack';
+import { navigateBackToStore } from './RouterMap';
 
 
 const NormalTab = ({ source, title }) => {
@@ -72,10 +73,7 @@ class HomeTab extends Component {
 }
 
 const gotoMyShop = () => {
-    if (global.$navigator) {
-        global.$navigator._navigation.popToTop();
-        global.$navigator._navigation.navigate('MyShop_RecruitPage');
-    }
+    navigateBackToStore();
 };
 
 const ShowFlag = () =>

@@ -18,6 +18,7 @@ import BasePage from '../../BasePage';
 import res from './res';
 import DesignRule from '../../constants/DesignRule';
 import Toast from '../../utils/bridge';
+import { backToShow } from '../../navigation/RouterMap';
 
 const imgWidth = px2dp(168);
 
@@ -228,9 +229,7 @@ export default class ShowConnectPage extends BasePage {
     _keyExtractor = (data) => data.id + '';
 
     goToHome() {
-        // this.$navigateBackToHome();
-        this.props.navigation.popToTop();
-        this.props.navigation.navigate('ShowListPage');
+        backToShow();
     }
 
     _renderInfinite() {

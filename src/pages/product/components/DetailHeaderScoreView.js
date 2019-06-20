@@ -8,7 +8,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
 
 import RES from '../res/product';
-import RouterMap from '../../../navigation/RouterMap';
+import RouterMap, { routeNavigate } from '../../../navigation/RouterMap';
 import StringUtils from '../../../utils/StringUtils';
 
 const arrow_right = RES.button.arrow_right_black;
@@ -95,7 +95,7 @@ export class DetailHeaderScoreView extends Component {
     };
 
     _action = (index) => {
-        const { navigation, pData } = this.props;
+        const { pData } = this.props;
         const { comment } = pData;
         const commentTemp = (comment || {}).comment;
         const { imgUrl, videoUrl, videoImgPath } = comment || {};
@@ -103,7 +103,7 @@ export class DetailHeaderScoreView extends Component {
         if (StringUtils.isNoEmpty(imgUrl)) {
             images = imgUrl.split('$');
         }
-        navigation.navigate(RouterMap.P_ScoreSwiperPage, {
+        routeNavigate(RouterMap.P_ScoreSwiperPage, {
             video: videoUrl,
             videoImg: videoImgPath,
             images: images,
@@ -113,8 +113,8 @@ export class DetailHeaderScoreView extends Component {
     };
 
     _allScoreAction = () => {
-        const { navigation, pData } = this.props;
-        navigation.navigate(RouterMap.P_ScoreListPage, {
+        const { pData } = this.props;
+        routeNavigate(RouterMap.P_ScoreListPage, {
             pData: pData
         });
     };

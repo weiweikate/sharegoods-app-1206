@@ -19,7 +19,7 @@ import user from '../../model/user';
 import apiEnvironment from '../../api/ApiEnvironment';
 import { observer } from 'mobx-react';
 import BasePage from '../../BasePage';
-import { forceToHome } from '../../navigation/RouterMap';
+import { forceToHome, routeNavigate } from '../../navigation/RouterMap';
 
 @observer
 export default class DebugPanelPage extends BasePage {
@@ -70,20 +70,20 @@ export default class DebugPanelPage extends BasePage {
 
     // 跳转HTTP请求历史记录页面
     goToFetchHistoryPage = () => {
-        this.props.navigation.navigate('debug/FetchHistoryPage');
+        routeNavigate('debug/FetchHistoryPage');
     };
 
     // 跳转到user
     goToUserPage = () => {
-        this.props.navigation.navigate('debug/UserInfoPage');
+        routeNavigate('debug/UserInfoPage');
     };
 
     // 跳转到工具调试页面
     goToToolDebugging = () => {
-        this.props.navigation.navigate('debug/ToolDebugPage');
+        routeNavigate('debug/ToolDebugPage');
     };
     goToDemo = () => {
-        this.props.navigation.navigate('debug/DemoListPage');
+        routeNavigate('debug/DemoListPage');
     };
 
 

@@ -12,6 +12,7 @@ import DesignRule from '../../constants/DesignRule';
 import res from './res';
 import OssHelper from '../../utils/OssHelper';
 import apiEnvironment from '../../api/ApiEnvironment';
+import { routeNavigate } from '../../navigation/RouterMap';
 
 const {
     pindianzhaojilingbgd,
@@ -25,7 +26,6 @@ export default class NoAccessPage extends Component {
 
     render() {
         const { imgError } = this.state;
-        const { navigation } = this.props;
         const imgWidth = ScreenUtils.width;
         const imgHeight = ScreenUtils.height - ScreenUtils.headerHeight - (this.props.leftNavItemHidden ? ScreenUtils.tabBarHeight : 0);
         return (
@@ -55,7 +55,7 @@ export default class NoAccessPage extends Component {
                                          }}
                                          resizeMode='stretch'>
                             <TouchableWithoutFeedback onPress={() => {
-                                navigation.navigate('HtmlPage', {
+                                routeNavigate('HtmlPage', {
                                     uri: `${apiEnvironment.getCurrentH5Url()}/topic/temp/ST20190084`
                                 });
                             }}>
