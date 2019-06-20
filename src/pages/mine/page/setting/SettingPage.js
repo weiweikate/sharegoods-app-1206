@@ -33,6 +33,7 @@ import { QYChatTool } from '../../../../utils/QYModule/QYChatTool';
 import WhiteModel from '../../../show/model/WhiteModel';
 import store from '@mr/rn-store';
 import { forceToHome } from '../../../../navigation/RouterMap';
+import RouterMap from '../../../../navigation/RouterMap';
 
 /**
  * @author luoyongming
@@ -260,10 +261,10 @@ class SettingPage extends BasePage {
 
     //**********************************BusinessPart******************************************
     jumpToAddressManagePage = () => {
-        this.$navigate('mine/address/AddressManagerPage');
+        this.$navigate(RouterMap.AddressManagerPage);
     };
     jumptToAboutUsPage = () => {
-        this.$navigate('HtmlPage', {
+        this.$navigate(RouterMap.HtmlPage, {
             title: '关于我们',
             uri: apiEnvironment.getCurrentH5Url() + '/static/protocol/about-us.html'
         });
@@ -271,7 +272,7 @@ class SettingPage extends BasePage {
     // 账户设置
     jumpToAccountSettingPage = () => {
         if (user.isLogin) {
-            this.$navigate('mine/setting/AccountSettingPage');
+            this.$navigate(RouterMap.AccountSettingPage);
         } else {
             this.gotoLoginPage();
         }

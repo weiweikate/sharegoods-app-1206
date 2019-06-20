@@ -20,7 +20,7 @@ import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import DetailNavShowModal from '../components/DetailNavShowModal';
 import user from '../../../model/user';
-import RouterMap from '../../../navigation/RouterMap';
+import RouterMap, { routeNavigate } from '../../../navigation/RouterMap';
 import DetailHeaderScoreView from '../components/DetailHeaderScoreView';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import CommShareModal from '../../../comm/components/CommShareModal';
@@ -65,10 +65,10 @@ export class XpDetailPage extends BasePage {
                         this.$navigate(RouterMap.LoginPage);
                         return;
                     }
-                    this.$navigate('message/MessageCenterPage');
+                    this.$navigate(RouterMap.MessageCenterPage);
                     break;
                 case 1:
-                    this.$navigate('home/search/SearchPage');
+                    this.$navigate(RouterMap.SearchPage);
                     break;
                 case 2:
                     setTimeout(() => {
@@ -136,13 +136,13 @@ export class XpDetailPage extends BasePage {
     /*加入购物车 立即购买*/
     _bottomViewAction = (type) => {
         if (type === 'goGwc') {
-            this.$navigate('shopCart/ShopCart', {
+            this.$navigate(RouterMap.ShopCart, {
                 hiddeLeft: false
             });
         } else if (type === 'keFu') {
             track(trackEvent.ClickOnlineCustomerService, { customerServiceModuleSource: 2 });
             if (!user.isLogin) {
-                this.$navigate('login/login/LoginPage');
+                routeNavigate(RouterMap.LoginPage);
                 return;
             }
             const { pData, title, shopId } = this.xpDetailModel;
@@ -198,7 +198,7 @@ export class XpDetailPage extends BasePage {
                 quantity: amount,
                 productCode: this.xpDetailModel.selectedSpuCode
             });
-            this.$navigate('order/order/ConfirOrderPage', {
+            this.$navigate(RouterMap.ConfirOrderPage, {
                 orderParamVO: {
                     orderType: 98,
                     orderProducts: orderProducts,

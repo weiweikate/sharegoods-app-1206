@@ -11,6 +11,7 @@ import UIText from '../../../components/ui/UIText';
 import DesignRule from '../../../constants/DesignRule';
 import User from '../../../model/user';
 import res from '../res/index';
+import RouterMap from '../../../navigation/RouterMap';
 
 const logoRed = res.home_icon_logo_red;
 const searchImg = res.icon_search;
@@ -30,7 +31,7 @@ export default ({ navigation, hasMessage }) =>
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={() => {
                 if (!User.isLogin) {
-                    navigation('login/login/LoginPage');
+                    navigation(RouterMap.LoginPage);
                     return;
                 }
                 navigation('message/MessageCenterPage');

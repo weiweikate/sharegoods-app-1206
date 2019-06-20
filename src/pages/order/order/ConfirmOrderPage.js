@@ -18,6 +18,7 @@ import ConfirmBottomView from '../components/confirmOrder/ConfirmBottomView';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import SelectOneTicketModel from '../components/confirmOrder/SelectOneTicketModel';
 import SelectTicketModel from '../components/confirmOrder/SelectTicketModel';
+import RouterMap from '../../../navigation/RouterMap';
 
 @observer
 export default class ConfirmOrderPage extends BasePage {
@@ -112,7 +113,7 @@ export default class ConfirmOrderPage extends BasePage {
 
     // 地址重新选择
     selectAddress = () => {
-        this.$navigate('mine/address/AddressManagerPage', {
+        this.$navigate(RouterMap.AddressManagerPage, {
             from: 'order',
             currentId: confirmOrderModel.addressId,
             callBack: (json) => {
@@ -142,7 +143,7 @@ export default class ConfirmOrderPage extends BasePage {
 
             callback: (data) => {
                 console.log('submitProduct', data);
-                this.$navigateReplace('payment/PaymentPage', {
+                this.$navigateReplace(RouterMap.PaymentPage, {
                     orderNum: data.orderNo,
                     amounts: data.payAmount,
                     pageType: 0,
@@ -215,10 +216,6 @@ export default class ConfirmOrderPage extends BasePage {
                 }
             });
             return;
-            // this.$navigate('mine/coupons/CouponsPage', {
-            //     fromOrder: 1,
-            //     orderParam: confirmOrderModel.orderParamVO, callBack:
-            // });
         }
     };
 }

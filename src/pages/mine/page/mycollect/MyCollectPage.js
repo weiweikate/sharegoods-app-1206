@@ -26,6 +26,8 @@ import { PageLoadingState, renderViewByLoadingState } from '../../../../componen
 
 import RES from '../../res';
 import shopCartStore from '../../../shopCart/model/ShopCartStore';
+import { routeNavigate } from '../../../../navigation/RouterMap';
+import RouterMap from '../../../../navigation/RouterMap';
 
 const MoneyIcon = RES.collectShop.ic_money;
 const StarIcon = RES.collectShop.colloct_star;
@@ -117,7 +119,7 @@ export default class MyCollectPage extends BasePage {
             }
         }
         return (
-            <NoMoreClick onPress={() => this.go2PruductDetailPage(item.storeCode, 0)}
+            <NoMoreClick onPress={() => this.go2PinDetailPage(item.storeCode, 0)}
                          activeOpacity={1}>
                 <View style={styles.rowContainer}>
                     <AvatarImage source={{ uri: item.headUrl }} style={styles.img} borderRadius={25}/>
@@ -160,7 +162,7 @@ export default class MyCollectPage extends BasePage {
             }
         }
         return (
-            <NoMoreClick onPress={() => this.go2PruductDetailPage(item.storeCode, 1)}>
+            <NoMoreClick onPress={() => this.go2PinDetailPage(item.storeCode, 1)}>
                 <View style={[styles.rowContainer, { backgroundColor: '#c7c7c7' }]}>
                     <View style={{
                         position: 'absolute',
@@ -218,9 +220,9 @@ export default class MyCollectPage extends BasePage {
         this.getDataFromNetwork();
     };
 
-    go2PruductDetailPage(storeCode, index) {
+    go2PinDetailPage(storeCode, index) {
         if (index !== 1) {
-            this.$navigate('spellShop/MyShop_RecruitPage', { storeCode: storeCode });
+            this.$navigate(RouterMap.MyShop_RecruitPage, { storeCode: storeCode });
         }
 
     }
@@ -277,7 +279,7 @@ export default class MyCollectPage extends BasePage {
                 tFailedInfo: err
             });
             if (err.code === 10009) {
-                this.$navigate('login/login/LoginPage');
+                routeNavigate(RouterMap.LoginPage);
             }
         });
     };

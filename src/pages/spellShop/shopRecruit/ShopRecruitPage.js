@@ -37,6 +37,7 @@ import { track, trackEvent } from '../../../utils/SensorsTrack';
 import MyShopDetailModel from '../myShop/MyShopDetailModel';
 import { observer } from 'mobx-react';
 import { ShopBottomBannerView } from '../myShop/components/ShopDetailItemView';
+import RouterMap from '../../../navigation/RouterMap';
 
 const NavLeft = resCommon.button.white_back;
 const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
@@ -64,7 +65,7 @@ export default class ShopRecruitPage extends BasePage {
                 </View>
                 <View style={styles.rightBarItemContainer}>
                     <TouchableOpacity onPress={() => {
-                        this.$navigate('spellShop/recommendSearch/RecommendPage');
+                        this.$navigate(RouterMap.RecommendPage);
                     }
                     }>
                         <Image style={{ marginRight: 10 }} source={icons8_Shop_50px}/>
@@ -159,7 +160,7 @@ export default class ShopRecruitPage extends BasePage {
     _clickAllMembers = () => {
         //自己只能查看列表
         if (this.state.storeData.myStore) {
-            this.$navigate('spellShop/myShop/ShopAssistantPage', { storeData: this.state.storeData });
+            this.$navigate(RouterMap.ShopAssistantPage, { storeData: this.state.storeData });
         }
     };
     _clickSettingItem = () => {

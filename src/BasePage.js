@@ -24,8 +24,7 @@ import res from './comm/res';
 import bridge from './utils/bridge';
 import DesignRule from './constants/DesignRule';
 import Toast from './utils/bridge';
-import RouterMap, { GoToTabItem, replaceRoute } from './navigation/RouterMap';
-import StringUtils from './utils/StringUtils';
+import RouterMap, { GoToTabItem, navigateBack, replaceRoute, routeNavigate, routePush } from './navigation/RouterMap';
 
 export default class BasePage extends Component {
     constructor(props) {
@@ -116,9 +115,9 @@ export default class BasePage extends Component {
      */
     gotoLoginPage = (params = {}) => {
         if (true) {
-            this.$navigate(RouterMap.LoginPage, params);
+            routeNavigate(RouterMap.LoginPage, params);
         } else {
-            this.$navigate(RouterMap.OldUserLoginPage, params);
+            routeNavigate(RouterMap.OldUserLoginPage, params);
         }
     };
 
@@ -132,7 +131,6 @@ export default class BasePage extends Component {
     }
 
     $renderSecondLeftItem() {
-
     }
 
     render() {
@@ -208,33 +206,9 @@ export default class BasePage extends Component {
         }
         this.$navigatorBar.changeTitle(newTitle, callBack);
     };
-    // 路由跳转
-    $navigate = (routeName, params) => {
-        try {
-            if (StringUtils.isEmpty(routeName)) {
-                return;
-            }
-            let time = new Date().getTime();
-            if (time - this.navigateTime < 600) {
-                return;
-            }
-            this.navigateTime = time;
-            console.log('navigate time ' + this.navigateTime);
-            params = params || {};
-            if (this.props.screenProps) {
-                this.props.screenProps.rootNavigation.navigate(routeName, {
-                    preRouteName: this.props.screenProps.rootNavigation.state.routeName,
-                    ...params
-                });
-            } else {
-                this.props.navigation.navigate(routeName, {
-                    preRouteName: this.props.navigation.state.routeName,
-                    ...params
-                });
-            }
-        } catch (e) {
-            console.warn(`js_navigate error: ${e.toString()}`);
-        }
+
+    $navigate = (...arg) => {
+        routePush(...arg);
     };
 
     // 重置、返回到首页
@@ -261,31 +235,7 @@ export default class BasePage extends Component {
 
     // 返回
     $navigateBack = (step) => {
-        try {
-            console.log('step', step);
-            let $routes = global.$routes || [];
-            let routerKey = '';
-            if (typeof step === 'number') {
-                let router = $routes[$routes.length + step];
-                routerKey = router.key;
-            } else if (typeof step === 'string') {
-                for (let i = 0; i < $routes.length - 1; i++) {
-                    if (step === $routes[i].routeName) {
-                        routerKey = $routes[i + 1].key;
-                        break;
-                    }
-                }
-            }
-            if (!StringUtils.isEmpty(routerKey)) {
-                const backAction = NavigationActions.back({ key: routerKey });
-                this.props.navigation.dispatch(backAction);
-            } else {
-                this.props.navigation.goBack();
-            }
-
-        } catch (e) {
-            console.warn(`$navigateBack error: ${e.toString()}`);
-        }
+        navigateBack(step);
     };
 
     // 路由替换

@@ -67,7 +67,7 @@ export default class PaymentPage extends BasePage {
                 const { selectedBalace } = payment;
                 if (!selectedBalace && oneCoupon <= 0) {
                     // this.$navigate(RouterMap.PaymentFinshPage,{payResult: PaymentResult.success})
-                    this.$navigate('payment/ChannelPage', {
+                    this.$navigate(RouterMap.ChannelPage, {
                         bizType: bizType,
                         modeType: modeType
                     });
@@ -77,10 +77,10 @@ export default class PaymentPage extends BasePage {
                 if (user.hadSalePassword) {
                     this.setState({ showPwd: true });
                 } else {
-                    this.$navigate('mine/account/JudgePhonePage', { title: '设置交易密码' });
+                    this.$navigate(RouterMap.JudgePhonePage, { title: '设置交易密码' });
                 }
             } else if (result.code === payStatus.payNeedThrid) {
-                this.$navigate('payment/ChannelPage', {
+                this.$navigate(RouterMap.ChannelPage, {
                     // remainMoney: Math.floor(StringUtils.mul(result.unpaidAmount,100)) / 100 ,
                     bizType: bizType,
                     modeType: modeType
@@ -145,7 +145,7 @@ export default class PaymentPage extends BasePage {
             this.setState({ showPwd: false });
             if (parseInt(result.status) === payStatus.payNeedThrid) {
                 payment.selectedBalace = false;
-                this.$navigate('payment/ChannelPage', {
+                this.$navigate(RouterMap.ChannelPage, {
                     remainMoney: (payment.amounts - channelAmount).toFixed(2),
                     bizType: bizType,
                     modeType: modeType
@@ -170,7 +170,7 @@ export default class PaymentPage extends BasePage {
 
     _forgetPassword = () => {
         this.setState({ showPwd: false });
-        this.$navigate('mine/account/JudgePhonePage', { title: '设置交易密码' });
+        this.$navigate(RouterMap.JudgePhonePage, { title: '设置交易密码' });
     };
 
     _cancelPay = () => {

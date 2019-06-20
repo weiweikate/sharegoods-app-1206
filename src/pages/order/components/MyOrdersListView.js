@@ -20,7 +20,7 @@ import {
     MRText as Text
 } from '../../../components/ui';
 // import user from '../../../manager/user';
-import RouterMap, { replaceRoute } from '../../../navigation/RouterMap';
+import RouterMap, { replaceRoute, routeNavigate } from '../../../navigation/RouterMap';
 import { payStatus, payment, payStatusMsg } from '../../payment/Payment';
 import { SmoothPushPreLoadHighComponent } from '../../../comm/components/SmoothPushHighComponent';
 
@@ -318,7 +318,7 @@ export default class MyOrdersListView extends Component {
             Toast.hiddenLoading();
             Toast.$toast(e.msg);
             if (e.code === 10009) {
-                this.props.nav('login/login/LoginPage');
+                routeNavigate(RouterMap.LoginPage);
             }
             this.setState({ isError: true, errMsgText: e.msg || '未知错误' });
         });

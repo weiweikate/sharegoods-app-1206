@@ -20,6 +20,7 @@ import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import { MRText as Text } from '../../../../components/ui';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
+import RouterMap from '../../../../navigation/RouterMap';
 
 const { px2dp } = ScreenUtils;
 const renwu = res.cashAccount.renwu_icon;
@@ -104,7 +105,7 @@ export default class MyCashAccountPage extends BasePage {
     }
 
     $NavBarRightPressed = () => {
-        this.$navigate('mine/bankCard/BankCardListPage');
+        this.$navigate(RouterMap.BankCardListPage);
     };
     $navigationBarOptions = {
         title: '现金账户',
@@ -195,7 +196,7 @@ export default class MyCashAccountPage extends BasePage {
                         </View>
                     </TouchableWithoutFeedback>
                     {this.state.canWithdraw ? <TouchableWithoutFeedback onPress={() => {
-                        this.$navigate('mine/bankCard/BankCardListPage');
+                        this.$navigate(RouterMap.BankCardListPage);
                     }}>
                         <Text style={styles.settingStyle}>账户设置</Text>
                     </TouchableWithoutFeedback> : null}
@@ -300,9 +301,9 @@ export default class MyCashAccountPage extends BasePage {
             if (data.data && data.data.length > 0) {
                 MineApi.gongmallResult().then((data) => {
                     if (!data.data) {
-                        this.$navigate('mine/bankCard/WithdrawalAgreementPage');
+                        this.$navigate(RouterMap.WithdrawalAgreementPage);
                     } else {
-                        this.$navigate('mine/userInformation/WithdrawCashPage');
+                        this.$navigate(RouterMap.WithdrawCashPage);
                     }
                 }).catch(error => {
                     this.$toastShow(error.msg);
@@ -313,7 +314,7 @@ export default class MyCashAccountPage extends BasePage {
                     }
                 }, {
                     text: '马上就去', onPress: () => {
-                        this.$navigate('mine/bankCard/BankCardListPage', {
+                        this.$navigate(RouterMap.BankCardListPage, {
                             callBack: (params) => {
                             }
                         });

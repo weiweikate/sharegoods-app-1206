@@ -34,6 +34,7 @@ const arrowRightImg = res.myData.black_right_arrow;
 import LinearGradient from 'react-native-linear-gradient';
 import StringUtils from '../../../../utils/StringUtils';
 import { SmoothPushPreLoadHighComponent } from '../../../../comm/components/SmoothPushHighComponent';
+import RouterMap from '../../../../navigation/RouterMap';
 
 const { px2dp } = ScreenUtils;
 
@@ -167,7 +168,7 @@ export default class MyPromotionPage extends BasePage {
                                 justifyContent: 'center',
                                 flexDirection: 'row'
                             }}
-                                         onPress={() => this.$navigate('mine/ExpDetailPage', {
+                                         onPress={() => this.$navigate(RouterMap.ExpDetailPage, {
                                              experience: this.state.experience,
                                              levelExperience: this.state.levelExperience
                                          })}>
@@ -413,7 +414,7 @@ export default class MyPromotionPage extends BasePage {
     }
 
     _onPressInvite = () => {
-        this.$navigate('mine/InviteFriendsPage');
+        this.$navigate(RouterMap.InviteFriendsPage);
     };
 
     // 去购物

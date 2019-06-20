@@ -35,6 +35,8 @@ import DetailHeaderServiceModal from '../product/components/DetailHeaderServiceM
 import ProductApi from '../product/api/ProductApi';
 import { beginChatType, QYChatTool } from '../../utils/QYModule/QYChatTool';
 import { SmoothPushPreLoadHighComponent } from '../../comm/components/SmoothPushHighComponent';
+import { routeNavigate } from '../../navigation/RouterMap';
+import RouterMap from '../../navigation/RouterMap';
 
 /*
 * 仅有礼包了  2019.4.25
@@ -189,7 +191,7 @@ export default class TopicDetailPage extends BasePage {
         if (this.state.activityType !== 3 && (status === 4 || status === 5) && type === 1) {
             this.__timer__ = setTimeout(() => {
                 this.havePushDone = true;
-                this.$navigate('product/ProductDetailPage', {
+                this.$navigate(RouterMap.ProductDetailPage, {
                     productCode: this.state.activityData.prodCode
                 });
             }, 5000);
@@ -275,7 +277,7 @@ export default class TopicDetailPage extends BasePage {
             productCode: this.state.activityData.prodCode,
             spuName: this.state.data.name
         });
-        this.$navigate('order/order/ConfirOrderPage', {
+        this.$navigate(RouterMap.ConfirOrderPage, {
             orderParamVO: {
                 orderType: this.state.activityType,
                 orderProducts: orderProducts,
@@ -306,7 +308,7 @@ export default class TopicDetailPage extends BasePage {
         //     priceList: priceList
         // }];
 
-        this.$navigate('order/order/ConfirOrderPage', {
+        this.$navigate(RouterMap.ConfirOrderPage, {
             orderParamVO: {
                 activityCode: this.params.activityCode,
                 orderType: 3,
@@ -616,7 +618,7 @@ export default class TopicDetailPage extends BasePage {
                                    this.$navigateBack();
                                }}
                                navRLeft={() => {
-                                   this.$navigate('shopCart/ShopCart', {
+                                   this.$navigate(RouterMap.ShopCart, {
                                        hiddeLeft: false
                                    });
                                }}
@@ -625,13 +627,13 @@ export default class TopicDetailPage extends BasePage {
                                        switch (item.type) {
                                            case 0:
                                                if (!user.isLogin) {
-                                                   this.$navigate('login/login/LoginPage');
+                                                   routeNavigate(RouterMap.LoginPage);
                                                    return;
                                                }
-                                               this.$navigate('message/MessageCenterPage');
+                                               routeNavigate(RouterMap.MessageCenterPage);
                                                break;
                                            case 1:
-                                               this.$navigate('home/search/SearchPage');
+                                               routeNavigate(RouterMap.SearchPage);
                                                break;
                                            case 2:
                                                setTimeout(() => {
@@ -640,7 +642,7 @@ export default class TopicDetailPage extends BasePage {
                                                break;
                                            case 3:
                                                if (!user.isLogin) {
-                                                   this.$navigate('login/login/LoginPage');
+                                                   routeNavigate(RouterMap.LoginPage);
                                                    return;
                                                }
                                                setTimeout(() => {

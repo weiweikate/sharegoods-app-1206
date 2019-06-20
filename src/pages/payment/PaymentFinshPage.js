@@ -19,6 +19,7 @@ import PaymentApi from './PaymentApi';
 import apiEnvironment from '../../api/ApiEnvironment';
 import bridge from '../../utils/bridge';
 import { replaceRoute } from '../../navigation/RouterMap';
+import RouterMap from '../../navigation/RouterMap';
 
 const { px2dp } = ScreenUtils;
 const {
@@ -282,7 +283,7 @@ export default class PaymentFinshPage extends BasePage {
             orderPayResultBtnType: 5
         });
 
-        this.$navigate('HtmlPage', {
+        this.$navigate(RouterMap.HtmlPage, {
             uri: couponItem.url
         });
     };

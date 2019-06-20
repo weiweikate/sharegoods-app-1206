@@ -52,7 +52,7 @@ const allKinds = {
     10: { title: '邀请有礼奖励', img: icon_invite },
     11: { title: '分享奖励', img: fenxiang_icon },
     12: { title: '奖池投奖', img: tuiguang_icon },
-    13: { title: '奖池奖励', img: zengsong_icon },
+    13: { title: '奖池奖励', img: zengsong_icon }
 };
 @observer
 export default class MyIntegralAccountPage extends BasePage {
@@ -114,7 +114,7 @@ export default class MyIntegralAccountPage extends BasePage {
                                          this.$navigate(RouterMap.loginPage);
                                          return;
                                      }
-                                     this.$navigate('home/signIn/SignInPage');
+                                     this.$navigate(RouterMap.SignInPage);
                                  }}>
                         <Text style={{
                             fontSize: DesignRule.fontSize_threeTitle,

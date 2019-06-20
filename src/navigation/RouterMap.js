@@ -127,21 +127,22 @@ function navigateBack(step) {
         routerKey = router.key;
     } else if (typeof step === 'string') {
         for (let i = 0; i < $routes.length - 1; i++) {
-
             if (step === $routes[i].routeName) {
                 routerKey = $routes[i + 1].key;
                 break;
             }
         }
     }
-    if (!routerKey && $routes.length > 1) {
+    if (!StringUtils.isEmpty(routerKey) && $routes.length > 1) {
         let router = $routes[$routes.length - 1];
         routerKey = router.key;
     }
 
-    if (routerKey) {
+    if (!StringUtils.isEmpty(routerKey)) {
         const backAction = NavigationActions.back({ key: routerKey });//routerKey代表从哪个返回
         global.$navigator && global.$navigator.dispatch(backAction);
+    } else {
+        global.$navigator && global.$navigator._navigation.back();
     }
 }
 

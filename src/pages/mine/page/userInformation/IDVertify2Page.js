@@ -20,9 +20,11 @@ import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
-import {MRText as Text, MRTextInput as RNTextInput} from '../../../../components/ui'
+import { MRText as Text, MRTextInput as RNTextInput } from '../../../../components/ui';
 import apiEnvironment from '../../../../api/ApiEnvironment';
 import { track, trackEvent } from '../../../../utils/SensorsTrack';
+import { routeNavigate } from '../../../../navigation/RouterMap';
+import RouterMap from '../../../../navigation/RouterMap';
 
 const IDcard_country = res.userInfoImg.IDcard_country;
 const IDcard_persion = res.userInfoImg.IDcard_persion;
@@ -146,7 +148,7 @@ export default class IDVertify2Page extends BasePage {
                             <UIText value={'《实名认证协议》'}
                                     style={{ fontSize: 11, color: DesignRule.mainColor }}
                                     onPress={() => {
-                                        this.$navigate('HtmlPage', {
+                                        this.$navigate(RouterMap.HtmlPage, {
                                             title: '实名认证协议',
                                             uri: apiEnvironment.getCurrentH5Url() + '/static/protocol/privacy.html'
                                         });
@@ -160,33 +162,34 @@ export default class IDVertify2Page extends BasePage {
     };
     renderBackIdCard = () => {
         let imageWidth = (ScreenUtils.width - 45) / 2;
-        if (StringUtils.isEmpty(this.state.backIdCard) ) {
-          return  <UIImage source={IDcard_persion} style={{ height: imageWidth, width: imageWidth }} onPress={() => {
+        if (StringUtils.isEmpty(this.state.backIdCard)) {
+            return <UIImage source={IDcard_persion} style={{ height: imageWidth, width: imageWidth }} onPress={() => {
                 this.getIDcard_country();
-            }}/>
-        }else {
-            return(
+            }}/>;
+        } else {
+            return (
                 <TouchableOpacity onPress={() => {
                     this.getIDcard_country();
                 }}>
-                    <ImageLoad source={{ uri: this.state.backIdCard }} style={{ height: imageWidth, width: imageWidth }}/>
-                </TouchableOpacity>)
+                    <ImageLoad source={{ uri: this.state.backIdCard }}
+                               style={{ height: imageWidth, width: imageWidth }}/>
+                </TouchableOpacity>);
         }
     };
     renderFrontIdCard = () => {//IDcard_persion
         let imageWidth = (ScreenUtils.width - 45) / 2;
-        if (StringUtils.isEmpty(this.state.frontIdCard))
-        {
-            return  <UIImage source={IDcard_country} style={{ height: imageWidth, width: imageWidth }} onPress={() => {
+        if (StringUtils.isEmpty(this.state.frontIdCard)) {
+            return <UIImage source={IDcard_country} style={{ height: imageWidth, width: imageWidth }} onPress={() => {
                 this.getIDcard_persion();
-            }}/>
-        }else {
-            return(
+            }}/>;
+        } else {
+            return (
                 <TouchableOpacity onPress={() => {
                     this.getIDcard_persion();
                 }}>
-                    <ImageLoad source={{ uri: this.state.frontIdCard }} style={{ height: imageWidth, width: imageWidth }}/>
-                </TouchableOpacity>)
+                    <ImageLoad source={{ uri: this.state.frontIdCard }}
+                               style={{ height: imageWidth, width: imageWidth }}/>
+                </TouchableOpacity>);
         }
     };
     renderHintInformation = () => {
@@ -297,7 +300,7 @@ export default class IDVertify2Page extends BasePage {
             });
             this.$navigateBack();
             if (this.params.from === 'salePwd') {
-                this.$navigate('mine/account/SetOrEditPayPwdPage', {
+                this.$navigate(RouterMap.SetOrEditPayPwdPage, {
                     userName: this.state.name,
                     cardNum: this.state.idNumber,
                     oldPwd: '',
@@ -310,7 +313,7 @@ export default class IDVertify2Page extends BasePage {
             this.$loadingDismiss();
             this.$toastShow(err.msg);
             if (err.code === 10009) {
-                this.$navigate('login/login/LoginPage');
+                routeNavigate(RouterMap.LoginPage);
             }
         });
     };

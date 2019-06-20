@@ -25,6 +25,7 @@ import Emoticons, * as emoticons from '../../comm/components/emoticons';
 import EmptyUtils from '../../utils/EmptyUtils';
 import ShowApi from './ShowApi';
 import { backToShow } from '../../navigation/RouterMap';
+import RouterMap from '../../navigation/RouterMap';
 
 const { addIcon, delIcon, iconShowDown, iconShowEmoji, addShowIcon } = res;
 
@@ -190,7 +191,7 @@ export default class ReleaseNotesPage extends BasePage {
         });
         return (
             <TouchableWithoutFeedback onPress={() => {
-                this.$navigate('show/ShowProductListPage', {
+                this.$navigate(RouterMap.ShowProductListPage, {
                     spus,
                     callBack: (value) => {
                         let arr = this.state.products;

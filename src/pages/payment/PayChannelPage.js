@@ -238,14 +238,14 @@ export default class ChannelPage extends BasePage {
                 this.props.navigation.dispatch({
                     key: this.props.navigation.state.key,
                     type: 'ReplacePayScreen',
-                    routeName: 'payment/PaymentResultPage',
+                    routeName: RouterMap.PaymentResultPage,
                     params: { payResult: PaymentResult.success }
                 });
                 track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: 'success' });
                 payment.resetPayment();
             } else if (result.data === payStatus.payOutTime) {
                 this.setState({ orderChecking: false });
-                this.$navigate('payment/PaymentResultPage', {
+                this.$navigate(RouterMap.PaymentResultPage, {
                     payResult: PaymentResult.timeout,
                     payMsg: '订单支付超时，下单金额已原路返回'
                 });

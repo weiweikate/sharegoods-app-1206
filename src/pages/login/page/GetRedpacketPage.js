@@ -15,6 +15,7 @@ import StringUtils from '../../../utils/StringUtils';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import { MRText as Text } from '../../../components/ui';
+import RouterMap from '../../../navigation/RouterMap';
 
 const {
     refresh,
@@ -354,7 +355,7 @@ export default class GetRedpacketPage extends BasePage {
         this.$navigateBackToHome();
     };
     jumpToWriteCodePage = () => {
-        this.$navigate('login/login/InviteCodePage');
+        this.$navigate(RouterMap.InviteCodePage);
     };
     redPacketClick = (redPacketIndex) => {
         this.$loadingShow('加载中');
