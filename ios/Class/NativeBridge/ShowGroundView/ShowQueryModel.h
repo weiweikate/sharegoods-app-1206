@@ -59,10 +59,13 @@ NS_ASSUME_NONNULL_END
  宽高比
  */
 @property (nonatomic, readonly, assign)CGFloat aspectRatio;
+@property (nonatomic, readonly, assign)CGFloat aspectRatio_show;
 /**
  显示图片链接
  */
 @property (nonatomic, readonly, assign)NSString *showImage;
+
+@property (nonatomic, readonly, assign)NSString *showImage_oss;
 
 @end
 
