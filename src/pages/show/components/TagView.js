@@ -8,7 +8,7 @@ import {
     StyleSheet,
     View,
     TouchableWithoutFeedback,
-    Image
+    Image,
 } from 'react-native';
 
 import LinearGradient from 'react-native-linear-gradient';
@@ -23,14 +23,8 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
 
 export default class TagView extends PureComponent {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         let text = `#${this.props.text}`;
-
-
         return (
             <TouchableWithoutFeedback
                 disabled={!this.props.canDelete}
@@ -38,11 +32,11 @@ export default class TagView extends PureComponent {
                     this.props.onPress && this.props.onPress();
                 }}
             >
-                <View style={[styles.wrapper,this.props.style]}>
+                <View style={[styles.wrapper, this.props.style, { height: px2dp(24), borderRadius: px2dp(12) }]}>
                     <LinearGradient colors={['#FC5D39', '#FF0050']}
                                     start={{ x: 1, y: 0 }} end={{ x: 0, y: 0 }}
                                     style={{ position: 'absolute', left: 0, top: 0, right: 0, bottom: 0 }}/>
-                    <MRText style={styles.text}>
+                    <MRText style={{ color: DesignRule.white, fontSize: DesignRule.fontSize_24 }}>
                         {text}
                     </MRText>
                     {this.props.canDelete ? <Image source={tagDelete} style={styles.deleteIcon}/> : null}
@@ -55,12 +49,9 @@ export default class TagView extends PureComponent {
 
 var styles = StyleSheet.create({
     wrapper: {
-        backgroundColor: 'red',
         flexDirection: 'row',
         alignItems: 'center',
-        height: px2dp(24),
         paddingHorizontal: px2dp(6),
-        borderRadius: px2dp(12),
         overflow: 'hidden'
     },
     text: {

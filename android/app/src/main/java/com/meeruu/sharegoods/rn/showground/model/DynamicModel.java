@@ -10,8 +10,7 @@ import java.util.Map;
 
 import static com.meeruu.commonlib.utils.ParameterUtils.NETWORK_ELSE_CACHED;
 
-public class ShowgroundModel implements IShowgroundModel {
-
+public class DynamicModel implements IShowgroundModel  {
     private final String GET = "GET";
     private final String POST = "POST";
     private String uri = "";
@@ -20,7 +19,7 @@ public class ShowgroundModel implements IShowgroundModel {
 
     @Override
     public void fetchRecommendList(int page, int size, final BaseCallback callback) {
-        ShowgroundRequestConfig showgroundRequestConfig = new ShowgroundRequestConfig();
+        DynamicModel.ShowgroundRequestConfig showgroundRequestConfig = new DynamicModel.ShowgroundRequestConfig();
         HashMap params = new HashMap();
         params.put("size", size + "");
         params.put("page", page + "");
@@ -43,13 +42,20 @@ public class ShowgroundModel implements IShowgroundModel {
         this.rnParams = map;
     }
 
+    @Override
+    public void deleteDynamic(String showNo, BaseCallback callback) {
+        DeleteRequestConfig deleteRequestConfig = new DeleteRequestConfig();
+        deleteRequestConfig.setParams(showNo);
+        RequestManager.getInstance().doPost(deleteRequestConfig,callback);
+    }
+
     private static class ShowgroundRequestConfig implements BaseRequestConfig {
 
         private HashMap map;
 
         @Override
         public String getUrl() {
-            return HttpUrlUtils.getUrl(HttpUrlUtils.URL_SHOWLIST);
+            return HttpUrlUtils.getUrl(HttpUrlUtils.URL_DYNAMIC);
         }
 
         public void setParams(HashMap params) {
@@ -62,8 +68,26 @@ public class ShowgroundModel implements IShowgroundModel {
         }
     }
 
-    @Override
-    public void deleteDynamic(String showNo, BaseCallback callback) {
+    private static class DeleteRequestConfig implements BaseRequestConfig {
 
+        private String showNo;
+
+        @Override
+        public String getUrl() {
+            return HttpUrlUtils.getUrl(HttpUrlUtils.URL_DELETE_DYNAMIC);
+        }
+
+        public void setParams(String params) {
+            showNo = params;
+        }
+
+        @Override
+        public Map getParams() {
+            HashMap map = new HashMap();
+            map.put("showNo",showNo);
+            return map;
+        }
     }
+
+
 }

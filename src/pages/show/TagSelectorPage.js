@@ -15,9 +15,9 @@ import NoMoreClick from '../../components/ui/NoMoreClick';
 import { MRText } from '../../components/ui';
 import TagView from './components/TagView';
 import RefreshFlatList from '../../comm/components/RefreshFlatList';
-import MineAPI from '../mine/api/MineApi';
 import ScreenUtils from '../../utils/ScreenUtils';
 import EmptyUtils from '../../utils/EmptyUtils';
+import ShowApi from './ShowApi';
 
 const { px2dp } = ScreenUtils;
 
@@ -29,7 +29,10 @@ export default class TagSelectorPage extends BasePage {
 
     $NavBarRenderRightItem = () => {
         return (
-            <NoMoreClick onPress={this._publish}>
+            <NoMoreClick onPress={()=>{
+                this.params.callback(this.state.selectTags);
+                this.props.navigation.goBack();
+            }}>
                 <MRText style={styles.addStyle}>
                     添加
                 </MRText>
@@ -53,8 +56,8 @@ export default class TagSelectorPage extends BasePage {
         }
 
         for(let i = 0;i<this.selectTags.length;i++){
-            if(item.phone === this.selectTags[i].phone){
-                this.$toastShow('已经选择了');
+            if(item.tagId === this.selectTags[i].tagId){
+                this.$toastShow('您已经选过这个标签啦');
                 return;
             }
         }
@@ -78,7 +81,7 @@ export default class TagSelectorPage extends BasePage {
             }}>
                 <View style={styles.itemWrapper}>
                     <MRText style={{ color: DesignRule.textColor_instruction }}>#</MRText>
-                    <MRText style={styles.tagText}>{item.nickname}</MRText>
+                    <MRText style={styles.tagText}>{item.name}</MRText>
                 </View>
             </TouchableWithoutFeedback>
         );
@@ -91,7 +94,7 @@ export default class TagSelectorPage extends BasePage {
         return (
             <View style={{ flexDirection: 'row', width: DesignRule.width ,height:px2dp(50),borderBottomColor:DesignRule.bgColor,borderBottomWidth:px2dp(5),alignItems:'center'}}>
                 {this.state.selectTags.map((item, index) => {
-                    return (<TagView style={{marginLeft:px2dp(15)}} canDelete={true} text={item.nickname} onPress={() => this.deleteTag(index)}/>);
+                    return (<TagView style={{marginLeft:px2dp(15)}} canDelete={true} text={item.name} onPress={() => this.deleteTag(index)}/>);
                 })}
             </View>
         );
@@ -106,7 +109,8 @@ export default class TagSelectorPage extends BasePage {
                     ref={(ref) => {
                         this.list = ref;
                     }}
-                    url={MineAPI.getShowFansList}
+                    renderLoadMoreComponent={()=>{return null}}
+                    url={ShowApi.getAllTag}
                     renderItem={this._listItemRender}
                     style={{ flex: 1, marginTop: px2dp(15) }}
                     renderEmpty={() => {

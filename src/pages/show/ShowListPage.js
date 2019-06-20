@@ -194,10 +194,12 @@ export default class ShowListPage extends BasePage {
     };
 
     _goMyDynamicPage=()=>{
-        if (!user.isLogin) {
-            this.$navigate('login/login/LoginPage');
-            return;
-        }
+        this.$navigate(RouterMap.ReleaseNotesPage);
+        return;
+        // if (!user.isLogin) {
+        //     this.$navigate('login/login/LoginPage');
+        //     return;
+        // }
         this.$navigate(RouterMap.MyDynamicPage);
     }
 

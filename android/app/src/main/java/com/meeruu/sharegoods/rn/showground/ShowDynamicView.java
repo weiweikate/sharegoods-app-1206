@@ -1,6 +1,8 @@
 package com.meeruu.sharegoods.rn.showground;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -8,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +20,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
@@ -24,7 +28,10 @@ import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
+import com.meeruu.commonlib.utils.ScreenUtils;
+import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.sharegoods.R;
+import com.meeruu.sharegoods.rn.showground.adapter.ShowDynamicAdapter;
 import com.meeruu.sharegoods.rn.showground.adapter.ShowGroundAdapter;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
 import com.meeruu.sharegoods.rn.showground.event.onEndScrollEvent;
@@ -33,6 +40,7 @@ import com.meeruu.sharegoods.rn.showground.event.onScrollStateChangedEvent;
 import com.meeruu.sharegoods.rn.showground.event.onScrollYEvent;
 import com.meeruu.sharegoods.rn.showground.event.onStartRefreshEvent;
 import com.meeruu.sharegoods.rn.showground.event.onStartScrollEvent;
+import com.meeruu.sharegoods.rn.showground.presenter.DynamicPresenter;
 import com.meeruu.sharegoods.rn.showground.presenter.ShowgroundPresenter;
 import com.meeruu.sharegoods.rn.showground.view.IShowgroundView;
 import com.meeruu.sharegoods.rn.showground.widgets.CustomLoadMoreView;
@@ -43,16 +51,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRefreshListener {
+public class ShowDynamicView implements IShowgroundView, SwipeRefreshLayout.OnRefreshListener {
     private int page = 1;
     private SwipeRefreshLayout swipeRefreshLayout;
     private RnRecyclerView recyclerView;
     private StaggeredGridLayoutManager layoutManager;
-    private ShowGroundAdapter adapter;
-    private ShowgroundPresenter presenter;
+    private ShowDynamicAdapter adapter;
+    private DynamicPresenter presenter;
     private EventDispatcher eventDispatcher;
     private onItemPressEvent itemPressEvent;
-    private onScrollYEvent onScrollYEvent;
+    private com.meeruu.sharegoods.rn.showground.event.onScrollYEvent onScrollYEvent;
     private onStartRefreshEvent startRefreshEvent;
     private onStartScrollEvent startScrollEvent;
     private onEndScrollEvent endScrollEvent;
@@ -61,8 +69,10 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
     private Handler handler;
     private View errImg;
     private boolean sIsScrolling;
+    private boolean deleteIng = false;
+    private int deleteIndex = -1;
 
-    public ViewGroup getShowGroundView(ReactContext reactContext) {
+    public ViewGroup getShowDynamicView(ReactContext reactContext) {
         eventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
         LayoutInflater inflater = LayoutInflater.from(reactContext);
         View view = inflater.inflate(R.layout.view_showground, null);
@@ -72,7 +82,7 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
         return (ViewGroup) view;
     }
 
-    private void initView(Context context, final View view) {
+    private void initView(final Context context, final View view) {
         handler = new Handler();
         showgroundView = new WeakReference<>(view);
         errView = view.findViewById(R.id.err_view);
@@ -109,7 +119,8 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
         startScrollEvent = new onStartScrollEvent();
         onScrollYEvent = new onScrollYEvent();
         endScrollEvent = new onEndScrollEvent();
-        adapter = new ShowGroundAdapter();
+        setRecyclerViewItemEvent(view);
+        adapter = new ShowDynamicAdapter();
         adapter.setPreLoadNumber(3);
         adapter.setHasStableIds(true);
         layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
@@ -214,8 +225,45 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
         });
     }
 
+
+    private void setRecyclerViewItemEvent(final View view) {
+        recyclerView.addOnItemTouchListener(new OnItemChildClickListener() {
+            @Override
+            public void onSimpleItemChildClick(final BaseQuickAdapter adapter, View itemview, final int position) {
+                final List<NewestShowGroundBean.DataBean> data = adapter.getData();
+                final NewestShowGroundBean.DataBean bean = data.get(position);
+                int id = itemview.getId();
+                switch (id) {
+                    case R.id.iv_delete:
+                        if (!deleteIng) {
+                            AlertDialog alertDialog = new AlertDialog.Builder(view.getContext()).setTitle("温馨提示").setMessage("确定删除这条动态吗？").setPositiveButton("确定", new DialogInterface.OnClickListener() {//添加"Yes"按钮
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    presenter.deleteItem(bean.getShowNo());
+                                    deleteIndex = position;
+                                    deleteIng = true;
+                                }
+                            })
+
+                                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {//添加取消
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                        }
+                                    }).create();
+                            alertDialog.show();
+
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+    }
+
+
     private void initData() {
-        presenter = new ShowgroundPresenter(this);
+        presenter = new DynamicPresenter(this);
     }
 
     private void setEmptyText() {
@@ -354,11 +402,14 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
     }
 
     public void addHeader(View view) {
-        int i = adapter.getHeaderLayoutCount();
-        if (i != 0) {
-            adapter.removeAllHeaderView();
+        adapter.setHeaderAndEmpty(true);
+        adapter.setHeaderView(view);
+        View emptyView = adapter.getEmptyView();
+        final ViewGroup.LayoutParams lp = emptyView.getLayoutParams();
+        if (lp != null) {
+            lp.height = ScreenUtils.getScreenHeight() - DensityUtils.dip2px(400);
         }
-        adapter.addHeaderView(view);
+        emptyView.setLayoutParams(lp);
         recyclerView.scrollToPosition(0);
     }
 
@@ -380,11 +431,17 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
 
     @Override
     public void deleteSuccess() {
-
+        deleteIng = false;
+        adapter.remove(deleteIndex);
+        deleteIndex = -1;
     }
 
     @Override
     public void deleteFail(String err) {
-
+        deleteIng = false;
+        deleteIndex = -1;
+        if (!TextUtils.isEmpty(err)) {
+            ToastUtils.showToast(err);
+        }
     }
 }

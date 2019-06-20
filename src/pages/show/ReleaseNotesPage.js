@@ -25,6 +25,7 @@ import Emoticons, * as emoticons from '../../comm/components/emoticons';
 import EmptyUtils from '../../utils/EmptyUtils';
 import ShowApi from './ShowApi';
 import RouterMap from '../../navigation/RouterMap';
+import TagView from './components/TagView';
 
 const { addIcon, delIcon, iconShowDown, iconShowEmoji, addShowIcon, showTagIcon } = res;
 const { arrow_right_black } = res.button;
@@ -40,13 +41,14 @@ export default class ReleaseNotesPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            imageArr: [],
+            imageArr: [{url:'https://cdn.sharegoodsmall.com/sharegoods/630d0fa0db66482bb69364482accf241.jpg',width:750,height:1334}],
             showEmoji: false,
             showEmojiButton: false,
             text: '',
             titleText: '',
             keyBoardHeight: 0,
-            products: []
+            products: [],
+            tags:[]
         };
 
     }
@@ -97,7 +99,12 @@ export default class ReleaseNotesPage extends BasePage {
         let products = this.state.products || [];
         let images = this.state.imageArr;
         let urls = images.map((value) => {
-            return `${value.url}?width=${value.width}&height=${value.height}`;
+            return {
+                baseUrl:value.url,
+                height:value.height,
+                width:value.width,
+                type:2
+            }
         });
         let productsPar = products.map((value) => {
             return value.spuCode;
@@ -105,7 +112,9 @@ export default class ReleaseNotesPage extends BasePage {
         let params = {
             content,
             images: urls,
-            products: productsPar
+            products: productsPar,
+            title:this.state.titleText,
+            tagList:this.state.tags.map((item)=>{return item.tagId})
         };
         ShowApi.publishShow(params).then((data) => {
             this.props.navigation.popToTop();
@@ -329,20 +338,43 @@ export default class ReleaseNotesPage extends BasePage {
         );
     };
 
+    refreshTags=(tags)=>{
+        this.setState({tags});
+    }
+
     tagRender = () => {
+        if(EmptyUtils.isEmpty(this.state.tags)){
+            return (
+                <TouchableWithoutFeedback onPress={()=>{
+                    this.$navigate(RouterMap.TagSelectorPage,{callback:this.refreshTags});
+                }}>
+                    <View style={styles.tagWrapper}>
+                        <Image style={{ width: px2dp(18), height: px2dp(18),marginLeft:DesignRule.margin_page }} source={showTagIcon}/>
+                        <MRText style={styles.tagPlaceholder}>
+                            添加活动 获得更多曝光
+                        </MRText>
+                        <Image source={arrow_right_black} style={{ width: px2dp(10), height: px2dp(16) }}/>
+                    </View>
+                </TouchableWithoutFeedback>
+            );
+        }
+
         return (
             <TouchableWithoutFeedback onPress={()=>{
-                this.$navigate(RouterMap.TagSelectorPage);
+                this.$navigate(RouterMap.TagSelectorPage,{callback:this.refreshTags});
             }}>
                 <View style={styles.tagWrapper}>
-                    <Image style={{ width: px2dp(18), height: px2dp(18) }} source={showTagIcon}/>
-                    <MRText style={styles.tagPlaceholder}>
-                        添加活动 获得更多曝光
-                    </MRText>
+                    {this.state.tags.map((item,index)=>{
+                        return(
+                            <TagView text={item.name} style={{marginLeft:px2dp(15)}}/>
+                        )
+                    })}
+                    <View style={{flex:1}}/>
                     <Image source={arrow_right_black} style={{ width: px2dp(10), height: px2dp(16) }}/>
                 </View>
             </TouchableWithoutFeedback>
-        );
+        )
+
     };
 
     _render() {
@@ -558,10 +590,10 @@ var styles = StyleSheet.create({
         height: px2dp(50),
         flexDirection: 'row',
         alignItems: 'center',
-        paddingHorizontal: DesignRule.margin_page,
-        borderBottomWidth: 1,
+        paddingRight: DesignRule.margin_page,
+        borderBottomWidth: ScreenUtils.onePixel,
         borderBottomColor: 'rgba(0,0,0,0.1)',
-        borderTopWidth: 1,
+        borderTopWidth: ScreenUtils.onePixel,
         borderTopColor: 'rgba(0,0,0,0.1)'
     },
     tagPlaceholder: {

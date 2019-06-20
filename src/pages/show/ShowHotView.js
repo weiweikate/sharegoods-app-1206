@@ -148,6 +148,7 @@ export default class ShowHotView extends React.Component {
                                        ref={(ref) => {
                                            this.RecommendShowList = ref;
                                        }}
+                                       type={'recommend'}
                                        headerHeight={showBannerModules.bannerHeight + 20}
                                        renderHeader={Platform.OS === 'ios' ? this.renderHeader() : this.state.headerView}
                                        onStartRefresh={() => {
@@ -248,7 +249,6 @@ export default class ShowHotView extends React.Component {
                                 bottom: px2dp(118)
                             }}>
                                 <ReleaseButton
-
                                     onPress={() => {
                                         if (!user.isLogin) {
                                             this.props.navigate('login/login/LoginPage');

@@ -15,13 +15,13 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-public class ShowRecommendViewManager extends ViewGroupManager<ViewGroup> {
-    private static final String COMPONENT_NAME = "ShowRecommendView";
+public class ShowDynamicViewManager extends ViewGroupManager<ViewGroup> {
+    private static final String COMPONENT_NAME = "ShowDynamicView";
     public static final int REPLACE_DATA = 1;
     public static final int ADD_DATA_TOP = 2;
     public static final int REPLACE_ITEM_DATA = 3;
     public static final int SCROLL_TO_TOP = 4;
-
+    public static final int DELETE_ITEM = 5;
     @Override
     public String getName() {
         return COMPONENT_NAME;
@@ -29,9 +29,9 @@ public class ShowRecommendViewManager extends ViewGroupManager<ViewGroup> {
 
     @Override
     protected ViewGroup createViewInstance(ThemedReactContext reactContext) {
-        ShowRecommendView showRecommendView = new ShowRecommendView();
-        ViewGroup viewGroup = showRecommendView.getShowRecommendView(reactContext);
-        viewGroup.setTag(showRecommendView);
+        ShowDynamicView showGroundView = new ShowDynamicView();
+        ViewGroup viewGroup = showGroundView.getShowDynamicView(reactContext);
+        viewGroup.setTag(showGroundView);
         return viewGroup;
 
     }
@@ -40,59 +40,63 @@ public class ShowRecommendViewManager extends ViewGroupManager<ViewGroup> {
     @ReactProp(name = "params")
     public void setParams(View view, ReadableMap map) {
         Object object = view.getTag();
-        if (object != null && object instanceof ShowRecommendView) {
-            ((ShowRecommendView) object).setParams(map.toHashMap());
+        if (object != null && object instanceof ShowDynamicView) {
+            ((ShowDynamicView) object).setParams(map.toHashMap());
         }
     }
-
-    @ReactProp(name = "type")
-    public void setType(View view, String type) {
-        Object object = view.getTag();
-        if (object != null && object instanceof ShowRecommendView) {
-            ((ShowRecommendView) object).setType(type);
-        }
-    }
-
 
     @Override
-    public void addView(ViewGroup parent, final View child, int index) {
-        final Object object = parent.getTag();
-        if (object != null && object instanceof ShowRecommendView) {
-            ((ShowRecommendView) object).addHeader(child);
+    public void addView(ViewGroup parent, View child, int index) {
+        Object object = parent.getTag();
+        if (object != null && object instanceof ShowDynamicView) {
+            ((ShowDynamicView) object).addHeader(child);
         }
     }
 
-    @javax.annotation.Nullable
+    @Nullable
     @Override
     public Map<String, Integer> getCommandsMap() {
-        return MapBuilder.of("replaceData", REPLACE_DATA, "replaceItemData", REPLACE_ITEM_DATA, "scrollToTop", SCROLL_TO_TOP);
+        return MapBuilder.of("replaceData", REPLACE_DATA,"addDataToTop",ADD_DATA_TOP,"replaceItemData",REPLACE_ITEM_DATA,"scrollToTop",SCROLL_TO_TOP,"deleteItem",DELETE_ITEM);
     }
 
     @Override
-    public void receiveCommand(@Nonnull ViewGroup root, int commandId, @javax.annotation.Nullable ReadableArray args) {
+    public void receiveCommand(@Nonnull ViewGroup root, int commandId, @Nullable ReadableArray args) {
         switch (commandId) {
             case REPLACE_DATA: {
                 Object object = root.getTag();
-                if (object != null && object instanceof ShowRecommendView) {
-                    ((ShowRecommendView) object).repelaceData(args.getInt(0), args.getInt(1));
+                if (object != null && object instanceof ShowDynamicView) {
+                    ((ShowDynamicView) object).repelaceData(args.getInt(0), args.getInt(1));
                 }
             }
             break;
-            case REPLACE_ITEM_DATA: {
+            case ADD_DATA_TOP:{
                 Object object = root.getTag();
-                if (object != null && object instanceof ShowRecommendView) {
-                    ((ShowRecommendView) object).repelaceItemData(args.getInt(0), args.getString(1));
+                if (object != null && object instanceof ShowDynamicView) {
+                    ((ShowDynamicView) object).addDataToTop(args.getString(0));
                 }
             }
             break;
-            case SCROLL_TO_TOP: {
+            case REPLACE_ITEM_DATA:{
                 Object object = root.getTag();
-                if (object != null && object instanceof ShowRecommendView) {
-                    ((ShowRecommendView) object).scrollIndex(0);
+                if (object != null && object instanceof ShowDynamicView) {
+                    ((ShowDynamicView) object).repelaceItemData(args.getInt(0), args.getString(1));
                 }
             }
             break;
-
+            case SCROLL_TO_TOP:{
+                Object object = root.getTag();
+                if (object != null && object instanceof ShowDynamicView) {
+                    ((ShowDynamicView) object).scrollIndex(0);
+                }
+            }
+            break;
+            case DELETE_ITEM:{
+                Object object = root.getTag();
+                if (object != null && object instanceof ShowDynamicView) {
+                    ((ShowDynamicView) object).scrollIndex(0);
+                }
+            }
+            break;
         }
     }
 
@@ -105,13 +109,9 @@ public class ShowRecommendViewManager extends ViewGroupManager<ViewGroup> {
                 .put("MrShowGroundOnStartScrollEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onStartScroll")))
                 .put("MrShowGroundOnEndScrollEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onEndScroll")))
                 .put("MrNineClickEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onNineClick")))
-                .put("MrAddCartEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onAddCartClick")))
                 .put("MrShowScrollStateChangeEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onScrollStateChanged")))
-                .put("MrDownloadPressEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onDownloadPress")))
-                .put("MrZanPressEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onZanPress")))
-                .put("MrSharePress", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onSharePress")))
                 .put("MrScrollY", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onScrollY")))
-                .put("MrPressProductEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onPressProduct")))
                 .build();
     }
+
 }
