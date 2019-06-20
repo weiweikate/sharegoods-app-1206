@@ -26,6 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(CGFloat)getWidthStringfontSize:(CGFloat)fontSize viewWidth:(CGFloat)width;
 
+- (NSMutableDictionary *)getURLParameters;
+
 @end
 
 NS_ASSUME_NONNULL_END
