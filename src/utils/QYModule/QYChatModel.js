@@ -1,10 +1,9 @@
-import { NativeEventEmitter, NativeModules } from "react-native";
-import { observable, computed, action } from "mobx";
-import { NavigationActions } from "react-navigation";
-import RouterMap from "../../navigation/RouterMap";
+import { NativeEventEmitter, NativeModules } from 'react-native';
+import { observable, computed, action } from 'mobx';
+import RouterMap, { navigate } from '../../navigation/RouterMap';
 
-const QY_MSG_CHANGE = "QY_MSG_CHANGE";
-const QY_CARD_CLICK = "QY_CARD_CLICK";
+const QY_MSG_CHANGE = 'QY_MSG_CHANGE';
+const QY_CARD_CLICK = 'QY_CARD_CLICK';
 const { JRQYService } = NativeModules;
 const QYManagerEmitter = new NativeEventEmitter(JRQYService);
 
@@ -13,7 +12,7 @@ const CARD_TYPE = {
     ORDER_CARD: 1//订单卡片
 };
 
-const platformShopId = "hzmrwlyxgs";
+const platformShopId = 'hzmrwlyxgs';
 
 class QYChatModel {
 
@@ -64,7 +63,7 @@ class QYChatModel {
     }
 
     //上次发起客服暂存的商品id
-    preProductUrl = "";
+    preProductUrl = '';
 
 
     constructor() {
@@ -102,23 +101,15 @@ class QYChatModel {
     };
 
     cardClickHandle = (handleData) => {
-        let productUrl = handleData && handleData.linkUrl ? handleData.linkUrl : "";
-        if (this.preProductUrl !== productUrl  ) {
-            let productSplitArr = productUrl.split("/");
-            let productCode = productSplitArr.length > 0 ? productSplitArr[productSplitArr.length - 1] : "";
+        let productUrl = handleData && handleData.linkUrl ? handleData.linkUrl : '';
+        if (this.preProductUrl !== productUrl) {
+            let productSplitArr = productUrl.split('/');
+            let productCode = productSplitArr.length > 0 ? productSplitArr[productSplitArr.length - 1] : '';
             let card_type = handleData ? handleData.card_type : -1;
             if (parseInt(card_type) === CARD_TYPE.PRODUCT_CARD) {
-                const navigationAction = NavigationActions.navigate({
-                    routeName: RouterMap.ProductDetailPage,
-                    params: { productCode: productCode }
-                });
-                global.$navigator.dispatch(navigationAction);
-            }else if(parseInt(card_type) === CARD_TYPE.ORDER_CARD) {
-                const navigationAction = NavigationActions.navigate({
-                    routeName: RouterMap.MyOrdersDetailPage,
-                    params: { orderNo: productCode }
-                });
-                global.$navigator.dispatch(navigationAction);
+                navigate(RouterMap.ProductDetailPage, { productCode: productCode });
+            } else if (parseInt(card_type) === CARD_TYPE.ORDER_CARD) {
+                navigate(RouterMap.MyOrdersDetailPage, { orderNo: productCode });
             }
         }
     };

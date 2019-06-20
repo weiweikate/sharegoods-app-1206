@@ -79,6 +79,7 @@ const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
 class HomePage extends BasePage {
 
     st = 0;
+    offsetY = 0;
 
     $navigationBarOptions = {
         title: '',
@@ -157,6 +158,10 @@ class HomePage extends BasePage {
 
     constructor(props) {
         super(props);
+        // 重置
+        homeModule.initHomeParams();
+        homeTabManager.setAboveRecommend(false);
+        this.offsetY = 0;
         InteractionManager.runAfterInteractions(() => {
             homeModule.loadHomeList(true);
         });
@@ -174,7 +179,6 @@ class HomePage extends BasePage {
                     homeModalManager.leaveHome();
                 }
                 BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
-
             }
         );
 
@@ -201,6 +205,8 @@ class HomePage extends BasePage {
                     if (!homeModule.firstLoad) {
                         limitGoModule.loadLimitGo(false);
                     }
+                    // 修复首页图标不准确
+                    this.homeTabChange();
                 }
                 TrackApi.homePage();//埋点
             }
@@ -221,6 +227,28 @@ class HomePage extends BasePage {
             });
         });
     }
+
+    homeTabChange = () => {
+        this.toGoods && this.toGoods.measure((fx, fy, w, h, left, top) => {
+            if (top) {
+                if (top < 0) {
+                    if (!homeTabManager.isAboveRecommend) {
+                        homeTabManager.setAboveRecommend(true);
+                    }
+                } else {
+                    if (this.offsetY > height && top < scrollDist) {
+                        if (!homeTabManager.isAboveRecommend) {
+                            homeTabManager.setAboveRecommend(true);
+                        }
+                    } else {
+                        if (homeTabManager.isAboveRecommend) {
+                            homeTabManager.setAboveRecommend(false);
+                        }
+                    }
+                }
+            }
+        });
+    };
 
     homeTypeRefresh = (type) => {
         homeModule.refreshHome(type);
@@ -324,12 +352,12 @@ class HomePage extends BasePage {
     }
 
     _onListViewScroll = (event) => {
-        if (!this.props.isFocused) {
+        if (!homeModule.isFocused) {
             return;
         }
-        let offsetY = event.nativeEvent.contentOffset.y;
+        this.offsetY = event.nativeEvent.contentOffset.y;
         this.toGoods && this.toGoods.measure((fx, fy, w, h, left, top) => {
-            if (offsetY > height && top < scrollDist) {
+            if (this.offsetY > height && top < scrollDist) {
                 homeTabManager.setAboveRecommend(true);
             } else {
                 homeTabManager.setAboveRecommend(false);

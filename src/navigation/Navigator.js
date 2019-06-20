@@ -1,35 +1,29 @@
-import { NavigationActions, StackNavigator } from 'react-navigation';
+import { NavigationActions, createStackNavigator, createAppContainer } from 'react-navigation';
 import { Platform, NativeModules } from 'react-native';
 /**
  * 以下两个对象不可以颠倒引入，会导致全局路由RouterMap不可用
  */
 import RouterMap from './RouterMap';
 import Router from './Stack';
-import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
 import Analytics from '../utils/AnalyticsUtil';
 import bridge from '../utils/bridge';
 import showPinFlagModel from '../model/ShowPinFlag';
 
-const Navigator = StackNavigator(Router,
+const RootStack = createStackNavigator(Router,
     {
         initialRouteName: 'Tab',
         initialRouteParams: {},
         headerMode: 'none',
-        // mode: 'modal',
+        // mode: 'card',
         navigationOptions: {
             gesturesEnabled: true
-        },
-        transitionConfig: (transitionProps, prevTransitionProps, isModal) => {
-            return ({
-                screenInterpolator: CardStackStyleInterpolator.forHorizontal
-            });
         }
     }
 );
 // goBack 返回指定的router
-const defaultStateAction = Navigator.router.getStateForAction;
+const defaultStateAction = RootStack.router.getStateForAction;
 
-Navigator.router.getStateForAction = (action, state) => {
+RootStack.router.getStateForAction = (action, state) => {
     const currentPage = getCurrentRouteName(state);
     if (state && (action.type === NavigationActions.BACK) && (state.routes.length === 1)) {
         console.log('退出RN页面');
@@ -140,5 +134,7 @@ export const getCurrentRouteName = (navigationState) => {
     }
     return route.routeName;
 };
+
+const Navigator = createAppContainer(RootStack);
 
 export default Navigator;

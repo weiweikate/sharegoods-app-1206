@@ -240,6 +240,7 @@ export default class MyCouponsItems extends Component {
     _gotoLookAround = () => {
         this.props.nav.popToTop();
         this.props.nav.navigate('HomePage');
+
     };
 
     render() {

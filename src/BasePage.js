@@ -18,13 +18,13 @@ import {
 } from './components/ui';
 
 import { renderViewByLoadingState } from './components/pageDecorator/PageState';
-import { NavigationActions } from 'react-navigation';
+import { StackActions, NavigationActions } from 'react-navigation';
 import { netState } from '@mr/rn-request';
 import res from './comm/res';
 import bridge from './utils/bridge';
 import DesignRule from './constants/DesignRule';
 import Toast from './utils/bridge';
-import RouterMap from './navigation/RouterMap';
+import RouterMap, { GoToTabItem, replaceRoute } from './navigation/RouterMap';
 import StringUtils from './utils/StringUtils';
 
 export default class BasePage extends Component {
@@ -210,8 +210,6 @@ export default class BasePage extends Component {
     };
     // 路由跳转
     $navigate = (routeName, params) => {
-        // navigate(routeName, params);
-        // return;
         try {
             if (StringUtils.isEmpty(routeName)) {
                 return;
@@ -238,32 +236,20 @@ export default class BasePage extends Component {
             console.warn(`js_navigate error: ${e.toString()}`);
         }
     };
+
+    // 重置、返回到首页
     $navigateBackToHome = () => {
-        this.props.navigation.popToTop();
-        this.props.navigation.navigate('HomePage');
-    };
-    //返回拼店
-    $navigateBackToStore = () => {
-        this.props.navigation.popToTop();
-        this.props.navigation.navigate('MyShop_RecruitPage');
+        GoToTabItem(0);
     };
 
-    // 返回到首页
-    $navigateReset = (routeName = 'Tab', params) => {
-        const resetAction = NavigationActions.reset({
-            index: 0,
-            actions: [
-                NavigationActions.navigate({
-                    routeName: routeName,
-                    params: params
-                })
-            ]
-        });
-        this.props.navigation.dispatch(resetAction);
+    //返回拼店
+    $navigateBackToStore = () => {
+        GoToTabItem(2);
     };
+
     // 返回到登录页面
     $navigateResetLogin = () => {
-        const resetAction = NavigationActions.reset({
+        const resetAction = StackActions.reset({
             index: 1,
             actions: [
                 NavigationActions.navigate({ routeName: 'Tab' }),
@@ -300,6 +286,11 @@ export default class BasePage extends Component {
         } catch (e) {
             console.warn(`$navigateBack error: ${e.toString()}`);
         }
+    };
+
+    // 路由替换
+    $navigateReplace = (routeName, params) => {
+        replaceRoute(routeName, params);
     };
 
     $toastShow = (title) => {

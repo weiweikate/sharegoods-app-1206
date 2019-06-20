@@ -19,7 +19,6 @@ import BasePage from '../../../../BasePage';
 import {
     NoMoreClick
 } from '../../../../components/ui';
-import { NavigationActions } from 'react-navigation';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import res from '../../res';
 // import ImageLoad from '@mr/image-placeholder';
@@ -419,13 +418,7 @@ export default class MyPromotionPage extends BasePage {
 
     // 去购物
     _onGoShop = () => {
-        let resetAction = NavigationActions.reset({
-            index: 0,
-            actions: [
-                NavigationActions.navigate({ routeName: 'Tab' })//要跳转到的页面名字
-            ]
-        });
-        this.props.navigation.dispatch(resetAction);
+        this.$navigateBackToHome();
     };
 
     renderFooter() {

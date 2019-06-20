@@ -10,13 +10,12 @@ import GoodsItem from '../components/confirmOrder/GoodsItem';
 import { confirmOrderModel } from '../model/ConfirmOrderModel';
 import { observer } from 'mobx-react';
 import BasePage from '../../../BasePage';
-import { NavigationActions } from 'react-navigation';
 import DesignRule from '../../../constants/DesignRule';
 import ConfirmAddressView from '../components/confirmOrder/ConfirmAddressView';
 import ConfirmPriceView from '../components/confirmOrder/ConfirmPriceView';
 import ConfirmBottomView from '../components/confirmOrder/ConfirmBottomView';
 // import { renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
-import {track, trackEvent} from '../../../utils/SensorsTrack';
+import { track, trackEvent } from '../../../utils/SensorsTrack';
 import SelectOneTicketModel from '../components/confirmOrder/SelectOneTicketModel';
 import SelectTicketModel from '../components/confirmOrder/SelectTicketModel';
 
@@ -55,8 +54,12 @@ export default class ConfirmOrderPage extends BasePage {
                     renderItem={this._renderItem}
                 />
                 <ConfirmBottomView commitOrder={() => this.commitOrder()}/>
-                <SelectOneTicketModel ref={(ref)=>{this.oneTicketModel = ref}}/>
-                <SelectTicketModel ref={(ref)=>{this.ticketModel = ref}} />
+                <SelectOneTicketModel ref={(ref) => {
+                    this.oneTicketModel = ref;
+                }}/>
+                <SelectTicketModel ref={(ref) => {
+                    this.ticketModel = ref;
+                }}/>
             </View>
         );
     };
@@ -97,7 +100,7 @@ export default class ConfirmOrderPage extends BasePage {
         this.didFocusSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
-                    track(trackEvent.ViewOrderConfirmPage,{})
+                track(trackEvent.ViewOrderConfirmPage, {});
             }
         );
     }
@@ -138,21 +141,15 @@ export default class ConfirmOrderPage extends BasePage {
         confirmOrderModel.submitProduct(this.params.orderParamVO, {
 
             callback: (data) => {
-                console.log('submitProduct', data)
-
-                let replace = NavigationActions.replace({
-                    key: this.props.navigation.state.key,
-                    routeName: 'payment/PaymentPage',
-                    params: {
-                        orderNum: data.orderNo,
-                        amounts: data.payAmount,
-                        pageType: 0,
-                        orderProductList: data.orderProductList,
-                        outTradeNo: data.orderNo,
-                        platformOrderNo: data.platformOrderNo
-                    },
+                console.log('submitProduct', data);
+                this.$navigateReplace('payment/PaymentPage', {
+                    orderNum: data.orderNo,
+                    amounts: data.payAmount,
+                    pageType: 0,
+                    orderProductList: data.orderProductList,
+                    outTradeNo: data.orderNo,
+                    platformOrderNo: data.platformOrderNo
                 });
-                this.props.navigation.dispatch(replace);
             }
         });
     };
@@ -161,9 +158,9 @@ export default class ConfirmOrderPage extends BasePage {
     jumpToCouponsPage = (params) => {
         if (params === 'justOne') {//一元券
             let payAmount = parseInt(confirmOrderModel.payAmount); //要实付钱
-            let tokenCoin =  parseInt(confirmOrderModel.tokenCoin);//一元优惠的券
+            let tokenCoin = parseInt(confirmOrderModel.tokenCoin);//一元优惠的券
             let orderAmount = payAmount + tokenCoin;
-            if (orderAmount < 1){//订单总价格要大于1
+            if (orderAmount < 1) {//订单总价格要大于1
                 this.$toastShow('订单价格大于1元才可使用一元优惠');
                 return;
             }
@@ -183,9 +180,9 @@ export default class ConfirmOrderPage extends BasePage {
                         this.loadPageData(params);
                     }, 0);
                 }
-            })
+            });
         } else {
-            track(trackEvent.ViewCoupon,{couponModuleSource:3});
+            track(trackEvent.ViewCoupon, { couponModuleSource: 3 });
             this.ticketModel && this.ticketModel.open(confirmOrderModel.orderParamVO, (data) => {
                 console.log('CouponsPage', data);
                 confirmOrderModel.couponData = data;
@@ -211,7 +208,7 @@ export default class ConfirmOrderPage extends BasePage {
                     setTimeout(() => {
                         this.loadPageData({
                             userCouponCode: null,
-                            tokenCoin: confirmOrderModel.tokenCoin ,
+                            tokenCoin: confirmOrderModel.tokenCoin,
                             addressId: confirmOrderModel.addressId
                         });
                     }, 0);

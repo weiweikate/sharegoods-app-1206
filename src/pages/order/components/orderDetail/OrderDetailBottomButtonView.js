@@ -11,9 +11,8 @@ import OrderApi from '../../api/orderApi';
 import Toast from '../../../../utils/bridge';
 import shopCartCacheTool from '../../../shopCart/model/ShopCartCacheTool';
 import { observer } from 'mobx-react';
-import RouterMap from '../../../../navigation/RouterMap';
+import RouterMap, { replaceRoute } from '../../../../navigation/RouterMap';
 import { payStatus, payment, payStatusMsg } from '../../../payment/Payment';
-import { NavigationActions } from 'react-navigation';
 import { track, trackEvent } from '../../../../utils/SensorsTrack';
 
 const { px2dp } = ScreenUtils;
@@ -39,11 +38,11 @@ export default class OrderDetailBottomButtonView extends Component {
                             height: px2dp(48),
                             marginRight: 6,
                             alignItems: 'center',
-                            justifyContent: 'center',
+                            justifyContent: 'center'
                         }}>
                             <UIText value={'更多'} style={{ color: DesignRule.textColor_secondTitle, fontSize: 13 }}
                                     onPress={
-                                       this.props.switchButton
+                                        this.props.switchButton
                                     }/>
                         </View>
                         {nameArr.map((item, i) => {
@@ -62,22 +61,22 @@ export default class OrderDetailBottomButtonView extends Component {
             } else {
                 let datas = [];
                 if (orderDetailModel.status === 4) {
-                   datas = [
-                    {
-                        id: 7,
+                    datas = [
+                        {
+                            id: 7,
                             operation: '删除订单',
-                        isRed: false
-                    },{
-                           id: 5,
-                           operation: '查看物流',
-                           isRed: false
-                       }, {
-                        id: 8,
+                            isRed: false
+                        }, {
+                            id: 5,
+                            operation: '查看物流',
+                            isRed: false
+                        }, {
+                            id: 8,
                             operation: '再次购买',
                             isRed: true
-                    }
-                    ]
-                }else {
+                        }
+                    ];
+                } else {
                     datas = nameArr;
                 }
                 return (
@@ -143,7 +142,7 @@ export default class OrderDetailBottomButtonView extends Component {
                 if (orderDetailModel.warehouseOrderDTOList[0].expList.length === 1 && orderDetailModel.warehouseOrderDTOList[0].unSendProductInfoList.length === 0) {
                     this.props.nav('order/logistics/LogisticsDetailsPage', {
                         expressNo: orderDetailModel.warehouseOrderDTOList[0].expList[0].expNO,
-                        expressCode: orderDetailModel.warehouseOrderDTOList[0].expList[0].expressCode,
+                        expressCode: orderDetailModel.warehouseOrderDTOList[0].expList[0].expressCode
 
                     });
                 } else {
@@ -254,27 +253,27 @@ export default class OrderDetailBottomButtonView extends Component {
                 ], { cancelable: true });
                 break;
             case 10:
-                OrderApi.checkInfo({warehouseOrderNo:orderDetailModel.getOrderNo()}).then(res => {
-                    if(res.data){
+                OrderApi.checkInfo({ warehouseOrderNo: orderDetailModel.getOrderNo() }).then(res => {
+                    if (res.data) {
                         this.props.nav(RouterMap.P_ScorePublishPage, {
-                            orderNo:  orderDetailModel.getOrderNo()
+                            orderNo: orderDetailModel.getOrderNo()
                         });
-                    }else{
+                    } else {
                         Toast.$toast('该商品已晒过单！');
-                        this.props.loadPageData()
+                        this.props.loadPageData();
                     }
 
-                }).catch(e =>{
+                }).catch(e => {
                     Toast.$toast(e.msg);
-                })
+                });
 
                 break;
         }
     };
 
     async _goToPay() {
-        const {payAmount,platformOrderNo} = orderDetailModel
-        let result = await payment.checkOrderStatus(platformOrderNo,0,0,payAmount,'')
+        const { payAmount, platformOrderNo } = orderDetailModel;
+        let result = await payment.checkOrderStatus(platformOrderNo, 0, 0, payAmount, '');
         if (result.code === payStatus.payNo) {
             this.props.nav('payment/PaymentPage', {
                 orderNum: orderDetailModel.warehouseOrderDTOList[0].outTradeNo,
@@ -287,18 +286,13 @@ export default class OrderDetailBottomButtonView extends Component {
                 remainMoney: Math.floor(result.unpaidAmount * 100) / 100,
                 orderProductList: orderDetailModel.warehouseOrderDTOList[0].products,
                 orderNum: orderDetailModel.warehouseOrderDTOList[0].outTradeNo,
-                platformOrderNo: orderDetailModel.platformOrderNo,
-            })
-        } else if (result.code === payStatus.payOut) {
-            Toast.$toast(payStatusMsg[result.code])
-            let replace = NavigationActions.replace({
-                key: this.props.navigation.state.key,
-                routeName: 'order/order/MyOrdersListPage',
-                params: { index: 2 }
+                platformOrderNo: orderDetailModel.platformOrderNo
             });
-            this.props.navigation.dispatch(replace);
+        } else if (result.code === payStatus.payOut) {
+            Toast.$toast(payStatusMsg[result.code]);
+            replaceRoute('order/order/MyOrdersListPage', { index: 2 });
         } else {
-            Toast.$toast(payStatusMsg[result.code])
+            Toast.$toast(payStatusMsg[result.code]);
         }
     }
 }

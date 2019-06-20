@@ -17,7 +17,6 @@ import Toast from '../../../utils/bridge';
 // import GoodsGrayItem from "../components/GoodsGrayItem";
 import OrderApi from '../api/orderApi';
 import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
-import { NavigationActions } from 'react-navigation';
 import DesignRule from '../../../constants/DesignRule';
 import MineApi from '../../mine/api/MineApi';
 import { getDateData, leadingZeros } from '../components/orderDetail/OrderCutDown';
@@ -305,13 +304,7 @@ export default class MyOrdersDetailPage extends BasePage {
                                 this.$navigate('message/MessageCenterPage');
                                 break;
                             case 1:
-                                let resetAction = NavigationActions.reset({
-                                    index: 0,
-                                    actions: [
-                                        NavigationActions.navigate({ routeName: 'Tab' })//要跳转到的页面名字
-                                    ]
-                                });
-                                this.props.navigation.dispatch(resetAction);
+                                this.$navigateBackToHome();
                                 break;
                         }
                         this.setState({ isShowShowMessageModal: false });
@@ -547,7 +540,10 @@ export default class MyOrdersDetailPage extends BasePage {
                 if (orderDetailModel.expList.length === 0) {
                     pageStateString.sellerState = '等待平台发货';
                 } else if (orderDetailModel.expList.length === 1 && orderDetailModel.unSendProductInfoList.length === 0) {
-                    OrderApi.findLogisticsDetail({ expressNo: orderDetailModel.expList[0].expNO, expressCode:orderDetailModel.expList[0].expressCode}).then((response) => {
+                    OrderApi.findLogisticsDetail({
+                        expressNo: orderDetailModel.expList[0].expNO,
+                        expressCode: orderDetailModel.expList[0].expressCode
+                    }).then((response) => {
                         console.log(response);
                         pageStateString.sellerState = response.data.list[0].status || '等待平台发货';
                     }).catch(e => {

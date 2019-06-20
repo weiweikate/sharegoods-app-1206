@@ -32,6 +32,7 @@ import StringUtils from '../../../../utils/StringUtils';
 import { QYChatTool } from '../../../../utils/QYModule/QYChatTool';
 import WhiteModel from '../../../show/model/WhiteModel';
 import store from '@mr/rn-store';
+import { forceToHome } from '../../../../navigation/RouterMap';
 
 /**
  * @author luoyongming
@@ -78,6 +79,10 @@ class SettingPage extends BasePage {
                 });
             });
         }
+    }
+
+    componentWillUnmount() {
+        clearTimeout();
     }
 
     //**********************************ViewPart******************************************
@@ -209,6 +214,7 @@ class SettingPage extends BasePage {
             }}/>
         );
     };
+
     toLoginOut = () => {
         Alert.alert(
             '退出登录',
@@ -231,7 +237,7 @@ class SettingPage extends BasePage {
                         loginModel.clearPassword();
                         //清空购物车
                         shopCartStore.data = [];
-                        this.$navigateBackToHome();
+                        this.toHomePage();
                         DeviceEventEmitter.emit('login_out');
                         homeModule.loadHomeList();
                         MineApi.signOut();
@@ -245,6 +251,10 @@ class SettingPage extends BasePage {
                 }
             ]
         );
+    };
+
+    toHomePage = () => {
+        forceToHome();
     };
 
 

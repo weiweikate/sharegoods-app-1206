@@ -13,8 +13,7 @@ import { login, TrackApi } from '../../../utils/SensorsTrack';
 import JPushUtils from '../../../utils/JPushUtils';
 import DeviceInfo from 'react-native-device-info/deviceinfo';
 import { DeviceEventEmitter } from 'react-native';
-import RouterMap from '../../../navigation/RouterMap';
-import { NavigationActions } from 'react-navigation';
+import RouterMap, { navigateBack, routePush } from '../../../navigation/RouterMap';
 import { track } from '../../../utils/SensorsTrack';
 import StringUtils from '../../../utils/StringUtils';
 
@@ -38,10 +37,10 @@ const oneClickLoginValidation = (phone, authenToken, navigation, successCallBack
         }
         if (result.data.regNow) {
             //新用户
-            navigation.navigate(RouterMap.InviteCodePage);
+            routePush(RouterMap.InviteCodePage,{})
         } else {
             //老用户
-            gobackPage(navigation);
+            navigateBack()
         }
 
         UserModel.saveUserInfo(result.data);
@@ -51,18 +50,6 @@ const oneClickLoginValidation = (phone, authenToken, navigation, successCallBack
     }).catch(error => {
         bridge.$toast(error.msg);
     });
-};
-const gobackPage = (navigation) => {
-    // //老用户登录成功后直接退出原界面
-    try {
-        let $routes = global.$routes || [];
-        let router = $routes[$routes.length - 1];
-        let routerKey = router.key;
-        const backAction = NavigationActions.back({ key: routerKey });
-        navigation.dispatch(backAction);
-    } catch (e) {
-        navigation.popToTop();
-    }
 };
 /**
  * 一键登录后未绑定微信去绑定微信

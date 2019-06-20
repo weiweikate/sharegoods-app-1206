@@ -15,7 +15,6 @@ import {
     NativeAppEventEmitter
     // Image
 } from 'react-native';
-import { NavigationActions } from 'react-navigation';
 import DebugButton from './components/debug/DebugButton';
 import { netStatus } from './comm/components/NoNetHighComponent';
 import Navigator, { getCurrentRouteName } from './navigation/Navigator';
@@ -108,12 +107,12 @@ class App extends Component {
         this.subscription = NativeAppEventEmitter.addListener(
             'Event_navigateHtmlPage',
             (reminder) => {
-                this.timer = setInterval(()=>{
-                    if (global.$navigator){
-                        navigate('HtmlPage', {uri: reminder.uri})
-                        clearInterval(this.timer)
+                this.timer = setInterval(() => {
+                    if (global.$navigator) {
+                        navigate('HtmlPage', { uri: reminder.uri });
+                        clearInterval(this.timer);
                     }
-                },100)
+                }, 100);
             }
         );
         // 在加载完了，允许重启
@@ -180,10 +179,7 @@ class App extends Component {
     }
 
     showDebugPage = () => {
-        const navigationAction = NavigationActions.navigate({
-            routeName: RouterMap.DebugPanelPage
-        });
-        global.$navigator.dispatch(navigationAction);
+        navigate(RouterMap.DebugPanelPage, {});
     };
 }
 
