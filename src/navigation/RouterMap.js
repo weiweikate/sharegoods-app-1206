@@ -137,13 +137,11 @@ function navigateBack(step) {
         let router = $routes[$routes.length - 1];
         routerKey = router.key;
     }
-
+    let backAction = NavigationActions.back();
     if (!StringUtils.isEmpty(routerKey)) {
-        const backAction = NavigationActions.back({ key: routerKey });//routerKey代表从哪个返回
-        global.$navigator && global.$navigator.dispatch(backAction);
-    } else {
-        global.$navigator && global.$navigator._navigation.back();
+        backAction = NavigationActions.back({ key: routerKey });//routerKey代表从哪个返回
     }
+    global.$navigator && global.$navigator.dispatch(backAction);
 }
 
 // 通过设置参数n，指定返回多少层
