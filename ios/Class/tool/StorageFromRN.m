@@ -40,7 +40,7 @@ static NSString *RCTGetStorageDirectory()
 
 + (NSDictionary *)configDic
 {
-  NSString * HostJson = [StorageFromRN getItem:@"HostJson"];
+  NSString * HostJson = [StorageFromRN getItem:@"@mr/hostJson"];
   NSDictionary *dic = @{};
   if (HostJson) {
     dic =  [NSDictionary dictionaryWithJsonString:HostJson];
@@ -51,7 +51,7 @@ static NSString *RCTGetStorageDirectory()
 +(NSString *)getHost
 {
   NSDictionary *dic = [self configDic];
-  NSString * path = dic[@"@mr/hostJson"];
+  NSString * path = dic[@"host"];
   if (path==nil || path.length == 0) {
     path = @"https://api.sharegoodsmall.com/gateway";
   }
