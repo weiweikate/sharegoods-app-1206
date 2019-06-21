@@ -20,6 +20,7 @@ import PaymentApi from './PaymentApi';
 // import RouterMap from '../../navigation/RouterMap';
 import apiEnvironment from '../../api/ApiEnvironment';
 import bridge from '../../utils/bridge';
+import FinshPayAlertView from './FinshPayAlertView';
 // import PaymentApi from './PaymentApi';
 
 const { px2dp } = ScreenUtils;
@@ -59,7 +60,8 @@ export default class PaymentFinshPage extends BasePage {
         this.state = {
             showShareView: false,
             couponIdList: [],
-            shareCode:''
+            shareCode:'',
+            isShow:true,
         };
         //orderPayResultPageType 有券无劵
         TrackApi.ViewOrderPayPage({ orderPayType: 2, orderPayResultPageType: 2 });
@@ -80,24 +82,6 @@ export default class PaymentFinshPage extends BasePage {
             this.setState({
                 couponIdList:result.data || [],
             })
-            // this.setState({
-            //     couponIdList: [
-            //         {
-            //             "id": 976323,
-            //             "name": "H5新注册兑换券",
-            //             "code": "1559117839071000001",
-            //             "remarks": null,
-            //             "type": 5,
-            //             "value": 0,
-            //             "useConditions": 0,
-            //             "startTime": 1559117839000,
-            //             "expireTime": 1559377039000,
-            //             "status": 0,
-            //             "count": 1,
-            //             "url": "/cycle-coupon"
-            //         }
-            //     ]
-            // })
         });
         PaymentApi.judgeShare().then(result=>{
             console.log(result);
@@ -113,11 +97,6 @@ export default class PaymentFinshPage extends BasePage {
                 showShareView:false
             })
         })
-        // setTimeout(() => {
-        //     this.setState({
-        //         showShareView: true
-        //     });
-        // }, 2000);
     }
 
     _render() {
@@ -127,6 +106,10 @@ export default class PaymentFinshPage extends BasePage {
                 {/*<RenderSeparator title={'你还有兑换券即将过期，快来使用吧'}/>*/}
                 {this.renderCouponList()}
                 {this.state.showShareView ? this._renderShareView() : null}
+                <FinshPayAlertView btnClick={()=>{
+
+                    this._clickAlertView();
+                }} isShow={this.state.isShow}/>
             </ScrollView>
         );
     }
@@ -235,6 +218,18 @@ export default class PaymentFinshPage extends BasePage {
         this.props.navigation.dispatch(replace);
     };
 
+    /**
+     点击弹窗
+     */
+    _clickAlertView=()=>{
+        this.setState({
+            isShow:false
+        },()=>{
+            this.$navigate('HtmlPage',{
+                uri:`${apiEnvironment.getCurrentH5Url()}/activity/freeOrder`
+            });
+        })
+    }
     /**
      * 渲染优惠券Items
      * @param itemData

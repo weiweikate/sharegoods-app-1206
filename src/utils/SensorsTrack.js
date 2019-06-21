@@ -4,6 +4,7 @@ import SensorsEvent from './TrackEvent'
 import user from "../model/user";
 import apiEnvironment from '../api/ApiEnvironment';
 import EmptyUtils from './EmptyUtils';
+// import StringUtils from './StringUtils';
 let timeStamp = null;
 const {
     track:nativeTrack,
