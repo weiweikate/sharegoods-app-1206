@@ -62,7 +62,7 @@ export class XpDetailPage extends BasePage {
             switch (item.type) {
                 case 0:
                     if (!user.isLogin) {
-                        this.$navigate(RouterMap.LoginPage);
+                        this.gotoLoginPage();
                         return;
                     }
                     this.$navigate(RouterMap.MessageCenterPage);
@@ -161,7 +161,7 @@ export class XpDetailPage extends BasePage {
             });
         } else {
             if (!user.isLogin) {
-                this.$navigate(RouterMap.LoginPage);
+                this.gotoLoginPage();
                 return;
             }
             this.goType = type;

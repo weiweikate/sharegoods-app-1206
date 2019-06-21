@@ -20,7 +20,7 @@ import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import { MRText as Text } from '../../../../components/ui';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
-import RouterMap from '../../../../navigation/RouterMap';
+import RouterMap, { routeNavigate } from '../../../../navigation/RouterMap';
 
 const { px2dp } = ScreenUtils;
 const renwu = res.cashAccount.renwu_icon;
@@ -374,7 +374,7 @@ export default class MyCashAccountPage extends BasePage {
                 user.saveUserInfo(data);
             }).catch(err => {
                 if (err.code === 10009) {
-                    this.gotoLoginPage();
+                    routeNavigate(RouterMap.LoginPage);
                 }
             });
         }

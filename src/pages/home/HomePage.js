@@ -186,22 +186,28 @@ class HomePage extends BasePage {
             'didFocus',
             payload => {
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
-                if (user.token) {
-                    this.loadMessageCount();
-                } else {
-                    this.setState({
-                        hasMessage: false
-                    });
-                }
-                const { state } = payload;
 
+                const { state } = payload;
                 if (state && state.routeName === 'HomePage') {
                     this.luckyIcon && this.luckyIcon.getLucky(1, '');
                     homeTabManager.setHomeFocus(true);
                     homeModule.homeFocused(true);
                     homeModalManager.entryHome();
-                    homeModalManager.refreshPrize();
-                    taskModel.getData();
+                    user.getToken().then(() => {//让user初始化完成
+                        this.luckyIcon && this.luckyIcon.getLucky(1, '');
+                        homeModalManager.requestData();
+                        if (user.token) {
+                            this.loadMessageCount();
+                        } else {
+                            this.setState({
+                                hasMessage: false
+                            });
+                        }
+                        if (!homeModule.firstLoad) {
+                            taskModel.getData();
+                        }
+                        homeModalManager.refreshPrize();
+                    });
                     if (!homeModule.firstLoad) {
                         limitGoModule.loadLimitGo(false);
                     }
@@ -217,15 +223,6 @@ class HomePage extends BasePage {
         this.listenerRetouchHome = DeviceEventEmitter.addListener('retouch_home', this.retouchHome);
         this.listenerHomeRefresh = JSManagerEmitter.addListener(HOME_REFRESH, this.homeTypeRefresh);
         this.listenerSkip = JSManagerEmitter.addListener(HOME_SKIP, this.homeSkip);
-
-        InteractionManager.runAfterInteractions(() => {
-            user.getToken().then(() => {//让user初始化完成
-                this.luckyIcon && this.luckyIcon.getLucky(1, '');
-                homeModalManager.requestData();
-                this.loadMessageCount();
-                taskModel.getData();
-            });
-        });
     }
 
     homeTabChange = () => {

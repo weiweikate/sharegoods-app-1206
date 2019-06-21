@@ -17,6 +17,7 @@ import { autorun } from 'mobx';
 import Animation from 'lottie-react-native';
 import { TrackApi } from '../utils/SensorsTrack';
 import { navigateBackToStore } from './RouterMap';
+import RouterMap from './RouterMap';
 
 
 const NormalTab = ({ source, title }) => {
@@ -209,7 +210,7 @@ export const TabNav = createBottomTabNavigator(
                         if (user && user.isLogin) {
                             navigation.navigate(navigation.state.routeName);
                         } else {
-                            navigation.navigate('login/login/LoginPage');
+                            navigation.navigate(RouterMap.LoginPage);
                         }
                     }
                 }

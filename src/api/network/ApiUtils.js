@@ -1,7 +1,7 @@
 import HttpUtils from './HttpUtils';
 import User from '../../model/user';
 import apiEnvironment from '../ApiEnvironment';
-import { routeNavigate, routePush } from '../../navigation/RouterMap';
+import { routePush } from '../../navigation/RouterMap';
 import RouterMap from '../../navigation/RouterMap';
 
 export default function ApiUtils(Urls) {
@@ -26,9 +26,6 @@ export default function ApiUtils(Urls) {
             filter = item.filter, checkLogin = item.checkLogin || false;
         result[name] = async function(params, config = {}) {
             if (checkLogin === true && !User.isLogin) {
-                routeNavigate(RouterMap.LoginPage, {
-                    callback: config.callback
-                });
                 return Promise.reject({
                     code: 10009,
                     msg: '用户登录失效'
@@ -44,13 +41,10 @@ export default function ApiUtils(Urls) {
                 if (response.code === 10009) {
                     User.clearUserInfo();
                     User.clearToken();
-                    routeNavigate(RouterMap.LoginPage, {
-                        callback: config.callback
-                    });
                 }
                 //系统升级中跳转错误网页
                 if (response.code === 9999) {
-                    routePush('HtmlPage', { uri: apiEnvironment.getCurrentH5Url() + '/system-maintenance' });
+                    routePush(RouterMap.HtmlPage, { uri: apiEnvironment.getCurrentH5Url() + '/system-maintenance' });
                 }
                 return Promise.reject(response);
             }

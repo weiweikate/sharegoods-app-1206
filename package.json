@@ -14,7 +14,8 @@
         "run-android": "react-native run-android",
         "bundle:android": "cd android && ./gradlew assembleRelease && npm run deploy:android",
         "deploy:android": "curl -F \"file=@./android/app/build/outputs/apk/app-release.apk\" -F \"_api_key=13949a533c6ab385526ee2a960e88c71\" https://www.pgyer.com/apiv2/app/upload",
-        "gradle": "sh gradle.sh"
+        "gradle": "sh gradle.sh",
+        "check-types": "tsc"
     },
     "lint-staged": {
         "src/**/*.js": "eslint"
@@ -72,21 +73,22 @@
     },
     "devDependencies": {
         "@babel/core": "^7.4.5",
-        "@babel/plugin-proposal-decorators": "^7.1.6",
-        "babel-eslint": "7.2.0",
+        "@babel/plugin-proposal-class-properties": "^7.4.4",
+        "@babel/plugin-proposal-decorators": "^7.4.4",
+        "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
+        "@babel/preset-typescript": "^7.3.3",
+        "babel-eslint": "10.0.2",
         "babel-jest": "24.8.0",
         "babel-plugin-transform-decorators-legacy": "1.3.5",
         "babel-plugin-transform-object-rest-spread": "^7.0.0-beta.3",
-        "babel-preset-react-native": "5.0.2",
-        "metro-react-native-babel-preset": "0.54.1",
-        "babel-preset-react-native-stage-0": "1.0.1",
-        "eslint": "3.18.0",
+        "eslint": "5.16.0",
         "eslint-plugin-prettier": "2.3.1",
         "eslint-plugin-react": "6.10.3",
         "husky": "0.14.3",
         "jest": "24.8.0",
         "json-server": "^0.12.2",
         "lint-staged": "7.2.2",
+        "metro-react-native-babel-preset": "0.54.1",
         "prettier": "1.14.2",
         "react-devtools-core": "3.4.3",
         "react-test-renderer": "16.8.3"

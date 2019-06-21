@@ -8,18 +8,35 @@ import Router from './Stack';
 import Analytics from '../utils/AnalyticsUtil';
 import bridge from '../utils/bridge';
 import showPinFlagModel from '../model/ShowPinFlag';
+import StackViewStyleInterpolator from 'react-navigation-stack/src/views/StackView/StackViewStyleInterpolator';
+
+let IOS_NaviConfig = {
+    initialRouteName: 'Tab',
+    initialRouteParams: {},
+    headerMode: 'none',
+    mode: 'card',
+    navigationOptions: {
+        gesturesEnabled: true
+    }
+};
+let Andorid_NaviConfig = {
+    initialRouteName: 'Tab',
+    initialRouteParams: {},
+    headerMode: 'none',
+    navigationOptions: {
+        gesturesEnabled: true
+    },
+    transitionConfig: () => {
+        return ({
+            screenInterpolator: StackViewStyleInterpolator.forHorizontal
+        });
+    }
+};
 
 const RootStack = createStackNavigator(Router,
-    {
-        initialRouteName: 'Tab',
-        initialRouteParams: {},
-        headerMode: 'none',
-        // mode: 'modal',
-        navigationOptions: {
-            gesturesEnabled: true
-        }
-    }
+    Platform.OS === 'ios' ? IOS_NaviConfig : Andorid_NaviConfig
 );
+
 // goBack 返回指定的router
 const defaultStateAction = RootStack.router.getStateForAction;
 

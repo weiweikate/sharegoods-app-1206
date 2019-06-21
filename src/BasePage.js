@@ -114,11 +114,7 @@ export default class BasePage extends Component {
      * 跳转登录页面
      */
     gotoLoginPage = (params = {}) => {
-        if (true) {
-            routeNavigate(RouterMap.LoginPage, params);
-        } else {
-            routeNavigate(RouterMap.OldUserLoginPage, params);
-        }
+        routeNavigate(RouterMap.LoginPage, params);
     };
 
     renderContianer() {

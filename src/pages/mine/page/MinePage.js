@@ -228,7 +228,7 @@ export default class MinePage extends BasePage {
 
     jumpToUserInformationPage = () => {
         if (!user.isLogin) {
-            this.gotoLoginPage();
+            routeNavigate(RouterMap.LoginPage);
             return;
         }
         TrackApi.ViewPersonalInfo();
@@ -897,7 +897,7 @@ export default class MinePage extends BasePage {
 
     jumpToAllOrder = () => {
         if (!user.isLogin) {
-            this.gotoLoginPage();
+            routeNavigate(RouterMap.LoginPage);
             return;
         }
         track(trackEvent.ViewMyOrder, { myOrderModuleSource: 1 });

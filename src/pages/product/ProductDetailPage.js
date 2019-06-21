@@ -106,7 +106,7 @@ export default class ProductDetailPage extends BasePage {
                 break;
             case 'keFu':
                 if (!user.isLogin) {
-                    this.$navigate(RouterMap.LoginPage);
+                    this.gotoLoginPage();
                     return;
                 }
                 track(trackEvent.ClickOnlineCustomerService, { customerServiceModuleSource: 2 });
@@ -126,7 +126,7 @@ export default class ProductDetailPage extends BasePage {
                 break;
             case 'buy':
                 if (!user.isLogin) {
-                    this.$navigate(RouterMap.LoginPage);
+                    this.gotoLoginPage();
                     return;
                 }
                 this.state.goType = type;
@@ -211,7 +211,7 @@ export default class ProductDetailPage extends BasePage {
                 return <ProductDetailCouponsView productDetailCouponsViewModel={productDetailCouponsViewModel}
                                                  onPress={() => {
                                                      if (!user.isLogin) {
-                                                         this.$navigate(RouterMap.LoginPage);
+                                                         this.gotoLoginPage();
                                                          return;
                                                      }
                                                      this.ProductDetailCouponsWindowView.showWindowView();

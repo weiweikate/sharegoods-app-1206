@@ -111,7 +111,7 @@ export default class MyIntegralAccountPage extends BasePage {
                     <NoMoreClick style={styles.withdrawButtonWrapper}
                                  onPress={() => {
                                      if (!user.isLogin) {
-                                         this.$navigate(RouterMap.loginPage);
+                                         this.gotoLoginPage();
                                          return;
                                      }
                                      this.$navigate(RouterMap.SignInPage);
