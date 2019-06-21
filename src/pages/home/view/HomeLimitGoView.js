@@ -14,8 +14,10 @@ import NoMoreClick from '../../../components/ui/NoMoreClick';
 import user from '../../../model/user';
 import RouterMap, { routeNavigate, routePush } from '../../../navigation/RouterMap';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
+import productRes from '../../product/res/product';
 
 const { px2dp } = ScreenUtils;
+const { saleSmall_1001 } = productRes.pSacle;
 
 export default class HomeLimitGoView extends Component {
 
@@ -179,6 +181,8 @@ const GoodsItem = ({ item, activityCode, navigate }) => {
             {item.promotionStatus === limitStatus.end ?
                 <Image source={resHome.home_sallout}
                        style={styles.goodsTag}/> : null}
+            {item.monthSaleCount >= 1000 &&
+            <Image source={saleSmall_1001} style={{ width: 50, height: 18, top: 5, left: 0, position: 'absolute' }}/>}
         </ImageLoader>
         <View style={styles.goodsContent}>
             <Text style={styles.goodsTitle} numberOfLines={2}>{item.name}</Text>
