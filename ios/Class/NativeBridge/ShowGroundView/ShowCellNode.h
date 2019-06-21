@@ -10,6 +10,6 @@
 #import <AsyncDisplayKit/AsyncDisplayKit.h>
 #import "ShowQueryModel.h"
 @interface ShowCellNode : ASCellNode
--(instancetype)initWithModel:(ShowQuery_dataModel *)model;
+-(instancetype)initWithModel:(ShowQuery_dataModel *)model index: (NSInteger)index;
 @end
 

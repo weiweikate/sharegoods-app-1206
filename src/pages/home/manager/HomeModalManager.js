@@ -253,7 +253,7 @@ class HomeModalManager {
     @action
     getPrize() {
         HomeAPI.getWinningInfo({}).then(data => {
-            if (data.data) {
+            if (data.data && data.data.popUp) {
                 this.needShowPrize = true;
                 this.prizeData = data.data;
             }
