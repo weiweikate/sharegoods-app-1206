@@ -194,10 +194,10 @@ export default class MyDynamicPage extends BasePage {
 
 
     _render() {
-        let waterfall = Platform.OS == 'ios' ? ShowFoundView : ShowDynamicView;
+        let Waterfall = Platform.OS == 'ios' ? ShowFoundView : ShowDynamicView;
         return (
             <View style={styles.contain}>
-                <waterfall style={{ flex: 1, marginTop: -10 }}
+                <Waterfall style={{ flex: 1, marginTop: -10 }}
                            ref={(ref) => {
                                this.dynamicList = ref;
                            }}

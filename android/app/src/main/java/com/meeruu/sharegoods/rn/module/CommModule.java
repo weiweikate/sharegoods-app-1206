@@ -479,15 +479,24 @@ public class CommModule extends ReactContextBaseJavaModule {
             return;
         }
 
-        Bitmap bmp = ThumbnailUtils.createVideoThumbnail(filePath, MediaStore.Images.Thumbnails.MINI_KIND);
+        String curPath = filePath;
+        if(!TextUtils.isEmpty(filePath) && filePath.startsWith("file://")){
+            try {
+                File  file1 = new File(new URI(filePath));
+                curPath = file1.getAbsolutePath();
+            }catch (Exception e){
+                promise.reject("");
+                return;
+            }
+        }
+
+        Bitmap bmp = ThumbnailUtils.createVideoThumbnail(curPath, MediaStore.Images.Thumbnails.MINI_KIND);
         if (bmp != null) {
             String returnPath = BitmapUtils.saveImageToCache(bmp, "video.png", filePath);
-
             if (bmp != null && !bmp.isRecycled()) {
                 bmp.recycle();
             }
             bmp = null;
-
             WritableMap map = Arguments.createMap();
             map.putString("imagePath", returnPath);
             promise.resolve(map);

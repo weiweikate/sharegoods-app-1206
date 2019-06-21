@@ -11,7 +11,7 @@ const Utiles = {
      * callBack
      * @param callBack {ok: 是否上传成功，imageThumbUrl}
      */    //NativeModules.commModule.RN_ImageCompression(uri, response.fileSize, 1024 * 1024 * 3, () => {
-    getImagePicker: (callBack, num = 1, cropping = false, withSize = false,edit=false) => {
+    getImagePicker: (callBack, num = 1, cropping = false, withSize = false, edit = false) => {
         let newCallback = (value) => {
             if (value && value.ok) {
                 let result = value.images.map((item) => {
@@ -29,7 +29,7 @@ const Utiles = {
                 (buttonIndex) => {
                     if (buttonIndex === 1) {
                         if (withSize) {
-                            Utiles.pickSingleWithCamera(cropping, callBack,edit);
+                            Utiles.pickSingleWithCamera(cropping, callBack, edit);
                         } else {
                             Utiles.pickSingleWithCamera(cropping, newCallback);
                         }
@@ -61,7 +61,7 @@ const Utiles = {
                         text: '拍照', onPress: () => {
                             if (withSize) {
                                 // Utiles.pickSingleWithCamera(cropping, callBack,edit);
-                                Utiles.openCameraAndRecord(callBack,edit);
+                                Utiles.openCameraAndRecord(callBack, edit);
                             } else {
                                 Utiles.pickSingleWithCamera(cropping, newCallback);
                             }
@@ -71,10 +71,11 @@ const Utiles = {
                         text: '从相册选择', onPress: () => {
                             if (num > 1) {
                                 if (withSize) {
-                                    Utiles.pickMultiple(num, callBack,edit);
+                                    Utiles.pickMultiple(num, callBack, edit);
+
 
                                 } else {
-                                    Utiles.pickMultiple(num, newCallback,edit);
+                                    Utiles.pickMultiple(num, newCallback, edit);
                                 }
                             } else {
                                 if (withSize) {
@@ -92,7 +93,7 @@ const Utiles = {
             );
         }
     },
-    pickSingleWithCamera(cropping, callBack,edit) {
+    pickSingleWithCamera(cropping, callBack, edit) {
         ImagePicker.openCamera({
             cropping: cropping,
             width: 600,
@@ -118,7 +119,7 @@ const Utiles = {
         });
     },
 
-    openCameraAndRecord(callBack,edit) {
+    openCameraAndRecord(callBack, edit) {
         ImagePicker.openCameraAndRecord({
             width: 600,
             height: 600,
@@ -166,7 +167,7 @@ const Utiles = {
         });
     },
 
-    pickMultiple: (num, callBack,edit) => {
+    pickMultiple: (num, callBack, edit) => {
         ImagePicker.openPicker({
             edit,
             multiple: true,
@@ -177,6 +178,10 @@ const Utiles = {
             mediaType: 'photo',
             loadingLabelText: '处理中...'
         }).then(images => {
+            Utiles.uploadVideo(images[0], (data) => {
+                callBack(data);
+            });
+            return;
             Utiles.upload(images.map((item) => {
                 let path = item.path;
                 let width = item.width;
@@ -184,6 +189,78 @@ const Utiles = {
                 return { width, height, path };
             }), images.map(item => item.size + ''), callBack);
         }).catch(e => {
+        });
+    },
+    uploadVideo(video, callback) {
+        Toast.showLoading('正在上传');
+        let datas = {
+            type: 'video/mp4',
+            uri: video.path,
+            name: new Date().getTime() + 'c.mp4'
+        };
+        let formData = new FormData();
+        formData.append('file', datas);
+        request.setBaseUrl(apiEnvironment.getCurrentHostUrl());
+        let promise1 = request.upload('/common/upload/oss', datas, {}).then((res) => {
+            if (res.code === 10000 && res.data) {
+                return Promise.resolve({ url: res.data, width: video.width, height: video.height, type: 'video' ,videoTime:video.videoTime});
+            } else {
+                return Promise.reject({
+                    msg: '视频上传失败'
+                });
+            }
+        }).catch((e) => {
+            return Promise.reject({
+                msg: '视频上传失败'
+            });
+        });
+
+        let promise2 = NativeModules.commModule.RN_Video_Image(video.path).then(({ imagePath }) => {
+            let datas = {
+                type: 'image/png',
+                uri: `file://${imagePath}`,
+                name: new Date().getTime() + 'c.png'
+            };
+            let formData = new FormData();
+            formData.append('file', datas);
+            request.setBaseUrl(apiEnvironment.getCurrentHostUrl());
+            return request.upload('/common/upload/oss', datas, {}).then((res) => {
+                if (res.code === 10000 && res.data) {
+                    return Promise.resolve({ url: res.data, type: 'cover' });
+                } else {
+                    return Promise.reject({
+                        msg: '视频上传失败'
+                    });
+                }
+            }).catch((e) => {
+                Toast.hiddenLoading();
+            });
+            return Promise.resolve(imagePath);
+        }).catch(e => {
+            return Promise.reject({
+                msg: '视频上传失败'
+            });
+        });
+
+        Promise.all([promise1, promise2]).then((data) => {
+            Toast.hiddenLoading();
+            if (data) {
+                let params = {type:'video'};
+                data.map((item) => {
+                    if (item.type === 'cover') {
+                        params.cover = item.url;
+                    }
+                    if (item.type === 'video') {
+                        params.video = item.url;
+                        params.width = item.width;
+                        params.height = item.height;
+                        params.videoTime = item.videoTime;
+                    }
+                });
+                callback(params);
+            }
+        }).catch(e => {
+            Toast.hiddenLoading();
         });
     },
     upload(images, sizes, callBack, camera = false) {
