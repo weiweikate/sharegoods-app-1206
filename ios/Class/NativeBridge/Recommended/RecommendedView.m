@@ -261,6 +261,9 @@ static NSString *IDType = @"TypeCell";
   }
   RecommendedCell * cell = [tableView dequeueReusableCellWithIdentifier:ID];
   cell.model = model;
+  if(self.type&&[self.type isEqualToString:@"recommend"]){
+    cell.type = YES;
+  }
   cell.cellDelegate = self;
   cell.clipsToBounds = YES;
   return cell;

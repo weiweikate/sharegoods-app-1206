@@ -37,6 +37,7 @@ typedef void(^cellBlock)(RecommendedCell*);//block写法比较特殊，一般重
 
 @interface RecommendedCell : UITableViewCell
 @property (nonatomic,strong) JXModelData * model;
+@property (nonatomic,assign) BOOL type;
 @property (nonatomic,copy) cellBlock block;
 @property (nonatomic, weak) id<JXCellDelegate> cellDelegate;
 @end

@@ -88,7 +88,7 @@
         CGFloat itemW = [self itemWidthForPicPathArray:_sources];
         CGFloat itemH = 0;
         if (_sources.count < 2) {
-            itemH = 140;
+            itemH = itemW;
         } else {
             itemH = itemW;
         }
@@ -134,11 +134,11 @@
 - (CGFloat)itemWidthForPicPathArray:(NSArray *)array
 {
   if (array.count == 1){
-      return (SCREEN_WIDTH-190);
+      return (SCREEN_WIDTH-158);
   }else if(array.count==4||array.count==2) {
-      return (SCREEN_WIDTH-95)/2;
+      return (SCREEN_WIDTH-161)/2;
     } else {
-      CGFloat w =  (SCREEN_WIDTH-105)/3;
+      CGFloat w =  (SCREEN_WIDTH-76)/3;
       return w;
     }
 }

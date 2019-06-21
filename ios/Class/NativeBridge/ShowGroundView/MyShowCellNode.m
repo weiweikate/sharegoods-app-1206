@@ -121,7 +121,7 @@
 {
   if (!_deleteBtnNode) {
     _deleteBtnNode = [ASButtonNode new];
-    [_deleteBtnNode setImage:[UIImage imageNamed:@"download"] forState:0];
+    [_deleteBtnNode setImage:[UIImage imageNamed:@"icon_delete"] forState:0];
     [_deleteBtnNode addTarget:self action:@selector(deletBtnTap) forControlEvents:ASControlNodeEventTouchUpInside];
   }
   return _deleteBtnNode;

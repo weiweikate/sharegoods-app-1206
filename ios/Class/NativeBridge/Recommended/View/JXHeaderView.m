@@ -121,6 +121,18 @@
     [self.headImg sd_setImageWithURL:[NSURL URLWithString:[UserInfoModel.userImg getUrlAndWidth:30 height:30]] placeholderImage:[UIImage imageNamed:@"default_avatar"]];
   
     self.nameLab.text = UserInfoModel.userName.length>0? UserInfoModel.userName:@" ";
+
+}
+
+-(void)setType:(BOOL)type{
+  _type = type;
+  if(type){
+    self.nameLab.sd_layout.topEqualToView(self.headImg);
+    self.timeLab.sd_layout.heightIs(15);
+  }else{
+    self.nameLab.sd_layout.topSpaceToView(self, 7.5);
+    self.timeLab.sd_layout.heightIs(0);
+  }
 }
 
 -(void)setTime:(NSString *)time{

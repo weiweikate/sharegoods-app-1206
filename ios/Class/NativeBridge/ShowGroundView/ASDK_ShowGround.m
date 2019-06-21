@@ -303,23 +303,36 @@
 - (ASCellNodeBlock)js_collectionNode:(ASCollectionNode *)collectionNode nodeBlockForItemAtIndexPath:(NSIndexPath *)indexPath
 {
   ShowQuery_dataModel *model = self.dataArr[indexPath.item];
-
-//    return ^{
-//      ShowCellNode *node = [[ShowCellNode alloc]initWithModel:model index:indexPath.row];
-//      return node;
-//    };
-
-  return ^{
-    MyShowCellNode *node = [[MyShowCellNode alloc]initWithModel:model index:indexPath.row ];
-    node.deletBtnTapBlock = ^(ShowQuery_dataModel *m, NSInteger index) {
-      index = [self.dataArr indexOfObject:m];
-      [self.dataArr removeObject:m];
-      [self.collectionNode deleteItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]]];
+  if([self.type isEqualToString:@"MyDynamic"]){
+    return ^{
+      MyShowCellNode *node = [[MyShowCellNode alloc]initWithModel:model index:indexPath.row ];
+      node.deletBtnTapBlock = ^(ShowQuery_dataModel *m, NSInteger index) {
+        index = [self.dataArr indexOfObject:m];
+        [self deletehData:m];
+        [self.dataArr removeObject:m];
+        [self.collectionNode deleteItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]]];
+      };
+      return node;
     };
-    return node;
-  };
+  }
+    return ^{
+      ShowCellNode *node = [[ShowCellNode alloc]initWithModel:model index:indexPath.row];
+      return node;
+    };
 }
 
+
+/**
+ 刷新数据
+ */
+- (void)deletehData:(ShowQuery_dataModel*)cellModel
+{
+  [NetWorkTool requestWithURL:@"/gateway/social/show/content/delete@POST" params:@{@"showNo": @(1)}  toModel:nil success:^(NSDictionary* result) {
+    
+  } failure:^(NSString *msg, NSInteger code) {
+    
+  } showLoading:nil];
+}
 
 /**
  * Asks the inspector for the number of supplementary views for the given kind in the specified section.
