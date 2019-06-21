@@ -91,9 +91,11 @@ export default class LoginPage extends BasePage {
     $isMonitorNetworkStatus() {
         return false;
     }
+
     $NavBarLeftPressed = () => {
         this.$navigateBack();
     };
+
     _render() {
         return (
             <View style={Styles.contentStyle}>
@@ -111,7 +113,7 @@ export default class LoginPage extends BasePage {
                     rendOtherLoginView(true, () => {
                         this.weChatLoginClick();
                     }, (htmlParams) => {
-                        this.$navigate('HtmlPage', htmlParams);
+                        this.$navigate(RouterMap.HtmlPage, htmlParams);
                     })
                 }
 
@@ -121,7 +123,7 @@ export default class LoginPage extends BasePage {
 
     /*忘记密码*/
     forgetPasswordClick = () => {
-        this.$navigate('login/login/ForgetPasswordPage');
+        this.$navigate(RouterMap.ForgetPasswordPage);
     };
     /*微信登陆*/
     weChatLoginClick = () => {

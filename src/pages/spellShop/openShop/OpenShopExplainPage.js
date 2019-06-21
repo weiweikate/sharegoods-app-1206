@@ -19,6 +19,7 @@ import res from '../res';
 import { MRText as Text } from '../../../components/ui';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
+import RouterMap from '../../../navigation/RouterMap';
 
 
 const { openShop_yes, openShop_no } = res.openShop;
@@ -69,7 +70,7 @@ export default class OpenShopExplainPage extends BasePage {
     };
 
     _onPress = () => {
-        this.$navigate('HtmlPage', {
+        this.$navigate(RouterMap.HtmlPage, {
             title: '拼店管理条例',
             uri: `${apiEnvironment.getCurrentH5Url()}/static/protocol/pindian.html`
         });
@@ -87,7 +88,7 @@ export default class OpenShopExplainPage extends BasePage {
                     text: '确认开店', onPress: () => {
                         SpellShopApi.depositTest().then(() => {
                             spellStatusModel.getUser(2);
-                            this.$navigate('spellShop/shopSetting/SetShopNamePage');
+                            this.$navigate(RouterMap.SetShopNamePage);
                         }).catch((error) => {
                             this.$toastShow(error.msg);
                         });

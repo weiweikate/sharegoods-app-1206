@@ -6,6 +6,7 @@ import MyOrdersListView from './../components/MyOrdersListView';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
+import RouterMap from '../../../navigation/RouterMap';
 
 const { search } = res;
 
@@ -44,7 +45,7 @@ class MyOrdersListPage extends BasePage {
     };
 
     gotoSearchPage = () => {
-        this.$navigate('order/order/SearchPage');
+        this.$navigate(RouterMap.SearchPage);
     };
 
     componentWillUnmount() {

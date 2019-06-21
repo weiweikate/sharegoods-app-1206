@@ -13,6 +13,7 @@ import ImageLoad from '@mr/image-placeholder';
 import { MRText as Text } from '../../../components/ui';
 import { TrackApi } from '../../../utils/SensorsTrack';
 import { homeModule } from '../model/Modules';
+import RouterMap from '../../../navigation/RouterMap';
 
 const icon_search = res.search;
 
@@ -88,7 +89,7 @@ export default class CategorySearchPage extends BasePage {
     };
 
     go2SearchPage = () => {
-        this.$navigate('home/search/SearchPage');
+        this.$navigate(RouterMap.SearchPage);
     };
 
     _render() {
@@ -346,7 +347,7 @@ export default class CategorySearchPage extends BasePage {
     };
 
     go2ResultPage(categoryId, name) {
-        this.$navigate('home/search/SearchResultPage', { categoryId, keywords: name, searchType: 11 });
+        this.$navigate(RouterMap.SearchResultPage, { categoryId, keywords: name, searchType: 11 });
     }
 }
 const styles = StyleSheet.create({

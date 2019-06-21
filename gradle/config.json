@@ -46,5 +46,9 @@
     "@mr/mr-rn-storage": {
         "content": "apply from: '../../../../android/rn_storage.gradle'",
         "bulid_path": "../node_modules/@mr/mr-rn-storage/android/build.gradle"
+    },
+    "rn-gesture": {
+        "content": "apply from: '../../../android/rn-gesture.gradle'",
+        "bulid_path": "../node_modules/react-native-gesture-handler/android/build.gradle"
     }
 }

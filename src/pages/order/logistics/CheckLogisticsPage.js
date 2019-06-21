@@ -6,6 +6,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import GoodsGrayItem from '../components/GoodsGrayItem';
+import RouterMap from '../../../navigation/RouterMap';
 
 export default class CheckLogisticsPage extends BasePage {
     constructor(props) {
@@ -18,7 +19,7 @@ export default class CheckLogisticsPage extends BasePage {
     };
 
     show(expressNo, expressCode) {
-        this.$navigate('order/logistics/LogisticsDetailsPage', {
+        this.$navigate(RouterMap.LogisticsDetailsPage, {
             expressNo: expressNo,
             expressCode: expressCode
         });
