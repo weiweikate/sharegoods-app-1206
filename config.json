@@ -25,7 +25,7 @@
             "gongmao": "http://testsop.sharegoodsmall.com/gateway/gongmall/contract/reback"
         },
         "qa2": {
-            "name": "测试",
+            "name": "测试2",
             "host": "https://test2api.sharegoodsmall.com/gateway",
             "h5": "https://test2h5.sharegoodsmall.com",
             "oss": "https://test2cdn.sharegoodsmall.com",

@@ -42,7 +42,7 @@ import AddCartModel from './model/AddCartModel';
 import { sourceType } from '../product/SelectionPage';
 import shopCartCacheTool from '../shopCart/model/ShopCartCacheTool';
 import SelectionPage from '../product/SelectionPage';
-import RouterMap, { navigateBack, routeNavigate } from '../../navigation/RouterMap';
+import RouterMap, { routePop, routeNavigate } from '../../navigation/RouterMap';
 import DownloadUtils from './utils/DownloadUtils';
 
 const { iconShowFire, iconLike, iconNoLike, iconDownload, iconShowShare } = res;
@@ -164,7 +164,7 @@ export default class ShowDetailPage extends BasePage {
 
 
     _goBack() {
-        navigateBack();
+        routePop();
     }
 
     _goToGoodsPage(good) {
