@@ -14,7 +14,6 @@ import DateUtils from '../../../utils/DateUtils';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import RouterMap from '../../../navigation/RouterMap';
-
 const {
     refund,
     return_goods,
@@ -30,7 +29,7 @@ class AfterSaleServiceHomePage extends BasePage {
             thirdType: 1,
             passwordDis: false,
             phoneError: false,
-            passwordError: false
+            passwordError: false,
             /** pageData.orderProductList 如果是产品订单里面就是一个一个商品，如果是礼包、优惠券订单，该数组就只有一个。
              * orderProductList.orderProductPriceList 就是礼包里面的子商品
              * index 表示当前退的哪一个商品，如果没有index，说明退的是礼包，那么默认取orderProductList第一个来显示就行
@@ -73,7 +72,7 @@ class AfterSaleServiceHomePage extends BasePage {
                     salePrice={StringUtils.formatMoneyString(productData.unitPrice)}
                     category={productData.spec}
                     goodsNum={productData.quantity}
-                    // onPress={() => this.jumpToProductDetailPage()}
+                   onPress={() => this.jumpToProductDetailPage()}
                 />
                 {this.renderOrderTime()}
             </ScrollView>
@@ -98,7 +97,7 @@ class AfterSaleServiceHomePage extends BasePage {
     };
     renderSelect = () => {
         let orderSubType = this.params.pageData.orderSubType;
-        console.log('renderSelect', this.params.pageData);
+        console.log('renderSelect',this.params.pageData);
         let image = [refund, return_goods, exchange];
         let title = ['退款', '退货退款', '换货'];
         let content = ['未收到货', '已收到货，需要退换已收到的货物', '需要更换货'];
@@ -111,23 +110,23 @@ class AfterSaleServiceHomePage extends BasePage {
                 continue;//升级礼包     //经验值专区的商品
             }
             // if ((productData.restrictions & status[i]) !== status[i]) {
-            arr.push(
-                <TouchableOpacity style={{
-                    flexDirection: 'row',
-                    height: 79,
-                    alignItems: 'center',
-                    alignContent: 'center',
-                    marginBottom: 10,
-                    backgroundColor: 'white'
-                }} onPress={() => this.pageSelect(i)} key={i}>
-                    <UIImage source={image[i]} style={{ width: 50, height: 50, marginBottom: 10, marginLeft: 21 }}/>
-                    <View style={{ marginLeft: 10 }}>
-                        <UIText value={title[i]} style={{ fontSize: 16, color: DesignRule.textColor_mainTitle }}/>
-                        <UIText value={content[i]}
-                                style={{ fontSize: 15, color: DesignRule.textColor_secondTitle }}/>
-                    </View>
-                </TouchableOpacity>
-            );
+                arr.push(
+                    <TouchableOpacity style={{
+                        flexDirection: 'row',
+                        height: 79,
+                        alignItems: 'center',
+                        alignContent: 'center',
+                        marginBottom: 10,
+                        backgroundColor: 'white'
+                    }} onPress={() => this.pageSelect(i)} key={i}>
+                        <UIImage source={image[i]} style={{ width: 50, height: 50, marginBottom: 10, marginLeft: 21 }}/>
+                        <View style={{ marginLeft: 10 }}>
+                            <UIText value={title[i]} style={{ fontSize: 16, color: DesignRule.textColor_mainTitle }}/>
+                            <UIText value={content[i]}
+                                    style={{ fontSize: 15, color: DesignRule.textColor_secondTitle }}/>
+                        </View>
+                    </TouchableOpacity>
+                );
             // }
         }
         return arr;
@@ -151,7 +150,6 @@ class AfterSaleServiceHomePage extends BasePage {
                 this.$navigate(RouterMap.AfterSaleServicePage, {
                     pageType: 2,
                     orderProductNo
-                    //  productId: this.params.pageData.orderProductList[this.state.index].productId
                 });
                 break;
         }
@@ -178,40 +176,25 @@ class AfterSaleServiceHomePage extends BasePage {
     loadPageData() {
     }
 
-    jumpToProductDetailPage = (productId) => {
+    jumpToProductDetailPage = () => {
         let productData = this.params.pageData;
-        switch (this.state.pageData.orderType) {
+        switch (productData.orderType) {
             case 1://秒杀
-                this.$navigate(RouterMap.ProductDetailPage, {
-                    productId: productData.productId,
-                    activityCode: productData.id,
-                    ids: productData.activityCode
-                });
-
-                break;
             case 2://降价拍
                 this.$navigate(RouterMap.ProductDetailPage, {
-                    productId: productData.productId,
-                    id: productData.id,
-                    ids: productData.activityCode
+                    activityType: productData.orderSubType,
+                    activityCode: productData.activityCode
                 });
                 break;
-
-            case 3://优惠套餐
-                this.$navigate('home/CouponsComboDetailPage', { id: productData.productId });
-                break;
+            case 3://
             case 4:
-
+                this.$navigate(RouterMap.TopicDetailPage, {
+                    activityType: productData.orderSubType,
+                    activityCode:productData.activityCode
+                });
                 break;
-
-            case 5://礼包
-                this.$navigate('home/GiftProductDetailPage', { giftBagId: productData.productId });
-                break;
-
-            case 99://普通商品
-                this.$navigate(RouterMap.ProductDetailPage, { productId: productData.productId });
-                break;
-            default:
+            default://普通商品
+                this.$navigate(RouterMap.ProductDetailPage, { productCode: productData.prodCode });
                 break;
         }
     };
