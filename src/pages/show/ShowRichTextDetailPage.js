@@ -85,8 +85,10 @@ export default class ShowRichTextDetailPage extends BasePage {
                     Toast.showLoading();
                     if (this.params.code) {
                         this.getDetailByIdOrCode(this.params.code);
+                        this.getDetailTagWithCode(this.params.code);
                     } else if (this.params.id) {
                         this.getDetailByIdOrCode(this.params.id);
+                        this.getDetailTagWithCode(this.params.id);
                     } else {
                         this.setState({
                             pageState: PageLoadingState.success
@@ -95,6 +97,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                         let data = this.params.data;
                         data.hotCount += 1;
                         this.showDetailModule.setDetail(data);
+                        this.getDetailTagWithCode(data.showNo);
                         this.params.ref && this.params.ref.replaceData(this.params.index, data.hotCount);
                     }
                     this.incrCountByType(6);
@@ -136,6 +139,39 @@ export default class ShowRichTextDetailPage extends BasePage {
         });
     };
 
+    getDetailTagWithCode = (code) => {
+        ShowApi.getTagWithCode({ showNo: code }).then((data) => {
+            if (data) {
+                this.setState({ tags: data.data });
+            }
+        }).catch((error) => {
+
+        });
+    };
+
+    renderTags = () => {
+        return (
+            <View style={{ flexDirection: 'row', marginTop: px2dp(10) }}>
+                {this.state.tags.map((item, index) => {
+                    return (
+                        <View key={`tag${index}`} style={{
+                            height: px2dp(24),
+                            marginLeft: px2dp(15),
+                            paddingHorizontal: px2dp(8),
+                            borderRadius: px2dp(12),
+                            backgroundColor: '#fee2e8',
+                            alignItems: 'center',
+                            flexDirection: 'row'
+                        }}>
+                            <Text style={{ color: DesignRule.mainColor, fontSize: DesignRule.fontSize_24 }}>
+                                #{item.name}
+                            </Text>
+                        </View>
+                    );
+                })}
+            </View>
+        );
+    };
 
     _goBack() {
         navigateBack();
@@ -504,6 +540,8 @@ export default class ShowRichTextDetailPage extends BasePage {
                                    showsVerticalScrollIndicator={false}
 
                 />
+
+                {this.renderTags()}
 
                 <ProductRowListView style={{ marginVertical: px2dp(10) }}
                                     products={detail.products}

@@ -20,11 +20,6 @@ import java.util.Map;
 
 
 public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.DataBean, BaseViewHolder> {
-
-    //    public static final int Featured = 1;
-//    public static final int Hot = 2;
-    private static final int Recommend = 3;
-    private static final int New = 4;
     private final int realWidth;
     private final int maxHeight;
     private final int minHeight;

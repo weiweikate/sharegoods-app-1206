@@ -6,7 +6,7 @@ import {
     Image,
     BackHandler,
     InteractionManager,
-    DeviceEventEmitter
+    DeviceEventEmitter,TouchableWithoutFeedback
 } from 'react-native';
 import BasePage from '../../BasePage';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
@@ -33,8 +33,7 @@ import apiEnvironment from '../../api/ApiEnvironment';
 import CommShareModal from '../../comm/components/CommShareModal';
 import WhiteModel from './model/WhiteModel';
 import { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
-import { routeNavigate } from '../../navigation/RouterMap';
-import RouterMap from '../../navigation/RouterMap';
+import {RouterMap,routeNavigate} from '../../navigation/RouterMap';
 
 const {
     mine_user_icon,
@@ -194,6 +193,16 @@ export default class ShowListPage extends BasePage {
         });
     };
 
+    _goMyDynamicPage=()=>{
+        this.$navigate(RouterMap.ReleaseNotesPage);
+        return;
+        // if (!user.isLogin) {
+        //     this.$navigate('login/login/LoginPage');
+        //     return;
+        // }
+        this.$navigate(RouterMap.MyDynamicPage);
+    }
+
 
     _render() {
         const { page, left, needsExpensive, detail } = this.state;
@@ -235,9 +244,11 @@ export default class ShowListPage extends BasePage {
                         :
                         null
                 }
-                <View style={[{ marginLeft: left ? px2dp(10) : px2dp(15) }]}>
-                    {icon}
-                </View>
+                <TouchableWithoutFeedback onPress={this._goMyDynamicPage}>
+                    <View style={[{ marginLeft: left ? px2dp(10) : px2dp(15) }]}>
+                        {icon}
+                    </View>
+                </TouchableWithoutFeedback>
                 <View style={{ flex: 1 }}/>
                 <View style={styles.titleView}>
                     <TouchableOpacity style={styles.items} onPress={() => this._gotoPage(0)}>

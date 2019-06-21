@@ -16,6 +16,7 @@ import com.meeruu.sharegoods.rn.module.QRCodeModule;
 import com.meeruu.sharegoods.rn.popmodal.PopModalManager;
 import com.meeruu.sharegoods.rn.showground.RecyclerViewHeaderManager;
 import com.meeruu.sharegoods.rn.showground.ShowActivityViewManager;
+import com.meeruu.sharegoods.rn.showground.ShowDynamicViewManager;
 import com.meeruu.sharegoods.rn.showground.ShowGroundViewManager;
 import com.meeruu.sharegoods.rn.showground.ShowRecommendViewManager;
 import com.meeruu.sharegoods.rn.viewmanager.MRBannerViewManager;
@@ -81,7 +82,8 @@ public class RNMRPackage implements ReactPackage {
                 new RecyclerViewHeaderManager(),
                 new ShowGroundViewManager(),
                 new ShowRecommendViewManager(),
-                new ShowActivityViewManager());
+                new ShowActivityViewManager(),
+                new ShowDynamicViewManager());
     }
 
 }
