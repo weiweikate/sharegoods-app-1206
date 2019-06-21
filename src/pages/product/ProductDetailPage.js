@@ -2,8 +2,7 @@ import React from 'react';
 import {
     View,
     StyleSheet,
-    SectionList,
-    InteractionManager
+    SectionList
 } from 'react-native';
 import BasePage from '../../BasePage';
 import DetailBottomView from './components/DetailBottomView';
@@ -82,10 +81,7 @@ export default class ProductDetailPage extends BasePage {
         this.willFocusSubscription = this.props.navigation.addListener('willFocus', payload => {
                 const { state } = payload;
                 if (state && state.routeName === 'product/ProductDetailPage' && !user.isProdFirstLoad) {
-                    InteractionManager.runAfterInteractions(() => {
-                        alert(111);
-                        this.productDetailModel && this.productDetailModel.requestProductDetail();
-                    });
+                    this.productDetailModel && this.productDetailModel.requestProductDetail();
                 }
             }
         );
