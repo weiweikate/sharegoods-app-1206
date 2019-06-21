@@ -7,7 +7,7 @@ import AvatarImage from '../../../../components/ui/AvatarImage';
 import UIImage from '@mr/image-placeholder';
 import pRes from '../../res/product';
 import DateUtils from '../../../../utils/DateUtils';
-import RouterMap from '../../../../navigation/RouterMap';
+import RouterMap, { routePush } from '../../../../navigation/RouterMap';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
 import StringUtils from '../../../../utils/StringUtils';
 
@@ -59,13 +59,13 @@ export class P_ScoreListItemView extends Component {
     };
 
     _action = (index) => {
-        const { navigation, itemData } = this.props;
+        const { itemData } = this.props;
         const { imgUrl, videoUrl, videoImgPath, comment } = itemData;
         let images = [];
         if (StringUtils.isNoEmpty(imgUrl)) {
             images = imgUrl.split('$');
         }
-        navigation.navigate(RouterMap.P_ScoreSwiperPage, {
+        routePush(RouterMap.P_ScoreSwiperPage, {
             video: videoUrl,
             videoImg: videoImgPath,
             images: images,

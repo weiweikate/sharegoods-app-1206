@@ -475,7 +475,7 @@ export default class ProductDetailModel {
     };
 
     /****网络请求****/
-    requestProductDetail = () => {
+    requestProductDetail = (code) => {
         /*
         * SPU00000263 秒杀
         * SPU00000375 直降

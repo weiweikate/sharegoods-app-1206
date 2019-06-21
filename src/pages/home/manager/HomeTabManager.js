@@ -6,9 +6,12 @@ class HomeTabManager {
     @observable
     homeFocus = true;
 
+    isAboveRecommend = false;
+
     @action
     setAboveRecommend(recommend) {
         this.aboveRecommend = recommend;
+        this.isAboveRecommend = recommend;
     }
 
     @action

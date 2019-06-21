@@ -21,6 +21,7 @@ import MineApi from '../../api/MineApi';
 import PasswordInput from './../../components/PasswordInput';
 
 import DesignRule from '../../../../constants/DesignRule';
+import RouterMap from '../../../../navigation/RouterMap';
 
 export default class BankCardPasswordPage extends BasePage {
     // 导航配置
@@ -79,7 +80,7 @@ export default class BankCardPasswordPage extends BasePage {
                     onChange={value => this.inputText(value)}
                 />
                 <TouchableWithoutFeedback onPress={() => {
-                    this.$navigate('mine/account/JudgePhonePage', { title: '设置交易密码' });
+                    this.$navigate(RouterMap.JudgePhonePage, { title: '设置交易密码' });
                 }}>
                     <Text style={styles.forgetStyle}>
                         忘记密码

@@ -7,7 +7,7 @@ import shopRes from '../../res';
 import LinearGradient from 'react-native-linear-gradient';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import { observer } from 'mobx-react';
-import { navigate } from '../../../../navigation/RouterMap';
+import { routePush } from '../../../../navigation/RouterMap';
 import { homeModule } from '../../../home/model/Modules';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
 import CommShareModal from '../../../../comm/components/CommShareModal';
@@ -62,7 +62,7 @@ export class ShopProductItemView extends Component {
                         const router = homeModule.homeNavigate(linkType, linkTypeCode);
                         let params = homeModule.paramsNavigate(item);
                         if (router) {
-                            navigate(router, params);
+                            routePush(router, params);
                         }
                     }
                 }>
@@ -247,7 +247,7 @@ export class ShopBottomBannerView extends Component {
                             const router = homeModule.homeNavigate(linkType, linkTypeCode);
                             let params = homeModule.paramsNavigate(item);
                             if (router) {
-                                navigate(router, params);
+                                routePush(router, params);
                             }
                         }}/>;
                     })

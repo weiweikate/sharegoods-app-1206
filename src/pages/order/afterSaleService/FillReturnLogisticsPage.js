@@ -24,6 +24,7 @@ import bridge from '../../../utils/bridge';
 import OrderApi from '../api/orderApi';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
+import RouterMap from '../../../navigation/RouterMap';
 
 const {
     afterSaleService: {
@@ -42,7 +43,7 @@ export default class FillReturnLogisticsPage extends BasePage {
             logisticsCompanyName: null,
             //物流单号
             logisticsNum: '',
-            code: 0,
+            code: 0
         };
         this._bindFunc();
     }
@@ -87,7 +88,7 @@ export default class FillReturnLogisticsPage extends BasePage {
                                    style={styles.item_detail}
                                    onChangeText={(text) => {
                                        let reg = /^[0-9a-zA-Z]*$/;
-                                       if(reg.test(text)) {
+                                       if (reg.test(text)) {
                                            this.setState({ logisticsNum: text });
                                        }
                                    }}
@@ -117,7 +118,7 @@ export default class FillReturnLogisticsPage extends BasePage {
      * 选择物流公司
      */
     selectLogisticsCompany() {
-        this.$navigate('order/afterSaleService/SelectLogisticsCompanyPage', { callBack: this.callBack });
+        this.$navigate(RouterMap.SelectLogisticsCompanyPage, { callBack: this.callBack });
     }
 
     scanQRCode() {
@@ -128,7 +129,7 @@ export default class FillReturnLogisticsPage extends BasePage {
     }
 
     callBack(logisticsCompanyName, code) {
-        this.setState({ logisticsCompanyName ,code});
+        this.setState({ logisticsCompanyName, code });
     }
 
     submit() {

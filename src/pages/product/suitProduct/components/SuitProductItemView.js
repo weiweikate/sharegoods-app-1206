@@ -7,7 +7,7 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import UIImage from '@mr/image-placeholder';
 import res from '../../res/product';
 import { observer } from 'mobx-react';
-import { navigate } from '../../../../navigation/RouterMap';
+import { routePush } from '../../../../navigation/RouterMap';
 import RouterMap from '../../../../navigation/RouterMap';
 import StringUtils from '../../../../utils/StringUtils';
 import SelectionPage from '../../SelectionPage';
@@ -138,7 +138,7 @@ export class SubProductView extends Component {
                 <Image style={mStyles.selectImg}
                        source={isSelected ? selected : un_selected}/>
                 <NoMoreClick onPress={() => {
-                    navigate(RouterMap.ProductDetailPage, { productCode: prodCode });
+                    routePush(RouterMap.ProductDetailPage, { productCode: prodCode });
                 }}>
                     <UIImage style={mStyles.productImg} source={{ uri: imgUrl }}/>
                 </NoMoreClick>

@@ -9,6 +9,7 @@
  *
  */
 
+
 'use strict';
 import React from 'react';
 import {
@@ -23,7 +24,8 @@ import bg from './res/promotion_bg.png';
 import MineApi from '../../api/MineApi';
 import RefreshList from '../../../../components/ui/RefreshList';
 import EmptyUtils from '../../../../utils/EmptyUtils';
-import {MRText as Text} from '../../../../components/ui'
+import { MRText as Text } from '../../../../components/ui';
+import RouterMap from '../../../../navigation/RouterMap';
 
 
 const { px2dp } = ScreenUtils;
@@ -85,12 +87,14 @@ export default class InvitePromotionPage extends BasePage<Props> {
 
     _itemRender = ({ item }) => {
         let tip = (
-            <Text style={[styles.itemTextStyle,{color:item.userBuy && (item.status === 1 ) ? '#FF0050' : '#999999'}]}>
+            <Text
+                style={[styles.itemTextStyle, { color: item.userBuy && (item.status === 1) ? '#FF0050' : '#999999' }]}>
                 库存不足
             </Text>
         );
         let limit = (
-            <Text style={[styles.itemTextStyle,{color:item.userBuy && (item.status === 1 ) ? '#FF0050' : '#999999'}]}>
+            <Text
+                style={[styles.itemTextStyle, { color: item.userBuy && (item.status === 1) ? '#FF0050' : '#999999' }]}>
                 {`每人限购${item.buyLimit}份`}
             </Text>
         );
@@ -98,13 +102,15 @@ export default class InvitePromotionPage extends BasePage<Props> {
             <View style={{ height: px2dp(65), width: ScreenUtils.width }}>
                 <TouchableWithoutFeedback onPress={() => {
                     if (item.userBuy && item.status === 1) {
-                        this.$navigate('mine/promotion/PromotionPayPage', item);
+                        this.$navigate(RouterMap.PromotionPayPage, item);
                     }
                 }}>
-                    <View style={[styles.itemWrapper, { backgroundColor: item.userBuy && (item.status === 1 ) ? '#FFDBB2' : '#FFECD7',
-                        opacity:item.userBuy && (item.status === 1 ) ? 1 : 0.9
+                    <View style={[styles.itemWrapper, {
+                        backgroundColor: item.userBuy && (item.status === 1) ? '#FFDBB2' : '#FFECD7',
+                        opacity: item.userBuy && (item.status === 1) ? 1 : 0.9
                     }]}>
-                        <Text style={[styles.itemTextStyle,{color:item.userBuy && (item.status === 1 ) ? '#FF0050' : '#999999'}]}>
+                        <Text
+                            style={[styles.itemTextStyle, { color: item.userBuy && (item.status === 1) ? '#FF0050' : '#999999' }]}>
                             {item.name}{`/推广周期${item.cycle}天`}
                         </Text>
                         {item.status === 2 ? tip : null}
@@ -142,7 +148,7 @@ const styles = StyleSheet.create({
     imageStyle: {
         width: ScreenUtils.width,
         alignItems: 'center',
-        paddingTop: px2dp(200),
+        paddingTop: px2dp(200)
     },
     itemWrapper: {
         height: px2dp(58),
@@ -150,7 +156,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         alignSelf: 'center',
-        borderRadius: px2dp(5),
+        borderRadius: px2dp(5)
 
     },
     itemTextStyle: {

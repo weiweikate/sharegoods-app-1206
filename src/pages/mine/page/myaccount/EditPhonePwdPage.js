@@ -101,8 +101,6 @@ export default class EditPhonePwdPage extends BasePage {
                     user.clearUserInfo();
                     shopCartStore.data = [];
                     this.$navigateResetLogin();
-                    // this.$navigateReset();
-                    // this.$navigate('login/login/LoginPage');
                 }
             });
         }).catch((data) => {

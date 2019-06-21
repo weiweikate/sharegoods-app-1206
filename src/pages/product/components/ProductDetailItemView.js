@@ -17,7 +17,7 @@ import { contentImgWidth, price_type } from '../ProductDetailModel';
 import { ActivityDidBeginView, ActivityWillBeginView } from './ProductDetailActivityView';
 import UIImage from '@mr/image-placeholder';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import RouterMap, { navigate } from '../../../navigation/RouterMap';
+import RouterMap, { routeNavigate, routePush } from '../../../navigation/RouterMap';
 import { observer } from 'mobx-react';
 import res from '../../home/res';
 import { activity_type, activity_status } from '../ProductDetailModel';
@@ -220,7 +220,7 @@ export class SuitItemView extends Component {
 
     _goSuitPage = () => {
         const { productDetailModel } = this.props;
-        navigate(RouterMap.SuitProductPage, { productDetailModel });
+        routePush(RouterMap.SuitProductPage, { productDetailModel });
     };
 
     render() {
@@ -473,7 +473,7 @@ export class ContentItemView extends Component {
             return null;
         }
         return <TouchableWithoutFeedback onPress={() => {
-            navigate(RouterMap.CheckBigImagesView, { imageUrls: [item] });
+            routeNavigate(RouterMap.CheckBigImagesView, { imageUrls: [item] });
         }}>
             <Image source={{ uri: item }} style={{ width, height }}/>
         </TouchableWithoutFeedback>;

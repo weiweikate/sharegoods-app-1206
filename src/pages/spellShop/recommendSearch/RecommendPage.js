@@ -32,6 +32,7 @@ import { homeType } from '../../home/HomeTypes';
 import { homeModule } from '../../home/model/Modules';
 import { bannerModule } from './PinShopBannerModel';
 import { IntervalMsgView, IntervalType } from '../../../comm/components/IntervalMsgView';
+import RouterMap from '../../../navigation/RouterMap';
 
 const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
@@ -219,22 +220,22 @@ export default class RecommendPage extends BasePage {
     _clickOpenShopItem = () => {
         //已缴纳保证金
         if (SpellStatusModel.storeStatus === 2) {
-            this.$navigate('spellShop/shopSetting/SetShopNamePage');
+            this.$navigate(RouterMap.SetShopNamePage);
         } else if (SpellStatusModel.storeCode && StringUtils.isNoEmpty(SpellStatusModel.storeStatus) && SpellStatusModel.storeStatus !== 0) {//有店铺店铺没关闭
             this.props.navigation.popToTop();
         } else {
-            this.$navigate('spellShop/openShop/OpenShopExplainPage');
+            this.$navigate(RouterMap.OpenShopExplainPage);
         }
     };
 
     // 点击搜索店铺
     _clickSearchItem = () => {
-        this.$navigate('spellShop/recommendSearch/SearchPage');
+        this.$navigate(RouterMap.SearchPage);
     };
 
     // 点击查看某个店铺
     _RecommendRowOnPress = (storeCode) => {
-        this.$navigate('spellShop/MyShop_RecruitPage', { storeCode: storeCode });
+        this.$navigate(RouterMap.MyShop_RecruitPage, { storeCode: storeCode });
     };
 
     // 点击轮播图广告
