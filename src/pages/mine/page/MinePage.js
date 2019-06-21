@@ -642,6 +642,7 @@ export default class MinePage extends BasePage {
                             color: '#333333',
                             includeFontPadding: false,
                             height: 22,
+                            width: 80,
                             fontSize: this.getAdjustsFontSize(num)
                         }}>
                             {num}
@@ -676,7 +677,8 @@ export default class MinePage extends BasePage {
             <View style={{
                 backgroundColor: 'white',
                 marginHorizontal: DesignRule.margin_page,
-                borderRadius: px2dp(10)
+                borderRadius: px2dp(10),
+                marginTop: px2dp(10)
             }}>
                 <View style={{
                     flexDirection: 'row',

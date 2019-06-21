@@ -21,6 +21,7 @@ import MineAPI from '../../api/MineApi';
 import {MRText as Text} from '../../../../components/ui'
 import { TrackApi } from '../../../../utils/SensorsTrack';
 import bridge from '../../../../utils/bridge';
+import SettingModel from '../../model/SettingModel';
 
 // const HeaderBarBgImg = res.myShop.txbg_03;
 const white_back = res.button.white_back;
@@ -96,7 +97,7 @@ export default class MyMentorPage extends BasePage {
                 {this._profileRender(this.state.profile)}
                 {this._navRender()}
 
-                <View style={styles.btnBgStyle}>
+                {SettingModel.messageState ? <View style={styles.btnBgStyle}>
                     <TouchableWithoutFeedback onPress={() => {
                         this.state.phone && Linking.openURL(`sms:${this.state.phone}`)
                     }}>
@@ -106,7 +107,8 @@ export default class MyMentorPage extends BasePage {
                         </View>
                     </TouchableWithoutFeedback>
 
-                </View>
+                </View> : null
+                }
             </View>
         );
     }
@@ -154,22 +156,22 @@ export default class MyMentorPage extends BasePage {
                 <Text style={[styles.itemTextStyle,{marginLeft: 20, marginRight:20}]}>
                     {this.state.nickName ? this.state.nickName : ''}
                 </Text>
-                {this.state.weChatNumber ?
-                    <View style={{flexDirection: 'row', alignItems: 'center',marginLeft: 20, marginRight:20}}>
-                        <Text style={styles.weChatStyle} numberOfLines={1}>微信号：{this.state.weChatNumber}</Text>
-                        <TouchableWithoutFeedback onPress={() => {
-                            this.state.weChatNumber && Clipboard.setString(this.state.weChatNumber);
-                            bridge.$toast('复制到剪切版');
-                        }}>
-                            <View style={styles.copyViewStyle}>
-                                <Text style={styles.copyTextStyle}>复制</Text>
-                            </View>
-                        </TouchableWithoutFeedback>
-                    </View> :
-                    <View>
-                        <Text style={styles.copyTextStyle}>暂无微信号</Text>
-                    </View>
-                }
+                {SettingModel.WXChatState ? (this.state.weChatNumber ?
+                        <View style={{flexDirection: 'row', alignItems: 'center', marginLeft: 20, marginRight: 20}}>
+                            <Text style={styles.weChatStyle} numberOfLines={1}>微信号：{this.state.weChatNumber}</Text>
+                            <TouchableWithoutFeedback onPress={() => {
+                                this.state.weChatNumber && Clipboard.setString(this.state.weChatNumber);
+                                bridge.$toast('复制到剪切版');
+                            }}>
+                                <View style={styles.copyViewStyle}>
+                                    <Text style={styles.copyTextStyle}>复制</Text>
+                                </View>
+                            </TouchableWithoutFeedback>
+                        </View> :
+                        <View>
+                            <Text style={styles.copyTextStyle}>暂无微信号</Text>
+                        </View>
+                ) : null}
             </ImageBackground>
         );
     };
