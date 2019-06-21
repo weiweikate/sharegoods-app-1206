@@ -4,7 +4,8 @@ import {
     View,
     Image,
     ImageBackground,
-    TouchableOpacity
+    TouchableOpacity,
+    Platform
 } from 'react-native';
 import BasePage from '../../BasePage';
 import DesignRule from '../../constants/DesignRule';
@@ -19,6 +20,7 @@ import {
 import ScreenUtils from '../../utils/ScreenUtils';
 import EmptyUtils from '../../utils/EmptyUtils';
 import ShowDynamicView from './components/ShowDynamicView';
+import ShowFoundView from './ShowFoundView';
 
 const headerBgSize = { width: 375, height: 200 };
 const headerHeight = ScreenUtils.statusBarHeight + 44;
@@ -50,7 +52,7 @@ export default class MyDynamicPage extends BasePage {
         this.state = {
             isRefreshing: false,
             isLoadingMore: false,
-            changeHeader: true,
+            changeHeader: true
         };
     }
 
@@ -169,7 +171,7 @@ export default class MyDynamicPage extends BasePage {
     };
 
     _onScroll = (nativeEvent) => {
-        let Y = nativeEvent.YDistance-px2dp(10);
+        let Y = nativeEvent.YDistance - px2dp(10);
         // alert(Y);
         if (Y < offset) {
             this.st = Y / offset;
@@ -192,28 +194,32 @@ export default class MyDynamicPage extends BasePage {
 
 
     _render() {
+        let waterfall = Platform.OS == 'ios' ? ShowFoundView : ShowDynamicView;
         return (
             <View style={styles.contain}>
-                <ShowDynamicView style={{ flex: 1,marginTop:-10 }}
-                                 ref={(ref) => {
-                                     this.dynamicList = ref;
-                                 }}
-                                 uri={'/social/show/content/page/mine/query@GET'}
-                                 renderHeader={this.renderHeader()}
-                                 onItemPress={({ nativeEvent }) => {
-                                     let params = {
-                                         data: nativeEvent,
-                                         ref: this.dynamicList,
-                                         index: nativeEvent.index
-                                     };
-                                     if (nativeEvent.showType === 1) {
-                                         this.$navigate('show/ShowDetailPage', params);
-                                     } else {
-                                         this.$navigate('show/ShowRichTextDetailPage', params);
-                                     }
+                <waterfall style={{ flex: 1, marginTop: -10 }}
+                           ref={(ref) => {
+                               this.dynamicList = ref;
+                           }}
+                           uri={'/social/show/content/page/mine/query@GET'}
+                           type={'MyDynamic'}
+                           renderHeader={this.renderHeader()}
+                           onItemPress={({ nativeEvent }) => {
+                               let params = {
+                                   data: nativeEvent,
+                                   ref: this.dynamicList,
+                                   index: nativeEvent.index
+                               };
+                               if (nativeEvent.showType === 1) {
+                                   this.$navigate('show/ShowDetailPage', params);
+                               } else {
+                                   this.$navigate('show/ShowRichTextDetailPage', params);
+                               }
 
-                                 }}
-                                 onScrollY={({ nativeEvent })=>{this._onScroll(nativeEvent)}}
+                           }}
+                           onScrollY={({ nativeEvent }) => {
+                               this._onScroll(nativeEvent);
+                           }}
                 />
                 {this.navBackgroundRender()}
                 {this.navRender()}
