@@ -62,7 +62,8 @@ export default class ShowDetailPage extends BasePage {
         this.state = {
             pageState: PageLoadingState.loading,
             errorMsg: '',
-            productModalVisible: false
+            productModalVisible: false,
+            tags: []
         };
         this.noNeedRefresh = false;
         TrackApi.xiuChangDetail();
@@ -85,8 +86,10 @@ export default class ShowDetailPage extends BasePage {
                     Toast.showLoading();
                     if (this.params.code) {
                         this.getDetailByIdOrCode(this.params.code);
+                        this.getDetailTagWithCode(this.params.code);
                     } else if (this.params.id) {
                         this.getDetailByIdOrCode(this.params.id);
+                        this.getDetailTagWithCode(this.params.id);
                     } else {
                         this.setState({
                             pageState: PageLoadingState.success
@@ -95,6 +98,7 @@ export default class ShowDetailPage extends BasePage {
                         let data = this.params.data;
                         data.hotCount += 1;
                         this.showDetailModule.setDetail(data);
+                        this.getDetailTagWithCode(data.showNo);
                         this.params.ref && this.params.ref.replaceData(this.params.index, data.hotCount);
 
                     }
@@ -136,6 +140,40 @@ export default class ShowDetailPage extends BasePage {
             Toast.$toast(error.msg || '获取详情失败');
             Toast.hiddenLoading();
         });
+    };
+
+    getDetailTagWithCode = (code) => {
+        ShowApi.getTagWithCode({ showNo: code }).then((data) => {
+            if (data) {
+                this.setState({ tags: data.data });
+            }
+        }).catch((error) => {
+
+        });
+    };
+
+    renderTags = () => {
+        return (
+            <View style={{ flexDirection: 'row', marginTop: px2dp(10) }}>
+                {this.state.tags.map((item, index) => {
+                    return (
+                        <View key={`tag${index}`} style={{
+                            height: px2dp(24),
+                            marginLeft: px2dp(15),
+                            paddingHorizontal: px2dp(8),
+                            borderRadius: px2dp(12),
+                            backgroundColor: '#fee2e8',
+                            alignItems: 'center',
+                            flexDirection: 'row'
+                        }}>
+                            <Text style={{ color: DesignRule.mainColor, fontSize: DesignRule.fontSize_24 }}>
+                                #{item.name}
+                            </Text>
+                        </View>
+                    );
+                })}
+            </View>
+        );
     };
 
     incrCountByType = (type) => {
@@ -499,6 +537,8 @@ export default class ShowDetailPage extends BasePage {
                     marginTop: px2dp(10),
                     letterSpacing: 1.5
                 }}>{content}</Text>
+
+                {this.renderTags()}
 
                 {this._otherInfoRender()}
 

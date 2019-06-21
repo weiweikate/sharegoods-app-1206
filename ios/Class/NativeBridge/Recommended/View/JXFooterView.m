@@ -100,7 +100,7 @@
   [_zanBtn addTarget:self action:@selector(tapZanBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.zanBtn.sd_layout.topSpaceToView(self.scrollView,10)
   .heightIs(24).widthIs(24)
-  .leftSpaceToView(self, 30);
+  .leftSpaceToView(self, 10);
 
   self.zanNum.sd_layout.centerYEqualToView(self.zanBtn)
   .leftSpaceToView(self.zanBtn, 1)
@@ -169,7 +169,7 @@
   if(len>0){
     self.scrollView.sd_layout
     .topEqualToView(self)
-    .leftSpaceToView(self, 30)
+    .leftSpaceToView(self, 10)
     .rightSpaceToView(self, 0)
     .heightIs(72);
 

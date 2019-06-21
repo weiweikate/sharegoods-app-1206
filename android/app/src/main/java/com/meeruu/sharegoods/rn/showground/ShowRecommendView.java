@@ -517,8 +517,22 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         }
     }
 
+    public void setType(String type){
+        adapter.setType(type);
+    }
+
     private void showList() {
         errView.setVisibility(View.INVISIBLE);
         swipeRefreshLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void deleteSuccess() {
+
+    }
+
+    @Override
+    public void deleteFail(String err) {
+
     }
 }

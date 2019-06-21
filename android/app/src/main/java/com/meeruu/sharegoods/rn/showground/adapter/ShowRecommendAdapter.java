@@ -9,6 +9,7 @@ import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.SnapHelper;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -22,6 +23,7 @@ import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
+import com.meeruu.sharegoods.rn.showground.contacts.CommValue;
 import com.meeruu.sharegoods.rn.showground.utils.NumUtils;
 import com.meeruu.sharegoods.rn.showground.widgets.GridView.ImageInfo;
 import com.meeruu.sharegoods.rn.showground.widgets.GridView.NineGridView;
@@ -34,9 +36,10 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
     private NineGridView.clickL clickL;
     private ProductsAdapter.AddCartListener addCartListener;
     private ProductsAdapter.PressProductListener pressProductListener;
+    private String type;
     private static int maxWidth = ScreenUtils.getScreenWidth() - DensityUtils.dip2px(90);
     private static int radius_5 = DensityUtils.dip2px(5);
-    private static int imgWidth = ScreenUtils.getScreenWidth() - DensityUtils.dip2px(85);
+    private static int imgWidth = ScreenUtils.getScreenWidth() - DensityUtils.dip2px(60);
 
     public ShowRecommendAdapter(NineGridView.clickL clickL, ProductsAdapter.AddCartListener addCartListener, ProductsAdapter.PressProductListener pressProductListener) {
         super(new ArrayList<NewestShowGroundBean.DataBean>());
@@ -59,6 +62,10 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         this.pressProductListener = pressProductListener;
     }
 
+    public void setType(String type){
+        this.type = type;
+    }
+
     @Override
     protected void convert(final BaseViewHolder helper, final NewestShowGroundBean.DataBean item) {
         switch (helper.getItemViewType()) {
@@ -71,8 +78,6 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
             default:
                 covertImageText(helper, item);
         }
-
-
     }
 
     private void covertImageText(final BaseViewHolder helper, final NewestShowGroundBean.DataBean item) {
@@ -229,6 +234,14 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
             recyclerView.setVisibility(View.GONE);
             recyclerView.setTag(null);
         }
+
+        ImageView ivRecommend = helper.getView(R.id.iv_recommend);
+        if(TextUtils.equals(type,"recommend") && item.getCreateSource() == CommValue.NORMAL_USER_CONTENT){
+            ivRecommend.setVisibility(View.VISIBLE);
+        }else {
+            ivRecommend.setVisibility(View.GONE);
+        }
+
         helper.addOnClickListener(R.id.icon_download, R.id.icon_share, R.id.content);
     }
 }

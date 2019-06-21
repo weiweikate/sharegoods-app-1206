@@ -55,12 +55,14 @@ import com.meeruu.sharegoods.ui.activity.MRWebviewActivity;
 import com.meeruu.statusbar.ImmersionBar;
 import com.meituan.android.walle.WalleChannelReader;
 import com.qiyukf.unicorn.api.Unicorn;
+import com.reactnative.ivpusic.imagepicker.cameralibrary.util.UriUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
+import java.net.URI;
 import java.util.HashSet;
 import java.util.List;
 
@@ -233,10 +235,14 @@ public class CommModule extends ReactContextBaseJavaModule {
         }
         for (int i = 0; i < list.size(); i++) {
             String filePath = (String) list.get(i);
+            File file = null;
+            try {
+                file = new File(new URI(filePath));
+            }catch (Exception e){
 
-            File file = new File(filePath);
+            }
 
-            if (!file.exists()) {
+            if (file != null && !file.exists()) {
                 continue;
             }
             if (isVideo(filePath)) {
