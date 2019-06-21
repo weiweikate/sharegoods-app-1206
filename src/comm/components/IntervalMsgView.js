@@ -102,15 +102,15 @@ const styles = StyleSheet.create({
     },
     btn: {
         flexDirection: 'row', alignItems: 'center',
-        height: px2dp(22), borderRadius: px2dp(11), backgroundColor: 'rgba(0,0,0,0.6)'
+        height: px2dp(28), borderRadius: px2dp(14), backgroundColor: 'rgba(0,0,0,0.6)'
     },
     image: {
         marginRight: px2dp(6), overflow: 'hidden',
-        width: px2dp(22), height: px2dp(22), borderRadius: px2dp(11)
+        width: px2dp(28), height: px2dp(28), borderRadius: px2dp(14)
     },
     text: {
         maxWidth: maxTextWidth,
-        fontSize: 10, color: DesignRule.white
+        fontSize: 12, color: DesignRule.white
     },
     arrow: {
         marginRight: px2dp(7),
@@ -162,17 +162,17 @@ class IntervalMsgViewModel {
         }
 
         Animated.sequence([
-            Animated.delay(2000),
+            Animated.delay(1500),
             Animated.timing(
                 this.translateX,
                 { toValue: 0, duration: 500, useNativeDriver: true }
             ),
-            Animated.delay(5000),
+            Animated.delay(3000),
             Animated.timing(
                 this.opacity,
                 { toValue: 0, duration: 1000, useNativeDriver: true }
             ),
-            Animated.delay(3000)
+            Animated.delay(1500)
         ]).start(
             () => {
                 /*复原*/

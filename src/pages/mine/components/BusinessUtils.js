@@ -11,7 +11,7 @@ const Utiles = {
      * callBack
      * @param callBack {ok: 是否上传成功，imageThumbUrl}
      */    //NativeModules.commModule.RN_ImageCompression(uri, response.fileSize, 1024 * 1024 * 3, () => {
-    getImagePicker: (callBack, num = 1, cropping = false, withSize = false) => {
+    getImagePicker: (callBack, num = 1, cropping = false, withSize = false,edit=false) => {
         let newCallback = (value) => {
             if (value && value.ok) {
                 let result = value.images.map((item) => {
@@ -29,7 +29,7 @@ const Utiles = {
                 (buttonIndex) => {
                     if (buttonIndex === 1) {
                         if (withSize) {
-                            Utiles.pickSingleWithCamera(cropping, callBack);
+                            Utiles.pickSingleWithCamera(cropping, callBack,edit);
                         } else {
                             Utiles.pickSingleWithCamera(cropping, newCallback);
                         }
@@ -60,7 +60,8 @@ const Utiles = {
                     {
                         text: '拍照', onPress: () => {
                             if (withSize) {
-                                Utiles.pickSingleWithCamera(cropping, callBack);
+                                // Utiles.pickSingleWithCamera(cropping, callBack,edit);
+                                Utiles.openCameraAndRecord(callBack,edit);
                             } else {
                                 Utiles.pickSingleWithCamera(cropping, newCallback);
                             }
@@ -70,15 +71,14 @@ const Utiles = {
                         text: '从相册选择', onPress: () => {
                             if (num > 1) {
                                 if (withSize) {
-                                    Utiles.pickMultiple(num, callBack);
+                                    Utiles.pickMultiple(num, callBack,edit);
 
                                 } else {
-                                    Utiles.pickMultiple(num, newCallback);
+                                    Utiles.pickMultiple(num, newCallback,edit);
                                 }
                             } else {
                                 if (withSize) {
                                     Utiles.pickSingle(cropping, false, callBack);
-
                                 } else {
                                     Utiles.pickSingle(cropping, false, newCallback);
 
@@ -92,11 +92,12 @@ const Utiles = {
             );
         }
     },
-    pickSingleWithCamera(cropping, callBack) {
+    pickSingleWithCamera(cropping, callBack,edit) {
         ImagePicker.openCamera({
             cropping: cropping,
             width: 600,
             height: 600,
+            edit,
             includeExif: true,
             cropperCancelText: '取消',
             cropperChooseText: '选取',
@@ -107,6 +108,26 @@ const Utiles = {
             //     image: {uri: image.path, width: image.width, height: image.height},
             //     images: null
             // });
+            let param = {
+                path: image.path,
+                width: image.width,
+                height: image.height
+            };
+            Utiles.upload([param], [image.size + ''], callBack, true);
+        }).catch(e => {
+        });
+    },
+
+    openCameraAndRecord(callBack,edit) {
+        ImagePicker.openCameraAndRecord({
+            width: 600,
+            height: 600,
+            edit,
+            includeExif: true,
+            cropperCancelText: '取消',
+            cropperChooseText: '选取',
+            loadingLabelText: '处理中...'
+        }).then(image => {
             let param = {
                 path: image.path,
                 width: image.width,
@@ -145,8 +166,9 @@ const Utiles = {
         });
     },
 
-    pickMultiple: (num, callBack) => {
+    pickMultiple: (num, callBack,edit) => {
         ImagePicker.openPicker({
+            edit,
             multiple: true,
             waitAnimationEnd: false,
             includeExif: true,

@@ -15,8 +15,6 @@ const index = {
     dingdanxiangqing_icon_fuk: require('./dingdanxiangqing_icon_fuk.png'),
     dizhi: require('./dizhi.png'),
     dizhi_icon: require('./dizhi_icon.png'),
-    kongbeiye_wulian: require('./kongbeiye_wulian.png'),
-    kongbeuye_dingdan: require('./kongbeuye_dingdan.png'),
     logisticsBottom: require('./logisticsBottom.png'),
     logisticsTop: require('./logisticsTop.png'),
     no_wuliu: require('./no_wuliu.png'),

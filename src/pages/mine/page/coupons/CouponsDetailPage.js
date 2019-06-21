@@ -14,7 +14,7 @@ import user from '../../../../model/user';
 import CouponExplainItem from '../../components/CouponExplainItem';
 import CouponNormalItem from '../../components/CouponNormalItem';
 
-const NoMessage = res.couponsImg.coupons_no_data;
+const NoMessage = res.placeholder.noCollect;
 
 
 const { px2dp } = ScreenUtils;

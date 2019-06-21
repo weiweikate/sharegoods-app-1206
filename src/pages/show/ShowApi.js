@@ -22,13 +22,17 @@ const api = {
     //购物车列表
     carList: ["/user/shoppingcart/list",{ method: 'get', checkLogin: true}],
     //添加文章
-    publishShow: ['/social/show/content/save',{method:'post',checkLogin:true}],
+    publishShow: ['/social/show/content/save',{method:'post',checkLogin:false}],
     //点赞/收藏/浏览量  1.点赞 2.收藏3.分享4.下载 5.浏览量 6.人气值
     incrCountByType:['/social/show/count/incrCountByType',{method:'post'}],
     //取消点赞/收藏 1.点赞 2.收藏3.分享4.下载 5.浏览量 6.人气值
     reduceCountByType:['/social/show/count/reduceCountByType',{method:'post'}],
     //判断用户类型
-    getWhiteList:['/social/show/user/query',{method:'get'}]
+    getWhiteList:['/social/show/user/query',{method:'get'}],
+    //标签列表查询
+    getAllTag:['/social/show/tag/list',{method:'get'}],
+    //查询单个文章标签
+    getTagWithCode:['/social/show/tag/content/info',{method:'get'}],
 };
 import ApiUtils from '../../api/network/ApiUtils';
 

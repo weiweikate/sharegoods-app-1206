@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="10dp"
     android:background="@drawable/white_round_background"
-    android:padding="10dp">
+    android:padding="15dp">
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/user_icon"
@@ -43,9 +43,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/user_icon"
-        android:layout_marginLeft="5dp"
         android:layout_marginTop="10dp"
-        android:layout_toRightOf="@id/user_icon"
+        android:layout_alignParentLeft="true"
         android:textColor="@color/textColor_secondTitle"
         android:textSize="13sp"
         app:etv_EllipsisHint="..."
@@ -62,18 +61,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/content"
-        android:layout_marginLeft="5dp"
         android:layout_marginTop="10dp"
-        android:layout_toRightOf="@id/user_icon" />
+        android:layout_alignParentLeft="true" />
 
     <com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView
         android:id="@+id/product_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/nine_grid"
-        android:layout_marginLeft="5dp"
         android:layout_marginTop="10dp"
-        android:layout_toRightOf="@id/user_icon" />
+        android:layout_alignParentLeft="true" />
 
 
     <ImageView
@@ -83,7 +80,7 @@
         android:layout_below="@id/product_list"
         android:layout_marginLeft="2dp"
         android:layout_marginTop="15dp"
-        android:layout_toRightOf="@id/user_icon"
+        android:layout_alignParentLeft="true"
         android:padding="2dp"
         android:src="@drawable/icon_fire" />
 
@@ -96,7 +93,6 @@
         android:layout_toRightOf="@+id/icon_hand"
         android:gravity="center_vertical"
         android:maxLines="1"
-        android:text="22"
         android:textColor="@color/textColor_mainTitle"
         android:textSize="10sp" />
 
@@ -122,7 +118,6 @@
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/icon_download"
         android:gravity="center_vertical"
-        android:text="22"
         android:textColor="@color/textColor_mainTitle"
         android:textSize="10sp" />
 
@@ -135,5 +130,12 @@
         android:layout_alignParentRight="true"
         android:layout_marginTop="15dp"
         android:src="@drawable/show_release_icon" />
+
+    <ImageView android:src="@drawable/show_recommend"
+        android:id="@+id/iv_recommend"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="35dp"/>
 
 </RelativeLayout>
