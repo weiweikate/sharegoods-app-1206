@@ -419,7 +419,6 @@ export default class TaskVIew extends React.Component {
                 <View style={{
                     backgroundColor: 'white',
                     borderRadius: 5,
-                    marginTop: 10,
                     overflow: 'hidden',
                     flex: 1,
                 }}>
@@ -453,23 +452,23 @@ export default class TaskVIew extends React.Component {
             }, this.props.style]}>
                 <View style={{backgroundColor: 'white',borderRadius: 8,
                     overflow: 'hidden',
-                    paddingTop: 5,}}>
+                    marginTop: 5,}}>
                 {this.renderTitle(type)}
                 {this.renderProgressView()}
                 {this.renderTaskView()}
                 {this.renderBtn()}
+                </View>
                 <ImageBackground source={current_p}
                                  style={{width: autoSizeWidth(156/2),
                                      height: autoSizeWidth(124/2),
                                      right: 5,
-                                     top: -5,
+                                     top: 0,
                                      position: 'absolute',
                                      alignItems: 'center',
                                      justifyContent: 'center',
                                  }}>
                     <MRText style={{color: '#FF0050', fontSize: autoSizeWidth(17), fontWeight: '600', marginBottom: autoSizeWidth(10)}}>{this.model.progress}</MRText>
                 </ImageBackground>
-                </View>
                 <TaskModalView type={type}/>
             </View>
         );
