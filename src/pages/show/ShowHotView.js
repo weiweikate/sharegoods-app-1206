@@ -22,7 +22,7 @@ import bridge from '../../utils/bridge';
 import ShowApi from './ShowApi';
 import EmptyUtils from '../../utils/EmptyUtils';
 import ShowUtils from './utils/ShowUtils';
-import RouterMap from '../../navigation/RouterMap';
+import RouterMap, { routeNavigate, routePush } from '../../navigation/RouterMap';
 import DownloadUtils from './utils/DownloadUtils';
 
 @observer
@@ -170,7 +170,7 @@ export default class ShowHotView extends React.Component {
 
                                        }}
                                        onNineClick={({ nativeEvent }) => {
-                                           this.props.navigate('show/ShowDetailImagePage', {
+                                           routeNavigate(RouterMap.ShowDetailImagePage, {
                                                imageUrls: nativeEvent.imageUrls,
                                                index: nativeEvent.index
                                            });
@@ -180,7 +180,7 @@ export default class ShowHotView extends React.Component {
                                        }}
 
                                        onPressProduct={({ nativeEvent }) => {
-                                           this.props.navigate(RouterMap.ProductDetailPage, { productCode: nativeEvent.prodCode });
+                                           routePush(RouterMap.ProductDetailPage, { productCode: nativeEvent.prodCode });
                                        }}
 
                                        onZanPress={({ nativeEvent }) => {
@@ -197,7 +197,7 @@ export default class ShowHotView extends React.Component {
 
                                        onDownloadPress={({ nativeEvent }) => {
                                            if (!user.isLogin) {
-                                               this.props.navigate('login/login/LoginPage');
+                                               routeNavigate(RouterMap.LoginPage);
                                                return;
                                            }
                                            let { detail } = nativeEvent;
@@ -251,10 +251,10 @@ export default class ShowHotView extends React.Component {
 
                                     onPress={() => {
                                         if (!user.isLogin) {
-                                            this.props.navigate('login/login/LoginPage');
+                                            routeNavigate(RouterMap.LoginPage);
                                             return;
                                         }
-                                        this.props.navigate('show/ReleaseNotesPage');
+                                        routeNavigate(RouterMap.ReleaseNotesPage);
                                     }}/>
                             </Animated.View> : null
                     }

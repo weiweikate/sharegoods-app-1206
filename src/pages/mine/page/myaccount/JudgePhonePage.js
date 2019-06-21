@@ -8,16 +8,17 @@ import { TimeDownUtils } from '../../../../utils/TimeDownUtils';
 import MineAPI from '../../api/MineApi';
 import user from '../../../../model/user';
 import SMSTool from '../../../../utils/SMSTool';
-import { MRText as Text} from '../../../../components/ui';
+import { MRText as Text } from '../../../../components/ui';
 import { observer } from 'mobx-react';
-import VerifyCodeInput from '../../components/VerifyCodeInput'
+import VerifyCodeInput from '../../components/VerifyCodeInput';
 import Styles from '../../../login/style/InputPhoneNum.Style';
 import RouterMap from '../../../../navigation/RouterMap';
-const {px2dp} = ScreenUtils;
+
+const { px2dp } = ScreenUtils;
 export const PageType = {
     setSalePay: '设置交易密码',
     changeSalePay: '修改交易密码',
-    setLoginPW: '设置登录密码',
+    setLoginPW: '设置登录密码'
 };
 @observer
 export default class JudgePhonePage extends BasePage {
@@ -34,11 +35,11 @@ export default class JudgePhonePage extends BasePage {
 
 
     componentDidMount() {
-           this._onGetCode();
+        this._onGetCode();
     }
 
     _render() {
-        const  phoneNum  = user.phone;
+        const phoneNum = user.phone;
         return (
             <View style={Styles.bgContent}>
                 <View style={Styles.contentStyle}>
@@ -107,23 +108,23 @@ export default class JudgePhonePage extends BasePage {
         let that = this;
         let SMSType = '';
         let pageType = this.params.title;
-        let {setSalePay, changeSalePay, setLoginPW} = PageType
-        if (pageType === setSalePay){
+        let { setSalePay, changeSalePay, setLoginPW } = PageType;
+        if (pageType === setSalePay) {
             SMSType = SMSTool.SMSType.SetSaleType;
         } else if (pageType === changeSalePay) {
             SMSType = SMSTool.SMSType.ForgetSaleType;
-        }else if (pageType === setLoginPW) {
+        } else if (pageType === setLoginPW) {
             SMSType = SMSTool.SMSType.setLoginPW;
         }
         if (StringUtils.checkPhone(tel)) {
             SMSTool.sendVerificationCode(SMSType, tel).then((data) => {
-                that.setState({downTime: 60});
+                that.setState({ downTime: 60 });
                 bridge.$toast('验证码已发送请注意查收');
                 (new TimeDownUtils()).startDown((time) => {
-                    that.setState({downTime: time});
+                    that.setState({ downTime: time });
                 });
             }).catch((data) => {
-                that.setState({downTime: 0});
+                that.setState({ downTime: 0 });
                 bridge.$toast(data.msg);
             });
         } else {
@@ -150,19 +151,19 @@ export default class JudgePhonePage extends BasePage {
         }
 
         let pageType = this.params.title;
-        let {setSalePay, changeSalePay, setLoginPW} = PageType
+        let { setSalePay, changeSalePay, setLoginPW } = PageType;
         if (pageType === setSalePay || pageType === changeSalePay) {
 
             this.judgePhoneSalePay(tel, code);
-        }else if (pageType === setLoginPW) {
+        } else if (pageType === setLoginPW) {
             this.judgePhoneLoginPW(tel, code);
         }
 
     };
     //验证登录密码密码短信验证码
     judgePhoneLoginPW = (tel, code) => {
-        this.$navigate(RouterMap.SetPhonePwdPage, {code});
-    }
+        this.$navigate(RouterMap.SetPhonePwdPage, { code });
+    };
     //验证支付密码短信验证码
     judgePhoneSalePay = (tel, code) => {
         // 验证
@@ -175,16 +176,16 @@ export default class JudgePhonePage extends BasePage {
             // 原来用title来判断是设置交易\修改密码, 这里用本地user数据来判断
             if (user.hadSalePassword) {//设置过交易密码， 修改支付密码
                 if (user.idcard) {//认证过身份证
-                    this.$navigate('mine/account/JudgeIDCardPage');
+                    this.$navigate(RouterMap.JudgeIDCardPage);
                 } else {
                     // 跳转到实名认证页面
-                    this.$navigate('mine/userInformation/IDVertify2Page', {
+                    this.$navigate(RouterMap.IDVertify2Page, {
                         from: 'salePwd'
                     });
                 }
             } else {
                 // 第一次设置交易密码
-                this.$navigate('mine/account/SetOrEditPayPwdPage', {
+                this.$navigate(RouterMap.SetOrEditPayPwdPage, {
                     title: '设置交易密码',
                     tips: '请设置6位纯数字交易支付密码',
                     from: 'set',
@@ -196,6 +197,6 @@ export default class JudgePhonePage extends BasePage {
             bridge.$toast(data.msg);
             this.isLoadding = false;
         });
-    }
+    };
 }
 

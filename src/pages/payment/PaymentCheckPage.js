@@ -12,8 +12,7 @@ import ScreenUtils from '../../utils/ScreenUtils';
 import res from './res';
 import { track, TrackApi, trackEvent } from '../../utils/SensorsTrack';
 import { PaymentResult } from './PaymentResultPage';
-import { NavigationActions } from 'react-navigation';
-import RouterMap from '../../navigation/RouterMap';
+import RouterMap, { replaceRoute } from '../../navigation/RouterMap';
 
 const { px2dp } = ScreenUtils;
 
@@ -27,14 +26,14 @@ export default class PaymentCheckPage extends BasePage {
         };
         payment.checking = true;
         //埋点
-        TrackApi.ViewOrderPayPage({orderPayType:1,orderPayResultPageType:0});
+        TrackApi.ViewOrderPayPage({ orderPayType: 1, orderPayResultPageType: 0 });
     }
 
     $navigationBarOptions = {
         title: '支付订单'
     };
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         payment.checking = false;
 
     }
@@ -51,6 +50,7 @@ export default class PaymentCheckPage extends BasePage {
             </View>
         );
     }
+
     _renderWaitView = () => {
         return (
             <View style={styles.waitBgViewStyle}>
@@ -91,40 +91,22 @@ export default class PaymentCheckPage extends BasePage {
             console.log(result);
             let resultData = result.data;
             if (parseInt(resultData.status) === payStatus.paySuccess) {
-                let replace;
                 if (bizType !== 1) {
-                    replace = NavigationActions.replace({
-                        key: this.props.navigation.state.key,
-                        // routeName: RouterMap.PaymentResultPage,
-                        routeName:RouterMap.PaymentFinshPage,
-                        params: { payResult: PaymentResult.success }
-                    });
+                    replaceRoute(RouterMap.PaymentFinshPage, { payResult: PaymentResult.success });
                 } else {
-                    replace = NavigationActions.replace({
-                        key: this.props.navigation.state.key,
-                        routeName: RouterMap.AddCapacitySuccessPage,
-                        params: { payResult: PaymentResult.success }
-                    });
+                    replaceRoute(RouterMap.AddCapacitySuccessPage, { payResult: PaymentResult.success });
                 }
-                this.props.navigation.dispatch(replace);
                 payment.resetPayment();
-                TrackApi.orderPayResultPage({isPaySuccess:true})
-                // track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: "success" });
+                TrackApi.orderPayResultPage({ isPaySuccess: true });
             } else if (parseInt(resultData.status) === payStatus.payClose) {
-                const {bizType} = payment;
-                if (bizType !== 1){
-                    let replace = NavigationActions.replace({
-                        key: this.props.navigation.state.key,
-                        routeName: RouterMap.PaymentResultPage,
-                        // routeName:RouterMap.PaymentFinshPage,
-                        params: { payResult: PaymentResult.fail, payMsg: '支付关闭' }
-                    });
-                    this.props.navigation.dispatch(replace);
+                const { bizType } = payment;
+                if (bizType !== 1) {
+                    replaceRoute(RouterMap.PaymentResultPage, { payResult: PaymentResult.fail, payMsg: '支付关闭' });
                 } else {
                     this._goToOrder();
                 }
                 payment.resetPayment();
-                TrackApi.ViewOrderPayPage({orderPayType:3})
+                TrackApi.ViewOrderPayPage({ orderPayType: 3 });
             } else {
                 setTimeout(() => {
                     this._checkStatues();
@@ -137,13 +119,13 @@ export default class PaymentCheckPage extends BasePage {
     };
 
     _goToOrder(index) {
-        const {bizType} = payment;
-        if (bizType === 1){
+        const { bizType } = payment;
+        if (bizType === 1) {
             this.props.navigation.dispatch({
                 key: this.props.navigation.state.key,
-                type:'ReplacePayScreen',
-                routeName: RouterMap.AddCapacityHistoryPage,
-            })
+                type: 'ReplacePayScreen',
+                routeName: RouterMap.AddCapacityHistoryPage
+            });
         } else {
             this.props.navigation.dispatch({
                 key: this.props.navigation.state.key,

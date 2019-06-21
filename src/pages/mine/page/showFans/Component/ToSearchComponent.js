@@ -14,13 +14,14 @@ import {
 import DesignRule from '../../../../../constants/DesignRule';
 import ScreenUtils from '../../../../../utils/ScreenUtils';
 import { MRText } from '../../../../../components/ui';
-import RouterMap from '../../../../../navigation/RouterMap';
-import res from '../../../res'
-const {icon_search} = res.myData;
+import RouterMap, { routeNavigate } from '../../../../../navigation/RouterMap';
+import res from '../../../res';
+
+const { icon_search } = res.myData;
 const { px2dp } = ScreenUtils;
 export default class ToSearchComponent extends PureComponent {
     toSearch = () => {
-        this.props.navigate && this.props.navigate(RouterMap.SearchShowFansPage,{levelId:this.props.levelId});
+        routeNavigate(RouterMap.SearchShowFansPage, { levelId: this.props.levelId });
     };
 
     render() {

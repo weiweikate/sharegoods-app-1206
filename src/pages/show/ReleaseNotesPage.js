@@ -24,6 +24,8 @@ import UIImage from '../../components/ui/UIImage';
 import Emoticons, * as emoticons from '../../comm/components/emoticons';
 import EmptyUtils from '../../utils/EmptyUtils';
 import ShowApi from './ShowApi';
+import { backToShow } from '../../navigation/RouterMap';
+import RouterMap from '../../navigation/RouterMap';
 
 const { addIcon, delIcon, iconShowDown, iconShowEmoji, addShowIcon } = res;
 
@@ -85,35 +87,34 @@ export default class ReleaseNotesPage extends BasePage {
         );
     };
 
-    _publish=()=>{
-        if(EmptyUtils.isEmptyArr(this.state.imageArr)){
+    _publish = () => {
+        if (EmptyUtils.isEmptyArr(this.state.imageArr)) {
             this.$toastShow('至少需要上传一张图片哦');
             return;
         }
         let content = this.state.text || '';
         let products = this.state.products || [];
         let images = this.state.imageArr;
-        let urls = images.map((value)=>{
+        let urls = images.map((value) => {
             return `${value.url}?width=${value.width}&height=${value.height}`;
-        })
-        let productsPar = products.map((value)=>{
+        });
+        let productsPar = products.map((value) => {
             return value.spuCode;
-        })
+        });
         let params = {
             content,
-            images:urls,
-            products:productsPar
-        }
-        ShowApi.publishShow(params).then((data)=>{
-            this.props.navigation.popToTop();
-            this.props.navigation.navigate('ShowListPage');
-            if(data.data){
-                DeviceEventEmitter.emit('PublishShowFinish',JSON.stringify(data.data));
+            images: urls,
+            products: productsPar
+        };
+        ShowApi.publishShow(params).then((data) => {
+            backToShow();
+            if (data.data) {
+                DeviceEventEmitter.emit('PublishShowFinish', JSON.stringify(data.data));
             }
-        }).catch((error)=>{
+        }).catch((error) => {
             this.$toastShow(error.msg || '网络错误');
-        })
-    }
+        });
+    };
 
     choosePicker = () => {
         let imageArr = this.state.imageArr;
@@ -124,7 +125,7 @@ export default class ReleaseNotesPage extends BasePage {
         BusinessUtils.getImagePicker(callback => {
             let result = imageArr.concat(callback.images);
             this.setState({ imageArr: result });
-        }, num, true,true);
+        }, num, true, true);
     };
 
     deletePic = (index) => {
@@ -181,7 +182,7 @@ export default class ReleaseNotesPage extends BasePage {
     };
 
     _addProductButton = () => {
-        if(this.state.products.length >= 5){
+        if (this.state.products.length >= 5) {
             return null;
         }
 
@@ -190,7 +191,7 @@ export default class ReleaseNotesPage extends BasePage {
         });
         return (
             <TouchableWithoutFeedback onPress={() => {
-                this.$navigate('show/ShowProductListPage', {
+                this.$navigate(RouterMap.ShowProductListPage, {
                     spus,
                     callBack: (value) => {
                         let arr = this.state.products;
@@ -256,10 +257,10 @@ export default class ReleaseNotesPage extends BasePage {
             <TouchableWithoutFeedback onPress={() => {
                 Keyboard.dismiss();
                 this.setState({
-                    showEmoji:false,
-                    keyBoardHeight:0,
-                    showEmojiButton:false
-                })
+                    showEmoji: false,
+                    keyBoardHeight: 0,
+                    showEmojiButton: false
+                });
             }}>
                 <Image source={iconShowDown} style={styles.closeKeyboard}/>
             </TouchableWithoutFeedback>
@@ -280,7 +281,12 @@ export default class ReleaseNotesPage extends BasePage {
                             {item.productName ? item.productName : ''}
                         </MRText>
                         <View style={{ flex: 1 }}/>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' ,marginLeft:px2dp(10),marginBottom:px2dp(5)}}>
+                        <View style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            marginLeft: px2dp(10),
+                            marginBottom: px2dp(5)
+                        }}>
                             <MRText style={{ fontSize: px2dp(10), color: DesignRule.mainColor }}>￥</MRText>
                             <MRText style={styles.priceText}>
                                 {item.showPrice ? item.showPrice : item.price}
@@ -460,7 +466,7 @@ var styles = StyleSheet.create({
         padding: px2dp(5),
         marginHorizontal: DesignRule.margin_page,
         width: (DesignRule.width - DesignRule.margin_page * 2),
-        height:px2dp(70)
+        height: px2dp(70)
     },
     validProductImg: {
         width: px2dp(60),
@@ -470,7 +476,7 @@ var styles = StyleSheet.create({
         color: DesignRule.textColor_mainTitle,
         fontSize: DesignRule.fontSize_24,
         width: DesignRule.width - px2dp(115),
-        marginLeft:px2dp(10)
+        marginLeft: px2dp(10)
     },
     contentStyle: {
         color: DesignRule.textColor_instruction,

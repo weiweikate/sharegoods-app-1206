@@ -3,7 +3,7 @@ import { View, StyleSheet, Image } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import res from '../res/product';
-import RouterMap, { navigateBack, navigate } from '../../../navigation/RouterMap';
+import RouterMap, { navigateBack, routePush } from '../../../navigation/RouterMap';
 import { MRText } from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
 import { observer } from 'mobx-react';
@@ -37,7 +37,7 @@ export default class ProductDetailNavView extends Component {
                     </View>
                     <View style={[styles.barItemContainer, { justifyContent: 'flex-end' }]}>
                         <NoMoreClick style={styles.btnContainer} onPress={() => {
-                            navigate(RouterMap.ShopCart, { hiddeLeft: false });
+                            routePush(RouterMap.ShopCart, { hiddeLeft: false });
                         }}>
                             <Image source={shopCar}/>
                             {getAllGoodsClassNumber !== 0 && <View style={styles.amountView}>

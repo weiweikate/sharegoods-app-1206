@@ -1,4 +1,4 @@
-import { TabNavigator } from 'react-navigation';
+import { createBottomTabNavigator } from 'react-navigation';
 import React, { Component } from 'react';
 import { DeviceEventEmitter, Text, View, TouchableWithoutFeedback } from 'react-native';
 import Home from '../pages/home/HomePage';
@@ -16,6 +16,8 @@ import { observer } from 'mobx-react';
 import { autorun } from 'mobx';
 import Animation from 'lottie-react-native';
 import { TrackApi } from '../utils/SensorsTrack';
+import { navigateBackToStore } from './RouterMap';
+import RouterMap from './RouterMap';
 
 
 const NormalTab = ({ source, title }) => {
@@ -65,17 +67,14 @@ class HomeTab extends Component {
         this.animation && (aboveRecommend ? this.animation.play(0, 7) : this.animation.play(10, 17));
     });
 
-    componentDidUpdate(prevProps) {
-        const { aboveRecommend } = homeTabManager;
-        this.animation && (this.animation.setNativeProps({ progress: aboveRecommend ? 0.5 : 1 }));
-    }
+    observeAboveFocused = autorun(() => {
+        homeTabManager.homeFocus;
+        this.animation && (this.animation.setNativeProps({ progress: homeTabManager.isAboveRecommend ? 0.5 : 1 }));
+    }, { delay: 50 });
 }
 
 const gotoMyShop = () => {
-    if (global.$navigator) {
-        global.$navigator._navigation.popToTop();
-        global.$navigator._navigation.navigate('MyShop_RecruitPage');
-    }
+    navigateBackToStore();
 };
 
 const ShowFlag = () =>
@@ -154,19 +153,17 @@ export class SpellShopTab extends Component {
     }
 }
 
-export const TabNav = TabNavigator(
+export const TabNav = createBottomTabNavigator(
     {
         HomePage: {
             screen: Home,
             navigationOptions: {
-                tabBarIcon: ({ focused }) => <HomeTab normalSource={res.tab.home_n}
-                                                      title={'首页'} focus={focused}/>,
-                tabBarOnPress: (tab) => {
-                    const { jumpToIndex, scene, previousScene } = tab;
-                    if (previousScene.key !== 'HomePage') {
-                        jumpToIndex(scene.index);
-                    } else {
+                tabBarIcon: ({ focused }) => <HomeTab title={'首页'} focus={focused}/>,
+                tabBarOnPress: ({ navigation }) => {
+                    if (navigation.isFocused()) {
                         DeviceEventEmitter.emit('retouch_home');
+                    } else {
+                        navigation.navigate(navigation.state.routeName);
                     }
                 }
             }
@@ -177,13 +174,12 @@ export const TabNav = TabNavigator(
                 tabBarLabel: '秀场',
                 tabBarIcon: ({ focused }) => <Tab focused={focused} normalSource={res.tab.discover_n}
                                                   activeSource={res.tab.discover_s} title={'秀场'}/>,
-                tabBarOnPress: (tab) => {
-                    const { jumpToIndex, scene, previousScene } = tab;
-                    if (previousScene.key !== 'ShowListPage') {
-                        jumpToIndex(scene.index);
-                        TrackApi.WatchXiuChang({ xiuChangModuleSource: 1 });
-                    } else {
+                tabBarOnPress: ({ navigation }) => {
+                    if (navigation.isFocused()) {
                         DeviceEventEmitter.emit('retouch_show');
+                    } else {
+                        navigation.navigate(navigation.state.routeName);
+                        TrackApi.WatchXiuChang({ xiuChangModuleSource: 1 });
                     }
                 }
             }
@@ -199,26 +195,26 @@ export const TabNav = TabNavigator(
         },
         ShopCartPage: {
             screen: ShopCart,
-            navigationOptions: ({ navigation }) => ({
+            navigationOptions: {
                 tabBarIcon: ({ focused }) => <Tab focused={focused} normalSource={res.tab.cart_n}
                                                   activeSource={res.tab.cart_s} title={'购物车'}/>
-            })
+            }
         },
         MinePage: {
             screen: Mine,
-            navigationOptions: ({ navigation }) => ({
+            navigationOptions: {
                 tabBarIcon: ({ focused }) => <Tab focused={focused} normalSource={res.tab.mine_n}
                                                   activeSource={res.tab.mine_s} title={'我的'}/>,
-                tabBarOnPress: (tab) => {
-                    const { jumpToIndex, scene } = tab;
-                    if (user && user.isLogin) {
-                        jumpToIndex(scene.index);
-                    } else {
-                        // alert(RouterMap.LoginPage);
-                        navigation.navigate('login/login/LoginPage');
+                tabBarOnPress: ({ navigation }) => {
+                    if (!navigation.isFocused()) {
+                        if (user && user.isLogin) {
+                            navigation.navigate(navigation.state.routeName);
+                        } else {
+                            navigation.navigate(RouterMap.LoginPage);
+                        }
                     }
                 }
-            })
+            }
         }
     },
     {
