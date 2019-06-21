@@ -31,9 +31,10 @@ import {
     TouchableOpacity,
     TouchableWithoutFeedback
 } from 'react-native';
-import NetNotConnectImage from './source/net_error.png'; //用于断网，超时展示
-import ServerErrorImage from './source/net_error.png'; //用于其他网络请求展示
 import Systemupgrade from './source/Systemupgrade.png'; //用于f服务段code：9999展示
+import res from '../../../comm/res';
+
+const { netError } = res.placeholder;
 const BugErrorCode = -20000;       //异常错误，请稍后再试 js bug error
 const SystemUpgradeCode = 9999;
 // const NetUnKnowErrorCode = -20001; //未知错误,请稍后再试 (网络错误，但是没有错误码)
@@ -54,7 +55,7 @@ export default class NetFailedView extends Component {
 
     // 默认属性
     static defaultProps = {
-        buttonText: '重新加载', // 重新加载按钮title
+        buttonText: '刷新', // 重新加载按钮title
         showReloadBtn: true
     };
 
@@ -82,23 +83,23 @@ export default class NetFailedView extends Component {
         if (Platform.OS === 'ios') {
             // ios -1001 连接超时 -1005 tcp断开 -1009 网络无连接
             if (code === BugErrorCode || code === -1001 || code === -1005 || code === -1009) {
-                return NetNotConnectImage;
+                return netError;
             }
 
-            if (code === SystemUpgradeCode){//服务段定义：系统升级维护
+            if (code === SystemUpgradeCode) {//服务段定义：系统升级维护
                 return Systemupgrade;
             }
 
-            return source || ServerErrorImage;
+            return source || netError;
         } else {
             // android 1006 连接超时 1007 网络无连接
             if (code === BugErrorCode || code === 1006 || code === 1007) {
-                return NetNotConnectImage;
+                return netError;
             }
-            if (code === SystemUpgradeCode){//服务段定义：系统升级维护
+            if (code === SystemUpgradeCode) {//服务段定义：系统升级维护
                 return Systemupgrade;
             }
-            return source || ServerErrorImage;
+            return source || netError;
         }
     };
 
@@ -132,7 +133,7 @@ export default class NetFailedView extends Component {
         } = this._getErrorInfo();
         if (code === SystemUpgradeCode) {
             msg = '系统维护升级中';
-            showReloadBtn =  false;
+            showReloadBtn = false;
         }
         return (<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={[styles.container, style]}>

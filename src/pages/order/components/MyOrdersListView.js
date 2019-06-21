@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {
-    View, Alert, Keyboard, TouchableWithoutFeedback,
-    StyleSheet, TouchableOpacity, Image
+    View, Alert
 } from 'react-native';
 import RefreshList from '../../../components/ui/RefreshList';
 import constants from '../../../constants/constants';
@@ -15,16 +14,12 @@ import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 // import userOrderNum from '../../../manager/userOrderNum';
 import DesignRule from '../../../constants/DesignRule';
 import MineApi from '../../mine/api/MineApi';
-import res from '../res';
-import {
-    MRText as Text
-} from '../../../components/ui';
 // import user from '../../../manager/user';
 import RouterMap from '../../../navigation/RouterMap';
 import { payStatus, payment, payStatusMsg } from '../../payment/Payment';
 import { NavigationActions } from 'react-navigation';
 import { SmoothPushPreLoadHighComponent } from '../../../comm/components/SmoothPushHighComponent';
-const emptyIcon = res.kongbeuye_dingdan;
+import NetFailedView from '../../../components/pageDecorator/BaseView/NetFailedView';
 @SmoothPushPreLoadHighComponent
 export default class MyOrdersListView extends Component {
     constructor(props) {
@@ -79,28 +74,7 @@ export default class MyOrdersListView extends Component {
     };
 
     renderError() {
-        return (
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                <View style={styles.errContainer}>
-                    <Image source={res.placeholder.netError}
-                           style={{ width: DesignRule.autoSizeWidth(120), height: DesignRule.autoSizeWidth(120) }}
-                           resizeMode={'contain'}/>
-                    <Text style={styles.titleStyle} allowFontScaling={false}>
-                        {this.state.errMsgText}
-                    </Text>
-                    <TouchableOpacity activeOpacity={0.5} style={styles.btnStyle}
-                                      onPress={() => this.getDataFromNetwork()}>
-                        <Text style={{
-                            color: DesignRule.bgColor_btn,
-                            fontSize: DesignRule.fontSize_mediumBtnText
-                        }} allowFontScaling={false}>
-                            重新加载
-                        </Text>
-                    </TouchableOpacity>
-
-                </View>
-            </TouchableWithoutFeedback>
-        );
+        return (<NetFailedView netFailedInfo={{msg:this.state.errMsgText}} reloadBtnClick={this.getDataFromNetwork}/>);
     }
 
     render() {
@@ -115,7 +89,6 @@ export default class MyOrdersListView extends Component {
                     isEmpty={this.state.isEmpty}
                     initialNumToRender={5}
                     emptyTip={'暂无订单'}
-                    emptyIcon={emptyIcon}
                     ListHeaderComponent={<View style={{ height: 10 }}/>}
                 />}
                 {this.renderModal()}
@@ -588,32 +561,3 @@ export default class MyOrdersListView extends Component {
         }
     }
 }
-
-const styles = StyleSheet.create({
-    errContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    titleStyle: {
-        fontSize: 15,
-        color: DesignRule.textColor_instruction,
-        marginTop: 10,
-        textAlign: 'center'
-    },
-    btnText: {
-        fontSize: 15,
-        color: DesignRule.mainColor,
-        textAlign: 'center'
-    },
-    btnStyle: {
-        height: 36,
-        width: 115,
-        borderRadius: 18,
-        borderColor: DesignRule.bgColor_btn,
-        borderWidth: DesignRule.lineHeight * 1.5,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: 20
-    }
-});

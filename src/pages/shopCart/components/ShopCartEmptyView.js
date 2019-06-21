@@ -54,8 +54,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     imgStyle: {
-        height: 115,
-        width: 115
+        height: 158,
+        width: 158
     },
     topTextStyle: {
         marginTop: 10,

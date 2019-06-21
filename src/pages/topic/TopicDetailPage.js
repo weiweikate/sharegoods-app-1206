@@ -199,6 +199,7 @@ export default class TopicDetailPage extends BasePage {
                         track(trackEvent.ProductDetail, {
                             spuCode: packageCode,
                             spuName: name,
+                            productType:7,
                             priceShareStore: groupPrice,
                             pricePerCommodity: levelPrice,
                             priceType: priceType === 2 ? 100 : user.levelRemark

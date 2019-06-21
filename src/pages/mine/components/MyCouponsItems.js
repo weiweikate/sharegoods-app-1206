@@ -24,7 +24,7 @@ import CouponExplainItem from './CouponExplainItem';
 import CouponNormalItem from './CouponNormalItem';
 import RouterMap from '../../../navigation/RouterMap';
 
-const NoMessage = res.couponsImg.coupons_no_data;
+const NoMessage = res.placeholder.noCollect;
 const plusIcon = res.couponsImg.youhuiquan_icon_jia_nor;
 const jianIcon = res.couponsImg.youhuiquan_icon_jian_nor;
 
@@ -196,7 +196,7 @@ export default class MyCouponsItems extends Component {
         } else {
             return (
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                    <Image source={NoMessage} style={{ width: 110, height: 110, marginTop: 112 }}/>
+                    <Image source={NoMessage} style={{ marginTop: 101 }}/>
                     <Text style={{ color: DesignRule.textColor_instruction, fontSize: 15, marginTop: 11 }}
                           allowFontScaling={false}>还没有优惠券哦</Text>
                     <Text style={{ color: DesignRule.textColor_instruction, fontSize: 12, marginTop: 3 }}

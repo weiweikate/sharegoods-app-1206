@@ -36,6 +36,7 @@ import { ContentSectionView, SectionLineView, SectionNullView } from './componen
 import ProductDetailNavView from './components/ProductDetailNavView';
 import { IntervalMsgType, IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
 import ProductDetailCouponsView, { ProductDetailCouponsWindowView } from './components/ProductDetailCouponsView';
+import { ProductDetailSetAddressView } from './components/ProductDetailAddressView';
 
 /**
  * @author chenyangjun
@@ -192,7 +193,7 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _renderItem = ({ item, index, section: { key } }) => {
-        const { productDetailCouponsViewModel } = this.productDetailModel;
+        const { productDetailCouponsViewModel, productDetailAddressModel } = this.productDetailModel;
         if (key === sectionType.sectionContent) {
             return <ContentItemView item={item}/>;
         }
@@ -234,6 +235,9 @@ export default class ProductDetailPage extends BasePage {
                 return <ParamItemView paramAction={() => {
                     this.DetailParamsModal.show(this.productDetailModel);
                 }}/>;
+            }
+            case productItemType.address: {
+                return <ProductDetailSetAddressView productDetailAddressModel={productDetailAddressModel}/>;
             }
             case productItemType.comment: {
                 return <DetailHeaderScoreView pData={this.productDetailModel}
