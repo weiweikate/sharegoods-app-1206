@@ -8,7 +8,8 @@ import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import { MRText as Text } from '../../../../components/ui';
 import RefreshFlatList from '../../../../comm/components/RefreshFlatList';
-import  SmoothPushHighComponent  from '../../../../comm/components/SmoothPushHighComponent';
+import SmoothPushHighComponent from '../../../../comm/components/SmoothPushHighComponent';
+import RouterMap from '../../../../navigation/RouterMap';
 
 
 const addrBorderImgN = res.address.dizhi_img_nor;
@@ -39,7 +40,7 @@ export default class AddressManagerPage extends BasePage {
     };
 
     $NavBarRightPressed = () => {
-        this.$navigate('mine/address/AddressEditAndAddPage', {
+        this.$navigate(RouterMap.AddressEditAndAddPage, {
             refreshing: this.refreshing.bind(this),
             from: 'add'
         });
@@ -208,7 +209,7 @@ export default class AddressManagerPage extends BasePage {
 
     _onEditAddress = (item, index) => {
         // 编辑地址页面
-        this.$navigate('mine/address/AddressEditAndAddPage', {
+        this.$navigate(RouterMap.AddressEditAndAddPage, {
             refreshing: this.refreshing.bind(this),
             from: 'edit',
             receiver: item.receiver,

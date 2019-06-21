@@ -33,6 +33,8 @@ import apiEnvironment from '../../api/ApiEnvironment';
 import CommShareModal from '../../comm/components/CommShareModal';
 import WhiteModel from './model/WhiteModel';
 import { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
+import { routeNavigate } from '../../navigation/RouterMap';
+import RouterMap from '../../navigation/RouterMap';
 
 const {
     mine_user_icon,
@@ -62,7 +64,7 @@ export default class ShowListPage extends BasePage {
         if (this.state.left) {
             return false;
         } else {
-            this.$navigate('HomePage');
+            this.$navigateBackToHome();
             return true;
         }
     };
@@ -153,10 +155,10 @@ export default class ShowListPage extends BasePage {
 
     jumpToServicePage = () => {
         if (!user.isLogin) {
-            this.$navigate('login/login/LoginPage');
+            routeNavigate(RouterMap.LoginPage);
             return;
         }
-        this.$navigate('message/MessageCenterPage');
+        routeNavigate(RouterMap.MessageCenterPage);
     };
 
     loadMessageCount = () => {
@@ -424,7 +426,7 @@ let styles = StyleSheet.create({
     index: {
         color: DesignRule.textColor_secondTitle,
         fontSize: px2dp(13),
-        fontWeight: '600'
+        fontWeight: '500'
     },
     activityIndex: {
         color: DesignRule.mainColor,

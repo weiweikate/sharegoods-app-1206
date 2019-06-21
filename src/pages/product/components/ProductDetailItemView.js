@@ -17,7 +17,7 @@ import { contentImgWidth, price_type } from '../ProductDetailModel';
 import { ActivityDidBeginView, ActivityWillBeginView } from './ProductDetailActivityView';
 import UIImage from '@mr/image-placeholder';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import RouterMap, { navigate } from '../../../navigation/RouterMap';
+import RouterMap, { routeNavigate, routePush } from '../../../navigation/RouterMap';
 import { observer } from 'mobx-react';
 import res from '../../home/res';
 import { activity_type, activity_status } from '../ProductDetailModel';
@@ -44,11 +44,11 @@ export class HeaderItemView extends Component {
                     minPrice == maxPrice
                         ?
                         <Text style={styles.priceText}>¥<Text
-                            style={{ fontSize: 24, fontWeight: 'bold' }}>{minPrice}</Text></Text>
+                            style={{ fontSize: 24, fontWeight: '400' }}>{minPrice}</Text></Text>
                         :
                         <Text style={styles.priceText}>¥<Text
-                            style={{ fontSize: 24, fontWeight: 'bold' }}>{minPrice}</Text>-¥<Text
-                            style={{ fontSize: 24, fontWeight: 'bold' }}>{maxPrice}</Text></Text>
+                            style={{ fontSize: 24, fontWeight: '400' }}>{minPrice}</Text>-¥<Text
+                            style={{ fontSize: 24, fontWeight: '400' }}>{maxPrice}</Text></Text>
                 }
                 <Text style={styles.originalText}>¥{originalPrice}</Text>
                 {
@@ -168,13 +168,13 @@ const styles = StyleSheet.create({
         height: 22, width: 1, backgroundColor: DesignRule.lineColor_inGrayBg
     },
     shopSubText: {
-        paddingLeft: 15, paddingRight: 5, fontWeight: 'bold',
+        paddingLeft: 15, paddingRight: 5, fontWeight: '500',
         color: DesignRule.textColor_redWarn, fontSize: 14
     },
 
     nameText: {
         marginHorizontal: 15, paddingBottom: 5, paddingTop: 10,
-        color: DesignRule.textColor_mainTitle, fontSize: 16, fontWeight: 'bold'
+        color: DesignRule.textColor_mainTitle, fontSize: 16, fontWeight: '500'
     },
 
     secondNameText: {
@@ -220,7 +220,7 @@ export class SuitItemView extends Component {
 
     _goSuitPage = () => {
         const { productDetailModel } = this.props;
-        navigate(RouterMap.SuitProductPage, { productDetailModel });
+        routePush(RouterMap.SuitProductPage, { productDetailModel });
     };
 
     render() {
@@ -258,7 +258,7 @@ const SuitItemViewStyles = StyleSheet.create({
         height: 40
     },
     LeftText: {
-        color: DesignRule.textColor_mainTitle, fontSize: 15, fontWeight: 'bold'
+        color: DesignRule.textColor_mainTitle, fontSize: 15, fontWeight: '500'
     },
     rightView: {
         flexDirection: 'row', alignItems: 'center'
@@ -473,7 +473,7 @@ export class ContentItemView extends Component {
             return null;
         }
         return <TouchableWithoutFeedback onPress={() => {
-            navigate(RouterMap.CheckBigImagesView, { imageUrls: [item] });
+            routeNavigate(RouterMap.CheckBigImagesView, { imageUrls: [item] });
         }}>
             <Image source={{ uri: item }} style={{ width, height }}/>
         </TouchableWithoutFeedback>;

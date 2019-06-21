@@ -15,11 +15,11 @@ import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import DesignRule from '../../../constants/DesignRule';
 import MineApi from '../../mine/api/MineApi';
 // import user from '../../../manager/user';
-import RouterMap from '../../../navigation/RouterMap';
+import RouterMap, { replaceRoute, routeNavigate } from '../../../navigation/RouterMap';
 import { payStatus, payment, payStatusMsg } from '../../payment/Payment';
-import { NavigationActions } from 'react-navigation';
 import { SmoothPushPreLoadHighComponent } from '../../../comm/components/SmoothPushHighComponent';
 import NetFailedView from '../../../components/pageDecorator/BaseView/NetFailedView';
+
 @SmoothPushPreLoadHighComponent
 export default class MyOrdersListView extends Component {
     constructor(props) {
@@ -151,7 +151,7 @@ export default class MyOrdersListView extends Component {
                 orderType: item.subStatus,
                 prodCode: item.prodCode,
                 skuCode: item.skuCode,
-                activityCodes:item.activityCodes,
+                activityCodes: item.activityCodes,
                 afterSaleTime: item.afterSaleTime,
                 orderCustomerServiceInfoDTO: item.orderCustomerServiceInfoDTO
             });
@@ -174,7 +174,7 @@ export default class MyOrdersListView extends Component {
                     orderType: item.subStatus,
                     prodCode: item.prodCode,
                     skuCode: item.skuCode,
-                    activityCodes:item.activityCodes
+                    activityCodes: item.activityCodes
                 });
             });
         });
@@ -190,8 +190,8 @@ export default class MyOrdersListView extends Component {
                         orderNo: item.platformOrderNo,
                         quantity: item.quantity,
                         orderStatus: 1,
-                        subStatus:item.warehouseOrderDTOList[0].subStatus,
-                        warehouseType:item.warehouseOrderDTOList[0].warehouseType,
+                        subStatus: item.warehouseOrderDTOList[0].subStatus,
+                        warehouseType: item.warehouseOrderDTOList[0].warehouseType,
                         totalPrice: item.payAmount,
                         nowTime: item.nowTime,
                         cancelTime: item.warehouseOrderDTOList[0].cancelTime,
@@ -212,8 +212,8 @@ export default class MyOrdersListView extends Component {
                             quantity: this.totalAmount(resp.products),
                             orderType: resp.subStatus,
                             orderStatus: resp.status,
-                            subStatus:item.warehouseOrderDTOList[0].subStatus,
-                            warehouseType:item.warehouseOrderDTOList[0].warehouseType,
+                            subStatus: item.warehouseOrderDTOList[0].subStatus,
+                            warehouseType: item.warehouseOrderDTOList[0].warehouseType,
                             totalPrice: resp.payAmount,
                             expList: resp.expList || [],
                             nowTime: item.nowTime,
@@ -291,7 +291,7 @@ export default class MyOrdersListView extends Component {
             Toast.hiddenLoading();
             Toast.$toast(e.msg);
             if (e.code === 10009) {
-                this.props.nav('login/login/LoginPage');
+                routeNavigate(RouterMap.LoginPage);
             }
             this.setState({ isError: true, errMsgText: e.msg || '未知错误' });
         });
@@ -476,8 +476,9 @@ export default class MyOrdersListView extends Component {
                         spuCode: item.prodCode
                     });
                 });
-                track(trackEvent.OrderAgain,{
-                    orderId:data.orderNo, })
+                track(trackEvent.OrderAgain, {
+                    orderId: data.orderNo
+                });
                 shopCartCacheTool.addGoodItem(cartData);
                 this.props.nav('shopCart/ShopCart', { hiddeLeft: false });
                 break;
@@ -520,8 +521,8 @@ export default class MyOrdersListView extends Component {
                 });
                 break;
             case 99:
-                this.clickItem(index)
-                break
+                this.clickItem(index);
+                break;
         }
 
     };
@@ -529,10 +530,10 @@ export default class MyOrdersListView extends Component {
     async _goToPay(index) {
         let payData = this.state.viewData[index];
         const { platformOrderNo, orderNo, totalPrice, orderProduct } = payData;
-        const {productName} = orderProduct;
+        const { productName } = orderProduct;
         console.log('_goToPay', payData);
         //从订单发起的都是普通支付
-        let result = await payment.checkOrderStatus(platformOrderNo,0,0,totalPrice,productName);
+        let result = await payment.checkOrderStatus(platformOrderNo, 0, 0, totalPrice, productName);
         // return;
         if (result.code === payStatus.payNo) {
             this.props.nav('payment/PaymentPage', {
@@ -550,12 +551,7 @@ export default class MyOrdersListView extends Component {
             });
         } else if (result.code === payStatus.payOut) {
             Toast.$toast(payStatusMsg[result.code]);
-            let replace = NavigationActions.replace({
-                key: this.props.navigation.state.key,
-                routeName: 'order/order/MyOrdersListPage',
-                params: { index: 2 }
-            });
-            this.props.navigation.dispatch(replace);
+            replaceRoute('order/order/MyOrdersListPage', { index: 2 });
         } else {
             Toast.$toast(payStatusMsg[result.code] || '系统处理失败');
         }

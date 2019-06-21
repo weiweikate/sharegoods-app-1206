@@ -1,11 +1,5 @@
 apply plugin: 'com.android.library'
 
-buildscript {
-    repositories {
-        jcenter()
-    }
-}
-
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
     buildToolsVersion rootProject.ext.android.buildToolsVersion
@@ -18,8 +12,10 @@ android {
         abortOnError false
     }
     buildTypes {
-
         releaseStaging {}
+    }
+    sourceSets {
+        main.java.srcDirs += 'lib/src/main/java'
     }
 }
 
@@ -29,9 +25,11 @@ repositories {
 
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
+    // From node_modules
     api rootProject.ext.dependencies.support
     // From node_modules
     api(rootProject.ext.dependencies.rn) {
         exclude group: 'com.android.support'
     }
 }
+  

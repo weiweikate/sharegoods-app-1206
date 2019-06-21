@@ -1,35 +1,46 @@
-import { NavigationActions, StackNavigator } from 'react-navigation';
+import { NavigationActions, createStackNavigator, createAppContainer } from 'react-navigation';
 import { Platform, NativeModules } from 'react-native';
 /**
  * 以下两个对象不可以颠倒引入，会导致全局路由RouterMap不可用
  */
 import RouterMap from './RouterMap';
 import Router from './Stack';
-import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
 import Analytics from '../utils/AnalyticsUtil';
 import bridge from '../utils/bridge';
 import showPinFlagModel from '../model/ShowPinFlag';
+import StackViewStyleInterpolator from 'react-navigation-stack/src/views/StackView/StackViewStyleInterpolator';
 
-const Navigator = StackNavigator(Router,
-    {
-        initialRouteName: 'Tab',
-        initialRouteParams: {},
-        headerMode: 'none',
-        // mode: 'modal',
-        navigationOptions: {
-            gesturesEnabled: true
-        },
-        transitionConfig: (transitionProps, prevTransitionProps, isModal) => {
-            return ({
-                screenInterpolator: CardStackStyleInterpolator.forHorizontal
-            });
-        }
+let IOS_NaviConfig = {
+    initialRouteName: 'Tab',
+    initialRouteParams: {},
+    headerMode: 'none',
+    mode: 'card',
+    navigationOptions: {
+        gesturesEnabled: true
     }
-);
-// goBack 返回指定的router
-const defaultStateAction = Navigator.router.getStateForAction;
+};
+let Andorid_NaviConfig = {
+    initialRouteName: 'Tab',
+    initialRouteParams: {},
+    headerMode: 'none',
+    navigationOptions: {
+        gesturesEnabled: true
+    },
+    transitionConfig: () => {
+        return ({
+            screenInterpolator: StackViewStyleInterpolator.forHorizontal
+        });
+    }
+};
 
-Navigator.router.getStateForAction = (action, state) => {
+const RootStack = createStackNavigator(Router,
+    Platform.OS === 'ios' ? IOS_NaviConfig : Andorid_NaviConfig
+);
+
+// goBack 返回指定的router
+const defaultStateAction = RootStack.router.getStateForAction;
+
+RootStack.router.getStateForAction = (action, state) => {
     const currentPage = getCurrentRouteName(state);
     if (state && (action.type === NavigationActions.BACK) && (state.routes.length === 1)) {
         console.log('退出RN页面');
@@ -140,5 +151,7 @@ export const getCurrentRouteName = (navigationState) => {
     }
     return route.routeName;
 };
+
+const Navigator = createAppContainer(RootStack);
 
 export default Navigator;

@@ -2,7 +2,7 @@ import { action, observable } from 'mobx';
 
 
 class ShowPinFlag {
-    @observable showFlag = true;
+    @observable showFlag = false;
 
     @action saveShowFlag(isShow) {
         if (isShow === this.showFlag) {

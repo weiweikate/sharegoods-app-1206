@@ -18,9 +18,7 @@ import DateUtils from '../../../utils/DateUtils';
 import SelectionPage, { sourceType } from '../../product/SelectionPage';
 import StringUtils from '../../../utils/StringUtils';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
-import ShopCartStore from '../../shopCart/model/ShopCartStore';
 import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
-import { observer } from 'mobx-react';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
 import DesignRule from '../../../constants/DesignRule';
@@ -28,6 +26,7 @@ import res from '../res';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { MRText as Text } from '../../../components/ui';
 import { RecyclerListView, LayoutProvider, DataProvider } from 'recyclerlistview';
+import ShopCartRedNumView from './components/ShopCartRedNumView';
 
 const viewTypes = {
     rowView: 'rowView',
@@ -37,14 +36,11 @@ const viewTypes = {
 
 const { width, height } = ScreenUtils;
 
-
 const {
     toGwc,
     toTop
 } = res.search;
 
-
-@observer
 export default class SearchResultPage extends BasePage {
 
 
@@ -290,7 +286,7 @@ export default class SearchResultPage extends BasePage {
     };
 
     _onPressToGwc = () => {
-        this.$navigate('shopCart/ShopCart', {
+        this.$navigate(RouterMap.ShopCart, {
             hiddeLeft: false
         });
     };
@@ -503,18 +499,7 @@ export default class SearchResultPage extends BasePage {
                 <View style={{ position: 'absolute', right: 15, bottom: 15 }}>
                     <TouchableOpacity onPress={this._onPressToGwc}>
                         <Image source={toGwc}/>
-                        {ShopCartStore.getAllGoodsClassNumber === 0 ? null : <View style={{
-                            position: 'absolute', top: 4, left: 4, height: 16,
-                            paddingHorizontal: 4,
-                            backgroundColor: DesignRule.mainColor,
-                            borderRadius: 8, justifyContent: 'center', alignItems: 'center'
-                        }}>
-                            <Text style={{
-                                color: 'white',
-                                fontSize: 10
-                            }}
-                                  allowFontScaling={false}>{ShopCartStore.getAllGoodsClassNumber > 99 ? 99 : ShopCartStore.getAllGoodsClassNumber}</Text>
-                        </View>}
+                        <ShopCartRedNumView/>
                     </TouchableOpacity>
                     {this.state.showTop ? <TouchableOpacity onPress={this._onPressToTop.bind(this)}>
                         <Image style={{ marginTop: 5 }} source={toTop}/>

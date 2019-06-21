@@ -78,17 +78,16 @@ export default class ProductDetailPage extends BasePage {
 
 
     componentDidMount() {
-        this.firstLoad = true;
         this.willFocusSubscription = this.props.navigation.addListener('willFocus', payload => {
                 const { state } = payload;
-                if (state && state.routeName === 'product/ProductDetailPage' && !this.firstLoad) {
+                if (state && state.routeName === 'product/ProductDetailPage' && !user.isProdFirstLoad) {
                     this.productDetailModel && this.productDetailModel.requestProductDetail();
                 }
-                this.firstLoad = false;
             }
         );
-        if (this.firstLoad) {
+        if (user.isProdFirstLoad) {
             setTimeout(() => {
+                user.isProdFirstLoad = false;
                 this.productDetailModel && this.productDetailModel.requestProductDetail();
             }, 500);
         }
@@ -108,7 +107,7 @@ export default class ProductDetailPage extends BasePage {
                 break;
             case 'keFu':
                 if (!user.isLogin) {
-                    this.$navigate(RouterMap.LoginPage);
+                    this.gotoLoginPage();
                     return;
                 }
                 track(trackEvent.ClickOnlineCustomerService, { customerServiceModuleSource: 2 });
@@ -128,7 +127,7 @@ export default class ProductDetailPage extends BasePage {
                 break;
             case 'buy':
                 if (!user.isLogin) {
-                    this.$navigate(RouterMap.LoginPage);
+                    this.gotoLoginPage();
                     return;
                 }
                 this.state.goType = type;
@@ -167,7 +166,7 @@ export default class ProductDetailPage extends BasePage {
                 quantity: amount,
                 productCode: prodCode
             }];
-            this.$navigate('order/order/ConfirOrderPage', {
+            this.$navigate(RouterMap.ConfirOrderPage, {
                 orderParamVO: {
                     orderType: 99,
                     orderProducts: orderProducts,
@@ -213,7 +212,7 @@ export default class ProductDetailPage extends BasePage {
                 return <ProductDetailCouponsView productDetailCouponsViewModel={productDetailCouponsViewModel}
                                                  onPress={() => {
                                                      if (!user.isLogin) {
-                                                         this.$navigate(RouterMap.LoginPage);
+                                                         this.gotoLoginPage();
                                                          return;
                                                      }
                                                      this.ProductDetailCouponsWindowView.showWindowView();

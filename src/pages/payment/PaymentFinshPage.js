@@ -12,15 +12,14 @@ import ScreenUtils from '../../utils/ScreenUtils';
 import res from './res';
 import { MRText } from '../../components/ui';
 import LinearGradient from 'react-native-linear-gradient';
-import { NavigationActions } from 'react-navigation';
 import { TrackApi } from '../../utils/SensorsTrack';
 import ShareUtil from '../../utils/ShareUtil';
 import user from '../../model/user';
 import PaymentApi from './PaymentApi';
-// import RouterMap from '../../navigation/RouterMap';
 import apiEnvironment from '../../api/ApiEnvironment';
 import bridge from '../../utils/bridge';
-// import PaymentApi from './PaymentApi';
+import { replaceRoute } from '../../navigation/RouterMap';
+import RouterMap from '../../navigation/RouterMap';
 
 const { px2dp } = ScreenUtils;
 const {
@@ -59,27 +58,27 @@ export default class PaymentFinshPage extends BasePage {
         this.state = {
             showShareView: false,
             couponIdList: [],
-            shareCode:''
+            shareCode: ''
         };
         //orderPayResultPageType 有券无劵
         TrackApi.ViewOrderPayPage({ orderPayType: 2, orderPayResultPageType: 2 });
         //
-        setTimeout(()=>{
+        setTimeout(() => {
             bridge.$checkIsCanComment();
-        },2000);
+        }, 2000);
 
     }
 
     componentDidMount() {
         PaymentApi.getUserCouponAmount(
             {
-                couponIdList:81
+                couponIdList: 81
             }
-        ).then(result=>{
+        ).then(result => {
             console.log(result);
             this.setState({
-                couponIdList:result.data || [],
-            })
+                couponIdList: result.data || []
+            });
             // this.setState({
             //     couponIdList: [
             //         {
@@ -99,20 +98,20 @@ export default class PaymentFinshPage extends BasePage {
             //     ]
             // })
         });
-        PaymentApi.judgeShare().then(result=>{
+        PaymentApi.judgeShare().then(result => {
             console.log(result);
 
             let isShare = result.data && result.data.isShare;
-            let  shareCode = result.data && result.data.shareCode;
+            let shareCode = result.data && result.data.shareCode;
             this.setState({
-                showShareView:isShare,
-                shareCode:shareCode,
-            })
-        }).catch(error=>{
+                showShareView: isShare,
+                shareCode: shareCode
+            });
+        }).catch(error => {
             this.setState({
-                showShareView:false
-            })
-        })
+                showShareView: false
+            });
+        });
         // setTimeout(() => {
         //     this.setState({
         //         showShareView: true
@@ -214,8 +213,7 @@ export default class PaymentFinshPage extends BasePage {
             orderPayType: 2,
             orderPayResultBtnType: 1
         });
-        // this.$navigateBackToHome();
-        this.$navigateReset();
+        this.$navigateBackToHome();
     };
     /**
      * 去订单页面事件
@@ -226,13 +224,7 @@ export default class PaymentFinshPage extends BasePage {
             orderPayType: 2,
             orderPayResultBtnType: 2
         });
-        let replace = NavigationActions.replace({
-            key: this.props.navigation.state.key,
-            type: 'ReplacePayScreen',
-            routeName: 'order/order/MyOrdersListPage',
-            params: { index: 2 }
-        });
-        this.props.navigation.dispatch(replace);
+        replaceRoute('order/order/MyOrdersListPage', { index: 2 });
     };
 
     /**
@@ -253,7 +245,7 @@ export default class PaymentFinshPage extends BasePage {
                             商品兑换券
                         </MRText>
                         <MRText style={{ color: '#B4B4B4', fontSize: px2dp(12), marginTop: px2dp(3) }}>
-                            有效期：{this.format(itemData.expireTime) }
+                            有效期：{this.format(itemData.expireTime)}
                         </MRText>
                     </View>
                     <View style={{ width: px2dp(90), alignItems: 'center', justifyContent: 'center' }}>
@@ -291,8 +283,8 @@ export default class PaymentFinshPage extends BasePage {
             orderPayResultBtnType: 5
         });
 
-        this.$navigate('HtmlPage',{
-            uri:couponItem.url
+        this.$navigate(RouterMap.HtmlPage, {
+            uri: couponItem.url
         });
     };
     /**
@@ -362,19 +354,20 @@ export default class PaymentFinshPage extends BasePage {
         ShareUtil.onShare({
             shareType: 1,
             platformType: 0,
-            title: user.nickname+'送你一个免费大礼',
+            title: user.nickname + '送你一个免费大礼',
             dec: '秀购专享福利 海量商品免费送～立即领取',
             thumImage: `${apiEnvironment.getCurrentOssHost()}/sharegoods/h5/resource/icon/shareIcon.png`,
             linkUrl: `${apiEnvironment.getCurrentH5Url()}/activity/drawShare/${this.state.shareCode}`
         });
 
         PaymentApi.shareCallback({
-            source:'app',
-            shareUrl:`${apiEnvironment.getCurrentH5Url()}/activity/drawShare/${this.state.shareCode}`,
-            shareCode:this.state.shareCode
-        }).then(result=>{
+            source: 'app',
+            shareUrl: `${apiEnvironment.getCurrentH5Url()}/activity/drawShare/${this.state.shareCode}`,
+            shareCode: this.state.shareCode
+        }).then(result => {
 
-        }).catch(error=>{});
+        }).catch(error => {
+        });
     };
     /**
      * 分享到朋友圈
@@ -388,23 +381,24 @@ export default class PaymentFinshPage extends BasePage {
         });
 
         ShareUtil.onShare({
-            hdImageURL:user.headImg,
-            imageUrl:user.headImg,
+            hdImageURL: user.headImg,
+            imageUrl: user.headImg,
             shareType: 1,
             platformType: 1,
-            thumImage:`${apiEnvironment.getCurrentOssHost()}/sharegoods/h5/resource/icon/shareIcon.png`,
-            title:user.nickname+'送你一个免费大礼，秀购专享福利 海量商品免费送～',
+            thumImage: `${apiEnvironment.getCurrentOssHost()}/sharegoods/h5/resource/icon/shareIcon.png`,
+            title: user.nickname + '送你一个免费大礼，秀购专享福利 海量商品免费送～',
             dec: '',
             linkUrl: `${apiEnvironment.getCurrentH5Url()}/activity/drawShare/${this.state.shareCode}`
         });
 
         PaymentApi.shareCallback({
-            source:'app',
-            shareUrl:`${apiEnvironment.getCurrentH5Url()}/activity/drawShare/${this.state.shareCode}`,
-            shareCode:this.state.shareCode
-        }).then(result=>{
+            source: 'app',
+            shareUrl: `${apiEnvironment.getCurrentH5Url()}/activity/drawShare/${this.state.shareCode}`,
+            shareCode: this.state.shareCode
+        }).then(result => {
 
-        }).catch(error=>{});
+        }).catch(error => {
+        });
     };
 
     format = (timeStamp) => {
@@ -418,7 +412,7 @@ export default class PaymentFinshPage extends BasePage {
         let d = time.getDate();
         // let h = time.getHours();
         // let mm = time.getMinutes();
-        return y+'.'+m+'.'+d;
+        return y + '.' + m + '.' + d;
     };
 }
 

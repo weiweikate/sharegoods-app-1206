@@ -48,17 +48,17 @@ export default class ConfirmReceiveGoodsPage extends BasePage {
 
     };
     showOrderPage = () => {
-        OrderApi.checkInfo({warehouseOrderNo:this.params.orderNo}).then(res => {
-            if(res.data){
+        OrderApi.checkInfo({ warehouseOrderNo: this.params.orderNo }).then(res => {
+            if (res.data) {
                 this.$navigate(RouterMap.P_ScorePublishPage, {
                     orderNo: this.params.orderNo
                 });
-            }else{
+            } else {
                 Toast.$toast('该商品已晒过单！');
             }
-        }).catch(e =>{
+        }).catch(e => {
             Toast.$toast(e.msg);
-        })
+        });
     };
     $NavBarLeftPressed = () => {
         this.$navigateBack();
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     firstTextStyle: {
         color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(20),
-        fontWeight: 'bold',
+        fontWeight: '600',
         marginTop: px2dp(10)
     },
     secTextStyle: { color: DesignRule.textColor_instruction, fontSize: px2dp(13), marginTop: px2dp(10) },
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
         borderRadius: px2dp(24), borderColor: DesignRule.lineColor_inWhiteBg, borderWidth: 1,
         width: px2dp(110), height: px2dp(40), alignItems: 'center', justifyContent: 'center', flex: 1
     },
-    selectStyle : {
+    selectStyle: {
         marginLeft: px2dp(58),
         marginRight: px2dp(58),
         marginTop: px2dp(40),

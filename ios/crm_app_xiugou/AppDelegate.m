@@ -16,6 +16,7 @@
  */
 
 #import "AppDelegate.h"
+#import <CodePush/CodePush.h>
 #import "CommentTool.h"
 
 #import <React/RCTBundleURLProvider.h>

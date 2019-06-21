@@ -7,13 +7,13 @@ import DesignRule from '../../../../constants/DesignRule';
 import BasePage from '../../../../BasePage';
 import UserSingleItem from '../../components/UserSingleItem';
 import user from '../../../../model/user';
-import { observer } from 'mobx-react/native';
+import { observer } from 'mobx-react';
 import BusinessUtils from '../../components/BusinessUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 
 const dismissKeyboard = require('dismissKeyboard');
 import MineApi from '../../api/MineApi';
-import RouterMap from '../../../../navigation/RouterMap';
+import RouterMap, { routeNavigate } from '../../../../navigation/RouterMap';
 import CommModal from '../../../../comm/components/CommModal';
 import { MRText as Text } from '../../../../components/ui';
 import { track, trackEvent } from '../../../../utils/SensorsTrack';
@@ -54,7 +54,7 @@ export default class UserInformationPage extends BasePage {
         if (user.isLogin) {
             MineApi.getUser().then(res => {
                 let data = res.data;
-                console.log('data',data);
+                console.log('data', data);
                 user.saveUserInfo(data);
             }).catch(err => {
                 this.$toastShow(err.msg);
@@ -93,12 +93,12 @@ export default class UserInformationPage extends BasePage {
                 }}
 
                 visible={this.state.showCopy}>
-                <TouchableWithoutFeedback onPress={()=>{
+                <TouchableWithoutFeedback onPress={() => {
                     this.setState({
                         showCopy: false
                     });
                 }}>
-                    <View style={{ flex: 1 ,justifyContent:'center',alignItems:'center'}}>
+                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                         <TouchableWithoutFeedback onPress={this.copyCode}>
                             <View style={{
                                 backgroundColor: DesignRule.white,
@@ -163,7 +163,8 @@ export default class UserInformationPage extends BasePage {
                 }}/>
                 <UserSingleItem leftText={'手机号'} rightText={user.phone} rightTextStyle={styles.grayText}
                                 leftTextStyle={styles.blackText} isArrow={false} isLine={false}/>
-                <UserSingleItem leftText={'微信号'} rightText={user.weChatNumber?user.weChatNumber:'设置微信号'} rightTextStyle={styles.grayText}
+                <UserSingleItem leftText={'微信号'} rightText={user.weChatNumber ? user.weChatNumber : '设置微信号'}
+                                rightTextStyle={styles.grayText}
                                 leftTextStyle={styles.blackText} isLine={false} isArrow={true}
                                 onPress={() => this.jumpToSetWechatPage()}/>
                 {this.renderWideLine()}
@@ -195,7 +196,7 @@ export default class UserInformationPage extends BasePage {
     }
 
     takePhoto = () => {
-        track(trackEvent.ClickModifyAvatar,{});
+        track(trackEvent.ClickModifyAvatar, {});
         BusinessUtils.getImagePicker(callback => {
             this.$loadingShow();
             MineApi.updateUserById({ headImg: callback.imageUrl[0], type: 1 }).then((response) => {
@@ -204,10 +205,10 @@ export default class UserInformationPage extends BasePage {
                 if (response.code === 10000) {
                     user.headImg = callback.imageUrl[0];
                     this.$toastShow('头像修改成功');
-                    if (callback.camera === true){
-                        track(trackEvent.ModifuAvatarSuccess, {modificationMode:1});
+                    if (callback.camera === true) {
+                        track(trackEvent.ModifuAvatarSuccess, { modificationMode: 1 });
                     } else {
-                        track(trackEvent.ModifuAvatarSuccess, {modificationMode:2});
+                        track(trackEvent.ModifuAvatarSuccess, { modificationMode: 2 });
                     }
                 }
             }).catch(err => {
@@ -222,21 +223,21 @@ export default class UserInformationPage extends BasePage {
     jumpToIDVertify2Page = () => {
         if (!user.realname) {
             track(trackEvent.ClickRealCodeentityVerify, {});
-            this.$navigate('mine/userInformation/IDVertify2Page');
+            this.$navigate(RouterMap.IDVertify2Page);
         }
     };
     jumpToNickNameModifyPage = () => {
         track(trackEvent.ClickModifyNickName, {});
-        this.$navigate('mine/userInformation/NickNameModifyPage', { oldNickName: user.nickname });
+        this.$navigate(RouterMap.NickNameModifyPage, { oldNickName: user.nickname });
     };
 
     jumpToSetWechatPage = () => {
-        this.$navigate('mine/userInformation/SetWechatPage', { weChatNumber: user.weChatNumber });
+        this.$navigate(RouterMap.SetWechatPage, { weChatNumber: user.weChatNumber });
     };
 
     renderGetCityPicker = () => {
         dismissKeyboard();
-        this.$navigate('mine/address/SelectAreaPage', {
+        this.$navigate(RouterMap.SelectAreaPage, {
             setArea: this.setArea.bind(this),
             tag: 'province',
             fatherCode: '0'
@@ -255,7 +256,7 @@ export default class UserInformationPage extends BasePage {
             this.$toastShow('地址修改成功');
         }).catch(err => {
             if (err.code === 10009) {
-                this.$navigate('login/login/LoginPage');
+                routeNavigate(RouterMap.LoginPage);
             }
         });
     }

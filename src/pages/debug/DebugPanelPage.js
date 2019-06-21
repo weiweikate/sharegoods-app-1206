@@ -14,12 +14,11 @@ import {
 } from 'react-native';
 import GeneralButton from '../../components/pageDecorator/BaseView/GeneralButton';
 
-//const {commModule} = NativeModules;
 import user from '../../model/user';
 import apiEnvironment from '../../api/ApiEnvironment';
-import { NavigationActions } from 'react-navigation';
 import { observer } from 'mobx-react';
 import BasePage from '../../BasePage';
+import { forceToHome, routeNavigate } from '../../navigation/RouterMap';
 
 @observer
 export default class DebugPanelPage extends BasePage {
@@ -65,30 +64,25 @@ export default class DebugPanelPage extends BasePage {
             hostName: apiEnvironment.getCurrentHostName(),
             hostUrl: apiEnvironment.getCurrentHostUrl()
         });
-        const resetAction = NavigationActions.reset({
-            index: 0,
-            actions: [NavigationActions.navigate({ routeName: 'Tab' })]
-        });
-        this.props.navigation.dispatch(resetAction);
-
+        forceToHome();
     };
 
     // 跳转HTTP请求历史记录页面
     goToFetchHistoryPage = () => {
-        this.props.navigation.navigate('debug/FetchHistoryPage');
+        routeNavigate('debug/FetchHistoryPage');
     };
 
     // 跳转到user
     goToUserPage = () => {
-        this.props.navigation.navigate('debug/UserInfoPage');
+        routeNavigate('debug/UserInfoPage');
     };
 
     // 跳转到工具调试页面
     goToToolDebugging = () => {
-        this.props.navigation.navigate('debug/ToolDebugPage');
+        routeNavigate('debug/ToolDebugPage');
     };
     goToDemo = () => {
-        this.props.navigation.navigate('debug/DemoListPage');
+        routeNavigate('debug/DemoListPage');
     };
 
 

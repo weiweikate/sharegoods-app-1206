@@ -9,6 +9,7 @@ import HTML from 'react-native-render-html';
 import MineApi from '../../api/MineApi';
 import DesignRule from '../../../../constants/DesignRule';
 import { MRText as Text, NoMoreClick } from '../../../../components/ui';
+import RouterMap, { routeNavigate } from '../../../../navigation/RouterMap';
 
 /**
  * @author chenxiang
@@ -122,7 +123,7 @@ export default class HelperQuestionDetail extends BasePage {
             this.loadPageData();
         }).catch(err => {
             if (err.code === 10009) {
-                this.gotoLoginPage();
+                routeNavigate(RouterMap.LoginPage);
             }
         });
     }
@@ -133,7 +134,7 @@ export default class HelperQuestionDetail extends BasePage {
             this.loadPageData();
         }).catch(err => {
             if (err.code === 10009) {
-                this.$navigate('login/login/LoginPage');
+                routeNavigate(RouterMap.LoginPage);
             }
         });
     }

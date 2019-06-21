@@ -16,7 +16,7 @@ import { MRText as Text, MRTextInput as RNTextInput } from '../../../../componen
 import StringUtils, { isNoEmpty } from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import user from '../../../../model/user';
-import { observer } from 'mobx-react/native';
+import { observer } from 'mobx-react';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import MineAPI from '../../api/MineApi';

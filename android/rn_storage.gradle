@@ -1,4 +1,13 @@
 apply plugin: 'com.android.library'
+
+long dbSizeInMB = 6L
+
+def newDbSize = rootProject.properties['AsyncStorage_db_size_in_MB']
+
+if( newDbSize != null && newDbSize.isLong()) {
+    dbSizeInMB = newDbSize.toLong()
+}
+
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
     buildToolsVersion rootProject.ext.android.buildToolsVersion
@@ -6,30 +15,20 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
+        buildConfigField "Long", "AsyncStorage_db_size", "${dbSizeInMB}L"
     }
     lintOptions {
         abortOnError false
+        warning 'InvalidPackage'
     }
     buildTypes {
         releaseStaging {}
     }
 }
 
-repositories {
-    mavenLocal()
-    jcenter()
-    google()
-    maven {
-        // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
-        url "$projectDir/../../../node_modules/react-native/android"
-    }
-}
-
 dependencies {
-    api fileTree(include: ['*.jar'], dir: 'libs')
-    api rootProject.ext.dependencies.support
-    // From node_modules
     api(rootProject.ext.dependencies.rn) {
         exclude group: 'com.android.support'
     }
+    api rootProject.ext.dependencies.support
 }

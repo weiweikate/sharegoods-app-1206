@@ -23,6 +23,7 @@ import chatModel from '../../utils/QYModule/QYChatModel';
 import { observer } from 'mobx-react';
 import { beginChatType, QYChatTool } from '../../utils/QYModule/QYChatTool';
 import ServiceRowView from './components/ServiceRowView';
+import RouterMap from '../../navigation/RouterMap';
 
 const {
     icon_03: noticeIcon,
@@ -89,17 +90,17 @@ export default class MessageCenterPage extends BasePage {
     orderMenuJump(i) {
         switch (i) {
             case 0:
-                this.$navigate('message/NotificationPage');
+                this.$navigate(RouterMap.NotificationPage);
                 TrackApi.ViewNotice();
                 break;
             case 1:
                 TrackApi.ViewMessage();
-                this.$navigate('message/MessageGatherPage');
+                this.$navigate(RouterMap.MessageGatherPage);
                 break;
 
             case 2:
                 TrackApi.ViewPinMessage();
-                this.$navigate('message/ShopMessagePage');
+                this.$navigate(RouterMap.ShopMessagePage);
                 break;
         }
     }

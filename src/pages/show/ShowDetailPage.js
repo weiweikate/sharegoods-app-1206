@@ -42,7 +42,7 @@ import AddCartModel from './model/AddCartModel';
 import { sourceType } from '../product/SelectionPage';
 import shopCartCacheTool from '../shopCart/model/ShopCartCacheTool';
 import SelectionPage from '../product/SelectionPage';
-import RouterMap from '../../navigation/RouterMap';
+import RouterMap, { navigateBack, routeNavigate } from '../../navigation/RouterMap';
 import DownloadUtils from './utils/DownloadUtils';
 
 const { iconShowFire, iconLike, iconNoLike, iconDownload, iconShowShare } = res;
@@ -164,14 +164,11 @@ export default class ShowDetailPage extends BasePage {
 
 
     _goBack() {
-        console.log('_goBack');
-        const { navigation } = this.props;
-        navigation.goBack(null);
+        navigateBack();
     }
 
     _goToGoodsPage(good) {
-        const { navigation } = this.props;
-        navigation.push('product/ProductDetailPage', {
+        routeNavigate(RouterMap.ProductDetailPage, {
             productCode: good.code
         });
     }
@@ -181,8 +178,7 @@ export default class ShowDetailPage extends BasePage {
         if (user.isLogin) {
             this.showDetailModule.showGoodAction();
         } else {
-            const { navigation } = this.props;
-            navigation.push('login/login/LoginPage');
+            routeNavigate(RouterMap.LoginPage);
         }
     }
 
@@ -190,8 +186,7 @@ export default class ShowDetailPage extends BasePage {
         if (user.isLogin) {
             this.showDetailModule.showConnectAction();
         } else {
-            const { navigation } = this.props;
-            navigation.push('login/login/LoginPage');
+            routeNavigate(RouterMap.LoginPage);
         }
     }
 
@@ -271,8 +266,7 @@ export default class ShowDetailPage extends BasePage {
 
     _showImagesPage(imgs, index) {
         this.noNeedRefresh = true;
-        const { navigation } = this.props;
-        navigation.push('show/ShowDetailImagePage', {
+        routeNavigate(RouterMap.ShowDetailImagePage, {
             imageUrls: imgs,
             index: index
         });
@@ -297,7 +291,7 @@ export default class ShowDetailPage extends BasePage {
 
     _downloadShowContent = () => {
         if (!user.isLogin) {
-            this.$navigate('login/login/LoginPage');
+            routeNavigate(RouterMap.LoginPage);
             return;
         }
 
