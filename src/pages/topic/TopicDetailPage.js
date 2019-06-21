@@ -3,12 +3,7 @@ import {
     View,
     StyleSheet,
     SectionList,
-    // Image,
-    FlatList,
-    // TouchableWithoutFeedback,
     TouchableOpacity
-    // AsyncStorage,
-    // ImageBackground
 } from 'react-native';
 import BasePage from '../../BasePage';
 import TopicDetailHeaderView from './components/TopicDetailHeaderView';
@@ -29,17 +24,9 @@ import {
     MRText as Text
 } from '../../components/ui';
 
-// const { px2dp } = ScreenUtils;
 import EmptyUtils from '../../utils/EmptyUtils';
-// import StringUtils from '../../utils/StringUtils';
-// import CommModal from 'CommModal';
 import DetailNavView from '../product/components/DetailNavView';
 
-// const LASTSHOWPROMOTIONTIME = 'LASTSHOWPROMOTIONTIME';
-// import res from './res';
-
-// const redEnvelopeBg = res.other.red_big_envelope;
-// const tongyong_btn_close_white = res.button.tongyong_btn_close_white;
 import { PageLoadingState, renderViewByLoadingState } from '../../components/pageDecorator/PageState';
 import NavigatorBar from '../../components/pageDecorator/NavigatorBar/NavigatorBar';
 import MessageAPI from '../message/api/MessageApi';
@@ -48,6 +35,8 @@ import DetailHeaderServiceModal from '../product/components/DetailHeaderServiceM
 import ProductApi from '../product/api/ProductApi';
 import { beginChatType, QYChatTool } from '../../utils/QYModule/QYChatTool';
 import { SmoothPushPreLoadHighComponent } from '../../comm/components/SmoothPushHighComponent';
+import { routeNavigate } from '../../navigation/RouterMap';
+import RouterMap from '../../navigation/RouterMap';
 
 /*
 * 仅有礼包了  2019.4.25
@@ -96,7 +85,6 @@ export default class TopicDetailPage extends BasePage {
 
 
     componentDidMount() {
-        // this.getPromotion();
         this.willFocusSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
@@ -110,54 +98,10 @@ export default class TopicDetailPage extends BasePage {
         );
     }
 
-    // getPromotion = async () => {
-    //     try {
-    //         const value = await AsyncStorage.getItem(LASTSHOWPROMOTIONTIME);
-    //         var currStr = new Date().getTime() + '';
-    //         if (value == null || parseInt(currStr) - parseInt(value) > 24 * 60 * 60 * 1000) {
-    //             if (user.isLogin && EmptyUtils.isEmpty(user.upUserid)) {
-    //                 HomeAPI.getReceivePackage({ type: 2 }).then((data) => {
-    //                     if (!EmptyUtils.isEmpty(data.data)) {
-    //                         this.setState({
-    //                             canGetCoupon: true,
-    //                             couponData: data.data
-    //                         });
-    //                         this.couponId = data.data.id;
-    //                         AsyncStorage.setItem(LASTSHOWPROMOTIONTIME, currStr);
-    //                     }
-    //                 });
-    //             }
-    //         }
-    //     } catch (error) {
-    //     }
-    // };
-
     componentWillUnmount() {
         this.willFocusSubscription && this.willFocusSubscription.remove();
         this.__timer__ && clearInterval(this.__timer__);
     }
-
-    // getCoupon = () => {
-    //     if (EmptyUtils.isEmpty(this.couponId)) {
-    //         this.setState({
-    //             canGetCoupon: false
-    //         });
-    //         this.$toastShow('领取失败！');
-    //     } else {
-    //         HomeAPI.givingPackageToUser({ id: this.couponId }).then((data) => {
-    //             this.setState({
-    //                 hasGetCoupon: true
-    //             });
-    //         }).catch((error) => {
-    //             this.setState({
-    //                 canGetCoupon: false
-    //             });
-    //             this.$toastShow(error.msg);
-    //         });
-    //
-    //     }
-    // };
-
 
     //数据
     _getActivityData = () => {
@@ -247,7 +191,7 @@ export default class TopicDetailPage extends BasePage {
         if (this.state.activityType !== 3 && (status === 4 || status === 5) && type === 1) {
             this.__timer__ = setTimeout(() => {
                 this.havePushDone = true;
-                this.$navigate('product/ProductDetailPage', {
+                this.$navigate(RouterMap.ProductDetailPage, {
                     productCode: this.state.activityData.prodCode
                 });
             }, 5000);
@@ -333,7 +277,7 @@ export default class TopicDetailPage extends BasePage {
             productCode: this.state.activityData.prodCode,
             spuName: this.state.data.name
         });
-        this.$navigate('order/order/ConfirOrderPage', {
+        this.$navigate(RouterMap.ConfirOrderPage, {
             orderParamVO: {
                 orderType: this.state.activityType,
                 orderProducts: orderProducts,
@@ -364,7 +308,7 @@ export default class TopicDetailPage extends BasePage {
         //     priceList: priceList
         // }];
 
-        this.$navigate('order/order/ConfirOrderPage', {
+        this.$navigate(RouterMap.ConfirOrderPage, {
             orderParamVO: {
                 activityCode: this.params.activityCode,
                 orderType: 3,
@@ -674,7 +618,7 @@ export default class TopicDetailPage extends BasePage {
                                    this.$navigateBack();
                                }}
                                navRLeft={() => {
-                                   this.$navigate('shopCart/ShopCart', {
+                                   this.$navigate(RouterMap.ShopCart, {
                                        hiddeLeft: false
                                    });
                                }}
@@ -683,13 +627,13 @@ export default class TopicDetailPage extends BasePage {
                                        switch (item.type) {
                                            case 0:
                                                if (!user.isLogin) {
-                                                   this.$navigate('login/login/LoginPage');
+                                                   routeNavigate(RouterMap.LoginPage);
                                                    return;
                                                }
-                                               this.$navigate('message/MessageCenterPage');
+                                               routeNavigate(RouterMap.MessageCenterPage);
                                                break;
                                            case 1:
-                                               this.$navigate('home/search/SearchPage');
+                                               routeNavigate(RouterMap.SearchPage);
                                                break;
                                            case 2:
                                                setTimeout(() => {
@@ -698,7 +642,7 @@ export default class TopicDetailPage extends BasePage {
                                                break;
                                            case 3:
                                                if (!user.isLogin) {
-                                                   this.$navigate('login/login/LoginPage');
+                                                   routeNavigate(RouterMap.LoginPage);
                                                    return;
                                                }
                                                setTimeout(() => {

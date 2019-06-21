@@ -17,6 +17,7 @@ import DesignRule from '../../../constants/DesignRule';
 import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
 import SearchNavView from './components/SearchNavView';
 import res from '../res';
+import RouterMap from '../../../navigation/RouterMap';
 
 export default class SearchPage extends BasePage {
 
@@ -116,7 +117,7 @@ export default class SearchPage extends BasePage {
     };
 
     _clickShopAtRow = (item) => {
-        this.$navigate('spellShop/MyShop_RecruitPage', { storeCode: item.storeNumber });
+        this.$navigate(RouterMap.MyShop_RecruitPage, { storeCode: item.storeNumber });
     };
 
     // 渲染行

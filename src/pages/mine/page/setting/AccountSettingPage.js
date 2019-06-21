@@ -5,13 +5,13 @@ import {
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
 import user from '../../../../model/user';
-import { observer } from 'mobx-react/native';
+import { observer } from 'mobx-react';
 import MineAPI from '../../api/MineApi';
 import bridge from '../../../../utils/bridge';
 import StringUtils from '../../../../utils/StringUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
-import RouterMap from '../../../../navigation/RouterMap';
+import RouterMap, { routeNavigate } from '../../../../navigation/RouterMap';
 import { PageType } from '../myaccount/JudgePhonePage';
 
 const arrow_right = res.button.arrow_right;
@@ -93,7 +93,7 @@ export default class AccountSettingPage extends BasePage {
     }
 
     _toEditPhoneNum = (tel) => {
-        this.$navigate('mine/account/EditPhoneNumPage', {
+        routeNavigate(RouterMap.EditPhoneNumPage, {
             oldNum: tel
         });
     };
@@ -117,13 +117,13 @@ export default class AccountSettingPage extends BasePage {
         }
 
         if (phonePwdStatus === PhonePwdStatus.Setted) {
-            this.$navigate('mine/account/EditPhonePwdPage');
+            routeNavigate(RouterMap.EditPhonePwdPage);
             return;
         }
         MineAPI.checkPhonePwd({}).then((data) => {
             if (data.data === true) {
                 this.setState({ phonePwdStatus: PhonePwdStatus.Setted });
-                this.$navigate('mine/account/EditPhonePwdPage');
+                routeNavigate(RouterMap.EditPhonePwdPage);
             } else {
                 this.setState({ phonePwdStatus: PhonePwdStatus.UnSet });
                 Alert.alert('未设置登录密码',
@@ -149,10 +149,10 @@ export default class AccountSettingPage extends BasePage {
         console.log(user);
         if (user.hadSalePassword) {
             // 设置过交易密码,
-            this.$navigate('mine/account/EditPayPwdPage');
+            this.$navigate(RouterMap.EditPayPwdPage);
         } else {
             // 验证手机号
-            this.$navigate('mine/account/JudgePhonePage', {
+            this.$navigate(RouterMap.JudgePhonePage, {
                 title: '设置交易密码'
             });
         }

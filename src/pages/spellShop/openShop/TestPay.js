@@ -12,6 +12,7 @@ import DesignRule from '../../../constants/DesignRule';
 import {
     MRText as Text
 } from '../../../components/ui';
+import RouterMap from '../../../navigation/RouterMap';
 
 export default class OpenShopSuccessPage extends BasePage {
 
@@ -22,7 +23,7 @@ export default class OpenShopSuccessPage extends BasePage {
     _click = () => {
         SpellShopApi.depositTest().then(() => {
             spellStatusModel.getUser(2);
-            this.$navigate('spellShop/shopSetting/SetShopNamePage');
+            this.$navigate(RouterMap.SetShopNamePage);
         }).catch((error) => {
             this.$toastShow(error.msg);
         });

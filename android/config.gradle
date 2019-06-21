@@ -32,5 +32,8 @@ ext {
             okhttp       : 'com.squareup.okhttp3:okhttp:3.12.1',
             exifinterface: 'com.android.support:exifinterface:28.0.0',
             lottie       : 'com.airbnb.android:lottie:2.6.1',
+            // 如果你需要支持WebP格式，包括WebP动图
+            webpAnimated : 'com.facebook.fresco:animated-webp:1.10.0',
+            webp         : 'com.facebook.fresco:webpsupport:1.10.0'
     ]
 }

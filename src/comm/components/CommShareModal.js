@@ -85,7 +85,7 @@ import { track } from '../../utils/SensorsTrack';
 import user from '../../model/user';
 import { getSource } from '@mr/image-placeholder/oos';
 import ShareUtil from '../../utils/ShareUtil';
-import { navigate } from '../../navigation/RouterMap';
+import { routeNavigate } from '../../navigation/RouterMap';
 import RouterMap from '../../navigation/RouterMap';
 
 // 0：未知
@@ -132,7 +132,7 @@ export default class CommShareModal extends React.Component {
                 },
                     {
                         text: '马上登录', onPress: () => {
-                            navigate(RouterMap.LoginPage);
+                            routeNavigate(RouterMap.LoginPage);
                         }
                     }]);
             return;
@@ -161,7 +161,7 @@ export default class CommShareModal extends React.Component {
         const { type, imageJson } = this.props;
         let params = { ...(imageJson || {}) };
         params.shareMoney && (params.shareMoney = this.getMoneyText(params.shareMoney));
-        params = { headerImage: user.headImg||'', userName: user.nickname||'', ...params };
+        params = { headerImage: user.headImg || '', userName: user.nickname || '', ...params };
         if (type === 'promotionShare' || type === 'Image' || type === 'Show') {
             if (this.state.path.length === 0) {
                 if (type === 'promotionShare') {
@@ -326,11 +326,13 @@ export default class CommShareModal extends React.Component {
                 this.share(0);
             }
         });
-        array.push({
-            image: res.share.weiXinTimeLine, title: '朋友圈', onPress: () => {
-                this.share(1);
-            }
-        });
+        if (shareType === 0) {
+            array.push({
+                image: res.share.weiXinTimeLine, title: '朋友圈', onPress: () => {
+                    this.share(1);
+                }
+            });
+        }
         array.push({
             image: res.share.QQ, title: 'QQ好友', onPress: () => {
                 this.share(2);
@@ -405,7 +407,7 @@ export default class CommShareModal extends React.Component {
                                             color: DesignRule.textColor_mainTitle,
                                             fontSize: autoSizeWidth(15),
                                             marginHorizontal: 7,
-                                            fontWeight: 'bold'
+                                            fontWeight: '600'
                                         }}>{'分享秀一秀 '}<MRText
                                             style={{ color: DesignRule.mainColor }}>{shareMoneyText || ''}</MRText>{shareMoneyText ? '起' : ''}
                                         </MRText>
@@ -414,7 +416,7 @@ export default class CommShareModal extends React.Component {
                                             color: DesignRule.textColor_mainTitle,
                                             fontSize: autoSizeWidth(15),
                                             marginHorizontal: 7,
-                                            fontWeight: 'bold'
+                                            fontWeight: '600'
                                         }}>分享到</MRText>
                                 }
                                 <View style={{

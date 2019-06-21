@@ -2,17 +2,18 @@
 import React from 'react';
 import {
     View,
-    FlatList, RefreshControl , Alert
+    FlatList, RefreshControl, Alert
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import AnnouncementRow from './components/AnnouncementRow';
 import ConfirmAlert from '../../../components/ui/ConfirmAlert';
-import { observer } from 'mobx-react/native';
+import { observer } from 'mobx-react';
 import SpellShopApi from '../api/SpellShopApi';
 import bridge from '../../../utils/bridge';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
 import DesignRule from '../../../constants/DesignRule';
+import RouterMap from '../../../navigation/RouterMap';
 // 是否显示删除按钮
 
 @observer
@@ -25,7 +26,7 @@ export default class AnnouncementListPage extends BasePage {
     };
 
     $NavBarRightPressed = () => {
-        this.$navigate('spellShop/shopSetting/AnnouncementPublishPage', {
+        this.$navigate(RouterMap.AnnouncementPublishPage, {
             publishSuccess: () => {
                 this.loadPageData();
             },
@@ -140,7 +141,7 @@ export default class AnnouncementListPage extends BasePage {
         //     }
         // });
 
-        id &&  Alert.alert('提示', '确定要删除此条公告',
+        id && Alert.alert('提示', '确定要删除此条公告',
             [
                 {
                     text: '取消', onPress: () => {
@@ -161,7 +162,7 @@ export default class AnnouncementListPage extends BasePage {
     };
 
     _clickRow = (info) => {
-        this.$navigate('spellShop/shopSetting/AnnouncementDetailPage', info);
+        this.$navigate(RouterMap.AnnouncementDetailPage, info);
     };
 
     // 列表触底

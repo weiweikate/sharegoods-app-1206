@@ -1,7 +1,8 @@
 import HttpUtils from './HttpUtils';
 import User from '../../model/user';
 import apiEnvironment from '../ApiEnvironment';
-import { navigate } from '../../navigation/RouterMap';
+import { routePush } from '../../navigation/RouterMap';
+import RouterMap from '../../navigation/RouterMap';
 
 export default function ApiUtils(Urls) {
     let result = {}, list = [];
@@ -24,13 +25,10 @@ export default function ApiUtils(Urls) {
         let name = item.name, url = item.uri, method = item.method || 'post', isRSA = item.isRSA || false,
             filter = item.filter, checkLogin = item.checkLogin || false;
         result[name] = async function(params, config = {}) {
-            if (checkLogin === true && !User.isLogin){
-                config.nav && config.nav.navigate('login/login/LoginPage', {
-                    callback: config.callback
-                });
-                return  Promise.reject({
+            if (checkLogin === true && !User.isLogin) {
+                return Promise.reject({
                     code: 10009,
-                    msg: '用户登录失效',
+                    msg: '用户登录失效'
                 });
             }
             const response = await HttpUtils[method](url, isRSA, params, config);
@@ -43,14 +41,10 @@ export default function ApiUtils(Urls) {
                 if (response.code === 10009) {
                     User.clearUserInfo();
                     User.clearToken();
-                    // config.auth &&
-                    config.nav && config.nav.navigate('login/login/LoginPage', {
-                        callback: config.callback
-                    });
                 }
                 //系统升级中跳转错误网页
                 if (response.code === 9999) {
-                    navigate('HtmlPage', {uri: apiEnvironment.getCurrentH5Url() + '/system-maintenance'})
+                    routePush(RouterMap.HtmlPage, { uri: apiEnvironment.getCurrentH5Url() + '/system-maintenance' });
                 }
                 return Promise.reject(response);
             }

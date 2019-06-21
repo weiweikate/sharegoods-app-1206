@@ -22,9 +22,9 @@ import {
 } from 'react-native';
 
 import ImageLoad from '@mr/image-placeholder';
-import {homeType}from '../home/HomeTypes';
-import HomeAPI from '../home/api/HomeAPI'
-import { navigate } from '../../navigation/RouterMap';
+import { homeType } from '../home/HomeTypes';
+import HomeAPI from '../home/api/HomeAPI';
+import { routePush } from '../../navigation/RouterMap';
 import { homeModule } from '../home/model/Modules';
 import { trackEvent, track } from '../../utils/SensorsTrack';
 
@@ -44,19 +44,19 @@ export default class LuckyIcon extends React.Component {
     componentDidMount() {
     }
 
-    getLucky = (showPage,showPageValue) =>{
-        HomeAPI.getHomeData({type: homeType.float,showPage,showPageValue}).then((data) => {
-            if (data.data && data.data.length > 0){
-                this.setState({show: true});
-                this.setState({data: data.data[0]})
+    getLucky = (showPage, showPageValue) => {
+        HomeAPI.getHomeData({ type: homeType.float, showPage, showPageValue }).then((data) => {
+            if (data.data && data.data.length > 0) {
+                this.setState({ show: true });
+                this.setState({ data: data.data[0] });
 
             } else {
-                this.setState({show: false});
+                this.setState({ show: false });
             }
         }).catch(() => {
-            this.setState({show: false});
-        })
-    }
+            this.setState({ show: false });
+        });
+    };
 
     open = () => {
         if (this.isOpen === false) {
@@ -71,7 +71,7 @@ export default class LuckyIcon extends React.Component {
             ).start();
         }
         this.isOpen = true;
-    }
+    };
 
     close = () => {
         if (this.isOpen === true) {
@@ -86,22 +86,22 @@ export default class LuckyIcon extends React.Component {
             ).start();
             this.isOpen = false;
         }
-    }
+    };
 
     _onPress = () => {
-        if (this.isOpen === false){
+        if (this.isOpen === false) {
             this.open();
             return;
         }
 
-        track(trackEvent.ClickLotteryPage,{lotteryModuleSource: '1'}) //0：未知 1:app首页 100：其他
+        track(trackEvent.ClickLotteryPage, { lotteryModuleSource: '1' }); //0：未知 1:app首页 100：其他
         let data = this.state.data;
         const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
         let params = homeModule.paramsNavigate(data);
-        if (router){
-            navigate(router, params);
+        if (router) {
+            routePush(router, params);
         }
-    }
+    };
 
     render() {
         if (this.state.show === false) {
@@ -109,11 +109,12 @@ export default class LuckyIcon extends React.Component {
         }
 
         return (
-            <Animated.View style={{position: 'absolute', right: 5, bottom: 40, transform: [{ translateX: this.state.x}]}}>
+            <Animated.View
+                style={{ position: 'absolute', right: 5, bottom: 40, transform: [{ translateX: this.state.x }] }}>
                 <TouchableOpacity onPress={this._onPress}>
                     <ImageLoad
                         style={styles.image}
-                        source={{uri: this.state.data.image}}
+                        source={{ uri: this.state.data.image }}
                         resizeMode={'contain'}
                         isAvatar={true}
                     />
@@ -126,6 +127,6 @@ export default class LuckyIcon extends React.Component {
 const styles = StyleSheet.create({
     image: {
         height: 50,
-        width: 50,
+        width: 50
     }
 });

@@ -116,7 +116,7 @@ export class ShopCloseExplainPage extends BasePage {
 const styles = StyleSheet.create({
     tittleText: {
         alignSelf: 'center', paddingBottom: 10,
-        color: DesignRule.textColor_mainTitle, fontSize: 17, fontWeight: 'bold'
+        color: DesignRule.textColor_mainTitle, fontSize: 17, fontWeight: '400'
     },
     contentView: {
         marginHorizontal: 15,

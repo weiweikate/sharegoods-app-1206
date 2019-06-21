@@ -12,12 +12,12 @@ import RecentSearchView from './components/RecentSearchView';
 import SearchNav from './components/SearchNav';
 import RouterMap from '../../../navigation/RouterMap';
 import HomeAPI from '../api/HomeAPI';
-import Storage from '../../../utils/storage';
+import store from '@mr/rn-store';
 import StringUtils from '../../../utils/StringUtils';
 import DesignRule from '../../../constants/DesignRule';
 import { MRText as Text } from '../../../components/ui';
 
-const recentDataKey = 'recentDataKey';
+const recentDataKey = '@mr/recentDataKey';
 export default class SearchPage extends BasePage {
 
     $navigationBarOptions = {
@@ -60,13 +60,11 @@ export default class SearchPage extends BasePage {
     }
 
     //从本地拿到最近搜索记录;
-    getRecentSearch = () => {
-        Storage.get(recentDataKey, []).then((value) => {
-                this.setState({
-                    recentData: value
-                });
-            }
-        );
+    async getRecentSearch() {
+        let value = await store.get(recentDataKey);
+        this.setState({
+            recentData: value || []
+        });
     };
 
     //热门数据;
@@ -102,7 +100,7 @@ export default class SearchPage extends BasePage {
         this.setState({
             recentData: []
         }, () => {
-            Storage.set(recentDataKey, this.state.recentData);
+            store.save(recentDataKey, this.state.recentData);
         });
     };
     //提交搜索
@@ -132,7 +130,7 @@ export default class SearchPage extends BasePage {
             if (this.state.recentData.length > 10) {
                 this.state.recentData = this.state.recentData.slice(0, 10);
             }
-            Storage.set(recentDataKey, this.state.recentData);
+            store.save(recentDataKey, this.state.recentData);
             this.forceUpdate();
         }
 

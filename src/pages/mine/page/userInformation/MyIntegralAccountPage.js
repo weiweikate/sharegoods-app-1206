@@ -15,7 +15,7 @@ import DataUtils from '../../../../utils/DateUtils';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
 import Toast from '../../../../utils/bridge' ;
-import { observer } from 'mobx-react/native';
+import { observer } from 'mobx-react';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import { MRText as Text } from '../../../../components/ui';
@@ -52,7 +52,7 @@ const allKinds = {
     10: { title: '邀请有礼奖励', img: icon_invite },
     11: { title: '分享奖励', img: fenxiang_icon },
     12: { title: '奖池投奖', img: tuiguang_icon },
-    13: { title: '奖池奖励', img: zengsong_icon },
+    13: { title: '奖池奖励', img: zengsong_icon }
 };
 @observer
 export default class MyIntegralAccountPage extends BasePage {
@@ -111,10 +111,10 @@ export default class MyIntegralAccountPage extends BasePage {
                     <NoMoreClick style={styles.withdrawButtonWrapper}
                                  onPress={() => {
                                      if (!user.isLogin) {
-                                         this.$navigate(RouterMap.loginPage);
+                                         this.gotoLoginPage();
                                          return;
                                      }
-                                     this.$navigate('home/signIn/SignInPage');
+                                     this.$navigate(RouterMap.SignInPage);
                                  }}>
                         <Text style={{
                             fontSize: DesignRule.fontSize_threeTitle,

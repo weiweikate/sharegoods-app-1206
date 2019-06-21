@@ -129,7 +129,7 @@ export default class AssistantListPage extends BasePage {
         const { myStore, status } = this.params.storeData;
         //0-关闭 1-正常 2-已缴纳保证金 3-招募中
         if (myStore && status !== 3) {
-            this.$navigate('spellShop/myShop/ShopAssistantDetailPage', { userCode });
+            this.$navigate(RouterMap.ShopAssistantDetailPage, { userCode });
         }
     };
 

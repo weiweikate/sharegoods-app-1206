@@ -9,7 +9,7 @@ import { MRText } from '../../components/ui';
 import res from '../res';
 import DesignRule from '../../constants/DesignRule';
 import StringUtils from '../../utils/StringUtils';
-import { navigate, backToHome, GoToTabItem} from '../../navigation/RouterMap';
+import { backToHome, GoToTabItem, routePush } from '../../navigation/RouterMap';
 import { track, trackEvent } from '../../utils/SensorsTrack';
 
 const { white_go } = res.button;
@@ -162,6 +162,7 @@ class IntervalMsgViewModel {
         }
 
         Animated.sequence([
+            Animated.delay(2000),
             Animated.timing(
                 this.translateX,
                 { toValue: 0, duration: 500, useNativeDriver: true }
@@ -171,7 +172,7 @@ class IntervalMsgViewModel {
                 this.opacity,
                 { toValue: 0, duration: 1000, useNativeDriver: true }
             ),
-            Animated.delay(5000)
+            Animated.delay(3000)
         ]).start(
             () => {
                 /*复原*/
@@ -225,13 +226,13 @@ export function IntervalMsgNavigate(forwardType, keyCode) {
     if (forwardType === IntervalMsgType.home) {
         backToHome();
     } else if (forwardType === IntervalMsgType.showList) {
-        GoToTabItem(1)
-    }  else if (forwardType === IntervalMsgType.alert) {
+        GoToTabItem(1);
+    } else if (forwardType === IntervalMsgType.alert) {
     }
     else {
         const router = IntervalMsgRouter[forwardType];
         if (router) {
-            navigate(router, {
+            routePush(router, {
                 productCode: keyCode,
                 storeCode: keyCode,
                 orderNo: keyCode,

@@ -33,6 +33,8 @@ import apiEnvironment from '../../api/ApiEnvironment';
 import CommShareModal from '../../comm/components/CommShareModal';
 import WhiteModel from './model/WhiteModel';
 import { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
+import { routeNavigate } from '../../navigation/RouterMap';
+import RouterMap from '../../navigation/RouterMap';
 
 const {
     mine_user_icon,
@@ -62,7 +64,7 @@ export default class ShowListPage extends BasePage {
         if (this.state.left) {
             return false;
         } else {
-            this.$navigate('HomePage');
+            this.$navigateBackToHome();
             return true;
         }
     };
@@ -79,7 +81,6 @@ export default class ShowListPage extends BasePage {
             payload => {
                 BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
 
-                this.pageFocused = false;
                 const { state } = payload;
                 if (state && state.routeName === 'HomePage') {
                     this.setState({ isShow: false });
@@ -92,10 +93,10 @@ export default class ShowListPage extends BasePage {
         this.didFocusSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
+                BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
                 if (user.isLogin) {
                     WhiteModel.saveWhiteType();
                 }
-                BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
                 const { state } = payload;
                 if (state && (state.routeName === 'ShowListPage' || state.routeName === 'show/ShowListPage')) {
                     this.setState({
@@ -111,9 +112,7 @@ export default class ShowListPage extends BasePage {
             this._gotoPage(2);
             this.foundList && this.foundList.addDataToTop(value);
         });
-
         this.listenerRetouchShow = DeviceEventEmitter.addListener('retouch_show', this.retouchShow);
-
     }
 
     componentWillUnmount() {
@@ -121,6 +120,7 @@ export default class ShowListPage extends BasePage {
         this.didFocusSubscription && this.didFocusSubscription.remove();
         this.listener && this.listener.remove();
         this.publishListener && this.publishListener.remove();
+        this.listenerRetouchShow && this.listenerRetouchShow.remove();
     }
 
     retouchShow = () => {
@@ -155,10 +155,10 @@ export default class ShowListPage extends BasePage {
 
     jumpToServicePage = () => {
         if (!user.isLogin) {
-            this.$navigate('login/login/LoginPage');
+            routeNavigate(RouterMap.LoginPage);
             return;
         }
-        this.$navigate('message/MessageCenterPage');
+        routeNavigate(RouterMap.MessageCenterPage);
     };
 
     loadMessageCount = () => {
@@ -364,7 +364,7 @@ export default class ShowListPage extends BasePage {
                                 }}
                                 taskShareParams={{
                                     uri: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
-                                    code: detail.showType === 1 ? 22: 25,
+                                    code: detail.showType === 1 ? 22 : 25,
                                     data: detail.showNo
                                 }}
                                 webJson={{
@@ -426,7 +426,7 @@ let styles = StyleSheet.create({
     index: {
         color: DesignRule.textColor_secondTitle,
         fontSize: px2dp(13),
-        fontWeight: '600'
+        fontWeight: '500'
     },
     activityIndex: {
         color: DesignRule.mainColor,

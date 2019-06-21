@@ -26,12 +26,13 @@ import DesignRule from '../../../constants/DesignRule';
 import RecommendBanner from './components/RecommendBanner';
 import res from '../res';
 import geolocation from '@mr/rn-geolocation';
-import Storage from '../../../utils/storage';
+import store from '@mr/rn-store';
 import { TrackApi } from '../../../utils/SensorsTrack';
 import { homeType } from '../../home/HomeTypes';
 import { homeModule } from '../../home/model/Modules';
 import { bannerModule } from './PinShopBannerModel';
 import { IntervalMsgView, IntervalType } from '../../../comm/components/IntervalMsgView';
+import RouterMap from '../../../navigation/RouterMap';
 
 const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
@@ -119,30 +120,29 @@ export default class RecommendPage extends BasePage {
         return segmentIndex === 1 ? 10 : 10;
     };
 
-    _verifyLocation = () => {
-        Storage.get('storage_MrLocation', {}).then((value) => {
-                //有缓存加载缓存
-                if (value && StringUtils.isNoEmpty(value.latitude)) {
-                    this.state.locationResult = value;
+    _verifyLocation() {
+        store.get('@mr/storage_MrLocation').then((value) => {
+            //有缓存加载缓存
+            if (value && StringUtils.isNoEmpty(value.latitude)) {
+                this.state.locationResult = value;
+                this._loadPageData();
+            }
+            //更新定位数据  没缓存的话加载数据
+            geolocation.getLastLocation().then(result => {
+                this.state.locationResult = result;
+                store.save('@mr/storage_MrLocation', result);
+                if (!value.latitude) {
                     this._loadPageData();
                 }
-                //更新定位数据  没缓存的话加载数据
-                geolocation.getLastLocation().then(result => {
-                    this.state.locationResult = result;
-                    Storage.set('storage_MrLocation', result);
-                    if (!value.latitude) {
-                        this._loadPageData();
-                    }
-                }).catch((error) => {
-                        SpellStatusModel.alertAction(error, () => {
-                            this.$navigateBackToHome();
-                        }, () => {
-                            this.$navigateBackToHome();
-                        });
-                    }
-                );
-            }
-        );
+            }).catch((error) => {
+                    SpellStatusModel.alertAction(error, () => {
+                        this.$navigateBackToHome();
+                    }, () => {
+                        this.$navigateBackToHome();
+                    });
+                }
+            );
+        });
     };
 
     _refreshing = () => {
@@ -220,22 +220,22 @@ export default class RecommendPage extends BasePage {
     _clickOpenShopItem = () => {
         //已缴纳保证金
         if (SpellStatusModel.storeStatus === 2) {
-            this.$navigate('spellShop/shopSetting/SetShopNamePage');
+            this.$navigate(RouterMap.SetShopNamePage);
         } else if (SpellStatusModel.storeCode && StringUtils.isNoEmpty(SpellStatusModel.storeStatus) && SpellStatusModel.storeStatus !== 0) {//有店铺店铺没关闭
             this.props.navigation.popToTop();
         } else {
-            this.$navigate('spellShop/openShop/OpenShopExplainPage');
+            this.$navigate(RouterMap.OpenShopExplainPage);
         }
     };
 
     // 点击搜索店铺
     _clickSearchItem = () => {
-        this.$navigate('spellShop/recommendSearch/SearchPage');
+        this.$navigate(RouterMap.SearchPage);
     };
 
     // 点击查看某个店铺
     _RecommendRowOnPress = (storeCode) => {
-        this.$navigate('spellShop/MyShop_RecruitPage', { storeCode: storeCode });
+        this.$navigate(RouterMap.MyShop_RecruitPage, { storeCode: storeCode });
     };
 
     // 点击轮播图广告
@@ -328,7 +328,7 @@ export default class RecommendPage extends BasePage {
                              renderItem={this._renderItem}
                              sections={[{ data: this.state.dataList }]}
                              initialNumToRender={5}/>
-                <IntervalMsgView pageType = {IntervalType.shopHome}/>
+                <IntervalMsgView pageType={IntervalType.shopHome}/>
             </View>
         );
     }
