@@ -155,13 +155,13 @@
   
   self.headView.sd_layout
   .topSpaceToView(bgView, 9)
-  .leftSpaceToView(bgView, 0)
+  .leftSpaceToView(bgView, 10)
   .rightSpaceToView(bgView, 5)
   .heightIs(34);
 
     //内容
   self.contentLab.sd_layout.topSpaceToView(self.headView, 8)
-  .leftSpaceToView(bgView, 45)
+  .leftSpaceToView(bgView, 10)
   .rightSpaceToView(bgView, 30)
   .autoHeightRatio(0);
 
@@ -172,12 +172,12 @@
 
   self.bodyView.sd_layout
   .topSpaceToView(self.foldLabel, 5)
-  .leftSpaceToView(bgView, 45);
+  .leftSpaceToView(bgView, 10);
 
     //
   self.footerView.sd_layout
   .topSpaceToView(self.bodyView, 10)
-  .leftSpaceToView(bgView, 15)
+  .leftSpaceToView(bgView, 0)
   .rightSpaceToView(bgView, 15);
 
   [bgView setupAutoHeightWithBottomView:self.footerView bottomMargin:5];
