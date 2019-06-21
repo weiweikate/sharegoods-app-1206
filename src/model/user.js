@@ -201,7 +201,6 @@ class User {
     readUserInfoFromDisk() {
         store.get(USERINFOCACHEKEY).then((infoStr) => {
             if (infoStr) {
-                // bridge.setCookies(info);
                 this.saveUserInfo(infoStr, false);
             } else {
                 bridge.clearCookies();

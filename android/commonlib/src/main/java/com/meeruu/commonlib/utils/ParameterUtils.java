@@ -80,10 +80,10 @@ public class ParameterUtils {
     /**
      * 一般图片url宽高
      */
-    public static final String IMG_URL_WH = "%1$s?x-oss-process=image/resize,m_lfit,w_%2$s,h_%3$s/quality,Q_80/format,jpg";
+    public static final String IMG_URL_WH = "%1$s?x-oss-process=image/resize,m_lfit,w_%2$s,h_%3$s/quality,Q_80/format,webp";
     /**
      * 圆形图片url宽高
      */
-    public static final String CIRCLE_IMG_URL_WH = "%1$s?x-oss-process=image/resize,m_pad,w_%2$s,h_%3$s/quality,Q_80/format,jpg";
+    public static final String CIRCLE_IMG_URL_WH = "%1$s?x-oss-process=image/resize,m_pad,w_%2$s,h_%3$s/quality,Q_80/format,webp";
 
 }

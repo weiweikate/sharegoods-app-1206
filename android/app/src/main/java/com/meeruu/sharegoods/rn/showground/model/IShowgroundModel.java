@@ -9,4 +9,6 @@ public interface IShowgroundModel {
     void fetchRecommendList(int page, int size, BaseCallback callback);
 
     void setParams(Map map);
+
+    void deleteDynamic(String showNo,BaseCallback callback);
 }

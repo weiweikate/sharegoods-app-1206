@@ -22,7 +22,7 @@
 #import "ASCollectionNode+ReloadIndexPaths.h"
 #import <SDAutoLayout.h>
 #import <YYKit.h>
-#import "ShowCellASImageNode.h"
+#import "MyShowCellNode.h"
 
 #define kReuseIdentifier @"ShowCell"
 #define SystemUpgradeCode 9999
@@ -303,14 +303,19 @@
 - (ASCellNodeBlock)js_collectionNode:(ASCollectionNode *)collectionNode nodeBlockForItemAtIndexPath:(NSIndexPath *)indexPath
 {
   ShowQuery_dataModel *model = self.dataArr[indexPath.item];
-  if (indexPath.row > 6) {
-    return ^{
-      ShowCellASImageNode *node = [[ShowCellASImageNode alloc]initWithModel:model];
-      return node;
-    };
-  }
+
+//    return ^{
+//      ShowCellNode *node = [[ShowCellNode alloc]initWithModel:model index:indexPath.row];
+//      return node;
+//    };
+
   return ^{
-    ShowCellNode *node = [[ShowCellNode alloc]initWithModel:model];
+    MyShowCellNode *node = [[MyShowCellNode alloc]initWithModel:model index:indexPath.row ];
+    node.deletBtnTapBlock = ^(ShowQuery_dataModel *m, NSInteger index) {
+      index = [self.dataArr indexOfObject:m];
+      [self.dataArr removeObject:m];
+      [self.collectionNode deleteItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]]];
+    };
     return node;
   };
 }
