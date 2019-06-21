@@ -107,7 +107,6 @@ export default class PaymentFinshPage extends BasePage {
                 {this.renderCouponList()}
                 {this.state.showShareView ? this._renderShareView() : null}
                 <FinshPayAlertView btnClick={()=>{
-
                     this._clickAlertView();
                 }} isShow={this.state.isShow}/>
             </ScrollView>
