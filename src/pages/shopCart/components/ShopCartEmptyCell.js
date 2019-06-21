@@ -4,6 +4,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
 import { MRText } from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
+// import { shopCartEmptyModel } from '../model/ShopCartEmptyModel';
 
 const { px2dp } = ScreenUtils;
 
@@ -14,8 +15,11 @@ export default class ShopCartEmptyCell extends Component {
     }
 
     render() {
-        const { itemData } = this.props;
+        const { itemData,onClick } = this.props;
         return (
+            <TouchableOpacity onPress={()=>{
+               onClick();
+            }}>
             <View style={{
                 height: itemData.height,
                 width: ScreenUtils.width / 2 - px2dp(10),
@@ -24,7 +28,7 @@ export default class ShopCartEmptyCell extends Component {
             }}>
                 <PreLoadImage
                     imageUri={'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1560785169775&di=44526d7f7a4019b449db841e97d00349&imgtype=0&src=http%3A%2F%2Fs3.sinaimg.cn%2Fmw690%2F006hikKrzy7slzicK9sa2%26690'}
-                    style={{ width: ScreenUtils.width / 2 - px2dp(5), height: itemData.imageHeight }}
+                    style={{ width: ScreenUtils.width / 2 - px2dp(10), height: itemData.imageHeight }}
                 />
                 <MRText numberOfLines={2}
                         style={{ fontSize: px2dp(14), color: DesignRule.textColor_mainTitle, marginTop: px2dp(5) }}>
@@ -46,6 +50,7 @@ export default class ShopCartEmptyCell extends Component {
                     </View>
                 </View>
             </View>
+            </TouchableOpacity>
         );
     }
 

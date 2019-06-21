@@ -14,80 +14,111 @@
 
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
-import { StyleSheet, View,Image } from 'react-native';
+import {  View, Image, RefreshControl } from 'react-native';
 // import { UIText } from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
 // import res from '../res';
 import PropTypes from 'prop-types';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import {shopCartEmptyModel} from '../model/ShopCartEmptyModel'
-import Waterfall from '@mr/react-native-waterfall'
+import { EmptyViewTypes, shopCartEmptyModel } from '../model/ShopCartEmptyModel';
+// import Waterfall from '@mr/react-native-waterfall';
 // import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
 import { MRText } from '../../../components/ui';
 import ShopCartEmptyCell from './ShopCartEmptyCell';
-import res from '../res'
+import res from '../res';
+import { RecyclerListView, LayoutProvider, DataProvider } from 'recyclerlistview';
+import { homeModule } from '../../home/model/Modules';
+// import { ShopBottomBannerView } from '../../spellShop/myShop/components/ShopDetailItemView';
 
-const {px2dp} = ScreenUtils;
-const { shopCartNoGoods } = res
+const { px2dp } = ScreenUtils;
+const { shopCartNoGoods } = res;
 @observer
 export default class ShopCartEmptyView extends Component {
-
+    st = 0;
+    dataProvider = new DataProvider((r1, r2) => {
+        return r1 !== r2;
+    });
+    layoutProvider = new LayoutProvider((i) => {
+        return this.dataProvider.getDataForIndex(i).type || 0;
+    }, (type, dim) => {
+        if (type === EmptyViewTypes.topEmptyItem){
+            dim.width = ScreenUtils.width;
+            dim.height = px2dp(350)
+        } else {
+            dim.width = ScreenUtils.width/2;
+            dim.height = px2dp(168 + 98)
+        }
+    });
     constructor(props) {
         super(props);
     }
-
-    componentDidMount(){
-        this.waterfall && this.waterfall.addItems(shopCartEmptyModel.emptyViewList);
-    }
-    _renderItem = (itemData) => {
-        return(<ShopCartEmptyCell itemData={itemData}/>)
+    _renderItem = (type, itemData, index) => {
+        console.log('数据源'+JSON.stringify(itemData));
+        if (type === EmptyViewTypes.topEmptyItem) {
+            return this._renderHeaderView();
+        }else {
+           return <ShopCartEmptyCell itemData={itemData} onClick={() => {
+                    // this.waterfall.clear();
+                    // this.waterfall.addItems(shopCartEmptyModel.emptyViewList.splice(0, 1));
+                }}/>
+        }
     };
-    _onRefresh=()=>{
+    _onRefresh = () => {
 
-    }
-    _keyExtractor=(dataItem)=>{
+    };
+    _keyExtractor = (dataItem) => {
         return dataItem.id;
-    }
-    refreshing=()=>{
+    };
+    refreshing = () => {
 
-    }
-    infiniting=()=>{
-
-    }
-
-    _renderHeaderView=()=>{
-        return(
-            <View style={{width:ScreenUtils.width,height:350,paddingLeft:px2dp(15),paddingRight:px2dp(15)}}>
-              <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
-               <Image source={shopCartNoGoods} style={{width:px2dp(244),height:px2dp(140)}}></Image>
-                  <MRText style={{fontSize:px2dp(13),color:'rgba(153, 153, 153, 1)',marginTop:px2dp(5)}}>暂无商品</MRText>
-              </View>
-                <View style={{width:ScreenUtils.width,height:px2dp(50),flexDirection:'row',alignItems:'center'}}>
-                    <View style={{width:px2dp(2),height:px2dp(8),backgroundColor:'#FF0050'}}/>
-                    <MRText style={{marginLeft:px2dp(5), fontSize:px2dp(16)}}>为你推荐</MRText>
+    };
+    _renderHeaderView = () => {
+        return (
+            <View style={{ width: ScreenUtils.width, height: 350, paddingLeft: px2dp(15), paddingRight: px2dp(15) }}>
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                    <Image source={shopCartNoGoods} style={{ width: px2dp(244), height: px2dp(140) }}></Image>
+                    <MRText style={{
+                        fontSize: px2dp(13),
+                        color: 'rgba(153, 153, 153, 1)',
+                        marginTop: px2dp(5)
+                    }}>暂无商品</MRText>
+                </View>
+                <View
+                    style={{ width: ScreenUtils.width, height: px2dp(50), flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={{ width: px2dp(2), height: px2dp(8), backgroundColor: '#FF0050' }}/>
+                    <MRText style={{ marginLeft: px2dp(5), fontSize: px2dp(16) }}>为你推荐</MRText>
                 </View>
             </View>
-        )
-    }
+        );
+    };
 
     render() {
-        return (
-            <View style={styles.bgViewStyle}>
-                <Waterfall
-                    space={3}
-                    ref={(ref)=>{this.waterfall = ref}}
-                    renderHeader={()=>{return this._renderHeaderView()}}
-                    columns={2}
-                    infinite={true}
-                    hasMore={false}
-                    renderItem={item => this._renderItem(item)}
-                    style={{flex:1}}
-                    // containerStyle={{marginLeft: 15, marginRight: 15}}
-                    keyExtractor={(data) => this._keyExtractor(data)}
-                    // infiniting={(done)=>this.infiniting(done)}
-                />
-            </View>
-        );
+        const {emptyViewList} = shopCartEmptyModel
+        this.dataProvider = this.dataProvider.cloneWithRows(emptyViewList);
+        return (<RecyclerListView
+                ref={(ref) => {
+                    this.recyclerListView = ref;
+                }}
+                style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1 }}
+                refreshControl={<RefreshControl refreshing={homeModule.isRefreshing}
+                                                onRefresh={this._onRefresh.bind(this)}
+                                                colors={[DesignRule.mainColor]}/>}
+                // onEndReached={this._onEndReached.bind(this)}
+                onEndReachedThreshold={ScreenUtils.height / 3}
+                dataProvider={this.dataProvider}
+                rowRenderer={this._renderItem.bind(this)}
+                layoutProvider={this.layoutProvider}
+                onScrollBeginDrag={() => {
+                    // this.luckyIcon.close();
+                }}
+                showsVerticalScrollIndicator={false}
+                // onScroll={this._onListViewScroll}
+                // renderFooter={() => <Footer
+                //     isFetching={homeModule.isFetching}
+                //     errorMsg={homeModule.errorMsg}
+                //     isEnd={homeModule.isEnd}/>
+                // }
+            />);
     }
 }
 ShopCartEmptyView.propTypes = {
@@ -95,38 +126,38 @@ ShopCartEmptyView.propTypes = {
     navigateToHome: PropTypes.func.isRequired
 };
 
-const styles = StyleSheet.create({
-    bgViewStyle: {
-        backgroundColor: DesignRule.bgColor,
-        flex: 1,
-    },
-    imgStyle: {
-        height: 115,
-        width: 115
-    },
-    topTextStyle: {
-        marginTop: 10,
-        fontSize: 15,
-        color: DesignRule.textColor_secondTitle
-    },
-    bottomTextBgViewStyle: {
-        marginTop: 22,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderColor: DesignRule.mainColor,
-        borderWidth: 1,
-        borderRadius: 18,
-        width: 115,
-        height: 36
-    },
-    bottomTextStyle: {
-        color: DesignRule.mainColor,
-        fontSize: 15
-    },
-    addSomethingTipStyle: {
-        marginTop: 10,
-        fontSize: 15,
-        color: DesignRule.textColor_secondTitle
-    }
-
-});
+// const styles = StyleSheet.create({
+//     bgViewStyle: {
+//         backgroundColor: DesignRule.bgColor,
+//         flex: 1
+//     },
+//     imgStyle: {
+//         height: 115,
+//         width: 115
+//     },
+//     topTextStyle: {
+//         marginTop: 10,
+//         fontSize: 15,
+//         color: DesignRule.textColor_secondTitle
+//     },
+//     bottomTextBgViewStyle: {
+//         marginTop: 22,
+//         justifyContent: 'center',
+//         alignItems: 'center',
+//         borderColor: DesignRule.mainColor,
+//         borderWidth: 1,
+//         borderRadius: 18,
+//         width: 115,
+//         height: 36
+//     },
+//     bottomTextStyle: {
+//         color: DesignRule.mainColor,
+//         fontSize: 15
+//     },
+//     addSomethingTipStyle: {
+//         marginTop: 10,
+//         fontSize: 15,
+//         color: DesignRule.textColor_secondTitle
+//     }
+//
+// });
