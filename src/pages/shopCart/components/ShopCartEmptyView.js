@@ -14,24 +14,32 @@
 
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
-import {  View, Image, RefreshControl } from 'react-native';
-// import { UIText } from '../../../components/ui';
+import {  View, Image, RefreshControl ,Text} from 'react-native';
 import DesignRule from '../../../constants/DesignRule';
-// import res from '../res';
 import PropTypes from 'prop-types';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { EmptyViewTypes, shopCartEmptyModel } from '../model/ShopCartEmptyModel';
-// import Waterfall from '@mr/react-native-waterfall';
-// import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
 import { MRText } from '../../../components/ui';
 import ShopCartEmptyCell from './ShopCartEmptyCell';
 import res from '../res';
 import { RecyclerListView, LayoutProvider, DataProvider } from 'recyclerlistview';
 import { homeModule } from '../../home/model/Modules';
-// import { ShopBottomBannerView } from '../../spellShop/myShop/components/ShopDetailItemView';
+import RouterMap from '../../../navigation/RouterMap';
 
 const { px2dp } = ScreenUtils;
 const { shopCartNoGoods } = res;
+
+const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={{
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 50
+}}>
+    <Text style={{
+        color: DesignRule.textColor_instruction,
+        fontSize: DesignRule.fontSize_24
+    }}
+          allowFontScaling={false}>{errorMsg ? errorMsg : (isEnd ? '我也是有底线的' : (isFetching ? '加载中...' : '加载更多'))}</Text>
+</View>;
 @observer
 export default class ShopCartEmptyView extends Component {
     st = 0;
@@ -52,20 +60,26 @@ export default class ShopCartEmptyView extends Component {
     constructor(props) {
         super(props);
     }
+    componentDidMount() {
+        shopCartEmptyModel.getRecommendProducts();
+    }
     _renderItem = (type, itemData, index) => {
+        const {navigateToHome} = this.props;
         console.log('数据源'+JSON.stringify(itemData));
         if (type === EmptyViewTypes.topEmptyItem) {
             return this._renderHeaderView();
         }else {
            return <ShopCartEmptyCell itemData={itemData} onClick={() => {
-                    // this.waterfall.clear();
-                    // this.waterfall.addItems(shopCartEmptyModel.emptyViewList.splice(0, 1));
+               navigateToHome(RouterMap.ProductDetailPage,{ productCode:itemData.prodCode})
                 }}/>
         }
     };
     _onRefresh = () => {
-
+      shopCartEmptyModel.getRecommendProducts(true)
     };
+    _onEndReached=()=>{
+        shopCartEmptyModel.getRecommendProducts(false);
+    }
     _keyExtractor = (dataItem) => {
         return dataItem.id;
     };
@@ -103,7 +117,7 @@ export default class ShopCartEmptyView extends Component {
                 refreshControl={<RefreshControl refreshing={homeModule.isRefreshing}
                                                 onRefresh={this._onRefresh.bind(this)}
                                                 colors={[DesignRule.mainColor]}/>}
-                // onEndReached={this._onEndReached.bind(this)}
+                onEndReached={this._onEndReached.bind(this)}
                 onEndReachedThreshold={ScreenUtils.height / 3}
                 dataProvider={this.dataProvider}
                 rowRenderer={this._renderItem.bind(this)}
@@ -113,11 +127,11 @@ export default class ShopCartEmptyView extends Component {
                 }}
                 showsVerticalScrollIndicator={false}
                 // onScroll={this._onListViewScroll}
-                // renderFooter={() => <Footer
-                //     isFetching={homeModule.isFetching}
-                //     errorMsg={homeModule.errorMsg}
-                //     isEnd={homeModule.isEnd}/>
-                // }
+                renderFooter={() => <Footer
+                    isFetching={shopCartEmptyModel.isFetching}
+                    errorMsg={shopCartEmptyModel.errorMsg}
+                    isEnd={shopCartEmptyModel.isEnd}/>
+                }
             />);
     }
 }
