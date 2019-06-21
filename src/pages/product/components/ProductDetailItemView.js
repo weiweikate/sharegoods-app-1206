@@ -29,6 +29,7 @@ const { arrow_right_red } = RES;
 const { service_true } = RES.service;
 const { toTop } = res.search;
 const { px2dp } = ScreenUtils;
+const { saleBig_1001 } = RES.pSacle;
 
 /*
 * 商品头部
@@ -36,7 +37,7 @@ const { px2dp } = ScreenUtils;
 export class HeaderItemView extends Component {
 
     /*价格模块*/
-    _renderPriceView = ({ minPrice, maxPrice, originalPrice, levelText }) => {
+    _renderPriceView = ({ minPrice, maxPrice, originalPrice, levelText, monthSaleCount }) => {
         return (
             <View style={styles.priceView}>
                 {
@@ -56,6 +57,14 @@ export class HeaderItemView extends Component {
                         <Text style={styles.levelText}>{levelText}</Text>
                     </View> : null
                 }
+                {monthSaleCount >= 1000 && <Image source={saleBig_1001}
+                                                  style={{
+                                                      width: 104,
+                                                      height: 33,
+                                                      top: -7,
+                                                      right: -5,
+                                                      position: 'absolute'
+                                                  }}/>}
             </View>
         );
     };
@@ -102,10 +111,11 @@ export class HeaderItemView extends Component {
                             minPrice: promotionMinPrice,
                             maxPrice: promotionMaxPrice,
                             originalPrice,
-                            levelText
+                            levelText,
+                            monthSaleCount
                         })
                         :
-                        this._renderPriceView({ minPrice, maxPrice, originalPrice, levelText }))
+                        this._renderPriceView({ minPrice, maxPrice, originalPrice, levelText, monthSaleCount }))
                 }
                 {showShop && this._renderShop({ priceType, shopAction, groupPrice })}
                 <NoMoreClick onPress={() => {

@@ -38,7 +38,6 @@ const { width, height } = ScreenUtils;
 
 const {
     toGwc,
-    kongbaiye_ss_icon,
     toTop
 } = res.search;
 
@@ -90,7 +89,6 @@ export default class SearchResultPage extends BasePage {
                 reloadBtnClick: this._emptyRequest
             },
             emptyProps: {
-                source: kongbaiye_ss_icon,
                 description: '很抱歉',
                 subDescription: '没找到任何内容'
             }
