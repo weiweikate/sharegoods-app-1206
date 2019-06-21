@@ -211,7 +211,7 @@ class TaskModel {
             if (this.expanded) {
                 homeHeight = px2dp(48 + 383 + 10);
             } else {
-                homeHeight = px2dp(48 + 83 + 10);
+                homeHeight = px2dp(48 + 83 + 10+ 30);
             }
         }
         if (homeHeight !== this.homeHeight) {
