@@ -41,6 +41,7 @@
   Method xmg_imageNamedMethod = class_getInstanceMethod(self, @selector(track_webView:shouldStartLoadWithRequest:navigationType:));
   // 交互方法:runtime
   method_exchangeImplementations(imageNamedMethod, xmg_imageNamedMethod);
+  
  
 }
 
