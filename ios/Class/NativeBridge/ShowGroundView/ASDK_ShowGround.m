@@ -343,7 +343,7 @@
 - (void)deletehData:(ShowQuery_dataModel*)m
 {
   if(m.showNo){
-  [NetWorkTool requestWithURL:@"/gateway/social/show/content/delete@POST" params:@{@"showNo": m.showNo}  toModel:nil success:^(NSDictionary* result) {
+  [NetWorkTool requestWithURL:@"/social/show/content/delete@POST" params:@{@"showNo": m.showNo}  toModel:nil success:^(NSDictionary* result) {
     NSInteger index = [self.dataArr indexOfObject:m];
     [self.dataArr removeObject:m];
     [self.callBackArr removeObject:m];
