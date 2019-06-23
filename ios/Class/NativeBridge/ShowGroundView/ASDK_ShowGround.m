@@ -23,6 +23,7 @@
 #import <SDAutoLayout.h>
 #import <YYKit.h>
 #import "MyShowCellNode.h"
+#import "NSObject+Util.h"
 
 #define kReuseIdentifier @"ShowCell"
 #define SystemUpgradeCode 9999
@@ -307,10 +308,23 @@
     return ^{
       MyShowCellNode *node = [[MyShowCellNode alloc]initWithModel:model index:indexPath.row ];
       node.deletBtnTapBlock = ^(ShowQuery_dataModel *m, NSInteger index) {
-        index = [self.dataArr indexOfObject:m];
-        [self deletehData:m];
-        [self.dataArr removeObject:m];
-        [self.collectionNode deleteItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]]];
+        
+        UIAlertController *alterController = [UIAlertController alertControllerWithTitle:@"温馨提示"
+                                                                                 message:@"确定删除这条动态吗？"
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"再想想"
+                                                               style:UIAlertActionStyleDefault
+                                                             handler:^(UIAlertAction * _Nonnull action) {
+                                                        
+                                                             }];
+        UIAlertAction *actionSubmit = [UIAlertAction actionWithTitle:@"狠心删除"
+                                                               style:UIAlertActionStyleDefault
+                                                             handler:^(UIAlertAction * _Nonnull action) {
+                                                               [self deletehData:m];
+                                                             }];
+        [alterController addAction:actionSubmit];
+        [alterController addAction:actionCancel];
+        [self.currentViewController_XG  presentViewController:alterController animated:YES completion:nil];
       };
       return node;
     };
@@ -322,16 +336,23 @@
 }
 
 
+
 /**
- 刷新数据
+ 删除文章数据
  */
-- (void)deletehData:(ShowQuery_dataModel*)cellModel
+- (void)deletehData:(ShowQuery_dataModel*)m
 {
-  [NetWorkTool requestWithURL:@"/gateway/social/show/content/delete@POST" params:@{@"showNo": @(1)}  toModel:nil success:^(NSDictionary* result) {
+  if(m.showNo){
+  [NetWorkTool requestWithURL:@"/gateway/social/show/content/delete@POST" params:@{@"showNo": m.showNo}  toModel:nil success:^(NSDictionary* result) {
+    NSInteger index = [self.dataArr indexOfObject:m];
+    [self.dataArr removeObject:m];
+    [self.callBackArr removeObject:m];
+    [self.collectionNode deleteItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]]];
     
   } failure:^(NSString *msg, NSInteger code) {
-    
+    [MBProgressHUD showSuccess:msg];
   } showLoading:nil];
+  }
 }
 
 /**

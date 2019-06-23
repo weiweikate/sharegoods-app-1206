@@ -28,6 +28,7 @@
 		0153BAB122A1078A00BFD8AC /* ShowShareImgMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0153BAB022A1078A00BFD8AC /* ShowShareImgMaker.m */; };
 		0153BAB422A110AF00BFD8AC /* ShareImageMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0153BAB222A110AF00BFD8AC /* ShareImageMaker.m */; };
 		01739A9122BCC3EB00661677 /* JXModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0131F1B3228E57D200A2026D /* JXModel.m */; };
+		01739CD322BF283D00661677 /* ShowQueryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EAFA6221BFE89007AAEE0 /* ShowQueryModel.m */; };
 		01E48F9422708B960038BEE6 /* JXHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E48F9322708B960038BEE6 /* JXHeaderView.m */; };
 		033C66B821927ACB00433026 /* MRBannerViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 033C66B721927ACB00433026 /* MRBannerViewManager.m */; };
 		0347BAD52237CD0A0011184A /* Lottie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0347BAC92237CC680011184A /* Lottie.framework */; };
@@ -149,7 +150,6 @@
 		CD5EAF48221BEA9F007AAEE0 /* NetWorkTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EAF11221BEA9F007AAEE0 /* NetWorkTool.m */; };
 		CD5EAF9D221BFB5E007AAEE0 /* ShowGroundViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EAF9C221BFB5E007AAEE0 /* ShowGroundViewManager.m */; };
 		CD5EAFA0221BFB8E007AAEE0 /* ShowGroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EAF9F221BFB8E007AAEE0 /* ShowGroundView.m */; };
-		CD5EAFA7221BFE89007AAEE0 /* ShowQueryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EAFA6221BFE89007AAEE0 /* ShowQueryModel.m */; };
 		CD5EB082221D46E3007AAEE0 /* ShowCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EB081221D46E3007AAEE0 /* ShowCell.m */; };
 		CD5EB10B221E9A9F007AAEE0 /* ShowHeaderViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EB10A221E9A9E007AAEE0 /* ShowHeaderViewManager.m */; };
 		CD5EB143221E9AB3007AAEE0 /* ShowHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EB142221E9AB3007AAEE0 /* ShowHeaderView.m */; };
@@ -3041,6 +3041,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01739CD322BF283D00661677 /* ShowQueryModel.m in Sources */,
 				01739A9122BCC3EB00661677 /* JXModel.m in Sources */,
 				5068363521379B78001AB175 /* RCTPayTool.m in Sources */,
 				C4F01EEC222D141200ACA1B4 /* PhoneAutherTool.m in Sources */,
@@ -3082,7 +3083,6 @@
 				C4D4505A2249F6B800196E1B /* JRServiceManager+Util.m in Sources */,
 				5077FCE321A4FE37003B860D /* NSString+Base64.m in Sources */,
 				012630182281196A008D4F7E /* ActiveModel.m in Sources */,
-				CD5EAFA7221BFE89007AAEE0 /* ShowQueryModel.m in Sources */,
 				0119D0562296A2B800FB70F0 /* NSString+UrlAddParams.m in Sources */,
 				5068363921379B78001AB175 /* SGQRCodeScanManager.m in Sources */,
 				C452DC75229D3C59002A3F07 /* CommentTool.m in Sources */,
