@@ -23,6 +23,7 @@
 #import <SDAutoLayout.h>
 #import <YYKit.h>
 #import "MyShowCellNode.h"
+#import "NSObject+Util.h"
 
 #define kReuseIdentifier @"ShowCell"
 #define SystemUpgradeCode 9999
@@ -303,23 +304,56 @@
 - (ASCellNodeBlock)js_collectionNode:(ASCollectionNode *)collectionNode nodeBlockForItemAtIndexPath:(NSIndexPath *)indexPath
 {
   ShowQuery_dataModel *model = self.dataArr[indexPath.item];
-
-//    return ^{
-//      ShowCellNode *node = [[ShowCellNode alloc]initWithModel:model index:indexPath.row];
-//      return node;
-//    };
-
-  return ^{
-    MyShowCellNode *node = [[MyShowCellNode alloc]initWithModel:model index:indexPath.row ];
-    node.deletBtnTapBlock = ^(ShowQuery_dataModel *m, NSInteger index) {
-      index = [self.dataArr indexOfObject:m];
-      [self.dataArr removeObject:m];
-      [self.collectionNode deleteItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]]];
+  if([self.type isEqualToString:@"MyDynamic"]){
+    return ^{
+      MyShowCellNode *node = [[MyShowCellNode alloc]initWithModel:model index:indexPath.row ];
+      node.deletBtnTapBlock = ^(ShowQuery_dataModel *m, NSInteger index) {
+        
+        UIAlertController *alterController = [UIAlertController alertControllerWithTitle:@"温馨提示"
+                                                                                 message:@"确定删除这条动态吗？"
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"再想想"
+                                                               style:UIAlertActionStyleDefault
+                                                             handler:^(UIAlertAction * _Nonnull action) {
+                                                        
+                                                             }];
+        UIAlertAction *actionSubmit = [UIAlertAction actionWithTitle:@"狠心删除"
+                                                               style:UIAlertActionStyleDefault
+                                                             handler:^(UIAlertAction * _Nonnull action) {
+                                                               [self deletehData:m];
+                                                             }];
+        [alterController addAction:actionSubmit];
+        [alterController addAction:actionCancel];
+        [self.currentViewController_XG  presentViewController:alterController animated:YES completion:nil];
+      };
+      return node;
     };
-    return node;
-  };
+  }
+    return ^{
+      ShowCellNode *node = [[ShowCellNode alloc]initWithModel:model index:indexPath.row];
+      return node;
+    };
 }
 
+
+
+/**
+ 删除文章数据
+ */
+- (void)deletehData:(ShowQuery_dataModel*)m
+{
+  if(m.showNo){
+  [NetWorkTool requestWithURL:@"/gateway/social/show/content/delete@POST" params:@{@"showNo": m.showNo}  toModel:nil success:^(NSDictionary* result) {
+    NSInteger index = [self.dataArr indexOfObject:m];
+    [self.dataArr removeObject:m];
+    [self.callBackArr removeObject:m];
+    [self.collectionNode deleteItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]]];
+    
+  } failure:^(NSString *msg, NSInteger code) {
+    [MBProgressHUD showSuccess:msg];
+  } showLoading:nil];
+  }
+}
 
 /**
  * Asks the inspector for the number of supplementary views for the given kind in the specified section.

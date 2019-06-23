@@ -20,7 +20,7 @@ import {
 import ScreenUtils from '../../utils/ScreenUtils';
 import EmptyUtils from '../../utils/EmptyUtils';
 import ShowDynamicView from './components/ShowDynamicView';
-import ShowFoundView from './ShowFoundView';
+import ShowGroundView from './components/ShowGroundView';
 
 const headerBgSize = { width: 375, height: 200 };
 const headerHeight = ScreenUtils.statusBarHeight + 44;
@@ -153,7 +153,7 @@ export default class MyDynamicPage extends BasePage {
 
 
     _render() {
-        let Waterfall = Platform.OS == 'ios' ? ShowFoundView : ShowDynamicView;
+        let Waterfall = Platform.OS === 'ios' ? ShowGroundView : ShowDynamicView;
         return (
             <View style={styles.contain}>
                 <Waterfall style={{ flex: 1, marginTop: -10 }}
