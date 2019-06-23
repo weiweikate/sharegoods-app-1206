@@ -18,6 +18,7 @@ typedef void(^imgBlock)(NSArray*,NSInteger);//block写法比较特殊，一般�
 @property (nonatomic,copy)imgBlock imgBlock; //定义一个MyBlock属性
 
 @property (nonatomic,strong)NSArray<SourcesModel *> * sources;
+@property(nonatomic,assign)BOOL imageType;
 
 
 @end

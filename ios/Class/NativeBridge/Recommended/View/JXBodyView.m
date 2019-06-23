@@ -19,10 +19,22 @@
 @property (nonatomic,strong) NSMutableArray *itemsArr;
 @property (nonatomic,strong) NSMutableArray *actionSheetArr;
 @property (nonatomic, strong) NSArray *imageViewsArray;
+@property (nonatomic,strong) UIView *bgView;
 
 @end
 
 @implementation JXBodyView
+
+-(UIView *)bgView{
+  if(!_bgView){
+    _bgView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, (SCREEN_WIDTH-158), (SCREEN_WIDTH-158))];
+    _bgView.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.1];
+    UIImageView * bgImage = [[UIImageView alloc]initWithFrame:CGRectMake(83, 83, 53, 53)];
+    bgImage.image = [UIImage imageNamed:@"vedio"];
+    [_bgView addSubview:bgImage];
+  }
+  return _bgView;
+}
 
 - (NSMutableArray *)itemsArr{
     if (!_itemsArr) {
@@ -43,7 +55,7 @@
 // the first imageView is outside of the Window
 - (void)setUp{
     NSMutableArray *temp = [NSMutableArray new];
-    
+
     for (int i = 0; i < 9; i++) {
         UIImageView *imageView = [UIImageView new];
         [self addSubview:imageView];
@@ -59,19 +71,29 @@
         tap.view.tag = i;
         [temp addObject:imageView];
     }
-    
+
     self.imageViewsArray = [temp copy];
 }
 
 
+-(void)setImageType:(BOOL)imageType{
+  _imageType = imageType;
+}
 
 -(void)setSources:(NSArray<SourcesModel *> *)sources{
-  
+
   NSMutableArray * arr = [NSMutableArray new];
   for(int i=0;i<sources.count;i++){
-    if(sources[i].type==2){
-      if(arr.count>9) return;
-      [arr addObject:sources[i]];
+    if(self.imageType){
+      if(sources[i].type==5){
+        [arr addObject:sources[i]];
+        break;
+      }
+    }else{
+      if(sources[i].type==2){
+        if(arr.count>9) break;
+        [arr addObject:sources[i]];
+      }
     }
   }
   _sources = arr;
@@ -94,22 +116,22 @@
         }
         long perRowItemCount = [self perRowItemCountForPicPathArray:_sources];
         CGFloat margin = 5;
-        
+
         [_sources enumerateObjectsUsingBlock:^(SourcesModel *  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-         
+
             long columnIndex = idx % perRowItemCount;
             long rowIndex = idx / perRowItemCount;
             UIImageView *imageView = [self->_imageViewsArray objectAtIndex:idx];
             imageView.backgroundColor = [UIColor colorWithHexString:@"f5f5f5"];
-          
+
           NSString * showImage = _sources[idx].url?_sources[idx].url:@"";
           [imageView setImageWithURL:[NSURL URLWithString:[showImage getUrlAndWidth:itemW height:itemH]] placeholder:[UIImage imageWithColor:[UIColor colorWithHexString:@"f5f5f5"]]];
-          
+
             imageView.hidden = NO;
             imageView.frame = CGRectMake(columnIndex * (itemW + margin), rowIndex * (itemH + margin), itemW, itemH);
-
+          if(self.imageType)[self addSubview:self.bgView];
         }];
-        
+
         CGFloat w = perRowItemCount * itemW + (perRowItemCount - 1) * margin;
         int columnCount = ceilf(_sources.count * 1.0 / perRowItemCount);
         CGFloat h = columnCount * itemH + (columnCount - 1) * margin;
@@ -125,10 +147,10 @@
 
 - (void)tapImageView:(UITapGestureRecognizer *)tap
 {
-  if(self.imgBlock){
+  if(self.imgBlock&&!self.imageType){
     self.imgBlock(self.sources,tap.view.tag);
   }
-    
+
 }
 
 - (CGFloat)itemWidthForPicPathArray:(NSArray *)array
