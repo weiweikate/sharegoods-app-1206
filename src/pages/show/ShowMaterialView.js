@@ -2,7 +2,7 @@
  * 精选热门
  */
 import React from 'react';
-import { View, StyleSheet,Animated } from 'react-native';
+import { View, StyleSheet, Animated } from 'react-native';
 import { observer } from 'mobx-react';
 import { tag } from './Show';
 import ScreenUtils from '../../utils/ScreenUtils';
@@ -20,7 +20,7 @@ import bridge from '../../utils/bridge';
 import ShowApi from './ShowApi';
 import EmptyUtils from '../../utils/EmptyUtils';
 import ShowUtils from './utils/ShowUtils';
-import RouterMap from '../../navigation/RouterMap';
+import RouterMap, { routeNavigate, routePush } from '../../navigation/RouterMap';
 import DownloadUtils from './utils/DownloadUtils';
 
 @observer
@@ -45,11 +45,11 @@ export default class ShowMaterialView extends React.Component {
 
     }
 
-    scrollToTop=()=>{
-        if(this.state.showToTop){
+    scrollToTop = () => {
+        if (this.state.showToTop) {
             this.materialList && this.materialList.scrollToTop();
         }
-    }
+    };
 
 
     releaseButtonShow = () => {
@@ -106,7 +106,7 @@ export default class ShowMaterialView extends React.Component {
         });
         return (
             <View style={styles.container}>
-                <View style={{ flex: 1, paddingHorizontal: 15,paddingTop: ScreenUtils.isIOS ? 5 : 0 }}>
+                <View style={{ flex: 1, paddingHorizontal: 15, paddingTop: ScreenUtils.isIOS ? 5 : 0 }}>
                     <ShowRecommendView style={{ flex: 1 }}
                                        uri={'/social/show/content/page/query@GET'}
                                        ref={(ref) => {
@@ -129,13 +129,13 @@ export default class ShowMaterialView extends React.Component {
 
                                        }}
                                        onNineClick={({ nativeEvent }) => {
-                                           this.props.navigate('show/ShowDetailImagePage', {
+                                           routeNavigate(RouterMap.ShowDetailImagePage, {
                                                imageUrls: nativeEvent.imageUrls,
                                                index: nativeEvent.index
                                            });
                                        }}
                                        onPressProduct={({ nativeEvent }) => {
-                                           this.props.navigate(RouterMap.ProductDetailPage, { productCode: nativeEvent.prodCode });
+                                           routePush(RouterMap.ProductDetailPage, { productCode: nativeEvent.prodCode });
                                        }}
 
                                        onAddCartClick={({ nativeEvent }) => {
@@ -155,7 +155,7 @@ export default class ShowMaterialView extends React.Component {
 
                                        onDownloadPress={({ nativeEvent }) => {
                                            if (!user.isLogin) {
-                                               this.props.navigate('login/login/LoginPage');
+                                               routeNavigate(RouterMap.LoginPage);
                                                return;
                                            }
                                            let { detail } = nativeEvent;
@@ -165,7 +165,10 @@ export default class ShowMaterialView extends React.Component {
                                                });
                                                ShowUtils.downloadShow(urls, detail.content).then(() => {
                                                    detail.downloadCount += 1;
-                                                   ShowApi.incrCountByType({ showNo: nativeEvent.detail.showNo, type: 4 });
+                                                   ShowApi.incrCountByType({
+                                                       showNo: nativeEvent.detail.showNo,
+                                                       type: 4
+                                                   });
                                                    this.materialList && this.materialList.replaceItemData(nativeEvent.index, JSON.stringify(detail));
                                                });
                                            }
@@ -207,10 +210,10 @@ export default class ShowMaterialView extends React.Component {
 
                                     onPress={() => {
                                         if (!user.isLogin) {
-                                            this.props.navigate('login/login/LoginPage');
+                                            routeNavigate(RouterMap.LoginPage);
                                             return;
                                         }
-                                        this.props.navigate('show/ReleaseNotesPage');
+                                        routeNavigate(RouterMap.ReleaseNotesPage);
                                     }}/>
                             </Animated.View> : null
                     }

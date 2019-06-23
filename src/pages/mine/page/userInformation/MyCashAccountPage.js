@@ -23,6 +23,7 @@ import res from '../../res';
 import { MRText as Text } from '../../../../components/ui';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
 import StickyHeader from '../../components/StickyHeader'
+import RouterMap, { routeNavigate } from '../../../../navigation/RouterMap';
 
 const { px2dp } = ScreenUtils;
 const renwu = res.cashAccount.renwu_icon;
@@ -110,7 +111,7 @@ export default class MyCashAccountPage extends BasePage {
     }
 
     $NavBarRightPressed = () => {
-        this.$navigate('mine/bankCard/BankCardListPage');
+        this.$navigate(RouterMap.BankCardListPage);
     };
     $navigationBarOptions = {
         title: '现金账户',
@@ -212,6 +213,11 @@ export default class MyCashAccountPage extends BasePage {
                             <Image source={res.button.white_back}/>
                         </View>
                     </TouchableWithoutFeedback>
+                    {/*{this.state.canWithdraw ? <TouchableWithoutFeedback onPress={() => {*/}
+                        {/*this.$navigate(RouterMap.BankCardListPage);*/}
+                    {/*}}>*/}
+                        {/*<Text style={styles.settingStyle}>账户设置</Text>*/}
+                    {/*</TouchableWithoutFeedback> : null}*/}
                 </View>
             </ImageBackground>
         );
@@ -328,9 +334,9 @@ export default class MyCashAccountPage extends BasePage {
             if (data.data && data.data.length > 0) {
                 MineApi.gongmallResult().then((data) => {
                     if (!data.data) {
-                        this.$navigate('mine/bankCard/WithdrawalAgreementPage');
+                        this.$navigate(RouterMap.WithdrawalAgreementPage);
                     } else {
-                        this.$navigate('mine/userInformation/WithdrawCashPage');
+                        this.$navigate(RouterMap.WithdrawCashPage);
                     }
                 }).catch(error => {
                     this.$toastShow(error.msg);
@@ -341,7 +347,7 @@ export default class MyCashAccountPage extends BasePage {
                     }
                 }, {
                     text: '马上就去', onPress: () => {
-                        this.$navigate('mine/bankCard/BankCardListPage', {
+                        this.$navigate(RouterMap.BankCardListPage, {
                             callBack: (params) => {
                             }
                         });
@@ -401,7 +407,7 @@ export default class MyCashAccountPage extends BasePage {
                 user.saveUserInfo(data);
             }).catch(err => {
                 if (err.code === 10009) {
-                    this.gotoLoginPage();
+                    routeNavigate(RouterMap.LoginPage);
                 }
             });
         }

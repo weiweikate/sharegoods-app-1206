@@ -62,7 +62,7 @@ class ExchangeGoodsDetailPage extends BasePage {
     };
 
     $NavigationBarDefaultLeftPressed = () => {
-        this.$navigateBack('order/order/MyOrdersDetailPage');
+        this.$navigateBack(RouterMap.MyOrdersDetailPage);
     };
 
     $isMonitorNetworkStatus() {
@@ -154,7 +154,7 @@ class ExchangeGoodsDetailPage extends BasePage {
 
             /** 只要是被拒绝就显示拒绝理由*/
         } else if (status === 6) {
-            if(reject && reject.length > 0){
+            if (reject && reject.length > 0) {
                 isShow_refuseReasonView = true;
                 refuseReasonViewType = 1;
             }
@@ -330,14 +330,14 @@ class ExchangeGoodsDetailPage extends BasePage {
 
     returnLogists = (expressNo, expressCode) => {
         if (EmptyUtils.isEmpty(expressNo)) {
-            this.$navigate('order/afterSaleService/FillReturnLogisticsPage', {
+            this.$navigate(RouterMap.FillReturnLogisticsPage, {
                 pageData: this.afterSaleDetailModel.pageData,
                 callBack: () => {
                     this.afterSaleDetailModel.loadPageData();
                 }
             });
         } else {
-            this.$navigate('order/logistics/LogisticsDetailsPage', {
+            this.$navigate(RouterMap.LogisticsDetailsPage, {
                 expressNo: expressNo,
                 expressCode: expressCode
             });
@@ -349,25 +349,25 @@ class ExchangeGoodsDetailPage extends BasePage {
             this.$toastShow('请填写完整的退货物流信息\n才可以查看商家的物流信息');
             return;
         }
-        this.logisticsDetailsPage(expressNo, expressCode)
+        this.logisticsDetailsPage(expressNo, expressCode);
     };
 
     logisticsDetailsPage = (expressNo, expressCode) => {
-        OrderApi.return_express({serviceNo: this.params.serviceNo}).then((data)=>{
-            if (data.data && data.data.length > 1){//有多个物流
+        OrderApi.return_express({ serviceNo: this.params.serviceNo }).then((data) => {
+            if (data.data && data.data.length > 1) {//有多个物流
                 this.$navigate(RouterMap.AfterLogisticsListView, {
                     serviceNo: this.params.serviceNo
                 });
-            }else {
-                this.$navigate('order/logistics/LogisticsDetailsPage', {
+            } else {
+                this.$navigate(RouterMap.LogisticsDetailsPage, {
                     expressNo: expressNo,
                     expressCode: expressCode
                 });
             }
-        }).catch(err=>{
+        }).catch(err => {
             this.$toastShow(err.msg);
         });
-    }
+    };
 
     /**
      * 撤销、修改
@@ -382,7 +382,7 @@ class ExchangeGoodsDetailPage extends BasePage {
             let tips = ['确认撤销本次退款申请？您最多只能发起' + num + '次',
                 '确认撤销本次退货退款申请？您最多只能发起' + num + '次',
                 '确认撤销本次换货申请？您最多只能发起' + num + '次'];
-            if (num <= 0){
+            if (num <= 0) {
                 this.$toastShow('平台售后操作已到上线');
                 return;
             }
@@ -422,14 +422,16 @@ class ExchangeGoodsDetailPage extends BasePage {
             imgList = imgList || '';
             if (EmptyUtils.isEmpty(imgList)) {
                 imgList = [];
-            }else {
+            } else {
                 imgList = imgList.split(',');
             }
 
-            this.$navigate('order/afterSaleService/AfterSaleServicePage', {
+            this.$navigate(RouterMap.AfterSaleServicePage, {
                 pageType: type - 1,
                 isEdit: true,
-                callBack: ()=> {this.afterSaleDetailModel.loadPageData()},
+                callBack: () => {
+                    this.afterSaleDetailModel.loadPageData();
+                },
                 serviceNo,
                 orderProductNo,
                 reason,

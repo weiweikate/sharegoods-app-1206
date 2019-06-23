@@ -13,6 +13,7 @@ import GoodsItem from '../components/GoodsGrayItem';
 import DateUtils from '../../../utils/DateUtils';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
+import RouterMap from '../../../navigation/RouterMap';
 const {
     refund,
     return_goods,
@@ -57,7 +58,7 @@ class AfterSaleServiceHomePage extends BasePage {
     //**********************************ViewPart******************************************
     _render() {
 
-         let productData = this.params.pageData
+        let productData = this.params.pageData;
         return (
             <ScrollView style={DesignRule.style_container}>
                 {this.renderWideLine()}
@@ -71,7 +72,7 @@ class AfterSaleServiceHomePage extends BasePage {
                     salePrice={StringUtils.formatMoneyString(productData.unitPrice)}
                     category={productData.spec}
                     goodsNum={productData.quantity}
-                   // onPress={() => this.jumpToProductDetailPage()}
+                   onPress={() => this.jumpToProductDetailPage()}
                 />
                 {this.renderOrderTime()}
             </ScrollView>
@@ -134,22 +135,21 @@ class AfterSaleServiceHomePage extends BasePage {
         let orderProductNo = this.params.pageData.orderProductNo;
         switch (index) {
             case 0:
-                this.$navigate('order/afterSaleService/AfterSaleServicePage', {
+                this.$navigate(RouterMap.AfterSaleServicePage, {
                     pageType: 0,
-                    orderProductNo,
+                    orderProductNo
                 });
                 break;
             case 1:
-                this.$navigate('order/afterSaleService/AfterSaleServicePage', {
+                this.$navigate(RouterMap.AfterSaleServicePage, {
                     pageType: 1,
-                    orderProductNo,
+                    orderProductNo
                 });
                 break;
             case 2:
-                this.$navigate('order/afterSaleService/AfterSaleServicePage', {
+                this.$navigate(RouterMap.AfterSaleServicePage, {
                     pageType: 2,
-                    orderProductNo,
-                  //  productId: this.params.pageData.orderProductList[this.state.index].productId
+                    orderProductNo
                 });
                 break;
         }
@@ -176,42 +176,25 @@ class AfterSaleServiceHomePage extends BasePage {
     loadPageData() {
     }
 
-    jumpToProductDetailPage = (productId) => {
-        //this.$navigate('home/product/ProductDetailPage', { productId: productId });
+    jumpToProductDetailPage = () => {
         let productData = this.params.pageData;
-        switch (this.state.pageData.orderType) {
+        switch (productData.orderType) {
             case 1://秒杀
-                this.$navigate('product/ProductDetailPage', {
-                    productId: productData.productId,
-                    activityCode: productData.id,
-                    ids: productData.activityCode
-                });
-
-                break;
             case 2://降价拍
-                this.$navigate('product/ProductDetailPage', {
-                    productId: productData.productId,
-                    id: productData.id,
-                    ids: productData.activityCode
+                this.$navigate(RouterMap.ProductDetailPage, {
+                    activityType: productData.orderSubType,
+                    activityCode: productData.activityCode
                 });
-
                 break;
-
-            case 3://优惠套餐
-                this.$navigate('home/CouponsComboDetailPage', { id: productData.productId });
-                break;
+            case 3://
             case 4:
-
+                this.$navigate(RouterMap.TopicDetailPage, {
+                    activityType: productData.orderSubType,
+                    activityCode:productData.activityCode
+                });
                 break;
-
-            case 5://礼包
-                this.$navigate('home/GiftProductDetailPage', { giftBagId: productData.productId });
-                break;
-
-            case 99://普通商品
-                this.$navigate('product/ProductDetailPage', { productId: productData.productId });
-                break;
-            default:
+            default://普通商品
+                this.$navigate(RouterMap.ProductDetailPage, { productCode: productData.prodCode });
                 break;
         }
     };

@@ -18,14 +18,13 @@ import {
 } from './components/ui';
 
 import { renderViewByLoadingState } from './components/pageDecorator/PageState';
-import { NavigationActions } from 'react-navigation';
+import { StackActions, NavigationActions } from 'react-navigation';
 import { netState } from '@mr/rn-request';
 import res from './comm/res';
 import bridge from './utils/bridge';
 import DesignRule from './constants/DesignRule';
 import Toast from './utils/bridge';
-import RouterMap from './navigation/RouterMap';
-import StringUtils from './utils/StringUtils';
+import RouterMap, { GoToTabItem, navigateBack, replaceRoute, routeNavigate, routePush } from './navigation/RouterMap';
 
 export default class BasePage extends Component {
     constructor(props) {
@@ -115,11 +114,7 @@ export default class BasePage extends Component {
      * 跳转登录页面
      */
     gotoLoginPage = (params = {}) => {
-        if (true) {
-            this.$navigate(RouterMap.LoginPage, params);
-        } else {
-            this.$navigate(RouterMap.OldUserLoginPage, params);
-        }
+        routeNavigate(RouterMap.LoginPage, params);
     };
 
     renderContianer() {
@@ -132,7 +127,6 @@ export default class BasePage extends Component {
     }
 
     $renderSecondLeftItem() {
-
     }
 
     render() {
@@ -208,66 +202,28 @@ export default class BasePage extends Component {
         }
         this.$navigatorBar.changeTitle(newTitle, callBack);
     };
-    // 路由跳转
-    $navigate = (routeName, params) => {
-        // navigate(routeName, params);
-        // return;
-        try {
-            if (StringUtils.isEmpty(routeName)) {
-                return;
-            }
-            let time = new Date().getTime();
-            if (time - this.navigateTime < 600) {
-                return;
-            }
-            this.navigateTime = time;
-            console.log('navigate time ' + this.navigateTime);
-            params = params || {};
-            if (this.props.screenProps) {
-                this.props.screenProps.rootNavigation.navigate(routeName, {
-                    preRouteName: this.props.screenProps.rootNavigation.state.routeName,
-                    ...params
-                });
-            } else {
-                this.props.navigation.navigate(routeName, {
-                    preRouteName: this.props.navigation.state.routeName,
-                    ...params
-                });
-            }
-        } catch (e) {
-            console.warn(`js_navigate error: ${e.toString()}`);
-        }
-    };
-    $navigateBackToHome = () => {
-        this.props.navigation.popToTop();
-        this.props.navigation.navigate('HomePage');
-    };
-    //返回拼店
-    $navigateBackToStore = () => {
-        this.props.navigation.popToTop();
-        this.props.navigation.navigate('MyShop_RecruitPage');
+
+    $navigate = (...arg) => {
+        routePush(...arg);
     };
 
-    // 返回到首页
-    $navigateReset = (routeName = 'Tab', params) => {
-        const resetAction = NavigationActions.reset({
-            index: 0,
-            actions: [
-                NavigationActions.navigate({
-                    routeName: routeName,
-                    params: params
-                })
-            ]
-        });
-        this.props.navigation.dispatch(resetAction);
+    // 重置、返回到首页
+    $navigateBackToHome = () => {
+        GoToTabItem(0);
     };
+
+    //返回拼店
+    $navigateBackToStore = () => {
+        GoToTabItem(2);
+    };
+
     // 返回到登录页面
     $navigateResetLogin = () => {
-        const resetAction = NavigationActions.reset({
+        const resetAction = StackActions.reset({
             index: 1,
             actions: [
-                NavigationActions.navigate({ routeName: 'Tab' }),
-                NavigationActions.navigate({ routeName: 'login/login/LoginPage' })
+                NavigationActions.navigate({ routeName: RouterMap.Tab }),
+                NavigationActions.navigate({ routeName: RouterMap.LoginPage })
             ]
         });
         this.props.navigation.dispatch(resetAction);
@@ -275,31 +231,12 @@ export default class BasePage extends Component {
 
     // 返回
     $navigateBack = (step) => {
-        try {
-            console.log('step', step);
-            let $routes = global.$routes || [];
-            let routerKey = '';
-            if (typeof step === 'number') {
-                let router = $routes[$routes.length + step];
-                routerKey = router.key;
-            } else if (typeof step === 'string') {
-                for (let i = 0; i < $routes.length - 1; i++) {
-                    if (step === $routes[i].routeName) {
-                        routerKey = $routes[i + 1].key;
-                        break;
-                    }
-                }
-            }
-            if (!StringUtils.isEmpty(routerKey)) {
-                const backAction = NavigationActions.back({ key: routerKey });
-                this.props.navigation.dispatch(backAction);
-            } else {
-                this.props.navigation.goBack();
-            }
+        navigateBack(step);
+    };
 
-        } catch (e) {
-            console.warn(`$navigateBack error: ${e.toString()}`);
-        }
+    // 路由替换
+    $navigateReplace = (routeName, params) => {
+        replaceRoute(routeName, params);
     };
 
     $toastShow = (title) => {

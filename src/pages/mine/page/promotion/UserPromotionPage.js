@@ -27,12 +27,13 @@ import EmptyUtils from '../../../../utils/EmptyUtils';
 import DateUtils from '../../../../utils/DateUtils';
 import { PageLoadingState } from '../../../../components/pageDecorator/PageState';
 import DesignRule from '../../../../constants/DesignRule';
-import {MRText as Text} from '../../../../components/ui';
+import { MRText as Text } from '../../../../components/ui';
 
 const { px2dp } = ScreenUtils;
 // const url = '/static/protocol/extensionExplain.html'
 import apiEnvironment from '../../../../api/ApiEnvironment';
 import StringUtils from '../../../../utils/StringUtils';
+import RouterMap from '../../../../navigation/RouterMap';
 
 type Props = {};
 export default class UserPromotionPage extends BasePage<Props> {
@@ -41,7 +42,7 @@ export default class UserPromotionPage extends BasePage<Props> {
         this.state = {
             data: [],
             isEmpty: false,
-            loadingState:PageLoadingState.loading,
+            loadingState: PageLoadingState.loading
         };
         this.currentPage = 1;
     }
@@ -54,12 +55,12 @@ export default class UserPromotionPage extends BasePage<Props> {
 
     $getPageStateOptions = () => {
         return {
-            loadingState: this.state.loadingState,
+            loadingState: this.state.loadingState
         };
     };
 
     goExplicationPage = () => {
-        this.$navigate('HtmlPage', {
+        this.$navigate(RouterMap.HtmlPage, {
             title: '推广说明',
             uri: `${apiEnvironment.getCurrentH5Url()}/static/protocol/extensionExplain.html`
         });
@@ -76,9 +77,9 @@ export default class UserPromotionPage extends BasePage<Props> {
     };
 
     componentDidMount() {
-        this.listener = DeviceEventEmitter.addListener('payPromotionSuccess',()=>{
+        this.listener = DeviceEventEmitter.addListener('payPromotionSuccess', () => {
             this.onRefresh();
-        })
+        });
         // if(this.params.callback && this.params.callback.reload){
         //     alert();
         //     this.onRefresh();
@@ -113,10 +114,10 @@ export default class UserPromotionPage extends BasePage<Props> {
                 }
             }
         }).catch((error) => {
-            if(this.currentPage === 1 && EmptyUtils.isEmptyArr(this.state.data)){
+            if (this.currentPage === 1 && EmptyUtils.isEmptyArr(this.state.data)) {
                 this.setState({
                     loadingState: PageLoadingState.fail
-                })
+                });
             }
         });
     };
@@ -135,26 +136,26 @@ export default class UserPromotionPage extends BasePage<Props> {
 
     /**************************viewpart********************************/
 
-    _itemRender=({item}) =>{
+    _itemRender = ({ item }) => {
         let text;
-        if(item.status === 2){
+        if (item.status === 2) {
             text = (
                 <Text style={styles.grayTextStyle}>
                     已结束
                 </Text>
-            )
-        }else if(item.status === 3){
+            );
+        } else if (item.status === 3) {
             text = (
                 <Text style={styles.grayTextStyle}>
                     已取消
                 </Text>
-            )
-        }else {
+            );
+        } else {
             text = (
                 <Text style={styles.grayTextStyle}>
                     {`剩余推广金额${StringUtils.formatMoneyString(item.remain * item.price)}`}
                 </Text>
-            )
+            );
         }
         return (
             <View style={{ backgroundColor: 'white', marginBottom: px2dp(10) }}>
@@ -170,11 +171,11 @@ export default class UserPromotionPage extends BasePage<Props> {
                         <Text style={styles.blackTextStyle}>
                             {item.packageName}
                         </Text>
-                        <View style={{height:px2dp(10)}}/>
+                        <View style={{ height: px2dp(10) }}/>
                         {text}
                     </View>
-                    <TouchableWithoutFeedback onPress={()=>{
-                        this.$navigate('mine/promotion/PromotionDetailPage',item)
+                    <TouchableWithoutFeedback onPress={() => {
+                        this.$navigate(RouterMap.PromotionDetailPage, item);
                     }}>
                         <View style={styles.grayButtonWrapper}>
                             <Text style={styles.grayTextStyle}>
@@ -190,11 +191,11 @@ export default class UserPromotionPage extends BasePage<Props> {
                 </View>
             </View>
         );
-    }
+    };
 
     _bottomButtonRender() {
         return (
-            <TouchableWithoutFeedback onPress={() => this.$navigate('mine/promotion/InvitePromotionPage')}>
+            <TouchableWithoutFeedback onPress={() => this.$navigate(RouterMap.InvitePromotionPage)}>
                 <View style={styles.bottomButtonWrapper}>
                     <Text style={styles.bottomButtonTextStyle}>
                         发起邀请推广
@@ -228,7 +229,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: DesignRule.bgColor,
-        paddingTop: px2dp(10),
+        paddingTop: px2dp(10)
     },
     grayButtonWrapper: {
         borderColor: DesignRule.lineColor_inGrayBg,
@@ -255,12 +256,12 @@ const styles = StyleSheet.create({
     blackTextStyle: {
         color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(16),
-        includeFontPadding:false
+        includeFontPadding: false
     },
     grayTextStyle: {
         color: DesignRule.textColor_instruction,
         fontSize: px2dp(13),
-        includeFontPadding:false
+        includeFontPadding: false
     },
     bottomTextWrapper: {
         height: px2dp(33),
@@ -270,7 +271,7 @@ const styles = StyleSheet.create({
     bottomTextStyle: {
         color: DesignRule.textColor_instruction,
         fontSize: px2dp(13),
-        includeFontPadding:false
+        includeFontPadding: false
     },
     bottomButtonWrapper: {
         height: px2dp(48),
@@ -281,7 +282,7 @@ const styles = StyleSheet.create({
         // left: 0,
         // bottom: 0,
         backgroundColor: DesignRule.mainColor,
-        marginBottom:ScreenUtils.safeBottom
+        marginBottom: ScreenUtils.safeBottom
     },
     bottomButtonTextStyle: {
         color: 'white',

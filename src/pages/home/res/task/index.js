@@ -21,5 +21,10 @@ const task = {
     V3:require('./V3.png'),
     V4:require('./V4.png'),
     V5:require('./V5.png'),
+    red_btn:require('./red_btn.png'),
+    yellow_btn:require('./yellow_btn.png'),
+    red_bg:require('./red_bg.png'),
+    gary_bg:require('./gary_bg.png'),
+    current_p:require('./current_p.png'),
 };
 export default task;

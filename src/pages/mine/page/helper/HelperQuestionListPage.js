@@ -11,6 +11,7 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import { MRText as Text, NoMoreClick } from '../../../../components/ui';
+import RouterMap from '../../../../navigation/RouterMap';
 
 const arrow_right = res.button.arrow_right_black;
 
@@ -76,7 +77,7 @@ export default class HelperQuestionListPage extends BasePage {
     }
 
     orderMenuJump(i) {
-        this.$navigate('mine/helper/HelperQuestionDetail', { id: i });
+        this.$navigate(RouterMap.HelperQuestionDetail, { id: i });
     }
 
     _render() {

@@ -31,6 +31,7 @@ import Styles from '../style/SelectMentorPage.style';
 import { homeRegisterFirstManager } from '../../home/manager/HomeRegisterFirstManager';
 import { MRText as Text } from '../../../components/ui';
 import { TrackApi } from '../../../utils/SensorsTrack';
+import RouterMap from '../../../navigation/RouterMap';
 
 const { px2dp } = ScreenUtils;
 const {
@@ -50,6 +51,7 @@ export default class SelectMentorPage extends BasePage {
         this.itemRefArr = [];
         TrackApi.adviserSelectPage();
     }
+
     // 禁用某个页面的手势
     static navigationOptions = {
         gesturesEnabled: false
@@ -78,6 +80,7 @@ export default class SelectMentorPage extends BasePage {
     componentDidMount() {
         this.loadPageData();
     }
+
     /**
      * 拉取数据
      */
@@ -90,7 +93,7 @@ export default class SelectMentorPage extends BasePage {
             console.log(response);
             if (response.data.length < 3) {
                 this.setState({
-                    mentorData: response.data,
+                    mentorData: response.data
                 });
             } else {
                 this.setState({
@@ -142,12 +145,13 @@ export default class SelectMentorPage extends BasePage {
             </View>
         );
     }
+
     _renderMentorListView = () => {
         return (
             <View
                 style={{
                     alignItems: 'center',
-                    justifyContent: 'center',
+                    justifyContent: 'center'
                 }}
             >
                 {
@@ -281,7 +285,7 @@ export default class SelectMentorPage extends BasePage {
                 />
                 <UIText
                     style={{
-                        marginTop:3,
+                        marginTop: 3,
                         fontSize: 13,
                         color: DesignRule.textColor_placeholder
                     }}
@@ -392,8 +396,8 @@ export default class SelectMentorPage extends BasePage {
     * 绑定导师
     * */
     _bindMentor = () => {
-        if (this.state.selectIndex === -1){
-            return ;
+        if (this.state.selectIndex === -1) {
+            return;
         }
         if (this.state.selectIndex <= this.state.mentorData.length - 1) {
             let mentorData = this.state.mentorData[this.state.selectIndex];
@@ -411,7 +415,7 @@ export default class SelectMentorPage extends BasePage {
 
     };
     jumpToWriteCodePage = () => {
-        this.$navigate('login/login/InviteCodePage');
+        this.$navigate(RouterMap.InviteCodePage);
     };
     _createItemView = () => {
         console.log('选中索引' + this.state.selectIndex);
@@ -447,7 +451,7 @@ export default class SelectMentorPage extends BasePage {
         });
     };
     _toDetailPage = (itemData) => {
-        this.$navigate('login/login/MentorDetailPage', {
+        this.$navigate(RouterMap.MentorDetailPage, {
             itemData: itemData,
             give: this.params.give
         });

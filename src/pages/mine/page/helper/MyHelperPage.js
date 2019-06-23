@@ -43,6 +43,7 @@ import StringUtils from "../../../../utils/StringUtils";
 import { SmoothPushPreLoadHighComponentFirstDelay } from '../../../../comm/components/SmoothPushHighComponent';
 import CommModal from '../../../../comm/components/CommModal';
 import TimerMixin from 'react-timer-mixin';
+import RouterMap from '../../../../navigation/RouterMap';
 
 
 @SmoothPushPreLoadHighComponentFirstDelay
@@ -209,7 +210,7 @@ export default class MyHelperPage extends BasePage {
 
     orderListq(list) {
         if(StringUtils.isNoEmpty(list)){
-            this.$navigate("mine/helper/HelperQuestionListPage", { list });
+            this.$navigate(RouterMap.HelperQuestionListPage, { list });
         }
     }
 
@@ -219,18 +220,18 @@ export default class MyHelperPage extends BasePage {
             return;
         }
         if (type === 1) {
-            this.$navigate("order/afterSaleService/AfterSaleListPage");
+            this.$navigate(RouterMap.AfterSaleListPage);
         } else if (type === 2) {
-            this.$navigate("mine/helper/HelperFeedbackPage");
+            this.$navigate(RouterMap.HelperFeedbackPage);
         } else if (type === 3) {
-            this.$navigate("order/order/MyOrdersListPage", { index: 0 });
+            this.$navigate(RouterMap.MyOrdersListPage, { index: 0 });
         }
 
     }
 
     gotoquestionDetail(id) {
         console.log(id);
-        this.$navigate("mine/helper/HelperQuestionDetail", { id: id });
+        this.$navigate(RouterMap.HelperQuestionDetail, { id: id });
     }
 
     componentDidMount() {

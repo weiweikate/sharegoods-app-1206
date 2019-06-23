@@ -34,6 +34,8 @@ import WhiteModel from '../../../show/model/WhiteModel';
 import store from '@mr/rn-store';
 import SettingModel from '../../model/SettingModel'
 import { observer } from 'mobx-react';
+import { forceToHome } from '../../../../navigation/RouterMap';
+import RouterMap from '../../../../navigation/RouterMap';
 
 /**
  * @author luoyongming
@@ -81,6 +83,10 @@ class SettingPage extends BasePage {
                 });
             });
         }
+    }
+
+    componentWillUnmount() {
+        clearTimeout();
     }
 
     //**********************************ViewPart******************************************
@@ -274,6 +280,7 @@ class SettingPage extends BasePage {
             }}/>
         );
     };
+
     toLoginOut = () => {
         Alert.alert(
             '退出登录',
@@ -296,7 +303,7 @@ class SettingPage extends BasePage {
                         loginModel.clearPassword();
                         //清空购物车
                         shopCartStore.data = [];
-                        this.$navigateBackToHome();
+                        this.toHomePage();
                         DeviceEventEmitter.emit('login_out');
                         homeModule.loadHomeList();
                         MineApi.signOut();
@@ -312,13 +319,17 @@ class SettingPage extends BasePage {
         );
     };
 
+    toHomePage = () => {
+        forceToHome();
+    };
+
 
     //**********************************BusinessPart******************************************
     jumpToAddressManagePage = () => {
-        this.$navigate('mine/address/AddressManagerPage');
+        this.$navigate(RouterMap.AddressManagerPage);
     };
     jumptToAboutUsPage = () => {
-        this.$navigate('HtmlPage', {
+        this.$navigate(RouterMap.HtmlPage, {
             title: '关于我们',
             uri: apiEnvironment.getCurrentH5Url() + '/static/protocol/about-us.html'
         });
@@ -326,7 +337,7 @@ class SettingPage extends BasePage {
     // 账户设置
     jumpToAccountSettingPage = () => {
         if (user.isLogin) {
-            this.$navigate('mine/setting/AccountSettingPage');
+            this.$navigate(RouterMap.AccountSettingPage);
         } else {
             this.gotoLoginPage();
         }

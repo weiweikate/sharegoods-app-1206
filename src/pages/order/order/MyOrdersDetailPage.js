@@ -17,7 +17,6 @@ import Toast from '../../../utils/bridge';
 // import GoodsGrayItem from "../components/GoodsGrayItem";
 import OrderApi from '../api/orderApi';
 import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
-import { NavigationActions } from 'react-navigation';
 import DesignRule from '../../../constants/DesignRule';
 import MineApi from '../../mine/api/MineApi';
 import { getDateData, leadingZeros } from '../components/orderDetail/OrderCutDown';
@@ -32,6 +31,7 @@ import { orderDetailModel, orderDetailAfterServiceModel, assistDetailModel } fro
 import { observer } from 'mobx-react';
 import GiftHeaderView from '../components/orderDetail/GiftHeaderView';
 import { SmoothPushPreLoadHighComponent } from '../../../comm/components/SmoothPushHighComponent';
+import RouterMap from '../../../navigation/RouterMap';
 
 const buyerHasPay = res.buyerHasPay;
 const productDetailHome = res.productDetailHome;
@@ -302,16 +302,10 @@ export default class MyOrdersDetailPage extends BasePage {
                     clickSelect={(index) => {
                         switch (index) {
                             case 0:
-                                this.$navigate('message/MessageCenterPage');
+                                this.$navigate(RouterMap.MessageCenterPage);
                                 break;
                             case 1:
-                                let resetAction = NavigationActions.reset({
-                                    index: 0,
-                                    actions: [
-                                        NavigationActions.navigate({ routeName: 'Tab' })//要跳转到的页面名字
-                                    ]
-                                });
-                                this.props.navigation.dispatch(resetAction);
+                                this.$navigateBackToHome();
                                 break;
                         }
                         this.setState({ isShowShowMessageModal: false });
@@ -547,7 +541,10 @@ export default class MyOrdersDetailPage extends BasePage {
                 if (orderDetailModel.expList.length === 0) {
                     pageStateString.sellerState = '等待平台发货';
                 } else if (orderDetailModel.expList.length === 1 && orderDetailModel.unSendProductInfoList.length === 0) {
-                    OrderApi.findLogisticsDetail({ expressNo: orderDetailModel.expList[0].expNO, expressCode:orderDetailModel.expList[0].expressCode}).then((response) => {
+                    OrderApi.findLogisticsDetail({
+                        expressNo: orderDetailModel.expList[0].expNO,
+                        expressCode: orderDetailModel.expList[0].expressCode
+                    }).then((response) => {
                         console.log(response);
                         pageStateString.sellerState = response.data.list[0].status || '等待平台发货';
                     }).catch(e => {
@@ -607,20 +604,20 @@ export default class MyOrdersDetailPage extends BasePage {
         switch (orderDetailModel.productsList()[index].orderSubType) {
             case 1://秒杀
             case 2://降价拍
-                this.$navigate('product/ProductDetailPage', {
+                this.$navigate(RouterMap.ProductDetailPage, {
                     activityType: orderDetailModel.productsList()[index].orderSubType,
                     activityCode: orderDetailModel.productsList()[index].activityCode//
                 });
                 break;
             case 3://
             case 4:
-                this.$navigate('topic/TopicDetailPage', {
+                this.$navigate(RouterMap.TopicDetailPage, {
                     activityType: orderDetailModel.productsList()[index].orderSubType,
                     activityCode: orderDetailModel.productsList()[index].activityCode
                 });
                 break;
             default://普通商品
-                this.$navigate('product/ProductDetailPage', { productCode: orderDetailModel.productsList()[index].prodCode });
+                this.$navigate(RouterMap.ProductDetailPage, { productCode: orderDetailModel.productsList()[index].prodCode });
                 break;
         }
     };
@@ -643,14 +640,14 @@ export default class MyOrdersDetailPage extends BasePage {
 
         switch (menu.id) {
             case 0:
-                this.$navigate('order/afterSaleService/AfterSaleServicePage', {
+                this.$navigate(RouterMap.AfterSaleServicePage, {
                     pageType: 0,
                     orderProductNo: products.orderProductNo
                 });
 
                 break;
             case 1:
-                this.$navigate('order/afterSaleService/AfterSaleServiceHomePage', {
+                this.$navigate(RouterMap.AfterSaleServiceHomePage, {
                     pageData: {
                         ...products,
                         orderSubType: StringUtils.isEmpty(products.activityCodes) ? -1 : products.activityCodes[0].orderType
@@ -659,17 +656,17 @@ export default class MyOrdersDetailPage extends BasePage {
                 });
                 break;
             case 2:
-                this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
+                this.$navigate(RouterMap.ExchangeGoodsDetailPage, {
                     serviceNo: products.orderCustomerServiceInfoDTO.serviceNo
                 });
                 break;
             case 3:
-                this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
+                this.$navigate(RouterMap.ExchangeGoodsDetailPage, {
                     serviceNo: products.orderCustomerServiceInfoDTO.serviceNo
                 });
                 break;
             case 6:
-                this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
+                this.$navigate(RouterMap.ExchangeGoodsDetailPage, {
                     serviceNo: products.orderCustomerServiceInfoDTO.serviceNo
                 });
                 break;
