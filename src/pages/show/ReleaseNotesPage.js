@@ -17,7 +17,6 @@ import { MRText } from '../../components/ui';
 import DesignRule from '../../constants/DesignRule';
 import ScreenUtils from '../../utils/ScreenUtils';
 import res from './res';
-import BusinessUtils from '../mine/components/BusinessUtils';
 import ImageLoad from '@mr/image-placeholder';
 import NoMoreClick from '../../components/ui/NoMoreClick';
 import UIImage from '../../components/ui/UIImage';
@@ -26,6 +25,7 @@ import EmptyUtils from '../../utils/EmptyUtils';
 import ShowApi from './ShowApi';
 import RouterMap from '../../navigation/RouterMap';
 import TagView from './components/TagView';
+import PictureVideoUtils from './utils/PictureVideoUtils';
 
 const { addIcon, delIcon, iconShowDown, iconShowEmoji, addShowIcon, showTagIcon } = res;
 const { arrow_right_black } = res.button;
@@ -41,14 +41,15 @@ export default class ReleaseNotesPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            imageArr: [{url:'https://cdn.sharegoodsmall.com/sharegoods/630d0fa0db66482bb69364482accf241.jpg',width:750,height:1334}],
+            imageArr: [],
             showEmoji: false,
             showEmojiButton: false,
             text: '',
             titleText: '',
             keyBoardHeight: 0,
             products: [],
-            tags:[]
+            tags: [],
+            videoData: null
         };
 
     }
@@ -91,30 +92,52 @@ export default class ReleaseNotesPage extends BasePage {
     };
 
     _publish = () => {
-        if (EmptyUtils.isEmptyArr(this.state.imageArr)) {
-            this.$toastShow('至少需要上传一张图片哦');
+        if (EmptyUtils.isEmptyArr(this.state.imageArr) && this.state.videoData === null) {
+            this.$toastShow('至少需要上传一张图片或视频哦');
             return;
         }
         let content = this.state.text || '';
         let products = this.state.products || [];
         let images = this.state.imageArr;
-        let urls = images.map((value) => {
-            return {
-                baseUrl:value.url,
-                height:value.height,
-                width:value.width,
-                type:2
-            }
-        });
+        let urls, video = null;
+        if (this.state.videoData) {
+            let cover = {
+                baseUrl: this.state.videoData.cover,
+                height: this.state.videoData.height,
+                width: this.state.videoData.width,
+                type: 5
+            };
+            urls = [cover];
+            video = {
+                baseUrl: this.state.videoData.video,
+                videoTime: this.state.videoData.videoTime,
+                width: this.state.videoData.width,
+                height: this.state.videoData.height,
+                type: 4
+            };
+        } else {
+            urls = images.map((value) => {
+                return {
+                    baseUrl: value.url,
+                    height: value.height,
+                    width: value.width,
+                    type: 2
+                };
+            });
+        }
+
         let productsPar = products.map((value) => {
             return value.spuCode;
         });
         let params = {
             content,
+            video,
             images: urls,
             products: productsPar,
-            title:this.state.titleText,
-            tagList:this.state.tags.map((item)=>{return item.tagId})
+            title: this.state.titleText,
+            tagList: this.state.tags.map((item) => {
+                return item.tagId;
+            })
         };
         ShowApi.publishShow(params).then((data) => {
             this.props.navigation.popToTop();
@@ -133,10 +156,23 @@ export default class ReleaseNotesPage extends BasePage {
             return;
         }
         let num = 9 - imageArr.length;
-        BusinessUtils.getImagePicker(callback => {
-            let result = imageArr.concat(callback.images);
-            this.setState({ imageArr: result });
-        }, num, true, true, true);
+        // BusinessUtils.getImagePicker(callback => {
+        //     if (callback.type === 'video') {
+        //         this.setState({ videoData: callback });
+        //     } else {
+        //         let result = imageArr.concat(callback.images);
+        //         this.setState({ imageArr: result });
+        //     }
+        // }, num, true, true, true);
+
+        PictureVideoUtils.selectPictureOrVideo(num,true,callback => {
+            if (callback.type === 'video') {
+                this.setState({ videoData: callback });
+            } else {
+                let result = imageArr.concat(callback.images);
+                this.setState({ imageArr: result });
+            }
+        })
     };
 
     deletePic = (index) => {
@@ -150,6 +186,21 @@ export default class ReleaseNotesPage extends BasePage {
     };
 
     _imageRender = () => {
+        if (this.state.videoData) {
+            return (
+                <View style={styles.imagesWrapper}>
+                    <View>
+                        <ImageLoad style={styles.photo_item} source={{ uri: this.state.videoData.cover }}/>
+                        <NoMoreClick style={styles.delete_btn} onPress={() => {
+                            this.setState({ videoData: null });
+                        }}>
+                            <UIImage style={{ width: px2dp(15), height: px2dp(15) }} source={delIcon}/>
+                        </NoMoreClick>
+                    </View>
+                </View>
+            );
+        }
+
         let images = this.state.imageArr.map((value, index) => {
             let left = index === 0 ? 0 : px2dp(15);
             return (
@@ -177,6 +228,10 @@ export default class ReleaseNotesPage extends BasePage {
     };
 
     _addImageButton = () => {
+        if (this.state.videoData) {
+            return null;
+        }
+
         let imageArr = this.state.imageArr;
         if (imageArr.length >= 9) {
             return null;
@@ -338,18 +393,19 @@ export default class ReleaseNotesPage extends BasePage {
         );
     };
 
-    refreshTags=(tags)=>{
-        this.setState({tags});
-    }
+    refreshTags = (tags) => {
+        this.setState({ tags });
+    };
 
     tagRender = () => {
-        if(EmptyUtils.isEmpty(this.state.tags)){
+        if (EmptyUtils.isEmpty(this.state.tags)) {
             return (
-                <TouchableWithoutFeedback onPress={()=>{
-                    this.$navigate(RouterMap.TagSelectorPage,{callback:this.refreshTags});
+                <TouchableWithoutFeedback onPress={() => {
+                    this.$navigate(RouterMap.TagSelectorPage, { callback: this.refreshTags });
                 }}>
                     <View style={styles.tagWrapper}>
-                        <Image style={{ width: px2dp(18), height: px2dp(18),marginLeft:DesignRule.margin_page }} source={showTagIcon}/>
+                        <Image style={{ width: px2dp(18), height: px2dp(18), marginLeft: DesignRule.margin_page }}
+                               source={showTagIcon}/>
                         <MRText style={styles.tagPlaceholder}>
                             添加活动 获得更多曝光
                         </MRText>
@@ -360,20 +416,20 @@ export default class ReleaseNotesPage extends BasePage {
         }
 
         return (
-            <TouchableWithoutFeedback onPress={()=>{
-                this.$navigate(RouterMap.TagSelectorPage,{callback:this.refreshTags});
+            <TouchableWithoutFeedback onPress={() => {
+                this.$navigate(RouterMap.TagSelectorPage, { callback: this.refreshTags ,tags:this.state.tags});
             }}>
                 <View style={styles.tagWrapper}>
-                    {this.state.tags.map((item,index)=>{
-                        return(
-                            <TagView text={item.name} style={{marginLeft:px2dp(15)}}/>
-                        )
+                    {this.state.tags.map((item, index) => {
+                        return (
+                            <TagView text={item.name} style={{ marginLeft: px2dp(15) }}/>
+                        );
                     })}
-                    <View style={{flex:1}}/>
+                    <View style={{ flex: 1 }}/>
                     <Image source={arrow_right_black} style={{ width: px2dp(10), height: px2dp(16) }}/>
                 </View>
             </TouchableWithoutFeedback>
-        )
+        );
 
     };
 
@@ -394,7 +450,6 @@ export default class ReleaseNotesPage extends BasePage {
                     });
                 }}
                 onEmoticonPress={(emoji) => {
-                    console.log(emoji);
                     this.setState({
                         text: this.state.text + emoji.code
                     }, () => {

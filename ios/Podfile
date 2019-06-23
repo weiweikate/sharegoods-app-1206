@@ -49,6 +49,8 @@ pod 'Texture'
 
 #  pod 'react-native-webview', :path => '../node_modules/@mr/react-native-webview'
 
+#  pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
+
 end
 
 #    暂时未用,先注释已被后期使用

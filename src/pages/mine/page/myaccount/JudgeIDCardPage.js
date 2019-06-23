@@ -10,6 +10,7 @@ import user from '../../../../model/user';
 import MineAPI from '../../api/MineApi';
 import DesignRule from '../../../../constants/DesignRule';
 import {MRText as Text, MRTextInput as TextInput} from '../../../../components/ui'
+import RouterMap from '../../../../navigation/RouterMap';
 export default class SetNewPhoneNumPage extends BasePage {
 
     // 导航配置
@@ -109,7 +110,7 @@ export default class SetNewPhoneNumPage extends BasePage {
             realname: userName,
             idcard: cardNum
         }).then((data) => {
-            this.$navigate('mine/account/SetOrEditPayPwdPage', {
+            this.$navigate(RouterMap.SetOrEditPayPwdPage, {
                 userName,
                 cardNum,
                 oldPwd: '',

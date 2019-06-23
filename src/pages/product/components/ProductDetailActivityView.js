@@ -6,7 +6,7 @@ import res from '../res/product';
 import { observer } from 'mobx-react';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import apiEnvironment from '../../../api/ApiEnvironment';
-import { navigate } from '../../../navigation/RouterMap';
+import { routePush } from '../../../navigation/RouterMap';
 
 const { arrow_right_black } = res.button;
 
@@ -21,7 +21,7 @@ export class ActivityWillBeginView extends Component {
         const { extraProperty } = singleActivity;
         return (
             <NoMoreClick style={WillBeginStyles.bgView} onPress={() => {
-                extraProperty === 'toSpike' && navigate('HtmlPage', {
+                extraProperty === 'toSpike' && routePush('HtmlPage', {
                     uri: `${apiEnvironment.getCurrentH5Url()}/spike?spuCode=${prodCode}`
                 });
             }}>
@@ -91,7 +91,7 @@ export class ActivityDidBeginView extends Component {
         progressWidthS = progressWidthS < 12 ? 12 : progressWidthS;
         return (
             <NoMoreClick style={DidBeginViewStyles.bgView} onPress={() => {
-                extraProperty === 'toSpike' && navigate('HtmlPage', {
+                extraProperty === 'toSpike' && routePush('HtmlPage', {
                     uri: `${apiEnvironment.getCurrentH5Url()}/spike?spuCode=${prodCode}`
                 });
             }}>

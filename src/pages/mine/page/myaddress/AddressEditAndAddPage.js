@@ -11,6 +11,7 @@ import UIImage from '../../../../components/ui/UIImage';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import { MRText as Text, MRTextInput as TextInput } from '../../../../components/ui';
+import RouterMap from '../../../../navigation/RouterMap';
 
 const addrSelectedIcon = res.button.selected_circle_red;
 const addrUnSelectedIcon = res.button.unselected_circle;
@@ -195,7 +196,7 @@ export default class AddressEditAndAddPage extends BasePage {
 
     _getCityPicker = () => {
         dismissKeyboard();
-        this.$navigate('mine/address/SelectAreaPage', {
+        this.$navigate(RouterMap.SelectAreaPage, {
             setArea: this.setArea.bind(this),
             tag: 'province',
             fatherCode: '0'

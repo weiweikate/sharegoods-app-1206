@@ -19,7 +19,6 @@ class HomeModule {
     @observable isRefreshing = false;
     @observable isFocused = false;
     @observable goodsOtherLen = 0;
-    lastGoods = null;
     isFetching = false;
     isEnd = false;
     page = 1;
@@ -68,6 +67,14 @@ class HomeModule {
             return ({ ...item });
         });
     };
+
+    @action initHomeParams() {
+        this.homeList = [];
+        this.page = 1;
+        this.isFetching = false;
+        this.isEnd = false;
+        this.firstLoad = true;
+    }
 
     @action refreshHome = (type) => {
         switch (type) {

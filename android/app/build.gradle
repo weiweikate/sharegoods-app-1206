@@ -193,6 +193,8 @@ dependencies {
     api project(':base_adapter')
     api project(':react-native-extra-dimensions-android')
     api project(':react-native-code-push')
+    implementation 'com.mabeijianxi:small-video-record2:2.0.3@aar'
+    implementation project(':react-native-gesture-handler')
     implementation project(':@mr_mr-rn-storage')
     implementation project(':@mr_rn-webview-bridge')
     implementation project(':@mr_rn-request')

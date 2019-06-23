@@ -20,6 +20,7 @@ import ProtocolView from '../components/Login.protocol.view';
 import { isCanPhoneAuthen, startPhoneAuthen } from '../model/PhoneAuthenAction';
 import { oneClickLoginValidation } from '../model/LoginActionModel';
 import { TrackApi } from '../../../utils/SensorsTrack';
+import RouterMap from '../../../navigation/RouterMap';
 
 const { px2dp } = ScreenUtils;
 const {
@@ -39,13 +40,14 @@ export default class LocalNumLogin extends BasePage {
         };
         TrackApi.onKeyLoginPage();
     }
+
     // 导航配置
     $navigationBarOptions = {
         gesturesEnabled: false
 
     };
 
-    componentDidMount(){
+    componentDidMount() {
         if (Platform.OS === 'android') {
             this.$loadingShow();
             isCanPhoneAuthen().then(result => {
@@ -113,7 +115,7 @@ export default class LocalNumLogin extends BasePage {
                             });
                         }}
                         textClick={(htmlUrl) => {
-                            this.$navigate('HtmlPage', {
+                            this.$navigate(RouterMap.HtmlPage, {
                                 title: '用户协议内容',
                                 uri: htmlUrl
                             });

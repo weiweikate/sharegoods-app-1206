@@ -42,8 +42,9 @@ import AddCartModel from './model/AddCartModel';
 import { sourceType } from '../product/SelectionPage';
 import shopCartCacheTool from '../shopCart/model/ShopCartCacheTool';
 import SelectionPage from '../product/SelectionPage';
-import RouterMap from '../../navigation/RouterMap';
+import RouterMap, { navigateBack, routeNavigate } from '../../navigation/RouterMap';
 import DownloadUtils from './utils/DownloadUtils';
+import VideoView from '../../components/ui/video/VideoView';
 
 const { iconShowFire, iconLike, iconNoLike, iconDownload, iconShowShare } = res;
 // @SmoothPushPreLoadHighComponent
@@ -153,23 +154,30 @@ export default class ShowDetailPage extends BasePage {
     };
 
     renderTags = () => {
+        if (EmptyUtils.isEmpty(this.state.tags)) {
+            return null;
+        }
         return (
             <View style={{ flexDirection: 'row', marginTop: px2dp(10) }}>
                 {this.state.tags.map((item, index) => {
                     return (
-                        <View key={`tag${index}`} style={{
-                            height: px2dp(24),
-                            marginLeft: px2dp(15),
-                            paddingHorizontal: px2dp(8),
-                            borderRadius: px2dp(12),
-                            backgroundColor: '#fee2e8',
-                            alignItems: 'center',
-                            flexDirection: 'row'
+                        <TouchableWithoutFeedback onPress={()=>{
+                            this.$navigate(RouterMap.TagDetailPage,item);
                         }}>
-                            <Text style={{ color: DesignRule.mainColor, fontSize: DesignRule.fontSize_24 }}>
-                                #{item.name}
-                            </Text>
-                        </View>
+                            <View key={`tag${index}`} style={{
+                                height: px2dp(24),
+                                marginLeft: px2dp(15),
+                                paddingHorizontal: px2dp(8),
+                                borderRadius: px2dp(12),
+                                backgroundColor: '#fee2e8',
+                                alignItems: 'center',
+                                flexDirection: 'row'
+                            }}>
+                                <Text style={{ color: DesignRule.mainColor, fontSize: DesignRule.fontSize_24 }}>
+                                    #{item.name}
+                                </Text>
+                            </View>
+                        </TouchableWithoutFeedback>
                     );
                 })}
             </View>
@@ -202,14 +210,11 @@ export default class ShowDetailPage extends BasePage {
 
 
     _goBack() {
-        console.log('_goBack');
-        const { navigation } = this.props;
-        navigation.goBack(null);
+        navigateBack();
     }
 
     _goToGoodsPage(good) {
-        const { navigation } = this.props;
-        navigation.push('product/ProductDetailPage', {
+        routeNavigate(RouterMap.ProductDetailPage, {
             productCode: good.code
         });
     }
@@ -219,8 +224,7 @@ export default class ShowDetailPage extends BasePage {
         if (user.isLogin) {
             this.showDetailModule.showGoodAction();
         } else {
-            const { navigation } = this.props;
-            navigation.push('login/login/LoginPage');
+            routeNavigate(RouterMap.LoginPage);
         }
     }
 
@@ -228,8 +232,7 @@ export default class ShowDetailPage extends BasePage {
         if (user.isLogin) {
             this.showDetailModule.showConnectAction();
         } else {
-            const { navigation } = this.props;
-            navigation.push('login/login/LoginPage');
+            routeNavigate(RouterMap.LoginPage);
         }
     }
 
@@ -309,8 +312,7 @@ export default class ShowDetailPage extends BasePage {
 
     _showImagesPage(imgs, index) {
         this.noNeedRefresh = true;
-        const { navigation } = this.props;
-        navigation.push('show/ShowDetailImagePage', {
+        routeNavigate(RouterMap.ShowDetailImagePage, {
             imageUrls: imgs,
             index: index
         });
@@ -335,11 +337,9 @@ export default class ShowDetailPage extends BasePage {
 
     _downloadShowContent = () => {
         if (!user.isLogin) {
-            this.$navigate('login/login/LoginPage');
+            routeNavigate(RouterMap.LoginPage);
             return;
         }
-
-
         let { detail } = this.showDetailModule;
         if (!EmptyUtils.isEmptyArr(detail.resource)) {
             let urls = detail.resource.map((value) => {
@@ -351,10 +351,7 @@ export default class ShowDetailPage extends BasePage {
                 this.showDetailModule.setDetail(detail);
             });
         }
-
         DownloadUtils.downloadProduct({ detail });
-
-
     };
 
     _clickLike = () => {
@@ -505,7 +502,18 @@ export default class ShowDetailPage extends BasePage {
         }
 
         let content = detail.content ? detail.content : '';
-
+        let video, cover;
+        if (detail.showType === 3) {
+            for (let i = 0; i < detail.resource.length; i++) {
+                let item = detail.resource[i];
+                if (item.type === 4) {
+                    video = item.baseUrl;
+                }
+                if (item.type === 5) {
+                    cover = item.baseUrl;
+                }
+            }
+        }
 
         return <View style={styles.container}>
             <ScrollView
@@ -518,12 +526,16 @@ export default class ShowDetailPage extends BasePage {
             >
                 <View style={styles.virHeader}/>
                 {
-                    detail.resource
+                    detail.showType === 1 && detail.resource
                         ?
                         <ShowImageView items={detail.resource}
                                        onPress={(imgs, index) => this._showImagesPage(imgs, index)}/>
                         :
                         null
+                }
+                {
+                    detail.showType === 3 ?
+                        <VideoView videoUrl={video} videoCover={cover} navigation={this.props.navigation}/> : null
                 }
 
                 <ProductRowListView style={{ marginTop: px2dp(10) }}
@@ -595,7 +607,7 @@ export default class ShowDetailPage extends BasePage {
                                 dec: '好物不独享，内有惊喜福利~'
                             }}
             />
-            {detail.status !== 1 ? this._shieldRender() : null}
+            {detail.status !== 1 && (EmptyUtils.isEmpty(detail.userInfoVO) || detail.userInfoVO.userNo !== user.code)? this._shieldRender() : null}
         </View>;
     }
 }
