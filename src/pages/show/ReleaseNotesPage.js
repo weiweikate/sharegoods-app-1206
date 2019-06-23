@@ -17,7 +17,6 @@ import { MRText } from '../../components/ui';
 import DesignRule from '../../constants/DesignRule';
 import ScreenUtils from '../../utils/ScreenUtils';
 import res from './res';
-import BusinessUtils from '../mine/components/BusinessUtils';
 import ImageLoad from '@mr/image-placeholder';
 import NoMoreClick from '../../components/ui/NoMoreClick';
 import UIImage from '../../components/ui/UIImage';
@@ -26,6 +25,7 @@ import EmptyUtils from '../../utils/EmptyUtils';
 import ShowApi from './ShowApi';
 import RouterMap from '../../navigation/RouterMap';
 import TagView from './components/TagView';
+import PictureVideoUtils from './utils/PictureVideoUtils';
 
 const { addIcon, delIcon, iconShowDown, iconShowEmoji, addShowIcon, showTagIcon } = res;
 const { arrow_right_black } = res.button;
@@ -156,14 +156,23 @@ export default class ReleaseNotesPage extends BasePage {
             return;
         }
         let num = 9 - imageArr.length;
-        BusinessUtils.getImagePicker(callback => {
+        // BusinessUtils.getImagePicker(callback => {
+        //     if (callback.type === 'video') {
+        //         this.setState({ videoData: callback });
+        //     } else {
+        //         let result = imageArr.concat(callback.images);
+        //         this.setState({ imageArr: result });
+        //     }
+        // }, num, true, true, true);
+
+        PictureVideoUtils.selectPictureOrVideo(num,true,callback => {
             if (callback.type === 'video') {
                 this.setState({ videoData: callback });
             } else {
                 let result = imageArr.concat(callback.images);
                 this.setState({ imageArr: result });
             }
-        }, num, true, true, true);
+        })
     };
 
     deletePic = (index) => {
@@ -408,7 +417,7 @@ export default class ReleaseNotesPage extends BasePage {
 
         return (
             <TouchableWithoutFeedback onPress={() => {
-                this.$navigate(RouterMap.TagSelectorPage, { callback: this.refreshTags });
+                this.$navigate(RouterMap.TagSelectorPage, { callback: this.refreshTags ,tags:this.state.tags});
             }}>
                 <View style={styles.tagWrapper}>
                     {this.state.tags.map((item, index) => {

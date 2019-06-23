@@ -21,6 +21,20 @@ import DesignRule from '../../../constants/DesignRule';
 
 
 const screenWidth = Dimensions.get('window').width;
+// const size916 = {
+//     width:screenWidth,
+//     height:screenWidth/9*16
+// }
+//
+// const size11 = {
+//     width:screenWidth,
+//     height:screenWidth
+// }
+//
+// const size34 = {
+//     width:screenWidth,
+//     height:screenWidth/4*3
+// }
 
 function formatTime(second) {
     let h = 0, i = 0, s = parseInt(second);
@@ -65,6 +79,8 @@ export default class VideoView extends Component {
             }
         );
     }
+
+
 
     componentWillUnmount() {
         this.willBlurSubscription && this.willBlurSubscription.remove();

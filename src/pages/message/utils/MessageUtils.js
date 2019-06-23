@@ -77,6 +77,15 @@ const MessageUtils = {
                 pagParams = {storeCode:params};
                 navigation('spellShop/MyShop_RecruitPage', pagParams);
                 break;
+            case 215:
+                pagParams = JSON.parse(params);
+                let code = pagParams.showNo;
+                if(pagParams.showType == 1 || pagParams.showType == 3){
+                    navigation(RouterMap.ShowDetailPage,{code});
+                }else {
+                    navigation(RouterMap.ShowRichTextDetailPage,{code});
+                }
+                break;
             case 300://工猫合同详情
                 pagParams = {url:params};
                 navigation(RouterMap.GongMallContractPage,pagParams);

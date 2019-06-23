@@ -72,8 +72,6 @@ const Utiles = {
                             if (num > 1) {
                                 if (withSize) {
                                     Utiles.pickMultiple(num, callBack, edit);
-
-
                                 } else {
                                     Utiles.pickMultiple(num, newCallback, edit);
                                 }

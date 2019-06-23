@@ -52,13 +52,20 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
         float height = 1;
         String imgUrl = null;
         if (item.getResource() != null) {
-            imgUrl = item.getResource().get(0).getUrl();
-            Map<String, String> map = UrlUtils.urlSplit(imgUrl);
-            if (map.containsKey("width")) {
-                width = Float.valueOf(map.get("width"));
-            }
-            if (map.containsKey("height")) {
-                height = Float.valueOf(map.get("height"));
+            if(item.getShowType() == 3){
+                for (NewestShowGroundBean.DataBean.ResourceBean resourceBean : item.getResource()){
+                    if(resourceBean.getType() == 5){
+                        imgUrl = resourceBean.getBaseUrl();
+                        width = (float) resourceBean.getWidth();
+                        height = (float) resourceBean.getHeight();
+                        break;
+                    }
+                }
+            }else {
+                NewestShowGroundBean.DataBean.ResourceBean resourceBean = item.getResource().get(0);
+                imgUrl = resourceBean.getBaseUrl();
+                width = (float) resourceBean.getWidth();
+                height = (float) resourceBean.getHeight();
             }
         }
 

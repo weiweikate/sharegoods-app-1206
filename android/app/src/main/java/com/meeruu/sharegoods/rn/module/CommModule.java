@@ -36,6 +36,11 @@ import com.facebook.react.bridge.UiThreadUtil;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.mabeijianxi.smallvideorecord2.LocalMediaCompress;
+import com.mabeijianxi.smallvideorecord2.MediaRecorderActivity;
+import com.mabeijianxi.smallvideorecord2.model.AutoVBRMode;
+import com.mabeijianxi.smallvideorecord2.model.LocalMediaConfig;
+import com.mabeijianxi.smallvideorecord2.model.OnlyCompressOverBean;
 import com.meeruu.commonlib.utils.AppUtils;
 import com.meeruu.commonlib.utils.BitmapUtils;
 import com.meeruu.commonlib.utils.FileUtils;
@@ -67,6 +72,9 @@ import java.util.HashSet;
 import java.util.List;
 
 import cn.jpush.android.api.JPushInterface;
+import mabeijianxi.camera.model.MediaRecorderConfig;
+
+import static com.facebook.react.bridge.UiThreadUtil.runOnUiThread;
 
 
 public class CommModule extends ReactContextBaseJavaModule {
@@ -538,7 +546,7 @@ public class CommModule extends ReactContextBaseJavaModule {
                     promise.reject("文件操作失败");
                     return;
                 }
-                UiThreadUtil.runOnUiThread(new Runnable() {
+                runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Uri uri = Uri.parse("file://" + storePath);
@@ -571,6 +579,47 @@ public class CommModule extends ReactContextBaseJavaModule {
         intent.putExtra("web_url", url);
         intent.putExtra("url_action", "get");
         getCurrentActivity().startActivityForResult(intent, ParameterUtils.REQUEST_CODE_GONGMAO);
+    }
+
+    @ReactMethod
+    public void compressVideo(String path, final Promise promise){
+        String realPath = Uri.parse(path).getPath();
+        File file = new File(realPath);
+        if(file.exists()){
+            LocalMediaConfig.Buidler buidler = new LocalMediaConfig.Buidler();
+            final LocalMediaConfig config = buidler
+                    .setVideoPath(file.getAbsolutePath())
+                    .captureThumbnailsTime(1)
+                    .doH264Compress(new AutoVBRMode())
+                    .setFramerate(15)
+                    .setScale(1.0f)
+                    .build();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                        }
+                    });
+                    OnlyCompressOverBean onlyCompressOverBean = new LocalMediaCompress(config).startCompress();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+//                        hideProgress();
+                        }
+                    });
+                    if(onlyCompressOverBean.isSucceed()){
+                        promise.resolve(onlyCompressOverBean.getVideoPath());
+                    }else {
+                        promise.reject("compress video fail");
+                    }
+
+                }}).start();
+        }else {
+            promise.reject("file not found");
+        }
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

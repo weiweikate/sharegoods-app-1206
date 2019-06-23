@@ -43,9 +43,9 @@ export default class TagSelectorPage extends BasePage {
 
     constructor(props) {
         super(props);
-        this.selectTags = [];
+        this.selectTags = this.params.tags || [];
         this.state = {
-            selectTags: []
+            selectTags: this.params.tags || []
         };
     }
 

@@ -47,52 +47,11 @@ export default class MyDynamicPage extends BasePage {
 
     constructor(props) {
         super(props);
-        this.data = [];
 
         this.state = {
-            isRefreshing: false,
-            isLoadingMore: false,
             changeHeader: true
         };
     }
-
-    componentWillMount() {
-        this.loadMore();
-    }
-
-    addMoreDatas = () => {
-        for (var i = 0; i < 50; ++i) {
-            this.data.push({
-                height: 50 + Math.floor(Math.random() * 200)
-            });
-        }
-        this.setState({ data: this.data });
-    };
-
-    refresh = () => {
-        if (this.state.isRefreshing || this.state.isLoadingMore) {
-            return;
-        }
-        this.setState({ isRefreshing: true });
-        setTimeout(() => {
-            this.data = [];
-            this.setState({ data: [] });
-            this.addMoreDatas();
-            this.setState({ isRefreshing: false });
-        }, 500);
-    };
-
-    loadMore = () => {
-        if (this.state.isRefreshing || this.state.isLoadingMore) {
-            return;
-        }
-        this.setState({ isLoadingMore: true });
-        setTimeout(() => {
-            this.addMoreDatas();
-            this.setState({ isLoadingMore: false });
-        }, 500);
-    };
-
 
     renderHeader = () => {
         let icon = (user.headImg && user.headImg.length > 0) ?
@@ -210,7 +169,7 @@ export default class MyDynamicPage extends BasePage {
                                    ref: this.dynamicList,
                                    index: nativeEvent.index
                                };
-                               if (nativeEvent.showType === 1) {
+                               if (nativeEvent.showType === 1 || nativeEvent.showType == 3) {
                                    this.$navigate('show/ShowDetailPage', params);
                                } else {
                                    this.$navigate('show/ShowRichTextDetailPage', params);
