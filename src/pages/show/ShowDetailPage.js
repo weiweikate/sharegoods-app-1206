@@ -44,8 +44,7 @@ import shopCartCacheTool from '../shopCart/model/ShopCartCacheTool';
 import SelectionPage from '../product/SelectionPage';
 import RouterMap, { navigateBack, routeNavigate } from '../../navigation/RouterMap';
 import DownloadUtils from './utils/DownloadUtils';
-import VideoView from '../../components/ui/video/VideoView';
-
+import ShowVideoView from './components/ShowVideoView'
 const { iconShowFire, iconLike, iconNoLike, iconDownload, iconShowShare } = res;
 // @SmoothPushPreLoadHighComponent
 @observer
@@ -535,7 +534,7 @@ export default class ShowDetailPage extends BasePage {
                 }
                 {
                     detail.showType === 3 ?
-                        <VideoView videoUrl={video} videoCover={cover} navigation={this.props.navigation}/> : null
+                        <ShowVideoView videoUrl={video} videoCover={cover} navigation={this.props.navigation}/> : null
                 }
 
                 <ProductRowListView style={{ marginTop: px2dp(10) }}

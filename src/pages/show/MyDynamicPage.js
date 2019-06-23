@@ -161,6 +161,7 @@ export default class MyDynamicPage extends BasePage {
                                this.dynamicList = ref;
                            }}
                            uri={'/social/show/content/page/mine/query@GET'}
+                           headerHeight={px2dp(200)}
                            type={'MyDynamic'}
                            renderHeader={this.renderHeader()}
                            onItemPress={({ nativeEvent }) => {

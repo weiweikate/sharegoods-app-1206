@@ -347,9 +347,11 @@ export default class ShowListPage extends BasePage {
                                                            ref: this.activityList,
                                                            index
                                                        };
-                                                       if (data.showType === 1) {
+                                                       if (data.showType === 1 ||data.showType ===3) {
                                                            navigate('show/ShowDetailPage', params);
-                                                       } else {
+                                                       } else if(data.showType === 4){
+                                                           navigate(RouterMap.TagDetailPage,{tagId:data.tagId,name:'后端周一补'})
+                                                       }else {
                                                            navigate('show/ShowRichTextDetailPage', params);
                                                        }
                                                    }}

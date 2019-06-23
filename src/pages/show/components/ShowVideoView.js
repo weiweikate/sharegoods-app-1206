@@ -11,9 +11,9 @@ import {
 } from 'react-native';
 import Video from 'react-native-video';
 // import Orientation from 'react-native-orientation';
-import icon_video_play from './icon_video_play.png';
-import icon_video_pause from './icon_video_pause.png';
-import icon_control_slider from './icon_control_slider.png';
+import icon_video_play from '../../../components/ui/video/icon_video_play.png';
+import icon_video_pause from '../../../components/ui/video/icon_video_pause.png';
+import icon_control_slider from '../../../components/ui/video/icon_control_slider.png';
 import DesignRule from '../../../constants/DesignRule';
 
 // import icon_control_full_screen from './icon_control_full_screen.png';
@@ -113,6 +113,7 @@ export default class VideoView extends Component {
                 rate={1.0}
                 volume={1.0}
                 muted={false}
+                repeat={true}
                 paused={!this.state.isPlaying}
                 resizeMode={'contain'}
                 playWhenInactive={false}
