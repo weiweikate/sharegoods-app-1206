@@ -151,9 +151,9 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
 
         if (item.getProducts() != null && item.getProducts().size() > 0) {
             String tag = (String) recyclerView.getTag(R.id.mr_show_product);
-            String data = JSONObject.toJSONString(item.getProducts());
-            if (!TextUtils.equals(tag, data)) {
-                recyclerView.setTag(R.id.mr_show_product, data);
+
+            if (!TextUtils.equals(tag, item.getShowNo())) {
+                recyclerView.setTag(R.id.mr_show_product, item.getShowNo());
                 ((SimpleItemAnimator) recyclerView.getItemAnimator())
                         .setSupportsChangeAnimations(false);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
@@ -318,9 +318,9 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
 
         if (item.getProducts() != null && item.getProducts().size() > 0) {
             String tag = (String) recyclerView.getTag(R.id.mr_show_product);
-            String data = JSONObject.toJSONString(item.getProducts());
-            if (!TextUtils.equals(tag, data)) {
-                recyclerView.setTag(R.id.mr_show_product, data);
+//            String data = JSONObject.toJSONString(item.getProducts());
+            if (!TextUtils.equals(tag, item.getShowNo())) {
+                recyclerView.setTag(R.id.mr_show_product, item.getShowNo());
                 ((SimpleItemAnimator) recyclerView.getItemAnimator())
                         .setSupportsChangeAnimations(false);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);

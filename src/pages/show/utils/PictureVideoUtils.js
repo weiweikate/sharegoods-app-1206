@@ -23,14 +23,15 @@ class PictureVideoUtils {
         }).then(images => {
             if(images && images.length === 1 && images[0].type.indexOf('video')>-1){
                 NativeModules.commModule.compressVideo(images[0].path).then((data)=>{
-                    alert(data)
+                    return;
+                    let video = images[0];
+                    video.path = data;
+                    this.uploadVideo(video, (data) => {
+                        callBack(data);
+                    });
                 }).catch((error)=>{
-                    alert(error);
+                    Toast.$toast('上传失败');
                 })
-                return;
-                this.uploadVideo(images[0], (data) => {
-                    callBack(data);
-                });
             }else {
                 this.upload(images.map((item) => {
                     let path = item.path;
