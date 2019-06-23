@@ -44,7 +44,8 @@ import shopCartCacheTool from '../shopCart/model/ShopCartCacheTool';
 import SelectionPage from '../product/SelectionPage';
 import RouterMap, { navigateBack, routeNavigate } from '../../navigation/RouterMap';
 import DownloadUtils from './utils/DownloadUtils';
-import ShowVideoView from './components/ShowVideoView'
+import ShowVideoView from './components/ShowVideoView';
+
 const { iconShowFire, iconLike, iconNoLike, iconDownload, iconShowShare } = res;
 // @SmoothPushPreLoadHighComponent
 @observer
@@ -160,8 +161,8 @@ export default class ShowDetailPage extends BasePage {
             <View style={{ flexDirection: 'row', marginTop: px2dp(10) }}>
                 {this.state.tags.map((item, index) => {
                     return (
-                        <TouchableWithoutFeedback onPress={()=>{
-                            this.$navigate(RouterMap.TagDetailPage,item);
+                        <TouchableWithoutFeedback onPress={() => {
+                            this.$navigate(RouterMap.TagDetailPage, item);
                         }}>
                             <View key={`tag${index}`} style={{
                                 height: px2dp(24),
@@ -286,11 +287,13 @@ export default class ShowDetailPage extends BasePage {
 
                 </View>
 
-                <TouchableOpacity style={styles.shareView} onPress={() => {
+
+                {detail.status === 1 ? <TouchableOpacity style={styles.shareView} onPress={() => {
                     this._goToShare();
                 }}>
                     <Image source={iconShowShare}/>
-                </TouchableOpacity>
+                </TouchableOpacity> : null}
+
             </View>
         );
 
@@ -501,7 +504,7 @@ export default class ShowDetailPage extends BasePage {
         }
 
         let content = detail.content ? detail.content : '';
-        let video, cover;
+        let video, cover,coverWidth,coverHeight;
         if (detail.showType === 3) {
             for (let i = 0; i < detail.resource.length; i++) {
                 let item = detail.resource[i];
@@ -510,6 +513,8 @@ export default class ShowDetailPage extends BasePage {
                 }
                 if (item.type === 5) {
                     cover = item.baseUrl;
+                    coverHeight = item.height;
+                    coverWidth = item.width;
                 }
             }
         }
@@ -534,7 +539,7 @@ export default class ShowDetailPage extends BasePage {
                 }
                 {
                     detail.showType === 3 ?
-                        <ShowVideoView videoUrl={video} videoCover={cover} navigation={this.props.navigation}/> : null
+                        <ShowVideoView width={coverWidth} height={coverHeight} videoUrl={video} videoCover={cover} navigation={this.props.navigation}/> : null
                 }
 
                 <ProductRowListView style={{ marginTop: px2dp(10) }}
@@ -606,7 +611,7 @@ export default class ShowDetailPage extends BasePage {
                                 dec: '好物不独享，内有惊喜福利~'
                             }}
             />
-            {detail.status !== 1 && (EmptyUtils.isEmpty(detail.userInfoVO) || detail.userInfoVO.userNo !== user.code)? this._shieldRender() : null}
+            {detail.status !== 1 && (EmptyUtils.isEmpty(detail.userInfoVO) || detail.userInfoVO.userNo !== user.code) ? this._shieldRender() : null}
         </View>;
     }
 }
