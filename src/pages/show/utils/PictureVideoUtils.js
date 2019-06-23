@@ -23,9 +23,8 @@ class PictureVideoUtils {
         }).then(images => {
             if(images && images.length === 1 && images[0].type.indexOf('video')>-1){
                 NativeModules.commModule.compressVideo(images[0].path).then((data)=>{
-                    return;
                     let video = images[0];
-                    video.path = data;
+                    video.path = 'file://'+data;
                     this.uploadVideo(video, (data) => {
                         callBack(data);
                     });
@@ -116,6 +115,7 @@ class PictureVideoUtils {
                         params.videoTime = item.videoTime;
                     }
                 });
+
                 callback(params);
             }
         }).catch(e => {
@@ -172,15 +172,6 @@ class PictureVideoUtils {
                 const imgUrls = res.map((item) => {
                     return item.url;
                 });
-                // alert(JSON.stringify(res))
-                // callBack({
-                //     ok: true,
-                //     imageUrl: res.url,
-                //     imageThumbUrl: res.url,
-                //     width:res.width,
-                //     height:res.height,
-                //     camera: camera
-                // });
                 callBack({
                     ok: true,
                     imageUrl: imgUrls,
@@ -190,7 +181,6 @@ class PictureVideoUtils {
                 });
             }).catch(error => {
                 Toast.hiddenLoading();
-                // callBack({ ok: false, msg: '上传图片失败' });
                 console.log(error);
                 console.warn('图片上传失败' + error.toString());
                 Toast.$toast('图片上传失败');

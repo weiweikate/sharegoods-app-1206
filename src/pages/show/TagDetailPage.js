@@ -103,6 +103,8 @@ export default class TagDetailPage extends BasePage {
     renderItem = (itemData, itemIdx, itemContainer) => {
         //TODO 宽高判断 0判断
         let uri, width = 1, height = 1;
+        let minHeight = itemContainer.width * 120 / 167;
+        let maxHeight = itemContainer.width * 240 / 167;
         if (itemData.showType === 3) {
             if (itemData.resource) {
                 for (let i = 0; i < itemData.resource.length; i++) {
@@ -123,6 +125,13 @@ export default class TagDetailPage extends BasePage {
         }
 
         height = itemContainer.width * height / width;
+        if(height < minHeight){
+            height = minHeight;
+        }
+
+        if(height > maxHeight){
+            height = maxHeight
+        }
 
         return (
             <TouchableWithoutFeedback onPress={() => {
