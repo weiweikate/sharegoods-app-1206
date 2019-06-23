@@ -226,9 +226,9 @@
             "h5": "http://testh5.sharegoodsmall.com",
             "wxAppletKey": "gh_aa91c3ea0f6c"
         },
-        "活动-用的开发环境": {
-            "name": "活动-用的开发环境",
-            "host": "http://172.16.10.11:1080/gateway",
+        "商家一期环境": {
+            "name": "商家一期环境",
+            "host": "http://test2api.sharegoodsmall.com/gateway",
             "oss": "https://testh5.sharegoodsmall.com",
             "h5": "http://testh5.sharegoodsmall.com",
             "wxAppletKey": "gh_aa91c3ea0f6c"
