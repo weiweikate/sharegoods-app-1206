@@ -10,7 +10,7 @@ import {
     Image,
     TouchableWithoutFeedback,
     Keyboard,
-    TextInput, DeviceEventEmitter
+    TextInput, DeviceEventEmitter,
 } from 'react-native';
 import BasePage from '../../BasePage';
 import { MRText } from '../../components/ui';
@@ -133,6 +133,7 @@ export default class ReleaseNotesPage extends BasePage {
             return;
         }
         let num = 9 - imageArr.length;
+
         BusinessUtils.getImagePicker(callback => {
             let result = imageArr.concat(callback.images);
             this.setState({ imageArr: result });
