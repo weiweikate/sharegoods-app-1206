@@ -45,6 +45,7 @@ import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { ShopBottomBannerView, ShopProductItemView } from './components/ShopDetailItemView';
 import MyShopDetailModel from './MyShopDetailModel';
 import { IntervalMsgView, IntervalType } from '../../../comm/components/IntervalMsgView';
+import RouterMap from '../../../navigation/RouterMap';
 
 const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
 const NavLeft = resCommon.button.white_back;
@@ -106,7 +107,7 @@ export default class MyShopPage extends BasePage {
             return (
                 <View style={styles.rightBarItemContainer}>
                     <TouchableOpacity onPress={() => {
-                        this.$navigate('spellShop/recommendSearch/RecommendPage');
+                        this.$navigate(RouterMap.RecommendPage);
                     }}>
                         <Image style={{ marginRight: 10 }} source={icons8_Shop_50px}/>
                     </TouchableOpacity>
@@ -249,7 +250,7 @@ export default class MyShopPage extends BasePage {
     _clickSettingItem = () => {
         const { myStore } = this.state.storeData;
         if (myStore) {
-            this.$navigate('spellShop/shopSetting/ShopPageSettingPage', {
+            this.$navigate(RouterMap.ShopPageSettingPage, {
                 storeData: this.state.storeData,
                 myShopCallBack: this._loadPageData
             });
@@ -304,13 +305,13 @@ export default class MyShopPage extends BasePage {
 
     // 点击店铺公告
     _clickShopAnnouncement = () => {
-        this.$navigate('spellShop/shopSetting/AnnouncementListPage', { storeData: this.state.storeData });
+        this.$navigate(RouterMap.AnnouncementListPage, { storeData: this.state.storeData });
     };
 
     // 点击全部成员
     _clickAllMembers = () => {
         if (this.state.storeData.userStatus === 1) {
-            this.$navigate('spellShop/myShop/ShopAssistantPage', { storeData: this.state.storeData });
+            this.$navigate(RouterMap.ShopAssistantPage, { storeData: this.state.storeData });
         }
     };
 

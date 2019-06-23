@@ -77,10 +77,10 @@ export default class SearchShowFansPage extends BasePage<Props> {
                                 this.list && this.list._onRefresh();
                             });
                         }} style={styles.textInputStyle}/>
-                    <TouchableOpacity onPress={()=>{
+                    <TouchableOpacity onPress={() => {
                         this.setState({
-                            fanName:''
-                        })
+                            fanName: ''
+                        });
                     }}>
                         <Image source={icon_clean} style={styles.cleanIcon}/>
                     </TouchableOpacity>

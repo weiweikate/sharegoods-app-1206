@@ -227,7 +227,7 @@ export default class BankCardListPage extends BasePage {
                 }
             }, {
                 text: '马上就去', onPress: () => {
-                    this.$navigate('mine/userInformation/IDVertify2Page');
+                    this.$navigate(RouterMap.IDVertify2Page);
                 }
             }]);
             return;
@@ -239,7 +239,7 @@ export default class BankCardListPage extends BasePage {
                 }
             }, {
                 text: '马上就去', onPress: () => {
-                    this.$navigate('mine/account/JudgePhonePage', { title: '设置交易密码' });
+                    this.$navigate(RouterMap.JudgePhonePage, { title: '设置交易密码' });
                 }
             }]);
             return;

@@ -33,6 +33,7 @@ import apiEnvironment from '../../api/ApiEnvironment';
 import CommShareModal from '../../comm/components/CommShareModal';
 import WhiteModel from './model/WhiteModel';
 import { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
+import { routeNavigate } from '../../navigation/RouterMap';
 import RouterMap from '../../navigation/RouterMap';
 
 const {
@@ -63,7 +64,7 @@ export default class ShowListPage extends BasePage {
         if (this.state.left) {
             return false;
         } else {
-            this.$navigate('HomePage');
+            this.$navigateBackToHome();
             return true;
         }
     };
@@ -154,10 +155,10 @@ export default class ShowListPage extends BasePage {
 
     jumpToServicePage = () => {
         if (!user.isLogin) {
-            this.$navigate('login/login/LoginPage');
+            routeNavigate(RouterMap.LoginPage);
             return;
         }
-        this.$navigate('message/MessageCenterPage');
+        routeNavigate(RouterMap.MessageCenterPage);
     };
 
     loadMessageCount = () => {
@@ -194,12 +195,10 @@ export default class ShowListPage extends BasePage {
     };
 
     _goMyDynamicPage=()=>{
-        this.$navigate(RouterMap.ReleaseNotesPage);
-        return;
-        // if (!user.isLogin) {
-        //     this.$navigate('login/login/LoginPage');
-        //     return;
-        // }
+        if (!user.isLogin) {
+            this.$navigate('login/login/LoginPage');
+            return;
+        }
         this.$navigate(RouterMap.MyDynamicPage);
     }
 
@@ -348,9 +347,11 @@ export default class ShowListPage extends BasePage {
                                                            ref: this.activityList,
                                                            index
                                                        };
-                                                       if (data.showType === 1) {
+                                                       if (data.showType === 1 ||data.showType ===3) {
                                                            navigate('show/ShowDetailPage', params);
-                                                       } else {
+                                                       } else if(data.showType === 4){
+                                                           navigate(RouterMap.TagDetailPage,{tagId:data.tagId,name:'后端周一补'})
+                                                       }else {
                                                            navigate('show/ShowRichTextDetailPage', params);
                                                        }
                                                    }}

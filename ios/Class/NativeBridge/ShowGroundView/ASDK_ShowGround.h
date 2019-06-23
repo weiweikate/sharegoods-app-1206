@@ -19,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) RCTBubblingEventBlock onScrollY;
 
 @property (nonatomic, copy) NSString* uri;
+@property (nonatomic, copy) NSString* type;
 @property (nonatomic, strong) NSDictionary* params;
 @property (nonatomic, assign) NSInteger headerHeight;
 -(void)replaceData:(NSInteger) index num:(NSInteger) num;

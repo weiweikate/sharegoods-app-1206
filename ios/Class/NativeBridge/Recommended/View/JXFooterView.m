@@ -100,7 +100,7 @@
   [_zanBtn addTarget:self action:@selector(tapZanBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.zanBtn.sd_layout.topSpaceToView(self.scrollView,10)
   .heightIs(24).widthIs(24)
-  .leftSpaceToView(self, 10);
+  .leftSpaceToView(self, 0);
 
   self.zanNum.sd_layout.centerYEqualToView(self.zanBtn)
   .leftSpaceToView(self.zanBtn, 1)
@@ -109,7 +109,7 @@
   //下载
   [_downloadBtn addTarget:self action:@selector(tapDownloadBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.downloadBtn.sd_layout.centerYEqualToView(self.zanNum)
-  .leftSpaceToView(self.zanNum, 0)
+  .leftSpaceToView(self.zanNum, 10)
   .widthIs(24).heightIs(24);
 
   self.downLoadNUm.sd_layout.centerYEqualToView(self.downloadBtn)
@@ -135,12 +135,14 @@
 -(void)setDownloadCount:(NSInteger)downloadCount{
     _downloadCount = downloadCount;
   NSString * num = @"";
-    if(downloadCount<999){
+    if(downloadCount<=999){
       num = [NSString stringWithFormat:@"%ld",downloadCount>0?downloadCount:0];
+    }else if(downloadCount<10000){
+      num = [NSString stringWithFormat:@"%ldK+",downloadCount>0?downloadCount/1000:0];
     }else if(downloadCount<100000){
-      num = @"999+";
+      num = [NSString stringWithFormat:@"%ldW+",downloadCount>0?downloadCount/10000:0];
     }else{
-      num = @"10w+";
+      num = @"10W+";
     }
   self.downLoadNUm.text = num;
 }
@@ -150,10 +152,12 @@
   NSString * num = @"";
     if(likesCount<=999){
       num = [NSString stringWithFormat:@"%ld",likesCount>0?likesCount:0];
-    }else if(likesCount<=100000){
-      num = @"999+";
+    }else if(likesCount<10000){
+      num = [NSString stringWithFormat:@"%ldK+",likesCount>0?likesCount/1000:0];
+    }else if(likesCount<100000){
+      num = [NSString stringWithFormat:@"%ldW+",likesCount>0?likesCount/10000:0];
     }else{
-      num = @"10w+";
+      num = @"10W+";
     }
   self.zanNum.text = num;
 }
@@ -164,12 +168,12 @@
 
 -(void)setGoodsView{
     NSInteger len = self.products.count;
-    CGFloat width = len>0&&len<=1?(SCREEN_WIDTH-90):(SCREEN_WIDTH-110);
+    CGFloat width = len>0&&len<=1?(SCREEN_WIDTH-60):(SCREEN_WIDTH-95);
   self.scrollView.sd_layout.heightIs(0);
   if(len>0){
     self.scrollView.sd_layout
     .topEqualToView(self)
-    .leftSpaceToView(self, 10)
+    .leftSpaceToView(self, 0)
     .rightSpaceToView(self, 0)
     .heightIs(72);
 

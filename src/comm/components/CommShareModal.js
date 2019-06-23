@@ -85,7 +85,7 @@ import { track } from '../../utils/SensorsTrack';
 import user from '../../model/user';
 import { getSource } from '@mr/image-placeholder/oos';
 import ShareUtil from '../../utils/ShareUtil';
-import { navigate } from '../../navigation/RouterMap';
+import { routeNavigate } from '../../navigation/RouterMap';
 import RouterMap from '../../navigation/RouterMap';
 
 // 0：未知
@@ -132,7 +132,7 @@ export default class CommShareModal extends React.Component {
                 },
                     {
                         text: '马上登录', onPress: () => {
-                            navigate(RouterMap.LoginPage);
+                            routeNavigate(RouterMap.LoginPage);
                         }
                     }]);
             return;

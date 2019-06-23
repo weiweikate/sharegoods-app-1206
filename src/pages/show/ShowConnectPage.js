@@ -18,6 +18,8 @@ import BasePage from '../../BasePage';
 import res from './res';
 import DesignRule from '../../constants/DesignRule';
 import Toast from '../../utils/bridge';
+import { backToShow } from '../../navigation/RouterMap';
+import RouterMap from '../../navigation/RouterMap';
 
 const imgWidth = px2dp(168);
 
@@ -142,7 +144,7 @@ export default class ShowConnectPage extends BasePage {
     }
 
     _gotoDetail(data) {
-        this.$navigate('show/ShowDetailPage', { id: data.id, code: data.code });
+        this.$navigate(RouterMap.ShowDetailPage, { id: data.id, code: data.code });
     }
 
     _selectedAction(data) {
@@ -228,9 +230,7 @@ export default class ShowConnectPage extends BasePage {
     _keyExtractor = (data) => data.id + '';
 
     goToHome() {
-        // this.$navigateBackToHome();
-        this.props.navigation.popToTop();
-        this.props.navigation.navigate('ShowListPage');
+        backToShow();
     }
 
     _renderInfinite() {

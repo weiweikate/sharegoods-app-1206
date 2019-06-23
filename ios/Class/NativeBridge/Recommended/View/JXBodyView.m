@@ -74,8 +74,8 @@
       [arr addObject:sources[i]];
     }
   }
-  _sources = [arr copy];
-  for (NSInteger i=_sources.count; i<self.imageViewsArray.count; i++) {
+  _sources = arr;
+  for (long i=_sources.count; i<self.imageViewsArray.count; i++) {
     UIImageView *imageView = [self.imageViewsArray objectAtIndex:i];
     imageView.hidden = YES;
   }
@@ -88,7 +88,7 @@
         CGFloat itemW = [self itemWidthForPicPathArray:_sources];
         CGFloat itemH = 0;
         if (_sources.count < 2) {
-            itemH = 140;
+            itemH = itemW;
         } else {
             itemH = itemW;
         }
@@ -106,9 +106,8 @@
           [imageView setImageWithURL:[NSURL URLWithString:[showImage getUrlAndWidth:itemW height:itemH]] placeholder:[UIImage imageWithColor:[UIColor colorWithHexString:@"f5f5f5"]]];
           
             imageView.hidden = NO;
-        
-            
             imageView.frame = CGRectMake(columnIndex * (itemW + margin), rowIndex * (itemH + margin), itemW, itemH);
+
         }];
         
         CGFloat w = perRowItemCount * itemW + (perRowItemCount - 1) * margin;
@@ -135,15 +134,11 @@
 - (CGFloat)itemWidthForPicPathArray:(NSArray *)array
 {
   if (array.count == 1){
-      return (SCREEN_WIDTH-190);
-  }
-  else if(array.count==4
-          ||array.count==2
-          ) {
-      return (SCREEN_WIDTH-95)/2;
-    }
-  else {
-      CGFloat w =  (SCREEN_WIDTH-105)/3;
+      return (SCREEN_WIDTH-158);
+  }else if(array.count==4||array.count==2) {
+      return (SCREEN_WIDTH-161)/2;
+    } else {
+      CGFloat w =  (SCREEN_WIDTH-76)/3;
       return w;
     }
 }

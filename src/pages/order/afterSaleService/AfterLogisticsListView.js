@@ -26,6 +26,7 @@ import StringUtils from '../../../utils/StringUtils';
 import DesignRule from '../../../constants/DesignRule';
 import { MRText } from '../../../components/ui';
 import res from '../res';
+import RouterMap from '../../../navigation/RouterMap';
 
 
 export default class AfterLogisticsListView extends BasePage {
@@ -47,7 +48,7 @@ export default class AfterLogisticsListView extends BasePage {
                 <TouchableOpacity
                     style={{ height: 40, backgroundColor: DesignRule.white, justifyContent: 'center', marginBottom: 1 }}
                     onPress={() => {
-                        this.$navigate('order/logistics/LogisticsDetailsPage', {
+                        this.$navigate(RouterMap.LogisticsDetailsPage, {
                             expressNo: expNO,
                             expressCode: expressCode
                         });
@@ -68,7 +69,7 @@ export default class AfterLogisticsListView extends BasePage {
                     goodsNum={quantity}
                     style={{ backgroundColor: DesignRule.white }}
                     onPress={() => {
-                        this.$navigate('order/logistics/LogisticsDetailsPage', {
+                        this.$navigate(RouterMap.LogisticsDetailsPage, {
                             expressNo: expNO,
                             expressCode: expressCode
                         });

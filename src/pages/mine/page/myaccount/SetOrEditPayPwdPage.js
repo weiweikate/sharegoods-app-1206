@@ -9,6 +9,7 @@ import StringUtils from '../../../../utils/StringUtils';
 import user from '../../../../model/user';
 import DesignRule from '../../../../constants/DesignRule';
 import ScreenUtils from '../../../../utils/ScreenUtils';
+import RouterMap from '../../../../navigation/RouterMap';
 
 export default class SetOrEditPayPwdPage extends BasePage {
 
@@ -40,7 +41,7 @@ export default class SetOrEditPayPwdPage extends BasePage {
             this.paw.clean();
             if (from === 'edit') {
                 // 跳转到确认密码
-                this.$navigate('mine/account/SetOrEditPayPwdPage', {
+                this.$navigate(RouterMap.SetOrEditPayPwdPage, {
                     userName,
                     cardNum,
                     oldPwd: pwd,
@@ -50,7 +51,7 @@ export default class SetOrEditPayPwdPage extends BasePage {
                 });
             } else {
                 // 跳转到确认密码
-                this.$navigate('mine/account/SetOrEditPayPwdPage', {
+                this.$navigate(RouterMap.SetOrEditPayPwdPage, {
                     oldPwd: pwd,
                     title,
                     tips: '请再次输入一次交易支付密码',
@@ -84,7 +85,7 @@ export default class SetOrEditPayPwdPage extends BasePage {
                     }).then((response) => {
                             // 设置支付密码成功成功,跳转成功页面
                             user.setHadSalePassword(true);
-                            this.$navigate('mine/account/SetPayPwdSuccessPage');
+                            this.$navigate(RouterMap.SetPayPwdSuccessPage);
                         }
                     ).catch((data) => {
                         this.paw && this.paw.changeRedBorderColor();

@@ -17,7 +17,6 @@ RCT_EXPORT_MODULE()
 RCT_EXPORT_METHOD(getImageOrVideo:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 {
   
-
   dispatch_async(dispatch_get_main_queue(), ^{
     [[MRImageVideoManager sharedInstance]startSelectImageOrVideo];
   });

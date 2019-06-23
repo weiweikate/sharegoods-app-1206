@@ -13,84 +13,86 @@
 'use strict';
 
 import React from 'react';
-import {navigate} from '../../../navigation/RouterMap';
+import { routePush } from '../../../navigation/RouterMap';
 
 import {
-  StyleSheet,
-  View,
+    StyleSheet,
+    View,
     ImageBackground,
-  TouchableOpacity
+    TouchableOpacity
 } from 'react-native';
 
 import {
-  MRText
+    MRText
 } from '../../../components/ui';
-import HomeModalManager from '../manager/HomeModalManager'
+import HomeModalManager from '../manager/HomeModalManager';
 import Modal from '../../../comm/components/CommModal';
 
-import res from '../res'
+import res from '../res';
 import ScreenUtils from '../../../utils/ScreenUtils';
-const {btn_bg, unwin, win} = res
+
+const { btn_bg, unwin, win } = res;
 import { observer } from 'mobx-react';
+
 @observer
 export default class PraiseModel extends React.Component {
 
-  constructor(props) {
-    super(props);
+    constructor(props) {
+        super(props);
 
-    this.state = {};
-  }
-
+        this.state = {};
+    }
 
 
     renderContent() {
-      let data = HomeModalManager.prizeData || {}
-      let title = null;
-      let image = null;
-      if (data.popUp) {
-          title = '本期您共中了'+data.userShowpeas+'枚秀豆';
-         image = win
-      }else {
-          title = '很遗憾您尚未中奖\n下次再接再厉';
-          image = unwin
-      }
-      return(
-          <View style={styles.modal}>
-              <ImageBackground source={image} style={styles.bg}>
-                  <MRText style={styles.title}>{title}</MRText>
-                  <TouchableOpacity onPress={()=> {
-                      navigate('HtmlPage',{uri: '/awardPool'});
-                      HomeModalManager.closePrize()}
-                  }>
-                      <ImageBackground source={btn_bg} style={styles.btn}>
-                          <MRText style={styles.btnText}>确认</MRText>
-                      </ImageBackground>
-                  </TouchableOpacity>
-              </ImageBackground>
-          </View>
-      )
-  }
+        let data = HomeModalManager.prizeData || {};
+        let title = null;
+        let image = null;
+        if (data.popUp) {
+            title = '本期您共中了' + data.userShowpeas + '枚秀豆';
+            image = win;
+        } else {
+            title = '很遗憾您尚未中奖\n下次再接再厉';
+            image = unwin;
+        }
+        return (
+            <View style={styles.modal}>
+                <ImageBackground source={image} style={styles.bg}>
+                    <MRText style={styles.title}>{title}</MRText>
+                    <TouchableOpacity onPress={() => {
+                        routePush('HtmlPage', { uri: '/awardPool' });
+                        HomeModalManager.closePrize();
+                    }
+                    }>
+                        <ImageBackground source={btn_bg} style={styles.btn}>
+                            <MRText style={styles.btnText}>确认</MRText>
+                        </ImageBackground>
+                    </TouchableOpacity>
+                </ImageBackground>
+            </View>
+        );
+    }
 
 
-  render() {
-    return (
-        <Modal
-            animationType='slide'
-            ref={(ref) => {
-                this.modal = ref;
-            }}
-            onRequestClose={() => {
-                HomeModalManager.closePrize()
-            }}
-            visible={HomeModalManager.isShowPrize && HomeModalManager.isHome}>
+    render() {
+        return (
+            <Modal
+                animationType='slide'
+                ref={(ref) => {
+                    this.modal = ref;
+                }}
+                onRequestClose={() => {
+                    HomeModalManager.closePrize();
+                }}
+                visible={HomeModalManager.isShowPrize && HomeModalManager.isHome}>
                 {this.renderContent()}
-        </Modal>
-    );
-  }
+            </Modal>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
-    modal:{
+    modal: {
         position: 'absolute',
         top: 0,
         left: 0,
@@ -98,7 +100,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         backgroundColor: 'rgba(0,0,0,0.3)',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'center'
 
     },
     bg: {
@@ -111,7 +113,7 @@ const styles = StyleSheet.create({
         height: ScreenUtils.autoSizeWidth(40),
         width: ScreenUtils.autoSizeWidth(180),
         alignItems: 'center',
-        justifyContent: 'center' ,
+        justifyContent: 'center',
         marginBottom: ScreenUtils.autoSizeWidth(30)
     },
     btnText: {
