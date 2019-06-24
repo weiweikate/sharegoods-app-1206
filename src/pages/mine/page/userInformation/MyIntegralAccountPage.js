@@ -69,6 +69,8 @@ export default class MyIntegralAccountPage extends BasePage {
 
     };
         this.currentPage = 1;
+        this.type = null;
+        this.biType = null;
     }
 
     $navigationBarOptions = {
@@ -146,18 +148,30 @@ export default class MyIntegralAccountPage extends BasePage {
                         }}>兑换1元现金劵</Text>
                     </NoMoreClick>
                 </View>
+
                 <Text style={{
                     color: DesignRule.textColor_mainTitle,
                     fontSize: 48,
                     marginLeft: DesignRule.margin_page,
                 }}>{user.userScore ? user.userScore : 0}</Text>
+
+                <View style={{display:'flex', flexDirection:'row'}} >
+                    <View style={{flex:1,marginLeft: 15, justifyContent:'center'}}>
+                        <Text style={styles.numTextStyle}>{user.blockedBalance ? user.blockedBalance : '0.00'}</Text>
+                        <Text style={styles.numRemarkStyle}>待入账秀豆（枚）</Text>
+                    </View>
+                    <View style={{flex:1,marginLeft: 15, justifyContent:'center'}}>
+                        <Text style={styles.numTextStyle}>{user.historicalBalance ? user.historicalScore : '0.00'}</Text>
+                        <Text style={styles.numRemarkStyle}>累计秀豆（枚）</Text>
+                    </View>
+                </View>
             </ImageBackground>
         );
     }
 
     renderHeader = () => {
         return (
-            <ImageBackground resizeMode={'stretch'} source={account_bg} style={{width:ScreenUtils.width}}>
+            <ImageBackground resizeMode={'stretch'} source={account_bg} style={{width: ScreenUtils.width}}>
                 <View style={styles.headerWrapper}>
                     <TouchableWithoutFeedback onPress={() => {
                         this.$navigateBack();
@@ -166,11 +180,21 @@ export default class MyIntegralAccountPage extends BasePage {
                             width: 60,
                             paddingLeft: DesignRule.margin_page,
                             height: 40,
-                            justifyContent: 'center'
+                            justifyContent: 'center',
+                            alignItems:'flex-start',
+                            flex:1
                         }}>
                             <Image source={res.button.white_back}/>
                         </View>
                     </TouchableWithoutFeedback>
+                    <Text style={{
+                        color: DesignRule.white,
+                        fontSize: px2dp(17),
+                        includeFontPadding: false
+                    }}>
+                        秀豆
+                    </Text>
+                    <View style={{flex:1}}/>
                 </View>
             </ImageBackground>
         );
@@ -202,14 +226,25 @@ export default class MyIntegralAccountPage extends BasePage {
                             fontSize: 12, color: DesignRule.textColor_instruction
                         }}>{item.time}</Text>
                     </View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={{
-                            fontSize: 17,
-                            color: DesignRule.textColor_mainTitle
-                        }}>{StringUtils.formatMoneyString(item.capital, false)}</Text>
-                        <Image style={{ marginLeft: 5, width: 8, height: 5 }}
-                               source={item.capitalRed ? red_up : lv_down}/>
-                    </View>
+                    {this.type === 2 && this.biType === 1 ?
+                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                            <Text style={{
+                                fontSize: 17,
+                                color: DesignRule.textColor_mainTitle
+                            }}>{StringUtils.formatMoneyString(item.capital, false)}</Text>
+                            <Text style={{
+                                fontSize: 12, color: DesignRule.textColor_instruction
+                            }}>{item.realBalance && `${item.realBalance}`.length>0 ? `已入账：${item.realBalance}` : '待入账：？'}</Text>
+                        </View>
+                        :
+                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                            <Text style={{
+                                fontSize: 17,
+                                color: DesignRule.textColor_mainTitle
+                            }}>{StringUtils.formatMoneyString(item.capital, false)}</Text>
+                            <Image style={{marginLeft: 5, width: 8, height: 5}}
+                                   source={item.capitalRed ? red_up : lv_down}/>
+                        </View>}
                 </View>
             </View>
         );
@@ -219,17 +254,32 @@ export default class MyIntegralAccountPage extends BasePage {
         return (
             <View style={{flex: 1, backgroundColor: 'white'}}>
                 <ScrollableTabView
-                    onChangeTab={(obj) => {}}
-                    style={{flex: 1, width: ScreenUtils.width*2/3, marginBottom: ScreenUtils.safeBottom}}
+                    onChangeTab={(obj) => {
+                        if (obj.i === 1) {
+                            this.type = 1;
+                            this.biType = 1;
+                        } else if (obj.i === 2) {
+                            this.type = 1;
+                            this.biType = 2;
+                        } else if (obj.i === 3) {
+                            this.type = 2;
+                            this.biType = 1;
+                        } else {
+                            this.type = null;
+                            this.biType = null;
+                        }
+                        this.onRefresh()
+                    }}
+                    style={{flex: 1, width: ScreenUtils.width * 2 / 3, marginBottom: ScreenUtils.safeBottom}}
                     scrollWithoutAnimation={true}
                     renderTabBar={this._renderTabBar}
                     //进界面的时候打算进第几个
                     initialPage={0}
                 >
-                    <View tabLabel={'全部'}/>
-                    <View tabLabel={'收入'}/>
-                    <View tabLabel={'支出'}/>
-                    <View tabLabel={'待入账'}/>
+                    <View tabLabel={'全部'} style={{width:1,height:1}}/>
+                    <View tabLabel={'收入'} style={{width:1,height:1}}/>
+                    <View tabLabel={'支出'} style={{width:1,height:1}}/>
+                    <View tabLabel={'待入账'} style={{width:1,height:1}}/>
                 </ScrollableTabView>
             </View>
 
@@ -262,7 +312,9 @@ export default class MyIntegralAccountPage extends BasePage {
         }
         MineApi.userScoreQuery({
             page: this.currentPage,
-            size: 10
+            size: 10,
+            usType:this.type,
+            status: this.biType
 
         }).then((response) => {
             Toast.hiddenLoading();
@@ -276,9 +328,8 @@ export default class MyIntegralAccountPage extends BasePage {
                         serialNumber: item.serialNo || '',
                         capital: use_type_symbol[item.usType] + (item.userScore ? item.userScore : 0),
                         iconImage: allKinds[item.useType] ? allKinds[item.useType].img : taskImg,
-                        capitalRed: use_type_symbol[item.usType] === '+'
-
-
+                        capitalRed: use_type_symbol[item.usType] === '+',
+                        realBalance: item.realBalance
                     });
                 });
                 this.setState({ viewData: arrData, isEmpty: data.data && data.data.length !== 0 ? false : true });
@@ -319,7 +370,7 @@ const styles = StyleSheet.create({
         backgroundColor: DesignRule.bgColor
     },
     tabBar: {
-        width: ScreenUtils.width*2/3,
+        width: ScreenUtils.width * 2 / 3,
         height: 40,
         borderWidth: 0,
         borderColor: DesignRule.lineColor_inWhiteBg
@@ -333,7 +384,7 @@ const styles = StyleSheet.create({
     tabBarUnderline: {
         width: 10,
         height: 2,
-        marginHorizontal: (ScreenUtils.width*2/3 - 10 * 4) / 8,
+        marginHorizontal: (ScreenUtils.width * 2 / 3 - 10 * 4) / 8,
         backgroundColor: DesignRule.mainColor,
         borderRadius: 1
     },
@@ -349,7 +400,9 @@ const styles = StyleSheet.create({
         backgroundColor: DesignRule.white,
         borderColor: DesignRule.mainColor,
         borderWidth: 1,
-        paddingHorizontal: px2dp(7)
+        position: 'absolute',
+        right: 6,
+        top: 0
     },
     withdrawWrapper: {
         flexDirection: 'row',
@@ -370,7 +423,15 @@ const styles = StyleSheet.create({
         marginTop: ScreenUtils.statusBarHeight,
         height: 44,
         width: ScreenUtils.width
-    }
+    },
+    numTextStyle:{
+        color:'#333333',
+        fontSize:19,
+    },
+    numRemarkStyle:{
+        color:'#999999',
+        fontSize:12,
+    },
 });
 
 

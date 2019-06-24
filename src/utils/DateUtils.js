@@ -91,107 +91,10 @@ export const getFormatDate = (timestamp, fmt = 'yyyy-MM-dd hh:mm:ss') => {
     return dateFormat(fmt);
 };
 
-//JS日期系列：根据日期 得到年龄
-//参数sDate1，sDate2：参数sDate1：创建时间， 参数sDate2：当前时间 格式：2018-6-24
-
-export  const jsGetAge = (sDate1,sDate2)=>{
-    let fixDate = function(sDate){
-        let aD = sDate.split('-');
-        for(let i = 0; i < aD.length; i++){
-            aD[i] = fixZero(parseInt(aD[i]));
-        }
-        return aD.join('-');
-    };
-
-    let fixZero = function(n){
-        return n < 10 ? '0' + n : n;
-    };
-    let fixInt = function(a){
-        for(let i = 0; i < a.length; i++){
-            a[i] = parseInt(a[i]);
-        }
-        return a;
-    };
-
-    let getMonthDays = function(y,m){
-        let aMonthDays = [0,31,28,31,30,31,30,31,31,30,31,30,31];
-        if((y % 400 == 0) || (y % 4 == 0 && y % 100 != 0)){
-            aMonthDays[2] = 29;
-        }
-        return aMonthDays[m];
-    };
-
-    let y = 0;
-    let m = 0;
-    let d = 0;
-    let sTmp;
-    let aTmp;
-        sDate1 = fixDate(sDate1);
-        sDate2 = fixDate(sDate2);
-        if(sDate1 > sDate2){
-            sTmp = sDate2;
-            sDate2 = sDate1;
-            sDate1 = sTmp;
-        }
-        let aDate1 = sDate1.split('-');
-        aDate1 = fixInt(aDate1);
-        let aDate2 = sDate2.split('-');
-        aDate2 = fixInt(aDate2);
-        //年份
-        y = aDate2[0] - aDate1[0];
-        if( sDate2.replace(aDate2[0],'') < sDate1.replace(aDate1[0],'')){
-            y = y - 1;
-        }
-        //月份
-        aTmp = [aDate1[0] + y,aDate1[1],fixZero(aDate1[2])];
-        while(true){
-            if(aTmp[1] == 12){
-                aTmp[0]++;
-                aTmp[1] = 1;
-            }else{
-                aTmp[1]++;
-            }
-            if(([aTmp[0],fixZero(aTmp[1]),aTmp[2]]).join('-') <= sDate2){
-                m++;
-            } else {
-                break;
-            }
-        }
-        //天数
-        aTmp = [aDate1[0] + y,aDate1[1] + m,aDate1[2]];
-        if(aTmp[1] > 12){
-            aTmp[0]++;
-            aTmp[1] -= 12;
-        }
-        while(true){
-            if(aTmp[2] == getMonthDays(aTmp[0],aTmp[1])){
-                aTmp[1]++;
-                aTmp[2] = 1;
-            } else {
-                aTmp[2]++;
-            }
-            sTmp = ([aTmp[0],fixZero(aTmp[1]),fixZero(aTmp[2])]).join('-');
-            if(sTmp <= sDate2){
-                d++;
-            } else {
-                break;
-            }
-        }
-
-        if(y > 0){
-            return y + '年';
-        }
-        if(m > 0){
-            return m + '月';
-        }
-        return d + '天';
-}
-
 export default {
     formatDate,
     isToday,
     isTomorrow,
     getFormatDate,
-    jsGetAge
 };
 

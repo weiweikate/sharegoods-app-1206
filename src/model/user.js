@@ -68,6 +68,8 @@ class User {
     @observable
     regTime = null;         //注册时间
     @observable
+    shareGoodsAge = null;   //秀龄
+    @observable
     lastLoginTime = null;   //最后登录时间
     @observable
     inviteId = null;        //邀请码
@@ -100,7 +102,13 @@ class User {
     @observable
     availableBalance = null;//可提现金额
     @observable
+    totalBalance=null;      // 余额加待提现余额
+    @observable
+    historicalBalance = null;  //总金额
+    @observable
     blockedBalance = null; //冻结金额
+    @observable
+    couponCount = null  // * 一元券加优惠券数量
     @observable
     tokenCoin = null;       //一元券数量
     @observable
@@ -109,6 +117,12 @@ class User {
     blockedCoin = null;     //冻结代币
     @observable
     userScore = null;       //积分
+    @observable
+    totalScore = null;       //秀豆加待提现秀豆
+    @observable
+    historicalScore = null;  //总秀豆积分
+    @observable
+    blockedUserScore  = null; //待入账秀豆积分
     @observable
     password = null;        //密码
     @observable
@@ -276,6 +290,14 @@ class User {
         this.level = info.level;                    //
         this.levelName = info.levelName;            //
 
+        this.historicalScore = info.historicalScore; //总积分
+        this.historicalBalance = info.historicalBalance;//总金额
+        this.shareGoodsAge = info.shareGoodsAge;
+        this.totalBalance = info.totalBalance;
+        this.totalScore = info.totalScore;
+        this.blockedUserScore = info.blockedUserScore;
+        this.couponCount = info.couponCount;
+
         this.experience = info.experience;
         this.salePsw = info.salePsw;                //
         this.hadSalePassword = info.hadSalePassword; // 是否设置过交易密码
@@ -416,6 +438,16 @@ class User {
         this.profile = null; //简介
         this.upCode = null;
         this.finishGuide = false;
+        this.perfectNumberCode = null;
+        this.weChatNumber = null; //微信号
+        this.shareGoodsAge = null;
+        this.totalBalance = null;
+        this.totalScore = null;
+        this.couponCount = null;
+        this.historicalScore = null; //总积分
+        this.historicalBalance = null;
+        this.blockedUserScore = null;
+
 
         return store.deleted(USERINFOCACHEKEY).catch(e => {
         });

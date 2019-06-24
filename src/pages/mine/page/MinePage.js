@@ -12,8 +12,6 @@ import BasePage from '../../../BasePage';
 import UIText from '../../../components/ui/UIText';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import DateUtils from '../../../utils/DateUtils';
-
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import user from '../../../model/user';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
@@ -317,9 +315,6 @@ export default class MinePage extends BasePage {
     };
 
     renderUserHead = () => {
-        let now = DateUtils.formatDate('','yyyy-MM-dd');
-        let regTime = !EmptyUtils.isEmpty(user.regTime) ? DateUtils.formatDate(user.regTime,'yyyy-MM-dd') : DateUtils.formatDate('','yyyy-MM-dd');
-        console.log(now);
         let accreditID = !EmptyUtils.isEmpty(user.code) ? (
             <TouchableWithoutFeedback onLongPress={() => {
                 this.setState({
@@ -332,9 +327,9 @@ export default class MinePage extends BasePage {
             </TouchableWithoutFeedback>
         ) : null;
 
-        let xiuOld = EmptyUtils.isEmpty(user.regTime) ? (
+        let xiuOld = !EmptyUtils.isEmpty(user.shareGoodsAge) ? (
                 <Text style={{ fontSize: 11, color: DesignRule.textColor_instruction, includeFontPadding: false, marginTop: 5,marginRight:15 }}>
-                    {user.perfectNumberCode ? `秀龄：${DateUtils.jsGetAge(regTime,now)}` : '0天'}
+                    {user.shareGoodsAge ? `秀龄：${user.shareGoodsAge}` : '0天'}
                 </Text>
         ) : null;
 
@@ -544,19 +539,19 @@ export default class MinePage extends BasePage {
                     justifyContent: 'space-between',
                     alignItems: 'center'
                 }}>
-                    {this.accountItemView(StringUtils.formatMoneyString(user.availableBalance ? user.availableBalance : '0.00', false), '个人帐户(元)',1,() => {
+                    {this.accountItemView(StringUtils.formatMoneyString(user.totalBalance ? user.totalBalance : '0.00', false), '个人帐户(元)',1,() => {
                         settingModel.availableBalanceAdd();
                         this.go2CashDetailPage(1);
                         TrackApi.ViewAccountBalance();
                     })}
                     <View style={{height:30,width:1,backgroundColor:'#E4E4E4'}}/>
-                    {this.accountItemView(user.userScore ? user.userScore + '' : '0', '秀豆账户(枚)', 2 ,() => {
+                    {this.accountItemView(user.totalScore ? user.totalScore : '0', '秀豆账户(枚)', 2 ,() => {
                         settingModel.userScoreAdd();
                         this.go2CashDetailPage(2);
                         TrackApi.ViewShowDou();
                     })}
                     <View style={{height:30,width:1,backgroundColor:'#E4E4E4'}}/>
-                    {this.accountItemView(StringUtils.formatMoneyString(user.blockedBalance ? user.blockedBalance : '0', false), '优惠券(张)', 3, () => {
+                    {this.accountItemView(user.couponCount ? user.couponCount : '0', '优惠券(张)', 3, () => {
                         settingModel.couponsAdd();
                         this.go2CashDetailPage(3);
                     })}
@@ -622,6 +617,7 @@ export default class MinePage extends BasePage {
         }else if(index === 3){
             msgNum = settingModel.coupons;
         }
+
         return (
             <TouchableWithoutFeedback onPress={onPress}>
                 <View style={{
@@ -638,7 +634,7 @@ export default class MinePage extends BasePage {
                             includeFontPadding: false,
                             height: 22,
                             maxWidth: 80,
-                            fontSize: this.getAdjustsFontSize(num)
+                            fontSize: this.getAdjustsFontSize(`${num}`)
                         }}>
                             {num}
                         </Text>
@@ -845,6 +841,7 @@ export default class MinePage extends BasePage {
             icon: mine_icon_mentor,
             onPress: () => {
                 if (user.upUserCode) {
+                    settingModel.fansMSGAdd();
                     this.$navigate(RouterMap.MyMentorPage);
                 }
             }
@@ -853,7 +850,7 @@ export default class MinePage extends BasePage {
         let fans = {
             text: '我的秀迷',
             icon: mine_icon_fans,
-            num: this.state.hasMessageNum,
+            num: settingModel.fansMSG,
             onPress: () => {
                 if (this.state.hasFans) {
                     this.$navigate(RouterMap.MainShowFansPage);

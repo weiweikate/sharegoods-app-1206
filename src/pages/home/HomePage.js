@@ -261,11 +261,23 @@ class HomePage extends BasePage {
     };
 
     mineMessageData = (data)=>{
-        const message = JSON.parse(data) || {};
-        settingModel.availableBalanceAdd(1);
-        settingModel.userScoreAdd(1);
-        settingModel.couponsAdd(1);
-        console.log('JSPushData',message);
+        const { params } = JSON.parse(data) || {};
+        console.log('JSPushData',params);
+        if(params && params.index === 1){
+            settingModel.availableBalanceAdd(1);
+        }
+
+        if(params && params.index === 2){
+            settingModel.userScoreAdd(1);
+        }
+
+        if(params && params.index === 3){
+            settingModel.couponsAdd(1);
+        }
+
+        if(params && params.index === 4){
+            settingModel.fansMSGAdd(1);
+        }
     };
 
     componentWillUnmount() {

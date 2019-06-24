@@ -21,6 +21,9 @@ class SettingModel {
     coupons = 0;
 
     @observable
+    fansMSG = 0;
+
+    @observable
     WXChatState = true;
 
     @observable
@@ -67,6 +70,15 @@ class SettingModel {
             this.coupons = this.coupons + num;
         }else {
             this.coupons = 0;
+        }
+    }
+
+    @action
+    fansMSGAdd(num){
+        if(num){
+            this.fansMSG = this.fansMSG + num;
+        }else {
+            this.fansMSG = 0;
         }
     }
 

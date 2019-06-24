@@ -108,6 +108,9 @@ export default class MyCashAccountPage extends BasePage {
 
         };
         this.currentPage = 0;
+        this.type = null;
+        this.biType = null;
+
     }
 
     $NavBarRightPressed = () => {
@@ -193,6 +196,16 @@ export default class MyCashAccountPage extends BasePage {
                     fontSize: 48,
                     marginLeft: DesignRule.margin_page,
                 }}>{user.availableBalance ? user.availableBalance : '0.00'}</Text>
+                <View style={{display:'flex', flexDirection:'row'}} >
+                    <View style={{flex:1,marginLeft: 15, justifyContent:'center'}}>
+                        <Text style={styles.numTextStyle}>{user.blockedBalance ? user.blockedBalance : '0.00'}</Text>
+                        <Text style={styles.numRemarkStyle}>待入账(元)</Text>
+                    </View>
+                    <View style={{flex:1,marginLeft: 15, justifyContent:'center'}}>
+                        <Text style={styles.numTextStyle}>{user.historicalBalance ? user.historicalBalance : '0.00'}</Text>
+                        <Text style={styles.numRemarkStyle}>累计收益(元)</Text>
+                    </View>
+                </View>
             </ImageBackground>
         );
     }
@@ -208,16 +221,21 @@ export default class MyCashAccountPage extends BasePage {
                             width: 60,
                             paddingLeft: DesignRule.margin_page,
                             height: 40,
-                            justifyContent: 'center'
+                            justifyContent: 'center',
+                            alignItems:'flex-start',
+                            flex:1
                         }}>
                             <Image source={res.button.white_back}/>
                         </View>
                     </TouchableWithoutFeedback>
-                    {/*{this.state.canWithdraw ? <TouchableWithoutFeedback onPress={() => {*/}
-                        {/*this.$navigate(RouterMap.BankCardListPage);*/}
-                    {/*}}>*/}
-                        {/*<Text style={styles.settingStyle}>账户设置</Text>*/}
-                    {/*</TouchableWithoutFeedback> : null}*/}
+                    <Text style={{
+                        color: DesignRule.white,
+                        fontSize: px2dp(17),
+                        includeFontPadding: false
+                    }}>
+                    账户余额
+                    </Text>
+                    <View style={{flex:1}}/>
                 </View>
             </ImageBackground>
         );
@@ -227,8 +245,23 @@ export default class MyCashAccountPage extends BasePage {
         return (
             <View style={{flex: 1, backgroundColor: 'white'}}>
                 <ScrollableTabView
-                    onChangeTab={(obj) => {}}
-                    style={{flex: 1, width: ScreenUtils.width*2/3, marginBottom: ScreenUtils.safeBottom}}
+                    onChangeTab={(obj) => {
+                        if(obj.i === 1){
+                           this.type = 1;
+                           this.biType = 1;
+                        }else  if(obj.i === 2){
+                            this.type = 1;
+                            this.biType = 2;
+                        }else  if(obj.i === 3){
+                            this.type = 2;
+                            this.biType = 1;
+                        }else {
+                            this.type = null;
+                            this.biType = null;
+                        }
+                        this.onRefresh()
+                    }}
+                    style={{flex: 1, width: ScreenUtils.width * 2 / 3, marginBottom: ScreenUtils.safeBottom}}
                     scrollWithoutAnimation={true}
                     renderTabBar={this._renderTabBar}
                     //进界面的时候打算进第几个
@@ -284,19 +317,33 @@ export default class MyCashAccountPage extends BasePage {
                             fontSize: 12, color: DesignRule.textColor_instruction
                         }}>{item.time}</Text>
                     </View>
-                    <View style={{ justifyContent: 'space-between', alignItems: 'flex-end' }}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    {this.type === 2 && this.biType === 1 ?
+                        <View style={{justifyContent: 'space-between', alignItems: 'flex-end'}}>
+                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                <Text style={{
+                                    fontSize: 17,
+                                    color: DesignRule.textColor_mainTitle
+                                }}>{StringUtils.formatMoneyString(item.capital, false)}</Text>
+                            </View>
                             <Text style={{
-                                fontSize: 17,
-                                color: DesignRule.textColor_mainTitle
-                            }}>{StringUtils.formatMoneyString(item.capital, false)}</Text>
-                            <Image style={{ marginLeft: 5, width: 8, height: 5 }}
-                                   source={item.capitalRed ? lv_down : red_up}/>
+                                fontSize: 12, color: DesignRule.textColor_instruction
+                                }}>{item.realBalance && item.realBalance.length > 0 ? `已入账：${item.realBalance}` : '待入账：？'}</Text>
                         </View>
-                        <Text style={{
-                            fontSize: 12, color: DesignRule.textColor_instruction
-                        }}>{item.serialNumber}</Text>
-                    </View>
+                        :
+                        <View style={{justifyContent: 'space-between', alignItems: 'flex-end'}}>
+                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                <Text style={{
+                                    fontSize: 17,
+                                    color: DesignRule.textColor_mainTitle
+                                }}>{StringUtils.formatMoneyString(item.capital, false)}</Text>
+                                <Image style={{marginLeft: 5, width: 8, height: 5}}
+                                       source={item.capitalRed ? lv_down : red_up}/>
+                            </View>
+                            <Text style={{
+                                fontSize: 12, color: DesignRule.textColor_instruction
+                            }}>{item.serialNumber}</Text>
+                        </View>}
+
                 </View>
             </View>
         );
@@ -366,7 +413,7 @@ export default class MyCashAccountPage extends BasePage {
         }
 
         let arrData = this.currentPage === 1 ? [] : this.state.viewData;
-        MineApi.userBalanceQuery({ page: this.currentPage, size: 10, type: 1 }).then((response) => {
+        MineApi.userBalanceQuery({ page: this.currentPage, size: 10, type: this.type, biType:this.biType }).then((response) => {
             Toast.hiddenLoading();
             console.log(response);
             if (response.code === 10000) {
@@ -379,7 +426,8 @@ export default class MyCashAccountPage extends BasePage {
                             serialNumber: item.serialNo,
                             capital: use_type_symbol[item.biType] + (item.balance ? item.balance : 0.00),
                             iconImage: allType[item.useType] ? allType[item.useType].icon : renwu,
-                            capitalRed: use_type_symbol[item.biType] === '-'
+                            capitalRed: use_type_symbol[item.biType] === '-',
+                            realBalance: item.realBalance
                         });
                     });
                 }
@@ -432,7 +480,7 @@ const styles = StyleSheet.create({
         width: ScreenUtils.width
     },
     tabBar: {
-        width: ScreenUtils.width*2/3,
+        width: ScreenUtils.width * 2 / 3,
         height: 40,
         borderWidth: 0,
         borderColor: DesignRule.lineColor_inWhiteBg
@@ -446,7 +494,7 @@ const styles = StyleSheet.create({
     tabBarUnderline: {
         width: 10,
         height: 2,
-        marginHorizontal: (ScreenUtils.width*2/3 - 10 * 4) / 8,
+        marginHorizontal: (ScreenUtils.width * 2 / 3 - 10 * 4) / 8,
         backgroundColor: DesignRule.mainColor,
         borderRadius: 1
     },
@@ -488,8 +536,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: DesignRule.white,
         borderColor: DesignRule.mainColor,
-        borderWidth: 1
-    }
+        borderWidth: 1,
+        position: 'absolute',
+        right: 6,
+        top: 0
+    },
+    numTextStyle:{
+        color:'#333333',
+        fontSize:19,
+    },
+    numRemarkStyle:{
+        color:'#999999',
+        fontSize:12,
+    },
 });
 
 
