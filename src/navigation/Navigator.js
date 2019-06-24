@@ -15,7 +15,7 @@ const RootStack = createStackNavigator(Router,
         initialRouteName: 'Tab',
         initialRouteParams: {},
         headerMode: 'none',
-        navigationOptions: {
+        defaultNavigationOptions: {
             gesturesEnabled: true
         },
         transitionConfig: () => ({

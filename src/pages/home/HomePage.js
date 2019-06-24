@@ -162,10 +162,6 @@ class HomePage extends BasePage {
         homeModule.initHomeParams();
         homeTabManager.setAboveRecommend(false);
         this.offsetY = 0;
-        InteractionManager.runAfterInteractions(() => {
-            homeModule.loadHomeList(true);
-        });
-
     }
 
     componentDidMount() {
@@ -179,6 +175,18 @@ class HomePage extends BasePage {
                     homeModalManager.leaveHome();
                 }
                 BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+            }
+        );
+
+        this.willFocusSubscription = this.props.navigation.addListener(
+            'willFocus',
+            payload => {
+                const { state } = payload;
+                if (state && state.routeName === 'HomePage') {
+                    if (homeModule.firstLoad) {
+                        homeModule.loadHomeList(true);
+                    }
+                }
             }
         );
 
@@ -259,6 +267,7 @@ class HomePage extends BasePage {
 
     componentWillUnmount() {
         this.willBlurSubscription && this.willBlurSubscription.remove();
+        this.willFocusSubscription && this.willFocusSubscription.remove();
         this.didFocusSubscription && this.didFocusSubscription.remove();
         this.listener && this.listener.remove();
         this.listenerMessage && this.listenerMessage.remove();

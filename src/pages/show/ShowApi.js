@@ -4,9 +4,9 @@ const api = {
     //活动
     showActivity: ['/social/show/content/page/query', { method: 'get' }],
     // 发现详情
-    showDetail: ['/social/show/content/queryByContentNo', { method: 'get' }],
+    showDetail: ['/social/show/content/queryByShowNo', { method: 'get' }],
     // 发现详情
-    showDetailCode: ['/social/show/content/queryByContentNo', { method: 'get' }],
+    showDetailCode: ['/social/show/content/queryByShowNo', { method: 'get' }],
     // 点赞
     showGood: '/discover/count/save',
     // 取消点赞:
@@ -33,6 +33,10 @@ const api = {
     getAllTag:['/social/show/tag/list',{method:'get'}],
     //查询单个文章标签
     getTagWithCode:['/social/show/tag/content/info',{method:'get'}],
+    //某个tag 下的所有文章
+    getDynamicWithTag:['/social/show/content/tag/list',{method:'get'}],
+    //查询单个标签信息
+    getTagInfo:['/social/show/tag/info',{method:'get'}]
 };
 import ApiUtils from '../../api/network/ApiUtils';
 

@@ -35,7 +35,7 @@ import {
 } from './components';
 import { observer } from 'mobx-react';
 import res from '../res';
-import RouterMap, { popToRuteName } from '../../../navigation/RouterMap';
+import RouterMap, { popToRouteName } from '../../../navigation/RouterMap';
 
 const netError = res.placeholder.netError;
 
@@ -62,7 +62,7 @@ class ExchangeGoodsDetailPage extends BasePage {
     };
 
     $NavigationBarDefaultLeftPressed = () => {
-        popToRuteName(RouterMap.MyOrdersDetailPage);
+        popToRouteName(RouterMap.MyOrdersDetailPage);
     };
 
     $isMonitorNetworkStatus() {
@@ -401,7 +401,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                             OrderApi.afterSaleCancel({ serviceNo: this.params.serviceNo }).then(result => {
                                 that.$loadingDismiss();
                                 DeviceEventEmitter.emit('OrderNeedRefresh');
-                                popToRuteName(RouterMap.MyOrdersDetailPage);
+                                popToRouteName(RouterMap.MyOrdersDetailPage);
                             }).catch(error => {
                                 that.$loadingDismiss();
                                 that.$toastShow(error.msg || '操作失败，请重试');

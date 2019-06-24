@@ -73,7 +73,7 @@ export default class VideoView extends Component {
     _render = () => {
         if (this.state.showVideoCover) {
             return <View style={{ flex: 1, backgroundColor: DesignRule.imgBg_color }}>
-                <Image style={{ flex: 1, width: this.state.width }}
+                <Image style={{ flex: 1, width: this.state.videoWidth,height:this.state.videoHeight }}
                        source={{ uri: this.state.videoCover }}
                        resizeMode={'cover'}/>
                 <TouchableOpacity style={{

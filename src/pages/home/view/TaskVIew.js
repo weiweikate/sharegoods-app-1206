@@ -60,8 +60,9 @@ const {
     task_finish,
     red_bg,
     gary_bg,
-    current_p
+    current_p,
 } = res.task;
+
 
 
 // type	string
@@ -170,7 +171,7 @@ class TaskItem extends React.Component {
                         <MRText style={{
                             fontSize: autoSizeWidth(13),
                             color: 'white',
-                            marginBottom: 5
+                            marginBottom: autoSizeWidth(8)
                         }} allowFontScaling={false}>{title}</MRText>
                   </ImageBackground>
                 </TouchableOpacity>
