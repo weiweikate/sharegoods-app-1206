@@ -190,10 +190,10 @@
   self.footerView.sd_layout
   .topSpaceToView(self.bodyView, 10)
   .leftSpaceToView(bgView, 10)
-  .rightSpaceToView(bgView, 15);
+  .rightSpaceToView(bgView, 0);
 
   self.jingpin.sd_layout.topSpaceToView(self.headView, 0)
-  .rightSpaceToView(bgView, 15)
+  .rightSpaceToView(bgView, 10)
   .widthIs(50).heightIs(50);
 
   [bgView setupAutoHeightWithBottomView:self.footerView bottomMargin:5];
