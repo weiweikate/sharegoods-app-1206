@@ -8,6 +8,7 @@
 
 #import "SGRecordSuccessPreview.h"
 #import "UIButton+Convenience.h"
+#import "IJSImageManagerController.h"
 @interface SGRecordSuccessPreview(){
     float _width;
     float _distance;
@@ -22,8 +23,24 @@
 @property (nonatomic ,strong) AVPlayerViewController *avPlayer;
 #endif
 @property (nonatomic ,assign) AVCaptureVideoOrientation orientation;
+@property (nonatomic, strong) UIImageView * mainImageView;
+@property (nonatomic,assign) BOOL isFirstLoad;
 @end
 @implementation SGRecordSuccessPreview
+
+-(instancetype)init{
+  if (self = [super init]) {
+    self.isFirstLoad = YES;
+  }
+  return self;
+}
+-(UIImageView *)mainImageView{
+  if (!_mainImageView) {
+    _mainImageView=[[UIImageView alloc]init];
+    _mainImageView.frame = self.bounds;
+  }
+  return _mainImageView;
+}
 - (void)setImage:(UIImage *)image videoPath:(NSString *)videoPath captureVideoOrientation:(AVCaptureVideoOrientation)orientation{
     _image = image;
     _videoPath = videoPath;
@@ -35,14 +52,12 @@
     [self setupUI];
 }
 - (void)setupUI{
-
     if (_isPhoto) {
-        UIImageView *imageview = [[UIImageView alloc]initWithImage:_image];
-        imageview.frame = self.bounds;
+        [self.mainImageView setImage:_image];
         if (_orientation == AVCaptureVideoOrientationLandscapeRight || _orientation ==AVCaptureVideoOrientationLandscapeLeft) {
-            imageview.contentMode = UIViewContentModeScaleAspectFit;
+            self.mainImageView.contentMode = UIViewContentModeScaleAspectFit;
         }
-        [self addSubview:imageview];
+        [self addSubview:self.mainImageView];
     } else {
 #if __IPHONE_OS_VERSION_MAX_ALLOWED < __IPHONE_9_0
         MPMoviePlayerController *mpPlayer = [[MPMoviePlayerController alloc]initWithContentURL:[NSURL fileURLWithPath:_videoPath]];
@@ -82,7 +97,6 @@
   [self addSubview:editButton];
   _editButton = editButton;
   
-    
     // 发送
     UIButton *sendButton = [UIButton image:@"短视频_完成" target:self action:@selector(send)];
     sendButton.bounds = CGRectMake(0, 0, _width, _width);
@@ -90,18 +104,32 @@
     [self addSubview:sendButton];
     _sendButton = sendButton;
 }
+
+-(void)LayoutSubview{
+  
+  
+}
 -(void)layoutSubviews{
     [super layoutSubviews];
     NSLog(@"预览图");
+  if (self.isFirstLoad) {
+    self.isFirstLoad = NO;
     [UIView animateWithDuration:0.25 animations:^{
-        _cancelButton.bounds = CGRectMake(0, 0, _width, _width);
-        _cancelButton.center = CGPointMake(self.bounds.size.width / 4, self.bounds.size.height -_distance - _width/2);
-        _sendButton.bounds = CGRectMake(0, 0, _width, _width);
-        _sendButton.center = CGPointMake(self.bounds.size.width / 4 * 3, self.bounds.size.height - _distance - _width/2);
-        _editButton.bounds =CGRectMake(0, 0, _width, _width);
-        _editButton.center = CGPointMake(self.bounds.size.width / 4 * 2, self.bounds.size.height - _distance - _width/2);
-      _editButton.hidden = YES;
+      _cancelButton.bounds = CGRectMake(0, 0, _width, _width);
+      _cancelButton.center = CGPointMake(self.bounds.size.width / 4, self.bounds.size.height -_distance - _width/2);
+      _sendButton.bounds = CGRectMake(0, 0, _width, _width);
+      _sendButton.center = CGPointMake(self.bounds.size.width / 4 * 3, self.bounds.size.height - _distance - _width/2);
+      _editButton.bounds =CGRectMake(0, 0, _width, _width);
+      _editButton.center = CGPointMake(self.bounds.size.width / 4 * 2, self.bounds.size.height - _distance - _width/2);
     }];
+  }else{
+      _cancelButton.bounds = CGRectMake(0, 0, _width, _width);
+      _cancelButton.center = CGPointMake(self.bounds.size.width / 4, self.bounds.size.height -_distance - _width/2);
+      _sendButton.bounds = CGRectMake(0, 0, _width, _width);
+      _sendButton.center = CGPointMake(self.bounds.size.width / 4 * 3, self.bounds.size.height - _distance - _width/2);
+      _editButton.bounds =CGRectMake(0, 0, _width, _width);
+      _editButton.center = CGPointMake(self.bounds.size.width / 4 * 2, self.bounds.size.height - _distance - _width/2);
+  }
 }
 #if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_8_4
 - (void)replay{
@@ -112,9 +140,17 @@
 }
 #endif
 -(void)editClick{
-  if (self.editBlock) {
-    self.editBlock(_image,_videoPath);
-  }
+  __weak typeof (self) weakSelf = self;
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    IJSImageManagerController *vc =[[IJSImageManagerController alloc]initWithEditImage:_image];
+    [vc loadImageOnCompleteResult:^(UIImage *image, NSURL *outputPath, NSError *error) {
+      [self setImage:image videoPath:nil captureVideoOrientation:_orientation];
+      //    weakSelf.backImageView.image = image;
+//      [self sendWithImage:image videoPath:nil];
+    }];
+    vc.mapImageArr = @[];
+    [[self currentViewController_XG] presentViewController:vc animated:YES completion:nil];
+  });
 }
 - (void)cancel{
     if (self.cancelBlcok) {
