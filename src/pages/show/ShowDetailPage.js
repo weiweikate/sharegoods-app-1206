@@ -313,6 +313,7 @@ export default class ShowDetailPage extends BasePage {
     };
 
     _showImagesPage(imgs, index) {
+        alert('sss');
         this.noNeedRefresh = true;
         routeNavigate(RouterMap.ShowDetailImagePage, {
             imageUrls: imgs,

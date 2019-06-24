@@ -4,7 +4,7 @@ import ScreenUtils from '../../utils/ScreenUtils';
 
 const { width, px2dp } = ScreenUtils;
 import ViewPager from '../../components/ui/ViewPager';
-// import ImageLoad from '@mr/image-placeholder';
+import ImageLoad from '@mr/image-placeholder';
 import {
     MRText as Text
 } from '../../components/ui';
@@ -72,12 +72,12 @@ export default class ShowImageView extends Component {
 
     _renderViewPageItem(item,index) {
         return <TouchableWithoutFeedback onPress={() => this.props.onPress(this.state.items, this.index)}>
-            {/*<View>*/}
-                {/*<ImageLoad style={{*/}
-                    {/*width: width,*/}
-                    {/*height: this.imageHeight*/}
-                {/*}} source={{ uri: item }} resizeMode='contain'/>*/}
-            {/*</View>*/}
+            <View>
+                <ImageLoad style={{
+                    width: width,
+                    height: this.imageHeight
+                }} source={{ uri: item }} resizeMode='contain'/>
+            </View>
 
             <ShowImageItemView needLoad={this.index === index} item={item} width={width} imageHeight={this.imageHeight}/>
         </TouchableWithoutFeedback>;
