@@ -254,6 +254,14 @@ export default class CommShareModal extends React.Component {
         }
         Clipboard.setString(ShareUtil.queryString(this.props.webJson.linkUrl, { pageSource: 6 }));
         NativeModules.commModule.toast('复制链接成功');
+        // 2、跳转代码
+        Linking.canOpenURL('weixin://').then(supported => { // weixin://  alipay://
+            if (supported) {
+                Linking.openURL('weixin://');
+            } else {
+                bridge.$toast('请先安装微信');
+            }
+        });
     }
 
     changeShareType(shareType) {//切换是分享图片还是分享网页

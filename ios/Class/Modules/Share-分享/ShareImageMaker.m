@@ -175,30 +175,41 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
       imageHeght = 687*i;
     }
 
-    //logo
-    UIImage * logo = [UIImage imageNamed:@"logoShare.png"];
+    //底图片
     [nodes addObject:@{
-                       @"value": logo,
+                       @"value": [images[0] boxblurWithBlurNumber:0.9] ,
                        @"locationType": @"rect",
-                       @"location": [NSValue valueWithCGRect:CGRectMake(104*i, 46*i, 37*i, 37*i)]}
+                       @"location": [NSValue valueWithCGRect:CGRectMake(0, 0, 375*i, 667*i)]}
      ];
-
-    //标语
-    NSMutableAttributedString *logoTitle = [[NSMutableAttributedString alloc]initWithString:@"秀一秀 赚到够"
-                                                                                    attributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:18*i], NSForegroundColorAttributeName: [UIColor colorWithHexString:@"FF0050"]}];
+    
+    
+    //模糊图片
+    UIImage * bgImg = [UIImage imageWithColor:[[UIColor grayColor] colorWithAlphaComponent:0.5]];
+    
     [nodes addObject:@{
-                       @"value": logoTitle,
-                       @"location": [NSValue valueWithCGPoint:CGPointMake(152*i, 55*i)]}
-     ];
-
-
-
-    //主图图片[images[0] creatRoundImagWithRadius:0.02 width:(375-60)*i height:410*i]
-    [nodes addObject:@{
-                       @"value": [images[0] creatRoundImagWithRadius:0.02 width:339*i height:339*i],
+                       @"value": bgImg,
                        @"locationType": @"rect",
-                       @"location": [NSValue valueWithCGRect:CGRectMake(18*i, 100*i, 339*i, 339*i)]}
+                       @"location": [NSValue valueWithCGRect:CGRectMake(0, 0, 375*i, 667*i)]}
      ];
+    
+    //白色背景
+    UIImage * whiteBgImg = [UIImage imageWithColor:[UIColor whiteColor]];
+    
+    [nodes addObject:@{
+                       @"value": [whiteBgImg  creatRoundImagWithRadius:0.01 width:(375-60)*i height:490*i],
+                       @"locationType": @"rect",
+                       @"location": [NSValue valueWithCGRect:CGRectMake(30*i, 89*i, (375-60)*i, 490*i)]}
+     ];
+    
+    //商品
+    [nodes addObject:@{
+                       @"value": [images[0] creatRoundImagWithRadius:0.02 width:(375-60)*i height:345*i],
+                       @"locationType": @"rect",
+                       @"location": [NSValue valueWithCGRect:CGRectMake(50*i, 109*i, (375-100)*i, 275*i)]}
+     ];
+    
+    
+    
   //标题
   NSMutableParagraphStyle *style = [NSMutableParagraphStyle new];
   style.lineBreakMode = NSLineBreakByTruncatingTail;
