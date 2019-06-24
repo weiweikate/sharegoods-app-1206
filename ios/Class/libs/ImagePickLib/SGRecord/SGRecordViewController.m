@@ -18,7 +18,7 @@
 #define STRONGSELF __strong typeof(weakSelf) strongSelf = weakSelf;
 #define TIMER_INTERVAL 0.5 //定时器时间间隔
 #define RECORD_TIME 0.5 //开始录制视频的时间
-#define VIDEO_MIN_TIME 5 // 录制视频最短时间
+#define VIDEO_MIN_TIME 1 // 录制视频最短时间
 @interface SGRecordViewController ()<SGRecordEngineDelegate,UIGestureRecognizerDelegate,SGMotionManagerDeviceOrientationDelegate>
 @property (nonatomic ,strong) SGRecordManager *recordManger;
 @property (nonatomic ,assign) BOOL allowRecord;//允许录制
@@ -42,7 +42,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor grayColor];
-    self.title = @"拍摄或录像";
+    self.title = @"拍摄";
     self.allowRecord = YES;
     [self setupUI];
 }
@@ -88,7 +88,7 @@
     WEAKSELF
     [self.recordManger takePhoto:^(UIImage *image) {
         NSLog(@"拍照结束:%@",image);
-        UIImageWriteToSavedPhotosAlbum(image, nil, nil, NULL);
+//        UIImageWriteToSavedPhotosAlbum(image, nil, nil, NULL);
         STRONGSELF
         dispatch_async(dispatch_get_main_queue(), ^{
             [strongSelf.recordManger shutdown];
@@ -142,18 +142,6 @@
 //
 -(void)editImage:(UIImage *)imge videoPath:(NSString *)videoPath{
    [self editImage:imge];
-//  [self dismissViewControllerAnimated:YES completion:^{
-//    if (imge) {
-////      if (self.finshBlock) {
-////        self.finshBlock(imge, nil, hyf_edit_img);
-////      }
-//
-//    }else if (videoPath && videoPath.length > 0){
-////      if (self.finshBlock) {
-////        self.finshBlock(nil, videoPath, hyf_edit_video);
-////      }
-//    }
-//  }];
 }
 //编辑图片
 -(void)editImage:(UIImage *)image{
@@ -264,7 +252,7 @@
     UILabel *tipLabel = [[UILabel alloc]init];
     tipLabel.bounds = CGRectMake(0, 0, 200, 20);
     tipLabel.center = CGPointMake(self.view.center.x, self.view.bounds.size.height - 160 - 13/2);
-    tipLabel.text = @"点击拍照,长按拍摄";
+    tipLabel.text = @"点击拍照";
     tipLabel.font = [UIFont systemFontOfSize:13];
     tipLabel.textAlignment = NSTextAlignmentCenter;
     tipLabel.textColor = [UIColor whiteColor];
@@ -368,7 +356,7 @@
     NSLog(@"按下按钮");
     [self hideExitAndSwitchViews];
     [self removeTimer];
-    [self timer];
+//  hyf更改  [self timer];
 }
 // 按钮抬起
 - (void)toucheUpInsideOrOutSide:(UIButton *)button{

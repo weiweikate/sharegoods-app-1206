@@ -75,7 +75,6 @@
     
   
     [self.exportSession exportAsynchronouslyWithCompletionHandler:^(void){
-
         switch (self.exportSession.status) {
             case AVAssetExportSessionStatusCompleted:
                  [[NSNotificationCenter defaultCenter] postNotificationName:WAAVSEExportCommandCompletionNotification object:self];

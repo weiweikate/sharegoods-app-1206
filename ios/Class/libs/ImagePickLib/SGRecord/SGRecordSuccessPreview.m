@@ -100,6 +100,7 @@
         _sendButton.center = CGPointMake(self.bounds.size.width / 4 * 3, self.bounds.size.height - _distance - _width/2);
         _editButton.bounds =CGRectMake(0, 0, _width, _width);
         _editButton.center = CGPointMake(self.bounds.size.width / 4 * 2, self.bounds.size.height - _distance - _width/2);
+      _editButton.hidden = YES;
     }];
 }
 #if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_8_4

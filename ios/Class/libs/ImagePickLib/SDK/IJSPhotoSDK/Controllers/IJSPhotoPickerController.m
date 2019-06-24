@@ -581,7 +581,7 @@ static NSString *const CellID = @"pickerID";
 - (void)_createrData
 {
     UIView *loadView =  [IJSLodingView showLodingViewAddedTo:self.view title:[NSBundle localizedStringForKey:@"加载中..."]];
-    [[IJSImageManager shareManager] getAssetsFromFetchResult:self.albumModel.result allowPickingVideo:YES allowPickingImage:YES completion:^(NSArray<IJSAssetModel *> *models) {
+    [[IJSImageManager shareManager] getAssetsFromFetchResult:self.albumModel.result allowPickingVideo:NO allowPickingImage:YES completion:^(NSArray<IJSAssetModel *> *models) {
         [loadView removeFromSuperview];
         self.assetModelArr = [NSMutableArray arrayWithArray:models];
         [self.assetModelArr enumerateObjectsUsingBlock:^(IJSAssetModel *_Nonnull obj, NSUInteger idx, BOOL *_Nonnull stop) {
