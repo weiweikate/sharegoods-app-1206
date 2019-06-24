@@ -24,6 +24,14 @@
             "wxAppletKey": "gh_aa91c3ea0f6c",
             "gongmao": "http://testsop.sharegoodsmall.com/gateway/gongmall/contract/reback"
         },
+        "after": {
+            "name": "商家一期",
+            "host": "https://test2api.sharegoodsmall.com/gateway",
+            "h5": "https://testh5.sharegoodsmall.com",
+            "oss": "https://testcdn.sharegoodsmall.com",
+            "wxAppletKey": "gh_aa91c3ea0f6c",
+            "gongmao": "http://testsop.sharegoodsmall.com/gateway/gongmall/contract/reback"
+        },
         "pre_release": {
             "name": "UAT",
             "host": "https://uatapi.sharegoodsmall.com/gateway",
