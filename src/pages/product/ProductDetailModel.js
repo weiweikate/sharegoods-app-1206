@@ -313,10 +313,8 @@ export default class ProductDetailModel {
         /*服务,参数,选择地址*/
         let settingList = [{ itemKey: productItemType.service }];
         paramList.length !== 0 && settingList.push({ itemKey: productItemType.param });
-        settingList.push({ itemKey: productItemType.address });
-        sectionArr.push(
-            { key: sectionType.sectionSetting, data: settingList }
-        );
+        // settingList.push({ itemKey: productItemType.address });
+        sectionArr.push({ key: sectionType.sectionSetting, data: settingList });
         /*晒单,*/
         sectionArr.push(
             { key: sectionType.sectionScore, data: [{ itemKey: productItemType.comment }] },
