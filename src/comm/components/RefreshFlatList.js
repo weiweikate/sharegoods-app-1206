@@ -60,7 +60,7 @@ export default class RefreshFlatList extends React.Component {
         onEndRefresh: PropTypes.func,
         onStartLoadMore: PropTypes.func,
         onEndLoadMore: PropTypes.func,
-
+        emptyHeight: PropTypes.number
     };
 
     static defaultProps = {
@@ -76,7 +76,8 @@ export default class RefreshFlatList extends React.Component {
         defaultEmptyText: '暂无数据~',
         defaultData: [],
         renderHeader: ()=>{return null},
-        componentDidMountRefresh: true
+        componentDidMountRefresh: true,
+        emptyHeight: ScreenUtils.height - ScreenUtils.headerHeight,
     };
 
     constructor(props) {
@@ -89,7 +90,6 @@ export default class RefreshFlatList extends React.Component {
             loadingMore: false,
             footerStatus: 'idle',
             data: [],
-            height: ScreenUtils.height - ScreenUtils.headerHeight,
             error: null,
         };
         this.page = props.defaultPage;
@@ -112,7 +112,7 @@ export default class RefreshFlatList extends React.Component {
             return this.props.renderEmpty();
         } else {
             return (
-                <View style={{ height: this.state.height - 40, alignItems: 'center', justifyContent: 'center' }}>
+                <View style={{ height: this.props.emptyHeight - 40, alignItems: 'center', justifyContent: 'center' }}>
                     <Image source={this.props.defaultEmptyImage}
                            style={{ width: 110, height: 110 }}
                            resizeMode={'contain'}/>

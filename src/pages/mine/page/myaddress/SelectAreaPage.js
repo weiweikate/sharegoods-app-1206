@@ -7,7 +7,7 @@ import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
 import RefreshFlatList from '../../../../comm/components/RefreshFlatList';
-import RouterMap from '../../../../navigation/RouterMap';
+import RouterMap, { routePop } from '../../../../navigation/RouterMap';
 
 const arrow_right = res.button.arrow_right;
 export default class SelectAreaPage extends BasePage {
@@ -85,7 +85,7 @@ export default class SelectAreaPage extends BasePage {
             // 回退并刷新
             if (this.canBack) {
                 this.canBack = false;
-                this.$navigateBack(-3);
+                routePop(-3);
                 const { provinceCode, provinceName, cityCode, cityName } = this.props.navigation.state.params || {};
                 let areaText = provinceName + cityName + item.name;
                 setArea && setArea(provinceCode, provinceName, cityCode, cityName, item.code, item.name, areaText);

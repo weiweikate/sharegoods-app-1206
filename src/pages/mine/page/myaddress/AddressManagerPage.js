@@ -11,11 +11,6 @@ import RefreshFlatList from '../../../../comm/components/RefreshFlatList';
 import SmoothPushHighComponent from '../../../../comm/components/SmoothPushHighComponent';
 import RouterMap from '../../../../navigation/RouterMap';
 
-
-const addrBorderImgN = res.address.dizhi_img_nor;
-const addrBorderImgS = res.address.dizhi_img_sel;
-const addrRight = res.address.dizhi_icon_moren_sel;
-const dingwei = res.address.dizhi_icon_dingwei_nor;
 const NoMessage = res.address.kongbeiye_icon_dizhi;
 const addr_edit = res.address.addr_edit;
 const addr_del = res.address.addr_del;
@@ -83,11 +78,8 @@ export default class AddressManagerPage extends BasePage {
                 isSupportLoadingMore={false}
                 url={MineAPI.queryAddrList}
                 params={{}}
-                renderHeader={this._header}
-                renderFooter={this._footer}
                 renderItem={this._renderItem}
                 renderEmpty={this._renderEmptyView}
-                ItemSeparatorComponent={this._separator}
                 handleRequestResult={(response) => {
                     if (response.data && response.data.length > 0) {
                         let ids = [];
@@ -120,64 +112,46 @@ export default class AddressManagerPage extends BasePage {
 
     _renderItem = (item) => {
         return <TouchableOpacity onPress={() => this._onItemClick(item.item)} style={styles.touchable}>
-            <Image source={item.index === this.state.selectIndex ? addrRight : null}
-                   style={styles.topImage}/>
-            <View style={styles.cell}>
-                <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 20 }}>
-                    <Image source={dingwei}
-                           style={{
-                               width: 16,
-                               height: 20,
-                               marginLeft: 16,
-                               marginRight: 10
-                           }}/>
-                    <View style={{ flex: 1, flexDirection: 'column' }}>
-                        <View style={styles.cell_name_tel}>
-                            <Text style={{
-                                flex: 1,
-                                fontSize: 15,
-                                color: DesignRule.textColor_mainTitle
-                            }}>收货人：{item.item.receiver}</Text>
-                            <Text style={{
-                                fontSize: 15,
-                                color: DesignRule.textColor_mainTitle
-                            }}>{item.item.receiverPhone}</Text>
-                        </View>
-                        <Text
-                            numberOfLines={2}
-                            ellipsizeMode={'tail'}
-                            style={styles.cell_addr}>{item.item.province + item.item.city + item.item.area + item.item.address}</Text>
-                    </View>
+                <View style={styles.cell_name_tel}>
+                    <Text style={{
+                        flex: 1,
+                        fontSize: 15,
+                        color: DesignRule.textColor_mainTitle
+                    }}>{item.item.receiver+ '     ' + item.item.receiverPhone}</Text>
+                    {item.item.defaultStatus === 1 ? <View style={{backgroundColor: 'rgba(255,0,80,0.1)', justifyContent: 'center', paddingHorizontal: 3, height: 16}}>
+                        <Text style={{color: '#FF0050', fontSize: 10}}>默认</Text>
+                    </View>: null}
                 </View>
-                <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg, marginTop: 15 }}/>
-                <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 13, paddingBottom: 13 }}>
-                    <TouchableOpacity style={{ flex: 1, flexDirection: 'row', alignItems: 'center', marginLeft: 16 }}
-                                      onPress={() => this._onSelectImgClick(item.item, item.index)}>
-                        <Image style={{ width: 16, height: 16, marginRight: 11 }}
-                               source={item.index === this.state.selectIndex ? res.button.selected_circle_red : res.button.unselected_circle}
-                        />
-                        <Text style={{
-                            flex: 1,
-                            fontSize: 13,
-                            color: item.index === this.state.selectIndex ? DesignRule.mainColor : DesignRule.textColor_instruction
-                        }}>默认地址</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', marginRight: 16 }}
-                                      onPress={() => this._onEditAddress(item.item, item.index)}>
-                        <Image style={{ width: 16, height: 17, marginRight: 4 }}
-                               source={addr_edit}/>
-                        <Text style={{ fontSize: 13, color: DesignRule.textColor_instruction }}>编辑</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', marginRight: 17 }}
-                                      onPress={() => this._onDelAddress(item.item)}>
-                        <Image style={{ width: 17, height: 15, marginRight: 6 }}
-                               source={addr_del}/>
-                        <Text style={{ fontSize: 13, color: DesignRule.textColor_instruction }}>删除</Text>
-                    </TouchableOpacity>
-                </View>
+                <Text
+                    numberOfLines={2}
+                    ellipsizeMode={'tail'}
+                    style={styles.cell_addr}>{item.item.province + item.item.city + item.item.area + item.item.address}</Text>
+            <View style={{flex: 1}}/>
+            <View style={{ flexDirection: 'row', alignItems: 'center',height: DesignRule.autoSizeWidth(38), borderTopWidth: 1, borderTopColor: DesignRule.bgColor}}>
+                <TouchableOpacity style={{ flex: 1, flexDirection: 'row', alignItems: 'center', marginLeft: 16 }}
+                                  onPress={() => this._onSelectImgClick(item.item, item.index)}>
+                    <Image style={{ width: DesignRule.autoSizeWidth(16), height: DesignRule.autoSizeWidth(16), marginRight: 11 }}
+                           source={item.index === this.state.selectIndex ? res.button.selected_circle_red : res.button.unselected_circle}
+                    />
+                    <Text style={{
+                        flex: 1,
+                        fontSize: 13,
+                        color: item.index === this.state.selectIndex ? DesignRule.mainColor : DesignRule.textColor_instruction
+                    }}>默认地址</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', marginRight: 16 }}
+                                  onPress={() => this._onEditAddress(item.item, item.index)}>
+                    <Image style={{ width: 16, height: 17, marginRight: 4 }}
+                           source={addr_edit}/>
+                    <Text style={{ fontSize: 13, color: DesignRule.textColor_instruction }}>编辑</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', marginRight: 17 }}
+                                  onPress={() => this._onDelAddress(item.item)}>
+                    <Image style={{ width: 17, height: 15, marginRight: 6 }}
+                           source={addr_del}/>
+                    <Text style={{ fontSize: 13, color: DesignRule.textColor_instruction }}>删除</Text>
+                </TouchableOpacity>
             </View>
-            <Image source={item.index === this.state.selectIndex ? addrBorderImgS : addrBorderImgN}
-                   style={styles.bottomImage}/>
         </TouchableOpacity>;
     };
 
@@ -244,39 +218,27 @@ export default class AddressManagerPage extends BasePage {
         ]);
     };
 
-    _header = () => {
-        return <View style={{ height: 10, backgroundColor: 'transparent' }}/>;
-    };
-
-    _footer = () => {
-        return <View style={{ height: 20, backgroundColor: 'transparent' }}/>;
-    };
-
-    _separator = () => {
-        return <View style={{ height: 10, backgroundColor: 'transparent' }}/>;
-    };
 }
 
 const styles = StyleSheet.create({
     touchable: {
-        flex: 1,
+        height: DesignRule.autoSizeWidth(127),
         marginRight: 15,
-        marginLeft: 15
-    },
-    cell: {
-        flexDirection: 'column',
-        backgroundColor: 'white',
-        borderRadius: 10
+        marginLeft: 15,
+        marginTop: 10,
+        backgroundColor: 'white'
     },
     cell_name_tel: {
         flexDirection: 'row',
-        paddingRight: 17
+        paddingHorizontal: 15,
+        marginTop: DesignRule.autoSizeWidth(15),
     },
     cell_addr: {
-        fontSize: 13,
-        color: DesignRule.textColor_secondTitle,
+        fontSize: 12,
+        color: DesignRule.textColor_mainTitle,
         paddingRight: 17,
-        marginTop: 5
+        marginTop: DesignRule.autoSizeWidth(10),
+        marginLeft: 15
     },
     topImage: {
         height: 33,

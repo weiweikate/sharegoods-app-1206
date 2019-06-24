@@ -20,6 +20,7 @@ import RefreshFlatList from '../../../comm/components/RefreshFlatList';
 import { clickOrderAgain, clickOrderConfirmReceipt, clickOrderLogistics } from '../order/CommonOrderHandle';
 import CancelProdectsModal from './orderDetail/CancelProdectsModal';
 import { orderDetailModel } from '../model/OrderDetailModel';
+import ScreenUtils from '../../../utils/ScreenUtils';
 const emptyIcon = res.kongbeuye_dingdan;
 
 @SmoothPushPreLoadHighComponent
@@ -63,6 +64,7 @@ export default class MyOrdersListView extends Component {
                     }}
                     onStartRefresh={()=> {Toast.showLoading()}}
                     onEndRefresh={() => {Toast.hiddenLoading()}}
+                    emptyHeight={ScreenUtils.height - ScreenUtils.headerHeight - 200}
                 />
                 {this.renderModal()}
                 <CancelProdectsModal ref={(ref) => {
