@@ -615,7 +615,7 @@ public class CommModule extends ReactContextBaseJavaModule {
             final LocalMediaConfig config = buidler
                     .setVideoPath(file.getAbsolutePath())
                     .captureThumbnailsTime(1)
-                    .doH264Compress(new VBRMode(58000,1421))
+                    .doH264Compress(new VBRMode(58000,3000))
                     .setFramerate(30)
                     .setScale(1.0f)
                     .build();
