@@ -9,7 +9,7 @@ import { MRText } from '../../components/ui';
 import res from '../res';
 import DesignRule from '../../constants/DesignRule';
 import StringUtils from '../../utils/StringUtils';
-import { navigate, backToHome, GoToTabItem } from '../../navigation/RouterMap';
+import { backToHome, GoToTabItem, routePush } from '../../navigation/RouterMap';
 import { track, trackEvent } from '../../utils/SensorsTrack';
 
 const { white_go } = res.button;
@@ -232,7 +232,7 @@ export function IntervalMsgNavigate(forwardType, keyCode) {
     else {
         const router = IntervalMsgRouter[forwardType];
         if (router) {
-            navigate(router, {
+            routePush(router, {
                 productCode: keyCode,
                 storeCode: keyCode,
                 orderNo: keyCode,

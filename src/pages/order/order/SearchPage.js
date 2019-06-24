@@ -11,6 +11,7 @@ import StringUtils from '../../../utils/StringUtils';
 import store from '@mr/rn-store';
 import SearchNav from '../../home/search/components/SearchNav';
 import DesignRule from '../../../constants/DesignRule';
+import RouterMap from '../../../navigation/RouterMap';
 
 const dismissKeyboard = require('dismissKeyboard');
 //全局变量，历史搜索记录,因为是递加的
@@ -88,7 +89,7 @@ export default class SearchPage extends BasePage {
 
     //从本地拿到最近搜索记录
     async getRecentSearch() {
-        let value = await store.get(recentDataKey, []);
+        let value = await store.get(recentDataKey);
         this.setState({
             recentData: value || []
         });
@@ -141,14 +142,14 @@ export default class SearchPage extends BasePage {
                     // });
                     break;
                 case 1:
-                    this.$navigate('order/order/OrderSearchResultPage', {
+                    this.$navigate(RouterMap.OrderSearchResultPage, {
                         keyWord: inputText, callBack: () => {
                             this.getRecentSearch();
                         }
                     });
                     break;
                 case 2:
-                    this.$navigate('order/afterSaleService/AfterSaleListPage', {
+                    this.$navigate(RouterMap.AfterSaleListPage, {
                         condition: inputText,
                         type: 'search'
                     });

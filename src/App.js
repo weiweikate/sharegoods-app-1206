@@ -11,17 +11,17 @@ import {
     StyleSheet,
     Text,
     View,
-    InteractionManager, NativeAppEventEmitter
+    InteractionManager,
+    NativeAppEventEmitter
     // Image
 } from 'react-native';
-import { NavigationActions } from 'react-navigation';
 import DebugButton from './components/debug/DebugButton';
 import { netStatus } from './comm/components/NoNetHighComponent';
 import Navigator, { getCurrentRouteName } from './navigation/Navigator';
 import { SpellShopFlag, SpellShopTab } from './navigation/Tab';
 import { checkInitResult } from './pages/login/model/PhoneAuthenAction';
 import loginModel from './pages/login/model/LoginModel';
-import RouterMap, { navigate } from './navigation/RouterMap';
+import RouterMap, { routeNavigate, routePush } from './navigation/RouterMap';
 import user from '../src/model/user';
 import apiEnvironment from './api/ApiEnvironment';
 import CONFIG from '../config';
@@ -51,6 +51,20 @@ if (__DEV__) {
         'waiting:',
         waitingModuleNames.length
     );
+} else {
+    // 非开发环境，屏蔽所有console
+    global.console = {
+        info: () => {
+        },
+        log: () => {
+        },
+        warn: () => {
+        },
+        debug: () => {
+        },
+        error: () => {
+        }
+    };
 }
 
 
@@ -93,15 +107,13 @@ class App extends Component {
         this.subscription = NativeAppEventEmitter.addListener(
             'Event_navigateHtmlPage',
             (reminder) => {
-
-                this.timer = setInterval(()=>{
-                    if (global.$navigator){
-                        navigate('HtmlPage', {uri: reminder.uri})
-                        clearInterval(this.timer)
+                this.timer = setInterval(() => {
+                    if (global.$navigator) {
+                        routePush('HtmlPage', { uri: reminder.uri });
+                        clearInterval(this.timer);
                     }
-                },100)
+                }, 100);
             }
-
         );
         // 在加载完了，允许重启
         codePush.allowRestart();
@@ -167,10 +179,7 @@ class App extends Component {
     }
 
     showDebugPage = () => {
-        const navigationAction = NavigationActions.navigate({
-            routeName: RouterMap.DebugPanelPage
-        });
-        global.$navigator.dispatch(navigationAction);
+        routeNavigate(RouterMap.DebugPanelPage, {});
     };
 }
 

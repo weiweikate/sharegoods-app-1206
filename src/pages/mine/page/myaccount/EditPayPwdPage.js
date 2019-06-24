@@ -3,7 +3,9 @@ import React from 'react';
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
-import {MRText as Text} from '../../../../components/ui'
+import { MRText as Text } from '../../../../components/ui';
+import RouterMap from '../../../../navigation/RouterMap';
+
 export default class EditPayPwdPage extends BasePage {
 
     // 导航配置
@@ -44,14 +46,14 @@ export default class EditPayPwdPage extends BasePage {
     }
 
     _know = () => {
-        this.$navigate('mine/account/OldPayPwdPage', {
+        this.$navigate(RouterMap.OldPayPwdPage, {
             oldPwd: '',
             tips: '请输入旧的支付密码'
         });
     };
 
     _forget = () => {
-        this.$navigate('mine/account/JudgePhonePage', {
+        this.$navigate(RouterMap.JudgePhonePage, {
             title: '修改交易密码'
         });
     };

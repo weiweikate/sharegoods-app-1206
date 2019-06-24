@@ -85,7 +85,7 @@ export default class ShopCartPage extends BasePage {
 
     handleBackPress = () => {
         if (this.$navigationBarOptions.leftNavItemHidden) {
-            this.$navigate('HomePage');
+            this.$navigateBackToHome()
             return true;
         } else {
             return false;
@@ -211,7 +211,7 @@ export default class ShopCartPage extends BasePage {
             });
             return;
         }
-        this.$navigate('product/ProductDetailPage', {
+        this.$navigate(RouterMap.ProductDetailPage, {
             productId: itemData.productId,
             productCode: itemData.spuCode
         });

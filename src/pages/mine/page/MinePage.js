@@ -20,7 +20,7 @@ import NoMoreClick from '../../../components/ui/NoMoreClick';
 import MineApi from '../api/MineApi';
 import { observer } from 'mobx-react';
 import userOrderNum from '../../../model/userOrderNum';
-import RouterMap from '../../../navigation/RouterMap';
+import RouterMap, { routeNavigate } from '../../../navigation/RouterMap';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import EmptyUtils from '../../../utils/EmptyUtils';
@@ -142,9 +142,8 @@ export default class MinePage extends BasePage {
     }
 
     handleBackPress = () => {
-        this.$navigate('HomePage');
+        this.$navigateBackToHome();
         return true;
-
     };
 
     _needShowFans = () => {
@@ -229,11 +228,11 @@ export default class MinePage extends BasePage {
 
     jumpToUserInformationPage = () => {
         if (!user.isLogin) {
-            this.gotoLoginPage();
+            routeNavigate(RouterMap.LoginPage);
             return;
         }
         TrackApi.ViewPersonalInfo();
-        this.$navigate('mine/userInformation/UserInformationPage');
+        this.$navigate(RouterMap.UserInformationPage);
     };
 
     copyId = () => {
@@ -464,7 +463,7 @@ export default class MinePage extends BasePage {
                     <Text style={{
                         fontSize: DesignRule.fontSize_threeTitle,
                         color: DesignRule.white,
-                        fontWeight: 'bold'
+                        fontWeight: '600'
                     }}>
                         我的账户
                     </Text>
@@ -545,7 +544,7 @@ export default class MinePage extends BasePage {
                                 style={{
                                     fontSize: DesignRule.fontSize_threeTitle,
                                     color: DesignRule.textColor_mainTitle,
-                                    fontWeight: 'bold'
+                                    fontWeight: '600'
                                 }}/>
                     </View>
                     <TouchableWithoutFeedback onPress={this.jumpToAllOrder}>
@@ -592,7 +591,7 @@ export default class MinePage extends BasePage {
                             includeFontPadding: false,
                             fontSize: DesignRule.fontSize_threeTitle,
                             color: DesignRule.textColor_mainTitle,
-                            fontWeight: 'bold',
+                            fontWeight: '600',
                             width: ScreenUtils.width - DesignRule.margin_page * 2
                         }}>
                         常用工具
@@ -854,25 +853,25 @@ export default class MinePage extends BasePage {
     //跳转到对应的订单状态页面
     jumpToOrderAccordingStates = (index) => {
         if (!user.isLogin) {
-            this.$navigate('login/login/LoginPage');
+            routeNavigate(RouterMap.LoginPage);
             return;
         }
         track(trackEvent.ViewMyOrder, { myOrderModuleSource: 1 });
         switch (index) {
             case 0:
-                this.$navigate('order/order/MyOrdersListPage', { index: 1 });
+                this.$navigate(RouterMap.MyOrdersListPage, { index: 1 });
                 break;
             case 1:
-                this.$navigate('order/order/MyOrdersListPage', { index: 2 });
+                this.$navigate(RouterMap.MyOrdersListPage, { index: 2 });
                 break;
             case 2:
-                this.$navigate('order/order/MyOrdersListPage', { index: 3 });
+                this.$navigate(RouterMap.MyOrdersListPage, { index: 3 });
                 break;
             case 3:
-                this.$navigate('order/order/MyOrdersListPage', { index: 4 });
+                this.$navigate(RouterMap.MyOrdersListPage, { index: 4 });
                 break;
             case 4:
-                this.$navigate('order/afterSaleService/AfterSaleListPage', { index: 4 });
+                this.$navigate(RouterMap.AfterSaleListPage, { index: 4 });
                 break;
         }
     };
@@ -881,14 +880,14 @@ export default class MinePage extends BasePage {
     go2CashDetailPage(i) {
         switch (i) {
             case 1:
-                this.$navigate('mine/userInformation/MyCashAccountPage', { availableBalance: user.availableBalance });
+                this.$navigate(RouterMap.MyCashAccountPage, { availableBalance: user.availableBalance });
                 break;
             case 2:
-                this.$navigate('mine/userInformation/MyIntegralAccountPage', { userScore: user.userScore ? user.userScore : 0 });
+                this.$navigate(RouterMap.MyIntegralAccountPage, { userScore: user.userScore ? user.userScore : 0 });
                 break;
             case 3:
                 track(trackEvent.ViewWaitToRecord, { recordModuleSource: 1 });
-                this.$navigate('mine/userInformation/WaitingForWithdrawCashPage', { blockedBalance: user.blockedBalance ? user.blockedBalance : 0 });
+                this.$navigate(RouterMap.WaitingForWithdrawCashPage, { blockedBalance: user.blockedBalance ? user.blockedBalance : 0 });
                 break;
             default:
                 break;
@@ -898,22 +897,22 @@ export default class MinePage extends BasePage {
 
     jumpToAllOrder = () => {
         if (!user.isLogin) {
-            this.gotoLoginPage();
+            routeNavigate(RouterMap.LoginPage);
             return;
         }
         track(trackEvent.ViewMyOrder, { myOrderModuleSource: 1 });
-        this.$navigate('order/order/MyOrdersListPage', { index: 0 });
+        routeNavigate(RouterMap.MyOrdersListPage, { index: 0 });
     };
     jumpToServicePage = () => {
         if (!user.isLogin) {
-            this.$navigate('login/login/LoginPage');
+            routeNavigate(RouterMap.LoginPage);
             return;
         }
-        this.$navigate('message/MessageCenterPage');
+        routeNavigate(RouterMap.MessageCenterPage);
     };
 
     jumpToSettingPage = () => {
-        this.$navigate('mine/SettingPage', { callBack: () => this.loadPageData() });
+        this.$navigate(RouterMap.SettingPage, { callBack: () => this.loadPageData() });
     };
 }
 

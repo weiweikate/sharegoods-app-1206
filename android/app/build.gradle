@@ -180,6 +180,8 @@ dependencies {
     api rootProject.ext.dependencies.wechat
     api rootProject.ext.dependencies.recyclerview
     api rootProject.ext.dependencies.lottie
+    api rootProject.ext.dependencies.webp
+    api rootProject.ext.dependencies.webpAnimated
 
     api(name: 'alipaySdk-15.5.9-20181123210657-noUtdid', ext: 'aar')
     api project(':react-native-video')
@@ -191,6 +193,7 @@ dependencies {
     api project(':base_adapter')
     api project(':react-native-extra-dimensions-android')
     api project(':react-native-code-push')
+    implementation project(':react-native-gesture-handler')
     implementation project(':@mr_mr-rn-storage')
     implementation project(':@mr_rn-webview-bridge')
     implementation project(':@mr_rn-request')

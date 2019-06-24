@@ -33,6 +33,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import res from '../res';
 import { trackEvent, track } from '../../../utils/SensorsTrack';
 import ProductApi from '../../product/api/ProductApi';
+import RouterMap from '../../../navigation/RouterMap';
 
 const { arrow_right } = res;
 
@@ -554,7 +555,7 @@ class AfterSaleServicePage extends BasePage {
             OrderApi.afterSaleApply(params).then((response) => {
                 this.$loadingDismiss();
                 DeviceEventEmitter.emit('OrderNeedRefresh');
-                this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
+                this.$navigate(RouterMap.ExchangeGoodsDetailPage, {
                     serviceNo: response.data.serviceNo
                 });
 

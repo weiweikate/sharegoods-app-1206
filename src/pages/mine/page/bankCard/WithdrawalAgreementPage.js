@@ -25,6 +25,7 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import apiEnvironment from '../../../../api/ApiEnvironment';
 import MineApi from '../../api/MineApi';
+import RouterMap from '../../../../navigation/RouterMap';
 
 const { px2dp } = ScreenUtils;
 type Props = {};
@@ -47,7 +48,7 @@ export default class WithdrawalAgreementPage extends BasePage<Props> {
         MineApi.gongmallEnter().then((data) => {
             if (data.data) {
                 NativeModules.commModule.goGongmallPage(data.data).then(()=>{
-                    this.$navigateBack('mine/userInformation/MyCashAccountPage');
+                    this.$navigateBack(RouterMap.MyCashAccountPage);
                 });
             }
         }).catch(error => {

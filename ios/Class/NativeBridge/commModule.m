@@ -48,7 +48,6 @@ RCT_EXPORT_MODULE()
   [[NSNotificationCenter defaultCenter]  removeObserver:self];
 }
 
-
 RCT_EXPORT_METHOD(captureScreenImage:(NSDictionary *)info and:(RCTResponseSenderBlock)callback){
 
   dispatch_async(dispatch_get_main_queue(), ^{

@@ -15,6 +15,8 @@ import res from './../../res';
 import { observer } from 'mobx-react';
 import couponsModel from './../../model/CouponsModel';
 import bridge from '../../../../utils/bridge';
+import { routeNavigate } from '../../../../navigation/RouterMap';
+import RouterMap from '../../../../navigation/RouterMap';
 
 const topUp = res.couponsImg.youhuiquan_icon_topArrow;
 const topDown = res.couponsImg.youhuiquan_icon_topArrowed;
@@ -42,7 +44,7 @@ export default class CouponsPage extends BasePage {
 
     componentDidMount() {
         if (!User.isLogin) {
-            this.gotoLoginPage();
+            routeNavigate(RouterMap.LoginPage);
         }
     }
 
@@ -74,8 +76,7 @@ export default class CouponsPage extends BasePage {
                 animationType='fade'
                 onRequestClose={() => {
                 }}
-                style={{ flex: 1 }}
-                ref="modal">
+                style={{ flex: 1 }}>
                 <NoMoreClick onPress={() => {
                     this.setState({ modalVisible: false });
                 }} activeOpacity={1}>

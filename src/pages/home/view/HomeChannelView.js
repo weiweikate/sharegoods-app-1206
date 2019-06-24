@@ -16,7 +16,7 @@ import DesignRule from '../../../constants/DesignRule';
 import { MRText as Text } from '../../../components/ui/index';
 import ImageLoad from '@mr/image-placeholder';
 import { homeModule } from '../model/Modules';
-import RouterMap from '../../../navigation/RouterMap';
+import RouterMap, { routeNavigate, routePush } from '../../../navigation/RouterMap';
 import user from '../../../model/user';
 import { TrackApi } from '../../../utils/SensorsTrack';
 
@@ -49,11 +49,10 @@ export default class HomeChannelView extends Component {
 
 
     _filterNav = (router, params) => {
-        const { navigate } = this.props;
-        if (router === 'home/signIn/SignInPage' && !user.isLogin) {
-            navigate(RouterMap.LoginPage);
+        if (router === RouterMap.SignInPage && !user.isLogin) {
+            routeNavigate(RouterMap.LoginPage);
         } else {
-            navigate(router, { ...params });
+            routePush(router, { ...params });
         }
     };
 

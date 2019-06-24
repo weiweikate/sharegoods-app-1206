@@ -13,8 +13,7 @@ import { PaymentResult } from './PaymentResultPage';
 
 const { px2dp } = ScreenUtils;
 import Toast from '../../utils/bridge';
-import { NavigationActions } from 'react-navigation';
-import RouterMap from '../../navigation/RouterMap';
+import RouterMap, { replaceRoute } from '../../navigation/RouterMap';
 import StringUtils from '../../utils/StringUtils';
 import { TrackApi } from '../../utils/SensorsTrack';
 
@@ -47,9 +46,9 @@ export default class PaymentPage extends BasePage {
         user.updateUserData();
         //埋点
         TrackApi.ViewOrderPayPage({
-            orderId:payment.orderNo,
-            totalPayAmount:payment.amounts
-        })
+            orderId: payment.orderNo,
+            totalPayAmount: payment.amounts
+        });
     }
 
     $NavBarLeftPressed = () => {
@@ -68,9 +67,9 @@ export default class PaymentPage extends BasePage {
                 const { selectedBalace } = payment;
                 if (!selectedBalace && oneCoupon <= 0) {
                     // this.$navigate(RouterMap.PaymentFinshPage,{payResult: PaymentResult.success})
-                    this.$navigate("payment/ChannelPage",{
-                        bizType:bizType,
-                        modeType:modeType
+                    this.$navigate(RouterMap.ChannelPage, {
+                        bizType: bizType,
+                        modeType: modeType
                     });
                     return;
                 }
@@ -78,13 +77,13 @@ export default class PaymentPage extends BasePage {
                 if (user.hadSalePassword) {
                     this.setState({ showPwd: true });
                 } else {
-                    this.$navigate('mine/account/JudgePhonePage', { title: '设置交易密码' });
+                    this.$navigate(RouterMap.JudgePhonePage, { title: '设置交易密码' });
                 }
             } else if (result.code === payStatus.payNeedThrid) {
-                this.$navigate('payment/ChannelPage', {
+                this.$navigate(RouterMap.ChannelPage, {
                     // remainMoney: Math.floor(StringUtils.mul(result.unpaidAmount,100)) / 100 ,
-                    bizType:bizType,
-                    modeType:modeType
+                    bizType: bizType,
+                    modeType: modeType
                 });
             } else if (result.code === payStatus.payOut) {
                 Toast.$toast(payStatusMsg[result.code]);
@@ -104,18 +103,19 @@ export default class PaymentPage extends BasePage {
     _selectedBalance() {
         payment.selectBalancePayment();
     }
+
     _platformPay(password) {
         let selectBance = payment.selectedBalace;
         let { availableBalance } = user;//去除用余额
         let channelAmount = parseFloat(payment.amounts); //需要支付的金额
-        let { fundsTradingNo, oneCoupon, bizType,modeType } = payment;
+        let { fundsTradingNo, oneCoupon, bizType, modeType } = payment;
         let detailList = [];
 
-        if (channelAmount == 0.00){
+        if (channelAmount == 0.00) {
             detailList.push({
                 payType: paymentType.zeroPay,
                 payAmount: channelAmount
-            })
+            });
         }
         //拼店扩容 且 减去优惠券后
         if (bizType === 1 && oneCoupon > 0) {
@@ -123,12 +123,12 @@ export default class PaymentPage extends BasePage {
                 payType: paymentType.coupon,
                 payAmount: oneCoupon
             });
-            channelAmount = StringUtils.sub(channelAmount,oneCoupon) > 0 ? StringUtils.sub(channelAmount,oneCoupon) : 0;
+            channelAmount = StringUtils.sub(channelAmount, oneCoupon) > 0 ? StringUtils.sub(channelAmount, oneCoupon) : 0;
         }
-       //余额支付
+        //余额支付
         if (selectBance) {
-            if (parseFloat(channelAmount)  > 0) {
-                if (parseFloat(channelAmount)  > parseFloat(availableBalance) ) {
+            if (parseFloat(channelAmount) > 0) {
+                if (parseFloat(channelAmount) > parseFloat(availableBalance)) {
                     detailList.push({
                         payType: paymentType.balance,
                         payAmount: availableBalance
@@ -145,31 +145,19 @@ export default class PaymentPage extends BasePage {
             this.setState({ showPwd: false });
             if (parseInt(result.status) === payStatus.payNeedThrid) {
                 payment.selectedBalace = false;
-                this.$navigate('payment/ChannelPage', {
-                    remainMoney: (payment.amounts - channelAmount).toFixed(2) ,
-                    bizType:bizType,
-                    modeType:modeType
+                this.$navigate(RouterMap.ChannelPage, {
+                    remainMoney: (payment.amounts - channelAmount).toFixed(2),
+                    bizType: bizType,
+                    modeType: modeType
                 });
                 return;
             }
-            let replace;
             if (bizType === 1) {
                 //如何为拼店扩容来的支付，支付结果跳转拼店扩容结果页
-                replace = NavigationActions.replace({
-                    key: this.props.navigation.state.key,
-                    routeName: RouterMap.AddCapacitySuccessPage,
-                    params: { payResult: PaymentResult.success }
-                });
+                replaceRoute(RouterMap.AddCapacitySuccessPage, { payResult: PaymentResult.success });
             } else {
-                replace = NavigationActions.replace({
-                    key: this.props.navigation.state.key,
-                    // routeName: 'payment/PaymentResultPage',
-                    routeName:RouterMap.PaymentFinshPage,
-                    params: { payResult: PaymentResult.success }
-                });
-
+                replaceRoute(RouterMap.PaymentFinshPage, { payResult: PaymentResult.success });
             }
-            this.props.navigation.dispatch(replace);
             payment.resetPayment();
         }).catch(err => {
             this.setState({ showPwdMsg: err.msg });
@@ -182,7 +170,7 @@ export default class PaymentPage extends BasePage {
 
     _forgetPassword = () => {
         this.setState({ showPwd: false });
-        this.$navigate('mine/account/JudgePhonePage', { title: '设置交易密码' });
+        this.$navigate(RouterMap.JudgePhonePage, { title: '设置交易密码' });
     };
 
     _cancelPay = () => {
@@ -210,13 +198,13 @@ export default class PaymentPage extends BasePage {
     };
 
     _goToOrder(index) {
-        const {bizType} = payment;
-        if (bizType === 1){
+        const { bizType } = payment;
+        if (bizType === 1) {
             this.props.navigation.dispatch({
                 key: this.props.navigation.state.key,
-                type:'ReplacePaymentPage',
-                routeName: RouterMap.AddCapacityHistoryPage,
-            })
+                type: 'ReplacePaymentPage',
+                routeName: RouterMap.AddCapacityHistoryPage
+            });
         } else {
             this.props.navigation.dispatch({
                 key: this.props.navigation.state.key,
@@ -241,7 +229,7 @@ export default class PaymentPage extends BasePage {
         if (selectedBalace) {
             channelAmount = (channelAmount - availableBalance) <= 0 ? 0.00 : (channelAmount - availableBalance);
         }
-        channelAmount =  channelAmount.toFixed(2);
+        channelAmount = channelAmount.toFixed(2);
         //此处可能因为拼店扩容存在一元劵
         return <View style={styles.container}>
             <View style={[styles.content, payment.oneCoupon > 0 ? { height: px2dp(150) } : { height: px2dp(100) }]}>
@@ -370,7 +358,7 @@ const styles = StyleSheet.create({
         marginTop: px2dp(10),
         color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(30),
-        fontWeight: '600'
+        fontWeight: '400'
     },
     needView: {
         flex: 1,

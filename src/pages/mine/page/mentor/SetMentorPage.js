@@ -18,6 +18,7 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import MineAPI from '../../api/MineApi';
 import StringUtils from '../../../../utils/StringUtils';
 import user from '../../../../model/user';
+import RouterMap from '../../../../navigation/RouterMap';
 
 
 const {
@@ -123,7 +124,7 @@ export default class SetMentorPage extends BasePage {
 
         let noCanSet = (
             <TouchableWithoutFeedback onPress={() => {
-                this.$navigate('HtmlPage', {
+                this.$navigate(RouterMap.HtmlPage, {
                     title: '我的服务顾问',
                     uri: apiEnvironment.getCurrentH5Url() + '/static/protocol/consultant-explain.html'
                 });

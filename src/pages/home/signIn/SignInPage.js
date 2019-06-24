@@ -32,6 +32,7 @@ import { track, TrackApi, trackEvent } from '../../../utils/SensorsTrack';
 import { MRText as Text } from '../../../components/ui';
 import CommModal from '../../../comm/components/CommModal';
 import { homeModule } from '../model/Modules';
+import RouterMap from '../../../navigation/RouterMap';
 
 const {
     sign_in_bg: signInImageBg,
@@ -166,7 +167,7 @@ export default class SignInPage extends BasePage {
     };
 
     showMore = () => {
-        this.$navigate('HtmlPage', {
+        this.$navigate(RouterMap.HtmlPage, {
             title: '签到规则',
             uri: `${apiEnvironment.getCurrentH5Url()}/static/protocol/signInRule.html`
         });
@@ -465,7 +466,7 @@ export default class SignInPage extends BasePage {
                 {this.state.exchangeData ? this._couponRender() : null}
                 {this.state.exchangeData ? this._reminderRender() : null}
                 <View style={{ flex: 1 }}/>
-                <TouchableWithoutFeedback onPress={() => this.$navigate('mine/coupons/CouponsPage')}>
+                <TouchableWithoutFeedback onPress={() => this.$navigate(RouterMap.CouponsPage)}>
                     <View>
                         <Text style={styles.couponsTextStyle}>
                             已有{user.tokenCoin ? user.tokenCoin : 0}张现金券>

@@ -39,8 +39,8 @@ const {
     taskModal_exp,
     taskModal_chou,
     taskModal_h,
-    taskModal_header,
-    taskModal_wa,
+    taskModal_light,
+    taskModal_title,
     dou_bg,
     h_bg,
     exp_bg,
@@ -89,17 +89,19 @@ export default class TaskModalView extends React.Component {
         })
         return(
             <View style={styles.modal}>
-                <View style={{borderRadius: 10, overflow: 'hidden'}}>
-                    <Image source={taskModal_header} style={styles.header}/>
+                <Image source={taskModal_light} style={{
+                    width: ScreenUtils.autoSizeWidth(839/2),
+                    height: ScreenUtils.autoSizeWidth(551/2),
+                    bottom: ScreenUtils.height/2.0 + ScreenUtils.autoSizeWidth(51*alertData.length)/2,
+                    position: 'absolute'
+                }}/>
                     <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }}
-                                    colors={[ '#FFC664','#FF914A']}
-                                    style={{ alignItems: "center"}}
+                                    colors={[ '#FEF5D7','#FEDB98']}
+                                    style={{ alignItems: "center", width: ScreenUtils.autoSizeWidth(250),borderRadius: 10, overflow: 'hidden'}}
                     >
-                        <Image source={taskModal_wa} style={{
-                            width: ScreenUtils.autoSizeWidth(185),
-                            height: ScreenUtils.autoSizeWidth(30),
-                            marginBottom: ScreenUtils.autoSizeWidth(10),
-                        }}/>
+                        <View style={{height:ScreenUtils.autoSizeWidth(80), alignItems: 'center', justifyContent: 'center'}}>
+                            <MRText style={{fontSize: 14, color: DesignRule.mainColor}}>恭喜您获得奖励</MRText>
+                        </View>
                         {
                             alertData.map((item) => {
                                 let {total, code, unit = '', name} = item;
@@ -133,7 +135,12 @@ export default class TaskModalView extends React.Component {
                             </ImageBackground>
                         </TouchableOpacity>
                     </LinearGradient>
-                </View>
+                <Image source={taskModal_title} style={{
+                    width: ScreenUtils.autoSizeWidth(544/2),
+                    height: ScreenUtils.autoSizeWidth(230/2),
+                    top: ScreenUtils.height/2.0 - ScreenUtils.autoSizeWidth(80+51*alertData.length+83)/2 -ScreenUtils.autoSizeWidth(40) ,
+                    position: 'absolute',
+                }}/>
             </View>
         )
     }
@@ -191,6 +198,7 @@ export class UserLevelModalView extends React.Component {
                         width: ScreenUtils.autoSizeWidth(250),
                         height: ScreenUtils.autoSizeWidth(250)}}/>
                 </TouchableOpacity>
+
             </View>
         )
     }
@@ -236,15 +244,17 @@ const styles = StyleSheet.create({
         height: ScreenUtils.autoSizeWidth(50),
     },
     btn: {
-        height: ScreenUtils.autoSizeWidth(51),
-        width: ScreenUtils.autoSizeWidth(170),
+        height: ScreenUtils.autoSizeWidth(108/2),
+        width: ScreenUtils.autoSizeWidth(370/2),
         alignItems: 'center',
         justifyContent: 'center' ,
         marginBottom: ScreenUtils.autoSizeWidth(23),
-        marginTop: ScreenUtils.autoSizeWidth(10),
+        marginTop: ScreenUtils.autoSizeWidth(14),
     },
     btnText: {
         fontSize: 18,
-        color: '#D75A26'
+        color: '#FFF9C5',
+        fontWeight: '400',
+        marginBottom: ScreenUtils.autoSizeWidth(10),
     },
 });
