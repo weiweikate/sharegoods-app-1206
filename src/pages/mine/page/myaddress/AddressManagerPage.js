@@ -111,6 +111,8 @@ export default class AddressManagerPage extends BasePage {
     }
 
     _renderItem = (item) => {
+        let {province, city, area, address, street} = item.item;
+        street = street || '';
         return <TouchableOpacity onPress={() => this._onItemClick(item.item)} style={styles.touchable}>
                 <View style={styles.cell_name_tel}>
                     <Text style={{
@@ -125,7 +127,7 @@ export default class AddressManagerPage extends BasePage {
                 <Text
                     numberOfLines={2}
                     ellipsizeMode={'tail'}
-                    style={styles.cell_addr}>{item.item.province + item.item.city + item.item.area + item.item.address}</Text>
+                    style={styles.cell_addr}>{province + city + area + street + address}</Text>
             <View style={{flex: 1}}/>
             <View style={{ flexDirection: 'row', alignItems: 'center',height: DesignRule.autoSizeWidth(38), borderTopWidth: 1, borderTopColor: DesignRule.bgColor}}>
                 <TouchableOpacity style={{ flex: 1, flexDirection: 'row', alignItems: 'center', marginLeft: 16 }}
@@ -194,6 +196,7 @@ export default class AddressManagerPage extends BasePage {
             provinceCode: item.provinceCode,
             cityCode: item.cityCode,
             areaCode: item.areaCode,
+            streeCode: item.streeCode,
             isDefault: index === this.state.selectIndex
         });
     };

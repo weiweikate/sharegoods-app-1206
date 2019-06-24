@@ -169,7 +169,7 @@ export default class UserInformationPage extends BasePage {
                                 onPress={() => this.jumpToSetWechatPage()}/>
                 {this.renderWideLine()}
                 <UserSingleItem leftText={'所在区域'}
-                                rightText={user.area ? user.province + user.city + user.area : ''}
+                                rightText={user.area ? user.province + user.city + user.area  : ''}
                                 rightTextStyle={[styles.grayText, {
                                     maxWidth: ScreenUtils.width / 5 * 3,
                                     numberOfLines: 2
@@ -240,21 +240,24 @@ export default class UserInformationPage extends BasePage {
         this.$navigate(RouterMap.SelectAreaPage, {
             setArea: this.setArea.bind(this),
             tag: 'province',
-            fatherCode: '0'
+            fatherCode: '0',
+            type: 3//代表3级
         });
     };
     editProfile = () => {
         this.$navigate(RouterMap.ProfileEditPage);
     };
 
-    setArea(provinceCode, provinceName, cityCode, cityName, areaCode, areaName, areaText) {
+    setArea(provinceCode, provinceName, cityCode, cityName, areaCode, areaName, streetCode, streetName,areaText) {
         user.province = provinceName;
         user.city = cityName;
         user.area = areaName;
+        user.street = streetName;
 
-        MineApi.updateUserById({ type: 3, provinceId: provinceCode, cityId: cityCode, areaId: areaCode }).then(res => {
+        MineApi.updateUserById({ type: 3, provinceId: provinceCode, cityId: cityCode, areaId: areaCode, streetCode: streetCode}).then(res => {
             this.$toastShow('地址修改成功');
         }).catch(err => {
+            this.$toastShow(err.msg);
             if (err.code === 10009) {
                 routeNavigate(RouterMap.LoginPage);
             }

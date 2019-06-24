@@ -76,6 +76,7 @@ export default class AddressEditAndAddPage extends BasePage {
                 provinceCode: this.state.provinceCode,
                 cityCode: this.state.cityCode,
                 areaCode: this.state.areaCode,
+                streetCode: this.state.streetCode,
                 defaultStatus: this.state.isDefault ? '1' : '2'
             }).then((data) => {
                 this.isLoadding = false;
@@ -95,6 +96,7 @@ export default class AddressEditAndAddPage extends BasePage {
                 provinceCode: this.state.provinceCode,
                 cityCode: this.state.cityCode,
                 areaCode: this.state.areaCode,
+                streetCode: this.state.streetCode,
                 defaultStatus: this.state.isDefault ? '1' : '2'
             }).then((data) => {
                 this.isLoadding = false;
@@ -110,7 +112,7 @@ export default class AddressEditAndAddPage extends BasePage {
 
     constructor(props) {
         super(props);
-        const { receiver, tel, address, areaText, provinceCode, cityCode, areaCode, isDefault, from } = this.params;
+        const { receiver, tel, address, areaText, provinceCode, cityCode, areaCode, isDefault, from, streetCode } = this.params;
         if (from === 'edit') {
             this.$navigationBarOptions.title = '编辑地址';
         } else if (from === 'add') {
@@ -127,6 +129,8 @@ export default class AddressEditAndAddPage extends BasePage {
             cityName: '',
             areaCode: areaCode,
             areaName: '',
+            streetCode: streetCode,
+            streetName: '',
             isDefault: isDefault || false,
             from
         };
@@ -203,7 +207,7 @@ export default class AddressEditAndAddPage extends BasePage {
         });
     };
 
-    setArea(provinceCode, provinceName, cityCode, cityName, areaCode, areaName, areaText) {
+    setArea(provinceCode, provinceName, cityCode, cityName, areaCode, areaName,streetCode, streetName,areaText) {
         console.log(areaText);
         this.setState({
             areaText: areaText,
@@ -212,7 +216,9 @@ export default class AddressEditAndAddPage extends BasePage {
             cityCode: cityCode,
             cityName: cityName,
             areaCode: areaCode,
-            areaName: areaName
+            areaName: areaName,
+            streetCode,
+            streetName
         });
     }
 }
