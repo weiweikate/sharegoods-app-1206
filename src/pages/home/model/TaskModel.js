@@ -84,9 +84,7 @@ class TaskModel {
             let length = data.ruleList.length;
             if (length > 0) {
                 if (data.ruleList && data.ruleList[length - 1]) {
-                    if (data.ruleList[length - 1].value > this.progress) {
                         this.totalProgress = data.ruleList[length - 1].value;
-                    }
                 }
             }
             if (this.type === 'home') {
