@@ -12,6 +12,8 @@ import BasePage from '../../../BasePage';
 import UIText from '../../../components/ui/UIText';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
+import {jsGetAge} from '../../../utils/DateUtils';
+
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import user from '../../../model/user';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
@@ -224,19 +226,11 @@ export default class MinePage extends BasePage {
     _reload = () => {
         this.loadMessageCount();
         userOrderNum.getUserOrderNum();
-        this.setState({
-            isRefreshing: true
-        });
         MineApi.getUser().then(res => {
             let data = res.data;
             user.saveUserInfo(data);
-            this.setState({
-                isRefreshing: false
-            });
         }).catch(err => {
-            this.setState({
-                isRefreshing: false
-            });
+
         });
     };
 
@@ -342,16 +336,10 @@ export default class MinePage extends BasePage {
             </TouchableWithoutFeedback>
         ) : null;
 
-        let xiuOld = !EmptyUtils.isEmpty(user.code) ? (
-            <TouchableWithoutFeedback onLongPress={() => {
-                this.setState({
-                    modalId: true
-                });
-            }}>
+        let xiuOld = EmptyUtils.isEmpty(user.regTime) ? (
                 <Text style={{ fontSize: 11, color: DesignRule.textColor_instruction, includeFontPadding: false, marginTop: 5,marginRight:15 }}>
-                    {user.perfectNumberCode && `秀龄：${user.code}`}
+                    {user.perfectNumberCode ? `秀龄：${jsGetAge('2016-8-31 10:35:00','2019-8-31')}` : ''}
                 </Text>
-            </TouchableWithoutFeedback>
         ) : null;
 
         let levelArr = ['V0','V1','V2','V3','V4','V5']
@@ -642,25 +630,25 @@ export default class MinePage extends BasePage {
                             color: '#333333',
                             includeFontPadding: false,
                             height: 22,
-                            width: 80,
+                            maxWidth: 80,
                             fontSize: this.getAdjustsFontSize(num)
                         }}>
                             {num}
                         </Text>
                         <View style={{
-                            width: 14,
-                            height: 10,
-                            borderRadius: 8,
-                            backgroundColor: DesignRule.mainColor,
+                            width: px2dp(16),
+                            height: px2dp(16),
+                            borderRadius: px2dp(8),
                             position: 'relative',
-                            top: 0,
-                            right: 5,
+                            top: -5,
+                            right: 0,
+                            backgroundColor: DesignRule.mainColor,
                             alignItems: 'center',
                             justifyContent: 'center'
                         }}>
-                            <Text style={{
-                                color: DesignRule.white,
-                            }}>…</Text>
+                            <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(10) }}>
+                                {num > 99 ? 99 : num}
+                            </Text>
                         </View>
                     </View>
                     <View style={{ height: 9 }}/>

@@ -91,10 +91,65 @@ export const getFormatDate = (timestamp, fmt = 'yyyy-MM-dd hh:mm:ss') => {
     return dateFormat(fmt);
 };
 
+//JS日期系列：根据日期 得到年龄
+//参数strBirthday已经是正确格式的2007.02.09这样的日期字符串
+//后续再增加相关的如日期判断等JS关于日期处理的相关方法
+
+export  const jsGetAge = (time,twoTime)=> {
+    time = time.replace(new RegExp('-','gm'),'/');
+    let timeMiao = new Date(time).getTime()
+    let year = new Date(time).getFullYear()
+    let month = new Date(time).getMonth() + 1;
+    let date = new Date(time).getDate();
+    let thatYear = '';
+    let thatTimeMiao = '';
+    if(twoTime){
+        twoTime = twoTime.replace(new RegExp('-','gm'),'/');
+         thatYear = new Date(twoTime).getFullYear();
+         thatTimeMiao = new Date(twoTime).getTime()
+    } else{
+         thatYear = new Date().getFullYear();
+         thatTimeMiao = new Date().getTime();
+    }
+    let chaTime = thatTimeMiao - timeMiao;
+    let day = parseInt(chaTime / 86400000)
+    // let yu = chaTime % 86400000
+    // let hour = parseInt(yu / 3600000)
+    // let yuH = yu % 3600000
+    // let min = parseInt(yuH / 60000)
+    // let yuM = yuH % 60000
+    // let sec = parseInt(yuM / 1000)
+    let yYear = 0
+    let yDay = 0;
+    for(let x = 0;x <= thatYear - year;x++){
+        let fYear = year + x
+        let fTime = new Date('' + fYear + '/' + month + '/' + date + '').getTime();
+        let fDay = parseInt((fTime - timeMiao) / 86400000)
+        if(fDay > 0 && fDay <= day){
+            yYear = yYear + 1;
+            yDay = day - fDay
+        }
+    }
+
+    if(yYear > 0){
+        return yYear + '年';
+    }
+
+    if(yDay > 0){
+        return yDay + '月';
+    }
+
+    if(day > 0){
+        return day + '天';
+    }
+    return 0 + '天';
+}
+
 export default {
     formatDate,
     isToday,
     isTomorrow,
-    getFormatDate
+    getFormatDate,
+    jsGetAge
 };
 
