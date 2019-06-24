@@ -87,6 +87,7 @@ SINGLETON_FOR_CLASS(JRShareManager)
 {
   UMSocialMessageObject * message = [[UMSocialMessageObject alloc]init];
   id thumImage = [self getImageWithPath:imageUrl];
+  
   if (platform == UMSocialPlatformType_Sina) {
     UMShareImageObject *shareObject =  [[UMShareImageObject alloc] init];
     shareObject.thumbImage = [UIImage imageNamed:@"icon"];
@@ -101,7 +102,6 @@ SINGLETON_FOR_CLASS(JRShareManager)
     //分享消息对象设置分享内容对象
     message.shareObject = shareObject;
   }
-  
    [self shareWithMessageObject:message platform:platform completion:completion];
 
 }

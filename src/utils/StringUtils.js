@@ -8,6 +8,10 @@ const isEmpty = (param) => {
 export const isNoEmpty = (input) => {
     return !isEmpty(input);
 };
+
+export const roundFun = (value, n)=> {
+    return Math.round(value*Math.pow(10,n))/Math.pow(10,n);
+}
 /*
 * 12->¥12.00
 * 12.000->¥12.00
@@ -354,6 +358,7 @@ function sub(arg1, arg2) {
 }
 
 export default {
+    roundFun,
     isEmpty,
     isNoEmpty,
     formatMoneyString,

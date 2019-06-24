@@ -66,6 +66,7 @@ const scrollDist = height / 2 - headerHeight;
 import BasePage from '../../BasePage';
 import { TrackApi } from '../../utils/SensorsTrack';
 import taskModel from './model/TaskModel';
+import settingModel from '../mine/model/SettingModel'
 import TaskVIew from './view/TaskVIew';
 import intervalMsgModel, { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
 import { UserLevelModalView } from './view/TaskModalView';
@@ -231,6 +232,8 @@ class HomePage extends BasePage {
         this.listenerRetouchHome = DeviceEventEmitter.addListener('retouch_home', this.retouchHome);
         this.listenerHomeRefresh = JSManagerEmitter.addListener(HOME_REFRESH, this.homeTypeRefresh);
         this.listenerSkip = JSManagerEmitter.addListener(HOME_SKIP, this.homeSkip);
+        this.listenerJSMessage = JSManagerEmitter.addListener('MINE_NATIVE_TO_RN_MSG', this.mineMessageData);
+
     }
 
     homeTabChange = () => {
@@ -265,6 +268,26 @@ class HomePage extends BasePage {
         intervalMsgModel.setMsgData(content);
     };
 
+    mineMessageData = (data)=>{
+        const { params } = JSON.parse(data) || {};
+        console.log('JSPushData',params);
+        if(params && params.index === 1){
+            settingModel.availableBalanceAdd(1);
+        }
+
+        if(params && params.index === 2){
+            settingModel.userScoreAdd(1);
+        }
+
+        if(params && params.index === 3){
+            settingModel.couponsAdd(1);
+        }
+
+        if(params && params.index === 4){
+            settingModel.fansMSGAdd(1);
+        }
+    };
+
     componentWillUnmount() {
         this.willBlurSubscription && this.willBlurSubscription.remove();
         this.willFocusSubscription && this.willFocusSubscription.remove();
@@ -275,6 +298,7 @@ class HomePage extends BasePage {
         this.listenerRetouchHome && this.listenerRetouchHome.remove();
         this.listenerHomeRefresh && this.listenerHomeRefresh.remove();
         this.listenerSkip && this.listenerSkip.remove();
+        this.listenerJSMessage && this.listenerJSMessage.remove();
     }
 
     retouchHome = () => {
