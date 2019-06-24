@@ -1,6 +1,6 @@
 {
     "showDebugPanel": true,
-    "envType": "zhaoshuai",
+    "envType": "liuwu",
     "isDevHotUpdate": false,
     "__注释__": "[showDebugPanel]:是否显示调试面板   [envType]:决定网络启动后，默认的网络环境类型",
     "env": {
@@ -202,6 +202,10 @@
         "zhaoshuai":{
             "name":"赵帅",
             "host":"http://172.18.7.197:1080/gateway"
+        },
+        "liuwu": {
+            "name": "刘武",
+            "host":"hhttp://172.16.10.10:1080/gateway"
         }
     }
 }
