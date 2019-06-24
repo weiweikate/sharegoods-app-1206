@@ -133,7 +133,7 @@
 
   //内容背景
   self.contentLabView.sd_layout.topSpaceToView(self.headView,10 )
-  .leftSpaceToView(bgView, 10)
+  .leftSpaceToView(bgView, 45)
   .rightSpaceToView(bgView, 10);
 
   [self.contentLabView setupAutoHeightWithBottomView:_contentLab bottomMargin:10];
@@ -152,7 +152,7 @@
   //点赞
   [_zanBtn addTarget:self action:@selector(tapZanBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.zanBtn.sd_layout.topSpaceToView(self.contentLabView,10)
-  .leftSpaceToView(bgView, 10)
+  .leftSpaceToView(bgView, 45)
    .widthIs(24).heightIs(24);
 
   self.zanNum.sd_layout.centerYEqualToView(self.zanBtn)
@@ -183,8 +183,8 @@
     }
   }
   if(imageUrl.length>0){
-    [self.picImg setImageWithURL:[NSURL URLWithString:[imageUrl getUrlAndWidth:SCREEN_WIDTH-60 height:(SCREEN_WIDTH-60)*0.56]] placeholder:[UIImage imageWithColor:[UIColor colorWithHexString:@"f5f5f5"]]];
     self.picImg.sd_layout.autoHeightRatio(0.56);
+    [self.picImg setImageWithURL:[NSURL URLWithString:[imageUrl getUrlAndWidth:SCREEN_WIDTH-60 height:(SCREEN_WIDTH-60)*0.56]] placeholder:[UIImage imageWithColor:[UIColor colorWithHexString:@"f5f5f5"]]];
     self.contentLab.text = model.title;
   }else{
     self.picImg.sd_layout.autoHeightRatio(0);
@@ -217,12 +217,10 @@
   NSString * num = @"";
   if(count<=999){
     num = [NSString stringWithFormat:@"%ld",count>0?count:0];
-  }else if(count<10000){
-    num = [NSString stringWithFormat:@"%ldK+",count>0?count/1000:0];
-  }else if(count<100000){
-    num = [NSString stringWithFormat:@"%ldW+",count>0?count/10000:0];
+  }else if(count<=100000){
+    num = @"999+";
   }else{
-    num = @"10W+";
+    num = @"10w+";
   }
   return num;
 }
