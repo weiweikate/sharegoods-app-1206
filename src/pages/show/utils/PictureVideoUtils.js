@@ -26,19 +26,10 @@ class PictureVideoUtils {
 
             ).then(images => {
                 if(images && images.length === 1 && images[0].type.indexOf('video')>-1){
-                    // NativeModules.commModule.compressVideo(images[0].path).then((data)=>{
                         let video = images[0];
-                        // video.path = 'file://'+data;
                         this.uploadVideo(video, (data) => {
                             callBack(data);
                         });
-                    // }).catch((error)=>{
-                    //     alert(error);
-                    // })
-                    return;
-                    this.uploadVideo(images[0], (data) => {
-                        callBack(data);
-                    });
                 }else {
                     this.upload(images.map((item) => {
                         let path = item.path;
@@ -69,12 +60,7 @@ class PictureVideoUtils {
                             callBack(data);
                         });
                     }).catch((error)=>{
-                        alert(error);
                     })
-                    return;
-                    this.uploadVideo(images[0], (data) => {
-                        callBack(data);
-                    });
                 }else {
                     this.upload(images.map((item) => {
                         let path = item.path;

@@ -9,7 +9,6 @@ import {
     MRText as Text
 } from '../../components/ui';
 import ShowUtils from './utils/ShowUtils';
-import ShowImageItemView from './ShowImageItemView';
 
 const maxHeight = ScreenUtils.height * 0.72;
 const minHeight = ScreenUtils.height * 0.36;
@@ -78,8 +77,6 @@ export default class ShowImageView extends Component {
                     height: this.imageHeight
                 }} source={{ uri: item }} resizeMode='contain'/>
             </View>
-
-            <ShowImageItemView needLoad={this.index === index} item={item} width={width} imageHeight={this.imageHeight}/>
         </TouchableWithoutFeedback>;
     }
 
