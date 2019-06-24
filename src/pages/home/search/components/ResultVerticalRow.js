@@ -12,11 +12,12 @@ import {
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
+import productRes from '../../../product/res/product';
 import { MRText as Text } from '../../../../components/ui';
 import UIImage from '@mr/image-placeholder';
 
 const gwc = res.search.gwc;
-
+const { saleSmall_1001 } = productRes.pSacle;
 
 export default class ResultVerticalRow extends Component {
 
@@ -34,14 +35,17 @@ export default class ResultVerticalRow extends Component {
 
     render() {
         const { isActivity } = this.props;
-        let { minPrice, promotionMinPrice, imgUrl, name } = this.props.itemData || {};
+        let { minPrice, promotionMinPrice, imgUrl, name, monthSaleCount } = this.props.itemData || {};
         return (
             <TouchableWithoutFeedback onPress={() => {
                 this.props.onPressAtIndex(this.props.itemData || {});
             }}>
                 <View style={{ backgroundColor: 'white' }}>
                     <View style={[styles.container]}>
-                        <ReuserImage style={styles.img} source={{ uri: imgUrl || '' }} borderRadius={5}/>
+                        <ReuserImage style={styles.img} source={{ uri: imgUrl || '' }} borderRadius={5}>
+                            {monthSaleCount >= 1000 &&
+                            <Image source={saleSmall_1001} style={{ width: 50, height: 18, marginTop: 5 }}/>}
+                        </ReuserImage>
                         <View style={styles.textContentView}>
                             <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: 13 }}
                                   numberOfLines={2} allowFontScaling={false}>{`${name || ''}`}</Text>

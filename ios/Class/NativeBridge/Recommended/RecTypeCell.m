@@ -162,7 +162,7 @@
   //分享/转发
   [_shareBtn addTarget:self action:@selector(tapShareBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.shareBtn.sd_layout.centerYEqualToView(self.zanBtn)
-  .rightSpaceToView(bgView,15)
+  .rightSpaceToView(bgView,10)
   .widthIs(70).heightIs(30);
 
   [bgView setupAutoHeightWithBottomView:self.shareBtn bottomMargin:5];

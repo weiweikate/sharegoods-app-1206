@@ -74,7 +74,7 @@ export default class OldPayPwdPage extends BasePage {
             }).then((response) => {
                 // 修改成功
                 bridge.$toast('修改成功');
-                this.$navigateBack(-2);
+                this.$navigateBack(2);
             }).catch((data) => {
                 this.paw && this.paw.changeRedBorderColor();
                 this.setState({ msg: data.msg });

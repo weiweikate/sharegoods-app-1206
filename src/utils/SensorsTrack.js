@@ -32,7 +32,7 @@ const productTrack = {
     CategorySearchBannerClick:'CategorySearchBannerClick',//类目搜索banner广告位
     ProductListClick:'ProductListClick',//搜索页-商品列表页点击
     Search:'Search',//搜索
-    ProductDetail:'ProductDetail',//浏览商品详情页,
+    ProductDetail:'productDetail',//浏览商品详情页,
     AddToShoppingcart:'AddToShoppingcart',//加入购物车
     Share:'Share',//分享商品
     SpikeTimeClick:'FlashSaleTimeRangeClick',// 限时购tab

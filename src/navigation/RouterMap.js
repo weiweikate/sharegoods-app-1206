@@ -25,6 +25,25 @@ const RouterMap = {
     ...PageKey
 };
 
+function hasRoute(routeName) {
+    let $routes = global.$routes || [];
+    for (let i = 0, len = $routes.length; i < len - 1; i++) {
+        if (routeName === $routes[i].routeName) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// 出栈到指定页面，不存在则回退到上一步
+function popToRouteName(routeName) {
+    if (hasRoute(routeName)) {
+        routeNavigate(routeName);
+    } else {
+        routePop();
+    }
+}
+
 // 跳转到某个页面，如果页面存在，不会重新创建,适用于静态页面，例如login
 function routeNavigate(routeName, params) {
     if (StringUtils.isEmpty(routeName)) {
@@ -118,33 +137,20 @@ function GoToTabItem(index) {
     global.$navigator && global.$navigator._navigation.navigate(['HomePage', 'ShowListPage', 'MyShop_RecruitPage', 'ShopCartPage', 'MinePage'][index]);
 }
 
-// 页面路由回退
-function navigateBack(step) {
+// 登录页的回退逻辑，要么回退到上一步，要么回到栈顶
+function loginBack() {
     let $routes = global.$routes || [];
-    let routerKey = null;
-    if (typeof step === 'number' && $routes.length + step > 0) {
-        let router = $routes[$routes.length + step];
-        routerKey = router.key;
-    } else if (typeof step === 'string') {
-        for (let i = 0; i < $routes.length - 1; i++) {
-            if (step === $routes[i].routeName) {
-                routerKey = $routes[i + 1].key;
-                break;
-            }
-        }
-    }
-    if (!StringUtils.isEmpty(routerKey) && $routes.length > 1) {
-        let router = $routes[$routes.length - 1];
-        routerKey = router.key;
-    }
-    let backAction = NavigationActions.back();
+    let router = $routes[$routes.length - 1];
+    let routerKey = router.key;
     if (!StringUtils.isEmpty(routerKey)) {
-        backAction = NavigationActions.back({ key: routerKey });//routerKey代表从哪个返回
+        const backAction = NavigationActions.back({ key: routerKey });//routerKey代表从哪个返回
+        global.$navigator && global.$navigator.dispatch(backAction);
+    } else {
+        global.$navigator && global.$navigator._navigation.popToTop();
     }
-    global.$navigator && global.$navigator.dispatch(backAction);
 }
 
-// 通过设置参数n，指定返回多少层
+// 通过设置参数n,正数，指定返回多少层
 function routePop(n) {
     if (!n) {
         n = 1;
@@ -157,7 +163,6 @@ function routePop(n) {
 
 export default RouterMap;
 export {
-    navigateBack,
     backToHome,
     backToShow,
     navigateBackToStore,
@@ -166,7 +171,9 @@ export {
     replaceRoute,
     routePush,
     routeNavigate,
-    routePop
+    routePop,
+    loginBack,
+    popToRouteName
 };
 
 

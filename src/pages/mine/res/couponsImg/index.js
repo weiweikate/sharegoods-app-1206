@@ -1,5 +1,4 @@
 const couponsImg = {
-    coupons_no_data: require('./kong_icon_gouwuche_nor.png'),
     youhuiquan_bg_unUseBg: require('./youhuiquan_bgwhite_nor.png'),
     youhuiquan_bg_usedBg: require('./youhuiquan_used.png'),
     youhuiquan_bg_drop: require('./youhuiquan_dropDown.png'),

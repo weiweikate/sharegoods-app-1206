@@ -64,7 +64,6 @@ import com.meeruu.sharegoods.ui.activity.MRWebviewActivity;
 import com.meeruu.statusbar.ImmersionBar;
 import com.meituan.android.walle.WalleChannelReader;
 import com.qiyukf.unicorn.api.Unicorn;
-import com.reactnative.ivpusic.imagepicker.cameralibrary.util.UriUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -615,7 +614,7 @@ public class CommModule extends ReactContextBaseJavaModule {
             final LocalMediaConfig config = buidler
                     .setVideoPath(file.getAbsolutePath())
                     .captureThumbnailsTime(1)
-                    .doH264Compress(new VBRMode(58000,1421))
+                    .doH264Compress(new VBRMode(58000,3000))
                     .setFramerate(30)
                     .setScale(1.0f)
                     .build();

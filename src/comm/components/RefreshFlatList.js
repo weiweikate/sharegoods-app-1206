@@ -106,7 +106,6 @@ export default class RefreshFlatList extends React.Component {
             return (
                 <View style={{ height: this.state.height - 40, alignItems: 'center', justifyContent: 'center' }}>
                     <Image source={this.props.defaultEmptyImage}
-                           style={{ width: 110, height: 110 }}
                            resizeMode={'contain'}/>
                     <Text style={{
                         marginTop: 10,

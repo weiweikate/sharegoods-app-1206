@@ -148,7 +148,7 @@ export default class SetNewPhoneNumPage extends BasePage {
                 this.isLoadding = false;
                 user.changePhone(tel);
                 bridge.$toast('绑定成功');
-                this.$navigateBack(-2);
+                this.$navigateBack(2);
             }).catch((data) => {
                 this.isLoadding = false;
                 bridge.$toast(data.msg);
