@@ -153,15 +153,6 @@ export default class ReleaseNotesPage extends BasePage {
             return;
         }
         let num = 8 - imageArr.length;
-        // BusinessUtils.getImagePicker(callback => {
-        //     if (callback.type === 'video') {
-        //         this.setState({ videoData: callback });
-        //     } else {
-        //         let result = imageArr.concat(callback.images);
-        //         this.setState({ imageArr: result });
-        //     }
-        // }, num, true, true, true);
-
         PictureVideoUtils.selectPictureOrVideo(num,false,callback => {
             if (callback.type === 'video') {
                 this.setState({ videoData: callback });
