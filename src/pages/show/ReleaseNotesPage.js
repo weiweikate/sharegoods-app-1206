@@ -162,7 +162,7 @@ export default class ReleaseNotesPage extends BasePage {
         //     }
         // }, num, true, true, true);
 
-        PictureVideoUtils.selectPictureOrVideo(num,num === 8,callback => {
+        PictureVideoUtils.selectPictureOrVideo(num,false,callback => {
             if (callback.type === 'video') {
                 this.setState({ videoData: callback });
             } else {
