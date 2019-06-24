@@ -39,7 +39,7 @@ import SelectionPage from '../product/SelectionPage';
 import EmptyUtils from '../../utils/EmptyUtils';
 import NoMoreClick from '../../components/ui/NoMoreClick';
 import ProductListModal from './components/ProductListModal';
-import RouterMap, { navigateBack, routeNavigate, routePush } from '../../navigation/RouterMap';
+import RouterMap, { routePop, routeNavigate, routePush } from '../../navigation/RouterMap';
 import ShowApi from './ShowApi';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -174,7 +174,7 @@ export default class ShowRichTextDetailPage extends BasePage {
     };
 
     _goBack() {
-        navigateBack();
+        routePop();
     }
 
     _goToGoodsPage(good) {

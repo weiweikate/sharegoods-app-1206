@@ -1,5 +1,5 @@
 import { NavigationActions, createStackNavigator, createAppContainer } from 'react-navigation';
-import { Platform, NativeModules } from 'react-native';
+import { Platform, NativeModules, Animated, Easing } from 'react-native';
 /**
  * 以下两个对象不可以颠倒引入，会导致全局路由RouterMap不可用
  */
@@ -10,31 +10,24 @@ import bridge from '../utils/bridge';
 import showPinFlagModel from '../model/ShowPinFlag';
 import StackViewStyleInterpolator from 'react-navigation-stack/src/views/StackView/StackViewStyleInterpolator';
 
-let IOS_NaviConfig = {
-    initialRouteName: 'Tab',
-    initialRouteParams: {},
-    headerMode: 'none',
-    mode: 'card',
-    navigationOptions: {
-        gesturesEnabled: true
-    }
-};
-let Andorid_NaviConfig = {
-    initialRouteName: 'Tab',
-    initialRouteParams: {},
-    headerMode: 'none',
-    navigationOptions: {
-        gesturesEnabled: true
-    },
-    transitionConfig: () => {
-        return ({
-            screenInterpolator: StackViewStyleInterpolator.forHorizontal
-        });
-    }
-};
-
 const RootStack = createStackNavigator(Router,
-    Platform.OS === 'ios' ? IOS_NaviConfig : Andorid_NaviConfig
+    {
+        initialRouteName: 'Tab',
+        initialRouteParams: {},
+        headerMode: 'none',
+        navigationOptions: {
+            gesturesEnabled: true
+        },
+        transitionConfig: () => ({
+            transitionSpec: {
+                duration: 260,
+                easing: Easing.out(Easing.poly(3.6)),
+                timing: Animated.timing,
+                useNativeDriver: true
+            },
+            screenInterpolator: StackViewStyleInterpolator.forHorizontal
+        })
+    }
 );
 
 // goBack 返回指定的router

@@ -31,13 +31,13 @@ export default class LoadingView extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            rotateValue: new Animated.Value(0)
-        };
     }
 
     componentDidMount() {
-        if(!this.props.source){
+        if (!this.props.source) {
+            this.state = {
+                rotateValue: new Animated.Value(0)
+            };
             this.startLoading();
         }
     }
@@ -48,9 +48,15 @@ export default class LoadingView extends Component {
         if (source) {
             return (<UIImage style={imgStyle} source={source}/>);
         } else {
-            return(
-                <View style={{overflow: 'hidden', borderRadius:5}}>
-                    <MRLoadingView style={{width:70,height:70,backgroundColor:'rgba(0,0,0,0.6)',justifyContent:'center',alignItems:'center'}} />
+            return (
+                <View style={{ overflow: 'hidden', borderRadius: 5 }}>
+                    <MRLoadingView style={{
+                        width: 70,
+                        height: 70,
+                        backgroundColor: 'rgba(0,0,0,0.6)',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}/>
                 </View>);
         }
     };
@@ -72,8 +78,8 @@ export default class LoadingView extends Component {
             source,
             imgStyle
         } = this.props;
-        return (<View style={[styles.container,style]}>
-            {this._renderLoading(source,imgStyle)}
+        return (<View style={[styles.container, style]}>
+            {this._renderLoading(source, imgStyle)}
         </View>);
     }
 }

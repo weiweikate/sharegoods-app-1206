@@ -113,7 +113,7 @@ export default class Login extends BasePage {
             this.$navigate(RouterMap.InputPhoneNum,
                 {
                     campaignType: this.state.campaignType,
-                    spm:this.state.spm
+                    spm: this.state.spm
 
                 });
         } else {
@@ -127,7 +127,7 @@ export default class Login extends BasePage {
     _wxLogin = () => {
         wxLoginAction((code, data) => {
             if (code === 10000) {
-                this.$navigateBack(-1);
+                this.$navigateBack();
                 this.params.callback && this.params.callback();
             } else if (code === 34005) {
                 //绑定手机号

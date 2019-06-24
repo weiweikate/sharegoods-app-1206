@@ -22,6 +22,7 @@ import { observer } from 'mobx-react';
 import res from '../../home/res';
 import { activity_type, activity_status } from '../ProductDetailModel';
 import bridge from '../../../utils/bridge';
+import { getSource } from '@mr/image-placeholder/oos';
 
 const { isNoEmpty } = StringUtils;
 const { arrow_right_black } = RES.button;
@@ -485,7 +486,8 @@ export class ContentItemView extends Component {
         return <TouchableWithoutFeedback onPress={() => {
             routeNavigate(RouterMap.CheckBigImagesView, { imageUrls: [item] });
         }}>
-            <Image source={{ uri: item }} style={{ width, height }}/>
+            <Image source={getSource({ uri: item }, ScreenUtils.width, height, 'lfit')}
+                   style={{ width, height }}/>
         </TouchableWithoutFeedback>;
     }
 }

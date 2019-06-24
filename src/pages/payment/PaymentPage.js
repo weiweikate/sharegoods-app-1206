@@ -56,8 +56,6 @@ export default class PaymentPage extends BasePage {
     };
 
     goToPay = () => {
-        this.$navigate(RouterMap.PaymentFinshPage);
-        return;
         const { bizType, modeType, platformOrderNo, amounts, oneCoupon } = payment;
         payment.checkOrderStatus(platformOrderNo, bizType, modeType, amounts).then(result => {
             if (result.code === payStatus.payNo) {
