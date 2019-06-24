@@ -12,6 +12,8 @@ import SubSwichView from './SubSwichView';
 // import ImageLoad from '@mr/image-placeholder'
 import DesignRule from '../../../constants/DesignRule';
 import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
+import { getSource } from '@mr/image-placeholder/oos';
+
 // import StringUtils from "../../../utils/StringUtils";
 
 class SbSectiontHeaderView extends Component {
@@ -57,17 +59,18 @@ class ActivityOneView extends Component {
         imageUrl: PropTypes.string.isRequired,
         ratio: PropTypes.number
     };
-    constructor(props){
-        super(props)
-        this.state = {
-            ratio:1
-        }
 
-        Image.getSize(this.props.imageUrl,(width,heigth)=>{
+    constructor(props) {
+        super(props);
+        this.state = {
+            ratio: 1
+        };
+
+        Image.getSize(this.props.imageUrl, (width, heigth) => {
             this.setState({
-                ratio:heigth / width
-            })
-        })
+                ratio: heigth / width
+            });
+        });
     }
 
     render() {
@@ -79,9 +82,9 @@ class ActivityOneView extends Component {
                     imageUri={imageUrl}
                     style={[
                         ActivityOneViewStyles.bgImageStyle,
-                            {
-                                height: ScreenUtils.width * this.state.ratio
-                            }
+                        {
+                            height: ScreenUtils.width * this.state.ratio
+                        }
                     ]}
                     // resizeMode={'stretch'}
                 />
@@ -95,8 +98,8 @@ const ActivityOneViewStyles = StyleSheet.create({
         // height: ScreenUtils.width * 16 / 75,
         width: ScreenUtils.width,
         backgroundColor: 'white',
-        marginLeft:-10,
-        marginTop:10,
+        marginLeft: -10,
+        marginTop: 10
     }
 });
 
@@ -106,35 +109,39 @@ class TopBannerView extends Component {
         imageUrl: PropTypes.string.isRequired,
         ratio: PropTypes.number
     };
-    constructor(props){
-        super(props)
+
+    constructor(props) {
+        super(props);
         this.state = {
-            ratio:0.5
-        }
+            ratio: 0.5
+        };
     }
 
     //当接收到新的props时候，而且imageUrl存在再去调用计算
     componentWillReceiveProps(props) {
         if ((props.imageUrl + '').indexOf('http') !== -1) {
-            Image.getSize(props.imageUrl,(width,heigth)=>{
+            Image.getSize(props.imageUrl, (width, heigth) => {
                 this.setState({
-                    ratio:heigth / width
-                })
-            })
+                    ratio: heigth / width
+                });
+            });
         }
     }
+
     render() {
         const { imageUrl } = this.props;
-        console.log(this.props);
-
+        const height = ScreenUtils.width * this.state.ratio;
+        if (height === 0) {
+            return null;
+        }
         return (
             <View>
                 <PreLoadImage
-                    imageUri={imageUrl}
+                    imageUri={getSource({ uri: imageUrl }, ScreenUtils.width, height, 'lfit').uri}
                     style={[
                         TopBannerViewStyle.bgImageStyle,
                         {
-                            height: ScreenUtils.width * this.state.ratio
+                            height: height
                         }
                     ]}
                 />
@@ -145,11 +152,11 @@ class TopBannerView extends Component {
 
 const TopBannerViewStyle = StyleSheet.create({
     bgImageStyle: {
-        width: ScreenUtils.width,
+        width: ScreenUtils.width
         // backgroundColor: 'white',
     }
 });
 
-export { SbSectiontHeaderView, ActivityOneView, TopBannerView};
+export { SbSectiontHeaderView, ActivityOneView, TopBannerView };
 
 

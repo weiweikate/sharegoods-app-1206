@@ -24,15 +24,19 @@ import res from './comm/res';
 import bridge from './utils/bridge';
 import DesignRule from './constants/DesignRule';
 import Toast from './utils/bridge';
-import RouterMap, { GoToTabItem, navigateBack, replaceRoute, routeNavigate, routePush } from './navigation/RouterMap';
+import RouterMap, {
+    GoToTabItem,
+    replaceRoute,
+    routeNavigate,
+    routePop,
+    routePush
+} from './navigation/RouterMap';
 
 export default class BasePage extends Component {
     constructor(props) {
         super(props);
         this.params = this.props.navigation.state.params || {};
         this.viewDidLoad = netState.isConnected;
-        // alert(this.viewDidLoad)
-        this.navigateTime = new Date().getTime();
     }
 
     $navigationBarOptions = {
@@ -167,26 +171,28 @@ export default class BasePage extends Component {
             console.warn('$NavigationBarDefaultLeftPressed error ' + error.toString());
         }
     };
+
     // 默认点击右侧事件
     $NavigationBarDefaultRightPressed = () => {
         console.warn('mark sure you had set $NavigationBarDefaultRightPressed func');
     };
+
     // 隐藏左边item
     $NavigationBarHiddenLeftItem = (hidden, callBack) => {
-
         if (!this.$navigatorBar) {
             return;
         }
         this.$navigatorBar.hiddenLeftItem(hidden, callBack);
     };
+
     // 隐藏右边item
     $NavigationBarHiddenRightItem = (hidden, callBack) => {
-
         if (!this.$navigatorBar) {
             return;
         }
         this.$navigatorBar.hiddenRightItem(hidden, callBack);
     };
+
     //更换右边title
     $NavigationBarResetRightTitle = (newTitle, callBack) => {
         if (!this.$navigatorBar) {
@@ -194,9 +200,9 @@ export default class BasePage extends Component {
         }
         this.$navigatorBar.changeRightTitle(newTitle, callBack);
     };
+
     // 更换title
     $NavigationBarResetTitle = (newTitle, callBack) => {
-
         if (!this.$navigatorBar) {
             return;
         }
@@ -231,7 +237,7 @@ export default class BasePage extends Component {
 
     // 返回
     $navigateBack = (step) => {
-        navigateBack(step);
+        routePop(step);
     };
 
     // 路由替换

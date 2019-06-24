@@ -131,7 +131,7 @@ export default class LoginPage extends BasePage {
         wxLoginAction((code, data) => {
             if (code === 10000) {
                 this.params.callback && this.params.callBack();
-                this.$navigateBack(-2);
+                this.$navigateBack(2);
             } else if (code === 34005) {
                 this.$navigate(RouterMap.InputPhoneNum, data);
             }
@@ -157,7 +157,7 @@ export default class LoginPage extends BasePage {
                         this.$navigate(RouterMap.InviteCodePage);
                         // TrackApi.phoneSignUpSuccess({ 'signUpPhone': phoneNum });
                     } else {
-                        this.$navigateBack(-2);
+                        this.$navigateBack(2);
                     }
                 } else {
                     this.$loadingDismiss();
@@ -171,7 +171,7 @@ export default class LoginPage extends BasePage {
                     this.$toastShow('登录成功');
                     this.params.callback && this.params.callback();
                     this.$loadingDismiss();
-                    this.$navigateBack(-2);
+                    this.$navigateBack(2);
                 } else {
                     this.$loadingDismiss();
                     // this.$toastShow(data.msg);

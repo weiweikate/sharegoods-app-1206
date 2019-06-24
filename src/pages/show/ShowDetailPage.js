@@ -42,7 +42,7 @@ import AddCartModel from './model/AddCartModel';
 import { sourceType } from '../product/SelectionPage';
 import shopCartCacheTool from '../shopCart/model/ShopCartCacheTool';
 import SelectionPage from '../product/SelectionPage';
-import RouterMap, { navigateBack, routeNavigate } from '../../navigation/RouterMap';
+import RouterMap, { routePop, routeNavigate } from '../../navigation/RouterMap';
 import DownloadUtils from './utils/DownloadUtils';
 import ShowVideoView from './components/ShowVideoView';
 
@@ -146,7 +146,7 @@ export default class ShowDetailPage extends BasePage {
     getDetailTagWithCode = (code) => {
         ShowApi.getTagWithCode({ showNo: code }).then((data) => {
             if (data) {
-                this.setState({ tags: data.data });
+                this.setState({ tags: data.data || [] });
             }
         }).catch((error) => {
 
@@ -210,7 +210,7 @@ export default class ShowDetailPage extends BasePage {
 
 
     _goBack() {
-        navigateBack();
+        routePop();
     }
 
     _goToGoodsPage(good) {

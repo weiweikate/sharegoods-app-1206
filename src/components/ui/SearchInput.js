@@ -16,6 +16,7 @@ import UIImage from '../../components/ui/UIImage';
 import left_arrow from '../../comm/res/button/icon_header_back.png';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
+import { routePop } from '../../navigation/RouterMap';
 
 /**
  * 搜索输入框组件
@@ -109,7 +110,7 @@ class SearchInput extends Component {
         }
     };
     buttonNavigateBack = () => {
-        this.navigateBack();
+        routePop();
     };
     finish = () => {
         //把子组件的点击事件传递给父组件，由父组件来finish掉整个页面

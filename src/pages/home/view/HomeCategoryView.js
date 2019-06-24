@@ -3,11 +3,8 @@ import { View, StyleSheet, TouchableWithoutFeedback, Text, ScrollView } from 're
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { observer } from 'mobx-react';
 import { categoryModule } from '../model/HomeCategoryModel';
-// import DesignRule from '../../../constants/DesignRule';
 import bridge from '../../../utils/bridge';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
-// import { homeModule } from '../model/Modules';
-// import { homePoint } from '../HomeTypes';
 
 const { px2dp } = ScreenUtils;
 

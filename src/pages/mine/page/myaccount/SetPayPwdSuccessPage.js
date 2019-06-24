@@ -49,11 +49,11 @@ export default class SetPayPwdSuccessPage extends BasePage {
     }
 
     $NavigationBarDefaultLeftPressed = (callBack) => {
-        this.$navigateBack(-4);
+        this.$navigateBack(4);
     };
 
     onPress = () => {
-        this.$navigateBack(-4);
+        this.$navigateBack(4);
     }
     _render() {
         const {bgViewStyle, imageStyle, titleStyle, tipStyle} = styles;

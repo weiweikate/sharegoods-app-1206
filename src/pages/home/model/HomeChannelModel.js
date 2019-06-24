@@ -20,7 +20,7 @@ class ChannelModules {
             const res = yield HomeApi.getHomeData({ type: homeType.channel });
             this.channelList = res.data || [];
             homeModule.changeHomeList(homeType.channel);
-            store.save(kHomeChannelStore, res.data);
+            store.save(kHomeChannelStore, this.channelList);
         } catch (error) {
             console.log(error);
         }

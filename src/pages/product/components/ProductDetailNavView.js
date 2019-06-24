@@ -3,7 +3,7 @@ import { View, StyleSheet, Image } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import res from '../res/product';
-import RouterMap, { navigateBack, routePush } from '../../../navigation/RouterMap';
+import RouterMap, { routePop, routePush } from '../../../navigation/RouterMap';
 import { MRText } from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
 import { observer } from 'mobx-react';
@@ -26,7 +26,7 @@ export default class ProductDetailNavView extends Component {
                 <View style={styles.containerView}>
                     <View style={[styles.barItemContainer, { justifyContent: 'flex-start' }]}>
                         <NoMoreClick style={styles.btnContainer} onPress={() => {
-                            navigateBack();
+                            routePop();
                         }}>
                             <Image source={back}/>
                         </NoMoreClick>
