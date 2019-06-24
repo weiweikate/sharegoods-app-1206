@@ -29,6 +29,7 @@
 @property (nonatomic,assign) NSInteger likesCount;
 @property (nonatomic,assign) NSInteger shareCount;
 @property (nonatomic,assign) NSInteger hotCount;
+@property (nonatomic,assign) NSInteger createSource;
 @property (nonatomic,copy) NSString * showNo;
 @property (nonatomic,strong)NSArray<GoodsDataModel*> * products;
 @property (nonatomic,strong)NSArray<SourcesModel*> * resource;

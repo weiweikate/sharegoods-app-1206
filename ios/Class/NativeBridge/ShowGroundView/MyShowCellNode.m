@@ -23,7 +23,7 @@
   if (self = [super init]) {
     _model = model;
     _index = index;
-    if (index%2) {
+    if (model.status==3||model.status==4) {
       [self setMask];
     }
     [self addSubnode:self.imageNode];
@@ -109,9 +109,21 @@
 {
   if (!_statusNode) {
     _statusNode = [ASTextNode new];
-    _statusNode.attributedText = [[NSAttributedString alloc]initWithString:@"审核中" attributes:@{
+    NSString * statusStr = @"";
+    NSString * color = @"";
+    if(self.model.status==1){
+      statusStr = @"已发布";
+      color = @"#FF0050";
+    }else if (self.model.status==2){
+      statusStr = @"审核中";
+      color = @"#3187FF";
+    }else if (self.model.status==3){
+      statusStr = @"已屏蔽";
+      color = @"#999999";
+    }
+    _statusNode.attributedText = [[NSAttributedString alloc]initWithString:statusStr attributes:@{
                                                                                                       NSFontAttributeName: [UIFont systemFontOfSize:12],
-                                                                                                      NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#3187FF"]
+                                                                                                      NSForegroundColorAttributeName: [UIColor colorWithHexString:color]
                                                                                                       }];
   }
   return _statusNode;
@@ -121,7 +133,7 @@
 {
   if (!_deleteBtnNode) {
     _deleteBtnNode = [ASButtonNode new];
-    [_deleteBtnNode setImage:[UIImage imageNamed:@"download"] forState:0];
+    [_deleteBtnNode setImage:[UIImage imageNamed:@"icon_delete"] forState:0];
     [_deleteBtnNode addTarget:self action:@selector(deletBtnTap) forControlEvents:ASControlNodeEventTouchUpInside];
   }
   return _deleteBtnNode;

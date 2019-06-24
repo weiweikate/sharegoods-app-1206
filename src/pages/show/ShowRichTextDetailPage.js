@@ -154,19 +154,23 @@ export default class ShowRichTextDetailPage extends BasePage {
             <View style={{ flexDirection: 'row', marginTop: px2dp(10) }}>
                 {this.state.tags && this.state.tags.map((item, index) => {
                     return (
-                        <View key={`tag${index}`} style={{
-                            height: px2dp(24),
-                            marginLeft: px2dp(15),
-                            paddingHorizontal: px2dp(8),
-                            borderRadius: px2dp(12),
-                            backgroundColor: '#fee2e8',
-                            alignItems: 'center',
-                            flexDirection: 'row'
+                        <TouchableWithoutFeedback onPress={() => {
+                            this.$navigate(RouterMap.TagDetailPage, item);
                         }}>
-                            <Text style={{ color: DesignRule.mainColor, fontSize: DesignRule.fontSize_24 }}>
-                                #{item.name}
-                            </Text>
-                        </View>
+                            <View key={`tag${index}`} style={{
+                                height: px2dp(24),
+                                marginLeft: px2dp(15),
+                                paddingHorizontal: px2dp(8),
+                                borderRadius: px2dp(12),
+                                backgroundColor: '#fee2e8',
+                                alignItems: 'center',
+                                flexDirection: 'row'
+                            }}>
+                                <Text style={{ color: DesignRule.mainColor, fontSize: DesignRule.fontSize_24 }}>
+                                    #{item.name}
+                                </Text>
+                            </View>
+                        </TouchableWithoutFeedback>
                     );
                 })}
             </View>
@@ -249,17 +253,15 @@ export default class ShowRichTextDetailPage extends BasePage {
                         <Text style={styles.showName}
                               allowFontScaling={false}>{userName}</Text>
                     </View>
-
                 </View>
-
-                <TouchableOpacity style={styles.shareView} onPress={() => {
+                {detail.status === 1 ? <TouchableOpacity style={styles.shareView} onPress={() => {
                     this._goToShare();
                 }}>
                     <Image source={iconShowShare}/>
-                </TouchableOpacity>
+                </TouchableOpacity> : null}
+
             </View>
         );
-
     }
 
     _shieldRender = () => {

@@ -121,8 +121,17 @@ public class NewestShowGroundBean {
         private List<ProductsBean> products;
         private List<ResourceBean> resource;
         private List<ImageInfo> nineImageInfos;
+        private ImageInfo videoCover;
         private boolean owner;
         private int createSource;
+
+        public ImageInfo getVideoCover() {
+            return videoCover;
+        }
+
+        public void setVideoCover(ImageInfo videoCover) {
+            this.videoCover = videoCover;
+        }
 
         public int getCreateSource() {
             return createSource;

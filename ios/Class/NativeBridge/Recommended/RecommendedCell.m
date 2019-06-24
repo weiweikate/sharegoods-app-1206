@@ -20,10 +20,20 @@
 @property (nonatomic,strong)JXFooterView* footerView;
 @property (nonatomic,strong) UILabel * contentLab;
 @property (nonatomic, strong) UILabel *foldLabel;       // 展开按钮
+@property (nonatomic,strong) UIImageView * jingpin;
 
 @end
 
 @implementation RecommendedCell
+
+-(UIImageView*)jingpin{
+  if(!_jingpin){
+    _jingpin = [[UIImageView alloc] init];
+    _jingpin.image = [UIImage imageNamed:@"icon_recommend"];
+    _jingpin.layer.masksToBounds = YES;
+  }
+  return _jingpin;
+}
 
 -(UILabel *)contentLab{
     if(!_contentLab){
@@ -84,7 +94,7 @@
         [weakSelf.cellDelegate clickGood:goods];
       }
     };
-    
+
     _footerView.zanBlock =  ^(NSString* a){
       NSLog(@"zanClick");
       if (weakSelf.cellDelegate) {
@@ -146,23 +156,24 @@
   [bgView addSubview:self.footerView];
   [bgView addSubview:self.contentLab];
   [bgView addSubview:self.foldLabel];
+  [bgView addSubview:self.jingpin];
 
-    bgView.sd_layout
+  bgView.sd_layout
     .leftSpaceToView(self.contentView, 0)
     .rightSpaceToView(self.contentView, 0)
     .topSpaceToView(self.contentView, 5)
-    .heightIs(200);
+    .autoHeightRatio(0);
   
   self.headView.sd_layout
   .topSpaceToView(bgView, 9)
-  .leftSpaceToView(bgView, 10)
+  .leftSpaceToView(bgView, 0)
   .rightSpaceToView(bgView, 5)
   .heightIs(34);
 
     //内容
   self.contentLab.sd_layout.topSpaceToView(self.headView, 8)
-  .leftSpaceToView(bgView, 10)
-  .rightSpaceToView(bgView, 30)
+  .leftSpaceToView(bgView, 15)
+  .rightSpaceToView(bgView, 15)
   .autoHeightRatio(0);
 
   self.foldLabel.sd_layout.topSpaceToView(self.contentLab, 5)
@@ -170,6 +181,7 @@
   .widthIs(40)
   .heightIs(20);
 
+  //九宫格图片
   self.bodyView.sd_layout
   .topSpaceToView(self.foldLabel, 5)
   .leftSpaceToView(bgView, 10);
@@ -177,8 +189,12 @@
     //
   self.footerView.sd_layout
   .topSpaceToView(self.bodyView, 10)
-  .leftSpaceToView(bgView, 0)
+  .leftSpaceToView(bgView, 10)
   .rightSpaceToView(bgView, 15);
+
+  self.jingpin.sd_layout.topSpaceToView(self.headView, 0)
+  .rightSpaceToView(bgView, 15)
+  .widthIs(50).heightIs(50);
 
   [bgView setupAutoHeightWithBottomView:self.footerView bottomMargin:5];
   [self setupAutoHeightWithBottomView:bgView bottomMargin:5];
@@ -189,9 +205,20 @@
   self.headView.UserInfoModel = model.userInfoVO;
   self.headView.time = model.publishTimeStr;
   self.bodyView.sources = model.resource;
-  
+  if(model.showType==3){
+    self.bodyView.imageType = YES;
+  }else{
+    self.bodyView.imageType = NO;
+  }
+  if(self.type&&(model.createSource&&model.createSource==2)){
+    self.headView.type = NO;
+    self.jingpin.hidden = NO;
+  }else{
+    self.headView.type = YES;
+    self.jingpin.hidden = YES;
+  }
     NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:model.title attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13.0], NSForegroundColorAttributeName:[UIColor colorWithRed:102/255.0 green:102/255.0 blue:102/255.0 alpha:1.0]}];
-    NSArray *array = [self getSeparatedLinesFromLabel:model.title font:[UIFont systemFontOfSize:13] andLableWidth:SCREEN_WIDTH-105];
+    NSArray *array = [self getSeparatedLinesFromLabel:model.title font:[UIFont systemFontOfSize:13] andLableWidth:SCREEN_WIDTH-60];
   //组合需要显示的文本
   if(array.count>3){
     NSString *line3String = array[2];
@@ -207,7 +234,7 @@
   }else{
       self.contentLab.attributedText = title;
   }
-  
+
     self.footerView.products = model.products;
     self.footerView.downloadCount = model.downloadCount;
     self.footerView.likesCount = model.hotCount;
@@ -278,7 +305,7 @@
     CFAttributedStringSetAttribute((CFMutableAttributedStringRef)attStr, lineRange, kCTKernAttributeName, (CFTypeRef)([NSNumber numberWithInt:0.0]));
     [linesArray addObject:lineString];
   }
-  
+
   CGPathRelease(path);
   CFRelease( frame );
   CFRelease(frameSetter);

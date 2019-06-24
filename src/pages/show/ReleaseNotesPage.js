@@ -10,14 +10,13 @@ import {
     Image,
     TouchableWithoutFeedback,
     Keyboard,
-    TextInput, DeviceEventEmitter
+    TextInput
 } from 'react-native';
 import BasePage from '../../BasePage';
 import { MRText } from '../../components/ui';
 import DesignRule from '../../constants/DesignRule';
 import ScreenUtils from '../../utils/ScreenUtils';
 import res from './res';
-import BusinessUtils from '../mine/components/BusinessUtils';
 import ImageLoad from '@mr/image-placeholder';
 import NoMoreClick from '../../components/ui/NoMoreClick';
 import UIImage from '../../components/ui/UIImage';
@@ -26,6 +25,7 @@ import EmptyUtils from '../../utils/EmptyUtils';
 import ShowApi from './ShowApi';
 import RouterMap from '../../navigation/RouterMap';
 import TagView from './components/TagView';
+import PictureVideoUtils from './utils/PictureVideoUtils';
 
 const { addIcon, delIcon, iconShowDown, iconShowEmoji, addShowIcon, showTagIcon } = res;
 const { arrow_right_black } = res.button;
@@ -98,7 +98,6 @@ export default class ReleaseNotesPage extends BasePage {
         }
         let content = this.state.text || '';
         let products = this.state.products || [];
-        let tags = this.state.tags || [];
         let images = this.state.imageArr;
         let urls, video = null;
         if (this.state.videoData) {
@@ -136,16 +135,13 @@ export default class ReleaseNotesPage extends BasePage {
             images: urls,
             products: productsPar,
             title: this.state.titleText,
-            tagList: tags.map((item) => {
+            tagList: this.state.tags.map((item) => {
                 return item.tagId;
             })
         };
         ShowApi.publishShow(params).then((data) => {
             this.props.navigation.popToTop();
-            this.props.navigation.navigate('ShowListPage');
-            if (data.data) {
-                DeviceEventEmitter.emit('PublishShowFinish', JSON.stringify(data.data));
-            }
+            this.props.navigation.navigate(RouterMap.MyDynamicPage);
         }).catch((error) => {
             this.$toastShow(error.msg || '网络错误');
         });
@@ -153,18 +149,27 @@ export default class ReleaseNotesPage extends BasePage {
 
     choosePicker = () => {
         let imageArr = this.state.imageArr;
-        if (imageArr.length >= 9) {
+        if (imageArr.length >= 8) {
             return;
         }
-        let num = 9 - imageArr.length;
-        BusinessUtils.getImagePicker(callback => {
+        let num = 8 - imageArr.length;
+        // BusinessUtils.getImagePicker(callback => {
+        //     if (callback.type === 'video') {
+        //         this.setState({ videoData: callback });
+        //     } else {
+        //         let result = imageArr.concat(callback.images);
+        //         this.setState({ imageArr: result });
+        //     }
+        // }, num, true, true, true);
+
+        PictureVideoUtils.selectPictureOrVideo(num,num === 8,callback => {
             if (callback.type === 'video') {
                 this.setState({ videoData: callback });
             } else {
                 let result = imageArr.concat(callback.images);
                 this.setState({ imageArr: result });
             }
-        }, num, true, true, true);
+        })
     };
 
     deletePic = (index) => {
@@ -225,7 +230,7 @@ export default class ReleaseNotesPage extends BasePage {
         }
 
         let imageArr = this.state.imageArr;
-        if (imageArr.length >= 9) {
+        if (imageArr.length >= 8) {
             return null;
         }
 
@@ -240,7 +245,7 @@ export default class ReleaseNotesPage extends BasePage {
     };
 
     _addProductButton = () => {
-        if (this.state.products.length >= 5) {
+        if (this.state.products.length >= 1) {
             return null;
         }
 
@@ -409,7 +414,7 @@ export default class ReleaseNotesPage extends BasePage {
 
         return (
             <TouchableWithoutFeedback onPress={() => {
-                this.$navigate(RouterMap.TagSelectorPage, { callback: this.refreshTags });
+                this.$navigate(RouterMap.TagSelectorPage, { callback: this.refreshTags ,tags:this.state.tags});
             }}>
                 <View style={styles.tagWrapper}>
                     {this.state.tags.map((item, index) => {
@@ -650,3 +655,4 @@ var styles = StyleSheet.create({
         marginLeft: px2dp(8)
     }
 });
+

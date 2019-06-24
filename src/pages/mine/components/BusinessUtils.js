@@ -11,7 +11,7 @@ const Utiles = {
      * callBack
      * @param callBack {ok: 是否上传成功，imageThumbUrl}
      */    //NativeModules.commModule.RN_ImageCompression(uri, response.fileSize, 1024 * 1024 * 3, () => {
-    getImagePicker: (callBack, num = 1, cropping = false, withSize = false,edit=false) => {
+    getImagePicker: (callBack, num = 1, cropping = false, withSize = false) => {
         let newCallback = (value) => {
             if (value && value.ok) {
                 let result = value.images.map((item) => {
@@ -29,7 +29,7 @@ const Utiles = {
                 (buttonIndex) => {
                     if (buttonIndex === 1) {
                         if (withSize) {
-                            Utiles.pickSingleWithCamera(cropping, callBack,edit);
+                            Utiles.pickSingleWithCamera(cropping, callBack);
                         } else {
                             Utiles.pickSingleWithCamera(cropping, newCallback);
                         }
@@ -60,8 +60,7 @@ const Utiles = {
                     {
                         text: '拍照', onPress: () => {
                             if (withSize) {
-                                // Utiles.pickSingleWithCamera(cropping, callBack,edit);
-                                Utiles.openCameraAndRecord(callBack,edit);
+                                Utiles.pickSingleWithCamera(cropping, callBack);
                             } else {
                                 Utiles.pickSingleWithCamera(cropping, newCallback);
                             }
@@ -71,14 +70,15 @@ const Utiles = {
                         text: '从相册选择', onPress: () => {
                             if (num > 1) {
                                 if (withSize) {
-                                    Utiles.pickMultiple(num, callBack,edit);
+                                    Utiles.pickMultiple(num, callBack);
 
                                 } else {
-                                    Utiles.pickMultiple(num, newCallback,edit);
+                                    Utiles.pickMultiple(num, newCallback);
                                 }
                             } else {
                                 if (withSize) {
                                     Utiles.pickSingle(cropping, false, callBack);
+
                                 } else {
                                     Utiles.pickSingle(cropping, false, newCallback);
 
@@ -92,12 +92,11 @@ const Utiles = {
             );
         }
     },
-    pickSingleWithCamera(cropping, callBack,edit) {
+    pickSingleWithCamera(cropping, callBack) {
         ImagePicker.openCamera({
             cropping: cropping,
             width: 600,
             height: 600,
-            edit,
             includeExif: true,
             cropperCancelText: '取消',
             cropperChooseText: '选取',
@@ -117,31 +116,12 @@ const Utiles = {
         }).catch(e => {
         });
     },
-
-    openCameraAndRecord(callBack,edit) {
-        ImagePicker.openCameraAndRecord({
-            width: 600,
-            height: 600,
-            edit,
-            includeExif: true,
-            cropperCancelText: '取消',
-            cropperChooseText: '选取',
-            loadingLabelText: '处理中...'
-        }).then(image => {
-            let param = {
-                path: image.path,
-                width: image.width,
-                height: image.height
-            };
-            Utiles.upload([param], [image.size + ''], callBack, true);
-        }).catch(e => {
-        });
-    },
     pickSingle(cropit, circular = false, callBack) {
         ImagePicker.openPicker({
             width: 300,
             height: 300,
             cropping: cropit,
+            mediaType: 'photo',
             cropperCircleOverlay: circular,
             compressImageMaxWidth: 640,
             compressImageMaxHeight: 480,
@@ -166,9 +146,8 @@ const Utiles = {
         });
     },
 
-    pickMultiple: (num, callBack,edit) => {
+    pickMultiple: (num, callBack) => {
         ImagePicker.openPicker({
-            edit,
             multiple: true,
             waitAnimationEnd: false,
             includeExif: true,
