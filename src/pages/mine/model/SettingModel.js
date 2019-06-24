@@ -7,6 +7,19 @@ import { observable, action } from 'mobx';
 import store from '@mr/rn-store';
 
 class SettingModel {
+
+    @observable
+    JSPushMessage = true;
+
+    @observable
+    userScore = 0;
+
+    @observable
+    availableBalance = 0;
+
+    @observable
+    coupons = 0;
+
     @observable
     WXChatState = true;
 
@@ -28,6 +41,33 @@ class SettingModel {
                 this.messageState = data.messageState;
             }
         });
+    }
+
+    @action
+    userScoreAdd(num){
+        if(num){
+            this.userScore = this.userScore + num;
+        }else {
+            this.userScore = 0;
+        }
+    }
+
+    @action
+    availableBalanceAdd(num){
+        if(num){
+            this.availableBalance = this.availableBalance + num;
+        }else {
+            this.availableBalance = 0;
+        }
+    }
+
+    @action
+    couponsAdd(num){
+        if(num){
+            this.coupons = this.coupons + num;
+        }else {
+            this.coupons = 0;
+        }
     }
 
     @action

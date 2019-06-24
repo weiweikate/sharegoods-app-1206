@@ -6,13 +6,13 @@ import {
     // RefreshControl,
     TouchableWithoutFeedback,
     DeviceEventEmitter, TouchableOpacity,
-    Image, BackHandler, Clipboard, NativeModules, NativeEventEmitter
+    Image, BackHandler, Clipboard
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import UIText from '../../../components/ui/UIText';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import {jsGetAge} from '../../../utils/DateUtils';
+import DateUtils from '../../../utils/DateUtils';
 
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import user from '../../../model/user';
@@ -34,11 +34,9 @@ import CommModal from '../../../comm/components/CommModal';
 import { track, TrackApi, trackEvent } from '../../../utils/SensorsTrack';
 import TaskVIew from '../../home/view/TaskVIew';
 import { mineTaskModel } from '../../home/model/TaskModel';
+import settingModel from '../model/SettingModel'
 import PullView from '../components/pulltorefreshlayout'
 
-
-const { JSPushBridge } = NativeModules;
-const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
 
 const {
     // mine_header_bg,
@@ -102,6 +100,7 @@ export default class MinePage extends BasePage {
             changeHeader: true,
             hasMessageNum: 0,
             hasFans: false,
+            hasFansMSGNum: 0,
             modalId: false
         };
 
@@ -142,7 +141,6 @@ export default class MinePage extends BasePage {
                 mineTaskModel.getData();
             });
         this.listener = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
-        this.listenerJSMessage = JSManagerEmitter.addListener('MINE_NATIVE_TO_RN_MSG', this.setMessageData);
 
         // this.refresh();
     }
@@ -151,12 +149,7 @@ export default class MinePage extends BasePage {
         this.didFocusSubscription && this.didFocusSubscription.remove();
         this.willBlurSubscription && this.willBlurSubscription.remove();
         this.listener && this.listener.remove();
-        this.listenerJSMessage && this.listenerJSMessage.remove();
     }
-
-    setMessageData = ()=>{
-
-    };
 
     handleBackPress = () => {
         this.$navigateBackToHome();
@@ -324,6 +317,9 @@ export default class MinePage extends BasePage {
     };
 
     renderUserHead = () => {
+        let now = DateUtils.formatDate('','yyyy-MM-dd');
+        let regTime = !EmptyUtils.isEmpty(user.regTime) ? DateUtils.formatDate(user.regTime,'yyyy-MM-dd') : DateUtils.formatDate('','yyyy-MM-dd');
+        console.log(now);
         let accreditID = !EmptyUtils.isEmpty(user.code) ? (
             <TouchableWithoutFeedback onLongPress={() => {
                 this.setState({
@@ -338,7 +334,7 @@ export default class MinePage extends BasePage {
 
         let xiuOld = EmptyUtils.isEmpty(user.regTime) ? (
                 <Text style={{ fontSize: 11, color: DesignRule.textColor_instruction, includeFontPadding: false, marginTop: 5,marginRight:15 }}>
-                    {user.perfectNumberCode ? `秀龄：${jsGetAge('2016-8-31 10:35:00','2019-8-31')}` : ''}
+                    {user.perfectNumberCode ? `秀龄：${DateUtils.jsGetAge(regTime,now)}` : '0天'}
                 </Text>
         ) : null;
 
@@ -548,17 +544,20 @@ export default class MinePage extends BasePage {
                     justifyContent: 'space-between',
                     alignItems: 'center'
                 }}>
-                    {this.accountItemView(StringUtils.formatMoneyString(user.availableBalance ? user.availableBalance : '0.00', false), '个人帐户(元)', () => {
+                    {this.accountItemView(StringUtils.formatMoneyString(user.availableBalance ? user.availableBalance : '0.00', false), '个人帐户(元)',1,() => {
+                        settingModel.availableBalanceAdd();
                         this.go2CashDetailPage(1);
                         TrackApi.ViewAccountBalance();
                     })}
                     <View style={{height:30,width:1,backgroundColor:'#E4E4E4'}}/>
-                    {this.accountItemView(user.userScore ? user.userScore + '' : '0', '秀豆账户(枚)', () => {
+                    {this.accountItemView(user.userScore ? user.userScore + '' : '0', '秀豆账户(枚)', 2 ,() => {
+                        settingModel.userScoreAdd();
                         this.go2CashDetailPage(2);
                         TrackApi.ViewShowDou();
                     })}
                     <View style={{height:30,width:1,backgroundColor:'#E4E4E4'}}/>
-                    {this.accountItemView(StringUtils.formatMoneyString(user.blockedBalance ? user.blockedBalance : '0', false), '优惠券(张)', () => {
+                    {this.accountItemView(StringUtils.formatMoneyString(user.blockedBalance ? user.blockedBalance : '0', false), '优惠券(张)', 3, () => {
+                        settingModel.couponsAdd();
                         this.go2CashDetailPage(3);
                     })}
                 </View>
@@ -614,7 +613,15 @@ export default class MinePage extends BasePage {
         return Math.max(fontSize, 1);
     };
 
-    accountItemView = (num, text, onPress) => {
+    accountItemView = (num, text, index, onPress) => {
+        let  msgNum = 0;
+        if(index === 1){
+            msgNum = settingModel.availableBalance;
+        }else if(index === 2){
+            msgNum = settingModel.userScore;
+        }else if(index === 3){
+            msgNum = settingModel.coupons;
+        }
         return (
             <TouchableWithoutFeedback onPress={onPress}>
                 <View style={{
@@ -635,7 +642,7 @@ export default class MinePage extends BasePage {
                         }}>
                             {num}
                         </Text>
-                        <View style={{
+                        {msgNum > 0 ? <View style={{
                             width: px2dp(16),
                             height: px2dp(16),
                             borderRadius: px2dp(8),
@@ -647,9 +654,10 @@ export default class MinePage extends BasePage {
                             justifyContent: 'center'
                         }}>
                             <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(10) }}>
-                                {num > 99 ? 99 : num}
+                                {msgNum > 99 ? 99 : msgNum}
                             </Text>
-                        </View>
+                        </View> : null
+                        }
                     </View>
                     <View style={{ height: 9 }}/>
                     <Text style={{ color: '#999999', fontSize: px2dp(12) }}>
@@ -845,6 +853,7 @@ export default class MinePage extends BasePage {
         let fans = {
             text: '我的秀迷',
             icon: mine_icon_fans,
+            num: this.state.hasMessageNum,
             onPress: () => {
                 if (this.state.hasFans) {
                     this.$navigate(RouterMap.MainShowFansPage);
@@ -1026,8 +1035,8 @@ export default class MinePage extends BasePage {
                 this.$navigate(RouterMap.MyIntegralAccountPage, { userScore: user.userScore ? user.userScore : 0 });
                 break;
             case 3:
-                track(trackEvent.ViewWaitToRecord, { recordModuleSource: 1 });
-                this.$navigate(RouterMap.WaitingForWithdrawCashPage, { blockedBalance: user.blockedBalance ? user.blockedBalance : 0 });
+                TrackApi.ViewCoupon({ couponModuleSource: 1 });
+                this.$navigate(RouterMap.CouponsPage);
                 break;
             default:
                 break;
