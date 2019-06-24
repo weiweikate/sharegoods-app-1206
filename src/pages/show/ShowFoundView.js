@@ -12,6 +12,8 @@ const { px2dp } = ScreenUtils;
 import ReleaseButton from './components/ReleaseButton';
 import user from '../../model/user';
 import ShowGroundView from './components/ShowGroundView';
+import { routeNavigate, routePush } from '../../navigation/RouterMap';
+import RouterMap from '../../navigation/RouterMap';
 
 @observer
 export default class ShowFoundView extends React.Component {
@@ -31,11 +33,11 @@ export default class ShowFoundView extends React.Component {
         this.foundList && this.foundList.addDataToTop(value);
     };
 
-    scrollToTop=()=>{
-        if(this.state.showToTop){
+    scrollToTop = () => {
+        if (this.state.showToTop) {
             this.foundList && this.foundList.scrollToTop();
         }
-    }
+    };
 
     releaseButtonShow = () => {
         Animated.timing(
@@ -56,7 +58,6 @@ export default class ShowFoundView extends React.Component {
             }
         ).start();
     };
-
 
 
     render() {
@@ -113,10 +114,10 @@ export default class ShowFoundView extends React.Component {
 
                                 onPress={() => {
                                     if (!user.isLogin) {
-                                        this.props.navigate('login/login/LoginPage');
+                                        routeNavigate(RouterMap.LoginPage);
                                         return;
                                     }
-                                    this.props.navigate('show/ReleaseNotesPage');
+                                    routePush(RouterMap.ReleaseNotesPage);
                                 }}/>
                         </Animated.View> : null
                 }

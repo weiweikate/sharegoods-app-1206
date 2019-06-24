@@ -11,7 +11,7 @@ import res from '../res/product';
 import UIImage from '@mr/image-placeholder';
 import { MRText as Text } from '../../../components/ui/index';
 import { sourceType } from '../SelectionPage';
-import RouterMap, { navigate } from '../../../navigation/RouterMap';
+import RouterMap, { routeNavigate } from '../../../navigation/RouterMap';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 
 const { icon_close } = res;
@@ -46,7 +46,7 @@ export default class SelectionHeaderView extends Component {
         }
         if (imageUrls.length > 0) {
             closeSelectionPage();
-            navigate(RouterMap.CheckBigImagesView, { imageUrls: imageUrls });
+            routeNavigate(RouterMap.CheckBigImagesView, { imageUrls: imageUrls });
         }
     };
 

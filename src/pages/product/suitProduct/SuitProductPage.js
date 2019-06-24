@@ -30,7 +30,7 @@ export default class SuitProductPage extends BasePage {
 
     _bottomAction = () => {
         if (!user.isLogin) {
-            this.$navigate(RouterMap.LoginPage);
+            this.gotoLoginPage();
             return;
         }
         const { groupCode, selectedAmount, mainProduct } = this.suitProductModel;

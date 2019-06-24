@@ -6,6 +6,7 @@ import com.BV.LinearGradient.LinearGradientPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.facebook.react.ReactApplication;
+import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainPackageConfig;
@@ -88,7 +89,8 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     new CodePush(BuildConfig.CODEPUSH_KEY, MainApplication.this,
                             BuildConfig.DEBUG, ParameterUtils.CODE_PUSH_SERVER),
                     new RNCWebViewPackage(),
-                    new AsyncStoragePackage()
+                    new AsyncStoragePackage(),
+                    new RNGestureHandlerPackage()
             );
         }
 

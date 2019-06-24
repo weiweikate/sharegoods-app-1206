@@ -58,7 +58,7 @@ class AfterSaleServiceHomePage extends BasePage {
     //**********************************ViewPart******************************************
     _render() {
 
-         let productData = this.params.pageData
+        let productData = this.params.pageData;
         return (
             <ScrollView style={DesignRule.style_container}>
                 {this.renderWideLine()}
@@ -135,22 +135,21 @@ class AfterSaleServiceHomePage extends BasePage {
         let orderProductNo = this.params.pageData.orderProductNo;
         switch (index) {
             case 0:
-                this.$navigate('order/afterSaleService/AfterSaleServicePage', {
+                this.$navigate(RouterMap.AfterSaleServicePage, {
                     pageType: 0,
-                    orderProductNo,
+                    orderProductNo
                 });
                 break;
             case 1:
-                this.$navigate('order/afterSaleService/AfterSaleServicePage', {
+                this.$navigate(RouterMap.AfterSaleServicePage, {
                     pageType: 1,
-                    orderProductNo,
+                    orderProductNo
                 });
                 break;
             case 2:
-                this.$navigate('order/afterSaleService/AfterSaleServicePage', {
+                this.$navigate(RouterMap.AfterSaleServicePage, {
                     pageType: 2,
-                    orderProductNo,
-                  //  productId: this.params.pageData.orderProductList[this.state.index].productId
+                    orderProductNo
                 });
                 break;
         }

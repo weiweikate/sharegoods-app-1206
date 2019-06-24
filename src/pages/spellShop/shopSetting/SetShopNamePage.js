@@ -9,7 +9,7 @@ import {
     Image,
     StyleSheet,
     ScrollView,
-    TouchableOpacity,
+    TouchableOpacity
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import StringUtils from '../../../utils/StringUtils';
@@ -24,6 +24,7 @@ import {
 } from '../../../components/ui';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import AvatarImage from '../../../components/ui/AvatarImage';
+import RouterMap from '../../../navigation/RouterMap';
 
 const { px2dp } = ScreenUtils;
 const arrow_right = res.button.arrow_right_black;
@@ -136,7 +137,7 @@ export default class SetShopNamePage extends BasePage {
                 profile: this.state.textProfile
             }).then(() => {
                 spellStatusModel.getUser(2);
-                this.$navigate('spellShop/openShop/OpenShopSuccessPage');
+                this.$navigate(RouterMap.OpenShopSuccessPage);
             }).catch((error) => {
                 this.$toastShow(error.msg);
             });
@@ -156,21 +157,21 @@ export default class SetShopNamePage extends BasePage {
     _clickHeader = () => {
         BusinessUtils.getImagePicker((response) => {
             // if (response && typeof response === 'object' && response.ok) {
-                const { imageUrl } = response;
-                if (imageUrl) {
-                    this.setState({
-                        storeHeadUrlOrigin: imageUrl[0]
-                    });
-                }
+            const { imageUrl } = response;
+            if (imageUrl) {
+                this.setState({
+                    storeHeadUrlOrigin: imageUrl[0]
+                });
+            }
             // } else {
             //     this.$toastShow(response.msg);
             // }
-        },1, true);
+        }, 1, true);
     };
 
     /*选择区域*/
     _getCityPicker = () => {
-        this.$navigate('mine/address/SelectAreaPage', {
+        this.$navigate(RouterMap.SelectAreaPage, {
             setArea: this.setArea.bind(this),
             tag: 'province',
             fatherCode: '0'
@@ -254,7 +255,8 @@ export default class SetShopNamePage extends BasePage {
                                    placeholder={'可以简单介绍下你拼店的目标方向'}
                                    blurOnSubmit={false}
                                    style={styles.profileText}/>
-                        <Text style={styles.profileTextAbsolute} allowFontScaling={false}>{`${this.state.textProfile.length}/180`}</Text>
+                        <Text style={styles.profileTextAbsolute}
+                              allowFontScaling={false}>{`${this.state.textProfile.length}/180`}</Text>
                     </View>
 
                 </ScrollView>

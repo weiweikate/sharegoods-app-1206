@@ -39,7 +39,7 @@ import SelectionPage from '../product/SelectionPage';
 import EmptyUtils from '../../utils/EmptyUtils';
 import NoMoreClick from '../../components/ui/NoMoreClick';
 import ProductListModal from './components/ProductListModal';
-import RouterMap from '../../navigation/RouterMap';
+import RouterMap, { navigateBack, routeNavigate, routePush } from '../../navigation/RouterMap';
 import ShowApi from './ShowApi';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -138,14 +138,11 @@ export default class ShowRichTextDetailPage extends BasePage {
 
 
     _goBack() {
-        console.log('_goBack');
-        const { navigation } = this.props;
-        navigation.goBack(null);
+        navigateBack();
     }
 
     _goToGoodsPage(good) {
-        const { navigation } = this.props;
-        navigation.push('product/ProductDetailPage', {
+        routePush(RouterMap.ProductDetailPage, {
             productCode: good.code
         });
     }
@@ -155,8 +152,7 @@ export default class ShowRichTextDetailPage extends BasePage {
         if (user.isLogin) {
             this.showDetailModule.showGoodAction();
         } else {
-            const { navigation } = this.props;
-            navigation.push('login/login/LoginPage');
+            routeNavigate(RouterMap.LoginPage);
         }
     }
 
@@ -164,8 +160,7 @@ export default class ShowRichTextDetailPage extends BasePage {
         if (user.isLogin) {
             this.showDetailModule.showConnectAction();
         } else {
-            const { navigation } = this.props;
-            navigation.push('login/login/LoginPage');
+            routeNavigate(RouterMap.LoginPage);
         }
     }
 
@@ -246,8 +241,7 @@ export default class ShowRichTextDetailPage extends BasePage {
 
     _showImagesPage(imgs, index) {
         this.noNeedRefresh = true;
-        const { navigation } = this.props;
-        navigation.push('show/ShowDetailImagePage', {
+        routeNavigate(RouterMap.ShowDetailImagePage, {
             imageUrls: imgs,
             index: index
         });

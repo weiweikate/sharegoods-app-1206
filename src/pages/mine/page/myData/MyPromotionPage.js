@@ -19,7 +19,6 @@ import BasePage from '../../../../BasePage';
 import {
     NoMoreClick
 } from '../../../../components/ui';
-import { NavigationActions } from 'react-navigation';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import res from '../../res';
 // import ImageLoad from '@mr/image-placeholder';
@@ -35,6 +34,7 @@ const arrowRightImg = res.myData.black_right_arrow;
 import LinearGradient from 'react-native-linear-gradient';
 import StringUtils from '../../../../utils/StringUtils';
 import { SmoothPushPreLoadHighComponent } from '../../../../comm/components/SmoothPushHighComponent';
+import RouterMap from '../../../../navigation/RouterMap';
 
 const { px2dp } = ScreenUtils;
 
@@ -168,7 +168,7 @@ export default class MyPromotionPage extends BasePage {
                                 justifyContent: 'center',
                                 flexDirection: 'row'
                             }}
-                                         onPress={() => this.$navigate('mine/ExpDetailPage', {
+                                         onPress={() => this.$navigate(RouterMap.ExpDetailPage, {
                                              experience: this.state.experience,
                                              levelExperience: this.state.levelExperience
                                          })}>
@@ -414,18 +414,12 @@ export default class MyPromotionPage extends BasePage {
     }
 
     _onPressInvite = () => {
-        this.$navigate('mine/InviteFriendsPage');
+        this.$navigate(RouterMap.InviteFriendsPage);
     };
 
     // 去购物
     _onGoShop = () => {
-        let resetAction = NavigationActions.reset({
-            index: 0,
-            actions: [
-                NavigationActions.navigate({ routeName: 'Tab' })//要跳转到的页面名字
-            ]
-        });
-        this.props.navigation.dispatch(resetAction);
+        this.$navigateBackToHome();
     };
 
     renderFooter() {

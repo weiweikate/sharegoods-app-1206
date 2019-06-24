@@ -9,6 +9,7 @@
  *
  */
 
+
 'use strict';
 import React from 'react';
 import {
@@ -20,9 +21,9 @@ import {
 import BasePage from '../../BasePage';
 import DesignRule from '../../constants/DesignRule';
 import res from './res';
-import { NavigationActions } from 'react-navigation';
 import ScreenUtils from '../../utils/ScreenUtils';
 import { MRText as Text } from '../../components/ui';
+import { replaceRoute } from '../../navigation/RouterMap';
 
 const { autoSizeWidth } = ScreenUtils;
 const {
@@ -54,12 +55,7 @@ export default class PaymentResultPage extends BasePage {
 
     /** 去订单列表*/
     goToOrder = () => {
-        let replace = NavigationActions.replace({
-            key: this.props.navigation.state.key,
-            routeName: 'order/order/MyOrdersListPage',
-            params: { index: 2 }
-        });
-        this.props.navigation.dispatch(replace);
+        replaceRoute('order/order/MyOrdersListPage', { index: 2 });
     };
 
     /** 重新支付*/

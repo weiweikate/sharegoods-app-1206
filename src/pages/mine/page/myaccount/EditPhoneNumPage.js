@@ -12,6 +12,7 @@ import MineAPI from '../../api/MineApi';
 import SMSTool from '../../../../utils/SMSTool';
 import DesignRule from '../../../../constants/DesignRule';
 import {MRText as Text, MRTextInput as TextInput} from '../../../../components/ui'
+import RouterMap from '../../../../navigation/RouterMap';
 /**
  * @author chenxiang
  * @date on 2018/9/18
@@ -147,7 +148,7 @@ export default class EditPhoneNumPage extends BasePage {
             phone: oldNum
         }).then((data) => {
             this.isLoadding = false;
-            this.$navigate('mine/account/SetNewPhoneNumPage', {
+            this.$navigate(RouterMap.SetNewPhoneNumPage, {
                 oldNum: oldNum,
                 oldCode: this.state.code
             });

@@ -19,6 +19,7 @@ import JPushUtils from '../../../utils/JPushUtils';
 import { login, track, TrackApi, trackEvent } from '../../../utils/SensorsTrack';
 import { MRText as Text } from '../../../components/ui';
 import apiEnvironment from '../../../api/ApiEnvironment';
+import RouterMap from '../../../navigation/RouterMap';
 
 const {
     red_button_s,
@@ -62,7 +63,9 @@ export default class RegistPage extends BasePage {
                     phone={''}
                     loginClick={(phone, code, password) => {
                         this.$loadingShow();
-                        setTimeout(()=>{this.clickNext(phone, code, password)},200)
+                        setTimeout(() => {
+                            this.clickNext(phone, code, password);
+                        }, 200);
                     }}
                     ref={'topView'}
                 />
@@ -88,14 +91,14 @@ export default class RegistPage extends BasePage {
                         阅读并接受
                     </Text>
                     <TouchableOpacity onPress={() => {
-                        this.$navigate('HtmlPage', {
+                        this.$navigate(RouterMap.HtmlPage, {
                             title: '用户协议内容',
                             uri: 'https://reg.163.com/agreement_mobile_ysbh_wap.shtml?v=20171127'
                         });
                     }}>
                         <Text style={{ color: DesignRule.mainColor, fontSize: 11 }}
                               onPress={() => {
-                                  this.$navigate('HtmlPage', {
+                                  this.$navigate(RouterMap.HtmlPage, {
                                       title: '用户协议内容',
                                       uri: htmlUrl
                                   });
@@ -131,7 +134,7 @@ export default class RegistPage extends BasePage {
             systemVersion: this.params.systemVersion ? this.params.systemVersion : '',
             wechatVersion: '',
             nickname: this.params.nickName,
-            headImg: this.params.headerImg ? this.params.headerImg : '',
+            headImg: this.params.headerImg ? this.params.headerImg : ''
         }).then((data) => {
             if (data.code === 10000) {
                 //推送
@@ -169,7 +172,6 @@ export default class RegistPage extends BasePage {
             homeModule.loadHomeList();
             //埋点登录成功
             login(data.data.code);
-            // this.$navigate('login/login/GetRedpacketPage');
             bridge.setCookies(data.data);
             //推送
             JPushUtils.updatePushTags();
@@ -177,7 +179,7 @@ export default class RegistPage extends BasePage {
             /**
              * 跳转导师选择页面
              */
-            this.$navigate('login/login/SelectMentorPage', { isHaveRedPocket: isGive });
+            this.$navigate(RouterMap.SelectMentorPage, { isHaveRedPocket: isGive });
         }).catch((data) => {
             this.$loadingDismiss();
             bridge.$toast(data.msg);

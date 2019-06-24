@@ -521,7 +521,7 @@ public class RequestManager {
         params.put("channel", channel + "");
         params.put("platform", "Android " + DeviceUtils.getSystemName());
         params.put("Security-Policy", "SIGNATURE");
-        params.put("sg-token", SPCacheUtils.get(ParameterUtils.LOGIN_TOKEN, "") + "");
+        params.put("sg-token", JSON.parse((String) SPCacheUtils.get(ParameterUtils.LOGIN_TOKEN, "")) + "");
         params.put("version", AppUtils.getVersionName() + "");
         return params;
     }

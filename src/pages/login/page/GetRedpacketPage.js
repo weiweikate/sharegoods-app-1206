@@ -10,12 +10,12 @@ import {
 import BasePage from '../../../BasePage';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import CommModal from '../../../comm/components/CommModal';
-import { NavigationActions } from 'react-navigation';
 import LoginAPI from '../api/LoginApi';
 import StringUtils from '../../../utils/StringUtils';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
-import {MRText as Text} from '../../../components/ui'
+import { MRText as Text } from '../../../components/ui';
+import RouterMap from '../../../navigation/RouterMap';
 
 const {
     refresh,
@@ -110,7 +110,8 @@ export default class GetRedpacketPage extends BasePage {
                                 {StringUtils.formatMoneyString(this.state.price, false)}
                                 {/*{EmptyUtils.isEmpty(this.state.couponData) ? null : this.state.couponData.price}*/}
                                 <Text
-                                    style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(15) }} allowFontScaling={false}>
+                                    style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(15) }}
+                                    allowFontScaling={false}>
                                     元
                                 </Text>
                             </Text>
@@ -145,13 +146,7 @@ export default class GetRedpacketPage extends BasePage {
         this.setState({
             showRedAlter: false
         });
-        let resetAction = NavigationActions.reset({
-            index: 0,
-            actions: [
-                NavigationActions.navigate({ routeName: 'Tab' })//要跳转到的页面名字
-            ]
-        });
-        this.props.navigation.dispatch(resetAction);
+        this.$navigateBackToHome();
     };
 
     _render() {
@@ -249,7 +244,7 @@ export default class GetRedpacketPage extends BasePage {
      *
      */
     _changeRedpacket = () => {
-       // this.
+        // this.
     };
     /**
      * 渲染红包列表
@@ -357,16 +352,10 @@ export default class GetRedpacketPage extends BasePage {
      * 跳过函数
      */
     jump = () => {
-        let resetAction = NavigationActions.reset({
-            index: 0,
-            actions: [
-                NavigationActions.navigate({ routeName: 'Tab' })//要跳转到的页面名字
-            ]
-        });
-        this.props.navigation.dispatch(resetAction);
+        this.$navigateBackToHome();
     };
     jumpToWriteCodePage = () => {
-        this.$navigate('login/login/InviteCodePage');
+        this.$navigate(RouterMap.InviteCodePage);
     };
     redPacketClick = (redPacketIndex) => {
         this.$loadingShow('加载中');

@@ -185,6 +185,9 @@ class User {
     @observable
     weChatNumber = null;
 
+    // 全局记录商品详情页是否是首次加载
+    isProdFirstLoad = true;
+
     @action getToken = () => {
         if (this.token) {
             return Promise.resolve(this.token);
