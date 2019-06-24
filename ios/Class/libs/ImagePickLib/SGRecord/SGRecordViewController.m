@@ -88,7 +88,7 @@
     WEAKSELF
     [self.recordManger takePhoto:^(UIImage *image) {
         NSLog(@"拍照结束:%@",image);
-        //UIImageWriteToSavedPhotosAlbum(image, nil, nil, NULL);
+        UIImageWriteToSavedPhotosAlbum(image, nil, nil, NULL);
         STRONGSELF
         dispatch_async(dispatch_get_main_queue(), ^{
             [strongSelf.recordManger shutdown];

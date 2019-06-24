@@ -205,6 +205,11 @@
   self.headView.UserInfoModel = model.userInfoVO;
   self.headView.time = model.publishTimeStr;
   self.bodyView.sources = model.resource;
+  if(model.showType==3){
+    self.bodyView.imageType = YES;
+  }else{
+    self.bodyView.imageType = NO;
+  }
   if(self.type&&(model.createSource&&model.createSource==2)){
     self.headView.type = NO;
     self.jingpin.hidden = NO;

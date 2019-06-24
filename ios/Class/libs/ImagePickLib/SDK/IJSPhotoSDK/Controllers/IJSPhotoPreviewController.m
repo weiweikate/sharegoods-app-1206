@@ -725,9 +725,7 @@ static NSString *const IJSSelectedCellID = @"IJSSelectedCell";
                 });
             }
         }];
-    }
-    else
-    {
+    }else{
         NSIndexPath *currentIndex = [NSIndexPath indexPathForRow:index inSection:0];
         // 执行点击操作
         if (model.outputPath) // 上次已经编辑过,直接编辑编辑过的图片
@@ -1020,6 +1018,7 @@ static NSString *const IJSSelectedCellID = @"IJSSelectedCell";
             UIImage *image =[UIImage imageWithData:[NSData dataWithContentsOfURL:model.outputPath]];
             [photos replaceObjectAtIndex:index withObject:image];
             [assets replaceObjectAtIndex:index withObject:model.asset];
+            [infoArr replaceObjectAtIndex:index withObject:@{@"PHImageFileURLKey":model.outputPath}];
             for (id item in photos)
             {
                 if ([item isKindOfClass:[NSNumber class]])
@@ -1027,7 +1026,9 @@ static NSString *const IJSSelectedCellID = @"IJSSelectedCell";
                     return;
                 }
             }
-            [self _didGetAllPhotos:photos asset:assets infos:nil isSelectOriginalPhoto:NO avPlayers:nil sourceType:IJSPImageType];
+          
+          
+            [self _didGetAllPhotos:photos asset:assets infos:infoArr isSelectOriginalPhoto:NO avPlayers:nil sourceType:IJSPImageType];
         }
         else
         { // 没有裁剪过

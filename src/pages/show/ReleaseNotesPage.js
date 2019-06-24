@@ -10,7 +10,7 @@ import {
     Image,
     TouchableWithoutFeedback,
     Keyboard,
-    TextInput, DeviceEventEmitter,
+    TextInput
 } from 'react-native';
 import BasePage from '../../BasePage';
 import { MRText } from '../../components/ui';
@@ -141,10 +141,7 @@ export default class ReleaseNotesPage extends BasePage {
         };
         ShowApi.publishShow(params).then((data) => {
             this.props.navigation.popToTop();
-            this.props.navigation.navigate('ShowListPage');
-            if (data.data) {
-                DeviceEventEmitter.emit('PublishShowFinish', JSON.stringify(data.data));
-            }
+            this.props.navigation.navigate(RouterMap.MyDynamicPage);
         }).catch((error) => {
             this.$toastShow(error.msg || '网络错误');
         });
@@ -165,7 +162,7 @@ export default class ReleaseNotesPage extends BasePage {
         //     }
         // }, num, true, true, true);
 
-        PictureVideoUtils.selectPictureOrVideo(num,true,callback => {
+        PictureVideoUtils.selectPictureOrVideo(num,num === 9,callback => {
             if (callback.type === 'video') {
                 this.setState({ videoData: callback });
             } else {

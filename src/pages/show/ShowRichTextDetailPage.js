@@ -253,17 +253,15 @@ export default class ShowRichTextDetailPage extends BasePage {
                         <Text style={styles.showName}
                               allowFontScaling={false}>{userName}</Text>
                     </View>
-
                 </View>
-
-                <TouchableOpacity style={styles.shareView} onPress={() => {
+                {detail.status === 1 ? <TouchableOpacity style={styles.shareView} onPress={() => {
                     this._goToShare();
                 }}>
                     <Image source={iconShowShare}/>
-                </TouchableOpacity>
+                </TouchableOpacity> : null}
+
             </View>
         );
-
     }
 
     _shieldRender = () => {

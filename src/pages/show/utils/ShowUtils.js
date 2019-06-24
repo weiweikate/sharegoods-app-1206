@@ -9,13 +9,13 @@ import Toast from '../../../utils/bridge';
 const formatShowNum = (num) => {
     if (num <= 999) {
         return num + '';
+    }else if(num < 10000){
+        return parseInt(num/1000)+'K+';
+    }else if(num < 100000){
+        return parseInt(num/10000)+'W+';
+    }else {
+        return '10W+';
     }
-
-    if (num > 999 && num <= 100000) {
-        return '999+';
-    }
-
-    return '10w+';
 };
 
 const downloadShow = (urls, content) => {
@@ -29,11 +29,6 @@ const downloadShow = (urls, content) => {
                 url = value.substring(0,index);
             }
             let promise = NativeModules.commModule.saveImageToPhotoAlbumWithUrl(url);
-            //     .then(() => {
-            //     return Promise.resolve();
-            // }).catch(() => {
-            //     return Promise.reject();
-            // });
             promises.push(promise);
         });
     }

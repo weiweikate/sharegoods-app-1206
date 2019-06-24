@@ -22,6 +22,8 @@ import { MRText } from '../../components/ui';
 import ShowApi from './ShowApi';
 import ImageLoad from '@mr/image-placeholder';
 import ShowUtils from './utils/ShowUtils';
+import CommShareModal from '../../comm/components/CommShareModal';
+import apiEnvironment from '../../api/ApiEnvironment';
 
 const { iconShowShare, iconShowFire } = res;
 const { px2dp } = ScreenUtils;
@@ -44,7 +46,9 @@ export default class TagDetailPage extends BasePage {
 
     $NavBarRenderRightItem = () => {
         return (
-            <NoMoreClick onPress={this._publish}>
+            <NoMoreClick onPress={() => {
+                this.shareModal && this.shareModal.open();
+            }}>
                 <Image source={iconShowShare}/>
             </NoMoreClick>
         );
@@ -136,7 +140,7 @@ export default class TagDetailPage extends BasePage {
                 }}>
                     <ImageLoad
                         source={{ uri }}
-                        style={{ width: itemContainer.width, height,marginBottom:px2dp(10) }}/>
+                        style={{ width: itemContainer.width, height, marginBottom: px2dp(10) }}/>
                     {itemData.content ? <MRText style={{
                         fontSize: DesignRule.fontSize_threeTitle,
                         color: DesignRule.textColor_mainTitle,
@@ -183,24 +187,34 @@ export default class TagDetailPage extends BasePage {
 
     _render() {
         return (
-            <Waterfall
-                showsVerticalScrollIndicator={false}
-                style={styles.waterfall}
-                data={this.data}
-                renderHeader={this.renderHeader}
-                gap={px2dp(15)}
-                numberOfColumns={2}
-                expansionOfScope={100}
-                onEndReachedThreshold={1000}
-                onEndReached={this.loadMore}
-                renderItem={this.renderItem}
-                refreshControl={
-                    <RefreshControl
-                        colors={[DesignRule.mainColor]}
-                        refreshing={this.state.isRefreshing}
-                        onRefresh={this.refresh}
-                    />
-                }/>
+            <View style={{flex:1}}>
+                <Waterfall
+                    showsVerticalScrollIndicator={false}
+                    style={styles.waterfall}
+                    data={this.data}
+                    renderHeader={this.renderHeader}
+                    gap={px2dp(15)}
+                    numberOfColumns={2}
+                    expansionOfScope={100}
+                    onEndReachedThreshold={1000}
+                    onEndReached={this.loadMore}
+                    renderItem={this.renderItem}
+                    refreshControl={
+                        <RefreshControl
+                            colors={[DesignRule.mainColor]}
+                            refreshing={this.state.isRefreshing}
+                            onRefresh={this.refresh}
+                        />
+                    }/>
+                <CommShareModal ref={(ref) => this.shareModal = ref}
+
+                                webJson={{
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/aTag/list?tagId=${this.params.tagId}`,//(图文分享下的链接)
+                                    title: this.params.name || '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
+                                    dec: '好物不独享，内有惊喜福利~'
+                                }}
+                />
+            </View>
         );
     }
 }

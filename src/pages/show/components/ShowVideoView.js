@@ -21,20 +21,23 @@ import DesignRule from '../../../constants/DesignRule';
 
 
 const screenWidth = Dimensions.get('window').width;
-// const size916 = {
-//     width:screenWidth,
-//     height:screenWidth/9*16
-// }
-//
-// const size11 = {
-//     width:screenWidth,
-//     height:screenWidth
-// }
-//
-// const size34 = {
-//     width:screenWidth,
-//     height:screenWidth/4*3
-// }
+const size916 = {
+    width: screenWidth,
+    height: screenWidth / 9 * 16,
+    ratio: 9 / 16
+};
+
+const size11 = {
+    width: screenWidth,
+    height: screenWidth,
+    ratio: 1
+};
+
+const size34 = {
+    width: screenWidth,
+    height: screenWidth / 4 * 3,
+    ratio: 4 / 3
+};
 
 function formatTime(second) {
     let h = 0, i = 0, s = parseInt(second);
@@ -53,11 +56,12 @@ export default class VideoView extends Component {
 
     constructor(props) {
         super(props);
+        let sizeMode = this._calculateRatio(this.props.width,this.props.height);
         this.state = {
             videoUrl: props.videoUrl,
             videoCover: props.videoCover,
-            videoWidth: screenWidth,
-            videoHeight: screenWidth * 9 / 16, // 默认16：9的宽高比
+            videoWidth: sizeMode.width,
+            videoHeight: sizeMode.height,
             showVideoCover: true,    // 是否显示视频封面
             showVideoControl: false, // 是否显示视频控制组件
             isPlaying: false,        // 视频是否正在播放
@@ -72,24 +76,39 @@ export default class VideoView extends Component {
         this.willBlurSubscription = this.props.navigation.addListener(
             'willBlur',
             payload => {
-                const { state } = payload;
-                if (state && (state.routeName === 'product/ProductDetailPage' || state.routeName === 'topic/TopicDetailPage')) {
-                    this.pauseVideo();
-                }
+                this.pauseVideo();
             }
         );
+        this.didFocus = this.props.navigation.addListener('didFocus',()=>{
+            this.playVideo();
+        } )
     }
-
 
 
     componentWillUnmount() {
         this.willBlurSubscription && this.willBlurSubscription.remove();
+        this.didFocus && this.didFocus.remove();
+    }
+
+    _calculateRatio(width, height) {
+        let ratios = [size11, size34, size916];
+        let sizeMode = size11;
+        let diffValue = 999;
+        let ratio = width/height;
+        for (let i = 0; i < ratios.length; i++) {
+            let value = Math.abs(ratios[i].ratio-ratio);
+            if(value < diffValue){
+                diffValue = value;
+                sizeMode = ratios[i];
+            }
+        }
+        return sizeMode;
     }
 
     _render = () => {
         if (this.state.showVideoCover) {
             return <View style={{ flex: 1, backgroundColor: DesignRule.imgBg_color }}>
-                <Image style={{ flex: 1, width: this.state.videoWidth,height:this.state.videoHeight }}
+                <Image style={{ flex: 1, width: this.state.videoWidth, height: this.state.videoHeight }}
                        source={{ uri: this.state.videoCover }}
                        resizeMode={'cover'}/>
                 <TouchableOpacity style={{
@@ -123,7 +142,6 @@ export default class VideoView extends Component {
                 onLoadStart={this._onLoadStart}
                 onLoad={this._onLoaded}
                 onProgress={this._onProgressChanged}
-                onEnd={this._onPlayEnd}
                 onError={this._onPlayError}
                 onBuffer={this._onBuffering}
                 style={{ width: this.state.videoWidth, height: this.state.videoHeight }}
@@ -325,7 +343,7 @@ export default class VideoView extends Component {
         } else {
             this.setState({
                 videoWidth: width,
-                videoHeight: width * 9 / 16,
+                videoHeight: this.state.videoHeight,
                 isFullScreen: false
             });
         }

@@ -38,7 +38,9 @@ RCT_EXPORT_METHOD(beginQYChat:(NSDictionary *)chatInfo){
 //  NSLog(@"%@",chatInfo);
   dispatch_async(dispatch_get_main_queue(), ^{
 //     [[JRServiceManager sharedInstance] swichGroup:chatInfo];
-    [[MRImageVideoManager sharedInstance]startSelectImageOrVideo];;
+    [[MRImageVideoManager sharedInstance]startSelectImageOrVideoWithBlock:^(NSArray * _Nonnull imageOrVideoArr) {
+      
+    }];
   });
 }
 RCT_EXPORT_METHOD(qiYULogout){
