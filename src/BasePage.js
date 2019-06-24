@@ -37,8 +37,6 @@ export default class BasePage extends Component {
         super(props);
         this.params = this.props.navigation.state.params || {};
         this.viewDidLoad = netState.isConnected;
-        // alert(this.viewDidLoad)
-        this.navigateTime = new Date().getTime();
     }
 
     $navigationBarOptions = {
@@ -173,26 +171,28 @@ export default class BasePage extends Component {
             console.warn('$NavigationBarDefaultLeftPressed error ' + error.toString());
         }
     };
+
     // 默认点击右侧事件
     $NavigationBarDefaultRightPressed = () => {
         console.warn('mark sure you had set $NavigationBarDefaultRightPressed func');
     };
+
     // 隐藏左边item
     $NavigationBarHiddenLeftItem = (hidden, callBack) => {
-
         if (!this.$navigatorBar) {
             return;
         }
         this.$navigatorBar.hiddenLeftItem(hidden, callBack);
     };
+
     // 隐藏右边item
     $NavigationBarHiddenRightItem = (hidden, callBack) => {
-
         if (!this.$navigatorBar) {
             return;
         }
         this.$navigatorBar.hiddenRightItem(hidden, callBack);
     };
+
     //更换右边title
     $NavigationBarResetRightTitle = (newTitle, callBack) => {
         if (!this.$navigatorBar) {
@@ -200,9 +200,9 @@ export default class BasePage extends Component {
         }
         this.$navigatorBar.changeRightTitle(newTitle, callBack);
     };
+
     // 更换title
     $NavigationBarResetTitle = (newTitle, callBack) => {
-
         if (!this.$navigatorBar) {
             return;
         }

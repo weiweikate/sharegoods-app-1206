@@ -142,7 +142,7 @@ export default class ShowRichTextDetailPage extends BasePage {
     getDetailTagWithCode = (code) => {
         ShowApi.getTagWithCode({ showNo: code }).then((data) => {
             if (data) {
-                this.setState({ tags: data.data });
+                this.setState({ tags: data.data || [] });
             }
         }).catch((error) => {
 
@@ -152,7 +152,7 @@ export default class ShowRichTextDetailPage extends BasePage {
     renderTags = () => {
         return (
             <View style={{ flexDirection: 'row', marginTop: px2dp(10) }}>
-                {this.state.tags.map((item, index) => {
+                {this.state.tags && this.state.tags.map((item, index) => {
                     return (
                         <View key={`tag${index}`} style={{
                             height: px2dp(24),

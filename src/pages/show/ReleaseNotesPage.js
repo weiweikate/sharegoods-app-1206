@@ -98,6 +98,7 @@ export default class ReleaseNotesPage extends BasePage {
         }
         let content = this.state.text || '';
         let products = this.state.products || [];
+        let tags = this.state.tags || [];
         let images = this.state.imageArr;
         let urls, video = null;
         if (this.state.videoData) {
@@ -135,7 +136,7 @@ export default class ReleaseNotesPage extends BasePage {
             images: urls,
             products: productsPar,
             title: this.state.titleText,
-            tagList: this.state.tags.map((item) => {
+            tagList: tags.map((item) => {
                 return item.tagId;
             })
         };

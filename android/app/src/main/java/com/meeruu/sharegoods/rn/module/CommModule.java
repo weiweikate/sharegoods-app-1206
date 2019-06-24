@@ -55,7 +55,6 @@ import com.meeruu.sharegoods.ui.activity.MRWebviewActivity;
 import com.meeruu.statusbar.ImmersionBar;
 import com.meituan.android.walle.WalleChannelReader;
 import com.qiyukf.unicorn.api.Unicorn;
-import com.reactnative.ivpusic.imagepicker.cameralibrary.util.UriUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

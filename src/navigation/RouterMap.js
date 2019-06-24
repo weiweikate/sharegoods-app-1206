@@ -36,7 +36,7 @@ function hasRoute(routeName) {
 }
 
 // 出栈到指定页面，不存在则回退到上一步
-function popToRuteName(routeName) {
+function popToRouteName(routeName) {
     if (hasRoute(routeName)) {
         routeNavigate(routeName);
     } else {
@@ -173,7 +173,7 @@ export {
     routeNavigate,
     routePop,
     loginBack,
-    popToRuteName
+    popToRouteName
 };
 
 

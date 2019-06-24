@@ -145,7 +145,7 @@ export default class ShowDetailPage extends BasePage {
     getDetailTagWithCode = (code) => {
         ShowApi.getTagWithCode({ showNo: code }).then((data) => {
             if (data) {
-                this.setState({ tags: data.data });
+                this.setState({ tags: data.data || [] });
             }
         }).catch((error) => {
 

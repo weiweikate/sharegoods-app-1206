@@ -61,7 +61,7 @@ export default class MyDynamicPage extends BasePage {
     }
 
     addMoreDatas = () => {
-        for (var i = 0; i < 50; ++i) {
+        for (let i = 0; i < 50; ++i) {
             this.data.push({
                 height: 50 + Math.floor(Math.random() * 200)
             });
