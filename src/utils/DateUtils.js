@@ -95,6 +95,6 @@ export default {
     formatDate,
     isToday,
     isTomorrow,
-    getFormatDate
+    getFormatDate,
 };
 
