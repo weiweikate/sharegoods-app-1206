@@ -13,6 +13,7 @@
 #import "RSAManager.h"
 #import "GongMaoVC.h"
 #import "CommentTool.h"
+#import "IJSVideoManager.h"
 
 #define AppVersion [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]
 
@@ -328,10 +329,16 @@ RCT_EXPORT_METHOD(RN_Video_Image:(NSString*) path
       UIImage *videoImage = [[UIImage alloc] initWithCGImage:img];
       CGImageRelease(img);
       NSData * data = UIImageJPEGRepresentation(videoImage,1.0);
-      
-      [cache setObject:data forKey:key withBlock:^{
-        resolve(@{@"imagePath":key});
-      }];
+//    [IJSVideoManager saveImageToSandBoxImage:image completion:^(NSURL *outputPath, NSError *error) {
+//
+//        }];
+      key = [NSString stringWithFormat:@"%@%@",@"file://",key];
+      BOOL isRight = [data writeToURL:[NSURL URLWithString:key] atomically:YES];
+      if (isRight) {
+        [cache setObject:data forKey:key withBlock:^{
+          resolve(@{@"imagePath":key});
+        }];
+      }
     }
   }];
 }

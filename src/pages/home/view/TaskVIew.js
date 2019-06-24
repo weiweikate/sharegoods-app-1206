@@ -442,6 +442,11 @@ export default class TaskVIew extends React.Component {
             return null;
         }
         let type = this.props.type;
+        let progress = this.model.progress + '';
+        let fontSize = autoSizeWidth(17);
+        if (progress.length >=4){
+            fontSize =  autoSizeWidth(15)
+        }
         return (
             <View style={[{
                 width: ScreenUtils.width,
@@ -464,7 +469,7 @@ export default class TaskVIew extends React.Component {
                                      alignItems: 'center',
                                      justifyContent: 'center',
                                  }}>
-                    <MRText style={{color: '#FF0050', fontSize: autoSizeWidth(17), fontWeight: '600', marginBottom: autoSizeWidth(10)}}>{this.model.progress}</MRText>
+                    <MRText style={{color: '#FF0050', fontSize: fontSize, fontWeight: '600', marginBottom: autoSizeWidth(10)}}>{progress}</MRText>
                 </ImageBackground>
                 <TaskModalView type={type}/>
             </View>

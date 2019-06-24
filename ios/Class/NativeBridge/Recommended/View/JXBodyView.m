@@ -160,7 +160,7 @@
   }else if(array.count==4||array.count==2) {
       return (SCREEN_WIDTH-161)/2;
     } else {
-      CGFloat w =  (SCREEN_WIDTH-76)/3;
+      CGFloat w =  (SCREEN_WIDTH-60)/3;
       return w;
     }
 }
