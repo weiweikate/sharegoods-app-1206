@@ -198,7 +198,7 @@ export default class MyCashAccountPage extends BasePage {
                     {this.state.canWithdraw ? <TouchableWithoutFeedback onPress={() => {
                         this.$navigate(RouterMap.BankCardListPage);
                     }}>
-                        <Text style={styles.settingStyle}>账户设置</Text>
+                        <Text style={styles.settingStyle}>银行卡管理</Text>
                     </TouchableWithoutFeedback> : null}
                 </View>
             </ImageBackground>
