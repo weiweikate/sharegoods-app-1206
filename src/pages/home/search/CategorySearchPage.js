@@ -39,6 +39,17 @@ export default class CategorySearchPage extends BasePage {
 
     componentDidMount() {
         this.$loadingShow('加载中');
+        setTimeout(() => {
+            this.getTypeList();
+            this.getTypeSection();
+        }, 100);
+    }
+
+    componentWillUnmount() {
+        clearTimeout();
+    }
+
+    getTypeList = () => {
         // 分类列表
         HomeAPI.findNameList().then((response) => {
             this.$loadingDismiss();
@@ -56,7 +67,9 @@ export default class CategorySearchPage extends BasePage {
             this.$loadingDismiss();
             bridge.$toast(data.msg);
         });
+    };
 
+    getTypeSection = () => {
         // 热门分类
         HomeAPI.findHotList().then((response) => {
             let datas = response.data || {};
@@ -72,7 +85,7 @@ export default class CategorySearchPage extends BasePage {
         }).catch((data) => {
             bridge.$toast(data.msg);
         });
-    }
+    };
 
     renderViewPageItem = (item) => {
         return (

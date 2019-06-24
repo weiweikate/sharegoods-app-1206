@@ -5,7 +5,7 @@ import productScore from './productScore';
 import service from './service';
 import suitProduct from './suitProduct';
 import pDetailNav from './pDetailNav';
-
+import pSale from './pSale';
 const product = {
     ...res,
     detailShowBg: require('./detailShowBg.png'),
@@ -23,6 +23,7 @@ const product = {
     product_coupon: require('./product_coupon.png'),
     couponRemarkHide: require('./couponRemarkHide.png'),
     couponRemarkShow: require('./couponRemarkShow.png'),
+    pAddress: require('./pAddress.png'),
     detailNavView: {
         ...detailNavView
     },
@@ -40,6 +41,9 @@ const product = {
     },
     pDetailNav: {
         ...pDetailNav
+    },
+    pSacle:{
+        ...pSale
     }
 };
 export default product;

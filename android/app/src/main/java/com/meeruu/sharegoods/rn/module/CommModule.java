@@ -44,6 +44,7 @@ import com.mabeijianxi.smallvideorecord2.MediaRecorderActivity;
 import com.mabeijianxi.smallvideorecord2.model.AutoVBRMode;
 import com.mabeijianxi.smallvideorecord2.model.LocalMediaConfig;
 import com.mabeijianxi.smallvideorecord2.model.OnlyCompressOverBean;
+import com.mabeijianxi.smallvideorecord2.model.VBRMode;
 import com.meeruu.commonlib.utils.AppUtils;
 import com.meeruu.commonlib.utils.BitmapUtils;
 import com.meeruu.commonlib.utils.FileUtils;
@@ -63,7 +64,6 @@ import com.meeruu.sharegoods.ui.activity.MRWebviewActivity;
 import com.meeruu.statusbar.ImmersionBar;
 import com.meituan.android.walle.WalleChannelReader;
 import com.qiyukf.unicorn.api.Unicorn;
-import com.reactnative.ivpusic.imagepicker.cameralibrary.util.UriUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -614,8 +614,8 @@ public class CommModule extends ReactContextBaseJavaModule {
             final LocalMediaConfig config = buidler
                     .setVideoPath(file.getAbsolutePath())
                     .captureThumbnailsTime(1)
-                    .doH264Compress(new AutoVBRMode())
-                    .setFramerate(20)
+                    .doH264Compress(new VBRMode(58000,3000))
+                    .setFramerate(30)
                     .setScale(1.0f)
                     .build();
             new Thread(new Runnable() {

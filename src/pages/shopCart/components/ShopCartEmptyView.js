@@ -53,7 +53,7 @@ export default class ShopCartEmptyView extends Component {
             dim.width = ScreenUtils.width;
             dim.height = px2dp(350)
         } else {
-            dim.width = ScreenUtils.width/2;
+            dim.width = ScreenUtils.width / 2;
             dim.height = px2dp(168 + 98)
         }
     });
@@ -65,7 +65,7 @@ export default class ShopCartEmptyView extends Component {
     }
     _renderItem = (type, itemData, index) => {
         const {navigateToHome} = this.props;
-        console.log('数据源'+JSON.stringify(itemData));
+        console.log('数据源' + JSON.stringify(itemData));
         if (type === EmptyViewTypes.topEmptyItem) {
             return this._renderHeaderView();
         }else {
@@ -90,7 +90,7 @@ export default class ShopCartEmptyView extends Component {
         return (
             <View style={{ width: ScreenUtils.width, height: 350, paddingLeft: px2dp(15), paddingRight: px2dp(15) }}>
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                    <Image source={shopCartNoGoods} style={{ width: px2dp(244), height: px2dp(140) }}></Image>
+                    <Image source={shopCartNoGoods} style={{ width: px2dp(244), height: px2dp(140) }} />
                     <MRText style={{
                         fontSize: px2dp(13),
                         color: 'rgba(153, 153, 153, 1)',

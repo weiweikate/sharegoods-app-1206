@@ -85,7 +85,7 @@ export default class SelectAreaPage extends BasePage {
             // 回退并刷新
             if (this.canBack) {
                 this.canBack = false;
-                this.$navigateBack(-3);
+                this.$navigateBack(3);
                 const { provinceCode, provinceName, cityCode, cityName } = this.props.navigation.state.params || {};
                 let areaText = provinceName + cityName + item.name;
                 setArea && setArea(provinceCode, provinceName, cityCode, cityName, item.code, item.name, areaText);

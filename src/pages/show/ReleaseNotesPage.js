@@ -149,10 +149,10 @@ export default class ReleaseNotesPage extends BasePage {
 
     choosePicker = () => {
         let imageArr = this.state.imageArr;
-        if (imageArr.length >= 9) {
+        if (imageArr.length >= 8) {
             return;
         }
-        let num = 9 - imageArr.length;
+        let num = 8 - imageArr.length;
         // BusinessUtils.getImagePicker(callback => {
         //     if (callback.type === 'video') {
         //         this.setState({ videoData: callback });
@@ -162,7 +162,7 @@ export default class ReleaseNotesPage extends BasePage {
         //     }
         // }, num, true, true, true);
 
-        PictureVideoUtils.selectPictureOrVideo(num,num === 9,callback => {
+        PictureVideoUtils.selectPictureOrVideo(num,num === 8,callback => {
             if (callback.type === 'video') {
                 this.setState({ videoData: callback });
             } else {
@@ -230,7 +230,7 @@ export default class ReleaseNotesPage extends BasePage {
         }
 
         let imageArr = this.state.imageArr;
-        if (imageArr.length >= 9) {
+        if (imageArr.length >= 8) {
             return null;
         }
 
@@ -245,7 +245,7 @@ export default class ReleaseNotesPage extends BasePage {
     };
 
     _addProductButton = () => {
-        if (this.state.products.length >= 5) {
+        if (this.state.products.length >= 1) {
             return null;
         }
 

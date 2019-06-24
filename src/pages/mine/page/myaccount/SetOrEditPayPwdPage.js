@@ -73,7 +73,7 @@ export default class SetOrEditPayPwdPage extends BasePage {
                     }).then((response) => {
                         // 修改成功
                         bridge.$toast('修改成功');
-                        this.$navigateBack(-4);
+                        this.$navigateBack(4);
                     }).catch((data) => {
                         this.paw && this.paw.changeRedBorderColor();
                         this.setState({msg: data.msg});

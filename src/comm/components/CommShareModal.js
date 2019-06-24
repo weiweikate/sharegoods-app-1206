@@ -173,8 +173,8 @@ export default class CommShareModal extends React.Component {
                     });
                 } else if (type === 'Image' || type === 'Show') {
                     let url = params && params.imageUrlStr;
-                    this.props.imageJson && (params.imageUrlStr = getSource(url, this.imageWidth, this.imageHeight));
-                    delete params.shareMoney;
+                    this.props.imageJson && (params.imageUrlStr = getSource({ uri: url }, this.imageWidth, this.imageHeight, 'lfit').uri);
+                    delete params['shareMoney'];
                     bridge.creatShareImage(params, (path) => {
                         this.setState({ path: Platform.OS === 'android' ? 'file://' + path : '' + path }, () => {
                             this.changeShareType(0);
