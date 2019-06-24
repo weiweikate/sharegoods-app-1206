@@ -13,7 +13,6 @@ import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-vi
 import ScreenUtils from '../../utils/ScreenUtils';
 
 const { px2dp } = ScreenUtils;
-import backIconImg from '../../comm/res/button/icon_header_back.png';
 import DesignRule from '../../constants/DesignRule';
 import { observer } from 'mobx-react';
 import {
@@ -35,6 +34,7 @@ import WhiteModel from './model/WhiteModel';
 import { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
 import { routeNavigate } from '../../navigation/RouterMap';
 import RouterMap from '../../navigation/RouterMap';
+import comm from '../../comm/res';
 
 const {
     mine_user_icon,
@@ -195,7 +195,7 @@ export default class ShowListPage extends BasePage {
     };
 
     _goMyDynamicPage = () => {
-        if(WhiteModel.userStatus !== 2){
+        if (WhiteModel.userStatus !== 2) {
             return;
         }
         // if (!user.isLogin) {
@@ -241,7 +241,7 @@ export default class ShowListPage extends BasePage {
                     left
                         ?
                         <TouchableOpacity style={styles.backImg} onPress={() => this._onLeftPressed()}>
-                            <Image source={backIconImg} style={styles.img}/>
+                            <Image source={comm.button.icon_header_back} style={styles.img}/>
                         </TouchableOpacity>
                         :
                         null
@@ -361,107 +361,107 @@ export default class ShowListPage extends BasePage {
                                                            navigate('show/ShowRichTextDetailPage', params);
                                                        }
                                                    }}
-                                                       navigate={this.$navigate}/> : null
-                                                   }
-                        </View>
-                        </ScrollableTabView>
-                        <IntervalMsgView pageType={IntervalType.xiuChang}/>
-                    {detail ?
-                        <CommShareModal ref={(ref) => this.shareModal = ref}
-                        type={'Show'}
-                        trackEvent={'ArticleShare'}
-                        trackParmas={{ articeCode: detail.code, articleTitle: detail.title }}
-                        imageJson={{
-                        imageType: 'show',
-                        imageUrlStr: detail.resource[0] ? detail.resource[0].url : '',
-                        titleStr: detail.showType === 1 ? detail.content : detail.title,
-                        QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
-                        headerImage: (detail.userInfoVO && detail.userInfoVO.userImg) ? detail.userInfoVO.userImg : null,
-                        userName: (detail.userInfoVO && detail.userInfoVO.userName) ? detail.userInfoVO.userName : '',
-                        dec: '好物不独享，内有惊喜福利~'
-                    }}
-                        taskShareParams={{
-                        uri: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
-                        code: detail.showType === 1 ? 22 : 25,
-                        data: detail.showNo
-                    }}
-                        webJson={{
-                        title: (detail.showType === 1 ? detail.content : detail.title) || '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
-                        linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
-                        thumImage: detail.resource && detail.resource[0] && detail.resource[0].url
-                            ? detail.resource[0].url : '',//(分享图标小图(https链接)图文分享使用)
-                        dec: '好物不独享，内有惊喜福利~'
-                    }}
-                        /> : null}
-
-                        </View>;
+                                                   navigate={this.$navigate}/> : null
                     }
-                    }
+                </View>
+            </ScrollableTabView>
+            <IntervalMsgView pageType={IntervalType.xiuChang}/>
+            {detail ?
+                <CommShareModal ref={(ref) => this.shareModal = ref}
+                                type={'Show'}
+                                trackEvent={'ArticleShare'}
+                                trackParmas={{ articeCode: detail.code, articleTitle: detail.title }}
+                                imageJson={{
+                                    imageType: 'show',
+                                    imageUrlStr: detail.resource[0] ? detail.resource[0].url : '',
+                                    titleStr: detail.showType === 1 ? detail.content : detail.title,
+                                    QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
+                                    headerImage: (detail.userInfoVO && detail.userInfoVO.userImg) ? detail.userInfoVO.userImg : null,
+                                    userName: (detail.userInfoVO && detail.userInfoVO.userName) ? detail.userInfoVO.userName : '',
+                                    dec: '好物不独享，内有惊喜福利~'
+                                }}
+                                taskShareParams={{
+                                    uri: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
+                                    code: detail.showType === 1 ? 22 : 25,
+                                    data: detail.showNo
+                                }}
+                                webJson={{
+                                    title: (detail.showType === 1 ? detail.content : detail.title) || '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
+                                    thumImage: detail.resource && detail.resource[0] && detail.resource[0].url
+                                        ? detail.resource[0].url : '',//(分享图标小图(https链接)图文分享使用)
+                                    dec: '好物不独享，内有惊喜福利~'
+                                }}
+                /> : null}
 
-                    let styles = StyleSheet.create({
-                    container: {
-                    flex: 1
-                },
-                    underline: {
-                    height: 0
-                },
-                    tab: {
-                    height: 0,
-                    borderWidth: 0
-                },
-                    tabBar: {
-                    height: 0,
-                    borderWidth: 0
-                },
-                    header: {
-                    height: ScreenUtils.headerHeight,
-                    paddingTop: ScreenUtils.statusBarHeight,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    backgroundColor: '#fff'
-                },
-                    backImg: {
-                    height: 44,
-                    width: 45,
-                    paddingLeft: 15,
-                    flexDirection: 'row',
-                    alignItems: 'center'
-                },
-                    img: {
-                    height: 15,
-                    width: 15
-                },
-                    titleView: {
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    alignSelf: 'center'
-                },
-                    items: {
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    height: 44
-                },
-                    index: {
-                    color: DesignRule.textColor_secondTitle,
-                    fontSize: px2dp(13),
-                    fontWeight: '500'
-                },
-                    activityIndex: {
-                    color: DesignRule.mainColor,
-                    fontSize: px2dp(15),
-                    fontWeight: '600'
-                },
-                    line: {
-                    backgroundColor: DesignRule.mainColor,
-                    width: 20,
-                    height: 2,
-                    borderRadius: 1,
-                    position: 'absolute',
-                    bottom: 0
-                },
-                    userIcon: {
-                    width: px2dp(30),
-                    height: px2dp(30),
-                    borderRadius: px2dp(15)
-                }
-                });
+        </View>;
+    }
+}
+
+let styles = StyleSheet.create({
+    container: {
+        flex: 1
+    },
+    underline: {
+        height: 0
+    },
+    tab: {
+        height: 0,
+        borderWidth: 0
+    },
+    tabBar: {
+        height: 0,
+        borderWidth: 0
+    },
+    header: {
+        height: ScreenUtils.headerHeight,
+        paddingTop: ScreenUtils.statusBarHeight,
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#fff'
+    },
+    backImg: {
+        height: 44,
+        width: 45,
+        paddingLeft: 15,
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    img: {
+        height: 15,
+        width: 15
+    },
+    titleView: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        alignSelf: 'center'
+    },
+    items: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 44
+    },
+    index: {
+        color: DesignRule.textColor_secondTitle,
+        fontSize: px2dp(13),
+        fontWeight: '500'
+    },
+    activityIndex: {
+        color: DesignRule.mainColor,
+        fontSize: px2dp(15),
+        fontWeight: '600'
+    },
+    line: {
+        backgroundColor: DesignRule.mainColor,
+        width: 20,
+        height: 2,
+        borderRadius: 1,
+        position: 'absolute',
+        bottom: 0
+    },
+    userIcon: {
+        width: px2dp(30),
+        height: px2dp(30),
+        borderRadius: px2dp(15)
+    }
+});
