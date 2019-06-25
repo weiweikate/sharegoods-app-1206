@@ -1,5 +1,7 @@
 package com.meeruu.commonlib.umeng;
 
+import java.util.List;
+
 public class ShareImageBean {
     public String imageUrlStr;
     public String titleStr;
@@ -46,15 +48,15 @@ public class ShareImageBean {
         this.userName = userName;
     }
 
-    public String getPriceType() {
+    public List<String> getPriceType() {
         return priceType;
     }
 
-    public void setPriceType(String priceType) {
+    public void setPriceType(List<String> priceType) {
         this.priceType = priceType;
     }
 
-    public String priceType;
+    public List<String> priceType;
 
     public String getImageType() {
         return imageType;
