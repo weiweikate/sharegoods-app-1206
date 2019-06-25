@@ -60,7 +60,7 @@ export default class ProductListModal extends PureComponent {
                             ￥{data.originalPrice}
                         </MRText>
                         <View style={{ flex: 1 }}/>
-                        <NoMoreClick onPress={()=>{this.props.addCart(data.prodCode)}}>
+                        <NoMoreClick onPress={()=>{this.props.addCart(data)}}>
                         <Image source={addCarIcon} style={styles.carIcon}/>
                         </NoMoreClick>
                     </View>

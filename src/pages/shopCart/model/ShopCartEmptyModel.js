@@ -15,18 +15,13 @@ class ShopCartEmptyModel {
     @observable
     errorMsg = '';
     @observable
-    isEnd = false;
-
-    pageSize = 2;
-
+    isEnd = true;
+    pageSize = 10;
     page = 1;
-
     constructor(props) {
         this.createData();
     }
-
     createData = () => {
-
         this.emptyViewList.push(
             {
                 id: 0,
@@ -41,9 +36,8 @@ class ShopCartEmptyModel {
     isRefreshing = false;
     @action
     getRecommendProducts = (isRefresh = true) => {
-
         if (isRefresh) {
-            this.page = 0;
+            this.page = 1;
         } else {
             this.isFetching = true;
             this.page = this.page + 1;
@@ -56,13 +50,12 @@ class ShopCartEmptyModel {
                 let goodList = result.data || [];
                 let tempArr = [];
                 let newArr = [];
-
                 tempArr = goodList.map((goodItem, index) => {
                     return {
                         ...goodItem,
                         id: index,
                         type: EmptyViewTypes.recommendListItem,
-                        height: 168 + 98,
+                        height: 168 + 80,
                         imageHeight: 168
                     };
                 });
@@ -74,12 +67,13 @@ class ShopCartEmptyModel {
                         imageHeight: 168
                     });
                     newArr = newArr.concat(tempArr);
-                } else {
-                    if (goodList.length < this.pageSize) {
-                        this.isEnd = true;
-                    }
-                    newArr = newArr.concat([...this.emptyViewList.slice(), ...tempArr]);
                 }
+                // else {
+                //     if (goodList.length < this.pageSize) {
+                //         this.isEnd = true;
+                //     }
+                //     newArr = newArr.concat([...this.emptyViewList.slice(), ...tempArr]);
+                // }
                 this.emptyViewList = newArr;
                 console.log(result);
             }).catch(error => {
@@ -110,12 +104,13 @@ class ShopCartEmptyModel {
                         imageHeight: 168
                     });
                     newArr = newArr.concat(tempArr);
-                } else {
-                    if (goodList.length < this.pageSize) {
-                        this.isEnd = true;
-                    }
-                    newArr = newArr.concat([...this.emptyViewList.slice(), ...tempArr]);
                 }
+                // else {
+                //     if (goodList.length < this.pageSize) {
+                //         this.isEnd = true;
+                //     }
+                //     newArr = newArr.concat([...this.emptyViewList.slice(), ...tempArr]);
+                // }
                 this.emptyViewList = newArr;
                 console.log(result);
             }).catch(error => {
