@@ -13,6 +13,7 @@ import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-vi
 import ScreenUtils from '../../utils/ScreenUtils';
 
 const { px2dp } = ScreenUtils;
+import backIconImg from '../../comm/res/button/icon_header_back.png';
 import DesignRule from '../../constants/DesignRule';
 import { observer } from 'mobx-react';
 import {
@@ -34,7 +35,6 @@ import WhiteModel from './model/WhiteModel';
 import { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
 import { routeNavigate } from '../../navigation/RouterMap';
 import RouterMap from '../../navigation/RouterMap';
-import comm from '../../comm/res';
 
 const {
     mine_user_icon,
@@ -195,13 +195,10 @@ export default class ShowListPage extends BasePage {
     };
 
     _goMyDynamicPage = () => {
-        if (WhiteModel.userStatus !== 2) {
+        if (!user.isLogin) {
+            routeNavigate(RouterMap.LoginPage);
             return;
         }
-        // if (!user.isLogin) {
-        //     this.$navigate('login/login/LoginPage');
-        //     return;
-        // }
         this.$navigate(RouterMap.MyDynamicPage);
     };
 
@@ -241,7 +238,7 @@ export default class ShowListPage extends BasePage {
                     left
                         ?
                         <TouchableOpacity style={styles.backImg} onPress={() => this._onLeftPressed()}>
-                            <Image source={comm.button.icon_header_back} style={styles.img}/>
+                            <Image source={backIconImg} style={styles.img}/>
                         </TouchableOpacity>
                         :
                         null

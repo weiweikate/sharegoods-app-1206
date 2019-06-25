@@ -4,6 +4,7 @@ import {
 import user from '../../model/user';
 import DeviceInfo from 'react-native-device-info/deviceinfo';
 import chatModel from './QYChatModel';
+import QYApi from './QYApi';
 
 const { JRQYService } = NativeModules;
 
@@ -27,14 +28,34 @@ const QYChatTool = {
      * systemVersion:手机系统版本
      */
     initQYChat() {
-        let jsonParams = {
-            userId: user.code + '',
-            userIcon: user.headImg,
-            nickName: user.nickname,
-            device: DeviceInfo.getDeviceName(),
-            systemVersion: DeviceInfo.getSystemVersion()
-        };
-        JRQYService.initQYChat(jsonParams);
+
+        QYApi.judgeVip().then(result=>{
+
+            console.log(result);
+            let jsonParams = {
+                userId: user.code + '',
+                userIcon: user.headImg,
+                nickName: user.nickname,
+                device: DeviceInfo.getDeviceName(),
+                systemVersion: DeviceInfo.getSystemVersion(),
+                isVip:result.data
+            };
+            JRQYService.initQYChat(jsonParams);
+
+        }).catch(error=>{
+
+            console.log(error)
+            let jsonParams = {
+                userId: user.code + '',
+                userIcon: user.headImg,
+                nickName: user.nickname,
+                device: DeviceInfo.getDeviceName(),
+                systemVersion: DeviceInfo.getSystemVersion(),
+                isVip:false
+            };
+            JRQYService.initQYChat(jsonParams);
+        })
+
     },
 
     /**

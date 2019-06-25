@@ -162,7 +162,7 @@
   //分享/转发
   [_shareBtn addTarget:self action:@selector(tapShareBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.shareBtn.sd_layout.centerYEqualToView(self.zanBtn)
-  .rightSpaceToView(bgView,15)
+  .rightSpaceToView(bgView,10)
   .widthIs(70).heightIs(30);
 
   [bgView setupAutoHeightWithBottomView:self.shareBtn bottomMargin:5];
@@ -183,8 +183,8 @@
     }
   }
   if(imageUrl.length>0){
-    [self.picImg setImageWithURL:[NSURL URLWithString:[imageUrl getUrlAndWidth:SCREEN_WIDTH-60 height:(SCREEN_WIDTH-60)*0.56]] placeholder:[UIImage imageWithColor:[UIColor colorWithHexString:@"f5f5f5"]]];
     self.picImg.sd_layout.autoHeightRatio(0.56);
+    [self.picImg setImageWithURL:[NSURL URLWithString:[imageUrl getUrlAndWidth:SCREEN_WIDTH-60 height:(SCREEN_WIDTH-60)*0.56]] placeholder:[UIImage imageWithColor:[UIColor colorWithHexString:@"f5f5f5"]]];
     self.contentLab.text = model.title;
   }else{
     self.picImg.sd_layout.autoHeightRatio(0);
@@ -215,15 +215,15 @@
 
 -(NSString*)zanNumWithFormat:(NSInteger)count{
   NSString * num = @"";
-  if(count<=999){
-    num = [NSString stringWithFormat:@"%ld",count>0?count:0];
-  }else if(count<10000){
-    num = [NSString stringWithFormat:@"%ldK+",count>0?count/1000:0];
-  }else if(count<100000){
-    num = [NSString stringWithFormat:@"%ldW+",count>0?count/10000:0];
-  }else{
-    num = @"10W+";
-  }
+    if(count<=999){
+        num = [NSString stringWithFormat:@"%ld",count>0?count:0];
+    }else if(count<10000){
+        num = [NSString stringWithFormat:@"%ldK+",count>0?count/1000:0];
+    }else if(count<100000){
+        num = [NSString stringWithFormat:@"%ldW+",count>0?count/10000:0];
+    }else{
+        num = @"10W+";
+    }
   return num;
 }
 

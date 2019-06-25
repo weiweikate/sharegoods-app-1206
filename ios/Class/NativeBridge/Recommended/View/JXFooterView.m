@@ -119,7 +119,7 @@
   //分享/转发
   [_shareBtn addTarget:self action:@selector(tapShareBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.shareBtn.sd_layout.centerYEqualToView(self.zanBtn)
-     .rightSpaceToView(self, 0)
+     .rightSpaceToView(self, 10)
      .widthIs(70).heightIs(30);
 
   [self setupAutoHeightWithBottomView:self.zanBtn bottomMargin:0];
@@ -168,7 +168,7 @@
 
 -(void)setGoodsView{
     NSInteger len = self.products.count;
-    CGFloat width = len>0&&len<=1?(SCREEN_WIDTH-60):(SCREEN_WIDTH-95);
+    CGFloat width = len>0&&len<=1?(SCREEN_WIDTH-55):(SCREEN_WIDTH-90);
   self.scrollView.sd_layout.heightIs(0);
   if(len>0){
     self.scrollView.sd_layout

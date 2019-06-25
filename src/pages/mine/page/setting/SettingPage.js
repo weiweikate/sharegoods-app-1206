@@ -32,6 +32,8 @@ import StringUtils from '../../../../utils/StringUtils';
 import { QYChatTool } from '../../../../utils/QYModule/QYChatTool';
 import WhiteModel from '../../../show/model/WhiteModel';
 import store from '@mr/rn-store';
+import SettingModel from '../../model/SettingModel'
+import { observer } from 'mobx-react';
 import { forceToHome } from '../../../../navigation/RouterMap';
 import RouterMap from '../../../../navigation/RouterMap';
 
@@ -45,6 +47,7 @@ import RouterMap from '../../../../navigation/RouterMap';
 
 const arrow_right = res.button.arrow_right;
 
+@observer
 class SettingPage extends BasePage {
     constructor(props) {
         super(props);
@@ -135,11 +138,72 @@ class SettingPage extends BasePage {
                         <Image source={arrow_right}/>
                     </TouchableOpacity>
                     {this.renderLine()}
+                    <View style={{height:10,width:1}}/>
+
                     <TouchableOpacity style={styles.viewStyle}
                                       onPress={() => this.getNewVersion()}>
                         <UIText value={'版本检测'} style={[styles.blackText, { flex: 1 }]}/>
                         <UIText value={'当前版本v' + this.state.version}
                                 style={{ fontSize: 13, color: DesignRule.textColor_secondTitle }}/>
+                    </TouchableOpacity>
+                    {this.renderLine()}
+                    <View style={{
+                        height: 15,
+                        backgroundColor: DesignRule.bgColor,
+                    }}/>
+                    <TouchableOpacity style={styles.viewStyle}>
+                        <UIText value={'通过短信联系我'} style={styles.blackText}/>
+                        <Switch value={SettingModel.messageState}
+                                onTintColor={'#00D914'}
+                                thumbTintColor={Platform.OS === 'android' ? 'white' : ''}
+                                tintColor={DesignRule.textColor_hint}
+                                onValueChange={() => {
+                                    if(SettingModel.messageState) {
+
+                                        Alert.alert('确认关闭', '若关闭短信通道，你的秀迷将不能再通过发送短信联系您哦~',
+                                            [
+                                                {
+                                                    text: '取消', onPress: () => {
+                                                    }
+                                                },
+                                                {
+                                                    text: '确定', onPress: () => {
+                                                        SettingModel.messageClick();
+                                                    }
+                                                }
+                                            ]
+                                        );
+                                    }else {
+                                        SettingModel.messageClick();
+                                    }
+                                }}/>
+                    </TouchableOpacity>
+
+                    {this.renderLine()}
+                    <TouchableOpacity style={styles.viewStyle}>
+                        <UIText value={'展示微信号'} style={styles.blackText}/>
+                        <Switch value={SettingModel.WXChatState}
+                                onTintColor={'#00D914'}
+                                thumbTintColor={Platform.OS === 'android' ? 'white' : ''}
+                                tintColor={DesignRule.textColor_hint}
+                                onValueChange={() => {
+                                    if(SettingModel.WXChatState){
+                                        Alert.alert('确认关闭', '若关闭微信通道，你的秀迷将不能通过微信联系到您哦～',
+                                            [
+                                                {
+                                                    text: '取消', onPress: () => {
+                                                    }
+                                                },
+                                                {
+                                                    text: '确定', onPress: () => {
+                                                        SettingModel.wxChatClick();                                                }
+                                                }
+                                            ]
+                                        );
+                                    }else {
+                                        SettingModel.wxChatClick();
+                                    }
+                                }}/>
                     </TouchableOpacity>
                 </View>
                 <TouchableOpacity style={{
@@ -200,6 +264,7 @@ class SettingPage extends BasePage {
             });
         }
     };
+
     renderWideLine = () => {
         return (
             <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
