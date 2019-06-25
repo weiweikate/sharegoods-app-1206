@@ -420,10 +420,20 @@ const ServiceItemViewStyles = StyleSheet.create({
 * */
 export class ParamItemView extends Component {
     render() {
-        const { paramAction } = this.props;
+        const { paramAction, productDetailModel } = this.props;
+        const { paramList } = productDetailModel;
+        const paramNames = paramList.map((item, index) => {
+            if (index > 1) {
+                return null;
+            }
+            return item.paramName;
+        });
         return (
             <NoMoreClick style={ParamItemViewStyles.paramView} onPress={paramAction}>
                 <Text style={ParamItemViewStyles.paramText}>参数</Text>
+                <View style={{ flex: 1, justifyContent: 'center', marginLeft: 10 }}>
+                    <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: 13 }}>{paramNames.join(' ')}</Text>
+                </View>
                 <Image source={arrow_right_black}/>
             </NoMoreClick>
         );
