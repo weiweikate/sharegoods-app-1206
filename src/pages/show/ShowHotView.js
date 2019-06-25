@@ -169,9 +169,9 @@ export default class ShowHotView extends React.Component {
                                                index: nativeEvent.index
                                            };
                                            if (nativeEvent.showType === 1 || nativeEvent.showType === 3) {
-                                               navigate('show/ShowDetailPage', params);
+                                               navigate(RouterMap.ShowDetailPage, params);
                                            } else {
-                                               navigate('show/ShowRichTextDetailPage', params);
+                                               navigate(RouterMap.ShowRichTextDetailPage, params);
                                            }
 
                                            const { showNo , userInfoVO } = nativeEvent;

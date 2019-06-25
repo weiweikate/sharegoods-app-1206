@@ -246,7 +246,7 @@ export default class ReleaseNotesPage extends BasePage {
         });
         return (
             <TouchableWithoutFeedback onPress={() => {
-                this.$navigate('show/ShowProductListPage', {
+                this.$navigate(RouterMap.ShowProductListPage, {
                     spus,
                     callBack: (value) => {
                         let arr = this.state.products;

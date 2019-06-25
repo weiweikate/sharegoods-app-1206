@@ -232,7 +232,7 @@ export default class ProductDetailPage extends BasePage {
                                         }}/>;
             }
             case productItemType.param: {
-                return <ParamItemView paramAction={() => {
+                return <ParamItemView productDetailModel={this.productDetailModel} paramAction={() => {
                     this.DetailParamsModal.show(this.productDetailModel);
                 }}/>;
             }

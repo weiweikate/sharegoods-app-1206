@@ -114,8 +114,8 @@ function backToHome() {
 
 // 跳转到秀场tab
 function backToShow(index = -1) {
-    DeviceEventEmitter.emit('PublishShowFinish', index);
     GoToTabItem(1);
+    DeviceEventEmitter.emit('PublishShowFinish', index);
 }
 
 // 跳转到拼店tab
