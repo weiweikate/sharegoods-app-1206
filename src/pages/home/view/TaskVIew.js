@@ -471,7 +471,7 @@ export default class TaskVIew extends React.Component {
                                      alignItems: 'center',
                                      justifyContent: 'center',
                                  }}>
-                    <MRText style={{color: '#FF0050', fontSize: fontSize, fontWeight: '600', marginBottom: autoSizeWidth(10)}}>{progress}</MRText>
+                    <MRText style={{color: '#FF0050', fontSize: fontSize, fontWeight: '600', marginBottom: autoSizeWidth(14)}}>{progress}</MRText>
                 </ImageBackground>
                 <TaskModalView type={type}/>
             </View>
