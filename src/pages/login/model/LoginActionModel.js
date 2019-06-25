@@ -13,7 +13,7 @@ import { login, TrackApi } from '../../../utils/SensorsTrack';
 import JPushUtils from '../../../utils/JPushUtils';
 import DeviceInfo from 'react-native-device-info/deviceinfo';
 import { DeviceEventEmitter } from 'react-native';
-import RouterMap, { navigateBack, routePush } from '../../../navigation/RouterMap';
+import RouterMap, { loginBack, routePush } from '../../../navigation/RouterMap';
 import { track } from '../../../utils/SensorsTrack';
 import StringUtils from '../../../utils/StringUtils';
 
@@ -37,10 +37,10 @@ const oneClickLoginValidation = (phone, authenToken, navigation, successCallBack
         }
         if (result.data.regNow) {
             //新用户
-            routePush(RouterMap.InviteCodePage,{})
+            routePush(RouterMap.InviteCodePage, {});
         } else {
             //老用户
-            navigateBack()
+            loginBack();
         }
 
         UserModel.saveUserInfo(result.data);

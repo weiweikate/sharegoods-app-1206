@@ -402,7 +402,6 @@ export default class FlyImageViewer extends Component {
             imageStatus.width = ScreenUtils.width;
         }
         return imageStatus;
-
     };
 
 

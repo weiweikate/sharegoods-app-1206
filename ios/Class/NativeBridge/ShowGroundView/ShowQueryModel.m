@@ -39,7 +39,7 @@
 + (nullable NSDictionary<NSString *, id> *)modelContainerPropertyGenericClass{
   return @{
            @"products" : @"ProductsModel",
-           @"sources" : @"ResourceModel",
+           @"resource" : @"ResourceModel",
            };
 }
 
@@ -61,8 +61,14 @@
 - (NSString *)showImage
 {
   NSString * showImage = @"";
-  if([self.resource[0] valueForKey:@"url"]){
-    showImage = [self.resource[0] valueForKey:@"url"];
+  if(self.showType&&self.showType == 3){
+    for(int i=0;i<self.resource.count;i++){
+      if(self.resource[i].type==5 && [self.resource[i] valueForKey:@"baseUrl"]){
+      showImage = [self.resource[i] valueForKey:@"baseUrl"];
+      }
+    }
+  }else if([self.resource[0] valueForKey:@"baseUrl"]){
+    showImage = [self.resource[0] valueForKey:@"baseUrl"];
   }
   return showImage;
 }

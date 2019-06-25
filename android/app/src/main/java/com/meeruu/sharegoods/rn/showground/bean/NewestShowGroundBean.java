@@ -121,6 +121,35 @@ public class NewestShowGroundBean {
         private List<ProductsBean> products;
         private List<ResourceBean> resource;
         private List<ImageInfo> nineImageInfos;
+        private ImageInfo videoCover;
+        private boolean owner;
+        private int createSource;
+
+        public ImageInfo getVideoCover() {
+            return videoCover;
+        }
+
+        public void setVideoCover(ImageInfo videoCover) {
+            this.videoCover = videoCover;
+        }
+
+        public int getCreateSource() {
+            return createSource;
+        }
+
+        public void setCreateSource(int createSource) {
+            this.createSource = createSource;
+        }
+
+        public boolean isOwner() {
+            return owner;
+        }
+
+        public void setOwner(boolean owner) {
+            this.owner = owner;
+        }
+
+
 
         public List<ImageInfo> getNineImageInfos() {
             return nineImageInfos;
@@ -661,6 +690,42 @@ public class NewestShowGroundBean {
 
             private int type;
             private String url;
+            private String baseUrl;
+            private double width;
+            private double height;
+            private long videoTime;
+
+            public String getBaseUrl() {
+                return baseUrl;
+            }
+
+            public void setBaseUrl(String baseUrl) {
+                this.baseUrl = baseUrl;
+            }
+
+            public double getWidth() {
+                return width;
+            }
+
+            public void setWidth(double width) {
+                this.width = width;
+            }
+
+            public double getHeight() {
+                return height;
+            }
+
+            public void setHeight(double height) {
+                this.height = height;
+            }
+
+            public long getVideoTime() {
+                return videoTime;
+            }
+
+            public void setVideoTime(long videoTime) {
+                this.videoTime = videoTime;
+            }
 
             public int getType() {
                 return type;

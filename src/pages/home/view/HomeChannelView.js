@@ -6,7 +6,8 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     View,
-    TouchableOpacity
+    TouchableOpacity,
+    Image
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
@@ -14,7 +15,6 @@ import { channelModules } from '../model/HomeChannelModel';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
 import { MRText as Text } from '../../../components/ui/index';
-import ImageLoad from '@mr/image-placeholder';
 import { homeModule } from '../model/Modules';
 import RouterMap, { routeNavigate, routePush } from '../../../navigation/RouterMap';
 import user from '../../../model/user';
@@ -30,7 +30,7 @@ class Item extends Component {
         const { image, title } = this.props.data;
         let source = { uri: image };
         return <TouchableOpacity style={styles.item} onPress={() => onPress(data)}>
-            <ImageLoad style={styles.icon} showPlaceholder={false} source={source}/>
+            <Image style={styles.icon} showPlaceholder={false} source={source}/>
             <Text style={styles.name} allowFontScaling={false} numberOfLines={1}>{title}</Text>
         </TouchableOpacity>;
     }

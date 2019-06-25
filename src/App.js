@@ -100,7 +100,6 @@ class App extends Component {
         apiEnvironment.loadLastApiSettingFromDiskCache();
         user.readUserInfoFromDisk();
         global.$routes = [];
-
     }
 
     componentDidMount() {

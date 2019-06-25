@@ -15,6 +15,7 @@ import user from '../../../../model/user';
 import apiEnvironment from '../../../../api/ApiEnvironment';
 import spellStatusModel from '../../model/SpellStatusModel';
 import bridge from '../../../../utils/bridge';
+import { getSource } from '@mr/image-placeholder/oos';
 
 const { myShop } = shopRes;
 const { shopProduct, shopProductShare } = myShop;
@@ -286,7 +287,8 @@ class ShopDetailImageView extends Component {
             return null;
         }
         return <TouchableWithoutFeedback onPress={onPress}>
-            <Image source={{ uri: item }} style={{ width, height }}/>
+            <Image source={getSource({ uri: item }, ScreenUtils.width, height, 'lfit')}
+                   style={{ width, height }}/>
         </TouchableWithoutFeedback>;
     }
 }

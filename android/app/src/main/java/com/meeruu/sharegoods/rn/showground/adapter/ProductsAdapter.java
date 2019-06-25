@@ -64,6 +64,9 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.VH> {
     public void onBindViewHolder(@NonNull final VH vh, int i) {
         final AddCartListener addCartListener = this.addCartListener;
         final NewestShowGroundBean.DataBean.ProductsBean bean = this.mDatas.get(i);
+        if(bean == null){
+            return;
+        }
         vh.name.setText(bean.getName());
         String url = bean.getImgUrl();
         String tag = (String) vh.productImg.getTag();

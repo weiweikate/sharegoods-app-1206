@@ -21,5 +21,7 @@ const cashAccountImg = {
     xiaofei_icon: require('./zhanghu_icon_xiaofei.png'),
     zengsong_icon:require('./zhanghu_icon_zengsong.png'),
     writer_icon:require('./writer_icon.png'),
+    cash_noData:require('./noData.png'),
+
 };
 export default cashAccountImg;

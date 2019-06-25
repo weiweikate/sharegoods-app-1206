@@ -11,12 +11,13 @@
 @property(nonatomic, copy)NSString * imageType;// product\web\show
 @property(nonatomic, copy)NSString * imageUrlStr;
 @property(nonatomic, copy)NSString * titleStr;
-@property(nonatomic, copy)NSString * priceType;
+@property(nonatomic, strong)NSArray * priceType;
 @property(nonatomic, copy)NSString * priceStr;
 @property(nonatomic, copy)NSString * retailPrice;
 @property(nonatomic, copy)NSString * spellPrice;
 @property(nonatomic, copy)NSString * QRCodeStr;
 @property(nonatomic, copy)NSString * shareMoney;
+@property(nonatomic, assign)NSInteger monthSaleType;
 
 @property(nonatomic, copy)NSString * originalPrice;
 @property(nonatomic, copy)NSString * currentPrice;
