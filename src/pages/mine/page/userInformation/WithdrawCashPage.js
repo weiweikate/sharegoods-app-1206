@@ -25,13 +25,14 @@ import EmptyUtils from '../../../../utils/EmptyUtils';
 import { PageLoadingState } from '../../../../components/pageDecorator/PageState';
 import WithdrawFinishModal from './Modal/WithdrawFinishModal';
 import DateUtils from '../../../../utils/DateUtils';
+import RouterMap from '../../../../navigation/RouterMap';
 
 const arrow_right = res.button.arrow_right_black;
 const bank = res.bankCard.bankcard_icon;
 const delete_icon = res.bankCard.delete_icon;
 const singleCommit = 10000;
 
-function number_format(number, decimals, dec_point, thousands_sep,roundtag) {
+function number_format(number, decimals, dec_point, thousands_sep, roundtag) {
     /*
     * 参数说明：
     * number：要格式化的数字
@@ -47,7 +48,7 @@ function number_format(number, decimals, dec_point, thousands_sep,roundtag) {
         sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
         dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
         s = '',
-        toFixedFix = function (n, prec) {
+        toFixedFix = function(n, prec) {
 
             let k = Math.pow(10, prec);
             console.log();
@@ -66,6 +67,7 @@ function number_format(number, decimals, dec_point, thousands_sep,roundtag) {
     }
     return s.join(dec);
 }
+
 function formatMoneyString(num, needSymbol = true) {
     let temp = (isNoEmpty(num) ? num : 0) + '';
     if (temp.indexOf('.') === -1) {
@@ -112,9 +114,9 @@ export default class WithdrawCashPage extends BasePage {
             balance: null,
             multiple: null,
             errorTip: null,
-            withdrawApplyConfigVOList:[],
-            count:null,
-            currentTime:null
+            withdrawApplyConfigVOList: [],
+            count: null,
+            currentTime: null
         };
         this.rate = null;
         this.minCount = null;
@@ -193,7 +195,6 @@ export default class WithdrawCashPage extends BasePage {
     }
 
 
-
     _getRate() {
         MineAPI.queryRate().then((data) => {
             this.rate = null;
@@ -239,9 +240,9 @@ export default class WithdrawCashPage extends BasePage {
                 endDay: data.data.endDay,
                 balance: data.data.balance,
                 multiple: data.data.multiple,
-                count:data.data.count,
-                withdrawApplyConfigVOList:data.data.withdrawApplyConfigVOList || [],
-                currentTime:data.data.nowTime
+                count: data.data.count,
+                withdrawApplyConfigVOList: data.data.withdrawApplyConfigVOList || [],
+                currentTime: data.data.nowTime
             });
 
             if (this.getLastBankInfoSuccess && this.getRateSuccess) {
@@ -259,23 +260,23 @@ export default class WithdrawCashPage extends BasePage {
         });
     }
 
-    numInList=(num,list)=>{
-        if(EmptyUtils.isEmptyArr(list)){
+    numInList = (num, list) => {
+        if (EmptyUtils.isEmptyArr(list)) {
             return false;
         }
 
-        if(EmptyUtils.isEmpty(num)){
+        if (EmptyUtils.isEmpty(num)) {
             return false;
         }
 
 
-    }
+    };
 
     forgetTransactionPassword = () => {
         this.setState({
             isShowModal: false
         });
-        this.$navigate('mine/account/JudgePhonePage', { title: '设置交易密码' });
+        this.$navigate(RouterMap.JudgePhonePage, { title: '设置交易密码' });
     };
 
     _render() {
@@ -304,7 +305,7 @@ export default class WithdrawCashPage extends BasePage {
                 />
                 <WithdrawFinishModal visible={this.state.showFinishModal} onRequestClose={() => {
                     this.setState({ showFinishModal: false });
-                    this.$navigateBack('mine/userInformation/MyCashAccountPage');
+                    this.$navigateBack(RouterMap.MyCashAccountPage);
                 }}/>
             </View>
         );
@@ -322,15 +323,15 @@ export default class WithdrawCashPage extends BasePage {
     };
     renderButtom = () => {
         let dayInList = false;
-        if(EmptyUtils.isEmptyArr(this.state.withdrawApplyConfigVOList)){
+        if (EmptyUtils.isEmptyArr(this.state.withdrawApplyConfigVOList)) {
             dayInList = true;
         }
         let dateTime = new Date(parseInt(this.state.currentTime));
         let day = dateTime.getDate();
-        for(let i = 0;i<this.state.withdrawApplyConfigVOList.length;i++){
+        for (let i = 0; i < this.state.withdrawApplyConfigVOList.length; i++) {
             let from = this.state.withdrawApplyConfigVOList[i].from;
             let to = this.state.withdrawApplyConfigVOList[i].to;
-            if(day >= from && day <= to){
+            if (day >= from && day <= to) {
                 dayInList = true;
                 break;
             }
@@ -355,50 +356,55 @@ export default class WithdrawCashPage extends BasePage {
         );
     };
 
-    renderArrive =()=>{
-        if(this.state.currentTime){
+    renderArrive = () => {
+        if (this.state.currentTime) {
             let dateTime = new Date(parseInt(this.state.currentTime));
             let show = false;
-            if(EmptyUtils.isEmptyArr(this.state.withdrawApplyConfigVOList)){
+            if (EmptyUtils.isEmptyArr(this.state.withdrawApplyConfigVOList)) {
                 show = true;
-            }else {
+            } else {
                 let day = dateTime.getDate();
-                for(let i = 0;i<this.state.withdrawApplyConfigVOList.length;i++){
+                for (let i = 0; i < this.state.withdrawApplyConfigVOList.length; i++) {
                     let from = this.state.withdrawApplyConfigVOList[i].from;
                     let to = this.state.withdrawApplyConfigVOList[i].to;
-                    if(day >= from && day <= to){
+                    if (day >= from && day <= to) {
                         show = true;
                         break;
                     }
                 }
             }
-            if(!show){
+            if (!show) {
                 return null;
             }
 
 
-            dateTime=dateTime.setDate(dateTime.getDate()+25);
+            dateTime = dateTime.setDate(dateTime.getDate() + 25);
 
-            return(
-                <View style={{ padding:DesignRule.margin_page,marginVertical:10,backgroundColor:DesignRule.white}}>
-                    <MRText style={{ color: DesignRule.textColor_secondTitle,
-                        fontSize: DesignRule.fontSize_threeTitle}}>
+            return (
+                <View
+                    style={{ padding: DesignRule.margin_page, marginVertical: 10, backgroundColor: DesignRule.white }}>
+                    <MRText style={{
+                        color: DesignRule.textColor_secondTitle,
+                        fontSize: DesignRule.fontSize_threeTitle
+                    }}>
                         到账时间
                     </MRText>
-                    <MRText  style={{ color: DesignRule.textColor_secondTitle,
-                        fontSize: DesignRule.fontSize_threeTitle,marginTop:5}}>
-                        {`预计${DateUtils.formatDate(dateTime,'MM月dd日')}（25天后）23:59前到账`}
+                    <MRText style={{
+                        color: DesignRule.textColor_secondTitle,
+                        fontSize: DesignRule.fontSize_threeTitle, marginTop: 5
+                    }}>
+                        {`预计${DateUtils.formatDate(dateTime, 'MM月dd日')}（25天后）23:59前到账`}
                     </MRText>
                 </View>
-            )
-        }else {
+            );
+        } else {
             return null;
         }
-    }
+    };
 
     renderTip = () => {
 
-        let tip2index = 1,tip3Index = 1,tip4Index = 1;
+        let tip2index = 1, tip3Index = 1, tip4Index = 1;
         if (this.state.balance !== null) {
             tip4Index++;
             tip3Index++;
@@ -410,31 +416,30 @@ export default class WithdrawCashPage extends BasePage {
 
         let dateTip = null;
 
-        if(!EmptyUtils.isEmptyArr(this.state.withdrawApplyConfigVOList)){
-            let dataArr = this.state.withdrawApplyConfigVOList.map((value)=>{
-                if(value.from === value.to){
+        if (!EmptyUtils.isEmptyArr(this.state.withdrawApplyConfigVOList)) {
+            let dataArr = this.state.withdrawApplyConfigVOList.map((value) => {
+                if (value.from === value.to) {
                     return `${value.from}号`;
-                }else {
+                } else {
                     return `${value.from}--${value.to}号`;
                 }
-            })
-            dateTip = `1.提现申请时间为每月${dataArr.join('、')}；`
+            });
+            dateTip = `1.提现申请时间为每月${dataArr.join('、')}；`;
         }
 
-        if(this.state.count){
-            if(dateTip){
-                dateTip+=`\n每月只能申请提现${this.state.count}次`
-            }else {
-                dateTip=`1:每月只能申请提现${this.state.count}次`
+        if (this.state.count) {
+            if (dateTip) {
+                dateTip += `\n每月只能申请提现${this.state.count}次`;
+            } else {
+                dateTip = `1:每月只能申请提现${this.state.count}次`;
             }
         }
 
-        if(dateTip){
+        if (dateTip) {
             tip4Index++;
             tip3Index++;
             tip2index++;
         }
-
 
 
         return (
@@ -485,12 +490,12 @@ export default class WithdrawCashPage extends BasePage {
     };
 
     checkError = (money) => {
-        if(money === null){
+        if (money === null) {
             this.setState({ errorTip: null });
             return;
         }
 
-        if(money.length === 0){
+        if (money.length === 0) {
             this.setState({ errorTip: null });
             return;
         }
@@ -550,7 +555,7 @@ export default class WithdrawCashPage extends BasePage {
             if (!EmptyUtils.isEmpty(this.state.rate)) {
                 // tip2 = `可提现，额外扣除￥${Math.ceil(accMul(this.state.rate / 100, parseFloat(this.state.money)) * 100) / 100}手续费(费率${this.state.rate}%)`;
                 let num = math.eval(`${this.state.rate} * ${this.state.money} / 100 `);
-                tip2 = `可提现，额外扣除￥${number_format(num,2,'.','','ceil')}服务费(费率${this.state.rate}%)`;
+                tip2 = `可提现，额外扣除￥${number_format(num, 2, '.', '', 'ceil')}服务费(费率${this.state.rate}%)`;
             } else {
                 tip2 = '可提现，无服务费';
             }
@@ -689,22 +694,22 @@ export default class WithdrawCashPage extends BasePage {
     };
 
 
-    authNum=(text)=>{
-        if(text === null){
-            return true
-        }
-        if(text.length === 0){
+    authNum = (text) => {
+        if (text === null) {
             return true;
         }
-        if(/^-?\d+\.?\d{0,2}$/.test(text)){
-            return true
-        }else {
-            return false
+        if (text.length === 0) {
+            return true;
         }
-    }
+        if (/^-?\d+\.?\d{0,2}$/.test(text)) {
+            return true;
+        } else {
+            return false;
+        }
+    };
 
     onChangeText = (text) => {
-        if(this.authNum(text)){
+        if (this.authNum(text)) {
             this.checkError(text);
             this.setState({ money: text });
         }
@@ -726,7 +731,7 @@ export default class WithdrawCashPage extends BasePage {
                 }
             }, {
                 text: '马上就去', onPress: () => {
-                    this.$navigate('mine/userInformation/IDVertify2Page');
+                    this.$navigate(RouterMap.IDVertify2Page);
                 }
             }]);
             return;
@@ -738,7 +743,7 @@ export default class WithdrawCashPage extends BasePage {
                 }
             }, {
                 text: '马上就去', onPress: () => {
-                    this.$navigate('mine/account/JudgePhonePage', { title: '设置交易密码' });
+                    this.$navigate(RouterMap.JudgePhonePage, { title: '设置交易密码' });
                 }
             }]);
             return;
@@ -750,7 +755,7 @@ export default class WithdrawCashPage extends BasePage {
         this.passwordView.open();
     };
     selectBankCard = () => {
-        this.$navigate('mine/bankCard/BankCardListPage', {
+        this.$navigate(RouterMap.BankCardListPage, {
             callBack: (params) => {
                 this.setState({
                     card_no: params.cardNo,

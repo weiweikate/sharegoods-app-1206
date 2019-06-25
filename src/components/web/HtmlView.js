@@ -42,6 +42,7 @@ export default class RequestDetailPage extends BasePage {
         this.canGoBack = false;
         let realUri = '';
         let platform = Platform.OS;
+        this.openShareModal = this.params.openShareModal || false;
         let app_version = DeviceInfo.getVersion();
         let app_name = DeviceInfo.getBundleId();
         let parmasString = 'platform=' + platform +
@@ -236,6 +237,10 @@ export default class RequestDetailPage extends BasePage {
 
                     // onLoadStart={() => this._onLoadStart()}
                     onLoadEnd={(event) => {
+                        if (this.openShareModal){
+                            this.openShareModal = false;
+                            this.webView && this.webView.sendToBridge(JSON.stringify({ action: 'openShareModal' }));
+                        }
                         if (event && event.nativeEvent) {
                             this.canGoBack = event.nativeEvent.canGoBack;
                             this.$NavigationBarResetTitle(this.state.title || event.nativeEvent.title);

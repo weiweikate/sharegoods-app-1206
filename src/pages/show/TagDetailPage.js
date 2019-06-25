@@ -24,6 +24,7 @@ import ImageLoad from '@mr/image-placeholder';
 import ShowUtils from './utils/ShowUtils';
 import CommShareModal from '../../comm/components/CommShareModal';
 import apiEnvironment from '../../api/ApiEnvironment';
+import RouterMap from '../../navigation/RouterMap';
 
 const { iconShowShare, iconShowFire } = res;
 const { px2dp } = ScreenUtils;
@@ -136,9 +137,9 @@ export default class TagDetailPage extends BasePage {
         return (
             <TouchableWithoutFeedback onPress={() => {
                 if (itemData.showType === 1 || itemData.showType === 3) {
-                    this.$navigate('show/ShowDetailPage', { code: itemData.showNo });
+                    this.$navigate(RouterMap.ShowDetailPage, { code: itemData.showNo });
                 } else {
-                    this.$navigate('show/ShowRichTextDetailPage', { code: itemData.showNo });
+                    this.$navigate(RouterMap.ShowRichTextDetailPage, { code: itemData.showNo });
                 }
             }}>
                 <View style={{
@@ -216,7 +217,7 @@ export default class TagDetailPage extends BasePage {
                         />
                     }/>
                 <CommShareModal ref={(ref) => this.shareModal = ref}
-
+                                defaultModalVisible={this.params.openShareModal}
                                 webJson={{
                                     linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/aTag/list?tagId=${this.params.tagId}`,//(图文分享下的链接)
                                     title: this.params.name || '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
