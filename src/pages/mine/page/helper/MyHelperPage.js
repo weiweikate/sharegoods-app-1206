@@ -32,8 +32,8 @@ const {
     icon_tuikuan,
     icon_feedback,
     icon_auto_feedback,
-    icon_kefu
 } = res.helperAndCustomerService;
+const  icon_kefu = res.button.icon_kefu;
 import user from "../../../../model/user";
 import { observer } from "mobx-react";
 import OssHelper from "../../../../utils/OssHelper";
