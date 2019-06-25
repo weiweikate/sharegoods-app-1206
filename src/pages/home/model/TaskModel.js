@@ -41,7 +41,7 @@ class TaskModel {
     @observable
     tasks = [];
     @observable
-    hideFinishTask = true;
+    hideFinishTask = false;
     @observable
     advMsg = '';
     @observable
@@ -51,6 +51,8 @@ class TaskModel {
     openAlert = false;
     @observable
     alertData = [];
+    @observable
+    canOpenProgress = -1;
 
     @action
     getLocationExpanded() {
@@ -69,12 +71,6 @@ class TaskModel {
         HomeApi.getMissionActivity({ activityType: this.type === 'home' ? activity_mission_main_no : activity_mission_daily_no }).then((result) => {
             let data = result.data || {};
             this.progress = data.activityValue || 0;
-            if (this.progress >= 10 && this.progress<100) {
-                this.progress = parseInt((this.progress*10 + ''))/10
-            }
-            if (this.progress >= 100){
-                this.progress = parseInt((this.progress + ''))
-            }
             this.boxs = data.ruleList || [];
             let tasks = data.missionList || [];
             this.tasks = this.sort(tasks);
@@ -96,6 +92,7 @@ class TaskModel {
             if (this.type === 'home') {
                 this.calculateHomeHeight();
             }
+            this.findCanOpenProgress();
         }).catch(() => {
             this.show = false;
             if (this.type === 'home') {
@@ -103,6 +100,18 @@ class TaskModel {
             }
         });
     }
+
+    @action
+    findCanOpenProgress(){
+        let canOpenProgress = -1
+        this.boxs.forEach(item => {
+            if (canOpenProgress === -1 && item.prizeStatus === 1) {
+                canOpenProgress = item.value;
+            }
+        })
+        this.canOpenProgress = canOpenProgress;
+    }
+
 
     sort(data) {
         if (data.length < 2) {
@@ -160,6 +169,7 @@ class TaskModel {
             });
             this.openAlert = true;
             this.alertData = data.data.prizeList || [];
+            this.findCanOpenProgress();
             bridge.hiddenLoading();
         }).catch(err => {
             bridge.$toast(err.msg);

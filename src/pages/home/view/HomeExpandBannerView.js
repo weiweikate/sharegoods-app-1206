@@ -7,7 +7,7 @@ import { observer } from 'mobx-react';
 import bridge from '../../../utils/bridge';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { homePoint } from '../HomeTypes';
-import { getSource } from '@mr/image-placeholder/oos';
+// import { getSource } from '@mr/image-placeholder/oos';
 
 const { px2dp } = ScreenUtils;
 
@@ -42,7 +42,7 @@ export default class HomeExpandBannerView extends Component {
                     <TouchableWithoutFeedback onPress={() => this._adAction(val, index)} key={'banner' + index}>
                         <Image
                             style={[styles.bannerImage, { height: imgHeight }]}
-                            source={getSource({ uri: url }, ScreenUtils.width, imgHeight, 'lfit')}/>
+                            source={{ uri: url }}/>
                     </TouchableWithoutFeedback>
                 );
             }

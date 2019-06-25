@@ -61,6 +61,7 @@ const {
     red_bg,
     gary_bg,
     current_p,
+    inform
 } = res.task;
 
 
@@ -269,7 +270,7 @@ export default class TaskVIew extends React.Component {
         );
     }
 
-    renderTitle(type) {
+    renderTitle() {
 
         return (
             <View style={[styles.header, { height: autoSizeWidth(40), paddingHorizontal: 15 }]}>
@@ -278,10 +279,11 @@ export default class TaskVIew extends React.Component {
                     color: '#333333',
                     fontWeight: '600'
                 }}>{this.model.name}</MRText>
+                <UIImage source={inform} style={{width: autoSizeWidth(15),height: autoSizeWidth(13), marginLeft: autoSizeWidth(5)}}/>
                 <MRText style={{
                     fontSize: autoSizeWidth(10),
                     color: '#333333',
-                    marginLeft: 5
+                    marginLeft: autoSizeWidth(5)
                 }}>{this.model.advMsg}</MRText>
             </View>
         );
@@ -328,15 +330,18 @@ export default class TaskVIew extends React.Component {
                                     })
                                 }
                             </View>
-                            <UIImage source={task_run_people}
-                                     style={{
-                                         position: 'absolute',
-                                         left: progress * autoSizeWidth(290) - autoSizeWidth(15),
-                                         width: autoSizeWidth(22),
-                                         height: autoSizeWidth(15),
-                                         top: 0
-                                     }}
-                            />
+                            {
+                                this.model.canOpenProgress !== -1?  <UIImage source={task_run_people}
+                                                                             style={{
+                                                                                 position: 'absolute',
+                                                                                 left: this.model.canOpenProgress/this.model.totalProgress * autoSizeWidth(290) - autoSizeWidth(5),
+                                                                                 width: autoSizeWidth(25),
+                                                                                 height: autoSizeWidth(23),
+                                                                                 top: autoSizeWidth(20)
+                                                                             }}
+                                /> : null
+                            }
+
                         </View>
                 </View>
             </View>
@@ -400,9 +405,9 @@ export default class TaskVIew extends React.Component {
                               onPress={() => this.model.expandedClick()}
             >
                 <MRText style={{ fontSize: autoSizeWidth(10), color: DesignRule.mainColor }}>{this.model.expanded ?
-                    '收起任务列表' : '隐藏已完成任务 '}</MRText>
+                    '收起任务列表' : '做任务赚活跃值'}</MRText>
                 <UIImage source={this.model.expanded ? arrow_red_top : arrow_red_bottom}
-                         style={{ height: autoSizeWidth(6), width: autoSizeWidth(11) }}/>
+                         style={{ height: autoSizeWidth(6), width: autoSizeWidth(11), marginLeft: 3 }}/>
             </TouchableOpacity>
         )
     }
@@ -444,9 +449,6 @@ export default class TaskVIew extends React.Component {
         let type = this.props.type;
         let progress = this.model.progress + '';
         let fontSize = autoSizeWidth(17);
-        if (progress.length >=4){
-            fontSize =  autoSizeWidth(15)
-        }
         return (
             <View style={[{
                 width: ScreenUtils.width,
@@ -461,15 +463,15 @@ export default class TaskVIew extends React.Component {
                     {this.renderBtn()}
                 </View>
                 <ImageBackground source={current_p}
-                                 style={{width: autoSizeWidth(156/2),
-                                     height: autoSizeWidth(124/2),
-                                     right: 5,
-                                     top: type === 'home'? 0 :autoSizeWidth(10),
+                                 style={{width: autoSizeWidth(90),
+                                     height: autoSizeWidth(45),
+                                     right: 23,
+                                     top: type === 'home'?  autoSizeWidth(10):autoSizeWidth(10),
                                      position: 'absolute',
                                      alignItems: 'center',
                                      justifyContent: 'center',
                                  }}>
-                    <MRText style={{color: '#FF0050', fontSize: fontSize, fontWeight: '600', marginBottom: autoSizeWidth(10)}}>{progress}</MRText>
+                    <MRText style={{color: '#FF0050', fontSize: fontSize, fontWeight: '600', marginBottom: autoSizeWidth(14)}}>{progress}</MRText>
                 </ImageBackground>
                 <TaskModalView type={type}/>
             </View>

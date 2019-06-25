@@ -71,7 +71,6 @@ export default class ShowConnectPage extends BasePage {
             if (data && data.length > 0) {
                 this.waterfall && this.waterfall.addItems(data);
             } else {
-                // this.waterfall.addItems([]);
                 this.setState({ isEmpty: true });
             }
             this.state.collectData = data;
