@@ -9,13 +9,14 @@ import res from '../res/index';
 import { MRText as Text } from '../../../components/ui/index';
 import { bannerModule } from '../model/HomeBannerModel';
 import { TrackApi } from '../../../utils/SensorsTrack';
+import RouterMap from '../../../navigation/RouterMap';
 
 @observer
 export default class HomeUserView extends Component {
 
     _goToPromotionPage() {
         const { navigate } = this.props;
-        navigate('mine/userInformation/WaitingForWithdrawCashPage');
+        navigate(RouterMap.WaitingForWithdrawCashPage);
         TrackApi.ViewLevelInterest({ moduleSource: 1 });
     }
 

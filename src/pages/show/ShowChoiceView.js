@@ -1,80 +1,84 @@
 /**
  * 秀场精选
  */
-import React, {Component} from 'react'
-import { View, StyleSheet, Image, TouchableWithoutFeedback } from 'react-native'
-import ScreenUtil from '../../utils/ScreenUtils'
-const { px2dp } = ScreenUtil
-import {observer} from 'mobx-react'
-import { showChoiceModules } from './Show'
+import React, { Component } from 'react';
+import { View, StyleSheet, Image, TouchableWithoutFeedback } from 'react-native';
+import ScreenUtil from '../../utils/ScreenUtils';
+
+const { px2dp } = ScreenUtil;
+import { observer } from 'mobx-react';
+import { showChoiceModules } from './Show';
 import res from './res';
+
 const seeImg = res.button.see;
 const maskImg = res.other.show_mask;
 import DesignRule from '../../constants/DesignRule';
-import ImageLoad from '@mr/image-placeholder'
-import AvatarImage from '../../components/ui/AvatarImage'
+import ImageLoad from '@mr/image-placeholder';
+import AvatarImage from '../../components/ui/AvatarImage';
 import {
-    MRText as Text,
+    MRText as Text
 } from '../../components/ui';
+import RouterMap from '../../navigation/RouterMap';
 
 class Card extends Component {
 
     state = {
         readNumber: 0
-    }
+    };
 
     componentWillMount() {
-        const { item } = this.props
-        this.setState({readNumber: item.click})
+        const { item } = this.props;
+        this.setState({ readNumber: item.click });
     }
 
     componentWillReceiveProps(nextProps) {
-        const { item } = nextProps
+        const { item } = nextProps;
         if (item.click !== this.state.readNumber) {
-            this.state.readNumber = item.click
+            this.state.readNumber = item.click;
         }
     }
 
     _onSelectedCard() {
-        const { press } = this.props
-        press && press()
+        const { press } = this.props;
+        press && press();
     }
 
-    setClick=(num)=>{
+    setClick = (num) => {
         this.setState({
-            readNumber:num
-        })
-    }
+            readNumber: num
+        });
+    };
 
 
-
-    render () {
-        const { item } = this.props
-        const { readNumber } = this.state
-        let number = readNumber
+    render() {
+        const { item } = this.props;
+        const { readNumber } = this.state;
+        let number = readNumber;
         if (!number) {
-            number = 0
+            number = 0;
         }
         if (number > 999999) {
-            number = 999999 + '+'
+            number = 999999 + '+';
         }
-        return <TouchableWithoutFeedback style={styles.card} onPress={()=> this._onSelectedCard()}>
-        <View style={styles.card}>
-        <ImageLoad style={styles.imgView} source={{uri:item.coverImg}} resizeMode={'cover'}>
-            <Image style={styles.mask} source={maskImg} resizeMode={'cover'}/>
-            <Text style={styles.dis} numberOfLines={2} allowFontScaling={false}>{item.pureContent ? item.pureContent.slice(0, 100).trim() : ''}</Text>
-        </ImageLoad>
-        <View style={styles.profileView}>
-            <AvatarImage style={styles.portrait} source={{uri:item.userHeadImg ? item.userHeadImg : ''}} borderRadius={px2dp(15)}/>
-            <Text style={styles.name} allowFontScaling={false}>{item.userName}</Text>
-            <View style={{flex: 1}}/>
-            <View style={styles.rightRow}>
-                <Image source={seeImg}/>
-                <Text style={styles.number} allowFontScaling={false}>{ number }</Text>
+        return <TouchableWithoutFeedback style={styles.card} onPress={() => this._onSelectedCard()}>
+            <View style={styles.card}>
+                <ImageLoad style={styles.imgView} source={{ uri: item.coverImg }} resizeMode={'cover'}>
+                    <Image style={styles.mask} source={maskImg} resizeMode={'cover'}/>
+                    <Text style={styles.dis} numberOfLines={2}
+                          allowFontScaling={false}>{item.pureContent ? item.pureContent.slice(0, 100).trim() : ''}</Text>
+                </ImageLoad>
+                <View style={styles.profileView}>
+                    <AvatarImage style={styles.portrait} source={{ uri: item.userHeadImg ? item.userHeadImg : '' }}
+                                 borderRadius={px2dp(15)}/>
+                    <Text style={styles.name} allowFontScaling={false}>{item.userName}</Text>
+                    <View style={{ flex: 1 }}/>
+                    <View style={styles.rightRow}>
+                        <Image source={seeImg}/>
+                        <Text style={styles.number} allowFontScaling={false}>{number}</Text>
+                    </View>
+                </View>
             </View>
-        </View>
-        </View>
-    </TouchableWithoutFeedback>
+        </TouchableWithoutFeedback>;
     }
 }
 
@@ -82,49 +86,53 @@ class Card extends Component {
 export default class ShowChoiceView extends Component {
 
     constructor(props) {
-        super(props)
+        super(props);
         this.isScroll = false;
         this.changeIsScroll = this.changeIsScroll.bind(this);
     }
 
-    changeIsScroll(isScroll)
-    {
-        this.isScroll = isScroll
+    changeIsScroll(isScroll) {
+        this.isScroll = isScroll;
     }
 
-    _onChoiceAction(item,index) {
-        const { navigate } = this.props
+    _onChoiceAction(item, index) {
+        const { navigate } = this.props;
         if (this.isScroll === true) {
-            return
+            return;
         }
-        navigate('show/ShowDetailPage', {id: item.id, code: item.code,ref:this['card' + index],isFormHeader:true})
+        navigate(RouterMap.ShowDetailPage, {
+            id: item.id,
+            code: item.code,
+            ref: this['card' + index],
+            isFormHeader: true
+        });
     }
 
     render() {
-        const { choiceList } = showChoiceModules
-        let items = []
+        const { choiceList } = showChoiceModules;
+        let items = [];
         if (!choiceList) {
-            return <View/>
+            return <View/>;
         }
         choiceList.map((item, index) => {
-            items.push(<Card ref={(ref)=>{
+            items.push(<Card ref={(ref) => {
                 this['card' + index] = ref;
-            }} key={index} item={item} press={()=>this._onChoiceAction(item,index)}/>)
-        })
+            }} key={index} item={item} press={() => this._onChoiceAction(item, index)}/>);
+        });
         return <View>
-        {
-            items.length > 0
-            ?
-            <View style={[styles.container, {height: showChoiceModules.choiceHeight + px2dp(53)}]}>
-                <View style={styles.titleView}>
-                    <Text style={styles.title} allowFontScaling={false}>精选</Text>
-                </View>
-                {items}
-            </View>
-            :
-            null
-        }
-        </View>
+            {
+                items.length > 0
+                    ?
+                    <View style={[styles.container, { height: showChoiceModules.choiceHeight + px2dp(53) }]}>
+                        <View style={styles.titleView}>
+                            <Text style={styles.title} allowFontScaling={false}>精选</Text>
+                        </View>
+                        {items}
+                    </View>
+                    :
+                    null
+            }
+        </View>;
     }
 }
 
@@ -226,4 +234,4 @@ let styles = StyleSheet.create({
         bottom: 0,
         height: px2dp(40)
     }
-})
+});
