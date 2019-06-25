@@ -41,6 +41,12 @@ const productTrack = {
     NewUserGuideShow: 'NewUserGuideShow',//显示新手礼包
     NewUserGuideBtnClick: 'NewUserGuideBtnClick',//新手礼包按钮点击
 }
+
+const homeEvent = {
+    MissionBtnClick: 'MissionBtnClick',//任务按钮点击
+    BoxBtnClick: 'BoxBtnClick',//宝箱按钮点击
+    MissionFrameBtnClick: 'MissionFrameBtnClick',//任务按钮点击
+}
 /** 订单相关的埋点事件名称*/
 const inviteEvent = {
     QrCodeShareto: 'QrCodeShareto',//分享二维码
@@ -103,7 +109,8 @@ const trackEvent = {
     ...inviteEvent,
     ...mineEvent,
     ...afterEvent,
-    ...commonEvent
+    ...commonEvent,
+    ...homeEvent
 };
 
 function track(event_name,parmas) {
