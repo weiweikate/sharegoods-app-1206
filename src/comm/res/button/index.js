@@ -30,5 +30,6 @@ const button = {
     arrow_red_bottom: require('./arrow_red_bottom.png'),
     expanded_bottom: require('./expanded_bottom.png'),
     expanded_right: require('./expanded_right.png'),
+    icon_kefu:require('./kefu_icon_zaixian.png'),
 };
 export default button;
