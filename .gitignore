@@ -23,6 +23,7 @@ project.xcworkspace
 Pods/
 *.bundle
 !ATAuthSDK.bundle
+!JSPhotoSDK.bundle
 !JVerificationResource.bundle
 
 # Android/IntelliJ

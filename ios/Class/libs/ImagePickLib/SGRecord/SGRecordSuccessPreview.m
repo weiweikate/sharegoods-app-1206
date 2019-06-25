@@ -83,14 +83,14 @@
     _width = 148/2;
     _distance = 120/2;
     // 取消
-    UIButton *cancelButton = [UIButton image:@"短视频_重拍" target:self action:@selector(cancel)];
+    UIButton *cancelButton = [UIButton image:@"record_cancel" target:self action:@selector(cancel)];
     cancelButton.bounds = CGRectMake(0, 0, _width, _width);
     cancelButton.center = CGPointMake(self.center.x, self.bounds.size.height -_distance - _width/2);
     [self addSubview:cancelButton];
     _cancelButton = cancelButton;
   
   //编辑按钮
-  UIButton *editButton = [UIButton image:@"短视频_重拍" target:self action:@selector(editClick)];
+  UIButton *editButton = [UIButton image:@"edit_img_bg" target:self action:@selector(editClick)];
   [editButton setTitle:@"编辑" forState:UIControlStateNormal];
   editButton.bounds = CGRectMake(0, 0, _width, _width);
   editButton.center = CGPointMake(self.center.x, self.bounds.size.height -_distance - _width/2);
@@ -98,7 +98,7 @@
   _editButton = editButton;
   
     // 发送
-    UIButton *sendButton = [UIButton image:@"短视频_完成" target:self action:@selector(send)];
+    UIButton *sendButton = [UIButton image:@"record_finsh_bg" target:self action:@selector(send)];
     sendButton.bounds = CGRectMake(0, 0, _width, _width);
     sendButton.center = CGPointMake(self.center.x, self.bounds.size.height - _distance - _width/2);
     [self addSubview:sendButton];
