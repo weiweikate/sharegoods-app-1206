@@ -26,7 +26,6 @@ const QYChatTool = {
      * device:手机型号
      * systemVersion:手机系统版本
      */
-
     initQYChat() {
         let jsonParams = {
             userId: user.code + '',
@@ -63,7 +62,7 @@ const QYChatTool = {
         chatType: beginChatType.BEGIN_FROM_OTHER,
         data: {}
     }) {
-        if (params.data && params.data.urlString && params.data.urlString.length > 0){
+        if (params.data && params.data.urlString && params.data.urlString.length > 0) {
             chatModel.preProductUrl = params.data.urlString;
         } else {
             chatModel.preProductUrl = '';
