@@ -405,7 +405,7 @@ export default class TaskVIew extends React.Component {
                               onPress={() => this.model.expandedClick()}
             >
                 <MRText style={{ fontSize: autoSizeWidth(10), color: DesignRule.mainColor }}>{this.model.expanded ?
-                    '收起任务列表' : '隐藏已完成任务 '}</MRText>
+                    '收起任务列表' : '展开任务列表'}</MRText>
                 <UIImage source={this.model.expanded ? arrow_red_top : arrow_red_bottom}
                          style={{ height: autoSizeWidth(6), width: autoSizeWidth(11) }}/>
             </TouchableOpacity>
@@ -466,7 +466,7 @@ export default class TaskVIew extends React.Component {
                                  style={{width: autoSizeWidth(90),
                                      height: autoSizeWidth(45),
                                      right: 15,
-                                     top: type === 'home'?  autoSizeWidth(15):autoSizeWidth(25),
+                                     top: type === 'home'?  autoSizeWidth(15):autoSizeWidth(15),
                                      position: 'absolute',
                                      alignItems: 'center',
                                      justifyContent: 'center',
