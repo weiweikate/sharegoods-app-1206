@@ -111,7 +111,7 @@ export default class AddressManagerPage extends BasePage {
     }
 
     _renderItem = (item) => {
-        let {province, city, area, address, street} = item.item;
+        let {province, city, area, address, street,addressStatus} = item.item;
         street = street || '';
         return <TouchableOpacity onPress={() => this._onItemClick(item.item)} style={styles.touchable}>
                 <View style={styles.cell_name_tel}>
@@ -128,6 +128,11 @@ export default class AddressManagerPage extends BasePage {
                     numberOfLines={2}
                     ellipsizeMode={'tail'}
                     style={styles.cell_addr}>{province + city + area + street + address}</Text>
+            {
+                addressStatus === 0? <Text
+                    ellipsizeMode={'tail'}
+                    style={[styles.cell_addr,{color: DesignRule.mainColor, fontSize: 10}]}>{'该地址已变更'}</Text>:null
+            }
             <View style={{flex: 1}}/>
             <View style={{ flexDirection: 'row', alignItems: 'center',height: DesignRule.autoSizeWidth(38), borderTopWidth: 1, borderTopColor: DesignRule.bgColor}}>
                 <TouchableOpacity style={{ flex: 1, flexDirection: 'row', alignItems: 'center', marginLeft: 16 }}
@@ -160,6 +165,10 @@ export default class AddressManagerPage extends BasePage {
     _onItemClick = (item) => {
         // 地址列表点击
         if (this.params.from === 'order') {
+            if (item.addressStatus === 0){
+                bridge.$toast("该地址已变更,请重新选择地址");
+                return;
+            }
             bridge.showLoading();
             let callBack = this.params.callBack;
             callBack && callBack({ ...item });
@@ -168,6 +177,10 @@ export default class AddressManagerPage extends BasePage {
     };
 
     _onSelectImgClick = (item, index) => {
+        if (item.addressStatus === 0){
+            bridge.$toast("该地址已变更");
+            return;
+        }
         // 设置默认地址
         if (index !== this.state.selectIndex) {
             MineAPI.setDefaultAddr({ id: item.id }).then((response) => {
