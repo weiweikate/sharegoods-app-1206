@@ -66,14 +66,14 @@ const scrollDist = height / 2 - headerHeight;
 import BasePage from '../../BasePage';
 import { TrackApi } from '../../utils/SensorsTrack';
 import taskModel from './model/TaskModel';
-import settingModel from '../mine/model/SettingModel'
+import settingModel from '../mine/model/SettingModel';
 import TaskVIew from './view/TaskVIew';
 import intervalMsgModel, { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
 import { UserLevelModalView } from './view/TaskModalView';
 
 const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
     <Text style={styles.text}
-          allowFontScaling={false}>{errorMsg ? errorMsg : (isEnd ? '我也是有底线的' : (isFetching ? '加载中...' : '加载更多'))}</Text>
+          allowFontScaling={false}>{errorMsg ? errorMsg : (isEnd ? '我也是有底线的' : (isFetching ? '加载中...' : '加载更多中...'))}</Text>
 </View>;
 
 @observer
@@ -268,25 +268,25 @@ class HomePage extends BasePage {
         intervalMsgModel.setMsgData(content);
     };
 
-    mineMessageData = (data)=>{
+    mineMessageData = (data) => {
         const { params } = JSON.parse(data) || {};
-        if(params && Number(params.index) === 1){
-            console.log('JSPushData1',params);
+        if (params && Number(params.index) === 1) {
+            console.log('JSPushData1', params);
             settingModel.availableBalanceAdd(1);
         }
 
-        if(params && Number(params.index) === 2){
-            console.log('JSPushData2',params);
+        if (params && Number(params.index) === 2) {
+            console.log('JSPushData2', params);
             settingModel.userScoreAdd(1);
         }
 
-        if(params && Number(params.index) === 3){
-            console.log('JSPushData3',params);
+        if (params && Number(params.index) === 3) {
+            console.log('JSPushData3', params);
             settingModel.couponsAdd(1);
         }
 
-        if(params && Number(params.index) === 4){
-            console.log('JSPushData4',params);
+        if (params && Number(params.index) === 4) {
+            console.log('JSPushData4', params);
             settingModel.fansMSGAdd(1);
         }
     };
@@ -344,7 +344,7 @@ class HomePage extends BasePage {
         } else if (type === homeType.user) {
             return <HomeUserView navigate={this.$navigate}/>;
         } else if (type === homeType.task) {
-            return <TaskVIew type={'home'} style={{marginTop: ScreenUtils.autoSizeWidth(10)}}/>;
+            return <TaskVIew type={'home'} style={{ marginTop: ScreenUtils.autoSizeWidth(10) }}/>;
         } else if (type === homeType.channel) {
             return <HomeChannelView navigate={this.$navigate}/>;
         } else if (type === homeType.expandBanner) {

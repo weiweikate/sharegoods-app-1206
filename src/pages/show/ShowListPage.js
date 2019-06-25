@@ -73,7 +73,6 @@ export default class ShowListPage extends BasePage {
 
     constructor(props) {
         super(props);
-        this.lastStopScrollTime = -1;
         track(trackEvent.ViewXiuChang, {
             xiuChangListType: 1
         });
