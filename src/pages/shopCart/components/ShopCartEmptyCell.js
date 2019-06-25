@@ -29,7 +29,11 @@ export default class ShopCartEmptyCell extends Component {
             }}>
                 <PreLoadImage
                     imageUri={itemData.imgUrl}
-                    style={{ width: ScreenUtils.width / 2 - px2dp(10), height: itemData.imageHeight }}
+                    style={{
+                        width: ScreenUtils.width / 2 - px2dp(10),
+                        height: itemData.imageHeight ,
+                        borderRadius:px2dp(5)
+                    }}
                 />
                 <MRText numberOfLines={2}
                         style={{ fontSize: px2dp(14),
