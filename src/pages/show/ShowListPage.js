@@ -349,7 +349,7 @@ export default class ShowListPage extends BasePage {
                                                            index
                                                        };
                                                        if (data.showType === 1 || data.showType === 3) {
-                                                           navigate(RouterMap.TagDetailPage, params);
+                                                           navigate(RouterMap.ShowDetailPage, params);
                                                        } else if (data.showType === 4) {
                                                            navigate(RouterMap.TagDetailPage, {
                                                                tagId: data.tagId,
