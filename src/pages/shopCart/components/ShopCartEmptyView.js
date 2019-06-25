@@ -70,7 +70,7 @@ export default class ShopCartEmptyView extends Component {
             return this._renderHeaderView();
         }else {
            return <ShopCartEmptyCell itemData={itemData} onClick={() => {
-               navigateToHome(RouterMap.ProductDetailPage,{ productCode:itemData.prodCode})
+               navigateToHome(RouterMap.ProductDetailPage,{ productCode:itemData.prodCode,trackType:4})
                 }}/>
         }
     };

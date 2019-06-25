@@ -71,6 +71,8 @@ export default class ProductDetailModel {
     productDetailCouponsViewModel = new ProductDetailCouponsViewModel();
     productDetailAddressModel = new ProductDetailAddressModel();
 
+    @observable trackType;
+    @observable trackCode;
     @observable sourceType;
     @observable prodCode;
     @observable loadingState = PageLoadingState.loading;
@@ -457,11 +459,11 @@ export default class ProductDetailModel {
             }
             /*商品详情埋点*/
             track(trackEvent.ProductDetail, {
+                productShowSource: this.trackType || 0,
+                sourceAttributeCode: this.trackCode || 0,
                 spuCode: prodCode,
                 spuName: name,
                 productType: productType,
-                productShowSource: '',
-                sourceAttributeCode: '',
                 priceShareStore: groupPrice,
                 priceShow: this.activityStatus === activity_status.inSell ? promotionMinPrice : minPrice,
                 priceType: priceType === price_type.shop ? 100 : user.levelRemark

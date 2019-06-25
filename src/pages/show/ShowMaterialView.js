@@ -149,7 +149,7 @@ export default class ShowMaterialView extends React.Component {
                                            });
                                        }}
                                        onPressProduct={({ nativeEvent }) => {
-                                           routePush(RouterMap.ProductDetailPage, { productCode: nativeEvent.prodCode });
+                                           routePush(RouterMap.ProductDetailPage, { productCode: nativeEvent.prodCode,trackType:3 });
                                        }}
 
                                        onAddCartClick={({ nativeEvent }) => {
