@@ -115,7 +115,7 @@ class HomeModule {
         }, 1000);
 
         // 首页类目
-        categoryModule.loadCategoryList();
+        categoryModule.loadCategoryList(this.firstLoad);
         // 首页顶部轮播图
         bannerModule.loadBannerList(this.firstLoad);
         // 首页频道类目

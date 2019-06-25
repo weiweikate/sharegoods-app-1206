@@ -9,6 +9,7 @@
 #import "JRServiceBridge.h"
 #import <React/RCTBridge.h>
 #import "JRServiceManager.h"
+#import "MRImageVideoManager.h"
 
 @implementation JRServiceBridge
 {
@@ -36,7 +37,10 @@ RCT_EXPORT_METHOD(initQYChat:(NSDictionary *)info){
 RCT_EXPORT_METHOD(beginQYChat:(NSDictionary *)chatInfo){
 //  NSLog(@"%@",chatInfo);
   dispatch_async(dispatch_get_main_queue(), ^{
-     [[JRServiceManager sharedInstance] swichGroup:chatInfo];
+//     [[JRServiceManager sharedInstance] swichGroup:chatInfo];
+    [[MRImageVideoManager sharedInstance]startSelectImageOrVideoWithBlock:^(NSArray * _Nonnull imageOrVideoArr) {
+      
+    }];
   });
 }
 RCT_EXPORT_METHOD(qiYULogout){

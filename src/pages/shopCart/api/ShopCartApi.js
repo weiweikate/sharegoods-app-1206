@@ -18,8 +18,11 @@ const api = {
     /*同步购物车本地商品接口*/
     loginArrange: '/user/shoppingcart/loginArrange',
     /*再来一单**/
-     oneMoreOrder: '/user/shoppingcart/oneMoreOrder'
-
+     oneMoreOrder: '/user/shoppingcart/oneMoreOrder',
+    /* 商品推荐已登录 */
+    recommendProducts:['/user/shoppingcart/recommend_products',{method: 'get'}],
+    /*商品推荐未登录*/
+    recommend_products_not_login:['/user/shoppingcart/recommend_products_not_login',{method: 'get'}]
 
 };
 import ApiUtils from '../../../api/network/ApiUtils';

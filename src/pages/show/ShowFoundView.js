@@ -81,7 +81,7 @@ export default class ShowFoundView extends React.Component {
                                         ref: this.foundList,
                                         index: nativeEvent.index
                                     };
-                                    if (nativeEvent.showType === 1) {
+                                    if (nativeEvent.showType === 1 || nativeEvent.showType === 3 ) {
                                         navigate('show/ShowDetailPage', params);
                                     } else {
                                         navigate('show/ShowRichTextDetailPage', params);

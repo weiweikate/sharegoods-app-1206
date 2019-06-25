@@ -20,11 +20,21 @@ android {
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
     // From node_modules
-    implementation ('com.github.yalantis:ucrop:2.2.2-native'){
-        exclude group: 'com.squareup.okhttp3', module: 'okhttp'
-    }
+//    implementation ('com.github.yalantis:ucrop:2.2.2-native'){
+//        exclude group: 'com.squareup.okhttp3', module: 'okhttp'
+//    }
     implementation 'id.zelory:compressor:2.1.0'
+//    api ('com.github.LuckSiege.PictureSelector:picture_library:v2.2.3'){
+//        exclude group: 'com.squareup.okhttp3', module: 'okhttp'
+//    }
     api rootProject.ext.dependencies.support
+    api rootProject.ext.dependencies.recyclerview
+    api "com.github.bumptech.glide:glide:4.5.0"
+    api project(':ucrop')
+    api "io.reactivex.rxjava2:rxjava:2.0.5"
+    api "io.reactivex.rxjava2:rxandroid:2.0.1"
+//    api 'com.github.yalantis:ucrop:2.2.3-native'
+
     // From node_modules
     api(rootProject.ext.dependencies.rn) {
         exclude group: 'com.android.support'

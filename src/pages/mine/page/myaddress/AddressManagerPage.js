@@ -16,7 +16,7 @@ const addrBorderImgN = res.address.dizhi_img_nor;
 const addrBorderImgS = res.address.dizhi_img_sel;
 const addrRight = res.address.dizhi_icon_moren_sel;
 const dingwei = res.address.dizhi_icon_dingwei_nor;
-const NoMessage = res.address.kongbeiye_icon_dizhi;
+const NoMessage = res.placeholder.no_data;
 const addr_edit = res.address.addr_edit;
 const addr_del = res.address.addr_del;
 
@@ -67,7 +67,7 @@ export default class AddressManagerPage extends BasePage {
     _renderEmptyView = () => {
         return (
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                <Image source={NoMessage} style={{ width: 110, height: 110, marginTop: 112 }}/>
+                <Image source={NoMessage} style={{ marginTop: 112 }}/>
                 <Text style={{ color: DesignRule.textColor_instruction, fontSize: 15, marginTop: 11 }}>暂无收货地址</Text>
                 <Text style={{ color: DesignRule.textColor_instruction, fontSize: 12, marginTop: 3 }}>快去添加吧～</Text>
             </View>

@@ -66,17 +66,24 @@ public class NineGridView extends ViewGroup {
         if (mImageInfo != null && mImageInfo.size() > 0) {
             //只有1张图时 图片宽度即是总宽度  高度等于宽度
             if (mImageInfo.size() == 1) {
-                gridWidth = (int) (totalWidth * 0.8);
-                gridHeight = gridWidth * 12 / 19;
+                gridHeight = gridWidth = ((totalWidth - gridSpacing * 2) / 3) * 2;
+                height = gridHeight * rowCount + gridSpacing * (rowCount - 1) + getPaddingTop() + getPaddingBottom();
+                setMeasuredDimension(width, height);
+                return;
+            } else if (mImageInfo.size() == 2 || mImageInfo.size() == 4) {
+                gridWidth = gridHeight = (totalWidth - gridSpacing * 2) / 3;
+                height = gridHeight * rowCount + gridSpacing * (rowCount - 1) + getPaddingTop() + getPaddingBottom();
+                setMeasuredDimension(width, height);
+                return;
             } else {
                 //按照有几列 来计算每张图片的宽度和高度
                 //gridWidth 、gridHeight表示每张图片占据的宽、高
                 gridWidth = gridHeight = (totalWidth - gridSpacing * (columnCount - 1)) / columnCount;
+                width = gridWidth * columnCount + gridSpacing * (columnCount - 1) + getPaddingLeft() + getPaddingRight();
+                height = gridHeight * rowCount + gridSpacing * (rowCount - 1) + getPaddingTop() + getPaddingBottom();
+                setMeasuredDimension(width, height);
+                return;
             }
-            //此处width height就是我们即将为控件设置的总宽度 width可在layout中给定 height需要根据图片数量计算
-            width = gridWidth * columnCount + gridSpacing * (columnCount - 1) + getPaddingLeft() + getPaddingRight();
-            height = gridHeight * rowCount + gridSpacing * (rowCount - 1) + getPaddingTop() + getPaddingBottom();
-            Log.d("yzp", "wid  " + width + "height   " + height);
         }
         setMeasuredDimension(width, height);
     }

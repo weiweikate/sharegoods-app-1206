@@ -454,7 +454,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         if (data != null) {
             for (int i = 0; i < data.size(); i++) {
                 NewestShowGroundBean.DataBean bean = (NewestShowGroundBean.DataBean) data.get(i);
-                if (bean.getItemType() == 1) {
+                if (bean.getItemType() == 1 || bean.getItemType() == 3) {
                     List<NewestShowGroundBean.DataBean.ResourceBean> resource = bean.getResource();
                     List<ImageInfo> resolveResource = new ArrayList<>();
                     if (resource != null) {
@@ -464,6 +464,13 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
                                 ImageInfo imageInfo = new ImageInfo();
                                 imageInfo.setImageUrl(resourceBean.getUrl());
                                 resolveResource.add(imageInfo);
+                            }
+
+                            if(resourceBean.getType() == 5){
+                                ImageInfo imageInfo = new ImageInfo();
+                                imageInfo.setImageUrl(resourceBean.getUrl());
+                                bean.setVideoCover(imageInfo);
+                                break;
                             }
                         }
                         bean.setNineImageInfos(resolveResource);
@@ -517,8 +524,22 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         }
     }
 
+    public void setType(String type){
+        adapter.setType(type);
+    }
+
     private void showList() {
         errView.setVisibility(View.INVISIBLE);
         swipeRefreshLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void deleteSuccess() {
+
+    }
+
+    @Override
+    public void deleteFail(String err) {
+
     }
 }

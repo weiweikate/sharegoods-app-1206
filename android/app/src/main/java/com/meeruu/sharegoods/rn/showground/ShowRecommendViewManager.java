@@ -45,6 +45,14 @@ public class ShowRecommendViewManager extends ViewGroupManager<ViewGroup> {
         }
     }
 
+    @ReactProp(name = "type")
+    public void setType(View view, String type) {
+        Object object = view.getTag();
+        if (object != null && object instanceof ShowRecommendView) {
+            ((ShowRecommendView) object).setType(type);
+        }
+    }
+
 
     @Override
     public void addView(ViewGroup parent, final View child, int index) {

@@ -279,7 +279,7 @@ export class ShowDetail {
     @observable isCollecting = false;        //正在收藏
     @action loadDetail = flow(function* (id) {
         try {
-            const result = yield ShowApi.showDetail({ id: id });
+            const result = yield ShowApi.showDetail({ showNo: id });
             this.detail = result.data;
             return result.data;
         } catch (error) {
@@ -294,7 +294,7 @@ export class ShowDetail {
 
     @action showDetailCode = flow(function* (code) {
         try {
-            const result = yield ShowApi.showDetailCode({ contentNo: code });
+            const result = yield ShowApi.showDetailCode({ showNo: code });
             this.detail = result.data;
             return result.data;
         } catch (error) {

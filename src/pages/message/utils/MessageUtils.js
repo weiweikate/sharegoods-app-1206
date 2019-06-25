@@ -2,7 +2,7 @@
  * @author xzm
  * @date 2018/10/23
  */
-import RouterMap from '../../../navigation/RouterMap';
+import RouterMap,{backToShow} from '../../../navigation/RouterMap';
 
 const MessageUtils = {
 
@@ -76,6 +76,18 @@ const MessageUtils = {
             case 212://招募
                 pagParams = {storeCode:params};
                 navigation('spellShop/MyShop_RecruitPage', pagParams);
+                break;
+            case 215:
+                pagParams = JSON.parse(params);
+                let code = pagParams.showNo;
+                if(pagParams.showType == 1 || pagParams.showType == 3){
+                    navigation(RouterMap.ShowDetailPage,{code});
+                }else {
+                    navigation(RouterMap.ShowRichTextDetailPage,{code});
+                }
+                break;
+            case 217:
+                backToShow(2);
                 break;
             case 300://工猫合同详情
                 pagParams = {url:params};

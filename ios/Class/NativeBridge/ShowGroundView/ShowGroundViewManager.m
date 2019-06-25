@@ -18,6 +18,8 @@ RCT_EXPORT_MODULE(ShowGroundView)
 RCT_EXPORT_VIEW_PROPERTY(onItemPress, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onStartRefresh, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(uri, NSString)
+RCT_EXPORT_VIEW_PROPERTY(type, NSString)
+
 RCT_EXPORT_VIEW_PROPERTY(params, NSDictionary)
 RCT_EXPORT_VIEW_PROPERTY(headerHeight, NSInteger)
 RCT_EXPORT_VIEW_PROPERTY(onScrollStateChanged, RCTBubblingEventBlock)

@@ -1,6 +1,6 @@
 {
     "showDebugPanel": true,
-    "envType": "online",
+    "envType": "qa2",
     "isDevHotUpdate": false,
     "__注释__": "[showDebugPanel]:是否显示调试面板   [envType]:决定网络启动后，默认的网络环境类型",
     "env": {
@@ -23,6 +23,14 @@
             "oss": "https://testcdn.sharegoodsmall.com",
             "wxAppletKey": "gh_aa91c3ea0f6c",
             "gongmao": "http://testsop.sharegoodsmall.com/gateway/gongmall/contract/reback"
+        },
+        "qa2": {
+            "name": "测试2",
+            "host": "https://test2api.sharegoodsmall.com/gateway",
+            "h5": "https://test2h5.sharegoodsmall.com",
+            "oss": "https://test2cdn.sharegoodsmall.com",
+            "wxAppletKey": "gh_aa91c3ea0f6c",
+            "gongmao": "http://test2sop.sharegoodsmall.com/gateway/gongmall/contract/reback"
         },
         "pre_release": {
             "name": "UAT",
@@ -81,7 +89,7 @@
         },
         "wyh": {
             "name": "王亚辉",
-            "host": "http://172.18.5.89:1080/gateway"
+            "host": "http://172.18.6.70:8066/gateway"
         },
         "zhaoqiang": {
             "name": "赵强",
@@ -126,7 +134,7 @@
         },
         "dev_zb": {
             "name": "张波",
-            "host": "http://172.18.6.96:8903/gateway"
+            "host": "http://172.18.6.46:8903/gateway"
         },
         "申祥瑀": {
             "name": "延签测试",
@@ -194,7 +202,7 @@
         },
         "潘红亮": {
             "name": "潘红亮",
-            "host": "http://172.18.6.27:9090/gateway"
+            "host": "http://172.18.6.27:9090/gateway-a"
         },
         "姜振兴": {
             "name": "姜振兴",
