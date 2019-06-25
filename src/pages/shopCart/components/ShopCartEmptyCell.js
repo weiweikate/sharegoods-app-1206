@@ -4,6 +4,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
 import { MRText } from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
+import { TrackApi } from '../../../utils/SensorsTrack';
 
 const { px2dp } = ScreenUtils;
 
@@ -18,6 +19,13 @@ export default class ShopCartEmptyCell extends Component {
         return (
             <TouchableOpacity onPress={()=>{
                onClick();
+               TrackApi.RecommendSpuClick({
+                   strategyId:itemData.strategyId,
+                   spuRelationValue:itemData.spuRelationValue,
+                   spuRelationIndex:itemData.spuRelationIndex,
+                   spuCode:itemData.spuCode,
+                   spuName:itemData.spuName,
+               })
             }}>
             <View style={{
                 height: itemData.height,
