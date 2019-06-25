@@ -33,14 +33,17 @@ export default class ShopCartEmptyCell extends Component {
                 marginLeft: px2dp(5),
                 height: itemData.height,
                 backgroundColor:DesignRule.color_fff,
-                borderRadius:px2dp(5)
+                borderRadius:px2dp(6),
+                padding:px2dp(3),
+                paddingTop:px2dp(0)
             }}>
                 <PreLoadImage
                     imageUri={itemData.imgUrl}
                     style={{
-                        width: ScreenUtils.width / 2 - px2dp(10),
+                        marginTop:px2dp(2),
+                        width: ScreenUtils.width / 2 - px2dp(16),
                         height: itemData.imageHeight ,
-                        borderRadius:px2dp(5)
+                        borderRadius:px2dp(6)
                     }}
                 />
                 <MRText numberOfLines={2}
