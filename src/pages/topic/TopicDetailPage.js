@@ -3,7 +3,8 @@ import {
     View,
     StyleSheet,
     SectionList,
-    TouchableOpacity
+    TouchableOpacity,
+    FlatList
 } from 'react-native';
 import BasePage from '../../BasePage';
 import TopicDetailHeaderView from './components/TopicDetailHeaderView';
