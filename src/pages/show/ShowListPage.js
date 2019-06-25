@@ -34,7 +34,7 @@ import CommShareModal from '../../comm/components/CommShareModal';
 import WhiteModel from './model/WhiteModel';
 import { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
 import { routeNavigate } from '../../navigation/RouterMap';
-import RouterMap from '../../navigation/RouterMap';
+import RouterMap,{} from '../../navigation/RouterMap';
 
 const {
     mine_user_icon,
@@ -108,9 +108,10 @@ export default class ShowListPage extends BasePage {
         this.setState({ needsExpensive: true });
 
         this.listener = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
-        this.publishListener = DeviceEventEmitter.addListener('PublishShowFinish', (value) => {
-            this._gotoPage(2);
-            this.foundList && this.foundList.addDataToTop(value);
+        this.publishListener = DeviceEventEmitter.addListener('PublishShowFinish', (index) => {
+            if(index !== -1){
+                this._gotoPage(index);
+            }
         });
         this.listenerRetouchShow = DeviceEventEmitter.addListener('retouch_show', this.retouchShow);
     }
@@ -196,7 +197,7 @@ export default class ShowListPage extends BasePage {
 
     _goMyDynamicPage = () => {
         if (!user.isLogin) {
-            this.$navigate('login/login/LoginPage');
+            this.$navigate(RouterMap.LoginPage);
             return;
         }
         this.$navigate(RouterMap.MyDynamicPage);
@@ -348,14 +349,14 @@ export default class ShowListPage extends BasePage {
                                                            index
                                                        };
                                                        if (data.showType === 1 || data.showType === 3) {
-                                                           navigate('show/ShowDetailPage', params);
+                                                           navigate(RouterMap.TagDetailPage, params);
                                                        } else if (data.showType === 4) {
                                                            navigate(RouterMap.TagDetailPage, {
                                                                tagId: data.tagId,
                                                                name: data.tagName
                                                            });
                                                        } else {
-                                                           navigate('show/ShowRichTextDetailPage', params);
+                                                           navigate(RouterMap.ShowRichTextDetailPage, params);
                                                        }
                                                    }}
                                                        navigate={this.$navigate}/> : null
