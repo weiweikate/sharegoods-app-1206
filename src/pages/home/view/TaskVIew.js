@@ -283,7 +283,7 @@ export default class TaskVIew extends React.Component {
                 <MRText style={{
                     fontSize: autoSizeWidth(10),
                     color: '#333333',
-                    marginLeft: 5
+                    marginLeft: autoSizeWidth(5)
                 }}>{this.model.advMsg}</MRText>
             </View>
         );
@@ -405,9 +405,9 @@ export default class TaskVIew extends React.Component {
                               onPress={() => this.model.expandedClick()}
             >
                 <MRText style={{ fontSize: autoSizeWidth(10), color: DesignRule.mainColor }}>{this.model.expanded ?
-                    '收起任务列表' : '展开任务列表'}</MRText>
+                    '收起任务列表' : '做任务赚活跃值'}</MRText>
                 <UIImage source={this.model.expanded ? arrow_red_top : arrow_red_bottom}
-                         style={{ height: autoSizeWidth(6), width: autoSizeWidth(11) }}/>
+                         style={{ height: autoSizeWidth(6), width: autoSizeWidth(11), marginLeft: 3 }}/>
             </TouchableOpacity>
         )
     }
@@ -465,8 +465,8 @@ export default class TaskVIew extends React.Component {
                 <ImageBackground source={current_p}
                                  style={{width: autoSizeWidth(90),
                                      height: autoSizeWidth(45),
-                                     right: 15,
-                                     top: type === 'home'?  autoSizeWidth(15):autoSizeWidth(15),
+                                     right: 23,
+                                     top: type === 'home'?  autoSizeWidth(10):autoSizeWidth(10),
                                      position: 'absolute',
                                      alignItems: 'center',
                                      justifyContent: 'center',
