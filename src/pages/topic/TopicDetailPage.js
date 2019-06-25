@@ -143,6 +143,7 @@ export default class TopicDetailPage extends BasePage {
                         track(trackEvent.ProductDetail, {
                             spuCode: packageCode,
                             spuName: name,
+                            productType: 7,
                             priceShareStore: groupPrice,
                             pricePerCommodity: levelPrice,
                             priceType: priceType === 2 ? 100 : user.levelRemark
@@ -587,17 +588,19 @@ export default class TopicDetailPage extends BasePage {
         }
 
         let productName, productImgUrl, originalPrice, groupPrice,
-            v0Price;
+            v0Price, monthSale;
         if (this.state.activityType === 3) {
-            const { name, imgUrl } = this.state.data || {};
+            const { name, imgUrl, saleNum } = this.state.data || {};
             productName = name || '';
             productImgUrl = imgUrl;
             v0Price = (this.state.data || {}).v1 || '';
+            monthSale = saleNum;
         } else {
-            const { name, imgUrl } = this.state.data || {};
+            const { name, imgUrl, monthSaleCount } = this.state.data || {};
             productName = name || '';
             productImgUrl = imgUrl;
             v0Price = (this.state.data || {}).v0Price || '';
+            monthSale = monthSaleCount;
         }
         originalPrice = (this.state.data || {}).originalPrice || '';
         groupPrice = (this.state.data || {}).groupPrice || '';
@@ -726,8 +729,10 @@ export default class TopicDetailPage extends BasePage {
                                 trackEvent={trackEvent.Share}
                                 type={'Image'}
                                 imageJson={{
+                                    monthSaleType: monthSale >= 1000 ? 3 : (monthSale >= 500 ? 2 : 1),
                                     imageUrlStr: productImgUrl,
                                     titleStr: productName,
+                                    priceType: ['零售价'],
                                     priceStr: `￥${originalPrice}`,
                                     retailPrice: `￥${v0Price}`,
                                     spellPrice: `￥${groupPrice}`,

@@ -14,7 +14,6 @@
 SINGLETON_FOR_CLASS(JRCacheManager)
 
 -(void)clearMemory{
-  
   [self deleteAllFileOfPath:KTmpPath];
   [self deleteAllFileOfPath:[KLibraryPath stringByAppendingString:@"/Library"]];
 }

@@ -377,4 +377,14 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
             }
         });
     }
+
+    @Override
+    public void deleteSuccess() {
+
+    }
+
+    @Override
+    public void deleteFail(String err) {
+
+    }
 }

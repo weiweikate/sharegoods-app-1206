@@ -19,16 +19,6 @@ const  pageModular = {
         'name':'SpecialTopicPagelistClick',
         'params':{}
     },
-    'xiuChang':{
-        'des': '秀场页面预览',
-        'name':'ViewXiuChang',
-        'params':{}
-    },
-    'xiuChangDetail':{
-        'des': '秀场详情页面预览',
-        'name':'XiuChangDetails',
-        'params':{}
-    },
     'pinShop':{
         'des': '拼店',
         'name':'ViewPinShop',

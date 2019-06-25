@@ -21,11 +21,13 @@ import MineAPI from '../../api/MineApi';
 import {MRText as Text} from '../../../../components/ui'
 import { TrackApi } from '../../../../utils/SensorsTrack';
 import bridge from '../../../../utils/bridge';
+import SettingModel from '../../model/SettingModel';
 
 // const HeaderBarBgImg = res.myShop.txbg_03;
 const white_back = res.button.white_back;
 const mine_user_icon = homeRes.homeBaseImg.mine_user_icon;
 const headerHeight = ScreenUtils.statusBarHeight + 44;
+const { fans_noData } = homeRes.showFans
 
 export default class MyMentorPage extends BasePage {
     constructor(props) {
@@ -65,11 +67,11 @@ export default class MyMentorPage extends BasePage {
                     levelName: `${info.levelName}品鉴官`,
                     code: info.code,
                     phone: info.phone,
-                    profile: info.profile ? info.profile : '这位服务顾问很懒，什么也没留下~'
+                    profile: info.profile ? info.profile : ''
                 });
                 this.imageCacheManager.downloadAndCacheUrl(info.headImg).then((data)=>{
                     this.setState({
-                    headImg:ScreenUtils.isIOS? data:`file://${data}`
+                    headImg:ScreenUtils.isIOS ? data : `file://${data}`
                     });
                 });
                 TrackApi.ViewMyAdviser({hasAdviser:true,adviserCode:info.code});
@@ -94,6 +96,19 @@ export default class MyMentorPage extends BasePage {
                 {/*{this._itemRender("手机号", this.state.phone)}*/}
                 {this._profileRender(this.state.profile)}
                 {this._navRender()}
+
+                {SettingModel.messageState ? <View style={styles.btnBgStyle}>
+                    <TouchableWithoutFeedback onPress={() => {
+                        this.state.phone && Linking.openURL(`sms:${this.state.phone}`)
+                    }}>
+                        <View style={{flexDirection: 'row', flex: 1, justifyContent: 'center'}}>
+                            <Image source={homeRes.mentor.mentor_message_icon} style={styles.btnImageStyle}/>
+                            <Text style={styles.btnTextStyle}>给TA发短信</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+
+                </View> : null
+                }
             </View>
         );
     }
@@ -139,46 +154,24 @@ export default class MyMentorPage extends BasePage {
             <ImageBackground source={bgImage} style={styles.headerWrapper} blurRadius={ScreenUtils.isIOS ? px2dp(100) : px2dp(15)}>
                     {image}
                 <Text style={[styles.itemTextStyle,{marginLeft: 20, marginRight:20}]}>
-                    {this.state.nickName?this.state.nickName:''}
+                    {this.state.nickName ? this.state.nickName : ''}
                 </Text>
-                {this.state.weChatNumber ?
-                    <View style={{flexDirection: 'row', alignItems: 'center',marginLeft: 20, marginRight:20}}>
-                        <Text style={styles.weChatStyle} numberOfLines={1}>微信号：{this.state.weChatNumber}</Text>
-                        <TouchableWithoutFeedback onPress={() => {
-                            this.state.weChatNumber&&Clipboard.setString(this.state.weChatNumber);
-                            bridge.$toast('复制到剪切版');
-                        }}>
-                            <View style={styles.copyViewStyle}>
-                                <Text style={styles.copyTextStyle}>复制</Text>
-                            </View>
-                        </TouchableWithoutFeedback>
-                    </View> :
-                    <View>
-                        <Text style={styles.copyTextStyle}>暂无微信号</Text>
-                    </View>
-                }
-                <View style={styles.btnBgStyle}>
-                    <TouchableWithoutFeedback onPress={() => {
-                        this.state.phone&&Linking.openURL(`tel:${this.state.phone}`)
-                    }}>
-                        <View style={{flexDirection: 'row', flex: 1, justifyContent: 'center'}}>
-                            <Image source={homeRes.mentor.mentor_phone_icon} style={styles.btnImageStyle}/>
-                            <Text style={styles.btnTextStyle}>给TA打电话</Text>
+                {SettingModel.WXChatState ? (this.state.weChatNumber ?
+                        <View style={{flexDirection: 'row', alignItems: 'center', marginLeft: 20, marginRight: 20}}>
+                            <Text style={styles.weChatStyle} numberOfLines={1}>微信号：{this.state.weChatNumber}</Text>
+                            <TouchableWithoutFeedback onPress={() => {
+                                this.state.weChatNumber && Clipboard.setString(this.state.weChatNumber);
+                                bridge.$toast('复制到剪切版');
+                            }}>
+                                <View style={styles.copyViewStyle}>
+                                    <Text style={styles.copyTextStyle}>复制</Text>
+                                </View>
+                            </TouchableWithoutFeedback>
+                        </View> :
+                        <View>
+                            <Text style={styles.copyTextStyle}>暂无微信号</Text>
                         </View>
-                    </TouchableWithoutFeedback>
-
-                    <View style={{width: 1, height: 20, backgroundColor: '#CCCCCC', borderRadius: 1}}/>
-
-                    <TouchableWithoutFeedback onPress={() => {
-                        this.state.phone&&Linking.openURL(`sms:${this.state.phone}`)
-                    }}>
-                        <View style={{flexDirection: 'row', flex: 1, justifyContent: 'center'}}>
-                            <Image source={homeRes.mentor.mentor_message_icon} style={styles.btnImageStyle}/>
-                            <Text style={styles.btnTextStyle}>给TA发短信</Text>
-                        </View>
-                    </TouchableWithoutFeedback>
-
-                </View>
+                ) : null}
             </ImageBackground>
         );
     };
@@ -205,15 +198,23 @@ export default class MyMentorPage extends BasePage {
     _profileRender = (profile) => {
         return (
             <View style={styles.profileWrapper}>
-                <View style={{flexDirection:'row', margin:15, alignItems:'center'}}>
+                <View style={{flexDirection:'row', margin:15, alignItems:'center',}}>
                     <View style={{width:2, height:12, backgroundColor:'#FF0050',borderRadius:2, marginRight:10}}/>
                     <Text style={styles.profileTitleStyle}>
                         简介
                     </Text>
                 </View>
-                <Text style={styles.profileTextStyle}>
-                    {profile}
-                </Text>
+                {profile.length > 0 ?
+                    <View style={{height: px2dp(160)}}>
+                        <Text style={styles.profileTextStyle}>
+                            {profile}
+                        </Text>
+                    </View> :
+                    <View style={{felx: 1, alignItems: 'center', marginBottom: 15}}>
+                        <Image source={fans_noData} style={{width: 160, height: 115,}}/>
+                        <Text style={{color: '#999999', fontSize: 13}}>暂无简介</Text>
+                    </View>
+                }
             </View>
         );
     };
@@ -221,11 +222,12 @@ export default class MyMentorPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        alignItems: 'center'
     },
     headerWrapper: {
         width: ScreenUtils.width,
-        height: px2dp(280),
+        height: px2dp(250),
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -268,7 +270,6 @@ const styles = StyleSheet.create({
         marginTop: 42,
         marginLeft: 20,
         marginRight: 20,
-        height: px2dp(135),
         borderRadius:px2dp( 10)
 
     },
@@ -309,10 +310,8 @@ const styles = StyleSheet.create({
         height: px2dp(44),
         width: ScreenUtils.width - 40,
         alignItems: 'center',
-        position: 'absolute',
-        bottom: -22,
-        left: 20,
-        borderRadius:px2dp( 22)
+        borderRadius:px2dp( 22),
+        marginTop: 15
     },
     btnImageStyle:{
         height: px2dp(20),

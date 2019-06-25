@@ -77,7 +77,7 @@ export default class EditPhonePwdPage extends BasePage {
             code: this.params.code,
             phone: user.phone
         }).then((data) => {
-            this.$navigateBack(-2);
+            this.$navigateBack(2);
             this.isLoadding = false;
         }).catch((data) => {
             this.isLoadding = false;

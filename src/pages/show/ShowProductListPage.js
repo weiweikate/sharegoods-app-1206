@@ -16,13 +16,13 @@ import {
 import BasePage from '../../BasePage';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 import ScreenUtils from '../../utils/ScreenUtils';
-import backIconImg from '../../comm/res/button/icon_header_back.png';
 import { MRText, UIImage } from '../../components/ui';
 import DesignRule from '../../constants/DesignRule';
 import ShowApi from './ShowApi';
 import EmptyUtils from '../../utils/EmptyUtils';
-import res from './res'
-const {showCartNoneBg} = res;
+import res from './res';
+
+const { showCartNoneBg } = res;
 const { px2dp } = ScreenUtils;
 
 export default class ShowProductListPage extends BasePage {
@@ -144,7 +144,12 @@ export default class ShowProductListPage extends BasePage {
         const { statusBarHeight } = ScreenUtils;
         let content;
         if (EmptyUtils.isEmptyArr(this.state.catData)) {
-            content = <Image source={showCartNoneBg} style={{ width: 267, height: 154,alignSelf:'center',marginTop:ScreenUtils.height*0.3 }}/>;
+            content = <Image source={showCartNoneBg} style={{
+                width: 267,
+                height: 154,
+                alignSelf: 'center',
+                marginTop: ScreenUtils.height * 0.3
+            }}/>;
         } else {
             content = <FlatList style={styles.container}
                                 renderItem={this._listItemRender}
@@ -177,7 +182,7 @@ export default class ShowProductListPage extends BasePage {
             <View style={styles.header}>
                 <View style={styles.flex}>
                     <TouchableOpacity style={styles.backImg} onPress={() => this.$navigateBack()}>
-                        <Image source={backIconImg} style={styles.img}/>
+                        <Image source={res.button.icon_header_back} style={styles.img}/>
                     </TouchableOpacity>
                 </View>
                 <TouchableWithoutFeedback onPress={() => {

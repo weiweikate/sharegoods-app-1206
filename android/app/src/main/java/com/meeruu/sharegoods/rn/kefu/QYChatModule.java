@@ -41,6 +41,7 @@ public class QYChatModule extends ReactContextBaseJavaModule {
     public static final int BEGIN_FROM_PRODUCT = 1;//从产品详情发起客服
     public static final int BEGIN_FROM_ORDER = 2;//从订单发起客服
     public static final int BEGIN_FROM_MESSAGE = 3;//从消息列表发起客服
+    private int userLevel;
 
     /**
      * 构造方法必须实现
@@ -125,6 +126,10 @@ public class QYChatModule extends ReactContextBaseJavaModule {
         if (params.hasKey("userId")) {
             userInfo.userId = params.getString("userId");
         }
+
+        if (params.hasKey("isVip")) {
+            userLevel = params.getBoolean("isVip") ? 11 : 0;
+        }
         // CRM 扩展字段
         JSONArray arr = new JSONArray();
         if (params.hasKey("nickName")) {
@@ -158,6 +163,7 @@ public class QYChatModule extends ReactContextBaseJavaModule {
 
         userInfo.data = JSONArray.toJSONString(arr);
         Unicorn.setUserInfo(userInfo);
+
         addUnreadCountChangeListener(true);
         sendEvent2RN(Unicorn.getUnreadCount());
     }
@@ -199,6 +205,7 @@ public class QYChatModule extends ReactContextBaseJavaModule {
          * 设置来源后，在客服会话界面的"用户资料"栏的页面项，可以看到这里设置的值。
          */
         ConsultSource source = new ConsultSource("mine/helper", title, "");
+        source.vipLevel = userLevel;
         source.custom = chatType + "";
         source.shopId = params.hasKey("shopId") ? params.getString("shopId") : "";
         ReadableMap map = params.getMap("data");

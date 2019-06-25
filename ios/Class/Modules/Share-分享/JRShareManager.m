@@ -87,12 +87,21 @@ SINGLETON_FOR_CLASS(JRShareManager)
 {
   UMSocialMessageObject * message = [[UMSocialMessageObject alloc]init];
   id thumImage = [self getImageWithPath:imageUrl];
-  UMShareWebpageObject *shareObject = [UMShareWebpageObject shareObjectWithTitle:title descr:subTitle thumImage:thumImage];
-  //设置网页地址
-  shareObject.webpageUrl = linkUrl;
-  //分享消息对象设置分享内容对象
-  message.shareObject = shareObject;
   
+  if (platform == UMSocialPlatformType_Sina) {
+    UMShareImageObject *shareObject =  [[UMShareImageObject alloc] init];
+    shareObject.thumbImage = [UIImage imageNamed:@"icon"];
+    [shareObject setShareImage:thumImage];
+    message.text = [NSString stringWithFormat:@"%@%@%@",title,subTitle,linkUrl];
+    //分享消息对象设置分享内容对象
+    message.shareObject = shareObject;
+  }else{
+    UMShareWebpageObject *shareObject = [UMShareWebpageObject shareObjectWithTitle:title descr:subTitle thumImage:thumImage];
+    //设置网页地址
+    shareObject.webpageUrl = linkUrl;
+    //分享消息对象设置分享内容对象
+    message.shareObject = shareObject;
+  }
    [self shareWithMessageObject:message platform:platform completion:completion];
 
 }

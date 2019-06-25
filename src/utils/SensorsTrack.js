@@ -4,6 +4,7 @@ import SensorsEvent from './TrackEvent'
 import user from "../model/user";
 import apiEnvironment from '../api/ApiEnvironment';
 import EmptyUtils from './EmptyUtils';
+// import StringUtils from './StringUtils';
 let timeStamp = null;
 const {
     track:nativeTrack,
@@ -31,7 +32,7 @@ const productTrack = {
     CategorySearchBannerClick:'CategorySearchBannerClick',//类目搜索banner广告位
     ProductListClick:'ProductListClick',//搜索页-商品列表页点击
     Search:'Search',//搜索
-    ProductDetail:'ProductDetail',//浏览商品详情页,
+    ProductDetail:'productDetail',//浏览商品详情页,
     AddToShoppingcart:'AddToShoppingcart',//加入购物车
     Share:'Share',//分享商品
     SpikeTimeClick:'FlashSaleTimeRangeClick',// 限时购tab
@@ -45,6 +46,17 @@ const inviteEvent = {
     QrCodeShareto: 'QrCodeShareto',//分享二维码
     ClickLotteryPage: 'ClickLotteryPage',//首页抽奖
     ViewOrderConfirmPage: 'ViewOrderConfirmPage'//浏览下单页
+}
+
+const showEvent = {
+    ViewXiuChang:'ViewXiuChang',//秀场页浏览
+    ViewXiuChangDetails:'ViewXiuChangDetails',//秀场文章详情查看
+    XiuChangEnterClick:'XiuChangEnterClick',//秀场进入按钮
+    XiuChangLikeClick:'XiuChangLikeClick',//秀场点赞按钮点击
+    XiuChangDownLoadClick:'XiuChangDownLoadClick',//秀场下载按钮点击
+    XiuChangShareClick:'XiuChangShareClick',//秀场分享按钮点击,
+    XiuChangAddToCart:'XiuChangAddToCart',//加入购物车点击确认
+    XiuChangSpuClick:'XiuChangSpuClick',//点击商品
 }
 
 const mineEvent = {
@@ -102,7 +114,8 @@ const trackEvent = {
     ...inviteEvent,
     ...mineEvent,
     ...afterEvent,
-    ...commonEvent
+    ...commonEvent,
+    ...showEvent
 };
 
 function track(event_name,parmas) {
