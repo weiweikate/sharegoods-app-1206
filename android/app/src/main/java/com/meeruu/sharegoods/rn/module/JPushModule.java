@@ -40,4 +40,10 @@ public class JPushModule extends ReactContextBaseJavaModule {
         this.mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit("activitySkip", event.getData());
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMineMsg(Event.MRMineMsgEvent event) {
+        this.mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit("MINE_NATIVE_TO_RN_MSG", event.getData());
+    }
 }
