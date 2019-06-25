@@ -9,6 +9,7 @@
  *
  */
 
+
 'use strict';
 
 import { observable, action } from 'mobx';
@@ -21,6 +22,8 @@ const { px2dp } = ScreenUtil;
 import { homeModule } from './Modules';
 import bridge from '../../../utils/bridge';
 import store from '@mr/rn-store';
+import { track, trackEvent } from '../../../utils/SensorsTrack';
+import { IntervalMsgNavigate } from '../../../comm/components/IntervalMsgView';
 
 const activity_mission_main_no = 'activity_mission_main_no';    // 主线任务
 const activity_mission_daily_no = 'activity_mission_daily_no';     // 日常任务
@@ -139,6 +142,7 @@ class TaskModel {
 
     @action
     expandedClick() {
+        this.expandedEvent();
         this.expanded = !this.expanded;
         store.save('@mr/taskExpanded' + this.type, { expanded: this.expanded });
         if (this.type === 'home') {
@@ -159,6 +163,7 @@ class TaskModel {
 
     @action
     boxClick(box) {
+        this.boxBtnClickEvent(box);
         bridge.showLoading();
         HomeApi.getActivityPrize({ activityNo: this.activityNo, ruleId: box.id }).then(data => {
             this.boxs = this.boxs.map((item) => {
@@ -179,6 +184,12 @@ class TaskModel {
 
     @action
     getMissionPrize(item, isSubTask) {
+        this.missionBtnClickEvent(item);
+        if (item.status === 0) {
+            let { interactiveCode, interactiveValue, category } = item;
+            IntervalMsgNavigate(parseInt(interactiveCode), interactiveValue, category===1);
+            return;
+        }
         bridge.showLoading();
         HomeApi.getMissionPrize({
             activityNo: this.activityNo,
@@ -234,7 +245,24 @@ class TaskModel {
         }
     }
 
+    /** 埋点相关*/
+    boxBtnClickEvent(item){
+        track(trackEvent.BoxBtnClick,{boxNum:item.id, userValue: this.progress});
+    }
 
+    missionBtnClickEvent(item){
+        track(trackEvent.MissionBtnClick,{
+            missionBtnName:item.status === 0 ? '前往' : '领奖',
+            missionId:item.no,
+            missionName: item.missionName,
+            missionIndex: this.tasks.indexOf(item),
+            userValue: this.progress});
+    }
+
+    expandedEvent(){
+        track(trackEvent.MissionFrameBtnClick,{missionFrameBtnName: this.expanded ?
+                '收起任务列表' : '做任务赚活跃值', userValue: this.progress});
+    }
 }
 
 const taskModel = new TaskModel();

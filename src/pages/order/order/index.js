@@ -2,7 +2,7 @@ import MyOrdersDetailPage from './MyOrdersDetailPage';
 import MyOrdersListPage from './MyOrdersListPage';
 import OrderSearchResultPage from './OrderSearchResultPage';
 import ConfirOrderPage from './ConfirmOrderPage';
-import SearchPage from './SearchPage';
+import SearchPageOrder from './SearchPage';
 import ConfirmReceiveGoodsPage from './ConfirmReceiveGoodsPage';
 
 export default {
@@ -12,7 +12,7 @@ export default {
         MyOrdersListPage,
         OrderSearchResultPage,
         ConfirOrderPage,
-        SearchPage,
+        SearchPageOrder,
         ConfirmReceiveGoodsPage
     }
 };

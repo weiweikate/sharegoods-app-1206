@@ -9,6 +9,7 @@
  *
  */
 
+
 'use strict';
 import React from 'react';
 import {
@@ -27,6 +28,7 @@ import {
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import RefreshFlatList from '../../../comm/components/RefreshFlatList';
+import RouterMap from '../../../navigation/RouterMap';
 
 const {
     afterSaleService: {
@@ -71,7 +73,7 @@ export default class AfterSaleListPage extends BasePage<Props> {
     };
 
     gotoSearchPage = () => {
-        this.$navigate('order/order/SearchPage', { pageType: 2 });
+        this.$navigate(RouterMap.SearchPageOrder, { pageType: 2 });
     };
 
     _bind() {

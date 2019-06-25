@@ -7,7 +7,8 @@ import {
     View,
     Image,
     StyleSheet,
-    TouchableOpacity
+    TouchableOpacity,
+    ScrollView
 } from 'react-native';
 
 import DesignRule from '../../../../constants/DesignRule';
@@ -76,7 +77,7 @@ export default class ShopHeader extends Component {
                     marginHorizontal: px2dp(20)
                 }}>
                     <AvatarImage style={styles.headerImg} borderRadius={px2dp(30)}
-                               source={{ uri: StringUtils.isNoEmpty(headUrl) ? headUrl : '' }}/>
+                                 source={{ uri: StringUtils.isNoEmpty(headUrl) ? headUrl : '' }}/>
                     <View style={styles.shopInContainer}>
                         <Text style={styles.shopName} allowFontScaling={false}>{name || ''}</Text>
                         <Text style={styles.shopId} allowFontScaling={false}>ID：{showNumber || ''}</Text>
@@ -101,17 +102,19 @@ export default class ShopHeader extends Component {
                     backgroundColor: '#E4E4E4',
                     height: 0.5
                 }}/>
-                <Text style={{
-                    color: DesignRule.textColor_mainTitle,
-                    fontSize: 13,
-                    marginHorizontal: px2dp(20)
-                }} allowFontScaling={false}>店铺简介</Text>
-                <Text style={{
-                    color: DesignRule.textColor_secondTitle,
-                    fontSize: 12,
-                    marginHorizontal: px2dp(20),
-                    marginTop: px2dp(5), marginBottom: px2dp(15)
-                }} allowFontScaling={false}>{StringUtils.isNoEmpty(profile) ? profile : '店家很懒，没有介绍自己~'}</Text>
+                <ScrollView style={{ maxHeight: 83 }}>
+                    <Text style={{
+                        color: DesignRule.textColor_mainTitle,
+                        fontSize: 13,
+                        marginHorizontal: px2dp(20)
+                    }} allowFontScaling={false}>店铺简介</Text>
+                    <Text style={{
+                        color: DesignRule.textColor_secondTitle,
+                        fontSize: 12,
+                        marginHorizontal: px2dp(20),
+                        marginTop: px2dp(5), marginBottom: px2dp(15)
+                    }} allowFontScaling={false}>{StringUtils.isNoEmpty(profile) ? profile : '店家很懒，没有介绍自己~'}</Text>
+                </ScrollView>
             </View>
         </View>;
     }

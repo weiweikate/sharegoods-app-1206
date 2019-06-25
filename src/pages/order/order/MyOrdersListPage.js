@@ -8,6 +8,7 @@ import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import MineApi from '../../mine/api/MineApi';
 import StringUtils from '../../../utils/StringUtils';
+import RouterMap from '../../../navigation/RouterMap';
 
 const { search } = res;
 
@@ -47,7 +48,7 @@ class MyOrdersListPage extends BasePage {
     };
 
     gotoSearchPage = () => {
-        this.$navigate('order/order/SearchPage');
+        this.$navigate(RouterMap.SearchPageOrder);
     };
 
     componentWillUnmount() {

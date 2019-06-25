@@ -1,5 +1,5 @@
 import RecommendPage from './RecommendPage';
-import SearchPage from './SearchPage';
+import ShopSearchPage from './ShopSearchPage';
 
 export default {
     //推荐搜索模块
@@ -8,6 +8,6 @@ export default {
         //推荐页面
         RecommendPage,
         //搜索页面
-        SearchPage
+        ShopSearchPage
     }
 };
