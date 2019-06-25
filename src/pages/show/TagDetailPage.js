@@ -217,7 +217,7 @@ export default class TagDetailPage extends BasePage {
                         />
                     }/>
                 <CommShareModal ref={(ref) => this.shareModal = ref}
-
+                                defaultModalVisible={this.params.openShareModal}
                                 webJson={{
                                     linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/aTag/list?tagId=${this.params.tagId}`,//(图文分享下的链接)
                                     title: this.params.name || '秀一秀 赚到够',//分享标题(当为图文分享时候使用)

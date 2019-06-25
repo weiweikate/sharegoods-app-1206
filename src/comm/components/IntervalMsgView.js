@@ -222,7 +222,7 @@ export const IntervalType = {
     shopDetail: 5//拼店详情
 };
 
-export function IntervalMsgNavigate(forwardType, keyCode) {
+export function IntervalMsgNavigate(forwardType, keyCode, openShareModal) {
     if (forwardType === IntervalMsgType.home) {
         backToHome();
     } else if (forwardType === IntervalMsgType.showList) {
@@ -238,7 +238,8 @@ export function IntervalMsgNavigate(forwardType, keyCode) {
                 orderNo: keyCode,
                 code: keyCode,
                 id: keyCode,
-                uri: keyCode
+                uri: keyCode,
+                openShareModal
             });
         } else {
             // navigate('HtmlPage', {

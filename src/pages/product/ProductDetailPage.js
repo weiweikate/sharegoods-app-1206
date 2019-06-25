@@ -321,6 +321,7 @@ export default class ProductDetailPage extends BasePage {
                                             productDetailCouponsViewModel={productDetailCouponsViewModel}/>
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
+                            defaultModalVisible={this.params.openShareModal}
                             trackParmas={{
                                 spuCode: prodCode,
                                 spuName: name
