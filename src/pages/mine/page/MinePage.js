@@ -253,7 +253,7 @@ export default class MinePage extends BasePage {
                     renderForeground={this.renderUserHead}
                     renderStickyHeader={this.renderLevelNameNav}
                     stickyHeaderHeight={this.state.changeHeader ? 0 : px2dp(44 + statusBarHeight)}
-                    parallaxHeaderHeight={237 + statusBarHeight}
+                    parallaxHeaderHeight={217 + statusBarHeight}
                     onScroll={this._onScroll}
                     showsVerticalScrollIndicator={false}
                 >
@@ -749,7 +749,7 @@ export default class MinePage extends BasePage {
     renderBodyView = () => {
         return (
             <View style={{flex:1,backgroundColor:'#F7F7F7'}}>
-                <TaskVIew type={'mine'} style={{backgroundColor: '#F7F7F7', paddingBottom: 0 }}/>
+                <TaskVIew type={'mine'} style={{backgroundColor: '#F7F7F7', paddingBottom: 0, marginTop: 5 }}/>
                 {this.orderRender()}
                 {this.activeRender()}
                 {this.utilsRender()}
