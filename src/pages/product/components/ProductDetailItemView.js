@@ -113,7 +113,7 @@ export class HeaderItemView extends Component {
                     Clipboard.setString(name);
                     bridge.$toast('已将商品名称复制至剪贴板');
                 }}>
-                    <Text style={styles.nameText} numberOfLines={2}>{name}</Text>
+                    <Text style={styles.nameText}>{name}</Text>
                 </NoMoreClick>
                 {isNoEmpty(secondName) && <Text style={styles.secondNameText} numberOfLines={2}>{secondName}</Text>}
                 <View style={styles.freightMonthView}>
