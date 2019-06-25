@@ -13,7 +13,6 @@ import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-vi
 import ScreenUtils from '../../utils/ScreenUtils';
 
 const { px2dp } = ScreenUtils;
-import backIconImg from '../../comm/res/button/icon_header_back.png';
 import DesignRule from '../../constants/DesignRule';
 import { observer } from 'mobx-react';
 import {
@@ -40,6 +39,7 @@ const {
     mine_user_icon,
     mine_message_icon_gray
 } = res.homeBaseImg;
+const {icon_header_back} = res.button
 @observer
 export default class ShowListPage extends BasePage {
 
@@ -239,7 +239,7 @@ export default class ShowListPage extends BasePage {
                     left
                         ?
                         <TouchableOpacity style={styles.backImg} onPress={() => this._onLeftPressed()}>
-                            <Image source={backIconImg} style={styles.img}/>
+                            <Image source={icon_header_back} style={styles.img}/>
                         </TouchableOpacity>
                         :
                         null
