@@ -75,7 +75,8 @@ function getTopicJumpPageParam(itemData) {
             linkTypeCode: itemData.prodCode,
             activityType: itemData.productType,
             activityCode: itemData.prodCode,
-            productType: itemData.productType
+            productType: itemData.productType,
+            trackType:2
         }
     };
 }

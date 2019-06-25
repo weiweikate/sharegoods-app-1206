@@ -570,7 +570,7 @@ export default class ShowDetailPage extends BasePage {
                                         this.setState({
                                             productModalVisible: false
                                         });
-                                        this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode });
+                                        this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode,trackType:3 });
                                     }}
                 />
                 <Text style={{
@@ -596,7 +596,7 @@ export default class ShowDetailPage extends BasePage {
                                                      this.setState({
                                                          productModalVisible: false
                                                      });
-                                                     this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode });
+                                                     this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode,trackType:3 });
                                                  }}
                                                  addCart={this.addCart}
                                                  products={detail.products} requestClose={() => {
@@ -607,6 +607,7 @@ export default class ShowDetailPage extends BasePage {
 
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
+                            defaultModalVisible={this.params.openShareModal}
                             type={'Show'}
                             trackEvent={trackEvent.XiuChangShareClick}
                             trackParmas={{ articleCode: detail.code, author: (detail.userInfoVO||{}).userNo,xiuChangBtnLocation:'2',xiuChangListType:''}}

@@ -63,6 +63,8 @@ export default class ProductDetailPage extends BasePage {
         };
         this.productDetailModel.prodCode = this.params.productCode;
         this.productDetailModel.sourceType = this.params.type;
+        this.productDetailModel.trackCode = this.params.trackCode;
+        this.productDetailModel.trackType = this.params.trackType;
     }
 
     _getPageStateOptions = () => {
@@ -321,6 +323,7 @@ export default class ProductDetailPage extends BasePage {
                                             productDetailCouponsViewModel={productDetailCouponsViewModel}/>
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
+                            defaultModalVisible={this.params.openShareModal}
                             trackParmas={{
                                 spuCode: prodCode,
                                 spuName: name
