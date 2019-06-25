@@ -15,11 +15,6 @@ const ShowModular = {
         'name':'WatchXiuChang',
         'params':{}
     },
-    'XiuChangDetails':{
-        'des':'秀场文章详情查看',
-        'name':'XiuChangDetails',
-        'params':{}
-    },
     'ArticleShare':{
         'des':'文章分享',
         'name':'ArticleShare',

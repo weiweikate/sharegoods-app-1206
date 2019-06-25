@@ -73,24 +73,29 @@ export default class ShowMaterialView extends React.Component {
     };
 
 
-    addCart = (code) => {
+    addCart = (detail) => {
         let addCartModel = new AddCartModel();
-        addCartModel.requestProductDetail(code, (productIsPromotionPrice) => {
+        addCartModel.requestProductDetail(detail.prodCode, (productIsPromotionPrice) => {
             this.SelectionPage.show(addCartModel, (amount, skuCode) => {
                 const { prodCode, name, originalPrice } = addCartModel;
                 shopCartCacheTool.addGoodItem({
                     'amount': amount,
                     'skuCode': skuCode,
-                    'productCode': code
+                    'productCode': detail.prodCode
                 });
                 /*加入购物车埋点*/
-                track(trackEvent.AddToShoppingcart, {
+                const { showNo , userInfoVO } = detail;
+                const { userNo } = userInfoVO || {};
+                track(trackEvent.XiuChangAddToCart, {
+                    xiuChangBtnLocation:'1',
+                    xiuChangListType:'2',
+                    articleCode:showNo,
+                    author:userNo,
                     spuCode: prodCode,
                     skuCode: skuCode,
                     spuName: name,
                     pricePerCommodity: originalPrice,
                     spuAmount: amount,
-                    shoppingcartEntrance: 1
                 });
             }, { sourceType: productIsPromotionPrice ? sourceType.promotion : null });
         }, (error) => {
@@ -126,6 +131,15 @@ export default class ShowMaterialView extends React.Component {
                                            } else {
                                                navigate(RouterMap.ShowRichTextDetailPage, params);
                                            }
+
+                                           const { showNo , userInfoVO } = nativeEvent;
+                                           const { userNo } = userInfoVO || {};
+                                           track(trackEvent.XiuChangEnterClick,{
+                                               xiuChangListType:2,
+                                               articleCode:showNo,
+                                               author:userNo,
+                                               xiuChangEnterBtnName:'秀场列表'
+                                           })
 
                                        }}
                                        onNineClick={({ nativeEvent }) => {
@@ -174,6 +188,15 @@ export default class ShowMaterialView extends React.Component {
                                            }
 
                                            DownloadUtils.downloadProduct(nativeEvent);
+
+                                           const { showNo , userInfoVO } = detail;
+                                           const { userNo } = userInfoVO || {};
+                                           track(trackEvent.XiuChangDownLoadClick,{
+                                               xiuChangBtnLocation:'1',
+                                               xiuChangListType:'2',
+                                               articleCode:showNo,
+                                               author:userNo
+                                           })
 
                                        }}
 

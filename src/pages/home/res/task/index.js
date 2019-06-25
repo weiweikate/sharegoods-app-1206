@@ -26,5 +26,6 @@ const task = {
     current_p:require('./current_p.png'),
     taskModal_light:require('./taskModal_light.png'),
     taskModal_title:require('./taskModal_title.png'),
+    inform:require('./inform.png'),
 };
 export default task;
