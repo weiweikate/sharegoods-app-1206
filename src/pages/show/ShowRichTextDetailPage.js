@@ -561,7 +561,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                                     products={detail.products}
                                     addCart={this.addCart}
                                     pressProduct={(prodCode) => {
-                                        this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode });
+                                        this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode ,trackType:3});
                                     }}
                 />
 
@@ -593,7 +593,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                                                      this.setState({
                                                          productModalVisible: false
                                                      });
-                                                     this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode });
+                                                     this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode ,trackType:3});
                                                  }}
                                                  addCart={this.addCart}
                                                  products={detail.products} requestClose={() => {
