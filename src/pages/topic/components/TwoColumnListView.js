@@ -15,6 +15,7 @@ import DesignRule from '../../../constants/DesignRule';
 import {
     MRText as Text
 } from '../../../components/ui';
+import RouterMap from '../../../navigation/RouterMap';
 export default class TwoColumnListView extends Component {
 
     constructor(props) {
@@ -97,7 +98,7 @@ export default class TwoColumnListView extends Component {
     _itemClickAction = (item) => {
         console.log(item.key);
         const { navigateTool } = this.props;
-        navigateTool('topic/TopicDetailPage');
+        navigateTool(RouterMap.TopicDetailPage);
 
     };
     _renderRowView = (item) => {

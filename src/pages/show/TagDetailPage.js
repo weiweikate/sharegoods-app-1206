@@ -24,6 +24,7 @@ import ImageLoad from '@mr/image-placeholder';
 import ShowUtils from './utils/ShowUtils';
 import CommShareModal from '../../comm/components/CommShareModal';
 import apiEnvironment from '../../api/ApiEnvironment';
+import RouterMap from '../../navigation/RouterMap';
 
 const { iconShowShare, iconShowFire } = res;
 const { px2dp } = ScreenUtils;
@@ -136,9 +137,9 @@ export default class TagDetailPage extends BasePage {
         return (
             <TouchableWithoutFeedback onPress={() => {
                 if (itemData.showType === 1 || itemData.showType === 3) {
-                    this.$navigate('show/ShowDetailPage', { code: itemData.showNo });
+                    this.$navigate(RouterMap.ShowDetailPage, { code: itemData.showNo });
                 } else {
-                    this.$navigate('show/ShowRichTextDetailPage', { code: itemData.showNo });
+                    this.$navigate(RouterMap.ShowRichTextDetailPage, { code: itemData.showNo });
                 }
             }}>
                 <View style={{

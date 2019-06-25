@@ -15,7 +15,7 @@ class ShopCartEmptyModel {
     @observable
     errorMsg = '';
     @observable
-    isEnd = false;
+    isEnd = true;
     pageSize = 10;
     page = 1;
     constructor(props) {
@@ -67,12 +67,13 @@ class ShopCartEmptyModel {
                         imageHeight: 168
                     });
                     newArr = newArr.concat(tempArr);
-                } else {
-                    if (goodList.length < this.pageSize) {
-                        this.isEnd = true;
-                    }
-                    newArr = newArr.concat([...this.emptyViewList.slice(), ...tempArr]);
                 }
+                // else {
+                //     if (goodList.length < this.pageSize) {
+                //         this.isEnd = true;
+                //     }
+                //     newArr = newArr.concat([...this.emptyViewList.slice(), ...tempArr]);
+                // }
                 this.emptyViewList = newArr;
                 console.log(result);
             }).catch(error => {
@@ -103,12 +104,13 @@ class ShopCartEmptyModel {
                         imageHeight: 168
                     });
                     newArr = newArr.concat(tempArr);
-                } else {
-                    if (goodList.length < this.pageSize) {
-                        this.isEnd = true;
-                    }
-                    newArr = newArr.concat([...this.emptyViewList.slice(), ...tempArr]);
                 }
+                // else {
+                //     if (goodList.length < this.pageSize) {
+                //         this.isEnd = true;
+                //     }
+                //     newArr = newArr.concat([...this.emptyViewList.slice(), ...tempArr]);
+                // }
                 this.emptyViewList = newArr;
                 console.log(result);
             }).catch(error => {
