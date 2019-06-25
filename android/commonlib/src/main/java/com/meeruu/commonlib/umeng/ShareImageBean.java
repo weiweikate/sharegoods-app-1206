@@ -15,6 +15,15 @@ public class ShareImageBean {
     public String headerImage;
     public String userName;
     public String diamondNum;
+    public int monthSaleType;
+
+    public int getMonthSaleType() {
+        return monthSaleType;
+    }
+
+    public void setMonthSaleType(int monthSaleType) {
+        this.monthSaleType = monthSaleType;
+    }
 
     public String getDiamondNum() {
         return diamondNum;
