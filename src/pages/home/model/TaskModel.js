@@ -187,7 +187,6 @@ class TaskModel {
         this.missionBtnClickEvent(item);
         if (item.status === 0) {
             let { interactiveCode, interactiveValue, openShareModal } = item;
-            openShareModal = true
             IntervalMsgNavigate(parseInt(interactiveCode), interactiveValue, openShareModal);
             return;
         }
