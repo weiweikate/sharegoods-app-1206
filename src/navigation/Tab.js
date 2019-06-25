@@ -10,7 +10,6 @@ import res from '../comm/res';
 import ScreenUtils from '../utils/ScreenUtils';
 import ShowListPage from '../pages/show/ShowListPage';
 import user from '../model/user';
-import settingModel from '../pages/mine/model/SettingModel'
 import { homeTabManager } from '../pages/home/manager/HomeTabManager';
 import DesignRule from '../constants/DesignRule';
 import { observer } from 'mobx-react';
@@ -25,8 +24,6 @@ const NormalTab = ({ source, title }) => {
     return <View style={styles.tab}>
         <View>
             <Image style={styles.tabBarIcon} source={source}/>
-            {title === '我的' && (settingModel.availableBalance > 0 || settingModel.userScore > 0 || settingModel.coupons > 0 || settingModel.fansMSG > 0) ?
-                <View style={styles.mineDot}/> : null}
         </View>
         <Text style={styles.text}>{title}</Text>
 

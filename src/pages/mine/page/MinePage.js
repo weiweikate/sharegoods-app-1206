@@ -853,6 +853,7 @@ export default class MinePage extends BasePage {
             num: settingModel.fansMSG,
             onPress: () => {
                 if (this.state.hasFans) {
+                    settingModel.fansMSGAdd();
                     this.$navigate(RouterMap.MainShowFansPage);
                 }
             }
