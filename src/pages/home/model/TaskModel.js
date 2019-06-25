@@ -186,8 +186,8 @@ class TaskModel {
     getMissionPrize(item, isSubTask) {
         this.missionBtnClickEvent(item);
         if (item.status === 0) {
-            let { interactiveCode, interactiveValue, openShareModal } = item;
-            IntervalMsgNavigate(parseInt(interactiveCode), interactiveValue, openShareModal);
+            let { interactiveCode, interactiveValue, category } = item;
+            IntervalMsgNavigate(parseInt(interactiveCode), interactiveValue, category===1);
             return;
         }
         bridge.showLoading();
