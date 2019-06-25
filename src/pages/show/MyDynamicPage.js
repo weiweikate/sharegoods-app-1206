@@ -21,6 +21,7 @@ import ScreenUtils from '../../utils/ScreenUtils';
 import EmptyUtils from '../../utils/EmptyUtils';
 import ShowDynamicView from './components/ShowDynamicView';
 import ShowGroundView from './components/ShowGroundView';
+import RouterMap from '../../navigation/RouterMap';
 
 const headerBgSize = { width: 375, height: 200 };
 const headerHeight = ScreenUtils.statusBarHeight + 44;
@@ -171,9 +172,9 @@ export default class MyDynamicPage extends BasePage {
                                    index: nativeEvent.index
                                };
                                if (nativeEvent.showType === 1 || nativeEvent.showType == 3) {
-                                   this.$navigate('show/ShowDetailPage', params);
+                                   this.$navigate(RouterMap.ShowDetailPage, params);
                                } else {
-                                   this.$navigate('show/ShowRichTextDetailPage', params);
+                                   this.$navigate(RouterMap.ShowRichTextDetailPage, params);
                                }
 
                            }}

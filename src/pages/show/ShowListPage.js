@@ -348,14 +348,14 @@ export default class ShowListPage extends BasePage {
                                                            index
                                                        };
                                                        if (data.showType === 1 || data.showType === 3) {
-                                                           navigate('show/ShowDetailPage', params);
+                                                           navigate(RouterMap.ShowDetailPage, params);
                                                        } else if (data.showType === 4) {
                                                            navigate(RouterMap.TagDetailPage, {
                                                                tagId: data.tagId,
                                                                name: data.tagName
                                                            });
                                                        } else {
-                                                           navigate('show/ShowRichTextDetailPage', params);
+                                                           navigate(RouterMap.ShowRichTextDetailPage, params);
                                                        }
                                                    }}
                                                    navigate={this.$navigate}/> : null

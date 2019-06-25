@@ -217,7 +217,7 @@ export default class PaymentFinshPage extends BasePage {
         this.setState({
             isShow:false
         },()=>{
-            this.$navigate('HtmlPage',{
+            this.$navigate(RouterMap.HtmlPage,{
                 uri:`${apiEnvironment.getCurrentH5Url()}/activity/freeOrder`
             });
         })

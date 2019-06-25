@@ -67,7 +67,7 @@ export default class MyPromotionPage extends BasePage {
     };
 
     $NavBarRightPressed = () => {
-        this.$navigate('mine/ExpDetailPage', {
+        this.$navigate(RouterMap.ExpDetailPage, {
             experience: this.state.experience,
             levelExperience: this.state.levelExperience
         })
