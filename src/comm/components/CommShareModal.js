@@ -110,7 +110,7 @@ export default class CommShareModal extends React.Component {
         this._bind();
         this.defaultShareType = 1;
         this.state = {
-            modalVisible: false,
+            modalVisible: props.defaultModalVisible || false,
             shareType: this.defaultShareType, //如果是type小程序分享，默认分享方式是小程序分享。其余的type，默认分享类型是web图文
             path: '',
             showToastImage: false,

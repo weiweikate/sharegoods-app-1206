@@ -722,6 +722,7 @@ export default class TopicDetailPage extends BasePage {
 
                 {/*分享*/}
                 <CommShareModal ref={(ref) => this.shareModal = ref}
+                                defaultModalVisible={this.params.openShareModal}
                                 trackParmas={{
                                     spuCode: this.params.activityCode,
                                     spuName: productName

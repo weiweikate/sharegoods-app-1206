@@ -604,6 +604,7 @@ export default class ShowRichTextDetailPage extends BasePage {
             {detail.status !== 1 ? this._shieldRender() : null}
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
+                            defaultModalVisible={this.params.openShareModal}
                             type={'Show'}
                             trackEvent={trackEvent.XiuChangShareClick}
                             trackParmas={{ articleCode: detail.code, author: (detail.userInfoVO||{}).userNo,xiuChangBtnLocation:'2',xiuChangListType:''}}
