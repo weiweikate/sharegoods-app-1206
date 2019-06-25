@@ -45,7 +45,7 @@ class MyOrdersListPage extends BasePage {
     };
 
     gotoSearchPage = () => {
-        this.$navigate(RouterMap.SearchPage);
+        this.$navigate(RouterMap.SearchPageOrder);
     };
 
     componentWillUnmount() {
