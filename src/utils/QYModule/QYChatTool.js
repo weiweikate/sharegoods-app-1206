@@ -28,33 +28,28 @@ const QYChatTool = {
      * systemVersion:手机系统版本
      */
     initQYChat() {
-
-        QYApi.judgeVip().then(result=>{
-
-            console.log(result);
+        QYApi.judgeVip().then(result => {
             let jsonParams = {
                 userId: user.code + '',
                 userIcon: user.headImg,
                 nickName: user.nickname,
                 device: DeviceInfo.getDeviceName(),
                 systemVersion: DeviceInfo.getSystemVersion(),
-                isVip:result.data
+                isVip: result.data
             };
             JRQYService.initQYChat(jsonParams);
 
-        }).catch(error=>{
-
-            console.log(error)
+        }).catch(error => {
             let jsonParams = {
                 userId: user.code + '',
                 userIcon: user.headImg,
                 nickName: user.nickname,
                 device: DeviceInfo.getDeviceName(),
                 systemVersion: DeviceInfo.getSystemVersion(),
-                isVip:false
+                isVip: false
             };
             JRQYService.initQYChat(jsonParams);
-        })
+        });
 
     },
 
