@@ -51,8 +51,8 @@ const allKinds = {
     9: { title: '秀购奖励', img: zensong },
     10: { title: '邀请有礼奖励', img: icon_invite },
     11: { title: '分享奖励', img: fenxiang_icon },
-    12: { title: '奖池投奖', img: tuiguang_icon },
-    13: { title: '奖池奖励', img: zengsong_icon }
+    12: { title: '参与活动', img: tuiguang_icon },
+    13: { title: '活动奖励', img: zengsong_icon }
 };
 @observer
 export default class MyIntegralAccountPage extends BasePage {
