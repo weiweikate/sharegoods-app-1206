@@ -61,6 +61,7 @@ const {
     red_bg,
     gary_bg,
     current_p,
+    inform
 } = res.task;
 
 
@@ -269,7 +270,7 @@ export default class TaskVIew extends React.Component {
         );
     }
 
-    renderTitle(type) {
+    renderTitle() {
 
         return (
             <View style={[styles.header, { height: autoSizeWidth(40), paddingHorizontal: 15 }]}>
@@ -278,6 +279,7 @@ export default class TaskVIew extends React.Component {
                     color: '#333333',
                     fontWeight: '600'
                 }}>{this.model.name}</MRText>
+                <UIImage source={inform} style={{width: autoSizeWidth(15),height: autoSizeWidth(13), marginLeft: autoSizeWidth(5)}}/>
                 <MRText style={{
                     fontSize: autoSizeWidth(10),
                     color: '#333333',
@@ -403,7 +405,7 @@ export default class TaskVIew extends React.Component {
                               onPress={() => this.model.expandedClick()}
             >
                 <MRText style={{ fontSize: autoSizeWidth(10), color: DesignRule.mainColor }}>{this.model.expanded ?
-                    '收起任务列表' : '隐藏已完成任务 '}</MRText>
+                    '收起任务列表' : '展开任务列表'}</MRText>
                 <UIImage source={this.model.expanded ? arrow_red_top : arrow_red_bottom}
                          style={{ height: autoSizeWidth(6), width: autoSizeWidth(11) }}/>
             </TouchableOpacity>
@@ -447,9 +449,6 @@ export default class TaskVIew extends React.Component {
         let type = this.props.type;
         let progress = this.model.progress + '';
         let fontSize = autoSizeWidth(17);
-        if (progress.length >=4){
-            fontSize =  autoSizeWidth(15)
-        }
         return (
             <View style={[{
                 width: ScreenUtils.width,
@@ -464,10 +463,10 @@ export default class TaskVIew extends React.Component {
                     {this.renderBtn()}
                 </View>
                 <ImageBackground source={current_p}
-                                 style={{width: autoSizeWidth(156/2),
-                                     height: autoSizeWidth(124/2),
-                                     right: 5,
-                                     top: type === 'home'? 0 :autoSizeWidth(10),
+                                 style={{width: autoSizeWidth(90),
+                                     height: autoSizeWidth(45),
+                                     right: 15,
+                                     top: type === 'home'?  autoSizeWidth(15):autoSizeWidth(15),
                                      position: 'absolute',
                                      alignItems: 'center',
                                      justifyContent: 'center',

@@ -41,7 +41,7 @@ class TaskModel {
     @observable
     tasks = [];
     @observable
-    hideFinishTask = true;
+    hideFinishTask = false;
     @observable
     advMsg = '';
     @observable
@@ -71,12 +71,6 @@ class TaskModel {
         HomeApi.getMissionActivity({ activityType: this.type === 'home' ? activity_mission_main_no : activity_mission_daily_no }).then((result) => {
             let data = result.data || {};
             this.progress = data.activityValue || 0;
-            if (this.progress >= 10 && this.progress<100) {
-                this.progress = parseInt((this.progress*10 + ''))/10
-            }
-            if (this.progress >= 100){
-                this.progress = parseInt((this.progress + ''))
-            }
             this.boxs = data.ruleList || [];
             let tasks = data.missionList || [];
             this.tasks = this.sort(tasks);
