@@ -328,15 +328,18 @@ export default class TaskVIew extends React.Component {
                                     })
                                 }
                             </View>
-                            <UIImage source={task_run_people}
-                                     style={{
-                                         position: 'absolute',
-                                         left: progress * autoSizeWidth(290) - autoSizeWidth(15),
-                                         width: autoSizeWidth(22),
-                                         height: autoSizeWidth(15),
-                                         top: 0
-                                     }}
-                            />
+                            {
+                                this.model.canOpenProgress !== -1?  <UIImage source={task_run_people}
+                                                                             style={{
+                                                                                 position: 'absolute',
+                                                                                 left: this.model.canOpenProgress/this.model.totalProgress * autoSizeWidth(290) - autoSizeWidth(5),
+                                                                                 width: autoSizeWidth(25),
+                                                                                 height: autoSizeWidth(23),
+                                                                                 top: autoSizeWidth(20)
+                                                                             }}
+                                /> : null
+                            }
+
                         </View>
                 </View>
             </View>
