@@ -62,6 +62,7 @@ export default class ProductDetailPage extends BasePage {
             goType: ''
         };
         this.productDetailModel.prodCode = this.params.productCode;
+        this.productDetailModel.sourceType = this.params.type;
     }
 
     _getPageStateOptions = () => {
@@ -288,8 +289,9 @@ export default class ProductDetailPage extends BasePage {
 
     _renderContent = () => {
         const {
-            name, imgUrl, prodCode, originalPrice, groupPrice, v0Price, promotionPrice,
-            shareMoney, sectionDataList, isSkillIn, nameShareText, productDetailCouponsViewModel
+            name, imgUrl, prodCode, originalPrice, groupPrice, v0Price, promotionMinPrice,
+            shareMoney, sectionDataList, productIsPromotionPrice, nameShareText, productDetailCouponsViewModel,
+            priceTypeTextList, monthSaleCount
         } = this.productDetailModel;
         return <View style={styles.container}>
             <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
@@ -326,11 +328,12 @@ export default class ProductDetailPage extends BasePage {
                             trackEvent={trackEvent.Share}
                             type={'Image'}
                             imageJson={{
+                                monthSaleType: monthSaleCount >= 1000 ? 3 : (monthSaleCount >= 500 ? 2 : 1),
                                 imageUrlStr: imgUrl,
                                 titleStr: `${name}`,
-                                priceType: isSkillIn ? 'mr_skill' : '',
+                                priceType: priceTypeTextList,
                                 priceStr: `￥${originalPrice}`,
-                                retailPrice: `￥${isSkillIn ? promotionPrice : v0Price}`,
+                                retailPrice: `￥${productIsPromotionPrice ? promotionMinPrice : v0Price}`,
                                 shareMoney: shareMoney,
                                 spellPrice: `￥${groupPrice}`,
                                 QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`
