@@ -16,6 +16,7 @@ console.log(PageKey);
 
 const RouterMap = {
     Tab: 'Tab',
+    HtmlPage: 'HtmlPage',
     DebugLoginPage: 'debug/DemoLoginPage',
     DebugDemoPage: 'debug/DemoListPage',
     DebugFetchHistoryPage: 'debug/FetchHistoryPage',

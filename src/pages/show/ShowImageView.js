@@ -69,7 +69,7 @@ export default class ShowImageView extends Component {
         </View>;
     }
 
-    _renderViewPageItem(item) {
+    _renderViewPageItem(item,index) {
         return <TouchableWithoutFeedback onPress={() => this.props.onPress(this.state.items, this.index)}>
             <View>
                 <ImageLoad style={{

@@ -5,10 +5,12 @@ import {
     ImageBackground,
     Alert,
     Image,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    Animated
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import { RefreshList } from '../../../../components/ui';
+import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DataUtils from '../../../../utils/DateUtils';
@@ -20,6 +22,7 @@ import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import { MRText as Text } from '../../../../components/ui';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
+import StickyHeader from '../../components/StickyHeader'
 import RouterMap, { routeNavigate } from '../../../../navigation/RouterMap';
 
 const { px2dp } = ScreenUtils;
@@ -37,6 +40,7 @@ const account_bg_white = res.bankCard.account_bg_white;
 const red_up = res.cashAccount.zhanghu_red;
 const lv_down = res.cashAccount.zhanghu_lv;
 const writer = res.cashAccount.writer_icon;
+const cash_noData = res.cashAccount.cash_noData;
 
 const allType = {
     1: {
@@ -99,9 +103,14 @@ export default class MyCashAccountPage extends BasePage {
             viewData: [],
             currentPage: 1,
             isEmpty: false,
-            canWithdraw: false
+            canWithdraw: false,
+            scrollY: new Animated.Value(0)
+
         };
         this.currentPage = 0;
+        this.type = null;
+        this.biType = null;
+
     }
 
     $NavBarRightPressed = () => {
@@ -121,19 +130,38 @@ export default class MyCashAccountPage extends BasePage {
         return (
             <View style={styles.mainContainer}>
                 {this.renderHeader()}
-                {this.state.viewData && this.state.viewData.length > 0 ? null : this.renderReHeader()}
-                <RefreshList
-                    data={this.state.viewData}
-                    ListHeaderComponent={this.renderReHeader}
-                    progressViewOffset={30}
-                    renderItem={this.renderItem}
-                    onRefresh={this.onRefresh}
-                    onLoadMore={this.onLoadMore}
-                    extraData={this.state}
-                    isEmpty={this.state.isEmpty}
-                    emptyTip={'暂无明细数据～'}
-                />
-                {this._accountInfoRender()}
+                <Animated.ScrollView
+                    onScroll={Animated.event([{
+                        nativeEvent: { contentOffset: { y: this.state.scrollY, } }
+                    }], { useNativeDriver: true })}
+                    scrollEventThrottle={1}
+                    bounces={false}
+                    showsVerticalScrollIndicator={false}
+                    style={{backgroundColor:'white'}}
+                >
+                    <ImageBackground resizeMode={'stretch'} source={account_bg}
+                                     style={{marginBottom:40,height:px2dp(160),width:ScreenUtils.width}}>
+                        {this._accountInfoRender()}
+                    </ImageBackground>
+                    <StickyHeader
+                        stickyHeaderY={px2dp(202)} // 滑动到多少悬浮
+                        stickyScrollY={this.state.scrollY}
+                    >
+                        {this.renderReHeader()}
+                    </StickyHeader>
+                    <RefreshList
+                        data={this.state.viewData}
+                        renderItem={this.renderItem}
+                        onRefresh={this.onRefresh}
+                        onLoadMore={this.onLoadMore}
+                        extraData={this.state}
+                        progressViewOffset={30}
+                        isEmpty={this.state.isEmpty}
+                        emptyTip={'暂无明细数据～'}
+                        emptyIcon={cash_noData}
+                    />
+
+                </Animated.ScrollView>
             </View>
         );
     }
@@ -142,8 +170,8 @@ export default class MyCashAccountPage extends BasePage {
         return (
             <ImageBackground source={account_bg_white} resizeMode={'stretch'} style={{
                 position: 'absolute',
-                top: px2dp(80),
-                height: px2dp(140),
+                top: px2dp(10),
+                height: px2dp(174),
                 width: ScreenUtils.width,
                 left: 0,
                 paddingHorizontal: DesignRule.margin_page
@@ -167,21 +195,24 @@ export default class MyCashAccountPage extends BasePage {
                     color: DesignRule.textColor_mainTitle,
                     fontSize: 48,
                     marginLeft: DesignRule.margin_page,
-                    marginTop: px2dp(15),
-                    marginBottom: px2dp(30)
                 }}>{user.availableBalance ? user.availableBalance : '0.00'}</Text>
+                <View style={{display:'flex', flexDirection:'row'}} >
+                    <View style={{flex:1,marginLeft: 15, justifyContent:'center'}}>
+                        <Text style={styles.numTextStyle}>{user.blockedBalance ? user.blockedBalance : '0.00'}</Text>
+                        <Text style={styles.numRemarkStyle}>待入账(元)</Text>
+                    </View>
+                    <View style={{flex:1,marginLeft: 15, justifyContent:'center'}}>
+                        <Text style={styles.numTextStyle}>{user.historicalBalance ? user.historicalBalance : '0.00'}</Text>
+                        <Text style={styles.numRemarkStyle}>累计收益(元)</Text>
+                    </View>
+                </View>
             </ImageBackground>
         );
     }
 
-    renderFooter = () => {
-        return (
-            <View style={{ height: 20, width: ScreenUtils.width, backgroundColor: DesignRule.bgColor }}/>
-        );
-    };
     renderHeader = () => {
         return (
-            <ImageBackground resizeMode={'stretch'} source={account_bg} style={styles.container}>
+            <ImageBackground resizeMode={'stretch'} source={account_bg} style={{width:ScreenUtils.width}}>
                 <View style={styles.headerWrapper}>
                     <TouchableWithoutFeedback onPress={() => {
                         this.$navigateBack();
@@ -190,16 +221,21 @@ export default class MyCashAccountPage extends BasePage {
                             width: 60,
                             paddingLeft: DesignRule.margin_page,
                             height: 40,
-                            justifyContent: 'center'
+                            justifyContent: 'center',
+                            alignItems:'flex-start',
+                            flex:1
                         }}>
                             <Image source={res.button.white_back}/>
                         </View>
                     </TouchableWithoutFeedback>
-                    {this.state.canWithdraw ? <TouchableWithoutFeedback onPress={() => {
-                        this.$navigate(RouterMap.BankCardListPage);
+                    <Text style={{
+                        color: DesignRule.white,
+                        fontSize: px2dp(17),
+                        includeFontPadding: false
                     }}>
-                        <Text style={styles.settingStyle}>银行卡管理</Text>
-                    </TouchableWithoutFeedback> : null}
+                    账户余额
+                    </Text>
+                    <View style={{flex:1}}/>
                 </View>
             </ImageBackground>
         );
@@ -207,25 +243,54 @@ export default class MyCashAccountPage extends BasePage {
 
     renderReHeader = () => {
         return (
-            <View style={{
-                paddingLeft: 15,
-                paddingTop: 52,
-                paddingBottom: 20,
-                flexDirection: 'row',
-                alignItems: 'center',
-                backgroundColor: 'white'
-            }}>
-                <View style={{
-                    backgroundColor: DesignRule.mainColor,
-                    width: 2,
-                    height: 8,
-                    borderRadius: 1,
-                    marginRight: 5
-                }}/>
-                <Text style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}>账户明细</Text>
+            <View style={{flex: 1, backgroundColor: 'white'}}>
+                <ScrollableTabView
+                    onChangeTab={(obj) => {
+                        if(obj.i === 1){
+                           this.type = 1;
+                           this.biType = 1;
+                        }else  if(obj.i === 2){
+                            this.type = 1;
+                            this.biType = 2;
+                        }else  if(obj.i === 3){
+                            this.type = 2;
+                            this.biType = 1;
+                        }else {
+                            this.type = null;
+                            this.biType = null;
+                        }
+                        this.onRefresh()
+                    }}
+                    style={{flex: 1, width: ScreenUtils.width * 2 / 3, marginBottom: ScreenUtils.safeBottom}}
+                    scrollWithoutAnimation={true}
+                    renderTabBar={this._renderTabBar}
+                    //进界面的时候打算进第几个
+                    initialPage={0}
+                >
+                    <View tabLabel={'全部'}/>
+                    <View tabLabel={'收入'}/>
+                    <View tabLabel={'支出'}/>
+                    <View tabLabel={'待入账'}/>
+                </ScrollableTabView>
             </View>
+
         );
     };
+
+    _renderTabBar = () => {
+        return (
+            <DefaultTabBar
+                backgroundColor={'white'}
+                activeTextColor={DesignRule.mainColor}
+                inactiveTextColor={DesignRule.textColor_instruction}
+                textStyle={styles.tabBarText}
+                underlineStyle={styles.tabBarUnderline}
+                style={styles.tabBar}
+                tabStyle={styles.tab}
+            />
+        )
+    };
+
     renderItem = ({ item, index }) => {
         return (
             <View style={{
@@ -234,7 +299,8 @@ export default class MyCashAccountPage extends BasePage {
                 alignItems: 'center',
                 width: ScreenUtils.width,
                 backgroundColor: 'white',
-                paddingBottom: 20
+                paddingBottom: 10,
+                paddingTop: 10,
             }}>
                 <Image source={item.iconImage} style={{ marginLeft: 15, width: 40, height: 40 }}/>
                 <View style={{
@@ -251,19 +317,33 @@ export default class MyCashAccountPage extends BasePage {
                             fontSize: 12, color: DesignRule.textColor_instruction
                         }}>{item.time}</Text>
                     </View>
-                    <View style={{ justifyContent: 'space-between', alignItems: 'flex-end' }}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    {this.type === 2 && this.biType === 1 ?
+                        <View style={{justifyContent: 'space-between', alignItems: 'flex-end'}}>
+                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                <Text style={{
+                                    fontSize: 17,
+                                    color: DesignRule.textColor_mainTitle
+                                }}>{StringUtils.formatMoneyString(item.capital, false)}</Text>
+                            </View>
                             <Text style={{
-                                fontSize: 17,
-                                color: DesignRule.textColor_mainTitle
-                            }}>{StringUtils.formatMoneyString(item.capital, false)}</Text>
-                            <Image style={{ marginLeft: 5, width: 8, height: 5 }}
-                                   source={item.capitalRed ? lv_down : red_up}/>
+                                fontSize: 12, color: DesignRule.textColor_instruction
+                                }}>{item.realBalance && item.realBalance.length > 0 ? `已入账：${item.realBalance}` : '待入账：？'}</Text>
                         </View>
-                        <Text style={{
-                            fontSize: 12, color: DesignRule.textColor_instruction
-                        }}>{item.serialNumber}</Text>
-                    </View>
+                        :
+                        <View style={{justifyContent: 'space-between', alignItems: 'flex-end'}}>
+                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                <Text style={{
+                                    fontSize: 17,
+                                    color: DesignRule.textColor_mainTitle
+                                }}>{StringUtils.formatMoneyString(item.capital, false)}</Text>
+                                <Image style={{marginLeft: 5, width: 8, height: 5}}
+                                       source={item.capitalRed ? lv_down : red_up}/>
+                            </View>
+                            <Text style={{
+                                fontSize: 12, color: DesignRule.textColor_instruction
+                            }}>{item.serialNumber}</Text>
+                        </View>}
+
                 </View>
             </View>
         );
@@ -333,7 +413,7 @@ export default class MyCashAccountPage extends BasePage {
         }
 
         let arrData = this.currentPage === 1 ? [] : this.state.viewData;
-        MineApi.userBalanceQuery({ page: this.currentPage, size: 10, type: 1 }).then((response) => {
+        MineApi.userBalanceQuery({ page: this.currentPage, size: 10, type: this.type, biType:this.biType }).then((response) => {
             Toast.hiddenLoading();
             console.log(response);
             if (response.code === 10000) {
@@ -346,7 +426,8 @@ export default class MyCashAccountPage extends BasePage {
                             serialNumber: item.serialNo,
                             capital: use_type_symbol[item.biType] + (item.balance ? item.balance : 0.00),
                             iconImage: allType[item.useType] ? allType[item.useType].icon : renwu,
-                            capitalRed: use_type_symbol[item.biType] === '-'
+                            capitalRed: use_type_symbol[item.biType] === '-',
+                            realBalance: item.realBalance
                         });
                     });
                 }
@@ -398,7 +479,25 @@ const styles = StyleSheet.create({
         height: px2dp(188),
         width: ScreenUtils.width
     },
-
+    tabBar: {
+        width: ScreenUtils.width * 2 / 3,
+        height: 40,
+        borderWidth: 0,
+        borderColor: DesignRule.lineColor_inWhiteBg
+    },
+    tab: {
+        paddingBottom: 0
+    },
+    tabBarText: {
+        fontSize: 15
+    },
+    tabBarUnderline: {
+        width: 10,
+        height: 2,
+        marginHorizontal: (ScreenUtils.width * 2 / 3 - 10 * 4) / 8,
+        backgroundColor: DesignRule.mainColor,
+        borderRadius: 1
+    },
     viewStyle: {
         height: 95,
         marginTop: 10,
@@ -437,8 +536,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: DesignRule.white,
         borderColor: DesignRule.mainColor,
-        borderWidth: 1
-    }
+        borderWidth: 1,
+        position: 'absolute',
+        right: 6,
+        top: 0
+    },
+    numTextStyle:{
+        color:'#333333',
+        fontSize:19,
+    },
+    numRemarkStyle:{
+        color:'#999999',
+        fontSize:12,
+    },
 });
 
 
