@@ -1,5 +1,5 @@
 const button = {
-    icon_header_back: require('./icon_header_back.png'),
+    icon_header_back: require('./back_black.png'),
     see_white: require('./see_white.png'),
     see: require('./see.png'),
     selected_circle_red: require('./selected_circle_red.png'),
@@ -8,7 +8,7 @@ const button = {
     tongyong_btn_close_white: require('./tongyong_btn_close_white.png'),
     tongyon_icon_check_green: require('./tongyon_icon_check_green.png'),
     unselected_circle: require('./gouwuche_icon_weixuan_nor.png'),
-    unAbleSelected_circle:require('./unselected_circle.png'),
+    unAbleSelected_circle: require('./unselected_circle.png'),
     arrow_bottom: require('./arrow_bottom.png'),//朝下、灰色箭头
     arrow_top: require('./arrow_top.png'),//朝上、灰色箭头
     cancel_white_circle: require('./cancel_white_circle.png'),//白色圆形取消按钮
@@ -31,6 +31,6 @@ const button = {
     expanded_bottom: require('./expanded_bottom.png'),
     expanded_right: require('./expanded_right.png'),
     back_black: require('./back_black.png'),
-    back_white: require('./back_white.png'),
+    back_white: require('./back_white.png')
 };
 export default button;

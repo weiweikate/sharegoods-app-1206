@@ -18,8 +18,7 @@ import user from '../../model/user';
 import PaymentApi from './PaymentApi';
 import apiEnvironment from '../../api/ApiEnvironment';
 import bridge from '../../utils/bridge';
-
-import FinshPayAlertView from './FinshPayAlertView';
+// import FinshPayAlertView from './FinshPayAlertView';
 import { replaceRoute } from '../../navigation/RouterMap';
 import RouterMap from '../../navigation/RouterMap';
 
@@ -106,9 +105,9 @@ export default class PaymentFinshPage extends BasePage {
                 {/*<RenderSeparator title={'你还有兑换券即将过期，快来使用吧'}/>*/}
                 {this.renderCouponList()}
                 {this.state.showShareView ? this._renderShareView() : null}
-                <FinshPayAlertView btnClick={()=>{
-                    this._clickAlertView();
-                }} isShow={this.state.isShow}/>
+                {/*<FinshPayAlertView btnClick={()=>{*/}
+                    {/*this._clickAlertView();*/}
+                {/*}} isShow={this.state.isShow}/>*/}
             </ScrollView>
         );
     }

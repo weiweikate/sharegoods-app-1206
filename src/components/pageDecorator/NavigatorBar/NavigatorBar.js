@@ -9,9 +9,9 @@ import {
     StyleSheet,
     TouchableOpacity
 } from 'react-native';
-import BackIcon from '../../../comm/res/button/icon_header_back.png';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
+import res from '../../../comm/res';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -21,7 +21,7 @@ export default class NavigatorBar extends Component {
 
         title: '',
 
-        leftNavImage: BackIcon,
+        leftNavImage: res.button.icon_header_back,
         leftNavTitle: '',
         leftNavItemHidden: false,
 
@@ -181,7 +181,7 @@ export default class NavigatorBar extends Component {
                 <Image
                     source={leftNavImage}
                     resizeMode={'stretch'}
-                    style={[{ height: 15, width: 15 }, leftImageStyle]}
+                    style={leftImageStyle}
                 />
             </TouchableOpacity>;
         }

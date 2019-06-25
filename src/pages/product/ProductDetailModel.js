@@ -51,6 +51,7 @@ export const product_status = {
     down: 2,
     future: 3
 };
+
 /*活动状态*/
 export const activity_status = {
     unBegin: 1,//未开始
