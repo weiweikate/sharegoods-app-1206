@@ -253,7 +253,7 @@ export default class MinePage extends BasePage {
                     renderForeground={this.renderUserHead}
                     renderStickyHeader={this.renderLevelNameNav}
                     stickyHeaderHeight={this.state.changeHeader ? 0 : px2dp(44 + statusBarHeight)}
-                    parallaxHeaderHeight={237}
+                    parallaxHeaderHeight={217+statusBarHeight}
                     onScroll={this._onScroll}
                     showsVerticalScrollIndicator={false}
                 >

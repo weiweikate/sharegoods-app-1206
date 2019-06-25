@@ -150,6 +150,8 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     imageWidth = width.floatValue;
 
   }else{
+    imageHeght = 667*i;
+    imageWidth =  375*i;
     NSString *titleStr = model.titleStr;
     NSString *priceStr = model.priceStr;
     NSString *retailPrice = model.retailPrice;
@@ -161,16 +163,13 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     if (height > sigle) {
       height= sigle;
     }
-    if (height > sigle) {
-      imageHeght = 687*i;
-    }
-
+  
     //白色背景
     UIImage * whiteBgImg = [UIImage imageWithColor:[UIColor whiteColor]];
     [nodes addObject:@{
                        @"value": [whiteBgImg  creatRoundImagWithRadius:0.01 width:(375)*i height:482*i],
                        @"locationType": @"rect",
-                       @"location": [NSValue valueWithCGRect:CGRectMake(0, 100*i, 375*i, 482*i)]}
+                       @"location": [NSValue valueWithCGRect:CGRectMake(0, 561*i, 375*i, 106*i)]}
      ];
     
     //商品白色背景
@@ -179,14 +178,14 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     [nodes addObject:@{
                        @"value": [goodsWhiteBgImg  creatRoundImagWithRadius:0.01 width:375*i height:440*i],
                        @"locationType": @"rect",
-                       @"location": [NSValue valueWithCGRect:CGRectMake(0, 0, 375*i, 524*i)]}
+                       @"location": [NSValue valueWithCGRect:CGRectMake(0, 0, 375*i, 595*i)]}
      ];
      
     //商品
     [nodes addObject:@{
                        @"value": images[0],
                        @"locationType": @"rect",
-                       @"location": [NSValue valueWithCGRect:CGRectMake(24*i, 24*i, 327*i, 327*i)]}
+                       @"location": [NSValue valueWithCGRect:CGRectMake(24*i, 47*i, 327*i, 327*i)]}
      ];
     
     
@@ -196,21 +195,21 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     [nodes addObject:@{
                        @"value": hotImage,
                        @"locationType": @"rect",
-                       @"location": [NSValue valueWithCGRect:CGRectMake(250*i, 18*i, 101*i, 32*i)]}
+                       @"location": [NSValue valueWithCGRect:CGRectMake(250*i, (43+18)*i, 101*i, 32*i)]}
      ];
     
   //标题
   NSMutableParagraphStyle *style = [NSMutableParagraphStyle new];
-  CGFloat titleWidth = [titleStr getWidthStringfontSize:18 viewWidth:276];
+  CGFloat titleWidth = [titleStr getWidthStringfontSize:18 viewWidth:328];
 
-  CGFloat titlelength = titleWidth>=260? 256:276;
+  CGFloat titlelength = titleWidth>=310? 308:328;
   style.lineBreakMode = NSLineBreakByTruncatingTail;
   NSAttributedString *titleAttrStr = [[NSAttributedString alloc]initWithString:titleStr
                                                                     attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:18*i], NSForegroundColorAttributeName: [UIColor colorWithHexString:@"333333"]}];
   [nodes addObject:@{
                      @"value": titleAttrStr,
                      @"locationType": @"rect",
-                     @"location": [NSValue valueWithCGRect:CGRectMake(23*i, 369*i, titlelength*i, height)]}
+                     @"location": [NSValue valueWithCGRect:CGRectMake(23*i, 394*i, titlelength*i, height)]}
    ];
   if( titleWidth>=260){
     NSAttributedString *dotAttrStr = [[NSAttributedString alloc]initWithString:@"..."
@@ -218,7 +217,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     [nodes addObject:@{
                        @"value": dotAttrStr,
                        @"locationType": @"rect",
-                       @"location": [NSValue valueWithCGRect:CGRectMake((23+titlelength)*i, 369*i, 20*i, height)]}
+                       @"location": [NSValue valueWithCGRect:CGRectMake((23+titlelength)*i, 394*i, 20*i, height)]}
      ];
   }
 
@@ -227,12 +226,12 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
                                                                                          attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:30*i], NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#FF0050"]}];
     [nodes addObject:@{
                        @"value": retailPriceAttrStr,
-                       @"location": [NSValue valueWithCGPoint:CGPointMake(15*i, 398*i)]}
+                       @"location": [NSValue valueWithCGPoint:CGPointMake(24*i, (43+398)*i)]}
      ];
 
     for(NSInteger index=0;index<model.priceType.count;index++){
       
-      CGFloat spellPriceWidth = index>0?[model.priceType[index] getWidthStringfontSize:13 viewWidth:200]:0;
+      CGFloat priceWidth = index>0?[model.priceType[index-1] getWidthStringfontSize:13 viewWidth:200]:0;
       //拼店文字
       NSMutableAttributedString *pindian = [[NSMutableAttributedString alloc]initWithString:[NSString stringWithFormat:@" %@ ",model.priceType[index]]
                                                                                  attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:13*i],
@@ -240,7 +239,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
                                                                                               NSForegroundColorAttributeName: [UIColor colorWithHexString:@"FF0050"]}];
       [nodes addObject:@{
                          @"value": pindian,
-                         @"location": [NSValue valueWithCGPoint:CGPointMake(((spellPriceWidth+20)*index+15)*i, 451*i)]}
+                         @"location": [NSValue valueWithCGPoint:CGPointMake(((priceWidth+20)*index+24)*i, (43+451)*i)]}
        ];
     }
     
@@ -251,28 +250,28 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
 
     [nodes addObject:@{
                        @"value": priceAttrStr,
-                       @"location": [NSValue valueWithCGPoint:CGPointMake(15*i, 481*i)]}
+                       @"location": [NSValue valueWithCGPoint:CGPointMake(24*i, (43+481)*i)]}
      ];
 
   //二维码
   UIImage *QRCodeImage = [UIImage QRCodeWithStr:QRCodeStr];
   [nodes addObject:@{@"value": QRCodeImage,
                      @"locationType": @"rect",
-                     @"location": [NSValue valueWithCGRect:CGRectMake(263*i, 414*i, 89*i, 89*i)]}
+                     @"location": [NSValue valueWithCGRect:CGRectMake(263*i, (43+414)*i, 89*i, 89*i)]}
    ];
     
-    //用户头像
+    //秀购头像
     [nodes addObject:@{
                        @"value": [[UIImage imageNamed:@"logo.png"] creatRoundImagWithRadius:0.5 width:33*i height:33*i],
                        @"locationType": @"rect",
-                       @"location": [NSValue valueWithCGRect:CGRectMake(87*i, 533*i, 33*i, 33*i)]}
+                       @"location": [NSValue valueWithCGRect:CGRectMake(87*i, (43+533)*i, 39*i, 39*i)]}
      ];
     
     //头像
     [nodes addObject:@{
                        @"value": [images[1] creatRoundImagWithRadius:0.5 width:33*i height:33*i],
                        @"locationType": @"rect",
-                       @"location": [NSValue valueWithCGRect:CGRectMake(151*i, 537*i, 33*i, 33*i)]}
+                       @"location": [NSValue valueWithCGRect:CGRectMake(144*i, (43+533)*i, 39*i, 39*i)]}
      ];
     
     NSMutableAttributedString * tempStrAttrStr = [[NSMutableAttributedString alloc]initWithString:@"为您推荐好物"
@@ -281,7 +280,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     
     [nodes addObject:@{
                       @"value": tempStrAttrStr,
-                      @"location": [NSValue valueWithCGPoint:CGPointMake(193*i, 545*i)]}
+                      @"location": [NSValue valueWithCGPoint:CGPointMake(195*i, (43+543)*i)]}
          ];
     
   }
