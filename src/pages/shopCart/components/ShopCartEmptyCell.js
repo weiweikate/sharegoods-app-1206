@@ -23,7 +23,9 @@ export default class ShopCartEmptyCell extends Component {
                 height: itemData.height,
                 width: ScreenUtils.width / 2 - px2dp(10),
                 marginLeft: px2dp(5),
-                height: itemData.height
+                height: itemData.height,
+                backgroundColor:DesignRule.color_fff,
+                borderRadius:px2dp(5)
             }}>
                 <PreLoadImage
                     imageUri={itemData.imgUrl}
@@ -32,13 +34,17 @@ export default class ShopCartEmptyCell extends Component {
                 <MRText numberOfLines={2}
                         style={{ fontSize: px2dp(14),
                             color: DesignRule.textColor_mainTitle,
-                            marginTop: px2dp(5) }}>
+                            marginTop: px2dp(5) ,
+                            marginLeft:px2dp(10),
+                            marginRight:px2dp(10),
+                            height:px2dp(40)
+                        }}>
                     {itemData.name}
                 </MRText>
                 <View style={{ flexDirection: 'row', marginTop: px2dp(3) }}>
                     {this.createTipView([])}
                 </View>
-                <View style={{ flexDirection: 'row',alignItems:'center' }}>
+                <View style={{ flexDirection: 'row',alignItems:'center' ,paddingLeft:px2dp(10) }}>
                     <View style={{ flex: 1 }}>
                         <MRText style={{color:'rgba(255, 0, 80, 1)',fontSize:px2dp(12)}}>
                             {`￥${itemData.originalPrice}`}
