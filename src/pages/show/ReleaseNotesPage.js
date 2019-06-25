@@ -93,7 +93,7 @@ export default class ReleaseNotesPage extends BasePage {
 
     _publish = () => {
         if (EmptyUtils.isEmptyArr(this.state.imageArr) && this.state.videoData === null) {
-            this.$toastShow('至少需要上传一张图片或视频哦');
+            this.$toastShow('至少需要上传一张图片哦');
             return;
         }
         let content = this.state.text || '';
@@ -142,6 +142,7 @@ export default class ReleaseNotesPage extends BasePage {
         ShowApi.publishShow(params).then((data) => {
             this.props.navigation.popToTop();
             this.props.navigation.navigate(RouterMap.MyDynamicPage);
+
         }).catch((error) => {
             this.$toastShow(error.msg || '网络错误');
         });

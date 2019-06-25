@@ -13,7 +13,6 @@ import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-vi
 import ScreenUtils from '../../utils/ScreenUtils';
 
 const { px2dp } = ScreenUtils;
-import backIconImg from '../../comm/res/button/icon_header_back.png';
 import DesignRule from '../../constants/DesignRule';
 import { observer } from 'mobx-react';
 import {
@@ -108,9 +107,10 @@ export default class ShowListPage extends BasePage {
         this.setState({ needsExpensive: true });
 
         this.listener = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
-        this.publishListener = DeviceEventEmitter.addListener('PublishShowFinish', (value) => {
-            this._gotoPage(2);
-            this.foundList && this.foundList.addDataToTop(value);
+        this.publishListener = DeviceEventEmitter.addListener('PublishShowFinish', (index) => {
+            if (index !== -1) {
+                this._gotoPage(index);
+            }
         });
         this.listenerRetouchShow = DeviceEventEmitter.addListener('retouch_show', this.retouchShow);
     }
@@ -238,7 +238,7 @@ export default class ShowListPage extends BasePage {
                     left
                         ?
                         <TouchableOpacity style={styles.backImg} onPress={() => this._onLeftPressed()}>
-                            <Image source={backIconImg} style={styles.img}/>
+                            <Image source={res.button.icon_header_back} style={styles.img}/>
                         </TouchableOpacity>
                         :
                         null
@@ -318,7 +318,6 @@ export default class ShowListPage extends BasePage {
                                 }}/>
                             :
                             null
-
                     }
                 </View>
 
@@ -348,14 +347,14 @@ export default class ShowListPage extends BasePage {
                                                            index
                                                        };
                                                        if (data.showType === 1 || data.showType === 3) {
-                                                           navigate(RouterMap.ShowDetailPage, params);
+                                                           navigate('show/ShowDetailPage', params);
                                                        } else if (data.showType === 4) {
                                                            navigate(RouterMap.TagDetailPage, {
                                                                tagId: data.tagId,
                                                                name: data.tagName
                                                            });
                                                        } else {
-                                                           navigate(RouterMap.ShowRichTextDetailPage, params);
+                                                           navigate('show/ShowRichTextDetailPage', params);
                                                        }
                                                    }}
                                                    navigate={this.$navigate}/> : null

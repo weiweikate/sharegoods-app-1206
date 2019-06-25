@@ -222,7 +222,7 @@ class PictureVideoUtils {
         let paths = images.map((vale) => {
             return vale.path;
         });
-        NativeModules.commModule.RN_ImageCompression(paths, sizes, 1024 * 1024 * 3, upload);
+        NativeModules.commModule.RN_ImageCompression(paths, sizes, 1024 * 1024 * 1, upload);
     };
 }
 
