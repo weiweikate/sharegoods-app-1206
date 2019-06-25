@@ -33,7 +33,8 @@ import CommShareModal from '../../comm/components/CommShareModal';
 import WhiteModel from './model/WhiteModel';
 import { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
 import { routeNavigate } from '../../navigation/RouterMap';
-import RouterMap,{} from '../../navigation/RouterMap';
+import RouterMap from '../../navigation/RouterMap';
+import { track, trackEvent } from '../../utils/SensorsTrack';
 
 const {
     mine_user_icon,
@@ -72,6 +73,9 @@ export default class ShowListPage extends BasePage {
     constructor(props) {
         super(props);
         this.lastStopScrollTime = -1;
+        track(trackEvent.ViewXiuChang,{
+            xiuChangListType:1
+        })
     }
 
     componentDidMount() {
@@ -143,6 +147,9 @@ export default class ShowListPage extends BasePage {
 
 
     _gotoPage(number) {
+        track(trackEvent.ViewXiuChang,{
+            xiuChangListType:number + 1
+        })
         this.setState({ page: number });
     }
 
@@ -358,6 +365,14 @@ export default class ShowListPage extends BasePage {
                                                        } else {
                                                            navigate(RouterMap.ShowRichTextDetailPage, params);
                                                        }
+                                                       const { showNo , userInfoVO } = data;
+                                                       const { userNo } = userInfoVO || {};
+                                                       track(trackEvent.XiuChangEnterClick,{
+                                                           xiuChangListType:4,
+                                                           articleCode:showNo,
+                                                           author:userNo,
+                                                           xiuChangEnterBtnName:'秀场列表'
+                                                       })
                                                    }}
                                                        navigate={this.$navigate}/> : null
                                                    }
@@ -367,8 +382,8 @@ export default class ShowListPage extends BasePage {
                     {detail ?
                         <CommShareModal ref={(ref) => this.shareModal = ref}
                         type={'Show'}
-                        trackEvent={'ArticleShare'}
-                        trackParmas={{ articeCode: detail.code, articleTitle: detail.title }}
+                        trackEvent={trackEvent.XiuChangShareClick}
+                        trackParmas={{ articleCode: detail.code, author: (detail.userInfoVO||{}).userNo,xiuChangBtnLocation:'1',xiuChangListType:this.state.page + 1}}
                         imageJson={{
                         imageType: 'show',
                         imageUrlStr: detail.resource[0] ? detail.resource[0].url : '',

@@ -14,6 +14,7 @@ import user from '../../model/user';
 import ShowGroundView from './components/ShowGroundView';
 import { routeNavigate, routePush } from '../../navigation/RouterMap';
 import RouterMap from '../../navigation/RouterMap';
+import { track, trackEvent } from '../../utils/SensorsTrack';
 
 @observer
 export default class ShowFoundView extends React.Component {
@@ -86,6 +87,15 @@ export default class ShowFoundView extends React.Component {
                                     } else {
                                         navigate('show/ShowRichTextDetailPage', params);
                                     }
+
+                                    const { showNo , userInfoVO } = nativeEvent;
+                                    const { userNo } = userInfoVO || {};
+                                    track(trackEvent.XiuChangEnterClick,{
+                                        xiuChangListType:3,
+                                        articleCode:showNo,
+                                        author:userNo,
+                                        xiuChangEnterBtnName:'秀场列表'
+                                    })
 
                                 }}
                                 onScrollY={({ nativeEvent }) => {

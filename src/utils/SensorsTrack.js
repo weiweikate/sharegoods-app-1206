@@ -48,6 +48,17 @@ const inviteEvent = {
     ViewOrderConfirmPage: 'ViewOrderConfirmPage'//浏览下单页
 }
 
+const showEvent = {
+    ViewXiuChang:'ViewXiuChang',//秀场页浏览
+    ViewXiuChangDetails:'ViewXiuChangDetails',//秀场文章详情查看
+    XiuChangEnterClick:'XiuChangEnterClick',//秀场进入按钮
+    XiuChangLikeClick:'XiuChangLikeClick',//秀场点赞按钮点击
+    XiuChangDownLoadClick:'XiuChangDownLoadClick',//秀场下载按钮点击
+    XiuChangShareClick:'XiuChangShareClick',//秀场分享按钮点击,
+    XiuChangAddToCart:'XiuChangAddToCart',//加入购物车点击确认
+    XiuChangSpuClick:'XiuChangSpuClick',//点击商品
+}
+
 const mineEvent = {
     ClickModifyAvatar: 'ClickModifyAvatar', //点击修改头像
     ModifuAvatarSuccess: 'ModifuAvatarSuccess', // 修改头像成功
@@ -103,7 +114,8 @@ const trackEvent = {
     ...inviteEvent,
     ...mineEvent,
     ...afterEvent,
-    ...commonEvent
+    ...commonEvent,
+    ...showEvent
 };
 
 function track(event_name,parmas) {
