@@ -51,6 +51,8 @@ class TaskModel {
     openAlert = false;
     @observable
     alertData = [];
+    @observable
+    canOpenProgress = -1;
 
     @action
     getLocationExpanded() {
@@ -96,6 +98,7 @@ class TaskModel {
             if (this.type === 'home') {
                 this.calculateHomeHeight();
             }
+            this.findCanOpenProgress();
         }).catch(() => {
             this.show = false;
             if (this.type === 'home') {
@@ -103,6 +106,18 @@ class TaskModel {
             }
         });
     }
+
+    @action
+    findCanOpenProgress(){
+        let canOpenProgress = -1
+        this.boxs.forEach(item => {
+            if (canOpenProgress === -1 && item.prizeStatus === 1) {
+                canOpenProgress = item.value;
+            }
+        })
+        this.canOpenProgress = canOpenProgress;
+    }
+
 
     sort(data) {
         if (data.length < 2) {
@@ -160,6 +175,7 @@ class TaskModel {
             });
             this.openAlert = true;
             this.alertData = data.data.prizeList || [];
+            this.findCanOpenProgress();
             bridge.hiddenLoading();
         }).catch(err => {
             bridge.$toast(err.msg);

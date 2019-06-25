@@ -12,7 +12,7 @@
 'use strict';
 
 import React from 'react';
-import {navigate, navigateBackToStore} from '../../../navigation/RouterMap';
+import {routePush, navigateBackToStore} from '../../../navigation/RouterMap';
 
 import {
     StyleSheet,
@@ -100,7 +100,7 @@ export default class TaskModalView extends React.Component {
                                     style={{ alignItems: "center", width: ScreenUtils.autoSizeWidth(250),borderRadius: 10, overflow: 'hidden'}}
                     >
                         <View style={{height:ScreenUtils.autoSizeWidth(80), alignItems: 'center', justifyContent: 'center'}}>
-                            <MRText style={{fontSize: 14, color: DesignRule.mainColor}}>恭喜您获得奖励</MRText>
+                            <MRText style={{fontSize: 14, color: DesignRule.mainColor, marginTop:ScreenUtils.autoSizeWidth(40)}}>恭喜您获得奖励</MRText>
                         </View>
                         {
                             alertData.map((item) => {
@@ -147,7 +147,7 @@ export default class TaskModalView extends React.Component {
 
     onPress(lottery){
         if (lottery)  {
-            navigate('HtmlPage', {uri: lottery.parameter})
+            routePush('HtmlPage', {uri: lottery.parameter})
         }
         this.model.closeAlert()
     }
