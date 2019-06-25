@@ -19,7 +19,7 @@ import SearchNavView from './components/SearchNavView';
 import res from '../res';
 import RouterMap from '../../../navigation/RouterMap';
 
-export default class SearchPage extends BasePage {
+export default class ShopSearchPage extends BasePage {
 
 
     // 导航配置

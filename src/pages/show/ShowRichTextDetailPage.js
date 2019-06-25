@@ -561,7 +561,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                                     products={detail.products}
                                     addCart={this.addCart}
                                     pressProduct={(prodCode) => {
-                                        this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode });
+                                        this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode ,trackType:3});
                                     }}
                 />
 
@@ -593,7 +593,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                                                      this.setState({
                                                          productModalVisible: false
                                                      });
-                                                     this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode });
+                                                     this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode ,trackType:3});
                                                  }}
                                                  addCart={this.addCart}
                                                  products={detail.products} requestClose={() => {
@@ -604,6 +604,7 @@ export default class ShowRichTextDetailPage extends BasePage {
             {detail.status !== 1 ? this._shieldRender() : null}
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
+                            defaultModalVisible={this.params.openShareModal}
                             type={'Show'}
                             trackEvent={trackEvent.XiuChangShareClick}
                             trackParmas={{ articleCode: detail.code, author: (detail.userInfoVO||{}).userNo,xiuChangBtnLocation:'2',xiuChangListType:''}}

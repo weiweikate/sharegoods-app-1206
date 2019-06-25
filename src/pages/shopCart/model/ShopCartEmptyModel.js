@@ -7,6 +7,8 @@ const EmptyViewTypes = {
     recommendListItem: 'recommendListItem'
 };
 
+const Cell_Height = 168 + 80;
+
 class ShopCartEmptyModel {
     @observable
     emptyViewList = [];
@@ -55,7 +57,7 @@ class ShopCartEmptyModel {
                         ...goodItem,
                         id: index,
                         type: EmptyViewTypes.recommendListItem,
-                        height: 168 + 80,
+                        height: Cell_Height,
                         imageHeight: 168
                     };
                 });
@@ -63,7 +65,7 @@ class ShopCartEmptyModel {
                     newArr.push({
                         id: 0,
                         type: EmptyViewTypes.topEmptyItem,
-                        height: 168 + 98,
+                        height: Cell_Height,
                         imageHeight: 168
                     });
                     newArr = newArr.concat(tempArr);
@@ -92,7 +94,7 @@ class ShopCartEmptyModel {
                         ...goodItem,
                         id: index,
                         type: EmptyViewTypes.recommendListItem,
-                        height: 168 + 98,
+                        height: Cell_Height,
                         imageHeight: 168
                     };
                 });
@@ -100,7 +102,7 @@ class ShopCartEmptyModel {
                     newArr.push({
                         id: 0,
                         type: EmptyViewTypes.topEmptyItem,
-                        height: 168 + 98,
+                        height: Cell_Height,
                         imageHeight: 168
                     });
                     newArr = newArr.concat(tempArr);

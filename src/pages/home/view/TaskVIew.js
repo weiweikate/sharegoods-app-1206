@@ -17,7 +17,7 @@ const BoxStatusCanOpen = 1;
 const BoxStatusOpen = 2;
 
 const TaskStatusUndone = 0;
-const TaskStatusWaitFinish = 1;
+// const TaskStatusWaitFinish = 1;
 const TaskStatusFinish = 2;
 
 import React from 'react';
@@ -40,7 +40,7 @@ import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import taskModel, { mineTaskModel } from '../model/TaskModel';
 import TaskModalView from './TaskModalView';
-import { IntervalMsgNavigate } from '../../../comm/components/IntervalMsgView';
+// import { IntervalMsgNavigate } from '../../../comm/components/IntervalMsgView';
 import ImageLoader from '@mr/image-placeholder';
 
 const { autoSizeWidth, px2dp } = ScreenUtils;
@@ -164,7 +164,7 @@ class TaskItem extends React.Component {
 
                 }}
                                   onPress={() => {
-                                      this.btnClick(item, subTask);
+                                      this.btnClick(item, subTask, title);
                                   }}>
                     <ImageBackground source={btn}
                                      resizeMode={'stretch'}
@@ -181,13 +181,9 @@ class TaskItem extends React.Component {
 
     }
 
-    btnClick(item, subTask) {
-        if (item.status === TaskStatusWaitFinish) {
-            this.props.model.getMissionPrize(item, subTask);
-        } else if (item.status === TaskStatusUndone) {
-            let { interactiveCode, interactiveValue } = item;
-            IntervalMsgNavigate(parseInt(interactiveCode), interactiveValue);
-        }
+    btnClick(item, subTask, title) {
+            this.props.model.getMissionPrize(item, subTask, title);
+
     }
 
     renderSubItem(item){

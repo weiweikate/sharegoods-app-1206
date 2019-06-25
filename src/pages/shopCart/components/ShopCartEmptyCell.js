@@ -4,6 +4,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
 import { MRText } from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
+import { TrackApi } from '../../../utils/SensorsTrack';
 
 const { px2dp } = ScreenUtils;
 
@@ -18,6 +19,13 @@ export default class ShopCartEmptyCell extends Component {
         return (
             <TouchableOpacity onPress={()=>{
                onClick();
+               TrackApi.RecommendSpuClick({
+                   strategyId:itemData.strategyId,
+                   spuRelationValue:itemData.spuRelationValue,
+                   spuRelationIndex:itemData.spuRelationIndex,
+                   spuCode:itemData.spuCode,
+                   spuName:itemData.spuName,
+               })
             }}>
             <View style={{
                 height: itemData.height,
@@ -25,14 +33,17 @@ export default class ShopCartEmptyCell extends Component {
                 marginLeft: px2dp(5),
                 height: itemData.height,
                 backgroundColor:DesignRule.color_fff,
-                borderRadius:px2dp(5)
+                borderRadius:px2dp(6),
+                padding:px2dp(3),
+                paddingTop:px2dp(0)
             }}>
                 <PreLoadImage
                     imageUri={itemData.imgUrl}
                     style={{
-                        width: ScreenUtils.width / 2 - px2dp(10),
+                        marginTop:px2dp(2),
+                        width: ScreenUtils.width / 2 - px2dp(16),
                         height: itemData.imageHeight ,
-                        borderRadius:px2dp(5)
+                        borderRadius:px2dp(6)
                     }}
                 />
                 <MRText numberOfLines={2}
