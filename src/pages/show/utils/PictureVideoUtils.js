@@ -2,7 +2,7 @@
  * @author xzm
  * @date 2019/6/22
  */
-import {NativeModules} from 'react-native';
+import {NativeModules,Platform} from 'react-native';
 import ImagePicker from '@mr/rn-image-crop-picker';
 import Toast from '../../../utils/bridge';
 import { request } from '@mr/rn-request/index';
@@ -10,41 +10,73 @@ import apiEnvironment from '../../../api/ApiEnvironment';
 
 class PictureVideoUtils {
     selectPictureOrVideo = (num,canVideo,callBack) => {
-        ImagePicker.openPicker({
-            edit:true,
-            multiple: true,
-            waitAnimationEnd: false,
-            includeExif: true,
-            forceJpg: true,
-            maxFiles: num,
-            canVideo,
-            mediaType: 'photo',
-            loadingLabelText: '处理中...'
-        }).then(images => {
-            if(images && images.length === 1 && images[0].type.indexOf('video')>-1){
-                NativeModules.commModule.compressVideo(images[0].path).then((data)=>{
-                    let video = images[0];
-                    video.path = 'file://'+data;
-                    this.uploadVideo(video, (data) => {
-                        callBack(data);
-                    });
-                }).catch((error)=>{
-                    Toast.$toast('上传失败');
-                })
-            }else {
-                this.upload(images.map((item) => {
-                    let path = item.path;
-                    let width = item.width;
-                    let height = item.height;
-                    return { width, height, path };
-                }), images.map(item => item.size + ''), callBack);
-            }
-        }).catch(e => {
-        });
+        if (Platform.OS === 'ios'){
+            NativeModules.MRImagePickerBridge.getImageOrVideo(
+                {
+                    edit:true,
+                    multiple: true,
+                    waitAnimationEnd: false,
+                    includeExif: true,
+                    forceJpg: true,
+                    maxFiles: num,
+                    canVideo,
+                    mediaType: 'photo',
+                    loadingLabelText: '处理中...'
+                }
+
+            ).then(images => {
+                if(images && images.length === 1 && images[0].type.indexOf('video')>-1){
+                        let video = images[0];
+                        this.uploadVideo(video, (data) => {
+                            callBack(data);
+                        });
+                }else {
+                    this.upload(images.map((item) => {
+                        let path = item.path;
+                        let width = item.width;
+                        let height = item.height;
+                        return { width, height, path };
+                    }), images.map(item => item.size + ''), callBack);
+                }
+            }).catch(e => {
+            });
+        }else {
+            ImagePicker.openPicker({
+                edit:true,
+                multiple: true,
+                waitAnimationEnd: false,
+                includeExif: true,
+                forceJpg: true,
+                maxFiles: num,
+                canVideo,
+                mediaType: 'photo',
+                loadingLabelText: '处理中...'
+            }).then(images => {
+                if(images && images.length === 1 && images[0].type.indexOf('video')>-1){
+                    NativeModules.commModule.compressVideo(images[0].path).then((data)=>{
+                        let video = images[0];
+                        video.path = 'file://'+data;
+                        this.uploadVideo(video, (data) => {
+                            callBack(data);
+                        });
+                    }).catch((error)=>{
+                    })
+                }else {
+                    this.upload(images.map((item) => {
+                        let path = item.path;
+                        let width = item.width;
+                        let height = item.height;
+                        return { width, height, path };
+                    }), images.map(item => item.size + ''), callBack);
+                }
+            }).catch(e => {
+            });
+        }
+
     };
 
     uploadVideo = (video, callback) => {
-        Toast.showLoading('正在上传');
+        // Toast.showLoading('正在上传');
         let datas = {
             type: 'video/mp4',
             uri: video.path,
@@ -52,6 +84,7 @@ class PictureVideoUtils {
         };
         let formData = new FormData();
         formData.append('file', datas);
+        // formData.append('', datas.path);
         request.setBaseUrl(apiEnvironment.getCurrentHostUrl());
         let promise1 = request.upload('/common/upload/oss', datas, {}).then((res) => {
             if (res.code === 10000 && res.data) {
@@ -76,7 +109,7 @@ class PictureVideoUtils {
         let promise2 = NativeModules.commModule.RN_Video_Image(video.path).then(({ imagePath }) => {
             let datas = {
                 type: 'image/png',
-                uri: `file://${imagePath}`,
+                uri:  ''+imagePath,
                 name: new Date().getTime() + 'c.png'
             };
             let formData = new FormData();

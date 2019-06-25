@@ -15,8 +15,6 @@ const task = {
     dou_bg: require('./dou_bg.png'),
     chou_bg: require('./chou_bg.png'),
     taskModal_h:require('./taskModal_h.png'),
-    taskModal_header:require('./taskModal_header.png'),
-    taskModal_wa:require('./taskModal_wa.png'),
     V2:require('./V2.png'),
     V3:require('./V3.png'),
     V4:require('./V4.png'),
@@ -26,5 +24,7 @@ const task = {
     red_bg:require('./red_bg.png'),
     gary_bg:require('./gary_bg.png'),
     current_p:require('./current_p.png'),
+    taskModal_light:require('./taskModal_light.png'),
+    taskModal_title:require('./taskModal_title.png'),
 };
 export default task;
