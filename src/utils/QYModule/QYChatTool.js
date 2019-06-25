@@ -27,35 +27,29 @@ const QYChatTool = {
      * device:手机型号
      * systemVersion:手机系统版本
      */
-
     initQYChat() {
-
-        QYApi.judgeVip().then(result=>{
-
-            console.log(result);
+        QYApi.judgeVip().then(result => {
             let jsonParams = {
                 userId: user.code + '',
                 userIcon: user.headImg,
                 nickName: user.nickname,
                 device: DeviceInfo.getDeviceName(),
                 systemVersion: DeviceInfo.getSystemVersion(),
-                isVip:result.data
+                isVip: result.data
             };
             JRQYService.initQYChat(jsonParams);
 
-        }).catch(error=>{
-
-            console.log(error)
+        }).catch(error => {
             let jsonParams = {
                 userId: user.code + '',
                 userIcon: user.headImg,
                 nickName: user.nickname,
                 device: DeviceInfo.getDeviceName(),
                 systemVersion: DeviceInfo.getSystemVersion(),
-                isVip:false
+                isVip: false
             };
             JRQYService.initQYChat(jsonParams);
-        })
+        });
 
     },
 
@@ -84,7 +78,7 @@ const QYChatTool = {
         chatType: beginChatType.BEGIN_FROM_OTHER,
         data: {}
     }) {
-        if (params.data && params.data.urlString && params.data.urlString.length > 0){
+        if (params.data && params.data.urlString && params.data.urlString.length > 0) {
             chatModel.preProductUrl = params.data.urlString;
         } else {
             chatModel.preProductUrl = '';

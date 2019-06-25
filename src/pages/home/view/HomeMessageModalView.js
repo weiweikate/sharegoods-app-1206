@@ -34,7 +34,6 @@ import HomeModalManager from '../manager/HomeModalManager';
 import { observer } from 'mobx-react';
 
 const { autoSizeWidth } = ScreenUtils;
-import ImageLoad from '@mr/image-placeholder';
 import { homeModule } from '../model/Modules';
 import { routePush } from '../../../navigation/RouterMap';
 
@@ -183,17 +182,16 @@ function AdViewBindModal(modal, dataName = 'AdData', visibleName = 'isShowAd', c
                             <TouchableOpacity onPress={() => {
                                 this.gotoPage();
                             }}>
-                                <ImageLoad style={{
+                                <Image style={{
                                     width: autoSizeWidth(310),
                                     height: autoSizeWidth(410),
                                     backgroundColor: this.state.backgroundColor
                                 }}
-                                           onLoadEnd={() => {
-                                               this.setState({ backgroundColor: null });
-                                           }}
-                                           source={{ uri: image }}
-                                           resizeMode={'contain'}
-                                           showPlaceholder={false}
+                                       onLoadEnd={() => {
+                                           this.setState({ backgroundColor: null });
+                                       }}
+                                       source={{ uri: image }}
+                                       resizeMode={'contain'}
                                 />
                             </TouchableOpacity>
                             <View style={{ flex: 1 }}>
