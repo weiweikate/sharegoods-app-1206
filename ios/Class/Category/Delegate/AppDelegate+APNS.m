@@ -47,7 +47,7 @@
     if (homeTypeDic) {
          [[NSNotificationCenter defaultCenter]postNotificationName:@"HOME_CUSTOM_SKIP" object:homeTypeDic];
     }
-  }else if (typeString && [@"msgTipsTagEvent" isEqualToString:typeString]){
+  }else if (typeString && [@"sendTipsTagEvent" isEqualToString:typeString]){
     NSDictionary *mineTypeDic = userInfo[@"content"];
     if (mineTypeDic) {
       [[NSNotificationCenter defaultCenter]postNotificationName:@"MINE_CUSTON_MESSAGE" object:mineTypeDic];

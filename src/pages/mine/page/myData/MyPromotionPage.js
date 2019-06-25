@@ -67,7 +67,7 @@ export default class MyPromotionPage extends BasePage {
     };
 
     $NavBarRightPressed = () => {
-        this.$navigate('mine/ExpDetailPage', {
+        this.$navigate(RouterMap.ExpDetailPage, {
             experience: this.state.experience,
             levelExperience: this.state.levelExperience
         })
@@ -448,7 +448,7 @@ export default class MyPromotionPage extends BasePage {
     renderFooter() {
         return (
             <View style={{
-                width: ScreenUtils.width, height: 100, position: 'absolute', bottom: 0,
+                backgroundColor:'white', width: ScreenUtils.width, height: 100,
                 alignItems: 'center', justifyContent: 'center',}}>
             {/*<View style={{ flexDirection: 'column'}}>*/}
                 {/*<View*/}

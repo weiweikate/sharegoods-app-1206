@@ -47,7 +47,7 @@ const {
     mine_after_buy_icon,
     // mine_friendsHelp,
     mine_invite,
-    mine_moreMoney,
+    // mine_moreMoney,
     // mine_icon_favorite_shop,
     mine_icon_help_service,
     mine_icon_address,
@@ -253,7 +253,7 @@ export default class MinePage extends BasePage {
                     renderForeground={this.renderUserHead}
                     renderStickyHeader={this.renderLevelNameNav}
                     stickyHeaderHeight={this.state.changeHeader ? 0 : px2dp(44 + statusBarHeight)}
-                    parallaxHeaderHeight={237}
+                    parallaxHeaderHeight={217 + statusBarHeight}
                     onScroll={this._onScroll}
                     showsVerticalScrollIndicator={false}
                 >
@@ -386,14 +386,14 @@ export default class MinePage extends BasePage {
                             {accreditID}
                         </View>
                     </View>
-                    <TouchableOpacity onPress={()=>{
-                        this.$navigate(RouterMap.MyPromotionPage);
-                        TrackApi.ViewLevelInterest({ moduleSource: 2 });
-                    }} activeOpacity={1}>
-                        <Image source={mine_moreMoney}
-                               style={{width: px2dp(54), height: px2dp(54), marginLeft: px2dp(21)}}
-                               />
-                    </TouchableOpacity>
+                    {/*<TouchableOpacity onPress={()=>{*/}
+                        {/*this.$navigate(RouterMap.MyPromotionPage);*/}
+                        {/*TrackApi.ViewLevelInterest({ moduleSource: 2 });*/}
+                    {/*}} activeOpacity={1}>*/}
+                        {/*<Image source={mine_moreMoney}*/}
+                               {/*style={{width: px2dp(54), height: px2dp(54), marginLeft: px2dp(21)}}*/}
+                               {/*/>*/}
+                    {/*</TouchableOpacity>*/}
                 </View>
                 <View style={{flexDirection:'row',flex:1}}>
                     {this.accountRender()}
@@ -749,7 +749,7 @@ export default class MinePage extends BasePage {
     renderBodyView = () => {
         return (
             <View style={{flex:1,backgroundColor:'#F7F7F7'}}>
-                <TaskVIew type={'mine'} style={{backgroundColor: '#F7F7F7', paddingBottom: 0 }}/>
+                <TaskVIew type={'mine'} style={{backgroundColor: '#F7F7F7', paddingBottom: 0, marginTop: 5 }}/>
                 {this.orderRender()}
                 {this.activeRender()}
                 {this.utilsRender()}
@@ -853,6 +853,7 @@ export default class MinePage extends BasePage {
             num: settingModel.fansMSG,
             onPress: () => {
                 if (this.state.hasFans) {
+                    settingModel.fansMSGAdd();
                     this.$navigate(RouterMap.MainShowFansPage);
                 }
             }

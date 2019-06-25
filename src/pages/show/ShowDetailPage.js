@@ -30,7 +30,7 @@ import {
 import Toast from '../../utils/bridge';
 import { NetFailedView } from '../../components/pageDecorator/BaseView';
 import AvatarImage from '../../components/ui/AvatarImage';
-import { track, TrackApi, trackEvent } from '../../utils/SensorsTrack';
+import { track , trackEvent } from '../../utils/SensorsTrack';
 // import { SmoothPushPreLoadHighComponent } from '../../comm/components/SmoothPushHighComponent';
 import ProductRowListView from './components/ProductRowListView';
 import ProductListModal from './components/ProductListModal';
@@ -67,7 +67,6 @@ export default class ShowDetailPage extends BasePage {
             tags: []
         };
         this.noNeedRefresh = false;
-        TrackApi.xiuChangDetail();
     }
 
     $isMonitorNetworkStatus() {
@@ -119,11 +118,10 @@ export default class ShowDetailPage extends BasePage {
         Toast.showLoading();
         this.showDetailModule.showDetailCode(code).then(() => {
             const { detail } = this.showDetailModule;
-            TrackApi.XiuChangDetails({
+            track(trackEvent.ViewXiuChangDetails,{
                 articleCode: detail.code,
                 author: detail.userName,
-                collectionCount: detail.collectCount
-            });
+            })
             if (this.params.isFormHeader) {
                 this.params.ref && this.params.ref.setClick(detail.click);
             } else {
@@ -354,6 +352,15 @@ export default class ShowDetailPage extends BasePage {
             });
         }
         DownloadUtils.downloadProduct({ detail });
+
+        const { showNo , userInfoVO } = detail;
+        const { userNo } = userInfoVO || {};
+        track(trackEvent.XiuChangDownLoadClick,{
+            xiuChangBtnLocation:'2',
+            xiuChangListType:'',
+            articleCode:showNo,
+            author:userNo
+        })
     };
 
     _clickLike = () => {
@@ -371,6 +378,15 @@ export default class ShowDetailPage extends BasePage {
             detail.like = true;
             detail.likesCount += 1;
             this.showDetailModule.setDetail(detail);
+
+            const { showNo , userInfoVO } = detail;
+            const { userNo } = userInfoVO || {};
+            track(trackEvent.XiuChangLikeClick,{
+                xiuChangBtnLocation:'2',
+                xiuChangListType:'',
+                articleCode:showNo,
+                author:userNo
+            })
         }
     };
 
@@ -455,10 +471,10 @@ export default class ShowDetailPage extends BasePage {
         );
     };
 
-    addCart = (code) => {
+    addCart = (detail) => {
         let addCartModel = new AddCartModel();
 
-        addCartModel.requestProductDetail(code, (productIsPromotionPrice) => {
+        addCartModel.requestProductDetail(detail.prodCode, (productIsPromotionPrice) => {
             this.setState({
                 productModalVisible: false
             });
@@ -467,16 +483,21 @@ export default class ShowDetailPage extends BasePage {
                 shopCartCacheTool.addGoodItem({
                     'amount': amount,
                     'skuCode': skuCode,
-                    'productCode': code
+                    'productCode': detail.prodCode
                 });
                 /*加入购物车埋点*/
-                track(trackEvent.AddToShoppingcart, {
+                const { showNo , userInfoVO } = detail;
+                const { userNo } = userInfoVO || {};
+                track(trackEvent.XiuChangAddToCart, {
+                    xiuChangBtnLocation:'2',
+                    xiuChangListType:'',
+                    articleCode:showNo,
+                    author:userNo,
                     spuCode: prodCode,
                     skuCode: skuCode,
                     spuName: name,
                     pricePerCommodity: originalPrice,
                     spuAmount: amount,
-                    shoppingcartEntrance: 1
                 });
             }, { sourceType: productIsPromotionPrice ? sourceType.promotion : null });
         }, (error) => {
@@ -587,8 +608,8 @@ export default class ShowDetailPage extends BasePage {
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             type={'Show'}
-                            trackEvent={'ArticleShare'}
-                            trackParmas={{ articeCode: detail.code, articleTitle: detail.title }}
+                            trackEvent={trackEvent.XiuChangShareClick}
+                            trackParmas={{ articleCode: detail.code, author: (detail.userInfoVO||{}).userNo,xiuChangBtnLocation:'2',xiuChangListType:''}}
                             imageJson={{
                                 imageType: 'show',
                                 imageUrlStr: detail.resource ? detail.resource[0].url : '',

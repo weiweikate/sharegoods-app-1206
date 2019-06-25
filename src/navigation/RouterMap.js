@@ -7,7 +7,7 @@ import { PageKey } from './Stack';
 import { NavigationActions, StackActions } from 'react-navigation';
 import apiEnvironment from '../api/ApiEnvironment';
 import StringUtils from '../utils/StringUtils';
-
+import {DeviceEventEmitter} from 'react-native'
 let timeStamp = null;
 let errWebtimeStamp = null;
 let perRouteName = null;
@@ -113,8 +113,9 @@ function backToHome() {
 }
 
 // 跳转到秀场tab
-function backToShow() {
+function backToShow(index = -1) {
     GoToTabItem(1);
+    DeviceEventEmitter.emit('PublishShowFinish', index);
 }
 
 // 跳转到拼店tab

@@ -18,10 +18,10 @@ import {
     StyleSheet,
     View,
     TouchableOpacity,
-    Animated
+    Animated,
+    Image
 } from 'react-native';
 
-import ImageLoad from '@mr/image-placeholder';
 import { homeType } from '../home/HomeTypes';
 import HomeAPI from '../home/api/HomeAPI';
 import { routePush } from '../../navigation/RouterMap';
@@ -112,11 +112,10 @@ export default class LuckyIcon extends React.Component {
             <Animated.View
                 style={{ position: 'absolute', right: 5, bottom: 40, transform: [{ translateX: this.state.x }] }}>
                 <TouchableOpacity onPress={this._onPress}>
-                    <ImageLoad
+                    <Image
                         style={styles.image}
                         source={{ uri: this.state.data.image }}
                         resizeMode={'contain'}
-                        isAvatar={true}
                     />
                 </TouchableOpacity>
             </Animated.View>
