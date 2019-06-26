@@ -44,12 +44,11 @@ const headerBgHeight = px2dp(182) + ScreenUtils.statusBarHeight + 30;
 const headerHeight = ScreenUtils.headerHeight;
 const offset = headerBgHeight - headerHeight;
 const {myData} = res;
-const angleArr = [myData.icon_v0Angle,myData.icon_v1Angle,myData.icon_v2Angle,myData.icon_v3Angle,myData.icon_v4Angle,myData.icon_v5Angle];
-const dotArr = [myData.icon_v0Dot,myData.icon_v1Dot,myData.icon_v2Dot,myData.icon_v3Dot,myData.icon_v4Dot,myData.icon_v5Dot,];
-const vipBgArr = [myData.icon_v0Bg,myData.icon_v1Bg,myData.icon_v2Bg,myData.icon_v3Bg,myData.icon_v4Bg,myData.icon_v5Bg,];
-const vipLevelArr = [myData.icon_v0,myData.icon_v1,myData.icon_v2,myData.icon_v3,myData.icon_v4,myData.icon_v5,];
+const angleArr = [myData.icon_v1Angle,myData.icon_v2Angle,myData.icon_v3Angle,myData.icon_v4Angle,myData.icon_v5Angle];
+const dotArr = [myData.icon_v1Dot,myData.icon_v2Dot,myData.icon_v3Dot,myData.icon_v4Dot,myData.icon_v5Dot,];
+const vipBgArr = [myData.icon_v1Bg,myData.icon_v2Bg,myData.icon_v3Bg,myData.icon_v4Bg,myData.icon_v5Bg,];
+const vipLevelArr = [myData.icon_v1,myData.icon_v2,myData.icon_v3,myData.icon_v4,myData.icon_v5,];
 const levelName = [
-    {name:'黄金',level:'V0'},
     {name:'铂金',level:'V1'},
     {name:'黑金',level:'V2'},
     {name:'钻石',level:'V3'},
@@ -204,7 +203,7 @@ export default class MyPromotionPage extends BasePage {
     };
 
     renderLevelCard = (index)=>{
-        let color = index === 2 || index === 4 || index === 5 ? '#FFE6B1' : DesignRule.textColor_mainTitle;
+        let color = index === 1 || index === 3 || index === 4 ? '#FFE6B1' : DesignRule.textColor_mainTitle;
 
         let icon = (this.state.headImg && this.state.headImg.length > 0) ?
             <AvatarImage source={{ uri: this.state.headImg }} style={styles.userIconNavStyle}
@@ -316,12 +315,12 @@ export default class MyPromotionPage extends BasePage {
                     </View>
                     : <View style={{flex:1, height:4}}/>}
                 <Image source={dotArr[index]} style={{width:10, height:10}}/>
-                {index < 5 ?
+                {index < 4 ?
                     <View style={{flex: 1, height: 4, backgroundColor: 'rgba(0,0,0,0.1)', marginLeft: 20, marginRight: 20, borderRadius: 6}}>
                         <View style={{flex: 1, width:`${progress}%`,height: 4, backgroundColor: '#FFD57D', borderRadius: 6}}/>
                     </View>
                     : <View style={{flex:1, height:4}}/>}
-                {index < 5 ? <Image source={dotArr[index + num]} style={{width:10, height:10}}/>
+                {index < 4 ? <Image source={dotArr[index + num]} style={{width:10, height:10}}/>
                     : <View style={{width:10, height:10}}/>}
             </View>
         )
