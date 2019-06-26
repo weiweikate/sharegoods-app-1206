@@ -243,7 +243,8 @@ const styles = StyleSheet.create({
         height: px2dp(70),
         width: px2dp(70),
         borderRadius: px2dp(35),
-        overflow:'hidden'
+        overflow: 'hidden',
+        marginTop: 20
     },
     itemWrapper: {
         height: px2dp(40),
