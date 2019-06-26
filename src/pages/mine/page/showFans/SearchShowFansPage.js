@@ -69,14 +69,26 @@ export default class SearchShowFansPage extends BasePage<Props> {
                             <Text style={styles.fansNameStyle} numberOfLines={1}>{name}</Text>
                             {num < 9 ? <Image source={showFansVip[num - 1]} style={styles.levelIcon}/> : null}
                         </View>
-                        <View style={{marginLeft: 8, marginTop: 5}}>
-                            <View style={{width: 100, height: 10, backgroundColor: 'rgba(65,150,100,0.1)', borderRadius: 6}}>
-                                <View style={{flex: 1, width: percent, height: 4, backgroundColor: '#FF0450', borderRadius: 6}}/>
+                        {item.percent && item.percent > 0 ? <View style={{marginLeft: 8, marginTop: 5}}>
+                            <View style={{
+                                width: 100,
+                                height: 10,
+                                backgroundColor: 'rgba(65,150,100,0.1)',
+                                borderRadius: 6
+                            }}>
+                                <View style={{
+                                    flex: 1,
+                                    width: percent,
+                                    height: 4,
+                                    backgroundColor: '#FF0450',
+                                    borderRadius: 6
+                                }}/>
                             </View>
-                            <Text style={{position: 'absolute', top: -2, left:5, color: 'white', fontSize: 9}}>
+                            <Text style={{position: 'absolute', top: -2, left: 5, color: 'white', fontSize: 9}}>
                                 任务进度：{percent}
                             </Text>
-                        </View>
+                        </View> : null
+                        }
                     </View>
 
                     {SettingModel.WXChatState ? (item.weChatNumber ? <TouchableWithoutFeedback onPress={() => {
