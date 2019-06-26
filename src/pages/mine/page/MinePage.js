@@ -249,7 +249,7 @@ export default class MinePage extends BasePage {
                 <PullView
                     bounces={false}
                     contentBackgroundColor={'#F7F7F7'}
-                    backgroundColor={'#F7F7F7'}
+                    backgroundColor={'white'}
                     renderForeground={this.renderUserHead}
                     renderStickyHeader={this.renderLevelNameNav}
                     stickyHeaderHeight={this.state.changeHeader ? 0 : px2dp(44 + statusBarHeight)}

@@ -363,7 +363,7 @@ export default class MyIntegralAccountPage extends BasePage {
         let use_type_symbol = ['', '+', '-'];
         let arrData = this.currentPage === 1 ? [] : this.state.viewData;
         if (this.currentPage > 1) {
-            Toast.showLoading();
+            // Toast.showLoading();
         }
         MineApi.userScoreQuery({
             page: this.currentPage,
