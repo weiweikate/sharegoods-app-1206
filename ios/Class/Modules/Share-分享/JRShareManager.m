@@ -225,7 +225,43 @@ SINGLETON_FOR_CLASS(JRShareManager)
       [JRLoadingAndToastTool showToast:@"保存失败\n请确认图片保存权限已开启" andDelyTime:0.5f];
     }
   }];
+
 }
+
+
+//videoPath为视频下载到本地之后的本地路径
+- (void)saveVideo:(NSString *)videoPath  withCallBackBlock:(shareFinshBlock)finshBlock;{
+  
+  if (videoPath) {
+    NSString * path =NSHomeDirectory();
+    videoPath = [path stringByAppendingString:videoPath];
+    NSURL *url = [NSURL URLWithString:videoPath];
+    BOOL compatible = UIVideoAtPathIsCompatibleWithSavedPhotosAlbum([url path]);
+    if (compatible)
+    {
+      //保存相册核心代码
+      UISaveVideoAtPathToSavedPhotosAlbum([url path], self, @selector(savedPhotoImage:didFinishSavingWithError:contextInfo:), (__bridge void * _Nullable)(finshBlock));
+    }
+  }
+}
+
+
+//保存视频完成之后的回调
+- (void) savedPhotoImage:(UIImage*)image didFinishSavingWithError: (NSError *)error contextInfo: (void *)contextInfo {
+  shareFinshBlock finshBlock = (__bridge shareFinshBlock)contextInfo;
+  if (error) {
+    finshBlock(error.description);
+  }  else {
+   finshBlock(error.description);
+  }
+}
+
+-(BOOL)saveVideoToLocation:(NSString *)videoPath data:(NSData *)data{
+  NSString * path =NSHomeDirectory();
+  NSString * Pathimg =[path stringByAppendingString:videoPath];
+ return [data writeToFile:Pathimg atomically:YES];
+}
+
 
 
 @end
