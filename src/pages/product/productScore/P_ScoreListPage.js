@@ -159,7 +159,9 @@ export default class P_ScoreListPage extends BasePage {
             orderProducts.push({
                 skuCode: skuCode,
                 quantity: amount,
-                productCode: pData.prodCode
+                productCode: pData.prodCode,
+                activityCode: '',
+                batchNo: 1,
             });
             this.$navigate(RouterMap.ConfirOrderPage, {
                 orderParamVO: {
