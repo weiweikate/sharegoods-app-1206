@@ -27,6 +27,7 @@ import ImageLoad from '@mr/image-placeholder';
 import { MRText as Text } from '../../components/ui';
 import res from '../res';
 import bridge from '../../utils/bridge';
+import {getSize} from '../../utils/OssHelper';
 
 const { down_icon, close_icon } = res.button;
 
@@ -363,7 +364,7 @@ export default class FlyImageViewer extends Component {
                     saveImageSize();
                 }
             } else {
-                Image.getSize(image, (width, height) => {
+                getSize(image, (width, height) => {
                     sizeLoaded = true;
                     imageStatus.width = width;
                     imageStatus.height = height;
