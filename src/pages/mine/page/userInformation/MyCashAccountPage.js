@@ -332,6 +332,7 @@ export default class MyCashAccountPage extends BasePage {
 
     renderItem = (info) => {
         let item = info.item;
+        console.log('item',item);
         let key = info.section.key;
         if (key === 'A') {
             return (
@@ -342,7 +343,7 @@ export default class MyCashAccountPage extends BasePage {
             )
         }
         if(item.title && item.title === 'empty'){
-            return <EmptyView description={''} subDescription={'暂无明细数据～'} source={cash_noData}/>
+            return <EmptyView  style={{flex:1}} imageStyle={{width:267, height:192}} description={''} subDescription={'暂无明细数据～'} source={cash_noData}/>
         }
         return (
             <View style={{
@@ -369,7 +370,7 @@ export default class MyCashAccountPage extends BasePage {
                             fontSize: 12, color: DesignRule.textColor_instruction
                         }}>{item.time}</Text>
                     </View>
-                    { item.state === 2 || (this.type === 2 && this.biType === 1) ?
+                    { Number(item.status) === 2 || (this.type === 2 && this.biType === 1) ?
                         <View style={{justifyContent: 'space-between', alignItems: 'flex-end'}}>
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                 <Text style={{
@@ -479,7 +480,8 @@ export default class MyCashAccountPage extends BasePage {
                             capital: use_type_symbol[item.biType] + (item.balance ? item.balance : 0.00),
                             iconImage: allType[item.useType] ? allType[item.useType].icon : renwu,
                             capitalRed: use_type_symbol[item.biType] === '-',
-                            realBalance: item.realBalance
+                            realBalance: item.realBalance,
+                            status: item.status
                         });
                     });
                 }

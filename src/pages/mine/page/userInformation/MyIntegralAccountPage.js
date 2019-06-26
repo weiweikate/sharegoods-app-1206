@@ -250,7 +250,7 @@ export default class MyIntegralAccountPage extends BasePage {
         }
         if(item.title && item.title === 'empty'){
             return(
-                <EmptyView description={''} subDescription={'暂无明细数据～'} source={cash_noData}/>
+                <EmptyView style={{flex:1}} imageStyle={{width:267, height:192}} description={''} subDescription={'暂无明细数据～'} source={cash_noData}/>
             )}
 
         return (
@@ -278,7 +278,7 @@ export default class MyIntegralAccountPage extends BasePage {
                             fontSize: 12, color: DesignRule.textColor_instruction
                         }}>{item.time}</Text>
                     </View>
-                    {item.state === 2 || (this.type === 2 && this.biType === 1) ?
+                    {item.status === 2 || (this.type === 2 && this.biType === 1) ?
                         <View style={{justifyContent: 'space-between', alignItems: 'flex-end'}}>
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                 <Text style={{
@@ -384,7 +384,8 @@ export default class MyIntegralAccountPage extends BasePage {
                         capital: use_type_symbol[item.usType] + (item.userScore ? item.userScore : 0),
                         iconImage: allKinds[item.useType] ? allKinds[item.useType].img : taskImg,
                         capitalRed: use_type_symbol[item.usType] === '+',
-                        realBalance: item.realBalance
+                        realBalance: item.realBalance,
+                        status: item.status
                     });
                 });
                 this.setState({ viewData: arrData, isEmpty: data.data && data.data.length !== 0 ? false : true });
