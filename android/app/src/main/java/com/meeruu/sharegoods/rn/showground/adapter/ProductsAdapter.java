@@ -120,7 +120,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.VH> {
             @Override
             public void onClick(View v) {
                 if (pressProductListener != null) {
-                    pressProductListener.onPressProduct(bean.getProdCode());
+                    pressProductListener.onPressProduct(JSON.toJSONString(bean),detail);
                 }
             }
         });
@@ -153,6 +153,6 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.VH> {
     }
 
     public interface PressProductListener {
-        void onPressProduct(String code);
+        void onPressProduct(String product,String detail);
     }
 }
