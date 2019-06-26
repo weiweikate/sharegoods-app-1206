@@ -217,8 +217,8 @@
     self.headView.type = YES;
     self.jingpin.hidden = YES;
   }
-    NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:model.title attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13.0], NSForegroundColorAttributeName:[UIColor colorWithRed:102/255.0 green:102/255.0 blue:102/255.0 alpha:1.0]}];
-    NSArray *array = [self getSeparatedLinesFromLabel:model.title font:[UIFont systemFontOfSize:13] andLableWidth:SCREEN_WIDTH-60];
+    NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:model.content attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13.0], NSForegroundColorAttributeName:[UIColor colorWithRed:102/255.0 green:102/255.0 blue:102/255.0 alpha:1.0]}];
+    NSArray *array = [self getSeparatedLinesFromLabel:model.content font:[UIFont systemFontOfSize:13] andLableWidth:SCREEN_WIDTH-60];
   //组合需要显示的文本
   if(array.count>3){
     NSString *line3String = array[2];
