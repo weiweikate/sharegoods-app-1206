@@ -160,11 +160,12 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
 
         ProductsAdapter.PressProductListener pressProductListener = new ProductsAdapter.PressProductListener() {
             @Override
-            public void onPressProduct(String code) {
+            public void onPressProduct(String product,String detail) {
                 onPressProductEvent onPressProductEvent = new onPressProductEvent();
                 onPressProductEvent.init(view.getId());
                 WritableMap writableMap = Arguments.createMap();
-                writableMap.putString("prodCode", code);
+                writableMap.putString("product", product);
+                writableMap.putString("detail", detail);
                 onPressProductEvent.setData(writableMap);
                 eventDispatcher.dispatchEvent(onPressProductEvent);
             }
