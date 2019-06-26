@@ -230,7 +230,7 @@ export default class RecommendPage extends BasePage {
 
     // 点击搜索店铺
     _clickSearchItem = () => {
-        this.$navigate(RouterMap.SearchPage);
+        this.$navigate(RouterMap.ShopSearchPage);
     };
 
     // 点击查看某个店铺

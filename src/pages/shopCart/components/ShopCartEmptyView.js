@@ -54,7 +54,7 @@ export default class ShopCartEmptyView extends Component {
             dim.height = px2dp(350)
         } else {
             dim.width = ScreenUtils.width / 2;
-            dim.height = px2dp(168 + 98)
+            dim.height = px2dp(168 + 88)
         }
     });
     constructor(props) {
@@ -70,7 +70,7 @@ export default class ShopCartEmptyView extends Component {
             return this._renderHeaderView();
         }else {
            return <ShopCartEmptyCell itemData={itemData} onClick={() => {
-               navigateToHome(RouterMap.ProductDetailPage,{ productCode:itemData.prodCode})
+               navigateToHome(RouterMap.ProductDetailPage,{ productCode:itemData.prodCode,trackType:4})
                 }}/>
         }
     };
@@ -117,7 +117,7 @@ export default class ShopCartEmptyView extends Component {
                 refreshControl={<RefreshControl refreshing={homeModule.isRefreshing}
                                                 onRefresh={this._onRefresh.bind(this)}
                                                 colors={[DesignRule.mainColor]}/>}
-                onEndReached={this._onEndReached.bind(this)}
+                // onEndReached={this._onEndReached.bind(this)}
                 onEndReachedThreshold={ScreenUtils.height / 3}
                 dataProvider={this.dataProvider}
                 rowRenderer={this._renderItem.bind(this)}

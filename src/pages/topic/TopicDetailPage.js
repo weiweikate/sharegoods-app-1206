@@ -3,7 +3,8 @@ import {
     View,
     StyleSheet,
     SectionList,
-    TouchableOpacity
+    TouchableOpacity,
+    FlatList
 } from 'react-native';
 import BasePage from '../../BasePage';
 import TopicDetailHeaderView from './components/TopicDetailHeaderView';
@@ -37,6 +38,7 @@ import { beginChatType, QYChatTool } from '../../utils/QYModule/QYChatTool';
 import { SmoothPushPreLoadHighComponent } from '../../comm/components/SmoothPushHighComponent';
 import { routeNavigate } from '../../navigation/RouterMap';
 import RouterMap from '../../navigation/RouterMap';
+import { price_type } from '../product/ProductDetailModel';
 
 /*
 * 仅有礼包了  2019.4.25
@@ -141,12 +143,14 @@ export default class TopicDetailPage extends BasePage {
                         /*商品详情埋点*/
                         const { packageCode, name, levelPrice, groupPrice, priceType } = this.state.data;
                         track(trackEvent.ProductDetail, {
+                            productShowSource: 0,
+                            sourceAttributeCode: 0,
                             spuCode: packageCode,
                             spuName: name,
                             productType: 7,
                             priceShareStore: groupPrice,
-                            pricePerCommodity: levelPrice,
-                            priceType: priceType === 2 ? 100 : user.levelRemark
+                            priceShow: levelPrice,
+                            priceType: priceType === price_type.shop ? 100 : user.levelRemark
                         });
 
                         //礼包弹框去掉
@@ -722,6 +726,7 @@ export default class TopicDetailPage extends BasePage {
 
                 {/*分享*/}
                 <CommShareModal ref={(ref) => this.shareModal = ref}
+                                defaultModalVisible={this.params.openShareModal}
                                 trackParmas={{
                                     spuCode: this.params.activityCode,
                                     spuName: productName

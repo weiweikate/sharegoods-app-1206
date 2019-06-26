@@ -148,10 +148,11 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         });
         ProductsAdapter.AddCartListener addCartListener = new ProductsAdapter.AddCartListener() {
             @Override
-            public void onAddCart(String code) {
+            public void onAddCart(String product,String detail) {
                 addCartEvent.init(view.getId());
                 WritableMap map = Arguments.createMap();
-                map.putString("prodCode", code);
+                map.putString("product", product);
+                map.putString("detail", detail);
                 addCartEvent.setData(map);
                 eventDispatcher.dispatchEvent(addCartEvent);
             }
