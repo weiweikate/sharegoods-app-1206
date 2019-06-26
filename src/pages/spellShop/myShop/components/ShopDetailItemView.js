@@ -16,6 +16,7 @@ import apiEnvironment from '../../../../api/ApiEnvironment';
 import spellStatusModel from '../../model/SpellStatusModel';
 import bridge from '../../../../utils/bridge';
 import { getSource } from '@mr/image-placeholder/oos';
+import { getSize } from '../../../../utils/OssHelper';
 
 const { myShop } = shopRes;
 const { shopProduct, shopProductShare, shop_card } = myShop;
@@ -272,7 +273,7 @@ class ShopDetailImageView extends Component {
 
     componentDidMount() {
         const { item } = this.props;
-        Image.getSize(item, (widths, height) => {
+        getSize(item, (widths, height) => {
             height = height / widths * width;
             this.setState({
                 height

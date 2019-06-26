@@ -206,8 +206,10 @@
   self.headView.time = model.publishTimeStr;
   if(model.showType==3){
     self.bodyView.imageType = YES;
+    self.footerView.type = YES;
   }else{
     self.bodyView.imageType = NO;
+    self.footerView.type = NO;
   }
   self.bodyView.sources = model.resource;
   if(self.type&&(model.createSource&&model.createSource==2)){

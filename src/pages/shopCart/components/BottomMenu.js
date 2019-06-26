@@ -95,7 +95,6 @@ export default class BottomMenu extends Component {
                                     value={`去结算(${shopCartStore.getTotalSelectGoodsNum})`}
                                     style={{ color: 'white', fontSize: 16 }}
                                 />
-
                             </LinearGradient>
                         </TouchableOpacity>
                     </View>

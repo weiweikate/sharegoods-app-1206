@@ -210,7 +210,7 @@ export default class ShowActivityView extends Component {
                             {item.title}
                         </MRText>
                     }
-                    {item.showType === 4 ?
+                    {item.showType != 4 ?
                         <View style={{flexDirection: 'row', alignItems: 'center', margin: 10}}>
                             <PreLoadImage
                                 imageUri={item.userInfoVO && item.userInfoVO.userImg}
@@ -229,7 +229,7 @@ export default class ShowActivityView extends Component {
                             <Text style={{marginLeft: 8, color: '#666666', fontSize: DesignRule.fontSize_22}}>
                                 {item.hotCount ? item.hotCount > 999 ? item.hotCount > 100000 ? '10w+' : '999+' : item.hotCount : '0'}
                             </Text>
-                        </View> : null
+                        </View> : <View style={{margin: 7}}/>
                     }
                 </View>
             </TouchableWithoutFeedback>
