@@ -183,7 +183,7 @@ export default class MyIntegralAccountPage extends BasePage {
                         <Text style={styles.numRemarkStyle}>待入账秀豆（枚）</Text>
                     </View>
                     <View style={{flex:1,marginLeft: 15, justifyContent:'center'}}>
-                        <Text style={styles.numTextStyle}>{user.historicalBalance ? user.historicalScore : '0.00'}</Text>
+                        <Text style={styles.numTextStyle}>{user.historicalScore ? user.historicalScore : '0.00'}</Text>
                         <Text style={styles.numRemarkStyle}>累计秀豆（枚）</Text>
                     </View>
                 </View>
