@@ -154,6 +154,7 @@ let styles = StyleSheet.create({
         width: 100
     },
     container: {
-        flex: 1
+        flex: 1,
+        paddingHorizontal: px2dp(5)
     }
 });
