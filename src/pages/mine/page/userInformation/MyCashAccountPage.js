@@ -275,7 +275,7 @@ export default class MyCashAccountPage extends BasePage {
                         this.$navigate(RouterMap.BankCardListPage);
                     }}>
                         <Text style={styles.settingStyle}>账户设置</Text>
-                    </TouchableWithoutFeedback> : null
+                        </TouchableWithoutFeedback> : <Text style={styles.settingStyle}>    </Text>
                     }
                     </View>
             </View>
@@ -462,7 +462,7 @@ export default class MyCashAccountPage extends BasePage {
     getDataFromNetwork = () => {
         let use_type_symbol = ['', '+', '-'];
         if (this.currentPage > 1) {
-            Toast.showLoading();
+            // Toast.showLoading();
         }
 
         let arrData = this.currentPage === 1 ? [] : this.state.viewData;
