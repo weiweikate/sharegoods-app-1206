@@ -602,7 +602,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                     productModalVisible: false
                 });
             }}/> : null}
-            {detail.status !== 1 ? this._shieldRender() : null}
+            {detail.status !== 1  && (EmptyUtils.isEmpty(detail.userInfoVO) || detail.userInfoVO.userNo !== user.code) ? this._shieldRender() : null}
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             defaultModalVisible={this.params.openShareModal}

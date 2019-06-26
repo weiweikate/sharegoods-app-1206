@@ -62,6 +62,7 @@ export default class TagDetailPage extends BasePage {
     };
 
     refresh = () => {
+        return;
         if (this.state.isRefreshing || this.state.isLoadingMore) {
             return;
         }
@@ -83,6 +84,7 @@ export default class TagDetailPage extends BasePage {
     };
 
     loadMore = () => {
+        return;
         if (this.state.isRefreshing || this.state.isLoadingMore) {
             return;
         }
