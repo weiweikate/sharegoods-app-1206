@@ -158,8 +158,8 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
   
     priceStr = [NSString stringWithFormat:@"市场价：%@",priceStr];
 
-    CGFloat sigle =  [@"1" getStringHeightWithfontSize:18*i viewWidth:276*i];
-    CGFloat height =  [titleStr getStringHeightWithfontSize:18*i viewWidth:276*i];
+    CGFloat sigle =  [@"1" getStringHeightWithfontSize:20*i viewWidth:328*i];
+    CGFloat height =  [titleStr getStringHeightWithfontSize:20*i viewWidth:328*i];
     if (height > sigle) {
       height= sigle;
     }
@@ -185,7 +185,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     [nodes addObject:@{
                        @"value": images[0],
                        @"locationType": @"rect",
-                       @"location": [NSValue valueWithCGRect:CGRectMake(24*i, 47*i, 327*i, 327*i)]}
+                       @"location": [NSValue valueWithCGRect:CGRectMake(24*i, 46*i, 327*i, 327*i)]}
      ];
     
     
@@ -195,25 +195,25 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     [nodes addObject:@{
                        @"value": hotImage,
                        @"locationType": @"rect",
-                       @"location": [NSValue valueWithCGRect:CGRectMake(250*i, (43+18)*i, 101*i, 32*i)]}
+                       @"location": [NSValue valueWithCGRect:CGRectMake(250*i, 40*i, 101*i, 32*i)]}
      ];
     
   //标题
   NSMutableParagraphStyle *style = [NSMutableParagraphStyle new];
-  CGFloat titleWidth = [titleStr getWidthStringfontSize:18 viewWidth:328];
+  CGFloat titleWidth = [titleStr getWidthStringfontSize:20 viewWidth:328];
 
-  CGFloat titlelength = titleWidth>=310? 308:328;
+  CGFloat titlelength = titleWidth>=310? 318:328;
   style.lineBreakMode = NSLineBreakByTruncatingTail;
   NSAttributedString *titleAttrStr = [[NSAttributedString alloc]initWithString:titleStr
-                                                                    attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:18*i], NSForegroundColorAttributeName: [UIColor colorWithHexString:@"333333"]}];
+                                                                    attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:20*i], NSForegroundColorAttributeName: [UIColor colorWithHexString:@"333333"]}];
   [nodes addObject:@{
                      @"value": titleAttrStr,
                      @"locationType": @"rect",
                      @"location": [NSValue valueWithCGRect:CGRectMake(23*i, 394*i, titlelength*i, height)]}
    ];
-  if( titleWidth>=260){
+  if( titleWidth>=310){
     NSAttributedString *dotAttrStr = [[NSAttributedString alloc]initWithString:@"..."
-                                                                      attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:18*i], NSForegroundColorAttributeName: [UIColor colorWithHexString:@"333333"]}];
+                                                                      attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:20*i], NSForegroundColorAttributeName: [UIColor colorWithHexString:@"333333"]}];
     [nodes addObject:@{
                        @"value": dotAttrStr,
                        @"locationType": @"rect",
@@ -226,7 +226,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
                                                                                          attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:30*i], NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#FF0050"]}];
     [nodes addObject:@{
                        @"value": retailPriceAttrStr,
-                       @"location": [NSValue valueWithCGPoint:CGPointMake(24*i, (43+398)*i)]}
+                       @"location": [NSValue valueWithCGPoint:CGPointMake(15*i, 437*i)]}
      ];
 
     for(NSInteger index=0;index<model.priceType.count;index++){
@@ -239,48 +239,48 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
                                                                                               NSForegroundColorAttributeName: [UIColor colorWithHexString:@"FF0050"]}];
       [nodes addObject:@{
                          @"value": pindian,
-                         @"location": [NSValue valueWithCGPoint:CGPointMake(((priceWidth+20)*index+24)*i, (43+451)*i)]}
+                         @"location": [NSValue valueWithCGPoint:CGPointMake(((priceWidth+20)*index+15)*i, 502*i)]}
        ];
     }
     
 
     //价格
     NSMutableAttributedString *priceAttrStr = [[NSMutableAttributedString alloc]initWithString:priceStr
-                                                                                    attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13*i], NSForegroundColorAttributeName: [UIColor colorWithHexString:@"999999"], NSStrikethroughStyleAttributeName: @1}];
+                                                                                    attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15*i], NSForegroundColorAttributeName: [UIColor colorWithHexString:@"999999"], NSStrikethroughStyleAttributeName: @1}];
 
     [nodes addObject:@{
                        @"value": priceAttrStr,
-                       @"location": [NSValue valueWithCGPoint:CGPointMake(24*i, (43+481)*i)]}
+                       @"location": [NSValue valueWithCGPoint:CGPointMake(15*i, 543*i)]}
      ];
 
   //二维码
   UIImage *QRCodeImage = [UIImage QRCodeWithStr:QRCodeStr];
   [nodes addObject:@{@"value": QRCodeImage,
                      @"locationType": @"rect",
-                     @"location": [NSValue valueWithCGRect:CGRectMake(263*i, (43+414)*i, 89*i, 89*i)]}
+                     @"location": [NSValue valueWithCGRect:CGRectMake(252*i, 442*i, 100*i, 100*i)]}
    ];
     
     //秀购头像
     [nodes addObject:@{
                        @"value": [[UIImage imageNamed:@"logo.png"] creatRoundImagWithRadius:0.5 width:33*i height:33*i],
                        @"locationType": @"rect",
-                       @"location": [NSValue valueWithCGRect:CGRectMake(87*i, (43+533)*i, 39*i, 39*i)]}
+                       @"location": [NSValue valueWithCGRect:CGRectMake(87*i, 612*i, 39*i, 39*i)]}
      ];
     
     //头像
     [nodes addObject:@{
                        @"value": [images[1] creatRoundImagWithRadius:0.5 width:33*i height:33*i],
                        @"locationType": @"rect",
-                       @"location": [NSValue valueWithCGRect:CGRectMake(144*i, (43+533)*i, 39*i, 39*i)]}
+                       @"location": [NSValue valueWithCGRect:CGRectMake(144*i, 612*i, 39*i, 39*i)]}
      ];
     
     NSMutableAttributedString * tempStrAttrStr = [[NSMutableAttributedString alloc]initWithString:@"为您推荐好物"
-                                                                                          attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:13*i],
+                                                                                          attributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:15*i],
                                                                                                           NSForegroundColorAttributeName: [UIColor colorWithHexString:@"333333"],}];
     
     [nodes addObject:@{
                       @"value": tempStrAttrStr,
-                      @"location": [NSValue valueWithCGPoint:CGPointMake(195*i, (43+543)*i)]}
+                      @"location": [NSValue valueWithCGPoint:CGPointMake(195*i, 622*i)]}
          ];
     
   }
