@@ -91,7 +91,7 @@
     __weak RecommendedCell *weakSelf = self;
     _footerView.clickGoods = ^(GoodsDataModel* goods){
       if (weakSelf.cellDelegate) {
-        [weakSelf.cellDelegate clickGood:goods];
+        [weakSelf.cellDelegate clickGood:goods cell:weakSelf];
       }
     };
 
@@ -119,7 +119,7 @@
     };
     _footerView.addCarBlock = ^(GoodsDataModel* a){
       if (weakSelf.cellDelegate) {
-        [weakSelf.cellDelegate addCar:a];
+        [weakSelf.cellDelegate addCar:a cell:weakSelf];
       }
     };
   }
@@ -204,12 +204,12 @@
   _model = model;
   self.headView.UserInfoModel = model.userInfoVO;
   self.headView.time = model.publishTimeStr;
-  self.bodyView.sources = model.resource;
   if(model.showType==3){
     self.bodyView.imageType = YES;
   }else{
     self.bodyView.imageType = NO;
   }
+  self.bodyView.sources = model.resource;
   if(self.type&&(model.createSource&&model.createSource==2)){
     self.headView.type = NO;
     self.jingpin.hidden = NO;

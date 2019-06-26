@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -160,7 +161,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
                 linearLayoutManager.setOrientation(OrientationHelper.HORIZONTAL);
                 recyclerView.setLayoutManager(linearLayoutManager);
-                ProductsAdapter productsAdapter = new ProductsAdapter(item.getProducts());
+                ProductsAdapter productsAdapter = new ProductsAdapter(item.getProducts(), JSON.toJSONString(item));
                 if (this.addCartListener != null) {
                     productsAdapter.setAddCartListener(addCartListener);
                 } else {
@@ -327,7 +328,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
                 linearLayoutManager.setOrientation(OrientationHelper.HORIZONTAL);
                 recyclerView.setLayoutManager(linearLayoutManager);
-                ProductsAdapter productsAdapter = new ProductsAdapter(item.getProducts());
+                ProductsAdapter productsAdapter = new ProductsAdapter(item.getProducts(),JSON.toJSONString(item));
                 if (this.addCartListener != null) {
                     productsAdapter.setAddCartListener(addCartListener);
                 } else {
