@@ -56,6 +56,10 @@ class ConfirmOrderModel {
 
     @action
     selectAddressId(addressId){
+        addressId = addressId + '';
+        if (this.addressId == addressId && this.addressId && this.addressId.length > 0) {
+            return;
+        }
         this.addressId = addressId;
         this.tokenCoin = 0;
         this.makeSureProduct()
@@ -63,11 +67,17 @@ class ConfirmOrderModel {
 
     @action
     selecttokenCoin(num){
+        if (this.tokenCoin == num) {
+            return;
+        }
         this.tokenCoin = num;
         this.makeSureProduct()
     }
     @action
     selectUserCoupon(userCouponCode){
+        if ( this.userCouponCode == userCouponCode) {
+            return;
+        }
         this.tokenCoin = 0;
         this.userCouponCode = userCouponCode;
         this.makeSureProduct();
@@ -109,6 +119,9 @@ class ConfirmOrderModel {
 
 
     disPoseErr = (err) => {
+        if (this.data){
+            this.handleNetData(this.data);
+        }
         if (err.code === 10003 && err.msg.indexOf('不在限制的购买时间') !== -1) {
             Alert.alert('提示', err.msg, [
                 {
@@ -125,12 +138,13 @@ class ConfirmOrderModel {
     };
 
     handleNetData = (data) => {
+        this.data = data;
         this.platformOrderNo = data.platformOrderNo || '';
         this.productOrderList = data.productOrderList || [];
         this.failProductList = data.failProductList || '';
         this.payInfo = data.payInfo || {};
         this.receiveInfo = data.receiveInfo || {};
-        this.addressId =  this.receiveInfo.id;
+        this.addressId =  this.receiveInfo.id + '';
         this.tokenCoin =  this.payInfo.tokenCoinAmount;
         // this.orderProductList.map((item) => {
         //     if ((item.restrictions & 1) === 1) {

@@ -169,7 +169,6 @@ export default class AddressManagerPage extends BasePage {
                 bridge.$toast("该地址已变更,请重新选择地址");
                 return;
             }
-            bridge.showLoading();
             let callBack = this.params.callBack;
             callBack && callBack({ ...item });
             this.$navigateBack();
