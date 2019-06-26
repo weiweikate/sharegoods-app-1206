@@ -154,7 +154,8 @@ export default class MyIntegralAccountPage extends BasePage {
                                  }}>
                         <Text style={{
                             fontSize: DesignRule.fontSize_threeTitle,
-                            color: DesignRule.mainColor
+                            color: DesignRule.mainColor,
+                            paddingHorizontal: 10
                         }}>兑换1元现金劵</Text>
                     </NoMoreClick>
                 </View>

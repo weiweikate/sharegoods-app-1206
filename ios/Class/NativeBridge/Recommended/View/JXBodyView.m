@@ -114,7 +114,7 @@
         [arr addObject:sources[i]];
       }
     }else{
-      if(sources[i].type==5){
+      if(sources[i].type==2){
         if(arr.count>9) break;
         [arr addObject:sources[i]];
       }

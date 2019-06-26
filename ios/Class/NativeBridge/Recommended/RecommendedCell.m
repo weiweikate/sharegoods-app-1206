@@ -91,7 +91,7 @@
     __weak RecommendedCell *weakSelf = self;
     _footerView.clickGoods = ^(GoodsDataModel* goods){
       if (weakSelf.cellDelegate) {
-        [weakSelf.cellDelegate clickGood:goods];
+        [weakSelf.cellDelegate clickGood:goods cell:weakSelf];
       }
     };
 
