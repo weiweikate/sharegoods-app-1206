@@ -10,6 +10,7 @@
  */
 'use strict';
 import apiEnvironment from '../api/ApiEnvironment';
+import HttpUtils from '../api/network/HttpUtils';
 const timestamp = new Date().getTime();
 
 export default function(url) {
@@ -19,3 +20,18 @@ export default function(url) {
         return url;
     }
 }
+
+function getSize(url, callBack) {
+    if (!url) {
+        return
+    }
+    url = url.split("？")[0]
+    HttpUtils.get(url+'?x-oss-process=image/info').then((data)=> {
+        let height = data.ImageHeight.value;
+        let width = data.ImageWidth.value;
+        callBack&&callBack(width, height)
+    })
+}
+
+export {getSize}
+

@@ -57,6 +57,10 @@ const allKinds = {
     12: { title: '参与活动', img: tuiguang_icon },
     13: { title: '活动奖励', img: zengsong_icon }
 };
+
+const offset = 175;
+const headerHeight = ScreenUtils.statusBarHeight + 44;
+
 @observer
 export default class MyIntegralAccountPage extends BasePage {
     constructor(props) {
@@ -65,12 +69,12 @@ export default class MyIntegralAccountPage extends BasePage {
             viewData: [],
             currentPage: 1,
             isEmpty: false,
+            changeHeader: false
     };
         this.currentPage = 1;
         this.type = null;
         this.biType = null;
-        this.changeHeader = false;
-
+        this.st = 0;
     }
 
     $navigationBarOptions = {
@@ -89,18 +93,23 @@ export default class MyIntegralAccountPage extends BasePage {
 
     _onScroll = (event) => {
         let Y = event.nativeEvent.contentOffset.y;
-        console.log('event',Y);
-        if(Y <= 200) {
-            this.changeHeader = true;
+        if (Y <= 175) {
+            this.st = Y / offset;
+            this.setState({
+                changeHeader: false
+            });
         } else {
-            this.changeHeader = false;
+            this.st = 1;
+            this.setState({
+                changeHeader: true
+            });
         }
 
-
-        // this.headerBg.setNativeProps({
-        //     opacity: this.st
-        // });
+        this.headerBg.setNativeProps({
+            opacity: this.st,
+        });
     };
+
     //**********************************ViewPart******************************************
     _render() {
         const {viewData} = this.state;
@@ -111,7 +120,7 @@ export default class MyIntegralAccountPage extends BasePage {
 
         return (
             <View style={styles.mainContainer}>
-                {this.renderHeader()}
+                {this.state.changeHeader ? <View style={{height: headerHeight}}/> : null}
                 <SectionList
                     renderSectionHeader={this.sectionComp}
                     renderItem={this.renderItem}
@@ -125,6 +134,8 @@ export default class MyIntegralAccountPage extends BasePage {
                     stickySectionHeadersEnabled={true}
                     onScroll={(e)=>{this._onScroll(e)}}
                 />
+                {this.navBackgroundRender()}
+                {this.renderHeader()}
             </View>
         );
     }
@@ -133,7 +144,7 @@ export default class MyIntegralAccountPage extends BasePage {
         return (
             <ImageBackground source={account_bg_white} resizeMode={'stretch'} style={{
                 position: 'absolute',
-                top: px2dp(10),
+                top: px2dp(66),
                 height: px2dp(174),
                 width: ScreenUtils.width,
                 left: 0,
@@ -166,7 +177,7 @@ export default class MyIntegralAccountPage extends BasePage {
                     marginLeft: DesignRule.margin_page,
                 }}>{user.userScore ? user.userScore : 0}</Text>
 
-                <View style={{display:'flex', flexDirection:'row'}} >
+                <View style={{display:'flex', flexDirection:'row', marginBottom: 15}} >
                     <View style={{flex:1,marginLeft: 15, justifyContent:'center'}}>
                         <Text style={styles.numTextStyle}>{user.blockedUserScore ? user.blockedUserScore : '0.00'}</Text>
                         <Text style={styles.numRemarkStyle}>待入账秀豆（枚）</Text>
@@ -180,9 +191,24 @@ export default class MyIntegralAccountPage extends BasePage {
         );
     }
 
+    navBackgroundRender = ()=> {
+        return (
+            <View ref={(ref) => this.headerBg = ref}
+                  style={{
+                      backgroundColor: '#FF0050',
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: headerHeight,
+                      opacity: 0
+                  }}/>
+        );
+    };
+
     renderHeader = () => {
         return (
-            <ImageBackground resizeMode={'stretch'} source={account_bg} style={{width: ScreenUtils.width}}>
+            <View  style={{ position: 'absolute', top: 0, left: 0, right: 0 }}>
                 <View style={styles.headerWrapper}>
                     <TouchableWithoutFeedback onPress={() => {
                         this.$navigateBack();
@@ -203,11 +229,11 @@ export default class MyIntegralAccountPage extends BasePage {
                         fontSize: px2dp(17),
                         includeFontPadding: false
                     }}>
-                        秀豆{this.state.changeHeader?`(${user.userScore && user.userScore})`:''}
+                        {this.state.changeHeader ? '秀豆' : ''}
                     </Text>
                     <View style={{flex:1}}/>
                 </View>
-            </ImageBackground>
+            </View>
         );
     };
 
@@ -217,7 +243,7 @@ export default class MyIntegralAccountPage extends BasePage {
         if (key === 'A') {
             return (
                 <ImageBackground resizeMode={'stretch'} source={account_bg}
-                                 style={{marginBottom: 40, height: px2dp(160), width: ScreenUtils.width}}>
+                                 style={{marginBottom: 10, height: px2dp(225), width: ScreenUtils.width, backgroundColor: 'white'}}>
                     {this._accountInfoRender()}
                 </ImageBackground>
             )
@@ -337,7 +363,7 @@ export default class MyIntegralAccountPage extends BasePage {
         let use_type_symbol = ['', '+', '-'];
         let arrData = this.currentPage === 1 ? [] : this.state.viewData;
         if (this.currentPage > 1) {
-            Toast.showLoading();
+            // Toast.showLoading();
         }
         MineApi.userScoreQuery({
             page: this.currentPage,

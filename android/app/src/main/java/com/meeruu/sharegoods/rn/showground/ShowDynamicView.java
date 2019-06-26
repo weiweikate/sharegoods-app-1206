@@ -127,7 +127,7 @@ public class ShowDynamicView implements IShowgroundView, SwipeRefreshLayout.OnRe
         layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         recyclerView.setLayoutManager(layoutManager);
         adapter.setEnableLoadMore(true);
-        View emptyView = LayoutInflater.from(context).inflate(R.layout.show_empty_view, null);
+        View emptyView = LayoutInflater.from(context).inflate(R.layout.dynamic_empty_view, null);
         emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         adapter.setEmptyView(emptyView);
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
@@ -274,7 +274,7 @@ public class ShowDynamicView implements IShowgroundView, SwipeRefreshLayout.OnRe
         if (list == null || list.size() == 0) {
             View view = adapter.getEmptyView();
             TextView textView = view.findViewById(R.id.empty_tv);
-            textView.setText("暂无数据");
+            textView.setText("暂无内容");
         }
     }
 

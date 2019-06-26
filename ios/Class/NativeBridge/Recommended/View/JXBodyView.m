@@ -101,6 +101,9 @@
   if(imageType){
     self.bgView.hidden = NO;
     self.bgImage.hidden = NO;
+  }else{
+    self.bgView.hidden = YES;
+    self.bgImage.hidden = YES;
   }
 }
 

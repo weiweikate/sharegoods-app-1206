@@ -1,7 +1,7 @@
 import React from 'react';
 import {
-    Switch,
-    View, Image, TouchableOpacity, StyleSheet, Alert, Platform
+    // Switch,
+    View, Image, TouchableOpacity, StyleSheet, Alert,
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
@@ -14,7 +14,7 @@ import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import RouterMap, { routeNavigate } from '../../../../navigation/RouterMap';
 import { PageType } from '../myaccount/JudgePhonePage';
-import SettingModel from "../../model/SettingModel";
+// import SettingModel from "../../model/SettingModel";
 
 const arrow_right = res.button.arrow_right;
 const PhonePwdStatus = {
@@ -101,38 +101,38 @@ export default class AccountSettingPage extends BasePage {
                     <Image source={arrow_right} resizeMode={'contain'}/>
                 </TouchableOpacity>
 
-                {this.renderLine()}
-                <View style={{
-                    height: 15,
-                    backgroundColor: DesignRule.bgColor,
-                }}/>
-                <TouchableOpacity style={styles.viewStyle}>
-                    <UIText value={'通过短信联系我'} style={styles.blackText}/>
-                    <Switch value={SettingModel.messageState}
-                            onTintColor={'#00D914'}
-                            thumbTintColor={Platform.OS === 'android' ? 'white' : ''}
-                            tintColor={DesignRule.textColor_hint}
-                            onValueChange={() => {
-                                if(SettingModel.messageState) {
+                {/*{this.renderLine()}*/}
+                {/*<View style={{*/}
+                    {/*height: 15,*/}
+                    {/*backgroundColor: DesignRule.bgColor,*/}
+                {/*}}/>*/}
+                {/*<TouchableOpacity style={styles.viewStyle}>*/}
+                    {/*<UIText value={'通过短信联系我'} style={styles.blackText}/>*/}
+                    {/*<Switch value={SettingModel.messageState}*/}
+                            {/*onTintColor={'#00D914'}*/}
+                            {/*thumbTintColor={Platform.OS === 'android' ? 'white' : ''}*/}
+                            {/*tintColor={DesignRule.textColor_hint}*/}
+                            {/*onValueChange={() => {*/}
+                                {/*if(SettingModel.messageState) {*/}
 
-                                    Alert.alert('确认关闭', '若关闭短信通道，你的秀迷将不能再通过发送短信联系您哦~',
-                                        [
-                                            {
-                                                text: '取消', onPress: () => {
-                                                }
-                                            },
-                                            {
-                                                text: '确定', onPress: () => {
-                                                    SettingModel.messageClick();
-                                                }
-                                            }
-                                        ]
-                                    );
-                                }else {
-                                    SettingModel.messageClick();
-                                }
-                            }}/>
-                </TouchableOpacity>
+                                    {/*Alert.alert('确认关闭', '若关闭短信通道，你的秀迷将不能再通过发送短信联系您哦~',*/}
+                                        {/*[*/}
+                                            {/*{*/}
+                                                {/*text: '取消', onPress: () => {*/}
+                                                {/*}*/}
+                                            {/*},*/}
+                                            {/*{*/}
+                                                {/*text: '确定', onPress: () => {*/}
+                                                    {/*SettingModel.messageClick();*/}
+                                                {/*}*/}
+                                            {/*}*/}
+                                        {/*]*/}
+                                    {/*);*/}
+                                {/*}else {*/}
+                                    {/*SettingModel.messageClick();*/}
+                                {/*}*/}
+                            {/*}}/>*/}
+                {/*</TouchableOpacity>*/}
 
                 {/*{this.renderLine()}*/}
                 {/*<TouchableOpacity style={styles.viewStyle}>*/}

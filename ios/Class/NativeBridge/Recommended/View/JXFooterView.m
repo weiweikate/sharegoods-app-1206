@@ -127,6 +127,7 @@
 
 }
 
+
 -(void)setProducts:(NSArray *)products{
   _products = products;
   [self setGoodsView];

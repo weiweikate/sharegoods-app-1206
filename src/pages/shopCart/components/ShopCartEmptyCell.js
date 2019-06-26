@@ -9,13 +9,11 @@ import { TrackApi } from '../../../utils/SensorsTrack';
 const { px2dp } = ScreenUtils;
 
 export default class ShopCartEmptyCell extends Component {
-
     constructor(props) {
         super(props);
     }
-
     render() {
-        const { itemData,onClick } = this.props;
+        const { itemData,onClick ,haveShopCartGoods} = this.props;
         return (
             <TouchableOpacity onPress={()=>{
                onClick();
@@ -28,8 +26,9 @@ export default class ShopCartEmptyCell extends Component {
                })
             }}>
             <View style={{
+                marginBottom:haveShopCartGoods?px2dp(5):0,
                 height: itemData.height,
-                width: ScreenUtils.width / 2 - px2dp(10),
+                width: haveShopCartGoods?ScreenUtils.width / 2 - px2dp(25) : ScreenUtils.width / 2 - px2dp(10),
                 marginLeft: px2dp(5),
                 height: itemData.height,
                 backgroundColor:DesignRule.color_fff,
@@ -41,7 +40,7 @@ export default class ShopCartEmptyCell extends Component {
                     imageUri={itemData.imgUrl}
                     style={{
                         marginTop:px2dp(2),
-                        width: ScreenUtils.width / 2 - px2dp(16),
+                        width: haveShopCartGoods?ScreenUtils.width / 2 - px2dp(30) :ScreenUtils.width / 2 - px2dp(16),
                         height: itemData.imageHeight ,
                         borderRadius:px2dp(6)
                     }}

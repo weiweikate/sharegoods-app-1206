@@ -31,6 +31,7 @@ import ShowMaterialView from './ShowMaterialView';
 import apiEnvironment from '../../api/ApiEnvironment';
 import CommShareModal from '../../comm/components/CommShareModal';
 import WhiteModel from './model/WhiteModel';
+import ShowListIndexModel from './model/ShowListIndexModel';
 import { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
 import { routeNavigate } from '../../navigation/RouterMap';
 import RouterMap from '../../navigation/RouterMap';
@@ -129,7 +130,7 @@ export default class ShowListPage extends BasePage {
     }
 
     retouchShow = () => {
-        switch (this.state.page) {
+        switch (ShowListIndexModel.pageIndex) {
             case 0:
                 this.hotList && this.hotList.scrollToTop();
                 break;
@@ -150,11 +151,14 @@ export default class ShowListPage extends BasePage {
         track(trackEvent.ViewXiuChang, {
             xiuChangListType: number + 1
         });
-        this.setState({ page: number });
+        // this.setState({ page: number });
+        ShowListIndexModel.setIndex(number);
     }
 
     _onChangeTab(number) {
-        this.setState({ page: number.i });
+        ShowListIndexModel.setIndex(number.i);
+
+        // this.setState({ page: number.i });
     }
 
     _onLeftPressed() {
@@ -212,7 +216,7 @@ export default class ShowListPage extends BasePage {
 
 
     _render() {
-        const { page, left, needsExpensive, detail } = this.state;
+        const { left, needsExpensive, detail } = this.state;
         let HotView = null;
         if (needsExpensive) {
             HotView = require('./ShowHotView').default;
@@ -259,29 +263,29 @@ export default class ShowListPage extends BasePage {
                 <View style={{ flex: 1 }}/>
                 <View style={styles.titleView}>
                     <TouchableOpacity style={styles.items} onPress={() => this._gotoPage(0)}>
-                        <Text style={[page === 0 ? styles.activityIndex : styles.index]}
+                        <Text style={[ShowListIndexModel.pageIndex === 0 ? styles.activityIndex : styles.index]}
                               allowFontScaling={false}>推荐</Text>
-                        {page === 0 ? <View style={styles.line}/> : null}
+                        {ShowListIndexModel.pageIndex === 0 ? <View style={styles.line}/> : null}
                     </TouchableOpacity>
                     <View style={{ width: px2dp(20) }}/>
                     <TouchableOpacity style={[{ marginRight: px2dp(20) }, styles.items]}
                                       onPress={() => this._gotoPage(1)}>
-                        <Text style={page === 1 ? styles.activityIndex : styles.index}
+                        <Text style={ShowListIndexModel.pageIndex === 1 ? styles.activityIndex : styles.index}
                               allowFontScaling={false}>素材圈</Text>
-                        {page === 1 ? <View style={styles.line}/> : null}
+                        {ShowListIndexModel.pageIndex === 1 ? <View style={styles.line}/> : null}
                     </TouchableOpacity>
 
                     <TouchableOpacity style={[styles.items, { marginRight: px2dp(20) }]}
                                       onPress={() => this._gotoPage(2)}>
-                        <Text style={page === 2 ? styles.activityIndex : styles.index}
+                        <Text style={ShowListIndexModel.pageIndex === 2 ? styles.activityIndex : styles.index}
                               allowFontScaling={false}>发现</Text>
-                        {page === 2 ? <View style={styles.line}/> : null}
+                        {ShowListIndexModel.pageIndex === 2 ? <View style={styles.line}/> : null}
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.items} onPress={() => this._gotoPage(3)}>
-                        <Text style={page === 3 ? styles.activityIndex : styles.index}
+                        <Text style={ShowListIndexModel.pageIndex === 3 ? styles.activityIndex : styles.index}
                               allowFontScaling={false}>活动</Text>
-                        {page === 3 ? <View style={styles.line}/> : null}
+                        {ShowListIndexModel.pageIndex === 3 ? <View style={styles.line}/> : null}
                     </TouchableOpacity>
                 </View>
                 <View style={{ flex: 1 }}/>
@@ -292,7 +296,7 @@ export default class ShowListPage extends BasePage {
             <ScrollableTabView
                 ref={(ref) => this.scrollableTabView = ref}
                 style={styles.tab}
-                page={this.state.page}
+                page={ShowListIndexModel.pageIndex}
                 renderTabBar={() => <DefaultTabBar style={styles.tabBar}/>}
                 tabBarUnderlineStyle={styles.underline}
                 onChangeTab={(number) => this._onChangeTab(number)}
@@ -387,7 +391,7 @@ export default class ShowListPage extends BasePage {
                                     articleCode: detail.code,
                                     author: (detail.userInfoVO || {}).userNo,
                                     xiuChangBtnLocation: '1',
-                                    xiuChangListType: this.state.page + 1
+                                    xiuChangListType: ShowListIndexModel.pageIndex + 1
                                 }}
                                 imageJson={{
                                     imageType: 'show',

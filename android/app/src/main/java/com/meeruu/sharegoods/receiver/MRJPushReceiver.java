@@ -88,7 +88,7 @@ public class MRJPushReceiver extends BroadcastReceiver {
                 // 跳标
                 EventBus.getDefault().post(new Event.MRNativeTagEvent(content));
                 break;
-            case "msgTipsTagEvent":
+            case "sendTipsTagEvent":
                 EventBus.getDefault().post(new Event.MRMineMsgEvent(content));
                 break;
             default:

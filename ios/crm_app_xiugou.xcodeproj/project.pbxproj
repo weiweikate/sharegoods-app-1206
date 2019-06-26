@@ -135,7 +135,8 @@
 		C48634F722C1B6A00096C8EC /* edit_img_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C48634F522C1B6A00096C8EC /* edit_img_bg@2x.png */; };
 		C48634FA22C1B74D0096C8EC /* record_finsh_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C48634F822C1B74D0096C8EC /* record_finsh_bg@2x.png */; };
 		C48634FB22C1B74D0096C8EC /* record_finsh_bg@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C48634F922C1B74D0096C8EC /* record_finsh_bg@3x.png */; };
-		C48636A122C256F90096C8EC /* AA.m in Sources */ = {isa = PBXBuildFile; fileRef = C48636A022C256F90096C8EC /* AA.m */; };
+		C48636B622C343950096C8EC /* AA.m in Sources */ = {isa = PBXBuildFile; fileRef = C48636B422C343950096C8EC /* AA.m */; };
+		C48636B922C344290096C8EC /* UIImageView+ConfigLib.m in Sources */ = {isa = PBXBuildFile; fileRef = C48636B822C344290096C8EC /* UIImageView+ConfigLib.m */; };
 		C4D4505A2249F6B800196E1B /* JRServiceManager+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D450592249F6B800196E1B /* JRServiceManager+Util.m */; };
 		C4EFED0422B767E300D12A4C /* libRNCAsyncStorage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4EFECC022B7632200D12A4C /* libRNCAsyncStorage.a */; };
 		C4F01EEC222D141200ACA1B4 /* PhoneAutherTool.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F01EEB222D141200ACA1B4 /* PhoneAutherTool.m */; };
@@ -1063,8 +1064,10 @@
 		C48634F522C1B6A00096C8EC /* edit_img_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "edit_img_bg@2x.png"; sourceTree = "<group>"; };
 		C48634F822C1B74D0096C8EC /* record_finsh_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "record_finsh_bg@2x.png"; sourceTree = "<group>"; };
 		C48634F922C1B74D0096C8EC /* record_finsh_bg@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "record_finsh_bg@3x.png"; sourceTree = "<group>"; };
-		C486369F22C256F90096C8EC /* AA.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AA.h; sourceTree = "<group>"; };
-		C48636A022C256F90096C8EC /* AA.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AA.m; sourceTree = "<group>"; };
+		C48636B422C343950096C8EC /* AA.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AA.m; sourceTree = "<group>"; };
+		C48636B522C343950096C8EC /* AA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AA.h; sourceTree = "<group>"; };
+		C48636B722C344290096C8EC /* UIImageView+ConfigLib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImageView+ConfigLib.h"; sourceTree = "<group>"; };
+		C48636B822C344290096C8EC /* UIImageView+ConfigLib.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+ConfigLib.m"; sourceTree = "<group>"; };
 		C4D450582249F6B800196E1B /* JRServiceManager+Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JRServiceManager+Util.h"; sourceTree = "<group>"; };
 		C4D450592249F6B800196E1B /* JRServiceManager+Util.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "JRServiceManager+Util.m"; sourceTree = "<group>"; };
 		C4EFECB922B7632200D12A4C /* RNCAsyncStorage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNCAsyncStorage.xcodeproj; path = "../node_modules/@mr/mr-rn-storage/ios/RNCAsyncStorage.xcodeproj"; sourceTree = "<group>"; };
@@ -2354,6 +2357,17 @@
 			path = MRCacheLib;
 			sourceTree = "<group>";
 		};
+		C48636B322C343860096C8EC /* Decode */ = {
+			isa = PBXGroup;
+			children = (
+				C48636B522C343950096C8EC /* AA.h */,
+				C48636B422C343950096C8EC /* AA.m */,
+				C48636B722C344290096C8EC /* UIImageView+ConfigLib.h */,
+				C48636B822C344290096C8EC /* UIImageView+ConfigLib.m */,
+			);
+			path = Decode;
+			sourceTree = "<group>";
+		};
 		C4EFECBA22B7632200D12A4C /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -2831,6 +2845,7 @@
 		CD1E519221C9D935007103A1 /* tool */ = {
 			isa = PBXGroup;
 			children = (
+				C48636B322C343860096C8EC /* Decode */,
 				CD5EAF10221BEA9F007AAEE0 /* netTool */,
 				CD1E51C721C9D96B007103A1 /* BGKeychainTool.h */,
 				CD1E51C821C9D96B007103A1 /* BGKeychainTool.m */,
@@ -2844,8 +2859,6 @@
 				CD89B1F1224B4C54006CCEF7 /* SGNetworkImageNode.m */,
 				C44F2CD82252483B00334776 /* SuspensionBtn.h */,
 				C44F2CD92252483B00334776 /* SuspensionBtn.m */,
-				C486369F22C256F90096C8EC /* AA.h */,
-				C48636A022C256F90096C8EC /* AA.m */,
 			);
 			path = tool;
 			sourceTree = "<group>";
@@ -3892,6 +3905,7 @@
 				50043A7E21C772AF00270DFA /* MRShopCartCellManager.m in Sources */,
 				C4F2E43A22BE303100FF6213 /* SGRecordSuccessPreview.m in Sources */,
 				5068363221379B78001AB175 /* JRDeviceInfo.m in Sources */,
+				C48636B622C343950096C8EC /* AA.m in Sources */,
 				C4F2E45622BE303100FF6213 /* IJSVideoManagerController.m in Sources */,
 				C4F2E45122BE303100FF6213 /* NSError+IJSError.m in Sources */,
 				C4F2E46D22BE303100FF6213 /* IJSAlbumModel.m in Sources */,
@@ -3951,6 +3965,7 @@
 				CDAB6D1F219AC5F800DE6716 /* MRWaveViewManager.m in Sources */,
 				C4F2E47322BE303100FF6213 /* IJSAlbumPickerCell.m in Sources */,
 				01091618227053B00043E997 /* RecommendedView.m in Sources */,
+				C48636B922C344290096C8EC /* UIImageView+ConfigLib.m in Sources */,
 				C4F2E45F22BE303100FF6213 /* IJSVideoSlideView.m in Sources */,
 				CD89B18C224B0FCD006CCEF7 /* ASDK_ShowGround.m in Sources */,
 				C4F2E47522BE303100FF6213 /* IJSPreviewGifView.m in Sources */,
@@ -4029,7 +4044,6 @@
 				C4F2E46A22BE303100FF6213 /* IJSIMapViewExportView.m in Sources */,
 				5068363021379B78001AB175 /* CachesModule.m in Sources */,
 				CD5EB10B221E9A9F007AAEE0 /* ShowHeaderViewManager.m in Sources */,
-				C48636A122C256F90096C8EC /* AA.m in Sources */,
 				C4F2E48622BE303100FF6213 /* TOCropScrollView.m in Sources */,
 				CD89B1D1224B1A30006CCEF7 /* ShowCellNode.m in Sources */,
 				C4F2E46F22BE303100FF6213 /* IJSPreviewVideoView.m in Sources */,
@@ -4250,8 +4264,7 @@
 					"$(SRCROOT)/../node_modules/@sensors.data/react-native-sensors-analytics/ios",
 					"$(SRCROOT)/../node_modules/@mr/rn-geolocation/ios/**",
 					"$(SRCROOT)/../node_modules/@mr/rn-request/ios",
-					"$(SRCROOT)/../node_modules/react-native/Libraries",
-					"$(SRCROOT)/../../node_modules/react-native/React",
+					"$(SRCROOT)/../node_modules/react-native-webp",
 				);
 				INFOPLIST_FILE = crm_app_xiugou/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -4424,8 +4437,7 @@
 					"$(SRCROOT)/../node_modules/@sensors.data/react-native-sensors-analytics/ios",
 					"$(SRCROOT)/../node_modules/@mr/rn-geolocation/ios/**",
 					"$(SRCROOT)/../node_modules/@mr/rn-request/ios",
-					"$(SRCROOT)/../node_modules/react-native/Libraries",
-					"$(SRCROOT)/../../node_modules/react-native/React",
+					"$(SRCROOT)/../node_modules/react-native-webp",
 				);
 				INFOPLIST_FILE = crm_app_xiugou/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -4498,8 +4510,7 @@
 					"$(SRCROOT)/../node_modules/@sensors.data/react-native-sensors-analytics/ios",
 					"$(SRCROOT)/../node_modules/@mr/rn-geolocation/ios/**",
 					"$(SRCROOT)/../node_modules/@mr/rn-request/ios",
-					"$(SRCROOT)/../node_modules/react-native/Libraries",
-					"$(SRCROOT)/../../node_modules/react-native/React",
+					"$(SRCROOT)/../node_modules/react-native-webp",
 				);
 				INFOPLIST_FILE = crm_app_xiugou/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
