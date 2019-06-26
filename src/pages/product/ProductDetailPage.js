@@ -167,7 +167,9 @@ export default class ProductDetailPage extends BasePage {
             let orderProducts = [{
                 skuCode: skuCode,
                 quantity: amount,
-                productCode: prodCode
+                productCode: prodCode,
+                activityCode: '',
+                batchNo: 1,
             }];
             this.$navigate(RouterMap.ConfirOrderPage, {
                 orderParamVO: {

@@ -196,7 +196,9 @@ export class XpDetailPage extends BasePage {
             orderProducts.push({
                 skuCode: skuCode,
                 quantity: amount,
-                productCode: this.xpDetailModel.selectedSpuCode
+                productCode: this.xpDetailModel.selectedSpuCode,
+                activityCode: '',
+                batchNo: 1,
             });
             this.$navigate(RouterMap.ConfirOrderPage, {
                 orderParamVO: {
