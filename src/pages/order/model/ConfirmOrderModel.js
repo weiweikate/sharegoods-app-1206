@@ -194,8 +194,10 @@ class ConfirmOrderModel {
         bridge.showLoading();
         OrderApi.submitOrder(this.getParams()).then((response) => {
             bridge.hiddenLoading();
-            let data = response.data;
-            shopCartCacheTool.getShopCartGoodsListData();
+            let data = response.data || {};
+            if (this.orderParamVO.source === 1) {
+                shopCartCacheTool.getShopCartGoodsListData();
+            }
             replaceRoute('payment/PaymentPage', {
                     orderNum: data.platformOrderNo,
                     amounts: data.payInfo.payAmount,
