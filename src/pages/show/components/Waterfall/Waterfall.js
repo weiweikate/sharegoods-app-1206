@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { ScrollView, View, StyleSheet} from 'react-native';
 import ItemView from './ItemView'
+import EmptyUtils from '../../../../utils/EmptyUtils';
 
 var styles = StyleSheet.create({
   root: {
@@ -339,6 +340,7 @@ export default class Waterfall extends Component{
       <ScrollView scrollEventThrottle={4} {...this.props} ref={this._refScrollView} style={[styles.root,this.props.style]} onLayout={this._onRootLayout} onScroll={this._onScroll}>
         <View style={styles.container} ref={this._refContainer} >
         { this._renderHeader() }
+            {!EmptyUtils.isEmptyArr(this.list) ? <View/> : null}
         { this.width && this._renderItems() }
         </View>
       </ScrollView>
