@@ -25,6 +25,7 @@ import ShowUtils from './utils/ShowUtils';
 import CommShareModal from '../../comm/components/CommShareModal';
 import apiEnvironment from '../../api/ApiEnvironment';
 import RouterMap from '../../navigation/RouterMap';
+import TagDetailItemView from './components/TagDetailItemView';
 
 const { iconShowShare, iconShowFire } = res;
 const { px2dp } = ScreenUtils;
@@ -102,6 +103,8 @@ export default class TagDetailPage extends BasePage {
     };
 
     renderItem = (itemData, itemIdx, itemContainer) => {
+
+        return(<TagDetailItemView itemData={itemData} itemContainer={itemContainer}/>)
         let uri, width = 1, height = 1;
         let minHeight = itemContainer.width * 120 / 167;
         let maxHeight = itemContainer.width * 240 / 167;

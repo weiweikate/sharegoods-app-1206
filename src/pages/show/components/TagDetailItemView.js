@@ -9,11 +9,13 @@ import {
   TouchableWithoutFeedback,
   Image
 } from 'react-native';
+import ImageLoad from '@mr/image-placeholder';
 import DesignRule from '../../../constants/DesignRule';
 import ShowUtils from '../utils/ShowUtils';
-import RouterMap from '../../../navigation/RouterMap';
+import RouterMap ,{routePush}from '../../../navigation/RouterMap';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import res from '../res';
+import { MRText } from '../../../components/ui';
 const { px2dp } = ScreenUtils;
 const { iconShowFire } = res;
 
@@ -21,10 +23,17 @@ const { iconShowFire } = res;
 export default class TagDetailItemView extends PureComponent {
   constructor(props) {
     super(props);
-
+    this.hotCount = this.props.itemData.hotCount;
     this.state={
-
+        hotCount:this.hotCount
     }
+  }
+
+    hotAdd=(num)=>{
+      this.hotCount = num;
+      this.setState({
+          hotCount:this.hotCount
+      })
   }
 
   render(){
@@ -63,9 +72,9 @@ export default class TagDetailItemView extends PureComponent {
       return (
           <TouchableWithoutFeedback onPress={() => {
               if (itemData.showType === 1 || itemData.showType === 3) {
-                  this.$navigate(RouterMap.ShowDetailPage, { code: itemData.showNo });
+                  routePush(RouterMap.ShowDetailPage, { code: itemData.showNo ,updateHotNum:(num)=>{this.hotAdd(num)}});
               } else {
-                  this.$navigate(RouterMap.ShowRichTextDetailPage, { code: itemData.showNo });
+                  routePush(RouterMap.ShowRichTextDetailPage, { code: itemData.showNo });
               }
           }}>
               <View style={{
@@ -108,7 +117,7 @@ export default class TagDetailItemView extends PureComponent {
                       </MRText>
                       <Image style={{ width: 20, height: 20 }} source={iconShowFire}/>
                       <MRText style={{ color: DesignRule.textColor_secondTitle, marginLeft: px2dp(5) }}>
-                          {ShowUtils.formatShowNum(itemData.hotCount)}
+                          {ShowUtils.formatShowNum(this.state.hotCount)}
                       </MRText>
                   </View>
               </View>

@@ -106,12 +106,15 @@ export default class ShowDetailPage extends BasePage {
                 }
             }
         );
+
+
     }
 
     componentWillUnmount() {
         this.willFocusSubscription && this.willFocusSubscription.remove();
         let { detail } = this.showDetailModule;
         this.params.ref && this.params.ref.replaceItemData(this.params.index, JSON.stringify(detail));
+        this.params.updateHotNum && this.params.updateHotNum(detail.hotCount);
     }
 
     getDetailByIdOrCode = (code) => {

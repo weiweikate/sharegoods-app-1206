@@ -167,7 +167,6 @@ class ShopCartCacheTool {
                 let [...localValue] = res;
                 shopCartStore.getShopCartListWithNoLogin(localValue);
             }).catch(error => {
-                alert(error);
                 bridge.$toast('读取本地数据异常');
             });
         }
