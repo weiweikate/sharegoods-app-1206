@@ -97,6 +97,7 @@ SINGLETON_FOR_CLASS(MRImageVideoManager)
     nav.allowPickingImage = YES;
     nav.sortAscendingByModificationDate = NO;
     
+    
      __weak typeof (self) weakSelf = self;
     [nav loadTheSelectedData:^(NSArray<UIImage *> *photos, NSArray<NSURL *> *avPlayers, NSArray<PHAsset *> *assets, NSArray<NSDictionary *> *infos, IJSPExportSourceType sourceType, NSError *error) {
       NSLog(@"回调信息");
