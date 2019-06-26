@@ -273,8 +273,8 @@ export default class MyCashAccountPage extends BasePage {
                         <TouchableWithoutFeedback  onPress={() => {
                         this.$navigate(RouterMap.BankCardListPage);
                     }}>
-                        <Text style={styles.settingStyle}>银行卡管理</Text>
-                        </TouchableWithoutFeedback> : null
+                        <Text style={[styles.settingStyle,{flex:1}]}>银行卡管理</Text>
+                        </TouchableWithoutFeedback> : <View style={{flex:1}}/>
                     }
                     </View>
             </View>
@@ -574,7 +574,8 @@ const styles = StyleSheet.create({
     },
     settingStyle: {
         color: DesignRule.white,
-        fontSize: DesignRule.fontSize_threeTitle
+        fontSize: DesignRule.fontSize_threeTitle,
+        textAlign: 'right'
     },
     countTextStyle: {
         color: DesignRule.textColor_mainTitle,

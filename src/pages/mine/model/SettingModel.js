@@ -3,18 +3,24 @@
  * @Desc
  */
 
-import { observable, action } from 'mobx';
+import { observable, action, autorun } from 'mobx';
 import store from '@mr/rn-store';
 import userModel from '../../../model/user';
 
 
-const userScoreKey = '@mr/MSGUserScore';
-const availableBalanceKey = '@mr/MSGAvailableBalance';
-const couponsKey = '@mr/MSGCoupons';
-const fansMSGKey = '@mr/fansMSG';
+const mineKey = '@mr/msgmine';
+
 
 class SettingModel {
-
+    @observable
+    data = {};
+    @observable
+    params = {
+        userScore:'',
+        availableBalance:'',
+        coupons:'',
+        fansMSG:''
+    };
     @observable
     JSPushMessage = true;
 
@@ -51,35 +57,38 @@ class SettingModel {
                 this.messageState = data.messageState;
             }
         });
-
-        if(userModel.code){
-            store.get(`${userScoreKey}${userModel.code}`).then((data) => {
-                console.log('data',data)
+         store.get(mineKey).then((data) => {
+                console.log('dataMineKey',data)
                 if (data) {
-                    this.userScore = data.userScore;
+                    this.data = data;
+                    let item = data[userModel.code];
+                    this.userScore = item.userScore;
+                    this.availableBalance = item.availableBalance;
+                    this.coupons = item.coupons;
+                    this.fansMSG = item.fansMSG;
+                    this.params = {
+                        userScore: this.userScore,
+                        availableBalance:this.availableBalance,
+                        coupons: this.coupons,
+                        fansMSG:this.fansMSG,
+                    }
+                }else {
+                    this.data = {};
+                    this.userScore = 0;
+                    this.availableBalance = 0;
+                    this.coupons = 0;
+                    this.fansMSG = 0;
+                    this.params = {
+                        userScore: 0,
+                        availableBalance: 0,
+                        coupons: 0,
+                        fansMSG: 0,
+                    }
                 }
-            });
-            store.get(`${availableBalanceKey}${userModel.code}`).then((data) => {
-                console.log('data',data)
-                if (data) {
-                    this.availableBalance = data.availableBalance;
-                }
-            });
-            store.get(`${couponsKey}${userModel.code}`).then((data) => {
-                console.log('data',data)
-                if (data) {
-                    this.coupons = data.coupons;
-                }
-            });
-            store.get(`${fansMSGKey}${userModel.code}`).then((data) => {
-                console.log('data',data)
-                if (data) {
-                    this.fansMSG = data.fansMSG;
-                }
-            });
-        }
-
+            })
     }
+
+
 
     @action
     userScoreAdd(num){
@@ -89,7 +98,11 @@ class SettingModel {
             } else {
                 this.userScore = 0;
             }
-            store.save(`${userScoreKey}${userModel.code}`, { userScore: this.userScore });
+            let key = userModel.code;
+            this.params.userScore = this.userScore;
+            let value = this.data;
+            value[key] = this.params;
+            store.save(mineKey, value);
         }
     }
 
@@ -101,7 +114,11 @@ class SettingModel {
             } else {
                 this.availableBalance = 0;
             }
-            store.save(`${availableBalanceKey}${userModel.code}`, {availableBalance: this.availableBalance });
+            let key = userModel.code;
+            this.params.availableBalance = this.availableBalance;
+            let value = this.data;
+            value[key] = this.params;
+            store.save(mineKey, value);
         }
     }
 
@@ -113,7 +130,11 @@ class SettingModel {
             } else {
                 this.coupons = 0;
             }
-            store.save(`${couponsKey}${userModel.code}`, { coupons: this.coupons });
+            let key = userModel.code;
+            this.params.coupons = this.coupons;
+            let value = this.data;
+            value[key] = this.params;
+            store.save(mineKey, value);
         }
     }
 
@@ -125,7 +146,11 @@ class SettingModel {
             } else {
                 this.fansMSG = 0;
             }
-            store.save(`${fansMSGKey}${userModel.code}`, { fansMSG: this.fansMSG });
+            let key = userModel.code;
+            this.params.fansMSG = this.fansMSG;
+            let value = this.data;
+            value[key] = this.params;
+            store.save(mineKey, value);
         }
     }
 
@@ -145,7 +170,11 @@ class SettingModel {
 
 
 const settingModel = new SettingModel();
-settingModel.getLocationState();
+
+
+autorun(()=>{
+    userModel.code ? settingModel.getLocationState() : null;
+})
 
 export default settingModel;
 

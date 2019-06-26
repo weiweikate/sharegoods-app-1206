@@ -99,7 +99,7 @@
   //点赞
   [_zanBtn addTarget:self action:@selector(tapZanBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.zanBtn.sd_layout.topSpaceToView(self.scrollView,10)
-  .heightIs(24).widthIs(24)
+  .heightIs(26).widthIs(26)
   .leftSpaceToView(self, 0);
 
   self.zanNum.sd_layout.centerYEqualToView(self.zanBtn)
@@ -110,7 +110,7 @@
   [_downloadBtn addTarget:self action:@selector(tapDownloadBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.downloadBtn.sd_layout.centerYEqualToView(self.zanNum)
   .leftSpaceToView(self.zanNum, 10)
-  .widthIs(24).heightIs(24);
+  .widthIs(26).heightIs(26);
 
   self.downLoadNUm.sd_layout.centerYEqualToView(self.downloadBtn)
   .leftSpaceToView(self.downloadBtn, 1)

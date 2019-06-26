@@ -153,7 +153,7 @@
   [_zanBtn addTarget:self action:@selector(tapZanBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.zanBtn.sd_layout.topSpaceToView(self.contentLabView,10)
   .leftSpaceToView(bgView, 10)
-   .widthIs(24).heightIs(24);
+   .widthIs(26).heightIs(26);
 
   self.zanNum.sd_layout.centerYEqualToView(self.zanBtn)
   .leftSpaceToView(self.zanBtn, 1)
