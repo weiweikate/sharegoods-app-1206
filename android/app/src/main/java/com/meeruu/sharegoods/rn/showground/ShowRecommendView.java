@@ -148,10 +148,11 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         });
         ProductsAdapter.AddCartListener addCartListener = new ProductsAdapter.AddCartListener() {
             @Override
-            public void onAddCart(String code) {
+            public void onAddCart(String product,String detail) {
                 addCartEvent.init(view.getId());
                 WritableMap map = Arguments.createMap();
-                map.putString("prodCode", code);
+                map.putString("product", product);
+                map.putString("detail", detail);
                 addCartEvent.setData(map);
                 eventDispatcher.dispatchEvent(addCartEvent);
             }
@@ -159,11 +160,12 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
 
         ProductsAdapter.PressProductListener pressProductListener = new ProductsAdapter.PressProductListener() {
             @Override
-            public void onPressProduct(String code) {
+            public void onPressProduct(String product,String detail) {
                 onPressProductEvent onPressProductEvent = new onPressProductEvent();
                 onPressProductEvent.init(view.getId());
                 WritableMap writableMap = Arguments.createMap();
-                writableMap.putString("prodCode", code);
+                writableMap.putString("product", product);
+                writableMap.putString("detail", detail);
                 onPressProductEvent.setData(writableMap);
                 eventDispatcher.dispatchEvent(onPressProductEvent);
             }

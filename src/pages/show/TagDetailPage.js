@@ -102,7 +102,6 @@ export default class TagDetailPage extends BasePage {
     };
 
     renderItem = (itemData, itemIdx, itemContainer) => {
-        //TODO 宽高判断 0判断
         let uri, width = 1, height = 1;
         let minHeight = itemContainer.width * 120 / 167;
         let maxHeight = itemContainer.width * 240 / 167;
@@ -192,7 +191,7 @@ export default class TagDetailPage extends BasePage {
 
 
     renderHeader = () => {
-        return (<TagDescriptionView tagId={6} callback={this.headerRequestFinish}/>);
+        return (<TagDescriptionView tagId={this.params.tagId} callback={this.headerRequestFinish}/>);
     };
 
     _render() {

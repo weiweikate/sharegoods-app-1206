@@ -208,7 +208,8 @@ export default class DownPricePage extends BasePage {
             spuCode: itemData.prodCode || ''
 
         });
-        const pageObj = getTopicJumpPageParam(itemData);
+        let pageObj = getTopicJumpPageParam(itemData);
+        pageObj = { ...pageObj, trackCode: this.params.linkTypeCode };
         this.$navigate(pageObj.pageRoute, pageObj.params);
     };
 
