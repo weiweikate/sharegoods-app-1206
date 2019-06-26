@@ -408,6 +408,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         height: 44,
         alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.8)'
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        position:'absolute',
+        bottom:0,
+        left:0
     }
 });

@@ -23,7 +23,7 @@ import UIImage from '../../components/ui/UIImage';
 import Emoticons, * as emoticons from '../../comm/components/emoticons';
 import EmptyUtils from '../../utils/EmptyUtils';
 import ShowApi from './ShowApi';
-import RouterMap from '../../navigation/RouterMap';
+import RouterMap,{replaceRoute} from '../../navigation/RouterMap';
 import TagView from './components/TagView';
 import PictureVideoUtils from './utils/PictureVideoUtils';
 
@@ -140,9 +140,7 @@ export default class ReleaseNotesPage extends BasePage {
             })
         };
         ShowApi.publishShow(params).then((data) => {
-            this.props.navigation.popToTop();
-            this.props.navigation.navigate(RouterMap.MyDynamicPage);
-
+            replaceRoute(RouterMap.MyDynamicPage);
         }).catch((error) => {
             this.$toastShow(error.msg || '网络错误');
         });

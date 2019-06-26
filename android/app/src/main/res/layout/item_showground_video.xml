@@ -106,6 +106,7 @@
 
     <ImageView
         android:id="@+id/icon_download"
+        android:visibility="gone"
         android:layout_width="26dp"
         android:layout_height="28dp"
         android:layout_below="@id/product_list"
@@ -120,6 +121,7 @@
 
     <TextView
         android:id="@+id/download_num"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="28dp"
         android:layout_alignTop="@+id/icon_download"
