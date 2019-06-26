@@ -68,7 +68,7 @@ class SettingModel {
             store.get(`${couponsKey}${userModel.code}`).then((data) => {
                 console.log('data',data)
                 if (data) {
-                    this.MSGCoupons = data.MSGCoupons;
+                    this.coupons = data.coupons;
                 }
             });
             store.get(`${fansMSGKey}${userModel.code}`).then((data) => {

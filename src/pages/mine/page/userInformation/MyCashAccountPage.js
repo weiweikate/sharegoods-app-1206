@@ -266,7 +266,6 @@ export default class MyCashAccountPage extends BasePage {
                         color: DesignRule.white,
                         fontSize: px2dp(17),
                         includeFontPadding: false,
-                        flex:1
                     }}>
                         {this.state.changeHeader ? '账户余额' : ''}
                     </Text>
@@ -274,8 +273,8 @@ export default class MyCashAccountPage extends BasePage {
                         <TouchableWithoutFeedback  onPress={() => {
                         this.$navigate(RouterMap.BankCardListPage);
                     }}>
-                        <Text style={styles.settingStyle}>账户设置</Text>
-                        </TouchableWithoutFeedback> : <Text style={styles.settingStyle}>    </Text>
+                        <Text style={styles.settingStyle}>银行卡管理</Text>
+                        </TouchableWithoutFeedback> : null
                     }
                     </View>
             </View>
