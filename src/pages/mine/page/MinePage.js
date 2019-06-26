@@ -476,7 +476,7 @@ export default class MinePage extends BasePage {
                 backgroundColor:'#ffffff',
             }}>
                 {icon}
-                <View style={{flexDirection: 'row', alignItems: 'center', flex:1}}>
+                <View style={{flexDirection: 'row', alignItems: 'center', flex:1, marginLeft: px2dp(10)}}>
                     <Text maxLength={8}
                           style={{
                               color: DesignRule.textColor_mainTitle,

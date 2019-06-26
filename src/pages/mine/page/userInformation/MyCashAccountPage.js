@@ -94,6 +94,9 @@ const allType = {
 
 };
 
+const offset = 175;
+const headerHeight = ScreenUtils.statusBarHeight + 44;
+
 @observer
 export default class MyCashAccountPage extends BasePage {
     constructor(props) {
@@ -109,7 +112,7 @@ export default class MyCashAccountPage extends BasePage {
         this.currentPage = 0;
         this.type = null;
         this.biType = null;
-
+        this.st = 0;
     }
 
     $NavBarRightPressed = () => {
@@ -127,13 +130,23 @@ export default class MyCashAccountPage extends BasePage {
 
     _onScroll = (event) => {
         let Y = event.nativeEvent.contentOffset.y;
-        console.log('event', Y);
-        if (Y <= 200) {
-            this.changeHeader = false;
+        if (Y <= 175) {
+            this.st = Y / offset;
+            this.setState({
+                changeHeader: false
+            });
         } else {
-            this.changeHeader = true;
+            this.st = 1;
+            this.setState({
+                changeHeader: true
+            });
         }
+
+        this.headerBg.setNativeProps({
+            opacity: this.st,
+        });
     };
+
     sectionComp = (info) => {
         let txt = info.section.key;
         return txt === 'B' ? this.renderReHeader() : null
@@ -152,7 +165,7 @@ export default class MyCashAccountPage extends BasePage {
         ];
         return (
             <View style={styles.mainContainer}>
-                {this.renderHeader()}
+                {this.state.changeHeader ? <View style={{height: headerHeight}}/> : null}
                 <SectionList
                     renderSectionHeader={this.sectionComp}
                     renderItem={this.renderItem}
@@ -166,6 +179,8 @@ export default class MyCashAccountPage extends BasePage {
                     stickySectionHeadersEnabled={true}
                     onScroll={(e)=>{this._onScroll(e)}}
                 />
+                {this.navBackgroundRender()}
+                {this.renderHeader()}
             </View>
         );
     }
@@ -174,7 +189,7 @@ export default class MyCashAccountPage extends BasePage {
         return (
             <ImageBackground source={account_bg_white} resizeMode={'stretch'} style={{
                 position: 'absolute',
-                top: px2dp(10),
+                top: px2dp(66),
                 height: px2dp(174),
                 width: ScreenUtils.width,
                 left: 0,
@@ -200,7 +215,7 @@ export default class MyCashAccountPage extends BasePage {
                     fontSize: 48,
                     marginLeft: DesignRule.margin_page,
                 }}>{user.availableBalance ? user.availableBalance : '0.00'}</Text>
-                <View style={{display:'flex', flexDirection:'row'}} >
+                <View style={{display:'flex', flexDirection:'row', marginBottom: 15}} >
                     <View style={{flex:1,marginLeft: 15, justifyContent:'center'}}>
                         <Text style={styles.numTextStyle}>{user.blockedBalance ? user.blockedBalance : '0.00'}</Text>
                         <Text style={styles.numRemarkStyle}>待入账(元)</Text>
@@ -214,9 +229,24 @@ export default class MyCashAccountPage extends BasePage {
         );
     }
 
+    navBackgroundRender = ()=> {
+        return (
+            <View ref={(ref) => this.headerBg = ref}
+                  style={{
+                      backgroundColor: '#FF0050',
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: headerHeight,
+                      opacity: 0
+                  }}/>
+        );
+    }
+
     renderHeader = () => {
         return (
-            <ImageBackground resizeMode={'stretch'} source={account_bg} style={{width:ScreenUtils.width}}>
+            <View  style={{ position: 'absolute', top: 0, left: 0, right: 0 }}>
                 <View style={styles.headerWrapper}>
                     <TouchableWithoutFeedback onPress={() => {
                         this.$navigateBack();
@@ -237,11 +267,16 @@ export default class MyCashAccountPage extends BasePage {
                         fontSize: px2dp(17),
                         includeFontPadding: false
                     }}>
-                    账户余额{this.state.changeHeader ? `(${user.availableBalance ? user.availableBalance : '0.00'})` : ''}
+                        {this.state.changeHeader ? '账户余额' : ''}
                     </Text>
-                    <View style={{flex:1}}/>
-                </View>
-            </ImageBackground>
+                    {this.state.canWithdraw ?
+                        <TouchableWithoutFeedback onPress={() => {
+                        this.$navigate(RouterMap.BankCardListPage);
+                    }}>
+                        <Text style={styles.settingStyle}>账户设置</Text>
+                    </TouchableWithoutFeedback> : null}
+                    </View>
+            </View>
         );
     };
 
@@ -277,7 +312,6 @@ export default class MyCashAccountPage extends BasePage {
                     <View tabLabel={'待入账'}/>
                 </ScrollableTabView>
             </View>
-
         );
     };
 
@@ -301,7 +335,7 @@ export default class MyCashAccountPage extends BasePage {
         if (key === 'A') {
             return (
                 <ImageBackground resizeMode={'stretch'} source={account_bg}
-                                 style={{marginBottom: 40, height: px2dp(160), width: ScreenUtils.width}}>
+                                 style={{marginBottom: 10, height: px2dp(225), width: ScreenUtils.width, backgroundColor: 'white'}}>
                     {this._accountInfoRender()}
                 </ImageBackground>
             )
