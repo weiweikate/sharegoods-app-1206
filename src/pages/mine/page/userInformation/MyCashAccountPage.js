@@ -430,7 +430,7 @@ export default class MyCashAccountPage extends BasePage {
         }
 
         let arrData = this.currentPage === 1 ? [] : this.state.viewData;
-        MineApi.userBalanceQuery({ page: this.currentPage, size: 10, type: this.type, biType:this.biType }).then((response) => {
+        MineApi.userBalanceQuery({ page: this.currentPage, size: 10, type: this.type }).then((response) => {
             Toast.hiddenLoading();
             console.log(response);
             if (response.code === 10000) {
