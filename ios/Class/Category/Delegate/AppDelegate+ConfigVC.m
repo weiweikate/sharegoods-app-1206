@@ -47,7 +47,7 @@
   self.window.rootViewController = nav;
   [self.window makeKeyAndVisible];
 //  [NSThread sleepForTimeInterval:3];
-  [self createDebugSuspensionButton];
+//  [self createDebugSuspensionButton];
 }
 
 // 创建悬浮球按钮

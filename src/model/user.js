@@ -8,6 +8,7 @@ import { login, logout } from '../utils/SensorsTrack';
 import StringUtils from '../utils/StringUtils';
 import JPushUtils from '../utils/JPushUtils';
 import { mediatorCallFunc } from '../SGMediator';
+// import { shopCartEmptyModel } from '../pages/shopCart/model/ShopCartEmptyModel';
 
 
 const USERINFOCACHEKEY = '@mr/userInfo';
@@ -511,7 +512,6 @@ const user = new User();
 autorun(() => {
     user.isLogin ? shopCartCacheTool.synchronousData() : null;
 });
-
 autorun(() => {
     if (user.code) {
         // 启动时埋点关联登录用户,先取消关联，再重新关联
