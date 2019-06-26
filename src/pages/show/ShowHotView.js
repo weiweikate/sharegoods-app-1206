@@ -235,6 +235,8 @@ export default class ShowHotView extends React.Component {
                                            }
 
                                            DownloadUtils.downloadProduct(nativeEvent);
+                                           this.shareModal && this.shareModal.open();
+                                           this.props.onShare(nativeEvent);
 
                                            const { showNo , userInfoVO } = detail;
                                            const { userNo } = userInfoVO || {};
@@ -249,7 +251,6 @@ export default class ShowHotView extends React.Component {
                                        onSharePress={({ nativeEvent }) => {
                                            this.shareModal && this.shareModal.open();
                                            this.props.onShare(nativeEvent);
-
                                        }}
 
                                        onScrollY={({ nativeEvent }) => {
