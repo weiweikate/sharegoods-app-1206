@@ -80,7 +80,7 @@ const vipBg = [
  */
 
 const headerBgSize = { width: 375, height: 237 };
-const platformHeight = ScreenUtils.isIOS ? 0 : 10;
+const platformHeight = 10;
 const { px2dp, statusBarHeight } = ScreenUtils;
 const headerHeight = ScreenUtils.statusBarHeight + 44;
 // const offset = ScreenUtils.getImgHeightWithWidth(headerBgSize) - headerHeight;
