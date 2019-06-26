@@ -570,7 +570,7 @@ export default class ShowDetailPage extends BasePage {
                                         this.setState({
                                             productModalVisible: false
                                         });
-                                        this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode });
+                                        this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode,trackType:3 });
                                     }}
                 />
                 <Text style={{
@@ -596,7 +596,7 @@ export default class ShowDetailPage extends BasePage {
                                                      this.setState({
                                                          productModalVisible: false
                                                      });
-                                                     this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode });
+                                                     this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode,trackType:3 });
                                                  }}
                                                  addCart={this.addCart}
                                                  products={detail.products} requestClose={() => {

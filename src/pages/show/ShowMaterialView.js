@@ -73,15 +73,17 @@ export default class ShowMaterialView extends React.Component {
     };
 
 
-    addCart = (detail) => {
+    addCart = (productStr,detailStr) => {
+        const product = JSON.parse(productStr);
+        const detail = JSON.parse(detailStr);
         let addCartModel = new AddCartModel();
-        addCartModel.requestProductDetail(detail.prodCode, (productIsPromotionPrice) => {
+        addCartModel.requestProductDetail(product.prodCode, (productIsPromotionPrice) => {
             this.SelectionPage.show(addCartModel, (amount, skuCode) => {
                 const { prodCode, name, originalPrice } = addCartModel;
                 shopCartCacheTool.addGoodItem({
                     'amount': amount,
                     'skuCode': skuCode,
-                    'productCode': detail.prodCode
+                    'productCode': product.prodCode
                 });
                 /*加入购物车埋点*/
                 const { showNo , userInfoVO } = detail;
@@ -149,12 +151,11 @@ export default class ShowMaterialView extends React.Component {
                                            });
                                        }}
                                        onPressProduct={({ nativeEvent }) => {
-                                           routePush(RouterMap.ProductDetailPage, { productCode: nativeEvent.prodCode });
+                                           routePush(RouterMap.ProductDetailPage, { productCode: nativeEvent.prodCode,trackType:3 });
                                        }}
 
                                        onAddCartClick={({ nativeEvent }) => {
-                                           // alert(nativeEvent.prodCode);
-                                           this.addCart(nativeEvent.prodCode);
+                                           this.addCart(nativeEvent.product,nativeEvent.detail);
                                        }}
                                        onZanPress={({ nativeEvent }) => {
                                            if (!nativeEvent.detail.like) {

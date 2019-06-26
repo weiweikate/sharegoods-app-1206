@@ -58,7 +58,8 @@ class HomeModule {
             uri: data.linkTypeCode,
             id: data.id,
             code: data.linkTypeCode,
-            keywords: data.name
+            keywords: data.name,
+            trackType:1
         };
 
     };

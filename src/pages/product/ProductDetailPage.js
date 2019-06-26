@@ -63,6 +63,8 @@ export default class ProductDetailPage extends BasePage {
         };
         this.productDetailModel.prodCode = this.params.productCode;
         this.productDetailModel.sourceType = this.params.type;
+        this.productDetailModel.trackCode = this.params.trackCode;
+        this.productDetailModel.trackType = this.params.trackType;
     }
 
     _getPageStateOptions = () => {
