@@ -29,6 +29,6 @@ const index = {
     showHeaderBg:require('./show_header_bg.png'),
     iconDelete:require('./show_delete_icon.png'),
     showTagIcon:require('./show_tag_icon.png'),
-    tagDelete:require('./tag_delete.png'),
+    dynamicEmpty:require('./dynamic_empty.png'),
 };
 export default index
