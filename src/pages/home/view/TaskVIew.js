@@ -61,7 +61,8 @@ const {
     red_bg,
     gary_bg,
     current_p,
-    inform
+    inform,
+    defaultImage
 } = res.task;
 
 
@@ -75,20 +76,22 @@ const {
 class TaskItem extends React.Component {
     constructor(props) {
         super(props);
+        let data = this.props.data || {};
         this.state = {
-            expanded: false
+            expanded: false,
+            isShowDefaultImage: data.logoUrl? false: true
         };
 
     }
 
     renderItem(item, expanded) {
-        let { complete, prizeDesc, name, total, prizeValue, logoUrl = '' } = item;
+        let { complete, memo, name, total, prizeValue, logoUrl = '' } = item;
         let progrossTitle ='('+ complete + '/' + (total ? total : '无上限')+ ')';
         if (total === 1){
             progrossTitle = '';
         }
         let btn = this.renderBtn(item, false);
-        let maxWidth = btn?autoSizeWidth(130):autoSizeWidth(200)
+        let maxWidth = btn?autoSizeWidth(125):autoSizeWidth(195)
         if (item.type !== 2) {
             maxWidth += autoSizeWidth(15)
         }
@@ -100,10 +103,15 @@ class TaskItem extends React.Component {
                     height: autoSizeWidth(64),
                     paddingHorizontal: autoSizeWidth(20)
                 }}>
+                    {
+                        this.state.isShowDefaultImage? <UIImage style={{width: autoSizeWidth(40), height: autoSizeWidth(40)}}
+                                                                    source={defaultImage}
+                        />: <ImageLoader style={{width: autoSizeWidth(40), height: autoSizeWidth(40)}}
+                                         source={{uri: logoUrl}}
+                                         onError={()=>{this.setState({isShowDefaultImage: true})}}
+                        />
+                    }
 
-                    <ImageLoader style={{width: autoSizeWidth(40), height: autoSizeWidth(40)}}
-                                 source={{uri: logoUrl}}
-                    />
                     <View style={{justifyContent: 'center', marginLeft: 10, flex: 1,marginRight: 5}}>
                         <View style={{
                             flexDirection: 'row',
@@ -123,7 +131,7 @@ class TaskItem extends React.Component {
                             </LinearGradient>
                         </View>
                         <MRText style={{ fontSize: autoSizeWidth(12), color: '#999999'}}
-                                numberOfLines={1}>{prizeDesc}</MRText>
+                                numberOfLines={1}>{memo}</MRText>
                     </View>
                     {btn}
                     {item.type === 2?  <TouchableOpacity style={{
@@ -187,7 +195,7 @@ class TaskItem extends React.Component {
     }
 
     renderSubItem(item){
-        let { complete, prizeDesc, name, total} = item;
+        let { complete, memo, name, total} = item;
         let progrossTitle ='('+ complete + '/' + (total ? total : '无上限')+ ')';
         if (total === 1){
             progrossTitle = '';
@@ -199,7 +207,7 @@ class TaskItem extends React.Component {
                     <MRText style={{ fontSize: autoSizeWidth(14), color: '#333333', maxWidth: autoSizeWidth(140)}}
                             numberOfLines={1}>{name + progrossTitle}</MRText>
                     <MRText style={{ fontSize: autoSizeWidth(12), color: '#999999'}}
-                            numberOfLines={1}>{prizeDesc}</MRText>
+                            numberOfLines={1}>{memo}</MRText>
                 </View>
                 {this.renderBtn(item, true)}
             </View>

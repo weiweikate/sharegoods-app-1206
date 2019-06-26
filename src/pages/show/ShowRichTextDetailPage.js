@@ -562,7 +562,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                                     products={detail.products}
                                     addCart={this.addCart}
                                     pressProduct={(prodCode) => {
-                                        this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode ,trackType:3});
+                                        this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode ,trackType:3,trackCode:detail.showNo});
                                     }}
                 />
 
@@ -594,7 +594,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                                                      this.setState({
                                                          productModalVisible: false
                                                      });
-                                                     this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode ,trackType:3});
+                                                     this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode ,trackType:3,trackCode:detail.showNo});
                                                  }}
                                                  addCart={this.addCart}
                                                  products={detail.products} requestClose={() => {

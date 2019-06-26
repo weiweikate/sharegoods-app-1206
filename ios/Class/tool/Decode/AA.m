@@ -21,13 +21,16 @@ RCT_EXPORT_MODULE();
                                         resizeMode:(UIViewContentMode)resizeMode
                                  completionHandler:(RCTImageLoaderCompletionBlock)completionHandler
 {
-  
-  //    NSData *data = [NSData dataWithContentOfFile:@"/tmp/image.webp"];
-  YYImageDecoder *decoder = [YYImageDecoder decoderWithData:imageData scale:2.0];
-  UIImage *image = [decoder frameAtIndex:0 decodeForDisplay:YES].image;
+  YYImageDecoder *decoder = [YYImageDecoder decoderWithData:imageData scale:[UIScreen mainScreen].scale];
+  UIImage *image = nil;
+  if (decoder.frameCount == 1) {
+    image = [decoder frameAtIndex:0 decodeForDisplay:YES].image;
+  }else{
+    image = [[YYImage alloc] initWithData:imageData scale:[UIScreen mainScreen].scale];
+    image = [image imageByDecoded];
+  }
   completionHandler(nil, image);
-  
-  
   return ^{};
 }
+
 @end

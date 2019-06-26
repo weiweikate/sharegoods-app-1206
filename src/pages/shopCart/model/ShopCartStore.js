@@ -5,9 +5,6 @@ import MineApi from '../../mine/api/MineApi';
 import user from '../../../model/user';
 import shopCartCacheTool from './ShopCartCacheTool';
 import { QYChatTool } from '../../../utils/QYModule/QYChatTool';
-import {
-    InteractionManager
-} from 'react-native';
 
 // import testData from './testData';
 class ShopCartStore {
@@ -237,6 +234,12 @@ class ShopCartStore {
             invalidObj.sectionIndex = tempAllData.length;
             tempAllData.push(invalidObj);
         }
+        //推荐商品视图
+       let recommedObj = {
+            type :-2,
+            data:[]
+        }
+        tempAllData.push(recommedObj);
         this.data = tempAllData;
         //计算规则
         this.calculationAwardRules();
@@ -590,16 +593,15 @@ class ShopCartStore {
     /*删除购物车商品*/
     deleteItemWithIndex(skuCodes) {
         if (skuCodes) {
-            InteractionManager.runAfterInteractions(() => {
                 ShopCartAPI.deleteItem({
                     'skuCodes': skuCodes
                 }).then(res => {
                     bridge.$toast('删除成功');
                     this.packingShopCartGoodsData(res.data);
+                    // this.getShopCartListData()
                 }).catch(error => {
                     bridge.$toast(error.msg);
                 });
-            });
         }
     }
 }

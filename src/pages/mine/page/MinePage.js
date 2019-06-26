@@ -80,7 +80,7 @@ const vipBg = [
  */
 
 const headerBgSize = { width: 375, height: 237 };
-
+const platformHeight = 10;
 const { px2dp, statusBarHeight } = ScreenUtils;
 const headerHeight = ScreenUtils.statusBarHeight + 44;
 // const offset = ScreenUtils.getImgHeightWithWidth(headerBgSize) - headerHeight;
@@ -253,7 +253,7 @@ export default class MinePage extends BasePage {
                     renderForeground={this.renderUserHead}
                     renderStickyHeader={this.renderLevelNameNav}
                     stickyHeaderHeight={this.state.changeHeader ? 0 : px2dp(44 + statusBarHeight)}
-                    parallaxHeaderHeight={227+statusBarHeight}
+                    parallaxHeaderHeight={ScreenUtils.getImgHeightWithWidth(headerBgSize)}
                     onScroll={this._onScroll}
                     showsVerticalScrollIndicator={false}
                 >
@@ -476,7 +476,7 @@ export default class MinePage extends BasePage {
                 backgroundColor:'#ffffff',
             }}>
                 {icon}
-                <View style={{flexDirection: 'row', alignItems: 'center', flex:1}}>
+                <View style={{flexDirection: 'row', alignItems: 'center', flex:1, marginLeft: px2dp(10)}}>
                     <Text maxLength={8}
                           style={{
                               color: DesignRule.textColor_mainTitle,
@@ -539,7 +539,7 @@ export default class MinePage extends BasePage {
                     justifyContent: 'space-between',
                     alignItems: 'center'
                 }}>
-                    {this.accountItemView(StringUtils.formatMoneyString(user.totalBalance ? user.totalBalance : '0.00', false), '个人帐户(元)',1,() => {
+                    {this.accountItemView(StringUtils.formatMoneyString(user.totalBalance ? user.totalBalance : '0.00', false), '个人账户(元)',1,() => {
                         settingModel.availableBalanceAdd();
                         this.go2CashDetailPage(1);
                         TrackApi.ViewAccountBalance();
@@ -749,7 +749,7 @@ export default class MinePage extends BasePage {
     renderBodyView = () => {
         return (
             <View style={{flex:1,backgroundColor:'#F7F7F7'}}>
-                <TaskVIew type={'mine'} style={{marginTop:10,backgroundColor: '#F7F7F7', paddingBottom: 0 }}/>
+                <TaskVIew type={'mine'} style={{marginTop:platformHeight,backgroundColor: '#F7F7F7', paddingBottom: 0 }}/>
                 {this.orderRender()}
                 {this.activeRender()}
                 {this.utilsRender()}

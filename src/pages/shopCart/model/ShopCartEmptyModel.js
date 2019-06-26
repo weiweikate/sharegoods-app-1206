@@ -22,6 +22,7 @@ class ShopCartEmptyModel {
     page = 1;
     constructor(props) {
         this.createData();
+        this.getRecommendProducts(true);
     }
     createData = () => {
         this.emptyViewList.push(
@@ -70,12 +71,6 @@ class ShopCartEmptyModel {
                     });
                     newArr = newArr.concat(tempArr);
                 }
-                // else {
-                //     if (goodList.length < this.pageSize) {
-                //         this.isEnd = true;
-                //     }
-                //     newArr = newArr.concat([...this.emptyViewList.slice(), ...tempArr]);
-                // }
                 this.emptyViewList = newArr;
                 console.log(result);
             }).catch(error => {
@@ -107,22 +102,13 @@ class ShopCartEmptyModel {
                     });
                     newArr = newArr.concat(tempArr);
                 }
-                // else {
-                //     if (goodList.length < this.pageSize) {
-                //         this.isEnd = true;
-                //     }
-                //     newArr = newArr.concat([...this.emptyViewList.slice(), ...tempArr]);
-                // }
                 this.emptyViewList = newArr;
                 console.log(result);
             }).catch(error => {
 
             });
         }
-
     };
-
-
 }
 
 const shopCartEmptyModel = new ShopCartEmptyModel();

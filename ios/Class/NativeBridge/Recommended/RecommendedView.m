@@ -320,9 +320,13 @@ static NSString *IDType = @"TypeCell";
   }
 }
 
--(void)clickGood:(GoodsDataModel *)goods{
+-(void)clickGood:(GoodsDataModel *)goods cell:(RecommendedCell *)cell{
+  NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
+  NSMutableDictionary * dic = [NSMutableDictionary dictionaryWithDictionary:self.callBackArr[indexPath.row]];
   if(_onPressProduct&&goods.prodCode) {
-    NSDictionary * dic = @{@"prodCode":goods.prodCode};
+    NSError *parseError = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dic options:NSJSONWritingPrettyPrinted error:&parseError];
+    NSDictionary * dic = @{@"product": goods.modelToJSONString,@"detail":[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding]};
     _onPressProduct(dic);
   }
 }

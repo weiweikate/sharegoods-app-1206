@@ -57,6 +57,10 @@ SINGLETON_FOR_HEADER(JRShareManager)
        completion:(shareFinshBlock) completion;
 
 -(void)saveImage:(UIImage *)image;
+
+-(void)saveVideo:(NSString *)videoPath withCallBackBlock:(shareFinshBlock)finshBlock;
+
+-(BOOL)saveVideoToLocation:(NSString *)videoPath data:(NSData *)data;
   
   
 
