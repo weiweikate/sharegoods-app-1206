@@ -183,8 +183,8 @@
     }
   }
   if(imageUrl.length>0){
-    self.picImg.sd_layout.autoHeightRatio(0.56);
     [self.picImg setImageWithURL:[NSURL URLWithString:[imageUrl getUrlAndWidth:SCREEN_WIDTH-60 height:(SCREEN_WIDTH-60)*0.56]] placeholder:[UIImage imageWithColor:[UIColor colorWithHexString:@"f5f5f5"]]];
+    self.picImg.sd_layout.autoHeightRatio(0.56);
     self.contentLab.text = model.title;
   }else{
     self.picImg.sd_layout.autoHeightRatio(0);
