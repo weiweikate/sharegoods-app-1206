@@ -102,7 +102,7 @@ export default class CustomerServiceView extends React.Component {
     render() {
 
         return (
-                <View style={{alignItems: 'center', paddingBottom: ScreenUtils.safeBottom}}>
+                <View style={{alignItems: 'center', paddingBottom: ScreenUtils.safeBottom, marginTop: 20}}>
                     <View style={{
                         width: ScreenUtils.width,
                         justifyContent: 'space-between',

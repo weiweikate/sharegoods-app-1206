@@ -73,7 +73,7 @@ class TaskModel {
     getData() {
         HomeApi.getMissionActivity({ activityType: this.type === 'home' ? activity_mission_main_no : activity_mission_daily_no }).then((result) => {
             let data = result.data || {};
-            this.progress = data.activityValue || 0;
+            this.progress = data.value || 0;
             this.boxs = data.ruleList || [];
             let tasks = data.missionList || [];
             this.tasks = this.sort(tasks);

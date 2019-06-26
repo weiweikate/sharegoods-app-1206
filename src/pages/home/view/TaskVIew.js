@@ -175,7 +175,7 @@ class TaskItem extends React.Component {
                                       this.btnClick(item, subTask, title);
                                   }}>
                     <ImageBackground source={btn}
-                                     resizeMode={'stretch'}
+                                     resizeMode={'contain'}
                                      style={{width:  ScreenUtils.autoSizeWidth(63), height: ScreenUtils.autoSizeWidth(35), alignItems: 'center', justifyContent: 'center'}}>
                         <MRText style={{
                             fontSize: autoSizeWidth(13),

@@ -183,7 +183,7 @@ export default class MyIntegralAccountPage extends BasePage {
                         <Text style={styles.numRemarkStyle}>待入账秀豆（枚）</Text>
                     </View>
                     <View style={{flex:1,marginLeft: 15, justifyContent:'center'}}>
-                        <Text style={styles.numTextStyle}>{user.historicalBalance ? user.historicalScore : '0.00'}</Text>
+                        <Text style={styles.numTextStyle}>{user.historicalScore ? user.historicalScore : '0.00'}</Text>
                         <Text style={styles.numRemarkStyle}>累计秀豆（枚）</Text>
                     </View>
                 </View>
@@ -278,7 +278,7 @@ export default class MyIntegralAccountPage extends BasePage {
                             fontSize: 12, color: DesignRule.textColor_instruction
                         }}>{item.time}</Text>
                     </View>
-                    {this.type === 2 && this.biType === 1 ?
+                    {item.state === 2 || (this.type === 2 && this.biType === 1) ?
                         <View style={{justifyContent: 'space-between', alignItems: 'flex-end'}}>
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                 <Text style={{

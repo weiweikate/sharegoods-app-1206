@@ -126,14 +126,14 @@
   _emptyView.backgroundColor = [UIColor colorWithHexString:@"f5f5f5"];
 
   UIImageView *imgView = [UIImageView new];
-  imgView.image = [UIImage imageNamed:@"Systemupgrade"];
+  imgView.image = [UIImage imageNamed:@"empty"];
   [_emptyView addSubview:imgView];
 
   imgView.sd_layout
   .centerXEqualToView(_emptyView)
   .centerYEqualToView(_emptyView)
-  .widthIs(130)
-  .heightIs(150);
+  .widthIs(267)
+  .heightIs(192);
 
   _emptyLb = [UILabel new];
   _emptyLb.font = [UIFont systemFontOfSize:13];
@@ -458,6 +458,8 @@
 {
   _headerHeight  = headerHeight;
   _layoutDelegate.headerHeight = headerHeight;
+  _emptyView.sd_layout.topSpaceToView(self, headerHeight)
+  .leftEqualToView(self).rightEqualToView(self).bottomEqualToView(self);
   [self.collectionNode reloadData];
 }
 //

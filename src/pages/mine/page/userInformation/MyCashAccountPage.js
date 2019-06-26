@@ -266,7 +266,6 @@ export default class MyCashAccountPage extends BasePage {
                         color: DesignRule.white,
                         fontSize: px2dp(17),
                         includeFontPadding: false,
-                        flex:1
                     }}>
                         {this.state.changeHeader ? '账户余额' : ''}
                     </Text>
@@ -274,8 +273,8 @@ export default class MyCashAccountPage extends BasePage {
                         <TouchableWithoutFeedback  onPress={() => {
                         this.$navigate(RouterMap.BankCardListPage);
                     }}>
-                        <Text style={styles.settingStyle}>账户设置</Text>
-                        </TouchableWithoutFeedback> : <Text style={styles.settingStyle}>    </Text>
+                        <Text style={[styles.settingStyle,{flex:1}]}>银行卡管理</Text>
+                        </TouchableWithoutFeedback> : <View style={{flex:1}}/>
                     }
                     </View>
             </View>
@@ -370,7 +369,7 @@ export default class MyCashAccountPage extends BasePage {
                             fontSize: 12, color: DesignRule.textColor_instruction
                         }}>{item.time}</Text>
                     </View>
-                    {this.type === 2 && this.biType === 1 ?
+                    { item.state === 2 || (this.type === 2 && this.biType === 1) ?
                         <View style={{justifyContent: 'space-between', alignItems: 'flex-end'}}>
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                 <Text style={{
@@ -575,7 +574,8 @@ const styles = StyleSheet.create({
     },
     settingStyle: {
         color: DesignRule.white,
-        fontSize: DesignRule.fontSize_threeTitle
+        fontSize: DesignRule.fontSize_threeTitle,
+        textAlign: 'right'
     },
     countTextStyle: {
         color: DesignRule.textColor_mainTitle,

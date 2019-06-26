@@ -21,16 +21,17 @@ export default function(url) {
     }
 }
 
-function getSize(url, callBack) {
+function getSize(url, callBack,callBack2) {
     if (!url) {
+        callBack2&&callBack2({msg: 'url is null'})
         return
     }
-    url = url.split("？")[0]
+    url = url.split("?")[0]
     HttpUtils.get(url+'?x-oss-process=image/info').then((data)=> {
         let height = data.ImageHeight.value;
         let width = data.ImageWidth.value;
         callBack&&callBack(width, height)
-    })
+    }).catch((err)=>{callBack2&&callBack2(err)})
 }
 
 export {getSize}
