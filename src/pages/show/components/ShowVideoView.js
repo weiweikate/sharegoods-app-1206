@@ -389,8 +389,8 @@ const styles = StyleSheet.create({
         height: 50
     },
     playControl: {
-        width: 24,
-        height: 24,
+        width: 50,
+        height: 50,
         marginLeft: 15
     },
     shrinkControl: {
