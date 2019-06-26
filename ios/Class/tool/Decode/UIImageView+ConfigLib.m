@@ -32,19 +32,21 @@
   if ([image isKindOfClass:[YYImage class]]) {
     YYImage *image2 = (YYImage*)image;
     NSInteger num = [image2 animatedImageFrameCount];
-    NSMutableArray * frames = [[NSMutableArray alloc]initWithCapacity:num];
-    CGFloat animationDuration = 0.0;
-    for (int i = 0; i<num; i++) {
-      [frames addObject:[image2 animatedImageFrameAtIndex:i]];
-      animationDuration+= [image2 animatedImageDurationAtIndex:i];
+    if (num > 1) {
+      NSMutableArray * frames = [[NSMutableArray alloc]initWithCapacity:num];
+      CGFloat animationDuration = 0.0;
+      for (int i = 0; i<num; i++) {
+        [frames addObject:[image2 animatedImageFrameAtIndex:i]];
+        animationDuration+= [image2 animatedImageDurationAtIndex:i];
+      }
+      self.animationImages=frames;//将图片数组加入UIImageView动画数组中
+      self.animationDuration = animationDuration;//每次动画时长
+      [self startAnimating];
+      return;
     }
-    self.animationImages=frames;//将图片数组加入UIImageView动画数组中
-    self.animationDuration = animationDuration;//每次动画时长
-    [self startAnimating];
-  }else{
+  }
     [self my_setImage:image];
     [self stopAnimating];
-  }
 }
 -(void)dealloc{
   [self stopAnimating];
