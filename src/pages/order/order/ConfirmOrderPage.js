@@ -11,7 +11,6 @@ import GoodsItem from '../components/confirmOrder/GoodsItem';
 import { confirmOrderModel } from '../model/ConfirmOrderModel';
 import { observer } from 'mobx-react';
 import BasePage from '../../../BasePage';
-import { NavigationActions } from 'react-navigation';
 import DesignRule from '../../../constants/DesignRule';
 import ConfirmAddressView from '../components/confirmOrder/ConfirmAddressView';
 import ConfirmPriceView from '../components/confirmOrder/ConfirmPriceView';
@@ -115,21 +114,7 @@ export default class ConfirmOrderPage extends BasePage {
 
     // 提交订单
     commitOrder = () => {
-        confirmOrderModel.submitProduct(
-            (data) => {
-                let replace = NavigationActions.replace({
-                    key: this.props.navigation.state.key,
-                    routeName: 'payment/PaymentPage',
-                    params: {
-                        orderNum: data.platformOrderNo,
-                        amounts: data.payInfo.payAmount,
-                        orderProductList: data.orderProductList,
-                        platformOrderNo: data.platformOrderNo
-                    },
-                });
-                this.props.navigation.dispatch(replace);
-            }
-        );
+        confirmOrderModel.submitProduct();
     };
 
     // 选择优惠券

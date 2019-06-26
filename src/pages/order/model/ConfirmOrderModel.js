@@ -6,7 +6,7 @@ import bridge from '../../../utils/bridge';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { Alert } from 'react-native';
 import shopCartCacheTool from "../../shopCart/model/ShopCartCacheTool";
-import { navigateBack } from "../../../navigation/RouterMap";
+import { navigateBack, replaceRoute } from '../../../navigation/RouterMap';
 
 class ConfirmOrderModel {
 
@@ -40,11 +40,11 @@ class ConfirmOrderModel {
         this.err=null;
         this.canUseCou = false;
 
-        this.addressId = null;
+        this.addressId = '';
         this.message = '';
         this.tokenCoin = 0;
         this.orderParamVO = {};
-        this.userCouponCode = null;
+        this.userCouponCode = '';
 
         this.platformOrderNo = null;
         this.productOrderList = [];
@@ -183,7 +183,7 @@ class ConfirmOrderModel {
         // }
     };
 
-    @action submitProduct(callback) {
+    @action submitProduct() {
         if (StringUtils.isEmpty(this.addressId)) {
             bridge.$toast('请先添加地址');
             return;
@@ -196,7 +196,12 @@ class ConfirmOrderModel {
             bridge.hiddenLoading();
             let data = response.data;
             shopCartCacheTool.getShopCartGoodsListData();
-            callback(data);
+            replaceRoute('payment/PaymentPage', {
+                    orderNum: data.platformOrderNo,
+                    amounts: data.payInfo.payAmount,
+                    orderProductList: data.orderProductList,
+                    platformOrderNo: data.platformOrderNo
+            })
             track(trackEvent.submitOrder, {
                 orderId: data.orderNo,
                 orderSubmitPage:this.orderParamVO.source==1?11:1
