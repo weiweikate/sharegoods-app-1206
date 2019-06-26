@@ -2,7 +2,6 @@ import { observable, flow, action } from 'mobx';
 import HomeApi from '../api/HomeAPI';
 import { homeType } from '../HomeTypes';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import { Image } from 'react-native';
 import { homeModule } from './Modules';
 import store from '@mr/rn-store';
 import HttpUtils from '../../../api/network/HttpUtils';
