@@ -109,6 +109,7 @@ export default class ShowRichTextDetailPage extends BasePage {
         this.willFocusSubscription && this.willFocusSubscription.remove();
         let { detail } = this.showDetailModule;
         this.params.ref && this.params.ref.replaceItemData(this.params.index, JSON.stringify(detail));
+        this.params.updateHotNum && this.params.updateHotNum(detail.hotCount);
     }
 
     getDetailByIdOrCode = (code) => {
@@ -561,7 +562,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                                     products={detail.products}
                                     addCart={this.addCart}
                                     pressProduct={(prodCode) => {
-                                        this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode ,trackType:3});
+                                        this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode ,trackType:3,trackCode:detail.showNo});
                                     }}
                 />
 
@@ -593,7 +594,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                                                      this.setState({
                                                          productModalVisible: false
                                                      });
-                                                     this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode ,trackType:3});
+                                                     this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode ,trackType:3,trackCode:detail.showNo});
                                                  }}
                                                  addCart={this.addCart}
                                                  products={detail.products} requestClose={() => {
@@ -601,7 +602,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                     productModalVisible: false
                 });
             }}/> : null}
-            {detail.status !== 1 ? this._shieldRender() : null}
+            {detail.status !== 1  && (EmptyUtils.isEmpty(detail.userInfoVO) || detail.userInfoVO.userNo !== user.code) ? this._shieldRender() : null}
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             defaultModalVisible={this.params.openShareModal}

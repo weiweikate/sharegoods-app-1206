@@ -106,12 +106,15 @@ export default class ShowDetailPage extends BasePage {
                 }
             }
         );
+
+
     }
 
     componentWillUnmount() {
         this.willFocusSubscription && this.willFocusSubscription.remove();
         let { detail } = this.showDetailModule;
         this.params.ref && this.params.ref.replaceItemData(this.params.index, JSON.stringify(detail));
+        this.params.updateHotNum && this.params.updateHotNum(detail.hotCount);
     }
 
     getDetailByIdOrCode = (code) => {
@@ -403,14 +406,15 @@ export default class ShowDetailPage extends BasePage {
                     </View>
                 </NoMoreClick>
                 <View style={{ width: px2dp(24) }}/>
-                <NoMoreClick onPress={this._downloadShowContent}>
+                {detail.showType !== 3? <NoMoreClick onPress={this._downloadShowContent}>
                     <View style={{ flexDirection: 'row' }}>
                         <Image source={iconDownload} style={styles.bottomIcon}/>
                         <Text style={styles.bottomNumText}>
                             {ShowUtils.formatShowNum(detail.downloadCount)}
                         </Text>
                     </View>
-                </NoMoreClick>
+                </NoMoreClick> : null}
+
                 <View style={{ flex: 1 }}/>
                 {!EmptyUtils.isEmptyArr(detail.products) ? <TouchableWithoutFeedback onPress={() => {
                     this.setState({
@@ -570,7 +574,7 @@ export default class ShowDetailPage extends BasePage {
                                         this.setState({
                                             productModalVisible: false
                                         });
-                                        this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode,trackType:3 });
+                                        this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode,trackType:3 ,trackCode:detail.showNo});
                                     }}
                 />
                 <Text style={{
@@ -596,7 +600,7 @@ export default class ShowDetailPage extends BasePage {
                                                      this.setState({
                                                          productModalVisible: false
                                                      });
-                                                     this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode,trackType:3 });
+                                                     this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode,trackType:3,trackCode:detail.showNo });
                                                  }}
                                                  addCart={this.addCart}
                                                  products={detail.products} requestClose={() => {

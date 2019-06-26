@@ -80,7 +80,7 @@ const vipBg = [
  */
 
 const headerBgSize = { width: 375, height: 237 };
-
+const platformHeight = 10;
 const { px2dp, statusBarHeight } = ScreenUtils;
 const headerHeight = ScreenUtils.statusBarHeight + 44;
 // const offset = ScreenUtils.getImgHeightWithWidth(headerBgSize) - headerHeight;
@@ -249,11 +249,11 @@ export default class MinePage extends BasePage {
                 <PullView
                     bounces={false}
                     contentBackgroundColor={'#F7F7F7'}
-                    backgroundColor={'#F7F7F7'}
+                    backgroundColor={'white'}
                     renderForeground={this.renderUserHead}
                     renderStickyHeader={this.renderLevelNameNav}
                     stickyHeaderHeight={this.state.changeHeader ? 0 : px2dp(44 + statusBarHeight)}
-                    parallaxHeaderHeight={217 + statusBarHeight}
+                    parallaxHeaderHeight={ScreenUtils.getImgHeightWithWidth(headerBgSize)}
                     onScroll={this._onScroll}
                     showsVerticalScrollIndicator={false}
                 >
@@ -476,7 +476,7 @@ export default class MinePage extends BasePage {
                 backgroundColor:'#ffffff',
             }}>
                 {icon}
-                <View style={{flexDirection: 'row', alignItems: 'center', flex:1}}>
+                <View style={{flexDirection: 'row', alignItems: 'center', flex:1, marginLeft: px2dp(10)}}>
                     <Text maxLength={8}
                           style={{
                               color: DesignRule.textColor_mainTitle,
@@ -539,7 +539,7 @@ export default class MinePage extends BasePage {
                     justifyContent: 'space-between',
                     alignItems: 'center'
                 }}>
-                    {this.accountItemView(StringUtils.formatMoneyString(user.totalBalance ? user.totalBalance : '0.00', false), '个人帐户(元)',1,() => {
+                    {this.accountItemView(StringUtils.formatMoneyString(user.totalBalance ? user.totalBalance : '0.00', false), '个人账户(元)',1,() => {
                         settingModel.availableBalanceAdd();
                         this.go2CashDetailPage(1);
                         TrackApi.ViewAccountBalance();
@@ -639,7 +639,7 @@ export default class MinePage extends BasePage {
                             {num}
                         </Text>
                         {msgNum > 0 ? <View style={{
-                            width: px2dp(16),
+                            minWidth: px2dp(16),
                             height: px2dp(16),
                             borderRadius: px2dp(8),
                             position: 'relative',
@@ -650,7 +650,7 @@ export default class MinePage extends BasePage {
                             justifyContent: 'center'
                         }}>
                             <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(10) }}>
-                                {msgNum > 99 ? 99 : msgNum}
+                                {msgNum > 99 ? '99+' : msgNum}
                             </Text>
                         </View> : null
                         }
@@ -749,7 +749,7 @@ export default class MinePage extends BasePage {
     renderBodyView = () => {
         return (
             <View style={{flex:1,backgroundColor:'#F7F7F7'}}>
-                <TaskVIew type={'mine'} style={{backgroundColor: '#F7F7F7', paddingBottom: 0, marginTop: 5 }}/>
+                <TaskVIew type={'mine'} style={{marginTop:platformHeight,backgroundColor: '#F7F7F7', paddingBottom: 0 }}/>
                 {this.orderRender()}
                 {this.activeRender()}
                 {this.utilsRender()}
@@ -781,7 +781,7 @@ export default class MinePage extends BasePage {
             let num = this.getOrderNum(i);
             let numView = num ? (
                 <View style={{
-                    width: px2dp(16),
+                    minWidth: px2dp(16),
                     height: px2dp(16),
                     borderRadius: px2dp(8),
                     position: 'absolute',
@@ -792,7 +792,7 @@ export default class MinePage extends BasePage {
                     justifyContent: 'center'
                 }}>
                     <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(10) }}>
-                        {num > 99 ? 99 : num}
+                        {num > 99 ? '99+' : num}
                     </Text>
                 </View>
             ) : null;
@@ -853,7 +853,6 @@ export default class MinePage extends BasePage {
             num: settingModel.fansMSG,
             onPress: () => {
                 if (this.state.hasFans) {
-                    settingModel.fansMSGAdd();
                     this.$navigate(RouterMap.MainShowFansPage);
                 }
             }
@@ -971,7 +970,7 @@ export default class MinePage extends BasePage {
                                  resizeMode={'contain'}
                                  style={{ width: 20, marginBottom: 8 }}/>
                         {menu[i].num ? <View style={{
-                            width: 16,
+                            minWidth: 16,
                             height: 16,
                             borderRadius: 8,
                             backgroundColor: DesignRule.mainColor,
@@ -985,7 +984,7 @@ export default class MinePage extends BasePage {
                                 color: DesignRule.white,
                                 fontSize: 9,
                                 includeFontPadding: false
-                            }}>{menu[i].num > 99 ? 99 : menu[i].num}</Text>
+                            }}>{menu[i].num > 99 ? '99+' : menu[i].num}</Text>
                         </View> : null}
                     </View>
                     <UIText value={menu[i].text} style={styles.greyText}/>

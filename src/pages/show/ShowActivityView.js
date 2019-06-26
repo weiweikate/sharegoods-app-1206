@@ -210,25 +210,27 @@ export default class ShowActivityView extends Component {
                             {item.title}
                         </MRText>
                     }
-                    <View style={{flexDirection: 'row', alignItems: 'center', margin: 10}}>
-                        <PreLoadImage
-                            imageUri={item.userInfoVO && item.userInfoVO.userImg}
-                            style={{
-                                width: 24,
-                                height: 24,
-                                borderRadius: 12
-                            }}
-                            defaultImage={res.placeholder.noHeadImage}
-                            errImage={res.placeholder.noHeadImage}
-                        />
-                        <Text style={{flex: 1, marginLeft: 5,color:'#666666',fontSize:DesignRule.fontSize_22}}
-                              numberOfLines={1}>{item.userInfoVO && item.userInfoVO.userName}
-                        </Text>
-                        <Image style={{width: 12, height: 16,marginLeft: 10}} source={res.hotIcon}/>
-                        <Text style={{marginLeft: 8,color:'#666666',fontSize:DesignRule.fontSize_22}}>
-                            {item.hotCount ? item.hotCount > 999 ? item.hotCount > 100000 ? '10w+' : '999+' : item.hotCount : '0'}
-                        </Text>
-                    </View>
+                    {item.showType != 4 ?
+                        <View style={{flexDirection: 'row', alignItems: 'center', margin: 10}}>
+                            <PreLoadImage
+                                imageUri={item.userInfoVO && item.userInfoVO.userImg}
+                                style={{
+                                    width: 24,
+                                    height: 24,
+                                    borderRadius: 12
+                                }}
+                                defaultImage={res.placeholder.noHeadImage}
+                                errImage={res.placeholder.noHeadImage}
+                            />
+                            <Text style={{flex: 1, marginLeft: 5, color: '#666666', fontSize: DesignRule.fontSize_22}}
+                                  numberOfLines={1}>{item.userInfoVO && item.userInfoVO.userName}
+                            </Text>
+                            <Image style={{width: 12, height: 16, marginLeft: 10}} source={res.hotIcon}/>
+                            <Text style={{marginLeft: 8, color: '#666666', fontSize: DesignRule.fontSize_22}}>
+                                {item.hotCount ? item.hotCount > 999 ? item.hotCount > 100000 ? '10w+' : '999+' : item.hotCount : '0'}
+                            </Text>
+                        </View> : <View style={{margin: 7}}/>
+                    }
                 </View>
             </TouchableWithoutFeedback>
         );

@@ -127,9 +127,22 @@
 
 }
 
+
 -(void)setProducts:(NSArray *)products{
   _products = products;
   [self setGoodsView];
+}
+
+- (void)setType:(BOOL)type{
+  _type = type;
+  if(type){
+    self.downloadBtn.hidden = YES;
+    self.downLoadNUm.hidden = YES;
+    
+  }else{
+    self.downloadBtn.hidden = NO;
+    self.downLoadNUm.hidden = NO;
+  }
 }
 
 -(void)setDownloadCount:(NSInteger)downloadCount{
@@ -202,8 +215,7 @@
         //将多余的部分切掉
         goodsImg.layer.masksToBounds = YES;
         goodsImg.image = [UIImage imageNamed:@"welcome3"];
-        [goodsImg sd_setImageWithURL:[NSURL URLWithString:[self.products[i] valueForKey:@"imgUrl"]] placeholderImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"f5f5f5"]]];
-
+        [goodsImg setImageWithURL:[NSURL URLWithString:[self.products[i] valueForKey:@"imgUrl"]] placeholder:[UIImage imageWithColor:[UIColor colorWithHexString:@"f5f5f5"]]];
 
         UILabel* titile = [[UILabel alloc]init];
         titile.font = [UIFont systemFontOfSize:10];

@@ -37,6 +37,8 @@ import com.facebook.react.bridge.UiThreadUtil;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.meeruu.commonlib.callback.ReqProgressCallBack;
+import com.meeruu.commonlib.server.RequestManager;
 import com.meeruu.commonlib.utils.AppUtils;
 import com.meeruu.commonlib.utils.BitmapUtils;
 import com.meeruu.commonlib.utils.FileUtils;
@@ -56,6 +58,8 @@ import com.meeruu.sharegoods.ui.activity.MRWebviewActivity;
 import com.meeruu.statusbar.ImmersionBar;
 import com.meituan.android.walle.WalleChannelReader;
 import com.qiyukf.unicorn.api.Unicorn;
+import com.reactnative.ivpusic.imagepicker.cameralibrary.util.LogUtil;
+import com.reactnative.ivpusic.imagepicker.picture.lib.tools.Md5Utils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -558,6 +562,39 @@ public class CommModule extends ReactContextBaseJavaModule {
                 promise.reject("下载失败");
             }
         });
+    }
+
+
+    //TODO 视频下载
+    @ReactMethod
+    public void saveVideoToPhotoAlbumWithUrl(final String url, final Promise promise) {
+        if (TextUtils.isEmpty(url)) {
+            promise.reject("url不能为空");
+            return;
+        }
+       
+        final String storePath = SDCardUtils.getFileDirPath(mContext, "MR/picture")
+                .getAbsolutePath() ;
+
+        RequestManager.getInstance().downLoadFile(url, storePath, new ReqProgressCallBack<Object>() {
+            @Override
+            public void onErr(String errCode, String msg) {
+                promise.reject(msg);
+            }
+
+            @Override
+            public void onSuccess(Object result) {
+                //
+            }
+
+            @Override
+            public void onProgress(long total, long current) {
+
+            }
+        });
+
+        // 预加载原图
+       
     }
 
     @ReactMethod

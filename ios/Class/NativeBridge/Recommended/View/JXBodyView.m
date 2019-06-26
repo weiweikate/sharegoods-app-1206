@@ -20,6 +20,7 @@
 @property (nonatomic,strong) NSMutableArray *actionSheetArr;
 @property (nonatomic, strong) NSArray *imageViewsArray;
 @property (nonatomic,strong) UIView *bgView;
+@property (nonatomic,strong) UIImageView *bgImage;
 
 @end
 
@@ -27,13 +28,20 @@
 
 -(UIView *)bgView{
   if(!_bgView){
-    _bgView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, (SCREEN_WIDTH-158), (SCREEN_WIDTH-158))];
+    _bgView = [[UIView alloc]init];
+    _bgView.hidden = YES;
     _bgView.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.1];
-    UIImageView * bgImage = [[UIImageView alloc]initWithFrame:CGRectMake(83, 83, 53, 53)];
-    bgImage.image = [UIImage imageNamed:@"vedio"];
-    [_bgView addSubview:bgImage];
   }
   return _bgView;
+}
+
+-(UIImageView *)bgImage{
+  if(!_bgImage){
+    _bgImage = [[UIImageView alloc]init];
+    _bgImage.hidden = YES;
+    _bgImage.image = [UIImage imageNamed:@"vedio"];
+  }
+  return _bgImage;
 }
 
 - (NSMutableArray *)itemsArr{
@@ -71,13 +79,32 @@
         tap.view.tag = i;
         [temp addObject:imageView];
     }
-
     self.imageViewsArray = [temp copy];
+  
+  [self addSubview:self.bgView];
+  [self.bgView addSubview:self.bgImage];
+
+  self.bgView.sd_layout
+  .leftEqualToView(self)
+  .topEqualToView(self)
+  .widthIs(SCREEN_WIDTH-158).heightIs(SCREEN_WIDTH-158);
+
+  self.bgImage.sd_layout
+  .centerYEqualToView(self.bgView)
+  .centerXEqualToView(self.bgView)
+  .widthIs(53).heightIs(53);
 }
 
 
 -(void)setImageType:(BOOL)imageType{
   _imageType = imageType;
+  if(imageType){
+    self.bgView.hidden = NO;
+    self.bgImage.hidden = NO;
+  }else{
+    self.bgView.hidden = YES;
+    self.bgImage.hidden = YES;
+  }
 }
 
 -(void)setSources:(NSArray<SourcesModel *> *)sources{
@@ -86,8 +113,8 @@
   for(int i=0;i<sources.count;i++){
     if(self.imageType){
       if(sources[i].type==5){
+        if(arr.count>1) break;
         [arr addObject:sources[i]];
-        break;
       }
     }else{
       if(sources[i].type==2){
@@ -102,6 +129,8 @@
     imageView.hidden = YES;
   }
     if (_sources.count == 0) {
+      self.bgView.hidden = YES;
+      self.bgImage.hidden = YES;
       self.height_sd = 0;
       self.fixedHeight = @(0);
       return;
@@ -129,15 +158,13 @@
 
             imageView.hidden = NO;
             imageView.frame = CGRectMake(columnIndex * (itemW + margin), rowIndex * (itemH + margin), itemW, itemH);
-          if(self.imageType)[self addSubview:self.bgView];
         }];
-
+  
         CGFloat w = perRowItemCount * itemW + (perRowItemCount - 1) * margin;
         int columnCount = ceilf(_sources.count * 1.0 / perRowItemCount);
         CGFloat h = columnCount * itemH + (columnCount - 1) * margin;
         self.width_sd = w;
         self.height_sd = h;
-
         self.fixedHeight = @(h);
         self.fixedWidth = @(w);
 }

@@ -25,8 +25,9 @@ import ShowUtils from './utils/ShowUtils';
 import CommShareModal from '../../comm/components/CommShareModal';
 import apiEnvironment from '../../api/ApiEnvironment';
 import RouterMap from '../../navigation/RouterMap';
+import TagDetailItemView from './components/TagDetailItemView';
 
-const { iconShowShare, iconShowFire } = res;
+const { iconShowShare, iconShowFire, dynamicEmpty } = res;
 const { px2dp } = ScreenUtils;
 
 export default class TagDetailPage extends BasePage {
@@ -102,6 +103,8 @@ export default class TagDetailPage extends BasePage {
     };
 
     renderItem = (itemData, itemIdx, itemContainer) => {
+
+        return (<TagDetailItemView itemData={itemData} itemContainer={itemContainer}/>);
         let uri, width = 1, height = 1;
         let minHeight = itemContainer.width * 120 / 167;
         let maxHeight = itemContainer.width * 240 / 167;
@@ -125,12 +128,12 @@ export default class TagDetailPage extends BasePage {
         }
 
         height = itemContainer.width * height / width;
-        if(height < minHeight){
+        if (height < minHeight) {
             height = minHeight;
         }
 
-        if(height > maxHeight){
-            height = maxHeight
+        if (height > maxHeight) {
+            height = maxHeight;
         }
 
         return (
@@ -194,9 +197,20 @@ export default class TagDetailPage extends BasePage {
         return (<TagDescriptionView tagId={this.params.tagId} callback={this.headerRequestFinish}/>);
     };
 
+    renderEmpty = () => {
+        return (
+            <View style={{alignSelf:'center',alignItems:'center'}}>
+                <Image source={dynamicEmpty} style={{width:px2dp(267),height:px2dp(192),marginTop:px2dp(50)}}/>
+                <MRText style={styles.emptyTip}>
+                    暂无内容
+                </MRText>
+            </View>
+        );
+    };
+
     _render() {
         return (
-            <View style={{flex:1}}>
+            <View style={{ flex: 1 }}>
                 <Waterfall
                     showsVerticalScrollIndicator={false}
                     style={styles.waterfall}
@@ -208,6 +222,7 @@ export default class TagDetailPage extends BasePage {
                     onEndReachedThreshold={1000}
                     onEndReached={this.loadMore}
                     renderItem={this.renderItem}
+                    renderEmpty={this.renderEmpty}
                     refreshControl={
                         <RefreshControl
                             colors={[DesignRule.mainColor]}
@@ -228,4 +243,9 @@ export default class TagDetailPage extends BasePage {
     }
 }
 
-var styles = StyleSheet.create({});
+var styles = StyleSheet.create({
+    emptyTip:{
+        color:DesignRule.textColor_secondTitle,
+        fontSize:DesignRule.fontSize_threeTitle
+    }
+});

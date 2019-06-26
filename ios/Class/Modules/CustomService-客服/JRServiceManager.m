@@ -164,7 +164,7 @@ SINGLETON_FOR_CLASS(JRServiceManager)
    NSDictionary * chatInfo = swichData;
    self.dataDic = chatInfo;//暂存来的数据
   QYSessionViewController * sessionVC = [[QYSDK sharedSDK] sessionViewController];
-  sessionVC.vipLevel = self.isVip?1:0;
+  sessionVC.vipLevel = self.isVip?11:0;
   //暂存客服来源类型
   if (![chatInfo[@"shopId"] isEqualToString:suspensionId] && ((NSString *)chatInfo[@"shopId"]).length != 0) {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
