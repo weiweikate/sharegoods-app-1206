@@ -185,7 +185,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         }
 
         ImageView ivRecommend = helper.getView(R.id.iv_recommend);
-        if(TextUtils.equals(type,"recommend") && item.getCreateSource() == CommValue.NORMAL_USER_CONTENT){
+        if(item.getCreateSource() == CommValue.NORMAL_USER_CONTENT){
             ivRecommend.setVisibility(View.VISIBLE);
         }else {
             ivRecommend.setVisibility(View.GONE);
@@ -352,7 +352,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         }
 
         ImageView ivRecommend = helper.getView(R.id.iv_recommend);
-        if(TextUtils.equals(type,"recommend") && item.getCreateSource() == CommValue.NORMAL_USER_CONTENT){
+        if(item.getCreateSource() == CommValue.NORMAL_USER_CONTENT){
             ivRecommend.setVisibility(View.VISIBLE);
         }else {
             ivRecommend.setVisibility(View.GONE);
