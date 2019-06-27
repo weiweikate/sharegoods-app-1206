@@ -122,7 +122,7 @@ export class P_ScoreListItemView extends Component {
                 <Text style={styles.dateText}>{DateUtils.formatDate(createTime || '', 'yyyy-MM-dd')}</Text>
                 {
                     StringUtils.isEmpty(reply) ? null : <View style={styles.responseView}>
-                        <Text style={styles.responseTittleText}>秀秀回复</Text>
+                        <Text style={styles.responseTittleText}>商家回复</Text>
                         <Text
                             style={styles.responseContentText}>{reply}</Text>
                     </View>
