@@ -91,7 +91,7 @@ export default class ProductDetailPage extends BasePage {
             setTimeout(() => {
                 user.isProdFirstLoad = false;
                 this.productDetailModel && this.productDetailModel.requestProductDetail();
-            }, 500);
+            }, 200);
         }
     }
 

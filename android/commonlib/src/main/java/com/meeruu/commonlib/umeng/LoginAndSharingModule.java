@@ -578,7 +578,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             canvas.drawBitmap(outBitmap, mSrcRect, mDestRect, paint);
         } else {
             int height = (int) (outWidth / (375 * 667.0));
-            Rect mSrcRect = new Rect(0, (outHeight - height) / 2, 0, outHeight - (height / 2));
+            Rect mSrcRect = new Rect(0, (outHeight - height) / 2, outWidth, outHeight - (height / 2));
             Rect mDestRect = new Rect(0, 0, 375 * precision, 667 * precision);
             canvas.drawBitmap(outBitmap, mSrcRect, mDestRect, paint);
         }
@@ -685,7 +685,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         } else {
             int width = outWidth;
             int height = (int) (outWidth / (375 * 667.0));
-            Rect mSrcRect = new Rect(0, (outHeight - height) / 2, 0, outHeight - (height / 2));
+            Rect mSrcRect = new Rect(0, (outHeight - height) / 2, width, outHeight - (height / 2));
             Rect mDestRect = new Rect(0, 0, 375 * precision, 667 * precision);
             canvas.drawBitmap(outBitmap, mSrcRect, mDestRect, paint);
         }
@@ -706,7 +706,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         } else {
             paint.setAntiAlias(true);
             int height = (int) (outWidth / (315 * 345.0));
-            Rect mSrcRect = new Rect(0, (outHeight - height) / 2, 0, (outHeight + height) / 2);
+            Rect mSrcRect = new Rect(0, (outHeight - height) / 2, outWidth, (outHeight + height) / 2);
             Rect mDestRect = new Rect(30 * precision, 57 * precision, 345 * precision, 402 * precision);
             canvas.drawBitmap(bitmap, mSrcRect, mDestRect, paint);
         }
@@ -1223,6 +1223,12 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                         fail.invoke("图片获取失败");
                     }
                 }
+
+                @Override
+                public void onRequestFailure(ImageRequest request, String requestId, Throwable throwable, boolean isPrefetch) {
+                    super.onRequestFailure(request, requestId, throwable, isPrefetch);
+                    fail.invoke("图片获取失败");
+                }
             });
         }
     }
@@ -1307,14 +1313,11 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             canvas.drawBitmap(bitmap, mSrcRect, mDestRect, paint);
         } else {
             height = outWidth;
-            Rect mSrcRect = new Rect(0, (outHeight - height) / 2, 0, (outHeight + height) / 2);
+            Rect mSrcRect = new Rect(0, (outHeight - height) / 2, outWidth, (outHeight + height) / 2);
             Rect mDestRect = new Rect(24 * precision, 46 * precision, 351 * precision, 373 * precision);
             canvas.drawBitmap(bitmap, mSrcRect, mDestRect, paint);
         }
 
-        if (bitmap != null && !bitmap.isRecycled()) {
-            bitmap.recycle();
-        }
 
         Bitmap topRightBtp = null;
 
@@ -1434,6 +1437,12 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         if(result != null && !result.isRecycled()){
             result.recycle();
         }
+
+        if (bitmap != null && !bitmap.isRecycled()) {
+            bitmap.recycle();
+        }
+
+
         if (!TextUtils.isEmpty(path)) {
             success.invoke(path);
         } else {
