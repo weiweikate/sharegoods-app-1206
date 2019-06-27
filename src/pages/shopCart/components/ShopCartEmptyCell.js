@@ -4,8 +4,6 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
 import { MRText } from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
-import { TrackApi } from '../../../utils/SensorsTrack';
-
 const { px2dp } = ScreenUtils;
 
 export default class ShopCartEmptyCell extends Component {
@@ -17,30 +15,20 @@ export default class ShopCartEmptyCell extends Component {
         return (
             <TouchableOpacity onPress={()=>{
                onClick();
-               TrackApi.RecommendSpuClick({
-                   strategyId:itemData.strategyId,
-                   spuRelationValue:itemData.spuRelationValue,
-                   spuRelationIndex:itemData.spuRelationIndex,
-                   spuCode:itemData.spuCode,
-                   spuName:itemData.spuName,
-               })
             }}>
             <View style={{
-                marginBottom:haveShopCartGoods?px2dp(5):0,
+                marginTop:px2dp(8),
                 height: itemData.height,
-                width: haveShopCartGoods?ScreenUtils.width / 2 - px2dp(25) : ScreenUtils.width / 2 - px2dp(10),
-                marginLeft: px2dp(5),
-                height: itemData.height,
+                width: haveShopCartGoods?ScreenUtils.width / 2 - px2dp(23) : ScreenUtils.width / 2 - px2dp(19),
+                marginLeft:haveShopCartGoods? px2dp(10):px2dp(0),
                 backgroundColor:DesignRule.color_fff,
                 borderRadius:px2dp(6),
-                padding:px2dp(3),
-                paddingTop:px2dp(0)
             }}>
                 <PreLoadImage
                     imageUri={itemData.imgUrl}
                     style={{
                         marginTop:px2dp(2),
-                        width: haveShopCartGoods?ScreenUtils.width / 2 - px2dp(30) :ScreenUtils.width / 2 - px2dp(16),
+                        width: haveShopCartGoods?ScreenUtils.width / 2 - px2dp(30) :ScreenUtils.width / 2 - px2dp(20),
                         height: itemData.imageHeight ,
                         borderRadius:px2dp(6)
                     }}

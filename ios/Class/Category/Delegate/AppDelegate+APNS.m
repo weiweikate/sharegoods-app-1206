@@ -28,12 +28,18 @@
 @implementation AppDelegate (APNS)
 
 -(void)JR_ConfigAPNS:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
-  [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
   [self configAPNSWithOption:launchOptions];
   [self checkCurrentNotificationStatus];
   
   NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
   [defaultCenter addObserver:self selector:@selector(networkDidReceiveMessage:) name:kJPFNetworkDidReceiveMessageNotification object:nil];
+}
+
+- (void)clearBadge{
+  [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    [JPUSHService resetBadge];
+  });
 }
 // 自定义消息 回调
 - (void)networkDidReceiveMessage:(NSNotification *)notification {
@@ -288,6 +294,7 @@
   //应用退出后的bgde后期根据具体业务再说
   //  NSInteger count = [[[QYSDK sharedSDK] conversationManager] allUnreadCount];
   //  [[UIApplication sharedApplication] setApplicationIconBadgeNumber:count];
+  [self clearBadge];
 }
 - (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
@@ -296,7 +303,7 @@
   //极光提交
   [JPUSHService registerDeviceToken:deviceToken];
   [JPUSHService registrationIDCompletionHandler:^(int resCode, NSString *registrationID) {
-    NSLog(@"%@",registrationID);
+    NSLog(@"registrationID%@",registrationID);
     if (resCode == 0) {
       // 将极光推送的 Registration Id 存储在神策分析的用户 Profile "jgId" 中
       [SensorsAnalyticsSDK.sharedInstance profilePushKey:@"jgId" pushId:registrationID];
