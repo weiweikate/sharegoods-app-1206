@@ -43,7 +43,7 @@ import RouterMap, { routePop, routeNavigate, routePush } from '../../navigation/
 import ShowApi from './ShowApi';
 import LinearGradient from 'react-native-linear-gradient';
 
-const { iconShowFire, iconLike, iconNoLike, iconShowShare } = res;
+const { iconShowFire, iconLike, iconNoLike, iconShowShare ,dynamicEmpty} = res;
 
 
 @SmoothPushPreLoadHighComponent
@@ -473,8 +473,23 @@ export default class ShowRichTextDetailPage extends BasePage {
 
         let { detail } = this.showDetailModule;
         if (!detail) {
-            detail = { imgs: '', products: [], click: 0, content: '' };
+            detail = { imgs: '', products: [], click: 0, content: '', status: 0 };
         }
+
+        if (detail.status !== 1 && (EmptyUtils.isEmpty(detail.userInfoVO) || detail.userInfoVO.userNo !== user.code)) {
+
+            return (<View style={styles.container}>
+                <View style={{backgroundColor:DesignRule.bgColor,alignItems:'center',flex:1,marginTop:ScreenUtils.statusBarHeight}}>
+                    <Image source={dynamicEmpty}
+                           style={{ width: px2dp(267), height: px2dp(192), marginTop: px2dp(50),marginTop:px2dp(165) }}/>
+                    <Text style={styles.emptyTip}>
+                        {detail.status === 2 ? '系统正在快马加鞭审核中,耐心等待哦！':'文章不见了，先看看别的吧！'}
+                    </Text>
+                </View>
+                {this._renderNormalTitle()}
+            </View>);
+        }
+
 
         let content = detail.content ? detail.content : '';
         let html = '<!DOCTYPE html><html>' +
@@ -602,7 +617,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                     productModalVisible: false
                 });
             }}/> : null}
-            {detail.status !== 1  && (EmptyUtils.isEmpty(detail.userInfoVO) || detail.userInfoVO.userNo !== user.code) ? this._shieldRender() : null}
+            {detail.status !== 1  && (EmptyUtils.isEmpty(detail.userInfoVO) || detail.userInfoVO.userNo === user.code) ? this._shieldRender() : null}
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             defaultModalVisible={this.params.openShareModal}
@@ -890,6 +905,10 @@ let styles = StyleSheet.create({
         marginTop: px2dp(10),
         marginBottom: px2dp(13),
         fontWeight: '400'
+    },
+    emptyTip: {
+        color: DesignRule.textColor_secondTitle,
+        fontSize: DesignRule.fontSize_threeTitle
     }
 });
 

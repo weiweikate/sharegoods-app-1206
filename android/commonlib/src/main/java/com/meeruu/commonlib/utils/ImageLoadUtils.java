@@ -60,6 +60,19 @@ public class ImageLoadUtils {
         if (TextUtils.isEmpty(url)) {
             return;
         }
+
+        String noQStr = url;
+        if (noQStr.contains("?")) {
+            noQStr = noQStr.substring(0, noQStr.indexOf("?"));
+        }
+        String[] strs = noQStr.split(".");
+        if (strs.length > 1 && "webp".equals(strs[1])) {
+            Uri uri = Uri.parse(noQStr);
+            loadImage(uri, view);
+            return;
+        }
+
+
         view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             boolean hasMeasured = false;
 
@@ -93,6 +106,19 @@ public class ImageLoadUtils {
         if (TextUtils.isEmpty(url)) {
             return;
         }
+
+        String noQStr = url;
+        if (noQStr.contains("?")) {
+            noQStr = noQStr.substring(0, noQStr.indexOf("?"));
+        }
+        String[] strs = noQStr.split(".");
+        if (strs.length > 1 && "webp".equals(strs[1])) {
+            Uri uri = Uri.parse(noQStr);
+            loadImage(uri, view, scaleType);
+            return;
+        }
+
+
         view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             boolean hasMeasured = false;
 
@@ -165,6 +191,18 @@ public class ImageLoadUtils {
         if (TextUtils.isEmpty(url)) {
             return;
         }
+
+        String noQStr = url;
+        if (noQStr.contains("?")) {
+            noQStr = noQStr.substring(0, noQStr.indexOf("?"));
+        }
+        String[] strs = noQStr.split(".");
+        if (strs.length > 1 && "webp".equals(strs[1])) {
+            Uri uri = Uri.parse(noQStr);
+            loadRoundImage(uri, view,radius);
+            return;
+        }
+
         view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             boolean hasMeasured = false;
 
@@ -199,6 +237,18 @@ public class ImageLoadUtils {
         if (TextUtils.isEmpty(url)) {
             return;
         }
+
+        String noQStr = url;
+        if (noQStr.contains("?")) {
+            noQStr = noQStr.substring(0, noQStr.indexOf("?"));
+        }
+        String[] strs = noQStr.split(".");
+        if (strs.length > 1 && "webp".equals(strs[1])) {
+            Uri uri = Uri.parse(noQStr);
+            loadRoundImage(uri, view, radius, false);
+            return;
+        }
+
         view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             boolean hasMeasured = false;
 
@@ -248,6 +298,19 @@ public class ImageLoadUtils {
         if (TextUtils.isEmpty(url)) {
             return;
         }
+
+        String noQStr = url;
+        if (noQStr.contains("?")) {
+            noQStr = noQStr.substring(0, noQStr.indexOf("?"));
+        }
+        String[] strs = noQStr.split(".");
+        if (strs.length > 1 && "webp".equals(strs[1])) {
+            Uri uri = Uri.parse(noQStr);
+            loadImageAsCircle(uri, view);
+            return;
+        }
+
+
         view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             boolean hasMeasured = false;
 
