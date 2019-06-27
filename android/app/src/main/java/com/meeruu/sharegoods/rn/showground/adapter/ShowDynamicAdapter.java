@@ -48,14 +48,9 @@ public class ShowDynamicAdapter extends BaseQuickAdapter<NewestShowGroundBean.Da
                 height = resourceBean.getHeight();
             } else {
                 //视频类型，取封面
-                for (NewestShowGroundBean.DataBean.ResourceBean resourceBean : item.getResource()) {
-                    if (resourceBean.getType() == 5) {
-                        imgUrl = resourceBean.getUrl();
-                        width = resourceBean.getWidth();
-                        height = resourceBean.getHeight();
-                        break;
-                    }
-                }
+                imgUrl = item.getVideoCover().imageUrl;
+                width = item.getVideoCover().imageViewWidth;
+                height = item.getVideoCover().imageViewHeight;
             }
         }
 
