@@ -3,7 +3,6 @@ package com.meeruu.qiyu.activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -38,8 +37,6 @@ public class QiyuServiceMessageActivity extends ServiceMessageActivity {
         final SharedPreferences preferences = PreferenceUtil.getSharedPreference(getApplication(), "qiyu");
         if (source != null) {
             String shopId = preferences.getString("shopId", "");
-            Log.d("1====", shopId);
-            Log.d("2====", source.shopId);
             if (TextUtils.isEmpty(source.shopId)) {
                 if (TextUtils.isEmpty(shopId)) {
                     myKefuButton.setVisibility(View.GONE);

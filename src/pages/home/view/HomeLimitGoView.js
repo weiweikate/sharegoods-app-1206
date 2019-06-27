@@ -265,9 +265,8 @@ const styles = StyleSheet.create({
     },
     time: {
         color: '#FC533B',
-        fontWeight: '500',
-        fontSize: 15
-
+        fontWeight: '400',
+        fontSize: 16
     },
     normal: {
         alignItems: 'center',
