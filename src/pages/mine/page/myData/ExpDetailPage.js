@@ -157,15 +157,23 @@ export default class ExpDetailPage extends BasePage {
                             <Image source={res.button.white_back}/>
                         </View>
                     </TouchableWithoutFeedback>
-                    <Text ref={(ref) => this.textBg = ref}
-                          style={{
-                              opacity: 0,
-                              color: DesignRule.white,
-                              fontSize: px2dp(17),
-                              includeFontPadding: false
-                          }}>
-                         我的经验
-                    </Text>
+                    {!this.state.isEmpty ? <Text ref={(ref) => this.textBg = ref}
+                                                 style={{
+                                                     opacity: 0,
+                                                     color: DesignRule.white,
+                                                     fontSize: px2dp(17),
+                                                     includeFontPadding: false
+                                                 }}>
+                            我的经验
+                        </Text> :
+                        <Text style={{
+                            color: DesignRule.white,
+                            fontSize: px2dp(17),
+                            includeFontPadding: false
+                        }}>
+                            我的经验
+                        </Text>
+                    }
                     <View style={{flex:1}}/>
                 </View>
             </View>
@@ -250,6 +258,7 @@ export default class ExpDetailPage extends BasePage {
     _renderContent = () => {
         return (
             <View style={styles.contentStyle}>
+                {this.state.isEmpty ? <View style={{backgroundColor:'#FF0050', height:headerHeight}}/> : null}
                 <RefreshList
                     data={this.state.viewData}
                     ListHeaderComponent={()=>(
