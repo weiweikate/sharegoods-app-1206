@@ -116,7 +116,7 @@ export default class TagDetailItemView extends PureComponent {
                                            style={{ width: px2dp(20), height: px2dp(20), borderRadius: px2dp(10) }}/> :
                                 <Image source={mine_user_icon}
                                        style={{ width: px2dp(20), height: px2dp(20), borderRadius: px2dp(10) }}
-                                       borderRadius={px2dp(27)}/>}
+                                       borderRadius={px2dp(10)}/>}
                         </View>
                         <MRText style={{
                             color: DesignRule.textColor_secondTitle,
