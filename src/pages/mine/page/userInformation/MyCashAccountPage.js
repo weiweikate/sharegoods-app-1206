@@ -419,29 +419,27 @@ export default class MyCashAccountPage extends BasePage {
 
 
     //**********************************BusinessPart******************************************
-    componentWillMount() {
-        this.didFocusSubscription = this.props.navigation.addListener(
-            'didFocus',
-            payload => {
-                this.onRefresh();
-            }
-        );
-    }
-
     componentWillUnmount() {
         this.didFocusSubscription && this.didFocusSubscription.remove();
     }
 
     componentDidMount() {
-        MineApi.canWithdraw({ phoneNo: user.phone }).then(data => {
-            this.setState({
-                canWithdraw: data.data
-            });
-        }).catch((error) => {
-            this.setState({
-                canWithdraw: false
-            });
-        });
+        this.didFocusSubscription = this.props.navigation.addListener(
+            'didFocus',
+            payload => {
+                this.onRefresh();
+                MineApi.canWithdraw({ phoneNo: user.phone }).then(data => {
+                    this.setState({
+                        canWithdraw: data.data
+                    });
+                }).catch((error) => {
+                    this.setState({
+                        canWithdraw: false
+                    });
+                });
+            }
+        );
+
     }
 
     jumpToWithdrawCashPage = () => {
