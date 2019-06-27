@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { observable, action ,autorun} from 'mobx';
 import ShopCartAPI from '../api/ShopCartApi';
 import user from '../../../model/user';
 
@@ -113,4 +113,7 @@ class ShopCartEmptyModel {
 
 const shopCartEmptyModel = new ShopCartEmptyModel();
 
+autorun(()=>{
+    user.isLogin?shopCartEmptyModel.getRecommendProducts(true):null;
+})
 export { shopCartEmptyModel, EmptyViewTypes };
