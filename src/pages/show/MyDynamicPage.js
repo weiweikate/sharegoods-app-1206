@@ -68,7 +68,7 @@ export default class MyDynamicPage extends BasePage {
 
         return (
             <ImageBackground source={EmptyUtils.isEmpty(user.headImg) ? showHeaderBg : { uri: user.headImg }}
-                             style={styles.headerContainer} blurRadius={EmptyUtils.isEmpty(user.headImg) ? 0 : 10}>
+                             style={[styles.headerContainer,{marginBottom:px2dp(ScreenUtils.isIOS ? 5:0)}]} blurRadius={EmptyUtils.isEmpty(user.headImg) ? 0 : 10}>
                 {icon}
                 <Text style={styles.nameStyle}>
                     {name}
