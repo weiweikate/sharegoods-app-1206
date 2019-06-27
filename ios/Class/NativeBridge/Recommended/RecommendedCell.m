@@ -212,7 +212,7 @@
     self.footerView.type = NO;
   }
   self.bodyView.sources = model.resource;
-  if(self.type&&(model.createSource&&model.createSource==2)){
+  if((model.createSource&&model.createSource==2)){
     self.headView.type = NO;
     self.jingpin.hidden = NO;
   }else{
