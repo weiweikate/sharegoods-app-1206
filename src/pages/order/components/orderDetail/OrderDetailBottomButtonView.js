@@ -29,7 +29,7 @@ export default class OrderDetailBottomButtonView extends Component {
     };
 
     render() {
-        let nameArr = orderDetailModel.menu;
+        let nameArr = [...orderDetailModel.menu];
         if (nameArr.length > 0) {
             if (nameArr.length === 3) {
                 return (

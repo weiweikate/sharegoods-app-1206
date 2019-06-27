@@ -70,10 +70,10 @@ class OrderDetailModel {
         this.payInfo = data.payInfo || {}
         this.receiveInfo = data.receiveInfo || {}
         let {payTime, nowTime, receiveTime, cancelReason} = this.baseInfo
-
         orderDetailModel.loadingState=PageLoadingState.success
         this.platformOrderNo = this.merchantOrder.platformOrderNo || '';
-        let menu =  GetViewOrderStatus(this.merchantOrder.status).menu_orderDetail;
+        let menu =  [...GetViewOrderStatus(this.merchantOrder.status).menu_orderDetail];
+
         switch (this.merchantOrder.status) {
             case OrderType.WAIT_PAY:
             {

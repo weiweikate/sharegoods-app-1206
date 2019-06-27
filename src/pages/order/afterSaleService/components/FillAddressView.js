@@ -8,6 +8,8 @@
  * Created by huchao on 2019/5/10.
  *
  */
+
+
 'use strict';
 
 import React from 'react';
@@ -24,7 +26,7 @@ import {
 import DesignRule from '../../../../constants/DesignRule';
 import { observer } from 'mobx-react';
 import { AfterStatus } from '../AfterType';
-import {navigate} from '../../../../navigation/RouterMap'
+import { routePush } from '../../../../navigation/RouterMap';
 const {
     STATUS_SEND_BACK           //待寄回
 } = AfterStatus;
@@ -43,7 +45,7 @@ export default class FillAddressView extends React.Component {
 
     onPress = ()=> {
         let afterSaleDetailModel = this.props.afterSaleDetailModel;
-        navigate('order/afterSaleService/FillReturnLogisticsPage', {
+        routePush('order/afterSaleService/FillReturnLogisticsPage', {
             pageData:{
                 productOrderNo:afterSaleDetailModel.pageData.product.productOrderNo,
                 serviceNo:afterSaleDetailModel.pageData.service.serviceNo},

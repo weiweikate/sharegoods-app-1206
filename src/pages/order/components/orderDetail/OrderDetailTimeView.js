@@ -117,7 +117,7 @@ export default class OrderDetailTimeView extends Component {
                 <UIText
                     value={"创建时间：" + DateUtils.getFormatDate(orderTime / 1000)}
                     style={styles.textGoodsDownStyle}/>
-                {StringUtils.isNoEmpty(payTime) && status > 1 ?
+                {StringUtils.isNoEmpty(payTime)?
                     <UIText
                         value={"付款时间：" + DateUtils.getFormatDate(payTime / 1000)}
                         style={styles.textGoodsDownStyle}/> : null}
@@ -125,11 +125,11 @@ export default class OrderDetailTimeView extends Component {
                     <UIText
                         value={"关闭时间：" + DateUtils.getFormatDate(subStatus < 4 ? cancelTime / 1000 : finishTime / 1000)}
                         style={styles.textGoodsDownStyle}/> : null}
-                {StringUtils.isNoEmpty(deliverTime) && status < 5 ?
+                {StringUtils.isNoEmpty(deliverTime)  ?
                     <UIText
                         value={"发货时间：" + DateUtils.getFormatDate(deliverTime / 1000)}
                         style={styles.textOrderDownStyle}/> : null }
-                {StringUtils.isNoEmpty(finishTime) && status < 5 ?
+                {StringUtils.isNoEmpty(finishTime) ?
                     <UIText
                         value={"完成时间：" + DateUtils.getFormatDate(autoReceiveTime ? autoReceiveTime / 1000 : finishTime / 1000)}
                         style={styles.textOrderDownStyle}/> : null}

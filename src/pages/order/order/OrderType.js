@@ -102,7 +102,7 @@ function GetAfterBtns(product) {
 
 function GetViewOrderStatus(status) {
     if (status){
-        return ViewOrderStatus[status] || {menuData:[], menu_orderDetail:[]}
+        return {...ViewOrderStatus[status]} || {menuData:[], menu_orderDetail:[]}
     }
     return {menuData:[], menu_orderDetail:[]}
 }
