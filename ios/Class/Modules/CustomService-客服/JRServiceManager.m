@@ -33,7 +33,7 @@
 @property (nonatomic,copy) NSString * preShopId;
 @property (nonatomic,copy) NSString * preTitle;
 @property (nonatomic,assign) CHAT_TYPE  preChatType;
-@property (nonatomic,assign) BOOL * isVip;
+@property (nonatomic,assign) BOOL  isVip;
 
 @property (nonatomic,strong) SuspensionBtn *suspensionBtn ;
 @property (nonatomic,strong) SuspensionBtn * changeToSupplierBtn;
@@ -129,7 +129,7 @@ SINGLETON_FOR_CLASS(JRServiceManager)
 -(void)initQYChat:(id)jsonData{
   [self initActionConfig];
   QYUserInfo * userInfo = [self packingUserInfo:jsonData];
-  self.isVip = jsonData[@"isVip"]?YES:NO;
+  self.isVip = [jsonData[@"isVip"] boolValue] ?YES:NO;
 
   [[[QYSDK sharedSDK] conversationManager] setDelegate:self];
   [[QYSDK sharedSDK] setUserInfo:userInfo];
@@ -188,7 +188,6 @@ SINGLETON_FOR_CLASS(JRServiceManager)
   QYSource *source = [[QYSource alloc] init];
   source.title = chatInfo[@"title"];
   sessionVC.sessionTitle = chatInfo[@"title"];
-  sessionVC.title = @"nihao";
   sessionVC.navigationItem.leftBarButtonItem =
   [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain
                                   target:self action:@selector(onBack:)];

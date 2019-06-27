@@ -34,6 +34,7 @@ import bridge from '../../../utils/bridge';
 // import ShopCartEmptyView from './ShopCartEmptyView';
 import { shopCartEmptyModel } from '../model/ShopCartEmptyModel';
 import ShopCartEmptyCell from './ShopCartEmptyCell';
+import { TrackApi } from '../../../utils/SensorsTrack';
 
 const { px2dp } = ScreenUtils;
 const section_width = ScreenUtils.width - px2dp(30)
@@ -72,9 +73,16 @@ export default class SectionHeaderView extends Component {
         }
         let viewItemList = [];
         const recommdListData = shopCartEmptyModel.emptyViewList;
-        viewItemList = recommdListData.map(itemData => {
+        viewItemList = recommdListData.map((itemData ,index)=> {
             return (<ShopCartEmptyCell  haveShopCartGoods={true} itemData={itemData} onClick={()=>{
                 routePush(RouterMap.ProductDetailPage,{ productCode:itemData.prodCode});
+                TrackApi.RecommendSpuClick({
+                    strategyId:itemData.strategyId,
+                    spuRelationValue:itemData.spuRelationValue,
+                    spuRelationIndex:index,
+                    spuCode:itemData.prodCode,
+                    spuName:itemData.name,
+                })
             }} />);
         });
         //删掉他娘头部空视图 ok？
@@ -82,7 +90,7 @@ export default class SectionHeaderView extends Component {
         return (
             <View style={{width:section_width,flexDirection:'row', flexWrap: 'wrap'}}>
                 <View style={{ marginLeft:px2dp(5),width: ScreenUtils.width, height: px2dp(50), flexDirection: 'row', alignItems: 'center' }}>
-                    <View style={{ width: px2dp(2), height: px2dp(8), backgroundColor: '#FF0050' }}/>
+                    <View style={{ width: px2dp(2), height: px2dp(8),borderRadius:px2dp(1), backgroundColor: '#FF0050' }}/>
                     <MRText style={{ marginLeft: px2dp(5), fontSize: px2dp(16) }}>为你推荐</MRText>
                 </View>
                 {viewItemList}
