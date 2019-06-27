@@ -17,15 +17,12 @@ export default class ShopCartEmptyCell extends Component {
                onClick();
             }}>
             <View style={{
-                marginBottom:haveShopCartGoods?px2dp(5):0,
+                marginTop:px2dp(8),
                 height: itemData.height,
-                width: haveShopCartGoods?ScreenUtils.width / 2 - px2dp(23) : ScreenUtils.width / 2 - px2dp(12),
-                marginLeft:haveShopCartGoods? px2dp(5):px2dp(0),
-                height: itemData.height,
+                width: haveShopCartGoods?ScreenUtils.width / 2 - px2dp(23) : ScreenUtils.width / 2 - px2dp(19),
+                marginLeft:haveShopCartGoods? px2dp(10):px2dp(0),
                 backgroundColor:DesignRule.color_fff,
                 borderRadius:px2dp(6),
-                padding:px2dp(2),
-                paddingTop:px2dp(0),
             }}>
                 <PreLoadImage
                     imageUri={itemData.imgUrl}
