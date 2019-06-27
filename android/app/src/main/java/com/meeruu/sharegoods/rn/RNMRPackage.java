@@ -81,7 +81,6 @@ public class RNMRPackage implements ReactPackage {
                 new RecyclerViewHeaderManager(),
                 new ShowGroundViewManager(),
                 new ShowRecommendViewManager(),
-                new ShowActivityViewManager(),
                 new ShowDynamicViewManager());
     }
 
