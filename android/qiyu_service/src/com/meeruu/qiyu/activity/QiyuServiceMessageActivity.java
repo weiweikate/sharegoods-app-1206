@@ -1,16 +1,16 @@
 package com.meeruu.qiyu.activity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import com.meeruu.qiyu.KeyBoardUtils;
-import com.meeruu.qiyu.SPCacheUtils;
-import com.meeruu.qiyu.ScreenUtils;
 import com.meeruu.qiyu.SoftKeyboardFixerForFullscreen;
+import com.meeruu.qiyu.preference.PreferenceUtil;
 import com.meeruu.qiyu.view.MyKefuButton;
 import com.meeruu.statusbar.ImmersionBar;
 import com.qiyukf.unicorn.R;
@@ -35,8 +35,11 @@ public class QiyuServiceMessageActivity extends ServiceMessageActivity {
         final ImageView ivKefu = findViewById(R.id.iv_kefu);
         Bundle data = getIntent().getExtras();
         source = (ConsultSource) data.getSerializable("source");
+        final SharedPreferences preferences = PreferenceUtil.getSharedPreference(getApplication(), "qiyu");
         if (source != null) {
-            String shopId = (String) SPCacheUtils.get(QiyuServiceMessageActivity.this, "shopId", "");
+            String shopId = preferences.getString("shopId", "");
+            Log.d("1====", shopId);
+            Log.d("2====", source.shopId);
             if (TextUtils.isEmpty(source.shopId)) {
                 if (TextUtils.isEmpty(shopId)) {
                     myKefuButton.setVisibility(View.GONE);
@@ -60,12 +63,11 @@ public class QiyuServiceMessageActivity extends ServiceMessageActivity {
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(source.shopId)) {
-                    SPCacheUtils.put(QiyuServiceMessageActivity.this, "shopId", source.shopId);
+                    preferences.edit().putString("shopId", source.shopId).apply();
                     source.shopId = "";
                     Unicorn.openServiceActivity(QiyuServiceMessageActivity.this, "平台客服", source);
                 } else {
-                    String shopId = (String) SPCacheUtils.get(QiyuServiceMessageActivity.this, "shopId", "");
-                    source.shopId = shopId;
+                    source.shopId = preferences.getString("shopId", "");
                     Unicorn.openServiceActivity(QiyuServiceMessageActivity.this, source.title, source);
                 }
             }

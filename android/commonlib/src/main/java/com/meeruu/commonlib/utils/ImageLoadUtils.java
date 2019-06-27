@@ -228,7 +228,6 @@ public class ImageLoadUtils {
                             newUrl = String.format(ParameterUtils.IMG_URL_WH, newUrl, width, height);
                         }
                     }
-                    LogUtils.d("=======" + newUrl);
                     Uri uri = Uri.parse(newUrl);
                     loadRoundImage(uri, view, radius);
                 }
