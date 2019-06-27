@@ -20,7 +20,7 @@ const RootStack = createStackNavigator(Router,
         },
         transitionConfig: () => ({
             transitionSpec: {
-                duration: 260,
+                duration: 220,
                 easing: Easing.out(Easing.poly(3.6)),
                 timing: Animated.timing,
                 useNativeDriver: true

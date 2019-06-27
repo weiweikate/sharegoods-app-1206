@@ -6,7 +6,6 @@ import {
     TouchableOpacity
 } from 'react-native';
 import PropTypes from 'prop-types';
-// import DesignRule from "../../../constants/DesignRule";
 
 /**
  * 此组件为网络图片预加载组件,即网络图片加载可用,
@@ -26,7 +25,7 @@ export default class PreLoadImage extends Component {
         };
     }
 
-    componentWillReceiveProps(nextProps,prosp) {
+    componentWillReceiveProps(nextProps, prosp) {
         if (nextProps.imageUri !== this.props.imageUri) {
             this.state.isLoadComplete = false;
             this.state.type = 0;

@@ -86,7 +86,6 @@ class ActivityOneView extends Component {
                             height: ScreenUtils.width * this.state.ratio
                         }
                     ]}
-                    // resizeMode={'stretch'}
                 />
             </View>
         );
