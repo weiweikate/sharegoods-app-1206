@@ -80,7 +80,7 @@ const vipBg = [
  */
 
 const headerBgSize = { width: 375, height: 237 };
-
+const platformHeight = 10;
 const { px2dp, statusBarHeight } = ScreenUtils;
 const headerHeight = ScreenUtils.statusBarHeight + 44;
 // const offset = ScreenUtils.getImgHeightWithWidth(headerBgSize) - headerHeight;
@@ -244,16 +244,18 @@ export default class MinePage extends BasePage {
 
     //**********************************ViewPart******************************************
     _render() {
+        const {availableBalance, userScore, coupons, fansMSG } = settingModel
+        console.log(availableBalance,userScore,coupons,fansMSG);
         return (
             <View style={{flex: 1}}>
                 <PullView
                     bounces={false}
                     contentBackgroundColor={'#F7F7F7'}
-                    backgroundColor={'#F7F7F7'}
+                    backgroundColor={'white'}
                     renderForeground={this.renderUserHead}
                     renderStickyHeader={this.renderLevelNameNav}
                     stickyHeaderHeight={this.state.changeHeader ? 0 : px2dp(44 + statusBarHeight)}
-                    parallaxHeaderHeight={217+statusBarHeight}
+                    parallaxHeaderHeight={ScreenUtils.getImgHeightWithWidth(headerBgSize)}
                     onScroll={this._onScroll}
                     showsVerticalScrollIndicator={false}
                 >
@@ -367,24 +369,26 @@ export default class MinePage extends BasePage {
                         justifyContent: 'center'
                     }}>
                         <TouchableWithoutFeedback onPress={this.jumpToUserInformationPage}>
-                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                <Text maxLength={8}
-                                    style={{
-                                        color: DesignRule.textColor_mainTitle,
-                                        fontSize: px2dp(16),
-                                        includeFontPadding: false
-                                    }}>
-                                    {name}
-                                </Text>
-                                <UIImage source={res.button.white_go}
-                                         style={{height: px2dp(12), width: px2dp(7), marginLeft: px2dp(12)}}
-                                         resizeMode={'stretch'}/>
+                            <View>
+                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                    <Text maxLength={8}
+                                          style={{
+                                              color: DesignRule.textColor_mainTitle,
+                                              fontSize: px2dp(16),
+                                              includeFontPadding: false
+                                          }}>
+                                        {name}
+                                    </Text>
+                                    <UIImage source={res.button.white_go}
+                                             style={{height: px2dp(12), width: px2dp(7), marginLeft: px2dp(12)}}
+                                             resizeMode={'stretch'}/>
+                                </View>
+                                <View style={{flexDirection: 'row'}}>
+                                    {xiuOld}
+                                    {accreditID}
+                                </View>
                             </View>
                         </TouchableWithoutFeedback>
-                        <View style={{flexDirection: 'row'}}>
-                            {xiuOld}
-                            {accreditID}
-                        </View>
                     </View>
                     {/*<TouchableOpacity onPress={()=>{*/}
                         {/*this.$navigate(RouterMap.MyPromotionPage);*/}
@@ -476,7 +480,7 @@ export default class MinePage extends BasePage {
                 backgroundColor:'#ffffff',
             }}>
                 {icon}
-                <View style={{flexDirection: 'row', alignItems: 'center', flex:1}}>
+                <View style={{flexDirection: 'row', alignItems: 'center', flex:1, marginLeft: px2dp(10)}}>
                     <Text maxLength={8}
                           style={{
                               color: DesignRule.textColor_mainTitle,
@@ -490,13 +494,12 @@ export default class MinePage extends BasePage {
                     this.$navigate(RouterMap.MyPromotionPage);
                     TrackApi.ViewLevelInterest({ moduleSource: 2 });
                 }}>
-                    <ImageBackground style={{
-                        height: 24, width: 85,justifyContent:'center',
-                        alignItems: 'center',marginRight:15}} source={res.homeBaseImg.mine_btn_yellow}>
+                    <View style={{height: 24, width: 85,justifyContent:'center',
+                        alignItems: 'center',marginRight:15,backgroundColor:'#FFE6B1',borderRadius:12}}>
                         <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: DesignRule.fontSize_22 }}>
                             {user.token ? `${user.levelName ? user.levelName : ''}品鉴官>` : ''}
                         </Text>
-                    </ImageBackground>
+                    </View>
                 </TouchableWithoutFeedback>
             </View>
         );
@@ -539,13 +542,13 @@ export default class MinePage extends BasePage {
                     justifyContent: 'space-between',
                     alignItems: 'center'
                 }}>
-                    {this.accountItemView(StringUtils.formatMoneyString(user.totalBalance ? user.totalBalance : '0.00', false), '个人帐户(元)',1,() => {
+                    {this.accountItemView(StringUtils.formatMoneyString(user.totalBalance ? user.totalBalance : '0.00', false), '个人账户(元)',1,() => {
                         settingModel.availableBalanceAdd();
                         this.go2CashDetailPage(1);
                         TrackApi.ViewAccountBalance();
                     })}
                     <View style={{height:30,width:1,backgroundColor:'#E4E4E4'}}/>
-                    {this.accountItemView(user.totalScore ? user.totalScore : '0', '秀豆账户(枚)', 2 ,() => {
+                    {this.accountItemView(StringUtils.formatMoneyString(user.totalScore ? user.totalScore : '0',false), '秀豆账户(枚)', 2 ,() => {
                         settingModel.userScoreAdd();
                         this.go2CashDetailPage(2);
                         TrackApi.ViewShowDou();
@@ -749,7 +752,7 @@ export default class MinePage extends BasePage {
     renderBodyView = () => {
         return (
             <View style={{flex:1,backgroundColor:'#F7F7F7'}}>
-                <TaskVIew type={'mine'} style={{backgroundColor: '#F7F7F7', paddingBottom: 0 }}/>
+                <TaskVIew type={'mine'} style={{marginTop:platformHeight,backgroundColor: '#F7F7F7', paddingBottom: 0 }}/>
                 {this.orderRender()}
                 {this.activeRender()}
                 {this.utilsRender()}

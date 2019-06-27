@@ -67,13 +67,15 @@ export default class MyDynamicPage extends BasePage {
         }
 
         return (
-            <ImageBackground source={EmptyUtils.isEmpty(user.headImg) ? showHeaderBg : { uri: user.headImg }}
-                             style={styles.headerContainer} blurRadius={EmptyUtils.isEmpty(user.headImg) ? 0 : 10}>
-                {icon}
-                <Text style={styles.nameStyle}>
-                    {name}
-                </Text>
-            </ImageBackground>
+            <View style={{flex: 1, marginBottom: px2dp(ScreenUtils.isIOS ? 10 : 0)}}>
+                <ImageBackground source={EmptyUtils.isEmpty(user.headImg) ? showHeaderBg : {uri: user.headImg}}
+                                 style={styles.headerContainer} blurRadius={EmptyUtils.isEmpty(user.headImg) ? 0 : 10}>
+                    {icon}
+                    <Text style={styles.nameStyle}>
+                        {name}
+                    </Text>
+                </ImageBackground>
+            </View>
         );
     };
 
@@ -155,6 +157,7 @@ export default class MyDynamicPage extends BasePage {
 
     _render() {
         let Waterfall = Platform.OS === 'ios' ? ShowGroundView : ShowDynamicView;
+        let headerHeight = Platform.OS === 'ios' ? 210 : 200;
         return (
             <View style={styles.contain}>
                 <Waterfall style={{ flex: 1, marginTop: -10 }}
@@ -162,7 +165,7 @@ export default class MyDynamicPage extends BasePage {
                                this.dynamicList = ref;
                            }}
                            uri={'/social/show/content/page/mine/query@GET'}
-                           headerHeight={px2dp(200)}
+                           headerHeight={px2dp(headerHeight)}
                            type={'MyDynamic'}
                            renderHeader={this.renderHeader()}
                            onItemPress={({ nativeEvent }) => {

@@ -91,7 +91,7 @@
   
   //编辑按钮
   UIButton *editButton = [UIButton image:@"edit_img_bg" target:self action:@selector(editClick)];
-  [editButton setTitle:@"编辑" forState:UIControlStateNormal];
+//  [editButton setTitle:@"" forState:UIControlStateNormal];
   editButton.bounds = CGRectMake(0, 0, _width, _width);
   editButton.center = CGPointMake(self.center.x, self.bounds.size.height -_distance - _width/2);
   [self addSubview:editButton];

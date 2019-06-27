@@ -106,12 +106,15 @@ export default class ShowDetailPage extends BasePage {
                 }
             }
         );
+
+
     }
 
     componentWillUnmount() {
         this.willFocusSubscription && this.willFocusSubscription.remove();
         let { detail } = this.showDetailModule;
         this.params.ref && this.params.ref.replaceItemData(this.params.index, JSON.stringify(detail));
+        this.params.updateHotNum && this.params.updateHotNum(detail.hotCount);
     }
 
     getDetailByIdOrCode = (code) => {
@@ -352,7 +355,6 @@ export default class ShowDetailPage extends BasePage {
             });
         }
         DownloadUtils.downloadProduct({ detail });
-
         const { showNo , userInfoVO } = detail;
         const { userNo } = userInfoVO || {};
         track(trackEvent.XiuChangDownLoadClick,{
@@ -361,6 +363,7 @@ export default class ShowDetailPage extends BasePage {
             articleCode:showNo,
             author:userNo
         })
+        this._goToShare();
     };
 
     _clickLike = () => {
@@ -403,14 +406,15 @@ export default class ShowDetailPage extends BasePage {
                     </View>
                 </NoMoreClick>
                 <View style={{ width: px2dp(24) }}/>
-                <NoMoreClick onPress={this._downloadShowContent}>
+                {detail.showType !== 3? <NoMoreClick onPress={this._downloadShowContent}>
                     <View style={{ flexDirection: 'row' }}>
                         <Image source={iconDownload} style={styles.bottomIcon}/>
                         <Text style={styles.bottomNumText}>
                             {ShowUtils.formatShowNum(detail.downloadCount)}
                         </Text>
                     </View>
-                </NoMoreClick>
+                </NoMoreClick> : null}
+
                 <View style={{ flex: 1 }}/>
                 {!EmptyUtils.isEmptyArr(detail.products) ? <TouchableWithoutFeedback onPress={() => {
                     this.setState({
@@ -626,7 +630,7 @@ export default class ShowDetailPage extends BasePage {
                                 data: detail.showNo
                             }}
                             webJson={{
-                                title: (detail.showType === 1 ? detail.content : detail.title) || '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
+                                title: detail.title || '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
                                 linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
                                 thumImage: detail.resource && detail.resource[0] && detail.resource[0].url
                                     ? detail.resource[0].url : '', //(分享图标小图(https链接)图文分享使用)

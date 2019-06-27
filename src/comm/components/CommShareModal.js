@@ -78,6 +78,7 @@ import ScreenUtils from '../../utils/ScreenUtils';
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 import CommModal from './CommModal';
 import res from '../res';
+import resHome from '../../pages/mine/res'
 import bridge from '../../utils/bridge';
 import DesignRule from '../../constants/DesignRule';
 import { track } from '../../utils/SensorsTrack';
@@ -254,14 +255,6 @@ export default class CommShareModal extends React.Component {
         }
         Clipboard.setString(ShareUtil.queryString(this.props.webJson.linkUrl, { pageSource: 6 }));
         NativeModules.commModule.toast('复制链接成功');
-        // 2、跳转代码
-        Linking.canOpenURL('weixin://').then(supported => { // weixin://  alipay://
-            if (supported) {
-                Linking.openURL('weixin://');
-            } else {
-                bridge.$toast('请先安装微信');
-            }
-        });
     }
 
     changeShareType(shareType) {//切换是分享图片还是分享网页
@@ -290,6 +283,9 @@ export default class CommShareModal extends React.Component {
     };
 
     render() {
+        if (!this.state.modalVisible) {
+            return null;
+        }
         const { type } = this.props;
         // const { shareType } = this.state;
         let scale = this.props.type === 'web' ? 517 / 315 : 667 / 375;
@@ -345,7 +341,6 @@ export default class CommShareModal extends React.Component {
                 image: res.share.download, title: '下载图片', onPress: () => {
                     this.setState({ shareType: 0 },()=>{
                         this.saveImage(this.state.path);
-                        this.share(1);
                     });
 
                 }
@@ -381,7 +376,6 @@ export default class CommShareModal extends React.Component {
             image: res.share.copyURL, title: '复制链接', onPress: () => {
                 this.setState({ shareType: 1 },()=>{
                     this.copyUrl();
-                    this.share(1);
                 });
             }
         });
@@ -389,6 +383,10 @@ export default class CommShareModal extends React.Component {
 
         const { shareMoney } = this.props.imageJson || {};
         const shareMoneyText = this.getMoneyText(shareMoney);
+        let icon = (user.headImg && user.headImg.length > 0) ?
+            <Image source={{ uri: user.headImg }} style={styles.userIcon}
+                         borderRadius={13}/> : <Image source={resHome.homeBaseImg.mine_user_icon} style={styles.userIcon}
+                                                             borderRadius={13}/>;
 
         return (
             <CommModal onRequestClose={this.close}
@@ -422,9 +420,11 @@ export default class CommShareModal extends React.Component {
                                 <View style={{
                                     flex: 1,
                                     marginLeft: autoSizeWidth(25),
+                                    marginRight: 7,
                                     height: 1,
                                     backgroundColor: DesignRule.lineColor_inColorBg
                                 }}/>
+                                {icon}
                                 {
                                     shareMoneyText ?
                                         <MRText style={{
@@ -611,5 +611,10 @@ const styles = StyleSheet.create({
         width: autoSizeWidth(18),
         height: autoSizeWidth(18)
 
-    }
+    },
+    userIcon: {
+        width: 26,
+        height: 26,
+        borderRadius: 13,
+    },
 });

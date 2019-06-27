@@ -22,15 +22,16 @@ typedef void(^finshCompressVideo)(NSString * newPath);
 
 @property (nonatomic,strong) hyfFinshSelectBlock  finshBlock;
 @property (nonatomic,strong) WAVideoBox  * videoBox;
+@property (nonatomic,strong) NSDictionary * options;
 @end
 
 @implementation MRImageVideoManager
 
 SINGLETON_FOR_CLASS(MRImageVideoManager)
 
--(void)startSelectImageOrVideoWithBlock:(hyfFinshSelectBlock)finshBlock{
+-(void)startSelectImageOrVideoWithBlock:(NSDictionary *)options and:(hyfFinshSelectBlock)finshBlock{
   _finshBlock = finshBlock;
-  
+  _options = options;
   UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"相机",@"相册", nil];
   [sheet showInView:[self currentViewController_XG].view];
   
@@ -91,11 +92,13 @@ SINGLETON_FOR_CLASS(MRImageVideoManager)
     [[IJSImageManager shareManager] stopCachingImagesFormAllAssets];
     [IJSImageManager shareManager].allowPickingOriginalPhoto = YES;
     
-    IJSImagePickerController * nav = [[IJSImagePickerController alloc]initWithMaxImagesCount:7 columnNumber:4 pushPhotoPickerVc:YES];
+    IJSImagePickerController * nav = [[IJSImagePickerController alloc]initWithMaxImagesCount:8 columnNumber:4 pushPhotoPickerVc:YES];
+    nav.maxImagesCount = self.options[@"maxFiles"] ?[self.options[@"maxFiles"] integerValue]:8;
     nav.allowPickingVideo = NO;
     nav.networkAccessAllowed = NO;
     nav.allowPickingImage = YES;
     nav.sortAscendingByModificationDate = NO;
+    
     
      __weak typeof (self) weakSelf = self;
     [nav loadTheSelectedData:^(NSArray<UIImage *> *photos, NSArray<NSURL *> *avPlayers, NSArray<PHAsset *> *assets, NSArray<NSDictionary *> *infos, IJSPExportSourceType sourceType, NSError *error) {
@@ -140,29 +143,33 @@ SINGLETON_FOR_CLASS(MRImageVideoManager)
 
 //保存图片到沙盒
 -(void)saveImageWithImageArr:(NSArray *)imageArr and:(void(^)(NSArray * imageUrlArr))finshSave{
-  dispatch_semaphore_t sema = dispatch_semaphore_create(1);
-  NSMutableArray * urlArr=[NSMutableArray new];
-  for (NSInteger index =0 ; index < imageArr.count; index++) {
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-       dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
-      [IJSVideoManager saveImageToSandBoxImage:imageArr[index] completion:^(NSURL *outputPath, NSError *error) {
-        if (error) {
-          [JRLoadingAndToastTool showToast:@"图片缓存失败" andDelyTime:1];
-          dispatch_semaphore_signal(sema);
-          return ;
-        }
-        dispatch_semaphore_signal(sema);
-        [urlArr addObject:outputPath];
-        if (imageArr.count == urlArr.count) {
+  __weak typeof(self) weakSelf = self;
+ __block NSInteger saveImageIndex = imageArr.count;
+  NSMutableArray * urlArr = [[NSMutableArray alloc]initWithCapacity:saveImageIndex];
+  for (NSInteger index = 0; index < imageArr.count; index++) {
+    [urlArr addObject:@""];
+    [IJSVideoManager saveImageToSandBoxImage:imageArr[index] completion:^(NSURL *outputPath, NSError *error) {
+      saveImageIndex--;
+      if (!error) {
+        urlArr[index] = outputPath.absoluteString;
+      }
+      if (saveImageIndex == 0) {
+        if ([urlArr containsObject:@""]) {
+          [JRLoadingAndToastTool showToast:@"图片保存失败" andDelyTime:1];
+        }else{
           if (finshSave) {
             finshSave(urlArr);
           }
-        }else if (index == imageArr.count - 1 ) {
-          [JRLoadingAndToastTool showToast:@"图片缓存失败" andDelyTime:1];
         }
-      }];
-    });
+      }
+    }];
   }
+//  [weakSelf saveImage:imageArr toUrlArr:urlArr];
+}
+-(void)saveImage:(NSArray *)imageArr toUrlArr:(NSMutableArray *)urlArr {
+
+  
+ 
 }
 
 -(void)compressVideo:(NSString *)path andFinsh:(finshCompressVideo)finshCompress{

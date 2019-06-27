@@ -108,7 +108,7 @@ export default class TaskModalView extends React.Component {
                                 return(
                                     <ImageBackground source={bgs[GiftType[code]-1]} style={{
                                         height: ScreenUtils.autoSizeWidth(51),
-                                        width: ScreenUtils.autoSizeWidth(170),
+                                        width: ScreenUtils.autoSizeWidth(220),
                                         marginTop: ScreenUtils.autoSizeWidth(8),
                                         alignItems: 'center',
                                         flexDirection: 'row'

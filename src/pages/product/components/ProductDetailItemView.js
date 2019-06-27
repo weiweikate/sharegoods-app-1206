@@ -23,6 +23,7 @@ import res from '../../home/res';
 import { activity_type, activity_status } from '../ProductDetailModel';
 import bridge from '../../../utils/bridge';
 import { getSource } from '@mr/image-placeholder/oos';
+import { getSize } from '../../../utils/OssHelper';
 
 const { isNoEmpty } = StringUtils;
 const { arrow_right_black } = RES.button;
@@ -479,7 +480,7 @@ export class ContentItemView extends Component {
 
     componentDidMount() {
         const { item } = this.props;
-        Image.getSize(item, (width, height) => {
+        getSize(item, (width, height) => {
             height = height / width * contentImgWidth;
             this.setState({
                 height

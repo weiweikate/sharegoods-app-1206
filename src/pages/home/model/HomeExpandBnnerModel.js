@@ -2,9 +2,9 @@ import { observable, flow, action } from 'mobx';
 import HomeApi from '../api/HomeAPI';
 import { homeType } from '../HomeTypes';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import { Image } from 'react-native';
 import { homeModule } from './Modules';
 import store from '@mr/rn-store';
+import { getSize } from '../../../utils/OssHelper';
 
 const { px2dp } = ScreenUtils;
 const bannerWidth = ScreenUtils.width;
@@ -56,11 +56,11 @@ class HomeExpandBnnerModel {
                 let url = val.image;
                 this.imgUrls.push(url);
                 if (!this.adHeights.has(url)) {
-                    Image.getSize(url, (width, height) => {
+                    getSize(url,(width, height)=> {
                         let h = (bannerWidth * height) / width;
                         this.adHeights.set(url, h);
                         this.getBannerHeight();
-                    });
+                    })
                 }
             });
         }

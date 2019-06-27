@@ -66,14 +66,13 @@ const scrollDist = height / 2 - headerHeight;
 import BasePage from '../../BasePage';
 import { TrackApi } from '../../utils/SensorsTrack';
 import taskModel from './model/TaskModel';
-import settingModel from '../mine/model/SettingModel'
 import TaskVIew from './view/TaskVIew';
 import intervalMsgModel, { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
 import { UserLevelModalView } from './view/TaskModalView';
 
 const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
     <Text style={styles.text}
-          allowFontScaling={false}>{errorMsg ? errorMsg : (isEnd ? '我也是有底线的' : (isFetching ? '加载中...' : '加载更多'))}</Text>
+          allowFontScaling={false}>{errorMsg ? errorMsg : (isEnd ? '我也是有底线的' : (isFetching ? '加载中...' : '加载更多中...'))}</Text>
 </View>;
 
 @observer
@@ -232,7 +231,6 @@ class HomePage extends BasePage {
         this.listenerRetouchHome = DeviceEventEmitter.addListener('retouch_home', this.retouchHome);
         this.listenerHomeRefresh = JSManagerEmitter.addListener(HOME_REFRESH, this.homeTypeRefresh);
         this.listenerSkip = JSManagerEmitter.addListener(HOME_SKIP, this.homeSkip);
-        this.listenerJSMessage = JSManagerEmitter.addListener('MINE_NATIVE_TO_RN_MSG', this.mineMessageData);
 
     }
 
@@ -268,29 +266,6 @@ class HomePage extends BasePage {
         intervalMsgModel.setMsgData(content);
     };
 
-    mineMessageData = (data)=>{
-        const { params } = JSON.parse(data) || {};
-        if(params && Number(params.index) === 1){
-            console.log('JSPushData1',params);
-            settingModel.availableBalanceAdd(1);
-        }
-
-        if(params && Number(params.index) === 2){
-            console.log('JSPushData2',params);
-            settingModel.userScoreAdd(1);
-        }
-
-        if(params && Number(params.index) === 3){
-            console.log('JSPushData3',params);
-            settingModel.couponsAdd(1);
-        }
-
-        if(params && Number(params.index) === 4){
-            console.log('JSPushData4',params);
-            settingModel.fansMSGAdd(1);
-        }
-    };
-
     componentWillUnmount() {
         this.willBlurSubscription && this.willBlurSubscription.remove();
         this.willFocusSubscription && this.willFocusSubscription.remove();
@@ -301,7 +276,6 @@ class HomePage extends BasePage {
         this.listenerRetouchHome && this.listenerRetouchHome.remove();
         this.listenerHomeRefresh && this.listenerHomeRefresh.remove();
         this.listenerSkip && this.listenerSkip.remove();
-        this.listenerJSMessage && this.listenerJSMessage.remove();
     }
 
     retouchHome = () => {

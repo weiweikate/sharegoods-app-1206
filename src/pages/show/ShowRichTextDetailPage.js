@@ -109,6 +109,7 @@ export default class ShowRichTextDetailPage extends BasePage {
         this.willFocusSubscription && this.willFocusSubscription.remove();
         let { detail } = this.showDetailModule;
         this.params.ref && this.params.ref.replaceItemData(this.params.index, JSON.stringify(detail));
+        this.params.updateHotNum && this.params.updateHotNum(detail.hotCount);
     }
 
     getDetailByIdOrCode = (code) => {
@@ -601,7 +602,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                     productModalVisible: false
                 });
             }}/> : null}
-            {detail.status !== 1 ? this._shieldRender() : null}
+            {detail.status !== 1  && (EmptyUtils.isEmpty(detail.userInfoVO) || detail.userInfoVO.userNo !== user.code) ? this._shieldRender() : null}
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             defaultModalVisible={this.params.openShareModal}
@@ -623,7 +624,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                                 data: detail.showNo
                             }}
                             webJson={{
-                                title: (detail.showType === 1 ? detail.content : detail.title) || '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
+                                title: detail.title || '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
                                 linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
                                 thumImage: detail.resource && detail.resource[0] ? detail.resource[0].url : '',//(分享图标小图(https链接)图文分享使用)
                                 dec: '好物不独享，内有惊喜福利~'

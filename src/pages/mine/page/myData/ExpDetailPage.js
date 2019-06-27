@@ -26,8 +26,9 @@ const lv_down = res.cashAccount.zhanghu_lv;
 const { px2dp } = ScreenUtils;
 
 // const headerBgSize = { width: ScreenUtils.width, height: 188 };
-// const headerHeight = ScreenUtils.statusBarHeight + 44;
-// const offset = ScreenUtils.getImgHeightWithWidth(headerBgSize) - headerHeight;
+
+const offset = 175;
+const headerHeight = ScreenUtils.statusBarHeight + 44;
 
 const detailData = {
     1: { title: '邀请注册奖励', icon: res.cashAccount.fenxiang_icon },
@@ -64,8 +65,12 @@ export default class ExpDetailPage extends BasePage {
             levelExperience: this.params.levelExperience || 0,
             isEmpty: false,
             loadingState: PageLoadingState.loading,
+            changeHeader: false
+
         };
         this.currentPage = 0;
+        this.st = 0;
+
     }
 
     $navigationBarOptions = {
@@ -86,6 +91,31 @@ export default class ExpDetailPage extends BasePage {
         this.getDataFromNetwork();
     }
 
+
+    _onScroll = (event) => {
+        let Y = event.nativeEvent.contentOffset.y;
+        if (Y <= 175) {
+            this.st = Y / offset;
+            // this.setState({
+            //     changeHeader: false
+            // });
+        } else {
+            this.st = 1;
+            // this.setState({
+            //     changeHeader: true
+            // });
+        }
+
+        this.headerBg.setNativeProps({
+            opacity: this.st,
+        });
+        this.textBg.setNativeProps({
+            style:{
+                opacity: this.st == 1 ? 1 : 0
+            },
+        });
+    };
+
     _render() {
         return (
             <View style={styles.container}>
@@ -94,9 +124,24 @@ export default class ExpDetailPage extends BasePage {
         );
     }
 
+    navBackgroundRender = ()=> {
+        return (
+            <View ref={(ref) => this.headerBg = ref}
+                  style={{
+                      backgroundColor: '#FF0050',
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: headerHeight,
+                      opacity: 0
+                  }}/>
+        );
+    }
+
     renderHeader = () => {
         return (
-            <ImageBackground resizeMode={'stretch'} source={account_bg} style={{width:ScreenUtils.width,height:ScreenUtils.statusBarHeight + 44}}>
+            <View  style={{ position: 'absolute', top: 0, left: 0, right: 0 }}>
                 <View style={styles.headerWrapper}>
                     <TouchableWithoutFeedback onPress={() => {
                         this.$navigateBack();
@@ -112,16 +157,18 @@ export default class ExpDetailPage extends BasePage {
                             <Image source={res.button.white_back}/>
                         </View>
                     </TouchableWithoutFeedback>
-                    <Text style={{
-                        color: DesignRule.white,
-                        fontSize: px2dp(17),
-                        includeFontPadding: false
-                    }}>
-                        {this.st < 0.7 ? '' : '我的经验'}
+                    <Text ref={(ref) => this.textBg = ref}
+                          style={{
+                              opacity: 0,
+                              color: DesignRule.white,
+                              fontSize: px2dp(17),
+                              includeFontPadding: false
+                          }}>
+                         我的经验
                     </Text>
                     <View style={{flex:1}}/>
                 </View>
-            </ImageBackground>
+            </View>
         );
     };
 
@@ -131,8 +178,8 @@ export default class ExpDetailPage extends BasePage {
         return (
             <ImageBackground source={account_bg_white} resizeMode={'stretch'} style={{
                 position: 'absolute',
-                top: px2dp(10),
-                height: px2dp(205),
+                top: px2dp(66),
+                height: 174,
                 width: DesignRule.width,
                 left: 0,
                 paddingHorizontal: DesignRule.margin_page,
@@ -147,7 +194,7 @@ export default class ExpDetailPage extends BasePage {
                     color: DesignRule.textColor_mainTitle,
                     fontSize: 48,
                     marginLeft: DesignRule.margin_page,
-                    marginTop: px2dp(15)
+                    marginTop: px2dp(5)
                 }}>
                     {this.state.experience || 0}
                     <Text style={{
@@ -165,7 +212,7 @@ export default class ExpDetailPage extends BasePage {
                 </Text>
                 <View style={{
                     overflow: 'hidden',
-                    marginTop: px2dp(26),
+                    marginTop: px2dp(10),
                     height: px2dp(8),
                     width: ScreenUtils.px2dp(315),
                     alignSelf: 'center',
@@ -203,11 +250,11 @@ export default class ExpDetailPage extends BasePage {
     _renderContent = () => {
         return (
             <View style={styles.contentStyle}>
-                {this.renderHeader()}
                 <RefreshList
                     data={this.state.viewData}
                     ListHeaderComponent={()=>(
-                        <ImageBackground resizeMode={'stretch'} source={account_bg} style={styles.headerContainer}>
+                        <ImageBackground resizeMode={'stretch'} source={account_bg}
+                                         style={{marginBottom: 10, height: 225, width: ScreenUtils.width, backgroundColor: 'white'}}>
                             {this._accountInfoRender()}
                         </ImageBackground>
                     )}
@@ -218,11 +265,15 @@ export default class ExpDetailPage extends BasePage {
                     isEmpty={this.state.isEmpty}
                     emptyTip={'暂无数据'}
                     progressViewOffset={px2dp(90)}
+                    onScroll={(e)=>{this._onScroll(e)}}
                 />
-
+                {this.navBackgroundRender()}
+                {this.renderHeader()}
             </View>
         );
     };
+
+
     renderReHeader = () => {
         return (
             <View style={{

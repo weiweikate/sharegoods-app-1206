@@ -389,8 +389,8 @@ const styles = StyleSheet.create({
         height: 50
     },
     playControl: {
-        width: 24,
-        height: 24,
+        width: 50,
+        height: 50,
         marginLeft: 15
     },
     shrinkControl: {
@@ -408,6 +408,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         height: 44,
         alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.8)'
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        position:'absolute',
+        bottom:0,
+        left:0
     }
 });

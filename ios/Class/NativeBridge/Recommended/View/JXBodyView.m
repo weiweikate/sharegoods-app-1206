@@ -30,6 +30,7 @@
   if(!_bgView){
     _bgView = [[UIView alloc]init];
     _bgView.hidden = YES;
+    _bgView.layer.cornerRadius = 5;
     _bgView.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.1];
   }
   return _bgView;
@@ -101,6 +102,9 @@
   if(imageType){
     self.bgView.hidden = NO;
     self.bgImage.hidden = NO;
+  }else{
+    self.bgView.hidden = YES;
+    self.bgImage.hidden = YES;
   }
 }
 

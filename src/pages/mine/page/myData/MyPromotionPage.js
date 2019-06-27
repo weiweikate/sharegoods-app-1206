@@ -17,6 +17,7 @@ import LinearGradient from 'react-native-linear-gradient';
 // 图片资源
 import DesignRule from '../../../../constants/DesignRule';
 import BasePage from '../../../../BasePage';
+import user from '../../../../model/user';
 // import {
 //     NoMoreClick
 // } from '../../../../components/ui';
@@ -121,7 +122,7 @@ export default class MyPromotionPage extends BasePage {
                 experience: data.experience || 0,
                 levelExperience: data.levelExperience || 0,
                 headImg: data.headImg,
-                realName: data.nickname,
+                realName: user.nickname,
                 loadingState: PageLoadingState.success,
                 ...data
             });
@@ -193,10 +194,15 @@ export default class MyPromotionPage extends BasePage {
                 {this.renderLevelCard(userLevel)}
                 {this.progressView(userLevel)}
                 <View style={{flex:1, height:30,alignItems:'center',justifyContent:'center'}}>
-                    <Text style={{color:'#999999',fontSize:10}}>距下一等级还差
-                        <Text style={{color:'#333333',fontSize:16}}> {EXPNum >= 0 ? EXPNum : 0} </Text>
-                        经验值
-                    </Text>
+                    {EXPNum >= 0 ?
+                        <Text style={{color: '#999999', fontSize: 10}}>距下一等级还差
+                            <Text style={{color: '#333333', fontSize: 16}}> {EXPNum >= 0 ? EXPNum : 0} </Text>
+                            经验值
+                        </Text> :
+                        <Text style={{color: '#999999', fontSize: 10}}>
+                            您已达到最高等级
+                        </Text>
+                    }
                 </View>
             </View>
         )
@@ -306,21 +312,21 @@ export default class MyPromotionPage extends BasePage {
             <View key={index + 'progressView'}
                 style={{flex: 1, flexDirection: 'row', height: 16, alignItems: 'center',marginTop:10, marginLeft:10,marginRight:10}}>
 
-                {index > 0 ? <Image source={dotArr[index - num]} style={{width:10, height:10}}/>
+                {index > 0 ? <Image source={dotArr[index - num]} style={{width:10, height:10, marginRight: 20,}}/>
                     : <View style={{width:10, height:10}}/>}
                 {index > 0 ?
-                    <View style={{flex: 1, height: 4, backgroundColor: 'rgba(0,0,0,0.1)', marginLeft: 20, marginRight: 20, borderRadius: 6}}>
+                    <View style={{flex: 1, height: 4, backgroundColor: 'rgba(0,0,0,0.1)', borderRadius: 6}}>
                         <View style={{flex: 1, width: index == 5 ? `${progress}%` : index > userLevel ? '0%' : '100%',
                             height: 4, backgroundColor: '#FFD57D', borderRadius: 6}}/>
                     </View>
                     : <View style={{flex:1, height:4}}/>}
-                <Image source={dotArr[index]} style={{width:10, height:10}}/>
+                <Image source={dotArr[index]} style={{width:10, height:10, marginLeft: 20, marginRight: 20,}}/>
                 {index < 4 ?
-                    <View style={{flex: 1, height: 4, backgroundColor: 'rgba(0,0,0,0.1)', marginLeft: 20, marginRight: 20, borderRadius: 6}}>
+                    <View style={{flex: 1, height: 4, backgroundColor: 'rgba(0,0,0,0.1)',  borderRadius: 6}}>
                         <View style={{flex: 1, width:`${progress}%`,height: 4, backgroundColor: '#FFD57D', borderRadius: 6}}/>
                     </View>
                     : <View style={{flex:1, height:4}}/>}
-                {index < 4 ? <Image source={dotArr[index + num]} style={{width:10, height:10}}/>
+                {index < 4 ? <Image source={dotArr[index + num]} style={{width:10, height:10,marginLeft: 20,}}/>
                     : <View style={{width:10, height:10}}/>}
             </View>
         )

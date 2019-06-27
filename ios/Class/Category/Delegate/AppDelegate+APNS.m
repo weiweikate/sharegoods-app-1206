@@ -28,6 +28,7 @@
 @implementation AppDelegate (APNS)
 
 -(void)JR_ConfigAPNS:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
+  [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
   [self configAPNSWithOption:launchOptions];
   [self checkCurrentNotificationStatus];
   
@@ -287,7 +288,6 @@
   //应用退出后的bgde后期根据具体业务再说
   //  NSInteger count = [[[QYSDK sharedSDK] conversationManager] allUnreadCount];
   //  [[UIApplication sharedApplication] setApplicationIconBadgeNumber:count];
-  [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
 }
 - (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
@@ -393,7 +393,7 @@
     [userDefaults setObject:[NSDate new] forKey: NotificationStatusTime];
     return;
   }
-  if ( [[date dateByAddingSeconds: 30] compare:[NSDate new]] == NSOrderedDescending)  {
+  if ( [[date dateByAddingDays: 30] compare:[NSDate new]] == NSOrderedDescending)  {
     return;
   }
     [userDefaults setObject:[NSDate new] forKey: NotificationStatusTime];

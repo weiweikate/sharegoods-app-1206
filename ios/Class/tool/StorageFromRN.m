@@ -12,6 +12,7 @@
 
 static NSString *const RCTStorageDirectory = @"RCTAsyncLocalStorage_V1";
 static NSString *const RCTManifestFileName = @"manifest.json";
+static NSString *const ProductHost = @"https://api.sharegoodsmall.com/gateway";
 
 static NSString *RCTGetStorageDirectory()
 {
@@ -54,7 +55,7 @@ static NSString *RCTGetStorageDirectory()
   NSDictionary *dic = [self configDic];
   NSString * path = dic[@"host"];
   if (path==nil || path.length == 0) {
-    path = @"https://api.sharegoodsmall.com/gateway";
+    path = ProductHost;
   }
   return path;
 }
@@ -76,5 +77,13 @@ static NSString *RCTGetStorageDirectory()
     path = @"https://api.sharegoodsmall.com/gateway/gongmall/contract/reback";
   }
   return path;
+}
+
++(NSString *)getTrackAddress{
+  if ([[self getHost] isEqualToString:ProductHost]) {
+    return SA_SERVER_URL_production;
+  }else{
+     return SA_SERVER_URL_default;
+  }
 }
 @end

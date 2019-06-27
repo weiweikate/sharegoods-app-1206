@@ -3,11 +3,24 @@
  * @Desc
  */
 
-import { observable, action } from 'mobx';
+import { observable, action, autorun } from 'mobx';
 import store from '@mr/rn-store';
+import userModel from '../../../model/user';
+
+
+const mineKey = '@mr/msgmine';
+
 
 class SettingModel {
-
+    @observable
+    data = {};
+    @observable
+    params = {
+        userScore: 0,
+        availableBalance: 0,
+        coupons: 0,
+        fansMSG: 0
+    };
     @observable
     JSPushMessage = true;
 
@@ -44,41 +57,100 @@ class SettingModel {
                 this.messageState = data.messageState;
             }
         });
+         store.get(mineKey).then((data) => {
+                console.log('dataMineKey',data)
+                if (data) {
+                    this.data = data;
+                    let item = data[userModel.code];
+                    this.userScore = item && item.userScore ? item.userScore : 0;
+                    this.availableBalance = item && item.availableBalance ? item.availableBalance : 0;
+                    this.coupons = item && item.availableBalance ? item.availableBalance : 0;
+                    this.fansMSG = item && item.fansMSG ? item.fansMSG : 0;
+                    this.params = {
+                        userScore: this.userScore,
+                        availableBalance:this.availableBalance,
+                        coupons: this.coupons,
+                        fansMSG:this.fansMSG,
+                    }
+                }else {
+                    this.data = {};
+                    this.userScore = 0;
+                    this.availableBalance = 0;
+                    this.coupons = 0;
+                    this.fansMSG = 0;
+                    this.params = {
+                        userScore: 0,
+                        availableBalance: 0,
+                        coupons: 0,
+                        fansMSG: 0,
+                    }
+                }
+            })
     }
+
+
 
     @action
     userScoreAdd(num){
-        if(num){
-            this.userScore = this.userScore + num;
-        }else {
-            this.userScore = 0;
+        if(userModel.code) {
+            if (num) {
+                this.userScore = this.userScore + num;
+            } else {
+                this.userScore = 0;
+            }
+            let key = userModel.code;
+            this.params.userScore = this.userScore;
+            let value = this.data;
+            value[key] = this.params;
+            store.save(mineKey, value);
         }
     }
 
     @action
     availableBalanceAdd(num){
-        if(num){
-            this.availableBalance = this.availableBalance + num;
-        }else {
-            this.availableBalance = 0;
+        if(userModel.code) {
+            if (num) {
+                this.availableBalance = this.availableBalance + num;
+            } else {
+                this.availableBalance = 0;
+            }
+            let key = userModel.code;
+            this.params.availableBalance = this.availableBalance;
+            let value = this.data;
+            value[key] = this.params;
+            store.save(mineKey, value);
         }
     }
 
     @action
     couponsAdd(num){
-        if(num){
-            this.coupons = this.coupons + num;
-        }else {
-            this.coupons = 0;
+        if(userModel.code) {
+            if (num) {
+                this.coupons = this.coupons + num;
+            } else {
+                this.coupons = 0;
+            }
+            let key = userModel.code;
+            this.params.coupons = this.coupons;
+            let value = this.data;
+            value[key] = this.params;
+            store.save(mineKey, value);
         }
     }
 
     @action
     fansMSGAdd(num){
-        if(num){
-            this.fansMSG = this.fansMSG + num;
-        }else {
-            this.fansMSG = 0;
+        if(userModel.code) {
+            if (num) {
+                this.fansMSG = this.fansMSG + num;
+            } else {
+                this.fansMSG = 0;
+            }
+            let key = userModel.code;
+            this.params.fansMSG = this.fansMSG;
+            let value = this.data;
+            value[key] = this.params;
+            store.save(mineKey, value);
         }
     }
 
@@ -98,7 +170,11 @@ class SettingModel {
 
 
 const settingModel = new SettingModel();
-settingModel.getLocationState();
+
+
+autorun(()=>{
+    userModel.code ? settingModel.getLocationState() : null;
+})
 
 export default settingModel;
 

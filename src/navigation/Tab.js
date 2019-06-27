@@ -28,20 +28,23 @@ class NormalTab extends Component {
         return <View style={styles.tab}>
             <View>
                 <Image style={styles.tabBarIcon} source={source}/>
-                {title === '我的' && (settingModel.availableBalance > 0 || settingModel.userScore > 0 || settingModel.coupons > 0 || settingModel.fansMSG > 0) ?
-                    <View style={styles.mineDot}/> : null}
+                {user.isLogin && title === '我的' && (settingModel.availableBalance > 0 || settingModel.userScore > 0 || settingModel.coupons > 0 || settingModel.fansMSG > 0) ?
+                    <Image source={res.other.dot} style={styles.mineDot}/> : null}
             </View>
             <Text style={styles.text}>{title}</Text>
         </View>;
     }
 }
 
-const ActiveTab = ({ source, title }) => {
-    return <View style={styles.tab}>
-        <Image style={styles.tabBarIcon} source={source}/>
-        <Text style={styles.activeText}>{title}</Text>
-    </View>;
-};
+class ActiveTab extends Component {
+    render(){
+        const {source,title} = this.props;
+        return <View style={styles.tab}>
+                <Image style={styles.tabBarIcon} source={source}/>
+            <Text style={styles.text}>{title}</Text>
+        </View>;
+    }
+}
 
 const Tab = ({ focused, activeSource, normalSource, title }) => {
     if (focused) {
@@ -305,9 +308,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         right: 0,
         top: 0,
-        width: 10,
+        width: 16,
         height: 10,
-        backgroundColor: 'red',
-        borderRadius: 5
     }
 });

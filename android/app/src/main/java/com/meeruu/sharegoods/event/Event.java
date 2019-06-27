@@ -38,4 +38,16 @@ public class Event {
         }
     }
 
+    public static class MRMineMsgEvent {
+        private String data;
+
+        public MRMineMsgEvent(String data) {
+            this.data = data;
+        }
+
+        public String getData() {
+            return data;
+        }
+    }
+
 }
