@@ -475,7 +475,7 @@ export default class MinePage extends BasePage {
                 flexDirection: 'row',
                 alignItems: 'center',
                 height: px2dp(44 + statusBarHeight),
-                width: px2dp(ScreenUtils.width),
+                width: ScreenUtils.width,
                 paddingVertical: 5,
                 backgroundColor:'#ffffff',
             }}>
