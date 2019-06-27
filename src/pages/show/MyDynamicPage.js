@@ -197,7 +197,6 @@ export default class MyDynamicPage extends BasePage {
 var styles = StyleSheet.create({
     contain: {
         flex: 1,
-        backgroundColor: 'red'
     },
     headerContainer: {
         width: DesignRule.width,

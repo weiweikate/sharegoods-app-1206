@@ -147,7 +147,7 @@ export default class MessageCenterPage extends BasePage {
                 count = this.state.shopMessageCount;
             }
 
-
+            count = count > 99 ? '99+' : count;
             arr.push(
                 <View key={i} style={{ width: ScreenUtils.width, height: 60, marginTop: 11 }}>
                     <TouchableOpacity style={{
@@ -178,7 +178,7 @@ export default class MessageCenterPage extends BasePage {
                                 <Text style={{
                                     color: 'white',
                                     includeFontPadding: false,
-                                    fontSize: DesignRule.fontSize_20
+                                    fontSize: px2dp(9)
                                 }}>{count}</Text>
                             </View> : null}
                             <Image source={arrow_right} style={{ height: 14 }} resizeMode={'contain'}/>

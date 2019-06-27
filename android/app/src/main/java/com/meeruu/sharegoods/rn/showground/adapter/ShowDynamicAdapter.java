@@ -28,7 +28,7 @@ public class ShowDynamicAdapter extends BaseQuickAdapter<NewestShowGroundBean.Da
 
     public ShowDynamicAdapter() {
         super(R.layout.show_dynamic_item);
-        realWidth = (ScreenUtils.getScreenWidth() - DensityUtils.dip2px(40)) / 2;
+        realWidth = (ScreenUtils.getScreenWidth() - DensityUtils.dip2px(30)) / 2 ;
         minHeight = realWidth * 120 / 167;
         maxHeight = realWidth * 240 / 167;
     }
