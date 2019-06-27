@@ -19,7 +19,7 @@ export default class ShopCartEmptyCell extends Component {
             <View style={{
                 marginTop:px2dp(8),
                 height: itemData.height,
-                width: haveShopCartGoods?ScreenUtils.width / 2 - px2dp(23) : ScreenUtils.width / 2 - px2dp(19),
+                width: haveShopCartGoods?ScreenUtils.width / 2 - px2dp(23) : ScreenUtils.width / 2 - px2dp(22),
                 marginLeft:haveShopCartGoods? px2dp(10):px2dp(0),
                 backgroundColor:DesignRule.color_fff,
                 borderRadius:px2dp(6),
@@ -28,7 +28,7 @@ export default class ShopCartEmptyCell extends Component {
                     imageUri={itemData.imgUrl}
                     style={{
                         marginTop:px2dp(2),
-                        width: haveShopCartGoods?ScreenUtils.width / 2 - px2dp(30) :ScreenUtils.width / 2 - px2dp(20),
+                        width: haveShopCartGoods?ScreenUtils.width / 2 - px2dp(30) :ScreenUtils.width / 2 - px2dp(25),
                         height: itemData.imageHeight ,
                         borderRadius:px2dp(6)
                     }}
