@@ -178,6 +178,7 @@ export default class MyCashAccountPage extends BasePage {
                     onEndReachedThreshold={0.1}
                     stickySectionHeadersEnabled={true}
                     onScroll={(e)=>{this._onScroll(e)}}
+                    showsVerticalScrollIndicator={false}
                 />
                 {this.navBackgroundRender()}
                 {this.renderHeader()}
@@ -214,6 +215,8 @@ export default class MyCashAccountPage extends BasePage {
                     color: DesignRule.textColor_mainTitle,
                     fontSize: 48,
                     marginLeft: DesignRule.margin_page,
+                    height: 58,
+                    lineHeight: 58
                 }}>{user.availableBalance ? user.availableBalance : '0.00'}</Text>
                 <View style={{display:'flex', flexDirection:'row', marginBottom: 15}} >
                     <View style={{flex:1,marginLeft: 15, justifyContent:'center'}}>

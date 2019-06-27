@@ -133,6 +133,7 @@ export default class MyIntegralAccountPage extends BasePage {
                     onEndReachedThreshold={0.1}
                     stickySectionHeadersEnabled={true}
                     onScroll={(e)=>{this._onScroll(e)}}
+                    showsVerticalScrollIndicator={false}
                 />
                 {this.navBackgroundRender()}
                 {this.renderHeader()}
@@ -175,6 +176,8 @@ export default class MyIntegralAccountPage extends BasePage {
                     color: DesignRule.textColor_mainTitle,
                     fontSize: 48,
                     marginLeft: DesignRule.margin_page,
+                    height: 58,
+                    lineHeight: 58
                 }}>{user.userScore ? user.userScore : 0}</Text>
 
                 <View style={{display:'flex', flexDirection:'row', marginBottom: 15}} >
