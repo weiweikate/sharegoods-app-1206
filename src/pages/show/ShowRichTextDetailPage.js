@@ -455,7 +455,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                     'productCode': detail.prodCode
                 });
                 /*加入购物车埋点*/
-                const { showNo , userInfoVO } = detail;
+                const { showNo , userInfoVO } = this.showDetailModule.detail;
                 const { userNo } = userInfoVO || {};
                 track(trackEvent.XiuChangAddToCart, {
                     xiuChangBtnLocation:'2',
