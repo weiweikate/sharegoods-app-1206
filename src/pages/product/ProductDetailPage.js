@@ -62,7 +62,6 @@ export default class ProductDetailPage extends BasePage {
             goType: ''
         };
         this.productDetailModel.prodCode = this.params.productCode;
-        this.productDetailModel.sourceType = this.params.type;
         this.productDetailModel.trackCode = this.params.trackCode;
         this.productDetailModel.trackType = this.params.trackType;
     }
@@ -292,7 +291,7 @@ export default class ProductDetailPage extends BasePage {
     _renderContent = () => {
         const {
             name, imgUrl, prodCode, originalPrice, groupPrice, v0Price, promotionMinPrice,
-            shareMoney, sectionDataList, productIsPromotionPrice, nameShareText, productDetailCouponsViewModel,
+            shareMoney, sectionDataList, productIsPromotionPrice, isSkillIn, nameShareText, productDetailCouponsViewModel,
             priceTypeTextList, monthSaleCount
         } = this.productDetailModel;
         return <View style={styles.container}>
@@ -331,7 +330,7 @@ export default class ProductDetailPage extends BasePage {
                             trackEvent={trackEvent.Share}
                             type={'Image'}
                             imageJson={{
-                                monthSaleType: monthSaleCount >= 1000 ? 3 : (monthSaleCount >= 500 ? 2 : 1),
+                                monthSaleType: isSkillIn ? 4 : (monthSaleCount >= 1000 ? 3 : (monthSaleCount >= 500 ? 2 : 1)),
                                 imageUrlStr: imgUrl,
                                 titleStr: `${name}`,
                                 priceType: priceTypeTextList,
