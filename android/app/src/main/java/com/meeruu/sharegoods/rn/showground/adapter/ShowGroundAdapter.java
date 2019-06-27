@@ -14,9 +14,8 @@ import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
 import com.meeruu.sharegoods.rn.showground.utils.NumUtils;
-import com.meeruu.sharegoods.rn.showground.utils.UrlUtils;
 
-import java.util.Map;
+import static com.meeruu.sharegoods.rn.showground.adapter.ShowRecommendAdapter.userImgW;
 
 
 public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.DataBean, BaseViewHolder> {
@@ -44,7 +43,7 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
             userUrl = "res://" + userIcon.getContext().getPackageName() + "/" + R.drawable.bg_app_user;
         }
         if (!TextUtils.equals(userUrl, userTag)) {
-            ImageLoadUtils.loadCircleNetImage(userUrl, userIcon);
+            ImageLoadUtils.loadCircleNetImage(userUrl, userIcon, userImgW, userImgW);
             userIcon.setTag(userUrl);
         }
         final SimpleDraweeView imageView = helper.getView(R.id.showground_item_image);
@@ -52,16 +51,16 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
         float height = 1;
         String imgUrl = null;
         if (item.getResource() != null) {
-            if(item.getShowType() == 3){
-                for (NewestShowGroundBean.DataBean.ResourceBean resourceBean : item.getResource()){
-                    if(resourceBean.getType() == 5){
+            if (item.getShowType() == 3) {
+                for (NewestShowGroundBean.DataBean.ResourceBean resourceBean : item.getResource()) {
+                    if (resourceBean.getType() == 5) {
                         imgUrl = resourceBean.getBaseUrl();
                         width = (float) resourceBean.getWidth();
                         height = (float) resourceBean.getHeight();
                         break;
                     }
                 }
-            }else {
+            } else {
                 NewestShowGroundBean.DataBean.ResourceBean resourceBean = item.getResource().get(0);
                 imgUrl = resourceBean.getBaseUrl();
                 width = (float) resourceBean.getWidth();
@@ -91,7 +90,7 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
             params.width = realWidth;
             params.height = realHeight;
             imageView.setLayoutParams(params);
-            ImageLoadUtils.loadRoundNetImage(imgUrl, imageView, arr_raduis);
+            ImageLoadUtils.loadRoundNetImage(imgUrl, imageView, realWidth, realHeight, arr_raduis);
         }
         TextView name = helper.getView(R.id.showground_item_name);
         name.setText(item.getUserInfoVO().getUserName());
