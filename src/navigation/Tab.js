@@ -16,7 +16,6 @@ import DesignRule from '../constants/DesignRule';
 import { observer } from 'mobx-react';
 import { autorun } from 'mobx';
 import Animation from 'lottie-react-native';
-import { TrackApi } from '../utils/SensorsTrack';
 import { navigateBackToStore } from './RouterMap';
 import RouterMap from './RouterMap';
 
@@ -191,7 +190,6 @@ export const TabNav = createBottomTabNavigator(
                         DeviceEventEmitter.emit('retouch_show');
                     } else {
                         navigation.navigate(navigation.state.routeName);
-                        TrackApi.WatchXiuChang({ xiuChangModuleSource: 1 });
                     }
                 }
             }
