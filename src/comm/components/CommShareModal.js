@@ -283,6 +283,9 @@ export default class CommShareModal extends React.Component {
     };
 
     render() {
+        if (!this.state.modalVisible) {
+            return null;
+        }
         const { type } = this.props;
         // const { shareType } = this.state;
         let scale = this.props.type === 'web' ? 517 / 315 : 667 / 375;
