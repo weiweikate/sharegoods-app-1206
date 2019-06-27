@@ -73,7 +73,6 @@ export default class ProductDetailModel {
 
     @observable trackType;
     @observable trackCode;
-    @observable sourceType;
     @observable prodCode;
     @observable loadingState = PageLoadingState.loading;
     @observable netFailedInfo = {};
@@ -206,9 +205,7 @@ export default class ProductDetailModel {
 
     @computed get priceTypeTextList() {
         const { couponsList } = this.productDetailCouponsViewModel;
-        if (this.sourceType === 9) {
-            return ['新人免费'];
-        } else if (this.isSkillIn) {
+        if (this.isSkillIn) {
             return ['秒杀价', '限时'];
         } else if (couponsList.length > 0) {
             return ['领券更省', '限时'];
