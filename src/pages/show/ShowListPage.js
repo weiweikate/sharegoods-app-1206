@@ -74,9 +74,6 @@ export default class ShowListPage extends BasePage {
 
     constructor(props) {
         super(props);
-        track(trackEvent.ViewXiuChang, {
-            xiuChangListType: 1
-        });
     }
 
     componentDidMount() {
@@ -106,6 +103,10 @@ export default class ShowListPage extends BasePage {
                 if (state && (state.routeName === 'ShowListPage' || state.routeName === 'show/ShowListPage')) {
                     this.setState({
                         pageFocused: true
+                    });
+
+                    track(trackEvent.ViewXiuChang, {
+                        xiuChangListType: ShowListIndexModel.pageIndex + 1
                     });
                 }
             }
@@ -148,9 +149,6 @@ export default class ShowListPage extends BasePage {
 
 
     _gotoPage(number) {
-        track(trackEvent.ViewXiuChang, {
-            xiuChangListType: number + 1
-        });
         // this.setState({ page: number });
         ShowListIndexModel.setIndex(number);
     }

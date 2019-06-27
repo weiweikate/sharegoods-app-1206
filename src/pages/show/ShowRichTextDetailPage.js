@@ -98,6 +98,12 @@ export default class ShowRichTextDetailPage extends BasePage {
                         this.showDetailModule.setDetail(data);
                         this.getDetailTagWithCode(data.showNo);
                         this.params.ref && this.params.ref.replaceData(this.params.index, data.hotCount);
+
+                        const { detail } = this.showDetailModule;
+                        track(trackEvent.ViewXiuChangDetails,{
+                            articleCode: detail.code,
+                            author: detail.userName,
+                        })
                     }
                     this.incrCountByType(6);
                 }
@@ -348,6 +354,16 @@ export default class ShowRichTextDetailPage extends BasePage {
             detail.like = false;
             detail.likesCount -= 1;
             this.showDetailModule.setDetail(detail);
+
+            const { showNo , userInfoVO } = detail;
+            const { userNo } = userInfoVO || {};
+            track(trackEvent.XiuChangLikeClick,{
+                xiuChangBtnLocation:'2',
+                xiuChangListType:'',
+                articleCode:showNo,
+                author:userNo,
+                likeType:2
+            })
         } else {
             this.incrCountByType(1);
             detail.like = true;
@@ -360,7 +376,8 @@ export default class ShowRichTextDetailPage extends BasePage {
                 xiuChangBtnLocation:'2',
                 xiuChangListType:'',
                 articleCode:showNo,
-                author:userNo
+                author:userNo,
+                likeType:1
             })
         }
     };
