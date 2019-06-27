@@ -102,6 +102,7 @@ export default class ShowListPage extends BasePage {
                 if (user.isLogin) {
                     WhiteModel.saveWhiteType();
                 }
+                this.loadMessageCount();
                 const { state } = payload;
                 if (state && (state.routeName === 'ShowListPage' || state.routeName === 'show/ShowListPage')) {
                     this.setState({
@@ -213,7 +214,6 @@ export default class ShowListPage extends BasePage {
         }
         this.$navigate(RouterMap.MyDynamicPage);
     };
-
 
     _render() {
         const { left, needsExpensive, detail } = this.state;
