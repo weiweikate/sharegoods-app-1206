@@ -64,7 +64,7 @@ export default class FillReturnLogisticsPage extends BasePage {
     _render() {
         let { receiver = '',
             receiverPhone = '',
-            returnAddress = ''} = this.state.pageData || {};
+            receiverAddress = ''} = this.state.pageData || {};
 
 
         return (
@@ -80,7 +80,7 @@ export default class FillReturnLogisticsPage extends BasePage {
                                     value={'退换货地址：' }/>
                             <View style={{flex: 1, marginRight: 10}}>
                             <UIText style={[styles.item_title,{marginLeft: 0}]}
-                                    value={ returnAddress }/>
+                                    value={ receiverAddress }/>
                             </View>
                         </View>
                         <UIText style={[styles.item_title, {marginTop: 5}]}

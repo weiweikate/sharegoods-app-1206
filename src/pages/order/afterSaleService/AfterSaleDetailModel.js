@@ -34,14 +34,13 @@ class AfterSaleDetailModel {
             data.exchangeExpress = data.exchangeExpress || {};
             data.refundAddress = data.refundAddress || {};
             data.product = data.product || {};
-            data.refundAddress = data.refundAddress || {};
             data.refundInfo = data.refundInfo || {};
             let service = data.service;
             let status = service.status;
             let subStatus = service.subStatus;
             //申请被拒绝且，有物流，说明在寄回商品以后被拒绝（把subStatus状态REFUSE_APPLY改为REFUSE_AFTER）
             if (status === AfterStatus.STATUS_FAIL){
-                if (subStatus === SubStatus.REFUSE_APPLY && this.pageData.orderRefundExpress && this.pageData.orderRefundExpress.expressNo) {
+                if (subStatus === SubStatus.REFUSE_APPLY && data.refundAddress.expressNo) {
                     data.service.subStatus = SubStatus.REFUSE_AFTER;
                 }
             }

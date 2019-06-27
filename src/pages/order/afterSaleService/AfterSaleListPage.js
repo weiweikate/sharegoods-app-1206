@@ -100,6 +100,9 @@ export default class AfterSaleListPage extends BasePage<Props> {
             serviceNo,
             productOrderNo
         } = item;
+        if (type === 11 || type === 12) {
+            type = 1;
+        }
         return (
             <View style={{ height: 160, marginBottom: 10 }}>
                 <GoodsGrayItem
@@ -156,7 +159,11 @@ export default class AfterSaleListPage extends BasePage<Props> {
     }
 
     getStatusText(item) {//1.待审核 2.待寄回 3.待仓库确认 4.待平台处理 5.售后完成 6.售后关闭|否| 7, "待商家取消发货"
-        let typeStr = ['仅退款', '退货退款', '换货'][item.type - 1];
+        let type = item.type;
+        if (type === 11 || type === 12) {
+            type = 1;
+        }
+        let typeStr = ['仅退款', '退货退款', '换货'][type - 1];
         switch (item.status) {
             case 1:
             case 7://在c端，7、1都是待审核

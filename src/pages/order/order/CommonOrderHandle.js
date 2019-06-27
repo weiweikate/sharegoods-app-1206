@@ -31,13 +31,11 @@ function clickOrderLogistics(merchantOrderNo){
     })
 }
 
-function clickOrderConfirmReceipt(merchantOrderNo, products, callBack){
+function clickOrderConfirmReceipt(merchantOrderNo, subStatus, callBack){
     let content = `确定收到货了吗?`;
-    products.map((value) => {
-        if (value.status < 3) {
-            content = '您还有商品未发货，确认收货吗？';
-        }
-    });
+    if (subStatus === 3){
+        content = '您还有商品未发货，确认收货吗？';
+    }
     Alert.alert('', `${content}`, [
         {
             text: `取消`, onPress: () => {

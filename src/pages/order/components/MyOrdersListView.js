@@ -191,6 +191,7 @@ export default class MyOrdersListView extends Component {
         let orderProduct = data.merchantOrder.productOrderList || [];
         let merchantOrderNo = data.merchantOrder.merchantOrderNo;
         let platformOrderNo = data.merchantOrder.platformOrderNo;
+        let subStatus = data.merchantOrder.subStatus
         switch (menu.id) {
             case 1:
                 if (this.props.cancelReasons.length > 0) {
@@ -213,7 +214,7 @@ export default class MyOrdersListView extends Component {
                 clickOrderLogistics(merchantOrderNo)
                 break;
             case 6:
-                clickOrderConfirmReceipt(merchantOrderNo,orderProduct)
+                clickOrderConfirmReceipt(merchantOrderNo,subStatus)
                 break;
             case 7:
             case 9:

@@ -135,7 +135,7 @@ export default class OrderDetailBottomButtonView extends Component {
                 clickOrderLogistics(orderDetailModel.merchantOrderNo)
                 break;
             case 6:
-                clickOrderConfirmReceipt(orderDetailModel.merchantOrderNo,orderDetailModel.productsList(),this.props.loadPageData)
+                clickOrderConfirmReceipt(orderDetailModel.merchantOrderNo,orderDetailModel.merchantOrder.subStatus,this.props.loadPageData)
                 break;
             case 7:
                 Alert.alert("", `确定删除此订单吗?`, [
