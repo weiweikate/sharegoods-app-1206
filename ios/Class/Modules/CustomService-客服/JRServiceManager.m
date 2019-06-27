@@ -129,7 +129,7 @@ SINGLETON_FOR_CLASS(JRServiceManager)
 -(void)initQYChat:(id)jsonData{
   [self initActionConfig];
   QYUserInfo * userInfo = [self packingUserInfo:jsonData];
-  self.isVip = jsonData[@"isVip"]?YES:NO;
+  self.isVip = jsonData[@"isVip"] ?YES:NO;
 
   [[[QYSDK sharedSDK] conversationManager] setDelegate:self];
   [[QYSDK sharedSDK] setUserInfo:userInfo];
