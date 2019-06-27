@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Animated, Dimensions, View, ViewPropTypes } from 'react-native'
-import showPinFlagModel from '../../../../model/ShowPinFlag';
+import user from '../../../../model/user';
 
 const styles = require('./styles')
 
@@ -337,10 +337,9 @@ class ParallaxScrollView extends Component {
                     //     footerHeight = Math.max(0, viewHeight - height - stickyHeaderHeight)
                     // }
                     const { nativeEvent: { layout: { height } } } = e
-                    console.log('height',height);
-                    console.log('viewHeight',viewHeight);
-                    console.log('stickyHeaderHeight',stickyHeaderHeight);
-                    const maxH = showPinFlagModel.showFlag ? ScreenUtils.width * 254 / 559 : 64;
+                    let storeStatus = user && ((user.levelRemark >= 'V2' && !user.storeCode) ||
+                        (user.storeCode && user.levelRemark >= 'V2' && user.storeStatus === 0))
+                    const maxH = storeStatus ? ScreenUtils.width * 254 / 559 : viewHeight - height - ScreenUtils.headerHeight;
                     const footerHeight = Math.max(
                         0,
                         maxH

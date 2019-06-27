@@ -150,7 +150,7 @@ class SettingPage extends BasePage {
                     marginTop: 42,
                     backgroundColor: DesignRule.mainColor,
                     width: ScreenUtils.width - 84,
-                    height: 50,
+                    height: 40,
                     marginLeft: 42,
                     marginRight: 42,
                     alignItems: 'center',
