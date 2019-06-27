@@ -16,10 +16,10 @@ class SettingModel {
     data = {};
     @observable
     params = {
-        userScore:'',
-        availableBalance:'',
-        coupons:'',
-        fansMSG:''
+        userScore: 0,
+        availableBalance: 0,
+        coupons: 0,
+        fansMSG: 0
     };
     @observable
     JSPushMessage = true;
@@ -62,10 +62,10 @@ class SettingModel {
                 if (data) {
                     this.data = data;
                     let item = data[userModel.code];
-                    this.userScore = item.userScore;
-                    this.availableBalance = item.availableBalance;
-                    this.coupons = item.coupons;
-                    this.fansMSG = item.fansMSG;
+                    this.userScore = item && item.userScore ? item.userScore : 0;
+                    this.availableBalance = item && item.availableBalance ? item.availableBalance : 0;
+                    this.coupons = item && item.availableBalance ? item.availableBalance : 0;
+                    this.fansMSG = item && item.fansMSG ? item.fansMSG : 0;
                     this.params = {
                         userScore: this.userScore,
                         availableBalance:this.availableBalance,

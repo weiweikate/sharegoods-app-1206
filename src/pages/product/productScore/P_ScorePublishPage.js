@@ -25,7 +25,7 @@ export class P_ScorePublishPage extends BasePage {
 
     $NavBarRightPressed = () => {
         this.p_ScorePublishModel._publish(() => {
-            this.$navigate(RouterMap.P_ScoreSuccessPage);
+            this.$navigateReplace(RouterMap.P_ScoreSuccessPage);
         });
     };
 
