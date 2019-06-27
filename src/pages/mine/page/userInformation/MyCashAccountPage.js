@@ -178,6 +178,7 @@ export default class MyCashAccountPage extends BasePage {
                     onEndReachedThreshold={0.1}
                     stickySectionHeadersEnabled={true}
                     onScroll={(e)=>{this._onScroll(e)}}
+                    showsVerticalScrollIndicator={false}
                 />
                 {this.navBackgroundRender()}
                 {this.renderHeader()}
@@ -214,6 +215,8 @@ export default class MyCashAccountPage extends BasePage {
                     color: DesignRule.textColor_mainTitle,
                     fontSize: 48,
                     marginLeft: DesignRule.margin_page,
+                    height: 58,
+                    lineHeight: 58
                 }}>{user.availableBalance ? user.availableBalance : '0.00'}</Text>
                 <View style={{display:'flex', flexDirection:'row', marginBottom: 15}} >
                     <View style={{flex:1,marginLeft: 15, justifyContent:'center'}}>
@@ -273,8 +276,8 @@ export default class MyCashAccountPage extends BasePage {
                         <TouchableWithoutFeedback  onPress={() => {
                         this.$navigate(RouterMap.BankCardListPage);
                     }}>
-                        <Text style={styles.settingStyle}>银行卡管理</Text>
-                        </TouchableWithoutFeedback> : null
+                        <Text style={[styles.settingStyle,{flex:1}]}>银行卡管理</Text>
+                        </TouchableWithoutFeedback> : <View style={{flex:1}}/>
                     }
                     </View>
             </View>
@@ -332,6 +335,7 @@ export default class MyCashAccountPage extends BasePage {
 
     renderItem = (info) => {
         let item = info.item;
+        console.log('item',item);
         let key = info.section.key;
         if (key === 'A') {
             return (
@@ -342,7 +346,7 @@ export default class MyCashAccountPage extends BasePage {
             )
         }
         if(item.title && item.title === 'empty'){
-            return <EmptyView description={''} subDescription={'暂无明细数据～'} source={cash_noData}/>
+            return <EmptyView  style={{flex:1}} imageStyle={{width:267, height:192}} description={''} subDescription={'暂无明细数据～'} source={cash_noData}/>
         }
         return (
             <View style={{
@@ -369,7 +373,7 @@ export default class MyCashAccountPage extends BasePage {
                             fontSize: 12, color: DesignRule.textColor_instruction
                         }}>{item.time}</Text>
                     </View>
-                    {this.type === 2 && this.biType === 1 ?
+                    { Number(item.status) === 2 || (this.type === 2 && this.biType === 1) ?
                         <View style={{justifyContent: 'space-between', alignItems: 'flex-end'}}>
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                 <Text style={{
@@ -479,7 +483,8 @@ export default class MyCashAccountPage extends BasePage {
                             capital: use_type_symbol[item.biType] + (item.balance ? item.balance : 0.00),
                             iconImage: allType[item.useType] ? allType[item.useType].icon : renwu,
                             capitalRed: use_type_symbol[item.biType] === '-',
-                            realBalance: item.realBalance
+                            realBalance: item.realBalance,
+                            status: item.status
                         });
                     });
                 }
@@ -574,7 +579,8 @@ const styles = StyleSheet.create({
     },
     settingStyle: {
         color: DesignRule.white,
-        fontSize: DesignRule.fontSize_threeTitle
+        fontSize: DesignRule.fontSize_threeTitle,
+        textAlign: 'right'
     },
     countTextStyle: {
         color: DesignRule.textColor_mainTitle,

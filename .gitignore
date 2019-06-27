@@ -81,3 +81,4 @@ build
 *.mobileprovision
 /android/app/mapping.txt
 /android/app/debug/
+*.jsbeautifyrc

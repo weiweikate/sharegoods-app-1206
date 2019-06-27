@@ -191,7 +191,8 @@ export default class ShowMaterialView extends React.Component {
                                            }
 
                                            DownloadUtils.downloadProduct(nativeEvent);
-
+                                           this.shareModal && this.shareModal.open();
+                                           this.props.onShare(nativeEvent);
                                            const { showNo , userInfoVO } = detail;
                                            const { userNo } = userInfoVO || {};
                                            track(trackEvent.XiuChangDownLoadClick,{

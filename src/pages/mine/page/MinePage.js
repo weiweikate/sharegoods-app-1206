@@ -244,6 +244,8 @@ export default class MinePage extends BasePage {
 
     //**********************************ViewPart******************************************
     _render() {
+        const {availableBalance, userScore, coupons, fansMSG } = settingModel
+        console.log(availableBalance,userScore,coupons,fansMSG);
         return (
             <View style={{flex: 1}}>
                 <PullView
@@ -490,13 +492,12 @@ export default class MinePage extends BasePage {
                     this.$navigate(RouterMap.MyPromotionPage);
                     TrackApi.ViewLevelInterest({ moduleSource: 2 });
                 }}>
-                    <ImageBackground style={{
-                        height: 24, width: 85,justifyContent:'center',
-                        alignItems: 'center',marginRight:15}} source={res.homeBaseImg.mine_btn_yellow}>
+                    <View style={{height: 24, width: 85,justifyContent:'center',
+                        alignItems: 'center',marginRight:15,backgroundColor:'#FFE6B1',borderRadius:12}}>
                         <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: DesignRule.fontSize_22 }}>
                             {user.token ? `${user.levelName ? user.levelName : ''}品鉴官>` : ''}
                         </Text>
-                    </ImageBackground>
+                    </View>
                 </TouchableWithoutFeedback>
             </View>
         );

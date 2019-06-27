@@ -179,7 +179,7 @@ export default class ExpDetailPage extends BasePage {
             <ImageBackground source={account_bg_white} resizeMode={'stretch'} style={{
                 position: 'absolute',
                 top: px2dp(66),
-                height: px2dp(174),
+                height: 174,
                 width: DesignRule.width,
                 left: 0,
                 paddingHorizontal: DesignRule.margin_page,
@@ -194,7 +194,7 @@ export default class ExpDetailPage extends BasePage {
                     color: DesignRule.textColor_mainTitle,
                     fontSize: 48,
                     marginLeft: DesignRule.margin_page,
-                    marginTop: px2dp(15)
+                    marginTop: px2dp(5)
                 }}>
                     {this.state.experience || 0}
                     <Text style={{
@@ -254,7 +254,7 @@ export default class ExpDetailPage extends BasePage {
                     data={this.state.viewData}
                     ListHeaderComponent={()=>(
                         <ImageBackground resizeMode={'stretch'} source={account_bg}
-                                         style={{marginBottom: 10, height: px2dp(225), width: ScreenUtils.width, backgroundColor: 'white'}}>
+                                         style={{marginBottom: 10, height: 225, width: ScreenUtils.width, backgroundColor: 'white'}}>
                             {this._accountInfoRender()}
                         </ImageBackground>
                     )}

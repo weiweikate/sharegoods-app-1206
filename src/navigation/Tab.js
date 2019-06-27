@@ -28,7 +28,7 @@ class NormalTab extends Component {
         return <View style={styles.tab}>
             <View>
                 <Image style={styles.tabBarIcon} source={source}/>
-                {title === '我的' && (settingModel.availableBalance > 0 || settingModel.userScore > 0 || settingModel.coupons > 0 || settingModel.fansMSG > 0) ?
+                {user.isLogin && title === '我的' && (settingModel.availableBalance > 0 || settingModel.userScore > 0 || settingModel.coupons > 0 || settingModel.fansMSG > 0) ?
                     <View style={styles.mineDot}/> : null}
             </View>
             <Text style={styles.text}>{title}</Text>
@@ -42,7 +42,7 @@ class ActiveTab extends Component {
         return <View style={styles.tab}>
             <View>
                 <Image style={styles.tabBarIcon} source={source}/>
-                {title === '我的' && (settingModel.availableBalance > 0 || settingModel.userScore > 0 || settingModel.coupons > 0 || settingModel.fansMSG > 0) ?
+                {user.isLogin && title === '我的' && (settingModel.availableBalance > 0 || settingModel.userScore > 0 || settingModel.coupons > 0 || settingModel.fansMSG > 0) ?
                     <View style={styles.mineDot}/> : null}
             </View>
             <Text style={styles.text}>{title}</Text>

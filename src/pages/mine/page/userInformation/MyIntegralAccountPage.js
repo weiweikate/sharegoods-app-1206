@@ -133,6 +133,7 @@ export default class MyIntegralAccountPage extends BasePage {
                     onEndReachedThreshold={0.1}
                     stickySectionHeadersEnabled={true}
                     onScroll={(e)=>{this._onScroll(e)}}
+                    showsVerticalScrollIndicator={false}
                 />
                 {this.navBackgroundRender()}
                 {this.renderHeader()}
@@ -175,6 +176,8 @@ export default class MyIntegralAccountPage extends BasePage {
                     color: DesignRule.textColor_mainTitle,
                     fontSize: 48,
                     marginLeft: DesignRule.margin_page,
+                    height: 58,
+                    lineHeight: 58
                 }}>{user.userScore ? user.userScore : 0}</Text>
 
                 <View style={{display:'flex', flexDirection:'row', marginBottom: 15}} >
@@ -183,7 +186,7 @@ export default class MyIntegralAccountPage extends BasePage {
                         <Text style={styles.numRemarkStyle}>待入账秀豆（枚）</Text>
                     </View>
                     <View style={{flex:1,marginLeft: 15, justifyContent:'center'}}>
-                        <Text style={styles.numTextStyle}>{user.historicalBalance ? user.historicalScore : '0.00'}</Text>
+                        <Text style={styles.numTextStyle}>{user.historicalScore ? user.historicalScore : '0.00'}</Text>
                         <Text style={styles.numRemarkStyle}>累计秀豆（枚）</Text>
                     </View>
                 </View>
@@ -250,7 +253,7 @@ export default class MyIntegralAccountPage extends BasePage {
         }
         if(item.title && item.title === 'empty'){
             return(
-                <EmptyView description={''} subDescription={'暂无明细数据～'} source={cash_noData}/>
+                <EmptyView style={{flex:1}} imageStyle={{width:267, height:192}} description={''} subDescription={'暂无明细数据～'} source={cash_noData}/>
             )}
 
         return (
@@ -278,7 +281,7 @@ export default class MyIntegralAccountPage extends BasePage {
                             fontSize: 12, color: DesignRule.textColor_instruction
                         }}>{item.time}</Text>
                     </View>
-                    {this.type === 2 && this.biType === 1 ?
+                    {item.status === 2 || (this.type === 2 && this.biType === 1) ?
                         <View style={{justifyContent: 'space-between', alignItems: 'flex-end'}}>
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                 <Text style={{
@@ -384,7 +387,8 @@ export default class MyIntegralAccountPage extends BasePage {
                         capital: use_type_symbol[item.usType] + (item.userScore ? item.userScore : 0),
                         iconImage: allKinds[item.useType] ? allKinds[item.useType].img : taskImg,
                         capitalRed: use_type_symbol[item.usType] === '+',
-                        realBalance: item.realBalance
+                        realBalance: item.realBalance,
+                        status: item.status
                     });
                 });
                 this.setState({ viewData: arrData, isEmpty: data.data && data.data.length !== 0 ? false : true });
