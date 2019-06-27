@@ -122,7 +122,7 @@
      .rightSpaceToView(self, 10)
      .widthIs(70).heightIs(30);
 
-  [self setupAutoHeightWithBottomView:self.zanBtn bottomMargin:0];
+  [self setupAutoHeightWithBottomView:self.zanBtn bottomMargin:10];
 
 
 }
