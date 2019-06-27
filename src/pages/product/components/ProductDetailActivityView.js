@@ -83,7 +83,7 @@ const progressWidth = 90;
 export class ActivityDidBeginView extends Component {
     render() {
         const { productDetailModel } = this.props;
-        const { promotionPrice, originalPrice, promotionSaleRate, showTimeText, prodCode, singleActivity, monthSaleCount } = productDetailModel;
+        const { promotionPrice, originalPrice, promotionSaleRate, showTimeText, prodCode, singleActivity } = productDetailModel;
         const { extraProperty } = singleActivity;
         const promotionSaleRateS = promotionSaleRate || 0;
         let ratePercentText = promotionSaleRateS > 0.9 ? '即将售罄' : `还剩${Math.ceil((1 - promotionSaleRateS) * 100)}%`;
@@ -107,8 +107,7 @@ export class ActivityDidBeginView extends Component {
                         </View>
                         <MRText style={[DidBeginViewStyles.amountText]} numberOfLines={1}>原价¥{originalPrice}</MRText>
                     </View>
-                    {monthSaleCount >= 1000 &&
-                    <Image source={saleLargeSkill} style={{ width: 56, height: 56, position: 'absolute', right: 0 }}/>}
+                    <Image source={saleLargeSkill} style={{ width: 56, height: 56, position: 'absolute', right: 0 }}/>
                 </View>
                 <View style={DidBeginViewStyles.rightView}>
                     <View style={{ marginLeft: 8, marginRight: 8 }}>
