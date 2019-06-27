@@ -200,6 +200,14 @@ export default class ShowHotView extends React.Component {
                                            const detail = JSON.parse(nativeEvent.detail)
                                            const product = JSON.parse(nativeEvent.product)
                                            const {showNo} = detail ||{};
+                                           track(trackEvent.XiuChangSpuClick, {
+                                               xiuChangBtnLocation:'1',
+                                               xiuChangListType:'1',
+                                               articleCode:showNo,
+                                               spuCode: product.prodCode,
+                                               spuName: product.name,
+                                               author: detail.userInfoVO ? detail.userInfoVO.userNo : ''
+                                           });
                                            routePush(RouterMap.ProductDetailPage, { productCode: product.prodCode ,trackType:3,trackCode:showNo});
                                        }}
 
