@@ -42,7 +42,7 @@ import user from '../../../model/user';
 import resCommon from '../../../comm/res';
 import LinearGradient from 'react-native-linear-gradient';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
-import { ShopBottomBannerView, ShopCardView, ShopProductItemView } from './components/ShopDetailItemView';
+import { ShopBottomBannerView, ShopProductItemView } from './components/ShopDetailItemView';
 import MyShopDetailModel from './MyShopDetailModel';
 import { IntervalMsgView, IntervalType } from '../../../comm/components/IntervalMsgView';
 import RouterMap from '../../../navigation/RouterMap';
@@ -458,10 +458,10 @@ export default class MyShopPage extends BasePage {
         return <TouchableOpacity onPress={this._joinBtnAction}
                                  disabled={!canJoin}
                                  style={{
-                                     height: 48,
+                                     height: 40,
                                      width: 150,
                                      backgroundColor: canJoin ? DesignRule.mainColor : 'rgb(221,109,140)',
-                                     borderRadius: 5,
+                                     borderRadius: 20,
                                      marginTop: 30,
                                      marginBottom: 30,
                                      alignSelf: 'center', justifyContent: 'center', alignItems: 'center'
@@ -489,7 +489,7 @@ export default class MyShopPage extends BasePage {
                             colors={[DesignRule.mainColor]}
                         />}>
                 <ShopHeader onPressShopAnnouncement={this._clickShopAnnouncement} item={this.state.storeData}/>
-                {userStatus === 1 && <ShopCardView/>}
+                {/*{userStatus === 1 && <ShopCardView/>}*/}
                 <ShopProductItemView MyShopDetailModel={this.MyShopDetailModel}/>
                 {userStatus === 1 ? <ShopHeaderBonus storeData={this.state.storeData}/> : null}
                 <MembersRow storeUserList={storeUserList || []}
