@@ -200,6 +200,12 @@ export default class RequestDetailPage extends BasePage {
             this.luckyIcon && this.luckyIcon.getLucky(parmas.showPage, parmas.showPageValue);
             return;
         }
+
+        if (msg.action === 'changeTitle') {
+            let parmas = msg.params || {};
+            this.$NavigationBarResetTitle(parmas.title);
+            return;
+        }
     };
 
     _render() {

@@ -314,7 +314,7 @@ class ParallaxScrollView extends Component {
 		children,
 		{ contentBackgroundColor, stickyHeaderHeight, contentContainerStyle, renderContentBackground }
 	) {
-		const { viewHeight } = this.state
+		// const { viewHeight } = this.state
 		const containerStyles = [{ backgroundColor: contentBackgroundColor }]
 
 		if (contentContainerStyle) {containerStyles.push(contentContainerStyle)}
@@ -336,10 +336,10 @@ class ParallaxScrollView extends Component {
                     // if(this.props.footerView){const { nativeEvent: { layout: { height } } } = e
                     //     footerHeight = Math.max(0, viewHeight - height - stickyHeaderHeight)
                     // }
-                    const { nativeEvent: { layout: { height } } } = e
+                    // const { nativeEvent: { layout: { height } } } = e
                     let storeStatus = user && ((user.levelRemark >= 'V2' && !user.storeCode) ||
                         (user.storeCode && user.levelRemark >= 'V2' && user.storeStatus === 0))
-                    const maxH = storeStatus ? ScreenUtils.width * 254 / 559 : viewHeight - height - ScreenUtils.headerHeight;
+                    const maxH = storeStatus ? ScreenUtils.width * 254 / 559 : 20;
                     const footerHeight = Math.max(
                         0,
                         maxH
