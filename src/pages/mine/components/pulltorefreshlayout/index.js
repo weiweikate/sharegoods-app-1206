@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import { Animated, Dimensions, View, ViewPropTypes } from 'react-native'
+import showPinFlagModel from '../../../../model/ShowPinFlag';
 
 const styles = require('./styles')
 
 import { bool, func, number, string } from 'prop-types'
+import ScreenUtils from '../../../../utils/ScreenUtils';
 
 const window = Dimensions.get('window')
 
@@ -315,7 +317,7 @@ class ParallaxScrollView extends Component {
 		const { viewHeight } = this.state
 		const containerStyles = [{ backgroundColor: contentBackgroundColor }]
 
-		if (contentContainerStyle) containerStyles.push(contentContainerStyle)
+		if (contentContainerStyle) {containerStyles.push(contentContainerStyle)}
 
 		this.containerHeight = this.state.viewHeight;
 
@@ -330,10 +332,19 @@ class ParallaxScrollView extends Component {
 				style={[containerStyles, { minHeight: this.containerHeight }]}
 				onLayout={e => {
 					// Adjust the bottom height so we can scroll the parallax header all the way up.
-                    let footerHeight = 60;
-                    if(this.props.footerView){const { nativeEvent: { layout: { height } } } = e
-                        footerHeight = Math.max(0, viewHeight - height - stickyHeaderHeight)
-                    }
+                    // let footerHeight = 60;
+                    // if(this.props.footerView){const { nativeEvent: { layout: { height } } } = e
+                    //     footerHeight = Math.max(0, viewHeight - height - stickyHeaderHeight)
+                    // }
+                    const { nativeEvent: { layout: { height } } } = e
+                    console.log('height',height);
+                    console.log('viewHeight',viewHeight);
+                    console.log('stickyHeaderHeight',stickyHeaderHeight);
+                    const maxH = showPinFlagModel.showFlag ? ScreenUtils.width * 254 / 559 : 64;
+                    const footerHeight = Math.max(
+                        0,
+                        maxH
+                    )
 					if (this._footerHeight !== footerHeight) {
 						this._footerComponent.setNativeProps({
 							style: { height: footerHeight }
