@@ -341,7 +341,6 @@ export default class CommShareModal extends React.Component {
                 image: res.share.download, title: '下载图片发圈', onPress: () => {
                     this.setState({ shareType: 0 },()=>{
                         this.saveImage(this.state.path);
-                        this.share(1);
                     });
 
                 }
@@ -377,7 +376,6 @@ export default class CommShareModal extends React.Component {
             image: res.share.copyURL, title: '复制链接发圈', onPress: () => {
                 this.setState({ shareType: 1 },()=>{
                     this.copyUrl();
-                    this.share(1);
                 });
             }
         });

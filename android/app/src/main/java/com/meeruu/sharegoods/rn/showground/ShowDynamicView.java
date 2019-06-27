@@ -44,9 +44,11 @@ import com.meeruu.sharegoods.rn.showground.presenter.DynamicPresenter;
 import com.meeruu.sharegoods.rn.showground.presenter.ShowgroundPresenter;
 import com.meeruu.sharegoods.rn.showground.view.IShowgroundView;
 import com.meeruu.sharegoods.rn.showground.widgets.CustomLoadMoreView;
+import com.meeruu.sharegoods.rn.showground.widgets.GridView.ImageInfo;
 import com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -251,7 +253,6 @@ public class ShowDynamicView implements IShowgroundView, SwipeRefreshLayout.OnRe
                                         }
                                     }).create();
                             alertDialog.show();
-
                         }
                         break;
                     default:
@@ -319,7 +320,7 @@ public class ShowDynamicView implements IShowgroundView, SwipeRefreshLayout.OnRe
     public void viewLoadMore(final List data) {
         showList();
         if (data != null) {
-            adapter.addData(data);
+            adapter.addData(resolveData(data));
         }
     }
 
@@ -327,11 +328,44 @@ public class ShowDynamicView implements IShowgroundView, SwipeRefreshLayout.OnRe
     public void refreshShowground(final List data) {
         if (adapter != null) {
             adapter.setEnableLoadMore(true);
-            adapter.setNewData(data);
+            adapter.setNewData(resolveData(data));
             swipeRefreshLayout.setRefreshing(false);
             setEmptyText();
         }
     }
+
+    private List resolveData(List data) {
+        if (data != null) {
+            for (int i = 0; i < data.size(); i++) {
+                NewestShowGroundBean.DataBean bean = (NewestShowGroundBean.DataBean) data.get(i);
+                if (bean.getItemType() == 1 || bean.getItemType() == 3) {
+                    List<NewestShowGroundBean.DataBean.ResourceBean> resource = bean.getResource();
+                    List<ImageInfo> resolveResource = new ArrayList<>();
+                    if (resource != null) {
+                        for (int j = 0; j < resource.size(); j++) {
+                            NewestShowGroundBean.DataBean.ResourceBean resourceBean = resource.get(j);
+                            if (resourceBean.getType() == 2) {
+                                ImageInfo imageInfo = new ImageInfo();
+                                imageInfo.setImageUrl(resourceBean.getUrl());
+                                resolveResource.add(imageInfo);
+                            }
+
+                            if(resourceBean.getType() == 5){
+                                ImageInfo imageInfo = new ImageInfo();
+                                imageInfo.setImageUrl(resourceBean.getUrl());
+                                bean.setVideoCover(imageInfo);
+                                break;
+                            }
+                        }
+                        bean.setNineImageInfos(resolveResource);
+                    }
+                    data.set(i, bean);
+                }
+            }
+        }
+        return data;
+    }
+
 
     @Override
     public void loadMoreEnd() {

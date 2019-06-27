@@ -244,6 +244,8 @@ export default class MinePage extends BasePage {
 
     //**********************************ViewPart******************************************
     _render() {
+        const {availableBalance, userScore, coupons, fansMSG } = settingModel
+        console.log(availableBalance,userScore,coupons,fansMSG);
         return (
             <View style={{flex: 1}}>
                 <PullView
@@ -367,24 +369,26 @@ export default class MinePage extends BasePage {
                         justifyContent: 'center'
                     }}>
                         <TouchableWithoutFeedback onPress={this.jumpToUserInformationPage}>
-                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                <Text maxLength={8}
-                                    style={{
-                                        color: DesignRule.textColor_mainTitle,
-                                        fontSize: px2dp(16),
-                                        includeFontPadding: false
-                                    }}>
-                                    {name}
-                                </Text>
-                                <UIImage source={res.button.white_go}
-                                         style={{height: px2dp(12), width: px2dp(7), marginLeft: px2dp(12)}}
-                                         resizeMode={'stretch'}/>
+                            <View>
+                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                    <Text maxLength={8}
+                                          style={{
+                                              color: DesignRule.textColor_mainTitle,
+                                              fontSize: px2dp(16),
+                                              includeFontPadding: false
+                                          }}>
+                                        {name}
+                                    </Text>
+                                    <UIImage source={res.button.white_go}
+                                             style={{height: px2dp(12), width: px2dp(7), marginLeft: px2dp(12)}}
+                                             resizeMode={'stretch'}/>
+                                </View>
+                                <View style={{flexDirection: 'row'}}>
+                                    {xiuOld}
+                                    {accreditID}
+                                </View>
                             </View>
                         </TouchableWithoutFeedback>
-                        <View style={{flexDirection: 'row'}}>
-                            {xiuOld}
-                            {accreditID}
-                        </View>
                     </View>
                     {/*<TouchableOpacity onPress={()=>{*/}
                         {/*this.$navigate(RouterMap.MyPromotionPage);*/}
@@ -544,7 +548,7 @@ export default class MinePage extends BasePage {
                         TrackApi.ViewAccountBalance();
                     })}
                     <View style={{height:30,width:1,backgroundColor:'#E4E4E4'}}/>
-                    {this.accountItemView(user.totalScore ? user.totalScore : '0', '秀豆账户(枚)', 2 ,() => {
+                    {this.accountItemView(StringUtils.formatMoneyString(user.totalScore ? user.totalScore : '0',false), '秀豆账户(枚)', 2 ,() => {
                         settingModel.userScoreAdd();
                         this.go2CashDetailPage(2);
                         TrackApi.ViewShowDou();
@@ -679,7 +683,7 @@ export default class MinePage extends BasePage {
                     marginBottom: px2dp(10)
                 }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <View style={{width:2, height:8,backgroundColor:'#FF0050'}}/>
+                        <View style={{width:2, height:8,backgroundColor:'#FF0050',borderRadius:1}}/>
                         <UIText value={'我的订单'}
                                 style={{
                                     marginLeft: 10,
@@ -727,7 +731,7 @@ export default class MinePage extends BasePage {
                         alignItems:'center',
                         marginTop: px2dp(10)
                     }}>
-                    <View style={{width:2, height:8,backgroundColor:'#FF0050'}} />
+                    <View style={{width:2, height:8,backgroundColor:'#FF0050',borderRadius:1}} />
                     <Text
                         style={{
                             includeFontPadding: false,

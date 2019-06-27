@@ -479,7 +479,7 @@ static IJSVideoManager *manager;
         [fileManager createDirectoryAtPath:filePath withIntermediateDirectories:YES attributes:nil error:nil];
     }
   
-    NSString *outputPath =[filePath stringByAppendingPathComponent:[NSString stringWithFormat:@"/output-%ld.%@",[NSDate new].timeIntervalSince1970,type]];
+    NSString *outputPath =[filePath stringByAppendingPathComponent:[NSString stringWithFormat:@"/output-%lf.%@",[NSDate new].timeIntervalSince1970,type]];
     NSURL *outputURL = [NSURL fileURLWithPath:outputPath];
     return outputURL;
 }

@@ -25,6 +25,7 @@
 #import "BGKeychainTool.h"
 #import "JRBaseVC.h"
 #import <React-Native-Webview-Bridge/RCTWebViewBridge.h>
+#import "StorageFromRN.h"
 @interface RCTWebViewBridge (ConfigLib)
 - (BOOL)webView:(__unused UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request
        navigationType:(UIWebViewNavigationType)navigationType;
@@ -128,7 +129,7 @@
 - (void)initSensorsAnalyticsWithLaunchOptions:(NSDictionary *)launchOptions {
   
   // 初始化 SDK
-  SensorsAnalyticsSDK * sdkInstance = [SensorsAnalyticsSDK sharedInstanceWithServerURL:SA_SERVER_URL
+  SensorsAnalyticsSDK * sdkInstance = [SensorsAnalyticsSDK sharedInstanceWithServerURL:[StorageFromRN getTrackAddress]
                                                                       andLaunchOptions:launchOptions
                                                                           andDebugMode:SA_DEBUG_MODE];
   
