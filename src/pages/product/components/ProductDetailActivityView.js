@@ -9,7 +9,7 @@ import apiEnvironment from '../../../api/ApiEnvironment';
 import { routePush } from '../../../navigation/RouterMap';
 
 const { arrow_right_black } = res.button;
-const { saleLarge_1001 } = res.pSacle;
+const { saleLargeSkill } = res.pSacle;
 
 /*
 * 秒杀未开始
@@ -108,7 +108,7 @@ export class ActivityDidBeginView extends Component {
                         <MRText style={[DidBeginViewStyles.amountText]} numberOfLines={1}>原价¥{originalPrice}</MRText>
                     </View>
                     {monthSaleCount >= 1000 &&
-                    <Image source={saleLarge_1001} style={{ width: 56, height: 56, position: 'absolute', right: 0 }}/>}
+                    <Image source={saleLargeSkill} style={{ width: 56, height: 56, position: 'absolute', right: 0 }}/>}
                 </View>
                 <View style={DidBeginViewStyles.rightView}>
                     <View style={{ marginLeft: 8, marginRight: 8 }}>
