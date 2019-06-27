@@ -306,7 +306,7 @@ const styles = StyleSheet.create({
     },
     mineDot: {
         position: 'absolute',
-        right: 0,
+        right: -6,
         top: 0,
         width: 16,
         height: 10,

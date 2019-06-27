@@ -683,7 +683,7 @@ export default class MinePage extends BasePage {
                     marginBottom: px2dp(10)
                 }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <View style={{width:2, height:8,backgroundColor:'#FF0050'}}/>
+                        <View style={{width:2, height:8,backgroundColor:'#FF0050',borderRadius:1}}/>
                         <UIText value={'我的订单'}
                                 style={{
                                     marginLeft: 10,
@@ -731,7 +731,7 @@ export default class MinePage extends BasePage {
                         alignItems:'center',
                         marginTop: px2dp(10)
                     }}>
-                    <View style={{width:2, height:8,backgroundColor:'#FF0050'}} />
+                    <View style={{width:2, height:8,backgroundColor:'#FF0050',borderRadius:1}} />
                     <Text
                         style={{
                             includeFontPadding: false,
