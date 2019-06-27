@@ -43,7 +43,7 @@ import RouterMap, { routePop, routeNavigate, routePush } from '../../navigation/
 import ShowApi from './ShowApi';
 import LinearGradient from 'react-native-linear-gradient';
 
-const { iconShowFire, iconLike, iconNoLike, iconShowShare } = res;
+const { iconShowFire, iconLike, iconNoLike, iconShowShare ,dynamicEmpty} = res;
 
 
 @SmoothPushPreLoadHighComponent
@@ -98,6 +98,12 @@ export default class ShowRichTextDetailPage extends BasePage {
                         this.showDetailModule.setDetail(data);
                         this.getDetailTagWithCode(data.showNo);
                         this.params.ref && this.params.ref.replaceData(this.params.index, data.hotCount);
+
+                        const { detail } = this.showDetailModule;
+                        track(trackEvent.ViewXiuChangDetails,{
+                            articleCode: detail.code,
+                            author: detail.userName,
+                        })
                     }
                     this.incrCountByType(6);
                 }
@@ -348,6 +354,16 @@ export default class ShowRichTextDetailPage extends BasePage {
             detail.like = false;
             detail.likesCount -= 1;
             this.showDetailModule.setDetail(detail);
+
+            const { showNo , userInfoVO } = detail;
+            const { userNo } = userInfoVO || {};
+            track(trackEvent.XiuChangLikeClick,{
+                xiuChangBtnLocation:'2',
+                xiuChangListType:'',
+                articleCode:showNo,
+                author:userNo,
+                likeType:2
+            })
         } else {
             this.incrCountByType(1);
             detail.like = true;
@@ -360,7 +376,8 @@ export default class ShowRichTextDetailPage extends BasePage {
                 xiuChangBtnLocation:'2',
                 xiuChangListType:'',
                 articleCode:showNo,
-                author:userNo
+                author:userNo,
+                likeType:1
             })
         }
     };
@@ -473,8 +490,23 @@ export default class ShowRichTextDetailPage extends BasePage {
 
         let { detail } = this.showDetailModule;
         if (!detail) {
-            detail = { imgs: '', products: [], click: 0, content: '' };
+            detail = { imgs: '', products: [], click: 0, content: '', status: 0 };
         }
+
+        if (detail.status !== 1 && (EmptyUtils.isEmpty(detail.userInfoVO) || detail.userInfoVO.userNo !== user.code)) {
+
+            return (<View style={styles.container}>
+                <View style={{backgroundColor:DesignRule.bgColor,alignItems:'center',flex:1,marginTop:ScreenUtils.statusBarHeight}}>
+                    <Image source={dynamicEmpty}
+                           style={{ width: px2dp(267), height: px2dp(192), marginTop: px2dp(50),marginTop:px2dp(165) }}/>
+                    <Text style={styles.emptyTip}>
+                        {detail.status === 2 ? '系统正在快马加鞭审核中,耐心等待哦！':'文章不见了，先看看别的吧！'}
+                    </Text>
+                </View>
+                {this._renderNormalTitle()}
+            </View>);
+        }
+
 
         let content = detail.content ? detail.content : '';
         let html = '<!DOCTYPE html><html>' +
@@ -602,7 +634,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                     productModalVisible: false
                 });
             }}/> : null}
-            {detail.status !== 1  && (EmptyUtils.isEmpty(detail.userInfoVO) || detail.userInfoVO.userNo !== user.code) ? this._shieldRender() : null}
+            {detail.status !== 1  && (EmptyUtils.isEmpty(detail.userInfoVO) || detail.userInfoVO.userNo === user.code) ? this._shieldRender() : null}
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             defaultModalVisible={this.params.openShareModal}
@@ -624,7 +656,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                                 data: detail.showNo
                             }}
                             webJson={{
-                                title: (detail.showType === 1 ? detail.content : detail.title) || '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
+                                title: detail.title || '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
                                 linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
                                 thumImage: detail.resource && detail.resource[0] ? detail.resource[0].url : '',//(分享图标小图(https链接)图文分享使用)
                                 dec: '好物不独享，内有惊喜福利~'
@@ -890,6 +922,10 @@ let styles = StyleSheet.create({
         marginTop: px2dp(10),
         marginBottom: px2dp(13),
         fontWeight: '400'
+    },
+    emptyTip: {
+        color: DesignRule.textColor_secondTitle,
+        fontSize: DesignRule.fontSize_threeTitle
     }
 });
 

@@ -27,10 +27,10 @@
 
 #ifdef DEBUG
 #define SA_DEBUG_MODE SensorsAnalyticsDebugOff
-#define SA_SERVER_URL @"https://track.sharegoodsmall.com/sa?project=default"
 #else
 #define SA_DEBUG_MODE SensorsAnalyticsDebugOff
-#define SA_SERVER_URL @"https://track.sharegoodsmall.com/sa?project=production"
 #endif
+#define SA_SERVER_URL_production @"https://track.sharegoodsmall.com/sa?project=production"
+#define SA_SERVER_URL_default  @"https://track.sharegoodsmall.com/sa?project=default"
 
 #endif /* JRNotiOrKey_h */

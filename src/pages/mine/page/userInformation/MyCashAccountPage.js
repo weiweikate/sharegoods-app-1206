@@ -90,7 +90,11 @@ const allType = {
     12: {
         title: '写手奖励',
         icon: writer
-    }
+    },
+    13: {
+        title: '系统升级',
+        icon: hongbao
+    },
 
 };
 
@@ -132,18 +136,26 @@ export default class MyCashAccountPage extends BasePage {
         let Y = event.nativeEvent.contentOffset.y;
         if (Y <= 175) {
             this.st = Y / offset;
-            this.setState({
-                changeHeader: false
-            });
+            if(this.state.changeHeader) {
+                this.setState({
+                    changeHeader: false
+                });
+            }
         } else {
             this.st = 1;
-            this.setState({
-                changeHeader: true
-            });
+            if(!this.state.changeHeader) {
+                this.setState({
+                    changeHeader: true
+                });
+            }
         }
 
         this.headerBg.setNativeProps({
             opacity: this.st,
+        });
+        this.header.setNativeProps({
+            opacity: this.st,
+            position: this.st === 1 ? null : 'absolute',
         });
     };
 
@@ -165,7 +177,7 @@ export default class MyCashAccountPage extends BasePage {
         ];
         return (
             <View style={styles.mainContainer}>
-                {this.state.changeHeader ? <View style={{height: headerHeight}}/> : null}
+                <View ref={(ref)=>{this.header = ref}} style={{position:'absolute',height: headerHeight}}/>
                 <SectionList
                     renderSectionHeader={this.sectionComp}
                     renderItem={this.renderItem}
@@ -178,6 +190,7 @@ export default class MyCashAccountPage extends BasePage {
                     onEndReachedThreshold={0.1}
                     stickySectionHeadersEnabled={true}
                     onScroll={(e)=>{this._onScroll(e)}}
+                    showsVerticalScrollIndicator={false}
                 />
                 {this.navBackgroundRender()}
                 {this.renderHeader()}
@@ -190,7 +203,7 @@ export default class MyCashAccountPage extends BasePage {
             <ImageBackground source={account_bg_white} resizeMode={'stretch'} style={{
                 position: 'absolute',
                 top: px2dp(66),
-                height: px2dp(174),
+                height: px2dp(184),
                 width: ScreenUtils.width,
                 left: 0,
                 paddingHorizontal: DesignRule.margin_page
@@ -214,8 +227,10 @@ export default class MyCashAccountPage extends BasePage {
                     color: DesignRule.textColor_mainTitle,
                     fontSize: 48,
                     marginLeft: DesignRule.margin_page,
+                    height: 58,
+                    lineHeight: 58
                 }}>{user.availableBalance ? user.availableBalance : '0.00'}</Text>
-                <View style={{display:'flex', flexDirection:'row', marginBottom: 15}} >
+                <View style={{display:'flex', flexDirection:'row', marginBottom: 15,marginTop: 15}} >
                     <View style={{flex:1,marginLeft: 15, justifyContent:'center'}}>
                         <Text style={styles.numTextStyle}>{user.blockedBalance ? user.blockedBalance : '0.00'}</Text>
                         <Text style={styles.numRemarkStyle}>待入账(元)</Text>
@@ -266,7 +281,6 @@ export default class MyCashAccountPage extends BasePage {
                         color: DesignRule.white,
                         fontSize: px2dp(17),
                         includeFontPadding: false,
-                        flex:1
                     }}>
                         {this.state.changeHeader ? '账户余额' : ''}
                     </Text>
@@ -274,8 +288,8 @@ export default class MyCashAccountPage extends BasePage {
                         <TouchableWithoutFeedback  onPress={() => {
                         this.$navigate(RouterMap.BankCardListPage);
                     }}>
-                        <Text style={styles.settingStyle}>账户设置</Text>
-                        </TouchableWithoutFeedback> : <Text style={styles.settingStyle}>    </Text>
+                        <Text style={[styles.settingStyle,{flex:1}]}>银行卡管理</Text>
+                        </TouchableWithoutFeedback> : <View style={{flex:1}}/>
                     }
                     </View>
             </View>
@@ -333,17 +347,18 @@ export default class MyCashAccountPage extends BasePage {
 
     renderItem = (info) => {
         let item = info.item;
+        console.log('item',item);
         let key = info.section.key;
         if (key === 'A') {
             return (
                 <ImageBackground resizeMode={'stretch'} source={account_bg}
-                                 style={{marginBottom: 10, height: px2dp(225), width: ScreenUtils.width, backgroundColor: 'white'}}>
+                                 style={{marginBottom: 10, height: px2dp(234), width: ScreenUtils.width, backgroundColor: 'white'}}>
                     {this._accountInfoRender()}
                 </ImageBackground>
             )
         }
         if(item.title && item.title === 'empty'){
-            return <EmptyView description={''} subDescription={'暂无明细数据～'} source={cash_noData}/>
+            return <EmptyView  style={{flex:1}} imageStyle={{width:267, height:192}} description={''} subDescription={'暂无明细数据～'} source={cash_noData}/>
         }
         return (
             <View style={{
@@ -370,7 +385,7 @@ export default class MyCashAccountPage extends BasePage {
                             fontSize: 12, color: DesignRule.textColor_instruction
                         }}>{item.time}</Text>
                     </View>
-                    {this.type === 2 && this.biType === 1 ?
+                    { Number(item.status) === 2 || (this.type === 2 && this.biType === 1) ?
                         <View style={{justifyContent: 'space-between', alignItems: 'flex-end'}}>
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                 <Text style={{
@@ -404,29 +419,27 @@ export default class MyCashAccountPage extends BasePage {
 
 
     //**********************************BusinessPart******************************************
-    componentWillMount() {
-        this.didFocusSubscription = this.props.navigation.addListener(
-            'didFocus',
-            payload => {
-                this.onRefresh();
-            }
-        );
-    }
-
     componentWillUnmount() {
         this.didFocusSubscription && this.didFocusSubscription.remove();
     }
 
     componentDidMount() {
-        MineApi.canWithdraw({ phoneNo: user.phone }).then(data => {
-            this.setState({
-                canWithdraw: data.data
-            });
-        }).catch((error) => {
-            this.setState({
-                canWithdraw: false
-            });
-        });
+        this.didFocusSubscription = this.props.navigation.addListener(
+            'didFocus',
+            payload => {
+                this.onRefresh();
+                MineApi.canWithdraw({ phoneNo: user.phone }).then(data => {
+                    this.setState({
+                        canWithdraw: data.data
+                    });
+                }).catch((error) => {
+                    this.setState({
+                        canWithdraw: false
+                    });
+                });
+            }
+        );
+
     }
 
     jumpToWithdrawCashPage = () => {
@@ -480,7 +493,8 @@ export default class MyCashAccountPage extends BasePage {
                             capital: use_type_symbol[item.biType] + (item.balance ? item.balance : 0.00),
                             iconImage: allType[item.useType] ? allType[item.useType].icon : renwu,
                             capitalRed: use_type_symbol[item.biType] === '-',
-                            realBalance: item.realBalance
+                            realBalance: item.realBalance,
+                            status: item.status
                         });
                     });
                 }
@@ -526,7 +540,7 @@ export default class MyCashAccountPage extends BasePage {
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
-        backgroundColor: DesignRule.bgColor
+        backgroundColor: DesignRule.white
     },
     container: {
         height: px2dp(188),
@@ -575,7 +589,8 @@ const styles = StyleSheet.create({
     },
     settingStyle: {
         color: DesignRule.white,
-        fontSize: DesignRule.fontSize_threeTitle
+        fontSize: DesignRule.fontSize_threeTitle,
+        textAlign: 'right'
     },
     countTextStyle: {
         color: DesignRule.textColor_mainTitle,

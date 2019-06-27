@@ -91,7 +91,7 @@ class TaskItem extends React.Component {
             progrossTitle = '';
         }
         let btn = this.renderBtn(item, false);
-        let maxWidth = btn?autoSizeWidth(125):autoSizeWidth(195)
+        let maxWidth = btn?autoSizeWidth(125+15):autoSizeWidth(195+15)
         if (item.type !== 2) {
             maxWidth += autoSizeWidth(15)
         }
@@ -101,7 +101,8 @@ class TaskItem extends React.Component {
                     flexDirection: 'row',
                     alignItems: 'center',
                     height: autoSizeWidth(64),
-                    paddingHorizontal: autoSizeWidth(20)
+                    paddingLeft: autoSizeWidth(15),
+                    paddingRight: autoSizeWidth(10)
                 }}>
                     {
                         this.state.isShowDefaultImage? <UIImage style={{width: autoSizeWidth(40), height: autoSizeWidth(40)}}
@@ -149,7 +150,6 @@ class TaskItem extends React.Component {
                                  style={{ height: autoSizeWidth(11), width: autoSizeWidth(11) }}/>
                     </TouchableOpacity> : null}
                 </View>
-                <View style={{marginHorizontal: 20, backgroundColor: DesignRule.lineColor_inWhiteBg, height: 0.5}}/>
             </View>
 
         );
@@ -175,7 +175,7 @@ class TaskItem extends React.Component {
                                       this.btnClick(item, subTask, title);
                                   }}>
                     <ImageBackground source={btn}
-                                     resizeMode={'stretch'}
+                                     resizeMode={'contain'}
                                      style={{width:  ScreenUtils.autoSizeWidth(63), height: ScreenUtils.autoSizeWidth(35), alignItems: 'center', justifyContent: 'center'}}>
                         <MRText style={{
                             fontSize: autoSizeWidth(13),
@@ -201,9 +201,9 @@ class TaskItem extends React.Component {
             progrossTitle = '';
         }
         return(
-            <View style={{height: autoSizeWidth(52),marginTop: 5,flexDirection: 'row',marginLeft: autoSizeWidth(20),marginRight: autoSizeWidth(10),
-                alignItems: 'center', backgroundColor: '#F7F7F7', paddingRight: autoSizeWidth(10)}}>
-                <View style={{justifyContent: 'center', marginLeft: 10, flex: 1,marginRight: 5}}>
+            <View style={{height: autoSizeWidth(52),marginTop: 5,flexDirection: 'row',marginLeft: autoSizeWidth(10),marginRight: autoSizeWidth(10),
+                alignItems: 'center', backgroundColor: '#F7F7F7', paddingRight: autoSizeWidth(5)}}>
+                <View style={{justifyContent: 'center', marginLeft: 15, flex: 1,marginRight: 5}}>
                     <MRText style={{ fontSize: autoSizeWidth(14), color: '#333333', maxWidth: autoSizeWidth(140)}}
                             numberOfLines={1}>{name + progrossTitle}</MRText>
                     <MRText style={{ fontSize: autoSizeWidth(12), color: '#999999'}}
@@ -234,6 +234,7 @@ class TaskItem extends React.Component {
                 {expanded ? subMissions.map((item) => {
                     return this.renderSubItem(item);
                 }) : null}
+                <View style={{marginHorizontal: 20, backgroundColor: DesignRule.lineColor_inWhiteBg, height: 0.5}}/>
             </View>
         );
     }
@@ -298,7 +299,7 @@ export default class TaskVIew extends React.Component {
         return (
             <View style={{paddingHorizontal: 10}}>
                 <View style={{backgroundColor: "#FFF1D9", height: autoSizeWidth(80), alignItems: 'center', borderRadius: 5, overflow: 'hidden'}}>
-                        <View style={{ height: autoSizeWidth(40), justifyContent: 'center', marginTop: autoSizeWidth(10)}}>
+                        <View style={{ height: autoSizeWidth(40), justifyContent: 'center', marginTop: autoSizeWidth(25)}}>
                             <View style={{
                                 width: autoSizeWidth(290),
                                 backgroundColor: '#f5f5f5',
@@ -341,7 +342,7 @@ export default class TaskVIew extends React.Component {
                                                                                  left: this.model.canOpenProgress/this.model.totalProgress * autoSizeWidth(290) - autoSizeWidth(5),
                                                                                  width: autoSizeWidth(25),
                                                                                  height: autoSizeWidth(23),
-                                                                                 top: autoSizeWidth(20)
+                                                                                 top: autoSizeWidth(5)
                                                                              }}
                                 /> : null
                             }
@@ -368,8 +369,7 @@ export default class TaskVIew extends React.Component {
         return (
             <TouchableOpacity style={{
                 width: autoSizeWidth(47),
-                height: autoSizeWidth(73),
-                justifyContent: 'center',
+                height: autoSizeWidth(65),
                 alignItems: 'center',
                 left: autoSizeWidth(290) / this.model.totalProgress * data.value -autoSizeWidth(47/2.0),
                 position: 'absolute',
@@ -418,11 +418,8 @@ export default class TaskVIew extends React.Component {
 
     renderTaskView() {
         let expanded = this.model.expanded;
-        if (expanded === false) {
-            return null;
-        }
         return (
-            <View style={{ height: autoSizeWidth(280) }}>
+            <View style={{ height: expanded === false ?0:autoSizeWidth(280) }}>
                 <View style={{
                     backgroundColor: 'white',
                     borderRadius: 5,

@@ -152,8 +152,9 @@ export default class ShowMaterialView extends React.Component {
                                        }}
                                        onPressProduct={({ nativeEvent }) => {
                                            const detail = JSON.parse(nativeEvent.detail)
+                                           const product = JSON.parse(nativeEvent.product)
                                            const {showNo} = detail ||{};
-                                           routePush(RouterMap.ProductDetailPage, { productCode: nativeEvent.prodCode,trackType:3,trackCode:showNo });
+                                           routePush(RouterMap.ProductDetailPage, { productCode: product.prodCode,trackType:3,trackCode:showNo });
                                        }}
 
                                        onAddCartClick={({ nativeEvent }) => {
@@ -191,7 +192,8 @@ export default class ShowMaterialView extends React.Component {
                                            }
 
                                            DownloadUtils.downloadProduct(nativeEvent);
-
+                                           this.shareModal && this.shareModal.open();
+                                           this.props.onShare(nativeEvent);
                                            const { showNo , userInfoVO } = detail;
                                            const { userNo } = userInfoVO || {};
                                            track(trackEvent.XiuChangDownLoadClick,{

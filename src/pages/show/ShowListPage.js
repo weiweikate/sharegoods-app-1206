@@ -74,9 +74,6 @@ export default class ShowListPage extends BasePage {
 
     constructor(props) {
         super(props);
-        track(trackEvent.ViewXiuChang, {
-            xiuChangListType: 1
-        });
     }
 
     componentDidMount() {
@@ -102,10 +99,15 @@ export default class ShowListPage extends BasePage {
                 if (user.isLogin) {
                     WhiteModel.saveWhiteType();
                 }
+                this.loadMessageCount();
                 const { state } = payload;
                 if (state && (state.routeName === 'ShowListPage' || state.routeName === 'show/ShowListPage')) {
                     this.setState({
                         pageFocused: true
+                    });
+
+                    track(trackEvent.ViewXiuChang, {
+                        xiuChangListType: ShowListIndexModel.pageIndex + 1
                     });
                 }
             }
@@ -148,9 +150,6 @@ export default class ShowListPage extends BasePage {
 
 
     _gotoPage(number) {
-        track(trackEvent.ViewXiuChang, {
-            xiuChangListType: number + 1
-        });
         // this.setState({ page: number });
         ShowListIndexModel.setIndex(number);
     }
@@ -213,7 +212,6 @@ export default class ShowListPage extends BasePage {
         }
         this.$navigate(RouterMap.MyDynamicPage);
     };
-
 
     _render() {
         const { left, needsExpensive, detail } = this.state;
@@ -408,7 +406,7 @@ export default class ShowListPage extends BasePage {
                                     data: detail.showNo
                                 }}
                                 webJson={{
-                                    title: (detail.showType === 1 ? detail.content : detail.title) || '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
+                                    title: detail.title || '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
                                     linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
                                     thumImage: detail.resource && detail.resource[0] && detail.resource[0].url
                                         ? detail.resource[0].url : '',//(分享图标小图(https链接)图文分享使用)

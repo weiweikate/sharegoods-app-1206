@@ -46,7 +46,7 @@ const downloadShow = (urls, content) => {
 
     return Promise.all(promises).then(res => {
         if (Platform.OS === 'android') {
-            Toast.$toast('图片已下载到相册，文案已复制');
+            Toast.$toast('文案已复制,图片已下载到相册');
         }
         return Promise.resolve();
     }).catch(error => {

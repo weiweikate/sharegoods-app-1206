@@ -1,10 +1,7 @@
 package com.meeruu.sharegoods.rn.showground.adapter;
 
-import android.graphics.Color;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -19,10 +16,6 @@ import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
 import com.meeruu.sharegoods.rn.showground.contacts.CommValue;
-import com.meeruu.sharegoods.rn.showground.utils.NumUtils;
-import com.meeruu.sharegoods.rn.showground.utils.UrlUtils;
-
-import java.util.Map;
 
 public class ShowDynamicAdapter extends BaseQuickAdapter<NewestShowGroundBean.DataBean, BaseViewHolder> {
     private final int realWidth;
@@ -35,7 +28,7 @@ public class ShowDynamicAdapter extends BaseQuickAdapter<NewestShowGroundBean.Da
 
     public ShowDynamicAdapter() {
         super(R.layout.show_dynamic_item);
-        realWidth = (ScreenUtils.getScreenWidth() - DensityUtils.dip2px(40)) / 2;
+        realWidth = (ScreenUtils.getScreenWidth() - DensityUtils.dip2px(30)) / 2 ;
         minHeight = realWidth * 120 / 167;
         maxHeight = realWidth * 240 / 167;
     }
@@ -47,22 +40,17 @@ public class ShowDynamicAdapter extends BaseQuickAdapter<NewestShowGroundBean.Da
         double height = 1;
         String imgUrl = null;
         if (item.getResource() != null) {
-            if(item.getShowType() != 3){
+            if (item.getShowType() != 3) {
                 //非视频类型
                 NewestShowGroundBean.DataBean.ResourceBean resourceBean = item.getResource().get(0);
                 imgUrl = resourceBean.getUrl();
                 width = resourceBean.getWidth();
                 height = resourceBean.getHeight();
-            }else {
+            } else {
                 //视频类型，取封面
-                for(NewestShowGroundBean.DataBean.ResourceBean resourceBean : item.getResource()){
-                    if(resourceBean.getType() == 5){
-                        imgUrl = resourceBean.getUrl();
-                        width = resourceBean.getWidth();
-                        height = resourceBean.getHeight();
-                        break;
-                    }
-                }
+                imgUrl = item.getVideoCover().imageUrl;
+                width = item.getVideoCover().imageViewWidth;
+                height = item.getVideoCover().imageViewHeight;
             }
         }
 
@@ -86,37 +74,38 @@ public class ShowDynamicAdapter extends BaseQuickAdapter<NewestShowGroundBean.Da
             imageView.setTag(imgUrl);
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) imageView.getLayoutParams();
             params.height = realHeight;
+            params.width = realWidth;
             imageView.setLayoutParams(params);
-            ImageLoadUtils.loadRoundNetImage(imgUrl, imageView, arr_raduis);
+            ImageLoadUtils.loadRoundNetImage(imgUrl, imageView, realWidth, realHeight, arr_raduis);
         }
 
         ImageView shadow = helper.getView(R.id.iv_shadow);
         FrameLayout root = helper.getView(R.id.root_view);
-        if(item.getStatus() == 3){
-            int length = minHeight-30;
+        if (item.getStatus() == 3) {
+            int length = minHeight - 30;
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) shadow.getLayoutParams();
             params.width = length;
             params.height = length;
             shadow.setLayoutParams(params);
             shadow.setVisibility(View.VISIBLE);
             root.setForeground(root.getContext().getResources().getDrawable(R.drawable.white_shadow));
-        }else {
+        } else {
             shadow.setVisibility(View.GONE);
             root.setForeground(null);
         }
 
         TextView desc = helper.getView(R.id.tv_desc);
 
-        if(item.getStatus() == CommValue.PUBLISH_DONE){
+        if (item.getStatus() == CommValue.PUBLISH_DONE) {
             desc.setText("已发布");
             desc.setTextColor(desc.getContext().getResources().getColor(R.color.status_red));
-        }else if(item.getStatus() == CommValue.WAIT_APPROVE){
+        } else if (item.getStatus() == CommValue.WAIT_APPROVE) {
             desc.setText("审核中");
             desc.setTextColor(desc.getContext().getResources().getColor(R.color.status_blue));
-        }else if(item.getStatus() == CommValue.SHIELD){
+        } else if (item.getStatus() == CommValue.SHIELD) {
             desc.setText("已屏蔽");
             desc.setTextColor(desc.getContext().getResources().getColor(R.color.status_gray));
-        }else if(item.getStatus() == CommValue.DELETED){
+        } else if (item.getStatus() == CommValue.DELETED) {
             desc.setText("已删除");
             desc.setTextColor(desc.getContext().getResources().getColor(R.color.status_gray));
         }

@@ -198,8 +198,9 @@ export default class ShowHotView extends React.Component {
 
                                        onPressProduct={({ nativeEvent }) => {
                                            const detail = JSON.parse(nativeEvent.detail)
+                                           const product = JSON.parse(nativeEvent.product)
                                            const {showNo} = detail ||{};
-                                           routePush(RouterMap.ProductDetailPage, { productCode: nativeEvent.prodCode ,trackType:3,trackCode:showNo});
+                                           routePush(RouterMap.ProductDetailPage, { productCode: product.prodCode ,trackType:3,trackCode:showNo});
                                        }}
 
                                        onZanPress={({ nativeEvent }) => {
@@ -235,6 +236,8 @@ export default class ShowHotView extends React.Component {
                                            }
 
                                            DownloadUtils.downloadProduct(nativeEvent);
+                                           this.shareModal && this.shareModal.open();
+                                           this.props.onShare(nativeEvent);
 
                                            const { showNo , userInfoVO } = detail;
                                            const { userNo } = userInfoVO || {};
@@ -249,7 +252,6 @@ export default class ShowHotView extends React.Component {
                                        onSharePress={({ nativeEvent }) => {
                                            this.shareModal && this.shareModal.open();
                                            this.props.onShare(nativeEvent);
-
                                        }}
 
                                        onScrollY={({ nativeEvent }) => {

@@ -99,7 +99,7 @@
   //点赞
   [_zanBtn addTarget:self action:@selector(tapZanBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.zanBtn.sd_layout.topSpaceToView(self.scrollView,10)
-  .heightIs(24).widthIs(24)
+  .heightIs(26).widthIs(26)
   .leftSpaceToView(self, 0);
 
   self.zanNum.sd_layout.centerYEqualToView(self.zanBtn)
@@ -110,7 +110,7 @@
   [_downloadBtn addTarget:self action:@selector(tapDownloadBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.downloadBtn.sd_layout.centerYEqualToView(self.zanNum)
   .leftSpaceToView(self.zanNum, 10)
-  .widthIs(24).heightIs(24);
+  .widthIs(26).heightIs(26);
 
   self.downLoadNUm.sd_layout.centerYEqualToView(self.downloadBtn)
   .leftSpaceToView(self.downloadBtn, 1)
@@ -122,7 +122,7 @@
      .rightSpaceToView(self, 10)
      .widthIs(70).heightIs(30);
 
-  [self setupAutoHeightWithBottomView:self.zanBtn bottomMargin:0];
+  [self setupAutoHeightWithBottomView:self.zanBtn bottomMargin:10];
 
 
 }
@@ -131,6 +131,18 @@
 -(void)setProducts:(NSArray *)products{
   _products = products;
   [self setGoodsView];
+}
+
+- (void)setType:(BOOL)type{
+  _type = type;
+  if(type){
+    self.downloadBtn.hidden = YES;
+    self.downLoadNUm.hidden = YES;
+    
+  }else{
+    self.downloadBtn.hidden = NO;
+    self.downLoadNUm.hidden = NO;
+  }
 }
 
 -(void)setDownloadCount:(NSInteger)downloadCount{
@@ -203,11 +215,10 @@
         //将多余的部分切掉
         goodsImg.layer.masksToBounds = YES;
         goodsImg.image = [UIImage imageNamed:@"welcome3"];
-        [goodsImg sd_setImageWithURL:[NSURL URLWithString:[self.products[i] valueForKey:@"imgUrl"]] placeholderImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"f5f5f5"]]];
-
+        [goodsImg setImageWithURL:[NSURL URLWithString:[self.products[i] valueForKey:@"imgUrl"]] placeholder:[UIImage imageWithColor:[UIColor colorWithHexString:@"f5f5f5"]]];
 
         UILabel* titile = [[UILabel alloc]init];
-        titile.font = [UIFont systemFontOfSize:10];
+        titile.font = [UIFont systemFontOfSize:12];
         titile.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
         titile.text = [self.products[i] valueForKey:@"name"];
 

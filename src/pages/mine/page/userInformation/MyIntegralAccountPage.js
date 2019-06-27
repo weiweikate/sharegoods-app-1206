@@ -95,18 +95,27 @@ export default class MyIntegralAccountPage extends BasePage {
         let Y = event.nativeEvent.contentOffset.y;
         if (Y <= 175) {
             this.st = Y / offset;
-            this.setState({
-                changeHeader: false
-            });
+            if(this.state.changeHeader) {
+                this.setState({
+                    changeHeader: false
+                });
+            }
         } else {
             this.st = 1;
-            this.setState({
-                changeHeader: true
-            });
+            if(!this.state.changeHeader) {
+                this.setState({
+                    changeHeader: true
+                });
+            }
         }
 
         this.headerBg.setNativeProps({
             opacity: this.st,
+        });
+
+        this.header.setNativeProps({
+            opacity: this.st,
+            position: this.st === 1 ? null : 'absolute',
         });
     };
 
@@ -120,7 +129,7 @@ export default class MyIntegralAccountPage extends BasePage {
 
         return (
             <View style={styles.mainContainer}>
-                {this.state.changeHeader ? <View style={{height: headerHeight}}/> : null}
+                <View ref={(ref)=>{this.header = ref}} style={{position:'absolute',height: headerHeight}}/>
                 <SectionList
                     renderSectionHeader={this.sectionComp}
                     renderItem={this.renderItem}
@@ -133,6 +142,7 @@ export default class MyIntegralAccountPage extends BasePage {
                     onEndReachedThreshold={0.1}
                     stickySectionHeadersEnabled={true}
                     onScroll={(e)=>{this._onScroll(e)}}
+                    showsVerticalScrollIndicator={false}
                 />
                 {this.navBackgroundRender()}
                 {this.renderHeader()}
@@ -145,7 +155,7 @@ export default class MyIntegralAccountPage extends BasePage {
             <ImageBackground source={account_bg_white} resizeMode={'stretch'} style={{
                 position: 'absolute',
                 top: px2dp(66),
-                height: px2dp(174),
+                height: px2dp(184),
                 width: ScreenUtils.width,
                 left: 0,
                 paddingHorizontal: DesignRule.margin_page
@@ -175,15 +185,17 @@ export default class MyIntegralAccountPage extends BasePage {
                     color: DesignRule.textColor_mainTitle,
                     fontSize: 48,
                     marginLeft: DesignRule.margin_page,
+                    height: 58,
+                    lineHeight: 58
                 }}>{user.userScore ? user.userScore : 0}</Text>
 
-                <View style={{display:'flex', flexDirection:'row', marginBottom: 15}} >
+                <View style={{display:'flex', flexDirection:'row', marginBottom: 15, marginTop: 15}} >
                     <View style={{flex:1,marginLeft: 15, justifyContent:'center'}}>
                         <Text style={styles.numTextStyle}>{user.blockedUserScore ? user.blockedUserScore : '0.00'}</Text>
                         <Text style={styles.numRemarkStyle}>待入账秀豆（枚）</Text>
                     </View>
                     <View style={{flex:1,marginLeft: 15, justifyContent:'center'}}>
-                        <Text style={styles.numTextStyle}>{user.historicalBalance ? user.historicalScore : '0.00'}</Text>
+                        <Text style={styles.numTextStyle}>{user.historicalScore ? user.historicalScore : '0.00'}</Text>
                         <Text style={styles.numRemarkStyle}>累计秀豆（枚）</Text>
                     </View>
                 </View>
@@ -243,14 +255,14 @@ export default class MyIntegralAccountPage extends BasePage {
         if (key === 'A') {
             return (
                 <ImageBackground resizeMode={'stretch'} source={account_bg}
-                                 style={{marginBottom: 10, height: px2dp(225), width: ScreenUtils.width, backgroundColor: 'white'}}>
+                                 style={{marginBottom: 10, height: px2dp(234), width: ScreenUtils.width, backgroundColor: 'white'}}>
                     {this._accountInfoRender()}
                 </ImageBackground>
             )
         }
         if(item.title && item.title === 'empty'){
             return(
-                <EmptyView description={''} subDescription={'暂无明细数据～'} source={cash_noData}/>
+                <EmptyView style={{flex:1}} imageStyle={{width:267, height:192}} description={''} subDescription={'暂无明细数据～'} source={cash_noData}/>
             )}
 
         return (
@@ -278,7 +290,7 @@ export default class MyIntegralAccountPage extends BasePage {
                             fontSize: 12, color: DesignRule.textColor_instruction
                         }}>{item.time}</Text>
                     </View>
-                    {this.type === 2 && this.biType === 1 ?
+                    {item.status === 2 || (this.type === 2 && this.biType === 1) ?
                         <View style={{justifyContent: 'space-between', alignItems: 'flex-end'}}>
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                 <Text style={{
@@ -384,7 +396,8 @@ export default class MyIntegralAccountPage extends BasePage {
                         capital: use_type_symbol[item.usType] + (item.userScore ? item.userScore : 0),
                         iconImage: allKinds[item.useType] ? allKinds[item.useType].img : taskImg,
                         capitalRed: use_type_symbol[item.usType] === '+',
-                        realBalance: item.realBalance
+                        realBalance: item.realBalance,
+                        status: item.status
                     });
                 });
                 this.setState({ viewData: arrData, isEmpty: data.data && data.data.length !== 0 ? false : true });
@@ -422,7 +435,7 @@ export default class MyIntegralAccountPage extends BasePage {
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
-        backgroundColor: DesignRule.bgColor
+        backgroundColor: DesignRule.white
     },
     tabBar: {
         width: ScreenUtils.width * 2 / 3,

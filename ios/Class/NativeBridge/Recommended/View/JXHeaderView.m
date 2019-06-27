@@ -89,7 +89,7 @@
   self.headImg.layer.cornerRadius = self.headImg.frame.size.width/2.0;
 
   //昵称
-  self.nameLab.sd_layout.leftSpaceToView(_headImg, 5)
+  self.nameLab.sd_layout.leftSpaceToView(_headImg, 10)
   .heightIs(15).topEqualToView(_headImg);
   [_nameLab setSingleLineAutoResizeWithMaxWidth:200];
 
@@ -104,7 +104,7 @@
 //  .widthIs(50);
 
   //发布时间
-  self.timeLab.sd_layout.leftSpaceToView(_headImg, 5)
+  self.timeLab.sd_layout.leftSpaceToView(_headImg, 10)
     .topSpaceToView(self.nameLab, 2)
   .heightIs(15);
     [_timeLab setSingleLineAutoResizeWithMaxWidth:200];
