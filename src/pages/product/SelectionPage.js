@@ -14,6 +14,7 @@ import bridge from '../../utils/bridge';
 import Modal from '../../comm/components/CommModal';
 import DesignRule from '../../constants/DesignRule';
 import { MRText as Text } from '../../components/ui/index';
+// import { ProductDetailSkuAddressView } from './components/ProductDetailAddressView';
 
 export const sourceType = {
     promotion: 'promotion'
@@ -252,6 +253,7 @@ export default class SelectionPage extends Component {
 
     render() {
         const { afterAmount, type } = this.state.propData;
+        // const { productDetailAddressModel } = this.state.data;
         return (
             <Modal
                 ref={(ref) => this.modal = ref}
@@ -278,6 +280,7 @@ export default class SelectionPage extends Component {
                                              })}/>
                         <View style={{ flex: 1, backgroundColor: 'white' }}>
                             <ScrollView>
+                                {/*<ProductDetailSkuAddressView productDetailAddressModel={productDetailAddressModel}/>*/}
                                 {this._addSelectionSectionView()}
                                 {!this.state.unShowAmount &&
                                 <SelectionAmountView style={{ marginVertical: 30 }}

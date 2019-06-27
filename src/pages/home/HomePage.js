@@ -72,7 +72,7 @@ import { UserLevelModalView } from './view/TaskModalView';
 
 const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
     <Text style={styles.text}
-          allowFontScaling={false}>{errorMsg ? errorMsg : (isEnd ? '我也是有底线的' : (isFetching ? '加载中...' : '加载更多'))}</Text>
+          allowFontScaling={false}>{errorMsg ? errorMsg : (isEnd ? '我也是有底线的' : (isFetching ? '加载中...' : '加载更多中...'))}</Text>
 </View>;
 
 @observer
@@ -162,10 +162,6 @@ class HomePage extends BasePage {
         homeModule.initHomeParams();
         homeTabManager.setAboveRecommend(false);
         this.offsetY = 0;
-        InteractionManager.runAfterInteractions(() => {
-            homeModule.loadHomeList(true);
-        });
-
     }
 
     componentDidMount() {
@@ -179,6 +175,18 @@ class HomePage extends BasePage {
                     homeModalManager.leaveHome();
                 }
                 BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+            }
+        );
+
+        this.willFocusSubscription = this.props.navigation.addListener(
+            'willFocus',
+            payload => {
+                const { state } = payload;
+                if (state && state.routeName === 'HomePage') {
+                    if (homeModule.firstLoad) {
+                        homeModule.loadHomeList(true);
+                    }
+                }
             }
         );
 
@@ -223,6 +231,7 @@ class HomePage extends BasePage {
         this.listenerRetouchHome = DeviceEventEmitter.addListener('retouch_home', this.retouchHome);
         this.listenerHomeRefresh = JSManagerEmitter.addListener(HOME_REFRESH, this.homeTypeRefresh);
         this.listenerSkip = JSManagerEmitter.addListener(HOME_SKIP, this.homeSkip);
+
     }
 
     homeTabChange = () => {
@@ -259,6 +268,7 @@ class HomePage extends BasePage {
 
     componentWillUnmount() {
         this.willBlurSubscription && this.willBlurSubscription.remove();
+        this.willFocusSubscription && this.willFocusSubscription.remove();
         this.didFocusSubscription && this.didFocusSubscription.remove();
         this.listener && this.listener.remove();
         this.listenerMessage && this.listenerMessage.remove();

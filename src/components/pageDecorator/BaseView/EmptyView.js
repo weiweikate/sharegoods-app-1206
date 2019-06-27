@@ -25,8 +25,10 @@ import {
     RefreshControl,
     TouchableWithoutFeedback
 } from 'react-native';
-import EmptyImage from './source/no_data.png';
 import DesignRule from '../../../constants/DesignRule';
+import res from '../../../comm/res';
+
+const { no_data } = res.placeholder;
 
 export default class EmptyView extends Component {
 
@@ -87,7 +89,7 @@ export default class EmptyView extends Component {
 
     _getImgSource = () => {
         const { source } = this.props;
-        return source || EmptyImage;
+        return source || no_data;
     };
 
 
@@ -98,7 +100,6 @@ export default class EmptyView extends Component {
             imageStyle,
             description
         } = this.props;
-        const { width, height } = this.state;
         return (
             <ScrollView
                 keyboardShouldPersistTaps="handled"
@@ -109,7 +110,7 @@ export default class EmptyView extends Component {
                 style={[styles.scrollViewContainer, style]}
             >
 
-                <View style={[styles.container, { width, height }]}>
+                <View style={[styles.container]}>
                     <Image
                         source={this._getImgSource()}
                         style={[styles.img, imageStyle]}

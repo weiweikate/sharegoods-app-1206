@@ -89,7 +89,7 @@
   self.headImg.layer.cornerRadius = self.headImg.frame.size.width/2.0;
 
   //昵称
-  self.nameLab.sd_layout.leftSpaceToView(_headImg, 5)
+  self.nameLab.sd_layout.leftSpaceToView(_headImg, 10)
   .heightIs(15).topEqualToView(_headImg);
   [_nameLab setSingleLineAutoResizeWithMaxWidth:200];
 
@@ -104,7 +104,7 @@
 //  .widthIs(50);
 
   //发布时间
-  self.timeLab.sd_layout.leftSpaceToView(_headImg, 5)
+  self.timeLab.sd_layout.leftSpaceToView(_headImg, 10)
     .topSpaceToView(self.nameLab, 2)
   .heightIs(15);
     [_timeLab setSingleLineAutoResizeWithMaxWidth:200];
@@ -121,6 +121,18 @@
     [self.headImg sd_setImageWithURL:[NSURL URLWithString:[UserInfoModel.userImg getUrlAndWidth:30 height:30]] placeholderImage:[UIImage imageNamed:@"default_avatar"]];
   
     self.nameLab.text = UserInfoModel.userName.length>0? UserInfoModel.userName:@" ";
+
+}
+
+-(void)setType:(BOOL)type{
+  _type = type;
+  if(type){
+    self.nameLab.sd_layout.topEqualToView(self.headImg);
+    self.timeLab.sd_layout.heightIs(15);
+  }else{
+    self.nameLab.sd_layout.topSpaceToView(self, 7.5);
+    self.timeLab.sd_layout.heightIs(0);
+  }
 }
 
 -(void)setTime:(NSString *)time{

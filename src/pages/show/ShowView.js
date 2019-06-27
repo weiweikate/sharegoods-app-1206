@@ -11,7 +11,6 @@ import {
     MRText as Text
 } from '../../components/ui';
 import res from './res';
-import { TrackApi } from '../../utils/SensorsTrack';
 import { routePush } from '../../navigation/RouterMap';
 import RouterMap from '../../navigation/RouterMap';
 
@@ -26,7 +25,6 @@ export default class ShowView extends Component {
         super(props);
         this.showModules = new HomeShowModules();
         this.showModules.loadShowList();
-        TrackApi.xiuChang();
     }
 
     _renderItems(item, index) {

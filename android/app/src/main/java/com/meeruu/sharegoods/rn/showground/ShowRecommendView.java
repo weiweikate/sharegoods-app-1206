@@ -148,10 +148,11 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         });
         ProductsAdapter.AddCartListener addCartListener = new ProductsAdapter.AddCartListener() {
             @Override
-            public void onAddCart(String code) {
+            public void onAddCart(String product,String detail) {
                 addCartEvent.init(view.getId());
                 WritableMap map = Arguments.createMap();
-                map.putString("prodCode", code);
+                map.putString("product", product);
+                map.putString("detail", detail);
                 addCartEvent.setData(map);
                 eventDispatcher.dispatchEvent(addCartEvent);
             }
@@ -159,11 +160,12 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
 
         ProductsAdapter.PressProductListener pressProductListener = new ProductsAdapter.PressProductListener() {
             @Override
-            public void onPressProduct(String code) {
+            public void onPressProduct(String product,String detail) {
                 onPressProductEvent onPressProductEvent = new onPressProductEvent();
                 onPressProductEvent.init(view.getId());
                 WritableMap writableMap = Arguments.createMap();
-                writableMap.putString("prodCode", code);
+                writableMap.putString("product", product);
+                writableMap.putString("detail", detail);
                 onPressProductEvent.setData(writableMap);
                 eventDispatcher.dispatchEvent(onPressProductEvent);
             }
@@ -454,7 +456,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         if (data != null) {
             for (int i = 0; i < data.size(); i++) {
                 NewestShowGroundBean.DataBean bean = (NewestShowGroundBean.DataBean) data.get(i);
-                if (bean.getItemType() == 1) {
+                if (bean.getItemType() == 1 || bean.getItemType() == 3) {
                     List<NewestShowGroundBean.DataBean.ResourceBean> resource = bean.getResource();
                     List<ImageInfo> resolveResource = new ArrayList<>();
                     if (resource != null) {
@@ -464,6 +466,13 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
                                 ImageInfo imageInfo = new ImageInfo();
                                 imageInfo.setImageUrl(resourceBean.getUrl());
                                 resolveResource.add(imageInfo);
+                            }
+
+                            if(resourceBean.getType() == 5){
+                                ImageInfo imageInfo = new ImageInfo();
+                                imageInfo.setImageUrl(resourceBean.getUrl());
+                                bean.setVideoCover(imageInfo);
+                                break;
                             }
                         }
                         bean.setNineImageInfos(resolveResource);
@@ -517,8 +526,22 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         }
     }
 
+    public void setType(String type){
+        adapter.setType(type);
+    }
+
     private void showList() {
         errView.setVisibility(View.INVISIBLE);
         swipeRefreshLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void deleteSuccess() {
+
+    }
+
+    @Override
+    public void deleteFail(String err) {
+
     }
 }

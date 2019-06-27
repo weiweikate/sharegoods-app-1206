@@ -9,6 +9,7 @@
 #import "JRServiceBridge.h"
 #import <React/RCTBridge.h>
 #import "JRServiceManager.h"
+#import "MRImageVideoManager.h"
 
 @implementation JRServiceBridge
 {

@@ -6,14 +6,13 @@ import {
     Image,
     BackHandler,
     InteractionManager,
-    DeviceEventEmitter
+    DeviceEventEmitter, TouchableWithoutFeedback
 } from 'react-native';
 import BasePage from '../../BasePage';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 import ScreenUtils from '../../utils/ScreenUtils';
 
 const { px2dp } = ScreenUtils;
-import backIconImg from '../../comm/res/button/icon_header_back.png';
 import DesignRule from '../../constants/DesignRule';
 import { observer } from 'mobx-react';
 import {
@@ -32,14 +31,18 @@ import ShowMaterialView from './ShowMaterialView';
 import apiEnvironment from '../../api/ApiEnvironment';
 import CommShareModal from '../../comm/components/CommShareModal';
 import WhiteModel from './model/WhiteModel';
+import ShowListIndexModel from './model/ShowListIndexModel';
 import { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
 import { routeNavigate } from '../../navigation/RouterMap';
 import RouterMap from '../../navigation/RouterMap';
+import { track, trackEvent } from '../../utils/SensorsTrack';
 
 const {
     mine_user_icon,
     mine_message_icon_gray
 } = res.homeBaseImg;
+const { icon_header_back } = res.button;
+
 @observer
 export default class ShowListPage extends BasePage {
 
@@ -71,7 +74,6 @@ export default class ShowListPage extends BasePage {
 
     constructor(props) {
         super(props);
-        this.lastStopScrollTime = -1;
     }
 
     componentDidMount() {
@@ -97,10 +99,15 @@ export default class ShowListPage extends BasePage {
                 if (user.isLogin) {
                     WhiteModel.saveWhiteType();
                 }
+                this.loadMessageCount();
                 const { state } = payload;
                 if (state && (state.routeName === 'ShowListPage' || state.routeName === 'show/ShowListPage')) {
                     this.setState({
                         pageFocused: true
+                    });
+
+                    track(trackEvent.ViewXiuChang, {
+                        xiuChangListType: ShowListIndexModel.pageIndex + 1
                     });
                 }
             }
@@ -108,9 +115,10 @@ export default class ShowListPage extends BasePage {
         this.setState({ needsExpensive: true });
 
         this.listener = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
-        this.publishListener = DeviceEventEmitter.addListener('PublishShowFinish', (value) => {
-            this._gotoPage(2);
-            this.foundList && this.foundList.addDataToTop(value);
+        this.publishListener = DeviceEventEmitter.addListener('PublishShowFinish', (index) => {
+            if (index !== -1) {
+                this._gotoPage(index);
+            }
         });
         this.listenerRetouchShow = DeviceEventEmitter.addListener('retouch_show', this.retouchShow);
     }
@@ -124,7 +132,7 @@ export default class ShowListPage extends BasePage {
     }
 
     retouchShow = () => {
-        switch (this.state.page) {
+        switch (ShowListIndexModel.pageIndex) {
             case 0:
                 this.hotList && this.hotList.scrollToTop();
                 break;
@@ -142,11 +150,14 @@ export default class ShowListPage extends BasePage {
 
 
     _gotoPage(number) {
-        this.setState({ page: number });
+        // this.setState({ page: number });
+        ShowListIndexModel.setIndex(number);
     }
 
     _onChangeTab(number) {
-        this.setState({ page: number.i });
+        ShowListIndexModel.setIndex(number.i);
+
+        // this.setState({ page: number.i });
     }
 
     _onLeftPressed() {
@@ -194,9 +205,16 @@ export default class ShowListPage extends BasePage {
         });
     };
 
+    _goMyDynamicPage = () => {
+        if (!user.isLogin) {
+            this.$navigate(RouterMap.LoginPage);
+            return;
+        }
+        this.$navigate(RouterMap.MyDynamicPage);
+    };
 
     _render() {
-        const { page, left, needsExpensive, detail } = this.state;
+        const { left, needsExpensive, detail } = this.state;
         let HotView = null;
         if (needsExpensive) {
             HotView = require('./ShowHotView').default;
@@ -230,40 +248,42 @@ export default class ShowListPage extends BasePage {
                     left
                         ?
                         <TouchableOpacity style={styles.backImg} onPress={() => this._onLeftPressed()}>
-                            <Image source={backIconImg} style={styles.img}/>
+                            <Image source={icon_header_back} style={styles.img}/>
                         </TouchableOpacity>
                         :
                         null
                 }
-                <View style={[{ marginLeft: left ? px2dp(10) : px2dp(15) }]}>
-                    {icon}
-                </View>
+                <TouchableWithoutFeedback onPress={this._goMyDynamicPage}>
+                    <View style={[{ marginLeft: left ? px2dp(10) : px2dp(15) }]}>
+                        {icon}
+                    </View>
+                </TouchableWithoutFeedback>
                 <View style={{ flex: 1 }}/>
                 <View style={styles.titleView}>
                     <TouchableOpacity style={styles.items} onPress={() => this._gotoPage(0)}>
-                        <Text style={[page === 0 ? styles.activityIndex : styles.index]}
+                        <Text style={[ShowListIndexModel.pageIndex === 0 ? styles.activityIndex : styles.index]}
                               allowFontScaling={false}>推荐</Text>
-                        {page === 0 ? <View style={styles.line}/> : null}
+                        {ShowListIndexModel.pageIndex === 0 ? <View style={styles.line}/> : null}
                     </TouchableOpacity>
                     <View style={{ width: px2dp(20) }}/>
                     <TouchableOpacity style={[{ marginRight: px2dp(20) }, styles.items]}
                                       onPress={() => this._gotoPage(1)}>
-                        <Text style={page === 1 ? styles.activityIndex : styles.index}
+                        <Text style={ShowListIndexModel.pageIndex === 1 ? styles.activityIndex : styles.index}
                               allowFontScaling={false}>素材圈</Text>
-                        {page === 1 ? <View style={styles.line}/> : null}
+                        {ShowListIndexModel.pageIndex === 1 ? <View style={styles.line}/> : null}
                     </TouchableOpacity>
 
                     <TouchableOpacity style={[styles.items, { marginRight: px2dp(20) }]}
                                       onPress={() => this._gotoPage(2)}>
-                        <Text style={page === 2 ? styles.activityIndex : styles.index}
+                        <Text style={ShowListIndexModel.pageIndex === 2 ? styles.activityIndex : styles.index}
                               allowFontScaling={false}>发现</Text>
-                        {page === 2 ? <View style={styles.line}/> : null}
+                        {ShowListIndexModel.pageIndex === 2 ? <View style={styles.line}/> : null}
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.items} onPress={() => this._gotoPage(3)}>
-                        <Text style={page === 3 ? styles.activityIndex : styles.index}
+                        <Text style={ShowListIndexModel.pageIndex === 3 ? styles.activityIndex : styles.index}
                               allowFontScaling={false}>活动</Text>
-                        {page === 3 ? <View style={styles.line}/> : null}
+                        {ShowListIndexModel.pageIndex === 3 ? <View style={styles.line}/> : null}
                     </TouchableOpacity>
                 </View>
                 <View style={{ flex: 1 }}/>
@@ -274,7 +294,7 @@ export default class ShowListPage extends BasePage {
             <ScrollableTabView
                 ref={(ref) => this.scrollableTabView = ref}
                 style={styles.tab}
-                page={this.state.page}
+                page={ShowListIndexModel.pageIndex}
                 renderTabBar={() => <DefaultTabBar style={styles.tabBar}/>}
                 tabBarUnderlineStyle={styles.underline}
                 onChangeTab={(number) => this._onChangeTab(number)}
@@ -337,11 +357,24 @@ export default class ShowListPage extends BasePage {
                                                            ref: this.activityList,
                                                            index
                                                        };
-                                                       if (data.showType === 1) {
-                                                           navigate('show/ShowDetailPage', params);
+                                                       if (data.showType === 1 || data.showType === 3) {
+                                                           navigate(RouterMap.ShowDetailPage, params);
+                                                       } else if (data.showType === 4) {
+                                                           navigate(RouterMap.TagDetailPage, {
+                                                               tagId: data.tagId,
+                                                               name: data.tagName
+                                                           });
                                                        } else {
-                                                           navigate('show/ShowRichTextDetailPage', params);
+                                                           navigate(RouterMap.ShowRichTextDetailPage, params);
                                                        }
+                                                       const { showNo, userInfoVO } = data;
+                                                       const { userNo } = userInfoVO || {};
+                                                       track(trackEvent.XiuChangEnterClick, {
+                                                           xiuChangListType: 4,
+                                                           articleCode: showNo,
+                                                           author: userNo,
+                                                           xiuChangEnterBtnName: '秀场列表'
+                                                       });
                                                    }}
                                                    navigate={this.$navigate}/> : null
                     }
@@ -351,8 +384,13 @@ export default class ShowListPage extends BasePage {
             {detail ?
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 type={'Show'}
-                                trackEvent={'ArticleShare'}
-                                trackParmas={{ articeCode: detail.code, articleTitle: detail.title }}
+                                trackEvent={trackEvent.XiuChangShareClick}
+                                trackParmas={{
+                                    articleCode: detail.code,
+                                    author: (detail.userInfoVO || {}).userNo,
+                                    xiuChangBtnLocation: '1',
+                                    xiuChangListType: ShowListIndexModel.pageIndex + 1
+                                }}
                                 imageJson={{
                                     imageType: 'show',
                                     imageUrlStr: detail.resource[0] ? detail.resource[0].url : '',
@@ -368,7 +406,7 @@ export default class ShowListPage extends BasePage {
                                     data: detail.showNo
                                 }}
                                 webJson={{
-                                    title: (detail.showType === 1 ? detail.content : detail.title) || '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
+                                    title: detail.title || '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
                                     linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
                                     thumImage: detail.resource && detail.resource[0] && detail.resource[0].url
                                         ? detail.resource[0].url : '',//(分享图标小图(https链接)图文分享使用)

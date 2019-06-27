@@ -58,7 +58,8 @@ class HomeModule {
             uri: data.linkTypeCode,
             id: data.id,
             code: data.linkTypeCode,
-            keywords: data.name
+            keywords: data.name,
+            trackType:1
         };
 
     };
@@ -115,7 +116,7 @@ class HomeModule {
         }, 1000);
 
         // 首页类目
-        categoryModule.loadCategoryList();
+        categoryModule.loadCategoryList(this.firstLoad);
         // 首页顶部轮播图
         bannerModule.loadBannerList(this.firstLoad);
         // 首页频道类目

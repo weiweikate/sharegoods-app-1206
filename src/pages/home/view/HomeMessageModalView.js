@@ -34,7 +34,6 @@ import HomeModalManager from '../manager/HomeModalManager';
 import { observer } from 'mobx-react';
 
 const { autoSizeWidth } = ScreenUtils;
-import ImageLoad from '@mr/image-placeholder';
 import { homeModule } from '../model/Modules';
 import { routePush } from '../../../navigation/RouterMap';
 
@@ -180,22 +179,23 @@ function AdViewBindModal(modal, dataName = 'AdData', visibleName = 'isShowAd', c
                                visible={modal[visibleName] && modal.isHome}>
                         <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center' }}>
                             <View style={{ flex: 1 }}/>
-                            <TouchableOpacity onPress={() => {
+                            <TouchableWithoutFeedback onPress={() => {
                                 this.gotoPage();
                             }}>
-                                <ImageLoad style={{
-                                    width: autoSizeWidth(310),
-                                    height: autoSizeWidth(410),
-                                    backgroundColor: this.state.backgroundColor
-                                }}
+                                <View>
+                                    <Image style={{
+                                        width: autoSizeWidth(310),
+                                        height: autoSizeWidth(410),
+                                        backgroundColor: this.state.backgroundColor
+                                    }}
                                            onLoadEnd={() => {
                                                this.setState({ backgroundColor: null });
                                            }}
                                            source={{ uri: image }}
                                            resizeMode={'contain'}
-                                           showPlaceholder={false}
-                                />
-                            </TouchableOpacity>
+                                    />
+                                </View>
+                            </TouchableWithoutFeedback>
                             <View style={{ flex: 1 }}>
                                 <TouchableOpacity onPress={() => {
                                     this.close();

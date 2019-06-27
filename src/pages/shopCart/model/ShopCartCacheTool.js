@@ -1,40 +1,46 @@
+
 import ShopCartAPI from '../api/ShopCartApi';
 import bridge from '../../../utils/bridge';
 import user from '../../../model/user';
 import shopCartStore from './ShopCartStore';
-import store from '@mr/rn-store';
+// import Storage from '../../../utils/storage';
+import Storage from '@mr/rn-store'
 import apiEnvironment from '../../../api/ApiEnvironment';
+// import { get, save } from '@mr/rn-store';
 
 class ShopCartCacheTool {
-
-    static  shopCartLocalStorageKey = '@mr/' + apiEnvironment.getCurrentHostUrl() + 'shopCartLocalStorageKey';
-
+    static  shopCartLocalStorageKey = '@mr/'+apiEnvironment.getCurrentHostUrl() +'/shopCartLocalStorageKey';
     /**
      * 删除本地数据
      */
+
     deleteAllLocalData() {
-        store.deleted(ShopCartCacheTool.shopCartLocalStorageKey);
+        Storage.remove(ShopCartCacheTool.shopCartLocalStorageKey).then(() => {
+        }).catch(() => {
+        });
     }
 
     /*同步购物车商品*/
     synchronousData() {
         //用户非登入状态
-        store.get(ShopCartCacheTool.shopCartLocalStorageKey).then(res => {
-            res = res ? res : [];
+        Storage.get(ShopCartCacheTool.shopCartLocalStorageKey).then(res => {
             let [...localValue] = res;
             if (localValue && (localValue instanceof Array && localValue.length > 0)) {
                 ShopCartAPI.addItem(
-                    {
-                        shoppingCartParamList: localValue
-                    }
+                {
+                    shoppingCartParamList: localValue
+                }
                 ).then(res => {
                     bridge.hiddenLoading();
                     //同步完数据组装
                     shopCartStore.packingShopCartGoodsData(res.data);
+                    // shopCartStore.getShopCartListData();
                     //同步成功删除本地数据
                     this.deleteAllLocalData();
                 }).catch(error => {
                     bridge.hiddenLoading();
+                    // bridge.$toast(error);
+                    // bridge.$toast(error.msg);
                 });
             } else {
                 //不存在本地缓存 但他妈的也得拉一下数据老铁
@@ -49,14 +55,13 @@ class ShopCartCacheTool {
     /**
      * 删除购物车数据
      */
-
     deleteShopCartGoods(skuCodes) {
         if (user.isLogin) {
             //登陆状态 直接后台删除
             shopCartStore.deleteItemWithIndex(skuCodes);
         } else {
             //从本地拿出数据删除掉
-            store.get(ShopCartCacheTool.shopCartLocalStorageKey).then(res => {
+            Storage.get(ShopCartCacheTool.shopCartLocalStorageKey).then(res => {
                 res = res ? res : [];
                 let [...localValue] = res;
                 if (localValue && (localValue instanceof Array)) {
@@ -69,7 +74,7 @@ class ShopCartCacheTool {
                     });
                 }
                 //再存入本地
-                store.save(ShopCartCacheTool.shopCartLocalStorageKey, localValue).then(() => {
+                Storage.save(ShopCartCacheTool.shopCartLocalStorageKey, localValue).then(() => {
                     //拉取刷新
                     shopCartStore.getShopCartListWithNoLogin(localValue);
                 }).catch(error => {
@@ -79,7 +84,6 @@ class ShopCartCacheTool {
             });
         }
     }
-
     /*
     * 参数对象必须包括参数
     * "amount": 10, 商品数量
@@ -105,7 +109,7 @@ class ShopCartCacheTool {
                 shopCartStore.addItemToShopCart(goodsItem);
             } else {
                 //缓存本地
-                store.get(ShopCartCacheTool.shopCartLocalStorageKey).then(res => {
+                Storage.get(ShopCartCacheTool.shopCartLocalStorageKey).then(res => {
                     //为商品添加spuCode
                     goodsItem.spuCode = goodsItem.productCode;
                     res = res ? res : [];
@@ -137,18 +141,17 @@ class ShopCartCacheTool {
                         localValue = [];
                         localValue.push(goodsItem);
                     }
-                    store.save(ShopCartCacheTool.shopCartLocalStorageKey, localValue).then(() => {
-                        //存入成功后,从后台拉取详细信息
+                    Storage.save(ShopCartCacheTool.shopCartLocalStorageKey, localValue).then(() => {
                         shopCartStore.getShopCartListWithNoLogin(localValue);
                     }).catch(() => {
                         bridge.$toast('本地加入购物车失败');
                     });
+
                 }).catch(error => {
 
                 });
             }
         }
-
     }
 
     /*获取购物车数据 总入口*/
@@ -158,13 +161,12 @@ class ShopCartCacheTool {
             shopCartStore.getShopCartListData();
         } else {
             //用户非登入状态
-            store.get(ShopCartCacheTool.shopCartLocalStorageKey).then(res => {
+            Storage.get(ShopCartCacheTool.shopCartLocalStorageKey).then(res => {
                 //拿到数据后拉去详情
                 res = res ? res : [];
                 let [...localValue] = res;
                 shopCartStore.getShopCartListWithNoLogin(localValue);
             }).catch(error => {
-                alert(error);
                 bridge.$toast('读取本地数据异常');
             });
         }
@@ -186,7 +188,7 @@ class ShopCartCacheTool {
             shopCartStore.updateCartItem(itemData, rowId);
         } else {
             /*未登录状态登录状态更新本地*/
-            store.get(ShopCartCacheTool.shopCartLocalStorageKey).then(res => {
+            Storage.get(ShopCartCacheTool.shopCartLocalStorageKey).then(res => {
                 res = res ? res : [];
                 let [...localValue] = res;
                 if (localValue instanceof Array && localValue.length > 0) {
@@ -198,7 +200,7 @@ class ShopCartCacheTool {
                     });
                 }
                 //重新缓存
-                store.save(ShopCartCacheTool.shopCartLocalStorageKey, localValue).then(() => {
+                Storage.save(ShopCartCacheTool.shopCartLocalStorageKey, localValue).then(() => {
                     //重新拉去数据
                     shopCartStore.getShopCartListWithNoLogin(localValue);
                 }).catch(() => {
@@ -210,8 +212,6 @@ class ShopCartCacheTool {
         }
     }
 }
-
 const shopCartCacheTool = new ShopCartCacheTool();
-
 export default shopCartCacheTool;
 

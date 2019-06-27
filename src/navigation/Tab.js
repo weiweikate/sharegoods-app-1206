@@ -10,29 +10,40 @@ import res from '../comm/res';
 import ScreenUtils from '../utils/ScreenUtils';
 import ShowListPage from '../pages/show/ShowListPage';
 import user from '../model/user';
+import settingModel from '../pages/mine/model/SettingModel';
 import { homeTabManager } from '../pages/home/manager/HomeTabManager';
 import DesignRule from '../constants/DesignRule';
 import { observer } from 'mobx-react';
 import { autorun } from 'mobx';
 import Animation from 'lottie-react-native';
-import { TrackApi } from '../utils/SensorsTrack';
 import { navigateBackToStore } from './RouterMap';
 import RouterMap from './RouterMap';
 
 
-const NormalTab = ({ source, title }) => {
-    return <View style={styles.tab}>
-        <Image style={styles.tabBarIcon} source={source}/>
-        <Text style={styles.text}>{title}</Text>
-    </View>;
-};
+@observer
+class NormalTab extends Component {
+    render(){
+        const {source,title} = this.props;
+        return <View style={styles.tab}>
+            <View>
+                <Image style={styles.tabBarIcon} source={source}/>
+                {user.isLogin && title === '我的' && (settingModel.availableBalance > 0 || settingModel.userScore > 0 || settingModel.coupons > 0 || settingModel.fansMSG > 0) ?
+                    <Image source={res.other.dot} style={styles.mineDot}/> : null}
+            </View>
+            <Text style={styles.text}>{title}</Text>
+        </View>;
+    }
+}
 
-const ActiveTab = ({ source, title }) => {
-    return <View style={styles.tab}>
-        <Image style={styles.tabBarIcon} source={source}/>
-        <Text style={styles.activeText}>{title}</Text>
-    </View>;
-};
+class ActiveTab extends Component {
+    render(){
+        const {source,title} = this.props;
+        return <View style={styles.tab}>
+                <Image style={styles.tabBarIcon} source={source}/>
+            <Text style={styles.text}>{title}</Text>
+        </View>;
+    }
+}
 
 const Tab = ({ focused, activeSource, normalSource, title }) => {
     if (focused) {
@@ -179,7 +190,6 @@ export const TabNav = createBottomTabNavigator(
                         DeviceEventEmitter.emit('retouch_show');
                     } else {
                         navigation.navigate(navigation.state.routeName);
-                        TrackApi.WatchXiuChang({ xiuChangModuleSource: 1 });
                     }
                 }
             }
@@ -291,5 +301,12 @@ const styles = StyleSheet.create({
         height: 44,
         left: (ScreenUtils.width / 2) - 22,
         bottom: ScreenUtils.safeBottom
+    },
+    mineDot: {
+        position: 'absolute',
+        right: -6,
+        top: 0,
+        width: 16,
+        height: 10,
     }
 });

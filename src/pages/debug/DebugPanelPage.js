@@ -45,7 +45,7 @@ export default class DebugPanelPage extends BasePage {
         this.setState({
             nickName: 'sssss'
         });
-        this.$navigateBack(-2);
+        this.$navigateBack(2);
     };
     // 点击切换环境
     onClickChange = async envType => {

@@ -15,15 +15,14 @@
 import React from "react";
 
 import {
-    StyleSheet,
     View,
     TouchableOpacity,
-    NativeModules
+    NativeModules,
+    Image
 } from "react-native";
 
 import {
-    UIText,
-    UIImage
+    MRText as Text,
 } from "../../../../components/ui";
 import DesignRule from '../../../../constants/DesignRule';
 import res from "../../res";
@@ -33,13 +32,10 @@ import orderApi from '../../api/orderApi';
 import { track, trackEvent } from '../../../../utils/SensorsTrack';
 import { beginChatType, QYChatTool } from '../../../../utils/QYModule/QYChatTool';
 import bridge from '../../../../utils/bridge';
+import ScreenUtils from '../../../../utils/ScreenUtils';
+import LinearGradient from 'react-native-linear-gradient';
 
-const {
-    afterSaleService: {
-        applyRefundMessage,
-        applyRefundPhone
-    }
-} = res;
+const  icon_kefu = res.button.icon_kefu;
 
 export default class CustomerServiceView extends React.Component {
 
@@ -104,81 +100,41 @@ export default class CustomerServiceView extends React.Component {
     };
 
     render() {
-        let data = [
-            {
-                name: "在线客服",
-                image: applyRefundMessage,
-                time: "9:00-22:00",
-                onPress: this.contactSeller
-            },
-            {
-                name: "客服电话",
-                image: applyRefundPhone,
-                time: "9:00-22:00",
-                onPress: this.callPhone
-            }
-        ];
+
         return (
-            <View style={styles.container}>
-                {data.map((item, index) => {
-                    return (
-                        <TouchableOpacity
-                            style={styles.button}
-                            onPress={item.onPress}
-                            key={index}>
-                            <UIImage
-                                source={item.image}
-                                style={styles.image}/>
-                            <View>
-                                <UIText
-                                    value={item.name}
-                                    style={styles.name}/>
-                                <UIText
-                                    value={item.time}
-                                    style={styles.time}/>
-                            </View>
+                <View style={{alignItems: 'center', paddingBottom: ScreenUtils.safeBottom, marginTop: 20}}>
+                    <View style={{
+                        width: ScreenUtils.width,
+                        justifyContent: 'space-between',
+                        paddingHorizontal: 15,
+                    }}>
+
+                        <TouchableOpacity style={{
+                            height:  ScreenUtils.autoSizeWidth(40),
+                            borderRadius:  ScreenUtils.autoSizeWidth(20),
+                            overflow: 'hidden'
+                        }}
+                                     onPress={() => this.contactSeller()}>
+                            <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+                                            TouchableOpacity   colors={['#FC5D39', '#FF0050']}
+                                            style={{ alignItems: "center",
+                                                flexDirection: "row",
+                                                justifyContent: "center",
+                                                flex: 1}}
+                            >
+                                <Image source={icon_kefu} style={{ height: 23, width: 23 }} resizeMode={"contain"}/>
+
+                                <Text style={{
+                                    fontFamily: "PingFangSC-Regular",
+                                    fontSize: 13,
+                                    color: 'white',
+                                    marginLeft: 4
+                                }} allowFontScaling={false}>在线客服</Text>
+                            </LinearGradient>
                         </TouchableOpacity>
-                    );
-                })}
-                <View style={styles.line}/>
-            </View>
+                    </View>
+                    <Text style={{fontSize: 10, color: DesignRule.textColor_secondTitle, marginVertical: 5}}>服务时间：9:00-22:00</Text>
+                </View>
         );
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: DesignRule.white,
-        flexDirection: "row",
-        height: DesignRule.autoSizeWidth(70),
-        marginBottom: DesignRule.safeBottom
-    },
-    button: {
-        alignItems: "center",
-        flex: 1,
-        flexDirection: "row"
-    },
-    image: {
-        marginLeft: DesignRule.autoSizeWidth(40),
-        marginRight: DesignRule.autoSizeWidth(7),
-        height: DesignRule.autoSizeWidth(25),
-        width: DesignRule.autoSizeWidth(25)
-    },
-    name: {
-        fontSize: DesignRule.fontSize_secondTitle,
-        color: DesignRule.textColor_mainTitle
-    },
-    time: {
-        fontSize: DesignRule.fontSize_24,
-        color: DesignRule.textColor_placeholder,
-        marginTop: DesignRule.autoSizeWidth(4)
-    },
-    line: {
-        backgroundColor: DesignRule.lineColor_inWhiteBg,
-        width: DesignRule.lineHeight,
-        height: DesignRule.autoSizeWidth(30),
-        position: "absolute",
-        top: DesignRule.autoSizeWidth(20),
-        left: DesignRule.width / 2
-    }
-});

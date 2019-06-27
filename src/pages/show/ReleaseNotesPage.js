@@ -10,24 +10,25 @@ import {
     Image,
     TouchableWithoutFeedback,
     Keyboard,
-    TextInput, DeviceEventEmitter
+    TextInput
 } from 'react-native';
 import BasePage from '../../BasePage';
 import { MRText } from '../../components/ui';
 import DesignRule from '../../constants/DesignRule';
 import ScreenUtils from '../../utils/ScreenUtils';
 import res from './res';
-import BusinessUtils from '../mine/components/BusinessUtils';
 import ImageLoad from '@mr/image-placeholder';
 import NoMoreClick from '../../components/ui/NoMoreClick';
 import UIImage from '../../components/ui/UIImage';
 import Emoticons, * as emoticons from '../../comm/components/emoticons';
 import EmptyUtils from '../../utils/EmptyUtils';
 import ShowApi from './ShowApi';
-import { backToShow } from '../../navigation/RouterMap';
-import RouterMap from '../../navigation/RouterMap';
+import RouterMap,{replaceRoute} from '../../navigation/RouterMap';
+import TagView from './components/TagView';
+import PictureVideoUtils from './utils/PictureVideoUtils';
 
-const { addIcon, delIcon, iconShowDown, iconShowEmoji, addShowIcon } = res;
+const { addIcon, delIcon, iconShowDown, iconShowEmoji, addShowIcon, showTagIcon } = res;
+const { arrow_right_black } = res.button;
 
 const { px2dp } = ScreenUtils;
 
@@ -44,8 +45,11 @@ export default class ReleaseNotesPage extends BasePage {
             showEmoji: false,
             showEmojiButton: false,
             text: '',
+            titleText: '',
             keyBoardHeight: 0,
-            products: []
+            products: [],
+            tags: [],
+            videoData: null
         };
 
     }
@@ -88,29 +92,55 @@ export default class ReleaseNotesPage extends BasePage {
     };
 
     _publish = () => {
-        if (EmptyUtils.isEmptyArr(this.state.imageArr)) {
+        if (EmptyUtils.isEmptyArr(this.state.imageArr) && this.state.videoData === null) {
             this.$toastShow('至少需要上传一张图片哦');
             return;
         }
         let content = this.state.text || '';
         let products = this.state.products || [];
         let images = this.state.imageArr;
-        let urls = images.map((value) => {
-            return `${value.url}?width=${value.width}&height=${value.height}`;
-        });
+        let urls, video = null;
+        if (this.state.videoData) {
+            let cover = {
+                baseUrl: this.state.videoData.cover,
+                height: this.state.videoData.height,
+                width: this.state.videoData.width,
+                type: 5
+            };
+            urls = [cover];
+            video = {
+                baseUrl: this.state.videoData.video,
+                videoTime: this.state.videoData.videoTime,
+                width: this.state.videoData.width,
+                height: this.state.videoData.height,
+                type: 4
+            };
+        } else {
+            urls = images.map((value) => {
+                return {
+                    baseUrl: value.url,
+                    height: value.height,
+                    width: value.width,
+                    type: 2
+                };
+            });
+        }
+
         let productsPar = products.map((value) => {
             return value.spuCode;
         });
         let params = {
             content,
+            video,
             images: urls,
-            products: productsPar
+            products: productsPar,
+            title: this.state.titleText,
+            tagList: this.state.tags.map((item) => {
+                return item.tagId;
+            })
         };
         ShowApi.publishShow(params).then((data) => {
-            backToShow();
-            if (data.data) {
-                DeviceEventEmitter.emit('PublishShowFinish', JSON.stringify(data.data));
-            }
+            replaceRoute(RouterMap.MyDynamicPage);
         }).catch((error) => {
             this.$toastShow(error.msg || '网络错误');
         });
@@ -118,14 +148,18 @@ export default class ReleaseNotesPage extends BasePage {
 
     choosePicker = () => {
         let imageArr = this.state.imageArr;
-        if (imageArr.length >= 9) {
+        if (imageArr.length >= 8) {
             return;
         }
-        let num = 9 - imageArr.length;
-        BusinessUtils.getImagePicker(callback => {
-            let result = imageArr.concat(callback.images);
-            this.setState({ imageArr: result });
-        }, num, true, true);
+        let num = 8 - imageArr.length;
+        PictureVideoUtils.selectPictureOrVideo(num,false,callback => {
+            if (callback.type === 'video') {
+                this.setState({ videoData: callback });
+            } else {
+                let result = imageArr.concat(callback.images);
+                this.setState({ imageArr: result });
+            }
+        })
     };
 
     deletePic = (index) => {
@@ -139,6 +173,21 @@ export default class ReleaseNotesPage extends BasePage {
     };
 
     _imageRender = () => {
+        if (this.state.videoData) {
+            return (
+                <View style={styles.imagesWrapper}>
+                    <View>
+                        <ImageLoad style={styles.photo_item} source={{ uri: this.state.videoData.cover }}/>
+                        <NoMoreClick style={styles.delete_btn} onPress={() => {
+                            this.setState({ videoData: null });
+                        }}>
+                            <UIImage style={{ width: px2dp(15), height: px2dp(15) }} source={delIcon}/>
+                        </NoMoreClick>
+                    </View>
+                </View>
+            );
+        }
+
         let images = this.state.imageArr.map((value, index) => {
             let left = index === 0 ? 0 : px2dp(15);
             return (
@@ -166,8 +215,12 @@ export default class ReleaseNotesPage extends BasePage {
     };
 
     _addImageButton = () => {
+        if (this.state.videoData) {
+            return null;
+        }
+
         let imageArr = this.state.imageArr;
-        if (imageArr.length >= 9) {
+        if (imageArr.length >= 8) {
             return null;
         }
 
@@ -182,7 +235,7 @@ export default class ReleaseNotesPage extends BasePage {
     };
 
     _addProductButton = () => {
-        if (this.state.products.length >= 5) {
+        if (this.state.products.length >= 1) {
             return null;
         }
 
@@ -306,6 +359,67 @@ export default class ReleaseNotesPage extends BasePage {
         });
     };
 
+    _renderTitleInput = () => {
+        return (
+            <View style={styles.titleInputWrapper}>
+                <TextInput
+                    style={{ flex: 1 }}
+                    allowFontScaling={false}
+                    onChangeText={(text) => {
+                        this.setState({
+                            titleText: text
+                        });
+                    }}
+                    placeholder={'请输入活动标题（选填）'}
+                    maxLength={23}
+                    value={this.state.titleText}/>
+                <MRText style={styles.numLimitTextStyle}>
+                    {`${this.state.titleText ? this.state.titleText.length : 0}/23`}
+                </MRText>
+            </View>
+        );
+    };
+
+    refreshTags = (tags) => {
+        this.setState({ tags });
+    };
+
+    tagRender = () => {
+        if (EmptyUtils.isEmpty(this.state.tags)) {
+            return (
+                <TouchableWithoutFeedback onPress={() => {
+                    this.$navigate(RouterMap.TagSelectorPage, { callback: this.refreshTags });
+                }}>
+                    <View style={styles.tagWrapper}>
+                        <Image style={{ width: px2dp(18), height: px2dp(18), marginLeft: DesignRule.margin_page }}
+                               source={showTagIcon}/>
+                        <MRText style={styles.tagPlaceholder}>
+                            添加活动 获得更多曝光
+                        </MRText>
+                        <Image source={arrow_right_black} style={{ width: px2dp(10), height: px2dp(16) }}/>
+                    </View>
+                </TouchableWithoutFeedback>
+            );
+        }
+
+        return (
+            <TouchableWithoutFeedback onPress={() => {
+                this.$navigate(RouterMap.TagSelectorPage, { callback: this.refreshTags ,tags:this.state.tags});
+            }}>
+                <View style={styles.tagWrapper}>
+                    {this.state.tags.map((item, index) => {
+                        return (
+                            <TagView text={item.name} style={{ marginLeft: px2dp(15) }}/>
+                        );
+                    })}
+                    <View style={{ flex: 1 }}/>
+                    <Image source={arrow_right_black} style={{ width: px2dp(10), height: px2dp(16) }}/>
+                </View>
+            </TouchableWithoutFeedback>
+        );
+
+    };
+
     _render() {
 
         const emoji = <View>
@@ -323,7 +437,6 @@ export default class ReleaseNotesPage extends BasePage {
                     });
                 }}
                 onEmoticonPress={(emoji) => {
-                    console.log(emoji);
                     this.setState({
                         text: this.state.text + emoji.code
                     }, () => {
@@ -340,23 +453,35 @@ export default class ReleaseNotesPage extends BasePage {
                 <View style={{ flex: 1 }}>
                     <ScrollView showsVerticalScrollIndicator={false}>
                         <View style={styles.noteContain}>
-                            <TextInput style={styles.textInputStyle}
-                                       multiline
-                                       allowFontScaling={false}
-                                       ref={(ref) => {
-                                           this.textinput = ref;
-                                       }}
-                                       onChangeText={(text) => {
-                                           this.setState({
-                                               text: text
-                                           });
-                                       }}
-                                       placeholder={'可分享购物心得，生活感悟......'}
-                                       maxLength={1000}
-                                       value={this.state.text}
-                            />
+                            {this._renderTitleInput()}
+
+                            <View style={{ width: DesignRule.width }}>
+                                <TextInput style={styles.textInputStyle}
+                                           multiline
+                                           allowFontScaling={false}
+                                           ref={(ref) => {
+                                               this.textinput = ref;
+                                           }}
+                                           onChangeText={(text) => {
+                                               this.setState({
+                                                   text: text
+                                               });
+                                           }}
+                                           placeholder={'可分享购物心得，生活感悟......'}
+                                           maxLength={1000}
+                                           value={this.state.text}
+                                />
+                                <MRText style={[styles.numLimitTextStyle, {
+                                    bottom: px2dp(5),
+                                    right: px2dp(15),
+                                    position: 'absolute'
+                                }]}>
+                                    {`${this.state.text ? this.state.text.length : 0}/1000`}
+                                </MRText>
+                            </View>
                             <View style={styles.lineStyle}/>
                             {this._imageRender()}
+                            {this.tagRender()}
                         </View>
                         {this._addProductButton()}
                         {this._productsRender()}
@@ -490,6 +615,34 @@ var styles = StyleSheet.create({
         width: px2dp(18),
         height: px2dp(18),
         marginRight: px2dp(8)
+    },
+    titleInputWrapper: {
+        height: px2dp(50),
+        alignItems: 'center',
+        flexDirection: 'row',
+        paddingHorizontal: DesignRule.margin_page,
+        borderBottomWidth: 1,
+        borderBottomColor: 'rgba(0,0,0,0.1)'
+    },
+    numLimitTextStyle: {
+        color: '#cccccc',
+        fontSize: DesignRule.fontSize_threeTitle
+    },
+    tagWrapper: {
+        height: px2dp(50),
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingRight: DesignRule.margin_page,
+        borderBottomWidth: ScreenUtils.onePixel,
+        borderBottomColor: 'rgba(0,0,0,0.1)',
+        borderTopWidth: ScreenUtils.onePixel,
+        borderTopColor: 'rgba(0,0,0,0.1)'
+    },
+    tagPlaceholder: {
+        color: DesignRule.textColor_instruction,
+        fontSize: DesignRule.fontSize_threeTitle,
+        flex: 1,
+        marginLeft: px2dp(8)
     }
 });
 

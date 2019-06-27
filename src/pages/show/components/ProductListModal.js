@@ -19,7 +19,7 @@ import EmptyUtils from '../../../utils/EmptyUtils';
 import res from '../res';
 import ImageLoad from '@mr/image-placeholder';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
-const { addCarIcon ,button} = res;
+const { addCarIcon ,showClose} = res;
 
 const { px2dp } = ScreenUtils;
 
@@ -60,7 +60,7 @@ export default class ProductListModal extends PureComponent {
                             ￥{data.originalPrice}
                         </MRText>
                         <View style={{ flex: 1 }}/>
-                        <NoMoreClick onPress={()=>{this.props.addCart(data.prodCode)}}>
+                        <NoMoreClick onPress={()=>{this.props.addCart(data)}}>
                         <Image source={addCarIcon} style={styles.carIcon}/>
                         </NoMoreClick>
                     </View>
@@ -93,7 +93,7 @@ export default class ProductListModal extends PureComponent {
                         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }}>
                             <TouchableWithoutFeedback onPress={this.props.requestClose}>
                             <View style={styles.closeWrapper}>
-                                <Image resizeMode={'stretch'} style={styles.closeIcon} source={button.close_icon}/>
+                                <Image resizeMode={'stretch'} style={styles.closeIcon} source={showClose}/>
                             </View>
                             </TouchableWithoutFeedback>
                         </View>
@@ -112,8 +112,8 @@ var styles = StyleSheet.create({
         width: DesignRule.width,
         height: ScreenUtils.height * 0.65,
         backgroundColor: DesignRule.bgColor,
-        borderTopLeftRadius: 5,
-        borderTopRightRadius: 5,
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
         position: 'absolute',
         left: 0,
         bottom: 0
@@ -131,8 +131,8 @@ var styles = StyleSheet.create({
         marginRight:px2dp(8)
     },
     closeIcon: {
-        height: px2dp(11),
-        width: px2dp(11),
+        height: px2dp(18),
+        width: px2dp(18),
     },
     itemWrapper: {
         height: px2dp(70),

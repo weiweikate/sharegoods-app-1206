@@ -73,7 +73,7 @@ export default class AfterSaleListPage extends BasePage<Props> {
     };
 
     gotoSearchPage = () => {
-        this.$navigate(RouterMap.SearchPage, { pageType: 2 });
+        this.$navigate(RouterMap.SearchPageOrder, { pageType: 2 });
     };
 
     _bind() {

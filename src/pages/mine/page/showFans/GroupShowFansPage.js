@@ -23,19 +23,22 @@ import res from '../../res';
 import AvatarImage from '../../../../components/ui/AvatarImage';
 import ToSearchComponent from './Component/ToSearchComponent';
 import SmoothPushHighComponent from '../../../../comm/components/SmoothPushHighComponent';
-import bridge from "../../../../utils/bridge";
+import bridge from '../../../../utils/bridge'
+import SettingModel from '../../model/SettingModel';
+
 const {px2dp} = ScreenUtils;
 const {
     bg_fans_item
 } = res.homeBaseImg;
 
 const {
-    icon_v1,
-    icon_v2,
-    icon_v3,
-    icon_v4,
-    icon_v5
-} = res.myData;
+    fans_icon_v1,
+    fans_icon_v2,
+    fans_icon_v3,
+    fans_icon_v4,
+    fans_icon_v5,
+    fans_WXChat
+} = res.showFans;
 type Props = {};
 @SmoothPushHighComponent
 export default class GroupShowFansPage extends BasePage<Props> {
@@ -54,40 +57,58 @@ export default class GroupShowFansPage extends BasePage<Props> {
     _listItemRender = ({ item,index }) => {
         const uri = { uri: item.headImg };
         let name = item.nickname.substring(0,28);
+        let percent = item.percent ? item.percent + '%' : '0%'
         return (
-            <ImageBackground key={index+'showFans'} resizeMode={'stretch'} source={bg_fans_item} style={styles.itemWrapper}>
+            <ImageBackground key={index + 'showFans'} resizeMode={'stretch'} source={bg_fans_item} style={styles.itemWrapper}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <View style={[styles.fansIcon, {overflow: 'hidden'}]}>
                         <AvatarImage style={styles.fansIcon} source={uri}/>
                     </View>
                     <View style={{flex: 1}}>
                         <Text style={styles.fansNameStyle} numberOfLines={1}>{name}</Text>
-                        {item.weChatNumber ?
-                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                <Text style={[styles.fansNameStyle,{width:100}]} numberOfLines={1}>{item.weChatNumber}</Text>
-                                <TouchableWithoutFeedback onPress={() => {
-                                    Clipboard.setString(item.weChatNumber);
-                                    bridge.$toast('复制到剪切版');
-                                }}>
-                                    <View style={styles.copyViewStyle}>
-                                        <Text style={styles.copyTextStyle} >复制</Text>
-                                    </View>
-                                </TouchableWithoutFeedback>
-                            </View> : null
+                        {item.percent && item.percent > 0 ? <View style={{marginLeft: 8, marginTop: 5}}>
+                            <View style={{
+                                width: 100,
+                                height: 10,
+                                backgroundColor: 'rgba(65,150,100,0.1)',
+                                borderRadius: 6
+                            }}>
+                                <View style={{
+                                    flex: 1,
+                                    width: percent,
+                                    height: 4,
+                                    backgroundColor: '#FF0450',
+                                    borderRadius: 6
+                                }}/>
+                            </View>
+                            <Text style={{position: 'absolute', top: -2, left: 5, color: 'white', fontSize: 9}}>
+                                任务进度：{percent}
+                            </Text>
+                        </View> : null
                         }
                     </View>
 
-                    <TouchableWithoutFeedback onPress={() => {
-                        item.phone&&Linking.openURL(`tel:${item.phone}`)
+                    {SettingModel.WXChatState ? (item.weChatNumber ? <TouchableWithoutFeedback onPress={() => {
+                        // 2、跳转代码
+                        Linking.canOpenURL('weixin://').then(supported => { // weixin://  alipay://
+                            if (supported) {
+                                Clipboard.setString(item.weChatNumber);
+                                bridge.$toast('复制微信号到剪切版');
+                                Linking.openURL('weixin://');
+                            } else {
+                                bridge.$toast('请先安装微信');
+                            }
+                        });
                     }}>
-                        <Image style={[styles.btnIcon, {marginRight: 25}]} source={res.showFans.phoneIcon}/>
-                    </TouchableWithoutFeedback>
+                        <Image style={[styles.btnIcon, {marginRight: SettingModel.messageState ? 25 : 0}]} source={fans_WXChat}/>
+                    </TouchableWithoutFeedback> : null) : null}
 
-                    <TouchableWithoutFeedback onPress={() => {
-                        item.phone&&Linking.openURL(`sms:${item.phone}`)
+                    {SettingModel.messageState ? <TouchableWithoutFeedback onPress={() => {
+                        item.phone && Linking.openURL(`sms:${item.phone}`)
                     }}>
                         <Image style={[styles.btnIcon, {marginRight: 5}]} source={res.showFans.messageIcon}/>
-                    </TouchableWithoutFeedback>
+                    </TouchableWithoutFeedback> : null
+                    }
                 </View>
             </ImageBackground>
         );
@@ -97,19 +118,19 @@ export default class GroupShowFansPage extends BasePage<Props> {
     _headerRender = () => {
         let levelIcon ;
         if(this.params.vname === 'v1'){
-            levelIcon = icon_v1
+            levelIcon = fans_icon_v1
         }
         if(this.params.vname === 'v2'){
-            levelIcon = icon_v2
+            levelIcon = fans_icon_v2
         }
         if(this.params.vname === 'v3'){
-            levelIcon = icon_v3
+            levelIcon = fans_icon_v3
         }
         if(this.params.vname === 'v4'){
-            levelIcon = icon_v4
+            levelIcon = fans_icon_v4
         }
         if(this.params.vname === 'v5'){
-            levelIcon = icon_v5
+            levelIcon = fans_icon_v5
         }
        return(
            <View style={styles.headerWrapper}>

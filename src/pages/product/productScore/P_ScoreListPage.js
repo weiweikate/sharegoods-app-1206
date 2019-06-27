@@ -254,7 +254,10 @@ export default class P_ScoreListPage extends BasePage {
 
     _render() {
         const { pData } = this.params;
-        const { name, imgUrl, prodCode, originalPrice, groupPrice, v0Price, shareMoney } = pData || {};
+        const {
+            name, imgUrl, prodCode, originalPrice, groupPrice, v0Price, shareMoney,
+            monthSaleCount, priceTypeTextList, promotionMinPrice, productIsPromotionPrice
+        } = pData || {};
         return (
             <View style={styles.container}>
                 <ProductDetailNavView productDetailModel={pData}
@@ -274,10 +277,12 @@ export default class P_ScoreListPage extends BasePage {
                                 trackEvent={trackEvent.Share}
                                 type={'Image'}
                                 imageJson={{
+                                    monthSaleType: monthSaleCount >= 1000 ? 3 : (monthSaleCount >= 500 ? 2 : 1),
                                     imageUrlStr: imgUrl,
                                     titleStr: `${name}`,
+                                    priceType: priceTypeTextList,
                                     priceStr: `￥${originalPrice}`,
-                                    retailPrice: `￥${v0Price}`,
+                                    retailPrice: `￥${productIsPromotionPrice ? promotionMinPrice : v0Price}`,
                                     shareMoney: shareMoney,
                                     spellPrice: `￥${groupPrice}`,
                                     QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`

@@ -3,19 +3,20 @@
  * @date 2019/5/14
  */
 import StringUtils from '../../../utils/StringUtils';
-import { NativeModules ,Platform} from 'react-native';
+import { NativeModules, Platform } from 'react-native';
 import Toast from '../../../utils/bridge';
+import EmptyUtils from '../../../utils/EmptyUtils';
 
 const formatShowNum = (num) => {
     if (num <= 999) {
         return num + '';
+    } else if (num < 10000) {
+        return parseInt(num / 1000) + 'K+';
+    } else if (num < 100000) {
+        return parseInt(num / 10000) + 'W+';
+    } else {
+        return '10W+';
     }
-
-    if (num > 999 && num <= 100000) {
-        return '999+';
-    }
-
-    return '10w+';
 };
 
 const downloadShow = (urls, content) => {
@@ -25,22 +26,27 @@ const downloadShow = (urls, content) => {
         urls.map((value) => {
             let url = value;
             let index = value.indexOf('?');
-            if( index!== -1){
-                url = value.substring(0,index);
+            if (index !== -1) {
+                url = value.substring(0, index);
             }
-            let promise = NativeModules.commModule.saveImageToPhotoAlbumWithUrl(url);
-            //     .then(() => {
-            //     return Promise.resolve();
-            // }).catch(() => {
-            //     return Promise.reject();
-            // });
-            promises.push(promise);
+            let videoType = ['avi', 'wmv', 'mpeg', 'mp4', 'mov', 'mkv', 'flv', 'f4v', 'm4v', 'rmvb', 'rm', '3gp'];
+            let aUrl = url.toLowerCase();
+            let isVideo = false;
+            for (let i = 0; i < videoType.length; i++) {
+                if (StringEndWith(aUrl, videoType[i])) {
+                    isVideo = true;
+                    break;
+                }
+            }
+            if(!isVideo){
+                NativeModules.commModule.saveImageToPhotoAlbumWithUrl(url);
+            }
         });
     }
 
     return Promise.all(promises).then(res => {
-        if(Platform.OS === 'android'){
-            Toast.$toast('图片已下载到相册，文案已复制');
+        if (Platform.OS === 'android') {
+            Toast.$toast('文案已复制,图片已下载到相册');
         }
         return Promise.resolve();
     }).catch(error => {
@@ -48,11 +54,20 @@ const downloadShow = (urls, content) => {
         return Promise.reject();
     });
 };
+
+function StringEndWith(oriStr, endStr) {
+    if (EmptyUtils.isEmpty(oriStr) || EmptyUtils.isEmpty(endStr)) {
+        return false;
+    }
+    let d = oriStr.length - endStr.length;
+    return (d >= 0 && oriStr.lastIndexOf(endStr) == d);
+}
+
 function getUrlVars(url) {
 
     var vars = {};
-    if(url){
-        url.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+    if (url) {
+        url.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m, key, value) {
             vars[key] = value;
         });
     }

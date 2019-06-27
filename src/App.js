@@ -12,7 +12,7 @@ import {
     Text,
     View,
     InteractionManager,
-    NativeAppEventEmitter
+    NativeAppEventEmitter, NativeModules, NativeEventEmitter
     // Image
 } from 'react-native';
 import DebugButton from './components/debug/DebugButton';
@@ -33,6 +33,10 @@ import ScreenUtils from './utils/ScreenUtils';
 import codePush from 'react-native-code-push';
 import chatModel from './utils/QYModule/QYChatModel';
 import showPinFlagModel from './model/ShowPinFlag';
+import settingModel from './pages/mine/model/SettingModel';
+
+const { JSPushBridge } = NativeModules;
+const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
 
 if (__DEV__) {
     const modules = require.getModules();
@@ -100,7 +104,6 @@ class App extends Component {
         apiEnvironment.loadLastApiSettingFromDiskCache();
         user.readUserInfoFromDisk();
         global.$routes = [];
-
     }
 
     componentDidMount() {
@@ -147,7 +150,36 @@ class App extends Component {
 
             }, 3000);
         });
+        this.listenerJSMessage = JSManagerEmitter.addListener('MINE_NATIVE_TO_RN_MSG', this.mineMessageData);
     }
+
+    componentWillUnmount() {
+        this.listenerJSMessage && this.listenerJSMessage.remove();
+    }
+
+
+    mineMessageData = (data)=>{
+        const { params } = JSON.parse(data) || {};
+        if(params && Number(params.index) === 1){
+            console.log('JSPushData1',params);
+            settingModel.availableBalanceAdd(1);
+        }
+
+        if(params && Number(params.index) === 2){
+            console.log('JSPushData2',params);
+            settingModel.userScoreAdd(1);
+        }
+
+        if(params && Number(params.index) === 3){
+            console.log('JSPushData3',params);
+            settingModel.couponsAdd(1);
+        }
+
+        if(params && Number(params.index) === 4){
+            console.log('JSPushData4',params);
+            settingModel.fansMSGAdd(1);
+        }
+    };
 
     render() {
         const prefix = 'meeruu://';

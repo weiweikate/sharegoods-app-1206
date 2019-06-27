@@ -72,24 +72,31 @@ export default class ShowHotView extends React.Component {
         });
     }
 
-    addCart = (code) => {
+    addCart = (productStr,detailStr) => {
+        const product = JSON.parse(productStr);
+        const detail = JSON.parse(detailStr);
         let addCartModel = new AddCartModel();
-        addCartModel.requestProductDetail(code, (productIsPromotionPrice) => {
+        addCartModel.requestProductDetail(product.prodCode, (productIsPromotionPrice) => {
             this.SelectionPage.show(addCartModel, (amount, skuCode) => {
                 const { prodCode, name, originalPrice } = addCartModel;
                 shopCartCacheTool.addGoodItem({
                     'amount': amount,
                     'skuCode': skuCode,
-                    'productCode': code
+                    'productCode': product.prodCode
                 });
                 /*加入购物车埋点*/
-                track(trackEvent.AddToShoppingcart, {
+                const { showNo , userInfoVO } = detail;
+                const { userNo } = userInfoVO || {};
+                track(trackEvent.XiuChangAddToCart, {
+                    xiuChangBtnLocation:'1',
+                    xiuChangListType:'1',
+                    articleCode:showNo,
+                    author:userNo,
                     spuCode: prodCode,
                     skuCode: skuCode,
                     spuName: name,
                     pricePerCommodity: originalPrice,
                     spuAmount: amount,
-                    shoppingcartEntrance: 1
                 });
             }, { sourceType: productIsPromotionPrice ? sourceType.promotion : null });
         }, (error) => {
@@ -148,6 +155,7 @@ export default class ShowHotView extends React.Component {
                                        ref={(ref) => {
                                            this.RecommendShowList = ref;
                                        }}
+                                       type={'recommend'}
                                        headerHeight={showBannerModules.bannerHeight + 20}
                                        renderHeader={Platform.OS === 'ios' ? this.renderHeader() : this.state.headerView}
                                        onStartRefresh={() => {
@@ -162,11 +170,20 @@ export default class ShowHotView extends React.Component {
                                                ref: this.RecommendShowList,
                                                index: nativeEvent.index
                                            };
-                                           if (nativeEvent.showType === 1) {
-                                               navigate('show/ShowDetailPage', params);
+                                           if (nativeEvent.showType === 1 || nativeEvent.showType === 3) {
+                                               navigate(RouterMap.ShowDetailPage, params);
                                            } else {
-                                               navigate('show/ShowRichTextDetailPage', params);
+                                               navigate(RouterMap.ShowRichTextDetailPage, params);
                                            }
+
+                                           const { showNo , userInfoVO } = nativeEvent;
+                                           const { userNo } = userInfoVO || {};
+                                           track(trackEvent.XiuChangEnterClick,{
+                                               xiuChangListType:1,
+                                               articleCode:showNo,
+                                               author:userNo,
+                                               xiuChangEnterBtnName:'秀场列表'
+                                           })
 
                                        }}
                                        onNineClick={({ nativeEvent }) => {
@@ -176,11 +193,22 @@ export default class ShowHotView extends React.Component {
                                            });
                                        }}
                                        onAddCartClick={({ nativeEvent }) => {
-                                           this.addCart(nativeEvent.prodCode);
+                                           this.addCart(nativeEvent.product,nativeEvent.detail);
                                        }}
 
                                        onPressProduct={({ nativeEvent }) => {
-                                           routePush(RouterMap.ProductDetailPage, { productCode: nativeEvent.prodCode });
+                                           const detail = JSON.parse(nativeEvent.detail)
+                                           const product = JSON.parse(nativeEvent.product)
+                                           const {showNo} = detail ||{};
+                                           track(trackEvent.XiuChangSpuClick, {
+                                               xiuChangBtnLocation:'1',
+                                               xiuChangListType:'1',
+                                               articleCode:showNo,
+                                               spuCode: product.prodCode,
+                                               spuName: product.name,
+                                               author: detail.userInfoVO ? detail.userInfoVO.userNo : ''
+                                           });
+                                           routePush(RouterMap.ProductDetailPage, { productCode: product.prodCode ,trackType:3,trackCode:showNo});
                                        }}
 
                                        onZanPress={({ nativeEvent }) => {
@@ -216,12 +244,22 @@ export default class ShowHotView extends React.Component {
                                            }
 
                                            DownloadUtils.downloadProduct(nativeEvent);
+                                           this.shareModal && this.shareModal.open();
+                                           this.props.onShare(nativeEvent);
+
+                                           const { showNo , userInfoVO } = detail;
+                                           const { userNo } = userInfoVO || {};
+                                           track(trackEvent.XiuChangDownLoadClick,{
+                                               xiuChangBtnLocation:'1',
+                                               xiuChangListType:'1',
+                                               articleCode:showNo,
+                                               author:userNo
+                                           })
                                        }}
 
                                        onSharePress={({ nativeEvent }) => {
                                            this.shareModal && this.shareModal.open();
                                            this.props.onShare(nativeEvent);
-
                                        }}
 
                                        onScrollY={({ nativeEvent }) => {
@@ -248,7 +286,6 @@ export default class ShowHotView extends React.Component {
                                 bottom: px2dp(118)
                             }}>
                                 <ReleaseButton
-
                                     onPress={() => {
                                         if (!user.isLogin) {
                                             routeNavigate(RouterMap.LoginPage);

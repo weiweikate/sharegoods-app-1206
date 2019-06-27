@@ -22,6 +22,8 @@ import { observer } from 'mobx-react';
 import res from '../../home/res';
 import { activity_type, activity_status } from '../ProductDetailModel';
 import bridge from '../../../utils/bridge';
+import { getSource } from '@mr/image-placeholder/oos';
+import { getSize } from '../../../utils/OssHelper';
 
 const { isNoEmpty } = StringUtils;
 const { arrow_right_black } = RES.button;
@@ -29,6 +31,7 @@ const { arrow_right_red } = RES;
 const { service_true } = RES.service;
 const { toTop } = res.search;
 const { px2dp } = ScreenUtils;
+const { saleBig_1001 } = RES.pSacle;
 
 /*
 * 商品头部
@@ -36,7 +39,7 @@ const { px2dp } = ScreenUtils;
 export class HeaderItemView extends Component {
 
     /*价格模块*/
-    _renderPriceView = ({ minPrice, maxPrice, originalPrice, levelText }) => {
+    _renderPriceView = ({ minPrice, maxPrice, originalPrice, levelText, monthSaleCount }) => {
         return (
             <View style={styles.priceView}>
                 {
@@ -56,6 +59,14 @@ export class HeaderItemView extends Component {
                         <Text style={styles.levelText}>{levelText}</Text>
                     </View> : null
                 }
+                {monthSaleCount >= 1000 && <Image source={saleBig_1001}
+                                                  style={{
+                                                      width: 104,
+                                                      height: 33,
+                                                      top: -7,
+                                                      right: -5,
+                                                      position: 'absolute'
+                                                  }}/>}
             </View>
         );
     };
@@ -102,10 +113,11 @@ export class HeaderItemView extends Component {
                             minPrice: promotionMinPrice,
                             maxPrice: promotionMaxPrice,
                             originalPrice,
-                            levelText
+                            levelText,
+                            monthSaleCount
                         })
                         :
-                        this._renderPriceView({ minPrice, maxPrice, originalPrice, levelText }))
+                        this._renderPriceView({ minPrice, maxPrice, originalPrice, levelText, monthSaleCount }))
                 }
                 {showShop && this._renderShop({ priceType, shopAction, groupPrice })}
                 <NoMoreClick onPress={() => {
@@ -458,7 +470,7 @@ export class ContentItemView extends Component {
 
     componentDidMount() {
         const { item } = this.props;
-        Image.getSize(item, (width, height) => {
+        getSize(item, (width, height) => {
             height = height / width * contentImgWidth;
             this.setState({
                 height
@@ -475,7 +487,8 @@ export class ContentItemView extends Component {
         return <TouchableWithoutFeedback onPress={() => {
             routeNavigate(RouterMap.CheckBigImagesView, { imageUrls: [item] });
         }}>
-            <Image source={{ uri: item }} style={{ width, height }}/>
+            <Image source={getSource({ uri: item }, ScreenUtils.width, height, 'lfit')}
+                   style={{ width, height }}/>
         </TouchableWithoutFeedback>;
     }
 }

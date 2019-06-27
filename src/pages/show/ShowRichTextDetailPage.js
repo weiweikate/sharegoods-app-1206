@@ -28,7 +28,7 @@ import {
 import Toast from '../../utils/bridge';
 import { NetFailedView } from '../../components/pageDecorator/BaseView';
 import AvatarImage from '../../components/ui/AvatarImage';
-import { track, TrackApi, trackEvent } from '../../utils/SensorsTrack';
+import { track , trackEvent } from '../../utils/SensorsTrack';
 import { SmoothPushPreLoadHighComponent } from '../../comm/components/SmoothPushHighComponent';
 import ProductRowListView from './components/ProductRowListView';
 import ShowUtils from './utils/ShowUtils';
@@ -39,11 +39,11 @@ import SelectionPage from '../product/SelectionPage';
 import EmptyUtils from '../../utils/EmptyUtils';
 import NoMoreClick from '../../components/ui/NoMoreClick';
 import ProductListModal from './components/ProductListModal';
-import RouterMap, { navigateBack, routeNavigate, routePush } from '../../navigation/RouterMap';
+import RouterMap, { routePop, routeNavigate, routePush } from '../../navigation/RouterMap';
 import ShowApi from './ShowApi';
 import LinearGradient from 'react-native-linear-gradient';
 
-const { iconShowFire, iconLike, iconNoLike, iconShowShare } = res;
+const { iconShowFire, iconLike, iconNoLike, iconShowShare ,dynamicEmpty} = res;
 
 
 @SmoothPushPreLoadHighComponent
@@ -65,7 +65,6 @@ export default class ShowRichTextDetailPage extends BasePage {
             productModalVisible: false
         };
         this.noNeedRefresh = false;
-        TrackApi.xiuChangDetail();
     }
 
     $isMonitorNetworkStatus() {
@@ -85,8 +84,10 @@ export default class ShowRichTextDetailPage extends BasePage {
                     Toast.showLoading();
                     if (this.params.code) {
                         this.getDetailByIdOrCode(this.params.code);
+                        this.getDetailTagWithCode(this.params.code);
                     } else if (this.params.id) {
                         this.getDetailByIdOrCode(this.params.id);
+                        this.getDetailTagWithCode(this.params.id);
                     } else {
                         this.setState({
                             pageState: PageLoadingState.success
@@ -95,7 +96,14 @@ export default class ShowRichTextDetailPage extends BasePage {
                         let data = this.params.data;
                         data.hotCount += 1;
                         this.showDetailModule.setDetail(data);
+                        this.getDetailTagWithCode(data.showNo);
                         this.params.ref && this.params.ref.replaceData(this.params.index, data.hotCount);
+
+                        const { detail } = this.showDetailModule;
+                        track(trackEvent.ViewXiuChangDetails,{
+                            articleCode: detail.showNo,
+                            author: detail.userInfoVO.userNo
+                        })
                     }
                     this.incrCountByType(6);
                 }
@@ -107,16 +115,16 @@ export default class ShowRichTextDetailPage extends BasePage {
         this.willFocusSubscription && this.willFocusSubscription.remove();
         let { detail } = this.showDetailModule;
         this.params.ref && this.params.ref.replaceItemData(this.params.index, JSON.stringify(detail));
+        this.params.updateHotNum && this.params.updateHotNum(detail.hotCount);
     }
 
     getDetailByIdOrCode = (code) => {
         this.showDetailModule.showDetailCode(code).then(() => {
             const { detail } = this.showDetailModule;
-            TrackApi.XiuChangDetails({
-                articleCode: detail.code,
-                author: detail.userName,
-                collectionCount: detail.collectCount
-            });
+            track(trackEvent.ViewXiuChangDetails,{
+                articleCode: detail.showNo,
+                author: detail.userInfoVO.userNo
+            })
             if (this.params.isFormHeader) {
                 this.params.ref && this.params.ref.setClick(detail.click);
             } else {
@@ -136,9 +144,46 @@ export default class ShowRichTextDetailPage extends BasePage {
         });
     };
 
+    getDetailTagWithCode = (code) => {
+        ShowApi.getTagWithCode({ showNo: code }).then((data) => {
+            if (data) {
+                this.setState({ tags: data.data || [] });
+            }
+        }).catch((error) => {
+
+        });
+    };
+
+    renderTags = () => {
+        return (
+            <View style={{ flexDirection: 'row', marginTop: px2dp(10) }}>
+                {this.state.tags && this.state.tags.map((item, index) => {
+                    return (
+                        <TouchableWithoutFeedback onPress={() => {
+                            this.$navigate(RouterMap.TagDetailPage, item);
+                        }}>
+                            <View key={`tag${index}`} style={{
+                                height: px2dp(24),
+                                marginLeft: px2dp(15),
+                                paddingHorizontal: px2dp(8),
+                                borderRadius: px2dp(12),
+                                backgroundColor: '#fee2e8',
+                                alignItems: 'center',
+                                flexDirection: 'row'
+                            }}>
+                                <Text style={{ color: DesignRule.mainColor, fontSize: DesignRule.fontSize_24 }}>
+                                    #{item.name}
+                                </Text>
+                            </View>
+                        </TouchableWithoutFeedback>
+                    );
+                })}
+            </View>
+        );
+    };
 
     _goBack() {
-        navigateBack();
+        routePop();
     }
 
     _goToGoodsPage(good) {
@@ -213,17 +258,15 @@ export default class ShowRichTextDetailPage extends BasePage {
                         <Text style={styles.showName}
                               allowFontScaling={false}>{userName}</Text>
                     </View>
-
                 </View>
-
-                <TouchableOpacity style={styles.shareView} onPress={() => {
+                {detail.status === 1 ? <TouchableOpacity style={styles.shareView} onPress={() => {
                     this._goToShare();
                 }}>
                     <Image source={iconShowShare}/>
-                </TouchableOpacity>
+                </TouchableOpacity> : null}
+
             </View>
         );
-
     }
 
     _shieldRender = () => {
@@ -311,11 +354,31 @@ export default class ShowRichTextDetailPage extends BasePage {
             detail.like = false;
             detail.likesCount -= 1;
             this.showDetailModule.setDetail(detail);
+
+            const { showNo , userInfoVO } = detail;
+            const { userNo } = userInfoVO || {};
+            track(trackEvent.XiuChangLikeClick,{
+                xiuChangBtnLocation:'2',
+                xiuChangListType:'',
+                articleCode:showNo,
+                author:userNo,
+                likeType:2
+            })
         } else {
             this.incrCountByType(1);
             detail.like = true;
             detail.likesCount += 1;
             this.showDetailModule.setDetail(detail);
+
+            const { showNo , userInfoVO } = detail;
+            const { userNo } = userInfoVO || {};
+            track(trackEvent.XiuChangLikeClick,{
+                xiuChangBtnLocation:'2',
+                xiuChangListType:'',
+                articleCode:showNo,
+                author:userNo,
+                likeType:1
+            })
         }
     };
 
@@ -378,9 +441,9 @@ export default class ShowRichTextDetailPage extends BasePage {
         );
     };
 
-    addCart = (code) => {
+    addCart = (detail) => {
         let addCartModel = new AddCartModel();
-        addCartModel.requestProductDetail(code, (productIsPromotionPrice) => {
+        addCartModel.requestProductDetail(detail.prodCode, (productIsPromotionPrice) => {
             this.setState({
                 productModalVisible: false
             });
@@ -389,16 +452,21 @@ export default class ShowRichTextDetailPage extends BasePage {
                 shopCartCacheTool.addGoodItem({
                     'amount': amount,
                     'skuCode': skuCode,
-                    'productCode': code
+                    'productCode': detail.prodCode
                 });
                 /*加入购物车埋点*/
-                track(trackEvent.AddToShoppingcart, {
+                const { showNo , userInfoVO } = this.showDetailModule.detail;
+                const { userNo } = userInfoVO || {};
+                track(trackEvent.XiuChangAddToCart, {
+                    xiuChangBtnLocation:'2',
+                    xiuChangListType:'',
+                    articleCode:showNo,
+                    author:userNo,
                     spuCode: prodCode,
                     skuCode: skuCode,
                     spuName: name,
                     pricePerCommodity: originalPrice,
                     spuAmount: amount,
-                    shoppingcartEntrance: 1
                 });
             }, { sourceType: productIsPromotionPrice ? sourceType.promotion : null });
         }, (error) => {
@@ -422,8 +490,23 @@ export default class ShowRichTextDetailPage extends BasePage {
 
         let { detail } = this.showDetailModule;
         if (!detail) {
-            detail = { imgs: '', products: [], click: 0, content: '' };
+            detail = { imgs: '', products: [], click: 0, content: '', status: 0 };
         }
+
+        if (detail.status !== 1 && (EmptyUtils.isEmpty(detail.userInfoVO) || detail.userInfoVO.userNo !== user.code)) {
+
+            return (<View style={styles.container}>
+                <View style={{backgroundColor:DesignRule.bgColor,alignItems:'center',flex:1,marginTop:ScreenUtils.statusBarHeight}}>
+                    <Image source={dynamicEmpty}
+                           style={{ width: px2dp(267), height: px2dp(192), marginTop: px2dp(50),marginTop:px2dp(165) }}/>
+                    <Text style={styles.emptyTip}>
+                        {detail.status === 2 ? '系统正在快马加鞭审核中,耐心等待哦！':'文章不见了，先看看别的吧！'}
+                    </Text>
+                </View>
+                {this._renderNormalTitle()}
+            </View>);
+        }
+
 
         let content = detail.content ? detail.content : '';
         let html = '<!DOCTYPE html><html>' +
@@ -505,11 +588,25 @@ export default class ShowRichTextDetailPage extends BasePage {
 
                 />
 
+                {this.renderTags()}
+
                 <ProductRowListView style={{ marginVertical: px2dp(10) }}
                                     products={detail.products}
                                     addCart={this.addCart}
-                                    pressProduct={(prodCode) => {
-                                        this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode });
+                                    pressProduct={(data) => {
+                                        this.setState({
+                                            productModalVisible: false
+                                        });
+                                        const {prodCode,name} = data;
+                                        track(trackEvent.XiuChangSpuClick, {
+                                            xiuChangBtnLocation:'2',
+                                            xiuChangListType:'0',
+                                            articleCode:detail.showNo,
+                                            spuCode: prodCode,
+                                            spuName: name,
+                                            author: detail.userInfoVO ? detail.userInfoVO.userNo : ''
+                                        });
+                                        this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode ,trackType:3,trackCode:detail.showNo});
                                     }}
                 />
 
@@ -541,7 +638,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                                                      this.setState({
                                                          productModalVisible: false
                                                      });
-                                                     this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode });
+                                                     this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode ,trackType:3,trackCode:detail.showNo});
                                                  }}
                                                  addCart={this.addCart}
                                                  products={detail.products} requestClose={() => {
@@ -549,12 +646,13 @@ export default class ShowRichTextDetailPage extends BasePage {
                     productModalVisible: false
                 });
             }}/> : null}
-            {detail.status !== 1 ? this._shieldRender() : null}
+            {detail.status !== 1  && (EmptyUtils.isEmpty(detail.userInfoVO) || detail.userInfoVO.userNo === user.code) ? this._shieldRender() : null}
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
+                            defaultModalVisible={this.params.openShareModal}
                             type={'Show'}
-                            trackEvent={'ArticleShare'}
-                            trackParmas={{ articeCode: detail.code, articleTitle: detail.title }}
+                            trackEvent={trackEvent.XiuChangShareClick}
+                            trackParmas={{ articleCode: detail.code, author: (detail.userInfoVO||{}).userNo,xiuChangBtnLocation:'2',xiuChangListType:''}}
                             imageJson={{
                                 imageType: 'show',
                                 imageUrlStr: detail.resource ? detail.resource[0].url : '',
@@ -570,7 +668,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                                 data: detail.showNo
                             }}
                             webJson={{
-                                title: (detail.showType === 1 ? detail.content : detail.title) || '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
+                                title: detail.title || '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
                                 linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
                                 thumImage: detail.resource && detail.resource[0] ? detail.resource[0].url : '',//(分享图标小图(https链接)图文分享使用)
                                 dec: '好物不独享，内有惊喜福利~'
@@ -836,6 +934,10 @@ let styles = StyleSheet.create({
         marginTop: px2dp(10),
         marginBottom: px2dp(13),
         fontWeight: '400'
+    },
+    emptyTip: {
+        color: DesignRule.textColor_secondTitle,
+        fontSize: DesignRule.fontSize_threeTitle
     }
 });
 

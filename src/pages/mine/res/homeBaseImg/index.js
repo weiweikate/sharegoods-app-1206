@@ -27,6 +27,20 @@ const index = {
     mine_icon_fans:require('./mine_icon_fans.png'),
     bg_fans_item:require('./bg_fans_item.png'),
     mine_icon_message:require('./mine_icon_message.png'),
-    mine_showOrder: require('./me_icon_shaidan_nor.png')
+    mine_showOrder: require('./me_icon_shaidan_nor.png'),
+    mine_friendsHelp: require('./friendsHelp.png'),
+    mine_invite: require('./invite.png'),
+    mine_moreMoney: require('./moreMoney.png'),
+    mine_line_v0: require('./v0Bgline.png'),
+    mine_line_v1: require('./v1Bgline.png'),
+    mine_line_v2: require('./v2Bgline.png'),
+    mine_line_v3: require('./v3Bgline.png'),
+    mine_line_v4: require('./v4Bgline.png'),
+    mine_line_v5: require('./v5Bgline.png'),
+    mine_btn_red: require('./btnRed.png'),
+    mine_btn_yellow: require('./btnYellow.png'),
+    mine_levelBg: require('./levelBg.png'),
+
+
 };
 export default index;

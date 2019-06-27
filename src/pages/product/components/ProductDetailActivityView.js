@@ -9,6 +9,7 @@ import apiEnvironment from '../../../api/ApiEnvironment';
 import { routePush } from '../../../navigation/RouterMap';
 
 const { arrow_right_black } = res.button;
+const { saleLargeSkill } = res.pSacle;
 
 /*
 * 秒杀未开始
@@ -104,11 +105,12 @@ export class ActivityDidBeginView extends Component {
                                 <MRText style={DidBeginViewStyles.skillText}>秒杀价</MRText>
                             </View>
                         </View>
-                        <MRText style={[DidBeginViewStyles.amountText]}>原价¥{originalPrice}</MRText>
+                        <MRText style={[DidBeginViewStyles.amountText]} numberOfLines={1}>原价¥{originalPrice}</MRText>
                     </View>
+                    <Image source={saleLargeSkill} style={{ width: 56, height: 56, position: 'absolute', right: 0 }}/>
                 </View>
                 <View style={DidBeginViewStyles.rightView}>
-                    <View style={{ marginLeft: 13, marginRight: 8 }}>
+                    <View style={{ marginLeft: 8, marginRight: 8 }}>
                         <MRText style={DidBeginViewStyles.timeText}>{showTimeText}</MRText>
                         <View style={DidBeginViewStyles.leaveView}>
                             <View style={[DidBeginViewStyles.progressView, { width: progressWidthS }]}/>
@@ -119,7 +121,7 @@ export class ActivityDidBeginView extends Component {
                             </View>
                         </View>
                     </View>
-                    {extraProperty === 'toSpike' && <Image source={arrow_right_black} style={{ marginRight: 13 }}/>}
+                    {extraProperty === 'toSpike' && <Image source={arrow_right_black} style={{ marginRight: 8 }}/>}
                 </View>
             </NoMoreClick>
         );

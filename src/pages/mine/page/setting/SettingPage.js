@@ -32,6 +32,7 @@ import StringUtils from '../../../../utils/StringUtils';
 import { QYChatTool } from '../../../../utils/QYModule/QYChatTool';
 import WhiteModel from '../../../show/model/WhiteModel';
 import store from '@mr/rn-store';
+import { observer } from 'mobx-react';
 import { forceToHome } from '../../../../navigation/RouterMap';
 import RouterMap from '../../../../navigation/RouterMap';
 
@@ -45,6 +46,7 @@ import RouterMap from '../../../../navigation/RouterMap';
 
 const arrow_right = res.button.arrow_right;
 
+@observer
 class SettingPage extends BasePage {
     constructor(props) {
         super(props);
@@ -135,6 +137,8 @@ class SettingPage extends BasePage {
                         <Image source={arrow_right}/>
                     </TouchableOpacity>
                     {this.renderLine()}
+                    <View style={{height:10,width:1}}/>
+
                     <TouchableOpacity style={styles.viewStyle}
                                       onPress={() => this.getNewVersion()}>
                         <UIText value={'版本检测'} style={[styles.blackText, { flex: 1 }]}/>
@@ -146,7 +150,7 @@ class SettingPage extends BasePage {
                     marginTop: 42,
                     backgroundColor: DesignRule.mainColor,
                     width: ScreenUtils.width - 84,
-                    height: 50,
+                    height: 40,
                     marginLeft: 42,
                     marginRight: 42,
                     alignItems: 'center',
@@ -200,6 +204,7 @@ class SettingPage extends BasePage {
             });
         }
     };
+
     renderWideLine = () => {
         return (
             <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
