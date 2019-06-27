@@ -342,7 +342,7 @@ export default class TaskVIew extends React.Component {
                                                                                  left: this.model.canOpenProgress/this.model.totalProgress * autoSizeWidth(290) - autoSizeWidth(5),
                                                                                  width: autoSizeWidth(25),
                                                                                  height: autoSizeWidth(23),
-                                                                                 top: autoSizeWidth(20)
+                                                                                 top: autoSizeWidth(5)
                                                                              }}
                                 /> : null
                             }

@@ -21,6 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
  公猫返回的key
  */
 +(NSString *)getGongMao;
+
++(NSString *)getTrackAddress;
 @end
 
 NS_ASSUME_NONNULL_END
