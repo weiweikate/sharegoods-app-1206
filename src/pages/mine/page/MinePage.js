@@ -253,7 +253,7 @@ export default class MinePage extends BasePage {
                     contentBackgroundColor={'#F7F7F7'}
                     backgroundColor={'white'}
                     renderForeground={this.renderUserHead}
-                    renderStickyHeader={this.renderLevelNameNav}
+                    renderFixedHeader={this.renderLevelNameNav}
                     stickyHeaderHeight={this.state.changeHeader ? 0 : px2dp(44 + statusBarHeight)}
                     parallaxHeaderHeight={ScreenUtils.getImgHeightWithWidth(headerBgSize)}
                     onScroll={this._onScroll}
@@ -475,7 +475,7 @@ export default class MinePage extends BasePage {
                 flexDirection: 'row',
                 alignItems: 'center',
                 height: px2dp(44 + statusBarHeight),
-                width: px2dp(ScreenUtils.width),
+                width: ScreenUtils.width,
                 paddingVertical: 5,
                 backgroundColor:'#ffffff',
             }}>

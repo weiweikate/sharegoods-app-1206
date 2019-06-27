@@ -151,7 +151,7 @@ export default class MyPromotionPage extends BasePage {
                 userLevel = i;
             }
         }
-        const EXPNum = this.state.levelExperience - this.state.experience;
+        const EXPNum = StringUtils.sub(this.state.levelExperience,this.state.experience);
         const storeStar = 3;
         const starsArr = [];
         if (storeStar && typeof storeStar === 'number') {
