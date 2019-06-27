@@ -130,7 +130,8 @@ function track(event_name,parmas) {
         return;
     }
     //不为线上环境就，不上传埋点数据
-    if (apiEnvironment.envType !== 'online') {
+    let track_testPhones = ['13675893461'];//这些为数据测试手机号，任何环境都上报传埋点数据
+    if (apiEnvironment.envType !== 'online' && track_testPhones.indexOf(user.phone || '') === -1) {
         return;
     }
     let currentTimeStamp = new Date().getTime();
