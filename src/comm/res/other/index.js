@@ -10,5 +10,6 @@ const other = {
     commOldLoginImg:require('./home_icon.png'),
     close_X:require('./close_X.png'),
     top_Icon:require('./icon_top.png'),
+    dot: require('./dot.png')
 };
 export default other;

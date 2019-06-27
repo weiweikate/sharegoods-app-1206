@@ -369,24 +369,26 @@ export default class MinePage extends BasePage {
                         justifyContent: 'center'
                     }}>
                         <TouchableWithoutFeedback onPress={this.jumpToUserInformationPage}>
-                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                <Text maxLength={8}
-                                    style={{
-                                        color: DesignRule.textColor_mainTitle,
-                                        fontSize: px2dp(16),
-                                        includeFontPadding: false
-                                    }}>
-                                    {name}
-                                </Text>
-                                <UIImage source={res.button.white_go}
-                                         style={{height: px2dp(12), width: px2dp(7), marginLeft: px2dp(12)}}
-                                         resizeMode={'stretch'}/>
+                            <View>
+                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                    <Text maxLength={8}
+                                          style={{
+                                              color: DesignRule.textColor_mainTitle,
+                                              fontSize: px2dp(16),
+                                              includeFontPadding: false
+                                          }}>
+                                        {name}
+                                    </Text>
+                                    <UIImage source={res.button.white_go}
+                                             style={{height: px2dp(12), width: px2dp(7), marginLeft: px2dp(12)}}
+                                             resizeMode={'stretch'}/>
+                                </View>
+                                <View style={{flexDirection: 'row'}}>
+                                    {xiuOld}
+                                    {accreditID}
+                                </View>
                             </View>
                         </TouchableWithoutFeedback>
-                        <View style={{flexDirection: 'row'}}>
-                            {xiuOld}
-                            {accreditID}
-                        </View>
                     </View>
                     {/*<TouchableOpacity onPress={()=>{*/}
                         {/*this.$navigate(RouterMap.MyPromotionPage);*/}

@@ -29,7 +29,7 @@ class NormalTab extends Component {
             <View>
                 <Image style={styles.tabBarIcon} source={source}/>
                 {user.isLogin && title === '我的' && (settingModel.availableBalance > 0 || settingModel.userScore > 0 || settingModel.coupons > 0 || settingModel.fansMSG > 0) ?
-                    <View style={styles.mineDot}/> : null}
+                    <Image source={res.other.dot} style={styles.mineDot}/> : null}
             </View>
             <Text style={styles.text}>{title}</Text>
         </View>;
@@ -40,11 +40,7 @@ class ActiveTab extends Component {
     render(){
         const {source,title} = this.props;
         return <View style={styles.tab}>
-            <View>
                 <Image style={styles.tabBarIcon} source={source}/>
-                {user.isLogin && title === '我的' && (settingModel.availableBalance > 0 || settingModel.userScore > 0 || settingModel.coupons > 0 || settingModel.fansMSG > 0) ?
-                    <View style={styles.mineDot}/> : null}
-            </View>
             <Text style={styles.text}>{title}</Text>
         </View>;
     }
@@ -312,9 +308,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         right: 0,
         top: 0,
-        width: 10,
+        width: 16,
         height: 10,
-        backgroundColor: 'red',
-        borderRadius: 5
     }
 });
