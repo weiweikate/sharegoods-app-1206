@@ -122,7 +122,7 @@
      .rightSpaceToView(self, 10)
      .widthIs(70).heightIs(30);
 
-  [self setupAutoHeightWithBottomView:self.zanBtn bottomMargin:0];
+  [self setupAutoHeightWithBottomView:self.zanBtn bottomMargin:10];
 
 
 }
@@ -218,7 +218,7 @@
         [goodsImg setImageWithURL:[NSURL URLWithString:[self.products[i] valueForKey:@"imgUrl"]] placeholder:[UIImage imageWithColor:[UIColor colorWithHexString:@"f5f5f5"]]];
 
         UILabel* titile = [[UILabel alloc]init];
-        titile.font = [UIFont systemFontOfSize:10];
+        titile.font = [UIFont systemFontOfSize:12];
         titile.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
         titile.text = [self.products[i] valueForKey:@"name"];
 

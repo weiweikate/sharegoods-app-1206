@@ -17,8 +17,8 @@ RCT_EXPORT_MODULE()
 RCT_EXPORT_METHOD(getImageOrVideo:(NSDictionary *)info and:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 {
   dispatch_async(dispatch_get_main_queue(), ^{
-    [[MRImageVideoManager sharedInstance]startSelectImageOrVideoWithBlock:^(NSArray * _Nonnull imageOrVideoArr) {
-         resolve(imageOrVideoArr);
+    [[MRImageVideoManager sharedInstance]startSelectImageOrVideoWithBlock:info and:^(NSArray * _Nonnull imageOrVideoArr) {
+      resolve(imageOrVideoArr);
     }];
   });
 }

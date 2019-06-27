@@ -22,7 +22,7 @@ SINGLETON_FOR_HEADER(MRImageVideoManager)
 
 +(void)getImageAndVideo;
 
--(void)startSelectImageOrVideoWithBlock:(hyfFinshSelectBlock)finshBlock;
+-(void)startSelectImageOrVideoWithBlock:(NSDictionary *)options and:(hyfFinshSelectBlock)finshBlock;
 
 @end
 

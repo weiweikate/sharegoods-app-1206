@@ -22,15 +22,16 @@ typedef void(^finshCompressVideo)(NSString * newPath);
 
 @property (nonatomic,strong) hyfFinshSelectBlock  finshBlock;
 @property (nonatomic,strong) WAVideoBox  * videoBox;
+@property (nonatomic,strong) NSDictionary * options;
 @end
 
 @implementation MRImageVideoManager
 
 SINGLETON_FOR_CLASS(MRImageVideoManager)
 
--(void)startSelectImageOrVideoWithBlock:(hyfFinshSelectBlock)finshBlock{
+-(void)startSelectImageOrVideoWithBlock:(NSDictionary *)options and:(hyfFinshSelectBlock)finshBlock{
   _finshBlock = finshBlock;
-  
+  _options = options;
   UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"相机",@"相册", nil];
   [sheet showInView:[self currentViewController_XG].view];
   
@@ -92,6 +93,7 @@ SINGLETON_FOR_CLASS(MRImageVideoManager)
     [IJSImageManager shareManager].allowPickingOriginalPhoto = YES;
     
     IJSImagePickerController * nav = [[IJSImagePickerController alloc]initWithMaxImagesCount:8 columnNumber:4 pushPhotoPickerVc:YES];
+    nav.maxImagesCount = self.options[@"maxFiles"] ?[self.options[@"maxFiles"] integerValue]:8;
     nav.allowPickingVideo = NO;
     nav.networkAccessAllowed = NO;
     nav.allowPickingImage = YES;
