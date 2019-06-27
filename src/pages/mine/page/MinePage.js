@@ -253,7 +253,7 @@ export default class MinePage extends BasePage {
                     contentBackgroundColor={'#F7F7F7'}
                     backgroundColor={'white'}
                     renderForeground={this.renderUserHead}
-                    renderStickyHeader={this.renderLevelNameNav}
+                    renderFixedHeader={this.renderLevelNameNav}
                     stickyHeaderHeight={this.state.changeHeader ? 0 : px2dp(44 + statusBarHeight)}
                     parallaxHeaderHeight={ScreenUtils.getImgHeightWithWidth(headerBgSize)}
                     onScroll={this._onScroll}
@@ -369,24 +369,26 @@ export default class MinePage extends BasePage {
                         justifyContent: 'center'
                     }}>
                         <TouchableWithoutFeedback onPress={this.jumpToUserInformationPage}>
-                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                <Text maxLength={8}
-                                    style={{
-                                        color: DesignRule.textColor_mainTitle,
-                                        fontSize: px2dp(16),
-                                        includeFontPadding: false
-                                    }}>
-                                    {name}
-                                </Text>
-                                <UIImage source={res.button.white_go}
-                                         style={{height: px2dp(12), width: px2dp(7), marginLeft: px2dp(12)}}
-                                         resizeMode={'stretch'}/>
+                            <View>
+                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                    <Text maxLength={8}
+                                          style={{
+                                              color: DesignRule.textColor_mainTitle,
+                                              fontSize: px2dp(16),
+                                              includeFontPadding: false
+                                          }}>
+                                        {name}
+                                    </Text>
+                                    <UIImage source={res.button.white_go}
+                                             style={{height: px2dp(12), width: px2dp(7), marginLeft: px2dp(12)}}
+                                             resizeMode={'stretch'}/>
+                                </View>
+                                <View style={{flexDirection: 'row'}}>
+                                    {xiuOld}
+                                    {accreditID}
+                                </View>
                             </View>
                         </TouchableWithoutFeedback>
-                        <View style={{flexDirection: 'row'}}>
-                            {xiuOld}
-                            {accreditID}
-                        </View>
                     </View>
                     {/*<TouchableOpacity onPress={()=>{*/}
                         {/*this.$navigate(RouterMap.MyPromotionPage);*/}
@@ -473,7 +475,7 @@ export default class MinePage extends BasePage {
                 flexDirection: 'row',
                 alignItems: 'center',
                 height: px2dp(44 + statusBarHeight),
-                width: px2dp(ScreenUtils.width),
+                width: ScreenUtils.width,
                 paddingVertical: 5,
                 backgroundColor:'#ffffff',
             }}>
@@ -681,7 +683,7 @@ export default class MinePage extends BasePage {
                     marginBottom: px2dp(10)
                 }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <View style={{width:2, height:8,backgroundColor:'#FF0050'}}/>
+                        <View style={{width:2, height:8,backgroundColor:'#FF0050',borderRadius:1}}/>
                         <UIText value={'我的订单'}
                                 style={{
                                     marginLeft: 10,
@@ -729,7 +731,7 @@ export default class MinePage extends BasePage {
                         alignItems:'center',
                         marginTop: px2dp(10)
                     }}>
-                    <View style={{width:2, height:8,backgroundColor:'#FF0050'}} />
+                    <View style={{width:2, height:8,backgroundColor:'#FF0050',borderRadius:1}} />
                     <Text
                         style={{
                             includeFontPadding: false,
@@ -941,7 +943,7 @@ export default class MinePage extends BasePage {
         }
 
 
-        let menu = [service, address, message, setting];
+        let menu = [message, address, service, setting];
 
 
         if (this.state.hasFans) {

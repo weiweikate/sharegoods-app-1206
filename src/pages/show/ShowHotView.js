@@ -198,8 +198,17 @@ export default class ShowHotView extends React.Component {
 
                                        onPressProduct={({ nativeEvent }) => {
                                            const detail = JSON.parse(nativeEvent.detail)
+                                           const product = JSON.parse(nativeEvent.product)
                                            const {showNo} = detail ||{};
-                                           routePush(RouterMap.ProductDetailPage, { productCode: nativeEvent.prodCode ,trackType:3,trackCode:showNo});
+                                           track(trackEvent.XiuChangSpuClick, {
+                                               xiuChangBtnLocation:'1',
+                                               xiuChangListType:'1',
+                                               articleCode:showNo,
+                                               spuCode: product.prodCode,
+                                               spuName: product.name,
+                                               author: detail.userInfoVO ? detail.userInfoVO.userNo : ''
+                                           });
+                                           routePush(RouterMap.ProductDetailPage, { productCode: product.prodCode ,trackType:3,trackCode:showNo});
                                        }}
 
                                        onZanPress={({ nativeEvent }) => {

@@ -109,6 +109,9 @@
   if(self){
     CGFloat scale = [UIScreen mainScreen].scale;
     NSString* showImage = [self componentsSeparatedByString:@"?"].firstObject;
+    if([self containsString:@".webp"]||[self containsString:@".gif"]){
+      return self;
+    }
     showImage = [NSString stringWithFormat:@"%@?x-oss-process=image/resize,m_lfit,w_%0.0lf,h_%0.0lf/quality,Q_80",showImage,width*scale,height*scale];
     return showImage;
   }

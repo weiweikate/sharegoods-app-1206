@@ -247,14 +247,14 @@ class TaskModel {
 
     /** 埋点相关*/
     boxBtnClickEvent(item){
-        track(trackEvent.BoxBtnClick,{boxNum:item.id, userValue: this.progress});
+        track(trackEvent.BoxBtnClick,{boxNum: this.boxs.indexOf(item), userValue: this.progress});
     }
 
     missionBtnClickEvent(item){
         track(trackEvent.MissionBtnClick,{
             missionBtnName:item.status === 0 ? '前往' : '领奖',
             missionId:item.no,
-            missionName: item.missionName,
+            missionName: item.name,
             missionIndex: this.tasks.indexOf(item),
             userValue: this.progress});
     }

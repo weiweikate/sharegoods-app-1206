@@ -30,5 +30,7 @@ const index = {
     iconDelete:require('./show_delete_icon.png'),
     showTagIcon:require('./show_tag_icon.png'),
     dynamicEmpty:require('./dynamic_empty.png'),
+    tagDelete:require('./tag_delete.png'),
+    showClose:require('./show_close.png')
 };
 export default index

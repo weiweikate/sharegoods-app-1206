@@ -393,7 +393,7 @@
     [userDefaults setObject:[NSDate new] forKey: NotificationStatusTime];
     return;
   }
-  if ( [[date dateByAddingSeconds: 30] compare:[NSDate new]] == NSOrderedDescending)  {
+  if ( [[date dateByAddingDays: 30] compare:[NSDate new]] == NSOrderedDescending)  {
     return;
   }
     [userDefaults setObject:[NSDate new] forKey: NotificationStatusTime];
