@@ -228,6 +228,21 @@ SINGLETON_FOR_CLASS(JRShareManager)
 
 }
 
+//保存图片到相册
+-(void)saveDownloadImage:(UIImage *)image{
+  __block ALAssetsLibrary *lib = [[ALAssetsLibrary alloc] init];
+  [lib writeImageToSavedPhotosAlbum:image.CGImage metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
+    NSLog(@"assetURL = %@, error = %@", assetURL, error);
+    lib = nil;
+    if (!error) {
+      [JRLoadingAndToastTool showToast:@"文案已复制,图片已下载到相册" andDelyTime:0.5f];
+    }else{
+      [JRLoadingAndToastTool showToast:@"保存失败\n请确认图片保存权限已开启" andDelyTime:0.5f];
+    }
+  }];
+  
+}
+
 
 //videoPath为视频下载到本地之后的本地路径
 - (void)saveVideo:(NSString *)videoPath  withCallBackBlock:(shareFinshBlock)finshBlock;{

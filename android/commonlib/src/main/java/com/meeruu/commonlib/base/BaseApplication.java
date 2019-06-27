@@ -155,6 +155,7 @@ public class BaseApplication extends MultiDexApplication {
             // 响应url点击事件
             @Override
             public void onURLClicked(Context context, String url) {
+                LogUtils.d("=====" + url);
                 // 商品卡片，订单卡片
                 if (url.contains("h5.sharegoodsmall.com/product") || url.contains("http:///")) {
                     ((QiyuServiceMessageActivity) context).finish();
@@ -163,6 +164,7 @@ public class BaseApplication extends MultiDexApplication {
                     EventBus.getDefault().post(event);
                 } else {
                     Intent toWeb = new Intent();
+                    toWeb.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     try {
                         toWeb.setClass(appContext, Class.forName("com.meeruu.sharegoods.ui.activity.MRWebviewActivity"));
                     } catch (ClassNotFoundException e) {

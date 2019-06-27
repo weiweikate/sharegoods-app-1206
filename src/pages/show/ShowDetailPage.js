@@ -103,8 +103,8 @@ export default class ShowDetailPage extends BasePage {
 
                         const { detail } = this.showDetailModule;
                         track(trackEvent.ViewXiuChangDetails,{
-                            articleCode: detail.code,
-                            author: detail.userName,
+                            articleCode: detail.showNo,
+                            author: detail.userInfoVO.userNo
                         })
 
                     }
@@ -128,8 +128,8 @@ export default class ShowDetailPage extends BasePage {
         this.showDetailModule.showDetailCode(code).then(() => {
             const { detail } = this.showDetailModule;
             track(trackEvent.ViewXiuChangDetails, {
-                articleCode: detail.code,
-                author: detail.userName
+                articleCode: detail.showNo,
+                author: detail.userInfoVO.userNo
             });
             if (this.params.isFormHeader) {
                 this.params.ref && this.params.ref.setClick(detail.click);
@@ -605,9 +605,18 @@ export default class ShowDetailPage extends BasePage {
                 <ProductRowListView style={{ marginTop: px2dp(10) }}
                                     products={detail.products}
                                     addCart={this.addCart}
-                                    pressProduct={(prodCode) => {
+                                    pressProduct={(data) => {
+                                        const {prodCode,name} = data;
                                         this.setState({
                                             productModalVisible: false
+                                        });
+                                        track(trackEvent.XiuChangSpuClick, {
+                                            xiuChangBtnLocation:'2',
+                                            xiuChangListType:'0',
+                                            articleCode:detail.showNo,
+                                            spuCode: prodCode,
+                                            spuName: name,
+                                            author: detail.userInfoVO ? detail.userInfoVO.userNo : ''
                                         });
                                         this.$navigate(RouterMap.ProductDetailPage, {
                                             productCode: prodCode,

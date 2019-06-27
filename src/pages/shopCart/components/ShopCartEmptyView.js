@@ -25,6 +25,7 @@ import res from '../res';
 import { RecyclerListView, LayoutProvider, DataProvider } from 'recyclerlistview';
 import { homeModule } from '../../home/model/Modules';
 import RouterMap from '../../../navigation/RouterMap';
+import { TrackApi } from '../../../utils/SensorsTrack';
 
 const { px2dp } = ScreenUtils;
 const { shopCartNoGoods } = res;
@@ -65,12 +66,18 @@ export default class ShopCartEmptyView extends Component {
     }
     _renderItem = (type, itemData, index) => {
         const {navigateToHome} = this.props;
-        console.log('数据源' + JSON.stringify(itemData));
         if (type === EmptyViewTypes.topEmptyItem) {
             return this._renderHeaderView();
         }else {
            return <ShopCartEmptyCell itemData={itemData} onClick={() => {
                navigateToHome(RouterMap.ProductDetailPage,{ productCode:itemData.prodCode,trackType:4})
+               TrackApi.RecommendSpuClick({
+                   strategyId:itemData.strategyId,
+                   spuRelationValue:itemData.spuRelationValue,
+                   spuRelationIndex:index-1,
+                   spuCode:itemData.prodCode,
+                   spuName:itemData.name,
+               })
                 }}/>
         }
     };
@@ -88,7 +95,7 @@ export default class ShopCartEmptyView extends Component {
     };
     _renderHeaderView = () => {
         return (
-            <View style={{ width: ScreenUtils.width, height: 350, paddingLeft: px2dp(15), paddingRight: px2dp(15) }}>
+            <View style={{ width: ScreenUtils.width, height:px2dp(350) , paddingLeft: px2dp(15), paddingRight: px2dp(15) }}>
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                     <Image source={shopCartNoGoods} style={{ width: px2dp(244), height: px2dp(140) }} />
                     <MRText style={{
@@ -98,8 +105,8 @@ export default class ShopCartEmptyView extends Component {
                     }}>暂无商品</MRText>
                 </View>
                 <View
-                    style={{ width: ScreenUtils.width, height: px2dp(50), flexDirection: 'row', alignItems: 'center' }}>
-                    <View style={{ width: px2dp(2), height: px2dp(8), backgroundColor: '#FF0050' }}/>
+                    style={{ width: ScreenUtils.width, height: px2dp(40), flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={{ width: px2dp(2), height: px2dp(8),borderRadius:px2dp(1), backgroundColor: '#FF0050' }}/>
                     <MRText style={{ marginLeft: px2dp(5), fontSize: px2dp(16) }}>为你推荐</MRText>
                 </View>
             </View>
@@ -113,7 +120,7 @@ export default class ShopCartEmptyView extends Component {
                 ref={(ref) => {
                     this.recyclerListView = ref;
                 }}
-                style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1 }}
+                style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1,paddingLeft:px2dp(8), flex: 1 }}
                 refreshControl={<RefreshControl refreshing={homeModule.isRefreshing}
                                                 onRefresh={this._onRefresh.bind(this)}
                                                 colors={[DesignRule.mainColor]}/>}
@@ -122,9 +129,6 @@ export default class ShopCartEmptyView extends Component {
                 dataProvider={this.dataProvider}
                 rowRenderer={this._renderItem.bind(this)}
                 layoutProvider={this.layoutProvider}
-                onScrollBeginDrag={() => {
-                    // this.luckyIcon.close();
-                }}
                 showsVerticalScrollIndicator={false}
                 // onScroll={this._onListViewScroll}
                 renderFooter={() => <Footer

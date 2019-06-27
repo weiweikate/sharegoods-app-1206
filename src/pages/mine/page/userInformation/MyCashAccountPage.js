@@ -98,7 +98,6 @@ const allType = {
 
 };
 
-const offset = 175;
 const headerHeight = ScreenUtils.statusBarHeight + 44;
 
 @observer
@@ -135,7 +134,7 @@ export default class MyCashAccountPage extends BasePage {
     _onScroll = (event) => {
         let Y = event.nativeEvent.contentOffset.y;
         if (Y <= 175) {
-            this.st = Y / offset;
+            this.st = 0;
             if(this.state.changeHeader) {
                 this.setState({
                     changeHeader: false

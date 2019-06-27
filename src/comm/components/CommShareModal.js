@@ -415,7 +415,7 @@ export default class CommShareModal extends React.Component {
                         margin: 15,
 
                     }}>
-                        <View style={[styles.contentContainer]}>
+                        <View style={[styles.contentContainer, {height:currentType?autoSizeWidth(250):autoSizeWidth(180),}]}>
                             <View style={styles.header}>
                                 <View style={{
                                     flex: 1,
@@ -491,7 +491,7 @@ export default class CommShareModal extends React.Component {
                                     fontWeight: '600'
                                 }}>分享链接至</MRText>
                             </View>
-                            <View style={{flex:1,flexDirection:'row',borderRadius: 10}}>
+                            <View style={{flex:1,flexDirection:'row',borderRadius: 10, alignItems:'center',}}>
                                 {
                                     arrayWeb.map((item, index) => {
                                         return (

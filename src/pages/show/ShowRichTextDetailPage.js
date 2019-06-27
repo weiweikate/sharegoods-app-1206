@@ -101,8 +101,8 @@ export default class ShowRichTextDetailPage extends BasePage {
 
                         const { detail } = this.showDetailModule;
                         track(trackEvent.ViewXiuChangDetails,{
-                            articleCode: detail.code,
-                            author: detail.userName,
+                            articleCode: detail.showNo,
+                            author: detail.userInfoVO.userNo
                         })
                     }
                     this.incrCountByType(6);
@@ -122,8 +122,8 @@ export default class ShowRichTextDetailPage extends BasePage {
         this.showDetailModule.showDetailCode(code).then(() => {
             const { detail } = this.showDetailModule;
             track(trackEvent.ViewXiuChangDetails,{
-                articleCode: detail.code,
-                author: detail.userName,
+                articleCode: detail.showNo,
+                author: detail.userInfoVO.userNo
             })
             if (this.params.isFormHeader) {
                 this.params.ref && this.params.ref.setClick(detail.click);
@@ -593,7 +593,19 @@ export default class ShowRichTextDetailPage extends BasePage {
                 <ProductRowListView style={{ marginVertical: px2dp(10) }}
                                     products={detail.products}
                                     addCart={this.addCart}
-                                    pressProduct={(prodCode) => {
+                                    pressProduct={(data) => {
+                                        this.setState({
+                                            productModalVisible: false
+                                        });
+                                        const {prodCode,name} = data;
+                                        track(trackEvent.XiuChangSpuClick, {
+                                            xiuChangBtnLocation:'2',
+                                            xiuChangListType:'0',
+                                            articleCode:detail.showNo,
+                                            spuCode: prodCode,
+                                            spuName: name,
+                                            author: detail.userInfoVO ? detail.userInfoVO.userNo : ''
+                                        });
                                         this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode ,trackType:3,trackCode:detail.showNo});
                                     }}
                 />

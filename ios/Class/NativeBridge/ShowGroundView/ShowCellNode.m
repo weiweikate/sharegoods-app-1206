@@ -122,13 +122,11 @@
     }
     if (_index < SGNetworkImageNodeNum) {
       SGNetworkImageNode * imageNode = [SGNetworkImageNode new];
-      imageNode.defaultImage = [UIImage imageWithColor:[UIColor whiteColor]];
       imageNode.URL = [NSURL URLWithString:urlStr];
       imageNode.defaultImage = [UIImage imageNamed:@"default_avatar"];
       _headerNode = imageNode;
     }else{
       ASNetworkImageNode * imageNode = [ASNetworkImageNode new];
-      imageNode.defaultImage = [UIImage imageWithColor:[UIColor whiteColor]];
       imageNode.URL = [NSURL URLWithString:urlStr];
       imageNode.defaultImage = [UIImage imageNamed:@"default_avatar"];
       _headerNode = imageNode;

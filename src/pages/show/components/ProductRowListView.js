@@ -45,7 +45,7 @@ export default class ProductRowListView extends PureComponent {
 
         return (
             <TouchableWithoutFeedback onPress={() => {
-                this.props.pressProduct && this.props.pressProduct(data.prodCode);
+                this.props.pressProduct && this.props.pressProduct(data);
             }}>
                 <View key={'product' + index} style={[{ width }, styles.itemWrapper]}>
                     <ImageLoad style={styles.productIcon} source={{ uri: data.imgUrl }}/>

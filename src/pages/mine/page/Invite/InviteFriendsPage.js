@@ -37,7 +37,7 @@ import apiEnvironment from '../../../../api/ApiEnvironment';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import user from '../../../../model/user';
-import { trackEvent} from '../../../../utils/SensorsTrack';
+import {track, trackEvent} from '../../../../utils/SensorsTrack';
 import { SmoothPushPreLoadHighComponentFirstDelay } from '../../../../comm/components/SmoothPushHighComponent';
 
 const {
@@ -75,6 +75,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
     }
 
     componentDidMount() {
+        track(trackEvent.ViewInviteFriends,{});
         this.loadPageData();
     }
 
