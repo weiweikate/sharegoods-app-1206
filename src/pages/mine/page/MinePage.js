@@ -635,7 +635,6 @@ export default class MinePage extends BasePage {
                             textAlign: 'center',
                             color: '#333333',
                             includeFontPadding: false,
-                            height: 22,
                             maxWidth: 80,
                             fontSize: this.getAdjustsFontSize(`${num}`)
                         }}>
