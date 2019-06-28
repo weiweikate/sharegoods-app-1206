@@ -14,8 +14,7 @@ import {
     TouchableOpacity
 } from 'react-native';
 import {observer} from 'mobx-react';
-import RefreshList from '../../components/ui/RefreshList';
-import Toast from '../../utils/bridge';
+import RefreshFlatList from '../../comm/components/RefreshFlatList';
 import res from './res';
 import DesignRule from '../../constants/DesignRule';
 import ScreenUtils from '../../utils/ScreenUtils';
@@ -24,50 +23,20 @@ import ShowApi from './ShowApi';
 import PreLoadImage from '../../components/ui/preLoadImage/PreLoadImage';
 
 import {MRText} from '../../components/ui';
-import EmptyUtils from "../../utils/EmptyUtils";
+import EmptyUtils from '../../utils/EmptyUtils';
 
 @observer
 export default class ShowActivityView extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            viewData: [],
-            isEmpty: false,
-            currentPage: 1,
-            firstLoading: 1, //1：加载动画 2 动画结束
-            isError: false,
-            errMsgText: '发生错误',
-        };
-        this.currentPage = 1;
-        this.noMoreData = false;
-        this.isFirst = true;
-        this.isRefresh = false;
     }
 
     componentDidMount() {
-        //网络请求，业务处理
-        if (this.isFirst) {
-            this.time = setTimeout(() => {
-                this.getDataFromNetwork();
-            }, 700);
-        }
     }
+
 
     componentWillUnmount() {
-    this.time && clearTimeout(this.time);
     }
-
-    onLoadMore = () => {
-        this.currentPage++;
-        this.getDataFromNetwork();
-    };
-
-    onRefresh = () => {
-        console.log('onRefresh', this.currentPage);
-        this.currentPage = 1;
-        this.isRefresh = true;
-        this.getDataFromNetwork();
-    };
 
     clickItem = (item, index) => {
         this.props.clickItem && this.props.clickItem(index,item);
@@ -75,46 +44,14 @@ export default class ShowActivityView extends Component {
 
     replaceItemData=(index,data)=>{
         let itemData = JSON.parse(data);
-        let dataSource = this.state.viewData;
+        let dataSource = this.List && this.List.getSourceData();
         dataSource[index] = itemData;
-        this.setState({
-            viewData:dataSource
-        })
+        this.List && this.List.changeData(dataSource);
     };
 
     replaceData=(index,data)=>{
 
     };
-
-    getDataFromNetwork = () => {
-        if (!this.isRefresh) {
-            // Toast.showLoading('加载中...');
-        }
-            ShowApi.showActivity({page: this.currentPage, size: 10, spreadPosition: 4}).then(result => {
-                if (result.code && result.code === 10000) {
-                    if (result.data && result.data.data) {
-                        Toast.hiddenLoading();
-                        this.isFirst = false;
-                        let arrs = this.currentPage === 1 ? [] : this.state.viewData;
-                        if(!EmptyUtils.isEmptyArr(result.data.data)){
-                            result.data.data.map((item, index) => {
-                                arrs.push(item);
-                            });
-                        }
-                        this.setState({
-                            firstLoading: 2,
-                            viewData: arrs,
-                            isEmpty: result.data.totalNum === 0, isError: false
-                        });
-                    }
-                }
-            }).catch(err => {
-                Toast.hiddenLoading();
-                this.setState({isError: true, firstLoading: 2});
-                Toast.$toast(err.msg);
-            });
-    };
-
 
     onListViewScroll = (event) => {
         let offsetY = event.nativeEvent.contentOffset.y;
@@ -129,41 +66,32 @@ export default class ShowActivityView extends Component {
 
     scrollToTop = ()=>{
         if(showActiveModules.topBtnHide){
-            this.List.scrollToIndex({viewPosition: 0, index: 0 });
+            this.List && this.List.scrollToTop();
         }
     }
 
     render() {
         return (
             <View style={styles.container}>
-                {this.state.isError ? this.renderError() : <RefreshList
-                    ref={(ref)=>{this.List=ref}}
-                    isHideFooter={false}
-                    firstLoading={this.state.firstLoading}
-                    data={this.state.viewData}
-                    headerData={[0]}
+                <RefreshFlatList
+                    ref={(ref)=>{this.List = ref}}
+                    style={styles.container}
+                    url={ShowApi.showActivity}
                     renderItem={this.renderItem}
-                    onRefresh={this.onRefresh}
-                    onLoadMore={this.onLoadMore}
-                    onListViewScroll={(e) => {
-                        this.onListViewScroll(e)
-                    }}
-                    extraData={this.state}
-                    isEmpty={this.state.isEmpty}
-                    emptyTip={'暂无数据'}
-                    initialNumToRender={5}
-                    ListHeaderComponent={<View style={{height: 0}}/>}
-                />}
+                    params={{spreadPosition: 4}}
+                    renderError={this.renderError}
+                    onScroll={this.onListViewScroll}
+                    />
             </View>
         );
     }
 
-    renderError() {
+    renderError = ()=> {
         return (
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={styles.errContainer}>
                     <TouchableOpacity activeOpacity={0.5} style={{alignItems: 'center'}}
-                                      onPress={() => {this.currentPage = 1;this.getDataFromNetwork()}}>
+                                      onPress={() => {this.List && this.List._onRefresh()}}>
                         <Image source={res.placeholder.no_data_img}
                                style={{width: DesignRule.autoSizeWidth(120), height: DesignRule.autoSizeWidth(120)}}
                                resizeMode={'contain'}/>
@@ -184,10 +112,10 @@ export default class ShowActivityView extends Component {
     renderItem = ({item, index}) => {
         console.log(item)
         let imageUrl = '';
-        let len = EmptyUtils.isEmptyArr(item.resource)?0:item.resource.length;
+        let len = EmptyUtils.isEmptyArr(item.resource) ? 0 : item.resource.length;
         for(let i = 0;i < len;i++){
             if (item.resource[i].type === 1) {
-                imageUrl= item.resource[i].url;
+                imageUrl = item.resource[i].url;
                 break;
             }
         }
@@ -199,7 +127,7 @@ export default class ShowActivityView extends Component {
                           this['item' + index] = ref
                       }}
                 >
-                    <Image style={styles.itemImgStyle} source={{uri:imageUrl.length>0 ?imageUrl : '111.png'}}/>
+                    <Image style={styles.itemImgStyle} source={{uri:imageUrl.length > 0 ? imageUrl : '111.png'}}/>
                     {ScreenUtils.isIOS ?
                         <Text style={styles.contentStyle}
                                                numberOfLines={2}>
@@ -264,7 +192,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     },
     itemImgStyle: {
-        height: (ScreenUtils.width - 30)*190/345,
+        height: (ScreenUtils.width - 30) * 190 / 345,
         width: ScreenUtils.width - 30,
         backgroundColor: '#f5f5f5',
         borderRadius: 5,
