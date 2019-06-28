@@ -55,7 +55,7 @@ export default class ShopCartEmptyView extends Component {
             dim.height = px2dp(350)
         } else {
             dim.width = ScreenUtils.width / 2 - px2dp(8);
-            dim.height = px2dp(168 + 88)
+            dim.height = px2dp(168 + 85)
         }
     });
     constructor(props) {
