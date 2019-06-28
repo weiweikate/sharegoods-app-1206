@@ -107,6 +107,20 @@ export default class RefreshFlatList extends React.Component {
         }
     }
 
+    scrollToTop = (animated = true)=> {
+        this.list && this.list.scrollToOffset({y: 0, animated: animated});
+    }
+
+    changeData = (data)=>{
+        this.setState({
+            data: data
+        })
+    }
+
+    getSourceData = ()=>{
+        return this.state.data;
+    }
+
     _renderEmpty() {
         if (this.props.renderEmpty) {
             return this.props.renderEmpty();

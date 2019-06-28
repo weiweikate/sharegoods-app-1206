@@ -105,6 +105,7 @@ class AfterSaleServicePage extends BasePage {
     };
     refundAndExchangeType = () => {
         let { payAmount, freightAmount } = this.state.productData;
+        freightAmount = freightAmount || 0;
         switch (this.state.pageType) {
             case 0:
                 return (
