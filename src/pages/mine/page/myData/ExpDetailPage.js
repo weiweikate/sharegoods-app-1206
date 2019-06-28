@@ -91,7 +91,7 @@ export default class ExpDetailPage extends BasePage {
     };
 
     componentDidMount() {
-        this.onLoad();
+        this.onRefresh();
     }
 
 

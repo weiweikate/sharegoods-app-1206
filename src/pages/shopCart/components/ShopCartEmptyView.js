@@ -54,7 +54,7 @@ export default class ShopCartEmptyView extends Component {
             dim.width = ScreenUtils.width;
             dim.height = px2dp(350)
         } else {
-            dim.width = ScreenUtils.width / 2 - px2dp(8);
+            dim.width = (ScreenUtils.width - px2dp(25)) / 2 ;
             dim.height = px2dp(168 + 85)
         }
     });
@@ -117,22 +117,27 @@ export default class ShopCartEmptyView extends Component {
         const {emptyViewList} = shopCartEmptyModel
         this.dataProvider = this.dataProvider.cloneWithRows(emptyViewList);
         return (
-            <View style={{paddingLeft:px2dp(10),flex:1}}>
+            <View style={{flex:1, justifyContent:'center'}}>
                 <RecyclerListView
-                    ref={(ref) => {
-                        this.recyclerListView = ref;
+                    style={{
+                        minHeight:
+                        ScreenUtils.headerHeight,
+                        minWidth: 1,
+                        flex:1,
                     }}
-                    style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1 }}
+                    contentContainerStyle={{
+                        justifyContent:'space-between',
+                        marginLeft:px2dp(15),
+                        marginRight:px2dp(15)
+                    }}
                     refreshControl={<RefreshControl refreshing={homeModule.isRefreshing}
                                                     onRefresh={this._onRefresh.bind(this)}
                                                     colors={[DesignRule.mainColor]}/>}
-                    // onEndReached={this._onEndReached.bind(this)}
                     onEndReachedThreshold={ScreenUtils.height / 3}
                     dataProvider={this.dataProvider}
                     rowRenderer={this._renderItem.bind(this)}
                     layoutProvider={this.layoutProvider}
                     showsVerticalScrollIndicator={false}
-                    // onScroll={this._onListViewScroll}
                     renderFooter={() => <Footer
                         isFetching={shopCartEmptyModel.isFetching}
                         errorMsg={shopCartEmptyModel.errorMsg}
