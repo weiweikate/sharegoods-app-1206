@@ -18,11 +18,12 @@ import React, { Component } from 'react';
 import {
     View,
     StyleSheet,
-    Alert
+    Alert,
+    Text
 } from 'react-native';
 import {
     MRText,
-    UIText
+    UIText,
 } from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -37,9 +38,21 @@ import ShopCartEmptyCell from './ShopCartEmptyCell';
 import { TrackApi } from '../../../utils/SensorsTrack';
 
 const { px2dp } = ScreenUtils;
-const section_width = ScreenUtils.width - px2dp(30) + px2dp(7)
+const section_width = ScreenUtils.width - px2dp(30)
 
 
+const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={{
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 50,
+    width:section_width
+}}>
+    <Text style={{
+        color: DesignRule.textColor_instruction,
+        fontSize: DesignRule.fontSize_24
+    }}
+          allowFontScaling={false}>{errorMsg ? errorMsg : (isEnd ? '我也是有底线的' : (isFetching ? '加载中...' : '加载更多'))}</Text>
+</View>;
 @observer
 export default class SectionHeaderView extends Component {
 
@@ -88,13 +101,14 @@ export default class SectionHeaderView extends Component {
         //删掉他娘头部空视图 ok？
         viewItemList.shift();
         return (
-            <View style={{width:section_width,flexDirection:'row',alignItems:'flex-start', flexWrap: 'wrap',marginLeft:px2dp(-8)}}>
+            <View style={{width:section_width,flexDirection:'row',justifyContent:'space-between', flexWrap: 'wrap'}}>
                 <View style={{width:section_width,height:px2dp(15)}}/>
-                <View style={{ marginLeft:px2dp(9),width: ScreenUtils.width, height: px2dp(35), flexDirection: 'row', alignItems: 'center' }}>
+                <View style={{marginLeft:px2dp(2), width: ScreenUtils.width, height: px2dp(35), flexDirection: 'row', alignItems: 'center' }}>
                     <View style={{ width: px2dp(2), height: px2dp(8),borderRadius:px2dp(1), backgroundColor: '#FF0050'}}/>
                     <MRText style={{ marginLeft: px2dp(5), fontSize: px2dp(16) }}>为你推荐</MRText>
                 </View>
                 {viewItemList}
+                <Footer isEnd={true}/>
             </View>
         )
     };

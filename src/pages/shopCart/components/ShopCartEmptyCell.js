@@ -5,36 +5,29 @@ import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
 import { MRText } from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
 const { px2dp } = ScreenUtils;
+const cell_width = (ScreenUtils.width -px2dp(35))/2
 
 export default class ShopCartEmptyCell extends Component {
     constructor(props) {
         super(props);
     }
     render() {
-        const { itemData,onClick ,haveShopCartGoods} = this.props;
+        const { itemData,onClick} = this.props;
         return (
-            <View
-            style={{
-                width: haveShopCartGoods?ScreenUtils.width / 2 - px2dp(22) : ScreenUtils.width / 2 - px2dp(13),
-                height: itemData.height,
-                backgroundColor:DesignRule.color_fff,
-                borderRadius:px2dp(8),
-                marginLeft:haveShopCartGoods? px2dp(10):px2dp(0),
-                marginTop:haveShopCartGoods?px2dp(8):0,
-
-            }}
-            >
-                <TouchableOpacity onPress={()=>{
-                    onClick();
+                <View style={{
+                    width:cell_width,
+                    borderRadius:px2dp(6),
+                    height: itemData.height,
+                    backgroundColor:DesignRule.color_fff,
+                    marginTop:px2dp(5)
                 }}>
-                    <View style={{
-
-                        borderRadius:px2dp(6),
+                    <TouchableOpacity onPress={()=>{
+                        onClick();
                     }}>
                         <PreLoadImage
                             imageUri={itemData.imgUrl}
                             style={{
-                                width: haveShopCartGoods?ScreenUtils.width / 2 - px2dp(30) :ScreenUtils.width / 2 - px2dp(17),
+                                width: cell_width ,
                                 height: itemData.imageHeight ,
                                 borderRadius:px2dp(6)
                             }}
@@ -58,14 +51,8 @@ export default class ShopCartEmptyCell extends Component {
                                     {`￥${itemData.originalPrice}`}
                                 </MRText>
                             </View>
-                            {/*<View style={{ width: px2dp(50), alignItems: 'center', justifyContent: 'center' }}>*/}
-                            {/*<TouchableOpacity>*/}
-                            {/*<Image style={{ width: px2dp(10), height: px2dp(2), backgroundColor: 'red' }}/>*/}
-                            {/*</TouchableOpacity>*/}
-                            {/*</View>*/}
                         </View>
-                    </View>
-                </TouchableOpacity>
+                    </TouchableOpacity>
             </View>
         );
     }
