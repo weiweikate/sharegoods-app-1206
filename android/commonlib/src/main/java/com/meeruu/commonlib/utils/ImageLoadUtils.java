@@ -182,7 +182,14 @@ public class ImageLoadUtils {
                 if (newUrl.contains("?")) {
                     newUrl = newUrl.substring(0, newUrl.indexOf("?"));
                 }
-                newUrl = String.format(ParameterUtils.IMG_URL_WH, newUrl, width, height);
+
+                String ext = null;
+                if (newUrl.contains(".")) {
+                    ext = newUrl.substring(newUrl.lastIndexOf(".") + 1, newUrl.length());
+                }
+                if (!TextUtils.equals(ext, "webp")) {
+                    newUrl = String.format(ParameterUtils.IMG_URL_WH, newUrl, width, height);
+                }
             }
         }
         Uri uri = Uri.parse(newUrl);
@@ -199,7 +206,14 @@ public class ImageLoadUtils {
                 if (newUrl.contains("?")) {
                     newUrl = newUrl.substring(0, newUrl.indexOf("?"));
                 }
-                newUrl = String.format(ParameterUtils.IMG_URL_WH, newUrl, width, height);
+
+                String ext = null;
+                if (newUrl.contains(".")) {
+                    ext = newUrl.substring(newUrl.lastIndexOf(".") + 1, newUrl.length());
+                }
+                if (!TextUtils.equals(ext, "webp")) {
+                    newUrl = String.format(ParameterUtils.IMG_URL_WH, newUrl, width, height);
+                }
             }
         }
         Uri uri = Uri.parse(newUrl);
