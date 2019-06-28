@@ -69,7 +69,7 @@ class OrderDetailModel {
         this.merchantOrder = data.merchantOrder || {}
         this.payInfo = data.payInfo || {}
         this.receiveInfo = data.receiveInfo || {}
-        let {payTime, nowTime, receiveTime, cancelReason} = this.baseInfo
+        let {cancelTime, nowTime, receiveTime, cancelReason} = this.baseInfo
         orderDetailModel.loadingState=PageLoadingState.success
         this.platformOrderNo = this.merchantOrder.platformOrderNo || '';
         let menu =  [...GetViewOrderStatus(this.merchantOrder.status).menu_orderDetail];
@@ -80,8 +80,8 @@ class OrderDetailModel {
                 this.moreDetail = '';
                 this.sellerState = '';
                 this.buyState = '等待买家付款';
-                if (payTime - nowTime > 0){
-                    this.startTimer((payTime - nowTime)/1000);
+                if (cancelTime - nowTime > 0){
+                    this.startTimer((cancelTime - nowTime)/1000);
                 }
                 break;
             }
@@ -98,7 +98,7 @@ class OrderDetailModel {
                 this.sellerState = '';
                 this.buyState = '平台已发货';
                 if (receiveTime - nowTime > 0){
-                    this.startTimer((payTime - nowTime)/1000);
+                    this.startTimer((receiveTime - nowTime)/1000);
                 }
                 break;
             }
@@ -160,6 +160,7 @@ class OrderDetailModel {
 
     @action
     startTimer(remainingTime) {
+        remainingTime = parseInt(remainingTime)
         this.stopTimer();
         if (remainingTime === null || remainingTime === undefined) {
             return;
