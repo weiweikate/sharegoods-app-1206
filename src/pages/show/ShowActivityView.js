@@ -109,6 +109,21 @@ export default class ShowActivityView extends Component {
         );
     }
 
+    hotNum = (num)=>{
+        if(num){
+            if(num <= 999){
+                return num;
+            }else if(num < 10000){
+                return `${parseInt(num / 1000)}k+`;
+            }else if(num < 100000){
+                return `${parseInt(num / 10000)}W+`;
+            }else{
+                return '10W+';
+            }
+        }
+        return 0;
+    };
+
     renderItem = ({item, index}) => {
         console.log(item)
         let imageUrl = '';
@@ -155,7 +170,7 @@ export default class ShowActivityView extends Component {
                             </Text>
                             <Image style={{width: 12, height: 16, marginLeft: 10}} source={res.hotIcon}/>
                             <Text style={{marginLeft: 8, color: '#666666', fontSize: DesignRule.fontSize_22}}>
-                                {item.hotCount ? item.hotCount > 999 ? item.hotCount > 100000 ? '10w+' : '999+' : item.hotCount : '0'}
+                                {this.hotNum(item.hotCount)}
                             </Text>
                         </View> : <View style={{margin: 7}}/>
                     }
