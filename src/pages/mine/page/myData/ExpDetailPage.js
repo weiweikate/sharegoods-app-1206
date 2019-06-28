@@ -6,7 +6,8 @@ import {
     ImageBackground,
     TouchableWithoutFeedback,
     Image,
-    SectionList
+    SectionList,
+    RefreshControl
 } from 'react-native';
 import { PageLoadingState, renderViewByLoadingState } from '../../../../components/pageDecorator/PageState';
 import MineApi from '../../api/MineApi';
@@ -65,7 +66,9 @@ export default class ExpDetailPage extends BasePage {
             levelExperience: this.params.levelExperience || 0,
             isEmpty: false,
             loadingState: PageLoadingState.loading,
-            changeHeader: false
+            changeHeader: false,
+            refreshing: false,
+
 
         };
         this.currentPage = 0;
@@ -88,7 +91,7 @@ export default class ExpDetailPage extends BasePage {
     };
 
     componentDidMount() {
-        this.getDataFromNetwork();
+        this.onLoad();
     }
 
 
@@ -253,13 +256,18 @@ export default class ExpDetailPage extends BasePage {
                     sections={sections}
                     keyExtractor = {this.extraUniqueKey}// 生成一个不重复的key
                     ItemSeparatorComponent={() => <View/>}
-                    onRefresh={this.onRefresh}
-                    refreshing={false}
                     onEndReached={this.onLoadMore}
                     onEndReachedThreshold={0.1}
                     stickySectionHeadersEnabled={true}
                     onScroll={(e)=>{this._onScroll(e)}}
                     showsVerticalScrollIndicator={false}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this.onLoad}
+                            colors={[DesignRule.mainColor]}
+                        />
+                    }
                 />
             </View>
         );
@@ -343,15 +351,22 @@ export default class ExpDetailPage extends BasePage {
                 });
             });
             this.setState({
+                refreshing: false,
                 loadingState: PageLoadingState.success,
                 viewData: arrData,
                 isEmpty: data.data && data.data.length !== 0 ? false : true
             });
         }).catch(e => {
-            this.setState({ loadingState: PageLoadingState.fail, netFailedInfo: e, viewData: arrData, isEmpty: true });
+            this.setState({refreshing: false, loadingState: PageLoadingState.fail, netFailedInfo: e, viewData: arrData, isEmpty: true });
 
         });
     };
+    onLoad = ()=>{
+        this.currentPage = 1;
+        this.setState({ refreshing: this.currentPage === 1 });
+        this.getDataFromNetwork();
+    }
+
     onRefresh = () => {
         this.currentPage = 1;
         this.getDataFromNetwork();

@@ -6,7 +6,8 @@ import {
     Alert,
     Image,
     TouchableWithoutFeedback,
-    SectionList
+    SectionList,
+    RefreshControl
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
@@ -108,7 +109,9 @@ export default class MyCashAccountPage extends BasePage {
             currentPage: 1,
             isEmpty: false,
             canWithdraw: false,
-            changeHeader: false
+            changeHeader: false,
+            refreshing: false,
+
         };
         this.currentPage = 0;
         this.type = null;
@@ -173,9 +176,6 @@ export default class MyCashAccountPage extends BasePage {
                     sections={sections}
                     keyExtractor={this.extraUniqueKey}// 生成一个不重复的key
                     ItemSeparatorComponent={() => <View/>}
-                    onRefresh={this.onRefresh}
-                    refreshing={false}
-                    initialNumToRender={10}
                     onEndReached={this.onLoadMore}
                     onEndReachedThreshold={0.1}
                     stickySectionHeadersEnabled={true}
@@ -183,6 +183,13 @@ export default class MyCashAccountPage extends BasePage {
                         this._onScroll(e);
                     }}
                     showsVerticalScrollIndicator={false}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this.onLoad}
+                            colors={[DesignRule.mainColor]}
+                        />
+                    }
                 />
             </View>
         );
@@ -417,7 +424,7 @@ export default class MyCashAccountPage extends BasePage {
         this.didFocusSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
-                this.onRefresh();
+                this.onLoad();
                 MineApi.canWithdraw({ phoneNo: user.phone }).then(data => {
                     this.setState({
                         canWithdraw: data.data
@@ -464,10 +471,6 @@ export default class MyCashAccountPage extends BasePage {
 
     getDataFromNetwork = () => {
         let use_type_symbol = ['', '+', '-'];
-        if (this.currentPage > 1) {
-            // Toast.showLoading();
-        }
-
         let arrData = this.currentPage === 1 ? [] : this.state.viewData;
         MineApi.userBalanceQuery({
             page: this.currentPage,
@@ -494,21 +497,40 @@ export default class MyCashAccountPage extends BasePage {
                     });
                 }
                 this.setState({
+                    refreshing: false,
                     viewData: arrData,
                     isEmpty: data.data && data.data.length !== 0 ? false : true
                 });
             } else {
+                this.setState({ refreshing: false});
                 this.$toastShow(response.msg);
 
             }
         }).catch(e => {
             Toast.hiddenLoading();
             this.setState({
+                refreshing: false,
                 viewData: arrData,
                 isEmpty: true
             });
         });
     };
+    onLoad = ()=>{
+        if (user.isLogin) {
+            MineApi.getUser().then(resp => {
+                let data = resp.data;
+                user.saveUserInfo(data);
+            }).catch(err => {
+                if (err.code === 10009) {
+                    routeNavigate(RouterMap.LoginPage);
+                }
+            });
+        }
+        this.currentPage = 1;
+        this.setState({ refreshing: this.currentPage === 1 });
+        this.getDataFromNetwork();
+    }
+
     onRefresh = () => {
         this.currentPage = 1;
         if (user.isLogin) {
