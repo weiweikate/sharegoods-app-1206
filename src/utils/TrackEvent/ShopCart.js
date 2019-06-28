@@ -9,6 +9,10 @@ const  shopCartModular = {
         "name": "CartCheckoutClick",//  提交订单
         "params": {}
     },
-
+    'RecommendSpuClick':{
+        "des":"购物车推荐商品埋点",
+        "name":"RecommendSpuClick",
+        "params":{}
+    }
 }
 export default shopCartModular

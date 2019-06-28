@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.meeruu.commonlib.base.BaseActivity;
@@ -29,10 +30,10 @@ import com.meeruu.commonlib.utils.SPCacheUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.commonlib.utils.Utils;
+import com.meeruu.sharegoods.event.Event;
 import com.meeruu.sharegoods.event.HideSplashEvent;
 import com.meeruu.sharegoods.rn.preload.ReactNativePreLoader;
 import com.meeruu.sharegoods.ui.activity.GuideActivity;
-import com.meeruu.sharegoods.ui.activity.MRWebviewActivity;
 import com.meeruu.sharegoods.ui.activity.MainRNActivity;
 import com.meeruu.sharegoods.utils.HttpUrlUtils;
 
@@ -42,9 +43,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.meeruu.commonlib.utils.ParameterUtils.WEBVIEW_ACTION;
-import static com.meeruu.commonlib.utils.ParameterUtils.WEBVIEW_URL;
 
 /**
  * @author louis
@@ -146,7 +144,7 @@ public class MainActivity extends BaseActivity {
     protected void initViewAndData() {
         String imgUrl = (String) SPCacheUtils.get("adBgImg", "");
         String url = (String) SPCacheUtils.get("adImg", "");
-        if (!TextUtils.isEmpty(imgUrl)) {
+        if (!TextUtils.isEmpty(imgUrl) && Fresco.hasBeenInitialized()) {
             ((ViewStub) findViewById(R.id.vs_adv)).inflate();
             ivAdv = findViewById(R.id.iv_adv);
             SimpleDraweeView iv_adv_bg = findViewById(R.id.iv_adv_bg);
@@ -158,7 +156,7 @@ public class MainActivity extends BaseActivity {
             ImageLoadUtils.loadNetImage(imgUrl, iv_adv_bg);
             if (!TextUtils.isEmpty(url)) {
                 ImageLoadUtils.loadScaleTypeNetImage(url, ivAdv,
-                        ScalingUtils.ScaleType.FIT_CENTER);
+                        ScalingUtils.ScaleType.FIT_CENTER, true);
             }
             initAdvEvent();
             startTimer();
@@ -203,9 +201,8 @@ public class MainActivity extends BaseActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 if (!TextUtils.isEmpty(adUrl)) {
                     hasGo = true;
-                    startActivityForResult(new Intent(MainActivity.this, MRWebviewActivity.class)
-                            .putExtra(WEBVIEW_URL, adUrl)
-                            .putExtra(WEBVIEW_ACTION, "get"), ParameterUtils.REQUEST_CODE_WEBVIEW);
+                    goIndex();
+                    EventBus.getDefault().post(new Event.MR2HTMLEvent(adUrl));
                 }
                 return false;
             }

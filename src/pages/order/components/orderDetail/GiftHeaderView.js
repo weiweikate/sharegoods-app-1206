@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import {  orderDetailModel } from '../../model/OrderDetailModel';
 import DesignRule from '../../../../constants/DesignRule';
-import { observer } from 'mobx-react/native';
+import { observer } from 'mobx-react';
 import ScreenUtil from '../../../../utils/ScreenUtils';
 const {px2dp} = ScreenUtil;
 import {MRText as Text} from '../../../../components/ui';

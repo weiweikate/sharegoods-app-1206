@@ -14,17 +14,11 @@ import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
 import com.meeruu.sharegoods.rn.showground.utils.NumUtils;
-import com.meeruu.sharegoods.rn.showground.utils.UrlUtils;
 
-import java.util.Map;
+import static com.meeruu.sharegoods.rn.showground.adapter.ShowRecommendAdapter.userImgW;
 
 
 public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.DataBean, BaseViewHolder> {
-
-    //    public static final int Featured = 1;
-//    public static final int Hot = 2;
-    private static final int Recommend = 3;
-    private static final int New = 4;
     private final int realWidth;
     private final int maxHeight;
     private final int minHeight;
@@ -49,7 +43,7 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
             userUrl = "res://" + userIcon.getContext().getPackageName() + "/" + R.drawable.bg_app_user;
         }
         if (!TextUtils.equals(userUrl, userTag)) {
-            ImageLoadUtils.loadCircleNetImage(userUrl, userIcon);
+            ImageLoadUtils.loadCircleNetImage(userUrl, userIcon, userImgW, userImgW);
             userIcon.setTag(userUrl);
         }
         final SimpleDraweeView imageView = helper.getView(R.id.showground_item_image);
@@ -57,13 +51,15 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
         float height = 1;
         String imgUrl = null;
         if (item.getResource() != null) {
-            imgUrl = item.getResource().get(0).getUrl();
-            Map<String, String> map = UrlUtils.urlSplit(imgUrl);
-            if (map.containsKey("width")) {
-                width = Float.valueOf(map.get("width"));
-            }
-            if (map.containsKey("height")) {
-                height = Float.valueOf(map.get("height"));
+            if (item.getShowType() == 3) {
+                imgUrl = item.getVideoCover().imageUrl;
+                width = item.getVideoCover().imageViewWidth;
+                height = item.getVideoCover().imageViewHeight;
+            } else {
+                NewestShowGroundBean.DataBean.ResourceBean resourceBean = item.getResource().get(0);
+                imgUrl = resourceBean.getBaseUrl();
+                width = (float) resourceBean.getWidth();
+                height = (float) resourceBean.getHeight();
             }
         }
 
@@ -89,7 +85,7 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
             params.width = realWidth;
             params.height = realHeight;
             imageView.setLayoutParams(params);
-            ImageLoadUtils.loadRoundNetImage(imgUrl, imageView, arr_raduis);
+            ImageLoadUtils.loadRoundNetImage(imgUrl, imageView, realWidth, realHeight, arr_raduis,false);
         }
         TextView name = helper.getView(R.id.showground_item_name);
         name.setText(item.getUserInfoVO().getUserName());

@@ -19,6 +19,7 @@
 #import <AdSupport/AdSupport.h>
 #import "JVERIFICATIONService.h"
 #import <SensorsAnalyticsSDK.h>
+#define NotificationStatusTime @"NotificationStatusTime"
 
 @interface AppDelegate (APNS)<JPUSHRegisterDelegate>
 
@@ -28,9 +29,17 @@
 
 -(void)JR_ConfigAPNS:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
   [self configAPNSWithOption:launchOptions];
+  [self checkCurrentNotificationStatus];
   
   NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
   [defaultCenter addObserver:self selector:@selector(networkDidReceiveMessage:) name:kJPFNetworkDidReceiveMessageNotification object:nil];
+}
+
+- (void)clearBadge{
+  [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    [JPUSHService resetBadge];
+  });
 }
 // 自定义消息 回调
 - (void)networkDidReceiveMessage:(NSNotification *)notification {
@@ -44,6 +53,11 @@
      NSDictionary *homeTypeDic = userInfo[@"content"];
     if (homeTypeDic) {
          [[NSNotificationCenter defaultCenter]postNotificationName:@"HOME_CUSTOM_SKIP" object:homeTypeDic];
+    }
+  }else if (typeString && [@"sendTipsTagEvent" isEqualToString:typeString]){
+    NSDictionary *mineTypeDic = userInfo[@"content"];
+    if (mineTypeDic) {
+      [[NSNotificationCenter defaultCenter]postNotificationName:@"MINE_CUSTON_MESSAGE" object:mineTypeDic];
     }
   }
 }
@@ -280,7 +294,7 @@
   //应用退出后的bgde后期根据具体业务再说
   //  NSInteger count = [[[QYSDK sharedSDK] conversationManager] allUnreadCount];
   //  [[UIApplication sharedApplication] setApplicationIconBadgeNumber:count];
-  [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+  [self clearBadge];
 }
 - (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
@@ -289,7 +303,7 @@
   //极光提交
   [JPUSHService registerDeviceToken:deviceToken];
   [JPUSHService registrationIDCompletionHandler:^(int resCode, NSString *registrationID) {
-    NSLog(@"%@",registrationID);
+    NSLog(@"registrationID%@",registrationID);
     if (resCode == 0) {
       // 将极光推送的 Registration Id 存储在神策分析的用户 Profile "jgId" 中
       [SensorsAnalyticsSDK.sharedInstance profilePushKey:@"jgId" pushId:registrationID];
@@ -328,5 +342,86 @@
   {
     
   }
+}
+
+
+-(void) checkCurrentNotificationStatus
+{
+  if (@available(iOS 10 , *))
+  {
+    [[UNUserNotificationCenter currentNotificationCenter] getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
+      
+      if (settings.authorizationStatus == UNAuthorizationStatusDenied)
+      {
+        // 没权限
+         [self showAlrtToSetting];
+      }else{
+       
+        NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+      [userDefaults removeObjectForKey: NotificationStatusTime];
+      }
+      
+    }];
+  }
+  else if (@available(iOS 8 , *))
+  {
+    UIUserNotificationSettings * setting = [[UIApplication sharedApplication] currentUserNotificationSettings];
+    
+    if (setting.types == UIUserNotificationTypeNone) {
+      // 没权限
+       [self showAlrtToSetting];
+    }else{
+      NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+      
+      [userDefaults removeObjectForKey: NotificationStatusTime];
+    }
+  }
+  else
+  {
+    UIRemoteNotificationType type = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
+    if (type == UIUserNotificationTypeNone)
+    {
+      // 没权限
+      [self showAlrtToSetting];
+    }else{
+       NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+      [userDefaults removeObjectForKey: NotificationStatusTime];
+    }
+  }
+}
+
+
+#pragma mark 没权限的弹窗
+-(void) showAlrtToSetting
+{
+  NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+  NSDate *date = [userDefaults objectForKey: NotificationStatusTime];
+  if (!date) {
+    [userDefaults setObject:[NSDate new] forKey: NotificationStatusTime];
+    return;
+  }
+  if ( [[date dateByAddingDays: 30] compare:[NSDate new]] == NSOrderedDescending)  {
+    return;
+  }
+    [userDefaults setObject:[NSDate new] forKey: NotificationStatusTime];
+  UIAlertController * alert = [UIAlertController alertControllerWithTitle:@"" message:@"开启消息通知，获取秀购最新资讯" preferredStyle:UIAlertControllerStyleAlert];
+  
+  UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    
+  }];
+  UIAlertAction * setAction = [UIAlertAction actionWithTitle:@"去设置" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    NSURL * url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+    dispatch_async(dispatch_get_main_queue(), ^{
+      if ([[UIApplication sharedApplication] canOpenURL:url]) {
+        [[UIApplication sharedApplication] openURL:url];
+      }
+    });
+    
+  }];
+  
+  [alert addAction:cancelAction];
+  [alert addAction:setAction];
+  
+  [self.currentViewController_XG  presentViewController:alert animated:YES completion:nil];
 }
 @end

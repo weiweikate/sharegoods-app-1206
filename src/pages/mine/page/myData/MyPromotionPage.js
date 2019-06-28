@@ -2,52 +2,77 @@
 import React from 'react';
 import {
     View,
-    Image,
-    Dimensions,
+    // Image,
     StyleSheet,
     ScrollView,
     RefreshControl,
     ImageBackground,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    Image
 } from 'react-native';
 import { PageLoadingState, renderViewByLoadingState } from '../../../../components/pageDecorator/PageState';
 import MineApi from '../../api/MineApi';
 import HTML from 'react-native-render-html';
+import LinearGradient from 'react-native-linear-gradient';
 // 图片资源
 import DesignRule from '../../../../constants/DesignRule';
 import BasePage from '../../../../BasePage';
-import {
-    NoMoreClick
-} from '../../../../components/ui';
-import { NavigationActions } from 'react-navigation';
+import user from '../../../../model/user';
+// import {
+//     NoMoreClick
+// } from '../../../../components/ui';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import res from '../../res';
 // import ImageLoad from '@mr/image-placeholder';
 import AvatarImage from '../../../../components/ui/AvatarImage';
 import { MRText as Text } from '../../../../components/ui';
+// import Carousel from 'react-native-snap-carousel';
+
 // 常量
-const SCREEN_WIDTH = Dimensions.get('window').width;
-const HeaderBarBgImg = res.homeBaseImg.home_jingshenqingk_bg;
-const iconbg = res.homeBaseImg.home_jingshnegqingk_icon;
-const CCZImg = res.myData.ccz_03;
-const ProgressImg = res.myData.jdt_05;
-const arrowRightImg = res.myData.black_right_arrow;
-import LinearGradient from 'react-native-linear-gradient';
-import StringUtils from '../../../../utils/StringUtils';
+// const iconbg = res.homeBaseImg.home_jingshnegqingk_icon;
+// const CCZImg = res.myData.ccz_03;
+// const ProgressImg = res.myData.jdt_05;
+// const arrowRightImg = res.myData.black_right_arrow;
+// import LinearGradient from 'react-native-linear-gradient';
+// import StringUtils from '../../../../utils/StringUtils';
 import { SmoothPushPreLoadHighComponent } from '../../../../comm/components/SmoothPushHighComponent';
+import StringUtils from '../../../../utils/StringUtils';
+import RouterMap from '../../../../navigation/RouterMap';
 
 const { px2dp } = ScreenUtils;
 
 const headerBgHeight = px2dp(182) + ScreenUtils.statusBarHeight + 30;
 const headerHeight = ScreenUtils.headerHeight;
 const offset = headerBgHeight - headerHeight;
+const {myData} = res;
+const angleArr = [myData.icon_v1Angle,myData.icon_v2Angle,myData.icon_v3Angle,myData.icon_v4Angle,myData.icon_v5Angle];
+const dotArr = [myData.icon_v1Dot,myData.icon_v2Dot,myData.icon_v3Dot,myData.icon_v4Dot,myData.icon_v5Dot,];
+const vipBgArr = [myData.icon_v1Bg,myData.icon_v2Bg,myData.icon_v3Bg,myData.icon_v4Bg,myData.icon_v5Bg,];
+const vipLevelArr = [myData.icon_v1,myData.icon_v2,myData.icon_v3,myData.icon_v4,myData.icon_v5,];
+const levelName = [
+    {name:'铂金',level:'V1'},
+    {name:'黑金',level:'V2'},
+    {name:'钻石',level:'V3'},
+    {name:'达人',level:'V4'},
+    {name:'名人',level:'V5'}];
+
+let userLevel = 0;
+
 @SmoothPushPreLoadHighComponent
 export default class MyPromotionPage extends BasePage {
 
     $navigationBarOptions = {
-        show: false, // false则隐藏导航
-        title: '我的经验值'
+        show: true, // false则隐藏导航
+        title: '我的晋升'
     };
+
+    $NavBarRightPressed = () => {
+        this.$navigate(RouterMap.ExpDetailPage, {
+            experience: this.state.experience,
+            levelExperience: this.state.levelExperience
+        })
+    };
+
     $getPageStateOptions = () => {
         return {
             loadingState: this.state.loadingState,
@@ -61,6 +86,7 @@ export default class MyPromotionPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
+            slider1ActiveSlide: 0,
             loadingState: PageLoadingState.loading,
             levelName: '',
             experience: 0,
@@ -75,6 +101,8 @@ export default class MyPromotionPage extends BasePage {
     }
 
     componentDidMount() {
+        userLevel = 0;
+        this.$NavigationBarResetRightTitle('经验明细');
         // InteractionManager.runAfterInteractions(this.loadPageData);
         this.loadPageData();
     }
@@ -94,7 +122,7 @@ export default class MyPromotionPage extends BasePage {
                 experience: data.experience || 0,
                 levelExperience: data.levelExperience || 0,
                 headImg: data.headImg,
-                realName: data.realName,
+                realName: user.nickname,
                 loadingState: PageLoadingState.success,
                 ...data
             });
@@ -118,12 +146,12 @@ export default class MyPromotionPage extends BasePage {
     };
 
     renderHeader = () => {
-        const progress = this.state.experience / this.state.levelExperience;
-        const marginLeft = px2dp(315) * progress;
-        const headerWidth = px2dp(65);
-        const radius = marginLeft > 4 ? -0.5 : 4;
-
-
+        for(let i = 0;i < levelName.length;i++){
+            if(levelName[i].level === this.state.levelRemark){
+                userLevel = i;
+            }
+        }
+        const EXPNum = StringUtils.sub(this.state.levelExperience,this.state.experience);
         const storeStar = 3;
         const starsArr = [];
         if (storeStar && typeof storeStar === 'number') {
@@ -132,123 +160,177 @@ export default class MyPromotionPage extends BasePage {
             }
         }
 
-        return <View style={{ height: px2dp(182) + 115 + ScreenUtils.statusBarHeight }}>
-
-            <ImageBackground source={HeaderBarBgImg} style={{
-                width: SCREEN_WIDTH, height: px2dp(182) + ScreenUtils.statusBarHeight + 30,
-                flexDirection: 'row', paddingTop: ScreenUtils.statusBarHeight
-            }}>
-
-
-                <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 25, marginBottom: 40 }}>
-                    <AvatarImage style={{ width: headerWidth, height: headerWidth, borderRadius: headerWidth / 2 }}
-                                 borderRadius={headerWidth / 2}
-                                 source={{ uri: this.state.headImg }}/>
-                    <View style={{
-                        justifyContent: 'center',
-                        marginLeft: 10
-                    }}>
-                        <View style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                            width: ScreenUtils.width - 130
-                        }}>
-                            <Text style={{
-                                fontSize: 15,
-                                color: 'white'
-                            }}
-                                  allowFontScaling={false}>{this.state.levelName ? `${this.state.levelName}品鉴官` : ''}</Text>
-                            <NoMoreClick style={{
-                                backgroundColor: 'white',
-                                width: 65,
-                                height: 19,
-                                borderRadius: 9,
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                flexDirection: 'row'
-                            }}
-                                         onPress={() => this.$navigate('mine/ExpDetailPage', {
-                                             experience: this.state.experience,
-                                             levelExperience: this.state.levelExperience
-                                         })}>
-                                <Text style={{ fontSize: 10, color: '#000000', marginRight: 4 }}>经验明细</Text>
-                                <Image source={arrowRightImg}/>
-                            </NoMoreClick>
-                        </View>
-
-                        <ImageBackground style={{
-                            justifyContent: 'center', alignItems: 'center', marginTop: 10,
-                            height: 15,
-                            width: 35
-                        }} source={iconbg}>
-                            <Text style={styles.shopName}
-                                  allowFontScaling={false}>{this.state.levelRemark || ' '}</Text>
-                        </ImageBackground>
-                    </View>
-                </View>
-            </ImageBackground>
-            <View style={styles.whiteBg}>
-                <View style={{ height: 43, marginHorizontal: 0, flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={CCZImg} style={{ marginLeft: 17, marginRight: 6 }}/>
-                    <Text style={{
-                        fontSize: 15,
-                        color: DesignRule.textColor_mainTitle
-                    }} allowFontScaling={false}>经验值</Text>
-                </View>
-
-                <View style={{ flex: 1, alignItems: 'center' }}>
-                    <Text style={{
-                        marginTop: 10,
-                        color: '#f00006',
-                        fontSize: 10
-                    }} allowFontScaling={false}>{this.state.experience || 0}<Text style={{
-                        color: DesignRule.textColor_secondTitle
-                    }}>
-                        /{this.state.levelExperience}
-                    </Text></Text>
-
-                    <ImageBackground source={ProgressImg} style={{
-                        overflow: 'hidden',
-                        marginTop: 5,
-                        height: 8,
-                        width: px2dp(315),
-                        borderRadius: 4
-                    }}>
-                        <View style={{
-                            marginRight: -0.5,
-                            marginLeft: marginLeft,
-                            height: 8,
-                            borderBottomRightRadius: 4,
-                            borderTopRightRadius: 4,
-                            backgroundColor: DesignRule.lineColor_inGrayBg,
-                            borderBottomLeftRadius: radius,
-                            borderTopLeftRadius: radius
-                        }}/>
-                    </ImageBackground>
-                    {/*315 8*/}
-                    {/*<Image source={ProgressImg} style={{marginTop: 5}}/>*/}
-
-                    <Text style={{
-                        marginTop: 10,
-                        color: DesignRule.textColor_mainTitle,
-                        fontSize: 12
-                    }} allowFontScaling={false}>距离晋升还差
-                        <Text style={{
-                            color: DesignRule.textColor_mainTitle,
-                            fontSize: 12
-                        }}>
-                            {(parseFloat(this.state.levelExperience) - parseFloat(this.state.experience)) > 0 ? `${StringUtils.formatDecimal(this.state.levelExperience - this.state.experience)}Exp` : '0Exp'}
+        return(
+            <View style={{marginTop: 10}}>
+                {/*<Carousel*/}
+                    {/*data={levelName}*/}
+                    {/*renderItem={this.renderLevelCard}*/}
+                    {/*sliderWidth={ScreenUtils.width}*/}
+                    {/*itemWidth={px2dp(345)}*/}
+                    {/*inactiveSlideScale={1}*/}
+                    {/*inactiveSlideOpacity={1}*/}
+                    {/*enableMomentum={true}*/}
+                    {/*activeSlideAlignment={'center'}*/}
+                    {/*containerCustomStyle={styles.slider}*/}
+                    {/*contentContainerCustomStyle={styles.sliderContentContainer}*/}
+                    {/*onSnapToItem={(index) => {*/}
+                        {/*this.setState({slider1ActiveSlide:index});*/}
+                        {/*this.carousel.snapToItem( index,true)}*/}
+                    {/*}*/}
+                {/*/>*/}
+                {/*<Carousel*/}
+                    {/*ref = {(c)=> { this.carousel  = c }}*/}
+                    {/*data={levelName}*/}
+                    {/*renderItem={this.progressView}*/}
+                    {/*sliderWidth={ScreenUtils.isIOS ? 0.1 : 1}*/}
+                    {/*itemWidth={ScreenUtils.width}*/}
+                    {/*inactiveSlideScale={1}*/}
+                    {/*inactiveSlideOpacity={1}*/}
+                    {/*enableMomentum={true}*/}
+                    {/*activeSlideAlignment={'start'}*/}
+                    {/*containerCustomStyle={[styles.slider,{ marginTop: -10}]}*/}
+                    {/*contentContainerCustomStyle={styles.sliderContentContainer}*/}
+                {/*/>*/}
+                {this.renderLevelCard(userLevel)}
+                {this.progressView(userLevel)}
+                <View style={{flex:1, height:30,alignItems:'center',justifyContent:'center'}}>
+                    {EXPNum >= 0 ?
+                        <Text style={{color: '#999999', fontSize: 10}}>距下一等级还差
+                            <Text style={{color: '#333333', fontSize: 16}}> {EXPNum >= 0 ? EXPNum : 0} </Text>
+                            经验值
+                        </Text> :
+                        <Text style={{color: '#999999', fontSize: 10}}>
+                            您已达到最高等级
                         </Text>
-                        {(this.state.levelExperience - this.state.experience) > 0 ? null :
-                            <Text style={{ color: DesignRule.mainColor, fontSize: 11 }}
-                                  allowFontScaling={false}>(Exp已满)</Text>
-                        }
-                    </Text>
+                    }
                 </View>
             </View>
-        </View>;
+        )
     };
+
+    renderLevelCard = (index)=>{
+        let color = index === 1 || index === 3 || index === 4 ? '#FFE6B1' : DesignRule.textColor_mainTitle;
+
+        let icon = (this.state.headImg && this.state.headImg.length > 0) ?
+            <AvatarImage source={{ uri: this.state.headImg }} style={styles.userIconNavStyle}
+                         borderRadius={px2dp(13)}/> : <Image source={res.homeBaseImg.mine_user_icon} style={styles.userIconNavStyle}
+                                                             borderRadius={px2dp(13)}/>;
+
+                                                             return (
+            <View style={{alignItems: 'center'}} key={index + 'LevelCard'}>
+                <ImageBackground source={vipBgArr[index]} style={{
+                    width: px2dp(335), height: px2dp(190),
+                    flexDirection: 'row', paddingTop: ScreenUtils.statusBarHeight, borderRadius: 15
+                }}>
+                    <View style={{flex: 2}}>
+                        <View style={{flexDirection: 'row'}}>
+                            <Image source={vipLevelArr[index]} style={{width: 28, height: 28, marginLeft: px2dp(20)}}/>
+                            <View style={{marginLeft: 10, justifyContent: 'flex-end'}}>
+                                <Text style={{
+                                    color: color,
+                                    fontSize: 16,
+                                    fontWeight: '600',
+                                    position: 'absolute',
+                                    bottom: -4.5,
+                                }}>
+                                    {this.state.levelName ? `${this.state.levelName}品鉴官` : ''}
+                                </Text>
+                            </View>
+                        </View>
+                        <Text style={{
+                            marginTop: px2dp(10),
+                            marginLeft: px2dp(20),
+                            fontSize: DesignRule.fontSize_22,
+                            color: color
+                        }}>
+                            {`${StringUtils.roundFun(this.state.experience ,2)}/ ${StringUtils.roundFun(this.state.levelExperience,2)}`}
+                        </Text>
+                        <View style={{flex: 1, flexDirection: 'row', alignItems: 'flex-end'}}>
+                            <View style={{flexDirection: 'row', marginBottom: 20, alignItems: 'center'}}>
+                                <View style={{alignItems:'center', justifyContent:'center',
+                                    marginLeft: px2dp(20), backgroundColor: 'white',
+                                    borderRadius:14,width:px2dp(28),height:px2dp(28)}}>
+                                {icon}
+                                </View>
+                                <Text style={{
+                                    marginLeft: 10,
+                                    fontSize: DesignRule.fontSize_24,
+                                    color: color}}>
+                                    {this.state.realName && this.state.realName.length > 0 ? this.state.realName : ''}
+                                </Text>
+                            </View>
+                        </View>
+                    </View>
+                    {userLevel <= index ? <ImageBackground style={{
+                        width: 70,
+                        height: 24,
+                        position: 'absolute',
+                        top: 0,
+                        right: 0,
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}source={userLevel == index ? angleArr[index] : angleArr[2]}>
+                        <Text style={{
+                            fontSize: DesignRule.fontSize_24,
+                            color: DesignRule.color_fff}}>
+                            {userLevel == index ? '当前等级' : '待升级'}
+                        </Text>
+                    </ImageBackground> : null}
+                </ImageBackground>
+            </View>
+        )
+    }
+
+    progressView = (index) => {
+        let num = 1;
+        const progress = index < userLevel ? 100 : index > userLevel ? 0 :
+            (this.state.experience / this.state.levelExperience) < 1 ? (this.state.experience / this.state.levelExperience) * 100 : 100;
+        // return (
+        //     <View key={index + 'progressView'}
+        //         style={{flex: 1, flexDirection: 'row', height: 16, alignItems: 'center',marginLeft:10,marginRight:10}}>
+        //
+        //         {index > 0 ? <Image source={dotArr[this.state.slider1ActiveSlide - num]} style={{width:10, height:10}}/>
+        //             : <View style={{width:10, height:10}}/>}
+        //         {index > 0 ?
+        //             <View style={{flex: 1, height: 4, backgroundColor: 'rgba(0,0,0,0.1)', marginLeft: 20, marginRight: 20, borderRadius: 6}}>
+        //                 <View style={{flex: 1, width: index == 5 ? `${progress}%` : index > userLevel ? '0%' : '100%',
+        //                     height: 4, backgroundColor: '#FFD57D', borderRadius: 6}}/>
+        //             </View>
+        //             : <View style={{flex:1, height:4}}/>}
+        //         <Image source={dotArr[this.state.slider1ActiveSlide]} style={{width:10, height:10}}/>
+        //         {index < 5 ?
+        //             <View style={{flex: 1, height: 4, backgroundColor: 'rgba(0,0,0,0.1)', marginLeft: 20, marginRight: 20, borderRadius: 6}}>
+        //                 <View style={{flex: 1, width:`${progress}%`,height: 4, backgroundColor: '#FFD57D', borderRadius: 6}}/>
+        //             </View>
+        //             : <View style={{flex:1, height:4}}/>}
+        //         {index < 5 ? <Image source={dotArr[this.state.slider1ActiveSlide + num]} style={{width:10, height:10}}/>
+        //             : <View style={{width:10, height:10}}/>}
+        //     </View>
+        // )
+
+        return(
+            <View key={index + 'progressView'}
+                style={{flex: 1, flexDirection: 'row', height: 16, alignItems: 'center',marginTop:10, marginLeft:10,marginRight:10}}>
+
+                {index > 0 ? <Image source={dotArr[index - num]} style={{width:10, height:10, marginRight: 20,}}/>
+                    : <View style={{width:10, height:10}}/>}
+                {index > 0 ?
+                    <View style={{flex: 1, height: 4, backgroundColor: 'rgba(0,0,0,0.1)', borderRadius: 6}}>
+                        <View style={{flex: 1, width: index == 5 ? `${progress}%` : index > userLevel ? '0%' : '100%',
+                            height: 4, backgroundColor: '#FFD57D', borderRadius: 6}}/>
+                    </View>
+                    : <View style={{flex:1, height:4}}/>}
+                <Image source={dotArr[index]} style={{width:10, height:10, marginLeft: 20, marginRight: 20,}}/>
+                {index < 4 ?
+                    <View style={{flex: 1, height: 4, backgroundColor: 'rgba(0,0,0,0.1)',  borderRadius: 6}}>
+                        <View style={{flex: 1, width:`${progress}%`,height: 4, backgroundColor: '#FFD57D', borderRadius: 6}}/>
+                    </View>
+                    : <View style={{flex:1, height:4}}/>}
+                {index < 4 ? <Image source={dotArr[index + num]} style={{width:10, height:10,marginLeft: 20,}}/>
+                    : <View style={{width:10, height:10}}/>}
+            </View>
+        )
+    }
 
     renderWelfare() {
         // const arr = ['分红增加', '分红增加', '分红增加', '分红增加'];
@@ -303,60 +385,6 @@ export default class MyPromotionPage extends BasePage {
                 changeHeader: false
             });
         }
-
-
-        this.headerBg.setNativeProps({
-            opacity: this.st
-        });
-    };
-
-    _navRender = () => {
-
-        let title = !this.state.changeHeader || this.state.loadingState === PageLoadingState.fail ? <Text style={{
-            color: DesignRule.white,
-            alignSelf: 'center',
-            fontSize: 17,
-            includeFontPadding: false
-        }} allowFontScaling={false}>我的经验值</Text> : null;
-        return (
-            <View style={{
-                width: SCREEN_WIDTH,
-                height: ScreenUtils.headerHeight,
-                paddingTop: ScreenUtils.statusBarHeight,
-                position: 'absolute', top: 0,
-                left: 0,
-                flexDirection: 'row',
-                alignItems: 'center'
-            }}>
-
-                <LinearGradient ref={(ref) => {
-                    this.headerBg = ref;
-                }} start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }} colors={['#FF1C89', '#FF156E']} style={{
-                    width: SCREEN_WIDTH,
-                    height: ScreenUtils.headerHeight,
-                    position: 'absolute',
-                    left: 0,
-                    top: 0,
-                    opacity: this.state.loadingState === PageLoadingState.fail ? 1 : 0
-                }}/>
-                <TouchableWithoutFeedback onPress={() => {
-                    this.$navigateBack();
-                }}>
-                    <View style={{
-                        width: 60,
-                        paddingLeft: DesignRule.margin_page,
-                        height: 40,
-                        justifyContent: 'center'
-                    }}>
-                        <Image source={res.button.white_back}/>
-                    </View>
-                </TouchableWithoutFeedback>
-                <View style={{ width: SCREEN_WIDTH - 120, justifyContent: 'center' }}>
-                    {title}
-                </View>
-                <View style={{ flex: 1 }}/>
-            </View>
-        );
     };
 
     // 主题内容
@@ -390,21 +418,21 @@ export default class MyPromotionPage extends BasePage {
         let controlParams = this.$getPageStateOptions ? this.$getPageStateOptions() : null;
         return (
             controlParams ? renderViewByLoadingState(controlParams, () => {
-                return this._render();
-            }) : this._render()
+                return this.renderView();
+            }) : this.renderView()
         );
     }
 
 
-    render() {
-        return (<View style={{ flex: 1 }}>
+    _render() {
+        return (<View style={{ flex: 1}}>
             {this.renderContianer()}
-            {this._navRender()}
+            {/*{this._navRender()}*/}
         </View>);
 
     }
 
-    _render() {
+    renderView() {
         return (
             <View style={styles.container}>
                 {this.renderBodyView()}
@@ -414,54 +442,58 @@ export default class MyPromotionPage extends BasePage {
     }
 
     _onPressInvite = () => {
-        this.$navigate('mine/InviteFriendsPage');
+        this.$navigate(RouterMap.InviteFriendsPage);
     };
 
     // 去购物
     _onGoShop = () => {
-        let resetAction = NavigationActions.reset({
-            index: 0,
-            actions: [
-                NavigationActions.navigate({ routeName: 'Tab' })//要跳转到的页面名字
-            ]
-        });
-        this.props.navigation.dispatch(resetAction);
+        this.$navigateBackToHome();
     };
 
     renderFooter() {
         return (
-            <View style={{ flexDirection: 'column', height: 48.5 }}>
-                <View
-                    style={{ height: 0.5, width: ScreenUtils.width, backgroundColor: DesignRule.lineColor_inGrayBg }}/>
-                <View style={{
-                    width: Dimensions.get('window').width, height: 48, position: 'absolute', bottom: 0,
-                    alignItems: 'center', justifyContent: 'center', flexDirection: 'row'
-                }}>
+            <View style={{
+                backgroundColor:'white', width: ScreenUtils.width, height: 100,
+                alignItems: 'center', justifyContent: 'center',}}>
+            {/*<View style={{ flexDirection: 'column'}}>*/}
+                {/*<View*/}
+                    {/*// style={{ height: 0.5, width: ScreenUtils.width, backgroundColor: DesignRule.lineColor_inGrayBg }}/>*/}
                     <TouchableWithoutFeedback onPress={this._onPressInvite}>
-                        <View style={{
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            flex: 1,
-                            backgroundColor: '#fff',
-                            height: 48
-                        }}>
-                            <Text style={{ fontSize: 14, color: '#000' }} allowFontScaling={false}>分享好友</Text>
-                        </View>
+                        <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}}
+                                        colors={['#FC5D39', '#FF0050']}
+                                        style={{
+                                            alignItems: 'center',
+                                            flexDirection: 'row',
+                                            justifyContent: 'center',
+                                            width:ScreenUtils.width - 60,
+                                            height: 40,
+                                            borderRadius:24
+                                        }}
+                        >
+                            <Text style={{
+                                fontSize: 18,
+                                color: 'white',
+                            }} allowFontScaling={false}>邀请好友
+                            </Text>
+                        </LinearGradient>
                     </TouchableWithoutFeedback>
+                <Text style={{ fontSize: 11, color: '#666666',marginTop: 15, marginBottom: 11 }} allowFontScaling={false}>
+                    注：任务奖励金系统会不定时触发
+                </Text>
 
-                    <TouchableWithoutFeedback onPress={this._onGoShop}>
-                        <View style={{
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            backgroundColor: DesignRule.mainColor,
-                            flex: 1,
-                            height: 48
-                        }}>
-                            <Text style={{ fontSize: 14, color: '#fff' }} allowFontScaling={false}>浏览秀购</Text>
-                        </View>
-                    </TouchableWithoutFeedback>
-                </View>
-            </View>
+                    {/*<TouchableWithoutFeedback onPress={this._onGoShop}>*/}
+                        {/*<View style={{*/}
+                            {/*alignItems: 'center',*/}
+                            {/*justifyContent: 'center',*/}
+                            {/*backgroundColor: DesignRule.mainColor,*/}
+                            {/*flex: 1,*/}
+                            {/*height: 48*/}
+                        {/*}}>*/}
+                            {/*<Text style={{ fontSize: 14, color: '#fff' }} allowFontScaling={false}>浏览秀购</Text>*/}
+                        {/*</View>*/}
+                    {/*</TouchableWithoutFeedback>*/}
+                {/*</View>*/}
+             </View>
         );
     }
 }
@@ -469,14 +501,15 @@ export default class MyPromotionPage extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor:'white',
         marginBottom: ScreenUtils.safeBottom
     },
     headerBg: {
         marginTop: 26,
         marginLeft: 10,
         marginRight: 10,
-        width: 105 / 375 * SCREEN_WIDTH,
-        height: 105 / 375 * SCREEN_WIDTH,
+        width: 105 / 375 * ScreenUtils.width,
+        height: 105 / 375 * ScreenUtils.width,
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -487,8 +520,8 @@ const styles = StyleSheet.create({
     },
     //白的面板背景
     whiteBg: {
-        width: SCREEN_WIDTH - 22,
-        height: 153 / 375 * (SCREEN_WIDTH - 22),
+        width: ScreenUtils.width - 22,
+        height: 153 / 375 * (ScreenUtils.width - 22),
         position: 'absolute',
         bottom: 11,
         left: 11,
@@ -502,5 +535,16 @@ const styles = StyleSheet.create({
         shadowRadius: 10,
         shadowOpacity: 1,
         borderRadius: 12
-    }
+    },
+    slider: {
+        overflow: 'visible' // for custom animations
+    },
+    sliderContentContainer: {
+        paddingVertical: 10 // for custom animation
+    },
+    userIconNavStyle: {
+        width: px2dp(26),
+        height: px2dp(26),
+        borderRadius: px2dp(13),
+    },
 });

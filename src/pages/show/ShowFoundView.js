@@ -12,6 +12,9 @@ const { px2dp } = ScreenUtils;
 import ReleaseButton from './components/ReleaseButton';
 import user from '../../model/user';
 import ShowGroundView from './components/ShowGroundView';
+import { routeNavigate, routePush } from '../../navigation/RouterMap';
+import RouterMap from '../../navigation/RouterMap';
+import { track, trackEvent } from '../../utils/SensorsTrack';
 
 @observer
 export default class ShowFoundView extends React.Component {
@@ -31,11 +34,11 @@ export default class ShowFoundView extends React.Component {
         this.foundList && this.foundList.addDataToTop(value);
     };
 
-    scrollToTop=()=>{
-        if(this.state.showToTop){
+    scrollToTop = () => {
+        if (this.state.showToTop) {
             this.foundList && this.foundList.scrollToTop();
         }
-    }
+    };
 
     releaseButtonShow = () => {
         Animated.timing(
@@ -56,7 +59,6 @@ export default class ShowFoundView extends React.Component {
             }
         ).start();
     };
-
 
 
     render() {
@@ -80,11 +82,20 @@ export default class ShowFoundView extends React.Component {
                                         ref: this.foundList,
                                         index: nativeEvent.index
                                     };
-                                    if (nativeEvent.showType === 1) {
-                                        navigate('show/ShowDetailPage', params);
+                                    if (nativeEvent.showType === 1 || nativeEvent.showType === 3) {
+                                        navigate(RouterMap.ShowDetailPage, params);
                                     } else {
-                                        navigate('show/ShowRichTextDetailPage', params);
+                                        navigate(RouterMap.ShowRichTextDetailPage, params);
                                     }
+
+                                    const { showNo , userInfoVO } = nativeEvent;
+                                    const { userNo } = userInfoVO || {};
+                                    track(trackEvent.XiuChangEnterClick,{
+                                        xiuChangListType:3,
+                                        articleCode:showNo,
+                                        author:userNo,
+                                        xiuChangEnterBtnName:'秀场列表'
+                                    })
 
                                 }}
                                 onScrollY={({ nativeEvent }) => {
@@ -113,10 +124,10 @@ export default class ShowFoundView extends React.Component {
 
                                 onPress={() => {
                                     if (!user.isLogin) {
-                                        this.props.navigate('login/login/LoginPage');
+                                        routeNavigate(RouterMap.LoginPage);
                                         return;
                                     }
-                                    this.props.navigate('show/ReleaseNotesPage');
+                                    routePush(RouterMap.ReleaseNotesPage);
                                 }}/>
                         </Animated.View> : null
                 }
@@ -134,7 +145,7 @@ let styles = StyleSheet.create({
     recTitle: {
         color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(19),
-        fontWeight: '600'
+        fontWeight: '400'
     },
     text: {
         color: '#999',
@@ -143,6 +154,7 @@ let styles = StyleSheet.create({
         width: 100
     },
     container: {
-        flex: 1
+        flex: 1,
+        paddingHorizontal: 5
     }
 });

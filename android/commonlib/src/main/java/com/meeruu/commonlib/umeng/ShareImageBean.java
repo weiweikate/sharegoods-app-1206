@@ -1,5 +1,7 @@
 package com.meeruu.commonlib.umeng;
 
+import java.util.List;
+
 public class ShareImageBean {
     public String imageUrlStr;
     public String titleStr;
@@ -13,6 +15,15 @@ public class ShareImageBean {
     public String headerImage;
     public String userName;
     public String diamondNum;
+    public int monthSaleType;
+
+    public int getMonthSaleType() {
+        return monthSaleType;
+    }
+
+    public void setMonthSaleType(int monthSaleType) {
+        this.monthSaleType = monthSaleType;
+    }
 
     public String getDiamondNum() {
         return diamondNum;
@@ -46,15 +57,15 @@ public class ShareImageBean {
         this.userName = userName;
     }
 
-    public String getPriceType() {
+    public List<String> getPriceType() {
         return priceType;
     }
 
-    public void setPriceType(String priceType) {
+    public void setPriceType(List<String> priceType) {
         this.priceType = priceType;
     }
 
-    public String priceType;
+    public List<String> priceType;
 
     public String getImageType() {
         return imageType;

@@ -1,17 +1,19 @@
+import React, { Component } from 'react';
+import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import MarqueeLabelVertical from '../../components/ui/MarqueeLabelVertical';
+import ScreenUtil from '../../utils/ScreenUtils';
 
-import React, {Component} from 'react'
-import { View, StyleSheet, Image, TouchableOpacity } from 'react-native'
-import MarqueeLabelVertical from '../../components/ui/MarqueeLabelVertical'
-import ScreenUtil from '../../utils/ScreenUtils'
-const { px2dp, onePixel } = ScreenUtil
-import {observer} from 'mobx-react'
+const { px2dp, onePixel } = ScreenUtil;
+import { observer } from 'mobx-react';
 import { HomeShowModules, tagName } from './Show';
 import DesignRule from '../../constants/DesignRule';
 import {
-    MRText as Text,
+    MRText as Text
 } from '../../components/ui';
-import res from './res'
-import { TrackApi } from '../../utils/SensorsTrack';
+import res from './res';
+import { routePush } from '../../navigation/RouterMap';
+import RouterMap from '../../navigation/RouterMap';
+
 const homeShowImg = res.other.home_show;
 const TagView = ({ text }) => <View style={styles.tagView}>
     <Text style={styles.tag} allowFontScaling={false}>{text}</Text>
@@ -23,23 +25,21 @@ export default class ShowView extends Component {
         super(props);
         this.showModules = new HomeShowModules();
         this.showModules.loadShowList();
-        TrackApi.xiuChang();
     }
 
     _renderItems(item, index) {
         return <View key={index} style={styles.item}><TagView
             text={tagName[item.generalize ? item.generalize : 0]}/><Text numberOfLines={1}
-                                                                         style={styles.text} allowFontScaling={false}>{item.title}</Text></View>;
+                                                                         style={styles.text}
+                                                                         allowFontScaling={false}>{item.title}</Text></View>;
     }
 
     _goToShow() {
-        const { navigation } = this.props;
-        navigation.navigate('show/ShowListPage', { fromHome: true });
+        routePush(RouterMap.ShowListPage, { fromHome: true });
     }
 
     _goToDetail() {
-        const { navigation } = this.props;
-        navigation.navigate('show/ShowDetailPage', { id: this.showModules.firstId });
+        routePush(RouterMap.ShowDetailPage, { id: this.showModules.firstId });
     }
 
     _showEnd() {

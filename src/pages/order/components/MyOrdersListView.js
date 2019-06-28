@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {
-    View, Alert, Keyboard, TouchableWithoutFeedback,
-    StyleSheet, TouchableOpacity, Image
+    View, Alert
 } from 'react-native';
 import RefreshList from '../../../components/ui/RefreshList';
 import constants from '../../../constants/constants';
@@ -15,16 +14,12 @@ import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 // import userOrderNum from '../../../manager/userOrderNum';
 import DesignRule from '../../../constants/DesignRule';
 import MineApi from '../../mine/api/MineApi';
-import res from '../res';
-import {
-    MRText as Text
-} from '../../../components/ui';
 // import user from '../../../manager/user';
-import RouterMap from '../../../navigation/RouterMap';
+import RouterMap, { replaceRoute, routeNavigate } from '../../../navigation/RouterMap';
 import { payStatus, payment, payStatusMsg } from '../../payment/Payment';
-import { NavigationActions } from 'react-navigation';
 import { SmoothPushPreLoadHighComponent } from '../../../comm/components/SmoothPushHighComponent';
-const emptyIcon = res.kongbeuye_dingdan;
+import NetFailedView from '../../../components/pageDecorator/BaseView/NetFailedView';
+
 @SmoothPushPreLoadHighComponent
 export default class MyOrdersListView extends Component {
     constructor(props) {
@@ -79,28 +74,7 @@ export default class MyOrdersListView extends Component {
     };
 
     renderError() {
-        return (
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                <View style={styles.errContainer}>
-                    <Image source={res.placeholder.netError}
-                           style={{ width: DesignRule.autoSizeWidth(120), height: DesignRule.autoSizeWidth(120) }}
-                           resizeMode={'contain'}/>
-                    <Text style={styles.titleStyle} allowFontScaling={false}>
-                        {this.state.errMsgText}
-                    </Text>
-                    <TouchableOpacity activeOpacity={0.5} style={styles.btnStyle}
-                                      onPress={() => this.getDataFromNetwork()}>
-                        <Text style={{
-                            color: DesignRule.bgColor_btn,
-                            fontSize: DesignRule.fontSize_mediumBtnText
-                        }} allowFontScaling={false}>
-                            重新加载
-                        </Text>
-                    </TouchableOpacity>
-
-                </View>
-            </TouchableWithoutFeedback>
-        );
+        return (<NetFailedView netFailedInfo={{msg:this.state.errMsgText}} reloadBtnClick={this.getDataFromNetwork}/>);
     }
 
     render() {
@@ -115,7 +89,6 @@ export default class MyOrdersListView extends Component {
                     isEmpty={this.state.isEmpty}
                     initialNumToRender={5}
                     emptyTip={'暂无订单'}
-                    emptyIcon={emptyIcon}
                     ListHeaderComponent={<View style={{ height: 10 }}/>}
                 />}
                 {this.renderModal()}
@@ -178,7 +151,7 @@ export default class MyOrdersListView extends Component {
                 orderType: item.subStatus,
                 prodCode: item.prodCode,
                 skuCode: item.skuCode,
-                activityCodes:item.activityCodes,
+                activityCodes: item.activityCodes,
                 afterSaleTime: item.afterSaleTime,
                 orderCustomerServiceInfoDTO: item.orderCustomerServiceInfoDTO
             });
@@ -201,7 +174,7 @@ export default class MyOrdersListView extends Component {
                     orderType: item.subStatus,
                     prodCode: item.prodCode,
                     skuCode: item.skuCode,
-                    activityCodes:item.activityCodes
+                    activityCodes: item.activityCodes
                 });
             });
         });
@@ -217,8 +190,8 @@ export default class MyOrdersListView extends Component {
                         orderNo: item.platformOrderNo,
                         quantity: item.quantity,
                         orderStatus: 1,
-                        subStatus:item.warehouseOrderDTOList[0].subStatus,
-                        warehouseType:item.warehouseOrderDTOList[0].warehouseType,
+                        subStatus: item.warehouseOrderDTOList[0].subStatus,
+                        warehouseType: item.warehouseOrderDTOList[0].warehouseType,
                         totalPrice: item.payAmount,
                         nowTime: item.nowTime,
                         cancelTime: item.warehouseOrderDTOList[0].cancelTime,
@@ -239,8 +212,8 @@ export default class MyOrdersListView extends Component {
                             quantity: this.totalAmount(resp.products),
                             orderType: resp.subStatus,
                             orderStatus: resp.status,
-                            subStatus:item.warehouseOrderDTOList[0].subStatus,
-                            warehouseType:item.warehouseOrderDTOList[0].warehouseType,
+                            subStatus: item.warehouseOrderDTOList[0].subStatus,
+                            warehouseType: item.warehouseOrderDTOList[0].warehouseType,
                             totalPrice: resp.payAmount,
                             expList: resp.expList || [],
                             nowTime: item.nowTime,
@@ -318,7 +291,7 @@ export default class MyOrdersListView extends Component {
             Toast.hiddenLoading();
             Toast.$toast(e.msg);
             if (e.code === 10009) {
-                this.props.nav('login/login/LoginPage');
+                routeNavigate(RouterMap.LoginPage);
             }
             this.setState({ isError: true, errMsgText: e.msg || '未知错误' });
         });
@@ -503,8 +476,9 @@ export default class MyOrdersListView extends Component {
                         spuCode: item.prodCode
                     });
                 });
-                track(trackEvent.OrderAgain,{
-                    orderId:data.orderNo, })
+                track(trackEvent.OrderAgain, {
+                    orderId: data.orderNo
+                });
                 shopCartCacheTool.addGoodItem(cartData);
                 this.props.nav('shopCart/ShopCart', { hiddeLeft: false });
                 break;
@@ -547,8 +521,8 @@ export default class MyOrdersListView extends Component {
                 });
                 break;
             case 99:
-                this.clickItem(index)
-                break
+                this.clickItem(index);
+                break;
         }
 
     };
@@ -556,10 +530,10 @@ export default class MyOrdersListView extends Component {
     async _goToPay(index) {
         let payData = this.state.viewData[index];
         const { platformOrderNo, orderNo, totalPrice, orderProduct } = payData;
-        const {productName} = orderProduct;
+        const { productName } = orderProduct;
         console.log('_goToPay', payData);
         //从订单发起的都是普通支付
-        let result = await payment.checkOrderStatus(platformOrderNo,0,0,totalPrice,productName);
+        let result = await payment.checkOrderStatus(platformOrderNo, 0, 0, totalPrice, productName);
         // return;
         if (result.code === payStatus.payNo) {
             this.props.nav('payment/PaymentPage', {
@@ -577,43 +551,9 @@ export default class MyOrdersListView extends Component {
             });
         } else if (result.code === payStatus.payOut) {
             Toast.$toast(payStatusMsg[result.code]);
-            let replace = NavigationActions.replace({
-                key: this.props.navigation.state.key,
-                routeName: 'order/order/MyOrdersListPage',
-                params: { index: 2 }
-            });
-            this.props.navigation.dispatch(replace);
+            replaceRoute('order/order/MyOrdersListPage', { index: 2 });
         } else {
             Toast.$toast(payStatusMsg[result.code] || '系统处理失败');
         }
     }
 }
-
-const styles = StyleSheet.create({
-    errContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    titleStyle: {
-        fontSize: 15,
-        color: DesignRule.textColor_instruction,
-        marginTop: 10,
-        textAlign: 'center'
-    },
-    btnText: {
-        fontSize: 15,
-        color: DesignRule.mainColor,
-        textAlign: 'center'
-    },
-    btnStyle: {
-        height: 36,
-        width: 115,
-        borderRadius: 18,
-        borderColor: DesignRule.bgColor_btn,
-        borderWidth: DesignRule.lineHeight * 1.5,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: 20
-    }
-});

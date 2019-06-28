@@ -37,7 +37,7 @@ import apiEnvironment from '../../../../api/ApiEnvironment';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import user from '../../../../model/user';
-import { trackEvent} from '../../../../utils/SensorsTrack';
+import {track, trackEvent} from '../../../../utils/SensorsTrack';
 import { SmoothPushPreLoadHighComponentFirstDelay } from '../../../../comm/components/SmoothPushHighComponent';
 
 const {
@@ -75,6 +75,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
     }
 
     componentDidMount() {
+        track(trackEvent.ViewInviteFriends,{});
         this.loadPageData();
     }
 
@@ -225,6 +226,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
                     </TouchableOpacity>
                 </View>
                 <CommShareModal ref={(ref) => this.shareModal = ref}
+                                defaultModalVisible={this.params.openShareModal}
                     // type={'promotionShare'}
                     //  imageJson={{
                     //      imageUrlStr: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1539577593172&di=c87eead9eb2e2073b50758daf6194c62&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F59c914525c484566292f8d8d3d29c964ca59c7ca.jpg',
@@ -233,10 +235,10 @@ export default class InviteFriendsPage extends BasePage<Props> {
                     //      QRCodeStr: '分享的链接'
                     //  }}
                                 webJson={{
-                                    title: '新人免费领好物',
-                                    dec: '礼物区又上新啦，海量好礼免费领!',
+                                    title: '送你1张免费商品兑换券，海量好物0元领！',
+                                    dec: '新人尊享，价值269元好礼在等你，惊喜连连福利不断~',
                                     linkUrl: this.linkUrl,
-                                    thumImage: 'logo.png'
+                                    thumImage: `${apiEnvironment.getCurrentOssHost()}/sharegoods/h5/resource/icon/shareIcon.png`,
                                 }}
                     // miniProgramJson = {{
                     //     title: '分享小程序title',

@@ -21,8 +21,8 @@ android {
         applicationId rootProject.ext.android.applicationId
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
-        versionCode 1301
-        versionName "1.3.1"
+        versionCode 1302
+        versionName "1.3.2"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -180,22 +180,26 @@ dependencies {
     api rootProject.ext.dependencies.wechat
     api rootProject.ext.dependencies.recyclerview
     api rootProject.ext.dependencies.lottie
+    api rootProject.ext.dependencies.webp
+    api rootProject.ext.dependencies.webpAnimated
 
     api(name: 'alipaySdk-15.5.9-20181123210657-noUtdid', ext: 'aar')
     api project(':react-native-video')
     api project(':react-native-linear-gradient')
     api project(':react-native-fetch-blob')
-    api project(':rn-image-crop-picker')
-    api project(':rn_deviceinfo')
-    api project(':rn-webview-bridge')
-    api project(':rn-request')
-    api project(':cookies')
-    api project(':rn-geolocation')
     api project(':commonlib')
     api project(':qrcode')
+    api project(':rn_deviceinfo')
     api project(':base_adapter')
-    api project(':react-native-webview')
     api project(':react-native-extra-dimensions-android')
     api project(':react-native-code-push')
+    implementation project(':react-native-gesture-handler')
+    implementation project(':@mr_mr-rn-storage')
+    implementation project(':@mr_rn-webview-bridge')
+    implementation project(':@mr_rn-request')
+    implementation project(':@mr_rn-image-crop-picker')
+    implementation project(':@mr_rn-geolocation')
+    implementation project(':@mr_react-native-webview')
+    implementation project(':@mr_cookies')
     api rootProject.ext.dependencies.sensors
 }

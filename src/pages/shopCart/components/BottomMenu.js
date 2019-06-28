@@ -9,19 +9,20 @@
  *
  */
 
-"use strict";
-import React, { Component } from "react";
-import DesignRule from "../../../constants/DesignRule";
-import ScreenUtils from "../../../utils/ScreenUtils";
-import res from "../res";
-import shopCartStore from "../model/ShopCartStore";
-import { View, TouchableOpacity, StyleSheet, Image } from "react-native";
-import { UIText } from "../../../components/ui/index";
-import PropTypes from "prop-types";
-import user from "../../../model/user";
-import RouterMap from "../../../navigation/RouterMap";
-import bridge from "../../../utils/bridge";
-import LinearGradient from "react-native-linear-gradient";
+
+'use strict';
+import React, { Component } from 'react';
+import DesignRule from '../../../constants/DesignRule';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import res from '../res';
+import shopCartStore from '../model/ShopCartStore';
+import { View, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { UIText } from '../../../components/ui/index';
+import PropTypes from 'prop-types';
+import user from '../../../model/user';
+import RouterMap, { routeNavigate, routePush } from '../../../navigation/RouterMap';
+import bridge from '../../../utils/bridge';
+import LinearGradient from 'react-native-linear-gradient';
 import { TrackApi } from '../../../utils/SensorsTrack';
 
 const dismissKeyboard = require('dismissKeyboard');
@@ -94,7 +95,6 @@ export default class BottomMenu extends Component {
                                     value={`去结算(${shopCartStore.getTotalSelectGoodsNum})`}
                                     style={{ color: 'white', fontSize: 16 }}
                                 />
-
                             </LinearGradient>
                         </TouchableOpacity>
                     </View>
@@ -109,12 +109,10 @@ export default class BottomMenu extends Component {
     };
     _toBuyImmediately = () => {
         dismissKeyboard();
-        const { navigate } = this.props;
-
         if (!user.isLogin) {
-            navigate(RouterMap.LoginPage);
+            routeNavigate(RouterMap.LoginPage);
             TrackApi.CartCheckoutClick({
-                cartCheckoutBtnActive:false
+                cartCheckoutBtnActive: false
             });
             return;
         }
@@ -122,7 +120,7 @@ export default class BottomMenu extends Component {
         if (selectArr.length <= 0) {
             bridge.$toast('请先选择结算商品~');
             TrackApi.CartCheckoutClick({
-                cartCheckoutBtnActive:false
+                cartCheckoutBtnActive: false
             });
             return;
         }
@@ -145,14 +143,14 @@ export default class BottomMenu extends Component {
         if (haveNaNGood) {
             bridge.$toast('存在选中商品数量为空,或存在正在编辑的商品,请确认~');
             TrackApi.CartCheckoutClick({
-                cartCheckoutBtnActive:false
+                cartCheckoutBtnActive: false
             });
             return;
         }
         if (!isCanSettlement) {
             bridge.$toast('商品库存不足请确认~');
             TrackApi.CartCheckoutClick({
-                cartCheckoutBtnActive:false
+                cartCheckoutBtnActive: false
             });
             return;
         }
@@ -168,7 +166,7 @@ export default class BottomMenu extends Component {
                     activityCode: goods.activityCode
                 });
             });
-            navigate('order/order/ConfirOrderPage', {
+            routePush(RouterMap.ConfirOrderPage, {
                 orderParamVO: {
                     orderType: 99,
                     orderProducts: buyGoodsArr,
@@ -177,7 +175,7 @@ export default class BottomMenu extends Component {
             });
 
             TrackApi.CartCheckoutClick({
-                cartCheckoutBtnActive:true
+                cartCheckoutBtnActive: true
             });
         }
     };
@@ -196,9 +194,9 @@ const styles = StyleSheet.create({
         marginLeft: px2dp(10),
         marginRight: px2dp(10)
     },
-    touchableOpacity:{ flexDirection: 'row', paddingLeft: 19, alignItems: 'center' },
-    selectImg:{ width: px2dp(22), height: px2dp(22) },
-    selectText:{ fontSize: px2dp(13), color: DesignRule.textColor_instruction, marginLeft: px2dp(10)  },
+    touchableOpacity: { flexDirection: 'row', paddingLeft: 19, alignItems: 'center' },
+    selectImg: { width: px2dp(22), height: px2dp(22) },
+    selectText: { fontSize: px2dp(13), color: DesignRule.textColor_instruction, marginLeft: px2dp(10) },
     selectGoodsNum: {
         width: px2dp(110),
         height: px2dp(34),

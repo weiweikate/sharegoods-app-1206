@@ -25,6 +25,7 @@ import SectionHeaderView from '../components/SectionHeaderView';
 import RouterMap from '../../../navigation/RouterMap';
 import { TrackApi } from '../../../utils/SensorsTrack';
 import BottomMenu from '../components/BottomMenu';
+import { shopCartEmptyModel } from '../model/ShopCartEmptyModel';
 
 const { px2dp } = ScreenUtils;
 
@@ -85,7 +86,7 @@ export default class ShopCartPage extends BasePage {
 
     handleBackPress = () => {
         if (this.$navigationBarOptions.leftNavItemHidden) {
-            this.$navigate('HomePage');
+            this.$navigateBackToHome()
             return true;
         } else {
             return false;
@@ -104,7 +105,7 @@ export default class ShopCartPage extends BasePage {
     _renderEmptyView = () => {
         return (
             <ShopCartEmptyView
-                navigateToHome={this.$navigateBackToHome}
+                navigateToHome={this.$navigate}
             />
         );
     };
@@ -128,8 +129,9 @@ export default class ShopCartPage extends BasePage {
                         this._renderRowHiddenComponent(data, rowMap)
                     )}
                     renderHeaderView={(sectionData) => {
-                        console.log(sectionData.section);
-                        return (<SectionHeaderView sectionData={sectionData.section} navigate={this.$navigate}/>);
+                        {
+                            return (<SectionHeaderView sectionData={sectionData.section} navigate={this.$navigate}/>);
+                        }
                     }}
                     listViewRef={(listView) => this.contentList = listView}
                     rightOpenValue={-75}
@@ -197,6 +199,7 @@ export default class ShopCartPage extends BasePage {
     _refreshFun = () => {
         shopCartStore.setRefresh(true);
         shopCartCacheTool.getShopCartGoodsListData();
+        shopCartEmptyModel.getRecommendProducts(true);
     };
     _jumpToProductDetailPage = (itemData) => {
         if (itemData.productStatus === 0) {
@@ -208,7 +211,7 @@ export default class ShopCartPage extends BasePage {
             });
             return;
         }
-        this.$navigate('product/ProductDetailPage', {
+        this.$navigate(RouterMap.ProductDetailPage, {
             productId: itemData.productId,
             productCode: itemData.spuCode
         });

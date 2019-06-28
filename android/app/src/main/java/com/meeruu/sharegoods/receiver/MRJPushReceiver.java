@@ -39,7 +39,6 @@ public class MRJPushReceiver extends BroadcastReceiver {
                 objExtra = new JSONObject(extra);
             }
         } catch (JSONException e) {
-            e.printStackTrace();
         }
 
         if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
@@ -88,6 +87,9 @@ public class MRJPushReceiver extends BroadcastReceiver {
             case "ActivitySkip":
                 // 跳标
                 EventBus.getDefault().post(new Event.MRNativeTagEvent(content));
+                break;
+            case "sendTipsTagEvent":
+                EventBus.getDefault().post(new Event.MRMineMsgEvent(content));
                 break;
             default:
                 break;

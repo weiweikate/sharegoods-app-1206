@@ -55,19 +55,26 @@ NS_ASSUME_NONNULL_END
 @property (nonatomic, assign)CGFloat imgWide;
 @property (nonatomic, assign)CGFloat imgHigh;
 
+@property (nonatomic, copy)NSString *showNo;
+@property (nonatomic, assign)NSInteger showType;
+@property (nonatomic, assign)NSInteger status;
+
 /**
  宽高比
  */
 @property (nonatomic, readonly, assign)CGFloat aspectRatio;
+@property (nonatomic, readonly, assign)CGFloat aspectRatio_show;
 /**
  显示图片链接
  */
 @property (nonatomic, readonly, assign)NSString *showImage;
 
+@property (nonatomic, readonly, assign)NSString *showImage_oss;
+
 @end
 
 @interface ResourceModel : NSObject
-@property (nonatomic,copy) NSString * url;
+@property (nonatomic,copy) NSString * baseUrl;
 @property (nonatomic,assign) NSInteger type;
 @end
 

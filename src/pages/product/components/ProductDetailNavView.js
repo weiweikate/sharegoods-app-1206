@@ -3,7 +3,7 @@ import { View, StyleSheet, Image } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import res from '../res/product';
-import RouterMap, { navigateBack, navigate } from '../../../navigation/RouterMap';
+import RouterMap, { routePop, routePush } from '../../../navigation/RouterMap';
 import { MRText } from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
 import { observer } from 'mobx-react';
@@ -26,7 +26,7 @@ export default class ProductDetailNavView extends Component {
                 <View style={styles.containerView}>
                     <View style={[styles.barItemContainer, { justifyContent: 'flex-start' }]}>
                         <NoMoreClick style={styles.btnContainer} onPress={() => {
-                            navigateBack();
+                            routePop();
                         }}>
                             <Image source={back}/>
                         </NoMoreClick>
@@ -37,7 +37,7 @@ export default class ProductDetailNavView extends Component {
                     </View>
                     <View style={[styles.barItemContainer, { justifyContent: 'flex-end' }]}>
                         <NoMoreClick style={styles.btnContainer} onPress={() => {
-                            navigate(RouterMap.ShopCart, { hiddeLeft: false });
+                            routePush(RouterMap.ShopCart, { hiddeLeft: false });
                         }}>
                             <Image source={shopCar}/>
                             {getAllGoodsClassNumber !== 0 && <View style={styles.amountView}>
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
         flex: 1, justifyContent: 'center', alignItems: 'center', height: 44
     },
     centerText: {
-        color: DesignRule.textColor_mainTitle, fontSize: 14, fontWeight: 'bold'
+        color: DesignRule.textColor_mainTitle, fontSize: 14, fontWeight: '600'
     },
     amountView: {
         position: 'absolute', top: 4, right: 8, height: 16,

@@ -6,6 +6,9 @@ import ShowDetailImagePage from './ShowDetailImagePage'
 import ReleaseNotesPage from './ReleaseNotesPage'
 import ShowProductListPage from './ShowProductListPage'
 import ShowRichTextDetailPage from './ShowRichTextDetailPage'
+import MyDynamicPage from './MyDynamicPage'
+import TagSelectorPage from './TagSelectorPage'
+import TagDetailPage from './TagDetailPage'
 export default {
     moduleName: 'show',
     childRoutes: {
@@ -16,6 +19,9 @@ export default {
         ShowDetailImagePage,
         ReleaseNotesPage,
         ShowProductListPage,
-        ShowRichTextDetailPage
+        ShowRichTextDetailPage,
+        MyDynamicPage,
+        TagSelectorPage,
+        TagDetailPage
     }
 }

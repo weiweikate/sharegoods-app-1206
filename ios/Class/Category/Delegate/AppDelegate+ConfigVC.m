@@ -19,8 +19,8 @@
 #import <SandBoxPreviewTool/SuspensionButton.h>
 #import <SandBoxPreviewTool/SandBoxPreviewTool.h>
 #import <CodePush/CodePush.h>
-
 #import "JRServiceBridge.h"
+#import "MRImageVideoManager.h"
 
 
 @implementation AppDelegate (ConfigVC)
@@ -63,11 +63,14 @@
 
 - (void)testA {
   NSLog(@"testa");
+  
 //  JRServiceBridge * emitter = [[JRServiceBridge alloc]init];
 ////  [emitter sendEventWithName:QY_MSG_CHANGE body:@{@"name":@"原生传递过来的数据"}];
 //  dispatch_async(dispatch_get_main_queue(), ^{
 //   [emitter sendEventWithName:QY_MSG_CHANGE body:@{@"name": @"原生传递过来的数据"}];
 //  });
+  
+  [MRImageVideoManager getImageAndVideo];
   
 }
 

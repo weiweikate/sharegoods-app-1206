@@ -25,6 +25,12 @@ const index = {
     iconDownload:require('./icon_show_download.png'),
     iconToTop:require('./icon_to_top.png'),
     iconShowShare:require('./icon_show_share.png'),
-    showCartNoneBg:require('./show_cart_none_bg.png')
+    showCartNoneBg:require('./show_cart_none_bg.png'),
+    showHeaderBg:require('./show_header_bg.png'),
+    iconDelete:require('./show_delete_icon.png'),
+    showTagIcon:require('./show_tag_icon.png'),
+    dynamicEmpty:require('./dynamic_empty.png'),
+    tagDelete:require('./tag_delete.png'),
+    showClose:require('./show_close.png')
 };
 export default index

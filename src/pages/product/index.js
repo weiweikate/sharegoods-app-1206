@@ -4,6 +4,7 @@ import xpProduct from './xpProduct/index';
 import productScore from './productScore/index';
 import BigImagesPage from './BigImagesPage';
 import suitProduct from './suitProduct';
+import productAddress from './productAddress';
 
 export default {
     moduleName: 'product',    //模块名称
@@ -13,6 +14,7 @@ export default {
         xpProduct,
         productScore,
         BigImagesPage,
-        suitProduct
+        suitProduct,
+        productAddress
     }
 };

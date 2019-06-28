@@ -12,6 +12,7 @@ import ScreenUtils from '../../utils/ScreenUtils';
 import res from '../../comm/res';
 import DesignRule from '../../constants/DesignRule';
 import { MRText as Text } from './UIText';
+import EmptyView from '../pageDecorator/BaseView/EmptyView';
 
 const empty_list_message = res.placeholder.no_data;
 
@@ -99,17 +100,7 @@ export default class RefreshList extends Component {
     };
 
     renderEmpty = () => {
-        return (
-            <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}
-                              onPress={() => !this.props.emptyNoRefresh && this.props.onRefresh()}>
-                <Image style={{ height: 110, width: 110 }} source={this.state.emptyIcon} resizeMode={'contain'}/>
-                <Text
-                    style={{
-                        marginTop: 20,
-                        fontSize: 14,
-                        color: DesignRule.textColor_instruction
-                    }}>{this.state.emptyTip}</Text>
-            </TouchableOpacity>);
+        return <EmptyView description={''} subDescription={this.state.emptyTip} source={this.state.emptyIcon}/>
     };
 
     refresh = () => {
@@ -171,7 +162,7 @@ export default class RefreshList extends Component {
         } else {
             if (isEmpty) {
                 return (
-                    <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center', marginTop: 80 }}>
+                    <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center' }}>
                         {this.renderEmpty()}
                     </View>);
             }

@@ -9,7 +9,7 @@ import { MRText } from '../../components/ui';
 import res from '../res';
 import DesignRule from '../../constants/DesignRule';
 import StringUtils from '../../utils/StringUtils';
-import { navigate, backToHome, GoToTabItem} from '../../navigation/RouterMap';
+import { backToHome, GoToTabItem, routePush } from '../../navigation/RouterMap';
 import { track, trackEvent } from '../../utils/SensorsTrack';
 
 const { white_go } = res.button;
@@ -102,15 +102,15 @@ const styles = StyleSheet.create({
     },
     btn: {
         flexDirection: 'row', alignItems: 'center',
-        height: px2dp(22), borderRadius: px2dp(11), backgroundColor: 'rgba(0,0,0,0.6)'
+        height: px2dp(28), borderRadius: px2dp(14), backgroundColor: 'rgba(0,0,0,0.6)'
     },
     image: {
         marginRight: px2dp(6), overflow: 'hidden',
-        width: px2dp(22), height: px2dp(22), borderRadius: px2dp(11)
+        width: px2dp(28), height: px2dp(28), borderRadius: px2dp(14)
     },
     text: {
         maxWidth: maxTextWidth,
-        fontSize: 10, color: DesignRule.white
+        fontSize: 12, color: DesignRule.white
     },
     arrow: {
         marginRight: px2dp(7),
@@ -162,16 +162,17 @@ class IntervalMsgViewModel {
         }
 
         Animated.sequence([
+            Animated.delay(1500),
             Animated.timing(
                 this.translateX,
                 { toValue: 0, duration: 500, useNativeDriver: true }
             ),
-            Animated.delay(5000),
+            Animated.delay(3000),
             Animated.timing(
                 this.opacity,
                 { toValue: 0, duration: 1000, useNativeDriver: true }
             ),
-            Animated.delay(5000)
+            Animated.delay(1500)
         ]).start(
             () => {
                 /*复原*/
@@ -221,23 +222,24 @@ export const IntervalType = {
     shopDetail: 5//拼店详情
 };
 
-export function IntervalMsgNavigate(forwardType, keyCode) {
+export function IntervalMsgNavigate(forwardType, keyCode, openShareModal) {
     if (forwardType === IntervalMsgType.home) {
         backToHome();
     } else if (forwardType === IntervalMsgType.showList) {
-        GoToTabItem(1)
-    }  else if (forwardType === IntervalMsgType.alert) {
+        GoToTabItem(1);
+    } else if (forwardType === IntervalMsgType.alert) {
     }
     else {
         const router = IntervalMsgRouter[forwardType];
         if (router) {
-            navigate(router, {
+            routePush(router, {
                 productCode: keyCode,
                 storeCode: keyCode,
                 orderNo: keyCode,
                 code: keyCode,
                 id: keyCode,
-                uri: keyCode
+                uri: keyCode,
+                openShareModal
             });
         } else {
             // navigate('HtmlPage', {

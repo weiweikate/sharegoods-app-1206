@@ -11,28 +11,32 @@ import {
     StyleSheet,
     Text,
     View,
-    InteractionManager
+    InteractionManager,
+    NativeAppEventEmitter, NativeModules, NativeEventEmitter
     // Image
 } from 'react-native';
-import { NavigationActions } from 'react-navigation';
 import DebugButton from './components/debug/DebugButton';
 import { netStatus } from './comm/components/NoNetHighComponent';
 import Navigator, { getCurrentRouteName } from './navigation/Navigator';
 import { SpellShopFlag, SpellShopTab } from './navigation/Tab';
 import { checkInitResult } from './pages/login/model/PhoneAuthenAction';
 import loginModel from './pages/login/model/LoginModel';
-import RouterMap from './navigation/RouterMap';
+import RouterMap, { routeNavigate, routePush } from './navigation/RouterMap';
 import user from '../src/model/user';
 import apiEnvironment from './api/ApiEnvironment';
 import CONFIG from '../config';
 import bridge from './utils/bridge';
 import TimerMixin from 'react-timer-mixin';
 import geolocation from '@mr/rn-geolocation';
-import Storage from './utils/storage';
+import store from '@mr/rn-store';
 import ScreenUtils from './utils/ScreenUtils';
 import codePush from 'react-native-code-push';
 import chatModel from './utils/QYModule/QYChatModel';
 import showPinFlagModel from './model/ShowPinFlag';
+import settingModel from './pages/mine/model/SettingModel';
+
+const { JSPushBridge } = NativeModules;
+const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
 
 if (__DEV__) {
     const modules = require.getModules();
@@ -51,6 +55,20 @@ if (__DEV__) {
         'waiting:',
         waitingModuleNames.length
     );
+} else {
+    // 非开发环境，屏蔽所有console
+    global.console = {
+        info: () => {
+        },
+        log: () => {
+        },
+        warn: () => {
+        },
+        debug: () => {
+        },
+        error: () => {
+        }
+    };
 }
 
 
@@ -75,6 +93,7 @@ class App extends Component {
     async componentWillMount() {
         // 禁止重启
         codePush.disallowRestart();
+        this.subscription && this.subscription.remove();
         // code push
         codePush.sync({
             updateDialog: false,
@@ -82,13 +101,23 @@ class App extends Component {
         });
         netStatus.startMonitorNetworkStatus();
         // 环境配置
-        await apiEnvironment.loadLastApiSettingFromDiskCache();
-        await user.readUserInfoFromDisk();
+        apiEnvironment.loadLastApiSettingFromDiskCache();
+        user.readUserInfoFromDisk();
         global.$routes = [];
-
     }
 
     componentDidMount() {
+        this.subscription = NativeAppEventEmitter.addListener(
+            'Event_navigateHtmlPage',
+            (reminder) => {
+                this.timer = setInterval(() => {
+                    if (global.$navigator) {
+                        routePush('HtmlPage', { uri: reminder.uri });
+                        clearInterval(this.timer);
+                    }
+                }, 100);
+            }
+        );
         // 在加载完了，允许重启
         codePush.allowRestart();
         //初始化init  定位存储  和app变活跃 会定位
@@ -106,7 +135,7 @@ class App extends Component {
                 }).then(() => {
                     return geolocation.getLastLocation();
                 }).then(result => {
-                    Storage.set('storage_MrLocation', result);
+                    store.save('@mr/storage_MrLocation', result);
                 }).catch((error) => {
                 });
             }, 200);
@@ -121,12 +150,40 @@ class App extends Component {
 
             }, 3000);
         });
+        this.listenerJSMessage = JSManagerEmitter.addListener('MINE_NATIVE_TO_RN_MSG', this.mineMessageData);
     }
+
+    componentWillUnmount() {
+        this.listenerJSMessage && this.listenerJSMessage.remove();
+    }
+
+
+    mineMessageData = (data)=>{
+        const { params } = JSON.parse(data) || {};
+        if(params && Number(params.index) === 1){
+            console.log('JSPushData1',params);
+            settingModel.availableBalanceAdd(1);
+        }
+
+        if(params && Number(params.index) === 2){
+            console.log('JSPushData2',params);
+            settingModel.userScoreAdd(1);
+        }
+
+        if(params && Number(params.index) === 3){
+            console.log('JSPushData3',params);
+            settingModel.couponsAdd(1);
+        }
+
+        if(params && Number(params.index) === 4){
+            console.log('JSPushData4',params);
+            settingModel.fansMSGAdd(1);
+        }
+    };
 
     render() {
         const prefix = 'meeruu://';
         const showDebugPanel = String(CONFIG.showDebugPanel);
-
         return (
             <View style={styles.container}>
                 <Navigator
@@ -154,10 +211,7 @@ class App extends Component {
     }
 
     showDebugPage = () => {
-        const navigationAction = NavigationActions.navigate({
-            routeName: RouterMap.DebugPanelPage
-        });
-        global.$navigator.dispatch(navigationAction);
+        routeNavigate(RouterMap.DebugPanelPage, {});
     };
 }
 

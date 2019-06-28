@@ -7,7 +7,7 @@ import shopRes from '../../res';
 import LinearGradient from 'react-native-linear-gradient';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import { observer } from 'mobx-react';
-import { navigate } from '../../../../navigation/RouterMap';
+import { routePush } from '../../../../navigation/RouterMap';
 import { homeModule } from '../../../home/model/Modules';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
 import CommShareModal from '../../../../comm/components/CommShareModal';
@@ -15,9 +15,11 @@ import user from '../../../../model/user';
 import apiEnvironment from '../../../../api/ApiEnvironment';
 import spellStatusModel from '../../model/SpellStatusModel';
 import bridge from '../../../../utils/bridge';
+import { getSource } from '@mr/image-placeholder/oos';
+import { getSize } from '../../../../utils/OssHelper';
 
 const { myShop } = shopRes;
-const { shopProduct, shopProductShare } = myShop;
+const { shopProduct, shopProductShare, shop_card } = myShop;
 const { px2dp, width } = ScreenUtils;
 const itemImgSize = px2dp(100);
 const progressWidth = px2dp(60);
@@ -62,7 +64,7 @@ export class ShopProductItemView extends Component {
                         const router = homeModule.homeNavigate(linkType, linkTypeCode);
                         let params = homeModule.paramsNavigate(item);
                         if (router) {
-                            navigate(router, params);
+                            routePush(router, params);
                         }
                     }
                 }>
@@ -206,7 +208,7 @@ const ProductItemViewStyles = StyleSheet.create({
     },
 
     itemPrice: {
-        fontSize: 12, color: DesignRule.mainColor, fontWeight: 'bold'
+        fontSize: 12, color: DesignRule.mainColor, fontWeight: '600'
     },
     /*进度条*/
     progressBgView: {
@@ -247,7 +249,7 @@ export class ShopBottomBannerView extends Component {
                             const router = homeModule.homeNavigate(linkType, linkTypeCode);
                             let params = homeModule.paramsNavigate(item);
                             if (router) {
-                                navigate(router, params);
+                                routePush(router, params);
                             }
                         }}/>;
                     })
@@ -271,7 +273,7 @@ class ShopDetailImageView extends Component {
 
     componentDidMount() {
         const { item } = this.props;
-        Image.getSize(item, (widths, height) => {
+        getSize(item, (widths, height) => {
             height = height / widths * width;
             this.setState({
                 height
@@ -286,7 +288,36 @@ class ShopDetailImageView extends Component {
             return null;
         }
         return <TouchableWithoutFeedback onPress={onPress}>
-            <Image source={{ uri: item }} style={{ width, height }}/>
+            <Image source={getSource({ uri: item }, ScreenUtils.width, height, 'lfit')}
+                   style={{ width, height }}/>
         </TouchableWithoutFeedback>;
     }
 }
+
+export class ShopCardView extends React.Component {
+    _cardAction = () => {
+
+    };
+
+    render() {
+        return (
+            <NoMoreClick style={cardStyles.container} onPress={this._cardAction}>
+                <Image source={shop_card} style={cardStyles.image}/>
+                <MRText style={{ fontSize: 12, color: DesignRule.textColor_mainTitle }}>挑战任务卡</MRText>
+                <View style={{ flex: 1 }}/>
+                <MRText style={{ fontSize: 12, color: DesignRule.textColor_secondTitle, marginRight: 15 }}>敬请期待</MRText>
+            </NoMoreClick>
+        );
+    }
+}
+
+const cardStyles = StyleSheet.create({
+    container: {
+        flexDirection: 'row', alignItems: 'center', marginHorizontal: 15,
+        height: 44, marginBottom: 15, backgroundColor: 'white', borderRadius: 5
+    },
+    image: {
+        marginLeft: 9, marginRight: 4,
+        height: 16, width: 16
+    }
+});

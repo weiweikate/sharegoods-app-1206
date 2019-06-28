@@ -121,6 +121,7 @@ const Utiles = {
             width: 300,
             height: 300,
             cropping: cropit,
+            mediaType: 'photo',
             cropperCircleOverlay: circular,
             compressImageMaxWidth: 640,
             compressImageMaxHeight: 480,

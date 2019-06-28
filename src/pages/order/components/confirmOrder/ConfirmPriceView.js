@@ -11,7 +11,7 @@ import {
     UIText
 } from '../../../../components/ui';
 import DesignRule from '../../../../constants/DesignRule';
-import { observer } from 'mobx-react/native';
+import { observer } from 'mobx-react';
 import { confirmOrderModel } from '../../model/ConfirmOrderModel';
 import res from '../../res';
 

@@ -33,6 +33,7 @@
 @property (nonatomic,copy) NSString * preShopId;
 @property (nonatomic,copy) NSString * preTitle;
 @property (nonatomic,assign) CHAT_TYPE  preChatType;
+@property (nonatomic,assign) BOOL  isVip;
 
 @property (nonatomic,strong) SuspensionBtn *suspensionBtn ;
 @property (nonatomic,strong) SuspensionBtn * changeToSupplierBtn;
@@ -128,6 +129,8 @@ SINGLETON_FOR_CLASS(JRServiceManager)
 -(void)initQYChat:(id)jsonData{
   [self initActionConfig];
   QYUserInfo * userInfo = [self packingUserInfo:jsonData];
+  self.isVip = [jsonData[@"isVip"] boolValue] ?YES:NO;
+
   [[[QYSDK sharedSDK] conversationManager] setDelegate:self];
   [[QYSDK sharedSDK] setUserInfo:userInfo];
   
@@ -161,6 +164,7 @@ SINGLETON_FOR_CLASS(JRServiceManager)
    NSDictionary * chatInfo = swichData;
    self.dataDic = chatInfo;//暂存来的数据
   QYSessionViewController * sessionVC = [[QYSDK sharedSDK] sessionViewController];
+  sessionVC.vipLevel = self.isVip?11:0;
   //暂存客服来源类型
   if (![chatInfo[@"shopId"] isEqualToString:suspensionId] && ((NSString *)chatInfo[@"shopId"]).length != 0) {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -183,8 +187,7 @@ SINGLETON_FOR_CLASS(JRServiceManager)
   
   QYSource *source = [[QYSource alloc] init];
   source.title = chatInfo[@"title"];
-  sessionVC.source = source;
-  
+  sessionVC.sessionTitle = chatInfo[@"title"];
   sessionVC.navigationItem.leftBarButtonItem =
   [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain
                                   target:self action:@selector(onBack:)];

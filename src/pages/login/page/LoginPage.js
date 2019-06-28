@@ -91,9 +91,11 @@ export default class LoginPage extends BasePage {
     $isMonitorNetworkStatus() {
         return false;
     }
+
     $NavBarLeftPressed = () => {
         this.$navigateBack();
     };
+
     _render() {
         return (
             <View style={Styles.contentStyle}>
@@ -111,7 +113,7 @@ export default class LoginPage extends BasePage {
                     rendOtherLoginView(true, () => {
                         this.weChatLoginClick();
                     }, (htmlParams) => {
-                        this.$navigate('HtmlPage', htmlParams);
+                        this.$navigate(RouterMap.HtmlPage, htmlParams);
                     })
                 }
 
@@ -121,7 +123,7 @@ export default class LoginPage extends BasePage {
 
     /*忘记密码*/
     forgetPasswordClick = () => {
-        this.$navigate('login/login/ForgetPasswordPage');
+        this.$navigate(RouterMap.ForgetPasswordPage);
     };
     /*微信登陆*/
     weChatLoginClick = () => {
@@ -129,7 +131,7 @@ export default class LoginPage extends BasePage {
         wxLoginAction((code, data) => {
             if (code === 10000) {
                 this.params.callback && this.params.callBack();
-                this.$navigateBack(-2);
+                this.$navigateBack(2);
             } else if (code === 34005) {
                 this.$navigate(RouterMap.InputPhoneNum, data);
             }
@@ -155,7 +157,7 @@ export default class LoginPage extends BasePage {
                         this.$navigate(RouterMap.InviteCodePage);
                         // TrackApi.phoneSignUpSuccess({ 'signUpPhone': phoneNum });
                     } else {
-                        this.$navigateBack(-2);
+                        this.$navigateBack(2);
                     }
                 } else {
                     this.$loadingDismiss();
@@ -169,7 +171,7 @@ export default class LoginPage extends BasePage {
                     this.$toastShow('登录成功');
                     this.params.callback && this.params.callback();
                     this.$loadingDismiss();
-                    this.$navigateBack(-2);
+                    this.$navigateBack(2);
                 } else {
                     this.$loadingDismiss();
                     // this.$toastShow(data.msg);

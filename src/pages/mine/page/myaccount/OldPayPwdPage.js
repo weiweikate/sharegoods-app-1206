@@ -8,6 +8,7 @@ import bridge from '../../../../utils/bridge';
 import StringUtils from '../../../../utils/StringUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import ScreenUtils from '../../../../utils/ScreenUtils';
+import RouterMap from '../../../../navigation/RouterMap';
 
 export default class OldPayPwdPage extends BasePage {
 
@@ -28,9 +29,16 @@ export default class OldPayPwdPage extends BasePage {
 
     _render() {
         return <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-            <UIText value={this.state.tips} style={{ fontSize: 17, color: DesignRule.textColor_mainTitle, marginTop: 120 }}/>
-            <Password maxLength={6} style={{width: ScreenUtils.autoSizeWidth(345), marginTop: 30 , height:ScreenUtils.autoSizeWidth(45)}}
-                      onEnd={(pwd) => this._onext(pwd)} ref={(ref)=> {this.paw = ref}}/>
+            <UIText value={this.state.tips}
+                    style={{ fontSize: 17, color: DesignRule.textColor_mainTitle, marginTop: 120 }}/>
+            <Password maxLength={6} style={{
+                width: ScreenUtils.autoSizeWidth(345),
+                marginTop: 30,
+                height: ScreenUtils.autoSizeWidth(45)
+            }}
+                      onEnd={(pwd) => this._onext(pwd)} ref={(ref) => {
+                this.paw = ref;
+            }}/>
             <UIText value={this.state.msg}
                     style={{ fontSize: 15, color: DesignRule.mainColor, marginTop: 15 }}/>
         </View>;
@@ -39,21 +47,21 @@ export default class OldPayPwdPage extends BasePage {
     _onext = (pwd) => {
         const { oldPwd } = this.props.navigation.state.params;
         if (StringUtils.isEmpty(oldPwd)) {
-            this.paw.clean()
+            this.paw.clean();
             // 判断密码是否正确，正确则跳转到新页面输入新密码
             MineAPI.judgeSalesPassword({
                 newPassword: pwd,
                 type: '3'
             }).then((response) => {
                 // 跳转到输入新密码
-                this.$navigate('mine/account/OldPayPwdPage', {
+                this.$navigate(RouterMap.OldPayPwdPage, {
                     oldPwd: pwd,
                     tips: '请输入新的支付密码'
                 });
-                this.setState({msg: ''});
+                this.setState({ msg: '' });
             }).catch((data) => {
                 this.paw && this.paw.changeRedBorderColor();
-                this.setState({msg: data.msg});
+                this.setState({ msg: data.msg });
             });
         } else {
             if (oldPwd === pwd) {
@@ -66,10 +74,10 @@ export default class OldPayPwdPage extends BasePage {
             }).then((response) => {
                 // 修改成功
                 bridge.$toast('修改成功');
-                this.$navigateBack(-2);
+                this.$navigateBack(2);
             }).catch((data) => {
                 this.paw && this.paw.changeRedBorderColor();
-                this.setState({msg: data.msg});
+                this.setState({ msg: data.msg });
             });
         }
     };

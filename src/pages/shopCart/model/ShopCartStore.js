@@ -1,4 +1,4 @@
-import { observable, action, computed } from 'mobx';
+import { observable, action, computed,autorun } from 'mobx';
 import ShopCartAPI from '../api/ShopCartApi';
 import bridge from '../../../utils/bridge';
 import MineApi from '../../mine/api/MineApi';
@@ -42,6 +42,7 @@ class ShopCartStore {
     @computed
     get cartData() {
         return this.data.slice();
+        // return this.data;
     }
 
     @computed
@@ -49,7 +50,9 @@ class ShopCartStore {
         if (this.data.slice() instanceof Array && this.data.slice().length > 0) {
             let tempNumber = 0;
             this.data.slice().map((classGoods) => {
-                tempNumber += classGoods.data.slice().length;
+                if (classGoods.type !== -2) {
+                    tempNumber += classGoods.data.slice().length;
+                }
             });
             return tempNumber;
         } else {
@@ -62,7 +65,9 @@ class ShopCartStore {
     get getTotalGoodsNumber() {
         let goodNumber;
         this.data.slice().map(items => {
-            goodNumber += items.data.length;
+            if (items.type !== -2) {
+                goodNumber += items.data.length;
+            }
         });
         return goodNumber;
 
@@ -72,14 +77,15 @@ class ShopCartStore {
     get getTotalSelectGoodsNum() {
         let totalSelectNum = 0;
         this.data.slice().map(items => {
-            items.data.map(
-                (item) => {
-                    if (item.isSelected && !isNaN(item.amount) && item.productStatus !== 2) {
-                        // totalSelectNum += item.amount;
-                        totalSelectNum += 1;
+            if (items.type !== -2) {
+                items.data.map((item) => {
+                        if (item.isSelected && !isNaN(item.amount) && item.productStatus !== 2) {
+                            // totalSelectNum += item.amount;
+                            totalSelectNum += 1;
+                        }
                     }
-                }
-            );
+                );
+            }
         });
         return totalSelectNum;
     }
@@ -88,15 +94,15 @@ class ShopCartStore {
     get getTotalMoney() {
         let totalMoney = 0.00;
         this.data.slice().map(items => {
-            items.data.map(item => {
-                if (item.isSelected && !isNaN(item.amount) && item.productStatus !== 2) {
-                    totalMoney = totalMoney + parseFloat(item.amount) * parseFloat(item.price);
-                }
-            });
+            if (items.type !== -2) {
+                items.data.map(item => {
+                    if (item.isSelected && !isNaN(item.amount) && item.productStatus !== 2) {
+                        totalMoney = totalMoney + parseFloat(item.amount) * parseFloat(item.price);
+                    }
+                });
+            }
         });
-
-        this.calculationAwardRules();
-
+        // this.calculationAwardRules();
         return Math.round(totalMoney * 100) / 100;
     }
 
@@ -118,15 +124,17 @@ class ShopCartStore {
         let isHaveNormalGood = false;
         let flag = true;
         this.data.map(items => {
-            items.data.map(item => {
-                //看是否存在正常商品
-                if (item.productStatus === 1 && item.sellStock > 0) {
-                    isHaveNormalGood = true;
-                    if (!item.isSelected) {
-                        flag = false;
+            if (items.type !== -2) {
+                items.data.map(item => {
+                    //看是否存在正常商品
+                    if (item.productStatus === 1 && item.sellStock > 0) {
+                        isHaveNormalGood = true;
+                        if (!item.isSelected) {
+                            flag = false;
+                        }
                     }
-                }
-            });
+                });
+            }
         });
 
         if (isHaveNormalGood && flag) {
@@ -234,66 +242,32 @@ class ShopCartStore {
             invalidObj.sectionIndex = tempAllData.length;
             tempAllData.push(invalidObj);
         }
+        //推荐商品视图
+        let recommedObj = {
+             type :-2,
+             data:[],
+            middleTitle : ''
+         }
+         tempAllData.push(recommedObj);
         this.data = tempAllData;
         //计算规则
         this.calculationAwardRules();
         //清空以往的选择
         this.needSelectGoods = [];
-        return;
-        // if (response && response instanceof Array && response.length > 0) {
-        //     let tempArr = [];
-        //     response.forEach(item => {
-        //         item.isSelected = false;
-        //         let [...valueArr] = item.specValues || [];
-        //         let tempString = '';
-        //         valueArr.map((string) => {
-        //             tempString = tempString + `${string} `;
-        //         });
-        //         item.specString = tempString;
-        //
-        //         //从订单过来的选中
-        //         this.needSelectGoods.map(selectGood =>{
-        //             if (selectGood.productCode === item.productCode &&
-        //                 selectGood.skuCode === item.skuCode &&
-        //                 item.productStatus !== 0 &&
-        //                 item.stock !== 0
-        //             ){
-        //                 item.isSelected = true
-        //             }
-        //         })
-        //
-        //         originArr.map(originGood =>{
-        //             if (originGood.productCode === item.productCode && item.skuCode === originGood.skuCode){
-        //                 if (item.productStatus === 1) {
-        //                     item.isSelected = originGood.isSelected
-        //                 }else {
-        //                     item.isSelected = false;
-        //                 }
-        //
-        //             }
-        //         })
-        //         tempArr.push(item);
-        //     });
-        //     //将需要选中的数组清空
-        //     this.needSelectGoods = []
-        //     this.data = tempArr;
-        // } else {
-        //     this.data = [];
-        //     //组装元数据错误
-        // }
     };
     /**
      * 计算奖励规则
      * @constructor
      */
     calculationAwardRules = () => {
-        this.data.slice().map((items, itemsIndex) => {
+        // return;
+        this.data.slice().map((items) => {
             //检验专区分组计算
             if (items.type === 8) {
                 //所选商品总金额
                 let totalSelectMoney = 0;
                 let middleTitleTip = '';
-                items.data.map((itemGood, itemGoodIndex) => {
+                items.data.map((itemGood) => {
                     if (itemGood.isSelected) {
                         totalSelectMoney += itemGood.price * itemGood.amount;
                     }
@@ -340,23 +314,6 @@ class ShopCartStore {
             }
         });
     };
-
-    // hyfSub(arg1,arg2){
-    //     let r1,r2,m,n;
-    //     try {
-    //         r1 = arg1.toString().split(".")[1].length;
-    //     }catch (e) {
-    //         r1 = 0;
-    //     }
-    //     try {
-    //         r2 = arg2.toString().split(".")[1].length;
-    //     }catch (e) {
-    //         r2 = 0;
-    //     }
-    //     m = Math.pow(10,Math.max(r1,r2));
-    //     n=(r1>=r2)?r1:r2;
-    //     return Number(((arg1 * m - arg2 * m)/m).toFixed(n));
-    // }
     /**
      * 判断是否可以结算
      */
@@ -500,13 +457,6 @@ class ShopCartStore {
         });
     };
 
-    /*加入购物车*/
-    //     {
-    //     'amount': item.amount,
-    //     'productCode': item.productCode,
-    //     'skuCode': item.skuCode,
-    //     'timestamp': item.timestamp
-    // }
     addItemToShopCart(item) {
         if (item) {
             //加入单个商品
@@ -560,27 +510,11 @@ class ShopCartStore {
             }).catch((error) => {
                 bridge.$toast(error.msg || '加入购物车失败');
                 if (error.code === 10009) {
-                    // user.clearUserInfo();
-                    // user.clearToken();
-                    // //清空购物车
-                    // this.data = [];
-                    // MineApi.signOut();
-                    // QYChatUtil.qiYULogout();
                 } else {
                     bridge.$toast(error.msg);
                 }
                 bridge.hiddenLoading();
             });
-
-            // ShopCartAPI.oneMoreOrder({
-            //     cacheList: oneMoreList
-            // }).then(result => {
-            //     //添加完成再次拉取
-            //     //  this.getShopCartListData()
-            //     this.packingShopCartGoodsData(result.data);
-            // }).catch(reason => {
-            //     bridge.$toast(reason.msg);
-            // });
         }
     }
 
@@ -592,6 +526,7 @@ class ShopCartStore {
             }).then(res => {
                 bridge.$toast('删除成功');
                 this.packingShopCartGoodsData(res.data);
+                // this.getShopCartListData()
             }).catch(error => {
                 bridge.$toast(error.msg);
             });
@@ -599,7 +534,14 @@ class ShopCartStore {
     }
 }
 
+
+
 const shopCartStore = new ShopCartStore();
+
+autorun(()=>{
+    shopCartStore.getTotalSelectGoodsNum;
+    shopCartStore.calculationAwardRules();
+})
 
 export default shopCartStore;
 

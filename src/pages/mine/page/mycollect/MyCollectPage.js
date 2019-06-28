@@ -10,7 +10,7 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    ListView, Image,RefreshControl
+    ListView, Image, RefreshControl
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
@@ -18,15 +18,16 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import { SwipeListView } from '../../../../components/ui/react-native-swipe-list-view';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
-import { observer } from 'mobx-react/native';
+import { observer } from 'mobx-react';
 import DesignRule from '../../../../constants/DesignRule';
 import UIImage from '@mr/image-placeholder';
-import {MRText as Text,NoMoreClick,AvatarImage} from '../../../../components/ui'
-// import { NavigationActions } from 'react-navigation';
+import { MRText as Text, NoMoreClick, AvatarImage } from '../../../../components/ui';
 import { PageLoadingState, renderViewByLoadingState } from '../../../../components/pageDecorator/PageState';
 
 import RES from '../../res';
 import shopCartStore from '../../../shopCart/model/ShopCartStore';
+import { routeNavigate } from '../../../../navigation/RouterMap';
+import RouterMap from '../../../../navigation/RouterMap';
 
 const MoneyIcon = RES.collectShop.ic_money;
 const StarIcon = RES.collectShop.colloct_star;
@@ -69,6 +70,7 @@ export default class MyCollectPage extends BasePage {
             loadingState: PageLoadingState.loading
         }, this.getDataFromNetwork);
     };
+
     $isMonitorNetworkStatus() {
         return true;
     }
@@ -117,20 +119,23 @@ export default class MyCollectPage extends BasePage {
             }
         }
         return (
-            <NoMoreClick onPress={() => this.go2PruductDetailPage(item.storeCode, 0)}
+            <NoMoreClick onPress={() => this.go2PinDetailPage(item.storeCode, 0)}
                          activeOpacity={1}>
                 <View style={styles.rowContainer}>
-                         <AvatarImage source={{ uri: item.headUrl }} style={styles.img} borderRadius={25}/>
+                    <AvatarImage source={{ uri: item.headUrl }} style={styles.img} borderRadius={25}/>
                     <View style={styles.right}>
                         <View style={styles.row}>
-                            <Text numberOfLines={1} style={styles.title} allowFontScaling={false}>{item.name || ''}</Text>
+                            <Text numberOfLines={1} style={styles.title}
+                                  allowFontScaling={false}>{item.name || ''}</Text>
                         </View>
 
-                        <Text style={[styles.desc, styles.margin]} allowFontScaling={false}>{item.userCount || 0}成员</Text>
+                        <Text style={[styles.desc, styles.margin]}
+                              allowFontScaling={false}>{item.userCount || 0}成员</Text>
                         <View style={styles.bottomRow}>
                             <Image source={MoneyIcon}/>
                             <Text
-                                style={[styles.desc, { color: '#f39500' }]} allowFontScaling={false}>交易额:{item.totalTradeBalance ? item.totalTradeBalance : 0}元</Text>
+                                style={[styles.desc, { color: '#f39500' }]}
+                                allowFontScaling={false}>交易额:{item.totalTradeBalance ? item.totalTradeBalance : 0}元</Text>
                             <View style={{ flex: 1 }}/>
                             <View style={styles.starContainer}>
                                 {
@@ -143,7 +148,7 @@ export default class MyCollectPage extends BasePage {
                         </View>
                     </View>
                 </View>
-                <View style={{height:0.5,backgroundColor:DesignRule.lineColor_inColorBg}}/>
+                <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/>
             </NoMoreClick>
         );
     };
@@ -157,7 +162,7 @@ export default class MyCollectPage extends BasePage {
             }
         }
         return (
-            <NoMoreClick onPress={() => this.go2PruductDetailPage(item.storeCode, 1)}>
+            <NoMoreClick onPress={() => this.go2PinDetailPage(item.storeCode, 1)}>
                 <View style={[styles.rowContainer, { backgroundColor: '#c7c7c7' }]}>
                     <View style={{
                         position: 'absolute',
@@ -180,13 +185,16 @@ export default class MyCollectPage extends BasePage {
                     }
                     <View style={styles.right}>
                         <View style={styles.row}>
-                            <Text numberOfLines={1} style={styles.title} allowFontScaling={false}>{item.name || ''}</Text>
+                            <Text numberOfLines={1} style={styles.title}
+                                  allowFontScaling={false}>{item.name || ''}</Text>
                         </View>
 
-                        <Text style={[styles.desc, styles.margin]} allowFontScaling={false}>{item.userCount || 0}成员</Text>
+                        <Text style={[styles.desc, styles.margin]}
+                              allowFontScaling={false}>{item.userCount || 0}成员</Text>
                         <View style={styles.bottomRow}>
                             <Image source={MoneyIcon}/>
-                            <Text style={[styles.desc, { color: '#f39500' }]} allowFontScaling={false}>交易额:{item.totalTradeBalance}元</Text>
+                            <Text style={[styles.desc, { color: '#f39500' }]}
+                                  allowFontScaling={false}>交易额:{item.totalTradeBalance}元</Text>
                             <View style={{ flex: 1 }}/>
                             <View style={styles.starContainer}>
                                 {
@@ -212,19 +220,14 @@ export default class MyCollectPage extends BasePage {
         this.getDataFromNetwork();
     };
 
-    go2PruductDetailPage(storeCode, index) {
+    go2PinDetailPage(storeCode, index) {
         if (index !== 1) {
-            this.$navigate('spellShop/MyShop_RecruitPage', { storeCode: storeCode });
+            this.$navigate(RouterMap.MyShop_RecruitPage, { storeCode: storeCode });
         }
 
     }
+
     componentDidMount() {
-        this.willBlurSubscription = this.props.navigation.addListener(
-            'willBlur',
-            payload => {
-                // BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
-            }
-        );
         this.didFocusSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
@@ -235,9 +238,9 @@ export default class MyCollectPage extends BasePage {
                 }
             });
     }
+
     componentWillUnmount() {
         this.didFocusSubscription && this.didFocusSubscription.remove();
-        this.willBlurSubscription && this.willBlurSubscription.remove();
     }
 
     getDataFromNetwork = () => {
@@ -266,17 +269,17 @@ export default class MyCollectPage extends BasePage {
                 console.log(arr);
                 this.setState({
                     viewData: arr,
-                    loadingState: PageLoadingState.success,
+                    loadingState: PageLoadingState.success
                 });
             }
         }).catch(err => {
             // this.$loadingDismiss();
             this.setState({
                 loadingState: PageLoadingState.fail,
-                tFailedInfo: err,
-            })
+                tFailedInfo: err
+            });
             if (err.code === 10009) {
-                this.$navigate('login/login/LoginPage');
+                routeNavigate(RouterMap.LoginPage);
             }
         });
     };
@@ -288,13 +291,14 @@ export default class MyCollectPage extends BasePage {
             </View>
         );
     }
-    _renderContent=()=>{
-        return(
-            <View style={{ flex: 1}}>
+
+    _renderContent = () => {
+        return (
+            <View style={{ flex: 1 }}>
                 {this.state.viewData && this.state.viewData.length > 0 ? this._renderListView() : this._renderEmptyView()}
             </View>
-        )
-    }
+        );
+    };
 
     _renderListView = () => {
         console.log(this.state.viewData);
@@ -326,11 +330,11 @@ export default class MyCollectPage extends BasePage {
                         >
                             <View
                                 style={{
-                                    width:60,
-                                    justifyContent:'center',
-                                    alignItems:'center',
-                                    backgroundColor:DesignRule.mainColor,
-                                    height:80,
+                                    width: 60,
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    backgroundColor: DesignRule.mainColor,
+                                    height: 80
                                 }}
                             >
                                 <UIText style={{ color: 'white' }} value={'立即\n删除'}/>
@@ -360,16 +364,6 @@ export default class MyCollectPage extends BasePage {
     };
 
     gotoLookAround() {
-        // const resetAction = NavigationActions.reset({
-        //     index: 0,
-        //     actions: [
-        //         NavigationActions.navigate({
-        //             routeName: 'Tab',
-        //             params: {}
-        //         })
-        //     ]
-        // });
-        // this.props.navigation.dispatch(resetAction);
         this.$navigateBackToStore();
     }
 
@@ -466,7 +460,7 @@ const styles = StyleSheet.create({
         // backgroundColor: DesignRule.mainColor,
         flex: 1,
         flexDirection: 'row',
-        justifyContent: 'flex-end',
+        justifyContent: 'flex-end'
         // padding: 15
     },
     bottomRow: {
@@ -494,7 +488,7 @@ const styles = StyleSheet.create({
     },
     img: {
         width: 50,
-        height: 50,
+        height: 50
     },
     ingContainer: {
         width: 46,

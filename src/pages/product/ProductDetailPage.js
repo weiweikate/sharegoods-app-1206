@@ -36,6 +36,7 @@ import { ContentSectionView, SectionLineView, SectionNullView } from './componen
 import ProductDetailNavView from './components/ProductDetailNavView';
 import { IntervalMsgType, IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
 import ProductDetailCouponsView, { ProductDetailCouponsWindowView } from './components/ProductDetailCouponsView';
+import { ProductDetailSetAddressView } from './components/ProductDetailAddressView';
 
 /**
  * @author chenyangjun
@@ -61,6 +62,8 @@ export default class ProductDetailPage extends BasePage {
             goType: ''
         };
         this.productDetailModel.prodCode = this.params.productCode;
+        this.productDetailModel.trackCode = this.params.trackCode;
+        this.productDetailModel.trackType = this.params.trackType;
     }
 
     _getPageStateOptions = () => {
@@ -77,19 +80,18 @@ export default class ProductDetailPage extends BasePage {
 
 
     componentDidMount() {
-        this.firstLoad = true;
         this.willFocusSubscription = this.props.navigation.addListener('willFocus', payload => {
                 const { state } = payload;
-                if (state && state.routeName === 'product/ProductDetailPage' && !this.firstLoad) {
+                if (state && state.routeName === 'product/ProductDetailPage' && !user.isProdFirstLoad) {
                     this.productDetailModel && this.productDetailModel.requestProductDetail();
                 }
-                this.firstLoad = false;
             }
         );
-        if (this.firstLoad) {
+        if (user.isProdFirstLoad) {
             setTimeout(() => {
+                user.isProdFirstLoad = false;
                 this.productDetailModel && this.productDetailModel.requestProductDetail();
-            }, 500);
+            }, 200);
         }
     }
 
@@ -107,7 +109,7 @@ export default class ProductDetailPage extends BasePage {
                 break;
             case 'keFu':
                 if (!user.isLogin) {
-                    this.$navigate(RouterMap.LoginPage);
+                    this.gotoLoginPage();
                     return;
                 }
                 track(trackEvent.ClickOnlineCustomerService, { customerServiceModuleSource: 2 });
@@ -127,7 +129,7 @@ export default class ProductDetailPage extends BasePage {
                 break;
             case 'buy':
                 if (!user.isLogin) {
-                    this.$navigate(RouterMap.LoginPage);
+                    this.gotoLoginPage();
                     return;
                 }
                 this.state.goType = type;
@@ -166,7 +168,7 @@ export default class ProductDetailPage extends BasePage {
                 quantity: amount,
                 productCode: prodCode
             }];
-            this.$navigate('order/order/ConfirOrderPage', {
+            this.$navigate(RouterMap.ConfirOrderPage, {
                 orderParamVO: {
                     orderType: 99,
                     orderProducts: orderProducts,
@@ -192,7 +194,7 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _renderItem = ({ item, index, section: { key } }) => {
-        const { productDetailCouponsViewModel } = this.productDetailModel;
+        const { productDetailCouponsViewModel, productDetailAddressModel } = this.productDetailModel;
         if (key === sectionType.sectionContent) {
             return <ContentItemView item={item}/>;
         }
@@ -212,7 +214,7 @@ export default class ProductDetailPage extends BasePage {
                 return <ProductDetailCouponsView productDetailCouponsViewModel={productDetailCouponsViewModel}
                                                  onPress={() => {
                                                      if (!user.isLogin) {
-                                                         this.$navigate(RouterMap.LoginPage);
+                                                         this.gotoLoginPage();
                                                          return;
                                                      }
                                                      this.ProductDetailCouponsWindowView.showWindowView();
@@ -234,6 +236,9 @@ export default class ProductDetailPage extends BasePage {
                 return <ParamItemView paramAction={() => {
                     this.DetailParamsModal.show(this.productDetailModel);
                 }}/>;
+            }
+            case productItemType.address: {
+                return <ProductDetailSetAddressView productDetailAddressModel={productDetailAddressModel}/>;
             }
             case productItemType.comment: {
                 return <DetailHeaderScoreView pData={this.productDetailModel}
@@ -285,8 +290,9 @@ export default class ProductDetailPage extends BasePage {
 
     _renderContent = () => {
         const {
-            name, imgUrl, prodCode, originalPrice, groupPrice, v0Price, promotionPrice,
-            shareMoney, sectionDataList, isSkillIn, nameShareText, productDetailCouponsViewModel
+            name, imgUrl, prodCode, originalPrice, groupPrice, v0Price, promotionMinPrice,
+            shareMoney, sectionDataList, productIsPromotionPrice, isSkillIn, nameShareText, productDetailCouponsViewModel,
+            priceTypeTextList, monthSaleCount
         } = this.productDetailModel;
         return <View style={styles.container}>
             <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
@@ -316,6 +322,7 @@ export default class ProductDetailPage extends BasePage {
                                             productDetailCouponsViewModel={productDetailCouponsViewModel}/>
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
+                            defaultModalVisible={this.params.openShareModal}
                             trackParmas={{
                                 spuCode: prodCode,
                                 spuName: name
@@ -323,11 +330,12 @@ export default class ProductDetailPage extends BasePage {
                             trackEvent={trackEvent.Share}
                             type={'Image'}
                             imageJson={{
+                                monthSaleType: isSkillIn ? 4 : (monthSaleCount >= 1000 ? 3 : (monthSaleCount >= 500 ? 2 : 1)),
                                 imageUrlStr: imgUrl,
                                 titleStr: `${name}`,
-                                priceType: isSkillIn ? 'mr_skill' : '',
+                                priceType: priceTypeTextList,
                                 priceStr: `￥${originalPrice}`,
-                                retailPrice: `￥${isSkillIn ? promotionPrice : v0Price}`,
+                                retailPrice: `￥${productIsPromotionPrice ? promotionMinPrice : v0Price}`,
                                 shareMoney: shareMoney,
                                 spellPrice: `￥${groupPrice}`,
                                 QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`

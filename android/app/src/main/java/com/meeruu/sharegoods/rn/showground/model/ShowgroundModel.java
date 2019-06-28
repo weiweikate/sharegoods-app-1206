@@ -62,4 +62,8 @@ public class ShowgroundModel implements IShowgroundModel {
         }
     }
 
+    @Override
+    public void deleteDynamic(String showNo, BaseCallback callback) {
+
+    }
 }

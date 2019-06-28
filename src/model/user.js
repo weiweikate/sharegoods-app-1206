@@ -1,4 +1,4 @@
-import { AsyncStorage } from 'react-native';
+import store from '@mr/rn-store';
 import { action, computed, observable, autorun } from 'mobx';
 import shopCartCacheTool from '../pages/shopCart/model/ShopCartCacheTool';
 import UserApi from './userApi';
@@ -8,11 +8,12 @@ import { login, logout } from '../utils/SensorsTrack';
 import StringUtils from '../utils/StringUtils';
 import JPushUtils from '../utils/JPushUtils';
 import { mediatorCallFunc } from '../SGMediator';
+// import { shopCartEmptyModel } from '../pages/shopCart/model/ShopCartEmptyModel';
 
 
-const USERINFOCACHEKEY = 'UserInfo';
-const CARTDATA = 'cartData';
-const USERTOKEN = 'USERTOKEN';
+const USERINFOCACHEKEY = '@mr/userInfo';
+const CARTDATA = '@mr/cartData';
+const USERTOKEN = '@mr/userToken';
 
 class User {
 
@@ -68,6 +69,8 @@ class User {
     @observable
     regTime = null;         //注册时间
     @observable
+    shareGoodsAge = null;   //秀龄
+    @observable
     lastLoginTime = null;   //最后登录时间
     @observable
     inviteId = null;        //邀请码
@@ -100,7 +103,13 @@ class User {
     @observable
     availableBalance = null;//可提现金额
     @observable
+    totalBalance=null;      // 余额加待提现余额
+    @observable
+    historicalBalance = null;  //总金额
+    @observable
     blockedBalance = null; //冻结金额
+    @observable
+    couponCount = null  // * 一元券加优惠券数量
     @observable
     tokenCoin = null;       //一元券数量
     @observable
@@ -109,6 +118,12 @@ class User {
     blockedCoin = null;     //冻结代币
     @observable
     userScore = null;       //积分
+    @observable
+    totalScore = null;       //秀豆加待提现秀豆
+    @observable
+    historicalScore = null;  //总秀豆积分
+    @observable
+    blockedUserScore  = null; //待入账秀豆积分
     @observable
     password = null;        //密码
     @observable
@@ -185,31 +200,31 @@ class User {
     @observable
     weChatNumber = null;
 
+    // 全局记录商品详情页是否是首次加载
+    isProdFirstLoad = true;
+
     @action getToken = () => {
         if (this.token) {
             return Promise.resolve(this.token);
         } else {
-            return AsyncStorage.getItem(USERTOKEN).then(token => {
+            return store.get(USERTOKEN).then(token => {
                 this.token = token;
-                AsyncStorage.setItem(USERTOKEN, String(token));
+                store.save(USERTOKEN, token);
                 return Promise.resolve(token);
             });
         }
     };
 
     // 从缓存磁盘读取用户上一次使用的信息记录
-    async readUserInfoFromDisk() {
-        AsyncStorage.getItem(USERINFOCACHEKEY).then(infoStr => {
-            if (infoStr && typeof infoStr === 'string') {
-                const info = JSON.parse(infoStr);
-                console.log('readUserInfoFromDisk', info);
-                // bridge.setCookies(info);
-                this.saveUserInfo(info, false);
+    readUserInfoFromDisk() {
+        store.get(USERINFOCACHEKEY).then((infoStr) => {
+            if (infoStr) {
+                this.saveUserInfo(infoStr, false);
             } else {
                 bridge.clearCookies();
             }
-        }).catch(err => {
-            console.warn('Error: user.readUserInfoFromDisk()\n' + err.toString());
+        }).catch(e => {
+            console.warn('Error: user.readUserInfoFromDisk()\n' + e.toString());
         });
     }
 
@@ -219,7 +234,7 @@ class User {
             return;
         }
         this.token = token;
-        AsyncStorage.setItem(USERTOKEN, String(token)).catch(e => {
+        store.save(USERTOKEN, token).catch(e => {
         });
     }
 
@@ -276,6 +291,14 @@ class User {
         this.level = info.level;                    //
         this.levelName = info.levelName;            //
 
+        this.historicalScore = info.historicalScore; //总积分
+        this.historicalBalance = info.historicalBalance;//总金额
+        this.shareGoodsAge = info.shareGoodsAge;
+        this.totalBalance = info.totalBalance;
+        this.totalScore = info.totalScore;
+        this.blockedUserScore = info.blockedUserScore;
+        this.couponCount = info.couponCount;
+
         this.experience = info.experience;
         this.salePsw = info.salePsw;                //
         this.hadSalePassword = info.hadSalePassword; // 是否设置过交易密码
@@ -295,16 +318,15 @@ class User {
         this.perfectNumberCode = info.perfectNumberCode;
         this.weChatNumber = info.weChatNumber; //微信号
 
-        if (this.levelRemark  && this.levelRemark !== info.levelRemark){
+        if (this.levelRemark && this.levelRemark !== info.levelRemark) {
             // mediatorCallFunc()
-            mediatorCallFunc('Home_UserLevelUpdate',info.levelRemark);
+            mediatorCallFunc('Home_UserLevelUpdate', info.levelRemark);
         }
         this.levelRemark = info.levelRemark;
 
 
-
         if (saveToDisk) {
-            AsyncStorage.setItem(USERINFOCACHEKEY, JSON.stringify(info)).catch(e => {
+            store.save(USERINFOCACHEKEY, info).catch(e => {
             });
         }
         QYChatTool.initQYChat();
@@ -332,7 +354,7 @@ class User {
         }
         this.cartData = cartData;
         if (saveToDisk) {
-            AsyncStorage.setItem(CARTDATA, JSON.stringify(cartData)).catch(e => {
+            store.save(CARTDATA, cartData).catch(e => {
             });
         }
     }
@@ -417,25 +439,31 @@ class User {
         this.profile = null; //简介
         this.upCode = null;
         this.finishGuide = false;
-        // todo 清空cookie
-        //NativeModules.commModule.clearCookie(apiEnvironment.getCurrentHostUrl());
-        // AsyncStorage.removeItem(LASTSHOWPROMOTIONTIME).catch(e => {
-        // });
+        this.perfectNumberCode = null;
+        this.weChatNumber = null; //微信号
+        this.shareGoodsAge = null;
+        this.totalBalance = null;
+        this.totalScore = null;
+        this.couponCount = null;
+        this.historicalScore = null; //总积分
+        this.historicalBalance = null;
+        this.blockedUserScore = null;
 
-        return AsyncStorage.removeItem(USERINFOCACHEKEY).catch(e => {
+
+        return store.deleted(USERINFOCACHEKEY).catch(e => {
         });
     }
 
     @action clearToken() {
         this.token = null;
-        AsyncStorage.setItem(USERTOKEN, '');
+        store.save(USERTOKEN, '');
     }
 
     // 清空离线购物车信息
     @action
     clearCartDatarInfo() {
         this.cartData = [];
-        return AsyncStorage.removeItem(CARTDATA).catch(e => {
+        return store.deleted(CARTDATA).catch(e => {
         });
     }
 
@@ -484,7 +512,6 @@ const user = new User();
 autorun(() => {
     user.isLogin ? shopCartCacheTool.synchronousData() : null;
 });
-
 autorun(() => {
     if (user.code) {
         // 启动时埋点关联登录用户,先取消关联，再重新关联

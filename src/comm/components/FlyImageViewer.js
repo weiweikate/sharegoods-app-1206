@@ -17,16 +17,17 @@ import {
     Platform,
     StyleSheet,
     ActionSheetIOS,
-    Alert
+    Alert,
+    ActivityIndicator
 } from 'react-native';
-//import * as typings from './image-viewer.type'
-// import {TransmitTransparently} from 'nt-transmit-transparently'
 import ImageZoom from './FlyImageZoom';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
 import ImageLoad from '@mr/image-placeholder';
 import { MRText as Text } from '../../components/ui';
 import res from '../res';
+import bridge from '../../utils/bridge';
+import {getSize} from '../../utils/OssHelper';
 
 const { down_icon, close_icon } = res.button;
 
@@ -175,7 +176,7 @@ export default class FlyImageViewer extends Component {
         },
 
         loadingRender: () => {
-            return null;
+            return <ActivityIndicator animating={true}/>;
         },
 
         onSaveToCamera: () => {
@@ -363,7 +364,7 @@ export default class FlyImageViewer extends Component {
                     saveImageSize();
                 }
             } else {
-                Image.getSize(image, (width, height) => {
+                getSize(image, (width, height) => {
                     sizeLoaded = true;
                     imageStatus.width = width;
                     imageStatus.height = height;
@@ -402,7 +403,6 @@ export default class FlyImageViewer extends Component {
             imageStatus.width = ScreenUtils.width;
         }
         return imageStatus;
-
     };
 
 
@@ -592,6 +592,7 @@ export default class FlyImageViewer extends Component {
         this.jumpToCurrentImage();
     }
 
+
     /**
      * 获得整体内容
      */
@@ -601,26 +602,24 @@ export default class FlyImageViewer extends Component {
         const screenHeight = this.height;
 
         const ImageElements = this.props.imageUrls.map((image, index) => {
-            let width = this.state.imageSizes[index] && this.state.imageSizes[index].width;
-            let height = this.state.imageSizes[index] && this.state.imageSizes[index].height;
             const imageInfo = this.state.imageSizes[index];
-
-            let r = width / height;
-            if (width > height) {
-                // 如果宽大于屏幕宽度,整体缩放到宽度是屏幕宽度
-                if (width > screenWidth) {
-                    width = screenWidth;
-                    height = width / r;
-                }
-            } else {
-                // 如果高大于屏幕高度,整体缩放到高度是屏幕高度
-                if (height > screenHeight) {
-                    height = screenHeight;
-                    width = height * r;
-                }
+            let width = imageInfo && imageInfo.width;
+            let height = imageInfo && imageInfo.height;
+            // 如果宽大于屏幕宽度,整体缩放到宽度是屏幕宽度
+            if (width > screenWidth) {
+                const widthPixel = screenWidth / width;
+                width *= widthPixel;
+                height *= widthPixel;
             }
-            if (imageInfo.status === 'success' && this.props.enableImageZoom) {
 
+            // 如果此时高度还大于屏幕高度,整体缩放到高度是屏幕高度
+            if (height > screenHeight) {
+                const HeightPixel = screenHeight / height;
+                width *= HeightPixel;
+                height *= HeightPixel;
+            }
+
+            if (imageInfo.status === 'success' && this.props.enableImageZoom) {
                 return (
                     <ImageZoom key={index}
                                style={this.styles.modalContainer}
@@ -647,7 +646,7 @@ export default class FlyImageViewer extends Component {
                                                 onPress={this.handleClick.bind(this)}
                                                 style={this.styles.loadingTouchable}>
                                 <View style={this.styles.loadingContainer}>
-                                    {this.props.loadingRender()}
+                                    <ActivityIndicator animating={true} size={'large'} color={DesignRule.mainColor}/>
                                 </View>
                             </TouchableHighlight>
                         );
@@ -729,6 +728,7 @@ export default class FlyImageViewer extends Component {
      */
     saveToLocal() {
         if (!this.props.onSave) {
+            bridge.$toast('图片保存中...')
             let that = this;
             if (Platform.OS === 'ios') {
                 CameraRoll.saveToCameraRoll(that.props.imageUrls[that.state.currentShowIndex])
@@ -736,7 +736,7 @@ export default class FlyImageViewer extends Component {
                         that.props.onSaveToCamera(that.state.currentShowIndex);
                     });
             } else {
-                ImageCacheManager().downloadAndCacheUrl(this.props.imageUrls[this.state.currentShowIndex]).then(((path) => {
+                ImageCacheManager().downloadAndCacheUrl(that.props.imageUrls[this.state.currentShowIndex]).then(((path) => {
                     CameraRoll.saveToCameraRoll(path)
                         .then(() => {
                             that.props.onSaveToCamera(that.state.currentShowIndex);

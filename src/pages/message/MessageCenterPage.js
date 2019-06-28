@@ -23,6 +23,7 @@ import chatModel from '../../utils/QYModule/QYChatModel';
 import { observer } from 'mobx-react';
 import { beginChatType, QYChatTool } from '../../utils/QYModule/QYChatTool';
 import ServiceRowView from './components/ServiceRowView';
+import RouterMap from '../../navigation/RouterMap';
 
 const {
     icon_03: noticeIcon,
@@ -89,17 +90,17 @@ export default class MessageCenterPage extends BasePage {
     orderMenuJump(i) {
         switch (i) {
             case 0:
-                this.$navigate('message/NotificationPage');
+                this.$navigate(RouterMap.NotificationPage);
                 TrackApi.ViewNotice();
                 break;
             case 1:
                 TrackApi.ViewMessage();
-                this.$navigate('message/MessageGatherPage');
+                this.$navigate(RouterMap.MessageGatherPage);
                 break;
 
             case 2:
                 TrackApi.ViewPinMessage();
-                this.$navigate('message/ShopMessagePage');
+                this.$navigate(RouterMap.ShopMessagePage);
                 break;
         }
     }
@@ -146,7 +147,7 @@ export default class MessageCenterPage extends BasePage {
                 count = this.state.shopMessageCount;
             }
 
-
+            count = count > 99 ? '99+' : count;
             arr.push(
                 <View key={i} style={{ width: ScreenUtils.width, height: 60, marginTop: 11 }}>
                     <TouchableOpacity style={{
@@ -177,7 +178,7 @@ export default class MessageCenterPage extends BasePage {
                                 <Text style={{
                                     color: 'white',
                                     includeFontPadding: false,
-                                    fontSize: DesignRule.fontSize_20
+                                    fontSize: px2dp(9)
                                 }}>{count}</Text>
                             </View> : null}
                             <Image source={arrow_right} style={{ height: 14 }} resizeMode={'contain'}/>

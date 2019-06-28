@@ -87,12 +87,21 @@ SINGLETON_FOR_CLASS(JRShareManager)
 {
   UMSocialMessageObject * message = [[UMSocialMessageObject alloc]init];
   id thumImage = [self getImageWithPath:imageUrl];
-  UMShareWebpageObject *shareObject = [UMShareWebpageObject shareObjectWithTitle:title descr:subTitle thumImage:thumImage];
-  //设置网页地址
-  shareObject.webpageUrl = linkUrl;
-  //分享消息对象设置分享内容对象
-  message.shareObject = shareObject;
   
+  if (platform == UMSocialPlatformType_Sina) {
+    UMShareImageObject *shareObject =  [[UMShareImageObject alloc] init];
+    shareObject.thumbImage = [UIImage imageNamed:@"icon"];
+    [shareObject setShareImage:thumImage];
+    message.text = [NSString stringWithFormat:@"%@%@%@",title,subTitle,linkUrl];
+    //分享消息对象设置分享内容对象
+    message.shareObject = shareObject;
+  }else{
+    UMShareWebpageObject *shareObject = [UMShareWebpageObject shareObjectWithTitle:title descr:subTitle thumImage:thumImage];
+    //设置网页地址
+    shareObject.webpageUrl = linkUrl;
+    //分享消息对象设置分享内容对象
+    message.shareObject = shareObject;
+  }
    [self shareWithMessageObject:message platform:platform completion:completion];
 
 }
@@ -216,7 +225,58 @@ SINGLETON_FOR_CLASS(JRShareManager)
       [JRLoadingAndToastTool showToast:@"保存失败\n请确认图片保存权限已开启" andDelyTime:0.5f];
     }
   }];
+
 }
+
+//保存图片到相册
+-(void)saveDownloadImage:(UIImage *)image{
+  __block ALAssetsLibrary *lib = [[ALAssetsLibrary alloc] init];
+  [lib writeImageToSavedPhotosAlbum:image.CGImage metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
+    NSLog(@"assetURL = %@, error = %@", assetURL, error);
+    lib = nil;
+    if (!error) {
+      [JRLoadingAndToastTool showToast:@"文案已复制,图片已下载到相册" andDelyTime:0.5f];
+    }else{
+      [JRLoadingAndToastTool showToast:@"保存失败\n请确认图片保存权限已开启" andDelyTime:0.5f];
+    }
+  }];
+  
+}
+
+
+//videoPath为视频下载到本地之后的本地路径
+- (void)saveVideo:(NSString *)videoPath  withCallBackBlock:(shareFinshBlock)finshBlock;{
+  
+  if (videoPath) {
+    NSString * path =NSHomeDirectory();
+    videoPath = [path stringByAppendingString:videoPath];
+    NSURL *url = [NSURL URLWithString:videoPath];
+    BOOL compatible = UIVideoAtPathIsCompatibleWithSavedPhotosAlbum([url path]);
+    if (compatible)
+    {
+      //保存相册核心代码
+      UISaveVideoAtPathToSavedPhotosAlbum([url path], self, @selector(savedPhotoImage:didFinishSavingWithError:contextInfo:), (__bridge void * _Nullable)(finshBlock));
+    }
+  }
+}
+
+
+//保存视频完成之后的回调
+- (void) savedPhotoImage:(UIImage*)image didFinishSavingWithError: (NSError *)error contextInfo: (void *)contextInfo {
+  shareFinshBlock finshBlock = (__bridge shareFinshBlock)contextInfo;
+  if (error) {
+    finshBlock(error.description);
+  }  else {
+   finshBlock(error.description);
+  }
+}
+
+-(BOOL)saveVideoToLocation:(NSString *)videoPath data:(NSData *)data{
+  NSString * path =NSHomeDirectory();
+  NSString * Pathimg =[path stringByAppendingString:videoPath];
+ return [data writeToFile:Pathimg atomically:YES];
+}
+
 
 
 @end

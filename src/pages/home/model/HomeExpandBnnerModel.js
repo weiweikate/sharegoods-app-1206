@@ -2,9 +2,9 @@ import { observable, flow, action } from 'mobx';
 import HomeApi from '../api/HomeAPI';
 import { homeType } from '../HomeTypes';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import { Image } from 'react-native';
 import { homeModule } from './Modules';
-import { get, save } from '@mr/rn-store';
+import store from '@mr/rn-store';
+import { getSize } from '../../../utils/OssHelper';
 
 const { px2dp } = ScreenUtils;
 const bannerWidth = ScreenUtils.width;
@@ -34,7 +34,7 @@ class HomeExpandBnnerModel {
     @action loadBannerList = flow(function* (isCache) {
         try {
             if (isCache) {
-                const storeRes = yield get(kHomeExpandStore);
+                const storeRes = yield store.get(kHomeExpandStore);
                 if (storeRes) {
                     this.banner = storeRes || [];
                     this.handleExpnadHeight();
@@ -43,7 +43,7 @@ class HomeExpandBnnerModel {
             const bannerRes = yield HomeApi.getHomeData({ type: homeType.expandBanner });
             this.banner = bannerRes.data || [];
             this.handleExpnadHeight();
-            save(kHomeExpandStore, this.banner);
+            store.save(kHomeExpandStore, this.banner);
         } catch (error) {
             console.log(error);
         }
@@ -56,11 +56,11 @@ class HomeExpandBnnerModel {
                 let url = val.image;
                 this.imgUrls.push(url);
                 if (!this.adHeights.has(url)) {
-                    Image.getSize(url, (width, height) => {
+                    getSize(url,(width, height)=> {
                         let h = (bannerWidth * height) / width;
                         this.adHeights.set(url, h);
                         this.getBannerHeight();
-                    });
+                    })
                 }
             });
         }

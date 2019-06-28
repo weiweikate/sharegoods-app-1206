@@ -261,6 +261,9 @@ static NSString *IDType = @"TypeCell";
   }
   RecommendedCell * cell = [tableView dequeueReusableCellWithIdentifier:ID];
   cell.model = model;
+  if(self.type&&[self.type isEqualToString:@"recommend"]){
+    cell.type = YES;
+  }
   cell.cellDelegate = self;
   cell.clipsToBounds = YES;
   return cell;
@@ -317,16 +320,24 @@ static NSString *IDType = @"TypeCell";
   }
 }
 
--(void)clickGood:(GoodsDataModel *)goods{
+-(void)clickGood:(GoodsDataModel *)goods cell:(RecommendedCell *)cell{
+  NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
+  NSMutableDictionary * dic = [NSMutableDictionary dictionaryWithDictionary:self.callBackArr[indexPath.row]];
   if(_onPressProduct&&goods.prodCode) {
-    NSDictionary * dic = @{@"prodCode":goods.prodCode};
+    NSError *parseError = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dic options:NSJSONWritingPrettyPrinted error:&parseError];
+    NSDictionary * dic = @{@"product": goods.modelToJSONString,@"detail":[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding]};
     _onPressProduct(dic);
   }
 }
 
--(void)addCar:(GoodsDataModel *)model{
+-(void)addCar:(GoodsDataModel *)model cell:(RecommendedCell *)cell{
+  NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
+  NSMutableDictionary * dic = [NSMutableDictionary dictionaryWithDictionary:self.callBackArr[indexPath.row]];
   if(_onAddCartClick&&model.prodCode) {
-    NSDictionary * dic = @{@"prodCode":model.prodCode};
+    NSError *parseError = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dic options:NSJSONWritingPrettyPrinted error:&parseError];
+    NSDictionary * dic = @{@"product": model.modelToJSONString,@"detail":[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding]};
     _onAddCartClick(dic);
   }
 }

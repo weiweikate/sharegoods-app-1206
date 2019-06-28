@@ -9,6 +9,7 @@
  *
  */
 
+
 'use strict';
 
 import { observable, action } from 'mobx';
@@ -20,13 +21,14 @@ const { px2dp } = ScreenUtil;
 
 import { homeModule } from './Modules';
 import bridge from '../../../utils/bridge';
-import { get, save } from '@mr/rn-store';
+import store from '@mr/rn-store';
+import { track, trackEvent } from '../../../utils/SensorsTrack';
+import { IntervalMsgNavigate } from '../../../comm/components/IntervalMsgView';
 
 const activity_mission_main_no = 'activity_mission_main_no';    // 主线任务
 const activity_mission_daily_no = 'activity_mission_daily_no';     // 日常任务
 
 class TaskModel {
-    type = 'home';
     @observable
     show = false;
     @observable
@@ -38,11 +40,11 @@ class TaskModel {
     @observable
     homeHeight = 0; //
     @observable
-    expanded = false;
+    expanded = true;
     @observable
     tasks = [];
     @observable
-    hideFinishTask = true;
+    hideFinishTask = false;
     @observable
     advMsg = '';
     @observable
@@ -52,25 +54,26 @@ class TaskModel {
     openAlert = false;
     @observable
     alertData = [];
+    @observable
+    canOpenProgress = -1;
 
     @action
     getLocationExpanded() {
-        get('task_expanded_').then((data) => {
-            // alert(data)
+        store.get('@mr/taskExpanded' + this.type).then((data) => {
             if (data) {
                 this.expanded = data.expanded;
             }
+            if (this.type === 'home') {
+                this.calculateHomeHeight();
+            }
         });
-        if (this.type === 'home') {
-            this.calculateHomeHeight();
-        }
     }
 
     @action
     getData() {
         HomeApi.getMissionActivity({ activityType: this.type === 'home' ? activity_mission_main_no : activity_mission_daily_no }).then((result) => {
             let data = result.data || {};
-            this.progress = data.activityValue || 0;
+            this.progress = data.value || 0;
             this.boxs = data.ruleList || [];
             let tasks = data.missionList || [];
             this.tasks = this.sort(tasks);
@@ -86,14 +89,13 @@ class TaskModel {
             let length = data.ruleList.length;
             if (length > 0) {
                 if (data.ruleList && data.ruleList[length - 1]) {
-                    if (data.ruleList[length - 1].value > this.progress) {
                         this.totalProgress = data.ruleList[length - 1].value;
-                    }
                 }
             }
             if (this.type === 'home') {
                 this.calculateHomeHeight();
             }
+            this.findCanOpenProgress();
         }).catch(() => {
             this.show = false;
             if (this.type === 'home') {
@@ -101,6 +103,18 @@ class TaskModel {
             }
         });
     }
+
+    @action
+    findCanOpenProgress(){
+        let canOpenProgress = -1
+        this.boxs.forEach(item => {
+            if (canOpenProgress === -1 && item.prizeStatus === 1) {
+                canOpenProgress = item.value;
+            }
+        })
+        this.canOpenProgress = canOpenProgress;
+    }
+
 
     sort(data) {
         if (data.length < 2) {
@@ -128,8 +142,9 @@ class TaskModel {
 
     @action
     expandedClick() {
+        this.expandedEvent();
         this.expanded = !this.expanded;
-        save('task_expanded_' + this.type, { expanded: this.expanded });
+        store.save('@mr/taskExpanded' + this.type, { expanded: this.expanded });
         if (this.type === 'home') {
             this.calculateHomeHeight();
         }
@@ -148,6 +163,7 @@ class TaskModel {
 
     @action
     boxClick(box) {
+        this.boxBtnClickEvent(box);
         bridge.showLoading();
         HomeApi.getActivityPrize({ activityNo: this.activityNo, ruleId: box.id }).then(data => {
             this.boxs = this.boxs.map((item) => {
@@ -158,6 +174,7 @@ class TaskModel {
             });
             this.openAlert = true;
             this.alertData = data.data.prizeList || [];
+            this.findCanOpenProgress();
             bridge.hiddenLoading();
         }).catch(err => {
             bridge.$toast(err.msg);
@@ -167,6 +184,12 @@ class TaskModel {
 
     @action
     getMissionPrize(item, isSubTask) {
+        this.missionBtnClickEvent(item);
+        if (item.status === 0) {
+            let { interactiveCode, interactiveValue, category } = item;
+            IntervalMsgNavigate(parseInt(interactiveCode), interactiveValue, category===1);
+            return;
+        }
         bridge.showLoading();
         HomeApi.getMissionPrize({
             activityNo: this.activityNo,
@@ -189,9 +212,6 @@ class TaskModel {
                 }
                 return tasks;
             });
-            if (item.prizeValue) {
-                this.progress = this.progress + item.prizeValue;
-            }
             this.boxs = this.boxs.map(box => {
                 if (this.progress >= box.value && box.prizeStatus === 0) {
                     box.prizeStatus = 1;
@@ -214,9 +234,9 @@ class TaskModel {
             homeHeight = 0;
         } else {
             if (this.expanded) {
-                homeHeight = px2dp(48 + 383 + 10);
+                homeHeight = px2dp(48 + 383 + 10+ 10);
             } else {
-                homeHeight = px2dp(48 + 83 + 10);
+                homeHeight = px2dp(48 + 83 + 10+ 30);
             }
         }
         if (homeHeight !== this.homeHeight) {
@@ -225,10 +245,28 @@ class TaskModel {
         }
     }
 
+    /** 埋点相关*/
+    boxBtnClickEvent(item){
+        track(trackEvent.BoxBtnClick,{boxNum: this.boxs.indexOf(item), userValue: this.progress});
+    }
 
+    missionBtnClickEvent(item){
+        track(trackEvent.MissionBtnClick,{
+            missionBtnName:item.status === 0 ? '前往' : '领奖',
+            missionId:item.no,
+            missionName: item.name,
+            missionIndex: this.tasks.indexOf(item),
+            userValue: this.progress});
+    }
+
+    expandedEvent(){
+        track(trackEvent.MissionFrameBtnClick,{missionFrameBtnName: this.expanded ?
+                '收起任务列表' : '做任务赚活跃值', userValue: this.progress});
+    }
 }
 
 const taskModel = new TaskModel();
+taskModel.type = 'home';
 taskModel.getLocationExpanded();
 const mineTaskModel = new TaskModel();
 mineTaskModel.type = 'mine';

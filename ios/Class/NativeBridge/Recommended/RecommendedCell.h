@@ -23,11 +23,11 @@ NS_ASSUME_NONNULL_BEGIN
 
   //点击回调
 - (void)labelClick:(RecommendedCell*)cell;
--(void)clickGood:(GoodsDataModel*)goods;
+-(void)clickGood:(GoodsDataModel*)goods cell:(RecommendedCell*)cell;
 -(void)zanClick:(RecommendedCell*)cell;
 -(void)downloadClick:(RecommendedCell*)cell;
 -(void)shareClick:(RecommendedCell*)cell;
--(void)addCar:(GoodsDataModel*)goods;
+-(void)addCar:(GoodsDataModel*)goods cell:(RecommendedCell*)cell;
 -(void)imageClick:(NSArray*)images tag:(NSInteger)tag;
 
 @end
@@ -37,6 +37,7 @@ typedef void(^cellBlock)(RecommendedCell*);//block写法比较特殊，一般重
 
 @interface RecommendedCell : UITableViewCell
 @property (nonatomic,strong) JXModelData * model;
+@property (nonatomic,assign) BOOL type;
 @property (nonatomic,copy) cellBlock block;
 @property (nonatomic, weak) id<JXCellDelegate> cellDelegate;
 @end

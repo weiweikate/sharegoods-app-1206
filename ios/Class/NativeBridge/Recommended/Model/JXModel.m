@@ -27,6 +27,15 @@
            };
 }
 
+- (NSString *)title
+{
+  if (_title) {
+    return _title;
+  }
+  return  @"";
+}
+
+
 @end
 
 @implementation GoodsDataModel

@@ -72,13 +72,14 @@ import { UserLevelModalView } from './view/TaskModalView';
 
 const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
     <Text style={styles.text}
-          allowFontScaling={false}>{errorMsg ? errorMsg : (isEnd ? '我也是有底线的' : (isFetching ? '加载中...' : '加载更多'))}</Text>
+          allowFontScaling={false}>{errorMsg ? errorMsg : (isEnd ? '我也是有底线的' : (isFetching ? '加载中...' : '加载更多中...'))}</Text>
 </View>;
 
 @observer
 class HomePage extends BasePage {
 
     st = 0;
+    offsetY = 0;
 
     $navigationBarOptions = {
         title: '',
@@ -157,10 +158,10 @@ class HomePage extends BasePage {
 
     constructor(props) {
         super(props);
-        InteractionManager.runAfterInteractions(() => {
-            homeModule.loadHomeList(true);
-        });
-
+        // 重置
+        homeModule.initHomeParams();
+        homeTabManager.setAboveRecommend(false);
+        this.offsetY = 0;
     }
 
     componentDidMount() {
@@ -174,34 +175,53 @@ class HomePage extends BasePage {
                     homeModalManager.leaveHome();
                 }
                 BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+            }
+        );
 
+        this.willFocusSubscription = this.props.navigation.addListener(
+            'willFocus',
+            payload => {
+                const { state } = payload;
+                if (state && state.routeName === 'HomePage') {
+                    if (homeModule.firstLoad) {
+                        homeModule.loadHomeList(true);
+                    }
+                }
             }
         );
 
         this.didFocusSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
-                if (user.token) {
-                    this.loadMessageCount();
-                } else {
-                    this.setState({
-                        hasMessage: false
-                    });
-                }
-                const { state } = payload;
+                BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 
+                const { state } = payload;
                 if (state && state.routeName === 'HomePage') {
                     this.luckyIcon && this.luckyIcon.getLucky(1, '');
                     homeTabManager.setHomeFocus(true);
                     homeModule.homeFocused(true);
                     homeModalManager.entryHome();
-                    homeModalManager.refreshPrize();
-                    taskModel.getData();
+                    user.getToken().then(() => {//让user初始化完成
+                        this.luckyIcon && this.luckyIcon.getLucky(1, '');
+                        homeModalManager.requestData();
+                        if (user.token) {
+                            this.loadMessageCount();
+                        } else {
+                            this.setState({
+                                hasMessage: false
+                            });
+                        }
+                        if (!homeModule.firstLoad) {
+                            taskModel.getData();
+                        }
+                        homeModalManager.refreshPrize();
+                    });
                     if (!homeModule.firstLoad) {
                         limitGoModule.loadLimitGo(false);
                     }
+                    // 修复首页图标不准确
+                    this.homeTabChange();
                 }
-                BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
                 TrackApi.homePage();//埋点
             }
         );
@@ -212,15 +232,29 @@ class HomePage extends BasePage {
         this.listenerHomeRefresh = JSManagerEmitter.addListener(HOME_REFRESH, this.homeTypeRefresh);
         this.listenerSkip = JSManagerEmitter.addListener(HOME_SKIP, this.homeSkip);
 
-        InteractionManager.runAfterInteractions(() => {
-            user.getToken().then(() => {//让user初始化完成
-                this.luckyIcon && this.luckyIcon.getLucky(1, '');
-                homeModalManager.requestData();
-                this.loadMessageCount();
-                taskModel.getData();
-            });
-        });
     }
+
+    homeTabChange = () => {
+        this.toGoods && this.toGoods.measure((fx, fy, w, h, left, top) => {
+            if (top) {
+                if (top < 0) {
+                    if (!homeTabManager.isAboveRecommend) {
+                        homeTabManager.setAboveRecommend(true);
+                    }
+                } else {
+                    if (this.offsetY > height && top < scrollDist) {
+                        if (!homeTabManager.isAboveRecommend) {
+                            homeTabManager.setAboveRecommend(true);
+                        }
+                    } else {
+                        if (homeTabManager.isAboveRecommend) {
+                            homeTabManager.setAboveRecommend(false);
+                        }
+                    }
+                }
+            }
+        });
+    };
 
     homeTypeRefresh = (type) => {
         homeModule.refreshHome(type);
@@ -234,6 +268,7 @@ class HomePage extends BasePage {
 
     componentWillUnmount() {
         this.willBlurSubscription && this.willBlurSubscription.remove();
+        this.willFocusSubscription && this.willFocusSubscription.remove();
         this.didFocusSubscription && this.didFocusSubscription.remove();
         this.listener && this.listener.remove();
         this.listenerMessage && this.listenerMessage.remove();
@@ -283,7 +318,7 @@ class HomePage extends BasePage {
         } else if (type === homeType.user) {
             return <HomeUserView navigate={this.$navigate}/>;
         } else if (type === homeType.task) {
-            return <TaskVIew type={'home'}/>;
+            return <TaskVIew type={'home'} style={{marginTop: ScreenUtils.autoSizeWidth(10)}}/>;
         } else if (type === homeType.channel) {
             return <HomeChannelView navigate={this.$navigate}/>;
         } else if (type === homeType.expandBanner) {
@@ -324,12 +359,12 @@ class HomePage extends BasePage {
     }
 
     _onListViewScroll = (event) => {
-        if (!this.props.isFocused) {
+        if (!homeModule.isFocused) {
             return;
         }
-        let offsetY = event.nativeEvent.contentOffset.y;
+        this.offsetY = event.nativeEvent.contentOffset.y;
         this.toGoods && this.toGoods.measure((fx, fy, w, h, left, top) => {
-            if (offsetY > height && top < scrollDist) {
+            if (this.offsetY > height && top < scrollDist) {
                 homeTabManager.setAboveRecommend(true);
             } else {
                 homeTabManager.setAboveRecommend(false);

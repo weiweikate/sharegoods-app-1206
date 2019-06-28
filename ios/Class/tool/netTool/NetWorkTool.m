@@ -188,4 +188,12 @@
     }];
 }
 
++ (NSURLSessionDataTask *)dowmload:(NSString *)url
+                        parameters:(nullable id)parameters
+                          progress:(nullable void (^)(NSProgress *downloadProgress))downloadProgress
+                           success:(nullable void (^)(NSURLSessionDataTask *task, id _Nullable responseObject))success
+                           failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError *error))failure
+{
+ return [[self manager] GET:url parameters:parameters progress:downloadProgress success:success failure:failure];
+}
 @end

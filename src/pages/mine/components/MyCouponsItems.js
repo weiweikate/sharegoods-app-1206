@@ -22,9 +22,9 @@ import { MRText as Text, MRTextInput as TextInput } from '../../../components/ui
 import couponsModel from '../model/CouponsModel';
 import CouponExplainItem from './CouponExplainItem';
 import CouponNormalItem from './CouponNormalItem';
-import RouterMap from '../../../navigation/RouterMap';
+import RouterMap, { backToHome, routePush } from '../../../navigation/RouterMap';
 
-const NoMessage = res.couponsImg.coupons_no_data;
+const NoMessage = res.placeholder.noCollect;
 const plusIcon = res.couponsImg.youhuiquan_icon_jia_nor;
 const jianIcon = res.couponsImg.youhuiquan_icon_jian_nor;
 
@@ -196,7 +196,7 @@ export default class MyCouponsItems extends Component {
         } else {
             return (
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                    <Image source={NoMessage} style={{ width: 110, height: 110, marginTop: 112 }}/>
+                    <Image source={NoMessage} style={{ marginTop: 101 }}/>
                     <Text style={{ color: DesignRule.textColor_instruction, fontSize: 15, marginTop: 11 }}
                           allowFontScaling={false}>还没有优惠券哦</Text>
                     <Text style={{ color: DesignRule.textColor_instruction, fontSize: 12, marginTop: 3 }}
@@ -238,8 +238,7 @@ export default class MyCouponsItems extends Component {
     };
 
     _gotoLookAround = () => {
-        this.props.nav.popToTop();
-        this.props.nav.navigate('HomePage');
+        backToHome();
     };
 
     render() {
@@ -565,27 +564,27 @@ export default class MyCouponsItems extends Component {
     clickItem = (index, item) => {
         //礼包
         if (item.redirectType && item.redirectType === 10) {
-            this.props.nav.navigate(RouterMap.TopicDetailPage, { activityType: 3, activityCode: item.redirectUrl });
+            routePush(RouterMap.TopicDetailPage, { activityType: 3, activityCode: item.redirectUrl });
         }
 
         //专题(老版)
         if (item.redirectType && item.redirectType === 11) {
-            this.props.nav.navigate(RouterMap.DownPricePage, { linkTypeCode: item.redirectUrl });
+            routePush(RouterMap.DownPricePage, { linkTypeCode: item.redirectUrl });
         }
 
         //商品
         if (item.redirectType && item.redirectType === 12) {
-            this.props.nav.navigate(RouterMap.ProductDetailPage, { productCode: item.redirectUrl });
+            routePush(RouterMap.ProductDetailPage, { productCode: item.redirectUrl });
         }
 
         //秀场
         if (item.redirectType && item.redirectType === 13) {
-            this.props.nav.navigate(RouterMap.ShowRichTextDetailPage, { code: item.redirectUrl });
+            routePush(RouterMap.ShowRichTextDetailPage, { code: item.redirectUrl });
         }
 
         //h5链接
         if (item.redirectType && item.redirectType === 14) {
-            this.props.nav.navigate('HtmlPage', { uri: item.redirectUrl });
+            routePush('HtmlPage', { uri: item.redirectUrl });
         }
     };
 }
