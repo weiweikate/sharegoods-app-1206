@@ -129,7 +129,6 @@ export default class ShopCartPage extends BasePage {
                         this._renderRowHiddenComponent(data, rowMap)
                     )}
                     renderHeaderView={(sectionData) => {
-                        console.log(sectionData.section);
                         {
                             return (<SectionHeaderView sectionData={sectionData.section} navigate={this.$navigate}/>);
                         }
