@@ -24,6 +24,7 @@ import StringUtils from '../../../../utils/StringUtils';
 import RouterMap from '../../../../navigation/RouterMap';
 import EmptyView from '../../../../components/pageDecorator/BaseView/EmptyView';
 import EmptyUtils from '../../../../utils/EmptyUtils';
+import LinearGradient from 'react-native-linear-gradient'
 
 const { px2dp } = ScreenUtils;
 
@@ -35,7 +36,6 @@ const taskImg = res.cashAccount.renwu_icon;
 const yiyuanImg = res.cashAccount.quan_icon;
 const zensong = res.cashAccount.zengsong_icon;
 const xiugou_reword = res.cashAccount.renwuShuoMing_icon;
-const account_bg = res.bankCard.account_bg;
 const account_bg_white = res.bankCard.account_bg_white;
 const red_up = res.cashAccount.zhanghu_red;
 const lv_down = res.cashAccount.zhanghu_lv;
@@ -58,7 +58,6 @@ const allKinds = {
     13: { title: '活动奖励', img: zengsong_icon }
 };
 
-const headerHeight = ScreenUtils.statusBarHeight + 44;
 
 @observer
 export default class MyIntegralAccountPage extends BasePage {
@@ -107,15 +106,6 @@ export default class MyIntegralAccountPage extends BasePage {
                 });
             }
         }
-
-        this.headerBg.setNativeProps({
-            opacity: this.st,
-        });
-
-        this.header.setNativeProps({
-            opacity: this.st,
-            position: this.st === 1 ? null : 'absolute',
-        });
     };
 
     //**********************************ViewPart******************************************
@@ -128,7 +118,7 @@ export default class MyIntegralAccountPage extends BasePage {
 
         return (
             <View style={styles.mainContainer}>
-                <View ref={(ref)=>{this.header = ref}} style={{position:'absolute',height: headerHeight}}/>
+                {this.renderHeader()}
                 <SectionList
                     renderSectionHeader={this.sectionComp}
                     renderItem={this.renderItem}
@@ -143,8 +133,6 @@ export default class MyIntegralAccountPage extends BasePage {
                     onScroll={(e)=>{this._onScroll(e)}}
                     showsVerticalScrollIndicator={false}
                 />
-                {this.navBackgroundRender()}
-                {this.renderHeader()}
             </View>
         );
     }
@@ -153,11 +141,11 @@ export default class MyIntegralAccountPage extends BasePage {
         return (
             <ImageBackground source={account_bg_white} resizeMode={'stretch'} style={{
                 position: 'absolute',
-                top: px2dp(66),
+                top: 0,
                 height: px2dp(184),
                 width: ScreenUtils.width,
                 left: 0,
-                paddingHorizontal: DesignRule.margin_page
+                paddingHorizontal: DesignRule.margin_page,
             }}>
 
                 <View style={styles.withdrawWrapper}>
@@ -188,7 +176,7 @@ export default class MyIntegralAccountPage extends BasePage {
                     lineHeight: 58
                 }}>{user.userScore ? user.userScore : 0}</Text>
 
-                <View style={{display:'flex', flexDirection:'row', marginBottom: 15, marginTop: 15}} >
+                <View style={{display:'flex', flexDirection:'row',marginTop: 15}} >
                     <View style={{flex:1,marginLeft: 15, justifyContent:'center'}}>
                         <Text style={styles.numTextStyle}>{user.blockedUserScore ? user.blockedUserScore : '0.00'}</Text>
                         <Text style={styles.numRemarkStyle}>待入账秀豆（枚）</Text>
@@ -202,24 +190,13 @@ export default class MyIntegralAccountPage extends BasePage {
         );
     }
 
-    navBackgroundRender = ()=> {
-        return (
-            <View ref={(ref) => this.headerBg = ref}
-                  style={{
-                      backgroundColor: '#FF0050',
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      height: headerHeight,
-                      opacity: 0
-                  }}/>
-        );
-    };
 
     renderHeader = () => {
         return (
-            <View  style={{ position: 'absolute', top: 0, left: 0, right: 0 }}>
+            <LinearGradient start={{ x: 0, y: 0 }}
+                            end={{ x: 1, y: 0 }}
+                            colors={['#FF0050', '#FC5D39']}
+            >
                 <View style={styles.headerWrapper}>
                     <TouchableWithoutFeedback onPress={() => {
                         this.$navigateBack();
@@ -244,7 +221,7 @@ export default class MyIntegralAccountPage extends BasePage {
                     </Text>
                     <View style={{flex:1}}/>
                 </View>
-            </View>
+            </LinearGradient>
         );
     };
 
@@ -253,10 +230,15 @@ export default class MyIntegralAccountPage extends BasePage {
         let key = info.section.key;
         if (key === 'A') {
             return (
-                <ImageBackground resizeMode={'stretch'} source={account_bg}
-                                 style={{marginBottom: 10, height: px2dp(234), width: ScreenUtils.width, backgroundColor: 'white'}}>
+                <View>
+                    <LinearGradient style={{marginBottom: 10, height: px2dp(164), width: ScreenUtils.width, backgroundColor: 'white'}}
+                                    start={{x: 0, y: 0}}
+                                    end={{x: 1, y: 0}}
+                                    colors={['#FF0050', '#FC5D39']}
+                    />
+                    <View style={{height:10, width:ScreenUtils.width, backgroundColor:'white'}}/>
                     {this._accountInfoRender()}
-                </ImageBackground>
+                </View>
             )
         }
         if(item.title && item.title === 'empty'){
@@ -300,7 +282,7 @@ export default class MyIntegralAccountPage extends BasePage {
                             </View>
                             <Text style={{
                                 fontSize: 12, color: DesignRule.textColor_instruction
-                            }}>{item.realBalance && `${item.realBalance}`.length > 0 ? `已入账：${item.realBalance}` : '待入账：？'}</Text>
+                            }}>{item.realUserScore == 0 || (  item.realUserScore && item.realUserScore >= 0) ? `已入账：${item.realUserScore}` : '待入账：？'}</Text>
                         </View>
                         :
                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -395,7 +377,7 @@ export default class MyIntegralAccountPage extends BasePage {
                         capital: use_type_symbol[item.usType] + (item.userScore ? item.userScore : 0),
                         iconImage: allKinds[item.useType] ? allKinds[item.useType].img : taskImg,
                         capitalRed: use_type_symbol[item.usType] === '+',
-                        realBalance: item.realBalance,
+                        realUserScore: item.realUserScore,
                         status: item.status
                     });
                 });
