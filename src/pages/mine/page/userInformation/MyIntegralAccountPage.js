@@ -300,7 +300,7 @@ export default class MyIntegralAccountPage extends BasePage {
                             </View>
                             <Text style={{
                                 fontSize: 12, color: DesignRule.textColor_instruction
-                            }}>{item.realBalance && `${item.realBalance}`.length > 0 ? `已入账：${item.realBalance}` : '待入账：？'}</Text>
+                            }}>{item.realUserScore && `${item.realUserScore}`.length > 0 ? `已入账：${item.realUserScore}` : '待入账：？'}</Text>
                         </View>
                         :
                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
