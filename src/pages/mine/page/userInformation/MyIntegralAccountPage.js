@@ -357,7 +357,7 @@ export default class MyIntegralAccountPage extends BasePage {
     };
     //**********************************BusinessPart******************************************
     componentDidMount() {
-        this.onLoad();
+        this.onRefresh();
     }
 
     getDataFromNetwork = () => {
