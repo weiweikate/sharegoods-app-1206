@@ -88,7 +88,7 @@ export default class SectionHeaderView extends Component {
         //删掉他娘头部空视图 ok？
         viewItemList.shift();
         return (
-            <View style={{width:section_width,flexDirection:'row', flexWrap: 'wrap',marginLeft:px2dp(-8)}}>
+            <View style={{width:section_width,flexDirection:'row',alignItems:'flex-start', flexWrap: 'wrap',marginLeft:px2dp(-8)}}>
                 <View style={{width:section_width,height:px2dp(15)}}/>
                 <View style={{ marginLeft:px2dp(9),width: ScreenUtils.width, height: px2dp(35), flexDirection: 'row', alignItems: 'center' }}>
                     <View style={{ width: px2dp(2), height: px2dp(8),borderRadius:px2dp(1), backgroundColor: '#FF0050'}}/>
