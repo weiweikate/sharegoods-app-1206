@@ -85,7 +85,7 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
             params.width = realWidth;
             params.height = realHeight;
             imageView.setLayoutParams(params);
-            ImageLoadUtils.loadRoundNetImage(imgUrl, imageView, realWidth, realHeight, arr_raduis);
+            ImageLoadUtils.loadRoundNetImage(imgUrl, imageView, realWidth, realHeight, arr_raduis,false);
         }
         TextView name = helper.getView(R.id.showground_item_name);
         name.setText(item.getUserInfoVO().getUserName());
