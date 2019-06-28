@@ -164,12 +164,14 @@
     _hotNumNode.maximumNumberOfLines = 1;
     NSString * num = @"";
     if (_model.hotCount) {
-      if(_model.hotCount<999){
+      if(_model.hotCount<=999){
         num = [NSString stringWithFormat:@"%ld",_model.hotCount>0?_model.hotCount:0];
+      }else if(_model.hotCount<10000){
+        num = [NSString stringWithFormat:@"%ldK+",_model.hotCount>0?_model.hotCount/1000:0];
       }else if(_model.hotCount<100000){
-        num = @"999+";
+        num = [NSString stringWithFormat:@"%ldW+",_model.hotCount>0?_model.hotCount/10000:0];
       }else{
-        num = @"10w+";
+        num = @"10W+";
       }
     }
     _hotNumNode.attributedText = [[NSAttributedString alloc]initWithString:num
