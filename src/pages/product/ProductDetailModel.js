@@ -184,7 +184,7 @@ export default class ProductDetailModel {
     @observable promotionMaxPrice;
 
     @computed get nameShareText() {
-        const { activityType, activityStatus, promotionDecreaseAmount } = this;
+        const { activityType, activityStatus, promotionDecreaseAmount, secondName } = this;
         if (activityType === activity_type.skill && activityStatus === activity_status.inSell) {
             return {
                 name: `工厂价秒杀，不足24小时！${this.name}`,
@@ -198,7 +198,7 @@ export default class ProductDetailModel {
         } else {
             return {
                 name: `${this.monthSaleCount >= 1000 ? '[明星爆款]' : (this.monthSaleCount >= 500 ? '[人气爆款]' : '[爆款新品]')}${this.name}`,
-                desc: '商品详情'
+                desc: secondName
             };
         }
     }

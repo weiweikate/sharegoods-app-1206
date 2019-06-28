@@ -210,13 +210,13 @@ export default class TagDetailPage extends BasePage {
 
     _render() {
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1 ,paddingHorizontal:px2dp(5)}}>
                 <Waterfall
                     showsVerticalScrollIndicator={false}
                     style={styles.waterfall}
                     data={this.data}
                     renderHeader={this.renderHeader}
-                    gap={px2dp(15)}
+                    gap={px2dp(10)}
                     numberOfColumns={2}
                     expansionOfScope={100}
                     onEndReachedThreshold={1000}
@@ -246,6 +246,7 @@ export default class TagDetailPage extends BasePage {
 var styles = StyleSheet.create({
     emptyTip:{
         color:DesignRule.textColor_secondTitle,
-        fontSize:DesignRule.fontSize_threeTitle
-    }
+        fontSize:DesignRule.fontSize_threeTitle,
+    },
+
 });

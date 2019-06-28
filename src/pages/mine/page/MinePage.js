@@ -253,7 +253,7 @@ export default class MinePage extends BasePage {
                     contentBackgroundColor={'#F7F7F7'}
                     backgroundColor={'white'}
                     renderForeground={this.renderUserHead}
-                    renderStickyHeader={this.renderLevelNameNav}
+                    renderFixedHeader={this.renderLevelNameNav}
                     stickyHeaderHeight={this.state.changeHeader ? 0 : px2dp(44 + statusBarHeight)}
                     parallaxHeaderHeight={ScreenUtils.getImgHeightWithWidth(headerBgSize)}
                     onScroll={this._onScroll}
@@ -475,7 +475,7 @@ export default class MinePage extends BasePage {
                 flexDirection: 'row',
                 alignItems: 'center',
                 height: px2dp(44 + statusBarHeight),
-                width: px2dp(ScreenUtils.width),
+                width: ScreenUtils.width,
                 paddingVertical: 5,
                 backgroundColor:'#ffffff',
             }}>
@@ -635,7 +635,6 @@ export default class MinePage extends BasePage {
                             textAlign: 'center',
                             color: '#333333',
                             includeFontPadding: false,
-                            height: 22,
                             maxWidth: 80,
                             fontSize: this.getAdjustsFontSize(`${num}`)
                         }}>
@@ -683,7 +682,7 @@ export default class MinePage extends BasePage {
                     marginBottom: px2dp(10)
                 }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <View style={{width:2, height:8,backgroundColor:'#FF0050'}}/>
+                        <View style={{width:2, height:8,backgroundColor:'#FF0050',borderRadius:1}}/>
                         <UIText value={'我的订单'}
                                 style={{
                                     marginLeft: 10,
@@ -731,7 +730,7 @@ export default class MinePage extends BasePage {
                         alignItems:'center',
                         marginTop: px2dp(10)
                     }}>
-                    <View style={{width:2, height:8,backgroundColor:'#FF0050'}} />
+                    <View style={{width:2, height:8,backgroundColor:'#FF0050',borderRadius:1}} />
                     <Text
                         style={{
                             includeFontPadding: false,
@@ -943,7 +942,7 @@ export default class MinePage extends BasePage {
         }
 
 
-        let menu = [service, address, message, setting];
+        let menu = [message, address, service, setting];
 
 
         if (this.state.hasFans) {

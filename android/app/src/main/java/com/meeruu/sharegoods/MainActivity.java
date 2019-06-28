@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.meeruu.commonlib.base.BaseActivity;
@@ -143,7 +144,7 @@ public class MainActivity extends BaseActivity {
     protected void initViewAndData() {
         String imgUrl = (String) SPCacheUtils.get("adBgImg", "");
         String url = (String) SPCacheUtils.get("adImg", "");
-        if (!TextUtils.isEmpty(imgUrl)) {
+        if (!TextUtils.isEmpty(imgUrl) && Fresco.hasBeenInitialized()) {
             ((ViewStub) findViewById(R.id.vs_adv)).inflate();
             ivAdv = findViewById(R.id.iv_adv);
             SimpleDraweeView iv_adv_bg = findViewById(R.id.iv_adv_bg);

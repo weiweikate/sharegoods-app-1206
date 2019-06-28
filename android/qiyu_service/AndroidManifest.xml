@@ -71,6 +71,12 @@
                 android:resource="@xml/ysf_provider" />
         </provider>
 
+        <provider
+            android:name="com.meeruu.qiyu.preference.SharedPreferenceProvider"
+            android:authorities="com.meeruu.preference"
+            android:exported="false"
+            android:process=":remote" />
+
         <activity-alias
             android:name="com.qiyukf.unicorn.ui.activity.ServiceMessageActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"

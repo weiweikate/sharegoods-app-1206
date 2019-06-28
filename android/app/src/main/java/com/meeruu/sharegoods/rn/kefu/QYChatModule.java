@@ -1,5 +1,6 @@
 package com.meeruu.sharegoods.rn.kefu;
 
+import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
@@ -16,7 +17,7 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.meeruu.commonlib.event.QiyuUrlEvent;
 import com.meeruu.commonlib.utils.AppUtils;
-import com.meeruu.commonlib.utils.SPCacheUtils;
+import com.meeruu.qiyu.preference.PreferenceUtil;
 import com.qiyukf.unicorn.api.ConsultSource;
 import com.qiyukf.unicorn.api.ProductDetail;
 import com.qiyukf.unicorn.api.Unicorn;
@@ -173,7 +174,7 @@ public class QYChatModule extends ReactContextBaseJavaModule {
         String title = "";
         if (params.hasKey("shopId")) {
             String shopId = params.getString("shopId");
-            if (TextUtils.isEmpty(shopId)) {
+            if (TextUtils.isEmpty(shopId) || "hzmrwlyxgs".equals(shopId)) {
                 title = "平台客服";
             } else {
                 if (params.hasKey("title")) {
@@ -183,16 +184,17 @@ public class QYChatModule extends ReactContextBaseJavaModule {
         } else {
             title = "平台客服";
         }
+        SharedPreferences preferences = PreferenceUtil.getSharedPreference(mContext, "qiyu");
         double type = params.getDouble("chatType");
         int chatType = (int) type;
         switch (chatType) {
             case BEGIN_FROM_MESSAGE:
-                SPCacheUtils.remove("shopId");
+                preferences.edit().remove("shopId").apply();
                 break;
             case BEGIN_FROM_ORDER:
                 break;
             case BEGIN_FROM_OTHER:
-                SPCacheUtils.remove("shopId");
+                preferences.edit().remove("shopId").apply();
                 break;
             case BEGIN_FROM_PRODUCT:
                 break;
@@ -207,7 +209,11 @@ public class QYChatModule extends ReactContextBaseJavaModule {
         ConsultSource source = new ConsultSource("mine/helper", title, "");
         source.vipLevel = userLevel;
         source.custom = chatType + "";
-        source.shopId = params.hasKey("shopId") ? params.getString("shopId") : "";
+        if (params.hasKey("shopId")) {
+            source.shopId = params.getString("shopId");
+        } else {
+            source.shopId = "";
+        }
         ReadableMap map = params.getMap("data");
         if (map.hasKey("urlString")) {
             ProductDetail productDetail = new ProductDetail.Builder()

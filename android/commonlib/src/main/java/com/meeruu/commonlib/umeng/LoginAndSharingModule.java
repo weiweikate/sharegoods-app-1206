@@ -578,7 +578,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             canvas.drawBitmap(outBitmap, mSrcRect, mDestRect, paint);
         } else {
             int height = (int) (outWidth / (375 * 667.0));
-            Rect mSrcRect = new Rect(0, (outHeight - height) / 2, 0, outHeight - (height / 2));
+            Rect mSrcRect = new Rect(0, (outHeight - height) / 2, outWidth, outHeight - (height / 2));
             Rect mDestRect = new Rect(0, 0, 375 * precision, 667 * precision);
             canvas.drawBitmap(outBitmap, mSrcRect, mDestRect, paint);
         }
@@ -685,7 +685,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         } else {
             int width = outWidth;
             int height = (int) (outWidth / (375 * 667.0));
-            Rect mSrcRect = new Rect(0, (outHeight - height) / 2, 0, outHeight - (height / 2));
+            Rect mSrcRect = new Rect(0, (outHeight - height) / 2, width, outHeight - (height / 2));
             Rect mDestRect = new Rect(0, 0, 375 * precision, 667 * precision);
             canvas.drawBitmap(outBitmap, mSrcRect, mDestRect, paint);
         }
@@ -706,7 +706,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         } else {
             paint.setAntiAlias(true);
             int height = (int) (outWidth / (315 * 345.0));
-            Rect mSrcRect = new Rect(0, (outHeight - height) / 2, 0, (outHeight + height) / 2);
+            Rect mSrcRect = new Rect(0, (outHeight - height) / 2, outWidth, (outHeight + height) / 2);
             Rect mDestRect = new Rect(30 * precision, 57 * precision, 345 * precision, 402 * precision);
             canvas.drawBitmap(bitmap, mSrcRect, mDestRect, paint);
         }
@@ -1223,12 +1223,21 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                         fail.invoke("图片获取失败");
                     }
                 }
+
+                @Override
+                public void onRequestFailure(ImageRequest request, String requestId, Throwable throwable, boolean isPrefetch) {
+                    super.onRequestFailure(request, requestId, throwable, isPrefetch);
+                    fail.invoke("图片获取失败");
+                }
             });
         }
     }
 
     public static void getHeaderBitmap(final Context context, final Bitmap productBitmap, final ShareImageBean shareImageBean, final Callback success, final Callback fail) {
-        if (Fresco.hasBeenInitialized()) {
+        if(TextUtils.isEmpty(shareImageBean.getHeaderImage())){
+            Bitmap header = BitmapFactory.decodeResource(context.getResources(),R.drawable.bg_app_user);
+            draw(context, productBitmap, header, shareImageBean, success, fail);
+        }else if(Fresco.hasBeenInitialized()) {
             ImageLoadUtils.preFetch(Uri.parse(shareImageBean.getHeaderImage()), 0, 0, new BaseRequestListener() {
                 @Override
                 public void onRequestSuccess(ImageRequest request, String requestId, boolean isPrefetch) {
@@ -1236,12 +1245,14 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                     CacheKey cacheKey = DefaultCacheKeyFactory.getInstance().getEncodedCacheKey(request, this);
                     BinaryResource resource = ImagePipelineFactory.getInstance().getMainFileCache().getResource(cacheKey);
                     if (resource == null) {
-                        draw(context, productBitmap, null, shareImageBean, success, fail);
+                        Bitmap header = BitmapFactory.decodeResource(context.getResources(),R.drawable.bg_app_user);
+                        draw(context, productBitmap, header, shareImageBean, success, fail);
                         return;
                     }
                     final File file = ((FileBinaryResource) resource).getFile();
                     if (file == null) {
-                        draw(context, productBitmap, null, shareImageBean, success, fail);
+                        Bitmap header = BitmapFactory.decodeResource(context.getResources(),R.drawable.bg_app_user);
+                        draw(context, productBitmap, header, shareImageBean, success, fail);
                         return;
                     }
                     Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), BitmapUtils.getBitmapOption(2));
@@ -1251,6 +1262,15 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                         draw(context, productBitmap, null, shareImageBean, success, fail);
                     }
                 }
+
+                @Override
+                public void onRequestFailure(ImageRequest request, String requestId, Throwable throwable, boolean isPrefetch) {
+                    super.onRequestFailure(request, requestId, throwable, isPrefetch);
+                    Bitmap header = BitmapFactory.decodeResource(context.getResources(),R.drawable.bg_app_user);
+                    draw(context, productBitmap, header, shareImageBean, success, fail);
+                }
+
+
             });
         }
     }
@@ -1307,14 +1327,11 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             canvas.drawBitmap(bitmap, mSrcRect, mDestRect, paint);
         } else {
             height = outWidth;
-            Rect mSrcRect = new Rect(0, (outHeight - height) / 2, 0, (outHeight + height) / 2);
+            Rect mSrcRect = new Rect(0, (outHeight - height) / 2, outWidth, (outHeight + height) / 2);
             Rect mDestRect = new Rect(24 * precision, 46 * precision, 351 * precision, 373 * precision);
             canvas.drawBitmap(bitmap, mSrcRect, mDestRect, paint);
         }
 
-        if (bitmap != null && !bitmap.isRecycled()) {
-            bitmap.recycle();
-        }
 
         Bitmap topRightBtp = null;
 
@@ -1434,6 +1451,12 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         if(result != null && !result.isRecycled()){
             result.recycle();
         }
+
+        if (bitmap != null && !bitmap.isRecycled()) {
+            bitmap.recycle();
+        }
+
+
         if (!TextUtils.isEmpty(path)) {
             success.invoke(path);
         } else {

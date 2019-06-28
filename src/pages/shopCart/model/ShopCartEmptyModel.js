@@ -1,15 +1,18 @@
 import { observable, action ,autorun} from 'mobx';
 import ShopCartAPI from '../api/ShopCartApi';
 import user from '../../../model/user';
+import ScreenUtils from '../../../utils/ScreenUtils';
 
 const EmptyViewTypes = {
     topEmptyItem: 'topEmptyItem',
     recommendListItem: 'recommendListItem'
 };
 
-const Cell_Height = 168 + 80;
+const {px2dp} = ScreenUtils
+const Cell_Height = px2dp(248);
 
 class ShopCartEmptyModel {
+
     @observable
     emptyViewList = [];
     @observable
@@ -29,10 +32,11 @@ class ShopCartEmptyModel {
             {
                 id: 0,
                 type: EmptyViewTypes.topEmptyItem,
-                height: 168 + 98,
-                imageHeight: 168
+                height: Cell_Height,
+                imageHeight: px2dp(168)
             }
         );
+
 
     };
     @observable
@@ -59,7 +63,7 @@ class ShopCartEmptyModel {
                         id: index,
                         type: EmptyViewTypes.recommendListItem,
                         height: Cell_Height,
-                        imageHeight: 168
+                        imageHeight: px2dp(168)
                     };
                 });
                 if (isRefresh) {
@@ -67,7 +71,7 @@ class ShopCartEmptyModel {
                         id: 0,
                         type: EmptyViewTypes.topEmptyItem,
                         height: Cell_Height,
-                        imageHeight: 168
+                        imageHeight: px2dp(168)
                     });
                     newArr = newArr.concat(tempArr);
                 }
@@ -90,7 +94,7 @@ class ShopCartEmptyModel {
                         id: index,
                         type: EmptyViewTypes.recommendListItem,
                         height: Cell_Height,
-                        imageHeight: 168
+                        imageHeight: px2dp(168)
                     };
                 });
                 if (isRefresh) {
@@ -98,7 +102,7 @@ class ShopCartEmptyModel {
                         id: 0,
                         type: EmptyViewTypes.topEmptyItem,
                         height: Cell_Height,
-                        imageHeight: 168
+                        imageHeight: px2dp(168)
                     });
                     newArr = newArr.concat(tempArr);
                 }

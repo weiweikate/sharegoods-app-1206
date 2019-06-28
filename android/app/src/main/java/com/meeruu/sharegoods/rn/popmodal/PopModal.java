@@ -12,6 +12,7 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.FrameLayout;
@@ -298,6 +299,10 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
             frameLayout.removeAllViews();
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
             frameLayout.setLayoutParams(params);
+            ViewGroup parent = (ViewGroup) mHostView.getParent();
+            if (parent != null) {
+                parent.removeViewAt(0);
+            }
             frameLayout.addView(mHostView);
             frameLayout.setFocusable(true);
             frameLayout.setFocusableInTouchMode(true);

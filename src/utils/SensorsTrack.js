@@ -73,7 +73,8 @@ const mineEvent = {
     ClickRealCodeentityVerify: 'ClickRealCodeentityVerify', //点击实名认证
     ReadCodeentityVerifySuccss: 'ReadCodeentityVerifySuccss', //实名认证成功
     ClickOnlineCustomerService: 'ClickOnlineCustomerService', //点击在线客服 0：未知 1：tab我的-帮助与客服 2：商品详情页3：我的订单 4：售后详情页 100：其他
-    ClickPhoneCustomerService: 'ClickPhoneCustomerService' //点击客服电话    0：未知 1：tab我的-帮助与客服 2：商品详情页3：我的订单 4：售后详情页 100：其他
+    ClickPhoneCustomerService: 'ClickPhoneCustomerService', //点击客服电话    0：未知 1：tab我的-帮助与客服 2：商品详情页3：我的订单 4：售后详情页 100：其他
+    ViewInviteFriends:'ViewInviteFriends', //点击邀请好友按钮
 }
 
 const afterEvent = {

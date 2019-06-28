@@ -244,6 +244,7 @@ public class CommModule extends ReactContextBaseJavaModule {
             File file = null;
             try {
                 file = new File(new URI(filePath));
+                filePath = file.getAbsolutePath();
             }catch (Exception e){
 
             }
