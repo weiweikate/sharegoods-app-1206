@@ -54,7 +54,7 @@ export default class ShopCartEmptyView extends Component {
             dim.width = ScreenUtils.width;
             dim.height = px2dp(350)
         } else {
-            dim.width = ScreenUtils.width / 2;
+            dim.width = ScreenUtils.width / 2 - px2dp(8);
             dim.height = px2dp(168 + 88)
         }
     });
@@ -95,7 +95,7 @@ export default class ShopCartEmptyView extends Component {
     };
     _renderHeaderView = () => {
         return (
-            <View style={{ width: ScreenUtils.width, height:px2dp(350) , paddingLeft: px2dp(5), paddingRight: px2dp(15) }}>
+            <View style={{ width: ScreenUtils.width, height:px2dp(350) }}>
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                     <Image source={shopCartNoGoods} style={{ width: px2dp(244), height: px2dp(140) }} />
                     <MRText style={{
@@ -116,27 +116,31 @@ export default class ShopCartEmptyView extends Component {
     render() {
         const {emptyViewList} = shopCartEmptyModel
         this.dataProvider = this.dataProvider.cloneWithRows(emptyViewList);
-        return (<RecyclerListView
-                ref={(ref) => {
-                    this.recyclerListView = ref;
-                }}
-                style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1,paddingLeft:px2dp(8), flex: 1 }}
-                refreshControl={<RefreshControl refreshing={homeModule.isRefreshing}
-                                                onRefresh={this._onRefresh.bind(this)}
-                                                colors={[DesignRule.mainColor]}/>}
-                // onEndReached={this._onEndReached.bind(this)}
-                onEndReachedThreshold={ScreenUtils.height / 3}
-                dataProvider={this.dataProvider}
-                rowRenderer={this._renderItem.bind(this)}
-                layoutProvider={this.layoutProvider}
-                showsVerticalScrollIndicator={false}
-                // onScroll={this._onListViewScroll}
-                renderFooter={() => <Footer
-                    isFetching={shopCartEmptyModel.isFetching}
-                    errorMsg={shopCartEmptyModel.errorMsg}
-                    isEnd={shopCartEmptyModel.isEnd}/>
-                }
-            />);
+        return (
+            <View style={{paddingLeft:px2dp(10),flex:1}}>
+                <RecyclerListView
+                    ref={(ref) => {
+                        this.recyclerListView = ref;
+                    }}
+                    style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1 }}
+                    refreshControl={<RefreshControl refreshing={homeModule.isRefreshing}
+                                                    onRefresh={this._onRefresh.bind(this)}
+                                                    colors={[DesignRule.mainColor]}/>}
+                    // onEndReached={this._onEndReached.bind(this)}
+                    onEndReachedThreshold={ScreenUtils.height / 3}
+                    dataProvider={this.dataProvider}
+                    rowRenderer={this._renderItem.bind(this)}
+                    layoutProvider={this.layoutProvider}
+                    showsVerticalScrollIndicator={false}
+                    // onScroll={this._onListViewScroll}
+                    renderFooter={() => <Footer
+                        isFetching={shopCartEmptyModel.isFetching}
+                        errorMsg={shopCartEmptyModel.errorMsg}
+                        isEnd={shopCartEmptyModel.isEnd}/>
+                    }
+                />
+            </View>
+           );
     }
 }
 ShopCartEmptyView.propTypes = {
