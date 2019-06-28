@@ -1,58 +1,62 @@
-import { View, TouchableOpacity} from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import React, { Component } from 'react';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
 import { MRText } from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
+import ImageLoad from '@mr/image-placeholder';
+
 const { px2dp } = ScreenUtils;
-const cell_width = (ScreenUtils.width -px2dp(35))/2
+const cell_width = (ScreenUtils.width - px2dp(35)) / 2;
 
 export default class ShopCartEmptyCell extends Component {
     constructor(props) {
         super(props);
     }
+
     render() {
-        const { itemData,onClick} = this.props;
+        const { itemData, onClick } = this.props;
         return (
-                <View style={{
-                    width:cell_width,
-                    borderRadius:px2dp(6),
-                    height: itemData.height,
-                    backgroundColor:DesignRule.color_fff,
-                    marginTop:px2dp(5)
+            <View style={{
+                width: cell_width,
+                borderRadius: px2dp(5),
+                height: itemData.height,
+                backgroundColor: DesignRule.color_fff,
+                marginTop: px2dp(5),
+                overflow: 'hidden'
+            }}>
+                <TouchableOpacity onPress={() => {
+                    onClick();
                 }}>
-                    <TouchableOpacity onPress={()=>{
-                        onClick();
-                    }}>
-                        <PreLoadImage
-                            imageUri={itemData.imgUrl}
+                    <ImageLoad
+                        source={{ uri: itemData.imgUrl }}
+                        style={{
+                            width: cell_width,
+                            height: itemData.imageHeight,
+                        }}
+                        showPlaceholder={false}
+                    />
+                    <MRText numberOfLines={2}
                             style={{
-                                width: cell_width ,
-                                height: itemData.imageHeight ,
-                                borderRadius:px2dp(6)
-                            }}
-                        />
-                        <MRText numberOfLines={2}
-                                style={{ fontSize: px2dp(13),
-                                    color: DesignRule.textColor_mainTitle,
-                                    marginTop: px2dp(5) ,
-                                    marginLeft:px2dp(10),
-                                    marginRight:px2dp(10),
-                                    height:px2dp(45)
-                                }}>
-                            {itemData.name}
-                        </MRText>
-                        <View style={{ flexDirection: 'row', marginTop: px2dp(3) }}>
-                            {this.createTipView([])}
+                                fontSize: px2dp(13),
+                                color: DesignRule.textColor_mainTitle,
+                                marginTop: px2dp(5),
+                                marginLeft: px2dp(10),
+                                marginRight: px2dp(10),
+                                height: px2dp(45)
+                            }}>
+                        {itemData.name}
+                    </MRText>
+                    <View style={{ flexDirection: 'row', marginTop: px2dp(3) }}>
+                        {this.createTipView([])}
+                    </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: px2dp(10) }}>
+                        <View style={{ flex: 1 }}>
+                            <MRText style={{ color: 'rgba(255, 0, 80, 1)', fontSize: px2dp(12) }}>
+                                {`￥${itemData.originalPrice}`}
+                            </MRText>
                         </View>
-                        <View style={{ flexDirection: 'row',alignItems:'center' ,paddingLeft:px2dp(10) }}>
-                            <View style={{ flex: 1 }}>
-                                <MRText style={{color:'rgba(255, 0, 80, 1)',fontSize:px2dp(12)}}>
-                                    {`￥${itemData.originalPrice}`}
-                                </MRText>
-                            </View>
-                        </View>
-                    </TouchableOpacity>
+                    </View>
+                </TouchableOpacity>
             </View>
         );
     }
