@@ -21,11 +21,9 @@ import {
 import BottomSingleSelectModal from '../components/BottomSingleSelectModal';
 import StringUtils from '../../../utils/StringUtils';
 import AutoExpandingInput from '../../../components/ui/AutoExpandingInput';
-// import DateUtils from '../../../utils/DateUtils';
 import BusinessUtils from '../../mine/components/BusinessUtils';
 
 import OrderApi from '../api/orderApi';
-// import SelectionPage from '../../home/product/SelectionPage';
 import EmptyUtils from '../../../utils/EmptyUtils';
 import bridge from '../../../utils/bridge';
 import DesignRule from '../../../constants/DesignRule';
@@ -66,9 +64,7 @@ class AfterSaleServicePage extends BasePage {
     }
 
     componentDidMount() {
-       setTimeout(()=>{
-           this.loadPageData();
-       },1000)
+        this.loadPageData();
     }
 
     $isMonitorNetworkStatus() {
@@ -98,13 +94,14 @@ class AfterSaleServicePage extends BasePage {
     renderOrderNum = () => {
         return (
             <View style={{ height: 40, backgroundColor: 'white', justifyContent: 'center' }}>
-                <UIText value={'订单编号：' + this.state.productData.productOrderNo}
+                <UIText value={'订单编号：' + (this.state.productData.merchantOrderNo||'')}
                         style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>
             </View>
         );
     };
     refundAndExchangeType = () => {
         let { payAmount, freightAmount } = this.state.productData;
+        freightAmount = freightAmount || 0;
         switch (this.state.pageType) {
             case 0:
                 return (

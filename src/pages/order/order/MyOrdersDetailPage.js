@@ -338,7 +338,7 @@ export default class MyOrdersDetailPage extends BasePage {
 
 
      loadPageData() {
-       orderDetailModel.loadDetailInfo(this.params.merchantOrderNo);
+       orderDetailModel.loadDetailInfo(this.params.merchantOrderNo || this.params.orderNo || '');
     }
     //去商品详情
     clickItem = (item) => {
@@ -369,7 +369,8 @@ export default class MyOrdersDetailPage extends BasePage {
                 break;
             case 2:
                 this.$navigate('order/afterSaleService/AfterSaleServiceHomePage', {
-                    pageData: item
+                    pageData: item,
+                    merchantOrderNo: orderDetailModel.merchantOrderNo
                     //-1代表普通商品
                 });
                 break;

@@ -13,6 +13,8 @@ import GoodsItem from '../components/GoodsGrayItem';
 import DateUtils from '../../../utils/DateUtils';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
+import { routePush } from '../../../navigation/RouterMap';
+import RouterMap from '../../../navigation/RouterMap';
 const {
     refund,
     return_goods,
@@ -22,19 +24,7 @@ const {
 class AfterSaleServiceHomePage extends BasePage {
     constructor(props) {
         super(props);
-        this.state = {
-            phone: '',
-            pwd: '',
-            thirdType: 1,
-            passwordDis: false,
-            phoneError: false,
-            passwordError: false,
-            /** pageData.orderProductList 如果是产品订单里面就是一个一个商品，如果是礼包、优惠券订单，该数组就只有一个。
-             * orderProductList.orderProductPriceList 就是礼包里面的子商品
-             * index 表示当前退的哪一个商品，如果没有index，说明退的是礼包，那么默认取orderProductList第一个来显示就行
-             */
-        };
-        this.jumpToProductDetailPage = this.jumpToProductDetailPage.bind(this);
+        this.state = {};
     }
 
     $navigationBarOptions = {
@@ -44,44 +34,34 @@ class AfterSaleServiceHomePage extends BasePage {
 
     //**********************************ViewPart******************************************
     _render() {
-
-         let productData = this.params.pageData
+        let productData = this.params.pageData
         return (
             <ScrollView style={DesignRule.style_container}>
-                {this.renderWideLine()}
-                {this.renderServiceType()}
-                {this.renderLine()}
+                <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
+                <View style={{ backgroundColor: 'white', height: 40, justifyContent: 'center', paddingLeft: 15 }}>
+                    <UIText value={'服务类型'} style={{ color: DesignRule.textColor_mainTitle, fontSize: 13 }}/>
+                </View>
                 {this.renderSelect()}
-                {this.renderOrderNum()}
+                <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inColorBg }}/>
+                <View style={{ height: 40, backgroundColor: 'white', justifyContent: 'center' }}>
+                    <UIText value={'订单编号：' + this.params.merchantOrderNo}
+                            style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>
+                </View>
                 <GoodsItem
                     uri={productData.specImg}
                     goodsName={productData.productName}
                     salePrice={StringUtils.formatMoneyString(productData.unitPrice)}
                     category={productData.spec}
                     goodsNum={productData.quantity}
-                   // onPress={() => this.jumpToProductDetailPage()}
                 />
-                {this.renderOrderTime()}
+                <View style={{ height: 40, backgroundColor: 'white', justifyContent: 'center' }}>
+                    <UIText value={'下单时间：' + DateUtils.getFormatDate(this.params.pageData.createTime / 1000)}
+                            style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>
+                </View>
             </ScrollView>
         );
     }
 
-    renderOrderNum = () => {
-        return (
-            <View style={{ height: 40, backgroundColor: 'white', justifyContent: 'center' }}>
-                <UIText value={'订单编号：' + this.params.pageData.productOrderNo}
-                        style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>
-            </View>
-        );
-    };
-    renderOrderTime = () => {
-        return (
-            <View style={{ height: 40, backgroundColor: 'white', justifyContent: 'center' }}>
-                <UIText value={'下单时间：' + DateUtils.getFormatDate(this.params.pageData.createTime / 1000)}
-                        style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>
-            </View>
-        );
-    };
     renderSelect = () => {
         let activityList = this.params.pageData.activityList || [];
         activityList = activityList.map((item) => {return item.activityType})
@@ -94,95 +74,33 @@ class AfterSaleServiceHomePage extends BasePage {
                 continue;//升级礼包     //经验值专区的商品
             }
             // if ((productData.restrictions & status[i]) !== status[i]) {
-                arr.push(
-                    <TouchableOpacity style={{
-                        flexDirection: 'row',
-                        height: 79,
-                        alignItems: 'center',
-                        alignContent: 'center',
-                        marginBottom: 10,
-                        backgroundColor: 'white'
-                    }} onPress={() => this.pageSelect(i)} key={i}>
-                        <UIImage source={image[i]} style={{ width: 50, height: 50, marginBottom: 10, marginLeft: 21 }}/>
-                        <View style={{ marginLeft: 10 }}>
-                            <UIText value={title[i]} style={{ fontSize: 16, color: DesignRule.textColor_mainTitle }}/>
-                            <UIText value={content[i]}
-                                    style={{ fontSize: 15, color: DesignRule.textColor_secondTitle }}/>
-                        </View>
-                    </TouchableOpacity>
-                );
+            arr.push(
+                <TouchableOpacity style={{
+                    flexDirection: 'row',
+                    height: 79,
+                    alignItems: 'center',
+                    alignContent: 'center',
+                    marginBottom: 10,
+                    backgroundColor: 'white'
+                }} onPress={() => this.pageSelect(i)} key={i}>
+                    <UIImage source={image[i]} style={{ width: 50, height: 50, marginBottom: 10, marginLeft: 21 }}/>
+                    <View style={{ marginLeft: 10 }}>
+                        <UIText value={title[i]} style={{ fontSize: 16, color: DesignRule.textColor_mainTitle }}/>
+                        <UIText value={content[i]}
+                                style={{ fontSize: 15, color: DesignRule.textColor_secondTitle }}/>
+                    </View>
+                </TouchableOpacity>
+            );
             // }
         }
         return arr;
     };
+
     pageSelect = (index) => {
         let orderProductNo = this.params.pageData.productOrderNo;
-                this.$navigate('order/afterSaleService/AfterSaleServicePage', {
-                    pageType: index,
-                    orderProductNo,
-                });
-
-    };
-    renderServiceType = () => {
-        return (
-            <View style={{ backgroundColor: 'white', height: 40, justifyContent: 'center', paddingLeft: 15 }}>
-                <UIText value={'服务类型'} style={{ color: DesignRule.textColor_mainTitle, fontSize: 13 }}/>
-            </View>
-        );
-    };
-    renderLine = () => {
-        return (
-            <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inColorBg }}/>
-        );
-    };
-    renderWideLine = () => {
-        return (
-            <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
-        );
+        routePush(RouterMap.AfterSaleServicePage, { pageType: index, orderProductNo})
     };
 
-    loadPageData() {
-    }
-
-    jumpToProductDetailPage = (productId) => {
-        //this.$navigate('home/product/ProductDetailPage', { productId: productId });
-        let productData = this.params.pageData;
-        switch (this.state.pageData.orderType) {
-            case 1://秒杀
-                this.$navigate('product/ProductDetailPage', {
-                    productId: productData.productId,
-                    activityCode: productData.id,
-                    ids: productData.activityCode
-                });
-
-                break;
-            case 2://降价拍
-                this.$navigate('product/ProductDetailPage', {
-                    productId: productData.productId,
-                    id: productData.id,
-                    ids: productData.activityCode
-                });
-
-                break;
-
-            case 3://优惠套餐
-                this.$navigate('home/CouponsComboDetailPage', { id: productData.productId });
-                break;
-            case 4:
-
-                break;
-
-            case 5://礼包
-                this.$navigate('home/GiftProductDetailPage', { giftBagId: productData.productId });
-                break;
-
-            case 99://普通商品
-                this.$navigate('product/ProductDetailPage', { productId: productData.productId });
-                break;
-            default:
-                break;
-        }
-    };
 }
 
 export default AfterSaleServiceHomePage;

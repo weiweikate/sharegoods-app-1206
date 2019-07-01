@@ -163,7 +163,10 @@ export default class BottomMenu extends Component {
                     productCode: goods.spuCode,
                     batchNo: '1',
                     shoppingCartId: goods.id,
-                    activityCode: goods.activityCode
+                    activityCode: goods.activityCode,
+                    specImg:goods.imgUrl,
+                    productName:goods.productName,
+                    unitPrice:goods.price,
                 });
             });
             routePush(RouterMap.ConfirOrderPage, {
