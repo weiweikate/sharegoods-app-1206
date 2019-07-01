@@ -20,8 +20,6 @@ import android.text.TextUtils;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
-import com.facebook.react.ReactNativeHost;
-import com.facebook.react.ReactRootView;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.meeruu.commonlib.base.BaseApplication;
@@ -39,14 +37,11 @@ import com.meeruu.sharegoods.rn.preload.PreLoadReactDelegate;
 import com.meeruu.sharegoods.service.VersionUpdateService;
 import com.meeruu.sharegoods.utils.LoadingDialog;
 import com.meeruu.statusbar.ImmersionBar;
-import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 import com.umeng.socialize.UMShareAPI;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import javax.annotation.Nullable;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -100,25 +95,7 @@ public class MainRNActivity extends ReactActivity {
 
     @Override
     protected ReactActivityDelegate createReactActivityDelegate() {
-        return new MyReactDelegate(this, getMainComponentName());
-    }
-
-    //自定义MyReactDelegate
-    static class MyReactDelegate extends PreLoadReactDelegate {
-
-        public MyReactDelegate(ReactActivity activity, @Nullable String mainComponentName) {
-            super(activity, mainComponentName);
-        }
-
-        @Override
-        protected ReactNativeHost getReactNativeHost() {
-            return super.getReactNativeHost();
-        }
-
-        @Override
-        protected ReactRootView createRootView() {
-            return new RNGestureHandlerEnabledRootView(getPlainActivity());
-        }
+        return new PreLoadReactDelegate(this, getMainComponentName());
     }
 
     @Override
