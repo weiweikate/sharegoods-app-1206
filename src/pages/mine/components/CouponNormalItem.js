@@ -38,12 +38,12 @@ export default class CouponNormalItem extends Component {
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 {
                                     item.type === 3 || item.type === 4 ||  item.type === 5 || item.type === 12 ? null :
-                                        <View style={{ alignSelf: 'center', marginTop:(item.value + '').length < 3 ? 14 : 5 }}>
+                                        <View style={{ alignSelf: 'center', marginTop:(item.value + '').length < 3 ? 14 : 4 }}>
                                             <Text
                                                 style={{
                                                     fontSize: 14,
                                                     color: item.status === 0 ? (item.levelimit ? '#FF80A7' : '#FF0050') : '#FF80A7',
-                                                }} allowFontScaling={false}>￥</Text>
+                                                }} allowFontScaling={false}>¥</Text>
                                         </View>}
                                 <View>
                                     <Text style={{
