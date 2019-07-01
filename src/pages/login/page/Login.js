@@ -34,8 +34,8 @@ export default class Login extends BasePage {
         };
     }
 
-    // 导航配置
-    $navigationBarOptions = {
+    // 禁用某个页面的手势
+    static navigationOptions = {
         gesturesEnabled: false
     };
 
