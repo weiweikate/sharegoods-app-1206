@@ -22,7 +22,7 @@
     },
     "dependencies": {
         "@mr/cookies": "0.0.7",
-        "@mr/image-placeholder": "0.1.40",
+        "@mr/image-placeholder": "0.1.41",
         "@mr/react-native-autoheight-webview": "^1.0.4",
         "@mr/react-native-webview": "^5.2.8",
         "@mr/rn-geolocation": "0.1.12",
