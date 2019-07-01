@@ -109,7 +109,7 @@ export default class ConfirmPriceView extends Component {
                     <UIText value={'1元现金券'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
-                            value={tokenCoinAmount ? '-¥'+tokenCoinAmount : '选择1元现金券'}
+                            value={tokenCoinAmount ? '-¥'+tokenCoinAmount : '请选择1元现金券'}
                             style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(15) }]}/>
                         <Image source={arrow_right}/>
                     </View>
@@ -124,6 +124,7 @@ export default class ConfirmPriceView extends Component {
                     <UIText value={'买家留言'} style={styles.blackText}/>
                     <RNTextInput
                         ref={(e) => this.input = e}
+                        maxLength={180}
                         style={styles.inputTextStyle}
                         onChangeText={text => confirmOrderModel.message = text}
                         placeholder={'选填：填写内容已与卖家协商确认'}

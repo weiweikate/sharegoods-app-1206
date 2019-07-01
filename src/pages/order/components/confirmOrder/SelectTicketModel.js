@@ -167,7 +167,7 @@ export default class SelectTicketModel extends React.Component {
                             <Text style={{
                                 fontSize: DesignRule.fontSize_secondTitle,
                                 color: DesignRule.textColor_secondTitle}}>
-                                选择优惠券
+                                请选择优惠券
                             </Text>
                         </View>
                         <RefreshFlatList url={API.listAvailable}

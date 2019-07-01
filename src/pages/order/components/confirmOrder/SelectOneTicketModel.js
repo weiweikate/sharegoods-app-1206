@@ -112,15 +112,18 @@ export default class SelectOneTicketModel extends React.Component {
                         <View style={{flex: 1, marginLeft: autoSizeWidth(30)}}>
                             <Text style={{color: '#222222', fontSize: autoSizeWidth(13)}}>
                                 1元现金券
-                                <Text style={styles.detail}>
-                                    （可叠加使用）
-                                </Text>
+                            </Text>
+                            <Text style={styles.detail}>
+                               无金额门槛
                             </Text>
                             <Text style={styles.detail}>
                                 无时间限制
                             </Text>
                             <Text style={styles.detail}>
-                                全品类：无金额门槛
+                                任意商品可用
+                            </Text>
+                            <Text style={styles.detail}>
+                                可叠加使用
                             </Text>
                         </View>
                         <Text style={{
@@ -240,8 +243,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     detail: {
-        marginTop: autoSizeWidth(5),
-        fontSize: autoSizeWidth(11),
-        color: DesignRule.textColor_instruction
+        marginTop: autoSizeWidth(1),
+        fontSize: autoSizeWidth(10),
+        color: DesignRule.textColor_placeholder
     }
 });
