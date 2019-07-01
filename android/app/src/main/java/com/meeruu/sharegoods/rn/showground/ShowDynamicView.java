@@ -49,6 +49,7 @@ import com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -360,6 +361,11 @@ public class ShowDynamicView implements IShowgroundView, SwipeRefreshLayout.OnRe
                         bean.setNineImageInfos(resolveResource);
                     }
                     data.set(i, bean);
+                }
+                //处理product中的空值
+                List products = bean.getProducts();
+                if(products != null && products.size()>0){
+                    products.removeAll(Collections.singleton(null));
                 }
             }
         }
