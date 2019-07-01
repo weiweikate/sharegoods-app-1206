@@ -12,10 +12,12 @@ import {
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
+import productRes from '../../../product/res/product';
 import UIImage from '@mr/image-placeholder';
 import { MRText as Text } from '../../../../components/ui';
 
 const gwc = res.search.gwc;
+const { saleSmall_1001 } = productRes.pSacle;
 
 const imgHeight = (ScreenUtils.width - 30 - 5) / 2;
 
@@ -34,14 +36,16 @@ export default class ResultHorizontalRow extends Component {
 
     render() {
         const { isActivity } = this.props;
-        let { minPrice, promotionMinPrice, name, imgUrl } = this.props.itemData || {};
+        let { minPrice, promotionMinPrice, name, imgUrl, monthSaleCount } = this.props.itemData || {};
         return (
             <TouchableWithoutFeedback onPress={() => {
                 this.props.onPressAtIndex(this.props.itemData || {});
             }}>
                 <View style={[styles.container, this.props.style]}>
-                    <ReuserImage style={styles.img} source={{ uri: imgUrl }}/>
-
+                    <ReuserImage style={styles.img} source={{ uri: imgUrl }}>
+                        {monthSaleCount >= 1000 &&
+                        <Image source={saleSmall_1001} style={{ width: 50, height: 18, marginTop: 5 }}/>}
+                    </ReuserImage>
                     <Text style={{
                         color: DesignRule.textColor_mainTitle,
                         fontSize: 13,

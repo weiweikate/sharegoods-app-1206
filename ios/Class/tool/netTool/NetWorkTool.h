@@ -18,4 +18,10 @@ typedef void (^AFErrorBlock)(NSString *msg, NSInteger code);
            success:(SuccessBlock)successBlock
            failure:(AFErrorBlock)errorBlock
        showLoading:(NSString *)showLoading;
+
++ (NSURLSessionDataTask *)dowmload:(NSString *)url
+                        parameters:(nullable id)parameters
+                          progress:(nullable void (^)(NSProgress *downloadProgress))downloadProgress
+                           success:(nullable void (^)(NSURLSessionDataTask *task, id _Nullable responseObject))success
+                           failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError *error))failure;
 @end

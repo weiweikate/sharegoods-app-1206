@@ -25,6 +25,7 @@ import PropTypes from 'prop-types';
 import DesignRule from '../../constants/DesignRule';
 import ScreenUtils from '../../utils/ScreenUtils';
 import res from '../res';
+import bridge from "../../utils/bridge";
 
 export default class RefreshFlatList extends React.Component {
     static propTypes = {
@@ -32,8 +33,10 @@ export default class RefreshFlatList extends React.Component {
         renderItem: PropTypes.func, // ({index:number, item:object}) => React.Element
         renderHeader: PropTypes.func,
         renderFooter: PropTypes.func,
+        renderError: PropTypes.func,
         onScroll: PropTypes.func,
         showsVerticalScrollIndicator: PropTypes.bool,
+        componentDidMountRefresh: PropTypes.bool,
         //showLoadingHub: PropTypes.bool,//是否显示loadingHub，默认false
 
         /** 自定义 加载更多的框(status) => <BaseLoadMoreComponent status={status}/> 返回的组件必须继承BaseLoadMoreComponent */
@@ -57,7 +60,8 @@ export default class RefreshFlatList extends React.Component {
         onStartRefresh: PropTypes.func,
         onEndRefresh: PropTypes.func,
         onStartLoadMore: PropTypes.func,
-        onEndLoadMore: PropTypes.func
+        onEndLoadMore: PropTypes.func,
+        emptyHeight: PropTypes.number
     };
 
     static defaultProps = {
@@ -72,7 +76,9 @@ export default class RefreshFlatList extends React.Component {
         defaultEmptyImage: res.placeholder.no_data,
         defaultEmptyText: '暂无数据~',
         defaultData: [],
-        renderHeader: ()=>{return null}
+        renderHeader: ()=>{return null},
+        componentDidMountRefresh: true,
+        emptyHeight: ScreenUtils.height - ScreenUtils.headerHeight,
     };
 
     constructor(props) {
@@ -85,10 +91,11 @@ export default class RefreshFlatList extends React.Component {
             loadingMore: false,
             footerStatus: 'idle',
             data: [],
-            height: ScreenUtils.height - ScreenUtils.headerHeight
+            error: null,
         };
         this.page = props.defaultPage;
         this.allLoadCompleted = false;
+        this.isNetLoading = false;
     }
 
     _bind() {
@@ -96,7 +103,23 @@ export default class RefreshFlatList extends React.Component {
     }
 
     componentDidMount() {
-        this._onRefresh();
+        if (this.props.componentDidMountRefresh){
+            this._onRefresh(false);
+        }
+    }
+
+    scrollToTop = (animated = true)=> {
+        this.list && this.list.scrollToOffset({y: 0, animated: animated});
+    }
+
+    changeData = (data)=>{
+        this.setState({
+            data: data
+        })
+    }
+
+    getSourceData = ()=>{
+        return this.state.data;
     }
 
     _renderEmpty() {
@@ -104,9 +127,8 @@ export default class RefreshFlatList extends React.Component {
             return this.props.renderEmpty();
         } else {
             return (
-                <View style={{ height: this.state.height - 40, alignItems: 'center', justifyContent: 'center' }}>
+                <View style={{ height: this.props.emptyHeight - 40, alignItems: 'center', justifyContent: 'center' }}>
                     <Image source={this.props.defaultEmptyImage}
-                           style={{ width: 110, height: 110 }}
                            resizeMode={'contain'}/>
                     <Text style={{
                         marginTop: 10,
@@ -149,13 +171,36 @@ export default class RefreshFlatList extends React.Component {
 
     }
 
-    _onRefresh() {
-        if (this.state.refreshing === true) {
+    _onRefresh(refreshing = true) {
+        if (this.state.refreshing === true || this.isNetLoading === true) {
             return;
         }
-        this.setState({ refreshing: true, footerStatus: 'idle' });
+        this.setState({ refreshing: refreshing, footerStatus: 'idle' });
         this.allLoadCompleted = false;
         let { onStartRefresh, url, params, defaultPage, onEndRefresh ,paramsFunc} = this.props;
+        if(paramsFunc){
+            params = paramsFunc();
+        }
+        this.page = defaultPage;
+        onStartRefresh && onStartRefresh();
+        if (!refreshing){
+            bridge.showLoading()
+        }
+        if (url) {
+            this._getData(url, params, true);
+        } else {
+            onEndRefresh && onEndRefresh();
+        }
+    }
+
+    onRefresh() {
+        if (this.state.refreshing === true || this.isNetLoading === true) {
+            return;
+        }
+        this.setState({ footerStatus: 'idle' });
+        this.list && this.list.scrollToOffset({y: 0, animated: false});
+        this.allLoadCompleted = false;
+        let { onStartRefresh, url, params, defaultPage, onEndRefresh, paramsFunc } = this.props;
         if(paramsFunc){
             params = paramsFunc();
         }
@@ -169,27 +214,13 @@ export default class RefreshFlatList extends React.Component {
         }
     }
 
-    // onRefresh() {
-    //     this.setState({ footerStatus: 'idle' });
-    //     this.allLoadCompleted = false;
-    //     let { onStartRefresh, url, params, defaultPage, onEndRefresh } = this.props;
-    //     this.page = defaultPage;
-    //     onStartRefresh && onStartRefresh();
-    //
-    //     if (url) {
-    //         this._getData(url, params, true);
-    //     } else {
-    //         onEndRefresh && onEndRefresh();
-    //     }
-    // }
-
 
     _onLoadMore() {
         let { onStartLoadMore, url, params, isSupportLoadingMore ,paramsFunc} = this.props;
         if(paramsFunc){
             params = paramsFunc();
         }
-        if (isSupportLoadingMore === false || this.allLoadCompleted === true) {
+        if (isSupportLoadingMore === false || this.allLoadCompleted === true || this.isNetLoading === true) {
             return;
         }
         this.page++;
@@ -203,6 +234,7 @@ export default class RefreshFlatList extends React.Component {
     }
 
     _getData(url, params, isRefresh) {
+        this.isNetLoading = true;
         let { pageKey, sizeKey, pageSize, handleRequestResult, isSupportLoadingMore, onEndRefresh, onEndLoadMore } = this.props;
         let that = this;
         if (isSupportLoadingMore) {
@@ -210,8 +242,10 @@ export default class RefreshFlatList extends React.Component {
             params[sizeKey] = pageSize;
         }
         url(params).then((result => {
+            bridge.hiddenLoading()
             let netData = [];
             let allLoadCompleted = false;
+            this.isNetLoading = false;
             let footerStatus = 'idle';
             if (handleRequestResult) {
                 netData = handleRequestResult(result, isRefresh) || [];
@@ -241,9 +275,11 @@ export default class RefreshFlatList extends React.Component {
                 refreshing: false,
                 loadingMore: false,
                 footerStatus,
-                data
+                data,
+                error: null
             });
         })).catch((error) => {
+            bridge.hiddenLoading()
             if (isRefresh === false) {
                 onEndLoadMore && onEndLoadMore();
             } else {
@@ -251,10 +287,12 @@ export default class RefreshFlatList extends React.Component {
 
             }
             // NativeModules.commModule.toast(error.msg || '请求失败');
+            this.isNetLoading = false;
             that.setState({
                 refreshing: false,
                 loadingMore: false,
-                footerStatus: 'idle'
+                footerStatus: 'idle',
+                error: error
             });
         })
         ;
@@ -262,9 +300,13 @@ export default class RefreshFlatList extends React.Component {
 
 
     render() {
+        if (this.state.data.length === 0 && this.state.error && this.props.renderError){
+            return this.props.renderError(this.state.error || {});
+        }
         return (
             <FlatList
                 {...this.props}
+                ref={(ref) => {this.list = ref}}
                 data={this.state.data}
                 ListEmptyComponent={this._renderEmpty.bind(this)}
                 ListFooterComponent={this._renderFooter.bind(this)}

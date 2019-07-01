@@ -20,6 +20,7 @@ import {
 import DesignRule from '../../constants/DesignRule';
 
 export default function SmoothPushHighComponent(WrappedComponent) {
+    return WrappedComponent;
     WrappedComponent.xg_finishPush = false;
     return class HighComponent extends Component {
         constructor(props) {
@@ -54,6 +55,7 @@ export default function SmoothPushHighComponent(WrappedComponent) {
 
 
 export function SmoothPushHighComponentEverydelay(WrappedComponent) {
+    return WrappedComponent;
     if (Platform.OS !== 'ios') {
         return WrappedComponent;
     }
@@ -87,6 +89,7 @@ export function SmoothPushHighComponentEverydelay(WrappedComponent) {
 
 
 function SmoothPushPreLoadHighComponent(WrappedComponent) {
+    return WrappedComponent;
     const shouldComponentUpdate = WrappedComponent.prototype.shouldComponentUpdate;
 
     WrappedComponent.prototype.shouldComponentUpdate = function(nextProps, nextState) {
@@ -128,6 +131,7 @@ export { SmoothPushPreLoadHighComponent };
 
 //先请求，如果在第一次退出动画的完成也不进行render，防止卡顿
 export function SmoothPushPreLoadHighComponentFirstDelay(WrappedComponent) {
+    return WrappedComponent;
     const shouldComponentUpdate = WrappedComponent.prototype.shouldComponentUpdate;
     WrappedComponent.prototype.xg_finishPush = false;
 

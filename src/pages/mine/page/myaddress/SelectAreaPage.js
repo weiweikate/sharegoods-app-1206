@@ -7,6 +7,7 @@ import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
 import RefreshFlatList from '../../../../comm/components/RefreshFlatList';
+import RouterMap from '../../../../navigation/RouterMap';
 
 const arrow_right = res.button.arrow_right;
 export default class SelectAreaPage extends BasePage {
@@ -62,7 +63,7 @@ export default class SelectAreaPage extends BasePage {
         const { setArea } = this.props.navigation.state.params || {};
         if (this.state.tag === 'province') {
             // 跳转到市级
-            this.$navigate('mine/address/SelectAreaPage', {
+            this.$navigate(RouterMap.SelectAreaPage, {
                 setArea: setArea,
                 tag: 'city',
                 provinceCode: item.code,
@@ -71,7 +72,7 @@ export default class SelectAreaPage extends BasePage {
             });
         } else if (this.state.tag === 'city') {
             // 跳转到区级
-            this.$navigate('mine/address/SelectAreaPage', {
+            this.$navigate(RouterMap.SelectAreaPage, {
                 setArea: setArea,
                 tag: 'area',
                 provinceCode: this.props.navigation.state.params.provinceCode,
@@ -84,7 +85,7 @@ export default class SelectAreaPage extends BasePage {
             // 回退并刷新
             if (this.canBack) {
                 this.canBack = false;
-                this.$navigateBack(-3);
+                this.$navigateBack(3);
                 const { provinceCode, provinceName, cityCode, cityName } = this.props.navigation.state.params || {};
                 let areaText = provinceName + cityName + item.name;
                 setArea && setArea(provinceCode, provinceName, cityCode, cityName, item.code, item.name, areaText);

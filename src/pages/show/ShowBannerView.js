@@ -27,7 +27,7 @@ const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
 
 const HOME_REFRESH = 'homeRefresh';
 const width = ScreenUtils.width - px2dp(30);
-const height = width * 120 / 345;
+const height = width * 160 / 345;
 @observer
 export default class ShowBannerView extends Component {
     state = {

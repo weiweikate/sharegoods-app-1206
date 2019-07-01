@@ -6,7 +6,6 @@ import NoMoreClick from '../../../components/ui/NoMoreClick';
 import DesignRule from '../../../constants/DesignRule';
 import RouterMap from '../../../navigation/RouterMap';
 import res from '../res';
-import { NavigationActions } from 'react-navigation';
 
 const { addCapacitySuccess } = res.addCapacity;
 const { px2dp } = ScreenUtils;
@@ -21,12 +20,7 @@ export class AddCapacitySuccessPage extends BasePage {
     };
 
     _goHistoryPage = () => {
-        let replace = NavigationActions.replace({
-            key: this.props.navigation.state.key,
-            routeName: RouterMap.AddCapacityHistoryPage,
-            params: {}
-        });
-        this.props.navigation.dispatch(replace);
+        this.$navigateReplace(RouterMap.AddCapacityHistoryPage, {});
     };
 
     _render() {

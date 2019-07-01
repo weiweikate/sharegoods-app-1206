@@ -22,7 +22,14 @@ import RouterMap from '../../../../navigation/RouterMap';
 import res from '../../res'
 import { SmoothPushPreLoadHighComponentFirstDelay } from '../../../../comm/components/SmoothPushHighComponent';
 const { px2dp } = ScreenUtils;
-const {next_icon,icon_v1,icon_v2,icon_v3,icon_v4,icon_v5} = res.myData;
+const {next_icon} = res.myData;
+const {
+    fans_icon_v1,
+    fans_icon_v2,
+    fans_icon_v3,
+    fans_icon_v4,
+    fans_icon_v5
+} = res.showFans;
 
 type Props = {};
 @SmoothPushPreLoadHighComponentFirstDelay
@@ -71,15 +78,15 @@ export default class MainShowFansPage extends BasePage<Props> {
     itemRender(data, index) {
         let levelIcon ;
         if(data.vname === 'v1'){
-            levelIcon = icon_v1
+            levelIcon = fans_icon_v1
         }else if(data.vname === 'v2'){
-            levelIcon = icon_v2
+            levelIcon = fans_icon_v2
         }else if(data.vname === 'v3'){
-            levelIcon = icon_v3
+            levelIcon = fans_icon_v3
         }else if(data.vname === 'v4'){
-            levelIcon = icon_v4
+            levelIcon = fans_icon_v4
         }else if(data.vname === 'v5'){
-            levelIcon = icon_v5
+            levelIcon = fans_icon_v5
         }else {
             return null;
         }

@@ -83,7 +83,7 @@ static CGFloat initAutoInterval = 0;
     cell.layer.cornerRadius = _itemRadius;
   }
   NSString *tempUrlString = _imgUrlArray[index];
-  [cell.imgView sd_setImageWithURL:[NSURL URLWithString: [tempUrlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]] placeholderImage:nil];
+  [cell.imgView setImageURL:[NSURL URLWithString: [tempUrlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]]];
   if (_tittleArray && _tittleArray.count>index) {
     cell.tittleLabel.text = _tittleArray[index];
   }

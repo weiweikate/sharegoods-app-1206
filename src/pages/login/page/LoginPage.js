@@ -91,9 +91,11 @@ export default class LoginPage extends BasePage {
     $isMonitorNetworkStatus() {
         return false;
     }
+
     $NavBarLeftPressed = () => {
         this.$navigateBack();
     };
+
     _render() {
         return (
             <View style={Styles.contentStyle}>
@@ -101,7 +103,7 @@ export default class LoginPage extends BasePage {
                     oldUserLoginClick={this.oldUserLoginClick.bind(this)}
                     forgetPasswordClick={this.forgetPasswordClick}
                     loginClick={(loginType, LoginParam) => {
-                        this.$loadingShow();
+                        this.$loadingShow('登录中');
                         setTimeout(() => {
                             this.loginClick(loginType, LoginParam);
                         }, 0);
@@ -111,7 +113,7 @@ export default class LoginPage extends BasePage {
                     rendOtherLoginView(true, () => {
                         this.weChatLoginClick();
                     }, (htmlParams) => {
-                        this.$navigate('HtmlPage', htmlParams);
+                        this.$navigate(RouterMap.HtmlPage, htmlParams);
                     })
                 }
 
@@ -121,7 +123,7 @@ export default class LoginPage extends BasePage {
 
     /*忘记密码*/
     forgetPasswordClick = () => {
-        this.$navigate('login/login/ForgetPasswordPage');
+        this.$navigate(RouterMap.ForgetPasswordPage);
     };
     /*微信登陆*/
     weChatLoginClick = () => {
@@ -129,7 +131,7 @@ export default class LoginPage extends BasePage {
         wxLoginAction((code, data) => {
             if (code === 10000) {
                 this.params.callback && this.params.callBack();
-                this.$navigateBack(-2);
+                this.$navigateBack(2);
             } else if (code === 34005) {
                 this.$navigate(RouterMap.InputPhoneNum, data);
             }
@@ -143,7 +145,6 @@ export default class LoginPage extends BasePage {
         const { campaignType, spm } = this.params;
         const h5Param = { ...LoginParam, campaignType, spm };
         if (loginType === 0) {
-            // track(trackEvent.login, { loginMethod: '验证码登录' });
             codeLoginAction(h5Param, (data) => {
                 if (data.code === 10000) {
                     this.$toastShow('登录成功');
@@ -155,7 +156,7 @@ export default class LoginPage extends BasePage {
                         this.$navigate(RouterMap.InviteCodePage);
                         // TrackApi.phoneSignUpSuccess({ 'signUpPhone': phoneNum });
                     } else {
-                        this.$navigateBack(-2);
+                        this.$navigateBack(2);
                     }
                 } else {
                     this.$loadingDismiss();
@@ -169,7 +170,7 @@ export default class LoginPage extends BasePage {
                     this.$toastShow('登录成功');
                     this.params.callback && this.params.callback();
                     this.$loadingDismiss();
-                    this.$navigateBack(-2);
+                    this.$navigateBack(2);
                 } else {
                     this.$loadingDismiss();
                     // this.$toastShow(data.msg);

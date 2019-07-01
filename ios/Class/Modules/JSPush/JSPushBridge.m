@@ -14,6 +14,10 @@
 #define HOME_CUSTOM_MSG @"HOME_CUSTOM_MSG"
 #define HOME_CUSTOM_SKIP @"HOME_CUSTOM_SKIP"
 
+#define MINE_CUSTON_MESSAGE @"MINE_CUSTON_MESSAGE"
+#define MINE_NATIVE_TO_RN_MSG @"MINE_NATIVE_TO_RN_MSG"
+
+
 
 
 @implementation JSPushBridge
@@ -25,7 +29,8 @@
 -(NSArray<NSString *> *)supportedEvents{
   return @[
            HOME_REFRESH,
-           HOME_CUSTOM_RN_SKIP
+           HOME_CUSTOM_RN_SKIP,
+           MINE_NATIVE_TO_RN_MSG
            ];
 }
 RCT_EXPORT_MODULE(JSPushBridge)
@@ -41,6 +46,9 @@ RCT_EXPORT_MODULE(JSPushBridge)
   
   [[NSNotificationCenter defaultCenter]addObserver:self
                                           selector:@selector(toHomeSkip:) name:HOME_CUSTOM_SKIP object:nil];
+  
+  [[NSNotificationCenter defaultCenter]addObserver:self
+                                          selector:@selector(toMinePageCustomMsg:) name:MINE_CUSTON_MESSAGE object:nil];
 }
 -(void)toHomePageCustomMsg:(NSNotification *)noti{
   if (noti.object) {
@@ -53,6 +61,14 @@ RCT_EXPORT_MODULE(JSPushBridge)
   if (noti.object) {
     dispatch_async(dispatch_get_main_queue(), ^{
       [self sendEventWithName:HOME_CUSTOM_RN_SKIP body:noti.object];
+    });
+  }
+}
+
+-(void)toMinePageCustomMsg:(NSNotification *)noti{
+  if (noti.object) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [self sendEventWithName:MINE_NATIVE_TO_RN_MSG body:noti.object];
     });
   }
 }

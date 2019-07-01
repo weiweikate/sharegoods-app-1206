@@ -11,7 +11,7 @@ import {
     Image,
     PixelRatio,
     TouchableWithoutFeedback,
-    TouchableOpacity
+    TouchableOpacity, Clipboard, Linking
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import { MRText as Text, MRTextInput as TextInput } from '../../../../components/ui';
@@ -21,12 +21,22 @@ import DesignRule from '../../../../constants/DesignRule';
 import MineAPI from '../../api/MineApi';
 import AvatarImage from '../../../../components/ui/AvatarImage';
 import res from '../../res';
+import bridge from '../../../../utils/bridge';
+import SettingModel from '../../model/SettingModel';
 
 const { icon_search, icon_clean } = res.myData;
 const { px2dp } = ScreenUtils;
 const {
     bg_fans_item
 } = res.homeBaseImg;
+
+const showFansVip = [
+    res.showFans.fans_icon_v1,
+    res.showFans.fans_icon_v2,
+    res.showFans.fans_icon_v3,
+    res.showFans.fans_icon_v4,
+    res.showFans.fans_icon_v5,
+];
 type Props = {};
 export default class SearchShowFansPage extends BasePage<Props> {
     constructor(props) {
@@ -43,20 +53,65 @@ export default class SearchShowFansPage extends BasePage<Props> {
     };
 
 
-    _listItemRender = ({ item }) => {
+    _listItemRender = ({ item, index }) => {
         const uri = { uri: item.headImg };
+        let name = item.nickname.substring(0,28);
+        let num = item.level ? item.level : 10;
+        let percent = item.percent ? item.percent + '%' : '0%'
         return (
-            <ImageBackground resizeMode={'stretch'} source={bg_fans_item} style={styles.itemWrapper}>
-                <View style={[styles.fansIcon, { overflow: 'hidden' }]}>
-                    <AvatarImage style={styles.fansIcon} source={uri}/>
-                </View>
-                <Text style={styles.fansNameStyle}>
-                    {item.nickname}
-                </Text>
-                <View style={styles.levelWrapper}>
-                    <Text style={styles.levelTextStyle}>
-                        {`V${item.level ? item.level : 0}`}
-                    </Text>
+            <ImageBackground key={index + 'showFans'} resizeMode={'stretch'} source={bg_fans_item} style={styles.itemWrapper}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={[styles.fansIcon, {overflow: 'hidden'}]}>
+                        <AvatarImage style={styles.fansIcon} source={uri}/>
+                    </View>
+                    <View style={{flex: 1}}>
+                        <View style={{flexDirection: 'row'}}>
+                            <Text style={styles.fansNameStyle} numberOfLines={1}>{name}</Text>
+                            {num < 9 ? <Image source={showFansVip[num - 1]} style={styles.levelIcon}/> : null}
+                        </View>
+                        {item.percent && item.percent > 0 ? <View style={{marginLeft: 8, marginTop: 5}}>
+                            <View style={{
+                                width: 100,
+                                height: 10,
+                                backgroundColor: 'rgba(65,150,100,0.1)',
+                                borderRadius: 6
+                            }}>
+                                <View style={{
+                                    flex: 1,
+                                    width: percent,
+                                    height: 4,
+                                    backgroundColor: '#FF0450',
+                                    borderRadius: 6
+                                }}/>
+                            </View>
+                            <Text style={{position: 'absolute', top: -2, left: 5, color: 'white', fontSize: 9}}>
+                                任务进度：{percent}
+                            </Text>
+                        </View> : null
+                        }
+                    </View>
+
+                    {SettingModel.WXChatState ? (item.weChatNumber ? <TouchableWithoutFeedback onPress={() => {
+                        // 2、跳转代码
+                        Linking.canOpenURL('weixin://').then(supported => { // weixin://  alipay://
+                            if (supported) {
+                                Clipboard.setString(item.weChatNumber);
+                                bridge.$toast('复制微信号到剪切版');
+                                Linking.openURL('weixin://');
+                            } else {
+                                bridge.$toast('请先安装微信');
+                            }
+                        });
+                    }}>
+                        <Image style={[styles.btnIcon, {marginRight: SettingModel.messageState ? 25 : 0}]} source={res.showFans.fans_WXChat}/>
+                    </TouchableWithoutFeedback> : null) : null}
+
+                    {SettingModel.messageState ? <TouchableWithoutFeedback onPress={() => {
+                        item.phone && Linking.openURL(`sms:${item.phone}`)
+                    }}>
+                        <Image style={[styles.btnIcon, {marginRight: 5}]} source={res.showFans.messageIcon}/>
+                    </TouchableWithoutFeedback> : null
+                    }
                 </View>
             </ImageBackground>
         );
@@ -77,10 +132,10 @@ export default class SearchShowFansPage extends BasePage<Props> {
                                 this.list && this.list._onRefresh();
                             });
                         }} style={styles.textInputStyle}/>
-                    <TouchableOpacity onPress={()=>{
+                    <TouchableOpacity onPress={() => {
                         this.setState({
-                            fanName:''
-                        })
+                            fanName: ''
+                        });
                     }}>
                         <Image source={icon_clean} style={styles.cleanIcon}/>
                     </TouchableOpacity>
@@ -143,10 +198,9 @@ const styles = StyleSheet.create({
         borderRadius: 20
     },
     fansNameStyle: {
-        color: DesignRule.textColor_mainTitle_222,
-        fontSize: DesignRule.fontSize_mainTitle,
+        color: '#2C2C2C',
+        fontSize: DesignRule.fontSize_threeTitle,
         marginLeft: 8,
-        paddingVertical: 5
     },
     typeWrapper: {
         width: 55,
@@ -195,9 +249,10 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginTop: px2dp(15)
     },
-    levelName: {
-        color: DesignRule.textColor_mainTitle,
-        fontSize: DesignRule.fontSize_threeTitle
+    levelIcon: {
+        width: px2dp(24),
+        height: px2dp(16),
+        marginLeft: px2dp(5),
     },
     numTextStyle: {
         fontSize: px2dp(12),
@@ -243,6 +298,6 @@ const styles = StyleSheet.create({
         height: px2dp(16),
         marginLeft: px2dp(10),
         marginRight: px2dp(10)
-    }
+    },
 
 });

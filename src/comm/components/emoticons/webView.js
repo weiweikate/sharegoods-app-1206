@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     titleIOS: {
         textAlign: 'center',
         color: '#696969',
-        fontWeight: 'bold',
+        fontWeight: '500',
         fontSize: 20,
     },
     leftIOSContainer: {

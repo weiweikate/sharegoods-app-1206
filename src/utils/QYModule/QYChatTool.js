@@ -4,6 +4,7 @@ import {
 import user from '../../model/user';
 import DeviceInfo from 'react-native-device-info/deviceinfo';
 import chatModel from './QYChatModel';
+import QYApi from './QYApi';
 
 const { JRQYService } = NativeModules;
 
@@ -26,16 +27,30 @@ const QYChatTool = {
      * device:手机型号
      * systemVersion:手机系统版本
      */
-
     initQYChat() {
-        let jsonParams = {
-            userId: user.code + '',
-            userIcon: user.headImg,
-            nickName: user.nickname,
-            device: DeviceInfo.getDeviceName(),
-            systemVersion: DeviceInfo.getSystemVersion()
-        };
-        JRQYService.initQYChat(jsonParams);
+        QYApi.judgeVip().then(result => {
+            let jsonParams = {
+                userId: user.code + '',
+                userIcon: user.headImg,
+                nickName: user.nickname,
+                device: DeviceInfo.getDeviceName(),
+                systemVersion: DeviceInfo.getSystemVersion(),
+                isVip: result.data
+            };
+            JRQYService.initQYChat(jsonParams);
+
+        }).catch(error => {
+            let jsonParams = {
+                userId: user.code + '',
+                userIcon: user.headImg,
+                nickName: user.nickname,
+                device: DeviceInfo.getDeviceName(),
+                systemVersion: DeviceInfo.getSystemVersion(),
+                isVip: false
+            };
+            JRQYService.initQYChat(jsonParams);
+        });
+
     },
 
     /**
@@ -63,7 +78,7 @@ const QYChatTool = {
         chatType: beginChatType.BEGIN_FROM_OTHER,
         data: {}
     }) {
-        if (params.data && params.data.urlString && params.data.urlString.length > 0){
+        if (params.data && params.data.urlString && params.data.urlString.length > 0) {
             chatModel.preProductUrl = params.data.urlString;
         } else {
             chatModel.preProductUrl = '';

@@ -7,6 +7,7 @@ import { observer } from 'mobx-react';
 import bridge from '../../../utils/bridge';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { homePoint } from '../HomeTypes';
+// import { getSource } from '@mr/image-placeholder/oos';
 
 const { px2dp } = ScreenUtils;
 

@@ -16,6 +16,7 @@
  */
 
 #import "AppDelegate.h"
+#import <CodePush/CodePush.h>
 #import "CommentTool.h"
 
 #import <React/RCTBundleURLProvider.h>
@@ -92,6 +93,21 @@
   NSDictionary *dictionary = [NSDictionary dictionaryWithObjectsAndKeys:userAgent, @"UserAgent", nil];
   [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
 
+}
+
+
+-(void)saveVideoToPhotoAlbumWithUrl{
+  
+  [NetWorkTool dowmload:@"https://testcdn.sharegoodsmall.com/sharegoods/bef251f9d6a84c8599b8afcc9dadb385.mp4" parameters:@{} progress:^(NSProgress *downloadProgress) {
+    
+  } success:^(NSURLSessionDataTask *task, id  _Nullable responseObject) {
+    [[JRShareManager sharedInstance] saveVideoToLocation:@"/Documents/bef251f9d6a84c8599b8afcc9dadb385.mp4" data:responseObject];
+    [[JRShareManager sharedInstance] saveVideo:@"/Documents/bef251f9d6a84c8599b8afcc9dadb385.mp4" withCallBackBlock:^(NSString *errorStr) {
+      
+    }];
+  } failure:^(NSURLSessionDataTask * _Nullable task, NSError *error) {
+    
+  }];
 }
 
 @end

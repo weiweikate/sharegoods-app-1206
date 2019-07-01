@@ -2,7 +2,7 @@
  * 精选热门
  */
 import React from 'react';
-import { View, StyleSheet,Animated } from 'react-native';
+import { View, StyleSheet, Animated } from 'react-native';
 import { observer } from 'mobx-react';
 import { tag } from './Show';
 import ScreenUtils from '../../utils/ScreenUtils';
@@ -20,7 +20,7 @@ import bridge from '../../utils/bridge';
 import ShowApi from './ShowApi';
 import EmptyUtils from '../../utils/EmptyUtils';
 import ShowUtils from './utils/ShowUtils';
-import RouterMap from '../../navigation/RouterMap';
+import RouterMap, { routeNavigate, routePush } from '../../navigation/RouterMap';
 import DownloadUtils from './utils/DownloadUtils';
 
 @observer
@@ -45,11 +45,11 @@ export default class ShowMaterialView extends React.Component {
 
     }
 
-    scrollToTop=()=>{
-        if(this.state.showToTop){
+    scrollToTop = () => {
+        if (this.state.showToTop) {
             this.materialList && this.materialList.scrollToTop();
         }
-    }
+    };
 
 
     releaseButtonShow = () => {
@@ -73,24 +73,31 @@ export default class ShowMaterialView extends React.Component {
     };
 
 
-    addCart = (code) => {
+    addCart = (productStr,detailStr) => {
+        const product = JSON.parse(productStr);
+        const detail = JSON.parse(detailStr);
         let addCartModel = new AddCartModel();
-        addCartModel.requestProductDetail(code, (productIsPromotionPrice) => {
+        addCartModel.requestProductDetail(product.prodCode, (productIsPromotionPrice) => {
             this.SelectionPage.show(addCartModel, (amount, skuCode) => {
                 const { prodCode, name, originalPrice } = addCartModel;
                 shopCartCacheTool.addGoodItem({
                     'amount': amount,
                     'skuCode': skuCode,
-                    'productCode': code
+                    'productCode': product.prodCode
                 });
                 /*加入购物车埋点*/
-                track(trackEvent.AddToShoppingcart, {
+                const { showNo , userInfoVO } = detail;
+                const { userNo } = userInfoVO || {};
+                track(trackEvent.XiuChangAddToCart, {
+                    xiuChangBtnLocation:'1',
+                    xiuChangListType:'2',
+                    articleCode:showNo,
+                    author:userNo,
                     spuCode: prodCode,
                     skuCode: skuCode,
                     spuName: name,
                     pricePerCommodity: originalPrice,
                     spuAmount: amount,
-                    shoppingcartEntrance: 1
                 });
             }, { sourceType: productIsPromotionPrice ? sourceType.promotion : null });
         }, (error) => {
@@ -106,7 +113,7 @@ export default class ShowMaterialView extends React.Component {
         });
         return (
             <View style={styles.container}>
-                <View style={{ flex: 1, paddingHorizontal: 15,paddingTop: ScreenUtils.isIOS ? 5 : 0 }}>
+                <View style={{ flex: 1, paddingHorizontal: 15, paddingTop: ScreenUtils.isIOS ? 5 : 0 }}>
                     <ShowRecommendView style={{ flex: 1 }}
                                        uri={'/social/show/content/page/query@GET'}
                                        ref={(ref) => {
@@ -121,26 +128,45 @@ export default class ShowMaterialView extends React.Component {
                                                ref: this.materialList,
                                                index: nativeEvent.index
                                            };
-                                           if (nativeEvent.showType === 1) {
-                                               navigate('show/ShowDetailPage', params);
+                                           if (nativeEvent.showType === 1 || nativeEvent.showType === 3) {
+                                               navigate(RouterMap.ShowDetailPage, params);
                                            } else {
-                                               navigate('show/ShowRichTextDetailPage', params);
+                                               navigate(RouterMap.ShowRichTextDetailPage, params);
                                            }
+
+                                           const { showNo , userInfoVO } = nativeEvent;
+                                           const { userNo } = userInfoVO || {};
+                                           track(trackEvent.XiuChangEnterClick,{
+                                               xiuChangListType:2,
+                                               articleCode:showNo,
+                                               author:userNo,
+                                               xiuChangEnterBtnName:'秀场列表'
+                                           })
 
                                        }}
                                        onNineClick={({ nativeEvent }) => {
-                                           this.props.navigate('show/ShowDetailImagePage', {
+                                           routeNavigate(RouterMap.ShowDetailImagePage, {
                                                imageUrls: nativeEvent.imageUrls,
                                                index: nativeEvent.index
                                            });
                                        }}
                                        onPressProduct={({ nativeEvent }) => {
-                                           this.props.navigate(RouterMap.ProductDetailPage, { productCode: nativeEvent.prodCode });
+                                           const detail = JSON.parse(nativeEvent.detail)
+                                           const product = JSON.parse(nativeEvent.product)
+                                           const {showNo} = detail ||{};
+                                           track(trackEvent.XiuChangSpuClick, {
+                                               xiuChangBtnLocation:'1',
+                                               xiuChangListType:'2',
+                                               articleCode:showNo,
+                                               spuCode: product.prodCode,
+                                               spuName: product.name,
+                                               author: detail.userInfoVO ? detail.userInfoVO.userNo : ''
+                                           });
+                                           routePush(RouterMap.ProductDetailPage, { productCode: product.prodCode,trackType:3,trackCode:showNo });
                                        }}
 
                                        onAddCartClick={({ nativeEvent }) => {
-                                           // alert(nativeEvent.prodCode);
-                                           this.addCart(nativeEvent.prodCode);
+                                           this.addCart(nativeEvent.product,nativeEvent.detail);
                                        }}
                                        onZanPress={({ nativeEvent }) => {
                                            if (!nativeEvent.detail.like) {
@@ -155,7 +181,7 @@ export default class ShowMaterialView extends React.Component {
 
                                        onDownloadPress={({ nativeEvent }) => {
                                            if (!user.isLogin) {
-                                               this.props.navigate('login/login/LoginPage');
+                                               routeNavigate(RouterMap.LoginPage);
                                                return;
                                            }
                                            let { detail } = nativeEvent;
@@ -165,12 +191,25 @@ export default class ShowMaterialView extends React.Component {
                                                });
                                                ShowUtils.downloadShow(urls, detail.content).then(() => {
                                                    detail.downloadCount += 1;
-                                                   ShowApi.incrCountByType({ showNo: nativeEvent.detail.showNo, type: 4 });
+                                                   ShowApi.incrCountByType({
+                                                       showNo: nativeEvent.detail.showNo,
+                                                       type: 4
+                                                   });
                                                    this.materialList && this.materialList.replaceItemData(nativeEvent.index, JSON.stringify(detail));
                                                });
                                            }
 
                                            DownloadUtils.downloadProduct(nativeEvent);
+                                           this.shareModal && this.shareModal.open();
+                                           this.props.onShare(nativeEvent);
+                                           const { showNo , userInfoVO } = detail;
+                                           const { userNo } = userInfoVO || {};
+                                           track(trackEvent.XiuChangDownLoadClick,{
+                                               xiuChangBtnLocation:'1',
+                                               xiuChangListType:'2',
+                                               articleCode:showNo,
+                                               author:userNo
+                                           })
 
                                        }}
 
@@ -207,10 +246,10 @@ export default class ShowMaterialView extends React.Component {
 
                                     onPress={() => {
                                         if (!user.isLogin) {
-                                            this.props.navigate('login/login/LoginPage');
+                                            routeNavigate(RouterMap.LoginPage);
                                             return;
                                         }
-                                        this.props.navigate('show/ReleaseNotesPage');
+                                        routeNavigate(RouterMap.ReleaseNotesPage);
                                     }}/>
                             </Animated.View> : null
                     }
@@ -230,7 +269,7 @@ let styles = StyleSheet.create({
     recTitle: {
         color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(19),
-        fontWeight: '600'
+        fontWeight: '400'
     },
     text: {
         color: '#999',

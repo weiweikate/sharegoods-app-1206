@@ -38,7 +38,7 @@ const Router = {
     },
     HtmlPage: {
         screen: htmlView,
-        path:'path/HtmlPage/:uri'
+        path: 'path/HtmlPage/:uri'
     }
 };
 const PageKey = {};

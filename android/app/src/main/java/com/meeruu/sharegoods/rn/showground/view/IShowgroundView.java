@@ -20,5 +20,9 @@ public interface IShowgroundView {
 
     void addDataToTop(String value);
 
+    void deleteSuccess();
+
+    void deleteFail(String err);
+
 
 }

@@ -3,6 +3,7 @@
  * @date 2019/3/11
  */
 
+
 'use strict';
 
 import React from 'react';
@@ -33,9 +34,8 @@ import HomeModalManager from '../manager/HomeModalManager';
 import { observer } from 'mobx-react';
 
 const { autoSizeWidth } = ScreenUtils;
-import ImageLoad from '@mr/image-placeholder';
 import { homeModule } from '../model/Modules';
-import { navigate } from '../../../navigation/RouterMap';
+import { routePush } from '../../../navigation/RouterMap';
 
 @observer
 export default class HomeMessageModalView extends React.Component {
@@ -139,73 +139,83 @@ export default class HomeMessageModalView extends React.Component {
 }
 
 
-function AdViewBindModal(modal,dataName = 'AdData', visibleName = 'isShowAd' , closeFunc = 'closeAd') {
+function AdViewBindModal(modal, dataName = 'AdData', visibleName = 'isShowAd', closeFunc = 'closeAd') {
     return (
-    class HomeAdModal extends React.Component {
-        state = {
-            messageIndex: 0,
-            backgroundColor: '#f5f5f5'
-        };
+        class HomeAdModal extends React.Component {
+            state = {
+                messageIndex: 0,
+                backgroundColor: '#f5f5f5'
+            };
 
-        constructor(props) {
-            super(props);
-        }
-
-        gotoPage = () => {
-            let data = modal[dataName] || {};
-            const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
-            let params = homeModule.paramsNavigate(data);
-            if (router) {
-                navigate(router, params);
+            constructor(props) {
+                super(props);
             }
-           this.close();
-            //页面跳转
-        };
 
-        close(){
-            modal[closeFunc]&&modal[closeFunc]();
-        }
+            gotoPage = () => {
+                let data = modal[dataName] || {};
+                const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
+                let params = homeModule.paramsNavigate(data);
+                if (router) {
+                    routePush(router, params);
+                }
+                this.close();
+                //页面跳转
+            };
 
-        render() {
-            let AdData = modal[dataName] || {};
-            let image = AdData.image || '';
-            return (
-                <CommModal ref={(ref) => {
-                    this.messageModal = ref;
-                }}
-                           onRequestClose={() =>  {this.close()}}
-                           visible={modal[visibleName] && modal.isHome}>
-                    <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center' }}>
-                        <View style={{ flex: 1 }}/>
-                        <TouchableOpacity onPress={() => {
-                            this.gotoPage();
-                        }}>
-                            <ImageLoad style={{ width: autoSizeWidth(310), height: autoSizeWidth(410), backgroundColor:this.state.backgroundColor}}
-                                       onLoadEnd={()=>{this.setState({backgroundColor: null})}}
-                                       source={{ uri: image }}
-                                       resizeMode={'contain'}
-                                       showPlaceholder={false}
-                             />
-                        </TouchableOpacity>
-                        <View style={{ flex: 1 }}>
-                            <TouchableOpacity onPress={() => {
-                                this.close();
-                            }} style={{ marginTop: autoSizeWidth(25) }}>
-                                <Image source={closeImg} style={{ height: autoSizeWidth(24), width: autoSizeWidth(24) }}
-                                       resizeMode={'stretch'}/>
-                            </TouchableOpacity>
+            close() {
+                modal[closeFunc] && modal[closeFunc]();
+            }
+
+            render() {
+                let AdData = modal[dataName] || {};
+                let image = AdData.image || '';
+                return (
+                    <CommModal ref={(ref) => {
+                        this.messageModal = ref;
+                    }}
+                               onRequestClose={() => {
+                                   this.close();
+                               }}
+                               visible={modal[visibleName] && modal.isHome}>
+                        <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center' }}>
+                            <View style={{ flex: 1 }}/>
+                            <TouchableWithoutFeedback onPress={() => {
+                                this.gotoPage();
+                            }}>
+                                <View>
+                                    <Image style={{
+                                        width: autoSizeWidth(310),
+                                        height: autoSizeWidth(410),
+                                        backgroundColor: this.state.backgroundColor
+                                    }}
+                                           onLoadEnd={() => {
+                                               this.setState({ backgroundColor: null });
+                                           }}
+                                           source={{ uri: image }}
+                                           resizeMode={'contain'}
+                                    />
+                                </View>
+                            </TouchableWithoutFeedback>
+                            <View style={{ flex: 1 }}>
+                                <TouchableOpacity onPress={() => {
+                                    this.close();
+                                }} style={{ marginTop: autoSizeWidth(25) }}>
+                                    <Image source={closeImg}
+                                           style={{ height: autoSizeWidth(24), width: autoSizeWidth(24) }}
+                                           resizeMode={'stretch'}/>
+                                </TouchableOpacity>
+                            </View>
                         </View>
-                    </View>
-                </CommModal>
-            );
-        }
-    })
+                    </CommModal>
+                );
+            }
+        });
 
 }
 
 let HomeAdModal = observer(AdViewBindModal(HomeModalManager));
-let GiftModal = observer(AdViewBindModal(HomeModalManager, 'giftData' ,'isShowGift', 'closeGift'));
-export{HomeAdModal, AdViewBindModal, GiftModal}
+let GiftModal = observer(AdViewBindModal(HomeModalManager, 'giftData', 'isShowGift', 'closeGift'));
+export { HomeAdModal, AdViewBindModal, GiftModal };
 
 
 const styles = StyleSheet.create({

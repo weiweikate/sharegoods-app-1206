@@ -21,6 +21,7 @@ import android.text.TextUtils;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactNativeHost;
+import com.facebook.react.ReactRootView;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.meeruu.commonlib.base.BaseApplication;
@@ -38,6 +39,7 @@ import com.meeruu.sharegoods.rn.preload.PreLoadReactDelegate;
 import com.meeruu.sharegoods.service.VersionUpdateService;
 import com.meeruu.sharegoods.utils.LoadingDialog;
 import com.meeruu.statusbar.ImmersionBar;
+import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 import com.umeng.socialize.UMShareAPI;
 
 import org.greenrobot.eventbus.EventBus;
@@ -111,6 +113,11 @@ public class MainRNActivity extends ReactActivity {
         @Override
         protected ReactNativeHost getReactNativeHost() {
             return super.getReactNativeHost();
+        }
+
+        @Override
+        protected ReactRootView createRootView() {
+            return new RNGestureHandlerEnabledRootView(getPlainActivity());
         }
     }
 

@@ -4,6 +4,7 @@ import SensorsEvent from './TrackEvent'
 import user from "../model/user";
 import apiEnvironment from '../api/ApiEnvironment';
 import EmptyUtils from './EmptyUtils';
+// import StringUtils from './StringUtils';
 let timeStamp = null;
 const {
     track:nativeTrack,
@@ -31,7 +32,7 @@ const productTrack = {
     CategorySearchBannerClick:'CategorySearchBannerClick',//类目搜索banner广告位
     ProductListClick:'ProductListClick',//搜索页-商品列表页点击
     Search:'Search',//搜索
-    ProductDetail:'ProductDetail',//浏览商品详情页,
+    ProductDetail:'productDetail',//浏览商品详情页,
     AddToShoppingcart:'AddToShoppingcart',//加入购物车
     Share:'Share',//分享商品
     SpikeTimeClick:'FlashSaleTimeRangeClick',// 限时购tab
@@ -40,11 +41,28 @@ const productTrack = {
     NewUserGuideShow: 'NewUserGuideShow',//显示新手礼包
     NewUserGuideBtnClick: 'NewUserGuideBtnClick',//新手礼包按钮点击
 }
+
+const homeEvent = {
+    MissionBtnClick: 'MissionBtnClick',//任务按钮点击
+    BoxBtnClick: 'BoxBtnClick',//宝箱按钮点击
+    MissionFrameBtnClick: 'MissionFrameBtnClick',//任务按钮点击
+}
 /** 订单相关的埋点事件名称*/
 const inviteEvent = {
     QrCodeShareto: 'QrCodeShareto',//分享二维码
     ClickLotteryPage: 'ClickLotteryPage',//首页抽奖
     ViewOrderConfirmPage: 'ViewOrderConfirmPage'//浏览下单页
+}
+
+const showEvent = {
+    ViewXiuChang:'ViewXiuChang',//秀场页浏览
+    ViewXiuChangDetails:'ViewXiuChangDetails',//秀场文章详情查看
+    XiuChangEnterClick:'XiuChangEnterClick',//秀场进入按钮
+    XiuChangLikeClick:'XiuChangLikeClick',//秀场点赞按钮点击
+    XiuChangDownLoadClick:'XiuChangDownLoadClick',//秀场下载按钮点击
+    XiuChangShareClick:'XiuChangShareClick',//秀场分享按钮点击,
+    XiuChangAddToCart:'XiuChangAddToCart',//加入购物车点击确认
+    XiuChangSpuClick:'XiuChangSpuClick',//点击商品
 }
 
 const mineEvent = {
@@ -55,7 +73,8 @@ const mineEvent = {
     ClickRealCodeentityVerify: 'ClickRealCodeentityVerify', //点击实名认证
     ReadCodeentityVerifySuccss: 'ReadCodeentityVerifySuccss', //实名认证成功
     ClickOnlineCustomerService: 'ClickOnlineCustomerService', //点击在线客服 0：未知 1：tab我的-帮助与客服 2：商品详情页3：我的订单 4：售后详情页 100：其他
-    ClickPhoneCustomerService: 'ClickPhoneCustomerService' //点击客服电话    0：未知 1：tab我的-帮助与客服 2：商品详情页3：我的订单 4：售后详情页 100：其他
+    ClickPhoneCustomerService: 'ClickPhoneCustomerService', //点击客服电话    0：未知 1：tab我的-帮助与客服 2：商品详情页3：我的订单 4：售后详情页 100：其他
+    ViewInviteFriends:'ViewInviteFriends', //点击邀请好友按钮
 }
 
 const afterEvent = {
@@ -102,7 +121,9 @@ const trackEvent = {
     ...inviteEvent,
     ...mineEvent,
     ...afterEvent,
-    ...commonEvent
+    ...commonEvent,
+    ...homeEvent,
+    ...showEvent
 };
 
 function track(event_name,parmas) {
@@ -110,7 +131,8 @@ function track(event_name,parmas) {
         return;
     }
     //不为线上环境就，不上传埋点数据
-    if (apiEnvironment.envType !== 'online') {
+    let track_testPhones = ['13675893461'];//这些为数据测试手机号，任何环境都上报传埋点数据
+    if (apiEnvironment.envType !== 'online' && track_testPhones.indexOf(user.phone || '') === -1) {
         return;
     }
     let currentTimeStamp = new Date().getTime();

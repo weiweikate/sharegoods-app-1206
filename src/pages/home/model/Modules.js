@@ -19,7 +19,6 @@ class HomeModule {
     @observable isRefreshing = false;
     @observable isFocused = false;
     @observable goodsOtherLen = 0;
-    lastGoods = null;
     isFetching = false;
     isEnd = false;
     page = 1;
@@ -59,7 +58,8 @@ class HomeModule {
             uri: data.linkTypeCode,
             id: data.id,
             code: data.linkTypeCode,
-            keywords: data.name
+            keywords: data.name,
+            trackType:1
         };
 
     };
@@ -68,6 +68,14 @@ class HomeModule {
             return ({ ...item });
         });
     };
+
+    @action initHomeParams() {
+        this.homeList = [];
+        this.page = 1;
+        this.isFetching = false;
+        this.isEnd = false;
+        this.firstLoad = true;
+    }
 
     @action refreshHome = (type) => {
         switch (type) {
@@ -108,7 +116,7 @@ class HomeModule {
         }, 1000);
 
         // 首页类目
-        categoryModule.loadCategoryList();
+        categoryModule.loadCategoryList(this.firstLoad);
         // 首页顶部轮播图
         bannerModule.loadBannerList(this.firstLoad);
         // 首页频道类目

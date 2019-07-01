@@ -20,7 +20,8 @@ const index = {
     coupon_bg:require('./coupon_bg.png'),
     share_to_friend_circle:require('./share_to_friends_circle.png'),
     pay_success_icon:require('./pay_success_icon.png'),
-    share_to_wx:require('./share_to_wx.png')
-
+    share_to_wx:require('./share_to_wx.png'),
+    finsh_pay_alertbg:require('./finsh_pay_alertbg.png'),
+    payClose:require('./payClose.png')
 };
 export default index;

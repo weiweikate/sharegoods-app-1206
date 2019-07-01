@@ -24,7 +24,37 @@
 #import "SensorsAnalyticsSDK.h"
 #import "BGKeychainTool.h"
 #import "JRBaseVC.h"
+#import <React-Native-Webview-Bridge/RCTWebViewBridge.h>
+#import "StorageFromRN.h"
+@interface RCTWebViewBridge (ConfigLib)
+- (BOOL)webView:(__unused UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request
+       navigationType:(UIWebViewNavigationType)navigationType;
+@end
+@implementation RCTWebViewBridge (ConfigLib)
++ (void)load
+{
+  // self -> UIImage
+  // 获取imageNamed
+  // 获取哪个类的方法
+  // SEL:获取哪个方法
+  Method imageNamedMethod = class_getInstanceMethod(self, @selector(webView:shouldStartLoadWithRequest:navigationType:));
+  // 获取xmg_imageNamed
+  Method xmg_imageNamedMethod = class_getInstanceMethod(self, @selector(track_webView:shouldStartLoadWithRequest:navigationType:));
+  // 交互方法:runtime
+  method_exchangeImplementations(imageNamedMethod, xmg_imageNamedMethod);
+  
+ 
+}
 
+- (BOOL)track_webView:(__unused UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request
+ navigationType:(UIWebViewNavigationType)navigationType{
+  if ([[SensorsAnalyticsSDK sharedInstance] showUpWebView:webView WithRequest:request enableVerify:YES]) {
+    return NO;
+  }
+  return [self track_webView:webView shouldStartLoadWithRequest:request navigationType:navigationType];
+}
+
+@end
 
 @implementation AppDelegate (ConfigLib)
 -(void)JR_ConfigLib:(UIApplication *)application  didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -99,7 +129,7 @@
 - (void)initSensorsAnalyticsWithLaunchOptions:(NSDictionary *)launchOptions {
   
   // 初始化 SDK
-  SensorsAnalyticsSDK * sdkInstance = [SensorsAnalyticsSDK sharedInstanceWithServerURL:SA_SERVER_URL
+  SensorsAnalyticsSDK * sdkInstance = [SensorsAnalyticsSDK sharedInstanceWithServerURL:[StorageFromRN getTrackAddress]
                                                                       andLaunchOptions:launchOptions
                                                                           andDebugMode:SA_DEBUG_MODE];
   
@@ -120,6 +150,7 @@
   // 忽略单个页面
   [sdkInstance ignoreAutoTrackViewControllers:@[[JRBaseVC class]]];
   [sdkInstance identify: uuid];
+  [[SensorsAnalyticsSDK sharedInstance] addWebViewUserAgentSensorsDataFlag];
   
 }
 

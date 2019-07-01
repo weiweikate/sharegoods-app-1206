@@ -4,16 +4,14 @@ import {
     Text,
     View,
     Image,
-    Platform,
-    StatusBar,
     PixelRatio,
     Dimensions,
     StyleSheet,
     TouchableOpacity
 } from 'react-native';
-import BackIcon from '../../../comm/res/button/icon_header_back.png';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
+import res from '../../../comm/res';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -23,7 +21,7 @@ export default class NavigatorBar extends Component {
 
         title: '',
 
-        leftNavImage: BackIcon,
+        leftNavImage: res.button.icon_header_back,
         leftNavTitle: '',
         leftNavItemHidden: false,
 
@@ -183,7 +181,7 @@ export default class NavigatorBar extends Component {
                 <Image
                     source={leftNavImage}
                     resizeMode={'stretch'}
-                    style={[{ height: 15, width: 15 }, leftImageStyle]}
+                    style={leftImageStyle}
                 />
             </TouchableOpacity>;
         }
@@ -222,7 +220,8 @@ export default class NavigatorBar extends Component {
             return <TouchableOpacity
                 style={styles.right}
                 onPress={this._onRightPressed}>
-                <Text style={[styles.button, this.props.rightTitleStyle]} allowFontScaling={false}>{rightNavTitle || ''}</Text>
+                <Text style={[styles.button, this.props.rightTitleStyle]}
+                      allowFontScaling={false}>{rightNavTitle || ''}</Text>
             </TouchableOpacity>;
         }
         return null;
@@ -230,23 +229,14 @@ export default class NavigatorBar extends Component {
 
     _renderTitle = () => {
         const { title, titleStyle } = this.state;
-            if (this.props.renderTitle) {
-                return <View
-                    style={[styles.title, titleStyle]}>
-                    {this.props.renderTitle()}
-                </View>;
-            }
-        return (<Text style={[styles.title, titleStyle]} allowFontScaling={false} numberOfLines={1}>{title || ' '}</Text>);
+        if (this.props.renderTitle) {
+            return <View
+                style={[styles.title, titleStyle]}>
+                {this.props.renderTitle()}
+            </View>;
         }
-
-
-    _renderStatusBar = () => {
-        if (Platform.OS === 'android') {
-            return null;
-        }
-        const { statusBarStyle } = this.props;
-        const _statusBarStyle = (statusBarStyle && ['light-content', 'default'].indexOf(statusBarStyle) >= 0) ? statusBarStyle : 'default';
-        return (<StatusBar barStyle={_statusBarStyle}/>);
+        return (
+            <Text style={[styles.title, titleStyle]} allowFontScaling={false} numberOfLines={1}>{title || ' '}</Text>);
     };
 
     render() {
@@ -260,7 +250,6 @@ export default class NavigatorBar extends Component {
         return (
 
             <View style={[styles.navBar, headerStyle]}>
-                {/*{this._renderStatusBar()}*/}
                 {this._renderLeftItem()}
                 {this._renderTitle()}
                 {this._renderRightItem()}

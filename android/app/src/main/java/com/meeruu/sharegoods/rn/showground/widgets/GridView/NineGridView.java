@@ -66,17 +66,24 @@ public class NineGridView extends ViewGroup {
         if (mImageInfo != null && mImageInfo.size() > 0) {
             //只有1张图时 图片宽度即是总宽度  高度等于宽度
             if (mImageInfo.size() == 1) {
-                gridWidth = (int) (totalWidth * 0.8);
-                gridHeight = gridWidth * 12 / 19;
+                gridHeight = gridWidth = ((totalWidth - gridSpacing * 2) / 3) * 2;
+                height = gridHeight * rowCount + gridSpacing * (rowCount - 1) + getPaddingTop() + getPaddingBottom();
+                setMeasuredDimension(width, height);
+                return;
+            } else if (mImageInfo.size() == 2 || mImageInfo.size() == 4) {
+                gridWidth = gridHeight = (totalWidth - gridSpacing * 2) / 3;
+                height = gridHeight * rowCount + gridSpacing * (rowCount - 1) + getPaddingTop() + getPaddingBottom();
+                setMeasuredDimension(width, height);
+                return;
             } else {
                 //按照有几列 来计算每张图片的宽度和高度
                 //gridWidth 、gridHeight表示每张图片占据的宽、高
                 gridWidth = gridHeight = (totalWidth - gridSpacing * (columnCount - 1)) / columnCount;
+                width = gridWidth * columnCount + gridSpacing * (columnCount - 1) + getPaddingLeft() + getPaddingRight();
+                height = gridHeight * rowCount + gridSpacing * (rowCount - 1) + getPaddingTop() + getPaddingBottom();
+                setMeasuredDimension(width, height);
+                return;
             }
-            //此处width height就是我们即将为控件设置的总宽度 width可在layout中给定 height需要根据图片数量计算
-            width = gridWidth * columnCount + gridSpacing * (columnCount - 1) + getPaddingLeft() + getPaddingRight();
-            height = gridHeight * rowCount + gridSpacing * (rowCount - 1) + getPaddingTop() + getPaddingBottom();
-            Log.d("yzp", "wid  " + width + "height   " + height);
         }
         setMeasuredDimension(width, height);
     }
@@ -99,10 +106,15 @@ public class NineGridView extends ViewGroup {
             int bottom = top + gridHeight;
             Log.d("yyy", "left  " + left + "right " + right + "top " + top + "bottom  " + bottom);
             childrenView.layout(left, top, right, bottom);
+            ImageInfo imageInfo = mImageInfo.get(i);
+            if (imageInfo != null) {
+                imageInfo.setImageViewWidth(gridWidth);
+                imageInfo.setImageViewHeight(gridHeight);
+            }
             //imageloader是接口，调用接口中的onDisplayImage方法绘制imageview 。在使用的地方调用setImageLoader方法
             //重写接口中的方法，可以使用不同的图片框架显示图片 如Glide Piccasso等
             if (mImageLoader != null) {
-                mImageLoader.onDisplayImage(getContext(), childrenView, mImageInfo.get(i).imageUrl);
+                mImageLoader.onDisplayImage(getContext(), childrenView, imageInfo);
             }
         }
     }
@@ -252,9 +264,9 @@ public class NineGridView extends ViewGroup {
          *
          * @param context   上下文
          * @param imageView 需要展示图片的ImageView
-         * @param url       图片地址
+         * @param imageInfo 图片对象
          */
-        void onDisplayImage(Context context, SimpleDraweeView imageView, String url);
+        void onDisplayImage(Context context, SimpleDraweeView imageView, ImageInfo imageInfo);
 
         /*  *//**
          * @param url 图片的地址

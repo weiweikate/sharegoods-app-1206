@@ -42,6 +42,7 @@ export default class RequestDetailPage extends BasePage {
         this.canGoBack = false;
         let realUri = '';
         let platform = Platform.OS;
+        this.openShareModal = this.params.openShareModal || false;
         let app_version = DeviceInfo.getVersion();
         let app_name = DeviceInfo.getBundleId();
         let parmasString = 'platform=' + platform +
@@ -59,8 +60,8 @@ export default class RequestDetailPage extends BasePage {
             realUri = uri + '?';
         }
         realUri = realUri + parmasString;
-        if (realUri.indexOf('http') === -1 && realUri.charAt(0) !== '/'){
-            realUri = '/'+ realUri ;
+        if (realUri.indexOf('http') === -1 && realUri.charAt(0) !== '/') {
+            realUri = '/' + realUri;
         }
         //如果没有http，就加上当前h5的域名
         if (realUri.indexOf('http') === -1) {
@@ -117,16 +118,22 @@ export default class RequestDetailPage extends BasePage {
     });
 
     componentDidMount() {
-        let first = true;
-        BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+        let isFirst = true;
+        this.willFocusSubscription = this.props.navigation.addListener(
+            'didFocus',
+            payload => {
+                BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+                if (!isFirst) {
+                    this.webView && this.webView.sendToBridge(JSON.stringify({ action: 'entry' }));
+                }
+                isFirst = false;
+            }
+        );
+
         this.willBlurSubscription = this.props.navigation.addListener(
             'willBlur',
             payload => {
                 BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
-                if (!first){
-                    this.webView && this.webView.sendToBridge(JSON.stringify({ action: 'entry' }));
-                }
-                first = false;
             }
         );
         this.$NavigationBarResetTitle(this.state.title || '加载中...');
@@ -143,13 +150,14 @@ export default class RequestDetailPage extends BasePage {
 
     componentWillUnmount() {
         this.willBlurSubscription && this.willBlurSubscription.remove();
+        this.willFocusSubscription && this.willFocusSubscription.remove();
     }
 
-    successCallBack = (type)=>{
-        if(type === 'reload'){
+    successCallBack = (type) => {
+        if (type === 'reload') {
             this.webView && this.webView.reload();
         }
-        if(type === 'shareSuccess'){
+        if (type === 'shareSuccess') {
             this.webView && this.webView.sendToBridge(JSON.stringify({ action: 'shareSuccess' }));
         }
     };
@@ -157,7 +165,7 @@ export default class RequestDetailPage extends BasePage {
     _postMessage = (msg) => {
         if (msg.action === 'share') {
             // this.webJson = msg.shareParmas;
-            this.setState({ shareParmas:msg.shareParams || msg.shareParmas }, () => {
+            this.setState({ shareParmas: msg.shareParams || msg.shareParmas }, () => {
                 this.shareModal && this.shareModal.open();
             });
             return;
@@ -192,6 +200,12 @@ export default class RequestDetailPage extends BasePage {
             this.luckyIcon && this.luckyIcon.getLucky(parmas.showPage, parmas.showPageValue);
             return;
         }
+
+        if (msg.action === 'changeTitle') {
+            let parmas = msg.params || {};
+            this.$NavigationBarResetTitle(parmas.title);
+            return;
+        }
     };
 
     _render() {
@@ -203,6 +217,7 @@ export default class RequestDetailPage extends BasePage {
                     ref={(ref) => {
                         this.webView = ref;
                     }}
+                    mixedContentMode={'always'}
                     originWhitelist={['(.*?)']}
                     source={{ uri: this.state.uri }}
                     navigateAppPage={(r, p) => {
@@ -228,6 +243,10 @@ export default class RequestDetailPage extends BasePage {
 
                     // onLoadStart={() => this._onLoadStart()}
                     onLoadEnd={(event) => {
+                        if (this.openShareModal){
+                            this.openShareModal = false;
+                            this.webView && this.webView.sendToBridge(JSON.stringify({ action: 'openShareModal' }));
+                        }
                         if (event && event.nativeEvent) {
                             this.canGoBack = event.nativeEvent.canGoBack;
                             this.$NavigationBarResetTitle(this.state.title || event.nativeEvent.title);
@@ -246,7 +265,7 @@ export default class RequestDetailPage extends BasePage {
                 <WebAdModal/>
                 <LuckyIcon ref={(ref) => {
                     this.luckyIcon = ref;
-                }} />
+                }}/>
             </View>
         );
     }

@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,assign) NSInteger likesCount;
 @property (nonatomic,assign) NSInteger shareCount;
 @property (nonatomic,copy) NSString * showNo;
-@property (nonatomic,assign) NSInteger type; //事件类型
+@property (nonatomic,assign) BOOL type; //事件类型
 @property (nonatomic,strong)NSArray * products;
 @property (nonatomic,assign) BOOL isLike;
 

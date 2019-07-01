@@ -18,6 +18,7 @@ const SuccessImg = res.button.tongyon_icon_check_green;
 import {
     MRText as Text
 } from '../../../components/ui';
+import RouterMap from '../../../navigation/RouterMap';
 
 
 export default class OpenShopSuccessPage extends BasePage {
@@ -35,7 +36,7 @@ export default class OpenShopSuccessPage extends BasePage {
         SpellShopApi.getById().then((data) => {
             //分享好友页面
             this.$loadingDismiss();
-            this.$navigate('spellShop/openShop/InvitationFriendPage', { shareInfo: data.data || {} });
+            this.$navigate(RouterMap.InvitationFriendPage, { shareInfo: data.data || {} });
         }).catch((error) => {
             this.$loadingDismiss();
             this.$toastShow(error.msg);

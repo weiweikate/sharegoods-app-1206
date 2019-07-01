@@ -103,7 +103,7 @@ export default class SelectOneTicketModel extends React.Component {
                             marginLeft: autoSizeWidth(26)
                         }}>
                             ¥
-                            <Text style={{fontWeight: '600',
+                            <Text style={{fontWeight: '400',
                                 color: DesignRule.mainColor,
                             fontSize: DesignRule.autoSizeWidth(20)}}>
                                 1

@@ -33,11 +33,6 @@ export default class ProgressBarView extends Component {
         };
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        console.log('shouldComponentUpdate --nextProps' + nextProps + '===nextState' + nextState);
-        return true;
-    }
-
     render() {
         const { statue, itemData } = this.props;
         return (

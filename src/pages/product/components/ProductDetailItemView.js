@@ -17,11 +17,13 @@ import { contentImgWidth, price_type } from '../ProductDetailModel';
 import { ActivityDidBeginView, ActivityWillBeginView } from './ProductDetailActivityView';
 import UIImage from '@mr/image-placeholder';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import RouterMap, { navigate } from '../../../navigation/RouterMap';
+import RouterMap, { routeNavigate, routePush } from '../../../navigation/RouterMap';
 import { observer } from 'mobx-react';
 import res from '../../home/res';
 import { activity_type, activity_status } from '../ProductDetailModel';
 import bridge from '../../../utils/bridge';
+import { getSource } from '@mr/image-placeholder/oos';
+import { getSize } from '../../../utils/OssHelper';
 
 const { isNoEmpty } = StringUtils;
 const { arrow_right_black } = RES.button;
@@ -29,6 +31,7 @@ const { arrow_right_red } = RES;
 const { service_true } = RES.service;
 const { toTop } = res.search;
 const { px2dp } = ScreenUtils;
+const { saleBig_1001 } = RES.pSacle;
 
 /*
 * 商品头部
@@ -36,7 +39,7 @@ const { px2dp } = ScreenUtils;
 export class HeaderItemView extends Component {
 
     /*价格模块*/
-    _renderPriceView = ({ minPrice, maxPrice, originalPrice, levelText }) => {
+    _renderPriceView = ({ minPrice, maxPrice, originalPrice, levelText, monthSaleCount }) => {
         return (
             <View style={styles.priceView}>
                 {
@@ -44,11 +47,11 @@ export class HeaderItemView extends Component {
                     minPrice == maxPrice
                         ?
                         <Text style={styles.priceText}>¥<Text
-                            style={{ fontSize: 24, fontWeight: 'bold' }}>{minPrice}</Text></Text>
+                            style={{ fontSize: 24, fontWeight: '400' }}>{minPrice}</Text></Text>
                         :
                         <Text style={styles.priceText}>¥<Text
-                            style={{ fontSize: 24, fontWeight: 'bold' }}>{minPrice}</Text>-¥<Text
-                            style={{ fontSize: 24, fontWeight: 'bold' }}>{maxPrice}</Text></Text>
+                            style={{ fontSize: 24, fontWeight: '400' }}>{minPrice}</Text>-¥<Text
+                            style={{ fontSize: 24, fontWeight: '400' }}>{maxPrice}</Text></Text>
                 }
                 <Text style={styles.originalText}>¥{originalPrice}</Text>
                 {
@@ -56,6 +59,14 @@ export class HeaderItemView extends Component {
                         <Text style={styles.levelText}>{levelText}</Text>
                     </View> : null
                 }
+                {monthSaleCount >= 1000 && <Image source={saleBig_1001}
+                                                  style={{
+                                                      width: 104,
+                                                      height: 33,
+                                                      top: -7,
+                                                      right: -5,
+                                                      position: 'absolute'
+                                                  }}/>}
             </View>
         );
     };
@@ -102,10 +113,11 @@ export class HeaderItemView extends Component {
                             minPrice: promotionMinPrice,
                             maxPrice: promotionMaxPrice,
                             originalPrice,
-                            levelText
+                            levelText,
+                            monthSaleCount
                         })
                         :
-                        this._renderPriceView({ minPrice, maxPrice, originalPrice, levelText }))
+                        this._renderPriceView({ minPrice, maxPrice, originalPrice, levelText, monthSaleCount }))
                 }
                 {showShop && this._renderShop({ priceType, shopAction, groupPrice })}
                 <NoMoreClick onPress={() => {
@@ -168,13 +180,13 @@ const styles = StyleSheet.create({
         height: 22, width: 1, backgroundColor: DesignRule.lineColor_inGrayBg
     },
     shopSubText: {
-        paddingLeft: 15, paddingRight: 5, fontWeight: 'bold',
+        paddingLeft: 15, paddingRight: 5, fontWeight: '500',
         color: DesignRule.textColor_redWarn, fontSize: 14
     },
 
     nameText: {
         marginHorizontal: 15, paddingBottom: 5, paddingTop: 10,
-        color: DesignRule.textColor_mainTitle, fontSize: 16, fontWeight: 'bold'
+        color: DesignRule.textColor_mainTitle, fontSize: 16, fontWeight: '500'
     },
 
     secondNameText: {
@@ -220,7 +232,7 @@ export class SuitItemView extends Component {
 
     _goSuitPage = () => {
         const { productDetailModel } = this.props;
-        navigate(RouterMap.SuitProductPage, { productDetailModel });
+        routePush(RouterMap.SuitProductPage, { productDetailModel });
     };
 
     render() {
@@ -258,7 +270,7 @@ const SuitItemViewStyles = StyleSheet.create({
         height: 40
     },
     LeftText: {
-        color: DesignRule.textColor_mainTitle, fontSize: 15, fontWeight: 'bold'
+        color: DesignRule.textColor_mainTitle, fontSize: 15, fontWeight: '500'
     },
     rightView: {
         flexDirection: 'row', alignItems: 'center'
@@ -458,7 +470,7 @@ export class ContentItemView extends Component {
 
     componentDidMount() {
         const { item } = this.props;
-        Image.getSize(item, (width, height) => {
+        getSize(item, (width, height) => {
             height = height / width * contentImgWidth;
             this.setState({
                 height
@@ -473,9 +485,10 @@ export class ContentItemView extends Component {
             return null;
         }
         return <TouchableWithoutFeedback onPress={() => {
-            navigate(RouterMap.CheckBigImagesView, { imageUrls: [item] });
+            routeNavigate(RouterMap.CheckBigImagesView, { imageUrls: [item] });
         }}>
-            <Image source={{ uri: item }} style={{ width, height }}/>
+            <Image source={getSource({ uri: item }, ScreenUtils.width, height, 'lfit')}
+                   style={{ width, height }}/>
         </TouchableWithoutFeedback>;
     }
 }

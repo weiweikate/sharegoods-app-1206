@@ -9,6 +9,7 @@
 
 #import <UIKit/UIKit.h>
 #import "AdView.h"
+
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (nonatomic, strong) UIWindow *window;

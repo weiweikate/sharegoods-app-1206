@@ -7,7 +7,7 @@ import API from '../../../api';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { Alert } from 'react-native';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
-import { navigateBack } from '../../../navigation/RouterMap';
+import { routePop } from '../../../navigation/RouterMap';
 import { OrderType } from '../../../utils/EnumUtil';
 
 class ConfirmOrderModel {
@@ -153,16 +153,14 @@ class ConfirmOrderModel {
             Alert.alert('提示', err.msg, [
                 {
                     text: '确定', onPress: () => {
-                        navigateBack()
+                        routePop()
                     }
                 }
             ]);
         } else if (err.code === 54001) {
             bridge.$toast('商品库存不足！');
-          // navigateBack()
         } else {
             bridge.$toast(err.msg);
-            // navigateBack()
         }
     };
 

@@ -17,6 +17,8 @@ import ProductApi from '../api/ProductApi';
 import { beginChatType, QYChatTool } from '../../../utils/QYModule/QYChatTool';
 import ProductDetailNavView from '../components/ProductDetailNavView';
 import { SmoothPushPreLoadHighComponent } from '../../../comm/components/SmoothPushHighComponent';
+import { routeNavigate } from '../../../navigation/RouterMap';
+import RouterMap from '../../../navigation/RouterMap';
 
 const { p_score_smile, p_score_empty } = res.productScore;
 
@@ -159,7 +161,7 @@ export default class P_ScoreListPage extends BasePage {
                 quantity: amount,
                 productCode: pData.prodCode
             });
-            this.$navigate('order/order/ConfirOrderPage', {
+            this.$navigate(RouterMap.ConfirOrderPage, {
                 orderParamVO: {
                     orderType: 99,
                     orderProducts: orderProducts,
@@ -177,7 +179,7 @@ export default class P_ScoreListPage extends BasePage {
                 break;
             case 'keFu':
                 if (!user.isLogin) {
-                    this.$navigate('login/login/LoginPage');
+                    routeNavigate(RouterMap.LoginPage);
                     return;
                 }
                 track(trackEvent.ClickOnlineCustomerService, { customerServiceModuleSource: 2 });
@@ -197,7 +199,7 @@ export default class P_ScoreListPage extends BasePage {
                 break;
             case 'buy':
                 if (!user.isLogin) {
-                    this.$navigate('login/login/LoginPage');
+                    routeNavigate(RouterMap.LoginPage);
                     return;
                 }
                 this.state.goType = type;
@@ -252,7 +254,10 @@ export default class P_ScoreListPage extends BasePage {
 
     _render() {
         const { pData } = this.params;
-        const { name, imgUrl, prodCode, originalPrice, groupPrice, v0Price, shareMoney } = pData || {};
+        const {
+            name, imgUrl, prodCode, originalPrice, groupPrice, v0Price, shareMoney,
+            monthSaleCount, priceTypeTextList, promotionMinPrice, productIsPromotionPrice
+        } = pData || {};
         return (
             <View style={styles.container}>
                 <ProductDetailNavView productDetailModel={pData}
@@ -272,10 +277,12 @@ export default class P_ScoreListPage extends BasePage {
                                 trackEvent={trackEvent.Share}
                                 type={'Image'}
                                 imageJson={{
+                                    monthSaleType: monthSaleCount >= 1000 ? 3 : (monthSaleCount >= 500 ? 2 : 1),
                                     imageUrlStr: imgUrl,
                                     titleStr: `${name}`,
+                                    priceType: priceTypeTextList,
                                     priceStr: `￥${originalPrice}`,
-                                    retailPrice: `￥${v0Price}`,
+                                    retailPrice: `￥${productIsPromotionPrice ? promotionMinPrice : v0Price}`,
                                     shareMoney: shareMoney,
                                     spellPrice: `￥${groupPrice}`,
                                     QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`
