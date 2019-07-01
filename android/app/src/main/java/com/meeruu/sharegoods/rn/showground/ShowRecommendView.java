@@ -29,7 +29,6 @@ import com.facebook.react.uimanager.events.EventDispatcher;
 import com.meeruu.commonlib.handler.WeakHandler;
 import com.meeruu.commonlib.tool.FastScrollLinearLayoutManager;
 import com.meeruu.commonlib.utils.DensityUtils;
-import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.sharegoods.R;
@@ -79,7 +78,6 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
     private WeakHandler mHandler;
     private View errView;
     private View errImg;
-    private boolean sIsScrolling;
 
     private int page = 1;
 
@@ -148,7 +146,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         });
         ProductsAdapter.AddCartListener addCartListener = new ProductsAdapter.AddCartListener() {
             @Override
-            public void onAddCart(String product,String detail) {
+            public void onAddCart(String product, String detail) {
                 addCartEvent.init(view.getId());
                 WritableMap map = Arguments.createMap();
                 map.putString("product", product);
@@ -160,7 +158,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
 
         ProductsAdapter.PressProductListener pressProductListener = new ProductsAdapter.PressProductListener() {
             @Override
-            public void onPressProduct(String product,String detail) {
+            public void onPressProduct(String product, String detail) {
                 onPressProductEvent onPressProductEvent = new onPressProductEvent();
                 onPressProductEvent.init(view.getId());
                 WritableMap writableMap = Arguments.createMap();
@@ -234,20 +232,6 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
                     ymap.putInt("YDistance", DensityUtils.px2dip(flag));
                     onScrollYEvent.setData(ymap);
                     eventDispatcher.dispatchEvent(onScrollYEvent);
-                }
-            }
-
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-
-                if (newState == RecyclerView.SCROLL_STATE_DRAGGING || newState == RecyclerView.SCROLL_STATE_SETTLING) {
-                    sIsScrolling = true;
-                    ImageLoadUtils.pauseLoadImage();
-                } else if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (sIsScrolling == true) {
-                        ImageLoadUtils.resumeLoadImage();
-                    }
-                    sIsScrolling = false;
                 }
             }
         });
@@ -468,7 +452,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
                                 resolveResource.add(imageInfo);
                             }
 
-                            if(resourceBean.getType() == 5){
+                            if (resourceBean.getType() == 5) {
                                 ImageInfo imageInfo = new ImageInfo();
                                 imageInfo.setImageUrl(resourceBean.getUrl());
                                 bean.setVideoCover(imageInfo);
@@ -526,7 +510,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         }
     }
 
-    public void setType(String type){
+    public void setType(String type) {
         adapter.setType(type);
     }
 
