@@ -574,9 +574,9 @@ export default class FlyImageViewer extends Component {
     }
 
     /**
-     * 完成布局
+     * 完成布局: React.LayoutChangeEvent
      */
-    handleLayout(event: React.LayoutChangeEvent) {
+    handleLayout(event) {
         if (this.hasLayout) {
             return;
         }
