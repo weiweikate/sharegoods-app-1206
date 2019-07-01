@@ -50,7 +50,7 @@ export default class CouponExplainItem extends Component {
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 {
                                     item.type === 3 || item.type === 4 || item.type === 5 || item.type === 12 ? null :
-                                        <View style={{ alignSelf: 'center', marginTop: (item.value + '').length < 3 ? 14 : 5 }}>
+                                        <View style={{ alignSelf: 'center', marginTop:(item.value + '').length < 3 ? 14 : 4 }}>
                                             <Text
                                                 style={{
                                                     fontSize: 14,
@@ -100,7 +100,7 @@ export default class CouponExplainItem extends Component {
                             alignItems: 'center',
                             marginLeft: 5,
                             justifyContent: 'center'}}>
-                            {item.status === 0 || (item.status === 3 && item.type === 99)?
+                            {item.status === 0 || (item.status === 3 && item.type === 99) ?
                                 (
                                     item.type === 99 ?
                                         <View style={{alignItems: 'center', marginRight: 10}}>
@@ -116,7 +116,7 @@ export default class CouponExplainItem extends Component {
                                                             style={styles.xNumsStyle}/>
                                                 </View>
                                                 : null)
-                                                :<UIText style={[styles.xNumStyle, {marginRight: 0}]}
+                                                : <UIText style={[styles.xNumStyle, {marginRight: 0}]}
                                                 value={'x' + user.tokenCoin}/>
                                             }
                                         </View>
@@ -132,7 +132,7 @@ export default class CouponExplainItem extends Component {
                                                                       style={styles.xNumsStyle}/> : null}
                                         </View>
                                         :
-                                            (item.redirectType && item.redirectType!=0?
+                                            (item.redirectType && item.redirectType != 0 ?
                                             <NoMoreClick style={{
                                                 height: ScreenUtils.autoSizeWidth(27),
                                                 width: ScreenUtils.autoSizeWidth(60),
