@@ -137,6 +137,7 @@ export default class ProductDetailModel {
     @observable upTime;
     @observable sevenDayReturn;//7天退换
     @observable weekendDelivery;//节假日发货
+    @observable orderOnProduct;//商详下单
 
     /**七鱼相关**/
     @observable shopId;
@@ -353,7 +354,7 @@ export default class ProductDetailModel {
                 groupPrice, v0Price, shareMoney, selfReturning,
                 monthSaleCount, skuList, specifyList, stockSysConfig, promoteInfoVOList,
                 paramList, comment, totalComment, overtimeComment,
-                prodCode, upTime, now, content, sevenDayReturn, weekendDelivery,
+                prodCode, upTime, now, content, sevenDayReturn, weekendDelivery, orderOnProduct,
                 promotionResult, promotionDecreaseAmount, promotionPrice, promotionLimitNum,
                 promotionSaleNum, promotionStockNum, promotionMinPrice, promotionMaxPrice, promotionAttentionNum, promotionSaleRate
             } = data || {};
@@ -390,6 +391,7 @@ export default class ProductDetailModel {
             this.upTime = upTime;
             this.sevenDayReturn = sevenDayReturn;
             this.weekendDelivery = weekendDelivery;
+            this.orderOnProduct = orderOnProduct;
 
             const { singleActivity, groupActivity, tags } = promotionResult || {};
             this.singleActivity = singleActivity || {};
