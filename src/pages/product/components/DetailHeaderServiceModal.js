@@ -14,7 +14,7 @@ import DesignRule from '../../../constants/DesignRule';
 import res from '../res/product';
 
 const { px2dp } = ScreenUtils;
-const { fa_huo, ji_su, qi_tian, zheng_ping, bounus } = res.service;
+const { fa_huo, ji_su, qi_tian, zheng_ping } = res.service;
 
 export default class DetailHeaderServiceModal extends Component {
 
@@ -69,9 +69,7 @@ export default class DetailHeaderServiceModal extends Component {
     };
 
     render() {
-        const { restrictions } = this.state.pData;
-        //1优惠券,4退换,8节假日
-
+        const { sevenDayReturn, weekendDelivery } = this.state.pData;
         let sectionListData = [
             {
                 headerTittle: '质量保障',
@@ -84,25 +82,16 @@ export default class DetailHeaderServiceModal extends Component {
                 data: [{ content: '支持48小时发货（法定节假日或者促销活动期间以平台通知为准，因自然灾害等不可抗力因素造成的发货延时除外）' }]
             },
             {
-                headerTittle: `${(restrictions & 4) === 4 ? '' : '不支持'}7天无理由退换货`,
+                headerTittle: `${sevenDayReturn ? '' : '不支持'}7天无理由退换货`,
                 headerImg: qi_tian,
-                data: [{ content: `${(restrictions & 4) === 4 ? '收到商品之日7天（含）内，可在线申请退货服务（部分食品、贴身衣物等特殊商品除外）' : '食品、贴身衣物、兑换、秒杀、经验翻倍等特殊商品，无质量问题不支持退换货'}` }]
+                data: [{ content: `${sevenDayReturn ? '收到商品之日7天（含）内，可在线申请退货服务（部分食品、贴身衣物等特殊商品除外）' : '食品、贴身衣物、兑换、秒杀、经验翻倍等特殊商品，无质量问题不支持退换货'}` }]
             },
             {
-                headerTittle: `${(restrictions & 8) === 8 ? '' : '不支持'}节假日发货`,
+                headerTittle: `${weekendDelivery ? '' : '不支持'}节假日发货`,
                 headerImg: fa_huo,
-                data: [{ content: `该商品${(restrictions & 8) === 8 ? '' : '不支持'}节假日发货` }]
+                data: [{ content: `该商品${weekendDelivery ? '' : '不支持'}节假日发货` }]
             }
         ];
-
-        if ((restrictions & 1) !== 1) {
-            sectionListData.push({
-                headerTittle: '不支持使用优惠券',
-                headerImg: bounus,
-                data: [{ content: '该商品不支持使用优惠券使用优惠券' }]
-            });
-        }
-
 
         return (
             <CommModal onRequestClose={this._close}

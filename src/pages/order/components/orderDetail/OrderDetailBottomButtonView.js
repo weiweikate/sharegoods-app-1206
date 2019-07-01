@@ -31,7 +31,7 @@ export default class OrderDetailBottomButtonView extends Component {
     render() {
         let nameArr = [...orderDetailModel.menu];
         if (nameArr.length > 0) {
-            if (nameArr.length === 3) {
+            if (nameArr.length === 4) {
                 return (
                     <View style={styles.containerStyle}>
                         <View style={{
@@ -46,6 +46,9 @@ export default class OrderDetailBottomButtonView extends Component {
                                     }/>
                         </View>
                         {nameArr.map((item, i) => {
+                            if (i === 0){
+                                return <View />
+                            }
                             return <NoMoreClick key={i}
                                                 style={[styles.touchableStyle, { borderColor: item.isRed ? DesignRule.mainColor : DesignRule.color_ddd }]}
                                                 onPress={() => {

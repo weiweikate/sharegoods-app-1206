@@ -1,6 +1,6 @@
 import OrderApi from '../api/orderApi';
 import bridge from '../../../utils/bridge';
-import { navigate } from '../../../navigation/RouterMap';
+import RouterMap, { routePush } from '../../../navigation/RouterMap';
 import { Alert } from 'react-native';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
@@ -17,9 +17,9 @@ function clickOrderLogistics(merchantOrderNo){
             bridge.$toast('无物流信息')
         } else if (length === 1){
             let express = [...deliveryPackage, ...unDeliveryProductList][0] || {}
-            navigate('order/logistics/LogisticsDetailsPage',{expressNo: express.expressNo, expressCode: express.expressCode})
+            routePush(RouterMap.LogisticsDetailsPage,{expressNo: express.expressNo, expressCode: express.expressCode})
         } else {
-            navigate('order/logistics/CheckLogisticsPage', {
+            routePush(RouterMap.CheckLogisticsPage, {
                 expressList: deliveryPackage,
                 unSendProductInfoList: unDeliveryProductList
             });
@@ -46,7 +46,7 @@ function clickOrderConfirmReceipt(merchantOrderNo, subStatus, callBack){
                 bridge.showLoading();
                 OrderApi.confirmReceipt({ merchantOrderNo: merchantOrderNo}).then((response) => {
                     bridge.hiddenLoading();
-                    this.props.nav('order/order/ConfirmReceiveGoodsPage', {
+                    routePush('order/order/ConfirmReceiveGoodsPage', {
                         merchantOrderNo: merchantOrderNo,
                         callBack: callBack
                     });
@@ -63,17 +63,17 @@ function clickOrderConfirmReceipt(merchantOrderNo, subStatus, callBack){
 }
 
 function clickOrderAgain(merchantOrderNo, products){
-    let cartData = products.map((item, index) => {
-        return{
-            productCode: item.prodCode,
-            skuCode: item.skuCode,
-            amount: item.num,
-            spuCode: item.prodCode
-        };
-    });
+    // let cartData = products.map((item, index) => {
+    //     return{
+    //         productCode: item.prodCode,
+    //         skuCode: item.skuCode,
+    //         amount: item.quantity,
+    //         spuCode: item.prodCode
+    //     };
+    // });
     track(trackEvent.OrderAgain,{ orderId: merchantOrderNo})
-    shopCartCacheTool.addGoodItem(cartData);
-    navigate('shopCart/ShopCart', { hiddeLeft: false });
+    shopCartCacheTool.addGoodItem(products);
+    routePush('shopCart/ShopCart', { hiddeLeft: false });
 }
 
 
