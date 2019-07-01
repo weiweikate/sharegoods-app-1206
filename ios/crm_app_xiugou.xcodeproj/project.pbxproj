@@ -347,13 +347,6 @@
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
 			remoteInfo = crm_app_xiugou;
 		};
-		031DF87822C5E12F0035BD7A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0347BAC12237CC670011184A /* Lottie.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 6445B0D5207E0D4D00D84F6A;
-			remoteInfo = LottieLibraryMacOS;
-		};
 		0347BABF2237CC490011184A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0347BABB2237CC480011184A /* LottieReactNative.xcodeproj */;
@@ -1620,7 +1613,6 @@
 				0347BACB2237CC680011184A /* Lottie.framework */,
 				0347BACD2237CC680011184A /* Lottie.framework */,
 				0347BACF2237CC680011184A /* libLottie.a */,
-				031DF87922C5E12F0035BD7A /* libLottie.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3294,13 +3286,6 @@
 			fileType = archive.ar;
 			path = libRCTVibration.a;
 			remoteRef = 00C302E31ABCB9EE00DB3ED1 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		031DF87922C5E12F0035BD7A /* libLottie.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libLottie.a;
-			remoteRef = 031DF87822C5E12F0035BD7A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		0347BAC02237CC490011184A /* libLottieReactNative.a */ = {
