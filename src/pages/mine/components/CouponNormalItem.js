@@ -38,16 +38,16 @@ export default class CouponNormalItem extends Component {
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 {
                                     item.type === 3 || item.type === 4 ||  item.type === 5 || item.type === 12 ? null :
-                                        <View style={{ alignSelf: 'flex-end', marginBottom: 2 }}>
+                                        <View style={{ alignSelf: 'center', marginTop:(item.value + '').length < 3 ? 14 : 4 }}>
                                             <Text
                                                 style={{
                                                     fontSize: 14,
                                                     color: item.status === 0 ? (item.levelimit ? '#FF80A7' : '#FF0050') : '#FF80A7',
-                                                }} allowFontScaling={false}>￥</Text>
+                                                }} allowFontScaling={false}>¥</Text>
                                         </View>}
                                 <View>
                                     <Text style={{
-                                        fontSize: (item.value && item.value.length < 3 ? 34 : 20),
+                                        fontSize: (item.value && (item.value + '').length < 3 ? 34 : 20),
                                         fontWeight:'600',
                                         color: item.status === 0 ? (item.levelimit ? '#FF80A7' : '#FF0050') : '#FF80A7',
                                     }} allowFontScaling={false}>{item.value}</Text>
@@ -65,8 +65,9 @@ export default class CouponNormalItem extends Component {
                         }}>
                             <View style={{ flexDirection: 'row' }}>
                                 <Text style={{
-                                    fontSize: 15,
-                                    color: item.status === 0 ? DesignRule.textColor_mainTitle : DesignRule.textColor_instruction,
+                                    fontSize: 16,
+                                    fontWeight:'600',
+                                    color: item.status === 0 ? '#222222' : DesignRule.textColor_instruction,
                                 }} allowFontScaling={false} numberOfLines={0}>
                                     {item.name}</Text>
                                 {/*{item.type === 12 ? <UIText value={'x' + item.number} style={{*/}
@@ -121,7 +122,7 @@ export default class CouponNormalItem extends Component {
                                                 }} allowFontScaling={false}>去使用</Text>
                                             </LinearGradient>
                                         </NoMoreClick> : (item.count > 1 ? <UIText value={'x' + item.count}
-                                                                                   style={styles.xNumsStyle}/>:null))
+                                                                                   style={styles.xNumsStyle}/> : null))
                                 ) :
                                 (stateImg ? <View style={{justifyContent: 'center', alignItems: 'center'}}>
                                     <Image style={{width: 55, height: 55}}
