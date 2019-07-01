@@ -424,7 +424,7 @@ export default class MyCashAccountPage extends BasePage {
         this.didFocusSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
-                this.onLoad();
+                this.onRefresh();
                 MineApi.canWithdraw({ phoneNo: user.phone }).then(data => {
                     this.setState({
                         canWithdraw: data.data
