@@ -120,8 +120,6 @@ export default class ProductDetailModel {
      * [{type(8：经验翻倍 9：券兑换),message}]
      * */
     @observable promoteInfoVOList = [];
-    /*服务信息 位运算 1(支持优惠券) 4(支持7天退换) 8(支持节假日退换)*/
-    @observable restrictions;
     /*参数
      * [{paramName: "上市时间", paramValue: "2018年12月"}]
      * */
@@ -137,6 +135,9 @@ export default class ProductDetailModel {
     @observable now;
     /*开售时间*/
     @observable upTime;
+    @observable sevenDayReturn;//7天退换
+    @observable weekendDelivery;//节假日发货
+    @observable orderOnProduct;//商详下单
 
     /**七鱼相关**/
     @observable shopId;
@@ -352,8 +353,8 @@ export default class ProductDetailModel {
                 originalPrice, priceType, name, secondName, freight,
                 groupPrice, v0Price, shareMoney, selfReturning,
                 monthSaleCount, skuList, specifyList, stockSysConfig, promoteInfoVOList,
-                restrictions, paramList, comment, totalComment, overtimeComment,
-                prodCode, upTime, now, content,
+                paramList, comment, totalComment, overtimeComment,
+                prodCode, upTime, now, content, sevenDayReturn, weekendDelivery, orderOnProduct,
                 promotionResult, promotionDecreaseAmount, promotionPrice, promotionLimitNum,
                 promotionSaleNum, promotionStockNum, promotionMinPrice, promotionMaxPrice, promotionAttentionNum, promotionSaleRate
             } = data || {};
@@ -380,7 +381,6 @@ export default class ProductDetailModel {
             this.specifyList = specifyList || [];
             this.stockSysConfig = stockSysConfig || [];
             this.promoteInfoVOList = promoteInfoVOList || [];
-            this.restrictions = restrictions;
             this.paramList = paramList || [];
             /*不赋值默认 判空用*/
             this.comment = comment;
@@ -389,6 +389,9 @@ export default class ProductDetailModel {
             this.contentArr = contentArr;
             this.now = now;
             this.upTime = upTime;
+            this.sevenDayReturn = sevenDayReturn;
+            this.weekendDelivery = weekendDelivery;
+            this.orderOnProduct = orderOnProduct;
 
             const { singleActivity, groupActivity, tags } = promotionResult || {};
             this.singleActivity = singleActivity || {};
@@ -523,7 +526,7 @@ export default class ProductDetailModel {
         }).then((data) => {
             let tempData = data.data || {};
             this.productSuccess(tempData);
-            this.requestShopInfo(tempData.supplierCode);
+            this.requestShopInfo(tempData.merchantCode);
             this.productDetailCouponsViewModel.requestListProdCoupon(this.prodCode);
         }).catch((e) => {
             this.productError(e);

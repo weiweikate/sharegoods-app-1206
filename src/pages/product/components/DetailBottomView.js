@@ -31,31 +31,26 @@ export default class DetailBottomView extends Component {
 
     render() {
         let { pData } = this.props;
-        //productStatus  1正常  2下架  3当前时间不能买
-        let { productStatus, skuList, showSellOut, productIsPromotionPrice, selfReturning } = pData || {};
+        let { productStatus, skuList, showSellOut, productIsPromotionPrice, selfReturning, orderOnProduct } = pData || {};
         //总库存
         let stock = 0;
         (skuList || []).forEach((item) => {
             stock = stock + (productIsPromotionPrice ? item.promotionStockNum : item.sellStock);
         });
-        //提示消息样式
-        let isDown = productStatus === product_status.down;
-        let showNoticeText = '商品已经下架啦~';
-
-        //不能加入购物车
-        let cantJoin = productStatus === product_status.down;
-
-        //不能立即购买  不正常||库存0
-        let cantBuy = productStatus !== product_status.on || stock === 0;
-        //立即购买文案
-        let buyText = productStatus === product_status.future ? '暂不可购买' : '立即购买';
+        //显示已下架
+        const isDown = productStatus === product_status.down;
+        //不能购买(不是上架状态||不能单独购买)
+        const cantBuy = productStatus !== product_status.on || !orderOnProduct;
+        //不能加购(不能单独购买)
+        const cantJoin = !orderOnProduct;
+        const buyText = productStatus === product_status.future ? '暂不可购买' : '立即购买';
 
         return (
-            <View style={{ height: 49 + ScreenUtils.safeBottom + (isDown ? 20 : 0), backgroundColor: 'white' }}>
+            <View style={{ backgroundColor: 'white' }}>
                 {
-                    isDown &&
+                    !orderOnProduct &&
                     <View style={styles.toastView}>
-                        <Text style={styles.toastText}>{showNoticeText}</Text>
+                        <Text style={styles.toastText}>该商品不支持单独购买</Text>
                     </View>
                 }
                 <View style={styles.container}>
@@ -65,9 +60,9 @@ export default class DetailBottomView extends Component {
                         <Text style={styles.leftText}>客服</Text>
                     </TouchableOpacity>
                     {
-                        (showSellOut || stock === 0) ?
+                        (showSellOut || isDown || stock === 0) ?
                             <View style={styles.outView}>
-                                <Text style={styles.outText}>{showSellOut ? '已抢光' : '已售罄'}</Text>
+                                <Text style={styles.outText}>{showSellOut ? '已抢光' : (isDown ? '已下架' : '已售罄')}</Text>
                             </View>
                             :
                             <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
@@ -76,18 +71,19 @@ export default class DetailBottomView extends Component {
                                                   disabled={cantJoin}>
                                     <Image style={styles.leftImage}
                                            source={cantJoin ? jiarugouwuche_no : xiangqing_btn_gouwuche_nor}/>
-                                    <Text style={styles.leftText}>加购</Text>
+                                    <Text
+                                        style={[styles.leftText, { color: cantJoin ? '#E4E4E4' : DesignRule.textColor_secondTitle }]}>加购</Text>
                                 </TouchableOpacity>
                                 <View style={styles.btnView}>
-                                    <TouchableOpacity
-                                        style={[styles.btn, { backgroundColor: cantBuy ? DesignRule.textColor_placeholder : DesignRule.mainColor }]}
-                                        onPress={() => this.props.bottomViewAction('buy')} disabled={cantBuy}>
+                                    <TouchableOpacity style={[styles.btn]}
+                                                      onPress={() => this.props.bottomViewAction('buy')}
+                                                      disabled={cantBuy}>
                                         <LinearGradient style={styles.LinearGradient}
                                                         start={{ x: 0, y: 0 }}
                                                         end={{ x: 1, y: 0 }}
-                                                        colors={['#FFCB02', '#FF9502']}>
+                                                        colors={cantBuy ? ['#CCCCCC', '#CCCCCC'] : ['#FFCB02', '#FF9502']}>
                                             <Text style={[styles.btnText, {
-                                                color: cantBuy ? DesignRule.textColor_instruction : DesignRule.white,
+                                                color: DesignRule.white,
                                                 fontSize: (isNoEmpty(selfReturning) && selfReturning > 0) ? 14 : 17
                                             }]}>{buyText}</Text>
                                             {(isNoEmpty(selfReturning) && selfReturning > 0) && < Text style={{
@@ -95,7 +91,7 @@ export default class DetailBottomView extends Component {
                                             }}>返{selfReturning}</Text>}
                                         </LinearGradient>
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={[styles.btn, { backgroundColor: '#FBBB50' }]}
+                                    <TouchableOpacity style={[styles.btn]}
                                                       onPress={() => this.props.bottomViewAction('jlj')}>
                                         <LinearGradient style={styles.LinearGradient}
                                                         start={{ x: 0, y: 0 }}
@@ -116,14 +112,14 @@ export default class DetailBottomView extends Component {
 const styles = StyleSheet.create({
     toastView: {
         justifyContent: 'center', alignItems: 'center',
-        height: 20, backgroundColor: 'rgba(0,0,0,0.5)'
+        height: 22, backgroundColor: '#FFE5ED'
     },
     toastText: {
-        color: DesignRule.white, fontSize: 13
+        color: DesignRule.textColor_redWarn, fontSize: 12
     },
 
     container: {
-        height: 49, flexDirection: 'row', alignItems: 'center',
+        height: 49, flexDirection: 'row', alignItems: 'center', marginBottom: ScreenUtils.safeBottom,
         backgroundColor: 'white'
     },
     leftBtn: {

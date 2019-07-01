@@ -205,27 +205,24 @@ export default class SelectionPage extends Component {
         }
 
         let isAll = true;
-
         const { specMap } = this.state;
-
         this.state.selectStrList.forEach((item) => {
             if (StringUtils.isEmpty(item)) {
                 isAll = false;
             }
         });
-
         if (!isAll || this.state.selectStrList.length !== specMap.length) {
             bridge.$toast('请选择规格');
             return;
         }
+
         let itemValues = this.state.selectStrList.map((item) => {
             return item.replace(/@/g, '');
         });
         itemValues = itemValues.join('@');
-        itemValues = `@${itemValues}@`;
         let itemData;
-        const { priceList = [] } = this.state;
-        priceList.forEach((item) => {
+        const { skuList } = this.state.data;
+        (skuList || []).forEach((item) => {
             if (item.propertyValues === itemValues) {
                 itemData = item;
             }
