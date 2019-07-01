@@ -62,11 +62,7 @@ export default class SetMentorPage extends BasePage {
             this.$toastShow('请输入推荐人会员号！');
             return;
         }
-
-
-        this.setState({
-            searchCode: this.state.nowSearch
-        });
+        let searchCode = this.state.nowSearch;
         let params = {
             tutorCode: this.state.nowSearch
         };
@@ -76,7 +72,8 @@ export default class SetMentorPage extends BasePage {
                 canSet: data.data.status === 1,
                 hasSearch: true,
                 searchErrorMsg: '',
-                mentorNickName: data.data.nickName
+                mentorNickName: data.data.nickName,
+                searchCode: searchCode
             });
 
         }).catch((error) => {
@@ -165,7 +162,7 @@ export default class SetMentorPage extends BasePage {
     };
 
     _buttonRender = () => {
-        let canCommit = (this.state.searchCode === this.state.nowSearch && this.state.hasSearch && !this.state.hasError && this.state.canSet);
+        let canCommit = ((this.state.searchCode === this.state.nowSearch )&& this.state.hasSearch && !this.state.hasError && this.state.canSet);
         let color = canCommit ? DesignRule.textColor_btnText : DesignRule.textColor_placeholder;
         return (
             <TouchableWithoutFeedback disabled={!canCommit} onPress={() => {
