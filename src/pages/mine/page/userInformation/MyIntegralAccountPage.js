@@ -6,7 +6,8 @@ import {
     ImageBackground,
     TouchableWithoutFeedback,
     Image,
-    SectionList
+    SectionList,
+    RefreshControl
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
@@ -67,8 +68,10 @@ export default class MyIntegralAccountPage extends BasePage {
             viewData: [],
             currentPage: 1,
             isEmpty: false,
-            changeHeader: false
-    };
+            changeHeader: false,
+            refreshing: false,
+
+        };
         this.currentPage = 1;
         this.type = null;
         this.biType = null;
@@ -125,13 +128,18 @@ export default class MyIntegralAccountPage extends BasePage {
                     sections={sections}
                     keyExtractor = {this.extraUniqueKey}// 生成一个不重复的key
                     ItemSeparatorComponent={() => <View/>}
-                    onRefresh={this.onRefresh}
-                    refreshing={false}
                     onEndReached={this.onLoadMore}
                     onEndReachedThreshold={0.1}
                     stickySectionHeadersEnabled={true}
                     onScroll={(e)=>{this._onScroll(e)}}
                     showsVerticalScrollIndicator={false}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this.onLoad}
+                            colors={[DesignRule.mainColor]}
+                        />
+                    }
                 />
             </View>
         );
@@ -355,9 +363,6 @@ export default class MyIntegralAccountPage extends BasePage {
     getDataFromNetwork = () => {
         let use_type_symbol = ['', '+', '-'];
         let arrData = this.currentPage === 1 ? [] : this.state.viewData;
-        if (this.currentPage > 1) {
-            // Toast.showLoading();
-        }
         MineApi.userScoreQuery({
             page: this.currentPage,
             size: 10,
@@ -381,16 +386,34 @@ export default class MyIntegralAccountPage extends BasePage {
                         status: item.status
                     });
                 });
-                this.setState({ viewData: arrData, isEmpty: data.data && data.data.length !== 0 ? false : true });
+                this.setState({refreshing: false, viewData: arrData, isEmpty: data.data && data.data.length !== 0 ? false : true });
             } else {
+                this.setState({ refreshing: false});
                 NativeModules.commModule.toast(response.msg);
             }
         }).catch(e => {
             Toast.hiddenLoading();
-            this.setState({ viewData: arrData, isEmpty: true });
+            this.setState({ refreshing: false, viewData: arrData, isEmpty: true });
 
         });
     };
+
+    onLoad = ()=>{
+        if (user.isLogin) {
+            MineApi.getUser().then(resp => {
+                let data = resp.data;
+                user.saveUserInfo(data);
+            }).catch(err => {
+                if (err.code === 10009) {
+                    this.gotoLoginPage();
+                }
+            });
+        }
+        this.currentPage = 1;
+        this.setState({ refreshing: this.currentPage === 1 });
+        this.getDataFromNetwork();
+    }
+
     onRefresh = () => {
         this.currentPage = 1;
         if (user.isLogin) {

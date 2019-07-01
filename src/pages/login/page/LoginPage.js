@@ -103,7 +103,7 @@ export default class LoginPage extends BasePage {
                     oldUserLoginClick={this.oldUserLoginClick.bind(this)}
                     forgetPasswordClick={this.forgetPasswordClick}
                     loginClick={(loginType, LoginParam) => {
-                        this.$loadingShow();
+                        this.$loadingShow('登录中');
                         setTimeout(() => {
                             this.loginClick(loginType, LoginParam);
                         }, 0);
@@ -145,7 +145,6 @@ export default class LoginPage extends BasePage {
         const { campaignType, spm } = this.params;
         const h5Param = { ...LoginParam, campaignType, spm };
         if (loginType === 0) {
-            // track(trackEvent.login, { loginMethod: '验证码登录' });
             codeLoginAction(h5Param, (data) => {
                 if (data.code === 10000) {
                     this.$toastShow('登录成功');
