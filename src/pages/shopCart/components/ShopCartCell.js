@@ -355,7 +355,6 @@ const styles = StyleSheet.create({
         marginTop: px2dp(30)
     },
     productName: {
-        marginTop: 0,
         fontSize: px2dp(13),
         lineHeight: px2dp(10),
         color: DesignRule.textColor_mainTitle

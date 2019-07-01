@@ -16,7 +16,7 @@ export default class HomeUserView extends Component {
 
     _goToPromotionPage() {
         const { navigate } = this.props;
-        navigate(RouterMap.WaitingForWithdrawCashPage);
+        navigate(RouterMap.MyCashAccountPage);
         TrackApi.ViewLevelInterest({ moduleSource: 1 });
     }
 
