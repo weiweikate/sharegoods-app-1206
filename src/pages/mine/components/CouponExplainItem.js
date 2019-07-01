@@ -34,7 +34,6 @@ export default class CouponExplainItem extends Component {
         let { item, index } = this.props;
         let stateImg = item.status === 1 ? res.couponsImg.youhuiquan_icon_yishiyong :
             (item.status === 2 ? res.couponsImg.youhuiquan_icon_yishixiao : res.couponsImg.youhuiquan_icon_daijihuo);
-
         return (
             <TouchableOpacity
                 style={{ backgroundColor: DesignRule.bgColor, marginBottom: 5, justifyContent: 'center' }}
@@ -51,17 +50,17 @@ export default class CouponExplainItem extends Component {
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 {
                                     item.type === 3 || item.type === 4 || item.type === 5 || item.type === 12 ? null :
-                                        <View style={{ alignSelf: 'flex-end', marginBottom: 2 }}>
+                                        <View style={{ alignSelf: 'center', marginTop: (item.value + '').length < 3 ? 14 : 5 }}>
                                             <Text
                                                 style={{
                                                     fontSize: 14,
                                                     color: item.status === 0 ? (item.levelimit ? '#FF80A7' : '#FF0050') : '#FF80A7',
-                                                }} allowFontScaling={false}>￥</Text>
+                                                }} allowFontScaling={false}>¥</Text>
                                         </View>}
                                 <View>
                                     <Text style={{
-                                        fontSize: item.type === 4 ? 20 : (item.value && item.value.length < 3 ? 33 : 20),
-                                        fontWeight:'500',
+                                        fontSize: item.type === 4 ? 20 : (item.value && (item.value + '').length < 3 ? 34 : 20),
+                                        fontWeight:'600',
                                         color: item.status === 0 ? (item.levelimit ? '#FF80A7' : '#FF0050') : '#FF80A7',
                                     }} allowFontScaling={false}>{item.value}</Text>
                                 </View>
@@ -78,8 +77,9 @@ export default class CouponExplainItem extends Component {
                         }}>
                             <View style={{ flexDirection: 'row' }}>
                                 <Text style={{
-                                    fontSize: 15,
-                                    color: item.status === 0 ? DesignRule.textColor_mainTitle : DesignRule.textColor_instruction,
+                                    fontSize: 16,
+                                    fontWeight:'600',
+                                    color: item.status === 0 ? '#222222' : DesignRule.textColor_instruction,
                                 }} allowFontScaling={false} numberOfLines={0}>
                                     {item.name}</Text>
                                 {/*{item.type === 12 ? <UIText value={'x' + item.number} style={{*/}
@@ -189,7 +189,7 @@ export default class CouponExplainItem extends Component {
                     }} source={remark} resizeMode='stretch'>
                         <View style={{ marginLeft: 20, }}>
                             <Text style={{
-                                marginTop: 5,
+                                marginTop: 10,
                                 color: item.status === 0 ? DesignRule.textColor_secondTitle : DesignRule.textColor_secondTitle,
                                 lineHeight: 25,
                                 fontSize: 10
