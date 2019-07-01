@@ -393,16 +393,16 @@ export class ServiceItemView extends Component {
 
     render() {
         const { productDetailModel, serviceAction } = this.props;
-        const { restrictions } = productDetailModel;
+        const { sevenDayReturn, weekendDelivery } = productDetailModel;
         return (
             <NoMoreClick style={ServiceItemViewStyles.serviceView} onPress={serviceAction}>
                 <Text style={ServiceItemViewStyles.serviceNameText}>服务</Text>
                 <View style={{ flexDirection: 'row', flex: 1 }}>
                     {this._imgText('质量保障')}
                     {this._imgText('48小时发货')}
-                    {(restrictions & 4) === 4 && this._imgText('7天退换')}
+                    {sevenDayReturn === 1 && this._imgText('7天退换')}
                     {/*最多显示3条*/}
-                    {(restrictions & 8) === 8 && (restrictions & 4) !== 4 && this._imgText('节假日发货')}
+                    {weekendDelivery === 1 && sevenDayReturn !== 1 && this._imgText('节假日发货')}
                 </View>
                 <Image source={arrow_right_black}/>
             </NoMoreClick>
