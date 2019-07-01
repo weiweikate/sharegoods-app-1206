@@ -93,12 +93,13 @@ export default class TagDetailItemView extends PureComponent {
                     <ImageLoad
                         source={{ uri }}
                         style={{ width: itemContainer.width, height, marginBottom: px2dp(10) }}/>
-                    {itemData.content ? <MRText style={{
+                    {itemData.content ? <MRText
+                        numberOfLines={2}
+                        style={{
                         fontSize: DesignRule.fontSize_threeTitle,
                         color: DesignRule.textColor_mainTitle,
                         width: itemContainer.width - px2dp(20),
                         alignSelf: 'center',
-                        maxLength: 2,
                         marginBottom: px2dp(10)
                     }}>
                         {itemData.content}
