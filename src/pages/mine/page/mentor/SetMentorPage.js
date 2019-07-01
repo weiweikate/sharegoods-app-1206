@@ -19,7 +19,7 @@ import MineAPI from '../../api/MineApi';
 import StringUtils from '../../../../utils/StringUtils';
 import user from '../../../../model/user';
 import RouterMap from '../../../../navigation/RouterMap';
-
+import LinearGradient from 'react-native-linear-gradient';
 
 const {
     mentor_error_icon,
@@ -58,8 +58,8 @@ export default class SetMentorPage extends BasePage {
 
 
     _searchWithCode = () => {
-        if(this.state.nowSearch && StringUtils.isEmpty(this.state.nowSearch.trim())){
-            this.$toastShow('请输入推荐人会员号！')
+        if (this.state.nowSearch && StringUtils.isEmpty(this.state.nowSearch.trim())) {
+            this.$toastShow('请输入推荐人会员号！');
             return;
         }
 
@@ -72,46 +72,46 @@ export default class SetMentorPage extends BasePage {
         };
         MineAPI.findTutor(params).then((data) => {
             this.setState({
-                hasError:false,
-                canSet:data.data.status === 1,
-                hasSearch:true,
-                searchErrorMsg:'',
-                mentorNickName:data.data.nickName
-            })
+                hasError: false,
+                canSet: data.data.status === 1,
+                hasSearch: true,
+                searchErrorMsg: '',
+                mentorNickName: data.data.nickName
+            });
 
         }).catch((error) => {
             // this.$toastShow(error.msg);
             this.setState({
-                hasError:true,
-                canSet:false,
-                hasSearch:true,
-                searchErrorMsg:error.msg
-            })
+                hasError: true,
+                canSet: false,
+                hasSearch: true,
+                searchErrorMsg: error.msg
+            });
         });
     };
 
-    _bindTutor=()=>{
+    _bindTutor = () => {
         let params = {
             tutorCode: this.state.nowSearch
         };
-        MineAPI.bindTutor(params).then(data=>{
+        MineAPI.bindTutor(params).then(data => {
             this.$toastShow('服务顾问设置成功');
             this._saveUser();
 
-        }).catch((error)=>{
-            this.$toastShow(error.msg)
-        })
-    }
+        }).catch((error) => {
+            this.$toastShow(error.msg);
+        });
+    };
 
 
-    _saveUser=()=>{
+    _saveUser = () => {
         MineAPI.getUser().then(res => {
             let data = res.data;
             user.saveUserInfo(data);
             this.$navigateBack();
         }).catch(err => {
         });
-    }
+    };
     _mentorResult = () => {
         let canSet = (
             <View style={styles.rowStyle}>
@@ -168,22 +168,30 @@ export default class SetMentorPage extends BasePage {
         let canCommit = (this.state.searchCode === this.state.nowSearch && this.state.hasSearch && !this.state.hasError && this.state.canSet);
         let color = canCommit ? DesignRule.textColor_btnText : DesignRule.textColor_placeholder;
         return (
-            <TouchableWithoutFeedback disabled={!canCommit} onPress={()=>{
+            <TouchableWithoutFeedback disabled={!canCommit} onPress={() => {
                 Alert.alert(
                     `你确定要将"${this.state.mentorNickName}"设置为您的服务顾问？`,
                     null,
                     [
-                        {text: '取消', onPress: () => console.log('取消'),style: 'cancel'},
-                        {text: '确定', onPress: () => this._bindTutor()},
+                        { text: '取消', onPress: () => console.log('取消'), style: 'cancel' },
+                        { text: '确定', onPress: () => this._bindTutor() }
                     ],
                     { cancelable: false }
-                )
+                );
             }}>
-                <View style={[styles.buttonStyle, { backgroundColor: color }]}>
-                    <Text style={styles.buttonTextStyle}>
-                        设置他为我的服务顾问
-                    </Text>
-                </View>
+                {
+                    canCommit ? <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }}
+                                        colors={['#FF1C89', '#FD0128']}
+                                        style={styles.buttonStyle}>
+                            <Text style={styles.buttonTextStyle}>
+                                设置他为我的服务顾问
+                            </Text>
+                        </LinearGradient> : <View style={[styles.buttonStyle, { backgroundColor: color }]}>
+                            <Text style={styles.buttonTextStyle}>
+                                设置他为我的服务顾问
+                            </Text>
+                        </View>
+                }
             </TouchableWithoutFeedback>
         );
     };
@@ -263,14 +271,14 @@ const styles = StyleSheet.create({
         color: '#333333',
         fontSize: DesignRule.fontSize_threeTitle,
         marginHorizontal: 7,
-        flex:1
+        flex: 1
     },
     resultWrapper: {
         height: 17,
         marginLeft: DesignRule.margin_page,
         flexDirection: 'row',
         alignItems: 'center',
-        marginTop:10
+        marginTop: 10
     },
     mentorStyle: {
         color: DesignRule.textColor_mainTitle
@@ -278,7 +286,7 @@ const styles = StyleSheet.create({
     iconStyle: {
         width: 14,
         height: 14,
-        marginLeft:5
+        marginLeft: 5
     },
     canSetTextStyle: {
         color: DesignRule.color_green,
@@ -299,13 +307,14 @@ const styles = StyleSheet.create({
         fontSize: DesignRule.fontSize_22
     },
     buttonStyle: {
-        width: DesignRule.width - 80,
-        height: DesignRule.height_bigBtn,
-        borderRadius: DesignRule.height_bigBtn / 2,
+        width: DesignRule.width - 30,
+        height: 40,
+        borderRadius: 20,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 48,
-        alignSelf: 'center'
+        position: 'absolute',
+        bottom: 15 + ScreenUtils.safeBottom,
+        left: 15
     },
     buttonTextStyle: {
         color: DesignRule.white,
@@ -334,8 +343,8 @@ const styles = StyleSheet.create({
         color: DesignRule.textColor_mainTitle,
         fontSize: DesignRule.fontSize_threeTitle
     },
-    rowStyle:{
-        flexDirection:'row',
-        alignItems:'center'
+    rowStyle: {
+        flexDirection: 'row',
+        alignItems: 'center'
     }
 });
