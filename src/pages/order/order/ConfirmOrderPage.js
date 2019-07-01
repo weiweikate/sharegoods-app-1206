@@ -158,7 +158,7 @@ export default class ConfirmOrderPage extends BasePage {
     // 选择优惠券
     jumpToCouponsPage = (params) => {
         if (params === 'justOne') {//一元券
-            let payAmount = parseInt(confirmOrderModel.payInfo.payAmount); //要实付钱
+            let payAmount = parseInt(confirmOrderModel.payInfo.payAmount || 0); //要实付钱
             let tokenCoin =  parseInt(confirmOrderModel.tokenCoin);//一元优惠的券
             let orderAmount = payAmount + tokenCoin;
             if (orderAmount < 1 || orderAmount.isNaN){//订单总价格要大于1
