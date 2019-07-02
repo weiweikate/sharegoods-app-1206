@@ -194,12 +194,7 @@ public class NineGridView extends ViewGroup {
                 @Override
                 public void onClick(View v) {
                     if (click != null && mImageInfo != null) {
-                        List<String> list = new ArrayList<>();
-                        for (int i = 0; i < mImageInfo.size(); i++) {
-                            String url = mImageInfo.get(i);
-                            list.add(url);
-                        }
-                        click.imageClick(list, position);
+                        click.imageClick(mImageInfo, position);
                     }
                 }
             });
