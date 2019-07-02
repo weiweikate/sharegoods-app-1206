@@ -106,7 +106,7 @@ const TrackShareType = {
     other: 100//其他
 };
 
-let  urlArrs = {};
+let  urlArrs = '';
 
 export default class CommShareModal extends React.Component {
 
@@ -131,13 +131,14 @@ export default class CommShareModal extends React.Component {
         if (user.isLogin) {
             user.userShare();
             let params = this.props.webJson;
+            urlArrs = '';
             if(params && params.linkUrl){
                 userApi.shareShortUrl({'longUrl':params.linkUrl, 'expireTime':0})
                     .then(res=>{
                         console.log(res);
-                        urlArrs = res.data || '';
+                        urlArrs = res.data && res.data.data ? res.data.data : '';
+
                     }).catch(error=>{
-                    console.log(error);
                 });
             }
         } else {

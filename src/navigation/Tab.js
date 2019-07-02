@@ -27,7 +27,8 @@ class NormalTab extends Component {
         return <View style={styles.tab}>
             <View>
                 <Image style={styles.tabBarIcon} source={source}/>
-                {user.isLogin && title === '我的' && (settingModel.availableBalance > 0 || settingModel.userScore > 0 || settingModel.coupons > 0 || settingModel.fansMSG > 0) ?
+                {user.isLogin && title === '我的' && (settingModel.availableBalance > 0 || settingModel.userScore > 0
+                    || settingModel.coupons > 0 || settingModel.fansMSG > 0 || settingModel.mainTask > 0) ?
                     <Image source={res.other.dot} style={styles.mineDot}/> : null}
             </View>
             <Text style={styles.text}>{title}</Text>
@@ -218,6 +219,7 @@ export const TabNav = createBottomTabNavigator(
                 tabBarOnPress: ({ navigation }) => {
                     if (!navigation.isFocused()) {
                         if (user && user.isLogin) {
+                            settingModel.mainTaskAdd();
                             navigation.navigate(navigation.state.routeName);
                         } else {
                             navigation.navigate(RouterMap.LoginPage);

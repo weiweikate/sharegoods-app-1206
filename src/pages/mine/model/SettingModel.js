@@ -19,7 +19,8 @@ class SettingModel {
         userScore: 0,
         availableBalance: 0,
         coupons: 0,
-        fansMSG: 0
+        fansMSG: 0,
+        mainTask: 0
     };
     @observable
     JSPushMessage = true;
@@ -35,6 +36,9 @@ class SettingModel {
 
     @observable
     fansMSG = 0;
+
+    @observable
+    mainTask = 0;
 
     @observable
     WXChatState = true;
@@ -66,11 +70,13 @@ class SettingModel {
                     this.availableBalance = item && item.availableBalance ? item.availableBalance : 0;
                     this.coupons = item && item.availableBalance ? item.availableBalance : 0;
                     this.fansMSG = item && item.fansMSG ? item.fansMSG : 0;
+                    this.mainTask = item && item.mainTask ? item.mainTask : 0;
                     this.params = {
                         userScore: this.userScore,
-                        availableBalance:this.availableBalance,
+                        availableBalance: this.availableBalance,
                         coupons: this.coupons,
-                        fansMSG:this.fansMSG,
+                        fansMSG: this.fansMSG,
+                        mainTask: this.mainTask,
                     }
                 }else {
                     this.data = {};
@@ -78,11 +84,13 @@ class SettingModel {
                     this.availableBalance = 0;
                     this.coupons = 0;
                     this.fansMSG = 0;
+                    this.mainTask = 0;
                     this.params = {
                         userScore: 0,
                         availableBalance: 0,
                         coupons: 0,
                         fansMSG: 0,
+                        mainTask: 0,
                     }
                 }
             })
@@ -148,6 +156,22 @@ class SettingModel {
             }
             let key = userModel.code;
             this.params.fansMSG = this.fansMSG;
+            let value = this.data;
+            value[key] = this.params;
+            store.save(mineKey, value);
+        }
+    }
+
+    @action
+    mainTaskAdd(num){
+        if(userModel.code) {
+            if (num) {
+                this.mainTask = this.mainTask + num;
+            } else {
+                this.mainTask = 0;
+            }
+            let key = userModel.code;
+            this.params.mainTask = this.mainTask;
             let value = this.data;
             value[key] = this.params;
             store.save(mineKey, value);
