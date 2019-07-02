@@ -10,11 +10,11 @@ import java.util.List;
 
 public class NineGridViewAdapter implements Serializable {
     protected Context context;
-    private List<ImageInfo> imageInfo;
+    private List<String> imageUrls;
 
-    public NineGridViewAdapter(Context context, List<ImageInfo> imageInfo) {
+    public NineGridViewAdapter(Context context, List<String> imageInfo) {
         this.context = context;
-        this.imageInfo = imageInfo;
+        this.imageUrls = imageInfo;
     }
 
     /**
@@ -25,7 +25,7 @@ public class NineGridViewAdapter implements Serializable {
      * @param index        当前点击图片的的索引
      * @param imageInfo    图片地址的数据集合
      */
-    protected void onImageItemClick(Context context, NineGridView nineGridView, int index, List<ImageInfo> imageInfo) {
+    protected void onImageItemClick(Context context, NineGridView nineGridView, int index, List<String> imageInfo) {
     }
 
     /**
@@ -41,11 +41,11 @@ public class NineGridViewAdapter implements Serializable {
         return imageView;
     }
 
-    public List<ImageInfo> getImageInfo() {
-        return imageInfo;
+    public List<String> getImageInfo() {
+        return this.imageUrls;
     }
 
-    public void setImageInfoList(List<ImageInfo> imageInfo) {
-        this.imageInfo = imageInfo;
+    public void setImageInfoList(List<String> imageInfo) {
+        this.imageUrls = imageInfo;
     }
 }

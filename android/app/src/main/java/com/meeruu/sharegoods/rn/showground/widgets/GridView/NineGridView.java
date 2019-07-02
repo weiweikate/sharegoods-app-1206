@@ -20,8 +20,6 @@ public class NineGridView extends ViewGroup {
 
     private static ImageLoader mImageLoader;        //全局的图片加载器(必须设置,否则不显示图片)
     private clickL click;
-    private int singleImageSize = 250;              // 单张图片时的最大大小,单位dp
-    private float singleImageRatio = 1.0f;          // 单张图片的宽高比(宽/高)
     private int maxImageSize = 9;                   // 最大显示的图片数
     private int gridSpacing = 5;                    // 宫格间距，单位dp
 
@@ -31,7 +29,7 @@ public class NineGridView extends ViewGroup {
     private int gridHeight;     // 宫格高度
 
     private List<SimpleDraweeView> imageViews;
-    private List<ImageInfo> mImageInfo;
+    private List<String> mImageInfo;
     private NineGridViewAdapter mAdapter;
 
     public NineGridView(Context context) {
@@ -104,17 +102,9 @@ public class NineGridView extends ViewGroup {
             int top = (gridHeight + gridSpacing) * rowNum + getPaddingTop();
             int right = left + gridWidth;
             int bottom = top + gridHeight;
-            Log.d("yyy", "left  " + left + "right " + right + "top " + top + "bottom  " + bottom);
             childrenView.layout(left, top, right, bottom);
-            ImageInfo imageInfo = mImageInfo.get(i);
-            if (imageInfo != null) {
-                imageInfo.setImageViewWidth(gridWidth);
-                imageInfo.setImageViewHeight(gridHeight);
-            }
-            //imageloader是接口，调用接口中的onDisplayImage方法绘制imageview 。在使用的地方调用setImageLoader方法
-            //重写接口中的方法，可以使用不同的图片框架显示图片 如Glide Piccasso等
             if (mImageLoader != null) {
-                mImageLoader.onDisplayImage(getContext(), childrenView, imageInfo);
+                mImageLoader.onDisplayImage(getContext(), childrenView, mImageInfo.get(i), gridWidth);
             }
         }
     }
@@ -125,7 +115,7 @@ public class NineGridView extends ViewGroup {
     //等到adapter 得到需要显示的图片信息
     public void setAdapter(@NonNull NineGridViewAdapter adapter) {
         mAdapter = adapter;
-        List<ImageInfo> imageInfo = adapter.getImageInfo();
+        List<String> imageInfo = adapter.getImageInfo();
 
         if (imageInfo == null || imageInfo.isEmpty()) {
             setVisibility(GONE);
@@ -206,7 +196,7 @@ public class NineGridView extends ViewGroup {
                     if (click != null && mImageInfo != null) {
                         List<String> list = new ArrayList<>();
                         for (int i = 0; i < mImageInfo.size(); i++) {
-                            String url = mImageInfo.get(i).getImageUrl();
+                            String url = mImageInfo.get(i);
                             list.add(url);
                         }
                         click.imageClick(list, position);
@@ -223,20 +213,6 @@ public class NineGridView extends ViewGroup {
      */
     public void setGridSpacing(int spacing) {
         gridSpacing = spacing;
-    }
-
-    /**
-     * 设置只有一张图片时的宽
-     */
-    public void setSingleImageSize(int maxImageSize) {
-        singleImageSize = maxImageSize;
-    }
-
-    /**
-     * 设置只有一张图片时的宽高比
-     */
-    public void setSingleImageRatio(float ratio) {
-        singleImageRatio = ratio;
     }
 
     /**
@@ -264,9 +240,9 @@ public class NineGridView extends ViewGroup {
          *
          * @param context   上下文
          * @param imageView 需要展示图片的ImageView
-         * @param imageInfo 图片对象
+         * @param url       图片对象
          */
-        void onDisplayImage(Context context, SimpleDraweeView imageView, ImageInfo imageInfo);
+        void onDisplayImage(Context context, SimpleDraweeView imageView, String url, int width);
 
         /*  *//**
          * @param url 图片的地址
