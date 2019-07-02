@@ -45,7 +45,7 @@ const {
     mine_wait_send_icon,
     mine_wait_receive_icon,
     mine_after_buy_icon,
-    // mine_friendsHelp,
+    mine_friendsHelp,
     mine_invite,
     // mine_moreMoney,
     // mine_icon_favorite_shop,
@@ -415,7 +415,7 @@ export default class MinePage extends BasePage {
                 flexDirection: 'row',
                 alignItems: 'center',
                 height: 37,
-                width: 345,
+                marginHorizontal: px2dp(15),
                 borderRadius: 10,
             }} source={index !== 10 ? vipBg[index] : vipBg[2]}>
                 <View style={{
@@ -578,29 +578,39 @@ export default class MinePage extends BasePage {
                     this.$navigate(RouterMap.InviteFriendsPage);
                 }}>
                     <View>
-                        <Image resizeMode={'contain'}
-                            style={{
+                        <ImageBackground style={{
                             height: px2dp(70),
-                            width: (ScreenUtils.width - 30)
-                        }} source={mine_invite}/>
+                            width: (ScreenUtils.width - 45) / 2
+                        }} source={mine_invite}>
+                            <View style={{flex: 1, justifyContent: 'center', marginLeft: 15}}>
+                                <Text style={{fontSize: 14, color: '#333333', fontWeight: '600', marginBottom: 5}}>
+                                    邀请好友赚钱</Text>
+
+                                <ImageBackground style={{width: 65, height: 26, alignItems: 'center'}}
+                                                 source={res.homeBaseImg.mine_btn_red}>
+                                    <Text style={{fontSize: 10, color: 'white'}}>立即邀请</Text>
+                                </ImageBackground>
+                            </View>
+                        </ImageBackground>
                     </View>
                 </TouchableWithoutFeedback>
-                {/*<TouchableWithoutFeedback onPress={() => {*/}
-                    {/*this.$navigate('HtmlPage', { uri: '/activity/freeOrder' });*/}
-                {/*}}>*/}
-                    {/*<View>*/}
-                        {/*<ImageBackground style={{*/}
-                            {/*height: px2dp(70),*/}
-                            {/*width: (ScreenUtils.width - 45) / 2*/}
-                        {/*}} source={mine_friendsHelp}>*/}
-                            {/*<View style={{flex: 1, justifyContent: 'center', marginLeft: 15}}>*/}
-                                {/*<Text style={{fontSize: 14, color: '#333333', fontWeight: '600', marginBottom: 5}}>*/}
-                                    {/*助力减</Text>*/}
-                                {/*<Text style={{height: 26, fontSize: 10, color: '#999999'}}>好友助力减到底</Text>*/}
-                            {/*</View>*/}
-                        {/*</ImageBackground>*/}
-                    {/*</View>*/}
-                {/*</TouchableWithoutFeedback>*/}
+
+                <TouchableWithoutFeedback onPress={() => {
+                    this.$navigate(RouterMap.HtmlPage,{ uri: '/activity/freeOrder' });
+                }}>
+                    <View>
+                        <ImageBackground style={{
+                            height: px2dp(70),
+                            width: (ScreenUtils.width - 45) / 2
+                        }} source={mine_friendsHelp}>
+                            <View style={{flex: 1, justifyContent: 'center', marginLeft: 15}}>
+                                <Text style={{fontSize: 14, color: '#333333', fontWeight: '600', marginBottom: 5}}>
+                                    助力减</Text>
+                                <Text style={{height: 26, fontSize: 10, color: '#999999'}}>好友助力减到底</Text>
+                            </View>
+                        </ImageBackground>
+                    </View>
+                </TouchableWithoutFeedback>
             </View>
         )
     };

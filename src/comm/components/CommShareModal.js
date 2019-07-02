@@ -83,6 +83,8 @@ import bridge from '../../utils/bridge';
 import DesignRule from '../../constants/DesignRule';
 import { track } from '../../utils/SensorsTrack';
 import user from '../../model/user';
+import userApi from '../../model/userApi';
+
 import { getSource } from '@mr/image-placeholder/oos';
 import ShareUtil from '../../utils/ShareUtil';
 import { routeNavigate } from '../../navigation/RouterMap';
@@ -104,6 +106,8 @@ const TrackShareType = {
     other: 100//其他
 };
 
+let  urlArrs = {};
+
 export default class CommShareModal extends React.Component {
 
     constructor(props) {
@@ -111,6 +115,7 @@ export default class CommShareModal extends React.Component {
         this._bind();
         this.defaultShareType = 1;
         this.state = {
+            shortUrl: '',
             modalVisible: props.defaultModalVisible || false,
             shareType: this.defaultShareType, //如果是type小程序分享，默认分享方式是小程序分享。其余的type，默认分享类型是web图文
             path: '',
@@ -122,8 +127,19 @@ export default class CommShareModal extends React.Component {
 
     /** public*/
     open() {
+
         if (user.isLogin) {
             user.userShare();
+            let params = this.props.webJson;
+            if(params && params.linkUrl){
+                userApi.shareShortUrl({'longUrl':params.linkUrl, 'expireTime':0})
+                    .then(res=>{
+                        console.log(res);
+                        urlArrs = res.data || '';
+                    }).catch(error=>{
+                    console.log(error);
+                });
+            }
         } else {
             Alert.alert('', '为了给您提供更完整的服务，\n请登录后操作',
                 [{
@@ -175,7 +191,7 @@ export default class CommShareModal extends React.Component {
                 } else if (type === 'Image' || type === 'Show') {
                     let url = params && params.imageUrlStr;
                     this.props.imageJson && (params.imageUrlStr = getSource({ uri: url }, this.imageWidth, this.imageHeight, 'lfit').uri);
-                    delete params['shareMoney'];
+                    delete params.shareMoney;
                     bridge.creatShareImage(params, (path) => {
                         this.setState({ path: Platform.OS === 'android' ? 'file://' + path : '' + path }, () => {
                             this.changeShareType(0);
@@ -231,6 +247,9 @@ export default class CommShareModal extends React.Component {
         } else if (this.state.shareType === 2) {
             params = this.props.miniProgramJson;
         }
+         if(urlArrs != '') {
+             params.linkUrl = urlArrs
+         }
 
         params = {
             ...params,
@@ -415,7 +434,7 @@ export default class CommShareModal extends React.Component {
                         margin: 15,
 
                     }}>
-                        <View style={[styles.contentContainer, {height:currentType?autoSizeWidth(250):autoSizeWidth(180),}]}>
+                        <View style={[styles.contentContainer, {height:currentType ? autoSizeWidth(250) : autoSizeWidth(180),}]}>
                             <View style={styles.header}>
                                 <View style={{
                                     flex: 1,
