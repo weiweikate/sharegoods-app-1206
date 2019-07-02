@@ -21,6 +21,7 @@ import bridge from '../../utils/bridge';
 // import FinshPayAlertView from './FinshPayAlertView';
 import { replaceRoute } from '../../navigation/RouterMap';
 import RouterMap from '../../navigation/RouterMap';
+import FinshPayAlertView from './FinshPayAlertView';
 
 const { px2dp } = ScreenUtils;
 const {
@@ -60,7 +61,7 @@ export default class PaymentFinshPage extends BasePage {
             showShareView: false,
             couponIdList: [],
             shareCode:'',
-            isShow:true
+            isShow:false
         };
         //orderPayResultPageType 有券无劵
         TrackApi.ViewOrderPayPage({ orderPayType: 2, orderPayResultPageType: 2 });
@@ -96,6 +97,13 @@ export default class PaymentFinshPage extends BasePage {
                 showShareView:false
             })
         })
+        PaymentApi.jumpCheckIsAlter().then(result=>{
+            console.log(result);
+            this.setState({
+                isShow:result.data
+            })
+        }).catch(error=>{
+        })
     }
 
     _render() {
@@ -105,9 +113,9 @@ export default class PaymentFinshPage extends BasePage {
                 {/*<RenderSeparator title={'你还有兑换券即将过期，快来使用吧'}/>*/}
                 {this.renderCouponList()}
                 {this.state.showShareView ? this._renderShareView() : null}
-                {/*<FinshPayAlertView btnClick={()=>{*/}
-                    {/*this._clickAlertView();*/}
-                {/*}} isShow={this.state.isShow}/>*/}
+                <FinshPayAlertView btnClick={()=>{
+                    this._clickAlertView();
+                }} isShow={this.state.isShow}/>
             </ScrollView>
         );
     }
