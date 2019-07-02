@@ -188,7 +188,14 @@ export default class MyOrdersDetailPage extends BasePage {
                         {this.renderFooter()}
                     </ScrollView>
                     <OrderDetailBottomButtonView
-                        openCancelModal = {()=>{this.cancelProdectsModal&&this.cancelProdectsModal.open(orderDetailModel.platformOrderNo)}}
+                        openCancelModal = {(callBack)=>{
+                            let isPay = true;
+                            if (!callBack) {
+                                isPay = false;
+                                callBack = ()=>{this.cancelModal&&this.cancelModal.open()}
+                            }
+                            this.cancelProdectsModal&&this.cancelProdectsModal.open(orderDetailModel.platformOrderNo,callBack,isPay)
+                        }}
                         goBack={() => this.$navigateBack()}
                         nav={this.$navigate}
                         switchButton={() => {
@@ -231,7 +238,7 @@ export default class MyOrdersDetailPage extends BasePage {
             <GoodsDetailItem
                 uri={item.specImg}
                 goodsName={item.productName}
-                salePrice={'￥' + StringUtils.formatMoneyString(item.unitPrice, false)}
+                salePrice={StringUtils.formatMoneyString(item.unitPrice, false)}
                 category={item.spec}
                 goodsNum={item.quantity}
                 activityCodes={item.activityList || []}
@@ -308,7 +315,6 @@ export default class MyOrdersDetailPage extends BasePage {
                 <CancelProdectsModal ref={(ref) => {
                     this.cancelProdectsModal = ref;
                 }}
-                                     clickSure={()=>{ this.cancelModal&&this.cancelModal.open()}}
                 />
             </View>
 

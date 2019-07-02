@@ -127,10 +127,10 @@ export default class OrderDetailBottomButtonView extends Component {
 
                 break;
             case 2:
-                this._goToPay();
+                this.props.openCancelModal&&this.props.openCancelModal(()=> {this._goToPay()});
                 break;
             case 3:
-                this._goToPay();
+                this.props.openCancelModal&&this.props.openCancelModal(()=> {this._goToPay()});
                 break;
             case 4:
                 break;
@@ -213,12 +213,11 @@ export default class OrderDetailBottomButtonView extends Component {
         let orderProductList = orderDetailModel.productsList();
         let platformOrderNo = orderDetailModel.platformOrderNo
         let merchantOrderNo = orderDetailModel.merchantOrderNo
-        let payAmount = orderDetailModel.payInfo.payAmount;
-        let result = await payment.checkOrderStatus(platformOrderNo,0,0,payAmount,'')
+        let result = await payment.checkOrderStatus(platformOrderNo,0,0,0,'')
         if (result.code === payStatus.payNo) {
             this.props.nav("payment/PaymentPage", {
                 orderNum: merchantOrderNo,
-                amounts: payAmount,
+                amounts: result.unpaidAmount,
                 platformOrderNo: platformOrderNo,
                 orderProductList: orderProductList
             });
@@ -226,7 +225,7 @@ export default class OrderDetailBottomButtonView extends Component {
             this.props.nav('payment/ChannelPage', {
                 remainMoney: Math.floor(result.unpaidAmount * 100) / 100,
                 orderProductList: orderProductList,
-                orderNum: payAmount,
+                orderNum: merchantOrderNo,
                 platformOrderNo: platformOrderNo,
             })
         } else if (result.code === payStatus.payOut) {
