@@ -404,7 +404,7 @@ public class ImageLoadUtils {
             requestBuilder.setResizeOptions(new ResizeOptions(ScreenUtils.getScreenWidth(), ScreenUtils.getScreenHeight() / 2));
         }
         ImageRequest request = requestBuilder.build();
-        GenericDraweeHierarchy hierarchy = new GenericDraweeHierarchyBuilder(BaseApplication.appContext.getResources()).setFadeDuration(300).setPlaceholderImage(R.drawable.bg_app_img).setPlaceholderImageScaleType(ScalingUtils.ScaleType.CENTER_CROP).setActualImageScaleType(ScalingUtils.ScaleType.CENTER_CROP).build();
+        GenericDraweeHierarchy hierarchy = new GenericDraweeHierarchyBuilder(BaseApplication.appContext.getResources()).setPlaceholderImage(R.drawable.bg_app_img).setPlaceholderImageScaleType(ScalingUtils.ScaleType.CENTER_CROP).setActualImageScaleType(ScalingUtils.ScaleType.CENTER_CROP).build();
         DraweeController controller = Fresco.newDraweeControllerBuilder().setImageRequest(request).setOldController(view.getController()).build();
         view.setHierarchy(hierarchy);
         view.setController(controller);
@@ -426,7 +426,7 @@ public class ImageLoadUtils {
         }
         ImageRequest request = requestBuilder.build();
         DraweeController controller = Fresco.newDraweeControllerBuilder().setImageRequest(request).setOldController(view.getController()).build();
-        GenericDraweeHierarchy hierarchy = new GenericDraweeHierarchyBuilder(BaseApplication.appContext.getResources()).setFadeDuration(300).setRoundingParams(roundParams).setPlaceholderImage(R.drawable.bg_app_img).setPlaceholderImageScaleType(ScalingUtils.ScaleType.CENTER_CROP).build();
+        GenericDraweeHierarchy hierarchy = new GenericDraweeHierarchyBuilder(BaseApplication.appContext.getResources()).setRoundingParams(roundParams).setPlaceholderImage(R.drawable.bg_app_img).setPlaceholderImageScaleType(ScalingUtils.ScaleType.CENTER_CROP).build();
         if (scaleType != null) {
             hierarchy.setActualImageScaleType(scaleType);
         } else {
@@ -443,7 +443,7 @@ public class ImageLoadUtils {
      */
     public static void loadImage(Uri uri, SimpleDraweeView view, ControllerListener listener) {
         DraweeController controller = Fresco.newDraweeControllerBuilder().setOldController(view.getController()).setControllerListener(listener).setUri(uri).build();
-        GenericDraweeHierarchy hierarchy = new GenericDraweeHierarchyBuilder(BaseApplication.appContext.getResources()).setFadeDuration(300).setPlaceholderImage(R.drawable.bg_app_img).setPlaceholderImageScaleType(ScalingUtils.ScaleType.CENTER_CROP).setActualImageScaleType(ScalingUtils.ScaleType.CENTER_CROP).build();
+        GenericDraweeHierarchy hierarchy = new GenericDraweeHierarchyBuilder(BaseApplication.appContext.getResources()).setPlaceholderImage(R.drawable.bg_app_img).setPlaceholderImageScaleType(ScalingUtils.ScaleType.CENTER_CROP).setActualImageScaleType(ScalingUtils.ScaleType.CENTER_CROP).build();
         view.setHierarchy(hierarchy);
         view.setController(controller);
     }
@@ -477,7 +477,7 @@ public class ImageLoadUtils {
             requestBuilder.setResizeOptions(new ResizeOptions(ScreenUtils.getScreenWidth(), ScreenUtils.getScreenHeight() / 2));
         }
         ImageRequest request = requestBuilder.build();
-        GenericDraweeHierarchy hierarchy = new GenericDraweeHierarchyBuilder(BaseApplication.appContext.getResources()).setFadeDuration(300).setRoundingParams(RoundingParams.fromCornersRadius(radius)).setPlaceholderImage(R.drawable.bg_app_img).setPlaceholderImageScaleType(ScalingUtils.ScaleType.CENTER_CROP).setActualImageScaleType(ScalingUtils.ScaleType.CENTER_CROP).build();
+        GenericDraweeHierarchy hierarchy = new GenericDraweeHierarchyBuilder(BaseApplication.appContext.getResources()).setRoundingParams(RoundingParams.fromCornersRadius(radius)).setPlaceholderImage(R.drawable.bg_app_img).setPlaceholderImageScaleType(ScalingUtils.ScaleType.CENTER_CROP).setActualImageScaleType(ScalingUtils.ScaleType.CENTER_CROP).build();
         DraweeController controller = Fresco.newDraweeControllerBuilder().setImageRequest(request).setOldController(view.getController()).build();
         view.setHierarchy(hierarchy);
         view.setController(controller);
@@ -504,7 +504,7 @@ public class ImageLoadUtils {
             requestBuilder.setResizeOptions(new ResizeOptions(ScreenUtils.getScreenWidth(), ScreenUtils.getScreenHeight() / 2));
         }
         ImageRequest request = requestBuilder.build();
-        GenericDraweeHierarchyBuilder builder = new GenericDraweeHierarchyBuilder(BaseApplication.appContext.getResources()).setFadeDuration(300).setRoundingParams(RoundingParams.fromCornersRadii(radius)).setPlaceholderImageScaleType(ScalingUtils.ScaleType.CENTER_CROP).setActualImageScaleType(ScalingUtils.ScaleType.CENTER_CROP);
+        GenericDraweeHierarchyBuilder builder = new GenericDraweeHierarchyBuilder(BaseApplication.appContext.getResources()).setRoundingParams(RoundingParams.fromCornersRadii(radius)).setPlaceholderImageScaleType(ScalingUtils.ScaleType.CENTER_CROP).setActualImageScaleType(ScalingUtils.ScaleType.CENTER_CROP);
         if (needPlace) {
             builder.setPlaceholderImage(R.drawable.bg_app_img);
         }
@@ -534,7 +534,7 @@ public class ImageLoadUtils {
             requestBuilder.setResizeOptions(new ResizeOptions(ScreenUtils.getScreenWidth(), ScreenUtils.getScreenHeight() / 2));
         }
         ImageRequest request = requestBuilder.build();
-        GenericDraweeHierarchy hierarchy = new GenericDraweeHierarchyBuilder(BaseApplication.appContext.getResources()).setFadeDuration(300).setRoundingParams(RoundingParams.fromCornersRadii(radius)).setPlaceholderImage(R.drawable.bg_app_img).setPlaceholderImageScaleType(ScalingUtils.ScaleType.CENTER_CROP).setActualImageScaleType(ScalingUtils.ScaleType.CENTER_CROP).build();
+        GenericDraweeHierarchy hierarchy = new GenericDraweeHierarchyBuilder(BaseApplication.appContext.getResources()).setRoundingParams(RoundingParams.fromCornersRadii(radius)).setPlaceholderImage(R.drawable.bg_app_img).setPlaceholderImageScaleType(ScalingUtils.ScaleType.CENTER_CROP).setActualImageScaleType(ScalingUtils.ScaleType.CENTER_CROP).build();
         DraweeController controller = Fresco.newDraweeControllerBuilder().setImageRequest(request).setOldController(view.getController()).build();
         view.setHierarchy(hierarchy);
         view.setController(controller);
@@ -562,7 +562,7 @@ public class ImageLoadUtils {
         }
         ImageRequest request = requestBuilder.build();
         DraweeController controller = Fresco.newDraweeControllerBuilder().setImageRequest(request).setOldController(view.getController()).build();
-        GenericDraweeHierarchy hierarchy = new GenericDraweeHierarchyBuilder(BaseApplication.appContext.getResources()).setFadeDuration(300).setRoundingParams(roundParams).setPlaceholderImage(R.drawable.bg_app_user).setPlaceholderImageScaleType(ScalingUtils.ScaleType.CENTER_CROP).setActualImageScaleType(ScalingUtils.ScaleType.CENTER_CROP).build();
+        GenericDraweeHierarchy hierarchy = new GenericDraweeHierarchyBuilder(BaseApplication.appContext.getResources()).setRoundingParams(roundParams).setPlaceholderImage(R.drawable.bg_app_user).setPlaceholderImageScaleType(ScalingUtils.ScaleType.CENTER_CROP).setActualImageScaleType(ScalingUtils.ScaleType.CENTER_CROP).build();
         view.setHierarchy(hierarchy);
         view.setController(controller);
     }
@@ -607,7 +607,7 @@ public class ImageLoadUtils {
      * @param view 要填充的View
      */
     public static void loadGif(Uri uri, SimpleDraweeView view) {
-        GenericDraweeHierarchy hierarchy = new GenericDraweeHierarchyBuilder(BaseApplication.appContext.getResources()).setFadeDuration(300).setPlaceholderImage(R.drawable.bg_app_img).setPlaceholderImageScaleType(ScalingUtils.ScaleType.CENTER_CROP).setActualImageScaleType(ScalingUtils.ScaleType.CENTER_CROP).build();
+        GenericDraweeHierarchy hierarchy = new GenericDraweeHierarchyBuilder(BaseApplication.appContext.getResources()).setPlaceholderImage(R.drawable.bg_app_img).setPlaceholderImageScaleType(ScalingUtils.ScaleType.CENTER_CROP).setActualImageScaleType(ScalingUtils.ScaleType.CENTER_CROP).build();
         DraweeController controller = Fresco.newDraweeControllerBuilder().setUri(uri).setRetainImageOnFailure(true).setAutoPlayAnimations(true).build();
         view.setHierarchy(hierarchy);
         view.setController(controller);

@@ -10,6 +10,7 @@ import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactRootView;
 import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.sharegoods.MainApplication;
+import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -30,7 +31,7 @@ public class ReactNativePreLoader {
             return;
         }
         // 1.创建ReactRootView
-        ReactRootView rootView = new ReactRootView(new MutableContextWrapper(context.getApplicationContext()));
+        ReactRootView rootView = new RNGestureHandlerEnabledRootView(new MutableContextWrapper(context.getApplicationContext()));
         rootView.startReactApplication(
                 ((MainApplication) context.getApplicationContext()).getReactNativeHost().getReactInstanceManager(),
                 componentName,

@@ -41,9 +41,14 @@ export default class GetRedpacketPage extends BasePage {
 
     // 导航配置
     $navigationBarOptions = {
-        title: '领取红包',
+        title: '领取红包'
+    };
+
+    // 禁用某个页面的手势
+    static navigationOptions = {
         gesturesEnabled: false
     };
+
     /*render右上角*/
     $NavBarRenderRightItem = () => {
         return (

@@ -270,13 +270,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 60,
         borderBottomWidth: 1.0 / PixelRatio.get(),
         borderBottomColor: '#DCDCDC'
-        // shadowColor: "rgba(0, 0, 0, 0.2)",
-        // shadowOffset: {
-        //     width: 0,
-        //     height: 0
-        // },
-        // shadowRadius: 1,
-        // shadowOpacity: 1
     },
     title: {
         fontSize: 18,

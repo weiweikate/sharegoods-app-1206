@@ -43,8 +43,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/user_icon"
-        android:layout_marginTop="10dp"
         android:layout_alignParentLeft="true"
+        android:layout_marginTop="10dp"
         android:textColor="@color/textColor_secondTitle"
         android:textSize="13sp"
         app:etv_EllipsisHint="..."
@@ -55,21 +55,25 @@
         app:etv_ToExpandHintColor="@color/app_main_color"
         app:etv_ToShrinkHintColor="@color/app_main_color" />
 
-    <FrameLayout  android:id="@+id/cover_wrapper"
+    <FrameLayout
+        android:id="@+id/cover_wrapper"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/content"
-        android:layout_marginTop="10dp"
         android:layout_alignParentLeft="true"
+        android:layout_marginTop="10dp"
         android:foreground="@drawable/black_transparent">
+
         <com.facebook.drawee.view.SimpleDraweeView
-            android:layout_height="wrap_content"
+            android:id="@+id/iv_cover"
             android:layout_width="wrap_content"
-            android:id="@+id/iv_cover"/>
-        <ImageView android:layout_width="53dp"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_width="53dp"
             android:layout_height="53dp"
             android:layout_gravity="center"
-            android:src="@drawable/icon_play"/>
+            android:src="@drawable/icon_play" />
     </FrameLayout>
 
     <com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView
@@ -77,8 +81,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/cover_wrapper"
-        android:layout_marginTop="10dp"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="10dp" />
 
 
     <ImageView
@@ -86,9 +90,9 @@
         android:layout_width="28dp"
         android:layout_height="28dp"
         android:layout_below="@id/product_list"
+        android:layout_alignParentLeft="true"
         android:layout_marginLeft="2dp"
         android:layout_marginTop="15dp"
-        android:layout_alignParentLeft="true"
         android:padding="2dp"
         android:src="@drawable/icon_fire" />
 
@@ -106,7 +110,6 @@
 
     <ImageView
         android:id="@+id/icon_download"
-        android:visibility="gone"
         android:layout_width="26dp"
         android:layout_height="28dp"
         android:layout_below="@id/product_list"
@@ -117,11 +120,11 @@
         android:paddingTop="4dp"
         android:paddingRight="2dp"
         android:paddingBottom="2dp"
-        android:src="@drawable/icon_show_download" />
+        android:src="@drawable/icon_show_download"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/download_num"
-        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="28dp"
         android:layout_alignTop="@+id/icon_download"
@@ -129,7 +132,8 @@
         android:layout_toRightOf="@+id/icon_download"
         android:gravity="center_vertical"
         android:textColor="@color/textColor_mainTitle"
-        android:textSize="10sp" />
+        android:textSize="10sp"
+        android:visibility="gone" />
 
 
     <ImageView
@@ -141,11 +145,12 @@
         android:layout_marginTop="15dp"
         android:src="@drawable/show_release_icon" />
 
-    <ImageView android:src="@drawable/show_recommend"
+    <ImageView
         android:id="@+id/iv_recommend"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="35dp"/>
+        android:layout_marginTop="35dp"
+        android:src="@drawable/show_recommend" />
 
 </RelativeLayout>

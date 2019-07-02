@@ -41,6 +41,7 @@ import com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +63,6 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
     private WeakReference<View> showgroundView;
     private Handler handler;
     private View errImg;
-    private boolean sIsScrolling;
 
     public ViewGroup getShowGroundView(ReactContext reactContext) {
         eventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
@@ -190,15 +190,6 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
                     default:
                         break;
                 }
-                if (newState == RecyclerView.SCROLL_STATE_DRAGGING || newState == RecyclerView.SCROLL_STATE_SETTLING) {
-                    sIsScrolling = true;
-                    ImageLoadUtils.pauseLoadImage();
-                } else if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (sIsScrolling == true) {
-                        ImageLoadUtils.resumeLoadImage();
-                    }
-                    sIsScrolling = false;
-                }
                 if (eventDispatcher != null) {
                     onScrollStateChangedEvent onScrollStateChangedEvent = new onScrollStateChangedEvent();
                     onScrollStateChangedEvent.init(view.getId());
@@ -313,6 +304,11 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
                         bean.setNineImageInfos(resolveResource);
                     }
                     data.set(i, bean);
+                }
+                //处理product中的空值
+                List products = bean.getProducts();
+                if(products != null && products.size()>0){
+                    products.removeAll(Collections.singleton(null));
                 }
             }
         }
