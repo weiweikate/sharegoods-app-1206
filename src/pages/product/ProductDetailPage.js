@@ -93,6 +93,7 @@ export default class ProductDetailPage extends BasePage {
                 this.productDetailModel && this.productDetailModel.requestProductDetail();
             }, 200);
         }
+        this.productDetailModel.productDetailAddressModel.requestAddress();
     }
 
     componentWillUnmount() {

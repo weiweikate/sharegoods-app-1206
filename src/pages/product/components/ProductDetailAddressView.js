@@ -3,10 +3,11 @@ import { View, StyleSheet, Image } from 'react-native';
 import { MRText, NoMoreClick } from '../../../components/ui';
 import res from '../res/product';
 import DesignRule from '../../../constants/DesignRule';
-import { observable } from 'mobx';
+import { observable, computed, autorun } from 'mobx';
 import { observer } from 'mobx-react';
-import RouterMap, { navigate } from '../../../navigation/RouterMap';
+import RouterMap, { routePush } from '../../../navigation/RouterMap';
 import MineAPI from '../../mine/api/MineApi';
+import ProductApi from '../api/ProductApi';
 
 const { arrow_right_black } = res.button;
 const { pAddress } = res;
@@ -15,13 +16,13 @@ const { pAddress } = res;
 export class ProductDetailSetAddressView extends React.Component {
     render() {
         const { productDetailAddressModel } = this.props;
-        const { addressText } = productDetailAddressModel;
+        const { showAreaText } = productDetailAddressModel;
         return (
             <NoMoreClick style={pStyles.containerView} onPress={() => {
-                navigate(RouterMap.ProductAddressListPage, { productDetailAddressModel });
+                routePush(RouterMap.ProductAddressListPage, { productDetailAddressModel });
             }}>
                 <MRText style={pStyles.nameText}>选择</MRText>
-                <MRText style={pStyles.valueText}>配送至:{addressText}</MRText>
+                <MRText style={pStyles.valueText}>配送至: {showAreaText}</MRText>
                 <Image source={arrow_right_black}/>
             </NoMoreClick>
         );
@@ -47,7 +48,7 @@ const pStyles = StyleSheet.create({
 export class ProductDetailSkuAddressView extends React.Component {
     render() {
         const { productDetailAddressModel } = this.props;
-        const { addressText } = productDetailAddressModel;
+        const { showAreaText } = productDetailAddressModel;
         return (
             <View style={sStyles.containerView}>
                 <View style={sStyles.lineView}/>
@@ -63,7 +64,7 @@ export class ProductDetailSkuAddressView extends React.Component {
                                 color: DesignRule.textColor_instruction,
                                 fontSize: 12,
                                 flex: 1
-                            }}>{addressText}</MRText>
+                            }}>{showAreaText}</MRText>
                         </View>
                     </View>
                     <Image source={arrow_right_black}/>
@@ -98,10 +99,56 @@ const sStyles = StyleSheet.create({
 });
 
 export class ProductDetailAddressModel {
-    @observable addressText = '杭州市 萧山区';
-    @observable addressCode = '330109';
-    @observable addressList = [];
 
+    @observable prodCode = null;
+    /*个人地址列表*/
+    @observable addressList = [];
+    /*手动选择的区域*/
+    @observable addressSelectedText = null;
+    @observable addressSelectedCode = null;
+
+    /*区域库存(地区变化就需要更新)*/
+    @observable areaSkuList = [];
+
+    @computed get showAreaText() {
+        if (this.addressSelectedText) {
+            return this.addressSelectedText;
+        }
+        for (const item of this.addressList) {
+            if (item.defaultStatus === 1) {
+                return item.province + item.city + item.area;
+            }
+        }
+        return '杭州市萧山区';
+    }
+
+    @computed get getAreaCode() {
+        if (this.addressSelectedCode) {
+            return this.addressSelectedCode;
+        }
+        for (const item of this.addressList) {
+            if (item.defaultStatus === 1) {
+                return item.areaCode;
+            }
+        }
+        return '330109';
+    }
+
+    /*地址变化自动更新库存*/
+    requestSkuByAreaCode = autorun(() => {
+        const { prodCode, getAreaCode } = this;
+        if (!this.prodCode) {
+            return;
+        }
+        ProductApi.getProductSkuStockByAreaCode({
+            prodCode: prodCode,
+            areaCode: getAreaCode
+        }).then((data) => {
+            this.areaSkuList = data.data || [];
+        });
+    });
+
+    /*获取收货地址*/
     requestAddress = () => {
         MineAPI.queryAddrList().then((data) => {
             this.addressList = data.data || [];

@@ -7,12 +7,7 @@ import { observer } from 'mobx-react';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import MineAPI from '../../mine/api/MineApi';
 import DesignRule from '../../../constants/DesignRule';
-
-const addressType = {
-    'addressProvince': '0',
-    'addressCity': '1',
-    'addressArea': '2'
-};
+import RouterMap, { popToRouteName } from '../../../navigation/RouterMap';
 
 @observer
 export class AddressSelectPage extends BasePage {
@@ -21,12 +16,19 @@ export class AddressSelectPage extends BasePage {
     };
     addressSelectModel = new AddressSelectModel();
     _renderItem = ({ item }) => {
-        const { requestWithCode, indexType, selectItems } = this.addressSelectModel;
+        const { requestWithCode, itemIndex, selectItems } = this.addressSelectModel;
         return (
             <NoMoreClick style={{ height: 40, justifyContent: 'center' }} onPress={() => {
                 //点击列当前的城市
-                selectItems[indexType] = item;
-                if (indexType === addressType.addressArea) {
+                selectItems[itemIndex] = item;
+                if (itemIndex === 2) {
+                    const { productDetailAddressModel } = this.params;
+                    const nameList = selectItems.map((item) => {
+                        return item.name;
+                    });
+                    productDetailAddressModel.addressSelectedText = nameList.join('');
+                    productDetailAddressModel.addressSelectedCode = item.code;
+                    popToRouteName(RouterMap.ProductDetailPage);
                     return;
                 }
                 //下一页
@@ -36,8 +38,8 @@ export class AddressSelectPage extends BasePage {
             </NoMoreClick>
         );
     };
-    _keyExtractor = (item, index) => {
-        return item.id + index + '';
+    _keyExtractor = (item) => {
+        return item.code + '';
     };
 
     _ItemSeparatorComponent = () => {
@@ -51,34 +53,34 @@ export class AddressSelectPage extends BasePage {
     }
 
     _render() {
-        const { selectItems, addressList, indexType } = this.addressSelectModel;
+        const { selectItems, addressList, itemIndex } = this.addressSelectModel;
         return (
             <View style={{ flex: 1 }}>
                 <View style={{ height: 40, backgroundColor: 'white' }}>
                     <View style={styles.tittleContainer}>
                         {
-                            Object.keys(selectItems).map((item, index) => {
-                                const value = selectItems[item];
-                                if (!value) {
+                            selectItems.map((item, index) => {
+                                if (!item.name) {
                                     return null;
                                 }
                                 return (
                                     <NoMoreClick key={index} onPress={() => {
-                                        this.addressSelectModel.indexType = item;
-                                        Object.keys(selectItems).forEach((item1) => {
-                                            if (item1 === item) {
-                                                selectItems[item1] = { name: '请选择' };
-                                            } else if (item1 > item) {
-                                                selectItems[item1] = null;
+                                        this.addressSelectModel.itemIndex = index;
+                                        selectItems.forEach((item, index1) => {
+                                            if (index1 === index) {
+                                                selectItems[index1] = { name: '请选择' };
+                                            } else if (index1 > item) {
+                                                selectItems[index1] = {};
                                             }
                                         });
+
                                     }}>
                                         <View style={{ flex: 1, justifyContent: 'center' }}>
-                                            <MRText style={styles.tittleText}>{value.name}</MRText>
+                                            <MRText style={styles.tittleText}>{item.name}</MRText>
                                         </View>
                                         <View style={{
                                             height: 2,
-                                            backgroundColor: item === indexType ? DesignRule.mainColor : 'white'
+                                            backgroundColor: index === itemIndex ? DesignRule.mainColor : 'white'
                                         }}/>
                                     </NoMoreClick>
                                 );
@@ -119,34 +121,26 @@ export default AddressSelectPage;
 
 class AddressSelectModel {
     //当前列表项数据
-    @observable indexType = null;
-    @observable selectItems = {
-        [addressType.addressProvince]: null,
-        [addressType.addressCity]: null,
-        [addressType.addressArea]: null
-    };
-    @observable contentList = {
-        [addressType.addressProvince]: [],
-        [addressType.addressCity]: [],
-        [addressType.addressArea]: []
-    };
+    @observable itemIndex = -1;
+    @observable selectItems = [{ name: '请选择' }, {}, {}];
+    @observable contentList = [[], [], []];
 
     @computed get addressList() {
-        return this.contentList[this.indexType] || [];
+        return this.contentList[this.itemIndex] || [];
     }
 
     @action requestWithCode = (code) => {
         MineAPI.getAreaList({ fatherCode: code }).then((data) => {
             //当前列表项数据
-            if (!this.indexType) {
-                this.indexType = addressType.addressProvince;
-            } else if (this.indexType === addressType.addressProvince) {
-                this.indexType = addressType.addressCity;
-            } else if (this.indexType === addressType.addressCity) {
-                this.indexType = addressType.addressArea;
+            if (this.itemIndex === -1) {
+                this.itemIndex = 0;
+            } else if (this.itemIndex === 0) {
+                this.itemIndex = 1;
+            } else if (this.itemIndex === 1) {
+                this.itemIndex = 2;
             }
-            this.contentList[this.indexType] = data.data || [];
-            this.selectItems[this.indexType] = { name: '请选择' };
+            this.contentList[this.itemIndex] = data.data || [];
+            this.selectItems[this.itemIndex] = { name: '请选择' };
         });
     };
 }
