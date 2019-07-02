@@ -347,6 +347,11 @@ public class ControlView extends RelativeLayout implements View.OnTouchListener 
     public boolean isHasRecordPiece() {
         return hasRecordPiece;
     }
+
+    public FlashType getFlashType() {
+        return flashType;
+    }
+
     /**
      * 是否有录制片段
      *

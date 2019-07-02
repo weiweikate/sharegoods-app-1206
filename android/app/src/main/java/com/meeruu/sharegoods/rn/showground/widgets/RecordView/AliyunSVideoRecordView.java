@@ -3,6 +3,8 @@ package com.meeruu.sharegoods.rn.showground.widgets.RecordView;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
@@ -31,6 +33,7 @@ import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.utils.OrientationDetector;
 import com.meeruu.sharegoods.rn.showground.utils.PermissionUtils;
+import com.meeruu.sharegoods.rn.showground.utils.ThreadUtils;
 import com.meeruu.sharegoods.rn.showground.utils.TimeFormatterUtils;
 import com.meeruu.sharegoods.rn.showground.widgets.RecordView.control.ControlView;
 import com.meeruu.sharegoods.rn.showground.widgets.RecordView.control.ControlViewListener;
@@ -86,6 +89,8 @@ public class AliyunSVideoRecordView extends FrameLayout implements ScaleGestureD
      */
     private boolean tempIsComplete = true;
     private int rotation;
+    private boolean isOpenFailed = false;
+
 
     /**
      * 视频是是否正正在已经调用stopRecord到onComplete回调过程中这段时间，这段时间不可再次调用stopRecord
@@ -438,241 +443,241 @@ public class AliyunSVideoRecordView extends FrameLayout implements ScaleGestureD
     }
 
     private void initRecorder() {
-//        recorder = AliyunRecorderCreator.getRecorderInstance(getContext());
-//        recorder.setDisplayView(mSurfaceView);
-//        clipManager = recorder.getClipManager();
-//        recorder.setFocusMode(CameraParam.FOCUS_MODE_CONTINUE);
-//        clipManager.setMaxDuration(MAX_RECORD_TIME);
-//        clipManager.setMinDuration(getMaxRecordTime());
-//        MediaInfo mediaInfo = new MediaInfo();
-//        mediaInfo.setVideoWidth(TEST_VIDEO_WIDTH);
-//        mediaInfo.setVideoHeight(TEST_VIDEO_HEIGHT);
-//        //mediaInfo.setHWAutoSize(true);//硬编时自适应宽高为16的倍数
-//        recorder.setMediaInfo(mediaInfo);
-//        cameraType = recorder.getCameraCount() == 1 ? com.aliyun.svideo.sdk.external.struct.recorder.CameraType.BACK
-//                : cameraType;
-//        recorder.setCamera(cameraType);
-//        recorder.setBeautyStatus(false);
-//
-//        initOritationDetector();
-//        recorder.setOnFrameCallback(new OnFrameCallBack() {
-//            @Override
-//            public void onFrameBack(byte[] bytes, int width, int height, Camera.CameraInfo info) {
-//                //原始数据回调 NV21,这里获取原始数据主要是为了faceUnity高级美颜使用
-//                frameBytes = bytes;
-//                frameWidth = width;
-//                frameHeight = height;
-//            }
-//
-//            @Override
-//            public Camera.Size onChoosePreviewSize(List<Camera.Size> supportedPreviewSizes,
-//                                                   Camera.Size preferredPreviewSizeForVideo) {
-//
-//                return null;
-//            }
-//
-//            @Override
-//            public void openFailed() {
-//                Log.e(AliyunTag.TAG, "openFailed----------");
-//                isOpenFailed = true;
-//            }
-//        });
-//
-//        recorder.setRecordCallback(new RecordCallback() {
-//            @Override
-//            public void onComplete(final boolean validClip, final long clipDuration) {
-//                Log.e(TAG, "onComplete   duration : " + clipDuration +
-//                        ", clipManager.getDuration() = " + clipManager.getDuration());
-//                tempIsComplete = true;
-//                ThreadUtils.runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        Log.d(TAG, "onComplete    isStopToCompleteDuration:" + isStopToCompleteDuration);
-//
-//                        isStopToCompleteDuration = false;
-//                        handleStopCallback(validClip, clipDuration);
-//                        if (isMaxDuration && validClip) {
-//                            finishRecording();
-//                        }
-//
-//                    }
-//                });
-//
-//            }
-//
-//            /**
-//             * 合成完毕的回调
-//             * @param outputPath
-//             */
-//            @Override
-//            public void onFinish(final String outputPath) {
-//                Log.e(TAG, "onFinish:" + outputPath);
-//
-//                ThreadUtils.runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        if (mCompleteListener != null) {
-//                            final int duration = clipManager.getDuration();
-//                            //deleteAllPart();
-//                            // 选择音乐后, 在录制完合成过程中退后台
-//                            // 保持在后台情况下, sdk合成完毕后, 会仍然执行跳转代码, 此时会弹起跳转后的页面
-//                            if (activityStoped) {
-//                                pendingCompseFinishRunnable =  new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        if (!isStopToCompleteDuration) {
-//                                            mCompleteListener.onComplete(outputPath, duration);
-//                                        }
-//                                    }
-//                                };
-//                            } else {
-//                                if (!isStopToCompleteDuration) {
-//                                    mCompleteListener.onComplete(outputPath, duration);
-//                                }
-//                            }
-//                        }
-//                    }
-//                });
-//
-//            }
-//
-//            @Override
-//            public void onProgress(final long duration) {
-//                final int currentDuration = clipManager.getDuration();
-//                ThreadUtils.runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        isAllowChangeMv = false;
-//                        recordTime = 0;
-//                        //设置录制进度
-//                        if (mRecordTimeView != null) {
-//                            mRecordTimeView.setDuration((int)duration);
-//                        }
-//
-//                        recordTime = (int) (currentDuration + duration);
-//                        if (recordTime <= clipManager.getMaxDuration() && recordTime >= clipManager.getMinDuration()) {
-//                            // 2018/7/11 让下一步按钮可点击
-//                            mControlView.setCompleteEnable(true);
-//                        } else {
-//                            mControlView.setCompleteEnable(false);
-//                        }
-//                        if (mControlView != null && mControlView.getRecordState().equals(RecordState.STOP)) {
-//                            return;
-//                        }
-//                        if (mControlView != null) {
-//                            mControlView.setRecordTime(TimeFormatterUtils.formatTime(recordTime));
-//                        }
-//
-//                    }
-//                });
-//
-//            }
-//
-//            @Override
-//            public void onMaxDuration() {
-//                Log.e(TAG, "onMaxDuration:");
-//                isMaxDuration = true;
-//                ThreadUtils.runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        if (mControlView != null) {
-//                            mControlView.setCompleteEnable(false);
-//                            mControlView.setRecordState(RecordState.STOP);
-//                            mControlView.updataCutDownView(false);
-//                        }
-//                    }
-//                });
-//
-//            }
-//
-//            @Override
-//            public void onError(int errorCode) {
-//                Log.e(TAG, "onError:" + errorCode);
-//                ThreadUtils.runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        recordTime = 0;
-//                        tempIsComplete = true;
-//                        handleStopCallback(false, 0);
-//                    }
-//                });
-//            }
-//
-//            @Override
-//            public void onInitReady() {
-//                Log.e(TAG, "onInitReady");
-//                ThreadUtils.runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        restoreConflictEffect();
-//                        if (effectPaster != null) {
-//                            addEffectToRecord(effectPaster.getPath());
-//                        }
-//
-//                    }
-//                });
-//            }
-//
-//            @Override
-//            public void onDrawReady() {
-//
-//            }
-//
-//            @Override
-//            public void onPictureBack(final Bitmap bitmap) {
-//
-//            }
-//
-//            @Override
-//            public void onPictureDataBack(final byte[] data) {
-//
-//            }
-//
-//        });
-//        recorder.setOnTextureIdCallback(new OnTextureIdCallBack() {
-//            @Override
-//            public int onTextureIdBack(int textureId, int textureWidth, int textureHeight, float[] matrix) {
-//
-//                //******************************** start ******************************************
-//                //这块代码会影响到标准版的faceUnity功能 改动的时候要关联app gradle 一起改动
-//                if (faceInitResult && currentBeautyFaceMode == BeautyMode.Advanced && faceUnityManager != null) {
-//                    /**
-//                     * faceInitResult fix bug:反复退出进入会出现黑屏情况,原因是因为release之后还在调用渲染的接口,必须要保证release了之后不能再调用渲染接口
-//                     */
-//                    return faceUnityManager.draw(frameBytes, mFuImgNV21Bytes, textureId, frameWidth, frameHeight, mFrameId++, mControlView.getCameraType().getType());
-//                }
-//                //******************************** end ********************************************
-//                return textureId;
-//            }
-//
-//            OpenGLTest test;
-//
-//            @Override
-//            public int onScaledIdBack(int scaledId, int textureWidth, int textureHeight, float[] matrix) {
-//                //if (test == null) {
-//                //    test = new OpenGLTest();
-//                //}
-//
-//                return scaledId;
-//            }
-//
-//            @Override
-//            public void onTextureDestroyed() {
-//                // sdk3.7.8改动, 自定义渲染（第三方渲染）销毁gl资源，以前GLSurfaceView时可以通过GLSurfaceView.queueEvent来做，
-//                // 现在增加了一个gl资源销毁的回调，需要统一在这里面做。
-//                if (faceUnityManager != null && faceInitResult) {
-//                    faceUnityManager.release();
-//                    faceInitResult = false;
-//                }
-//            }
-//        });
-//
-//        recorder.setEncoderInfoCallback(new EncoderInfoCallback() {
-//            @Override
-//            public void onEncoderInfoBack(EncoderInfo info) {
-//            }
-//        });
-//        recorder.setFaceTrackInternalMaxFaceCount(2);
+        recorder = AliyunRecorderCreator.getRecorderInstance(getContext());
+        recorder.setDisplayView(mSurfaceView);
+        clipManager = recorder.getClipManager();
+        recorder.setFocusMode(CameraParam.FOCUS_MODE_CONTINUE);
+        clipManager.setMaxDuration(MAX_RECORD_TIME);
+        clipManager.setMinDuration(getMaxRecordTime());
+        MediaInfo mediaInfo = new MediaInfo();
+        mediaInfo.setVideoWidth(TEST_VIDEO_WIDTH);
+        mediaInfo.setVideoHeight(TEST_VIDEO_HEIGHT);
+        //mediaInfo.setHWAutoSize(true);//硬编时自适应宽高为16的倍数
+        recorder.setMediaInfo(mediaInfo);
+        cameraType = recorder.getCameraCount() == 1 ? com.aliyun.svideo.sdk.external.struct.recorder.CameraType.BACK
+                : cameraType;
+        recorder.setCamera(cameraType);
+        recorder.setBeautyStatus(false);
+
+        initOritationDetector();
+        recorder.setOnFrameCallback(new OnFrameCallBack() {
+            @Override
+            public void onFrameBack(byte[] bytes, int width, int height, Camera.CameraInfo info) {
+                //原始数据回调 NV21,这里获取原始数据主要是为了faceUnity高级美颜使用
+                frameBytes = bytes;
+                frameWidth = width;
+                frameHeight = height;
+            }
+
+            @Override
+            public Camera.Size onChoosePreviewSize(List<Camera.Size> supportedPreviewSizes,
+                                                   Camera.Size preferredPreviewSizeForVideo) {
+
+                return null;
+            }
+
+            @Override
+            public void openFailed() {
+                Log.e(AliyunTag.TAG, "openFailed----------");
+                isOpenFailed = true;
+            }
+        });
+
+        recorder.setRecordCallback(new RecordCallback() {
+            @Override
+            public void onComplete(final boolean validClip, final long clipDuration) {
+                Log.e(TAG, "onComplete   duration : " + clipDuration +
+                        ", clipManager.getDuration() = " + clipManager.getDuration());
+                tempIsComplete = true;
+                ThreadUtils.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d(TAG, "onComplete    isStopToCompleteDuration:" + isStopToCompleteDuration);
+
+                        isStopToCompleteDuration = false;
+                        handleStopCallback(validClip, clipDuration);
+                        if (isMaxDuration && validClip) {
+                            finishRecording();
+                        }
+
+                    }
+                });
+
+            }
+
+            /**
+             * 合成完毕的回调
+             * @param outputPath
+             */
+            @Override
+            public void onFinish(final String outputPath) {
+                Log.e(TAG, "onFinish:" + outputPath);
+
+                ThreadUtils.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mCompleteListener != null) {
+                            final int duration = clipManager.getDuration();
+                            //deleteAllPart();
+                            // 选择音乐后, 在录制完合成过程中退后台
+                            // 保持在后台情况下, sdk合成完毕后, 会仍然执行跳转代码, 此时会弹起跳转后的页面
+                            if (activityStoped) {
+                                pendingCompseFinishRunnable =  new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (!isStopToCompleteDuration) {
+                                            mCompleteListener.onComplete(outputPath, duration);
+                                        }
+                                    }
+                                };
+                            } else {
+                                if (!isStopToCompleteDuration) {
+                                    mCompleteListener.onComplete(outputPath, duration);
+                                }
+                            }
+                        }
+                    }
+                });
+
+            }
+
+            @Override
+            public void onProgress(final long duration) {
+                final int currentDuration = clipManager.getDuration();
+                ThreadUtils.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        isAllowChangeMv = false;
+                        recordTime = 0;
+                        //设置录制进度
+                        if (mRecordTimeView != null) {
+                            mRecordTimeView.setDuration((int)duration);
+                        }
+
+                        recordTime = (int) (currentDuration + duration);
+                        if (recordTime <= clipManager.getMaxDuration() && recordTime >= clipManager.getMinDuration()) {
+                            // 2018/7/11 让下一步按钮可点击
+                            mControlView.setCompleteEnable(true);
+                        } else {
+                            mControlView.setCompleteEnable(false);
+                        }
+                        if (mControlView != null && mControlView.getRecordState().equals(RecordState.STOP)) {
+                            return;
+                        }
+                        if (mControlView != null) {
+                            mControlView.setRecordTime(TimeFormatterUtils.formatTime(recordTime));
+                        }
+
+                    }
+                });
+
+            }
+
+            @Override
+            public void onMaxDuration() {
+                Log.e(TAG, "onMaxDuration:");
+                isMaxDuration = true;
+                ThreadUtils.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mControlView != null) {
+                            mControlView.setCompleteEnable(false);
+                            mControlView.setRecordState(RecordState.STOP);
+                            mControlView.updataCutDownView(false);
+                        }
+                    }
+                });
+
+            }
+
+            @Override
+            public void onError(int errorCode) {
+                Log.e(TAG, "onError:" + errorCode);
+                ThreadUtils.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        recordTime = 0;
+                        tempIsComplete = true;
+                        handleStopCallback(false, 0);
+                    }
+                });
+            }
+
+            @Override
+            public void onInitReady() {
+                Log.e(TAG, "onInitReady");
+                ThreadUtils.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        restoreConflictEffect();
+                        if (effectPaster != null) {
+                            addEffectToRecord(effectPaster.getPath());
+                        }
+
+                    }
+                });
+            }
+
+            @Override
+            public void onDrawReady() {
+
+            }
+
+            @Override
+            public void onPictureBack(final Bitmap bitmap) {
+
+            }
+
+            @Override
+            public void onPictureDataBack(final byte[] data) {
+
+            }
+
+        });
+        recorder.setOnTextureIdCallback(new OnTextureIdCallBack() {
+            @Override
+            public int onTextureIdBack(int textureId, int textureWidth, int textureHeight, float[] matrix) {
+
+                //******************************** start ******************************************
+                //这块代码会影响到标准版的faceUnity功能 改动的时候要关联app gradle 一起改动
+                if (faceInitResult && currentBeautyFaceMode == BeautyMode.Advanced && faceUnityManager != null) {
+                    /**
+                     * faceInitResult fix bug:反复退出进入会出现黑屏情况,原因是因为release之后还在调用渲染的接口,必须要保证release了之后不能再调用渲染接口
+                     */
+                    return faceUnityManager.draw(frameBytes, mFuImgNV21Bytes, textureId, frameWidth, frameHeight, mFrameId++, mControlView.getCameraType().getType());
+                }
+                //******************************** end ********************************************
+                return textureId;
+            }
+
+            OpenGLTest test;
+
+            @Override
+            public int onScaledIdBack(int scaledId, int textureWidth, int textureHeight, float[] matrix) {
+                //if (test == null) {
+                //    test = new OpenGLTest();
+                //}
+
+                return scaledId;
+            }
+
+            @Override
+            public void onTextureDestroyed() {
+                // sdk3.7.8改动, 自定义渲染（第三方渲染）销毁gl资源，以前GLSurfaceView时可以通过GLSurfaceView.queueEvent来做，
+                // 现在增加了一个gl资源销毁的回调，需要统一在这里面做。
+                if (faceUnityManager != null && faceInitResult) {
+                    faceUnityManager.release();
+                    faceInitResult = false;
+                }
+            }
+        });
+
+        recorder.setEncoderInfoCallback(new EncoderInfoCallback() {
+            @Override
+            public void onEncoderInfoBack(EncoderInfo info) {
+            }
+        });
+        recorder.setFaceTrackInternalMaxFaceCount(2);
     }
 
     /**
@@ -722,5 +727,55 @@ public class AliyunSVideoRecordView extends FrameLayout implements ScaleGestureD
         return rotation;
     }
 
+    /**
+     * 片段录制完成的回调处理
+     *
+     * @param isValid
+     * @param duration
+     */
+    private void handleStopCallback(final boolean isValid, final long duration) {
+        post(new Runnable() {
+            @Override
+            public void run() {
 
+                mControlView.setRecordState(RecordState.STOP);
+                if (mControlView != null) {
+                    mControlView.setRecording(false);
+                }
+
+                if (!isValid) {
+//                    if (mRecordTimeView != null) {
+//                        mRecordTimeView.setDuration(0);
+//
+//                        if (mRecordTimeView.getTimelineDuration() == 0) {
+//                            mControlView.setHasRecordPiece(false);
+//                        }
+//                    }
+                    return;
+                }
+
+                if (duration > 200) {
+//                    if (mRecordTimeView != null) {
+//                        mRecordTimeView.setDuration((int)duration);
+//                        mRecordTimeView.clipComplete();
+//                    }
+                    mControlView.setHasRecordPiece(true);
+//                    isAllowChangeMv = false;
+                } else {
+
+//                    if (mRecordTimeView != null) {
+//                        mRecordTimeView.setDuration(0);
+//                    }
+                    //todo 小于200毫秒的视频会导致合成视频出现异常，这里会做删除
+                    clipManager.deletePart();
+                    if (clipManager.getDuration() == 0) {
+//                        isAllowChangeMv = true;
+                        mControlView.setHasRecordPiece(false);
+                    }
+                    isMaxDuration = false;
+                }
+
+            }
+        });
+    }
 }
