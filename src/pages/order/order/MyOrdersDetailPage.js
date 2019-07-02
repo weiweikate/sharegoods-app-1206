@@ -17,7 +17,6 @@ import Toast from '../../../utils/bridge';
 // import GoodsGrayItem from "../components/GoodsGrayItem";
 import OrderApi from '../api/orderApi';
 import { renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
-import { NavigationActions } from 'react-navigation';
 import DesignRule from '../../../constants/DesignRule';
 import MineApi from '../../mine/api/MineApi';
 // import { getDateData, leadingZeros } from '../components/orderDetail/OrderCutDown';
@@ -34,6 +33,7 @@ import GiftHeaderView from '../components/orderDetail/GiftHeaderView';
 import { SmoothPushPreLoadHighComponent } from '../../../comm/components/SmoothPushHighComponent';
 import { GetAfterBtns, checkOrderAfterSaleService, judgeProduceIsContainActivityTypes } from './OrderType';
 import CancelProdectsModal from '../components/orderDetail/CancelProdectsModal';
+import { backToHome } from '../../../navigation/RouterMap';
 
 const buyerHasPay = res.buyerHasPay;
 const productDetailHome = res.productDetailHome;
@@ -278,13 +278,7 @@ export default class MyOrdersDetailPage extends BasePage {
                                 this.$navigate('message/MessageCenterPage');
                                 break;
                             case 1:
-                                let resetAction = NavigationActions.reset({
-                                    index: 0,
-                                    actions: [
-                                        NavigationActions.navigate({ routeName: 'Tab' })//要跳转到的页面名字
-                                    ]
-                                });
-                                this.props.navigation.dispatch(resetAction);
+                                backToHome();
                                 break;
                         }
                         this.setState({ isShowShowMessageModal: false });

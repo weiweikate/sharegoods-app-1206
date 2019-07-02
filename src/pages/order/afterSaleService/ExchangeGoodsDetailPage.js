@@ -407,7 +407,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                             OrderApi.afterSaleCancel({ serviceNo: this.params.serviceNo }).then(result => {
                                 that.$loadingDismiss();
                                 DeviceEventEmitter.emit('OrderNeedRefresh');
-                                that.$navigateBack('order/order/MyOrdersDetailPage');
+                                that.afterSaleDetailModel.userCancel();
                             }).catch(error => {
                                 that.$loadingDismiss();
                                 that.$toastShow(error.msg || '操作失败，请重试');
