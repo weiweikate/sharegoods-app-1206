@@ -580,7 +580,7 @@ export default class MinePage extends BasePage {
                     <View>
                         <ImageBackground style={{
                             height: px2dp(70),
-                            width: (ScreenUtils.width - 45) / 2
+                            width: (ScreenUtils.width - px2dp(40)) / 2
                         }} source={mine_invite}>
                             <View style={{flex: 1, justifyContent: 'center', marginLeft: 15}}>
                                 <Text style={{fontSize: 14, color: '#333333', fontWeight: '600', marginBottom: 5}}>
@@ -601,7 +601,7 @@ export default class MinePage extends BasePage {
                     <View>
                         <ImageBackground style={{
                             height: px2dp(70),
-                            width: (ScreenUtils.width - 45) / 2
+                            width: (ScreenUtils.width - px2dp(40)) / 2
                         }} source={mine_friendsHelp}>
                             <View style={{flex: 1, justifyContent: 'center', marginLeft: 15}}>
                                 <Text style={{fontSize: 14, color: '#333333', fontWeight: '600', marginBottom: 5}}>
