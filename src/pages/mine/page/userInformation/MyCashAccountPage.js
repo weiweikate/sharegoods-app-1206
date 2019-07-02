@@ -284,7 +284,7 @@ export default class MyCashAccountPage extends BasePage {
 
     renderReHeader = () => {
         return (
-            <View style={{ flex: 1, backgroundColor: 'white' }}>
+            <View style={{ flex: 1, backgroundColor: 'white', height: 40 }}>
                 <ScrollableTabView
                     onChangeTab={(obj) => {
                         if (obj.i === 1) {
