@@ -80,7 +80,7 @@ export default class ConfirmOrderPage extends BasePage {
                                    uri={item.specImg}
                                    activityCodes={item.activityList || []}
                                    goodsName={item.productName}
-                                   salePrice={StringUtils.formatMoneyString(item.unitPrice)}
+                                   salePrice={item.unitPrice}
                                    category={item.spec}
                                    goodsNum={'x' + item.quantity}
                                    onPress={() => {
@@ -119,7 +119,6 @@ export default class ConfirmOrderPage extends BasePage {
 
     componentWillUnmount() {
         confirmOrderModel.clearData();
-        clearTimeout();
     }
 
     _render() {

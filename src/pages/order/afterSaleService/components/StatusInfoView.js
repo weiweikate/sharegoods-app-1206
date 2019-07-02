@@ -31,8 +31,8 @@ const {
 } = PageType;
 
 const {
-    STATUS_IN_REVIEW ,           //待审核
-    STATUS_SEND_BACK,            //待寄回
+    // STATUS_IN_REVIEW ,           //待审核
+    // STATUS_SEND_BACK,            //待寄回
     STATUS_WAREHOUSE_CONFIRMED,  //待仓库确认
     STATUS_PLATFORM_PROCESSING, //待平台处理
     STATUS_SUCCESS,              //售后完成
@@ -108,7 +108,7 @@ export default class StatusInfoView extends React.Component {
                 }
                 return{
                     titleStr: '售后已完成，退款成功',
-                    remarkStr: remarks,
+                    remarkStr: '平台已同意您的退款',
                 }
             case STATUS_FAIL: {
                 if (subStatus === REFUSE_REVOKED){

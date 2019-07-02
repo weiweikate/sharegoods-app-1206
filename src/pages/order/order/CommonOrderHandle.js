@@ -43,6 +43,9 @@ function clickOrderConfirmReceipt(merchantOrderNo, subStatus, callBack){
         },
         {
             text: `确定`, onPress: () => {
+                if (subStatus === 3) {
+                    return;
+                }
                 bridge.showLoading();
                 OrderApi.confirmReceipt({ merchantOrderNo: merchantOrderNo}).then((response) => {
                     bridge.hiddenLoading();
