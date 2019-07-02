@@ -70,7 +70,6 @@ export default class MyOrdersListView extends Component {
                 <CancelProdectsModal ref={(ref) => {
                     this.cancelProdectsModal = ref;
                 }}
-                                     clickSure={()=>{ this.cancelModal&&this.cancelModal.open()}}
                 />
             </View>
         );
@@ -195,20 +194,20 @@ export default class MyOrdersListView extends Component {
         switch (menu.id) {
             case 1:
                 if (this.props.cancelReasons.length > 0) {
-                    this.cancelProdectsModal && this.cancelProdectsModal.open(platformOrderNo);
+                    this.cancelProdectsModal && this.cancelProdectsModal.open(platformOrderNo,()=>{this.cancelModal &&this.cancelModal.open()});
                 } else {
                     Toast.$toast('无取消理由');
                 }
 
                 break;
             case 2:
-                this._goToPay(data);
+                this.cancelProdectsModal && this.cancelProdectsModal.open(platformOrderNo,()=>{ this._goToPay(data)}, true);
                 break;
             case 3:
-                this._goToPay(data);
+                this.cancelProdectsModal && this.cancelProdectsModal.open(platformOrderNo,()=>{ this._goToPay(data)}, true);
                 break;
             case 4:
-                this._goToPay(data);
+                this.cancelProdectsModal && this.cancelProdectsModal.open(platformOrderNo,()=>{ this._goToPay(data), true});
                 break;
             case 5:
                 clickOrderLogistics(merchantOrderNo)
@@ -268,14 +267,13 @@ export default class MyOrdersListView extends Component {
         let orderProduct = data.merchantOrder.productOrderList || [];
         let merchantOrderNo = data.merchantOrder.merchantOrderNo;
         let platformOrderNo = data.merchantOrder.platformOrderNo;
-        let totalPrice = data.payInfo.payAmount;
         //从订单发起的都是普通支付
-        let result = await payment.checkOrderStatus(platformOrderNo,0,0,totalPrice,'');
+        let result = await payment.checkOrderStatus(platformOrderNo,0,0,0,'');
         // return;
         if (result.code === payStatus.payNo) {
             this.props.nav('payment/PaymentPage', {
                 orderNum: merchantOrderNo,
-                amounts: totalPrice,
+                amounts: result.unpaidAmount,
                 platformOrderNo: platformOrderNo,
                 orderProductList: orderProduct
             });

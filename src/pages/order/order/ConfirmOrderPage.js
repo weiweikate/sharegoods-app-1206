@@ -19,6 +19,7 @@ import ConfirmBottomView from '../components/confirmOrder/ConfirmBottomView';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import SelectOneTicketModel from '../components/confirmOrder/SelectOneTicketModel';
 import SelectTicketModel from '../components/confirmOrder/SelectTicketModel';
+import { MRText } from '../../../components/ui';
 
 @observer
 export default class ConfirmOrderPage extends BasePage {
@@ -51,11 +52,48 @@ export default class ConfirmOrderPage extends BasePage {
                             return this._renderItem(item, index)
                         })
                     }
+
+                    {
+                        confirmOrderModel.failProductList.length > 0 ?
+                            <View style={{
+                                backgroundColor: 'white',
+                                paddingLeft: 15,
+                                height: 36,
+                                justifyContent: 'center',
+                                marginTop: 5,
+                                borderBottomWidth: 1,
+                                borderBottomColor: DesignRule.lineColor_inWhiteBg
+                            }}>
+                                <MRText style={{
+                                    fontSize: 12,
+                                    color: '#333333'}}>
+                                    失效商品
+                                </MRText>
+                            </View> : null
+                    }
+
+                    {
+                        confirmOrderModel.failProductList.length > 0 ?
+                            confirmOrderModel.failProductList.map((item, index) => {
+                               return <GoodsItem
+                                   key={'failProductList'+index}
+                                   uri={item.specImg}
+                                   activityCodes={item.activityList || []}
+                                   goodsName={item.productName}
+                                   salePrice={item.unitPrice}
+                                   category={item.spec}
+                                   goodsNum={'x' + item.quantity}
+                                   onPress={() => {
+                                   }}
+                                   failProduct={true}
+                               />
+                            })  : null
+                    }
                     <KeyboardAvoidingView>
-                    <ConfirmPriceView
-                    jumpToCouponsPage={(params) => this.jumpToCouponsPage(params)}
-                    inputFocus={() => {
-                    }}/>
+                        <ConfirmPriceView
+                            jumpToCouponsPage={(params) => this.jumpToCouponsPage(params)}
+                            inputFocus={() => {
+                            }}/>
                     </KeyboardAvoidingView>
                 </ScrollView>
                 <ConfirmBottomView commitOrder={() => this.commitOrder()}/>
@@ -81,7 +119,6 @@ export default class ConfirmOrderPage extends BasePage {
 
     componentWillUnmount() {
         confirmOrderModel.clearData();
-        clearTimeout();
     }
 
     _render() {
@@ -93,7 +130,7 @@ export default class ConfirmOrderPage extends BasePage {
     }
 
     componentDidMount() {
-            this.loadPageData();
+        this.loadPageData();
     }
 
     loadPageData = (params) => {
@@ -120,7 +157,7 @@ export default class ConfirmOrderPage extends BasePage {
     // 选择优惠券
     jumpToCouponsPage = (params) => {
         if (params === 'justOne') {//一元券
-            let payAmount = parseInt(confirmOrderModel.payInfo.payAmount); //要实付钱
+            let payAmount = parseInt(confirmOrderModel.payInfo.payAmount || 0); //要实付钱
             let tokenCoin =  parseInt(confirmOrderModel.tokenCoin);//一元优惠的券
             let orderAmount = payAmount + tokenCoin;
             if (orderAmount < 1 || orderAmount.isNaN){//订单总价格要大于1

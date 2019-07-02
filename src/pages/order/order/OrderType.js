@@ -49,7 +49,8 @@ const ViewOrderStatus = {
     },
     4:  {
         status: '交易完成',
-        menuData:[{ id:7, operation:'删除订单', isRed:false, },
+        menuData:[{ id:7, operation:'删除订单', isRed:false,},
+                  { id:5, operation:'查看物流', isRed:false,},
                   { id:8, operation:'再次购买', isRed:true, }],
         menu_orderDetail: [{ id:7, operation:'删除订单', isRed:false, },
                            { id:5, operation: '查看物流', isRed: false },

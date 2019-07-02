@@ -8,6 +8,7 @@
  * Created by huchao on 2018/11/27.
  *
  */
+
 "use strict";
 import React from "react";
 import {
@@ -21,6 +22,7 @@ import DesignRule from '../../../../constants/DesignRule';
 import EmptyUtils from "../../../../utils/EmptyUtils";
 import ImageLoader from '@mr/image-placeholder';
 import { PageType } from '../AfterType';
+import DateUtils from '../../../../utils/DateUtils';
 const {
     PAGE_AREFUND,
     PAGE_EXCHANGE
@@ -81,6 +83,12 @@ export default class AfterSaleInfoView extends React.Component {
                 }
 
                 <UIText value={ "问题说明：" + (afterSaleInfo.description || "")}
+                        style={styles.refundReason}/>
+                <UIText value={"申请时间：" + DateUtils.formatDate(afterSaleInfo.createTime|| '')}
+                        style={styles.refundReason}/>
+                <UIText value={"订单号：" + afterSaleInfo.merchantOrderNo}
+                        style={styles.refundReason}/>
+                <UIText value={"申请单号：" + afterSaleInfo.serviceNo}
                         style={styles.refundReason}/>
                 <UIText value={"凭证图片："}
                         style={styles.refundReason}/>

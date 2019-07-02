@@ -14,6 +14,7 @@ import DesignRule from '../../../../constants/DesignRule';
 import { observer } from 'mobx-react';
 import { confirmOrderModel } from '../../model/ConfirmOrderModel';
 import res from '../../res';
+import StringUtils from '../../../../utils/StringUtils';
 
 const arrow_right = res.arrow_right;
 
@@ -64,7 +65,7 @@ export default class ConfirmPriceView extends Component {
                  < View style={styles.couponsStyle}>
                     <UIText value={'商品金额'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <UIText value={`¥${totalAmount}`}
+                        <UIText value={`${StringUtils.formatMoneyString(totalAmount)}`}
                                 style={[styles.grayText]}/>
                     </View>
                 </View>
@@ -72,7 +73,7 @@ export default class ConfirmPriceView extends Component {
                 <View style={[styles.couponsStyle,]}>
                     <UIText value={'运费'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <UIText value={`¥${totalFreightFee}`}
+                        <UIText value={`${StringUtils.formatMoneyString(totalFreightFee)}`}
                                 style={[styles.grayText]}/>
                     </View>
                 </View>
@@ -84,7 +85,7 @@ export default class ConfirmPriceView extends Component {
                     {this.renderLine()}
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
-                            value={promotionAmount>0?('-¥'+promotionAmount):('+¥'+ Math.abs(promotionAmount))}
+                            value={promotionAmount>0?('-'+StringUtils.formatMoneyString(promotionAmount)):('+'+ StringUtils.formatMoneyString(Math.abs(promotionAmount)))}
                             style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(15) }]}/>
                         <Image source={arrow_right}/>
                     </View>
@@ -97,7 +98,7 @@ export default class ConfirmPriceView extends Component {
                     <UIText value={'优惠券'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
-                            value={couponAmount?'-¥'+couponAmount :'请选择优惠券'}
+                            value={couponAmount?'-'+StringUtils.formatMoneyString(couponAmount) :'请选择优惠券'}
                             style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(15) }]}/>
                         <Image source={arrow_right}/>
                     </View>
@@ -109,7 +110,7 @@ export default class ConfirmPriceView extends Component {
                     <UIText value={'1元现金券'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
-                            value={tokenCoinAmount ? '-¥'+tokenCoinAmount : '选择1元现金券'}
+                            value={tokenCoinAmount ? '-'+StringUtils.formatMoneyString(tokenCoinAmount) : '请选择1元现金券'}
                             style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(15) }]}/>
                         <Image source={arrow_right}/>
                     </View>
@@ -124,6 +125,7 @@ export default class ConfirmPriceView extends Component {
                     <UIText value={'买家留言'} style={styles.blackText}/>
                     <RNTextInput
                         ref={(e) => this.input = e}
+                        maxLength={180}
                         style={styles.inputTextStyle}
                         onChangeText={text => confirmOrderModel.message = text}
                         placeholder={'选填：填写内容已与卖家协商确认'}

@@ -38,7 +38,7 @@ class ConfirmOrderModel {
     @action clearData() {
         this.loadingState = PageLoadingState.success;
         this.err=null;
-        this.canUseCou = false;
+        this.canUseCou = true;
 
         this.addressId = '';
         this.message = '';
@@ -51,6 +51,7 @@ class ConfirmOrderModel {
         this.failProductList = []
         this.payInfo = {};
         this.receiveInfo = {};
+        this.data = {};
 
     }
 
@@ -84,6 +85,15 @@ class ConfirmOrderModel {
     }
 
     getParams(){
+        let productList = (this.orderParamVO.orderProducts || []).map(item => {
+            // "skuCode":, //string 平台skuCode
+            // "quantity":, //int 购买数量
+            // "activityCode":, //string 活动code
+            // "batchNo": //string 活动批次号
+            let {skuCode, quantity, activityCode, batchNo} = item;
+            return {skuCode, quantity, activityCode, batchNo};
+        })
+
         return {
             couponInfo: { //券信息
                 couponCodes: [this.userCouponCode], //List<string> 本次下单使用的优惠券code
@@ -92,7 +102,7 @@ class ConfirmOrderModel {
             receiveInfo: {
                 id: this.addressId //int 收货地址ID
             },
-            productList: this.orderParamVO.orderProducts,
+            productList: productList,
             invokeInfo: { //接口请求信息
                 source: this.orderParamVO.source,  //int 订单来源: 1.购物车 2.直接下单
                 channel: 2//int 渠道来源: 1.小程序 2.APP 3.H5
@@ -141,60 +151,27 @@ class ConfirmOrderModel {
         this.data = data;
         this.platformOrderNo = data.platformOrderNo || '';
         this.productOrderList = data.productOrderList || [];
-        this.failProductList = data.failProductList || '';
         this.payInfo = data.payInfo || {};
         this.receiveInfo = data.receiveInfo || {};
         this.addressId =  this.receiveInfo.id + '';
         this.tokenCoin =  this.payInfo.tokenCoinAmount;
-        // this.orderProductList.map((item) => {
-        //     if ((item.restrictions & 1) === 1) {
-        //         this.canUseCou = true;
-        //     }
-        // });
-        // if (this.canUseCou) {
-        //     let arr = [];
-        //     let params = {};
-        //     //老的降价拍礼包走
-        //    if ( this.orderParamVO.orderType === OrderType.depreciate_old || this.orderParamVO.orderType === OrderType.gift) {
-        //         this.orderParamVO.orderProducts.map((item, index) => {
-        //             arr.push({
-        //                 priceCode: item.skuCode,
-        //                 productCode: item.productCode || item.prodCode,
-        //                 amount: 1
-        //             });
-        //         });
-        //         params = {
-        //             productPriceIds: arr,
-        //             activityCode: this.orderParamVO.activityCode,
-        //             activityType: this.orderParamVO.orderType === OrderType.gift ? this.orderParamVO.orderSubType :  this.orderParamVO.orderType
-        //         };
-        //     } else{//其他
-        //         this.orderParamVO.orderProducts.map((item, index) => {
-        //
-        //             let {quantity, num , skuCode, productCode, activityCode, batchNo} = item
-        //             let  amount = quantity || num;
-        //             arr.push({
-        //                 priceCode: skuCode,
-        //                 productCode: productCode,
-        //                 amount: amount,
-        //                 activityCode: activityCode,
-        //                 batchNo
-        //             });
-        //         });
-        //
-        //         params = { productPriceIds: arr };
-        //         //orderType1：秒杀，2：降价拍，3（，orderSubType 3升级礼包 4普通礼包）
-        //     }
-        //     API.listAvailable({ page: 1, pageSize: 20, ...params }).then(resp => {
-        //         let data = resp.data || {};
-        //         let dataList = data.data || [];
-        //         if (dataList.length === 0) {
-        //             this.couponName = '暂无优惠券';
-        //         }
-        //     }).catch(result => {
-        //         console.log(result);
-        //     });
-        // }
+        //遍历出失效对应商品信息
+        let failProductList = [];
+        let list = data.failProductList || [];
+        let orderProducts = this.orderParamVO.orderProducts || []
+        for (let i = 0; i < list.length; i++){
+            for (let j = 0; j < orderProducts.length; j++){
+                if (list[i].skuCode == orderProducts[j].skuCode &&
+                    list[i].quantity == orderProducts[j].quantity &&
+                    list[i].activityCode == orderProducts[j].activityCode &&
+                    list[i].batchNo == orderProducts[j].batchNo
+                ){
+                    failProductList.push(orderProducts[j]);
+                    break;
+                }
+            }
+        }
+        this.failProductList = failProductList;
     };
 
     @action submitProduct() {
@@ -215,7 +192,7 @@ class ConfirmOrderModel {
             replaceRoute('payment/PaymentPage', {
                     orderNum: data.platformOrderNo,
                     amounts: data.payInfo.payAmount,
-                    orderProductList: data.orderProductList,
+                    orderProductList: data.productOrderList,
                     platformOrderNo: data.platformOrderNo
             })
             track(trackEvent.submitOrder, {

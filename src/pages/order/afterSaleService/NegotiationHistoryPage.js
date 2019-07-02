@@ -60,7 +60,7 @@ export default class NegotiationHistoryPage extends BasePage {
              <View style={{height: 10, backgroundColor: DesignRule.bgColor}}/>
              <View style={styles.headerContainer}>
                  {isUser?
-                     <ImageLoader source={user.headImg} style={styles.headerImg} isAvatar={true}/>:
+                     <ImageLoader source={{uri: user.headImg}} style={styles.headerImg} isAvatar={true}/>:
                      <Image source={res.other.tongyong_logo_nor} style={styles.headerImg} />
                  }
                  <MRText style={styles.name}>{isUser?'自己':'秀购平台'}</MRText>

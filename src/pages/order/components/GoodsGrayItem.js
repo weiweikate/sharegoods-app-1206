@@ -24,6 +24,7 @@ import {
 } from '../../../components/ui';
 import UIImage from '@mr/image-placeholder';
 import DesignRule from '../../../constants/DesignRule';
+import StringUtils from '../../../utils/StringUtils';
 
 export default class GoodsGrayItem extends React.Component {
 
@@ -64,6 +65,7 @@ export default class GoodsGrayItem extends React.Component {
 
     render() {
         let { uri, goodsName, salePrice, category, goodsNum, onPress,activityCodes} = this.props;
+        salePrice = StringUtils.formatMoneyString(salePrice)
         let tips = [];
         if (activityCodes){
             activityCodes.forEach((item)=> {
