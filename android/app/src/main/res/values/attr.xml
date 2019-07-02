@@ -49,4 +49,24 @@
         <attr name="canFoldAgain" format="boolean"/>
         <attr name="canClickTail" format="boolean"/>
     </declare-styleable>
+
+    <declare-styleable name="AlivcRecordUIStyle">
+        <attr name="recordMusicImage" format="reference"/>
+        <attr name="lightImageOpen" format="reference"/>
+        <attr name="lightImageAuto" format="reference"/>
+        <attr name="lightImageClose" format="reference"/>
+        <attr name="lightImageUnable" format="reference"/>
+        <attr name="countdownImage" format="reference"/>
+        <attr name="switchCameraImage" format="reference"/>
+        <attr name="finishImageUnable" format="reference"/>
+        <attr name="finishImageAble" format="reference"/>
+        <attr name="faceImage" format="reference"/>
+        <attr name="magicImage" format="reference"/>
+        <attr name="videoShootImageNormal" format="reference"/>
+        <attr name="videoShootImageShooting" format="reference"/>
+        <attr name="videoShootImageLongPressing" format="reference"/>
+        <attr name="deleteImage" format="reference"/>
+        <attr name="dotImage" format="reference"/>
+        <attr name="triangleImage" format="reference"/>
+    </declare-styleable>
 </resources>

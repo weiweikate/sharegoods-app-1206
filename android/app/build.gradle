@@ -202,4 +202,13 @@ dependencies {
     implementation project(':@mr_react-native-webview')
     implementation project(':@mr_cookies')
     api rootProject.ext.dependencies.sensors
+
+    implementation 'com.aliyun.video.android:svideosnap:3.10.0'//短视频基础版SDK必须依赖
+    implementation 'com.aliyun.video.android:core:1.2.0' //核心库必须依赖
+    implementation  'com.alivc.conan:AlivcConan:0.9.4.1'//核心库必须依赖
+    implementation  'com.aliyun.video.android:AlivcSvideoFFmpeg:1.0.0'//必须依赖
+    implementation  'com.aliyun.video.android:upload:1.5.2'// 上传库,如不需要上传可不依赖
+    implementation 'com.google.code.gson:gson:2.8.0'
+//    implementation 'com.squareup.okhttp3:okhttp:3.2.0'
+    implementation 'com.aliyun.dpa:oss-android-sdk:+'
 }
