@@ -30,7 +30,7 @@ import okhttp3.OkHttpClient;
 public class FrescoImagePipelineConfig {
 
     // 最大缓存数量
-    private static final int MAX_CACHE_ENTRIES = 64;
+    private static final int MAX_CACHE_ENTRIES = 128;
     private static final int MAX_CACHE_ASHM_ENTRIES = 128;
     private static final int MAX_CACHE_EVICTION_ENTRIES = 16;
 
@@ -136,9 +136,9 @@ public class FrescoImagePipelineConfig {
         final ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         final int maxMemory = Math.min(activityManager.getMemoryClass() * ByteConstants.MB, Integer.MAX_VALUE);
         if (maxMemory < 32 * ByteConstants.MB) {
-            return 4 * ByteConstants.MB;
+            return 5 * ByteConstants.MB;
         } else if (maxMemory < 64 * ByteConstants.MB) {
-            return 6 * ByteConstants.MB;
+            return 10 * ByteConstants.MB;
         } else {
             return maxMemory / 4;
         }
