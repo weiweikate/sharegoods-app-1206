@@ -108,9 +108,8 @@ export default class MyCashAccountPage extends BasePage {
             viewData: [],
             currentPage: 1,
             isEmpty: false,
-            canWithdraw: false,
             changeHeader: false,
-            refreshing: false,
+            refreshing: false
 
         };
         this.currentPage = 0;
@@ -210,14 +209,13 @@ export default class MyCashAccountPage extends BasePage {
                     <Text style={styles.countTextStyle}>
                         账户余额（元）
                     </Text>
-                    {this.state.canWithdraw ?
-                        <NoMoreClick style={styles.withdrawButtonWrapper} onPress={() => this.jumpToWithdrawCashPage()}>
-                            <Text
-                                style={{
-                                    fontSize: DesignRule.fontSize_threeTitle,
-                                    color: DesignRule.mainColor
-                                }}>提现</Text>
-                        </NoMoreClick> : null}
+                    <NoMoreClick style={styles.withdrawButtonWrapper} onPress={() => this.jumpToWithdrawCashPage()}>
+                        <Text
+                            style={{
+                                fontSize: DesignRule.fontSize_threeTitle,
+                                color: DesignRule.mainColor
+                            }}>提现</Text>
+                    </NoMoreClick>
 
                 </View>
                 <Text style={{
@@ -270,13 +268,13 @@ export default class MyCashAccountPage extends BasePage {
                     }}>
                         {this.state.changeHeader ? '账户余额' : ''}
                     </Text>
-                    {this.state.canWithdraw ?
-                        <TouchableWithoutFeedback onPress={() => {
-                            this.$navigate(RouterMap.BankCardListPage);
-                        }}>
-                            <Text style={[styles.settingStyle, { flex: 1 }]}>银行卡管理</Text>
-                        </TouchableWithoutFeedback> : <View style={{ flex: 1 }}/>
-                    }
+
+                    <TouchableWithoutFeedback onPress={() => {
+                        this.$navigate(RouterMap.BankCardListPage);
+                    }}>
+                        <Text style={[styles.settingStyle, { flex: 1 }]}>银行卡管理</Text>
+                    </TouchableWithoutFeedback>
+
                 </View>
             </LinearGradient>
         );
@@ -425,15 +423,6 @@ export default class MyCashAccountPage extends BasePage {
             'didFocus',
             payload => {
                 this.onRefresh();
-                MineApi.canWithdraw({ phoneNo: user.phone }).then(data => {
-                    this.setState({
-                        canWithdraw: data.data
-                    });
-                }).catch((error) => {
-                    this.setState({
-                        canWithdraw: false
-                    });
-                });
             }
         );
 
@@ -502,7 +491,7 @@ export default class MyCashAccountPage extends BasePage {
                     isEmpty: data.data && data.data.length !== 0 ? false : true
                 });
             } else {
-                this.setState({ refreshing: false});
+                this.setState({ refreshing: false });
                 this.$toastShow(response.msg);
 
             }
@@ -515,7 +504,7 @@ export default class MyCashAccountPage extends BasePage {
             });
         });
     };
-    onLoad = ()=>{
+    onLoad = () => {
         if (user.isLogin) {
             MineApi.getUser().then(resp => {
                 let data = resp.data;
@@ -529,7 +518,7 @@ export default class MyCashAccountPage extends BasePage {
         this.currentPage = 1;
         this.setState({ refreshing: this.currentPage === 1 });
         this.getDataFromNetwork();
-    }
+    };
 
     onRefresh = () => {
         this.currentPage = 1;
