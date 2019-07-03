@@ -190,10 +190,13 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             getWebBitmap(mContext, shareImageBean, success, fail);
         } else if ("webActivity".equals(shareImageBean.getImageType())) {
             getWebActivityBitmap(mContext, shareImageBean, success, fail);
-        } else {
+        } else if("invite".equals(shareImageBean.getImageType())){
+
+        }else {
             getBitmap(mContext, shareImageBean, success, fail);
         }
     }
+
 
     @ReactMethod
     public void creatShowShareImage(ReadableMap json, Callback success, Callback fail) {
@@ -479,6 +482,15 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                     }
                 }
             });
+        }
+    }
+
+    public void getInviteBitmap(final Context context, final ShareImageBean shareImageBean, final Callback success, final Callback fail){
+        if (TextUtils.isEmpty(shareImageBean.getHeaderImage()) || "logo.png".equals(shareImageBean.getHeaderImage())) {
+            Bitmap bitmap = getDefaultIcon(context);
+            drawInviteFriendsImage(context, bitmap, shareImageBean.getQRCodeStr(), success, fail);
+        } else {
+            downloadHeaderImg(context, shareImageBean.getHeaderImage(), shareImageBean.getQRCodeStr(), success, fail);
         }
     }
 
@@ -1055,30 +1067,20 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
 
     public void drawInviteFriendsImage(final Context context, Bitmap icon, final String url, final Callback success, final Callback fail) {
-        Bitmap result = Bitmap.createBitmap(750, (int) (1334), Bitmap.Config.RGB_565);
+        int precision = 3;
+        Bitmap result = Bitmap.createBitmap(375*precision, 667*precision, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(result);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.yqhy);
-        Bitmap qrBitmap = createQRImage(url, 360, 360);
-        int width = bitmap.getWidth();
-        int height = bitmap.getHeight();
-        int newWidth = 750;
-        int newHeight = 1334;
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
-
-        //获取想要缩放的matrix
-        Matrix matrix = new Matrix();
-        matrix.postScale(scaleWidth, scaleHeight);
-        Bitmap newbitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
-        canvas.drawBitmap(newbitmap, 0, 0, paint);
-        canvas.drawBitmap(qrBitmap, 200, 795, paint);
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.invite_bg);
+        Bitmap qrBitmap = createQRImage(url, 144*precision, 144*precision);
+        canvas.drawBitmap(bitmap, 0, 0, paint);
+        canvas.drawBitmap(qrBitmap, 116*precision, 282*precision, paint);
 
 
         int iconW = icon.getWidth();
         int iconH = icon.getHeight();
         // 设置想要的大小
-        int newIconLenght = 80;
+        int newIconLenght = 60*precision;
         // 计算缩放比例
         float iconWidthScale = ((float) newIconLenght) / iconW;
         float iconHeightScale = ((float) newIconLenght) / iconH;
@@ -1090,7 +1092,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
         Bitmap roundIcon = createCircleBitmap(newIcon);
 
-        canvas.drawBitmap(roundIcon, 340, 930, paint);
+        canvas.drawBitmap(roundIcon, 161*precision, 153*precision, paint);
 
         String path = BitmapUtils.saveImageToCache(result, "inviteFriends.png", url);
 
@@ -1105,10 +1107,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         if (qrBitmap != null && !qrBitmap.isRecycled()) {
             qrBitmap.recycle();
             qrBitmap = null;
-        }
-        if (newbitmap != null && !newbitmap.isRecycled()) {
-            newbitmap.recycle();
-            newbitmap = null;
         }
         if (roundIcon != null && !roundIcon.isRecycled()) {
             roundIcon.recycle();
