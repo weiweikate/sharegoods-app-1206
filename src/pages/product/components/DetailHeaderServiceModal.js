@@ -14,7 +14,7 @@ import DesignRule from '../../../constants/DesignRule';
 import res from '../res/product';
 
 const { px2dp } = ScreenUtils;
-const { fa_huo, ji_su, qi_tian, zheng_ping, bounus } = res.service;
+const { fa_huo, ji_su, qi_tian, zheng_ping, bounus, afterSaleLimitImg } = res.service;
 
 export default class DetailHeaderServiceModal extends Component {
 
@@ -69,7 +69,11 @@ export default class DetailHeaderServiceModal extends Component {
     };
 
     render() {
-        const { restrictions } = this.state.pData;
+        if (!this.state.modalVisible) {
+            return null;
+        }
+        const { restrictions, productData } = this.state.pData;
+        const { afterSaleLimit } = productData || {};
         //1优惠券,4退换,8节假日
 
         let sectionListData = [
@@ -84,9 +88,9 @@ export default class DetailHeaderServiceModal extends Component {
                 data: [{ content: '支持48小时发货（法定节假日或者促销活动期间以平台通知为准，因自然灾害等不可抗力因素造成的发货延时除外）' }]
             },
             {
-                headerTittle: `${(restrictions & 4) === 4 ? '' : '不支持'}7天无理由退换货`,
-                headerImg: qi_tian,
-                data: [{ content: `${(restrictions & 4) === 4 ? '收到商品之日7天（含）内，可在线申请退货服务（部分食品、贴身衣物等特殊商品除外）' : '食品、贴身衣物、兑换、秒杀、经验翻倍等特殊商品，无质量问题不支持退换货'}` }]
+                headerTittle: afterSaleLimit ? '仅支持换货' : `${(restrictions & 4) === 4 ? '' : '不支持'}7天无理由退换货`,
+                headerImg: afterSaleLimit ? afterSaleLimitImg : qi_tian,
+                data: [{ content: afterSaleLimit ? '消费者自商品购买后，仅支持换货，不支持退款及退货退款。' : `${(restrictions & 4) === 4 ? '收到商品之日7天（含）内，可在线申请退货服务（部分食品、贴身衣物等特殊商品除外）' : '食品、贴身衣物、兑换、秒杀、经验翻倍等特殊商品，无质量问题不支持退换货'}` }]
             },
             {
                 headerTittle: `${(restrictions & 8) === 8 ? '' : '不支持'}节假日发货`,

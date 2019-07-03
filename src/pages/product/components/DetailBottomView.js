@@ -32,7 +32,7 @@ export default class DetailBottomView extends Component {
     render() {
         let { pData } = this.props;
         //productStatus  1正常  2下架  3当前时间不能买
-        let { productStatus, skuList, showSellOut, productIsPromotionPrice, selfReturning } = pData || {};
+        let { productStatus, skuList, showSellOut, productIsPromotionPrice, selfReturning, isGroupIn } = pData || {};
         //总库存
         let stock = 0;
         (skuList || []).forEach((item) => {
@@ -70,14 +70,14 @@ export default class DetailBottomView extends Component {
                                 <Text style={styles.outText}>{showSellOut ? '已抢光' : '已售罄'}</Text>
                             </View>
                             :
-                            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-                                <TouchableOpacity style={styles.leftBtn}
-                                                  onPress={() => this.props.bottomViewAction('gwc')}
-                                                  disabled={cantJoin}>
+                            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center',justifyContent:'center' }}>
+                                {!isGroupIn && <TouchableOpacity style={styles.leftBtn}
+                                                                 onPress={() => this.props.bottomViewAction('gwc')}
+                                                                 disabled={cantJoin}>
                                     <Image style={styles.leftImage}
                                            source={cantJoin ? jiarugouwuche_no : xiangqing_btn_gouwuche_nor}/>
                                     <Text style={styles.leftText}>加购</Text>
-                                </TouchableOpacity>
+                                </TouchableOpacity>}
                                 <View style={styles.btnView}>
                                     <TouchableOpacity
                                         style={[styles.btn, { backgroundColor: cantBuy ? DesignRule.textColor_placeholder : DesignRule.mainColor }]}
