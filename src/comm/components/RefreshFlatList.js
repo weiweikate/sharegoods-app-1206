@@ -371,10 +371,11 @@ class DefaultLoadMoreComponent extends BaseLoadMoreComponent {
 
     renderLoadingMore() {
         return (
-            <View style={styles.footer}>
+             <View style={styles.footer}>
+                <ActivityIndicator style={{ marginRight: 6 }} color={DesignRule.mainColor} size='small'/>
                 <Text style={styles.footerText} allowFontScaling={false}>正在加载中...</Text>
-                <ActivityIndicator style={{ marginLeft: 20 }} size='small'/>
             </View>
+
         );
     }
 
