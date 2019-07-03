@@ -19,7 +19,6 @@ import {
     TouchableWithoutFeedback,
     ImageBackground,
     Image,
-    TouchableOpacity
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
@@ -185,12 +184,14 @@ export default class InviteFriendsPage extends BasePage<Props> {
                     alignItems: 'center',
                     justifyContent: 'center'
                 }}>
-                    <TouchableOpacity onPress={() => {
+                    <TouchableWithoutFeedback onPress={() => {
                         this.shareModal && this.shareModal.open();
                     }}>
-                        <Image source={shareBtn}
-                               style={{width: 201, height: 52}}/>
-                    </TouchableOpacity>
+                        <View>
+                            <Image source={shareBtn}
+                                   style={{width: 201, height: 52}}/>
+                        </View>
+                    </TouchableWithoutFeedback>
                 </View>
 
                 <TouchableWithoutFeedback onPress={() => {
