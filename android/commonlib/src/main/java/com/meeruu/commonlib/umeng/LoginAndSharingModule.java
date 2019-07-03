@@ -191,7 +191,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         } else if ("webActivity".equals(shareImageBean.getImageType())) {
             getWebActivityBitmap(mContext, shareImageBean, success, fail);
         } else if("invite".equals(shareImageBean.getImageType())){
-
+            getInviteBitmap(mContext,shareImageBean,success,fail);
         }else {
             getBitmap(mContext, shareImageBean, success, fail);
         }
@@ -387,16 +387,16 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         }
     }
 
-    @ReactMethod
-    public void saveInviteFriendsImage(String url, String headImg, Callback success, Callback fail) {
-
-        if (TextUtils.isEmpty(headImg) || "logo.png".equals(headImg)) {
-            Bitmap bitmap = getDefaultIcon(mContext);
-            drawInviteFriendsImage(mContext, bitmap, url, success, fail);
-        } else {
-            downloadHeaderImg(mContext, headImg, url, success, fail);
-        }
-    }
+//    @ReactMethod
+//    public void saveInviteFriendsImage(String url, String headImg, Callback success, Callback fail) {
+//
+//        if (TextUtils.isEmpty(headImg) || "logo.png".equals(headImg)) {
+//            Bitmap bitmap = getDefaultIcon(mContext);
+//            drawInviteFriendsImage(mContext, bitmap, url, success, fail);
+//        } else {
+//            downloadHeaderImg(mContext, headImg, url, success, fail);
+//        }
+//    }
 
     public static void getWebBitmap(final Context context, final ShareImageBean shareImageBean, final Callback success, final Callback fail) {
         if (Fresco.hasBeenInitialized()) {
@@ -488,9 +488,9 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     public void getInviteBitmap(final Context context, final ShareImageBean shareImageBean, final Callback success, final Callback fail){
         if (TextUtils.isEmpty(shareImageBean.getHeaderImage()) || "logo.png".equals(shareImageBean.getHeaderImage())) {
             Bitmap bitmap = getDefaultIcon(context);
-            drawInviteFriendsImage(context, bitmap, shareImageBean.getQRCodeStr(), success, fail);
+            drawInviteFriendsImage(context,bitmap, shareImageBean, success, fail);
         } else {
-            downloadHeaderImg(context, shareImageBean.getHeaderImage(), shareImageBean.getQRCodeStr(), success, fail);
+            downloadHeaderImg(context, shareImageBean.getHeaderImage(), shareImageBean, success, fail);
         }
     }
 
@@ -847,7 +847,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         return newBitmap;
     }
 
-    private void downloadHeaderImg(final Context context, final String headImg, final String url, final Callback success, final Callback fail) {
+    private void downloadHeaderImg(final Context context, final String headImg, final ShareImageBean shareImageBean, final Callback success, final Callback fail) {
         if (Fresco.hasBeenInitialized()) {
             ImageLoadUtils.preFetch(Uri.parse(headImg), 0, 0, new BaseRequestListener() {
                 @Override
@@ -857,21 +857,21 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                     BinaryResource resource = ImagePipelineFactory.getInstance().getMainFileCache().getResource(cacheKey);
                     if (resource == null) {
                         Bitmap bitmap = getDefaultIcon(context);
-                        drawInviteFriendsImage(context, bitmap, url, success, fail);
+                        drawInviteFriendsImage(context, bitmap, shareImageBean, success, fail);
                         return;
                     }
                     final File file = ((FileBinaryResource) resource).getFile();
                     if (file == null) {
                         Bitmap bitmap = getDefaultIcon(context);
-                        drawInviteFriendsImage(context, bitmap, url, success, fail);
+                        drawInviteFriendsImage(context, bitmap, shareImageBean, success, fail);
                         return;
                     }
                     Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), BitmapUtils.getBitmapOption(2));
                     if (bmp != null && !bmp.isRecycled()) {
-                        drawInviteFriendsImage(context, bmp, url, success, fail);
+                        drawInviteFriendsImage(context, bmp, shareImageBean, success, fail);
                     } else {
                         Bitmap bitmap = getDefaultIcon(context);
-                        drawInviteFriendsImage(context, bitmap, url, success, fail);
+                        drawInviteFriendsImage(context, bitmap, shareImageBean, success, fail);
                     }
                 }
 
@@ -879,7 +879,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                 public void onRequestFailure(ImageRequest request, String requestId, Throwable throwable, boolean isPrefetch) {
                     super.onRequestFailure(request, requestId, throwable, isPrefetch);
                     Bitmap bitmap = getDefaultIcon(context);
-                    drawInviteFriendsImage(context, bitmap, url, success, fail);
+                    drawInviteFriendsImage(context, bitmap, shareImageBean, success, fail);
                 }
             });
         }
@@ -1066,21 +1066,61 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     }
 
 
-    public void drawInviteFriendsImage(final Context context, Bitmap icon, final String url, final Callback success, final Callback fail) {
+    public void drawInviteFriendsImage(final Context context, Bitmap icon,final ShareImageBean shareImageBean, final Callback success, final Callback fail) {
         int precision = 3;
         Bitmap result = Bitmap.createBitmap(375*precision, 667*precision, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(result);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.invite_bg);
-        Bitmap qrBitmap = createQRImage(url, 144*precision, 144*precision);
-        canvas.drawBitmap(bitmap, 0, 0, paint);
+        Bitmap qrBitmap = createQRImage(shareImageBean.getQRCodeStr(), 144*precision, 144*precision);
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        int newWidth = 375*precision;
+        int newHeight = 667*precision;
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        //获取想要缩放的matrix
+        Matrix matrix = new Matrix();
+        matrix.postScale(scaleWidth, scaleHeight);
+
+        Bitmap newbitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+        canvas.drawBitmap(newbitmap, 0, 0, paint);
         canvas.drawBitmap(qrBitmap, 116*precision, 282*precision, paint);
 
+
+        Bitmap tipbitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.invite_tip_bg);
+        width = tipbitmap.getWidth();
+        height = tipbitmap.getHeight();
+        newWidth = 258*precision;
+        newHeight = 59*precision;
+        scaleWidth = ((float) newWidth) / width;
+        scaleHeight = ((float) newHeight) / height;
+        Matrix matrixTip = new Matrix();
+        matrixTip.postScale(scaleWidth, scaleHeight);
+        Bitmap newTipBg = Bitmap.createBitmap(tipbitmap, 0, 0, width, height, matrix, true);
+        canvas.drawBitmap(newTipBg, 60*precision, 208*precision, paint);
+
+        paint.setColor(Color.parseColor("#B93C3B"));
+        paint.setTextSize(13*precision);
+        Rect bounds = new Rect();
+        String name = shareImageBean.userName;
+        if(!TextUtils.isEmpty(name)){
+            paint.getTextBounds(name, 0, name.length(), bounds);
+            canvas.drawText(name,(375*precision-bounds.width())/2,230*precision+bounds.height(),paint);
+        }
+        String tipStr = "已有4000000+用户领取成功～";
+        paint.getTextBounds(tipStr, 0, tipStr.length(), bounds);
+        canvas.drawText(tipStr,(375*precision-bounds.width())/2,246*precision+bounds.height(),paint);
+
+        tipStr = "手机扫一扫注册新用户";
+        paint.setColor(Color.parseColor("#ffffff"));
+        paint.getTextBounds(tipStr, 0, tipStr.length(), bounds);
+        canvas.drawText(tipStr,(375*precision-bounds.width())/2,431*precision+bounds.height(),paint);
 
         int iconW = icon.getWidth();
         int iconH = icon.getHeight();
         // 设置想要的大小
-        int newIconLenght = 60*precision;
+        int newIconLenght = 56*precision;
         // 计算缩放比例
         float iconWidthScale = ((float) newIconLenght) / iconW;
         float iconHeightScale = ((float) newIconLenght) / iconH;
@@ -1094,7 +1134,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
         canvas.drawBitmap(roundIcon, 161*precision, 153*precision, paint);
 
-        String path = BitmapUtils.saveImageToCache(result, "inviteFriends.png", url);
+        String path = BitmapUtils.saveImageToCache(result, "inviteFriends.png", shareImageBean.getQRCodeStr());
 
         path = "file://" + path;
         Uri uri = Uri.parse(path);
@@ -1116,7 +1156,17 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             icon.recycle();
             icon = null;
         }
-        success.invoke();
+
+        if (tipbitmap != null && !tipbitmap.isRecycled()) {
+            tipbitmap.recycle();
+            tipbitmap = null;
+        }
+
+        if (newTipBg != null && !newTipBg.isRecycled()) {
+            newTipBg.recycle();
+            newTipBg = null;
+        }
+        success.invoke(path);
     }
 
     private static Bitmap createCircleBitmap(Bitmap resource) {
