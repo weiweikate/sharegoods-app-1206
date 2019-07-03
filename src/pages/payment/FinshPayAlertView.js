@@ -26,7 +26,14 @@ export default class FinshPayAlertView extends Component {
             isShow: props.isShow
         };
     }
-
+    componentWillReceiveProps(nextProps) {
+        const {isShow} = nextProps ;
+        if (isShow !== this.state.isShow){
+            this.setState({
+                isShow:isShow
+            })
+        }
+    }
     render() {
         const {btnClick,isShow} = this.props;
         return (
