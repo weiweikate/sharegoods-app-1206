@@ -205,7 +205,7 @@ export default class GoodsListItem extends React.Component {
                     <UIText value={'订单提交时间：' + DateUtils.getFormatDate(baseInfo.orderTime / 1000)}
                             style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 18 }}/>
                     <UIText
-                        value={ GetViewOrderStatus(merchantOrder.status).status}
+                        value={ GetViewOrderStatus(merchantOrder.status, merchantOrder.subStatus).status}
                         style={{ fontSize: 13, color: DesignRule.mainColor, marginRight: 13 }}/>
                 </View>
             </View>

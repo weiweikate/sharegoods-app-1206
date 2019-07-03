@@ -44,7 +44,7 @@ export default class BackAddressView extends React.Component {
     render() {
         let {title,onPress, data} = this.props;
         let {receiverPhone, receiver, receiverAddress, express, expressNo, expressCode, expressName} = data || {}
-        let detailAddress =   receiverAddress
+        let detailAddress =   receiverAddress +
             '；收件人：' + receiver + '联系方式：' + receiverPhone;
         let manyLogistics = express && express.length > 1;
         if (express && express.length > 0) {

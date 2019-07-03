@@ -10,9 +10,8 @@ import { orderDetailModel, assistDetailModel } from "../../model/OrderDetailMode
 import OrderApi from "../../api/orderApi";
 import Toast from "../../../../utils/bridge";
 import { observer } from "mobx-react";
-import RouterMap from "../../../../navigation/RouterMap";
+import RouterMap, { replaceRoute, routePop, routePush } from '../../../../navigation/RouterMap';
 import { payStatus, payment, payStatusMsg } from "../../../payment/Payment";
-import { NavigationActions } from "react-navigation";
 
 const { px2dp } = ScreenUtils;
 import { MRText as Text, NoMoreClick, UIText } from "../../../../components/ui";
@@ -140,62 +139,19 @@ export default class OrderDetailBottomButtonView extends Component {
             case 6:
                 clickOrderConfirmReceipt(orderDetailModel.merchantOrderNo,orderDetailModel.merchantOrder.subStatus,this.props.loadPageData)
                 break;
-            case 7:
-                Alert.alert("", `确定删除此订单吗?`, [
-                    {
-                        text: `取消`, onPress: () => {
-                        }
-                    },
-                    {
-                        text: `确定`, onPress: () => {
-                            Toast.showLoading();
-                            OrderApi.deleteOrder({ merchantOrderNo: orderDetailModel.merchantOrderNo }).then((response) => {
-                                Toast.hiddenLoading();
-                                Toast.$toast("订单已删除");
-                                this.props.goBack();
-                                this.props.callBack();
-                            }).catch(e => {
-                                Toast.hiddenLoading();
-                                Toast.$toast(e.msg);
-                            });
-
-                        }
-                    }
-
-                ], { cancelable: true });
-                break;
             case 8:
                 clickOrderAgain(orderDetailModel.merchantOrderNo, orderDetailModel.productsList());
                 break;
+            case 7:
             case 9:
-                Alert.alert("", `确定删除此订单吗?`, [
-                    {
-                        text: `取消`, onPress: () => {
-                        }
-                    },
-                    {
-                        text: `确定`, onPress: () => {
-                            Toast.showLoading();
-                            OrderApi.deleteOrder({ merchantOrderNo: orderDetailModel.merchantOrderNo }).then((response) => {
-                                Toast.hiddenLoading();
-                                Toast.$toast("订单已删除");
-                                this.props.goBack();
-                                this.props.callBack();
-                            }).catch(e => {
-                                Toast.hiddenLoading();
-                                Toast.$toast(e.msg);
-                            });
-                        }
-                    }
-
-                ], { cancelable: true });
+                this.deleteOrder();
                 break;
             case 10:
                 OrderApi.checkInfo({warehouseOrderNo:orderDetailModel.merchantOrderNo}).then(res => {
                     if(res.data){
-                        this.props.nav(RouterMap.P_ScorePublishPage, {
-                            orderNo:  orderDetailModel.merchantOrderNo
-                        });
+                        routePush(RouterMap.P_ScorePublishPage, {
+                            orderNo: orderDetailModel.merchantOrderNo
+                        })
                     }else{
                         Toast.$toast('该商品已晒过单！');
                         this.props.loadPageData()
@@ -209,20 +165,44 @@ export default class OrderDetailBottomButtonView extends Component {
         }
     };
 
+    deleteOrder(){
+        Alert.alert("", `确定删除此订单吗?`, [
+            {
+                text: `取消`, onPress: () => {
+                }
+            },
+            {
+                text: `确定`, onPress: () => {
+                    Toast.showLoading();
+                    OrderApi.deleteOrder({ merchantOrderNo: orderDetailModel.merchantOrderNo }).then((response) => {
+                        Toast.hiddenLoading();
+                        Toast.$toast("订单已删除");
+                        this.props.dataHandleDeleteOrder&&this.props.dataHandleDeleteOrder()
+                        routePop()
+                    }).catch(e => {
+                        Toast.hiddenLoading();
+                        Toast.$toast(e.msg);
+                    });
+                }
+            }
+
+        ], { cancelable: true });
+    }
+
     async _goToPay() {
         let orderProductList = orderDetailModel.productsList();
         let platformOrderNo = orderDetailModel.platformOrderNo
         let merchantOrderNo = orderDetailModel.merchantOrderNo
         let result = await payment.checkOrderStatus(platformOrderNo,0,0,0,'')
         if (result.code === payStatus.payNo) {
-            this.props.nav("payment/PaymentPage", {
+            routePush("payment/PaymentPage", {
                 orderNum: merchantOrderNo,
                 amounts: result.unpaidAmount,
                 platformOrderNo: platformOrderNo,
                 orderProductList: orderProductList
             });
         } else if (result.code === payStatus.payNeedThrid) {
-            this.props.nav('payment/ChannelPage', {
+            routePush('payment/ChannelPage', {
                 remainMoney: Math.floor(result.unpaidAmount * 100) / 100,
                 orderProductList: orderProductList,
                 orderNum: merchantOrderNo,
@@ -230,12 +210,8 @@ export default class OrderDetailBottomButtonView extends Component {
             })
         } else if (result.code === payStatus.payOut) {
             Toast.$toast(payStatusMsg[result.code])
-            let replace = NavigationActions.replace({
-                key: this.props.navigation.state.key,
-                routeName: 'order/order/MyOrdersListPage',
-                params: { index: 2 }
-            });
-            this.props.navigation.dispatch(replace);
+            replaceRoute( 'order/order/MyOrdersListPage',
+                 { index: 2 })
         } else {
             Toast.$toast(payStatusMsg[result.code])
         }

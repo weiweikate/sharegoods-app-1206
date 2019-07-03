@@ -69,7 +69,7 @@ export default class FillAddressView extends React.Component {
                     <MRText style={styles.timerStr}>
                         {this.props.afterSaleDetailModel.timeString}
                     </MRText>
-                    ，逾期为填写售后信息将自动关闭
+                    ，逾期未填写售后信息将自动关闭
                 </MRText>
                 <View style={styles.bottomContainer}>
                     <TouchableOpacity onPress={this.onPress}

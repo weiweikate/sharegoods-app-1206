@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
     View, Alert, Keyboard, TouchableWithoutFeedback,
-    StyleSheet, TouchableOpacity, Image
+    StyleSheet, TouchableOpacity, Image,DeviceEventEmitter
 } from 'react-native';
 import GoodsListItem from './GoodsListItem';
 import SingleSelectionModal from './BottomSingleSelectModal';
@@ -32,6 +32,17 @@ export default class MyOrdersListView extends Component {
             pageStatus: this.props.pageStatus,
         };
         this.item = {};
+
+    }
+    componentDidMount(){
+        this.subscription = DeviceEventEmitter.addListener('OrderRefresh', this.receiveNotifi)
+    };
+
+    componentWillUnmount(){
+        this.subscription.remove();
+    };
+
+    receiveNotifi(param){
 
     }
 
@@ -92,9 +103,9 @@ export default class MyOrdersListView extends Component {
             <GoodsListItem
                 {...item}
                 clickItem={() => {
-                    this.clickItem(item);
+                    this.clickItem(item, index);
                 }}
-                goodsItemClick={() => this.clickItem(item)}
+                goodsItemClick={() => this.clickItem(item, index)}
                 operationMenuClick={(menu) => this.operationMenuClick(menu, index, item)}
                 callBack={() => {
                     // this.onRefresh();
@@ -163,14 +174,12 @@ export default class MyOrdersListView extends Component {
 
     }
 
-    componentDidMount() {
 
-    }
-
-    clickItem = (data) => {
+    clickItem = (data,index) => {
             orderDetailModel.handleData(data);
             this.props.nav('order/order/MyOrdersDetailPage', {
-                merchantOrderNo: data.merchantOrder.merchantOrderNo
+                merchantOrderNo: data.merchantOrder.merchantOrderNo,
+                dataHandleDeleteOrder: ()=>this.dataHandleDeleteOrder(data,index)
             });
     };
     operationMenuClick = (menu, index, data) => {
@@ -228,7 +237,7 @@ export default class MyOrdersListView extends Component {
                             OrderApi.deleteOrder({ merchantOrderNo: merchantOrderNo}).then((response) => {
                                 Toast.hiddenLoading();
                                 Toast.$toast('订单已删除！');
-                                this.onRefresh();
+                                this.dataHandleDeleteOrder(data, index);
                             }).catch(e => {
                                 Toast.hiddenLoading();
                                 Toast.$toast(e.msg);
@@ -257,7 +266,7 @@ export default class MyOrdersListView extends Component {
                 });
                 break;
             case 99:
-                this.clickItem(data)
+                this.clickItem(data, index)
                 break
         }
 
@@ -295,6 +304,15 @@ export default class MyOrdersListView extends Component {
         } else {
             Toast.$toast(payStatusMsg[result.code] || '系统处理失败');
         }
+    }
+
+    /** 本地数据处理*/
+    dataHandleDeleteOrder =  (item, index) => {
+     if(this.list){
+        let data = this.list.getSourceData();
+        data.splice(index, 1);
+        this.list.changeData([...data])
+     }
     }
 }
 

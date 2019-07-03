@@ -34,7 +34,7 @@ function clickOrderLogistics(merchantOrderNo){
 function clickOrderConfirmReceipt(merchantOrderNo, subStatus, callBack){
     let content = `确定收到货了吗?`;
     if (subStatus === 3){
-        content = '您还有商品未发货，确认收货吗？';
+        content = '该订单存在未发货的商品，不能确认收货';
     }
     Alert.alert('', `${content}`, [
         {
@@ -78,6 +78,10 @@ function clickOrderAgain(merchantOrderNo, products){
     shopCartCacheTool.addGoodItem(products);
     routePush('shopCart/ShopCart', { hiddeLeft: false });
 }
+// //将数据
+// function dataHandleDeleteOrder() {
+//
+// }
 
 
 export {clickOrderLogistics, clickOrderConfirmReceipt, clickOrderAgain};

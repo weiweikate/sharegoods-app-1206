@@ -35,6 +35,13 @@ export default class AddressManagerPage extends BasePage {
     };
 
     $NavBarRightPressed = () => {
+        if (this.count >= this.limitCount) {
+            Alert.alert('', '您添加的地址已达上限,\n请删除部分地址再试', [{
+                text: '确定', onPress: () => {
+                }
+            }]);
+            return;
+        }
         this.$navigate(RouterMap.AddressEditAndAddPage, {
             refreshing: this.refreshing.bind(this),
             from: 'add'
@@ -52,6 +59,8 @@ export default class AddressManagerPage extends BasePage {
             selectIndex: this.initIndex,
             datas: []
         };
+        this.limitCount = 20;
+        this.count = 0;
     }
 
     refreshing() {
@@ -82,6 +91,8 @@ export default class AddressManagerPage extends BasePage {
                 renderEmpty={this._renderEmptyView}
                 handleRequestResult={(response) => {
                     if (response.data && response.data.length > 0) {
+                        this.limitCount = response.data[0].limitCount || this.limitCount;
+                        this.count = response.data.length;
                         let ids = [];
                         let selectIndex = -1;
                         for (let i = 0, len = response.data.length; i < len; i++) {

@@ -196,13 +196,10 @@ export default class MyOrdersDetailPage extends BasePage {
                             }
                             this.cancelProdectsModal&&this.cancelProdectsModal.open(orderDetailModel.platformOrderNo,callBack,isPay)
                         }}
-                        goBack={() => this.$navigateBack()}
-                        nav={this.$navigate}
                         switchButton={() => {
                             this.setState({ showDele: !this.state.showDele });
                         }}
-                        navigation={this.props.navigation}
-                        callBack={this.params.callBack && (() => this.params.callBack())}
+                        dataHandleDeleteOrder={this.params.dataHandleDeleteOrder}
                         loadPageData={() => this.loadPageData()}/>
                     {!this.state.showDele ? null : <NoMoreClick style={{
                         width: 68,

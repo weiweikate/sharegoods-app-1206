@@ -80,7 +80,7 @@ function GetAfterBtns(product) {
     }
     let afterSale = product.afterSale || {}
     let {type, status} = afterSale;
-    if (!type){
+    if (!type){//这个type为空，说明没有申请过售后
         if (product.status === OrderType.WAIT_DELIVER) {
            return [{ id:1, operation:'退款', isRed:false}]
         }else {
@@ -90,7 +90,9 @@ function GetAfterBtns(product) {
     if(status === AfterStatus.STATUS_SUCCESS){
         return [{ id:3, operation:'售后完成', isRed:false}]
     }
-
+    if (type === 11 || type === 12){
+        type = PageType.PAGE_AREFUND;
+    }
     switch (type) {
         case  PageType.PAGE_AREFUND:
             return [{ id:3, operation:'退款中', isRed:false}]
@@ -101,9 +103,13 @@ function GetAfterBtns(product) {
     }
 }
 
-function GetViewOrderStatus(status) {
+function GetViewOrderStatus(status, subStatus) {
     if (status){
-        return {...ViewOrderStatus[status]} || {menuData:[], menu_orderDetail:[]}
+        let data = {...ViewOrderStatus[status]} || {menuData:[], menu_orderDetail:[]}
+        if (status === OrderType.DELIVERED && subStatus === 3){
+            data.status = '部分发货'
+        }
+        return data;
     }
     return {menuData:[], menu_orderDetail:[]}
 }

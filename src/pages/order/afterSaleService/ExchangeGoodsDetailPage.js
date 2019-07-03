@@ -297,17 +297,17 @@ class ExchangeGoodsDetailPage extends BasePage {
         }
         let supplierCode = pageData.service.supplierCode;
         if (!supplierCode){
-            return;
+            this.kefuData = {};
         }
         let pictureUrlString = pageData.product.specImg || '';
         let desc = pageData.product.productName || '';
         let merchantOrderNo = pageData.product.merchantOrderNo || '';
-        if (this.kefuData){
+        if (this.kefuData ){
             QYChatTool.beginQYChat({
                 routePath: '',
                 urlString: '',
-                title: this.data.title || '平台客服',
-                shopId:this.data.shopId || '',
+                title: this.kefuData.title || '平台客服',
+                shopId:this.kefuData.shopId || '',
                 chatType: beginChatType.BEGIN_FROM_ORDER,
                 data: {
                     title: merchantOrderNo,
@@ -323,8 +323,8 @@ class ExchangeGoodsDetailPage extends BasePage {
                     QYChatTool.beginQYChat({
                             routePath: '',
                             urlString: '',
-                            title: this.data.title || '平台客服',
-                            shopId: this.data.shopId || '',
+                            title: this.kefuData.title || '平台客服',
+                            shopId: this.kefuData.shopId || '',
                             chatType: beginChatType.BEGIN_FROM_ORDER,
                             data: {
                                 title: merchantOrderNo,
@@ -424,16 +424,16 @@ class ExchangeGoodsDetailPage extends BasePage {
         //     this.$toastShow('请填写完整的退货物流信息\n才可以查看商家的物流信息');
         //     return;
         // }
-       if (manyLogistics) {
-           this.$navigate(RouterMap.AfterLogisticsListView, {
-               serviceNo: this.params.serviceNo
-           });
-       }else {
-           this.$navigate('order/logistics/LogisticsDetailsPage', {
-               expressNo: expressNo,
-               expressCode: expressCode
-           });
-       }
+        if (manyLogistics) {
+            this.$navigate(RouterMap.AfterLogisticsListView, {
+                serviceNo: this.params.serviceNo
+            });
+        }else {
+            this.$navigate('order/logistics/LogisticsDetailsPage', {
+                expressNo: expressNo,
+                expressCode: expressCode
+            });
+        }
     };
 
     /**
@@ -450,7 +450,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                 '确认撤销本次退货退款申请？您最多只能发起' + num + '次',
                 '确认撤销本次换货申请？您最多只能发起' + num + '次'];
             if (num <= 0){
-                this.$toastShow('平台售后操作已到上线');
+                this.$toastShow('平台售后操作已到上限');
                 return;
             }
 
