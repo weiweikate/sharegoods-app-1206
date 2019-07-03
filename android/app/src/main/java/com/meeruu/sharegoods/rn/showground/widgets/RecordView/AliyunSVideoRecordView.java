@@ -1,6 +1,7 @@
 package com.meeruu.sharegoods.rn.showground.widgets.RecordView;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -11,6 +12,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.SurfaceView;
@@ -24,11 +26,15 @@ import com.aliyun.recorder.supply.AliyunIClipManager;
 import com.aliyun.recorder.supply.AliyunIRecorder;
 import com.aliyun.recorder.supply.EncoderInfoCallback;
 import com.aliyun.recorder.supply.RecordCallback;
+import com.aliyun.svideo.sdk.external.struct.common.VideoQuality;
 import com.aliyun.svideo.sdk.external.struct.encoder.EncoderInfo;
+import com.aliyun.svideo.sdk.external.struct.encoder.VideoCodecs;
 import com.aliyun.svideo.sdk.external.struct.recorder.CameraParam;
 import com.aliyun.svideo.sdk.external.struct.recorder.CameraType;
 import com.aliyun.svideo.sdk.external.struct.recorder.FlashType;
 import com.aliyun.svideo.sdk.external.struct.recorder.MediaInfo;
+import com.aliyun.svideo.sdk.external.struct.snap.AliyunSnapVideoParam;
+import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.utils.OrientationDetector;
@@ -57,20 +63,32 @@ public class AliyunSVideoRecordView extends FrameLayout implements ScaleGestureD
     //录制视频是否达到最大值
     private boolean isMaxDuration = false;
     private AsyncTask<Void, Void, Void> finishRecodingTask;
-    private FragmentActivity mActivity;
+    private Activity mActivity;
     private boolean mIsBackground;
-
+    private OnFinishListener mCompleteListener;
+    private Runnable pendingCompseFinishRunnable;
+    //编码方式
+    private VideoCodecs mVideoCodec = VideoCodecs.H264_SOFT_FFMPEG;
+    //关键帧间隔
+    private int mGop = 5;
+    //录制码率
+    private int mBitrate = 25;
     //录制时长
     private int recordTime = 0;
     //文件存放位置
     private String videoPath;
-
+    //视频比例
+    private int mRatioMode = AliyunSnapVideoParam.RATIO_MODE_3_4;
     //最小录制时长
     private int minRecordTime = 2000;
     //最大录制时长
     private int maxRecordTime = 15 * 1000;
     private ProgressDialog progressBar;
     private OrientationDetector orientationDetector;
+    //视频分辨率
+    private int mResolutionMode = AliyunSnapVideoParam.RESOLUTION_540P;
+    //视频质量
+    private VideoQuality mVideoQuality = VideoQuality.HD;
     /**
      * 相机的原始NV21数据
      */
@@ -90,6 +108,7 @@ public class AliyunSVideoRecordView extends FrameLayout implements ScaleGestureD
     private boolean tempIsComplete = true;
     private int rotation;
     private boolean isOpenFailed = false;
+    private boolean activityStoped;
 
 
     /**
@@ -438,7 +457,7 @@ public class AliyunSVideoRecordView extends FrameLayout implements ScaleGestureD
             }
         }
     }
-    public void setActivity(FragmentActivity mActivity) {
+    public void setActivity(Activity mActivity) {
         this.mActivity = mActivity;
     }
 
@@ -547,12 +566,12 @@ public class AliyunSVideoRecordView extends FrameLayout implements ScaleGestureD
                 ThreadUtils.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        isAllowChangeMv = false;
+//                        isAllowChangeMv = false;
                         recordTime = 0;
                         //设置录制进度
-                        if (mRecordTimeView != null) {
-                            mRecordTimeView.setDuration((int)duration);
-                        }
+//                        if (mRecordTimeView != null) {
+//                            mRecordTimeView.setDuration((int)duration);
+//                        }
 
                         recordTime = (int) (currentDuration + duration);
                         if (recordTime <= clipManager.getMaxDuration() && recordTime >= clipManager.getMinDuration()) {
@@ -583,7 +602,7 @@ public class AliyunSVideoRecordView extends FrameLayout implements ScaleGestureD
                         if (mControlView != null) {
                             mControlView.setCompleteEnable(false);
                             mControlView.setRecordState(RecordState.STOP);
-                            mControlView.updataCutDownView(false);
+//                            mControlView.updataCutDownView(false);
                         }
                     }
                 });
@@ -609,10 +628,10 @@ public class AliyunSVideoRecordView extends FrameLayout implements ScaleGestureD
                 ThreadUtils.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        restoreConflictEffect();
-                        if (effectPaster != null) {
-                            addEffectToRecord(effectPaster.getPath());
-                        }
+//                        restoreConflictEffect();
+//                        if (effectPaster != null) {
+//                            addEffectToRecord(effectPaster.getPath());
+//                        }
 
                     }
                 });
@@ -640,17 +659,16 @@ public class AliyunSVideoRecordView extends FrameLayout implements ScaleGestureD
 
                 //******************************** start ******************************************
                 //这块代码会影响到标准版的faceUnity功能 改动的时候要关联app gradle 一起改动
-                if (faceInitResult && currentBeautyFaceMode == BeautyMode.Advanced && faceUnityManager != null) {
-                    /**
-                     * faceInitResult fix bug:反复退出进入会出现黑屏情况,原因是因为release之后还在调用渲染的接口,必须要保证release了之后不能再调用渲染接口
-                     */
-                    return faceUnityManager.draw(frameBytes, mFuImgNV21Bytes, textureId, frameWidth, frameHeight, mFrameId++, mControlView.getCameraType().getType());
-                }
+//                if (faceInitResult && currentBeautyFaceMode == BeautyMode.Advanced && faceUnityManager != null) {
+//                    /**
+//                     * faceInitResult fix bug:反复退出进入会出现黑屏情况,原因是因为release之后还在调用渲染的接口,必须要保证release了之后不能再调用渲染接口
+//                     */
+//                    return faceUnityManager.draw(frameBytes, mFuImgNV21Bytes, textureId, frameWidth, frameHeight, mFrameId++, mControlView.getCameraType().getType());
+//                }
                 //******************************** end ********************************************
                 return textureId;
             }
 
-            OpenGLTest test;
 
             @Override
             public int onScaledIdBack(int scaledId, int textureWidth, int textureHeight, float[] matrix) {
@@ -665,10 +683,10 @@ public class AliyunSVideoRecordView extends FrameLayout implements ScaleGestureD
             public void onTextureDestroyed() {
                 // sdk3.7.8改动, 自定义渲染（第三方渲染）销毁gl资源，以前GLSurfaceView时可以通过GLSurfaceView.queueEvent来做，
                 // 现在增加了一个gl资源销毁的回调，需要统一在这里面做。
-                if (faceUnityManager != null && faceInitResult) {
-                    faceUnityManager.release();
-                    faceInitResult = false;
-                }
+//                if (faceUnityManager != null && faceInitResult) {
+//                    faceUnityManager.release();
+//                    faceInitResult = false;
+//                }
             }
         });
 
@@ -777,5 +795,327 @@ public class AliyunSVideoRecordView extends FrameLayout implements ScaleGestureD
 
             }
         });
+    }
+    public void setCompleteListener(OnFinishListener mCompleteListener) {
+        this.mCompleteListener = mCompleteListener;
+    }
+    /**
+     * 录制完成事件监听
+     */
+    public interface OnFinishListener {
+        void onComplete(String path, int duration);
+    }
+
+    public void setRecordMute(boolean recordMute) {
+        if (recorder != null) {
+            recorder.setMute(recordMute);
+        }
+    }
+
+    public void onPause() {
+        mIsBackground = true;
+    }
+
+    public void onResume() {
+        mIsBackground = false;
+    }
+
+    public void onStop() {
+//        if (mFocusView != null) {
+//            mFocusView.activityStop();
+//        }
+    }
+
+
+    /**
+     * 开始预览
+     */
+    public void startPreview() {
+        activityStoped = false;
+        if (pendingCompseFinishRunnable != null) {
+            pendingCompseFinishRunnable.run();
+        }
+        pendingCompseFinishRunnable = null;
+        if (recorder != null) {
+            recorder.startPreview();
+//            if (isAllowChangeMv) {
+//                restoreConflictEffect();
+//            }
+            //            recorder.setZoom(scaleFactor);
+            if (clipManager.getDuration() >= clipManager.getMinDuration()) {
+                // 2018/7/11 让下一步按钮可点击
+                mControlView.setCompleteEnable(true);
+            } else {
+                mControlView.setCompleteEnable(false);
+            }
+        }
+        if (orientationDetector != null && orientationDetector.canDetectOrientation()) {
+            orientationDetector.enable();
+        }
+
+//        mCountDownView.setOnCountDownFinishListener(new AlivcCountDownView.OnCountDownFinishListener() {
+//            @Override
+//            public void onFinish() {
+//                FixedToastUtils.show(getContext(), "开始录制");
+//                startRecord();
+//            }
+//        });
+
+    }
+
+    public void setBackClickListener(OnBackClickListener listener) {
+        this.mBackClickListener = listener;
+    }
+
+    /**
+     * 结束预览
+     */
+    public void stopPreview() {
+        activityStoped = true;
+        if (mControlView != null && mControlView.getRecordState().equals(RecordState.READY)) {
+            mControlView.setRecordState(RecordState.STOP);
+            mControlView.setRecording(false);
+        }
+
+        if (mControlView != null && mControlView.getRecordState().equals(RecordState.RECORDING)) {
+            recorder.stopRecording();
+        }
+        recorder.stopPreview();
+
+//        if (beautyEffectChooser != null) {
+//            beautyEffectChooser.dismiss();
+//        }
+//
+//        if (mFaceUnityTask != null) {
+//            mFaceUnityTask.cancel(true);
+//            mFaceUnityTask = null;
+//        }
+        if (orientationDetector != null) {
+            orientationDetector.disable();
+        }
+
+        if (mControlView != null && mControlView.getFlashType() == FlashType.ON
+                && mControlView.getCameraType() == CameraType.BACK) {
+            mControlView.setFlashType(FlashType.OFF);
+        }
+    }
+
+    /**
+     * 删除所有录制文件
+     */
+    public void deleteAllPart() {
+        if (clipManager != null) {
+            clipManager.deleteAllPart();
+            if (clipManager.getDuration() < clipManager.getMinDuration() && mControlView != null) {
+                mControlView.setCompleteEnable(false);
+            }
+            if (clipManager.getDuration() == 0) {
+                // 音乐可以选择
+                //                    musicBtn.setVisibility(View.VISIBLE);
+                //                    magicMusic.setVisibility(View.VISIBLE);
+                //recorder.restartMv();
+
+                mControlView.setHasRecordPiece(false);
+            }
+        }
+    }
+
+    /**
+     * 设置Gop
+     *
+     * @param mGop
+     */
+    public void setGop(int mGop) {
+        this.mGop = mGop;
+        if (recorder != null) {
+            recorder.setGop(mGop);
+        }
+    }
+
+    /**
+     * 设置码率
+     *
+     * @param mBitrate
+     */
+    public void setBitrate(int mBitrate) {
+        this.mBitrate = mBitrate;
+        if (recorder != null) {
+            recorder.setVideoBitrate(mBitrate);
+        }
+    }
+
+    /**
+     * 设置录制时长
+     *
+     * @param maxRecordTime
+     */
+    public void setMaxRecordTime(int maxRecordTime) {
+        this.maxRecordTime = maxRecordTime;
+        if (clipManager != null) {
+            clipManager.setMaxDuration(getMaxRecordTime());
+        }
+
+    }
+
+    /**
+     * 设置最小录制时长
+     *
+     * @param minRecordTime
+     */
+    public void setMinRecordTime(int minRecordTime) {
+        this.minRecordTime = minRecordTime;
+        if (clipManager != null) {
+            clipManager.setMinDuration(minRecordTime);
+        }
+
+    }
+
+    /**
+     * 获取拍摄视频宽度
+     *
+     * @return
+     */
+    private int getVideoWidth() {
+        int width = 0;
+        switch (mResolutionMode) {
+            case AliyunSnapVideoParam.RESOLUTION_360P:
+                width = 360;
+                break;
+            case AliyunSnapVideoParam.RESOLUTION_480P:
+                width = 480;
+                break;
+            case AliyunSnapVideoParam.RESOLUTION_540P:
+                width = 540;
+                break;
+            case AliyunSnapVideoParam.RESOLUTION_720P:
+                width = 720;
+                break;
+            default:
+                width = 540;
+                break;
+        }
+
+        return width;
+    }
+
+    private int getVideoHeight() {
+        int width = getVideoWidth();
+        int height = 0;
+        switch (mRatioMode) {
+            case AliyunSnapVideoParam.RATIO_MODE_1_1:
+                height = width;
+                break;
+            case AliyunSnapVideoParam.RATIO_MODE_3_4:
+                height = width * 4 / 3;
+                break;
+            case AliyunSnapVideoParam.RATIO_MODE_9_16:
+                height = width * 16 / 9;
+                break;
+            default:
+                height = width;
+                break;
+        }
+        return height;
+    }
+
+    private MediaInfo getMediaInfo() {
+        MediaInfo info = new MediaInfo();
+        info.setFps(35);
+        info.setVideoWidth(getVideoWidth());
+        info.setVideoHeight(getVideoHeight());
+        info.setVideoCodec(mVideoCodec);
+        info.setCrf(0);
+        return info;
+    }
+
+    /**
+     * 设置视频比例
+     *
+     * @param mRatioMode
+     */
+    public void setRatioMode(int mRatioMode) {
+        this.mRatioMode = mRatioMode;
+        if (recorder != null) {
+            recorder.setMediaInfo(getMediaInfo());
+
+        }
+        if (mSurfaceView != null) {
+            LayoutParams params = (LayoutParams)mSurfaceView.getLayoutParams();
+            int screenWidth = ScreenUtils.getScreenWidth();
+            int height = 0;
+            int top;
+            switch (mRatioMode) {
+                case AliyunSnapVideoParam.RATIO_MODE_1_1:
+                    //视频比例为1：1的时候，录制界面向下移动，移动位置为顶部菜单栏的高度
+                    top = getContext().getResources().getDimensionPixelSize(R.dimen.alivc_record_title_height);
+                    params.setMargins(0, top, 0, 0 );
+                    height = screenWidth;
+                    break;
+                case AliyunSnapVideoParam.RATIO_MODE_3_4:
+                    //视频比例为3：4的时候，录制界面向下移动，移动位置为顶部菜单栏的高度
+                    top = getContext().getResources().getDimensionPixelSize(R.dimen.alivc_record_title_height);
+                    params.setMargins(0, top, 0, 0 );
+                    height = screenWidth * 4 / 3;
+                    break;
+                case AliyunSnapVideoParam.RATIO_MODE_9_16:
+
+                    int screenHeight = ScreenUtils.getScreenHeight();
+                    float screenRatio = screenWidth / (float)screenHeight;
+                    if (screenRatio >= 9 / 16f) {
+                        //胖手机宽高比小于9/16
+                        params.width = screenWidth;
+                        height = screenWidth * 16 / 9;
+                    } else {
+                        height = screenHeight;
+                        params.width = screenHeight * 9 / 16;
+                    }
+                    Log.e("RealHeight", "height:" + screenHeight + "width:" + screenWidth);
+                    params.gravity = Gravity.CENTER;
+                    break;
+                default:
+                    height = screenWidth * 16 / 9;
+                    break;
+            }
+            params.height = height;
+            mSurfaceView.setLayoutParams(params);
+        }
+
+    }
+
+    /**
+     * 设置视频质量
+     *
+     * @param mVideoQuality
+     */
+    public void setVideoQuality(VideoQuality mVideoQuality) {
+        this.mVideoQuality = mVideoQuality;
+        if (recorder != null) {
+            recorder.setVideoQuality(mVideoQuality);
+        }
+    }
+
+    /**
+     * 设置视频码率
+     *
+     * @param mResolutionMode
+     */
+    public void setResolutionMode(int mResolutionMode) {
+        this.mResolutionMode = mResolutionMode;
+        if (recorder != null) {
+            recorder.setMediaInfo(getMediaInfo());
+        }
+    }
+
+    /**
+     * 设置视频编码方式
+     *
+     * @param mVideoCodec
+     */
+    public void setVideoCodec(VideoCodecs mVideoCodec) {
+        this.mVideoCodec = mVideoCodec;
+        if (recorder != null) {
+            recorder.setMediaInfo(getMediaInfo());
+        }
+
     }
 }

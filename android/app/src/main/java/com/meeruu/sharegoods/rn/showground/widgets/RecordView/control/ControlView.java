@@ -74,14 +74,31 @@ public class ControlView extends RelativeLayout implements View.OnTouchListener 
 
     private void updateAllViews(){
         //准备录制和音乐选择的时候所有view隐藏
-//        if (isMusicSelViewShow || recordState == RecordState.READY) {
-//            setVisibility(GONE);
-//        } else {
-//            setVisibility(VISIBLE);
-//            updateBottomView();
-//            updateTittleView();
-//        }
+        if (recordState == RecordState.READY) {
+            setVisibility(GONE);
+        } else {
+            setVisibility(VISIBLE);
+            updateBottomView();
+            updateTittleView();
+        }
     }
+
+
+
+
+    /**
+     * 更新顶部视图
+     */
+    private void updateTittleView() {
+        if (recordState == RecordState.STOP) {
+            mTitleView.setVisibility(VISIBLE);
+            updateLightSwitchView();
+            updateCompleteView();
+        } else {
+            mTitleView.setVisibility(GONE);
+        }
+    }
+
 
     private void setViewListener(){
         // 返回按钮
@@ -145,6 +162,9 @@ public class ControlView extends RelativeLayout implements View.OnTouchListener 
                 }
             }
         });
+
+        //长按拍需求是按下就拍抬手停止拍
+        aliyunRecordBtn.setOnTouchListener(this);
     }
 
     /**
@@ -430,4 +450,77 @@ public class ControlView extends RelativeLayout implements View.OnTouchListener 
     public void setRecordTime(String recordTime) {
         aliyunRecordDuration.setText(recordTime);
     }
+
+    public RecordState getRecordState() {
+        if (recordState.equals(RecordState.COUNT_DOWN_RECORDING) || recordState.equals(RecordState.RECORDING)) {
+            return RecordState.RECORDING;
+        }
+        return recordState;
+    }
+
+    public void setFlashType(FlashType flashType) {
+        this.flashType = flashType;
+        updateLightSwitchView();
+    }
+
+    private void updateBottomView(){
+        aliyunRecordLayoutBottom.setVisibility(VISIBLE);
+        updateRecordBtnView();
+        updateDeleteView();
+
+    }
+
+
+    /**
+     * 更新录制按钮状态
+     */
+    private void updateRecordBtnView() {
+        if (recordState == RecordState.STOP) {
+            recordBtnScale(1f);
+            //拍摄按钮图片 - 未开始拍摄
+            UIConfigManager.setImageBackgroundConfig(aliyunRecordBtn, R.attr.videoShootImageNormal, R.mipmap.alivc_svideo_bg_record_storp);
+            aliyunRecordDuration.setVisibility(GONE);
+            mRecordTipTV.setVisibility(VISIBLE);
+            if (recordMode == RecordMode.LONG_PRESS) {
+                mRecordTipTV.setText(R.string.alivc_record_press);
+            } else {
+                mRecordTipTV.setText("");
+            }
+        } else if (recordState == RecordState.COUNT_DOWN_RECORDING) {
+            mRecordTipTV.setVisibility(GONE);
+            aliyunRecordDuration.setVisibility(VISIBLE);
+            recordBtnScale(1.25f);
+            aliyunRecordBtn.setBackgroundResource(R.mipmap.alivc_svideo_bg_record_pause);
+            //拍摄按钮图片 - 拍摄中
+            UIConfigManager.setImageBackgroundConfig(aliyunRecordBtn, R.attr.videoShootImageShooting, R.mipmap.alivc_svideo_bg_record_pause);
+
+        } else {
+            mRecordTipTV.setVisibility(GONE);
+            aliyunRecordDuration.setVisibility(VISIBLE);
+            recordBtnScale(1.25f);
+            if (recordMode == RecordMode.LONG_PRESS) {
+                aliyunRecordBtn.setBackgroundResource(R.mipmap.alivc_svideo_bg_record_start);
+                //拍摄按钮图片 - 长按中
+                UIConfigManager.setImageBackgroundConfig(aliyunRecordBtn, R.attr.videoShootImageLongPressing, R.mipmap.alivc_svideo_bg_record_start);
+            } else {
+                aliyunRecordBtn.setBackgroundResource(R.mipmap.alivc_svideo_bg_record_pause);
+                //拍摄按钮图片 - 拍摄中
+                UIConfigManager.setImageBackgroundConfig(aliyunRecordBtn, R.attr.videoShootImageShooting, R.mipmap.alivc_svideo_bg_record_pause);
+            }
+        }
+    }
+
+    /**
+     * 改变录制按钮大小
+     *
+     * @param scaleRate
+     */
+    private void recordBtnScale(float scaleRate) {
+        RelativeLayout.LayoutParams recordBgLp = (RelativeLayout.LayoutParams) aliyunRecordBtn.getLayoutParams();
+        recordBgLp.width = (int) (itemWidth * scaleRate);
+        recordBgLp.height = (int) (itemWidth * scaleRate);
+        aliyunRecordBtn.setLayoutParams(recordBgLp);
+    }
+
+
 }

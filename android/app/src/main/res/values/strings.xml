@@ -19,6 +19,8 @@
     <string name="spread_out">展开</string>
 
     <string name="aliyun_no_free_memory">剩余磁盘空间不足</string>
+    <string name="alivc_phone_state_calling">通话中, 录制时静音</string>
+    <string name="alivc_record_press">按住拍</string>
 
     <string name="test"> </string>
 </resources>
