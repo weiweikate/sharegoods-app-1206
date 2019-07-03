@@ -177,9 +177,10 @@ export default class CommShareModal extends React.Component {
     showImage() {
         const { type, imageJson } = this.props;
         let params = { ...(imageJson || {}) };
+        let name =  user.nickname && user.nickname.length > 8 ? user.nickname.replace(/^(\d{3})\d*(\d{4})$/,'$1****$2') : user.nickname;
         params.shareMoney && (params.shareMoney = this.getMoneyText(params.shareMoney));
-        params = { headerImage: user.headImg || '', userName: user.nickname || '', ...params };
-        if (type === 'promotionShare' || type === 'Image' || type === 'Show') {
+        params = { headerImage: user.headImg || '', userName: name || '', ...params };
+        if (type === 'promotionShare' || type === 'Image' || type === 'Show' || type === 'Invite') {
             if (this.state.path.length === 0) {
                 if (type === 'promotionShare') {
                     bridge.createPromotionShareImage(params.webJson.linkUrl, (path) => {
@@ -189,7 +190,7 @@ export default class CommShareModal extends React.Component {
                             }, 350);
                         });
                     });
-                } else if (type === 'Image' || type === 'Show') {
+                } else if (type === 'Image' || type === 'Show' || type === 'Invite') {
                     let url = params && params.imageUrlStr;
                     this.props.imageJson && (params.imageUrlStr = getSource({ uri: url }, this.imageWidth, this.imageHeight, 'lfit').uri);
                     delete params.shareMoney;
@@ -245,12 +246,12 @@ export default class CommShareModal extends React.Component {
             params.shareImage = this.state.path;
         } else if (this.state.shareType === 1) {//图文链接分享
             params = this.props.webJson;
+            if(urlArrs != '' && platformType === 0) {
+                params.linkUrl = urlArrs
+            }
         } else if (this.state.shareType === 2) {
             params = this.props.miniProgramJson;
         }
-         if(urlArrs != '') {
-             params.linkUrl = urlArrs
-         }
 
         params = {
             ...params,
@@ -325,7 +326,7 @@ export default class CommShareModal extends React.Component {
 
         let arrayImage = [];
         let arrayWeb = [];
-        let currentType = type === 'Image' || type === 'promotionShare' || type === 'Show';
+        let currentType = type === 'Image' || type === 'promotionShare' || type === 'Show' || type === 'Invite';
         if (currentType) {
             //             this.saveImage(this.state.path); //下载图片
             // this.setState({ showToastImage: true},
@@ -553,7 +554,7 @@ export default class CommShareModal extends React.Component {
                                 transform: [{ scale: this.state.scale }]
 
                             }}>
-                                {this.props.type === 'Image' ?
+                                {this.props.type === 'Image' || this.props.type === 'Invite' ?
                                     <TouchableWithoutFeedback onLongPress={() => {
                                         if (this.props.type === 'promotionShare') {
                                             Linking.openURL(this.props.webJson.linkUrl);

@@ -596,7 +596,7 @@ export default class MinePage extends BasePage {
                 </TouchableWithoutFeedback>
 
                 <TouchableWithoutFeedback onPress={() => {
-                    this.$navigate(RouterMap.HtmlPage,{ uri: '/activity/freeOrder' });
+                    this.$navigate(RouterMap.HtmlPage,{ uri: '/activity/freeorder' });
                 }}>
                     <View>
                         <ImageBackground style={{
