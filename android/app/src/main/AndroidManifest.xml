@@ -162,7 +162,7 @@
             android:configChanges="screenLayout|screenSize|smallestScreenSize|orientation"
             android:hardwareAccelerated="true"
             android:label="@string/app_name"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:resizeableActivity="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden"

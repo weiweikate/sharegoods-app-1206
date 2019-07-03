@@ -65,6 +65,7 @@ public class MainRNActivity extends ReactActivity {
     private WeakHandler myHandler;
     private String lastVersion;
     private ReactApplicationContext mContext;
+    private boolean needLoading = true;
 
     /**
      * Returns the name of the main component registered from JavaScript.
@@ -113,7 +114,7 @@ public class MainRNActivity extends ReactActivity {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
-        if (!isShowLoadingDialog && getIntent().getBooleanExtra("showLoading", true)) {
+        if (!isShowLoadingDialog && needLoading && getIntent().getBooleanExtra("showLoading", true)) {
             onLoadingEvent(new LoadingDialogEvent(true, "加载中"));
         }
     }
@@ -314,6 +315,7 @@ public class MainRNActivity extends ReactActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void hideSplash(HideSplashEvent event) {
+        needLoading = false;
         if (isShowLoadingDialog) {
             onLoadingEvent(new LoadingDialogEvent(false, "加载中"));
         }
