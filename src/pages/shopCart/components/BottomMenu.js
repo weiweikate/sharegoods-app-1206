@@ -110,6 +110,8 @@ export default class BottomMenu extends Component {
     };
     _toBuyImmediately = () => {
         dismissKeyboard();
+        // routeNavigate(RouterMap.PaymentFinshPage);
+        // return;
         if (!user.isLogin) {
             routeNavigate(RouterMap.LoginPage);
             TrackApi.CartCheckoutClick({
