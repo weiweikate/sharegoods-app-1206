@@ -33,7 +33,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
   }else if ([imageType isEqualToString:@"web"]){
     URLs = @[model.imageUrlStr];
     defaultImages = @[[UIImage imageNamed:@"logo.png"]];
-  }else if ([imageType isEqualToString:@"Invite"]){
+  }else if ([imageType isEqualToString:@"invite"]){
     URLs = @[model.headerImage];
     defaultImages = @[[UIImage imageNamed:@"logo.png"]];
   } else{//web or  produce or nil
@@ -61,7 +61,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
    return [ShowShareImgMaker checkLegalWithShareImageMakerModel:model completion:completion];
   }
 
-  if ([imageType isEqualToString:@"Invite"]) {
+  if ([imageType isEqualToString:@"invite"]) {
     return YES;
   }
   if ([imageType isEqualToString:@"web"]) {
@@ -146,7 +146,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
                        @"location": [NSValue valueWithCGRect:CGRectMake(195*i, 285*i, 45*i, 45*i)]}
      ];
 
-  }else if([imageType isEqualToString:@"Invite"]) {
+  }else if([imageType isEqualToString:@"invite"]) {
     NSDictionary * dataDic = [ShowShareImgMaker getParamsWithInviteImages:images
                                                                  model:model];
     nodes = dataDic[@"nodes"];

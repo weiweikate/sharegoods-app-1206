@@ -217,7 +217,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
                                 defaultModalVisible={this.params.openShareModal}
                                 type={'Invite'}
                                 imageJson={{
-                                    imageType: 'Invite',
+                                    imageType: 'invite',
                                     titleStr:'',
                                     imageUrlStr:'',
                                     QRCodeStr: this.linkUrl,
