@@ -231,6 +231,19 @@ export default class ProductDetailModel {
         return activityType === activity_type.group && activityStatus === activity_status.inSell && (groupActivity.subProductList || []).length > 0;
     }
 
+    @computed get groupSubProductCanSell() {
+        const { subProductList } = this.groupActivity;
+        for (const subProduct of (subProductList || [])) {
+            const { skuList } = subProduct || {};
+            const skuItem = (skuList || [])[0];
+            const { sellStock } = skuItem || {};
+            if (sellStock < 1) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /*秒杀倒计时显示*/
     @computed get showTimeText() {
         const { skillTimeout, activityStatus } = this;
