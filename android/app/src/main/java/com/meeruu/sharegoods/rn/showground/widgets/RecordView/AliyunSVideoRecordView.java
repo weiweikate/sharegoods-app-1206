@@ -1047,14 +1047,13 @@ public class AliyunSVideoRecordView extends FrameLayout implements ScaleGestureD
             switch (mRatioMode) {
                 case AliyunSnapVideoParam.RATIO_MODE_1_1:
                     //视频比例为1：1的时候，录制界面向下移动，移动位置为顶部菜单栏的高度
-                    top = getContext().getResources().getDimensionPixelSize(R.dimen.alivc_record_title_height);
-                    params.setMargins(0, top, 0, 0 );
+                    params.setMargins(0, 54, 0, 0 );
                     height = screenWidth;
                     break;
                 case AliyunSnapVideoParam.RATIO_MODE_3_4:
                     //视频比例为3：4的时候，录制界面向下移动，移动位置为顶部菜单栏的高度
-                    top = getContext().getResources().getDimensionPixelSize(R.dimen.alivc_record_title_height);
-                    params.setMargins(0, top, 0, 0 );
+
+                    params.setMargins(0, 54, 0, 0 );
                     height = screenWidth * 4 / 3;
                     break;
                 case AliyunSnapVideoParam.RATIO_MODE_9_16:

@@ -17,6 +17,7 @@ import com.meeruu.sharegoods.rn.popmodal.PopModalManager;
 import com.meeruu.sharegoods.rn.showground.RecyclerViewHeaderManager;
 import com.meeruu.sharegoods.rn.showground.ShowDynamicViewManager;
 import com.meeruu.sharegoods.rn.showground.ShowGroundViewManager;
+import com.meeruu.sharegoods.rn.showground.ShowModule;
 import com.meeruu.sharegoods.rn.showground.ShowRecommendViewManager;
 import com.meeruu.sharegoods.rn.viewmanager.MRBannerViewManager;
 import com.meeruu.sharegoods.rn.waveview.WaveViewManager;
@@ -66,6 +67,7 @@ public class RNMRPackage implements ReactPackage {
         modules.add(analyticsModule);
         modules.add(phoneAuthenModule);
         modules.add(jPushModule);
+        modules.add(new ShowModule(reactContext));
 
         return modules;
     }

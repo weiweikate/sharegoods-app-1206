@@ -69,7 +69,9 @@ public class AlivcEditView extends RelativeLayout implements View.OnClickListene
     private boolean hasTailAnimation = false;
     private AliyunVideoParam mVideoParam;
     private final String PATH_THUMBNAIL = Environment.getExternalStorageDirectory() + File.separator + "thumbnail.jpg";
-
+    /**
+     * 编辑核心接口类
+     */
     public AlivcEditView(Context context) {
         this(context, null);
     }
@@ -135,13 +137,13 @@ public class AlivcEditView extends RelativeLayout implements View.OnClickListene
      * @param changeState, 需要显示的状态,  true: 播放全篇, false: 暂停播放
      */
     public void switchPlayStateUI(boolean changeState) {
-        if (changeState) {
-            mPlayImage.setText(getResources().getString(R.string.alivc_svideo_play_film));
-            UIConfigManager.setImageResourceConfig(mPlayImage, 0, R.attr.playImage, R.mipmap.aliyun_svideo_play);
-        } else {
-            mPlayImage.setText(getResources().getString(R.string.alivc_svideo_pause_film));
-            UIConfigManager.setImageResourceConfig(mPlayImage, 0, R.attr.pauseImage, R.mipmap.aliyun_svideo_pause);
-        }
+//        if (changeState) {
+//            mPlayImage.setText(getResources().getString(R.string.alivc_svideo_play_film));
+//            UIConfigManager.setImageResourceConfig(mPlayImage, 0, R.attr.playImage, R.mipmap.aliyun_svideo_play);
+//        } else {
+//            mPlayImage.setText(getResources().getString(R.string.alivc_svideo_pause_film));
+//            UIConfigManager.setImageResourceConfig(mPlayImage, 0, R.attr.pauseImage, R.mipmap.aliyun_svideo_pause);
+//        }
     }
     @Override
     public void onClick(View v) {
@@ -157,53 +159,53 @@ public class AlivcEditView extends RelativeLayout implements View.OnClickListene
     }
 
     private void initGlSurfaceView() {
-        if (mVideoParam == null) {
-            return;
-        }
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)mGlSurfaceContainer.getLayoutParams();
-        FrameLayout.LayoutParams surfaceLayout = (FrameLayout.LayoutParams)mSurfaceView.getLayoutParams();
-        int outputWidth = mVideoParam.getOutputWidth();
-        int outputHeight = mVideoParam.getOutputHeight();
-
-        float percent;
-        if (outputWidth >= outputHeight) {
-            percent = (float)outputWidth / outputHeight;
-        } else {
-            percent = (float)outputHeight / outputWidth;
-        }
-        /*
-          指定surfaceView的宽高比是有必要的，这样可以避免某些非标分辨率下造成显示比例不对的问题
-         */
-        surfaceLayout.width = mScreenWidth;
-        surfaceLayout.height = Math.round((float)outputHeight * mScreenWidth / outputWidth);
-//        mPasterContainerPoint = new Point(surfaceLayout.width, surfaceLayout.height);
-        ViewGroup.MarginLayoutParams marginParams = null;
-        if (layoutParams instanceof MarginLayoutParams) {
-            marginParams = (ViewGroup.MarginLayoutParams)surfaceLayout;
-        } else {
-            marginParams = new MarginLayoutParams(surfaceLayout);
-        }
-        if (percent < 1.5) {
-            marginParams.setMargins(0,
-                getContext().getResources().getDimensionPixelSize(R.dimen.alivc_svideo_title_height), 0, 0);
-        } else {
-            if (outputWidth > outputHeight) {
-                marginParams.setMargins(0,
-                    getContext().getResources().getDimensionPixelSize(R.dimen.alivc_svideo_title_height) * 2, 0, 0);
-                //} else {
-                //    int screenWidth = ScreenUtils.getRealWidth(getContext());
-                //    int screenHeight = ScreenUtils.getRealHeight(getContext());
-                //    float screenRatio = screenWidth / (float)screenHeight;
-                //    if (screenRatio <= 9 / 16f) {
-                //        //长手机，宽高比小于9/16
-                //        marginParams.height = screenHeight;
-                //        marginParams.width = screenHeight / 16 * 9;
-                //    }
-            }
-        }
-        mGlSurfaceContainer.setLayoutParams(layoutParams);
-        mPasterContainer.setLayoutParams(marginParams);
-        mSurfaceView.setLayoutParams(marginParams);
+//        if (mVideoParam == null) {
+//            return;
+//        }
+//        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)mGlSurfaceContainer.getLayoutParams();
+//        FrameLayout.LayoutParams surfaceLayout = (FrameLayout.LayoutParams)mSurfaceView.getLayoutParams();
+//        int outputWidth = mVideoParam.getOutputWidth();
+//        int outputHeight = mVideoParam.getOutputHeight();
+//
+//        float percent;
+//        if (outputWidth >= outputHeight) {
+//            percent = (float)outputWidth / outputHeight;
+//        } else {
+//            percent = (float)outputHeight / outputWidth;
+//        }
+//        /*
+//          指定surfaceView的宽高比是有必要的，这样可以避免某些非标分辨率下造成显示比例不对的问题
+//         */
+//        surfaceLayout.width = mScreenWidth;
+//        surfaceLayout.height = Math.round((float)outputHeight * mScreenWidth / outputWidth);
+////        mPasterContainerPoint = new Point(surfaceLayout.width, surfaceLayout.height);
+//        ViewGroup.MarginLayoutParams marginParams = null;
+//        if (layoutParams instanceof MarginLayoutParams) {
+//            marginParams = (ViewGroup.MarginLayoutParams)surfaceLayout;
+//        } else {
+//            marginParams = new MarginLayoutParams(surfaceLayout);
+//        }
+//        if (percent < 1.5) {
+//            marginParams.setMargins(0,
+//                getContext().getResources().getDimensionPixelSize(R.dimen.alivc_svideo_title_height), 0, 0);
+//        } else {
+//            if (outputWidth > outputHeight) {
+//                marginParams.setMargins(0,
+//                    getContext().getResources().getDimensionPixelSize(R.dimen.alivc_svideo_title_height) * 2, 0, 0);
+//                //} else {
+//                //    int screenWidth = ScreenUtils.getRealWidth(getContext());
+//                //    int screenHeight = ScreenUtils.getRealHeight(getContext());
+//                //    float screenRatio = screenWidth / (float)screenHeight;
+//                //    if (screenRatio <= 9 / 16f) {
+//                //        //长手机，宽高比小于9/16
+//                //        marginParams.height = screenHeight;
+//                //        marginParams.width = screenHeight / 16 * 9;
+//                //    }
+//            }
+//        }
+//        mGlSurfaceContainer.setLayoutParams(layoutParams);
+//        mPasterContainer.setLayoutParams(marginParams);
+//        mSurfaceView.setLayoutParams(marginParams);
         //mCanvasController = mAliyunIEditor.obtainCanvasController(getContext(),
         //                    marginParams.width, marginParams.height);
     }
@@ -265,8 +267,8 @@ public class AlivcEditView extends RelativeLayout implements View.OnClickListene
         mTvRight.setEnabled(true);
     }
     public void onPause() {
-        isNeedResume = mAliyunIEditor.isPlaying();
-        playingPause();
-        mAliyunIEditor.saveEffectToLocal();
+//        isNeedResume = mAliyunIEditor.isPlaying();
+//        playingPause();
+//        mAliyunIEditor.saveEffectToLocal();
     }
 }

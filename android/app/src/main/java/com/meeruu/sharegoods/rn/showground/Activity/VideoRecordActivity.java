@@ -30,9 +30,16 @@ import com.aliyun.svideo.sdk.external.struct.snap.AliyunSnapVideoParam;
 import com.meeruu.commonlib.utils.NotchScreenUtil;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.sharegoods.R;
+import com.meeruu.sharegoods.event.LoadingDialogEvent;
+import com.meeruu.sharegoods.event.ShowVideoEvent;
 import com.meeruu.sharegoods.rn.showground.utils.PermissionUtils;
 import com.meeruu.sharegoods.rn.showground.utils.PhoneStateManger;
 import com.meeruu.sharegoods.rn.showground.widgets.RecordView.AliyunSVideoRecordView;
+import com.meeruu.sharegoods.utils.LoadingDialog;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 
@@ -182,6 +189,9 @@ public class VideoRecordActivity extends Activity {
     protected void onStart() {
         super.onStart();
         initPhoneStateManger();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
 
@@ -255,7 +265,9 @@ public class VideoRecordActivity extends Activity {
 //                intent.putExtra(INTENT_PARAM_KEY_ENTRANCE, entrance);
 //                intent.putExtra(INTENT_PARAM_KEY_HAS_MUSIC, videoRecordView.isHasMusic());
 //                startActivity(intent);
-                Log.e("sssssssss",path);
+                Intent intent = new Intent(VideoRecordActivity.this,VideoPlayActivity.class);
+                intent.putExtra("video_path",path);
+                startActivity(intent);
             }
         });
     }
@@ -308,6 +320,18 @@ public class VideoRecordActivity extends Activity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onVideoComplete(ShowVideoEvent event) {
+       finish();
+    }
 
     public static final int PERMISSION_REQUEST_CODE = 1000;
     @Override

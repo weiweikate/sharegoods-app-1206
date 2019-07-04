@@ -12,7 +12,7 @@ import StackViewStyleInterpolator from 'react-navigation-stack/src/views/StackVi
 
 const RootStack = createStackNavigator(Router,
     {
-        initialRouteName: 'Tab',
+        initialRouteName: RouterMap.ReleaseNotesPage,
         initialRouteParams: {},
         headerMode: 'none',
         defaultNavigationOptions: {

@@ -54,39 +54,39 @@ public class EditorActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // 检测是否是全面屏手机, 如果不是, 设置FullScreen
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        if (!NotchScreenUtil.checkNotchScreen(this)) {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-        }
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        setContentView(R.layout.activity_show_editor);
-        // 判断是编辑模块进入还是通过社区模块的编辑功能进入
-        //  svideo: 短视频
-        //  community: 社区
-        String entrance = getIntent().getStringExtra(INTENT_PARAM_KEY_ENTRANCE);
-        editView = findViewById(R.id.alivc_edit_view);
-        Intent intent = getIntent();
-        mVideoParam = (AliyunVideoParam) intent.getSerializableExtra(KEY_VIDEO_PARAM);
-        boolean hasTailAnimation = getIntent().getBooleanExtra("hasTailAnimation", false);
-        isReplaceMusic = intent.getBooleanExtra("isReplaceMusic", false);
-        String jsonExtra = intent.getStringExtra(KEY_PROJECT_JSON_PATH);
-        if (jsonExtra != null) {
-            mUri = Uri.fromFile(new File(jsonExtra));
-        } else {
-            List<MediaInfo> mediaInfos = intent.getParcelableArrayListExtra(AlivcEditorRoute.KEY_INTENT_MEDIA_INFO);
-            mUri = Uri.fromFile(new File(getProjectJsonPath(mediaInfos)));
-        }
-        if ("svideo".equals(entrance)) {
-            editView.setParam(mVideoParam, mUri, hasTailAnimation, true);
-        } else {
-            editView.setParam(mVideoParam, mUri, hasTailAnimation, false);
-        }
-        editView.setReplaceMusic(isReplaceMusic);
-        mTempFilePaths = intent.getStringArrayListExtra(KEY_TEMP_FILE_LIST);
-
-        boolean mHasRecordMusic = intent.getBooleanExtra(INTENT_PARAM_KEY_HAS_RECORD_MUSIC, false);
-        editView.setHasRecordMusic(mHasRecordMusic);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        if (!NotchScreenUtil.checkNotchScreen(this)) {
+//            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//
+//        }
+//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+//        setContentView(R.layout.activity_show_editor);
+//        // 判断是编辑模块进入还是通过社区模块的编辑功能进入
+//        //  svideo: 短视频
+//        //  community: 社区
+//        String entrance = getIntent().getStringExtra(INTENT_PARAM_KEY_ENTRANCE);
+//        editView = findViewById(R.id.alivc_edit_view);
+//        Intent intent = getIntent();
+//        mVideoParam = (AliyunVideoParam) intent.getSerializableExtra(KEY_VIDEO_PARAM);
+//        boolean hasTailAnimation = getIntent().getBooleanExtra("hasTailAnimation", false);
+//        isReplaceMusic = intent.getBooleanExtra("isReplaceMusic", false);
+//        String jsonExtra = intent.getStringExtra(KEY_PROJECT_JSON_PATH);
+//        if (jsonExtra != null) {
+//            mUri = Uri.fromFile(new File(jsonExtra));
+//        } else {
+//            List<MediaInfo> mediaInfos = intent.getParcelableArrayListExtra(AlivcEditorRoute.KEY_INTENT_MEDIA_INFO);
+//            mUri = Uri.fromFile(new File(getProjectJsonPath(mediaInfos)));
+//        }
+//        if ("svideo".equals(entrance)) {
+//            editView.setParam(mVideoParam, mUri, hasTailAnimation, true);
+//        } else {
+//            editView.setParam(mVideoParam, mUri, hasTailAnimation, false);
+//        }
+//        editView.setReplaceMusic(isReplaceMusic);
+//        mTempFilePaths = intent.getStringArrayListExtra(KEY_TEMP_FILE_LIST);
+//
+//        boolean mHasRecordMusic = intent.getBooleanExtra(INTENT_PARAM_KEY_HAS_RECORD_MUSIC, false);
+//        editView.setHasRecordMusic(mHasRecordMusic);
     }
     @Override
     protected void onResume() {
@@ -104,112 +104,112 @@ public class EditorActivity extends FragmentActivity {
         }
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (editView != null) {
-            editView.onStop();
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (editView != null) {
-            editView.onDestroy();
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (editView != null) {
-            editView.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (editView != null) {
-            editView.onStart();
-        }
-    }
-    @Override
-    public void onBackPressed() {
-        boolean isConsume = false;
-        if (editView != null) {
-            isConsume = editView.onBackPressed();
-        }
-        if (!isConsume) {
-            super.onBackPressed();
-            finish();
-        }
-    }
-
-    /**
-     * 通过MediaInfo生成ProjectJson
-     * @param mediaInfos List<MediaInfo>
-     * @return jsonPath
-     */
-    private String getProjectJsonPath(List<MediaInfo> mediaInfos) {
-
-        AliyunIImport mImport = AliyunImportCreator.getImportInstance(this);
-        mImport.setVideoParam(mVideoParam);
-        int size = mediaInfos.size();
-        for (int i = 0; i < size; i++) {
-            MediaInfo mediaInfo = mediaInfos.get(i);
-            if (mediaInfo.mimeType.startsWith("video")) {
-                mImport.addMediaClip(new AliyunVideoClip.Builder()
-                    .source(mediaInfo.filePath)
-                    .startTime(mediaInfo.startTime)
-                    .endTime(mediaInfo.startTime + mediaInfo.duration)
-                    .build());
-            } else if (mediaInfo.mimeType.startsWith("image")) {
-                mImport.addMediaClip(new AliyunImageClip.Builder()
-                    .source(mediaInfo.filePath)
-                    .duration(mediaInfo.duration)
-                    .build());
-            }
-        }
-        String projectConfigure = mImport.generateProjectConfigure();
-        mImport.release();
-
-        return projectConfigure;
-    }
-
-    public static void startEdit(Context context, AlivcSvideoEditParam param, List<MediaInfo> mediaList) {
-        if (context == null || param == null || mediaList == null || mediaList.size() == 0) {
-            return;
-        }
-        AliyunIImport mImport = AliyunImportCreator.getImportInstance(context);
-        param.setMediaInfo(mediaList.get(0));
-        AliyunVideoParam mVideoParam = param.generateVideoParam();
-        mImport.setVideoParam(mVideoParam);
-        int size = mediaList.size();
-        for (int i = 0; i < size; i++) {
-            MediaInfo mediaInfo = mediaList.get(i);
-            if (mediaInfo.mimeType.startsWith("video")) {
-                mImport.addMediaClip(new AliyunVideoClip.Builder()
-                    .source(mediaInfo.filePath)
-                    .startTime(mediaInfo.startTime)
-                    .endTime(mediaInfo.startTime + mediaInfo.duration)
-                    .build());
-            } else if (mediaInfo.mimeType.startsWith("image")) {
-                mImport.addMediaClip(new AliyunImageClip.Builder()
-                    .source(mediaInfo.filePath)
-                    .duration(mediaInfo.duration)
-                    .build());
-            }
-        }
-        String projectJsonPath = mImport.generateProjectConfigure();
-        if (projectJsonPath != null) {
-            Intent intent = new Intent(context, EditorActivity.class);
-            intent.putExtra("video_param", mVideoParam);
-            intent.putExtra("project_json_path", projectJsonPath);
-            intent.putExtra("hasTailAnimation", param.isHasTailAnimation());
-            intent.putExtra(INTENT_PARAM_KEY_ENTRANCE, param.getEntrance());
-            context.startActivity(intent);
-        }
-    }
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        if (editView != null) {
+//            editView.onStop();
+//        }
+//    }
+//
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        if (editView != null) {
+//            editView.onDestroy();
+//        }
+//    }
+//
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (editView != null) {
+//            editView.onActivityResult(requestCode, resultCode, data);
+//        }
+//    }
+//
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        if (editView != null) {
+//            editView.onStart();
+//        }
+//    }
+//    @Override
+//    public void onBackPressed() {
+//        boolean isConsume = false;
+//        if (editView != null) {
+//            isConsume = editView.onBackPressed();
+//        }
+//        if (!isConsume) {
+//            super.onBackPressed();
+//            finish();
+//        }
+//    }
+//
+//    /**
+//     * 通过MediaInfo生成ProjectJson
+//     * @param mediaInfos List<MediaInfo>
+//     * @return jsonPath
+//     */
+//    private String getProjectJsonPath(List<MediaInfo> mediaInfos) {
+//
+//        AliyunIImport mImport = AliyunImportCreator.getImportInstance(this);
+//        mImport.setVideoParam(mVideoParam);
+//        int size = mediaInfos.size();
+//        for (int i = 0; i < size; i++) {
+//            MediaInfo mediaInfo = mediaInfos.get(i);
+//            if (mediaInfo.mimeType.startsWith("video")) {
+//                mImport.addMediaClip(new AliyunVideoClip.Builder()
+//                    .source(mediaInfo.filePath)
+//                    .startTime(mediaInfo.startTime)
+//                    .endTime(mediaInfo.startTime + mediaInfo.duration)
+//                    .build());
+//            } else if (mediaInfo.mimeType.startsWith("image")) {
+//                mImport.addMediaClip(new AliyunImageClip.Builder()
+//                    .source(mediaInfo.filePath)
+//                    .duration(mediaInfo.duration)
+//                    .build());
+//            }
+//        }
+//        String projectConfigure = mImport.generateProjectConfigure();
+//        mImport.release();
+//
+//        return projectConfigure;
+//    }
+//
+//    public static void startEdit(Context context, AlivcSvideoEditParam param, List<MediaInfo> mediaList) {
+//        if (context == null || param == null || mediaList == null || mediaList.size() == 0) {
+//            return;
+//        }
+//        AliyunIImport mImport = AliyunImportCreator.getImportInstance(context);
+//        param.setMediaInfo(mediaList.get(0));
+//        AliyunVideoParam mVideoParam = param.generateVideoParam();
+//        mImport.setVideoParam(mVideoParam);
+//        int size = mediaList.size();
+//        for (int i = 0; i < size; i++) {
+//            MediaInfo mediaInfo = mediaList.get(i);
+//            if (mediaInfo.mimeType.startsWith("video")) {
+//                mImport.addMediaClip(new AliyunVideoClip.Builder()
+//                    .source(mediaInfo.filePath)
+//                    .startTime(mediaInfo.startTime)
+//                    .endTime(mediaInfo.startTime + mediaInfo.duration)
+//                    .build());
+//            } else if (mediaInfo.mimeType.startsWith("image")) {
+//                mImport.addMediaClip(new AliyunImageClip.Builder()
+//                    .source(mediaInfo.filePath)
+//                    .duration(mediaInfo.duration)
+//                    .build());
+//            }
+//        }
+//        String projectJsonPath = mImport.generateProjectConfigure();
+//        if (projectJsonPath != null) {
+//            Intent intent = new Intent(context, EditorActivity.class);
+//            intent.putExtra("video_param", mVideoParam);
+//            intent.putExtra("project_json_path", projectJsonPath);
+//            intent.putExtra("hasTailAnimation", param.isHasTailAnimation());
+//            intent.putExtra(INTENT_PARAM_KEY_ENTRANCE, param.getEntrance());
+//            context.startActivity(intent);
+//        }
+//    }
 }

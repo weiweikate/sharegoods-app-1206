@@ -10,7 +10,8 @@ import {
     Image,
     TouchableWithoutFeedback,
     Keyboard,
-    TextInput
+    TextInput,
+    NativeModules
 } from 'react-native';
 import BasePage from '../../BasePage';
 import { MRText } from '../../components/ui';
@@ -146,7 +147,21 @@ export default class ReleaseNotesPage extends BasePage {
         });
     };
 
+    publishVideo=(path)=>{
+        NativeModules.ShowModule.uploadVideo('cs',path).then((data)=>{
+
+        }).catch((error)=>{
+
+        })
+    }
+
     choosePicker = () => {
+
+        // NativeModules.ShowModule.recordVideo().then((data)=>{
+        //     this.publishVideo(data.videoPath);
+        // })
+        // return;
+
         let imageArr = this.state.imageArr;
         if (imageArr.length >= 8) {
             return;
