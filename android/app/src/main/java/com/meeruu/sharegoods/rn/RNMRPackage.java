@@ -19,7 +19,6 @@ import com.meeruu.sharegoods.rn.showground.ShowDynamicViewManager;
 import com.meeruu.sharegoods.rn.showground.ShowGroundViewManager;
 import com.meeruu.sharegoods.rn.showground.ShowRecommendViewManager;
 import com.meeruu.sharegoods.rn.viewmanager.MRBannerViewManager;
-import com.meeruu.sharegoods.rn.waveview.WaveViewManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -75,7 +74,6 @@ public class RNMRPackage implements ReactPackage {
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
         return Arrays.<ViewManager>asList(
                 new PopModalManager(),
-                new WaveViewManager(),
                 new MRLoadingViewManager(),
                 new MRBannerViewManager(),
                 new RecyclerViewHeaderManager(),
