@@ -7,7 +7,7 @@ import {
     AppState,
     ActivityIndicator,
     Platform,
-    Alert
+    // Alert
 } from 'react-native';
 import res from './res';
 import BasePage from '../../BasePage';
@@ -21,7 +21,7 @@ import { track, TrackApi, trackEvent } from '../../utils/SensorsTrack';
 
 const { px2dp } = ScreenUtils;
 import Toast from '../../utils/bridge';
-import RouterMap from '../../navigation/RouterMap';
+import RouterMap, { replaceRoute } from '../../navigation/RouterMap';
 import StringUtils from '../../utils/StringUtils';
 
 @observer
@@ -76,8 +76,6 @@ export default class ChannelPage extends BasePage {
                 payAmount: Math.floor(StringUtils.mul(result.unpaidAmount, 100)) / 100
             });
         });
-
-
     }
 
     componentWillUnmount() {
@@ -93,7 +91,7 @@ export default class ChannelPage extends BasePage {
         let payAmount = this.state.remainMoney || amounts;
         payment.checkOrderStatus(platformOrderNo, this.bizType, this.modeType, payAmount, name)
             .then(result => {
-                //以为借口返回的剩余未支付为准
+                //以为接口返回的剩余未支付为准
                 payAmount = Math.floor(StringUtils.mul(result.unpaidAmount, 100)) / 100;
                 console.log('checkOrderStatus', result);
                 let detailList = [];
@@ -176,29 +174,36 @@ export default class ChannelPage extends BasePage {
         if (payment.platformOrderNo && selctedPayType !== paymentType.none && this.canShowAlter) {
             this.canShowAlter = false;
             payment.isGoToPay = false;
-            Alert.alert(
-                '请确认支付是否已经完成',
-                '',
-                [{
-                    text: '重新支付', onPress: () => {
-                        this.canShowAlter = true;
-                    }
-                },
-                    {
-                        text: '已经完成支付', onPress: () => {
-                            this.orderTime = (new Date().getTime()) / 1000;
-                            //去等待结果页面
-                            this.props.navigation.dispatch({
-                                key: this.props.navigation.state.key,
-                                type: 'ReplacePayScreen',
-                                routeName: RouterMap.PaymentCheckPage,
-                                params: { payResult: PaymentResult.success }
-                            });
-                        }, style: 'cancel'
-                    }
-                ],
-                { cancelable: false }
-            );
+            this.props.navigation.dispatch({
+                key: this.props.navigation.state.key,
+                type: 'ReplacePayScreen',
+                routeName: RouterMap.PaymentCheckPage,
+                params: { payResult: PaymentResult.success }
+            });
+            // replaceRoute()
+            // Alert.alert(
+            //     '请确认支付是否已经完成',
+            //     '',
+            //     [{
+            //         text: '重新支付', onPress: () => {
+            //             this.canShowAlter = true;
+            //         }
+            //     },
+            //         {
+            //             text: '已经完成支付', onPress: () => {
+            //                 this.orderTime = (new Date().getTime()) / 1000;
+            //                 //去等待结果页面
+            //                 this.props.navigation.dispatch({
+            //                     key: this.props.navigation.state.key,
+            //                     type: 'ReplacePayScreen',
+            //                     routeName: RouterMap.PaymentCheckPage,
+            //                     params: { payResult: PaymentResult.success }
+            //                 });
+            //             }, style: 'cancel'
+            //         }
+            //     ],
+            //     { cancelable: false }
+            // );
             // this._checkOrder();
             // this.setState({ orderChecking: true });
         }
