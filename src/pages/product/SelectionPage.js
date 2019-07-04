@@ -11,14 +11,12 @@ import SelectionSectionView from './components/SelectionSectionView';
 import SelectionAmountView from './components/SelectionAmountView';
 import StringUtils from '../../utils/StringUtils';
 import bridge from '../../utils/bridge';
-import Modal from '../../comm/components/CommModal';
 import DesignRule from '../../constants/DesignRule';
 import { MRText as Text } from '../../components/ui/index';
-// import { ProductDetailSkuAddressView } from './components/ProductDetailAddressView';
+import { observer } from 'mobx-react';
+import { ProductDetailSkuAddressView } from './components/ProductDetailAddressView';
 
-export const sourceType = {
-    promotion: 'promotion'
-};
+@observer
 export default class SelectionPage extends Component {
 
     constructor(props) {
@@ -29,7 +27,7 @@ export default class SelectionPage extends Component {
             callBack: undefined,
             propData: {},
             specMap: [],//规格
-            priceList: [],//库存
+            skuList: [],//库存
             tittleList: [],
 
             selectStrList: [],//选择的名称值
@@ -37,27 +35,24 @@ export default class SelectionPage extends Component {
             maxStock: 0,//最大库存
             promotionLimit: null,//没值不限购
 
-            amount: 1,
-            source_Type: null,
-            unShowAmount: false
+            amount: 1
         };
     }
 
     show = (data, callBack, propData = {}) => {
         //type afterSpecIds
         //需要重置旧数据
-        if (propData.needUpdate) {
+        const { needUpdate, isAreaSku, productIsPromotionPrice } = propData;
+        if (needUpdate) {
             this.state.selectStrList = [];
             this.state.selectSpecList = [];
             this.state.maxStock = 0;
         }
-        const { specifyList, skuList, promotionLimitNum } = data;
-        this.state.source_Type = propData.sourceType;
-        this.state.unShowAmount = propData.unShowAmount;
-        this.state.promotionLimit = this.state.source_Type === sourceType.promotion ? promotionLimitNum : null;
+        const { specifyList, skuList, skuListByArea, promotionLimitNum } = data;
+        this.state.promotionLimit = productIsPromotionPrice ? promotionLimitNum : null;
 
         let specMapTemp = JSON.parse(JSON.stringify(specifyList || []));
-        let priceListTemp = JSON.parse(JSON.stringify(skuList || []));
+        let skuListTemp = JSON.parse(JSON.stringify((isAreaSku ? skuListByArea : skuList) || []));
 
         let tittleList = [];
         //提取规格处理id
@@ -65,8 +60,8 @@ export default class SelectionPage extends Component {
         specMapTemp.forEach((specifyListItem) => {
             tittleList.push(specifyListItem.specName || '');
         });
-        //修改priceListTemp中的propertyValues首尾增加','
-        priceListTemp.forEach((item) => {
+        //修改skuListTemp中的propertyValues首尾增加','
+        skuListTemp.forEach((item) => {
             item.propertyValues = `@${item.propertyValues}@`;
         });
 
@@ -76,13 +71,12 @@ export default class SelectionPage extends Component {
             callBack: callBack,
             propData: propData,
             specMap: specMapTemp,
-            priceList: priceListTemp,
+            skuList: skuListTemp,
             tittleList: tittleList
         }, () => {
             this._indexCanSelectedItems();
 
         });
-        this.modal && this.modal.open();
     };
 
     _clickItemAction = (item, indexOfProp) => {
@@ -98,7 +92,7 @@ export default class SelectionPage extends Component {
     _indexCanSelectedItems = () => {
         //afterPrice
         //type after退换货
-        const { afterPrice, type, productPriceId } = this.state.propData;
+        const { afterPrice, type, productPriceId, productIsPromotionPrice } = this.state.propData;
         let tempArr = [];
         this.state.tittleList.forEach((item, index) => {
             tempArr[index] = this._indexCanSelectedItem(index);
@@ -116,7 +110,7 @@ export default class SelectionPage extends Component {
                 //tempArr[index] 每行符合的数据
                 tempArr[index].forEach((item1) => {
                     //库存中有&&剩余数量不为0
-                    let sellStock = this.state.source_Type === sourceType.promotion ? item1.promotionStockNum : item1.sellStock;
+                    let sellStock = productIsPromotionPrice ? item1.promotionStockNum : item1.sellStock;
                     if (item1.propertyValues.indexOf(`@${item.specValue}@`) !== -1 && StringUtils.isNoEmpty(sellStock) && sellStock !== 0) {
                         //如果是退换货多一次判断
                         if (type === 'after') {
@@ -147,11 +141,12 @@ export default class SelectionPage extends Component {
     };
     //获取总库存
     _selelctSpe = () => {
+        const { productIsPromotionPrice } = this.state.propData;
         this.state.selectSpecList = this._indexCanSelectedItem();
         let stock = 0;
         this.state.selectSpecList.forEach((item) => {
             //总库存库存遍历相加
-            stock = stock + (this.state.source_Type === sourceType.promotion ? item.promotionStockNum : item.sellStock);
+            stock = stock + (productIsPromotionPrice ? item.promotionStockNum : item.sellStock);
         });
         this.state.maxStock = stock;
     };
@@ -164,11 +159,11 @@ export default class SelectionPage extends Component {
         }
 
         let tempArr = [];
-        const { priceList } = this.state;
+        const { skuList } = this.state;
         if (tempList.length === 0) {
-            tempArr = priceList;
+            tempArr = skuList;
         } else {
-            tempArr = priceList.filter((item) => {
+            tempArr = skuList.filter((item) => {
                 let contain = true;
                 let propertyValues = item.propertyValues || '';
                 tempList.forEach((priceItem) => {
@@ -249,69 +244,60 @@ export default class SelectionPage extends Component {
     };
 
     render() {
-        const { afterAmount, type } = this.state.propData;
-        // const { productDetailAddressModel } = this.state.data;
+        if (!this.state.modalVisible) {
+            return null;
+        }
+        const { afterAmount, type, productIsPromotionPrice, unShowAmount, isAreaSku } = this.state.propData;
+        const { productDetailAddressModel } = this.state.data;
         return (
-            <Modal
-                ref={(ref) => this.modal = ref}
-                animationType="none"
-                visible={this.state.modalVisible}
-                onRequestClose={() => {
-                    this.setState({ modalVisible: false }, () => {
-                        this.props.closeCallBack && this.props.closeCallBack();
-                    });
-                }}>
-                <View style={styles.container}>
-                    <TouchableWithoutFeedback onPress={() => this.setState({ modalVisible: false }, () => {
-                        this.props.closeCallBack && this.props.closeCallBack();
-                    })}>
-                        <View style={{ height: ScreenUtils.autoSizeHeight(175) }}/>
-                    </TouchableWithoutFeedback>
-                    <View style={{ flex: 1 }}>
-                        <SelectionHeaderView product={this.state.data}
-                                             sourceType={this.state.source_Type}
-                                             selectStrList={this.state.selectStrList}
-                                             selectSpecList={this.state.selectSpecList}
-                                             closeSelectionPage={() => this.setState({ modalVisible: false }, () => {
-                                                 this.props.closeCallBack && this.props.closeCallBack();
-                                             })}/>
-                        <View style={{ flex: 1, backgroundColor: 'white' }}>
-                            <ScrollView>
-                                {/*<ProductDetailSkuAddressView productDetailAddressModel={productDetailAddressModel}/>*/}
-                                {this._addSelectionSectionView()}
-                                {!this.state.unShowAmount &&
-                                <SelectionAmountView style={{ marginVertical: 30 }}
-                                                     amount={this.state.amount}
-                                                     amountClickAction={this._amountClickAction}
-                                                     maxCount={this.state.maxStock}
-                                                     afterAmount={afterAmount}
-                                                     promotionLimit={this.state.promotionLimit}
-                                                     type={type}/>}
-                            </ScrollView>
-                            <TouchableWithoutFeedback onPress={this._selectionViewConfirm}>
-                                <View style={{
-                                    height: 49,
-                                    backgroundColor: DesignRule.mainColor,
-                                    alignItems: 'center',
-                                    justifyContent: 'center'
-                                }}>
-                                    <Text style={{ fontSize: 16, color: 'white' }} allowFontScaling={false}>确认</Text>
-                                </View>
-                            </TouchableWithoutFeedback>
-                        </View>
+            <View style={styles.bgView}>
+                <TouchableWithoutFeedback onPress={() => this.setState({ modalVisible: false })}>
+                    <View style={{ height: ScreenUtils.autoSizeHeight(175) }}/>
+                </TouchableWithoutFeedback>
+                <View style={{ flex: 1 }}>
+                    <SelectionHeaderView product={this.state.data}
+                                         productIsPromotionPrice={productIsPromotionPrice}
+                                         selectStrList={this.state.selectStrList}
+                                         selectSpecList={this.state.selectSpecList}
+                                         closeSelectionPage={() => this.setState({ modalVisible: false })}/>
+                    <View style={{ flex: 1, backgroundColor: 'white' }}>
+                        <ScrollView>
+                            {
+                                isAreaSku &&
+                                <ProductDetailSkuAddressView productDetailAddressModel={productDetailAddressModel}/>
+                            }
+                            {this._addSelectionSectionView()}
+                            {!unShowAmount &&
+                            <SelectionAmountView style={{ marginVertical: 30 }}
+                                                 amount={this.state.amount}
+                                                 amountClickAction={this._amountClickAction}
+                                                 maxCount={this.state.maxStock}
+                                                 afterAmount={afterAmount}
+                                                 promotionLimit={this.state.promotionLimit}
+                                                 type={type}/>}
+                        </ScrollView>
+                        <TouchableWithoutFeedback onPress={this._selectionViewConfirm}>
+                            <View style={{
+                                height: 49,
+                                backgroundColor: DesignRule.mainColor,
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}>
+                                <Text style={{ fontSize: 16, color: 'white' }} allowFontScaling={false}>确认</Text>
+                            </View>
+                        </TouchableWithoutFeedback>
                     </View>
                 </View>
-            </Modal>
+            </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.5)',
-        width: ScreenUtils.width
+    bgView: {
+        zIndex: 1026,
+        position: 'absolute', top: 0, left: 0, bottom: 0, width: ScreenUtils.width,
+        backgroundColor: 'rgba(0,0,0,0.5)'
     }
-
 });
 

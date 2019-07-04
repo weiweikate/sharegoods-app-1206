@@ -73,13 +73,13 @@ export default class ProductDetailModel {
 
     @observable trackType;
     @observable trackCode;
-    @observable prodCode;
     @observable loadingState = PageLoadingState.loading;
     @observable netFailedInfo = {};
 
     @observable offsetY = 0;
     @observable opacity = 0;
 
+    @observable prodCode;
     /*总数据*/
     @observable productData;
     /*0产品删除 1产品上架 2产品下架(包含未上架的所有状态，出去删除状态) 3未开售*/
@@ -108,8 +108,29 @@ export default class ProductDetailModel {
     @observable freight;
     /*月销*/
     @observable monthSaleCount;
-    /*商品库存*/
+    /*商品库存全*/
     @observable skuList = [];
+
+    /**根据现有库存和地区库存结合成新德skuList**/
+    @computed get skuListByArea() {
+        const { productDetailAddressModel, skuList } = this;
+        const { areaSkuList } = productDetailAddressModel;
+        if (areaSkuList) {
+            if (areaSkuList.length > 0) {
+                return areaSkuList.map((areaSkuItem) => {
+                    for (const skuItem of skuList) {
+                        if (skuItem.skuCode === areaSkuItem.skuCode) {
+                            return { ...skuItem, ...areaSkuItem };
+                        }
+                    }
+                    return null;
+                });
+            }
+            return [];
+        }
+        return skuList;
+    }
+
     /*商品规格*/
     @observable specifyList = [];
     /*库存替换显示

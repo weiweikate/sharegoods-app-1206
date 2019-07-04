@@ -32,7 +32,6 @@ import { track , trackEvent } from '../../utils/SensorsTrack';
 import { SmoothPushPreLoadHighComponent } from '../../comm/components/SmoothPushHighComponent';
 import ProductRowListView from './components/ProductRowListView';
 import ShowUtils from './utils/ShowUtils';
-import { sourceType } from '../product/SelectionPage';
 import AddCartModel from './model/AddCartModel';
 import shopCartCacheTool from '../shopCart/model/ShopCartCacheTool';
 import SelectionPage from '../product/SelectionPage';
@@ -468,7 +467,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                     pricePerCommodity: originalPrice,
                     spuAmount: amount,
                 });
-            }, { sourceType: productIsPromotionPrice ? sourceType.promotion : null });
+            }, { productIsPromotionPrice: productIsPromotionPrice });
         }, (error) => {
             this.$toastShow(error.msg || '服务器繁忙');
         });

@@ -7,7 +7,7 @@ import {
 import BasePage from '../../BasePage';
 import DetailBottomView from './components/DetailBottomView';
 import PriceExplain from './components/PriceExplain';
-import SelectionPage, { sourceType } from './SelectionPage';
+import SelectionPage from './SelectionPage';
 import ScreenUtils from '../../utils/ScreenUtils';
 import shopCartCacheTool from '../shopCart/model/ShopCartCacheTool';
 import CommShareModal from '../../comm/components/CommShareModal';
@@ -132,11 +132,17 @@ export default class ProductDetailPage extends BasePage {
                     return;
                 }
                 this.state.goType = type;
-                this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, { sourceType: productIsPromotionPrice ? sourceType.promotion : null });
+                this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, {
+                    productIsPromotionPrice,
+                    isAreaSku: true
+                });
                 break;
             case 'gwc':
                 this.state.goType = type;
-                this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, { sourceType: productIsPromotionPrice ? sourceType.promotion : null });
+                this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, {
+                    productIsPromotionPrice,
+                    isAreaSku: true
+                });
                 break;
         }
     };

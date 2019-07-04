@@ -15,7 +15,7 @@ import ResultVerticalRow from './components/ResultVerticalRow';
 import RouterMap from '../../../navigation/RouterMap';
 import HomeAPI from '../api/HomeAPI';
 import DateUtils from '../../../utils/DateUtils';
-import SelectionPage, { sourceType } from '../../product/SelectionPage';
+import SelectionPage from '../../product/SelectionPage';
 import StringUtils from '../../../utils/StringUtils';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
@@ -220,7 +220,7 @@ export default class SearchResultPage extends BasePage {
         this.productItem = item;
         this.SelectionPage.show(item, this._selectionViewConfirm, {
             needUpdate: true,
-            sourceType: this._itemIsActivity(item) ? sourceType.promotion : null
+            productIsPromotionPrice: this._itemIsActivity(item)
         });
     };
 

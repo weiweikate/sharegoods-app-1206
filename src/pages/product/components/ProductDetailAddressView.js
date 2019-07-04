@@ -5,9 +5,10 @@ import res from '../res/product';
 import DesignRule from '../../../constants/DesignRule';
 import { observable, computed, autorun } from 'mobx';
 import { observer } from 'mobx-react';
-import RouterMap, { routePush } from '../../../navigation/RouterMap';
+import RouterMap, { routeNavigate, routePush } from '../../../navigation/RouterMap';
 import MineAPI from '../../mine/api/MineApi';
 import ProductApi from '../api/ProductApi';
+import user from '../../../model/user';
 
 const { arrow_right_black } = res.button;
 const { pAddress } = res;
@@ -19,6 +20,10 @@ export class ProductDetailSetAddressView extends React.Component {
         const { showAreaText } = productDetailAddressModel;
         return (
             <NoMoreClick style={pStyles.containerView} onPress={() => {
+                if (!user.isLogin) {
+                    routeNavigate(RouterMap.LoginPage);
+                    return;
+                }
                 routePush(RouterMap.ProductAddressListPage, { productDetailAddressModel });
             }}>
                 <MRText style={pStyles.nameText}>选择</MRText>
@@ -52,7 +57,13 @@ export class ProductDetailSkuAddressView extends React.Component {
         return (
             <View style={sStyles.containerView}>
                 <View style={sStyles.lineView}/>
-                <View style={sStyles.contentView}>
+                <NoMoreClick style={sStyles.contentView} onPress={() => {
+                    if (!user.isLogin) {
+                        routeNavigate(RouterMap.LoginPage);
+                        return;
+                    }
+                    routePush(RouterMap.ProductAddressListPage, { productDetailAddressModel });
+                }}>
                     <View style={sStyles.content1View}>
                         <MRText style={{ color: DesignRule.textColor_mainTitle, fontSize: 14 }}>配送区域 <MRText style={{
                             color: DesignRule.textColor_instruction,
@@ -68,7 +79,7 @@ export class ProductDetailSkuAddressView extends React.Component {
                         </View>
                     </View>
                     <Image source={arrow_right_black}/>
-                </View>
+                </NoMoreClick>
                 <View style={sStyles.lineView}/>
             </View>
         );
@@ -107,8 +118,8 @@ export class ProductDetailAddressModel {
     @observable addressSelectedText = null;
     @observable addressSelectedCode = null;
 
-    /*区域库存(地区变化就需要更新)*/
-    @observable areaSkuList = [];
+    /*区域库存(地区变化就需要更新)  未请求成功为null*/
+    @observable areaSkuList = null;
 
     @computed get showAreaText() {
         if (this.addressSelectedText) {

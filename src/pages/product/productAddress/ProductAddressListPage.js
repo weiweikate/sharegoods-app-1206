@@ -19,7 +19,7 @@ export class ProductAddressPage extends BasePage {
     };
 
     _renderItem = ({ item }) => {
-        const { receiverPhone, receiver, province, city, area, address, areaCode } = item;
+        const { receiverPhone, receiver, province, city, area, address, areaCode, defaultStatus } = item;
         return (
             <NoMoreClick style={styles.itemView} onPress={() => {
                 const { productDetailAddressModel } = this.params;
@@ -28,8 +28,13 @@ export class ProductAddressPage extends BasePage {
                 popToRouteName(RouterMap.ProductDetailPage);
             }}>
                 <View style={styles.itemTopView}>
-                    <MRText style={styles.itemNameText}>{receiver || ''}</MRText>
-                    <MRText style={styles.itemPhoneText}>{receiverPhone || ''}</MRText>
+                    <View style={styles.itemDefaultView}>
+                        <MRText style={styles.itemNameText}>{receiver || ''}</MRText>
+                        <MRText style={styles.itemPhoneText}>{receiverPhone || ''}</MRText>
+                    </View>
+                    {defaultStatus === 1 && <View style={styles.itemDefaultRedView}>
+                        <MRText style={styles.itemDefaultRedText}>默认</MRText>
+                    </View>}
                 </View>
                 <MRText
                     style={styles.itemAddressText}>{`${province || ''}${city || ''}${area || ''}${address || ''}`}</MRText>
@@ -91,14 +96,24 @@ const styles = StyleSheet.create({
         backgroundColor: 'white', borderRadius: 5
     },
     itemTopView: {
-        flexDirection: 'row', justifyContent: 'space-between', marginVertical: 10
+        flexDirection: 'row', justifyContent: 'space-between', marginVertical: 10, alignItems: 'center'
     },
     itemNameText: {
         marginLeft: 10,
         color: DesignRule.textColor_mainTitle, fontSize: 12
     },
+    itemDefaultView: {
+        flexDirection: 'row', alignItems: 'center'
+    },
+    itemDefaultRedView: {
+        alignItems: 'center', justifyContent: 'center', marginRight: 10,
+        width: 30, height: 17, backgroundColor: '#FFE5ED', borderRadius: 3
+    },
+    itemDefaultRedText: {
+        color: DesignRule.textColor_redWarn, fontSize: 10
+    },
     itemPhoneText: {
-        marginRight: 10,
+        marginLeft: 10,
         color: DesignRule.textColor_mainTitle, fontSize: 12
     },
     itemAddressText: {
