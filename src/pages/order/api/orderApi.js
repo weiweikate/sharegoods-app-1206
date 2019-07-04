@@ -45,6 +45,7 @@ const api = {
     PackageSubmitOrder:['/operator/activitypackage/submit',{ isRSA: true }],
     //（陈帅）再来一单
     againOrder:'/order/buy-again',
+    orderActivityCheck:'/bargain/activityCheck',//是否是助力减订单
     /**  售后模块相关接口 huchao */
 
     findAllExpress: ['/express/query', {method: 'get'}],
