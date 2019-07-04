@@ -5,6 +5,11 @@ public class LoadingDialogEvent {
     private boolean isShow;
     private String msg;
 
+    public LoadingDialogEvent(boolean isShow, String msg) {
+        this.isShow = isShow;
+        this.msg = msg;
+    }
+
     public boolean isShow() {
         return isShow;
     }

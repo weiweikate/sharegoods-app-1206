@@ -32,7 +32,6 @@ import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.commonlib.utils.Utils;
 import com.meeruu.sharegoods.event.Event;
 import com.meeruu.sharegoods.event.HideSplashEvent;
-import com.meeruu.sharegoods.rn.preload.ReactNativePreLoader;
 import com.meeruu.sharegoods.ui.activity.GuideActivity;
 import com.meeruu.sharegoods.ui.activity.MainRNActivity;
 import com.meeruu.sharegoods.utils.HttpUrlUtils;
@@ -61,14 +60,16 @@ public class MainActivity extends BaseActivity {
     private boolean hasGo = false;
     private String adUrl;
     private CountDownTimer countDownTimer = null;
+    private boolean showLoading = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setChangeStatusTrans(true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        EventBus.getDefault().register(this);
-        ReactNativePreLoader.preLoad(MainActivity.this, ParameterUtils.RN_MAIN_NAME);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         Log.d("is_phone", !Utils.isEmulator(getApplicationContext()) + "");
     }
 
@@ -130,7 +131,9 @@ public class MainActivity extends BaseActivity {
     protected void onDestroy() {
         releaseRes();
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     private void releaseRes() {
@@ -214,10 +217,12 @@ public class MainActivity extends BaseActivity {
     private void goIndex() {
         boolean hasGuide = (boolean) SPCacheUtils.get("hasGuide", false);
         if (hasGuide) {
-            startActivity(new Intent(MainActivity.this, MainRNActivity.class));
+            startActivity(new Intent(MainActivity.this, MainRNActivity.class)
+                    .putExtra("showLoading", showLoading));
         } else {
             startActivity(new Intent(MainActivity.this, GuideActivity.class));
         }
+        finish();
     }
 
     @Override
@@ -274,10 +279,6 @@ public class MainActivity extends BaseActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void hideSplash(HideSplashEvent event) {
-        if (hasBasePer && needGo && !hasGo) {
-            if (!isFinishing()) {
-                finish();
-            }
-        }
+        showLoading = false;
     }
 }

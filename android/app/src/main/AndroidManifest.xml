@@ -155,28 +155,19 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <!-- 秀购schema -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="com.meeruu.sharegoods.mobile"
-                    android:scheme="meeruu" />
-            </intent-filter>
         </activity>
+
         <activity
             android:name=".ui.activity.MainRNActivity"
             android:configChanges="screenLayout|screenSize|smallestScreenSize|orientation"
             android:hardwareAccelerated="true"
             android:label="@string/app_name"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:resizeableActivity="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden"
             tools:targetApi="n">
+            <!-- 秀购schema -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 

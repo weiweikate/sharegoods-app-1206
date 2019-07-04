@@ -22,8 +22,8 @@ import RouterMap from './RouterMap';
 
 @observer
 class NormalTab extends Component {
-    render(){
-        const {source,title} = this.props;
+    render() {
+        const { source, title } = this.props;
         return <View style={styles.tab}>
             <View>
                 <Image style={styles.tabBarIcon} source={source}/>
@@ -37,10 +37,10 @@ class NormalTab extends Component {
 }
 
 class ActiveTab extends Component {
-    render(){
-        const {source,title} = this.props;
+    render() {
+        const { source, title } = this.props;
         return <View style={styles.tab}>
-                <Image style={styles.tabBarIcon} source={source}/>
+            <Image style={styles.tabBarIcon} source={source}/>
             <Text style={styles.text}>{title}</Text>
         </View>;
     }
@@ -309,6 +309,6 @@ const styles = StyleSheet.create({
         right: -6,
         top: 0,
         width: 16,
-        height: 10,
+        height: 10
     }
 });

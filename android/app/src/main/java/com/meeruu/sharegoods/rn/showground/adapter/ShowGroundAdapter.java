@@ -16,6 +16,7 @@ import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
 import com.meeruu.sharegoods.rn.showground.utils.NumUtils;
 
 import static com.meeruu.sharegoods.rn.showground.adapter.ShowRecommendAdapter.userImgWH;
+import static com.meeruu.sharegoods.rn.showground.adapter.ShowRecommendAdapter.videoOrImageWH;
 
 
 public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.DataBean, BaseViewHolder> {
@@ -52,9 +53,9 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
         String imgUrl = null;
         if (item.getResource() != null) {
             if (item.getShowType() == 3) {
-                imgUrl = item.getVideoCover().imageUrl;
-                width = item.getVideoCover().imageViewWidth;
-                height = item.getVideoCover().imageViewHeight;
+                imgUrl = item.getVideoCover();
+                width = videoOrImageWH;
+                height = videoOrImageWH;
             } else {
                 NewestShowGroundBean.DataBean.ResourceBean resourceBean = item.getResource().get(0);
                 imgUrl = resourceBean.getBaseUrl();
