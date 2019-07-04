@@ -198,9 +198,6 @@ export default class AfterSaleListPage extends BasePage<Props> {
                     url={orderApi.afterSaleList}
                     renderItem={this.renderItem}
                     params={params}
-                    totalPageNum={(result) => {
-                        return result.data.isMore ? 10 : 0;
-                    }}
                     handleRequestResult={(result) => {
                         return result.data.data;
                     }}
