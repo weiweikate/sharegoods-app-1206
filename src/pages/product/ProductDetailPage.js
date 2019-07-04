@@ -22,6 +22,7 @@ import DetailPromoteModal from './components/DetailPromoteModal';
 import { beginChatType, QYChatTool } from '../../utils/QYModule/QYChatTool';
 import ProductDetailModel, { productItemType, sectionType } from './ProductDetailModel';
 import { observer } from 'mobx-react';
+import { autorun } from 'mobx';
 import RouterMap from '../../navigation/RouterMap';
 import {
     ContentItemView,
@@ -78,22 +79,19 @@ export default class ProductDetailPage extends BasePage {
         };
     };
 
+    listenerLogin = autorun(() => {
+        user.isLogin && this.productDetailModel.requestProductDetail();
+    });
 
     componentDidMount() {
-        this.willFocusSubscription = this.props.navigation.addListener('willFocus', payload => {
-                const { state } = payload;
-                if (state && state.routeName === 'product/ProductDetailPage' && !user.isProdFirstLoad) {
-                    this.productDetailModel && this.productDetailModel.requestProductDetail();
-                }
-            }
-        );
         if (user.isProdFirstLoad) {
             setTimeout(() => {
                 user.isProdFirstLoad = false;
                 this.productDetailModel && this.productDetailModel.requestProductDetail();
             }, 200);
+        } else {
+            this.productDetailModel && this.productDetailModel.requestProductDetail();
         }
-        this.productDetailModel.productDetailAddressModel.requestAddress();
     }
 
     componentWillUnmount() {
