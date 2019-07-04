@@ -135,8 +135,8 @@ export default class CommShareModal extends React.Component {
             if(params && params.linkUrl){
                 userApi.shareShortUrl({'longUrl':params.linkUrl, 'expireTime':0})
                     .then(res=>{
-                        console.log(res);
-                        urlArrs = res.data && res.data.data ? res.data.data : '';
+                        console.log('res',res);
+                        urlArrs = res && res.data ? res.data : '';
 
                     }).catch(error=>{
                 });

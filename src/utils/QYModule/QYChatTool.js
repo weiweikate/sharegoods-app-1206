@@ -35,7 +35,7 @@ const QYChatTool = {
                 nickName: user.nickname,
                 device: DeviceInfo.getDeviceName(),
                 systemVersion: DeviceInfo.getSystemVersion(),
-                isVip: result.data
+                isVip: result.data||false
             };
             JRQYService.initQYChat(jsonParams);
 

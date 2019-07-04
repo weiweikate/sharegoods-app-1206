@@ -158,7 +158,7 @@ class App extends Component {
     }
 
 
-    mineMessageData = (data)=>{
+    mineMessageData = (data) => {
         const { params } = JSON.parse(data) || {};
         if(params && Number(params.index) === 1){
             settingModel.availableBalanceAdd(1);
