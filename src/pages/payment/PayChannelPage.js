@@ -21,7 +21,7 @@ import { track, TrackApi, trackEvent } from '../../utils/SensorsTrack';
 
 const { px2dp } = ScreenUtils;
 import Toast from '../../utils/bridge';
-import RouterMap, { replaceRoute } from '../../navigation/RouterMap';
+import RouterMap  from '../../navigation/RouterMap';
 import StringUtils from '../../utils/StringUtils';
 
 @observer
