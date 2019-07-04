@@ -135,7 +135,7 @@ export default class StatusInfoView extends React.Component {
         switch (status) {
             case STATUS_WAREHOUSE_CONFIRMED:
                 return{
-                    titleStr: '物流信息提交成功，请耐心等待平台处理',
+                    titleStr: '物流信息提交成功，请耐心等待商家处理',
                 }
             case STATUS_PLATFORM_PROCESSING:
 
@@ -194,7 +194,7 @@ export default class StatusInfoView extends React.Component {
         switch (status) {
             case STATUS_WAREHOUSE_CONFIRMED:
                 return{
-                    titleStr: '物流信息提交成功，请耐心等待平台处理',
+                    titleStr: '物流信息提交成功，请耐心等待商家处理',
                 }
             case STATUS_PLATFORM_PROCESSING:
 

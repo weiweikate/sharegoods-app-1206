@@ -5,29 +5,9 @@ import Toast from "../../../utils/bridge";
 import { PageLoadingState } from "../../../components/pageDecorator/PageState";
 import { GetViewOrderStatus, OrderType } from '../order/OrderType';
 
-export const orderStatus = {
-    prePayment: 1,
-    didPayment: 2
-}
-
-
-class OrderStatusModel {
-    @observable status = 0
-    @observable statusMsg = 0
-}
-
-export const orderStatusModel = new OrderStatusModel()
 
 class OrderDetailModel {
-
-    @observable detail = {}
-    @observable statusDic = [{}]
-    @observable expList=[]
-    @observable warehouseOrderDTOList=[]
-    @observable unSendProductInfoList=[]
-    @observable status=null
-    @observable deleteInfo=false
-
+    @observable data = {};
     @observable menu = []
     @observable moreDetail = '';
     @observable sellerState = '';
@@ -51,6 +31,7 @@ class OrderDetailModel {
         return OrderApi.lookDetail({
             merchantOrderNo:merchantOrderNo
         }).then(rep => {
+            this.data = rep.data;
             this.handleData(rep.data || {})
         }).catch(err=>{
             if(err.code===47002){
@@ -63,7 +44,14 @@ class OrderDetailModel {
             Toast.$toast(err.msg);
         })
     }
+    @action dataHandleConfirmOrder(){
+        if (this.data&&this.data.merchantOrder) {
+            this.data.merchantOrder.status = OrderType.COMPLETED;
+            this.handleData({...this.data})
+        }
+    }
     @action handleData(data){
+        this.stopTimer();
         //判空
         this.baseInfo = data.baseInfo || {}
         this.merchantOrder = data.merchantOrder || {}

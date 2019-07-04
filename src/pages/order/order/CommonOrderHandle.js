@@ -49,9 +49,9 @@ function clickOrderConfirmReceipt(merchantOrderNo, subStatus, callBack){
                 bridge.showLoading();
                 OrderApi.confirmReceipt({ merchantOrderNo: merchantOrderNo}).then((response) => {
                     bridge.hiddenLoading();
+                    callBack && callBack();
                     routePush('order/order/ConfirmReceiveGoodsPage', {
-                        merchantOrderNo: merchantOrderNo,
-                        callBack: callBack
+                        merchantOrderNo: merchantOrderNo
                     });
                     bridge.$toast('确认收货成功');
                 }).catch(e => {

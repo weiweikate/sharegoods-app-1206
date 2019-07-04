@@ -62,7 +62,6 @@ export default class ConfirmReceiveGoodsPage extends BasePage {
     };
     $NavBarLeftPressed = () => {
         this.$navigateBack();
-        this.params.callBack && this.params.callBack();
     };
 }
 const styles = StyleSheet.create({

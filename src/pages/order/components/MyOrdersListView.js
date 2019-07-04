@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
     View, Alert, Keyboard, TouchableWithoutFeedback,
-    StyleSheet, TouchableOpacity, Image,DeviceEventEmitter
+    StyleSheet, TouchableOpacity, Image
 } from 'react-native';
 import GoodsListItem from './GoodsListItem';
 import SingleSelectionModal from './BottomSingleSelectModal';
@@ -21,6 +21,7 @@ import { clickOrderAgain, clickOrderConfirmReceipt, clickOrderLogistics } from '
 import CancelProdectsModal from './orderDetail/CancelProdectsModal';
 import { orderDetailModel } from '../model/OrderDetailModel';
 import ScreenUtils from '../../../utils/ScreenUtils';
+import { OrderType } from '../order/OrderType';
 const emptyIcon = res.kongbeuye_dingdan;
 
 @SmoothPushPreLoadHighComponent
@@ -32,17 +33,6 @@ export default class MyOrdersListView extends Component {
             pageStatus: this.props.pageStatus,
         };
         this.item = {};
-
-    }
-    componentDidMount(){
-        this.subscription = DeviceEventEmitter.addListener('OrderRefresh', this.receiveNotifi)
-    };
-
-    componentWillUnmount(){
-        this.subscription.remove();
-    };
-
-    receiveNotifi(param){
 
     }
 
@@ -179,6 +169,7 @@ export default class MyOrdersListView extends Component {
             orderDetailModel.handleData(data);
             this.props.nav('order/order/MyOrdersDetailPage', {
                 merchantOrderNo: data.merchantOrder.merchantOrderNo,
+                dataHandleConfirmOrder: ()=>this.dataHandleConfirmOrder(data, index),
                 dataHandleDeleteOrder: ()=>this.dataHandleDeleteOrder(data,index)
             });
     };
@@ -222,7 +213,7 @@ export default class MyOrdersListView extends Component {
                 clickOrderLogistics(merchantOrderNo)
                 break;
             case 6:
-                clickOrderConfirmReceipt(merchantOrderNo,subStatus)
+                clickOrderConfirmReceipt(merchantOrderNo,subStatus, this.dataHandleConfirmOrder(data, index))
                 break;
             case 7:
             case 9:
@@ -313,6 +304,20 @@ export default class MyOrdersListView extends Component {
         data.splice(index, 1);
         this.list.changeData([...data])
      }
+    }
+    //确认收货
+    dataHandleConfirmOrder =  (item, index) => {
+        if (this.props.pageStatus !== 0){//如果不是在全部里面确认收货，就走删除逻辑
+            this.dataHandleDeleteOrder(item, index);
+            return;
+        }
+        if(this.list){
+            let data = this.list.getSourceData();
+            if (data[index].merchantOrder){
+                data[index].merchantOrder.status = OrderType.COMPLETED;
+                this.list.changeData([...data])
+            }
+        }
     }
 }
 

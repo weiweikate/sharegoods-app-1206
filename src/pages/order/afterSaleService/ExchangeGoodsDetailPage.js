@@ -467,7 +467,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                             that.$loadingShow();
                             OrderApi.afterSaleCancel({ serviceNo: this.params.serviceNo }).then(result => {
                                 that.$loadingDismiss();
-                                DeviceEventEmitter.emit('OrderNeedRefresh');
+                                DeviceEventEmitter.emit('REFRESH_ORDER');
                                 that.afterSaleDetailModel.userCancel();
                             }).catch(error => {
                                 that.$loadingDismiss();

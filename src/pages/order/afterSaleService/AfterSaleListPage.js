@@ -171,9 +171,9 @@ export default class AfterSaleListPage extends BasePage<Props> {
             case 2:
                 return '待寄回';
             case 3:
-                return '待平台确认';
+                return '待商家确认';
             case 4:
-                return '待平台处理';
+                return '待商家处理';
             case 5:
                 return typeStr + '完成';
             case 6:

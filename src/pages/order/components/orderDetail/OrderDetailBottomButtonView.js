@@ -137,7 +137,10 @@ export default class OrderDetailBottomButtonView extends Component {
                 clickOrderLogistics(orderDetailModel.merchantOrderNo)
                 break;
             case 6:
-                clickOrderConfirmReceipt(orderDetailModel.merchantOrderNo,orderDetailModel.merchantOrder.subStatus,this.props.loadPageData)
+                clickOrderConfirmReceipt(orderDetailModel.merchantOrderNo,orderDetailModel.merchantOrder.subStatus, ()=> {
+                    this.props.dataHandleConfirmOrder && this.props.dataHandleConfirmOrder();//本地修改列表数据状态到交易完成
+                    orderDetailModel.dataHandleConfirmOrder();//本地修改详情状态到交易完成
+                })
                 break;
             case 8:
                 clickOrderAgain(orderDetailModel.merchantOrderNo, orderDetailModel.productsList());

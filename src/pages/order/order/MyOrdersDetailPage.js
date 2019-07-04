@@ -4,7 +4,7 @@ import {
     View,
     TouchableOpacity,
     Image,
-    ScrollView, Text, Alert
+    ScrollView, Text, Alert, DeviceEventEmitter
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import { NoMoreClick, UIText } from '../../../components/ui';
@@ -91,11 +91,18 @@ export default class MyOrdersDetailPage extends BasePage {
         );
     };
 
+    componentDidMount() {
+        this.loadPageData();
+        this.getCancelOrder();
+        //接收刷新的通知
+        this.listener = DeviceEventEmitter.addListener('REFRESH_ORDER', ()=> {
+            this.loadPageData();
+        })
+    }
 
     componentWillUnmount() {
-        this.didFocusSubscription && this.didFocusSubscription.remove();
         orderDetailModel.stopTimer();
-        // DeviceEventEmitter.removeAllListeners("OrderNeedRefresh");
+        this.listener && this.listener.remove();
     }
 
     showMore = () => {
@@ -115,11 +122,6 @@ export default class MyOrdersDetailPage extends BasePage {
 
         );
     };
-
-    componentDidMount() {
-        this.loadPageData();
-        this.getCancelOrder();
-    }
 
 
     getCancelOrder() {
@@ -200,6 +202,7 @@ export default class MyOrdersDetailPage extends BasePage {
                             this.setState({ showDele: !this.state.showDele });
                         }}
                         dataHandleDeleteOrder={this.params.dataHandleDeleteOrder}
+                        dataHandleConfirmOrder={this.params.dataHandleConfirmOrder}
                         loadPageData={() => this.loadPageData()}/>
                     {!this.state.showDele ? null : <NoMoreClick style={{
                         width: 68,

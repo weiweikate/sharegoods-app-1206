@@ -551,7 +551,7 @@ class AfterSaleServicePage extends BasePage {
             this.$loadingShow();
             OrderApi.afterSaleApply(params).then((response) => {
                 this.$loadingDismiss();
-                DeviceEventEmitter.emit('OrderNeedRefresh');
+                DeviceEventEmitter.emit('REFRESH_ORDER');
                 this.$navigate(RouterMap.ExchangeGoodsDetailPage, {
                     serviceNo: response.data.serviceNo
                 });
