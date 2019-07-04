@@ -843,7 +843,6 @@ export default class MinePage extends BasePage {
             icon: mine_icon_mentor,
             onPress: () => {
                 if (user.upUserCode) {
-                    settingModel.fansMSGAdd();
                     this.$navigate(RouterMap.MyMentorPage);
                 }
             }
@@ -855,6 +854,7 @@ export default class MinePage extends BasePage {
             num: settingModel.fansMSG,
             onPress: () => {
                 if (this.state.hasFans) {
+                    settingModel.fansMSGAdd();
                     this.$navigate(RouterMap.MainShowFansPage);
                 }
             }

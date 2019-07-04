@@ -9,7 +9,6 @@ import android.os.MessageQueue;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
-import android.util.Log;
 import android.webkit.WebView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;

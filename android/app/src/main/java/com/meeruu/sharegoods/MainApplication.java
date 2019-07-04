@@ -1,12 +1,9 @@
 package com.meeruu.sharegoods;
 
-import android.content.Context;
-
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.facebook.react.ReactApplication;
-import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainPackageConfig;
@@ -18,6 +15,7 @@ import com.meeruu.commonlib.config.FrescoImagePipelineConfig;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.sharegoods.rn.RNMRPackage;
 import com.meeruu.sharegoods.rn.lottie.LottiePackage;
+import com.meeruu.sharegoods.rn.preload.ReactNativePreLoader;
 import com.meeruu.sharegoods.rn.sensors.RNSensorsAnalyticsPackage;
 import com.microsoft.codepush.react.CodePush;
 import com.psykar.cookiemanager.CookieManagerPackage;
@@ -27,6 +25,7 @@ import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.request.MRNetStatePackage;
 import com.squareup.leakcanary.LeakCanary;
+import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -43,12 +42,9 @@ import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
 public class MainApplication extends BaseApplication implements ReactApplication {
 
     @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
-    }
-
-    @Override
     public void onCreate() {
+        // 预加载rn
+        ReactNativePreLoader.preLoad(this, ParameterUtils.RN_MAIN_NAME);
         super.onCreate();
         // 检测内存泄漏
         LeakCanary.install(this);

@@ -39,7 +39,7 @@ const onShare = (data, api, trackParmas, trackEvent, callback = () => {
         params.linkUrl = queryString(params.linkUrl, addData);
     }
 
-    if (params.platformType === 1 || params.platformType === 4) {
+    if (params.platformType === 1) {
         params.title = params.dec && params.dec.length > 0 ? params.title + ',' + params.dec : params.title;
     }
 
