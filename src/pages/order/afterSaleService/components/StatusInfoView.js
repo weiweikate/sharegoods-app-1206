@@ -43,7 +43,9 @@ const {
     REFUSE_REVOKED, //用户自己关闭
     REFUSE_OVERTIME , //超时
     REFUSE_APPLY, //拒绝售后申请
-    REFUSE_AFTER      //拒绝售后
+    REFUSE_AFTER,     //拒绝售后
+    WAIT_AUDIT, //等待管理员处理
+    WAIT_SENDBACK, //理员审核，等待寄回
 } = SubStatus;
 
 
@@ -138,10 +140,20 @@ export default class StatusInfoView extends React.Component {
                     titleStr: '物流信息提交成功，请耐心等待商家处理',
                 }
             case STATUS_PLATFORM_PROCESSING:
-
-                return{
-                    titleStr: '平台已同意您的售后申请',
+                if (subStatus === WAIT_AUDIT){
+                    return{
+                        titleStr: '物流信息提交成功，请耐心等待商家处理',
+                    }
                 }
+
+                if (subStatus === WAIT_SENDBACK){
+                    return{
+                        titleStr: '商家已经同意申请，等待商家发货',
+                    }
+                }
+                // return{
+                //     titleStr: '平台已同意您的售后申请',
+                // }
 
             case STATUS_SUCCESS:
                 if (isRefundFail(refundStatus)) {
@@ -198,8 +210,16 @@ export default class StatusInfoView extends React.Component {
                 }
             case STATUS_PLATFORM_PROCESSING:
 
-                return{
-                    titleStr: '平台已同意您的售后申请',
+                if (subStatus === WAIT_AUDIT){
+                    return{
+                        titleStr: '物流信息提交成功，请耐心等待商家处理',
+                    }
+                }
+
+                if (subStatus === WAIT_SENDBACK){
+                    return{
+                        titleStr: '商家已经同意申请，等待商家发货',
+                    }
                 }
 
             case STATUS_SUCCESS:
