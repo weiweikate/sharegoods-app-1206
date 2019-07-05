@@ -156,11 +156,15 @@ export default class ReleaseNotesPage extends BasePage {
     }
 
     choosePicker = () => {
-
-        // NativeModules.ShowModule.recordVideo().then((data)=>{
-        //     this.publishVideo(data.videoPath);
+        // NativeModules.ShowModule.selectVideo().then((data)=>{
+        //
         // })
         // return;
+
+        NativeModules.ShowModule.recordVideo().then((data)=>{
+            this.publishVideo(data.videoPath);
+        })
+        return;
 
         let imageArr = this.state.imageArr;
         if (imageArr.length >= 8) {
