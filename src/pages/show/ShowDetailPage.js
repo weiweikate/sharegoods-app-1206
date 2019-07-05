@@ -39,7 +39,6 @@ import EmptyUtils from '../../utils/EmptyUtils';
 import ShowApi from './ShowApi';
 import NoMoreClick from '../../components/ui/NoMoreClick';
 import AddCartModel from './model/AddCartModel';
-import { sourceType } from '../product/SelectionPage';
 import shopCartCacheTool from '../shopCart/model/ShopCartCacheTool';
 import SelectionPage from '../product/SelectionPage';
 import RouterMap, { routePop, routeNavigate } from '../../navigation/RouterMap';
@@ -520,7 +519,7 @@ export default class ShowDetailPage extends BasePage {
                     pricePerCommodity: originalPrice,
                     spuAmount: amount
                 });
-            }, { sourceType: productIsPromotionPrice ? sourceType.promotion : null });
+            }, { productIsPromotionPrice: productIsPromotionPrice });
         }, (error) => {
             this.$toastShow(error.msg || '服务器繁忙');
         });

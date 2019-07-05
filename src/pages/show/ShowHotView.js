@@ -14,7 +14,7 @@ import ShowRecommendView from './components/ShowRecommendView';
 import ReleaseButton from './components/ReleaseButton';
 
 import user from '../../model/user';
-import SelectionPage, { sourceType } from '../product/SelectionPage';
+import SelectionPage from '../product/SelectionPage';
 import AddCartModel from './model/AddCartModel';
 import shopCartCacheTool from '../shopCart/model/ShopCartCacheTool';
 import { track, trackEvent } from '../../utils/SensorsTrack';
@@ -98,7 +98,7 @@ export default class ShowHotView extends React.Component {
                     pricePerCommodity: originalPrice,
                     spuAmount: amount,
                 });
-            }, { sourceType: productIsPromotionPrice ? sourceType.promotion : null });
+            }, { productIsPromotionPrice: productIsPromotionPrice });
         }, (error) => {
             bridge.$toast(error.msg || '服务器繁忙');
         });

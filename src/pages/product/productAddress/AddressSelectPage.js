@@ -69,7 +69,7 @@ export class AddressSelectPage extends BasePage {
                                         selectItems.forEach((item, index1) => {
                                             if (index1 === index) {
                                                 selectItems[index1] = { name: '请选择' };
-                                            } else if (index1 > item) {
+                                            } else if (index1 > index) {
                                                 selectItems[index1] = {};
                                             }
                                         });

@@ -36,7 +36,7 @@
             "name": "商家一期",
             "host": "https://test2api.sharegoodsmall.com/gateway",
             "h5": "https://test2h5.sharegoodsmall.com",
-            "oss": "https://testcdn.sharegoodsmall.com",
+            "oss": "https://test2cdn.sharegoodsmall.com",
             "wxAppletKey": "gh_aa91c3ea0f6c",
             "gongmao": "http://testsop.sharegoodsmall.com/gateway/gongmall/contract/reback"
         },
