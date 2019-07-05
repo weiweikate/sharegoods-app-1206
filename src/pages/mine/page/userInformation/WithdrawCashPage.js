@@ -427,20 +427,11 @@ export default class WithdrawCashPage extends BasePage {
             dateTip = `1.提现申请时间为每月${dataArr.join('、')}；`;
         }
 
-        if (this.state.count) {
-            if (dateTip) {
-                dateTip += `\n每月只能申请提现${this.state.count}次`;
-            } else {
-                dateTip = `1:每月只能申请提现${this.state.count}次`;
-            }
-        }
-
         if (dateTip) {
             tip4Index++;
             tip3Index++;
             tip2index++;
         }
-
 
         return (
             <View style={{ flexDirection: 'row', marginLeft: DesignRule.margin_page, marginTop: 5 }}>

@@ -23,6 +23,8 @@ const resHome = {
     btn_bg:require('./btn_bg.png'),
     unwin:require('./unwin.png'),
     win:require('./win.png'),
+    limitGoHeader:require('./limitGoHeader.png'),
+    modalBg:require('./modalBg.png'),
     signIn: {
         ...signIn
     },

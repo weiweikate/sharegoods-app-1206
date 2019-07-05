@@ -199,12 +199,7 @@ public class CommModule extends ReactContextBaseJavaModule {
     }
 
     public void loadingDialog(boolean isShow, String msg) {
-        LoadingDialogEvent event = new LoadingDialogEvent();
-        event.setShow(isShow);
-        if (!TextUtils.isEmpty(msg)) {
-            event.setMsg(msg);
-        }
-        EventBus.getDefault().post(event);
+        EventBus.getDefault().post(new LoadingDialogEvent(isShow, msg));
     }
 
     @ReactMethod
@@ -245,7 +240,7 @@ public class CommModule extends ReactContextBaseJavaModule {
             try {
                 file = new File(new URI(filePath));
                 filePath = file.getAbsolutePath();
-            }catch (Exception e){
+            } catch (Exception e) {
 
             }
 
@@ -487,11 +482,11 @@ public class CommModule extends ReactContextBaseJavaModule {
         }
 
         String curPath = filePath;
-        if(!TextUtils.isEmpty(filePath) && filePath.startsWith("file://")){
+        if (!TextUtils.isEmpty(filePath) && filePath.startsWith("file://")) {
             try {
-                File  file1 = new File(new URI(filePath));
+                File file1 = new File(new URI(filePath));
                 curPath = file1.getAbsolutePath();
-            }catch (Exception e){
+            } catch (Exception e) {
                 promise.reject("");
                 return;
             }
@@ -573,9 +568,9 @@ public class CommModule extends ReactContextBaseJavaModule {
             promise.reject("url不能为空");
             return;
         }
-       
+
         final String storePath = SDCardUtils.getFileDirPath(mContext, "MR/picture")
-                .getAbsolutePath() ;
+                .getAbsolutePath();
 
         RequestManager.getInstance().downLoadFile(url, storePath, new ReqProgressCallBack<Object>() {
             @Override
@@ -595,7 +590,7 @@ public class CommModule extends ReactContextBaseJavaModule {
         });
 
         // 预加载原图
-       
+
     }
 
     @ReactMethod
@@ -614,9 +609,8 @@ public class CommModule extends ReactContextBaseJavaModule {
     }
 
 
-
     @ReactMethod
-    public void compressVideo(String path, final Promise promise){
+    public void compressVideo(String path, final Promise promise) {
 //        initSmallVideo();
 //        String realPath = Uri.parse(path).getPath();
 //        File file = new File(realPath);

@@ -252,7 +252,7 @@ export default class SelectionPage extends Component {
     };
 
     render() {
-        const { afterAmount, type } = this.state.propData;
+        const { afterAmount, type, isGroupIn } = this.state.propData;
         // const { productDetailAddressModel } = this.state.data;
         return (
             <Modal
@@ -289,6 +289,7 @@ export default class SelectionPage extends Component {
                                                      maxCount={this.state.maxStock}
                                                      afterAmount={afterAmount}
                                                      promotionLimit={this.state.promotionLimit}
+                                                     isGroupIn={isGroupIn}
                                                      type={type}/>}
                             </ScrollView>
                             <TouchableWithoutFeedback onPress={this._selectionViewConfirm}>

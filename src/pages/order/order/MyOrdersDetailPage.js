@@ -136,9 +136,23 @@ export default class MyOrdersDetailPage extends BasePage {
             });
         this.getCancelOrder();
 
+
     }
 
-
+    orderActivityCheck(productOrderNo, callBack){
+        OrderApi.orderActivityCheck({productOrderNo}).then((data)=> {
+            if (data === true){
+                Alert.alert('','您已参加助力免单活动，若您申请售后，活动奖励将被取消，您确定要申请售后吗？',
+                    [{text: '取消', onPress: () => {}},
+                        {text: '申请售后', onPress: () => {callBack && callBack();}}
+                    ])
+            } else {
+                callBack && callBack();
+            }
+        }).catch(() => {
+            callBack && callBack();
+        })
+    }
     getCancelOrder() {
         let arrs = [];
         MineApi.queryDictionaryTypeList({ code: 'QXDD' }).then(res => {
@@ -640,20 +654,24 @@ export default class MyOrdersDetailPage extends BasePage {
 
         switch (menu.id) {
             case 0:
-                this.$navigate(RouterMap.AfterSaleServicePage, {
-                    pageType: 0,
-                    orderProductNo: products.orderProductNo
-                });
+                this.orderActivityCheck(products.orderProductNo, () => {
+                    this.$navigate(RouterMap.AfterSaleServicePage, {
+                        pageType: 0,
+                        orderProductNo: products.orderProductNo
+                    });
 
+                })
                 break;
             case 1:
-                this.$navigate(RouterMap.AfterSaleServiceHomePage, {
-                    pageData: {
-                        ...products,
-                        orderSubType: StringUtils.isEmpty(products.activityCodes) ? -1 : products.activityCodes[0].orderType
-                    }
-                    //-1代表普通商品
-                });
+                this.orderActivityCheck(products.orderProductNo, () => {
+                    this.$navigate(RouterMap.AfterSaleServiceHomePage, {
+                        pageData: {
+                            ...products,
+                            orderSubType: StringUtils.isEmpty(products.activityCodes) ? -1 : products.activityCodes[0].orderType
+                        }
+                        //-1代表普通商品
+                    });
+                })
                 break;
             case 2:
                 this.$navigate(RouterMap.ExchangeGoodsDetailPage, {
