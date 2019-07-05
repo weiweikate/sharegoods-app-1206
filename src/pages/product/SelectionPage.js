@@ -13,6 +13,7 @@ import StringUtils from '../../utils/StringUtils';
 import bridge from '../../utils/bridge';
 import DesignRule from '../../constants/DesignRule';
 import { MRText as Text } from '../../components/ui/index';
+import { autorun } from 'mobx';
 import { observer } from 'mobx-react';
 import { ProductDetailSkuAddressView } from './components/ProductDetailAddressView';
 
@@ -38,6 +39,24 @@ export default class SelectionPage extends Component {
             amount: 1
         };
     }
+
+    /**选择地址变化刷新库存**/
+    updateShow = autorun(() => {
+        const { skuListByArea } = (this.state || {}).data || {};
+        const { isAreaSku } = (this.state || {}).propData || {};
+        if (isAreaSku && this.state.modalVisible) {
+            this.state.selectStrList = [];
+            this.state.selectSpecList = [];
+            this.maxStock = 0;
+
+            let skuListTemp = JSON.parse(JSON.stringify(skuListByArea));
+            skuListTemp.forEach((item) => {
+                item.propertyValues = `@${item.propertyValues}@`;
+            });
+            this.state.skuList = skuListTemp;
+            this._indexCanSelectedItems();
+        }
+    });
 
     show = (data, callBack, propData = {}) => {
         //type afterSpecIds

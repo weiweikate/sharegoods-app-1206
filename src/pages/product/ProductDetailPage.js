@@ -79,6 +79,7 @@ export default class ProductDetailPage extends BasePage {
         };
     };
 
+    /**登录刷新**/
     listenerLogin = autorun(() => {
         const loginChange = user.isLogin ? 1 : 1;
         if (this.isLoad && loginChange) {
