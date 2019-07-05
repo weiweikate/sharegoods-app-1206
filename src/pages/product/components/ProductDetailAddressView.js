@@ -53,7 +53,7 @@ const pStyles = StyleSheet.create({
 export class ProductDetailSkuAddressView extends React.Component {
     render() {
         const { productDetailAddressModel } = this.props;
-        const { showAreaText } = productDetailAddressModel;
+        const { showAreaText, areaSkuList } = productDetailAddressModel;
         return (
             <View style={sStyles.containerView}>
                 <View style={sStyles.lineView}/>
@@ -80,6 +80,7 @@ export class ProductDetailSkuAddressView extends React.Component {
                     </View>
                     <Image source={arrow_right_black}/>
                 </NoMoreClick>
+                {(areaSkuList && areaSkuList.length === 0) && <MRText style={sStyles.noSkuAlert}>该地区不支持配送</MRText>}
                 <View style={sStyles.lineView}/>
             </View>
         );
@@ -106,6 +107,10 @@ const sStyles = StyleSheet.create({
     addressImg: {
         marginRight: 8,
         width: 11, height: 14
+    },
+    noSkuAlert: {
+        paddingLeft: 20, paddingBottom: 9,
+        color: DesignRule.textColor_redWarn, fontSize: 12
     }
 });
 

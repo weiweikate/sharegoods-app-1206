@@ -80,10 +80,14 @@ export default class ProductDetailPage extends BasePage {
     };
 
     listenerLogin = autorun(() => {
-        user.isLogin && this.productDetailModel.requestProductDetail();
+        const loginChange = user.isLogin ? 1 : 1;
+        if (this.isLoad && loginChange) {
+            this.productDetailModel && this.productDetailModel.requestProductDetail();
+        }
     });
 
     componentDidMount() {
+        this.isLoad = true;
         if (user.isProdFirstLoad) {
             setTimeout(() => {
                 user.isProdFirstLoad = false;
@@ -95,6 +99,7 @@ export default class ProductDetailPage extends BasePage {
     }
 
     componentWillUnmount() {
+        this.isLoad = false;
         this.productDetailModel.clearTime();
         this.willFocusSubscription && this.willFocusSubscription.remove();
     }
