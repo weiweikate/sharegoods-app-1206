@@ -52,7 +52,7 @@ export default class ShopCartEmptyCell extends Component {
                     <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: px2dp(10) }}>
                         <View style={{ flex: 1 }}>
                             <MRText style={{ color: 'rgba(255, 0, 80, 1)', fontSize: px2dp(12) }}>
-                                {`￥${itemData.promotionMinPrice?itemData.promotionMinPrice:itemData.minPrice}起`}
+                                {`￥${ itemData.promotionMinPrice?itemData.promotionMinPrice:itemData.minPrice}起`}
                             </MRText>
                         </View>
                     </View>
