@@ -481,7 +481,7 @@ export default class ProductDetailModel {
                 productType: productType,
                 priceShareStore: groupPrice,
                 priceShow: this.activityStatus === activity_status.inSell ? promotionMinPrice : minPrice,
-                priceType: priceType === price_type.shop ? 100 : user.levelRemark
+                priceType: priceType === price_type.shop ? '100' : user.levelRemark
             });
         }
     };
