@@ -31,8 +31,8 @@ const QYChatTool = {
         QYApi.judgeVip().then(result => {
             let jsonParams = {
                 userId: user.code + '',
-                userIcon: user.headImg,
-                nickName: user.nickname,
+                userIcon: user.headImg||'',
+                nickName: user.nickname||'',
                 device: DeviceInfo.getDeviceName(),
                 systemVersion: DeviceInfo.getSystemVersion(),
                 isVip: result.data||false
@@ -42,8 +42,8 @@ const QYChatTool = {
         }).catch(error => {
             let jsonParams = {
                 userId: user.code + '',
-                userIcon: user.headImg,
-                nickName: user.nickname,
+                userIcon: user.headImg||'',
+                nickName: user.nickname||'',
                 device: DeviceInfo.getDeviceName(),
                 systemVersion: DeviceInfo.getSystemVersion(),
                 isVip: false
