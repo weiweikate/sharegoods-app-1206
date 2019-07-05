@@ -390,7 +390,7 @@ export default class MyCashAccountPage extends BasePage {
                             </View>
                             <Text style={{
                                 fontSize: 12, color: DesignRule.textColor_instruction
-                            }}>{item.realBalance == 0 && (item.realBalance && item.realBalance >= 0) ? `已入账：${item.realBalance}` : '待入账：？'}</Text>
+                            }}>{item.realBalance == 0 || (!EmptyUtils.isEmpty(item.realBalance) && item.realBalance >= 0) ? `已入账：${item.realBalance}` : '待入账：？'}</Text>
                         </View>
                         :
                         <View style={{ justifyContent: 'space-between', alignItems: 'flex-end' }}>
