@@ -19,14 +19,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.facebook.binaryresource.BinaryResource;
-import com.facebook.binaryresource.FileBinaryResource;
-import com.facebook.cache.common.CacheKey;
 import com.facebook.drawee.controller.BaseControllerListener;
-import com.facebook.imagepipeline.cache.DefaultCacheKeyFactory;
-import com.facebook.imagepipeline.core.ImagePipelineFactory;
-import com.facebook.imagepipeline.listener.BaseRequestListener;
-import com.facebook.imagepipeline.request.ImageRequest;
 import com.meeruu.commonlib.utils.BitmapUtils;
 import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
@@ -48,7 +41,6 @@ import com.reactnative.ivpusic.imagepicker.picture.lib.widget.longimage.Subsampl
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -185,36 +177,15 @@ public class PictureExternalPreviewActivity extends PictureBaseActivity implemen
                         }
                     });
                 } else {
-                    ImageLoadUtils.preFetch(Uri.parse("file://" + path), w480, w800, new BaseRequestListener() {
-                        @Override
-                        public void onRequestSuccess(ImageRequest request, String requestId, boolean isPrefetch) {
-                            super.onRequestSuccess(request, requestId, isPrefetch);
-                            CacheKey cacheKey = DefaultCacheKeyFactory.getInstance().getEncodedCacheKey(request, this);
-                            BinaryResource resource = ImagePipelineFactory.getInstance().getMainFileCache().getResource(cacheKey);
-                            if (resource == null) {
-                                return;
-                            }
-                            final File file = ((FileBinaryResource) resource).getFile();
-                            if (file == null) {
-                                return;
-                            }
-                            // 保存图片
-                            Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), BitmapUtils.getBitmapOption(2));
-                            if (bmp != null && !bmp.isRecycled()) {
-                                if (eqLongImg) {
-                                    displayLongPic(bmp, longImg);
-                                } else {
-                                    ImageLoadUtils.loadImageFile(path, imageView);
-                                }
-                            }
+                    dismissDialog();
+                    if (eqLongImg) {
+                        Bitmap bmp = BitmapFactory.decodeFile(path, BitmapUtils.getBitmapOption(2));
+                        if (bmp != null && !bmp.isRecycled()) {
+                            displayLongPic(bmp, longImg);
                         }
-
-                        @Override
-                        public void onRequestFailure(ImageRequest request, String requestId, Throwable throwable, boolean isPrefetch) {
-                            super.onRequestFailure(request, requestId, throwable, isPrefetch);
-                            dismissDialog();
-                        }
-                    });
+                    } else {
+                        ImageLoadUtils.loadImageFile(path, imageView);
+                    }
                 }
                 imageView.setOnViewTapListener(new OnViewTapListener() {
                     @Override

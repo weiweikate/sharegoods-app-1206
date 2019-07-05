@@ -5,6 +5,7 @@
     android:background="@color/black"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
+
     <RelativeLayout
         android:id="@+id/rl_title"
         android:layout_width="match_parent"
@@ -42,8 +43,8 @@
 
             <TextView
                 android:id="@+id/check"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
                 android:background="?attr/picture.checked.style"
                 android:gravity="center"
                 android:textColor="@color/white"
@@ -83,9 +84,11 @@
                 android:text="编辑"
                 android:textColor="?attr/picture.ac_preview.complete.textColor"
                 android:textSize="14sp" />
-            <Space android:layout_weight="1"
+
+            <Space
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content"/>
+                android:layout_weight="1" />
 
 
             <TextView

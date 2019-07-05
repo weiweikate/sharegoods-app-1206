@@ -30,9 +30,9 @@
     <attr name="picture.status.color" format="reference|color" />
     <attr name="picture.ac_preview.title.bg" format="reference|color" />
     <attr name="picture.preview.leftBack.icon" format="reference" />
-    <attr name="picture.statusFontColor" format="boolean" />
-    <attr name="picture.style.numComplete" format="boolean" />
-    <attr name="picture.style.checkNumMode" format="boolean" />
+    <attr name="picture_statusFontColor" format="boolean" />
+    <attr name="picture_style_numComplete" format="boolean" />
+    <attr name="picture_style_checkNumMode" format="boolean" />
     <attr name="picture.crop.toolbar.bg" format="reference|color" />
     <attr name="picture.crop.status.color" format="reference|color" />
     <attr name="picture.crop.title.color" format="reference|color" />

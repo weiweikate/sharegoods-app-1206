@@ -15,17 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.facebook.binaryresource.BinaryResource;
-import com.facebook.binaryresource.FileBinaryResource;
-import com.facebook.cache.common.CacheKey;
-import com.facebook.imagepipeline.cache.DefaultCacheKeyFactory;
-import com.facebook.imagepipeline.core.ImagePipelineFactory;
-import com.facebook.imagepipeline.listener.BaseRequestListener;
-import com.facebook.imagepipeline.request.ImageRequest;
 import com.meeruu.commonlib.utils.BitmapUtils;
-import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
-import com.meeruu.commonlib.utils.LogUtils;
 import com.reactnative.ivpusic.imagepicker.R;
 import com.reactnative.ivpusic.imagepicker.picture.lib.PictureVideoPlayActivity;
 import com.reactnative.ivpusic.imagepicker.picture.lib.config.PictureConfig;
@@ -37,7 +28,6 @@ import com.reactnative.ivpusic.imagepicker.picture.lib.widget.longimage.ImageSou
 import com.reactnative.ivpusic.imagepicker.picture.lib.widget.longimage.ImageViewState;
 import com.reactnative.ivpusic.imagepicker.picture.lib.widget.longimage.SubsamplingScaleImageView;
 
-import java.io.File;
 import java.util.List;
 
 /**
@@ -51,8 +41,6 @@ public class SimpleFragmentAdapter extends PagerAdapter {
     private Context mContext;
     private OnCallBackActivity onBackPressed;
     private SimpleFragmentAdapterInterface simpleFragmentAdapterInterface;
-    private int w480 = DensityUtils.dip2px(480);
-    private int w800 = DensityUtils.dip2px(800);
 
     public interface OnCallBackActivity {
         /**
@@ -133,33 +121,16 @@ public class SimpleFragmentAdapter extends PagerAdapter {
             longImg.setVisibility(eqLongImg && !isGif ? View.VISIBLE : View.GONE);
             // 压缩过的gif就不是gif了
             if (isGif && !media.isCompressed()) {
-                ImageLoadUtils.loadGif(Uri.parse(path), w480, w800, imageView);
+                ImageLoadUtils.loadGif(Uri.parse(path), imageView);
             } else {
-                ImageLoadUtils.preFetch(Uri.parse("file://" + path), w480, w800, new BaseRequestListener() {
-                    @Override
-                    public void onRequestSuccess(ImageRequest request, String requestId, boolean isPrefetch) {
-                        super.onRequestSuccess(request, requestId, isPrefetch);
-                        LogUtils.d("111======");
-                        CacheKey cacheKey = DefaultCacheKeyFactory.getInstance().getEncodedCacheKey(request, this);
-                        BinaryResource resource = ImagePipelineFactory.getInstance().getMainFileCache().getResource(cacheKey);
-                        if (resource == null) {
-                            return;
-                        }
-                        final File file = ((FileBinaryResource) resource).getFile();
-                        if (file == null) {
-                            return;
-                        }
-                        // 保存图片
-                        Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), BitmapUtils.getBitmapOption(2));
-                        if (bmp != null && !bmp.isRecycled()) {
-                            if (eqLongImg) {
-                                displayLongPic(bmp, longImg);
-                            } else {
-                                ImageLoadUtils.loadImageFile(path, imageView);
-                            }
-                        }
+                if (eqLongImg) {
+                    Bitmap bmp = BitmapFactory.decodeFile(path, BitmapUtils.getBitmapOption(2));
+                    if (bmp != null && !bmp.isRecycled()) {
+                        displayLongPic(bmp, longImg);
                     }
-                });
+                } else {
+                    ImageLoadUtils.loadImageFile(path, imageView);
+                }
             }
             imageView.setOnViewTapListener(new OnViewTapListener() {
                 @Override
