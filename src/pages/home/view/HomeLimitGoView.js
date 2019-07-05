@@ -140,9 +140,9 @@ export default class HomeLimitGoView extends Component {
             );
         });
 
-        // if (viewItems.length === 0) {
-        //     return null;
-        // }
+        if (viewItems.length === 0) {
+            return null;
+        }
 
         return (
             <View style={styles.container}>
