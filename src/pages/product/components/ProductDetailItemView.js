@@ -374,13 +374,16 @@ export class ServiceItemView extends Component {
     };
 
     render() {
-        const { serviceAction } = this.props;
+        const { productDetailModel, serviceAction } = this.props;
+        const { restrictions } = productDetailModel;
+        const { afterSaleLimit } = (productDetailModel || {}).groupActivity || {};
         return (
             <NoMoreClick style={ServiceItemViewStyles.serviceView} onPress={serviceAction}>
                 <Text style={ServiceItemViewStyles.serviceNameText}>服务</Text>
                 <View style={{ flexDirection: 'row', flex: 1 }}>
                     {this._imgText('质量保障')}
                     {this._imgText('48小时发货')}
+                    {afterSaleLimit ? this._imgText('仅支持换货') : (restrictions & 4) === 4 && this._imgText('7天退换')}
                 </View>
                 <Image source={arrow_right_black}/>
             </NoMoreClick>
