@@ -609,7 +609,7 @@ const styles = StyleSheet.create({
     },
     header: {
         flexDirection: 'row',
-        height: autoSizeWidth(45),
+        height: 45,
         alignItems: 'center'
     },
     bottomBtn: {
@@ -620,7 +620,7 @@ const styles = StyleSheet.create({
     },
     item: {
         width: (ScreenUtils.width - 30) / 4 - 0.1,
-        height: autoSizeWidth(80),
+        height: 80,
         marginTop: autoSizeWidth(0),
         alignItems: 'center',
         justifyContent: 'center'
