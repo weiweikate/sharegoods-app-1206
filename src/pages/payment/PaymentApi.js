@@ -29,6 +29,8 @@ const api = {
     judgeShare: ['/user/share/judgeShare'],
     //分享后的回调
     shareCallback: ['/user/share/shareCallback'],
+    //支付成功后是否给弹窗判断接口
+    jumpCheckIsAlter: ['/bargain/jumpCheck',{method:'get'}],
 };
 import ApiUtils from '../../api/network/ApiUtils';
 

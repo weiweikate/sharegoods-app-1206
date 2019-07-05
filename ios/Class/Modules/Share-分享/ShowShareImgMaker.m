@@ -260,6 +260,86 @@
   return @{@"width": @(375*i), @"height": @(imageHeght), @"nodes": nodes};
 }
 
++(NSDictionary *)getParamsWithInviteImages:(NSArray<UIImage *> *)images model:(ShareImageMakerModel *)model{
+  CGFloat i = 3;// 为了图片高清 图片尺寸375 * 667
+  NSMutableArray *nodes = [NSMutableArray new];
+  CGFloat imageHeght = 667*i;
+  CGFloat imageWidth =  375*i;
+
+  NSString *QRCodeStr = model.QRCodeStr;
+  NSString *nameStr = model.userName?model.userName:@"";
+  CGFloat sigle =  [@"1" getStringHeightWithfontSize:13*i viewWidth:200*i];
+  //背景
+  UIImage *bgImage = [UIImage imageNamed:@"Invite_fiends_bg"];
+
+  [nodes addObject:@{
+                     @"value": bgImage,
+                     @"locationType": @"rect",
+                     @"location": [NSValue valueWithCGRect:CGRectMake(0, 0, imageWidth, imageHeght)]}
+   ];
+  
+  //头像
+  [nodes addObject:@{
+                     @"value": [images[0] creatRoundImagWithRadius:0.5 width:35*i height:35*i],
+                     @"locationType": @"rect",
+                     @"location": [NSValue valueWithCGRect:CGRectMake(158*i, 146*i, 61*i, 61*i)]}
+   ];
+  
+  //文字背景
+  UIImage *textBgImage = [UIImage imageNamed:@"textBg"];
+  [nodes addObject:@{
+                     @"value": textBgImage,
+                     @"locationType": @"rect",
+                     @"location": [NSValue valueWithCGRect:CGRectMake(60*i, 208*i, 258*i, 59*i)]}
+   ];
+  
+  //昵称
+  NSString * name = [NSString stringWithFormat:@"%@",nameStr];
+  CGFloat nameWidth = [name getWidthStringfontSize:13 viewWidth:240];
+  NSAttributedString *nameAttrStr = [[NSAttributedString alloc]initWithString:name
+                                                                   attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:13*i], NSForegroundColorAttributeName: [UIColor colorWithHexString:@"B93C3B"]}];
+  
+  [nodes addObject:@{
+                     @"value": nameAttrStr,
+                     @"locationType": @"rect",
+                     @"location": [NSValue valueWithCGRect:CGRectMake((375-nameWidth)/2*i, 225*i, 220*i, sigle)]}
+   ];
+  
+  //文案
+  NSString * text = @"已有4000000+用户领取成功～";
+  CGFloat textWidth = [text getWidthStringfontSize:13 viewWidth:240];
+  NSAttributedString *textAttrStr = [[NSAttributedString alloc]initWithString:text
+                                                                   attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:13*i], NSForegroundColorAttributeName: [UIColor colorWithHexString:@"B93C3B"]}];
+  
+  [nodes addObject:@{
+                     @"value": textAttrStr,
+                     @"locationType": @"rect",
+                     @"location": [NSValue valueWithCGRect:CGRectMake((375-textWidth)/2*i, 230*i+sigle , 220*i, sigle)]}
+   ];
+  
+  //二维码
+  UIImage *QRCodeImage = [UIImage QRCodeWithStr:QRCodeStr];
+  [nodes addObject:@{@"value": QRCodeImage,
+                     @"locationType": @"rect",
+                     @"location": [NSValue valueWithCGRect:CGRectMake(116*i, 282*i, 144*i, 144*i)]}
+   ];
+
+  //介绍
+  NSString * remark = @"手机扫一扫注册新用户";
+  CGFloat remarkWidth = [remark getWidthStringfontSize:13 viewWidth:240];
+  NSAttributedString *remarkAttrStr = [[NSAttributedString alloc]initWithString:remark
+                                                                     attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:13*i], NSForegroundColorAttributeName: [UIColor colorWithHexString:@"FFFFFF"]}];
+
+  [nodes addObject:@{
+                     @"value": remarkAttrStr,
+                     @"locationType": @"rect",
+                     @"location": [NSValue valueWithCGRect:CGRectMake((375-remarkWidth)/2*i, 431*i, 220*i, sigle*3)]}
+   ];
+
+  return @{@"width": @(imageWidth), @"height": @(imageHeght), @"nodes": nodes};
+}
+
+
 +(NSString *)getShowProductImageModelImages:(NSArray<UIImage *> *)images model:(ShareImageMakerModel *)model{
   CGFloat i = 3;// 为了图片高清 图片尺寸250 * 340
   NSMutableArray *nodes = [NSMutableArray new];

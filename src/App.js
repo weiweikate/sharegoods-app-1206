@@ -80,8 +80,6 @@ let codePushOptions = {
 class App extends Component {
     constructor(props) {
         super(props);
-        // 移除启动页
-        bridge.removeLaunch();
         // 初始化chat
         chatModel;
         this.state = {
@@ -123,6 +121,8 @@ class App extends Component {
         //初始化init  定位存储  和app变活跃 会定位
         InteractionManager.runAfterInteractions(() => {
             TimerMixin.setTimeout(() => {
+                // 移除启动页
+                bridge.removeLaunch();
                 checkInitResult().then((data) => {
                     loginModel.setAuthPhone(data);
                 }).catch((erro) => {
@@ -160,24 +160,24 @@ class App extends Component {
 
     mineMessageData = (data) => {
         const { params } = JSON.parse(data) || {};
-        if (params && Number(params.index) === 1) {
-            console.log('JSPushData1', params);
+        if(params && Number(params.index) === 1){
             settingModel.availableBalanceAdd(1);
         }
 
-        if (params && Number(params.index) === 2) {
-            console.log('JSPushData2', params);
+        if(params && Number(params.index) === 2){
             settingModel.userScoreAdd(1);
         }
 
-        if (params && Number(params.index) === 3) {
-            console.log('JSPushData3', params);
+        if(params && Number(params.index) === 3){
             settingModel.couponsAdd(1);
         }
 
-        if (params && Number(params.index) === 4) {
-            console.log('JSPushData4', params);
+        if(params && Number(params.index) === 4){
             settingModel.fansMSGAdd(1);
+        }
+
+        if(params && Number(params.index) === 5){
+            settingModel.mainTaskAdd(1);
         }
     };
 

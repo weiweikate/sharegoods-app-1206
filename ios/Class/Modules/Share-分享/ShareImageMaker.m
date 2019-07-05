@@ -33,6 +33,9 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
   }else if ([imageType isEqualToString:@"web"]){
     URLs = @[model.imageUrlStr];
     defaultImages = @[[UIImage imageNamed:@"logo.png"]];
+  }else if ([imageType isEqualToString:@"invite"]){
+    URLs = @[model.headerImage];
+    defaultImages = @[[UIImage imageNamed:@"logo.png"]];
   } else{//web or  produce or nil
     URLs = @[model.imageUrlStr,model.headerImage];
     defaultImages = @[[UIImage imageNamed:@"logo.png"], [UIImage imageNamed:@"default_avatar.png"]];
@@ -58,6 +61,9 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
    return [ShowShareImgMaker checkLegalWithShareImageMakerModel:model completion:completion];
   }
 
+  if ([imageType isEqualToString:@"invite"]) {
+    return YES;
+  }
   if ([imageType isEqualToString:@"web"]) {
     if (model.imageUrlStr == nil) {
       completion(nil, @"图片URL（imageUrlStr）不能为nil");
@@ -140,7 +146,16 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
                        @"location": [NSValue valueWithCGRect:CGRectMake(195*i, 285*i, 45*i, 45*i)]}
      ];
 
-  } else if ([imageType isEqualToString:@"show"]){
+  }else if([imageType isEqualToString:@"invite"]) {
+    NSDictionary * dataDic = [ShowShareImgMaker getParamsWithInviteImages:images
+                                                                 model:model];
+    nodes = dataDic[@"nodes"];
+    NSNumber* height = dataDic[@"height"];
+    imageHeght = height.floatValue;
+    NSNumber* width = dataDic[@"width"];
+    imageWidth = width.floatValue;
+    
+  }else if ([imageType isEqualToString:@"show"]){
    NSDictionary * dataDic = [ShowShareImgMaker getParamsWithImages:images
                                      model:model];
     nodes = dataDic[@"nodes"];

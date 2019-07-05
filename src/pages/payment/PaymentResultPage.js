@@ -24,6 +24,7 @@ import res from './res';
 import ScreenUtils from '../../utils/ScreenUtils';
 import { MRText as Text } from '../../components/ui';
 import { replaceRoute } from '../../navigation/RouterMap';
+import RouterMap from '../../navigation/RouterMap';
 
 const { autoSizeWidth } = ScreenUtils;
 const {
@@ -55,7 +56,7 @@ export default class PaymentResultPage extends BasePage {
 
     /** 去订单列表*/
     goToOrder = () => {
-        replaceRoute('order/order/MyOrdersListPage', { index: 2 });
+        replaceRoute( RouterMap.MyOrdersListPage, { index: 2 });
     };
 
     /** 重新支付*/

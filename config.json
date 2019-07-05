@@ -1,7 +1,6 @@
 {
     "showDebugPanel": true,
-    "envType": "pre_release",
-    "isDevHotUpdate": false,
+    "envType": "online",
     "__注释__": "[showDebugPanel]:是否显示调试面板   [envType]:决定网络启动后，默认的网络环境类型",
     "env": {
         "dev_mock": {
@@ -11,6 +10,14 @@
         "dev": {
             "name": "开发",
             "host": "http://devapi.sharegoodsmall.com/gateway",
+            "oss": "https://devcdn.sharegoodsmall.com",
+            "h5": "https://devh5.sharegoodsmall.com",
+            "wxAppletKey": "gh_aa91c3ea0f6c",
+            "gongmao": "http://testsop.sharegoodsmall.com/gateway/gongmall/contract/reback"
+        },
+        "dev-order": {
+            "name": "dev-order",
+            "host": "http://172.16.10.10:1080/gateway",
             "oss": "https://devcdn.sharegoodsmall.com",
             "h5": "https://devh5.sharegoodsmall.com",
             "wxAppletKey": "gh_aa91c3ea0f6c",

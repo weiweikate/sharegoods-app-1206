@@ -17,9 +17,11 @@ import spellStatusModel from '../../model/SpellStatusModel';
 import bridge from '../../../../utils/bridge';
 import { getSource } from '@mr/image-placeholder/oos';
 import { getSize } from '../../../../utils/OssHelper';
+import RouterMap from '../../../../navigation/RouterMap';
 
-const { myShop } = shopRes;
+const { myShop, button } = shopRes;
 const { shopProduct, shopProductShare, shop_card } = myShop;
+const { arrow_right_black } = button;
 const { px2dp, width } = ScreenUtils;
 const itemImgSize = px2dp(100);
 const progressWidth = px2dp(60);
@@ -296,7 +298,9 @@ class ShopDetailImageView extends Component {
 
 export class ShopCardView extends React.Component {
     _cardAction = () => {
-
+        routePush(RouterMap.HtmlPage, {
+            uri: `${apiEnvironment.getCurrentH5Url()}/activity/millions`
+        });
     };
 
     render() {
@@ -305,7 +309,7 @@ export class ShopCardView extends React.Component {
                 <Image source={shop_card} style={cardStyles.image}/>
                 <MRText style={{ fontSize: 12, color: DesignRule.textColor_mainTitle }}>挑战任务卡</MRText>
                 <View style={{ flex: 1 }}/>
-                <MRText style={{ fontSize: 12, color: DesignRule.textColor_secondTitle, marginRight: 15 }}>敬请期待</MRText>
+                <Image source={arrow_right_black} style={{ marginRight: 15 }}/>
             </NoMoreClick>
         );
     }

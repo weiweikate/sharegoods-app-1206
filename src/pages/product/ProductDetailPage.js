@@ -102,7 +102,7 @@ export default class ProductDetailPage extends BasePage {
 
     //去购物车
     _bottomViewAction = (type) => {
-        const { productIsPromotionPrice } = this.productDetailModel;
+        const { productIsPromotionPrice, isGroupIn } = this.productDetailModel;
         switch (type) {
             case 'jlj':
                 this.shareModal && this.shareModal.open();
@@ -133,7 +133,10 @@ export default class ProductDetailPage extends BasePage {
                     return;
                 }
                 this.state.goType = type;
-                this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, { sourceType: productIsPromotionPrice ? sourceType.promotion : null });
+                this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, {
+                    sourceType: productIsPromotionPrice ? sourceType.promotion : null,
+                    isGroupIn
+                });
                 break;
             case 'gwc':
                 this.state.goType = type;
@@ -144,7 +147,7 @@ export default class ProductDetailPage extends BasePage {
 
     //选择规格确认
     _selectionViewConfirm = (amount, skuCode) => {
-        const { prodCode, name, originalPrice } = this.productDetailModel;
+        const { prodCode, name, originalPrice, isGroupIn, groupActivity } = this.productDetailModel;
         const { goType } = this.state;
         if (goType === 'gwc') {
             shopCartCacheTool.addGoodItem({
@@ -162,6 +165,35 @@ export default class ProductDetailPage extends BasePage {
                 shoppingcartEntrance: 1
             });
         } else if (goType === 'buy') {
+            if (isGroupIn) {
+                const { subProductList, code } = groupActivity;
+                let orderProductList = (subProductList || []).map((subProduct) => {
+                    const { skuList, prodCode } = subProduct || {};
+                    const skuItem = (skuList || [])[0];
+                    const { skuCode } = skuItem || {};
+                    return {
+                        activityCode: code,
+                        batchNo: 1,
+                        productCode: prodCode,
+                        skuCode: skuCode,
+                        quantity: amount
+                    };
+                });
+                this.$navigate(RouterMap.ConfirOrderPage, {
+                    orderParamVO: {
+                        orderType: 1,
+                        source: 2,
+                        orderProducts: [{
+                            activityCode: code,
+                            batchNo: 1,
+                            productCode: prodCode,
+                            skuCode: skuCode,
+                            quantity: amount
+                        }, ...orderProductList]
+                    }
+                });
+                return;
+            }
             const { type, couponId } = this.params;
             let orderProducts = [{
                 skuCode: skuCode,

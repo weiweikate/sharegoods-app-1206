@@ -67,6 +67,7 @@ export default class PaymentPage extends BasePage {
                 const { selectedBalace } = payment;
                 if (!selectedBalace && oneCoupon <= 0) {
                     // this.$navigate(RouterMap.PaymentFinshPage,{payResult: PaymentResult.success})
+                    // return;
                     this.$navigate(RouterMap.ChannelPage, {
                         bizType: bizType,
                         modeType: modeType
