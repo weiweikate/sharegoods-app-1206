@@ -23,10 +23,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
-import com.bumptech.glide.request.RequestOptions;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.yalantis.ucrop.model.CutInfo;
 
 import java.util.ArrayList;
@@ -77,17 +75,8 @@ public class PicturePhotoGalleryAdapter extends RecyclerView.Adapter<PicturePhot
         } else {
             holder.iv_dot.setVisibility(View.GONE);
         }
+        ImageLoadUtils.loadNetImage(path, holder.mIvPhoto);
 
-        RequestOptions options = new RequestOptions()
-                .placeholder(R.color.ucrop_color_grey)
-                .centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.ALL);
-
-        Glide.with(context)
-                .load(path)
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .apply(options)
-                .into(holder.mIvPhoto);
     }
 
 
@@ -98,12 +87,12 @@ public class PicturePhotoGalleryAdapter extends RecyclerView.Adapter<PicturePhot
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView mIvPhoto;
+        SimpleDraweeView mIvPhoto;
         ImageView iv_dot;
 
         public ViewHolder(View view) {
             super(view);
-            mIvPhoto = (ImageView) view.findViewById(R.id.iv_photo);
+            mIvPhoto = view.findViewById(R.id.iv_photo);
             iv_dot = (ImageView) view.findViewById(R.id.iv_dot);
         }
     }
