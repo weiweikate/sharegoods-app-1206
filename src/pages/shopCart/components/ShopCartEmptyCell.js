@@ -4,7 +4,6 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import { MRText } from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
 import ImageLoad from '@mr/image-placeholder';
-import user from '../../../model/user';
 
 const { px2dp } = ScreenUtils;
 const cell_width = (ScreenUtils.width - px2dp(35)) / 2;
