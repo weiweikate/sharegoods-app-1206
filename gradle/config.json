@@ -7,17 +7,9 @@
         "content": "apply from: '../../../../android/rn-request.gradle'",
         "bulid_path": "../node_modules/@mr/rn-request/android/build.gradle"
     },
-    "@mr/image-crop-picker": {
-        "content": "apply from: '../../../../android/rn-image-crop-picker.gradle'",
-        "bulid_path": "../node_modules/@mr/rn-image-crop-picker/android/build.gradle"
-    },
     "@mr/cookies": {
         "content": "apply from: '../../../../android/rn-cookies.gradle'",
         "bulid_path": "../node_modules/@mr/cookies/android/build.gradle"
-    },
-    "@mr/webview-bridge": {
-        "content": "apply from: '../../../../android/rn-webView-bridge.gradle'",
-        "bulid_path": "../node_modules/@mr/rn-webview-bridge/android/build.gradle"
     },
     "fetch-blob": {
         "content": "apply from: '../../../../android/rn-fetch-blob.gradle'",
@@ -35,10 +27,6 @@
         "content": "apply from: '../../../android/rn_extra_dimensions.gradle'",
         "bulid_path": "../node_modules/react-native-extra-dimensions-android/android/build.gradle"
     },
-    "rn-webview": {
-        "content": "apply from: '../../../../android/rn-webView.gradle'",
-        "bulid_path": "../node_modules/@mr/react-native-webview/android/build.gradle"
-    },
     "rn-code-push": {
         "content": "apply from: '../../../../android/rn-code-push.gradle'",
         "bulid_path": "../node_modules/react-native-code-push/android/app/build.gradle"
@@ -50,5 +38,9 @@
     "rn-gesture": {
         "content": "apply from: '../../../android/rn-gesture.gradle'",
         "bulid_path": "../node_modules/react-native-gesture-handler/android/build.gradle"
+    },
+    "rn-netInfo": {
+        "content": "apply from: '../../../../android/rn-netInfo.gradle'",
+        "bulid_path": "../node_modules/@react-native-community/netinfo/android/build.gradle"
     }
 }

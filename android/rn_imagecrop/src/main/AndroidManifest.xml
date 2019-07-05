@@ -1,0 +1,34 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.reactnative.ivpusic.imagepicker">
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application>
+
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".CustomerGalleryActivity" />
+        <activity android:name=".ImageDetail" />
+        <activity
+            android:name=".picture.lib.PictureSelectorActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".picture.lib.PicturePreviewActivity" />
+        <activity
+            android:name=".picture.lib.PictureVideoPlayActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="sensor" />
+        <activity android:name=".picture.lib.PictureExternalPreviewActivity" />
+        <activity android:name=".picture.lib.PicturePlayAudioActivity" />
+        <activity android:name=".CameraActivity" />
+        <activity
+            android:name=".picture.lib.imaging.IMGGalleryActivity"
+            android:theme="@style/ImageGalleryTheme" />
+
+        <activity
+            android:name=".picture.lib.imaging.IMGEditActivity"
+            android:theme="@style/ImageEditTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+    </application>
+
+</manifest>

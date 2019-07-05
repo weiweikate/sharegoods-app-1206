@@ -195,11 +195,9 @@ dependencies {
     api project(':react-native-code-push')
     implementation project(':react-native-gesture-handler')
     implementation project(':@mr_mr-rn-storage')
-    implementation project(':@mr_rn-webview-bridge')
     implementation project(':@mr_rn-request')
-    implementation project(':@mr_rn-image-crop-picker')
     implementation project(':@mr_rn-geolocation')
-    implementation project(':@mr_react-native-webview')
     implementation project(':@mr_cookies')
+    implementation project(':rn_imagecrop')
     api rootProject.ext.dependencies.sensors
 }
