@@ -49,10 +49,11 @@ import javax.annotation.Nonnull;
 public class ShowModule extends ReactContextBaseJavaModule implements LifecycleEventListener ,ActivityEventListener{
     public static final String MODULE_NAME = "ShowModule";
     private ReactApplicationContext mContext;
+    private VODUploadCallback callback;
     private Promise videoPromise;
     private Promise uploadPromise;
     VODUploadClient uploader;
-
+    private String uploadAuth,uploadAddress;
 
 
     @Nonnull
@@ -71,7 +72,7 @@ public class ShowModule extends ReactContextBaseJavaModule implements LifecycleE
 
     private void initUploader(){
         uploader = new VODUploadClientImpl(mContext.getApplicationContext());
-        VODUploadCallback callback = new VODUploadCallback() {
+        callback = new VODUploadCallback() {
             @Override
             public void onUploadSucceed(UploadFileInfo info) {
                 super.onUploadSucceed(info);
@@ -105,9 +106,9 @@ public class ShowModule extends ReactContextBaseJavaModule implements LifecycleE
             @Override
             public void onUploadStarted(UploadFileInfo uploadFileInfo) {
                 super.onUploadStarted(uploadFileInfo);
+                uploader.setUploadAuthAndAddress(uploadFileInfo, uploadAuth, uploadAddress);
             }
         };
-        uploader.init(callback);
     }
 
     @ReactMethod
@@ -188,20 +189,16 @@ public class ShowModule extends ReactContextBaseJavaModule implements LifecycleE
             @Override
             public void onSuccess(String result) {
                 VideoAuthBean videoAuthBean = JSON.parseObject(result, VideoAuthBean.class);
-                startUpload(title,fileName,path,videoAuthBean);
+                startUpload(title,fileName,path);
             }
         });
     }
 
-    private void startUpload(String title, String fileName,String path,VideoAuthBean videoAuthBean){
-
-        UploadFileInfo uploadFileInfo = new UploadFileInfo();
-        uploadFileInfo.setFilePath(path);
+    private void startUpload(String title, String fileName,String path){
         VodInfo vodInfo = new VodInfo();
         vodInfo.setFileName(fileName);
         vodInfo.setTitle(title);
-        uploadFileInfo.setVodInfo(vodInfo);
-        uploader.setUploadAuthAndAddress(uploadFileInfo, videoAuthBean.getUploadAuth(), videoAuthBean.getUploadAddress());
+        uploader.addFile(path,vodInfo);
     }
 
     @Override
