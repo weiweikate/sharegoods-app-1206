@@ -4,6 +4,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import { MRText } from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
 import ImageLoad from '@mr/image-placeholder';
+import user from '../../../model/user';
 
 const { px2dp } = ScreenUtils;
 const cell_width = (ScreenUtils.width - px2dp(35)) / 2;
@@ -52,7 +53,7 @@ export default class ShopCartEmptyCell extends Component {
                     <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: px2dp(10) }}>
                         <View style={{ flex: 1 }}>
                             <MRText style={{ color: 'rgba(255, 0, 80, 1)', fontSize: px2dp(12) }}>
-                                {`￥${itemData.groupPrice?itemData.groupPrice:(itemData.promotionMinPrice?itemData.promotionMinPrice:itemData.minPrice)}起`}
+                                {`￥${ itemData.promotionMinPrice?itemData.promotionMinPrice:itemData.minPrice}起`}
                             </MRText>
                         </View>
                     </View>
