@@ -80,6 +80,8 @@ let codePushOptions = {
 class App extends Component {
     constructor(props) {
         super(props);
+        // 移除启动页
+        bridge.removeLaunch();
         // 初始化chat
         chatModel;
         this.state = {
