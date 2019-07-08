@@ -21,7 +21,8 @@ const {
 const spellShopTrack = {
     IndexStoreBannerClick:'IndexStoreBannerClick',//拼店首页banner推荐位
     SharePin:'SharePin',//分享拼店
-    SeePingdian:'SeePingdian',//查看拼店
+    PinShopEnter:'PinShopEnter',//查看拼店
+    ViewPinShop:'ViewPinShop',//浏览拼店
 }
 
 const commonEvent = {

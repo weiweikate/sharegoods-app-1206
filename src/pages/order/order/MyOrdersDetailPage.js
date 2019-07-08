@@ -649,6 +649,9 @@ export default class MyOrdersDetailPage extends BasePage {
             && !(innerStatus < 6 && innerStatus >= 1)) {
             Toast.$toast('该商品售后已过期');
             return;
+        }else if (products.restrictions === -1 && orderDetailModel.status === 2) {
+            Toast.$toast('该商品属于套餐商品，不能退款');
+            return;
         }
 
 

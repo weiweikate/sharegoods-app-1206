@@ -235,7 +235,7 @@ export default class RecommendPage extends BasePage {
 
     // 点击查看某个店铺
     _RecommendRowOnPress = (storeCode) => {
-        this.$navigate(RouterMap.MyShop_RecruitPage, { storeCode: storeCode });
+        this.$navigate(RouterMap.MyShop_RecruitPage, { storeCode: storeCode,wayToPinType:2 });
     };
 
     // 点击轮播图广告
