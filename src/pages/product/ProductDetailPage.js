@@ -188,6 +188,7 @@ export default class ProductDetailPage extends BasePage {
             }];
             this.$navigate(RouterMap.ConfirOrderPage, {
                 orderParamVO: {
+                    productType:this.productDetailModel.type,
                     orderType: 99,
                     orderProducts: orderProducts,
                     source: parseInt(type) === 9 ? 4 : 2,
