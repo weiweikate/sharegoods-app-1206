@@ -18,6 +18,7 @@ const RootStack = createStackNavigator(Router,
         defaultNavigationOptions: {
             gesturesEnabled: true
         },
+        cardShadowEnabled: true,
         cardOverlayEnabled: true,
         transitionConfig: () => ({
             transitionSpec: {
