@@ -10,6 +10,7 @@ import HttpUtils from '../api/network/HttpUtils';
 import apiEnvironment from '../api/ApiEnvironment';
 import { track } from './SensorsTrack';
 import { mediatorCallFunc } from '../SGMediator';
+import userApi from '../model/userApi';
 
 const TrackShareType = {
     unknown: 0,
@@ -48,15 +49,18 @@ const onShare = (data, api, trackParmas, trackEvent, callback = () => {
         let shareType = [TrackShareType.wx, TrackShareType.wxTimeline, TrackShareType.qq, TrackShareType.qqSpace, TrackShareType.weibo][data.platformType];
         track(trackEvent, { shareType, ...p });
     }
-    bridge.share(params, () => {
-        if (user.isLogin && luckyDraw === true) {
-            user.luckyDraw();
-        }
-        shareSucceedCallBlack(api, callback);
-        callback('shareSuccess'); //提示分享成功
 
-        taskShareParams && mediatorCallFunc('Home_ShareNotify', { type: params.platformType + 1, ...taskShareParams });
-    }, (errorStr) => {
+    userApi.shareShortUrl({'longUrl': params.linkUrl, 'expireTime': 0})
+        .then(res => {
+            console.log('res', res);
+            if (res && res.data) {
+                params.linkUrl = res.data;
+                shareFunc(params,luckyDraw,api,callback ,taskShareParams)
+            } else {
+                shareFunc(params,luckyDraw,api,callback ,taskShareParams)
+            }
+        }).catch(error => {
+        shareFunc(params,luckyDraw,api,callback ,taskShareParams)
     });
 };
 
@@ -107,6 +111,19 @@ const queryString = (url, params) => {
     }
     return url;
 };
+
+const shareFunc = (params,luckyDraw, api,callback = ()=>{} ,taskShareParams = ()=>{})=>{
+    bridge.share(params, () => {
+        if (user.isLogin && luckyDraw === true) {
+            user.luckyDraw();
+        }
+        shareSucceedCallBlack(api, callback);
+        callback('shareSuccess'); //提示分享成功
+
+        taskShareParams && mediatorCallFunc('Home_ShareNotify', {type: params.platformType + 1, ...taskShareParams});
+    }, (errorStr) => {
+    });
+}
 
 export default {
     onShare,
