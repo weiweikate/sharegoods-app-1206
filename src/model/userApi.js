@@ -1,6 +1,6 @@
 const api = {
     getUser: ['/user/getUser', { method: 'get' }],
-    getUserOrderNum:['/order/count',{method:'post'}],
+    getUserOrderNum:['/orderV2/count',{method:'post'}],
     userShare:['/user/share',{method:'get'}],
     luckyDraw:['/user/send',{method:'post'}]
 };

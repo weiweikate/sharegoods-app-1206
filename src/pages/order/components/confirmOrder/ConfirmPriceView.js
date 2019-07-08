@@ -70,13 +70,15 @@ export default class ConfirmPriceView extends Component {
                     </View>
                 </View>
                 {this.renderLine()}
-                <View style={[styles.couponsStyle,]}>
-                    <UIText value={'运费'} style={styles.blackText}/>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <UIText value={`${StringUtils.formatMoneyString(totalFreightFee)}`}
-                                style={[styles.grayText]}/>
+                {confirmOrderModel.isAllVirtual ? null :
+                    <View style={[styles.couponsStyle,]}>
+                        <UIText value={'运费'} style={styles.blackText}/>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <UIText value={`${StringUtils.formatMoneyString(totalFreightFee)}`}
+                                    style={[styles.grayText]}/>
+                        </View>
                     </View>
-                </View>
+                }
                 <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
                 {promotionAmount ? <View style={styles.couponsStyle}
                                                activeOpacity={0.5}

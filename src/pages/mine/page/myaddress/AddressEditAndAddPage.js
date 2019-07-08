@@ -35,7 +35,18 @@ export default class AddressEditAndAddPage extends BasePage {
 
     $NavigationBarDefaultLeftPressed = () => {
         if (this.params.from === 'edit') {
-            routePop();
+            const { receiver, tel, address } = this.params;
+            if (this.state.receiverText === receiver &&
+                this.state.telText === tel&&
+                this.state.addrText ===  address
+            ){
+                routePop();
+            }else {
+                Alert.alert('','信息未保存，确认返回吗？',[
+                    { text: `取消`, onPress: () => {} },
+                    { text: `确定`, onPress: () => {routePop()}}])
+            }
+
         }else {
             if (StringUtils.isEmpty(this.state.receiverText) &&
                 StringUtils.isEmpty(this.state.telText) &&

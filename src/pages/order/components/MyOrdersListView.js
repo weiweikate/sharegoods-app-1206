@@ -243,7 +243,7 @@ export default class MyOrdersListView extends Component {
                 break;
             case 10:
                 OrderApi.checkInfo({ warehouseOrderNo: merchantOrderNo}).then(res => {
-                    if (res.data) {
+                    if (res.data === false) {
                         this.props.nav(RouterMap.P_ScorePublishPage, {
                             orderNo: merchantOrderNo
                         });
