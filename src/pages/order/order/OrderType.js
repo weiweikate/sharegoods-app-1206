@@ -117,8 +117,8 @@ function GetViewOrderStatus(status, subStatus) {
 //判断商品List是否支持售后
 function checkOrderAfterSaleService(products = [], status, nowTime, isShowToast) {
     if (status === OrderType.WAIT_PAY ||
-        status === OrderType.DELETED ||
-        status === OrderType.CLOSED
+        status === OrderType.DELETED
+        // status === OrderType.CLOSED
     ) {//待付款、无售后
         return false;
     }
@@ -154,7 +154,6 @@ function checkOrderAfterSaleService(products = [], status, nowTime, isShowToast)
 
         hasAfterSaleService = true;
     })
-
     return hasAfterSaleService
 
 }

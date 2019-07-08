@@ -6,7 +6,7 @@ import {
 import UIImage from '@mr/image-placeholder';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
-function _renderTips(tips){
+function _renderTips(tips, failProduct){
     if (tips && tips.length > 0 ) {
         return(
             <View style={{flexDirection: 'row', flexWrap: 'wrap', marginTop: 4, marginLeft: 10}}>
@@ -20,7 +20,7 @@ function _renderTips(tips){
                                 paddingVertical: 3,
                                 color: DesignRule.mainColor,
                                 marginVertical: 2.5,
-                                backgroundColor: 'rgba(255,0,80,0.1)'
+                                backgroundColor: !failProduct?'rgba(255,0,80,0.1)': 'white'
                             }}>
                                 {item}
                             </Text>
@@ -54,13 +54,15 @@ const GoodsItem = props => {
     //     MAN_JIAN(40, "满减"),
     //     MAN_ZHE(50, "满折"),
     let tips = [];
-    if (activityCodes){
+    if (activityCodes && !failProduct){
         activityCodes.forEach((item)=> {
             let types = item.tag
             if (types) {
                 tips.push(types);
             }
         })
+    }else {
+        tips = activityCodes;
     }
 
     return (
@@ -93,7 +95,7 @@ const GoodsItem = props => {
                             style={{ color: !failProduct?DesignRule.textColor_instruction: DesignRule.textColor_placeholder, fontSize: 13, marginRight: 20 }}/>
                     <UIText value={goodsNum} style={{ color: DesignRule.textColor_instruction, fontSize: 13 }}/>
                 </View>
-                { _renderTips(tips)}
+                { _renderTips(tips, failProduct)}
                 <View style={{
                     marginLeft: 10,
                     marginTop: 10,

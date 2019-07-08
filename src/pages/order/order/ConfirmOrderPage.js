@@ -31,6 +31,7 @@ export default class ConfirmOrderPage extends BasePage {
         //         batchNo: 1}],source : 1}
         confirmOrderModel.orderParamVO = this.params.orderParamVO;
         confirmOrderModel.couponsId = this.params.orderParamVO.couponsId;
+        confirmOrderModel.judgeIsAllVirtual(this.params.orderParamVO.orderProducts);
 
     }
 
@@ -46,7 +47,9 @@ export default class ConfirmOrderPage extends BasePage {
                     ref={(e) => this.listView = e}
                     style={{ flex: 1 }}
                     showsVerticalScrollIndicator={false}>
-                    <ConfirmAddressView selectAddress={() => this.selectAddress()}/>
+                    {
+                        !confirmOrderModel.isAllVirtual?  <ConfirmAddressView selectAddress={() => this.selectAddress()}/>:null
+                    }
                     {
                         confirmOrderModel.productOrderList.map((item, index) => {
                             return this._renderItem(item, index)
@@ -78,7 +81,7 @@ export default class ConfirmOrderPage extends BasePage {
                                return <GoodsItem
                                    key={'failProductList'+index}
                                    uri={item.specImg}
-                                   activityCodes={item.activityList || []}
+                                   activityCodes={item.failReason?[item.failReason]:[]}
                                    goodsName={item.productName}
                                    salePrice={item.unitPrice}
                                    category={item.spec}
