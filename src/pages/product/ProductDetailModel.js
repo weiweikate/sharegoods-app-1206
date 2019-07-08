@@ -82,8 +82,11 @@ export default class ProductDetailModel {
     @observable prodCode;
     /*总数据*/
     @observable productData;
+
     /*0产品删除 1产品上架 2产品下架(包含未上架的所有状态，出去删除状态) 3未开售*/
     @observable productStatus;
+    /*1-普通商品,2-内购商品,3-虚拟商品,4-卡券商品*/
+    @observable type;
     /*视频*/
     @observable videoUrl;
     /*主图*/
@@ -370,7 +373,7 @@ export default class ProductDetailModel {
         } else {
             this.productData = data || {};
             const {
-                videoUrl, imgUrl, imgFileList, minPrice, maxPrice,
+                type, videoUrl, imgUrl, imgFileList, minPrice, maxPrice,
                 originalPrice, priceType, name, secondName, freight,
                 groupPrice, v0Price, shareMoney, selfReturning,
                 monthSaleCount, skuList, specifyList, stockSysConfig, promoteInfoVOList,
@@ -383,6 +386,7 @@ export default class ProductDetailModel {
             let contentArr = isNoEmpty(content) ? content.split(',') : [];
 
             this.loadingState = PageLoadingState.success;
+            this.type = type;
             this.videoUrl = videoUrl;
             this.imgUrl = imgUrl;
             this.imgFileList = imgFileList || [];
