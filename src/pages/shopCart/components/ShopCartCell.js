@@ -33,13 +33,12 @@ import shopCartCacheTool from '../model/ShopCartCacheTool';
 const dismissKeyboard = require('dismissKeyboard');
 
 const { px2dp } = ScreenUtils;
+const Cell_Height = px2dp(150);
 
 export default class ShopCartCell extends Component {
     constructor(props) {
         super(props);
-
     }
-
     render() {
         const { itemData, rowMap, rowId, cellClickAction, sectionData } = this.props;
         return (
@@ -48,7 +47,6 @@ export default class ShopCartCell extends Component {
             </View>
         );
     }
-
     _renderCellView = (itemData, rowMap, rowId, cellClickAction, sectionData) => {
         return (
             <View rowMap={rowMap} style={{
@@ -61,7 +59,7 @@ export default class ShopCartCell extends Component {
                 }}
                 >
                     <View style={styles.standaloneRowFront}>
-                        <View style={{ flexDirection: 'row', paddingTop: px2dp(20), height: px2dp(145) }}>
+                        <View style={{ flexDirection: 'row', paddingTop: px2dp(20), height: Cell_Height }}>
                             <View style={{ height: px2dp(75), alignItems: 'center', justifyContent: 'center' }}>
                                 <UIImage source={getSelectImage(itemData)} style={styles.itemSelectImg}
                                          onPress={() => {
@@ -282,7 +280,7 @@ const styles = StyleSheet.create({
     standaloneRowFront: {
         alignItems: 'center',
         backgroundColor: '#fff',
-        height: px2dp(145),
+        height: Cell_Height,
         width: ScreenUtils.width - px2dp(30),
         flexDirection: 'row',
         marginRight: px2dp(16),
@@ -313,16 +311,13 @@ const styles = StyleSheet.create({
         height: px2dp(30)
     },
     TextInputStyle: {
-        padding: 0,
-        paddingTop: 5,
         height: px2dp(30),
-        width: px2dp(46),
         fontSize: px2dp(11),
         color: DesignRule.textColor_mainTitle,
         alignSelf: 'center',
         justifyContent: 'center',
         textAlign: 'center',
-        paddingVertical: 0
+        paddingVertical: 0,
     },
     validContextContainer: {
         flex: 1,
