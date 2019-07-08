@@ -14,6 +14,11 @@ PODS:
   - AFNetworking/Serialization (3.2.1)
   - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
+  - AlivcConan (0.9.5):
+    - AlivcConan/AlivcConan (= 0.9.5)
+  - AlivcConan/AlivcConan (0.9.5)
+  - AliyunOSSiOS (2.10.7)
+  - AliyunVideoSDKBasic (3.10.5)
   - Bugly (2.5.0)
   - CocoaLumberjack (3.4.2):
     - CocoaLumberjack/Default (= 3.4.2)
@@ -45,6 +50,7 @@ PODS:
     - PINCache (= 3.0.1-beta.6)
     - PINRemoteImage/Core
   - QIYU_iOS_SDK (4.9.0)
+  - QuCore-ThirdParty (3.10.0)
   - SandBoxPreviewTool (1.1)
   - SDAutoLayout (2.2.1)
   - SDWebImage (4.4.6):
@@ -90,6 +96,8 @@ PODS:
   - UMCShare/Social/ReducedWeChat (6.9.5):
     - UMCCommon
     - UMCShare/Core
+  - VODUpload (1.5.1):
+    - AliyunOSSiOS
   - WechatOpenSDK (1.8.4)
   - YYKit (1.0.9):
     - YYKit/no-arc (= 1.0.9)
@@ -97,6 +105,9 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking (~> 3.2.1)
+  - AlivcConan
+  - AliyunOSSiOS
+  - AliyunVideoSDKBasic
   - Bugly (~> 2.5.0)
   - CocoaLumberjack (~> 3.4.1)
   - IQKeyboardManager (~> 6.2.0)
@@ -105,6 +116,7 @@ DEPENDENCIES:
   - MBProgressHUD (~> 1.1.0)
   - MJRefresh
   - QIYU_iOS_SDK (~> 4.9.0)
+  - QuCore-ThirdParty
   - SandBoxPreviewTool (~> 1.1)
   - SDAutoLayout
   - SDWebImage (~> 4.4.6)
@@ -118,12 +130,16 @@ DEPENDENCIES:
   - UMCShare/Social/ReducedQQ
   - UMCShare/Social/ReducedSina
   - UMCShare/Social/ReducedWeChat
+  - VODUpload
   - WechatOpenSDK (~> 1.8.3)
   - YYKit (~> 1.0.9)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - AFNetworking
+    - AlivcConan
+    - AliyunOSSiOS
+    - AliyunVideoSDKBasic
     - Bugly
     - CocoaLumberjack
     - IQKeyboardManager
@@ -136,6 +152,7 @@ SPEC REPOS:
     - PINOperation
     - PINRemoteImage
     - QIYU_iOS_SDK
+    - QuCore-ThirdParty
     - SandBoxPreviewTool
     - SDAutoLayout
     - SDWebImage
@@ -147,11 +164,15 @@ SPEC REPOS:
     - UMCCommon
     - UMCSecurityPlugins
     - UMCShare
+    - VODUpload
     - WechatOpenSDK
     - YYKit
 
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
+  AlivcConan: 9dccc32986024768bb5f50e14ad54490123903c7
+  AliyunOSSiOS: 602b6a4e70e62a5f0a6431c20496343141d7e66f
+  AliyunVideoSDKBasic: c5c26b276b83eb623e81e8cd10022fccf477f1dd
   Bugly: 3ca9f255c01025582df26f9222893b383c7e4b4e
   CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
   IQKeyboardManager: 6194101620b73af5e67900b8f89707a99de0b804
@@ -164,6 +185,7 @@ SPEC CHECKSUMS:
   PINOperation: a6219e6fc9db9c269eb7a7b871ac193bcf400aac
   PINRemoteImage: d6d51c5d2adda55f1ce30c96e850b6c4ebd2856a
   QIYU_iOS_SDK: 7343f8366e56b92aa6b2da3ae8e92d5bd0e95c73
+  QuCore-ThirdParty: 60a6f08864631569569fa1e2c6208a7746698923
   SandBoxPreviewTool: 2d837db4409c74c9a8047838f5b320c08161fad1
   SDAutoLayout: 8bf6b3bbc8b01f775d4defbb4fda2ace805461be
   SDWebImage: 3f3f0c02f09798048c47a5ed0a13f17b063572d8
@@ -175,9 +197,10 @@ SPEC CHECKSUMS:
   UMCCommon: 79b5a614c958db367113eed5740109d9a98e1223
   UMCSecurityPlugins: 0831a08f3988f3cea9f1d3a7626cd9bee4fef150
   UMCShare: 552b29753f1b4da87b51d96545ed19e6263df397
+  VODUpload: d180069b5fcee002079a892de2f310bacdb8e355
   WechatOpenSDK: 9b721089507c895d05f997408c30bb6e6f5f9b60
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-PODFILE CHECKSUM: 09cea9704ac51e0867891c5c7d6cb535dceedef3
+PODFILE CHECKSUM: 12a014e3c0c99df53f4302e2e0198c9d8bd8d40c
 
 COCOAPODS: 1.6.1
