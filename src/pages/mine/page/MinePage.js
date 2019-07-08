@@ -358,7 +358,7 @@ export default class MinePage extends BasePage {
 
         return (
             <View style={styles.headerBgStyle}>
-                <View style={{ height: px2dp(54), flexDirection: 'row', marginRight: px2dp(5),}}>
+                <View style={{ height: px2dp(68), flexDirection: 'row', marginRight: px2dp(5),alignItems:'flex-end'}}>
                     <TouchableOpacity onPress={this.jumpToUserInformationPage} activeOpacity={1}>
                         {icon}
                     </TouchableOpacity>
@@ -414,7 +414,7 @@ export default class MinePage extends BasePage {
                 alignSelf: 'center',
                 flexDirection: 'row',
                 alignItems: 'center',
-                height: 37,
+                height: (ScreenUtils.width - px2dp(30)) * 37 / 346,
                 marginHorizontal: px2dp(15),
                 borderRadius: 10,
             }} source={index !== 10 ? vipBg[index] : vipBg[2]}>
@@ -533,6 +533,7 @@ export default class MinePage extends BasePage {
     accountRender = () => {
         return (
             <View style={{
+                flex: 1,
                 marginTop: px2dp(5),
                 marginHorizontal: px2dp(15),
                 justifyContent: 'center'
