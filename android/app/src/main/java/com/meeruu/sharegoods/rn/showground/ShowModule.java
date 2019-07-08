@@ -109,6 +109,8 @@ public class ShowModule extends ReactContextBaseJavaModule implements LifecycleE
                 uploader.setUploadAuthAndAddress(uploadFileInfo, uploadAuth, uploadAddress);
             }
         };
+        uploader.init(callback);
+        uploader.setPartSize(1024*1024);
     }
 
     @ReactMethod
@@ -189,6 +191,8 @@ public class ShowModule extends ReactContextBaseJavaModule implements LifecycleE
             @Override
             public void onSuccess(String result) {
                 VideoAuthBean videoAuthBean = JSON.parseObject(result, VideoAuthBean.class);
+                uploadAddress = videoAuthBean.getUploadAddress();
+                uploadAuth = videoAuthBean.getUploadAuth();
                 startUpload(title,fileName,path);
             }
         });
@@ -198,7 +202,11 @@ public class ShowModule extends ReactContextBaseJavaModule implements LifecycleE
         VodInfo vodInfo = new VodInfo();
         vodInfo.setFileName(fileName);
         vodInfo.setTitle(title);
+//        vodInfo.setCateId (19);
+        uploader.stop();
+        uploader.clearFiles();
         uploader.addFile(path,vodInfo);
+        uploader.start();
     }
 
     @Override
