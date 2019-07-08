@@ -83,8 +83,6 @@ import bridge from '../../utils/bridge';
 import DesignRule from '../../constants/DesignRule';
 import { track } from '../../utils/SensorsTrack';
 import user from '../../model/user';
-import userApi from '../../model/userApi';
-
 import { getSource } from '@mr/image-placeholder/oos';
 import ShareUtil from '../../utils/ShareUtil';
 import { routeNavigate } from '../../navigation/RouterMap';
@@ -106,7 +104,6 @@ const TrackShareType = {
     other: 100//其他
 };
 
-let  urlArrs = '';
 
 export default class CommShareModal extends React.Component {
 
@@ -130,17 +127,6 @@ export default class CommShareModal extends React.Component {
 
         if (user.isLogin) {
             user.userShare();
-            let params = this.props.webJson;
-            urlArrs = '';
-            if(params && params.linkUrl){
-                userApi.shareShortUrl({'longUrl':params.linkUrl, 'expireTime':0})
-                    .then(res=>{
-                        console.log('res',res);
-                        urlArrs = res && res.data ? res.data : '';
-
-                    }).catch(error=>{
-                });
-            }
         } else {
             Alert.alert('', '为了给您提供更完整的服务，\n请登录后操作',
                 [{
@@ -246,9 +232,6 @@ export default class CommShareModal extends React.Component {
             params.shareImage = this.state.path;
         } else if (this.state.shareType === 1) {//图文链接分享
             params = this.props.webJson;
-            if(urlArrs != '' && platformType === 0) {
-                params.linkUrl = urlArrs
-            }
         } else if (this.state.shareType === 2) {
             params = this.props.miniProgramJson;
         }
