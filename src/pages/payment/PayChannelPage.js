@@ -61,6 +61,8 @@ export default class ChannelPage extends BasePage {
         payment.bizType = this.params.bizType || 0;
         payment.modeType = this.params.modeType || 0;
         this.canShowAlter = true;
+        //胡玉峰-android平台app在调起支付宝的之时会回调一次应用状态，和微信有所不同，所以注意这里用次标识标记
+        this.isBack = false;
     }
 
     componentDidMount() {
@@ -171,7 +173,10 @@ export default class ChannelPage extends BasePage {
         if (payment.isGoToPay === false && Platform.OS === 'android') {
             return;
         }
-        if (payment.platformOrderNo && selctedPayType !== paymentType.none && this.canShowAlter) {
+        if (Platform.OS=== 'android' &&  selctedPayType === paymentType.alipay  && !this.isBack){
+            this.isBack = true;
+        } else if (payment.platformOrderNo && selctedPayType !== paymentType.none && this.canShowAlter) {
+            this.isBack = false;
             this.canShowAlter = false;
             payment.isGoToPay = false;
             this.props.navigation.dispatch({
@@ -210,9 +215,7 @@ export default class ChannelPage extends BasePage {
     _render() {
         const { selctedPayType, name } = payment;
         const { orderChecking } = this.state;
-        // let payMoney = this.remainMoney ? this.remainMoney : payment.amounts;
         let payMoney = this.state.remainMoney;
-
         return <View style={styles.container}>
             <View style={styles.content}>
                 <View style={styles.row}>
