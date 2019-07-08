@@ -232,6 +232,7 @@ public class ShowModule extends ReactContextBaseJavaModule implements LifecycleE
     public void onVideoComplete(ShowVideoEvent event) {
         WritableMap writableMap = Arguments.createMap();
         writableMap.putString("videoPath",event.getPath());
+        writableMap.putString("videoCover",event.getPath());
         videoPromise.resolve(writableMap);
     }
 
