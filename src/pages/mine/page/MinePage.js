@@ -642,6 +642,14 @@ export default class MinePage extends BasePage {
                     marginBottom: px2dp(15)
                 }}>
                     <View style={{flexDirection:'row',justifyContent:'center'}}>
+                        {msgNum > 0 ? <View style={{
+                            minWidth: px2dp(16),
+                            height: px2dp(16),
+                            borderRadius: px2dp(8),
+                            position: 'relative',
+                            top: -5,
+                            left: 0,
+                        }}/> : null}
                         <Text allowFontScaling={true} style={{
                             textAlign: 'center',
                             color: '#333333',
