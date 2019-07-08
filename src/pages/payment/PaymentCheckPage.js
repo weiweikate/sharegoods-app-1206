@@ -39,8 +39,8 @@ export default class PaymentCheckPage extends BasePage {
     }
 
     componentDidMount() {
-        // this.orderTime = (new Date().getTime()) / 1000;
-        // this._checkStatues();
+        this.orderTime = (new Date().getTime()) / 1000;
+        this._checkStatues();
     }
 
     _render() {
