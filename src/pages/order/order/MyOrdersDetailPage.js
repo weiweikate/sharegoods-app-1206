@@ -141,7 +141,7 @@ export default class MyOrdersDetailPage extends BasePage {
 
     orderActivityCheck(productOrderNo, callBack){
         OrderApi.orderActivityCheck({productOrderNo}).then((data)=> {
-            if (data === true){
+            if (data&&data.data === true){
                 Alert.alert('','您已参加助力免单活动，若您申请售后，活动奖励将被取消，您确定要申请售后吗？',
                     [{text: '取消', onPress: () => {}},
                         {text: '申请售后', onPress: () => {callBack && callBack();}}
