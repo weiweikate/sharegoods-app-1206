@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.media.MediaMetadataRetriever;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Environment;
@@ -67,6 +68,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.net.URI;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -95,8 +97,7 @@ public class CommModule extends ReactContextBaseJavaModule {
         this.mContext.addActivityEventListener(new ActivityEventListener() {
             @Override
             public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
-                if (gongMao != null && requestCode == ParameterUtils.REQUEST_CODE_GONGMAO
-                        && resultCode == ParameterUtils.SIGN_OK) {
+                if (gongMao != null && requestCode == ParameterUtils.REQUEST_CODE_GONGMAO && resultCode == ParameterUtils.SIGN_OK) {
                     gongMao.resolve(null);
                 }
             }
@@ -245,7 +246,7 @@ public class CommModule extends ReactContextBaseJavaModule {
             try {
                 file = new File(new URI(filePath));
                 filePath = file.getAbsolutePath();
-            }catch (Exception e){
+            } catch (Exception e) {
 
             }
 
@@ -487,17 +488,22 @@ public class CommModule extends ReactContextBaseJavaModule {
         }
 
         String curPath = filePath;
-        if(!TextUtils.isEmpty(filePath) && filePath.startsWith("file://")){
+        if (!TextUtils.isEmpty(filePath) && filePath.startsWith("file://")) {
             try {
-                File  file1 = new File(new URI(filePath));
+                File file1 = new File(new URI(filePath));
                 curPath = file1.getAbsolutePath();
-            }catch (Exception e){
+            } catch (Exception e) {
                 promise.reject("");
                 return;
             }
         }
 
-        Bitmap bmp = ThumbnailUtils.createVideoThumbnail(curPath, MediaStore.Images.Thumbnails.MINI_KIND);
+        Bitmap bmp;
+        if (curPath.startsWith("http")) {
+            bmp = getNetVideoBitmap(curPath);
+        } else {
+            bmp = ThumbnailUtils.createVideoThumbnail(curPath, MediaStore.Images.Thumbnails.MINI_KIND);
+        }
         if (bmp != null) {
             String returnPath = BitmapUtils.saveImageToCache(bmp, "video.png", filePath);
             if (bmp != null && !bmp.isRecycled()) {
@@ -511,6 +517,23 @@ public class CommModule extends ReactContextBaseJavaModule {
             promise.reject("");
             return;
         }
+    }
+
+    public static Bitmap getNetVideoBitmap(String videoUrl) {
+        Bitmap bitmap = null;
+
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+        try {
+            //根据url获取缩略图
+            retriever.setDataSource(videoUrl, new HashMap());
+            //获得第一帧图片
+            bitmap = retriever.getFrameAtTime();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } finally {
+            retriever.release();
+        }
+        return bitmap;
     }
 
     @ReactMethod
@@ -537,8 +560,7 @@ public class CommModule extends ReactContextBaseJavaModule {
                 }
                 String exten = FileUtils.getExtensionName(url);
                 String filename = FileUtils.getFileNameNoEx(file.getName());
-                final String storePath = SDCardUtils.getFileDirPath(mContext, "MR/picture")
-                        .getAbsolutePath() + File.separator + filename + "." + exten;
+                final String storePath = SDCardUtils.getFileDirPath(mContext, "MR/picture").getAbsolutePath() + File.separator + filename + "." + exten;
                 try {
                     FileUtils.copyFile(file.getAbsolutePath(), storePath);
                 } catch (Exception e) {
@@ -573,9 +595,8 @@ public class CommModule extends ReactContextBaseJavaModule {
             promise.reject("url不能为空");
             return;
         }
-       
-        final String storePath = SDCardUtils.getFileDirPath(mContext, "MR/picture")
-                .getAbsolutePath() ;
+
+        final String storePath = SDCardUtils.getFileDirPath(mContext, "MR/picture").getAbsolutePath();
 
         RequestManager.getInstance().downLoadFile(url, storePath, new ReqProgressCallBack<Object>() {
             @Override
@@ -595,7 +616,7 @@ public class CommModule extends ReactContextBaseJavaModule {
         });
 
         // 预加载原图
-       
+
     }
 
     @ReactMethod
@@ -614,9 +635,8 @@ public class CommModule extends ReactContextBaseJavaModule {
     }
 
 
-
     @ReactMethod
-    public void compressVideo(String path, final Promise promise){
+    public void compressVideo(String path, final Promise promise) {
 //        initSmallVideo();
 //        String realPath = Uri.parse(path).getPath();
 //        File file = new File(realPath);
@@ -662,7 +682,6 @@ public class CommModule extends ReactContextBaseJavaModule {
     public void event2RNHtmlPage(Event.MR2HTMLEvent event) {
         WritableMap map = new WritableNativeMap();
         map.putString("uri", event.getUrl());
-        this.mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                .emit("Event_navigateHtmlPage", map);
+        this.mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("Event_navigateHtmlPage", map);
     }
 }
