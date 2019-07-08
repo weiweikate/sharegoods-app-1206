@@ -12,6 +12,7 @@ import {
 
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
+
 const DeleteIcon = res.shopSetting.del_icon;
 const DashLine = res.shopSetting.xt_03;
 import {
@@ -27,7 +28,7 @@ export default class AnnouncementRow extends Component {
         createTime: PropTypes.number.isRequired,    // 发布时间
         onPress: PropTypes.func.isRequired,         // 点击回调
         onPressDelete: PropTypes.func.isRequired,   // 点击删除的回调
-        canDelete: PropTypes.bool.isRequired       // 是否可以删除
+        canDelete: PropTypes.bool       // 是否可以删除
     };
 
     _onPress = () => {

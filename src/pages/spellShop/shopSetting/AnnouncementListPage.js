@@ -201,7 +201,7 @@ export default class AnnouncementListPage extends BasePage {
                           refreshControl={<RefreshControl refreshing={this.state.refreshing}
                                                           onRefresh={this._onRefresh}
                                                           colors={[DesignRule.mainColor]}/>}/>
-                <ConfirmAlert ref="delAlert"/>
+                <ConfirmAlert/>
             </View>
         );
     }

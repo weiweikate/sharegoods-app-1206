@@ -141,7 +141,7 @@ export default class MyOrdersDetailPage extends BasePage {
 
     orderActivityCheck(productOrderNo, callBack){
         OrderApi.orderActivityCheck({productOrderNo}).then((data)=> {
-            if (data === true){
+            if (data&&data.data === true){
                 Alert.alert('','您已参加助力免单活动，若您申请售后，活动奖励将被取消，您确定要申请售后吗？',
                     [{text: '取消', onPress: () => {}},
                         {text: '申请售后', onPress: () => {callBack && callBack();}}
@@ -648,6 +648,9 @@ export default class MyOrdersDetailPage extends BasePage {
         } else if (orderDetailModel.status > 3 && products.afterSaleTime < orderDetailModel.warehouseOrderDTOList[0].nowTime && orderDetailModel.warehouseOrderDTOList[0].nowTime
             && !(innerStatus < 6 && innerStatus >= 1)) {
             Toast.$toast('该商品售后已过期');
+            return;
+        }else if (products.restrictions === -1 && orderDetailModel.status === 2) {
+            Toast.$toast('该商品属于套餐商品，不能退款');
             return;
         }
 

@@ -474,6 +474,18 @@ export default class ShowRichTextDetailPage extends BasePage {
         });
     };
 
+    _renderChecking = () => {
+        return (
+            <View style={styles.checkingWrapper}>
+                <View style={styles.checkingTextWrapper}>
+                    <Text style={styles.shieldText}>
+                        系统正在快马加鞭审核中，耐心等待哦
+                    </Text>
+                </View>
+            </View>
+        );
+    };
+
 
     _render() {
         const { pageState } = this.state;
@@ -646,7 +658,8 @@ export default class ShowRichTextDetailPage extends BasePage {
                     productModalVisible: false
                 });
             }}/> : null}
-            {detail.status !== 1  && (EmptyUtils.isEmpty(detail.userInfoVO) || detail.userInfoVO.userNo === user.code) ? this._shieldRender() : null}
+            {detail.status === 3  && (EmptyUtils.isEmpty(detail.userInfoVO) || detail.userInfoVO.userNo === user.code) ? this._shieldRender() : null}
+            {detail.status === 2 && (EmptyUtils.isEmpty(detail.userInfoVO) || detail.userInfoVO.userNo === user.code) ? this._renderChecking() : null}
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             defaultModalVisible={this.params.openShareModal}
@@ -938,6 +951,21 @@ let styles = StyleSheet.create({
     emptyTip: {
         color: DesignRule.textColor_secondTitle,
         fontSize: DesignRule.fontSize_threeTitle
-    }
+    },
+    checkingWrapper: {
+        position: 'absolute',
+        top: (ScreenUtils.statusBarHeight + px2dp(44)),
+        bottom: 0,
+        left: 0,
+        right: 0
+    },
+    checkingTextWrapper:{
+        width: DesignRule.width,
+        backgroundColor: 'black',
+        paddingHorizontal: DesignRule.margin_page,
+        height:px2dp(44),
+        flexDirection:'row',
+        alignItems:'center'
+    },
 });
 

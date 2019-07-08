@@ -34,6 +34,7 @@ export default class InfoRow extends Component {
 
 const styles = StyleSheet.create({
     row: {
+        marginHorizontal:15,marginBottom:10,borderRadius:5,
         height: 44,
         flexDirection: 'row',
         alignItems: 'center',

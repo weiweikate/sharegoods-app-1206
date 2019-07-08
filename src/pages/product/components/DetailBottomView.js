@@ -83,7 +83,7 @@ export default class DetailBottomView extends Component {
                                            source={cantJoin ? jiarugouwuche_no : xiangqing_btn_gouwuche_nor}/>
                                     <Text style={styles.leftText}>加购</Text>
                                 </TouchableOpacity>}
-                                <View style={styles.btnView}>
+                                <View style={[styles.btnView, { width: !isGroupIn ? px2dp(260) : px2dp(292) }]}>
                                     <TouchableOpacity
                                         style={[styles.btn, { backgroundColor: cantBuy ? DesignRule.textColor_placeholder : DesignRule.mainColor }]}
                                         onPress={() => this.props.bottomViewAction('buy')} disabled={cantBuy}>
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
 
     btnView: {
         flexDirection: 'row', overflow: 'hidden',
-        marginRight: 15, height: 40, width: px2dp(260), borderRadius: 20
+        marginRight: 15, height: 40, borderRadius: 20
     },
     btn: {
         flex: 1
