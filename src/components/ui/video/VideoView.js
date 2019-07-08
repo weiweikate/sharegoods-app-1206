@@ -41,7 +41,7 @@ export default class VideoView extends Component {
         super(props);
         this.state = {
             videoUrl: props.videoUrl,
-            videoCover: props.videoCover,
+            videoCover: '',
             videoWidth: screenWidth,
             videoHeight: screenWidth * 9 / 16, // 默认16：9的宽高比
             showVideoCover: true,    // 是否显示视频封面
