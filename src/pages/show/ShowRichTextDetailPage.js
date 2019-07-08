@@ -510,7 +510,7 @@ export default class ShowRichTextDetailPage extends BasePage {
             return (<View style={styles.container}>
                 <View style={{backgroundColor:DesignRule.bgColor,alignItems:'center',flex:1,marginTop:ScreenUtils.statusBarHeight}}>
                     <Image source={dynamicEmpty}
-                           style={{ width: px2dp(267), height: px2dp(192), marginTop: px2dp(50),marginTop:px2dp(165) }}/>
+                           style={{ width: px2dp(267), height: px2dp(192), marginTop:px2dp(165) }}/>
                     <Text style={styles.emptyTip}>
                         {detail.status === 2 ? '系统正在快马加鞭审核中,耐心等待哦！':'文章不见了，先看看别的吧！'}
                     </Text>
