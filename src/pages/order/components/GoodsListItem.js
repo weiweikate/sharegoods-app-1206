@@ -231,7 +231,7 @@ export default class GoodsListItem extends React.Component {
                 <UIText value={`共${baseInfo.productQuantity}件商品  ${merchantOrder.status < 2 ? '需付款: ' : '实付款: '}`}
 
                         style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}/>
-                <UIText value={StringUtils.formatMoneyString(payInfo.orderAmount)}
+                <UIText value={StringUtils.formatMoneyString(payInfo.payAmount)}
                         style={{ fontSize: 13, color: DesignRule.mainColor }}/>
                 {/*<UIText value={'（含运费' + StringUtils.formatMoneyString(freightPrice, false) + '）'}*/}
                 {/*style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}/>*/}

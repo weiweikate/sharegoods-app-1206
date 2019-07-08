@@ -16,6 +16,8 @@ class ConfirmOrderModel {
     err=null
     @observable
     canUseCou = true;
+    @observable
+    isAllVirtual = false;
 
     addressId =  '';
     orderParamVO = {};
@@ -84,6 +86,22 @@ class ConfirmOrderModel {
         this.makeSureProduct();
     }
 
+    @action
+    judgeIsAllVirtual(orderProducts){
+        let isAllVirtual = true;
+        (orderProducts || []).forEach(item => {
+            // "skuCode":, //string 平台skuCode
+            // "quantity":, //int 购买数量
+            // "activityCode":, //string 活动code
+            // "batchNo": //string 活动批次号
+            let { productType} = item;
+           if (productType !== 3){
+               isAllVirtual = false;
+           }
+        })
+       this.isAllVirtual = isAllVirtual;
+    }
+
     getParams(){
         let productList = (this.orderParamVO.orderProducts || []).map(item => {
             // "skuCode":, //string 平台skuCode
@@ -96,7 +114,7 @@ class ConfirmOrderModel {
 
         return {
             couponInfo: { //券信息
-                couponCodes: [this.userCouponCode], //List<string> 本次下单使用的优惠券code
+                couponCode: this.userCouponCode, //本次下单使用的优惠券code
                 tokenCoin: this.tokenCoin//BigDecimal 一元券抵扣金额
             },
             receiveInfo: {
@@ -130,6 +148,8 @@ class ConfirmOrderModel {
 
     disPoseErr = (err) => {
         if (this.data){
+            this.data.payInfo.payAmount +=  this.data.payInfo.couponAmount;
+            this.data.payInfo.couponAmount = 0;//清除优惠券信息
             this.handleNetData(this.data);
         }
         if (err.code === 10003 && err.msg.indexOf('不在限制的购买时间') !== -1) {
@@ -155,6 +175,9 @@ class ConfirmOrderModel {
         this.receiveInfo = data.receiveInfo || {};
         this.addressId =  this.receiveInfo.id + '';
         this.tokenCoin =  this.payInfo.tokenCoinAmount;
+        if (this.payInfo.couponAmount === 0){
+            this.userCouponCode = '';
+        }
         //遍历出失效对应商品信息
         let failProductList = [];
         let list = data.failProductList || [];
@@ -166,7 +189,8 @@ class ConfirmOrderModel {
                     list[i].activityCode == orderProducts[j].activityCode &&
                     list[i].batchNo == orderProducts[j].batchNo
                 ){
-                    failProductList.push(orderProducts[j]);
+                    let product = orderProducts[j];
+                    failProductList.push({...product, failReason: list[i].failReason});
                     break;
                 }
             }
