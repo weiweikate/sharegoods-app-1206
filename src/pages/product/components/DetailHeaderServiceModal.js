@@ -72,8 +72,8 @@ export default class DetailHeaderServiceModal extends Component {
         if (!this.state.modalVisible) {
             return null;
         }
-        const { restrictions, productData } = this.state.pData;
-        const { afterSaleLimit } = (productData || {}).groupActivity || {};
+        const { restrictions, groupActivity } = this.state.pData;
+        const { afterSaleLimit } = groupActivity || {};
         //1优惠券,4退换,8节假日
 
         let sectionListData = [
