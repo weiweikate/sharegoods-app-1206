@@ -391,24 +391,17 @@ export default class MyShopPage extends BasePage {
         const { totalBonusMoney } = manager;
         if (userStatus === 1) {
             return (
-                <View style={{ marginBottom: 10 }}>
-                    <View style={{ height: 10 }}/>
+                <View>
                     {this._renderRow(RmbIcon, '店铺已完成奖励总额', `¥${((totalTradeBalance - tradeBalance) || 0).toFixed(2)}`)}
-                    {this.renderSepLine()}
                     {this._renderRow(system_charge, '个人已获得奖励', `${(myStore ? totalBonusMoney : clerkBonusCount) || 0}元`)}
-
-                    <View style={{ height: 10 }}/>
                     {this._renderRow(QbIcon, '店铺成立时间', createTimeStr)}
-                    {!myStore ? this.renderSepLine() : null}
                     {!myStore ? this._renderRow(myShop_join, '加入时间', updateTime) : null}
                 </View>
             );
         } else {
             return (
-                <View style={{ marginBottom: 10 }}>
-                    <View style={{ height: 10 }}/>
+                <View>
                     {this._renderRow(RmbIcon, '店铺已完成奖励总额', `¥${((totalTradeBalance - tradeBalance) || 0).toFixed(2)}`)}
-                    <View style={{ height: 10 }}/>
                     {this._renderRow(QbIcon, '店铺成立时间', createTimeStr)}
                 </View>
             );
