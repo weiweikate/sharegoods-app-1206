@@ -15,15 +15,15 @@ import UserApi from './userApi';
 
 class UserOrderNum {
     @observable
-    afterSaleServiceNum = 0;
+    afterSaleServiceNum = 0; //售后
     @observable
-    waitPayNum = 0;
+    waitPayNum = 0; //待支付
     @observable
-    waitReceiveNum = 0;
+    waitReceiveNum = 0; //待收货
     @observable
-    waitSendNum = 0;
+    waitSendNum = 0; //待发货
     @observable
-    waitShowNum = 0;
+    waitShowNum = 0; //晒单
 
     // 设置用户信息
     @action
@@ -33,9 +33,9 @@ class UserOrderNum {
         }
 
         this.afterSaleServiceNum = data.afterSale;
-        this.waitPayNum = data.nonPay;
-        this.waitReceiveNum = data.nonReceiving;
-        this.waitSendNum = data.nonDelivery;
+        this.waitPayNum = data.waitPay;
+        this.waitReceiveNum = data.waitReceive;
+        this.waitSendNum = data.waitDeliver;
         this.waitShowNum = data.comment || 0;
     }
 
