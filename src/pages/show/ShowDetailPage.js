@@ -570,7 +570,6 @@ export default class ShowDetailPage extends BasePage {
                            style={{
                                width: px2dp(267),
                                height: px2dp(192),
-                               marginTop: px2dp(50),
                                marginTop: px2dp(165)
                            }}/>
                     <Text style={styles.emptyTip}>
