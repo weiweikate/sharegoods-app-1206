@@ -52,7 +52,7 @@ export default class XiuDouResultModal extends React.Component {
                         <View style={{flexDirection: 'row', height:  ScreenUtils.autoSizeWidth(30), alignItems: 'center'}}>
                             <MRText style={[styles.detail, {marginLeft: ScreenUtils.autoSizeWidth(15)}]}>获奖用户</MRText>
                             <MRText style={[styles.detail, {marginLeft: ScreenUtils.autoSizeWidth(32), flex: 1}]}>免单奖励</MRText>
-                            <MRText style={[styles.detail, {marginRight: ScreenUtils.autoSizeWidth(15)}]}>免单奖励</MRText>
+                            <MRText style={[styles.detail, {marginRight: ScreenUtils.autoSizeWidth(15)}]}>免单场次</MRText>
                         </View>
                         <RefreshFlatList url={HomeAPI.freeOrderList}
                                          params={{}}
