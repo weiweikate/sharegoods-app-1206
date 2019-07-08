@@ -195,8 +195,9 @@ export default class MyShopPage extends BasePage {
                 storeCode: storeNumber,
                 tittle: userStatus === 1 ? '我的店铺' : '店铺详情'
             });
-            track(trackEvent.SeePingdian, {
-                pinCode: storeNumber
+            track(trackEvent.PinShopEnter, {
+                pinCode: storeNumber,
+                wayToPinType: this.props.wayToPinType
             });
         }).catch((error) => {
             this.$toastShow(error.msg);

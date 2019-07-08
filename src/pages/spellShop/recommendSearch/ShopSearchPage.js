@@ -117,7 +117,7 @@ export default class ShopSearchPage extends BasePage {
     };
 
     _clickShopAtRow = (item) => {
-        this.$navigate(RouterMap.MyShop_RecruitPage, { storeCode: item.storeNumber });
+        this.$navigate(RouterMap.MyShop_RecruitPage, { storeCode: item.storeNumber,wayToPinType:1 });
     };
 
     // 渲染行
