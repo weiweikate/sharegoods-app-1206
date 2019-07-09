@@ -382,11 +382,11 @@ RCT_EXPORT_METHOD(updatePushTags:(id)paramTags){
   });
 }
 
-RCT_EXPORT_METHOD(deleteAllAlias{
+RCT_EXPORT_METHOD(deleteAllAlias){
    dispatch_async(dispatch_get_main_queue(), ^{
      [JSPushManager deleteAlias];
    });
-});
+}
 
 
 //RCT_EXPORT_METHOD(signWith:(NSString *)signString callback:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject){
