@@ -524,8 +524,6 @@ autorun(()=>{
     if (user.isLogin) {
         JPushUtils.updatePushTags();
         JPushUtils.updatePushAlias();
-    }else {
-        JPushUtils.deleteAllAlias();
     }
 })
 export default user;
