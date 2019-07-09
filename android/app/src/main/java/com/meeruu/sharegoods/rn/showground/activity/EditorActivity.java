@@ -1,25 +1,13 @@
-package com.meeruu.sharegoods.rn.showground.Activity;
+package com.meeruu.sharegoods.rn.showground.activity;
 
-import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.FrameLayout;
 
-import com.aliyun.svideo.sdk.external.struct.common.AliyunImageClip;
-import com.aliyun.svideo.sdk.external.struct.common.AliyunVideoClip;
 import com.aliyun.svideo.sdk.external.struct.common.AliyunVideoParam;
-import com.aliyun.svideo.sdk.external.struct.recorder.MediaInfo;
-import com.meeruu.commonlib.utils.NotchScreenUtil;
-import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.widgets.editview.AlivcEditView;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 public class EditorActivity extends FragmentActivity {
     private static final String TAG = "EditorActivity";

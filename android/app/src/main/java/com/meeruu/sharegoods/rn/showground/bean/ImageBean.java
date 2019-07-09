@@ -1,9 +1,7 @@
-package com.meeruu.sharegoods.event;
+package com.meeruu.sharegoods.rn.showground.bean;
 
-public class ShowVideoEvent {
+public class ImageBean {
     private String path;
-    private String cover;
-
     private int width;
     private int height;
 
@@ -13,14 +11,6 @@ public class ShowVideoEvent {
 
     public void setPath(String path) {
         this.path = path;
-    }
-
-    public String getCover() {
-        return cover;
-    }
-
-    public void setCover(String cover) {
-        this.cover = cover;
     }
 
     public int getWidth() {

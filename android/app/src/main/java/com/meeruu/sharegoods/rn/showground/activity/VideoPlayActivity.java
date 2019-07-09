@@ -1,9 +1,8 @@
-package com.meeruu.sharegoods.rn.showground.Activity;
+package com.meeruu.sharegoods.rn.showground.activity;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -17,11 +16,8 @@ import android.widget.VideoView;
 
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.event.ShowVideoEvent;
-import com.meeruu.sharegoods.rn.module.CommModule;
-import com.meeruu.sharegoods.rn.showground.ShowModule;
-import com.meeruu.sharegoods.rn.showground.bean.VideoAuthBean;
+import com.meeruu.sharegoods.rn.showground.bean.ImageBean;
 import com.meeruu.sharegoods.rn.showground.utils.VideoCoverUtils;
-import com.meeruu.sharegoods.ui.activity.MainRNActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -119,8 +115,10 @@ public class VideoPlayActivity extends Activity  implements MediaPlayer.OnErrorL
         }else if (id == R.id.tv_right){
             ShowVideoEvent event = new ShowVideoEvent();
             event.setPath(video_path);
-            String cover = VideoCoverUtils.getVideoThumb(VideoPlayActivity.this,video_path);
-            event.setCover(cover);
+            ImageBean cover = VideoCoverUtils.getVideoThumb(VideoPlayActivity.this,video_path);
+            event.setCover(cover.getPath());
+            event.setWidth(cover.getWidth());
+            event.setHeight(cover.getHeight());
             EventBus.getDefault().post(event);
             finish();
         }

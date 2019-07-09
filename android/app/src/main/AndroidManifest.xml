@@ -166,8 +166,8 @@
                     android:scheme="meeruu" />
             </intent-filter>
         </activity>
-        <activity android:name=".rn.showground.Activity.VideoPlayActivity"/>
-        <activity android:name=".rn.showground.Activity.VideoRecordActivity"/>
+        <activity android:name=".rn.showground.activity.VideoPlayActivity"/>
+        <activity android:name=".rn.showground.activity.VideoRecordActivity"/>
         <activity
             android:name=".ui.activity.MainRNActivity"
             android:configChanges="screenLayout|screenSize|smallestScreenSize|orientation"

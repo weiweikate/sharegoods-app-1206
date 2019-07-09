@@ -1,11 +1,7 @@
 package com.meeruu.sharegoods.rn.showground;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.text.TextUtils;
-import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.sdk.android.vod.upload.VODUploadCallback;
@@ -25,11 +21,9 @@ import com.facebook.react.bridge.WritableNativeMap;
 import com.meeruu.commonlib.callback.BaseCallback;
 import com.meeruu.commonlib.config.BaseRequestConfig;
 import com.meeruu.commonlib.server.RequestManager;
-import com.meeruu.sharegoods.event.Event;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
 import com.meeruu.sharegoods.event.ShowVideoEvent;
-import com.meeruu.sharegoods.rn.showground.Activity.VideoRecordActivity;
-import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
+import com.meeruu.sharegoods.rn.showground.activity.VideoRecordActivity;
 import com.meeruu.sharegoods.rn.showground.bean.VideoAuthBean;
 import com.meeruu.sharegoods.utils.HttpUrlUtils;
 import com.reactnative.ivpusic.imagepicker.picture.lib.PictureSelector;
@@ -53,7 +47,6 @@ public class ShowModule extends ReactContextBaseJavaModule implements LifecycleE
     private ReactApplicationContext mContext;
     private VODUploadCallback callback;
     private Promise videoPromise;
-    private Promise uploadPromise;
     VODUploadClient uploader;
     private String uploadAuth,uploadAddress;
 
@@ -187,8 +180,6 @@ public class ShowModule extends ReactContextBaseJavaModule implements LifecycleE
             return;
         }
         final String fileName = file.getName();
-
-        uploadPromise = promise;
         ShowVideoAuthRequest showVideoAuthRequest = new ShowVideoAuthRequest();
         HashMap hashMap = new HashMap();
         hashMap.put("fileName",fileName);
@@ -206,6 +197,10 @@ public class ShowModule extends ReactContextBaseJavaModule implements LifecycleE
                 uploadAddress = videoAuthBean.getUploadAddress();
                 uploadAuth = videoAuthBean.getUploadAuth();
                 startUpload(title,fileName,path);
+                WritableMap writableMap = Arguments.createMap();
+                writableMap.putString("showNo",videoAuthBean.getShowNo());
+                writableMap.putString("videoId",videoAuthBean.getVideoId());
+                promise.resolve(writableMap);
             }
         });
     }
@@ -245,6 +240,8 @@ public class ShowModule extends ReactContextBaseJavaModule implements LifecycleE
         WritableMap writableMap = Arguments.createMap();
         writableMap.putString("videoPath",event.getPath());
         writableMap.putString("videoCover",event.getCover());
+        writableMap.putInt("width",event.getWidth());
+        writableMap.putInt("height",event.getHeight());
         videoPromise.resolve(writableMap);
     }
 

@@ -153,7 +153,7 @@ export default class ReleaseNotesPage extends BasePage {
 
     publishVideo=(path)=>{
         NativeModules.ShowModule.uploadVideo('cs',this.state.videoData.videoPath).then((data)=>{
-
+            this.state
         }).catch((error)=>{
 
         })

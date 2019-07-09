@@ -2,51 +2,27 @@ package com.meeruu.sharegoods.rn.showground.widgets.editview;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Looper;
-import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.aliyun.common.utils.StorageUtils;
-import com.aliyun.crop.AliyunCropCreator;
-import com.aliyun.editor.EditorCallBack;
-import com.aliyun.querrorcode.AliyunEditorErrorCode;
-import com.aliyun.querrorcode.AliyunErrorCode;
 import com.aliyun.svideo.sdk.external.struct.common.AliyunVideoParam;
 import com.aliyun.svideo.sdk.external.struct.common.VideoDisplayMode;
-import com.aliyun.svideo.sdk.external.thumbnail.AliyunIThumbnailFetcher;
-import com.aliyun.svideo.sdk.external.thumbnail.AliyunThumbnailFetcherFactory;
-import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.commonlib.utils.FastClickUtil;
-import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.sharegoods.R;
-import com.meeruu.sharegoods.rn.showground.Activity.EditorActivity;
-import com.meeruu.sharegoods.rn.showground.utils.UIConfigManager;
+import com.meeruu.sharegoods.rn.showground.activity.EditorActivity;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 public class AlivcEditView extends RelativeLayout implements View.OnClickListener {
     /**
