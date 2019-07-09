@@ -7,7 +7,7 @@ import {
     Slider,
     TouchableWithoutFeedback,
     TouchableOpacity,
-    StyleSheet
+    StyleSheet, NativeModules, Platform
 } from 'react-native';
 import Video from 'react-native-video';
 // import Orientation from 'react-native-orientation';
@@ -41,7 +41,7 @@ export default class VideoView extends Component {
         super(props);
         this.state = {
             videoUrl: props.videoUrl,
-            videoCover: props.videoCover,
+            videoCover: '',
             videoWidth: screenWidth,
             videoHeight: screenWidth * 9 / 16, // 默认16：9的宽高比
             showVideoCover: true,    // 是否显示视频封面
@@ -66,14 +66,23 @@ export default class VideoView extends Component {
         );
     }
 
+    componentDidMount() {
+        NativeModules.commModule.RN_Video_Image(this.state.videoUrl).then(({ imagePath }) => {
+            this.setState({
+                videoCover: Platform.OS === 'android' ? 'file://' + imagePath : '' + imagePath
+            });
+        });
+    }
+
     componentWillUnmount() {
         this.willBlurSubscription && this.willBlurSubscription.remove();
     }
 
     _render = () => {
+
         if (this.state.showVideoCover) {
             return <View style={{ flex: 1, backgroundColor: DesignRule.imgBg_color }}>
-                <Image style={{ flex: 1, width: this.state.videoWidth,height:this.state.videoHeight }}
+                <Image style={{ flex: 1, width: this.state.videoWidth, height: this.state.videoHeight }}
                        source={{ uri: this.state.videoCover }}
                        resizeMode={'cover'}/>
                 <TouchableOpacity style={{

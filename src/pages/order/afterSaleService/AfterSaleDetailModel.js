@@ -44,7 +44,7 @@ class AfterSaleDetailModel {
                     data.service.subStatus = SubStatus.REFUSE_AFTER;
                 }
             }
-            if (status === 7){
+            if (status === AfterStatus.WAIT_SUPPLIER_CANCLE_DEVLIER){
                 data.service.status = AfterStatus.STATUS_IN_REVIEW;
             }
             this.pageData = data
@@ -56,7 +56,7 @@ class AfterSaleDetailModel {
             } else {
                 this.stopTimer();
             }
-            if (status === AfterStatus.STATUS_IN_REVIEW) {
+            if (status === AfterStatus.STATUS_IN_REVIEW || status === AfterStatus.WAIT_SUPPLIER_CANCLE_DEVLIER) {
                 callBack && callBack();//审核中,就执行callBack（callBack里面就是取消、修改的操作）
             } else if (callBack) {
                 /** 有callBack,但是状态不是在审核中*/
@@ -78,6 +78,14 @@ class AfterSaleDetailModel {
     @action
     stopTimer() {
         this.timer && clearInterval(this.timer);
+    }
+
+    @action
+    userCancel(){
+        let pageData = this.pageData;
+        pageData.service.status = AfterStatus.STATUS_FAIL;
+        pageData.service.subStatus = SubStatus.REFUSE_REVOKED;
+        this.pageData = pageData;
     }
 
     /**

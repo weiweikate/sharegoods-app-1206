@@ -44,7 +44,9 @@ export default class CancelProdectsModal extends React.Component {
     }
 
 
-    open(platformOrderNo){
+    open(platformOrderNo, callBack, isPay){
+        this.isPay = isPay;
+        this.callBack = callBack;
         if (this.platformOrderNo === platformOrderNo ) {
             this.openOrNext(this.state.data);
             this.platformOrderNo = platformOrderNo
@@ -54,6 +56,11 @@ export default class CancelProdectsModal extends React.Component {
         bridge.showLoading();
         OrderApi.getAllProductOrder({platformOrderNo: platformOrderNo}).then((data)=> {
             bridge.hiddenLoading();
+            (data.data||[]).map(item => {
+                if (item.couponAmount > 0){
+                    this.isCoupon = true;
+                }
+            })
             this.setState({data:data.data||[]})
             this.openOrNext(data.data)
 
@@ -89,7 +96,7 @@ export default class CancelProdectsModal extends React.Component {
     }
 
     clickSure = () => {
-        this.props.clickSure();
+        this.callBack &&  this.callBack();
         this.close()
     }
 
@@ -113,6 +120,8 @@ export default class CancelProdectsModal extends React.Component {
     }
 
     render() {
+        let title = this.isPay ? '支付':'取消';
+        let coupon = this.isCoupon ? '共享优惠': ''
         return (
             <CommModal visible={this.state.visible}
                        ref={(ref) => {
@@ -130,15 +139,15 @@ export default class CancelProdectsModal extends React.Component {
                         marginTop: 10,
                         alignItems: 'center',
                     }}>
-                        <UIText value={'取消订单'} style={{fontSize: 16, fontWeight: '600'}}/>
-                        <UIText value={'由于以下商品共享优惠，需要一起取消'} style={{fontSize: 12, color: '#666666'}}/>
+                        <UIText value={title+'订单'} style={{fontSize: 16, fontWeight: '600'}}/>
+                        <UIText value={'由于以下商品'+coupon+'，需要一起'+title} style={{fontSize: 12, color: '#666666'}}/>
                     </View>
                     <ScrollView style={{marginTop: 20}}>
                         {this.renderItems()}
                     </ScrollView>
                     <TouchableOpacity style={{  height:  45 ,justifyContent: 'center', alignItems: 'center',backgroundColor: DesignRule.mainColor}}
                                       onPress={() => {this.clickSure()}}>
-                        <UIText value={'取消订单'} style={{ color: 'white', fontSize: 16}}/>
+                        <UIText value={title+'订单'} style={{ color: 'white', fontSize: 16}}/>
                     </TouchableOpacity>
                     <TouchableOpacity style={{ right: 15, width: 50 ,top: 0, height: 50, position: 'absolute'}}
                                       onPress={() => {this.close()}}>

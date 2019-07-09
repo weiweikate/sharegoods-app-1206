@@ -7,7 +7,7 @@ import {
 import BasePage from '../../BasePage';
 import DetailBottomView from './components/DetailBottomView';
 import PriceExplain from './components/PriceExplain';
-import SelectionPage, { sourceType } from './SelectionPage';
+import SelectionPage from './SelectionPage';
 import ScreenUtils from '../../utils/ScreenUtils';
 import shopCartCacheTool from '../shopCart/model/ShopCartCacheTool';
 import CommShareModal from '../../comm/components/CommShareModal';
@@ -22,6 +22,7 @@ import DetailPromoteModal from './components/DetailPromoteModal';
 import { beginChatType, QYChatTool } from '../../utils/QYModule/QYChatTool';
 import ProductDetailModel, { productItemType, sectionType } from './ProductDetailModel';
 import { observer } from 'mobx-react';
+import { autorun } from 'mobx';
 import RouterMap from '../../navigation/RouterMap';
 import {
     ContentItemView,
@@ -78,24 +79,28 @@ export default class ProductDetailPage extends BasePage {
         };
     };
 
+    /**登录刷新**/
+    listenerLogin = autorun(() => {
+        const loginChange = user.isLogin ? 1 : 1;
+        if (this.isLoad && loginChange) {
+            this.productDetailModel && this.productDetailModel.requestProductDetail();
+        }
+    });
 
     componentDidMount() {
-        this.willFocusSubscription = this.props.navigation.addListener('willFocus', payload => {
-                const { state } = payload;
-                if (state && state.routeName === 'product/ProductDetailPage' && !user.isProdFirstLoad) {
-                    this.productDetailModel && this.productDetailModel.requestProductDetail();
-                }
-            }
-        );
+        this.isLoad = true;
         if (user.isProdFirstLoad) {
             setTimeout(() => {
                 user.isProdFirstLoad = false;
                 this.productDetailModel && this.productDetailModel.requestProductDetail();
             }, 200);
+        } else {
+            this.productDetailModel && this.productDetailModel.requestProductDetail();
         }
     }
 
     componentWillUnmount() {
+        this.isLoad = false;
         this.productDetailModel.clearTime();
         this.willFocusSubscription && this.willFocusSubscription.remove();
     }
@@ -133,11 +138,17 @@ export default class ProductDetailPage extends BasePage {
                     return;
                 }
                 this.state.goType = type;
-                this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, { sourceType: productIsPromotionPrice ? sourceType.promotion : null });
+                this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, {
+                    productIsPromotionPrice,
+                    isAreaSku: true
+                });
                 break;
             case 'gwc':
                 this.state.goType = type;
-                this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, { sourceType: productIsPromotionPrice ? sourceType.promotion : null });
+                this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, {
+                    productIsPromotionPrice,
+                    isAreaSku: true
+                });
                 break;
         }
     };
@@ -165,6 +176,7 @@ export default class ProductDetailPage extends BasePage {
             const { type, couponId } = this.params;
             const { specImg, productName, promotionPrice, price, propertyValues } = item;
             let orderProducts = [{
+                productType:this.productDetailModel.type,
                 skuCode: skuCode,
                 quantity: amount,
                 productCode: prodCode,

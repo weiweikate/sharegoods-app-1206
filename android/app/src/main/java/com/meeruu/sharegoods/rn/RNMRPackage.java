@@ -6,6 +6,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
 import com.meeruu.commonlib.umeng.AnalyticsModule;
 import com.meeruu.commonlib.umeng.LoginAndSharingModule;
+import com.meeruu.sharegoods.rn.dottedline.DottedLineManager;
 import com.meeruu.sharegoods.rn.kefu.QYChatModule;
 import com.meeruu.sharegoods.rn.loadingview.MRLoadingViewManager;
 import com.meeruu.sharegoods.rn.module.AppPayModule;
@@ -81,7 +82,8 @@ public class RNMRPackage implements ReactPackage {
                 new RecyclerViewHeaderManager(),
                 new ShowGroundViewManager(),
                 new ShowRecommendViewManager(),
-                new ShowDynamicViewManager());
+                new ShowDynamicViewManager(),
+                new DottedLineManager());
     }
 
 }

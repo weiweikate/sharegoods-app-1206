@@ -338,9 +338,6 @@ class AfterSaleServicePage extends BasePage {
         let returnReasons = this.state.returnReasons.map((item) => {
             return item.value;
         });
-        if (this.state.productData.restrictions && ((this.state.productData.restrictions & 4) === 4)) {
-            returnReasons.unshift('七天无理由退换');
-        }
 
         return (
             <View>
@@ -402,7 +399,7 @@ class AfterSaleServicePage extends BasePage {
         );
     };
 
-    _getReturnReason(fah) {//是否发货
+    _getReturnReason(fah, sevenDayReturn) {//是否发货
         let pageType = this.params.pageType || 0;
         if (fah === false) {
             pageType = 3;
@@ -410,7 +407,12 @@ class AfterSaleServicePage extends BasePage {
 
         let that = this;
         OrderApi.getReturnReason({ code: ['JTK', 'THTK', 'HH', 'WFH'][pageType] }).then((result) => {
-            that.setState({ returnReasons: result.data || [] });
+            let returnReasons = result.data || [];
+            if (sevenDayReturn) {
+                let returnReason = '七天无理由'+['退款','退货','换货','退款'][pageType];
+                returnReasons = [{value: returnReason}, ...returnReasons]
+            }
+            that.setState({ returnReasons: returnReasons });
         }).catch((error) => {
 
         });
@@ -444,9 +446,9 @@ class AfterSaleServicePage extends BasePage {
             let payAmount = productData.payAmount || 0;
             if (status === 2 || status === 1) {  //  状态 1.待付款 2.已付款 3.已发货 4.交易完成 5.交易关闭
                 editable = false;
-                that._getReturnReason(false);
+                that._getReturnReason(false,productData.afterSaleServiceDays);
             } else {
-                that._getReturnReason(true);
+                that._getReturnReason(true,productData.afterSaleServiceDays);
             }
             if (payAmount === 0) {
                 editable = false;
@@ -551,7 +553,7 @@ class AfterSaleServicePage extends BasePage {
             this.$loadingShow();
             OrderApi.afterSaleApply(params).then((response) => {
                 this.$loadingDismiss();
-                DeviceEventEmitter.emit('OrderNeedRefresh');
+                DeviceEventEmitter.emit('REFRESH_ORDER');
                 this.$navigate(RouterMap.ExchangeGoodsDetailPage, {
                     serviceNo: response.data.serviceNo
                 });

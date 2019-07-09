@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, FlatList } from 'react-native';
+import { View, StyleSheet, FlatList, DeviceEventEmitter } from 'react-native';
 import BasePage from '../../../BasePage';
 import P_ScorePubItemView from './components/P_ScorePubItemView';
 import ActionSheetView from '../../spellShop/components/ActionSheetView';
@@ -25,6 +25,7 @@ export class P_ScorePublishPage extends BasePage {
 
     $NavBarRightPressed = () => {
         this.p_ScorePublishModel._publish(() => {
+            DeviceEventEmitter.emit('REFRESH_ORDER');
             this.$navigateReplace(RouterMap.P_ScoreSuccessPage);
         });
     };
@@ -132,7 +133,7 @@ export class P_ScorePublishPage extends BasePage {
                     this.ActionSheetView = ref;
                 }}/>
                 {/*<CameraView ref={(ref) => {*/}
-                    {/*this.CameraView = ref;*/}
+                {/*this.CameraView = ref;*/}
                 {/*}}/>*/}
             </View>
 

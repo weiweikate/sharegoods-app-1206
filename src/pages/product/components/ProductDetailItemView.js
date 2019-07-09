@@ -130,8 +130,8 @@ export class HeaderItemView extends Component {
                 {isNoEmpty(secondName) && <Text style={styles.secondNameText} numberOfLines={2}>{secondName}</Text>}
                 <View style={styles.freightMonthView}>
                     {/*值为0*/}
-                    <Text style={styles.freightMonthText}>快递：{freight == 0 ? '包邮' : `${freight || ''}元`}</Text>
-                    <Text style={styles.freightMonthText}>{`近期销量: ${monthSaleCount || ''}`}</Text>
+                    <Text style={styles.freightMonthText}>快递：{freight == 0 ? '包邮' : `${freight}元`}</Text>
+                    <Text style={styles.freightMonthText}>{`近期销量: ${monthSaleCount}`}</Text>
                 </View>
             </View>
         );
@@ -392,17 +392,13 @@ export class ServiceItemView extends Component {
     };
 
     render() {
-        const { productDetailModel, serviceAction } = this.props;
-        const { sevenDayReturn, weekendDelivery } = productDetailModel;
+        const { serviceAction } = this.props;
         return (
             <NoMoreClick style={ServiceItemViewStyles.serviceView} onPress={serviceAction}>
                 <Text style={ServiceItemViewStyles.serviceNameText}>服务</Text>
                 <View style={{ flexDirection: 'row', flex: 1 }}>
                     {this._imgText('质量保障')}
                     {this._imgText('48小时发货')}
-                    {sevenDayReturn === 1 && this._imgText('7天退换')}
-                    {/*最多显示3条*/}
-                    {weekendDelivery === 1 && sevenDayReturn !== 1 && this._imgText('节假日发货')}
                 </View>
                 <Image source={arrow_right_black}/>
             </NoMoreClick>

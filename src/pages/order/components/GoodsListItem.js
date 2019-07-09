@@ -205,7 +205,7 @@ export default class GoodsListItem extends React.Component {
                     <UIText value={'订单提交时间：' + DateUtils.getFormatDate(baseInfo.orderTime / 1000)}
                             style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 18 }}/>
                     <UIText
-                        value={ GetViewOrderStatus(merchantOrder.status).status}
+                        value={ GetViewOrderStatus(merchantOrder.status, merchantOrder.subStatus).status}
                         style={{ fontSize: 13, color: DesignRule.mainColor, marginRight: 13 }}/>
                 </View>
             </View>
@@ -231,7 +231,7 @@ export default class GoodsListItem extends React.Component {
                 <UIText value={`共${baseInfo.productQuantity}件商品  ${merchantOrder.status < 2 ? '需付款: ' : '实付款: '}`}
 
                         style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}/>
-                <UIText value={StringUtils.formatMoneyString(payInfo.orderAmount)}
+                <UIText value={StringUtils.formatMoneyString(payInfo.payAmount)}
                         style={{ fontSize: 13, color: DesignRule.mainColor }}/>
                 {/*<UIText value={'（含运费' + StringUtils.formatMoneyString(freightPrice, false) + '）'}*/}
                 {/*style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}/>*/}

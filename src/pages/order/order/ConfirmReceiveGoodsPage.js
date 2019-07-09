@@ -48,10 +48,10 @@ export default class ConfirmReceiveGoodsPage extends BasePage {
 
     };
     showOrderPage = () => {
-        OrderApi.checkInfo({merchantOrderNo:this.params.merchantOrderNo}).then(res => {
-            if(res.data){
+        OrderApi.checkInfo({warehouseOrderNo:this.params.merchantOrderNo}).then(res => {
+            if(res.data === false){
                 this.$navigate(RouterMap.P_ScorePublishPage, {
-                    merchantOrderNo: this.params.merchantOrderNo
+                    orderNo: this.params.merchantOrderNo
                 });
             }else{
                 Toast.$toast('该商品已晒过单！');
@@ -62,7 +62,6 @@ export default class ConfirmReceiveGoodsPage extends BasePage {
     };
     $NavBarLeftPressed = () => {
         this.$navigateBack();
-        this.params.callBack && this.params.callBack();
     };
 }
 const styles = StyleSheet.create({

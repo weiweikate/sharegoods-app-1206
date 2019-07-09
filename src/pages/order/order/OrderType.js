@@ -49,7 +49,8 @@ const ViewOrderStatus = {
     },
     4:  {
         status: '交易完成',
-        menuData:[{ id:7, operation:'删除订单', isRed:false, },
+        menuData:[{ id:7, operation:'删除订单', isRed:false,},
+                  { id:5, operation:'查看物流', isRed:false,},
                   { id:8, operation:'再次购买', isRed:true, }],
         menu_orderDetail: [{ id:7, operation:'删除订单', isRed:false, },
                            { id:5, operation: '查看物流', isRed: false },
@@ -72,14 +73,14 @@ const ViewOrderStatus = {
 // 返回订单详情售后按钮list
 function GetAfterBtns(product) {
     if (product.status === OrderType.WAIT_PAY ||
-        product.status === OrderType.DELETED ||
-        product.status === OrderType.CLOSED
+        product.status === OrderType.DELETED
+        // product.status === OrderType.CLOSED
     ) {
         return [];
     }
     let afterSale = product.afterSale || {}
     let {type, status} = afterSale;
-    if (!type){
+    if (!type){//这个type为空，说明没有申请过售后
         if (product.status === OrderType.WAIT_DELIVER) {
            return [{ id:1, operation:'退款', isRed:false}]
         }else {
@@ -89,7 +90,9 @@ function GetAfterBtns(product) {
     if(status === AfterStatus.STATUS_SUCCESS){
         return [{ id:3, operation:'售后完成', isRed:false}]
     }
-
+    if (type === 11 || type === 12){
+        type = PageType.PAGE_AREFUND;
+    }
     switch (type) {
         case  PageType.PAGE_AREFUND:
             return [{ id:3, operation:'退款中', isRed:false}]
@@ -100,9 +103,13 @@ function GetAfterBtns(product) {
     }
 }
 
-function GetViewOrderStatus(status) {
+function GetViewOrderStatus(status, subStatus) {
     if (status){
-        return {...ViewOrderStatus[status]} || {menuData:[], menu_orderDetail:[]}
+        let data = {...ViewOrderStatus[status]} || {menuData:[], menu_orderDetail:[]}
+        if (status === OrderType.DELIVERED && subStatus === 3){
+            data.status = '部分发货'
+        }
+        return data;
     }
     return {menuData:[], menu_orderDetail:[]}
 }
@@ -110,8 +117,8 @@ function GetViewOrderStatus(status) {
 //判断商品List是否支持售后
 function checkOrderAfterSaleService(products = [], status, nowTime, isShowToast) {
     if (status === OrderType.WAIT_PAY ||
-        status === OrderType.DELETED ||
-        status === OrderType.CLOSED
+        status === OrderType.DELETED
+        // status === OrderType.CLOSED
     ) {//待付款、无售后
         return false;
     }
@@ -147,7 +154,6 @@ function checkOrderAfterSaleService(products = [], status, nowTime, isShowToast)
 
         hasAfterSaleService = true;
     })
-
     return hasAfterSaleService
 
 }

@@ -4,7 +4,7 @@ import {
     View,
     TouchableOpacity,
     Image,
-    ScrollView, Text, Alert
+    ScrollView, Text, Alert, DeviceEventEmitter
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import { NoMoreClick, UIText } from '../../../components/ui';
@@ -17,7 +17,6 @@ import Toast from '../../../utils/bridge';
 // import GoodsGrayItem from "../components/GoodsGrayItem";
 import OrderApi from '../api/orderApi';
 import { renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
-import { NavigationActions } from 'react-navigation';
 import DesignRule from '../../../constants/DesignRule';
 import MineApi from '../../mine/api/MineApi';
 // import { getDateData, leadingZeros } from '../components/orderDetail/OrderCutDown';
@@ -34,6 +33,7 @@ import GiftHeaderView from '../components/orderDetail/GiftHeaderView';
 import { SmoothPushPreLoadHighComponent } from '../../../comm/components/SmoothPushHighComponent';
 import { GetAfterBtns, checkOrderAfterSaleService, judgeProduceIsContainActivityTypes } from './OrderType';
 import CancelProdectsModal from '../components/orderDetail/CancelProdectsModal';
+import { backToHome } from '../../../navigation/RouterMap';
 
 const buyerHasPay = res.buyerHasPay;
 const productDetailHome = res.productDetailHome;
@@ -91,11 +91,18 @@ export default class MyOrdersDetailPage extends BasePage {
         );
     };
 
+    componentDidMount() {
+        this.loadPageData();
+        this.getCancelOrder();
+        //接收刷新的通知
+        this.listener = DeviceEventEmitter.addListener('REFRESH_ORDER', ()=> {
+            this.loadPageData();
+        })
+    }
 
     componentWillUnmount() {
-        this.didFocusSubscription && this.didFocusSubscription.remove();
         orderDetailModel.stopTimer();
-        // DeviceEventEmitter.removeAllListeners("OrderNeedRefresh");
+        this.listener && this.listener.remove();
     }
 
     showMore = () => {
@@ -115,11 +122,6 @@ export default class MyOrdersDetailPage extends BasePage {
 
         );
     };
-
-    componentDidMount() {
-        this.loadPageData();
-        this.getCancelOrder();
-    }
 
 
     getCancelOrder() {
@@ -188,14 +190,19 @@ export default class MyOrdersDetailPage extends BasePage {
                         {this.renderFooter()}
                     </ScrollView>
                     <OrderDetailBottomButtonView
-                        openCancelModal = {()=>{this.cancelProdectsModal&&this.cancelProdectsModal.open(orderDetailModel.platformOrderNo)}}
-                        goBack={() => this.$navigateBack()}
-                        nav={this.$navigate}
+                        openCancelModal = {(callBack)=>{
+                            let isPay = true;
+                            if (!callBack) {
+                                isPay = false;
+                                callBack = ()=>{this.cancelModal&&this.cancelModal.open()}
+                            }
+                            this.cancelProdectsModal&&this.cancelProdectsModal.open(orderDetailModel.platformOrderNo,callBack,isPay)
+                        }}
                         switchButton={() => {
                             this.setState({ showDele: !this.state.showDele });
                         }}
-                        navigation={this.props.navigation}
-                        callBack={this.params.callBack && (() => this.params.callBack())}
+                        dataHandleDeleteOrder={this.params.dataHandleDeleteOrder}
+                        dataHandleConfirmOrder={this.params.dataHandleConfirmOrder}
                         loadPageData={() => this.loadPageData()}/>
                     {!this.state.showDele ? null : <NoMoreClick style={{
                         width: 68,
@@ -231,7 +238,7 @@ export default class MyOrdersDetailPage extends BasePage {
             <GoodsDetailItem
                 uri={item.specImg}
                 goodsName={item.productName}
-                salePrice={'￥' + StringUtils.formatMoneyString(item.unitPrice, false)}
+                salePrice={StringUtils.formatMoneyString(item.unitPrice, false)}
                 category={item.spec}
                 goodsNum={item.quantity}
                 activityCodes={item.activityList || []}
@@ -278,13 +285,7 @@ export default class MyOrdersDetailPage extends BasePage {
                                 this.$navigate('message/MessageCenterPage');
                                 break;
                             case 1:
-                                let resetAction = NavigationActions.reset({
-                                    index: 0,
-                                    actions: [
-                                        NavigationActions.navigate({ routeName: 'Tab' })//要跳转到的页面名字
-                                    ]
-                                });
-                                this.props.navigation.dispatch(resetAction);
+                                backToHome();
                                 break;
                         }
                         this.setState({ isShowShowMessageModal: false });
@@ -314,7 +315,6 @@ export default class MyOrdersDetailPage extends BasePage {
                 <CancelProdectsModal ref={(ref) => {
                     this.cancelProdectsModal = ref;
                 }}
-                                     clickSure={()=>{ this.cancelModal&&this.cancelModal.open()}}
                 />
             </View>
 

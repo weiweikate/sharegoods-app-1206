@@ -163,7 +163,7 @@ export default class AfterSaleListPage extends BasePage<Props> {
         if (type === 11 || type === 12) {
             type = 1;
         }
-        let typeStr = ['仅退款', '退货退款', '换货'][type - 1];
+        let typeStr = ['仅退款', '退款', '换货'][type - 1];
         switch (item.status) {
             case 1:
             case 7://在c端，7、1都是待审核
@@ -171,9 +171,9 @@ export default class AfterSaleListPage extends BasePage<Props> {
             case 2:
                 return '待寄回';
             case 3:
-                return '待平台确认';
+                return '待商家确认';
             case 4:
-                return '待平台处理';
+                return '待商家处理';
             case 5:
                 return typeStr + '完成';
             case 6:
@@ -198,9 +198,6 @@ export default class AfterSaleListPage extends BasePage<Props> {
                     url={orderApi.afterSaleList}
                     renderItem={this.renderItem}
                     params={params}
-                    totalPageNum={(result) => {
-                        return result.data.isMore ? 10 : 0;
-                    }}
                     handleRequestResult={(result) => {
                         return result.data.data;
                     }}

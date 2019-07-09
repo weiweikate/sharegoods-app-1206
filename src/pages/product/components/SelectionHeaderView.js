@@ -10,7 +10,6 @@ import DesignRule from '../../../constants/DesignRule';
 import res from '../res/product';
 import UIImage from '@mr/image-placeholder';
 import { MRText as Text } from '../../../components/ui/index';
-import { sourceType } from '../SelectionPage';
 import RouterMap, { routeNavigate } from '../../../navigation/RouterMap';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 
@@ -52,7 +51,7 @@ export default class SelectionHeaderView extends Component {
 
     render() {
         const { imgUrl, minPrice, promotionMinPrice, stockSysConfig } = this.props.product || {};
-        let isPromotion = this.props.sourceType === sourceType.promotion;
+        let isPromotion = this.props.productIsPromotionPrice;
 
         let price = isPromotion ? promotionMinPrice : minPrice;
         let stock = 0;

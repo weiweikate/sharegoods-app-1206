@@ -40,15 +40,15 @@ export default class DetailBottomView extends Component {
         //显示已下架
         const isDown = productStatus === product_status.down;
         //不能购买(不是上架状态||不能单独购买)
-        const cantBuy = productStatus !== product_status.on || !orderOnProduct;
+        const cantBuy = productStatus !== product_status.on || orderOnProduct === 0;
         //不能加购(不能单独购买)
-        const cantJoin = !orderOnProduct;
+        const cantJoin = orderOnProduct === 0;
         const buyText = productStatus === product_status.future ? '暂不可购买' : '立即购买';
 
         return (
             <View style={{ backgroundColor: 'white' }}>
                 {
-                    !orderOnProduct &&
+                    orderOnProduct === 0 &&
                     <View style={styles.toastView}>
                         <Text style={styles.toastText}>该商品不支持单独购买</Text>
                     </View>

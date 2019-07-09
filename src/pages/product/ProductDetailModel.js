@@ -73,17 +73,20 @@ export default class ProductDetailModel {
 
     @observable trackType;
     @observable trackCode;
-    @observable prodCode;
     @observable loadingState = PageLoadingState.loading;
     @observable netFailedInfo = {};
 
     @observable offsetY = 0;
     @observable opacity = 0;
 
+    @observable prodCode;
     /*总数据*/
     @observable productData;
+
     /*0产品删除 1产品上架 2产品下架(包含未上架的所有状态，出去删除状态) 3未开售*/
     @observable productStatus;
+    /*1-普通商品,2-内购商品,3-虚拟商品,4-卡券商品*/
+    @observable type;
     /*视频*/
     @observable videoUrl;
     /*主图*/
@@ -108,8 +111,29 @@ export default class ProductDetailModel {
     @observable freight;
     /*月销*/
     @observable monthSaleCount;
-    /*商品库存*/
+    /*商品库存全*/
     @observable skuList = [];
+
+    /**根据现有库存和地区库存结合成新德skuList**/
+    @computed get skuListByArea() {
+        const { productDetailAddressModel, skuList } = this;
+        const { areaSkuList } = productDetailAddressModel;
+        if (areaSkuList) {
+            if (areaSkuList.length > 0) {
+                return areaSkuList.map((areaSkuItem) => {
+                    for (const skuItem of skuList) {
+                        if (skuItem.skuCode === areaSkuItem.skuCode) {
+                            return { ...skuItem, ...areaSkuItem };
+                        }
+                    }
+                    return null;
+                });
+            }
+            return [];
+        }
+        return skuList;
+    }
+
     /*商品规格*/
     @observable specifyList = [];
     /*库存替换显示
@@ -328,7 +352,7 @@ export default class ProductDetailModel {
         /*服务,参数,选择地址*/
         let settingList = [{ itemKey: productItemType.service }];
         paramList.length !== 0 && settingList.push({ itemKey: productItemType.param });
-        // settingList.push({ itemKey: productItemType.address });
+        settingList.push({ itemKey: productItemType.address });
         sectionArr.push({ key: sectionType.sectionSetting, data: settingList });
         /*晒单,*/
         sectionArr.push(
@@ -349,12 +373,12 @@ export default class ProductDetailModel {
         } else {
             this.productData = data || {};
             const {
-                videoUrl, imgUrl, imgFileList, minPrice, maxPrice,
+                type, videoUrl, imgUrl, imgFileList, minPrice, maxPrice,
                 originalPrice, priceType, name, secondName, freight,
                 groupPrice, v0Price, shareMoney, selfReturning,
                 monthSaleCount, skuList, specifyList, stockSysConfig, promoteInfoVOList,
                 paramList, comment, totalComment, overtimeComment,
-                prodCode, upTime, now, content, sevenDayReturn, weekendDelivery, orderOnProduct,
+                upTime, now, content, sevenDayReturn, weekendDelivery, orderOnProduct,
                 promotionResult, promotionDecreaseAmount, promotionPrice, promotionLimitNum,
                 promotionSaleNum, promotionStockNum, promotionMinPrice, promotionMaxPrice, promotionAttentionNum, promotionSaleRate
             } = data || {};
@@ -362,6 +386,7 @@ export default class ProductDetailModel {
             let contentArr = isNoEmpty(content) ? content.split(',') : [];
 
             this.loadingState = PageLoadingState.success;
+            this.type = type;
             this.videoUrl = videoUrl;
             this.imgUrl = imgUrl;
             this.imgFileList = imgFileList || [];
@@ -461,7 +486,7 @@ export default class ProductDetailModel {
             track(trackEvent.ProductDetail, {
                 productShowSource: this.trackType || 0,
                 sourceAttributeCode: this.trackCode || 0,
-                spuCode: prodCode,
+                spuCode: this.prodCode,
                 spuName: name,
                 productType: productType,
                 priceShareStore: groupPrice,
@@ -499,8 +524,10 @@ export default class ProductDetailModel {
         this.skillInterval && clearInterval(this.skillInterval);
     };
 
-    /****网络请求****/
-    requestProductDetail = (code) => {
+    /****商详网络请求****/
+    requestProductDetail = () => {
+        /**获取收货地址**/
+        this.productDetailAddressModel.requestAddress();
         /*
         * SPU00000263 秒杀
         * SPU00000375 直降
@@ -510,24 +537,29 @@ export default class ProductDetailModel {
         if (this.prodCode && this.prodCode.indexOf('MS') === 0) {
             TopicAPI.seckill_findByCode({ code: this.prodCode }).then((data) => {
                 const { prodCode } = data.data || {};
-                this.prodCode = prodCode;
-                this.requestProductDetailReal();
+                this.requestProductDetailReal(prodCode);
             }).catch(e => {
                 this.productError(e);
             });
         } else {
-            this.requestProductDetailReal();
+            this.requestProductDetailReal(this.prodCode);
         }
     };
 
-    requestProductDetailReal = () => {
+    /**请求商品**/
+    requestProductDetailReal = (code) => {
+        this.prodCode = code;
         ProductApi.getProductDetailByCodeV2({
             code: this.prodCode
         }).then((data) => {
             let tempData = data.data || {};
             this.productSuccess(tempData);
+            /*获取当前商品供应商*/
             this.requestShopInfo(tempData.merchantCode);
+            /*获取当前商品优惠券列表*/
             this.productDetailCouponsViewModel.requestListProdCoupon(this.prodCode);
+            /**赋值prodCode会自动拉取库存**/
+            this.productDetailAddressModel.prodCode = this.prodCode;
         }).catch((e) => {
             this.productError(e);
         });

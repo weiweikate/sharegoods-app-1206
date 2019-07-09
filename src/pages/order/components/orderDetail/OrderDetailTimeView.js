@@ -94,7 +94,7 @@ export default class OrderDetailTimeView extends Component {
     }
 
     render() {
-        let {userMessage, orderTime, payTime, cancelTime, finishTime, deliverTime, autoReceiveTime} = orderDetailModel.baseInfo
+        let {userMessage, orderTime, payTime, cancelTime,finishTime, deliverTime} = orderDetailModel.baseInfo
         let {subStatus, status} = orderDetailModel.merchantOrderNo;
         return (
             <View style={{ backgroundColor: "white", paddingTop: px2dp(10), marginTop: px2dp(10) }}>
@@ -129,9 +129,9 @@ export default class OrderDetailTimeView extends Component {
                     <UIText
                         value={"发货时间：" + DateUtils.getFormatDate(deliverTime / 1000)}
                         style={styles.textOrderDownStyle}/> : null }
-                {StringUtils.isNoEmpty(finishTime) ?
+                {StringUtils.isNoEmpty(finishTime && finishTime < (new Date()).getTime()) ?
                     <UIText
-                        value={"完成时间：" + DateUtils.getFormatDate(autoReceiveTime ? autoReceiveTime / 1000 : finishTime / 1000)}
+                        value={"完成时间：" + DateUtils.getFormatDate(finishTime / 1000)}
                         style={styles.textOrderDownStyle}/> : null}
                 <TouchableOpacity style={styles.kefuContainer}
                                   onPress={()=>{this.concactKeFu()}}

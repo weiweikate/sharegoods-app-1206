@@ -15,7 +15,7 @@ const api = {
     deleteOrder: '/orderV2/delete',
     //确认收货
     confirmReceipt: '/orderV2/confirmReceipt',
-    //校验是否可晒单
+    //校验是否晒过单
     checkInfo: ["/appraise/checkCommentStatus",{method:'get'}],
     //查询商家订单物流包裹详情
     getExpressPackageDetail: ['/orderV2/getExpressPackageDetail',{method:'get'}],

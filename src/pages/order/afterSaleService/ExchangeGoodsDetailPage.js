@@ -36,6 +36,9 @@ import RouterMap from '../../../navigation/RouterMap';
 import { PageType, isRefundFail, AfterStatus, SubStatus } from './AfterType';
 import NavigatorBar from '../../../components/pageDecorator/NavigatorBar/NavigatorBar';
 import ScreenUtils from '../../../utils/ScreenUtils';
+import { track, trackEvent } from '../../../utils/SensorsTrack';
+import { beginChatType, QYChatTool } from '../../../utils/QYModule/QYChatTool';
+import bridge from '../../../utils/bridge';
 const {
     PAGE_AREFUND,
     PAGE_SALES_RETURN,
@@ -126,6 +129,8 @@ class ExchangeGoodsDetailPage extends BasePage {
                 applyRefundAmount,
                 description,
                 imgList,
+                serviceNo,
+                createTime
             },
             refundInfo,
             product: {
@@ -135,6 +140,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                 spec,
                 quantity,
                 payAmount,
+                merchantOrderNo,
             },
             refundAddress,
         } = pageData;
@@ -249,7 +255,11 @@ class ExchangeGoodsDetailPage extends BasePage {
                                                                  description,
                                                                  imgList,
                                                                  refundPrice: applyRefundAmount,
-                                                                 quantity
+                                                                 quantity,
+                                                                 serviceNo,
+                                                                 merchantOrderNo,
+                                                                 createTime
+
                                                              }}
                         />:null
                     }
@@ -270,7 +280,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                               leftNavImage={white_back}
                               leftImageStyle={{width: 9}}
                               leftPressed={()=>{this.$navigateBack()}}
-                              title={'售后详情'}
+                              title={'售后进度'}
                               titleStyle={{color: 'white'}}
                               rightNavImage={tongyong_icon_kefu_white}
                               rightPressed={()=>{this.connetKefu()}}
@@ -279,7 +289,58 @@ class ExchangeGoodsDetailPage extends BasePage {
         );
     }
 
-    connetKefu = ()=>{}
+    connetKefu = ()=>{
+        track(trackEvent.ClickOnlineCustomerService, {customerServiceModuleSource: 4});
+        let pageData = this.afterSaleDetailModel.pageData;
+        if (EmptyUtils.isEmpty(pageData)){
+            return;
+        }
+        let supplierCode = pageData.service.supplierCode;
+        if (!supplierCode){
+            this.kefuData = {};
+        }
+        let pictureUrlString = pageData.product.specImg || '';
+        let desc = pageData.product.productName || '';
+        let merchantOrderNo = pageData.product.merchantOrderNo || '';
+        if (this.kefuData ){
+            QYChatTool.beginQYChat({
+                routePath: '',
+                urlString: '',
+                title: this.kefuData.title || '平台客服',
+                shopId:this.kefuData.shopId || '',
+                chatType: beginChatType.BEGIN_FROM_ORDER,
+                data: {
+                    title: merchantOrderNo,
+                    desc,
+                    pictureUrlString,
+                    urlString:'',
+                    note:'',
+                }}
+            )
+        } else {
+            OrderApi.getProductShopInfoBySupplierCode({ supplierCode }).then((data) => {
+                    this.kefuData = data.data;
+                    QYChatTool.beginQYChat({
+                            routePath: '',
+                            urlString: '',
+                            title: this.kefuData.title || '平台客服',
+                            shopId: this.kefuData.shopId || '',
+                            chatType: beginChatType.BEGIN_FROM_ORDER,
+                            data: {
+                                title: merchantOrderNo,
+                                desc,
+                                pictureUrlString,
+                                urlString: '',
+                                note: '',
+                            }
+                        }
+                    )
+                }
+            ).catch((e) => {
+                bridge.$toast(e.msg)
+            })
+        }
+    }
 
 
     _renderEmptyView() {
@@ -305,7 +366,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                     right: 0,
                     borderBottomWidth: 0}}
                               leftPressed={()=>{this.$navigateBack()}}
-                              title={'售后详情'}
+                              title={'售后进度'}
 
                 />
             </View>
@@ -363,16 +424,16 @@ class ExchangeGoodsDetailPage extends BasePage {
         //     this.$toastShow('请填写完整的退货物流信息\n才可以查看商家的物流信息');
         //     return;
         // }
-       if (manyLogistics) {
-           this.$navigate(RouterMap.AfterLogisticsListView, {
-               serviceNo: this.params.serviceNo
-           });
-       }else {
-           this.$navigate('order/logistics/LogisticsDetailsPage', {
-               expressNo: expressNo,
-               expressCode: expressCode
-           });
-       }
+        if (manyLogistics) {
+            this.$navigate(RouterMap.AfterLogisticsListView, {
+                serviceNo: this.params.serviceNo
+            });
+        }else {
+            this.$navigate('order/logistics/LogisticsDetailsPage', {
+                expressNo: expressNo,
+                expressCode: expressCode
+            });
+        }
     };
 
     /**
@@ -389,7 +450,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                 '确认撤销本次退货退款申请？您最多只能发起' + num + '次',
                 '确认撤销本次换货申请？您最多只能发起' + num + '次'];
             if (num <= 0){
-                this.$toastShow('平台售后操作已到上线');
+                this.$toastShow('平台售后操作已到上限');
                 return;
             }
 
@@ -406,8 +467,8 @@ class ExchangeGoodsDetailPage extends BasePage {
                             that.$loadingShow();
                             OrderApi.afterSaleCancel({ serviceNo: this.params.serviceNo }).then(result => {
                                 that.$loadingDismiss();
-                                DeviceEventEmitter.emit('OrderNeedRefresh');
-                                that.$navigateBack('order/order/MyOrdersDetailPage');
+                                DeviceEventEmitter.emit('REFRESH_ORDER');
+                                that.afterSaleDetailModel.userCancel();
                             }).catch(error => {
                                 that.$loadingDismiss();
                                 that.$toastShow(error.msg || '操作失败，请重试');

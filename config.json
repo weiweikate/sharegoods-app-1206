@@ -16,6 +16,14 @@
             "wxAppletKey": "gh_aa91c3ea0f6c",
             "gongmao": "http://testsop.sharegoodsmall.com/gateway/gongmall/contract/reback"
         },
+        "dev2": {
+            "name": "开发ip地址",
+            "host": "http://172.16.10.10:1080/gateway",
+            "oss": "https://devcdn.sharegoodsmall.com",
+            "h5": "https://devh5.sharegoodsmall.com",
+            "wxAppletKey": "gh_aa91c3ea0f6c",
+            "gongmao": "http://testsop.sharegoodsmall.com/gateway/gongmall/contract/reback"
+        },
         "qa": {
             "name": "测试",
             "host": "https://testapi.sharegoodsmall.com/gateway",
@@ -27,8 +35,8 @@
         "after": {
             "name": "商家一期",
             "host": "https://test2api.sharegoodsmall.com/gateway",
-            "h5": "https://testh5.sharegoodsmall.com",
-            "oss": "https://testcdn.sharegoodsmall.com",
+            "h5": "https://test2h5.sharegoodsmall.com",
+            "oss": "https://test2cdn.sharegoodsmall.com",
             "wxAppletKey": "gh_aa91c3ea0f6c",
             "gongmao": "http://testsop.sharegoodsmall.com/gateway/gongmall/contract/reback"
         },
@@ -185,7 +193,7 @@
         },
         "姜振兴": {
             "name": "姜振兴",
-            "host": "http://172.18.6.166:9090/gateway"
+            "host": "http://172.18.6.39:1080/gateway"
         },
         "dev_new": {
             "name": "优惠券测试",
