@@ -167,6 +167,7 @@ export default class BottomMenu extends Component {
                     specImg:goods.imgUrl,
                     productName:goods.productName,
                     unitPrice:goods.price,
+                    productType:goods.type
                 });
             });
             routePush(RouterMap.ConfirOrderPage, {
