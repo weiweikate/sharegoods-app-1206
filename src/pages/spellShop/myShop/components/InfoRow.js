@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     img: {
-        marginLeft: 25
+        marginLeft: 15
     },
     title: {
         fontSize: 13,
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
         color: DesignRule.textColor_secondTitle,
         flex: 1,
         textAlign: 'right',
-        marginRight: 21
+        marginRight: 15
     }
 });
 
