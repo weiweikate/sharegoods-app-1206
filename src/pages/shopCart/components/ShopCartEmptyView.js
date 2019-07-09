@@ -98,7 +98,7 @@ export default class ShopCartEmptyView extends Component {
     };
     _renderHeaderView = () => {
         return (
-            <View style={{ width: ScreenUtils.width, height: px2dp(350) }}>
+            <View style={{ width: ScreenUtils.width - px2dp(30), height: px2dp(350) }}>
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                     <Image source={shopCartNoGoods} style={{ width: px2dp(244), height: px2dp(140) }}/>
                     <MRText style={{
