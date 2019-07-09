@@ -46,7 +46,9 @@ const api = {
     getPopupBox: ['/popup/getPopupBoxByType', { method: 'get' }],
     //开奖结果
     getWinningInfo: ['/welfare/getWinningInfo', { method: 'get', checkLogin: true }],
-    freeOrderList: ['/product/freeOrderList', { method: 'get', checkLogin: true }],
+    freeOrderList: ['/product/freeOrderList', { method: 'get' }],
+    freeOrderDesc: ['/promotion/freeOrderDesc', { method: 'get' }],
+
     /** 任务相关接口*/
     // 领取活动奖励(activityNo,ruleId必填)
     getActivityPrize: ['/mission/getActivityPrize', { method: 'post' }],
