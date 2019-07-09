@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, SectionList, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { FlatList, Image, SectionList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import BasePage from '../../../BasePage';
 import HomeAPI from '../api/HomeAPI';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -20,6 +20,7 @@ const icon_search = res.search;
 
 const itemImgW = (ScreenUtils.width - 110 - 2 * 10.5 - 2 * 30) / 3;
 const bannerW = ScreenUtils.width - 110;
+const bannerH = bannerW * 118 / 265;
 export default class CategorySearchPage extends BasePage {
 
     constructor(props) {
@@ -95,7 +96,7 @@ export default class CategorySearchPage extends BasePage {
                 <ImageLoad
                     source={{ uri: item.img }}
                     borderRadius={5}
-                    style={{ width: bannerW, height: 118, borderRadius: 5, marginLeft: 10, marginRight: 10 }}
+                    style={{ width: bannerW, height: bannerH, borderRadius: 5, marginLeft: 10, marginRight: 10 }}
                 />
             </TouchableOpacity>
         );
@@ -159,7 +160,7 @@ export default class CategorySearchPage extends BasePage {
                                                backgroundColor: 'white'
                                            }}
                                            autoplay={true}
-                                           height={118}
+                                           height={bannerH}
                                            style={{ marginBottom: 10 }}
                                 /> : null
                         }

@@ -106,13 +106,13 @@
   BOOL isProduction = NO;
   NSString * appKey ;
   
-//#if DEBUG
+#if DEBUG
   isProduction = NO;
   appKey = KDEBUGJSPushKey;
-//#else
-//  isProduction = YES;
-//  appKey = KJSPushKey;
-//#endif
+#else
+  isProduction = YES;
+  appKey = KJSPushKey;
+#endif
   [JPUSHService setupWithOption:launchOptions
                          appKey:appKey
                         channel:@"App Store"

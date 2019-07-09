@@ -42,7 +42,7 @@ import user from '../../../model/user';
 import resCommon from '../../../comm/res';
 import LinearGradient from 'react-native-linear-gradient';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
-import { ShopBottomBannerView, ShopCardView, ShopProductItemView } from './components/ShopDetailItemView';
+import { ShopBottomBannerView, ShopProductItemView } from './components/ShopDetailItemView';
 import MyShopDetailModel from './MyShopDetailModel';
 import { IntervalMsgView, IntervalType } from '../../../comm/components/IntervalMsgView';
 import RouterMap from '../../../navigation/RouterMap';
@@ -195,8 +195,9 @@ export default class MyShopPage extends BasePage {
                 storeCode: storeNumber,
                 tittle: userStatus === 1 ? '我的店铺' : '店铺详情'
             });
-            track(trackEvent.SeePingdian, {
-                pinCode: storeNumber
+            track(trackEvent.PinShopEnter, {
+                pinCode: storeNumber,
+                wayToPinType: this.props.wayToPinType
             });
         }).catch((error) => {
             this.$toastShow(error.msg);
@@ -391,24 +392,17 @@ export default class MyShopPage extends BasePage {
         const { totalBonusMoney } = manager;
         if (userStatus === 1) {
             return (
-                <View style={{ marginBottom: 10 }}>
-                    <View style={{ height: 10 }}/>
+                <View>
                     {this._renderRow(RmbIcon, '店铺已完成奖励总额', `¥${((totalTradeBalance - tradeBalance) || 0).toFixed(2)}`)}
-                    {this.renderSepLine()}
                     {this._renderRow(system_charge, '个人已获得奖励', `${(myStore ? totalBonusMoney : clerkBonusCount) || 0}元`)}
-
-                    <View style={{ height: 10 }}/>
                     {this._renderRow(QbIcon, '店铺成立时间', createTimeStr)}
-                    {!myStore ? this.renderSepLine() : null}
                     {!myStore ? this._renderRow(myShop_join, '加入时间', updateTime) : null}
                 </View>
             );
         } else {
             return (
-                <View style={{ marginBottom: 10 }}>
-                    <View style={{ height: 10 }}/>
+                <View>
                     {this._renderRow(RmbIcon, '店铺已完成奖励总额', `¥${((totalTradeBalance - tradeBalance) || 0).toFixed(2)}`)}
-                    <View style={{ height: 10 }}/>
                     {this._renderRow(QbIcon, '店铺成立时间', createTimeStr)}
                 </View>
             );
@@ -489,7 +483,7 @@ export default class MyShopPage extends BasePage {
                             colors={[DesignRule.mainColor]}
                         />}>
                 <ShopHeader onPressShopAnnouncement={this._clickShopAnnouncement} item={this.state.storeData}/>
-                {userStatus === 1 && <ShopCardView/>}
+                {/*{userStatus === 1 && <ShopCardView/>}*/}
                 <ShopProductItemView MyShopDetailModel={this.MyShopDetailModel}/>
                 {userStatus === 1 ? <ShopHeaderBonus storeData={this.state.storeData}/> : null}
                 <MembersRow storeUserList={storeUserList || []}

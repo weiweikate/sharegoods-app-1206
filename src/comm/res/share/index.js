@@ -1,5 +1,5 @@
 const share = {
-    weiXin: require('./weiXin.png'),
+    weiXin: require('./wechat.png'),
     weiXinTimeLine: require('./weiXinTimeLine.png'),
     QQ: require('./QQ.png'),
     qqKongJian: require('./qqKongJian.png'),

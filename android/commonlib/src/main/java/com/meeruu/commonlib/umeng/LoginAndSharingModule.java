@@ -387,17 +387,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         }
     }
 
-//    @ReactMethod
-//    public void saveInviteFriendsImage(String url, String headImg, Callback success, Callback fail) {
-//
-//        if (TextUtils.isEmpty(headImg) || "logo.png".equals(headImg)) {
-//            Bitmap bitmap = getDefaultIcon(mContext);
-//            drawInviteFriendsImage(mContext, bitmap, url, success, fail);
-//        } else {
-//            downloadHeaderImg(mContext, headImg, url, success, fail);
-//        }
-//    }
-
     public static void getWebBitmap(final Context context, final ShareImageBean shareImageBean, final Callback success, final Callback fail) {
         if (Fresco.hasBeenInitialized()) {
             ImageLoadUtils.preFetch(Uri.parse(shareImageBean.getImageUrlStr()), 0, 0, new BaseRequestListener() {

@@ -20,6 +20,7 @@ import NavigatorBar from '../../components/pageDecorator/NavigatorBar';
 import user from '../../model/user';
 import store from '@mr/rn-store';
 import geolocation from '@mr/rn-geolocation';
+import { track, trackEvent } from '../../utils/SensorsTrack';
 
 @observer
 export default class MyShop_RecruitPage extends BasePage {
@@ -97,6 +98,15 @@ export default class MyShop_RecruitPage extends BasePage {
                     }
                 });
 
+                /*0：未知 1.V1用户页面 2.店铺列表 3.我的店铺*/
+                let pinShopPageType = 1;
+                if (spellStatusModel.storeStatus === 1 || spellStatusModel.storeStatus === 3) {
+                    pinShopPageType = 3;
+                } else if (spellStatusModel.canSeeGroupStore) {
+                    pinShopPageType = 2;
+                }
+                track(trackEvent.ViewPinShop, { pinShopPageType });
+
                 //tab出现的时候刷新user
                 //第一次不刷新
                 if (!this.unFirst) {
@@ -120,7 +130,7 @@ export default class MyShop_RecruitPage extends BasePage {
     }
 
     handleBackPress = () => {
-        this.$navigateBackToHome()
+        this.$navigateBackToHome();
         return true;
     };
 
@@ -174,6 +184,7 @@ export default class MyShop_RecruitPage extends BasePage {
                 case 1://店铺开启中
                     return <MyShopPage navigation={this.props.navigation}
                                        leftNavItemHidden={isHome}
+                                       wayToPinType={this.params.wayToPinType || 0}
                                        storeCode={this.params.storeCode}/>;
                 case 3://招募中的店铺
                     return <ShopRecruitPage navigation={this.props.navigation}

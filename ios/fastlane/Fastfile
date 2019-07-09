@@ -38,7 +38,8 @@ platform :ios do
       clean: true,
       export_options: {
         method: "ad-hoc", # 这可以不指定
-      }
+      },
+      include_symbols:false
     )
   end
 end
