@@ -25,6 +25,8 @@ NS_ASSUME_NONNULL_BEGIN
  @param alias 别名字符串
  */
 +(void)setAlias:(NSString *)alia;
+
++(void)deleteAlias;
 @end
 
 NS_ASSUME_NONNULL_END
