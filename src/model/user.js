@@ -520,6 +520,7 @@ autorun(() => {
         JPushUtils.updatePushTags();
     }
 });
+
 autorun(()=>{
     if (user.isLogin) {
         JPushUtils.updatePushTags();
