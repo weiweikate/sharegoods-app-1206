@@ -132,9 +132,7 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
 
             if (!mLastLoadFailed) {
                 RNCWebView reactWebView = (RNCWebView) webView;
-
                 reactWebView.callInjectedJavaScript();
-
                 emitFinishEvent(webView, url);
             }
         }
@@ -149,6 +147,7 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            view.loadUrl(url);
             dispatchEvent(view, new TopShouldStartLoadWithRequestEvent(view.getId(), url));
             return true;
         }
@@ -157,6 +156,7 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
         @TargetApi(Build.VERSION_CODES.N)
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            view.loadUrl(request.getUrl().toString());
             dispatchEvent(view, new TopShouldStartLoadWithRequestEvent(view.getId(), request.getUrl().toString()));
             return true;
         }

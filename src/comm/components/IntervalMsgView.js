@@ -170,7 +170,7 @@ class IntervalMsgViewModel {
             Animated.delay(3000),
             Animated.timing(
                 this.opacity,
-                { toValue: 0, duration: 1000, useNativeDriver: true }
+                { toValue: 0, duration: 500, useNativeDriver: true }
             ),
         ]).start(
             () => {
