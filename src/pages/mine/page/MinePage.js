@@ -47,6 +47,7 @@ const {
     mine_after_buy_icon,
     mine_friendsHelp,
     mine_invite,
+    // mine_invite2,
     // mine_moreMoney,
     // mine_icon_favorite_shop,
     mine_icon_help_service,
@@ -593,6 +594,13 @@ export default class MinePage extends BasePage {
                                 </ImageBackground>
                             </View>
                         </ImageBackground>
+                        {/*<View>*/}
+                            {/*<Image resizeMode={'contain'}*/}
+                                   {/*style={{*/}
+                                       {/*height: px2dp(70),*/}
+                                       {/*width: (ScreenUtils.width - px2dp(15) * 2)*/}
+                                   {/*}} source={mine_invite2}/>*/}
+                        {/*</View>*/}
                     </View>
                 </TouchableWithoutFeedback>
 
@@ -961,7 +969,7 @@ export default class MinePage extends BasePage {
         }
 
 
-        let menu = [message, address, service, setting];
+        let menu = [message, service, address, setting];
 
 
         if (this.state.hasFans) {

@@ -40,7 +40,15 @@ export default class XiuDouResultModal extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {visible: false};
+        this.state = {visible: false, desc: ''};
+    }
+
+
+
+    componentDidMount() {
+        HomeAPI.freeOrderDesc({}).then(data => {
+            this.setState({desc: data.data})
+        })
     }
 
 
@@ -54,21 +62,25 @@ export default class XiuDouResultModal extends React.Component {
                             <MRText style={[styles.detail, {marginLeft: ScreenUtils.autoSizeWidth(32), flex: 1}]}>免单奖励</MRText>
                             <MRText style={[styles.detail, {marginRight: ScreenUtils.autoSizeWidth(15)}]}>免单场次</MRText>
                         </View>
-                        <RefreshFlatList url={HomeAPI.freeOrderList}
-                                         params={{}}
-                                         renderItem={this.renderItem}
-                                         emptyHeight={ScreenUtils.autoSizeWidth(200)}
-                                         defaultEmptyText={'还没内容哦'}
-                                         sizeKey={'pageSize'}
-                                         pageKey={'pageIndex'}
-                        />
+                        <View style={{flex: 1}}>
+                            <RefreshFlatList url={HomeAPI.freeOrderList}
+                                             nestedScrollEnabled={true}
+                                             params={{}}
+                                             renderItem={this.renderItem}
+                                             emptyHeight={ScreenUtils.autoSizeWidth(200)}
+                                             defaultEmptyText={'还没内容哦'}
+                                             sizeKey={'pageSize'}
+                                             pageKey={'pageIndex'}
+                                             // handleRequestResult={(data)=> {
+                                             //     data = data.data.data;
+                                             //     return [...data,...data,...data,...data]
+                                             // }}
+                            />
+                        </View>
                     </View>
                     <View style={styles.bottomContainer}>
                         <MRText style={[styles.detail,{marginHorizontal: ScreenUtils.autoSizeWidth(10)}]}>
-                            <MRText style={styles.title}>{'活动概述\n'}</MRText>
-                            {'系统将会随机抽取若干参与秒杀活动的用户，送出与支付金额同等价值的秀豆。\n'}
-                            <MRText style={styles.title}>{'开奖时间\n'}</MRText>
-                            {'每个时段秒杀结束后同步开奖，请留意站内消息。'}
+                            {this.state.desc}
                         </MRText>
                     </View>
                     <TouchableOpacity style={{position: 'absolute',
@@ -98,7 +110,7 @@ export default class XiuDouResultModal extends React.Component {
                 <ImageLoader source={{uri: headImg}}
                              isAvatar={true}
                              style={{marginLeft: ScreenUtils.autoSizeWidth(15), height: ScreenUtils.autoSizeWidth(32), width: ScreenUtils.autoSizeWidth(32)}}/>
-                <MRText style={[styles.detail, {marginLeft: ScreenUtils.autoSizeWidth(32), flex: 1}]}>{award}</MRText>
+                <MRText style={[styles.title, {marginLeft: ScreenUtils.autoSizeWidth(32), flex: 1, fontSize: ScreenUtils.autoSizeWidth(14)}]}>{award}</MRText>
                 <MRText style={[styles.detail, {marginRight: ScreenUtils.autoSizeWidth(15)}]}>{time}</MRText>
             </View>
         )

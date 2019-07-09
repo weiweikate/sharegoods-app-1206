@@ -15,7 +15,7 @@ import user from '../../../model/user';
 import RouterMap, { routeNavigate, routePush } from '../../../navigation/RouterMap';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import productRes from '../../product/res/product';
-import res from '../res'
+// import res from '../res'
 import XiuDouResultModal from './XiuDouResultModal';
 
 const { px2dp } = ScreenUtils;
@@ -128,6 +128,12 @@ export default class HomeLimitGoView extends Component {
     openModal(){
         this.modal && this.modal.open();
     }
+
+    seeMore() {
+        routePush('HtmlPage', {
+            uri: `/spike`
+        });
+    }
     render() {
         let viewItems = [];
         const { spikeList } = limitGoModule;
@@ -146,12 +152,16 @@ export default class HomeLimitGoView extends Component {
 
         return (
             <View style={styles.container}>
-                <View style={{ paddingLeft: px2dp(15) }}>
+                <View style={{ paddingHorizontal: px2dp(15), flexDirection: 'row', alignItems: 'center'}}>
                     <HomeTitleView title={'限时购'}/>
+                    {/*<View style={{flex: 1}}/>*/}
+                    {/*<TouchableOpacity onPress={()=>{this.seeMore()}}>*/}
+                    {/*<MRText style={{color: DesignRule.textColor_placeholder, fontSize: px2dp(12)}}>更多></MRText>*/}
+                    {/*</TouchableOpacity>*/}
                 </View>
-                <TouchableOpacity onPress={()=>{this.openModal()}}>
-                    <Image source={res.limitGoHeader} style={{height: px2dp(60), width: ScreenUtils.width, marginTop: px2dp(-5)}}/>
-                </TouchableOpacity>
+                {/*<TouchableOpacity onPress={()=>{this.openModal()}}>*/}
+                    {/*<Image source={res.limitGoHeader} style={{height: px2dp(60), width: ScreenUtils.width, marginTop: px2dp(-5)}}/>*/}
+                {/*</TouchableOpacity>*/}
                 <ScrollableTabView
                     ref={ref => {
                         this.scrollableTabView = ref;

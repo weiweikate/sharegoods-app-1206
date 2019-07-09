@@ -141,6 +141,7 @@ export default class MyOrdersListView extends Component {
         list.map((item, index) => {
             arrData.push({
                 id: item.id,
+                restrictions: item.restrictions,
                 productId: item.prodCode,
                 productName: item.productName,
                 spec: item.spec,
@@ -164,6 +165,7 @@ export default class MyOrdersListView extends Component {
             unit.products.map((item) => {
                 arrData.push({
                     id: item.id,
+                    restrictions: item.restrictions,
                     productId: item.prodCode,
                     productName: item.productName,
                     spec: item.spec,
