@@ -140,14 +140,14 @@ export default class ProductDetailPage extends BasePage {
                 this.state.goType = type;
                 this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, {
                     productIsPromotionPrice,
-                    isAreaSku: true
+                    isAreaSku: this.productDetailModel.type !== 3
                 });
                 break;
             case 'gwc':
                 this.state.goType = type;
                 this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, {
                     productIsPromotionPrice,
-                    isAreaSku: true
+                    isAreaSku: this.productDetailModel.type !== 3
                 });
                 break;
         }

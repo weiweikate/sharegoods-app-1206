@@ -331,7 +331,7 @@ export default class ProductDetailModel {
     }
 
     @computed get sectionDataList() {
-        const { promoteInfoVOList, contentArr, groupActivity, activityStatus, paramList, productDetailCouponsViewModel } = this;
+        const { promoteInfoVOList, contentArr, groupActivity, activityStatus, paramList, productDetailCouponsViewModel, type } = this;
         const { couponsList } = productDetailCouponsViewModel;
         /*头部*/
         let sectionArr = [
@@ -352,7 +352,7 @@ export default class ProductDetailModel {
         /*服务,参数,选择地址*/
         let settingList = [{ itemKey: productItemType.service }];
         paramList.length !== 0 && settingList.push({ itemKey: productItemType.param });
-        settingList.push({ itemKey: productItemType.address });
+        type !== 3 && settingList.push({ itemKey: productItemType.address });
         sectionArr.push({ key: sectionType.sectionSetting, data: settingList });
         /*晒单,*/
         sectionArr.push(
