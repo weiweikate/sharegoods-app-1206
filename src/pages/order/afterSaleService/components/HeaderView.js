@@ -8,6 +8,7 @@
  * Created by huchao on 2018/11/27.
  *
  */
+
 "use strict";
 
 import React from "react";
@@ -15,7 +16,8 @@ import React from "react";
 import {
     StyleSheet,
     View,
-    ImageBackground
+    ImageBackground,
+    Platform
 } from "react-native";
 
 import {
@@ -25,6 +27,7 @@ import ScreenUtils from "../../../../utils/ScreenUtils";
 import res from "../../res";
 const  autoSizeWidth = ScreenUtils.autoSizeWidth;
 import {AfterStatus, SubStatus, PageType, isRefundFail} from '../AfterType'
+import DottedLine from '../../../../comm/components/DottedLine';
 
 const {
     PAGE_AREFUND,
@@ -75,6 +78,14 @@ export default class HeaderView extends React.Component {
         );
     }
 
+    renderDashedLine(style={}){
+        if (Platform.OS === 'ios'){
+            return <View style={[styles.dashedLine, style]}/>
+        } else {
+            return <DottedLine color={'white'} style={{flex: 1,height: 1}} space={1} itemWidth={2} isRow={true}/>
+        }
+    }
+
     /**
      * 画进度线
      * @param status  1.待审核 2.待寄回 3.待仓库确认 4.待平台处理 5.售后完成 6.售后关闭
@@ -108,7 +119,7 @@ export default class HeaderView extends React.Component {
                         {this.renderItem(1,'','填写申请')}
                         <View style={styles.solidLine}/>
                         {this.renderItem(3,'待商家审核','')}
-                        <View style={styles.dashedLine}/>
+                        {this.renderDashedLine()}
                         {this.renderItem(2,'','完成退款')}
                     </View>
                 )
@@ -162,11 +173,11 @@ export default class HeaderView extends React.Component {
                         {this.renderItem(1,'','填写申请')}
                         <View style={styles.solidLine}/>
                         {this.renderItem(3,'待商家审核','')}
-                        <View style={styles.dashedLine}/>
+                        {this.renderDashedLine()}
                         {this.renderItem(2,'','寄回商品')}
-                        <View style={[styles.dashedLine, {flex: 2}]}/>
+                        {this.renderDashedLine({flex: 2})}
                         {this.renderItem(2,'','商家确认')}
-                        <View style={[styles.dashedLine, {flex: 2}]}/>
+                        {this.renderDashedLine({flex: 2})}
                         {this.renderItem(2,'','完成退款')}
                     </View>
                 )
@@ -177,9 +188,9 @@ export default class HeaderView extends React.Component {
                         {this.renderItem(1,'','填写申请')}
                         <View style={styles.solidLine}/>
                         {this.renderItem(1,'','寄回商品')}
-                        <View style={styles.dashedLine}/>
+                        {this.renderDashedLine()}
                         {this.renderItem(2,'','商家确认')}
-                        <View style={styles.dashedLine}/>
+                        {this.renderDashedLine()}
                         {this.renderItem(2,'','完成退款')}
                     </View>
                 )
@@ -192,9 +203,9 @@ export default class HeaderView extends React.Component {
                         {this.renderItem(1,'','寄回商品')}
                         <View style={styles.solidLine}/>
                         {this.renderItem(3,'待商家审核','')}
-                        <View style={styles.dashedLine}/>
+                        {this.renderDashedLine()}
                         {this.renderItem(2,'','商家确认')}
-                        <View style={[styles.dashedLine, {flex: 2}]}/>
+                        {this.renderDashedLine({flex: 2})}
                         {this.renderItem(2,'','完成退款')}
                     </View>
                 )
@@ -207,7 +218,7 @@ export default class HeaderView extends React.Component {
                         {this.renderItem(1,'','寄回商品')}
                         <View style={styles.solidLine}/>
                         {this.renderItem(1,'','商家确认')}
-                        <View style={styles.dashedLine}/>
+                        {this.renderDashedLine()}
                         {this.renderItem(2,'','完成退款')}
                     </View>
                 )
@@ -264,11 +275,11 @@ export default class HeaderView extends React.Component {
                         {this.renderItem(1,'','填写申请')}
                         <View style={styles.solidLine}/>
                         {this.renderItem(3,'待商家审核','')}
-                        <View style={styles.dashedLine}/>
+                        {this.renderDashedLine()}
                         {this.renderItem(2,'','寄回商品')}
-                        <View style={[styles.dashedLine, {flex: 2}]}/>
+                        {this.renderDashedLine({flex: 2})}
                         {this.renderItem(2,'','商家确认')}
-                        <View style={[styles.dashedLine, {flex: 2}]}/>
+                        {this.renderDashedLine({flex: 2})}
                         {this.renderItem(2,'','完成换货')}
                     </View>
                 )
@@ -279,9 +290,9 @@ export default class HeaderView extends React.Component {
                         {this.renderItem(1,'','填写申请')}
                         <View style={styles.solidLine}/>
                         {this.renderItem(1,'','寄回商品')}
-                        <View style={styles.dashedLine}/>
+                        {this.renderDashedLine()}
                         {this.renderItem(2,'','商家确认')}
-                        <View style={styles.dashedLine}/>
+                        {this.renderDashedLine()}
                         {this.renderItem(2,'','完成换货')}
                     </View>
                 )
@@ -294,9 +305,9 @@ export default class HeaderView extends React.Component {
                         {this.renderItem(1,'','寄回商品')}
                         <View style={styles.solidLine}/>
                         {this.renderItem(3,'待商家审核','')}
-                        <View style={styles.dashedLine}/>
+                        {this.renderDashedLine()}
                         {this.renderItem(2,'','商家确认')}
-                        <View style={[styles.dashedLine, {flex: 2}]}/>
+                        {this.renderDashedLine({flex: 2})}
                         {this.renderItem(2,'','完成换货')}
                     </View>
                 )
@@ -309,7 +320,7 @@ export default class HeaderView extends React.Component {
                         {this.renderItem(1,'','寄回商品')}
                         <View style={styles.solidLine}/>
                         {this.renderItem(1,'','商家确认')}
-                        <View style={styles.dashedLine}/>
+                        {this.renderDashedLine()}
                         {this.renderItem(2,'','完成换货')}
                     </View>
                 )
