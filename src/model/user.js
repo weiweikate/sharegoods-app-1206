@@ -8,6 +8,7 @@ import { login, logout } from '../utils/SensorsTrack';
 import StringUtils from '../utils/StringUtils';
 import JPushUtils from '../utils/JPushUtils';
 import { mediatorCallFunc } from '../SGMediator';
+import JPushDeleteUtil from '../utils/JPushDeleteUtil';
 
 
 const USERINFOCACHEKEY = '@mr/userInfo';
@@ -524,8 +525,6 @@ autorun(()=>{
     if (user.isLogin) {
         JPushUtils.updatePushTags();
         JPushUtils.updatePushAlias();
-    }else {
-        JPushUtils.deleteAllAlias();
     }
 })
 export default user;
