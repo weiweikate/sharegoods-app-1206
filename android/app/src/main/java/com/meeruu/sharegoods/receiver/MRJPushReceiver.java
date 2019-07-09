@@ -122,21 +122,6 @@ public class MRJPushReceiver extends JPushMessageReceiver {
             }
             String uri = "meeruu://path/HtmlPage/"+link;
             deepLink(uri,context);
-        }else if(objExtra != null && objExtra.has(PAGE_KEY)){
-            try {
-                int pageType = objExtra.getInt(PAGE_KEY);
-                //暂时type 100跳转到账户余额页面
-                if(pageType == 100){
-                    String params = objExtra.getString(PARAMS_KEY);
-                    Map map = com.alibaba.fastjson.JSONObject.parseObject(params);
-                    String uri = "meeruu://path/MyCashAccountPage/"+map.get("index");
-                    deepLink(uri,context);
-                }else {
-                    startApp(context);
-                }
-            }catch (Exception e){
-                startApp(context);
-            }
         }else {
           startApp(context);
         }
