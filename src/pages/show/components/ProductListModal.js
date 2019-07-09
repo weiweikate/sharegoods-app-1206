@@ -4,13 +4,7 @@
  */
 
 import React, { PureComponent } from 'react';
-import {
-    StyleSheet,
-    View,
-    ScrollView,
-    Image,
-    TouchableWithoutFeedback
-} from 'react-native';
+import { Image, ScrollView, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import CommModal from '../../../comm/components/CommModal';
 import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -19,7 +13,8 @@ import EmptyUtils from '../../../utils/EmptyUtils';
 import res from '../res';
 import ImageLoad from '@mr/image-placeholder';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
-const { addCarIcon ,showClose} = res;
+
+const { addCarIcon, showClose } = res;
 
 const { px2dp } = ScreenUtils;
 
@@ -30,42 +25,44 @@ export default class ProductListModal extends PureComponent {
 
     _renderItem = (data, index) => {
         let showPrice = 0;
-        const { singleActivity = {}, groupActivity = {} } = data.promotionResult || {};
-        const { endTime: endTimeT, startTime: startTimeT, currentTime =  Date.parse( new Date()) } = groupActivity && groupActivity.type ? groupActivity : singleActivity;
+        const { singleActivity = {}, groupActivity = {} } = (data && data.promotionResult) || {};
+        const { endTime: endTimeT, startTime: startTimeT, currentTime = Date.parse(new Date()) } = groupActivity && groupActivity.type ? groupActivity : singleActivity;
         if (currentTime > startTimeT && currentTime < endTimeT + 500) {
             showPrice = data.promotionMinPrice;
         } else {
             showPrice = data.minPrice;
         }
         return (
-            <TouchableWithoutFeedback onPress={()=>{
+            <TouchableWithoutFeedback onPress={() => {
                 this.props.pressProduct && this.props.pressProduct(data.prodCode);
             }}>
-            <View key={'product' + index} style={styles.itemWrapper}>
-                <ImageLoad style={styles.productIcon} source={{uri:data.imgUrl}}/>
-                <View style={styles.itemInfoWrapper}>
-                    <MRText style={styles.nameText}
-                            numberOfLines={1}
-                            ellipsizeMode={'tail'}>
-                        {data.name}
-                    </MRText>
-
-                    <View style={styles.priceWrapper}>
-                        {showPrice?
-                            <MRText style={styles.curPrice}>
-                                ￥{showPrice}
-                            </MRText>:null}
-
-                        <MRText style={styles.oriPrice}>
-                            ￥{data.originalPrice}
+                <View key={'product' + index} style={styles.itemWrapper}>
+                    <ImageLoad style={styles.productIcon} source={{ uri: data.imgUrl }}/>
+                    <View style={styles.itemInfoWrapper}>
+                        <MRText style={styles.nameText}
+                                numberOfLines={1}
+                                ellipsizeMode={'tail'}>
+                            {data.name}
                         </MRText>
-                        <View style={{ flex: 1 }}/>
-                        <NoMoreClick onPress={()=>{this.props.addCart(data)}}>
-                        <Image source={addCarIcon} style={styles.carIcon}/>
-                        </NoMoreClick>
+
+                        <View style={styles.priceWrapper}>
+                            {showPrice ?
+                                <MRText style={styles.curPrice}>
+                                    ￥{showPrice}
+                                </MRText> : null}
+
+                            <MRText style={styles.oriPrice}>
+                                ￥{data.originalPrice}
+                            </MRText>
+                            <View style={{ flex: 1 }}/>
+                            <NoMoreClick onPress={() => {
+                                this.props.addCart(data);
+                            }}>
+                                <Image source={addCarIcon} style={styles.carIcon}/>
+                            </NoMoreClick>
+                        </View>
                     </View>
                 </View>
-            </View>
             </TouchableWithoutFeedback>
         );
     };
@@ -92,9 +89,9 @@ export default class ProductListModal extends PureComponent {
                         </MRText>
                         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }}>
                             <TouchableWithoutFeedback onPress={this.props.requestClose}>
-                            <View style={styles.closeWrapper}>
-                                <Image resizeMode={'stretch'} style={styles.closeIcon} source={showClose}/>
-                            </View>
+                                <View style={styles.closeWrapper}>
+                                    <Image resizeMode={'stretch'} style={styles.closeIcon} source={showClose}/>
+                                </View>
                             </TouchableWithoutFeedback>
                         </View>
                     </View>
@@ -128,11 +125,11 @@ var styles = StyleSheet.create({
         height: px2dp(30),
         justifyContent: 'center',
         alignItems: 'center',
-        marginRight:px2dp(8)
+        marginRight: px2dp(8)
     },
     closeIcon: {
         height: px2dp(18),
-        width: px2dp(18),
+        width: px2dp(18)
     },
     itemWrapper: {
         height: px2dp(70),
@@ -141,18 +138,17 @@ var styles = StyleSheet.create({
         flexDirection: 'row',
         marginRight: px2dp(10),
         width: DesignRule.width - px2dp(30),
-        marginBottom:px2dp(10),
-        marginLeft:px2dp(15)
+        marginBottom: px2dp(10),
+        marginLeft: px2dp(15)
     },
     productIcon: {
         width: px2dp(60),
         height: px2dp(60),
-        marginVertical:px2dp(5),
-        marginLeft:px2dp(5),
-        marginRight:px2dp(10)
+        marginVertical: px2dp(5),
+        marginLeft: px2dp(5),
+        marginRight: px2dp(10)
     },
     itemInfoWrapper: {
-        paddingVertical: px2dp(5),
         flex: 1,
         justifyContent: 'space-between',
         paddingVertical: px2dp(5)
@@ -178,15 +174,15 @@ var styles = StyleSheet.create({
         color: DesignRule.textColor_instruction,
         fontSize: px2dp(10),
         marginLeft: px2dp(5),
-        textDecorationLine:'line-through'
+        textDecorationLine: 'line-through'
     },
-    titleTextStyle:{
-        color:DesignRule.textColor_instruction,
-        fontSize:DesignRule.fontSize_secondTitle
+    titleTextStyle: {
+        color: DesignRule.textColor_instruction,
+        fontSize: DesignRule.fontSize_secondTitle
     },
-    modalTitle:{
-        color:DesignRule.textColor_instruction,
-        fontSize:DesignRule.fontSize_secondTitle
+    modalTitle: {
+        color: DesignRule.textColor_instruction,
+        fontSize: DesignRule.fontSize_secondTitle
     }
 });
 
