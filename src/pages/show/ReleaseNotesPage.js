@@ -93,6 +93,10 @@ export default class ReleaseNotesPage extends BasePage {
     };
 
     _publish = () => {
+        if(this.state.videoData){
+            this.publishVideo();
+            return;
+        }
         if (EmptyUtils.isEmptyArr(this.state.imageArr) && this.state.videoData === null) {
             this.$toastShow('至少需要上传一张图片哦');
             return;
@@ -148,7 +152,7 @@ export default class ReleaseNotesPage extends BasePage {
     };
 
     publishVideo=(path)=>{
-        NativeModules.ShowModule.uploadVideo('cs',path).then((data)=>{
+        NativeModules.ShowModule.uploadVideo('cs',this.state.videoData.videoPath).then((data)=>{
 
         }).catch((error)=>{
 
@@ -162,7 +166,7 @@ export default class ReleaseNotesPage extends BasePage {
         // return;
 
         NativeModules.ShowModule.recordVideo().then((data)=>{
-            this.publishVideo(data.videoPath);
+            this.setState({videoData:data})
         })
         return;
 
@@ -196,7 +200,7 @@ export default class ReleaseNotesPage extends BasePage {
             return (
                 <View style={styles.imagesWrapper}>
                     <View>
-                        <ImageLoad style={styles.photo_item} source={{ uri: this.state.videoData.cover }}/>
+                        <ImageLoad style={styles.photo_item} source={{ uri: `file://${this.state.videoData.videoCover}` }}/>
                         <NoMoreClick style={styles.delete_btn} onPress={() => {
                             this.setState({ videoData: null });
                         }}>

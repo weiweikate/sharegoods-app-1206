@@ -25,6 +25,8 @@ import com.facebook.react.bridge.WritableNativeMap;
 import com.meeruu.commonlib.callback.BaseCallback;
 import com.meeruu.commonlib.config.BaseRequestConfig;
 import com.meeruu.commonlib.server.RequestManager;
+import com.meeruu.sharegoods.event.Event;
+import com.meeruu.sharegoods.event.LoadingDialogEvent;
 import com.meeruu.sharegoods.event.ShowVideoEvent;
 import com.meeruu.sharegoods.rn.showground.Activity.VideoRecordActivity;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
@@ -76,11 +78,17 @@ public class ShowModule extends ReactContextBaseJavaModule implements LifecycleE
             @Override
             public void onUploadSucceed(UploadFileInfo info) {
                 super.onUploadSucceed(info);
+                LoadingDialogEvent event = new LoadingDialogEvent();
+                event.setShow(false);
+                EventBus.getDefault().post(event);
             }
 
             @Override
             public void onUploadFailed(UploadFileInfo info, String code, String message) {
                 super.onUploadFailed(info, code, message);
+                LoadingDialogEvent event = new LoadingDialogEvent();
+                event.setShow(false);
+                EventBus.getDefault().post(event);
             }
 
             @Override
@@ -107,6 +115,10 @@ public class ShowModule extends ReactContextBaseJavaModule implements LifecycleE
             public void onUploadStarted(UploadFileInfo uploadFileInfo) {
                 super.onUploadStarted(uploadFileInfo);
                 uploader.setUploadAuthAndAddress(uploadFileInfo, uploadAuth, uploadAddress);
+                LoadingDialogEvent event = new LoadingDialogEvent();
+                event.setShow(true);
+                event.setMsg("上传中");
+                EventBus.getDefault().post(event);
             }
         };
         uploader.init(callback);
@@ -232,7 +244,7 @@ public class ShowModule extends ReactContextBaseJavaModule implements LifecycleE
     public void onVideoComplete(ShowVideoEvent event) {
         WritableMap writableMap = Arguments.createMap();
         writableMap.putString("videoPath",event.getPath());
-        writableMap.putString("videoCover",event.getPath());
+        writableMap.putString("videoCover",event.getCover());
         videoPromise.resolve(writableMap);
     }
 
