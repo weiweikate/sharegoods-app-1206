@@ -98,6 +98,11 @@ public class MRJPushReceiver extends BroadcastReceiver {
 
     //接收到通知
     private void receiveNotify(JSONObject objExtra) {
+        try {
+            LogUtils.d("======" + objExtra.getString("linkUrl"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     //用户点击了通知
