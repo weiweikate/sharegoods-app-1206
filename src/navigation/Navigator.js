@@ -58,8 +58,6 @@ RootStack.router.getStateForAction = (action, state) => {
             index: routes.length - 1
         };
     }
-
-
     if (state && (action.type === NavigationActions.NAVIGATE)) {
         // 拼店显示flag逻辑
         if (action.routeName === 'HomePage' || action.routeName === 'ShowListPage'
@@ -82,7 +80,6 @@ RootStack.router.getStateForAction = (action, state) => {
         } else {
             showPinFlagModel.saveShowFlag(false);
         }
-        
         if (currentRoute
             && nextRoute === RouterMap.LoginPage
             && currentRoute.routeName === RouterMap.LoginPage) {
@@ -123,7 +120,6 @@ RootStack.router.getStateForAction = (action, state) => {
             index: routes.length - 1
         };
     }
-
     //支付页面路由替换，需要替换2个
     if (state && (action.type === 'ReplacePaymentPage')) {
         const routes = state.routes.slice(0, state.routes.length - 1);
@@ -134,7 +130,6 @@ RootStack.router.getStateForAction = (action, state) => {
             index: routes.length - 1
         };
     }
-
     return defaultStateAction(action, state);
 };
 
@@ -148,7 +143,5 @@ export const getCurrentRouteName = (navigationState) => {
     }
     return route.routeName;
 };
-
 const Navigator = createAppContainer(RootStack);
-
 export default Navigator;
