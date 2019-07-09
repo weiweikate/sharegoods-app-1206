@@ -559,7 +559,9 @@ export default class ProductDetailModel {
             /*获取当前商品优惠券列表*/
             this.productDetailCouponsViewModel.requestListProdCoupon(this.prodCode);
             /**赋值prodCode会自动拉取库存**/
-            this.productDetailAddressModel.prodCode = this.prodCode;
+            if (tempData && tempData.type !== 3) {
+                this.productDetailAddressModel.prodCode = this.prodCode;
+            }
         }).catch((e) => {
             this.productError(e);
         });
