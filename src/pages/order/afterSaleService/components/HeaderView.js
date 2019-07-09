@@ -82,7 +82,7 @@ export default class HeaderView extends React.Component {
         if (Platform.OS === 'ios'){
             return <View style={[styles.dashedLine, style]}/>
         } else {
-            return <DottedLine color={'white'} style={{flex: 1,height: 1}} space={1} itemWidth={2} isRow={true}/>
+            return <DottedLine color={'white'} style={{flex: 1,height: 1}} space={2} itemWidth={4} isRow={true}/>
         }
     }
 

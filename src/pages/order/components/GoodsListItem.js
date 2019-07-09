@@ -17,7 +17,7 @@ import DateUtils from '../../../utils/DateUtils';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res'
 import ScreenUtils from '../../../utils/ScreenUtils';
-import { GetViewOrderStatus, checkOrderAfterSaleService } from '../order/OrderType';
+import { GetViewOrderStatus, checkOrderAfterSaleService, OrderType } from '../order/OrderType';
 const arrow_black_bottom = res.button.arrow_black_bottom
 
 export default class GoodsListItem extends React.Component {
@@ -72,17 +72,21 @@ export default class GoodsListItem extends React.Component {
             });
         }
         if (hasAfterSaleService) {
-            let cancelIndex = 0
+            let cancelIndex = -1
             nameArr.forEach((item, index) => {
                 if (item.operation === '删除订单') {
-                    cancelIndex = index + 1;
+                    cancelIndex = index;
                 }
             })
-            nameArr.splice(cancelIndex, 0, {
+            nameArr.splice(cancelIndex+1, 0, {
                 id: 99,
                 operation: '申请售后',
                 isRed: false
             })
+
+            if (orderStatus === OrderType.COMPLETED && cancelIndex !== -1) {
+                nameArr.splice(cancelIndex, 1);
+            }
 
         }
         if (nameArr.length === 0) {

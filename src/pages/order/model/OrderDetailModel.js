@@ -3,7 +3,7 @@ import OrderApi from '../api/orderApi'
 // import StringUtils from "../../../utils/StringUtils";
 import Toast from "../../../utils/bridge";
 import { PageLoadingState } from "../../../components/pageDecorator/PageState";
-import { GetViewOrderStatus, OrderType } from '../order/OrderType';
+import { checkOrderAfterSaleService, GetViewOrderStatus, OrderType } from '../order/OrderType';
 
 
 class OrderDetailModel {
@@ -61,6 +61,7 @@ class OrderDetailModel {
         orderDetailModel.loadingState=PageLoadingState.success
         this.platformOrderNo = this.merchantOrder.platformOrderNo || '';
         let menu =  [...GetViewOrderStatus(this.merchantOrder.status).menu_orderDetail];
+        let hasAfterSaleService = checkOrderAfterSaleService(this.merchantOrder.productOrderList, this.merchantOrder.orderStatus, this.baseInfo.nowTime)
 
         switch (this.merchantOrder.status) {
             case OrderType.WAIT_PAY:
@@ -101,6 +102,17 @@ class OrderDetailModel {
                         operation: '晒单',
                         isRed: true
                     })
+                }
+                if (hasAfterSaleService){
+                    let cancelIndex = -1;
+                    menu.forEach((item, index) => {
+                        if (item.operation === '删除订单') {
+                            cancelIndex = index ;
+                        }
+                    })
+                    if (cancelIndex !== -1) {
+                        menu.splice(cancelIndex, 1);
+                    }
                 }
                 break;
             }

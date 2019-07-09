@@ -98,7 +98,7 @@ export default class AfterSaleListPage extends BasePage<Props> {
             refundNum,
             type,
             serviceNo,
-            productOrderNo
+           // productOrderNo
         } = item;
         if (type === 11 || type === 12) {
             type = 1;
@@ -132,18 +132,18 @@ export default class AfterSaleListPage extends BasePage<Props> {
                             style={[styles.text, { marginLeft: 35, flex: 1 }]}
                     />
                     <TouchableOpacity onPress={() => {
-                        if (status === 2) {
-                            this.$navigate('order/afterSaleService/FillReturnLogisticsPage', {
-                                pageData: {
-                                    serviceNo,
-                                    productOrderNo
-                                },
-                                callBack: () => {
-                                    this.list&&this.list.onRefresh();
-                                }
-                            });
-                            return;
-                        }
+                        // if (status === 2) {
+                        //     this.$navigate('order/afterSaleService/FillReturnLogisticsPage', {
+                        //         pageData: {
+                        //             serviceNo,
+                        //             productOrderNo
+                        //         },
+                        //         callBack: () => {
+                        //             this.list&&this.list.onRefresh();
+                        //         }
+                        //     });
+                        //     return;
+                        // }
                         this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
                             serviceNo: serviceNo
                         });
