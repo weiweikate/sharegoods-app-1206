@@ -226,22 +226,21 @@ class PictureVideoUtils {
     };
 
     uploadSingleImage = (image,callback)=>{
-        // let datas = {
-        //     type: 'image/png',
-        //     uri: image,
-        //     name: new Date().getTime() + i + 'c.png'
-        // };
-        // let formData = new FormData();
-        // formData.append('file', datas);
-        // request.upload('/common/upload/oss', datas, {}).then((res) => {
-        //     if (res.code === 10000 && res.data) {
-        //         return Promise.resolve({ url: res.data, width: images[i].width, height: images[i].height });
-        //     } else {
-        //         return Promise.reject({
-        //             msg: '图片上传失败'
-        //         });
-        //     }
-        // })
+        let datas = {
+            type: 'image/png',
+            uri: image,
+            name: new Date().getTime() +  + 'c.png'
+        };
+        let formData = new FormData();
+        formData.append('file', datas);
+        let upload = request.upload('/common/upload/oss', datas, {}).then((res) => {
+            if (res.code === 10000 && res.data) {
+                callback({ url: res.data})
+            } else {
+                callback(null);
+            }
+        })
+        return NativeModules.commModule.RN_ImageCompression([image], null, 1024 * 1024 * 1, upload);
     }
 
 }

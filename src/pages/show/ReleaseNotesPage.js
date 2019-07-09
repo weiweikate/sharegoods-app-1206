@@ -151,9 +151,11 @@ export default class ReleaseNotesPage extends BasePage {
         });
     };
 
-    publishVideo=(path)=>{
+    publishVideo=()=>{
         NativeModules.ShowModule.uploadVideo('cs',this.state.videoData.videoPath).then((data)=>{
-            this.state
+            PictureVideoUtils.uploadSingleImage(this.state.videoData.cover,(data)=>{
+                alert(JSON.stringify(data))
+            })
         }).catch((error)=>{
 
         })

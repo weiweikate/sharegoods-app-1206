@@ -18,6 +18,7 @@ import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.event.ShowVideoEvent;
 import com.meeruu.sharegoods.rn.showground.bean.ImageBean;
 import com.meeruu.sharegoods.rn.showground.utils.VideoCoverUtils;
+import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -89,6 +90,8 @@ public class VideoPlayActivity extends Activity  implements MediaPlayer.OnErrorL
         }
 
         super.onResume();
+
+        MobclickAgent.onResume(VideoPlayActivity.this);
     }
 
     @Override
@@ -139,6 +142,7 @@ public class VideoPlayActivity extends Activity  implements MediaPlayer.OnErrorL
 
     @Override
     public void onPrepared(MediaPlayer mp) {
+        MobclickAgent.onPause(VideoPlayActivity.this);
         mp.setOnInfoListener(new MediaPlayer.OnInfoListener() {
             @Override
             public boolean onInfo(MediaPlayer mp, int what, int extra) {
