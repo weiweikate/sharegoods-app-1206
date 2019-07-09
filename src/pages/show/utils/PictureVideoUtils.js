@@ -228,8 +228,8 @@ class PictureVideoUtils {
     uploadSingleImage = (image,callback)=>{
         let datas = {
             type: 'image/png',
-            uri: image,
-            name: new Date().getTime() +  + 'c.png'
+            uri: 'file://'+image,
+            name: new Date().getTime() + 'c.png'
         };
         let formData = new FormData();
         formData.append('file', datas);
@@ -240,7 +240,7 @@ class PictureVideoUtils {
                 callback(null);
             }
         })
-        return NativeModules.commModule.RN_ImageCompression([image], null, 1024 * 1024 * 1, upload);
+        NativeModules.commModule.RN_ImageCompression([image], null, 1024 * 1024 * 1, upload);
     }
 
 }
