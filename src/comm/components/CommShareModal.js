@@ -104,6 +104,7 @@ const TrackShareType = {
     other: 100//其他
 };
 
+
 export default class CommShareModal extends React.Component {
 
     constructor(props) {
@@ -111,6 +112,7 @@ export default class CommShareModal extends React.Component {
         this._bind();
         this.defaultShareType = 1;
         this.state = {
+            shortUrl: '',
             modalVisible: props.defaultModalVisible || false,
             shareType: this.defaultShareType, //如果是type小程序分享，默认分享方式是小程序分享。其余的type，默认分享类型是web图文
             path: '',
@@ -122,6 +124,7 @@ export default class CommShareModal extends React.Component {
 
     /** public*/
     open() {
+
         if (user.isLogin) {
             user.userShare();
         } else {
@@ -160,9 +163,10 @@ export default class CommShareModal extends React.Component {
     showImage() {
         const { type, imageJson } = this.props;
         let params = { ...(imageJson || {}) };
+        let name =  user.nickname && user.nickname.length > 8 ? user.nickname.replace(/^(\d{3})\d*(\d{4})$/,'$1****$2') : user.nickname;
         params.shareMoney && (params.shareMoney = this.getMoneyText(params.shareMoney));
-        params = { headerImage: user.headImg || '', userName: user.nickname || '', ...params };
-        if (type === 'promotionShare' || type === 'Image' || type === 'Show') {
+        params = { headerImage: user.headImg || '', userName: name || '', ...params };
+        if (type === 'promotionShare' || type === 'Image' || type === 'Show' || type === 'Invite') {
             if (this.state.path.length === 0) {
                 if (type === 'promotionShare') {
                     bridge.createPromotionShareImage(params.webJson.linkUrl, (path) => {
@@ -172,10 +176,10 @@ export default class CommShareModal extends React.Component {
                             }, 350);
                         });
                     });
-                } else if (type === 'Image' || type === 'Show') {
+                } else if (type === 'Image' || type === 'Show' || type === 'Invite') {
                     let url = params && params.imageUrlStr;
                     this.props.imageJson && (params.imageUrlStr = getSource({ uri: url }, this.imageWidth, this.imageHeight, 'lfit').uri);
-                    delete params['shareMoney'];
+                    delete params.shareMoney;
                     bridge.creatShareImage(params, (path) => {
                         this.setState({ path: Platform.OS === 'android' ? 'file://' + path : '' + path }, () => {
                             this.changeShareType(0);
@@ -305,7 +309,7 @@ export default class CommShareModal extends React.Component {
 
         let arrayImage = [];
         let arrayWeb = [];
-        let currentType = type === 'Image' || type === 'promotionShare' || type === 'Show';
+        let currentType = type === 'Image' || type === 'promotionShare' || type === 'Show' || type === 'Invite';
         if (currentType) {
             //             this.saveImage(this.state.path); //下载图片
             // this.setState({ showToastImage: true},
@@ -415,7 +419,7 @@ export default class CommShareModal extends React.Component {
                         margin: 15,
 
                     }}>
-                        <View style={[styles.contentContainer, {height:currentType ? 250 : 180,}]}>
+                        <View style={[styles.contentContainer, {height:currentType ? autoSizeWidth(250) : autoSizeWidth(180),}]}>
                             <View style={styles.header}>
                                 <View style={{
                                     flex: 1,
@@ -522,7 +526,7 @@ export default class CommShareModal extends React.Component {
                                 height: this.imageHeight,
                                 width: this.imageWidth,
                                 position: 'absolute',
-                                bottom: 275 + ScreenUtils.safeBottom,
+                                bottom: 275 + ScreenUtils.safeBottom * 3 / 2,
                                 left: (ScreenUtils.width - this.imageWidth) / 2,
                                 borderRadius: 10,
                                 borderColor: DesignRule.textColor_placeholder,
@@ -533,7 +537,7 @@ export default class CommShareModal extends React.Component {
                                 transform: [{ scale: this.state.scale }]
 
                             }}>
-                                {this.props.type === 'Image' ?
+                                {this.props.type === 'Image' || this.props.type === 'Invite' ?
                                     <TouchableWithoutFeedback onLongPress={() => {
                                         if (this.props.type === 'promotionShare') {
                                             Linking.openURL(this.props.webJson.linkUrl);

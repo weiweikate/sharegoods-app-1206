@@ -18,6 +18,7 @@ const RootStack = createStackNavigator(Router,
         defaultNavigationOptions: {
             gesturesEnabled: true
         },
+        cardShadowEnabled: true,
         cardOverlayEnabled: true,
         transitionConfig: () => ({
             transitionSpec: {
@@ -57,8 +58,6 @@ RootStack.router.getStateForAction = (action, state) => {
             index: routes.length - 1
         };
     }
-
-
     if (state && (action.type === NavigationActions.NAVIGATE)) {
         // 拼店显示flag逻辑
         if (action.routeName === 'HomePage' || action.routeName === 'ShowListPage'
@@ -69,7 +68,8 @@ RootStack.router.getStateForAction = (action, state) => {
         }
     }
 
-    if (state && (action.type === NavigationActions.NAVIGATE)) {
+    if (state && (action.type === NavigationActions.NAVIGATE) ||
+        state && (action.type === 'Navigation/PUSH')) {
         let length = state.routes.length;
         let currentRoute = state.routes[length - 1];
         let nextRoute = action.routeName;
@@ -120,7 +120,6 @@ RootStack.router.getStateForAction = (action, state) => {
             index: routes.length - 1
         };
     }
-
     //支付页面路由替换，需要替换2个
     if (state && (action.type === 'ReplacePaymentPage')) {
         const routes = state.routes.slice(0, state.routes.length - 1);
@@ -131,7 +130,6 @@ RootStack.router.getStateForAction = (action, state) => {
             index: routes.length - 1
         };
     }
-
     return defaultStateAction(action, state);
 };
 
@@ -145,7 +143,5 @@ export const getCurrentRouteName = (navigationState) => {
     }
     return route.routeName;
 };
-
 const Navigator = createAppContainer(RootStack);
-
 export default Navigator;

@@ -22,6 +22,9 @@
 + (NSDictionary *)getParamsWithWEBImages:(NSArray<UIImage *> *)images
                                 model:(ShareImageMakerModel *)model;
 
++ (NSDictionary *)getParamsWithInviteImages:(NSArray<UIImage *> *)images
+                                      model:(ShareImageMakerModel *)model;
+
 + (NSString *)getShowProductImageModelImages:(NSArray<UIImage *> *)images
                                            model:(ShareImageMakerModel *)model;
 @end

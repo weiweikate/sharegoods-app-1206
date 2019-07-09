@@ -105,8 +105,7 @@
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.meeruu.sharegoods.fileProvider"
             android:exported="false"
-            android:grantUriPermissions="true"
-            tools:replace="android:authorities">
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
@@ -126,6 +125,17 @@
                 <category android:name="com.meeruu.sharegoods" />
             </intent-filter>
         </receiver>
+
+        <!-- since 3.3.0 Required SDK 核心功能-->
+        <!-- 可配置android:process参数将PushService放在其他进程中 -->
+        <!--User defined.  For test only 继承自cn.jpush.android.service.JCommonService-->
+        <service
+            android:name=".service.MRJPushService"
+            android:process=":pushcore">
+            <intent-filter>
+                <action android:name="cn.jiguang.user.service.action" />
+            </intent-filter>
+        </service>
 
         <!-- 版本下载 -->
         <service

@@ -46,7 +46,8 @@ const {
     mine_wait_receive_icon,
     mine_after_buy_icon,
     // mine_friendsHelp,
-    mine_invite,
+    // mine_invite,
+    mine_invite2,
     // mine_moreMoney,
     // mine_icon_favorite_shop,
     mine_icon_help_service,
@@ -358,7 +359,7 @@ export default class MinePage extends BasePage {
 
         return (
             <View style={styles.headerBgStyle}>
-                <View style={{ height: px2dp(54), flexDirection: 'row', marginRight: px2dp(5),}}>
+                <View style={{ height: px2dp(68), flexDirection: 'row', marginRight: px2dp(5),alignItems:'flex-end'}}>
                     <TouchableOpacity onPress={this.jumpToUserInformationPage} activeOpacity={1}>
                         {icon}
                     </TouchableOpacity>
@@ -414,8 +415,8 @@ export default class MinePage extends BasePage {
                 alignSelf: 'center',
                 flexDirection: 'row',
                 alignItems: 'center',
-                height: 37,
-                width: 345,
+                height: (ScreenUtils.width - px2dp(30)) * 37 / 346,
+                marginHorizontal: px2dp(15),
                 borderRadius: 10,
             }} source={index !== 10 ? vipBg[index] : vipBg[2]}>
                 <View style={{
@@ -533,6 +534,7 @@ export default class MinePage extends BasePage {
     accountRender = () => {
         return (
             <View style={{
+                flex: 1,
                 marginTop: px2dp(5),
                 marginHorizontal: px2dp(15),
                 justifyContent: 'center'
@@ -578,20 +580,37 @@ export default class MinePage extends BasePage {
                     this.$navigate(RouterMap.InviteFriendsPage);
                 }}>
                     <View>
-                        <Image resizeMode={'contain'}
-                            style={{
-                            height: px2dp(70),
-                            width: (ScreenUtils.width - 30)
-                        }} source={mine_invite}/>
+                        {/*<ImageBackground style={{*/}
+                            {/*height: px2dp(70),*/}
+                            {/*width: (ScreenUtils.width - px2dp(40)) / 2*/}
+                        {/*}} source={mine_invite}>*/}
+                            {/*<View style={{flex: 1, justifyContent: 'center', marginLeft: 15}}>*/}
+                                {/*<Text style={{fontSize: 14, color: '#333333', fontWeight: '600', marginBottom: 5}}>*/}
+                                    {/*邀请好友赚钱</Text>*/}
+
+                                {/*<ImageBackground style={{width: 65, height: 26, alignItems: 'center'}}*/}
+                                                 {/*source={res.homeBaseImg.mine_btn_red}>*/}
+                                    {/*<Text style={{fontSize: 10, color: 'white'}}>立即邀请</Text>*/}
+                                {/*</ImageBackground>*/}
+                            {/*</View>*/}
+                        {/*</ImageBackground>*/}
+                        <View>
+                            <Image resizeMode={'contain'}
+                                   style={{
+                                       height: px2dp(70),
+                                       width: (ScreenUtils.width - px2dp(15) * 2)
+                                   }} source={mine_invite2}/>
+                        </View>
                     </View>
                 </TouchableWithoutFeedback>
+
                 {/*<TouchableWithoutFeedback onPress={() => {*/}
-                    {/*this.$navigate('HtmlPage', { uri: '/activity/freeOrder' });*/}
+                    {/*this.$navigate(RouterMap.HtmlPage,{ uri: '/activity/freeorder' });*/}
                 {/*}}>*/}
                     {/*<View>*/}
                         {/*<ImageBackground style={{*/}
                             {/*height: px2dp(70),*/}
-                            {/*width: (ScreenUtils.width - 45) / 2*/}
+                            {/*width: (ScreenUtils.width - px2dp(40)) / 2*/}
                         {/*}} source={mine_friendsHelp}>*/}
                             {/*<View style={{flex: 1, justifyContent: 'center', marginLeft: 15}}>*/}
                                 {/*<Text style={{fontSize: 14, color: '#333333', fontWeight: '600', marginBottom: 5}}>*/}
@@ -631,6 +650,14 @@ export default class MinePage extends BasePage {
                     marginBottom: px2dp(15)
                 }}>
                     <View style={{flexDirection:'row',justifyContent:'center'}}>
+                        {msgNum > 0 ? <View style={{
+                            minWidth: px2dp(16),
+                            height: px2dp(16),
+                            borderRadius: px2dp(8),
+                            position: 'relative',
+                            top: -5,
+                            left: 0,
+                        }}/> : null}
                         <Text allowFontScaling={true} style={{
                             textAlign: 'center',
                             color: '#333333',
@@ -942,7 +969,7 @@ export default class MinePage extends BasePage {
         }
 
 
-        let menu = [message, address, service, setting];
+        let menu = [message, service, address, setting];
 
 
         if (this.state.hasFans) {
