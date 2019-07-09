@@ -107,10 +107,9 @@ class ConfirmOrderModel {
         let orderProducts =  this.orderParamVO.orderProducts || [];
         if (filterFail){
             orderProducts = orderProducts.filter((item => {
-                return item.fail !== true;
+                return item.fail === false;
             }))
         }
-
         let productList = orderProducts.map(item => {
             // "skuCode":, //string 平台skuCode
             // "quantity":, //int 购买数量
@@ -189,9 +188,10 @@ class ConfirmOrderModel {
         let failProductList = [];
         let list = data.failProductList || [];
         let orderProducts = this.orderParamVO.orderProducts || []
-        for (let i = 0; i < list.length; i++){
             for (let j = 0; j < orderProducts.length; j++){
                 let product = orderProducts[j];
+                product.fail = false;
+                for (let i = 0; i < list.length; i++){
                 if (list[i].skuCode == orderProducts[j].skuCode &&
                     list[i].quantity == orderProducts[j].quantity &&
                     list[i].activityCode == orderProducts[j].activityCode &&
@@ -200,8 +200,6 @@ class ConfirmOrderModel {
                     product.fail = true;
                     failProductList.push({...product, failReason: list[i].failReason});
                     break;
-                }else{
-                    product.fail = true;
                 }
             }
         }

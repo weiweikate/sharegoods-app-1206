@@ -446,9 +446,9 @@ class AfterSaleServicePage extends BasePage {
             let payAmount = productData.payAmount || 0;
             if (status === 2 || status === 1) {  //  状态 1.待付款 2.已付款 3.已发货 4.交易完成 5.交易关闭
                 editable = false;
-                that._getReturnReason(false,productData.afterSaleServiceDays);
+                that._getReturnReason(false,productData.sevenDayReturn);
             } else {
-                that._getReturnReason(true,productData.afterSaleServiceDays);
+                that._getReturnReason(true,productData.sevenDayReturn);
             }
             if (payAmount === 0) {
                 editable = false;
