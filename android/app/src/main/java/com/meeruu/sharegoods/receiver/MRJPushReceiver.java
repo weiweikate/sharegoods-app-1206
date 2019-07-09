@@ -1,10 +1,15 @@
 package com.meeruu.sharegoods.receiver;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.util.Log;
 
 import com.meeruu.commonlib.utils.AppUtils;
 import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.sharegoods.event.Event;
+import com.meeruu.sharegoods.ui.activity.MainRNActivity;
 import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
 
 import org.greenrobot.eventbus.EventBus;
@@ -14,6 +19,10 @@ import org.json.JSONObject;
 import cn.jpush.android.api.CustomMessage;
 import cn.jpush.android.api.NotificationMessage;
 import cn.jpush.android.service.JPushMessageReceiver;
+import java.net.URLEncoder;
+import java.util.Map;
+
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * 自定义接收器
@@ -25,6 +34,9 @@ import cn.jpush.android.service.JPushMessageReceiver;
 public class MRJPushReceiver extends JPushMessageReceiver {
 
     private static final String PACKAGENAME = "com.meeruu.sharegoods";
+    private static final String LINk_KEY = "linkUrl";
+    private static final String PAGE_KEY = "pageType";
+    private static final String PARAMS_KEY = "params";
 
     // 注册回调
     @Override
@@ -101,9 +113,33 @@ public class MRJPushReceiver extends JPushMessageReceiver {
 
     //用户点击了通知
     private void notifyOpened(final Context context, JSONObject objExtra) {
+        if(objExtra != null && objExtra.has(LINk_KEY)){
+            String link = "";
+            try {
+                link = objExtra.getString(LINk_KEY);
+                link = URLEncoder.encode(link,"utf-8");
+            }catch (Exception e){
+            }
+            String uri = "meeruu://path/HtmlPage/"+link;
+            deepLink(uri,context);
+        }else {
+          startApp(context);
+        }
+    }
+
+    private void startApp(Context context){
         if (!AppUtils.isAppOnForeground(context)) {
             AppUtils.startAPP(context, PACKAGENAME);
         }
+    }
+
+    private void deepLink(String uri,Context context){
+        Uri realUri = Uri.parse(uri);
+        Intent intent = new Intent();
+        intent.setAction("android.intent.action.VIEW");
+        intent.setData(realUri);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 
 }
