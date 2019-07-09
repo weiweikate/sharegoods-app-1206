@@ -30,6 +30,7 @@ const index = {
     mine_showOrder: require('./me_icon_shaidan_nor.png'),
     mine_friendsHelp: require('./friendsHelp.png'),
     mine_invite: require('./invite.png'),
+    mine_invite2: require('./invite2.png'),
     mine_moreMoney: require('./moreMoney.png'),
     mine_line_v0: require('./v0Bgline.png'),
     mine_line_v1: require('./v1Bgline.png'),
