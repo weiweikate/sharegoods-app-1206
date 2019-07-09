@@ -1,6 +1,8 @@
 import { mediatorAddFunc } from '../../SGMediator';
 import homeApi from './api/HomeAPI'
 import homeModalManager from './manager/HomeModalManager'
+import { homeModule } from './model/Modules';
+import { routePush } from '../../navigation/RouterMap';
 //请求新手福利接口
 mediatorAddFunc('Home_RequestNoviceGift',()=>{
     homeModalManager.getGift();
@@ -13,4 +15,12 @@ mediatorAddFunc('Home_ShareNotify', (p) => {
 mediatorAddFunc('Home_UserLevelUpdate', (p) => {
     homeModalManager.userLevelUpdate(p);
 })
+
+mediatorAddFunc('Home_AdNavigate', (p) => {
+    if (p) {
+        const router = homeModule.homeNavigate(p.linkType, p.linkTypeCode);
+        let params = homeModule.paramsNavigate(p);
+        routePush(router, { ...params });
+    }
+});
 

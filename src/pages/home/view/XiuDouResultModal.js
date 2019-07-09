@@ -40,7 +40,7 @@ export default class XiuDouResultModal extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {visible: false};
+        this.state = {visible: true};
     }
 
 
@@ -54,14 +54,21 @@ export default class XiuDouResultModal extends React.Component {
                             <MRText style={[styles.detail, {marginLeft: ScreenUtils.autoSizeWidth(32), flex: 1}]}>免单奖励</MRText>
                             <MRText style={[styles.detail, {marginRight: ScreenUtils.autoSizeWidth(15)}]}>免单场次</MRText>
                         </View>
-                        <RefreshFlatList url={HomeAPI.freeOrderList}
-                                         params={{}}
-                                         renderItem={this.renderItem}
-                                         emptyHeight={ScreenUtils.autoSizeWidth(200)}
-                                         defaultEmptyText={'还没内容哦'}
-                                         sizeKey={'pageSize'}
-                                         pageKey={'pageIndex'}
-                        />
+                        <View style={{flex: 1}}>
+                            <RefreshFlatList url={HomeAPI.freeOrderList}
+                                             nestedScrollEnabled={true}
+                                             params={{}}
+                                             renderItem={this.renderItem}
+                                             emptyHeight={ScreenUtils.autoSizeWidth(200)}
+                                             defaultEmptyText={'还没内容哦'}
+                                             sizeKey={'pageSize'}
+                                             pageKey={'pageIndex'}
+                                             // handleRequestResult={(data)=> {
+                                             //     data = data.data.data;
+                                             //     return [...data,...data,...data,...data]
+                                             // }}
+                            />
+                        </View>
                     </View>
                     <View style={styles.bottomContainer}>
                         <MRText style={[styles.detail,{marginHorizontal: ScreenUtils.autoSizeWidth(10)}]}>
@@ -98,7 +105,7 @@ export default class XiuDouResultModal extends React.Component {
                 <ImageLoader source={{uri: headImg}}
                              isAvatar={true}
                              style={{marginLeft: ScreenUtils.autoSizeWidth(15), height: ScreenUtils.autoSizeWidth(32), width: ScreenUtils.autoSizeWidth(32)}}/>
-                <MRText style={[styles.detail, {marginLeft: ScreenUtils.autoSizeWidth(32), flex: 1}]}>{award}</MRText>
+                <MRText style={[styles.title, {marginLeft: ScreenUtils.autoSizeWidth(32), flex: 1, fontSize: ScreenUtils.autoSizeWidth(14)}]}>{award}</MRText>
                 <MRText style={[styles.detail, {marginRight: ScreenUtils.autoSizeWidth(15)}]}>{time}</MRText>
             </View>
         )

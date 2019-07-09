@@ -30,7 +30,8 @@
 -(void)JR_ConfigAPNS:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
   [self configAPNSWithOption:launchOptions];
   [self checkCurrentNotificationStatus];
-  
+  NSDictionary *pushNotificationKey = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+  [self showChatViewController:pushNotificationKey];
   NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
   [defaultCenter addObserver:self selector:@selector(networkDidReceiveMessage:) name:kJPFNetworkDidReceiveMessageNotification object:nil];
 }
@@ -304,6 +305,8 @@
   [JPUSHService registerDeviceToken:deviceToken];
   [JPUSHService registrationIDCompletionHandler:^(int resCode, NSString *registrationID) {
     NSLog(@"registrationID%@",registrationID);
+    UIAlertView * AlertView = [[UIAlertView alloc]initWithTitle:@"" message:[NSString stringWithFormat:@"%@",registrationID] delegate:nil cancelButtonTitle:@"取消" otherButtonTitles: nil];
+    [AlertView show];
     if (resCode == 0) {
       // 将极光推送的 Registration Id 存储在神策分析的用户 Profile "jgId" 中
       [SensorsAnalyticsSDK.sharedInstance profilePushKey:@"jgId" pushId:registrationID];
@@ -331,17 +334,45 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-  if ([UIApplication sharedApplication].applicationState == UIApplicationStateInactive) {
+//  if ([UIApplication sharedApplication].applicationState == UIApplicationStateInactive) {
     [self showChatViewController:userInfo];
-  }
+//  }
 }
 #pragma mark 推送来的消息解析
 -(void)showChatViewController:(NSDictionary *)userInfo{
-  id object = [userInfo objectForKey:@"nim"]; //含有“nim”字段，就表示是七鱼的消息
-  if (object)
-  {
-    
+  UIAlertView * AlertView = [[UIAlertView alloc]initWithTitle:@"" message:[NSString stringWithFormat:@"%@",userInfo] delegate:nil cancelButtonTitle:@"取消" otherButtonTitles: nil];
+  [AlertView show];
+  NSString *openURL = nil;
+  NSString * linkUrl = userInfo[@"linkUrl"];
+  NSNumber * pageType = userInfo[@"pageType"];
+  if (linkUrl &&
+      [linkUrl isKindOfClass:[NSString class]] &&
+      linkUrl.length > 0
+      ) {
+    openURL = [NSString stringWithFormat:@"meeruu://path/HtmlPage/%@",linkUrl];
+  }else if (pageType && [pageType integerValue] == 100){
+       openURL = [NSString stringWithFormat:@"meeruu://path/MyCashAccountPage/%@",userInfo[@"params"][@"index"]];
   }
+  
+  if (!openURL) {
+    return;
+  }
+  if (!self.isLoadJS) {
+    __weak AppDelegate * weakSelf = self;
+ [NSTimer scheduledTimerWithTimeInterval:1 repeats:YES block:^(NSTimer * _Nonnull timer) {
+      if (weakSelf.isLoadJS) {
+         [[UIApplication sharedApplication]openURL:[NSURL URLWithString:openURL] options:@{} completionHandler:nil];
+        [timer invalidate];
+      }
+    }];
+  }else{
+     [[UIApplication sharedApplication]openURL:[NSURL URLWithString:openURL] options:@{} completionHandler:nil];
+  }
+//  id object = [userInfo objectForKey:@"nim"]; //含有“nim”字段，就表示是七鱼的消息
+//  if (object)
+//  {
+//
+//  }
 }
 
 
