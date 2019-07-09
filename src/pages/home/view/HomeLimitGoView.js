@@ -16,7 +16,7 @@ import RouterMap, { routeNavigate, routePush } from '../../../navigation/RouterM
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import productRes from '../../product/res/product';
 // import res from '../res'
-// import XiuDouResultModal from './XiuDouResultModal';
+import XiuDouResultModal from './XiuDouResultModal';
 
 const { px2dp } = ScreenUtils;
 const { saleSmallSkill } = productRes.pSacle;
@@ -179,7 +179,7 @@ export default class HomeLimitGoView extends Component {
                 >
                     {viewItems}
                 </ScrollableTabView>
-                {/*<XiuDouResultModal ref={(ref)=>{this.modal = ref}}/>*/}
+                <XiuDouResultModal ref={(ref)=>{this.modal = ref}}/>
             </View>);
     }
 }

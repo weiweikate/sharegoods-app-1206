@@ -12,9 +12,9 @@
 //#import "JSPush"
 
 // iOS10 注册 APNs 所需头文件
-#ifdef NSFoundationVersionNumber_iOS_9_x_Max
+//#ifdef NSFoundationVersionNumber_iOS_9_x_Max
 #import <UserNotifications/UserNotifications.h>
-#endif
+//#endif
 // 如果需要使用 idfa 功能所需要引入的头文件
 #import <AdSupport/AdSupport.h>
 #import "JVERIFICATIONService.h"
@@ -106,13 +106,13 @@
   BOOL isProduction = NO;
   NSString * appKey ;
   
-#if DEBUG
+//#if DEBUG
   isProduction = NO;
   appKey = KDEBUGJSPushKey;
-#else
-  isProduction = YES;
-  appKey = KJSPushKey;
-#endif
+//#else
+//  isProduction = YES;
+//  appKey = KJSPushKey;
+//#endif
   [JPUSHService setupWithOption:launchOptions
                          appKey:appKey
                         channel:@"App Store"
@@ -305,8 +305,6 @@
   [JPUSHService registerDeviceToken:deviceToken];
   [JPUSHService registrationIDCompletionHandler:^(int resCode, NSString *registrationID) {
     NSLog(@"registrationID%@",registrationID);
-    UIAlertView * AlertView = [[UIAlertView alloc]initWithTitle:@"" message:[NSString stringWithFormat:@"%@",registrationID] delegate:nil cancelButtonTitle:@"取消" otherButtonTitles: nil];
-    [AlertView show];
     if (resCode == 0) {
       // 将极光推送的 Registration Id 存储在神策分析的用户 Profile "jgId" 中
       [SensorsAnalyticsSDK.sharedInstance profilePushKey:@"jgId" pushId:registrationID];
@@ -329,6 +327,8 @@
   
   // 直接上报数据
   [[SensorsAnalyticsSDK sharedInstance] flush];
+  
+  [self showChatViewController:response.notification.request.content.userInfo];
   completionHandler();  // 系统要求执行这个方法
 }
 
@@ -338,21 +338,41 @@
     [self showChatViewController:userInfo];
 //  }
 }
+
+//-(void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler{
+//  [self showChatViewController:response.notification.request.content.userInfo];
+//  completionHandler();
+//}
+//
+//- (void)jpushNotificationCenter:(UNUserNotificationCenter *)center openSettingsForNotification:(UNNotification *)notification{
+//  if (notification && [notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
+//     [self showChatViewController:notification.request.content.userInfo];
+//    //从通知界面直接进入应用
+//  }else{
+//    //从通知设置界面进入应用
+//  }
+//}
+
+//-(void)jpushNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void(^)())completionHandler{
+//  [self showChatViewController:response.notification.request.content.userInfo];
+//  completionHandler();
+//}
+
+
 #pragma mark 推送来的消息解析
 -(void)showChatViewController:(NSDictionary *)userInfo{
-  UIAlertView * AlertView = [[UIAlertView alloc]initWithTitle:@"" message:[NSString stringWithFormat:@"%@",userInfo] delegate:nil cancelButtonTitle:@"取消" otherButtonTitles: nil];
-  [AlertView show];
   NSString *openURL = nil;
   NSString * linkUrl = userInfo[@"linkUrl"];
-  NSNumber * pageType = userInfo[@"pageType"];
+//  NSNumber * pageType = userInfo[@"pageType"];
   if (linkUrl &&
       [linkUrl isKindOfClass:[NSString class]] &&
       linkUrl.length > 0
       ) {
-    openURL = [NSString stringWithFormat:@"meeruu://path/HtmlPage/%@",linkUrl];
-  }else if (pageType && [pageType integerValue] == 100){
-       openURL = [NSString stringWithFormat:@"meeruu://path/MyCashAccountPage/%@",userInfo[@"params"][@"index"]];
-  }
+    NSString*hString = [linkUrl stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet characterSetWithCharactersInString:@"`#%^{}\"[]|\\<> "]];
+    openURL = [NSString stringWithFormat:@"meeruu://path/HtmlPage/%@",hString];
+  }//else if (pageType && [pageType integerValue] == 100){
+    //   openURL = [NSString stringWithFormat:@"meeruu://path/MyCashAccountPage/%@",userInfo[@"params"][@"index"]];
+ // }
   
   if (!openURL) {
     return;

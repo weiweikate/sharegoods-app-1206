@@ -40,7 +40,15 @@ export default class XiuDouResultModal extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {visible: true};
+        this.state = {visible: false, desc: ''};
+    }
+
+
+
+    componentDidMount() {
+        HomeAPI.freeOrderDesc({}).then(data => {
+            this.setState({desc: data.data})
+        })
     }
 
 
@@ -72,10 +80,7 @@ export default class XiuDouResultModal extends React.Component {
                     </View>
                     <View style={styles.bottomContainer}>
                         <MRText style={[styles.detail,{marginHorizontal: ScreenUtils.autoSizeWidth(10)}]}>
-                            <MRText style={styles.title}>{'活动概述\n'}</MRText>
-                            {'系统将会随机抽取若干参与秒杀活动的用户，送出与支付金额同等价值的秀豆。\n'}
-                            <MRText style={styles.title}>{'开奖时间\n'}</MRText>
-                            {'每个时段秒杀结束后同步开奖，请留意站内消息。'}
+                            {this.state.desc}
                         </MRText>
                     </View>
                     <TouchableOpacity style={{position: 'absolute',
