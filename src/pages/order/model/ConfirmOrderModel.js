@@ -95,15 +95,23 @@ class ConfirmOrderModel {
             // "activityCode":, //string 活动code
             // "batchNo": //string 活动批次号
             let { productType} = item;
-           if (productType !== 3){
-               isAllVirtual = false;
-           }
+            if (productType !== 3){
+                isAllVirtual = false;
+            }
         })
-       this.isAllVirtual = isAllVirtual;
+        this.isAllVirtual = isAllVirtual;
     }
 
-    getParams(){
-        let productList = (this.orderParamVO.orderProducts || []).map(item => {
+    getParams(filterFail){
+
+        let orderProducts =  this.orderParamVO.orderProducts || [];
+        if (filterFail){
+            orderProducts = orderProducts.filter((item => {
+                return item.fail !== true;
+            }))
+        }
+
+        let productList = orderProducts.map(item => {
             // "skuCode":, //string 平台skuCode
             // "quantity":, //int 购买数量
             // "activityCode":, //string 活动code
@@ -111,7 +119,6 @@ class ConfirmOrderModel {
             let {skuCode, quantity, activityCode, batchNo} = item;
             return {skuCode, quantity, activityCode, batchNo};
         })
-
         return {
             couponInfo: { //券信息
                 couponCode: this.userCouponCode, //本次下单使用的优惠券code
@@ -184,14 +191,17 @@ class ConfirmOrderModel {
         let orderProducts = this.orderParamVO.orderProducts || []
         for (let i = 0; i < list.length; i++){
             for (let j = 0; j < orderProducts.length; j++){
+                let product = orderProducts[j];
                 if (list[i].skuCode == orderProducts[j].skuCode &&
                     list[i].quantity == orderProducts[j].quantity &&
                     list[i].activityCode == orderProducts[j].activityCode &&
                     list[i].batchNo == orderProducts[j].batchNo
                 ){
-                    let product = orderProducts[j];
+                    product.fail = true;
                     failProductList.push({...product, failReason: list[i].failReason});
                     break;
+                }else{
+                    product.fail = true;
                 }
             }
         }
@@ -199,7 +209,7 @@ class ConfirmOrderModel {
     };
 
     @action submitProduct() {
-        if (StringUtils.isEmpty(this.addressId)) {
+        if (StringUtils.isEmpty(this.addressId) && !this.isAllVirtual) {
             bridge.$toast('请先添加地址');
             return;
         }
@@ -207,17 +217,17 @@ class ConfirmOrderModel {
             return;
         }
         bridge.showLoading();
-        OrderApi.submitOrder(this.getParams()).then((response) => {
+        OrderApi.submitOrder(this.getParams(true)).then((response) => {
             bridge.hiddenLoading();
             let data = response.data || {};
             if (this.orderParamVO.source === 1) {
                 shopCartCacheTool.getShopCartGoodsListData();
             }
             replaceRoute('payment/PaymentPage', {
-                    orderNum: data.platformOrderNo,
-                    amounts: data.payInfo.payAmount,
-                    orderProductList: data.productOrderList,
-                    platformOrderNo: data.platformOrderNo
+                orderNum: data.platformOrderNo,
+                amounts: data.payInfo.payAmount,
+                orderProductList: data.productOrderList,
+                platformOrderNo: data.platformOrderNo
             })
             track(trackEvent.submitOrder, {
                 orderId: data.orderNo,
