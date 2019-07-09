@@ -382,6 +382,13 @@ RCT_EXPORT_METHOD(updatePushTags:(id)paramTags){
   });
 }
 
+RCT_EXPORT_METHOD(deleteAllAlias{
+   dispatch_async(dispatch_get_main_queue(), ^{
+     [JSPushManager deleteAlias];
+   });
+});
+
+
 //RCT_EXPORT_METHOD(signWith:(NSString *)signString callback:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject){
 //  NSString * signedString = [[RSAManager sharedInstance] signSHA1String:signString];
 ////  NSLog(@"加签后的字符串-----原生---- %@",signedString);

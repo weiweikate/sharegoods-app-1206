@@ -75,5 +75,9 @@ export default {
             };
             NativeModules.commModule.updatePushAlias(tempObj);
         }
+    },
+
+    deleteAllAlias:()=>{
+        NativeModules.commModule.deleteAllAlias();
     }
 };

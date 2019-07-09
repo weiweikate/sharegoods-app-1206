@@ -456,6 +456,11 @@ public class CommModule extends ReactContextBaseJavaModule {
         JPushInterface.setTags(this.mContext, tagSet, null);
     }
 
+    @ReactMethod
+    public void deleteAllAlias(){
+        JPushInterface.deleteAlias(this.mContext,1);
+    }
+
     /**
      * 获取视频文件关键帧
      *
