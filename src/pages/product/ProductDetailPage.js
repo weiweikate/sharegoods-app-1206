@@ -140,14 +140,14 @@ export default class ProductDetailPage extends BasePage {
                 this.state.goType = type;
                 this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, {
                     productIsPromotionPrice,
-                    isAreaSku: true
+                    isAreaSku: this.productDetailModel.type !== 3
                 });
                 break;
             case 'gwc':
                 this.state.goType = type;
                 this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, {
                     productIsPromotionPrice,
-                    isAreaSku: true
+                    isAreaSku: this.productDetailModel.type !== 3
                 });
                 break;
         }
@@ -174,16 +174,16 @@ export default class ProductDetailPage extends BasePage {
             });
         } else if (goType === 'buy') {
             const { type, couponId } = this.params;
-            const { specImg, productName, promotionPrice, price, propertyValues } = item;
+            const { specImg, promotionPrice, price, propertyValues } = item;
             let orderProducts = [{
-                productType:this.productDetailModel.type,
+                productType: this.productDetailModel.type,
                 skuCode: skuCode,
                 quantity: amount,
                 productCode: prodCode,
                 activityCode: '',
                 batchNo: 1,
                 specImg,
-                productName,
+                productName: name,
                 unitPrice: productIsPromotionPrice ? promotionPrice : price,
                 spec: (propertyValues || '').replace(/@/g, '-')
             }];

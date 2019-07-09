@@ -93,7 +93,7 @@ export class HeaderItemView extends Component {
         const { navigation, productDetailModel, shopAction } = this.props;
         const {
             freight, monthSaleCount, originalPrice, minPrice, groupPrice, promotionMinPrice, maxPrice, promotionMaxPrice, name,
-            secondName, levelText, priceType, activityType, activityStatus
+            secondName, levelText, priceType, activityType, activityStatus, type
         } = productDetailModel;
         let showWill = activityType === activity_type.skill && activityStatus === activity_status.unBegin;
         let showIn = activityType === activity_type.skill && activityStatus === activity_status.inSell;
@@ -130,7 +130,8 @@ export class HeaderItemView extends Component {
                 {isNoEmpty(secondName) && <Text style={styles.secondNameText} numberOfLines={2}>{secondName}</Text>}
                 <View style={styles.freightMonthView}>
                     {/*值为0*/}
-                    <Text style={styles.freightMonthText}>快递：{freight == 0 ? '包邮' : `${freight}元`}</Text>
+                    <Text
+                        style={styles.freightMonthText}>快递：{type === 3 ? '免运费' : (freight == 0 ? '包邮' : `${freight}元`)}</Text>
                     <Text style={styles.freightMonthText}>{`近期销量: ${monthSaleCount}`}</Text>
                 </View>
             </View>
