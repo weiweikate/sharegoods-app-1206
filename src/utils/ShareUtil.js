@@ -49,19 +49,23 @@ const onShare = (data, api, trackParmas, trackEvent, callback = () => {
         let shareType = [TrackShareType.wx, TrackShareType.wxTimeline, TrackShareType.qq, TrackShareType.qqSpace, TrackShareType.weibo][data.platformType];
         track(trackEvent, { shareType, ...p });
     }
+    if (params.platformType === 0) {
+        userApi.shareShortUrl({'longUrl': params.linkUrl, 'expireTime': 0})
+            .then(res => {
+                console.log('res', res);
+                if (res && res.data) {
+                    params.linkUrl = res.data;
+                    shareFunc(params, luckyDraw, api, callback, taskShareParams)
+                } else {
+                    shareFunc(params, luckyDraw, api, callback, taskShareParams)
+                }
+            }).catch(error => {
+            shareFunc(params, luckyDraw, api, callback, taskShareParams)
+        });
+    } else {
+        shareFunc(params, luckyDraw, api, callback, taskShareParams)
+    }
 
-    userApi.shareShortUrl({'longUrl': params.linkUrl, 'expireTime': 0})
-        .then(res => {
-            console.log('res', res);
-            if (res && res.data) {
-                params.linkUrl = res.data;
-                shareFunc(params,luckyDraw,api,callback ,taskShareParams)
-            } else {
-                shareFunc(params,luckyDraw,api,callback ,taskShareParams)
-            }
-        }).catch(error => {
-        shareFunc(params,luckyDraw,api,callback ,taskShareParams)
-    });
 };
 
 const shareSucceedCallBlack = (api, sucCallback = () => {
