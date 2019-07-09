@@ -11,55 +11,29 @@
 'use strict';
 
 import React, { Component } from 'react';
-import {
-    StyleSheet,
-    View,
-    TouchableOpacity,
-    TouchableHighlight
-} from 'react-native';
+import { StyleSheet, View, TouchableOpacity, TouchableHighlight } from 'react-native';
 import PropTypes from 'prop-types';
-import {
-    UIText,
-    UIImage,
-    MRTextInput as TextInput
-} from '../../../components/ui';
+import { UIText, UIImage, MRTextInput as TextInput } from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
 import shopCartStore from '../model/ShopCartStore';
 import { getSelectImage, getTipString, statueImage } from '../model/ShopCartMacro';
 import bridge from '../../../utils/bridge';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import shopCartCacheTool from '../model/ShopCartCacheTool';
-
 const dismissKeyboard = require('dismissKeyboard');
-
 const { px2dp } = ScreenUtils;
-
 export default class ShopCartCell extends Component {
     constructor(props) {
         super(props);
-
     }
-
     render() {
         const { itemData, rowMap, rowId, cellClickAction, sectionData } = this.props;
-        return (
-            <View>
-                {this._renderCellView(itemData, rowMap, rowId, cellClickAction, sectionData)}
-            </View>
-        );
+        return (<View>{this._renderCellView(itemData, rowMap, rowId, cellClickAction, sectionData)}</View>);
     }
-
     _renderCellView = (itemData, rowMap, rowId, cellClickAction, sectionData) => {
         return (
-            <View rowMap={rowMap} style={{
-                backgroundColor: DesignRule.bgColor,
-                paddingBottom: px2dp(1),
-                marginTop: itemData.topSpace
-            }}>
-                <TouchableHighlight onPress={() => {
-                    cellClickAction(itemData);
-                }}
-                >
+            <View rowMap={rowMap} style={{ backgroundColor: DesignRule.bgColor, paddingBottom: px2dp(1), marginTop: itemData.topSpace }}>
+                <TouchableHighlight onPress={() => {cellClickAction(itemData);}}>
                     <View style={styles.standaloneRowFront}>
                         <View style={{ flexDirection: 'row', paddingTop: px2dp(20), height: px2dp(145) }}>
                             <View style={{ height: px2dp(75), alignItems: 'center', justifyContent: 'center' }}>
@@ -68,12 +42,15 @@ export default class ShopCartCell extends Component {
                                              this._selectImageClick(sectionData, rowId);
                                          }}/>
                             </View>
-
                             <UIImage source={{ uri: itemData.imgUrl ? itemData.imgUrl : '' }}
                                      style={[styles.validProductImg]}/>
-                            {//是否售完
-                                itemData.productStatus === 1 ? null :
-                                    <UIImage source={statueImage[itemData.productStatus]} style={styles.statusImg}/>
+                            {
+                                itemData.orderOnProduct === 0
+                                    ? <UIImage source={statueImage[4]} style={styles.statusImg}/>
+                                    : (itemData.productStatus === 1
+                                    ? null
+                                    : <UIImage source={statueImage[itemData.productStatus]}
+                                               style={styles.statusImg}/>)
                             }
                         </View>
                         <View style={styles.validContextContainer}>
@@ -196,7 +173,8 @@ export default class ShopCartCell extends Component {
         if ((tempValues[sectionData.sectionIndex].data)[rowId].productStatus === 0 ||
             (tempValues[sectionData.sectionIndex].data)[rowId].productStatus === 2 ||
             (tempValues[sectionData.sectionIndex].data)[rowId].productStatus === 3 ||
-            (tempValues[sectionData.sectionIndex].data)[rowId].sellStock === 0) {
+            (tempValues[sectionData.sectionIndex].data)[rowId].sellStock === 0 ||
+            (tempValues[sectionData.sectionIndex].data)[rowId].orderOnProduct === 0) {
             bridge.$toast('此商品不可结算');
             (tempValues[sectionData.sectionIndex].data)[rowId].isSelected = false;
         } else {
@@ -231,8 +209,6 @@ export default class ShopCartCell extends Component {
         }
         shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
     };
-    /*action*/
-    /*减号操作*/
     _reduceProductNum = (itemData, rowId) => {
         if (itemData.productStatus === 0 || itemData.productStatus === 2) {
             return;
@@ -286,7 +262,7 @@ const styles = StyleSheet.create({
         width: ScreenUtils.width - px2dp(30),
         flexDirection: 'row',
         marginRight: px2dp(16),
-        borderRadius:px2dp(5),
+        borderRadius: px2dp(5)
     },
     itemSelectImg: { marginLeft: px2dp(10) },
     rectangle: {
