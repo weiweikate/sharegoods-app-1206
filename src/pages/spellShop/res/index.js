@@ -8,8 +8,8 @@ import addCapacity from './addCapacity';
 
 const index = {
     jbtk_03: require('./jbtk_03.png'),
-    pindianzhaojiling: require('./pindianzhaojiling.png'),
-    pindianzhaojilingbgd: require('./pindianzhaojilingbgd.png'),
+    pindianzhaojiling: require('./pindianzhaojiling.webp'),
+    pindianzhaojilingbgd: require('./pindianzhaojilingbgd.webp'),
     shopSetting: {
         ...shopSetting
     },
