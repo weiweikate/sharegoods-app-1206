@@ -68,7 +68,6 @@ export default class FinshPayAlertView extends Component {
                                 marginTop: px2dp(300),
                                 width: ScreenUtils.width - px2dp(66),
                                 height: px2dp(50),
-                                // backgroundColor: 'red',
                                 alignItems:'center',
                                 justifyContent:'center'
                             }}>
