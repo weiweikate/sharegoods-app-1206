@@ -32,6 +32,7 @@ const button = {
     expanded_right: require('./expanded_right.png'),
     icon_kefu:require('./kefu_icon_zaixian.png'),
     back_black: require('./back_black.png'),
-    back_white: require('./back_white.png')
+    back_white: require('./back_white.png'),
+    btn_close_white:require('./tongyong_btn_close_grey.png'),
 };
 export default button;

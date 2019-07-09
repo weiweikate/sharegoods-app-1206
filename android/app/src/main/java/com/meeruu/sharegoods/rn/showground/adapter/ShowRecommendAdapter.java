@@ -27,7 +27,6 @@ import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
 import com.meeruu.sharegoods.rn.showground.contacts.CommValue;
 import com.meeruu.sharegoods.rn.showground.utils.NumUtils;
-import com.meeruu.sharegoods.rn.showground.widgets.GridView.ImageInfo;
 import com.meeruu.sharegoods.rn.showground.widgets.GridView.NineGridView;
 import com.meeruu.sharegoods.rn.showground.widgets.GridView.NineGridViewAdapter;
 
@@ -39,23 +38,20 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
     private ProductsAdapter.AddCartListener addCartListener;
     private ProductsAdapter.PressProductListener pressProductListener;
     private String type;
-    private static int maxWidth = ScreenUtils.getScreenWidth() - DensityUtils.dip2px(90);
+    public static int maxWidth = ScreenUtils.getScreenWidth() - DensityUtils.dip2px(90);
     private static int radius_5 = DensityUtils.dip2px(5);
-    private static int imgWidth = ScreenUtils.getScreenWidth() - DensityUtils.dip2px(60);
-    private static int videoWidth = (ScreenUtils.getScreenWidth() - DensityUtils.dip2px(76)) / 3 * 2;
-    public static int userImgW = DensityUtils.dip2px(30f);
+    public static int videoOrImageWH = (ScreenUtils.getScreenWidth() - DensityUtils.dip2px(76)) / 3 * 2;
+    public static int userImgWH = DensityUtils.dip2px(30f);
 
     public ShowRecommendAdapter(NineGridView.clickL clickL, ProductsAdapter.AddCartListener addCartListener, ProductsAdapter.PressProductListener pressProductListener) {
         super(new ArrayList<NewestShowGroundBean.DataBean>());
         NineGridView.setImageLoader(new NineGridView.ImageLoader() {
             @Override
-            public void onDisplayImage(Context context, SimpleDraweeView imageView, ImageInfo imageInfo) {
-                String url = imageInfo.getImageUrl();
+            public void onDisplayImage(Context context, SimpleDraweeView imageView, String url, int width) {
                 String tag = (String) imageView.getTag();
                 if (!TextUtils.equals(tag, url)) {
                     imageView.setTag(url);
-                    ImageLoadUtils.loadRoundNetImage(url, imageView, imageInfo.getImageViewWidth(),
-                            imageInfo.getImageViewHeight(), radius_5);
+                    ImageLoadUtils.loadRoundNetImage(url, imageView, width, width, radius_5);
                 }
             }
         });
@@ -100,7 +96,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
             ImageLoadUtils.loadImageResAsCircle(userIcon.getContext(), R.drawable.bg_app_user, userIcon);
         } else {
             if (!TextUtils.equals(userUrl, userTag)) {
-                ImageLoadUtils.loadCircleNetImage(userUrl, userIcon, userImgW, userImgW);
+                ImageLoadUtils.loadCircleNetImage(userUrl, userIcon, userImgWH, userImgWH);
                 userIcon.setTag(userUrl);
             }
         }
@@ -138,16 +134,15 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         SimpleDraweeView coverView = helper.getView(R.id.iv_cover);
 
         //九宫格数据在网络请求完APP端处理的
-        ImageInfo coverData = item.getVideoCover();
         String coverTag = (String) coverView.getTag();
-        String coverDataStr = JSONObject.toJSONString(coverData);
-        if (!TextUtils.equals(coverTag, coverDataStr)) {
-            coverView.setTag(coverDataStr);
+        if (!TextUtils.equals(coverTag, item.getVideoCover())) {
+            coverView.setTag(item.getVideoCover());
             FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) coverView.getLayoutParams();
-            layoutParams.width = videoWidth;
-            layoutParams.height = videoWidth;
+            layoutParams.width = videoOrImageWH;
+            layoutParams.height = videoOrImageWH;
             coverView.setLayoutParams(layoutParams);
-            ImageLoadUtils.loadRoundNetImage(coverData.getImageUrl(), coverView, videoWidth, videoWidth, radius_5);
+            ImageLoadUtils.loadRoundNetImage(item.getVideoCover(), coverView, videoOrImageWH,
+                    videoOrImageWH, radius_5);
         }
 
         RecyclerView recyclerView = helper.getView(R.id.product_list);
@@ -204,7 +199,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
             ImageLoadUtils.loadImageResAsCircle(userIcon.getContext(), R.drawable.bg_app_user, userIcon);
         } else {
             if (!TextUtils.equals(userUrl, userTag)) {
-                ImageLoadUtils.loadCircleNetImage(userUrl, userIcon, userImgW, userImgW);
+                ImageLoadUtils.loadCircleNetImage(userUrl, userIcon, userImgWH, userImgWH);
                 userIcon.setTag(userUrl);
             }
         }
@@ -231,13 +226,10 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
             String url = item.getResource().get(0).getUrl();
             if (!TextUtils.equals(url, tag)) {
                 simpleDraweeView.setTag(url);
-                int width = imgWidth;
-                int height = width / 29 * 16;
                 LinearLayout.LayoutParams linearParams = (LinearLayout.LayoutParams) simpleDraweeView.getLayoutParams();
-                linearParams.height = height;
-                linearParams.width = width;
+                linearParams.height = videoOrImageWH;
                 simpleDraweeView.setLayoutParams(linearParams);
-                ImageLoadUtils.loadRoundNetImage(url, simpleDraweeView, width, height, radius_5);
+                ImageLoadUtils.loadRoundNetImage(url, simpleDraweeView, videoOrImageWH, maxWidth, radius_5);
                 simpleDraweeView.setVisibility(View.VISIBLE);
             }
         } else {
@@ -257,7 +249,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
             ImageLoadUtils.loadImageResAsCircle(userIcon.getContext(), R.drawable.bg_app_user, userIcon);
         } else {
             if (!TextUtils.equals(userUrl, userTag)) {
-                ImageLoadUtils.loadCircleNetImage(userUrl, userIcon, userImgW, userImgW);
+                ImageLoadUtils.loadCircleNetImage(userUrl, userIcon, userImgWH, userImgWH);
                 userIcon.setTag(userUrl);
             }
         }
@@ -295,7 +287,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         NineGridView nineGridView = helper.getView(R.id.nine_grid);
 
         //九宫格数据在网络请求完APP端处理的
-        List<ImageInfo> imageInfoList = item.getNineImageInfos();
+        List<String> imageInfoList = item.getImgUrls();
 
         if (this.clickL != null) {
             nineGridView.setClick(clickL);

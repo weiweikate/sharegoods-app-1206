@@ -38,7 +38,8 @@ export default class RequestDetailPage extends BasePage {
     constructor(props) {
         super(props);
         const params = this.props.navigation.state.params || {};
-        const { uri, title } = params;
+        let { uri, title } = params;
+        uri = decodeURIComponent(uri);
         this.canGoBack = false;
         let realUri = '';
         let platform = Platform.OS;

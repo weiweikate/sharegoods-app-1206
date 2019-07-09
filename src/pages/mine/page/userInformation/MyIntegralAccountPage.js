@@ -308,7 +308,7 @@ export default class MyIntegralAccountPage extends BasePage {
 
     renderReHeader = () => {
         return (
-            <View style={{flex: 1, backgroundColor: 'white'}}>
+            <View style={{ flex: 1, backgroundColor: 'white', height: 40 }}>
                 <ScrollableTabView
                     onChangeTab={(obj) => {
                         if (obj.i === 1) {
@@ -357,7 +357,7 @@ export default class MyIntegralAccountPage extends BasePage {
     };
     //**********************************BusinessPart******************************************
     componentDidMount() {
-        this.onLoad();
+        this.onRefresh();
     }
 
     getDataFromNetwork = () => {

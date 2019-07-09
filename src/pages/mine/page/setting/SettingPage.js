@@ -4,7 +4,7 @@ import {
     View,
     Image,
     NativeModules,
-    TouchableOpacity, Alert, Switch, Platform,
+    TouchableOpacity, Alert, Platform,
     Linking,
     DeviceEventEmitter
 } from 'react-native';
@@ -35,7 +35,8 @@ import store from '@mr/rn-store';
 import { observer } from 'mobx-react';
 import { forceToHome } from '../../../../navigation/RouterMap';
 import RouterMap from '../../../../navigation/RouterMap';
-
+import Switch from '../../components/SwitchComponent'
+import JPushDeleteUtil from '../../../../utils/JPushDeleteUtil';
 /**
  * @author luoyongming
  * @date on 2018/9/13
@@ -110,10 +111,9 @@ class SettingPage extends BasePage {
                             <TouchableOpacity style={styles.viewStyle}>
                                 <UIText value={'消息推送'} style={styles.blackText}/>
                                 <Switch value={this.state.value}
-                                        onTintColor={'#00D914'}
-                                        thumbTintColor={Platform.OS === 'android' ? 'white' : ''}
-                                        tintColor={DesignRule.textColor_hint}
-                                        onValueChange={(value) => {
+                                        backgroundActive={'#00D914'}
+                                        backgroundInactive={DesignRule.textColor_hint}
+                                        onSyncPress={(value) => {
                                             this.setState({
                                                 value: value
                                             });
@@ -250,6 +250,7 @@ class SettingPage extends BasePage {
                         // 退出七鱼
                         QYChatTool.qiYULogout();
                         this.$loadingDismiss();
+                        JPushDeleteUtil.deleteAllAlias();
                         WhiteModel.clearStatus();
                         // 神策退出登录
                         logout();

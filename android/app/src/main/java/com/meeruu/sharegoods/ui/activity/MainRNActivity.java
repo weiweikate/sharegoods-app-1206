@@ -20,8 +20,6 @@ import android.text.TextUtils;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
-import com.facebook.react.ReactNativeHost;
-import com.facebook.react.ReactRootView;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.meeruu.commonlib.base.BaseApplication;
@@ -33,20 +31,18 @@ import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.commonlib.utils.Utils;
 import com.meeruu.sharegoods.R;
+import com.meeruu.sharegoods.event.HideSplashEvent;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
 import com.meeruu.sharegoods.event.VersionUpdateEvent;
 import com.meeruu.sharegoods.rn.preload.PreLoadReactDelegate;
 import com.meeruu.sharegoods.service.VersionUpdateService;
 import com.meeruu.sharegoods.utils.LoadingDialog;
 import com.meeruu.statusbar.ImmersionBar;
-import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 import com.umeng.socialize.UMShareAPI;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import javax.annotation.Nullable;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -69,6 +65,7 @@ public class MainRNActivity extends ReactActivity {
     private WeakHandler myHandler;
     private String lastVersion;
     private ReactApplicationContext mContext;
+    private boolean needLoading = true;
 
     /**
      * Returns the name of the main component registered from JavaScript.
@@ -100,31 +97,13 @@ public class MainRNActivity extends ReactActivity {
 
     @Override
     protected ReactActivityDelegate createReactActivityDelegate() {
-        return new MyReactDelegate(this, getMainComponentName());
-    }
-
-    //自定义MyReactDelegate
-    static class MyReactDelegate extends PreLoadReactDelegate {
-
-        public MyReactDelegate(ReactActivity activity, @Nullable String mainComponentName) {
-            super(activity, mainComponentName);
-        }
-
-        @Override
-        protected ReactNativeHost getReactNativeHost() {
-            return super.getReactNativeHost();
-        }
-
-        @Override
-        protected ReactRootView createRootView() {
-            return new RNGestureHandlerEnabledRootView(getPlainActivity());
-        }
+        return new PreLoadReactDelegate(this, getMainComponentName());
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initHandler();
+        initEvent();
         initStatus();
         initServiceConn();
     }
@@ -134,6 +113,9 @@ public class MainRNActivity extends ReactActivity {
         super.onStart();
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
+        }
+        if (!isShowLoadingDialog && needLoading && getIntent().getBooleanExtra("showLoading", true)) {
+            onLoadingEvent(new LoadingDialogEvent(true, "加载中"));
         }
     }
 
@@ -197,7 +179,8 @@ public class MainRNActivity extends ReactActivity {
                 .init();
     }
 
-    private void initHandler() {
+    private void initEvent() {
+        // 初始化handler
         myHandler = new WeakHandler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
@@ -327,6 +310,14 @@ public class MainRNActivity extends ReactActivity {
         } else {
             isShowLoadingDialog = false;
             mLoadingDialog.dismiss();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void hideSplash(HideSplashEvent event) {
+        needLoading = false;
+        if (isShowLoadingDialog) {
+            onLoadingEvent(new LoadingDialogEvent(false, "加载中"));
         }
     }
 

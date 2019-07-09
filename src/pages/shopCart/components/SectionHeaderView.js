@@ -13,17 +13,8 @@
 'use strict';
 import { observer } from 'mobx-react';
 import React, { Component } from 'react';
-
-
-import {
-    View,
-    StyleSheet,
-    Alert
-} from 'react-native';
-import {
-    MRText,
-    UIText
-} from '../../../components/ui';
+import { View, StyleSheet, Alert, Text } from 'react-native';
+import { MRText, UIText } from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import PropTypes from 'prop-types';
@@ -31,24 +22,32 @@ import shopCartCacheTool from '../model/ShopCartCacheTool';
 import RouterMap, { routePush } from '../../../navigation/RouterMap';
 import StringUtils from '../../../utils/StringUtils';
 import bridge from '../../../utils/bridge';
-// import ShopCartEmptyView from './ShopCartEmptyView';
 import { shopCartEmptyModel } from '../model/ShopCartEmptyModel';
 import ShopCartEmptyCell from './ShopCartEmptyCell';
 import { TrackApi } from '../../../utils/SensorsTrack';
 
 const { px2dp } = ScreenUtils;
-const section_width = ScreenUtils.width - px2dp(30) + px2dp(7)
+const section_width = ScreenUtils.width - px2dp(30);
 
 
+const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={{
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 50,
+    width: section_width
+}}>
+    <Text style={{
+        color: DesignRule.textColor_instruction,
+        fontSize: DesignRule.fontSize_24
+    }}
+          allowFontScaling={false}>{errorMsg ? errorMsg : (isEnd ? '我也是有底线的' : (isFetching ? '加载中...' : '加载更多'))}</Text>
+</View>;
 @observer
 export default class SectionHeaderView extends Component {
 
     constructor(props) {
         super(props);
         this.state = {};
-    }
-
-    componentDidMount() {
     }
 
     render() {
@@ -68,125 +67,90 @@ export default class SectionHeaderView extends Component {
         );
     };
     _renderRecommdView = (sectionData) => {
-        if (sectionData.type !== -2){
+        if (sectionData.type !== -2) {
             return null;
         }
         let viewItemList = [];
         const recommdListData = shopCartEmptyModel.emptyViewList;
-        viewItemList = recommdListData.map((itemData ,index)=> {
-            return (<ShopCartEmptyCell  haveShopCartGoods={true} itemData={itemData} onClick={()=>{
-                routePush(RouterMap.ProductDetailPage,{ productCode:itemData.prodCode});
+        viewItemList = recommdListData.map((itemData, index) => {
+            return (<ShopCartEmptyCell haveShopCartGoods={true} itemData={itemData} onClick={() => {
+                routePush(RouterMap.ProductDetailPage, { productCode: itemData.prodCode });
                 TrackApi.RecommendSpuClick({
-                    strategyId:itemData.strategyId,
-                    spuRelationValue:itemData.spuRelationValue,
-                    spuRelationIndex:index,
-                    spuCode:itemData.prodCode,
-                    spuName:itemData.name,
-                })
-            }} />);
+                    strategyId: itemData.strategyId,
+                    spuRelationValue: itemData.spuRelationValue,
+                    spuRelationIndex: index,
+                    spuCode: itemData.prodCode,
+                    spuName: itemData.name
+                });
+            }}/>);
         });
-        //删掉他娘头部空视图 ok？
+        //删除头部视图
         viewItemList.shift();
         return (
-            <View style={{width:section_width,flexDirection:'row',alignItems:'flex-start', flexWrap: 'wrap',marginLeft:px2dp(-8)}}>
-                <View style={{width:section_width,height:px2dp(15)}}/>
-                <View style={{ marginLeft:px2dp(9),width: ScreenUtils.width, height: px2dp(35), flexDirection: 'row', alignItems: 'center' }}>
-                    <View style={{ width: px2dp(2), height: px2dp(8),borderRadius:px2dp(1), backgroundColor: '#FF0050'}}/>
+            <View style={{
+                width: section_width,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                flexWrap: 'wrap'
+            }}>
+                <View style={{ width: section_width, height: px2dp(15) }}/>
+                <View
+                    style={{ width: ScreenUtils.width, height: px2dp(35), flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={{
+                        width: px2dp(2),
+                        height: px2dp(8),
+                        borderRadius: px2dp(1),
+                        backgroundColor: '#FF0050'
+                    }}/>
                     <MRText style={{ marginLeft: px2dp(5), fontSize: px2dp(16) }}>为你推荐</MRText>
                 </View>
                 {viewItemList}
+                <Footer isEnd={true}/>
             </View>
-        )
+        );
     };
     _renderInvaildView = (sectionData) => {
         return (
-            <View
-                style={styles.bgViewStyle}
-            >
-                <View
-                    style={styles.invaildTopContentBgStyle}
-                >
+            <View style={styles.bgViewStyle}>
+                <View style={styles.invaildTopContentBgStyle}>
                     {/*中部文字*/}
-                    <View
-                        style={styles.middleTextBgStyle}
-                    >
-                        <UIText
-                            style={styles.middleTextStyle}
-                            numberOfLines={2}
-                            value={'失效宝贝' + sectionData.data.length + '件'}
-                        />
+                    <View style={styles.middleTextBgStyle}>
+                        <UIText style={styles.middleTextStyle} numberOfLines={2}
+                                value={'失效宝贝' + sectionData.data.length + '件'}/>
                     </View>
-                    <View
-                        style={
-                            styles.rightTextBgView
-                        }
-                    >
-                        <UIText
-                            value={'清空失效宝贝'}
-                            style={
-                                styles.rightTextStyle
-                            }
-                            onPress={() => {
-                                this.clearAllInvaildGood();
-                            }}
-                        />
+                    <View style={styles.rightTextBgView}>
+                        <UIText value={'清空失效宝贝'} style={styles.rightTextStyle}
+                                onPress={() => {
+                                    this.clearAllInvaildGood();
+                                }}/>
                     </View>
                 </View>
                 {/*底部分割线*/}
-                <View
-                    style={styles.bottomLineStyle}
-                />
+                <View style={styles.bottomLineStyle}/>
             </View>
         );
 
     };
     _renderNormalHeaderView = (sectionData) => {
         return (
-            <View
-                style={styles.bgViewStyle}
-            >
-                <View
-                    style={styles.topContentBgStyle}
-                >
-                    <View
-                        style={styles.leftTipBgStyle}
-                    >
-                        <UIText
-                            value={'经验翻倍'}
-                            style={styles.leftTextStyle}
-                        />
+            <View style={styles.bgViewStyle}>
+                <View style={styles.topContentBgStyle}>
+                    <View style={styles.leftTipBgStyle}>
+                        <UIText value={'经验翻倍'} style={styles.leftTextStyle}/>
                     </View>
                     {/*中部文字*/}
-                    <View
-                        style={styles.middleTextBgStyle}
-                    >
-                        <UIText
-                            style={styles.middleTextStyle}
-                            numberOfLines={2}
-                            value={sectionData.middleTitle}
-                        />
+                    <View style={styles.middleTextBgStyle}>
+                        <UIText style={styles.middleTextStyle} numberOfLines={2} value={sectionData.middleTitle}/>
                     </View>
-                    <View
-                        style={
-                            styles.rightTextBgView
-                        }
-                    >
-                        <UIText
-                            value={'去凑单 >'}
-
-                            style={
-                                styles.rightTextStyle
-                            }
-                            onPress={() => {
-                                this.collectBills();
-                            }}
-                        />
+                    <View style={styles.rightTextBgView}>
+                        <UIText value={'去凑单 >'} style={styles.rightTextStyle}
+                                onPress={() => {
+                                    this.collectBills();
+                                }}/>
                     </View>
                 </View>
                 {/*底部分割线*/}
-                <View
-                    style={styles.bottomLineStyle}
-                />
+                <View style={styles.bottomLineStyle}/>
             </View>
         );
     };

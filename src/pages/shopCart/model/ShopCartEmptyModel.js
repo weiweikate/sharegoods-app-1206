@@ -1,4 +1,4 @@
-import { observable, action ,autorun} from 'mobx';
+import { observable, action, autorun } from 'mobx';
 import ShopCartAPI from '../api/ShopCartApi';
 import user from '../../../model/user';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -8,11 +8,10 @@ const EmptyViewTypes = {
     recommendListItem: 'recommendListItem'
 };
 
-const {px2dp} = ScreenUtils
+const { px2dp } = ScreenUtils;
 const Cell_Height = px2dp(248);
 
 class ShopCartEmptyModel {
-
     @observable
     emptyViewList = [];
     @observable
@@ -25,7 +24,6 @@ class ShopCartEmptyModel {
     page = 1;
     constructor(props) {
         this.createData();
-        this.getRecommendProducts(true);
     }
     createData = () => {
         this.emptyViewList.push(
@@ -36,8 +34,6 @@ class ShopCartEmptyModel {
                 imageHeight: px2dp(168)
             }
         );
-
-
     };
     @observable
     isRefreshing = false;
@@ -117,7 +113,7 @@ class ShopCartEmptyModel {
 
 const shopCartEmptyModel = new ShopCartEmptyModel();
 
-autorun(()=>{
-    user.isLogin?shopCartEmptyModel.getRecommendProducts(true):null;
-})
+autorun(() => {
+    user.isLogin ? shopCartEmptyModel.getRecommendProducts(true) : null;
+});
 export { shopCartEmptyModel, EmptyViewTypes };

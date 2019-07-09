@@ -1,16 +1,17 @@
 import React from 'react';
 import {
     StyleSheet,
-    View,
+    View
 } from 'react-native';
 
-import FlyImageViewer from '../../comm/components/FlyImageViewer'
+import FlyImageViewer from '../../comm/components/FlyImageViewer';
 import BasePage from '../../BasePage';
 
 export default class ShowDetailImagePage extends BasePage {
     $navigationBarOptions = {
         show: false
     };
+
     // 禁用某个页面的手势
     static navigationOptions = {
         gesturesEnabled: false
@@ -21,12 +22,16 @@ export default class ShowDetailImagePage extends BasePage {
             <View style={styles.container}>
                 <FlyImageViewer imageUrls={this.params.imageUrls}
                                 index={this.params.index}
-                                onCancel={() => {this.props.navigation.goBack();}}
+                                onCancel={() => {
+                                    this.props.navigation.goBack();
+                                }}
                                 loadingRender={() => {
-                    return null;
-                }}
-                                saveToLocalByLongPress = {true}
-                                onSaveToCamera={()=> {this.$toastShow('保存成功')}}
+                                    return null;
+                                }}
+                                saveToLocalByLongPress={true}
+                                onSaveToCamera={() => {
+                                    this.$toastShow('保存成功');
+                                }}
 
                 />
 

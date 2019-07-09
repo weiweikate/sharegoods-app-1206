@@ -32,7 +32,7 @@ export default class DetailBottomView extends Component {
     render() {
         let { pData } = this.props;
         //productStatus  1正常  2下架  3当前时间不能买
-        let { productStatus, skuList, showSellOut, productIsPromotionPrice, selfReturning } = pData || {};
+        let { productStatus, skuList, showSellOut, productIsPromotionPrice, selfReturning, isGroupIn, groupSubProductCanSell } = pData || {};
         //总库存
         let stock = 0;
         (skuList || []).forEach((item) => {
@@ -45,8 +45,8 @@ export default class DetailBottomView extends Component {
         //不能加入购物车
         let cantJoin = productStatus === product_status.down;
 
-        //不能立即购买  不正常||库存0
-        let cantBuy = productStatus !== product_status.on || stock === 0;
+        //不能立即购买  不正常||库存0 || (isGroupIn&&不能买)
+        let cantBuy = productStatus !== product_status.on || stock === 0 || (isGroupIn && !groupSubProductCanSell);
         //立即购买文案
         let buyText = productStatus === product_status.future ? '暂不可购买' : '立即购买';
 
@@ -70,15 +70,20 @@ export default class DetailBottomView extends Component {
                                 <Text style={styles.outText}>{showSellOut ? '已抢光' : '已售罄'}</Text>
                             </View>
                             :
-                            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-                                <TouchableOpacity style={styles.leftBtn}
-                                                  onPress={() => this.props.bottomViewAction('gwc')}
-                                                  disabled={cantJoin}>
+                            <View style={{
+                                flex: 1,
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}>
+                                {!isGroupIn && <TouchableOpacity style={styles.leftBtn}
+                                                                 onPress={() => this.props.bottomViewAction('gwc')}
+                                                                 disabled={cantJoin}>
                                     <Image style={styles.leftImage}
                                            source={cantJoin ? jiarugouwuche_no : xiangqing_btn_gouwuche_nor}/>
                                     <Text style={styles.leftText}>加购</Text>
-                                </TouchableOpacity>
-                                <View style={styles.btnView}>
+                                </TouchableOpacity>}
+                                <View style={[styles.btnView, { width: !isGroupIn ? px2dp(260) : px2dp(292) }]}>
                                     <TouchableOpacity
                                         style={[styles.btn, { backgroundColor: cantBuy ? DesignRule.textColor_placeholder : DesignRule.mainColor }]}
                                         onPress={() => this.props.bottomViewAction('buy')} disabled={cantBuy}>
@@ -146,7 +151,7 @@ const styles = StyleSheet.create({
 
     btnView: {
         flexDirection: 'row', overflow: 'hidden',
-        marginRight: 15, height: 40, width: px2dp(260), borderRadius: 20
+        marginRight: 15, height: 40, borderRadius: 20
     },
     btn: {
         flex: 1

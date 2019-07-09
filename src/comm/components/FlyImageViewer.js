@@ -7,18 +7,18 @@
 import React, { Component } from 'react';
 import { ImageCacheManager } from 'react-native-cached-image';
 import {
-    TouchableOpacity,
-    View,
-    Image,
+    ActionSheetIOS,
+    ActivityIndicator,
+    Alert,
     Animated,
-    TouchableHighlight,
-    TouchableWithoutFeedback,
     CameraRoll,
+    Image,
     Platform,
     StyleSheet,
-    ActionSheetIOS,
-    Alert,
-    ActivityIndicator
+    TouchableHighlight,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    View
 } from 'react-native';
 import ImageZoom from './FlyImageZoom';
 import ScreenUtils from '../../utils/ScreenUtils';
@@ -27,7 +27,7 @@ import ImageLoad from '@mr/image-placeholder';
 import { MRText as Text } from '../../components/ui';
 import res from '../res';
 import bridge from '../../utils/bridge';
-import {getSize} from '../../utils/OssHelper';
+import { getSize } from '../../utils/OssHelper';
 
 const { down_icon, close_icon } = res.button;
 
@@ -574,9 +574,9 @@ export default class FlyImageViewer extends Component {
     }
 
     /**
-     * 完成布局
+     * 完成布局: React.LayoutChangeEvent
      */
-    handleLayout(event: React.LayoutChangeEvent) {
+    handleLayout(event) {
         if (this.hasLayout) {
             return;
         }
@@ -710,7 +710,7 @@ export default class FlyImageViewer extends Component {
                 this.props.renderIndicator(this.state.currentShowIndex + 1, this.props.imageUrls.length)
                 }
 
-                {this.props.imageUrls[this.state.currentShowIndex].originSizeKb && this.props.imageUrls[this.state.currentShowIndex].originUrl &&
+                {this.props.imageUrls[this.state.currentShowIndex] && this.props.imageUrls[this.state.currentShowIndex].originSizeKb && this.props.imageUrls[this.state.currentShowIndex].originUrl &&
                 <View style={this.styles.watchOrigin}>
                     <TouchableOpacity style={this.styles.watchOriginTouchable}>
                         <Text style={this.styles.watchOriginText} allowFontScaling={false}>查看原图(2M)</Text>
@@ -728,7 +728,7 @@ export default class FlyImageViewer extends Component {
      */
     saveToLocal() {
         if (!this.props.onSave) {
-            bridge.$toast('图片保存中...')
+            bridge.$toast('图片保存中...');
             let that = this;
             if (Platform.OS === 'ios') {
                 CameraRoll.saveToCameraRoll(that.props.imageUrls[that.state.currentShowIndex])

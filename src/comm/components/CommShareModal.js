@@ -52,41 +52,35 @@
 import React from 'react';
 
 import {
-    StyleSheet,
-    View,
-    TouchableWithoutFeedback,
-    Animated,
-    Image,
-    Platform,
-    TouchableOpacity,
-    Clipboard,
-    NativeModules,
-    Linking,
     ActivityIndicator,
     Alert,
+    Animated,
+    Clipboard,
+    Image,
+    Linking,
+    Platform,
+    StyleSheet,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    View
 } from 'react-native';
 import ShowShareImage from './ShowShareImage';
 
-import {
-    UIText,
-    UIImage,
-    MRText
-} from '../../components/ui';
+import { MRText, UIImage, UIText } from '../../components/ui';
 
 import ScreenUtils from '../../utils/ScreenUtils';
-//const saveMarginBottom = ScreenUtils.saveMarginBottom;
-const autoSizeWidth = ScreenUtils.autoSizeWidth;
 import CommModal from './CommModal';
 import res from '../res';
-import resHome from '../../pages/mine/res'
+import resHome from '../../pages/mine/res';
 import bridge from '../../utils/bridge';
 import DesignRule from '../../constants/DesignRule';
 import { track } from '../../utils/SensorsTrack';
 import user from '../../model/user';
 import { getSource } from '@mr/image-placeholder/oos';
 import ShareUtil from '../../utils/ShareUtil';
-import { routeNavigate } from '../../navigation/RouterMap';
-import RouterMap from '../../navigation/RouterMap';
+import RouterMap, { routeNavigate } from '../../navigation/RouterMap';
+//const saveMarginBottom = ScreenUtils.saveMarginBottom;
+const autoSizeWidth = ScreenUtils.autoSizeWidth;
 
 // 0：未知
 // 1：微信好友2：微信朋友圈3：qq好友4：qq空间5：微博6：复制链接7：分享图片
@@ -104,6 +98,7 @@ const TrackShareType = {
     other: 100//其他
 };
 
+
 export default class CommShareModal extends React.Component {
 
     constructor(props) {
@@ -111,6 +106,7 @@ export default class CommShareModal extends React.Component {
         this._bind();
         this.defaultShareType = 1;
         this.state = {
+            shortUrl: '',
             modalVisible: props.defaultModalVisible || false,
             shareType: this.defaultShareType, //如果是type小程序分享，默认分享方式是小程序分享。其余的type，默认分享类型是web图文
             path: '',
@@ -122,6 +118,7 @@ export default class CommShareModal extends React.Component {
 
     /** public*/
     open() {
+
         if (user.isLogin) {
             user.userShare();
         } else {
@@ -160,9 +157,10 @@ export default class CommShareModal extends React.Component {
     showImage() {
         const { type, imageJson } = this.props;
         let params = { ...(imageJson || {}) };
+        let name = user.nickname && user.nickname.length > 8 ? user.nickname.replace(/^(\d{3})\d*(\d{4})$/, '$1****$2') : user.nickname;
         params.shareMoney && (params.shareMoney = this.getMoneyText(params.shareMoney));
-        params = { headerImage: user.headImg || '', userName: user.nickname || '', ...params };
-        if (type === 'promotionShare' || type === 'Image' || type === 'Show') {
+        params = { headerImage: user.headImg || '', userName: name || '', ...params };
+        if (type === 'promotionShare' || type === 'Image' || type === 'Show' || type === 'Invite') {
             if (this.state.path.length === 0) {
                 if (type === 'promotionShare') {
                     bridge.createPromotionShareImage(params.webJson.linkUrl, (path) => {
@@ -172,10 +170,10 @@ export default class CommShareModal extends React.Component {
                             }, 350);
                         });
                     });
-                } else if (type === 'Image' || type === 'Show') {
+                } else if (type === 'Image' || type === 'Show' || type === 'Invite') {
                     let url = params && params.imageUrlStr;
                     this.props.imageJson && (params.imageUrlStr = getSource({ uri: url }, this.imageWidth, this.imageHeight, 'lfit').uri);
-                    delete params['shareMoney'];
+                    delete params.shareMoney;
                     bridge.creatShareImage(params, (path) => {
                         this.setState({ path: Platform.OS === 'android' ? 'file://' + path : '' + path }, () => {
                             this.changeShareType(0);
@@ -253,8 +251,12 @@ export default class CommShareModal extends React.Component {
         if (this.props.trackEvent) {
             track(this.props.trackEvent, { shareType: TrackShareType.copyLink, ...this.props.trackParmas });
         }
-        Clipboard.setString(ShareUtil.queryString(this.props.webJson.linkUrl, { pageSource: 6 }));
-        NativeModules.commModule.toast('复制链接成功');
+        if (this.props.webJson.linkUrl) {
+            Clipboard.setString(ShareUtil.queryString(this.props.webJson.linkUrl, { pageSource: 6 }));
+            bridge.$toast('复制链接成功');
+        } else {
+            bridge.$toast('链接不存在');
+        }
     }
 
     changeShareType(shareType) {//切换是分享图片还是分享网页
@@ -305,7 +307,7 @@ export default class CommShareModal extends React.Component {
 
         let arrayImage = [];
         let arrayWeb = [];
-        let currentType = type === 'Image' || type === 'promotionShare' || type === 'Show';
+        let currentType = type === 'Image' || type === 'promotionShare' || type === 'Show' || type === 'Invite';
         if (currentType) {
             //             this.saveImage(this.state.path); //下载图片
             // this.setState({ showToastImage: true},
@@ -314,7 +316,7 @@ export default class CommShareModal extends React.Component {
 
             arrayImage.push({
                 image: res.share.wechat, title: '微信好友', onPress: () => {
-                    this.setState({ shareType: 0 },()=>{
+                    this.setState({ shareType: 0 }, () => {
                         this.share(0);
                     });
 
@@ -323,7 +325,7 @@ export default class CommShareModal extends React.Component {
 
             arrayImage.push({
                 image: res.share.QQ, title: 'QQ好友', onPress: () => {
-                    this.setState({ shareType: 0 },()=>{
+                    this.setState({ shareType: 0 }, () => {
                         this.share(2);
                     });
                 }
@@ -331,7 +333,7 @@ export default class CommShareModal extends React.Component {
 
             arrayImage.push({
                 image: res.share.weibo, title: '微博', onPress: () => {
-                    this.setState({ shareType: 0 },()=>{
+                    this.setState({ shareType: 0 }, () => {
                         this.share(4);
                     });
                 }
@@ -339,7 +341,7 @@ export default class CommShareModal extends React.Component {
 
             arrayImage.push({
                 image: res.share.download, title: '下载图片发圈', onPress: () => {
-                    this.setState({ shareType: 0 },()=>{
+                    this.setState({ shareType: 0 }, () => {
                         this.saveImage(this.state.path);
                     });
 
@@ -349,7 +351,7 @@ export default class CommShareModal extends React.Component {
 
         arrayWeb.push({
             image: res.share.wechat, title: '微信好友', onPress: () => {
-                this.setState({ shareType: 1 },()=>{
+                this.setState({ shareType: 1 }, () => {
                     this.share(0);
                 });
             }
@@ -357,7 +359,7 @@ export default class CommShareModal extends React.Component {
 
         arrayWeb.push({
             image: res.share.QQ, title: 'QQ好友', onPress: () => {
-                this.setState({ shareType: 1 },()=>{
+                this.setState({ shareType: 1 }, () => {
                     this.share(2);
                 });
                 this.share(2);
@@ -366,7 +368,7 @@ export default class CommShareModal extends React.Component {
 
         arrayWeb.push({
             image: res.share.weibo, title: '微博', onPress: () => {
-                this.setState({ shareType: 1 },()=>{
+                this.setState({ shareType: 1 }, () => {
                     this.share(4);
                 });
             }
@@ -374,7 +376,7 @@ export default class CommShareModal extends React.Component {
 
         arrayWeb.push({
             image: res.share.copyURL, title: '复制链接发圈', onPress: () => {
-                this.setState({ shareType: 1 },()=>{
+                this.setState({ shareType: 1 }, () => {
                     this.copyUrl();
                 });
             }
@@ -385,8 +387,8 @@ export default class CommShareModal extends React.Component {
         const shareMoneyText = this.getMoneyText(shareMoney);
         let icon = (user.headImg && user.headImg.length > 0) ?
             <Image source={{ uri: user.headImg }} style={styles.userIcon}
-                         borderRadius={13}/> : <Image source={resHome.homeBaseImg.mine_user_icon} style={styles.userIcon}
-                                                             borderRadius={13}/>;
+                   borderRadius={13}/> : <Image source={resHome.homeBaseImg.mine_user_icon} style={styles.userIcon}
+                                                borderRadius={13}/>;
 
         return (
             <CommModal onRequestClose={this.close}
@@ -412,10 +414,11 @@ export default class CommShareModal extends React.Component {
                         paddingBottom: ScreenUtils.safeBottom,
                         backgroundColor: 'white',
                         borderRadius: 10,
-                        margin: 15,
+                        margin: 15
 
                     }}>
-                        <View style={[styles.contentContainer, {height:currentType?autoSizeWidth(250):autoSizeWidth(180),}]}>
+                        <View
+                            style={[styles.contentContainer, { height: currentType ? autoSizeWidth(250) : autoSizeWidth(180) }]}>
                             <View style={styles.header}>
                                 <View style={{
                                     flex: 1,
@@ -451,8 +454,8 @@ export default class CommShareModal extends React.Component {
                                 }}/>
                             </View>
 
-                            {currentType ? <View style={{height: 20,alignItems:'center',flexDirection:'row'}}>
-                                <View style={{width:2,height:10, backgroundColor:'#FF0050', marginLeft:15}}/>
+                            {currentType ? <View style={{ height: 20, alignItems: 'center', flexDirection: 'row' }}>
+                                <View style={{ width: 2, height: 10, backgroundColor: '#FF0050', marginLeft: 15 }}/>
                                 <MRText style={{
                                     color: DesignRule.textColor_mainTitle,
                                     fontSize: autoSizeWidth(12),
@@ -460,7 +463,7 @@ export default class CommShareModal extends React.Component {
                                     fontWeight: '600'
                                 }}>分享图片至</MRText>
                             </View> : null}
-                            {currentType ? <View style={{flex:1,flexDirection:'row'}}>
+                            {currentType ? <View style={{ flex: 1, flexDirection: 'row' }}>
                                 {
                                     arrayImage.map((item, index) => {
                                         return (
@@ -482,8 +485,8 @@ export default class CommShareModal extends React.Component {
                                 }
                             </View> : null}
 
-                            <View style={{height: 20,alignItems:'center',flexDirection:'row'}}>
-                                <View style={{width:2,height:10, backgroundColor:'#FF0050', marginLeft:15}}/>
+                            <View style={{ height: 20, alignItems: 'center', flexDirection: 'row' }}>
+                                <View style={{ width: 2, height: 10, backgroundColor: '#FF0050', marginLeft: 15 }}/>
                                 <MRText style={{
                                     color: DesignRule.textColor_mainTitle,
                                     fontSize: autoSizeWidth(12),
@@ -491,7 +494,7 @@ export default class CommShareModal extends React.Component {
                                     fontWeight: '600'
                                 }}>分享链接至</MRText>
                             </View>
-                            <View style={{flex:1,flexDirection:'row',borderRadius: 10, alignItems:'center',}}>
+                            <View style={{ flex: 1, flexDirection: 'row', borderRadius: 10, alignItems: 'center' }}>
                                 {
                                     arrayWeb.map((item, index) => {
                                         return (
@@ -522,7 +525,7 @@ export default class CommShareModal extends React.Component {
                                 height: this.imageHeight,
                                 width: this.imageWidth,
                                 position: 'absolute',
-                                bottom: 275 + ScreenUtils.safeBottom,
+                                bottom: 275 + ScreenUtils.safeBottom * 3 / 2,
                                 left: (ScreenUtils.width - this.imageWidth) / 2,
                                 borderRadius: 10,
                                 borderColor: DesignRule.textColor_placeholder,
@@ -533,7 +536,7 @@ export default class CommShareModal extends React.Component {
                                 transform: [{ scale: this.state.scale }]
 
                             }}>
-                                {this.props.type === 'Image' ?
+                                {this.props.type === 'Image' || this.props.type === 'Invite' ?
                                     <TouchableWithoutFeedback onLongPress={() => {
                                         if (this.props.type === 'promotionShare') {
                                             Linking.openURL(this.props.webJson.linkUrl);
@@ -588,7 +591,7 @@ const styles = StyleSheet.create({
     },
     header: {
         flexDirection: 'row',
-        height: autoSizeWidth(45),
+        height: 45,
         alignItems: 'center'
     },
     bottomBtn: {
@@ -599,7 +602,7 @@ const styles = StyleSheet.create({
     },
     item: {
         width: (ScreenUtils.width - 30) / 4 - 0.1,
-        height: autoSizeWidth(80),
+        height: 80,
         marginTop: autoSizeWidth(0),
         alignItems: 'center',
         justifyContent: 'center'
@@ -615,6 +618,6 @@ const styles = StyleSheet.create({
     userIcon: {
         width: 26,
         height: 26,
-        borderRadius: 13,
-    },
+        borderRadius: 13
+    }
 });
