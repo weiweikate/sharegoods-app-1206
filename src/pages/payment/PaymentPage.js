@@ -66,8 +66,6 @@ export default class PaymentPage extends BasePage {
                 //是否选择余额
                 const { selectedBalace } = payment;
                 if (!selectedBalace && oneCoupon <= 0) {
-                    // this.$navigate(RouterMap.PaymentFinshPage,{payResult: PaymentResult.success})
-                    // return;
                     this.$navigate(RouterMap.ChannelPage, {
                         bizType: bizType,
                         modeType: modeType
@@ -82,7 +80,6 @@ export default class PaymentPage extends BasePage {
                 }
             } else if (result.code === payStatus.payNeedThrid) {
                 this.$navigate(RouterMap.ChannelPage, {
-                    // remainMoney: Math.floor(StringUtils.mul(result.unpaidAmount,100)) / 100 ,
                     bizType: bizType,
                     modeType: modeType
                 });
@@ -104,14 +101,12 @@ export default class PaymentPage extends BasePage {
     _selectedBalance() {
         payment.selectBalancePayment();
     }
-
     _platformPay(password) {
         let selectBance = payment.selectedBalace;
         let { availableBalance } = user;//去除用余额
         let channelAmount = parseFloat(payment.amounts); //需要支付的金额
         let { fundsTradingNo, oneCoupon, bizType, modeType } = payment;
         let detailList = [];
-
         if (channelAmount == 0.00) {
             detailList.push({
                 payType: paymentType.zeroPay,
