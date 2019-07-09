@@ -70,7 +70,8 @@ RootStack.router.getStateForAction = (action, state) => {
         }
     }
 
-    if (state && (action.type === NavigationActions.NAVIGATE)) {
+    if (state && (action.type === NavigationActions.NAVIGATE) ||
+        state && (action.type === 'Navigation/PUSH')) {
         let length = state.routes.length;
         let currentRoute = state.routes[length - 1];
         let nextRoute = action.routeName;
@@ -81,6 +82,7 @@ RootStack.router.getStateForAction = (action, state) => {
         } else {
             showPinFlagModel.saveShowFlag(false);
         }
+        
         if (currentRoute
             && nextRoute === RouterMap.LoginPage
             && currentRoute.routeName === RouterMap.LoginPage) {
