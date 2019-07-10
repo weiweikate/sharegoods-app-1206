@@ -6,7 +6,7 @@ import bridge from '../../../utils/bridge';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { Alert } from 'react-native';
 import shopCartCacheTool from "../../shopCart/model/ShopCartCacheTool";
-import { navigateBack, replaceRoute } from '../../../navigation/RouterMap';
+import { navigateBack } from '../../../navigation/RouterMap';
 import { payment } from '../../payment/Payment';
 
 class ConfirmOrderModel {
