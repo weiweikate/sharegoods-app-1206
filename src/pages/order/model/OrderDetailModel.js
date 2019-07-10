@@ -19,6 +19,7 @@ class OrderDetailModel {
     @observable receiveInfo = {};
     @observable merchantOrderNo = ''
     @observable platformOrderNo = ''
+    @observable isAllVirtual = true;
 
     productsList() {
         return this.merchantOrder.productOrderList || []
@@ -61,7 +62,16 @@ class OrderDetailModel {
         orderDetailModel.loadingState=PageLoadingState.success
         this.platformOrderNo = this.merchantOrder.platformOrderNo || '';
         let menu =  [...GetViewOrderStatus(this.merchantOrder.status).menu_orderDetail];
-        let hasAfterSaleService = checkOrderAfterSaleService(this.merchantOrder.productOrderList, this.merchantOrder.orderStatus, this.baseInfo.nowTime)
+        let hasAfterSaleService = checkOrderAfterSaleService(this.merchantOrder.productOrderList, this.merchantOrder.orderStatus, this.baseInfo.nowTime);
+        let isAllVirtual = true;
+        this.merchantOrder.productOrderList.forEach((item) => {
+            if (item.orderType != 1){
+                isAllVirtual = false;
+            }
+        });
+
+        this.isAllVirtual = isAllVirtual;
+
 
         switch (this.merchantOrder.status) {
             case OrderType.WAIT_PAY:

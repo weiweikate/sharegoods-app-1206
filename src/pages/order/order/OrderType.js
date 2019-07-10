@@ -125,10 +125,16 @@ function checkOrderAfterSaleService(products = [], status, nowTime, isShowToast)
     let hasAfterSaleService = false;
 
     products.forEach((product) => {
-        let { activityList, afterSaleEndTime ,afterSale } = product
+        let { activityList, afterSaleEndTime ,afterSale, orderType } = product
         activityList = activityList || [];
         afterSale = afterSale || {};
         let afterStaus = afterSale.afterStaus;
+        if (orderType == 1){
+            if (isShowToast){
+                bridge.$toast('该商品属于虚拟商品，不能售后');
+            }
+            return;
+        }
         let activityTypes = activityList.map((item) => {
             return item.activityType;
         });

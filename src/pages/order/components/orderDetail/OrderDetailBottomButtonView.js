@@ -10,8 +10,8 @@ import { orderDetailModel, assistDetailModel } from "../../model/OrderDetailMode
 import OrderApi from "../../api/orderApi";
 import Toast from "../../../../utils/bridge";
 import { observer } from "mobx-react";
-import RouterMap, { replaceRoute, routePop, routePush } from '../../../../navigation/RouterMap';
-import { payStatus, payment, payStatusMsg } from "../../../payment/Payment";
+import RouterMap, {  routePop, routePush } from '../../../../navigation/RouterMap';
+import { payment } from "../../../payment/Payment";
 
 const { px2dp } = ScreenUtils;
 import { MRText as Text, NoMoreClick, UIText } from "../../../../components/ui";
@@ -192,33 +192,11 @@ export default class OrderDetailBottomButtonView extends Component {
         ], { cancelable: true });
     }
 
-    async _goToPay() {
-        let orderProductList = orderDetailModel.productsList();
-        let platformOrderNo = orderDetailModel.platformOrderNo
-        let merchantOrderNo = orderDetailModel.merchantOrderNo
-        let result = await payment.checkOrderStatus(platformOrderNo,0,0,0,'')
-        if (result.code === payStatus.payNo) {
-            routePush("payment/PaymentPage", {
-                orderNum: merchantOrderNo,
-                amounts: result.unpaidAmount,
-                platformOrderNo: platformOrderNo,
-                orderProductList: orderProductList
-            });
-        } else if (result.code === payStatus.payNeedThrid) {
-            routePush('payment/ChannelPage', {
-                remainMoney: Math.floor(result.unpaidAmount * 100) / 100,
-                orderProductList: orderProductList,
-                orderNum: merchantOrderNo,
-                platformOrderNo: platformOrderNo,
-            })
-        } else if (result.code === payStatus.payOut) {
-            Toast.$toast(payStatusMsg[result.code])
-            replaceRoute( 'order/order/MyOrdersListPage',
-                 { index: 2 })
-        } else {
-            Toast.$toast(payStatusMsg[result.code])
-        }
-    }
+     _goToPay() {
+         let orderProductList = orderDetailModel.productsList();
+         let platformOrderNo = orderDetailModel.platformOrderNo
+         payment.checkOrderToPage(platformOrderNo, orderProductList[0].productName)
+     }
 }
 const styles = StyleSheet.create({
     containerStyle: {
