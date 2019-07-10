@@ -41,6 +41,14 @@ pod 'MJRefresh'
 pod 'SDAutoLayout'
 # 异步渲染
 pod 'Texture'
+# 阿里云视频
+
+pod 'AliyunVideoSDKBasic'
+pod 'QuCore-ThirdParty'
+pod 'VODUpload'
+pod 'AliyunOSSiOS'
+pod 'AlivcConan'
+
 #pod 'SensorsAnalyticsSDK', :subspecs => ['ENABLE_REACT_NATIVE_APPCLICK']
 ##绘图和icon
 #pod 'RNSVG', :path => '../node_modules/react-native-svg'
