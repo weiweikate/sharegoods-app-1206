@@ -227,6 +227,7 @@ class PictureVideoUtils {
 
     uploadSingleImage = (image, callback) => {
         let url = apiEnvironment.getCurrentHostUrl();
+        // url ='https://testapi.sharegoodsmall.com/gateway';
         request.setBaseUrl(url);
         let datas = {
             type: 'image/png',
@@ -237,15 +238,12 @@ class PictureVideoUtils {
         formData.append('file', datas);
         let upload = () => {
             request.upload('/common/upload/oss', datas, {}).then((res) => {
-                alert(JSON.stringify(res));
-                return;
                 if (res.code === 10000 && res.data) {
                     callback({ url: res.data });
                 } else {
                     callback(null);
                 }
             }).catch((error)=>{
-                alert(error.message);
             });
         };
         NativeModules.commModule.RN_ImageCompression([image], null, 1024 * 1024 * 1, upload);

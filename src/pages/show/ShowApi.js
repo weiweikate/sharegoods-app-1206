@@ -32,7 +32,7 @@ const api = {
         method: 'post'
     }],
     //购物车列表
-    carList: ["/user/shoppingcart/list", {
+    carList: ['/user/shoppingcart/list', {
         method: 'get',
         checkLogin: true
     }],
@@ -68,7 +68,9 @@ const api = {
     //查询单个标签信息
     getTagInfo: ['/social/show/tag/info', {
         method: 'get'
-    }]
+    }],
+    //添加视频
+    saveVideo:['/social/show/content/video/save',{method:'post'}]
 };
 import ApiUtils from '../../api/network/ApiUtils';
 

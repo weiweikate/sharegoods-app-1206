@@ -161,18 +161,13 @@ export default class MyDynamicPage extends BasePage {
         return (
             <View style={styles.contain}>
                 <Waterfall style={{ flex: 1, marginTop: -10 }}
-                           ref={(ref) => {
-                               this.dynamicList = ref;
-                           }}
                            uri={'/social/show/content/page/mine/query@GET'}
                            headerHeight={px2dp(headerHeight)}
                            type={'MyDynamic'}
                            renderHeader={this.renderHeader()}
                            onItemPress={({ nativeEvent }) => {
                                let params = {
-                                   data: nativeEvent,
-                                   ref: this.dynamicList,
-                                   index: nativeEvent.index
+                                    code: nativeEvent.showNo
                                };
                                if (nativeEvent.showType === 1 || nativeEvent.showType == 3) {
                                    this.$navigate(RouterMap.ShowDetailPage, params);

@@ -24,9 +24,10 @@ import UIImage from '../../components/ui/UIImage';
 import Emoticons, * as emoticons from '../../comm/components/emoticons';
 import EmptyUtils from '../../utils/EmptyUtils';
 import ShowApi from './ShowApi';
-import RouterMap,{replaceRoute} from '../../navigation/RouterMap';
+import RouterMap, { replaceRoute } from '../../navigation/RouterMap';
 import TagView from './components/TagView';
 import PictureVideoUtils from './utils/PictureVideoUtils';
+import ImageOrVideoModal from './components/ImageOrVideoModal';
 
 const { addIcon, delIcon, iconShowDown, iconShowEmoji, addShowIcon, showTagIcon } = res;
 const { arrow_right_black } = res.button;
@@ -50,7 +51,8 @@ export default class ReleaseNotesPage extends BasePage {
             keyBoardHeight: 0,
             products: [],
             tags: [],
-            videoData: null
+            videoData: null,
+            selector: false
         };
 
     }
@@ -93,7 +95,7 @@ export default class ReleaseNotesPage extends BasePage {
     };
 
     _publish = () => {
-        if(this.state.videoData){
+        if (this.state.videoData) {
             this.publishVideo();
             return;
         }
@@ -151,41 +153,79 @@ export default class ReleaseNotesPage extends BasePage {
         });
     };
 
-    publishVideo=()=>{
-        const {videoPath,videoCover} = this.state.videoData;
-        NativeModules.ShowModule.uploadVideo('cs',videoPath).then((data)=>{
-            PictureVideoUtils.uploadSingleImage(videoCover,(data)=>{
-                alert(JSON.stringify(data))
-            })
-        }).catch((error)=>{
+    publishVideo = () => {
+        const { videoPath, videoCover, width, height } = this.state.videoData;
+        let content = this.state.text || '';
+        let products = this.state.products || [];
+        let productsPar = products.map((value) => {
+            return value.spuCode;
+        });
+        NativeModules.ShowModule.uploadVideo('cs', videoPath).then((data) => {
+            PictureVideoUtils.uploadSingleImage(videoCover, (res) => {
+                if (res.url) {
+                    let videoCover = {
+                        baseUrl: res.url,
+                        height,
+                        width,
+                        type: 5
+                    };
+                    let params = {
+                        content,
+                        videoCover,
+                        products: productsPar,
+                        showNo: data.showNo,
+                        tagList: this.state.tags.map((item) => {
+                            return item.tagId;
+                        }),
+                        title: this.state.titleText,
+                        videoId: data.videoId
+                    };
+                    ShowApi.saveVideo(params).then((data) => {
+                        replaceRoute(RouterMap.MyDynamicPage);
+                    }).catch((error) => {
+                        this.$toastShow(error.msg);
+                    });
 
-        })
-    }
+                } else {
+                    this.$toastShow('上传失败');
+                }
+            });
+        }).catch((error) => {
+            this.$toastShow('上传失败');
+        });
+    };
 
     choosePicker = () => {
-        // NativeModules.ShowModule.selectVideo().then((data)=>{
-        //
-        // })
-        // return;
+        let imageArr = this.state.imageArr;
+        if(EmptyUtils.isEmptyArr(imageArr)){
+            this.setState({selector:true});
+        }else {
+            this.chooseImage();
+        }
+    };
 
-        NativeModules.ShowModule.recordVideo().then((data)=>{
-            this.setState({videoData:data})
-        })
-        return;
-
+    chooseImage = () => {
+        this.setState({selector:false});
         let imageArr = this.state.imageArr;
         if (imageArr.length >= 8) {
             return;
         }
         let num = 8 - imageArr.length;
-        PictureVideoUtils.selectPictureOrVideo(num,false,callback => {
+        PictureVideoUtils.selectPictureOrVideo(num, false, callback => {
             if (callback.type === 'video') {
                 this.setState({ videoData: callback });
             } else {
                 let result = imageArr.concat(callback.images);
                 this.setState({ imageArr: result });
             }
-        })
+        });
+    };
+
+    chooseVideo = () => {
+        this.setState({selector:false});
+        NativeModules.ShowModule.recordVideo().then((data) => {
+            this.setState({ videoData: data });
+        });
     };
 
     deletePic = (index) => {
@@ -203,7 +243,8 @@ export default class ReleaseNotesPage extends BasePage {
             return (
                 <View style={styles.imagesWrapper}>
                     <View>
-                        <ImageLoad style={styles.photo_item} source={{ uri: `file://${this.state.videoData.videoCover}` }}/>
+                        <ImageLoad style={styles.photo_item}
+                                   source={{ uri: `file://${this.state.videoData.videoCover}` }}/>
                         <NoMoreClick style={styles.delete_btn} onPress={() => {
                             this.setState({ videoData: null });
                         }}>
@@ -430,7 +471,7 @@ export default class ReleaseNotesPage extends BasePage {
 
         return (
             <TouchableWithoutFeedback onPress={() => {
-                this.$navigate(RouterMap.TagSelectorPage, { callback: this.refreshTags ,tags:this.state.tags});
+                this.$navigate(RouterMap.TagSelectorPage, { callback: this.refreshTags, tags: this.state.tags });
             }}>
                 <View style={styles.tagWrapper}>
                     {this.state.tags.map((item, index) => {
@@ -517,6 +558,18 @@ export default class ReleaseNotesPage extends BasePage {
 
 
                 {this.state.showEmoji ? emoji : null}
+                <ImageOrVideoModal
+                    visible={this.state.selector}
+                    selectImage={() => {
+                        this.chooseImage();
+                    }}
+                    selectVideo={() => {
+                        this.chooseVideo();
+                    }}
+                    onRequestClose={() => {
+                        this.setState({ selector: false });
+                    }}
+                />
             </View>
         );
     }
@@ -544,7 +597,7 @@ var styles = StyleSheet.create({
         margin: px2dp(15)
     },
     lineStyle: {
-        height: 1,
+        height: ScreenUtils.onePixel,
         width: DesignRule.width - 2 * DesignRule.margin_page,
         alignSelf: 'center',
         backgroundColor: DesignRule.lineColor_inWhiteBg
@@ -647,7 +700,7 @@ var styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         paddingHorizontal: DesignRule.margin_page,
-        borderBottomWidth: 1,
+        borderBottomWidth: ScreenUtils.onePixel,
         borderBottomColor: 'rgba(0,0,0,0.1)'
     },
     numLimitTextStyle: {

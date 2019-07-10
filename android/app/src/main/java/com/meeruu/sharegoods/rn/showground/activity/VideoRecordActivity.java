@@ -21,17 +21,28 @@ import com.aliyun.svideo.sdk.external.struct.common.VideoDisplayMode;
 import com.aliyun.svideo.sdk.external.struct.common.VideoQuality;
 import com.aliyun.svideo.sdk.external.struct.encoder.VideoCodecs;
 import com.aliyun.svideo.sdk.external.struct.snap.AliyunSnapVideoParam;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeMap;
 import com.meeruu.commonlib.utils.NotchScreenUtil;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.sharegoods.R;
+import com.meeruu.sharegoods.event.Event;
 import com.meeruu.sharegoods.event.ShowVideoEvent;
+import com.meeruu.sharegoods.rn.showground.bean.ImageBean;
 import com.meeruu.sharegoods.rn.showground.utils.PermissionUtils;
 import com.meeruu.sharegoods.rn.showground.utils.PhoneStateManger;
+import com.meeruu.sharegoods.rn.showground.utils.VideoCoverUtils;
 import com.meeruu.sharegoods.rn.showground.widgets.RecordView.AliyunSVideoRecordView;
+import com.reactnative.ivpusic.imagepicker.picture.lib.PictureSelector;
+import com.reactnative.ivpusic.imagepicker.picture.lib.entity.LocalMedia;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
+
+import static com.meeruu.sharegoods.rn.showground.ShowModule.result_code;
 
 public class VideoRecordActivity extends Activity {
     private AliyunSVideoRecordView videoRecordView;
@@ -230,29 +241,6 @@ public class VideoRecordActivity extends Activity {
         videoRecordView.setCompleteListener(new AliyunSVideoRecordView.OnFinishListener() {
             @Override
             public void onComplete(String path, int duration) {
-//                AliyunIImport mImport = AliyunImportCreator.getImportInstance(AlivcSvideoRecordActivity.this);
-//                mImport.setVideoParam(mVideoParam);
-//                mImport.addMediaClip(new AliyunVideoClip.Builder()
-//                        .source(path)
-//                        .startTime(0)
-//                        .endTime(duration)
-//                        .displayMode(AliyunDisplayMode.DEFAULT)
-//                        .build());
-//                String projectJsonPath = mImport.generateProjectConfigure();
-//                Intent intent = new Intent();
-//                ActionInfo action = AliyunSvideoActionConfig.getInstance().getAction();
-//                //获取录制完成的配置页面
-//                String tagClassName = action.getTagClassName(ActionInfo.SVideoAction.RECORD_TARGET_CLASSNAME);
-//
-//                intent.setClassName(AlivcSvideoRecordActivity.this, tagClassName);
-//                if (tagClassName.equals(ActionInfo.getDefaultTargetConfig(ActionInfo.SVideoAction.RECORD_TARGET_CLASSNAME))) {
-//                    intent.putExtra("isReplaceMusic", isUseMusic);
-//                }
-//                intent.putExtra("video_param", mVideoParam);
-//                intent.putExtra("project_json_path", projectJsonPath);
-//                intent.putExtra(INTENT_PARAM_KEY_ENTRANCE, entrance);
-//                intent.putExtra(INTENT_PARAM_KEY_HAS_MUSIC, videoRecordView.isHasMusic());
-//                startActivity(intent);
                 Intent intent = new Intent(VideoRecordActivity.this,VideoPlayActivity.class);
                 intent.putExtra("video_path",path);
                 startActivity(intent);
@@ -266,10 +254,6 @@ public class VideoRecordActivity extends Activity {
         videoRecordView.onPause();
         videoRecordView.stopPreview();
         super.onPause();
-//        if (phoningToast != null) {
-//            phoningToast.cancel();
-//            phoningToast = null;
-//        }
     }
 
 
@@ -296,6 +280,19 @@ public class VideoRecordActivity extends Activity {
                 videoRecordView.deleteAllPart();
                 finish();
             }
+        }
+
+        if(requestCode == result_code){
+            List<LocalMedia> list = PictureSelector.obtainMultipleResult(data);
+            LocalMedia localMedia = list.get(0);
+            ShowVideoEvent showVideoEvent = new ShowVideoEvent();
+            ImageBean cover = VideoCoverUtils.getVideoThumb(this,localMedia.getPath());
+            showVideoEvent.setHeight(cover.getHeight());
+            showVideoEvent.setWidth(cover.getWidth());
+            showVideoEvent.setCover(cover.getPath());
+            showVideoEvent.setPath(localMedia.getPath());
+            EventBus.getDefault().post(showVideoEvent);
+            finish();
         }
     }
 

@@ -35,6 +35,8 @@ public class ControlView extends RelativeLayout implements View.OnTouchListener 
     private TextView aliyunDelete;
     private FrameLayout mTitleView;
     private TextView mRecordTipTV;
+    private LinearLayout llVideo;
+
     private ControlViewListener mListener;
     //闪光灯类型
     private FlashType flashType = FlashType.OFF;
@@ -165,6 +167,18 @@ public class ControlView extends RelativeLayout implements View.OnTouchListener 
 
         //长按拍需求是按下就拍抬手停止拍
         aliyunRecordBtn.setOnTouchListener(this);
+
+        llVideo.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (FastClickUtil.isFastClick()) {
+                    return;
+                }
+                if (mListener != null) {
+                    mListener.selectVideo();
+                }
+            }
+        });
     }
 
     /**
@@ -209,6 +223,7 @@ public class ControlView extends RelativeLayout implements View.OnTouchListener 
         aliyunComplete = findViewById(R.id.aliyun_complete);
         aliyunBack = (ImageView) findViewById(R.id.aliyun_back);
         aliyunRecordLayoutBottom = (LinearLayout) findViewById(R.id.aliyun_record_layout_bottom);
+        llVideo = findViewById(R.id.ll_video);
 //        aliyunRateBar = (LinearLayout) findViewById(R.id.aliyun_rate_bar);
 //        aliyunRateQuarter = (TextView) findViewById(R.id.aliyun_rate_quarter);
 //        aliyunRateHalf = (TextView) findViewById(R.id.aliyun_rate_half);

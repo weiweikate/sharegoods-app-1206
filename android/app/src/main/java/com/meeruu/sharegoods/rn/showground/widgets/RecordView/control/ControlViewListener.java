@@ -38,4 +38,8 @@ public interface ControlViewListener {
      * 删除点击事件
      */
     void onDeleteClick();
+    /**
+     * 选择视频
+     */
+    void selectVideo();
 }
