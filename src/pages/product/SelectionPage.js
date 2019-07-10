@@ -266,7 +266,7 @@ export default class SelectionPage extends Component {
         if (!this.state.modalVisible) {
             return null;
         }
-        const { afterAmount, type, productIsPromotionPrice, unShowAmount, isAreaSku } = this.state.propData;
+        const { afterAmount, type, productIsPromotionPrice, unShowAmount, isAreaSku ,isGroupIn} = this.state.propData;
         const { productDetailAddressModel } = this.state.data;
         return (
             <View style={styles.bgView}>
@@ -293,6 +293,7 @@ export default class SelectionPage extends Component {
                                                  maxCount={this.state.maxStock}
                                                  afterAmount={afterAmount}
                                                  promotionLimit={this.state.promotionLimit}
+                                                 isGroupIn={isGroupIn}
                                                  type={type}/>}
                         </ScrollView>
                         <TouchableWithoutFeedback onPress={this._selectionViewConfirm}>

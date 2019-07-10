@@ -41,10 +41,9 @@ export default class LocalNumLogin extends BasePage {
         TrackApi.onKeyLoginPage();
     }
 
-    // 导航配置
-    $navigationBarOptions = {
+    // 禁用某个页面的手势
+    static navigationOptions = {
         gesturesEnabled: false
-
     };
 
     componentDidMount() {

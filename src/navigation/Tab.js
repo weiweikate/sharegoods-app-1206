@@ -22,12 +22,13 @@ import RouterMap from './RouterMap';
 
 @observer
 class NormalTab extends Component {
-    render(){
-        const {source,title} = this.props;
+    render() {
+        const { source, title } = this.props;
         return <View style={styles.tab}>
             <View>
                 <Image style={styles.tabBarIcon} source={source}/>
-                {user.isLogin && title === '我的' && (settingModel.availableBalance > 0 || settingModel.userScore > 0 || settingModel.coupons > 0 || settingModel.fansMSG > 0) ?
+                {user.isLogin && title === '我的' && (settingModel.availableBalance > 0 || settingModel.userScore > 0
+                    || settingModel.coupons > 0 || settingModel.fansMSG > 0 || settingModel.mainTask > 0) ?
                     <Image source={res.other.dot} style={styles.mineDot}/> : null}
             </View>
             <Text style={styles.text}>{title}</Text>
@@ -36,10 +37,10 @@ class NormalTab extends Component {
 }
 
 class ActiveTab extends Component {
-    render(){
-        const {source,title} = this.props;
+    render() {
+        const { source, title } = this.props;
         return <View style={styles.tab}>
-                <Image style={styles.tabBarIcon} source={source}/>
+            <Image style={styles.tabBarIcon} source={source}/>
             <Text style={styles.text}>{title}</Text>
         </View>;
     }
@@ -218,6 +219,7 @@ export const TabNav = createBottomTabNavigator(
                 tabBarOnPress: ({ navigation }) => {
                     if (!navigation.isFocused()) {
                         if (user && user.isLogin) {
+                            settingModel.mainTaskAdd();
                             navigation.navigate(navigation.state.routeName);
                         } else {
                             navigation.navigate(RouterMap.LoginPage);
@@ -307,6 +309,6 @@ const styles = StyleSheet.create({
         right: -6,
         top: 0,
         width: 16,
-        height: 10,
+        height: 10
     }
 });

@@ -14,7 +14,7 @@
 
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
-import {  View, Image, RefreshControl ,Text} from 'react-native';
+import { View, Image, RefreshControl, Text } from 'react-native';
 import DesignRule from '../../../constants/DesignRule';
 import PropTypes from 'prop-types';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -50,43 +50,46 @@ export default class ShopCartEmptyView extends Component {
     layoutProvider = new LayoutProvider((i) => {
         return this.dataProvider.getDataForIndex(i).type || 0;
     }, (type, dim) => {
-        if (type === EmptyViewTypes.topEmptyItem){
+        if (type === EmptyViewTypes.topEmptyItem) {
             dim.width = ScreenUtils.width;
-            dim.height = px2dp(350)
+            dim.height = px2dp(350);
         } else {
-            dim.width = ScreenUtils.width / 2 - px2dp(8);
-            dim.height = px2dp(168 + 88)
+            dim.width = (ScreenUtils.width - px2dp(25)) / 2;
+            dim.height = px2dp(248 + 5);
         }
     });
+
     constructor(props) {
         super(props);
     }
+
     componentDidMount() {
         shopCartEmptyModel.getRecommendProducts();
     }
+
     _renderItem = (type, itemData, index) => {
-        const {navigateToHome} = this.props;
+        const { navigateToHome } = this.props;
         if (type === EmptyViewTypes.topEmptyItem) {
             return this._renderHeaderView();
-        }else {
-           return <ShopCartEmptyCell itemData={itemData} onClick={() => {
-               navigateToHome(RouterMap.ProductDetailPage,{ productCode:itemData.prodCode,trackType:4})
-               TrackApi.RecommendSpuClick({
-                   strategyId:itemData.strategyId,
-                   spuRelationValue:itemData.spuRelationValue,
-                   spuRelationIndex:index-1,
-                   spuCode:itemData.prodCode,
-                   spuName:itemData.name,
-               })
-                }}/>
+        } else {
+            return <ShopCartEmptyCell itemData={itemData} onClick={() => {
+                navigateToHome(RouterMap.ProductDetailPage, { productCode: itemData.prodCode, trackType: 4 });
+                TrackApi.RecommendSpuClick({
+                    strategyId: itemData.strategyId,
+                    spuRelationValue: itemData.spuRelationValue,
+                    spuRelationIndex: index - 1,
+                    spuCode: itemData.prodCode,
+                    spuName: itemData.name
+                });
+            }}/>;
         }
     };
     _onRefresh = () => {
-      shopCartEmptyModel.getRecommendProducts(true)
+        shopCartEmptyModel.getRecommendProducts(true);
     };
-    _onEndReached=()=>{
+    _onEndReached = () => {
         shopCartEmptyModel.getRecommendProducts(false);
-    }
+    };
     _keyExtractor = (dataItem) => {
         return dataItem.id;
     };
@@ -95,9 +98,9 @@ export default class ShopCartEmptyView extends Component {
     };
     _renderHeaderView = () => {
         return (
-            <View style={{ width: ScreenUtils.width, height:px2dp(350) }}>
+            <View style={{ width: ScreenUtils.width, height: px2dp(350) }}>
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                    <Image source={shopCartNoGoods} style={{ width: px2dp(244), height: px2dp(140) }} />
+                    <Image source={shopCartNoGoods} style={{ width: px2dp(244), height: px2dp(140) }}/>
                     <MRText style={{
                         fontSize: px2dp(13),
                         color: 'rgba(153, 153, 153, 1)',
@@ -106,7 +109,12 @@ export default class ShopCartEmptyView extends Component {
                 </View>
                 <View
                     style={{ width: ScreenUtils.width, height: px2dp(40), flexDirection: 'row', alignItems: 'center' }}>
-                    <View style={{ width: px2dp(2), height: px2dp(8),borderRadius:px2dp(1), backgroundColor: '#FF0050' }}/>
+                    <View style={{
+                        width: px2dp(2),
+                        height: px2dp(8),
+                        borderRadius: px2dp(1),
+                        backgroundColor: '#FF0050'
+                    }}/>
                     <MRText style={{ marginLeft: px2dp(5), fontSize: px2dp(16) }}>为你推荐</MRText>
                 </View>
             </View>
@@ -114,25 +122,28 @@ export default class ShopCartEmptyView extends Component {
     };
 
     render() {
-        const {emptyViewList} = shopCartEmptyModel
+        const { emptyViewList } = shopCartEmptyModel;
         this.dataProvider = this.dataProvider.cloneWithRows(emptyViewList);
         return (
-            <View style={{paddingLeft:px2dp(10),flex:1}}>
+            <View style={{ flex: 1, justifyContent: 'center' }}>
                 <RecyclerListView
-                    ref={(ref) => {
-                        this.recyclerListView = ref;
+                    style={{
+                        minHeight: ScreenUtils.headerHeight,
+                        minWidth: 1
                     }}
-                    style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1 }}
+                    contentContainerStyle={{
+                        justifyContent: 'space-between',
+                        marginLeft: px2dp(15),
+                        marginRight: px2dp(15)
+                    }}
                     refreshControl={<RefreshControl refreshing={homeModule.isRefreshing}
                                                     onRefresh={this._onRefresh.bind(this)}
                                                     colors={[DesignRule.mainColor]}/>}
-                    // onEndReached={this._onEndReached.bind(this)}
                     onEndReachedThreshold={ScreenUtils.height / 3}
                     dataProvider={this.dataProvider}
                     rowRenderer={this._renderItem.bind(this)}
                     layoutProvider={this.layoutProvider}
                     showsVerticalScrollIndicator={false}
-                    // onScroll={this._onListViewScroll}
                     renderFooter={() => <Footer
                         isFetching={shopCartEmptyModel.isFetching}
                         errorMsg={shopCartEmptyModel.errorMsg}
@@ -140,46 +151,10 @@ export default class ShopCartEmptyView extends Component {
                     }
                 />
             </View>
-           );
+        );
     }
 }
 ShopCartEmptyView.propTypes = {
     //去逛逛
     navigateToHome: PropTypes.func.isRequired
 };
-
-// const styles = StyleSheet.create({
-//     bgViewStyle: {
-//         backgroundColor: DesignRule.bgColor,
-//         flex: 1
-//     },
-//     imgStyle: {
-//         height: 115,
-//         width: 115
-//     },
-//     topTextStyle: {
-//         marginTop: 10,
-//         fontSize: 15,
-//         color: DesignRule.textColor_secondTitle
-//     },
-//     bottomTextBgViewStyle: {
-//         marginTop: 22,
-//         justifyContent: 'center',
-//         alignItems: 'center',
-//         borderColor: DesignRule.mainColor,
-//         borderWidth: 1,
-//         borderRadius: 18,
-//         width: 115,
-//         height: 36
-//     },
-//     bottomTextStyle: {
-//         color: DesignRule.mainColor,
-//         fontSize: 15
-//     },
-//     addSomethingTipStyle: {
-//         marginTop: 10,
-//         fontSize: 15,
-//         color: DesignRule.textColor_secondTitle
-//     }
-//
-// });

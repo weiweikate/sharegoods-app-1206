@@ -15,7 +15,8 @@ import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
 import com.meeruu.sharegoods.rn.showground.utils.NumUtils;
 
-import static com.meeruu.sharegoods.rn.showground.adapter.ShowRecommendAdapter.userImgW;
+import static com.meeruu.sharegoods.rn.showground.adapter.ShowRecommendAdapter.userImgWH;
+import static com.meeruu.sharegoods.rn.showground.adapter.ShowRecommendAdapter.videoOrImageWH;
 
 
 public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.DataBean, BaseViewHolder> {
@@ -43,7 +44,7 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
             userUrl = "res://" + userIcon.getContext().getPackageName() + "/" + R.drawable.bg_app_user;
         }
         if (!TextUtils.equals(userUrl, userTag)) {
-            ImageLoadUtils.loadCircleNetImage(userUrl, userIcon, userImgW, userImgW);
+            ImageLoadUtils.loadCircleNetImage(userUrl, userIcon, userImgWH, userImgWH);
             userIcon.setTag(userUrl);
         }
         final SimpleDraweeView imageView = helper.getView(R.id.showground_item_image);
@@ -52,9 +53,9 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
         String imgUrl = null;
         if (item.getResource() != null) {
             if (item.getShowType() == 3) {
-                imgUrl = item.getVideoCover().imageUrl;
-                width = item.getVideoCover().imageViewWidth;
-                height = item.getVideoCover().imageViewHeight;
+                imgUrl = item.getVideoCover();
+                width = videoOrImageWH;
+                height = videoOrImageWH;
             } else {
                 NewestShowGroundBean.DataBean.ResourceBean resourceBean = item.getResource().get(0);
                 imgUrl = resourceBean.getBaseUrl();
@@ -85,7 +86,7 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
             params.width = realWidth;
             params.height = realHeight;
             imageView.setLayoutParams(params);
-            ImageLoadUtils.loadRoundNetImage(imgUrl, imageView, realWidth, realHeight, arr_raduis);
+            ImageLoadUtils.loadRoundNetImage(imgUrl, imageView, realWidth, realHeight, arr_raduis, false);
         }
         TextView name = helper.getView(R.id.showground_item_name);
         name.setText(item.getUserInfoVO().getUserName());

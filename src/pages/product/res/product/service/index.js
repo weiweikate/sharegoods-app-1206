@@ -5,4 +5,5 @@ export default {
     zheng_ping: require('./zheng_ping.png'),
     bounus: require('./bounus.png'),
     service_true: require('./service_true.png'),
+    afterSaleLimitImg: require('./afterSaleLimit.png')
 };

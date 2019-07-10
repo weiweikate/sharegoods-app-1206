@@ -208,32 +208,26 @@ const styles = StyleSheet.create({
 * */
 export class SuitItemView extends Component {
     _renderItem = ({ item }) => {
-        const { imgUrl, name, minPrice, skuList } = item;
-
-        let decreaseList = (skuList || []).map((sku) => {
-            return sku.promotionDecreaseAmount;
-        });
-        let minDecrease = decreaseList.length === 0 ? 0 : Math.min.apply(null, decreaseList);
-
+        const { imgUrl, name, skuList } = item;
+        const { specImg, promotionDecreaseAmount, price } = skuList[0] || {};
         return (
             <View style={SuitItemViewStyles.item}>
-                <NoMoreClick onPress={this._goSuitPage}>
-                    <UIImage style={SuitItemViewStyles.itemImg} source={{ uri: imgUrl }}>
+                <NoMoreClick onPress={() => this._goSuitPage(item)}>
+                    <UIImage style={SuitItemViewStyles.itemImg} source={{ uri: specImg || imgUrl }}>
                         <View style={SuitItemViewStyles.subView}>
-                            <Text style={SuitItemViewStyles.subText}>立省{minDecrease}起</Text>
+                            <Text style={SuitItemViewStyles.subText}>立省{promotionDecreaseAmount || ''}</Text>
                         </View>
                     </UIImage>
                 </NoMoreClick>
                 <Text style={SuitItemViewStyles.itemText}
-                      numberOfLines={2}>{name}</Text>
-                <Text style={SuitItemViewStyles.itemPrice}>{`¥${minPrice}起`}</Text>
+                      numberOfLines={1}>{name}</Text>
+                <Text style={SuitItemViewStyles.itemPrice}>{`¥${price || ''}`}</Text>
             </View>
         );
     };
 
-    _goSuitPage = () => {
-        const { productDetailModel } = this.props;
-        routePush(RouterMap.SuitProductPage, { productDetailModel });
+    _goSuitPage = (item) => {
+        routePush(RouterMap.ProductDetailPage, { productCode: item.prodCode });
     };
 
     render() {
@@ -241,17 +235,13 @@ export class SuitItemView extends Component {
         const { groupActivity } = productDetailModel;
         return (
             <View style={SuitItemViewStyles.bgView}>
-                <NoMoreClick style={SuitItemViewStyles.tittleView} onPress={this._goSuitPage}>
+                <View style={SuitItemViewStyles.tittleView}>
                     <Text style={SuitItemViewStyles.LeftText}>优惠套餐</Text>
-                    <View style={SuitItemViewStyles.rightView}>
-                        <Text style={SuitItemViewStyles.RightText}>查看全部</Text>
-                        <Image source={arrow_right_black}/>
-                    </View>
-                </NoMoreClick>
+                </View>
                 <FlatList
                     style={SuitItemViewStyles.flatList}
                     data={groupActivity.subProductList || []}
-                    keyExtractor={(item, index) => item.id + index + ''}
+                    keyExtractor={(item) => item.prodCode + ''}
                     renderItem={this._renderItem}
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
@@ -267,18 +257,10 @@ const SuitItemViewStyles = StyleSheet.create({
         backgroundColor: DesignRule.white
     },
     tittleView: {
-        flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginHorizontal: 15,
-        height: 40
+        justifyContent: 'center', marginHorizontal: 15, height: 40
     },
     LeftText: {
         color: DesignRule.textColor_mainTitle, fontSize: 15, fontWeight: '500'
-    },
-    rightView: {
-        flexDirection: 'row', alignItems: 'center'
-    },
-    RightText: {
-        paddingRight: 8,
-        color: DesignRule.textColor_instruction, fontSize: 12
     },
     flatList: {
         marginLeft: 15
@@ -393,13 +375,15 @@ export class ServiceItemView extends Component {
     };
 
     render() {
-        const { serviceAction } = this.props;
+        const { productDetailModel, serviceAction } = this.props;
+        const { afterSaleLimit, sevenDayReturn } = (productDetailModel || {}).groupActivity || {};
         return (
             <NoMoreClick style={ServiceItemViewStyles.serviceView} onPress={serviceAction}>
                 <Text style={ServiceItemViewStyles.serviceNameText}>服务</Text>
                 <View style={{ flexDirection: 'row', flex: 1 }}>
                     {this._imgText('质量保障')}
                     {this._imgText('48小时发货')}
+                    {afterSaleLimit ? this._imgText('仅支持换货') : (sevenDayReturn ? this._imgText('7天退换') : null)}
                 </View>
                 <Image source={arrow_right_black}/>
             </NoMoreClick>

@@ -12,5 +12,6 @@
 
 @interface AppDelegate (APNS)
 -(void)JR_ConfigAPNS:(UIApplication *)application  didFinishLaunchingWithOptions:(NSDictionary *)launchOptions;
+
 @end
 

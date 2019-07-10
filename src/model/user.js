@@ -8,7 +8,6 @@ import { login, logout } from '../utils/SensorsTrack';
 import StringUtils from '../utils/StringUtils';
 import JPushUtils from '../utils/JPushUtils';
 import { mediatorCallFunc } from '../SGMediator';
-// import { shopCartEmptyModel } from '../pages/shopCart/model/ShopCartEmptyModel';
 
 
 const USERINFOCACHEKEY = '@mr/userInfo';
@@ -521,4 +520,10 @@ autorun(() => {
         JPushUtils.updatePushTags();
     }
 });
+autorun(()=>{
+    if (user.isLogin) {
+        JPushUtils.updatePushTags();
+        JPushUtils.updatePushAlias()
+    }
+})
 export default user;

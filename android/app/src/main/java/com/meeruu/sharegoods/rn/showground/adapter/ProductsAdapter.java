@@ -25,6 +25,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.VH> {
     private AddCartListener addCartListener;
     private PressProductListener pressProductListener;
     private String detail;
+
     public static class VH extends RecyclerView.ViewHolder {
         public TextView originalPrice;
         public TextView activityPrice;
@@ -48,7 +49,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.VH> {
 
     private List<NewestShowGroundBean.DataBean.ProductsBean> mDatas;
 
-    public ProductsAdapter(List<NewestShowGroundBean.DataBean.ProductsBean> data,String detail) {
+    public ProductsAdapter(List<NewestShowGroundBean.DataBean.ProductsBean> data, String detail) {
         this.mDatas = data;
         this.detail = detail;
     }
@@ -65,7 +66,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.VH> {
     public void onBindViewHolder(@NonNull final VH vh, int i) {
         final AddCartListener addCartListener = this.addCartListener;
         final NewestShowGroundBean.DataBean.ProductsBean bean = this.mDatas.get(i);
-        if(bean == null){
+        if (bean == null) {
             return;
         }
         vh.name.setText(bean.getName());
@@ -79,7 +80,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.VH> {
             @Override
             public void onClick(View v) {
                 if (addCartListener != null) {
-                    addCartListener.onAddCart(JSON.toJSONString(bean),detail);
+                    addCartListener.onAddCart(JSON.toJSONString(bean), detail);
                 }
             }
         });
@@ -120,7 +121,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.VH> {
             @Override
             public void onClick(View v) {
                 if (pressProductListener != null) {
-                    pressProductListener.onPressProduct(JSON.toJSONString(bean),detail);
+                    pressProductListener.onPressProduct(JSON.toJSONString(bean), detail);
                 }
             }
         });
@@ -149,10 +150,10 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.VH> {
     }
 
     public interface AddCartListener {
-        void onAddCart(String product,String detail);
+        void onAddCart(String product, String detail);
     }
 
     public interface PressProductListener {
-        void onPressProduct(String product,String detail);
+        void onPressProduct(String product, String detail);
     }
 }

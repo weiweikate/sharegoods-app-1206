@@ -20,6 +20,7 @@ import com.facebook.react.bridge.Callback;
 import com.facebook.react.devsupport.DoubleTapReloadRecognizer;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.modules.core.PermissionListener;
+import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 
 import javax.annotation.Nullable;
 
@@ -51,7 +52,7 @@ public class PreLoadReactDelegate extends ReactActivityDelegate {
     }
 
     protected ReactRootView createRootView() {
-        return new ReactRootView(getContext());
+        return new RNGestureHandlerEnabledRootView(getContext());
     }
 
     /**

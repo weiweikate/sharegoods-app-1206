@@ -126,7 +126,9 @@ export default class MyMentorPage extends BasePage {
                 }}>
                     <View style={{ flex: 1 }}>
                         <TouchableWithoutFeedback onPress={() => this.$navigateBack()}>
-                            <Image source={white_back} style={{ width: 10, height: 20 }}/>
+                            <View style={{width: 40}}>
+                                <Image source={white_back} style={{width: 10, height: 20}}/>
+                            </View>
                         </TouchableWithoutFeedback>
                     </View>
                     <Text style={{

@@ -17,6 +17,7 @@ import spellStatusModel from '../../model/SpellStatusModel';
 import bridge from '../../../../utils/bridge';
 import { getSource } from '@mr/image-placeholder/oos';
 import { getSize } from '../../../../utils/OssHelper';
+import RouterMap from '../../../../navigation/RouterMap';
 
 const { myShop } = shopRes;
 const { shopProduct, shopProductShare, shop_card } = myShop;
@@ -296,16 +297,15 @@ class ShopDetailImageView extends Component {
 
 export class ShopCardView extends React.Component {
     _cardAction = () => {
-
+        routePush(RouterMap.HtmlPage, {
+            uri: `${apiEnvironment.getCurrentH5Url()}/activity/millions`
+        });
     };
 
     render() {
         return (
             <NoMoreClick style={cardStyles.container} onPress={this._cardAction}>
                 <Image source={shop_card} style={cardStyles.image}/>
-                <MRText style={{ fontSize: 12, color: DesignRule.textColor_mainTitle }}>挑战任务卡</MRText>
-                <View style={{ flex: 1 }}/>
-                <MRText style={{ fontSize: 12, color: DesignRule.textColor_secondTitle, marginRight: 15 }}>敬请期待</MRText>
             </NoMoreClick>
         );
     }
@@ -313,11 +313,9 @@ export class ShopCardView extends React.Component {
 
 const cardStyles = StyleSheet.create({
     container: {
-        flexDirection: 'row', alignItems: 'center', marginHorizontal: 15,
-        height: 44, marginBottom: 15, backgroundColor: 'white', borderRadius: 5
+        marginBottom: 15
     },
     image: {
-        marginLeft: 9, marginRight: 4,
-        height: 16, width: 16
+        height: px2dp(80), width: width
     }
 });

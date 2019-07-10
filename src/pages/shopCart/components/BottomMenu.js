@@ -109,6 +109,8 @@ export default class BottomMenu extends Component {
     };
     _toBuyImmediately = () => {
         dismissKeyboard();
+        // routeNavigate(RouterMap.PaymentResultPage,{ payResult: PaymentResult.fail, payMsg: '订单支付超时，下单金额已原路退回' });
+        // return;
         if (!user.isLogin) {
             routeNavigate(RouterMap.LoginPage);
             TrackApi.CartCheckoutClick({

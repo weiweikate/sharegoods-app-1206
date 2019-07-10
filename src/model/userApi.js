@@ -2,7 +2,8 @@ const api = {
     getUser: ['/user/getUser', { method: 'get' }],
     getUserOrderNum:['/orderV2/count',{method:'get'}],
     userShare:['/user/share',{method:'get'}],
-    luckyDraw:['/user/send',{method:'post'}]
+    luckyDraw:['/user/send',{method:'post'}],
+    shareShortUrl:['/shortUrl/converter',{method:'post'}]
 };
 import ApiUtils from '../api/network/ApiUtils'
 

@@ -23,11 +23,7 @@ import htmlView from '../components/web/HtmlView';
 import message from '../pages/message';
 import topic from '../pages/topic';
 import show from '../pages/show/Index';
-
 import deepLinkPath from './DeepLinkPath';
-
-// import WithdrawalAgreementPage from '../pages/mine/page/bankCard/WithdrawalAgreementPage'
-// import MyOrdersListPage from '../pages/order/order/MyOrdersListPage';
 
 const Router = {
     Tab: {
@@ -38,7 +34,7 @@ const Router = {
     },
     HtmlPage: {
         screen: htmlView,
-        path:'path/HtmlPage/:uri'
+        path: 'path/HtmlPage/:uri'
     }
 };
 const PageKey = {};
