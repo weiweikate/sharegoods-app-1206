@@ -7,6 +7,7 @@ import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { Alert } from 'react-native';
 import shopCartCacheTool from "../../shopCart/model/ShopCartCacheTool";
 import { navigateBack, replaceRoute } from '../../../navigation/RouterMap';
+import { payment } from '../../payment/Payment';
 
 class ConfirmOrderModel {
 
@@ -221,12 +222,7 @@ class ConfirmOrderModel {
             if (this.orderParamVO.source === 1) {
                 shopCartCacheTool.getShopCartGoodsListData();
             }
-            replaceRoute('payment/PaymentPage', {
-                orderNum: data.platformOrderNo,
-                amounts: data.payInfo.payAmount,
-                orderProductList: data.productOrderList,
-                platformOrderNo: data.platformOrderNo
-            })
+            payment.checkOrderToPage(data.platformOrderNo,data.productOrderList[0].productName);
             track(trackEvent.submitOrder, {
                 orderId: data.orderNo,
                 orderSubmitPage:this.orderParamVO.source==1?11:1
