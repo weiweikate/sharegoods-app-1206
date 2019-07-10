@@ -110,6 +110,7 @@ export default class StatusInfoView extends React.Component {
                 }
                 return{
                     titleStr: '售后已完成，退款成功',
+                    detialStr: '退款金额预计三到五个工作日内原路返还',
                     remarkStr: '平台已同意您的退款',
                 }
             case STATUS_FAIL: {
