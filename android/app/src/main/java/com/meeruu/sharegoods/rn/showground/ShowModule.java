@@ -172,8 +172,6 @@ public class ShowModule extends ReactContextBaseJavaModule implements LifecycleE
 
     @ReactMethod
     public void uploadVideo(final String title, final String path, final Promise promise){
-//        UploadFileInfo uploadFileInfo = new UploadFileInfo();
-//        uploader.setUploadAuthAndAddress(uploadFileInfo,"","");
         File file = new File(path);
         if(!file.exists()){
             promise.reject("文件不存在");

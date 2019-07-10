@@ -152,8 +152,9 @@ export default class ReleaseNotesPage extends BasePage {
     };
 
     publishVideo=()=>{
-        NativeModules.ShowModule.uploadVideo('cs',this.state.videoData.videoPath).then((data)=>{
-            PictureVideoUtils.uploadSingleImage(this.state.videoData.cover,(data)=>{
+        const {videoPath,videoCover} = this.state.videoData;
+        NativeModules.ShowModule.uploadVideo('cs',videoPath).then((data)=>{
+            PictureVideoUtils.uploadSingleImage(videoCover,(data)=>{
                 alert(JSON.stringify(data))
             })
         }).catch((error)=>{
