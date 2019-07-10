@@ -267,6 +267,8 @@ export default class MyOrdersListView extends Component {
         let orderProduct = data.merchantOrder.productOrderList || [];
         let merchantOrderNo = data.merchantOrder.merchantOrderNo;
         let platformOrderNo = data.merchantOrder.platformOrderNo;
+
+
         //从订单发起的都是普通支付
         let result = await payment.checkOrderStatus(platformOrderNo,0,0,0,'');
         // return;

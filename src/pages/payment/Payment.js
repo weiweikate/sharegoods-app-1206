@@ -4,6 +4,9 @@ import Toast from '../../utils/bridge';
 import PayUtil from './PayUtil';
 import user from '../../model/user';
 import { track, trackEvent } from '../../utils/SensorsTrack';
+import { NavigationActions } from 'react-navigation';
+import RouterMap, { replaceRoute } from '../../navigation/RouterMap';
+import { PaymentResult } from './PaymentResultPage';
 
 
 export const paymentType = {
@@ -15,7 +18,7 @@ export const paymentType = {
     bank: 16,    //银行卡支付
     section: 5,  //
     coupon: 17, //优惠券支付
-    zeroPay:0
+    zeroPay: 0
 };
 
 
@@ -241,6 +244,51 @@ export class Payment {
     @action updateUserData = () => {
         user.updateUserData().then(data => {
             this.availableBalance = data.availableBalance;
+        });
+    };
+
+    checkOrderToPage = (platformOrderNo, title = '') => {
+        //从订单发起的都是普通支付
+        this.checkOrderStatus(platformOrderNo, 0, 0, 0, title).then(result => {
+            //零元支付
+            if (result.unpaidAmount == 0) {
+                let detailList = [];
+                detailList.push({
+                    payType: paymentType.zeroPay,
+                    payAmount: result.unpaidAmount
+                });
+                this.platformPay('',platformOrderNo,detailList,title).then(result=>{
+                    replaceRoute(RouterMap.PaymentFinshPage, { payResult: PaymentResult.success });
+                }).catch(error=>{
+                    Toast.$toast(error.msg);
+                });
+                return;
+            }
+            if (result.code === payStatus.payNo) {
+                this.props.nav('payment/PaymentPage', {
+                    amounts: Math.floor(result.unpaidAmount * 100) / 100,
+                    platformOrderNo: platformOrderNo,
+                    orderProductList: [],
+                    productTitle :title
+                });
+            } else if (result.code === payStatus.payNeedThrid) {
+                this.props.nav('payment/ChannelPage', {
+                    remainMoney: Math.floor(result.unpaidAmount * 100) / 100,
+                    platformOrderNo: platformOrderNo,
+                    orderProductList: [],
+                    productTitle:title
+                });
+            } else if (result.code === payStatus.payOut) {
+                Toast.$toast(payStatusMsg[result.code]);
+                let replace = NavigationActions.replace({
+                    key: this.props.navigation.state.key,
+                    routeName: 'order/order/MyOrdersListPage',
+                    params: { index: 2 }
+                });
+                this.props.navigation.dispatch(replace);
+            } else {
+                Toast.$toast(payStatusMsg[result.code] || '系统处理失败');
+            }
         });
     };
 
