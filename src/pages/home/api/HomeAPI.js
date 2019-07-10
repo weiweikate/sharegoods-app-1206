@@ -38,6 +38,7 @@ const api = {
     getLimitGo: ['/product/queryProductDetailByActivity', { method: 'post' }],
     //是否显示秒杀
     isShowLimitGo: ['/advertising/timeLimitSecKill', { method: 'get' }],
+    freeOrderSwitch: ['/promotion/freeOrderSwitch', { method: 'get' }],
     // 关注秒杀商品
     followLimit: ['/promotion/attention', { method: 'post' }],
     // 取消关注秒杀商品
