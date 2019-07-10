@@ -124,7 +124,7 @@ class ConfirmOrderModel {
                 tokenCoin: this.tokenCoin//BigDecimal 一元券抵扣金额
             },
             receiveInfo: {
-                id: this.addressId || '' //int 收货地址ID
+                id: this.addressId //int 收货地址ID
             },
             productList: productList,
             invokeInfo: { //接口请求信息
@@ -179,7 +179,7 @@ class ConfirmOrderModel {
         this.productOrderList = data.productOrderList || [];
         this.payInfo = data.payInfo || {};
         this.receiveInfo = data.receiveInfo || {};
-        this.addressId =  this.receiveInfo.id + '';
+        this.addressId =  this.receiveInfo.id || '';
         this.tokenCoin =  this.payInfo.tokenCoinAmount;
         if (this.payInfo.couponAmount === 0){
             this.userCouponCode = '';
