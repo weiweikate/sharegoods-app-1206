@@ -142,7 +142,7 @@ export default class RequestDetailPage extends BasePage {
 
     handleBackPress = () => {
         if (this.canGoBack) {
-            this.webView.goBack();
+            this.webView && this.webView.goBack();
         } else {
             this.$navigateBack();
         }
