@@ -409,12 +409,70 @@ export default class CommShareModal extends React.Component {
                     <TouchableOpacity style={{ flex: 1 }} onPress={() => {
                         this.close();
                     }}/>
+                    {
+                        currentType ?
+                            <Animated.View style={{
+                                height: this.imageHeight,
+                                width: this.imageWidth,
+                                position: 'relative',
+                                // bottom: 275 + ScreenUtils.safeBottom * 3 / 2,
+                                bottom: 5,
+                                left: (ScreenUtils.width - this.imageWidth) / 2,
+                                borderRadius: 10,
+                                borderColor: DesignRule.textColor_placeholder,
+                                shadowOpacity: 0.3,
+                                borderWidth: this.props.type === 'promotionShare' ? 0 : 0.5,
+                                overflow: 'hidden',
+                                shadowColor: DesignRule.textColor_placeholder,
+                                transform: [{ scale: this.state.scale }]
+
+                            }}>
+                                {this.props.type === 'Image' || this.props.type === 'Invite' ?
+                                    <TouchableWithoutFeedback onLongPress={() => {
+                                        if (this.props.type === 'promotionShare') {
+                                            Linking.openURL(this.props.webJson.linkUrl);
+                                        }
+                                    }}>
+                                        <Image source={{ uri: this.state.path }}
+                                               resizeMode={this.props.type === 'web' ? 'center' : 'contain'}
+                                               style={{
+                                                   height: this.imageHeight,
+                                                   width: this.imageWidth,
+                                                   backgroundColor: 'white'
+                                               }}/>
+                                    </TouchableWithoutFeedback> : null
+                                }
+                                {this.props.type === 'Show' ?
+                                    <ShowShareImage modalWidth={this.imageWidth} modalHeight={this.imageHeight * 2 / 3}
+                                                    data={this.props.imageJson} modal={this.modal}/> : null
+                                }
+                                {
+                                    this.state.path === '' && this.props.type !== 'Show' ? <ActivityIndicator
+                                        color="#aaaaaa"
+                                        style={{
+                                            position: 'absolute',
+                                            width: 10,
+                                            height: 10,
+                                            top: this.imageHeight / 2.0 - 5,
+                                            left: this.imageWidth / 2.0 - 5
+                                        }}/> : null
+                                }
+                                <TouchableWithoutFeedback onPress={() => {
+                                    this.close();
+                                }}>
+                                    <Image style={styles.closeImgStyle}
+                                           source={res.share.close_black}/>
+                                </TouchableWithoutFeedback>
+                            </Animated.View> : null
+                    }
                     <Animated.View style={{
                         transform: [{ translateY: this.state.y }],
                         paddingBottom: ScreenUtils.safeBottom,
                         backgroundColor: 'white',
                         borderRadius: 10,
-                        margin: 15
+                        marginLeft: 15,
+                        marginRight: 15,
+                        marginBottom: 15
 
                     }}>
                         <View
@@ -519,61 +577,7 @@ export default class CommShareModal extends React.Component {
                         </View>
 
                     </Animated.View>
-                    {
-                        currentType ?
-                            <Animated.View style={{
-                                height: this.imageHeight,
-                                width: this.imageWidth,
-                                position: 'absolute',
-                                bottom: 275 + ScreenUtils.safeBottom * 3 / 2,
-                                left: (ScreenUtils.width - this.imageWidth) / 2,
-                                borderRadius: 10,
-                                borderColor: DesignRule.textColor_placeholder,
-                                shadowOpacity: 0.3,
-                                borderWidth: this.props.type === 'promotionShare' ? 0 : 0.5,
-                                overflow: 'hidden',
-                                shadowColor: DesignRule.textColor_placeholder,
-                                transform: [{ scale: this.state.scale }]
 
-                            }}>
-                                {this.props.type === 'Image' || this.props.type === 'Invite' ?
-                                    <TouchableWithoutFeedback onLongPress={() => {
-                                        if (this.props.type === 'promotionShare') {
-                                            Linking.openURL(this.props.webJson.linkUrl);
-                                        }
-                                    }}>
-                                        <Image source={{ uri: this.state.path }}
-                                               resizeMode={this.props.type === 'web' ? 'center' : 'contain'}
-                                               style={{
-                                                   height: this.imageHeight,
-                                                   width: this.imageWidth,
-                                                   backgroundColor: 'white'
-                                               }}/>
-                                    </TouchableWithoutFeedback> : null
-                                }
-                                {this.props.type === 'Show' ?
-                                    <ShowShareImage modalWidth={this.imageWidth} modalHeight={this.imageHeight * 2 / 3}
-                                                    data={this.props.imageJson} modal={this.modal}/> : null
-                                }
-                                {
-                                    this.state.path === '' && this.props.type !== 'Show' ? <ActivityIndicator
-                                        color="#aaaaaa"
-                                        style={{
-                                            position: 'absolute',
-                                            width: 10,
-                                            height: 10,
-                                            top: this.imageHeight / 2.0 - 5,
-                                            left: this.imageWidth / 2.0 - 5
-                                        }}/> : null
-                                }
-                                <TouchableWithoutFeedback onPress={() => {
-                                    this.close();
-                                }}>
-                                    <Image style={styles.closeImgStyle}
-                                           source={res.share.close_black}/>
-                                </TouchableWithoutFeedback>
-                            </Animated.View> : null
-                    }
                 </View>
             </CommModal>
         );
