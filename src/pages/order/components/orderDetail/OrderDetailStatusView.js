@@ -45,7 +45,6 @@ const styles = StyleSheet.create({
         height: px2dp(100),
         flexDirection: 'row',
         paddingLeft: px2dp(22),
-        position: 'absolute',
         alignItems: 'center'
     },
     textStyle:{

@@ -4,8 +4,7 @@ import Toast from '../../utils/bridge';
 import PayUtil from './PayUtil';
 import user from '../../model/user';
 import { track, trackEvent } from '../../utils/SensorsTrack';
-import { NavigationActions } from 'react-navigation';
-import RouterMap, { replaceRoute } from '../../navigation/RouterMap';
+import RouterMap, { replaceRoute, routePush } from '../../navigation/RouterMap';
 import { PaymentResult } from './PaymentResultPage';
 
 
@@ -257,7 +256,7 @@ export class Payment {
                     payType: paymentType.zeroPay,
                     payAmount: result.unpaidAmount
                 });
-                this.platformPay('',platformOrderNo,detailList,title).then(result=>{
+                this.platformPay('',this.fundsTradingNo,detailList,title).then(result=>{
                     replaceRoute(RouterMap.PaymentFinshPage, { payResult: PaymentResult.success });
                 }).catch(error=>{
                     Toast.$toast(error.msg);
@@ -265,14 +264,14 @@ export class Payment {
                 return;
             }
             if (result.code === payStatus.payNo) {
-                this.props.nav('payment/PaymentPage', {
+                routePush('payment/PaymentPage', {
                     amounts: Math.floor(result.unpaidAmount * 100) / 100,
                     platformOrderNo: platformOrderNo,
                     orderProductList: [],
                     productTitle :title
                 });
             } else if (result.code === payStatus.payNeedThrid) {
-                this.props.nav('payment/ChannelPage', {
+                routePush('payment/ChannelPage', {
                     remainMoney: Math.floor(result.unpaidAmount * 100) / 100,
                     platformOrderNo: platformOrderNo,
                     orderProductList: [],
@@ -280,12 +279,7 @@ export class Payment {
                 });
             } else if (result.code === payStatus.payOut) {
                 Toast.$toast(payStatusMsg[result.code]);
-                let replace = NavigationActions.replace({
-                    key: this.props.navigation.state.key,
-                    routeName: 'order/order/MyOrdersListPage',
-                    params: { index: 2 }
-                });
-                this.props.navigation.dispatch(replace);
+                replaceRoute('order/order/MyOrdersListPage', { index: 2 })
             } else {
                 Toast.$toast(payStatusMsg[result.code] || '系统处理失败');
             }

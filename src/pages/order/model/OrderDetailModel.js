@@ -165,7 +165,19 @@ class OrderDetailModel {
         remainingTime = (remainingTime - H) / 24;
         let d = remainingTime;
 
-        return  d + '天' + H + '小时' + m + '分' + s + '秒';
+        let time =  d + '天' + H + '小时' + m + '分' + s + '秒';
+        if (d === 0){
+            time =  H + '小时' + m + '分' + s + '秒';
+            if (H === 0){
+                time = m + '分' + s + '秒';
+            }
+        }
+        if (this.merchantOrder.status ===  OrderType.WAIT_PAY){
+            return '还剩'+ time + '时间自动关闭订单'
+        }else {
+            return '还剩'+ time + '时间自动确认收货'
+        }
+
     }
 
     @action

@@ -80,7 +80,7 @@ export default class ConfirmPriceView extends Component {
                     </View>
                 }
                 <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
-                {promotionAmount ? <View style={styles.couponsStyle}
+                {promotionAmount != 0 ? <View style={styles.couponsStyle}
                                                activeOpacity={0.5}
                                                onPress={this.props.jumpToCouponsPage}>
                     <UIText value={'组合优惠'} style={styles.blackText}/>
@@ -100,7 +100,7 @@ export default class ConfirmPriceView extends Component {
                     <UIText value={'优惠券'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
-                            value={couponAmount?'-'+StringUtils.formatMoneyString(couponAmount) :'请选择优惠券'}
+                            value={couponAmount != 0 ?'-'+StringUtils.formatMoneyString(couponAmount) :'请选择优惠券'}
                             style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(15) }]}/>
                         <Image source={arrow_right}/>
                     </View>
@@ -112,7 +112,7 @@ export default class ConfirmPriceView extends Component {
                     <UIText value={'1元现金券'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
-                            value={tokenCoinAmount ? '-'+StringUtils.formatMoneyString(tokenCoinAmount) : '请选择1元现金券'}
+                            value={tokenCoinAmount != 0 ? '-'+StringUtils.formatMoneyString(tokenCoinAmount) : '请选择1元现金券'}
                             style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(15) }]}/>
                         <Image source={arrow_right}/>
                     </View>
