@@ -151,7 +151,7 @@ export default class OrderDetailBottomButtonView extends Component {
                 break;
             case 10:
                 OrderApi.checkInfo({warehouseOrderNo:orderDetailModel.merchantOrderNo}).then(res => {
-                    if(res.data === false){
+                    if(res.data === true){
                         routePush(RouterMap.P_ScorePublishPage, {
                             orderNo: orderDetailModel.merchantOrderNo
                         })
