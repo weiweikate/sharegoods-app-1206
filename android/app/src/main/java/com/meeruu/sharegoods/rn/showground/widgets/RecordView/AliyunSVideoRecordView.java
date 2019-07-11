@@ -34,6 +34,7 @@ import com.aliyun.svideo.sdk.external.struct.recorder.CameraType;
 import com.aliyun.svideo.sdk.external.struct.recorder.FlashType;
 import com.aliyun.svideo.sdk.external.struct.recorder.MediaInfo;
 import com.aliyun.svideo.sdk.external.struct.snap.AliyunSnapVideoParam;
+import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.sharegoods.R;
@@ -115,6 +116,7 @@ public class AliyunSVideoRecordView extends FrameLayout implements ScaleGestureD
     private boolean isOpenFailed = false;
     private boolean activityStoped;
 
+    private RecordTimelineView mRecordTimeView;
 
     /**
      * 视频是是否正正在已经调用stopRecord到onComplete回调过程中这段时间，这段时间不可再次调用stopRecord
@@ -168,6 +170,7 @@ public class AliyunSVideoRecordView extends FrameLayout implements ScaleGestureD
         initSurfaceView();
         initControlView();
         initRecorder();
+        initRecordTimeView();
 
     }
 
@@ -199,6 +202,25 @@ public class AliyunSVideoRecordView extends FrameLayout implements ScaleGestureD
         });
         addSubView(mSurfaceView);
     }
+
+
+
+    private void initRecordTimeView() {
+        mRecordTimeView = new RecordTimelineView(getContext());
+        LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, DensityUtils.dip2px( 6));
+
+        params.setMargins(DensityUtils.dip2px( 12),
+                DensityUtils.dip2px( 6),
+                DensityUtils.dip2px(12),
+                0);
+        mRecordTimeView.setColor(R.color.aliyun_color_record_duraton, R.color.aliyun_music_colorPrimary, R.color.aliyun_white,
+                R.color.alivc_bg_record_time);
+        mRecordTimeView.setMaxDuration(clipManager.getMaxDuration());
+        mRecordTimeView.setMinDuration(clipManager.getMinDuration());
+        addView(mRecordTimeView, params);
+
+    }
+
 
     /**
      * addSubView 添加子view到布局中
@@ -287,7 +309,7 @@ public class AliyunSVideoRecordView extends FrameLayout implements ScaleGestureD
                     // 这里是因为如果 SDK 还没有回调onComplete,点击回删会出现删除的不是最后一段的问题
                     return;
                 }
-//                mRecordTimeView.deleteLast();
+                mRecordTimeView.deleteLast();
                 clipManager.deletePart();
                 isMaxDuration = false;
                 if (mControlView != null) {
@@ -617,9 +639,9 @@ public class AliyunSVideoRecordView extends FrameLayout implements ScaleGestureD
 //                        isAllowChangeMv = false;
                         recordTime = 0;
                         //设置录制进度
-//                        if (mRecordTimeView != null) {
-//                            mRecordTimeView.setDuration((int)duration);
-//                        }
+                        if (mRecordTimeView != null) {
+                            mRecordTimeView.setDuration((int)duration);
+                        }
 
                         recordTime = (int) (currentDuration + duration);
                         if (recordTime <= clipManager.getMaxDuration() && recordTime >= clipManager.getMinDuration()) {
@@ -810,21 +832,21 @@ public class AliyunSVideoRecordView extends FrameLayout implements ScaleGestureD
                 }
 
                 if (!isValid) {
-//                    if (mRecordTimeView != null) {
-//                        mRecordTimeView.setDuration(0);
-//
-//                        if (mRecordTimeView.getTimelineDuration() == 0) {
-//                            mControlView.setHasRecordPiece(false);
-//                        }
-//                    }
+                    if (mRecordTimeView != null) {
+                        mRecordTimeView.setDuration(0);
+
+                        if (mRecordTimeView.getTimelineDuration() == 0) {
+                            mControlView.setHasRecordPiece(false);
+                        }
+                    }
                     return;
                 }
 
                 if (duration > 200) {
-//                    if (mRecordTimeView != null) {
-//                        mRecordTimeView.setDuration((int)duration);
-//                        mRecordTimeView.clipComplete();
-//                    }
+                    if (mRecordTimeView != null) {
+                        mRecordTimeView.setDuration((int)duration);
+                        mRecordTimeView.clipComplete();
+                    }
                     mControlView.setHasRecordPiece(true);
 //                    isAllowChangeMv = false;
                 } else {
@@ -962,7 +984,7 @@ public class AliyunSVideoRecordView extends FrameLayout implements ScaleGestureD
                 //                    musicBtn.setVisibility(View.VISIBLE);
                 //                    magicMusic.setVisibility(View.VISIBLE);
                 //recorder.restartMv();
-
+                mRecordTimeView.clear();
                 mControlView.setHasRecordPiece(false);
             }
         }
@@ -1002,7 +1024,9 @@ public class AliyunSVideoRecordView extends FrameLayout implements ScaleGestureD
         if (clipManager != null) {
             clipManager.setMaxDuration(getMaxRecordTime());
         }
-
+        if (mRecordTimeView != null) {
+            mRecordTimeView.setMaxDuration(getMaxRecordTime());
+        }
     }
 
     /**
@@ -1015,7 +1039,9 @@ public class AliyunSVideoRecordView extends FrameLayout implements ScaleGestureD
         if (clipManager != null) {
             clipManager.setMinDuration(minRecordTime);
         }
-
+        if (mRecordTimeView != null) {
+            mRecordTimeView.setMinDuration(minRecordTime);
+        }
     }
 
     /**

@@ -5,5 +5,9 @@
     <color name="status_gray">#999999</color>
     <color name="alivc_svideo_gray_alpha">#50C0C0C0</color>
     <color name="action_bar_bg">#232A42</color>
+    <color name="aliyun_color_record_duraton">#fd4646</color>
+    <color name="aliyun_music_colorPrimary">#3F51B5</color>
+    <color name="aliyun_white">#FFF</color>
+    <color name="alivc_bg_record_time">#33FFFFFF</color>
 
 </resources>

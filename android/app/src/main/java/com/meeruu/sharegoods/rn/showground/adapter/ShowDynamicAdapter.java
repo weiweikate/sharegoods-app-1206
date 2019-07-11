@@ -95,6 +95,7 @@ public class ShowDynamicAdapter extends BaseQuickAdapter<NewestShowGroundBean.Da
         }
 
         TextView desc = helper.getView(R.id.tv_desc);
+        ImageView delete = helper.getView(R.id.iv_delete);
 
         if (item.getStatus() == CommValue.PUBLISH_DONE) {
             desc.setText("已发布");
@@ -105,9 +106,18 @@ public class ShowDynamicAdapter extends BaseQuickAdapter<NewestShowGroundBean.Da
         } else if (item.getStatus() == CommValue.SHIELD) {
             desc.setText("已屏蔽");
             desc.setTextColor(desc.getContext().getResources().getColor(R.color.status_gray));
+        } else if(item.getStatus() == CommValue.TRANSCODING){
+            desc.setText("转码中");
+            desc.setTextColor(desc.getContext().getResources().getColor(R.color.status_blue));
         } else if (item.getStatus() == CommValue.DELETED) {
             desc.setText("已删除");
             desc.setTextColor(desc.getContext().getResources().getColor(R.color.status_gray));
+        }
+
+        if(item.getStatus() == CommValue.TRANSCODING){
+            delete.setVisibility(View.GONE);
+        }else {
+            delete.setVisibility(View.VISIBLE);
         }
 
         TextView title = helper.getView(R.id.showground_item_title);

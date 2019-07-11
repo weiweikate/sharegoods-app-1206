@@ -179,6 +179,16 @@ public class ControlView extends RelativeLayout implements View.OnTouchListener 
                 }
             }
         });
+
+        // 点击回删
+        aliyunDelete.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener != null) {
+                    mListener.onDeleteClick();
+                }
+            }
+        });
     }
 
     /**
