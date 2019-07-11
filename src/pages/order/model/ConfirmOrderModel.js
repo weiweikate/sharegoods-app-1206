@@ -149,15 +149,18 @@ class ConfirmOrderModel {
             bridge.hiddenLoading();
             this.err=err;
             this.disPoseErr(err);
+
         });
     }
 
 
     disPoseErr = (err) => {
-        if (this.data){
+        if (this.data){//原来有数据，清除选择优惠券信息
             this.data.payInfo.payAmount +=  this.data.payInfo.couponAmount;
             this.data.payInfo.couponAmount = 0;//清除优惠券信息
             this.handleNetData(this.data);
+        }else {//原来没有数据的时候，展示自己带下来的数据
+            this.productOrderList = this.orderParamVO.orderProducts || []
         }
         if (err.code === 10003 && err.msg.indexOf('不在限制的购买时间') !== -1) {
             Alert.alert('提示', err.msg, [
