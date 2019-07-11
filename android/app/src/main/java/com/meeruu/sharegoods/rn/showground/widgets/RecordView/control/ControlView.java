@@ -36,6 +36,7 @@ public class ControlView extends RelativeLayout implements View.OnTouchListener 
     private FrameLayout mTitleView;
     private TextView mRecordTipTV;
     private LinearLayout llVideo;
+    private ImageView ivReadyRecord;
 
     private ControlViewListener mListener;
     //闪光灯类型
@@ -189,6 +190,49 @@ public class ControlView extends RelativeLayout implements View.OnTouchListener 
                 }
             }
         });
+
+        // 准备录制
+        ivReadyRecord.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (FastClickUtil.isFastClick()) {
+                    return;
+                }
+                if (isRecording) {
+                    return;
+                }
+                if (recordState == RecordState.STOP) {
+                    recordState = RecordState.READY;
+                    updateAllViews();
+                    if (mListener != null) {
+                        mListener.onReadyRecordClick(false);
+                    }
+                } else {
+                    recordState = RecordState.STOP;
+                    if (mListener != null) {
+                        mListener.onReadyRecordClick(true);
+                    }
+                }
+
+            }
+        });
+
+    }
+
+    /**
+     * 倒计时按钮是否可以点击
+     *
+     * @param isClickable  true: 可点击, 按钮白色, false: 不可点击, 按钮置灰
+     */
+    public void updataCutDownView(boolean isClickable) {
+        if (isClickable) {
+            ivReadyRecord.setColorFilter(null);
+            ivReadyRecord.setClickable(true);
+        } else {
+            ivReadyRecord.setColorFilter(ContextCompat.getColor(getContext(), R.color.alivc_svideo_gray_alpha));
+            ivReadyRecord.setClickable(false);
+        }
+        UIConfigManager.setImageResourceConfig(ivReadyRecord, R.attr.countdownImage, R.mipmap.alivc_svideo_icon_magic);
     }
 
     /**
@@ -225,7 +269,7 @@ public class ControlView extends RelativeLayout implements View.OnTouchListener 
 
 
     private void assignViews() {
-//        ivReadyRecord = (ImageView) findViewById(R.id.aliyun_ready_record);
+        ivReadyRecord = (ImageView) findViewById(R.id.aliyun_ready_record);
         aliyunSwitchLight = (ImageView) findViewById(R.id.aliyun_switch_light);
 //        mLlFilterEffect = findViewById(R.id.alivc_record_effect_filter);
         aliyunSwitchCamera = (ImageView) findViewById(R.id.aliyun_switch_camera);
@@ -257,11 +301,11 @@ public class ControlView extends RelativeLayout implements View.OnTouchListener 
         //完成的按钮图片 - 不可用
         //底部滤镜，美颜，美肌对应的按钮图片
         //底部动图mv对应的按钮图片
-//        UIConfigManager.setImageResourceConfig(
-//            new ImageView[] {ivReadyRecord, findViewById(R.id.iv_beauty_face), findViewById(R.id.iv_gif_effect)}
-//            , new int[] { R.attr.countdownImage, R.attr.faceImage, R.attr.magicImage}
-//            , new int[] {R.mipmap.alivc_svideo_icon_magic, R.mipmap.alivc_svideo_icon_beauty_face, R.mipmap.alivc_svideo_icon_gif_effect}
-//        );
+        UIConfigManager.setImageResourceConfig(
+            new ImageView[] {ivReadyRecord}
+            , new int[] { R.attr.countdownImage}
+            , new int[] {R.mipmap.alivc_svideo_icon_magic}
+        );
 
         //回删对应的图片
         //拍摄中红点对应的图片

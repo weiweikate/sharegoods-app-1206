@@ -3,17 +3,25 @@ package com.meeruu.sharegoods.rn.showground.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.MediaController;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import com.aliyun.common.utils.MySystemParams;
+import com.meeruu.commonlib.utils.NotchScreenUtil;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.event.ShowVideoEvent;
 import com.meeruu.sharegoods.rn.showground.bean.ImageBean;
@@ -33,9 +41,16 @@ public class VideoPlayActivity extends Activity  implements MediaPlayer.OnErrorL
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        MySystemParams.getInstance().init(this);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        Window window = getWindow();
+        // 检测是否是全面屏手机, 如果不是, 设置FullScreen
+        if (!NotchScreenUtil.checkNotchScreen(this)) {
+            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_show_video_play);
         video_path = getIntent().getStringExtra("video_path");
         if(TextUtils.isEmpty(video_path)){
@@ -47,6 +62,7 @@ public class VideoPlayActivity extends Activity  implements MediaPlayer.OnErrorL
         iv_play = (ImageView) findViewById(com.reactnative.ivpusic.imagepicker.R.id.iv_play);
         next = findViewById(R.id.tv_right);
         mMediaController = new MediaController(this);
+        styleMediaController(mMediaController);
         mVideoView.setOnCompletionListener(this);
         mVideoView.setOnPreparedListener(this);
         mVideoView.setMediaController(mMediaController);
@@ -55,7 +71,23 @@ public class VideoPlayActivity extends Activity  implements MediaPlayer.OnErrorL
         next.setOnClickListener(this);
     }
 
+    private void styleMediaController(View view) {
+        if (view instanceof MediaController) {
+            MediaController v = (MediaController) view;
+            for (int i = 0; i < v.getChildCount(); i++) {
+                styleMediaController(v.getChildAt(i));
+            }
+        } else if (view instanceof LinearLayout) {
+            LinearLayout ll = (LinearLayout) view;
+            for (int i = 0; i < ll.getChildCount(); i++) {
+                styleMediaController(ll.getChildAt(i));
+            }
+        } else if (view instanceof SeekBar) {
 
+            ((SeekBar) view).setProgressDrawable(getResources().getDrawable(R.drawable.progressbar));
+            ((SeekBar) view).setThumb(getResources().getDrawable(R.drawable.progresshandle));
+        }
+    }
     @Override
     public void onStart() {
         // Play Video
