@@ -96,7 +96,7 @@ export default class SelectionHeaderView extends Component {
                             color: DesignRule.textColor_mainTitle,
                             fontSize: 13,
                             marginTop: 6
-                        }} numberOfLines={2}
+                        }} numberOfLines={1}
                               allowFontScaling={false}>{selectStrListTemp.join(',').replace(/@/g, '')}</Text>
                     </View>
                     <TouchableOpacity style={{ position: 'absolute', top: 16, right: 16 }}
