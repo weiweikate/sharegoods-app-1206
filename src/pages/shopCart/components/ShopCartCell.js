@@ -29,14 +29,22 @@ export default class ShopCartCell extends Component {
     constructor(props) {
         super(props);
     }
+
     render() {
         const { itemData, rowMap, rowId, cellClickAction, sectionData } = this.props;
         return (<View>{this._renderCellView(itemData, rowMap, rowId, cellClickAction, sectionData)}</View>);
     }
+
     _renderCellView = (itemData, rowMap, rowId, cellClickAction, sectionData) => {
         return (
-            <View rowMap={rowMap} style={{ backgroundColor: DesignRule.bgColor, paddingBottom: px2dp(1), marginTop: itemData.topSpace }}>
-                <TouchableHighlight onPress={() => {cellClickAction(itemData);}}>
+            <View rowMap={rowMap} style={{
+                backgroundColor: DesignRule.bgColor,
+                paddingBottom: px2dp(1),
+                marginTop: itemData.topSpace
+            }}>
+                <TouchableHighlight onPress={() => {
+                    cellClickAction(itemData);
+                }}>
                     <View style={styles.standaloneRowFront}>
                         <View style={{ flexDirection: 'row', paddingTop: px2dp(20), height: Cell_Height }}>
                             <View style={{ height: px2dp(75), alignItems: 'center', justifyContent: 'center' }}>
@@ -48,12 +56,14 @@ export default class ShopCartCell extends Component {
                             <UIImage source={{ uri: itemData.imgUrl ? itemData.imgUrl : '' }}
                                      style={[styles.validProductImg]}/>
                             {
-                                itemData.orderOnProduct === 0
-                                    ? <UIImage source={statueImage[4]} style={styles.statusImg}/>
-                                    : (itemData.productStatus === 1
-                                    ? null
-                                    : <UIImage source={statueImage[itemData.productStatus]}
-                                               style={styles.statusImg}/>)
+
+                                (itemData.productStatus !== 1)
+                                    ?
+                                    <UIImage source={statueImage[itemData.productStatus]}
+                                             style={styles.statusImg}/>
+                                    : (itemData.orderOnProduct === 0 ?
+                                    <UIImage source={statueImage[4]} style={styles.statusImg}/> :
+                                    null)
                             }
                         </View>
                         <View style={styles.validContextContainer}>
@@ -298,7 +308,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         justifyContent: 'center',
         textAlign: 'center',
-        paddingVertical: 0,
+        paddingVertical: 0
     },
     validContextContainer: {
         flex: 1,
