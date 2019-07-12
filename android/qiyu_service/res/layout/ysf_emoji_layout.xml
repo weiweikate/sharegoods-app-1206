@@ -84,37 +84,40 @@
         android:gravity="center"
         android:text="正在加载中，请稍后..."
         android:visibility="gone"/>
+
     <LinearLayout
         android:id="@+id/ll_load_fail_parent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
         android:orientation="vertical">
+
         <TextView
             android:id="@+id/ysf_tv_network_error_pic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="当前网络不可用"
-            android:drawablePadding="10dp"
-            android:drawableTop="@drawable/ysf_ic_network_error"
-            android:layout_marginTop="40dp"
-            android:layout_gravity="center_horizontal"
             android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="40dp"
+            android:drawableTop="@drawable/ysf_ic_network_error"
+            android:drawablePadding="10dp"
+            android:text="当前网络不可用" />
+
         <Button
             android:id="@+id/btn_load_fail_reload"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:textColor="@color/ysf_white"
-            android:paddingBottom="10dp"
-            android:layout_marginTop="20dp"
-            android:paddingTop="10dp"
             android:layout_gravity="center_horizontal"
-            android:paddingRight="12dp"
-            android:paddingLeft="12dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/ysf_evaluation_button_bg"
-            android:text="刷新"/>
+            android:paddingLeft="12dp"
+            android:paddingTop="10dp"
+            android:paddingRight="12dp"
+            android:paddingBottom="10dp"
+            android:text="刷新"
+            android:textColor="@color/ysf_white" />
     </LinearLayout>
 
 
