@@ -232,7 +232,7 @@ export default class ReleaseNotesPage extends BasePage {
             });
         } else {
             NativeModules.MRImagePickerBridge.getShowVideo().then((data)=>{
-
+                this.setState({videoData:data})
             });
         }
 

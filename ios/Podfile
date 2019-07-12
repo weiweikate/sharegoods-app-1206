@@ -48,6 +48,7 @@ pod 'QuCore-ThirdParty'
 pod 'VODUpload'
 pod 'AliyunOSSiOS'
 pod 'AlivcConan'
+pod 'JSONModel','~> 1.7.0'
 
 #pod 'SensorsAnalyticsSDK', :subspecs => ['ENABLE_REACT_NATIVE_APPCLICK']
 ##绘图和icon
