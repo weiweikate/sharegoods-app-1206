@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -33,7 +32,6 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
-import com.facebook.react.bridge.UiThreadUtil;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
@@ -58,8 +56,6 @@ import com.meeruu.sharegoods.ui.activity.MRWebviewActivity;
 import com.meeruu.statusbar.ImmersionBar;
 import com.meituan.android.walle.WalleChannelReader;
 import com.qiyukf.unicorn.api.Unicorn;
-import com.reactnative.ivpusic.imagepicker.cameralibrary.util.LogUtil;
-import com.reactnative.ivpusic.imagepicker.picture.lib.tools.Md5Utils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -424,8 +420,8 @@ public class CommModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void updatePushAlias(ReadableMap data) {
         if (data.hasKey("userId")) {
-            String lastVersion = data.getString("userId");
-            JPushInterface.setAlias(this.mContext, lastVersion, null);
+            String userId = data.getString("userId");
+            JPushInterface.setAlias(this.mContext, 1, userId);
         }
     }
 
@@ -454,6 +450,11 @@ public class CommModule extends ReactContextBaseJavaModule {
             tagSet.add(data.getString("version"));
         }
         JPushInterface.setTags(this.mContext, tagSet, null);
+    }
+
+    @ReactMethod
+    public void deleteAllAlias() {
+        JPushInterface.deleteAlias(this.mContext, 1);
     }
 
     /**
@@ -606,50 +607,6 @@ public class CommModule extends ReactContextBaseJavaModule {
         intent.putExtra("web_url", url);
         intent.putExtra("url_action", "get");
         getCurrentActivity().startActivityForResult(intent, ParameterUtils.REQUEST_CODE_GONGMAO);
-    }
-
-
-    @ReactMethod
-    public void compressVideo(String path, final Promise promise) {
-//        initSmallVideo();
-//        String realPath = Uri.parse(path).getPath();
-//        File file = new File(realPath);
-//        if(file.exists()){
-//            LocalMediaConfig.Buidler buidler = new LocalMediaConfig.Buidler();
-//            final LocalMediaConfig config = buidler
-//                    .setVideoPath(file.getAbsolutePath())
-//                    .captureThumbnailsTime(1)
-//                    .doH264Compress(new VBRMode(58000,3000))
-//                    .setFramerate(30)
-//                    .setScale(1.0f)
-//                    .build();
-//            new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            showLoadingDialog("视频压缩中...");
-//                        }
-//                    });
-//                    OnlyCompressOverBean onlyCompressOverBean = new LocalMediaCompress(config).startCompress();
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            hideLoadingDialog();
-//                        }
-//                    });
-//                    if(onlyCompressOverBean.isSucceed()){
-//                        promise.resolve(onlyCompressOverBean.getVideoPath());
-//                    }else {
-//                        promise.reject("compress video fail");
-//                    }
-//
-//                }}).start();
-//        }else {
-//            promise.reject("file not found");
-//        }
-
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

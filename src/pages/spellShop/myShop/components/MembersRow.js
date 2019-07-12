@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     icon: {
-        marginLeft: 23,
+        marginLeft: 15,
         marginRight: 8
     },
     iconTitle: {
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     },
     arrow: {
         marginLeft: 5,
-        marginRight: 21
+        marginRight: 15
     },
     membersContainer: {
         flexDirection: 'row',

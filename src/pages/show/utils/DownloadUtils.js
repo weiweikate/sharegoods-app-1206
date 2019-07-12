@@ -8,14 +8,14 @@ import EmptyUtils from '../../../utils/EmptyUtils';
  * @date 2019/5/31
  */
 
-const downloadProduct=(nativeEvent)=>{
+const downloadProduct = (nativeEvent) => {
     let { detail } = nativeEvent;
 
     let promises = [];
     if (!EmptyUtils.isEmptyArr(detail.products)) {
         detail.products.map((value) => {
             let showPrice = 0;
-            const { singleActivity = {}, groupActivity = {} } = value.promotionResult || {};
+            const { singleActivity = {}, groupActivity = {} } = (value && value.promotionResult) || {};
             const { endTime: endTimeT, startTime: startTimeT, currentTime = Date.parse(new Date()) } = groupActivity && groupActivity.type ? groupActivity : singleActivity;
             if (currentTime > startTimeT && currentTime < endTimeT + 500) {
                 showPrice = value.promotionMinPrice;
@@ -37,7 +37,7 @@ const downloadProduct=(nativeEvent)=>{
     if (!EmptyUtils.isEmptyArr(promises)) {
         Promise.all(promises);
     }
-}
+};
 
 export default {
     downloadProduct

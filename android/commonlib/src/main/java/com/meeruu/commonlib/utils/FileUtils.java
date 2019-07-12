@@ -42,7 +42,6 @@ public class FileUtils {
      *
      * @param oldPath
      * @param newPath
-     * @throws Exception
      */
     public static void copyFile(String oldPath, String newPath) throws Exception {
 

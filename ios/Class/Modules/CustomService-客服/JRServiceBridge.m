@@ -11,11 +11,16 @@
 #import "JRServiceManager.h"
 #import "MRImageVideoManager.h"
 
+
+
+
+
 @implementation JRServiceBridge
 {
   bool hasListeners;
 }
 
+@synthesize bridge=_bridge;
 
 -(NSArray<NSString *> *)supportedEvents{
   return @[
@@ -23,7 +28,6 @@
            QY_CARD_CLICK
            ];
 }
-
 RCT_EXPORT_MODULE(JRQYService)
 /***
  *用户登录后触发此方法

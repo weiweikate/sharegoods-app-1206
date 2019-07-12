@@ -20,12 +20,13 @@
     <color name="ysf_grey_e6e6e6">#e6e6e6</color>
     <color name="ysf_grey_eaeaea">#eaeaea</color>
     <color name="ysf_grey_e0e0e0">#E0E0E0</color>
+    <color name="ysf_grey_ededed">#ededed</color>
     <color name="ysf_grey_EFEFEF">#EFEFEF</color>
     <color name="ysf_grey_f1f1f1">#F1F1F1</color>
     <color name="ysf_grey_f3f3f3">#F3F3F3</color>
     <color name="ysf_grey_f7f7f7">#F7F7F7</color>
     <color name="ysf_grey_F9F9F9">#F9F9F9</color>
-    <color name="ysf_grey_fafafa">#FAFAFA</color>
+    <color name="ysf_grey_fafafa">#EDEDED</color>
     <color name="ysf_red_9d3b39">#9d3b39</color>
     <color name="ysf_red_e64340">#e64340</color>
     <color name="ysf_red_f25058">#f25058</color>
@@ -33,9 +34,11 @@
     <color name="ysf_blue_529DF9">#529DF9</color>
     <color name="ysf_blue_5e94e2">#5e94e2</color>
     <color name="ysf_blue_61a7ea">#61a7ea</color>
+    <color name="ysf_blue_cbe0ff">#cbe0ff</color>
     <color name="ysf_blue_81d4fa">#81d4fa</color>
     <color name="ysf_blue_bbd6f5">#bbd6f5</color>
-    <color name="ysf_blue_cbe0ff">#cbe0ff</color>
+    <color name="ysf_blue_9ac0fe">#9AC0FE</color>
+    <color name="ysf_blue_337EFF">#337EFF</color>
     <color name="ysf_white">@android:color/white</color>
     <color name="ysf_white_99FFFFFF">#99FFFFFF</color>
     <color name="ysf_black">@android:color/black</color>
@@ -49,6 +52,8 @@
     <color name="ysf_blue_4F82AE">#4F82AE</color>
     <color name="ysf_grey_E1E3E6">#E1E3E6</color>
     <color name="ysf_grey_F5F6F7">#F5F6F7</color>
+
+    <color name="ysf_color_EBEDF0">#EBEDF0</color>
 
     <!-- title bar -->
     <color name="ysf_title_bar_title_color">@color/ysf_black</color>
@@ -72,4 +77,18 @@
     <color name="ysf_theme_color_pressed">#4E97D9</color>
     <!-- disable状态下的颜色，影响按钮，EditText等控件 -->
     <color name="ysf_theme_color_disabled">#BCD8F1</color>
+
+    <!--mediaselect-->
+    <color name="ysf_album_popup_bg">#FFFFFF</color>
+    <color name="ysf_album_dropdown_title_text">#DE000000</color>
+    <color name="ysf_album_dropdown_count_text">#999999</color>
+    <color name="ysf_album_dropdown_thumbnail_placeholder">#EAEEF4</color>
+    <color name="ysf_album_empty_view">#4D000000</color>
+    <color name="ysf_primary">#1E8AE8</color>
+    <color name="ysf_item_placeholder">#EAEEF4</color>
+    <color name="ysf_item_checkCircle_backgroundColor">#1E8AE8</color>
+    <color name="ysf_item_checkCircle_borderColor">#FFFFFF</color>
+    <color name="ysf_capture">#424242</color>
+    <color name="ysf_check_original_radio_disable">#808080</color>
+
 </resources>
