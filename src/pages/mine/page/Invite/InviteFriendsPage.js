@@ -179,7 +179,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
                 <View style={{
                     width: ScreenUtils.width,
                     height: 52,
-                    bottom: 13,
+                    bottom: 33,
                     position: 'absolute',
                     alignItems: 'center',
                     justifyContent: 'center'

@@ -5,13 +5,15 @@
 
 import React from 'react';
 import {
-    StyleSheet,
-    View,
-    ImageBackground,
+    Clipboard,
     Image,
+    ImageBackground,
+    Linking,
     PixelRatio,
+    StyleSheet,
+    TouchableOpacity,
     TouchableWithoutFeedback,
-    TouchableOpacity, Clipboard, Linking
+    View
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import { MRText as Text, MRTextInput as TextInput } from '../../../../components/ui';
@@ -35,7 +37,7 @@ const showFansVip = [
     res.showFans.fans_icon_v2,
     res.showFans.fans_icon_v3,
     res.showFans.fans_icon_v4,
-    res.showFans.fans_icon_v5,
+    res.showFans.fans_icon_v5
 ];
 type Props = {};
 export default class SearchShowFansPage extends BasePage<Props> {
@@ -55,21 +57,22 @@ export default class SearchShowFansPage extends BasePage<Props> {
 
     _listItemRender = ({ item, index }) => {
         const uri = { uri: item.headImg };
-        let name = item.nickname.substring(0,28);
+        let name = (item.nickname && item.nickname.substring(0, 28)) || '';
         let num = item.level ? item.level : 10;
-        let percent = item.percent ? item.percent + '%' : '0%'
+        let percent = item.percent ? item.percent + '%' : '0%';
         return (
-            <ImageBackground key={index + 'showFans'} resizeMode={'stretch'} source={bg_fans_item} style={styles.itemWrapper}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <View style={[styles.fansIcon, {overflow: 'hidden'}]}>
+            <ImageBackground key={index + 'showFans'} resizeMode={'stretch'} source={bg_fans_item}
+                             style={styles.itemWrapper}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={[styles.fansIcon, { overflow: 'hidden' }]}>
                         <AvatarImage style={styles.fansIcon} source={uri}/>
                     </View>
-                    <View style={{flex: 1}}>
-                        <View style={{flexDirection: 'row'}}>
+                    <View style={{ flex: 1 }}>
+                        <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.fansNameStyle} numberOfLines={1}>{name}</Text>
                             {num < 9 ? <Image source={showFansVip[num - 1]} style={styles.levelIcon}/> : null}
                         </View>
-                        {item.percent && item.percent > 0 ? <View style={{marginLeft: 8, marginTop: 5}}>
+                        {item.percent && item.percent > 0 ? <View style={{ marginLeft: 8, marginTop: 5 }}>
                             <View style={{
                                 width: 100,
                                 height: 10,
@@ -84,7 +87,7 @@ export default class SearchShowFansPage extends BasePage<Props> {
                                     borderRadius: 6
                                 }}/>
                             </View>
-                            <Text style={{position: 'absolute', top: -2, left: 5, color: 'white', fontSize: 9}}>
+                            <Text style={{ position: 'absolute', top: -2, left: 5, color: 'white', fontSize: 9 }}>
                                 任务进度：{percent}
                             </Text>
                         </View> : null
@@ -103,13 +106,14 @@ export default class SearchShowFansPage extends BasePage<Props> {
                             }
                         });
                     }}>
-                        <Image style={[styles.btnIcon, {marginRight: SettingModel.messageState ? 25 : 0}]} source={res.showFans.fans_WXChat}/>
+                        <Image style={[styles.btnIcon, { marginRight: SettingModel.messageState ? 25 : 0 }]}
+                               source={res.showFans.fans_WXChat}/>
                     </TouchableWithoutFeedback> : null) : null}
 
                     {SettingModel.messageState ? <TouchableWithoutFeedback onPress={() => {
-                        item.phone && Linking.openURL(`sms:${item.phone}`)
+                        item.phone && Linking.openURL(`sms:${item.phone}`);
                     }}>
-                        <Image style={[styles.btnIcon, {marginRight: 5}]} source={res.showFans.messageIcon}/>
+                        <Image style={[styles.btnIcon, { marginRight: 5 }]} source={res.showFans.messageIcon}/>
                     </TouchableWithoutFeedback> : null
                     }
                 </View>
@@ -200,7 +204,7 @@ const styles = StyleSheet.create({
     fansNameStyle: {
         color: '#2C2C2C',
         fontSize: DesignRule.fontSize_threeTitle,
-        marginLeft: 8,
+        marginLeft: 8
     },
     typeWrapper: {
         width: 55,
@@ -252,7 +256,7 @@ const styles = StyleSheet.create({
     levelIcon: {
         width: px2dp(24),
         height: px2dp(16),
-        marginLeft: px2dp(5),
+        marginLeft: px2dp(5)
     },
     numTextStyle: {
         fontSize: px2dp(12),
@@ -298,6 +302,6 @@ const styles = StyleSheet.create({
         height: px2dp(16),
         marginLeft: px2dp(10),
         marginRight: px2dp(10)
-    },
+    }
 
 });

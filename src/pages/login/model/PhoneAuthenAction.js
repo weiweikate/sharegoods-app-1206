@@ -13,13 +13,13 @@ const startPhoneAuthen = (phoneNum) => {
     return PhoneAuthenModule.startPhoneAuthenWithPhoneNum(phoneNum);
 };
 
-const startLoginAuth =()=>{
+const startLoginAuth = () => {
     return PhoneAuthenModule.startLoginAuth();
-}
+};
 
-const checkInitResult =()=>{
+const checkInitResult = () => {
     return PhoneAuthenModule.checkInitResult();
-}
+};
 
 
-export { isCanPhoneAuthen, startPhoneAuthen,startLoginAuth,checkInitResult };
+export { isCanPhoneAuthen, startPhoneAuthen, startLoginAuth, checkInitResult };
