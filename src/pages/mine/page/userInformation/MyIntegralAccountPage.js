@@ -285,7 +285,7 @@ export default class MyIntegralAccountPage extends BasePage {
                                 <Text style={{
                                     fontSize: 17,
                                     color: DesignRule.textColor_mainTitle
-                                }}>{StringUtils.formatMoneyString(item.capital, false)}</Text>
+                                }}>{item.capital ? item.capital : 0}</Text>
 
                             </View>
                             <Text style={{
