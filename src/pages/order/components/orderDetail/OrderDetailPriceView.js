@@ -29,7 +29,6 @@ export default class OrderDetailPriceView extends Component {
             freightAmount,
             tokenCoinAmount,
             couponAmount,
-            orderAmount,
             payAmount} = orderDetailModel.payInfo
 
         return(
@@ -67,11 +66,6 @@ export default class OrderDetailPriceView extends Component {
                                 leftTextStyle={{ color: DesignRule.textColor_instruction }}
                                 rightText={'-' + StringUtils.formatMoneyString(couponAmount)}
                                 rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
-                                isLine={false}/>
-                <UserSingleItem itemHeightStyle={{ height: 35 }} leftText={'订单总价'}
-                                leftTextStyle={{ color: DesignRule.textColor_mainTitle_222, fontSize: 15 }}
-                                rightText={StringUtils.formatMoneyString(orderAmount)}
-                                rightTextStyle={{ color: DesignRule.textColor_mainTitle_222, fontSize: 15 }} isArrow={false}
                                 isLine={false}/>
                 {this.renderLine()}
                 <UserSingleItem itemHeightStyle={{ height: 45 }} leftText={`${status > 1 ? '实付款' : '需付款'}`}

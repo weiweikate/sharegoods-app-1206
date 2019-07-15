@@ -48,7 +48,7 @@ class AfterSaleDetailModel {
             if (status === AfterStatus.WAIT_SUPPLIER_CANCLE_DEVLIER){
                 data.service.status = AfterStatus.STATUS_IN_REVIEW;
             }
-
+              data.refundInfo.refundAmount = data.refundDetail.refundAmount;
             ( data.refundDetail.refundItemList || [] ).forEach(item => {
                 if (item.payType === 1){//余额
                     data.refundInfo.accountAmount = item.refundAmount

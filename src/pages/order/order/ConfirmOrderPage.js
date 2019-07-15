@@ -20,6 +20,7 @@ import { track, trackEvent } from '../../../utils/SensorsTrack';
 import SelectOneTicketModel from '../components/confirmOrder/SelectOneTicketModel';
 import SelectTicketModel from '../components/confirmOrder/SelectTicketModel';
 import { MRText } from '../../../components/ui';
+import RouterMap from '../../../navigation/RouterMap';
 
 @observer
 export default class ConfirmOrderPage extends BasePage {
@@ -143,13 +144,22 @@ export default class ConfirmOrderPage extends BasePage {
 
     // 地址重新选择
     selectAddress = () => {
-        this.$navigate('mine/address/AddressManagerPage', {
-            from: 'order',
-            currentId: confirmOrderModel.addressId,
-            callBack: (json) => {
-                confirmOrderModel.selectAddressId(json.id)
-            }
-        });
+        if (confirmOrderModel.addressId && confirmOrderModel.addressId.length > 0){
+            this.$navigate('mine/address/AddressManagerPage', {
+                from: 'order',
+                currentId: confirmOrderModel.addressId,
+                callBack: (json) => {
+                    confirmOrderModel.selectAddressId(json)
+                }
+            });
+        }else {
+            this.$navigate(RouterMap.AddressEditAndAddPage,{
+                callBack: (json) => {
+                    confirmOrderModel.selectAddressId(json)
+                },
+                from: 'add'
+            });
+        }
     };
 
     // 提交订单

@@ -6,8 +6,9 @@ import bridge from '../../../utils/bridge';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { Alert } from 'react-native';
 import shopCartCacheTool from "../../shopCart/model/ShopCartCacheTool";
-import { navigateBack } from '../../../navigation/RouterMap';
+import { navigateBack, routePush } from '../../../navigation/RouterMap';
 import { payment } from '../../payment/Payment';
+import RouterMap from '../../../navigation/RouterMap';
 
 class ConfirmOrderModel {
 
@@ -21,6 +22,8 @@ class ConfirmOrderModel {
     isAllVirtual = false;
 
     addressId =  '';
+    addressData = {};
+
     orderParamVO = {};
     tokenCoin = 0
     userCouponCode = '';
@@ -59,12 +62,13 @@ class ConfirmOrderModel {
     }
 
     @action
-    selectAddressId(addressId){
-        addressId = addressId + '';
+    selectAddressId(addressData){
+        let addressId = addressData.id + '';
         if (this.addressId == addressId && this.addressId && this.addressId.length > 0) {
             return;
         }
         this.addressId = addressId;
+        this.addressData = addressData;
         this.tokenCoin = 0;
         this.makeSureProduct()
     }
@@ -119,13 +123,21 @@ class ConfirmOrderModel {
             let {skuCode, quantity, activityCode, batchNo} = item;
             return {skuCode, quantity, activityCode, batchNo};
         })
+        let {receiver, receiverPhone, province, city, area, street, address} = this.addressData;
         return {
             couponInfo: { //券信息
                 couponCode: this.userCouponCode, //本次下单使用的优惠券code
                 tokenCoin: this.tokenCoin//BigDecimal 一元券抵扣金额
             },
             receiveInfo: {
-                id: this.addressId //int 收货地址ID
+                id: this.addressId, //int 收货地址ID
+                receiver,
+                receiverPhone,
+                province,
+                city,
+                area,
+                street,
+                address
             },
             productList: productList,
             invokeInfo: { //接口请求信息
@@ -184,9 +196,24 @@ class ConfirmOrderModel {
         this.payInfo = data.payInfo || {};
         this.receiveInfo = data.receiveInfo || {};
         this.addressId =  this.receiveInfo.id || '';
+        this.addressData = this.receiveInfo;
         this.tokenCoin =  this.payInfo.tokenCoinAmount;
         if (this.payInfo.couponAmount === 0){
             this.userCouponCode = '';
+        }
+
+        if (this.addressId === '' && this.isAllVirtual === false){
+            Alert.alert('','您还没有收货地址，请点击添加',
+                [{text: '取消', onPress: () => {}},
+                    {text: '添加', onPress: () => {
+                            routePush(RouterMap.AddressEditAndAddPage,{
+                                callBack: (json) => {
+                                    this.selectAddressId(json)
+                                },
+                                from: 'add'
+                            });
+                        }}
+                ])
         }
         //遍历出失效对应商品信息
         let failProductList = [];
