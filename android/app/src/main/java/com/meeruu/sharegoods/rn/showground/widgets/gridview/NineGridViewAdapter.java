@@ -16,7 +16,6 @@ public class NineGridViewAdapter implements Serializable {
         this.context = context;
         this.imageInfo = imageInfo;
     }
-
     /**
      * 如果要实现图片点击的逻辑，重写此方法即可
      *
