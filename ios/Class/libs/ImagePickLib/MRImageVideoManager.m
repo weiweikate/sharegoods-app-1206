@@ -21,6 +21,7 @@ typedef void(^finshCompressVideo)(NSString * newPath);
 @interface MRImageVideoManager ()<UIAlertViewDelegate,UIActionSheetDelegate>
 
 @property (nonatomic,strong) hyfFinshSelectBlock  finshBlock;
+@property (nonatomic,strong) hyfFinshRecordVideo  finshRecordBlock;
 @property (nonatomic,strong) WAVideoBox  * videoBox;
 @property (nonatomic,strong) NSDictionary * options;
 @end
@@ -28,12 +29,62 @@ typedef void(^finshCompressVideo)(NSString * newPath);
 @implementation MRImageVideoManager
 
 SINGLETON_FOR_CLASS(MRImageVideoManager)
-
+-(void)startRecordVideo:(hyfFinshRecordVideo)finshBlock{
+  _finshBlock = finshBlock;
+  
+}
 -(void)startSelectImageOrVideoWithBlock:(NSDictionary *)options and:(hyfFinshSelectBlock)finshBlock{
   _finshBlock = finshBlock;
   _options = options;
-  UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"相机",@"相册", nil];
-  [sheet showInView:[self currentViewController_XG].view];
+//  UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"相机",@"相册", nil];
+//  [sheet showInView:[self currentViewController_XG].view];
+//  return;
+  [[IJSImageManager shareManager] stopCachingImagesFormAllAssets];
+  [IJSImageManager shareManager].allowPickingOriginalPhoto = YES;
+  IJSImagePickerController * nav = [[IJSImagePickerController alloc]initWithMaxImagesCount:8 columnNumber:4 pushPhotoPickerVc:YES];
+  nav.maxImagesCount = self.options[@"maxFiles"] ?[self.options[@"maxFiles"] integerValue]:8;
+  nav.allowPickingVideo = NO;
+  nav.networkAccessAllowed = NO;
+  nav.allowPickingImage = YES;
+  nav.sortAscendingByModificationDate = NO;
+  __weak typeof (self) weakSelf = self;
+  [nav loadTheSelectedData:^(NSArray<UIImage *> *photos, NSArray<NSURL *> *avPlayers, NSArray<PHAsset *> *assets, NSArray<NSDictionary *> *infos, IJSPExportSourceType sourceType, NSError *error) {
+    NSLog(@"回调信息");
+    NSMutableArray * backArr = [NSMutableArray new];
+    if (sourceType == IJSPImageType)
+    {
+      [weakSelf saveImageWithImageArr:photos and:^(NSArray *imageUrlArr) {
+        for (NSInteger index = 0; index < imageUrlArr.count; index++){
+          NSMutableDictionary * imageInfo = [NSMutableDictionary dictionary];
+          PHAsset * asset = assets[index];
+          [imageInfo setObject:[NSString stringWithFormat:@"%@",imageUrlArr[index]] forKey:@"path"];
+          [imageInfo setObject:@"image" forKey:@"type"];
+          [imageInfo setObject:@(asset.pixelHeight) forKey:@"height"];
+          [imageInfo setObject:@(asset.pixelWidth) forKey:@"width"];
+          [backArr addObject:imageInfo];
+        }
+        if (weakSelf.finshBlock) {
+          weakSelf.finshBlock(backArr);
+        }
+      }];
+    }else{
+      if ( avPlayers && avPlayers.count > 0) {
+        NSString * urlPath = [NSString stringWithFormat:@"%@",((NSURL *)avPlayers[0]).absoluteString];
+        NSMutableDictionary * infoDic = [NSMutableDictionary dictionary];
+        PHAsset * asset = assets[0];
+        [infoDic setObject:@(asset.duration) forKey:@"videoTime"];
+        [infoDic setObject:@"video/mp4" forKey:@"type"];
+        [infoDic setObject:urlPath forKey:@"path"];
+        [infoDic setObject:@(asset.pixelWidth) forKey:@"width"];
+        [infoDic setObject:@(asset.pixelHeight) forKey:@"height"];
+        [backArr addObject:infoDic];
+        if (weakSelf.finshBlock) {
+          weakSelf.finshBlock(backArr);
+        }
+      }
+    }
+  }];
+  [[UIApplication sharedApplication].delegate.window.rootViewController presentViewController:nav animated:YES completion:nil];
   
 }
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
