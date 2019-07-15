@@ -31,6 +31,12 @@ SINGLETON_FOR_CLASS(JRShareManager)
        completion:(shareFinshBlock) completion
 {
   UMSocialPlatformType platefrom = [self getUMSocialPlatformType:[shareModel.platformType  integerValue]];
+  
+  if(platefrom == UMSocialPlatformType_Sina &&![[UMSocialManager defaultManager]isInstall:platefrom]){
+    [JRLoadingAndToastTool showToast:@"微博未安装" andDelyTime:1.5f];
+    return;
+  }
+  
   if ([shareModel.shareType integerValue] == 1 || [shareModel.shareType integerValue] == 2) {//为分享网页
     
     if ([shareModel.shareType integerValue] == 2 && platefrom == UMSocialPlatformType_WechatSession) {

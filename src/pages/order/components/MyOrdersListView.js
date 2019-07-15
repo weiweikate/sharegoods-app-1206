@@ -13,8 +13,7 @@ import {
     MRText as Text
 } from '../../../components/ui';
 import RouterMap from '../../../navigation/RouterMap';
-import { payStatus, payment, payStatusMsg } from '../../payment/Payment';
-import { NavigationActions } from 'react-navigation';
+import { payment } from '../../payment/Payment';
 import { SmoothPushPreLoadHighComponent } from '../../../comm/components/SmoothPushHighComponent';
 import RefreshFlatList from '../../../comm/components/RefreshFlatList';
 import { clickOrderAgain, clickOrderConfirmReceipt, clickOrderLogistics } from '../order/CommonOrderHandle';
@@ -243,7 +242,7 @@ export default class MyOrdersListView extends Component {
                 break;
             case 10:
                 OrderApi.checkInfo({ warehouseOrderNo: merchantOrderNo}).then(res => {
-                    if (res.data === false) {
+                    if (res.data === true) {
                         this.props.nav(RouterMap.P_ScorePublishPage, {
                             orderNo: merchantOrderNo
                         });
@@ -263,38 +262,11 @@ export default class MyOrdersListView extends Component {
 
     };
 
-    async _goToPay(data) {
+    _goToPay(data) {
         let orderProduct = data.merchantOrder.productOrderList || [];
-        let merchantOrderNo = data.merchantOrder.merchantOrderNo;
         let platformOrderNo = data.merchantOrder.platformOrderNo;
-        //从订单发起的都是普通支付
-        let result = await payment.checkOrderStatus(platformOrderNo,0,0,0,'');
-        // return;
-        if (result.code === payStatus.payNo) {
-            this.props.nav('payment/PaymentPage', {
-                orderNum: merchantOrderNo,
-                amounts: result.unpaidAmount,
-                platformOrderNo: platformOrderNo,
-                orderProductList: orderProduct
-            });
-        } else if (result.code === payStatus.payNeedThrid) {
-            this.props.nav('payment/ChannelPage', {
-                remainMoney: Math.floor(result.unpaidAmount * 100) / 100,
-                orderNum: merchantOrderNo,
-                platformOrderNo: platformOrderNo,
-                orderProductList: orderProduct
-            });
-        } else if (result.code === payStatus.payOut) {
-            Toast.$toast(payStatusMsg[result.code]);
-            let replace = NavigationActions.replace({
-                key: this.props.navigation.state.key,
-                routeName: 'order/order/MyOrdersListPage',
-                params: { index: 2 }
-            });
-            this.props.navigation.dispatch(replace);
-        } else {
-            Toast.$toast(payStatusMsg[result.code] || '系统处理失败');
-        }
+        payment.checkOrderToPage(platformOrderNo, orderProduct[0].productName)
+
     }
 
     /** 本地数据处理*/

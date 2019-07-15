@@ -3,7 +3,6 @@ package com.meeruu.sharegoods.rn.dottedline;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
-import com.meeruu.sharegoods.rn.waveview.WaveLoadingView;
 
 public class DottedLineManager  extends SimpleViewManager<DottedLine> {
     private static final String COMPONENT_NAME = "MRDottedLine";

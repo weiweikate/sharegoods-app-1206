@@ -129,7 +129,7 @@ export default class OrderDetailTimeView extends Component {
                     <UIText
                         value={"发货时间：" + DateUtils.getFormatDate(deliverTime / 1000)}
                         style={styles.textOrderDownStyle}/> : null }
-                {StringUtils.isNoEmpty(receiveTime && receiveTime < (new Date()).getTime()) ?
+                {receiveTime && receiveTime < (new Date()).getTime()?
                     <UIText
                         value={"完成时间：" + DateUtils.getFormatDate(receiveTime / 1000)}
                         style={styles.textOrderDownStyle}/> : null}

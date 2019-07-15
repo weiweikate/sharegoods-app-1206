@@ -4,13 +4,7 @@
  */
 
 import React, { PureComponent } from 'react';
-import {
-    StyleSheet,
-    View,
-    ScrollView,
-    Image,
-    TouchableWithoutFeedback
-} from 'react-native';
+import { Image, ScrollView, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import EmptyUtils from '../../../utils/EmptyUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
@@ -35,8 +29,8 @@ export default class ProductRowListView extends PureComponent {
             width = ScreenUtils.width - px2dp(30);
         }
         let showPrice = 0;
-        const { singleActivity = {}, groupActivity = {} } = data.promotionResult || {};
-        const { endTime: endTimeT, startTime: startTimeT, currentTime =  Date.parse( new Date())} = groupActivity && groupActivity.type ? groupActivity : singleActivity;
+        const { singleActivity = {}, groupActivity = {} } = (data && data.promotionResult) || {};
+        const { endTime: endTimeT, startTime: startTimeT, currentTime = Date.parse(new Date()) } = groupActivity && groupActivity.type ? groupActivity : singleActivity;
         if (currentTime > startTimeT && currentTime < endTimeT + 500) {
             showPrice = data.promotionMinPrice;
         } else {
@@ -96,10 +90,10 @@ export default class ProductRowListView extends PureComponent {
         for (let i = 0; i < length; i++) {
             if (i === 0) {
                 snapArr.push(0);
-            }else if (i === length - 1) {
+            } else if (i === length - 1) {
                 snapArr.push(totalWidth - ScreenUtils.width);
-            }else {
-                let width = DesignRule.margin_page+px2dp(10)*(i-1)+itemWidth*i-((ScreenUtils.width-itemWidth)/2)+px2dp(10);
+            } else {
+                let width = DesignRule.margin_page + px2dp(10) * (i - 1) + itemWidth * i - ((ScreenUtils.width - itemWidth) / 2) + px2dp(10);
                 snapArr.push(width);
             }
         }
@@ -142,7 +136,6 @@ var styles = StyleSheet.create({
         marginRight: px2dp(10)
     },
     itemInfoWrapper: {
-        paddingVertical: px2dp(5),
         flex: 1,
         justifyContent: 'space-between',
         paddingVertical: px2dp(5)

@@ -520,10 +520,11 @@ autorun(() => {
         JPushUtils.updatePushTags();
     }
 });
+
 autorun(()=>{
     if (user.isLogin) {
         JPushUtils.updatePushTags();
-        JPushUtils.updatePushAlias()
+        JPushUtils.updatePushAlias();
     }
 })
 export default user;

@@ -35,6 +35,7 @@ class AfterSaleDetailModel {
             data.refundAddress = data.refundAddress || {};
             data.product = data.product || {};
             data.refundInfo = data.refundInfo || {};
+            data.refundDetail = data.refundDetail || {};
             let service = data.service;
             let status = service.status;
             let subStatus = service.subStatus;
@@ -47,6 +48,15 @@ class AfterSaleDetailModel {
             if (status === AfterStatus.WAIT_SUPPLIER_CANCLE_DEVLIER){
                 data.service.status = AfterStatus.STATUS_IN_REVIEW;
             }
+
+            ( data.refundDetail.refundItemList || [] ).forEach(item => {
+                if (item.payType === 1){//余额
+                    data.refundInfo.accountAmount = item.refundAmount
+                } else if (item.payType !==0){//不是0元支付
+                    data.refundInfo.cashAmount = item.refundAmount
+                }
+            });
+
             this.pageData = data
             let cancelTime = service.cancelTime || 0;
             let nowTime = service.currentTime || 0;

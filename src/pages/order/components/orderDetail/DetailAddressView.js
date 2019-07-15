@@ -58,9 +58,8 @@ const styles = StyleSheet.create({
          backgroundColor: 'white',
          flexDirection: 'row',
          paddingTop:  px2dp(10),
-         paddingBottom:  px2dp(10),
+         paddingBottom:  px2dp(20),
          alignItems: 'center',
-         marginTop:105
      },
     innerTextStyle:{
         fontSize: 15,

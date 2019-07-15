@@ -34,7 +34,7 @@ const {
     // STATUS_IN_REVIEW ,           //待审核
     // STATUS_SEND_BACK,            //待寄回
     STATUS_WAREHOUSE_CONFIRMED,  //待仓库确认
-    STATUS_PLATFORM_PROCESSING, //待平台处理
+    STATUS_PLATFORM_PROCESSING, //待商家处理
     STATUS_SUCCESS,              //售后完成
     STATUS_FAIL
 } = AfterStatus;
@@ -76,7 +76,7 @@ export default class StatusInfoView extends React.Component {
                                       style={styles.detail}/>: null
                 }
                 {
-                    remarkStr?<UIText value={'平台说明：' + remarkStr}
+                    remarkStr?<UIText value={'商家说明：' + remarkStr}
                                       style={styles.detail}/>: null
                 }
 
@@ -110,7 +110,8 @@ export default class StatusInfoView extends React.Component {
                 }
                 return{
                     titleStr: '售后已完成，退款成功',
-                    remarkStr: '平台已同意您的退款',
+                    detialStr: '退款金额预计三到五个工作日内原路返还',
+                    remarkStr: '商家已同意您的退款',
                 }
             case STATUS_FAIL: {
                 if (subStatus === REFUSE_REVOKED){
@@ -122,12 +123,12 @@ export default class StatusInfoView extends React.Component {
                 if (subStatus === REFUSE_APPLY){
                     return{
                         titleStr: '售后已关闭',
-                        detialStr: '平台已经拒绝售后申请',
+                        detialStr: '商家已经拒绝售后申请',
                         remarkStr: remarks,
                     }
                 }
             }
-            default://待审核 不显 || 退款不存在，待寄回，待仓库确认，待平台处理的状态
+            default://待审核 不显 || 退款不存在，待寄回，待仓库确认，待商家处理的状态
                 return null;
 
         }
@@ -152,7 +153,7 @@ export default class StatusInfoView extends React.Component {
                     }
                 }
                 // return{
-                //     titleStr: '平台已同意您的售后申请',
+                //     titleStr: '商家已同意您的售后申请',
                 // }
 
             case STATUS_SUCCESS:
@@ -177,7 +178,7 @@ export default class StatusInfoView extends React.Component {
                 if (subStatus === REFUSE_APPLY){
                     return{
                         titleStr: '售后已关闭',
-                        detialStr: '平台已经拒绝售后申请',
+                        detialStr: '商家已经拒绝售后申请',
                         remarkStr: remarks,
                     }
                 }
@@ -191,7 +192,7 @@ export default class StatusInfoView extends React.Component {
                 if (subStatus === REFUSE_AFTER){
                     return{
                         titleStr: '售后已关闭',
-                        detialStr: '平台已经拒绝售后申请',
+                        detialStr: '商家已经拒绝售后申请',
                         remarkStr: remarks,
                     }
                 }
@@ -244,7 +245,7 @@ export default class StatusInfoView extends React.Component {
                 if (subStatus === REFUSE_APPLY){
                     return{
                         titleStr: '售后已关闭',
-                        detialStr: '平台已经拒绝售后申请',
+                        detialStr: '商家已经拒绝售后申请',
                         remarkStr: remarks,
                     }
                 }
@@ -258,7 +259,7 @@ export default class StatusInfoView extends React.Component {
                 if (subStatus === REFUSE_AFTER){
                     return{
                         titleStr: '售后已关闭',
-                        detialStr: '平台已经拒绝售后申请',
+                        detialStr: '商家已经拒绝售后申请',
                         remarkStr: remarks,
                     }
                 }

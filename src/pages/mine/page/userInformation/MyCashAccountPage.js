@@ -386,7 +386,7 @@ export default class MyCashAccountPage extends BasePage {
                                 <Text style={{
                                     fontSize: 17,
                                     color: DesignRule.textColor_mainTitle
-                                }}>{StringUtils.formatMoneyString(item.capital, false)}</Text>
+                                }}>{item.capital ? item.capital: 0}</Text>
                             </View>
                             <Text style={{
                                 fontSize: 12, color: DesignRule.textColor_instruction

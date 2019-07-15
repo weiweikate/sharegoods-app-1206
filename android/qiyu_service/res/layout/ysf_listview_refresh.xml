@@ -2,8 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:gravity="center"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
     <ProgressBar
         android:id="@+id/refresh_loading_indicator"
@@ -11,5 +12,9 @@
         android:layout_width="18dp"
         android:layout_height="18dp"
         android:visibility="gone"/>
-
+    <ImageView
+        android:id="@+id/ysf_iv_refresh_loading_anim"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        tools:src="@drawable/ysf_photograph_close"/>
 </LinearLayout>

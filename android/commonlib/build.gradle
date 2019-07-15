@@ -43,13 +43,13 @@ dependencies {
     api project(':qiyu_service')
     api project(':statusbar')
     api project(path: ':permissionlib')
-    api files('libs/umeng-analytics-7.5.4.jar')
-    api files('libs/umeng-common-1.5.4.jar')
-    api files('libs/umeng-share-wechat-simplify-6.9.4.jar')
-    api files('libs/umeng-share-sina-simplify-6.9.4.jar')
-    api files('libs/umeng-share-QQ-simplify-6.9.4.jar')
-    api files('libs/umeng-share-core-6.9.4.jar')
-    api files('libs/umeng-sharetool-6.9.4.jar')
+    api files('libs/umeng-analytics-8.1.1.jar')
+    api files('libs/umeng-common-2.1.0.jar')
+    api files('libs/umeng-share-core-6.9.6.jar')
+    api files('libs/umeng-share-QQ-simplify-6.9.6.jar')
+    api files('libs/umeng-share-sina-simplify-6.9.6.jar')
+    api files('libs/umeng-share-wechat-simplify-6.9.6.jar')
+    api files('libs/umeng-sharetool-6.9.6.jar')
     api files('libs/utdid4all-1.1.5.3_proguard.jar')
     api 'cn.jiguang.sdk:jpush:3.3.2'
     // 此处以JPush 3.2.0 版本为例。
@@ -66,4 +66,5 @@ dependencies {
     //    api 'cn.jiguang.sdk.plugin:vivo:3.3.2'//此版本插件仅支持JPushSDK3.2.0及以上版本
     api files('libs/jverification-android-release-2.1.1.jar')
     api 'jp.wasabeef:blurry:3.0.0'
+
 }

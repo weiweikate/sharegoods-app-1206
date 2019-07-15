@@ -113,11 +113,13 @@ export default class MyOrdersDetailPage extends BasePage {
     renderState = () => {
         let leftIconArr = [buyerHasPay, tobePayIcon, buyerHasPay, hasDeliverIcon, finishPayIcon, refuseIcon, refuseIcon, refuseIcon, refuseIcon, refuseIcon];
         return (
-            <View style={{ marginBottom: px2dp(10) }}>
+            <View>
                 <OrderDetailStatusView
                     leftTopIcon={leftIconArr[orderDetailModel.merchantOrder.status]}
                 />
-                <DetailAddressView/>
+                {orderDetailModel.isAllVirtual ? null :
+                    <DetailAddressView/>
+                }
             </View>
 
         );
@@ -337,22 +339,22 @@ export default class MyOrdersDetailPage extends BasePage {
     };
 
 
-     loadPageData() {
-       orderDetailModel.loadDetailInfo(this.params.merchantOrderNo || this.params.orderNo || '');
+    loadPageData() {
+        orderDetailModel.loadDetailInfo(this.params.merchantOrderNo || this.params.orderNo || '');
     }
     //去商品详情
     clickItem = (item) => {
         // 2://降价拍
         // 3://礼包
         let activityData = judgeProduceIsContainActivityTypes(item, [2, 3])
-         if (activityData) {
-             this.$navigate('topic/TopicDetailPage', {
-                 activityType: activityData.activityType,
-                 activityCode: activityData.activityCode
-             });
-         }else {
-             this.$navigate('product/ProductDetailPage', { productCode: item.prodCode });
-         }
+        if (activityData) {
+            this.$navigate('topic/TopicDetailPage', {
+                activityType: activityData.activityType,
+                activityCode: activityData.activityCode
+            });
+        }else {
+            this.$navigate('product/ProductDetailPage', { productCode: item.prodCode });
+        }
     };
     //点击售后按钮的处理
     afterSaleServiceClick = (menu, item) => {

@@ -10,7 +10,6 @@ import user from '../../model/user';
 import { payment, paymentType, payStatus, payStatusMsg } from './Payment';
 import PasswordView from './PayPasswordView';
 import { PaymentResult } from './PaymentResultPage';
-
 const { px2dp } = ScreenUtils;
 import Toast from '../../utils/bridge';
 import RouterMap, { replaceRoute } from '../../navigation/RouterMap';
@@ -38,6 +37,7 @@ export default class PaymentPage extends BasePage {
         payment.amounts = this.params.amounts ? parseFloat(this.params.amounts) : 0.0;
         let orderProduct = this.params.orderProductList && this.params.orderProductList[0];
         payment.name = orderProduct && orderProduct.productName;
+        payment.name = this.params.productTitle && this.params.productTitle;
         payment.orderNo = this.params.orderNum;
         payment.platformOrderNo = this.params.platformOrderNo;
         payment.modeType = this.params.modeType ? this.params.modeType : 0;

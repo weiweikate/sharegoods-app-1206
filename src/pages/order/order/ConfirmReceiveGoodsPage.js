@@ -49,7 +49,7 @@ export default class ConfirmReceiveGoodsPage extends BasePage {
     };
     showOrderPage = () => {
         OrderApi.checkInfo({warehouseOrderNo:this.params.merchantOrderNo}).then(res => {
-            if(res.data === false){
+            if(res.data === true){
                 this.$navigate(RouterMap.P_ScorePublishPage, {
                     orderNo: this.params.merchantOrderNo
                 });

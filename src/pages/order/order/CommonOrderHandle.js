@@ -66,16 +66,14 @@ function clickOrderConfirmReceipt(merchantOrderNo, subStatus, callBack){
 }
 
 function clickOrderAgain(merchantOrderNo, products){
-    // let cartData = products.map((item, index) => {
-    //     return{
-    //         productCode: item.prodCode,
-    //         skuCode: item.skuCode,
-    //         amount: item.quantity,
-    //         spuCode: item.prodCode
-    //     };
-    // });
+    let cartData = products.map((item, index) => {
+        return{
+            ...item,
+            amount: item.quantity
+        };
+    });
     track(trackEvent.OrderAgain,{ orderId: merchantOrderNo})
-    shopCartCacheTool.addGoodItem(products);
+    shopCartCacheTool.addGoodItem(cartData);
     routePush('shopCart/ShopCart', { hiddeLeft: false });
 }
 // //将数据

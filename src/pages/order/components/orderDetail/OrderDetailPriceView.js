@@ -39,11 +39,15 @@ export default class OrderDetailPriceView extends Component {
                                 rightText={StringUtils.formatMoneyString(totalAmount)}
                                 rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
                                 isLine={false}/>
-                <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'运费（快递）'}
-                                leftTextStyle={{ color: DesignRule.textColor_instruction }}
-                                rightText={StringUtils.formatMoneyString(freightAmount)}
-                                rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
-                                isLine={false}/>
+                {
+                    orderDetailModel.isAllVirtual ? null :
+                        <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'运费（快递）'}
+                                        leftTextStyle={{ color: DesignRule.textColor_instruction }}
+                                        rightText={StringUtils.formatMoneyString(freightAmount)}
+                                        rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
+                                        isLine={false}/>
+                }
+
                 {
                     promotionAmount !== 0?
                         <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'组合优惠'}

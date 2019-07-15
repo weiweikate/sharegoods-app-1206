@@ -119,7 +119,7 @@ public class BaseApplication extends MultiDexApplication {
         JVerificationInterface.init(this);
         // 七鱼初始化
         Unicorn.init(getApplicationContext(), "b87fd67831699ca494a9d3de266cd3b0", QiYuOptions(),
-                new QiyuImageLoader());
+                new QiyuImageLoader(getApplicationContext()));
         // umeng初始化
         String channel = WalleChannelReader.getChannel(getApplicationContext(), "guanwang");
         // 友盟统计
