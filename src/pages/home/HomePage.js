@@ -5,7 +5,8 @@ import {
     DeviceEventEmitter, InteractionManager,
     RefreshControl, BackHandler,
     NativeEventEmitter,
-    NativeModules
+    NativeModules,
+    ActivityIndicator
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import { observer } from 'mobx-react';
@@ -71,8 +72,9 @@ import intervalMsgModel, { IntervalMsgView, IntervalType } from '../../comm/comp
 import { UserLevelModalView } from './view/TaskModalView';
 
 const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
+    {errorMsg?null:(isEnd?null:(<ActivityIndicator style={{marginRight:6}} animating={true} size={'small'} color={DesignRule.mainColor}/>))}
     <Text style={styles.text}
-          allowFontScaling={false}>{errorMsg ? errorMsg : (isEnd ? '我也是有底线的' : (isFetching ? '加载中...' : '加载更多中...'))}</Text>
+          allowFontScaling={false}>{errorMsg ? errorMsg : (isEnd ? '我也是有底线的~' : (isFetching ? '加载中...' : '加载更多中...'))}</Text>
 </View>;
 
 @observer
@@ -448,6 +450,7 @@ const styles = StyleSheet.create({
         borderRadius: px2dp(5)
     },
     footer: {
+        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         height: 50

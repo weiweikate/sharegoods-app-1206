@@ -110,7 +110,9 @@ class HomeModule {
 
     //加载为你推荐列表
     @action loadHomeList = flow(function* () {
-        this.isRefreshing = true;
+        if(!this.firstLoad){
+            this.isRefreshing = true;
+        }
         setTimeout(() => {
             this.isRefreshing = false;
         }, 1000);
@@ -138,6 +140,8 @@ class HomeModule {
 
         this.page = 1;
         this.isEnd = false;
+        this.firstLoad = false;
+
         this.homeList = [{
             id: 0,
             type: homeType.category
@@ -219,7 +223,6 @@ class HomeModule {
             this.isFetching = false;
             this.isRefreshing = false;
             this.page++;
-            this.firstLoad = false;
             this.errorMsg = '';
         } catch (error) {
             this.isFetching = false;
