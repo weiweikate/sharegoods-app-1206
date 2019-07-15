@@ -54,7 +54,9 @@ export default class DebugPanelPage extends BasePage {
             alert('当前环境host暂未配置~\n暂不支持设置');
             return;
         }
+        // 清空用户信息
         await user.clearUserInfo();
+        // 保存域名环境
         await apiEnvironment.saveEnv(envType);
         this.setState({
             hostName: apiEnvironment.getCurrentHostName(),

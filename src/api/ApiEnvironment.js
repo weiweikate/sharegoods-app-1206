@@ -3,8 +3,12 @@
  * Api HOST配置
  * 支持动态切换
  */
+import {
+    NativeModules,
+} from 'react-native';
 import store from '@mr/rn-store';
 import config from '../../config';
+import StringUtils from '../utils/StringUtils';
 // 磁盘缓存key
 const KEY_ApiEnvironment = '@mr/apiEnvironment';
 const KEY_HostJson = '@mr/hostJson';
@@ -15,8 +19,21 @@ const ApiConfig = config.env;
 class ApiEnvironment {
 
     constructor() {
-        const envType = config.envType;
-        this.envType = envType && Object.keys(ApiConfig).indexOf(envType) >= 0 ? envType : 'online';
+        let baseHost = NativeModules.commModule.baseUrl
+        let hasBaseUrl = false;
+        if(StringUtils.isNoEmpty(baseHost)){
+            for(let obj in config.env){
+                if(config.env[obj] && (config.env[obj].host === baseHost)){
+                    hasBaseUrl = true;
+                    this.envType = String(obj)
+                    break;
+                }
+            }
+        }
+        if(!hasBaseUrl){
+            const envType = config.envType;
+            this.envType = envType && Object.keys(ApiConfig).indexOf(envType) >= 0 ? envType : 'online';
+        }
         //预上上线直接使用release
         // this.envType =  "pre_release"
         this.defaultTimeout = 15; // 请求默认超时时间 单位秒
