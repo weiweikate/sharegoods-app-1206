@@ -34,6 +34,7 @@ import codePush from 'react-native-code-push';
 import chatModel from './utils/QYModule/QYChatModel';
 import showPinFlagModel from './model/ShowPinFlag';
 import settingModel from './pages/mine/model/SettingModel';
+import StringUtils from './utils/StringUtils';
 
 const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
@@ -93,7 +94,7 @@ class App extends Component {
     async componentWillMount() {
         // 禁止重启
         codePush.disallowRestart();
-        this.subscription && this.subscription.remove();
+    
         // code push
         codePush.sync({
             updateDialog: false,
@@ -107,7 +108,8 @@ class App extends Component {
     }
 
     componentDidMount() {
-        this.subscription = NativeAppEventEmitter.addListener(
+        // 开机广告
+        this.startAdvSubscription = NativeAppEventEmitter.addListener(
             'Event_navigateHtmlPage',
             (reminder) => {
                 this.timer = setInterval(() => {
@@ -116,6 +118,27 @@ class App extends Component {
                         clearInterval(this.timer);
                     }
                 }, 100);
+            }
+        );
+        // 动态域名
+        this.startAdvSubscription = NativeAppEventEmitter.addListener(
+            'Event_change_baseUrl',
+            (data) => {
+                // 动态域名
+               let host = data.baseUrl || '';
+               // 当前域名
+               let currentUrl = apiEnvironment.getCurrentHostUrl();
+               if(StringUtils.isNoEmpty(host) && host !== currentUrl){
+                    for(let obj in CONFIG.env){
+                        if(CONFIG.env[obj] && (CONFIG.env[obj].host === host)){
+                             // 清空用户信息
+                            user.clearUserInfo();
+                            // 保存域名环境
+                            apiEnvironment.saveEnv(String(obj));
+                            break;
+                        }
+                    }
+               }
             }
         );
         // 在加载完了，允许重启
@@ -157,6 +180,7 @@ class App extends Component {
 
     componentWillUnmount() {
         this.listenerJSMessage && this.listenerJSMessage.remove();
+        this.startAdvSubscription && this.startAdvSubscription.remove();
     }
 
 

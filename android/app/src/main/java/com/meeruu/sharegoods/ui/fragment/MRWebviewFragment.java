@@ -41,6 +41,7 @@ import com.meeruu.commonlib.callback.OnWebCommonListener;
 import com.meeruu.commonlib.handler.WeakHandler;
 import com.meeruu.commonlib.utils.AppUtils;
 import com.meeruu.commonlib.utils.BitmapUtils;
+import com.meeruu.commonlib.utils.HttpUrlUtils;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.NetUtils;
@@ -53,7 +54,6 @@ import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.task.ScanQrcodeTask;
 import com.meeruu.sharegoods.ui.activity.SelectMyPhotoActivity;
 import com.meeruu.sharegoods.ui.dialog.OptionsPopupDialog;
-import com.meeruu.sharegoods.utils.HttpUrlUtils;
 
 import java.io.File;
 import java.util.ArrayList;

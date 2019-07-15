@@ -50,4 +50,16 @@ public class Event {
         }
     }
 
+    public static class MRBaseUrlEvent {
+        private String url;
+
+        public MRBaseUrlEvent(String url) {
+            this.url = url;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+    }
+
 }

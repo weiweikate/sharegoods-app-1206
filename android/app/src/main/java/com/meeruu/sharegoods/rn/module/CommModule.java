@@ -63,8 +63,12 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.net.URI;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Nullable;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -76,6 +80,8 @@ public class CommModule extends ReactContextBaseJavaModule {
     private ReactApplicationContext mContext;
     public static final String MODULE_NAME = "commModule";
     private Promise gongMao;
+    private String baseUrl;
+
 
     /**
      * 构造方法必须实现
@@ -615,5 +621,22 @@ public class CommModule extends ReactContextBaseJavaModule {
         map.putString("uri", event.getUrl());
         this.mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit("Event_navigateHtmlPage", map);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void baseUrl(Event.MRBaseUrlEvent event) {
+        WritableMap map = new WritableNativeMap();
+        this.baseUrl = event.getUrl();
+        map.putString("baseUrl", this.baseUrl);
+        this.mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit("Event_change_baseUrl", map);
+    }
+
+    @Nullable
+    @Override
+    public Map<String, Object> getConstants() {
+        final Map<String, Object> constants = new HashMap<>();
+        constants.put("baseUrl", this.baseUrl);
+        return constants;
     }
 }
