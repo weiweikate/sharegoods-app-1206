@@ -94,7 +94,7 @@ export default class AddressEditAndAddPage extends BasePage {
             bridge.$toast('请填写详细地址');
             return;
         }
-        const { refreshing, id, from } = this.params;
+        const { refreshing, id, from, callBack } = this.params;
         this.isLoadding = true;
         if (from === 'edit') {
             //编辑地址
@@ -132,6 +132,12 @@ export default class AddressEditAndAddPage extends BasePage {
                 this.isLoadding = false;
                 bridge.$toast('添加成功');
                 refreshing && refreshing();
+                data = data.data || {};
+                data.province = this.state.provinceName;
+                data.city = this.state.cityName;
+                data.area = this.state.areaName;
+                data.street = this.state.streetName;
+                callBack && callBack(data);
                 this.$navigateBack();
             }).catch((data) => {
                 this.isLoadding = false;
