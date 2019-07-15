@@ -195,7 +195,7 @@ class ConfirmOrderModel {
         this.productOrderList = data.productOrderList || [];
         this.payInfo = data.payInfo || {};
         this.receiveInfo = data.receiveInfo || {};
-        this.addressId =  this.receiveInfo.id || '';
+        this.addressId =  this.receiveInfo.id? this.receiveInfo.id+'' : '';
         this.addressData = this.receiveInfo;
         this.tokenCoin =  this.payInfo.tokenCoinAmount;
         if (this.payInfo.couponAmount === 0){
