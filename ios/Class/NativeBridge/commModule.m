@@ -42,11 +42,29 @@ RCT_EXPORT_MODULE()
 
 -(void)receiveSalesNotifaction:(NSNotification *)notify
 {
-  [self.bridge.eventDispatcher sendAppEventWithName:@"Event_navigateHtmlPage" body:notify.object];
+  NSDictionary * dic = notify.object;
+  if (!dic || ![dic isKindOfClass:[NSDictionary class]]) {
+    return;
+  }
+  NSString *eventName = dic[@"eventName"];
+  if (!eventName) {
+    return;
+  }
+  [self.bridge.eventDispatcher sendAppEventWithName:eventName  body:notify.object];
 }
 
 - (void)dealloc{
   [[NSNotificationCenter defaultCenter]  removeObserver:self];
+}
+
+
+- (NSDictionary *)constantsToExport
+{
+  NSString * baseUrl = [[NSUserDefaults standardUserDefaults] stringForKey:@"dynamicBaseUrl"];
+  if (!baseUrl) {
+    return @{};
+  }
+  return @{ @"baseUrl": baseUrl };
 }
 
 RCT_EXPORT_METHOD(captureScreenImage:(NSDictionary *)info and:(RCTResponseSenderBlock)callback){

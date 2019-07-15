@@ -11,5 +11,6 @@
 
 #define ShowApi_query   @"/discover/query@GET"
 #define AdApi_query   @"/advertising/queryAdvertisingList"
+#define Api_queryBaseUrl   @"/redirect/baseUrl@GET"
 
 #endif /* Header_h */
