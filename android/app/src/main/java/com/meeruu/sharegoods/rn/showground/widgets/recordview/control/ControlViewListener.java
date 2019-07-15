@@ -1,4 +1,4 @@
-package com.meeruu.sharegoods.rn.showground.widgets.RecordView.control;
+package com.meeruu.sharegoods.rn.showground.widgets.recordview.control;
 
 import com.aliyun.svideo.sdk.external.struct.recorder.FlashType;
 

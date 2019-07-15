@@ -27,9 +27,9 @@ import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
 import com.meeruu.sharegoods.rn.showground.contacts.CommValue;
 import com.meeruu.sharegoods.rn.showground.utils.NumUtils;
-import com.meeruu.sharegoods.rn.showground.widgets.GridView.ImageInfo;
-import com.meeruu.sharegoods.rn.showground.widgets.GridView.NineGridView;
-import com.meeruu.sharegoods.rn.showground.widgets.GridView.NineGridViewAdapter;
+import com.meeruu.sharegoods.rn.showground.widgets.gridview.ImageInfo;
+import com.meeruu.sharegoods.rn.showground.widgets.gridview.NineGridView;
+import com.meeruu.sharegoods.rn.showground.widgets.gridview.NineGridViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

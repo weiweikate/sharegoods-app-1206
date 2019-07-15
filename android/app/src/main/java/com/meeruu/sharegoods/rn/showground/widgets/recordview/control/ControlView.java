@@ -1,4 +1,4 @@
-package com.meeruu.sharegoods.rn.showground.widgets.RecordView.control;
+package com.meeruu.sharegoods.rn.showground.widgets.recordview.control;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -19,9 +19,6 @@ import com.aliyun.svideo.sdk.external.struct.recorder.FlashType;
 import com.meeruu.commonlib.utils.FastClickUtil;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.utils.UIConfigManager;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ControlView extends RelativeLayout implements View.OnTouchListener {
     private static final int MAX_ITEM_COUNT = 5;

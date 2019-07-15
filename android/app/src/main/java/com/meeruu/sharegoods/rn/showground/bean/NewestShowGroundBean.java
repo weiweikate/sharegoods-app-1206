@@ -1,7 +1,7 @@
 package com.meeruu.sharegoods.rn.showground.bean;
 
 import com.chad.library.adapter.base.entity.MultiItemEntity;
-import com.meeruu.sharegoods.rn.showground.widgets.GridView.ImageInfo;
+import com.meeruu.sharegoods.rn.showground.widgets.gridview.ImageInfo;
 
 import java.util.List;
 

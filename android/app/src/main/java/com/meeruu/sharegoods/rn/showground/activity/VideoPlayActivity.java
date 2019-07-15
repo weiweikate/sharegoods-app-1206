@@ -62,7 +62,6 @@ public class VideoPlayActivity extends Activity  implements MediaPlayer.OnErrorL
         iv_play = (ImageView) findViewById(com.reactnative.ivpusic.imagepicker.R.id.iv_play);
         next = findViewById(R.id.tv_right);
         mMediaController = new MediaController(this);
-        styleMediaController(mMediaController);
         mVideoView.setOnCompletionListener(this);
         mVideoView.setOnPreparedListener(this);
         mVideoView.setMediaController(mMediaController);
@@ -71,23 +70,6 @@ public class VideoPlayActivity extends Activity  implements MediaPlayer.OnErrorL
         next.setOnClickListener(this);
     }
 
-    private void styleMediaController(View view) {
-        if (view instanceof MediaController) {
-            MediaController v = (MediaController) view;
-            for (int i = 0; i < v.getChildCount(); i++) {
-                styleMediaController(v.getChildAt(i));
-            }
-        } else if (view instanceof LinearLayout) {
-            LinearLayout ll = (LinearLayout) view;
-            for (int i = 0; i < ll.getChildCount(); i++) {
-                styleMediaController(ll.getChildAt(i));
-            }
-        } else if (view instanceof SeekBar) {
-
-            ((SeekBar) view).setProgressDrawable(getResources().getDrawable(R.drawable.progressbar));
-            ((SeekBar) view).setThumb(getResources().getDrawable(R.drawable.progresshandle));
-        }
-    }
     @Override
     public void onStart() {
         // Play Video

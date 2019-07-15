@@ -1,4 +1,4 @@
-package com.meeruu.sharegoods.rn.showground.widgets.RecordView.control;
+package com.meeruu.sharegoods.rn.showground.widgets.recordview.control;
 
 public enum RecordState {
     /**

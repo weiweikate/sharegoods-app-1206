@@ -1,4 +1,4 @@
-package com.meeruu.sharegoods.rn.showground.widgets.GridView;
+package com.meeruu.sharegoods.rn.showground.widgets.gridview;
 
 import android.content.Context;
 import android.content.res.TypedArray;

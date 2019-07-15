@@ -1,4 +1,4 @@
-package com.meeruu.sharegoods.rn.showground.widgets.RecordView;
+package com.meeruu.sharegoods.rn.showground.widgets.recordview;
 
 import android.content.Context;
 import android.os.CountDownTimer;

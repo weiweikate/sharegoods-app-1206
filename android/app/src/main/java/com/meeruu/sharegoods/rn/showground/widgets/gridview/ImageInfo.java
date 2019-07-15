@@ -1,4 +1,4 @@
-package com.meeruu.sharegoods.rn.showground.widgets.GridView;
+package com.meeruu.sharegoods.rn.showground.widgets.gridview;
 
 import java.io.Serializable;
 

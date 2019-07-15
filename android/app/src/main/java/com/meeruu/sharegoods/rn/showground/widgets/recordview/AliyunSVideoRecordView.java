@@ -1,4 +1,4 @@
-package com.meeruu.sharegoods.rn.showground.widgets.RecordView;
+package com.meeruu.sharegoods.rn.showground.widgets.recordview;
 
 import android.Manifest;
 import android.app.Activity;
@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Environment;
-import android.support.v4.app.FragmentActivity;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -42,9 +41,9 @@ import com.meeruu.sharegoods.rn.showground.utils.OrientationDetector;
 import com.meeruu.sharegoods.rn.showground.utils.PermissionUtils;
 import com.meeruu.sharegoods.rn.showground.utils.ThreadUtils;
 import com.meeruu.sharegoods.rn.showground.utils.TimeFormatterUtils;
-import com.meeruu.sharegoods.rn.showground.widgets.RecordView.control.ControlView;
-import com.meeruu.sharegoods.rn.showground.widgets.RecordView.control.ControlViewListener;
-import com.meeruu.sharegoods.rn.showground.widgets.RecordView.control.RecordState;
+import com.meeruu.sharegoods.rn.showground.widgets.recordview.control.ControlView;
+import com.meeruu.sharegoods.rn.showground.widgets.recordview.control.ControlViewListener;
+import com.meeruu.sharegoods.rn.showground.widgets.recordview.control.RecordState;
 import com.qu.preview.callback.OnFrameCallBack;
 import com.qu.preview.callback.OnTextureIdCallBack;
 import com.reactnative.ivpusic.imagepicker.picture.lib.PictureSelector;

@@ -2,7 +2,7 @@
  * Copyright (C) 2010-2017 Alibaba Group Holding Limited.
  */
 
-package com.meeruu.sharegoods.rn.showground.widgets.RecordView;
+package com.meeruu.sharegoods.rn.showground.widgets.recordview;
 
 import android.content.Context;
 import android.graphics.Canvas;
