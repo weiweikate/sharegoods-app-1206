@@ -17,6 +17,8 @@
 #import <React/RCTComponent.h>
 #import <React/UIView+React.h>
 #import "MBProgressHUD+PD.h"
+#import "NSString+UrlAddParams.h"
+#import "NSDictionary+Util.h"
 #import <YYKit.h>
 
 #define SystemUpgradeCode 9999
@@ -164,6 +166,7 @@ static NSString *IDType = @"TypeCell";
  */
 - (void)refreshData
 {
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   if (self.onStartRefresh) {
     self.onStartRefresh(@{});
   }
@@ -175,7 +178,9 @@ static NSString *IDType = @"TypeCell";
   [dic addEntriesFromDictionary:@{@"page": [NSString stringWithFormat:@"%ld",self.page], @"size": @"10"}];
   __weak RecommendedView * weakSelf = self;
   [NetWorkTool requestWithURL:self.uri params:dic toModel:nil success:^(NSDictionary * result) {
-
+    if(self.type){
+      [defaults setObject:[NSString convertNSDictionaryToJsonString:result] forKey:self.type];
+    }
     JXModel* model = [JXModel modelWithJSON:result];
     weakSelf.dataArr = [model.data mutableCopy];
     if([result valueForKey:@"data"]&&![[result valueForKey:@"data"] isKindOfClass:[NSNull class]]){
@@ -393,6 +398,20 @@ static NSString *IDType = @"TypeCell";
   }
 }
 
+-(void)setType:(NSString *)type{
+  _type = type;
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  if([defaults objectForKey:type]){
+    NSDictionary *dicData = [NSDictionary dictionaryWithJsonString:[defaults objectForKey:type]];
+    if (dicData) {
+      self.callBackArr = [[dicData valueForKey:@"data"] mutableCopy];
+      JXModel *model = [JXModel modelWithJSON:dicData];
+      self.dataArr = [model.data mutableCopy];
+    }
+    [self.tableView reloadData];
+  }
+}
+
 - (void)setHeaderHeight:(NSInteger)headerHeight
 {
   _headerHeight  = headerHeight;
@@ -424,7 +443,7 @@ static NSString *IDType = @"TypeCell";
   [dic setObject:[NSNumber numberWithInteger:model.likesCount] forKey:@"likesCount"];
   [dic setObject:@(model.like) forKey:@"like"];
   [self.callBackArr replaceObjectAtIndex:indexPath.row withObject:dic];
-  
+
   if(_onZanPress) {
     _onZanPress(@{
                   @"detail":self.callBackArr[indexPath.item],
@@ -466,7 +485,7 @@ static NSString *IDType = @"TypeCell";
   if (self.onScrollStateChanged) {
     self.onScrollStateChanged(@{@"state":[NSNumber numberWithInteger:1]});
   }
-  
+
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {

@@ -24,6 +24,8 @@
 #import <YYKit.h>
 #import "MyShowCellNode.h"
 #import "NSObject+Util.h"
+#import "NSString+UrlAddParams.h"
+#import "NSDictionary+Util.h"
 
 #define kReuseIdentifier @"ShowCell"
 #define SystemUpgradeCode 9999
@@ -173,6 +175,7 @@
  */
 - (void)refreshData
 {
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   if (self.onStartRefresh) {
     self.onStartRefresh(@{});
   }
@@ -184,6 +187,9 @@
   [dic addEntriesFromDictionary:@{@"page": [NSString stringWithFormat:@"%ld",self.page], @"size": @"20"}];
   __weak ASDK_ShowGround * weakSelf = self;
   [NetWorkTool requestWithURL:self.uri params:dic  toModel:nil success:^(NSDictionary* result) {
+    if(self.type){
+      [defaults setObject:[NSString convertNSDictionaryToJsonString:result] forKey:self.type];
+    }
     ShowQueryModel* model = [ShowQueryModel modelWithJSON:result];
     weakSelf.dataArr = [model.data mutableCopy];
     if([result valueForKey:@"data"]&&![[result valueForKey:@"data"] isKindOfClass:[NSNull class]]){
@@ -308,14 +314,14 @@
     return ^{
       MyShowCellNode *node = [[MyShowCellNode alloc]initWithModel:model index:indexPath.row ];
       node.deletBtnTapBlock = ^(ShowQuery_dataModel *m, NSInteger index) {
-        
+
         UIAlertController *alterController = [UIAlertController alertControllerWithTitle:@"温馨提示"
                                                                                  message:@"确定删除这条动态吗？"
                                                                           preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"再想想"
                                                                style:UIAlertActionStyleDefault
                                                              handler:^(UIAlertAction * _Nonnull action) {
-                                                        
+
                                                              }];
         UIAlertAction *actionSubmit = [UIAlertAction actionWithTitle:@"狠心删除"
                                                                style:UIAlertActionStyleDefault
@@ -348,7 +354,7 @@
     [self.dataArr removeObject:m];
     [self.callBackArr removeObject:m];
     [self.collectionNode deleteItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]]];
-    
+
   } failure:^(NSString *msg, NSInteger code) {
     [MBProgressHUD showSuccess:msg];
   } showLoading:nil];
@@ -420,7 +426,7 @@
   if (self.onScrollStateChanged) {
     self.onScrollStateChanged(@{@"state":[NSNumber numberWithInteger:1]});
   }
-  
+
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
@@ -454,6 +460,21 @@
 
 }
 
+-(void)setType:(NSString *)type{
+  _type = type;  
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  if(type && [defaults objectForKey:type]){
+    NSDictionary *dicData = [NSDictionary dictionaryWithJsonString:[defaults objectForKey:type]];
+    if (dicData) {
+      self.callBackArr = [[dicData valueForKey:@"data"] mutableCopy];
+      ShowQueryModel* model = [ShowQueryModel modelWithJSON:dicData];
+      self.dataArr = [model.data mutableCopy];
+    }
+//    [self.collectionNode reloadData];
+  }
+}
+
+
 - (void)setHeaderHeight:(NSInteger)headerHeight
 {
   _headerHeight  = headerHeight;
@@ -471,6 +492,45 @@
     }
   }
 }
+
+//- (void)setHeaderHeight:(NSInteger)headerHeight
+//{
+//  _headerHeight  = headerHeight+44;
+//  _layoutDelegate.headerHeight = _headerHeight+10;
+//  _emptyView.sd_layout.topSpaceToView(self, _headerHeight+10)
+//  .leftEqualToView(self).rightEqualToView(self).bottomEqualToView(self);
+//  [self.collectionNode reloadData];
+//}
+////
+//- (void)didUpdateReactSubviews {
+//  for (UIView *view in self.reactSubviews) {
+//    if ([view isKindOfClass:[ShowHeaderView class]]) {
+//      UIView *headerBg = [[UIView alloc]init];
+//      UIView *btnV = [[UIView alloc]init];
+//      [headerBg addSubview:view];
+//      [headerBg addSubview:btnV];
+//
+//      headerBg.sd_layout.topEqualToView(self)
+//      .leftEqualToView(self).rightEqualToView(self)
+//      .heightIs(self.headerHeight).widthIs(375);
+//      headerBg.backgroundColor = [UIColor blueColor];
+//
+//      view.sd_layout.topEqualToView(headerBg)
+//      .leftEqualToView(headerBg).rightEqualToView(headerBg)
+//      .heightIs(self.headerHeight-44);
+//
+//      btnV.sd_layout.topSpaceToView(view, 0)
+//      .leftEqualToView(headerBg).rightEqualToView(headerBg)
+//      .heightIs(44);
+//      btnV.backgroundColor = [UIColor redColor];
+//
+//      [headerBg setupAutoHeightWithBottomView:btnV bottomMargin:0];
+//      self.headerView = headerBg;
+//      [self.collectionNode reloadData];
+//    }
+//  }
+//}
+
 
 -(void)replaceData:(NSInteger) index num:(NSInteger) num{
   if (self.dataArr.count>index) {

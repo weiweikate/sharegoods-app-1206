@@ -16,7 +16,7 @@
 		01091615227053800043E997 /* RecommendedManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 01091614227053800043E997 /* RecommendedManager.m */; };
 		01091618227053B00043E997 /* RecommendedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01091617227053B00043E997 /* RecommendedView.m */; };
 		0109161B227053D30043E997 /* RecommendedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0109161A227053D30043E997 /* RecommendedCell.m */; };
-		0119D0562296A2B800FB70F0 /* NSString+UrlAddParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 0119D0552296A2B800FB70F0 /* NSString+UrlAddParams.m */; };
+		0120E88822D87D0C001A2269 /* libRNCAsyncStorage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0120E87D22D87CEA001A2269 /* libRNCAsyncStorage.a */; };
 		01262D79228009CB008D4F7E /* RecTypeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01262D78228009CB008D4F7E /* RecTypeCell.m */; };
 		01263012228113D2008D4F7E /* ActiveView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01263011228113D2008D4F7E /* ActiveView.m */; };
 		012630182281196A008D4F7E /* ActiveModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 012630172281196A008D4F7E /* ActiveModel.m */; };
@@ -29,6 +29,7 @@
 		0153BAB422A110AF00BFD8AC /* ShareImageMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0153BAB222A110AF00BFD8AC /* ShareImageMaker.m */; };
 		01739A9122BCC3EB00661677 /* JXModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0131F1B3228E57D200A2026D /* JXModel.m */; };
 		01739CD322BF283D00661677 /* ShowQueryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EAFA6221BFE89007AAEE0 /* ShowQueryModel.m */; };
+		01DC348F22DC2CAA0025CF08 /* NSString+UrlAddParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 0119D0552296A2B800FB70F0 /* NSString+UrlAddParams.m */; };
 		01E48F9422708B960038BEE6 /* JXHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E48F9322708B960038BEE6 /* JXHeaderView.m */; };
 		033C66B821927ACB00433026 /* MRBannerViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 033C66B721927ACB00433026 /* MRBannerViewManager.m */; };
 		0347BAD52237CD0A0011184A /* Lottie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0347BAC92237CC680011184A /* Lottie.framework */; };
@@ -138,7 +139,6 @@
 		C48636B622C343950096C8EC /* AA.m in Sources */ = {isa = PBXBuildFile; fileRef = C48636B422C343950096C8EC /* AA.m */; };
 		C48636B922C344290096C8EC /* UIImageView+ConfigLib.m in Sources */ = {isa = PBXBuildFile; fileRef = C48636B822C344290096C8EC /* UIImageView+ConfigLib.m */; };
 		C4D4505A2249F6B800196E1B /* JRServiceManager+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D450592249F6B800196E1B /* JRServiceManager+Util.m */; };
-		C4EFED0422B767E300D12A4C /* libRNCAsyncStorage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4EFECC022B7632200D12A4C /* libRNCAsyncStorage.a */; };
 		C4F01EEC222D141200ACA1B4 /* PhoneAutherTool.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F01EEB222D141200ACA1B4 /* PhoneAutherTool.m */; };
 		C4F01EEF222D150E00ACA1B4 /* PhoneAuthenModule.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F01EEE222D150E00ACA1B4 /* PhoneAuthenModule.m */; };
 		C4F2915522891134006C168C /* JVerificationResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C4F2915422891134006C168C /* JVerificationResource.bundle */; };
@@ -347,12 +347,12 @@
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
 			remoteInfo = crm_app_xiugou;
 		};
-		031DF87822C5E12F0035BD7A /* PBXContainerItemProxy */ = {
+		0120E87C22D87CEA001A2269 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 0347BAC12237CC670011184A /* Lottie.xcodeproj */;
+			containerPortal = 0120E84422D87CEA001A2269 /* RNCAsyncStorage.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 6445B0D5207E0D4D00D84F6A;
-			remoteInfo = LottieLibraryMacOS;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNCAsyncStorage;
 		};
 		0347BABF2237CC490011184A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -732,13 +732,6 @@
 			remoteGlobalIDString = ED296FEE214C9CF800B7C4FE;
 			remoteInfo = "jsiexecutor-tvOS";
 		};
-		C4EFECBF22B7632200D12A4C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C4EFECB922B7632200D12A4C /* RNCAsyncStorage.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 134814201AA4EA6300B7C361;
-			remoteInfo = RNCAsyncStorage;
-		};
 		CD11955321870DB6007F602E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CD11954E21870DB6007F602E /* RCTVideo.xcodeproj */;
@@ -816,6 +809,7 @@
 		0109161A227053D30043E997 /* RecommendedCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RecommendedCell.m; sourceTree = "<group>"; };
 		0119D0542296A2B800FB70F0 /* NSString+UrlAddParams.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+UrlAddParams.h"; sourceTree = "<group>"; };
 		0119D0552296A2B800FB70F0 /* NSString+UrlAddParams.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+UrlAddParams.m"; sourceTree = "<group>"; };
+		0120E84422D87CEA001A2269 /* RNCAsyncStorage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNCAsyncStorage.xcodeproj; path = "../node_modules/@mr/rn-store/node_modules/@mr/mr-rn-storage/ios/RNCAsyncStorage.xcodeproj"; sourceTree = "<group>"; };
 		01262D3B228009CA008D4F7E /* RecTypeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecTypeCell.h; sourceTree = "<group>"; };
 		01262D78228009CB008D4F7E /* RecTypeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecTypeCell.m; sourceTree = "<group>"; };
 		01263010228113D2008D4F7E /* ActiveView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ActiveView.h; sourceTree = "<group>"; };
@@ -1077,7 +1071,6 @@
 		C48636B822C344290096C8EC /* UIImageView+ConfigLib.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+ConfigLib.m"; sourceTree = "<group>"; };
 		C4D450582249F6B800196E1B /* JRServiceManager+Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JRServiceManager+Util.h"; sourceTree = "<group>"; };
 		C4D450592249F6B800196E1B /* JRServiceManager+Util.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "JRServiceManager+Util.m"; sourceTree = "<group>"; };
-		C4EFECB922B7632200D12A4C /* RNCAsyncStorage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNCAsyncStorage.xcodeproj; path = "../node_modules/@mr/mr-rn-storage/ios/RNCAsyncStorage.xcodeproj"; sourceTree = "<group>"; };
 		C4F01EEA222D141200ACA1B4 /* PhoneAutherTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhoneAutherTool.h; sourceTree = "<group>"; };
 		C4F01EEB222D141200ACA1B4 /* PhoneAutherTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhoneAutherTool.m; sourceTree = "<group>"; };
 		C4F01EED222D150E00ACA1B4 /* PhoneAuthenModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhoneAuthenModule.h; sourceTree = "<group>"; };
@@ -1395,9 +1388,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0120E88822D87D0C001A2269 /* libRNCAsyncStorage.a in Frameworks */,
 				C4F2E49222BE30BC00FF6213 /* IJSFoundation.framework in Frameworks */,
 				BF2A519322B9EBC300A80506 /* libRNGestureHandler.a in Frameworks */,
-				C4EFED0422B767E300D12A4C /* libRNCAsyncStorage.a in Frameworks */,
 				BF2CCECE229F6D1600A5AD0D /* libRNCWebView.a in Frameworks */,
 				012630E322826C0C008D4F7E /* Accelerate.framework in Frameworks */,
 				10611B422249D662001960A9 /* JavaScriptCore.framework in Frameworks */,
@@ -1573,6 +1566,14 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		0120E84522D87CEA001A2269 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0120E87D22D87CEA001A2269 /* libRNCAsyncStorage.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		01262FB022811353008D4F7E /* Activity */ = {
 			isa = PBXGroup;
 			children = (
@@ -1620,7 +1621,6 @@
 				0347BACB2237CC680011184A /* Lottie.framework */,
 				0347BACD2237CC680011184A /* Lottie.framework */,
 				0347BACF2237CC680011184A /* libLottie.a */,
-				031DF87922C5E12F0035BD7A /* libLottie.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2249,7 +2249,7 @@
 			isa = PBXGroup;
 			children = (
 				BF2A512722B9EB6C00A80506 /* RNGestureHandler.xcodeproj */,
-				C4EFECB922B7632200D12A4C /* RNCAsyncStorage.xcodeproj */,
+				0120E84422D87CEA001A2269 /* RNCAsyncStorage.xcodeproj */,
 				104548412239FB4800E73EF8 /* CodePush.xcodeproj */,
 				0347BAC12237CC670011184A /* Lottie.xcodeproj */,
 				0347BABB2237CC480011184A /* LottieReactNative.xcodeproj */,
@@ -2374,14 +2374,6 @@
 				C48636B822C344290096C8EC /* UIImageView+ConfigLib.m */,
 			);
 			path = Decode;
-			sourceTree = "<group>";
-		};
-		C4EFECBA22B7632200D12A4C /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				C4EFECC022B7632200D12A4C /* libRNCAsyncStorage.a */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		C4F01EE9222D13F500ACA1B4 /*  PhoneAuther */ = {
@@ -3215,8 +3207,8 @@
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
 				{
-					ProductGroup = C4EFECBA22B7632200D12A4C /* Products */;
-					ProjectRef = C4EFECB922B7632200D12A4C /* RNCAsyncStorage.xcodeproj */;
+					ProductGroup = 0120E84522D87CEA001A2269 /* Products */;
+					ProjectRef = 0120E84422D87CEA001A2269 /* RNCAsyncStorage.xcodeproj */;
 				},
 				{
 					ProductGroup = 1872318221CB96D300513B04 /* Products */;
@@ -3297,11 +3289,11 @@
 			remoteRef = 00C302E31ABCB9EE00DB3ED1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		031DF87922C5E12F0035BD7A /* libLottie.a */ = {
+		0120E87D22D87CEA001A2269 /* libRNCAsyncStorage.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = libLottie.a;
-			remoteRef = 031DF87822C5E12F0035BD7A /* PBXContainerItemProxy */;
+			path = libRNCAsyncStorage.a;
+			remoteRef = 0120E87C22D87CEA001A2269 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		0347BAC02237CC490011184A /* libLottieReactNative.a */ = {
@@ -3668,13 +3660,6 @@
 			remoteRef = C4D450982249F6B900196E1B /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		C4EFECC022B7632200D12A4C /* libRNCAsyncStorage.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNCAsyncStorage.a;
-			remoteRef = C4EFECBF22B7632200D12A4C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		CD11955421870DB6007F602E /* libRCTVideo.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -3914,6 +3899,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01DC348F22DC2CAA0025CF08 /* NSString+UrlAddParams.m in Sources */,
 				01739CD322BF283D00661677 /* ShowQueryModel.m in Sources */,
 				01739A9122BCC3EB00661677 /* JXModel.m in Sources */,
 				5068363521379B78001AB175 /* RCTPayTool.m in Sources */,
@@ -3995,7 +3981,6 @@
 				5077FCE321A4FE37003B860D /* NSString+Base64.m in Sources */,
 				012630182281196A008D4F7E /* ActiveModel.m in Sources */,
 				C4F2E45322BE303100FF6213 /* NSObject+IJSUKeyValue.m in Sources */,
-				0119D0562296A2B800FB70F0 /* NSString+UrlAddParams.m in Sources */,
 				5068363921379B78001AB175 /* SGQRCodeScanManager.m in Sources */,
 				C4F2E47D22BE303100FF6213 /* IJSDExportView.m in Sources */,
 				C4F2E47122BE303100FF6213 /* IJSSelectedCell.m in Sources */,
@@ -4447,7 +4432,12 @@
 					"$(PROJECT_DIR)/Class/libs/ImagePickLib/SDK/Required",
 					"$(PROJECT_DIR)/Class/libs/ImagePickLib/WAVideoBox",
 				);
-				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = "$(inherited) $(PROJECT_DIR)/Class/libs/AliPay $(PROJECT_DIR)/crm_app_xiugou/Vendor $(PROJECT_DIR)/../node_modules/@mr/rn-geolocation/lib/ios";
+				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Class/libs/AliPay",
+					"$(PROJECT_DIR)/crm_app_xiugou/Vendor",
+					"$(PROJECT_DIR)/../node_modules/@mr/rn-geolocation/lib/ios",
+				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Class/Macros/Jure.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",

@@ -67,6 +67,10 @@
 -(JXHeaderView *)headView{
   if (!_headView) {
     _headView = [[JXHeaderView alloc] init];
+    __weak RecommendedCell *weakSelf = self;
+    _headView.clickHeaderImgBlock = ^(){
+      
+    };
   }
   return _headView;
 }

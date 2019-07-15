@@ -11,6 +11,9 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface NSString (UrlAddParams)
+
++(NSString*)convertNSDictionaryToJsonString:(NSDictionary *)json;
+
 -(NSString*)getUrlAndWidth:(CGFloat)width height:(CGFloat)height;
 
 -(NSString *)urlAddCompnentForValue:(NSString *)value key:(NSString *)key;

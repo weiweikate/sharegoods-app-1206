@@ -27,7 +27,9 @@
 -(UIImageView*)headImg{
   if (!_headImg) {
     _headImg = [[UIImageView alloc] init];
-//    _headImg.image = [UIImage imageNamed:@"welcome3"];
+    _headImg.userInteractionEnabled = YES;//打开用户交互
+    UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickHeaderImg)];
+    [_headImg addGestureRecognizer:tapGesture];
     _headImg.layer.masksToBounds = YES;
 
   }
@@ -109,6 +111,12 @@
   .heightIs(15);
     [_timeLab setSingleLineAutoResizeWithMaxWidth:200];
 
+}
+
+-(void)clickHeaderImg{
+  if(self.clickHeaderImgBlock){
+    self.clickHeaderImgBlock();
+  }
 }
 
 -(void)tapGuanzhuBtn:(UIButton*)sender{

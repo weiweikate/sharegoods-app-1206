@@ -10,6 +10,18 @@
 
 @implementation NSString (UrlAddParams)
 
++(NSString*)convertNSDictionaryToJsonString:(NSDictionary *)json{
+  NSError *error;
+  NSData *jsonData = [NSJSONSerialization dataWithJSONObject:json options:NSJSONWritingPrettyPrinted error:&error];
+  if (error) {
+    NSLog(@"json解析失败:%@", error);
+    return nil;
+  }
+  NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+  return jsonString;
+}
+
+
 -(NSString *)urlAddCompnentForValue:(NSString *)value key:(NSString *)key{
   
   NSMutableString *string = [[NSMutableString alloc]initWithString:self];
