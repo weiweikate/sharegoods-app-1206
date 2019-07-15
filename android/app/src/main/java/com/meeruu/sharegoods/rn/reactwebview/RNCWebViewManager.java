@@ -359,7 +359,7 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
         final RNCWebView webView = createRNCWebViewInstance(reactContext);
         RnWebChromeClient chromeClient = new RnWebChromeClient(reactContext, webView);
         webView.setWebChromeClient(chromeClient);
-        SensorsDataAPI.sharedInstance().showUpWebView(webView, true);
+        SensorsDataAPI.sharedInstance().showUpWebView(webView, true,true);
 
         reactContext.addLifecycleEventListener(webView);
         mWebViewConfig.configWebView(webView);
