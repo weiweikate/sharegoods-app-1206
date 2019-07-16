@@ -57,7 +57,7 @@ class ConfirmOrderModel {
         this.failProductList = []
         this.payInfo = {};
         this.receiveInfo = {};
-        this.data = {};
+        this.data = null;
 
     }
 
