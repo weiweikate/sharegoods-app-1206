@@ -70,7 +70,26 @@ const api = {
         method: 'get'
     }],
     //添加视频
-    saveVideo:['/social/show/content/video/save',{method:'post'}]
+    saveVideo:['/social/show/content/video/save',{
+        method:'post'
+    }],
+    //查询我的粉丝
+    getUserFans: ['/social/show/user/query/my/fans', {
+        method: 'get'
+    }],
+    //查询我的关注
+    getUserFollow: ['/social/show/user/query/my/follow', {
+        method: 'get'
+    }],
+    //查询Ta的粉丝
+    getOtherFans: ['/social/show/user/query/other/fans', {
+        method: 'get'
+    }],
+    //查询Ta的关注
+    getOtherFollow: ['/social/show/user/query/other/follow', {
+        method: 'get'
+    }]
+
 };
 import ApiUtils from '../../api/network/ApiUtils';
 
