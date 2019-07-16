@@ -3,9 +3,11 @@ package com.meeruu.sharegoods.rn.showground.adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.bean.VideoListBean;
 
@@ -46,13 +49,16 @@ public class LittleVideoListAdapter extends BaseVideoListAdapter<LittleVideoList
         textView.setTextColor(Color.WHITE);
         textView.setTextSize(12);
         textView.setText("#夏季防晒指南");
-        textView.setPadding(8,0,8,0);
+        int pad = DensityUtils.dip2px(8);
+        textView.setPadding(pad,0,pad,0);
         textView.setGravity(Gravity.CENTER);
         textView.setBackgroundResource(R.drawable.tag_background);
-        LinearLayout.LayoutParams tvParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 24);
+        LinearLayout.LayoutParams tvParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, DensityUtils.dip2px(24));
         textView.setLayoutParams(tvParam);
         myHolder.tagWrapper.removeAllViews();
         myHolder.tagWrapper.addView(textView);
+        myHolder.previewWrapper.setVisibility(View.VISIBLE);
+        myHolder.detailWrapper.setVisibility(View.INVISIBLE);
     }
 
     public final class  MyHolder extends BaseVideoListAdapter.BaseHolder {
@@ -60,12 +66,38 @@ public class LittleVideoListAdapter extends BaseVideoListAdapter<LittleVideoList
         public FrameLayout playerView;
         private ViewGroup mRootView;
         private ViewGroup tagWrapper;
+        private ViewGroup detailWrapper,previewWrapper;
+        private TextView tvDetail;
+        private TextView previewDetail;
+        private TextView close,open;
         MyHolder(@NonNull View itemView) {
             super(itemView);
             thumb = itemView.findViewById(R.id.img_thumb);
             playerView = itemView.findViewById(R.id.player_view);
             mRootView = itemView.findViewById(R.id.root_view);
             tagWrapper = itemView.findViewById(R.id.tag_wrapper);
+            tvDetail = itemView.findViewById(R.id.tv_detail);
+            previewDetail = itemView.findViewById(R.id.preview_detail);
+            close = itemView.findViewById(R.id.tv_close);
+            open = itemView.findViewById(R.id.tv_open);
+            detailWrapper = itemView.findViewById(R.id.video_text_open);
+            previewWrapper = itemView.findViewById(R.id.video_text_close);
+            open.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    previewWrapper.setVisibility(View.INVISIBLE);
+                    detailWrapper.setVisibility(View.VISIBLE);
+                }
+            });
+            close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    detailWrapper.setVisibility(View.INVISIBLE);
+                    previewWrapper.setVisibility(View.VISIBLE);
+                }
+            });
+
+
         }
 
         @Override

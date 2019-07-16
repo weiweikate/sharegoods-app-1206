@@ -28,7 +28,6 @@ public class NineGridView extends ViewGroup {
     private int rowCount;       // 行数
     private int gridWidth;      // 宫格宽度
     private int gridHeight;     // 宫格高度
-
     private List<SimpleDraweeView> imageViews;
     private List<ImageInfo> mImageInfo;
     private NineGridViewAdapter mAdapter;

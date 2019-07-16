@@ -24,8 +24,7 @@ public class NineGridViewAdapter implements Serializable {
      * @param index        当前点击图片的的索引
      * @param imageInfo    图片地址的数据集合
      */
-    protected void onImageItemClick(Context context, NineGridView nineGridView, int index, List<ImageInfo> imageInfo) {
-    }
+    protected void onImageItemClick(Context context, NineGridView nineGridView, int index, List<ImageInfo> imageInfo) { }
 
     /**
      * 生成ImageView容器的方式，

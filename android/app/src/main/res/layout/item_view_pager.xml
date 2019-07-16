@@ -4,14 +4,14 @@
     android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/black"
-    >
+    android:background="@android:color/black">
+
     <FrameLayout
         android:id="@+id/player_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipChildren="false"
         android:clickable="false"
+        android:clipChildren="false"
         android:focusable="false">
 
         <com.facebook.drawee.view.SimpleDraweeView
@@ -19,74 +19,169 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:adjustViewBounds="true"
             android:clickable="false"
-            android:focusable="false"
-            android:adjustViewBounds="true"/>
+            android:focusable="false" />
 
     </FrameLayout>
-    <RelativeLayout android:layout_width="match_parent"
+
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <LinearLayout android:layout_height="wrap_content"
+
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:orientation="vertical"
-            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
-            android:gravity="center_horizontal">
-            <ImageView android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/icon_download"/>
-            <TextView android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <ImageView
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon_download" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
                 android:text="0"
                 android:textColor="@color/white"
-                android:textSize="13sp"
-                android:layout_marginTop="7dp"/>
-            <ImageView android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:src="@mipmap/icon_collection"/>
-            <TextView android:layout_height="wrap_content"
+                android:textSize="13sp" />
+
+            <ImageView
                 android:layout_width="wrap_content"
-                android:text="0"
-                android:textColor="@color/white"
-                android:textSize="13sp"
-                android:layout_marginTop="7dp"/>
-            <ImageView android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:src="@mipmap/icon_like"/>
-            <TextView android:layout_height="wrap_content"
+                android:src="@mipmap/icon_collection" />
+
+            <TextView
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
                 android:text="0"
                 android:textColor="@color/white"
-                android:textSize="13sp"
-                android:layout_marginTop="7dp"/>
+                android:textSize="13sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:src="@mipmap/icon_like" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:text="0"
+                android:textColor="@color/white"
+                android:textSize="13sp" />
         </LinearLayout>
 
-        <TextView android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/tv_buy"
+            android:layout_width="wrap_content"
             android:layout_height="34dp"
-            android:textColor="@color/white"
-            android:text="立即购买"
-            android:gravity="center"
-            android:textSize="14sp"
-            android:paddingHorizontal="17dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="10dp"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/buy_background"
             android:layout_marginTop="10dp"
-            android:id="@+id/tv_buy"/>
-        <View android:layout_height="1dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/buy_background"
+            android:gravity="center"
+            android:paddingLeft="17dp"
+            android:paddingRight="17dp"
+            android:text="立即购买"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <View
+            android:id="@+id/line"
             android:layout_width="match_parent"
+            android:layout_height="1dp"
             android:layout_above="@+id/tv_buy"
-            android:background="@color/white"/>
-        <LinearLayout android:layout_width="wrap_content"
+            android:background="@color/white" />
+
+        <LinearLayout
+            android:id="@+id/tag_wrapper"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_above="@id/line"
+            android:layout_marginLeft="15dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal" />
+
+        <LinearLayout
+            android:id="@+id/video_text_close"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/tag_wrapper"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:id="@+id/tag_wrapper" />
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:visibility="invisible">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:id="@+id/preview_detail"
+                android:text="视频内容文本展示区域宽度为690 默认展示两行容文本展示区域宽度为690 默认展示两行 若文…"
+                android:textColor="@color/white"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/tv_open"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="展开"
+                android:textColor="#FF0050"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/video_text_open"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/tag_wrapper"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:visibility="invisible">
+            <com.meeruu.sharegoods.rn.showground.widgets.FocusScrollView
+                android:layout_width="match_parent"
+                android:layout_height="105dp">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tv_detail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="视频内容文本展示区域宽度为690 默认展示两行容文本展示区域宽度为690 默认展示两行 若文视频内容文本展示区域宽度为690 默认展示两行容文本展示区域宽度为690 默认展示两行 若文视频内视频内容文本展示区域宽度为690 默认展示两行容文本展示区域宽度为690 默认展示两行 若文视频内容文本展示区域宽度为690 默认展示两行容文本展示区域宽度为690 默认展示两行 若文视频内视频内容文本展示区域宽度为690 默认展示两行容文本展示区域宽度为690 默认展示两行 若文视频内容文本展示区域宽度为690 默认展示两行容文本展示区域宽度为690 默认展示两行 若文视频内容文本展示区域宽度为690 默认展示两行容文本展示区域宽度为690 默认展示两行 若文"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+            </com.meeruu.sharegoods.rn.showground.widgets.FocusScrollView>
+            <TextView
+                android:id="@+id/tv_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="收起"
+                android:textColor="#FF0050"
+                android:textSize="13sp"
+                android:layout_marginTop="5dp"/>
+        </LinearLayout>
+
     </RelativeLayout>
 
 </FrameLayout>
