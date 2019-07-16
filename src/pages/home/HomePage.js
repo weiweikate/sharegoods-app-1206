@@ -72,7 +72,7 @@ import intervalMsgModel, { IntervalMsgView, IntervalType } from '../../comm/comp
 import { UserLevelModalView } from './view/TaskModalView';
 
 const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
-    {errorMsg?null:(isEnd?null:(<ActivityIndicator style={{marginRight:6}} animating={true} size={'small'} color={DesignRule.mainColor}/>))}
+    <ActivityIndicator style={{marginRight:6}} animating={errorMsg?false:(isEnd?false:true)} size={'small'} color={DesignRule.mainColor}/>
     <Text style={styles.text}
           allowFontScaling={false}>{errorMsg ? errorMsg : (isEnd ? '我也是有底线的~' : (isFetching ? '加载中...' : '加载更多中...'))}</Text>
 </View>;
