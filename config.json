@@ -198,7 +198,7 @@
         },
         "activity-dev": {
             "name": "activity-dev",
-            "host": "http://172.16.10.11:9180/gateway",
+            "host": "http://172.16.10.11:1080/gateway",
             "oss": "https://devcdn.sharegoodsmall.com",
             "h5": "http://testh51.sharegoodsmall.com",
             "wxAppletKey": "gh_aa91c3ea0f6c",
