@@ -363,17 +363,10 @@
 -(void)showChatViewController:(NSDictionary *)userInfo{
   NSString *openURL = nil;
   NSString * linkUrl = userInfo[@"linkUrl"];
-//  NSNumber * pageType = userInfo[@"pageType"];
-  if (linkUrl &&
-      [linkUrl isKindOfClass:[NSString class]] &&
-      linkUrl.length > 0
-      ) {
+  if (linkUrl &&[linkUrl isKindOfClass:[NSString class]] &&linkUrl.length > 0) {
     NSString*hString = [linkUrl stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet characterSetWithCharactersInString:@"`#%^{}\"[]|\\<> "]];
     openURL = [NSString stringWithFormat:@"meeruu://path/HtmlPage/%@",hString];
-  }//else if (pageType && [pageType integerValue] == 100){
-    //   openURL = [NSString stringWithFormat:@"meeruu://path/MyCashAccountPage/%@",userInfo[@"params"][@"index"]];
- // }
-  
+  }
   if (!openURL) {
     return;
   }
@@ -381,20 +374,21 @@
     __weak AppDelegate * weakSelf = self;
  [NSTimer scheduledTimerWithTimeInterval:1 repeats:YES block:^(NSTimer * _Nonnull timer) {
       if (weakSelf.isLoadJS) {
-         [[UIApplication sharedApplication]openURL:[NSURL URLWithString:openURL] options:@{} completionHandler:nil];
+        [self openScheme:openURL];
         [timer invalidate];
       }
     }];
   }else{
-     [[UIApplication sharedApplication]openURL:[NSURL URLWithString:openURL] options:@{} completionHandler:nil];
+    [self openScheme:openURL];
   }
-//  id object = [userInfo objectForKey:@"nim"]; //含有“nim”字段，就表示是七鱼的消息
-//  if (object)
-//  {
-//
-//  }
 }
-
+- (void)openScheme:(NSString *)openURL{
+  if ([[UIApplication sharedApplication] respondsToSelector:@selector(openURL:options:completionHandler:)]) {
+    [[UIApplication sharedApplication]openURL:[NSURL URLWithString:openURL] options:@{} completionHandler:nil];
+  }else{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:openURL]];
+  }
+}
 
 -(void) checkCurrentNotificationStatus
 {
