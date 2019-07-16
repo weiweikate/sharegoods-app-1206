@@ -47,7 +47,7 @@ public class ShowVideoViewManager extends SimpleViewManager<VideoListView> {
 
             @Override
             public void onHostDestroy() {
-
+//TODO 释放组件
             }
         });
         return videoListView;

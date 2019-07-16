@@ -1,12 +1,16 @@
 package com.meeruu.sharegoods.rn.showground.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -38,20 +42,30 @@ public class LittleVideoListAdapter extends BaseVideoListAdapter<LittleVideoList
     @Override
     public void onBindViewHolder(@NonNull MyHolder myHolder, final int position) {
         super.onBindViewHolder(myHolder, position);
-
+        TextView textView = new TextView(context);
+        textView.setTextColor(Color.WHITE);
+        textView.setTextSize(12);
+        textView.setText("#夏季防晒指南");
+        textView.setPadding(8,0,8,0);
+        textView.setGravity(Gravity.CENTER);
+        textView.setBackgroundResource(R.drawable.tag_background);
+        LinearLayout.LayoutParams tvParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 24);
+        textView.setLayoutParams(tvParam);
+        myHolder.tagWrapper.removeAllViews();
+        myHolder.tagWrapper.addView(textView);
     }
 
     public final class  MyHolder extends BaseVideoListAdapter.BaseHolder {
         private SimpleDraweeView thumb;
         public FrameLayout playerView;
         private ViewGroup mRootView;
-
+        private ViewGroup tagWrapper;
         MyHolder(@NonNull View itemView) {
             super(itemView);
-            Log.d(TAG,"new PlayerManager");
             thumb = itemView.findViewById(R.id.img_thumb);
             playerView = itemView.findViewById(R.id.player_view);
             mRootView = itemView.findViewById(R.id.root_view);
+            tagWrapper = itemView.findViewById(R.id.tag_wrapper);
         }
 
         @Override

@@ -20,12 +20,73 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:clickable="false"
-            android:scaleType="fitXY"
             android:focusable="false"
             android:adjustViewBounds="true"/>
 
     </FrameLayout>
     <RelativeLayout android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+        <LinearLayout android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:gravity="center_horizontal">
+            <ImageView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon_download"/>
+            <TextView android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="0"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                android:layout_marginTop="7dp"/>
+            <ImageView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:src="@mipmap/icon_collection"/>
+            <TextView android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="0"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                android:layout_marginTop="7dp"/>
+            <ImageView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:src="@mipmap/icon_like"/>
+            <TextView android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="0"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                android:layout_marginTop="7dp"/>
+        </LinearLayout>
+
+        <TextView android:layout_width="wrap_content"
+            android:layout_height="34dp"
+            android:textColor="@color/white"
+            android:text="立即购买"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:paddingHorizontal="17dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/buy_background"
+            android:layout_marginTop="10dp"
+            android:id="@+id/tv_buy"/>
+        <View android:layout_height="1dp"
+            android:layout_width="match_parent"
+            android:layout_above="@+id/tv_buy"
+            android:background="@color/white"/>
+        <LinearLayout android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/tag_wrapper" />
+    </RelativeLayout>
 
 </FrameLayout>

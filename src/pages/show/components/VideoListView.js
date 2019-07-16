@@ -16,8 +16,6 @@ export default class VideoListView extends PureComponent {
         super(props);
     }
 
-
-
     render() {
         return(
             <View >
