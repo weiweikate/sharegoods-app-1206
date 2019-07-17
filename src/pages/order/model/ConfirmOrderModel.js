@@ -23,6 +23,7 @@ class ConfirmOrderModel {
 
     addressId =  '';
     addressData = {};
+    isNoAddress = false;
 
     orderParamVO = {};
     tokenCoin = 0
@@ -151,6 +152,7 @@ class ConfirmOrderModel {
     }
 
     @action makeSureProduct() {
+        this.isNoAddress = false;
         bridge.showLoading();
         OrderApi.makeSureOrder(this.getParams()).then(response => {
             bridge.hiddenLoading();
@@ -184,6 +186,19 @@ class ConfirmOrderModel {
             ]);
         } else if (err.code === 54001) {
             bridge.$toast('商品库存不足！');
+        } else if (err.code === 54002){
+            this.isNoAddress = true;
+            Alert.alert('','您还没有收货地址，请点击添加',
+                [{text: '取消', onPress: () => {}},
+                    {text: '添加', onPress: () => {
+                            routePush(RouterMap.AddressEditAndAddPage,{
+                                callBack: (json) => {
+                                    this.selectAddressId(json)
+                                },
+                                from: 'add'
+                            });
+                        }}
+                ])
         } else {
             bridge.$toast(err.msg);
         }
@@ -200,20 +215,6 @@ class ConfirmOrderModel {
         this.tokenCoin =  this.payInfo.tokenCoinAmount;
         if (this.payInfo.couponAmount === 0){
             this.userCouponCode = '';
-        }
-
-        if (this.addressId === '' && this.isAllVirtual === false){
-            Alert.alert('','您还没有收货地址，请点击添加',
-                [{text: '取消', onPress: () => {}},
-                    {text: '添加', onPress: () => {
-                            routePush(RouterMap.AddressEditAndAddPage,{
-                                callBack: (json) => {
-                                    this.selectAddressId(json)
-                                },
-                                from: 'add'
-                            });
-                        }}
-                ])
         }
         //遍历出失效对应商品信息
         let failProductList = [];
