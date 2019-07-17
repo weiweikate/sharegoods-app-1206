@@ -4,18 +4,16 @@
  */
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+
 const { px2dp } = ScreenUtils;
 
 import {
-    StyleSheet,
-    View,
-    Image
+    StyleSheet
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
-import res from  '../../res';
-import {MRText as Text} from '../../../../components/ui';
-const signingInIcon = res.signIn.complete_check;
+import { MRText as Text } from '../../../../components/ui';
+import LinearGradient from 'react-native-linear-gradient';
 
 
 /**
@@ -26,86 +24,66 @@ const signingInIcon = res.signIn.complete_check;
 export default class SignInCircleView extends PureComponent {
     static propTypes = {
         count: PropTypes.number.isRequired,
-        kind: PropTypes.oneOf(['signedIn','signingIn','noSignIn','willSignIn']).isRequired
+        kind: PropTypes.oneOf(['signedIn', 'signingIn', 'noSignIn', 'willSignIn']).isRequired
     };
 
     constructor(props) {
         super(props);
     }
 
-    signedInRender(){
+    signedInRender() {
         return (
-            <View style={[styles.circleStyle,{ backgroundColor: 'white'}]}>
-                <Text style={[styles.textStyle,{color:DesignRule.textColor_secondTitle}]}>
+            <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+                            colors={['#FFCB02', '#FF9502']}
+                            style={styles.circleStyle}>
+                <Text style={styles.textStyle}>
                     {`+${this.props.count}`}
                 </Text>
-            </View>
+            </LinearGradient>
         );
     }
 
-    signingInRender(){
+    noSignInRender() {
         return (
-            <View style={[styles.circleStyle,{ backgroundColor: 'white'}]}>
-                <Image source={signingInIcon} style={styles.iconStyle} resizeMode={'stretch'}/>
-            </View>
-        );
-    }
-
-    willSignInRender(){
-        return (
-            <View style={[styles.circleStyle,{ backgroundColor: '#c6b478'}]}>
-                <Text style={[styles.textStyle,{color:DesignRule.bgColor}]}>
+            <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+                            colors={['#FFCB02', '#FF9502']}
+                            style={[styles.circleStyle, { opacity: 0.5 }]}>
+                <Text style={styles.textStyle}>
                     {`+${this.props.count}`}
                 </Text>
-            </View>
+            </LinearGradient>
         );
     }
 
-    noSignInRender(){
-        return (
-            <View style={[styles.circleStyle,{ width:px2dp(30),
-                height:px2dp(30),backgroundColor: '#c6b478',borderRadius:px2dp(15), borderWidth: px2dp(1),
-                borderColor:'white'
-            }]}>
-                <Text style={[styles.textStyle,{color:DesignRule.textColor_secondTitle}]}>
-                    {`+${this.props.count}`}
-                </Text>
-            </View>
-        );
-    }
-
-    render(){
+    render() {
         switch (this.props.kind) {
             case 'signedIn' :
+            case 'signingIn' :
                 return this.signedInRender();
                 break;
-            case 'signingIn' :
-                return this.signingInRender();
-                break;
             case 'noSignIn' :
-                return this.noSignInRender();
-                break;
             case 'willSignIn' :
-                return this.willSignInRender();
+                return this.noSignInRender();
                 break;
         }
     }
 }
 
 const styles = StyleSheet.create({
-    circleStyle:{
-        width:px2dp(28),
-        height:px2dp(28),
-        borderRadius:px2dp(14),
-        justifyContent:'center',
-        alignItems:'center'
+    circleStyle: {
+        width: px2dp(24),
+        height: px2dp(24),
+        borderRadius: px2dp(12),
+        justifyContent: 'center',
+        alignItems: 'center'
     },
-    textStyle:{
-        fontSize:px2dp(12),
+    textStyle: {
+        fontSize: px2dp(12),
+        color: DesignRule.white
     },
-    iconStyle:{
-        width:px2dp(20),
-        height:px2dp(20)
+    iconStyle: {
+        width: px2dp(20),
+        height: px2dp(20)
     }
 });
 
