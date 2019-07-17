@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -18,16 +19,17 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.sharegoods.R;
+import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
 import com.meeruu.sharegoods.rn.showground.bean.VideoListBean;
 
 import java.util.List;
 
-public class LittleVideoListAdapter extends BaseVideoListAdapter<LittleVideoListAdapter.MyHolder, VideoListBean>{
+public class LittleVideoListAdapter extends BaseVideoListAdapter<LittleVideoListAdapter.MyHolder>{
 
     public static final String TAG = LittleVideoListAdapter.class.getSimpleName();
 //    private OnItemBtnClick mItemBtnClick;
     public LittleVideoListAdapter(Context context,
-                                  List<VideoListBean> urlList) {
+                                  List<NewestShowGroundBean.DataBean> urlList) {
         super(context, urlList);
     }
 
@@ -70,9 +72,11 @@ public class LittleVideoListAdapter extends BaseVideoListAdapter<LittleVideoList
         private TextView tvDetail;
         private TextView previewDetail;
         private TextView close,open;
+        private ImageView playIcon;
         MyHolder(@NonNull View itemView) {
             super(itemView);
             thumb = itemView.findViewById(R.id.img_thumb);
+            playIcon = itemView.findViewById(R.id.iv_play_icon);
             playerView = itemView.findViewById(R.id.player_view);
             mRootView = itemView.findViewById(R.id.root_view);
             tagWrapper = itemView.findViewById(R.id.tag_wrapper);
@@ -110,5 +114,9 @@ public class LittleVideoListAdapter extends BaseVideoListAdapter<LittleVideoList
             return mRootView;
         }
 
+        @Override
+        public ImageView getPlayIcon() {
+            return playIcon;
+        }
     }
 }

@@ -121,6 +121,7 @@ public class NewestShowGroundBean {
         private List<ProductsBean> products;
         private List<ResourceBean> resource;
         private List<ImageInfo> nineImageInfos;
+        private List<ShowTagsBean> showTags;
         private ImageInfo videoCover;
         private boolean owner;
         private int createSource;
@@ -149,7 +150,13 @@ public class NewestShowGroundBean {
             this.owner = owner;
         }
 
+        public List<ShowTagsBean> getShowTags() {
+            return showTags;
+        }
 
+        public void setShowTags(List<ShowTagsBean> showTags) {
+            this.showTags = showTags;
+        }
 
         public List<ImageInfo> getNineImageInfos() {
             return nineImageInfos;
@@ -327,6 +334,27 @@ public class NewestShowGroundBean {
 
             public void setUserName(String userName) {
                 this.userName = userName;
+            }
+        }
+
+        public static class ShowTagsBean {
+            private String name;
+            private int tagId;
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public int getTagId() {
+                return tagId;
+            }
+
+            public void setTagId(int tagId) {
+                this.tagId = tagId;
             }
         }
 

@@ -29,6 +29,7 @@ import RouterMap, { replaceRoute } from '../../navigation/RouterMap';
 import TagView from './components/TagView';
 import PictureVideoUtils from './utils/PictureVideoUtils';
 import ImageOrVideoModal from './components/ImageOrVideoModal';
+import user from '../../model/user';
 
 const { addIcon, delIcon, iconShowDown, iconShowEmoji, addShowIcon, showTagIcon } = res;
 const { arrow_right_black } = res.button;
@@ -161,7 +162,8 @@ export default class ReleaseNotesPage extends BasePage {
         let productsPar = products.map((value) => {
             return value.spuCode;
         });
-        NativeModules.ShowModule.uploadVideo('cs', videoPath).then((data) => {
+        let title = `${user.code}-${new Date().getTime()}-${this.state.titleText}`;
+        NativeModules.ShowModule.uploadVideo(title, videoPath).then((data) => {
             PictureVideoUtils.uploadSingleImage(videoCover, (res) => {
                 if (res.url) {
                     let videoCover = {

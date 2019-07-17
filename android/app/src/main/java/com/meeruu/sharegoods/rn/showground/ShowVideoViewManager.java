@@ -9,6 +9,7 @@ import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.meeruu.sharegoods.rn.showground.adapter.LittleVideoListAdapter;
+import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
 import com.meeruu.sharegoods.rn.showground.bean.VideoListBean;
 import com.meeruu.sharegoods.rn.showground.widgets.littlevideo.VideoListView;
 
@@ -47,7 +48,7 @@ public class ShowVideoViewManager extends SimpleViewManager<VideoListView> {
 
             @Override
             public void onHostDestroy() {
-//TODO 释放组件
+                videoListView.releasePlayer();
             }
         });
         return videoListView;
@@ -55,8 +56,8 @@ public class ShowVideoViewManager extends SimpleViewManager<VideoListView> {
 
     @ReactProp(name = "params")
     public void initData(View view, String map) {
-        VideoListBean videoListBean = JSON.parseObject(map, VideoListBean.class);
-        List<VideoListBean> list = new ArrayList<VideoListBean>();
+        NewestShowGroundBean.DataBean videoListBean = JSON.parseObject(map, NewestShowGroundBean.DataBean.class);
+        List<NewestShowGroundBean.DataBean> list = new ArrayList<NewestShowGroundBean.DataBean>();
         list.add(videoListBean);
         ((VideoListView) view).refreshData(list);
     }

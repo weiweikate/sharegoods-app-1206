@@ -281,6 +281,9 @@ public class VideoRecordActivity extends Activity {
 
         if(requestCode == result_code){
             List<LocalMedia> list = PictureSelector.obtainMultipleResult(data);
+            if(list == null || list.size() == 0){
+                return;
+            }
             LocalMedia localMedia = list.get(0);
             ShowVideoEvent showVideoEvent = new ShowVideoEvent();
             ImageBean cover = VideoCoverUtils.getVideoThumb(this,localMedia.getPath());

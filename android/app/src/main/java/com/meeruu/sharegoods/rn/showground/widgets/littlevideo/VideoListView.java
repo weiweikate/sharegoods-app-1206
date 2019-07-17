@@ -43,10 +43,13 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.TransferListener;
 import com.google.android.exoplayer2.util.Util;
+import com.meeruu.commonlib.callback.BaseCallback;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.adapter.BaseVideoListAdapter;
+import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
 import com.meeruu.sharegoods.rn.showground.bean.VideoListBean;
+import com.meeruu.sharegoods.rn.showground.model.VideoModel;
 import com.meeruu.sharegoods.rn.showground.widgets.ShowVideoView;
 
 import java.util.ArrayList;
@@ -62,11 +65,13 @@ public class VideoListView extends FrameLayout {
     private ImageView mPlayIcon;
     private ExoPlayerView videoView;
     private ExoPlayer exoPlayer;
+    private VideoModel videoModel;
     /**
      * 数据是否到达最后一页
      */
     private boolean isEnd;
-    private List<IVideoSourceModel> list;
+    private List<NewestShowGroundBean.DataBean> list;
+    private String currentShowNo;
 
     /**
      * 判断是否处于加载数据的状态中
@@ -75,7 +80,7 @@ public class VideoListView extends FrameLayout {
     /**
      * 预加载位置, 默认离底部还有5条数据时请求下一页视频列表
      */
-    private static final int DEFAULT_PRELOAD_NUMBER = 5;
+    private static final int DEFAULT_PRELOAD_NUMBER = 2;
     /**
      * 是否点击暂停
      */
@@ -134,6 +139,7 @@ public class VideoListView extends FrameLayout {
                     BaseVideoListAdapter.BaseHolder holder = (BaseVideoListAdapter.BaseHolder) recycler.findViewHolderForLayoutPosition(mCurrentPosition);
                     if (holder != null) {
                         holder.getCoverView().setVisibility(GONE);
+                        holder.getPlayIcon().setVisibility(GONE);
                     }
                     mPlayIcon.setVisibility(View.GONE);
                 }
@@ -223,16 +229,45 @@ public class VideoListView extends FrameLayout {
      * 暂停播放
      */
     public void pausePlay() {
+        if(exoPlayer == null){
+            return;
+        }
         isPauseInvoke = true;
         mPlayIcon.setVisibility(View.VISIBLE);
-//        videoView.pause();
         if (exoPlayer.getPlayWhenReady()) {
             exoPlayer.setPlayWhenReady(false);
         }
     }
 
+    /**
+     * 释放资源
+     */
+    public void releasePlayer() {
+        if (exoPlayer!= null) {
+            exoPlayer.setPlayWhenReady(false);
+            exoPlayer.release();
+            exoPlayer = null;
+        }
+    }
 
     private void init() {
+        this.addOnAttachStateChangeListener(new OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(View v) {
+
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(View v) {
+                if(exoPlayer != null){
+                    exoPlayer.release();
+                    exoPlayer = null;
+                }
+            }
+        });
+
+        this.videoModel = new VideoModel();
+
         list = new ArrayList<>();
         View view = LayoutInflater.from(mContext).inflate(R.layout.layout_video_list, this, true);
         recycler = view.findViewById(R.id.recycler);
@@ -319,7 +354,7 @@ public class VideoListView extends FrameLayout {
         if (position < 0 || position > list.size()) {
             return;
         }
-        IVideoSourceModel video = list.get(position);
+        NewestShowGroundBean.DataBean video = list.get(position);
         //恢复界面状态
         mPlayIcon.setVisibility(View.VISIBLE);
 //        isPauseInvoke = false;
@@ -332,8 +367,19 @@ public class VideoListView extends FrameLayout {
         if (holder != null) {
             holder.getContainerView().addView(mPlayerViewContainer, 0);
         }
+        List<NewestShowGroundBean.DataBean.ResourceBean> resource = video.getResource();
+        String videoUrl = null;
+        if (resource != null) {
+            for (int j = 0; j < resource.size(); j++) {
+                NewestShowGroundBean.DataBean.ResourceBean resourceBean = resource.get(j);
+                if (resourceBean.getType() == 4) {
+                    videoUrl = resourceBean.getBaseUrl();
+                    break;
+                }
+            }
+        }
 
-        Uri mp4VideoUri = Uri.parse(video.getVideoUrl());
+        Uri mp4VideoUri = Uri.parse(videoUrl);
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(getContext(), Util.getUserAgent(getContext(), "MainApplication"));
         MediaSource videoSource =  new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(mp4VideoUri);
         exoPlayer.prepare(videoSource);
@@ -355,7 +401,7 @@ public class VideoListView extends FrameLayout {
      *
      * @param list
      */
-    public void addMoreData(List<VideoListBean> list) {
+    public void addMoreData(List<NewestShowGroundBean.DataBean> list) {
         if (list == null || list.size() < 5) {
             isEnd = true;
         } else {
@@ -370,35 +416,51 @@ public class VideoListView extends FrameLayout {
     }
 
 
+
+
     /**
      * 刷新数据
      *
      * @param list 刷新数据
      */
-    public void refreshData(List<VideoListBean> list) {
+    public void refreshData(List<NewestShowGroundBean.DataBean> list) {
         isEnd = false;
         isLoadingData = false;
         adapter.refreshData(list);
+        currentShowNo = list.get(0).getShowNo();
     }
 
 
     private void loadMoreData() {
-        this.postDelayed(new Runnable() {
+        videoModel.getVideoList(currentShowNo, null, new BaseCallback<NewestShowGroundBean>() {
             @Override
-            public void run() {
-                VideoListBean videoListBean = new VideoListBean();
-                videoListBean.setCover("https://cdn.sharegoodsmall.com/sharegoods/62b9a220bf6c47939edae02f0177cde7.png");
-//                videoListBean.setVideoUrl("https://aweme.snssdk.com/aweme/v1/playwm/?video_id=v0300f950000bkjb2dm409jtmn54cqu0&ratio=720p&line=0");
-                videoListBean.setVideoUrl("http://testovd.sharegoodsmall.com/f266bc8abd05473b84862ec0bde7f16b/6ef4a1e71a9c41349b2e6dc51b951069-cdbe7453d62b932d44b79f0a00561836-sd.mp4");
-                List list = new ArrayList();
-                list.add(videoListBean);
-                list.add(videoListBean);
-                list.add(videoListBean);
-                list.add(videoListBean);
-                list.add(videoListBean);
-                addMoreData(list);
+            public void onErr(String errCode, String msg) {
+                Log.e("sss",msg);
             }
-        }, 2000);
+
+            @Override
+            public void onSuccess(NewestShowGroundBean result) {
+                addMoreData(result.getData());
+            }
+        });
+//        this.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                VideoListBean videoListBean = new VideoListBean();
+//                videoListBean.setCover("https://cdn.sharegoodsmall.com/sharegoods/62b9a220bf6c47939edae02f0177cde7.png");
+////                videoListBean.setVideoUrl("https://aweme.snssdk.com/aweme/v1/playwm/?video_id=v0300f950000bkjb2dm409jtmn54cqu0&ratio=720p&line=0");
+//                videoListBean.setVideoUrl("http://testovd.sharegoodsmall.com/f266bc8abd05473b84862ec0bde7f16b/6ef4a1e71a9c41349b2e6dc51b951069-cdbe7453d62b932d44b79f0a00561836-sd.mp4");
+//                List list = new ArrayList();
+//                list.add(videoListBean);
+//                list.add(videoListBean);
+//                list.add(videoListBean);
+//                list.add(videoListBean);
+//                list.add(videoListBean);
+//                addMoreData(list);
+//            }
+//        }, 2000);
+
+
 
     }
 

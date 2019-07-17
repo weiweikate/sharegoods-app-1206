@@ -13,10 +13,12 @@ public class HttpUrlUtils {
     /**************************** api ***************************/
     public static final String URL_SHOWLIST = "/social/show/content/page/query"; //秀场列表
     public static final String URL_START_AD = "/advertising/queryAdvertisingList"; //秀场列表
+    public static final String URL_SHOW_VIDEO = "/advertising/queryAdvertisingList"; //秀场视频列表
     public static final String URL_DYNAMIC = "/social/show/content/page/mine/query"; //秀场个人中心
     public static final String URL_DELETE_DYNAMIC = "/social/show/content/delete"; //秀场个人中心
     public static final String URL_GONGMAO = "/gongmall/contract/notify"; //签约回调
     public static final String URL_VIDEO_AUTH = "/social/show/token"; //签约回调
+
 
 
     /*********获取api接口url***********/

@@ -22,6 +22,12 @@
             android:adjustViewBounds="true"
             android:clickable="false"
             android:focusable="false" />
+        <ImageView android:id="@+id/iv_play_icon"
+            android:layout_height="53dp"
+            android:layout_width="53dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_video_play"
+            />
 
     </FrameLayout>
 
