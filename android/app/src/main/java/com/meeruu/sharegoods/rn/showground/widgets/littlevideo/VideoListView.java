@@ -16,6 +16,7 @@ import android.view.ViewParent;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.alibaba.fastjson.JSON;
 import com.brentvatne.exoplayer.ExoPlayerView;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -101,7 +102,6 @@ public class VideoListView extends FrameLayout {
         this.mContext = context;
         initPlayer();
         init();
-        loadMoreData();
     }
 
     private VideoListView(@NonNull Context context, @Nullable AttributeSet attrs) {
@@ -428,40 +428,22 @@ public class VideoListView extends FrameLayout {
         isLoadingData = false;
         adapter.refreshData(list);
         currentShowNo = list.get(0).getShowNo();
+        loadMoreData();
     }
 
 
     private void loadMoreData() {
-        videoModel.getVideoList(currentShowNo, null, new BaseCallback<NewestShowGroundBean>() {
+        videoModel.getVideoList(currentShowNo, null, new BaseCallback<String>() {
             @Override
             public void onErr(String errCode, String msg) {
-                Log.e("sss",msg);
             }
 
             @Override
-            public void onSuccess(NewestShowGroundBean result) {
-                addMoreData(result.getData());
+            public void onSuccess(String result) {
+                NewestShowGroundBean newestShowGroundBean = JSON.parseObject(result,NewestShowGroundBean.class);
+                addMoreData(newestShowGroundBean.getData());
             }
         });
-//        this.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                VideoListBean videoListBean = new VideoListBean();
-//                videoListBean.setCover("https://cdn.sharegoodsmall.com/sharegoods/62b9a220bf6c47939edae02f0177cde7.png");
-////                videoListBean.setVideoUrl("https://aweme.snssdk.com/aweme/v1/playwm/?video_id=v0300f950000bkjb2dm409jtmn54cqu0&ratio=720p&line=0");
-//                videoListBean.setVideoUrl("http://testovd.sharegoodsmall.com/f266bc8abd05473b84862ec0bde7f16b/6ef4a1e71a9c41349b2e6dc51b951069-cdbe7453d62b932d44b79f0a00561836-sd.mp4");
-//                List list = new ArrayList();
-//                list.add(videoListBean);
-//                list.add(videoListBean);
-//                list.add(videoListBean);
-//                list.add(videoListBean);
-//                list.add(videoListBean);
-//                addMoreData(list);
-//            }
-//        }, 2000);
-
-
-
     }
 
 
