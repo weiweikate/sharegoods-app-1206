@@ -64,7 +64,6 @@ dependencies {
     api 'cn.jiguang.sdk.plugin:oppo:3.3.2'
     //此版本插件仅支持JPushSDK3.1.8及以上版本
     //    api 'cn.jiguang.sdk.plugin:vivo:3.3.2'//此版本插件仅支持JPushSDK3.2.0及以上版本
-    api files('libs/jverification-android-release-2.1.1.jar')
     api 'jp.wasabeef:blurry:3.0.0'
-
+    api files('libs/jverification-android-release-2.3.2.jar')
 }

@@ -21,7 +21,7 @@ PODS:
   - CocoaLumberjack/Default (3.4.2)
   - CocoaLumberjack/Extensions (3.4.2):
     - CocoaLumberjack/Default
-  - IQKeyboardManager (6.2.1)
+  - IQKeyboardManager (6.2.0)
   - JCore (2.1.1)
   - JPush (3.2.1):
     - JCore (< 3.0.0, >= 2.0.0)
@@ -109,7 +109,7 @@ DEPENDENCIES:
   - SDAutoLayout
   - SDWebImage (~> 4.4.6)
   - SensorsAnalyticsSDK (~> 1.10.17)
-  - Texture
+  - Texture (= 2.8.1)
   - TYCyclePagerView (~> 1.1.0)
   - UICKeyChainStore (~> 2.1.1)
   - UMCAnalytics (~> 6.0.5)
@@ -154,7 +154,7 @@ SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   Bugly: 3ca9f255c01025582df26f9222893b383c7e4b4e
   CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
-  IQKeyboardManager: 964638372b4a61892cc74fdfa6fd26de8c9464a2
+  IQKeyboardManager: 6194101620b73af5e67900b8f89707a99de0b804
   JCore: 4072327557f0b83cc22dd4041f2f839740c0077b
   JPush: a1ff8b8ec53fa3419b414946e4db4efa313baeae
   JVerification: 0fc93283465481d0a670f5c5de45bc6900a9077c
@@ -178,6 +178,6 @@ SPEC CHECKSUMS:
   WechatOpenSDK: 9b721089507c895d05f997408c30bb6e6f5f9b60
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-PODFILE CHECKSUM: 4095a8350936d150999afcce9a727d525c91fe80
+PODFILE CHECKSUM: edabb4dccabedaaf97653dafc082e328f832cacd
 
 COCOAPODS: 1.6.1
