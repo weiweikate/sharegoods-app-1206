@@ -241,6 +241,7 @@ export default class MinePage extends BasePage {
     //**********************************ViewPart******************************************
     _render() {
         const {availableBalance, userScore, coupons, fansMSG } = settingModel
+        console.log(availableBalance,userScore,coupons,fansMSG);
         return (
             <View style={{flex: 1}}>
                 <PullView
