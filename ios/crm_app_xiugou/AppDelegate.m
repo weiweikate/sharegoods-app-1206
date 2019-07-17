@@ -43,6 +43,7 @@
   }
   [self configureUserAgent];
   [self getAd];
+  [self getDynamicBaseUrl];
   
 //  [[CommentTool sharedInstance]checkIsCanComment];
 
@@ -109,6 +110,18 @@
   } failure:^(NSURLSessionDataTask * _Nullable task, NSError *error) {
     
   }];
+}
+
+- (void)getDynamicBaseUrl
+{
+  [NetWorkTool requestWithURL:Api_queryBaseUrl params:@{} toModel:nil success:^(id result) {
+    if(result){
+      [[NSNotificationCenter defaultCenter] postNotificationName:@"EventToRN" object:@{@"baseUrl": result,
+                                                                                       @"eventName":@"Event_change_baseUrl"
+                                                                                       }];
+      [[NSUserDefaults standardUserDefaults] setObject:result forKey:@"dynamicBaseUrl"];
+    }
+  } failure:nil showLoading:nil];
 }
 
 @end
