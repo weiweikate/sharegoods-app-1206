@@ -17,7 +17,11 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.alibaba.fastjson.JSON;
+import com.brentvatne.exoplayer.DataSourceUtil;
 import com.brentvatne.exoplayer.ExoPlayerView;
+import com.facebook.react.modules.network.CookieJarContainer;
+import com.facebook.react.modules.network.ForwardingCookieHandler;
+import com.facebook.react.modules.network.OkHttpClientProvider;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -28,6 +32,7 @@ import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
+import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSourceFactory;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.ExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
@@ -55,6 +60,9 @@ import com.meeruu.sharegoods.rn.showground.widgets.ShowVideoView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.JavaNetCookieJar;
+import okhttp3.OkHttpClient;
 
 public class VideoListView extends FrameLayout {
     private static String TAG = VideoListView.class.getSimpleName();
@@ -113,8 +121,8 @@ public class VideoListView extends FrameLayout {
 
         mPlayerViewContainer = View.inflate(getContext(), R.layout.layout_player_view, null);
         videoView = mPlayerViewContainer.findViewById(R.id.video_view);
+//        videoView.setResizeMode();
         exoPlayer = ExoPlayerFactory.newSimpleInstance(getContext(), new DefaultTrackSelector(), new DefaultLoadControl());
-
         videoView.setUseTextureView(true);
         exoPlayer.setRepeatMode(Player.REPEAT_MODE_ONE);
         exoPlayer.addListener(new Player.EventListener() {
@@ -379,11 +387,16 @@ public class VideoListView extends FrameLayout {
             }
         }
 
-        Uri mp4VideoUri = Uri.parse(videoUrl);
-        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(getContext(), Util.getUserAgent(getContext(), "MainApplication"));
-        MediaSource videoSource =  new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(mp4VideoUri);
-        exoPlayer.prepare(videoSource);
+        //DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(getContext(), Util.getUserAgent(getContext(), "MainApplication"));
+         exoPlayer.prepare(buildSource(videoUrl));
 
+    }
+
+    private MediaSource buildSource(String url){
+        Uri mp4VideoUri = Uri.parse(url);
+        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(getContext(), Util.getUserAgent(getContext(), ""));
+        MediaSource videoSource =  new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(mp4VideoUri);
+        return videoSource;
     }
 
     /**
