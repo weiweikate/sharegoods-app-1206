@@ -259,16 +259,8 @@ export default class IDVertify2Page extends BasePage {
             NativeModules.commModule.toast('请输入姓名');
             return;
         }
-        if (!StringUtils.isChineseName(this.state.name)) {
-            NativeModules.commModule.toast('请输入真实姓名');
-            return;
-        }
         if (StringUtils.isEmpty(this.state.idNumber)) {
             NativeModules.commModule.toast('请输入证件号');
-            return;
-        }
-        if (!StringUtils.isCardNo(this.state.idNumber)) {
-            NativeModules.commModule.toast('请输入真实证件号');
             return;
         }
         if (StringUtils.isEmpty(this.state.backIdCard)) {

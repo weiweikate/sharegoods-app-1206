@@ -19,7 +19,8 @@ import {
     View,
     ImageBackground,
     TouchableOpacity,
-    Image
+    Image,
+    ScrollView
 } from 'react-native';
 import ImageLoader from '@mr/image-placeholder';
 
@@ -71,17 +72,19 @@ export default class XiuDouResultModal extends React.Component {
                                              defaultEmptyText={'还没内容哦'}
                                              sizeKey={'pageSize'}
                                              pageKey={'pageIndex'}
-                                             // handleRequestResult={(data)=> {
-                                             //     data = data.data.data;
-                                             //     return [...data,...data,...data,...data]
-                                             // }}
+                                // handleRequestResult={(data)=> {
+                                //     data = data.data.data;
+                                //     return [...data,...data,...data,...data]
+                                // }}
                             />
                         </View>
                     </View>
                     <View style={styles.bottomContainer}>
-                        <MRText style={[styles.detail,{marginHorizontal: ScreenUtils.autoSizeWidth(10)}]}>
-                            {this.state.desc}
-                        </MRText>
+                        <ScrollView>
+                            <MRText style={[styles.detail,{marginHorizontal: ScreenUtils.autoSizeWidth(10),marginTop: 5, color: '#666666', fontSize: ScreenUtils.autoSizeWidth(12)}]}>
+                                {this.state.desc}
+                            </MRText>
+                        </ScrollView>
                     </View>
                     <TouchableOpacity style={{position: 'absolute',
                         top: 0,
