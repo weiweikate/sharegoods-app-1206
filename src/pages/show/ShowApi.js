@@ -88,6 +88,12 @@ const api = {
     //查询Ta的关注
     getOtherFollow: ['/social/show/user/query/other/follow', {
         method: 'get'
+    }],
+    cancelFollow: ['/social/show/user/cancel/follow',  {
+        method: 'post'
+    }],
+    userFollow: ['/social/show/user/user/follow',  {
+        method: 'post'
     }]
 
 };
