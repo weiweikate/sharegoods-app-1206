@@ -279,7 +279,7 @@ export default class ShowDetailPage extends BasePage {
 
             <View style={styles.navTitle}>
                 <TouchableOpacity style={styles.backView} onPress={() => this._goBack()}>
-                    <Image source={res.back}/>
+                    <Image source={res.button.back_black} style={{width: 30, height: 30}}/>
                 </TouchableOpacity>
                 <View style={styles.profileRow}>
                     <View style={styles.profileLeft}>
@@ -885,7 +885,7 @@ let styles = StyleSheet.create({
         marginTop: ScreenUtils.statusBarHeight
     },
     backView: {
-        width: px2dp(44),
+        width: px2dp(40),
         height: px2dp(44),
         alignItems: 'center',
         justifyContent: 'center'

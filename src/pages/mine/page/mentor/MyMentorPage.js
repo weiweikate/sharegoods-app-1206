@@ -24,7 +24,7 @@ import bridge from '../../../../utils/bridge';
 import SettingModel from '../../model/SettingModel';
 
 // const HeaderBarBgImg = res.myShop.txbg_03;
-const white_back = res.button.white_back;
+const back_white = res.button.back_white;
 const mine_user_icon = homeRes.homeBaseImg.mine_user_icon;
 const headerHeight = ScreenUtils.statusBarHeight + 44;
 const { fans_noData } = homeRes.showFans
@@ -126,8 +126,8 @@ export default class MyMentorPage extends BasePage {
                 }}>
                     <View style={{ flex: 1 }}>
                         <TouchableWithoutFeedback onPress={() => this.$navigateBack()}>
-                            <View style={{width: 40}}>
-                                <Image source={white_back} style={{width: 10, height: 20}}/>
+                            <View style={{width: 40, justifyContent: 'center', alignItems: 'center'}}>
+                                <Image source={back_white} style={{width: 30, height: 30}}/>
                             </View>
                         </TouchableWithoutFeedback>
                     </View>

@@ -25,7 +25,7 @@ import res from '../res/index';
 
 const { px2dp } = ScreenUtils;
 
-const closeImg = res.button.cancel_white_circle;
+const closeImg = res.button.tongyong_btn_close_white;
 const home_notice_bg = res.home_notice_bg;
 
 import XQSwiper from '../../../components/ui/XGSwiper';

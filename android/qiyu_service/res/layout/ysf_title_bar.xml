@@ -27,8 +27,8 @@
             android:background="@drawable/ysf_title_bar_back_selector"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingLeft="10dp"
-            android:paddingRight="4dp">
+            android:paddingLeft="4dp"
+            android:paddingRight="10dp">
 
             <ImageView
                 android:id="@+id/ysf_title_bar_back_view"

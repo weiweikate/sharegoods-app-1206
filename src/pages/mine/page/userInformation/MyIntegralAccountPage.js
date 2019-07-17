@@ -210,14 +210,14 @@ export default class MyIntegralAccountPage extends BasePage {
                         this.$navigateBack();
                     }}>
                         <View style={{
-                            width: 60,
+                            width: 40,
                             paddingLeft: DesignRule.margin_page,
                             height: 40,
                             justifyContent: 'center',
-                            alignItems:'flex-start',
+                            alignItems: 'center',
                             flex:1
                         }}>
-                            <Image source={res.button.white_back}/>
+                            <Image source={res.button.back_white}  style={{width: 30, height: 30}}/>
                         </View>
                     </TouchableWithoutFeedback>
                     <Text style={{

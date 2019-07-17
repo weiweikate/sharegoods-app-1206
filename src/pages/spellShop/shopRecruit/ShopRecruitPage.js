@@ -39,7 +39,7 @@ import { observer } from 'mobx-react';
 import { ShopBottomBannerView } from '../myShop/components/ShopDetailItemView';
 import RouterMap from '../../../navigation/RouterMap';
 
-const NavLeft = resCommon.button.white_back;
+const NavLeft = resCommon.button.back_white;
 const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
 const icons9_shop = res.shopRecruit.icons9_shop;
 
@@ -54,10 +54,11 @@ export default class ShopRecruitPage extends BasePage {
         return (<View style={styles.transparentView}>
                 <View style={styles.leftBarItemContainer}>
                     {!this.props.leftNavItemHidden ?
-                        <TouchableOpacity style={{ width: 44 }} onPress={() => {
-                            this.$navigateBack();
+                        <TouchableOpacity style={{ width: 40, justifyContent: 'center', alignItems: 'center' }} 
+                            onPress={() => {
+                                this.$navigateBack();
                         }}>
-                            <Image source={NavLeft}/>
+                            <Image source={NavLeft}  style={{width: 30, height: 30}}/>
                         </TouchableOpacity> : null}
                 </View>
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>

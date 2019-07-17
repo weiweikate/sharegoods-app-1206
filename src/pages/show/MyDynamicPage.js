@@ -114,7 +114,7 @@ export default class MyDynamicPage extends BasePage {
                             <Image
                                 source={this.state.changeHeader ? back_white : back_black}
                                 resizeMode={'stretch'}
-                                style={{ height: 20, width: 20 }}
+                                style={{ height: 30, width: 30 }}
                             />
                         </TouchableOpacity>
                     </View>
@@ -191,7 +191,6 @@ export default class MyDynamicPage extends BasePage {
             </View>
         );
     }
-
 }
 
 var styles = StyleSheet.create({
@@ -212,7 +211,7 @@ var styles = StyleSheet.create({
         backgroundColor: DesignRule.bgColor
     },
     left: {
-        paddingHorizontal: 15
+        paddingHorizontal: 5
     },
     nameStyle: {
         marginTop: px2dp(15),

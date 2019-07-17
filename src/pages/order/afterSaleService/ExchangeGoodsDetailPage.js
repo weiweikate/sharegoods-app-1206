@@ -59,7 +59,7 @@ const {
 
 const netError = res.placeholder.netError;
 const arrow_right_black = res.button.arrow_right_black;
-const white_back = res.button.white_back;
+const back_white = res.button.back_white;
 const tongyong_icon_kefu_white = res.afterSaleService.tongyong_icon_kefu_white
 
 @observer
@@ -277,7 +277,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                     right: 0,
                     backgroundColor: 'rgba(0,0,0,0)',
                     borderBottomWidth: 0}}
-                              leftNavImage={white_back}
+                              leftNavImage={back_white}
                               leftImageStyle={{width: 9}}
                               leftPressed={()=>{this.$navigateBack()}}
                               title={'售后进度'}

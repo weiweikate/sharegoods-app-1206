@@ -35,7 +35,7 @@ const QbIcon = res.myShop.dzfhj_03_03;
 const MoneyIcon = res.myShop.ccz_03;
 const detail_zongti = res.myShop.detail_zongti;
 const detail_benci = res.myShop.detail_benci;
-const NavLeft = resCommon.button.white_back;
+const NavLeft = resCommon.button.back_white;
 
 export default class ShopAssistantDetailPage extends BasePage {
 
@@ -56,8 +56,8 @@ export default class ShopAssistantDetailPage extends BasePage {
 
                     <TouchableOpacity onPress={() => {
                         this.$navigateBack();
-                    }}>
-                        <Image source={NavLeft}/>
+                    }} style={{width: 40, justifyContent: 'center', alignItems: 'center'}}>
+                        <Image source={NavLeft} style={{width: 30, height: 30}}/>
                     </TouchableOpacity>
                 </View>
             </View>

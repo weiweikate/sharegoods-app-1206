@@ -48,7 +48,7 @@ import { IntervalMsgView, IntervalType } from '../../../comm/components/Interval
 import RouterMap from '../../../navigation/RouterMap';
 
 const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
-const NavLeft = resCommon.button.white_back;
+const NavLeft = resCommon.button.back_white;
 const shezhi = res.myShop.shezhi;
 const my_Shop_gengduo = res.myShop.my_Shop_gengduo;
 const onSc_03 = res.myShop.sc_03;
@@ -87,10 +87,11 @@ export default class MyShopPage extends BasePage {
         return (<View style={styles.transparentView}>
                 <View style={styles.leftBarItemContainer}>
                     {!this.props.leftNavItemHidden ?
-                        <TouchableOpacity style={{ width: 44 }} onPress={() => {
+                        <TouchableOpacity style={{ width: 40, justifyContent: 'center', alignItems: 'center'}} 
+                            onPress={() => {
                             this.$navigateBack();
                         }}>
-                            <Image source={NavLeft}/>
+                            <Image source={NavLeft}  style={{width: 30, height: 30}}/>
                         </TouchableOpacity> : null}
                 </View>
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>

@@ -140,7 +140,7 @@ export default class ExpDetailPage extends BasePage {
                             alignItems:'flex-start',
                             flex:1
                         }}>
-                            <Image source={res.button.white_back}/>
+                            <Image source={res.button.back_white}/>
                         </View>
                     </TouchableWithoutFeedback>
                         <Text style={{

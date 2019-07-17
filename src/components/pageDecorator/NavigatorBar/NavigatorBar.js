@@ -282,7 +282,7 @@ const styles = StyleSheet.create({
         left: 0,
         bottom: 0,
         justifyContent: 'center',
-        paddingHorizontal: 15
+        paddingHorizontal: 5
     },
     leftImage: {
         position: 'absolute',

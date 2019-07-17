@@ -189,7 +189,7 @@ export class UserLevelModalView extends React.Component {
                                       style={{alignSelf: 'flex-end',
                                           marginRight: ScreenUtils.autoSizeWidth(30),
                                           marginBottom: ScreenUtils.autoSizeWidth(0),}}>
-                        <Image source={res.button.cancel_white_circle} style={{
+                        <Image source={res.button.tongyong_btn_close_white} style={{
                             width: ScreenUtils.autoSizeWidth(25),
                             height: ScreenUtils.autoSizeWidth(25),
                         }} />
