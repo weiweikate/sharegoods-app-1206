@@ -10,8 +10,6 @@ import {
     UIText, UIButton
 } from '../../../../components/ui';
 import { MRText as Text, MRTextInput as RNTextInput } from '../../../../components/ui';
-
-import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import MineApi from '../../api/MineApi';
 import Toast from '../../../../utils/bridge';
@@ -38,7 +36,8 @@ class AddBankCardPage extends BasePage {
             account: user.realname,
             bankName: '',
             cardNo: '',
-            cardType: ''
+            cardType: '',
+            type: ''
         };
     }
 
@@ -149,6 +148,8 @@ class AddBankCardPage extends BasePage {
                     <RNTextInput
                         style={styles.inputTextStyle}
                         onChangeText={(text) => this.inputCardNum(text)}
+                        onEndEditing={this.getBankType}
+                        onSubmitEditing={this.getBankType}
                         value={this.state.cardNo}
                         placeholder={'请输入卡号'}
                     />
@@ -193,41 +194,29 @@ class AddBankCardPage extends BasePage {
     };
     inputCardNum = (cardNo) => {
         this.setState({ cardNo: this._formatCard(cardNo) });
-        let card = cardNo.replace(/ /g, '');
-        this.getBankType(card);
     };
-    getBankType = (bankCard) => {
-        if (StringUtils.isEmpty(bankCard)) {
-            this.setState({
-                bankName: '',
-                cardType: ''
-            });
-            return;
-        }
-        if (bankCard.length < 6) {
-            this.setState({
-                bankName: '',
-                cardType: ''
-            });
-            return;
-        }
-        MineApi.findByBankCard({ cardnumber: bankCard }).then((response) => {
+    getBankType = () => {
+        const bankCard = this.state.cardNo.replace(/ /g, '');
+        MineApi.findByBankCardV2({ cardNumber: bankCard }).then((response) => {
             if (response.data) {
+                const data = response.data || {};
                 this.setState({
-                    bankName: response.data[0],
-                    cardType: response.data[1]
+                    bankName: data.bankName || '',
+                    cardType: data.cardType || '',
+                    type: data.type || ''
                 });
             } else {
-                this.setState({
-                    bankName: '',
-                    cardType: ''
-                });
+                this._setDefault();
             }
         }).catch(e => {
-            this.setState({
-                bankName: '',
-                cardType: ''
-            });
+            this._setDefault();
+        });
+    };
+    _setDefault = () => {
+        this.setState({
+            bankName: '',
+            cardType: '',
+            type: ''
         });
     };
     renderWideLine = () => {
@@ -262,7 +251,8 @@ class AddBankCardPage extends BasePage {
             bankName: this.state.bankName,
             cardNo: this.state.cardNo.replace(/ /g, ''),
             cardType: this.state.cardType,
-            phone: this.state.phone.replace(/ /g, '')
+            phone: this.state.phone.replace(/ /g, ''),
+            type: this.state.type
         };
 
         lastcommit = now;
@@ -286,7 +276,7 @@ class AddBankCardPage extends BasePage {
         //     return;
         // }
         Toast.showLoading();
-        MineApi.addUserBank(params).then((response) => {
+        MineApi.addUserBankV2(params).then((response) => {
             Toast.hiddenLoading();
             this.$toastShow('绑定银行卡成功');
             DeviceEventEmitter.emit('bindBank');

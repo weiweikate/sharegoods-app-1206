@@ -90,15 +90,15 @@ const api = {
     //
     payPromotion:['/promotion/promotionPromoter/pay',{method:'get'}],
     //查询银行卡
-    getUserBankInfo:['/user/userBankInfo/findUserBankInfoByUserId',{method:'get'}],
+    getUserBankInfo:['/user/userBankInfo/findUserBankInfoByUserIdV2',{method:'get'}],
     //删除银行卡
     deleteUserBank:['/user/userBankInfo/deleteUserBankInfoByUserId',{method:'get'}],
     //添加银行卡
-    addUserBank:['/user/userBankInfo/addUserBankInfo',{method:'post'}],
+    addUserBankV2:['/user/userBankInfo/addUserBankInfoV2',{method:'post'}],
     //申请提现
     userWithdrawApply:['/user/withdraw/withdrawApply',{method:'post'}],
     //查询银行卡信息
-    findByBankCard:['/user/userBankInfo/findByBankCard',{method:'get'}],
+    findByBankCardV2:['/user/userBankInfo/findByBankCardV2',{method:'get'}],
     //费率查询
     queryRate:['/user/withdraw/queryRate',{method:'get'}],
     //最后一次提现银行卡信息
