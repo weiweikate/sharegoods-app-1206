@@ -36,6 +36,7 @@ import { observer } from 'mobx-react';
 const { autoSizeWidth } = ScreenUtils;
 import { homeModule } from '../model/Modules';
 import { routePush } from '../../../navigation/RouterMap';
+import { ImageCacheManager } from 'react-native-cached-image';
 
 @observer
 export default class HomeMessageModalView extends React.Component {
@@ -144,11 +145,11 @@ function AdViewBindModal(modal, dataName = 'AdData', visibleName = 'isShowAd', c
         class HomeAdModal extends React.Component {
             state = {
                 messageIndex: 0,
-                backgroundColor: '#f5f5f5'
             };
 
             constructor(props) {
                 super(props);
+                this.imageCacheManager =  ImageCacheManager()  ;
             }
 
             gotoPage = () => {
