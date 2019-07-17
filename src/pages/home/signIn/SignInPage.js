@@ -428,20 +428,21 @@ export default class SignInPage extends BasePage {
                 <View style={{
                     flexDirection: 'row',
                     alignItems: 'center',
-                    paddingHorizontal: px2dp(15),
+                    paddingLeft: px2dp(5),
+                    paddingRight: px2dp(15),
                     height: headerHeight,
                     paddingTop: ScreenUtils.statusBarHeight
                 }}>
                     <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row' }}>
                         <TouchableOpacity
-                            style={styles.left}
+                            style={[styles.left,{width: 40}]}
                             onPress={() => {
                                 this.props.navigation.goBack();
                             }}>
                             <Image
                                 source={this.state.changeHeader ? back_white : back_black}
                                 resizeMode={'stretch'}
-                                style={{ height: 20, width: 20 }}
+                                style={{ height: 30, width: 30 }}
                             />
                         </TouchableOpacity>
                     </View>

@@ -30,8 +30,6 @@ import { MRText as Text, AvatarImage } from '../../../components/ui';
 import LoginAPI from '../../login/api/LoginApi';
 import CommModal from '../../../comm/components/CommModal';
 import { track, TrackApi, trackEvent } from '../../../utils/SensorsTrack';
-import TaskVIew from '../../home/view/TaskVIew';
-import { mineTaskModel } from '../../home/model/TaskModel';
 import settingModel from '../model/SettingModel'
 import PullView from '../components/pulltorefreshlayout'
 
@@ -136,7 +134,6 @@ export default class MinePage extends BasePage {
                     this.refresh();
                 }
                 TrackApi.myPage();
-                mineTaskModel.getData();
             });
         this.listener = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
 
@@ -390,14 +387,6 @@ export default class MinePage extends BasePage {
                             </View>
                         </TouchableWithoutFeedback>
                     </View>
-                    {/*<TouchableOpacity onPress={()=>{*/}
-                        {/*this.$navigate(RouterMap.MyPromotionPage);*/}
-                        {/*TrackApi.ViewLevelInterest({ moduleSource: 2 });*/}
-                    {/*}} activeOpacity={1}>*/}
-                        {/*<Image source={mine_moreMoney}*/}
-                               {/*style={{width: px2dp(54), height: px2dp(54), marginLeft: px2dp(21)}}*/}
-                               {/*/>*/}
-                    {/*</TouchableOpacity>*/}
                 </View>
                 <View style={{flexDirection:'row',flex:1}}>
                     {this.accountRender()}
@@ -770,7 +759,6 @@ export default class MinePage extends BasePage {
     renderBodyView = () => {
         return (
             <View style={{flex:1,backgroundColor:'#F7F7F7'}}>
-                <TaskVIew type={'mine'} style={{marginTop:platformHeight,backgroundColor: '#F7F7F7', paddingBottom: 0 }}/>
                 {this.orderRender()}
                 {this.activeRender()}
                 {this.utilsRender()}
