@@ -32,6 +32,7 @@ import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.commonlib.utils.Utils;
 import com.meeruu.sharegoods.event.Event;
 import com.meeruu.sharegoods.event.HideSplashEvent;
+import com.meeruu.sharegoods.rn.preload.ReactNativePreLoader;
 import com.meeruu.sharegoods.ui.activity.GuideActivity;
 import com.meeruu.sharegoods.ui.activity.MainRNActivity;
 import com.meeruu.sharegoods.utils.HttpUrlUtils;
@@ -71,6 +72,13 @@ public class MainActivity extends BaseActivity {
             EventBus.getDefault().register(this);
         }
         Log.d("is_phone", !Utils.isEmulator(getApplicationContext()) + "");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // 预加载rn
+        ReactNativePreLoader.preLoad(this, ParameterUtils.RN_MAIN_NAME);
     }
 
     @Override

@@ -47,7 +47,6 @@ const {
     mine_after_buy_icon,
     mine_friendsHelp,
     mine_invite,
-    // mine_invite2,
     // mine_moreMoney,
     // mine_icon_favorite_shop,
     mine_icon_help_service,
@@ -586,21 +585,14 @@ export default class MinePage extends BasePage {
                         }} source={mine_invite}>
                             <View style={{flex: 1, justifyContent: 'center', marginLeft: 15}}>
                                 <Text style={{fontSize: 14, color: '#333333', fontWeight: '600', marginBottom: 5}}>
-                                    邀请好友赚钱</Text>
+                                   邀请好友赚钱</Text>
 
                                 <ImageBackground style={{width: 65, height: 26, alignItems: 'center'}}
-                                                 source={res.homeBaseImg.mine_btn_red}>
+                                                source={res.homeBaseImg.mine_btn_red}>
                                     <Text style={{fontSize: 10, color: 'white'}}>立即邀请</Text>
                                 </ImageBackground>
                             </View>
                         </ImageBackground>
-                        {/*<View>*/}
-                            {/*<Image resizeMode={'contain'}*/}
-                                   {/*style={{*/}
-                                       {/*height: px2dp(70),*/}
-                                       {/*width: (ScreenUtils.width - px2dp(15) * 2)*/}
-                                   {/*}} source={mine_invite2}/>*/}
-                        {/*</View>*/}
                     </View>
                 </TouchableWithoutFeedback>
 

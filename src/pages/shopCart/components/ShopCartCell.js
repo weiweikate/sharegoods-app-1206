@@ -59,8 +59,8 @@ export default class ShopCartCell extends Component {
                 }}
                 >
                     <View style={styles.standaloneRowFront}>
-                        <View style={{ flexDirection: 'row', paddingTop: px2dp(20), height: Cell_Height }}>
-                            <View style={{ height: px2dp(75), alignItems: 'center', justifyContent: 'center' }}>
+                        <View style={{ flexDirection: 'row', paddingTop: px2dp(10), height: Cell_Height }}>
+                            <View style={{ height: px2dp(80), alignItems: 'center', justifyContent: 'center' }}>
                                 <UIImage source={getSelectImage(itemData)} style={styles.itemSelectImg}
                                          onPress={() => {
                                              this._selectImageClick(sectionData, rowId);
@@ -75,10 +75,10 @@ export default class ShopCartCell extends Component {
                             }
                         </View>
                         <View style={styles.validContextContainer}>
-                            <View style={{}}>
+                            <View style={{flex: 1}}>
                                 <UIText value={itemData.productName ? itemData.productName : ''} numberOfLines={2}
                                         style={styles.productName}/>
-                                <UIText value={itemData.specifyContent ? itemData.specifyContent : ''} numberOfLines={1}
+                                <UIText value={itemData.specifyContent ? itemData.specifyContent : ''} numberOfLines={2}
                                         style={styles.specifyContent}/>
                                 <UIText value={getTipString(itemData).tipString} numberOfLines={2}
                                         style={styles.topTipString}/>
@@ -283,24 +283,28 @@ const styles = StyleSheet.create({
         height: Cell_Height,
         width: ScreenUtils.width - px2dp(30),
         flexDirection: 'row',
-        marginRight: px2dp(16),
+        marginRight: px2dp(15),
         borderRadius:px2dp(5),
     },
-    itemSelectImg: { marginLeft: px2dp(10) },
+    itemSelectImg: { marginLeft: px2dp(10), width: px2dp(18), height: px2dp(18) },
     rectangle: {
-        height: px2dp(30),
-        width: px2dp(30),
+        height: px2dp(22),
+        width: px2dp(22),
+        borderRadius: px2dp(3),
         justifyContent: 'center',
         backgroundColor: DesignRule.bgColor,
         alignItems: 'center'
     },
     addOrReduceBtnStyle: {
-        fontSize: px2dp(16),
+        height: px2dp(22),
+        fontSize: px2dp(15),
+        marginTop: px2dp(-2),
         color: DesignRule.textColor_mainTitle
     },
     validProductImg: {
-        width: px2dp(75),
-        height: px2dp(75),
+        width: px2dp(80),
+        height: px2dp(80),
+        borderRadius: px2dp(5),
         marginLeft: px2dp(10),
         marginRight: px2dp(10)
     },
@@ -308,11 +312,11 @@ const styles = StyleSheet.create({
         width: px2dp(40),
         justifyContent: 'center',
         alignItems: 'center',
-        height: px2dp(30)
+        height: px2dp(22)
     },
     TextInputStyle: {
-        height: px2dp(30),
-        fontSize: px2dp(11),
+        height: px2dp(22),
+        fontSize: px2dp(10),
         color: DesignRule.textColor_mainTitle,
         alignSelf: 'center',
         justifyContent: 'center',
@@ -321,10 +325,9 @@ const styles = StyleSheet.create({
     },
     validContextContainer: {
         flex: 1,
-        height: px2dp(120),
+        height: px2dp(130),
         justifyContent: 'space-between',
-        marginTop: px2dp(3),
-        paddingRight: px2dp(15)
+        paddingRight: px2dp(15),
     },
     labelBgView: {
         paddingLeft: px2dp(2),
@@ -339,8 +342,7 @@ const styles = StyleSheet.create({
     priceBgView: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
-        height: px2dp(30)
+        alignItems: 'center'
     },
     statusImg: {
         position: 'absolute',
@@ -351,12 +353,13 @@ const styles = StyleSheet.create({
     },
     productName: {
         fontSize: px2dp(13),
-        lineHeight: px2dp(10),
+        lineHeight: px2dp(18),
+        marginTop: px2dp(-3),
         color: DesignRule.textColor_mainTitle
     },
-    specifyContent: { fontSize: px2dp(13), color: DesignRule.textColor_instruction },
-    topTipString: { fontSize: px2dp(11), color: DesignRule.mainColor },
-    priceText: { fontSize: px2dp(14), color: DesignRule.mainColor }
+    specifyContent: { fontSize: px2dp(10),lineHeight: px2dp(14), color: DesignRule.textColor_instruction },
+    topTipString: { fontSize: px2dp(10), color: DesignRule.mainColor },
+    priceText: { fontSize: px2dp(17),fontWeight: '400', color: DesignRule.mainColor }
 });
 
 
