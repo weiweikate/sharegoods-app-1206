@@ -401,7 +401,7 @@ static NSString *IDType = @"TypeCell";
 -(void)setType:(NSString *)type{
   _type = type;
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-  if([defaults objectForKey:type]){
+  if(type&&[defaults objectForKey:type]){
     NSDictionary *dicData = [NSDictionary dictionaryWithJsonString:[defaults objectForKey:type]];
     if (dicData) {
       self.callBackArr = [[dicData valueForKey:@"data"] mutableCopy];
