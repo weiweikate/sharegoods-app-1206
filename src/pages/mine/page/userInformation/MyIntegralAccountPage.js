@@ -21,7 +21,6 @@ import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import { MRText as Text } from '../../../../components/ui';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
-import StringUtils from '../../../../utils/StringUtils';
 import RouterMap from '../../../../navigation/RouterMap';
 import EmptyView from '../../../../components/pageDecorator/BaseView/EmptyView';
 import EmptyUtils from '../../../../utils/EmptyUtils';
@@ -297,7 +296,7 @@ export default class MyIntegralAccountPage extends BasePage {
                             <Text style={{
                                 fontSize: 17,
                                 color: DesignRule.textColor_mainTitle
-                            }}>{StringUtils.formatMoneyString(item.capital, false)}</Text>
+                            }}>{item.capital ? item.capital : 0}</Text>
                             <Image style={{marginLeft: 5, width: 8, height: 5}}
                                    source={item.capitalRed ? red_up : lv_down}/>
                         </View>}
