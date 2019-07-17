@@ -77,11 +77,11 @@ const vipBg = [
  * @email chenxiang@meeruu.com
  */
 
+const { px2dp, headerHeight, statusBarHeight, getImgHeightWithWidth} = ScreenUtils;
 const headerBgSize = { width: 375, height: 237 };
-const platformHeight = 10;
-const { px2dp, statusBarHeight } = ScreenUtils;
-const headerHeight = ScreenUtils.statusBarHeight + 44;
-// const offset = ScreenUtils.getImgHeightWithWidth(headerBgSize) - headerHeight;
+const scaleHeaderSize = getImgHeightWithWidth(headerBgSize)
+const halfScaleHeaderSize = scaleHeaderSize / 2;
+// const offset = scaleHeaderSize - headerHeight;
 @observer
 export default class MinePage extends BasePage {
     constructor(props) {
@@ -181,22 +181,21 @@ export default class MinePage extends BasePage {
     };
 
     _onScroll = (event) => {
-        let Y = event.nativeEvent.contentOffset.y;
-        if (Y <= 0) {
-            this.setState({
-                changeHeader: true
-            });
+        this.offsetY = event.nativeEvent.contentOffset.y;
+    
+        if (this.offsetY <= halfScaleHeaderSize) {
+            if(!this.state.changeHeader){
+                this.setState({
+                    changeHeader: true
+                });
+            }
         } else {
-            this.st = 1;
-            this.setState({
-                changeHeader: false
-            });
+            if(this.state.changeHeader){
+                this.setState({
+                    changeHeader: false
+                });
+            }
         }
-
-
-        // this.headerBg.setNativeProps({
-        //     opacity: this.st
-        // });
     };
 
     refresh = () => {
@@ -242,7 +241,6 @@ export default class MinePage extends BasePage {
     //**********************************ViewPart******************************************
     _render() {
         const {availableBalance, userScore, coupons, fansMSG } = settingModel
-        console.log(availableBalance,userScore,coupons,fansMSG);
         return (
             <View style={{flex: 1}}>
                 <PullView
@@ -251,8 +249,8 @@ export default class MinePage extends BasePage {
                     backgroundColor={'white'}
                     renderForeground={this.renderUserHead}
                     renderFixedHeader={this.renderLevelNameNav}
-                    stickyHeaderHeight={this.state.changeHeader ? 0 : px2dp(44 + statusBarHeight)}
-                    parallaxHeaderHeight={ScreenUtils.getImgHeightWithWidth(headerBgSize)}
+                    stickyHeaderHeight={this.state.changeHeader ? 0 : headerHeight}
+                    parallaxHeaderHeight={scaleHeaderSize}
                     onScroll={this._onScroll}
                     showsVerticalScrollIndicator={false}
                 >
@@ -272,7 +270,7 @@ export default class MinePage extends BasePage {
                     alignItems: 'center',
                     paddingRight: px2dp(15),
                     height: headerHeight,
-                    paddingTop: ScreenUtils.statusBarHeight
+                    paddingTop: statusBarHeight
                 }}>
                     <View style={{ flex: 1 }}/>
                     <Text style={{
@@ -463,7 +461,7 @@ export default class MinePage extends BasePage {
                 alignSelf: 'center',
                 flexDirection: 'row',
                 alignItems: 'center',
-                height: px2dp(44 + statusBarHeight),
+                height: headerHeight,
                 width: ScreenUtils.width,
                 paddingVertical: 5,
                 backgroundColor:'#ffffff',
@@ -526,7 +524,7 @@ export default class MinePage extends BasePage {
                 marginTop: px2dp(5),
                 marginHorizontal: px2dp(15),
                 justifyContent: 'center'
-            }}>
+            }} ref={e => this.numArea = e}>
                 <View style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
@@ -560,7 +558,7 @@ export default class MinePage extends BasePage {
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                marginTop: 15,
+                marginTop: px2dp(15),
                 marginLeft: px2dp(15),
                 marginRight: px2dp(15)
             }}>
@@ -728,7 +726,7 @@ export default class MinePage extends BasePage {
                 flexDirection: 'row',
                 backgroundColor: 'white',
                 flexWrap: 'wrap',
-                marginVertical: px2dp(10),
+                marginVertical: px2dp(15),
                 marginHorizontal: DesignRule.margin_page,
                 borderRadius: px2dp(5)
             }}>
@@ -1096,7 +1094,7 @@ const styles = StyleSheet.create({
     },
     headerBgStyle: {
         width: ScreenUtils.width,
-        height: ScreenUtils.getImgHeightWithWidth(headerBgSize),
+        height: scaleHeaderSize,
         paddingTop: ScreenUtils.statusBarHeight + 10,
         backgroundColor: 'white'
     },
@@ -1128,7 +1126,7 @@ const styles = StyleSheet.create({
     makeMoneyMoreBackground: {
         height: (profileWidth * 140 / 702),
         width: profileWidth,
-        top: ScreenUtils.getImgHeightWithWidth(headerBgSize) - px2dp(31),
+        top: scaleHeaderSize - px2dp(31),
         left: DesignRule.margin_page - 1.5,
         position: 'absolute',
         flexDirection: 'row'
@@ -1143,7 +1141,7 @@ const styles = StyleSheet.create({
         height: 20,
         width: 50,
         backgroundColor: 'rgba(0, 0, 0, 0.8)',
-        marginTop: ScreenUtils.getImgHeightWithWidth(headerBgSize) / 2 - 5,
+        marginTop: scaleHeaderSize / 2 - 5,
         marginLeft: px2dp(90),
         borderRadius: 2,
         justifyContent: 'center',

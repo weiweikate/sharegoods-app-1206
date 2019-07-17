@@ -109,6 +109,7 @@ export type Size = {
     height: number;
 };
 
+// 根据宽获取高
 function getImgHeightWithWidth(size: Size, width: number = screenW): number {
     if (!size || !size.width || !size.height) {
         return 0;
