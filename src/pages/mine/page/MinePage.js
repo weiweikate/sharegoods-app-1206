@@ -78,7 +78,7 @@ const vipBg = [
  */
 
 const headerBgSize = { width: 375, height: 237 };
-const platformHeight = 10;
+// const platformHeight = 10;
 const { px2dp, statusBarHeight } = ScreenUtils;
 const headerHeight = ScreenUtils.statusBarHeight + 44;
 // const offset = ScreenUtils.getImgHeightWithWidth(headerBgSize) - headerHeight;
@@ -538,7 +538,7 @@ export default class MinePage extends BasePage {
                         TrackApi.ViewAccountBalance();
                     })}
                     <View style={{height:30,width:1,backgroundColor:'#E4E4E4'}}/>
-                    {this.accountItemView(StringUtils.formatMoneyString(user.totalScore ? user.totalScore : '0',false), '秀豆账户(枚)', 2 ,() => {
+                    {this.accountItemView(user.totalScore ? user.totalScore : '0', '秀豆账户(枚)', 2 ,() => {
                         settingModel.userScoreAdd();
                         this.go2CashDetailPage(2);
                         TrackApi.ViewShowDou();
