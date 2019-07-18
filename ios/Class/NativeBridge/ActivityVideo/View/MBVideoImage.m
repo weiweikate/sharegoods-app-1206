@@ -1,21 +1,23 @@
 //
-//  MBBtnView.m
+//  MBVideoImage.m
 //  crm_app_xiugou
 //
 //  Created by 周建新 on 2019/7/17.
 //  Copyright © 2019年 Facebook. All rights reserved.
 //
 
-#import "MBBtnView.h"
+#import "MBVideoImage.h"
 #import "UIView+SDAutoLayout.h"
 
-@interface MBBtnView()
+@interface MBVideoImage()
 @property (nonatomic,strong) UIImageView * downloadBtn;
 @property (nonatomic,strong) UIImageView * collectionBtn;
 @property (nonatomic,strong) UIImageView * zanBtn;
 @property (nonatomic,strong) UILabel * downLoadNum;
 @property (nonatomic,strong) UILabel * collectionNum;
 @property (nonatomic,strong) UILabel * zanNum;
+
+@property (nonatomic,strong) UIImageView *playImageView;        //播放按钮
 
 @property (nonatomic,strong)UIView  * bottomBgView;
 @property (nonatomic,strong)UILabel  * contentLab;
@@ -27,10 +29,9 @@
 @property (nonatomic,strong)UILabel  * tag2;
 @property (nonatomic,strong)UILabel  * tag3;
 
-
 @end
 
-@implementation MBBtnView
+@implementation MBVideoImage
 
 - (UIImageView *)playImageView {
   if (!_playImageView) {
@@ -39,9 +40,8 @@
   return _playImageView;
 }
 
-- (instancetype)init {
-  self = [super init];
-  
+- (instancetype)initWithFrame:(CGRect)frame {
+  self = [super initWithFrame:frame];
   if (self) {
     [self setUI];
     [self addEven];
@@ -54,7 +54,7 @@
   UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickPlay)];
   [self addGestureRecognizer:tapGesture];
   self.userInteractionEnabled = YES;
-  self.playImageView.hidden = YES;
+  self.playImageView.hidden = NO;
 }
 
 -(void)setUI{
@@ -90,7 +90,6 @@
                          lineview,
                          self.buyBtn]];
   
-  
   self.playImageView.sd_layout.centerXEqualToView(self).centerYEqualToView(self)
   .widthIs(80).heightIs(80);
   
@@ -104,7 +103,7 @@
   .topSpaceToView(self.collectionBtn, 7).widthIs(30).heightIs(20);
   
   [collectionView setupAutoHeightWithBottomView:self.collectionNum bottomMargin:2];
-
+  
   downloadView.sd_layout.centerXEqualToView(collectionView)
   .bottomSpaceToView(collectionView,15).widthIs(32);
   
@@ -113,7 +112,7 @@
   
   self.downLoadNum.sd_layout.centerXEqualToView(self.downloadBtn)
   .topSpaceToView(self.downloadBtn, 7).widthIs(30).heightIs(20);
-
+  
   [downloadView setupAutoHeightWithBottomView:self.downLoadNum bottomMargin:2];
   
   zanView.sd_layout.centerXEqualToView(collectionView)
@@ -124,9 +123,8 @@
   
   self.zanNum.sd_layout.centerXEqualToView(self.zanBtn)
   .topSpaceToView(self.zanBtn, 7).widthIs(30).heightIs(20);
-
-  [zanView setupAutoHeightWithBottomView:self.zanNum bottomMargin:2];
   
+  [zanView setupAutoHeightWithBottomView:self.zanNum bottomMargin:2];
   
   self.bottomBgView.sd_layout.bottomEqualToView(self)
   .leftEqualToView(self).widthIs(KScreenWidth).heightIs(165);
@@ -147,7 +145,7 @@
   lineview.sd_layout.bottomSpaceToView(self, 55)
   .widthIs(KScreenWidth).heightIs(1);
   
- self.buyBtn.sd_layout.bottomSpaceToView(self, 10)
+  self.buyBtn.sd_layout.bottomSpaceToView(self, 10)
   .rightSpaceToView(self, 20).widthIs(90).heightIs(34);
   
   text.sd_layout.centerYEqualToView(self.buyBtn).centerXEqualToView(self.buyBtn)
@@ -185,7 +183,7 @@
   self.tag2.sd_layout.centerXEqualToView(tag2View).centerYEqualToView(tag2View)
   .heightIs(24);
   [self.tag2 setSingleLineAutoResizeWithMaxWidth:(KScreenWidth-45)/3];
-
+  
   tag3View.sd_layout.bottomSpaceToView(self, 66).leftSpaceToView(tag2View, 15)
   .heightIs(24);
   self.tag3.sd_layout.centerXEqualToView(tag3View).centerYEqualToView(tag3View)
@@ -373,16 +371,9 @@
 
 #pragma arguments - dataDelegate
 
--(void)clickBuy{
-  if(self.dataDelegate){
-    [self.dataDelegate clickBuy];
-  }
-}
-
 -(void)clickPlay{
-  if(self.dataDelegate){
-    self.playImageView.hidden = self.playImageView.isHidden?NO:YES;
-    [self.dataDelegate clickPlayOrPause];
+  if(self.Delegate){
+    [self.Delegate clickImagePlayOrPause];
   }
 }
 
@@ -403,4 +394,11 @@
     [self.dataDelegate clickZan];
   }
 }
+
+-(void)clickBuy{
+  if(self.dataDelegate){
+    [self.dataDelegate clickBuy];
+  }
+}
+
 @end

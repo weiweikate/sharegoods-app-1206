@@ -8,17 +8,12 @@
 
 #import "MBPlayerView.h"
 #import "UIView+SDAutoLayout.h"
-
-#import "MBFileManager.h"
-#import "MBAVAssetResourceLoader.h"
 #import "MBToastLabelView.h"
 
-@interface MBPlayerView()<MBAVAssetResourceLoaderDelegate>
+@interface MBPlayerView()
 
 @property (nonatomic, weak) AVPlayerLayer *playerLayer;  //播放画面Layer
 @property (nonatomic) AVPlayerItem *playerItem;          //播放Item
-
-@property (nonatomic, strong) MBAVAssetResourceLoader *resourceLoader; //加载代理
 
 @end
 
@@ -30,7 +25,7 @@
     self = [super initWithFrame:frame];
 
     if (self) {
-      
+      self.backgroundColor = [UIColor blackColor];
       self.frame = frame;
       [self addPlayEvent];
       self.isPlaying = NO;
@@ -84,13 +79,14 @@
     _urlString = urlString;
     
     NSURL *url = [NSURL URLWithString:urlString];
-
+  
     [self.player pause];
-    
     [self.playerLayer removeFromSuperlayer];
     self.player = nil;
     self.playerLayer = nil;
-    
+    if ([self.playDelegate respondsToSelector:@selector(resetStatus)]) {
+      [self.playDelegate resetStatus];
+    }
     if (self.playerItem) {
         [self.playerItem removeObserver:self forKeyPath:@"status"];
     }
@@ -139,7 +135,7 @@
                 
             case AVPlayerItemStatusReadyToPlay:
                 NSLog(@"%@", @"AVPlayerItemStatusReadyToPlay");
-                [self.player pause];
+                [self.player play];
                 if ([self.playDelegate respondsToSelector:@selector(playerViewDidPrepareToShowVideo)]) {
                     [self.playDelegate playerViewDidPrepareToShowVideo];
                 }
@@ -153,38 +149,5 @@
     }
 }
 
-#pragma mark - Protocol MBAVAssetResourceLoaderDelegate
-- (void)didCompleteWithError:(NSError *)error {
-    NSString *errorMessage = @"未知错误";
-    
-    switch (error.code) {
-        case -1005:
-            errorMessage = @"网络中断";
-            break;
-        
-        case -1009:
-            errorMessage = @"无网络链接";
-            break;
-            
-        case -1001:
-            errorMessage = @"请求超时";
-            break;
-        
-        case -1004:
-            errorMessage = @"服务器内部错误";
-            break;
-        
-        case -1003:
-            errorMessage = @"找不到服务器";
-            break;
-        
-        default:
-            break;
-    }
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self addSubview:[MBToastLabelView message:errorMessage delaySecond:1]];
-    });
-}
 
 @end

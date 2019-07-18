@@ -12,7 +12,7 @@
 @protocol MBPlayerViewDelegate<NSObject>
 
 - (void)playerViewDidPrepareToShowVideo;
-
+- (void)resetStatus;
 @end
 
 @interface MBPlayerView : UIView

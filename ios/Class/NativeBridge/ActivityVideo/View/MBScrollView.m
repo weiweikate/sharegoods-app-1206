@@ -11,23 +11,26 @@
 #import <AVFoundation/AVFoundation.h>
 #import  <SDAutoLayout.h>
 #import "UIImageView+WebCache.h"
+#import "NSString+UrlAddParams.h"
 
 #import "MBVideoModel.h"
 #import "MBBtnView.h"
+#import "MBVideoImage.h"
+#import "UIImageView+WebCache.h"
 
 #define SCREEN_WIDTH [UIScreen mainScreen].bounds.size.width
 #define SCREEN_HEIGHT [UIScreen mainScreen].bounds.size.height
 
 #define IMAGEVIEW_COUNT 3
 
-@interface MBScrollView() <UIScrollViewDelegate, MBPlayerViewDelegate>
+@interface MBScrollView() <UIScrollViewDelegate, MBPlayerViewDelegate,MBProtocol,MBVideoImageDelegate>
 
-@property (nonatomic, strong) UIImageView *firstImageView, *secondImageView, *thirdImageView, *tempImageView;
+@property (nonatomic, strong) MBVideoImage *firstImageView, *secondImageView, *thirdImageView, *tempImageView;
 //@property (nonatomic, strong)  MBPlayerView *firstPlayerView, *secondPlayerView, *thirdPlayerView;
 //@property (nonatomic, strong) MBPlayerView *playerView;
 
-@property (nonatomic, strong) NSMutableArray<MBVideoModel *> *dataArray;
-@property (nonatomic, strong) MBVideoModel *firstVideoModel, *secondVideoModel, *thirdVideoModel;
+@property (nonatomic, strong) NSMutableArray<MBModelData *> *dataArray;
+@property (nonatomic, strong) MBModelData *firstVideoModel, *secondVideoModel, *thirdVideoModel;
 
 @property (nonatomic, assign) NSInteger currentIndexOfImageView;
 @property (nonatomic, assign) NSInteger currentIndexOfShowView;
@@ -49,7 +52,6 @@
     if (self) {
         self.pagingEnabled = YES;
         self.opaque = YES;
-        self.backgroundColor = [UIColor redColor];
         self.showsVerticalScrollIndicator = NO;
         self.showsHorizontalScrollIndicator = NO;
         if (@available(iOS 11.0, *)) {
@@ -58,9 +60,9 @@
 //        self.contentSize = CGSizeMake(0, KScreenHeight * 3);
       
         self.delegate = self;
-        self.firstVideoModel = [[MBVideoModel alloc] init];
-        self.secondVideoModel = [[MBVideoModel alloc] init];
-        self.thirdVideoModel = [[MBVideoModel alloc] init];
+        self.firstVideoModel = [[MBModelData alloc] init];
+        self.secondVideoModel = [[MBModelData alloc] init];
+        self.thirdVideoModel = [[MBModelData alloc] init];
     }
     
     return self;
@@ -87,6 +89,7 @@
   if(!_btnView){
     _btnView = [[MBBtnView alloc]init];
     _btnView.frame = CGRectMake(0,0 , KScreenWidth, KScreenHeight);
+    _btnView.dataDelegate = self;
   }
   return _btnView;
 }
@@ -95,7 +98,7 @@
 
 #pragma mark - Public
 
-- (void)setupData:(NSArray<MBVideoModel *> *)data {
+- (void)setupData:(NSArray<MBModelData *> *)data {
     if (data.count == 0) {
         return;
     }
@@ -106,34 +109,41 @@
         
         self.firstVideoModel = self.dataArray.firstObject;
         CGRect firstFrame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
-        self.firstImageView  = [[UIImageView alloc] initWithFrame: firstFrame];
-        [self.firstImageView sd_setImageWithURL: self.firstVideoModel.imageURL];
+        self.firstImageView  = [[MBVideoImage alloc] initWithFrame: firstFrame];
+        self.firstImageView.dataDelegate = self;
+        self.firstImageView.Delegate = self;
+      
+        [self.firstImageView setImageWithURL:[NSURL URLWithString:[[self getUrlfromArr:self.firstVideoModel type:@"img"] getUrlAndWidth:KScreenWidth height:KScreenHeight]] placeholder:[UIImage imageWithColor:[UIColor colorWithHexString:@"f5f5f5"]]];
         [self addSubview:self.firstImageView];
         self.currentIndexOfImageView = 0;
         
         if (self.dataArray.count > 1) {
             CGRect secondFrame = CGRectMake(0, self.frame.size.height, self.frame.size.width, self.frame.size.height);
-            self.secondImageView = [[UIImageView alloc] initWithFrame:secondFrame];
-            
+            self.secondImageView = [[MBVideoImage alloc] initWithFrame:secondFrame];
+            self.secondImageView.dataDelegate = self;
+            self.secondImageView.Delegate = self;
+
             self.secondVideoModel = self.dataArray[1];
-            [self.secondImageView sd_setImageWithURL:self.secondVideoModel.imageURL];
+            [self.firstImageView setImageWithURL:[NSURL URLWithString:[[self getUrlfromArr:self.secondVideoModel type:@"img"] getUrlAndWidth:KScreenWidth height:KScreenHeight]] placeholder:[UIImage imageWithColor:[UIColor colorWithHexString:@"f5f5f5"]]];
             [self addSubview:self.secondImageView];
             self.currentIndexOfImageView++;
         }
         
         if (self.dataArray.count > 2) {
             CGRect thirdFrame = CGRectMake(0, self.frame.size.height * 2, self.frame.size.width, self.frame.size.height);
-            self.thirdImageView = [[UIImageView alloc] initWithFrame:thirdFrame];
-            
+            self.thirdImageView = [[MBVideoImage alloc] initWithFrame:thirdFrame];
+            self.thirdImageView.dataDelegate = self;
+            self.thirdImageView.Delegate = self;
+
             self.thirdVideoModel = self.dataArray[2];
-            [self.thirdImageView sd_setImageWithURL:self.thirdVideoModel.imageURL];
-            [self addSubview:self.thirdImageView];
+            [self.firstImageView setImageWithURL:[NSURL URLWithString:[[self getUrlfromArr:self.thirdVideoModel type:@"img"] getUrlAndWidth:KScreenWidth height:KScreenHeight]] placeholder:[UIImage imageWithColor:[UIColor colorWithHexString:@"f5f5f5"]]];
+          [self addSubview:self.thirdImageView];
             self.currentIndexOfImageView++;
         }
         
-        [self playVideo];
+//        [self playVideo];
     }else {
-        for (MBVideoModel *model in data) {
+        for (MBModelData *model in data) {
             [self.dataArray addObject:model];
         }
         
@@ -149,21 +159,21 @@
 #pragma mark - Private
 
 - (void)playVideo {
-    if (self.firstImageView.frame.origin.y == self.contentOffset.y) {
+    if (self.firstImageView&&self.firstImageView.frame.origin.y == self.contentOffset.y) {
         self.playerView.frame = self.firstImageView.frame;
     }
     
-    if (self.secondImageView.frame.origin.y == self.contentOffset.y) {
+    if (self.secondImageView&&self.secondImageView.frame.origin.y == self.contentOffset.y) {
         self.playerView.frame = self.secondImageView.frame;
     }
     
-    if (self.thirdImageView.frame.origin.y == self.contentOffset.y) {
+    if (self.thirdImageView&&self.thirdImageView.frame.origin.y == self.contentOffset.y) {
         self.playerView.frame = self.thirdImageView.frame;
     }
     
-    MBVideoModel *videoModel = [self.dataArray objectAtIndex:self.currentIndexOfShowView];
-    
-  [self.playerView setUrlString:videoModel.videoURL.absoluteString];
+  MBModelData *videoModel = [self.dataArray objectAtIndex:self.currentIndexOfShowView];
+  
+  [self.playerView setUrlString:[self getUrlfromArr:videoModel type:@"video"]];
   self.playerView.playDelegate = self;
   [self.playerView addSubview: self.btnView];
   [self addSubview:self.playerView];
@@ -199,11 +209,9 @@
     if (offset_y > (KScreenHeight * self.currentIndexOfImageView) && translatePoint.y < 0) {
         self.currentIndexOfImageView++;
         NSLog(@"lalalalalal");
-
         if (self.currentIndexOfImageView == self.dataArray.count) {
             return;
         }
-
         self.firstImageView.frame = self.secondImageView.frame;
         self.firstImageView.image = self.secondImageView.image;
         self.secondImageView.frame = self.thirdImageView.frame;
@@ -214,13 +222,14 @@
         frame.origin.y += self.frame.size.height;
         self.thirdImageView.frame = frame;
         self.thirdVideoModel = [self.dataArray objectAtIndex:self.currentIndexOfImageView];
-        [self.thirdImageView sd_setImageWithURL:self.thirdVideoModel.imageURL];
+      
+        [self.firstImageView setImageWithURL:[NSURL URLWithString:[[self getUrlfromArr:self.thirdVideoModel type:@"img"] getUrlAndWidth:KScreenWidth height:KScreenHeight]] placeholder:[UIImage imageWithColor:[UIColor colorWithHexString:@"f5f5f5"]]];
     }
     
     if (offset_y >= self.frame.size.height * (self.currentIndexOfShowView + 1) && translatePoint.y < 0) {
         self.currentIndexOfShowView++;
         NSLog(@"should Play");
-        [self playVideo];
+//        [self playVideo];
     }
     
     if (offset_y < 0) {
@@ -240,17 +249,28 @@
             frame.origin.y -= self.frame.size.height;
             self.firstImageView.frame = frame;
             self.firstVideoModel = [self.dataArray objectAtIndex:self.currentIndexOfImageView - IMAGEVIEW_COUNT];
-            [self.firstImageView sd_setImageWithURL:self.firstVideoModel.imageURL];
-            
+          
+          [self.firstImageView setImageWithURL:[NSURL URLWithString:[[self getUrlfromArr:self.firstVideoModel type:@"img"] getUrlAndWidth:KScreenWidth height:KScreenHeight]] placeholder:[UIImage imageWithColor:[UIColor colorWithHexString:@"f5f5f5"]]];
+          
             self.currentIndexOfImageView--;
         }
+      
     }
     
     if (translatePoint.y > 0 && offset_y <= self.frame.size.height * (self.currentIndexOfShowView - 1) ) {
         self.currentIndexOfShowView--;
         NSLog(@"should back play");
-        [self playVideo];
+//        [self playVideo];
     }
+  
+}
+
+// 结束滚动后开始播放
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+  if(self.playerView&&self.playerView.frame.origin.y!=scrollView.contentOffset.y){
+    [self.playerView.player pause];
+    self.playerView.hidden = YES;
+  }
 }
 
 - (void)playerViewDidPrepareToShowVideo {
@@ -260,6 +280,59 @@
     });
 }
 
+#pragma mark -  MBBtnViewDelegate
+- (void)clickImagePlayOrPause{
+  [self playVideo];
+}
 
+-(void)clickPlayOrPause{
+  if(self.playerView.isPlaying){
+    [self.playerView.player pause];
+  }else{
+    [self.playerView.player play];
+  }
+}
 
+- (void)clickDownload{
+  if(self.dataDelegate){
+    [self.dataDelegate clickDownload];
+  }
+}
+
+-(void)clicCollection{
+  if(self.dataDelegate){
+    [self.dataDelegate clicCollection];
+  }
+}
+
+-(void)clickZan{
+  if(self.dataDelegate){
+    [self.dataDelegate clickZan];
+  }
+}
+
+-(void)clickBuy{
+  if(self.dataDelegate){
+    [self.dataDelegate clickBuy];
+  }
+}
+
+-(void)resetStatus{
+  self.btnView.playImageView.hidden = YES;
+}
+
+-(NSString*)getUrlfromArr:(MBModelData*)data type:(NSString*)type{
+  NSString * url = @"";
+  if(data.resource.count>0){
+    for(MBSourcesModel* model in data.resource){
+      if([type isEqualToString:@"img"]&&model.type==5){
+        url = model.baseUrl;
+      }
+      if([type isEqualToString:@"video"]&&model.type==4){
+        url = model.baseUrl;
+      }
+    }
+  }
+  return url;
+}
 @end

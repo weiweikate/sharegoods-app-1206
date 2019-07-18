@@ -1,5 +1,5 @@
 //
-//  MBBtnView.h
+//  MBVideoImage.h
 //  crm_app_xiugou
 //
 //  Created by 周建新 on 2019/7/17.
@@ -10,10 +10,15 @@
 #import "MBProtocol.h"
 
 NS_ASSUME_NONNULL_BEGIN
+@class MBVideoImage;
 
-@interface MBBtnView : UIView
+@protocol  MBVideoImageDelegate <NSObject>
+- (void)clickImagePlayOrPause; //点击播放/暂停
+@end
+
+@interface MBVideoImage : UIImageView
 @property (nonatomic, weak) id<MBProtocol> dataDelegate;
-@property (nonatomic,strong) UIImageView *playImageView;        //播放按钮
+@property (nonatomic, weak) id<MBVideoImageDelegate> Delegate;
 
 @end
 

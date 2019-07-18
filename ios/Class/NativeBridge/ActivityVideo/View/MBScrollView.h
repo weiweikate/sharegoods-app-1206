@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-
 #import "MBPlayerView.h"
 
 @class MBPlayerManager;
@@ -16,7 +15,10 @@
 @protocol  MBSrcollViewDataDelegate <NSObject>
 
 - (void)pullNewData;  //拉取新的额消息
-
+- (void)clickDownload;
+-(void)clicCollection;
+-(void)clickZan;
+-(void)clickBuy;
 @end
 
 @interface MBScrollView : UIScrollView
