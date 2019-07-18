@@ -355,6 +355,7 @@ class HomePage extends BasePage {
     }
 
     _onRefresh() {
+        homeModule.isRefreshing = true;
         homeModule.loadHomeList(true);
         taskModel.getData();
         this.luckyIcon && this.luckyIcon.getLucky(1, '');
