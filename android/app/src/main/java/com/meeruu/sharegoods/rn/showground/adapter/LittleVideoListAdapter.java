@@ -3,6 +3,7 @@ package com.meeruu.sharegoods.rn.showground.adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Gravity;
@@ -29,8 +30,8 @@ public class LittleVideoListAdapter extends BaseVideoListAdapter<LittleVideoList
     public static final String TAG = LittleVideoListAdapter.class.getSimpleName();
 //    private OnItemBtnClick mItemBtnClick;
     public LittleVideoListAdapter(Context context,
-                                  List<NewestShowGroundBean.DataBean> urlList) {
-        super(context, urlList);
+                                  List<NewestShowGroundBean.DataBean> list) {
+        super(context, list);
     }
 
     public LittleVideoListAdapter(Context context) {
@@ -47,20 +48,66 @@ public class LittleVideoListAdapter extends BaseVideoListAdapter<LittleVideoList
     @Override
     public void onBindViewHolder(@NonNull MyHolder myHolder, final int position) {
         super.onBindViewHolder(myHolder, position);
-        TextView textView = new TextView(context);
-        textView.setTextColor(Color.WHITE);
-        textView.setTextSize(12);
-        textView.setText("#夏季防晒指南");
-        int pad = DensityUtils.dip2px(8);
-        textView.setPadding(pad,0,pad,0);
-        textView.setGravity(Gravity.CENTER);
-        textView.setBackgroundResource(R.drawable.tag_background);
-        LinearLayout.LayoutParams tvParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, DensityUtils.dip2px(24));
-        textView.setLayoutParams(tvParam);
-        myHolder.tagWrapper.removeAllViews();
-        myHolder.tagWrapper.addView(textView);
-        myHolder.previewWrapper.setVisibility(View.VISIBLE);
-        myHolder.detailWrapper.setVisibility(View.INVISIBLE);
+        NewestShowGroundBean.DataBean itemData = this.list.get(position);
+
+
+        List<NewestShowGroundBean.DataBean.ShowTagsBean> showTagsBeanList = itemData.getShowTags();
+
+        //标签
+        if(showTagsBeanList == null || showTagsBeanList.size() == 0){
+            myHolder.tagWrapper.setVisibility(View.GONE);
+        }else {
+            myHolder.tagWrapper.setVisibility(View.VISIBLE);
+            myHolder.tagWrapper.removeAllViews();
+            for(int i = 0;i<showTagsBeanList.size();i++){
+                NewestShowGroundBean.DataBean.ShowTagsBean showTagsBean = showTagsBeanList.get(i);
+                TextView textView = new TextView(context);
+                textView.setTextColor(Color.WHITE);
+                textView.setTextSize(12);
+                textView.setText("#"+showTagsBean.getName());
+                int pad = DensityUtils.dip2px(8);
+                textView.setPadding(pad,0,pad,0);
+                textView.setGravity(Gravity.CENTER);
+                textView.setBackgroundResource(R.drawable.tag_background);
+                LinearLayout.LayoutParams tvParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, DensityUtils.dip2px(24));
+                int margin = DensityUtils.dip2px(10);
+                tvParam.setMargins(i== 0 ? 0: margin,0,0,0);
+                textView.setLayoutParams(tvParam);
+                myHolder.tagWrapper.addView(textView);
+            }
+        }
+
+
+
+
+
+        myHolder.collection.setText(itemData.getCollectCount()+"");
+        myHolder.download.setText(itemData.getDownloadCount()+"");
+        myHolder.like.setText(itemData.getLikesCount()+"");
+
+        if(itemData.isLike()){
+            myHolder.ivLike.setImageResource(R.mipmap.icon_liked);
+        }else {
+            myHolder.ivLike.setImageResource(R.mipmap.icon_like);
+        }
+
+        if(itemData.isCollect()){
+            myHolder.ivCollection.setImageResource(R.mipmap.icon_collected);
+        }else {
+            myHolder.ivCollection.setImageResource(R.mipmap.icon_collection);
+        }
+
+        String content = itemData.getContent();
+        if(TextUtils.isEmpty(content)){
+            myHolder.previewWrapper.setVisibility(View.GONE);
+            myHolder.detailWrapper.setVisibility(View.GONE);
+        }else {
+            myHolder.previewWrapper.setVisibility(View.VISIBLE);
+            myHolder.detailWrapper.setVisibility(View.INVISIBLE);
+            myHolder.tvDetail.setText(content);
+            myHolder.previewDetail.setText(content);
+        }
+
     }
 
     public final class  MyHolder extends BaseVideoListAdapter.BaseHolder {
@@ -73,6 +120,8 @@ public class LittleVideoListAdapter extends BaseVideoListAdapter<LittleVideoList
         private TextView previewDetail;
         private TextView close,open;
         private ImageView playIcon;
+        private TextView like,download,collection;
+        private ImageView ivLike,ivCollection;
         MyHolder(@NonNull View itemView) {
             super(itemView);
             thumb = itemView.findViewById(R.id.img_thumb);
@@ -84,8 +133,13 @@ public class LittleVideoListAdapter extends BaseVideoListAdapter<LittleVideoList
             previewDetail = itemView.findViewById(R.id.preview_detail);
             close = itemView.findViewById(R.id.tv_close);
             open = itemView.findViewById(R.id.tv_open);
+            like = itemView.findViewById(R.id.tv_like);
+            download = itemView.findViewById(R.id.tv_download);
+            collection = itemView.findViewById(R.id.tv_collection);
             detailWrapper = itemView.findViewById(R.id.video_text_open);
             previewWrapper = itemView.findViewById(R.id.video_text_close);
+            ivLike = itemView.findViewById(R.id.iv_like);
+            ivCollection = itemView.findViewById(R.id.iv_collection);
             open.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

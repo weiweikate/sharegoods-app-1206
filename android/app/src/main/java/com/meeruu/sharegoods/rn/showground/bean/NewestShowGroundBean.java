@@ -113,7 +113,8 @@ public class NewestShowGroundBean {
         private int shareCount;
         private int downloadCount;
         private int clickCount;
-
+        private int collectCount;
+        private boolean collect;
 
         private int hotCount;
         private long nowTime;
@@ -125,6 +126,22 @@ public class NewestShowGroundBean {
         private ImageInfo videoCover;
         private boolean owner;
         private int createSource;
+
+        public int getCollectCount() {
+            return collectCount;
+        }
+
+        public void setCollectCount(int collectCount) {
+            this.collectCount = collectCount;
+        }
+
+        public boolean isCollect() {
+            return collect;
+        }
+
+        public void setCollect(boolean collect) {
+            this.collect = collect;
+        }
 
         public ImageInfo getVideoCover() {
             return videoCover;

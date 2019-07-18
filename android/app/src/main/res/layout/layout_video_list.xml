@@ -42,30 +42,30 @@
             app:roundAsCircle="true" />
 
         <TextView
-            android:id="@+id/tv_name"
+            android:id="@+id/tv_namea"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/user_icon"
-            android:text="用户名"
             android:textColor="@color/white"
+            android:layout_marginLeft="2dp"
             android:textSize="13sp" />
-
         <ImageView
             android:id="@+id/iv_fire"
             android:layout_width="15dp"
             android:layout_height="15dp"
             android:layout_below="@+id/tv_name"
             android:layout_toRightOf="@+id/user_icon"
+            android:layout_marginLeft="2dp"
             android:src="@drawable/icon_fire" />
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="15dp"
+            android:id="@+id/tv_hotCountss"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/tv_name"
             android:layout_marginLeft="2dp"
             android:layout_toRightOf="@+id/iv_fire"
             android:gravity="center_vertical"
-            android:text="33333人气值"
             android:textColor="@color/white"
             android:textSize="11sp" />
 
@@ -80,6 +80,7 @@
             android:src="@mipmap/share_white_icon" />
 
         <TextView
+            android:id="@+id/tv_attention"
             android:layout_width="65dp"
             android:layout_height="28dp"
             android:layout_marginRight="17dp"

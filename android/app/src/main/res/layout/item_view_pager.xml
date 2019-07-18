@@ -46,6 +46,7 @@
             android:orientation="vertical">
 
             <ImageView
+                android:id="@+id/iv_download"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/icon_download" />
@@ -55,6 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7dp"
                 android:text="0"
+                android:id="@+id/tv_download"
                 android:textColor="@color/white"
                 android:textSize="13sp" />
 
@@ -62,6 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
+                android:id="@+id/iv_collection"
                 android:src="@mipmap/icon_collection" />
 
             <TextView
@@ -69,6 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7dp"
                 android:text="0"
+                android:id="@+id/tv_collection"
                 android:textColor="@color/white"
                 android:textSize="13sp" />
 
@@ -76,6 +80,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
+                android:id="@+id/iv_like"
                 android:src="@mipmap/icon_like" />
 
             <TextView
@@ -83,6 +88,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7dp"
                 android:text="0"
+                android:id="@+id/tv_like"
                 android:textColor="@color/white"
                 android:textSize="13sp" />
         </LinearLayout>
@@ -139,7 +145,6 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:id="@+id/preview_detail"
-                android:text="视频内容文本展示区域宽度为690 默认展示两行容文本展示区域宽度为690 默认展示两行 若文…"
                 android:textColor="@color/white"
                 android:textSize="13sp" />
 
@@ -173,7 +178,6 @@
                         android:id="@+id/tv_detail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="视频内容文本展示区域宽度为690 默认展示两行容文本展示区域宽度为690 默认展示两行 若文视频内容文本展示区域宽度为690 默认展示两行容文本展示区域宽度为690 默认展示两行 若文视频内视频内容文本展示区域宽度为690 默认展示两行容文本展示区域宽度为690 默认展示两行 若文视频内容文本展示区域宽度为690 默认展示两行容文本展示区域宽度为690 默认展示两行 若文视频内视频内容文本展示区域宽度为690 默认展示两行容文本展示区域宽度为690 默认展示两行 若文视频内容文本展示区域宽度为690 默认展示两行容文本展示区域宽度为690 默认展示两行 若文视频内容文本展示区域宽度为690 默认展示两行容文本展示区域宽度为690 默认展示两行 若文"
                         android:textColor="@color/white" />
                 </LinearLayout>
             </com.meeruu.sharegoods.rn.showground.widgets.FocusScrollView>
