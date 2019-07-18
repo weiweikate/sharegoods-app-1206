@@ -119,7 +119,9 @@
 
             default:///其他情况返回error
                 NSLog(@"请求结果：\n%@",responseObject[@"msg"]);
+             if (errorBlock) {
                 errorBlock(responseObject[@"msg"], code);
+             }
                 break;
         }
 
@@ -127,7 +129,9 @@
         if (showLoading) {
             [hub hideAnimated:YES];
         }
+       if (errorBlock) {
         errorBlock(@"网络链接异常，请检查您的网络", 1);
+       }
     }];
 }
 
@@ -176,7 +180,9 @@
 
             default:///其他情况返回error
                 NSLog(@"请求结果：\n%@",responseObject[@"msg"]);
+             if (errorBlock) {
                 errorBlock(responseObject[@"msg"], code);
+             }
                 break;
         }
 
@@ -184,7 +190,9 @@
         if (showLoading) {
             [hub hideAnimated:YES];
         }
-        errorBlock(@"网络链接异常，请检查您的网络", 1);
+      if (errorBlock) {
+         errorBlock(@"网络链接异常，请检查您的网络", 1);
+      }
     }];
 }
 

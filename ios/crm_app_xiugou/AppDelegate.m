@@ -115,7 +115,7 @@
 - (void)getDynamicBaseUrl
 {
   [NetWorkTool requestWithURL:Api_queryBaseUrl params:@{} toModel:nil success:^(id result) {
-    if(result){
+    if(result && [result isKindOfClass:[NSString class]]){
       [[NSNotificationCenter defaultCenter] postNotificationName:@"EventToRN" object:@{@"baseUrl": result,
                                                                                        @"eventName":@"Event_change_baseUrl"
                                                                                        }];

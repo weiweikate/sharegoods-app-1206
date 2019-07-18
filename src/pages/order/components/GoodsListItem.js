@@ -93,12 +93,31 @@ export default class GoodsListItem extends React.Component {
             return null;
         }
 
+        let isAllVirtual = true;
+        merchantOrder.productOrderList.forEach((item) => {
+            if (item.orderType != 1){
+                isAllVirtual = false;
+            }
+        });
+
+        nameArr = nameArr.filter((item) => {
+            if (!isAllVirtual){
+                return true;
+            }
+            if (item.operation === '查看物流' || item.operation === '确认收货'){
+                return false;
+            }
+            return true;
+        })
+
         let moreArr = []
         if (nameArr.length > 3){
             moreArr = nameArr.splice(0,nameArr.length - 3);
         }
 
-
+        if (nameArr.length === 0){
+            return null;
+        }
         return <View style={{
             flexDirection: 'row',
             height: ScreenUtils.autoSizeWidth(48),

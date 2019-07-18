@@ -212,7 +212,7 @@ export default class MyOrdersListView extends Component {
                 clickOrderLogistics(merchantOrderNo)
                 break;
             case 6:
-                clickOrderConfirmReceipt(merchantOrderNo,subStatus, this.dataHandleConfirmOrder(data, index))
+                clickOrderConfirmReceipt(merchantOrderNo,subStatus, () => this.dataHandleConfirmOrder(data, index))
                 break;
             case 7:
             case 9:
