@@ -29,6 +29,15 @@ export default class OrderDetailBottomButtonView extends Component {
 
     render() {
         let nameArr = [...orderDetailModel.menu];
+        nameArr = nameArr.filter((item) => {
+            if (!orderDetailModel.isAllVirtual){
+                return true;
+            }
+            if (item.operation === '查看物流' || item.operation === '确认收货'){
+                return false;
+            }
+            return true;
+        })
         if (nameArr.length > 0) {
             if (nameArr.length === 4) {
                 return (
@@ -61,26 +70,7 @@ export default class OrderDetailBottomButtonView extends Component {
                     </View>
                 );
             } else {
-                let datas=[];
-                if (orderDetailModel.status === 4) {
-                   datas=[
-                    {
-                        id: 7,
-                            operation: "删除订单",
-                        isRed: false
-                    },{
-                           id: 5,
-                           operation: "查看物流",
-                           isRed: false
-                       }, {
-                        id: 8,
-                            operation: "再次购买",
-                            isRed: true
-                    }
-                    ]
-                }else {
-                    datas=nameArr;
-                }
+                let datas= nameArr;
                 return (
                     <View style={styles.containerStyle}>
                         {datas.map((item, i) => {

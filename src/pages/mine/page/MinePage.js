@@ -182,7 +182,7 @@ export default class MinePage extends BasePage {
 
     _onScroll = (event) => {
         this.offsetY = event.nativeEvent.contentOffset.y;
-    
+
         if (this.offsetY <= halfScaleHeaderSize) {
             if(!this.state.changeHeader){
                 this.setState({
@@ -537,7 +537,7 @@ export default class MinePage extends BasePage {
                         TrackApi.ViewAccountBalance();
                     })}
                     <View style={{height:30,width:1,backgroundColor:'#E4E4E4'}}/>
-                    {this.accountItemView(StringUtils.formatMoneyString(user.totalScore ? user.totalScore : '0',false), '秀豆账户(枚)', 2 ,() => {
+                    {this.accountItemView(user.totalScore ? user.totalScore : '0', '秀豆账户(枚)', 2 ,() => {
                         settingModel.userScoreAdd();
                         this.go2CashDetailPage(2);
                         TrackApi.ViewShowDou();

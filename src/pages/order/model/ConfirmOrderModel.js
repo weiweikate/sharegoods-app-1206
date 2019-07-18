@@ -246,6 +246,10 @@ class ConfirmOrderModel {
         if(!StringUtils.isEmpty(this.err)){
             return;
         }
+        if (this.productOrderList.length === 0){
+            return;
+        }
+        
         bridge.showLoading();
         OrderApi.submitOrder(this.getParams(true)).then((response) => {
             bridge.hiddenLoading();
