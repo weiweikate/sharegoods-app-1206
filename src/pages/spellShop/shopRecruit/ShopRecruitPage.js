@@ -54,11 +54,11 @@ export default class ShopRecruitPage extends BasePage {
         return (<View style={styles.transparentView}>
                 <View style={styles.leftBarItemContainer}>
                     {!this.props.leftNavItemHidden ?
-                        <TouchableOpacity style={{ width: 40, justifyContent: 'center', alignItems: 'center' }} 
-                            onPress={() => {
-                                this.$navigateBack();
-                        }}>
-                            <Image source={NavLeft}  style={{width: 30, height: 30}}/>
+                        <TouchableOpacity style={{ width: 40, justifyContent: 'center', alignItems: 'center' }}
+                                          onPress={() => {
+                                              this.$navigateBack();
+                                          }}>
+                            <Image source={NavLeft} style={{ width: 30, height: 30 }}/>
                         </TouchableOpacity> : null}
                 </View>
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -439,7 +439,7 @@ const styles = StyleSheet.create({
         height: 44,
         backgroundColor: 'transparent',
         position: 'absolute',
-        left: 15,
+        left: 5,
         right: 15,
         zIndex: 4,
         flexDirection: 'row',

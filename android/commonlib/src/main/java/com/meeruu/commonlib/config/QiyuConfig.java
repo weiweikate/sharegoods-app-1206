@@ -13,7 +13,8 @@ public class QiyuConfig {
         YSFOptions options = new YSFOptions();
         StatusBarNotificationConfig statusBarNotificationConfig = new StatusBarNotificationConfig();
         statusBarNotificationConfig.notificationEntrance = QiyuServiceMessageActivity.class;
-        statusBarNotificationConfig.notificationSmallIconId = R.mipmap.ic_launcher_round;
+        statusBarNotificationConfig.notificationSmallIconId = R.mipmap.ic_launcher;
+        statusBarNotificationConfig.contentTitle = "秀购";
         options.statusBarNotificationConfig = statusBarNotificationConfig;
         UICustomization uiCustomization = new UICustomization();
         // 头像风格，0为圆形，1为方形

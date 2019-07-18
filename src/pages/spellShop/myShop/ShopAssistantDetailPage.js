@@ -56,8 +56,8 @@ export default class ShopAssistantDetailPage extends BasePage {
 
                     <TouchableOpacity onPress={() => {
                         this.$navigateBack();
-                    }} style={{width: 40, justifyContent: 'center', alignItems: 'center'}}>
-                        <Image source={NavLeft} style={{width: 30, height: 30}}/>
+                    }} style={{ width: 40, justifyContent: 'center', alignItems: 'center' }}>
+                        <Image source={NavLeft} style={{ width: 30, height: 30 }}/>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
         height: 44,
         backgroundColor: 'transparent',
         position: 'absolute',
-        left: 15,
+        left: 5,
         right: 15,
         zIndex: 3,
         flexDirection: 'row',

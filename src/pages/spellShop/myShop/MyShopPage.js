@@ -2,21 +2,11 @@
 //三种角色身份 普通 店长 店员
 
 import React from 'react';
-import {
-    View,
-    Image,
-    StyleSheet,
-    ScrollView,
-    RefreshControl,
-    TouchableOpacity,
-    Alert
-} from 'react-native';
+import { Alert, Image, RefreshControl, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { observer } from 'mobx-react';
 import BasePage from '../../../BasePage';
-import {
-    MRText as Text
-} from '../../../components/ui';
+import { MRText as Text } from '../../../components/ui';
 
 import ShopHeader from './components/ShopHeader';
 import ShopHeaderBonus from './components/ShopHeaderBonus';
@@ -24,8 +14,6 @@ import MembersRow from './components/MembersRow';
 import InfoRow from './components/InfoRow';
 import ActionSheetView from '../components/ActionSheetView';
 import ReportAlert from '../components/ReportAlert';
-// 图片资源
-
 import SpellShopApi from '../api/SpellShopApi';
 import DateUtils from '../../../utils/DateUtils';
 import StringUtils from '../../../utils/StringUtils';
@@ -46,6 +34,7 @@ import { ShopBottomBannerView, ShopCardView, ShopProductItemView } from './compo
 import MyShopDetailModel from './MyShopDetailModel';
 import { IntervalMsgView, IntervalType } from '../../../comm/components/IntervalMsgView';
 import RouterMap from '../../../navigation/RouterMap';
+// 图片资源
 
 const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
 const NavLeft = resCommon.button.back_white;
@@ -87,11 +76,11 @@ export default class MyShopPage extends BasePage {
         return (<View style={styles.transparentView}>
                 <View style={styles.leftBarItemContainer}>
                     {!this.props.leftNavItemHidden ?
-                        <TouchableOpacity style={{ width: 40, justifyContent: 'center', alignItems: 'center'}} 
-                            onPress={() => {
-                            this.$navigateBack();
-                        }}>
-                            <Image source={NavLeft}  style={{width: 30, height: 30}}/>
+                        <TouchableOpacity style={{ width: 40, justifyContent: 'center' }}
+                                          onPress={() => {
+                                              this.$navigateBack();
+                                          }}>
+                            <Image source={NavLeft} style={{ width: 30, height: 30 }}/>
                         </TouchableOpacity> : null}
                 </View>
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -566,7 +555,7 @@ const styles = StyleSheet.create({
         height: 44,
         backgroundColor: 'transparent',
         position: 'absolute',
-        left: 15,
+        left: 5,
         right: 15,
         zIndex: 4,
         flexDirection: 'row',

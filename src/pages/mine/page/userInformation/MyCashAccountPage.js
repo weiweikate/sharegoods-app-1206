@@ -1,13 +1,13 @@
 import React from 'react';
 import {
-    StyleSheet,
-    View,
-    ImageBackground,
     Alert,
     Image,
-    TouchableWithoutFeedback,
+    ImageBackground,
+    RefreshControl,
     SectionList,
-    RefreshControl
+    StyleSheet,
+    TouchableWithoutFeedback,
+    View
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
@@ -251,14 +251,13 @@ export default class MyCashAccountPage extends BasePage {
                         this.$navigateBack();
                     }}>
                         <View style={{
-                            width: 40,
-                            paddingLeft: DesignRule.margin_page,
+                            paddingLeft: px2dp(5),
                             height: 40,
                             justifyContent: 'center',
-                            alignItems: 'center',
                             flex: 1
                         }}>
-                            <Image source={res.button.back_white} style={{width: 30, height: 30}}/>
+                            <Image source={res.button.back_white}
+                                   style={{ width: 30, height: 30 }}/>
                         </View>
                     </TouchableWithoutFeedback>
                     <Text style={{
@@ -386,7 +385,7 @@ export default class MyCashAccountPage extends BasePage {
                                 <Text style={{
                                     fontSize: 17,
                                     color: DesignRule.textColor_mainTitle
-                                }}>{item.capital ? item.capital: 0}</Text>
+                                }}>{item.capital ? item.capital : 0}</Text>
                             </View>
                             <Text style={{
                                 fontSize: 12, color: DesignRule.textColor_instruction
@@ -570,13 +569,6 @@ const styles = StyleSheet.create({
         marginHorizontal: (ScreenUtils.width * 2 / 3 - 10 * 4) / 8,
         backgroundColor: DesignRule.mainColor,
         borderRadius: 1
-    },
-    viewStyle: {
-        height: 95,
-        marginTop: 10,
-        marginBottom: 10,
-        marginLeft: 15,
-        marginRight: 15
     },
     headerWrapper: {
         flexDirection: 'row',

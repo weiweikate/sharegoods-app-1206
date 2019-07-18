@@ -3,15 +3,15 @@
 */
 
 import React from 'react';
-import { View, StyleSheet, Image, TouchableWithoutFeedback } from 'react-native';
+import { Image, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
-
-const { px2dp, statusBarHeight, headerHeight } = ScreenUtils;
 import UIText from '../../../components/ui/UIText';
 import DesignRule from '../../../constants/DesignRule';
 import User from '../../../model/user';
 import res from '../res/index';
 import RouterMap, { routeNavigate } from '../../../navigation/RouterMap';
+
+const { px2dp, statusBarHeight, headerHeight } = ScreenUtils;
 
 const logoRed = res.home_icon_logo_red;
 const searchImg = res.icon_search;
@@ -35,6 +35,7 @@ export default ({ navigation, hasMessage }) =>
                     return;
                 }
                 navigation('message/MessageCenterPage');
+                // routeNavigate('login/login/LoginView')
             }}>
                 <View style={{ height: 32, width: 32, justifyContent: 'center', alignItems: 'center' }}>
                     <Image source={messageImg} style={styles.msgIcon}/>
