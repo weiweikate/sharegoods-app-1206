@@ -36,6 +36,7 @@ import { observer } from 'mobx-react';
 const { autoSizeWidth } = ScreenUtils;
 import { homeModule } from '../model/Modules';
 import { routePush } from '../../../navigation/RouterMap';
+import { ImageCacheManager } from 'react-native-cached-image';
 
 @observer
 export default class HomeMessageModalView extends React.Component {
@@ -144,11 +145,13 @@ function AdViewBindModal(modal, dataName = 'AdData', visibleName = 'isShowAd', c
         class HomeAdModal extends React.Component {
             state = {
                 messageIndex: 0,
-                backgroundColor: '#f5f5f5'
+                img: ''
             };
 
             constructor(props) {
                 super(props);
+                this.imageCacheManager =  ImageCacheManager()  ;
+                this.image = '';
             }
 
             gotoPage = () => {
@@ -169,6 +172,14 @@ function AdViewBindModal(modal, dataName = 'AdData', visibleName = 'isShowAd', c
             render() {
                 let AdData = modal[dataName] || {};
                 let image = AdData.image || '';
+                if (image !== this.image){
+                    this.image = image;
+                    this.imageCacheManager.downloadAndCacheUrl(image).then((data)=>{
+                        this.setState({
+                            img:ScreenUtils.isIOS ? data : `file://${data}`
+                        });
+                    });
+                }
                 return (
                     <CommModal ref={(ref) => {
                         this.messageModal = ref;
@@ -186,12 +197,9 @@ function AdViewBindModal(modal, dataName = 'AdData', visibleName = 'isShowAd', c
                                     <Image style={{
                                         width: autoSizeWidth(310),
                                         height: autoSizeWidth(410),
-                                        backgroundColor: this.state.backgroundColor
+                                        backgroundColor: this.state.img.length > 0 ? null: '#F4F4F4'
                                     }}
-                                           onLoadEnd={() => {
-                                               this.setState({ backgroundColor: null });
-                                           }}
-                                           source={{ uri: image }}
+                                           source={{ uri: this.state.img }}
                                            resizeMode={'contain'}
                                     />
                                 </View>
