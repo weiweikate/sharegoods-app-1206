@@ -43,7 +43,7 @@
   }
   [self configureUserAgent];
   [self getAd];
-  [self getDynamicBaseUrl];
+//  [self getDynamicBaseUrl];
   
 //  [[CommentTool sharedInstance]checkIsCanComment];
 
