@@ -38,6 +38,7 @@
 		037DBABF21B0E3030003DA18 /* money_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 037DBABD21B0E3030003DA18 /* money_1.png */; };
 		0386E930218C59D900697612 /* libbz2.1.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0386E92F218C59D900697612 /* libbz2.1.0.tbd */; };
 		03A568E621DEFA1E00D6A770 /* libRNGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03A568E121DEFA0C00D6A770 /* libRNGeolocation.a */; };
+		03B93B4222E0546F00C184EA /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD11955421870DB6007F602E /* libRCTVideo.a */; };
 		101157BA219AB489001F5E99 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 101157B9219AB489001F5E99 /* SystemConfiguration.framework */; };
 		101157C4219AB6FD001F5E99 /* ExternalAccessory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 101157C3219AB6FD001F5E99 /* ExternalAccessory.framework */; };
 		101157C6219AB715001F5E99 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 101157C5219AB715001F5E99 /* libc++.tbd */; };
@@ -386,6 +387,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNGeolocation;
+		};
+		03B93B4E22E0546F00C184EA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0347BAC12237CC670011184A /* Lottie.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6445B0D5207E0D4D00D84F6A;
+			remoteInfo = LottieLibraryMacOS;
 		};
 		0409D91D222F7706003A53EC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1291,6 +1299,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03B93B4222E0546F00C184EA /* libRCTVideo.a in Frameworks */,
 				BF9D6FB722D8FB0A0040FC2F /* libRNCAsyncStorage.a in Frameworks */,
 				C4F2E49222BE30BC00FF6213 /* IJSFoundation.framework in Frameworks */,
 				BF2A519322B9EBC300A80506 /* libRNGestureHandler.a in Frameworks */,
@@ -1513,6 +1522,7 @@
 				0347BACB2237CC680011184A /* Lottie.framework */,
 				0347BACD2237CC680011184A /* Lottie.framework */,
 				0347BACF2237CC680011184A /* libLottie.a */,
+				03B93B4F22E0546F00C184EA /* libLottie.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3100,6 +3110,13 @@
 			fileType = archive.ar;
 			path = libRNGeolocation.a;
 			remoteRef = 03A568E021DEFA0C00D6A770 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		03B93B4F22E0546F00C184EA /* libLottie.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLottie.a;
+			remoteRef = 03B93B4E22E0546F00C184EA /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		0409D91E222F7706003A53EC /* libRNCWebView.a */ = {
