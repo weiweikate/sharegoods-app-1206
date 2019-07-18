@@ -75,7 +75,7 @@ export default class CategorySearchPage extends BasePage {
         HomeAPI.findHotList().then((response) => {
             let datas = response.data || {};
             this.setState({
-                sectionArr: [{ index: 0, title: '热门分类', data: datas.productCategoryList }],
+                sectionArr: [{ index: 0, title: '热门分类', data: datas.productCategoryList || [] }],
                 bannerData: StringUtils.isEmpty(datas.img) ? [] : [{
                     img: datas.img,
                     linkType: datas.linkType,
@@ -246,7 +246,7 @@ export default class CategorySearchPage extends BasePage {
                             bridge.hiddenLoading();
                             let datas = response.data || {};
                             this.setState({
-                                sectionArr: [{ index: 0, title: '热门分类', data: datas.productCategoryList }],
+                                sectionArr: [{ index: 0, title: '热门分类', data: datas.productCategoryList || [] }],
                                 bannerData: StringUtils.isEmpty(datas.img) ? [] : [{
                                     img: datas.img,
                                     linkType: datas.linkType,
