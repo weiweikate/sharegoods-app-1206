@@ -7,9 +7,9 @@ import { Image, StyleSheet, TouchableWithoutFeedback, View } from 'react-native'
 import ScreenUtils from '../../../utils/ScreenUtils';
 import UIText from '../../../components/ui/UIText';
 import DesignRule from '../../../constants/DesignRule';
-import User from '../../../model/user';
 import res from '../res/index';
 import RouterMap, { routeNavigate } from '../../../navigation/RouterMap';
+import user from '../../../model/user';
 
 const { px2dp, statusBarHeight, headerHeight } = ScreenUtils;
 
@@ -30,12 +30,12 @@ export default ({ navigation, hasMessage }) =>
                 </View>
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={() => {
-                if (!User.isLogin) {
+                if (!user.isLogin) {
                     routeNavigate(RouterMap.LoginPage);
                     return;
                 }
-                navigation('message/MessageCenterPage');
-                // routeNavigate('login/login/LoginView')
+                navigation(RouterMap.MessageCenterPage);
+                // routeNavigate('login/login/LoginView');
             }}>
                 <View style={{ height: 32, width: 32, justifyContent: 'center', alignItems: 'center' }}>
                     <Image source={messageImg} style={styles.msgIcon}/>
