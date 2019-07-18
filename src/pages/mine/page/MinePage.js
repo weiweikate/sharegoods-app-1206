@@ -326,9 +326,9 @@ export default class MinePage extends BasePage {
         ) : null;
 
         let xiuOld = !EmptyUtils.isEmpty(user.shareGoodsAge) ? (
-                <Text style={{ fontSize: 11, color: DesignRule.textColor_instruction, includeFontPadding: false, marginTop: 5,marginRight:15 }}>
-                    {user.shareGoodsAge ? `秀龄：${user.shareGoodsAge}` : '0天'}
-                </Text>
+            <Text style={{ fontSize: 11, color: DesignRule.textColor_instruction, includeFontPadding: false, marginTop: 5,marginRight:15 }}>
+                {user.shareGoodsAge ? `秀龄：${user.shareGoodsAge}` : '0天'}
+            </Text>
         ) : null;
 
         let levelArr = ['V0','V1','V2','V3','V4','V5']
@@ -573,10 +573,10 @@ export default class MinePage extends BasePage {
                         }} source={mine_invite}>
                             <View style={{flex: 1, justifyContent: 'center', marginLeft: 15}}>
                                 <Text style={{fontSize: 14, color: '#333333', fontWeight: '600', marginBottom: 5}}>
-                                   邀请好友赚钱</Text>
+                                    邀请好友赚钱</Text>
 
                                 <ImageBackground style={{width: 65, height: 26, alignItems: 'center'}}
-                                                source={res.homeBaseImg.mine_btn_red}>
+                                                 source={res.homeBaseImg.mine_btn_red}>
                                     <Text style={{fontSize: 10, color: 'white'}}>立即邀请</Text>
                                 </ImageBackground>
                             </View>
@@ -711,10 +711,10 @@ export default class MinePage extends BasePage {
                     </TouchableWithoutFeedback>
                 </View>
                 {/*<ScrollView style={{ width: DesignRule.width - DesignRule.margin_page * 2 }} horizontal={true}*/}
-                            {/*showsHorizontalScrollIndicator={false}>*/}
-                    <View style={{ flex: 1, flexDirection: 'row', paddingBottom: px2dp(15) }}>
-                        {this.renderOrderStates()}
-                    </View>
+                {/*showsHorizontalScrollIndicator={false}>*/}
+                <View style={{ flex: 1, flexDirection: 'row', paddingBottom: px2dp(15) }}>
+                    {this.renderOrderStates()}
+                </View>
                 {/*</ScrollView>*/}
             </View>
 
@@ -1153,4 +1153,3 @@ const styles = StyleSheet.create({
         fontSize: DesignRule.fontSize_22
     },
 });
-
