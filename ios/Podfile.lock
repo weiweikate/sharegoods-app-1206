@@ -21,7 +21,7 @@ PODS:
   - CocoaLumberjack/Default (3.4.2)
   - CocoaLumberjack/Extensions (3.4.2):
     - CocoaLumberjack/Default
-  - IQKeyboardManager (6.2.0)
+  - IQKeyboardManager (6.2.1)
   - JCore (2.1.1)
   - JPush (3.2.1):
     - JCore (< 3.0.0, >= 2.0.0)
@@ -53,25 +53,25 @@ PODS:
   - SensorsAnalyticsSDK (1.10.26):
     - SensorsAnalyticsSDK/core (= 1.10.26)
   - SensorsAnalyticsSDK/core (1.10.26)
-  - Texture (2.8.1):
-    - Texture/AssetsLibrary (= 2.8.1)
-    - Texture/Core (= 2.8.1)
-    - Texture/MapKit (= 2.8.1)
-    - Texture/Photos (= 2.8.1)
-    - Texture/PINRemoteImage (= 2.8.1)
-    - Texture/Video (= 2.8.1)
-  - Texture/AssetsLibrary (2.8.1):
+  - Texture (2.8):
+    - Texture/AssetsLibrary (= 2.8)
+    - Texture/Core (= 2.8)
+    - Texture/MapKit (= 2.8)
+    - Texture/Photos (= 2.8)
+    - Texture/PINRemoteImage (= 2.8)
+    - Texture/Video (= 2.8)
+  - Texture/AssetsLibrary (2.8):
     - Texture/Core
-  - Texture/Core (2.8.1)
-  - Texture/MapKit (2.8.1):
+  - Texture/Core (2.8)
+  - Texture/MapKit (2.8):
     - Texture/Core
-  - Texture/Photos (2.8.1):
+  - Texture/Photos (2.8):
     - Texture/Core
-  - Texture/PINRemoteImage (2.8.1):
+  - Texture/PINRemoteImage (2.8):
     - PINRemoteImage/iOS (= 3.0.0-beta.13)
     - PINRemoteImage/PINCache
     - Texture/Core
-  - Texture/Video (2.8.1):
+  - Texture/Video (2.8):
     - Texture/Core
   - TYCyclePagerView (1.1.2)
   - UICKeyChainStore (2.1.2)
@@ -109,7 +109,7 @@ DEPENDENCIES:
   - SDAutoLayout
   - SDWebImage (~> 4.4.6)
   - SensorsAnalyticsSDK (~> 1.10.17)
-  - Texture (= 2.8.1)
+  - Texture (= 2.8)
   - TYCyclePagerView (~> 1.1.0)
   - UICKeyChainStore (~> 2.1.1)
   - UMCAnalytics (~> 6.0.5)
@@ -119,7 +119,7 @@ DEPENDENCIES:
   - UMCShare/Social/ReducedSina (~> 6.9.6)
   - UMCShare/Social/ReducedWeChat (~> 6.9.6)
   - WechatOpenSDK (~> 1.8.3)
-  - YYKit (~> 1.0.9)
+  - YYKit (= 1.0.9)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -154,7 +154,7 @@ SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   Bugly: 3ca9f255c01025582df26f9222893b383c7e4b4e
   CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
-  IQKeyboardManager: 6194101620b73af5e67900b8f89707a99de0b804
+  IQKeyboardManager: 964638372b4a61892cc74fdfa6fd26de8c9464a2
   JCore: 4072327557f0b83cc22dd4041f2f839740c0077b
   JPush: a1ff8b8ec53fa3419b414946e4db4efa313baeae
   JVerification: 0fc93283465481d0a670f5c5de45bc6900a9077c
@@ -168,7 +168,7 @@ SPEC CHECKSUMS:
   SDAutoLayout: 8bf6b3bbc8b01f775d4defbb4fda2ace805461be
   SDWebImage: c10d14a8883ebd89664f02a422006f66a85c0c5d
   SensorsAnalyticsSDK: df320e81d6e8461fcc1266005f3923e6e4b74b5c
-  Texture: 8ecf6984065a1e54f06bf97b349ecca28582acd7
+  Texture: fc6e0157201f3a6e503d364c147b1872e365cef4
   TYCyclePagerView: 0f67b0986995fd614843e819bc974cadd7f98008
   UICKeyChainStore: 85db518bb1d294366d15ec9b92a416c4e670518f
   UMCAnalytics: 045be2cd1ec05aa95ad62405a850757f932e2d59
@@ -178,6 +178,6 @@ SPEC CHECKSUMS:
   WechatOpenSDK: 9b721089507c895d05f997408c30bb6e6f5f9b60
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-PODFILE CHECKSUM: edabb4dccabedaaf97653dafc082e328f832cacd
+PODFILE CHECKSUM: 5e9122895d354c48866130a9d540a79f718e05a8
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.7.0.beta.2

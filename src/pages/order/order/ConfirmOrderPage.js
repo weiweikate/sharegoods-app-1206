@@ -144,7 +144,7 @@ export default class ConfirmOrderPage extends BasePage {
 
     // 地址重新选择
     selectAddress = () => {
-        if (confirmOrderModel.isNoAddress){
+        if (confirmOrderModel.isNoAddress === false){
             this.$navigate('mine/address/AddressManagerPage', {
                 from: 'order',
                 currentId: confirmOrderModel.addressId,
