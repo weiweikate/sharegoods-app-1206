@@ -30,8 +30,6 @@ import { MRText as Text, AvatarImage } from '../../../components/ui';
 import LoginAPI from '../../login/api/LoginApi';
 import CommModal from '../../../comm/components/CommModal';
 import { track, TrackApi, trackEvent } from '../../../utils/SensorsTrack';
-import TaskVIew from '../../home/view/TaskVIew';
-import { mineTaskModel } from '../../home/model/TaskModel';
 import settingModel from '../model/SettingModel'
 import PullView from '../components/pulltorefreshlayout'
 
@@ -79,11 +77,11 @@ const vipBg = [
  * @email chenxiang@meeruu.com
  */
 
+const { px2dp, headerHeight, statusBarHeight, getImgHeightWithWidth} = ScreenUtils;
 const headerBgSize = { width: 375, height: 237 };
-const platformHeight = 10;
-const { px2dp, statusBarHeight } = ScreenUtils;
-const headerHeight = ScreenUtils.statusBarHeight + 44;
-// const offset = ScreenUtils.getImgHeightWithWidth(headerBgSize) - headerHeight;
+const scaleHeaderSize = getImgHeightWithWidth(headerBgSize)
+const halfScaleHeaderSize = scaleHeaderSize / 2;
+// const offset = scaleHeaderSize - headerHeight;
 @observer
 export default class MinePage extends BasePage {
     constructor(props) {
@@ -136,7 +134,6 @@ export default class MinePage extends BasePage {
                     this.refresh();
                 }
                 TrackApi.myPage();
-                mineTaskModel.getData();
             });
         this.listener = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
 
@@ -184,22 +181,21 @@ export default class MinePage extends BasePage {
     };
 
     _onScroll = (event) => {
-        let Y = event.nativeEvent.contentOffset.y;
-        if (Y <= 0) {
-            this.setState({
-                changeHeader: true
-            });
+        this.offsetY = event.nativeEvent.contentOffset.y;
+
+        if (this.offsetY <= halfScaleHeaderSize) {
+            if(!this.state.changeHeader){
+                this.setState({
+                    changeHeader: true
+                });
+            }
         } else {
-            this.st = 1;
-            this.setState({
-                changeHeader: false
-            });
+            if(this.state.changeHeader){
+                this.setState({
+                    changeHeader: false
+                });
+            }
         }
-
-
-        // this.headerBg.setNativeProps({
-        //     opacity: this.st
-        // });
     };
 
     refresh = () => {
@@ -254,8 +250,8 @@ export default class MinePage extends BasePage {
                     backgroundColor={'white'}
                     renderForeground={this.renderUserHead}
                     renderFixedHeader={this.renderLevelNameNav}
-                    stickyHeaderHeight={this.state.changeHeader ? 0 : px2dp(44 + statusBarHeight)}
-                    parallaxHeaderHeight={ScreenUtils.getImgHeightWithWidth(headerBgSize)}
+                    stickyHeaderHeight={this.state.changeHeader ? 0 : headerHeight}
+                    parallaxHeaderHeight={scaleHeaderSize}
                     onScroll={this._onScroll}
                     showsVerticalScrollIndicator={false}
                 >
@@ -275,7 +271,7 @@ export default class MinePage extends BasePage {
                     alignItems: 'center',
                     paddingRight: px2dp(15),
                     height: headerHeight,
-                    paddingTop: ScreenUtils.statusBarHeight
+                    paddingTop: statusBarHeight
                 }}>
                     <View style={{ flex: 1 }}/>
                     <Text style={{
@@ -330,9 +326,9 @@ export default class MinePage extends BasePage {
         ) : null;
 
         let xiuOld = !EmptyUtils.isEmpty(user.shareGoodsAge) ? (
-                <Text style={{ fontSize: 11, color: DesignRule.textColor_instruction, includeFontPadding: false, marginTop: 5,marginRight:15 }}>
-                    {user.shareGoodsAge ? `秀龄：${user.shareGoodsAge}` : '0天'}
-                </Text>
+            <Text style={{ fontSize: 11, color: DesignRule.textColor_instruction, includeFontPadding: false, marginTop: 5,marginRight:15 }}>
+                {user.shareGoodsAge ? `秀龄：${user.shareGoodsAge}` : '0天'}
+            </Text>
         ) : null;
 
         let levelArr = ['V0','V1','V2','V3','V4','V5']
@@ -390,14 +386,6 @@ export default class MinePage extends BasePage {
                             </View>
                         </TouchableWithoutFeedback>
                     </View>
-                    {/*<TouchableOpacity onPress={()=>{*/}
-                        {/*this.$navigate(RouterMap.MyPromotionPage);*/}
-                        {/*TrackApi.ViewLevelInterest({ moduleSource: 2 });*/}
-                    {/*}} activeOpacity={1}>*/}
-                        {/*<Image source={mine_moreMoney}*/}
-                               {/*style={{width: px2dp(54), height: px2dp(54), marginLeft: px2dp(21)}}*/}
-                               {/*/>*/}
-                    {/*</TouchableOpacity>*/}
                 </View>
                 <View style={{flexDirection:'row',flex:1}}>
                     {this.accountRender()}
@@ -474,7 +462,7 @@ export default class MinePage extends BasePage {
                 alignSelf: 'center',
                 flexDirection: 'row',
                 alignItems: 'center',
-                height: px2dp(44 + statusBarHeight),
+                height: headerHeight,
                 width: ScreenUtils.width,
                 paddingVertical: 5,
                 backgroundColor:'#ffffff',
@@ -537,7 +525,7 @@ export default class MinePage extends BasePage {
                 marginTop: px2dp(5),
                 marginHorizontal: px2dp(15),
                 justifyContent: 'center'
-            }}>
+            }} ref={e => this.numArea = e}>
                 <View style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
@@ -571,7 +559,7 @@ export default class MinePage extends BasePage {
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                marginTop: 15,
+                marginTop: px2dp(15),
                 marginLeft: px2dp(15),
                 marginRight: px2dp(15)
             }}>
@@ -585,10 +573,10 @@ export default class MinePage extends BasePage {
                         }} source={mine_invite}>
                             <View style={{flex: 1, justifyContent: 'center', marginLeft: 15}}>
                                 <Text style={{fontSize: 14, color: '#333333', fontWeight: '600', marginBottom: 5}}>
-                                   邀请好友赚钱</Text>
+                                    邀请好友赚钱</Text>
 
                                 <ImageBackground style={{width: 65, height: 26, alignItems: 'center'}}
-                                                source={res.homeBaseImg.mine_btn_red}>
+                                                 source={res.homeBaseImg.mine_btn_red}>
                                     <Text style={{fontSize: 10, color: 'white'}}>立即邀请</Text>
                                 </ImageBackground>
                             </View>
@@ -723,10 +711,10 @@ export default class MinePage extends BasePage {
                     </TouchableWithoutFeedback>
                 </View>
                 {/*<ScrollView style={{ width: DesignRule.width - DesignRule.margin_page * 2 }} horizontal={true}*/}
-                            {/*showsHorizontalScrollIndicator={false}>*/}
-                    <View style={{ flex: 1, flexDirection: 'row', paddingBottom: px2dp(15) }}>
-                        {this.renderOrderStates()}
-                    </View>
+                {/*showsHorizontalScrollIndicator={false}>*/}
+                <View style={{ flex: 1, flexDirection: 'row', paddingBottom: px2dp(15) }}>
+                    {this.renderOrderStates()}
+                </View>
                 {/*</ScrollView>*/}
             </View>
 
@@ -739,7 +727,7 @@ export default class MinePage extends BasePage {
                 flexDirection: 'row',
                 backgroundColor: 'white',
                 flexWrap: 'wrap',
-                marginVertical: px2dp(10),
+                marginVertical: px2dp(15),
                 marginHorizontal: DesignRule.margin_page,
                 borderRadius: px2dp(5)
             }}>
@@ -770,7 +758,6 @@ export default class MinePage extends BasePage {
     renderBodyView = () => {
         return (
             <View style={{flex:1,backgroundColor:'#F7F7F7'}}>
-                <TaskVIew type={'mine'} style={{marginTop:platformHeight,backgroundColor: '#F7F7F7', paddingBottom: 0 }}/>
                 {this.orderRender()}
                 {this.activeRender()}
                 {this.utilsRender()}
@@ -1108,7 +1095,7 @@ const styles = StyleSheet.create({
     },
     headerBgStyle: {
         width: ScreenUtils.width,
-        height: ScreenUtils.getImgHeightWithWidth(headerBgSize),
+        height: scaleHeaderSize,
         paddingTop: ScreenUtils.statusBarHeight + 10,
         backgroundColor: 'white'
     },
@@ -1140,7 +1127,7 @@ const styles = StyleSheet.create({
     makeMoneyMoreBackground: {
         height: (profileWidth * 140 / 702),
         width: profileWidth,
-        top: ScreenUtils.getImgHeightWithWidth(headerBgSize) - px2dp(31),
+        top: scaleHeaderSize - px2dp(31),
         left: DesignRule.margin_page - 1.5,
         position: 'absolute',
         flexDirection: 'row'
@@ -1155,7 +1142,7 @@ const styles = StyleSheet.create({
         height: 20,
         width: 50,
         backgroundColor: 'rgba(0, 0, 0, 0.8)',
-        marginTop: ScreenUtils.getImgHeightWithWidth(headerBgSize) / 2 - 5,
+        marginTop: scaleHeaderSize / 2 - 5,
         marginLeft: px2dp(90),
         borderRadius: 2,
         justifyContent: 'center',
@@ -1166,4 +1153,3 @@ const styles = StyleSheet.create({
         fontSize: DesignRule.fontSize_22
     },
 });
-
