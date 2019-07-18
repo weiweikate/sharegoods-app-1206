@@ -1,11 +1,13 @@
 import React from 'react';
 import {
-    View,
-    StyleSheet,
-    DeviceEventEmitter, InteractionManager,
-    RefreshControl, BackHandler,
+    BackHandler,
+    DeviceEventEmitter,
+    InteractionManager,
     NativeEventEmitter,
-    NativeModules
+    NativeModules,
+    RefreshControl,
+    StyleSheet,
+    View, ActivityIndicator
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import { observer } from 'mobx-react';
@@ -30,7 +32,7 @@ import { withNavigationFocus } from 'react-navigation';
 import user from '../../model/user';
 import { homeTabManager } from './manager/HomeTabManager';
 import { MRText as Text } from '../../components/ui';
-import { RecyclerListView, LayoutProvider, DataProvider } from 'recyclerlistview';
+import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
 import { homeFocusAdModel } from './model/HomeFocusAdModel';
 import { todayModule } from './model/HomeTodayModel';
 import { recommendModule } from './model/HomeRecommendModel';
@@ -38,7 +40,7 @@ import { subjectModule } from './model/HomeSubjectModel';
 import { homeExpandBnnerModel } from './model/HomeExpandBnnerModel';
 import HomeTitleView from './view/HomeTitleView';
 import LuckyIcon from '../guide/LuckyIcon';
-import HomeMessageModalView, { HomeAdModal, GiftModal } from './view/HomeMessageModalView';
+import HomeMessageModalView, { GiftModal, HomeAdModal } from './view/HomeMessageModalView';
 import { channelModules } from './model/HomeChannelModel';
 import { bannerModule } from './model/HomeBannerModel';
 import HomeLimitGoView from './view/HomeLimitGoView';
@@ -46,6 +48,12 @@ import { limitGoModule } from './model/HomeLimitGoModel';
 import HomeExpandBannerView from './view/HomeExpandBannerView';
 import HomeFocusAdView from './view/HomeFocusAdView';
 import PraiseModel from './view/PraiseModel';
+import BasePage from '../../BasePage';
+import { TrackApi } from '../../utils/SensorsTrack';
+import taskModel from './model/TaskModel';
+import TaskVIew from './view/TaskVIew';
+import intervalMsgModel, { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
+import { UserLevelModalView } from './view/TaskModalView';
 
 const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
@@ -63,16 +71,13 @@ const HOME_SKIP = 'activitySkip';
 
 const { px2dp, height, headerHeight } = ScreenUtils;
 const scrollDist = height / 2 - headerHeight;
-import BasePage from '../../BasePage';
-import { TrackApi } from '../../utils/SensorsTrack';
-import taskModel from './model/TaskModel';
-import TaskVIew from './view/TaskVIew';
-import intervalMsgModel, { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
-import { UserLevelModalView } from './view/TaskModalView';
 
 const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
+    <ActivityIndicator style={{ marginRight: 6 }} animating={errorMsg ? false : (isEnd ? false : true)} size={'small'}
+                       color={DesignRule.mainColor}/>
     <Text style={styles.text}
-          allowFontScaling={false}>{errorMsg ? errorMsg : (isEnd ? '我也是有底线的' : (isFetching ? '加载中...' : '加载更多中...'))}</Text>
+          allowFontScaling={false}>{errorMsg ? errorMsg : (isEnd ? '我也是有底线的~' : (isFetching ? '加载中...' : '加载更多中...'))}</Text>
+
 </View>;
 
 @observer
@@ -318,7 +323,7 @@ class HomePage extends BasePage {
         } else if (type === homeType.user) {
             return <HomeUserView navigate={this.$navigate}/>;
         } else if (type === homeType.task) {
-            return <TaskVIew type={'home'} style={{marginTop: ScreenUtils.autoSizeWidth(10)}}/>;
+            return <TaskVIew type={'home'} style={{ marginTop: ScreenUtils.autoSizeWidth(10) }}/>;
         } else if (type === homeType.channel) {
             return <HomeChannelView navigate={this.$navigate}/>;
         } else if (type === homeType.expandBanner) {
@@ -448,6 +453,7 @@ const styles = StyleSheet.create({
         borderRadius: px2dp(5)
     },
     footer: {
+        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         height: 50

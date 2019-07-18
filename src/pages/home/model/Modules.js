@@ -1,6 +1,6 @@
-import { observable, action, flow } from 'mobx';
+import { action, flow, observable } from 'mobx';
 import HomeApi from '../api/HomeAPI';
-import { homeType, homeRoute, homeLinkType } from '../HomeTypes';
+import { homeLinkType, homeRoute, homeType } from '../HomeTypes';
 import { bannerModule } from './HomeBannerModel';
 import { homeFocusAdModel } from './HomeFocusAdModel';
 import { homeExpandBnnerModel } from './HomeExpandBnnerModel';
@@ -59,7 +59,7 @@ class HomeModule {
             id: data.id,
             code: data.linkTypeCode,
             keywords: data.name,
-            trackType:1
+            trackType: 1
         };
 
     };
@@ -110,7 +110,9 @@ class HomeModule {
 
     //加载为你推荐列表
     @action loadHomeList = flow(function* () {
-        this.isRefreshing = true;
+        if (!this.firstLoad) {
+            this.isRefreshing = true;
+        }
         setTimeout(() => {
             this.isRefreshing = false;
         }, 1000);
@@ -138,6 +140,8 @@ class HomeModule {
 
         this.page = 1;
         this.isEnd = false;
+        this.firstLoad = false;
+
         this.homeList = [{
             id: 0,
             type: homeType.category
@@ -219,7 +223,6 @@ class HomeModule {
             this.isFetching = false;
             this.isRefreshing = false;
             this.page++;
-            this.firstLoad = false;
             this.errorMsg = '';
         } catch (error) {
             this.isFetching = false;
