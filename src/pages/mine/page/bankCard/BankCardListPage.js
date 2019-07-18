@@ -27,17 +27,16 @@ import { observer } from 'mobx-react';
 import EmptyUtils from '../../../../utils/EmptyUtils';
 import SwipeListView from '../../../../components/ui/react-native-swipe-list-view/components/SwipeListView';
 import RouterMap from '../../../../navigation/RouterMap';
+import BankCardIconModel from './BankCardIconModel';
+import NoMoreClick from '../../../../components/ui/NoMoreClick';
+import bridge from '../../../../utils/bridge';
 
 const {
-    bankCard1,
-    bankCard2,
-    bankCard3,
-    bankCard4,
-    bankCard5,
-    bankcard_empty
+    bankcard_empty,
+    bankCardHide,
+    bankCardShow
 } = res.bankCard;
 
-const bankCardList = [bankCard1, bankCard2, bankCard3, bankCard4, bankCard5];
 @observer
 export default class BankCardListPage extends BasePage {
     constructor(props) {
@@ -55,7 +54,7 @@ export default class BankCardListPage extends BasePage {
 
     // 导航配置
     $navigationBarOptions = {
-        title: '提现银行卡管理',
+        title: '银行卡管理',
         show: true
     };
 
@@ -130,24 +129,38 @@ export default class BankCardListPage extends BasePage {
     };
 
     _renderValidItem = (rowData, rowId, rowMap) => {
+        const { bankName, type, cardNo } = rowData || {};
+        const { defaultBankIconBg, defaultBankIcon, bankCardIconBg_type, bankCardIcon_type } = BankCardIconModel;
+        const bankIcon = bankCardIcon_type[bankName] || defaultBankIcon;
+        const bankIconBg = bankCardIconBg_type[bankName] || defaultBankIconBg;
         return (
-            <View style={{ height: 110, flexDirection: 'row', marginTop: 10, width: ScreenUtils.width }}>
-                <TouchableWithoutFeedback onPress={() => this.callBack(this.state.viewData[rowId])}>
-                    <ImageBackground style={styles.bankCardView}
-                                     source={bankCardList[rowId]}
-                                     resizeMode={'stretch'}>
-                        <UIText value={rowData.bankName}
-                                style={{ fontSize: 18, color: 'white' }}/>
-                        <UIText value={rowData.cardType}
-                                style={{ fontSize: 13, color: 'white' }}/>
-                        <UIText value={StringUtils.formatBankCardNum(rowData.cardNo)} style={{
-                            fontSize: 18,
-                            color: 'white',
-                            marginTop: 15
+            <NoMoreClick onPress={() => this.callBack(this.state.viewData[rowId])} activeOpacity={1}>
+                <ImageBackground style={styles.bankCardView}
+                                 source={bankIconBg}
+                                 resizeMode={'stretch'}>
+                    <View style={styles.bankNameView}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Image source={bankIcon} style={{ width: 30, height: 30 }}/>
+                            <UIText value={bankName}
+                                    style={{ fontSize: 17, color: 'white', paddingLeft: 10, fontWeight: '600' }}/>
+                        </View>
+                        <NoMoreClick onPress={() => {
+                            rowData.isShow = !rowData.isShow;
+                            this.forceUpdate();
+                        }}>
+                            <Image source={rowData.isShow ? bankCardShow : bankCardHide}
+                                   style={{ width: 20, height: 20 }}/>
+                        </NoMoreClick>
+                    </View>
+                    <UIText value={type === 2 ? '信用卡' : '储蓄卡'}
+                            style={{ fontSize: 13, color: 'white', paddingLeft: 50 }}/>
+                    <View style={{ flex: 1, justifyContent: 'center' }}>
+                        <UIText value={rowData.isShow ? cardNo : StringUtils.formatBankCardNum(cardNo)} style={{
+                            fontSize: 24, color: 'white', paddingLeft: 50, fontWeight: '600'
                         }}/>
-                    </ImageBackground>
-                </TouchableWithoutFeedback>
-            </View>
+                    </View>
+                </ImageBackground>
+            </NoMoreClick>
         );
     };
 
@@ -168,15 +181,7 @@ export default class BankCardListPage extends BasePage {
                             rowMap[`${secId}${rowId}`].closeRow();
                             this.deleteBankCard(data);
                         }}>
-                        <View style={{
-                            backgroundColor: DesignRule.mainColor,
-                            width: 60,
-                            height: 109,
-                            marginTop: 10,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            borderRadius: 10
-                        }}>
+                        <View style={styles.deleteStyle}>
                             <UIText style={{ color: DesignRule.white, fontSize: DesignRule.fontSize_mediumBtnText }}
                                     value='删除'/>
                         </View>
@@ -260,6 +265,10 @@ export default class BankCardListPage extends BasePage {
     };
     callBack = (item) => {
         if (this.params.callBack) {
+            if (item.type === 2) {
+                bridge.$toast('信用卡不可提现！');
+                return;
+            }
             this.params.callBack(item);
             this.$navigateBack();
         }
@@ -269,46 +278,30 @@ export default class BankCardListPage extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1, backgroundColor: DesignRule.bgColor, marginTop: -1
-    }, bankCardView: {
-        height: 110,
+    },
+    bankCardView: {
+        height: 100,
         width: ScreenUtils.width - 30,
         borderRadius: 10,
-        marginLeft: 15,
-        marginRight: 15,
-        paddingTop: 17,
-        paddingLeft: 68
-    }, backTextWhite: {
-        color: 'white',
-        marginRight: 20,
-        borderRadius: 10,
-        width: 60
-    }, standaloneRowFront: {
-        alignItems: 'center',
-        backgroundColor: 'white',
-        justifyContent: 'center',
-        height: 130,
-        width: ScreenUtils.width,
-        flexDirection: 'row',
-        marginRight: 16
-    }, standaloneRowBack: {
+        marginHorizontal: 15,
+        marginTop: 5
+    },
+    standaloneRowBack: {
         alignItems: 'center',
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'flex-end',
         marginLeft: 15,
         marginRight: 15
-    }, deleteStyle: {
-        width: 60,
-        height: 110,
-        borderRadius: 10,
+    },
+    deleteStyle: {
         backgroundColor: DesignRule.mainColor,
+        width: 60,
+        height: 100,
         justifyContent: 'center',
-        alignItems: 'center'
-    }, addBankCardView: {
-
-        marginBottom: 40,
-        justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        borderRadius: 10,
+        marginTop: 5
     },
     rightStyle: {
         color: DesignRule.textColor_secondTitle,
@@ -320,6 +313,10 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginTop: 15,
         marginBottom: 30
+    },
+    bankNameView: {
+        flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
+        marginTop: 10, marginHorizontal: 10
     }
 });
 

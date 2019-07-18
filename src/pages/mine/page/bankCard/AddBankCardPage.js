@@ -16,6 +16,7 @@ import Toast from '../../../../utils/bridge';
 import user from '../../../../model/user';
 import DesignRule from '../../../../constants/DesignRule';
 import { observer } from 'mobx-react';
+import StringUtils from '../../../../utils/StringUtils';
 
 let lastcommit = null;
 
@@ -162,7 +163,8 @@ class AddBankCardPage extends BasePage {
                     backgroundColor: 'white'
                 }}>
                     <Text style={styles.accountStyle}>{'卡类型'}</Text>
-                    <Text style={styles.accountStyle2}>{`${this.state.bankName}  ${this.state.cardType}`}</Text>
+                    <Text
+                        style={styles.accountStyle2}>{`${this.state.bankName}  ${StringUtils.isNoEmpty(this.state.type) ? (this.state.type === 2 ? '信用卡' : '储蓄卡') : ''}`}</Text>
 
                 </View>
                 <UIButton
