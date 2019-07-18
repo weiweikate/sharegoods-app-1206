@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    ActivityIndicator,
     BackHandler,
     DeviceEventEmitter,
     InteractionManager,
@@ -7,7 +8,7 @@ import {
     NativeModules,
     RefreshControl,
     StyleSheet,
-    View, ActivityIndicator
+    View
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import { observer } from 'mobx-react';
@@ -358,6 +359,7 @@ class HomePage extends BasePage {
     }
 
     _onRefresh() {
+        homeModule.isRefreshing = true;
         homeModule.loadHomeList(true);
         taskModel.getData();
         this.luckyIcon && this.luckyIcon.getLucky(1, '');
