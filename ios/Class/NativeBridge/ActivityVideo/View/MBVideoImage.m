@@ -8,11 +8,12 @@
 
 #import "MBVideoImage.h"
 #import "UIView+SDAutoLayout.h"
+#import "NSString+UrlAddParams.h"
 
 @interface MBVideoImage()
-@property (nonatomic,strong) UIImageView * downloadBtn;
-@property (nonatomic,strong) UIImageView * collectionBtn;
-@property (nonatomic,strong) UIImageView * zanBtn;
+@property (nonatomic,strong) UIButton * downloadBtn;
+@property (nonatomic,strong) UIButton * collectionBtn;
+@property (nonatomic,strong) UIButton * zanBtn;
 @property (nonatomic,strong) UILabel * downLoadNum;
 @property (nonatomic,strong) UILabel * collectionNum;
 @property (nonatomic,strong) UILabel * zanNum;
@@ -25,9 +26,9 @@
 @property (nonatomic,strong)UILabel  * openOrclose;
 @property (nonatomic,strong)UIView  * buyBtn;
 
-@property (nonatomic,strong)UILabel  * tag1;
-@property (nonatomic,strong)UILabel  * tag2;
-@property (nonatomic,strong)UILabel  * tag3;
+@property (nonatomic,strong)UIButton  * tag1;
+@property (nonatomic,strong)UIButton  * tag2;
+@property (nonatomic,strong)UIButton  * tag3;
 
 @end
 
@@ -43,6 +44,7 @@
 - (instancetype)initWithFrame:(CGRect)frame {
   self = [super initWithFrame:frame];
   if (self) {
+    self.backgroundColor = [UIColor blackColor];
     [self setUI];
     [self addEven];
   }
@@ -154,54 +156,26 @@
 }
 
 -(void)setTagView{
-  UIView *tag1View = [[UIView alloc]init];
-  tag1View.layer.backgroundColor = [UIColor colorWithRed:255/255.0 green:0/255.0 blue:80/255.0 alpha:1.0].CGColor;
-  tag1View.layer.cornerRadius = 12;
-  [tag1View addSubview:self.tag1];
-  
-  UIView *tag2View = [[UIView alloc]init];
-  tag2View.layer.backgroundColor = [UIColor colorWithRed:255/255.0 green:0/255.0 blue:80/255.0 alpha:1.0].CGColor;
-  tag2View.layer.cornerRadius = 12;
-  [tag2View addSubview:self.tag2];
-  
-  UIView *tag3View = [[UIView alloc]init];
-  tag3View.layer.backgroundColor = [UIColor colorWithRed:255/255.0 green:0/255.0 blue:80/255.0 alpha:1.0].CGColor;
-  tag3View.layer.cornerRadius = 12;
-  [tag3View addSubview:self.tag3];
-  
   //标签
-  [self sd_addSubviews:@[tag1View,tag2View,tag3View]];
+  [self sd_addSubviews:@[self.tag1,self.tag2,self.tag3]];
+  self.tag1.sd_layout.bottomSpaceToView(self, 66).leftSpaceToView(self, 15);
+  [self.tag1 setupAutoSizeWithHorizontalPadding:8 buttonHeight:24];
   
-  tag1View.sd_layout.bottomSpaceToView(self, 66).leftSpaceToView(self, 15)
-  .heightIs(24);
-  self.tag1.sd_layout.centerXEqualToView(tag1View).centerYEqualToView(tag1View)
-  .heightIs(24);
-  [self.tag1 setSingleLineAutoResizeWithMaxWidth:(KScreenWidth-45)/3];
-  
-  tag2View.sd_layout.bottomSpaceToView(self, 66).leftSpaceToView(tag1View, 15)
-  .heightIs(24);
-  self.tag2.sd_layout.centerXEqualToView(tag2View).centerYEqualToView(tag2View)
-  .heightIs(24);
-  [self.tag2 setSingleLineAutoResizeWithMaxWidth:(KScreenWidth-45)/3];
-  
-  tag3View.sd_layout.bottomSpaceToView(self, 66).leftSpaceToView(tag2View, 15)
-  .heightIs(24);
-  self.tag3.sd_layout.centerXEqualToView(tag3View).centerYEqualToView(tag3View)
-  .heightIs(24);
-  [self.tag3 setSingleLineAutoResizeWithMaxWidth:(KScreenWidth-45)/3];
+  self.tag2.sd_layout.bottomSpaceToView(self, 66).leftSpaceToView(self.tag1, 15);
+  [self.tag2 setupAutoSizeWithHorizontalPadding:8 buttonHeight:24];
+
+  self.tag3.sd_layout.bottomSpaceToView(self, 66).leftSpaceToView(self.tag2, 15);
+  [self.tag3 setupAutoSizeWithHorizontalPadding:8 buttonHeight:24];
+
 }
 
 #pragma mark - Custom Accessors
 
--(UIImageView*)downloadBtn{
+-(UIButton*)downloadBtn{
   if (!_downloadBtn) {
-    _downloadBtn = [[UIImageView alloc] init];
-    _downloadBtn.userInteractionEnabled = YES;//打开用户交互
-    UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickDownLoad)];
-    [_downloadBtn addGestureRecognizer:tapGesture];
-    _downloadBtn.layer.masksToBounds = YES;
-    _downloadBtn.image = [UIImage imageNamed:@"hot"];
-    
+    _downloadBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_downloadBtn addTarget:self action:@selector(clickDownLoad:) forControlEvents:UIControlEventTouchUpInside];
+    [_downloadBtn setBackgroundImage:[UIImage imageNamed:@"videoDownload"] forState:UIControlStateNormal];
   }
   return _downloadBtn;
 }
@@ -211,20 +185,20 @@
     _downLoadNum = [[UILabel alloc]init];
     _downLoadNum.font = [UIFont systemFontOfSize:13];
     _downLoadNum.textColor =[UIColor whiteColor];
-    _downLoadNum.text = @"14万";
+    _downLoadNum.textAlignment = NSTextAlignmentCenter;
   }
   return _downLoadNum;
 }
 
--(UIImageView*)collectionBtn{
+-(UIButton*)collectionBtn{
   if (!_collectionBtn) {
-    _collectionBtn = [[UIImageView alloc] init];
-    _collectionBtn.userInteractionEnabled = YES;//打开用户交互
-    UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clicCollection)];
-    [_collectionBtn addGestureRecognizer:tapGesture];
-    _collectionBtn.layer.masksToBounds = YES;
-    _collectionBtn.image = [UIImage imageNamed:@"hot"];
-  }
+    _collectionBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_collectionBtn addTarget:self action:@selector(clicCollection:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [_collectionBtn setBackgroundImage:[UIImage imageNamed:@"videoCollectNo"] forState:UIControlStateNormal];
+    [_collectionBtn setBackgroundImage:[UIImage imageNamed:@"videoCollect"] forState:UIControlStateSelected];
+    
+    }
   return _collectionBtn;
 }
 
@@ -233,20 +207,19 @@
     _collectionNum = [[UILabel alloc]init];
     _collectionNum.font = [UIFont systemFontOfSize:13];
     _collectionNum.textColor =[UIColor whiteColor];
-    _collectionNum.text = @"14万";
-    
+    _collectionNum.textAlignment = NSTextAlignmentCenter;
+
   }
   return _collectionNum;
 }
 
--(UIImageView*)zanBtn{
+-(UIButton*)zanBtn{
   if (!_zanBtn) {
-    _zanBtn = [[UIImageView alloc] init];
-    _zanBtn.userInteractionEnabled = YES;//打开用户交互
-    UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickZan)];
-    [_zanBtn addGestureRecognizer:tapGesture];
-    _zanBtn.layer.masksToBounds = YES;
-    _zanBtn.image = [UIImage imageNamed:@"hot"];
+    _zanBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_zanBtn addTarget:self action:@selector(clickZan:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [_zanBtn setBackgroundImage:[UIImage imageNamed:@"videoZanNo"] forState:UIControlStateNormal];
+    [_zanBtn setBackgroundImage:[UIImage imageNamed:@"videoZan"] forState:UIControlStateSelected];
   }
   return _zanBtn;
 }
@@ -256,8 +229,8 @@
     _zanNum = [[UILabel alloc]init];
     _zanNum.font = [UIFont systemFontOfSize:13];
     _zanNum.textColor =[UIColor whiteColor];
-    _zanNum.text = @"14万";
-    
+    _zanNum.textAlignment = NSTextAlignmentCenter;
+
   }
   return _zanNum;
 }
@@ -282,7 +255,7 @@
     _contentLab = [[UILabel alloc]init];
     _contentLab.font = [UIFont systemFontOfSize:13];
     _contentLab.textColor = [UIColor whiteColor];
-    _contentLab.text = @"然而，今晚我见到了星星。我倚扶着阳台栏杆，心血来潮地抬了一下头，见到三两个星星在头顶闪耀。 我以为偌大的一块墨玉的池子里只有这三两个星星。但是几秒钟后，又多出了几个。 我努力把眼睛睁到最大，终于见到弱弱闪着的星星。我倚。然而，今晚我见到了星星。我倚扶着阳台栏杆，心血来潮地抬了一下头，见到三两个星星在头顶闪耀。 我以为偌大的一块墨玉的池子里只有这三两个星星。但是几秒钟后，又多出了几个。 我努力把眼睛睁到最大，终于见到弱弱闪着的星星。我倚。";
+    _contentLab.text = @"";
     _contentLab.hidden = NO;
   }
   return _contentLab;
@@ -294,7 +267,7 @@
     _contentTextView.backgroundColor = [UIColor clearColor];
     _contentTextView.font = [UIFont systemFontOfSize:13];
     _contentTextView.textColor = [UIColor whiteColor];
-    _contentTextView.text = @"然而，今晚我见到了星星。我倚扶着阳台栏杆，心血来潮地抬了一下头，见到三两个星星在头顶闪耀。 我以为偌大的一块墨玉的池子里只有这三两个星星。但是几秒钟后，又多出了几个。 我努力把眼睛睁到最大，终于见到弱弱闪着的星星。我倚。然而，今晚我见到了星星。我倚扶着阳台栏杆，心血来潮地抬了一下头，见到三两个星星在头顶闪耀。 我以为偌大的一块墨玉的池子里只有这三两个星星。但是几秒钟后，又多出了几个。 我努力把眼睛睁到最大，终于见到弱弱闪着的星星。我倚。";
+    _contentTextView.text = @"";
     [_contentTextView setEditable:NO];
     _contentTextView.hidden = YES;
   }
@@ -316,29 +289,41 @@
   return _openOrclose;
 }
 
--(UILabel *)tag1{
+-(UIButton *)tag1{
   if(!_tag1){
-    _tag1 = [[UILabel alloc]init];
-    _tag1.textColor = [UIColor whiteColor];
-    _tag1.font = [UIFont systemFontOfSize:12];
+    _tag1 = [[UIButton alloc]init];
+    _tag1.backgroundColor = [UIColor colorWithHexString:@"#FF0050"];
+    _tag1.titleLabel.font = [UIFont systemFontOfSize:12];
+    [_tag1 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    _tag1.layer.cornerRadius = 12;
+    _tag1.layer.masksToBounds = YES;
+    [_tag1 setTitle:@"关注22222" forState:UIControlStateNormal];
   }
   return _tag1;
 }
 
--(UILabel *)tag2{
+-(UIButton *)tag2{
   if(!_tag2){
-    _tag2 = [[UILabel alloc]init];
-    _tag2.textColor = [UIColor whiteColor];
-    _tag2.font = [UIFont systemFontOfSize:12];
+    _tag2 = [[UIButton alloc]init];
+    _tag2.backgroundColor = [UIColor colorWithHexString:@"#FF0050"];
+    _tag2.titleLabel.font = [UIFont systemFontOfSize:12];
+    [_tag2 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    _tag2.layer.cornerRadius = 12;
+    _tag2.layer.masksToBounds = YES;
+    [_tag2 setTitle:@"关注2322" forState:UIControlStateNormal];
   }
   return _tag2;
 }
 
--(UILabel *)tag3{
+-(UIButton *)tag3{
   if(!_tag3){
-    _tag3 = [[UILabel alloc]init];
-    _tag3.textColor = [UIColor whiteColor];
-    _tag3.font = [UIFont systemFontOfSize:12];
+    _tag3 = [[UIButton alloc]init];
+    _tag3.backgroundColor = [UIColor colorWithHexString:@"#FF0050"];
+    _tag3.titleLabel.font = [UIFont systemFontOfSize:12];
+    [_tag3 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    _tag3.layer.cornerRadius = 12;
+    _tag3.layer.masksToBounds = YES;
+    [_tag3 setTitle:@"关注" forState:UIControlStateNormal];
   }
   return _tag3;
 }
@@ -348,7 +333,7 @@
   if(!_buyBtn){
     _buyBtn = [[UIView alloc]init];
     _buyBtn.layer.cornerRadius = 17;
-    _buyBtn.backgroundColor = [UIColor colorWithRed:255/255.0 green:203/255.0 blue:2/255.0 alpha:1.0];
+    _buyBtn.backgroundColor = [UIColor colorWithHexString:@"FF9502"];
     _buyBtn.userInteractionEnabled = YES;//打开用户交互
     UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickBuy)];
     [_buyBtn addGestureRecognizer:tapGesture];
@@ -377,19 +362,21 @@
   }
 }
 
--(void)clickDownLoad{
+-(void)clickDownLoad:(UIButton*)sender{
   if(self.dataDelegate){
     [self.dataDelegate clickDownload];
   }
 }
 
--(void)clicCollection{
+-(void)clicCollection:(UIButton*)sender{
+  sender.selected = !sender.selected;
   if(self.dataDelegate){
     [self.dataDelegate clicCollection];
   }
 }
 
--(void)clickZan{
+-(void)clickZan:(UIButton*)sender{
+  sender.selected = !sender.selected;
   if(self.dataDelegate){
     [self.dataDelegate clickZan];
   }
@@ -400,5 +387,19 @@
     [self.dataDelegate clickBuy];
   }
 }
+
+#pragma arguments - setModel
+
+-(void)setModel:(MBModelData *)model{
+  _model = model;
+  self.downLoadNum.text = [NSString stringWithNumber:model.downloadCount];
+  self.collectionNum.text = [NSString stringWithNumber:model.collectCount];
+  self.collectionBtn.selected = model.collect;
+  self.zanNum.text = [NSString stringWithNumber:model.likesCount];
+  self.zanBtn.selected = model.like;
+  self.contentLab.text = model.content?model.content:@"";
+  self.contentTextView.text = model.content?model.content:@"";
+}
+
 
 @end

@@ -95,7 +95,7 @@
     self.playerItem = [AVPlayerItem playerItemWithURL:url];
     self.player = [AVPlayer playerWithPlayerItem:self.playerItem];
     [self.playerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:nil];
-    
+    self.playerLayer.videoGravity =AVLayerVideoGravityResizeAspectFill;
     self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
     self.playerLayer.frame = CGRectMake(0, 0, KScreenWidth, KScreenHeight);
     

@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "MBVideoModel.h"
 NS_ASSUME_NONNULL_BEGIN
 
 @class MBVideoHeaderView;
@@ -22,10 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface MBVideoHeaderView : UIView
 @property (nonatomic, weak) id<MBHeaderViewDelegate> dataDelegate;
-@property(nonatomic,strong)NSDictionary* UserInfoModel;
-@property(nonatomic,copy)NSString* time;
-@property(nonatomic,assign)BOOL type;
-
+@property(nonatomic,strong)MBModelData* model;
 
 @end
 

@@ -17,7 +17,7 @@
 @property (nonatomic,strong) UIImageView * headImg;
 @property (nonatomic,strong) UILabel * nameLab;
 @property (nonatomic,strong) UIButton * guanBtn;
-@property (nonatomic,strong) UILabel * timeLab;
+@property (nonatomic,strong) UILabel * hotLab;
 @property (nonatomic,strong) UIImageView * shareImg;
 @property (nonatomic,strong) UIView * hgImg;
 
@@ -28,7 +28,7 @@
   if (!_goBackImg) {
     _goBackImg = [[UIImageView alloc] init];
     _goBackImg.userInteractionEnabled = YES;//打开用户交互
-    _goBackImg.image = [UIImage imageNamed:@"logo"];
+    _goBackImg.image = [UIImage imageNamed:@"videoGoback"];
     UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goBack)];
     [_goBackImg addGestureRecognizer:tapGesture];
     _goBackImg.layer.masksToBounds = YES;
@@ -41,7 +41,6 @@
   if (!_headImg) {
     _headImg = [[UIImageView alloc] init];
     _headImg.userInteractionEnabled = YES;//打开用户交互
-    _headImg.image = [UIImage imageNamed:@"logo"];
     UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickHeaderImg)];
     [_headImg addGestureRecognizer:tapGesture];
     _headImg.layer.masksToBounds = YES;
@@ -68,7 +67,7 @@
 -(UIImageView*)shareImg{
   if (!_shareImg) {
     _shareImg = [[UIImageView alloc] init];
-    _shareImg.image = [UIImage imageNamed:@"hot"];
+    _shareImg.image = [UIImage imageNamed:@"videoShare"];
     _shareImg.userInteractionEnabled = YES;//打开用户交互
     UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickShareImg)];
     [_shareImg addGestureRecognizer:tapGesture];
@@ -88,14 +87,14 @@
   return _nameLab;
 }
 
--(UILabel*)timeLab{
-  if(!_timeLab){
-    _timeLab = [[UILabel alloc]init];
-    _timeLab.font = [UIFont systemFontOfSize:11];
-    _timeLab.textColor =[UIColor whiteColor];
-    _timeLab.text = @"msmmsmmsmmsmms";
+-(UILabel*)hotLab{
+  if(!_hotLab){
+    _hotLab = [[UILabel alloc]init];
+    _hotLab.font = [UIFont systemFontOfSize:11];
+    _hotLab.textColor =[UIColor whiteColor];
+    _hotLab.text = @"";
   }
-  return _timeLab;
+  return _hotLab;
 }
 
 -(UIButton*)guanBtn{
@@ -103,13 +102,12 @@
     _guanBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _guanBtn.titleLabel.font = [UIFont systemFontOfSize:13];
     [_guanBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    _guanBtn.layer.cornerRadius = 14;
     _guanBtn.backgroundColor = [UIColor colorWithHexString:@"#FF9502"];
     _guanBtn.layer.masksToBounds = YES;
   }
   return _guanBtn;
 }
-
-
 
 -(instancetype)initWithFrame:(CGRect)frame{
   self = [super initWithFrame:frame];
@@ -121,7 +119,7 @@
 }
 
 -(void)setUI{
-  UIImageView *hotImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"hot"]];
+  UIImageView *hotImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"videoHot"]];
   
   [self addSubview:self.hgImg];
   [self addSubview:self.goBackImg];
@@ -129,7 +127,7 @@
   [self addSubview:self.nameLab];
   [self addSubview:self.guanBtn];
   [self addSubview:self.shareImg];
-  [self addSubview:self.timeLab];
+  [self addSubview:self.hotLab];
   [self addSubview:hotImage];
   //背景
   self.hgImg.sd_layout.leftEqualToView(self)
@@ -158,20 +156,20 @@
   .topSpaceToView(self.nameLab, 2)
   .heightIs(15).widthIs(15);
   
-  self.timeLab.sd_layout.leftSpaceToView(hotImage, 2)
+  self.hotLab.sd_layout.leftSpaceToView(hotImage, 2)
   .centerYEqualToView(hotImage)
   .heightIs(15);
-  [_timeLab setSingleLineAutoResizeWithMaxWidth:100];
+  [self.hotLab setSingleLineAutoResizeWithMaxWidth:150];
   
   //关注
-    [_guanBtn setTitle:@"+关注" forState:UIControlStateNormal];
+    [_guanBtn setTitle:@"关注" forState:UIControlStateNormal];
     [_guanBtn setTitle:@"已关注" forState:UIControlStateSelected];
     [_guanBtn addTarget:self action:@selector(tapGuanzhuBtn:) forControlEvents:UIControlEventTouchUpInside];
   
     self.guanBtn.sd_layout.centerYEqualToView(self.headImg)
     .rightSpaceToView(self, 50)
-    .heightIs(20)
-    .widthIs(50);
+    .heightIs(28)
+    .widthIs(65);
   
   self.shareImg.sd_layout.centerYEqualToView(self.headImg)
   .rightSpaceToView(self, 18)
@@ -206,21 +204,17 @@
   }
 }
 
--(void)setType:(BOOL)type{
-  _type = type;
-  if(type){
-    self.nameLab.sd_layout.topEqualToView(self.headImg);
-    self.timeLab.sd_layout.heightIs(15);
-  }else{
-    self.nameLab.sd_layout.topSpaceToView(self, 7.5);
-    self.timeLab.sd_layout.heightIs(0);
+-(void)setModel:(MBModelData *)model{
+  _model = model;
+  if(model.userInfoVO){
+    self.nameLab.text = model.userInfoVO.userName?model.userInfoVO.userName:@"";
+    
+    [self.headImg sd_setImageWithURL:[NSURL URLWithString:[model.userInfoVO.userImg getUrlAndWidth:30 height:30]] placeholderImage:[UIImage imageNamed:@"default_avatar"]];
+  }
+  
+  if(model.hotCount){
+    self.hotLab.text = [NSString stringWithFormat:@"%ld人气值",model.hotCount];
   }
 }
-
--(void)setTime:(NSString *)time{
-  _time = time;
-  self.timeLab.text = self.time;
-}
-
 
 @end

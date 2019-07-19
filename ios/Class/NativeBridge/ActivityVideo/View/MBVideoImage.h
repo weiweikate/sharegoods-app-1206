@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "MBProtocol.h"
+#import "MBVideoModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 @class MBVideoImage;
@@ -19,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface MBVideoImage : UIImageView
 @property (nonatomic, weak) id<MBProtocol> dataDelegate;
 @property (nonatomic, weak) id<MBVideoImageDelegate> Delegate;
+@property(nonatomic,strong)MBModelData* model;
 
 @end
 

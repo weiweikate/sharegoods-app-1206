@@ -33,18 +33,19 @@
 @property (nonatomic,copy) NSString * title;
 @property (nonatomic,copy) NSString * content;
 @property (nonatomic,assign) NSInteger downloadCount; //下载数
+@property (nonatomic,assign) NSInteger collectCount; //收藏数
 @property (nonatomic,assign) NSInteger likesCount; //点赞数
-@property (nonatomic,assign) NSInteger shareCount;
+@property (nonatomic,assign) NSInteger clickCount; //浏览量
 @property (nonatomic,assign) NSInteger hotCount; //人气值
 @property (nonatomic,assign) NSInteger createSource; //文章创建来源{1:运营文章/素材，2:用户文章，3:商家素材
+@property (nonatomic,assign) NSInteger shareCount;
 @property (nonatomic,copy) NSString * showNo; //文章id
 @property (nonatomic,strong)NSArray<MBGoodsDataModel*> * products;
 @property (nonatomic,strong)NSArray<MBSourcesModel*> * resource;
 @property (nonatomic,strong)NSArray<MBShowTags*> * showTags;
 @property (nonatomic,strong)MBUserInfoModel * userInfoVO;
-@property (nonatomic,assign) NSInteger clickCount; //浏览量
 @property (nonatomic,assign) NSInteger showType;
-
+@property (nonatomic,assign) NSInteger attentionStatus;//0 未关注 1 关注 2 相互关注
 @property (nonatomic,copy) NSString * publishTimeStr;
 @property (nonatomic,copy) NSString * nowTime;
 @property (nonatomic,copy) NSString * remark;

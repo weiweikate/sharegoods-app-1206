@@ -19,6 +19,7 @@
 -(void)clicCollection;
 -(void)clickZan;
 -(void)clickBuy;
+-(void)getCurrentDataIndex:(NSInteger)index;
 @end
 
 @interface MBScrollView : UIScrollView

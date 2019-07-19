@@ -20,12 +20,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSDictionary* params;
 @property (nonatomic, assign) NSInteger headerHeight;
 
-- (void)setModels:(NSArray *)models index:(NSInteger)index;
-
-- (void)pause;
-- (void)resume;
-- (void)destoryPlayer;
-
 @end
 
 NS_ASSUME_NONNULL_END

@@ -12,6 +12,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NSString (UrlAddParams)
 
+/*
+ * 对数字格式处理显示1K+ ,2W+, 10W+
+ */
++(NSString *)stringWithNumber:(NSInteger)count;
+
 +(NSString*)convertNSDictionaryToJsonString:(NSDictionary *)json;
 
 -(NSString*)getUrlAndWidth:(CGFloat)width height:(CGFloat)height;

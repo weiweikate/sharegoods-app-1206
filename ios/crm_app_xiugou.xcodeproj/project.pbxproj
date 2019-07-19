@@ -29,7 +29,7 @@
 		0153BAB122A1078A00BFD8AC /* ShowShareImgMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0153BAB022A1078A00BFD8AC /* ShowShareImgMaker.m */; };
 		0153BAB422A110AF00BFD8AC /* ShareImageMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0153BAB222A110AF00BFD8AC /* ShareImageMaker.m */; };
 		017007B022DEFFD600B1C34A /* MBVideoImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 017007AF22DEFFD600B1C34A /* MBVideoImage.m */; };
-		0170081822E0404800B1C34A /* MBVideoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 013A893F22DDCBD1005001A3 /* MBVideoModel.m */; };
+		017008E422E0795A00B1C34A /* MBVideoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 013A893F22DDCBD1005001A3 /* MBVideoModel.m */; };
 		01739A9122BCC3EB00661677 /* JXModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0131F1B3228E57D200A2026D /* JXModel.m */; };
 		01739CD322BF283D00661677 /* ShowQueryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EAFA6221BFE89007AAEE0 /* ShowQueryModel.m */; };
 		017AC92F22DDEE9B00DB6E57 /* MBVideoHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 017AC92E22DDEE9B00DB6E57 /* MBVideoHeaderView.m */; };
@@ -3942,7 +3942,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0170081822E0404800B1C34A /* MBVideoModel.m in Sources */,
+				017008E422E0795A00B1C34A /* MBVideoModel.m in Sources */,
 				01DC348F22DC2CAA0025CF08 /* NSString+UrlAddParams.m in Sources */,
 				01739CD322BF283D00661677 /* ShowQueryModel.m in Sources */,
 				01739A9122BCC3EB00661677 /* JXModel.m in Sources */,
