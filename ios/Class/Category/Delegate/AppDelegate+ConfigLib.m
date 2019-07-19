@@ -19,6 +19,7 @@
 #import <QYSDK.h>
 #import <UMShare/UMShare.h>
 #import <UMCommon/UMCommon.h>
+#import <UMAnalytics/MobClick.h>
 #import "IQKeyboardManager.h"
 #import <React/RCTLinkingManager.h>
 #import "SensorsAnalyticsSDK.h"
@@ -77,6 +78,10 @@
 
 -(void)configUM{
   [UMConfigure initWithAppkey:KUmSocialAppkey channel:nil];
+  #if DEBUG
+  [MobClick setCrashReportEnabled:NO];
+  #endif
+
   [[UMSocialManager defaultManager] openLog:YES];
   /* 设置微信的appKey和appSecret */
   [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_WechatSession
