@@ -10,8 +10,7 @@ import java.util.Map;
 
 import static com.meeruu.commonlib.utils.ParameterUtils.NETWORK_ELSE_CACHED;
 
-public class ShowgroundModel implements IShowgroundModel {
-
+public class CollectionModel  implements IShowgroundModel {
     private final String GET = "GET";
     private final String POST = "POST";
     private String uri = "";
@@ -43,13 +42,20 @@ public class ShowgroundModel implements IShowgroundModel {
         this.rnParams = map;
     }
 
+    @Override
+    public void unCollection(String showNo, BaseCallback callback) {
+        UnCollectionConfig deleteRequestConfig = new UnCollectionConfig();
+        deleteRequestConfig.setParams(showNo);
+        RequestManager.getInstance().doPost(deleteRequestConfig,callback);
+    }
+
     private static class ShowgroundRequestConfig implements BaseRequestConfig {
 
         private HashMap map;
 
         @Override
         public String getUrl() {
-            return HttpUrlUtils.getUrl(HttpUrlUtils.URL_SHOWLIST);
+            return HttpUrlUtils.getUrl(HttpUrlUtils.URL_COLLECTION_LIST);
         }
 
         public void setParams(HashMap params) {
@@ -62,13 +68,30 @@ public class ShowgroundModel implements IShowgroundModel {
         }
     }
 
-    @Override
-    public void deleteDynamic(String showNo, BaseCallback callback) {
+    private static class UnCollectionConfig implements BaseRequestConfig {
 
+        private String showNo;
+
+        @Override
+        public String getUrl() {
+            return HttpUrlUtils.getUrl(HttpUrlUtils.REDUCE_COUNT_BY_TYPE);
+        }
+
+        public void setParams(String params) {
+            showNo = params;
+        }
+
+        @Override
+        public Map getParams() {
+            HashMap map = new HashMap();
+            map.put("showNo",showNo);
+            map.put("type",2);
+            return map;
+        }
     }
 
     @Override
-    public void unCollection(String showNo, BaseCallback callback) {
+    public void deleteDynamic(String showNo, BaseCallback callback) {
 
     }
 }

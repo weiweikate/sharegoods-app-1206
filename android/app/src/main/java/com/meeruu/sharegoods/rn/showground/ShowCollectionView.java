@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -27,7 +26,6 @@ import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
-import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.adapter.ShowDynamicAdapter;
@@ -38,45 +36,38 @@ import com.meeruu.sharegoods.rn.showground.event.onScrollStateChangedEvent;
 import com.meeruu.sharegoods.rn.showground.event.onScrollYEvent;
 import com.meeruu.sharegoods.rn.showground.event.onStartRefreshEvent;
 import com.meeruu.sharegoods.rn.showground.event.onStartScrollEvent;
+import com.meeruu.sharegoods.rn.showground.presenter.CollectionPresenter;
 import com.meeruu.sharegoods.rn.showground.presenter.DynamicPresenter;
 import com.meeruu.sharegoods.rn.showground.view.IShowgroundView;
 import com.meeruu.sharegoods.rn.showground.widgets.CustomLoadMoreView;
-import com.meeruu.sharegoods.rn.showground.widgets.gridview.ImageInfo;
 import com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView;
+import com.meeruu.sharegoods.rn.showground.widgets.gridview.ImageInfo;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ShowDynamicView implements IShowgroundView, SwipeRefreshLayout.OnRefreshListener {
-    private int page = 1;
+public class ShowCollectionView  implements IShowgroundView, SwipeRefreshLayout.OnRefreshListener {
+    private EventDispatcher eventDispatcher;
+    private Handler handler;
+    private WeakReference<View> showgroundView;
+    private View errView;
+    private View errImg;
     private SwipeRefreshLayout swipeRefreshLayout;
     private RnRecyclerView recyclerView;
-    private StaggeredGridLayoutManager layoutManager;
     private ShowDynamicAdapter adapter;
-    private DynamicPresenter presenter;
-    private EventDispatcher eventDispatcher;
-    private onItemPressEvent itemPressEvent;
-    private com.meeruu.sharegoods.rn.showground.event.onScrollYEvent onScrollYEvent;
-    private onStartRefreshEvent startRefreshEvent;
-    private onStartScrollEvent startScrollEvent;
-    private onEndScrollEvent endScrollEvent;
-    private View errView;
-    private WeakReference<View> showgroundView;
-    private Handler handler;
-    private View errImg;
-    private boolean sIsScrolling;
-    private boolean deleteIng = false;
-    private int deleteIndex = -1;
+    private StaggeredGridLayoutManager layoutManager;
+    private int page = 1;
+    private CollectionPresenter presenter;
 
-    public ViewGroup getShowDynamicView(ReactContext reactContext) {
+    public ViewGroup getShowCollectionView(ReactContext reactContext){
         eventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
         LayoutInflater inflater = LayoutInflater.from(reactContext);
         View view = inflater.inflate(R.layout.view_showground, null);
         initView(reactContext, view);
         initData();
+
         return (ViewGroup) view;
     }
 
@@ -112,11 +103,11 @@ public class ShowDynamicView implements IShowgroundView, SwipeRefreshLayout.OnRe
                 onRefresh();
             }
         }, 200);
-        itemPressEvent = new onItemPressEvent();
-        startRefreshEvent = new onStartRefreshEvent();
-        startScrollEvent = new onStartScrollEvent();
-        onScrollYEvent = new onScrollYEvent();
-        endScrollEvent = new onEndScrollEvent();
+//        itemPressEvent = new onItemPressEvent();
+//        startRefreshEvent = new onStartRefreshEvent();
+//        startScrollEvent = new onStartScrollEvent();
+//        onScrollYEvent = new onScrollYEvent();
+//        endScrollEvent = new onEndScrollEvent();
         setRecyclerViewItemEvent(view);
         adapter = new ShowDynamicAdapter();
         adapter.setPreLoadNumber(3);
@@ -148,10 +139,10 @@ public class ShowDynamicView implements IShowgroundView, SwipeRefreshLayout.OnRe
                     map.put("index", position);
                     WritableMap realData = Arguments.makeNativeMap(map);
                     if (eventDispatcher != null) {
-                        itemPressEvent = new onItemPressEvent();
-                        itemPressEvent.init(view.getId());
-                        itemPressEvent.setData(realData);
-                        eventDispatcher.dispatchEvent(itemPressEvent);
+//                        itemPressEvent = new onItemPressEvent();
+//                        itemPressEvent.init(view.getId());
+//                        itemPressEvent.setData(realData);
+//                        eventDispatcher.dispatchEvent(itemPressEvent);
                     }
                 }
             }
@@ -171,12 +162,12 @@ public class ShowDynamicView implements IShowgroundView, SwipeRefreshLayout.OnRe
                     }
                     int itemHeight = firstView.getHeight();
                     int flag = (position) * itemHeight - firstView.getTop();
-                    onScrollYEvent = new onScrollYEvent();
-                    onScrollYEvent.init(view.getId());
-                    WritableMap ymap = Arguments.createMap();
-                    ymap.putInt("YDistance", DensityUtils.px2dip(flag));
-                    onScrollYEvent.setData(ymap);
-                    eventDispatcher.dispatchEvent(onScrollYEvent);
+//                    onScrollYEvent = new onScrollYEvent();
+//                    onScrollYEvent.init(view.getId());
+//                    WritableMap ymap = Arguments.createMap();
+//                    ymap.putInt("YDistance", DensityUtils.px2dip(flag));
+//                    onScrollYEvent.setData(ymap);
+//                    eventDispatcher.dispatchEvent(onScrollYEvent);
                 }
             }
 
@@ -185,34 +176,34 @@ public class ShowDynamicView implements IShowgroundView, SwipeRefreshLayout.OnRe
                 super.onScrollStateChanged(recyclerView, newState);
                 switch (newState) {
                     case RecyclerView.SCROLL_STATE_IDLE:
-                        endScrollEvent = new onEndScrollEvent();
-                        endScrollEvent.init(view.getId());
-                        eventDispatcher.dispatchEvent(endScrollEvent);
+//                        endScrollEvent = new onEndScrollEvent();
+//                        endScrollEvent.init(view.getId());
+//                        eventDispatcher.dispatchEvent(endScrollEvent);
                         break;
                     case RecyclerView.SCROLL_STATE_DRAGGING:
-                        startScrollEvent = new onStartScrollEvent();
-                        startScrollEvent.init(view.getId());
-                        eventDispatcher.dispatchEvent(startScrollEvent);
-                        break;
+//                        startScrollEvent = new onStartScrollEvent();
+//                        startScrollEvent.init(view.getId());
+//                        eventDispatcher.dispatchEvent(startScrollEvent);
+//                        break;
                     default:
                         break;
                 }
                 if (newState == RecyclerView.SCROLL_STATE_DRAGGING || newState == RecyclerView.SCROLL_STATE_SETTLING) {
-                    sIsScrolling = true;
+//                    sIsScrolling = true;
                     ImageLoadUtils.pauseLoadImage();
                 } else if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (sIsScrolling == true) {
-                        ImageLoadUtils.resumeLoadImage();
-                    }
-                    sIsScrolling = false;
+//                    if (sIsScrolling == true) {
+//                        ImageLoadUtils.resumeLoadImage();
+//                    }
+//                    sIsScrolling = false;
                 }
                 if (eventDispatcher != null) {
-                    onScrollStateChangedEvent onScrollStateChangedEvent = new onScrollStateChangedEvent();
-                    onScrollStateChangedEvent.init(view.getId());
-                    WritableMap map = Arguments.createMap();
-                    map.putInt("state", newState);
-                    onScrollStateChangedEvent.setData(map);
-                    eventDispatcher.dispatchEvent(onScrollStateChangedEvent);
+//                    onScrollStateChangedEvent onScrollStateChangedEvent = new onScrollStateChangedEvent();
+//                    onScrollStateChangedEvent.init(view.getId());
+//                    WritableMap map = Arguments.createMap();
+//                    map.putInt("state", newState);
+//                    onScrollStateChangedEvent.setData(map);
+//                    eventDispatcher.dispatchEvent(onScrollStateChangedEvent);
                 }
                 int[] first = new int[2];
                 layoutManager.findFirstCompletelyVisibleItemPositions(first);
@@ -223,7 +214,6 @@ public class ShowDynamicView implements IShowgroundView, SwipeRefreshLayout.OnRe
         });
     }
 
-
     private void setRecyclerViewItemEvent(final View view) {
         recyclerView.addOnItemTouchListener(new OnItemChildClickListener() {
             @Override
@@ -231,36 +221,35 @@ public class ShowDynamicView implements IShowgroundView, SwipeRefreshLayout.OnRe
                 final List<NewestShowGroundBean.DataBean> data = adapter.getData();
                 final NewestShowGroundBean.DataBean bean = data.get(position);
                 int id = itemview.getId();
-                switch (id) {
-                    case R.id.iv_delete:
-                        if (!deleteIng) {
-                            AlertDialog alertDialog = new AlertDialog.Builder(view.getContext()).setTitle("温馨提示").setMessage("确定删除这条动态吗？").setPositiveButton("确定", new DialogInterface.OnClickListener() {//添加"Yes"按钮
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    presenter.deleteItem(bean.getShowNo());
-                                    deleteIndex = position;
-                                    deleteIng = true;
-                                }
-                            })
-
-                                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {//添加取消
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                        }
-                                    }).create();
-                            alertDialog.show();
-                        }
-                        break;
-                    default:
-                        break;
-                }
+//                switch (id) {
+//                    case R.id.iv_delete:
+//                        if (!deleteIng) {
+//                            AlertDialog alertDialog = new AlertDialog.Builder(view.getContext()).setTitle("温馨提示").setMessage("确定删除这条动态吗？").setPositiveButton("确定", new DialogInterface.OnClickListener() {//添加"Yes"按钮
+//                                @Override
+//                                public void onClick(DialogInterface dialogInterface, int i) {
+//                                    presenter.deleteItem(bean.getShowNo());
+//                                    deleteIndex = position;
+//                                    deleteIng = true;
+//                                }
+//                            })
+//
+//                                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {//添加取消
+//                                        @Override
+//                                        public void onClick(DialogInterface dialogInterface, int i) {
+//                                        }
+//                                    }).create();
+//                            alertDialog.show();
+//                        }
+//                        break;
+//                    default:
+//                        break;
+//                }
             }
         });
     }
 
-
     private void initData() {
-        presenter = new DynamicPresenter(this);
+        presenter = new CollectionPresenter(this);
     }
 
     private void setEmptyText() {
@@ -280,9 +269,9 @@ public class ShowDynamicView implements IShowgroundView, SwipeRefreshLayout.OnRe
         if (eventDispatcher != null) {
             View view = showgroundView.get();
             if (view != null) {
-                startRefreshEvent = new onStartRefreshEvent();
-                startRefreshEvent.init(view.getId());
-                eventDispatcher.dispatchEvent(startRefreshEvent);
+//                startRefreshEvent = new onStartRefreshEvent();
+//                startRefreshEvent.init(view.getId());
+//                eventDispatcher.dispatchEvent(startRefreshEvent);
             }
         }
         adapter.setEnableLoadMore(false);
@@ -372,81 +361,9 @@ public class ShowDynamicView implements IShowgroundView, SwipeRefreshLayout.OnRe
     }
 
     @Override
-    public void repelaceData(final int index, final int clickNum) {
-        if (adapter != null) {
-            final List<NewestShowGroundBean.DataBean> data = adapter.getData();
-
-            recyclerView.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    NewestShowGroundBean.DataBean bean = data.get(index);
-                    bean.setHotCount(clickNum);
-                    adapter.replaceData(data);
-
-                }
-            }, 200);
-        }
-    }
-
-    @Override
-    public void addDataToTop(final String value) {
-        if (adapter != null && !TextUtils.isEmpty(value)) {
-            final List<NewestShowGroundBean.DataBean> data = adapter.getData();
-            recyclerView.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    NewestShowGroundBean.DataBean bean = JSON.parseObject(value, NewestShowGroundBean.DataBean.class);
-                    data.add(0, bean);
-                    adapter.replaceData(data);
-                    recyclerView.scrollToPosition(0);
-                }
-            }, 200);
-        }
-    }
-
-    @Override
-    public void repelaceItemData(final int index, final String value) {
-        if (adapter != null && !TextUtils.isEmpty(value)) {
-            final List<NewestShowGroundBean.DataBean> data = adapter.getData();
-            recyclerView.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    NewestShowGroundBean.DataBean bean = JSON.parseObject(value, NewestShowGroundBean.DataBean.class);
-                    data.set(index, bean);
-                    adapter.replaceData(data);
-                }
-            }, 200);
-        }
-    }
-
-    public void scrollIndex(int index) {
-        if (recyclerView != null) {
-            recyclerView.scrollToPosition(0);
-        }
-    }
-
-    @Override
     public void loadMoreComplete() {
         showList();
         adapter.loadMoreComplete();
-    }
-
-    public void addHeader(View view) {
-        adapter.setHeaderAndEmpty(true);
-        adapter.setHeaderView(view);
-        View emptyView = adapter.getEmptyView();
-        final ViewGroup.LayoutParams lp = emptyView.getLayoutParams();
-        if (lp != null) {
-            lp.height = ScreenUtils.getScreenHeight() - DensityUtils.dip2px(400);
-        }
-        emptyView.setLayoutParams(lp);
-        recyclerView.scrollToPosition(0);
-    }
-
-    public void setParams(HashMap map) {
-        if (presenter != null) {
-            presenter.setParams(map);
-        }
     }
 
     private void showList() {
@@ -461,17 +378,32 @@ public class ShowDynamicView implements IShowgroundView, SwipeRefreshLayout.OnRe
 
     @Override
     public void deleteSuccess() {
-        deleteIng = false;
-        adapter.remove(deleteIndex);
-        deleteIndex = -1;
+//        deleteIng = false;
+//        adapter.remove(deleteIndex);
+//        deleteIndex = -1;
     }
 
     @Override
     public void deleteFail(String err) {
-        deleteIng = false;
-        deleteIndex = -1;
-        if (!TextUtils.isEmpty(err)) {
-            ToastUtils.showToast(err);
-        }
+//        deleteIng = false;
+//        deleteIndex = -1;
+//        if (!TextUtils.isEmpty(err)) {
+//            ToastUtils.showToast(err);
+//        }
+    }
+
+    @Override
+    public void repelaceData(int index, int clickNum) {
+
+    }
+
+    @Override
+    public void repelaceItemData(int index, String value) {
+
+    }
+
+    @Override
+    public void addDataToTop(String value) {
+
     }
 }
