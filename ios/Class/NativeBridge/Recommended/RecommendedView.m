@@ -388,8 +388,8 @@ static NSString *IDType = @"TypeCell";
 
   [self.tableView reloadRowAtIndexPath:indexPath withRowAnimation:UITableViewRowAnimationNone];
   
-  if(_onZanPress) {
-    _onZanPress(@{
+  if(_onCollectPress) {
+    _onCollectPress(@{
                   @"detail":self.callBackArr[indexPath.item],
                   @"index":[NSNumber numberWithInteger:indexPath.row]});
   }
@@ -497,8 +497,8 @@ static NSString *IDType = @"TypeCell";
   
   [self.tableView reloadRowAtIndexPath:indexPath withRowAnimation:UITableViewRowAnimationNone];
   
-  if(_onZanPress) {
-    _onZanPress(@{
+  if(_onCollectPress) {
+    _onCollectPress(@{
                   @"detail":self.callBackArr[indexPath.item],
                   @"index":[NSNumber numberWithInteger:indexPath.row]});
   }
