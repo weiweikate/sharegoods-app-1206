@@ -51,7 +51,7 @@ export default class MasterRow extends Component {
                         <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 3 }}>
                             <Text style={styles.name} allowFontScaling={false}>{(nickName || '  ')}</Text>
                             {packageStatus && showActivityImage ?
-                                <UIImage source={packageImg} style={{ width: 59, height: 16 }}/> : null}
+                                <UIImage source={{ uri: packageImg }} style={{ width: 59, height: 16, marginLeft: 5 }}/> : null}
                         </View>
                         <Text style={styles.level} allowFontScaling={false}>{levelName || ' '}</Text>
                         <Text style={styles.desc}
