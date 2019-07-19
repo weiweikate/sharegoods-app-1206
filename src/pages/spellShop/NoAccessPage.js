@@ -1,31 +1,22 @@
 import React, { Component } from 'react';
 import {
     View, ScrollView,
-    Image,
-    RefreshControl, ImageBackground,
-    StyleSheet, TouchableWithoutFeedback
+    RefreshControl, ImageBackground
 } from 'react-native';
 import SpellStatusModel from './model/SpellStatusModel';
 import ScreenUtils from '../../utils/ScreenUtils';
 import NavigatorBar from '../../components/pageDecorator/NavigatorBar/NavigatorBar';
 import DesignRule from '../../constants/DesignRule';
 import res from './res';
-import OssHelper from '../../utils/OssHelper';
-import apiEnvironment from '../../api/ApiEnvironment';
-import { routePush } from '../../navigation/RouterMap';
+import { backToHome, routeNavigate, routePush } from '../../navigation/RouterMap';
+import NoMoreClick from '../../components/ui/NoMoreClick';
+import user from '../../model/user';
+import RouterMap from '../../navigation/RouterMap';
 
-const {
-    pindianzhaojilingbgd,
-    pindianzhaojiling
-} = res;
+const { pindianzhaojiling, pindianzhaojilingbg } = res;
 
 export default class NoAccessPage extends Component {
-    state = {
-        imgError: false
-    };
-
     render() {
-        const { imgError } = this.state;
         const imgWidth = ScreenUtils.width;
         const imgHeight = ScreenUtils.height - ScreenUtils.headerHeight - (this.props.leftNavItemHidden ? ScreenUtils.tabBarHeight : 0);
         return (
@@ -45,39 +36,31 @@ export default class NoAccessPage extends Component {
                                                                 SpellStatusModel.getUser(1).then().catch((error) => {
                                                                 });
                                                             }}/>}>
-                    <View style={{ flex: 1 }}>
-                        <ImageBackground style={[styles.bgImg, { width: imgWidth, height: imgHeight }]}
-                                         source={imgError ? pindianzhaojilingbgd : { uri: OssHelper('/app/pindianzhaojilingbgd.png') }}
-                                         onError={() => {
-                                             this.setState({
-                                                 imgError: true
-                                             });
-                                         }}
-                                         resizeMode='stretch'>
-                            <TouchableWithoutFeedback onPress={() => {
-                                routePush('HtmlPage', {
-                                    uri: `${apiEnvironment.getCurrentH5Url()}/topic/temp/ST20190084`
-                                });
-                            }}>
-                                <Image style={{ width: imgWidth, height: imgHeight }}
-                                       source={imgError ? pindianzhaojiling : { uri: OssHelper('/app/pindianzhaojiling.png') }}
-                                       onError={() => {
-                                           this.setState({
-                                               imgError: true
-                                           });
-                                       }}
-                                       resizeMode='contain'/>
-                            </TouchableWithoutFeedback>
+                    <ImageBackground
+                        style={{ width: imgWidth, height: imgHeight }}
+                        source={pindianzhaojilingbg}
+                        resizeMode='stretch'>
+                        <ImageBackground style={{ width: imgWidth, height: imgHeight }}
+                                         source={pindianzhaojiling}
+                                         resizeMode='contain'>
+                            <NoMoreClick style={{ flex: 1 }} onPress={() => {
+                                backToHome();
+                            }}/>
+                            <NoMoreClick style={{ flex: 1 }} onPress={() => {
+                                if (!user.isLogin) {
+                                    routeNavigate(RouterMap.LoginPage);
+                                    return;
+                                }
+                                if (user.upUserCode) {
+                                    routePush(RouterMap.MyMentorPage);
+                                } else {
+                                    routePush(RouterMap.SetMentorPage);
+                                }
+                            }}/>
                         </ImageBackground>
-                    </View>
+                    </ImageBackground>
                 </ScrollView>
             </View>
         );
     }
 }
-
-const styles = StyleSheet.create({
-    bgImg: {
-        justifyContent: 'center', alignItems: 'center'
-    }
-});
