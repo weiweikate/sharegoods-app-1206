@@ -289,7 +289,7 @@ export default class FlyImageViewer extends Component {
         // 跳到当前图的位置
         this.positionXNumber = -this.width * this.state.currentShowIndex;
         this.standardPositionX = this.positionXNumber;
-        this.positionX.setValue(this.positionXNumber);
+        this.positionX.setValue(this.positionXNumber || 0);
     }
 
     /**

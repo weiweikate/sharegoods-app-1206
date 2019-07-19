@@ -117,9 +117,6 @@ public class BaseApplication extends MultiDexApplication {
         SensorsUtils.init(this);
         // 初始化一键登录
         JVerificationInterface.init(this);
-        // 七鱼初始化
-        Unicorn.init(getApplicationContext(), "b87fd67831699ca494a9d3de266cd3b0", QiYuOptions(),
-                new QiyuImageLoader());
         // umeng初始化
         String channel = WalleChannelReader.getChannel(getApplicationContext(), "guanwang");
         // 友盟统计
@@ -129,6 +126,9 @@ public class BaseApplication extends MultiDexApplication {
         // 初始化极光
         JPushInterface.init(getApplicationContext());
         if (Utils.isApkInDebug()) {
+            // 七鱼初始化
+            Unicorn.init(getApplicationContext(), "4ba53a88957fb27300d38fde30e0dc0f", QiYuOptions(),
+                    new QiyuImageLoader());
             // jpush debug
             JPushInterface.setDebugMode(true);
             // umeng debug
@@ -140,6 +140,9 @@ public class BaseApplication extends MultiDexApplication {
             // 神策
 //            SensorsDataAPI.sharedInstance().enableLog(true);
         } else {
+            // 七鱼初始化
+            Unicorn.init(getApplicationContext(), "b87fd67831699ca494a9d3de266cd3b0", QiYuOptions(),
+                    new QiyuImageLoader());
             JPushInterface.setDebugMode(false);
             JPushInterface.initCrashHandler(getApplicationContext());
             JPushInterface.setChannel(getApplicationContext(), channel);
