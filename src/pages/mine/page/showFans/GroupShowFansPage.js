@@ -71,7 +71,8 @@ export default class GroupShowFansPage extends BasePage<Props> {
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Text style={styles.fansNameStyle} numberOfLines={1}>{name}</Text>
                             {packageStatus ?
-                                <UIImage source={packageImg} style={{ width: 59, height: 16 }}/> : null}
+                                <UIImage source={{ uri: packageImg }}
+                                         style={{ width: 59, height: 16, marginLeft: 10 }}/> : null}
                         </View>
                         {item.percent && item.percent > 0 ? <View style={{ marginLeft: 8, marginTop: 5 }}>
                             <View style={{
