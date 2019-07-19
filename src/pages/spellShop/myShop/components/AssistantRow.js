@@ -13,6 +13,7 @@ import {
     MRText as Text
 } from '../../../../components/ui';
 import AvatarImage from '../../../../components/ui/AvatarImage';
+import UIImage from '@mr/image-placeholder';
 
 export default class AssistantRow extends Component {
 
@@ -45,8 +46,8 @@ export default class AssistantRow extends Component {
 
 
     renderContent = (style) => {
-        let { headImg, levelName, nickName, contribution } = this.props.item;
-        let { tradeBalance } = this.props;
+        let { headImg, levelName, nickName, contribution, packageStatus, packageImg } = this.props.item;
+        let { tradeBalance, showActivityImage } = this.props;
         tradeBalance = StringUtils.isEmpty(tradeBalance) ? 0 : parseFloat(tradeBalance);
         contribution = StringUtils.isEmpty(contribution) ? 0 : parseFloat(contribution);
         const sty = [styles.rowContainer];
@@ -57,7 +58,11 @@ export default class AssistantRow extends Component {
             <View style={sty}>
                 <AvatarImage source={{ uri: headImg }} style={styles.headerImg} borderRadius={14}/>
                 <View style={styles.right}>
-                    <Text style={styles.name} allowFontScaling={false}>{nickName || ' '}</Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 3 }}>
+                        <Text style={styles.name} allowFontScaling={false}>{nickName || ' '}</Text>
+                        {packageStatus && showActivityImage ?
+                            <UIImage source={packageImg} style={{ width: 59, height: 16 }}/> : null}
+                    </View>
                     <Text style={styles.level} allowFontScaling={false}>{levelName || ' '}</Text>
                     <Text
                         style={styles.desc}
@@ -144,7 +149,6 @@ const styles = StyleSheet.create({
     },
     name: {
         fontSize: 14,
-        paddingBottom: 3,
         color: DesignRule.textColor_secondTitle
     },
     level: {

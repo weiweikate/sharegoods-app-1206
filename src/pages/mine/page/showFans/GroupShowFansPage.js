@@ -25,6 +25,7 @@ import ToSearchComponent from './Component/ToSearchComponent';
 import SmoothPushHighComponent from '../../../../comm/components/SmoothPushHighComponent';
 import bridge from '../../../../utils/bridge';
 import SettingModel from '../../model/SettingModel';
+import UIImage from '@mr/image-placeholder';
 
 const { px2dp } = ScreenUtils;
 const {
@@ -58,6 +59,7 @@ export default class GroupShowFansPage extends BasePage<Props> {
         const uri = { uri: item.headImg };
         let name = (item.nickname && item.nickname.substring(0, 28)) || '';
         let percent = item.percent ? item.percent + '%' : '0%';
+        const { packageStatus, packageImg } = item;
         return (
             <ImageBackground key={index + 'showFans'} resizeMode={'stretch'} source={bg_fans_item}
                              style={styles.itemWrapper}>
@@ -66,7 +68,11 @@ export default class GroupShowFansPage extends BasePage<Props> {
                         <AvatarImage style={styles.fansIcon} source={uri}/>
                     </View>
                     <View style={{ flex: 1 }}>
-                        <Text style={styles.fansNameStyle} numberOfLines={1}>{name}</Text>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Text style={styles.fansNameStyle} numberOfLines={1}>{name}</Text>
+                            {packageStatus ?
+                                <UIImage source={packageImg} style={{ width: 59, height: 16 }}/> : null}
+                        </View>
                         {item.percent && item.percent > 0 ? <View style={{ marginLeft: 8, marginTop: 5 }}>
                             <View style={{
                                 width: 100,

@@ -11,6 +11,7 @@ import DesignRule from '../../../../constants/DesignRule';
 import StringUtils from '../../../../utils/StringUtils';
 import res from '../../res';
 import AvatarImage from '../../../../components/ui/AvatarImage';
+import UIImage from '@mr/image-placeholder';
 
 const ShopMasterIcon = res.myShop.dz_03;
 import {
@@ -37,8 +38,8 @@ export default class MasterRow extends Component {
     };
 
     render() {
-        let { headImg, nickName, levelName, contribution } = this.props.item;
-        let { tradeBalance } = this.props;
+        let { headImg, nickName, levelName, contribution, packageStatus, packageImg } = this.props.item;
+        let { tradeBalance, showActivityImage } = this.props;
         tradeBalance = StringUtils.isEmpty(tradeBalance) ? 0 : parseFloat(tradeBalance);
         contribution = StringUtils.isEmpty(contribution) ? 0 : parseFloat(contribution);
         return (<TouchableWithoutFeedback onPress={this._clickAssistantDetail}>
@@ -47,7 +48,11 @@ export default class MasterRow extends Component {
                 <View style={styles.row}>
                     <AvatarImage source={{ uri: headImg }} style={styles.headerImg} borderRadius={14}/>
                     <View style={styles.right}>
-                        <Text style={styles.name} allowFontScaling={false}>{(nickName || '  ')}</Text>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 3 }}>
+                            <Text style={styles.name} allowFontScaling={false}>{(nickName || '  ')}</Text>
+                            {packageStatus && showActivityImage ?
+                                <UIImage source={packageImg} style={{ width: 59, height: 16 }}/> : null}
+                        </View>
                         <Text style={styles.level} allowFontScaling={false}>{levelName || ' '}</Text>
                         <Text style={styles.desc}
                               allowFontScaling={false}>贡献度：{tradeBalance === 0 ? 0 : ((contribution / tradeBalance) * 100).toFixed(2)}%</Text>
@@ -94,7 +99,6 @@ const styles = StyleSheet.create({
     },
     name: {
         fontSize: 14,
-        paddingBottom: 3,
         color: '#222'
     },
     level: {
