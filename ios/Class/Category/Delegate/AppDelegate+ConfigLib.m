@@ -78,9 +78,10 @@
 
 -(void)configUM{
   [UMConfigure initWithAppkey:KUmSocialAppkey channel:nil];
-  if (DEBUG) {
-    [MobClick setCrashReportEnabled:NO];
-  }
+  #if DEBUG
+  [MobClick setCrashReportEnabled:NO];
+  #endif
+
   [[UMSocialManager defaultManager] openLog:YES];
   /* 设置微信的appKey和appSecret */
   [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_WechatSession
