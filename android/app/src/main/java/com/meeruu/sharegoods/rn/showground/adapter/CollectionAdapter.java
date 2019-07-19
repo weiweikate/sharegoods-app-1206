@@ -22,6 +22,7 @@ public class CollectionAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
     private final int maxHeight;
     private final int minHeight;
 
+    public static int userImgW = DensityUtils.dip2px(20f);
 
     private final int radius = DensityUtils.dip2px(5);
     private float[] arr_raduis = {radius, radius, radius, radius, 0, 0, 0, 0};
@@ -76,14 +77,21 @@ public class CollectionAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
             params.height = realHeight;
             params.width = realWidth;
             imageView.setLayoutParams(params);
-            ImageLoadUtils.loadRoundNetImage(imgUrl, imageView, realWidth, realHeight, arr_raduis);
+            ImageLoadUtils.loadRoundNetImage(imgUrl, imageView, realWidth, realHeight, arr_raduis,false);
         }
 
 
-
-
-
-
+        final SimpleDraweeView userIcon = helper.getView(R.id.iv_user_icon);
+        String userTag = (String) userIcon.getTag();
+        String userUrl = item.getUserInfoVO().getUserImg();
+        if (TextUtils.isEmpty(userUrl)) {
+            ImageLoadUtils.loadImageResAsCircle(userIcon.getContext(), R.drawable.bg_app_user, userIcon);
+        } else {
+            if (!TextUtils.equals(userUrl, userTag)) {
+                ImageLoadUtils.loadCircleNetImage(userUrl, userIcon, userImgW, userImgW);
+                userIcon.setTag(userUrl);
+            }
+        }
 
         TextView title = helper.getView(R.id.showground_item_title);
         String titleStr = item.getContent();
@@ -92,6 +100,13 @@ public class CollectionAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
             title.setVisibility(View.VISIBLE);
         } else {
             title.setVisibility(View.GONE);
+        }
+
+        TextView tvName = helper.getView(R.id.tv_name);
+        String name = item.getUserInfoVO().getUserName();
+        if(!TextUtils.equals((String)tvName.getTag(),name)){
+            tvName.setText(name);
+            tvName.setTag(name);
         }
 
         helper.addOnClickListener(R.id.iv_collection);

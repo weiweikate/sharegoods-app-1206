@@ -15,7 +15,8 @@ import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.sharegoods.R;
 
 
-import static com.meeruu.sharegoods.rn.showground.widgets.usercenter.TabPageAdapter.COLLECTIONANDARTICLE;
+import static com.meeruu.sharegoods.rn.showground.widgets.usercenter.TabPageAdapter.MINENORMAL;
+import static com.meeruu.sharegoods.rn.showground.widgets.usercenter.TabPageAdapter.OTHERS;
 
 public class UserCenterView {
     private ReactContext mContext;
@@ -35,7 +36,7 @@ public class UserCenterView {
     private void initView(View view){
         viewpager = view.findViewById(R.id.viewpager);
         TabPageAdapter adapter = new TabPageAdapter(mContext
-                , COLLECTIONANDARTICLE);
+                , MINENORMAL);
         viewpager.setAdapter(adapter);
         headerWrapper = view.findViewById(R.id.header_wrapper);
     }

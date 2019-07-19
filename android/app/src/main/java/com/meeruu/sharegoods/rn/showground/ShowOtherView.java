@@ -1,8 +1,6 @@
 package com.meeruu.sharegoods.rn.showground;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -24,21 +22,13 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
-import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
-import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.adapter.CollectionAdapter;
-import com.meeruu.sharegoods.rn.showground.adapter.ShowDynamicAdapter;
+import com.meeruu.sharegoods.rn.showground.adapter.ShowGroundAdapter;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
-import com.meeruu.sharegoods.rn.showground.event.onEndScrollEvent;
-import com.meeruu.sharegoods.rn.showground.event.onItemPressEvent;
-import com.meeruu.sharegoods.rn.showground.event.onScrollStateChangedEvent;
-import com.meeruu.sharegoods.rn.showground.event.onScrollYEvent;
-import com.meeruu.sharegoods.rn.showground.event.onStartRefreshEvent;
-import com.meeruu.sharegoods.rn.showground.event.onStartScrollEvent;
 import com.meeruu.sharegoods.rn.showground.presenter.CollectionPresenter;
-import com.meeruu.sharegoods.rn.showground.presenter.DynamicPresenter;
+import com.meeruu.sharegoods.rn.showground.presenter.OthersPresenter;
 import com.meeruu.sharegoods.rn.showground.view.IShowgroundView;
 import com.meeruu.sharegoods.rn.showground.widgets.CustomLoadMoreView;
 import com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView;
@@ -49,7 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ShowCollectionView  implements IShowgroundView, SwipeRefreshLayout.OnRefreshListener {
+public class ShowOtherView  implements IShowgroundView, SwipeRefreshLayout.OnRefreshListener{
     private EventDispatcher eventDispatcher;
     private Handler handler;
     private WeakReference<View> showgroundView;
@@ -57,12 +47,12 @@ public class ShowCollectionView  implements IShowgroundView, SwipeRefreshLayout.
     private View errImg;
     private SwipeRefreshLayout swipeRefreshLayout;
     private RnRecyclerView recyclerView;
-    private CollectionAdapter adapter;
+    private ShowGroundAdapter adapter;
     private StaggeredGridLayoutManager layoutManager;
     private int page = 1;
-    private CollectionPresenter presenter;
+    private OthersPresenter presenter;
 
-    public ViewGroup getShowCollectionView(ReactContext reactContext){
+    public ViewGroup getShowOtherView(ReactContext reactContext){
         eventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
         LayoutInflater inflater = LayoutInflater.from(reactContext);
         View view = inflater.inflate(R.layout.view_showground, null);
@@ -110,7 +100,7 @@ public class ShowCollectionView  implements IShowgroundView, SwipeRefreshLayout.
 //        onScrollYEvent = new onScrollYEvent();
 //        endScrollEvent = new onEndScrollEvent();
         setRecyclerViewItemEvent(view);
-        adapter = new CollectionAdapter();
+        adapter = new ShowGroundAdapter();
         adapter.setPreLoadNumber(3);
         adapter.setHasStableIds(true);
         layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
@@ -250,7 +240,7 @@ public class ShowCollectionView  implements IShowgroundView, SwipeRefreshLayout.
     }
 
     private void initData() {
-        presenter = new CollectionPresenter(this);
+        presenter = new OthersPresenter(this);
     }
 
     private void setEmptyText() {

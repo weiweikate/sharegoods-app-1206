@@ -1,32 +1,20 @@
 package com.meeruu.sharegoods.rn.showground.widgets.usercenter;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
 import com.facebook.react.bridge.ReactContext;
-import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.ShowCollectionView;
 import com.meeruu.sharegoods.rn.showground.ShowDynamicView;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.meeruu.sharegoods.rn.showground.ShowOtherView;
 
 public class TabPageAdapter extends PagerAdapter {
-    public static final String ARTICLE = "article";
-    public static final String COLLECTION = "collection";
-    public static final String COLLECTIONANDARTICLE = "collectionAndArticle";
+    public static final String OTHERS = "others";
+    public static final String MINEWRITER = "mineWriter";
+    public static final String MINENORMAL = "mineNormal";
     private ReactContext context;
     private String type;
 
@@ -42,8 +30,22 @@ public class TabPageAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         if(position == 0){
-            ViewGroup view = new ShowDynamicView().getShowDynamicView(context);
-            container.addView(view);
+            ViewGroup view = null;
+            switch (type) {
+                case MINENORMAL:
+                    view = new ShowDynamicView().getShowDynamicView(context);
+                    container.addView(view);
+                    break;
+                case OTHERS:
+                    view = new ShowOtherView().getShowOtherView(context);
+                    container.addView(view);
+                    break;
+                case MINEWRITER:
+                    view = new ShowDynamicView().getShowDynamicView(context);
+                    container.addView(view);
+                    break;
+            }
+
             return  view;
         }
        if(position == 1){
@@ -63,13 +65,13 @@ public class TabPageAdapter extends PagerAdapter {
     public int getCount() {
         int count  = 0;
         switch (type) {
-            case ARTICLE:
+            case MINENORMAL:
                 count = 1;
                 break;
-            case COLLECTION:
+            case OTHERS:
                 count = 1;
                 break;
-            case COLLECTIONANDARTICLE:
+            case MINEWRITER:
                 count = 2;
                 break;
         }
@@ -81,13 +83,13 @@ public class TabPageAdapter extends PagerAdapter {
     public CharSequence getPageTitle(int position) {
         String title  = "";
         switch (type) {
-            case ARTICLE:
+            case MINENORMAL:
                 title = "文章";
                 break;
-            case COLLECTION:
+            case OTHERS:
                 title = "收藏";
                 break;
-            case COLLECTIONANDARTICLE:
+            case MINEWRITER:
                 title = position == 0 ? "文章": "收藏";
                 break;
         }

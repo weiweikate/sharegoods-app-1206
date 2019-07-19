@@ -20,6 +20,7 @@ public class HttpUrlUtils {
     public static final String URL_VIDEO_AUTH = "/social/show/token"; //视频上传token
     public static final String URL_COLLECTION_LIST = "/social/show/content/page/mine/collect"; //我的收藏
     public static final String REDUCE_COUNT_BY_TYPE = "/social/show/count/reduceCountByType"; //取消点赞/收藏/浏览量
+    public static final String URL_OTHER_ARTICLE = "/social/show/content/page/other/query"; //查询其他人的文章
 
 
 
