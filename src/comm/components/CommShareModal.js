@@ -424,7 +424,7 @@ export default class CommShareModal extends React.Component {
                                     borderWidth: this.props.type === 'promotionShare' ? 0 : 0.5,
                                     overflow: 'hidden',
                                     shadowColor: DesignRule.textColor_placeholder,
-                                    transform: [{ scale: isNaN(this.state.scale) ? 0 : this.state.scale }]
+                                    transform: [{ scale: this.state.scale }]
 
                                 }}>
                                     {this.props.type === 'Image' || this.props.type === 'Invite' ?
@@ -467,7 +467,7 @@ export default class CommShareModal extends React.Component {
                                 </Animated.View> : null
                         }
                         <Animated.View style={{
-                            transform: [{ translateY: isNaN(this.state.y) ? 0 : this.state.y }],
+                            transform: [{ translateY: this.state.y }],
                             paddingBottom: ScreenUtils.safeBottom,
                             backgroundColor: 'white',
                             borderRadius: 10,

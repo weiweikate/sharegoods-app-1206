@@ -8,12 +8,13 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import {
+    InteractionManager,
+    NativeAppEventEmitter,
+    NativeEventEmitter,
+    NativeModules,
     StyleSheet,
     Text,
-    View,
-    InteractionManager,
-    NativeAppEventEmitter, NativeModules, NativeEventEmitter
-    // Image
+    View
 } from 'react-native';
 import DebugButton from './components/debug/DebugButton';
 import { netStatus } from './comm/components/NoNetHighComponent';
@@ -94,7 +95,7 @@ class App extends Component {
     async componentWillMount() {
         // 禁止重启
         codePush.disallowRestart();
-    
+        this.subscription && this.subscription.remove();
         // code push
         codePush.sync({
             updateDialog: false,
@@ -108,8 +109,10 @@ class App extends Component {
     }
 
     componentDidMount() {
+        // 在加载完了，允许重启
+        codePush.allowRestart();
         // 开机广告
-        this.startAdvSubscription = NativeAppEventEmitter.addListener(
+        this.subscription = NativeAppEventEmitter.addListener(
             'Event_navigateHtmlPage',
             (reminder) => {
                 this.timer = setInterval(() => {
@@ -125,24 +128,22 @@ class App extends Component {
             'Event_change_baseUrl',
             (data) => {
                 // 动态域名
-               let host = data.baseUrl || '';
-               // 当前域名
-               let currentUrl = apiEnvironment.getCurrentHostUrl();
-               if(StringUtils.isNoEmpty(host) && host !== currentUrl){
-                    for(let obj in CONFIG.env){
-                        if(CONFIG.env[obj] && (CONFIG.env[obj].host === host)){
-                             // 清空用户信息
+                let host = data.baseUrl || '';
+                // 当前域名
+                let currentUrl = apiEnvironment.getCurrentHostUrl();
+                if (StringUtils.isNoEmpty(host) && host !== currentUrl) {
+                    for (let obj in CONFIG.env) {
+                        if (CONFIG.env[obj] && (CONFIG.env[obj].host === host)) {
+                            // 清空用户信息
                             user.clearUserInfo();
                             // 保存域名环境
                             apiEnvironment.saveEnv(String(obj));
                             break;
                         }
                     }
-               }
+                }
             }
         );
-        // 在加载完了，允许重启
-        codePush.allowRestart();
         //初始化init  定位存储  和app变活跃 会定位
         InteractionManager.runAfterInteractions(() => {
             TimerMixin.setTimeout(() => {
@@ -186,23 +187,23 @@ class App extends Component {
 
     mineMessageData = (data) => {
         const { params } = JSON.parse(data) || {};
-        if(params && Number(params.index) === 1){
+        if (params && Number(params.index) === 1) {
             settingModel.availableBalanceAdd(1);
         }
 
-        if(params && Number(params.index) === 2){
+        if (params && Number(params.index) === 2) {
             settingModel.userScoreAdd(1);
         }
 
-        if(params && Number(params.index) === 3){
+        if (params && Number(params.index) === 3) {
             settingModel.couponsAdd(1);
         }
 
-        if(params && Number(params.index) === 4){
+        if (params && Number(params.index) === 4) {
             settingModel.fansMSGAdd(1);
         }
 
-        if(params && Number(params.index) === 5){
+        if (params && Number(params.index) === 5) {
             settingModel.mainTaskAdd(1);
         }
     };
