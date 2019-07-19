@@ -13,6 +13,10 @@
 #import "IJSImageManagerController.h"
 #import "WAVideoBox.h"
 #import "IJSVideoManager.h"
+#import "JRBaseNavVC.h"
+
+#import "AliyunMagicCameraViewController.h"
+#import "AliyunIConfig.h"
 
 
 typedef void(^finshCompressVideo)(NSString * newPath);
@@ -31,14 +35,37 @@ typedef void(^finshCompressVideo)(NSString * newPath);
 SINGLETON_FOR_CLASS(MRImageVideoManager)
 -(void)startRecordVideo:(hyfFinshRecordVideo)finshBlock{
   _finshBlock = finshBlock;
-  
+  dispatch_async(dispatch_get_main_queue(), ^{
+      AliyunMediaConfig * _mediaConfig;
+      _mediaConfig = [AliyunMediaConfig defaultConfig];
+      _mediaConfig.minDuration = 2.0;
+      _mediaConfig.maxDuration = 5;
+      _mediaConfig.fps = 25;
+      _mediaConfig.gop = 5;
+      _mediaConfig.cutMode = AliyunMediaCutModeScaleAspectFill;
+      _mediaConfig.videoOnly = NO;
+      _mediaConfig.backgroundColor = [UIColor blackColor];
+    
+      AliyunIConfig * config = [[AliyunIConfig alloc]init];
+      [AliyunIConfig setConfig:config];
+    
+      AliyunMagicCameraViewController * controller = [[AliyunMagicCameraViewController alloc]init];
+      [controller setValue:_mediaConfig forKey:@"quVideo"];
+    
+      JRBaseNavVC * navVC = [[JRBaseNavVC alloc]initWithRootViewController:controller];
+      [navVC setNavigationBarHidden:YES];
+    __weak typeof (self) weakSelf = self;
+    controller.finishBlock = ^(NSString * _Nonnull outputPath) {
+      [weakSelf getShutImageWithUrl:outputPath andFinshBlock:finshBlock];
+    };
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [[UIApplication sharedApplication].delegate.window.rootViewController presentViewController:navVC animated:YES completion:nil];
+    });
+  });
 }
 -(void)startSelectImageOrVideoWithBlock:(NSDictionary *)options and:(hyfFinshSelectBlock)finshBlock{
   _finshBlock = finshBlock;
   _options = options;
-//  UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"相机",@"相册", nil];
-//  [sheet showInView:[self currentViewController_XG].view];
-//  return;
   [[IJSImageManager shareManager] stopCachingImagesFormAllAssets];
   [IJSImageManager shareManager].allowPickingOriginalPhoto = YES;
   IJSImagePickerController * nav = [[IJSImagePickerController alloc]initWithMaxImagesCount:8 columnNumber:4 pushPhotoPickerVc:YES];
@@ -67,129 +94,62 @@ SINGLETON_FOR_CLASS(MRImageVideoManager)
           weakSelf.finshBlock(backArr);
         }
       }];
+    }
+  }];
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+      [[UIApplication sharedApplication].delegate.window.rootViewController presentViewController:nav animated:YES completion:nil];
+  });
+}
+
+-(void)getShutImageWithUrl:(NSString *)path andFinshBlock:(hyfFinshRecordVideo)finshBlock{
+  
+  if (![path hasPrefix:@"file://"]) {
+    path = [NSString stringWithFormat:@"%@%@",@"file://",path];
+  }
+  NSArray *paths=NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);
+  NSString *documentsDirectory=[paths objectAtIndex:0];
+  NSString *savedImagePath=[documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png",path.md5String]];
+  YYCache *cache = [YYCache cacheWithName:@"crm_app_xiugou_video_image"];
+  [cache objectForKey:savedImagePath withBlock:^(NSString * _Nonnull key, id<NSCoding>  _Nonnull object) {
+    if (object) {
+//      resolve(@{@"imagePath":key});
+      NSData * imageData = [NSData dataWithContentsOfFile:key];
+      UIImage * iamge = [UIImage imageWithData:imageData];
+      NSLog(@"%@",iamge);
     }else{
-      if ( avPlayers && avPlayers.count > 0) {
-        NSString * urlPath = [NSString stringWithFormat:@"%@",((NSURL *)avPlayers[0]).absoluteString];
-        NSMutableDictionary * infoDic = [NSMutableDictionary dictionary];
-        PHAsset * asset = assets[0];
-        [infoDic setObject:@(asset.duration) forKey:@"videoTime"];
-        [infoDic setObject:@"video/mp4" forKey:@"type"];
-        [infoDic setObject:urlPath forKey:@"path"];
-        [infoDic setObject:@(asset.pixelWidth) forKey:@"width"];
-        [infoDic setObject:@(asset.pixelHeight) forKey:@"height"];
-        [backArr addObject:infoDic];
-        if (weakSelf.finshBlock) {
-          weakSelf.finshBlock(backArr);
-        }
+      NSURL *videoUrl;
+      if ([path hasPrefix:@"file://"]) {
+        videoUrl = [NSURL fileURLWithPath:path];
+      }else{
+        videoUrl = [NSURL URLWithString:path];
+      }
+      NSDictionary *opts = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:AVURLAssetPreferPreciseDurationAndTimingKey];
+      AVURLAsset *urlAsset = [AVURLAsset URLAssetWithURL:videoUrl options:opts];
+      AVAssetImageGenerator *generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:urlAsset];
+      generator.appliesPreferredTrackTransform = YES;
+      NSError *error = nil;
+      CGImageRef img = [generator copyCGImageAtTime:CMTimeMakeWithSeconds(0.0, 5) actualTime:NULL error:&error];
+      UIImage *videoImage = [[UIImage alloc] initWithCGImage:img];
+      CGImageRelease(img);
+      NSData * data = UIImageJPEGRepresentation(videoImage,1.0);
+      key = [NSString stringWithFormat:@"%@%@",@"file://",key];
+      BOOL isRight = [data writeToURL:[NSURL URLWithString:key] atomically:YES];
+      if (isRight) {
+        [cache setObject:data forKey:key withBlock:^{
+//          resolve(@{@"imagePath":key});
+          NSDictionary * videoDic = @{
+                                      @"videoCover":key,
+                                      @"video":path,
+                                      @"width":@(KScreenWidth),
+                                      @"heigth":@(KScreenHeight)
+                                      };
+          if (finshBlock) {
+            finshBlock(@[videoDic]);
+          }
+        }];
       }
     }
   }];
-  [[UIApplication sharedApplication].delegate.window.rootViewController presentViewController:nav animated:YES completion:nil];
-  
-}
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-   __weak typeof (self) weakSelf = self;
-  if (buttonIndex == 0) {
-    SGRecordViewController *vc = [[SGRecordViewController alloc]init];
-      __weak typeof (self) weakSelf = self;
-    vc.finshBlock = ^(UIImage *image, NSString *videoPath, OptionType optionType) {
-      if (optionType == hyf_img) {
-        //拍照完成
-        NSMutableArray * backArr = [NSMutableArray new];
-        NSMutableDictionary * imageInfo = [NSMutableDictionary new];
-        [IJSVideoManager saveImageToSandBoxImage:image completion:^(NSURL *outputPath, NSError *error) {
-          if (error) {
-            [JRLoadingAndToastTool showToast:@"图片存储失败呢" andDelyTime:1];
-            return ;
-          }
-           [imageInfo setObject:[NSString stringWithFormat:@"%@",outputPath] forKey:@"path"];
-           [imageInfo setObject:@"image" forKey:@"type"];
-           [imageInfo setObject:@(1980) forKey:@"height"];
-           [imageInfo setObject:@(1024) forKey:@"width"];
-           [backArr addObject:imageInfo];
-          if (weakSelf.finshBlock) {
-            weakSelf.finshBlock(backArr);
-          }
-        }];
-      }else if(optionType == hyf_video){
-        //录像完成
-        [weakSelf compressVideo:videoPath andFinsh:^(NSString *newPath) {
-          NSArray * pathArr = [newPath componentsSeparatedByString:@"private"];
-          newPath = [NSString stringWithFormat:@"%@%@",@"file://",pathArr[1]];
-          //          [weakSelf compressVideo:urlPath andFinsh:^(NSString *newPath) {
-          NSMutableArray *backArr = [NSMutableArray new];
-          NSMutableDictionary * infoDic = [NSMutableDictionary dictionary];
-          [infoDic setObject:@(30) forKey:@"videoTime"];
-          [infoDic setObject:@"video/mp4" forKey:@"type"];
-          [infoDic setObject:newPath forKey:@"path"];
-          [infoDic setObject:@(1980) forKey:@"width"];
-          [infoDic setObject:@(1024) forKey:@"height"];
-          [backArr addObject:infoDic];
-          if (weakSelf.finshBlock) {
-            weakSelf.finshBlock(backArr);
-          }
-          
-        }];
-      }else if (optionType == hyf_edit_img){
-        //编辑图片
-        [weakSelf editImage:image];
-      }else if (optionType == hyf_edit_video){
-        //编辑视频
-      }
-    };
-    [[self currentViewController_XG] presentViewController:vc animated:YES completion:nil];
-  }else if (buttonIndex == 1){
-    
-    [[IJSImageManager shareManager] stopCachingImagesFormAllAssets];
-    [IJSImageManager shareManager].allowPickingOriginalPhoto = YES;
-    
-    IJSImagePickerController * nav = [[IJSImagePickerController alloc]initWithMaxImagesCount:8 columnNumber:4 pushPhotoPickerVc:YES];
-    nav.maxImagesCount = self.options[@"maxFiles"] ?[self.options[@"maxFiles"] integerValue]:8;
-    nav.allowPickingVideo = NO;
-    nav.networkAccessAllowed = NO;
-    nav.allowPickingImage = YES;
-    nav.sortAscendingByModificationDate = NO;
-    
-    
-     __weak typeof (self) weakSelf = self;
-    [nav loadTheSelectedData:^(NSArray<UIImage *> *photos, NSArray<NSURL *> *avPlayers, NSArray<PHAsset *> *assets, NSArray<NSDictionary *> *infos, IJSPExportSourceType sourceType, NSError *error) {
-      NSLog(@"回调信息");
-      NSMutableArray * backArr = [NSMutableArray new];
-      if (sourceType == IJSPImageType)
-      {
-        [weakSelf saveImageWithImageArr:photos and:^(NSArray *imageUrlArr) {
-          for (NSInteger index = 0; index < imageUrlArr.count; index++){
-            NSMutableDictionary * imageInfo = [NSMutableDictionary dictionary];
-            PHAsset * asset = assets[index];
-            [imageInfo setObject:[NSString stringWithFormat:@"%@",imageUrlArr[index]] forKey:@"path"];
-            [imageInfo setObject:@"image" forKey:@"type"];
-            [imageInfo setObject:@(asset.pixelHeight) forKey:@"height"];
-            [imageInfo setObject:@(asset.pixelWidth) forKey:@"width"];
-            [backArr addObject:imageInfo];
-          }
-          if (weakSelf.finshBlock) {
-            weakSelf.finshBlock(backArr);
-          }
-        }];
-    }else{
-        if ( avPlayers && avPlayers.count > 0) {
-           NSString * urlPath = [NSString stringWithFormat:@"%@",((NSURL *)avPlayers[0]).absoluteString];
-            NSMutableDictionary * infoDic = [NSMutableDictionary dictionary];
-            PHAsset * asset = assets[0];
-            [infoDic setObject:@(asset.duration) forKey:@"videoTime"];
-            [infoDic setObject:@"video/mp4" forKey:@"type"];
-            [infoDic setObject:urlPath forKey:@"path"];
-            [infoDic setObject:@(asset.pixelWidth) forKey:@"width"];
-            [infoDic setObject:@(asset.pixelHeight) forKey:@"height"];
-            [backArr addObject:infoDic];
-            if (weakSelf.finshBlock) {
-              weakSelf.finshBlock(backArr);
-            }
-        }
-    }
-    }];
-    [[self currentViewController_XG] presentViewController:nav animated:YES completion:nil];
-  }
 }
 
 //保存图片到沙盒
@@ -215,12 +175,6 @@ SINGLETON_FOR_CLASS(MRImageVideoManager)
       }
     }];
   }
-//  [weakSelf saveImage:imageArr toUrlArr:urlArr];
-}
--(void)saveImage:(NSArray *)imageArr toUrlArr:(NSMutableArray *)urlArr {
-
-  
- 
 }
 
 -(void)compressVideo:(NSString *)path andFinsh:(finshCompressVideo)finshCompress{

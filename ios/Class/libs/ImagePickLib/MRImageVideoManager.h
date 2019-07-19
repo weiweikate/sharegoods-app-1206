@@ -17,7 +17,6 @@ typedef void(^hyfFinshRecordVideo)(NSArray * videoArr);
 
 @interface MRImageVideoManager : NSObject
 
-
 SINGLETON_FOR_HEADER(MRImageVideoManager)
 //+(void)
 
