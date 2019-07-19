@@ -18,9 +18,15 @@
 
 @property (nonatomic,strong)JXHeaderView* headView;
 @property (nonatomic,strong) UILabel * contentLab;
-@property (nonatomic,strong) UIButton * zanBtn;
 @property (nonatomic,strong) UIButton * shareBtn;
+
+@property (nonatomic,strong) UIButton * zanBtn;
+@property (nonatomic,strong) UIButton * downloadBtn;
+@property (nonatomic,strong) UIButton * collectionBtn;
 @property (nonatomic,strong) UILabel * zanNum;
+@property (nonatomic,strong) UILabel * downLoadNUm;
+@property (nonatomic,strong) UILabel * collectionNum;
+
 @property (nonatomic,strong) UIImageView * picImg;
 @property (nonatomic,strong) UIView * contentLabView;
 

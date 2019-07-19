@@ -9,6 +9,7 @@
 #import "JXFooterView.h"
 #import "UIView+SDAutoLayout.h"
 #import "UIImageView+WebCache.h"
+#import "NSString+UrlAddParams.h"
 
 #define SCREEN_WIDTH ([UIScreen mainScreen].bounds.size.width)
 
@@ -182,36 +183,27 @@
 
 -(void)setDownloadCount:(NSInteger)downloadCount{
     _downloadCount = downloadCount;
-  NSString * num = @"";
-    if(downloadCount<=999){
-      num = [NSString stringWithFormat:@"%ld",downloadCount>0?downloadCount:0];
-    }else if(downloadCount<10000){
-      num = [NSString stringWithFormat:@"%ldK+",downloadCount>0?downloadCount/1000:0];
-    }else if(downloadCount<100000){
-      num = [NSString stringWithFormat:@"%ldW+",downloadCount>0?downloadCount/10000:0];
-    }else{
-      num = @"10W+";
-    }
-  self.downLoadNUm.text = num;
+  self.downLoadNUm.text = [NSString stringWithNumber:downloadCount];
 }
 
 -(void)setLikesCount:(NSInteger)likesCount{
   _likesCount = likesCount;
-  NSString * num = @"";
-    if(likesCount<=999){
-      num = [NSString stringWithFormat:@"%ld",likesCount>0?likesCount:0];
-    }else if(likesCount<10000){
-      num = [NSString stringWithFormat:@"%ldK+",likesCount>0?likesCount/1000:0];
-    }else if(likesCount<100000){
-      num = [NSString stringWithFormat:@"%ldW+",likesCount>0?likesCount/10000:0];
-    }else{
-      num = @"10W+";
-    }
-  self.zanNum.text = num;
+  self.zanNum.text = [NSString stringWithNumber:likesCount];
+}
+
+-(void)setCollectCount:(NSInteger)collectCount{
+  _collectCount = collectCount;
+  self.collectionNum.text = [NSString stringWithNumber:collectCount];
 }
 
 -(void)setIsLike:(BOOL)isLike{
+  _isLike = isLike;
   self.zanBtn.selected = isLike;
+}
+
+-(void)setIsCollect:(BOOL)isCollect{
+  _isCollect = isCollect;
+  self.zanBtn.selected = isCollect;
 }
 
 -(void)setGoodsView{
