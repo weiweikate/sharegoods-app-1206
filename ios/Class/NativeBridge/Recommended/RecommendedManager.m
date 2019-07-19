@@ -8,6 +8,7 @@
 
 #import "RecommendedManager.h"
 #import "ActiveView.h"
+#import "RecommendedView.h"
 #import <React/RCTBridge.h>
 #import <React/RCTUIManager.h>
 
@@ -37,7 +38,7 @@ RCT_EXPORT_VIEW_PROPERTY(onEndScroll, RCTBubblingEventBlock)
 
 - (UIView *)view
 {
-  ActiveView *view = [[ActiveView alloc]init];
+  RecommendedView *view = [[RecommendedView alloc]init];
   return view;
 }
 

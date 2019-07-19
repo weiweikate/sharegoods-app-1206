@@ -16,9 +16,11 @@
 @property (nonatomic, strong)UIScrollView * scrollView;
 @property (nonatomic,strong) UIButton * zanBtn;
 @property (nonatomic,strong) UIButton * downloadBtn;
+@property (nonatomic,strong) UIButton * collectionBtn;
 @property (nonatomic,strong) UIButton * shareBtn;
 @property (nonatomic,strong) UILabel * zanNum;
 @property (nonatomic,strong) UILabel * downLoadNUm;
+@property (nonatomic,strong) UILabel * collectionNum;
 
 @end
 
@@ -54,6 +56,16 @@
 
 }
 
+-(UILabel *)collectionNum{
+  if(!_collectionNum){
+    _collectionNum = [[UILabel alloc]init];
+    _collectionNum.font = [UIFont systemFontOfSize:10];
+    _collectionNum.textColor =[UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
+  }
+  return _collectionNum;
+  
+}
+
 -(UIButton*)zanBtn{
   if(!_zanBtn){
     _zanBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -64,12 +76,23 @@
   return _zanBtn;
 }
 
+
 -(UIButton*)downloadBtn{
   if(!_downloadBtn){
     _downloadBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_downloadBtn setBackgroundImage:[UIImage imageNamed:@"download"] forState:UIControlStateNormal];
+    [_downloadBtn setBackgroundImage:[UIImage imageNamed:@"showDownload"] forState:UIControlStateNormal];
   }
   return _downloadBtn;
+}
+
+-(UIButton*)collectionBtn{
+  if(!_collectionBtn){
+    _collectionBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_collectionBtn setBackgroundImage:[UIImage imageNamed:@"showCollectNo"] forState:UIControlStateNormal];
+    [_collectionBtn setBackgroundImage:[UIImage imageNamed:@"showCollect"] forState:UIControlStateSelected];
+    
+  }
+  return _collectionBtn;
 }
 
 -(UIButton*)shareBtn{
@@ -92,6 +115,8 @@
     [self addSubview:self.scrollView];
     [self addSubview:self.zanBtn];
     [self addSubview:self.zanNum];
+    [self addSubview:self.collectionBtn];
+    [self addSubview:self.collectionNum];
     [self addSubview:self.downloadBtn];
     [self addSubview:self.downLoadNUm];
     [self addSubview:self.shareBtn];
@@ -106,10 +131,20 @@
   .leftSpaceToView(self.zanBtn, 1)
   .widthIs(40).heightIs(26);
 
+  //收藏
+  [_collectionBtn addTarget:self action:@selector(tapCollectionBtn:) forControlEvents:UIControlEventTouchUpInside];
+  self.collectionBtn.sd_layout.centerYEqualToView(self.zanNum)
+  .heightIs(26).widthIs(26)
+  .leftSpaceToView(self, 0);
+  
+  self.collectionNum.sd_layout.centerYEqualToView(self.collectionBtn)
+  .leftSpaceToView(self.collectionBtn, 1)
+  .widthIs(40).heightIs(26);
+  
   //下载
   [_downloadBtn addTarget:self action:@selector(tapDownloadBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.downloadBtn.sd_layout.centerYEqualToView(self.zanNum)
-  .leftSpaceToView(self.zanNum, 10)
+  .leftSpaceToView(self.collectionNum, 10)
   .widthIs(26).heightIs(26);
 
   self.downLoadNUm.sd_layout.centerYEqualToView(self.downloadBtn)
@@ -272,10 +307,16 @@
   }
 }
 
--(void)tapZanBtn:(NSString*)sender{
-//  if(self.zanBlock){
-//    self.zanBlock(@"");
-//  }
+-(void)tapZanBtn:(UIButton*)sender{
+  if(self.zanBlock){
+    self.zanBlock(@"");
+  }
+}
+
+-(void)tapCollectionBtn:(UIButton*)sender{
+  if(self.collectionBlock){
+    self.collectionBlock(@"");
+  }
 }
 
 -(void)tapDownloadBtn:(UIButton*)sender{

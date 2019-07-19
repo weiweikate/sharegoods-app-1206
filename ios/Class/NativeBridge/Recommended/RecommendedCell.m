@@ -107,6 +107,15 @@
       weakSelf.footerView.isLike = weakSelf.model.like;
       weakSelf.footerView.likesCount = weakSelf.model.likesCount;
     };
+    
+    _footerView.collectionBlock = ^(NSString* a){
+      if (weakSelf.cellDelegate) {
+        [weakSelf.cellDelegate zanClick:weakSelf];
+      }
+      weakSelf.footerView.isLike = weakSelf.model.like;
+      weakSelf.footerView.likesCount = weakSelf.model.likesCount;
+    };
+    
     _footerView.downloadBlock =  ^(NSString* a){
       NSLog(@"downloadClick");
       if (weakSelf.cellDelegate) {

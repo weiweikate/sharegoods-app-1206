@@ -13,11 +13,6 @@
  视频model类
  */
 @interface MBVideoModel : NSObject
-@property (nonatomic, strong) NSURL *videoURL;
-@property (nonatomic, strong) NSString *videoName;
-@property (nonatomic, strong) NSString *videoDescription;
-@property (nonatomic, strong) NSURL *imageURL;
-
 @property (nonatomic, assign)NSInteger currentPage;
 @property (nonatomic, assign)NSInteger pageSize;
 @property (nonatomic, assign)NSInteger totalNum;
