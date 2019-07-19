@@ -82,7 +82,7 @@
     _nameLab = [[UILabel alloc]init];
     _nameLab.font = [UIFont systemFontOfSize:13];
     _nameLab.textColor =[UIColor whiteColor];
-    _nameLab.text = @"123";
+    _nameLab.text = @"";
   }
   return _nameLab;
 }

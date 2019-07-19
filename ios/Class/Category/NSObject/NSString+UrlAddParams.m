@@ -11,7 +11,7 @@
 @implementation NSString (UrlAddParams)
 
 +(NSString *)stringWithNumber:(NSInteger)count{
-  NSString * num = @"";
+  NSString * num = @"0";
   if(count<=999){
     num = [NSString stringWithFormat:@"%ld",count>0?count:0];
   }else if(count<10000){

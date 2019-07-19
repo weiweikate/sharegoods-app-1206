@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic,strong)UserInfoModel* UserInfoModel;
 @property(nonatomic,copy)NSString* time;
 @property(nonatomic,assign)BOOL type;
+@property (nonatomic,assign) NSInteger hotCount;
 @property(nonatomic,copy)void (^clickHeaderImgBlock)();
 
 @end

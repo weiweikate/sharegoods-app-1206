@@ -70,8 +70,8 @@
 -(UIButton*)zanBtn{
   if(!_zanBtn){
     _zanBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_zanBtn setBackgroundImage:[UIImage imageNamed:@"hot"] forState:UIControlStateNormal];
-    [_zanBtn setBackgroundImage:[UIImage imageNamed:@"hot"] forState:UIControlStateSelected];
+    [_zanBtn setBackgroundImage:[UIImage imageNamed:@"zan"] forState:UIControlStateNormal];
+    [_zanBtn setBackgroundImage:[UIImage imageNamed:@"yizan"] forState:UIControlStateSelected];
 
   }
   return _zanBtn;
@@ -135,8 +135,8 @@
   //收藏
   [_collectionBtn addTarget:self action:@selector(tapCollectionBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.collectionBtn.sd_layout.centerYEqualToView(self.zanNum)
-  .heightIs(26).widthIs(26)
-  .leftSpaceToView(self, 0);
+  .leftSpaceToView(self.zanNum, 10)
+  .heightIs(26).widthIs(26);
   
   self.collectionNum.sd_layout.centerYEqualToView(self.collectionBtn)
   .leftSpaceToView(self.collectionBtn, 1)
@@ -159,8 +159,6 @@
      .widthIs(70).heightIs(30);
 
   [self setupAutoHeightWithBottomView:self.zanBtn bottomMargin:10];
-
-
 }
 
 
@@ -203,7 +201,7 @@
 
 -(void)setIsCollect:(BOOL)isCollect{
   _isCollect = isCollect;
-  self.zanBtn.selected = isCollect;
+  self.collectionBtn.selected = isCollect;
 }
 
 -(void)setGoodsView{
@@ -221,7 +219,6 @@
     for(UIView *view in [self.scrollView subviews]){
       [view removeFromSuperview];
     }
-
       self.scrollView.contentSize = len>0&&len<=1?CGSizeMake(width*len, 70):CGSizeMake(width*len+10*len, 70);
     for (int i=0; i<len; i++) {
         UIView *bgView = [[UIView alloc] init];
@@ -300,12 +297,14 @@
 }
 
 -(void)tapZanBtn:(UIButton*)sender{
+  sender.selected = !sender.selected;
   if(self.zanBlock){
     self.zanBlock(@"");
   }
 }
 
 -(void)tapCollectionBtn:(UIButton*)sender{
+  sender.selected = !sender.selected;
   if(self.collectionBlock){
     self.collectionBlock(@"");
   }

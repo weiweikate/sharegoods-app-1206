@@ -184,6 +184,9 @@
 - (CGFloat)itemWidthForPicPathArray:(NSArray *)array
 {
   if (array.count == 1){
+      if(self.imageType){
+      
+      }
       return (SCREEN_WIDTH-158);
   }else if(array.count==4||array.count==2) {
       return (SCREEN_WIDTH-161)/2;

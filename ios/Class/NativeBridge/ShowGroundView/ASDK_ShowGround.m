@@ -187,7 +187,7 @@
   [dic addEntriesFromDictionary:@{@"page": [NSString stringWithFormat:@"%ld",self.page], @"size": @"20"}];
   __weak ASDK_ShowGround * weakSelf = self;
   [NetWorkTool requestWithURL:self.uri params:dic  toModel:nil success:^(NSDictionary* result) {
-    if(self.type){
+    if(![self.type isEqualToString:@"MyDynamic"]){
       [defaults setObject:[NSString convertNSDictionaryToJsonString:result] forKey:self.type];
     }
     ShowQueryModel* model = [ShowQueryModel modelWithJSON:result];
@@ -463,7 +463,7 @@
 -(void)setType:(NSString *)type{
   _type = type;  
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-  if(type && [defaults objectForKey:type]){
+  if(![type isEqualToString:@"MyDynamic"]&& [defaults objectForKey:type]){
     NSDictionary *dicData = [NSDictionary dictionaryWithJsonString:[defaults objectForKey:type]];
     if (dicData) {
       self.callBackArr = [[dicData valueForKey:@"data"] mutableCopy];
@@ -492,45 +492,6 @@
     }
   }
 }
-
-//- (void)setHeaderHeight:(NSInteger)headerHeight
-//{
-//  _headerHeight  = headerHeight+44;
-//  _layoutDelegate.headerHeight = _headerHeight+10;
-//  _emptyView.sd_layout.topSpaceToView(self, _headerHeight+10)
-//  .leftEqualToView(self).rightEqualToView(self).bottomEqualToView(self);
-//  [self.collectionNode reloadData];
-//}
-////
-//- (void)didUpdateReactSubviews {
-//  for (UIView *view in self.reactSubviews) {
-//    if ([view isKindOfClass:[ShowHeaderView class]]) {
-//      UIView *headerBg = [[UIView alloc]init];
-//      UIView *btnV = [[UIView alloc]init];
-//      [headerBg addSubview:view];
-//      [headerBg addSubview:btnV];
-//
-//      headerBg.sd_layout.topEqualToView(self)
-//      .leftEqualToView(self).rightEqualToView(self)
-//      .heightIs(self.headerHeight).widthIs(375);
-//      headerBg.backgroundColor = [UIColor blueColor];
-//
-//      view.sd_layout.topEqualToView(headerBg)
-//      .leftEqualToView(headerBg).rightEqualToView(headerBg)
-//      .heightIs(self.headerHeight-44);
-//
-//      btnV.sd_layout.topSpaceToView(view, 0)
-//      .leftEqualToView(headerBg).rightEqualToView(headerBg)
-//      .heightIs(44);
-//      btnV.backgroundColor = [UIColor redColor];
-//
-//      [headerBg setupAutoHeightWithBottomView:btnV bottomMargin:0];
-//      self.headerView = headerBg;
-//      [self.collectionNode reloadData];
-//    }
-//  }
-//}
-
 
 -(void)replaceData:(NSInteger) index num:(NSInteger) num{
   if (self.dataArr.count>index) {
