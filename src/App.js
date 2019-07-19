@@ -8,12 +8,13 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import {
+    InteractionManager,
+    NativeAppEventEmitter,
+    NativeEventEmitter,
+    NativeModules,
     StyleSheet,
     Text,
-    View,
-    InteractionManager,
-    NativeAppEventEmitter, NativeModules, NativeEventEmitter
-    // Image
+    View
 } from 'react-native';
 import DebugButton from './components/debug/DebugButton';
 import { netStatus } from './comm/components/NoNetHighComponent';
@@ -107,6 +108,8 @@ class App extends Component {
     }
 
     componentDidMount() {
+        // 在加载完了，允许重启
+        codePush.allowRestart();
         this.subscription = NativeAppEventEmitter.addListener(
             'Event_navigateHtmlPage',
             (reminder) => {
@@ -118,8 +121,6 @@ class App extends Component {
                 }, 100);
             }
         );
-        // 在加载完了，允许重启
-        codePush.allowRestart();
         //初始化init  定位存储  和app变活跃 会定位
         InteractionManager.runAfterInteractions(() => {
             TimerMixin.setTimeout(() => {
@@ -162,23 +163,23 @@ class App extends Component {
 
     mineMessageData = (data) => {
         const { params } = JSON.parse(data) || {};
-        if(params && Number(params.index) === 1){
+        if (params && Number(params.index) === 1) {
             settingModel.availableBalanceAdd(1);
         }
 
-        if(params && Number(params.index) === 2){
+        if (params && Number(params.index) === 2) {
             settingModel.userScoreAdd(1);
         }
 
-        if(params && Number(params.index) === 3){
+        if (params && Number(params.index) === 3) {
             settingModel.couponsAdd(1);
         }
 
-        if(params && Number(params.index) === 4){
+        if (params && Number(params.index) === 4) {
             settingModel.fansMSGAdd(1);
         }
 
-        if(params && Number(params.index) === 5){
+        if (params && Number(params.index) === 5) {
             settingModel.mainTaskAdd(1);
         }
     };
