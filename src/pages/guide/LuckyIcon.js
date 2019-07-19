@@ -79,7 +79,7 @@ export default class LuckyIcon extends React.Component {
                 // Animate value over time
                 this.state.x, // The value to drive
                 {
-                    toValue: 75/2,
+                    toValue: 75 / 2,
                     duration: 500,
                     useNativeDriver: true
                 }
@@ -110,7 +110,12 @@ export default class LuckyIcon extends React.Component {
 
         return (
             <Animated.View
-                style={{ position: 'absolute', right: 5, bottom: 40, transform: [{ translateX: this.state.x }] }}>
+                style={{
+                    position: 'absolute',
+                    right: 5,
+                    bottom: 40,
+                    transform: [{ translateX: this.state.x }]
+                }}>
                 <TouchableOpacity onPress={this._onPress}>
                     <Image
                         style={styles.image}

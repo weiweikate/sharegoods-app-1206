@@ -7,30 +7,18 @@
  */
 
 import React, { Component } from 'react';
-import {
-    View,
-    Image,
-    TouchableOpacity
-} from 'react-native';
+import { Image, TouchableOpacity, View } from 'react-native';
 import NavigatorBar from './components/pageDecorator/NavigatorBar/index';
-import {
-    MRText as Text
-} from './components/ui';
+import { MRText as Text } from './components/ui';
 
 import { renderViewByLoadingState } from './components/pageDecorator/PageState';
-import { StackActions, NavigationActions } from 'react-navigation';
+import { NavigationActions, StackActions } from 'react-navigation';
 import { netState } from '@mr/rn-request';
 import res from './comm/res';
 import bridge from './utils/bridge';
-import DesignRule from './constants/DesignRule';
 import Toast from './utils/bridge';
-import RouterMap, {
-    GoToTabItem,
-    replaceRoute,
-    routeNavigate,
-    routePop,
-    routePush
-} from './navigation/RouterMap';
+import DesignRule from './constants/DesignRule';
+import RouterMap, { GoToTabItem, replaceRoute, routeNavigate, routePop, routePush } from './navigation/RouterMap';
 
 export default class BasePage extends Component {
     constructor(props) {
@@ -49,6 +37,13 @@ export default class BasePage extends Component {
             return;
         }
     }
+
+    // componentWillUnmount() {
+    //     // 取消网络请求
+    //     Object.keys(cancelRequestMap).forEach(key => {
+    //         cancelRequestMap[key].cancel();
+    //     });
+    // }
 
     $refreshData() {
     }

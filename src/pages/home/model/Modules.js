@@ -110,9 +110,6 @@ class HomeModule {
 
     //加载为你推荐列表
     @action loadHomeList = flow(function* () {
-        if(!this.firstLoad){
-            this.isRefreshing = true;
-        }
         setTimeout(() => {
             this.isRefreshing = false;
         }, 1000);
