@@ -54,7 +54,7 @@ export default class NoAccessPage extends Component {
                                 if (user.upUserCode) {
                                     routePush(RouterMap.MyMentorPage);
                                 } else {
-                                    routePush(RouterMap.SetMentorPage);
+                                    backToHome();
                                 }
                             }}/>
                         </ImageBackground>
