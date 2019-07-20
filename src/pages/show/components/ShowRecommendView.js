@@ -28,11 +28,11 @@ export default class ShowRecommendView extends Component {
     };
 
     replaceItemData = (index,data)=>{
-        // UIManager.dispatchViewManagerCommand(
-        //     this.getHandle(),
-        //     UIManager.ShowRecommendView.Commands.replaceItemData,
-        //     [index,data]
-        // );
+        UIManager.dispatchViewManagerCommand(
+            this.getHandle(),
+            UIManager.ShowRecommendView.Commands.replaceItemData,
+            [index,data]
+        );
     }
 
     scrollToTop = ()=>{

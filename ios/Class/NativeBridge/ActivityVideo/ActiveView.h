@@ -20,6 +20,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSDictionary* params;
 @property (nonatomic, assign) NSInteger headerHeight;
 
+-(void)replaceItemData:(NSInteger) index data:(NSDictionary*) data;
+
+
 @end
 
 NS_ASSUME_NONNULL_END

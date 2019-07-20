@@ -170,19 +170,19 @@
   }
 }
 
-- (void)clickDownload{
+- (void)clickDownload:(MBModelData *)model{
   
 }
 
--(void)clicCollection{
+-(void)clicCollection:(MBModelData *)model{
  
 }
 
--(void)clickZan{
+-(void)clickZan:(MBModelData *)model{
  
 }
 
--(void)clickBuy{
+-(void)clickBuy:(MBModelData *)model{
  
 }
 
@@ -200,6 +200,14 @@
 
 - (void)shareClick{
   
+}
+
+
+#pragma arguments --RN callback Native
+-(void)replaceItemData:(NSInteger)index data:(NSDictionary *)data{
+  if(data){
+    
+  }
 }
 
 @end

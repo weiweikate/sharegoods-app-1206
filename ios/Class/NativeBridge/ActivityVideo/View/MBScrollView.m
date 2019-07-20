@@ -23,9 +23,9 @@
 
 #define IMAGEVIEW_COUNT 3
 
-@interface MBScrollView() <UIScrollViewDelegate, MBPlayerViewDelegate,MBProtocol,MBVideoImageDelegate>
+@interface MBScrollView() <UIScrollViewDelegate, MBPlayerViewDelegate,MBProtocol>
 
-@property (nonatomic, strong) MBVideoImage *firstImageView, *secondImageView, *thirdImageView, *tempImageView;
+@property (nonatomic, strong) UIImageView *firstImageView, *secondImageView, *thirdImageView, *tempImageView;
 //@property (nonatomic, strong)  MBPlayerView *firstPlayerView, *secondPlayerView, *thirdPlayerView;
 //@property (nonatomic, strong) MBPlayerView *playerView;
 
@@ -36,10 +36,11 @@
 @property (nonatomic, assign) NSInteger currentIndexOfShowView;
 
 @property (nonatomic, assign) BOOL isLoading;
+@property (nonatomic, assign) BOOL isInitVideo;
 
 @property (nonatomic) NSMutableArray<UIImageView *> *tempArray;
 
-@property (nonatomic, strong) MBBtnView * btnView;
+@property (nonatomic, strong) MBBtnView * btnView1,*btnView2,*btnView3;
 
 @end
 
@@ -86,35 +87,67 @@
     
     return _playerView;
 }
--(MBBtnView *)btnView{
-  if(!_btnView){
-    _btnView = [[MBBtnView alloc]init];
-    _btnView.frame = CGRectMake(0,0 , KScreenWidth, KScreenHeight);
-    _btnView.dataDelegate = self;
+-(MBBtnView *)btnView1{
+  if(!_btnView1){
+    _btnView1 = [[MBBtnView alloc]init];
+    _btnView1.dataDelegate = self;
   }
-  return _btnView;
+  return _btnView1;
 }
 
--(MBVideoImage *)firstImageView{
+-(MBBtnView *)btnView2{
+  if(!_btnView2){
+    _btnView2 = [[MBBtnView alloc]init];
+    _btnView2.dataDelegate = self;
+  }
+  return _btnView2;
+}
+-(MBBtnView *)btnView3{
+  if(!_btnView3){
+    _btnView3 = [[MBBtnView alloc]init];
+    _btnView3.dataDelegate = self;
+
+  }
+  return _btnView3;
+}
+-(UIImageView *)firstImageView{
   if(!_firstImageView){
-    _firstImageView = [[MBVideoImage alloc]init];
+    _firstImageView = [[UIImageView alloc]init];
+    _firstImageView.userInteractionEnabled = YES;
     [self addSubview:_firstImageView];
+    [self addSubview:self.btnView1];
+    self.btnView1.sd_layout
+    .centerYEqualToView(_firstImageView)
+    .centerYEqualToView(_firstImageView)
+    .widthIs(KScreenWidth).heightIs(KScreenHeight);
   }
   return _firstImageView;
 }
 
--(MBVideoImage *)secondImageView{
+-(UIImageView *)secondImageView{
   if(!_secondImageView){
-    _secondImageView = [[MBVideoImage alloc]init];
+    _secondImageView = [[UIImageView alloc]init];
+    _secondImageView.userInteractionEnabled = YES;
     [self addSubview:_secondImageView];
+    [self addSubview:self.btnView2];
+    self.btnView2.sd_layout
+    .centerYEqualToView(_secondImageView)
+    .centerYEqualToView(_secondImageView)
+    .widthIs(KScreenWidth).heightIs(KScreenHeight);
   }
   return _secondImageView;
 }
 
--(MBVideoImage *)thirdImageView{
+-(UIImageView *)thirdImageView{
   if(!_thirdImageView){
-    _thirdImageView = [[MBVideoImage alloc]init];
+    _thirdImageView = [[UIImageView alloc]init];
+    _thirdImageView.userInteractionEnabled = YES;
     [self addSubview:_thirdImageView];
+    [self addSubview:self.btnView3];
+    self.btnView3.sd_layout
+    .centerYEqualToView(_thirdImageView)
+    .centerYEqualToView(_thirdImageView)
+    .widthIs(KScreenWidth).heightIs(KScreenHeight);
   }
   return _thirdImageView;
 }
@@ -126,7 +159,6 @@
     if (data.count == 0) {
         return;
     }
-    
     if (self.dataArray.count < 3) {//还没有数据
       if(self.dataArray.count==0){
         self.dataArray = [NSMutableArray arrayWithArray:data];
@@ -138,9 +170,7 @@
           self.firstVideoModel = self.dataArray.firstObject;
           CGRect firstFrame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
           self.firstImageView.frame = firstFrame;
-          self.firstImageView.model = self.firstVideoModel;
-          self.firstImageView.dataDelegate = self;
-          self.firstImageView.Delegate = self;
+          self.btnView1.model = self.firstVideoModel;
           [self.firstImageView setImageWithURL:[NSURL URLWithString:[[self getUrlfromArr:self.firstVideoModel type:@"img"] getUrlAndWidth:KScreenWidth height:KScreenHeight]] placeholder:[UIImage imageWithColor:[UIColor colorWithHexString:@"f5f5f5"]]];
           self.currentIndexOfImageView = 0;
         }
@@ -148,11 +178,8 @@
         if (self.dataArray.count > 1) {
             CGRect secondFrame = CGRectMake(0, self.frame.size.height, self.frame.size.width, self.frame.size.height);
             self.secondImageView.frame = secondFrame;
-            self.secondImageView.dataDelegate = self;
-            self.secondImageView.Delegate = self;
-
             self.secondVideoModel = self.dataArray[1];
-            self.secondImageView.model = self.secondVideoModel;
+            self.btnView2.model = self.secondVideoModel;
             [self.secondImageView setImageWithURL:[NSURL URLWithString:[[self getUrlfromArr:self.secondVideoModel type:@"img"] getUrlAndWidth:KScreenWidth height:KScreenHeight]] placeholder:[UIImage imageWithColor:[UIColor colorWithHexString:@"f5f5f5"]]];
             self.currentIndexOfImageView++;
         }
@@ -160,11 +187,8 @@
         if (self.dataArray.count > 2) {
             CGRect thirdFrame = CGRectMake(0, self.frame.size.height * 2, self.frame.size.width, self.frame.size.height);
             self.thirdImageView.frame =  thirdFrame;
-            self.thirdImageView.dataDelegate = self;
-            self.thirdImageView.Delegate = self;
-
             self.thirdVideoModel = self.dataArray[2];
-            self.thirdImageView.model = self.thirdVideoModel;
+            self.btnView3.model = self.thirdVideoModel;
             [self.thirdImageView setImageWithURL:[NSURL URLWithString:[[self getUrlfromArr:self.thirdVideoModel type:@"img"] getUrlAndWidth:KScreenWidth height:KScreenHeight]] placeholder:[UIImage imageWithColor:[UIColor colorWithHexString:@"f5f5f5"]]];
             self.currentIndexOfImageView++;
         }
@@ -186,25 +210,22 @@
 #pragma mark - Private
 
 - (void)playVideo {
+  MBModelData *videoModel = [self.dataArray objectAtIndex:self.currentIndexOfShowView];
+  [self.playerView setUrlString:[self getUrlfromArr:videoModel type:@"video"]];
+  self.playerView.frame = CGRectMake(0, 0, KScreenWidth, KScreenHeight);
     if (self.firstImageView&&self.firstImageView.frame.origin.y == self.contentOffset.y) {
-        self.playerView.frame = self.firstImageView.frame;
+      [self.firstImageView addSubview:self.playerView ];
     }
     
     if (self.secondImageView&&self.secondImageView.frame.origin.y == self.contentOffset.y) {
-        self.playerView.frame = self.secondImageView.frame;
+      [self.secondImageView addSubview:self.playerView ];
     }
     
     if (self.thirdImageView&&self.thirdImageView.frame.origin.y == self.contentOffset.y) {
-        self.playerView.frame = self.thirdImageView.frame;
+      [self.thirdImageView addSubview:self.playerView ];
     }
-    
-  MBModelData *videoModel = [self.dataArray objectAtIndex:self.currentIndexOfShowView];
-  
-  [self.playerView setUrlString:[self getUrlfromArr:videoModel type:@"video"]];
-  self.btnView.model = videoModel;
+  self.isInitVideo = YES;
   self.playerView.playDelegate = self;
-  [self.playerView addSubview: self.btnView];
-  [self addSubview:self.playerView];
   [self.playerView setHidden:YES];
 }
 
@@ -250,7 +271,7 @@
         frame.origin.y += self.frame.size.height;
         self.thirdImageView.frame = frame;
         self.thirdVideoModel = [self.dataArray objectAtIndex:self.currentIndexOfImageView];
-        self.thirdImageView.model = self.thirdVideoModel;
+        self.btnView3.model = self.thirdVideoModel;
         [self.thirdImageView setImageWithURL:[NSURL URLWithString:[[self getUrlfromArr:self.thirdVideoModel type:@"img"] getUrlAndWidth:KScreenWidth height:KScreenHeight]] placeholder:[UIImage imageWithColor:[UIColor colorWithHexString:@"f5f5f5"]]];
     }
     
@@ -280,7 +301,7 @@
             frame.origin.y -= self.frame.size.height;
             self.firstImageView.frame = frame;
             self.firstVideoModel = [self.dataArray objectAtIndex:self.currentIndexOfImageView - IMAGEVIEW_COUNT];
-          self.firstImageView.model = self.firstVideoModel;
+          self.btnView1.model = self.firstVideoModel;
           [self.firstImageView setImageWithURL:[NSURL URLWithString:[[self getUrlfromArr:self.firstVideoModel type:@"img"] getUrlAndWidth:KScreenWidth height:KScreenHeight]] placeholder:[UIImage imageWithColor:[UIColor colorWithHexString:@"f5f5f5"]]];
           
             self.currentIndexOfImageView--;
@@ -302,6 +323,10 @@
 // 结束滚动后开始返回当前下标
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
   if(self.playerView&&self.playerView.frame.origin.y!=scrollView.contentOffset.y){
+    self.isInitVideo = false;
+    self.btnView1.playImageView.hidden = NO;
+    self.btnView2.playImageView.hidden = NO;
+    self.btnView3.playImageView.hidden = NO;
     [self.playerView.player pause];
     self.playerView.hidden = YES;
   }
@@ -315,16 +340,17 @@
 }
 
 #pragma mark -  MBBtnViewDelegate
-- (void)clickImagePlayOrPause{
-  [self playVideo];
-}
-
 -(void)clickPlayOrPause{
-  if(self.playerView.isPlaying){
-    [self.playerView.player pause];
+  if(self.isInitVideo){
+      if(self.playerView.isPlaying){
+        [self.playerView.player pause];
+      }else{
+        [self.playerView.player play];
+      }
   }else{
-    [self.playerView.player play];
+    [self playVideo];
   }
+
 }
 
 - (void)clickDownload{
@@ -352,7 +378,7 @@
 }
 
 -(void)resetStatus{
-  self.btnView.playImageView.hidden = YES;
+
 }
 
 -(NSString*)getUrlfromArr:(MBModelData*)data type:(NSString*)type{

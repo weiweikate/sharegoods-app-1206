@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol  MBHeaderViewDelegate <NSObject>
 - (void)headerClick;
-- (void)goBack; //点击播放/暂停
+- (void)goBack; 
 - (void)guanzhuClick;
 - (void)shareClick;
 @end

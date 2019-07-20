@@ -8,17 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import "MBPlayerView.h"
+#import "MBVideoModel.h"
 
 @class MBPlayerManager;
-@class MBVideoModel;
-
 @protocol  MBSrcollViewDataDelegate <NSObject>
 
 - (void)pullNewData;  //拉取新的额消息
-- (void)clickDownload;
--(void)clicCollection;
--(void)clickZan;
--(void)clickBuy;
+- (void)clickDownload:(MBModelData*) model;
+-(void)clicCollection:(MBModelData*) model;
+-(void)clickZan:(MBModelData*) model;
+-(void)clickBuy:(MBModelData*) model;
 -(void)getCurrentDataIndex:(NSInteger)index;
 @end
 

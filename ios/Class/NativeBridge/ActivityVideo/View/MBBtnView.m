@@ -55,7 +55,7 @@
   UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickPlay)];
   [self addGestureRecognizer:tapGesture];
   self.userInteractionEnabled = YES;
-  self.playImageView.hidden = YES;
+  self.playImageView.hidden = NO;
 }
 
 -(void)setUI{
@@ -357,7 +357,7 @@
 
 -(void)clickBuy{
   if(self.dataDelegate){
-    [self.dataDelegate clickBuy];
+    [self.dataDelegate clickBuy:self.model];
   }
 }
 
@@ -369,22 +369,33 @@
 }
 
 -(void)clickDownLoad:(UIButton*)sender{
+  self.downLoadNum.text = [NSString stringWithNumber:self.model.downloadCount++];
   if(self.dataDelegate){
-    [self.dataDelegate clickDownload];
+    [self.dataDelegate clickDownload:self.model];
   }
 }
 
 -(void)clicCollection:(UIButton*)sender{
+  if(sender.selected){
+    self.collectionNum.text = [NSString stringWithNumber:self.model.collectCount--];
+  }else{
+    self.collectionNum.text = [NSString stringWithNumber:self.model.collectCount++];
+  }
   sender.selected = !sender.selected;
   if(self.dataDelegate){
-    [self.dataDelegate clicCollection];
+    [self.dataDelegate clicCollection:self.model];
   }
 }
 
 -(void)clickZan:(UIButton*)sender{
+  if(sender.selected){
+    self.zanNum.text = [NSString stringWithNumber:self.model.likesCount--];
+  }else{
+    self.zanNum.text = [NSString stringWithNumber:self.model.likesCount++];
+  }
   sender.selected = !sender.selected;
   if(self.dataDelegate){
-    [self.dataDelegate clickZan];
+    [self.dataDelegate clickZan:self.model];
   }
 }
 

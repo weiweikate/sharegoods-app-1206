@@ -52,7 +52,7 @@ export default class ShowVideoPage extends BasePage {
             return (
                 <View style={{ flex: 1 }}>
                     <ShowVideoListView style={{ flex: 1 }}
-                                       params={JSON.stringify(this.params.data)}/>
+                                       params={this.params.data}/>
                 </View>
             );
         } else {

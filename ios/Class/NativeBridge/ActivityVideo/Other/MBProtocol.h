@@ -7,16 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "MBVideoModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol MBProtocol <NSObject>
 
-- (void)clickBuy;
+- (void)clickBuy:(MBModelData*) model;
 - (void)clickPlayOrPause; //点击播放/暂停
-- (void)clickDownload;
-- (void)clicCollection;
--(void)clickZan;
+- (void)clickDownload:(MBModelData*) model;
+- (void)clicCollection:(MBModelData*) model;
+-(void)clickZan:(MBModelData*) model;
 
 @end
 

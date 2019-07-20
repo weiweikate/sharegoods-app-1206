@@ -25,7 +25,7 @@
     self = [super initWithFrame:frame];
 
     if (self) {
-      self.backgroundColor = [UIColor blackColor];
+//      self.backgroundColor = [UIColor blackColor];
       self.frame = frame;
       [self addPlayEvent];
       self.isPlaying = NO;
@@ -84,6 +84,7 @@
     [self.playerLayer removeFromSuperlayer];
     self.player = nil;
     self.playerLayer = nil;
+    self.backgroundColor = [UIColor clearColor];
     if ([self.playDelegate respondsToSelector:@selector(resetStatus)]) {
       [self.playDelegate resetStatus];
     }
@@ -135,6 +136,7 @@
                 
             case AVPlayerItemStatusReadyToPlay:
                 NSLog(@"%@", @"AVPlayerItemStatusReadyToPlay");
+                self.backgroundColor = [UIColor blackColor];
                 [self.player play];
                 if ([self.playDelegate respondsToSelector:@selector(playerViewDidPrepareToShowVideo)]) {
                     [self.playDelegate playerViewDidPrepareToShowVideo];
