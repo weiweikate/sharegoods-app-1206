@@ -22,13 +22,13 @@
                 android:layout_margin="10dp"
                 />
 
-            <!--<ImageView-->
-                <!--android:id="@+id/aliyun_ready_record"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_margin="10dp"-->
-                <!--android:padding="5dp"-->
-                <!--android:src="@mipmap/alivc_svideo_icon_magic" />-->
+            <ImageView
+                android:id="@+id/aliyun_ready_record"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:padding="5dp"
+                android:src="@mipmap/alivc_svideo_icon_magic" />
 
 
             <ImageView
@@ -253,7 +253,7 @@
                     android:id="@+id/iv_gif_effect"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/icon_play"/>
+                    android:src="@mipmap/select_video_icon"/>
 
             </LinearLayout>
         </RelativeLayout>

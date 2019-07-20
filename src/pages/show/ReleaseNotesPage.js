@@ -11,7 +11,8 @@ import {
     TouchableWithoutFeedback,
     Keyboard,
     TextInput,
-    NativeModules
+    NativeModules,
+    Platform
 } from 'react-native';
 import BasePage from '../../BasePage';
 import { MRText } from '../../components/ui';
@@ -28,6 +29,7 @@ import RouterMap, { replaceRoute } from '../../navigation/RouterMap';
 import TagView from './components/TagView';
 import PictureVideoUtils from './utils/PictureVideoUtils';
 import ImageOrVideoModal from './components/ImageOrVideoModal';
+import user from '../../model/user';
 
 const { addIcon, delIcon, iconShowDown, iconShowEmoji, addShowIcon, showTagIcon } = res;
 const { arrow_right_black } = res.button;
@@ -160,7 +162,8 @@ export default class ReleaseNotesPage extends BasePage {
         let productsPar = products.map((value) => {
             return value.spuCode;
         });
-        NativeModules.ShowModule.uploadVideo('cs', videoPath).then((data) => {
+        let title = `${user.code}-${new Date().getTime()}-${this.state.titleText}`;
+        NativeModules.ShowModule.uploadVideo(title, videoPath).then((data) => {
             PictureVideoUtils.uploadSingleImage(videoCover, (res) => {
                 if (res.url) {
                     let videoCover = {
@@ -205,27 +208,36 @@ export default class ReleaseNotesPage extends BasePage {
     };
 
     chooseImage = () => {
-        this.setState({selector:false});
-        let imageArr = this.state.imageArr;
-        if (imageArr.length >= 8) {
-            return;
-        }
-        let num = 8 - imageArr.length;
-        PictureVideoUtils.selectPictureOrVideo(num, false, callback => {
-            if (callback.type === 'video') {
-                this.setState({ videoData: callback });
-            } else {
-                let result = imageArr.concat(callback.images);
-                this.setState({ imageArr: result });
+        this.setState({selector:false},()=>{
+            let imageArr = this.state.imageArr;
+            if (imageArr.length >= 8) {
+                return;
             }
+            let num = 8 - imageArr.length;
+            PictureVideoUtils.selectPictureOrVideo(num, false, callback => {
+                if (callback.type === 'video') {
+                    this.setState({ videoData: callback });
+                } else {
+                    let result = imageArr.concat(callback.images);
+                    this.setState({ imageArr: result });
+                }
+            });
         });
     };
 
     chooseVideo = () => {
         this.setState({selector:false});
-        NativeModules.ShowModule.recordVideo().then((data) => {
-            this.setState({ videoData: data });
-        });
+
+        if (Platform.OS === 'android'){
+            NativeModules.ShowModule.recordVideo().then((data) => {
+                this.setState({ videoData: data });
+            });
+        } else {
+            NativeModules.MRImagePickerBridge.getShowVideo().then((data)=>{
+                this.setState({videoData:data})
+            });
+        }
+
     };
 
     deletePic = (index) => {

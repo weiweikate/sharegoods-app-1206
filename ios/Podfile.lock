@@ -30,6 +30,7 @@ PODS:
   - JCore (1.2.6)
   - JPush (3.1.2):
     - JCore (~> 1.2.6)
+  - JSONModel (1.7.0)
   - JVerification (2.1.5):
     - JCore (< 3.0.0, >= 1.2.6)
   - MBProgressHUD (1.1.0)
@@ -112,6 +113,7 @@ DEPENDENCIES:
   - CocoaLumberjack (~> 3.4.1)
   - IQKeyboardManager (~> 6.2.0)
   - JPush (~> 3.1.0)
+  - JSONModel (~> 1.7.0)
   - JVerification (~> 2.1.5)
   - MBProgressHUD (~> 1.1.0)
   - MJRefresh
@@ -145,6 +147,7 @@ SPEC REPOS:
     - IQKeyboardManager
     - JCore
     - JPush
+    - JSONModel
     - JVerification
     - MBProgressHUD
     - MJRefresh
@@ -178,6 +181,7 @@ SPEC CHECKSUMS:
   IQKeyboardManager: 6194101620b73af5e67900b8f89707a99de0b804
   JCore: cae516dd2bf1a73b578ce6e1065abd49e709e0f7
   JPush: d0cead70ba223a6a3b52749899ebda830dfbc49a
+  JSONModel: 840bc0fcffb24b8454d2c026bf26fea454b8e98d
   JVerification: 679d7702963eb09392378308a74e2933c85bff79
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   MJRefresh: 697f8ec75ebdbe9207767bb682cf0f51b0d8a41f
@@ -201,6 +205,6 @@ SPEC CHECKSUMS:
   WechatOpenSDK: 9b721089507c895d05f997408c30bb6e6f5f9b60
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-PODFILE CHECKSUM: 12a014e3c0c99df53f4302e2e0198c9d8bd8d40c
+PODFILE CHECKSUM: 9c9620426e7721fc1f2415aa844ddd882e07c87f
 
 COCOAPODS: 1.6.1

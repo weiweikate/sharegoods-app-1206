@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 typedef void(^hyfFinshSelectBlock)(NSArray * imageOrVideoArr);
+typedef void(^hyfFinshRecordVideo)(NSArray * videoArr);
 
 @interface MRImageVideoManager : NSObject
 
@@ -23,6 +24,8 @@ SINGLETON_FOR_HEADER(MRImageVideoManager)
 +(void)getImageAndVideo;
 
 -(void)startSelectImageOrVideoWithBlock:(NSDictionary *)options and:(hyfFinshSelectBlock)finshBlock;
+
+-(void)startRecordVideo:(hyfFinshSelectBlock)finshBlock;
 
 @end
 

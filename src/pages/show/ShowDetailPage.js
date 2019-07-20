@@ -97,6 +97,7 @@ export default class ShowDetailPage extends BasePage {
                         Toast.hiddenLoading();
                         let data = this.params.data;
                         data.hotCount += 1;
+                        console.log(data);
                         this.showDetailModule.setDetail(data);
                         this.getDetailTagWithCode(data.showNo);
                         this.params.ref && this.params.ref.replaceData(this.params.index, data.hotCount);

@@ -19,6 +19,7 @@ import com.meeruu.sharegoods.rn.showground.ShowDynamicViewManager;
 import com.meeruu.sharegoods.rn.showground.ShowGroundViewManager;
 import com.meeruu.sharegoods.rn.showground.ShowModule;
 import com.meeruu.sharegoods.rn.showground.ShowRecommendViewManager;
+import com.meeruu.sharegoods.rn.showground.ShowVideoViewManager;
 import com.meeruu.sharegoods.rn.viewmanager.MRBannerViewManager;
 import com.meeruu.sharegoods.rn.waveview.WaveViewManager;
 
@@ -83,7 +84,8 @@ public class RNMRPackage implements ReactPackage {
                 new RecyclerViewHeaderManager(),
                 new ShowGroundViewManager(),
                 new ShowRecommendViewManager(),
-                new ShowDynamicViewManager());
+                new ShowDynamicViewManager(),
+                new ShowVideoViewManager());
     }
 
 }

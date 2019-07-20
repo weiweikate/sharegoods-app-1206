@@ -22,6 +22,7 @@ import EmptyUtils from '../../utils/EmptyUtils';
 import ShowDynamicView from './components/ShowDynamicView';
 import ShowGroundView from './components/ShowGroundView';
 import RouterMap from '../../navigation/RouterMap';
+import WriterInfoView from './components/WriterInfoView';
 
 const headerBgSize = { width: 375, height: 200 };
 const headerHeight = ScreenUtils.statusBarHeight + 44;
@@ -67,7 +68,8 @@ export default class MyDynamicPage extends BasePage {
         }
 
         return (
-            <View style={{flex: 1, marginBottom: px2dp(ScreenUtils.isIOS ? 10 : 0)}}>
+            <View style={{flex: 1, height:px2dp(235),marginBottom: px2dp(ScreenUtils.isIOS ? 10 : 0)}}>
+                <View>
                 <ImageBackground source={EmptyUtils.isEmpty(user.headImg) ? showHeaderBg : {uri: user.headImg}}
                                  style={styles.headerContainer} blurRadius={EmptyUtils.isEmpty(user.headImg) ? 0 : 10}>
                     {icon}
@@ -75,6 +77,8 @@ export default class MyDynamicPage extends BasePage {
                         {name}
                     </Text>
                 </ImageBackground>
+                </View>
+                <WriterInfoView style={{marginLeft:DesignRule.margin_page}}/>
             </View>
         );
     };
@@ -118,14 +122,7 @@ export default class MyDynamicPage extends BasePage {
                             />
                         </TouchableOpacity>
                     </View>
-                    <Text style={{
-                        color: this.state.changeHeader ? DesignRule.white : DesignRule.textColor_mainTitle,
-                        fontSize: px2dp(17),
-                        includeFontPadding: false
-                    }}>
-                        我的
-                    </Text>
-                    <View style={{ flex: 1 }}/>
+
 
                 </View>
             </View>

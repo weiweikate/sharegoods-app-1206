@@ -23,6 +23,14 @@ RCT_EXPORT_METHOD(getImageOrVideo:(NSDictionary *)info and:(RCTPromiseResolveBlo
   });
 }
 
+RCT_EXPORT_METHOD(getShowVideo:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject){
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [[MRImageVideoManager sharedInstance] startRecordVideo:^(NSArray * _Nonnull videoArr) {
+      
+    }];
+  });
+}
+
 //RCT_EXPORT_METHOD(compressVideo:(nsstring *)path and:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 //{
 //  dispatch_async(dispatch_get_main_queue(), ^{

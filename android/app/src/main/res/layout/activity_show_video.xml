@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <com.meeruu.sharegoods.rn.showground.widgets.RecordView.AliyunSVideoRecordView
+    <com.meeruu.sharegoods.rn.showground.widgets.recordview.AliyunSVideoRecordView
         android:id="@+id/recordView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

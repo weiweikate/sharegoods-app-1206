@@ -51,8 +51,8 @@ import com.meeruu.sharegoods.rn.showground.event.onZanPressEvent;
 import com.meeruu.sharegoods.rn.showground.presenter.ShowgroundPresenter;
 import com.meeruu.sharegoods.rn.showground.view.IShowgroundView;
 import com.meeruu.sharegoods.rn.showground.widgets.CustomLoadMoreView;
-import com.meeruu.sharegoods.rn.showground.widgets.GridView.ImageInfo;
-import com.meeruu.sharegoods.rn.showground.widgets.GridView.NineGridView;
+import com.meeruu.sharegoods.rn.showground.widgets.gridview.ImageInfo;
+import com.meeruu.sharegoods.rn.showground.widgets.gridview.NineGridView;
 import com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView;
 
 import java.lang.ref.WeakReference;
