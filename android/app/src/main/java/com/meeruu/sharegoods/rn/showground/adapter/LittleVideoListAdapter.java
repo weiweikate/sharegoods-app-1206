@@ -21,6 +21,8 @@ import com.meeruu.sharegoods.rn.showground.utils.NumUtils;
 
 import java.util.List;
 
+import static com.meeruu.sharegoods.rn.showground.widgets.littlevideo.VideoListView.isLogin;
+
 public class LittleVideoListAdapter extends BaseVideoListAdapter<LittleVideoListAdapter.MyHolder>{
 
     public static final String TAG = LittleVideoListAdapter.class.getSimpleName();
@@ -58,6 +60,12 @@ public class LittleVideoListAdapter extends BaseVideoListAdapter<LittleVideoList
                 holder.ivLike.setImageResource(R.mipmap.icon_liked);
             }else {
                 holder.ivLike.setImageResource(R.mipmap.icon_like);
+            }
+
+            if(itemData.isCollect()){
+                holder.ivCollection.setImageResource(R.mipmap.icon_collected);
+            }else {
+                holder.ivCollection.setImageResource(R.mipmap.icon_collection);
             }
         }
     }
@@ -128,6 +136,7 @@ public class LittleVideoListAdapter extends BaseVideoListAdapter<LittleVideoList
         }else {
             myHolder.ivCollection.setImageResource(R.mipmap.icon_collection);
         }
+        myHolder.ivCollection.setTag(itemData.isCollect());
 
         String content = itemData.getContent();
         if(TextUtils.isEmpty(content)){
@@ -146,17 +155,16 @@ public class LittleVideoListAdapter extends BaseVideoListAdapter<LittleVideoList
                 if(videoListCallback != null){
                     videoListCallback.onDownload(itemData,position);
                 }
+                if(!isLogin){
+                    return;
+                }
+                int download = (Integer) myHolder.download.getTag()+1;
+                myHolder.download.setText(NumUtils.formatShowNum(download));
+                myHolder.download.setTag(download);
+
             }
         });
 
-        myHolder.ivCollection.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(videoListCallback != null){
-                    videoListCallback.onLike(itemData,position);
-                }
-            }
-        });
 
         myHolder.ivLike.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,22 +197,28 @@ public class LittleVideoListAdapter extends BaseVideoListAdapter<LittleVideoList
             public void onClick(View v) {
                 boolean isCollectioned =(Boolean) myHolder.ivCollection.getTag();
                 if(isCollectioned){
-                    myHolder.ivLike.setTag(Boolean.FALSE);
-                    myHolder.ivLike.setImageResource(R.mipmap.icon_like);
-                    int like = (Integer) myHolder.like.getTag();
-                    like-=1;
-                    myHolder.like.setTag(like);
-                    myHolder.like.setText(NumUtils.formatShowNum(like));
+                    myHolder.ivCollection.setTag(Boolean.FALSE);
+                    myHolder.ivCollection.setImageResource(R.mipmap.icon_collection);
+                    int collectionTag = (Integer) myHolder.collection.getTag();
+                    collectionTag-=1;
+                    myHolder.collection.setTag(collectionTag);
+                    myHolder.collection.setText(NumUtils.formatShowNum(collectionTag));
                 }else {
-                    myHolder.ivLike.setTag(Boolean.TRUE);
-                    myHolder.ivLike.setImageResource(R.mipmap.icon_liked);
-                    int like = (Integer) myHolder.like.getTag();
-                    like+=1;
-                    myHolder.like.setTag(like);
-                    myHolder.like.setText(NumUtils.formatShowNum(like));
+                    myHolder.ivCollection.setTag(Boolean.TRUE);
+                    myHolder.ivCollection.setImageResource(R.mipmap.icon_collected);
+                    int collectionTag = (Integer) myHolder.collection.getTag();
+                    collectionTag+=1;
+                    myHolder.collection.setTag(collectionTag);
+                    myHolder.collection.setText(NumUtils.formatShowNum(collectionTag));
+                }
+
+                if(videoListCallback != null){
+                    videoListCallback.onCollection(itemData,position);
                 }
             }
         });
+
+
 
         myHolder.tvBuy.setOnClickListener(new View.OnClickListener() {
             @Override

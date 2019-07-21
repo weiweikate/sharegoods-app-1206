@@ -83,6 +83,7 @@ public class ShowVideoViewManager extends SimpleViewManager<View> {
                 .put("MrSharePress", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onSharePress")))
                 .put("MrPressTagEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onPressTag")))
                 .put("MrBuyEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onBuy")))
+                .put("MrDownloadPressEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onDownloadPress")))
                 .build();
     }
 }
