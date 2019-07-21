@@ -22,6 +22,7 @@ public class UserCenterView {
     private ReactContext mContext;
     private ViewPager viewpager;
     private ViewGroup headerWrapper;
+    private String userType;
     private int ox =( ScreenUtils.getScreenWidth()- DensityUtils.dip2px(130))/2;
     private int oy = 0;
     private int headerHeight = 0;
@@ -35,10 +36,14 @@ public class UserCenterView {
     }
     private void initView(View view){
         viewpager = view.findViewById(R.id.viewpager);
-        TabPageAdapter adapter = new TabPageAdapter(mContext
-                , MINENORMAL);
-        viewpager.setAdapter(adapter);
+
         headerWrapper = view.findViewById(R.id.header_wrapper);
+    }
+
+    public void setUserType(String s){
+        TabPageAdapter adapter = new TabPageAdapter(mContext
+                , s);
+        viewpager.setAdapter(adapter);
     }
 
     private void initTabBar(View view){

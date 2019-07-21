@@ -32,7 +32,9 @@ public class ShowDynamicViewManager extends ViewGroupManager<ViewGroup> {
 
     @Override
     protected ViewGroup createViewInstance(ThemedReactContext reactContext) {
-        ViewGroup userCenterView = new UserCenterView().getUserCenterView(reactContext);
+        UserCenterView userCenter = new UserCenterView();
+        ViewGroup userCenterView = userCenter.getUserCenterView(reactContext);
+        userCenterView.setTag(userCenter);
         return userCenterView;
 
     }
@@ -43,6 +45,14 @@ public class ShowDynamicViewManager extends ViewGroupManager<ViewGroup> {
         Object object = view.getTag();
         if (object != null && object instanceof ShowDynamicView) {
             ((ShowDynamicView) object).setParams(map.toHashMap());
+        }
+    }
+
+    @ReactProp(name = "userType")
+    public void setUserType(View view, String s) {
+        Object object = view.getTag();
+        if (object != null && object instanceof UserCenterView) {
+            ((UserCenterView) object).setUserType(s);
         }
     }
 

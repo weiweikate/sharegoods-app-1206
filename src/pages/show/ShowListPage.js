@@ -210,7 +210,7 @@ export default class ShowListPage extends BasePage {
             this.$navigate(RouterMap.LoginPage);
             return;
         }
-        this.$navigate(RouterMap.MyDynamicPage);
+        this.$navigate(RouterMap.MyDynamicPage,{userType:WhiteModel.userStatus == 2 ? 'mineWriter':'mineNormal'});
     };
 
     _render() {
@@ -357,9 +357,11 @@ export default class ShowListPage extends BasePage {
                                                            ref: this.activityList,
                                                            index
                                                        };
-                                                       if (data.showType === 1 || data.showType === 3) {
+                                                       if (data.showType === 1 ) {
                                                            navigate(RouterMap.ShowDetailPage, params);
-                                                       } else if (data.showType === 4) {
+                                                       }  else if(data.showType === 3){
+                                                           navigate(RouterMap.ShowVideoPage, params);
+                                                       }else if (data.showType === 4) {
                                                            navigate(RouterMap.TagDetailPage, {
                                                                tagId: data.tagId,
                                                                name: data.tagName

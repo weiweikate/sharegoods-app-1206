@@ -36,6 +36,8 @@ import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.adapter.ProductsAdapter;
 import com.meeruu.sharegoods.rn.showground.adapter.ShowRecommendAdapter;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
+import com.meeruu.sharegoods.rn.showground.event.OnCollectionEvent;
+import com.meeruu.sharegoods.rn.showground.event.OnSeeUserEvent;
 import com.meeruu.sharegoods.rn.showground.event.addCartEvent;
 import com.meeruu.sharegoods.rn.showground.event.onDownloadPressEvent;
 import com.meeruu.sharegoods.rn.showground.event.onEndScrollEvent;
@@ -47,7 +49,7 @@ import com.meeruu.sharegoods.rn.showground.event.onScrollYEvent;
 import com.meeruu.sharegoods.rn.showground.event.onSharePressEvent;
 import com.meeruu.sharegoods.rn.showground.event.onStartRefreshEvent;
 import com.meeruu.sharegoods.rn.showground.event.onStartScrollEvent;
-import com.meeruu.sharegoods.rn.showground.event.onZanPressEvent;
+import com.meeruu.sharegoods.rn.showground.event.OnZanPressEvent;
 import com.meeruu.sharegoods.rn.showground.presenter.ShowgroundPresenter;
 import com.meeruu.sharegoods.rn.showground.view.IShowgroundView;
 import com.meeruu.sharegoods.rn.showground.widgets.CustomLoadMoreView;
@@ -67,7 +69,9 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
     private EventDispatcher eventDispatcher;
     private onStartScrollEvent startScrollEvent;
     private onEndScrollEvent endScrollEvent;
-    private onZanPressEvent onZanPressEvent;
+    private OnZanPressEvent onZanPressEvent;
+    private OnSeeUserEvent onSeeUserEvent;
+    private OnCollectionEvent onCollectionEvent;
     private onSharePressEvent onSharePressEvent;
     private onDownloadPressEvent onDownloadPressEvent;
     private onScrollYEvent onScrollYEvent;
@@ -80,6 +84,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
     private View errView;
     private View errImg;
     private boolean sIsScrolling;
+    public static boolean isLogin;
 
     private int page = 1;
 
@@ -92,6 +97,10 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         initData();
 
         return (ViewGroup) view;
+    }
+
+    public void setLogin(boolean login){
+        isLogin = login;
     }
 
     public void initView(Context context, final View view) {
@@ -118,7 +127,9 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         startScrollEvent = new onStartScrollEvent();
         endScrollEvent = new onEndScrollEvent();
         itemPressEvent = new onItemPressEvent();
-        onZanPressEvent = new onZanPressEvent();
+        onZanPressEvent = new OnZanPressEvent();
+        onSeeUserEvent = new OnSeeUserEvent();
+        onCollectionEvent = new OnCollectionEvent();
         onDownloadPressEvent = new onDownloadPressEvent();
         onSharePressEvent = new onSharePressEvent();
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -300,6 +311,12 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
                     case R.id.content:
                         toDetail(position, view);
                         break;
+                    case R.id.icon_collection:
+                        delayCollection(bean, view, position, data);
+                        break;
+                    case R.id.user_icon:
+                        delaySeeUser(bean, view, position, data);
+                        break;
                     default:
                         break;
                 }
@@ -374,6 +391,53 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         data.set(position, bean);
         adapter.replaceData(data);
     }
+
+    private void delaySeeUser(NewestShowGroundBean.DataBean bean, View view, int position,
+    List<NewestShowGroundBean.DataBean> data) {
+        if (eventDispatcher != null) {
+            onSeeUserEvent.init(view.getId());
+            String jsonStr = JSON.toJSONString(bean);
+            Map map = JSONObject.parseObject(jsonStr, new TypeReference<Map>() {
+            });
+            WritableMap realData = Arguments.makeNativeMap(map);
+            onSeeUserEvent.setData(realData);
+            eventDispatcher.dispatchEvent(onSeeUserEvent);
+        }
+    }
+
+      private void delayCollection(NewestShowGroundBean.DataBean bean, View view, int position,
+                             List<NewestShowGroundBean.DataBean> data) {
+        if(!isLogin){
+            onCollectionEvent.init(view.getId());
+            eventDispatcher.dispatchEvent(onCollectionEvent);
+            return;
+        }
+        if (bean.isCollect()) {
+            bean.setCollect(false);
+            if (bean.getCollectCount() > 0) {
+                bean.setCollectCount(bean.getCollectCount() - 1);
+            }
+        } else {
+            bean.setCollect(true);
+            bean.setCollectCount(bean.getCollectCount() + 1);
+        }
+        if (eventDispatcher != null) {
+            onCollectionEvent.init(view.getId());
+            String jsonStr = JSON.toJSONString(bean);
+            Map map = JSONObject.parseObject(jsonStr, new TypeReference<Map>() {
+            });
+            Map result = new HashMap();
+            result.put("index", position);
+            result.put("detail", map);
+            WritableMap realData = Arguments.makeNativeMap(result);
+            onCollectionEvent.setData(realData);
+            eventDispatcher.dispatchEvent(onCollectionEvent);
+        }
+        data.set(position, bean);
+        adapter.replaceData(data);
+    }
+
+
 
 
     private void delayDownload(View view, int position, NewestShowGroundBean.DataBean bean) {

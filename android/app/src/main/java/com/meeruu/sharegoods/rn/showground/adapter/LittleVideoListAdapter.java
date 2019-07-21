@@ -195,6 +195,12 @@ public class LittleVideoListAdapter extends BaseVideoListAdapter<LittleVideoList
         myHolder.ivCollection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(videoListCallback != null){
+                    videoListCallback.onCollection(itemData,position);
+                }
+                if(!isLogin){
+                    return;
+                }
                 boolean isCollectioned =(Boolean) myHolder.ivCollection.getTag();
                 if(isCollectioned){
                     myHolder.ivCollection.setTag(Boolean.FALSE);
@@ -210,10 +216,6 @@ public class LittleVideoListAdapter extends BaseVideoListAdapter<LittleVideoList
                     collectionTag+=1;
                     myHolder.collection.setTag(collectionTag);
                     myHolder.collection.setText(NumUtils.formatShowNum(collectionTag));
-                }
-
-                if(videoListCallback != null){
-                    videoListCallback.onCollection(itemData,position);
                 }
             }
         });

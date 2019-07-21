@@ -69,7 +69,6 @@ export default class MyDynamicPage extends BasePage {
 
         return (
             <View style={{flex: 1, height:px2dp(235),marginBottom: px2dp(ScreenUtils.isIOS ? 10 : 0)}}>
-                <View>
                 <ImageBackground source={EmptyUtils.isEmpty(user.headImg) ? showHeaderBg : {uri: user.headImg}}
                                  style={styles.headerContainer} blurRadius={EmptyUtils.isEmpty(user.headImg) ? 0 : 10}>
                     {icon}
@@ -77,7 +76,6 @@ export default class MyDynamicPage extends BasePage {
                         {name}
                     </Text>
                 </ImageBackground>
-                </View>
                 <WriterInfoView style={{marginLeft:DesignRule.margin_page}}/>
             </View>
         );
@@ -160,6 +158,7 @@ export default class MyDynamicPage extends BasePage {
                 <Waterfall style={{ flex: 1, marginTop: -10 }}
                            uri={'/social/show/content/page/mine/query@GET'}
                            headerHeight={px2dp(headerHeight)}
+                           userType={this.params.userType}
                            type={'MyDynamic'}
                            renderHeader={this.renderHeader()}
                            onItemPress={({ nativeEvent }) => {

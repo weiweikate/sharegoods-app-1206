@@ -4,9 +4,9 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 
-public class onZanPressEvent extends Event<onZanPressEvent> {
+public class OnCollectionEvent extends Event<OnCollectionEvent> {
     private WritableMap data;
-    private static final String EVENT_NAME = "MrZanPressEvent";
+    private static final String EVENT_NAME = "MrCollectionEvent";
 
     public void setData(WritableMap data) {
         this.data = data;

@@ -34,7 +34,8 @@ export default class ShowVideoPage extends BasePage {
         this.data = {}
         this.state = {
             detail:null,
-            pageState: PageLoadingState.loading
+            pageState: PageLoadingState.loading,
+            productModalVisible:false
         };
 
     }
@@ -83,7 +84,7 @@ export default class ShowVideoPage extends BasePage {
                                        onSharePress={({nativeEvent})=>{
                                            this.setState({ detail: null }, () => {
                                                this.setState({
-                                                   detail:nativeEvent.detail
+                                                   detail:nativeEvent
                                                }, () => {
                                                    this.shareModal && this.shareModal.open();
                                                });
@@ -96,6 +97,30 @@ export default class ShowVideoPage extends BasePage {
                                                    productModalVisible:true
                                                });
                                            });
+                                       }}
+                                       onDownloadPress={({nativeEvent})=>{
+                                       }}
+                                       onCollectPress={({nativeEvent})=>{
+                                           alert(JSON.stringify(nativeEvent))
+                                           if(user.isLogin){
+                                               if(!nativeEvent.collect){
+                                                   ShowApi.reduceCountByType({showNo:nativeEvent.showNo,type:2}).then(()=>{
+
+                                                   }).catch(()=>{
+
+                                                   })
+                                               }else {
+                                                   ShowApi.incrCountByType({showNo:nativeEvent.showNo,type:2}).then(()=>{
+
+                                                   }).catch(()=>{
+
+                                                   })
+                                               }
+                                           }else {
+                                               routeNavigate(RouterMap.LoginPage);
+                                           }
+                                       }}
+                                       onLikePress={({nativeEvent})=>{
                                        }}
 
                                        isLogin={!EmptyUtils.isEmpty(user.token)}
