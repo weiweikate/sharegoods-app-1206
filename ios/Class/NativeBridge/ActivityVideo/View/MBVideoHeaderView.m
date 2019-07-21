@@ -11,6 +11,7 @@
 #import "UIImageView+WebCache.h"
 #import "NSString+UrlAddParams.h"
 #import "UIImage+Util.h"
+#import "NetWorkTool.h"
 
 @interface MBVideoHeaderView()
 @property (nonatomic,strong) UIImageView * goBackImg;
@@ -208,6 +209,11 @@
       [defaults synchronize];
     }
     sender.selected = !sender.selected;
+    if(sender.selected){
+      [self follow:modeltemp.userInfoVO.userNo];
+    }else{
+      [self cancelFollow:modeltemp.userInfoVO.userNo];
+    }
     modeltemp.attentionStatus = sender.selected;
   }
   if(self.dataDelegate){
@@ -240,13 +246,32 @@
           self.guanBtn.selected = NO;
         }
       }else{
-        self.guanBtn.selected = model.attentionStatus;
+        self.guanBtn.selected = model.attentionStatus!=0?YES:NO;
       }
     }
   }
   if(model.hotCount){
     self.hotLab.text = [NSString stringWithFormat:@"%ld人气值",model.hotCount];
   }
+}
+
+
+#pragma arguments - Networking
+
+-(void)follow:(NSString*)userNo{
+  [NetWorkTool requestWithURL:@"/social/show/user/follow@POST" params:@{@"userNo":userNo} toModel:nil success:^(NSDictionary* result) {
+    NSLog(@"success");
+  } failure:^(NSString *msg, NSInteger code) {
+    NSLog(@"failure");
+  } showLoading:nil];
+}
+
+-(void)cancelFollow:(NSString*)userNo{
+  [NetWorkTool requestWithURL:@"/social/show/user/cancel/follow@POST" params:@{@"userNo":userNo} toModel:nil success:^(NSDictionary* result) {
+    NSLog(@"success");
+  } failure:^(NSString *msg, NSInteger code) {
+    NSLog(@"failure");
+  } showLoading:nil];
 }
 
 @end
