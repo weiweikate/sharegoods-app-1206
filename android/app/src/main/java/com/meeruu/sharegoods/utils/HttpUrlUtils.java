@@ -21,6 +21,8 @@ public class HttpUrlUtils {
     public static final String URL_COLLECTION_LIST = "/social/show/content/page/mine/collect"; //我的收藏
     public static final String REDUCE_COUNT_BY_TYPE = "/social/show/count/reduceCountByType"; //取消点赞/收藏/浏览量
     public static final String URL_OTHER_ARTICLE = "/social/show/content/page/other/query"; //查询其他人的文章
+    public static final String URL_ATTENTION = "/social/show/user/follow"; //关注某人
+    public static final String URL_ATTENTION_NO = "/social/show/user/cancel/follow"; //取消关注
 
 
 

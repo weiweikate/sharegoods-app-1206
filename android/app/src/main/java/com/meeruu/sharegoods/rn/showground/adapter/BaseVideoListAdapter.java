@@ -3,6 +3,7 @@ package com.meeruu.sharegoods.rn.showground.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Point;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -19,6 +20,7 @@ import com.meeruu.sharegoods.rn.showground.widgets.gridview.ImageInfo;
 import com.meeruu.sharegoods.rn.showground.widgets.littlevideo.IVideoSourceModel;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public abstract class BaseVideoListAdapter<VH extends BaseVideoListAdapter.BaseHolder> extends RecyclerView.Adapter<VH>  {
@@ -124,6 +126,14 @@ public abstract class BaseVideoListAdapter<VH extends BaseVideoListAdapter.BaseH
         notifyDataSetChanged();
     }
 
+    public void replaceData(@NonNull Collection<NewestShowGroundBean.DataBean> data) {
+        // 不是同一个引用才清空列表
+        if (data != list) {
+            list.clear();
+            list.addAll(data);
+        }
+        notifyDataSetChanged();
+    }
     /**
      * 添加数据
      * @param list

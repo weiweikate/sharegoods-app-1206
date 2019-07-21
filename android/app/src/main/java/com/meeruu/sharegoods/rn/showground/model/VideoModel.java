@@ -25,6 +25,59 @@ public class VideoModel implements IVideoModel {
         RequestManager.getInstance().doGet(ONLY_NETWORK,videoRequestConfig, callback);
     }
 
+    @Override
+    public void attentionUser(String userCode, BaseCallback callback) {
+        AttentionRequestConfig attentionRequestConfig = new AttentionRequestConfig();
+        HashMap hashMap = new HashMap();
+        hashMap.put("userNo",userCode);
+        attentionRequestConfig.setParams(hashMap);
+        RequestManager.getInstance().doPost(attentionRequestConfig,callback);
+    }
+
+    @Override
+    public void notAttentionUser(String userCode, BaseCallback callback) {
+        NoAttentionRequestConfig noAttentionRequestConfig = new NoAttentionRequestConfig();
+        HashMap hashMap = new HashMap();
+        hashMap.put("userNo",userCode);
+        noAttentionRequestConfig.setParams(hashMap);
+        RequestManager.getInstance().doPost(noAttentionRequestConfig,callback);
+    }
+
+    private static class AttentionRequestConfig implements BaseRequestConfig {
+        private HashMap map;
+
+        @Override
+        public String getUrl() {
+            return HttpUrlUtils.getUrl(HttpUrlUtils.URL_ATTENTION);
+        }
+
+        public void setParams(HashMap params) {
+            map = params;
+        }
+
+        @Override
+        public Map getParams() {
+            return map;
+        }
+    }
+
+    private static class NoAttentionRequestConfig implements BaseRequestConfig {
+        private HashMap map;
+
+        @Override
+        public String getUrl() {
+            return HttpUrlUtils.getUrl(HttpUrlUtils.URL_ATTENTION_NO);
+        }
+
+        public void setParams(HashMap params) {
+            map = params;
+        }
+
+        @Override
+        public Map getParams() {
+            return map;
+        }
+    }
     private static class VideoRequestConfig implements BaseRequestConfig {
 
         private HashMap map;
