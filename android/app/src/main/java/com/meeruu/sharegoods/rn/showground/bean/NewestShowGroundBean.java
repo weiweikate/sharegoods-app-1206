@@ -115,6 +115,7 @@ public class NewestShowGroundBean {
         private int clickCount;
         private int collectCount;
         private boolean collect;
+        private int attentionStatus;
 
         private int hotCount;
         private long nowTime;
@@ -126,6 +127,14 @@ public class NewestShowGroundBean {
         private ImageInfo videoCover;
         private boolean owner;
         private int createSource;
+
+        public int getAttentionStatus() {
+            return attentionStatus;
+        }
+
+        public void setAttentionStatus(int attentionStatus) {
+            this.attentionStatus = attentionStatus;
+        }
 
         public int getCollectCount() {
             return collectCount;
