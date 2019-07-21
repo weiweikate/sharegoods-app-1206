@@ -67,7 +67,11 @@ export default class ShowVideoPage extends BasePage {
                 <View style={{ flex: 1 }}>
                     <ShowVideoListView style={{ flex: 1 }}
                                        onAttentionPress={()=>{
-                                           routeNavigate(RouterMap.LoginPage);
+                                           if(user.isLogin){
+
+                                           }else {
+                                               routeNavigate(RouterMap.LoginPage);
+                                           }
                                        }}
                                        userCode={user.code}
                                        onBack={()=>{
@@ -95,7 +99,7 @@ export default class ShowVideoPage extends BasePage {
                                        }}
 
                                        isLogin={!EmptyUtils.isEmpty(user.token)}
-                                       params={JSON.stringify(this.data)}/>
+                                       params={this.data}/>
                     {detail ?
                         <CommShareModal ref={(ref) => this.shareModal = ref}
                                         type={'Show'}

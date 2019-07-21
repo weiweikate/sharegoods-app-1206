@@ -25,7 +25,10 @@ import PropTypes from 'prop-types';
 import DesignRule from '../../constants/DesignRule';
 import ScreenUtils from '../../utils/ScreenUtils';
 import res from '../res';
-import bridge from "../../utils/bridge";
+import bridge from '../../utils/bridge';
+import store from '@mr/rn-store';
+
+const cache = '@mr/cache';
 
 export default class RefreshFlatList extends React.Component {
     static propTypes = {
@@ -105,6 +108,14 @@ export default class RefreshFlatList extends React.Component {
     componentDidMount() {
         if (this.props.componentDidMountRefresh){
             this._onRefresh(false);
+        }
+        if(this.props.cache){
+            store.get(cache).then(data=>{
+                if(data){
+                    this.setState({data:data});
+                }
+
+            })
         }
     }
 
@@ -266,6 +277,7 @@ export default class RefreshFlatList extends React.Component {
                 onEndLoadMore && onEndLoadMore();
             } else {
                 data = netData;
+                store.save(cache, netData);
                 onEndRefresh && onEndRefresh();
 
             }
