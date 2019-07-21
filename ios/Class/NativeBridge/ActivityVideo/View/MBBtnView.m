@@ -382,30 +382,38 @@
 
 -(void)clickDownLoad:(UIButton*)sender{
   AppDelegate *myDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-  if(myDelegate.AFNetworkStatus==1&&[NSString stringWithStorgeKey:@"downloadVideo"]){
-    [self showDownloadAlterWith:sender];
-  }else if(myDelegate.AFNetworkStatus==0){
-    [MBProgressHUD showSuccess:@"似乎已断开与互联网的连接"];
+  if(self.isLogin){
+    if(myDelegate.AFNetworkStatus==1&&[NSString stringWithStorgeKey:@"downloadVideo"]){
+      [self showDownloadAlterWith:sender];
+    }else if(myDelegate.AFNetworkStatus==0){
+      [MBProgressHUD showSuccess:@"似乎已断开与互联网的连接"];
+    }else{
+      MBModelData* modeltemp = self.model;
+      modeltemp.downloadCount++;
+      self.downLoadNum.text = [NSString stringWithNumber:modeltemp.downloadCount];
+      if(self.dataDelegate){
+        [self.dataDelegate clickDownload:modeltemp];
+      }
+    }
   }else{
-    MBModelData* modeltemp = self.model;
-    modeltemp.downloadCount++;
-    self.downLoadNum.text = [NSString stringWithNumber:modeltemp.downloadCount];
     if(self.dataDelegate){
-    [self.dataDelegate clickDownload:modeltemp];
+      [self.dataDelegate clickDownload:self.model];
     }
   }
 }
 
 -(void)clicCollection:(UIButton*)sender{
   MBModelData* modeltemp = self.model;
-  if(sender.selected){
-    modeltemp.collectCount--;
-  }else{
-    modeltemp.collectCount++;
+  if(self.isLogin){
+    if(sender.selected){
+      modeltemp.collectCount--;
+    }else{
+     modeltemp.collectCount++;
+    }
+    sender.selected = !sender.selected;
+    self.collectionNum.text = [NSString stringWithNumber:modeltemp.collectCount];
+    modeltemp.collect = sender.selected;
   }
-  sender.selected = !sender.selected;
-  self.collectionNum.text = [NSString stringWithNumber:modeltemp.collectCount];
-  modeltemp.collect = sender.selected;
   if(self.dataDelegate){
     [self.dataDelegate clicCollection:modeltemp];
   }

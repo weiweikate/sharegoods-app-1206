@@ -218,7 +218,7 @@
 -(void)clickTagBtn:(MBModelData *)model index:(NSInteger)index{
   NSLog(@"%@",model.showTags[index-1]);
   if(_onPressTag){
-    NSDictionary *dic = [NSDictionary dictionaryWithDictionary:model.showTags[index-1]];
+    NSDictionary *dic = [NSDictionary dictionaryWithDictionary:(NSDictionary*)model.showTags[index-1]];
     _onPressTag(dic);
   }
 }

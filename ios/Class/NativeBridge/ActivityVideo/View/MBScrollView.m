@@ -156,6 +156,13 @@
 #pragma mark - IBActions
 
 #pragma mark - Public
+-(void)setIsLogin:(BOOL *)isLogin{
+  _isLogin = isLogin;
+  self.btnView1.isLogin = isLogin;
+  self.btnView2.isLogin = isLogin;
+  self.btnView3.isLogin = isLogin;
+
+}
 
 - (void)setupData:(NSArray<MBModelData *> *)data {
     if (data.count == 0) {
