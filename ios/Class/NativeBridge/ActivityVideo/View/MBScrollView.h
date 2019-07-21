@@ -19,6 +19,8 @@
 -(void)clickZan:(MBModelData*) model;
 -(void)clickBuy:(MBModelData*) model;
 -(void)getCurrentDataIndex:(NSInteger)index;
+-(void)clickTagBtn:(MBModelData*)model index:(NSInteger)index;
+
 @end
 
 @interface MBScrollView : UIScrollView

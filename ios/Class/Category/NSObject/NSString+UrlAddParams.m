@@ -10,6 +10,32 @@
 
 @implementation NSString (UrlAddParams)
 
+
++(BOOL)stringWithStorgeKey:(NSString *)key{
+  NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+  NSDateFormatter *format = [[NSDateFormatter alloc]init];
+  [format setDateFormat:@"yyyy-MM-dd"];
+  
+  if([userDefaults objectForKey:key]){
+    NSDate *date = [format dateFromString:[userDefaults objectForKey:key]];
+    BOOL isToday = [[NSCalendar currentCalendar] isDateInToday:date];
+    if(isToday){
+      return NO;
+    }else{
+      NSString *nowDate = [format stringFromDate:[NSDate date]];
+      [userDefaults setObject:nowDate forKey:key];
+      [userDefaults synchronize];
+      return YES;
+    }
+  }else{
+    NSString *nowDate = [format stringFromDate:[NSDate date]];
+    [userDefaults setObject:nowDate forKey:key];
+    [userDefaults synchronize];
+    return YES;
+  }
+  return NO;
+}
+
 +(NSString *)stringWithNumber:(NSInteger)count{
   NSString * num = @"0";
   if(count<=999){

@@ -63,6 +63,8 @@
 -(instancetype)init{
   self=[super init];
   if(self){
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"guanzhu"];
+    
     self.didPausePlay = NO;
     [self initData];
     [self initUI];
@@ -93,16 +95,17 @@
 - (void)refreshData
 {
   NSMutableDictionary *dic = [NSMutableDictionary new];
-  if (self.params) {
-    dic = [self.params mutableCopy];
+  NSString *currentShowNo = @"";
+  if(self.dataArr.lastObject){
+   currentShowNo = [self.dataArr.lastObject valueForKey:@"showNo"];
   }
-[dic addEntriesFromDictionary:@{@"currentShowNo":@"SHOW2019071711285263900000600000" , @"queryUserCode": @""}];
+  [dic addEntriesFromDictionary:@{@"currentShowNo":currentShowNo , @"queryUserCode": @""}];
   __weak ActiveView * weakSelf = self;
   [NetWorkTool requestWithURL:@"/social/show/video/list/next@GET" params:dic toModel:nil success:^(NSDictionary* result) {
     MBVideoModel* model = [MBVideoModel modelWithJSON:result];
-    weakSelf.dataArr = [model.data mutableCopy];
+    [weakSelf.dataArr addObjectsFromArray:model.data];
     if([result valueForKey:@"data"]&&![[result valueForKey:@"data"] isKindOfClass:[NSNull class]]){
-      weakSelf.callBackArr = [[result valueForKey:@"data"] mutableCopy];
+      [weakSelf.callBackArr addObjectsFromArray:[result valueForKey:@"data"]];
     }
     self.VideoHeaderView.model = weakSelf.dataArr.firstObject;
     [self.scrollView setupData:weakSelf.dataArr];
@@ -119,9 +122,6 @@
 - (void)getMoreData
 {
   NSMutableDictionary *dic = [NSMutableDictionary new];
-  if (self.params) {
-    dic = [self.params mutableCopy];
-  }
   NSString *currentShowNo = [self.dataArr.lastObject valueForKey:@"showNo"];
   [dic addEntriesFromDictionary:@{@"currentShowNo": currentShowNo, @"queryUserCode": @""}];
   __weak ActiveView * weakSelf = self;
@@ -143,7 +143,7 @@
 - (void)initUI {
   [self addSubview:self.scrollView];
   [self addSubview:self.VideoHeaderView];
-  
+
   self.scrollView.sd_layout.topEqualToView(self)
   .leftEqualToView(self).widthIs(KScreenWidth).heightIs(KScreenHeight);
   
@@ -151,7 +151,15 @@
   .topSpaceToView(self, 0).leftSpaceToView(self, 0)
   .rightSpaceToView(self, 0).heightIs(100);
   self.scrollView.dataDelegate = self;
+}
+
+-(void)setParams:(NSDictionary *)params{
+  MBModelData* firstData = [MBModelData modelWithJSON:params];
+  self.dataArr = [NSMutableArray arrayWithObject:firstData];
+  self.callBackArr = [NSMutableArray arrayWithObject:params];
+  [self.scrollView setupData:self.dataArr];
   [self refreshData];
+
 }
 
 #pragma mark - Protocol conformance
@@ -171,34 +179,38 @@
 }
 
 - (void)clickDownload:(MBModelData *)model{
-  
+  [self.dataArr replaceObjectAtIndex:self.current withObject:model];
 }
 
 -(void)clicCollection:(MBModelData *)model{
- 
+  [self.dataArr replaceObjectAtIndex:self.current withObject:model];
 }
 
 -(void)clickZan:(MBModelData *)model{
- 
+  [self.dataArr replaceObjectAtIndex:self.current withObject:model];
 }
 
 -(void)clickBuy:(MBModelData *)model{
- 
+
+}
+
+-(void)clickTagBtn:(MBModelData *)model index:(NSInteger)index{
+  NSLog(@"%@",model.showTags[index-1]);
 }
 
 -(void)goBack{
   
 }
 
--(void)headerClick{
+-(void)headerClick:(MBModelData *)model{
   
 }
 
-- (void)guanzhuClick{
-  
+- (void)guanzhuClick:(MBModelData *)model{
+  [self.dataArr replaceObjectAtIndex:self.current withObject:model];
 }
 
-- (void)shareClick{
+- (void)shareClick:(MBModelData *)model{
   
 }
 

@@ -23,7 +23,6 @@
 		014FF20122708C57008B0094 /* JXFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 014FF20022708C57008B0094 /* JXFooterView.m */; };
 		0153BAB122A1078A00BFD8AC /* ShowShareImgMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0153BAB022A1078A00BFD8AC /* ShowShareImgMaker.m */; };
 		0153BAB422A110AF00BFD8AC /* ShareImageMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0153BAB222A110AF00BFD8AC /* ShareImageMaker.m */; };
-		01739A9122BCC3EB00661677 /* JXModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0131F1B3228E57D200A2026D /* JXModel.m */; };
 		01739CD322BF283D00661677 /* ShowQueryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EAFA6221BFE89007AAEE0 /* ShowQueryModel.m */; };
 		01C3AF3B22E2AF1E00A76422 /* ActivetyViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C3AEE622E2AF1E00A76422 /* ActivetyViewManager.m */; };
 		01C3AF3C22E2AF1E00A76422 /* ActiveView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C3AEE922E2AF1E00A76422 /* ActiveView.m */; };
@@ -33,6 +32,7 @@
 		01C3AF4122E2AF1E00A76422 /* MBBtnView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C3AEF522E2AF1E00A76422 /* MBBtnView.m */; };
 		01C3AF4222E2AF1E00A76422 /* MBPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C3AEF722E2AF1E00A76422 /* MBPlayerView.m */; };
 		01C3AF4322E2AF1E00A76422 /* MBVideoHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C3AEF822E2AF1E00A76422 /* MBVideoHeaderView.m */; };
+		01C3AFEF22E45C7A00A76422 /* JXModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0131F1B3228E57D200A2026D /* JXModel.m */; };
 		01E48F9422708B960038BEE6 /* JXHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E48F9322708B960038BEE6 /* JXHeaderView.m */; };
 		033C66B821927ACB00433026 /* MRBannerViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 033C66B721927ACB00433026 /* MRBannerViewManager.m */; };
 		0347BAD52237CD0A0011184A /* Lottie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0347BAC92237CC680011184A /* Lottie.framework */; };
@@ -3935,8 +3935,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01C3AFEF22E45C7A00A76422 /* JXModel.m in Sources */,
 				01739CD322BF283D00661677 /* ShowQueryModel.m in Sources */,
-				01739A9122BCC3EB00661677 /* JXModel.m in Sources */,
 				01C3AF3C22E2AF1E00A76422 /* ActiveView.m in Sources */,
 				5068363521379B78001AB175 /* RCTPayTool.m in Sources */,
 				C4F01EEC222D141200ACA1B4 /* PhoneAutherTool.m in Sources */,

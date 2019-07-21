@@ -17,6 +17,12 @@ NS_ASSUME_NONNULL_BEGIN
  */
 +(NSString *)stringWithNumber:(NSInteger)count;
 
+/*
+ * 存储状态
+ * 判断存储时间是否为当天
+ */
++(BOOL)stringWithStorgeKey:(NSString*)key;
+
 +(NSString*)convertNSDictionaryToJsonString:(NSDictionary *)json;
 
 -(NSString*)getUrlAndWidth:(CGFloat)width height:(CGFloat)height;

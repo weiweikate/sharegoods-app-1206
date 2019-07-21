@@ -50,8 +50,13 @@
 @end
 
 @interface SourcesModel : NSObject
-@property (nonatomic,copy) NSString * url;
-@property (nonatomic,assign) NSInteger type;
+@property (nonatomic,copy) NSString * url;//资源链接 兼容旧版本
+@property (nonatomic,copy) NSString * baseUrl;//资源链接不带？
+@property (nonatomic,assign) NSInteger type; //类型:{1:封面图片，2:普通图片，3：活动封面图片，4：视频 5 视频图片}
+@property (nonatomic,assign) CGFloat height;
+@property (nonatomic,assign) CGFloat width;
+@property (nonatomic,assign) CGFloat videoSize;
+@property (nonatomic,assign) CGFloat videoTime;
 @end
 
 @interface GoodsDataModel : NSObject

@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)clickDownload:(MBModelData*) model;
 - (void)clicCollection:(MBModelData*) model;
 -(void)clickZan:(MBModelData*) model;
+-(void)clickTag:(MBModelData*) model index:(NSInteger)index;
 
 @end
 

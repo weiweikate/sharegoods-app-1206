@@ -12,10 +12,10 @@
 #import  <SDAutoLayout.h>
 #import "UIImageView+WebCache.h"
 #import "NSString+UrlAddParams.h"
+#import "MBProgressHUD+PD.h"
 
 #import "MBVideoModel.h"
 #import "MBBtnView.h"
-#import "MBVideoImage.h"
 #import "UIImageView+WebCache.h"
 
 #define SCREEN_WIDTH [UIScreen mainScreen].bounds.size.width
@@ -34,6 +34,8 @@
 
 @property (nonatomic, assign) NSInteger currentIndexOfImageView;
 @property (nonatomic, assign) NSInteger currentIndexOfShowView;
+
+@property (nonatomic, assign) NSInteger pagIndex;
 
 @property (nonatomic, assign) BOOL isLoading;
 @property (nonatomic, assign) BOOL isInitVideo;
@@ -159,11 +161,10 @@
     if (data.count == 0) {
         return;
     }
+  
     if (self.dataArray.count < 3) {//还没有数据
-      if(self.dataArray.count==0){
+      if(self.dataArray.count<=3){
         self.dataArray = [NSMutableArray arrayWithArray:data];
-      }else{
-        [self.dataArray addObjectsFromArray:data];
       }
         self.contentSize = CGSizeMake(self.frame.size.width, self.frame.size.height * self.dataArray.count+1);
         if (self.dataArray.count > 0) {
@@ -263,15 +264,22 @@
         }
         self.firstImageView.frame = self.secondImageView.frame;
         self.firstImageView.image = self.secondImageView.image;
+        self.btnView1.model = self.btnView2.model;
+
         self.secondImageView.frame = self.thirdImageView.frame;
         self.firstImageView.image = self.secondImageView.image;
-        self.secondImageView.image = self.thirdImageView.image;
+        self.btnView1.model = self.btnView2.model;
 
+        self.secondImageView.image = self.thirdImageView.image;
+        self.btnView2.model = self.btnView3.model;
+      
         CGRect frame = self.thirdImageView.frame;
         frame.origin.y += self.frame.size.height;
         self.thirdImageView.frame = frame;
+      
         self.thirdVideoModel = [self.dataArray objectAtIndex:self.currentIndexOfImageView];
         self.btnView3.model = self.thirdVideoModel;
+      
         [self.thirdImageView setImageWithURL:[NSURL URLWithString:[[self getUrlfromArr:self.thirdVideoModel type:@"img"] getUrlAndWidth:KScreenWidth height:KScreenHeight]] placeholder:[UIImage imageWithColor:[UIColor colorWithHexString:@"f5f5f5"]]];
     }
     
@@ -294,9 +302,12 @@
         if (self.currentIndexOfImageView >= 3) {
             self.thirdImageView.frame = self.secondImageView.frame;
             self.thirdImageView.image = self.secondImageView.image;
+            self.btnView3.model = self.btnView2.model;
+          
             self.secondImageView.frame = self.firstImageView.frame;
             self.secondImageView.image = self.firstImageView.image;
-            
+            self.btnView2.model = self.btnView1.model;
+          
             CGRect frame = self.firstImageView.frame;
             frame.origin.y -= self.frame.size.height;
             self.firstImageView.frame = frame;
@@ -306,7 +317,6 @@
           
             self.currentIndexOfImageView--;
         }
-      
     }
     
     if (translatePoint.y > 0 && offset_y <= self.frame.size.height * (self.currentIndexOfShowView - 1) ) {
@@ -322,13 +332,14 @@
 
 // 结束滚动后开始返回当前下标
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-  if(self.playerView&&self.playerView.frame.origin.y!=scrollView.contentOffset.y){
+  if(self.pagIndex!=self.currentIndexOfShowView&&(self.playerView.frame.origin.y!=scrollView.contentOffset.y||scrollView.contentOffset.y==0)){
     self.isInitVideo = false;
     self.btnView1.playImageView.hidden = NO;
     self.btnView2.playImageView.hidden = NO;
     self.btnView3.playImageView.hidden = NO;
     [self.playerView.player pause];
     self.playerView.hidden = YES;
+    self.pagIndex = self.currentIndexOfShowView;
   }
 }
 
@@ -353,27 +364,34 @@
 
 }
 
-- (void)clickDownload{
+- (void)clickDownload:(MBModelData *)model{
   if(self.dataDelegate){
-    [self.dataDelegate clickDownload];
+    [self.dataDelegate clickDownload:model];
   }
 }
 
--(void)clicCollection{
+-(void)clicCollection:(MBModelData *)model{
   if(self.dataDelegate){
-    [self.dataDelegate clicCollection];
+    [self.dataDelegate clicCollection:model];
   }
 }
 
--(void)clickZan{
+-(void)clickZan:(MBModelData *)model{
   if(self.dataDelegate){
-    [self.dataDelegate clickZan];
+    [self.dataDelegate clickZan:model];
   }
 }
 
--(void)clickBuy{
+-(void)clickBuy:(MBModelData *)model{
   if(self.dataDelegate){
-    [self.dataDelegate clickBuy];
+    [self.dataDelegate clickBuy:model];
+  }
+}
+
+
+-(void)clickTag:(MBModelData *)model index:(NSInteger)index{
+  if(self.dataDelegate){
+    [self.dataDelegate clickTagBtn:model index:index];
   }
 }
 

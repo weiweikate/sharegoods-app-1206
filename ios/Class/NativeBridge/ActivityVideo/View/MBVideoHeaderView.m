@@ -181,20 +181,35 @@
 
 -(void)clickHeaderImg{
   if(self.dataDelegate){
-    [self.dataDelegate headerClick];
+    [self.dataDelegate headerClick:self.model];
   }
 }
 
 -(void)clickShareImg{
   if(self.dataDelegate){
-    [self.dataDelegate shareClick];
+    [self.dataDelegate shareClick:self.model];
   }
 }
 
 -(void)tapGuanzhuBtn:(UIButton*)sender{
+  MBModelData* modeltemp = self.model;
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  NSMutableDictionary* dic = [[NSMutableDictionary alloc]init];
+  
+  if(modeltemp.userInfoVO&&modeltemp.userInfoVO.userNo&&[defaults dictionaryForKey:@"guanzhu"]){
+    [dic setValuesForKeysWithDictionary:[defaults dictionaryForKey:@"guanzhu"]];
+    [dic setObject:sender.isSelected?@"NO":@"YES" forKey:modeltemp.userInfoVO.userNo];
+    [defaults setObject:dic forKey:@"guanzhu"];
+    [defaults synchronize];
+  }else{
+    [dic setObject:sender.isSelected?@"NO":@"YES" forKey:modeltemp.userInfoVO.userNo];
+    [defaults setObject:dic forKey:@"guanzhu"];
+    [defaults synchronize];
+  }
   sender.selected = !sender.selected;
+  modeltemp.attentionStatus = sender.selected;
   if(self.dataDelegate){
-    [self.dataDelegate guanzhuClick];
+    [self.dataDelegate guanzhuClick:modeltemp];
   }
 }
 
@@ -206,12 +221,27 @@
 
 -(void)setModel:(MBModelData *)model{
   _model = model;
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  
   if(model.userInfoVO){
     self.nameLab.text = model.userInfoVO.userName?model.userInfoVO.userName:@"";
     
     [self.headImg sd_setImageWithURL:[NSURL URLWithString:[model.userInfoVO.userImg getUrlAndWidth:30 height:30]] placeholderImage:[UIImage imageNamed:@"default_avatar"]];
+    
+    if(model.userInfoVO.userNo){
+      NSMutableDictionary* dic = [[NSMutableDictionary alloc]init];
+      if(model.userInfoVO.userNo&&[defaults dictionaryForKey:@"guanzhu"]){
+        [dic setValuesForKeysWithDictionary:[defaults dictionaryForKey:@"guanzhu"]];
+        if([dic valueForKey:model.userInfoVO.userNo]&&[[dic valueForKey:model.userInfoVO.userNo] isEqualToString:@"YES"]){
+          self.guanBtn.selected = YES;
+        }else{
+          self.guanBtn.selected = NO;
+        }
+      }else{
+        self.guanBtn.selected = model.attentionStatus;
+      }
+    }
   }
-  
   if(model.hotCount){
     self.hotLab.text = [NSString stringWithFormat:@"%ld人气值",model.hotCount];
   }

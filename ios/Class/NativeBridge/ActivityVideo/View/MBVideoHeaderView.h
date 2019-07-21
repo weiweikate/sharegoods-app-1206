@@ -8,15 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import "MBVideoModel.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @class MBVideoHeaderView;
 
 @protocol  MBHeaderViewDelegate <NSObject>
-- (void)headerClick;
+- (void)headerClick:(MBModelData*) model;;
 - (void)goBack; 
-- (void)guanzhuClick;
-- (void)shareClick;
+- (void)guanzhuClick:(MBModelData*) model;;
+- (void)shareClick:(MBModelData*) model;;
 @end
 
 

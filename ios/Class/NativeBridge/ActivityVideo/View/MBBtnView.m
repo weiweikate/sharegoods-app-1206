@@ -9,6 +9,8 @@
 #import "MBBtnView.h"
 #import "UIView+SDAutoLayout.h"
 #import "NSString+UrlAddParams.h"
+#import "MBProgressHUD+PD.h"
+#import "AppDelegate.h"   //需要引入这个头文件
 
 @interface MBBtnView()
 @property (nonatomic,strong) UIButton * downloadBtn;
@@ -27,7 +29,6 @@
 @property (nonatomic,strong)UIButton  * tag1;
 @property (nonatomic,strong)UIButton  * tag2;
 @property (nonatomic,strong)UIButton  * tag3;
-
 
 @end
 
@@ -93,7 +94,7 @@
   
   
   self.playImageView.sd_layout.centerXEqualToView(self).centerYEqualToView(self)
-  .widthIs(80).heightIs(80);
+  .widthIs(60).heightIs(60);
   
   collectionView.sd_layout.centerYEqualToView(self)
   .rightSpaceToView(self, 20).widthIs(32);
@@ -296,7 +297,8 @@
     [_tag1 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     _tag1.layer.cornerRadius = 12;
     _tag1.layer.masksToBounds = YES;
-    [_tag1 setTitle:@"关注22222" forState:UIControlStateNormal];
+    _tag1.tag = 1;
+    [_tag1 addTarget:self action:@selector(clickTag:) forControlEvents:UIControlEventTouchUpInside];
   }
   return _tag1;
 }
@@ -309,7 +311,8 @@
     [_tag2 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     _tag2.layer.cornerRadius = 12;
     _tag2.layer.masksToBounds = YES;
-    [_tag2 setTitle:@"关注2322" forState:UIControlStateNormal];
+    _tag2.tag = 2;
+    [_tag2 addTarget:self action:@selector(clickTag:) forControlEvents:UIControlEventTouchUpInside];
   }
   return _tag2;
 }
@@ -322,7 +325,8 @@
     [_tag3 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     _tag3.layer.cornerRadius = 12;
     _tag3.layer.masksToBounds = YES;
-    [_tag3 setTitle:@"关注" forState:UIControlStateNormal];
+    _tag3.tag = 3;
+    [_tag3 addTarget:self action:@selector(clickTag:) forControlEvents:UIControlEventTouchUpInside];
   }
   return _tag3;
 }
@@ -362,40 +366,69 @@
 }
 
 -(void)clickPlay{
-  if(self.dataDelegate){
-    self.playImageView.hidden = self.playImageView.isHidden?NO:YES;
-    [self.dataDelegate clickPlayOrPause];
+  AppDelegate *myDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+  
+  if(myDelegate.AFNetworkStatus==1&&[NSString stringWithStorgeKey:@"playVideo"]){
+    [self showVideoPlayAlterWith];
+  }else if(myDelegate.AFNetworkStatus==0){
+    [MBProgressHUD showSuccess:@"似乎已断开与互联网的连接"];
+  }else{
+      if(self.dataDelegate){
+        self.playImageView.hidden = self.playImageView.isHidden?NO:YES;
+        [self.dataDelegate clickPlayOrPause];
+      }
   }
 }
 
 -(void)clickDownLoad:(UIButton*)sender{
-  self.downLoadNum.text = [NSString stringWithNumber:self.model.downloadCount++];
-  if(self.dataDelegate){
-    [self.dataDelegate clickDownload:self.model];
+  AppDelegate *myDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+  if(myDelegate.AFNetworkStatus==1&&[NSString stringWithStorgeKey:@"downloadVideo"]){
+    [self showDownloadAlterWith:sender];
+  }else if(myDelegate.AFNetworkStatus==0){
+    [MBProgressHUD showSuccess:@"似乎已断开与互联网的连接"];
+  }else{
+    MBModelData* modeltemp = self.model;
+    modeltemp.downloadCount++;
+    self.downLoadNum.text = [NSString stringWithNumber:modeltemp.downloadCount];
+    if(self.dataDelegate){
+    [self.dataDelegate clickDownload:modeltemp];
+    }
   }
 }
 
 -(void)clicCollection:(UIButton*)sender{
+  MBModelData* modeltemp = self.model;
   if(sender.selected){
-    self.collectionNum.text = [NSString stringWithNumber:self.model.collectCount--];
+    modeltemp.collectCount--;
   }else{
-    self.collectionNum.text = [NSString stringWithNumber:self.model.collectCount++];
+    modeltemp.collectCount++;
   }
   sender.selected = !sender.selected;
+  self.collectionNum.text = [NSString stringWithNumber:modeltemp.collectCount];
+  modeltemp.collect = sender.selected;
   if(self.dataDelegate){
-    [self.dataDelegate clicCollection:self.model];
+    [self.dataDelegate clicCollection:modeltemp];
   }
 }
 
 -(void)clickZan:(UIButton*)sender{
+  MBModelData* modeltemp = self.model;
   if(sender.selected){
-    self.zanNum.text = [NSString stringWithNumber:self.model.likesCount--];
+    modeltemp.likesCount--;
   }else{
-    self.zanNum.text = [NSString stringWithNumber:self.model.likesCount++];
+    modeltemp.likesCount++;
   }
   sender.selected = !sender.selected;
+  self.zanNum.text = [NSString stringWithNumber:modeltemp.likesCount];
+  modeltemp.like = sender.selected;  
   if(self.dataDelegate){
     [self.dataDelegate clickZan:self.model];
+  }
+}
+
+-(void)clickTag:(UIButton*)sender{
+  if(self.dataDelegate){
+    [self.dataDelegate clickTag:self.model index:sender.tag];
   }
 }
 
@@ -408,8 +441,105 @@
   self.collectionBtn.selected = model.collect;
   self.zanNum.text = [NSString stringWithNumber:model.likesCount];
   self.zanBtn.selected = model.like;
-  self.contentLab.text = model.content?model.content:@"";
-  self.contentTextView.text = model.content?model.content:@"";
   
+  if(model.content.length>0){
+    self.contentLab.text = model.content?model.content:@"";
+    self.contentTextView.text = model.content?model.content:@"";
+    self.contentLab.hidden = NO;
+    self.contentTextView.hidden = YES;
+    self.openOrclose.hidden = NO;
+  }else{
+    self.contentLab.text = @"";
+    self.contentTextView.text = @"";
+    self.contentLab.hidden = YES;
+    self.contentTextView.hidden = YES;
+    self.openOrclose.hidden = YES;
+  }
+
+  if(model.products.count>0){
+    self.buyBtn.hidden = NO;
+  }else{
+    self.buyBtn.hidden = YES;
+  }
+  
+  if(self.contentLab.isHidden){
+    self.openOrclose.text = @"展开";
+    self.contentLab.hidden = NO;
+    self.contentTextView.hidden = YES;
+  }
+  if(model.showTags){
+    if([model.showTags count]>=1){
+      NSString *tag1Text = [NSString stringWithFormat:@"#%@",model.showTags.firstObject?[model.showTags.firstObject valueForKey:@"name"]:@""];
+      [self.tag1 setTitle:tag1Text forState:UIControlStateNormal];
+      self.tag1.hidden = NO;
+    }else{
+      self.tag1.hidden = YES;
+    }
+
+    if([model.showTags count]>=2){
+      NSString *tag2Text = [NSString stringWithFormat:@"#%@",model.showTags[1]?[model.showTags[1] valueForKey:@"name"]:@""];
+      [self.tag2 setTitle:tag2Text forState:UIControlStateNormal];
+      self.tag2.hidden = NO;
+    }else{
+      self.tag2.hidden = YES;
+    }
+
+    if([model.showTags count]>=3){
+      NSString *tag3Text = [NSString stringWithFormat:@"#%@",model.showTags[2]?[model.showTags[2] valueForKey:@"name"]:@""];
+      [self.tag3 setTitle:tag3Text forState:UIControlStateNormal];
+
+      self.tag3.hidden = NO;
+    }else{
+      self.tag3.hidden = YES;
+    }
+  }
+}
+
+-(void)showDownloadAlterWith:(UIButton*)sender{
+  __weak typeof(self) weakSelf = self;
+  UIAlertController *alterController = [UIAlertController alertControllerWithTitle:@"温馨提示"
+                                                                           message:@"您当前处于2G/3G/4G环境 继续下载将使用5M流量"
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+  UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"返回"
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction * _Nonnull action) {
+                                                         
+                                                       }];
+  UIAlertAction *actionSubmit = [UIAlertAction actionWithTitle:@"继续下载"
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction * _Nonnull action) {
+                                                         MBModelData* modeltemp = weakSelf.model;
+                                                         modeltemp.downloadCount++;
+                                                         weakSelf.downLoadNum.text = [NSString stringWithNumber:modeltemp.downloadCount];
+                                                         if(weakSelf.dataDelegate){
+                                                           [weakSelf.dataDelegate clickDownload:modeltemp];
+                                                         }
+                                                       }];
+  [alterController addAction:actionCancel];
+  [alterController addAction:actionSubmit];
+  [self.currentViewController_XG presentViewController:alterController animated:YES completion:^{}];
+}
+
+-(void)showVideoPlayAlterWith{
+  __weak typeof(self) weakSelf = self;
+  UIAlertController *alterController = [UIAlertController alertControllerWithTitle:@"温馨提示"
+                                                                           message:@"您当前处于2G/3G/4G环境                       继续播放将使用5M流量"
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+  UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"返回"
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction * _Nonnull action) {
+                                                         
+                                                       }];
+  UIAlertAction *actionSubmit = [UIAlertAction actionWithTitle:@"继续播放"
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction * _Nonnull action) {
+                                                         if(weakSelf.dataDelegate){
+                                                           weakSelf.playImageView.hidden = weakSelf.playImageView.isHidden?NO:YES;
+                                                           [weakSelf.dataDelegate clickPlayOrPause];
+                                                         }
+                                                       }];
+  [alterController addAction:actionCancel];
+  [alterController addAction:actionSubmit];
+  [self.currentViewController_XG presentViewController:alterController animated:YES completion:^{}];
 }
 @end
