@@ -16,43 +16,25 @@
 
 RCT_EXPORT_MODULE(MrShowVideoListView)
 
-RCT_EXPORT_VIEW_PROPERTY(onItemPress, RCTBubblingEventBlock)
-RCT_EXPORT_VIEW_PROPERTY(onStartRefresh, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(uri, NSString)
 RCT_EXPORT_VIEW_PROPERTY(params, NSDictionary)
 RCT_EXPORT_VIEW_PROPERTY(headerHeight, NSInteger)
-RCT_EXPORT_VIEW_PROPERTY(onStartScroll, RCTBubblingEventBlock)
-RCT_EXPORT_VIEW_PROPERTY(onEndScroll, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(userCode, NSString)
+
+RCT_EXPORT_VIEW_PROPERTY(onAttentionPress, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onBack, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onPressTag, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onSharePress, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onBuy, RCTBubblingEventBlock)
+
+RCT_EXPORT_VIEW_PROPERTY(onLikePress, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onDownloadPress, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onCollectPress, RCTBubblingEventBlock)
 
 - (UIView *)view
 {
   ActiveView *view = [[ActiveView alloc]init];
   return view;
-}
-
-
-RCT_EXPORT_METHOD(replaceItemData:(nonnull NSNumber *)reactTag
-                  index:(NSInteger) index
-                  data:(id) data){
-  [self.bridge.uiManager addUIBlock:^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *, ActiveView *> *viewRegistry) {
-    ActiveView *view = viewRegistry[reactTag];
-    if (![view isKindOfClass:[ActiveView class]]) {
-      RCTLogError(@"Invalid view returned from registry, expecting RNCUIWebView, got: %@", view);
-    } else {
-      [view replaceItemData:index data:[self convertjsonStringToDict:data]];
-    }
-  }];
-}
-
-- (NSDictionary *)convertjsonStringToDict:(NSString *)jsonString{
-  NSDictionary *retDict = nil;
-  if ([jsonString isKindOfClass:[NSString class]]) {
-    NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-    retDict = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:NULL];
-    return  retDict;
-  }else{
-    return retDict;
-  }
 }
 
 @end

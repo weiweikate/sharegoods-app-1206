@@ -162,6 +162,16 @@
 
 }
 
+
+-(void)setUserCode:(NSString *)userCode{
+  _userCode = userCode;
+  if(userCode&&userCode.length>0){
+    self.VideoHeaderView.isLogin = YES;
+  }else{
+    self.VideoHeaderView.isLogin = NO;
+  }
+}
+
 #pragma mark - Protocol conformance
 
 - (void)pullNewData {
@@ -180,26 +190,43 @@
 
 - (void)clickDownload:(MBModelData *)model{
   [self.dataArr replaceObjectAtIndex:self.current withObject:model];
+  if(_onDownloadPress){
+    
+  }
 }
 
 -(void)clicCollection:(MBModelData *)model{
   [self.dataArr replaceObjectAtIndex:self.current withObject:model];
+  if(_onCollectPress){
+    
+  }
 }
 
 -(void)clickZan:(MBModelData *)model{
   [self.dataArr replaceObjectAtIndex:self.current withObject:model];
+  if(_onLikePress){
+    
+  }
 }
 
 -(void)clickBuy:(MBModelData *)model{
-
+  if(_onBuy){
+    _onBuy(self.callBackArr[self.current]);
+  }
 }
 
 -(void)clickTagBtn:(MBModelData *)model index:(NSInteger)index{
   NSLog(@"%@",model.showTags[index-1]);
+  if(_onPressTag){
+    NSDictionary *dic = [NSDictionary dictionaryWithDictionary:model.showTags[index-1]];
+    _onPressTag(dic);
+  }
 }
 
 -(void)goBack{
-  
+  if(_onBack){
+    _onBack(@{});
+  }
 }
 
 -(void)headerClick:(MBModelData *)model{
@@ -208,18 +235,19 @@
 
 - (void)guanzhuClick:(MBModelData *)model{
   [self.dataArr replaceObjectAtIndex:self.current withObject:model];
+  if(_onAttentionPress){
+    _onAttentionPress(self.callBackArr[self.current]);
+  }
 }
 
 - (void)shareClick:(MBModelData *)model{
-  
+  if(_onSharePress){
+    _onSharePress(self.callBackArr[self.current]);
+  }
 }
 
 
 #pragma arguments --RN callback Native
--(void)replaceItemData:(NSInteger)index data:(NSDictionary *)data{
-  if(data){
-    
-  }
-}
+
 
 @end

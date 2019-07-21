@@ -24,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface MBVideoHeaderView : UIView
 @property (nonatomic, weak) id<MBHeaderViewDelegate> dataDelegate;
 @property(nonatomic,strong)MBModelData* model;
+@property (nonatomic, assign) BOOL *isLogin;
 
 @end
 

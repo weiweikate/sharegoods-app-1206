@@ -12,15 +12,22 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ActiveView : UIView
-@property (nonatomic, copy) RCTBubblingEventBlock onItemPress;
-@property (nonatomic, copy) RCTBubblingEventBlock onStartRefresh;
-@property (nonatomic, copy) RCTBubblingEventBlock onStartScroll;
-@property (nonatomic, copy) RCTBubblingEventBlock onEndScroll;
+
 @property (nonatomic, copy) NSString* uri;
 @property (nonatomic, strong) NSDictionary* params;
 @property (nonatomic, assign) NSInteger headerHeight;
+@property (nonatomic, copy) NSString* userCode;
 
--(void)replaceItemData:(NSInteger) index data:(NSDictionary*) data;
+@property (nonatomic, copy) RCTBubblingEventBlock onAttentionPress;
+@property (nonatomic, copy) RCTBubblingEventBlock onBack;
+@property (nonatomic, copy) RCTBubblingEventBlock onPressTag;
+@property (nonatomic, copy) RCTBubblingEventBlock onSharePress;
+@property (nonatomic, copy) RCTBubblingEventBlock onBuy;
+@property (nonatomic, copy) RCTBubblingEventBlock onLikePress;
+@property (nonatomic, copy) RCTBubblingEventBlock onDownloadPress;
+@property (nonatomic, copy) RCTBubblingEventBlock onCollectPress;
+
+
 
 
 @end

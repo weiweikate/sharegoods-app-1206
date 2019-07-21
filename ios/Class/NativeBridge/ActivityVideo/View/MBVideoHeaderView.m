@@ -193,21 +193,23 @@
 
 -(void)tapGuanzhuBtn:(UIButton*)sender{
   MBModelData* modeltemp = self.model;
-  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-  NSMutableDictionary* dic = [[NSMutableDictionary alloc]init];
+  if(self.isLogin){
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSMutableDictionary* dic = [[NSMutableDictionary alloc]init];
   
-  if(modeltemp.userInfoVO&&modeltemp.userInfoVO.userNo&&[defaults dictionaryForKey:@"guanzhu"]){
-    [dic setValuesForKeysWithDictionary:[defaults dictionaryForKey:@"guanzhu"]];
-    [dic setObject:sender.isSelected?@"NO":@"YES" forKey:modeltemp.userInfoVO.userNo];
-    [defaults setObject:dic forKey:@"guanzhu"];
-    [defaults synchronize];
-  }else{
-    [dic setObject:sender.isSelected?@"NO":@"YES" forKey:modeltemp.userInfoVO.userNo];
-    [defaults setObject:dic forKey:@"guanzhu"];
-    [defaults synchronize];
+    if(modeltemp.userInfoVO&&modeltemp.userInfoVO.userNo&&[defaults dictionaryForKey:@"guanzhu"]){
+      [dic setValuesForKeysWithDictionary:[defaults dictionaryForKey:@"guanzhu"]];
+      [dic setObject:sender.isSelected?@"NO":@"YES" forKey:modeltemp.userInfoVO.userNo];
+      [defaults setObject:dic forKey:@"guanzhu"];
+      [defaults synchronize];
+    }else{
+      [dic setObject:sender.isSelected?@"NO":@"YES" forKey:modeltemp.userInfoVO.userNo];
+      [defaults setObject:dic forKey:@"guanzhu"];
+      [defaults synchronize];
+    }
+    sender.selected = !sender.selected;
+    modeltemp.attentionStatus = sender.selected;
   }
-  sender.selected = !sender.selected;
-  modeltemp.attentionStatus = sender.selected;
   if(self.dataDelegate){
     [self.dataDelegate guanzhuClick:modeltemp];
   }
