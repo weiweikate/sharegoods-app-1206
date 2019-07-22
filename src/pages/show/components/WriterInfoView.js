@@ -19,8 +19,13 @@ const{px2dp} = ScreenUtils;
 export default class WriterInfoView extends PureComponent {
     constructor(props) {
         super(props);
-
+        this.state={
+            attentions:0,
+            fans:0,
+            hot:0
+        }
     }
+
 
     render(){
         return(
@@ -28,7 +33,7 @@ export default class WriterInfoView extends PureComponent {
                 <TouchableWithoutFeedback onPress={()=> {routePush(RouterMap.FansListPage,{type:1})}}>
                     <View>
                         <MRText>
-                            14
+                            {this.state.attentions}
                         </MRText>
                         <MRText>
                             关注
@@ -38,7 +43,7 @@ export default class WriterInfoView extends PureComponent {
                 <TouchableWithoutFeedback onPress={()=> {routePush(RouterMap.FansListPage,{type:0})}}>
                     <View>
                         <MRText>
-                            11
+                            {this.state.fans}
                         </MRText>
                         <MRText>
                             粉丝
@@ -48,7 +53,7 @@ export default class WriterInfoView extends PureComponent {
                 <TouchableWithoutFeedback onPress={()=> {routePush(RouterMap.FansListPage,{type:2})}}>
                     <View>
                         <MRText>
-                            14
+                            {this.state.hot}
                         </MRText>
                         <MRText>
                             关注

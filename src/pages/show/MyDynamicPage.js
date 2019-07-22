@@ -3,43 +3,30 @@ import {
     StyleSheet,
     View,
     Image,
-    ImageBackground,
     TouchableOpacity,
     Platform
 } from 'react-native';
 import BasePage from '../../BasePage';
 import DesignRule from '../../constants/DesignRule';
-import user from '../../model/user';
 import res from '../mine/res';
-import showRes from './res';
-import {
-    MRText as Text,
-    AvatarImage
-
-} from '../../components/ui';
 import ScreenUtils from '../../utils/ScreenUtils';
-import EmptyUtils from '../../utils/EmptyUtils';
 import ShowDynamicView from './components/ShowDynamicView';
 import ShowGroundView from './components/ShowGroundView';
 import RouterMap from '../../navigation/RouterMap';
-import WriterInfoView from './components/WriterInfoView';
+import UserInfoView from './components/UserInfoView';
 
 const headerBgSize = { width: 375, height: 200 };
 const headerHeight = ScreenUtils.statusBarHeight + 44;
 const offset = ScreenUtils.getImgHeightWithWidth(headerBgSize) - headerHeight;
 
 const { px2dp } = ScreenUtils;
-const {
-    mine_user_icon
-} = res.homeBaseImg;
+
 
 const {
     back_white,
     back_black
 } = res.button;
-const {
-    showHeaderBg
-} = showRes;
+
 
 export default class MyDynamicPage extends BasePage {
     $navigationBarOptions = {
@@ -56,39 +43,40 @@ export default class MyDynamicPage extends BasePage {
     }
 
     renderHeader = () => {
-        let icon = (user.headImg && user.headImg.length > 0) ?
-            <AvatarImage source={{ uri: user.headImg }} style={styles.userIcon}
-                         borderRadius={px2dp(65 / 2)}/> : <Image source={mine_user_icon} style={styles.userIcon}
-                                                                 borderRadius={px2dp(65 / 2)}/>;
-        let name = '';
-        if (EmptyUtils.isEmpty(user.nickname)) {
-            name = user.phone ? user.phone : '未登录';
-        } else {
-            name = user.nickname.length > 6 ? user.nickname.substring(0, 6) + '...' : user.nickname;
-        }
-
-        //布局不能改，否则android不能显示
-        return (
-            <View style={{
-                flex: 1,
-                position: 'absolute',
-                left: 0,
-                top: 0,
-                width: DesignRule.width,
-                height: px2dp(270),
-                backgroundColor: '#F7F7F7',
-                marginBottom: px2dp(ScreenUtils.isIOS ? 10 : 0)
-            }}>
-                <ImageBackground source={EmptyUtils.isEmpty(user.headImg) ? showHeaderBg : { uri: user.headImg }}
-                                 style={styles.headerContainer} blurRadius={EmptyUtils.isEmpty(user.headImg) ? 0 : 10}>
-                    {icon}
-                    <Text style={styles.nameStyle}>
-                        {name}
-                    </Text>
-                </ImageBackground>
-                <WriterInfoView style={{ marginLeft: DesignRule.margin_page, marginTop: px2dp(-35)}}/>
-            </View>
-        );
+        return <UserInfoView/>
+        // let icon = (user.headImg && user.headImg.length > 0) ?
+        //     <AvatarImage source={{ uri: user.headImg }} style={styles.userIcon}
+        //                  borderRadius={px2dp(65 / 2)}/> : <Image source={mine_user_icon} style={styles.userIcon}
+        //                                                          borderRadius={px2dp(65 / 2)}/>;
+        // let name = '';
+        // if (EmptyUtils.isEmpty(user.nickname)) {
+        //     name = user.phone ? user.phone : '未登录';
+        // } else {
+        //     name = user.nickname.length > 6 ? user.nickname.substring(0, 6) + '...' : user.nickname;
+        // }
+        //
+        // //布局不能改，否则android不能显示
+        // return (
+        //     <View style={{
+        //         flex: 1,
+        //         position: 'absolute',
+        //         left: 0,
+        //         top: 0,
+        //         width: DesignRule.width,
+        //         height: px2dp(270),
+        //         backgroundColor: '#F7F7F7',
+        //         marginBottom: px2dp(ScreenUtils.isIOS ? 10 : 0)
+        //     }}>
+        //         <ImageBackground source={EmptyUtils.isEmpty(user.headImg) ? showHeaderBg : { uri: user.headImg }}
+        //                          style={styles.headerContainer} blurRadius={EmptyUtils.isEmpty(user.headImg) ? 0 : 10}>
+        //             {icon}
+        //             <Text style={styles.nameStyle}>
+        //                 {name}
+        //             </Text>
+        //         </ImageBackground>
+        //         <WriterInfoView style={{ marginLeft: DesignRule.margin_page, marginTop: px2dp(-35)}}/>
+        //     </View>
+        // );
     };
 
     navBackgroundRender() {
