@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.ViewTreeObserver;
 
 import com.facebook.common.executors.CallerThreadExecutor;
+import com.facebook.common.executors.UiThreadImmediateExecutorService;
 import com.facebook.common.references.CloseableReference;
 import com.facebook.datasource.DataSource;
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -778,6 +779,25 @@ public class ImageLoadUtils {
         ImageRequest imageRequest = builder.build();
         ImagePipeline imagePipeline = Fresco.getImagePipeline();
         imagePipeline.fetchDecodedImage(imageRequest, BaseApplication.appContext);
+    }
+
+    /**
+     * uri转换bitmap
+     *
+     * @param uri
+     * @param width
+     * @param height
+     * @param subscriber
+     */
+    public static void load2Bitmap(Uri uri, int width, int height, BaseBitmapDataSubscriber subscriber) {
+        ImageRequestBuilder builder = ImageRequestBuilder.newBuilderWithSource(uri);
+        if (width > 0 && height > 0) {
+            builder.setResizeOptions(new ResizeOptions(width, height));
+        }
+        ImageRequest imageRequest = builder.build();
+        ImagePipeline imagePipeline = Fresco.getImagePipeline();
+        imagePipeline.fetchDecodedImage(imageRequest, BaseApplication.appContext)
+                .subscribe(subscriber, UiThreadImmediateExecutorService.getInstance());
     }
 
     /**
