@@ -160,14 +160,13 @@ public class BaseApplication extends MultiDexApplication {
                 LogUtils.d("=====" + url);
                 // 商品卡片，订单卡片
                 if (url.contains("h5.sharegoodsmall.com/product") || url.contains("http:///")) {
-                    ((QiyuServiceMessageActivity) context).finish();
                     QiyuUrlEvent event = new QiyuUrlEvent();
                     event.setUrl(url);
                     EventBus.getDefault().post(event);
                 } else {
-                    ((QiyuServiceMessageActivity) context).finish();
                     EventBus.getDefault().post(new Event.MR2HTMLEvent(url));
                 }
+                ((QiyuServiceMessageActivity) context).finish();
             }
         };
         return ysfOptions;

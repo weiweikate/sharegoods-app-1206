@@ -262,11 +262,7 @@ public class QYChatModule extends ReactContextBaseJavaModule {
         } else {
             map.putInt("card_type", 1);
         }
-        String url = event.getUrl();
-        if (!TextUtils.isEmpty(url) && url.indexOf("?") != -1) {
-            url = url.substring(0, url.indexOf("?"));
-        }
-        map.putString("linkUrl", url);
+        map.putString("linkUrl", event.getUrl());
         sendEvent(this.mContext, "QY_CARD_CLICK", map);
     }
 }
