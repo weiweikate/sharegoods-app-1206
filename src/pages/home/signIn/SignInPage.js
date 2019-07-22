@@ -294,7 +294,7 @@ export default class SignInPage extends BasePage {
         let datesView = this.state.signInData.map((item, index) => {
             return (
                 <Text key={'date' + index} style={styles.dateTextStyle}>
-                    {`第${index + 1}天`}
+                    {item.signDate && item.signDate.replace('-', '.')}
                 </Text>
             );
         });
