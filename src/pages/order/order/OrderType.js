@@ -74,12 +74,18 @@ const ViewOrderStatus = {
 function GetAfterBtns(product) {
     if (product.status === OrderType.WAIT_PAY ||
         product.status === OrderType.DELETED
-        // product.status === OrderType.CLOSED
     ) {
         return [];
     }
+
     let afterSale = product.afterSale || {}
     let {type, status} = afterSale;
+    if (product.status === OrderType.CLOSED){
+        if(status === AfterStatus.STATUS_SUCCESS){
+            return [{ id:3, operation:'售后完成', isRed:false}]
+        }else {
+            return [];
+        }}
     if (!type){//这个type为空，说明没有申请过售后
         if (product.status === OrderType.WAIT_DELIVER) {
            return [{ id:1, operation:'退款', isRed:false}]
@@ -117,8 +123,8 @@ function GetViewOrderStatus(status, subStatus) {
 //判断商品List是否支持售后
 function checkOrderAfterSaleService(products = [], status, nowTime, isShowToast) {
     if (status === OrderType.WAIT_PAY ||
-        status === OrderType.DELETED
-        // status === OrderType.CLOSED
+        status === OrderType.DELETED ||
+        status === OrderType.CLOSED
     ) {//待付款、无售后
         return false;
     }

@@ -358,7 +358,8 @@ export default class MyOrdersDetailPage extends BasePage {
     };
     //点击售后按钮的处理
     afterSaleServiceClick = (menu, item) => {
-        if (!checkOrderAfterSaleService([item],item.status,orderDetailModel.baseInfo.nowTime,true)){
+        //在按钮就查看售后详情的时候，是不用判断是否支持售后的
+        if (menu.id !== 3 && !checkOrderAfterSaleService([item],item.status,orderDetailModel.baseInfo.nowTime,true)){
             return;
         }
         switch (menu.id) {

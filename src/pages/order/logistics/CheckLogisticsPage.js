@@ -63,7 +63,7 @@ export default class CheckLogisticsPage extends BasePage {
                                     goodsName={data.productName}
                                     salePrice={data.unitPrice}
                                     category={data.spec}
-                                    goodsNum={data.quantity}
+                                    // goodsNum={data.quantity}
                                     style={{ backgroundColor: 'white' }}
                                 />;
                             })}
@@ -91,7 +91,7 @@ export default class CheckLogisticsPage extends BasePage {
                                 goodsName={item.productName}
                                 salePrice={item.unitPrice}
                                 category={item.spec}
-                                goodsNum={item.quantity}
+                                // goodsNum={item.quantity}
                                 style={{ backgroundColor: 'white' }}
                             />
                             <View
