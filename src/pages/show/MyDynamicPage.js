@@ -67,16 +67,26 @@ export default class MyDynamicPage extends BasePage {
             name = user.nickname.length > 6 ? user.nickname.substring(0, 6) + '...' : user.nickname;
         }
 
+        //布局不能改，否则android不能显示
         return (
-            <View style={{flex: 1, height:px2dp(235),marginBottom: px2dp(ScreenUtils.isIOS ? 10 : 0)}}>
-                <ImageBackground source={EmptyUtils.isEmpty(user.headImg) ? showHeaderBg : {uri: user.headImg}}
+            <View style={{
+                flex: 1,
+                position: 'absolute',
+                left: 0,
+                top: 0,
+                width: DesignRule.width,
+                height: px2dp(270),
+                backgroundColor: '#F7F7F7',
+                marginBottom: px2dp(ScreenUtils.isIOS ? 10 : 0)
+            }}>
+                <ImageBackground source={EmptyUtils.isEmpty(user.headImg) ? showHeaderBg : { uri: user.headImg }}
                                  style={styles.headerContainer} blurRadius={EmptyUtils.isEmpty(user.headImg) ? 0 : 10}>
                     {icon}
                     <Text style={styles.nameStyle}>
                         {name}
                     </Text>
                 </ImageBackground>
-                <WriterInfoView style={{marginLeft:DesignRule.margin_page}}/>
+                <WriterInfoView style={{ marginLeft: DesignRule.margin_page, marginTop: px2dp(-35)}}/>
             </View>
         );
     };
@@ -162,7 +172,7 @@ export default class MyDynamicPage extends BasePage {
                            renderHeader={this.renderHeader()}
                            onItemPress={({ nativeEvent }) => {
                                let params = {
-                                    code: nativeEvent.showNo
+                                   code: nativeEvent.showNo
                                };
                                if (nativeEvent.showType === 1 || nativeEvent.showType == 3) {
                                    this.$navigate(RouterMap.ShowDetailPage, params);
@@ -186,11 +196,11 @@ export default class MyDynamicPage extends BasePage {
 
 var styles = StyleSheet.create({
     contain: {
-        flex: 1,
+        flex: 1
     },
     headerContainer: {
         width: DesignRule.width,
-        height: px2dp(200),
+        height: px2dp(235),
         alignItems: 'center'
     },
     userIcon: {
