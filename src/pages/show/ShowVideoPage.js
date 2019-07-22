@@ -102,7 +102,7 @@ export default class ShowVideoPage extends BasePage {
                                        params={this.data}/>
                     {detail ?
                         <CommShareModal ref={(ref) => this.shareModal = ref}
-                                        type={'Show'}
+                                        type={'web'}
                                         trackEvent={trackEvent.XiuChangShareClick}
                                         trackParmas={{
                                             articleCode: detail.code,

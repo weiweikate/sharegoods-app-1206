@@ -246,7 +246,7 @@
 
 - (void)shareClick:(MBModelData *)model{
   if(_onSharePress){
-    _onSharePress(self.callBackArr[self.current]);
+    _onSharePress(@{@"detail":self.callBackArr[self.current]});
   }
 }
 
