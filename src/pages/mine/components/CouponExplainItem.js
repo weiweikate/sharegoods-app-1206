@@ -60,7 +60,7 @@ export default class CouponExplainItem extends Component {
                                 <View>
                                     <Text style={{
                                         fontSize: item.type === 4 ? 20 : (item.value && (item.value + '').length < 3 ? 34 : 20),
-                                        fontWeight:'600',
+                                        fontWeight:'400',
                                         color: item.status === 0 ? (item.levelimit ? '#FF80A7' : '#FF0050') : '#FF80A7',
                                     }} allowFontScaling={false}>{item.value}</Text>
                                 </View>
@@ -78,7 +78,7 @@ export default class CouponExplainItem extends Component {
                             <View style={{ flexDirection: 'row' }}>
                                 <Text style={{
                                     fontSize: 16,
-                                    fontWeight:'600',
+                                    fontWeight:'400',
                                     color: item.status === 0 ? '#222222' : DesignRule.textColor_instruction,
                                 }} allowFontScaling={false} numberOfLines={0}>
                                     {item.name}</Text>

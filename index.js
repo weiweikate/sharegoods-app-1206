@@ -1,9 +1,7 @@
-import { AppRegistry } from "react-native";
-import App from "./src/App";
+import { AppRegistry } from 'react-native';
+import App from './src/App';
 
 (function numberPolyfill() {
-
-
     //填充，弥补兼容性
     if (!Number.parseFloat) {
         Number.parseFloat = parseFloat;
@@ -13,11 +11,12 @@ import App from "./src/App";
     }
     if (!Number.isInteger) {
         Number.isInteger = function(value) {
-            return typeof value === "number" && isFinite(value) && Math.floor(value) === value;
+            return typeof value === 'number' && isFinite(value) && Math.floor(value) === value;
         };
     }
 })();
 
+// 非开发环境，屏蔽所有console
 if (!__DEV__) {
     global.console = {
         info: () => {
@@ -33,7 +32,7 @@ if (!__DEV__) {
     };
 }
 
-console.ignoredYellowBox = ['Warning: BackAndroid is deprecated. Please use BackHandler instead.','source.uri should not be an empty string','Invalid props.style key'];
+console.ignoredYellowBox = ['Warning: BackAndroid is deprecated. Please use BackHandler instead.', 'source.uri should not be an empty string', 'Invalid props.style key'];
 console.disableYellowBox = true; // 关闭全部黄色警告
 
-AppRegistry.registerComponent("sharegoods", () => App);
+AppRegistry.registerComponent('sharegoods', () => App);

@@ -9,7 +9,7 @@
         android:id="@+id/ysf_goods_content"
         layout="@layout/ysf_message_item_goods_inner" />
     <View
-        android:id="@+id/view_ysf_item_message_goods_line"
+        android:id="@+id/ysf_holder_product_list_line"
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_marginTop="10dp"
