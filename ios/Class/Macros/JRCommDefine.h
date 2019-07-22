@@ -11,6 +11,8 @@
 
 //获取存储对象
 #define kUserDefaults       [NSUserDefaults standardUserDefaults]
+#define kScale [UIScreen mainScreen].scale
+
 //时间
 #define kDate(t)                            [NSDate dateWithTimeIntervalSince1970:t]
 //获取屏幕宽高

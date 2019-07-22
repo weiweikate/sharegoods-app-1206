@@ -25,26 +25,38 @@
 
 @property (nonatomic,copy) NSString * title;
 @property (nonatomic,copy) NSString * content;
-@property (nonatomic,assign) NSInteger downloadCount;
-@property (nonatomic,assign) NSInteger likesCount;
+@property (nonatomic,assign) NSInteger downloadCount; //下载数
+@property (nonatomic,assign) NSInteger collectCount; //收藏数
+@property (nonatomic,assign) NSInteger likesCount; //点赞数
+@property (nonatomic,assign) NSInteger clickCount; //浏览量
+@property (nonatomic,assign) NSInteger hotCount; //人气值
+@property (nonatomic,assign) NSInteger createSource; //文章创建来源{1:运营文章/素材，2:用户文章，3:商家素材
 @property (nonatomic,assign) NSInteger shareCount;
-@property (nonatomic,assign) NSInteger hotCount;
-@property (nonatomic,assign) NSInteger createSource;
-@property (nonatomic,copy) NSString * showNo;
+@property (nonatomic,copy) NSString * showNo; //文章id
 @property (nonatomic,strong)NSArray<GoodsDataModel*> * products;
 @property (nonatomic,strong)NSArray<SourcesModel*> * resource;
 @property (nonatomic,strong)UserInfoModel * userInfoVO;
-@property (nonatomic,assign) NSInteger clickCount;
 @property (nonatomic,assign) NSInteger showType;
+@property (nonatomic,assign) NSInteger attentionStatus;//0 未关注 1 关注 2 相互关注
 @property (nonatomic,copy) NSString * publishTimeStr;
-@property (nonatomic,assign) BOOL like;
+@property (nonatomic,copy) NSString * nowTime;
+@property (nonatomic,copy) NSString * remark;
 
+@property (nonatomic,assign) BOOL like;//是否点赞
+
+@property (nonatomic,assign) BOOL collect; //是否收藏
 @property (nonatomic,assign) BOOL isOpening;
+@property (nonatomic,assign) BOOL owner;
 @end
 
 @interface SourcesModel : NSObject
-@property (nonatomic,copy) NSString * url;
-@property (nonatomic,assign) NSInteger type;
+@property (nonatomic,copy) NSString * url;//资源链接 兼容旧版本
+@property (nonatomic,copy) NSString * baseUrl;//资源链接不带？
+@property (nonatomic,assign) NSInteger type; //类型:{1:封面图片，2:普通图片，3：活动封面图片，4：视频 5 视频图片}
+@property (nonatomic,assign) CGFloat height;
+@property (nonatomic,assign) CGFloat width;
+@property (nonatomic,assign) CGFloat videoSize;
+@property (nonatomic,assign) CGFloat videoTime;
 @end
 
 @interface GoodsDataModel : NSObject

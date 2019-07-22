@@ -74,7 +74,7 @@ export default class ShowFoundView extends React.Component {
                                 }}
                                 uri={'/social/show/content/page/query@GET'}
                                 params={{ spreadPosition: tag.Found + '' }}
-
+                                type={'found'}
                                 onItemPress={({ nativeEvent }) => {
                                     const { navigate } = this.props;
                                     let params = {

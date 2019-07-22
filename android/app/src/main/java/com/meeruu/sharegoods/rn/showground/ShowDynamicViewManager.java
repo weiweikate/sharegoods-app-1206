@@ -3,6 +3,7 @@ package com.meeruu.sharegoods.rn.showground;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
@@ -10,6 +11,8 @@ import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
+import com.meeruu.sharegoods.R;
+import com.meeruu.sharegoods.rn.showground.widgets.usercenter.UserCenterView;
 
 import java.util.Map;
 
@@ -29,10 +32,8 @@ public class ShowDynamicViewManager extends ViewGroupManager<ViewGroup> {
 
     @Override
     protected ViewGroup createViewInstance(ThemedReactContext reactContext) {
-        ShowDynamicView showGroundView = new ShowDynamicView();
-        ViewGroup viewGroup = showGroundView.getShowDynamicView(reactContext);
-        viewGroup.setTag(showGroundView);
-        return viewGroup;
+        ViewGroup userCenterView = new UserCenterView().getUserCenterView(reactContext);
+        return userCenterView;
 
     }
 
@@ -47,10 +48,9 @@ public class ShowDynamicViewManager extends ViewGroupManager<ViewGroup> {
 
     @Override
     public void addView(ViewGroup parent, View child, int index) {
-        Object object = parent.getTag();
-        if (object != null && object instanceof ShowDynamicView) {
-            ((ShowDynamicView) object).addHeader(child);
-        }
+        ViewGroup headerWrapper = parent.findViewById(R.id.header_wrapper);
+        headerWrapper.removeAllViews();
+        headerWrapper.addView(child);
     }
 
     @Nullable

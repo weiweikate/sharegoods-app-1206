@@ -119,6 +119,7 @@ export default class ShowMaterialView extends React.Component {
                                        ref={(ref) => {
                                            this.materialList = ref;
                                        }}
+                                       type={'material'}
                                        params={{ spreadPosition: tag.Material + '' }}
                                        userIsLogin={user.token ? true : false}
                                        onItemPress={({ nativeEvent }) => {

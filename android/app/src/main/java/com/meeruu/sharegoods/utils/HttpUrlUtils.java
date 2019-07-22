@@ -15,9 +15,14 @@ public class HttpUrlUtils {
     public static final String URL_START_AD = "/advertising/queryAdvertisingList"; //秀场列表
     public static final String URL_SHOW_VIDEO = "/social/show/video/list/next"; //秀场视频列表
     public static final String URL_DYNAMIC = "/social/show/content/page/mine/query"; //秀场个人中心
-    public static final String URL_DELETE_DYNAMIC = "/social/show/content/delete"; //秀场个人中心
+    public static final String URL_DELETE_DYNAMIC = "/social/show/content/delete"; //删除发布文章
     public static final String URL_GONGMAO = "/gongmall/contract/notify"; //签约回调
-    public static final String URL_VIDEO_AUTH = "/social/show/token"; //签约回调
+    public static final String URL_VIDEO_AUTH = "/social/show/token"; //视频上传token
+    public static final String URL_COLLECTION_LIST = "/social/show/content/page/mine/collect"; //我的收藏
+    public static final String REDUCE_COUNT_BY_TYPE = "/social/show/count/reduceCountByType"; //取消点赞/收藏/浏览量
+    public static final String URL_OTHER_ARTICLE = "/social/show/content/page/other/query"; //查询其他人的文章
+    public static final String URL_ATTENTION = "/social/show/user/follow"; //关注某人
+    public static final String URL_ATTENTION_NO = "/social/show/user/cancel/follow"; //取消关注
 
 
 
