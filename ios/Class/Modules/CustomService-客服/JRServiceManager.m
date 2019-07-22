@@ -154,8 +154,8 @@ SINGLETON_FOR_CLASS(JRServiceManager)
       [[NSNotificationCenter defaultCenter]postNotificationName:QY_CARD_CLICK object:urlData];
     }else if ([eventName isEqualToString:@"QYEventNameTapLabelLink"]){
       [self onBack:nil];
-      NSDictionary * urlData = @{@"card_type":@(LINK_CLICK),@"linkUrl":eventData};
-      [[NSNotificationCenter defaultCenter]postNotificationName:QY_CARD_CLICK object:urlData];
+      NSDictionary * urlData = @{@"card_type":@(LINK_CLICK),@"uri":eventData};
+      [[NSNotificationCenter defaultCenter]postNotificationName:@"EventToRN" object:urlData];
     }
   };
 }
