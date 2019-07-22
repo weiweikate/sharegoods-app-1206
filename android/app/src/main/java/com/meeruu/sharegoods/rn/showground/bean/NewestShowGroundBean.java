@@ -113,7 +113,9 @@ public class NewestShowGroundBean {
         private int shareCount;
         private int downloadCount;
         private int clickCount;
-
+        private int collectCount;
+        private boolean collect;
+        private int attentionStatus;
 
         private int hotCount;
         private long nowTime;
@@ -121,9 +123,34 @@ public class NewestShowGroundBean {
         private List<ProductsBean> products;
         private List<ResourceBean> resource;
         private List<ImageInfo> nineImageInfos;
+        private List<ShowTagsBean> showTags;
         private ImageInfo videoCover;
         private boolean owner;
         private int createSource;
+
+        public int getAttentionStatus() {
+            return attentionStatus;
+        }
+
+        public void setAttentionStatus(int attentionStatus) {
+            this.attentionStatus = attentionStatus;
+        }
+
+        public int getCollectCount() {
+            return collectCount;
+        }
+
+        public void setCollectCount(int collectCount) {
+            this.collectCount = collectCount;
+        }
+
+        public boolean isCollect() {
+            return collect;
+        }
+
+        public void setCollect(boolean collect) {
+            this.collect = collect;
+        }
 
         public ImageInfo getVideoCover() {
             return videoCover;
@@ -149,7 +176,13 @@ public class NewestShowGroundBean {
             this.owner = owner;
         }
 
+        public List<ShowTagsBean> getShowTags() {
+            return showTags;
+        }
 
+        public void setShowTags(List<ShowTagsBean> showTags) {
+            this.showTags = showTags;
+        }
 
         public List<ImageInfo> getNineImageInfos() {
             return nineImageInfos;
@@ -327,6 +360,27 @@ public class NewestShowGroundBean {
 
             public void setUserName(String userName) {
                 this.userName = userName;
+            }
+        }
+
+        public static class ShowTagsBean {
+            private String name;
+            private int tagId;
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public int getTagId() {
+                return tagId;
+            }
+
+            public void setTagId(int tagId) {
+                this.tagId = tagId;
             }
         }
 

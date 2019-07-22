@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) RCTBubblingEventBlock goBack;
 
 @property (nonatomic, copy) NSString* uri;
+@property(nonatomic, strong)NSString *userType;
 @property (nonatomic, copy) NSString* type;
 @property (nonatomic, strong) NSDictionary* params;
 @property (nonatomic, assign) NSInteger headerHeight;

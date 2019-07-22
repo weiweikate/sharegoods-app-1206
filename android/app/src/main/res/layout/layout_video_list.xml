@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -10,6 +11,93 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="visible" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@drawable/black_transparent_gradient" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="165dp"
+        android:layout_gravity="bottom"
+        android:background="@drawable/transparent_black_gradient" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp">
+
+        <ImageView
+            android:id="@+id/back_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:paddingLeft="20dp"
+            android:paddingRight="10dp"
+            android:src="@mipmap/white_back" />
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/user_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/back_icon"
+            app:roundAsCircle="true" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/user_icon"
+            android:textColor="@color/white"
+            android:textSize="13sp" />
+
+        <ImageView
+            android:id="@+id/iv_fire"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_below="@+id/tv_name"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/user_icon"
+            android:src="@drawable/icon_fire" />
+
+        <TextView
+            android:id="@+id/tv_hotCount"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_name"
+            android:layout_toRightOf="@+id/iv_fire"
+            android:gravity="center_vertical"
+            android:textColor="@color/white"
+            android:textSize="11sp" />
+
+        <ImageView
+            android:id="@+id/iv_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:padding="3dp"
+            android:src="@mipmap/share_white_icon" />
+
+        <TextView
+            android:id="@+id/tv_attention"
+            android:layout_width="65dp"
+            android:layout_height="28dp"
+            android:layout_marginRight="17dp"
+            android:layout_toLeftOf="@+id/iv_share"
+            android:background="@drawable/attention_background"
+            android:gravity="center"
+            android:text="关注"
+            android:clickable="true"
+            android:enabled="true"
+            android:textColor="@color/white"
+            android:textSize="13sp" />
+    </RelativeLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -37,4 +125,4 @@
                 android:textSize="18sp" />
         </LinearLayout>
     </FrameLayout>
-</merge>
+</FrameLayout>

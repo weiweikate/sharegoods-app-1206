@@ -29,6 +29,7 @@ import RouterMap, { replaceRoute } from '../../navigation/RouterMap';
 import TagView from './components/TagView';
 import PictureVideoUtils from './utils/PictureVideoUtils';
 import ImageOrVideoModal from './components/ImageOrVideoModal';
+import user from '../../model/user';
 
 const { addIcon, delIcon, iconShowDown, iconShowEmoji, addShowIcon, showTagIcon } = res;
 const { arrow_right_black } = res.button;
@@ -161,39 +162,77 @@ export default class ReleaseNotesPage extends BasePage {
         let productsPar = products.map((value) => {
             return value.spuCode;
         });
-        NativeModules.ShowModule.uploadVideo('cs', videoPath).then((data) => {
-            PictureVideoUtils.uploadSingleImage(videoCover, (res) => {
-                if (res.url) {
-                    let videoCover = {
-                        baseUrl: res.url,
-                        height,
-                        width,
-                        type: 5
-                    };
-                    let params = {
-                        content,
-                        videoCover,
-                        products: productsPar,
-                        showNo: data.showNo,
-                        tagList: this.state.tags.map((item) => {
-                            return item.tagId;
-                        }),
-                        title: this.state.titleText,
-                        videoId: data.videoId
-                    };
-                    ShowApi.saveVideo(params).then((data) => {
-                        replaceRoute(RouterMap.MyDynamicPage);
-                    }).catch((error) => {
-                        this.$toastShow(error.msg);
-                    });
-
-                } else {
-                    this.$toastShow('上传失败');
-                }
+        let title = `${user.code}-${new Date().getTime()}-${this.state.titleText}`;
+        if (Platform.OS === 'android'){
+            NativeModules.ShowModule.uploadVideo(title, videoPath).then((data) => {
+                PictureVideoUtils.uploadSingleImage(videoCover, (res) => {
+                    if (res.url) {
+                        let videoCover = {
+                            baseUrl: res.url,
+                            height,
+                            width,
+                            type: 5
+                        };
+                        let params = {
+                            content,
+                            videoCover,
+                            products: productsPar,
+                            showNo: data.showNo,
+                            tagList: this.state.tags.map((item) => {
+                                return item.tagId;
+                            }),
+                            title: this.state.titleText,
+                            videoId: data.videoId
+                        };
+                        ShowApi.saveVideo(params).then((data) => {
+                            // replaceRoute(RouterMap.MyDynamicPage);
+                        }).catch((error) => {
+                            this.$toastShow(error.msg);
+                        });
+                    } else {
+                        this.$toastShow('上传失败');
+                    }
+                });
+            }).catch((error) => {
+                this.$toastShow('上传失败');
             });
-        }).catch((error) => {
-            this.$toastShow('上传失败');
-        });
+        } else {
+            NativeModules.MRImagePickerBridge.uploadVideo(title, videoPath).then((data) => {
+                PictureVideoUtils.uploadSingleImage(videoCover, (res) => {
+                    if (res.url) {
+                        let videoCover = {
+                            baseUrl: res.url,
+                            height,
+                            width,
+                            type: 5
+                        };
+                        let params = {
+                            content,
+                            videoCover,
+                            products: productsPar,
+                            showNo: data.showNo,
+                            tagList: this.state.tags.map((item) => {
+                                return item.tagId;
+                            }),
+                            title: this.state.titleText,
+                            videoId: data.videoId
+                        };
+                        ShowApi.saveVideo(params).then((data) => {
+                            replaceRoute(RouterMap.MyDynamicPage);
+                        }).catch((error) => {
+                            this.$toastShow(error.msg);
+                        });
+                    } else {
+                        this.$toastShow('上传失败');
+                    }
+                });
+            }).catch((error) => {
+                this.$toastShow(error.msg);
+                // this.$toastShow('上传失败');
+            });
+
+        }
+
     };
 
     choosePicker = () => {
@@ -225,7 +264,6 @@ export default class ReleaseNotesPage extends BasePage {
 
     chooseVideo = () => {
         this.setState({selector:false});
-
         if (Platform.OS === 'android'){
             NativeModules.ShowModule.recordVideo().then((data) => {
                 this.setState({ videoData: data });

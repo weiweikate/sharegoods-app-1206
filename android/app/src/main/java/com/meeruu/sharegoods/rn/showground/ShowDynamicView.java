@@ -77,7 +77,6 @@ public class ShowDynamicView implements IShowgroundView, SwipeRefreshLayout.OnRe
         View view = inflater.inflate(R.layout.view_showground, null);
         initView(reactContext, view);
         initData();
-
         return (ViewGroup) view;
     }
 

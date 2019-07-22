@@ -5,26 +5,47 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="10dp"
     android:background="@drawable/white_round_background"
-    android:padding="15dp">
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingBottom="15dp">
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/user_icon"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_marginTop="15dp"
         app:roundAsCircle="true" />
 
     <TextView
         android:id="@+id/user_name"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="20dp"
         android:layout_alignTop="@+id/user_icon"
         android:layout_marginStart="5dp"
         android:layout_marginLeft="5dp"
         android:layout_toEndOf="@+id/user_icon"
         android:layout_toRightOf="@+id/user_icon"
         android:includeFontPadding="false"
+        android:gravity="center_vertical"
         android:textColor="@color/textColor_mainTitle"
         android:textSize="13sp" />
+
+    <ImageView android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/icon_fire"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="15dp"
+        android:layout_toRightOf="@id/user_name"
+        android:id="@+id/iv_fire"/>
+    <TextView android:layout_height="20dp"
+        android:layout_width="wrap_content"
+        android:id="@+id/tv_hotCount"
+        android:layout_marginLeft="5dp"
+        android:textSize="11sp"
+        android:layout_marginTop="15dp"
+        android:textColor="#FF0050"
+        android:layout_gravity="center_vertical"
+        android:layout_toRightOf="@id/iv_fire"/>
 
     <TextView
         android:id="@+id/publish_time"
@@ -82,17 +103,41 @@
         android:layout_marginTop="15dp"
         android:layout_alignParentLeft="true"
         android:padding="2dp"
-        android:src="@drawable/icon_fire" />
+        android:src="@mipmap/icon_hand_gray" />
 
     <TextView
         android:id="@+id/like_num"
-        android:layout_width="30dp"
+        android:layout_width="45dp"
         android:layout_height="28dp"
         android:layout_alignTop="@+id/icon_hand"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/icon_hand"
-        android:gravity="center_vertical"
         android:maxLines="1"
+        android:gravity="center_vertical"
+        android:textColor="@color/textColor_mainTitle"
+        android:textSize="10sp" />
+
+    <ImageView
+        android:id="@+id/icon_collection"
+        android:layout_width="26dp"
+        android:layout_height="28dp"
+        android:layout_below="@id/product_list"
+        android:layout_marginTop="15dp"
+        android:layout_toRightOf="@id/like_num"
+        android:paddingLeft="2dp"
+        android:paddingTop="4dp"
+        android:paddingRight="2dp"
+        android:paddingBottom="2dp"
+        android:src="@mipmap/icon_collection_gray" />
+
+    <TextView
+        android:id="@+id/collection_num"
+        android:layout_width="45dp"
+        android:layout_height="28dp"
+        android:layout_alignTop="@+id/icon_collection"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/icon_collection"
+        android:gravity="center_vertical"
         android:textColor="@color/textColor_mainTitle"
         android:textSize="10sp" />
 
@@ -101,14 +146,13 @@
         android:layout_width="26dp"
         android:layout_height="28dp"
         android:layout_below="@id/product_list"
-        android:layout_marginLeft="10dp"
         android:layout_marginTop="15dp"
-        android:layout_toRightOf="@id/like_num"
+        android:layout_toRightOf="@id/collection_num"
         android:paddingLeft="2dp"
         android:paddingTop="4dp"
         android:paddingRight="2dp"
         android:paddingBottom="2dp"
-        android:src="@drawable/icon_show_download" />
+        android:src="@mipmap/icon_download_gray" />
 
     <TextView
         android:id="@+id/download_num"
@@ -136,6 +180,6 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="35dp"/>
+        />
 
 </RelativeLayout>

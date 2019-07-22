@@ -22,6 +22,7 @@ import EmptyUtils from '../../utils/EmptyUtils';
 import ShowDynamicView from './components/ShowDynamicView';
 import ShowGroundView from './components/ShowGroundView';
 import RouterMap from '../../navigation/RouterMap';
+import WriterInfoView from './components/WriterInfoView';
 
 const headerBgSize = { width: 375, height: 200 };
 const headerHeight = ScreenUtils.statusBarHeight + 44;
@@ -67,7 +68,7 @@ export default class MyDynamicPage extends BasePage {
         }
 
         return (
-            <View style={{flex: 1, marginBottom: px2dp(ScreenUtils.isIOS ? 10 : 0)}}>
+            <View style={{flex: 1, height:px2dp(235),marginBottom: px2dp(ScreenUtils.isIOS ? 10 : 0)}}>
                 <ImageBackground source={EmptyUtils.isEmpty(user.headImg) ? showHeaderBg : {uri: user.headImg}}
                                  style={styles.headerContainer} blurRadius={EmptyUtils.isEmpty(user.headImg) ? 0 : 10}>
                     {icon}
@@ -75,6 +76,7 @@ export default class MyDynamicPage extends BasePage {
                         {name}
                     </Text>
                 </ImageBackground>
+                <WriterInfoView style={{marginLeft:DesignRule.margin_page}}/>
             </View>
         );
     };
@@ -118,15 +120,6 @@ export default class MyDynamicPage extends BasePage {
                             />
                         </TouchableOpacity>
                     </View>
-                    <Text style={{
-                        color: this.state.changeHeader ? DesignRule.white : DesignRule.textColor_mainTitle,
-                        fontSize: px2dp(17),
-                        includeFontPadding: false
-                    }}>
-                        我的
-                    </Text>
-                    <View style={{ flex: 1 }}/>
-
                 </View>
             </View>
         );
@@ -158,11 +151,13 @@ export default class MyDynamicPage extends BasePage {
     _render() {
         let Waterfall = Platform.OS === 'ios' ? ShowGroundView : ShowDynamicView;
         let headerHeight = Platform.OS === 'ios' ? 210 : 200;
+        let userCode = this.params.userCode || '';
         return (
             <View style={styles.contain}>
                 <Waterfall style={{ flex: 1, marginTop: -10 }}
                            uri={'/social/show/content/page/mine/query@GET'}
-                           headerHeight={px2dp(headerHeight)}
+                           headerHeight={px2dp(headerHeight+100)}
+                           userType={`${this.params.userType}${userCode}`}
                            type={'MyDynamic'}
                            renderHeader={this.renderHeader()}
                            onItemPress={({ nativeEvent }) => {
@@ -177,11 +172,11 @@ export default class MyDynamicPage extends BasePage {
 
                            }}
                            onScrollY={({ nativeEvent }) => {
-                               this._onScroll(nativeEvent);
+                               // this._onScroll(nativeEvent);
                            }}
                 />
-                {this.navBackgroundRender()}
-                {this.navRender()}
+                {/*{this.navBackgroundRender()}*/}
+                {/*{this.navRender()}*/}
 
             </View>
         );

@@ -65,15 +65,17 @@
                failure:(AFErrorBlock)errorBlock
            showLoading:(NSString *)showLoading
 {
-  NSString * path = [StorageFromRN getHost];
-  [[self manager].requestSerializer setValue:[StorageFromRN getSG_Token] forHTTPHeaderField:@"sg-token"];
+  dispatch_async(dispatch_get_main_queue(), ^{
+    NSString * path = [StorageFromRN getHost];
+    [[self manager].requestSerializer setValue:[StorageFromRN getSG_Token] forHTTPHeaderField:@"sg-token"];
     NSArray<NSString *> * arr = [url componentsSeparatedByString:@"@"];
     NSString * URL = [NSString stringWithFormat:@"%@%@",path,arr.firstObject];
     if ([[arr.lastObject uppercaseString] isEqualToString:@"GET"]) {
-        [self GETWithURL:URL params:parmas toModel:modelClass success:successBlock failure:errorBlock showLoading:showLoading];
+      [self GETWithURL:URL params:parmas toModel:modelClass success:successBlock failure:errorBlock showLoading:showLoading];
     }else{
-        [self POSTWithURL:URL params:parmas toModel:modelClass success:successBlock failure:errorBlock showLoading:showLoading];
+      [self POSTWithURL:URL params:parmas toModel:modelClass success:successBlock failure:errorBlock showLoading:showLoading];
     }
+  });
 }
 
 + (void)GETWithURL:(NSString *)url

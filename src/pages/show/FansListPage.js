@@ -44,7 +44,7 @@ export default class FansListPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {};
-        this.type = this.params.type || 3;
+        this.type = this.params.type;
         if ( this.type > 3){this.type = 0}
     }
 

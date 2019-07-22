@@ -74,13 +74,16 @@ export default class TagDetailItemView extends PureComponent {
 
         return (
             <TouchableWithoutFeedback onPress={() => {
-                if (itemData.showType === 1 || itemData.showType === 3) {
+                if (itemData.showType === 1) {
                     routePush(RouterMap.ShowDetailPage, {
                         code: itemData.showNo, updateHotNum: (num) => {
                             this.hotAdd(num);
                         }
                     });
-                } else {
+                }else if( itemData.showType === 3){
+                    let data = { showNo: itemData.showNo };
+                    routePush(RouterMap.ShowVideoPage, { data });
+                }else {
                     routePush(RouterMap.ShowRichTextDetailPage, { code: itemData.showNo });
                 }
             }}>

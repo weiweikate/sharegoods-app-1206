@@ -24,12 +24,10 @@ public class NineGridView extends ViewGroup {
     private float singleImageRatio = 1.0f;          // 单张图片的宽高比(宽/高)
     private int maxImageSize = 9;                   // 最大显示的图片数
     private int gridSpacing = 5;                    // 宫格间距，单位dp
-
     private int columnCount;    // 列数
     private int rowCount;       // 行数
     private int gridWidth;      // 宫格宽度
     private int gridHeight;     // 宫格高度
-
     private List<SimpleDraweeView> imageViews;
     private List<ImageInfo> mImageInfo;
     private NineGridViewAdapter mAdapter;

@@ -74,7 +74,7 @@ export default class ShowFoundView extends React.Component {
                                 }}
                                 uri={'/social/show/content/page/query@GET'}
                                 params={{ spreadPosition: tag.Found + '' }}
-
+                                type={'found'}
                                 onItemPress={({ nativeEvent }) => {
                                     const { navigate } = this.props;
                                     let params = {
@@ -82,9 +82,11 @@ export default class ShowFoundView extends React.Component {
                                         ref: this.foundList,
                                         index: nativeEvent.index
                                     };
-                                    if (nativeEvent.showType === 1 || nativeEvent.showType === 3) {
+                                    if (nativeEvent.showType === 1) {
                                         navigate(RouterMap.ShowDetailPage, params);
-                                    } else {
+                                    } else if(nativeEvent.showType === 3){
+                                        navigate(RouterMap.ShowVideoPage, params);
+                                    }else {
                                         navigate(RouterMap.ShowRichTextDetailPage, params);
                                     }
 

@@ -76,7 +76,7 @@ public class ShowDynamicAdapter extends BaseQuickAdapter<NewestShowGroundBean.Da
             params.height = realHeight;
             params.width = realWidth;
             imageView.setLayoutParams(params);
-            ImageLoadUtils.loadRoundNetImage(imgUrl, imageView, realWidth, realHeight, arr_raduis);
+            ImageLoadUtils.loadRoundNetImage(imgUrl, imageView, realWidth, realHeight, arr_raduis,false);
         }
 
         ImageView shadow = helper.getView(R.id.iv_shadow);

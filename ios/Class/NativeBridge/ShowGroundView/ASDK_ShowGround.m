@@ -370,14 +370,14 @@
 
  - (NSString*)getCurrentUrl
 {
-  if ([self.type isEqualToString:@"mineWriter"]) {
+  if ([self.userType isEqualToString:@"mineWriter"]) {
     if (self.swichView.index == 1) {
       return ShowApi_mineCollect;
     }
     return ShowApi_mineQuery;
-  } else if ([self.type isEqualToString:@"mineNormal"]){
+  } else if ([self.userType isEqualToString:@"mineNormal"]){
     return ShowApi_mineCollect;
-  } else if ([self.type isEqualToString:@"others"]){
+  } else if ([self.userType isEqualToString:@"others"]){
     return ShowApi_otherQuery;
   }
   
@@ -474,7 +474,7 @@
     CGFloat left = ( KScreenWidth - self.swichView.width_sd)/2.0 -15;
     left = left/((hei)*1.0 );
     left = left * Y;
-//   self.swichView.frame = CGRectMake(left+15, self.swichView.origin.y, self.swichView.width_sd, self.swichView.height_sd);
+   self.swichView.frame = CGRectMake(left+15, self.swichView.origin.y, self.swichView.width_sd, self.swichView.height_sd);
 
   }
   _Navi.hidden =  Y < hei;

@@ -3,28 +3,34 @@ package com.meeruu.sharegoods.rn.showground.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Point;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
+import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
+import com.meeruu.sharegoods.rn.showground.widgets.gridview.ImageInfo;
 import com.meeruu.sharegoods.rn.showground.widgets.littlevideo.IVideoSourceModel;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-public abstract class BaseVideoListAdapter<VH extends BaseVideoListAdapter.BaseHolder, T extends IVideoSourceModel> extends RecyclerView.Adapter<VH>  {
+public abstract class BaseVideoListAdapter<VH extends BaseVideoListAdapter.BaseHolder> extends RecyclerView.Adapter<VH>  {
 
     public static final String TAG = BaseVideoListAdapter.class.getSimpleName();
-    protected List<T> list;
+    protected List<NewestShowGroundBean.DataBean> list;
     protected Context context;
     private Point mScreenPoint = new Point();
 
-    public BaseVideoListAdapter(Context context, List<T> urlList) {
+    public BaseVideoListAdapter(Context context, List<NewestShowGroundBean.DataBean> urlList) {
         this.context = context;
         this.list = urlList;
         //获取屏幕宽高
@@ -34,7 +40,7 @@ public abstract class BaseVideoListAdapter<VH extends BaseVideoListAdapter.BaseH
 
     }
     public BaseVideoListAdapter(Context context) {
-        this(context, new ArrayList<T>());
+        this(context, new ArrayList<NewestShowGroundBean.DataBean>());
     }
 
 
@@ -42,11 +48,26 @@ public abstract class BaseVideoListAdapter<VH extends BaseVideoListAdapter.BaseH
     public void onBindViewHolder(final VH holder, int position) {
 
         Log.d(TAG, "onBindViewHolder position:" + position);
-        final IVideoSourceModel video = list.get(position);
-        String coverPath = video.getCover();
-        final SimpleDraweeView iv = holder.getCoverView();
+        final NewestShowGroundBean.DataBean video = list.get(position);
+        List<NewestShowGroundBean.DataBean.ResourceBean> resource = video.getResource();
+        String cover = null;
+        if (resource != null) {
+            for (int j = 0; j < resource.size(); j++) {
+                NewestShowGroundBean.DataBean.ResourceBean resourceBean = resource.get(j);
+                if (resourceBean.getType() == 5) {
+                    cover = resourceBean.getBaseUrl();
+                    break;
+                }
+            }
+        }
 
-        ImageLoadUtils.loadNetImage(coverPath,iv);
+        final SimpleDraweeView iv = holder.getCoverView();
+        String tag = (String) iv.getTag();
+
+        if (!TextUtils.equals(cover, tag)) {
+            iv.setTag(cover);
+            ImageLoadUtils.loadNetImage(cover,iv);
+        }
 
 //        new ImageLoaderImpl().loadImage(context, coverPath, new ImageLoaderOptions.Builder()
 //                .asBitmap()
@@ -99,22 +120,30 @@ public abstract class BaseVideoListAdapter<VH extends BaseVideoListAdapter.BaseH
      * 刷新数据
      * @param list
      */
-    public void refreshData(List<T> list) {
+    public void refreshData(List<NewestShowGroundBean.DataBean> list) {
         this.list.clear();
         this.list.addAll(list);
         notifyDataSetChanged();
     }
 
+    public void replaceData(@NonNull Collection<NewestShowGroundBean.DataBean> data) {
+        // 不是同一个引用才清空列表
+        if (data != list) {
+            list.clear();
+            list.addAll(data);
+        }
+        notifyDataSetChanged();
+    }
     /**
      * 添加数据
      * @param list
      */
-    public void addMoreData(List<T> list) {
+    public void addMoreData(List<NewestShowGroundBean.DataBean> list) {
         this.list.addAll(list);
         notifyItemRangeInserted(this.list.size() - list.size(), list.size());
     }
 
-    public List<T> getDataList() {
+    public List<NewestShowGroundBean.DataBean> getDataList() {
         return list;
     }
 
@@ -123,6 +152,7 @@ public abstract class BaseVideoListAdapter<VH extends BaseVideoListAdapter.BaseH
             super(itemView);
         }
         public abstract SimpleDraweeView getCoverView();
+        public abstract ImageView getPlayIcon();
         public abstract ViewGroup getContainerView();
     }
 }
