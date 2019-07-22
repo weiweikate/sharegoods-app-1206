@@ -30,6 +30,7 @@ import RouterMap from '../../../../navigation/RouterMap';
 import BankCardIconModel from './BankCardIconModel';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
 import bridge from '../../../../utils/bridge';
+import { formatCardWithSpace } from './AddBankCardPage';
 
 const {
     bankcard_empty,
@@ -155,9 +156,11 @@ export default class BankCardListPage extends BasePage {
                     <UIText value={type === 2 ? '信用卡' : '储蓄卡'}
                             style={{ fontSize: 13, color: 'white', paddingLeft: 50 }}/>
                     <View style={{ flex: 1, justifyContent: 'center' }}>
-                        <UIText value={rowData.isShow ? cardNo : StringUtils.formatBankCardNum(cardNo)} style={{
-                            fontSize: ScreenUtils.px2dp(23), color: 'white', paddingLeft: 50, fontWeight: '500'
-                        }}/>
+                        <UIText
+                            value={rowData.isShow ? formatCardWithSpace(cardNo) : StringUtils.formatBankCardNum(cardNo)}
+                            style={{
+                                fontSize: ScreenUtils.px2dp(23), color: 'white', paddingLeft: 50, fontWeight: '500'
+                            }}/>
                     </View>
                 </ImageBackground>
             </NoMoreClick>
