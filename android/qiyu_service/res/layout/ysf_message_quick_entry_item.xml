@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/ysf_message_quick_entry_item_bg"
     android:gravity="center"
     android:orientation="horizontal"
     android:paddingBottom="3dp"
@@ -24,6 +23,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:maxLines="1"
-        android:textColor="#4F82AE"
+        android:textColor="@color/ysf_blue_4F82AE"
         android:textSize="@dimen/ysf_text_size_12" />
 </LinearLayout>
