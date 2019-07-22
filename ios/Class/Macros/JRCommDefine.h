@@ -18,6 +18,9 @@
 //获取屏幕宽高
 #define KScreenWidth         [[UIScreen mainScreen] bounds].size.width
 #define KScreenHeight        [[UIScreen mainScreen] bounds].size.height
+
+#define ScreenWidth     [[UIScreen mainScreen] bounds].size.width
+#define ScreenHeight     [[UIScreen mainScreen] bounds].size.height
 #define KRootVC    [UIApplication sharedApplication].keyWindow.rootViewController
 
 // iPhone X
@@ -34,6 +37,18 @@
 #define kIphone4             (KScreenHeight == 480.f)
 #define kIphoneN             (KScreenHeight == 667.f)
 #define kIPhoneX             (KScreenHeight == 812.f ? YES : NO)
+#define IPHONEX              (KScreenHeight == 812.f ? YES : NO)
+
+///Ali相关注解
+#define IS_IPHONEX (([[UIScreen mainScreen] bounds].size.height<812)?NO:YES)
+#define SafeTop (([[UIScreen mainScreen] bounds].size.height<812) ? 20 : 44)
+#define SafeBottom (([[UIScreen mainScreen] bounds].size.height<812) ? 0 : 34)
+#define SafeBeautyBottom (([[UIScreen mainScreen] bounds].size.height<812) ? 0 : 12)
+#define StatusBarHeight (([[UIScreen mainScreen] bounds].size.height<812) ? 20 : 44)
+#define NoStatusBarSafeTop (IS_IPHONEX ? 44 : 0)
+#define RGBToColor(R,G,B)  [UIColor colorWithRed:(R * 1.0) / 255.0 green:(G * 1.0) / 255.0 blue:(B * 1.0) / 255.0 alpha:1.0]
+
+#define KquTabBarHeight  (IS_IPHONEX ? 100 : 0)
 
 ///IOS 版本判断
 #define IOSAVAILABLEVERSION(version) ([[UIDevice currentDevice] availableVersion:version] < 0)
