@@ -24,15 +24,12 @@ import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.sharegoods.R;
-import com.meeruu.sharegoods.rn.showground.adapter.CollectionAdapter;
 import com.meeruu.sharegoods.rn.showground.adapter.ShowGroundAdapter;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
-import com.meeruu.sharegoods.rn.showground.presenter.CollectionPresenter;
 import com.meeruu.sharegoods.rn.showground.presenter.OthersPresenter;
 import com.meeruu.sharegoods.rn.showground.view.IShowgroundView;
 import com.meeruu.sharegoods.rn.showground.widgets.CustomLoadMoreView;
 import com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView;
-import com.meeruu.sharegoods.rn.showground.widgets.gridview.ImageInfo;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -312,24 +309,22 @@ public class ShowOtherView  implements IShowgroundView, SwipeRefreshLayout.OnRef
                 NewestShowGroundBean.DataBean bean = (NewestShowGroundBean.DataBean) data.get(i);
                 if (bean.getItemType() == 1 || bean.getItemType() == 3) {
                     List<NewestShowGroundBean.DataBean.ResourceBean> resource = bean.getResource();
-                    List<ImageInfo> resolveResource = new ArrayList<>();
+                    List<String> resolveResource = new ArrayList<>();
                     if (resource != null) {
                         for (int j = 0; j < resource.size(); j++) {
                             NewestShowGroundBean.DataBean.ResourceBean resourceBean = resource.get(j);
                             if (resourceBean.getType() == 2) {
-                                ImageInfo imageInfo = new ImageInfo();
-                                imageInfo.setImageUrl(resourceBean.getUrl());
-                                resolveResource.add(imageInfo);
+
+                                resolveResource.add(resourceBean.getUrl());
                             }
 
                             if(resourceBean.getType() == 5){
-                                ImageInfo imageInfo = new ImageInfo();
-                                imageInfo.setImageUrl(resourceBean.getUrl());
-                                bean.setVideoCover(imageInfo);
+
+                                bean.setVideoCover(resourceBean.getUrl());
                                 break;
                             }
                         }
-                        bean.setNineImageInfos(resolveResource);
+//                        bean.setNineImageInfos(resolveResource);
                     }
                     data.set(i, bean);
                 }

@@ -13,8 +13,9 @@
         android:id="@+id/user_icon"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:paddingTop="15dp"
+        android:layout_marginTop="15dp"
         app:roundAsCircle="true" />
+
 
     <TextView
         android:id="@+id/user_name"

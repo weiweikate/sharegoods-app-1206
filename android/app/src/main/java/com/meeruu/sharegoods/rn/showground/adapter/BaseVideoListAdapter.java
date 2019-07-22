@@ -1,7 +1,6 @@
 package com.meeruu.sharegoods.rn.showground.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -11,13 +10,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
-import com.meeruu.sharegoods.rn.showground.widgets.gridview.ImageInfo;
-import com.meeruu.sharegoods.rn.showground.widgets.littlevideo.IVideoSourceModel;
 
 import java.util.ArrayList;
 import java.util.Collection;

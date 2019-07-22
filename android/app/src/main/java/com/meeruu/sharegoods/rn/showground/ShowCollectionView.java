@@ -1,8 +1,6 @@
 package com.meeruu.sharegoods.rn.showground;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -24,25 +22,14 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
-import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
-import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.adapter.CollectionAdapter;
-import com.meeruu.sharegoods.rn.showground.adapter.ShowDynamicAdapter;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
-import com.meeruu.sharegoods.rn.showground.event.onEndScrollEvent;
-import com.meeruu.sharegoods.rn.showground.event.onItemPressEvent;
-import com.meeruu.sharegoods.rn.showground.event.onScrollStateChangedEvent;
-import com.meeruu.sharegoods.rn.showground.event.onScrollYEvent;
-import com.meeruu.sharegoods.rn.showground.event.onStartRefreshEvent;
-import com.meeruu.sharegoods.rn.showground.event.onStartScrollEvent;
 import com.meeruu.sharegoods.rn.showground.presenter.CollectionPresenter;
-import com.meeruu.sharegoods.rn.showground.presenter.DynamicPresenter;
 import com.meeruu.sharegoods.rn.showground.view.IShowgroundView;
 import com.meeruu.sharegoods.rn.showground.widgets.CustomLoadMoreView;
 import com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView;
-import com.meeruu.sharegoods.rn.showground.widgets.gridview.ImageInfo;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -326,24 +313,24 @@ public class ShowCollectionView  implements IShowgroundView, SwipeRefreshLayout.
                 NewestShowGroundBean.DataBean bean = (NewestShowGroundBean.DataBean) data.get(i);
                 if (bean.getItemType() == 1 || bean.getItemType() == 3) {
                     List<NewestShowGroundBean.DataBean.ResourceBean> resource = bean.getResource();
-                    List<ImageInfo> resolveResource = new ArrayList<>();
+                    List<String> resolveResource = new ArrayList<>();
                     if (resource != null) {
                         for (int j = 0; j < resource.size(); j++) {
                             NewestShowGroundBean.DataBean.ResourceBean resourceBean = resource.get(j);
                             if (resourceBean.getType() == 2) {
-                                ImageInfo imageInfo = new ImageInfo();
-                                imageInfo.setImageUrl(resourceBean.getUrl());
-                                resolveResource.add(imageInfo);
+//                                ImageInfo imageInfo = new ImageInfo();
+//                                imageInfo.setImageUrl(resourceBean.getUrl());
+                                resolveResource.add(resourceBean.getBaseUrl());
                             }
 
                             if(resourceBean.getType() == 5){
-                                ImageInfo imageInfo = new ImageInfo();
-                                imageInfo.setImageUrl(resourceBean.getUrl());
-                                bean.setVideoCover(imageInfo);
+//                                ImageInfo imageInfo = new ImageInfo();
+//                                imageInfo.setImageUrl(resourceBean.getUrl());
+                                bean.setVideoCover(resourceBean.getBaseUrl());
                                 break;
                             }
                         }
-                        bean.setNineImageInfos(resolveResource);
+//                        bean.setNineImageInfos(resolveResource);
                     }
                     data.set(i, bean);
                 }

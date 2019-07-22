@@ -9,7 +9,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +34,6 @@ import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.adapter.ProductsAdapter;
-import com.meeruu.sharegoods.rn.showground.adapter.ShowGroundAdapter;
 import com.meeruu.sharegoods.rn.showground.adapter.ShowRecommendAdapter;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
 import com.meeruu.sharegoods.rn.showground.event.OnCollectionEvent;
@@ -53,11 +51,9 @@ import com.meeruu.sharegoods.rn.showground.event.onSharePressEvent;
 import com.meeruu.sharegoods.rn.showground.event.onStartRefreshEvent;
 import com.meeruu.sharegoods.rn.showground.event.onStartScrollEvent;
 import com.meeruu.sharegoods.rn.showground.presenter.ShowAttentionPresenter;
-import com.meeruu.sharegoods.rn.showground.presenter.ShowgroundPresenter;
 import com.meeruu.sharegoods.rn.showground.view.IShowgroundView;
 import com.meeruu.sharegoods.rn.showground.widgets.CustomLoadMoreView;
 import com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView;
-import com.meeruu.sharegoods.rn.showground.widgets.gridview.ImageInfo;
 import com.meeruu.sharegoods.rn.showground.widgets.gridview.NineGridView;
 
 import java.lang.ref.WeakReference;
@@ -86,7 +82,6 @@ public class ShowAttentionView implements IShowgroundView, SwipeRefreshLayout.On
     private WeakHandler mHandler;
     private View errView;
     private View errImg;
-    private boolean sIsScrolling;
     public static boolean isLogin;
 
     private int page = 1;
@@ -253,16 +248,6 @@ public class ShowAttentionView implements IShowgroundView, SwipeRefreshLayout.On
 
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-
-                if (newState == RecyclerView.SCROLL_STATE_DRAGGING || newState == RecyclerView.SCROLL_STATE_SETTLING) {
-                    sIsScrolling = true;
-                    ImageLoadUtils.pauseLoadImage();
-                } else if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (sIsScrolling == true) {
-                        ImageLoadUtils.resumeLoadImage();
-                    }
-                    sIsScrolling = false;
-                }
             }
         });
     }
@@ -525,24 +510,20 @@ public class ShowAttentionView implements IShowgroundView, SwipeRefreshLayout.On
                 NewestShowGroundBean.DataBean bean = (NewestShowGroundBean.DataBean) data.get(i);
                 if (bean.getItemType() == 1 || bean.getItemType() == 3) {
                     List<NewestShowGroundBean.DataBean.ResourceBean> resource = bean.getResource();
-                    List<ImageInfo> resolveResource = new ArrayList<>();
+                    List<String> resolveResource = new ArrayList<>();
                     if (resource != null) {
                         for (int j = 0; j < resource.size(); j++) {
                             NewestShowGroundBean.DataBean.ResourceBean resourceBean = resource.get(j);
                             if (resourceBean.getType() == 2) {
-                                ImageInfo imageInfo = new ImageInfo();
-                                imageInfo.setImageUrl(resourceBean.getUrl());
-                                resolveResource.add(imageInfo);
+                                resolveResource.add(resourceBean.getUrl());
                             }
 
                             if(resourceBean.getType() == 5){
-                                ImageInfo imageInfo = new ImageInfo();
-                                imageInfo.setImageUrl(resourceBean.getUrl());
-                                bean.setVideoCover(imageInfo);
+                                bean.setVideoCover(resourceBean.getBaseUrl());
                                 break;
                             }
                         }
-                        bean.setNineImageInfos(resolveResource);
+                        bean.setImgUrls(resolveResource);
                     }
                     data.set(i, bean);
                 }

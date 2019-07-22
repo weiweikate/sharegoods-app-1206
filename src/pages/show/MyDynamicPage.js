@@ -43,7 +43,7 @@ export default class MyDynamicPage extends BasePage {
     }
 
     renderHeader = () => {
-        return <UserInfoView/>
+        return <UserInfoView userType={this.params.userType}/>
         // let icon = (user.headImg && user.headImg.length > 0) ?
         //     <AvatarImage source={{ uri: user.headImg }} style={styles.userIcon}
         //                  borderRadius={px2dp(65 / 2)}/> : <Image source={mine_user_icon} style={styles.userIcon}
@@ -155,6 +155,11 @@ export default class MyDynamicPage extends BasePage {
                 <Waterfall style={{ flex: 1, marginTop: -10 }}
                            uri={'/social/show/content/page/mine/query@GET'}
                            headerHeight={px2dp(headerHeight+100)}
+                           changeNav={({nativeEvent})=>{
+                               this.setState({
+                                   changeHeader:nativeEvent.show
+                               })
+                           }}
                            userType={`${this.params.userType}${userCode}`}
                            type={'MyDynamic'}
                            renderHeader={this.renderHeader()}
@@ -174,7 +179,7 @@ export default class MyDynamicPage extends BasePage {
                            }}
                 />
                 {/*{this.navBackgroundRender()}*/}
-                {/*{this.navRender()}*/}
+                {this.navRender()}
 
             </View>
         );

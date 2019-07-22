@@ -101,7 +101,7 @@ const api = {
     }],
     //查询自己用户信息
     getMineInfo: ['/social/show/user/query/mine/info',  {
-        method: 'post'
+        method: 'get'
     }]
 
 };

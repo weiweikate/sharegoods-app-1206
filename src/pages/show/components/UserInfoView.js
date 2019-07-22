@@ -34,6 +34,9 @@ const {
 export default class UserInfoView extends PureComponent {
     constructor(props) {
         super(props);
+        this.state = {
+            attentions:0
+        };
     }
 
     render() {
@@ -56,7 +59,7 @@ export default class UserInfoView extends PureComponent {
                 left: 0,
                 top: 0,
                 width: DesignRule.width,
-                height: px2dp(270),
+                height: this.props.userType === 'mineNormal' ? px2dp(235) : px2dp(270),
                 backgroundColor: '#F7F7F7',
                 marginBottom: px2dp(ScreenUtils.isIOS ? 10 : 0)
             }}>
@@ -66,8 +69,31 @@ export default class UserInfoView extends PureComponent {
                     <Text style={styles.nameStyle}>
                         {name}
                     </Text>
+                    {
+                        this.props.userType === 'mineNormal' ?
+                            <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: px2dp(12) }}>
+                                <Text style={{
+                                    color:DesignRule.white,
+                                    fontSize:px2dp(15)
+                                }}>
+                                    我的关注
+                                </Text>
+                                <Text style={{
+                                    color:DesignRule.white,
+                                    fontSize:px2dp(17),
+                                    marginLeft:px2dp(10)
+                                }}>
+                                    {this.state.attentions}
+                                </Text>
+                            </View> : null
+                    }
                 </ImageBackground>
-                <WriterInfoView style={{ marginLeft: DesignRule.margin_page, marginTop: px2dp(-35) }}/>
+                {
+                    this.props.userType !== 'mineNormal' ? <WriterInfoView userType={this.props.userType} style={{
+                        marginLeft: DesignRule.margin_page,
+                        marginTop: px2dp(-35)
+                    }}/> : null
+                }
             </View>
         );
 

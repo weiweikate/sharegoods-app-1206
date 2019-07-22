@@ -1,7 +1,6 @@
 package com.meeruu.sharegoods.rn.showground.bean;
 
 import com.chad.library.adapter.base.entity.MultiItemEntity;
-import com.meeruu.sharegoods.rn.showground.widgets.gridview.ImageInfo;
 
 import java.util.List;
 
@@ -122,9 +121,7 @@ public class NewestShowGroundBean {
         private boolean like;
         private List<ProductsBean> products;
         private List<ResourceBean> resource;
-        private List<ImageInfo> nineImageInfos;
         private List<ShowTagsBean> showTags;
-        private ImageInfo videoCover;
         private List<String> imgUrls;
         private String videoCover;
         private boolean owner;
@@ -154,7 +151,6 @@ public class NewestShowGroundBean {
             this.collect = collect;
         }
 
-        public ImageInfo getVideoCover() {
         public String getVideoCover() {
             return videoCover;
         }
