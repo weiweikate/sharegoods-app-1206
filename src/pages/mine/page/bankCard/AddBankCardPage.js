@@ -20,6 +20,33 @@ import StringUtils from '../../../../utils/StringUtils';
 
 let lastcommit = null;
 
+export function formatCardWithSpace(text) {
+    if (text) {
+        let phone = text.replace(/ /g, '');
+        if (phone && phone.length < 5) {
+            return phone;
+        }
+
+        if (phone && phone.length < 9) {
+            return `${phone.substring(0, 4)} ${phone.substring(4, phone.length)}`;
+        }
+
+        if (phone && phone.length < 13) {
+            return `${phone.substring(0, 4)} ${phone.substring(4, 8)} ${phone.substring(8, phone.length)}`;
+        }
+
+        if (phone && phone.length < 17) {
+            return `${phone.substring(0, 4)} ${phone.substring(4, 8)} ${phone.substring(8, 12)} ${phone.substring(12, phone.length)}`;
+        }
+
+        if (phone && phone.length > 16) {
+            return `${phone.substring(0, 4)} ${phone.substring(4, 8)} ${phone.substring(8, 12)} ${phone.substring(12, 16)} ${phone.substring(16, phone.length)}`;
+        }
+    } else {
+        return text;
+    }
+}
+
 @observer
 class AddBankCardPage extends BasePage {
     constructor(props) {
@@ -69,36 +96,6 @@ class AddBankCardPage extends BasePage {
         } else {
             return text;
         }
-
-    }
-
-    _formatCard(text) {
-
-        if (text) {
-            let phone = text.replace(/ /g, '');
-            if (phone && phone.length < 5) {
-                return phone;
-            }
-
-            if (phone && phone.length < 9) {
-                return `${phone.substring(0, 4)} ${phone.substring(4, phone.length)}`;
-            }
-
-            if (phone && phone.length < 13) {
-                return `${phone.substring(0, 4)} ${phone.substring(4, 8)} ${phone.substring(8, phone.length)}`;
-            }
-
-            if (phone && phone.length < 17) {
-                return `${phone.substring(0, 4)} ${phone.substring(4, 8)} ${phone.substring(8, 12)} ${phone.substring(12, phone.length)}`;
-            }
-
-            if (phone && phone.length > 16) {
-                return `${phone.substring(0, 4)} ${phone.substring(4, 8)} ${phone.substring(8, 12)} ${phone.substring(12, 16)} ${phone.substring(16, phone.length)}`;
-            }
-        } else {
-            return text;
-        }
-
 
     }
 
@@ -195,7 +192,7 @@ class AddBankCardPage extends BasePage {
         );
     };
     inputCardNum = (cardNo) => {
-        this.setState({ cardNo: this._formatCard(cardNo) });
+        this.setState({ cardNo: formatCardWithSpace(cardNo) });
     };
     getBankType = () => {
         const bankCard = this.state.cardNo.replace(/ /g, '');
@@ -212,6 +209,7 @@ class AddBankCardPage extends BasePage {
             }
         }).catch(e => {
             this._setDefault();
+            this.$toastShow(e.msg);
         });
     };
     _setDefault = () => {
