@@ -10,6 +10,7 @@ import MyDynamicPage from './MyDynamicPage'
 import TagSelectorPage from './TagSelectorPage'
 import TagDetailPage from './TagDetailPage'
 import ShowVideoPage from './ShowVideoPage'
+import FansListPage from './FansListPage'
 export default {
     moduleName: 'show',
     childRoutes: {
@@ -24,6 +25,7 @@ export default {
         MyDynamicPage,
         TagSelectorPage,
         TagDetailPage,
-        ShowVideoPage
+        ShowVideoPage,
+        FansListPage
     }
 }

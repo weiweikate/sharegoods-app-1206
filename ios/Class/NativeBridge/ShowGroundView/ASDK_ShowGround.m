@@ -24,8 +24,7 @@
 #import <YYKit.h>
 #import "MyShowCellNode.h"
 #import "NSObject+Util.h"
-#import "NSString+UrlAddParams.h"
-#import "NSDictionary+Util.h"
+#import "SwichView.h"
 
 #define kReuseIdentifier @"ShowCell"
 #define SystemUpgradeCode 9999
@@ -40,6 +39,8 @@
 @property (nonatomic, strong)UIView *emptyView;
 @property (nonatomic, strong)MosaicCollectionLayoutDelegate *layoutDelegate;
 @property (nonatomic, assign)BOOL isFinish;
+@property(nonatomic, strong)SwichView *swichView;
+@property (nonatomic, strong)SwichViewNavi *Navi;
 @end
 @implementation ASDK_ShowGround
 
@@ -82,7 +83,7 @@
   [_collectionNode.view registerClass:[ShowCollectionReusableView class] forSupplementaryViewOfKind: UICollectionElementKindSectionHeader withReuseIdentifier:@"ShowCollectionReusableView"];
   [_collectionNode.view registerClass:[UICollectionReusableView  class] forSupplementaryViewOfKind: UICollectionElementKindSectionFooter withReuseIdentifier:@"UICollectionReusableView_footer"];
   [self addSubnode:_collectionNode];
-
+  
 }
 
 - (void)layoutSubviews
@@ -95,7 +96,7 @@
  * 刷新控件
  */
 - (void)setupRefresh{
-
+  
   MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refreshData)];
   [header setTitle:@"下拉刷新" forState:MJRefreshStateIdle];
   [header setTitle:@"松开刷新" forState:MJRefreshStatePulling];
@@ -105,7 +106,7 @@
   header.stateLabel.textColor = [UIColor colorWithRed:144/255.f green:144/255.f blue:144/255.f alpha:1.0f];
   self.collectionNode.view.mj_header = header;
   [self.collectionNode.view.mj_header beginRefreshing];
-
+  
   MJRefreshAutoNormalFooter *footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreData)];
   footer.triggerAutomaticallyRefreshPercent = -10;
   [footer setTitle:@"上拉加载" forState:MJRefreshStateIdle];
@@ -113,9 +114,12 @@
   [footer setTitle:@"我也是有底线" forState:MJRefreshStateNoMoreData];
   footer.stateLabel.font = [UIFont systemFontOfSize:11];
   footer.stateLabel.textColor = [UIColor colorWithRed:144/255.f green:144/255.f blue:144/255.f alpha:1.0f];
-
+  
   self.collectionNode.view.mj_footer = footer;
   self.collectionNode.view.mj_footer.hidden = YES;
+  if (@available(iOS 11.0, *)) {
+    self.collectionNode.view.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+  }
 }
 
 /**
@@ -123,26 +127,30 @@
  */
 - (void)setupEmptyView{
   _emptyView = [UIView new];
-  [self addSubview:_emptyView];
-  _emptyView.sd_layout.spaceToSuperView(UIEdgeInsetsZero);
+  [self.collectionNode.view addSubview:_emptyView];
+  _emptyView.sd_layout
+  .topSpaceToView(self.collectionNode.view, 0)
+  .leftSpaceToView(self.collectionNode.view, 0)
+  .rightSpaceToView(self.collectionNode.view, 0)
+  .heightIs(KScreenHeight);
   _emptyView.backgroundColor = [UIColor colorWithHexString:@"f5f5f5"];
-
+  
   UIImageView *imgView = [UIImageView new];
   imgView.image = [UIImage imageNamed:@"empty"];
   [_emptyView addSubview:imgView];
-
+  
   imgView.sd_layout
   .centerXEqualToView(_emptyView)
   .centerYEqualToView(_emptyView)
   .widthIs(267)
   .heightIs(192);
-
+  
   _emptyLb = [UILabel new];
   _emptyLb.font = [UIFont systemFontOfSize:13];
   _emptyLb.textColor = [UIColor colorWithHexString:@"666666"];
   [_emptyView addSubview:_emptyLb];
   _emptyLb.textAlignment = 1;
-
+  
   _emptyLb.sd_layout
   .topSpaceToView(imgView, 10)
   .heightIs(20)
@@ -151,7 +159,7 @@
   //点击刷新
   UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(refreshData)];
   [_emptyView addGestureRecognizer:tap];
-   _emptyView.hidden = YES;
+  _emptyView.hidden = YES;
 }
 
 - (void)setErrCode:(NSInteger)errCode
@@ -159,9 +167,10 @@
   _errCode = errCode;
   if (self.dataArr.count > 0) {
     _emptyView.hidden = YES;
-
+    
   }else{
     _emptyView.hidden = NO;
+    self.collectionNode.view.mj_footer.hidden = YES;
     if (errCode == SystemUpgradeCode) {
       _emptyLb.text = @"系统维护升级中 ";
     }else{
@@ -175,7 +184,6 @@
  */
 - (void)refreshData
 {
-  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   if (self.onStartRefresh) {
     self.onStartRefresh(@{});
   }
@@ -186,16 +194,13 @@
   }
   [dic addEntriesFromDictionary:@{@"page": [NSString stringWithFormat:@"%ld",self.page], @"size": @"20"}];
   __weak ASDK_ShowGround * weakSelf = self;
-  [NetWorkTool requestWithURL:self.uri params:dic  toModel:nil success:^(NSDictionary* result) {
-    if(![self.type isEqualToString:@"MyDynamic"]){
-      [defaults setObject:[NSString convertNSDictionaryToJsonString:result] forKey:self.type];
-    }
+  [NetWorkTool requestWithURL:[self getCurrentUrl] params:dic  toModel:nil success:^(NSDictionary* result) {
     ShowQueryModel* model = [ShowQueryModel modelWithJSON:result];
     weakSelf.dataArr = [model.data mutableCopy];
     if([result valueForKey:@"data"]&&![[result valueForKey:@"data"] isKindOfClass:[NSNull class]]){
       weakSelf.callBackArr = [[result valueForKey:@"data"] mutableCopy];
     }
-
+    
     [weakSelf.collectionNode.view.mj_header endRefreshing];
     if(model.data.count < 20){
       [weakSelf.collectionNode.view.mj_footer endRefreshingWithNoMoreData];
@@ -206,7 +211,9 @@
     if (weakSelf.collectionNode.view.mj_footer.hidden) {
       //延迟0.5秒，防止第一次在刷新成功过程中在顶部出现footer《加载更多》
       dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        weakSelf.collectionNode.view.mj_footer.hidden = NO;
+        if (weakSelf.dataArr.count > 0) {
+          weakSelf.collectionNode.view.mj_footer.hidden = NO;
+        }
       });
     }
     weakSelf.errCode = 10000;
@@ -230,15 +237,15 @@
   }
   [dic addEntriesFromDictionary:@{@"page": [NSString stringWithFormat:@"%ld",self.page], @"size": @"20"}];
   __weak ASDK_ShowGround * weakSelf = self;
-  [NetWorkTool requestWithURL:self.uri params:dic toModel:nil success:^(NSDictionary* result) {
-
+  [NetWorkTool requestWithURL:[self getCurrentUrl] params:dic toModel:nil success:^(NSDictionary* result) {
+    
     ShowQueryModel* model = [ShowQueryModel modelWithJSON:result];
     [weakSelf.dataArr addObjectsFromArray:model.data];
-
+    
     if([result valueForKey:@"data"]&&![[result valueForKey:@"data"] isKindOfClass:[NSNull class]]){
       [weakSelf.callBackArr addObjectsFromArray:[result valueForKey:@"data"]];
     }
-
+    
     NSMutableArray *indexPaths = [NSMutableArray new];
     for (int i = 0; i<model.data.count; i++) {
       NSIndexPath *indexPath = [NSIndexPath indexPathForRow:weakSelf.dataArr.count - 1 - i inSection:0];
@@ -251,7 +258,7 @@
     }else{
       [weakSelf.collectionNode.view.mj_footer endRefreshing];
     }
-     weakSelf.errCode = 10000;
+    weakSelf.errCode = 10000;
   } failure:^(NSString *msg, NSInteger code) {
     weakSelf.errCode = code;
     [MBProgressHUD showSuccess:msg];
@@ -278,9 +285,9 @@
     [dic setObject:[NSNumber numberWithInteger:indexPath.row] forKey:@"index"];
     [self.callBackArr replaceObjectAtIndex:indexPath.row withObject:dic];
     _onItemPress(self.callBackArr[indexPath.row]);
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//       [_collectionNode reloadItemsAtIndexPaths:@[indexPath]];
-//    });
+    //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    //       [_collectionNode reloadItemsAtIndexPaths:@[indexPath]];
+    //    });
   }
 }
 
@@ -298,7 +305,7 @@
                      dispatch_get_main_queue(),
                      ^{
                        node.neverShowPlaceholders = NO;
-
+                       
                      });
     }else {
       node.neverShowPlaceholders = NO;
@@ -314,14 +321,14 @@
     return ^{
       MyShowCellNode *node = [[MyShowCellNode alloc]initWithModel:model index:indexPath.row ];
       node.deletBtnTapBlock = ^(ShowQuery_dataModel *m, NSInteger index) {
-
+        
         UIAlertController *alterController = [UIAlertController alertControllerWithTitle:@"温馨提示"
                                                                                  message:@"确定删除这条动态吗？"
                                                                           preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"再想想"
                                                                style:UIAlertActionStyleDefault
                                                              handler:^(UIAlertAction * _Nonnull action) {
-
+                                                               
                                                              }];
         UIAlertAction *actionSubmit = [UIAlertAction actionWithTitle:@"狠心删除"
                                                                style:UIAlertActionStyleDefault
@@ -335,10 +342,10 @@
       return node;
     };
   }
-    return ^{
-      ShowCellNode *node = [[ShowCellNode alloc]initWithModel:model index:indexPath.row];
-      return node;
-    };
+  return ^{
+    ShowCellNode *node = [[ShowCellNode alloc]initWithModel:model index:indexPath.row];
+    return node;
+  };
 }
 
 
@@ -349,16 +356,32 @@
 - (void)deletehData:(ShowQuery_dataModel*)m
 {
   if(m.showNo){
-  [NetWorkTool requestWithURL:@"/social/show/content/delete@POST" params:@{@"showNo": m.showNo}  toModel:nil success:^(NSDictionary* result) {
-    NSInteger index = [self.dataArr indexOfObject:m];
-    [self.dataArr removeObject:m];
-    [self.callBackArr removeObject:m];
-    [self.collectionNode deleteItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]]];
-
-  } failure:^(NSString *msg, NSInteger code) {
-    [MBProgressHUD showSuccess:msg];
-  } showLoading:nil];
+    [NetWorkTool requestWithURL:@"/social/show/content/delete@POST" params:@{@"showNo": m.showNo}  toModel:nil success:^(NSDictionary* result) {
+      NSInteger index = [self.dataArr indexOfObject:m];
+      [self.dataArr removeObject:m];
+      [self.callBackArr removeObject:m];
+      [self.collectionNode deleteItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]]];
+      
+    } failure:^(NSString *msg, NSInteger code) {
+      [MBProgressHUD showSuccess:msg];
+    } showLoading:nil];
   }
+}
+
+ - (NSString*)getCurrentUrl
+{
+  if ([self.userType isEqualToString:@"mineWriter"]) {
+    if (self.swichView.index == 1) {
+      return ShowApi_mineCollect;
+    }
+    return ShowApi_mineQuery;
+  } else if ([self.userType isEqualToString:@"mineNormal"]){
+    return ShowApi_mineCollect;
+  } else if ([self.userType isEqualToString:@"others"]){
+    return ShowApi_otherQuery;
+  }
+  
+  return self.uri;
 }
 
 /**
@@ -402,11 +425,11 @@
   //section header
   if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
     ShowCollectionReusableView * view = [collectionView dequeueReusableSupplementaryViewOfKind: UICollectionElementKindSectionHeader withReuseIdentifier:@"ShowCollectionReusableView" forIndexPath:indexPath];
-
+    
     //    view.backgroundColor = [UIColor redColor];
     [view removeAllSubviews];
     [view addSubview:self.headerView];
-
+    
     return view;
   }else{
     //section footer
@@ -426,7 +449,7 @@
   if (self.onScrollStateChanged) {
     self.onScrollStateChanged(@{@"state":[NSNumber numberWithInteger:1]});
   }
-
+  
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
@@ -446,6 +469,17 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
   CGFloat Y = scrollView.contentOffset.y;
+  CGFloat hei = _headerHeight - kNavBarHeight;
+  if(Y >= 0 && Y <= hei){
+    CGFloat left = ( KScreenWidth - self.swichView.width_sd)/2.0 -15;
+    left = left/((hei)*1.0 );
+    left = left * Y;
+   self.swichView.frame = CGRectMake(left+15, self.swichView.origin.y, self.swichView.width_sd, self.swichView.height_sd);
+
+  }
+  _Navi.hidden =  Y < hei;
+  
+   NSLog(@"____%lf",Y);
   if(_onScrollY){
     _onScrollY(@{@"YDistance":@(Y)});
   }
@@ -458,44 +492,89 @@
     scrollView.bounces = YES;
   }
 
+  
 }
-
--(void)setType:(NSString *)type{
-  _type = type;  
-  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-  if(![type isEqualToString:@"MyDynamic"]&& [defaults objectForKey:type]){
-    NSDictionary *dicData = [NSDictionary dictionaryWithJsonString:[defaults objectForKey:type]];
-    if (dicData) {
-      self.callBackArr = [[dicData valueForKey:@"data"] mutableCopy];
-      ShowQueryModel* model = [ShowQueryModel modelWithJSON:dicData];
-      self.dataArr = [model.data mutableCopy];
-    }
-//    [self.collectionNode reloadData];
-  }
-}
-
 
 - (void)setHeaderHeight:(NSInteger)headerHeight
 {
-  _headerHeight  = headerHeight;
-  _layoutDelegate.headerHeight = headerHeight;
-  _emptyView.sd_layout.topSpaceToView(self, headerHeight)
-  .leftEqualToView(self).rightEqualToView(self).bottomEqualToView(self);
+  _headerHeight  = headerHeight + 44;
+  self.headerView.frame  = CGRectMake(0, 0, KScreenWidth, _headerHeight);
+  _layoutDelegate.headerHeight = _headerHeight;
+  _emptyView.sd_layout
+  .topSpaceToView(self.collectionNode.view, _headerHeight)
+  .heightIs(KScreenHeight - _headerHeight);
   [self.collectionNode reloadData];
 }
 //
 - (void)didUpdateReactSubviews {
   for (UIView *view in self.reactSubviews) {
     if ([view isKindOfClass:[ShowHeaderView class]]) {
-      self.headerView = view;
+      UIView *bgView =[UIView new];
+      bgView.frame = CGRectMake(0, 0, KScreenWidth, _headerHeight);
+      [bgView addSubview:view];
+      view.sd_layout
+      .spaceToSuperView(UIEdgeInsetsMake(0, 0, 44, 0));
+      UIView *view2 = [UIView new];
+      [bgView addSubview:view2];
+      view2.sd_layout
+      .bottomSpaceToView(bgView, 0)
+      .leftSpaceToView(bgView, 0)
+      .rightSpaceToView(bgView, 0)
+      .heightIs(50);
+      
+      [view2 addSubview:self.swichView];
+      self.swichView.data = @[@"文章", @"收藏"];
+      self.Navi.data = @[@"文章", @"收藏"];
+      [self addSubview:self.Navi];
+      self.swichView.frame = CGRectMake(15, 0, 2*80-40, 44);
+      self.headerView = bgView;
       [self.collectionNode reloadData];
     }
   }
 }
 
+
+- (SwichView *)swichView
+{
+  if (!_swichView) {
+    _swichView =[SwichView new];
+    MJWeakSelf
+    _swichView.selectBlock = ^(NSInteger index) {
+      [weakSelf.Navi.swichView changToIndex:index];
+      if (weakSelf.collectionNode.contentOffset.y > _headerHeight-kNavBarHeight) {
+        [weakSelf.collectionNode setContentOffset:CGPointMake(0, _headerHeight-kNavBarHeight) animated:NO];
+      }
+      [weakSelf refreshData];
+    };
+  }
+  return _swichView;
+}
+
+- (SwichViewNavi *)Navi
+{
+  if (!_Navi) {
+      MJWeakSelf
+    _Navi = [SwichViewNavi new];
+    _Navi.hidden = YES;
+    _Navi.backBlock = ^{
+      if (weakSelf.goBack) {
+        weakSelf.goBack(@{});
+      }
+    };
+    _Navi.selectBlock = ^(NSInteger index) {
+       [weakSelf.swichView changToIndex:index];
+      if (weakSelf.collectionNode.contentOffset.y > _headerHeight-kNavBarHeight) {
+          [weakSelf.collectionNode setContentOffset:CGPointMake(0, _headerHeight-kNavBarHeight) animated:NO];
+      }
+      [weakSelf refreshData];
+    };
+  }
+  return  _Navi;
+}
+
 -(void)replaceData:(NSInteger) index num:(NSInteger) num{
   if (self.dataArr.count>index) {
-      self.dataArr[index].click = num;
+    self.dataArr[index].click = num;
     [self.collectionNode reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]]];
   }
 }
@@ -523,4 +602,6 @@
 -(void)scrollToTop{
   [self.collectionNode scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
 }
+
+
 @end

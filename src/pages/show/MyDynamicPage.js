@@ -166,7 +166,7 @@ export default class MyDynamicPage extends BasePage {
             <View style={styles.contain}>
                 <Waterfall style={{ flex: 1, marginTop: -10 }}
                            uri={'/social/show/content/page/mine/query@GET'}
-                           headerHeight={px2dp(headerHeight)}
+                           headerHeight={px2dp(headerHeight+100)}
                            userType={`${this.params.userType}${userCode}`}
                            type={'MyDynamic'}
                            renderHeader={this.renderHeader()}
@@ -182,11 +182,11 @@ export default class MyDynamicPage extends BasePage {
 
                            }}
                            onScrollY={({ nativeEvent }) => {
-                               this._onScroll(nativeEvent);
+                               // this._onScroll(nativeEvent);
                            }}
                 />
-                {this.navBackgroundRender()}
-                {this.navRender()}
+                {/*{this.navBackgroundRender()}*/}
+                {/*{this.navRender()}*/}
 
             </View>
         );
