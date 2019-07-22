@@ -53,25 +53,25 @@ PODS:
   - SensorsAnalyticsSDK (1.10.23):
     - SensorsAnalyticsSDK/core (= 1.10.23)
   - SensorsAnalyticsSDK/core (1.10.23)
-  - Texture (2.8.1):
-    - Texture/AssetsLibrary (= 2.8.1)
-    - Texture/Core (= 2.8.1)
-    - Texture/MapKit (= 2.8.1)
-    - Texture/Photos (= 2.8.1)
-    - Texture/PINRemoteImage (= 2.8.1)
-    - Texture/Video (= 2.8.1)
-  - Texture/AssetsLibrary (2.8.1):
+  - Texture (2.8):
+    - Texture/AssetsLibrary (= 2.8)
+    - Texture/Core (= 2.8)
+    - Texture/MapKit (= 2.8)
+    - Texture/Photos (= 2.8)
+    - Texture/PINRemoteImage (= 2.8)
+    - Texture/Video (= 2.8)
+  - Texture/AssetsLibrary (2.8):
     - Texture/Core
-  - Texture/Core (2.8.1)
-  - Texture/MapKit (2.8.1):
+  - Texture/Core (2.8)
+  - Texture/MapKit (2.8):
     - Texture/Core
-  - Texture/Photos (2.8.1):
+  - Texture/Photos (2.8):
     - Texture/Core
-  - Texture/PINRemoteImage (2.8.1):
+  - Texture/PINRemoteImage (2.8):
     - PINRemoteImage/iOS (= 3.0.0-beta.13)
     - PINRemoteImage/PINCache
     - Texture/Core
-  - Texture/Video (2.8.1):
+  - Texture/Video (2.8):
     - Texture/Core
   - TYCyclePagerView (1.1.2)
   - UICKeyChainStore (2.1.2)
@@ -109,7 +109,7 @@ DEPENDENCIES:
   - SDAutoLayout
   - SDWebImage (~> 4.4.6)
   - SensorsAnalyticsSDK (~> 1.10.17)
-  - Texture (= 2.8.1)
+  - Texture (= 2.8.0)
   - TYCyclePagerView (~> 1.1.0)
   - UICKeyChainStore (~> 2.1.1)
   - UMCAnalytics (~> 5.5.2)
@@ -168,7 +168,7 @@ SPEC CHECKSUMS:
   SDAutoLayout: 8bf6b3bbc8b01f775d4defbb4fda2ace805461be
   SDWebImage: 3f3f0c02f09798048c47a5ed0a13f17b063572d8
   SensorsAnalyticsSDK: a8c0834cc06c2640b6c0d62cd8666e18b756d13a
-  Texture: 8ecf6984065a1e54f06bf97b349ecca28582acd7
+  Texture: fc6e0157201f3a6e503d364c147b1872e365cef4
   TYCyclePagerView: 0f67b0986995fd614843e819bc974cadd7f98008
   UICKeyChainStore: 85db518bb1d294366d15ec9b92a416c4e670518f
   UMCAnalytics: 8449e33b7627ee26f1169202827a8d5a00b5442b
@@ -178,6 +178,6 @@ SPEC CHECKSUMS:
   WechatOpenSDK: 9b721089507c895d05f997408c30bb6e6f5f9b60
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-PODFILE CHECKSUM: a58135cbb73613bf42b134bad1944fbf1f431f71
+PODFILE CHECKSUM: 19f1a73a0b4ff070c95012889f52cf98d6ff8d18
 
 COCOAPODS: 1.6.1

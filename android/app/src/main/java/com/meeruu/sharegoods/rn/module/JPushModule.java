@@ -3,7 +3,7 @@ package com.meeruu.sharegoods.rn.module;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
-import com.meeruu.sharegoods.event.Event;
+import com.meeruu.commonlib.event.Event;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
