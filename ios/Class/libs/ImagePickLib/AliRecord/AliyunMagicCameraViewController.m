@@ -556,9 +556,9 @@
     CGPoint point = [tapGesture locationInView:self.magicCameraView.previewView];
     self.recorder.focusPoint = point;
     [self.magicCameraView refreshFocusPointWithPoint:point];
-    if (!self.recorder.isRecording) {
-        [self.magicCameraView cancelRecordBeautyView];
-    }
+//    if (!self.recorder.isRecording) {
+//        [self.magicCameraView cancelRecordBeautyView];
+//    }
     
 }
 

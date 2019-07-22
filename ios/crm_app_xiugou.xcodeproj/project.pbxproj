@@ -145,6 +145,7 @@
 		C4F01EEC222D141200ACA1B4 /* PhoneAutherTool.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F01EEB222D141200ACA1B4 /* PhoneAutherTool.m */; };
 		C4F01EEF222D150E00ACA1B4 /* PhoneAuthenModule.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F01EEE222D150E00ACA1B4 /* PhoneAuthenModule.m */; };
 		C4F2915522891134006C168C /* JVerificationResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C4F2915422891134006C168C /* JVerificationResource.bundle */; };
+		C4F2B3F122E193710067C5CE /* HYFUploaderVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F2B3F022E193710067C5CE /* HYFUploaderVideo.m */; };
 		C4F2E41E22BE303100FF6213 /* SGMotionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F2E33622BE303100FF6213 /* SGMotionManager.m */; };
 		C4F2E41F22BE303100FF6213 /* SGRecordEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F2E33922BE303100FF6213 /* SGRecordEncoder.m */; };
 		C4F2E42022BE303100FF6213 /* UIButton+Convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F2E33C22BE303100FF6213 /* UIButton+Convenience.m */; };
@@ -1099,6 +1100,8 @@
 		C4F01EED222D150E00ACA1B4 /* PhoneAuthenModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhoneAuthenModule.h; sourceTree = "<group>"; };
 		C4F01EEE222D150E00ACA1B4 /* PhoneAuthenModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhoneAuthenModule.m; sourceTree = "<group>"; };
 		C4F2915422891134006C168C /* JVerificationResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = JVerificationResource.bundle; sourceTree = "<group>"; };
+		C4F2B3EF22E193710067C5CE /* HYFUploaderVideo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HYFUploaderVideo.h; sourceTree = "<group>"; };
+		C4F2B3F022E193710067C5CE /* HYFUploaderVideo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HYFUploaderVideo.m; sourceTree = "<group>"; };
 		C4F2E33522BE303100FF6213 /* UIButton+Convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+Convenience.h"; sourceTree = "<group>"; };
 		C4F2E33622BE303100FF6213 /* SGMotionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGMotionManager.m; sourceTree = "<group>"; };
 		C4F2E33722BE303100FF6213 /* SGRecordProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGRecordProgressView.h; sourceTree = "<group>"; };
@@ -2870,6 +2873,8 @@
 				C4FB48B322DDB248007BBEBA /* AliyunMagicCameraViewController.m */,
 				C478821422DEF0CB001FAC35 /* HYFVideoPreviewView.h */,
 				C478821522DEF0CB001FAC35 /* HYFVideoPreviewView.m */,
+				C4F2B3EF22E193710067C5CE /* HYFUploaderVideo.h */,
+				C4F2B3F022E193710067C5CE /* HYFUploaderVideo.m */,
 			);
 			path = AliRecord;
 			sourceTree = "<group>";
@@ -4017,6 +4022,7 @@
 				CD3A8A0A21F05E17003B9803 /* MRLoadingViewManager.m in Sources */,
 				C4F2E46522BE303100FF6213 /* IJSIImputTextView.m in Sources */,
 				CD24240F21F837A9008C7FF4 /* NSDictionary+Util.m in Sources */,
+				C4F2B3F122E193710067C5CE /* HYFUploaderVideo.m in Sources */,
 				C4F2E44B22BE303100FF6213 /* UIBarButtonItem+IJSUUIBarBtItem.m in Sources */,
 				5068363821379B78001AB175 /* SGQRCodeHelperTool.m in Sources */,
 				C4F2E48C22BE303100FF6213 /* IJSMapViewMapCell.m in Sources */,
@@ -4379,6 +4385,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = T586HGP9C9;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Class/libs/AliPay",
@@ -4387,6 +4394,7 @@
 					"$(PROJECT_DIR)/Class/libs/ImagePickLib/SDK/Required",
 					"$(PROJECT_DIR)/Class/libs/ImagePickLib/WAVideoBox",
 				);
+				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Class/Macros/Jure.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -4546,6 +4554,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = T586HGP9C9;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Class/libs/AliPay",
@@ -4625,6 +4634,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = T586HGP9C9;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Class/libs/AliPay",
@@ -4633,6 +4643,7 @@
 					"$(PROJECT_DIR)/Class/libs/ImagePickLib/SDK/Required",
 					"$(PROJECT_DIR)/Class/libs/ImagePickLib/WAVideoBox",
 				);
+				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Class/Macros/Jure.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",

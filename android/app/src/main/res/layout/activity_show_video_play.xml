@@ -17,19 +17,23 @@
         android:layout_centerInParent="true"
         android:src="@drawable/ic_video_play"
         android:visibility="invisible" />
+    <RelativeLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        >
 
     <ImageView
         android:id="@+id/picture_left_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
         android:padding="15dp"
-        android:src="@drawable/picture_back" />
+        android:src="@drawable/picture_back"
+        android:layout_centerVertical="true"/>
+
     <TextView
         android:id="@+id/tv_right"
         android:layout_width="57dp"
         android:layout_height="27dp"
-        android:layout_marginTop="25dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="15dp"
         android:gravity="center"
@@ -37,5 +41,7 @@
         android:textSize="13sp"
         android:text="完成"
         android:background="@drawable/alivc_svideo_bg_next"
+        android:layout_centerVertical="true"
         />
+    </RelativeLayout>
 </RelativeLayout>

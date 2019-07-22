@@ -9,6 +9,7 @@ import ShowRichTextDetailPage from './ShowRichTextDetailPage'
 import MyDynamicPage from './MyDynamicPage'
 import TagSelectorPage from './TagSelectorPage'
 import TagDetailPage from './TagDetailPage'
+import ShowVideoPage from './ShowVideoPage'
 export default {
     moduleName: 'show',
     childRoutes: {
@@ -22,6 +23,7 @@ export default {
         ShowRichTextDetailPage,
         MyDynamicPage,
         TagSelectorPage,
-        TagDetailPage
+        TagDetailPage,
+        ShowVideoPage
     }
 }

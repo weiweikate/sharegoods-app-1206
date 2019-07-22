@@ -139,7 +139,7 @@ SINGLETON_FOR_CLASS(MRImageVideoManager)
 //          resolve(@{@"imagePath":key});
           NSDictionary * videoDic = @{
                                       @"videoCover":key,
-                                      @"video":path,
+                                      @"videoPath":path,
                                       @"width":@(KScreenWidth),
                                       @"heigth":@(KScreenHeight)
                                       };

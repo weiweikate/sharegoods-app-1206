@@ -1,4 +1,4 @@
-package com.meeruu.sharegoods.rn.showground.widgets.RecordView;
+package com.meeruu.sharegoods.rn.showground.widgets.recordview;
 
 import android.Manifest;
 import android.app.Activity;
@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Environment;
-import android.support.v4.app.FragmentActivity;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -42,9 +41,9 @@ import com.meeruu.sharegoods.rn.showground.utils.OrientationDetector;
 import com.meeruu.sharegoods.rn.showground.utils.PermissionUtils;
 import com.meeruu.sharegoods.rn.showground.utils.ThreadUtils;
 import com.meeruu.sharegoods.rn.showground.utils.TimeFormatterUtils;
-import com.meeruu.sharegoods.rn.showground.widgets.RecordView.control.ControlView;
-import com.meeruu.sharegoods.rn.showground.widgets.RecordView.control.ControlViewListener;
-import com.meeruu.sharegoods.rn.showground.widgets.RecordView.control.RecordState;
+import com.meeruu.sharegoods.rn.showground.widgets.recordview.control.ControlView;
+import com.meeruu.sharegoods.rn.showground.widgets.recordview.control.ControlViewListener;
+import com.meeruu.sharegoods.rn.showground.widgets.recordview.control.RecordState;
 import com.qu.preview.callback.OnFrameCallBack;
 import com.qu.preview.callback.OnTextureIdCallBack;
 import com.reactnative.ivpusic.imagepicker.picture.lib.PictureSelector;
@@ -62,6 +61,7 @@ public class AliyunSVideoRecordView extends FrameLayout implements ScaleGestureD
     private SurfaceView mSurfaceView;
     private AliyunIRecorder recorder;
     public ControlView mControlView;
+    private AlivcCountDownView mCountDownView;
     private AliyunIClipManager clipManager;
     private OnBackClickListener mBackClickListener;
     private com.aliyun.svideo.sdk.external.struct.recorder.CameraType cameraType
@@ -169,6 +169,7 @@ public class AliyunSVideoRecordView extends FrameLayout implements ScaleGestureD
     private void initVideoView(){
         initSurfaceView();
         initControlView();
+        initCountDownView();
         initRecorder();
         initRecordTimeView();
 
@@ -203,6 +204,18 @@ public class AliyunSVideoRecordView extends FrameLayout implements ScaleGestureD
         addSubView(mSurfaceView);
     }
 
+    /**
+     * 初始化倒计时view
+     */
+    private void initCountDownView() {
+        if (mCountDownView == null) {
+            mCountDownView = new AlivcCountDownView(getContext());
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
+                    FrameLayout.LayoutParams.MATCH_PARENT);
+            params.gravity = Gravity.CENTER;
+            addView(mCountDownView, params);
+        }
+    }
 
 
     private void initRecordTimeView() {
@@ -253,7 +266,19 @@ public class AliyunSVideoRecordView extends FrameLayout implements ScaleGestureD
                 }
             }
 
+            @Override
+            public void onReadyRecordClick(boolean isCancel) {
+                if (isStopToCompleteDuration) {
+                    /*TODO  这里是因为如果 SDK 还没有回调onComplete,倒计时录制，会crash */
+                    return;
+                }
+                if (isCancel) {
+                    cancelReadyRecord();
+                } else {
+                    showReadyRecordView();
+                }
 
+            }
 
             @Override
             public void onCameraSwitch() {
@@ -317,7 +342,7 @@ public class AliyunSVideoRecordView extends FrameLayout implements ScaleGestureD
                         mControlView.setCompleteEnable(false);
                     }
 
-//                    mControlView.updataCutDownView(true);
+                    mControlView.updataCutDownView(true);
                 }
 
                 if (clipManager.getDuration() == 0) {
@@ -408,6 +433,25 @@ public class AliyunSVideoRecordView extends FrameLayout implements ScaleGestureD
     public void onScaleEnd(ScaleGestureDetector detector) {
 
     }
+
+    /**
+     * 取消拍摄倒计时
+     */
+    private void cancelReadyRecord() {
+        if (mCountDownView != null) {
+            mCountDownView.cancle();
+        }
+    }
+
+    /**
+     * 显示准备拍摄倒计时view
+     */
+    private void showReadyRecordView() {
+        if (mCountDownView != null) {
+            mCountDownView.start();
+        }
+    }
+
 
     /**
      * 结束录制，并且将录制片段视频拼接成一个视频 跳转editorActivity在合成完成的回调的方法中
@@ -672,7 +716,7 @@ public class AliyunSVideoRecordView extends FrameLayout implements ScaleGestureD
                         if (mControlView != null) {
                             mControlView.setCompleteEnable(false);
                             mControlView.setRecordState(RecordState.STOP);
-//                            mControlView.updataCutDownView(false);
+                            mControlView.updataCutDownView(false);
                         }
                     }
                 });
@@ -923,13 +967,12 @@ public class AliyunSVideoRecordView extends FrameLayout implements ScaleGestureD
             orientationDetector.enable();
         }
 
-//        mCountDownView.setOnCountDownFinishListener(new AlivcCountDownView.OnCountDownFinishListener() {
-//            @Override
-//            public void onFinish() {
-//                FixedToastUtils.show(getContext(), "开始录制");
-//                startRecord();
-//            }
-//        });
+        mCountDownView.setOnCountDownFinishListener(new AlivcCountDownView.OnCountDownFinishListener() {
+            @Override
+            public void onFinish() {
+                startRecord();
+            }
+        });
 
     }
 
@@ -942,7 +985,8 @@ public class AliyunSVideoRecordView extends FrameLayout implements ScaleGestureD
      */
     public void stopPreview() {
         activityStoped = true;
-        if (mControlView != null && mControlView.getRecordState().equals(RecordState.READY)) {
+        if (mControlView != null && mCountDownView != null && mControlView.getRecordState().equals(RecordState.READY)) {
+            mCountDownView.cancle();
             mControlView.setRecordState(RecordState.STOP);
             mControlView.setRecording(false);
         }
@@ -1191,6 +1235,8 @@ public class AliyunSVideoRecordView extends FrameLayout implements ScaleGestureD
         }
 
     }
+
+
 
 
 }

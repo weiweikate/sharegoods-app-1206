@@ -29,6 +29,7 @@ import RouterMap, { replaceRoute } from '../../navigation/RouterMap';
 import TagView from './components/TagView';
 import PictureVideoUtils from './utils/PictureVideoUtils';
 import ImageOrVideoModal from './components/ImageOrVideoModal';
+import user from '../../model/user';
 
 const { addIcon, delIcon, iconShowDown, iconShowEmoji, addShowIcon, showTagIcon } = res;
 const { arrow_right_black } = res.button;
@@ -161,8 +162,9 @@ export default class ReleaseNotesPage extends BasePage {
         let productsPar = products.map((value) => {
             return value.spuCode;
         });
-        if (Platform.OS === 'ios'){
-            NativeModules.MRImagePickerBridge.uploadVideo('cs', videoPath).then((data) => {
+        let title = `${user.code}-${new Date().getTime()}-${this.state.titleText}`;
+        if (Platform.OS === 'android'){
+            NativeModules.ShowModule.uploadVideo(title, videoPath).then((data) => {
                 PictureVideoUtils.uploadSingleImage(videoCover, (res) => {
                     if (res.url) {
                         let videoCover = {
@@ -183,11 +185,10 @@ export default class ReleaseNotesPage extends BasePage {
                             videoId: data.videoId
                         };
                         ShowApi.saveVideo(params).then((data) => {
-                            replaceRoute(RouterMap.MyDynamicPage);
+                            // replaceRoute(RouterMap.MyDynamicPage);
                         }).catch((error) => {
                             this.$toastShow(error.msg);
                         });
-
                     } else {
                         this.$toastShow('上传失败');
                     }
@@ -196,7 +197,7 @@ export default class ReleaseNotesPage extends BasePage {
                 this.$toastShow('上传失败');
             });
         } else {
-            NativeModules.ShowModule.uploadVideo('cs', videoPath).then((data) => {
+            NativeModules.MRImagePickerBridge.uploadVideo(title, videoPath).then((data) => {
                 PictureVideoUtils.uploadSingleImage(videoCover, (res) => {
                     if (res.url) {
                         let videoCover = {
@@ -221,15 +222,17 @@ export default class ReleaseNotesPage extends BasePage {
                         }).catch((error) => {
                             this.$toastShow(error.msg);
                         });
-
                     } else {
                         this.$toastShow('上传失败');
                     }
                 });
             }).catch((error) => {
-                this.$toastShow('上传失败');
+                this.$toastShow(error.msg);
+                // this.$toastShow('上传失败');
             });
+
         }
+
     };
 
     choosePicker = () => {

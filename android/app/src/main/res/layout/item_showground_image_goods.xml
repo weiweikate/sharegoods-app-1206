@@ -56,7 +56,7 @@
         app:etv_ToShrinkHintColor="@color/app_main_color" />
 
 
-    <com.meeruu.sharegoods.rn.showground.widgets.GridView.NineGridView
+    <com.meeruu.sharegoods.rn.showground.widgets.gridview.NineGridView
         android:id="@+id/nine_grid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -1,4 +1,4 @@
-package com.meeruu.sharegoods.rn.showground.widgets.RecordView.control;
+package com.meeruu.sharegoods.rn.showground.widgets.recordview.control;
 
 import com.aliyun.svideo.sdk.external.struct.recorder.FlashType;
 
@@ -42,4 +42,11 @@ public interface ControlViewListener {
      * 选择视频
      */
     void selectVideo();
+
+    /**
+     * 准备录制视频事件
+     *
+     * @param isCancel true 取消准备，false开始准备
+     */
+    void onReadyRecordClick(boolean isCancel);
 }
