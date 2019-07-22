@@ -159,7 +159,7 @@ export default class BankCardListPage extends BasePage {
                         <UIText
                             value={rowData.isShow ? formatCardWithSpace(cardNo) : StringUtils.formatBankCardNum(cardNo)}
                             style={{
-                                fontSize: ScreenUtils.px2dp(23), color: 'white', paddingLeft: 50, fontWeight: '500'
+                                fontSize: 20, color: 'white', paddingLeft: 50, fontWeight: '500'
                             }}/>
                     </View>
                 </ImageBackground>
