@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak) id<MBProtocol> dataDelegate;
 @property (nonatomic,strong) UIImageView *playImageView;        //播放按钮
 @property(nonatomic,strong)MBModelData* model;
-@property (nonatomic, assign) BOOL *isLogin;
+@property (nonatomic, assign) BOOL isLogin;
 
 @end
 

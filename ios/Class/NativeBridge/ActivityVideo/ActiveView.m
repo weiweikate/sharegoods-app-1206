@@ -64,7 +64,6 @@
   self=[super init];
   if(self){
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"guanzhu"];
-    
     self.didPausePlay = NO;
     [self initData];
     [self initUI];
@@ -132,6 +131,9 @@
       if([result valueForKey:@"data"]&&![[result valueForKey:@"data"] isKindOfClass:[NSNull class]]){
         [weakSelf.callBackArr addObjectsFromArray:[result valueForKey:@"data"]];
       }
+      if(model.data.count==0){
+        [MBProgressHUD showSuccess:@"我也是有底线的"];
+      }
       [self.scrollView setupData:[model.data mutableCopy]];
     } failure:^(NSString *msg, NSInteger code) {
       MBVideoModel* model = [MBVideoModel new];
@@ -167,8 +169,10 @@
   _userCode = userCode;
   if(userCode&&userCode.length>0){
     self.VideoHeaderView.isLogin = YES;
+    self.scrollView.isLogin = YES;
   }else{
     self.VideoHeaderView.isLogin = NO;
+    self.scrollView.isLogin = NO;
   }
 }
 

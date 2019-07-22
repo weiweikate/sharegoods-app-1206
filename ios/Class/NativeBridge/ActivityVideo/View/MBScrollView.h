@@ -27,7 +27,7 @@
 
 @property (nonatomic, weak) id<MBSrcollViewDataDelegate> dataDelegate;
 @property (nonatomic, strong) MBPlayerView *playerView;
-@property (nonatomic, assign) BOOL *isLogin;
+@property (nonatomic, assign) BOOL isLogin;
 
 - (void)setupData:(NSArray<MBVideoModel *> *)data;
 

@@ -516,6 +516,7 @@
   UIAlertAction *actionSubmit = [UIAlertAction actionWithTitle:@"继续下载"
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * _Nonnull action) {
+                                                  [self saveDate:@"downloadVideo"];
                                                          MBModelData* modeltemp = weakSelf.model;
                                                          modeltemp.downloadCount++;
                                                          weakSelf.downLoadNum.text = [NSString stringWithNumber:modeltemp.downloadCount];
@@ -541,7 +542,7 @@
   UIAlertAction *actionSubmit = [UIAlertAction actionWithTitle:@"继续播放"
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * _Nonnull action) {
-                                                         if(weakSelf.dataDelegate){
+                                                        [self saveDate:@"playVideo"]; if(weakSelf.dataDelegate){
                                                            weakSelf.playImageView.hidden = weakSelf.playImageView.isHidden?NO:YES;
                                                            [weakSelf.dataDelegate clickPlayOrPause];
                                                          }
@@ -549,5 +550,14 @@
   [alterController addAction:actionCancel];
   [alterController addAction:actionSubmit];
   [self.currentViewController_XG presentViewController:alterController animated:YES completion:^{}];
+}
+
+-(void)saveDate:(NSString*)key{
+  NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+  NSDateFormatter *format = [[NSDateFormatter alloc]init];
+  [format setDateFormat:@"yyyy-MM-dd"];
+  NSString *nowDate = [format stringFromDate:[NSDate date]];
+  [userDefaults setObject:nowDate forKey:key];
+  [userDefaults synchronize];
 }
 @end

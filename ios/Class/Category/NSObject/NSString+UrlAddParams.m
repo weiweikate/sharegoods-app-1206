@@ -22,18 +22,11 @@
     if(isToday){
       return NO;
     }else{
-      NSString *nowDate = [format stringFromDate:[NSDate date]];
-      [userDefaults setObject:nowDate forKey:key];
-      [userDefaults synchronize];
       return YES;
     }
   }else{
-    NSString *nowDate = [format stringFromDate:[NSDate date]];
-    [userDefaults setObject:nowDate forKey:key];
-    [userDefaults synchronize];
     return YES;
   }
-  return NO;
 }
 
 +(NSString *)stringWithNumber:(NSInteger)count{
