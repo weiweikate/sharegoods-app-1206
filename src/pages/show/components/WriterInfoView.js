@@ -5,50 +5,59 @@
 
 import React, { PureComponent } from 'react';
 import {
-  StyleSheet,
-  View,
+    StyleSheet,
+    View,
+    TouchableWithoutFeedback
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
 import { MRText } from '../../../components/ui';
+import { routePush } from '../../../navigation/RouterMap';
+import RouterMap from '../../../navigation/RouterMap';
 const{px2dp} = ScreenUtils;
 
 export default class WriterInfoView extends PureComponent {
-  constructor(props) {
-    super(props);
+    constructor(props) {
+        super(props);
 
-  }
+    }
 
-  render(){
-      return(
-          <View style={[styles.wrapper,this.props.style]}>
-              <View>
-                  <MRText>
-                      14
-                  </MRText>
-                  <MRText>
-                      关注
-                  </MRText>
-              </View>
-              <View>
-                  <MRText>
-                      14
-                  </MRText>
-                  <MRText>
-                      关注
-                  </MRText>
-              </View>
-              <View>
-                  <MRText>
-                      14
-                  </MRText>
-                  <MRText>
-                      关注
-                  </MRText>
-              </View>
-          </View>
-      )
-  }
+    render(){
+        return(
+            <View style={[styles.wrapper,this.props.style]}>
+                <TouchableWithoutFeedback onPress={()=> {routePush(RouterMap.FansListPage,{type:1})}}>
+                    <View>
+                        <MRText>
+                            14
+                        </MRText>
+                        <MRText>
+                            关注
+                        </MRText>
+                    </View>
+                </TouchableWithoutFeedback>
+                <TouchableWithoutFeedback onPress={()=> {routePush(RouterMap.FansListPage,{type:0})}}>
+                    <View>
+                        <MRText>
+                            11
+                        </MRText>
+                        <MRText>
+                            粉丝
+                        </MRText>
+                    </View>
+                </TouchableWithoutFeedback>
+                <TouchableWithoutFeedback onPress={()=> {routePush(RouterMap.FansListPage,{type:2})}}>
+                    <View>
+                        <MRText>
+                            14
+                        </MRText>
+                        <MRText>
+                            关注
+                        </MRText>
+                    </View>
+                </TouchableWithoutFeedback>
+            </View>
+        )
+    }
 }
 
 var styles = StyleSheet.create({
