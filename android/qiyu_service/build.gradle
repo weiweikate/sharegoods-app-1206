@@ -8,8 +8,8 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
-        versionCode 52
-        versionName '4.10.0'
+        versionCode 56
+        versionName '5.0.0'
     }
 
     buildTypes {
@@ -39,5 +39,5 @@ dependencies {
     api fileTree(include: ['*.jar'], exclude: ['android-support-v4.jar'], dir: 'libs')
     api rootProject.ext.dependencies.support
     api project(':statusbar')
-    api files('libs/qiyu-sdk-4.11.1.jar')
+    api files('libs/qiyu-sdk-5.0.0.jar')
 }

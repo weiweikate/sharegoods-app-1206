@@ -8,7 +8,7 @@
         android:id="@+id/ysf_message_form_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/ysf_message_left_bg_product_selector"
+        android:background="@drawable/ysf_msg_back_left_selector"
         android:gravity="center_vertical"
         android:textColor="@color/ysf_black_2b2b2b"
         android:textSize="@dimen/ysf_text_size_16" />
