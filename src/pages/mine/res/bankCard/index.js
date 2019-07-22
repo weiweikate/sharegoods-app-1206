@@ -1,10 +1,5 @@
 const bankCard = {
     bank: require('./bank.png'),
-    bankCard1: require('./bankCard1.png'),
-    bankCard2: require('./bankCard2.png'),
-    bankCard3: require('./bankCard3.png'),
-    bankCard4: require('./bankCard4.png'),
-    bankCard5: require('./bankCard5.png'),
     bankCard: require('./bankCard.png'),
     bankGS: require('./bankGS.png'),
     bankJS: require('./bankJS.png'),
@@ -18,6 +13,8 @@ const bankCard = {
     bankcard_empty:require('./bankcard_empty.png'),
     bankcard_icon:require('./bankcard_icon.png'),
     withdraw_success_icon:require('./withdraw_success_icon.png'),
-    withdraw_success_btn:require('./withdraw_success_btn.png')
+    withdraw_success_btn:require('./withdraw_success_btn.png'),
+    bankCardShow:require('./bankCardShow.png'),
+    bankCardHide:require('./bankCardHide.png')
 };
 export default bankCard;

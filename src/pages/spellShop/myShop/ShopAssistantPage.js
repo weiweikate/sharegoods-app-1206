@@ -53,7 +53,8 @@ export default class AssistantListPage extends BasePage {
             netFailedInfo: {},
 
             list: [],
-            searchText: ''
+            searchText: '',
+            showActivityImage: false
         };
     }
 
@@ -79,6 +80,12 @@ export default class AssistantListPage extends BasePage {
             if (showExpand && myStore) {
                 this.$NavigationBarResetRightTitle('我要扩容');
             }
+        });
+
+        SpellShopApi.getStoreUserPackageNoOff().then((data) => {
+            this.setState({
+                showActivityImage: data.data
+            });
         });
     }
 
@@ -172,14 +179,19 @@ export default class AssistantListPage extends BasePage {
     // 渲染行
     _renderItem = ({ item }) => {
         const { tradeBalance } = this.params.storeData;
+        const { showActivityImage } = this.state;
         if (item.roleType === 0) {//0店主
-            return <MasterRow item={item} onPress={this._clickAssistantDetail} tradeBalance={tradeBalance}/>;
+            return <MasterRow item={item} onPress={this._clickAssistantDetail} tradeBalance={tradeBalance}
+                              isYourStore={this.params.storeData.myStore}
+                              showActivityImage={showActivityImage}/>;
         } else {//1店员
             return (<AssistantRow item={item}
                                   isYourStore={this.params.storeData.myStore}
                                   storeData={this.params.storeData}
                                   onPress={this._clickAssistantDetail}
-                                  onPressDelete={this._clickDeleteAssistant} tradeBalance={tradeBalance}/>);
+                                  onPressDelete={this._clickDeleteAssistant}
+                                  tradeBalance={tradeBalance}
+                                  showActivityImage={showActivityImage}/>);
         }
 
     };
