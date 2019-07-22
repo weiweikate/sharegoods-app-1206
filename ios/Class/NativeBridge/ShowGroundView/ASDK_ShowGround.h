@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) RCTBubblingEventBlock onEndScroll;
 @property (nonatomic, copy) RCTBubblingEventBlock onScrollStateChanged;
 @property (nonatomic, copy) RCTBubblingEventBlock onScrollY;
+@property (nonatomic, copy) RCTBubblingEventBlock goBack;
 
 @property (nonatomic, copy) NSString* uri;
 @property (nonatomic, copy) NSString* type;

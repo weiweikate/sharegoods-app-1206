@@ -21,7 +21,7 @@
 // iPhone X
 #define kStatusBarHeight     CGRectGetHeight([UIApplication sharedApplication].statusBarFrame) //状态栏高度
 #define kTabBarMoreHeight    (kIPhoneX ? 34.f : 0.f) // tab 底部高度
-#define kNavBarHeight        (kStatusBarHeight + 64.f)
+#define kNavBarHeight        (kStatusBarHeight + 44.f)
 #define kTabBarHeight        (kTabBarMoreHeight + 49.f)
 #define KNoNavHeight         KScreenHeight - kNavBarHeight
 #define KNoTabHeight         KScreenHeight - kTabBarHeight
