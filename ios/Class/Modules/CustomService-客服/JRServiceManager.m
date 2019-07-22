@@ -154,8 +154,14 @@ SINGLETON_FOR_CLASS(JRServiceManager)
       [[NSNotificationCenter defaultCenter]postNotificationName:QY_CARD_CLICK object:urlData];
     }else if ([eventName isEqualToString:@"QYEventNameTapLabelLink"]){
       [self onBack:nil];
-      NSDictionary * urlData = @{@"card_type":@(LINK_CLICK),@"uri":eventData};
-      [[NSNotificationCenter defaultCenter]postNotificationName:@"EventToRN" object:urlData];
+      if ([eventData containsString:@"h5.sharegoodsmall.com/product"] && [eventData containsString:@"http"])
+      {
+          NSDictionary *urlData = @{@"card_type":@(PRODUCT_CARD), @"linkUrl":eventData};
+         [[NSNotificationCenter defaultCenter]postNotificationName:QY_CARD_CLICK object:urlData];
+      }else{
+        NSDictionary * urlData = @{@"card_type":@(LINK_CLICK),@"uri":eventData};
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"EventToRN" object:urlData];
+      }
     }
   };
 }
