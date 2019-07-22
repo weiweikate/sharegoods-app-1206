@@ -10,25 +10,19 @@ import java.util.Map;
 
 import static com.meeruu.commonlib.utils.ParameterUtils.NETWORK_ELSE_CACHED;
 
-public class OtherModel  implements IShowgroundModel{
+public class ShowAttentionModel  implements IShowgroundModel {
     private final String GET = "GET";
     private final String POST = "POST";
     private String uri = "";
     private Map rnParams = new HashMap();
     private String requestType = GET;
-    private String userCode;
-
-    public OtherModel(String userCode){
-        this.userCode = userCode;
-    }
 
     @Override
     public void fetchRecommendList(int page, int size, final BaseCallback callback) {
-        OthersRequestConfig showgroundRequestConfig = new OthersRequestConfig();
+        ShowgroundRequestConfig showgroundRequestConfig = new ShowgroundRequestConfig();
         HashMap params = new HashMap();
         params.put("size", size + "");
         params.put("page", page + "");
-        params.put("userCode",userCode);
         params.putAll(this.rnParams);
         showgroundRequestConfig.setParams(params);
         switch (this.requestType){
@@ -48,17 +42,13 @@ public class OtherModel  implements IShowgroundModel{
         this.rnParams = map;
     }
 
-    @Override
-    public void unCollection(String showNo, BaseCallback callback) {
-    }
-
-    private static class OthersRequestConfig implements BaseRequestConfig {
+    private static class ShowgroundRequestConfig implements BaseRequestConfig {
 
         private HashMap map;
 
         @Override
         public String getUrl() {
-            return HttpUrlUtils.getUrl(HttpUrlUtils.URL_OTHER_ARTICLE);
+            return HttpUrlUtils.getUrl(HttpUrlUtils.URL_ATTENTION_LIST);
         }
 
         public void setParams(HashMap params) {
@@ -71,10 +61,13 @@ public class OtherModel  implements IShowgroundModel{
         }
     }
 
-
-
     @Override
     public void deleteDynamic(String showNo, BaseCallback callback) {
+
+    }
+
+    @Override
+    public void unCollection(String showNo, BaseCallback callback) {
 
     }
 }

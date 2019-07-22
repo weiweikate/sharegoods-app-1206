@@ -51,14 +51,15 @@ public class ShowOtherView  implements IShowgroundView, SwipeRefreshLayout.OnRef
     private StaggeredGridLayoutManager layoutManager;
     private int page = 1;
     private OthersPresenter presenter;
+    private String userCode;
 
-    public ViewGroup getShowOtherView(ReactContext reactContext){
+    public ViewGroup getShowOtherView(ReactContext reactContext,String userCode){
         eventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
+        this.userCode = userCode;
         LayoutInflater inflater = LayoutInflater.from(reactContext);
         View view = inflater.inflate(R.layout.view_showground, null);
         initView(reactContext, view);
         initData();
-
         return (ViewGroup) view;
     }
 
@@ -94,11 +95,6 @@ public class ShowOtherView  implements IShowgroundView, SwipeRefreshLayout.OnRef
                 onRefresh();
             }
         }, 200);
-//        itemPressEvent = new onItemPressEvent();
-//        startRefreshEvent = new onStartRefreshEvent();
-//        startScrollEvent = new onStartScrollEvent();
-//        onScrollYEvent = new onScrollYEvent();
-//        endScrollEvent = new onEndScrollEvent();
         setRecyclerViewItemEvent(view);
         adapter = new ShowGroundAdapter();
         adapter.setPreLoadNumber(3);
@@ -240,7 +236,7 @@ public class ShowOtherView  implements IShowgroundView, SwipeRefreshLayout.OnRef
     }
 
     private void initData() {
-        presenter = new OthersPresenter(this);
+        presenter = new OthersPresenter(this,userCode);
     }
 
     private void setEmptyText() {

@@ -3,25 +3,25 @@ package com.meeruu.sharegoods.rn.showground.presenter;
 import com.alibaba.fastjson.JSON;
 import com.meeruu.commonlib.callback.BaseCallback;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
-import com.meeruu.sharegoods.rn.showground.model.CollectionModel;
 import com.meeruu.sharegoods.rn.showground.model.IShowgroundModel;
-import com.meeruu.sharegoods.rn.showground.model.OtherModel;
+import com.meeruu.sharegoods.rn.showground.model.ShowAttentionModel;
+import com.meeruu.sharegoods.rn.showground.model.ShowgroundModel;
 import com.meeruu.sharegoods.rn.showground.view.IShowgroundView;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Map;
 
-public class OthersPresenter {
+public class ShowAttentionPresenter {
     private IShowgroundModel showgroundModel;
     private WeakReference<IShowgroundView> showgroundViewWeakReference;
 
-    public OthersPresenter(IShowgroundView view,String userCode) {
+    public ShowAttentionPresenter(IShowgroundView view) {
         showgroundViewWeakReference = new WeakReference<>(view);
-        showgroundModel = new OtherModel(userCode);
+        showgroundModel = new ShowAttentionModel();
     }
 
-    public void setParams(Map map) {
+    public void setParams(Map map){
         showgroundModel.setParams(map);
     }
 
@@ -30,7 +30,7 @@ public class OthersPresenter {
             @Override
             public void onErr(String errCode, String msg) {
                 IShowgroundView view = showgroundViewWeakReference.get();
-                if (view != null) {
+                if(view != null){
                     view.loadMoreFail(errCode);
                 }
             }
@@ -59,6 +59,4 @@ public class OthersPresenter {
             }
         });
     }
-
-
 }

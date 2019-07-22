@@ -26,6 +26,7 @@ public class UserCenterView {
     private int ox =( ScreenUtils.getScreenWidth()- DensityUtils.dip2px(130))/2;
     private int oy = 0;
     private int headerHeight = 0;
+    private String userCode;
     public ViewGroup getUserCenterView(ReactContext reactContext) {
         LayoutInflater inflater = LayoutInflater.from(reactContext);
         this.mContext = reactContext;
@@ -45,6 +46,7 @@ public class UserCenterView {
                 , s);
         viewpager.setAdapter(adapter);
     }
+
 
     private void initTabBar(View view){
         final TabLayout tableLayout = view.findViewById(R.id.tablayout);

@@ -23,6 +23,7 @@ public class HttpUrlUtils {
     public static final String URL_OTHER_ARTICLE = "/social/show/content/page/other/query"; //查询其他人的文章
     public static final String URL_ATTENTION = "/social/show/user/follow"; //关注某人
     public static final String URL_ATTENTION_NO = "/social/show/user/cancel/follow"; //取消关注
+    public static final String URL_ATTENTION_LIST = "/social/show/content/page/query/attention"; //取消关注
 
 
 

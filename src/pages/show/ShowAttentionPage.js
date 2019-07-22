@@ -2,15 +2,14 @@
  * 精选热门
  */
 import React from 'react';
-import { View, StyleSheet, Platform, Animated } from 'react-native';
+import { View, StyleSheet, Animated } from 'react-native';
 import ShowBannerView from './ShowBannerView';
 import { observer } from 'mobx-react';
-import { tag, showBannerModules } from './Show';
+import {  showBannerModules } from './Show';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
 
 const { px2dp } = ScreenUtils;
-import ShowRecommendView from './components/ShowRecommendView';
 import ReleaseButton from './components/ReleaseButton';
 
 import user from '../../model/user';
@@ -24,9 +23,10 @@ import EmptyUtils from '../../utils/EmptyUtils';
 import ShowUtils from './utils/ShowUtils';
 import RouterMap, { routeNavigate, routePush } from '../../navigation/RouterMap';
 import DownloadUtils from './utils/DownloadUtils';
+import ShowAttentionView from './components/ShowAttentionView';
 
 @observer
-export default class ShowHotView extends React.Component {
+export default class ShowAttentionPage extends React.Component {
 
     // state = {
     //     isEnd: false,
@@ -46,31 +46,7 @@ export default class ShowHotView extends React.Component {
 
     }
 
-    componentDidMount() {
-        if (this.firstLoad === true) {
-            console.log('ShowHotView firstLoad');
-            this.loadData();
-        }
-    }
 
-    refresh() {
-        console.log('ShowHotView refresh ');
-        if (this.firstLoad === true) {
-            return;
-        }
-        this.loadData();
-    }
-
-
-    loadData() {
-        showBannerModules.loadBannerList(() => {
-            if (Platform.OS !== 'ios') {
-                this.setState({
-                    headerView: this.renderHeader()
-                });
-            }
-        });
-    }
 
     addCart = (productStr,detailStr) => {
         const product = JSON.parse(productStr);
@@ -153,18 +129,12 @@ export default class ShowHotView extends React.Component {
         return (
             <View style={styles.container}>
                 <View style={{ flex: 1, paddingHorizontal: 15 }}>
-                    <ShowRecommendView style={{ flex: 1 }}
+                    <ShowAttentionView style={{ flex: 1 }}
                                        uri={this.props.uri}
                                        ref={(ref) => {
                                            this.RecommendShowList = ref;
                                        }}
                                        isLogin={!EmptyUtils.isEmpty(user.token)}
-                                       type={'recommend'}
-                                       headerHeight={this.props.hasBanner ? showBannerModules.bannerHeight + 20:0}
-                                       renderHeader={Platform.OS === 'ios' ? this.renderHeader() : this.state.headerView}
-                                       onStartRefresh={() => {
-                                           this.loadData();
-                                       }}
                                        onCollection={({nativeEvent})=>{
                                            if (!user.isLogin) {
                                                routeNavigate(RouterMap.LoginPage);
@@ -182,7 +152,6 @@ export default class ShowHotView extends React.Component {
                                        onSeeUser={({nativeEvent})=>{
                                            routeNavigate(RouterMap.MyDynamicPage,{userType:'others',userCode:nativeEvent.userInfoVO.userNo});
                                        }}
-                                       params={{ spreadPosition: tag.Recommend + '' }}
                                        onItemPress={({ nativeEvent }) => {
 
                                            const { navigate } = this.props;

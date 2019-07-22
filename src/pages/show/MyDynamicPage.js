@@ -120,8 +120,6 @@ export default class MyDynamicPage extends BasePage {
                             />
                         </TouchableOpacity>
                     </View>
-
-
                 </View>
             </View>
         );
@@ -153,12 +151,13 @@ export default class MyDynamicPage extends BasePage {
     _render() {
         let Waterfall = Platform.OS === 'ios' ? ShowGroundView : ShowDynamicView;
         let headerHeight = Platform.OS === 'ios' ? 210 : 200;
+        let userCode = this.params.userCode || '';
         return (
             <View style={styles.contain}>
                 <Waterfall style={{ flex: 1, marginTop: -10 }}
                            uri={'/social/show/content/page/mine/query@GET'}
                            headerHeight={px2dp(headerHeight)}
-                           userType={this.params.userType}
+                           userType={`${this.params.userType}${userCode}`}
                            type={'MyDynamic'}
                            renderHeader={this.renderHeader()}
                            onItemPress={({ nativeEvent }) => {

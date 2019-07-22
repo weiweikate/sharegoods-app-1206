@@ -5,11 +5,11 @@
 
 import { observable, action } from 'mobx';
 class WhiteModel {
-    @observable pageIndex = 0;
+    @observable pageIndex = 1;
 
     @action
     setIndex(num){
-        if(num <4 && num > -1){
+        if(num <5 && num > -1){
             this.pageIndex = num
         }
     }

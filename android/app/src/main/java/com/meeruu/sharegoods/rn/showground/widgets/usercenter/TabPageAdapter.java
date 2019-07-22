@@ -19,7 +19,6 @@ public class TabPageAdapter extends PagerAdapter {
     private String type;
 
 
-
     public TabPageAdapter(ReactContext context, String type) {
         super();
         this.context = context;
@@ -29,31 +28,32 @@ public class TabPageAdapter extends PagerAdapter {
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        if(position == 0){
+        if (position == 0) {
             ViewGroup view = null;
             switch (type) {
                 case MINENORMAL:
                     view = new ShowDynamicView().getShowDynamicView(context);
                     container.addView(view);
                     break;
-                case OTHERS:
-                    view = new ShowOtherView().getShowOtherView(context);
-                    container.addView(view);
-                    break;
                 case MINEWRITER:
                     view = new ShowDynamicView().getShowDynamicView(context);
                     container.addView(view);
                     break;
+                default:
+                    String userCode = type.replace("others", "");
+                    view = new ShowOtherView().getShowOtherView(context, userCode);
+                    container.addView(view);
+                    break;
             }
 
-            return  view;
+            return view;
         }
-       if(position == 1){
-           ViewGroup view = new ShowCollectionView().getShowCollectionView(context);
-           container.addView(view);
-           return  view;
-       }
-       return  null;
+        if (position == 1) {
+            ViewGroup view = new ShowCollectionView().getShowCollectionView(context);
+            container.addView(view);
+            return view;
+        }
+        return null;
     }
 
     @Override
@@ -63,16 +63,16 @@ public class TabPageAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        int count  = 0;
+        int count = 0;
         switch (type) {
             case MINENORMAL:
                 count = 1;
                 break;
-            case OTHERS:
-                count = 1;
-                break;
             case MINEWRITER:
                 count = 2;
+                break;
+            default:
+                count = 1;
                 break;
         }
         return count;
@@ -81,16 +81,16 @@ public class TabPageAdapter extends PagerAdapter {
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
-        String title  = "";
+        String title = "";
         switch (type) {
             case MINENORMAL:
                 title = "文章";
                 break;
-            case OTHERS:
-                title = "收藏";
-                break;
             case MINEWRITER:
-                title = position == 0 ? "文章": "收藏";
+                title = position == 0 ? "文章" : "收藏";
+                break;
+            default:
+                title = "收藏";
                 break;
         }
         return title;
