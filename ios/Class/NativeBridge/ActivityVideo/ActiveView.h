@@ -23,9 +23,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) RCTBubblingEventBlock onPressTag;
 @property (nonatomic, copy) RCTBubblingEventBlock onSharePress;
 @property (nonatomic, copy) RCTBubblingEventBlock onBuy;
-@property (nonatomic, copy) RCTBubblingEventBlock onLikePress;
+@property (nonatomic, copy) RCTBubblingEventBlock onZanPress;
 @property (nonatomic, copy) RCTBubblingEventBlock onDownloadPress;
-@property (nonatomic, copy) RCTBubblingEventBlock onCollectPress;
+@property (nonatomic, copy) RCTBubblingEventBlock onCollection;
 
 
 

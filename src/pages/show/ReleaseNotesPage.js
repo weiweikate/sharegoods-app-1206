@@ -163,39 +163,76 @@ export default class ReleaseNotesPage extends BasePage {
             return value.spuCode;
         });
         let title = `${user.code}-${new Date().getTime()}-${this.state.titleText}`;
-        NativeModules.ShowModule.uploadVideo(title, videoPath).then((data) => {
-            PictureVideoUtils.uploadSingleImage(videoCover, (res) => {
-                if (res.url) {
-                    let videoCover = {
-                        baseUrl: res.url,
-                        height,
-                        width,
-                        type: 5
-                    };
-                    let params = {
-                        content,
-                        videoCover,
-                        products: productsPar,
-                        showNo: data.showNo,
-                        tagList: this.state.tags.map((item) => {
-                            return item.tagId;
-                        }),
-                        title: this.state.titleText,
-                        videoId: data.videoId
-                    };
-                    ShowApi.saveVideo(params).then((data) => {
-                        replaceRoute(RouterMap.MyDynamicPage);
-                    }).catch((error) => {
-                        this.$toastShow(error.msg);
-                    });
-
-                } else {
-                    this.$toastShow('上传失败');
-                }
+        if (Platform.OS === 'android'){
+            NativeModules.ShowModule.uploadVideo(title, videoPath).then((data) => {
+                PictureVideoUtils.uploadSingleImage(videoCover, (res) => {
+                    if (res.url) {
+                        let videoCover = {
+                            baseUrl: res.url,
+                            height,
+                            width,
+                            type: 5
+                        };
+                        let params = {
+                            content,
+                            videoCover,
+                            products: productsPar,
+                            showNo: data.showNo,
+                            tagList: this.state.tags.map((item) => {
+                                return item.tagId;
+                            }),
+                            title: this.state.titleText,
+                            videoId: data.videoId
+                        };
+                        ShowApi.saveVideo(params).then((data) => {
+                            // replaceRoute(RouterMap.MyDynamicPage);
+                        }).catch((error) => {
+                            this.$toastShow(error.msg);
+                        });
+                    } else {
+                        this.$toastShow('上传失败');
+                    }
+                });
+            }).catch((error) => {
+                this.$toastShow('上传失败');
             });
-        }).catch((error) => {
-            this.$toastShow('上传失败');
-        });
+        } else {
+            NativeModules.MRImagePickerBridge.uploadVideo(title, videoPath).then((data) => {
+                PictureVideoUtils.uploadSingleImage(videoCover, (res) => {
+                    if (res.url) {
+                        let videoCover = {
+                            baseUrl: res.url,
+                            height,
+                            width,
+                            type: 5
+                        };
+                        let params = {
+                            content,
+                            videoCover,
+                            products: productsPar,
+                            showNo: data.showNo,
+                            tagList: this.state.tags.map((item) => {
+                                return item.tagId;
+                            }),
+                            title: this.state.titleText,
+                            videoId: data.videoId
+                        };
+                        ShowApi.saveVideo(params).then((data) => {
+                            replaceRoute(RouterMap.MyDynamicPage);
+                        }).catch((error) => {
+                            this.$toastShow(error.msg);
+                        });
+                    } else {
+                        this.$toastShow('上传失败');
+                    }
+                });
+            }).catch((error) => {
+                this.$toastShow(error.msg);
+                // this.$toastShow('上传失败');
+            });
+
+        }
+
     };
 
     choosePicker = () => {
@@ -227,7 +264,6 @@ export default class ReleaseNotesPage extends BasePage {
 
     chooseVideo = () => {
         this.setState({selector:false});
-
         if (Platform.OS === 'android'){
             NativeModules.ShowModule.recordVideo().then((data) => {
                 this.setState({ videoData: data });

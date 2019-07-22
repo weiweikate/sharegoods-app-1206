@@ -64,7 +64,6 @@
   self=[super init];
   if(self){
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"guanzhu"];
-    
     self.didPausePlay = NO;
     [self initData];
     [self initUI];
@@ -132,6 +131,9 @@
       if([result valueForKey:@"data"]&&![[result valueForKey:@"data"] isKindOfClass:[NSNull class]]){
         [weakSelf.callBackArr addObjectsFromArray:[result valueForKey:@"data"]];
       }
+      if(model.data.count==0){
+        [MBProgressHUD showSuccess:@"我也是有底线的"];
+      }
       [self.scrollView setupData:[model.data mutableCopy]];
     } failure:^(NSString *msg, NSInteger code) {
       MBVideoModel* model = [MBVideoModel new];
@@ -167,8 +169,10 @@
   _userCode = userCode;
   if(userCode&&userCode.length>0){
     self.VideoHeaderView.isLogin = YES;
+    self.scrollView.isLogin = YES;
   }else{
     self.VideoHeaderView.isLogin = NO;
+    self.scrollView.isLogin = NO;
   }
 }
 
@@ -191,21 +195,21 @@
 - (void)clickDownload:(MBModelData *)model{
   [self.dataArr replaceObjectAtIndex:self.current withObject:model];
   if(_onDownloadPress){
-    
+    _onDownloadPress(self.callBackArr[self.current]);
   }
 }
 
 -(void)clicCollection:(MBModelData *)model{
   [self.dataArr replaceObjectAtIndex:self.current withObject:model];
-  if(_onCollectPress){
-    
+  if(_onCollection){
+    _onCollection(self.callBackArr[self.current]);
   }
 }
 
 -(void)clickZan:(MBModelData *)model{
   [self.dataArr replaceObjectAtIndex:self.current withObject:model];
-  if(_onLikePress){
-    
+  if(_onZanPress){
+    _onZanPress(self.callBackArr[self.current]);
   }
 }
 
@@ -218,7 +222,7 @@
 -(void)clickTagBtn:(MBModelData *)model index:(NSInteger)index{
   NSLog(@"%@",model.showTags[index-1]);
   if(_onPressTag){
-    NSDictionary *dic = [NSDictionary dictionaryWithDictionary:model.showTags[index-1]];
+    NSDictionary *dic = [NSDictionary dictionaryWithDictionary:(NSDictionary*)model.showTags[index-1]];
     _onPressTag(dic);
   }
 }
@@ -242,7 +246,7 @@
 
 - (void)shareClick:(MBModelData *)model{
   if(_onSharePress){
-    _onSharePress(self.callBackArr[self.current]);
+    _onSharePress(@{@"detail":self.callBackArr[self.current]});
   }
 }
 

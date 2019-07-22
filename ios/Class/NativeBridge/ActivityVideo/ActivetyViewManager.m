@@ -27,9 +27,9 @@ RCT_EXPORT_VIEW_PROPERTY(onPressTag, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onSharePress, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onBuy, RCTBubblingEventBlock)
 
-RCT_EXPORT_VIEW_PROPERTY(onLikePress, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onZanPress, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onDownloadPress, RCTBubblingEventBlock)
-RCT_EXPORT_VIEW_PROPERTY(onCollectPress, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onCollection, RCTBubblingEventBlock)
 
 - (UIView *)view
 {

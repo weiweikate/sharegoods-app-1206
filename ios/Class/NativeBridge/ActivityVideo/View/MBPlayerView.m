@@ -23,7 +23,6 @@
 
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
-
     if (self) {
 //      self.backgroundColor = [UIColor blackColor];
       self.frame = frame;
@@ -35,7 +34,14 @@
 }
 
 - (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+  [self.player pause];
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  self.player = nil;
+  self.playerLayer = nil;
+  self.backgroundColor = [UIColor clearColor];
+  if (self.playerItem) {
+    [self.playerItem removeObserver:self forKeyPath:@"status"];
+  }
 }
 
 #pragma mark - Custom Accessors
@@ -141,7 +147,6 @@
                 if ([self.playDelegate respondsToSelector:@selector(playerViewDidPrepareToShowVideo)]) {
                     [self.playDelegate playerViewDidPrepareToShowVideo];
                 }
-                
                 break;
                 
             case AVPlayerItemStatusFailed:

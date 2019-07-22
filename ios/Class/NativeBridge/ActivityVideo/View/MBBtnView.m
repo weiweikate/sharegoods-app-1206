@@ -382,30 +382,38 @@
 
 -(void)clickDownLoad:(UIButton*)sender{
   AppDelegate *myDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-  if(myDelegate.AFNetworkStatus==1&&[NSString stringWithStorgeKey:@"downloadVideo"]){
-    [self showDownloadAlterWith:sender];
-  }else if(myDelegate.AFNetworkStatus==0){
-    [MBProgressHUD showSuccess:@"似乎已断开与互联网的连接"];
+  if(self.isLogin){
+    if(myDelegate.AFNetworkStatus==1&&[NSString stringWithStorgeKey:@"downloadVideo"]){
+      [self showDownloadAlterWith:sender];
+    }else if(myDelegate.AFNetworkStatus==0){
+      [MBProgressHUD showSuccess:@"似乎已断开与互联网的连接"];
+    }else{
+      MBModelData* modeltemp = self.model;
+      modeltemp.downloadCount++;
+      self.downLoadNum.text = [NSString stringWithNumber:modeltemp.downloadCount];
+      if(self.dataDelegate){
+        [self.dataDelegate clickDownload:modeltemp];
+      }
+    }
   }else{
-    MBModelData* modeltemp = self.model;
-    modeltemp.downloadCount++;
-    self.downLoadNum.text = [NSString stringWithNumber:modeltemp.downloadCount];
     if(self.dataDelegate){
-    [self.dataDelegate clickDownload:modeltemp];
+      [self.dataDelegate clickDownload:self.model];
     }
   }
 }
 
 -(void)clicCollection:(UIButton*)sender{
   MBModelData* modeltemp = self.model;
-  if(sender.selected){
-    modeltemp.collectCount--;
-  }else{
-    modeltemp.collectCount++;
+  if(self.isLogin){
+    if(sender.selected){
+      modeltemp.collectCount--;
+    }else{
+     modeltemp.collectCount++;
+    }
+    sender.selected = !sender.selected;
+    self.collectionNum.text = [NSString stringWithNumber:modeltemp.collectCount];
+    modeltemp.collect = sender.selected;
   }
-  sender.selected = !sender.selected;
-  self.collectionNum.text = [NSString stringWithNumber:modeltemp.collectCount];
-  modeltemp.collect = sender.selected;
   if(self.dataDelegate){
     [self.dataDelegate clicCollection:modeltemp];
   }
@@ -508,6 +516,7 @@
   UIAlertAction *actionSubmit = [UIAlertAction actionWithTitle:@"继续下载"
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * _Nonnull action) {
+                                                  [self saveDate:@"downloadVideo"];
                                                          MBModelData* modeltemp = weakSelf.model;
                                                          modeltemp.downloadCount++;
                                                          weakSelf.downLoadNum.text = [NSString stringWithNumber:modeltemp.downloadCount];
@@ -533,7 +542,7 @@
   UIAlertAction *actionSubmit = [UIAlertAction actionWithTitle:@"继续播放"
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * _Nonnull action) {
-                                                         if(weakSelf.dataDelegate){
+                                                        [self saveDate:@"playVideo"]; if(weakSelf.dataDelegate){
                                                            weakSelf.playImageView.hidden = weakSelf.playImageView.isHidden?NO:YES;
                                                            [weakSelf.dataDelegate clickPlayOrPause];
                                                          }
@@ -541,5 +550,14 @@
   [alterController addAction:actionCancel];
   [alterController addAction:actionSubmit];
   [self.currentViewController_XG presentViewController:alterController animated:YES completion:^{}];
+}
+
+-(void)saveDate:(NSString*)key{
+  NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+  NSDateFormatter *format = [[NSDateFormatter alloc]init];
+  [format setDateFormat:@"yyyy-MM-dd"];
+  NSString *nowDate = [format stringFromDate:[NSDate date]];
+  [userDefaults setObject:nowDate forKey:key];
+  [userDefaults synchronize];
 }
 @end
