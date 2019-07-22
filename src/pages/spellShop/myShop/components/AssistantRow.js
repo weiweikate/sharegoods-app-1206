@@ -47,7 +47,7 @@ export default class AssistantRow extends Component {
 
     renderContent = (style) => {
         let { headImg, levelName, nickName, contribution, packageStatus, packageImg } = this.props.item;
-        let { tradeBalance, showActivityImage } = this.props;
+        let { tradeBalance, showActivityImage, isYourStore } = this.props;
         tradeBalance = StringUtils.isEmpty(tradeBalance) ? 0 : parseFloat(tradeBalance);
         contribution = StringUtils.isEmpty(contribution) ? 0 : parseFloat(contribution);
         const sty = [styles.rowContainer];
@@ -60,7 +60,7 @@ export default class AssistantRow extends Component {
                 <View style={styles.right}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 3 }}>
                         <Text style={styles.name} allowFontScaling={false}>{nickName || ' '}</Text>
-                        {packageStatus && showActivityImage ?
+                        {packageStatus && showActivityImage && isYourStore ?
                             <UIImage source={{ uri: packageImg }}
                                      style={{ width: 59, height: 16, marginLeft: 5 }}/> : null}
                     </View>
