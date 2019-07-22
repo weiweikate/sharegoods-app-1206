@@ -1,20 +1,18 @@
 import React, { Component } from 'react';
 import {
-    View,
-    Platform,
-    StatusBar,
-    Keyboard,
     Animated,
-    PixelRatio,
     Dimensions,
+    Keyboard,
+    PixelRatio,
+    Platform,
     StyleSheet,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    View
 } from 'react-native';
 import Modal from '../../../comm/components/CommModal';
 import DesignRule from '../../../constants/DesignRule';
-import {
-    MRText as Text
-} from '../../../components/ui';
+import { MRText as Text } from '../../../components/ui';
+import ScreenUtils from '../../../utils/ScreenUtils';
 
 const MAX_SCREENT = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);
 const MIN_SCREENT = Math.min(Dimensions.get('window').width, Dimensions.get('window').height);
@@ -139,7 +137,7 @@ export default class ActionSheetView extends Component {
 
     // 计算面板行高
     _calculatePanelHeight = () => {
-        return 50 * (this.state.items.length + (this.state.title ? 1 : 0)) + 10 + 50 + (IPHONEX ? 34 : 0) + (Platform.OS === 'android' ? StatusBar.currentHeight : 0);
+        return 50 * (this.state.items.length + (this.state.title ? 1 : 0)) + 10 + 50 + ScreenUtils.safeBottom;
     };
 
     _renderItem = (item, index, onPress) => {

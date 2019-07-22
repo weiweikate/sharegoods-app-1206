@@ -236,10 +236,76 @@
             android:screenOrientation="portrait"
             android:targetActivity="com.meeruu.qiyu.activity.QiyuWatchVideoActivity"
             android:theme="@style/ysf_window_theme" />
+
         <activity
             android:name="com.meeruu.qiyu.activity.QiyuWatchVideoActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/ysf_video_play"
+            android:screenOrientation="portrait"
+            android:theme="@style/ysf_window_theme" />
+
+        <activity-alias
+            android:name="com.qiyukf.unicorn.ui.activity.LeaveMessageActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/ysf_leave_activity_label"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:targetActivity="com.meeruu.qiyu.activity.QiyuLeaveMessageActivity"
+            android:theme="@style/ysf_window_theme" />
+
+        <activity
+            android:name="com.meeruu.qiyu.activity.QiyuLeaveMessageActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/ysf_leave_activity_label"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/ysf_window_theme" />
+        <activity
+            android:name=".ui.activity.WatchPictureActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/ysf_watch_picture_activity_label"
+            android:screenOrientation="portrait"
+            android:theme="@style/ysf_window_theme" />
+
+        <activity-alias
+            android:name="com.qiyukf.unicorn.ui.activity.LeaveMsgCustomFieldMenuActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/ysf_leave_menu_activity_label"
+            android:screenOrientation="portrait"
+            android:targetActivity="com.meeruu.qiyu.activity.QiyuLeaveMsgCustomFieldMenuActivity"
+            android:theme="@style/ysf_window_theme" />
+
+        <activity
+            android:name="com.meeruu.qiyu.activity.QiyuLeaveMsgCustomFieldMenuActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/ysf_leave_menu_activity_label"
+            android:screenOrientation="portrait"
+            android:theme="@style/ysf_window_theme" />
+
+        <activity
+            android:name=".mediaselect.internal.ui.activity.AlbumPreviewActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/ysf_album_activity_label"
+            android:screenOrientation="portrait"
+            android:theme="@style/ysf_window_theme" />
+        <activity
+            android:name=".mediaselect.internal.ui.activity.SelectedPreviewActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/ysf_selected_preview_activity_label"
+            android:screenOrientation="portrait"
+            android:theme="@style/ysf_window_theme" />
+
+        <activity-alias
+            android:name="com.qiyukf.unicorn.mediaselect.internal.ui.activity.MatisseActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/ysf_matiss_activity_label"
+            android:screenOrientation="portrait"
+            android:targetActivity="com.meeruu.qiyu.activity.QiyuMatisseActivity"
+            android:theme="@style/ysf_window_theme" />
+        <activity
+            android:name="com.meeruu.qiyu.activity.QiyuMatisseActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/ysf_matiss_activity_label"
             android:screenOrientation="portrait"
             android:theme="@style/ysf_window_theme" />
     </application>

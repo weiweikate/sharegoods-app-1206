@@ -39,6 +39,8 @@ const api = {
 
     // 查看店铺人员列表 -- 共同行为get
     listByKeyword: ['/user/storeUser/listByKeyword', { method: 'get' }],
+    //是否显示活动图标
+    getStoreUserPackageNoOff: ['/user/storeUser/getStoreUserPackageNoOff', { method: 'get' }],
     // 查看店铺人员 -- 共同行为get
     findUserDetail: ['/user/storeUser/findUserDetail', { method: 'get' }],
 

@@ -87,7 +87,6 @@ class SpellStatusModel {
             this.getUserData(data.data || {});
             return Promise.resolve(data);
         }).catch((error) => {
-            this.getUserError(error);
             return Promise.reject(error);
         });
     }

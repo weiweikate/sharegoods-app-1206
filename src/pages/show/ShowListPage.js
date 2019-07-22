@@ -1,25 +1,20 @@
 import React from 'react';
 import {
-    View,
+    BackHandler,
+    DeviceEventEmitter,
+    Image,
+    InteractionManager,
     StyleSheet,
     TouchableOpacity,
-    Image,
-    BackHandler,
-    InteractionManager,
-    DeviceEventEmitter, TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    View
 } from 'react-native';
 import BasePage from '../../BasePage';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 import ScreenUtils from '../../utils/ScreenUtils';
-
-const { px2dp } = ScreenUtils;
 import DesignRule from '../../constants/DesignRule';
 import { observer } from 'mobx-react';
-import {
-    MRText as Text,
-    AvatarImage,
-    UIImage
-} from '../../components/ui';
+import { AvatarImage, MRText as Text, UIImage } from '../../components/ui';
 import ShowActivityViewIOS from './ShowActivityView';
 
 import user from '../../model/user';
@@ -33,9 +28,10 @@ import CommShareModal from '../../comm/components/CommShareModal';
 import WhiteModel from './model/WhiteModel';
 import ShowListIndexModel from './model/ShowListIndexModel';
 import { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
-import { routeNavigate } from '../../navigation/RouterMap';
-import RouterMap from '../../navigation/RouterMap';
+import RouterMap, { routeNavigate } from '../../navigation/RouterMap';
 import { track, trackEvent } from '../../utils/SensorsTrack';
+
+const { px2dp } = ScreenUtils;
 
 const {
     mine_user_icon,
@@ -314,7 +310,7 @@ export default class ShowListPage extends BasePage {
                             null
                     }
                 </View>
-                <View key={2} style={styles.container} tabLabel="   ">
+                <View key={2} style={styles.container} tabLabel="  ">
                     {
                         needsExpensive
                             ?
@@ -344,7 +340,7 @@ export default class ShowListPage extends BasePage {
                     }
                 </View>
 
-                <View key={4} style={styles.container} tabLabel="   ">
+                <View key={4} style={styles.container} tabLabel="    ">
                     {
                         needsExpensive
                             ? <ShowActivityViewIOS ref={(ref) => {

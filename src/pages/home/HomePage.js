@@ -5,7 +5,8 @@ import {
     DeviceEventEmitter, InteractionManager,
     RefreshControl, BackHandler,
     NativeEventEmitter,
-    NativeModules
+    NativeModules,
+    ActivityIndicator
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import { observer } from 'mobx-react';
@@ -71,8 +72,10 @@ import intervalMsgModel, { IntervalMsgView, IntervalType } from '../../comm/comp
 import { UserLevelModalView } from './view/TaskModalView';
 
 const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
+    <ActivityIndicator style={{ marginRight: 6 }} animating={errorMsg ? false : (isEnd ? false : true)} size={'small'}
+                       color={DesignRule.mainColor}/>
     <Text style={styles.text}
-          allowFontScaling={false}>{errorMsg ? errorMsg : (isEnd ? '我也是有底线的' : (isFetching ? '加载中...' : '加载更多中...'))}</Text>
+          allowFontScaling={false}>{errorMsg ? errorMsg : (isEnd ? '我也是有底线的~' : (isFetching ? '加载中...' : '加载更多中...'))}</Text>
 </View>;
 
 @observer
@@ -353,6 +356,7 @@ class HomePage extends BasePage {
     }
 
     _onRefresh() {
+        homeModule.isRefreshing = true;
         homeModule.loadHomeList(true);
         taskModel.getData();
         this.luckyIcon && this.luckyIcon.getLucky(1, '');
@@ -397,6 +401,7 @@ class HomePage extends BasePage {
                         this.luckyIcon.close();
                     }}
                     showsVerticalScrollIndicator={false}
+                    removeClippedSubviews={false}
                     onScroll={this._onListViewScroll}
                     renderFooter={() => <Footer
                         isFetching={homeModule.isFetching}
@@ -448,6 +453,7 @@ const styles = StyleSheet.create({
         borderRadius: px2dp(5)
     },
     footer: {
+        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         height: 50

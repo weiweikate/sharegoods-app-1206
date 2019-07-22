@@ -49,7 +49,7 @@ public class WebViewBridgeManager extends RNCWebViewManager {
         WebSettings settings = root.getSettings();
         String ua = settings.getUserAgentString();
         settings.setUserAgentString(ua + " xiugou");
-        SensorsDataAPI.sharedInstance().showUpWebView(root, true);
+        SensorsDataAPI.sharedInstance().showUpWebView(root, true,true);
         root.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {

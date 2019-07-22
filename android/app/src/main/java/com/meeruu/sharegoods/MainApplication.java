@@ -1,5 +1,7 @@
 package com.meeruu.sharegoods;
 
+import android.content.Context;
+
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.brentvatne.react.ReactVideoPackage;
@@ -14,11 +16,12 @@ import com.meeruu.commonlib.config.FrescoImagePipelineConfig;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.sharegoods.rn.RNMRPackage;
 import com.meeruu.sharegoods.rn.lottie.LottiePackage;
-import com.meeruu.sharegoods.rn.preload.ReactNativePreLoader;
 import com.meeruu.sharegoods.rn.reactwebview.RNCWebViewPackage;
 import com.meeruu.sharegoods.rn.sensors.RNSensorsAnalyticsPackage;
 import com.meeruu.sharegoods.rn.webviewbridge.WebViewBridgePackage;
 import com.microsoft.codepush.react.CodePush;
+import com.microsoft.codepush.react.CodePushUpdateManager;
+import com.microsoft.codepush.react.SettingsManager;
 import com.psykar.cookiemanager.CookieManagerPackage;
 import com.reactlibrary.RNGeolocationPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
@@ -43,8 +46,6 @@ public class MainApplication extends BaseApplication implements ReactApplication
 
     @Override
     public void onCreate() {
-        // 预加载rn
-        ReactNativePreLoader.preLoad(this, ParameterUtils.RN_MAIN_NAME);
         super.onCreate();
         // 检测内存泄漏
         LeakCanary.install(this);
@@ -67,6 +68,27 @@ public class MainApplication extends BaseApplication implements ReactApplication
             MainPackageConfig.Builder builder = new MainPackageConfig.Builder();
             builder.setFrescoConfig(FrescoImagePipelineConfig.getDefaultImagePipelineConfig(getApplicationContext()));
 
+            CodePush codePush;
+            try {
+                codePush = new CodePush(BuildConfig.CODEPUSH_KEY, getApplicationContext(),
+                        BuildConfig.DEBUG, ParameterUtils.CODE_PUSH_SERVER);
+            } catch (Exception e) {
+                // Reset code push update files when update files corrupted.
+                // The following code is a mimic of CodePush.clearUpdates()
+                // Since we already has exception in CodePush constructor,
+                // we breakdown the constructor here and clear all code push
+                // related files step by step without read the corrupted file itself.
+                Context mContext = getApplicationContext();
+                CodePushUpdateManager mUpdateManager = new CodePushUpdateManager(mContext.getFilesDir().getAbsolutePath());
+                SettingsManager mSettingsManager = new SettingsManager(mContext);
+                mUpdateManager.clearUpdates();
+                mSettingsManager.removeFailedUpdates();
+                mSettingsManager.removePendingUpdate();
+                // After code push update files being removed, we can build a new code push instance safely
+                codePush = new CodePush(BuildConfig.CODEPUSH_KEY, getApplicationContext(),
+                        BuildConfig.DEBUG, ParameterUtils.CODE_PUSH_SERVER);
+            }
+
             return Arrays.<ReactPackage>asList(
                     new RNMRPackage(),
                     new MainReactPackage(builder.build()),
@@ -82,8 +104,7 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     new RNSensorsAnalyticsPackage(),
                     new PickerPackage(),
                     new ExtraDimensionsPackage(),
-                    new CodePush(BuildConfig.CODEPUSH_KEY, MainApplication.this,
-                            BuildConfig.DEBUG, ParameterUtils.CODE_PUSH_SERVER),
+                    codePush,
                     new RNCWebViewPackage(),
                     new AsyncStoragePackage(),
                     new RNGestureHandlerPackage()
