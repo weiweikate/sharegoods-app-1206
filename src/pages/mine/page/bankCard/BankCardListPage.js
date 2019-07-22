@@ -187,7 +187,7 @@ export default class BankCardListPage extends BasePage {
             />);
         } else {
             return <View style={{ marginTop: 200, alignSelf: 'center', alignItems: 'center' }}>
-                <Image source={bankcard_empty} style={{ width: 120, height: 120 }}/>
+                <Image source={bankcard_empty}/>
                 <UIText style={{
                     color: DesignRule.textColor_instruction,
                     fontSize: DesignRule.fontSize_threeTitle,

@@ -41,10 +41,10 @@ export default class NavigatorBar extends Component {
 
         navigation: PropTypes.object,//导航
 
-        headerStyle: PropTypes.object,
+        headerStyle: PropTypes.any,
         title: PropTypes.string,
-        titleStyle: PropTypes.object,
-        leftImageStyle: PropTypes.object,
+        titleStyle: PropTypes.any,
+        leftImageStyle: PropTypes.any,
         leftNavTitle: PropTypes.string,
         leftNavImage: PropTypes.any,
         leftNavItemHidden: PropTypes.bool,

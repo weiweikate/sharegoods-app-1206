@@ -7,7 +7,7 @@ import {
     AppState,
     ActivityIndicator,
     Platform,
-    Alert
+    // Alert
 } from 'react-native';
 import res from './res';
 import BasePage from '../../BasePage';
@@ -15,13 +15,13 @@ import { observer } from 'mobx-react';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
 import { MRText as Text } from '../../components/ui';
-import { payment, paymentType, paymentTrack, payStatus, payStatusMsg } from './Payment';
+import { payment, paymentType, payStatus, payStatusMsg } from './Payment';
 import { PaymentResult } from './PaymentResultPage';
-import { track, TrackApi, trackEvent } from '../../utils/SensorsTrack';
+import {  TrackApi } from '../../utils/SensorsTrack';
 
 const { px2dp } = ScreenUtils;
 import Toast from '../../utils/bridge';
-import RouterMap from '../../navigation/RouterMap';
+import RouterMap  from '../../navigation/RouterMap';
 import StringUtils from '../../utils/StringUtils';
 
 @observer
@@ -61,6 +61,8 @@ export default class ChannelPage extends BasePage {
         payment.bizType = this.params.bizType || 0;
         payment.modeType = this.params.modeType || 0;
         this.canShowAlter = true;
+        //胡玉峰-android平台app在调起支付宝的之时会回调一次应用状态，和微信有所不同，所以注意这里用次标识标记
+        this.isBack = false;
     }
 
     componentDidMount() {
@@ -76,8 +78,6 @@ export default class ChannelPage extends BasePage {
                 payAmount: Math.floor(StringUtils.mul(result.unpaidAmount, 100)) / 100
             });
         });
-
-
     }
 
     componentWillUnmount() {
@@ -93,7 +93,7 @@ export default class ChannelPage extends BasePage {
         let payAmount = this.state.remainMoney || amounts;
         payment.checkOrderStatus(platformOrderNo, this.bizType, this.modeType, payAmount, name)
             .then(result => {
-                //以为借口返回的剩余未支付为准
+                //以为接口返回的剩余未支付为准
                 payAmount = Math.floor(StringUtils.mul(result.unpaidAmount, 100)) / 100;
                 console.log('checkOrderStatus', result);
                 let detailList = [];
@@ -170,91 +170,23 @@ export default class ChannelPage extends BasePage {
         if (this.state.orderChecking === true) {
             return;
         }
-        if (payment.isGoToPay === false && Platform.OS !== 'ios') {
+        if (payment.isGoToPay === false && Platform.OS === 'android') {
             return;
         }
-        if (payment.platformOrderNo && selctedPayType !== paymentType.none && this.canShowAlter) {
+        if (Platform.OS=== 'android' &&  selctedPayType === paymentType.alipay  && !this.isBack){
+            this.isBack = true;
+        } else if (payment.platformOrderNo && selctedPayType !== paymentType.none && this.canShowAlter) {
+            this.isBack = false;
             this.canShowAlter = false;
             payment.isGoToPay = false;
-            Alert.alert(
-                '请确认支付是否已经完成',
-                '',
-                [{
-                    text: '重新支付', onPress: () => {
-                        this.canShowAlter = true;
-                    }
-                },
-                    {
-                        text: '已经完成支付', onPress: () => {
-                            this.orderTime = (new Date().getTime()) / 1000;
-                            //去等待结果页面
-                            this.props.navigation.dispatch({
-                                key: this.props.navigation.state.key,
-                                type: 'ReplacePayScreen',
-                                routeName: RouterMap.PaymentCheckPage,
-                                params: { payResult: PaymentResult.success }
-                            });
-                        }, style: 'cancel'
-                    }
-                ],
-                { cancelable: false }
-            );
-            // this._checkOrder();
-            // this.setState({ orderChecking: true });
+            this.props.navigation.dispatch({
+                key: this.props.navigation.state.key,
+                type: 'ReplacePayScreen',
+                routeName: RouterMap.PaymentCheckPage,
+                params: { payResult: PaymentResult.success }
+            });
         }
     };
-
-    _checkOrder() {
-        let time = (new Date().getTime()) / 1000;
-        track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: 'checking' });
-        if (time - this.orderTime > 10) {
-            track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: 'checkOut' });
-            this.setState({ orderChecking: false });
-            return;
-        }
-        payment.checkPayStatus().then(result => {
-            if (result.data === payStatus.payCreate) {
-                this.setState({ orderChecking: false });
-
-                return;
-            }
-
-            if (result.data === payStatus.payThridClose) {
-                this.setState({ orderChecking: false });
-                return;
-            }
-
-            if (result.data === payStatus.payWait) {
-                setTimeout(() => {
-                    this._checkOrder();
-                }, 1000);
-                return;
-            }
-            let isSuccess = parseInt(result.data, 0) === payStatus.paySuccess;
-            if (isSuccess) {
-                this.setState({
-                    orderChecking: false
-                });
-                this.props.navigation.dispatch({
-                    key: this.props.navigation.state.key,
-                    type: 'ReplacePayScreen',
-                    routeName: RouterMap.PaymentResultPage,
-                    params: { payResult: PaymentResult.success }
-                });
-                track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: 'success' });
-                payment.resetPayment();
-            } else if (result.data === payStatus.payOutTime) {
-                this.setState({ orderChecking: false });
-                this.$navigate(RouterMap.PaymentResultPage, {
-                    payResult: PaymentResult.timeout,
-                    payMsg: '订单支付超时，下单金额已原路返回'
-                });
-                payment.resetPayment();
-            }
-        }).catch(() => {
-            this.setState({ orderChecking: false });
-        });
-    }
 
     _goToOrder(index) {
         const { bizType } = payment;
@@ -283,9 +215,7 @@ export default class ChannelPage extends BasePage {
     _render() {
         const { selctedPayType, name } = payment;
         const { orderChecking } = this.state;
-        // let payMoney = this.remainMoney ? this.remainMoney : payment.amounts;
         let payMoney = this.state.remainMoney;
-
         return <View style={styles.container}>
             <View style={styles.content}>
                 <View style={styles.row}>

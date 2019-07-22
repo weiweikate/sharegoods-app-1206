@@ -17,6 +17,8 @@ import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
 import com.meeruu.sharegoods.rn.showground.contacts.CommValue;
 
+import static com.meeruu.sharegoods.rn.showground.adapter.ShowRecommendAdapter.videoOrImageWH;
+
 public class ShowDynamicAdapter extends BaseQuickAdapter<NewestShowGroundBean.DataBean, BaseViewHolder> {
     private final int realWidth;
     private final int maxHeight;
@@ -48,9 +50,9 @@ public class ShowDynamicAdapter extends BaseQuickAdapter<NewestShowGroundBean.Da
                 height = resourceBean.getHeight();
             } else {
                 //视频类型，取封面
-                imgUrl = item.getVideoCover().imageUrl;
-                width = item.getVideoCover().imageViewWidth;
-                height = item.getVideoCover().imageViewHeight;
+                imgUrl = item.getVideoCover();
+                width = videoOrImageWH;
+                height = videoOrImageWH;
             }
         }
 

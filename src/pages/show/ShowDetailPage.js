@@ -103,18 +103,16 @@ export default class ShowDetailPage extends BasePage {
                         this.params.ref && this.params.ref.replaceData(this.params.index, data.hotCount);
 
                         const { detail } = this.showDetailModule;
-                        track(trackEvent.ViewXiuChangDetails,{
+                        track(trackEvent.ViewXiuChangDetails, {
                             articleCode: detail.showNo,
                             author: detail.userInfoVO.userNo
-                        })
+                        });
 
                     }
                     this.incrCountByType(6);
                 }
             }
         );
-
-
     }
 
     componentWillUnmount() {
@@ -320,6 +318,18 @@ export default class ShowDetailPage extends BasePage {
         );
     };
 
+    _renderChecking = () => {
+        return (
+            <View style={styles.checkingWrapper}>
+                <View style={styles.checkingTextWrapper}>
+                    <Text style={styles.shieldText}>
+                        系统正在快马加鞭审核中，耐心等待哦
+                    </Text>
+                </View>
+            </View>
+        );
+    };
+
     _showImagesPage(imgs, index) {
         this.noNeedRefresh = true;
         routeNavigate(RouterMap.ShowDetailImagePage, {
@@ -384,15 +394,15 @@ export default class ShowDetailPage extends BasePage {
             detail.likesCount -= 1;
             this.showDetailModule.setDetail(detail);
 
-            const { showNo , userInfoVO } = detail;
+            const { showNo, userInfoVO } = detail;
             const { userNo } = userInfoVO || {};
-            track(trackEvent.XiuChangLikeClick,{
-                xiuChangBtnLocation:'2',
-                xiuChangListType:'',
-                articleCode:showNo,
-                author:userNo,
-                likeType:2
-            })
+            track(trackEvent.XiuChangLikeClick, {
+                xiuChangBtnLocation: '2',
+                xiuChangListType: '',
+                articleCode: showNo,
+                author: userNo,
+                likeType: 2
+            });
         } else {
             this.incrCountByType(1);
             detail.like = true;
@@ -401,13 +411,13 @@ export default class ShowDetailPage extends BasePage {
 
             const { showNo, userInfoVO } = detail;
             const { userNo } = userInfoVO || {};
-            track(trackEvent.XiuChangLikeClick,{
-                xiuChangBtnLocation:'2',
-                xiuChangListType:'',
-                articleCode:showNo,
-                author:userNo,
-                likeType:1
-            })
+            track(trackEvent.XiuChangLikeClick, {
+                xiuChangBtnLocation: '2',
+                xiuChangListType: '',
+                articleCode: showNo,
+                author: userNo,
+                likeType: 1
+            });
         }
     };
 
@@ -551,11 +561,20 @@ export default class ShowDetailPage extends BasePage {
         if (detail.status !== 1 && (EmptyUtils.isEmpty(detail.userInfoVO) || detail.userInfoVO.userNo !== user.code)) {
 
             return (<View style={styles.container}>
-                <View style={{backgroundColor:DesignRule.bgColor,alignItems:'center',flex:1,marginTop:ScreenUtils.statusBarHeight}}>
+                <View style={{
+                    backgroundColor: DesignRule.bgColor,
+                    alignItems: 'center',
+                    flex: 1,
+                    marginTop: ScreenUtils.statusBarHeight
+                }}>
                     <Image source={dynamicEmpty}
-                           style={{ width: px2dp(267), height: px2dp(192), marginTop: px2dp(50),marginTop:px2dp(165) }}/>
+                           style={{
+                               width: px2dp(267),
+                               height: px2dp(192),
+                               marginTop: px2dp(165)
+                           }}/>
                     <Text style={styles.emptyTip}>
-                        {detail.status === 2 ? '系统正在快马加鞭审核中,耐心等待哦！':'文章不见了，先看看别的吧！'}
+                        {detail.status === 2 ? '系统正在快马加鞭审核中,耐心等待哦！' : '文章不见了，先看看别的吧！'}
                     </Text>
                 </View>
                 {this._renderNormalTitle()}
@@ -607,14 +626,14 @@ export default class ShowDetailPage extends BasePage {
                                     products={detail.products}
                                     addCart={this.addCart}
                                     pressProduct={(data) => {
-                                        const {prodCode,name} = data;
+                                        const { prodCode, name } = data;
                                         this.setState({
                                             productModalVisible: false
                                         });
                                         track(trackEvent.XiuChangSpuClick, {
-                                            xiuChangBtnLocation:'2',
-                                            xiuChangListType:'0',
-                                            articleCode:detail.showNo,
+                                            xiuChangBtnLocation: '2',
+                                            xiuChangListType: '0',
+                                            articleCode: detail.showNo,
                                             spuCode: prodCode,
                                             spuName: name,
                                             author: detail.userInfoVO ? detail.userInfoVO.userNo : ''
@@ -695,7 +714,8 @@ export default class ShowDetailPage extends BasePage {
                                 dec: '好物不独享，内有惊喜福利~'
                             }}
             />
-            {detail.status !== 1 && (EmptyUtils.isEmpty(detail.userInfoVO) || detail.userInfoVO.userNo === user.code) ? this._shieldRender() : null}
+            {detail.status === 3 && (EmptyUtils.isEmpty(detail.userInfoVO) || detail.userInfoVO.userNo === user.code) ? this._shieldRender() : null}
+            {detail.status === 2 && (EmptyUtils.isEmpty(detail.userInfoVO) || detail.userInfoVO.userNo === user.code) ? this._renderChecking() : null}
         </View>;
     }
 }
@@ -914,11 +934,26 @@ let styles = StyleSheet.create({
         right: 0,
         backgroundColor: 'rgba(255,255,255,0.7)'
     },
+    checkingWrapper: {
+        position: 'absolute',
+        top: (ScreenUtils.statusBarHeight + px2dp(44)),
+        bottom: 0,
+        left: 0,
+        right: 0
+    },
     shieldTextWrapper: {
         width: DesignRule.width,
         backgroundColor: 'black',
         paddingHorizontal: DesignRule.margin_page,
         paddingVertical: px2dp(6)
+    },
+    checkingTextWrapper:{
+        width: DesignRule.width,
+        backgroundColor: 'black',
+        paddingHorizontal: DesignRule.margin_page,
+        height:px2dp(44),
+        flexDirection:'row',
+        alignItems:'center'
     },
     shieldText: {
         color: DesignRule.white,

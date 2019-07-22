@@ -17,6 +17,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import res from '../res';
 import mineRes from '../../mine/res';
 import { MRText } from '../../../components/ui';
+import EmptyUtils from '../../../utils/EmptyUtils';
 
 const { px2dp } = ScreenUtils;
 const { iconShowFire } = res;
@@ -115,7 +116,7 @@ export default class TagDetailItemView extends PureComponent {
                         marginBottom: px2dp(10)
                     }}>
                         <View style={{ borderRadius: px2dp(10), overflow: 'hidden' }}>
-                            {(itemData.userInfoVO.userImg > 0) ?
+                            {!EmptyUtils.isEmpty(itemData.userInfoVO.userImg) ?
                                 <ImageLoad source={{ uri: itemData.userInfoVO.userImg }}
                                            style={{ width: px2dp(20), height: px2dp(20), borderRadius: px2dp(10) }}/> :
                                 <Image source={mine_user_icon}

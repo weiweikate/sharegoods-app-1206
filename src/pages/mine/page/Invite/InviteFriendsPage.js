@@ -19,7 +19,6 @@ import {
     TouchableWithoutFeedback,
     ImageBackground,
     Image,
-    TouchableOpacity
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
@@ -34,7 +33,7 @@ const autoSizeWidth = ScreenUtils.autoSizeWidth;
 import CommShareModal from '../../../../comm/components/CommShareModal';
 import bridge from '../../../../utils/bridge';
 import apiEnvironment from '../../../../api/ApiEnvironment';
-import DesignRule from '../../../../constants/DesignRule';
+// import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import user from '../../../../model/user';
 import {track, trackEvent} from '../../../../utils/SensorsTrack';
@@ -45,9 +44,13 @@ const {
         white_back
     },
     invite: {
-        bg,
-        button,
-        wenan
+        bgColor,
+        bgContent,
+        shareBtn,
+        textBg,
+        QRBg,
+        wenan,
+        defaultHeader
     }
 } = res;
 
@@ -89,63 +92,108 @@ export default class InviteFriendsPage extends BasePage<Props> {
         });
     }
 
-    //截屏
-    _saveImg = () => {
-        let logo = 'logo.png';
-        if (user && user.headImg && user.headImg.length > 4) {
-            logo = user.headImg;
-        }
-        // track(trackEvent.QrcodeShareto, { qrCodeID: this.linkUrl, shareMethod: '保存图片' });
-        this.setState({
-            disable: true
-        }, () => {
-            bridge.saveInviteFriendsImage(this.linkUrl, logo, () => {
-                this.$toastShow('保存成功');
-                this.__timer__ = setTimeout(() => {
-                    this.setState({
-                        disable: false
-                    });
-                }, 2500);
-            }, () => {
-                this.$toastShow('保存失败');
-                this.setState({
-                    disable: false
-                });
-            });
-        });
-    };
+    // //截屏
+    // _saveImg = () => {
+    //     let logo = 'logo.png';
+    //     if (user && user.headImg && user.headImg.length > 4) {
+    //         logo = user.headImg;
+    //     }
+    //     // track(trackEvent.QrcodeShareto, { qrCodeID: this.linkUrl, shareMethod: '保存图片' });
+    //     this.setState({
+    //         disable: true
+    //     }, () => {
+    //         bridge.saveInviteFriendsImage(this.linkUrl, logo, () => {
+    //             this.$toastShow('保存成功');
+    //             this.__timer__ = setTimeout(() => {
+    //                 this.setState({
+    //                     disable: false
+    //                 });
+    //             }, 2500);
+    //         }, () => {
+    //             this.$toastShow('保存失败');
+    //             this.setState({
+    //                 disable: false
+    //             });
+    //         });
+    //     });
+    // };
 
     _render() {
 
         let height = ScreenUtils.height;
         if(ScreenUtils.isAllScreenDevice && !ScreenUtils.getBarShow()){
             height = ExtraDimensions.get('REAL_WINDOW_HEIGHT')
-        }else if(ScreenUtils.isAllScreenDevice && ScreenUtils.getBarShow()){
-            if(ScreenUtils.getHasNotchScreen()){
+        }else if(ScreenUtils.isAllScreenDevice && ScreenUtils.getBarShow()) {
+            if (ScreenUtils.getHasNotchScreen()) {
                 height = ExtraDimensions.get('REAL_WINDOW_HEIGHT') - ExtraDimensions.get('SOFT_MENU_BAR_HEIGHT') + ExtraDimensions.get('STATUS_BAR_HEIGHT')
-            }else {
+            } else {
                 height = ExtraDimensions.get('REAL_WINDOW_HEIGHT') - ExtraDimensions.get('SOFT_MENU_BAR_HEIGHT')
             }
         }
 
-        return (
-            <View style={styles.container}>
-                <Image source={bg} style={{
-                    top: 0,
-                    left: 0,
-                    width: DesignRule.autoSizeWidth(375),
-                    height,
-                    resizeMode: 'stretch',
-                    position: 'absolute'
-                }}/>
-                <Image source={wenan} style={{
-                    top: ScreenUtils.statusBarHeight + 44,
-                    left: 0,
-                    width: autoSizeWidth(375),
-                    height: autoSizeWidth(75),
-                    resizeMode: 'stretch',
-                    position: 'absolute'
-                }}/>
+        let name =  user.nickname && user.nickname.length > 8 ? user.nickname.replace(/^(\d{3})\d*(\d{4})$/,'$1****$2') : user.nickname;
+        return(
+            <View style={styles.contain}>
+                <ImageBackground source={bgColor} style={{width: ScreenUtils.width, height, alignItems: 'center'}}>
+                    <View style={styles.headerStyle}>
+                        <Image source={wenan} style={styles.wenanStyle}/>
+                        <View style={{alignItems: 'center'}}>
+                            <View style={{width:64,height:64,borderRadius:32,backgroundColor: '#FBF6CF',alignItems:'center',justifyContent:'center'}}>
+                            {
+                                user && user.headImg && user.headImg.length > 4 ?
+                                    <UIImage source={{uri: user.headImg}}
+                                             style={{
+                                                 height: autoSizeWidth(58),
+                                                 width: autoSizeWidth(58),
+                                                 borderRadius: autoSizeWidth(29)
+                                             }}/>
+                                    :
+                                    <UIImage source={defaultHeader}
+                                             style={{
+                                                 height: autoSizeWidth(58),
+                                                 width: autoSizeWidth(58),
+                                                 borderRadius: autoSizeWidth(29)
+                                             }}/>
+                            }
+                            </View>
+                            <ImageBackground source={textBg}
+                                             style={styles.textBgStyle}>
+                                <Text style={{color: '#B93C3B', fontSize: 13, marginTop: 10}}>{name || ''}</Text>
+                                <Text style={{color: '#B93C3B', fontSize: 13}}>已有4000000+用户领取成功～</Text>
+                            </ImageBackground>
+                        </View>
+                    </View>
+                    {this.state.path ? <UIImage source={{uri: this.state.path}}
+                                                resizeMode={'stretch'}
+                                                style={{
+                                                    width: 144,
+                                                    height: 144,
+                                                }}/> :
+                        <Image source={QRBg} style={{width: 144, height: 144, backgroundColor: 'white'}}/>
+                    }
+                    <Text style={{color: '#FFFFFF', fontSize: 13, marginTop: 5}}>手机扫一扫注册新用户</Text>
+                    <Image source={bgContent}
+                           style={styles.btnText}/>
+                </ImageBackground>
+
+                <View style={{
+                    width: ScreenUtils.width,
+                    height: 52,
+                    bottom: 33,
+                    position: 'absolute',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}>
+                    <TouchableWithoutFeedback onPress={() => {
+                        this.shareModal && this.shareModal.open();
+                    }}>
+                        <View>
+                            <Image source={shareBtn}
+                                   style={{width: 201, height: 52}}/>
+                        </View>
+                    </TouchableWithoutFeedback>
+                </View>
+
                 <TouchableWithoutFeedback onPress={() => {
                     this.$navigateBack();
                 }}>
@@ -165,106 +213,58 @@ export default class InviteFriendsPage extends BasePage<Props> {
                                  }}/>
                     </View>
                 </TouchableWithoutFeedback>
-                <View style={{
-                    backgroundColor: 'white',
-                    width: autoSizeWidth(160),
-                    height: autoSizeWidth(160),
-                    top: height / 1334.0 * 775 + (height / 1334 * (1334 - 775) - autoSizeWidth(160) - autoSizeWidth(90)) / 2.0,
-                    left: autoSizeWidth(95 + 12.5),
-                    position: 'absolute',
-                    // shadowColor: DesignRule.mainColor,
-                    // shadowOpacity: 0.3,
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                }}>
-                    <UIImage source={{ uri: this.state.path }}
-                             resizeMode={'stretch'}
-                             style={{
-                                 width: autoSizeWidth(160),
-                                 height: autoSizeWidth(160),
-                             }}/>
-                    {
-                        user && user.headImg && user.headImg.length > 4 ?
-                            <View style={styles.logo}>
-                                <UIImage source={{ uri: user.headImg }}
-                                         style={{ height: autoSizeWidth(40), width: autoSizeWidth(40) }}/>
-                            </View> :
-                            <View style={styles.logo}>
-                                <UIImage source={res.other.tongyong_logo_nor}
-                                         style={{ height: autoSizeWidth(40), width: autoSizeWidth(40) }}/>
-                            </View>
-                    }
 
-                </View>
-                <View style={{
-                    flexDirection: 'row',
-                    position: 'absolute',
-                    left: 0,
-                    width: ScreenUtils.width,
-                    bottom: autoSizeWidth(40),
-                    alignItems: 'center',
-                    paddingHorizontal: DesignRule.autoSizeWidth(30)
-                }}>
-                    <TouchableOpacity onPress={this._saveImg} disabled={this.state.disable}>
-                        <ImageBackground source={button} style={styles.btnContainer} onPress={this._saveImg}
-                                         resizeMode={'stretch'}>
-
-                            <Text style={styles.btnText}>
-                                保存图片
-                            </Text>
-                        </ImageBackground>
-                    </TouchableOpacity>
-                    <View style={{ flex: 1 }}/>
-                    <TouchableOpacity onPress={() => {
-                        this.shareModal && this.shareModal.open();
-                    }}>
-                        <ImageBackground source={button} style={styles.btnContainer} resizeMode={'stretch'}>
-                            <Text style={styles.btnText}>
-                                立即分享
-                            </Text>
-                        </ImageBackground>
-                    </TouchableOpacity>
-                </View>
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 defaultModalVisible={this.params.openShareModal}
-                    // type={'promotionShare'}
-                    //  imageJson={{
-                    //      imageUrlStr: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1539577593172&di=c87eead9eb2e2073b50758daf6194c62&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F59c914525c484566292f8d8d3d29c964ca59c7ca.jpg',
-                    //      titleStr: '商品标题',
-                    //      priceStr: '¥100.00',
-                    //      QRCodeStr: '分享的链接'
-                    //  }}
+                                type={'Invite'}
+                                imageJson={{
+                                    imageType: 'invite',
+                                    titleStr:'',
+                                    imageUrlStr:'',
+                                    QRCodeStr: this.linkUrl,
+                                }}
                                 webJson={{
                                     title: '送你1张免费商品兑换券，海量好物0元领！',
                                     dec: '新人尊享，价值269元好礼在等你，惊喜连连福利不断~',
                                     linkUrl: this.linkUrl,
                                     thumImage: `${apiEnvironment.getCurrentOssHost()}/sharegoods/h5/resource/icon/shareIcon.png`,
                                 }}
-                    // miniProgramJson = {{
-                    //     title: '分享小程序title',
-                    //     dec: '分享小程序子标题',
-                    //     thumImage: 'logo.png',
-                    //     linkUrl: '${apiEnvironment.getCurrentH5Url()}/pages/index/index',
-                    //     userName: 'gh_3ac2059ac66f',
-                    //     miniProgramPath: 'pages/index/index'}}
-                                trackParmas={{ QrCodeID: this.linkUrl }}
+                                trackParmas={{QrCodeID: this.linkUrl}}
                                 trackEvent={trackEvent.QrCodeShareto}
-                                taskShareParams = {{ //分享完成后，请求后台
+                                taskShareParams={{ //分享完成后，请求后台
                                     uri: this.linkUrl,
                                     code: 10,
                                     data: ''
                                 }}
-                                // luckyDraw={true}
+                    // luckyDraw={true}
                 />
             </View>
-        );
+
+        )
     }
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#ff0050',
+    },
+    headerStyle: {
+        width: ScreenUtils.width,
+        height: ScreenUtils.height * 264 / 667,
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        marginBottom: 10
+    },
+    wenanStyle: {
+        width: ScreenUtils.width - 80,
+        height: (ScreenUtils.width - 80) * 118 / 292,
+        marginTop: 29
+    },
+    textBgStyle: {
+        height: autoSizeWidth(58),
+        width: ScreenUtils.width - 116,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     btnContainer: {
         borderRadius: autoSizeWidth(25),
@@ -274,10 +274,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     btnText: {
-        fontSize: DesignRule.fontSize_mediumBtnText,
-        color: '#ff0050',
-        marginBottom: autoSizeWidth(7),
-        marginRight: autoSizeWidth(5)
+        bottom: 0,
+        position: 'absolute',
+        width: ScreenUtils.width,
+        height: ScreenUtils.width * 1334 / 750,
+        alignItems: 'center'
     },
     logo: {
         width: autoSizeWidth(40),

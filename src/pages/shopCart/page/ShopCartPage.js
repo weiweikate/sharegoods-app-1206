@@ -234,7 +234,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         flex: 1
-        // backgroundColor:'green'
     },
     swipeListView: { width: shopCartListWidth },
     standaloneRowBack: {
@@ -249,7 +248,7 @@ const styles = StyleSheet.create({
     },
     hideBgView: {
         backgroundColor: 'white',
-        height: px2dp(145),
+        height: px2dp(150),
         width: shopCartListWidth,
         justifyContent: 'center',
         alignItems: 'flex-end'
@@ -259,6 +258,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: DesignRule.mainColor,
-        height: px2dp(145)
+        height: px2dp(150)
     }
 });

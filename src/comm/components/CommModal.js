@@ -7,7 +7,6 @@
 import React, { PureComponent } from 'react';
 import {
     View,
-    TouchableOpacity,
     StyleSheet,
     Platform,
     Modal,
@@ -96,14 +95,10 @@ export default class CommModal extends PureComponent {
                     this.setState({ visible: false });
                 }}
                 visible={[this.state.visible, this.state.update]}>
-                <TouchableOpacity
-                    activeOpacity={1}
-                >
-                    <View
-                        style={[styles.container, { backgroundColor: this.props.transparent ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 0.5)' }]}>
-                        {this.state.visible ? this.props.children : null}
-                    </View>
-                </TouchableOpacity>
+                <View
+                    style={[styles.container, { backgroundColor: this.props.transparent ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 0.5)' }]}>
+                    {this.state.visible ? this.props.children : null}
+                </View>
             </NativeModalAndroid>
         );
     }

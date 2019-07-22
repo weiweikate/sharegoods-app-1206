@@ -34,11 +34,11 @@ export default class LuckyIcon extends React.Component {
         super(props);
 
         this.state = {
-            x: new Animated.Value(25),
+            x: new Animated.Value(0),
             show: false,
             data: {}
         };
-        this.isOpen = false;
+        this.isOpen = true;
     }
 
     componentDidMount() {
@@ -79,7 +79,7 @@ export default class LuckyIcon extends React.Component {
                 // Animate value over time
                 this.state.x, // The value to drive
                 {
-                    toValue: 25,
+                    toValue: 75 / 2,
                     duration: 500,
                     useNativeDriver: true
                 }
@@ -110,7 +110,12 @@ export default class LuckyIcon extends React.Component {
 
         return (
             <Animated.View
-                style={{ position: 'absolute', right: 5, bottom: 40, transform: [{ translateX: this.state.x }] }}>
+                style={{
+                    position: 'absolute',
+                    right: 5,
+                    bottom: 40,
+                    transform: [{ translateX: this.state.x }]
+                }}>
                 <TouchableOpacity onPress={this._onPress}>
                     <Image
                         style={styles.image}
@@ -125,7 +130,7 @@ export default class LuckyIcon extends React.Component {
 
 const styles = StyleSheet.create({
     image: {
-        height: 50,
-        width: 50
+        height: 75,
+        width: 75
     }
 });

@@ -46,6 +46,8 @@ export default class GoodsGrayItem extends React.Component {
                                     marginRight: 6,
                                     paddingHorizontal: 3,
                                     paddingVertical: 3,
+                                    borderRadius: 3,
+                                    overflow: 'hidden',
                                     color: DesignRule.mainColor,
                                     marginVertical: 2.5,
                                     backgroundColor: 'rgba(255,0,80,0.1)'

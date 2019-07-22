@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -33,11 +32,11 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
-import com.facebook.react.bridge.UiThreadUtil;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.meeruu.commonlib.callback.ReqProgressCallBack;
+import com.meeruu.commonlib.event.Event;
 import com.meeruu.commonlib.server.RequestManager;
 import com.meeruu.commonlib.utils.AppUtils;
 import com.meeruu.commonlib.utils.BitmapUtils;
@@ -50,7 +49,6 @@ import com.meeruu.commonlib.utils.SDCardUtils;
 import com.meeruu.commonlib.utils.SecurityUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.sharegoods.bean.NetCommonParamsBean;
-import com.meeruu.sharegoods.event.Event;
 import com.meeruu.sharegoods.event.HideSplashEvent;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
 import com.meeruu.sharegoods.event.VersionUpdateEvent;
@@ -58,8 +56,6 @@ import com.meeruu.sharegoods.ui.activity.MRWebviewActivity;
 import com.meeruu.statusbar.ImmersionBar;
 import com.meituan.android.walle.WalleChannelReader;
 import com.qiyukf.unicorn.api.Unicorn;
-import com.reactnative.ivpusic.imagepicker.cameralibrary.util.LogUtil;
-import com.reactnative.ivpusic.imagepicker.picture.lib.tools.Md5Utils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -199,12 +195,7 @@ public class CommModule extends ReactContextBaseJavaModule {
     }
 
     public void loadingDialog(boolean isShow, String msg) {
-        LoadingDialogEvent event = new LoadingDialogEvent();
-        event.setShow(isShow);
-        if (!TextUtils.isEmpty(msg)) {
-            event.setMsg(msg);
-        }
-        EventBus.getDefault().post(event);
+        EventBus.getDefault().post(new LoadingDialogEvent(isShow, msg));
     }
 
     @ReactMethod
@@ -245,7 +236,7 @@ public class CommModule extends ReactContextBaseJavaModule {
             try {
                 file = new File(new URI(filePath));
                 filePath = file.getAbsolutePath();
-            }catch (Exception e){
+            } catch (Exception e) {
 
             }
 
@@ -429,8 +420,8 @@ public class CommModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void updatePushAlias(ReadableMap data) {
         if (data.hasKey("userId")) {
-            String lastVersion = data.getString("userId");
-            JPushInterface.setAlias(this.mContext, lastVersion, null);
+            String userId = data.getString("userId");
+            JPushInterface.setAlias(this.mContext, 1, userId);
         }
     }
 
@@ -461,6 +452,11 @@ public class CommModule extends ReactContextBaseJavaModule {
         JPushInterface.setTags(this.mContext, tagSet, null);
     }
 
+    @ReactMethod
+    public void deleteAllAlias() {
+        JPushInterface.deleteAlias(this.mContext, 1);
+    }
+
     /**
      * 获取视频文件关键帧
      *
@@ -487,11 +483,11 @@ public class CommModule extends ReactContextBaseJavaModule {
         }
 
         String curPath = filePath;
-        if(!TextUtils.isEmpty(filePath) && filePath.startsWith("file://")){
+        if (!TextUtils.isEmpty(filePath) && filePath.startsWith("file://")) {
             try {
-                File  file1 = new File(new URI(filePath));
+                File file1 = new File(new URI(filePath));
                 curPath = file1.getAbsolutePath();
-            }catch (Exception e){
+            } catch (Exception e) {
                 promise.reject("");
                 return;
             }
@@ -573,9 +569,9 @@ public class CommModule extends ReactContextBaseJavaModule {
             promise.reject("url不能为空");
             return;
         }
-       
+
         final String storePath = SDCardUtils.getFileDirPath(mContext, "MR/picture")
-                .getAbsolutePath() ;
+                .getAbsolutePath();
 
         RequestManager.getInstance().downLoadFile(url, storePath, new ReqProgressCallBack<Object>() {
             @Override
@@ -595,7 +591,7 @@ public class CommModule extends ReactContextBaseJavaModule {
         });
 
         // 预加载原图
-       
+
     }
 
     @ReactMethod
@@ -611,51 +607,6 @@ public class CommModule extends ReactContextBaseJavaModule {
         intent.putExtra("web_url", url);
         intent.putExtra("url_action", "get");
         getCurrentActivity().startActivityForResult(intent, ParameterUtils.REQUEST_CODE_GONGMAO);
-    }
-
-
-
-    @ReactMethod
-    public void compressVideo(String path, final Promise promise){
-//        initSmallVideo();
-//        String realPath = Uri.parse(path).getPath();
-//        File file = new File(realPath);
-//        if(file.exists()){
-//            LocalMediaConfig.Buidler buidler = new LocalMediaConfig.Buidler();
-//            final LocalMediaConfig config = buidler
-//                    .setVideoPath(file.getAbsolutePath())
-//                    .captureThumbnailsTime(1)
-//                    .doH264Compress(new VBRMode(58000,3000))
-//                    .setFramerate(30)
-//                    .setScale(1.0f)
-//                    .build();
-//            new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            showLoadingDialog("视频压缩中...");
-//                        }
-//                    });
-//                    OnlyCompressOverBean onlyCompressOverBean = new LocalMediaCompress(config).startCompress();
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            hideLoadingDialog();
-//                        }
-//                    });
-//                    if(onlyCompressOverBean.isSucceed()){
-//                        promise.resolve(onlyCompressOverBean.getVideoPath());
-//                    }else {
-//                        promise.reject("compress video fail");
-//                    }
-//
-//                }}).start();
-//        }else {
-//            promise.reject("file not found");
-//        }
-
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

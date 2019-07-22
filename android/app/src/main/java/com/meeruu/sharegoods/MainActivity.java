@@ -22,6 +22,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.meeruu.commonlib.base.BaseActivity;
 import com.meeruu.commonlib.callback.BaseCallback;
 import com.meeruu.commonlib.config.BaseRequestConfig;
+import com.meeruu.commonlib.event.Event;
 import com.meeruu.commonlib.handler.WeakHandler;
 import com.meeruu.commonlib.server.RequestManager;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
@@ -30,7 +31,6 @@ import com.meeruu.commonlib.utils.SPCacheUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.commonlib.utils.Utils;
-import com.meeruu.sharegoods.event.Event;
 import com.meeruu.sharegoods.event.HideSplashEvent;
 import com.meeruu.sharegoods.rn.preload.ReactNativePreLoader;
 import com.meeruu.sharegoods.ui.activity.GuideActivity;
@@ -61,15 +61,24 @@ public class MainActivity extends BaseActivity {
     private boolean hasGo = false;
     private String adUrl;
     private CountDownTimer countDownTimer = null;
+    private boolean showLoading = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setChangeStatusTrans(true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        EventBus.getDefault().register(this);
-        ReactNativePreLoader.preLoad(MainActivity.this, ParameterUtils.RN_MAIN_NAME);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         Log.d("is_phone", !Utils.isEmulator(getApplicationContext()) + "");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // 预加载rn
+        ReactNativePreLoader.preLoad(this, ParameterUtils.RN_MAIN_NAME);
     }
 
     @Override
@@ -130,7 +139,9 @@ public class MainActivity extends BaseActivity {
     protected void onDestroy() {
         releaseRes();
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     private void releaseRes() {
@@ -214,10 +225,12 @@ public class MainActivity extends BaseActivity {
     private void goIndex() {
         boolean hasGuide = (boolean) SPCacheUtils.get("hasGuide", false);
         if (hasGuide) {
-            startActivity(new Intent(MainActivity.this, MainRNActivity.class));
+            startActivity(new Intent(MainActivity.this, MainRNActivity.class)
+                    .putExtra("showLoading", showLoading));
         } else {
             startActivity(new Intent(MainActivity.this, GuideActivity.class));
         }
+        finish();
     }
 
     @Override
@@ -274,10 +287,6 @@ public class MainActivity extends BaseActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void hideSplash(HideSplashEvent event) {
-        if (hasBasePer && needGo && !hasGo) {
-            if (!isFinishing()) {
-                finish();
-            }
-        }
+        showLoading = false;
     }
 }

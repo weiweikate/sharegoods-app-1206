@@ -32,7 +32,10 @@ export default class ServiceRowView extends Component {
                     beginChat(item);
                 }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
-                        <ImageLoad uri={item.avatarImageUrlString} style={{
+                        <ImageLoad
+                            source={{ uri:item.avatarImageUrlString }}
+                            // uri={{uri:item.avatarImageUrlString}}
+                            style={{
                             height: px2dp(35),
                             width: px2dp(35)
                         }} borderRadius={px2dp(17)} isAvatar={true}/>

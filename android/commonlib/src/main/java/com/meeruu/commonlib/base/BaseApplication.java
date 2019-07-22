@@ -2,14 +2,12 @@ package com.meeruu.commonlib.base;
 
 import android.content.ComponentCallbacks2;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Looper;
 import android.os.MessageQueue;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
-import android.util.Log;
 import android.webkit.WebView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -17,6 +15,7 @@ import com.facebook.imagepipeline.core.ImagePipelineFactory;
 import com.facebook.soloader.SoLoader;
 import com.meeruu.commonlib.callback.ForegroundCallbacks;
 import com.meeruu.commonlib.config.FrescoImagePipelineConfig;
+import com.meeruu.commonlib.event.Event;
 import com.meeruu.commonlib.event.QiyuUrlEvent;
 import com.meeruu.commonlib.handler.CrashHandler;
 import com.meeruu.commonlib.rn.QiyuImageLoader;
@@ -118,9 +117,6 @@ public class BaseApplication extends MultiDexApplication {
         SensorsUtils.init(this);
         // 初始化一键登录
         JVerificationInterface.init(this);
-        // 七鱼初始化
-        Unicorn.init(getApplicationContext(), "b87fd67831699ca494a9d3de266cd3b0", QiYuOptions(),
-                new QiyuImageLoader());
         // umeng初始化
         String channel = WalleChannelReader.getChannel(getApplicationContext(), "guanwang");
         // 友盟统计
@@ -130,6 +126,9 @@ public class BaseApplication extends MultiDexApplication {
         // 初始化极光
         JPushInterface.init(getApplicationContext());
         if (Utils.isApkInDebug()) {
+            // 七鱼初始化
+            Unicorn.init(getApplicationContext(), "b87fd67831699ca494a9d3de266cd3b0", QiYuOptions(),
+                    new QiyuImageLoader(getApplicationContext()));
             // jpush debug
             JPushInterface.setDebugMode(true);
             // umeng debug
@@ -141,6 +140,9 @@ public class BaseApplication extends MultiDexApplication {
             // 神策
 //            SensorsDataAPI.sharedInstance().enableLog(true);
         } else {
+            // 七鱼初始化
+            Unicorn.init(getApplicationContext(), "b87fd67831699ca494a9d3de266cd3b0", QiYuOptions(),
+                    new QiyuImageLoader(getApplicationContext()));
             JPushInterface.setDebugMode(false);
             JPushInterface.initCrashHandler(getApplicationContext());
             JPushInterface.setChannel(getApplicationContext(), channel);
@@ -158,21 +160,13 @@ public class BaseApplication extends MultiDexApplication {
                 LogUtils.d("=====" + url);
                 // 商品卡片，订单卡片
                 if (url.contains("h5.sharegoodsmall.com/product") || url.contains("http:///")) {
-                    ((QiyuServiceMessageActivity) context).finish();
                     QiyuUrlEvent event = new QiyuUrlEvent();
                     event.setUrl(url);
                     EventBus.getDefault().post(event);
                 } else {
-                    Intent toWeb = new Intent();
-                    toWeb.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    try {
-                        toWeb.setClass(appContext, Class.forName("com.meeruu.sharegoods.ui.activity.MRWebviewActivity"));
-                    } catch (ClassNotFoundException e) {
-                    }
-                    toWeb.putExtra("web_url", url);
-                    toWeb.putExtra("url_action", "get");
-                    startActivity(toWeb);
+                    EventBus.getDefault().post(new Event.MR2HTMLEvent(url));
                 }
+                ((QiyuServiceMessageActivity) context).finish();
             }
         };
         return ysfOptions;

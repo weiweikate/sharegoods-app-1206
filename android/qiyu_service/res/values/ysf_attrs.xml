@@ -23,4 +23,5 @@
         <attr name="customView" format="reference" />
         <attr name="requestView" format="reference" />
     </declare-styleable>
+
 </resources>

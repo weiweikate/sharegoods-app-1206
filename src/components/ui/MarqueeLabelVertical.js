@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableWithoutFeedback, Animated, Easing } from 'react-native';
+import { Animated, Easing, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 
 let index = 0;
 export default class MarqueeLabelVertical extends Component {

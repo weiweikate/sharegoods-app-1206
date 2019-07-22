@@ -26,7 +26,6 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.meeruu.commonlib.utils.DensityUtils;
-import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.sharegoods.R;
@@ -46,6 +45,7 @@ import com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,7 +67,6 @@ public class ShowDynamicView implements IShowgroundView, SwipeRefreshLayout.OnRe
     private WeakReference<View> showgroundView;
     private Handler handler;
     private View errImg;
-    private boolean sIsScrolling;
     private boolean deleteIng = false;
     private int deleteIndex = -1;
 
@@ -196,15 +195,6 @@ public class ShowDynamicView implements IShowgroundView, SwipeRefreshLayout.OnRe
                         break;
                     default:
                         break;
-                }
-                if (newState == RecyclerView.SCROLL_STATE_DRAGGING || newState == RecyclerView.SCROLL_STATE_SETTLING) {
-                    sIsScrolling = true;
-                    ImageLoadUtils.pauseLoadImage();
-                } else if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (sIsScrolling == true) {
-                        ImageLoadUtils.resumeLoadImage();
-                    }
-                    sIsScrolling = false;
                 }
                 if (eventDispatcher != null) {
                     onScrollStateChangedEvent onScrollStateChangedEvent = new onScrollStateChangedEvent();
@@ -336,26 +326,27 @@ public class ShowDynamicView implements IShowgroundView, SwipeRefreshLayout.OnRe
                 NewestShowGroundBean.DataBean bean = (NewestShowGroundBean.DataBean) data.get(i);
                 if (bean.getItemType() == 1 || bean.getItemType() == 3) {
                     List<NewestShowGroundBean.DataBean.ResourceBean> resource = bean.getResource();
-                    List<ImageInfo> resolveResource = new ArrayList<>();
+                    List<String> resolveResource = new ArrayList<>();
                     if (resource != null) {
                         for (int j = 0; j < resource.size(); j++) {
                             NewestShowGroundBean.DataBean.ResourceBean resourceBean = resource.get(j);
                             if (resourceBean.getType() == 2) {
-                                ImageInfo imageInfo = new ImageInfo();
-                                imageInfo.setImageUrl(resourceBean.getUrl());
-                                resolveResource.add(imageInfo);
+                                resolveResource.add(resourceBean.getUrl());
                             }
 
-                            if(resourceBean.getType() == 5){
-                                ImageInfo imageInfo = new ImageInfo();
-                                imageInfo.setImageUrl(resourceBean.getUrl());
-                                bean.setVideoCover(imageInfo);
+                            if (resourceBean.getType() == 5) {
+                                bean.setVideoCover(resourceBean.getUrl());
                                 break;
                             }
                         }
-                        bean.setNineImageInfos(resolveResource);
+                        bean.setImgUrls(resolveResource);
                     }
                     data.set(i, bean);
+                }
+                //处理product中的空值
+                List products = bean.getProducts();
+                if (products != null && products.size() > 0) {
+                    products.removeAll(Collections.singleton(null));
                 }
             }
         }

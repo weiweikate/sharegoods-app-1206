@@ -26,7 +26,14 @@ export default class FinshPayAlertView extends Component {
             isShow: props.isShow
         };
     }
-
+    componentWillReceiveProps(nextProps) {
+        const {isShow} = nextProps ;
+        if (isShow !== this.state.isShow){
+            this.setState({
+                isShow:isShow
+            })
+        }
+    }
     render() {
         const {btnClick,isShow} = this.props;
         return (
@@ -61,7 +68,6 @@ export default class FinshPayAlertView extends Component {
                                 marginTop: px2dp(300),
                                 width: ScreenUtils.width - px2dp(66),
                                 height: px2dp(50),
-                                // backgroundColor: 'red',
                                 alignItems:'center',
                                 justifyContent:'center'
                             }}>

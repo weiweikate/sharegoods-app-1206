@@ -23,11 +23,7 @@ import htmlView from '../components/web/HtmlView';
 import message from '../pages/message';
 import topic from '../pages/topic';
 import show from '../pages/show/Index';
-
 import deepLinkPath from './DeepLinkPath';
-
-// import WithdrawalAgreementPage from '../pages/mine/page/bankCard/WithdrawalAgreementPage'
-// import GongMallPage from '../pages/mine/page/userInformation/GongMallPage'
 
 const Router = {
     Tab: {

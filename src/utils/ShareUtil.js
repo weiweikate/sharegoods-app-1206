@@ -10,6 +10,8 @@ import HttpUtils from '../api/network/HttpUtils';
 import apiEnvironment from '../api/ApiEnvironment';
 import { track } from './SensorsTrack';
 import { mediatorCallFunc } from '../SGMediator';
+import userApi from '../model/userApi';
+import StringUtils from './StringUtils';
 
 const TrackShareType = {
     unknown: 0,
@@ -48,16 +50,23 @@ const onShare = (data, api, trackParmas, trackEvent, callback = () => {
         let shareType = [TrackShareType.wx, TrackShareType.wxTimeline, TrackShareType.qq, TrackShareType.qqSpace, TrackShareType.weibo][data.platformType];
         track(trackEvent, { shareType, ...p });
     }
-    bridge.share(params, () => {
-        if (user.isLogin && luckyDraw === true) {
-            user.luckyDraw();
-        }
-        shareSucceedCallBlack(api, callback);
-        callback('shareSuccess'); //提示分享成功
+    if (params.platformType === 0) {
+        userApi.shareShortUrl({ 'longUrl': params.linkUrl, 'expireTime': 0 })
+            .then(res => {
+                console.log('res', res);
+                if (res && res.data) {
+                    params.linkUrl = res.data;
+                    shareFunc(params, luckyDraw, api, callback, taskShareParams);
+                } else {
+                    shareFunc(params, luckyDraw, api, callback, taskShareParams);
+                }
+            }).catch(error => {
+            shareFunc(params, luckyDraw, api, callback, taskShareParams);
+        });
+    } else {
+        shareFunc(params, luckyDraw, api, callback, taskShareParams);
+    }
 
-        taskShareParams && mediatorCallFunc('Home_ShareNotify', { type: params.platformType + 1, ...taskShareParams });
-    }, (errorStr) => {
-    });
 };
 
 const shareSucceedCallBlack = (api, sucCallback = () => {
@@ -93,19 +102,36 @@ const queryString = (url, params) => {
         Object.keys(params).forEach(key =>
             paramsArray.push(key + '=' + params[key])
         );
-        if (url.search(/\?/) === -1) {
-            url += '?' + paramsArray.join('&');
-        } else {
-            let arr = url.split('?');
-            if (arr.length > 1 && arr[1].length > 0) {
-                url += '&' + paramsArray.join('&');
+        if (StringUtils.isNoEmpty(url)) {
+            if (url.search(/\?/) === -1) {
+                url += '?' + paramsArray.join('&');
             } else {
-                url += paramsArray.join('&');
+                let arr = url.split('?');
+                if (arr.length > 1 && arr[1].length > 0) {
+                    url += '&' + paramsArray.join('&');
+                } else {
+                    url += paramsArray.join('&');
 
+                }
             }
         }
     }
     return url;
+};
+
+const shareFunc = (params, luckyDraw, api, callback = () => {
+}, taskShareParams = () => {
+}) => {
+    bridge.share(params, () => {
+        if (user.isLogin && luckyDraw === true) {
+            user.luckyDraw();
+        }
+        shareSucceedCallBlack(api, callback);
+        callback('shareSuccess'); //提示分享成功
+
+        taskShareParams && mediatorCallFunc('Home_ShareNotify', { type: params.platformType + 1, ...taskShareParams });
+    }, (errorStr) => {
+    });
 };
 
 export default {

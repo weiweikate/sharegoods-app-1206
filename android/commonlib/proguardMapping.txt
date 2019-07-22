@@ -2254,55 +2254,55 @@ com.meeruu.commonlib.base.BaseActivity -> com.meeruu.commonlib.base.BaseActivity
     1:3:void verifyPermission(java.util.List):191:193 -> verifyPermission
     4:5:void verifyPermission(java.util.List):195:196 -> verifyPermission
 com.meeruu.commonlib.base.BaseApplication -> com.meeruu.commonlib.base.BaseApplication:
-    1:1:void <init>():43:43 -> <init>
-    2:2:void <init>():47:47 -> <init>
-    3:3:void <init>():49:49 -> <init>
-    1:2:com.qiyukf.unicorn.api.YSFOptions QiYuOptions():153:154 -> QiYuOptions
-    1:1:void access$000(com.meeruu.commonlib.base.BaseApplication):43:43 -> a
-    1:2:void attachBaseContext(android.content.Context):105:106 -> attachBaseContext
-    3:5:void attachBaseContext(android.content.Context):108:110 -> attachBaseContext
-    1:1:void delayLoad():116:116 -> delayLoad
-    2:2:void delayLoad():118:118 -> delayLoad
-    3:3:void delayLoad():120:120 -> delayLoad
-    4:4:void delayLoad():122:122 -> delayLoad
-    5:5:void delayLoad():125:125 -> delayLoad
-    6:6:void delayLoad():127:127 -> delayLoad
-    7:7:void delayLoad():129:129 -> delayLoad
-    8:9:void delayLoad():131:132 -> delayLoad
-    10:10:void delayLoad():134:134 -> delayLoad
-    11:11:void delayLoad():136:136 -> delayLoad
-    12:12:void delayLoad():138:138 -> delayLoad
-    13:13:void delayLoad():140:140 -> delayLoad
-    14:16:void delayLoad():144:146 -> delayLoad
-    17:17:void delayLoad():148:148 -> delayLoad
-    1:1:java.lang.String getDownLoadUrl():60:60 -> getDownLoadUrl
-    1:4:com.meeruu.commonlib.base.BaseApplication getInstance():68:71 -> getInstance
-    5:5:com.meeruu.commonlib.base.BaseApplication getInstance():73:73 -> getInstance
-    6:6:com.meeruu.commonlib.base.BaseApplication getInstance():75:75 -> getInstance
-    1:1:boolean isDownload():52:52 -> isDownload
-    1:4:void onCreate():80:83 -> onCreate
-    5:8:void onCreate():85:88 -> onCreate
-    9:9:void onCreate():87:87 -> onCreate
-    10:10:void onCreate():90:90 -> onCreate
-    1:1:void onLowMemory():196:196 -> onLowMemory
-    2:3:void onLowMemory():198:199 -> onLowMemory
-    1:1:void onTrimMemory(int):183:183 -> onTrimMemory
-    2:3:void onTrimMemory(int):186:187 -> onTrimMemory
-    1:1:void setDownLoadUrl(java.lang.String):64:64 -> setDownLoadUrl
-    1:1:void setDownload(boolean):56:56 -> setDownload
+    1:1:void <init>():42:42 -> <init>
+    2:2:void <init>():46:46 -> <init>
+    3:3:void <init>():48:48 -> <init>
+    1:2:com.qiyukf.unicorn.api.YSFOptions QiYuOptions():152:153 -> QiYuOptions
+    1:1:void access$000(com.meeruu.commonlib.base.BaseApplication):42:42 -> a
+    1:2:void attachBaseContext(android.content.Context):104:105 -> attachBaseContext
+    3:5:void attachBaseContext(android.content.Context):107:109 -> attachBaseContext
+    1:1:void delayLoad():115:115 -> delayLoad
+    2:2:void delayLoad():117:117 -> delayLoad
+    3:3:void delayLoad():119:119 -> delayLoad
+    4:4:void delayLoad():121:121 -> delayLoad
+    5:5:void delayLoad():124:124 -> delayLoad
+    6:6:void delayLoad():126:126 -> delayLoad
+    7:7:void delayLoad():128:128 -> delayLoad
+    8:9:void delayLoad():130:131 -> delayLoad
+    10:10:void delayLoad():133:133 -> delayLoad
+    11:11:void delayLoad():135:135 -> delayLoad
+    12:12:void delayLoad():137:137 -> delayLoad
+    13:13:void delayLoad():139:139 -> delayLoad
+    14:16:void delayLoad():143:145 -> delayLoad
+    17:17:void delayLoad():147:147 -> delayLoad
+    1:1:java.lang.String getDownLoadUrl():59:59 -> getDownLoadUrl
+    1:4:com.meeruu.commonlib.base.BaseApplication getInstance():67:70 -> getInstance
+    5:5:com.meeruu.commonlib.base.BaseApplication getInstance():72:72 -> getInstance
+    6:6:com.meeruu.commonlib.base.BaseApplication getInstance():74:74 -> getInstance
+    1:1:boolean isDownload():51:51 -> isDownload
+    1:4:void onCreate():79:82 -> onCreate
+    5:8:void onCreate():84:87 -> onCreate
+    9:9:void onCreate():86:86 -> onCreate
+    10:10:void onCreate():89:89 -> onCreate
+    1:1:void onLowMemory():195:195 -> onLowMemory
+    2:3:void onLowMemory():197:198 -> onLowMemory
+    1:1:void onTrimMemory(int):182:182 -> onTrimMemory
+    2:3:void onTrimMemory(int):185:186 -> onTrimMemory
+    1:1:void setDownLoadUrl(java.lang.String):63:63 -> setDownLoadUrl
+    1:1:void setDownload(boolean):55:55 -> setDownload
 com.meeruu.commonlib.base.BaseApplication$1 -> com.meeruu.commonlib.base.BaseApplication$1:
     com.meeruu.commonlib.base.BaseApplication this$0 -> a
-    1:1:void <init>(com.meeruu.commonlib.base.BaseApplication):90:90 -> <init>
-    1:1:boolean queueIdle():95:95 -> queueIdle
+    1:1:void <init>(com.meeruu.commonlib.base.BaseApplication):89:89 -> <init>
+    1:1:boolean queueIdle():94:94 -> queueIdle
 com.meeruu.commonlib.base.BaseApplication$2 -> com.meeruu.commonlib.base.BaseApplication$2:
     com.meeruu.commonlib.base.BaseApplication this$0 -> a
-    1:1:void <init>(com.meeruu.commonlib.base.BaseApplication):154:154 -> <init>
-    1:1:void onURLClicked(android.content.Context,java.lang.String):158:158 -> onURLClicked
-    2:2:void onURLClicked(android.content.Context,java.lang.String):160:160 -> onURLClicked
-    3:4:void onURLClicked(android.content.Context,java.lang.String):166:167 -> onURLClicked
-    5:5:void onURLClicked(android.content.Context,java.lang.String):169:169 -> onURLClicked
-    6:8:void onURLClicked(android.content.Context,java.lang.String):172:174 -> onURLClicked
-    9:12:void onURLClicked(android.content.Context,java.lang.String):161:164 -> onURLClicked
+    1:1:void <init>(com.meeruu.commonlib.base.BaseApplication):153:153 -> <init>
+    1:1:void onURLClicked(android.content.Context,java.lang.String):157:157 -> onURLClicked
+    2:2:void onURLClicked(android.content.Context,java.lang.String):159:159 -> onURLClicked
+    3:4:void onURLClicked(android.content.Context,java.lang.String):165:166 -> onURLClicked
+    5:5:void onURLClicked(android.content.Context,java.lang.String):168:168 -> onURLClicked
+    6:8:void onURLClicked(android.content.Context,java.lang.String):171:173 -> onURLClicked
+    9:12:void onURLClicked(android.content.Context,java.lang.String):160:163 -> onURLClicked
 com.meeruu.commonlib.base.BaseFragment -> com.meeruu.commonlib.base.BaseFragment:
     1:1:void <init>():15:15 -> <init>
     2:4:void <init>():23:25 -> <init>
@@ -4533,263 +4533,270 @@ com.meeruu.commonlib.umeng.LoginAndSharingModule -> com.meeruu.commonlib.umeng.L
     1:1:void access$300(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):69:69 -> access$300
     1:1:void access$400(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):69:69 -> access$400
     1:1:android.graphics.Bitmap access$500(android.content.Context):69:69 -> access$500
-    1:1:void creatQRCodeImage(java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1572:1572 -> creatQRCodeImage
-    2:2:void creatQRCodeImage(java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1574:1574 -> creatQRCodeImage
-    3:5:void creatQRCodeImage(java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1577:1579 -> creatQRCodeImage
-    6:6:void creatQRCodeImage(java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1581:1581 -> creatQRCodeImage
-    7:8:void creatQRCodeImage(java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1584:1585 -> creatQRCodeImage
+    1:1:void creatQRCodeImage(java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1620:1620 -> creatQRCodeImage
+    2:2:void creatQRCodeImage(java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1622:1622 -> creatQRCodeImage
+    3:5:void creatQRCodeImage(java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1625:1627 -> creatQRCodeImage
+    6:6:void creatQRCodeImage(java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1629:1629 -> creatQRCodeImage
+    7:8:void creatQRCodeImage(java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1632:1633 -> creatQRCodeImage
     1:1:void creatShareImage(com.facebook.react.bridge.ReadableMap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):181:181 -> creatShareImage
     2:2:void creatShareImage(com.facebook.react.bridge.ReadableMap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):183:183 -> creatShareImage
-    3:8:void creatShareImage(com.facebook.react.bridge.ReadableMap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):187:192 -> creatShareImage
-    9:9:void creatShareImage(com.facebook.react.bridge.ReadableMap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):194:194 -> creatShareImage
-    1:1:void creatShowShareImage(com.facebook.react.bridge.ReadableMap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):200:200 -> creatShowShareImage
-    2:2:void creatShowShareImage(com.facebook.react.bridge.ReadableMap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):202:202 -> creatShowShareImage
-    3:3:void creatShowShareImage(com.facebook.react.bridge.ReadableMap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):206:206 -> creatShowShareImage
-    1:2:android.graphics.Bitmap createCircleBitmap(android.graphics.Bitmap):1126:1127 -> createCircleBitmap
-    3:3:android.graphics.Bitmap createCircleBitmap(android.graphics.Bitmap):1129:1129 -> createCircleBitmap
-    4:4:android.graphics.Bitmap createCircleBitmap(android.graphics.Bitmap):1132:1132 -> createCircleBitmap
-    5:5:android.graphics.Bitmap createCircleBitmap(android.graphics.Bitmap):1134:1134 -> createCircleBitmap
-    6:6:android.graphics.Bitmap createCircleBitmap(android.graphics.Bitmap):1136:1136 -> createCircleBitmap
-    7:7:android.graphics.Bitmap createCircleBitmap(android.graphics.Bitmap):1139:1139 -> createCircleBitmap
-    8:10:android.graphics.Bitmap createCircleBitmap(android.graphics.Bitmap):1141:1143 -> createCircleBitmap
-    1:3:android.graphics.Bitmap createCircleImage(android.graphics.Bitmap,int):1033:1035 -> createCircleImage
-    4:4:android.graphics.Bitmap createCircleImage(android.graphics.Bitmap,int):1039:1039 -> createCircleImage
-    5:5:android.graphics.Bitmap createCircleImage(android.graphics.Bitmap,int):1043:1043 -> createCircleImage
-    6:6:android.graphics.Bitmap createCircleImage(android.graphics.Bitmap,int):1047:1047 -> createCircleImage
-    7:7:android.graphics.Bitmap createCircleImage(android.graphics.Bitmap,int):1051:1051 -> createCircleImage
-    1:1:void createPromotionShareImage(java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):211:211 -> createPromotionShareImage
-    1:1:android.graphics.Bitmap createQRImage(java.lang.String,int,int):1667:1667 -> createQRImage
-    2:4:android.graphics.Bitmap createQRImage(java.lang.String,int,int):1670:1672 -> createQRImage
-    5:5:android.graphics.Bitmap createQRImage(java.lang.String,int,int):1674:1674 -> createQRImage
-    6:9:android.graphics.Bitmap createQRImage(java.lang.String,int,int):1678:1681 -> createQRImage
-    10:11:android.graphics.Bitmap createQRImage(java.lang.String,int,int):1683:1684 -> createQRImage
-    12:13:android.graphics.Bitmap createQRImage(java.lang.String,int,int):1689:1690 -> createQRImage
-    14:14:android.graphics.Bitmap createQRImage(java.lang.String,int,int):1692:1692 -> createQRImage
-    15:16:android.graphics.Bitmap createQRImage(java.lang.String,int,int):1697:1698 -> createQRImage
-    17:17:android.graphics.Bitmap createQRImage(java.lang.String,int,int):1701:1701 -> createQRImage
-    1:1:void createQRToAlbum(java.lang.String,com.facebook.react.bridge.Promise):1592:1592 -> createQRToAlbum
-    2:2:void createQRToAlbum(java.lang.String,com.facebook.react.bridge.Promise):1594:1594 -> createQRToAlbum
-    3:7:void createQRToAlbum(java.lang.String,com.facebook.react.bridge.Promise):1597:1601 -> createQRToAlbum
-    8:8:void createQRToAlbum(java.lang.String,com.facebook.react.bridge.Promise):1603:1603 -> createQRToAlbum
-    9:10:void createQRToAlbum(java.lang.String,com.facebook.react.bridge.Promise):1606:1607 -> createQRToAlbum
-    1:2:void createShowProductImage(java.lang.String,com.facebook.react.bridge.Promise):219:220 -> createShowProductImage
-    3:5:void createShowProductImage(java.lang.String,com.facebook.react.bridge.Promise):224:226 -> createShowProductImage
-    6:7:void createShowProductImage(java.lang.String,com.facebook.react.bridge.Promise):230:231 -> createShowProductImage
-    8:8:void createShowProductImage(java.lang.String,com.facebook.react.bridge.Promise):255:255 -> createShowProductImage
-    1:2:void downloadHeaderImg(android.content.Context,java.lang.String,java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):839:840 -> downloadHeaderImg
-    1:1:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1283:1283 -> draw
-    2:5:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1285:1288 -> draw
-    6:7:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1291:1292 -> draw
-    8:10:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1295:1297 -> draw
-    11:13:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1299:1301 -> draw
-    14:16:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1303:1305 -> draw
-    17:20:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1310:1313 -> draw
-    21:22:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1315:1316 -> draw
-    23:25:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1319:1321 -> draw
-    26:28:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1325:1327 -> draw
-    29:31:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1330:1332 -> draw
-    32:39:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1338:1345 -> draw
-    40:41:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1349:1350 -> draw
-    42:47:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1355:1360 -> draw
-    48:49:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1364:1365 -> draw
-    50:53:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1370:1373 -> draw
-    54:55:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1375:1376 -> draw
-    56:57:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1378:1379 -> draw
-    58:60:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1382:1384 -> draw
-    61:62:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1386:1387 -> draw
-    63:63:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1391:1391 -> draw
-    64:75:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1393:1404 -> draw
-    76:78:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1407:1409 -> draw
-    79:83:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1411:1415 -> draw
-    84:88:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1417:1421 -> draw
-    89:96:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1423:1430 -> draw
-    97:98:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1432:1433 -> draw
-    99:100:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1435:1436 -> draw
-    101:108:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1439:1446 -> draw
-    109:111:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1450:1452 -> draw
-    112:113:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1455:1456 -> draw
-    114:115:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1460:1461 -> draw
-    116:116:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1463:1463 -> draw
-    1:7:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1058:1064 -> drawInviteFriendsImage
-    8:12:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1071:1075 -> drawInviteFriendsImage
-    13:14:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1078:1079 -> drawInviteFriendsImage
-    15:16:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1086:1087 -> drawInviteFriendsImage
-    17:17:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1089:1089 -> drawInviteFriendsImage
-    18:18:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1091:1091 -> drawInviteFriendsImage
-    19:19:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1093:1093 -> drawInviteFriendsImage
-    20:20:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1095:1095 -> drawInviteFriendsImage
-    21:23:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1097:1099 -> drawInviteFriendsImage
-    24:25:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1101:1102 -> drawInviteFriendsImage
-    26:27:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1105:1106 -> drawInviteFriendsImage
-    28:29:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1109:1110 -> drawInviteFriendsImage
-    30:31:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1113:1114 -> drawInviteFriendsImage
-    32:33:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1117:1118 -> drawInviteFriendsImage
-    34:34:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1121:1121 -> drawInviteFriendsImage
-    1:4:void drawPromotionShare(android.content.Context,java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1154:1157 -> drawPromotionShare
-    5:6:void drawPromotionShare(android.content.Context,java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1160:1161 -> drawPromotionShare
-    7:8:void drawPromotionShare(android.content.Context,java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1168:1169 -> drawPromotionShare
-    9:20:void drawPromotionShare(android.content.Context,java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1171:1182 -> drawPromotionShare
-    21:21:void drawPromotionShare(android.content.Context,java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1184:1184 -> drawPromotionShare
-    22:23:void drawPromotionShare(android.content.Context,java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1187:1188 -> drawPromotionShare
-    24:25:void drawPromotionShare(android.content.Context,java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1191:1192 -> drawPromotionShare
-    26:27:void drawPromotionShare(android.content.Context,java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1195:1196 -> drawPromotionShare
-    1:3:void drawShopInviteFriendsImage(android.content.Context,com.facebook.react.bridge.ReadableMap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):888:890 -> drawShopInviteFriendsImage
-    1:3:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):928:930 -> drawShopInviteFriendsImageWithHeader
-    4:6:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):932:934 -> drawShopInviteFriendsImageWithHeader
-    7:7:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):940:940 -> drawShopInviteFriendsImageWithHeader
-    8:9:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):942:943 -> drawShopInviteFriendsImageWithHeader
-    10:13:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):950:953 -> drawShopInviteFriendsImageWithHeader
-    14:17:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):955:958 -> drawShopInviteFriendsImageWithHeader
-    18:19:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):961:962 -> drawShopInviteFriendsImageWithHeader
-    20:22:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):966:968 -> drawShopInviteFriendsImageWithHeader
-    23:25:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):970:972 -> drawShopInviteFriendsImageWithHeader
-    26:31:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):974:979 -> drawShopInviteFriendsImageWithHeader
-    32:36:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):981:985 -> drawShopInviteFriendsImageWithHeader
-    37:41:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):987:991 -> drawShopInviteFriendsImageWithHeader
-    42:43:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):993:994 -> drawShopInviteFriendsImageWithHeader
-    44:48:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):996:1000 -> drawShopInviteFriendsImageWithHeader
-    49:49:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1002:1002 -> drawShopInviteFriendsImageWithHeader
-    50:50:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1004:1004 -> drawShopInviteFriendsImageWithHeader
-    51:53:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1006:1008 -> drawShopInviteFriendsImageWithHeader
-    54:55:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1010:1011 -> drawShopInviteFriendsImageWithHeader
-    56:57:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1014:1015 -> drawShopInviteFriendsImageWithHeader
-    58:59:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1018:1019 -> drawShopInviteFriendsImageWithHeader
-    60:60:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1022:1022 -> drawShopInviteFriendsImageWithHeader
-    1:9:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):670:678 -> drawShow
-    10:12:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):682:684 -> drawShow
-    13:15:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):688:690 -> drawShow
-    16:18:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):693:695 -> drawShow
-    19:21:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):697:699 -> drawShow
-    22:24:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):703:705 -> drawShow
-    25:25:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):707:707 -> drawShow
-    26:28:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):709:711 -> drawShow
-    29:33:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):714:718 -> drawShow
-    34:44:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):720:730 -> drawShow
-    45:49:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):733:737 -> drawShow
-    50:56:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):740:746 -> drawShow
-    57:57:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):748:748 -> drawShow
-    58:60:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):750:752 -> drawShow
-    61:61:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):754:754 -> drawShow
-    62:62:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):756:756 -> drawShow
-    63:65:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):758:760 -> drawShow
-    66:75:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):764:773 -> drawShow
-    76:85:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):779:788 -> drawShow
-    86:87:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):790:791 -> drawShow
-    88:88:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):793:793 -> drawShow
-    89:90:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):796:797 -> drawShow
-    91:92:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):800:801 -> drawShow
-    93:94:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):804:805 -> drawShow
-    1:4:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):262:265 -> drawShowProduct
-    5:5:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):271:271 -> drawShowProduct
-    6:8:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):277:279 -> drawShowProduct
-    9:10:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):282:283 -> drawShowProduct
-    11:14:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):285:288 -> drawShowProduct
-    15:17:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):290:292 -> drawShowProduct
-    18:19:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):295:296 -> drawShowProduct
-    20:20:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):298:298 -> drawShowProduct
-    21:25:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):301:305 -> drawShowProduct
-    26:26:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):307:307 -> drawShowProduct
-    27:27:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):309:309 -> drawShowProduct
-    28:29:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):311:312 -> drawShowProduct
-    30:30:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):314:314 -> drawShowProduct
-    31:33:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):316:318 -> drawShowProduct
-    34:35:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):321:322 -> drawShowProduct
-    36:36:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):324:324 -> drawShowProduct
-    37:39:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):326:328 -> drawShowProduct
-    40:42:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):332:334 -> drawShowProduct
-    43:44:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):336:337 -> drawShowProduct
-    45:46:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):339:340 -> drawShowProduct
-    47:49:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):343:345 -> drawShowProduct
-    50:50:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):347:347 -> drawShowProduct
-    51:52:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):349:350 -> drawShowProduct
-    53:57:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):352:356 -> drawShowProduct
-    58:58:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):358:358 -> drawShowProduct
-    59:60:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):361:362 -> drawShowProduct
-    61:62:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):366:367 -> drawShowProduct
-    63:64:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):371:372 -> drawShowProduct
-    65:66:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):376:377 -> drawShowProduct
-    67:68:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):381:382 -> drawShowProduct
-    1:1:void drawWeb(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):428:428 -> drawWeb
-    2:2:void drawWeb(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):430:430 -> drawWeb
-    3:4:void drawWeb(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):432:433 -> drawWeb
-    5:6:void drawWeb(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):435:436 -> drawWeb
-    7:8:void drawWeb(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):439:440 -> drawWeb
-    9:11:void drawWeb(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):442:444 -> drawWeb
-    12:12:void drawWeb(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):446:446 -> drawWeb
-    13:14:void drawWeb(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):449:450 -> drawWeb
-    1:9:void drawWebActivity(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):564:572 -> drawWebActivity
-    10:12:void drawWebActivity(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):576:578 -> drawWebActivity
-    13:15:void drawWebActivity(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):581:583 -> drawWebActivity
-    16:19:void drawWebActivity(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):585:588 -> drawWebActivity
-    20:24:void drawWebActivity(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):590:594 -> drawWebActivity
-    25:35:void drawWebActivity(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):596:606 -> drawWebActivity
-    36:45:void drawWebActivity(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):609:618 -> drawWebActivity
-    46:49:void drawWebActivity(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):623:626 -> drawWebActivity
-    50:55:void drawWebActivity(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):629:634 -> drawWebActivity
-    56:56:void drawWebActivity(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):636:636 -> drawWebActivity
-    57:58:void drawWebActivity(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):638:639 -> drawWebActivity
-    59:59:void drawWebActivity(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):641:641 -> drawWebActivity
-    60:61:void drawWebActivity(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):644:645 -> drawWebActivity
-    62:63:void drawWebActivity(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):648:649 -> drawWebActivity
-    64:65:void drawWebActivity(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):652:653 -> drawWebActivity
-    66:67:void drawWebActivity(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):656:657 -> drawWebActivity
-    68:69:void drawWebActivity(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):661:662 -> drawWebActivity
-    1:2:void getBitmap(android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1203:1204 -> getBitmap
-    1:3:android.graphics.Bitmap getCircleHeaderBitmap(android.graphics.Bitmap,int,int):812:814 -> getCircleHeaderBitmap
-    4:4:android.graphics.Bitmap getCircleHeaderBitmap(android.graphics.Bitmap,int,int):817:817 -> getCircleHeaderBitmap
-    5:5:android.graphics.Bitmap getCircleHeaderBitmap(android.graphics.Bitmap,int,int):820:820 -> getCircleHeaderBitmap
-    6:6:android.graphics.Bitmap getCircleHeaderBitmap(android.graphics.Bitmap,int,int):822:822 -> getCircleHeaderBitmap
-    7:7:android.graphics.Bitmap getCircleHeaderBitmap(android.graphics.Bitmap,int,int):824:824 -> getCircleHeaderBitmap
-    8:12:android.graphics.Bitmap getCircleHeaderBitmap(android.graphics.Bitmap,int,int):827:831 -> getCircleHeaderBitmap
-    13:13:android.graphics.Bitmap getCircleHeaderBitmap(android.graphics.Bitmap,int,int):833:833 -> getCircleHeaderBitmap
-    1:1:android.graphics.Bitmap getDefaultIcon(android.content.Context):923:923 -> getDefaultIcon
-    1:5:void getHeaderBitmap(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1237:1241 -> getHeaderBitmap
-    1:2:void getShowBitmap(android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):457:458 -> getShowBitmap
-    1:8:void getShowHeaderBitmap(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):516:523 -> getShowHeaderBitmap
-    9:9:void getShowHeaderBitmap(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):527:527 -> getShowHeaderBitmap
-    1:2:void getWebActivityBitmap(android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):486:487 -> getWebActivityBitmap
-    1:2:void getWebBitmap(android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):399:400 -> getWebBitmap
+    3:10:void creatShareImage(com.facebook.react.bridge.ReadableMap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):187:194 -> creatShareImage
+    11:11:void creatShareImage(com.facebook.react.bridge.ReadableMap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):196:196 -> creatShareImage
+    1:1:void creatShowShareImage(com.facebook.react.bridge.ReadableMap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):203:203 -> creatShowShareImage
+    2:2:void creatShowShareImage(com.facebook.react.bridge.ReadableMap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):205:205 -> creatShowShareImage
+    3:3:void creatShowShareImage(com.facebook.react.bridge.ReadableMap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):209:209 -> creatShowShareImage
+    1:2:android.graphics.Bitmap createCircleBitmap(android.graphics.Bitmap):1174:1175 -> createCircleBitmap
+    3:3:android.graphics.Bitmap createCircleBitmap(android.graphics.Bitmap):1177:1177 -> createCircleBitmap
+    4:4:android.graphics.Bitmap createCircleBitmap(android.graphics.Bitmap):1180:1180 -> createCircleBitmap
+    5:5:android.graphics.Bitmap createCircleBitmap(android.graphics.Bitmap):1182:1182 -> createCircleBitmap
+    6:6:android.graphics.Bitmap createCircleBitmap(android.graphics.Bitmap):1184:1184 -> createCircleBitmap
+    7:7:android.graphics.Bitmap createCircleBitmap(android.graphics.Bitmap):1187:1187 -> createCircleBitmap
+    8:10:android.graphics.Bitmap createCircleBitmap(android.graphics.Bitmap):1189:1191 -> createCircleBitmap
+    1:3:android.graphics.Bitmap createCircleImage(android.graphics.Bitmap,int):1045:1047 -> createCircleImage
+    4:4:android.graphics.Bitmap createCircleImage(android.graphics.Bitmap,int):1051:1051 -> createCircleImage
+    5:5:android.graphics.Bitmap createCircleImage(android.graphics.Bitmap,int):1055:1055 -> createCircleImage
+    6:6:android.graphics.Bitmap createCircleImage(android.graphics.Bitmap,int):1059:1059 -> createCircleImage
+    7:7:android.graphics.Bitmap createCircleImage(android.graphics.Bitmap,int):1063:1063 -> createCircleImage
+    1:1:void createPromotionShareImage(java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):214:214 -> createPromotionShareImage
+    1:1:android.graphics.Bitmap createQRImage(java.lang.String,int,int):1715:1715 -> createQRImage
+    2:4:android.graphics.Bitmap createQRImage(java.lang.String,int,int):1718:1720 -> createQRImage
+    5:5:android.graphics.Bitmap createQRImage(java.lang.String,int,int):1722:1722 -> createQRImage
+    6:9:android.graphics.Bitmap createQRImage(java.lang.String,int,int):1726:1729 -> createQRImage
+    10:11:android.graphics.Bitmap createQRImage(java.lang.String,int,int):1731:1732 -> createQRImage
+    12:13:android.graphics.Bitmap createQRImage(java.lang.String,int,int):1737:1738 -> createQRImage
+    14:14:android.graphics.Bitmap createQRImage(java.lang.String,int,int):1740:1740 -> createQRImage
+    15:16:android.graphics.Bitmap createQRImage(java.lang.String,int,int):1745:1746 -> createQRImage
+    17:17:android.graphics.Bitmap createQRImage(java.lang.String,int,int):1749:1749 -> createQRImage
+    1:1:void createQRToAlbum(java.lang.String,com.facebook.react.bridge.Promise):1640:1640 -> createQRToAlbum
+    2:2:void createQRToAlbum(java.lang.String,com.facebook.react.bridge.Promise):1642:1642 -> createQRToAlbum
+    3:7:void createQRToAlbum(java.lang.String,com.facebook.react.bridge.Promise):1645:1649 -> createQRToAlbum
+    8:8:void createQRToAlbum(java.lang.String,com.facebook.react.bridge.Promise):1651:1651 -> createQRToAlbum
+    9:10:void createQRToAlbum(java.lang.String,com.facebook.react.bridge.Promise):1654:1655 -> createQRToAlbum
+    1:2:void createShowProductImage(java.lang.String,com.facebook.react.bridge.Promise):222:223 -> createShowProductImage
+    3:5:void createShowProductImage(java.lang.String,com.facebook.react.bridge.Promise):227:229 -> createShowProductImage
+    6:7:void createShowProductImage(java.lang.String,com.facebook.react.bridge.Promise):233:234 -> createShowProductImage
+    8:8:void createShowProductImage(java.lang.String,com.facebook.react.bridge.Promise):258:258 -> createShowProductImage
+    1:2:void downloadHeaderImg(android.content.Context,java.lang.String,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):851:852 -> downloadHeaderImg
+    1:1:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1331:1331 -> draw
+    2:5:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1333:1336 -> draw
+    6:7:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1339:1340 -> draw
+    8:10:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1343:1345 -> draw
+    11:13:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1347:1349 -> draw
+    14:16:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1351:1353 -> draw
+    17:20:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1358:1361 -> draw
+    21:22:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1363:1364 -> draw
+    23:25:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1367:1369 -> draw
+    26:28:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1373:1375 -> draw
+    29:31:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1378:1380 -> draw
+    32:39:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1386:1393 -> draw
+    40:41:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1397:1398 -> draw
+    42:47:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1403:1408 -> draw
+    48:49:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1412:1413 -> draw
+    50:53:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1418:1421 -> draw
+    54:55:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1423:1424 -> draw
+    56:57:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1426:1427 -> draw
+    58:60:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1430:1432 -> draw
+    61:62:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1434:1435 -> draw
+    63:63:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1439:1439 -> draw
+    64:75:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1441:1452 -> draw
+    76:78:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1455:1457 -> draw
+    79:83:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1459:1463 -> draw
+    84:88:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1465:1469 -> draw
+    89:96:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1471:1478 -> draw
+    97:98:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1480:1481 -> draw
+    99:100:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1483:1484 -> draw
+    101:108:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1487:1494 -> draw
+    109:111:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1498:1500 -> draw
+    112:113:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1503:1504 -> draw
+    114:115:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1508:1509 -> draw
+    116:116:void draw(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1511:1511 -> draw
+    1:7:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1071:1077 -> drawInviteFriendsImage
+    8:9:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1083:1084 -> drawInviteFriendsImage
+    10:12:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1086:1088 -> drawInviteFriendsImage
+    13:15:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1091:1093 -> drawInviteFriendsImage
+    16:19:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1098:1101 -> drawInviteFriendsImage
+    20:26:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1103:1109 -> drawInviteFriendsImage
+    27:28:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1112:1113 -> drawInviteFriendsImage
+    29:31:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1116:1118 -> drawInviteFriendsImage
+    32:33:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1120:1121 -> drawInviteFriendsImage
+    34:35:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1128:1129 -> drawInviteFriendsImage
+    36:36:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1131:1131 -> drawInviteFriendsImage
+    37:37:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1133:1133 -> drawInviteFriendsImage
+    38:38:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1135:1135 -> drawInviteFriendsImage
+    39:39:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1137:1137 -> drawInviteFriendsImage
+    40:42:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1139:1141 -> drawInviteFriendsImage
+    43:44:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1143:1144 -> drawInviteFriendsImage
+    45:46:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1147:1148 -> drawInviteFriendsImage
+    47:48:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1151:1152 -> drawInviteFriendsImage
+    49:50:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1155:1156 -> drawInviteFriendsImage
+    51:52:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1160:1161 -> drawInviteFriendsImage
+    53:54:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1165:1166 -> drawInviteFriendsImage
+    55:55:void drawInviteFriendsImage(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1169:1169 -> drawInviteFriendsImage
+    1:4:void drawPromotionShare(android.content.Context,java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1202:1205 -> drawPromotionShare
+    5:6:void drawPromotionShare(android.content.Context,java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1208:1209 -> drawPromotionShare
+    7:8:void drawPromotionShare(android.content.Context,java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1216:1217 -> drawPromotionShare
+    9:20:void drawPromotionShare(android.content.Context,java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1219:1230 -> drawPromotionShare
+    21:21:void drawPromotionShare(android.content.Context,java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1232:1232 -> drawPromotionShare
+    22:23:void drawPromotionShare(android.content.Context,java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1235:1236 -> drawPromotionShare
+    24:25:void drawPromotionShare(android.content.Context,java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1239:1240 -> drawPromotionShare
+    26:27:void drawPromotionShare(android.content.Context,java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1243:1244 -> drawPromotionShare
+    1:3:void drawShopInviteFriendsImage(android.content.Context,com.facebook.react.bridge.ReadableMap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):900:902 -> drawShopInviteFriendsImage
+    1:3:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):940:942 -> drawShopInviteFriendsImageWithHeader
+    4:6:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):944:946 -> drawShopInviteFriendsImageWithHeader
+    7:7:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):952:952 -> drawShopInviteFriendsImageWithHeader
+    8:9:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):954:955 -> drawShopInviteFriendsImageWithHeader
+    10:13:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):962:965 -> drawShopInviteFriendsImageWithHeader
+    14:17:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):967:970 -> drawShopInviteFriendsImageWithHeader
+    18:19:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):973:974 -> drawShopInviteFriendsImageWithHeader
+    20:22:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):978:980 -> drawShopInviteFriendsImageWithHeader
+    23:25:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):982:984 -> drawShopInviteFriendsImageWithHeader
+    26:31:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):986:991 -> drawShopInviteFriendsImageWithHeader
+    32:36:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):993:997 -> drawShopInviteFriendsImageWithHeader
+    37:41:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):999:1003 -> drawShopInviteFriendsImageWithHeader
+    42:43:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1005:1006 -> drawShopInviteFriendsImageWithHeader
+    44:48:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1008:1012 -> drawShopInviteFriendsImageWithHeader
+    49:49:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1014:1014 -> drawShopInviteFriendsImageWithHeader
+    50:50:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1016:1016 -> drawShopInviteFriendsImageWithHeader
+    51:53:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1018:1020 -> drawShopInviteFriendsImageWithHeader
+    54:55:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1022:1023 -> drawShopInviteFriendsImageWithHeader
+    56:57:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1026:1027 -> drawShopInviteFriendsImageWithHeader
+    58:59:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1030:1031 -> drawShopInviteFriendsImageWithHeader
+    60:60:void drawShopInviteFriendsImageWithHeader(android.content.Context,com.facebook.react.bridge.ReadableMap,android.graphics.Bitmap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1034:1034 -> drawShopInviteFriendsImageWithHeader
+    1:9:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):682:690 -> drawShow
+    10:12:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):694:696 -> drawShow
+    13:15:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):700:702 -> drawShow
+    16:18:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):705:707 -> drawShow
+    19:21:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):709:711 -> drawShow
+    22:24:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):715:717 -> drawShow
+    25:25:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):719:719 -> drawShow
+    26:28:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):721:723 -> drawShow
+    29:33:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):726:730 -> drawShow
+    34:44:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):732:742 -> drawShow
+    45:49:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):745:749 -> drawShow
+    50:56:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):752:758 -> drawShow
+    57:57:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):760:760 -> drawShow
+    58:60:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):762:764 -> drawShow
+    61:61:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):766:766 -> drawShow
+    62:62:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):768:768 -> drawShow
+    63:65:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):770:772 -> drawShow
+    66:75:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):776:785 -> drawShow
+    76:85:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):791:800 -> drawShow
+    86:87:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):802:803 -> drawShow
+    88:88:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):805:805 -> drawShow
+    89:90:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):808:809 -> drawShow
+    91:92:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):812:813 -> drawShow
+    93:94:void drawShow(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):816:817 -> drawShow
+    1:4:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):265:268 -> drawShowProduct
+    5:5:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):274:274 -> drawShowProduct
+    6:8:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):280:282 -> drawShowProduct
+    9:10:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):285:286 -> drawShowProduct
+    11:14:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):288:291 -> drawShowProduct
+    15:17:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):293:295 -> drawShowProduct
+    18:19:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):298:299 -> drawShowProduct
+    20:20:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):301:301 -> drawShowProduct
+    21:25:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):304:308 -> drawShowProduct
+    26:26:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):310:310 -> drawShowProduct
+    27:27:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):312:312 -> drawShowProduct
+    28:29:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):314:315 -> drawShowProduct
+    30:30:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):317:317 -> drawShowProduct
+    31:33:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):319:321 -> drawShowProduct
+    34:35:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):324:325 -> drawShowProduct
+    36:36:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):327:327 -> drawShowProduct
+    37:39:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):329:331 -> drawShowProduct
+    40:42:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):335:337 -> drawShowProduct
+    43:44:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):339:340 -> drawShowProduct
+    45:46:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):342:343 -> drawShowProduct
+    47:49:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):346:348 -> drawShowProduct
+    50:50:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):350:350 -> drawShowProduct
+    51:52:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):352:353 -> drawShowProduct
+    53:57:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):355:359 -> drawShowProduct
+    58:58:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):361:361 -> drawShowProduct
+    59:60:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):364:365 -> drawShowProduct
+    61:62:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):369:370 -> drawShowProduct
+    63:64:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):374:375 -> drawShowProduct
+    65:66:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):379:380 -> drawShowProduct
+    67:68:void drawShowProduct(android.content.Context,java.util.Map,android.graphics.Bitmap,com.facebook.react.bridge.Promise):384:385 -> drawShowProduct
+    1:1:void drawWeb(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):431:431 -> drawWeb
+    2:2:void drawWeb(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):433:433 -> drawWeb
+    3:4:void drawWeb(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):435:436 -> drawWeb
+    5:6:void drawWeb(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):438:439 -> drawWeb
+    7:8:void drawWeb(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):442:443 -> drawWeb
+    9:11:void drawWeb(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):445:447 -> drawWeb
+    12:12:void drawWeb(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):449:449 -> drawWeb
+    13:14:void drawWeb(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):452:453 -> drawWeb
+    1:9:void drawWebActivity(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):576:584 -> drawWebActivity
+    10:12:void drawWebActivity(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):588:590 -> drawWebActivity
+    13:15:void drawWebActivity(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):593:595 -> drawWebActivity
+    16:19:void drawWebActivity(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):597:600 -> drawWebActivity
+    20:24:void drawWebActivity(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):602:606 -> drawWebActivity
+    25:35:void drawWebActivity(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):608:618 -> drawWebActivity
+    36:45:void drawWebActivity(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):621:630 -> drawWebActivity
+    46:49:void drawWebActivity(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):635:638 -> drawWebActivity
+    50:55:void drawWebActivity(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):641:646 -> drawWebActivity
+    56:56:void drawWebActivity(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):648:648 -> drawWebActivity
+    57:58:void drawWebActivity(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):650:651 -> drawWebActivity
+    59:59:void drawWebActivity(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):653:653 -> drawWebActivity
+    60:61:void drawWebActivity(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):656:657 -> drawWebActivity
+    62:63:void drawWebActivity(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):660:661 -> drawWebActivity
+    64:65:void drawWebActivity(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):664:665 -> drawWebActivity
+    66:67:void drawWebActivity(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):668:669 -> drawWebActivity
+    68:69:void drawWebActivity(android.content.Context,android.graphics.Bitmap,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):673:674 -> drawWebActivity
+    1:2:void getBitmap(android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1251:1252 -> getBitmap
+    1:3:android.graphics.Bitmap getCircleHeaderBitmap(android.graphics.Bitmap,int,int):824:826 -> getCircleHeaderBitmap
+    4:4:android.graphics.Bitmap getCircleHeaderBitmap(android.graphics.Bitmap,int,int):829:829 -> getCircleHeaderBitmap
+    5:5:android.graphics.Bitmap getCircleHeaderBitmap(android.graphics.Bitmap,int,int):832:832 -> getCircleHeaderBitmap
+    6:6:android.graphics.Bitmap getCircleHeaderBitmap(android.graphics.Bitmap,int,int):834:834 -> getCircleHeaderBitmap
+    7:7:android.graphics.Bitmap getCircleHeaderBitmap(android.graphics.Bitmap,int,int):836:836 -> getCircleHeaderBitmap
+    8:12:android.graphics.Bitmap getCircleHeaderBitmap(android.graphics.Bitmap,int,int):839:843 -> getCircleHeaderBitmap
+    13:13:android.graphics.Bitmap getCircleHeaderBitmap(android.graphics.Bitmap,int,int):845:845 -> getCircleHeaderBitmap
+    1:1:android.graphics.Bitmap getDefaultIcon(android.content.Context):935:935 -> getDefaultIcon
+    1:5:void getHeaderBitmap(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1285:1289 -> getHeaderBitmap
+    1:1:void getInviteBitmap(android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):489:489 -> getInviteBitmap
+    2:2:void getInviteBitmap(android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):493:493 -> getInviteBitmap
+    3:4:void getInviteBitmap(android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):490:491 -> getInviteBitmap
+    1:2:void getShowBitmap(android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):460:461 -> getShowBitmap
+    1:8:void getShowHeaderBitmap(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):528:535 -> getShowHeaderBitmap
+    9:9:void getShowHeaderBitmap(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):539:539 -> getShowHeaderBitmap
+    1:2:void getWebActivityBitmap(android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):498:499 -> getWebActivityBitmap
+    1:2:void getWebBitmap(android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):402:403 -> getWebBitmap
     1:1:void loginWX(com.facebook.react.bridge.Callback):107:107 -> loginWX
-    1:5:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1468:1472 -> parseParam
-    6:6:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1474:1474 -> parseParam
-    7:8:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1479:1480 -> parseParam
-    9:10:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1485:1486 -> parseParam
-    11:11:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1488:1488 -> parseParam
-    12:13:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1491:1492 -> parseParam
-    14:14:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1494:1494 -> parseParam
-    15:16:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1497:1498 -> parseParam
-    17:17:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1500:1500 -> parseParam
-    18:19:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1503:1504 -> parseParam
-    20:20:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1506:1506 -> parseParam
-    21:22:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1510:1511 -> parseParam
-    23:23:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1513:1513 -> parseParam
-    24:25:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1517:1518 -> parseParam
-    26:26:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1520:1520 -> parseParam
-    27:29:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1523:1525 -> parseParam
-    30:30:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1527:1527 -> parseParam
-    31:32:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1530:1531 -> parseParam
-    33:33:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1533:1533 -> parseParam
-    34:35:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1536:1537 -> parseParam
-    36:36:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1539:1539 -> parseParam
-    37:38:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1542:1543 -> parseParam
-    39:39:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1545:1545 -> parseParam
-    40:41:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1548:1549 -> parseParam
-    42:42:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1551:1551 -> parseParam
-    1:3:void saveImage(java.lang.String):1559:1561 -> saveImage
-    1:3:void saveImageAndRefresh(android.net.Uri):1565:1567 -> saveImageAndRefresh
-    1:1:void saveInviteFriendsImage(java.lang.String,java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):390:390 -> saveInviteFriendsImage
-    2:2:void saveInviteFriendsImage(java.lang.String,java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):394:394 -> saveInviteFriendsImage
-    3:4:void saveInviteFriendsImage(java.lang.String,java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):391:392 -> saveInviteFriendsImage
-    1:1:void saveScreen(com.facebook.react.bridge.ReadableMap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1615:1615 -> saveScreen
-    1:1:void saveShopInviteFriendsImage(com.facebook.react.bridge.ReadableMap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):878:878 -> saveShopInviteFriendsImage
-    1:6:void screenshot(com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1623:1628 -> screenshot
-    7:7:void screenshot(com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1630:1630 -> screenshot
-    8:9:void screenshot(com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1633:1634 -> screenshot
-    10:15:void screenshot(com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1636:1641 -> screenshot
-    16:16:void screenshot(com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1643:1643 -> screenshot
-    17:17:void screenshot(com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1645:1645 -> screenshot
-    18:18:void screenshot(com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1648:1648 -> screenshot
-    19:20:void screenshot(com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1650:1651 -> screenshot
+    1:5:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1516:1520 -> parseParam
+    6:6:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1522:1522 -> parseParam
+    7:8:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1527:1528 -> parseParam
+    9:10:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1533:1534 -> parseParam
+    11:11:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1536:1536 -> parseParam
+    12:13:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1539:1540 -> parseParam
+    14:14:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1542:1542 -> parseParam
+    15:16:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1545:1546 -> parseParam
+    17:17:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1548:1548 -> parseParam
+    18:19:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1551:1552 -> parseParam
+    20:20:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1554:1554 -> parseParam
+    21:22:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1558:1559 -> parseParam
+    23:23:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1561:1561 -> parseParam
+    24:25:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1565:1566 -> parseParam
+    26:26:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1568:1568 -> parseParam
+    27:29:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1571:1573 -> parseParam
+    30:30:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1575:1575 -> parseParam
+    31:32:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1578:1579 -> parseParam
+    33:33:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1581:1581 -> parseParam
+    34:35:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1584:1585 -> parseParam
+    36:36:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1587:1587 -> parseParam
+    37:38:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1590:1591 -> parseParam
+    39:39:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1593:1593 -> parseParam
+    40:41:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1596:1597 -> parseParam
+    42:42:com.meeruu.commonlib.umeng.ShareImageBean parseParam(com.facebook.react.bridge.ReadableMap):1599:1599 -> parseParam
+    1:3:void saveImage(java.lang.String):1607:1609 -> saveImage
+    1:3:void saveImageAndRefresh(android.net.Uri):1613:1615 -> saveImageAndRefresh
+    1:1:void saveScreen(com.facebook.react.bridge.ReadableMap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1663:1663 -> saveScreen
+    1:1:void saveShopInviteFriendsImage(com.facebook.react.bridge.ReadableMap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):890:890 -> saveShopInviteFriendsImage
+    1:6:void screenshot(com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1671:1676 -> screenshot
+    7:7:void screenshot(com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1678:1678 -> screenshot
+    8:9:void screenshot(com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1681:1682 -> screenshot
+    10:15:void screenshot(com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1684:1689 -> screenshot
+    16:16:void screenshot(com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1691:1691 -> screenshot
+    17:17:void screenshot(com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1693:1693 -> screenshot
+    18:18:void screenshot(com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1696:1696 -> screenshot
+    19:20:void screenshot(com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1698:1699 -> screenshot
     1:1:void share(com.facebook.react.bridge.ReadableMap,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):101:101 -> share
     1:1:void umengDeleteOauth(com.umeng.socialize.bean.SHARE_MEDIA):152:152 -> umengDeleteOauth
 com.meeruu.commonlib.umeng.LoginAndSharingModule$1 -> com.meeruu.commonlib.umeng.LoginAndSharingModule$1:
@@ -4805,28 +4812,28 @@ com.meeruu.commonlib.umeng.LoginAndSharingModule$10 -> com.meeruu.commonlib.umen
     com.facebook.react.bridge.Callback val$success -> d
     com.facebook.react.bridge.Callback val$fail -> a
     android.content.Context val$context -> b
-    1:1:void <init>(com.facebook.react.bridge.Callback,android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback):1204:1204 -> <init>
-    1:2:void onRequestFailure(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,java.lang.Throwable,boolean):1229:1230 -> onRequestFailure
-    1:3:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):1207:1209 -> onRequestSuccess
-    4:4:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):1211:1211 -> onRequestSuccess
-    5:5:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):1214:1214 -> onRequestSuccess
-    6:6:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):1216:1216 -> onRequestSuccess
-    7:9:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):1219:1221 -> onRequestSuccess
-    10:10:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):1223:1223 -> onRequestSuccess
+    1:1:void <init>(com.facebook.react.bridge.Callback,android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback):1252:1252 -> <init>
+    1:2:void onRequestFailure(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,java.lang.Throwable,boolean):1277:1278 -> onRequestFailure
+    1:3:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):1255:1257 -> onRequestSuccess
+    4:4:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):1259:1259 -> onRequestSuccess
+    5:5:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):1262:1262 -> onRequestSuccess
+    6:6:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):1264:1264 -> onRequestSuccess
+    7:9:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):1267:1269 -> onRequestSuccess
+    10:10:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):1271:1271 -> onRequestSuccess
 com.meeruu.commonlib.umeng.LoginAndSharingModule$11 -> com.meeruu.commonlib.umeng.LoginAndSharingModule$11:
     android.content.Context val$context -> a
     com.meeruu.commonlib.umeng.ShareImageBean val$shareImageBean -> c
     com.facebook.react.bridge.Callback val$success -> d
     android.graphics.Bitmap val$productBitmap -> b
     com.facebook.react.bridge.Callback val$fail -> e
-    1:1:void <init>(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1241:1241 -> <init>
-    1:3:void onRequestFailure(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,java.lang.Throwable,boolean):1268:1270 -> onRequestFailure
-    1:3:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):1244:1246 -> onRequestSuccess
-    4:5:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):1248:1249 -> onRequestSuccess
-    6:6:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):1252:1252 -> onRequestSuccess
-    7:8:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):1254:1255 -> onRequestSuccess
-    9:11:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):1258:1260 -> onRequestSuccess
-    12:12:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):1262:1262 -> onRequestSuccess
+    1:1:void <init>(android.content.Context,android.graphics.Bitmap,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):1289:1289 -> <init>
+    1:3:void onRequestFailure(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,java.lang.Throwable,boolean):1316:1318 -> onRequestFailure
+    1:3:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):1292:1294 -> onRequestSuccess
+    4:5:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):1296:1297 -> onRequestSuccess
+    6:6:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):1300:1300 -> onRequestSuccess
+    7:8:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):1302:1303 -> onRequestSuccess
+    9:11:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):1306:1308 -> onRequestSuccess
+    12:12:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):1310:1310 -> onRequestSuccess
 com.meeruu.commonlib.umeng.LoginAndSharingModule$2 -> com.meeruu.commonlib.umeng.LoginAndSharingModule$2:
     com.meeruu.commonlib.umeng.LoginAndSharingModule this$0 -> a
     1:1:void <init>(com.meeruu.commonlib.umeng.LoginAndSharingModule):152:152 -> <init>
@@ -4838,91 +4845,91 @@ com.meeruu.commonlib.umeng.LoginAndSharingModule$3 -> com.meeruu.commonlib.umeng
     java.util.Map val$data -> b
     com.meeruu.commonlib.umeng.LoginAndSharingModule this$0 -> c
     com.facebook.react.bridge.Promise val$promise -> a
-    1:1:void <init>(com.meeruu.commonlib.umeng.LoginAndSharingModule,com.facebook.react.bridge.Promise,java.util.Map):231:231 -> <init>
-    1:3:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):234:236 -> onRequestSuccess
-    4:4:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):238:238 -> onRequestSuccess
-    5:5:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):241:241 -> onRequestSuccess
-    6:6:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):243:243 -> onRequestSuccess
-    7:9:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):246:248 -> onRequestSuccess
-    10:10:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):250:250 -> onRequestSuccess
+    1:1:void <init>(com.meeruu.commonlib.umeng.LoginAndSharingModule,com.facebook.react.bridge.Promise,java.util.Map):234:234 -> <init>
+    1:3:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):237:239 -> onRequestSuccess
+    4:4:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):241:241 -> onRequestSuccess
+    5:5:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):244:244 -> onRequestSuccess
+    6:6:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):246:246 -> onRequestSuccess
+    7:9:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):249:251 -> onRequestSuccess
+    10:10:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):253:253 -> onRequestSuccess
 com.meeruu.commonlib.umeng.LoginAndSharingModule$4 -> com.meeruu.commonlib.umeng.LoginAndSharingModule$4:
     com.meeruu.commonlib.umeng.ShareImageBean val$shareImageBean -> c
     com.facebook.react.bridge.Callback val$success -> d
     com.facebook.react.bridge.Callback val$fail -> a
     android.content.Context val$context -> b
-    1:1:void <init>(com.facebook.react.bridge.Callback,android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback):400:400 -> <init>
-    1:3:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):403:405 -> onRequestSuccess
-    4:4:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):407:407 -> onRequestSuccess
-    5:5:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):410:410 -> onRequestSuccess
-    6:6:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):412:412 -> onRequestSuccess
-    7:9:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):415:417 -> onRequestSuccess
-    10:10:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):419:419 -> onRequestSuccess
+    1:1:void <init>(com.facebook.react.bridge.Callback,android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback):403:403 -> <init>
+    1:3:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):406:408 -> onRequestSuccess
+    4:4:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):410:410 -> onRequestSuccess
+    5:5:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):413:413 -> onRequestSuccess
+    6:6:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):415:415 -> onRequestSuccess
+    7:9:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):418:420 -> onRequestSuccess
+    10:10:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):422:422 -> onRequestSuccess
 com.meeruu.commonlib.umeng.LoginAndSharingModule$5 -> com.meeruu.commonlib.umeng.LoginAndSharingModule$5:
     com.meeruu.commonlib.umeng.ShareImageBean val$shareImageBean -> c
     com.facebook.react.bridge.Callback val$success -> d
     com.facebook.react.bridge.Callback val$fail -> a
     android.content.Context val$context -> b
-    1:1:void <init>(com.facebook.react.bridge.Callback,android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback):458:458 -> <init>
-    1:3:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):461:463 -> onRequestSuccess
-    4:4:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):465:465 -> onRequestSuccess
-    5:5:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):468:468 -> onRequestSuccess
-    6:6:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):470:470 -> onRequestSuccess
-    7:9:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):473:475 -> onRequestSuccess
-    10:10:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):478:478 -> onRequestSuccess
+    1:1:void <init>(com.facebook.react.bridge.Callback,android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback):461:461 -> <init>
+    1:3:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):464:466 -> onRequestSuccess
+    4:4:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):468:468 -> onRequestSuccess
+    5:5:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):471:471 -> onRequestSuccess
+    6:6:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):473:473 -> onRequestSuccess
+    7:9:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):476:478 -> onRequestSuccess
+    10:10:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):481:481 -> onRequestSuccess
 com.meeruu.commonlib.umeng.LoginAndSharingModule$6 -> com.meeruu.commonlib.umeng.LoginAndSharingModule$6:
     com.meeruu.commonlib.umeng.ShareImageBean val$shareImageBean -> c
     com.facebook.react.bridge.Callback val$success -> d
     com.facebook.react.bridge.Callback val$fail -> a
     android.content.Context val$context -> b
-    1:1:void <init>(com.facebook.react.bridge.Callback,android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback):487:487 -> <init>
-    1:3:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):490:492 -> onRequestSuccess
-    4:4:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):494:494 -> onRequestSuccess
-    5:5:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):497:497 -> onRequestSuccess
-    6:6:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):499:499 -> onRequestSuccess
-    7:9:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):502:504 -> onRequestSuccess
-    10:10:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):507:507 -> onRequestSuccess
+    1:1:void <init>(com.facebook.react.bridge.Callback,android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback):499:499 -> <init>
+    1:3:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):502:504 -> onRequestSuccess
+    4:4:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):506:506 -> onRequestSuccess
+    5:5:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):509:509 -> onRequestSuccess
+    6:6:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):511:511 -> onRequestSuccess
+    7:9:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):514:516 -> onRequestSuccess
+    10:10:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):519:519 -> onRequestSuccess
 com.meeruu.commonlib.umeng.LoginAndSharingModule$7 -> com.meeruu.commonlib.umeng.LoginAndSharingModule$7:
     android.content.Context val$context -> c
     com.facebook.react.bridge.Callback val$fail -> a
     com.meeruu.commonlib.umeng.ShareImageBean val$shareImageBean -> b
     com.facebook.react.bridge.Callback val$success -> e
     android.graphics.Bitmap val$mainBitmap -> d
-    1:1:void <init>(com.facebook.react.bridge.Callback,com.meeruu.commonlib.umeng.ShareImageBean,android.content.Context,android.graphics.Bitmap,com.facebook.react.bridge.Callback):527:527 -> <init>
-    1:3:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):530:532 -> onRequestSuccess
-    4:4:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):534:534 -> onRequestSuccess
-    5:5:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):537:537 -> onRequestSuccess
-    6:6:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):539:539 -> onRequestSuccess
-    7:7:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):542:542 -> onRequestSuccess
-    8:13:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):544:549 -> onRequestSuccess
-    14:14:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):553:553 -> onRequestSuccess
+    1:1:void <init>(com.facebook.react.bridge.Callback,com.meeruu.commonlib.umeng.ShareImageBean,android.content.Context,android.graphics.Bitmap,com.facebook.react.bridge.Callback):539:539 -> <init>
+    1:3:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):542:544 -> onRequestSuccess
+    4:4:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):546:546 -> onRequestSuccess
+    5:5:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):549:549 -> onRequestSuccess
+    6:6:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):551:551 -> onRequestSuccess
+    7:7:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):554:554 -> onRequestSuccess
+    8:13:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):556:561 -> onRequestSuccess
+    14:14:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):565:565 -> onRequestSuccess
 com.meeruu.commonlib.umeng.LoginAndSharingModule$8 -> com.meeruu.commonlib.umeng.LoginAndSharingModule$8:
     android.content.Context val$context -> a
     com.facebook.react.bridge.Callback val$fail -> d
     com.facebook.react.bridge.Callback val$success -> c
+    com.meeruu.commonlib.umeng.ShareImageBean val$shareImageBean -> b
     com.meeruu.commonlib.umeng.LoginAndSharingModule this$0 -> e
-    java.lang.String val$url -> b
-    1:1:void <init>(com.meeruu.commonlib.umeng.LoginAndSharingModule,android.content.Context,java.lang.String,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):840:840 -> <init>
-    1:3:void onRequestFailure(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,java.lang.Throwable,boolean):868:870 -> onRequestFailure
-    1:3:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):843:845 -> onRequestSuccess
-    4:5:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):847:848 -> onRequestSuccess
-    6:6:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):851:851 -> onRequestSuccess
-    7:8:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):853:854 -> onRequestSuccess
-    9:11:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):857:859 -> onRequestSuccess
-    12:13:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):861:862 -> onRequestSuccess
+    1:1:void <init>(com.meeruu.commonlib.umeng.LoginAndSharingModule,android.content.Context,com.meeruu.commonlib.umeng.ShareImageBean,com.facebook.react.bridge.Callback,com.facebook.react.bridge.Callback):852:852 -> <init>
+    1:3:void onRequestFailure(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,java.lang.Throwable,boolean):880:882 -> onRequestFailure
+    1:3:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):855:857 -> onRequestSuccess
+    4:5:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):859:860 -> onRequestSuccess
+    6:6:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):863:863 -> onRequestSuccess
+    7:8:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):865:866 -> onRequestSuccess
+    9:11:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):869:871 -> onRequestSuccess
+    12:13:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):873:874 -> onRequestSuccess
 com.meeruu.commonlib.umeng.LoginAndSharingModule$9 -> com.meeruu.commonlib.umeng.LoginAndSharingModule$9:
     com.facebook.react.bridge.Callback val$success -> d
     com.facebook.react.bridge.Callback val$fail -> a
     android.content.Context val$context -> b
     com.meeruu.commonlib.umeng.LoginAndSharingModule this$0 -> e
     com.facebook.react.bridge.ReadableMap val$map -> c
-    1:1:void <init>(com.meeruu.commonlib.umeng.LoginAndSharingModule,com.facebook.react.bridge.Callback,android.content.Context,com.facebook.react.bridge.ReadableMap,com.facebook.react.bridge.Callback):890:890 -> <init>
-    1:2:void onRequestFailure(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,java.lang.Throwable,boolean):915:916 -> onRequestFailure
-    1:3:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):893:895 -> onRequestSuccess
-    4:4:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):897:897 -> onRequestSuccess
-    5:5:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):900:900 -> onRequestSuccess
-    6:6:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):902:902 -> onRequestSuccess
-    7:9:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):905:907 -> onRequestSuccess
-    10:10:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):909:909 -> onRequestSuccess
+    1:1:void <init>(com.meeruu.commonlib.umeng.LoginAndSharingModule,com.facebook.react.bridge.Callback,android.content.Context,com.facebook.react.bridge.ReadableMap,com.facebook.react.bridge.Callback):902:902 -> <init>
+    1:2:void onRequestFailure(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,java.lang.Throwable,boolean):927:928 -> onRequestFailure
+    1:3:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):905:907 -> onRequestSuccess
+    4:4:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):909:909 -> onRequestSuccess
+    5:5:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):912:912 -> onRequestSuccess
+    6:6:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):914:914 -> onRequestSuccess
+    7:9:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):917:919 -> onRequestSuccess
+    10:10:void onRequestSuccess(com.facebook.imagepipeline.request.ImageRequest,java.lang.String,boolean):921:921 -> onRequestSuccess
 com.meeruu.commonlib.umeng.ShareImageBean -> com.meeruu.commonlib.umeng.ShareImageBean:
     1:1:void <init>():5:5 -> <init>
     1:1:java.lang.String getDiamondNum():29:29 -> getDiamondNum
@@ -5209,14 +5216,6 @@ com.meeruu.commonlib.utils.DeviceUtils -> com.meeruu.commonlib.utils.DeviceUtils
     1:1:boolean isNavigationBarExist(android.app.Activity):196:196 -> isNavigationBarExist
     2:4:boolean isNavigationBarExist(android.app.Activity):198:200 -> isNavigationBarExist
     1:1:boolean isXiaomi():247:247 -> isXiaomi
-com.meeruu.commonlib.utils.FastClickUtil -> com.meeruu.commonlib.utils.FastClickUtil:
-    1:1:void <init>():5:5 -> <init>
-    1:2:boolean isFastClick():15:16 -> isFastClick
-    3:4:boolean isFastClick():19:20 -> isFastClick
-    1:4:boolean isFastClickActivity(java.lang.String):49:52 -> isFastClickActivity
-    5:5:boolean isFastClickActivity(java.lang.String):55:55 -> isFastClickActivity
-    1:2:boolean isRecordWithOtherClick():30:31 -> isRecordWithOtherClick
-    3:3:boolean isRecordWithOtherClick():34:34 -> isRecordWithOtherClick
 com.meeruu.commonlib.utils.FileUtils -> com.meeruu.commonlib.utils.FileUtils:
     1:1:void <init>():25:25 -> <init>
     1:7:void copyFile(java.lang.String,java.lang.String):50:56 -> copyFile
@@ -5479,62 +5478,6 @@ com.meeruu.commonlib.utils.NoFastClickUtils -> com.meeruu.commonlib.utils.NoFast
     1:1:boolean isFastClick():14:14 -> isFastClick
     2:2:boolean isFastClick():16:16 -> isFastClick
     3:3:boolean isFastClick():21:21 -> isFastClick
-com.meeruu.commonlib.utils.NotchScreenUtil -> com.meeruu.commonlib.utils.NotchScreenUtil:
-    1:1:void <init>():15:15 -> <init>
-    1:1:boolean checkHWNotchSwitchState(android.content.Context):287:287 -> checkHWNotchSwitchState
-    1:1:boolean checkHuaWei(android.content.Context):117:117 -> checkHuaWei
-    2:2:boolean checkHuaWei(android.content.Context):119:119 -> checkHuaWei
-    3:3:boolean checkHuaWei(android.content.Context):121:121 -> checkHuaWei
-    4:4:boolean checkHuaWei(android.content.Context):123:123 -> checkHuaWei
-    5:5:boolean checkHuaWei(android.content.Context):130:130 -> checkHuaWei
-    6:6:boolean checkHuaWei(android.content.Context):128:128 -> checkHuaWei
-    7:7:boolean checkHuaWei(android.content.Context):126:126 -> checkHuaWei
-    1:1:boolean checkMiUI(android.content.Context):75:75 -> checkMiUI
-    2:2:boolean checkMiUI(android.content.Context):78:78 -> checkMiUI
-    3:6:boolean checkMiUI(android.content.Context):81:84 -> checkMiUI
-    7:10:boolean checkMiUI(android.content.Context):86:89 -> checkMiUI
-    11:11:boolean checkMiUI(android.content.Context):100:100 -> checkMiUI
-    12:12:boolean checkMiUI(android.content.Context):98:98 -> checkMiUI
-    13:13:boolean checkMiUI(android.content.Context):96:96 -> checkMiUI
-    14:14:boolean checkMiUI(android.content.Context):94:94 -> checkMiUI
-    15:15:boolean checkMiUI(android.content.Context):92:92 -> checkMiUI
-    1:2:boolean checkMiUINotchSwitchState(android.content.Context):273:274 -> checkMiUINotchSwitchState
-    1:1:boolean checkNotchScreen(android.content.Context):39:39 -> checkNotchScreen
-    2:2:boolean checkNotchScreen(android.content.Context):41:41 -> checkNotchScreen
-    3:3:boolean checkNotchScreen(android.content.Context):43:43 -> checkNotchScreen
-    4:4:boolean checkNotchScreen(android.content.Context):45:45 -> checkNotchScreen
-    1:1:boolean checkOppo(android.content.Context):59:59 -> checkOppo
-    2:2:boolean checkOppo(android.content.Context):61:61 -> checkOppo
-    1:1:boolean checkVivo(android.content.Context):146:146 -> checkVivo
-    2:4:boolean checkVivo(android.content.Context):148:150 -> checkVivo
-    5:5:boolean checkVivo(android.content.Context):152:152 -> checkVivo
-    1:1:int dip2px(android.content.Context,float):328:328 -> dip2px
-    1:1:int[] getHwNotchSize(android.content.Context):166:166 -> getHwNotchSize
-    2:2:int[] getHwNotchSize(android.content.Context):170:170 -> getHwNotchSize
-    3:3:int[] getHwNotchSize(android.content.Context):172:172 -> getHwNotchSize
-    4:4:int[] getHwNotchSize(android.content.Context):174:174 -> getHwNotchSize
-    5:5:int[] getHwNotchSize(android.content.Context):176:176 -> getHwNotchSize
-    6:6:int[] getHwNotchSize(android.content.Context):188:188 -> getHwNotchSize
-    7:7:int[] getHwNotchSize(android.content.Context):184:184 -> getHwNotchSize
-    8:8:int[] getHwNotchSize(android.content.Context):180:180 -> getHwNotchSize
-    1:1:int[] getMiUINotchHeight(android.content.Context):232:232 -> getMiUINotchHeight
-    2:2:int[] getMiUINotchHeight(android.content.Context):234:234 -> getMiUINotchHeight
-    3:3:int[] getMiUINotchHeight(android.content.Context):236:236 -> getMiUINotchHeight
-    4:4:int[] getMiUINotchHeight(android.content.Context):239:239 -> getMiUINotchHeight
-    5:5:int[] getMiUINotchHeight(android.content.Context):241:241 -> getMiUINotchHeight
-    1:1:int getMiUIStatuBarHeight(android.content.Context):257:257 -> getMiUIStatuBarHeight
-    2:2:int getMiUIStatuBarHeight(android.content.Context):260:260 -> getMiUIStatuBarHeight
-    1:1:int[] getOppoNotchSize(android.content.Context):220:220 -> getOppoNotchSize
-    1:3:int[] getVivoNotchSize(android.content.Context):206:208 -> getVivoNotchSize
-    1:1:int px2dip(android.content.Context,float):336:336 -> px2dip
-    1:1:void setNotFullScreenWindowLayoutInDisplayCutout(android.view.Window):302:302 -> setNotFullScreenWindowLayoutInDisplayCutout
-    2:6:void setNotFullScreenWindowLayoutInDisplayCutout(android.view.Window):304:308 -> setNotFullScreenWindowLayoutInDisplayCutout
-    7:7:void setNotFullScreenWindowLayoutInDisplayCutout(android.view.Window):320:320 -> setNotFullScreenWindowLayoutInDisplayCutout
-    8:8:void setNotFullScreenWindowLayoutInDisplayCutout(android.view.Window):318:318 -> setNotFullScreenWindowLayoutInDisplayCutout
-    9:9:void setNotFullScreenWindowLayoutInDisplayCutout(android.view.Window):316:316 -> setNotFullScreenWindowLayoutInDisplayCutout
-    10:10:void setNotFullScreenWindowLayoutInDisplayCutout(android.view.Window):314:314 -> setNotFullScreenWindowLayoutInDisplayCutout
-    11:11:void setNotFullScreenWindowLayoutInDisplayCutout(android.view.Window):312:312 -> setNotFullScreenWindowLayoutInDisplayCutout
-    12:12:void setNotFullScreenWindowLayoutInDisplayCutout(android.view.Window):310:310 -> setNotFullScreenWindowLayoutInDisplayCutout
 com.meeruu.commonlib.utils.ParameterUtils -> com.meeruu.commonlib.utils.ParameterUtils:
     1:1:void <init>():3:3 -> <init>
 com.meeruu.commonlib.utils.SDCardUtils -> com.meeruu.commonlib.utils.SDCardUtils:

@@ -12,9 +12,9 @@
 //#import "JSPush"
 
 // iOS10 注册 APNs 所需头文件
-#ifdef NSFoundationVersionNumber_iOS_9_x_Max
+//#ifdef NSFoundationVersionNumber_iOS_9_x_Max
 #import <UserNotifications/UserNotifications.h>
-#endif
+//#endif
 // 如果需要使用 idfa 功能所需要引入的头文件
 #import <AdSupport/AdSupport.h>
 #import "JVERIFICATIONService.h"
@@ -30,7 +30,8 @@
 -(void)JR_ConfigAPNS:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
   [self configAPNSWithOption:launchOptions];
   [self checkCurrentNotificationStatus];
-  
+  NSDictionary *pushNotificationKey = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+  [self showChatViewController:pushNotificationKey];
   NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
   [defaultCenter addObserver:self selector:@selector(networkDidReceiveMessage:) name:kJPFNetworkDidReceiveMessageNotification object:nil];
 }
@@ -326,24 +327,68 @@
   
   // 直接上报数据
   [[SensorsAnalyticsSDK sharedInstance] flush];
+  
+  [self showChatViewController:response.notification.request.content.userInfo];
   completionHandler();  // 系统要求执行这个方法
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-  if ([UIApplication sharedApplication].applicationState == UIApplicationStateInactive) {
+//  if ([UIApplication sharedApplication].applicationState == UIApplicationStateInactive) {
     [self showChatViewController:userInfo];
-  }
-}
-#pragma mark 推送来的消息解析
--(void)showChatViewController:(NSDictionary *)userInfo{
-  id object = [userInfo objectForKey:@"nim"]; //含有“nim”字段，就表示是七鱼的消息
-  if (object)
-  {
-    
-  }
+//  }
 }
 
+//-(void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler{
+//  [self showChatViewController:response.notification.request.content.userInfo];
+//  completionHandler();
+//}
+//
+//- (void)jpushNotificationCenter:(UNUserNotificationCenter *)center openSettingsForNotification:(UNNotification *)notification{
+//  if (notification && [notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
+//     [self showChatViewController:notification.request.content.userInfo];
+//    //从通知界面直接进入应用
+//  }else{
+//    //从通知设置界面进入应用
+//  }
+//}
+
+//-(void)jpushNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void(^)())completionHandler{
+//  [self showChatViewController:response.notification.request.content.userInfo];
+//  completionHandler();
+//}
+
+
+#pragma mark 推送来的消息解析
+-(void)showChatViewController:(NSDictionary *)userInfo{
+  NSString *openURL = nil;
+  NSString * linkUrl = userInfo[@"linkUrl"];
+  if (linkUrl &&[linkUrl isKindOfClass:[NSString class]] &&linkUrl.length > 0) {
+    NSString*hString = [linkUrl stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet characterSetWithCharactersInString:@"`#%^{}\"[]|\\<> "]];
+    openURL = [NSString stringWithFormat:@"meeruu://path/HtmlPage/%@",hString];
+  }
+  if (!openURL) {
+    return;
+  }
+  if (!self.isLoadJS) {
+    __weak AppDelegate * weakSelf = self;
+ [NSTimer scheduledTimerWithTimeInterval:1 repeats:YES block:^(NSTimer * _Nonnull timer) {
+      if (weakSelf.isLoadJS) {
+        [self openScheme:openURL];
+        [timer invalidate];
+      }
+    }];
+  }else{
+    [self openScheme:openURL];
+  }
+}
+- (void)openScheme:(NSString *)openURL{
+  if ([[UIApplication sharedApplication] respondsToSelector:@selector(openURL:options:completionHandler:)]) {
+    [[UIApplication sharedApplication]openURL:[NSURL URLWithString:openURL] options:@{} completionHandler:nil];
+  }else{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:openURL]];
+  }
+}
 
 -(void) checkCurrentNotificationStatus
 {
