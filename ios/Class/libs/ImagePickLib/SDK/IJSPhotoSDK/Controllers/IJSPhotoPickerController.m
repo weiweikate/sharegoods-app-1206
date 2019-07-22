@@ -145,7 +145,7 @@ static NSString *const CellID = @"pickerID";
         [vc showAlertWithTitle:title];
         return;
     }
-    if ((tempModel.type != JSAssetModelMediaTypeVideo || tempModel.type != JSAssetModelMediaTypeAudio) && !vc.allowPickingImage)
+    if ((tempModel.type != JSAssetModelMediaTypeVideo && tempModel.type != JSAssetModelMediaTypeAudio) && !vc.allowPickingImage)
     {
         NSString *title = [NSString stringWithFormat:@"%@", [NSBundle localizedStringForKey:@"Do not support selection of image types"]];
         [vc showAlertWithTitle:title];
@@ -173,6 +173,13 @@ static NSString *const CellID = @"pickerID";
     }
     else // 选中的个数没有超标超标
     {
+      
+      if (!vc.allowPickingImage && vc.allowPickingVideo && tempModel.type == JSAssetModelMediaTypeVideo) {
+        if (self.selectedHandler) {
+          self.selectedHandler(@[], @[tempModel], nil, nil, nil, nil);
+        }
+        return;
+      }
         if (self.selectedModels.count == 0) //没选状态下
         {
             preViewVc.allAssetModelArr = _assetModelArr;
@@ -581,7 +588,8 @@ static NSString *const CellID = @"pickerID";
 - (void)_createrData
 {
     UIView *loadView =  [IJSLodingView showLodingViewAddedTo:self.view title:[NSBundle localizedStringForKey:@"加载中..."]];
-    [[IJSImageManager shareManager] getAssetsFromFetchResult:self.albumModel.result allowPickingVideo:NO allowPickingImage:YES completion:^(NSArray<IJSAssetModel *> *models) {
+    IJSImagePickerController *vc = (IJSImagePickerController *) self.navigationController;
+    [[IJSImageManager shareManager] getAssetsFromFetchResult:self.albumModel.result allowPickingVideo:vc.allowPickingVideo allowPickingImage:vc.allowPickingImage completion:^(NSArray<IJSAssetModel *> *models) {
         [loadView removeFromSuperview];
         self.assetModelArr = [NSMutableArray arrayWithArray:models];
         [self.assetModelArr enumerateObjectsUsingBlock:^(IJSAssetModel *_Nonnull obj, NSUInteger idx, BOOL *_Nonnull stop) {

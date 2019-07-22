@@ -62,7 +62,8 @@ RootStack.router.getStateForAction = (action, state) => {
         // 拼店显示flag逻辑
         if (action.routeName === 'HomePage' || action.routeName === 'ShowListPage'
             || action.routeName === 'ShopCartPage' || action.routeName === 'MinePage') {
-            showPinFlagModel.saveShowFlag(true);
+            // showPinFlagModel.saveShowFlag(true);
+            showPinFlagModel.saveShowFlag(false);
         } else {
             showPinFlagModel.saveShowFlag(false);
         }

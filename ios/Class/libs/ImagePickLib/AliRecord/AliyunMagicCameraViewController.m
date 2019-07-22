@@ -24,7 +24,9 @@
 #import "AlivcUIConfig.h"
 
 #import "HYFPreviewVC.h"
-@interface AliyunMagicCameraViewController () <UIGestureRecognizerDelegate,UIAlertViewDelegate,AliyunIRecorderDelegate>
+#import "IJSImageManager.h"
+#import "IJSImagePickerController.h"
+@interface AliyunMagicCameraViewController () <UIGestureRecognizerDelegate,UIAlertViewDelegate,AliyunIRecorderDelegate,MagicCameraViewDelegate>
 
 /**
  SDK录制类
@@ -598,6 +600,24 @@
 }
 
 #pragma mark - MagicCameraViewDelegate -
+
+-(void)selectVideoBtnClick{
+  [[IJSImageManager shareManager] stopCachingImagesFormAllAssets];
+  [IJSImageManager shareManager].allowPickingOriginalPhoto = YES;
+  IJSImagePickerController * nav = [[IJSImagePickerController alloc]initWithMaxImagesCount:8 columnNumber:4 pushPhotoPickerVc:YES];
+  nav.maxImagesCount = 1;
+  nav.allowPickingVideo = YES;
+  nav.networkAccessAllowed = NO;
+  nav.allowPickingImage = NO;
+  nav.sortAscendingByModificationDate = NO;
+  __weak typeof (self) weakSelf = self;
+  [nav loadTheSelectedData:^(NSArray<UIImage *> *photos, NSArray<NSURL *> *avPlayers, NSArray<PHAsset *> *assets, NSArray<NSDictionary *> *infos, IJSPExportSourceType sourceType, NSError *error) {
+    if (sourceType == IJSPVideoType ) {
+      
+    }
+  }];
+  [self presentViewController:nav animated:YES completion:nil];
+}
     
 - (void)magicCameraView:(AliyunMagicCameraView *)view dismissButtonTouched:(UIButton *)button{
     [self.magicCameraView cancelRecordBeautyView];
@@ -989,7 +1009,6 @@
     [_magicCameraView destroy];
     _magicCameraView.userInteractionEnabled =YES;
 }
-
 - (void)recorderDidFinishRecording {
     NSLog(@"---------->完成录制回调");
     self.magicCameraView.backButton.enabled = YES;
@@ -1011,10 +1030,7 @@
         
         //跳转处理
         NSString *outputPath = _recorder.outputPath;
-        
-        UISaveVideoAtPathToSavedPhotosAlbum(_recorder.outputPath, self, nil, nil);
-      
-      
+//        UISaveVideoAtPathToSavedPhotosAlbum(_recorder.outputPath, self, nil, nil);
       HYFPreviewVC *preViewVC = [[HYFPreviewVC alloc]init];
       preViewVC.videoPath = outputPath;
       preViewVC.finshPreview = ^(NSString * _Nonnull videoPath) {
