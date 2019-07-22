@@ -261,7 +261,6 @@
 		C4F2E48D22BE303100FF6213 /* IJSMapViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F2E41422BE303100FF6213 /* IJSMapViewModel.m */; };
 		C4F2E48E22BE303100FF6213 /* IJSMapViewCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F2E41622BE303100FF6213 /* IJSMapViewCollectionViewLayout.m */; };
 		C4F2E48F22BE303100FF6213 /* IJSMapViewThumbCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F2E41922BE303100FF6213 /* IJSMapViewThumbCell.m */; };
-		C4F2E49022BE303100FF6213 /* test.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = C4F2E41D22BE303100FF6213 /* test.mp4 */; };
 		C4F2E49222BE30BC00FF6213 /* IJSFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4F2E49122BE30BC00FF6213 /* IJSFoundation.framework */; };
 		C4F2E49522BE318F00FF6213 /* MRImageVideoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F2E49422BE318F00FF6213 /* MRImageVideoManager.m */; };
 		C4F2E49B22BF6D7000FF6213 /* MRImagePickerBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F2E49A22BF6D7000FF6213 /* MRImagePickerBridge.m */; };
@@ -1322,7 +1321,6 @@
 		C4F2E41922BE303100FF6213 /* IJSMapViewThumbCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IJSMapViewThumbCell.m; sourceTree = "<group>"; };
 		C4F2E41A22BE303100FF6213 /* IJSMapViewMapCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IJSMapViewMapCell.h; sourceTree = "<group>"; };
 		C4F2E41B22BE303100FF6213 /* IJSMapViewCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IJSMapViewCollectionViewLayout.h; sourceTree = "<group>"; };
-		C4F2E41D22BE303100FF6213 /* test.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = test.mp4; sourceTree = "<group>"; };
 		C4F2E49122BE30BC00FF6213 /* IJSFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = IJSFoundation.framework; sourceTree = "<group>"; };
 		C4F2E49322BE318F00FF6213 /* MRImageVideoManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRImageVideoManager.h; sourceTree = "<group>"; };
 		C4F2E49422BE318F00FF6213 /* MRImageVideoManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRImageVideoManager.m; sourceTree = "<group>"; };
@@ -2887,7 +2885,6 @@
 		C4F2E41C22BE303100FF6213 /* resource */ = {
 			isa = PBXGroup;
 			children = (
-				C4F2E41D22BE303100FF6213 /* test.mp4 */,
 			);
 			path = resource;
 			sourceTree = "<group>";
@@ -3865,7 +3862,6 @@
 				C4F2E42822BE303100FF6213 /* btn_video_flash_close@2x.png in Resources */,
 				C4F2E43522BE303100FF6213 /* icon_btn_camera_flash_auto@2x.png in Resources */,
 				C4F2E43422BE303100FF6213 /* icon_btn_camera_flash_off@2x.png in Resources */,
-				C4F2E49022BE303100FF6213 /* test.mp4 in Resources */,
 				037DBABF21B0E3030003DA18 /* money_1.png in Resources */,
 				C4F2E43022BE303100FF6213 /* icon_btn_camera_flash_on.png in Resources */,
 				5068361321379B78001AB175 /* AlipaySDK.bundle in Resources */,
