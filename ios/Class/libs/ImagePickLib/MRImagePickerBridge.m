@@ -67,7 +67,7 @@ RCT_EXPORT_METHOD(uploadVideo:(NSString *)title and:(NSString *)path :(RCTPromis
       NSString * uploadAddress = result[@"uploadAddress"];
       NSString * uploadAuth = result[@"uploadAuth"];
       
-      [HYFUploaderVideo startUpLoad:fileName and:tempFile and:title andUpLoadAuth:uploadAuth andUpLoadAddress:uploadAddress];
+      [[HYFUploaderVideo sharedInstance]startUpLoad:fileName and:path and:title andUpLoadAuth:uploadAuth andUpLoadAddress:uploadAddress];
       
     } failure:^(NSString *msg, NSInteger code) {
       NSLog(@"%@",msg);

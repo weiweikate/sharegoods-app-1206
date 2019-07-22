@@ -70,9 +70,9 @@ SINGLETON_FOR_CLASS(MRImageVideoManager)
   [IJSImageManager shareManager].allowPickingOriginalPhoto = YES;
   IJSImagePickerController * nav = [[IJSImagePickerController alloc]initWithMaxImagesCount:8 columnNumber:4 pushPhotoPickerVc:YES];
   nav.maxImagesCount = self.options[@"maxFiles"] ?[self.options[@"maxFiles"] integerValue]:8;
-  nav.allowPickingVideo = NO;
+  nav.allowPickingVideo = YES;
   nav.networkAccessAllowed = NO;
-  nav.allowPickingImage = YES;
+  nav.allowPickingImage = NO;
   nav.sortAscendingByModificationDate = NO;
   __weak typeof (self) weakSelf = self;
   [nav loadTheSelectedData:^(NSArray<UIImage *> *photos, NSArray<NSURL *> *avPlayers, NSArray<PHAsset *> *assets, NSArray<NSDictionary *> *infos, IJSPExportSourceType sourceType, NSError *error) {
@@ -103,9 +103,9 @@ SINGLETON_FOR_CLASS(MRImageVideoManager)
 
 -(void)getShutImageWithUrl:(NSString *)path andFinshBlock:(hyfFinshRecordVideo)finshBlock{
   
-  if (![path hasPrefix:@"file://"]) {
-    path = [NSString stringWithFormat:@"%@%@",@"file://",path];
-  }
+//  if (![path hasPrefix:@"file://"]) {
+//    path = [NSString stringWithFormat:@"%@%@",@"file://",path];
+//  }
   NSArray *paths=NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);
   NSString *documentsDirectory=[paths objectAtIndex:0];
   NSString *savedImagePath=[documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png",path.md5String]];
@@ -118,7 +118,7 @@ SINGLETON_FOR_CLASS(MRImageVideoManager)
       NSLog(@"%@",iamge);
     }else{
       NSURL *videoUrl;
-      if ([path hasPrefix:@"file://"]) {
+      if (![path hasPrefix:@"file://"]) {
         videoUrl = [NSURL fileURLWithPath:path];
       }else{
         videoUrl = [NSURL URLWithString:path];
