@@ -195,21 +195,21 @@
 - (void)clickDownload:(MBModelData *)model{
   [self.dataArr replaceObjectAtIndex:self.current withObject:model];
   if(_onDownloadPress){
-    
+    _onDownloadPress(self.callBackArr[self.current]);
   }
 }
 
 -(void)clicCollection:(MBModelData *)model{
   [self.dataArr replaceObjectAtIndex:self.current withObject:model];
-  if(_onCollectPress){
-    
+  if(_onCollection){
+    _onCollection(self.callBackArr[self.current]);
   }
 }
 
 -(void)clickZan:(MBModelData *)model{
   [self.dataArr replaceObjectAtIndex:self.current withObject:model];
-  if(_onLikePress){
-    
+  if(_onZanPress){
+    _onZanPress(self.callBackArr[self.current]);
   }
 }
 
