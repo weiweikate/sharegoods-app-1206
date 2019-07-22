@@ -142,7 +142,7 @@ export default class BankCardListPage extends BasePage {
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Image source={bankIcon} style={{ width: 30, height: 30 }}/>
                             <UIText value={bankName}
-                                    style={{ fontSize: 17, color: 'white', paddingLeft: 10, fontWeight: '600' }}/>
+                                    style={{ fontSize: 17, color: 'white', paddingLeft: 10, fontWeight: '500' }}/>
                         </View>
                         <NoMoreClick onPress={() => {
                             rowData.isShow = !rowData.isShow;
@@ -156,7 +156,7 @@ export default class BankCardListPage extends BasePage {
                             style={{ fontSize: 13, color: 'white', paddingLeft: 50 }}/>
                     <View style={{ flex: 1, justifyContent: 'center' }}>
                         <UIText value={rowData.isShow ? cardNo : StringUtils.formatBankCardNum(cardNo)} style={{
-                            fontSize: 24, color: 'white', paddingLeft: 50, fontWeight: '600'
+                            fontSize: ScreenUtils.px2dp(23), color: 'white', paddingLeft: 50, fontWeight: '500'
                         }}/>
                     </View>
                 </ImageBackground>

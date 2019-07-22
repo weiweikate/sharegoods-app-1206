@@ -164,7 +164,7 @@ class AddBankCardPage extends BasePage {
                 }}>
                     <Text style={styles.accountStyle}>{'卡类型'}</Text>
                     <Text
-                        style={styles.accountStyle2}>{`${this.state.bankName}  ${StringUtils.isNoEmpty(this.state.type) ? (this.state.type === 2 ? '信用卡' : '储蓄卡') : ''}`}</Text>
+                        style={styles.accountStyle2}>{`${this.state.bankName}  ${StringUtils.isNoEmpty(this.state.type) ? (parseInt(this.state.type) === 2 ? '信用卡' : '储蓄卡') : ''}`}</Text>
 
                 </View>
                 <UIButton
