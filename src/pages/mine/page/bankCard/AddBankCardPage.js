@@ -212,6 +212,7 @@ class AddBankCardPage extends BasePage {
             }
         }).catch(e => {
             this._setDefault();
+            this.$toastShow(e.msg)
         });
     };
     _setDefault = () => {
