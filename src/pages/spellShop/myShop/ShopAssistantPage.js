@@ -182,6 +182,7 @@ export default class AssistantListPage extends BasePage {
         const { showActivityImage } = this.state;
         if (item.roleType === 0) {//0店主
             return <MasterRow item={item} onPress={this._clickAssistantDetail} tradeBalance={tradeBalance}
+                              isYourStore={this.params.storeData.myStore}
                               showActivityImage={showActivityImage}/>;
         } else {//1店员
             return (<AssistantRow item={item}
