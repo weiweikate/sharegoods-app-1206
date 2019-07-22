@@ -110,6 +110,8 @@ class QYChatModel {
                 routePush(RouterMap.ProductDetailPage, { productCode: productCode });
             } else if (parseInt(card_type) === CARD_TYPE.ORDER_CARD) {
                 routePush(RouterMap.MyOrdersDetailPage, { orderNo: productCode });
+            } else {
+                routePush(RouterMap.HtmlPage,{uri:productUrl});
             }
         }
     };
