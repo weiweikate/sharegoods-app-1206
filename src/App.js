@@ -56,22 +56,7 @@ if (__DEV__) {
         'waiting:',
         waitingModuleNames.length
     );
-} else {
-    // 非开发环境，屏蔽所有console
-    global.console = {
-        info: () => {
-        },
-        log: () => {
-        },
-        warn: () => {
-        },
-        debug: () => {
-        },
-        error: () => {
-        }
-    };
 }
-
 
 let codePushOptions = {
     checkFrequency: codePush.CheckFrequency.ON_APP_RESUME
@@ -150,7 +135,6 @@ class App extends Component {
                 ScreenUtils.checkhasNotchScreen((data) => {
                     ScreenUtils.setHasNotchScreen(data);
                 });
-
             }, 3000);
         });
         this.listenerJSMessage = JSManagerEmitter.addListener('MINE_NATIVE_TO_RN_MSG', this.mineMessageData);
