@@ -32,6 +32,8 @@
 @property (nonatomic, assign)NSInteger errCode;
 @property(nonatomic, strong)UILabel *emptyLb;
 @property (nonatomic, strong)UIView *emptyView;
+@property (nonatomic, assign)BOOL noMore;
+
 @end
 
 static NSString *ID = @"tabCell";
@@ -166,6 +168,10 @@ static NSString *IDType = @"TypeCell";
  */
 - (void)refreshData
 {
+  if(self.noMore){
+    [self.tableView.mj_footer endRefreshingWithNoMoreData];
+    return;
+  }
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   if (self.onStartRefresh) {
     self.onStartRefresh(@{});
@@ -178,10 +184,11 @@ static NSString *IDType = @"TypeCell";
   [dic addEntriesFromDictionary:@{@"page": [NSString stringWithFormat:@"%ld",self.page], @"size": @"10"}];
   __weak RecommendedView * weakSelf = self;
   [NetWorkTool requestWithURL:self.uri params:dic toModel:nil success:^(NSDictionary * result) {
+
+    JXModel* model = [JXModel modelWithJSON:result];
     if(self.type){
       [defaults setObject:[NSString convertNSDictionaryToJsonString:result] forKey:self.type];
     }
-    JXModel* model = [JXModel modelWithJSON:result];
     weakSelf.dataArr = [model.data mutableCopy];
     if([result valueForKey:@"data"]&&![[result valueForKey:@"data"] isKindOfClass:[NSNull class]]){
       weakSelf.callBackArr = [[result valueForKey:@"data"] mutableCopy];
@@ -200,6 +207,7 @@ static NSString *IDType = @"TypeCell";
         self.tableView.mj_footer.hidden = NO;
       });
     }
+    weakSelf.noMore = model.isMore>0?NO:YES;
     weakSelf.errCode = 10000;
   } failure:^(NSString *msg, NSInteger code) {
     weakSelf.errCode = code;
@@ -213,6 +221,10 @@ static NSString *IDType = @"TypeCell";
  */
 - (void)getMoreData
 {
+  if(self.noMore){
+    [self.tableView.mj_footer endRefreshingWithNoMoreData];
+    return;
+  }
   self.page++;
   NSMutableDictionary *dic = [NSMutableDictionary new];
   if (self.params) {
@@ -234,6 +246,7 @@ static NSString *IDType = @"TypeCell";
     }else{
       [weakSelf.tableView.mj_footer endRefreshing];
     }
+      weakSelf.noMore = model.isMore>0?NO:YES;
       weakSelf.errCode = 10000;
   } failure:^(NSString *msg, NSInteger code) {
     weakSelf.errCode = code;

@@ -41,8 +41,10 @@
 - (void)dealloc {
   [self.player pause];
   [[NSNotificationCenter defaultCenter] removeObserver:self];
+  [self.playerLayer removeFromSuperlayer];
   self.player = nil;
   self.playerLayer = nil;
+  self.resourceLoader = nil;
   self.backgroundColor = [UIColor clearColor];
   if (self.playerItem) {
     [self.playerItem removeObserver:self forKeyPath:@"status"];

@@ -49,7 +49,7 @@
   if (!_scrollView) {
     _scrollView = [[MBScrollView alloc] init];
   }
-  
+
   return _scrollView;
 }
 
@@ -156,7 +156,7 @@
 
   self.scrollView.sd_layout.topEqualToView(self)
   .leftEqualToView(self).widthIs(KScreenWidth).heightIs(KScreenHeight);
-  
+
   self.VideoHeaderView.sd_layout
   .topSpaceToView(self, 0).leftSpaceToView(self, 0)
   .rightSpaceToView(self, 0).heightIs(100);
@@ -195,7 +195,7 @@
 -(void)getCurrentDataIndex:(NSInteger)index{
   NSLog(@"getCurrentDataIndex==%ld",index);
   self.current = index;
-  if([self.dataArr objectAtIndex:self.current]){
+  if(self.current<self.dataArr.count&&[self.dataArr objectAtIndex:self.current]){
     self.VideoHeaderView.model =[self.dataArr objectAtIndex:self.current];
   }
 }
