@@ -1,13 +1,7 @@
 import React from 'react';
 import BasePage from '../../BasePage';
 import WebViewBridge from '@mr/webview';
-import {
-    View,
-    Platform,
-    Image,
-    TouchableOpacity,
-    BackHandler
-} from 'react-native';
+import { BackHandler, Image, Platform, TouchableOpacity, View } from 'react-native';
 import CommShareModal from '../../comm/components/CommShareModal';
 // import res from '../../comm/res';
 import apiEnvironment from '../../api/ApiEnvironment';
@@ -38,7 +32,8 @@ export default class RequestDetailPage extends BasePage {
     constructor(props) {
         super(props);
         const params = this.props.navigation.state.params || {};
-        const { uri, title } = params;
+        let { uri, title } = params;
+        uri = decodeURIComponent(uri);
         this.canGoBack = false;
         let realUri = '';
         let platform = Platform.OS;
@@ -141,7 +136,7 @@ export default class RequestDetailPage extends BasePage {
 
     handleBackPress = () => {
         if (this.canGoBack) {
-            this.webView.goBack();
+            this.webView && this.webView.goBack();
         } else {
             this.$navigateBack();
         }
@@ -191,13 +186,13 @@ export default class RequestDetailPage extends BasePage {
         if (msg.action === 'exitShowAlert') {
             this.webType = 'exitShowAlert';
             let parmas = msg.params || {};
-            this.manager.getAd(parmas.showPage, parmas.showPageValue, homeType.Alert);
+            this.manager.getAd(parmas.showPage, parmas.showPageValue, homeType.Alert, this.currentUrl);
             return;
         }
 
         if (msg.action === 'showFloat') {
             let parmas = msg.params || {};
-            this.luckyIcon && this.luckyIcon.getLucky(parmas.showPage, parmas.showPageValue);
+            this.luckyIcon && this.luckyIcon.getLucky(parmas.showPage, parmas.showPageValue,  this.currentUrl);
             return;
         }
 
@@ -243,13 +238,14 @@ export default class RequestDetailPage extends BasePage {
 
                     // onLoadStart={() => this._onLoadStart()}
                     onLoadEnd={(event) => {
-                        if (this.openShareModal){
+                        if (this.openShareModal) {
                             this.openShareModal = false;
                             this.webView && this.webView.sendToBridge(JSON.stringify({ action: 'openShareModal' }));
                         }
                         if (event && event.nativeEvent) {
                             this.canGoBack = event.nativeEvent.canGoBack;
                             this.$NavigationBarResetTitle(this.state.title || event.nativeEvent.title);
+                            this.currentUrl = event.nativeEvent.url;
                         }
                     }}
                     postMessage={msg => this._postMessage(msg)}

@@ -33,7 +33,6 @@ axios.defaults.headers.post['Content-Type'] = 'application/json';
 axios.defaults.headers.common.device = DeviceInfo && DeviceInfo.getUniqueID() + '';
 axios.interceptors.response.use(null, configureResponseError);
 axios.interceptors.request.use(configureTimeout, err => {
-
     return Promise.reject(err);
 });
 
@@ -43,7 +42,7 @@ axios.interceptors.response.use((response) => {
     return Promise.reject(error);
 });
 
-axios.defaults.timeout = 120000;
+axios.defaults.timeout = 12000;
 
 // 记录日志
 function createHistory(response, requestStamp) {

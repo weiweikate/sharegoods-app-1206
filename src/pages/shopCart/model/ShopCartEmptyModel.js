@@ -12,7 +12,6 @@ const { px2dp } = ScreenUtils;
 const Cell_Height = px2dp(248);
 
 class ShopCartEmptyModel {
-
     @observable
     emptyViewList = [];
     @observable
@@ -23,12 +22,9 @@ class ShopCartEmptyModel {
     isEnd = true;
     pageSize = 10;
     page = 1;
-
     constructor(props) {
         this.createData();
-        this.getRecommendProducts(true);
     }
-
     createData = () => {
         this.emptyViewList.push(
             {

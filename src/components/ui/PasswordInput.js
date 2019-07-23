@@ -15,9 +15,9 @@ import {MRTextInput as TextInput}from './UIText';
  */
 export default class PasswordInput extends Component {
     static propTypes = {
-        style: PropTypes.style,
-        inputItemStyle: PropTypes.style,
-        iconStyle: PropTypes.style,
+        style: PropTypes.any,
+        inputItemStyle: PropTypes.any,
+        iconStyle: PropTypes.any,
         // maxLength: TextInput.propTypes.maxLength.isRequired,
         onChange: PropTypes.func,
         onEnd: PropTypes.func,

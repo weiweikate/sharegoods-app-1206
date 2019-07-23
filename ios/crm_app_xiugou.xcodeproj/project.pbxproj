@@ -326,6 +326,7 @@
 		CDAB6D20219AC5F800DE6716 /* TYWaveProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = CDAB6D1B219AC5F800DE6716 /* TYWaveProgressView.m */; };
 		CDAB6D21219AC5F800DE6716 /* TYWaterWaveView.m in Sources */ = {isa = PBXBuildFile; fileRef = CDAB6D1C219AC5F800DE6716 /* TYWaterWaveView.m */; };
 		CDAB6D24219AC74800DE6716 /* MRWaveView.m in Sources */ = {isa = PBXBuildFile; fileRef = CDAB6D23219AC74800DE6716 /* MRWaveView.m */; };
+		CDB33AE422E1940F000CCDCF /* SwichView.m in Sources */ = {isa = PBXBuildFile; fileRef = CDB33AE322E1940F000CCDCF /* SwichView.m */; };
 		CDCB5BDA2196DF71006B5F4E /* UIImage+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = CDCB5BD92196DF71006B5F4E /* UIImage+Util.m */; };
 /* End PBXBuildFile section */
 
@@ -798,6 +799,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 3400A8081CEB54A6008A0BC7;
 			remoteInfo = imageCropPicker;
+		};
+		CDB33AF022E19410000CCDCF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0347BAC12237CC670011184A /* Lottie.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6445B0D5207E0D4D00D84F6A;
+			remoteInfo = LottieLibraryMacOS;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -1446,6 +1454,8 @@
 		CDAB6D1E219AC5F800DE6716 /* TYWaveProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TYWaveProgressView.h; sourceTree = "<group>"; };
 		CDAB6D22219AC74800DE6716 /* MRWaveView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRWaveView.h; sourceTree = "<group>"; };
 		CDAB6D23219AC74800DE6716 /* MRWaveView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRWaveView.m; sourceTree = "<group>"; };
+		CDB33AE222E1940F000CCDCF /* SwichView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwichView.h; sourceTree = "<group>"; };
+		CDB33AE322E1940F000CCDCF /* SwichView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SwichView.m; sourceTree = "<group>"; };
 		CDCB5BD82196DF71006B5F4E /* UIImage+Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+Util.h"; sourceTree = "<group>"; };
 		CDCB5BD92196DF71006B5F4E /* UIImage+Util.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Util.m"; sourceTree = "<group>"; };
 		F223A756490300B42A2AB92D /* Pods-crm_app_xiugou.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-crm_app_xiugou.debug.xcconfig"; path = "Pods/Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1723,6 +1733,7 @@
 				0347BACB2237CC680011184A /* Lottie.framework */,
 				0347BACD2237CC680011184A /* Lottie.framework */,
 				0347BACF2237CC680011184A /* libLottie.a */,
+				CDB33AF122E19410000CCDCF /* libLottie.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3085,6 +3096,8 @@
 				CD5EB148221EA932007AAEE0 /* ShowCollectionReusableView.m */,
 				CD89B3F2224C9F8F006CCEF7 /* ASCollectionNode+ReloadIndexPaths.h */,
 				CD89B3F3224C9F8F006CCEF7 /* ASCollectionNode+ReloadIndexPaths.m */,
+				CDB33AE222E1940F000CCDCF /* SwichView.h */,
+				CDB33AE322E1940F000CCDCF /* SwichView.m */,
 			);
 			path = ShowGroundView;
 			sourceTree = "<group>";
@@ -3864,6 +3877,13 @@
 			remoteRef = CD67429721E43F5F00464549 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		CDB33AF122E19410000CCDCF /* libLottie.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLottie.a;
+			remoteRef = CDB33AF022E19410000CCDCF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -3991,8 +4011,6 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou-frameworks.sh",
 				"${PODS_ROOT}/AlivcConan/AlivcConan.framework",
@@ -4000,8 +4018,6 @@
 				"${PODS_ROOT}/QuCore-ThirdParty/frameworks/alivcffmpeg.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlivcConan.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AliyunVideoSDKPro.framework",
@@ -4263,6 +4279,7 @@
 				C4F2E47B22BE303100FF6213 /* IJSDrawingView.m in Sources */,
 				C4FB48D322DDBBEB007BBEBA /* AlivcImage.m in Sources */,
 				5068363A21379B78001AB175 /* SGQRCodeScanningView.m in Sources */,
+				CDB33AE422E1940F000CCDCF /* SwichView.m in Sources */,
 				C4F2E42322BE303100FF6213 /* SGRecordViewController.m in Sources */,
 				C4FB48CC22DDBB41007BBEBA /* AlivcRecordUIConfig.m in Sources */,
 				C4F2E42122BE303100FF6213 /* SGRecordManager.m in Sources */,

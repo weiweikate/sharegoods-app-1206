@@ -54,6 +54,7 @@ export default class HelperQuestionDetail extends BasePage {
             <View style={{ backgroundColor: DesignRule.bgColor, flex: 1 }}>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     {this.state.content ? <HTML html={this.state.content} imagesMaxWidth={ScreenUtils.width}
+                                                baseFontStyle={{lineHeight:20}}
                                                 containerStyle={{
                                                     backgroundColor: DesignRule.bgColor,
                                                     padding: 5

@@ -14,13 +14,14 @@ import ShowApi from './ShowApi';
 import { PageLoadingState } from '../../components/pageDecorator/PageState';
 import EmptyUtils from '../../utils/EmptyUtils';
 import user from '../../model/user';
-import RouterMap,{routeNavigate} from '../../navigation/RouterMap';
+import RouterMap, { routeNavigate } from '../../navigation/RouterMap';
 import { observer } from 'mobx-react';
 import CommShareModal from '../../comm/components/CommShareModal';
 import apiEnvironment from '../../api/ApiEnvironment';
 import { trackEvent } from '../../utils/SensorsTrack';
 import ShowListIndexModel from './model/ShowListIndexModel';
 import ProductListModal from './components/ProductListModal';
+
 const ShowVideoListView = requireNativeComponent('MrShowVideoListView');
 @observer
 export default class ShowVideoPage extends BasePage {
@@ -31,10 +32,11 @@ export default class ShowVideoPage extends BasePage {
 
     constructor(props) {
         super(props);
-        this.data = {}
+        this.data = {};
         this.state = {
-            detail:null,
-            pageState: PageLoadingState.loading
+            detail: null,
+            pageState: PageLoadingState.loading,
+            productModalVisible: false
         };
 
     }
@@ -61,41 +63,95 @@ export default class ShowVideoPage extends BasePage {
 
     _render() {
         if (this.state.pageState === PageLoadingState.success) {
-            const {detail } = this.state;
+            const { detail } = this.state;
 
             return (
                 <View style={{ flex: 1 }}>
                     <ShowVideoListView style={{ flex: 1 }}
-                                       onAttentionPress={()=>{
-                                           if(user.isLogin){
+                                       onAttentionPress={() => {
+                                           if (user.isLogin) {
 
-                                           }else {
+                                           } else {
                                                routeNavigate(RouterMap.LoginPage);
                                            }
                                        }}
                                        userCode={user.code}
-                                       onBack={()=>{
+                                       onBack={() => {
                                            this.$navigateBack(1);
                                        }}
-                                       onPressTag={({nativeEvent})=>{
+                                       onPressTag={({ nativeEvent }) => {
                                            this.$navigate(RouterMap.TagDetailPage, nativeEvent);
                                        }}
-                                       onSharePress={({nativeEvent})=>{
+                                       onSharePress={({ nativeEvent }) => {
                                            this.setState({ detail: null }, () => {
                                                this.setState({
-                                                   detail:nativeEvent.detail
+                                                   detail: nativeEvent
                                                }, () => {
                                                    this.shareModal && this.shareModal.open();
                                                });
                                            });
                                        }}
-                                       onBuy={({nativeEvent})=>{
+                                       onBuy={({ nativeEvent }) => {
                                            this.setState({ detail: null }, () => {
                                                this.setState({
-                                                   detail:nativeEvent,
-                                                   productModalVisible:true
+                                                   detail: nativeEvent,
+                                                   productModalVisible: true
                                                });
                                            });
+                                       }}
+                                       onDownloadPress={({ nativeEvent }) => {
+                                           if (user.isLogin) {
+                                               //TODO 下载功能
+                                               this.$toastShow('下载成功！');
+                                           } else {
+                                               routeNavigate(RouterMap.LoginPage);
+                                           }
+                                       }}
+                                       onCollection={({ nativeEvent }) => {
+                                           if (user.isLogin) {
+                                               if (!nativeEvent.collect) {
+                                                   ShowApi.reduceCountByType({
+                                                       showNo: nativeEvent.showNo,
+                                                       type: 2
+                                                   }).then(() => {
+
+                                                   }).catch(() => {
+
+                                                   });
+                                               } else {
+                                                   ShowApi.incrCountByType({
+                                                       showNo: nativeEvent.showNo,
+                                                       type: 2
+                                                   }).then(() => {
+
+                                                   }).catch(() => {
+
+                                                   });
+                                               }
+                                           } else {
+                                               routeNavigate(RouterMap.LoginPage);
+                                           }
+                                       }}
+                                       onZanPress={({ nativeEvent }) => {
+                                           if (!nativeEvent.like) {
+                                               ShowApi.reduceCountByType({
+                                                   showNo: nativeEvent.showNo,
+                                                   type: 1
+                                               }).then(() => {
+
+                                               }).catch(() => {
+
+                                               });
+                                           } else {
+                                               ShowApi.incrCountByType({
+                                                   showNo: nativeEvent.showNo,
+                                                   type: 1
+                                               }).then(() => {
+
+                                               }).catch(() => {
+
+                                               });
+                                           }
                                        }}
 
                                        isLogin={!EmptyUtils.isEmpty(user.token)}
@@ -132,19 +188,19 @@ export default class ShowVideoPage extends BasePage {
                                             dec: '好物不独享，内有惊喜福利~'
                                         }}
                         /> : null}
-                    {(detail&&detail.products) ? <ProductListModal visible={this.state.productModalVisible}
-                                                         pressProduct={(prodCode) => {
-                                                             this.setState({
-                                                                 productModalVisible: false
-                                                             });
-                                                             this.$navigate(RouterMap.ProductDetailPage, {
-                                                                 productCode: prodCode,
-                                                                 trackType: 3,
-                                                                 trackCode: detail.showNo
-                                                             });
-                                                         }}
-                                                         addCart={this.addCart}
-                                                         products={detail.products} requestClose={() => {
+                    {(detail && detail.products) ? <ProductListModal visible={this.state.productModalVisible}
+                                                                     pressProduct={(prodCode) => {
+                                                                         this.setState({
+                                                                             productModalVisible: false
+                                                                         });
+                                                                         this.$navigate(RouterMap.ProductDetailPage, {
+                                                                             productCode: prodCode,
+                                                                             trackType: 3,
+                                                                             trackCode: detail.showNo
+                                                                         });
+                                                                     }}
+                                                                     addCart={this.addCart}
+                                                                     products={detail.products} requestClose={() => {
                         this.setState({
                             productModalVisible: false
                         });

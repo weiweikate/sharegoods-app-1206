@@ -31,19 +31,19 @@ const QYChatTool = {
         QYApi.judgeVip().then(result => {
             let jsonParams = {
                 userId: user.code + '',
-                userIcon: user.headImg,
-                nickName: user.nickname,
+                userIcon: user.headImg||'',
+                nickName: user.nickname||'',
                 device: DeviceInfo.getDeviceName(),
                 systemVersion: DeviceInfo.getSystemVersion(),
-                isVip: result.data
+                isVip: result.data||false
             };
             JRQYService.initQYChat(jsonParams);
 
         }).catch(error => {
             let jsonParams = {
                 userId: user.code + '',
-                userIcon: user.headImg,
-                nickName: user.nickname,
+                userIcon: user.headImg||'',
+                nickName: user.nickname||'',
                 device: DeviceInfo.getDeviceName(),
                 systemVersion: DeviceInfo.getSystemVersion(),
                 isVip: false

@@ -33,7 +33,7 @@ import resCommon from '../../../comm/res';
 import user from '../../../model/user';
 import LinearGradient from 'react-native-linear-gradient';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
-import { track, trackEvent } from '../../../utils/SensorsTrack';
+import { trackEvent } from '../../../utils/SensorsTrack';
 import MyShopDetailModel from '../myShop/MyShopDetailModel';
 import { observer } from 'mobx-react';
 import { ShopBottomBannerView } from '../myShop/components/ShopDetailItemView';
@@ -144,9 +144,6 @@ export default class ShopRecruitPage extends BasePage {
                 storeData: dataTemp,
                 storeCode: storeNumber,
                 canOpen: maxUser && maxUser <= userCount
-            });
-            track(trackEvent.SeePingdian, {
-                pinCode: storeNumber
             });
         }).catch((error) => {
             this.setState({

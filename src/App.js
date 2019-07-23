@@ -8,12 +8,13 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import {
+    InteractionManager,
+    NativeAppEventEmitter,
+    NativeEventEmitter,
+    NativeModules,
     StyleSheet,
     Text,
-    View,
-    InteractionManager,
-    NativeAppEventEmitter, NativeModules, NativeEventEmitter
-    // Image
+    View
 } from 'react-native';
 import DebugButton from './components/debug/DebugButton';
 import { netStatus } from './comm/components/NoNetHighComponent';
@@ -55,22 +56,7 @@ if (__DEV__) {
         'waiting:',
         waitingModuleNames.length
     );
-} else {
-    // 非开发环境，屏蔽所有console
-    global.console = {
-        info: () => {
-        },
-        log: () => {
-        },
-        warn: () => {
-        },
-        debug: () => {
-        },
-        error: () => {
-        }
-    };
 }
-
 
 let codePushOptions = {
     checkFrequency: codePush.CheckFrequency.ON_APP_RESUME
@@ -107,6 +93,8 @@ class App extends Component {
     }
 
     componentDidMount() {
+        // 在加载完了，允许重启
+        codePush.allowRestart();
         this.subscription = NativeAppEventEmitter.addListener(
             'Event_navigateHtmlPage',
             (reminder) => {
@@ -118,11 +106,11 @@ class App extends Component {
                 }, 100);
             }
         );
-        // 在加载完了，允许重启
-        codePush.allowRestart();
         //初始化init  定位存储  和app变活跃 会定位
         InteractionManager.runAfterInteractions(() => {
             TimerMixin.setTimeout(() => {
+                // 移除启动页
+                bridge.removeLaunch();
                 checkInitResult().then((data) => {
                     loginModel.setAuthPhone(data);
                 }).catch((erro) => {
@@ -147,7 +135,6 @@ class App extends Component {
                 ScreenUtils.checkhasNotchScreen((data) => {
                     ScreenUtils.setHasNotchScreen(data);
                 });
-
             }, 3000);
         });
         this.listenerJSMessage = JSManagerEmitter.addListener('MINE_NATIVE_TO_RN_MSG', this.mineMessageData);
@@ -158,26 +145,26 @@ class App extends Component {
     }
 
 
-    mineMessageData = (data)=>{
+    mineMessageData = (data) => {
         const { params } = JSON.parse(data) || {};
-        if(params && Number(params.index) === 1){
-            console.log('JSPushData1',params);
+        if (params && Number(params.index) === 1) {
             settingModel.availableBalanceAdd(1);
         }
 
-        if(params && Number(params.index) === 2){
-            console.log('JSPushData2',params);
+        if (params && Number(params.index) === 2) {
             settingModel.userScoreAdd(1);
         }
 
-        if(params && Number(params.index) === 3){
-            console.log('JSPushData3',params);
+        if (params && Number(params.index) === 3) {
             settingModel.couponsAdd(1);
         }
 
-        if(params && Number(params.index) === 4){
-            console.log('JSPushData4',params);
+        if (params && Number(params.index) === 4) {
             settingModel.fansMSGAdd(1);
+        }
+
+        if (params && Number(params.index) === 5) {
+            settingModel.mainTaskAdd(1);
         }
     };
 

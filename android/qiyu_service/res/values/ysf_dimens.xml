@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- 通用 -->
-    <dimen name="ysf_action_bar_height">44dp</dimen>
-    <dimen name="ysf_title_bar_height">44dp</dimen>
+    <dimen name="ysf_action_bar_height">48dp</dimen>
+    <dimen name="ysf_title_bar_height">48dp</dimen>
     <dimen name="ysf_title_bar_text_size">@dimen/ysf_text_size_18</dimen>
     <dimen name="ysf_title_bar_icon_size">22.5dp</dimen>
     <dimen name="ysf_avatar_size">50dp</dimen>
@@ -15,7 +15,7 @@
     <!-- bubble -->
     <!-- 360 - 125 = 235 -->
     <dimen name="ysf_bubble_max_width">235dp</dimen>
-    <dimen name="ysf_bubble_content_max_width">228dp</dimen>
+    <dimen name="ysf_bubble_content_max_width">245dp</dimen>
     <dimen name="ysf_bubble_content_rich_image_max_width">202dp</dimen>
     <dimen name="ysf_bottom_component_margin_horizontal">6dp</dimen>
     <dimen name="ysf_bottom_component_margin_vertical">8dp</dimen>
@@ -26,6 +26,9 @@
     <dimen name="ysf_bubble_layout_margin_side">6dp</dimen>
     <dimen name="ysf_bubble_head_margin_horizontal">4dp</dimen>
     <dimen name="ysf_bubble_margin_top">2dp</dimen>
+
+    <!-- button -->
+    <dimen name="ysf_button_max_width">221dp</dimen>
 
     <!-- message -->
     <dimen name="ysf_message_action_list_height">220dp</dimen>
@@ -39,7 +42,12 @@
     <dimen name="ysf_message_input_height">30dp</dimen>
     <dimen name="ysf_message_faq_list_height">60dp</dimen>
 
+
     <!--text size-->
+    <dimen name="ysf_media_grid_spacing">4dp</dimen>
+    <dimen name="ysf_media_grid_size">48dp</dimen>
+    <dimen name="ysf_album_item_height">72dp</dimen>
+    <dimen name="ysf_grid_expected_size">120dp</dimen>
     <dimen name="ysf_text_size_9">9dp</dimen>
     <dimen name="ysf_text_size_10">10dp</dimen>
     <dimen name="ysf_text_size_11">11dp</dimen>
@@ -56,4 +64,7 @@
     <dimen name="ysf_text_size_22">22dp</dimen>
     <dimen name="ysf_text_size_23">23dp</dimen>
     <dimen name="ysf_text_size_24">24dp</dimen>
+
+    <!--text sp size-->
+    <dimen name="ysf_text_size_16sp">16sp</dimen>
 </resources>

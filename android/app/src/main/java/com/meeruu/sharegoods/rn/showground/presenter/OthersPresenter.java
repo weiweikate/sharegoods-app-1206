@@ -16,9 +16,9 @@ public class OthersPresenter {
     private IShowgroundModel showgroundModel;
     private WeakReference<IShowgroundView> showgroundViewWeakReference;
 
-    public OthersPresenter(IShowgroundView view) {
+    public OthersPresenter(IShowgroundView view,String userCode) {
         showgroundViewWeakReference = new WeakReference<>(view);
-        showgroundModel = new OtherModel();
+        showgroundModel = new OtherModel(userCode);
     }
 
     public void setParams(Map map) {

@@ -1,6 +1,5 @@
 import ShowListPage from './ShowListPage'
 import ShowDetailPage from './ShowDetailPage'
-import ShowGoodsPage from './ShowGoodsPage'
 import ShowConnectPage from './ShowConnectPage'
 import ShowDetailImagePage from './ShowDetailImagePage'
 import ReleaseNotesPage from './ReleaseNotesPage'
@@ -10,12 +9,12 @@ import MyDynamicPage from './MyDynamicPage'
 import TagSelectorPage from './TagSelectorPage'
 import TagDetailPage from './TagDetailPage'
 import ShowVideoPage from './ShowVideoPage'
+import FansListPage from './FansListPage'
 export default {
     moduleName: 'show',
     childRoutes: {
         ShowListPage,
         ShowDetailPage,
-        ShowGoodsPage,
         ShowConnectPage,
         ShowDetailImagePage,
         ReleaseNotesPage,
@@ -24,6 +23,7 @@ export default {
         MyDynamicPage,
         TagSelectorPage,
         TagDetailPage,
-        ShowVideoPage
+        ShowVideoPage,
+        FansListPage
     }
 }

@@ -112,7 +112,7 @@
   if (!_statusNode) {
     _statusNode = [ASTextNode new];
     NSString * statusStr = @"";
-    NSString * color = @"";
+    NSString * color = @"#999999";
     if(self.model.status==1){
       statusStr = @"已发布";
       color = @"#FF0050";

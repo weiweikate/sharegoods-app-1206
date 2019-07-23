@@ -1,9 +1,9 @@
 import React from 'react';
-import { Animated, StyleSheet, Image } from 'react-native';
+import { Animated, Image, StyleSheet } from 'react-native';
 import UIImage from '@mr/image-placeholder';
 import NoMoreClick from '../../components/ui/NoMoreClick';
 import ScreenUtils from '../../utils/ScreenUtils';
-import { observable, action, autorun } from 'mobx';
+import { action, autorun, observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { MRText } from '../../components/ui';
 import res from '../res';
@@ -83,7 +83,11 @@ export class IntervalMsgView extends React.Component {
         }
         return (
             <Animated.View
-                style={[styles.container, { ...style, opacity, transform: [{ translateX }] }]}>
+                style={[styles.container, {
+                    ...style,
+                    opacity,
+                    transform: [{ translateX }]
+                }]}>
                 <NoMoreClick style={styles.btn} onPress={() => this._onPress(showItem)}>
                     <UIImage style={styles.image} source={{ uri: headImg }}
                              isAvatar={true}/>
@@ -162,7 +166,7 @@ class IntervalMsgViewModel {
         }
 
         Animated.sequence([
-            Animated.delay(1500),
+            Animated.delay(1000),
             Animated.timing(
                 this.translateX,
                 { toValue: 0, duration: 500, useNativeDriver: true }
@@ -170,9 +174,8 @@ class IntervalMsgViewModel {
             Animated.delay(3000),
             Animated.timing(
                 this.opacity,
-                { toValue: 0, duration: 1000, useNativeDriver: true }
-            ),
-            Animated.delay(1500)
+                { toValue: 0, duration: 500, useNativeDriver: true }
+            )
         ]).start(
             () => {
                 /*复原*/
@@ -228,8 +231,7 @@ export function IntervalMsgNavigate(forwardType, keyCode, openShareModal) {
     } else if (forwardType === IntervalMsgType.showList) {
         GoToTabItem(1);
     } else if (forwardType === IntervalMsgType.alert) {
-    }
-    else {
+    } else {
         const router = IntervalMsgRouter[forwardType];
         if (router) {
             routePush(router, {

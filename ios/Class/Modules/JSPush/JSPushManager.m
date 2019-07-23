@@ -28,8 +28,6 @@
       DLog(@"极光------更新别名失败");
     }
   } seq:[[JSPushManager getNowTimeTimestamp] integerValue]];
-  
- 
 }
 
 +(void)deleteAlias{

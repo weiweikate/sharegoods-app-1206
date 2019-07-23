@@ -44,11 +44,8 @@ import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.util.Util;
 import com.meeruu.commonlib.callback.BaseCallback;
 import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
@@ -60,14 +57,15 @@ import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
 import com.meeruu.sharegoods.rn.showground.event.OnAttentionPressEvent;
 import com.meeruu.sharegoods.rn.showground.event.OnBackPressEvent;
 import com.meeruu.sharegoods.rn.showground.event.OnBuyEvent;
+import com.meeruu.sharegoods.rn.showground.event.OnCollectionEvent;
 import com.meeruu.sharegoods.rn.showground.event.OnPressTagEvent;
+import com.meeruu.sharegoods.rn.showground.event.onDownloadPressEvent;
 import com.meeruu.sharegoods.rn.showground.event.onSharePressEvent;
-import com.meeruu.sharegoods.rn.showground.event.onZanPressEvent;
+import com.meeruu.sharegoods.rn.showground.event.OnZanPressEvent;
 import com.meeruu.sharegoods.rn.showground.model.VideoModel;
 import com.meeruu.sharegoods.rn.showground.utils.CacheDataSourceFactory;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -84,8 +82,8 @@ public class VideoListView {
     private PlayerView videoView;
     private ExoPlayer exoPlayer;
     private VideoModel videoModel;
-    private boolean isLogin;
-    private String userCode;
+    public static boolean isLogin;
+    public static String userCode;
     /**
      * 数据是否到达最后一页
      */
@@ -227,33 +225,6 @@ public class VideoListView {
             }
         });
 
-//        attentionDetector = new GestureDetector(mContext,new GestureDetector.SimpleOnGestureListener(){
-//            @Override
-//            public boolean onSingleTapConfirmed(MotionEvent e) {
-//                //关注按钮点击事件
-//                if(isLogin){
-//                    NewestShowGroundBean.DataBean dataBean = getCurrentData();
-//                    String userNo = dataBean.getUserInfoVO().getUserNo();
-//                    if(dataBean.getAttentionStatus() == 0){
-//                        videoModel.attentionUser(userNo,null);
-//                        updateAttentions(userNo,true);
-//                        setAttentionView(true);
-//                    }else {
-//                        videoModel.notAttentionUser(userNo,null);
-//                        updateAttentions(userNo,false);
-//                        setAttentionView(false);
-//                    }
-//                }else {
-//                    pausePlay();
-//                    OnAttentionPressEvent attentionPressEvent = new OnAttentionPressEvent();
-//                    attentionPressEvent.init(view.getId());
-//                    eventDispatcher.dispatchEvent(attentionPressEvent);
-//                }
-//                return true;
-//            }
-//        });
-
-
         mPlayerViewContainer.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -327,7 +298,6 @@ public class VideoListView {
 
         this.videoModel = new VideoModel();
 
-        List list = new ArrayList<>();
         back = view.findViewById(R.id.back_icon);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -455,9 +425,7 @@ public class VideoListView {
                 String jsonStr = JSON.toJSONString(dataBean);
                 Map map = JSONObject.parseObject(jsonStr, new TypeReference<Map>() {
                 });
-                Map result = new HashMap();
-                result.put("detail", map);
-                WritableMap realData = Arguments.makeNativeMap(result);
+                WritableMap realData = Arguments.makeNativeMap(map);
                 onSharePressEvent.setData(realData);
                 eventDispatcher.dispatchEvent(onSharePressEvent);
             }
@@ -470,11 +438,40 @@ public class VideoListView {
         adapter.setVideoListCallback(new LittleVideoListAdapter.VideoListCallback() {
             @Override
             public void onDownload(NewestShowGroundBean.DataBean dataBean, int position) {
-
+                download(dataBean, position, view);
             }
 
             @Override
-            public void onCollection(NewestShowGroundBean.DataBean dataBean, int position) {
+            public void onCollection(NewestShowGroundBean.DataBean bean, int position) {
+                if (bean.isCollect()) {
+                    bean.setCollect(false);
+                    if (bean.getCollectCount() > 0) {
+                        bean.setCollectCount(bean.getCollectCount() - 1);
+                    }
+                } else {
+                    bean.setCollect(true);
+                    bean.setCollectCount(bean.getCollectCount() + 1);
+                }
+                if (eventDispatcher != null) {
+//            OnCollectionEvent onCollectionEvent = new OnCollectionEvent();
+//            onCollectionEvent.init(view.getId());
+//            String jsonStr = JSON.toJSONString(bean);
+//            Map map = JSONObject.parseObject(jsonStr);
+//            WritableMap realData = Arguments.makeNativeMap(map);
+//            onCollectionEvent.setData(realData);
+//            eventDispatcher.dispatchEvent(onCollectionEvent);
+                    OnCollectionEvent buyEvent = new OnCollectionEvent();
+                    buyEvent.init(view.getId());
+                    String jsonStr = JSON.toJSONString(bean);
+                    Map map = JSONObject.parseObject(jsonStr, new TypeReference<Map>() {
+                    });
+                    WritableMap realData = Arguments.makeNativeMap(map);
+                    buyEvent.setData(realData);
+                    eventDispatcher.dispatchEvent(buyEvent);
+                }
+                List list = adapter.getDataList();
+                list.set(position, bean);
+                adapter.notifyItemChanged(position, 1);
 
             }
 
@@ -510,6 +507,54 @@ public class VideoListView {
         });
     }
 
+    private void collection(NewestShowGroundBean.DataBean bean,final int position,View view){
+        if (bean.isCollect()) {
+            bean.setCollect(false);
+            if (bean.getCollectCount() > 0) {
+                bean.setCollectCount(bean.getCollectCount() - 1);
+            }
+        } else {
+            bean.setCollect(true);
+            bean.setCollectCount(bean.getCollectCount() + 1);
+        }
+        if (eventDispatcher != null) {
+//            OnCollectionEvent onCollectionEvent = new OnCollectionEvent();
+//            onCollectionEvent.init(view.getId());
+//            String jsonStr = JSON.toJSONString(bean);
+//            Map map = JSONObject.parseObject(jsonStr);
+//            WritableMap realData = Arguments.makeNativeMap(map);
+//            onCollectionEvent.setData(realData);
+//            eventDispatcher.dispatchEvent(onCollectionEvent);
+            OnCollectionEvent buyEvent = new OnCollectionEvent();
+            buyEvent.init(view.getId());
+            String jsonStr = JSON.toJSONString(bean);
+            Map map = JSONObject.parseObject(jsonStr, new TypeReference<Map>() {
+            });
+            WritableMap realData = Arguments.makeNativeMap(map);
+            buyEvent.setData(realData);
+            eventDispatcher.dispatchEvent(buyEvent);
+        }
+        List list = adapter.getDataList();
+        list.set(position, bean);
+        adapter.notifyItemChanged(position, 1);
+    }
+
+    private void download(NewestShowGroundBean.DataBean bean,final int position,View view){
+        if(isLogin){
+            bean.setDownloadCount(bean.getDownloadCount() + 1);
+            List list = adapter.getDataList();
+            list.set(position, bean);
+            adapter.notifyItemChanged(position, 1);
+        }
+        onDownloadPressEvent onDownloadPressEvent = new onDownloadPressEvent();
+        onDownloadPressEvent.init(view.getId());
+        String jsonStr = JSON.toJSONString(bean);
+        Map map = JSONObject.parseObject(jsonStr);
+        WritableMap realData = Arguments.makeNativeMap(map);
+        onDownloadPressEvent.setData(realData);
+        eventDispatcher.dispatchEvent(onDownloadPressEvent);
+    }
+
     private void like(NewestShowGroundBean.DataBean bean, final int position, View view) {
         if (bean.isLike()) {
             bean.setLike(false);
@@ -521,15 +566,11 @@ public class VideoListView {
             bean.setLikesCount(bean.getLikesCount() + 1);
         }
         if (eventDispatcher != null) {
-            onZanPressEvent onZanPressEvent = new onZanPressEvent();
+            OnZanPressEvent onZanPressEvent = new OnZanPressEvent();
             onZanPressEvent.init(view.getId());
             String jsonStr = JSON.toJSONString(bean);
-            Map map = JSONObject.parseObject(jsonStr, new TypeReference<Map>() {
-            });
-            Map result = new HashMap();
-            result.put("index", position);
-            result.put("detail", map);
-            WritableMap realData = Arguments.makeNativeMap(result);
+            Map map = JSONObject.parseObject(jsonStr);
+            WritableMap realData = Arguments.makeNativeMap(map);
             onZanPressEvent.setData(realData);
             eventDispatcher.dispatchEvent(onZanPressEvent);
         }
@@ -644,7 +685,6 @@ public class VideoListView {
 
     private MediaSource buildSource(String url) {
         Uri mp4VideoUri = Uri.parse(url);
-        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(mContext, Util.getUserAgent(mContext, ""));
         MediaSource videoSource = new ExtractorMediaSource(mp4VideoUri, new CacheDataSourceFactory(mContext, 100 * 1024 * 1024, 5 * 1024 * 1024), new DefaultExtractorsFactory(), mainHandler, null);
         return videoSource;
 
@@ -685,12 +725,12 @@ public class VideoListView {
         changeHeader(bean);
     }
 
-    public void setLogin(boolean isLogin) {
-        this.isLogin = isLogin;
+    public void setLogin(boolean login) {
+        isLogin = login;
     }
 
-    public void setUserCode(String userCode) {
-        this.userCode = userCode;
+    public void setUserCode(String code) {
+        userCode = code;
     }
 
     private void loadMoreData() {
@@ -718,7 +758,6 @@ public class VideoListView {
     public void setAdapter(LittleVideoListAdapter adapter) {
         this.adapter = adapter;
         recycler.setAdapter(adapter);
-//        this.list = adapter.getDataList();
     }
 
     private NewestShowGroundBean.DataBean getCurrentData() {

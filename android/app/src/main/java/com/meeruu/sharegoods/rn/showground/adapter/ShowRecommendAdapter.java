@@ -27,7 +27,6 @@ import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
 import com.meeruu.sharegoods.rn.showground.contacts.CommValue;
 import com.meeruu.sharegoods.rn.showground.utils.NumUtils;
-import com.meeruu.sharegoods.rn.showground.widgets.gridview.ImageInfo;
 import com.meeruu.sharegoods.rn.showground.widgets.gridview.NineGridView;
 import com.meeruu.sharegoods.rn.showground.widgets.gridview.NineGridViewAdapter;
 
@@ -39,23 +38,20 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
     private ProductsAdapter.AddCartListener addCartListener;
     private ProductsAdapter.PressProductListener pressProductListener;
     private String type;
-    private static int maxWidth = ScreenUtils.getScreenWidth() - DensityUtils.dip2px(90);
+    public static int maxWidth = ScreenUtils.getScreenWidth() - DensityUtils.dip2px(90);
     private static int radius_5 = DensityUtils.dip2px(5);
-    private static int imgWidth = ScreenUtils.getScreenWidth() - DensityUtils.dip2px(60);
-    private static int videoWidth = (ScreenUtils.getScreenWidth() - DensityUtils.dip2px(76)) / 3 * 2;
-    public static int userImgW = DensityUtils.dip2px(30f);
+    public static int videoOrImageWH = (ScreenUtils.getScreenWidth() - DensityUtils.dip2px(76)) / 3 * 2;
+    public static int userImgWH = DensityUtils.dip2px(30f);
 
     public ShowRecommendAdapter(NineGridView.clickL clickL, ProductsAdapter.AddCartListener addCartListener, ProductsAdapter.PressProductListener pressProductListener) {
         super(new ArrayList<NewestShowGroundBean.DataBean>());
         NineGridView.setImageLoader(new NineGridView.ImageLoader() {
             @Override
-            public void onDisplayImage(Context context, SimpleDraweeView imageView, ImageInfo imageInfo) {
-                String url = imageInfo.getImageUrl();
+            public void onDisplayImage(Context context, SimpleDraweeView imageView, String url, int width) {
                 String tag = (String) imageView.getTag();
                 if (!TextUtils.equals(tag, url)) {
                     imageView.setTag(url);
-                    ImageLoadUtils.loadRoundNetImage(url, imageView, imageInfo.getImageViewWidth(),
-                            imageInfo.getImageViewHeight(), radius_5);
+                    ImageLoadUtils.loadRoundNetImage(url, imageView, width, width, radius_5);
                 }
             }
         });
@@ -100,7 +96,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
             ImageLoadUtils.loadImageResAsCircle(userIcon.getContext(), R.drawable.bg_app_user, userIcon);
         } else {
             if (!TextUtils.equals(userUrl, userTag)) {
-                ImageLoadUtils.loadCircleNetImage(userUrl, userIcon, userImgW, userImgW);
+                ImageLoadUtils.loadCircleNetImage(userUrl, userIcon, userImgWH, userImgWH);
                 userIcon.setTag(userUrl);
             }
         }
@@ -124,13 +120,25 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
             content.setVisibility(View.GONE);
             content.setTag(titleStr);
         }
+        ImageView hand = helper.getView(R.id.icon_hand);
+        if(item.isLike()){
+            hand.setImageResource(R.mipmap.icon_liked);
+        }else {
+            hand.setImageResource(R.mipmap.icon_hand_gray);
+        }
+        ImageView collect = helper.getView(R.id.icon_collection);
+        if (item.isCollect()) {
+            collect.setImageResource(R.mipmap.icon_collected);
+        } else {
+            collect.setImageResource(R.mipmap.icon_collection_gray);
+        }
 
         TextView name = helper.getView(R.id.user_name);
         name.setText(item.getUserInfoVO().getUserName());
 
         TextView download = helper.getView(R.id.download_num);
 
-        download.setText(item.getDownloadCount() + "");
+        download.setText(NumUtils.formatShowNum(item.getDownloadCount()));
 
         TextView like = helper.getView(R.id.like_num);
         like.setText(NumUtils.formatShowNum(item.getHotCount()));
@@ -138,16 +146,15 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         SimpleDraweeView coverView = helper.getView(R.id.iv_cover);
 
         //九宫格数据在网络请求完APP端处理的
-        ImageInfo coverData = item.getVideoCover();
         String coverTag = (String) coverView.getTag();
-        String coverDataStr = JSONObject.toJSONString(coverData);
-        if (!TextUtils.equals(coverTag, coverDataStr)) {
-            coverView.setTag(coverDataStr);
+        if (!TextUtils.equals(coverTag, item.getVideoCover())) {
+            coverView.setTag(item.getVideoCover());
             FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) coverView.getLayoutParams();
-            layoutParams.width = videoWidth;
-            layoutParams.height = videoWidth;
+            layoutParams.width = videoOrImageWH;
+            layoutParams.height = videoOrImageWH;
             coverView.setLayoutParams(layoutParams);
-            ImageLoadUtils.loadRoundNetImage(coverData.getImageUrl(), coverView, videoWidth, videoWidth, radius_5);
+            ImageLoadUtils.loadRoundNetImage(item.getVideoCover(), coverView, videoOrImageWH,
+                    videoOrImageWH, radius_5);
         }
 
         RecyclerView recyclerView = helper.getView(R.id.product_list);
@@ -193,7 +200,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
             ivRecommend.setVisibility(View.GONE);
         }
 
-        helper.addOnClickListener(R.id.icon_download, R.id.icon_share, R.id.content);
+        helper.addOnClickListener(R.id.icon_download, R.id.icon_share, R.id.content,R.id.icon_hand,R.id.icon_collection,R.id.user_icon);
     }
 
     private void covertImageText(final BaseViewHolder helper, final NewestShowGroundBean.DataBean item) {
@@ -204,13 +211,34 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
             ImageLoadUtils.loadImageResAsCircle(userIcon.getContext(), R.drawable.bg_app_user, userIcon);
         } else {
             if (!TextUtils.equals(userUrl, userTag)) {
-                ImageLoadUtils.loadCircleNetImage(userUrl, userIcon, userImgW, userImgW);
+                ImageLoadUtils.loadCircleNetImage(userUrl, userIcon, userImgWH, userImgWH);
                 userIcon.setTag(userUrl);
             }
         }
+        ImageView hand = helper.getView(R.id.icon_hand);
+        if(item.isLike()){
+            hand.setImageResource(R.mipmap.icon_liked);
+        }else {
+            hand.setImageResource(R.mipmap.icon_hand_gray);
+        }
+        ImageView collect = helper.getView(R.id.icon_collection);
+        if (item.isCollect()) {
+            collect.setImageResource(R.mipmap.icon_collected);
+        } else {
+            collect.setImageResource(R.mipmap.icon_collection_gray);
+        }
+
+        TextView collectNum = helper.getView(R.id.collection_num);
+        collectNum.setText(NumUtils.formatShowNum(item.getCollectCount()));
 
         TextView name = helper.getView(R.id.user_name);
         name.setText(item.getUserInfoVO().getUserName());
+
+        TextView tvHot =helper.getView(R.id.tv_hotCount);
+        tvHot.setText(NumUtils.formatShowNum(item.getHotCount()));
+
+        TextView tvCollection = helper.getView(R.id.collection_num);
+        tvCollection.setText(NumUtils.formatShowNum(item.getCollectCount()));
 
         TextView publishTime = helper.getView(R.id.publish_time);
         if (!TextUtils.isEmpty(item.getPublishTimeStr())) {
@@ -220,7 +248,9 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         }
 
         TextView like = helper.getView(R.id.like_num);
-        like.setText(NumUtils.formatShowNum(item.getHotCount()));
+        like.setText(NumUtils.formatShowNum(item.getLikesCount()));
+        TextView hot = helper.getView(R.id.tv_hotCount);
+        hot.setText(NumUtils.formatShowNum(item.getHotCount()));
 
         TextView title = helper.getView(R.id.title);
         title.setText(item.getTitle() + "");
@@ -231,20 +261,17 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
             String url = item.getResource().get(0).getUrl();
             if (!TextUtils.equals(url, tag)) {
                 simpleDraweeView.setTag(url);
-                int width = imgWidth;
-                int height = width / 29 * 16;
                 LinearLayout.LayoutParams linearParams = (LinearLayout.LayoutParams) simpleDraweeView.getLayoutParams();
-                linearParams.height = height;
-                linearParams.width = width;
+                linearParams.height = videoOrImageWH;
                 simpleDraweeView.setLayoutParams(linearParams);
-                ImageLoadUtils.loadRoundNetImage(url, simpleDraweeView, width, height, radius_5);
+                ImageLoadUtils.loadRoundNetImage(url, simpleDraweeView, videoOrImageWH, maxWidth, radius_5);
                 simpleDraweeView.setVisibility(View.VISIBLE);
             }
         } else {
             simpleDraweeView.setVisibility(View.GONE);
         }
 
-        helper.addOnClickListener(R.id.icon_share);
+        helper.addOnClickListener(R.id.icon_share,R.id.content,R.id.icon_hand,R.id.icon_collection,R.id.user_icon);
     }
 
 
@@ -257,7 +284,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
             ImageLoadUtils.loadImageResAsCircle(userIcon.getContext(), R.drawable.bg_app_user, userIcon);
         } else {
             if (!TextUtils.equals(userUrl, userTag)) {
-                ImageLoadUtils.loadCircleNetImage(userUrl, userIcon, userImgW, userImgW);
+                ImageLoadUtils.loadCircleNetImage(userUrl, userIcon, userImgWH, userImgWH);
                 userIcon.setTag(userUrl);
             }
         }
@@ -268,6 +295,12 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         } else {
             publishTime.setText("");
         }
+
+        TextView tvHot =helper.getView(R.id.tv_hotCount);
+        tvHot.setText(NumUtils.formatShowNum(item.getHotCount()));
+
+        TextView tvCollection = helper.getView(R.id.collection_num);
+        tvCollection.setText(NumUtils.formatShowNum(item.getCollectCount()));
 
         String titleStr = item.getContent();
         if (titleStr != null && titleStr.trim().length() > 0) {
@@ -282,20 +315,33 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
             content.setTag(titleStr);
         }
 
+        ImageView hand = helper.getView(R.id.icon_hand);
+        if(item.isLike()){
+            hand.setImageResource(R.mipmap.icon_liked);
+        }else {
+            hand.setImageResource(R.mipmap.icon_hand_gray);
+        }
+        ImageView collect = helper.getView(R.id.icon_collection);
+        if (item.isCollect()) {
+            collect.setImageResource(R.mipmap.icon_collected);
+        } else {
+            collect.setImageResource(R.mipmap.icon_collection_gray);
+        }
+
         TextView name = helper.getView(R.id.user_name);
         name.setText(item.getUserInfoVO().getUserName());
 
         TextView download = helper.getView(R.id.download_num);
 
-        download.setText(item.getDownloadCount() + "");
+        download.setText(NumUtils.formatShowNum(item.getDownloadCount()));
 
         TextView like = helper.getView(R.id.like_num);
-        like.setText(NumUtils.formatShowNum(item.getHotCount()));
+        like.setText(NumUtils.formatShowNum(item.getLikesCount()));
 
         NineGridView nineGridView = helper.getView(R.id.nine_grid);
 
         //九宫格数据在网络请求完APP端处理的
-        List<ImageInfo> imageInfoList = item.getNineImageInfos();
+        List<String> imageInfoList = item.getImgUrls();
 
         if (this.clickL != null) {
             nineGridView.setClick(clickL);
@@ -358,7 +404,6 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         } else {
             ivRecommend.setVisibility(View.GONE);
         }
-
-        helper.addOnClickListener(R.id.icon_download, R.id.icon_share, R.id.content);
+        helper.addOnClickListener(R.id.icon_download, R.id.icon_share, R.id.content,R.id.icon_collection,R.id.icon_hand,R.id.user_icon);
     }
 }

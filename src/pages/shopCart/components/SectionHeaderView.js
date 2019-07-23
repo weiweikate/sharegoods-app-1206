@@ -13,18 +13,8 @@
 'use strict';
 import { observer } from 'mobx-react';
 import React, { Component } from 'react';
-
-
-import {
-    View,
-    StyleSheet,
-    Alert,
-    Text
-} from 'react-native';
-import {
-    MRText,
-    UIText
-} from '../../../components/ui';
+import { View, StyleSheet, Alert, Text } from 'react-native';
+import { MRText, UIText } from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import PropTypes from 'prop-types';
@@ -32,7 +22,6 @@ import shopCartCacheTool from '../model/ShopCartCacheTool';
 import RouterMap, { routePush } from '../../../navigation/RouterMap';
 import StringUtils from '../../../utils/StringUtils';
 import bridge from '../../../utils/bridge';
-// import ShopCartEmptyView from './ShopCartEmptyView';
 import { shopCartEmptyModel } from '../model/ShopCartEmptyModel';
 import ShopCartEmptyCell from './ShopCartEmptyCell';
 import { TrackApi } from '../../../utils/SensorsTrack';
@@ -59,9 +48,6 @@ export default class SectionHeaderView extends Component {
     constructor(props) {
         super(props);
         this.state = {};
-    }
-
-    componentDidMount() {
     }
 
     render() {
@@ -98,7 +84,7 @@ export default class SectionHeaderView extends Component {
                 });
             }}/>);
         });
-        //删掉他娘头部空视图 ok？
+        //删除头部视图
         viewItemList.shift();
         return (
             <View style={{
@@ -125,93 +111,46 @@ export default class SectionHeaderView extends Component {
     };
     _renderInvaildView = (sectionData) => {
         return (
-            <View
-                style={styles.bgViewStyle}
-            >
-                <View
-                    style={styles.invaildTopContentBgStyle}
-                >
+            <View style={styles.bgViewStyle}>
+                <View style={styles.invaildTopContentBgStyle}>
                     {/*中部文字*/}
-                    <View
-                        style={styles.middleTextBgStyle}
-                    >
-                        <UIText
-                            style={styles.middleTextStyle}
-                            numberOfLines={2}
-                            value={'失效宝贝' + sectionData.data.length + '件'}
-                        />
+                    <View style={styles.middleTextBgStyle}>
+                        <UIText style={styles.middleTextStyle} numberOfLines={2}
+                                value={'失效宝贝' + sectionData.data.length + '件'}/>
                     </View>
-                    <View
-                        style={
-                            styles.rightTextBgView
-                        }
-                    >
-                        <UIText
-                            value={'清空失效宝贝'}
-                            style={
-                                styles.rightTextStyle
-                            }
-                            onPress={() => {
-                                this.clearAllInvaildGood();
-                            }}
-                        />
+                    <View style={styles.rightTextBgView}>
+                        <UIText value={'清空失效宝贝'} style={styles.rightTextStyle}
+                                onPress={() => {
+                                    this.clearAllInvaildGood();
+                                }}/>
                     </View>
                 </View>
                 {/*底部分割线*/}
-                <View
-                    style={styles.bottomLineStyle}
-                />
+                <View style={styles.bottomLineStyle}/>
             </View>
         );
 
     };
     _renderNormalHeaderView = (sectionData) => {
         return (
-            <View
-                style={styles.bgViewStyle}
-            >
-                <View
-                    style={styles.topContentBgStyle}
-                >
-                    <View
-                        style={styles.leftTipBgStyle}
-                    >
-                        <UIText
-                            value={'经验翻倍'}
-                            style={styles.leftTextStyle}
-                        />
+            <View style={styles.bgViewStyle}>
+                <View style={styles.topContentBgStyle}>
+                    <View style={styles.leftTipBgStyle}>
+                        <UIText value={'经验翻倍'} style={styles.leftTextStyle}/>
                     </View>
                     {/*中部文字*/}
-                    <View
-                        style={styles.middleTextBgStyle}
-                    >
-                        <UIText
-                            style={styles.middleTextStyle}
-                            numberOfLines={2}
-                            value={sectionData.middleTitle}
-                        />
+                    <View style={styles.middleTextBgStyle}>
+                        <UIText style={styles.middleTextStyle} numberOfLines={2} value={sectionData.middleTitle}/>
                     </View>
-                    <View
-                        style={
-                            styles.rightTextBgView
-                        }
-                    >
-                        <UIText
-                            value={'去凑单 >'}
-
-                            style={
-                                styles.rightTextStyle
-                            }
-                            onPress={() => {
-                                this.collectBills();
-                            }}
-                        />
+                    <View style={styles.rightTextBgView}>
+                        <UIText value={'去凑单 >'} style={styles.rightTextStyle}
+                                onPress={() => {
+                                    this.collectBills();
+                                }}/>
                     </View>
                 </View>
                 {/*底部分割线*/}
-                <View
-                    style={styles.bottomLineStyle}
-                />
+                <View style={styles.bottomLineStyle}/>
             </View>
         );
     };

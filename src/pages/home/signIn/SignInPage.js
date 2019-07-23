@@ -9,7 +9,8 @@ import {
     TouchableOpacity,
     ImageBackground,
     Image,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    ScrollView
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -28,18 +29,34 @@ import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import { track, TrackApi, trackEvent } from '../../../utils/SensorsTrack';
-
 import { MRText as Text } from '../../../components/ui';
 import CommModal from '../../../comm/components/CommModal';
 import { homeModule } from '../model/Modules';
 import RouterMap from '../../../navigation/RouterMap';
+import LinearGradient from 'react-native-linear-gradient';
+import TaskVIew from '../view/TaskVIew';
+import { mineTaskModel } from '../model/TaskModel';
+
+const platformHeight = 10;
 
 const {
-    sign_in_bg: signInImageBg,
-    showbean_icon: showBeanIcon,
     coupons_bg: couponBackground,
-    modal_close: modalClose
+    modal_close: modalClose,
+    signin_header: headerBg,
+    white_bg: whiteBg,
+    signinButton,
+    noSigninButton
 } = res.signIn;
+const {
+    back_white,
+    back_black
+} = res.button;
+const headerHeight = ScreenUtils.statusBarHeight + 44;
+const size = {
+    width: 375,
+    height: 241
+};
+const headerBgHeight = ScreenUtils.getImgHeightWithWidth(size);
 
 @observer
 export default class SignInPage extends BasePage {
@@ -53,13 +70,14 @@ export default class SignInPage extends BasePage {
             signInData: null,
             exchangeData: null,
             showModal: false,
-            modalInfo: null
+            modalInfo: null,
+            changeHeader: true
         };
     }
 
     $navigationBarOptions = {
         title: '签到',
-        show: true// false则隐藏导航
+        show: false// false则隐藏导航
     };
 
     $isMonitorNetworkStatus() {
@@ -76,15 +94,6 @@ export default class SignInPage extends BasePage {
         };
     };
 
-    $NavBarRenderRightItem = () => {
-        return (
-            <TouchableOpacity onPress={this.showMore}>
-                <Text style={styles.rightItemStyle}>
-                    签到规则
-                </Text>
-            </TouchableOpacity>
-        );
-    };
 
     componentWillMount() {
         this.didFocusSubscription = this.props.navigation.addListener(
@@ -92,6 +101,7 @@ export default class SignInPage extends BasePage {
             payload => {
                 if (user.token) {
                     this.loadPageData();
+                    mineTaskModel.getData();
                 } else {
                     if (this.first) {
                         this.loadPageData();
@@ -227,34 +237,28 @@ export default class SignInPage extends BasePage {
         });
     };
 
-    //**********************************ViewPart******************************************
-    _signInButtonRender() {
-        let fontSize = px2dp(22);
-        if (user.userScore) {
-            let str = user.userScore + '';
-            if (str.length > 4) {
-                fontSize = px2dp(16);
-            }
+
+    _onScroll = (event) => {
+        let Y = event.nativeEvent.contentOffset.y;
+        if (Y <= 200) {
+            this.st = Y / 200;
+            this.setState({
+                changeHeader: true
+            });
+        } else {
+            this.st = 1;
+            this.setState({
+                changeHeader: false
+            });
         }
 
-        return (
-            <TouchableWithoutFeedback onPress={() => {
-                this.$toastShow('今天已签到！');
-            }}>
-                <View style={styles.signInButtonWrapper}>
-                    <Image style={styles.showBeanIconStyle} resizeMode={'stretch'} source={showBeanIcon}/>
-                    <Text style={[styles.showBeanTextStyle, { fontSize: fontSize }]}>
-                        {user.userScore ? user.userScore : 0}
-                    </Text>
-                </View>
-            </TouchableWithoutFeedback>
-        );
-    }
+        this.headerBg.setNativeProps({
+            opacity: this.st
+        });
+    };
 
-    _smallLineRenderWithColor(color) {
-        return (<View style={{ backgroundColor: color, height: px2dp(1), width: px2dp(15) }}/>);
-    }
 
+    //**********************************ViewPart******************************************
     _signInInfoRender = () => {
         let circlesView = this.state.signInData.map((item, index) => {
             let kind, count;
@@ -280,7 +284,7 @@ export default class SignInPage extends BasePage {
             } else {
                 return (
                     <View key={'circle' + index} style={styles.signInItemWrapper}>
-                        <View style={{ backgroundColor: index < 4 ? 'white' : '#c6b478', height: px2dp(1), flex: 1 }}/>
+                        <View style={{ flex: 1 }}/>
                         <SignInCircleView count={count} kind={kind}/>
                     </View>
                 );
@@ -296,126 +300,218 @@ export default class SignInPage extends BasePage {
         });
 
         return (
-            <View style={styles.signInInfoWrapper}>
-                <View style={styles.circleWrapper}>
-                    {this._smallLineRenderWithColor('white')}
-                    {circlesView}
-                    {this._smallLineRenderWithColor('#c6b478')}
-                </View>
+            <ImageBackground source={whiteBg} resizeMode={'stretch'} style={styles.signInInfoWrapper}>
                 <View style={styles.dateWrapper}>
                     {datesView}
+                </View>
+                <View style={styles.circleWrapper}>
+                    {circlesView}
+                </View>
+                {this._signButton()}
+            </ImageBackground>
+        );
+    };
+
+    _signButton = () => {
+        let hasSign = !EmptyUtils.isEmpty(this.state.signInData[3].continuous);
+
+        if (hasSign) {
+            let count;
+            if (this.state.signInData[3].continuous) {
+                count = this.state.signInData[3].continuous;
+            } else {
+                count = this.state.signInData[2].continuous ? this.state.signInData[2].continuous : 0;
+            }
+            return (
+                <ImageBackground source={signinButton}
+                                 style={{
+                                     height: px2dp(56),
+                                     width: px2dp(291),
+                                     marginTop: px2dp(20),
+                                     alignItems: 'center',
+                                     alignSelf: 'center',
+                                     justifyContent: 'center',
+                                     borderRadius: px2dp(20)
+                                 }}>
+                    <Text style={{
+                        color: DesignRule.white,
+                        fontSize: px2dp(16),
+                        marginTop: px2dp(-5)
+                    }}>
+                        {`已连续签到${count}天`}
+                    </Text>
+                </ImageBackground>
+            );
+        }
+        return (
+            <TouchableWithoutFeedback onPress={this.userSign}>
+                <View>
+                    <ImageBackground source={noSigninButton}
+                                     style={{
+                                         height: px2dp(56),
+                                         width: px2dp(291),
+                                         marginTop: px2dp(20),
+                                         justifyContent: 'center',
+                                         alignItems: 'center',
+                                         alignSelf: 'center',
+                                         borderRadius: px2dp(20)
+                                     }}>
+                        <Text style={{
+                            color: DesignRule.white, fontSize: px2dp(16),
+                            marginTop: px2dp(-5)
+                        }}>
+                            签到有礼
+                        </Text>
+                    </ImageBackground>
+                </View>
+            </TouchableWithoutFeedback>
+        );
+
+    };
+
+    _couponRender() {
+        let bgWidth = DesignRule.width - px2dp(14);
+        let bgHeight = ScreenUtils.getImgHeightWithWidth({ width: 361, height: 96 }, bgWidth);
+        return (
+            <View>
+                <View style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    marginBottom: px2dp(12),
+                    marginTop: px2dp(15),
+                    marginLeft: DesignRule.margin_page
+                }}>
+                    <View style={{ width: 2, height: 8, backgroundColor: DesignRule.mainColor }}/>
+                    <Text
+                        style={{
+                            marginLeft: px2dp(10),
+                            color: DesignRule.textColor_secondTitle,
+                            fontSize: px2dp(16)
+                        }}>
+                        其他福利
+                    </Text>
+                </View>
+                <ImageBackground source={couponBackground} style={{
+                    height: bgHeight,
+                    width: bgWidth,
+                    alignItems: 'center',
+                    flexDirection: 'row',
+                    marginLeft: px2dp(8)
+                }}>
+                    <View style={styles.couponTextWrapper}>
+                        <Text style={styles.couponNameTextStyle}>
+                            秀豆兑换1元现金券
+                        </Text>
+                        <Text style={styles.couponTagTextStyle}>
+                            {`${this.state.exchangeData}秀豆兑换1张劵\n无兑换限制，点击即可兑换`}
+                        </Text>
+                    </View>
+                    <View style={{ flex: 1 }}/>
+                    <TouchableWithoutFeedback onPress={this.exchangeCoupon}>
+                        <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+                                        colors={['#FC5D39', '#FF0050']}
+                                        style={styles.convertButtonStyle}>
+                            <Text style={styles.convertTextStyle}>
+                                立即兑换
+                            </Text>
+                        </LinearGradient>
+                    </TouchableWithoutFeedback>
+                </ImageBackground>
+            </View>
+        );
+    }
+
+    navRender = () => {
+        return (
+            <View
+                style={{ position: 'absolute', top: 0, left: 0, right: 0 }}>
+                <View style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    paddingHorizontal: px2dp(15),
+                    height: headerHeight,
+                    paddingTop: ScreenUtils.statusBarHeight
+                }}>
+                    <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row' }}>
+                        <TouchableOpacity
+                            style={styles.left}
+                            onPress={() => {
+                                this.props.navigation.goBack();
+                            }}>
+                            <Image
+                                source={this.state.changeHeader ? back_white : back_black}
+                                resizeMode={'stretch'}
+                                style={{ height: 20, width: 20 }}
+                            />
+                        </TouchableOpacity>
+                    </View>
+                    <Text style={{
+                        color: this.state.changeHeader ? DesignRule.white : DesignRule.textColor_mainTitle,
+                        fontSize: px2dp(17),
+                        includeFontPadding: false
+                    }}>
+                        签到
+                    </Text>
+                    <View style={{ flex: 1, justifyContent: 'flex-end', flexDirection: 'row' }}>
+                        <TouchableWithoutFeedback onPress={this.showMore}>
+                            <Text style={{
+                                color: this.state.changeHeader ? DesignRule.white : DesignRule.textColor_mainTitle,
+                                fontSize: px2dp(12),
+                                includeFontPadding: false
+                            }}>
+                                签到规则
+                            </Text>
+                        </TouchableWithoutFeedback>
+                    </View>
+
                 </View>
             </View>
         );
     };
 
-    _couponRender() {
+    navBackgroundRender() {
         return (
-            <ImageBackground source={couponBackground} style={styles.couponBgStyle}>
-                <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
-                    <Text style={{
-                        color: DesignRule.mainColor,
-                        fontSize: px2dp(36),
-                        marginLeft: px2dp(30),
-                        includeFontPadding: false,
-                        textAlignVertical: 'bottom'
-                    }}>
-                        1
-                    </Text>
-                    <Text style={{ color: DesignRule.mainColor, fontSize: px2dp(14), marginBottom: 8 }}>元</Text>
-                </View>
-                <View style={styles.couponTextWrapper}>
-                    <Text style={styles.couponNameTextStyle}>
-                        现金券
-                    </Text>
-                    <Text style={styles.couponTagTextStyle}>
-                        全场通用/无时间限制
-                    </Text>
-                </View>
-                <View style={{ flex: 1 }}/>
-                <View style={styles.convertWrapper}>
-                    <Text style={{
-                        color: DesignRule.textColor_mainTitle,
-                        fontSize: px2dp(12),
-                        includeFontPadding: false
-                    }}>
-                        消耗秀豆
-                    </Text>
-                    <Text style={{ color: DesignRule.mainColor, fontSize: px2dp(12), includeFontPadding: false }}>
-                        {`-- ${this.state.exchangeData} --`}
-                    </Text>
-                    <TouchableWithoutFeedback onPress={this.exchangeCoupon}>
-                        <View style={styles.convertButtonStyle}>
-                            <Text style={styles.convertTextStyle}>
-                                立即兑换
-                            </Text>
-                        </View>
-                    </TouchableWithoutFeedback>
-                </View>
-            </ImageBackground>
+            <View ref={(ref) => this.headerBg = ref}
+                  style={{
+                      backgroundColor: 'white',
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: headerHeight,
+                      opacity: 0
+                  }}/>
         );
     }
 
     _headerIconRender() {
-        let hasSign = !EmptyUtils.isEmpty(this.state.signInData[3].continuous);
-        let view = hasSign ? this._hasSignRender() : this._willSignRender();
-        return view;
+
+        return (
+            <ImageBackground source={headerBg} style={{ width: DesignRule.width, height: headerBgHeight }}>
+                <Text style={{
+                    marginTop: px2dp(70),
+                    color: DesignRule.white,
+                    marginLeft: px2dp(34),
+                    fontSize: DesignRule.fontSize_threeTitle
+                }}>
+                    我的秀豆
+                </Text>
+                <Text style={{
+                    color: DesignRule.white,
+                    fontSize: px2dp(50),
+                    marginLeft: px2dp(34),
+                    marginTop: px2dp(5),
+                    fontWeight: 'bold',
+                    includeFontPadding: false
+                }}>
+                    {user.userScore ? user.userScore : 0}
+                </Text>
+            </ImageBackground>
+        );
+
 
     }
 
-    _hasSignRender = () => {
-        let count;
-        if (this.state.signInData[3].continuous) {
-            count = this.state.signInData[3].continuous;
-        } else {
-            count = this.state.signInData[2].continuous ? this.state.signInData[2].continuous : 0;
-        }
-        return (
-            <ImageBackground
-                source={signInImageBg}
-                style={styles.headerImageStyle}
-                resizeMode={'stretch'}>
-                {this._signInButtonRender()}
-                <Text style={styles.signInCountTextStyle}>
-                    {`连续签到${count}天`}
-                </Text>
-            </ImageBackground>
-        );
-    };
-
-    _willSignRender = () => {
-        let count;
-        if (this.state.signInData[3].continuous) {
-            count = this.state.signInData[3].continuous;
-        } else {
-            count = this.state.signInData[2].continuous ? this.state.signInData[2].continuous : 0;
-        }
-        return (
-            <ImageBackground
-                source={signInImageBg}
-                style={styles.headerImageStyle}
-                resizeMode={'stretch'}>
-                <TouchableWithoutFeedback onPress={this.userSign}>
-                    <View style={styles.signInButtonWrapper}>
-                        <Text style={styles.willSignTextStyle}>
-                            签
-                        </Text>
-                    </View>
-                </TouchableWithoutFeedback>
-                <Text style={styles.signInCountTextStyle}>
-                    {`连续签到${count}天`}
-                </Text>
-            </ImageBackground>
-        );
-    };
-
-    _reminderRender = () => {
-        return (
-            <Text style={styles.reminderStyle}>
-                {`注：${this.state.exchangeData}秀豆兑换1张券，无兑换限制，点击即可兑换`}
-            </Text>
-        );
-    };
 
     _modalPress = () => {
         this.setState({
@@ -461,18 +557,18 @@ export default class SignInPage extends BasePage {
 
         return (
             <View style={styles.container}>
-                {this._headerIconRender()}
-                {this.state.signInData ? this._signInInfoRender() : null}
-                {this.state.exchangeData ? this._couponRender() : null}
-                {this.state.exchangeData ? this._reminderRender() : null}
-                <View style={{ flex: 1 }}/>
-                <TouchableWithoutFeedback onPress={() => this.$navigate(RouterMap.CouponsPage)}>
-                    <View>
-                        <Text style={styles.couponsTextStyle}>
-                            已有{user.tokenCoin ? user.tokenCoin : 0}张现金券>
-                        </Text>
-                    </View>
-                </TouchableWithoutFeedback>
+                <ScrollView
+                    onScroll={this._onScroll}
+                    showsVerticalScrollIndicator={false}>
+                    {this._headerIconRender()}
+                    {this.state.signInData ? this._signInInfoRender() : null}
+                    <TaskVIew type={'mine'}
+                              style={{ marginTop: platformHeight, backgroundColor: '#F7F7F7', paddingBottom: 0 }}/>
+                    {this.state.exchangeData ? this._couponRender() : null}
+                    {/*{this.state.exchangeData ? this._reminderRender() : null}*/}
+                </ScrollView>
+                {this.navBackgroundRender()}
+                {this.navRender()}
                 {this._signModalRender()}
             </View>
         );
@@ -509,18 +605,17 @@ const styles = StyleSheet.create({
         marginTop: px2dp(10)
     },
     signInInfoWrapper: {
-        width: ScreenUtils.width - px2dp(30),
-        height: px2dp(110),
-        borderRadius: px2dp(5),
-        backgroundColor: '#d4c59e',
-        justifyContent: 'space-between',
-        paddingVertical: px2dp(25),
-        marginTop: px2dp(-30),
-        marginLeft: px2dp(15)
+        width: ScreenUtils.width - px2dp(14),
+        paddingTop: px2dp(29),
+        marginTop: px2dp(-67),
+        marginLeft: px2dp(7),
+        paddingBottom: px2dp(37)
     },
     circleWrapper: {
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        paddingHorizontal: px2dp(21),
+        marginTop: px2dp(15)
     },
     signInItemWrapper: {
         flexDirection: 'row',
@@ -529,11 +624,11 @@ const styles = StyleSheet.create({
     },
     dateWrapper: {
         flexDirection: 'row',
-        paddingHorizontal: px2dp(15),
+        paddingHorizontal: px2dp(23),
         justifyContent: 'space-between'
     },
     dateTextStyle: {
-        color: 'white',
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(11)
     },
     showBeanIconStyle: {
@@ -544,7 +639,7 @@ const styles = StyleSheet.create({
         color: 'white'
     },
     couponBgStyle: {
-        height: px2dp(94),
+        height: px2dp(80),
         width: ScreenUtils.width - px2dp(30),
         marginLeft: px2dp(15),
         alignItems: 'center',
@@ -552,17 +647,19 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     couponNameTextStyle: {
-        color: DesignRule.textColor_mainTitle,
-        fontSize: px2dp(14)
+        color: DesignRule.textColor_mainTitle_222,
+        fontSize: px2dp(16),
+        fontWeight: 'bold'
     },
     couponTagTextStyle: {
         color: DesignRule.textColor_secondTitle,
-        fontSize: px2dp(12)
+        fontSize: px2dp(10)
     },
     couponTextWrapper: {
-        paddingVertical: px2dp(26),
+        paddingVertical: px2dp(13),
         justifyContent: 'space-between',
-        marginLeft: px2dp(30)
+        marginLeft: px2dp(78),
+        marginTop: -3
     },
     convertWrapper: {
         alignItems: 'center',
@@ -571,12 +668,13 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     convertButtonStyle: {
-        height: px2dp(20),
-        width: px2dp(68),
-        borderRadius: px2dp(10),
+        height: px2dp(28),
+        width: px2dp(70),
+        borderRadius: px2dp(14),
         backgroundColor: DesignRule.mainColor,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginRight: px2dp(15)
     },
     convertTextStyle: {
         color: 'white',

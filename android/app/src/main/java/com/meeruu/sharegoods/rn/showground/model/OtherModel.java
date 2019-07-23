@@ -16,6 +16,11 @@ public class OtherModel  implements IShowgroundModel{
     private String uri = "";
     private Map rnParams = new HashMap();
     private String requestType = GET;
+    private String userCode;
+
+    public OtherModel(String userCode){
+        this.userCode = userCode;
+    }
 
     @Override
     public void fetchRecommendList(int page, int size, final BaseCallback callback) {
@@ -23,6 +28,7 @@ public class OtherModel  implements IShowgroundModel{
         HashMap params = new HashMap();
         params.put("size", size + "");
         params.put("page", page + "");
+        params.put("userCode",userCode);
         params.putAll(this.rnParams);
         showgroundRequestConfig.setParams(params);
         switch (this.requestType){

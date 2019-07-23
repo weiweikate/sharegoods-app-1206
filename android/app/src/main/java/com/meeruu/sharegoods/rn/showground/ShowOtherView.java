@@ -24,15 +24,12 @@ import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.sharegoods.R;
-import com.meeruu.sharegoods.rn.showground.adapter.CollectionAdapter;
 import com.meeruu.sharegoods.rn.showground.adapter.ShowGroundAdapter;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
-import com.meeruu.sharegoods.rn.showground.presenter.CollectionPresenter;
 import com.meeruu.sharegoods.rn.showground.presenter.OthersPresenter;
 import com.meeruu.sharegoods.rn.showground.view.IShowgroundView;
 import com.meeruu.sharegoods.rn.showground.widgets.CustomLoadMoreView;
 import com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView;
-import com.meeruu.sharegoods.rn.showground.widgets.gridview.ImageInfo;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -51,14 +48,15 @@ public class ShowOtherView  implements IShowgroundView, SwipeRefreshLayout.OnRef
     private StaggeredGridLayoutManager layoutManager;
     private int page = 1;
     private OthersPresenter presenter;
+    private String userCode;
 
-    public ViewGroup getShowOtherView(ReactContext reactContext){
+    public ViewGroup getShowOtherView(ReactContext reactContext,String userCode){
         eventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
+        this.userCode = userCode;
         LayoutInflater inflater = LayoutInflater.from(reactContext);
         View view = inflater.inflate(R.layout.view_showground, null);
         initView(reactContext, view);
         initData();
-
         return (ViewGroup) view;
     }
 
@@ -94,11 +92,6 @@ public class ShowOtherView  implements IShowgroundView, SwipeRefreshLayout.OnRef
                 onRefresh();
             }
         }, 200);
-//        itemPressEvent = new onItemPressEvent();
-//        startRefreshEvent = new onStartRefreshEvent();
-//        startScrollEvent = new onStartScrollEvent();
-//        onScrollYEvent = new onScrollYEvent();
-//        endScrollEvent = new onEndScrollEvent();
         setRecyclerViewItemEvent(view);
         adapter = new ShowGroundAdapter();
         adapter.setPreLoadNumber(3);
@@ -240,7 +233,7 @@ public class ShowOtherView  implements IShowgroundView, SwipeRefreshLayout.OnRef
     }
 
     private void initData() {
-        presenter = new OthersPresenter(this);
+        presenter = new OthersPresenter(this,userCode);
     }
 
     private void setEmptyText() {
@@ -316,24 +309,22 @@ public class ShowOtherView  implements IShowgroundView, SwipeRefreshLayout.OnRef
                 NewestShowGroundBean.DataBean bean = (NewestShowGroundBean.DataBean) data.get(i);
                 if (bean.getItemType() == 1 || bean.getItemType() == 3) {
                     List<NewestShowGroundBean.DataBean.ResourceBean> resource = bean.getResource();
-                    List<ImageInfo> resolveResource = new ArrayList<>();
+                    List<String> resolveResource = new ArrayList<>();
                     if (resource != null) {
                         for (int j = 0; j < resource.size(); j++) {
                             NewestShowGroundBean.DataBean.ResourceBean resourceBean = resource.get(j);
                             if (resourceBean.getType() == 2) {
-                                ImageInfo imageInfo = new ImageInfo();
-                                imageInfo.setImageUrl(resourceBean.getUrl());
-                                resolveResource.add(imageInfo);
+
+                                resolveResource.add(resourceBean.getUrl());
                             }
 
                             if(resourceBean.getType() == 5){
-                                ImageInfo imageInfo = new ImageInfo();
-                                imageInfo.setImageUrl(resourceBean.getUrl());
-                                bean.setVideoCover(imageInfo);
+
+                                bean.setVideoCover(resourceBean.getUrl());
                                 break;
                             }
                         }
-                        bean.setNineImageInfos(resolveResource);
+//                        bean.setNineImageInfos(resolveResource);
                     }
                     data.set(i, bean);
                 }

@@ -87,6 +87,7 @@
 - (void)removeLaunch
 {
   self.adView.isLoadJS = YES;
+  self.isLoadJS = YES;
 }
 
 - (void)configureUserAgent {

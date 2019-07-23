@@ -1,10 +1,5 @@
 import React, { Component } from 'react';
-import {
-    View,
-    StyleSheet,
-    Animated,
-    Easing
-} from 'react-native';
+import { Animated, Easing, StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 import DesignRule from '../../constants/DesignRule';
 
@@ -99,10 +94,14 @@ export default class CustomProgress extends Component {
                     height: height
                 }
             });
-            //开始执行进度条动画
-            this._startAniProgress(this.progress);
-            //开始执行buffer动画
-            this._startAniBuffer(this.buffer);
+            if (this.progress && this.progress >= 0) {
+                //开始执行进度条动画
+                this._startAniProgress(this.progress);
+            }
+            if (this.buffer && this.buffer >= 0) {
+                //开始执行buffer动画
+                this._startAniBuffer(this.buffer);
+            }
         }
     }
 

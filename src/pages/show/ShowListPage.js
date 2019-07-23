@@ -6,7 +6,8 @@ import {
     Image,
     BackHandler,
     InteractionManager,
-    DeviceEventEmitter, TouchableWithoutFeedback
+    DeviceEventEmitter, TouchableWithoutFeedback,
+    Platform
 } from 'react-native';
 import BasePage from '../../BasePage';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
@@ -210,14 +211,16 @@ export default class ShowListPage extends BasePage {
             this.$navigate(RouterMap.LoginPage);
             return;
         }
-        this.$navigate(RouterMap.MyDynamicPage);
+        this.$navigate(RouterMap.MyDynamicPage, { userType: WhiteModel.userStatus === 2 ? 'mineWriter' : 'mineNormal' });
     };
 
     _render() {
         const { left, needsExpensive, detail } = this.state;
         let HotView = null;
+        let AttentionView = null;
         if (needsExpensive) {
             HotView = require('./ShowHotView').default;
+            AttentionView = Platform.OS === 'ios' ?HotView:require('./ShowAttentionPage').default;
         }
         let icon = (user.headImg && user.headImg.length > 0) ?
             <AvatarImage source={{ uri: user.headImg }} style={styles.userIcon}
@@ -260,30 +263,36 @@ export default class ShowListPage extends BasePage {
                 </TouchableWithoutFeedback>
                 <View style={{ flex: 1 }}/>
                 <View style={styles.titleView}>
-                    <TouchableOpacity style={styles.items} onPress={() => this._gotoPage(0)}>
+                    <TouchableOpacity style={[styles.items, { marginRight: px2dp(20) }]}
+                                      onPress={() => this._gotoPage(0)}>
                         <Text style={[ShowListIndexModel.pageIndex === 0 ? styles.activityIndex : styles.index]}
-                              allowFontScaling={false}>推荐</Text>
+                              allowFontScaling={false}>关注</Text>
                         {ShowListIndexModel.pageIndex === 0 ? <View style={styles.line}/> : null}
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.items} onPress={() => this._gotoPage(1)}>
+                        <Text style={[ShowListIndexModel.pageIndex === 1 ? styles.activityIndex : styles.index]}
+                              allowFontScaling={false}>推荐</Text>
+                        {ShowListIndexModel.pageIndex === 1 ? <View style={styles.line}/> : null}
                     </TouchableOpacity>
                     <View style={{ width: px2dp(20) }}/>
                     <TouchableOpacity style={[{ marginRight: px2dp(20) }, styles.items]}
-                                      onPress={() => this._gotoPage(1)}>
-                        <Text style={ShowListIndexModel.pageIndex === 1 ? styles.activityIndex : styles.index}
-                              allowFontScaling={false}>素材圈</Text>
-                        {ShowListIndexModel.pageIndex === 1 ? <View style={styles.line}/> : null}
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={[styles.items, { marginRight: px2dp(20) }]}
                                       onPress={() => this._gotoPage(2)}>
                         <Text style={ShowListIndexModel.pageIndex === 2 ? styles.activityIndex : styles.index}
-                              allowFontScaling={false}>发现</Text>
+                              allowFontScaling={false}>素材圈</Text>
                         {ShowListIndexModel.pageIndex === 2 ? <View style={styles.line}/> : null}
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.items} onPress={() => this._gotoPage(3)}>
+                    <TouchableOpacity style={[styles.items, { marginRight: px2dp(20) }]}
+                                      onPress={() => this._gotoPage(3)}>
                         <Text style={ShowListIndexModel.pageIndex === 3 ? styles.activityIndex : styles.index}
-                              allowFontScaling={false}>活动</Text>
+                              allowFontScaling={false}>发现</Text>
                         {ShowListIndexModel.pageIndex === 3 ? <View style={styles.line}/> : null}
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.items} onPress={() => this._gotoPage(4)}>
+                        <Text style={ShowListIndexModel.pageIndex === 4 ? styles.activityIndex : styles.index}
+                              allowFontScaling={false}>活动</Text>
+                        {ShowListIndexModel.pageIndex === 4 ? <View style={styles.line}/> : null}
                     </TouchableOpacity>
                 </View>
                 <View style={{ flex: 1 }}/>
@@ -300,6 +309,24 @@ export default class ShowListPage extends BasePage {
                 onChangeTab={(number) => this._onChangeTab(number)}
                 showsVerticalScrollIndicator={false}
             >
+                <View key={0} style={styles.container} tabLabel="">
+                    {
+                        needsExpensive
+                            ?
+                            <AttentionView ref={(ref) => {
+                                this.hotList = ref;
+                            }}
+                                     uri={'/social/show/content/page/query/attention@GET'}
+                                     hasBanner={false}
+                                     navigate={this.$navigate}
+                                     pageFocus={this.state.pageFocused}
+                                     onShare={(item) => {
+                                         this._setDetail(item.detail);
+                                     }}/>
+                            :
+                            null
+                    }
+                </View>
                 <View key={1} style={styles.container} tabLabel="">
                     {
                         needsExpensive
@@ -307,9 +334,13 @@ export default class ShowListPage extends BasePage {
                             <HotView ref={(ref) => {
                                 this.hotList = ref;
                             }}
-                                     navigate={this.$navigate} pageFocus={this.state.pageFocused} onShare={(item) => {
-                                this._setDetail(item.detail);
-                            }}/>
+                                     hasBanner={true}
+                                     uri={'/social/show/content/page/query@GET'}
+                                     navigate={this.$navigate}
+                                     pageFocus={this.state.pageFocused}
+                                     onShare={(item) => {
+                                         this._setDetail(item.detail);
+                                     }}/>
                             :
                             null
                     }
@@ -357,8 +388,10 @@ export default class ShowListPage extends BasePage {
                                                            ref: this.activityList,
                                                            index
                                                        };
-                                                       if (data.showType === 1 || data.showType === 3) {
+                                                       if (data.showType === 1) {
                                                            navigate(RouterMap.ShowDetailPage, params);
+                                                       } else if (data.showType === 3) {
+                                                           navigate(RouterMap.ShowVideoPage, params);
                                                        } else if (data.showType === 4) {
                                                            navigate(RouterMap.TagDetailPage, {
                                                                tagId: data.tagId,

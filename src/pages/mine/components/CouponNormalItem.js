@@ -25,7 +25,6 @@ export default class CouponNormalItem extends Component {
         console.log('item',item)
         let stateImg = item.status === 1 ? res.couponsImg.youhuiquan_icon_yishiyong :
             (item.status === 2 ? res.couponsImg.youhuiquan_icon_yishixiao : item.status === 3 ? (res.couponsImg.youhuiquan_icon_daijihuo) : null);
-
         return(
             <TouchableOpacity style={{ backgroundColor: DesignRule.bgColor, marginBottom: 5 }}
                               onPress={() => {console.log('item',item);this.props.ticketClickItem && this.props.ticketClickItem()}}>
@@ -48,7 +47,7 @@ export default class CouponNormalItem extends Component {
                                 <View>
                                     <Text style={{
                                         fontSize: (item.value && (item.value + '').length < 3 ? 34 : 20),
-                                        fontWeight:'600',
+                                        fontWeight:'400',
                                         color: item.status === 0 ? (item.levelimit ? '#FF80A7' : '#FF0050') : '#FF80A7',
                                     }} allowFontScaling={false}>{item.value}</Text>
                                 </View>
@@ -66,7 +65,7 @@ export default class CouponNormalItem extends Component {
                             <View style={{ flexDirection: 'row' }}>
                                 <Text style={{
                                     fontSize: 16,
-                                    fontWeight:'600',
+                                    fontWeight:'400',
                                     color: item.status === 0 ? '#222222' : DesignRule.textColor_instruction,
                                 }} allowFontScaling={false} numberOfLines={0}>
                                     {item.name}</Text>

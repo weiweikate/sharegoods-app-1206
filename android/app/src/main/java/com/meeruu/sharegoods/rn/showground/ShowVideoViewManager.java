@@ -5,8 +5,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -57,8 +59,9 @@ public class ShowVideoViewManager extends SimpleViewManager<View> {
     }
 
     @ReactProp(name = "params")
-    public void initData(View view, String map) {
-        NewestShowGroundBean.DataBean videoListBean = JSON.parseObject(map, NewestShowGroundBean.DataBean.class);
+    public void initData(View view, ReadableMap map) {
+        HashMap data = map.toHashMap();
+        NewestShowGroundBean.DataBean videoListBean = JSON.parseObject(JSONObject.toJSONString(data), NewestShowGroundBean.DataBean.class);
         List<NewestShowGroundBean.DataBean> list = new ArrayList<NewestShowGroundBean.DataBean>();
         list.add(videoListBean);
         ((VideoListView) view.getTag()).refreshData(list);
@@ -83,6 +86,9 @@ public class ShowVideoViewManager extends SimpleViewManager<View> {
                 .put("MrSharePress", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onSharePress")))
                 .put("MrPressTagEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onPressTag")))
                 .put("MrBuyEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onBuy")))
+                .put("MrDownloadPressEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onDownloadPress")))
+                .put("MrZanPressEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onZanPress")))
+                .put("MrCollectionEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onCollection")))
                 .build();
     }
 }

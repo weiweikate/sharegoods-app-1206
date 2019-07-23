@@ -5,8 +5,6 @@ import MineApi from '../../mine/api/MineApi';
 import user from '../../../model/user';
 import shopCartCacheTool from './ShopCartCacheTool';
 import { QYChatTool } from '../../../utils/QYModule/QYChatTool';
-
-// import testData from './testData';
 class ShopCartStore {
 
     needSelectGoods = [];

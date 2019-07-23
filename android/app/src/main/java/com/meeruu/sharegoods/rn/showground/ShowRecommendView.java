@@ -29,13 +29,15 @@ import com.facebook.react.uimanager.events.EventDispatcher;
 import com.meeruu.commonlib.handler.WeakHandler;
 import com.meeruu.commonlib.tool.FastScrollLinearLayoutManager;
 import com.meeruu.commonlib.utils.DensityUtils;
-import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.adapter.ProductsAdapter;
 import com.meeruu.sharegoods.rn.showground.adapter.ShowRecommendAdapter;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
+import com.meeruu.sharegoods.rn.showground.event.OnCollectionEvent;
+import com.meeruu.sharegoods.rn.showground.event.OnSeeUserEvent;
+import com.meeruu.sharegoods.rn.showground.event.OnZanPressEvent;
 import com.meeruu.sharegoods.rn.showground.event.addCartEvent;
 import com.meeruu.sharegoods.rn.showground.event.onDownloadPressEvent;
 import com.meeruu.sharegoods.rn.showground.event.onEndScrollEvent;
@@ -47,16 +49,15 @@ import com.meeruu.sharegoods.rn.showground.event.onScrollYEvent;
 import com.meeruu.sharegoods.rn.showground.event.onSharePressEvent;
 import com.meeruu.sharegoods.rn.showground.event.onStartRefreshEvent;
 import com.meeruu.sharegoods.rn.showground.event.onStartScrollEvent;
-import com.meeruu.sharegoods.rn.showground.event.onZanPressEvent;
 import com.meeruu.sharegoods.rn.showground.presenter.ShowgroundPresenter;
 import com.meeruu.sharegoods.rn.showground.view.IShowgroundView;
 import com.meeruu.sharegoods.rn.showground.widgets.CustomLoadMoreView;
-import com.meeruu.sharegoods.rn.showground.widgets.gridview.ImageInfo;
-import com.meeruu.sharegoods.rn.showground.widgets.gridview.NineGridView;
 import com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView;
+import com.meeruu.sharegoods.rn.showground.widgets.gridview.NineGridView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,7 +68,9 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
     private EventDispatcher eventDispatcher;
     private onStartScrollEvent startScrollEvent;
     private onEndScrollEvent endScrollEvent;
-    private onZanPressEvent onZanPressEvent;
+    private OnZanPressEvent onZanPressEvent;
+    private OnSeeUserEvent onSeeUserEvent;
+    private OnCollectionEvent onCollectionEvent;
     private onSharePressEvent onSharePressEvent;
     private onDownloadPressEvent onDownloadPressEvent;
     private onScrollYEvent onScrollYEvent;
@@ -80,6 +83,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
     private View errView;
     private View errImg;
     private boolean sIsScrolling;
+    public static boolean isLogin;
 
     private int page = 1;
 
@@ -92,6 +96,10 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         initData();
 
         return (ViewGroup) view;
+    }
+
+    public void setLogin(boolean login){
+        isLogin = login;
     }
 
     public void initView(Context context, final View view) {
@@ -118,7 +126,9 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         startScrollEvent = new onStartScrollEvent();
         endScrollEvent = new onEndScrollEvent();
         itemPressEvent = new onItemPressEvent();
-        onZanPressEvent = new onZanPressEvent();
+        onZanPressEvent = new OnZanPressEvent();
+        onSeeUserEvent = new OnSeeUserEvent();
+        onCollectionEvent = new OnCollectionEvent();
         onDownloadPressEvent = new onDownloadPressEvent();
         onSharePressEvent = new onSharePressEvent();
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -148,7 +158,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         });
         ProductsAdapter.AddCartListener addCartListener = new ProductsAdapter.AddCartListener() {
             @Override
-            public void onAddCart(String product,String detail) {
+            public void onAddCart(String product, String detail) {
                 addCartEvent.init(view.getId());
                 WritableMap map = Arguments.createMap();
                 map.putString("product", product);
@@ -160,7 +170,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
 
         ProductsAdapter.PressProductListener pressProductListener = new ProductsAdapter.PressProductListener() {
             @Override
-            public void onPressProduct(String product,String detail) {
+            public void onPressProduct(String product, String detail) {
                 onPressProductEvent onPressProductEvent = new onPressProductEvent();
                 onPressProductEvent.init(view.getId());
                 WritableMap writableMap = Arguments.createMap();
@@ -236,20 +246,6 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
                     eventDispatcher.dispatchEvent(onScrollYEvent);
                 }
             }
-
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-
-                if (newState == RecyclerView.SCROLL_STATE_DRAGGING || newState == RecyclerView.SCROLL_STATE_SETTLING) {
-                    sIsScrolling = true;
-                    ImageLoadUtils.pauseLoadImage();
-                } else if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (sIsScrolling == true) {
-                        ImageLoadUtils.resumeLoadImage();
-                    }
-                    sIsScrolling = false;
-                }
-            }
         });
     }
 
@@ -299,6 +295,12 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
                         break;
                     case R.id.content:
                         toDetail(position, view);
+                        break;
+                    case R.id.icon_collection:
+                        delayCollection(bean, view, position, data);
+                        break;
+                    case R.id.user_icon:
+                        delaySeeUser(bean, view, position, data);
                         break;
                     default:
                         break;
@@ -374,6 +376,53 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         data.set(position, bean);
         adapter.replaceData(data);
     }
+
+    private void delaySeeUser(NewestShowGroundBean.DataBean bean, View view, int position,
+    List<NewestShowGroundBean.DataBean> data) {
+        if (eventDispatcher != null) {
+            onSeeUserEvent.init(view.getId());
+            String jsonStr = JSON.toJSONString(bean);
+            Map map = JSONObject.parseObject(jsonStr, new TypeReference<Map>() {
+            });
+            WritableMap realData = Arguments.makeNativeMap(map);
+            onSeeUserEvent.setData(realData);
+            eventDispatcher.dispatchEvent(onSeeUserEvent);
+        }
+    }
+
+      private void delayCollection(NewestShowGroundBean.DataBean bean, View view, int position,
+                             List<NewestShowGroundBean.DataBean> data) {
+        if(!isLogin){
+            onCollectionEvent.init(view.getId());
+            eventDispatcher.dispatchEvent(onCollectionEvent);
+            return;
+        }
+        if (bean.isCollect()) {
+            bean.setCollect(false);
+            if (bean.getCollectCount() > 0) {
+                bean.setCollectCount(bean.getCollectCount() - 1);
+            }
+        } else {
+            bean.setCollect(true);
+            bean.setCollectCount(bean.getCollectCount() + 1);
+        }
+        if (eventDispatcher != null) {
+            onCollectionEvent.init(view.getId());
+            String jsonStr = JSON.toJSONString(bean);
+            Map map = JSONObject.parseObject(jsonStr, new TypeReference<Map>() {
+            });
+            Map result = new HashMap();
+            result.put("index", position);
+            result.put("detail", map);
+            WritableMap realData = Arguments.makeNativeMap(result);
+            onCollectionEvent.setData(realData);
+            eventDispatcher.dispatchEvent(onCollectionEvent);
+        }
+        data.set(position, bean);
+        adapter.replaceData(data);
+    }
+
+
 
 
     private void delayDownload(View view, int position, NewestShowGroundBean.DataBean bean) {
@@ -458,26 +507,27 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
                 NewestShowGroundBean.DataBean bean = (NewestShowGroundBean.DataBean) data.get(i);
                 if (bean.getItemType() == 1 || bean.getItemType() == 3) {
                     List<NewestShowGroundBean.DataBean.ResourceBean> resource = bean.getResource();
-                    List<ImageInfo> resolveResource = new ArrayList<>();
+                    List<String> resolveResource = new ArrayList<>();
                     if (resource != null) {
                         for (int j = 0; j < resource.size(); j++) {
                             NewestShowGroundBean.DataBean.ResourceBean resourceBean = resource.get(j);
                             if (resourceBean.getType() == 2) {
-                                ImageInfo imageInfo = new ImageInfo();
-                                imageInfo.setImageUrl(resourceBean.getUrl());
-                                resolveResource.add(imageInfo);
+                                resolveResource.add(resourceBean.getUrl());
                             }
 
-                            if(resourceBean.getType() == 5){
-                                ImageInfo imageInfo = new ImageInfo();
-                                imageInfo.setImageUrl(resourceBean.getUrl());
-                                bean.setVideoCover(imageInfo);
+                            if (resourceBean.getType() == 5) {
+                                bean.setVideoCover(resourceBean.getUrl());
                                 break;
                             }
                         }
-                        bean.setNineImageInfos(resolveResource);
+                        bean.setImgUrls(resolveResource);
                     }
                     data.set(i, bean);
+                }
+                //处理product中的空值
+                List products = bean.getProducts();
+                if (products != null && products.size() > 0) {
+                    products.removeAll(Collections.singleton(null));
                 }
             }
         }
@@ -526,7 +576,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         }
     }
 
-    public void setType(String type){
+    public void setType(String type) {
         adapter.setType(type);
     }
 

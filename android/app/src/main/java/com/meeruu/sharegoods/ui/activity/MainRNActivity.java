@@ -31,6 +31,7 @@ import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.commonlib.utils.Utils;
 import com.meeruu.sharegoods.R;
+import com.meeruu.sharegoods.event.HideSplashEvent;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
 import com.meeruu.sharegoods.event.VersionUpdateEvent;
 import com.meeruu.sharegoods.rn.preload.PreLoadReactDelegate;
@@ -64,6 +65,7 @@ public class MainRNActivity extends ReactActivity {
     private WeakHandler myHandler;
     private String lastVersion;
     private ReactApplicationContext mContext;
+    private boolean needLoading = true;
 
     /**
      * Returns the name of the main component registered from JavaScript.
@@ -101,7 +103,7 @@ public class MainRNActivity extends ReactActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initHandler();
+        initEvent();
         initStatus();
         initServiceConn();
     }
@@ -111,6 +113,9 @@ public class MainRNActivity extends ReactActivity {
         super.onStart();
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
+        }
+        if (!isShowLoadingDialog && needLoading && getIntent().getBooleanExtra("showLoading", true)) {
+            onLoadingEvent(new LoadingDialogEvent(true, "加载中"));
         }
     }
 
@@ -174,7 +179,8 @@ public class MainRNActivity extends ReactActivity {
                 .init();
     }
 
-    private void initHandler() {
+    private void initEvent() {
+        // 初始化handler
         myHandler = new WeakHandler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
@@ -304,6 +310,14 @@ public class MainRNActivity extends ReactActivity {
         } else {
             isShowLoadingDialog = false;
             mLoadingDialog.dismiss();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void hideSplash(HideSplashEvent event) {
+        needLoading = false;
+        if (isShowLoadingDialog) {
+            onLoadingEvent(new LoadingDialogEvent(false, "加载中"));
         }
     }
 

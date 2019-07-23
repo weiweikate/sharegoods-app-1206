@@ -1,11 +1,18 @@
 import { createBottomTabNavigator } from 'react-navigation';
 import React, { Component } from 'react';
-import { DeviceEventEmitter, Text, View, TouchableWithoutFeedback } from 'react-native';
+import {
+    DeviceEventEmitter,
+    Image,
+    ImageBackground,
+    StyleSheet,
+    Text,
+    TouchableWithoutFeedback,
+    View
+} from 'react-native';
 import Home from '../pages/home/HomePage';
 import Mine from '../pages/mine/page/MinePage';
 import ShopCart from '../pages/shopCart/page/ShopCartPage';
 import MyShop_RecruitPage from '../pages/spellShop/MyShop_RecruitPage';
-import { StyleSheet, Image, ImageBackground } from 'react-native';
 import res from '../comm/res';
 import ScreenUtils from '../utils/ScreenUtils';
 import ShowListPage from '../pages/show/ShowListPage';
@@ -16,18 +23,18 @@ import DesignRule from '../constants/DesignRule';
 import { observer } from 'mobx-react';
 import { autorun } from 'mobx';
 import Animation from 'lottie-react-native';
-import { navigateBackToStore } from './RouterMap';
-import RouterMap from './RouterMap';
+import RouterMap, { navigateBackToStore } from './RouterMap';
 
 
 @observer
 class NormalTab extends Component {
-    render(){
-        const {source,title} = this.props;
+    render() {
+        const { source, title } = this.props;
         return <View style={styles.tab}>
             <View>
                 <Image style={styles.tabBarIcon} source={source}/>
-                {user.isLogin && title === '我的' && (settingModel.availableBalance > 0 || settingModel.userScore > 0 || settingModel.coupons > 0 || settingModel.fansMSG > 0) ?
+                {user.isLogin && title === '我的' && (settingModel.availableBalance > 0 || settingModel.userScore > 0
+                    || settingModel.coupons > 0 || settingModel.fansMSG > 0 || settingModel.mainTask > 0) ?
                     <Image source={res.other.dot} style={styles.mineDot}/> : null}
             </View>
             <Text style={styles.text}>{title}</Text>
@@ -36,10 +43,10 @@ class NormalTab extends Component {
 }
 
 class ActiveTab extends Component {
-    render(){
-        const {source,title} = this.props;
+    render() {
+        const { source, title } = this.props;
         return <View style={styles.tab}>
-                <Image style={styles.tabBarIcon} source={source}/>
+            <Image style={styles.tabBarIcon} source={source}/>
             <Text style={styles.text}>{title}</Text>
         </View>;
     }
@@ -218,6 +225,7 @@ export const TabNav = createBottomTabNavigator(
                 tabBarOnPress: ({ navigation }) => {
                     if (!navigation.isFocused()) {
                         if (user && user.isLogin) {
+                            settingModel.mainTaskAdd();
                             navigation.navigate(navigation.state.routeName);
                         } else {
                             navigation.navigate(RouterMap.LoginPage);
@@ -307,6 +315,6 @@ const styles = StyleSheet.create({
         right: -6,
         top: 0,
         width: 16,
-        height: 10,
+        height: 10
     }
 });

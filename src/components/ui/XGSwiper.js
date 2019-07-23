@@ -1,11 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-    View,
-    TouchableWithoutFeedback,
-    ScrollView,
-    Animated
-} from 'react-native'
+import { Animated, ScrollView, TouchableWithoutFeedback, View } from 'react-native';
 
 export default class XQSwiper extends Component {
     static propTypes = {
@@ -22,7 +17,7 @@ export default class XQSwiper extends Component {
         renderRow: PropTypes.func.isRequired,
         onPress: PropTypes.func,
         onWillChange: PropTypes.func,
-        onDidChange: PropTypes.func,
+        onDidChange: PropTypes.func
     };
 
     static defaultProps = {
@@ -38,32 +33,36 @@ export default class XQSwiper extends Component {
     constructor(props) {
         super(props);
 
-        this.refScrollView = this.refScrollView.bind(this)
-        this.getRenderRowViews = this.getRenderRowViews.bind(this)
-        this.updateAnimated = this.updateAnimated.bind(this)
-        this.autoPlay = this.autoPlay.bind(this)
-        this.stopAutoPlay = this.stopAutoPlay.bind(this)
+        this.refScrollView = this.refScrollView.bind(this);
+        this.getRenderRowViews = this.getRenderRowViews.bind(this);
+        this.updateAnimated = this.updateAnimated.bind(this);
+        this.autoPlay = this.autoPlay.bind(this);
+        this.stopAutoPlay = this.stopAutoPlay.bind(this);
 
         const { dataSource, width, height, horizontal, index, loop, ratio, autoplayTimeout, autoplayDirection, cardParams } = this.props;
 
-        const side = horizontal ? width : height
-        const cardSide = cardParams.cardSide || side * ratio
-        const cardScale = cardParams.cardSmallSide ? (cardParams.cardSmallSide / (horizontal ? height : width)) : ratio
+        const side = horizontal ? width : height;
+        const cardSide = cardParams.cardSide || side * ratio;
+        const cardScale = cardParams.cardSmallSide ? (cardParams.cardSmallSide / (horizontal ? height : width)) : ratio;
         this.ezswiper = {
             horizontal: horizontal,
             scrollToDirection: horizontal ? 'x' : 'y',
             side: side,
             ratio: ratio,
-            cardParams: { cardSide: cardSide, cardScale: cardScale, cardTranslate: cardParams.cardSpace ? (((side - cardSide) + (side * (1 - cardScale))) / 2 - cardParams.cardSpace) : (((side - cardSide) + (side * (1 - cardScale))) / 2 * 0.8) },
+            cardParams: {
+                cardSide: cardSide,
+                cardScale: cardScale,
+                cardTranslate: cardParams.cardSpace ? (((side - cardSide) + (side * (1 - cardScale))) / 2 - cardParams.cardSpace) : (((side - cardSide) + (side * (1 - cardScale))) / 2 * 0.8)
+            },
             dataSource: dataSource,
             count: dataSource.length,
             currentIndex: index,
             loop: loop,
             autoplayTimeout: autoplayTimeout,
-            autoplayDirection: autoplayDirection,
-        }
+            autoplayDirection: autoplayDirection
+        };
 
-        this.scrollIndex = (this.ezswiper.loop ? this.ezswiper.currentIndex + 1 : this.ezswiper.currentIndex)
+        this.scrollIndex = (this.ezswiper.loop ? this.ezswiper.currentIndex + 1 : this.ezswiper.currentIndex);
 
         const scaleArray = [];
         const translateArray = [];
@@ -77,36 +76,40 @@ export default class XQSwiper extends Component {
             renderRow: this.renderRow.bind(this),
             onPress: this.onPress.bind(this),
             onWillChange: this.onWillChange.bind(this),
-            onDidChange: this.onDidChange.bind(this),
+            onDidChange: this.onDidChange.bind(this)
         };
     }
 
     componentWillUnmount() {
-        this.stopAutoPlay()
+        this.stopAutoPlay();
     }
 
     componentWillReceiveProps(nextProps) {
         // this.stopAutoPlay()
         const { dataSource, width, height, horizontal, index, loop, ratio, autoplayTimeout, autoplayDirection, cardParams } = nextProps;
 
-        const side = horizontal ? width : height
-        const cardSide = cardParams.cardSide || side * ratio
-        const cardScale = cardParams.cardSmallSide ? (cardParams.cardSmallSide / (horizontal ? height : width)) : ratio
+        const side = horizontal ? width : height;
+        const cardSide = cardParams.cardSide || side * ratio;
+        const cardScale = cardParams.cardSmallSide ? (cardParams.cardSmallSide / (horizontal ? height : width)) : ratio;
         this.ezswiper = {
             horizontal: horizontal,
             scrollToDirection: horizontal ? 'x' : 'y',
             side: side,
             ratio: ratio,
-            cardParams: { cardSide: cardSide, cardScale: cardScale, cardTranslate: cardParams.cardSpace ? (((side - cardSide) + (side * (1 - cardScale))) / 2 - cardParams.cardSpace) : (((side - cardSide) + (side * (1 - cardScale))) / 2 * 0.8) },
+            cardParams: {
+                cardSide: cardSide,
+                cardScale: cardScale,
+                cardTranslate: cardParams.cardSpace ? (((side - cardSide) + (side * (1 - cardScale))) / 2 - cardParams.cardSpace) : (((side - cardSide) + (side * (1 - cardScale))) / 2 * 0.8)
+            },
             dataSource: dataSource,
             count: dataSource.length,
             currentIndex: index,
             loop: loop,
             autoplayTimeout: autoplayTimeout,
-            autoplayDirection: autoplayDirection,
-        }
+            autoplayDirection: autoplayDirection
+        };
 
-        if(loop !== this.props.loop || index !== this.props.index){
+        if (loop !== this.props.loop || index !== this.props.index) {
             this.scrollIndex = (this.ezswiper.loop ? this.ezswiper.currentIndex + 1 : this.ezswiper.currentIndex);
         }
 
@@ -123,27 +126,33 @@ export default class XQSwiper extends Component {
     }
 
     componentDidMount() {
-        this.scrollView && this.scrollView.scrollTo({ [this.ezswiper.scrollToDirection]: (this.ezswiper.side * this.scrollIndex), animated: false });
-        this.updateAnimated(this.scrollIndex, this.scrollIndex)
-        this.autoPlay()
+        this.scrollView && this.scrollView.scrollTo({
+            [this.ezswiper.scrollToDirection]: (this.ezswiper.side * this.scrollIndex),
+            animated: false
+        });
+        this.updateAnimated(this.scrollIndex, this.scrollIndex);
+        this.autoPlay();
         this.setState({ initialized: true });
     }
 
 
     /**
-    | -------------------------------------------------------
-    | public api
-    | -------------------------------------------------------
-    */
+     | -------------------------------------------------------
+     | public api
+     | -------------------------------------------------------
+     */
     scrollTo(index, animated = true) {
-        this.scrollView && this.scrollView.scrollTo({ [this.ezswiper.scrollToDirection]: this.ezswiper.side * index, animated: animated });
+        this.scrollView && this.scrollView.scrollTo({
+            [this.ezswiper.scrollToDirection]: this.ezswiper.side * index,
+            animated: animated
+        });
     }
 
     /**
-    | -------------------------------------------------------
-    | private api
-    | -------------------------------------------------------
-    */
+     | -------------------------------------------------------
+     | private api
+     | -------------------------------------------------------
+     */
     updateAnimated(currentPageFloat, scrollIndex) {
         const { scaleArray, translateArray } = this.state;
         for (let i = 0; i < this.ezswiper.count + 2; i++) {
@@ -166,19 +175,19 @@ export default class XQSwiper extends Component {
     }
 
     autoPlay() {
-        this.stopAutoPlay()
+        this.stopAutoPlay();
         if (!this.ezswiper.loop || !this.ezswiper.autoplayTimeout) {
-            return
+            return;
         }
 
         this.autoPlayTimer = setTimeout(() => {
-            this.scrollTo(this.scrollIndex + (this.ezswiper.autoplayDirection ? 1 : -1))
-        }, this.ezswiper.autoplayTimeout * 1000)
+            this.scrollTo(this.scrollIndex + (this.ezswiper.autoplayDirection ? 1 : -1));
+        }, this.ezswiper.autoplayTimeout * 1000);
 
     }
 
     stopAutoPlay() {
-        this.autoPlayTimer && clearTimeout(this.autoPlayTimer)
+        this.autoPlayTimer && clearTimeout(this.autoPlayTimer);
     }
 
     renderRow(obj, index) {
@@ -204,40 +213,41 @@ export default class XQSwiper extends Component {
             return this.props.onDidChange(...arguments);
         }
     }
+
     onScroll(e) {
         if (this.scrollView) {
-            this.stopAutoPlay()
+            this.stopAutoPlay();
             let offset = e.nativeEvent.contentOffset[this.ezswiper.scrollToDirection];
             if (this.ezswiper.loop) {
                 if (Math.abs(offset - ((this.ezswiper.count + 1) * this.ezswiper.side)) < 20.1) {
-                    offset = this.ezswiper.side
+                    offset = this.ezswiper.side;
                     this.scrollView.scrollTo({ [this.ezswiper.scrollToDirection]: offset, animated: false });
                 } else if (Math.abs(offset) < 20.1) {
-                    offset = this.ezswiper.side * this.ezswiper.count
+                    offset = this.ezswiper.side * this.ezswiper.count;
                     this.scrollView.scrollTo({ [this.ezswiper.scrollToDirection]: offset, animated: false });
                 }
             }
 
             let currentPageFloat = offset / this.ezswiper.side;
-            const currentPageInt = currentPageFloat % 1
+            const currentPageInt = currentPageFloat % 1;
             if (currentPageInt === 0 || currentPageInt >= 0.9) {
-                currentPageFloat = Math.ceil(currentPageFloat)
-                this.willIndex = undefined
-                this.scrollIndex = currentPageFloat
-                this.autoPlay()
+                currentPageFloat = Math.ceil(currentPageFloat);
+                this.willIndex = undefined;
+                this.scrollIndex = currentPageFloat;
+                this.autoPlay();
             }
 
             const willIndex = Math.round(currentPageFloat);
             if (this.willIndex === undefined && willIndex !== this.scrollIndex) {
-                this.willIndex = willIndex
-                const dataSourceIndex = this.ezswiper.loop ? (this.willIndex + this.ezswiper.count - 1) % this.ezswiper.count : this.willIndex
-                this.onWillChange(this.ezswiper.dataSource[dataSourceIndex], dataSourceIndex)
+                this.willIndex = willIndex;
+                const dataSourceIndex = this.ezswiper.loop ? (this.willIndex + this.ezswiper.count - 1) % this.ezswiper.count : this.willIndex;
+                this.onWillChange(this.ezswiper.dataSource[dataSourceIndex], dataSourceIndex);
             }
 
-            const oldIndex = this.ezswiper.currentIndex
-            this.ezswiper.currentIndex = this.ezswiper.loop ? (this.scrollIndex + this.ezswiper.count - 1) % this.ezswiper.count : this.scrollIndex
+            const oldIndex = this.ezswiper.currentIndex;
+            this.ezswiper.currentIndex = this.ezswiper.loop ? (this.scrollIndex + this.ezswiper.count - 1) % this.ezswiper.count : this.scrollIndex;
             if (oldIndex !== this.ezswiper.currentIndex || !oldIndex) {
-                this.onDidChange(this.ezswiper.dataSource[this.ezswiper.currentIndex], this.ezswiper.currentIndex)
+                this.onDidChange(this.ezswiper.dataSource[this.ezswiper.currentIndex], this.ezswiper.currentIndex);
             }
 
             this.updateAnimated(currentPageFloat, this.scrollIndex);
@@ -245,10 +255,10 @@ export default class XQSwiper extends Component {
     }
 
     /**
-    | -------------------------------------------------------
-    | Render
-    | -------------------------------------------------------
-    */
+     | -------------------------------------------------------
+     | Render
+     | -------------------------------------------------------
+     */
     getRenderRowViews() {
         const { scaleArray, translateArray } = this.state;
         const { width, height } = this.props;
@@ -256,20 +266,32 @@ export default class XQSwiper extends Component {
         const count = this.ezswiper.count + (this.ezswiper.loop ? 2 : 0);
         const margin = (this.ezswiper.side - this.ezswiper.cardParams.cardSide) / 2;
         const views = [];
-        const maxIndex = this.ezswiper.count - 1
+        const maxIndex = this.ezswiper.count - 1;
 
         for (let i = 0; i < count; i++) {
-            const dataSourceIndex = this.ezswiper.loop ? (i + maxIndex) % this.ezswiper.count : i
-            const currentItem = this.ezswiper.dataSource[dataSourceIndex]
+            const dataSourceIndex = this.ezswiper.loop ? (i + maxIndex) % this.ezswiper.count : i;
+            const currentItem = this.ezswiper.dataSource[dataSourceIndex];
             views.push(
                 <View key={i} style={{ flexDirection: this.ezswiper.horizontal ? 'row' : 'column' }}>
-                    <View style={{ [this.ezswiper.horizontal ? 'width' : 'height']: margin, backgroundColor: 'transparent' }} />
+                    <View style={{
+                        [this.ezswiper.horizontal ? 'width' : 'height']: margin,
+                        backgroundColor: 'transparent'
+                    }}/>
                     <TouchableWithoutFeedback onPress={() => this.events.onPress(currentItem, dataSourceIndex)}>
-                        <Animated.View style={{ backgroundColor: 'transparent', width: this.ezswiper.horizontal ? this.ezswiper.cardParams.cardSide : width, height: this.ezswiper.horizontal ? height : this.ezswiper.cardParams.cardSide, transform: [{ [this.ezswiper.horizontal ? 'scaleY' : 'scaleX']: scaleArray[i] }, { [this.ezswiper.horizontal ? 'translateX' : 'translateY']: translateArray[i] }] }} >
+                        <Animated.View style={{
+                            backgroundColor: 'transparent',
+                            width: this.ezswiper.horizontal ? this.ezswiper.cardParams.cardSide : width,
+                            height: this.ezswiper.horizontal ? height : this.ezswiper.cardParams.cardSide,
+                            transform: [{ [this.ezswiper.horizontal ? 'scaleY' : 'scaleX']: scaleArray[i] },
+                                { [this.ezswiper.horizontal ? 'translateX' : 'translateY']: translateArray[i] }]
+                        }}>
                             {this.events.renderRow(currentItem, dataSourceIndex)}
                         </Animated.View>
                     </TouchableWithoutFeedback>
-                    <View style={{ [this.ezswiper.horizontal ? 'width' : 'height']: margin, backgroundColor: 'transparent' }} />
+                    <View style={{
+                        [this.ezswiper.horizontal ? 'width' : 'height']: margin,
+                        backgroundColor: 'transparent'
+                    }}/>
                 </View>
             );
         }

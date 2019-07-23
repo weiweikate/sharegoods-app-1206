@@ -125,6 +125,9 @@ export default class ShowHotView extends React.Component {
     };
 
     renderHeader = () => {
+        if(!this.props.hasBanner){
+            return <View/>
+        }
         const { bannerList } = showBannerModules;
         if (!bannerList || bannerList.length <= 0) {
             return null;
@@ -151,15 +154,33 @@ export default class ShowHotView extends React.Component {
             <View style={styles.container}>
                 <View style={{ flex: 1, paddingHorizontal: 15 }}>
                     <ShowRecommendView style={{ flex: 1 }}
-                                       uri={'/social/show/content/page/query@GET'}
+                                       uri={this.props.uri}
                                        ref={(ref) => {
                                            this.RecommendShowList = ref;
                                        }}
+                                       isLogin={!EmptyUtils.isEmpty(user.token)}
                                        type={'recommend'}
-                                       headerHeight={showBannerModules.bannerHeight + 20}
+                                       headerHeight={this.props.hasBanner ? showBannerModules.bannerHeight + 20:0}
                                        renderHeader={Platform.OS === 'ios' ? this.renderHeader() : this.state.headerView}
                                        onStartRefresh={() => {
                                            this.loadData();
+                                       }}
+                                       onCollection={({nativeEvent})=>{
+                                           if (!user.isLogin) {
+                                               routeNavigate(RouterMap.LoginPage);
+                                               return;
+                                           }
+                                           if (!nativeEvent.detail.collect) {
+                                               ShowApi.reduceCountByType({
+                                                   showNo: nativeEvent.detail.showNo,
+                                                   type: 2
+                                               });
+                                           } else {
+                                               ShowApi.incrCountByType({ showNo: nativeEvent.detail.showNo, type: 2 });
+                                           }
+                                       }}
+                                       onSeeUser={({nativeEvent})=>{
+                                           routeNavigate(RouterMap.MyDynamicPage,{userType:'others',userCode:nativeEvent.userInfoVO.userNo});
                                        }}
                                        params={{ spreadPosition: tag.Recommend + '' }}
                                        onItemPress={({ nativeEvent }) => {
@@ -170,9 +191,11 @@ export default class ShowHotView extends React.Component {
                                                ref: this.RecommendShowList,
                                                index: nativeEvent.index
                                            };
-                                           if (nativeEvent.showType === 1 || nativeEvent.showType === 3) {
+                                           if (nativeEvent.showType === 1) {
                                                navigate(RouterMap.ShowDetailPage, params);
-                                           } else {
+                                           }  else if(nativeEvent.showType === 3){
+                                               navigate(RouterMap.ShowVideoPage, params);
+                                           }else {
                                                navigate(RouterMap.ShowRichTextDetailPage, params);
                                            }
 
