@@ -15,18 +15,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-    View,
-    Text,
     Image,
     Keyboard,
-    Dimensions,
+    RefreshControl,
     ScrollView,
     StyleSheet,
-    RefreshControl,
-    TouchableWithoutFeedback
+    Text,
+    TouchableWithoutFeedback,
+    View
 } from 'react-native';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../../../comm/res';
+import ScreenUtils from '../../../utils/ScreenUtils';
 
 const { no_data } = res.placeholder;
 
@@ -55,9 +55,8 @@ export default class EmptyView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            width: Dimensions.get('window').width,
-            height: Dimensions.get('window').height - 44
-            //height: Dimensions.get('window').height - __BARHEIGHT__,
+            width: ScreenUtils.width,
+            height: ScreenUtils.height - 44
         };
     }
 

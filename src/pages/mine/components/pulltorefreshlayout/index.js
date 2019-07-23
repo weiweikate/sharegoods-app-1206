@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import { Animated, Dimensions, View, ViewPropTypes } from 'react-native';
+import { Animated, View, ViewPropTypes } from 'react-native';
 import user from '../../../../model/user';
 import { bool, func, number, string } from 'prop-types';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 
 const styles = require('./styles');
-
-const window = Dimensions.get('window');
 
 const SCROLLVIEW_REF = 'ScrollView';
 
@@ -60,8 +58,8 @@ class ParallaxScrollView extends Component {
         }
         this.state = {
             scrollY: new Animated.Value(0),
-            viewHeight: window.height,
-            viewWidth: window.width
+            viewHeight: ScreenUtils.height,
+            viewWidth: ScreenUtils.width
         };
         this.scrollY = new Animated.Value(0);
         this._footerComponent = {

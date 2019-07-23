@@ -1,26 +1,18 @@
 import React, { Component } from 'react';
-import {
-    View,
-    Dimensions,
-    Image,
-    Text,
-    Slider,
-    TouchableWithoutFeedback,
-    TouchableOpacity,
-    StyleSheet
-} from 'react-native';
+import { Image, Slider, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import Video from 'react-native-video';
 // import Orientation from 'react-native-orientation';
 import icon_video_play from '../../../components/ui/video/icon_video_play.png';
 import icon_video_pause from '../../../components/ui/video/icon_video_pause.png';
 import icon_control_slider from '../../../components/ui/video/icon_control_slider.png';
 import DesignRule from '../../../constants/DesignRule';
+import ScreenUtils from '../../../utils/ScreenUtils';
 
 // import icon_control_full_screen from './icon_control_full_screen.png';
 // import icon_control_shrink_screen from './icon_control_shrink_screen.png';
 
 
-const screenWidth = Dimensions.get('window').width;
+const screenWidth = ScreenUtils.width;
 const size916 = {
     width: screenWidth,
     height: screenWidth / 9 * 16,
@@ -56,7 +48,7 @@ export default class VideoView extends Component {
 
     constructor(props) {
         super(props);
-        let sizeMode = this._calculateRatio(this.props.width,this.props.height);
+        let sizeMode = this._calculateRatio(this.props.width, this.props.height);
         this.state = {
             videoUrl: props.videoUrl,
             videoCover: props.videoCover,
@@ -79,9 +71,9 @@ export default class VideoView extends Component {
                 this.pauseVideo();
             }
         );
-        this.didFocus = this.props.navigation.addListener('didFocus',()=>{
+        this.didFocus = this.props.navigation.addListener('didFocus', () => {
             this.playVideo();
-        } )
+        });
     }
 
 
@@ -94,10 +86,10 @@ export default class VideoView extends Component {
         let ratios = [size11, size34, size916];
         let sizeMode = size11;
         let diffValue = 999;
-        let ratio = width/height;
+        let ratio = width / height;
         for (let i = 0; i < ratios.length; i++) {
-            let value = Math.abs(ratios[i].ratio-ratio);
-            if(value < diffValue){
+            let value = Math.abs(ratios[i].ratio - ratio);
+            if (value < diffValue) {
                 diffValue = value;
                 sizeMode = ratios[i];
             }
@@ -409,8 +401,8 @@ const styles = StyleSheet.create({
         height: 44,
         alignItems: 'center',
         backgroundColor: 'rgba(0, 0, 0, 0.8)',
-        position:'absolute',
-        bottom:0,
-        left:0
+        position: 'absolute',
+        bottom: 0,
+        left: 0
     }
 });

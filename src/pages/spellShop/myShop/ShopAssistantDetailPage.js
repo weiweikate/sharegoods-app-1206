@@ -1,21 +1,8 @@
 //店员详情页面
 import React from 'react';
-import {
-    View,
-    Image,
-    Dimensions,
-    StyleSheet,
-    ScrollView,
-    ImageBackground,
-    TouchableOpacity
-} from 'react-native';
+import { Image, ImageBackground, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import UIImage from '@mr/image-placeholder';
-import {
-    MRText as Text
-} from '../../../components/ui';
-//Source
-const SCREEN_WIDTH = Dimensions.get('window').width;
-
+import { MRText as Text } from '../../../components/ui';
 import BasePage from '../../../BasePage';
 import DateUtils from '../../../utils/DateUtils';
 import SpellShopApi from '../api/SpellShopApi';
@@ -24,6 +11,8 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import StringUtils from '../../../utils/StringUtils';
 import res from '../res';
 import resCommon from '../../../comm/res';
+//Source
+const SCREEN_WIDTH = ScreenUtils.width;
 
 const RingImg = res.myShop.headBg;
 const HeaderBarBgImg = res.myShop.txbg_03;

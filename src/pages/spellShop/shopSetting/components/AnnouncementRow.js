@@ -1,23 +1,15 @@
 //公告所在行
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-    View,
-    Image,
-    Dimensions,
-    StyleSheet,
-    TouchableOpacity,
-    TouchableWithoutFeedback
-} from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
+import { MRText as Text } from '../../../../components/ui';
+import ScreenUtils from '../../../../utils/ScreenUtils';
 
 const DeleteIcon = res.shopSetting.del_icon;
 const DashLine = res.shopSetting.xt_03;
-import {
-    MRText as Text
-} from '../../../../components/ui';
 
 
 export default class AnnouncementRow extends Component {
@@ -145,6 +137,6 @@ const styles = StyleSheet.create({
         color: DesignRule.textColor_mainTitle
     },
     dashLine: {
-        width: Dimensions.get('window').width - 32
+        width: ScreenUtils.width - 32
     }
 });

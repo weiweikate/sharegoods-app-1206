@@ -1,21 +1,14 @@
 //店铺评分页面 PASS
 import React from 'react';
-import {
-    View,
-    Image,
-    Dimensions,
-    StyleSheet,
-    ScrollView
-} from 'react-native';
-
-const SCREEN_WIDTH = Dimensions.get('window').width;
-const WhitePanelHeight = 128 / 375 * SCREEN_WIDTH;
+import { Image, ScrollView, StyleSheet, View } from 'react-native';
 import BasePage from '../../../BasePage';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
-import {
-    MRText as Text
-} from '../../../components/ui';
+import { MRText as Text } from '../../../components/ui';
+import ScreenUtils from '../../../utils/ScreenUtils';
+
+const SCREEN_WIDTH = ScreenUtils.width;
+const WhitePanelHeight = 128 / 375 * SCREEN_WIDTH;
 
 const StarIcon = res.shopSetting.wjx_03;
 const store_level_1 = res.shopSetting.store_level_1;

@@ -2,16 +2,7 @@
  * Created by nuomi on 2018/7/18.
  */
 import React from 'react';
-import {
-    View,
-    Text,
-    Platform,
-    StyleSheet,
-    ScrollView,
-    Dimensions,
-    Button,
-    TouchableHighlight
-} from 'react-native';
+import { Button, Platform, ScrollView, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import GeneralButton from '../../components/pageDecorator/BaseView/GeneralButton';
 
 import user from '../../model/user';
@@ -19,6 +10,7 @@ import apiEnvironment from '../../api/ApiEnvironment';
 import { observer } from 'mobx-react';
 import BasePage from '../../BasePage';
 import { forceToHome, routeNavigate } from '../../navigation/RouterMap';
+import ScreenUtils from '../../utils/ScreenUtils';
 
 @observer
 export default class DebugPanelPage extends BasePage {
@@ -209,7 +201,7 @@ const styles = StyleSheet.create({
     topDescTextContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        width: Dimensions.get('window').width,
+        width: ScreenUtils.width,
         minHeight: 110
     },
     topDescText: {
@@ -251,7 +243,7 @@ const styles = StyleSheet.create({
     },
     // 按钮样式
     buttonStyle: {
-        width: (Dimensions.get('window').width - 48) / 2,
+        width: (ScreenUtils.width - 48) / 2,
         height: 48,
         alignItems: 'center',
         justifyContent: 'center',

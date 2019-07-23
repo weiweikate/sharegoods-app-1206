@@ -39,7 +39,6 @@ let staticStyle = {
 };
 
 declare var window: Window;
-// var ScreenWidth = Dimensions.get('window').width;
 //@TransmitTransparently('style')
 export default class FlyImageViewer extends Component {
 
