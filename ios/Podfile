@@ -41,6 +41,8 @@ pod 'MJRefresh'
 pod 'SDAutoLayout'
 # 异步渲染
 pod 'Texture'
+# 分页组件
+pod 'JXCategoryView'
 # 阿里云视频
 
 pod 'AliyunVideoSDKBasic'
