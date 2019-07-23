@@ -1,4 +1,4 @@
-package com.meeruu.sharegoods.event;
+package com.meeruu.commonlib.event;
 
 public class Event {
 

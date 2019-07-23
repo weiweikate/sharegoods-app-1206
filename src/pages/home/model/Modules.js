@@ -1,6 +1,6 @@
-import { observable, action, flow } from 'mobx';
+import { action, flow, observable } from 'mobx';
 import HomeApi from '../api/HomeAPI';
-import { homeType, homeRoute, homeLinkType } from '../HomeTypes';
+import { homeLinkType, homeRoute, homeType } from '../HomeTypes';
 import { bannerModule } from './HomeBannerModel';
 import { homeFocusAdModel } from './HomeFocusAdModel';
 import { homeExpandBnnerModel } from './HomeExpandBnnerModel';
@@ -59,7 +59,7 @@ class HomeModule {
             id: data.id,
             code: data.linkTypeCode,
             keywords: data.name,
-            trackType:1
+            trackType: 1
         };
 
     };

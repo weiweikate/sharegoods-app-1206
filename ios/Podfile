@@ -40,7 +40,11 @@ pod 'SensorsAnalyticsSDK', '~> 1.10.17'
 pod 'MJRefresh'
 pod 'SDAutoLayout'
 # 异步渲染
+<<<<<<< HEAD
 pod 'Texture' , '2.8'
+=======
+pod 'Texture' , '2.8.0'
+>>>>>>> 4bfcf5c43174f582857a8ef7560ebd2d447ee6df
 #pod 'SensorsAnalyticsSDK', :subspecs => ['ENABLE_REACT_NATIVE_APPCLICK']
 ##绘图和icon
 #pod 'RNSVG', :path => '../node_modules/react-native-svg'

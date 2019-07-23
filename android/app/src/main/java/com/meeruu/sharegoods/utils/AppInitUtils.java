@@ -4,10 +4,10 @@ import android.text.TextUtils;
 
 import com.meeruu.commonlib.callback.BaseCallback;
 import com.meeruu.commonlib.config.BaseRequestConfig;
+import com.meeruu.commonlib.event.Event;
 import com.meeruu.commonlib.server.RequestManager;
 import com.meeruu.commonlib.utils.HttpUrlUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
-import com.meeruu.sharegoods.event.Event;
 
 import org.greenrobot.eventbus.EventBus;
 

@@ -342,6 +342,7 @@ export default class ProductDetailPage extends BasePage {
             shareMoney, sectionDataList, productIsPromotionPrice, isSkillIn, nameShareText, productDetailCouponsViewModel,
             priceTypeTextList, monthSaleCount
         } = this.productDetailModel;
+        const { couponId } = this.params;
         return <View style={styles.container}>
             <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
             <ProductDetailNavView productDetailModel={this.productDetailModel}
@@ -386,16 +387,16 @@ export default class ProductDetailPage extends BasePage {
                                 retailPrice: `￥${productIsPromotionPrice ? promotionMinPrice : v0Price}`,
                                 shareMoney: shareMoney,
                                 spellPrice: `￥${groupPrice}`,
-                                QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`
+                                QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}&couponId=${couponId}`
                             }}
                             webJson={{
                                 title: nameShareText.name,
                                 dec: nameShareText.desc,
-                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`,
+                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}&couponId=${couponId}`,
                                 thumImage: imgUrl
                             }}
                             taskShareParams={{
-                                uri: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`,
+                                uri: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}&couponId=${couponId}`,
                                 code: IntervalMsgType.productDetail,
                                 data: prodCode
                             }}/>

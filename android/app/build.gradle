@@ -76,10 +76,10 @@ android {
             signingConfig signingConfigs.release
             buildConfigField "String", "CODEPUSH_KEY", '""'
             manifestPlaceholders = [
-                    JPUSH_PKGNAME: "com.meeruu.sharegoods",
+                    JPUSH_PKGNAME : "com.meeruu.sharegoods",
                     // 开发环境
-                    JPUSH_APPKEY : "3288c3f3feb6c119e3d88049",
-                    JPUSH_CHANNEL: "guanwang", //暂时填写默认值即可.
+                    JPUSH_APPKEY  : "3288c3f3feb6c119e3d88049",
+                    JPUSH_CHANNEL : "guanwang", //暂时填写默认值即可.
                     XIAOMI_APPKEY : "",//小米平台注册的appkey
                     XIAOMI_APPID  : "",//小米平台注册的appid
                     HUAWEI_APPID  : "",//华为平台注册的appid
