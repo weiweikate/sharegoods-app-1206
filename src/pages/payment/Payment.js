@@ -265,14 +265,14 @@ export class Payment {
             }
             if (result.code === payStatus.payNo) {
                 routePush('payment/PaymentPage', {
-                    amounts: Math.floor(result.unpaidAmount * 100) / 100,
+                    amounts: result.unpaidAmount * 100,
                     platformOrderNo: platformOrderNo,
                     orderProductList: [],
                     productTitle :title
                 });
             } else if (result.code === payStatus.payNeedThrid) {
                 routePush('payment/ChannelPage', {
-                    remainMoney: Math.floor(result.unpaidAmount * 100) / 100,
+                    remainMoney: result.unpaidAmount * 100,
                     platformOrderNo: platformOrderNo,
                     orderProductList: [],
                     productTitle:title

@@ -64,8 +64,10 @@ class ConfirmOrderModel {
 
     @action
     selectAddressId(addressData){
-        let addressId = addressData.id + '';
+        let addressId = addressData.id || '';
+            addressId = addressId + '';
         if (this.addressId == addressId && this.addressId && this.addressId.length > 0) {
+            this.receiveInfo = addressData;
             return;
         }
         this.addressId = addressId;
@@ -249,7 +251,7 @@ class ConfirmOrderModel {
         if (this.productOrderList.length === 0){
             return;
         }
-        
+
         bridge.showLoading();
         OrderApi.submitOrder(this.getParams(true)).then((response) => {
             bridge.hiddenLoading();
