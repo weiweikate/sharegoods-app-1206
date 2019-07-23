@@ -22,17 +22,27 @@ export class LimitGoModules {
     @observable currentGoodsList = [];
     @observable initialPage = 0;
     @observable currentPage = -1;
+    @observable isShowFreeOrder = false;
 
     @computed get limitHeight() {
         const len = (this.currentGoodsList && this.currentGoodsList.length) || 0;
+        let height = 0;
         if (len > 0) {
-            return px2dp(98) + len * px2dp(140) + (len - 1) * px2dp(10) + 0.8;
+            height = px2dp(98) + len * px2dp(140) + (len - 1) * px2dp(10) + 0.8;
         } else {
-            return px2dp(98) + 0.8;
+            height = px2dp(98) + 0.8;
         }
+
+        if (this.isShowFreeOrder) {
+            height += px2dp(55);
+        }
+        return height;
     }
 
     @action loadLimitGo = flow(function* (change) {
+        HomeApi.freeOrderSwitch().then((data)=> {
+            this.isShowFreeOrder = data.data || false;
+        })
         try {
             const isShowResult = yield HomeApi.isShowLimitGo();
             if (!isShowResult.data) {
@@ -63,6 +73,7 @@ export class LimitGoModules {
                     if (lastSeckills === 0) {
                         lastSeckills = diffTime;
                         _initialPage = index;
+                        _currentPage = index;
                     } else if (lastSeckills !== 0) {
                         if (lastSeckills > diffTime && date >= parseInt(spikeTime, 0)) {
                             lastSeckills = diffTime;

@@ -9,8 +9,6 @@
 #import "HYFUploaderVideo.h"
 #import <VODUpload/VODUploadClient.h>
 
-
-
 @interface HYFUploaderVideo ()
 
 @property (nonatomic,strong)  VODUploadClient* uploader;
@@ -23,77 +21,88 @@
 SINGLETON_FOR_CLASS(HYFUploaderVideo)
 
 
-//-(VODUploadClient *)uploader{
-//  if (!_uploader) {
-//    _uploader =  [VODUploadClient new];
-//    VODUploadListener * listener = [[VODUploadListener alloc]init];
-//    listener.finish = ^(UploadFileInfo *fileInfo, VodUploadResult *result) {
-//      [JRLoadingAndToastTool showToast:@"上传成功" andDelyTime:0.5];
-//    };
-//    listener.started = ^(UploadFileInfo *fileInfo) {
-//      [_uploader setUploadAuthAndAddress:fileInfo uploadAuth:_uploadAuth uploadAddress:_uploadAddress];
-//      [JRLoadingAndToastTool showLoadingText:@"上传中"];
-//    };
-//    listener.failure = ^(UploadFileInfo *fileInfo, NSString *code, NSString *message) {
-//      [JRLoadingAndToastTool showToast:@"上传失败" andDelyTime:0.5];
-//    };
-//    listener.expire = ^{
-//
-//    };
-//    [_uploader setListener:listener];
-//  }
-//  return _uploader;
-//}
-
-
-+(void)startUpLoad:(NSString *)fileName and:(NSString *)filePath and:(NSString *)title andUpLoadAuth:(NSString *)uploadAuth andUpLoadAddress:(NSString *)uploadAddress{
-
+-(instancetype)init{
+  if (self = [super init]) {
+    [self initUploader];
+  }
+  return self;
+}
+-(void)initUploader{
+  _uploader = [VODUploadClient new];
+  __weak VODUploadClient *weakClient = _uploader;
+  __weak HYFUploaderVideo *weakSelf = self;
+  OnUploadFinishedListener testFinishCallbackFunc = ^(UploadFileInfo* fileInfo,  VodUploadResult* result){
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [JRLoadingAndToastTool dissmissLoading];
+    });
+  };
   
+  OnUploadFailedListener testFailedCallbackFunc = ^(UploadFileInfo* fileInfo, NSString *code, NSString* message){
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [JRLoadingAndToastTool dissmissLoading];
+      [JRLoadingAndToastTool showToast:@"上传失败" andDelyTime:0.5];
+    });
+  };
+  
+  OnUploadProgressListener testProgressCallbackFunc = ^(UploadFileInfo* fileInfo, long uploadedSize, long totalSize) {
+    UploadFileInfo* info;
+    int i = 0;
+    for(; i<[[weakClient listFiles] count]; i++) {
+      info = [[weakClient listFiles] objectAtIndex:i];
+      if (info == fileInfo) {
+        break;
+      }
+    }
+    if (nil == info) {
+      return;
+    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+      
+    });
+  };
+  
+  OnUploadTokenExpiredListener testTokenExpiredCallbackFunc = ^{
+    NSLog(@"token expired.");
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [JRLoadingAndToastTool showToast:@"token过期" andDelyTime:0.5];
+    });
+  };
+  
+  OnUploadRertyListener testRetryCallbackFunc = ^{
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [JRLoadingAndToastTool dissmissLoading];
+    });
+  };
+  
+  OnUploadRertyResumeListener testRetryResumeCallbackFunc = ^{
+     [JRLoadingAndToastTool dissmissLoading];
+  };
+  
+  OnUploadStartedListener testUploadStartedCallbackFunc = ^(UploadFileInfo* fileInfo) {
+    [weakClient setUploadAuthAndAddress:fileInfo uploadAuth:weakSelf.uploadAuth uploadAddress:weakSelf.uploadAddress];
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [JRLoadingAndToastTool showLoadingText:@"上传中"];
+    });
+  };
+  
+  VODUploadListener *listener = [[VODUploadListener alloc] init];
+  listener.finish = testFinishCallbackFunc;
+  listener.failure = testFailedCallbackFunc;
+  listener.progress = testProgressCallbackFunc;
+  listener.expire = testTokenExpiredCallbackFunc;
+  listener.retry = testRetryCallbackFunc;
+  listener.retryResume = testRetryResumeCallbackFunc;
+  listener.started = testUploadStartedCallbackFunc;
+  // 点播上传。每次上传都是独立的鉴权，所以初始化时，不需要设置鉴权
+  [_uploader setListener:listener];
+}
+-(void)startUpLoad:(NSString *)fileName and:(NSString *)filePath and:(NSString *)title andUpLoadAuth:(NSString *)uploadAuth andUpLoadAddress:(NSString *)uploadAddress{
   [HYFUploaderVideo sharedInstance].uploadAuth = uploadAuth;
   [HYFUploaderVideo sharedInstance].uploadAddress = uploadAddress;
-  
-  
   VodInfo  * info = [VodInfo new];
   info.title = title;
-  VODUploadClient *uploader =  [VODUploadClient new];
-  VODUploadListener * listener = [[VODUploadListener alloc]init];
-  
-  __weak VODUploadClient * weakLoader = uploader;
-  listener.finish = ^(UploadFileInfo *fileInfo, VodUploadResult *result) {
-    dispatch_async(dispatch_get_main_queue(), ^{
-       [JRLoadingAndToastTool dissmissLoading];
-      [JRLoadingAndToastTool showToast:@"上传成功" andDelyTime:0.5];
-    });
-  };
-  listener.started = ^(UploadFileInfo *fileInfo) {
-    [weakLoader setUploadAuthAndAddress:fileInfo uploadAuth:uploadAuth uploadAddress:uploadAddress];
-    dispatch_async(dispatch_get_main_queue(), ^{
-       [JRLoadingAndToastTool dissmissLoading];
-       [JRLoadingAndToastTool showLoadingText:@"上传中"];
-    });
-  };
-  listener.failure = ^(UploadFileInfo *fileInfo, NSString *code, NSString *message) {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [JRLoadingAndToastTool dissmissLoading];
-       [JRLoadingAndToastTool showToast:@"message" andDelyTime:0.5];
-    });
-  };
-  listener.expire = ^{
-    
-  };
-  [uploader setListener:listener];
-  [uploader stop];
-  [uploader clearFiles];
-  [uploader addFile:filePath vodInfo:info];
-  [HYFUploaderVideo sharedInstance].uploader = uploader;
-  [uploader start];
-  
-  
-  
-//  [[HYFUploaderVideo sharedInstance].uploader stop];
-//  [[HYFUploaderVideo sharedInstance].uploader clearFiles];
-//  [[HYFUploaderVideo sharedInstance].uploader addFile:filePath vodInfo:info];
-//  [[HYFUploaderVideo sharedInstance].uploader start];
+  [_uploader addFile:filePath vodInfo:info];
+  [_uploader start];
 }
 
 

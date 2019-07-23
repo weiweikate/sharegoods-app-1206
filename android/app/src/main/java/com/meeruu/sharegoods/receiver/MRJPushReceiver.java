@@ -1,21 +1,23 @@
 package com.meeruu.sharegoods.receiver;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
+import android.net.Uri;
 
+import com.meeruu.commonlib.event.Event;
 import com.meeruu.commonlib.utils.AppUtils;
 import com.meeruu.commonlib.utils.LogUtils;
-import com.meeruu.sharegoods.event.Event;
 import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import cn.jpush.android.api.JPushInterface;
+import java.net.URLEncoder;
+
+import cn.jpush.android.api.CustomMessage;
+import cn.jpush.android.api.NotificationMessage;
+import cn.jpush.android.service.JPushMessageReceiver;
 
 /**
  * 自定义接收器
@@ -24,50 +26,54 @@ import cn.jpush.android.api.JPushInterface;
  * 1) 默认用户会打开主界面
  * 2) 接收不到自定义消息
  */
-public class MRJPushReceiver extends BroadcastReceiver {
+public class MRJPushReceiver extends JPushMessageReceiver {
 
-    private static final String TAG = "JPush";
     private static final String PACKAGENAME = "com.meeruu.sharegoods";
+    private static final String LINk_KEY = "linkUrl";
+    private static final String PAGE_KEY = "pageType";
+    private static final String PARAMS_KEY = "params";
 
+    // 注册回调
     @Override
-    public void onReceive(final Context context, Intent intent) {
-        Bundle bundle = intent.getExtras();
-        JSONObject objExtra = null;
+    public void onRegister(Context context, String regId) {
+        super.onRegister(context, regId);
+        // 将推送 ID 保存到用户表中
+        SensorsDataAPI.sharedInstance().profilePushId("jgId", regId);
+    }
+
+    // 通知被打开
+    @Override
+    public void onNotifyMessageOpened(Context context, NotificationMessage notificationMessage) {
+        super.onNotifyMessageOpened(context, notificationMessage);
         try {
-            String extra = bundle.getString(JPushInterface.EXTRA_EXTRA);
-            if (extra != null) {
-                objExtra = new JSONObject(extra);
-            }
-        } catch (JSONException e) {
-        }
-
-        if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
-            final String regId = bundle.getString(JPushInterface.EXTRA_REGISTRATION_ID);
-            // 将推送 ID 保存到用户表中
-            SensorsDataAPI.sharedInstance().profilePushId("jgId", regId);
-            Log.d(TAG, "[MyReceiver] 接收Registration Id : " + regId);
-        } else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
-            Log.d(TAG, "[MyReceiver] 接收到推送下来的自定义消息: " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
-            String content = bundle.getString(JPushInterface.EXTRA_MESSAGE);
-            String type = bundle.getString(JPushInterface.EXTRA_CONTENT_TYPE);
-            receiveMsg(context, content, type, objExtra);
-        } else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
-            Log.d(TAG, "[MyReceiver] 接收到推送下来的通知" + bundle.toString());
-            int notifactionId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
-            Log.d(TAG, "[MyReceiver] 接收到推送下来的通知的ID: " + notifactionId);
-            receiveNotify(objExtra);
-        } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
-            Log.d(TAG, "[MyReceiver] 用户点击打开了通知");
+            JSONObject objExtra = new JSONObject(notificationMessage.notificationExtras);
             notifyOpened(context, objExtra);
-        } else if (JPushInterface.ACTION_RICHPUSH_CALLBACK.equals(intent.getAction())) {
-            Log.d(TAG, "[MyReceiver] 用户收到到RICH PUSH CALLBACK: " + bundle.getString(JPushInterface.EXTRA_EXTRA));
-            //在这里根据 JPushInterface.EXTRA_EXTRA 的内容处理代码，比如打开新的Activity， 打开一个网页等..
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
-        } else if (JPushInterface.ACTION_CONNECTION_CHANGE.equals(intent.getAction())) {
-            boolean connected = intent.getBooleanExtra(JPushInterface.EXTRA_CONNECTION_CHANGE, false);
-            Log.w(TAG, "[MyReceiver]" + intent.getAction() + " connected state change to " + connected);
-        } else {
-            Log.d(TAG, "[MyReceiver] Unhandled intent - " + intent.getAction());
+    // 自定义消息
+    @Override
+    public void onMessage(Context context, CustomMessage customMessage) {
+        super.onMessage(context, customMessage);
+        try {
+            JSONObject objExtra = new JSONObject(customMessage.extra);
+            receiveMsg(context, customMessage.message, customMessage.contentType, objExtra);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // 通知消息
+    @Override
+    public void onNotifyMessageArrived(Context context, NotificationMessage notificationMessage) {
+        super.onNotifyMessageArrived(context, notificationMessage);
+        try {
+            JSONObject objExtra = new JSONObject(notificationMessage.notificationExtras);
+            receiveNotify(objExtra);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
@@ -102,9 +108,33 @@ public class MRJPushReceiver extends BroadcastReceiver {
 
     //用户点击了通知
     private void notifyOpened(final Context context, JSONObject objExtra) {
+        if (objExtra != null && objExtra.has(LINk_KEY)) {
+            String link = "";
+            try {
+                link = objExtra.getString(LINk_KEY);
+                link = URLEncoder.encode(link, "utf-8");
+            } catch (Exception e) {
+            }
+            String uri = "meeruu://path/HtmlPage/" + link;
+            deepLink(uri, context);
+        } else {
+            startApp(context);
+        }
+    }
+
+    private void startApp(Context context) {
         if (!AppUtils.isAppOnForeground(context)) {
             AppUtils.startAPP(context, PACKAGENAME);
         }
+    }
+
+    private void deepLink(String uri, Context context) {
+        Uri realUri = Uri.parse(uri);
+        Intent intent = new Intent();
+        intent.setAction("android.intent.action.VIEW");
+        intent.setData(realUri);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 
 }

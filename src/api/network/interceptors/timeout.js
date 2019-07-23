@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const DEFAULT_TIMEOUT = 15000;
+const DEFAULT_TIMEOUT = 12000;
 
 let requestIndex = 0;
 let cancelRequestMap = {};
@@ -22,3 +22,5 @@ export default function configureTimeout(config) {
 
     return config;
 }
+
+export { cancelRequestMap };

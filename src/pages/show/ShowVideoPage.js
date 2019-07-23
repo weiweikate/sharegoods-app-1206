@@ -48,7 +48,7 @@ export default class ShowVideoPage extends BasePage {
     };
 
     componentDidMount() {
-        ShowApi.showDetail({ showNo: this.params.data.showNo }).then((data) => {
+        ShowApi.showDetail({ showNo: this.params.code }).then((data) => {
             this.data = data.data || {};
             this.setState({
                 pageState: PageLoadingState.success

@@ -13,7 +13,10 @@
 #import "AlivcRecordUIConfig.h"
 @class AliyunMagicCameraView;
 @protocol MagicCameraViewDelegate <NSObject>
-
+/**
+ 选择视频按钮回调
+ */
+-(void)selectVideoBtnClick;
 /**
  返回按钮被点击的代理方法
  */

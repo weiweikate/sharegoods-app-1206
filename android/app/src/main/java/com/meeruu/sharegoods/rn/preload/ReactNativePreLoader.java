@@ -60,7 +60,7 @@ public class ReactNativePreLoader {
     }
 
     public static ReactRootView startReactApplication(Activity plainActivity, ReactInstanceManager reactInstanceManager, String componentName, Bundle launchOptions) {
-        ReactRootView rootView = new ReactRootView(plainActivity);
+        ReactRootView rootView = new RNGestureHandlerEnabledRootView(plainActivity);
         rootView.startReactApplication(
                 reactInstanceManager,
                 componentName,

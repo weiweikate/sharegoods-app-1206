@@ -94,6 +94,14 @@ const api = {
     }],
     userFollow: ['/social/show/user/user/follow',  {
         method: 'post'
+    }],
+    //查询其他用户信息
+    getOthersInfo: ['/social/show/user/query/other/info',  {
+        method: 'post'
+    }],
+    //查询自己用户信息
+    getMineInfo: ['/social/show/user/query/mine/info',  {
+        method: 'get'
     }]
 
 };

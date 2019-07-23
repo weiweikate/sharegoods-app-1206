@@ -81,7 +81,7 @@ export default class ProductDetailModel {
     @observable opacity = 0;
 
     /*总数据*/
-    @observable productData;
+    @observable productData = {};
     /*0产品删除 1产品上架 2产品下架(包含未上架的所有状态，出去删除状态) 3未开售*/
     @observable productStatus;
     /*视频*/
@@ -226,6 +226,24 @@ export default class ProductDetailModel {
         return activityType === activity_type.skill && activityStatus === activity_status.inSell;
     }
 
+    @computed get isGroupIn() {
+        const { activityType, activityStatus, groupActivity } = this;
+        return activityType === activity_type.group && activityStatus === activity_status.inSell && (groupActivity.subProductList || []).length > 0;
+    }
+
+    @computed get groupSubProductCanSell() {
+        const { subProductList } = this.groupActivity;
+        for (const subProduct of (subProductList || [])) {
+            const { skuList } = subProduct || {};
+            const skuItem = (skuList || [])[0];
+            const { sellStock } = skuItem || {};
+            if (sellStock < 1) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /*秒杀倒计时显示*/
     @computed get showTimeText() {
         const { skillTimeout, activityStatus } = this;
@@ -306,14 +324,14 @@ export default class ProductDetailModel {
     }
 
     @computed get sectionDataList() {
-        const { promoteInfoVOList, contentArr, groupActivity, activityStatus, paramList, productDetailCouponsViewModel } = this;
+        const { promoteInfoVOList, contentArr, paramList, productDetailCouponsViewModel, isGroupIn } = this;
         const { couponsList } = productDetailCouponsViewModel;
         /*头部*/
         let sectionArr = [
             { key: sectionType.sectionHeader, data: [{ itemKey: productItemType.headerView }] }
         ];
         /*优惠套餐*/
-        if (activityStatus === activity_status.inSell && (groupActivity.subProductList || []).length > 0) {
+        if (isGroupIn) {
             sectionArr.push(
                 { key: sectionType.sectionSuit, data: [{ itemKey: productItemType.suit }] }
             );
@@ -463,7 +481,7 @@ export default class ProductDetailModel {
                 productType: productType,
                 priceShareStore: groupPrice,
                 priceShow: this.activityStatus === activity_status.inSell ? promotionMinPrice : minPrice,
-                priceType: priceType === price_type.shop ? 100 : user.levelRemark
+                priceType: priceType === price_type.shop ? '100' : user.levelRemark
             });
         }
     };

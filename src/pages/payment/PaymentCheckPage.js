@@ -82,6 +82,7 @@ export default class PaymentCheckPage extends BasePage {
             track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: 'checkOut' });
             if (payment.checking) {
                 this._goToOrder(1);
+                // replaceRoute(RouterMap.PaymentResultPage,{ payResult: PaymentResult.timeout, payMsg: '订单支付超时，下单金额已原路退回' })
             }
             payment.resetPayment();
             return;

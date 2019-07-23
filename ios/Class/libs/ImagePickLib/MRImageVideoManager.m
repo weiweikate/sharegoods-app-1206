@@ -38,8 +38,8 @@ SINGLETON_FOR_CLASS(MRImageVideoManager)
   dispatch_async(dispatch_get_main_queue(), ^{
       AliyunMediaConfig * _mediaConfig;
       _mediaConfig = [AliyunMediaConfig defaultConfig];
-      _mediaConfig.minDuration = 2.0;
-      _mediaConfig.maxDuration = 5;
+      _mediaConfig.minDuration = 5.0f;
+      _mediaConfig.maxDuration = 30.f;
       _mediaConfig.fps = 25;
       _mediaConfig.gop = 5;
       _mediaConfig.cutMode = AliyunMediaCutModeScaleAspectFill;
@@ -103,9 +103,9 @@ SINGLETON_FOR_CLASS(MRImageVideoManager)
 
 -(void)getShutImageWithUrl:(NSString *)path andFinshBlock:(hyfFinshRecordVideo)finshBlock{
   
-  if (![path hasPrefix:@"file://"]) {
-    path = [NSString stringWithFormat:@"%@%@",@"file://",path];
-  }
+//  if (![path hasPrefix:@"file://"]) {
+//    path = [NSString stringWithFormat:@"%@%@",@"file://",path];
+//  }
   NSArray *paths=NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);
   NSString *documentsDirectory=[paths objectAtIndex:0];
   NSString *savedImagePath=[documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png",path.md5String]];
@@ -118,7 +118,7 @@ SINGLETON_FOR_CLASS(MRImageVideoManager)
       NSLog(@"%@",iamge);
     }else{
       NSURL *videoUrl;
-      if ([path hasPrefix:@"file://"]) {
+      if (![path hasPrefix:@"file://"]) {
         videoUrl = [NSURL fileURLWithPath:path];
       }else{
         videoUrl = [NSURL URLWithString:path];

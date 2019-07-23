@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.facebook.react.bridge.ReactContext;
+import com.meeruu.sharegoods.rn.showground.DynamicInterface;
 import com.meeruu.sharegoods.rn.showground.ShowCollectionView;
 import com.meeruu.sharegoods.rn.showground.ShowDynamicView;
 import com.meeruu.sharegoods.rn.showground.ShowOtherView;
@@ -17,12 +18,14 @@ public class TabPageAdapter extends PagerAdapter {
     public static final String MINENORMAL = "mineNormal";
     private ReactContext context;
     private String type;
+    private DynamicInterface dynamicInterface;
 
 
-    public TabPageAdapter(ReactContext context, String type) {
+    public TabPageAdapter(ReactContext context, String type,DynamicInterface dynamicInterface) {
         super();
         this.context = context;
         this.type = type;
+        this.dynamicInterface = dynamicInterface;
     }
 
     @NonNull
@@ -32,16 +35,13 @@ public class TabPageAdapter extends PagerAdapter {
             ViewGroup view = null;
             switch (type) {
                 case MINENORMAL:
-                    view = new ShowDynamicView().getShowDynamicView(context);
-                    container.addView(view);
-                    break;
                 case MINEWRITER:
-                    view = new ShowDynamicView().getShowDynamicView(context);
+                    view = new ShowDynamicView().getShowDynamicView(context,dynamicInterface);
                     container.addView(view);
                     break;
                 default:
                     String userCode = type.replace("others", "");
-                    view = new ShowOtherView().getShowOtherView(context, userCode);
+                    view = new ShowOtherView().getShowOtherView(context, userCode,dynamicInterface);
                     container.addView(view);
                     break;
             }
@@ -49,7 +49,7 @@ public class TabPageAdapter extends PagerAdapter {
             return view;
         }
         if (position == 1) {
-            ViewGroup view = new ShowCollectionView().getShowCollectionView(context);
+            ViewGroup view = new ShowCollectionView().getShowCollectionView(context,dynamicInterface);
             container.addView(view);
             return view;
         }

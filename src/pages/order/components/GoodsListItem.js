@@ -70,6 +70,10 @@ export default class GoodsListItem extends React.Component {
             if (status > 3 && nowTime && afterSaleTime && afterSaleTime < nowTime && !(innerStatus<6 && innerStatus>=1)) {
                 return;
             }
+            //套餐
+           if (product.restrictions === -1 && status<=2){
+               return;
+           }
 
             hasAfterSaleService = true;
         })

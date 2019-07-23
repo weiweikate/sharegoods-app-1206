@@ -157,7 +157,7 @@ export default class ShopAssistantDetailPage extends BasePage {
                 </ImageBackground>
                 {this._renderRow(QbIcon, '加入店铺时间', updateTime && DateUtils.formatDate(updateTime, 'yyyy年MM月dd日'))}
                 {this.renderSepLine()}
-                {this._renderRow(MoneyIcon, '共获得奖励总额', `${((dealerTotalBonus || 0) - (dealerThisTimeBonus || 0))}元`)}
+                {this._renderRow(MoneyIcon, '共获得奖励总额', `${StringUtils.sub((dealerTotalBonus || 0), (dealerThisTimeBonus || 0))}元`)}
                 {this.renderSepLine()}
                 {this._renderRow(detail_zongti, '总体贡献度', this._totalContribution())}
                 {this.renderSepLine()}
@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
     headImg: {
         width: 68,
         height: 68,
-        borderRadius:34
+        borderRadius: 34
     },
     shopInContainer: {
         height: 105 / 375 * SCREEN_WIDTH,

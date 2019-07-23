@@ -52,7 +52,7 @@ public class ShowDynamicViewManager extends ViewGroupManager<ViewGroup> {
     public void setUserType(View view, String s) {
         Object object = view.getTag();
         if (object != null && object instanceof UserCenterView) {
-            ((UserCenterView) object).setUserType(s);
+            ((UserCenterView) object).setUserType(s,view);
         }
     }
 
@@ -121,6 +121,7 @@ public class ShowDynamicViewManager extends ViewGroupManager<ViewGroup> {
                 .put("MrNineClickEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onNineClick")))
                 .put("MrShowScrollStateChangeEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onScrollStateChanged")))
                 .put("MrScrollY", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onScrollY")))
+                .put("MrNavStatusEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "changeNav")))
                 .build();
     }
 

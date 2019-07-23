@@ -26,7 +26,6 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.meeruu.commonlib.utils.DensityUtils;
-import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.sharegoods.R;
@@ -41,11 +40,11 @@ import com.meeruu.sharegoods.rn.showground.event.onStartScrollEvent;
 import com.meeruu.sharegoods.rn.showground.presenter.DynamicPresenter;
 import com.meeruu.sharegoods.rn.showground.view.IShowgroundView;
 import com.meeruu.sharegoods.rn.showground.widgets.CustomLoadMoreView;
-import com.meeruu.sharegoods.rn.showground.widgets.gridview.ImageInfo;
 import com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,20 +58,18 @@ public class ShowDynamicView implements IShowgroundView, SwipeRefreshLayout.OnRe
     private DynamicPresenter presenter;
     private EventDispatcher eventDispatcher;
     private onItemPressEvent itemPressEvent;
-    private com.meeruu.sharegoods.rn.showground.event.onScrollYEvent onScrollYEvent;
     private onStartRefreshEvent startRefreshEvent;
-    private onStartScrollEvent startScrollEvent;
-    private onEndScrollEvent endScrollEvent;
     private View errView;
     private WeakReference<View> showgroundView;
     private Handler handler;
     private View errImg;
-    private boolean sIsScrolling;
     private boolean deleteIng = false;
     private int deleteIndex = -1;
+    private DynamicInterface dynamicInterface;
 
-    public ViewGroup getShowDynamicView(ReactContext reactContext) {
+    public ViewGroup getShowDynamicView(ReactContext reactContext,DynamicInterface dynamicInterface) {
         eventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
+        this.dynamicInterface = dynamicInterface;
         LayoutInflater inflater = LayoutInflater.from(reactContext);
         View view = inflater.inflate(R.layout.view_showground, null);
         initView(reactContext, view);
@@ -114,9 +111,6 @@ public class ShowDynamicView implements IShowgroundView, SwipeRefreshLayout.OnRe
         }, 200);
         itemPressEvent = new onItemPressEvent();
         startRefreshEvent = new onStartRefreshEvent();
-        startScrollEvent = new onStartScrollEvent();
-        onScrollYEvent = new onScrollYEvent();
-        endScrollEvent = new onEndScrollEvent();
         setRecyclerViewItemEvent(view);
         adapter = new ShowDynamicAdapter();
         adapter.setPreLoadNumber(3);
@@ -140,19 +134,8 @@ public class ShowDynamicView implements IShowgroundView, SwipeRefreshLayout.OnRe
             @Override
             public void onItemClick(final BaseQuickAdapter adapter, View view1, final int position) {
                 final List<NewestShowGroundBean.DataBean> data = adapter.getData();
-                if (data != null) {
-                    NewestShowGroundBean.DataBean item = data.get(position);
-                    String json = JSONObject.toJSONString(item);
-                    Map map = JSONObject.parseObject(json, new TypeReference<Map>() {
-                    });
-                    map.put("index", position);
-                    WritableMap realData = Arguments.makeNativeMap(map);
-                    if (eventDispatcher != null) {
-                        itemPressEvent = new onItemPressEvent();
-                        itemPressEvent.init(view.getId());
-                        itemPressEvent.setData(realData);
-                        eventDispatcher.dispatchEvent(itemPressEvent);
-                    }
+                if (data != null && dynamicInterface != null) {
+                    dynamicInterface.onItemPress(data.get(position),position);
                 }
             }
         });
@@ -163,57 +146,48 @@ public class ShowDynamicView implements IShowgroundView, SwipeRefreshLayout.OnRe
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if (eventDispatcher != null) {
-                    int position = layoutManager.findFirstVisibleItemPositions(null)[0];
-                    View firstView = layoutManager.findViewByPosition(position);
-                    if (firstView == null) {
-                        return;
-                    }
-                    int itemHeight = firstView.getHeight();
-                    int flag = (position) * itemHeight - firstView.getTop();
-                    onScrollYEvent = new onScrollYEvent();
-                    onScrollYEvent.init(view.getId());
-                    WritableMap ymap = Arguments.createMap();
-                    ymap.putInt("YDistance", DensityUtils.px2dip(flag));
-                    onScrollYEvent.setData(ymap);
-                    eventDispatcher.dispatchEvent(onScrollYEvent);
-                }
+//                if (eventDispatcher != null) {
+//                    int position = layoutManager.findFirstVisibleItemPositions(null)[0];
+//                    View firstView = layoutManager.findViewByPosition(position);
+//                    if (firstView == null) {
+//                        return;
+//                    }
+//                    int itemHeight = firstView.getHeight();
+//                    int flag = (position) * itemHeight - firstView.getTop();
+//                    onScrollYEvent = new onScrollYEvent();
+//                    onScrollYEvent.init(view.getId());
+//                    WritableMap ymap = Arguments.createMap();
+//                    ymap.putInt("YDistance", DensityUtils.px2dip(flag));
+//                    onScrollYEvent.setData(ymap);
+//                    eventDispatcher.dispatchEvent(onScrollYEvent);
+//                }
             }
 
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                switch (newState) {
-                    case RecyclerView.SCROLL_STATE_IDLE:
-                        endScrollEvent = new onEndScrollEvent();
-                        endScrollEvent.init(view.getId());
-                        eventDispatcher.dispatchEvent(endScrollEvent);
-                        break;
-                    case RecyclerView.SCROLL_STATE_DRAGGING:
-                        startScrollEvent = new onStartScrollEvent();
-                        startScrollEvent.init(view.getId());
-                        eventDispatcher.dispatchEvent(startScrollEvent);
-                        break;
-                    default:
-                        break;
-                }
-                if (newState == RecyclerView.SCROLL_STATE_DRAGGING || newState == RecyclerView.SCROLL_STATE_SETTLING) {
-                    sIsScrolling = true;
-                    ImageLoadUtils.pauseLoadImage();
-                } else if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (sIsScrolling == true) {
-                        ImageLoadUtils.resumeLoadImage();
-                    }
-                    sIsScrolling = false;
-                }
-                if (eventDispatcher != null) {
-                    onScrollStateChangedEvent onScrollStateChangedEvent = new onScrollStateChangedEvent();
-                    onScrollStateChangedEvent.init(view.getId());
-                    WritableMap map = Arguments.createMap();
-                    map.putInt("state", newState);
-                    onScrollStateChangedEvent.setData(map);
-                    eventDispatcher.dispatchEvent(onScrollStateChangedEvent);
-                }
+//                switch (newState) {
+//                    case RecyclerView.SCROLL_STATE_IDLE:
+//                        endScrollEvent = new onEndScrollEvent();
+//                        endScrollEvent.init(view.getId());
+//                        eventDispatcher.dispatchEvent(endScrollEvent);
+//                        break;
+//                    case RecyclerView.SCROLL_STATE_DRAGGING:
+//                        startScrollEvent = new onStartScrollEvent();
+//                        startScrollEvent.init(view.getId());
+//                        eventDispatcher.dispatchEvent(startScrollEvent);
+//                        break;
+//                    default:
+//                        break;
+//                }
+//                if (eventDispatcher != null) {
+//                    onScrollStateChangedEvent onScrollStateChangedEvent = new onScrollStateChangedEvent();
+//                    onScrollStateChangedEvent.init(view.getId());
+//                    WritableMap map = Arguments.createMap();
+//                    map.putInt("state", newState);
+//                    onScrollStateChangedEvent.setData(map);
+//                    eventDispatcher.dispatchEvent(onScrollStateChangedEvent);
+//                }
                 int[] first = new int[2];
                 layoutManager.findFirstCompletelyVisibleItemPositions(first);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && (first[0] == 1 || first[1] == 1)) {
@@ -336,26 +310,27 @@ public class ShowDynamicView implements IShowgroundView, SwipeRefreshLayout.OnRe
                 NewestShowGroundBean.DataBean bean = (NewestShowGroundBean.DataBean) data.get(i);
                 if (bean.getItemType() == 1 || bean.getItemType() == 3) {
                     List<NewestShowGroundBean.DataBean.ResourceBean> resource = bean.getResource();
-                    List<ImageInfo> resolveResource = new ArrayList<>();
+                    List<String> resolveResource = new ArrayList<>();
                     if (resource != null) {
                         for (int j = 0; j < resource.size(); j++) {
                             NewestShowGroundBean.DataBean.ResourceBean resourceBean = resource.get(j);
                             if (resourceBean.getType() == 2) {
-                                ImageInfo imageInfo = new ImageInfo();
-                                imageInfo.setImageUrl(resourceBean.getUrl());
-                                resolveResource.add(imageInfo);
+                                resolveResource.add(resourceBean.getUrl());
                             }
 
-                            if(resourceBean.getType() == 5){
-                                ImageInfo imageInfo = new ImageInfo();
-                                imageInfo.setImageUrl(resourceBean.getUrl());
-                                bean.setVideoCover(imageInfo);
+                            if (resourceBean.getType() == 5) {
+                                bean.setVideoCover(resourceBean.getUrl());
                                 break;
                             }
                         }
-                        bean.setNineImageInfos(resolveResource);
+                        bean.setImgUrls(resolveResource);
                     }
                     data.set(i, bean);
+                }
+                //处理product中的空值
+                List products = bean.getProducts();
+                if (products != null && products.size() > 0) {
+                    products.removeAll(Collections.singleton(null));
                 }
             }
         }

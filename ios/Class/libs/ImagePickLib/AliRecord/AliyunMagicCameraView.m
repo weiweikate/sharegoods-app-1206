@@ -28,6 +28,10 @@
  回删按钮
  */
 @property (nonatomic, strong) UIButton *deleteButton;
+/**
+ 选择视频btn
+ **/
+@property (nonatomic,strong) UIButton * selectVideoBtn;
 
 /**
  时间显示控件
@@ -170,8 +174,15 @@
     longPressButton.titleLabel.font = [UIFont systemFontOfSize:14];
     self.longPressButton = longPressButton;
     [self addSubview:longPressButton];
-    
-    [self setExclusiveTouchInButtons];
+  
+  UIButton *selectVideoBtn = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth/2-21+72, ScreenHeight-110-SafeBottom, 30, 30)];
+  [selectVideoBtn setImage:[UIImage imageNamed:@"ali_select_video"] forState:UIControlStateNormal];
+  [selectVideoBtn setTitleColor:AlivcOxRGB(0xc3c5c6) forState:UIControlStateNormal];
+  [selectVideoBtn addTarget:self action:@selector(selectVideoBtnClick) forControlEvents:UIControlEventTouchUpInside];
+  selectVideoBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+  self.selectVideoBtn = selectVideoBtn;
+  [self addSubview:selectVideoBtn];
+  [self setExclusiveTouchInButtons];
 }
 
 /**
@@ -183,8 +194,16 @@
     [self.deleteButton setExclusiveTouch:YES];
     [self.finishButton setExclusiveTouch:YES];
     [self.cameraIdButton setExclusiveTouch:YES];
+    [self.selectVideoBtn setExclusiveTouch:YES];
 }
-
+/**
+选择视频按钮点击
+ **/
+-(void)selectVideoBtnClick{
+  if(self.delegate && [self.delegate respondsToSelector:@selector(selectVideoBtnClick)]){
+    [self.delegate selectVideoBtnClick];
+  }
+}
 
 /**
  显示单击拍按钮的点击事件
@@ -218,7 +237,6 @@
 }
 
 - (void)recordButtonTouchUp {
-    NSLog(@" DD----  %f    %f  - %f", CFAbsoluteTimeGetCurrent(), _startTime, (CFAbsoluteTimeGetCurrent() - _startTime));
     switch ([AliyunIConfig config].recordType) {
         case AliyunIRecordActionTypeCombination:
                 if (_recording) {
@@ -245,6 +263,7 @@
                 self.tapButton.hidden = YES;
                 self.longPressButton.hidden = YES;
                 self.triangleImageView.hidden = YES;
+                self.selectVideoBtn.hidden = YES;
                 _recording = YES;
                 _progressView.videoCount++;
                 self.circleBtn.transform = CGAffineTransformScale(self.transform, 1.32, 1.32);
@@ -281,6 +300,7 @@
                 self.tapButton.hidden = YES;
                 self.longPressButton.hidden = YES;
                 self.triangleImageView.hidden = YES;
+                self.selectVideoBtn.hidden = YES;
                 self.circleBtn.transform = CGAffineTransformScale(self.transform, 1.32, 1.32);
                 [self.circleBtn setImage:_uiConfig.videoShootImageLongPressing forState:UIControlStateNormal];
                 [self.circleBtn setTitle:@"" forState:UIControlStateNormal];
@@ -350,6 +370,7 @@
         self.triangleImageView.hidden = NO;
         self.tapButton.hidden = NO;
         self.longPressButton.hidden = NO;
+      self.selectVideoBtn.hidden = NO;
         self.timeLabel.text = @"";
     }
 }
@@ -372,11 +393,13 @@
         self.triangleImageView.hidden = YES;
         self.longPressButton.hidden = YES;
         self.tapButton.hidden = YES;
+      self.selectVideoBtn.hidden = YES;
         self.deleteButton.hidden = NO;
     }else{
         self.triangleImageView.hidden = hide;
         self.longPressButton.hidden = hide;
         self.tapButton.hidden = hide;
+      self.selectVideoBtn.hidden = hide;
         self.deleteButton.hidden = YES;
         if ([AliyunIConfig config].recordType == AliyunIRecordActionTypeHold) {
             [self.circleBtn setTitle:@"按住拍" forState:UIControlStateNormal];
@@ -391,10 +414,12 @@
         self.longPressButton.hidden = YES;
         self.tapButton.hidden = YES;
         self.deleteButton.hidden = NO;
+      self.selectVideoBtn.hidden = YES;
     }else{
         self.triangleImageView.hidden = NO;
         self.longPressButton.hidden = NO;
         self.tapButton.hidden = NO;
+      self.selectVideoBtn.hidden = NO;
         self.deleteButton.hidden = YES;
     }
 }
@@ -434,7 +459,6 @@
         [_finishButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal]; 
         _finishButton.enabled = NO;
         UIColor *bgColor_disable = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.34];
-//        UIColor *bgColor_enable =  [UIColor colorWithRed:252/255.0 green:68/255.0 blue:72/255.0 alpha:1/1.0];
         [_finishButton setBackgroundColor:bgColor_disable];
         [_finishButton addTarget:self action:@selector(finishButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         _finishButton.layer.cornerRadius = 2;
@@ -587,6 +611,7 @@
         self.triangleImageView.hidden = YES;
         self.tapButton.hidden = YES;
         self.longPressButton.hidden = YES;
+        self.selectVideoBtn.hidden = YES;
         self.timeLabel.text = @"";
     }
     self.countdownButton.enabled = NO;
