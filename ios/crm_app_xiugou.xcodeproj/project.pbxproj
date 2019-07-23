@@ -33,6 +33,10 @@
 		01C3AF4222E2AF1E00A76422 /* MBPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C3AEF722E2AF1E00A76422 /* MBPlayerView.m */; };
 		01C3AF4322E2AF1E00A76422 /* MBVideoHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C3AEF822E2AF1E00A76422 /* MBVideoHeaderView.m */; };
 		01C3AFEF22E45C7A00A76422 /* JXModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0131F1B3228E57D200A2026D /* JXModel.m */; };
+		01C3B21A22E5DB9F00A76422 /* MBNetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C3B21522E5DB9E00A76422 /* MBNetworkManager.m */; };
+		01C3B21B22E5DB9F00A76422 /* MBFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C3B21722E5DB9E00A76422 /* MBFileManager.m */; };
+		01C3B21C22E5DB9F00A76422 /* MBAVAssetResourceLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C3B21822E5DB9E00A76422 /* MBAVAssetResourceLoader.m */; };
+		01C3B21F22E5DBAE00A76422 /* MBURLTaskModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C3B21D22E5DBAE00A76422 /* MBURLTaskModel.m */; };
 		01E48F9422708B960038BEE6 /* JXHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E48F9322708B960038BEE6 /* JXHeaderView.m */; };
 		033C66B821927ACB00433026 /* MRBannerViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 033C66B721927ACB00433026 /* MRBannerViewManager.m */; };
 		0347BAD52237CD0A0011184A /* Lottie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0347BAC92237CC680011184A /* Lottie.framework */; };
@@ -861,6 +865,14 @@
 		01C3AEF922E2AF1E00A76422 /* MBToastLabelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBToastLabelView.h; sourceTree = "<group>"; };
 		01C3AEFA22E2AF1E00A76422 /* ActivetyViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivetyViewManager.h; sourceTree = "<group>"; };
 		01C3AEFB22E2AF1E00A76422 /* ActiveView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActiveView.h; sourceTree = "<group>"; };
+		01C3B21422E5DB9D00A76422 /* MBAVAssetResourceLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBAVAssetResourceLoader.h; sourceTree = "<group>"; };
+		01C3B21522E5DB9E00A76422 /* MBNetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBNetworkManager.m; sourceTree = "<group>"; };
+		01C3B21622E5DB9E00A76422 /* MBFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBFileManager.h; sourceTree = "<group>"; };
+		01C3B21722E5DB9E00A76422 /* MBFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBFileManager.m; sourceTree = "<group>"; };
+		01C3B21822E5DB9E00A76422 /* MBAVAssetResourceLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBAVAssetResourceLoader.m; sourceTree = "<group>"; };
+		01C3B21922E5DB9F00A76422 /* MBNetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBNetworkManager.h; sourceTree = "<group>"; };
+		01C3B21D22E5DBAE00A76422 /* MBURLTaskModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBURLTaskModel.m; sourceTree = "<group>"; };
+		01C3B21E22E5DBAE00A76422 /* MBURLTaskModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBURLTaskModel.h; sourceTree = "<group>"; };
 		01E48F9222708B960038BEE6 /* JXHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JXHeaderView.h; sourceTree = "<group>"; };
 		01E48F9322708B960038BEE6 /* JXHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JXHeaderView.m; sourceTree = "<group>"; };
 		033C66B621927ACB00433026 /* MRBannerViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRBannerViewManager.h; sourceTree = "<group>"; };
@@ -1649,6 +1661,12 @@
 			isa = PBXGroup;
 			children = (
 				01C3AEE822E2AF1E00A76422 /* MBProtocol.h */,
+				01C3B21422E5DB9D00A76422 /* MBAVAssetResourceLoader.h */,
+				01C3B21822E5DB9E00A76422 /* MBAVAssetResourceLoader.m */,
+				01C3B21622E5DB9E00A76422 /* MBFileManager.h */,
+				01C3B21722E5DB9E00A76422 /* MBFileManager.m */,
+				01C3B21922E5DB9F00A76422 /* MBNetworkManager.h */,
+				01C3B21522E5DB9E00A76422 /* MBNetworkManager.m */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -1658,6 +1676,8 @@
 			children = (
 				01C3AEEB22E2AF1E00A76422 /* MBVideoModel.h */,
 				01C3AEEC22E2AF1E00A76422 /* MBVideoModel.m */,
+				01C3B21E22E5DBAE00A76422 /* MBURLTaskModel.h */,
+				01C3B21D22E5DBAE00A76422 /* MBURLTaskModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -4150,6 +4170,7 @@
 				C4F2E47522BE303100FF6213 /* IJSPreviewGifView.m in Sources */,
 				014FF1C222708C30008B0094 /* JXBodyView.m in Sources */,
 				5068363B21379B78001AB175 /* WCQRCodeScanningVC.m in Sources */,
+				01C3B21C22E5DB9F00A76422 /* MBAVAssetResourceLoader.m in Sources */,
 				014FF20122708C57008B0094 /* JXFooterView.m in Sources */,
 				5068360E21379B78001AB175 /* JRBaseNavVC.m in Sources */,
 				CD23951022BB5F2C00AAB013 /* MyShowCellNode.m in Sources */,
@@ -4207,9 +4228,11 @@
 				C4F2E48F22BE303100FF6213 /* IJSMapViewThumbCell.m in Sources */,
 				C4F2E44222BE303100FF6213 /* WAAVSECommand.m in Sources */,
 				C4FB48B922DDB924007BBEBA /* AlivcRecordFocusView.m in Sources */,
+				01C3B21F22E5DBAE00A76422 /* MBURLTaskModel.m in Sources */,
 				CDAB6D20219AC5F800DE6716 /* TYWaveProgressView.m in Sources */,
 				CD5EB146221EA148007AAEE0 /* WHCWaterfallFlowLayout.m in Sources */,
 				C4F2E46B22BE303100FF6213 /* IJSVideoTrimView.m in Sources */,
+				01C3B21A22E5DB9F00A76422 /* MBNetworkManager.m in Sources */,
 				C4F2E46922BE303100FF6213 /* IJSImageNavigationView.m in Sources */,
 				033C66B821927ACB00433026 /* MRBannerViewManager.m in Sources */,
 				C4F2E47222BE303100FF6213 /* IJSPreviewLivePhotoView.m in Sources */,
@@ -4227,6 +4250,7 @@
 				C4F2E44E22BE303100FF6213 /* IJSLodingView.m in Sources */,
 				C4F2E46822BE303100FF6213 /* IJSImageGaussanView.m in Sources */,
 				C4F2E43D22BE303100FF6213 /* WAAVSEImageMixCommand.m in Sources */,
+				01C3B21B22E5DB9F00A76422 /* MBFileManager.m in Sources */,
 				CD908FAB2253492700E348B4 /* UINavigationController+Autorotate.m in Sources */,
 				C4F2E46A22BE303100FF6213 /* IJSIMapViewExportView.m in Sources */,
 				5068363021379B78001AB175 /* CachesModule.m in Sources */,

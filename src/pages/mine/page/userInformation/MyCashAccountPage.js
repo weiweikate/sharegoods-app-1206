@@ -485,7 +485,7 @@ export default class MyCashAccountPage extends BasePage {
                 if (data.data instanceof Array) {
                     data.data.map((item, index) => {
                         arrData.push({
-                            type: allType[item.useType] ? allType[item.useType].title : '其他',
+                            type: allType[item.useType] ?  [item.useType].title : '其他',
                             time: DataUtils.getFormatDate(item.createTime / 1000),
                             serialNumber: item.serialNo,
                             capital: use_type_symbol[item.biType] + (item.balance ? item.balance : 0.00),
