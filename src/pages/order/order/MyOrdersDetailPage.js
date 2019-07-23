@@ -34,6 +34,7 @@ import { SmoothPushPreLoadHighComponent } from '../../../comm/components/SmoothP
 import { GetAfterBtns, checkOrderAfterSaleService, judgeProduceIsContainActivityTypes } from './OrderType';
 import CancelProdectsModal from '../components/orderDetail/CancelProdectsModal';
 import { backToHome } from '../../../navigation/RouterMap';
+import RouterMap from '../../../navigation/RouterMap';
 
 const buyerHasPay = res.buyerHasPay;
 const productDetailHome = res.productDetailHome;
@@ -348,6 +349,10 @@ export default class MyOrdersDetailPage extends BasePage {
         // 3://礼包
         let activityData = judgeProduceIsContainActivityTypes(item, [2, 3])
         if (activityData) {
+            if (activityData.activityType === 3){
+                this.$navigate(RouterMap.ProductDeletePage)
+                return
+            }
             this.$navigate('topic/TopicDetailPage', {
                 activityType: activityData.activityType,
                 activityCode: activityData.activityCode
