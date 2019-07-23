@@ -7,12 +7,12 @@ import { observer } from 'mobx-react';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import MineAPI from '../../mine/api/MineApi';
 import DesignRule from '../../../constants/DesignRule';
-import RouterMap, { popToRouteName } from '../../../navigation/RouterMap';
+import RouterMap, { popToRouteName, routePop } from '../../../navigation/RouterMap';
 
 @observer
 export class AddressSelectPage extends BasePage {
     $navigationBarOptions = {
-        title: '选择配送区域'
+        title: this.params.tittle || '选择配送区域'
     };
     addressSelectModel = new AddressSelectModel();
     _renderItem = ({ item }) => {
@@ -22,6 +22,14 @@ export class AddressSelectPage extends BasePage {
                 //点击列当前的城市
                 selectItems[itemIndex] = item;
                 if (itemIndex === 2) {
+                    /*正常回调*/
+                    const { tittle, callBack } = this.params;
+                    if (tittle && callBack) {
+                        callBack(selectItems[0].name, selectItems[0].code, selectItems[1].name, selectItems[1].code, selectItems[2].name, selectItems[2].code);
+                        routePop();
+                        return;
+                    }
+                    /*商品详情回调*/
                     const { productDetailAddressModel } = this.params;
                     const nameList = selectItems.map((item) => {
                         return item.name;
