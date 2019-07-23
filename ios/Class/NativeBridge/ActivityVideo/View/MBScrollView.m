@@ -156,7 +156,7 @@
 #pragma mark - IBActions
 
 #pragma mark - Public
--(void)setIsLogin:(BOOL *)isLogin{
+-(void)setIsLogin:(BOOL)isLogin{
   _isLogin = isLogin;
   self.btnView1.isLogin = isLogin;
   self.btnView2.isLogin = isLogin;

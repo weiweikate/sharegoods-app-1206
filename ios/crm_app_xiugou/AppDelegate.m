@@ -25,6 +25,8 @@
 #import "ShareImageMaker.h"
 #import "WelcomeView.h"
 #import "NetWorkTool.h"
+#import "MBProgressHUD+PD.h"
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -130,9 +132,13 @@
     switch (status) {
       case 0:
         self.AFNetworkStatus = 0;
+        [MBProgressHUD showSuccess:@"当前为非Wifi环境,请注意流量消耗"];
+
         break;
       case 1:
         self.AFNetworkStatus = 1;
+        [MBProgressHUD showSuccess:@"当前为非Wifi环境,请注意流量消耗"];
+
       case 2:
         self.AFNetworkStatus = 2;
       default:
