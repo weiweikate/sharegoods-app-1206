@@ -38,8 +38,8 @@ SINGLETON_FOR_CLASS(MRImageVideoManager)
   dispatch_async(dispatch_get_main_queue(), ^{
       AliyunMediaConfig * _mediaConfig;
       _mediaConfig = [AliyunMediaConfig defaultConfig];
-      _mediaConfig.minDuration = 2.0;
-      _mediaConfig.maxDuration = 5;
+      _mediaConfig.minDuration = 5.0f;
+      _mediaConfig.maxDuration = 30.f;
       _mediaConfig.fps = 25;
       _mediaConfig.gop = 5;
       _mediaConfig.cutMode = AliyunMediaCutModeScaleAspectFill;
