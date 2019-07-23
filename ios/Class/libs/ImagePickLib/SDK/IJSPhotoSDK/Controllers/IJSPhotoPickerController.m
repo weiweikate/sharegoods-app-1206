@@ -176,7 +176,8 @@ static NSString *const CellID = @"pickerID";
       
       if (!vc.allowPickingImage && vc.allowPickingVideo && tempModel.type == JSAssetModelMediaTypeVideo) {
         if (self.selectedHandler) {
-          self.selectedHandler(@[], @[tempModel], nil, nil, nil, nil);
+          self.selectedHandler(nil, nil, @[tempModel.asset], nil, nil, nil);
+          [self dismissViewControllerAnimated:YES completion:nil];
         }
         return;
       }

@@ -70,9 +70,9 @@ SINGLETON_FOR_CLASS(MRImageVideoManager)
   [IJSImageManager shareManager].allowPickingOriginalPhoto = YES;
   IJSImagePickerController * nav = [[IJSImagePickerController alloc]initWithMaxImagesCount:8 columnNumber:4 pushPhotoPickerVc:YES];
   nav.maxImagesCount = self.options[@"maxFiles"] ?[self.options[@"maxFiles"] integerValue]:8;
-  nav.allowPickingVideo = YES;
+  nav.allowPickingVideo = NO;
   nav.networkAccessAllowed = NO;
-  nav.allowPickingImage = NO;
+  nav.allowPickingImage = YES;
   nav.sortAscendingByModificationDate = NO;
   __weak typeof (self) weakSelf = self;
   [nav loadTheSelectedData:^(NSArray<UIImage *> *photos, NSArray<NSURL *> *avPlayers, NSArray<PHAsset *> *assets, NSArray<NSDictionary *> *infos, IJSPExportSourceType sourceType, NSError *error) {

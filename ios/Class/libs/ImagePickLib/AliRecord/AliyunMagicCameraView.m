@@ -175,16 +175,14 @@
     self.longPressButton = longPressButton;
     [self addSubview:longPressButton];
   
-  UIButton *selectVideoBtn = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth/2-21+72, ScreenHeight-100-SafeBottom, 45, 20)];
-  [selectVideoBtn setTitle:@"选择视频" forState:UIControlStateNormal];
+  UIButton *selectVideoBtn = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth/2-21+72, ScreenHeight-110-SafeBottom, 30, 30)];
+  [selectVideoBtn setImage:[UIImage imageNamed:@"ali_select_video"] forState:UIControlStateNormal];
   [selectVideoBtn setTitleColor:AlivcOxRGB(0xc3c5c6) forState:UIControlStateNormal];
   [selectVideoBtn addTarget:self action:@selector(selectVideoBtnClick) forControlEvents:UIControlEventTouchUpInside];
   selectVideoBtn.titleLabel.font = [UIFont systemFontOfSize:14];
-//  self.longPressButton = longPressButton;
   self.selectVideoBtn = selectVideoBtn;
   [self addSubview:selectVideoBtn];
-    
-    [self setExclusiveTouchInButtons];
+  [self setExclusiveTouchInButtons];
 }
 
 /**
@@ -239,7 +237,6 @@
 }
 
 - (void)recordButtonTouchUp {
-    NSLog(@" DD----  %f    %f  - %f", CFAbsoluteTimeGetCurrent(), _startTime, (CFAbsoluteTimeGetCurrent() - _startTime));
     switch ([AliyunIConfig config].recordType) {
         case AliyunIRecordActionTypeCombination:
                 if (_recording) {

@@ -49,7 +49,7 @@ pod 'AliyunOSSiOS'
 pod 'AlivcConan'
 pod 'JSONModel','~> 1.7.0'
 
-pod 'Texture' , '2.8.1'
+pod 'Texture' , '2.8.0'
 #pod 'SensorsAnalyticsSDK', :subspecs => ['ENABLE_REACT_NATIVE_APPCLICK']
 ##绘图和icon
 #pod 'RNSVG', :path => '../node_modules/react-native-svg'

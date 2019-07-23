@@ -26,6 +26,7 @@
 #import "HYFPreviewVC.h"
 #import "IJSImageManager.h"
 #import "IJSImagePickerController.h"
+#import "IJSImageManager.h"
 @interface AliyunMagicCameraViewController () <UIGestureRecognizerDelegate,UIAlertViewDelegate,AliyunIRecorderDelegate,MagicCameraViewDelegate>
 
 /**
@@ -612,10 +613,26 @@
   nav.sortAscendingByModificationDate = NO;
   __weak typeof (self) weakSelf = self;
   [nav loadTheSelectedData:^(NSArray<UIImage *> *photos, NSArray<NSURL *> *avPlayers, NSArray<PHAsset *> *assets, NSArray<NSDictionary *> *infos, IJSPExportSourceType sourceType, NSError *error) {
-    if (sourceType == IJSPVideoType ) {
-      
+    if (assets.count > 0) {
+      PHAsset * asset = assets[0];
+      if (asset.mediaType == PHAssetMediaTypeVideo ) {
+        [JRLoadingAndToastTool showLoadingText:@"视频拉去中"];
+        [[IJSImageManager shareManager]getVideoOutputPathWithAsset:assets[0] completion:^(NSURL *outputPath, NSError *error, IJSImageState state) {
+          [JRLoadingAndToastTool dissmissLoading];
+          if (state == IJSImageExportSessionStatusCompleted ) {
+              NSLog(@"%@",outputPath);
+            if (self.finishBlock) {
+              self.finishBlock(outputPath.absoluteString);
+            }
+            [self dismissViewControllerAnimated:YES completion:nil];
+          }else{
+            [JRLoadingAndToastTool showToast:@"拉去视频失败" andDelyTime:0.5];
+          }
+        }];
+      }
     }
   }];
+    
   [self presentViewController:nav animated:YES completion:nil];
 }
     

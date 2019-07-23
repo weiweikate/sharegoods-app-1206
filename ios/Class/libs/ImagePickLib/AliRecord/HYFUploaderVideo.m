@@ -9,9 +9,6 @@
 #import "HYFUploaderVideo.h"
 #import <VODUpload/VODUploadClient.h>
 
-
-
-
 @interface HYFUploaderVideo ()
 
 @property (nonatomic,strong)  VODUploadClient* uploader;
@@ -32,29 +29,22 @@ SINGLETON_FOR_CLASS(HYFUploaderVideo)
 }
 -(void)initUploader{
   _uploader = [VODUploadClient new];
-  
   __weak VODUploadClient *weakClient = _uploader;
   __weak HYFUploaderVideo *weakSelf = self;
-  
-  // callback functions and listener
   OnUploadFinishedListener testFinishCallbackFunc = ^(UploadFileInfo* fileInfo,  VodUploadResult* result){
-    NSLog(@"wz on upload finished videoid:%@, imageurl:%@", result.videoId, result.imageUrl);
     dispatch_async(dispatch_get_main_queue(), ^{
-//      NSIndexSet *indexSet=[[NSIndexSet alloc]initWithIndex:0];
-//      [weakTable reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+      [JRLoadingAndToastTool dissmissLoading];
     });
   };
   
   OnUploadFailedListener testFailedCallbackFunc = ^(UploadFileInfo* fileInfo, NSString *code, NSString* message){
-    NSLog(@"failed code = %@, error message = %@", code, message);
     dispatch_async(dispatch_get_main_queue(), ^{
-//      NSIndexSet *indexSet=[[NSIndexSet alloc]initWithIndex:0];
-//      [weakTable reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+      [JRLoadingAndToastTool dissmissLoading];
+      [JRLoadingAndToastTool showToast:@"上传失败" andDelyTime:0.5];
     });
   };
   
   OnUploadProgressListener testProgressCallbackFunc = ^(UploadFileInfo* fileInfo, long uploadedSize, long totalSize) {
-    NSLog(@"progress uploadedSize : %li, totalSize : %li", uploadedSize, totalSize);
     UploadFileInfo* info;
     int i = 0;
     for(; i<[[weakClient listFiles] count]; i++) {
@@ -67,28 +57,32 @@ SINGLETON_FOR_CLASS(HYFUploaderVideo)
       return;
     }
     dispatch_async(dispatch_get_main_queue(), ^{
+      
     });
   };
   
   OnUploadTokenExpiredListener testTokenExpiredCallbackFunc = ^{
     NSLog(@"token expired.");
     dispatch_async(dispatch_get_main_queue(), ^{
+      [JRLoadingAndToastTool showToast:@"token过期" andDelyTime:0.5];
     });
   };
   
   OnUploadRertyListener testRetryCallbackFunc = ^{
-    NSLog(@"manager: retry begin.");
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [JRLoadingAndToastTool dissmissLoading];
+    });
   };
   
   OnUploadRertyResumeListener testRetryResumeCallbackFunc = ^{
-    NSLog(@"manager: retry begin.");
+     [JRLoadingAndToastTool dissmissLoading];
   };
   
   OnUploadStartedListener testUploadStartedCallbackFunc = ^(UploadFileInfo* fileInfo) {
-    NSLog(@"upload started .");
-    // Warning:每次上传都应该是独立的uploadAuth和uploadAddress
-    // Warning:demo为了演示方便，使用了固定的uploadAuth和uploadAddress
     [weakClient setUploadAuthAndAddress:fileInfo uploadAuth:weakSelf.uploadAuth uploadAddress:weakSelf.uploadAddress];
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [JRLoadingAndToastTool showLoadingText:@"上传中"];
+    });
   };
   
   VODUploadListener *listener = [[VODUploadListener alloc] init];
