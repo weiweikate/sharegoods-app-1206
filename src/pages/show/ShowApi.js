@@ -92,12 +92,12 @@ const api = {
     cancelFollow: ['/social/show/user/cancel/follow',  {
         method: 'post'
     }],
-    userFollow: ['/social/show/user/user/follow',  {
+    userFollow: ['/social/show/user/follow',  {
         method: 'post'
     }],
     //查询其他用户信息
     getOthersInfo: ['/social/show/user/query/other/info',  {
-        method: 'post'
+        method: 'get'
     }],
     //查询自己用户信息
     getMineInfo: ['/social/show/user/query/mine/info',  {

@@ -14,44 +14,28 @@ import DesignRule from '../../../constants/DesignRule';
 import { MRText } from '../../../components/ui';
 import { routePush } from '../../../navigation/RouterMap';
 import RouterMap from '../../../navigation/RouterMap';
-import ShowApi from '../ShowApi';
+import ShowUtils from '../utils/ShowUtils';
 
 const { px2dp } = ScreenUtils;
 
 export default class WriterInfoView extends PureComponent {
-    constructor(props) {
-        super(props);
-        this.state = {
-            attentions: 0,
-            fans: 0,
-            hot: 0
-        };
-    }
-
-    componentDidMount() {
-        if(this.props.userType === 'mineWriter' || this.props.userType === 'mineNormal'){
-            ShowApi.getMineInfo().then((data)=>{
-                const {fansCount,followCount,likeCount,collectCount} = data.data;
-                this.setState({
-                    attentions: followCount,
-                    fans: fansCount,
-                    hot: likeCount+collectCount
-                })
-            }).catch((err)=>{
-
-            })
-        }
-    }
 
     render() {
         return (
             <View style={[styles.wrapper, this.props.style]}>
                 <TouchableWithoutFeedback onPress={() => {
-                    routePush(RouterMap.FansListPage, { type: 1 });
+                    let params = {};
+                    if(this.props.userType === 'mineWriter' || this.props.userType === 'mineNormal'){
+                        params.type = 1;
+                    }else {
+                        params.type = 3;
+                        params.id = this.props.userNo;
+                    }
+                    routePush(RouterMap.FansListPage, params );
                 }}>
                     <View style={styles.itemWrapper}>
                         <MRText style={styles.numStyle}>
-                            {this.state.attentions}
+                            {ShowUtils.formatShowNum(this.props.attentions)}
                         </MRText>
                         <MRText style={styles.textStyle}>
                             关注
@@ -59,11 +43,18 @@ export default class WriterInfoView extends PureComponent {
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => {
-                    routePush(RouterMap.FansListPage, { type: 0 });
+                    let params = {};
+                    if(this.props.userType === 'mineWriter' || this.props.userType === 'mineNormal'){
+                        params.type = 0;
+                    }else {
+                        params.type = 2;
+                        params.id = this.props.userNo;
+                    }
+                    routePush(RouterMap.FansListPage, params);
                 }}>
                     <View style={styles.itemWrapper}>
                         <MRText style={styles.numStyle}>
-                            {this.state.fans}
+                            {ShowUtils.formatShowNum(this.props.fans)}
                         </MRText>
                         <MRText style={styles.textStyle}>
                             粉丝
@@ -73,7 +64,7 @@ export default class WriterInfoView extends PureComponent {
 
                 <View style={styles.itemWrapper}>
                     <MRText style={styles.numStyle}>
-                        {this.state.hot}
+                        {ShowUtils.formatShowNum(this.props.hot)}
                     </MRText>
                     <MRText style={styles.textStyle}>
                         收藏与获赞

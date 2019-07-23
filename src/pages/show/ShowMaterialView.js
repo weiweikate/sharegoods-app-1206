@@ -22,6 +22,7 @@ import EmptyUtils from '../../utils/EmptyUtils';
 import ShowUtils from './utils/ShowUtils';
 import RouterMap, { routeNavigate, routePush } from '../../navigation/RouterMap';
 import DownloadUtils from './utils/DownloadUtils';
+import WhiteModel from './model/WhiteModel';
 
 @observer
 export default class ShowMaterialView extends React.Component {
@@ -223,6 +224,14 @@ export default class ShowMaterialView extends React.Component {
                                            });
                                        }}
 
+                                       onSeeUser={({nativeEvent})=>{
+                                           let userNo = nativeEvent.userInfoVO.userNo;
+                                           if(user.code === userNo){
+                                               routeNavigate(RouterMap.MyDynamicPage, { userType: WhiteModel.userStatus === 2 ? 'mineWriter' : 'mineNormal' });
+                                           }else {
+                                               routeNavigate(RouterMap.MyDynamicPage,{userType:'others',userInfo:nativeEvent.userInfoVO});
+                                           }
+                                       }}
 
                                        onSharePress={({ nativeEvent }) => {
                                            this.shareModal && this.shareModal.open();

@@ -8,7 +8,8 @@ import {
     StyleSheet,
     View,
     ImageBackground,
-    Image
+    Image,
+    TouchableWithoutFeedback
 } from 'react-native';
 import user from '../../../model/user';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -22,6 +23,11 @@ import {
     AvatarImage
 
 } from '../../../components/ui';
+import { routePush } from '../../../navigation/RouterMap';
+import RouterMap from '../../../navigation/RouterMap';
+import LinearGradient from 'react-native-linear-gradient';
+import ShowApi from '../ShowApi';
+import ShowUtils from '../utils/ShowUtils';
 
 const { px2dp } = ScreenUtils;
 const {
@@ -35,21 +41,86 @@ export default class UserInfoView extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            attentions:0
+            attentions: 0,
+            fans: 0,
+            hot: 0,
+            relationType: -1
         };
     }
 
-    render() {
-        let icon = (user.headImg && user.headImg.length > 0) ?
-            <AvatarImage source={{ uri: user.headImg }} style={styles.userIcon}
-                         borderRadius={px2dp(65 / 2)}/> : <Image source={mine_user_icon} style={styles.userIcon}
-                                                                 borderRadius={px2dp(65 / 2)}/>;
-        let name = '';
-        if (EmptyUtils.isEmpty(user.nickname)) {
-            name = user.phone ? user.phone : '未登录';
+    componentDidMount() {
+        if (this.props.userType === 'mineWriter' || this.props.userType === 'mineNormal') {
+            ShowApi.getMineInfo().then((data) => {
+                const { fansCount, followCount, likeCount, collectCount } = data.data;
+                this.setState({
+                    attentions: followCount,
+                    fans: fansCount,
+                    hot: likeCount + collectCount
+                });
+            }).catch((err) => {
+
+            });
         } else {
-            name = user.nickname.length > 6 ? user.nickname.substring(0, 6) + '...' : user.nickname;
+            const { userNo = '' } = this.props.userInfo || {};
+            ShowApi.getOthersInfo({ userCode: userNo }).then((data) => {
+                const { fansCount, followCount, likeCount, collectCount } = data.data;
+                this.setState({
+                    attentions: followCount,
+                    fans: fansCount,
+                    hot: likeCount + collectCount
+                });
+            }).catch((err) => {
+
+            });
         }
+    }
+
+    _attentionButton = () => {
+        let text = '';
+        if(this.state.relationType === 0){
+            text='关注';
+        }else if(this.state.relationType === 1){
+            text='已关注';
+        }else if(this.state.relationType === 2){
+            text='相互关注';
+        }
+
+        return (<LinearGradient
+            start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+            colors={['#FFCB02', '#FF9502']}
+            style={{
+                width: px2dp(65),
+                height: px2dp(22),
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: px2dp(11),
+                marginTop: px2dp(-11)
+            }}>
+            <Text style={{ color: DesignRule.white, fontSize: DesignRule.fontSize_threeTitle }}>
+                {text}
+            </Text>
+        </LinearGradient>);
+    };
+
+    render() {
+        const { userNo = '' } = this.props.userInfo || {};
+
+        const { userImg, userName } = this.props.userInfo || {};
+        let img = (this.props.userType === 'mineNormal' || this.props.userType === 'mineWriter') ? user.headImg : userImg;
+        let name = '';
+        if (this.props.userType === 'mineNormal' || this.props.userType === 'mineWriter') {
+            name = EmptyUtils.isEmpty(user.nickname) ? user.phone : user.nickname;
+        } else {
+            name = userName;
+        }
+        if (name.length > 6) {
+            name = name.substring(0, 6) + '...';
+        }
+        let icon = (!EmptyUtils.isEmpty(img)) ?
+            <AvatarImage source={{ uri: img }} style={styles.userIcon}
+                         borderRadius={px2dp(75 / 2)}/> : <Image source={mine_user_icon} style={styles.userIcon}
+                                                                 borderRadius={px2dp(75 / 2)}/>;
+
 
         //布局不能改，否则android不能显示
         return (
@@ -63,36 +134,51 @@ export default class UserInfoView extends PureComponent {
                 backgroundColor: '#F7F7F7',
                 marginBottom: px2dp(ScreenUtils.isIOS ? 10 : 0)
             }}>
-                <ImageBackground source={EmptyUtils.isEmpty(user.headImg) ? showHeaderBg : { uri: user.headImg }}
-                                 style={styles.headerContainer} blurRadius={EmptyUtils.isEmpty(user.headImg) ? 0 : 10}>
+                <ImageBackground source={EmptyUtils.isEmpty(img) ? showHeaderBg : { uri: img }}
+                                 style={styles.headerContainer} blurRadius={EmptyUtils.isEmpty(img) ? 0 : 20}>
                     {icon}
+                    {(this.state.relationType !== -1 && this.props.userType !== 'mineNormal' && this.props.userType !== 'mineWriter') ?
+                        this._attentionButton() : null
+                    }
+
                     <Text style={styles.nameStyle}>
                         {name}
                     </Text>
                     {
                         this.props.userType === 'mineNormal' ?
-                            <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: px2dp(12) }}>
-                                <Text style={{
-                                    color:DesignRule.white,
-                                    fontSize:px2dp(15)
-                                }}>
-                                    我的关注
-                                </Text>
-                                <Text style={{
-                                    color:DesignRule.white,
-                                    fontSize:px2dp(17),
-                                    marginLeft:px2dp(10)
-                                }}>
-                                    {this.state.attentions}
-                                </Text>
-                            </View> : null
+                            <TouchableWithoutFeedback onPress={() => {
+                                routePush(RouterMap.FansListPage, { type: 1 });
+                            }}>
+                                <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: px2dp(12) }}>
+                                    <Text style={{
+                                        color: DesignRule.white,
+                                        fontSize: px2dp(15)
+                                    }}>
+                                        我的关注
+                                    </Text>
+                                    <Text style={{
+                                        color: DesignRule.white,
+                                        fontSize: px2dp(17),
+                                        marginLeft: px2dp(10)
+                                    }}>
+                                        {ShowUtils.formatShowNum(this.state.attentions)}
+                                    </Text>
+                                </View>
+                            </TouchableWithoutFeedback> : null
                     }
                 </ImageBackground>
                 {
-                    this.props.userType !== 'mineNormal' ? <WriterInfoView userType={this.props.userType} style={{
-                        marginLeft: DesignRule.margin_page,
-                        marginTop: px2dp(-35)
-                    }}/> : null
+                    this.props.userType !== 'mineNormal' ?
+                        <WriterInfoView
+                            attentions={this.state.attentions}
+                            fans={this.state.fans}
+                            hot={this.state.hot}
+                            userType={this.props.userType}
+                            userNo = {userNo}
+                            style={{
+                                marginLeft: DesignRule.margin_page,
+                                marginTop: px2dp(-35)
+                            }}/> : null
                 }
             </View>
         );
@@ -107,9 +193,9 @@ var styles = StyleSheet.create({
         alignItems: 'center'
     },
     userIcon: {
-        width: px2dp(65),
-        height: px2dp(65),
-        marginTop: px2dp(79)
+        width: px2dp(75),
+        height: px2dp(75),
+        marginTop: px2dp(64)
     },
     waterfall: {
         backgroundColor: DesignRule.bgColor

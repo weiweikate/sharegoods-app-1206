@@ -43,56 +43,8 @@ export default class MyDynamicPage extends BasePage {
     }
 
     renderHeader = () => {
-        return <UserInfoView userType={this.params.userType}/>
-        // let icon = (user.headImg && user.headImg.length > 0) ?
-        //     <AvatarImage source={{ uri: user.headImg }} style={styles.userIcon}
-        //                  borderRadius={px2dp(65 / 2)}/> : <Image source={mine_user_icon} style={styles.userIcon}
-        //                                                          borderRadius={px2dp(65 / 2)}/>;
-        // let name = '';
-        // if (EmptyUtils.isEmpty(user.nickname)) {
-        //     name = user.phone ? user.phone : '未登录';
-        // } else {
-        //     name = user.nickname.length > 6 ? user.nickname.substring(0, 6) + '...' : user.nickname;
-        // }
-        //
-        // //布局不能改，否则android不能显示
-        // return (
-        //     <View style={{
-        //         flex: 1,
-        //         position: 'absolute',
-        //         left: 0,
-        //         top: 0,
-        //         width: DesignRule.width,
-        //         height: px2dp(270),
-        //         backgroundColor: '#F7F7F7',
-        //         marginBottom: px2dp(ScreenUtils.isIOS ? 10 : 0)
-        //     }}>
-        //         <ImageBackground source={EmptyUtils.isEmpty(user.headImg) ? showHeaderBg : { uri: user.headImg }}
-        //                          style={styles.headerContainer} blurRadius={EmptyUtils.isEmpty(user.headImg) ? 0 : 10}>
-        //             {icon}
-        //             <Text style={styles.nameStyle}>
-        //                 {name}
-        //             </Text>
-        //         </ImageBackground>
-        //         <WriterInfoView style={{ marginLeft: DesignRule.margin_page, marginTop: px2dp(-35)}}/>
-        //     </View>
-        // );
+        return <UserInfoView userType={this.params.userType} userInfo={this.params.userInfo}/>
     };
-
-    navBackgroundRender() {
-        return (
-            <View ref={(ref) => this.headerBg = ref}
-                  style={{
-                      backgroundColor: 'white',
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      height: headerHeight,
-                      opacity: 0
-                  }}/>
-        );
-    }
 
     navRender = () => {
         return (
@@ -149,7 +101,7 @@ export default class MyDynamicPage extends BasePage {
     _render() {
         let Waterfall = Platform.OS === 'ios' ? ShowGroundView : ShowDynamicView;
         let headerHeight = Platform.OS === 'ios' ? 210 : 200;
-        let userCode = this.params.userCode || '';
+        const {userNo = ''} = this.params.userInfo || {};
         return (
             <View style={styles.contain}>
                 <Waterfall style={{ flex: 1, marginTop: -10 }}
@@ -160,7 +112,7 @@ export default class MyDynamicPage extends BasePage {
                                    changeHeader:nativeEvent.show
                                })
                            }}
-                           userType={`${this.params.userType}${userCode}`}
+                           userType={`${this.params.userType}${userNo}`}
                            type={'MyDynamic'}
                            renderHeader={this.renderHeader()}
                            onItemPress={({ nativeEvent }) => {

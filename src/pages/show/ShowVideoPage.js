@@ -21,6 +21,7 @@ import apiEnvironment from '../../api/ApiEnvironment';
 import { trackEvent } from '../../utils/SensorsTrack';
 import ShowListIndexModel from './model/ShowListIndexModel';
 import ProductListModal from './components/ProductListModal';
+import WhiteModel from './model/WhiteModel';
 
 const ShowVideoListView = requireNativeComponent('MrShowVideoListView');
 @observer
@@ -68,9 +69,9 @@ export default class ShowVideoPage extends BasePage {
             return (
                 <View style={{ flex: 1 }}>
                     <ShowVideoListView style={{ flex: 1 }}
-                                       onAttentionPress={() => {
+                                       onAttentionPress={({nativeEvent}) => {
                                            if (user.isLogin) {
-
+                                               ShowApi.userFollow({userNo:nativeEvent.userInfoVO.userNo}).then().catch();
                                            } else {
                                                routeNavigate(RouterMap.LoginPage);
                                            }
@@ -78,6 +79,14 @@ export default class ShowVideoPage extends BasePage {
                                        userCode={user.code}
                                        onBack={() => {
                                            this.$navigateBack(1);
+                                       }}
+                                       onSeeUser={({nativeEvent})=>{
+                                           let userNo = nativeEvent.userInfoVO.userNo;
+                                           if(user.code === userNo){
+                                               routeNavigate(RouterMap.MyDynamicPage, { userType: WhiteModel.userStatus === 2 ? 'mineWriter' : 'mineNormal' });
+                                           }else {
+                                               routeNavigate(RouterMap.MyDynamicPage,{userType:'others',userInfo:nativeEvent.userInfoVO});
+                                           }
                                        }}
                                        onPressTag={({ nativeEvent }) => {
                                            this.$navigate(RouterMap.TagDetailPage, nativeEvent);

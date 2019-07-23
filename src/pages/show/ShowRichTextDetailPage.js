@@ -259,6 +259,27 @@ export default class ShowRichTextDetailPage extends BasePage {
                               allowFontScaling={false}>{userName}</Text>
                     </View>
                 </View>
+                { detail.userInfoVO ?
+                    <TouchableWithoutFeedback onPress={()=>{
+                        ShowApi.userFollow({userNo:detail.userInfoVO.userNo}).then().catch();
+                    }}>
+                        <LinearGradient
+                            start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+                            colors={['#FFCB02', '#FF9502']}
+                            style={{
+                                width: px2dp(65),
+                                height: px2dp(28),
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                borderRadius: px2dp(14),
+                                marginRight: detail.status === 1 ? px2dp(20) : px2dp(15)
+                            }}>
+                            <Text style={{ color: DesignRule.white, fontSize: DesignRule.fontSize_threeTitle }}>
+                                关注
+                            </Text>
+                        </LinearGradient>
+                    </TouchableWithoutFeedback> : null
+                }
                 {detail.status === 1 ? <TouchableOpacity style={styles.shareView} onPress={() => {
                     this._goToShare();
                 }}>

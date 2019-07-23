@@ -90,7 +90,7 @@ public class TabPageAdapter extends PagerAdapter {
                 title = position == 0 ? "文章" : "收藏";
                 break;
             default:
-                title = "收藏";
+                title = "文章";
                 break;
         }
         return title;
