@@ -26,11 +26,14 @@ import ShowActivityViewIOS from './ShowActivityView';
 import user from '../../model/user';
 import res from '../mine/res';
 import EmptyUtils from '../../utils/EmptyUtils';
+import ShareUtil from '../../utils/ShareUtil'
 import MessageApi from '../message/api/MessageApi';
 import ShowFoundView from './ShowFoundView';
 import ShowMaterialView from './ShowMaterialView';
 import apiEnvironment from '../../api/ApiEnvironment';
-import CommShareModal from '../../comm/components/CommShareModal';
+// import CommShareModal from '../../comm/components/CommShareModal';
+import CommShowShareModal from '../../comm/components/CommShowShareModal';
+
 import WhiteModel from './model/WhiteModel';
 import ShowListIndexModel from './model/ShowListIndexModel';
 import { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
@@ -220,7 +223,7 @@ export default class ShowListPage extends BasePage {
         let AttentionView = null;
         if (needsExpensive) {
             HotView = require('./ShowHotView').default;
-            AttentionView = Platform.OS === 'ios' ?HotView:require('./ShowAttentionPage').default;
+            AttentionView = Platform.OS === 'ios' ? HotView : require('./ShowAttentionPage').default;
         }
         let icon = (user.headImg && user.headImg.length > 0) ?
             <AvatarImage source={{ uri: user.headImg }} style={styles.userIcon}
@@ -316,6 +319,7 @@ export default class ShowListPage extends BasePage {
                             <AttentionView ref={(ref) => {
                                 this.hotList = ref;
                             }}
+                                     type={'attention'}
                                      uri={'/social/show/content/page/query/attention@GET'}
                                      hasBanner={false}
                                      navigate={this.$navigate}
@@ -335,6 +339,7 @@ export default class ShowListPage extends BasePage {
                                 this.hotList = ref;
                             }}
                                      hasBanner={true}
+                                     type={'recommend'}
                                      uri={'/social/show/content/page/query@GET'}
                                      navigate={this.$navigate}
                                      pageFocus={this.state.pageFocused}
@@ -415,8 +420,8 @@ export default class ShowListPage extends BasePage {
             </ScrollableTabView>
             <IntervalMsgView pageType={IntervalType.xiuChang}/>
             {detail ?
-                <CommShareModal ref={(ref) => this.shareModal = ref}
-                                type={'Show'}
+                <CommShowShareModal ref={(ref) => this.shareModal = ref}
+                                type={ShareUtil.showSharedetailDataType(detail && detail.showType)}
                                 trackEvent={trackEvent.XiuChangShareClick}
                                 trackParmas={{
                                     articleCode: detail.code,

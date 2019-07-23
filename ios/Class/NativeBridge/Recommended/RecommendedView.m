@@ -380,14 +380,14 @@ static NSString *IDType = @"TypeCell";
     model.collectCount--;
   }
   model.collect = !model.collect;
-  
+
   NSMutableDictionary * dic = [NSMutableDictionary dictionaryWithDictionary:self.callBackArr[indexPath.row]];
   [dic setObject:[NSNumber numberWithInteger:model.collectCount] forKey:@"collectCount"];
   [dic setObject:@(model.collect) forKey:@"collect"];
   [self.callBackArr replaceObjectAtIndex:indexPath.row withObject:dic];
 
   [self.tableView reloadRowAtIndexPath:indexPath withRowAnimation:UITableViewRowAnimationNone];
-  
+
   if(_onCollectPress) {
     _onCollectPress(@{
                   @"detail":self.callBackArr[indexPath.item],
@@ -425,6 +425,14 @@ static NSString *IDType = @"TypeCell";
   }
 }
 
+-(void)headerImgClick:(RecommendedCell *)cell{
+  NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
+  if(_onSeeUser){
+    _onSeeUser(self.callBackArr[indexPath.item]);
+  }
+}
+
+#pragma arguments - public
 -(void)setType:(NSString *)type{
   _type = type;
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -470,9 +478,9 @@ static NSString *IDType = @"TypeCell";
   [dic setObject:[NSNumber numberWithInteger:model.likesCount] forKey:@"likesCount"];
   [dic setObject:@(model.like) forKey:@"like"];
   [self.callBackArr replaceObjectAtIndex:indexPath.row withObject:dic];
-  
+
   [self.tableView reloadRowAtIndexPath:indexPath withRowAnimation:UITableViewRowAnimationNone];
-  
+
   if(_onZanPress) {
     _onZanPress(@{
                   @"detail":self.callBackArr[indexPath.item],
@@ -489,14 +497,14 @@ static NSString *IDType = @"TypeCell";
     model.collectCount--;
   }
   model.collect = !model.collect;
-  
+
   NSMutableDictionary * dic = [NSMutableDictionary dictionaryWithDictionary:self.callBackArr[indexPath.row]];
   [dic setObject:[NSNumber numberWithInteger:model.collectCount] forKey:@"collectCount"];
   [dic setObject:@(model.collect) forKey:@"collect"];
   [self.callBackArr replaceObjectAtIndex:indexPath.row withObject:dic];
-  
+
   [self.tableView reloadRowAtIndexPath:indexPath withRowAnimation:UITableViewRowAnimationNone];
-  
+
   if(_onCollectPress) {
     _onCollectPress(@{
                   @"detail":self.callBackArr[indexPath.item],
@@ -517,6 +525,12 @@ static NSString *IDType = @"TypeCell";
 
 }
 
+-(void)recTypeHeaderImgClick:(RecTypeCell *)cell{
+  NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
+  if(_onSeeUser){
+    _onSeeUser(self.callBackArr[indexPath.item]);
+  }
+}
 
 #pragma mark - scrollView-delegate
 

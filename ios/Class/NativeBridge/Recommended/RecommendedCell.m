@@ -69,7 +69,9 @@
     _headView = [[JXHeaderView alloc] init];
     __weak RecommendedCell *weakSelf = self;
     _headView.clickHeaderImgBlock = ^(){
-      
+      if (weakSelf.cellDelegate) {
+        [weakSelf.cellDelegate headerImgClick:weakSelf];
+      }
     };
   }
   return _headView;
@@ -222,10 +224,8 @@
   
   if(model.showType==3){
     self.bodyView.imageType = YES;
-    self.footerView.type = YES;
   }else{
     self.bodyView.imageType = NO;
-    self.footerView.type = NO;
   }
   self.bodyView.sources = model.resource;
   if((model.createSource&&model.createSource==2)){

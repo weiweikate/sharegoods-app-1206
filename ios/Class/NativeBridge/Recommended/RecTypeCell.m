@@ -50,6 +50,12 @@
 -(JXHeaderView *)headView{
   if (!_headView) {
     _headView = [[JXHeaderView alloc] init];
+    __weak RecTypeCell *weakSelf = self;
+    _headView.clickHeaderImgBlock = ^(){
+      if (weakSelf.recTypeDelegate) {
+        [weakSelf.recTypeDelegate recTypeHeaderImgClick:weakSelf];
+      }
+    };
   }
   return _headView;
 }
