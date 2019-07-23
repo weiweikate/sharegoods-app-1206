@@ -11,7 +11,6 @@ import DesignRule from '../../constants/DesignRule';
 import res from '../mine/res';
 import ScreenUtils from '../../utils/ScreenUtils';
 import ShowDynamicView from './components/ShowDynamicView';
-import ShowGroundView from './components/ShowGroundView';
 import RouterMap from '../../navigation/RouterMap';
 import UserInfoView from './components/UserInfoView';
 
@@ -147,13 +146,12 @@ export default class MyDynamicPage extends BasePage {
 
 
     _render() {
-        let Waterfall = Platform.OS === 'ios' ? ShowGroundView : ShowDynamicView;
+        let Waterfall = ShowDynamicView;
         let headerHeight = Platform.OS === 'ios' ? 210 : 200;
         let userCode = this.params.userCode || '';
         return (
             <View style={styles.contain}>
                 <Waterfall style={{ flex: 1, marginTop: -10 }}
-                           uri={'/social/show/content/page/mine/query@GET'}
                            headerHeight={px2dp(headerHeight+100)}
                            changeNav={({nativeEvent})=>{
                                this.setState({
@@ -161,7 +159,6 @@ export default class MyDynamicPage extends BasePage {
                                })
                            }}
                            userType={`${this.params.userType}${userCode}`}
-                           type={'MyDynamic'}
                            renderHeader={this.renderHeader()}
                            onItemPress={({ nativeEvent }) => {
                                let params = {
