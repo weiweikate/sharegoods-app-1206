@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.alibaba.fastjson.JSONObject;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
@@ -17,8 +18,13 @@ import com.facebook.react.uimanager.events.EventDispatcher;
 import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.sharegoods.R;
+import com.meeruu.sharegoods.rn.showground.DynamicInterface;
+import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
 import com.meeruu.sharegoods.rn.showground.event.SetNavStatusEvent;
+import com.meeruu.sharegoods.rn.showground.event.onItemPressEvent;
 
+
+import java.util.Map;
 
 import static com.meeruu.sharegoods.rn.showground.widgets.usercenter.TabPageAdapter.MINENORMAL;
 import static com.meeruu.sharegoods.rn.showground.widgets.usercenter.TabPageAdapter.OTHERS;
@@ -49,9 +55,23 @@ public class UserCenterView {
         headerWrapper = view.findViewById(R.id.header_wrapper);
     }
 
-    public void setUserType(String s){
-        TabPageAdapter adapter = new TabPageAdapter(mContext
-                , s);
+    public void setUserType(String s,final View view){
+        TabPageAdapter adapter = new TabPageAdapter(mContext, s, new DynamicInterface() {
+            @Override
+            public void onItemPress(Object data, int position) {
+                NewestShowGroundBean.DataBean item = (NewestShowGroundBean.DataBean) data;
+                String json = JSONObject.toJSONString(item);
+                Map map = JSONObject.parseObject(json);
+                map.put("index", position);
+                WritableMap realData = Arguments.makeNativeMap(map);
+                if (eventDispatcher != null) {
+                    onItemPressEvent itemPressEvent = new onItemPressEvent();
+                    itemPressEvent.init(view.getId());
+                    itemPressEvent.setData(realData);
+                    eventDispatcher.dispatchEvent(itemPressEvent);
+                }
+            }
+        });
         viewpager.setAdapter(adapter);
     }
 

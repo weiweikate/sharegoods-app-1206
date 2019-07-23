@@ -391,7 +391,7 @@ export default class ShowListPage extends BasePage {
                                                        if (data.showType === 1) {
                                                            navigate(RouterMap.ShowDetailPage, params);
                                                        } else if (data.showType === 3) {
-                                                           navigate(RouterMap.ShowVideoPage, params);
+                                                           navigate(RouterMap.ShowVideoPage, {code:data.showNo});
                                                        } else if (data.showType === 4) {
                                                            navigate(RouterMap.TagDetailPage, {
                                                                tagId: data.tagId,

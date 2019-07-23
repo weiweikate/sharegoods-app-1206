@@ -52,7 +52,7 @@ public class ShowDynamicViewManager extends ViewGroupManager<ViewGroup> {
     public void setUserType(View view, String s) {
         Object object = view.getTag();
         if (object != null && object instanceof UserCenterView) {
-            ((UserCenterView) object).setUserType(s);
+            ((UserCenterView) object).setUserType(s,view);
         }
     }
 

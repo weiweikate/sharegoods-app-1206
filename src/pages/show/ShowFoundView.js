@@ -77,6 +77,8 @@ export default class ShowFoundView extends React.Component {
                                 type={'found'}
                                 onItemPress={({ nativeEvent }) => {
                                     const { navigate } = this.props;
+                                    const { showNo , userInfoVO } = nativeEvent;
+                                    const { userNo } = userInfoVO || {};
                                     let params = {
                                         data: nativeEvent,
                                         ref: this.foundList,
@@ -85,13 +87,11 @@ export default class ShowFoundView extends React.Component {
                                     if (nativeEvent.showType === 1) {
                                         navigate(RouterMap.ShowDetailPage, params);
                                     } else if(nativeEvent.showType === 3){
-                                        navigate(RouterMap.ShowVideoPage, params);
+                                        navigate(RouterMap.ShowVideoPage, {code:showNo});
                                     }else {
                                         navigate(RouterMap.ShowRichTextDetailPage, params);
                                     }
 
-                                    const { showNo , userInfoVO } = nativeEvent;
-                                    const { userNo } = userInfoVO || {};
                                     track(trackEvent.XiuChangEnterClick,{
                                         xiuChangListType:3,
                                         articleCode:showNo,

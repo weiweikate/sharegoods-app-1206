@@ -124,6 +124,8 @@ export default class ShowMaterialView extends React.Component {
                                        userIsLogin={user.token ? true : false}
                                        onItemPress={({ nativeEvent }) => {
                                            const { navigate } = this.props;
+                                           const { showNo , userInfoVO } = nativeEvent;
+                                           const { userNo } = userInfoVO || {};
                                            let params = {
                                                data: nativeEvent,
                                                ref: this.materialList,
@@ -132,13 +134,11 @@ export default class ShowMaterialView extends React.Component {
                                            if (nativeEvent.showType === 1) {
                                                navigate(RouterMap.ShowDetailPage, params);
                                            } else if(nativeEvent.showType === 3){
-                                               navigate(RouterMap.ShowVideoPage, params);
+                                               navigate(RouterMap.ShowVideoPage, {code:showNo});
                                            } else {
                                                navigate(RouterMap.ShowRichTextDetailPage, params);
                                            }
 
-                                           const { showNo , userInfoVO } = nativeEvent;
-                                           const { userNo } = userInfoVO || {};
                                            track(trackEvent.XiuChangEnterClick,{
                                                xiuChangListType:2,
                                                articleCode:showNo,

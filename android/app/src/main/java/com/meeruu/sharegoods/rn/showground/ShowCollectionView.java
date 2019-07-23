@@ -48,9 +48,11 @@ public class ShowCollectionView  implements IShowgroundView, SwipeRefreshLayout.
     private StaggeredGridLayoutManager layoutManager;
     private int page = 1;
     private CollectionPresenter presenter;
+    private DynamicInterface dynamicInterface;
 
-    public ViewGroup getShowCollectionView(ReactContext reactContext){
+    public ViewGroup getShowCollectionView(ReactContext reactContext,DynamicInterface dynamicInterface){
         eventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
+        this.dynamicInterface = dynamicInterface;
         LayoutInflater inflater = LayoutInflater.from(reactContext);
         View view = inflater.inflate(R.layout.view_showground, null);
         initView(reactContext, view);
@@ -91,11 +93,6 @@ public class ShowCollectionView  implements IShowgroundView, SwipeRefreshLayout.
                 onRefresh();
             }
         }, 200);
-//        itemPressEvent = new onItemPressEvent();
-//        startRefreshEvent = new onStartRefreshEvent();
-//        startScrollEvent = new onStartScrollEvent();
-//        onScrollYEvent = new onScrollYEvent();
-//        endScrollEvent = new onEndScrollEvent();
         setRecyclerViewItemEvent(view);
         adapter = new CollectionAdapter();
         adapter.setPreLoadNumber(3);
@@ -119,19 +116,8 @@ public class ShowCollectionView  implements IShowgroundView, SwipeRefreshLayout.
             @Override
             public void onItemClick(final BaseQuickAdapter adapter, View view1, final int position) {
                 final List<NewestShowGroundBean.DataBean> data = adapter.getData();
-                if (data != null) {
-                    NewestShowGroundBean.DataBean item = data.get(position);
-                    String json = JSONObject.toJSONString(item);
-                    Map map = JSONObject.parseObject(json, new TypeReference<Map>() {
-                    });
-                    map.put("index", position);
-                    WritableMap realData = Arguments.makeNativeMap(map);
-                    if (eventDispatcher != null) {
-//                        itemPressEvent = new onItemPressEvent();
-//                        itemPressEvent.init(view.getId());
-//                        itemPressEvent.setData(realData);
-//                        eventDispatcher.dispatchEvent(itemPressEvent);
-                    }
+                if (data != null && dynamicInterface != null) {
+                    dynamicInterface.onItemPress(data.get(position),position);
                 }
             }
         });

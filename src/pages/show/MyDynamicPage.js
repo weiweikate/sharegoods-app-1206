@@ -167,9 +167,11 @@ export default class MyDynamicPage extends BasePage {
                                let params = {
                                    code: nativeEvent.showNo
                                };
-                               if (nativeEvent.showType === 1 || nativeEvent.showType == 3) {
+                               if (nativeEvent.showType === 1) {
                                    this.$navigate(RouterMap.ShowDetailPage, params);
-                               } else {
+                               }else if(nativeEvent.showType == 3){
+                                   this.$navigate(RouterMap.ShowVideoPage, params);
+                               }else {
                                    this.$navigate(RouterMap.ShowRichTextDetailPage, params);
                                }
 
@@ -178,7 +180,6 @@ export default class MyDynamicPage extends BasePage {
                                // this._onScroll(nativeEvent);
                            }}
                 />
-                {/*{this.navBackgroundRender()}*/}
                 {this.navRender()}
 
             </View>
