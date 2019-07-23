@@ -9,7 +9,7 @@ import {
 import BasePage from '../../BasePage';
 import TopicDetailHeaderView from './components/TopicDetailHeaderView';
 import TopicDetailSegmentView from './components/TopicDetailSegmentView';
-import PriceExplain from '../product/components/PriceExplain';
+import { PriceExplain } from '../product/components/ProductDetailItemView';
 import ScreenUtils from '../../utils/ScreenUtils';
 import HTML from 'react-native-render-html';
 import TopicApi from './api/TopicApi';

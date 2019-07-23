@@ -6,7 +6,6 @@ import {
 } from 'react-native';
 import BasePage from '../../BasePage';
 import DetailBottomView from './components/DetailBottomView';
-import PriceExplain from './components/PriceExplain';
 import SelectionPage, { sourceType } from './SelectionPage';
 import ScreenUtils from '../../utils/ScreenUtils';
 import shopCartCacheTool from '../shopCart/model/ShopCartCacheTool';
@@ -28,9 +27,9 @@ import {
     HeaderItemView,
     ParamItemView,
     PromoteItemView,
-    ServiceItemView, ShowTopView, SuitItemView
+    ServiceItemView, ShowTopView, SuitItemView, PriceExplain
 } from './components/ProductDetailItemView';
-import DetailHeaderScoreView from './components/DetailHeaderScoreView';
+import ProductDetailScoreView from './components/ProductDetailScoreView';
 import DetailParamsModal from './components/DetailParamsModal';
 import { ContentSectionView, SectionLineView, SectionNullView } from './components/ProductDetailSectionView';
 import ProductDetailNavView from './components/ProductDetailNavView';
@@ -273,8 +272,8 @@ export default class ProductDetailPage extends BasePage {
                 return <ProductDetailSetAddressView productDetailAddressModel={productDetailAddressModel}/>;
             }
             case productItemType.comment: {
-                return <DetailHeaderScoreView pData={this.productDetailModel}
-                                              navigation={this.props.navigation}/>;
+                return <ProductDetailScoreView pData={this.productDetailModel}
+                                               navigation={this.props.navigation}/>;
             }
             case productItemType.priceExplain: {
                 return <PriceExplain/>;
