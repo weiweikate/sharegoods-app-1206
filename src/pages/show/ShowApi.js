@@ -89,9 +89,11 @@ const api = {
     getOtherFollow: ['/social/show/user/query/other/follow', {
         method: 'get'
     }],
+    //取消关注
     cancelFollow: ['/social/show/user/cancel/follow',  {
         method: 'post'
     }],
+    //关注
     userFollow: ['/social/show/user/follow',  {
         method: 'post'
     }],

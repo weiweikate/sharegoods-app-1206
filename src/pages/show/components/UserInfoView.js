@@ -28,6 +28,7 @@ import RouterMap from '../../../navigation/RouterMap';
 import LinearGradient from 'react-native-linear-gradient';
 import ShowApi from '../ShowApi';
 import ShowUtils from '../utils/ShowUtils';
+import bridge from '../../../utils/bridge';
 
 const { px2dp } = ScreenUtils;
 const {
@@ -63,8 +64,9 @@ export default class UserInfoView extends PureComponent {
         } else {
             const { userNo = '' } = this.props.userInfo || {};
             ShowApi.getOthersInfo({ userCode: userNo }).then((data) => {
-                const { fansCount, followCount, likeCount, collectCount } = data.data;
+                const { fansCount, followCount, likeCount, collectCount, relationType } = data.data;
                 this.setState({
+                    relationType,
                     attentions: followCount,
                     fans: fansCount,
                     hot: likeCount + collectCount
@@ -76,30 +78,57 @@ export default class UserInfoView extends PureComponent {
     }
 
     _attentionButton = () => {
+        const { userNo = '' } = this.props.userInfo || {};
+        const { relationType, fans = 0 } = this.state;
+
         let text = '';
-        if(this.state.relationType === 0){
-            text='关注';
-        }else if(this.state.relationType === 1){
-            text='已关注';
-        }else if(this.state.relationType === 2){
-            text='相互关注';
+        if (relationType === 0) {
+            text = '关注';
+        } else if (relationType === 1) {
+            text = '已关注';
+        } else if (relationType === 2) {
+            text = '相互关注';
         }
 
-        return (<LinearGradient
-            start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
-            colors={['#FFCB02', '#FF9502']}
-            style={{
-                width: px2dp(65),
-                height: px2dp(22),
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: px2dp(11),
-                marginTop: px2dp(-11)
+        return (
+            <TouchableWithoutFeedback onPress={() => {
+                if (relationType === 0) {
+                    ShowApi.userFollow({ userNo }).then(() => {
+                        this.setState({
+                            relationType: 1,
+                            fans: fans + 1
+                        });
+                    }).catch((error) => {
+                        bridge.$toast(error.msg);
+                    });
+                } else {
+                    ShowApi.cancelFollow({ userNo }).then(() => {
+                        this.setState({
+                            relationType: 0,
+                            fans: fans > 0 ? fans - 1 : fans
+                        });
+                    }).catch((error) => {
+                        bridge.$toast(error.msg);
+                    });
+                }
+
             }}>
-            <Text style={{ color: DesignRule.white, fontSize: DesignRule.fontSize_threeTitle }}>
-                {text}
-            </Text>
-        </LinearGradient>);
+                <LinearGradient
+                    start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+                    colors={['#FFCB02', '#FF9502']}
+                    style={{
+                        width: px2dp(65),
+                        height: px2dp(22),
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: px2dp(11),
+                        marginTop: px2dp(-11)
+                    }}>
+                    <Text style={{ color: DesignRule.white, fontSize: DesignRule.fontSize_threeTitle }}>
+                        {text}
+                    </Text>
+                </LinearGradient>
+            </TouchableWithoutFeedback>);
     };
 
     render() {
@@ -174,7 +203,7 @@ export default class UserInfoView extends PureComponent {
                             fans={this.state.fans}
                             hot={this.state.hot}
                             userType={this.props.userType}
-                            userNo = {userNo}
+                            userNo={userNo}
                             style={{
                                 marginLeft: DesignRule.margin_page,
                                 marginTop: px2dp(-35)
