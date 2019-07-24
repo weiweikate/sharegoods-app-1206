@@ -162,7 +162,7 @@ export default class CommShowShareModal extends React.Component {
         params = { headerImage: user.headImg || '', userName: name || '', ...params };
         if (type === 'showWeb') {
             if (this.state.path.length === 0) {
-                if (type === 'Image' || type === 'Show' || type === 'Invite') {
+                if (type === 'showWeb') {
                     let url = params && params.imageUrlStr;
                     this.props.imageJson && (params.imageUrlStr = getSource({ uri: url }, this.imageWidth, this.imageHeight, 'lfit').uri);
                     bridge.creatShareImage(params, (path) => {
@@ -291,51 +291,9 @@ export default class CommShowShareModal extends React.Component {
             this.imageHeight = this.imageWidth * scale;
         }
 
-
         // let arrayImage = [];
         let arrayWeb = [];
         // let currentType = type === 'showImage' || type === 'showWeb' || type === 'showVideo' || type === 'show';
-        console.log('type',type);
-        // if (currentType) {
-        //     //             this.saveImage(this.state.path); //下载图片
-        //     // this.setState({ showToastImage: true},
-        //     //                  () => {this.showImage();}); //网页切换为图片
-        //     // this.showImage();
-        //
-        //     arrayImage.push({
-        //         image: res.share.wechat, title: '微信好友', onPress: () => {
-        //             this.setState({ shareType: 0 }, () => {
-        //                 this.share(0);
-        //             });
-        //
-        //         }
-        //     });
-        //
-        //     arrayImage.push({
-        //         image: res.share.QQ, title: 'QQ好友', onPress: () => {
-        //             this.setState({ shareType: 0 }, () => {
-        //                 this.share(2);
-        //             });
-        //         }
-        //     });
-        //
-        //     arrayImage.push({
-        //         image: res.share.weibo, title: '微博', onPress: () => {
-        //             this.setState({ shareType: 0 }, () => {
-        //                 this.share(4);
-        //             });
-        //         }
-        //     });
-        //
-        //     arrayImage.push({
-        //         image: res.share.download, title: '下载图片发圈', onPress: () => {
-        //             this.setState({ shareType: 0 }, () => {
-        //                 this.saveImage(this.state.path);
-        //             });
-        //
-        //         }
-        //     });
-        // }
 
         arrayWeb.push({
             image: res.share.wechat, title: '微信好友', onPress: () => {
@@ -367,6 +325,7 @@ export default class CommShowShareModal extends React.Component {
             arrayWeb.push({
                 image: res.share.download, title: '下载推广图片', onPress: () => {
                     this.setState({ shareType: 0 }, () => {
+                        console.log('this.state.path',this.state.path)
                         this.saveImage(this.state.path);
                     });
                 }

@@ -34,6 +34,8 @@
 
 @property (nonatomic, strong) MBScrollView *scrollView;
 @property (nonatomic, assign) BOOL didPausePlay;
+@property (nonatomic, assign) BOOL isPersonal;
+@property (nonatomic, assign) BOOL isCollect;
 
 @property(nonatomic, strong)UILabel *emptyLb;
 @property (nonatomic, strong)UIView *emptyView;
@@ -100,7 +102,12 @@
   if(self.dataArr.lastObject){
    currentShowNo = [self.dataArr.lastObject valueForKey:@"showNo"];
   }
-  [dic addEntriesFromDictionary:@{@"currentShowNo":currentShowNo , @"queryUserCode": @""}];
+
+  [dic addEntriesFromDictionary:@{
+                                  @"currentShowNo":currentShowNo ,
+                                  @"queryUserCode": self.isPersonal ? self.userCode:@"",
+                                  @"isCollect": self.isCollect ? @1 : @2}];
+                                  
   __weak ActiveView * weakSelf = self;
   [NetWorkTool requestWithURL:@"/social/show/video/list/next@GET" params:dic toModel:nil success:^(NSDictionary* result) {
     MBVideoModel* model = [MBVideoModel modelWithJSON:result];
@@ -159,6 +166,12 @@
 
 -(void)setParams:(NSDictionary *)params{
   MBModelData* firstData = [MBModelData modelWithJSON:params];
+  if([params valueForKey:@"isPersonal"]){
+    self.isPersonal = [params valueForKey:@"isPersonal"];
+  }
+  if(self.isPersonal&&[params valueForKey:@"isCollect"]){
+    self.isCollect = [params valueForKey:@"isCollect"];
+  }
   self.dataArr = [NSMutableArray arrayWithObject:firstData];
   self.callBackArr = [NSMutableArray arrayWithObject:params];
   [self.scrollView setupData:self.dataArr];
