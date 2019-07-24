@@ -102,11 +102,14 @@
   if(self.dataArr.lastObject){
    currentShowNo = [self.dataArr.lastObject valueForKey:@"showNo"];
   }
-
-  [dic addEntriesFromDictionary:@{
-                                  @"currentShowNo":currentShowNo ,
-                                  @"queryUserCode": self.isPersonal ? self.userCode:@"",
-                                  @"isCollect": self.isCollect ? @1 : @2}];
+  if(self.isPersonal){
+    [dic setObject:self.userCode forKey:@"queryUserCode"];
+  }
+  
+  if(self.isCollect){
+    [dic setObject:[NSNumber numberWithInt:1]  forKey:@"isCollect"];
+  }
+  [dic addEntriesFromDictionary:@{@"currentShowNo":currentShowNo}];
                                   
   __weak ActiveView * weakSelf = self;
   [NetWorkTool requestWithURL:@"/social/show/video/list/next@GET" params:dic toModel:nil success:^(NSDictionary* result) {
@@ -131,6 +134,13 @@
 {
   NSMutableDictionary *dic = [NSMutableDictionary new];
   NSString *currentShowNo = [self.dataArr.lastObject valueForKey:@"showNo"];
+  if(self.isPersonal){
+    [dic setObject:self.userCode forKey:@"queryUserCode"];
+  }
+  if(self.isCollect){
+    [dic setObject:[NSNumber numberWithInt:1]  forKey:@"isCollect"];
+  }
+  
   [dic addEntriesFromDictionary:@{@"currentShowNo": currentShowNo, @"queryUserCode": @""}];
   __weak ActiveView * weakSelf = self;
 
