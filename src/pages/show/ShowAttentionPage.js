@@ -3,11 +3,8 @@
  */
 import React from 'react';
 import { View, StyleSheet, Animated } from 'react-native';
-import ShowBannerView from './ShowBannerView';
 import { observer } from 'mobx-react';
-import {  showBannerModules } from './Show';
 import ScreenUtils from '../../utils/ScreenUtils';
-import DesignRule from '../../constants/DesignRule';
 
 const { px2dp } = ScreenUtils;
 import ReleaseButton from './components/ReleaseButton';
@@ -39,7 +36,6 @@ export default class ShowAttentionPage extends React.Component {
         super(props);
         this.firstLoad = true;
         this.state = {
-            headerView: null,
             showToTop: false,
             rightValue: new Animated.Value(1)
         };
@@ -100,19 +96,6 @@ export default class ShowAttentionPage extends React.Component {
         ).start();
     };
 
-    renderHeader = () => {
-        if(!this.props.hasBanner){
-            return <View/>
-        }
-        const { bannerList } = showBannerModules;
-        if (!bannerList || bannerList.length <= 0) {
-            return null;
-        }
-        return (<View style={{ backgroundColor: DesignRule.bgColor, width: ScreenUtils.width - px2dp(30) }}>
-                <ShowBannerView navigate={this.props.navigate} pageFocused={this.props.pageFocus}/>
-            </View>
-        );
-    };
 
     scrollToTop = () => {
         if (this.state.showToTop) {
@@ -153,23 +136,23 @@ export default class ShowAttentionPage extends React.Component {
                                            routeNavigate(RouterMap.MyDynamicPage,{userType:'others',userCode:nativeEvent.userInfoVO.userNo});
                                        }}
                                        onItemPress={({ nativeEvent }) => {
-
+                                           const { showNo , userInfoVO } = nativeEvent;
+                                           const { userNo } = userInfoVO || {};
                                            const { navigate } = this.props;
                                            let params = {
                                                data: nativeEvent,
                                                ref: this.RecommendShowList,
-                                               index: nativeEvent.index
+                                               index: nativeEvent.index,
+                                               code:showNo
                                            };
                                            if (nativeEvent.showType === 1) {
                                                navigate(RouterMap.ShowDetailPage, params);
                                            }  else if(nativeEvent.showType === 3){
-                                               navigate(RouterMap.ShowVideoPage, params);
+                                               navigate(RouterMap.ShowVideoPage, {code:showNo});
                                            }else {
                                                navigate(RouterMap.ShowRichTextDetailPage, params);
                                            }
 
-                                           const { showNo , userInfoVO } = nativeEvent;
-                                           const { userNo } = userInfoVO || {};
                                            track(trackEvent.XiuChangEnterClick,{
                                                xiuChangListType:1,
                                                articleCode:showNo,

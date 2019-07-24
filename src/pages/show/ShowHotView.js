@@ -184,7 +184,8 @@ export default class ShowHotView extends React.Component {
                                        }}
                                        params={{ spreadPosition: tag.Recommend + '' }}
                                        onItemPress={({ nativeEvent }) => {
-
+                                           const { showNo , userInfoVO } = nativeEvent;
+                                           const { userNo } = userInfoVO || {};
                                            const { navigate } = this.props;
                                            let params = {
                                                data: nativeEvent,
@@ -194,13 +195,11 @@ export default class ShowHotView extends React.Component {
                                            if (nativeEvent.showType === 1) {
                                                navigate(RouterMap.ShowDetailPage, params);
                                            }  else if(nativeEvent.showType === 3){
-                                               navigate(RouterMap.ShowVideoPage, params);
+                                               navigate(RouterMap.ShowVideoPage, {code:showNo});
                                            }else {
                                                navigate(RouterMap.ShowRichTextDetailPage, params);
                                            }
 
-                                           const { showNo , userInfoVO } = nativeEvent;
-                                           const { userNo } = userInfoVO || {};
                                            track(trackEvent.XiuChangEnterClick,{
                                                xiuChangListType:1,
                                                articleCode:showNo,

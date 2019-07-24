@@ -175,16 +175,14 @@
     self.longPressButton = longPressButton;
     [self addSubview:longPressButton];
   
-  UIButton *selectVideoBtn = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth/2-21+72, ScreenHeight-100-SafeBottom, 45, 20)];
-  [selectVideoBtn setTitle:@"选择视频" forState:UIControlStateNormal];
+  UIButton *selectVideoBtn = [[UIButton alloc] initWithFrame:CGRectMake(ScreenWidth/2-21+72, ScreenHeight-110-SafeBottom, 30, 30)];
+  [selectVideoBtn setImage:[UIImage imageNamed:@"ali_select_video"] forState:UIControlStateNormal];
   [selectVideoBtn setTitleColor:AlivcOxRGB(0xc3c5c6) forState:UIControlStateNormal];
   [selectVideoBtn addTarget:self action:@selector(selectVideoBtnClick) forControlEvents:UIControlEventTouchUpInside];
   selectVideoBtn.titleLabel.font = [UIFont systemFontOfSize:14];
-//  self.longPressButton = longPressButton;
   self.selectVideoBtn = selectVideoBtn;
   [self addSubview:selectVideoBtn];
-    
-    [self setExclusiveTouchInButtons];
+  [self setExclusiveTouchInButtons];
 }
 
 /**
@@ -239,7 +237,6 @@
 }
 
 - (void)recordButtonTouchUp {
-    NSLog(@" DD----  %f    %f  - %f", CFAbsoluteTimeGetCurrent(), _startTime, (CFAbsoluteTimeGetCurrent() - _startTime));
     switch ([AliyunIConfig config].recordType) {
         case AliyunIRecordActionTypeCombination:
                 if (_recording) {
@@ -266,6 +263,7 @@
                 self.tapButton.hidden = YES;
                 self.longPressButton.hidden = YES;
                 self.triangleImageView.hidden = YES;
+                self.selectVideoBtn.hidden = YES;
                 _recording = YES;
                 _progressView.videoCount++;
                 self.circleBtn.transform = CGAffineTransformScale(self.transform, 1.32, 1.32);
@@ -302,6 +300,7 @@
                 self.tapButton.hidden = YES;
                 self.longPressButton.hidden = YES;
                 self.triangleImageView.hidden = YES;
+                self.selectVideoBtn.hidden = YES;
                 self.circleBtn.transform = CGAffineTransformScale(self.transform, 1.32, 1.32);
                 [self.circleBtn setImage:_uiConfig.videoShootImageLongPressing forState:UIControlStateNormal];
                 [self.circleBtn setTitle:@"" forState:UIControlStateNormal];
@@ -371,6 +370,7 @@
         self.triangleImageView.hidden = NO;
         self.tapButton.hidden = NO;
         self.longPressButton.hidden = NO;
+      self.selectVideoBtn.hidden = NO;
         self.timeLabel.text = @"";
     }
 }
@@ -393,11 +393,13 @@
         self.triangleImageView.hidden = YES;
         self.longPressButton.hidden = YES;
         self.tapButton.hidden = YES;
+      self.selectVideoBtn.hidden = YES;
         self.deleteButton.hidden = NO;
     }else{
         self.triangleImageView.hidden = hide;
         self.longPressButton.hidden = hide;
         self.tapButton.hidden = hide;
+      self.selectVideoBtn.hidden = hide;
         self.deleteButton.hidden = YES;
         if ([AliyunIConfig config].recordType == AliyunIRecordActionTypeHold) {
             [self.circleBtn setTitle:@"按住拍" forState:UIControlStateNormal];
@@ -412,10 +414,12 @@
         self.longPressButton.hidden = YES;
         self.tapButton.hidden = YES;
         self.deleteButton.hidden = NO;
+      self.selectVideoBtn.hidden = YES;
     }else{
         self.triangleImageView.hidden = NO;
         self.longPressButton.hidden = NO;
         self.tapButton.hidden = NO;
+      self.selectVideoBtn.hidden = NO;
         self.deleteButton.hidden = YES;
     }
 }
@@ -607,6 +611,7 @@
         self.triangleImageView.hidden = YES;
         self.tapButton.hidden = YES;
         self.longPressButton.hidden = YES;
+        self.selectVideoBtn.hidden = YES;
         self.timeLabel.text = @"";
     }
     self.countdownButton.enabled = NO;

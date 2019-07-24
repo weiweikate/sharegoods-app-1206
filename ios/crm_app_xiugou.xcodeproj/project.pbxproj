@@ -320,6 +320,13 @@
 		CDAB6D21219AC5F800DE6716 /* TYWaterWaveView.m in Sources */ = {isa = PBXBuildFile; fileRef = CDAB6D1C219AC5F800DE6716 /* TYWaterWaveView.m */; };
 		CDAB6D24219AC74800DE6716 /* MRWaveView.m in Sources */ = {isa = PBXBuildFile; fileRef = CDAB6D23219AC74800DE6716 /* MRWaveView.m */; };
 		CDB33AE422E1940F000CCDCF /* SwichView.m in Sources */ = {isa = PBXBuildFile; fileRef = CDB33AE322E1940F000CCDCF /* SwichView.m */; };
+		CDB33C1E22E6B8B4000CCDCF /* ShowDynamicViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CDB33C1D22E6B8B4000CCDCF /* ShowDynamicViewManager.m */; };
+		CDB33CC522E6BCE8000CCDCF /* PagingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDB33CC222E6BCE7000CCDCF /* PagingViewController.m */; };
+		CDB33CC622E6BCE8000CCDCF /* TestListBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = CDB33CC422E6BCE7000CCDCF /* TestListBaseView.m */; };
+		CDB33CD022E6BE44000CCDCF /* JXPagerListContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = CDB33CC822E6BE44000CCDCF /* JXPagerListContainerView.m */; };
+		CDB33CD122E6BE44000CCDCF /* JXPagerMainTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = CDB33CC922E6BE44000CCDCF /* JXPagerMainTableView.m */; };
+		CDB33CD222E6BE44000CCDCF /* JXPagerView.m in Sources */ = {isa = PBXBuildFile; fileRef = CDB33CCA22E6BE44000CCDCF /* JXPagerView.m */; };
+		CDB33CD322E6BE44000CCDCF /* JXPagerListRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = CDB33CCF22E6BE44000CCDCF /* JXPagerListRefreshView.m */; };
 		CDCB5BDA2196DF71006B5F4E /* UIImage+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = CDCB5BD92196DF71006B5F4E /* UIImage+Util.m */; };
 /* End PBXBuildFile section */
 
@@ -1354,6 +1361,20 @@
 		CDAB6D23219AC74800DE6716 /* MRWaveView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRWaveView.m; sourceTree = "<group>"; };
 		CDB33AE222E1940F000CCDCF /* SwichView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwichView.h; sourceTree = "<group>"; };
 		CDB33AE322E1940F000CCDCF /* SwichView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SwichView.m; sourceTree = "<group>"; };
+		CDB33C1C22E6B8B4000CCDCF /* ShowDynamicViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShowDynamicViewManager.h; sourceTree = "<group>"; };
+		CDB33C1D22E6B8B4000CCDCF /* ShowDynamicViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShowDynamicViewManager.m; sourceTree = "<group>"; };
+		CDB33C8122E6BCE7000CCDCF /* PagingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PagingViewController.h; sourceTree = "<group>"; };
+		CDB33CC222E6BCE7000CCDCF /* PagingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PagingViewController.m; sourceTree = "<group>"; };
+		CDB33CC322E6BCE7000CCDCF /* TestListBaseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestListBaseView.h; sourceTree = "<group>"; };
+		CDB33CC422E6BCE7000CCDCF /* TestListBaseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestListBaseView.m; sourceTree = "<group>"; };
+		CDB33CC822E6BE44000CCDCF /* JXPagerListContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JXPagerListContainerView.m; sourceTree = "<group>"; };
+		CDB33CC922E6BE44000CCDCF /* JXPagerMainTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JXPagerMainTableView.m; sourceTree = "<group>"; };
+		CDB33CCA22E6BE44000CCDCF /* JXPagerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JXPagerView.m; sourceTree = "<group>"; };
+		CDB33CCB22E6BE44000CCDCF /* JXPagerListRefreshView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JXPagerListRefreshView.h; sourceTree = "<group>"; };
+		CDB33CCC22E6BE44000CCDCF /* JXPagerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JXPagerView.h; sourceTree = "<group>"; };
+		CDB33CCD22E6BE44000CCDCF /* JXPagerListContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JXPagerListContainerView.h; sourceTree = "<group>"; };
+		CDB33CCE22E6BE44000CCDCF /* JXPagerMainTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JXPagerMainTableView.h; sourceTree = "<group>"; };
+		CDB33CCF22E6BE44000CCDCF /* JXPagerListRefreshView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JXPagerListRefreshView.m; sourceTree = "<group>"; };
 		CDCB5BD82196DF71006B5F4E /* UIImage+Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+Util.h"; sourceTree = "<group>"; };
 		CDCB5BD92196DF71006B5F4E /* UIImage+Util.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Util.m"; sourceTree = "<group>"; };
 		F223A756490300B42A2AB92D /* Pods-crm_app_xiugou.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-crm_app_xiugou.debug.xcconfig"; path = "Pods/Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou.debug.xcconfig"; sourceTree = "<group>"; };
@@ -2836,10 +2857,17 @@
 		CD5EAF9A221BFADF007AAEE0 /* ShowGroundView */ = {
 			isa = PBXGroup;
 			children = (
+				CDB33CC722E6BE44000CCDCF /* JXPagerView */,
+				CDB33C8122E6BCE7000CCDCF /* PagingViewController.h */,
+				CDB33CC222E6BCE7000CCDCF /* PagingViewController.m */,
+				CDB33CC322E6BCE7000CCDCF /* TestListBaseView.h */,
+				CDB33CC422E6BCE7000CCDCF /* TestListBaseView.m */,
 				CD5EB144221EA147007AAEE0 /* WHCWaterfallFlowLayout.h */,
 				CD5EB145221EA148007AAEE0 /* WHCWaterfallFlowLayout.m */,
 				CD5EAF9B221BFB5E007AAEE0 /* ShowGroundViewManager.h */,
 				CD5EAF9C221BFB5E007AAEE0 /* ShowGroundViewManager.m */,
+				CDB33C1C22E6B8B4000CCDCF /* ShowDynamicViewManager.h */,
+				CDB33C1D22E6B8B4000CCDCF /* ShowDynamicViewManager.m */,
 				CD5EAF9E221BFB8E007AAEE0 /* ShowGroundView.h */,
 				CD5EAF9F221BFB8E007AAEE0 /* ShowGroundView.m */,
 				CD89B1CA224B100F006CCEF7 /* MosaicCollectionLayoutDelegate.h */,
@@ -2915,6 +2943,21 @@
 				CDAB6D23219AC74800DE6716 /* MRWaveView.m */,
 			);
 			path = WaveProgressView;
+			sourceTree = "<group>";
+		};
+		CDB33CC722E6BE44000CCDCF /* JXPagerView */ = {
+			isa = PBXGroup;
+			children = (
+				CDB33CC822E6BE44000CCDCF /* JXPagerListContainerView.m */,
+				CDB33CC922E6BE44000CCDCF /* JXPagerMainTableView.m */,
+				CDB33CCA22E6BE44000CCDCF /* JXPagerView.m */,
+				CDB33CCB22E6BE44000CCDCF /* JXPagerListRefreshView.h */,
+				CDB33CCC22E6BE44000CCDCF /* JXPagerView.h */,
+				CDB33CCD22E6BE44000CCDCF /* JXPagerListContainerView.h */,
+				CDB33CCE22E6BE44000CCDCF /* JXPagerMainTableView.h */,
+				CDB33CCF22E6BE44000CCDCF /* JXPagerListRefreshView.m */,
+			);
+			path = JXPagerView;
 			sourceTree = "<group>";
 		};
 		CDE20087217DBA69001146FF /* Recovered References */ = {
@@ -3843,6 +3886,7 @@
 				5068363521379B78001AB175 /* RCTPayTool.m in Sources */,
 				C4F01EEC222D141200ACA1B4 /* PhoneAutherTool.m in Sources */,
 				C4F2E45922BE303100FF6213 /* IJSVideoEditController.m in Sources */,
+				CDB33CD122E6BE44000CCDCF /* JXPagerMainTableView.m in Sources */,
 				C4F2E44522BE303100FF6213 /* WAAVSERangeCommand.m in Sources */,
 				C4FB48CD22DDBB41007BBEBA /* AlivcShortVideoUIConfig.m in Sources */,
 				5068362E21379B78001AB175 /* JRLoadingAndToastTool.m in Sources */,
@@ -3884,12 +3928,14 @@
 				5068360F21379B78001AB175 /* JRBaseVC.m in Sources */,
 				C4FB48BA22DDB924007BBEBA /* AliyunMagicCameraView.m in Sources */,
 				01C3AF3B22E2AF1E00A76422 /* ActivetyViewManager.m in Sources */,
+				CDB33CC522E6BCE8000CCDCF /* PagingViewController.m in Sources */,
 				50043A7B21C76EC800270DFA /* ShopCartCell.m in Sources */,
 				C4FB48D622DDBCF1007BBEBA /* QUProgressView.m in Sources */,
 				105CAD0421BE369F00F4746D /* UMAnalyticsModule.m in Sources */,
 				50FB633F219AC4C100A35334 /* AppDelegate+APNS.m in Sources */,
 				C4F2E41E22BE303100FF6213 /* SGMotionManager.m in Sources */,
 				C4F2E49522BE318F00FF6213 /* MRImageVideoManager.m in Sources */,
+				CDB33CC622E6BCE8000CCDCF /* TestListBaseView.m in Sources */,
 				CDAB6D24219AC74800DE6716 /* MRWaveView.m in Sources */,
 				C4F2E47822BE303100FF6213 /* IJSPhotoPreviewController.m in Sources */,
 				CD6741F621DEF78500464549 /* AdView.m in Sources */,
@@ -3999,9 +4045,11 @@
 				C4F2E48F22BE303100FF6213 /* IJSMapViewThumbCell.m in Sources */,
 				C4F2E44222BE303100FF6213 /* WAAVSECommand.m in Sources */,
 				C4FB48B922DDB924007BBEBA /* AlivcRecordFocusView.m in Sources */,
+				CDB33CD022E6BE44000CCDCF /* JXPagerListContainerView.m in Sources */,
 				01C3B21F22E5DBAE00A76422 /* MBURLTaskModel.m in Sources */,
 				CDAB6D20219AC5F800DE6716 /* TYWaveProgressView.m in Sources */,
 				CD5EB146221EA148007AAEE0 /* WHCWaterfallFlowLayout.m in Sources */,
+				CDB33CD222E6BE44000CCDCF /* JXPagerView.m in Sources */,
 				C4F2E46B22BE303100FF6213 /* IJSVideoTrimView.m in Sources */,
 				01C3B21A22E5DB9F00A76422 /* MBNetworkManager.m in Sources */,
 				C4F2E46922BE303100FF6213 /* IJSImageNavigationView.m in Sources */,
@@ -4017,6 +4065,7 @@
 				C4F2E48A22BE303100FF6213 /* TOCropToolbar.m in Sources */,
 				5068363C21379B78001AB175 /* QRCodeModule.m in Sources */,
 				50043A8421C79D5400270DFA /* SCCell.m in Sources */,
+				CDB33C1E22E6B8B4000CCDCF /* ShowDynamicViewManager.m in Sources */,
 				C4F2E48E22BE303100FF6213 /* IJSMapViewCollectionViewLayout.m in Sources */,
 				C4F2E44E22BE303100FF6213 /* IJSLodingView.m in Sources */,
 				C4F2E46822BE303100FF6213 /* IJSImageGaussanView.m in Sources */,
@@ -4040,6 +4089,7 @@
 				C4F2E42122BE303100FF6213 /* SGRecordManager.m in Sources */,
 				C4FB48B422DDB248007BBEBA /* AliyunMagicCameraViewController.m in Sources */,
 				CD14EA192183FC9A00480A06 /* XGImageCompression.m in Sources */,
+				CDB33CD322E6BE44000CCDCF /* JXPagerListRefreshView.m in Sources */,
 				C4F2E46122BE303100FF6213 /* IJSIColorButtonView.m in Sources */,
 				CD24240921F825C1008C7FF4 /* StorageFromRN.m in Sources */,
 				C4F56A20226F5E960091E4E8 /* JSPushBridge.m in Sources */,
