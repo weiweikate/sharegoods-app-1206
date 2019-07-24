@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) RCTBubblingEventBlock onSharePress;
 @property (nonatomic, copy) RCTBubblingEventBlock onPressProduct;
 @property (nonatomic, copy) RCTBubblingEventBlock onCollectPress;
+@property (nonatomic, copy) RCTBubblingEventBlock onSeeUser;
 
 @property (nonatomic, copy) RCTBubblingEventBlock onScrollStateChanged;
 @property (nonatomic, copy) RCTBubblingEventBlock onScrollY;

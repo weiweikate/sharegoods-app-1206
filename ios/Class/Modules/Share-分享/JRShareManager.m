@@ -235,9 +235,9 @@ SINGLETON_FOR_CLASS(JRShareManager)
     NSLog(@"assetURL = %@, error = %@", assetURL, error);
     lib = nil;
     if (!error) {
-      [JRLoadingAndToastTool showToast:@"文案已复制,图片已下载到相册" andDelyTime:0.5f];
+//      [JRLoadingAndToastTool showToast:@"文案已复制,图片已下载到相册" andDelyTime:0.5f];
     }else{
-      [JRLoadingAndToastTool showToast:@"保存失败\n请确认图片保存权限已开启" andDelyTime:0.5f];
+//      [JRLoadingAndToastTool showToast:@"保存失败\n请确认图片保存权限已开启" andDelyTime:0.5f];
     }
   }];
   

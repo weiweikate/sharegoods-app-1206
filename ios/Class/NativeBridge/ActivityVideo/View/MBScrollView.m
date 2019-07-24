@@ -62,13 +62,13 @@
             self.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
         }
 //        self.contentSize = CGSizeMake(0, KScreenHeight * 3);
-      
+
         self.delegate = self;
         self.firstVideoModel = [[MBModelData alloc] init];
         self.secondVideoModel = [[MBModelData alloc] init];
         self.thirdVideoModel = [[MBModelData alloc] init];
     }
-    
+
     return self;
 }
 
@@ -78,7 +78,7 @@
     if (!_dataArray) {
         _dataArray = [NSMutableArray array];
     }
-    
+
     return _dataArray;
 }
 
@@ -86,13 +86,14 @@
     if (!_playerView) {
         _playerView = [[MBPlayerView alloc] init];
     }
-    
+
     return _playerView;
 }
 -(MBBtnView *)btnView1{
   if(!_btnView1){
     _btnView1 = [[MBBtnView alloc]init];
     _btnView1.dataDelegate = self;
+    _btnView1.hidden = YES;
   }
   return _btnView1;
 }
@@ -101,6 +102,8 @@
   if(!_btnView2){
     _btnView2 = [[MBBtnView alloc]init];
     _btnView2.dataDelegate = self;
+    _btnView2.hidden = YES;
+
   }
   return _btnView2;
 }
@@ -108,7 +111,7 @@
   if(!_btnView3){
     _btnView3 = [[MBBtnView alloc]init];
     _btnView3.dataDelegate = self;
-
+    _btnView3.hidden = YES;
   }
   return _btnView3;
 }
@@ -168,7 +171,7 @@
     if (data.count == 0) {
         return;
     }
-  
+
     if (self.dataArray.count < 3) {//还没有数据
       if(self.dataArray.count<=3){
         self.dataArray = [NSMutableArray arrayWithArray:data];
@@ -179,24 +182,27 @@
           CGRect firstFrame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
           self.firstImageView.frame = firstFrame;
           self.btnView1.model = self.firstVideoModel;
+          self.btnView1.hidden = NO;
           [self.firstImageView setImageWithURL:[NSURL URLWithString:[[self getUrlfromArr:self.firstVideoModel type:@"img"] getUrlAndWidth:KScreenWidth height:KScreenHeight]] placeholder:[UIImage imageWithColor:[UIColor colorWithHexString:@"00000"]]];
           self.currentIndexOfImageView = 0;
         }
-      
+
         if (self.dataArray.count > 1) {
             CGRect secondFrame = CGRectMake(0, self.frame.size.height, self.frame.size.width, self.frame.size.height);
             self.secondImageView.frame = secondFrame;
             self.secondVideoModel = self.dataArray[1];
             self.btnView2.model = self.secondVideoModel;
+            self.btnView2.hidden = NO;
             [self.secondImageView setImageWithURL:[NSURL URLWithString:[[self getUrlfromArr:self.secondVideoModel type:@"img"] getUrlAndWidth:KScreenWidth height:KScreenHeight]] placeholder:[UIImage imageWithColor:[UIColor colorWithHexString:@"00000"]]];
             self.currentIndexOfImageView++;
         }
-        
+
         if (self.dataArray.count > 2) {
             CGRect thirdFrame = CGRectMake(0, self.frame.size.height * 2, self.frame.size.width, self.frame.size.height);
             self.thirdImageView.frame =  thirdFrame;
             self.thirdVideoModel = self.dataArray[2];
             self.btnView3.model = self.thirdVideoModel;
+            self.btnView3.hidden = NO;
             [self.thirdImageView setImageWithURL:[NSURL URLWithString:[[self getUrlfromArr:self.thirdVideoModel type:@"img"] getUrlAndWidth:KScreenWidth height:KScreenHeight]] placeholder:[UIImage imageWithColor:[UIColor colorWithHexString:@"00000"]]];
             self.currentIndexOfImageView++;
         }
@@ -206,7 +212,7 @@
         for (MBModelData *model in data) {
             [self.dataArray addObject:model];
         }
-        
+
         if (data.count > 0) {//如果获取到新的数据，则自动上滑显示
             self.contentSize = CGSizeMake(self.frame.size.width, self.frame.size.height * self.dataArray.count);
             self.contentOffset = CGPointMake(0, self.frame.size.height * self.currentIndexOfImageView);
@@ -221,15 +227,18 @@
   MBModelData *videoModel = [self.dataArray objectAtIndex:self.currentIndexOfShowView];
   [self.playerView setUrlString:[self getUrlfromArr:videoModel type:@"video"]];
   self.playerView.frame = CGRectMake(0, 0, KScreenWidth, KScreenHeight);
-    if (self.firstImageView&&self.firstImageView.frame.origin.y == self.contentOffset.y) {
+    if (self.firstImageView && self.firstImageView.frame.size.width>0
+        &&self.firstImageView.frame.origin.y == self.contentOffset.y) {
       [self.firstImageView addSubview:self.playerView ];
     }
-    
-    if (self.secondImageView&&self.secondImageView.frame.origin.y == self.contentOffset.y) {
+
+    if (self.secondImageView && self.secondImageView.frame.size.width>0
+        &&self.secondImageView.frame.origin.y == self.contentOffset.y) {
       [self.secondImageView addSubview:self.playerView ];
     }
-    
-    if (self.thirdImageView&&self.thirdImageView.frame.origin.y == self.contentOffset.y) {
+
+    if (self.thirdImageView && self.thirdImageView.frame.size.width>0
+        &&self.thirdImageView.frame.origin.y == self.contentOffset.y) {
       [self.thirdImageView addSubview:self.playerView ];
     }
   self.isInitVideo = YES;
@@ -241,18 +250,18 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     CGFloat offset_y = scrollView.contentOffset.y;
-    
+
     CGPoint translatePoint = [scrollView.panGestureRecognizer translationInView:scrollView];
     if (self.dataArray.count == 0) {
         return;
     }
-    
+
     if (offset_y > (KScreenHeight * (self.dataArray.count - 1))) {
         if (self.isLoading) {
             return;
         }
         NSLog(@"拉到底部了");
-        
+
         self.isLoading = YES;
         [self.dataDelegate pullNewData]; //如果拉到了底部，则去拉取新数据
         return;
@@ -279,17 +288,17 @@
 
         self.secondImageView.image = self.thirdImageView.image;
         self.btnView2.model = self.btnView3.model;
-      
+
         CGRect frame = self.thirdImageView.frame;
         frame.origin.y += self.frame.size.height;
         self.thirdImageView.frame = frame;
-      
+
         self.thirdVideoModel = [self.dataArray objectAtIndex:self.currentIndexOfImageView];
         self.btnView3.model = self.thirdVideoModel;
-      
+
         [self.thirdImageView setImageWithURL:[NSURL URLWithString:[[self getUrlfromArr:self.thirdVideoModel type:@"img"] getUrlAndWidth:KScreenWidth height:KScreenHeight]] placeholder:[UIImage imageWithColor:[UIColor colorWithHexString:@"00000"]]];
     }
-    
+
     if (offset_y >= self.frame.size.height * (self.currentIndexOfShowView + 1) && translatePoint.y < 0) {
         self.currentIndexOfShowView++;
         if([self.dataDelegate respondsToSelector:@selector(getCurrentDataIndex:)]){
@@ -298,34 +307,34 @@
         NSLog(@"should Play");
 //        [self playVideo];
     }
-    
+
     if (offset_y < 0) {
         NSLog(@"已经到顶部了");
         return;
     }
-    
+
     //向上滑动
     if (translatePoint.y > 0 && offset_y < self.secondImageView.frame.origin.y) {
         if (self.currentIndexOfImageView >= 3) {
             self.thirdImageView.frame = self.secondImageView.frame;
             self.thirdImageView.image = self.secondImageView.image;
             self.btnView3.model = self.btnView2.model;
-          
+
             self.secondImageView.frame = self.firstImageView.frame;
             self.secondImageView.image = self.firstImageView.image;
             self.btnView2.model = self.btnView1.model;
-          
+
             CGRect frame = self.firstImageView.frame;
             frame.origin.y -= self.frame.size.height;
             self.firstImageView.frame = frame;
             self.firstVideoModel = [self.dataArray objectAtIndex:self.currentIndexOfImageView - IMAGEVIEW_COUNT];
           self.btnView1.model = self.firstVideoModel;
           [self.firstImageView setImageWithURL:[NSURL URLWithString:[[self getUrlfromArr:self.firstVideoModel type:@"img"] getUrlAndWidth:KScreenWidth height:KScreenHeight]] placeholder:[UIImage imageWithColor:[UIColor colorWithHexString:@"00000"]]];
-          
+
             self.currentIndexOfImageView--;
         }
     }
-    
+
     if (translatePoint.y > 0 && offset_y <= self.frame.size.height * (self.currentIndexOfShowView - 1) ) {
         self.currentIndexOfShowView--;
       if([self.dataDelegate respondsToSelector:@selector(getCurrentDataIndex:)]){
@@ -334,7 +343,7 @@
       NSLog(@"should back play");
 //        [self playVideo];
     }
-  
+
 }
 
 // 结束滚动后开始返回当前下标

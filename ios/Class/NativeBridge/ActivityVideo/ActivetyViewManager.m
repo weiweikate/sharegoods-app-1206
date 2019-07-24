@@ -26,6 +26,7 @@ RCT_EXPORT_VIEW_PROPERTY(onBack, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onPressTag, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onSharePress, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onBuy, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onSeeUser, RCTBubblingEventBlock)
 
 RCT_EXPORT_VIEW_PROPERTY(onZanPress, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onDownloadPress, RCTBubblingEventBlock)

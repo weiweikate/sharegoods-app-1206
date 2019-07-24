@@ -160,8 +160,8 @@ export default class ShowHotView extends React.Component {
                                            this.RecommendShowList = ref;
                                        }}
                                        isLogin={!EmptyUtils.isEmpty(user.token)}
-                                       type={'recommend'}
-                                       headerHeight={this.props.hasBanner ? showBannerModules.bannerHeight + 20:0}
+                                       type={this.props.type || ''}
+                                       headerHeight={this.props.hasBanner ? showBannerModules.bannerHeight + 20 : 0}
                                        renderHeader={Platform.OS === 'ios' ? this.renderHeader() : this.state.headerView}
                                        onStartRefresh={() => {
                                            this.loadData();
@@ -227,7 +227,7 @@ export default class ShowHotView extends React.Component {
                                        onPressProduct={({ nativeEvent }) => {
                                            const detail = JSON.parse(nativeEvent.detail)
                                            const product = JSON.parse(nativeEvent.product)
-                                           const {showNo} = detail ||{};
+                                           const {showNo} = detail || {};
                                            track(trackEvent.XiuChangSpuClick, {
                                                xiuChangBtnLocation:'1',
                                                xiuChangListType:'1',
