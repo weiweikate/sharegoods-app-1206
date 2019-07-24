@@ -9,6 +9,7 @@ import shopCartCacheTool from "../../shopCart/model/ShopCartCacheTool";
 import { navigateBack, routePush } from '../../../navigation/RouterMap';
 import { payment } from '../../payment/Payment';
 import RouterMap from '../../../navigation/RouterMap';
+import API from '../../../api';
 
 class ConfirmOrderModel {
 
@@ -66,10 +67,6 @@ class ConfirmOrderModel {
     selectAddressId(addressData){
         let addressId = addressData.id || '';
             addressId = addressId + '';
-        if (this.addressId == addressId && this.addressId && this.addressId.length > 0) {
-            this.receiveInfo = addressData;
-            return;
-        }
         this.addressId = addressId;
         this.addressData = addressData;
         this.tokenCoin = 0;
@@ -153,6 +150,34 @@ class ConfirmOrderModel {
         }
     }
 
+    getCouponParams(){
+        let orderProducts =  this.orderParamVO.orderProducts || [];
+        let arr = orderProducts.map((item) => {
+            return {
+                priceCode: item.skuCode,
+                productCode: item.productCode,
+                amount: item.quantity,
+                activityCode: item.activityCode,
+                batchNo: item.batchNo
+            };
+        });
+        let  params = { productPriceIds: arr };
+       return { sgAppVersion: 310, ...params}
+    }
+
+    @action
+    makeSureProduct_selectDefaltCoupon(couponsId){
+        if (couponsId){
+            API.listAvailable(this.getCouponParams()).then((data) => {
+
+            }).finally(()=> {
+                this.makeSureProduct();
+            })
+        }else {
+           this.makeSureProduct();
+        }
+    }
+
     @action makeSureProduct() {
         this.isNoAddress = false;
         bridge.showLoading();
@@ -188,7 +213,7 @@ class ConfirmOrderModel {
             ]);
         } else if (err.code === 54001) {
             bridge.$toast('商品库存不足！');
-        } else if (err.code === 54002){
+        } else if (err.code === 43009){
             this.isNoAddress = true;
             Alert.alert('','您还没有收货地址，请点击添加',
                 [{text: '取消', onPress: () => {}},

@@ -31,7 +31,6 @@ import res1 from '../../res'
 import RefreshFlatList from '../../../../comm/components/RefreshFlatList';
 import CouponNormalItem from '../../../mine/components/CouponNormalItem';
 import API from '../../../../api';
-import { OrderType } from '../../../../utils/EnumUtil';
 const emptyIcon = res1.empty_icon;
 let {autoSizeWidth, safeBottom} = ScreenUtils
 
@@ -50,34 +49,17 @@ export default class SelectTicketModel extends React.Component {
     }
 
     open = (orderParamVO, callBack) => {
-        let arr = [];
-        let {orderType, orderProducts = [], activityCode, orderSubType} = orderParamVO || {};
-        let params = {}
-        if (orderParamVO.orderType === OrderType.depreciate_old || orderParamVO.orderType === OrderType.gift) {
-            orderParamVO.orderProducts.map((item, index) => {
-                arr.push({
-                    priceCode: item.skuCode,
-                    productCode: item.productCode || item.prodCode,
-                    amount: 1
-                });
-            });
-            params = {
-                productPriceIds: arr,
-                activityCode:activityCode,
-                activityType:orderType === OrderType.gift ? orderSubType :  orderType
+        let { orderProducts = []} = orderParamVO || {};
+        let arr = orderProducts.map((item, index) => {
+            return {
+                priceCode: item.skuCode,
+                productCode: item.productCode,
+                amount: item.quantity,
+                activityCode: item.activityCode,
+                batchNo: item.batchNo
             };
-        }   else{
-            orderProducts.map((item, index) => {
-                arr.push({
-                    priceCode: item.skuCode,
-                    productCode: item.productCode,
-                    amount: item.quantity,
-                    activityCode: item.activityCode,
-                    batchNo: item.batchNo
-                });
-            });
-            params = { productPriceIds: arr };
-        }
+        });
+        let  params = { productPriceIds: arr };
         this.parmas = { sgAppVersion: 310, ...params}
         this.callBack = callBack;
         this.setState({modalVisible: true});

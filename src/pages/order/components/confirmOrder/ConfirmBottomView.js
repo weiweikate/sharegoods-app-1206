@@ -27,7 +27,7 @@ export default class ConfirmBottomView extends Component {
                             color: DesignRule.textColor_mainTitle
                         }}/>
                         <UIText
-                            value={'¥'+confirmOrderModel.payInfo.payAmount || '0'}
+                            value={'¥'+(confirmOrderModel.payInfo.payAmount || '0')}
                             style={styles.commitAmountStyle}/>
                     </View>
                     <NoMoreClick

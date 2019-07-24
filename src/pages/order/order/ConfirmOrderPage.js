@@ -31,7 +31,6 @@ export default class ConfirmOrderPage extends BasePage {
         //         activityCode: '', //string 活动code
         //         batchNo: 1}],source : 1}
         confirmOrderModel.orderParamVO = this.params.orderParamVO;
-        confirmOrderModel.couponsId = this.params.orderParamVO.couponsId;
         confirmOrderModel.judgeIsAllVirtual(this.params.orderParamVO.orderProducts);
 
     }
@@ -134,12 +133,12 @@ export default class ConfirmOrderPage extends BasePage {
     }
 
     componentDidMount() {
-        this.loadPageData();
+        this.loadPageData(this.params.orderParamVO.couponsId);
     }
 
-    loadPageData = (params) => {
+    loadPageData = (couponsId) => {
         // 获取订单数据
-        confirmOrderModel.makeSureProduct();
+        confirmOrderModel.makeSureProduct_selectDefaltCoupon(couponsId);
     };
 
     // 地址重新选择

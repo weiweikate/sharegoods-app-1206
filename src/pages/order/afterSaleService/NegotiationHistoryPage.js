@@ -85,12 +85,12 @@ export default class NegotiationHistoryPage extends BasePage {
     renderDetail(item){
         if (item.operation === '提交售后申请' || item.operation === '修改售后申请'){
             let content = item.content || '{}';
-            let {applyQuantity, imgList, description, reason, applyRefundAmount, createTime, merchantOrderNo, serviceNo} = JSON.parse(content) || {};
+            let {applyQuantity, imgList, description, reason, applyRefundAmount, createTime, merchantOrderNo, serviceNo, type} = JSON.parse(content) || {};
             return(
                 <View>
                     <MRText style={styles.detail}>{'申请售后理由：'+ reason}</MRText>
                     <MRText style={styles.detail}>{'申请数量：' + applyQuantity}</MRText>
-                    <MRText style={styles.detail}>{'退款金额：¥' + applyRefundAmount}</MRText>
+                    {type != 3?  <MRText style={styles.detail}>{'退款金额：¥' + applyRefundAmount}</MRText> : null}
                     <MRText style={styles.detail}>{'问题描述：' + description}</MRText>
                     <MRText style={styles.detail}>{"申请时间：" + DateUtils.formatDate(createTime|| '')}</MRText>
                     <View style={{flexDirection: 'row'}}>

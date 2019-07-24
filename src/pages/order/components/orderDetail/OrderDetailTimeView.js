@@ -95,7 +95,7 @@ export default class OrderDetailTimeView extends Component {
 
     render() {
         let {userMessage, orderTime, payTime, cancelTime,receiveTime, deliverTime} = orderDetailModel.baseInfo
-        let {subStatus, status} = orderDetailModel.merchantOrderNo;
+        let {subStatus, status} = orderDetailModel.merchantOrder;
         return (
             <View style={{ backgroundColor: "white", paddingTop: px2dp(10), marginTop: px2dp(10) }}>
                 {userMessage&&userMessage.length > 0? <View style={{  flexDirection: "row"}}>

@@ -42,6 +42,7 @@ export default class OrderDetailStateView extends Component {
 
     }
     render() {
+        let receiveInfo = orderDetailModel.receiveInfo;
         if (orderDetailModel.status === 1||orderDetailModel.status===5) {
             return (
                 <View style={styles.topOrderDetail}>
@@ -58,13 +59,13 @@ export default class OrderDetailStateView extends Component {
                                 <Text style={{
                                     flex: 1,
                                     fontSize: px2dp(15)
-                                }} allowFontScaling={false}>{orderDetailModel.receiver}</Text>
+                                }} allowFontScaling={false}>{receiveInfo.receiver}</Text>
                                 <Text style={{
                                     fontSize: px2dp(15),
                                     marginRight: px2dp(30)
-                                }} allowFontScaling={false}>{orderDetailModel.receiverPhone}</Text>
+                                }} allowFontScaling={false}>{receiveInfo.receiverPhone}</Text>
                             </View>
-                                <UIText value={"收货地址:" + orderDetailModel.province + orderDetailModel.city + orderDetailModel.area + orderDetailModel.address}
+                                <UIText value={"收货地址:" + receiveInfo.province + receiveInfo.city + receiveInfo.area + receiveInfo.street+ receiveInfo.address}
                                         style={styles.DetailAddressStyle}/>
                         </View>
                     </View>

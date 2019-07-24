@@ -70,7 +70,7 @@ export default class AfterSaleInfoView extends React.Component {
             return null;
         }
 
-        let strRefundPrice = '退款金额：¥' +  (afterSaleInfo.refundPrice || "");
+        let strRefundPrice = '退款金额：¥' +  (afterSaleInfo.refundPrice || "0");
         let strNum =  '申请数量：' + (afterSaleInfo.quantity || "");
         return (
             <View style={{ backgroundColor: "white" , marginBottom: 10}}>
