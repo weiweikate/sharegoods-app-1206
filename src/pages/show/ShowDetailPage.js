@@ -45,6 +45,7 @@ import SelectionPage from '../product/SelectionPage';
 import RouterMap, { routePop, routeNavigate } from '../../navigation/RouterMap';
 import DownloadUtils from './utils/DownloadUtils';
 import ShowVideoView from './components/ShowVideoView';
+import WhiteModel from './model/WhiteModel';
 
 const { iconShowFire, iconLike, iconNoLike, iconDownload, iconShowShare, dynamicEmpty } = res;
 // @SmoothPushPreLoadHighComponent
@@ -277,6 +278,15 @@ export default class ShowDetailPage extends BasePage {
         let userImage = (detail.userInfoVO && detail.userInfoVO.userImg) ? detail.userInfoVO.userImg : '';
         let userName = (detail.userInfoVO && detail.userInfoVO.userName) ? detail.userInfoVO.userName : '';
 
+        let attentionText = '';
+        if(detail.attentionStatus === 0){
+            attentionText = '关注';
+        }else if(detail.attentionStatus === 1){
+            attentionText = '已关注';
+        }else if(detail.attentionStatus === 2){
+            attentionText = '相互关注';
+        }
+
         return (
 
             <View style={styles.navTitle}>
@@ -285,16 +295,40 @@ export default class ShowDetailPage extends BasePage {
                 </TouchableOpacity>
                 <View style={styles.profileRow}>
                     <View style={styles.profileLeft}>
-                        <AvatarImage borderRadius={px2dp(15)} style={styles.portrait}
-                                     source={{ uri: userImage }}/>
+                        <TouchableWithoutFeedback onPress={() => {
+                            let userNo = detail.userInfoVO.userNo;
+                            if(user.code === userNo){
+                                routeNavigate(RouterMap.MyDynamicPage, { userType: WhiteModel.userStatus === 2 ? 'mineWriter' : 'mineNormal' });
+                            }else {
+                                routeNavigate(RouterMap.MyDynamicPage,{userType:'others',userInfo:detail.userInfoVO});
+                            }
+                        }}>
+                            <View>
+                                <AvatarImage
+                                    borderRadius={px2dp(15)} style={styles.portrait}
+                                    source={{ uri: userImage }}/>
+                            </View>
+                        </TouchableWithoutFeedback>
                         <Text style={styles.showName}
                               allowFontScaling={false}>{userName}</Text>
                     </View>
 
                 </View>
-                { detail.userInfoVO ?
-                    <TouchableWithoutFeedback onPress={()=>{
-                        ShowApi.userFollow({userNo:detail.userInfoVO.userNo}).then().catch();
+                {detail.userInfoVO ?
+                    <TouchableWithoutFeedback onPress={() => {
+                        if(detail.attentionStatus === 0){
+                            ShowApi.userFollow({ userNo: detail.userInfoVO.userNo }).then(()=>{
+                                this.showDetailModule.setAttentionStatus(1);
+                            }).catch((err)=>{
+                                this.$toastShow(err.msg);
+                            });
+                        }else {
+                            ShowApi.cancelFollow({ userNo: detail.userInfoVO.userNo }).then(()=>{
+                                this.showDetailModule.setAttentionStatus(0);
+                            }).catch((err)=>{
+                                this.$toastShow(err.msg);
+                            });
+                        }
                     }}>
                         <LinearGradient
                             start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
@@ -308,7 +342,7 @@ export default class ShowDetailPage extends BasePage {
                                 marginRight: detail.status === 1 ? px2dp(20) : px2dp(15)
                             }}>
                             <Text style={{ color: DesignRule.white, fontSize: DesignRule.fontSize_threeTitle }}>
-                                关注
+                                {attentionText}
                             </Text>
                         </LinearGradient>
                     </TouchableWithoutFeedback> : null
