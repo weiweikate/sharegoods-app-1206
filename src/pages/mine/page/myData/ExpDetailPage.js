@@ -54,7 +54,9 @@ const detailData = {
     20: { title: '秀购奖励', icon: res.cashAccount.zengsong_icon },
     30: { title: '30天未登录扣除', icon: res.cashAccount.jinggao_icon },
     31: { title: '周交易额未达标扣除', icon: res.cashAccount.jinggao_icon },
-    32: { title: '邀请有礼奖励', icon: res.myData.icon_invite }
+    32: { title: '邀请有礼奖励', icon: res.myData.icon_invite },
+    33: { title: '购买经验值', icon: res.cashAccount.zengsong_icon }
+
 };
 export default class ExpDetailPage extends BasePage {
     constructor(props) {

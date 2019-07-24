@@ -344,19 +344,19 @@ class ParallaxScrollView extends Component {
                     //     footerHeight = Math.max(0, viewHeight - height - stickyHeaderHeight)
                     // }
                     // const { nativeEvent: { layout: { height } } } = e
-                    let storeStatus = user && ((user.levelRemark >= 'V2' && !user.storeCode) ||
-                        (user.storeCode && user.levelRemark >= 'V2' && user.storeStatus === 0));
-                    const maxH = storeStatus ? ScreenUtils.width * 254 / 559 : 20;
-                    const footerHeight = Math.max(
-                        0,
-                        maxH
-                    );
-                    if (this._footerHeight !== footerHeight) {
-                        this._footerComponent.setNativeProps({
-                            style: { height: footerHeight }
-                        });
-                        this._footerHeight = footerHeight;
-                    }
+                    // let storeStatus = user && ((user.levelRemark >= 'V2' && !user.storeCode) ||
+                    //     (user.storeCode && user.levelRemark >= 'V2' && user.storeStatus === 0));
+                    // const maxH = storeStatus ? ScreenUtils.width * 254 / 559 : 20;
+                    // const footerHeight = Math.max(
+                    //     0,
+                    //     maxH
+                    // );
+                    // if (this._footerHeight !== footerHeight) {
+                    //     this._footerComponent.setNativeProps({
+                    //         style: { height: footerHeight }
+                    //     });
+                    //     this._footerHeight = footerHeight;
+                    // }
                 }}
 
             >
@@ -366,7 +366,14 @@ class ParallaxScrollView extends Component {
         );
     }
 
-    _renderFooterSpacer({ contentBackgroundColor }) {
+    _renderFooterSpacer = ({ contentBackgroundColor }) => {
+        let storeStatus = user && ((user.levelRemark >= 'V2' && !user.storeCode) ||
+            (user.storeCode && user.levelRemark >= 'V2' && user.storeStatus === 0));
+        const maxH = storeStatus ? ScreenUtils.width * 254 / 559 : 20;
+        const footerHeight = Math.max(
+            0,
+            maxH
+        );
         return (
             <View
                 ref={ref => {
@@ -374,7 +381,7 @@ class ParallaxScrollView extends Component {
                         this._footerComponent = ref;
                     }
                 }}
-                style={{ backgroundColor: contentBackgroundColor }}
+                style={{ backgroundColor: contentBackgroundColor ,height:footerHeight }}
             />
         );
     }
