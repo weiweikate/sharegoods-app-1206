@@ -47,7 +47,7 @@ import DownloadUtils from './utils/DownloadUtils';
 import ShowVideoView from './components/ShowVideoView';
 import WhiteModel from './model/WhiteModel';
 
-const { iconShowFire, iconLike, iconNoLike, iconDownload, iconShowShare, dynamicEmpty } = res;
+const { iconShowFire, iconLike, iconNoLike, iconDownload, iconShowShare, dynamicEmpty,collected,uncollected } = res;
 // @SmoothPushPreLoadHighComponent
 @observer
 export default class ShowDetailPage extends BasePage {
@@ -474,6 +474,44 @@ export default class ShowDetailPage extends BasePage {
         }
     };
 
+    _collectClick = () => {
+        let { detail } = this.showDetailModule;
+        if (detail.collect) {
+            if (detail.collectCount <= 0) {
+                return;
+            }
+            this.reduceCountByType(2);
+            detail.collect = false;
+            detail.collectCount -= 1;
+            this.showDetailModule.setDetail(detail);
+
+            // const { showNo, userInfoVO } = detail;
+            // const { userNo } = userInfoVO || {};
+            // track(trackEvent.XiuChangLikeClick, {
+            //     xiuChangBtnLocation: '2',
+            //     xiuChangListType: '',
+            //     articleCode: showNo,
+            //     author: userNo,
+            //     likeType: 2
+            // });
+        } else {
+            this.incrCountByType(2);
+            detail.collect = true;
+            detail.collectCount += 1;
+            this.showDetailModule.setDetail(detail);
+
+            // const { showNo, userInfoVO } = detail;
+            // const { userNo } = userInfoVO || {};
+            // track(trackEvent.XiuChangLikeClick, {
+            //     xiuChangBtnLocation: '2',
+            //     xiuChangListType: '',
+            //     articleCode: showNo,
+            //     author: userNo,
+            //     likeType: 1
+            // });
+        }
+    };
+
     _bottomRender = () => {
         let { detail } = this.showDetailModule;
         return (
@@ -486,15 +524,24 @@ export default class ShowDetailPage extends BasePage {
                         </Text>
                     </View>
                 </NoMoreClick>
-                <View style={{ width: px2dp(24) }}/>
-                {detail.showType !== 3 ? <NoMoreClick onPress={this._downloadShowContent}>
+                <View style={{ width: px2dp(20) }}/>
+                <NoMoreClick onPress={this._collectClick}>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Image source={detail.collect ? collected:uncollected} style={styles.bottomIcon}/>
+                        <Text style={styles.bottomNumText}>
+                            {ShowUtils.formatShowNum(detail.collectCount)}
+                        </Text>
+                    </View>
+                </NoMoreClick>
+                <View style={{ width: px2dp(20) }}/>
+                <NoMoreClick onPress={this._downloadShowContent}>
                     <View style={{ flexDirection: 'row' }}>
                         <Image source={iconDownload} style={styles.bottomIcon}/>
                         <Text style={styles.bottomNumText}>
                             {ShowUtils.formatShowNum(detail.downloadCount)}
                         </Text>
                     </View>
-                </NoMoreClick> : null}
+                </NoMoreClick>
 
                 <View style={{ flex: 1 }}/>
                 {!EmptyUtils.isEmptyArr(detail.products) ? <TouchableWithoutFeedback onPress={() => {
