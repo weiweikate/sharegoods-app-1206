@@ -48,7 +48,9 @@ public class ShowAttentionPresenter {
                                 iShowgroundView.loadMoreEnd();
                             } else if (list.size() < 10) {
                                 iShowgroundView.loadMoreEnd();
-                            } else {
+                            } else if(data.getIsMore()  == 0){
+                                iShowgroundView.loadMoreEnd();
+                            }else {
                                 iShowgroundView.loadMoreComplete();
                             }
                         } else {

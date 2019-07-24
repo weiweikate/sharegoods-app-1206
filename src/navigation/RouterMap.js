@@ -114,8 +114,8 @@ function backToHome() {
 
 // 跳转到秀场tab
 function backToShow(index = -1) {
-    GoToTabItem(1);
     ShowListIndexModel.setIndex(index)
+    GoToTabItem(1);
 }
 
 // 跳转到拼店tab

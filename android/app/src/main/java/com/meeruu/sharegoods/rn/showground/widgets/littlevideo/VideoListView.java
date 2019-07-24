@@ -122,6 +122,7 @@ public class VideoListView {
     private Handler mainHandler = new Handler();
     private EventDispatcher eventDispatcher;
     private List<String> attentionList = new ArrayList<>();
+    private List<String> noAttentionList = new ArrayList<>();
 
     private GestureDetector gestureDetector;
     private int minBufferMs = DefaultLoadControl.DEFAULT_MIN_BUFFER_MS;
@@ -602,9 +603,15 @@ public class VideoListView {
             if (!attentionList.contains(usercode)) {
                 attentionList.add(usercode);
             }
+            if(!noAttentionList.contains(usercode)){
+                noAttentionList.remove(usercode);
+            }
         } else {
             if (!attentionList.contains(usercode)) {
                 attentionList.remove(usercode);
+            }
+            if(!noAttentionList.contains(usercode)){
+                noAttentionList.add(usercode);
             }
         }
     }
@@ -630,7 +637,9 @@ public class VideoListView {
 
         if (bean.getAttentionStatus() == 0 && !attentionList.contains(bean.getUserInfoVO().getUserNo())) {
             setAttentionView(false);
-        } else {
+        } else if(bean.getAttentionStatus() != 0 && noAttentionList.contains(bean.getUserInfoVO().getUserNo())){
+            setAttentionView(false);
+        }else {
             setAttentionView(true);
         }
     }
@@ -658,9 +667,9 @@ public class VideoListView {
         }
         NewestShowGroundBean.DataBean video = list.get(position);
         //恢复界面状态
-        mPlayIcon.setVisibility(View.VISIBLE);
 //        isPauseInvoke = false;
         BaseVideoListAdapter.BaseHolder holder = (BaseVideoListAdapter.BaseHolder) recycler.findViewHolderForLayoutPosition(position);
+        holder.getPlayIcon().setVisibility(View.VISIBLE);
         ViewParent parent = mPlayerViewContainer.getParent();
         if (parent != null && parent instanceof FrameLayout) {
             ((ViewGroup) parent).removeView(mPlayerViewContainer);
