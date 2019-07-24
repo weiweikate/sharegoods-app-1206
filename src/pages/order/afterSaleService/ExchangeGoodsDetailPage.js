@@ -38,7 +38,6 @@ import NavigatorBar from '../../../components/pageDecorator/NavigatorBar/Navigat
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { beginChatType, QYChatTool } from '../../../utils/QYModule/QYChatTool';
-import bridge from '../../../utils/bridge';
 const {
     PAGE_AREFUND,
     PAGE_SALES_RETURN,
@@ -336,7 +335,21 @@ class ExchangeGoodsDetailPage extends BasePage {
                     )
                 }
             ).catch((e) => {
-                bridge.$toast(e.msg)
+                QYChatTool.beginQYChat({
+                        routePath: '',
+                        urlString: '',
+                        title:  '平台客服',
+                        shopId: '',
+                        chatType: beginChatType.BEGIN_FROM_ORDER,
+                        data: {
+                            title: merchantOrderNo,
+                            desc,
+                            pictureUrlString,
+                            urlString: '',
+                            note: '',
+                        }
+                    }
+                )
             })
         }
     }

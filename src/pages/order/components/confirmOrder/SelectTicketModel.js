@@ -48,8 +48,7 @@ export default class SelectTicketModel extends React.Component {
         this.setState({modalVisible: false});
     }
 
-    open = (orderParamVO, callBack) => {
-        let { orderProducts = []} = orderParamVO || {};
+    open = (orderProducts = [], callBack) => {
         let arr = orderProducts.map((item, index) => {
             return {
                 priceCode: item.skuCode,

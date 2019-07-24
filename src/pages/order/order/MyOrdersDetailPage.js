@@ -308,6 +308,7 @@ export default class MyOrdersDetailPage extends BasePage {
                             platformOrderNo: orderDetailModel.platformOrderNo,
                         }).then((response) => {
                             Toast.hiddenLoading();
+                            this.params.dataHandlecancel && this.params.dataHandlecancel();
                             this.goTobackNav();
                         }).catch(e => {
                             Toast.hiddenLoading();

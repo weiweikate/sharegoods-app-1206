@@ -46,7 +46,7 @@ class ConfirmOrderModel {
     @action clearData() {
         this.loadingState = PageLoadingState.success;
         this.err=null;
-        this.canUseCou = true;
+        this.canUseCou = false;
 
         this.addressId = '';
         this.message = '';
@@ -107,13 +107,17 @@ class ConfirmOrderModel {
         this.isAllVirtual = isAllVirtual;
     }
 
-    getParams(filterFail){
-
+    getAvailableProducts(){
         let orderProducts =  this.orderParamVO.orderProducts || [];
-        if (filterFail){
-            orderProducts = orderProducts.filter((item => {
+           return orderProducts.filter((item => {
                 return item.fail === false;
             }))
+    }
+
+    getParams(filterFail){
+        let orderProducts =  this.orderParamVO.orderProducts || [];
+        if (filterFail){
+            orderProducts = this.getAvailableProducts();
         }
         let productList = orderProducts.map(item => {
             // "skuCode":, //string 平台skuCode
@@ -169,7 +173,13 @@ class ConfirmOrderModel {
     makeSureProduct_selectDefaltCoupon(couponsId){
         if (couponsId){
             API.listAvailable(this.getCouponParams()).then((data) => {
-
+               // couponConfigId	Integer	823
+               data = data.data || {};
+                (data.data || []).forEach((item) => {
+                    if (item.couponConfigId == couponsId) {
+                        this.userCouponCode = item.code;
+                    }
+                })
             }).finally(()=> {
                 this.makeSureProduct();
             })
@@ -243,6 +253,13 @@ class ConfirmOrderModel {
         if (this.payInfo.couponAmount === 0){
             this.userCouponCode = '';
         }
+        let canUseCou = false;
+        this.productOrderList.forEach(item=> {
+            if (item.canCoupon === true){
+                canUseCou = true;
+            }
+        })
+        this.canUseCou = canUseCou;
         //遍历出失效对应商品信息
         let failProductList = [];
         let list = data.failProductList || [];

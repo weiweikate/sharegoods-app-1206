@@ -152,7 +152,7 @@ export default class MyOrdersListView extends Component {
             Toast.hiddenLoading();
             if (response.code === 10000) {
                 Toast.$toast('订单已取消');
-                this.onRefresh();
+                this.dataHandlecancel(this.item, this.itemIndex);
             } else {
                 Toast.$toast(response.msg);
             }
@@ -169,7 +169,8 @@ export default class MyOrdersListView extends Component {
             this.props.nav('order/order/MyOrdersDetailPage', {
                 merchantOrderNo: data.merchantOrder.merchantOrderNo,
                 dataHandleConfirmOrder: ()=>this.dataHandleConfirmOrder(data, index),
-                dataHandleDeleteOrder: ()=>this.dataHandleDeleteOrder(data,index)
+                dataHandleDeleteOrder: ()=>this.dataHandleDeleteOrder(data,index),
+                dataHandlecancel: () =>this.dataHandlecancel(data,index)
             });
     };
     operationMenuClick = (menu, index, data) => {
@@ -186,6 +187,7 @@ export default class MyOrdersListView extends Component {
          * 删除订单(已关闭(取消))    ->  9
          * */
         this.item = data;
+        this.itemIndex = index;
         let orderProduct = data.merchantOrder.productOrderList || [];
         let merchantOrderNo = data.merchantOrder.merchantOrderNo;
         let platformOrderNo = data.merchantOrder.platformOrderNo;
@@ -286,6 +288,20 @@ export default class MyOrdersListView extends Component {
             let data = this.list.getSourceData();
             if (data[index].merchantOrder){
                 data[index].merchantOrder.status = OrderType.COMPLETED;
+                this.list.changeData([...data])
+            }
+        }
+    }
+    //取消订单
+    dataHandlecancel  =  (item, index) => {
+        if (this.props.pageStatus !== 0){//如果不是在全部里面确认收货，就走删除逻辑
+            this.dataHandleDeleteOrder(item, index);
+            return;
+        }
+        if(this.list){
+            let data = this.list.getSourceData();
+            if (data[index].merchantOrder){
+                data[index].merchantOrder.status = OrderType.CLOSED;
                 this.list.changeData([...data])
             }
         }

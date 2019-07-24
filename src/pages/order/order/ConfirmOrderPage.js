@@ -184,7 +184,7 @@ export default class ConfirmOrderPage extends BasePage {
             })
         } else {
             track(trackEvent.ViewCoupon, { couponModuleSource: 3 });
-            this.ticketModel && this.ticketModel.open(confirmOrderModel.orderParamVO, (data) => {
+            this.ticketModel && this.ticketModel.open(confirmOrderModel.getAvailableProducts(), (data) => {
                 if (data.code) {
                     confirmOrderModel.selectUserCoupon(data.code)
                 } else if (data === 'giveUp') {
