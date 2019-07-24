@@ -40,13 +40,13 @@ public class ShowDynamicViewManager extends ViewGroupManager<ViewGroup> {
     }
 
 
-    @ReactProp(name = "params")
-    public void setParams(View view, ReadableMap map) {
-        Object object = view.getTag();
-        if (object != null && object instanceof ShowDynamicView) {
-            ((ShowDynamicView) object).setParams(map.toHashMap());
-        }
-    }
+//    @ReactProp(name = "params")
+//    public void setParams(View view, ReadableMap map) {
+//        Object object = view.getTag();
+//        if (object != null && object instanceof ShowDynamicView) {
+//            ((ShowDynamicView) object).setParams(map.toHashMap());
+//        }
+//    }
 
     @ReactProp(name = "userType")
     public void setUserType(View view, String s) {

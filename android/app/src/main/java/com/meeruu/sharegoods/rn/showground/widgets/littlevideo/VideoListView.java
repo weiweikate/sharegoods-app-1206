@@ -59,6 +59,7 @@ import com.meeruu.sharegoods.rn.showground.event.OnBackPressEvent;
 import com.meeruu.sharegoods.rn.showground.event.OnBuyEvent;
 import com.meeruu.sharegoods.rn.showground.event.OnCollectionEvent;
 import com.meeruu.sharegoods.rn.showground.event.OnPressTagEvent;
+import com.meeruu.sharegoods.rn.showground.event.OnSeeUserEvent;
 import com.meeruu.sharegoods.rn.showground.event.onDownloadPressEvent;
 import com.meeruu.sharegoods.rn.showground.event.onSharePressEvent;
 import com.meeruu.sharegoods.rn.showground.event.OnZanPressEvent;
@@ -84,6 +85,9 @@ public class VideoListView {
     private VideoModel videoModel;
     public static boolean isLogin;
     public static String userCode;
+    private boolean isCollect;
+    private boolean isPersonal;
+    private String personalCode;
     /**
      * 数据是否到达最后一页
      */
@@ -117,7 +121,6 @@ public class VideoListView {
     private TextView tvName, tvHotCount, tvAttention;
     private Handler mainHandler = new Handler();
     private EventDispatcher eventDispatcher;
-    //    private List<NewestShowGroundBean.DataBean> list;
     private List<String> attentionList = new ArrayList<>();
 
     private GestureDetector gestureDetector;
@@ -310,6 +313,21 @@ public class VideoListView {
 
 
         userIcon = view.findViewById(R.id.user_icon);
+        userIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pausePlay();
+                OnSeeUserEvent seeUserEvent = new OnSeeUserEvent();
+                seeUserEvent.init(view.getId());
+                NewestShowGroundBean.DataBean dataBean = getCurrentData();
+                String jsonStr = JSON.toJSONString(dataBean);
+                Map map = JSONObject.parseObject(jsonStr);
+                WritableMap realData = Arguments.makeNativeMap(map);
+                seeUserEvent.setData(realData);
+                eventDispatcher.dispatchEvent(seeUserEvent);
+            }
+        });
+
         tvName = view.findViewById(R.id.tv_name);
         tvHotCount = view.findViewById(R.id.tv_hotCount);
         tvAttention = view.findViewById(R.id.tv_attention);
@@ -328,27 +346,17 @@ public class VideoListView {
                         updateAttentions(userNo, false);
                         setAttentionView(false);
                     }
-                } else {
-                    pausePlay();
+
                     OnAttentionPressEvent attentionPressEvent = new OnAttentionPressEvent();
                     attentionPressEvent.init(view.getId());
+                    String jsonStr = JSON.toJSONString(dataBean);
+                    Map map = JSONObject.parseObject(jsonStr);
+                    WritableMap realData = Arguments.makeNativeMap(map);
+                    attentionPressEvent.setData(realData);
                     eventDispatcher.dispatchEvent(attentionPressEvent);
                 }
             }
         });
-//        tvAttention.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                return attentionDetector.onTouchEvent(event);
-//            }
-//        });
-
-//        share.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
 
         recycler = view.findViewById(R.id.recycler);
         recycler.setHasFixedSize(true);
@@ -453,13 +461,6 @@ public class VideoListView {
                     bean.setCollectCount(bean.getCollectCount() + 1);
                 }
                 if (eventDispatcher != null) {
-//            OnCollectionEvent onCollectionEvent = new OnCollectionEvent();
-//            onCollectionEvent.init(view.getId());
-//            String jsonStr = JSON.toJSONString(bean);
-//            Map map = JSONObject.parseObject(jsonStr);
-//            WritableMap realData = Arguments.makeNativeMap(map);
-//            onCollectionEvent.setData(realData);
-//            eventDispatcher.dispatchEvent(onCollectionEvent);
                     OnCollectionEvent buyEvent = new OnCollectionEvent();
                     buyEvent.init(view.getId());
                     String jsonStr = JSON.toJSONString(bean);
@@ -715,14 +716,19 @@ public class VideoListView {
      *
      * @param list 刷新数据
      */
-    public void refreshData(List<NewestShowGroundBean.DataBean> list) {
+    public void refreshData(List<NewestShowGroundBean.DataBean> list,boolean isPersonal,boolean isCollect) {
         isEnd = false;
         isLoadingData = false;
         adapter.refreshData(list);
-        currentShowNo = list.get(0).getShowNo();
+        NewestShowGroundBean.DataBean dataBean = list.get(0);
+        currentShowNo = dataBean.getShowNo();
+        this.isPersonal = isPersonal;
+        this.isCollect = isCollect;
+        if(this.isPersonal){
+            this.personalCode = dataBean.getUserInfoVO().getUserNo();
+        }
         loadMoreData();
-        NewestShowGroundBean.DataBean bean = list.get(0);
-        changeHeader(bean);
+        changeHeader(dataBean);
     }
 
     public void setLogin(boolean login) {
@@ -734,7 +740,7 @@ public class VideoListView {
     }
 
     private void loadMoreData() {
-        videoModel.getVideoList(currentShowNo, null, new BaseCallback<String>() {
+        videoModel.getVideoList(currentShowNo, personalCode,isCollect, new BaseCallback<String>() {
             @Override
             public void onErr(String errCode, String msg) {
             }

@@ -149,7 +149,7 @@ export default class ReleaseNotesPage extends BasePage {
             })
         };
         ShowApi.publishShow(params).then((data) => {
-            replaceRoute(RouterMap.MyDynamicPage);
+            replaceRoute(RouterMap.MyDynamicPage, { userType: 'mineWriter' });
         }).catch((error) => {
             this.$toastShow(error.msg || '网络错误');
         });
@@ -163,7 +163,7 @@ export default class ReleaseNotesPage extends BasePage {
             return value.spuCode;
         });
         let title = `${user.code}-${new Date().getTime()}-${this.state.titleText}`;
-        if (Platform.OS === 'android'){
+        if (Platform.OS === 'android') {
             NativeModules.ShowModule.uploadVideo(title, videoPath).then((data) => {
                 PictureVideoUtils.uploadSingleImage(videoCover, (res) => {
                     if (res.url) {
@@ -185,7 +185,7 @@ export default class ReleaseNotesPage extends BasePage {
                             videoId: data.videoId
                         };
                         ShowApi.saveVideo(params).then((data) => {
-                            // replaceRoute(RouterMap.MyDynamicPage);
+                            replaceRoute(RouterMap.MyDynamicPage,{userType:'mineWriter'});
                         }).catch((error) => {
                             this.$toastShow(error.msg);
                         });
@@ -218,7 +218,7 @@ export default class ReleaseNotesPage extends BasePage {
                             videoId: data.videoId
                         };
                         ShowApi.saveVideo(params).then((data) => {
-                            replaceRoute(RouterMap.MyDynamicPage);
+                            replaceRoute(RouterMap.MyDynamicPage,{userType:'mineWriter'});
                         }).catch((error) => {
                             this.$toastShow(error.msg);
                         });
@@ -237,15 +237,15 @@ export default class ReleaseNotesPage extends BasePage {
 
     choosePicker = () => {
         let imageArr = this.state.imageArr;
-        if(EmptyUtils.isEmptyArr(imageArr)){
-            this.setState({selector:true});
-        }else {
+        if (EmptyUtils.isEmptyArr(imageArr)) {
+            this.setState({ selector: true });
+        } else {
             this.chooseImage();
         }
     };
 
     chooseImage = () => {
-        this.setState({selector:false},()=>{
+        this.setState({ selector: false }, () => {
             let imageArr = this.state.imageArr;
             if (imageArr.length >= 8) {
                 return;
@@ -263,14 +263,14 @@ export default class ReleaseNotesPage extends BasePage {
     };
 
     chooseVideo = () => {
-        this.setState({selector:false});
-        if (Platform.OS === 'android'){
+        this.setState({ selector: false });
+        if (Platform.OS === 'android') {
             NativeModules.ShowModule.recordVideo().then((data) => {
                 this.setState({ videoData: data });
             });
         } else {
-            NativeModules.MRImagePickerBridge.getShowVideo().then((data)=>{
-                this.setState({videoData:data})
+            NativeModules.MRImagePickerBridge.getShowVideo().then((data) => {
+                this.setState({ videoData: data });
             });
         }
 

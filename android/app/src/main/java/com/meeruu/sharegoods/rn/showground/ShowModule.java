@@ -75,15 +75,11 @@ public class ShowModule extends ReactContextBaseJavaModule implements LifecycleE
             @Override
             public void onUploadSucceed(UploadFileInfo info) {
                 super.onUploadSucceed(info);
-                LoadingDialogEvent event = new LoadingDialogEvent(false,"");
-                EventBus.getDefault().post(event);
             }
 
             @Override
             public void onUploadFailed(UploadFileInfo info, String code, String message) {
                 super.onUploadFailed(info, code, message);
-                LoadingDialogEvent event = new LoadingDialogEvent(false,"");
-                EventBus.getDefault().post(event);
             }
 
             @Override
@@ -110,8 +106,6 @@ public class ShowModule extends ReactContextBaseJavaModule implements LifecycleE
             public void onUploadStarted(UploadFileInfo uploadFileInfo) {
                 super.onUploadStarted(uploadFileInfo);
                 uploader.setUploadAuthAndAddress(uploadFileInfo, uploadAuth, uploadAddress);
-                LoadingDialogEvent event = new LoadingDialogEvent(true,"上传中");
-                EventBus.getDefault().post(event);
             }
         };
         uploader.init(callback);

@@ -28,7 +28,7 @@ import {
 import Toast from '../../utils/bridge';
 import { NetFailedView } from '../../components/pageDecorator/BaseView';
 import AvatarImage from '../../components/ui/AvatarImage';
-import { track , trackEvent } from '../../utils/SensorsTrack';
+import { track, trackEvent } from '../../utils/SensorsTrack';
 import { SmoothPushPreLoadHighComponent } from '../../comm/components/SmoothPushHighComponent';
 import ProductRowListView from './components/ProductRowListView';
 import ShowUtils from './utils/ShowUtils';
@@ -42,8 +42,9 @@ import ProductListModal from './components/ProductListModal';
 import RouterMap, { routePop, routeNavigate, routePush } from '../../navigation/RouterMap';
 import ShowApi from './ShowApi';
 import LinearGradient from 'react-native-linear-gradient';
+import WhiteModel from './model/WhiteModel';
 
-const { iconShowFire, iconLike, iconNoLike, iconShowShare ,dynamicEmpty} = res;
+const { iconShowFire, iconLike, iconNoLike, iconShowShare, dynamicEmpty } = res;
 
 
 @SmoothPushPreLoadHighComponent
@@ -100,10 +101,10 @@ export default class ShowRichTextDetailPage extends BasePage {
                         this.params.ref && this.params.ref.replaceData(this.params.index, data.hotCount);
 
                         const { detail } = this.showDetailModule;
-                        track(trackEvent.ViewXiuChangDetails,{
+                        track(trackEvent.ViewXiuChangDetails, {
                             articleCode: detail.showNo,
                             author: detail.userInfoVO.userNo
-                        })
+                        });
                     }
                     this.incrCountByType(6);
                 }
@@ -121,10 +122,10 @@ export default class ShowRichTextDetailPage extends BasePage {
     getDetailByIdOrCode = (code) => {
         this.showDetailModule.showDetailCode(code).then(() => {
             const { detail } = this.showDetailModule;
-            track(trackEvent.ViewXiuChangDetails,{
+            track(trackEvent.ViewXiuChangDetails, {
                 articleCode: detail.showNo,
                 author: detail.userInfoVO.userNo
-            })
+            });
             if (this.params.isFormHeader) {
                 this.params.ref && this.params.ref.setClick(detail.click);
             } else {
@@ -244,7 +245,14 @@ export default class ShowRichTextDetailPage extends BasePage {
 
         let userImage = (detail.userInfoVO && detail.userInfoVO.userImg) ? detail.userInfoVO.userImg : '';
         let userName = (detail.userInfoVO && detail.userInfoVO.userName) ? detail.userInfoVO.userName : '';
-
+        let attentionText = '';
+        if(detail.attentionStatus === 0){
+            attentionText = '关注';
+        }else if(detail.attentionStatus === 1){
+            attentionText = '已关注';
+        }else if(detail.attentionStatus === 2){
+            attentionText = '相互关注';
+        }
         return (
 
             <View style={styles.navTitle}>
@@ -253,12 +261,59 @@ export default class ShowRichTextDetailPage extends BasePage {
                 </TouchableOpacity>
                 <View style={styles.profileRow}>
                     <View style={styles.profileLeft}>
-                        <AvatarImage borderRadius={px2dp(15)} style={styles.portrait}
-                                     source={{ uri: userImage }}/>
+                        <TouchableWithoutFeedback onPress={() => {
+                            let userNo = detail.userInfoVO.userNo;
+                            if (user.code === userNo) {
+                                routeNavigate(RouterMap.MyDynamicPage, { userType: WhiteModel.userStatus === 2 ? 'mineWriter' : 'mineNormal' });
+                            } else {
+                                routeNavigate(RouterMap.MyDynamicPage, {
+                                    userType: 'others',
+                                    userInfo: detail.userInfoVO
+                                });
+                            }
+                        }}>
+                            <View>
+                                <AvatarImage borderRadius={px2dp(15)} style={styles.portrait}
+                                             source={{ uri: userImage }}/>
+                            </View>
+                        </TouchableWithoutFeedback>
                         <Text style={styles.showName}
                               allowFontScaling={false}>{userName}</Text>
                     </View>
                 </View>
+                {detail.userInfoVO ?
+                    <TouchableWithoutFeedback onPress={() => {
+                        if(detail.attentionStatus === 0){
+                            ShowApi.userFollow({ userNo: detail.userInfoVO.userNo }).then(()=>{
+                                this.showDetailModule.setAttentionStatus(1);
+                            }).catch((err)=>{
+                                this.$toastShow(err.msg);
+                            });
+                        }else {
+                            ShowApi.cancelFollow({ userNo: detail.userInfoVO.userNo }).then(()=>{
+                                this.showDetailModule.setAttentionStatus(0);
+                            }).catch((err)=>{
+                                this.$toastShow(err.msg);
+                            });
+                        }
+                    }}>
+                        <LinearGradient
+                            start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+                            colors={['#FFCB02', '#FF9502']}
+                            style={{
+                                width: px2dp(65),
+                                height: px2dp(28),
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                borderRadius: px2dp(14),
+                                marginRight: detail.status === 1 ? px2dp(20) : px2dp(15)
+                            }}>
+                            <Text style={{ color: DesignRule.white, fontSize: DesignRule.fontSize_threeTitle }}>
+                                {attentionText}
+                            </Text>
+                        </LinearGradient>
+                    </TouchableWithoutFeedback> : null
+                }
                 {detail.status === 1 ? <TouchableOpacity style={styles.shareView} onPress={() => {
                     this._goToShare();
                 }}>
@@ -355,30 +410,30 @@ export default class ShowRichTextDetailPage extends BasePage {
             detail.likesCount -= 1;
             this.showDetailModule.setDetail(detail);
 
-            const { showNo , userInfoVO } = detail;
+            const { showNo, userInfoVO } = detail;
             const { userNo } = userInfoVO || {};
-            track(trackEvent.XiuChangLikeClick,{
-                xiuChangBtnLocation:'2',
-                xiuChangListType:'',
-                articleCode:showNo,
-                author:userNo,
-                likeType:2
-            })
+            track(trackEvent.XiuChangLikeClick, {
+                xiuChangBtnLocation: '2',
+                xiuChangListType: '',
+                articleCode: showNo,
+                author: userNo,
+                likeType: 2
+            });
         } else {
             this.incrCountByType(1);
             detail.like = true;
             detail.likesCount += 1;
             this.showDetailModule.setDetail(detail);
 
-            const { showNo , userInfoVO } = detail;
+            const { showNo, userInfoVO } = detail;
             const { userNo } = userInfoVO || {};
-            track(trackEvent.XiuChangLikeClick,{
-                xiuChangBtnLocation:'2',
-                xiuChangListType:'',
-                articleCode:showNo,
-                author:userNo,
-                likeType:1
-            })
+            track(trackEvent.XiuChangLikeClick, {
+                xiuChangBtnLocation: '2',
+                xiuChangListType: '',
+                articleCode: showNo,
+                author: userNo,
+                likeType: 1
+            });
         }
     };
 
@@ -455,18 +510,18 @@ export default class ShowRichTextDetailPage extends BasePage {
                     'productCode': detail.prodCode
                 });
                 /*加入购物车埋点*/
-                const { showNo , userInfoVO } = this.showDetailModule.detail;
+                const { showNo, userInfoVO } = this.showDetailModule.detail;
                 const { userNo } = userInfoVO || {};
                 track(trackEvent.XiuChangAddToCart, {
-                    xiuChangBtnLocation:'2',
-                    xiuChangListType:'',
-                    articleCode:showNo,
-                    author:userNo,
+                    xiuChangBtnLocation: '2',
+                    xiuChangListType: '',
+                    articleCode: showNo,
+                    author: userNo,
                     spuCode: prodCode,
                     skuCode: skuCode,
                     spuName: name,
                     pricePerCommodity: originalPrice,
-                    spuAmount: amount,
+                    spuAmount: amount
                 });
             }, { sourceType: productIsPromotionPrice ? sourceType.promotion : null });
         }, (error) => {
@@ -508,11 +563,16 @@ export default class ShowRichTextDetailPage extends BasePage {
         if (detail.status !== 1 && (EmptyUtils.isEmpty(detail.userInfoVO) || detail.userInfoVO.userNo !== user.code)) {
 
             return (<View style={styles.container}>
-                <View style={{backgroundColor:DesignRule.bgColor,alignItems:'center',flex:1,marginTop:ScreenUtils.statusBarHeight}}>
+                <View style={{
+                    backgroundColor: DesignRule.bgColor,
+                    alignItems: 'center',
+                    flex: 1,
+                    marginTop: ScreenUtils.statusBarHeight
+                }}>
                     <Image source={dynamicEmpty}
-                           style={{ width: px2dp(267), height: px2dp(192), marginTop:px2dp(165) }}/>
+                           style={{ width: px2dp(267), height: px2dp(192), marginTop: px2dp(165) }}/>
                     <Text style={styles.emptyTip}>
-                        {detail.status === 2 ? '系统正在快马加鞭审核中,耐心等待哦！':'文章不见了，先看看别的吧！'}
+                        {detail.status === 2 ? '系统正在快马加鞭审核中,耐心等待哦！' : '文章不见了，先看看别的吧！'}
                     </Text>
                 </View>
                 {this._renderNormalTitle()}
@@ -609,16 +669,20 @@ export default class ShowRichTextDetailPage extends BasePage {
                                         this.setState({
                                             productModalVisible: false
                                         });
-                                        const {prodCode,name} = data;
+                                        const { prodCode, name } = data;
                                         track(trackEvent.XiuChangSpuClick, {
-                                            xiuChangBtnLocation:'2',
-                                            xiuChangListType:'0',
-                                            articleCode:detail.showNo,
+                                            xiuChangBtnLocation: '2',
+                                            xiuChangListType: '0',
+                                            articleCode: detail.showNo,
                                             spuCode: prodCode,
                                             spuName: name,
                                             author: detail.userInfoVO ? detail.userInfoVO.userNo : ''
                                         });
-                                        this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode ,trackType:3,trackCode:detail.showNo});
+                                        this.$navigate(RouterMap.ProductDetailPage, {
+                                            productCode: prodCode,
+                                            trackType: 3,
+                                            trackCode: detail.showNo
+                                        });
                                     }}
                 />
 
@@ -650,7 +714,11 @@ export default class ShowRichTextDetailPage extends BasePage {
                                                      this.setState({
                                                          productModalVisible: false
                                                      });
-                                                     this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode ,trackType:3,trackCode:detail.showNo});
+                                                     this.$navigate(RouterMap.ProductDetailPage, {
+                                                         productCode: prodCode,
+                                                         trackType: 3,
+                                                         trackCode: detail.showNo
+                                                     });
                                                  }}
                                                  addCart={this.addCart}
                                                  products={detail.products} requestClose={() => {
@@ -658,14 +726,19 @@ export default class ShowRichTextDetailPage extends BasePage {
                     productModalVisible: false
                 });
             }}/> : null}
-            {detail.status === 3  && (EmptyUtils.isEmpty(detail.userInfoVO) || detail.userInfoVO.userNo === user.code) ? this._shieldRender() : null}
+            {detail.status === 3 && (EmptyUtils.isEmpty(detail.userInfoVO) || detail.userInfoVO.userNo === user.code) ? this._shieldRender() : null}
             {detail.status === 2 && (EmptyUtils.isEmpty(detail.userInfoVO) || detail.userInfoVO.userNo === user.code) ? this._renderChecking() : null}
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             defaultModalVisible={this.params.openShareModal}
                             type={'Show'}
                             trackEvent={trackEvent.XiuChangShareClick}
-                            trackParmas={{ articleCode: detail.code, author: (detail.userInfoVO||{}).userNo,xiuChangBtnLocation:'2',xiuChangListType:''}}
+                            trackParmas={{
+                                articleCode: detail.code,
+                                author: (detail.userInfoVO || {}).userNo,
+                                xiuChangBtnLocation: '2',
+                                xiuChangListType: ''
+                            }}
                             imageJson={{
                                 imageType: 'show',
                                 imageUrlStr: detail.resource ? detail.resource[0].url : '',
@@ -959,13 +1032,13 @@ let styles = StyleSheet.create({
         left: 0,
         right: 0
     },
-    checkingTextWrapper:{
+    checkingTextWrapper: {
         width: DesignRule.width,
         backgroundColor: 'black',
         paddingHorizontal: DesignRule.margin_page,
-        height:px2dp(44),
-        flexDirection:'row',
-        alignItems:'center'
-    },
+        height: px2dp(44),
+        flexDirection: 'row',
+        alignItems: 'center'
+    }
 });
 

@@ -135,7 +135,7 @@ public class ShowDynamicView implements IShowgroundView, SwipeRefreshLayout.OnRe
             public void onItemClick(final BaseQuickAdapter adapter, View view1, final int position) {
                 final List<NewestShowGroundBean.DataBean> data = adapter.getData();
                 if (data != null && dynamicInterface != null) {
-                    dynamicInterface.onItemPress(data.get(position),position);
+                    dynamicInterface.onItemPress(data.get(position),position,true,false);
                 }
             }
         });

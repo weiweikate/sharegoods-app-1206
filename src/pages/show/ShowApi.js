@@ -89,15 +89,17 @@ const api = {
     getOtherFollow: ['/social/show/user/query/other/follow', {
         method: 'get'
     }],
+    //取消关注
     cancelFollow: ['/social/show/user/cancel/follow',  {
         method: 'post'
     }],
-    userFollow: ['/social/show/user/user/follow',  {
+    //关注
+    userFollow: ['/social/show/user/follow',  {
         method: 'post'
     }],
     //查询其他用户信息
     getOthersInfo: ['/social/show/user/query/other/info',  {
-        method: 'post'
+        method: 'get'
     }],
     //查询自己用户信息
     getMineInfo: ['/social/show/user/query/mine/info',  {

@@ -21,6 +21,7 @@ import ShowUtils from './utils/ShowUtils';
 import RouterMap, { routeNavigate, routePush } from '../../navigation/RouterMap';
 import DownloadUtils from './utils/DownloadUtils';
 import ShowAttentionView from './components/ShowAttentionView';
+import WhiteModel from './model/WhiteModel';
 
 @observer
 export default class ShowAttentionPage extends React.Component {
@@ -133,7 +134,12 @@ export default class ShowAttentionPage extends React.Component {
                                            }
                                        }}
                                        onSeeUser={({nativeEvent})=>{
-                                           routeNavigate(RouterMap.MyDynamicPage,{userType:'others',userCode:nativeEvent.userInfoVO.userNo});
+                                           let userNo = nativeEvent.userInfoVO.userNo;
+                                           if(user.code === userNo){
+                                               routeNavigate(RouterMap.MyDynamicPage, { userType: WhiteModel.userStatus === 2 ? 'mineWriter' : 'mineNormal' });
+                                           }else {
+                                               routeNavigate(RouterMap.MyDynamicPage,{userType:'others',userInfo:nativeEvent.userInfoVO});
+                                           }
                                        }}
                                        onItemPress={({ nativeEvent }) => {
                                            const { showNo , userInfoVO } = nativeEvent;

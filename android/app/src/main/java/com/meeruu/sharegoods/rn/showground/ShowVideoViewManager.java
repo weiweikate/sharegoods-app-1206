@@ -60,11 +60,19 @@ public class ShowVideoViewManager extends SimpleViewManager<View> {
 
     @ReactProp(name = "params")
     public void initData(View view, ReadableMap map) {
+        boolean isPersonal = false;
+        boolean isCollect = false;
         HashMap data = map.toHashMap();
+        if(data.containsKey("isPersonal")){
+            isPersonal = (boolean) data.get("isPersonal");
+            if(isPersonal){
+                isCollect = (boolean) data.get("isCollect");
+            }
+        }
         NewestShowGroundBean.DataBean videoListBean = JSON.parseObject(JSONObject.toJSONString(data), NewestShowGroundBean.DataBean.class);
         List<NewestShowGroundBean.DataBean> list = new ArrayList<NewestShowGroundBean.DataBean>();
         list.add(videoListBean);
-        ((VideoListView) view.getTag()).refreshData(list);
+        ((VideoListView) view.getTag()).refreshData(list,isPersonal,isCollect);
     }
 
     @ReactProp(name = "isLogin")
@@ -89,6 +97,7 @@ public class ShowVideoViewManager extends SimpleViewManager<View> {
                 .put("MrDownloadPressEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onDownloadPress")))
                 .put("MrZanPressEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onZanPress")))
                 .put("MrCollectionEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onCollection")))
+                .put("MrSeeUserEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onSeeUser")))
                 .build();
     }
 }

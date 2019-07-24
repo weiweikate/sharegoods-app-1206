@@ -5,8 +5,10 @@
 
 import React from 'react';
 import {
-    // StyleSheet,
+    StyleSheet,
     View,
+    TouchableOpacity,
+    Image,
     requireNativeComponent
 } from 'react-native';
 import BasePage from '../../BasePage';
@@ -14,14 +16,19 @@ import ShowApi from './ShowApi';
 import { PageLoadingState } from '../../components/pageDecorator/PageState';
 import EmptyUtils from '../../utils/EmptyUtils';
 import user from '../../model/user';
-import RouterMap, { routeNavigate } from '../../navigation/RouterMap';
+import RouterMap, { routeNavigate, routePop } from '../../navigation/RouterMap';
 import { observer } from 'mobx-react';
 import CommShareModal from '../../comm/components/CommShareModal';
 import apiEnvironment from '../../api/ApiEnvironment';
 import { trackEvent } from '../../utils/SensorsTrack';
 import ShowListIndexModel from './model/ShowListIndexModel';
 import ProductListModal from './components/ProductListModal';
-
+import WhiteModel from './model/WhiteModel';
+import DesignRule from '../../constants/DesignRule';
+import res from './res';
+import ScreenUtils from '../../utils/ScreenUtils';
+import NetFailedView from '../../components/pageDecorator/BaseView/NetFailedView';
+const {px2dp} = ScreenUtils;
 const ShowVideoListView = requireNativeComponent('MrShowVideoListView');
 @observer
 export default class ShowVideoPage extends BasePage {
@@ -36,48 +43,83 @@ export default class ShowVideoPage extends BasePage {
         this.state = {
             detail: null,
             pageState: PageLoadingState.loading,
-            productModalVisible: false
+            productModalVisible: false,
+            errorMsg:'网络错误'
+
         };
 
     }
 
-    $getPageStateOptions = () => {
-        return {
-            loadingState: this.state.pageState
-        };
-    };
+    _renderNormalTitle() {
+        return (
+            <View style={styles.navTitle}>
+                <TouchableOpacity style={styles.backView} onPress={() => routePop()}>
+                    <Image source={res.back}/>
+                </TouchableOpacity>
+            </View>
+        );
+    }
 
     componentDidMount() {
         ShowApi.showDetail({ showNo: this.params.code }).then((data) => {
             this.data = data.data || {};
+            if(this.params.isPersonal){
+                this.data.isPersonal = this.params.isPersonal;
+                this.data.isCollect = this.params.isCollect;
+            }else {
+                this.data.isPersonal = false;
+            }
             this.setState({
                 pageState: PageLoadingState.success
             });
         }).catch((error) => {
             this.setState({
-                pageState: PageLoadingState.fail
+                pageState: PageLoadingState.fail,
+                errorMsg:error.msg
             });
         });
     }
 
 
     _render() {
-        if (this.state.pageState === PageLoadingState.success) {
-            const { detail } = this.state;
+        const { pageState } = this.state;
+        if (pageState === PageLoadingState.fail) {
+            return <View style={styles.container}>
+                <NetFailedView netFailedInfo={{ msg: this.state.errorMsg }}/>
+                {this._renderNormalTitle()}
+            </View>;
+        }
+        if (pageState === PageLoadingState.loading) {
+            return <View style={styles.container}>
+                {this._renderNormalTitle()}
+            </View>;
+        }
 
+        if (pageState === PageLoadingState.success) {
+            const { detail } = this.state;
             return (
                 <View style={{ flex: 1 }}>
                     <ShowVideoListView style={{ flex: 1 }}
-                                       onAttentionPress={() => {
+                                       onAttentionPress={({nativeEvent}) => {
                                            if (user.isLogin) {
-
+                                               ShowApi.userFollow({userNo:nativeEvent.userInfoVO.userNo}).then().catch();
                                            } else {
                                                routeNavigate(RouterMap.LoginPage);
                                            }
                                        }}
+                                       isPersonal={true}
+                                       isCollect={false}
                                        userCode={user.code}
                                        onBack={() => {
                                            this.$navigateBack(1);
+                                       }}
+                                       onSeeUser={({nativeEvent})=>{
+                                           let userNo = nativeEvent.userInfoVO.userNo;
+                                           if(user.code === userNo){
+                                               routeNavigate(RouterMap.MyDynamicPage, { userType: WhiteModel.userStatus === 2 ? 'mineWriter' : 'mineNormal' });
+                                           }else {
+                                               routeNavigate(RouterMap.MyDynamicPage,{userType:'others',userInfo:nativeEvent.userInfoVO});
+                                           }
                                        }}
                                        onPressTag={({ nativeEvent }) => {
                                            this.$navigate(RouterMap.TagDetailPage, nativeEvent);
@@ -213,5 +255,26 @@ export default class ShowVideoPage extends BasePage {
     }
 }
 
-// var styles = StyleSheet.create({});
+var styles = StyleSheet.create({
+    navTitle: {
+        height: px2dp(44),
+        width: ScreenUtils.width,
+        flexDirection: 'row',
+        alignItems: 'center',
+        top: ScreenUtils.statusBarHeight,
+        position: 'absolute',
+        left: 0,
+        backgroundColor: DesignRule.white
+    },
+    container: {
+        flex: 1,
+        backgroundColor: '#fff'
+    },
+    backView: {
+        width: px2dp(44),
+        height: px2dp(44),
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+});
 
