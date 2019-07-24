@@ -23,6 +23,8 @@ import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.DynamicInterface;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
+import com.meeruu.sharegoods.rn.showground.event.GoCollectionEvent;
+import com.meeruu.sharegoods.rn.showground.event.GoPublishEvent;
 import com.meeruu.sharegoods.rn.showground.event.SetNavStatusEvent;
 import com.meeruu.sharegoods.rn.showground.event.onItemPressEvent;
 
@@ -91,6 +93,24 @@ public class UserCenterView {
                     itemPressEvent.init(view.getId());
                     itemPressEvent.setData(realData);
                     eventDispatcher.dispatchEvent(itemPressEvent);
+                }
+            }
+
+            @Override
+            public void goCollection() {
+                if (eventDispatcher != null) {
+                    GoCollectionEvent goCollectionEvent = new GoCollectionEvent();
+                    goCollectionEvent.init(view.getId());
+                    eventDispatcher.dispatchEvent(goCollectionEvent);
+                }
+            }
+
+            @Override
+            public void goPublish() {
+                if (eventDispatcher != null) {
+                    GoPublishEvent goPublishEvent = new GoPublishEvent();
+                    goPublishEvent.init(view.getId());
+                    eventDispatcher.dispatchEvent(goPublishEvent);
                 }
             }
         });

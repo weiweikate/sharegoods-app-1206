@@ -11,7 +11,7 @@ import DesignRule from '../../constants/DesignRule';
 import res from '../mine/res';
 import ScreenUtils from '../../utils/ScreenUtils';
 import ShowDynamicView from './components/ShowDynamicView';
-import RouterMap from '../../navigation/RouterMap';
+import RouterMap,{backToShow} from '../../navigation/RouterMap';
 import UserInfoView from './components/UserInfoView';
 
 const headerBgSize = { width: 375, height: 200 };
@@ -128,8 +128,11 @@ export default class MyDynamicPage extends BasePage {
                                }
 
                            }}
-                           onScrollY={({ nativeEvent }) => {
-                               // this._onScroll(nativeEvent);
+                           goCollection={()=>{
+                               backToShow(1);
+                           }}
+                           goPublish={()=>{
+                               this.$navigate(RouterMap.ReleaseNotesPage);
                            }}
                 />
                 {this.navRender()}

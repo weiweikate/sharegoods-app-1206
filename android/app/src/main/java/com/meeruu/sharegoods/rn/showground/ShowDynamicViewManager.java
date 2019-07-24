@@ -122,6 +122,8 @@ public class ShowDynamicViewManager extends ViewGroupManager<ViewGroup> {
                 .put("MrShowScrollStateChangeEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onScrollStateChanged")))
                 .put("MrScrollY", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onScrollY")))
                 .put("MrNavStatusEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "changeNav")))
+                .put("MrGoCollectionEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "goCollection")))
+                .put("MrGoPublishEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "goPublish")))
                 .build();
     }
 

@@ -135,6 +135,8 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
 
         TextView name = helper.getView(R.id.user_name);
         name.setText(item.getUserInfoVO().getUserName());
+        TextView tvHot =helper.getView(R.id.tv_hotCount);
+        tvHot.setText(NumUtils.formatShowNum(item.getHotCount()));
 
         TextView download = helper.getView(R.id.download_num);
 
