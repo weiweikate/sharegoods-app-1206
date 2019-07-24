@@ -42,6 +42,9 @@ export default class MyDynamicPage extends BasePage {
     }
 
     renderHeader = () => {
+        if(Platform.OS === 'ios'){
+            return null;
+        }
         return <UserInfoView userType={this.params.userType} userInfo={this.params.userInfo}/>
     };
 
