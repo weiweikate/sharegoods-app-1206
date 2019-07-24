@@ -12,9 +12,21 @@ import RouterMap, { routeNavigate } from '../../../navigation/RouterMap';
 import StringUtils from '../../../utils/StringUtils';
 import bridge from '../../../utils/bridge';
 import LinearGradient from 'react-native-linear-gradient';
+import store from '@mr/rn-store';
 
 const { px2dp } = ScreenUtils;
 export default class PhoneLoginPage extends BasePage {
+
+    constructor(props) {
+        super(props);
+        this.params = this.props.navigation.state.params || {};
+    }
+
+    componentDidMount() {
+        store.get('@mr/localPhone').then((phone) => {
+            loginModel.savePhoneNumber(phone);
+        });
+    }
 
     $navigationBarOptions = {
         show: true, // false则隐藏导航
@@ -37,6 +49,7 @@ export default class PhoneLoginPage extends BasePage {
                             <TextInput
                                 allowFontScaling={false}
                                 style={Styles.phoneNumberInputStyle}
+                                value={loginModel.phoneNumber}
                                 onChangeText={text => loginModel.savePhoneNumber(text)}
                                 placeholder='请输入手机号'
                                 placeholderTextColor={DesignRule.textColor_instruction}
@@ -77,32 +90,33 @@ export default class PhoneLoginPage extends BasePage {
                 </View>
                 <View>
                     <View style={Styles.lineBgStyle}>
-                        <CommSpaceLine style={{ width: px2dp(102) }}/>
+                        <CommSpaceLine style={{ width: this.params.needBottom ? px2dp(102) : 0 }}/>
                         <Text style={Styles.otherLoginTextStyle}>
-                            其他登录方式
+                            {this.params.needBottom ? '其他登录方式' : ''}
                         </Text>
-                        <CommSpaceLine style={{ width: px2dp(102) }}/>
+                        <CommSpaceLine style={{ width: this.params.needBottom ? px2dp(102) : 0 }}/>
                     </View>
                     <View style={{ flexDirection: 'row', marginHorizontal: px2dp(30), marginTop: px2dp(20) }}>
                         <TouchableOpacity style={{ flex: 1, alignItems: 'center' }} onPress={() => {
                             // 微信登录
                         }}>
                             <Image style={{ width: px2dp(48), height: px2dp(48), marginBottom: px2dp(13) }}
-                                   source={res.share.weiXin}/>
+                                   source={this.params.needBottom ? res.share.weiXin : null}/>
                             <UIText style={{ fontSize: px2dp(13), color: DesignRule.textColor_mainTitle }}
-                                    value={'微信登录'}/>
+                                    value={this.params.needBottom ? '微信登录' : ''}/>
                         </TouchableOpacity>
                         <TouchableOpacity style={{ flex: 1, alignItems: 'center' }} onPress={() => {
                             // 密码
                             routeNavigate(RouterMap.PwdLoginPage);
                         }}>
                             <Image style={{ width: px2dp(48), height: px2dp(48), marginBottom: px2dp(13) }}
-                                   source={res.login_pwd}/>
+                                   source={this.params.needBottom ? res.login_pwd : null}/>
                             <UIText style={{ fontSize: px2dp(13), color: DesignRule.textColor_mainTitle }}
-                                    value={'密码登录'}/>
+                                    value={this.params.needBottom ? '密码登录' : ''}/>
                         </TouchableOpacity>
                     </View>
-                    <ProtocolView
+                    {this.params.needBottom ? <ProtocolView
+
                         textClick={(htmlUrl) => {
                             this.$navigate(RouterMap.HtmlPage, {
                                 title: '用户协议内容',
@@ -112,7 +126,7 @@ export default class PhoneLoginPage extends BasePage {
                         selectImageClick={(isSelect) => {
                             loginModel.saveIsSelectProtocol(isSelect);
                         }}
-                    />
+                    /> : <View style={{ height: px2dp(21) }}/>}
                 </View>
             </View>
         );
@@ -164,7 +178,7 @@ const Styles = StyleSheet.create(
         phoneNumberInputStyle: {
             width: ScreenUtils.width - 40,
             height: px2dp(40),
-            fontSize: px2dp(19)
+            fontSize: px2dp(14)
         }
     }
 );

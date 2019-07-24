@@ -144,7 +144,7 @@ const Styles = StyleSheet.create(
         phoneNumberInputStyle: {
             width: ScreenUtils.width - 40,
             height: px2dp(40),
-            fontSize: px2dp(19)
+            fontSize: px2dp(14)
         }
     }
 );

@@ -149,6 +149,8 @@ class App extends Component {
                     store.save('@mr/storage_MrLocation', result);
                 }).catch((error) => {
                 });
+                // 本机号码
+                store.save('@mr/localPhone', NativeModules.PhoneAuthenModule.JPushToken);
             }, 200);
             TimerMixin.setTimeout(() => {
                 ScreenUtils.isNavigationBarExist((data) => {

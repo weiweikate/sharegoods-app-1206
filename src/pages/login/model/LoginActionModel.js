@@ -9,12 +9,11 @@ import LoginAPI from '../api/LoginApi';
 import bridge from '../../../utils/bridge';
 import { homeModule } from '../../home/model/Modules';
 import UserModel from '../../../model/user';
-import { login, TrackApi } from '../../../utils/SensorsTrack';
+import { login, track, TrackApi } from '../../../utils/SensorsTrack';
 import JPushUtils from '../../../utils/JPushUtils';
 import DeviceInfo from 'react-native-device-info/deviceinfo';
 import { DeviceEventEmitter } from 'react-native';
 import RouterMap, { loginBack, routePush } from '../../../navigation/RouterMap';
-import { track } from '../../../utils/SensorsTrack';
 import StringUtils from '../../../utils/StringUtils';
 
 /**
@@ -33,7 +32,9 @@ const oneClickLoginValidation = (phone, authenToken, navigation, successCallBack
         TrackApi.localPhoneNumLogin({ 'loginMethod': 4 });
         if (result.data.unionid == null) {
             //未绑定微信
-            phoneBindWx();
+            getWxUserInfo((wxInfo) => {
+                phoneBindWx(wxInfo);
+            });
         }
         if (result.data.regNow) {
             //新用户
@@ -54,20 +55,17 @@ const oneClickLoginValidation = (phone, authenToken, navigation, successCallBack
 /**
  * 一键登录后未绑定微信去绑定微信
  */
-const phoneBindWx = () => {
-    getWxUserInfo((wxInfo) => {
-        console.log(wxInfo);
-        //去绑定微信，成功与否不管
-        LoginAPI.phoneBindWx({
-            unionId: wxInfo.unionid,
-            appOpenid: wxInfo.appOpenid,
-            headImg: wxInfo.headerImg,
-            nickname: wxInfo.nickName
-        }).then(result => {
-            // bridge.$toast('微信绑定成功');
-        }).catch(error => {
-            bridge.$toast(error.msg);
-        });
+const phoneBindWx = (wxInfo) => {
+    //去绑定微信，成功与否不管
+    LoginAPI.phoneBindWx({
+        unionId: wxInfo.unionid,
+        appOpenid: wxInfo.appOpenid,
+        headImg: wxInfo.headerImg,
+        nickname: wxInfo.nickName
+    }).then(result => {
+        // bridge.$toast('微信绑定成功');
+    }).catch(error => {
+        bridge.$toast(error.msg);
     });
 };
 /**
@@ -90,44 +88,42 @@ const getWxUserInfo = (callback) => {
  * 回调code 和 数据 34005 需要去绑定手机号 10000 登录成功
  * @param callBack
  */
-const wxLoginAction = (callBack) => {
+const wxLoginAction = (data, callBack) => {
     TrackApi.LoginButtonClick({ 'loginMethod': 1 });
-    getWxUserInfo((data) => {
-        LoginAPI.appWechatLogin({
-            device: data.device,
-            encryptedData: '',
-            headImg: data.headerImg,
-            iv: '',
-            nickname: data.nickName,
-            appOpenid: data.appOpenid,
-            systemVersion: data.systemVersion,
-            wechatVersion: '',
-            unionid: data.unionid
-        }).then((res) => {
-            if (res.code === 34005) {
-                data.title = '绑定手机号';
-                callBack && callBack(res.code, data);
-                TrackApi.wxSignUpSuccess();
-            } else if (res.code === 10000) {
-                callBack && callBack(res.code, data);
-                UserModel.saveUserInfo(res.data);
-                UserModel.saveToken(res.data.token);
-                TrackApi.wxLoginSuccess();
-                bridge.$toast('登录成功');
-                console.log(UserModel);
-                homeModule.loadHomeList();
-                bridge.setCookies(res.data);
-                // 埋点登录成功
-                login(data.data.code);
-            }
-        }).catch((error) => {
-            if (error.code === 34005) {
-                data.title = '绑定手机号';
-                callBack && callBack(error.code, data);
-                TrackApi.wxSignUpSuccess();
-            }
-            bridge.$toast(data.msg);
-        });
+    LoginAPI.appWechatLogin({
+        device: data.device,
+        encryptedData: '',
+        headImg: data.headerImg,
+        iv: '',
+        nickname: data.nickName,
+        appOpenid: data.appOpenid,
+        systemVersion: data.systemVersion,
+        wechatVersion: '',
+        unionid: data.unionid
+    }).then((res) => {
+        if (res.code === 34005) {
+            data.title = '绑定手机号';
+            callBack && callBack(res.code, data);
+            TrackApi.wxSignUpSuccess();
+        } else if (res.code === 10000) {
+            callBack && callBack(res.code, data);
+            UserModel.saveUserInfo(res.data);
+            UserModel.saveToken(res.data.token);
+            TrackApi.wxLoginSuccess();
+            bridge.$toast('登录成功');
+            console.log(UserModel);
+            homeModule.loadHomeList();
+            bridge.setCookies(res.data);
+            // 埋点登录成功
+            login(data.data.code);
+        }
+    }).catch((error) => {
+        if (error.code === 34005) {
+            data.title = '绑定手机号';
+            callBack && callBack(error.code, data);
+            TrackApi.wxSignUpSuccess();
+        }
+        bridge.$toast(data.msg);
     });
 };
 /**
@@ -248,6 +244,7 @@ const registAction = (params, callback) => {
 };
 
 export {
+    getWxUserInfo,
     wxLoginAction,
     codeLoginAction,
     pwdLoginAction,

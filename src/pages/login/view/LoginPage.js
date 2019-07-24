@@ -10,6 +10,7 @@ import loginModel from '../model/LoginModel';
 import ProtocolView from '../components/Login.protocol.view';
 import RouterMap, { routeNavigate } from '../../../navigation/RouterMap';
 import LinearGradient from 'react-native-linear-gradient';
+import { getWxUserInfo, wxLoginAction } from '../model/LoginActionModel';
 
 const { px2dp } = ScreenUtils;
 export default class LoginPage extends BasePage {
@@ -35,7 +36,24 @@ export default class LoginPage extends BasePage {
                         <TouchableOpacity
                             style={Styles.touchableStyle}
                             onPress={() => {
+                                if (!loginModel.isSelectProtocol) {
+                                    this.$toastShow('请先勾选用户协议');
+                                    return;
+                                }
                                 // 微信授权登录
+                                getWxUserInfo((wxData) => {
+                                    this.$loadingShow('加载中');
+                                    wxLoginAction(wxData, (code, data) => {
+                                        this.$loadingDismiss();
+                                        if (code === 10000) {
+                                            this.$navigateBack();
+                                            this.params.callback && this.params.callback();
+                                        } else if (code === 34005) {
+                                            // 绑定手机
+                                            routeNavigate(RouterMap.PhoneLoginPage, { needBottom: false });
+                                        }
+                                    });
+                                });
                             }}>
                             <UIText style={{ color: 'white', fontSize: px2dp(17) }} value={'微信登录'}/>
                         </TouchableOpacity>

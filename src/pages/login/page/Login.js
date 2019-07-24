@@ -1,14 +1,11 @@
-import React, {} from 'react';
-import {
-    View,
-    Image
-} from 'react-native';
+import React from 'react';
+import { Image, View } from 'react-native';
 import BasePage from '../../../BasePage';
 import Styles from '../style/Login.style';
 import { createLoginButton, loginBtnType } from '../components/Login.button.view';
 import res from '../res';
 import RouterMap from '../../../navigation/RouterMap';
-import { oneClickLoginValidation, wxLoginAction } from '../model/LoginActionModel';
+import { getWxUserInfo, oneClickLoginValidation, wxLoginAction } from '../model/LoginActionModel';
 import { TrackApi } from '../../../utils/SensorsTrack';
 import { startLoginAuth } from '../model/PhoneAuthenAction';
 import { observer } from 'mobx-react';
@@ -125,14 +122,18 @@ export default class Login extends BasePage {
         }
     };
     _wxLogin = () => {
-        wxLoginAction((code, data) => {
-            if (code === 10000) {
-                this.$navigateBack();
-                this.params.callback && this.params.callback();
-            } else if (code === 34005) {
-                //绑定手机号
-                this.$navigate(RouterMap.InputPhoneNum, data);
-            }
+        getWxUserInfo((wxData) => {
+            this.$loadingShow('加载中');
+            wxLoginAction(wxData, (code, data) => {
+                this.$loadingDismiss();
+                if (code === 10000) {
+                    this.$navigateBack();
+                    this.params.callback && this.params.callback();
+                } else if (code === 34005) {
+                    // 绑定手机号
+                    this.$navigate(RouterMap.InputPhoneNum, data);
+                }
+            });
         });
     };
 }
