@@ -226,6 +226,7 @@
 - (void)playVideo {
   MBModelData *videoModel = [self.dataArray objectAtIndex:self.currentIndexOfShowView];
   [self.playerView setUrlString:[self getUrlfromArr:videoModel type:@"video"]];
+  self.playerView.frame = CGRectMake(0, 0, KScreenWidth, KScreenHeight);
     if (self.firstImageView && self.firstImageView.frame.size.width>0
         &&self.firstImageView.frame.origin.y == self.contentOffset.y) {
       [self.firstImageView addSubview:self.playerView ];

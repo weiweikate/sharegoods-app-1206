@@ -100,9 +100,6 @@
   if(self.dataArr.lastObject){
    currentShowNo = [self.dataArr.lastObject valueForKey:@"showNo"];
   }
-  if (self.params) {
-    dic = [self.params mutableCopy];
-  }
   [dic addEntriesFromDictionary:@{@"currentShowNo":currentShowNo , @"queryUserCode": @""}];
   __weak ActiveView * weakSelf = self;
   [NetWorkTool requestWithURL:@"/social/show/video/list/next@GET" params:dic toModel:nil success:^(NSDictionary* result) {
@@ -127,9 +124,6 @@
 {
   NSMutableDictionary *dic = [NSMutableDictionary new];
   NSString *currentShowNo = [self.dataArr.lastObject valueForKey:@"showNo"];
-  if (self.params) {
-    dic = [self.params mutableCopy];
-  }
   [dic addEntriesFromDictionary:@{@"currentShowNo": currentShowNo, @"queryUserCode": @""}];
   __weak ActiveView * weakSelf = self;
 
