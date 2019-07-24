@@ -63,6 +63,12 @@ export default class ShowVideoPage extends BasePage {
     componentDidMount() {
         ShowApi.showDetail({ showNo: this.params.code }).then((data) => {
             this.data = data.data || {};
+            if(this.params.isPersonal){
+                this.data.isPersonal = this.params.isPersonal;
+                this.data.isCollect = this.params.isCollect;
+            }else {
+                this.data.isPersonal = false;
+            }
             this.setState({
                 pageState: PageLoadingState.success
             });
@@ -101,6 +107,8 @@ export default class ShowVideoPage extends BasePage {
                                                routeNavigate(RouterMap.LoginPage);
                                            }
                                        }}
+                                       isPersonal={true}
+                                       isCollect={false}
                                        userCode={user.code}
                                        onBack={() => {
                                            this.$navigateBack(1);

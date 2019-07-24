@@ -78,11 +78,13 @@ public class UserCenterView {
 
         TabPageAdapter adapter = new TabPageAdapter(mContext, s, new DynamicInterface() {
             @Override
-            public void onItemPress(Object data, int position) {
+            public void onItemPress(Object data, int position,boolean isPersonal,boolean isCollect) {
                 NewestShowGroundBean.DataBean item = (NewestShowGroundBean.DataBean) data;
                 String json = JSONObject.toJSONString(item);
                 Map map = JSONObject.parseObject(json);
                 map.put("index", position);
+                map.put("isPersonal",isPersonal);
+                map.put("isCollect",isCollect);
                 WritableMap realData = Arguments.makeNativeMap(map);
                 if (eventDispatcher != null) {
                     onItemPressEvent itemPressEvent = new onItemPressEvent();

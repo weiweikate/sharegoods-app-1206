@@ -120,6 +120,8 @@ export default class MyDynamicPage extends BasePage {
                                if (nativeEvent.showType === 1) {
                                    this.$navigate(RouterMap.ShowDetailPage, params);
                                }else if(nativeEvent.showType == 3){
+                                   params.isCollect = nativeEvent.isCollect;
+                                   params.isPersonal = nativeEvent.isPersonal;
                                    this.$navigate(RouterMap.ShowVideoPage, params);
                                }else {
                                    this.$navigate(RouterMap.ShowRichTextDetailPage, params);

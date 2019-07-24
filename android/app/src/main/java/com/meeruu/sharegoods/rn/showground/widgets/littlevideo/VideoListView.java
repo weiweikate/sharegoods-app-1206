@@ -85,6 +85,9 @@ public class VideoListView {
     private VideoModel videoModel;
     public static boolean isLogin;
     public static String userCode;
+    private boolean isCollect;
+    private boolean isPersonal;
+    private String personalCode;
     /**
      * 数据是否到达最后一页
      */
@@ -118,7 +121,6 @@ public class VideoListView {
     private TextView tvName, tvHotCount, tvAttention;
     private Handler mainHandler = new Handler();
     private EventDispatcher eventDispatcher;
-    //    private List<NewestShowGroundBean.DataBean> list;
     private List<String> attentionList = new ArrayList<>();
 
     private GestureDetector gestureDetector;
@@ -714,14 +716,19 @@ public class VideoListView {
      *
      * @param list 刷新数据
      */
-    public void refreshData(List<NewestShowGroundBean.DataBean> list) {
+    public void refreshData(List<NewestShowGroundBean.DataBean> list,boolean isPersonal,boolean isCollect) {
         isEnd = false;
         isLoadingData = false;
         adapter.refreshData(list);
-        currentShowNo = list.get(0).getShowNo();
+        NewestShowGroundBean.DataBean dataBean = list.get(0);
+        currentShowNo = dataBean.getShowNo();
+        this.isPersonal = isPersonal;
+        this.isCollect = isCollect;
+        if(this.isPersonal){
+            this.personalCode = dataBean.getUserInfoVO().getUserNo();
+        }
         loadMoreData();
-        NewestShowGroundBean.DataBean bean = list.get(0);
-        changeHeader(bean);
+        changeHeader(dataBean);
     }
 
     public void setLogin(boolean login) {
@@ -733,7 +740,7 @@ public class VideoListView {
     }
 
     private void loadMoreData() {
-        videoModel.getVideoList(currentShowNo, null, new BaseCallback<String>() {
+        videoModel.getVideoList(currentShowNo, personalCode,isCollect, new BaseCallback<String>() {
             @Override
             public void onErr(String errCode, String msg) {
             }
