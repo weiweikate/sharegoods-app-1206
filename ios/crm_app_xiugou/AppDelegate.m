@@ -120,6 +120,8 @@
                                                                                        @"eventName":@"Event_change_baseUrl"
                                                                                        }];
       [[NSUserDefaults standardUserDefaults] setObject:result forKey:@"dynamicBaseUrl"];
+    }else{
+      [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"dynamicBaseUrl"];
     }
   } failure:nil showLoading:nil];
 }
