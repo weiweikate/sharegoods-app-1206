@@ -13,7 +13,6 @@ import ShowImageView from './ShowImageView';
 import res from './res';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
-// import AutoHeightWebView from '@mr/react-native-autoheight-webview';
 import LinearGradient from 'react-native-linear-gradient';
 
 const { px2dp } = ScreenUtils;
@@ -30,7 +29,6 @@ import Toast from '../../utils/bridge';
 import { NetFailedView } from '../../components/pageDecorator/BaseView';
 import AvatarImage from '../../components/ui/AvatarImage';
 import { track, trackEvent } from '../../utils/SensorsTrack';
-// import { SmoothPushPreLoadHighComponent } from '../../comm/components/SmoothPushHighComponent';
 import ProductRowListView from './components/ProductRowListView';
 import ProductListModal from './components/ProductListModal';
 import ShowUtils from './utils/ShowUtils';
@@ -49,7 +47,6 @@ import CommShowShareModal from '../../comm/components/CommShowShareModal';
 import ShareUtil from '../../utils/ShareUtil';
 
 const { iconShowFire, iconLike, iconNoLike, iconDownload, iconShowShare, dynamicEmpty,collected,uncollected } = res;
-// @SmoothPushPreLoadHighComponent
 @observer
 export default class ShowDetailPage extends BasePage {
 
