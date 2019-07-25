@@ -20,8 +20,6 @@ import DebugButton from './components/debug/DebugButton';
 import { netStatus } from './comm/components/NoNetHighComponent';
 import Navigator, { getCurrentRouteName } from './navigation/Navigator';
 import { SpellShopFlag, SpellShopTab } from './navigation/Tab';
-import { checkInitResult } from './pages/login/model/PhoneAuthenAction';
-import loginModel from './pages/login/model/LoginModel';
 import RouterMap, { routeNavigate, routePush } from './navigation/RouterMap';
 import user from '../src/model/user';
 import apiEnvironment from './api/ApiEnvironment';
@@ -134,12 +132,6 @@ class App extends Component {
             TimerMixin.setTimeout(() => {
                 // 移除启动页
                 bridge.removeLaunch();
-                checkInitResult().then((data) => {
-                    loginModel.setAuthPhone(data);
-                }).catch((erro) => {
-                    loginModel.setAuthPhone(null);
-                });
-
                 geolocation.init({
                     ios: 'f85b644981f8642aef08e5a361e9ab6b',
                     android: '4a3ff7c2164aaf7d67a98fb9b88ae0e6'
@@ -149,8 +141,6 @@ class App extends Component {
                     store.save('@mr/storage_MrLocation', result);
                 }).catch((error) => {
                 });
-                // 本机号码
-                store.save('@mr/localPhone', NativeModules.PhoneAuthenModule.JPushToken);
             }, 200);
             TimerMixin.setTimeout(() => {
                 ScreenUtils.isNavigationBarExist((data) => {

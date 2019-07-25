@@ -7,7 +7,7 @@ const api = {
     signUser: ['/user/userSign/signUser', { isRSA: true }],
     //验证码登陆
     // codeLogin: ['/user/userLogin/codeLogin', { isRSA: true }],
-    codeLogin:['/user/userLogin/codeLoginWithRegister',{isRSA:true}],
+    codeLogin: ['/user/userLogin/codeLoginWithRegister', { isRSA: true }],
     //密码登陆
     passwordLogin: ['/user/userLogin/passwordLogin', { isRSA: true }],
     //app微信登陆
@@ -21,16 +21,17 @@ const api = {
     //获取导师列表
     queryInviterList: '/user/userSign/queryInviterList',
     //导师绑定
-    mentorBind:  ['/user/userSign/mentorBind',{method:'get'}],
+    mentorBind: ['/user/userSign/mentorBind', { method: 'get' }],
     //选择导师跳过调用接口
-    givePackage:['/user/userSign/givePackage',{method:'get'}],
+    givePackage: ['/user/userSign/givePackage', { method: 'get' }],
     //是否有秀迷
-    queryShowFansStatus:['/user/queryShowFansStatus',{method:'post'}],
+    queryShowFansStatus: ['/user/queryShowFansStatus', { method: 'post' }],
     //一键登录后去绑定微信操作
-    phoneBindWx:['/user/userLogin/bindWeChat'],
+    phoneBindWx: ['/user/userLogin/bindWeChat'],
     //一键登录校验token借口
-    // oneClickLoginValidation:['/user/userLogin/autoLogin'],
-    oneClickLoginValidation:['/user/userLogin/autoLoginByJiGuang'],
+    oneClickLoginValidation: ['/user/userLogin/autoLoginByJiGuang'],
+    // 获取本地手机号
+    getMobileByToken: ['/user/userLogin/getMobileByJiGuangToken']
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 

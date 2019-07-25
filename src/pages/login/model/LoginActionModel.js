@@ -158,8 +158,6 @@ const codeLoginAction = (LoginParam, callBack) => {
         bridge.setCookies(data.data);
         DeviceEventEmitter.emit('homePage_message', null);
         DeviceEventEmitter.emit('contentViewed', null);
-        bridge.$toast('登录成功');
-        TrackApi.codeLoginSuccess();
         homeModule.loadHomeList();
         //推送
         JPushUtils.updatePushTags();

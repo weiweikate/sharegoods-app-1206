@@ -17,9 +17,8 @@ const startLoginAuth = () => {
     return PhoneAuthenModule.startLoginAuth();
 };
 
-const checkInitResult = () => {
-    return PhoneAuthenModule.checkInitResult();
+const getToken = () => {
+    return PhoneAuthenModule.getToken();
 };
 
-
-export { isCanPhoneAuthen, startPhoneAuthen, startLoginAuth, checkInitResult };
+export { isCanPhoneAuthen, startPhoneAuthen, startLoginAuth, getToken };

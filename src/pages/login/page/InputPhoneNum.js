@@ -1,9 +1,5 @@
-import React, {} from 'react';
-import {
-    View,
-    TouchableOpacity,
-    Text
-} from 'react-native';
+import React from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
 import BasePage from '../../../BasePage';
 import Styles from '../style/InputPhoneNum.Style';
 import res from '../res';

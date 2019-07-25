@@ -1,6 +1,6 @@
 import BasePage from '../../../BasePage';
 import React from 'react';
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Image, InteractionManager, StyleSheet, TouchableOpacity, View } from 'react-native';
 import res from '../res';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { MRText as Text, UIText } from '../../../components/ui';
@@ -8,16 +8,42 @@ import DesignRule from '../../../constants/DesignRule';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
 import loginModel from '../model/LoginModel';
 import ProtocolView from '../components/Login.protocol.view';
-import RouterMap, { routeNavigate } from '../../../navigation/RouterMap';
+import RouterMap, { replaceRoute, routeNavigate } from '../../../navigation/RouterMap';
 import LinearGradient from 'react-native-linear-gradient';
 import { getWxUserInfo, wxLoginAction } from '../model/LoginActionModel';
+import { getToken } from '../model/PhoneAuthenAction';
+import LoginAPI from '../api/LoginApi';
+import StringUtils from '../../../utils/StringUtils';
+import store from '@mr/rn-store';
 
 const { px2dp } = ScreenUtils;
+const btnWidth = ScreenUtils.width - px2dp(60);
 export default class LoginPage extends BasePage {
 
-    constructor(props) {
-        super(props);
+    componentDidMount() {
+        // 获取手机号
+        InteractionManager.runAfterInteractions(() => {
+            getToken().then((token) => {
+                alert(token);
+                LoginAPI.getMobileByToken({
+                    token
+                }).then((res) => {
+                    let phone = res.data || '';
+                    alert(phone);
+                    if (StringUtils.isNoEmpty(phone)) {
+                        store.save('@mr/localPhone', phone);
+                    }
+                }).catch(e => {
+                });
+            }).catch(e => {
+            });
+        });
     }
+
+    // 禁用某个页面的手势
+    static navigationOptions = {
+        gesturesEnabled: false
+    };
 
     $navigationBarOptions = {
         show: true, // false则隐藏导航
@@ -30,9 +56,10 @@ export default class LoginPage extends BasePage {
         return (
             <View style={Styles.contentStyle}>
                 <Image style={Styles.loginLogo} source={res.login_logo}/>
-                <View style={{ flex: 1, justifyContent: 'center', marginTop: px2dp(-30) }}>
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: px2dp(-50) }}>
+                    <View style={Styles.loginButton}/>
                     <LinearGradient colors={['#FF1C89', '#FD0129']}
-                                    style={Styles.loginButton}>
+                                    style={[Styles.loginButton, { marginTop: px2dp(15) }]}>
                         <TouchableOpacity
                             style={Styles.touchableStyle}
                             onPress={() => {
@@ -50,7 +77,12 @@ export default class LoginPage extends BasePage {
                                             this.params.callback && this.params.callback();
                                         } else if (code === 34005) {
                                             // 绑定手机
-                                            routeNavigate(RouterMap.PhoneLoginPage, { needBottom: false });
+                                            this.$toastShow('请绑定手机号');
+                                            routeNavigate(RouterMap.PhoneLoginPage, {
+                                                ...this.params,
+                                                needBottom: false,
+                                                wxData
+                                            });
                                         }
                                     });
                                 });
@@ -58,6 +90,11 @@ export default class LoginPage extends BasePage {
                             <UIText style={{ color: 'white', fontSize: px2dp(17) }} value={'微信登录'}/>
                         </TouchableOpacity>
                     </LinearGradient>
+                    <View style={{ height: px2dp(35), justifyContent: 'center' }}>
+                        <UIText style={{
+                            fontSize: px2dp(12)
+                        }}/>
+                    </View>
                 </View>
                 <View>
                     <View style={Styles.lineBgStyle}>
@@ -69,20 +106,26 @@ export default class LoginPage extends BasePage {
                     </View>
                     <View style={{ flexDirection: 'row', marginHorizontal: px2dp(30), marginTop: px2dp(20) }}>
                         <TouchableOpacity style={{ flex: 1, alignItems: 'center' }} onPress={() => {
-                            routeNavigate(RouterMap.PhoneLoginPage);
+                            replaceRoute(RouterMap.PhoneLoginPage, { ...this.params, needBottom: true });
                         }}>
                             <Image style={{ width: px2dp(48), height: px2dp(48), marginBottom: px2dp(13) }}
                                    source={res.login_phone}/>
-                            <UIText style={{ fontSize: px2dp(13), color: DesignRule.textColor_mainTitle }}
-                                    value={'手机号登录'}/>
+                            <UIText style={{
+                                fontSize: px2dp(13),
+                                height: px2dp(25),
+                                color: DesignRule.textColor_mainTitle
+                            }} value={'手机号登录'}/>
                         </TouchableOpacity>
                         <TouchableOpacity style={{ flex: 1, alignItems: 'center' }} onPress={() => {
-                            routeNavigate(RouterMap.PwdLoginPage);
+                            replaceRoute(RouterMap.PwdLoginPage, { ...this.params });
                         }}>
                             <Image style={{ width: px2dp(48), height: px2dp(48), marginBottom: px2dp(13) }}
                                    source={res.login_pwd}/>
-                            <UIText style={{ fontSize: px2dp(13), color: DesignRule.textColor_mainTitle }}
-                                    value={'密码登录'}/>
+                            <UIText style={{
+                                fontSize: px2dp(13),
+                                height: px2dp(25),
+                                color: DesignRule.textColor_mainTitle
+                            }} value={'密码登录'}/>
                         </TouchableOpacity>
                     </View>
                     <ProtocolView
@@ -120,7 +163,8 @@ const Styles = StyleSheet.create(
             width: ScreenUtils.width,
             flexDirection: 'row',
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
+            height: px2dp(25)
         },
         otherLoginTextStyle: {
             color: DesignRule.textColor_secondTitle,
@@ -135,7 +179,7 @@ const Styles = StyleSheet.create(
         loginButton: {
             height: px2dp(42),
             borderRadius: px2dp(22),
-            width: ScreenUtils.width - px2dp(60)
+            width: btnWidth
         }
     }
 );

@@ -8,24 +8,44 @@ import DesignRule from '../../../constants/DesignRule';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
 import loginModel from '../model/LoginModel';
 import ProtocolView from '../components/Login.protocol.view';
-import RouterMap, { routeNavigate } from '../../../navigation/RouterMap';
+import RouterMap, { replaceRoute, routeNavigate } from '../../../navigation/RouterMap';
 import StringUtils from '../../../utils/StringUtils';
 import bridge from '../../../utils/bridge';
 import LinearGradient from 'react-native-linear-gradient';
 import store from '@mr/rn-store';
+import { getWxUserInfo, oneClickLoginValidation, wxLoginAction } from '../model/LoginActionModel';
+import { startLoginAuth } from '../model/PhoneAuthenAction';
 
 const { px2dp } = ScreenUtils;
+const btnWidth = ScreenUtils.width - px2dp(60);
 export default class PhoneLoginPage extends BasePage {
 
     constructor(props) {
         super(props);
-        this.params = this.props.navigation.state.params || {};
+        this.state = {
+            phoneNum: '',
+            redBtnBg: false
+        };
     }
 
+    // 禁用某个页面的手势
+    static navigationOptions = {
+        gesturesEnabled: false
+    };
+
     componentDidMount() {
-        store.get('@mr/localPhone').then((phone) => {
-            loginModel.savePhoneNumber(phone);
-        });
+        loginModel.saveIsSelectProtocol(true);
+        if (StringUtils.isNoEmpty(loginModel.phoneNumber)) {
+            this.setState({
+                phoneNum: loginModel.phoneNumber
+            });
+        } else {
+            store.get('@mr/localPhone').then((phone) => {
+                this.setState({
+                    phoneNum: phone || ''
+                });
+            });
+        }
     }
 
     $navigationBarOptions = {
@@ -35,57 +55,125 @@ export default class PhoneLoginPage extends BasePage {
         headerStyle: { borderBottomWidth: 0 }
     };
 
+    verifyPhone = () => {
+        if (!loginModel.isSelectProtocol) {
+            this.$toastShow('请先勾选用户协议');
+            return;
+        }
+        if (StringUtils.isEmpty(this.state.phoneNum.trim())) {
+            bridge.$toast('请输入手机号');
+            return;
+        } else {
+            if (!StringUtils.checkPhone(this.state.phoneNum)) {
+                bridge.$toast('请输入正确的手机号');
+                return;
+            }
+        }
+        // 一键登录
+        this.$loadingShow();
+        startLoginAuth().then((data) => {
+            this.$loadingDismiss();
+            let { navigation } = this.props;
+            oneClickLoginValidation(this.state.phoneNum, data, navigation);
+        }).catch((error) => {
+            // 一键登录失败，
+            this.$loadingDismiss();
+            loginModel.savePhoneNumber(this.state.phoneNum);
+            routeNavigate(RouterMap.LoginVerifyCodePage, { ...this.params, phoneNum: this.state.phoneNum });
+        });
+    };
+
+    /**
+     * 开始认证函数
+     * @param phone
+     * @param authenToken
+     * @private
+     */
+    _beginAuthen = (phone, authenToken = '') => {
+        let { navigation } = this.props;
+        oneClickLoginValidation(phone, authenToken, navigation);
+    };
+
     _render() {
         return (
             <View style={Styles.contentStyle}>
                 <Image style={Styles.loginLogo} source={res.login_logo}/>
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                    <View style={{ width: ScreenUtils.width - px2dp(60) }}>
-                        <View style={{
-                            backgroundColor: DesignRule.bgColor,
-                            borderRadius: px2dp(22),
-                            paddingHorizontal: px2dp(16)
-                        }}>
-                            <TextInput
-                                allowFontScaling={false}
-                                style={Styles.phoneNumberInputStyle}
-                                value={loginModel.phoneNumber}
-                                onChangeText={text => loginModel.savePhoneNumber(text)}
-                                placeholder='请输入手机号'
-                                placeholderTextColor={DesignRule.textColor_instruction}
-                                keyboardType='numeric'
-                                maxLength={11}
-                                onEndEditing={() => {
-                                    if (StringUtils.isEmpty(loginModel.phoneNumber.trim())) {
-                                        bridge.$toast('请输入手机号');
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: px2dp(-50) }}>
+                    <View style={{
+                        backgroundColor: DesignRule.bgColor,
+                        borderRadius: px2dp(22),
+                        paddingHorizontal: px2dp(16),
+                        width: btnWidth,
+                        flexDirection: 'row'
+                    }}>
+                        <TextInput
+                            allowFontScaling={false}
+                            style={Styles.phoneNumberInputStyle}
+                            value={this.state.phoneNum}
+                            onChangeText={text => {
+                                this.setState({
+                                    phoneNum: text || ''
+                                }, () => {
+                                    if (this.state.phoneNum.trim().length === 11) {
+                                        this.setState({
+                                            redBtnBg: true
+                                        });
                                     } else {
-                                        if (!StringUtils.checkPhone(loginModel.phoneNumber)) {
-                                            bridge.$toast('手机号格式不对');
+                                        if (this.state.redBtnBg) {
+                                            this.setState({
+                                                redBtnBg: false
+                                            });
                                         }
                                     }
-                                }}
-                            />
-                        </View>
-                        <LinearGradient colors={['#FF1C89', '#FD0129']}
-                                        style={[Styles.loginButton, {
-                                            marginTop: px2dp(15),
-                                            width: ScreenUtils.width - px2dp(60)
-                                        }]}>
-                            <TouchableOpacity
-                                style={Styles.touchableStyle}
-                                onPress={() => {
-                                    // 发送验证码，跳转到验证码页面
-                                    routeNavigate(RouterMap.LoginVerifyCodePage);
-                                }}>
-                                <UIText style={{ color: 'white', fontSize: px2dp(17) }} value={'下一步'}/>
-                            </TouchableOpacity>
-                        </LinearGradient>
+                                });
+                            }}
+                            placeholder='请输入手机号'
+                            placeholderTextColor={DesignRule.textColor_instruction}
+                            keyboardType='numeric'
+                            maxLength={11}
+                        />
+                        <TouchableOpacity
+                            style={{ justifyContent: 'center', width: px2dp(30) }} onPress={() => {
+                            this.setState({
+                                phoneNum: ''
+                            });
+                        }}>
+                            <Image style={Styles.seePasswordImageStyle}
+                                   source={this.state.phoneNum.length > 0 ? res.inputtext_clear : null}/>
+                        </TouchableOpacity>
+                    </View>
+                    {
+                        this.state.redBtnBg ?
+                            <LinearGradient colors={['#FF1C89', '#FD0129']}
+                                            style={[Styles.loginButton, {
+                                                marginTop: px2dp(15)
+                                            }]}>
+                                <TouchableOpacity
+                                    style={Styles.touchableStyle}
+                                    onPress={() => {
+                                        // 发送验证码，跳转到验证码页面
+                                        this.verifyPhone();
+                                    }}>
+                                    <UIText style={{ color: 'white', fontSize: px2dp(17) }} value={'下一步'}/>
+                                </TouchableOpacity>
+                            </LinearGradient> :
+                            <View style={[Styles.loginButton, {
+                                backgroundColor: DesignRule.bgColor_grayHeader,
+                                marginTop: px2dp(15),
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }]}>
+                                <UIText style={{
+                                    color: 'white',
+                                    fontSize: px2dp(17)
+                                }} value={'下一步'}/>
+                            </View>
+                    }
+
+                    <View style={{ height: px2dp(35), justifyContent: 'center' }}>
                         <UIText style={{
-                            paddingVertical: px2dp(8),
                             fontSize: px2dp(12)
                         }}/>
-                    </View>
-                    <View style={Styles.loginButton}>
                     </View>
                 </View>
                 <View>
@@ -99,24 +187,52 @@ export default class PhoneLoginPage extends BasePage {
                     <View style={{ flexDirection: 'row', marginHorizontal: px2dp(30), marginTop: px2dp(20) }}>
                         <TouchableOpacity style={{ flex: 1, alignItems: 'center' }} onPress={() => {
                             // 微信登录
+                            if (!loginModel.isSelectProtocol) {
+                                this.$toastShow('请先勾选用户协议');
+                                return;
+                            }
+                            // 微信授权登录
+                            getWxUserInfo((wxData) => {
+                                this.$loadingShow('加载中');
+                                wxLoginAction(wxData, (code, data) => {
+                                    this.$loadingDismiss();
+                                    if (code === 10000) {
+                                        this.$navigateBack();
+                                        this.params.callback && this.params.callback();
+                                    } else if (code === 34005) {
+                                        // 绑定手机
+                                        this.$toastShow('请绑定手机号');
+                                        routeNavigate(RouterMap.PhoneLoginPage, {
+                                            ...this.params,
+                                            needBottom: false,
+                                            wxData
+                                        });
+                                    }
+                                });
+                            });
                         }}>
                             <Image style={{ width: px2dp(48), height: px2dp(48), marginBottom: px2dp(13) }}
                                    source={this.params.needBottom ? res.share.weiXin : null}/>
-                            <UIText style={{ fontSize: px2dp(13), color: DesignRule.textColor_mainTitle }}
-                                    value={this.params.needBottom ? '微信登录' : ''}/>
+                            <UIText style={{
+                                fontSize: px2dp(13),
+                                height: px2dp(25),
+                                color: DesignRule.textColor_mainTitle
+                            }} value={this.params.needBottom ? '微信登录' : ''}/>
                         </TouchableOpacity>
                         <TouchableOpacity style={{ flex: 1, alignItems: 'center' }} onPress={() => {
                             // 密码
-                            routeNavigate(RouterMap.PwdLoginPage);
+                            replaceRoute(RouterMap.PwdLoginPage, { ...this.params });
                         }}>
                             <Image style={{ width: px2dp(48), height: px2dp(48), marginBottom: px2dp(13) }}
                                    source={this.params.needBottom ? res.login_pwd : null}/>
-                            <UIText style={{ fontSize: px2dp(13), color: DesignRule.textColor_mainTitle }}
-                                    value={this.params.needBottom ? '密码登录' : ''}/>
+                            <UIText style={{
+                                fontSize: px2dp(13),
+                                height: px2dp(25),
+                                color: DesignRule.textColor_mainTitle
+                            }} value={this.params.needBottom ? '密码登录' : ''}/>
                         </TouchableOpacity>
                     </View>
                     {this.params.needBottom ? <ProtocolView
-
                         textClick={(htmlUrl) => {
                             this.$navigate(RouterMap.HtmlPage, {
                                 title: '用户协议内容',
@@ -126,7 +242,11 @@ export default class PhoneLoginPage extends BasePage {
                         selectImageClick={(isSelect) => {
                             loginModel.saveIsSelectProtocol(isSelect);
                         }}
-                    /> : <View style={{ height: px2dp(21) }}/>}
+                    /> : <View style={{
+                        marginTop: px2dp(15),
+                        height: px2dp(21),
+                        marginBottom: px2dp(12)
+                    }}/>}
                 </View>
             </View>
         );
@@ -151,7 +271,8 @@ const Styles = StyleSheet.create(
             width: ScreenUtils.width,
             flexDirection: 'row',
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
+            height: px2dp(25)
         },
         otherLoginTextStyle: {
             color: DesignRule.textColor_secondTitle,
@@ -166,8 +287,7 @@ const Styles = StyleSheet.create(
         loginButton: {
             height: px2dp(42),
             borderRadius: px2dp(22),
-            width: px2dp(100),
-            marginTop: px2dp(50)
+            width: btnWidth
         },
         loginInput: {
             flex: 1,
@@ -176,8 +296,8 @@ const Styles = StyleSheet.create(
             color: DesignRule.textColor_mainTitle
         },
         phoneNumberInputStyle: {
-            width: ScreenUtils.width - 40,
-            height: px2dp(40),
+            width: ScreenUtils.width - px2dp(110),
+            height: px2dp(42),
             fontSize: px2dp(14)
         }
     }

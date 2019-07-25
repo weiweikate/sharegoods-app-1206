@@ -10,13 +10,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.SPCacheUtils;
-import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.sharegoods.R;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.annotation.Nullable;
 
 import cn.jiguang.verifysdk.api.JVerificationInterface;
 import cn.jiguang.verifysdk.api.JVerifyUIConfig;
@@ -25,7 +19,6 @@ import cn.jiguang.verifysdk.api.VerifyListener;
 public class PhoneAuthenModule extends ReactContextBaseJavaModule {
 
     private ReactApplicationContext mContext;
-    public String token;
 
     public PhoneAuthenModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -70,21 +63,27 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
         }
         JVerificationInterface.setCustomUIWithConfig(builder.build());
         boolean isVerifyEnable = JVerificationInterface.checkVerifyEnable(getCurrentActivity());
-        if (isVerifyEnable) {
-            getToken();
-        }
         callback.resolve(isVerifyEnable);
     }
 
-    private void getToken() {
-        JVerificationInterface.getToken(mContext, 5000, new VerifyListener() {
-            @Override
-            public void onResult(int i, String s, String s1) {
-                if (i == 2000) {
-                    token = s;
+    @ReactMethod
+    public void getToken(final Promise callback) {
+        boolean isVerifyEnable = JVerificationInterface.checkVerifyEnable(getCurrentActivity());
+        if (isVerifyEnable) {
+            JVerificationInterface.getToken(mContext, 5000, new VerifyListener() {
+                @Override
+                public void onResult(int i, String s, String s1) {
+                    if (i == 2000) {
+                        JVerificationInterface.preLogin(mContext, 5000, null);
+                        callback.resolve(s);
+                    } else {
+                        callback.resolve("获取本机号码失败");
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            callback.reject("当前网络不支持一键登录");
+        }
     }
 
     @ReactMethod
@@ -94,21 +93,11 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
             public void onResult(int code, String token, String operator) {
                 if (code == 6000) {
                     callback.resolve(token);
-                } else if (code == 6002) {
-                    // do nothing
                 } else {
-                    ToastUtils.showToast("一键登录认证失败");
+                    callback.reject("一键登录失败");
                 }
             }
         });
-    }
-
-    @Nullable
-    @Override
-    public Map<String, Object> getConstants() {
-        final Map<String, Object> constants = new HashMap<>();
-        constants.put("JPushToken", this.token);
-        return constants;
     }
 }
 

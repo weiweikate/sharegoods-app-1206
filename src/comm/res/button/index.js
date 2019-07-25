@@ -28,9 +28,10 @@ const button = {
     arrow_red_bottom: require('./arrow_red_bottom.png'),
     expanded_bottom: require('./expanded_bottom.png'),
     expanded_right: require('./expanded_right.png'),
-    icon_kefu:require('./kefu_icon_zaixian.png'),
+    icon_kefu: require('./kefu_icon_zaixian.png'),
     back_black: require('./back_black.png'), // 黑色回退按钮
     back_white: require('./back_white.png'), // 白色回退按钮
-    btn_close_white:require('./tongyong_btn_close_grey.png'),
+    btn_close_white: require('./tongyong_btn_close_grey.png'),
+    inputtext_clear: require('./inputtext_clear.png')
 };
 export default button;
