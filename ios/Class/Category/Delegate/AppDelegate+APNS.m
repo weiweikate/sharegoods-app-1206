@@ -105,18 +105,10 @@
   
   BOOL isProduction = NO;
   NSString * appKey ;
-  
-#if DEBUG
-  isProduction = NO;
-  appKey = KDEBUGJSPushKey;
-#else
-  isProduction = YES;
-  appKey = KJSPushKey;
-#endif
   [JPUSHService setupWithOption:launchOptions
-                         appKey:appKey
+                         appKey:KJSPushKey
                         channel:@"App Store"
-               apsForProduction:isProduction
+               apsForProduction:KJisProduction
           advertisingIdentifier:nil];
   
   // 下边为一键登录相关设置,有问题请联系胡玉峰同志 OK? 如需使用 IDFA 功能请添加此代码并在初始化配置类中设置 advertisingId
