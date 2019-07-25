@@ -93,7 +93,7 @@ export default class OrderDetailTimeView extends Component {
     }
 
     render() {
-        let {userMessage, orderTime, payTime, cancelTime,receiveTime, deliverTime} = orderDetailModel.baseInfo
+        let {userMessage, orderTime, payTime, cancelTime,receiveTime, deliverTime, finishTime} = orderDetailModel.baseInfo
         let {subStatus, status} = orderDetailModel.merchantOrder;
         return (
             <View style={{ backgroundColor: "white", paddingTop: px2dp(10), marginTop: 10 }}>
@@ -122,7 +122,7 @@ export default class OrderDetailTimeView extends Component {
                         style={styles.textGoodsDownStyle}/> : null}
                 {status === 5 ?
                     <UIText
-                        value={"关闭时间：" + DateUtils.getFormatDate(subStatus < 4 ? cancelTime / 1000 : receiveTime / 1000)}
+                        value={"关闭时间：" + DateUtils.getFormatDate(subStatus < 4 ? cancelTime / 1000 : finishTime / 1000)}
                         style={styles.textGoodsDownStyle}/> : null}
                 {StringUtils.isNoEmpty(deliverTime)  ?
                     <UIText
