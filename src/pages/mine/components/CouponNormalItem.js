@@ -105,7 +105,7 @@ export default class CouponNormalItem extends Component {
                                             width: ScreenUtils.autoSizeWidth(60),
                                             borderRadius: ScreenUtils.autoSizeWidth(14),
                                             overflow: 'hidden'
-                                        }} onPress={() => { this.props.clickItem(index, item)}}>
+                                        }} onPress={() => {this.props.clickItem && this.props.clickItem(index, item)}}>
                                             <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}}
                                                             colors={['#FC5D39', '#FF0050']}
                                                             style={{
@@ -128,6 +128,20 @@ export default class CouponNormalItem extends Component {
                                            source={stateImg}/>
                                     {item.count > 1 ? <UIText value={'x' + item.count}
                                                               style={styles.xNumsStyle}/> : null}
+                                    {item.couponConfigId === 81 && item.status === 3 ? <NoMoreClick style={{
+                                        height: ScreenUtils.autoSizeWidth(27),
+                                        width: ScreenUtils.autoSizeWidth(60),
+                                        borderRadius: ScreenUtils.autoSizeWidth(14),
+                                        overflow: 'hidden',
+                                        backgroundColor: '#FF0050',
+                                        justifyContent: 'center',
+                                        alignItems: 'center'
+                                    }} onPress={() => { this.props.onActivity && this.props.onActivity()}}>
+                                            <Text style={{
+                                                fontSize: 12,
+                                                color: 'white',
+                                            }} allowFontScaling={false}>待激活</Text>
+                                    </NoMoreClick> : null}
 
                                 </View> : null)}
                         </View>

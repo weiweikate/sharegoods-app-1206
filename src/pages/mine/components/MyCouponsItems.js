@@ -1,13 +1,6 @@
 import React, { Component } from 'react';
-import {
-    FlatList,
-    Image,
-    StyleSheet,
-    View,
-    RefreshControl, ActivityIndicator,
-    TouchableOpacity
-} from 'react-native';
-import { UIImage } from '../../../components/ui';
+import { ActivityIndicator, FlatList, Image, RefreshControl, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { MRText as Text } from '../../../components/ui';
 import Modal from '../../../comm/components/CommModal';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import API from '../../../api';
@@ -18,15 +11,14 @@ import user from '../../../model/user';
 import DesignRule from '../../../constants/DesignRule';
 import MineApi from '../api/MineApi';
 import res from '../res';
-import { MRText as Text, MRTextInput as TextInput } from '../../../components/ui';
 import couponsModel from '../model/CouponsModel';
 import CouponExplainItem from './CouponExplainItem';
 import CouponNormalItem from './CouponNormalItem';
 import RouterMap, { backToHome, routePush } from '../../../navigation/RouterMap';
 
 const NoMessage = res.placeholder.noCollect;
-const plusIcon = res.couponsImg.youhuiquan_icon_jia_nor;
-const jianIcon = res.couponsImg.youhuiquan_icon_jian_nor;
+// const plusIcon = res.couponsImg.youhuiquan_icon_jia_nor;
+// const jianIcon = res.couponsImg.youhuiquan_icon_jian_nor;
 
 const { px2dp } = ScreenUtils;
 
@@ -42,11 +34,11 @@ export default class MyCouponsItems extends Component {
             explainList: [],
             showDialogModal: false,
             tokenCoinNum: this.props.justOne,
-            isFirstLoad: true
+            isFirstLoad: true,
+            isLoadMore: false,
+            isEnd: false
         };
         this.currentPage = 0;
-        this.isLoadMore = false;
-        this.isEnd = false;
         this.addData = true;
         this.dataSel = {};
     }
@@ -61,16 +53,24 @@ export default class MyCouponsItems extends Component {
             return (
                 <CouponExplainItem item={item} index={index} toExtendData={() => this.toExtendData(item)}
                                    pickUpData={() => this.pickUpData(item)}
-                                   clickItem={() => this.clickItem(index, item)}/>
+                                   clickItem={() => this.clickItem(index, item)}
+                                   onActivity={()=>{this.onRequestOpen()}}
+                />
             );
         } else {
             return (
-                <CouponNormalItem item={item} index={index} clickItem={() => this.clickItem(index, item)}/>
+                <CouponNormalItem item={item} index={index} clickItem={() => this.clickItem(index, item)}
+                                  onActivity={()=>{this.onRequestOpen()}}
+                />
             );
         }
     };
     onRequestClose = () => {
         this.setState({ showDialogModal: false });
+    };
+
+    onRequestOpen = () => {
+        this.setState({ showDialogModal: true });
     };
 
     renderDialogModal() {
@@ -91,41 +91,7 @@ export default class MyCouponsItems extends Component {
         return (
             <View style={styles.contentStyle}>
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                    <View style={styles.couNumStyle}>
-                        <Text style={{ fontSize: px2dp(17), color: DesignRule.textColor_mainTitle }}
-                              allowFontScaling={false}>请选择券数</Text>
-                    </View>
-                    <View style={{
-                        marginTop: px2dp(18),
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }}>
-                        <UIImage source={jianIcon} style={{
-                            width: px2dp(24),
-                            height: px2dp(24),
-                            marginLeft: px2dp(39)
-                        }} resizeMode={'contain'} onPress={this.reduceTokenCoin}/>
-                        <View style={{
-                            borderWidth: 0.5, marginLeft: 5,
-                            marginRight: 5, borderColor: DesignRule.textColor_placeholder,
-                            backgroundColor: DesignRule.white
-                        }}>
-                            <TextInput
-                                keyboardType='numeric'
-                                autoFocus={true}
-                                defaultValue={`${(this.state.tokenCoinNum < user.tokenCoin ? this.state.tokenCoinNum : user.tokenCoin)}`}
-                                value={this.state.tokenCoinNum}
-                                onChangeText={this._onChangeText}
-                                onFocus={this._onFocus}
-                                style={styles.tnStyle}/>
-                        </View>
-                        <UIImage source={plusIcon} style={{
-                            width: px2dp(24),
-                            height: px2dp(24),
-                            marginRight: px2dp(39)
-                        }} onPress={this.plusTokenCoin} resizeMode={'contain'}/>
-                    </View>
+                    <View style={{width:286,height:122}}/>
                 </View>
 
                 <View style={{ width: '100%', height: 0.5, backgroundColor: DesignRule.textColor_placeholder }}/>
@@ -189,8 +155,8 @@ export default class MyCouponsItems extends Component {
         if (this.state.isFirstLoad) {
             return (
                 <View style={styles.footer_container}>
-                    <ActivityIndicator size="small" color="#888888"/>
-                    <Text style={styles.footer_text}>拼命加载中…</Text>
+                    <ActivityIndicator size="small" color={DesignRule.mainColor} style={{ marginRight: 6 }}/>
+                    <Text style={styles.footer_text}>加载中…</Text>
                 </View>
             );
         } else {
@@ -221,7 +187,17 @@ export default class MyCouponsItems extends Component {
     };
 
     _footer = () => {
-        return (<View style={{ height: 50 }}/>);
+        if (this.state.isFirstLoad || !this.state.viewData || (this.state.viewData && this.state.viewData.length === 0)) {
+            return null;
+        }
+        return (<View style={styles.footer}>
+            <ActivityIndicator
+                animating={this.state.isLoadMore ? false : (this.state.isEnd ? false : true)}
+                size={'small'}
+                color={DesignRule.mainColor}/>
+            <Text style={styles.text}
+                  allowFontScaling={false}>{this.state.isEnd ? '我也是有底线的~' : '加载更多中...'}</Text>
+        </View>);
     };
     toExtendData = (item) => {
         let index = this.state.viewData.indexOf(item);
@@ -307,12 +283,10 @@ export default class MyCouponsItems extends Component {
                 }
                 return `限${productStr}商品可用`;
             }
-        }
-        else if ((cat1.length + cat2.length + cat3.length) === 1) {
+        } else if ((cat1.length + cat2.length + cat3.length) === 1) {
             result = [...cat1, ...cat2, ...cat3];
             return `限${result[0]}品类可用`;
-        }
-        else if ((cat1.length + cat2.length + cat3.length) > 1) {
+        } else if ((cat1.length + cat2.length + cat3.length) > 1) {
             return '限指定品类商品可用';
         } else {
             return '全场通用券（特殊商品除外）';
@@ -344,7 +318,6 @@ export default class MyCouponsItems extends Component {
                 API.queryCoupons({
                     status: this.state.pageStatus
                 }).then(result => {
-                    this.isLoadMore = false;
                     let data = result.data || [];
                     data.forEach((item) => {
                         arrData.push({
@@ -363,7 +336,7 @@ export default class MyCouponsItems extends Component {
                         });
                     });
                     this.handleList(dataList, arrData);
-                    this.setState({ viewData: arrData, isFirstLoad: false });
+                    this.setState({ viewData: arrData, isFirstLoad: false, isLoadMore: false });
                 }).catch(err => {
                     console.log(err);
                     this.handleList(dataList, arrData);
@@ -430,30 +403,35 @@ export default class MyCouponsItems extends Component {
                     activityType: this.props.orderParam.orderType
                 };
             }
-
-            this.isLoadMore = true;
-            API.listAvailable({
-                page: this.currentPage, pageSize: 10,
-                sgAppVersion: 310,
-                ...params
-            }).then(res => {
-                bridge.hiddenLoading();
-                let data = res.data || {};
-                let dataList = data.data || [];
-                this.isLoadMore = false;
-                this.parseData(dataList);
-                if (dataList.length === 0) {
-                    this.isEnd = true;
-                    return;
-                }
-
-            }).catch(result => {
-                bridge.hiddenLoading();
-                this.setState({
-                    isFirstLoad: false, viewData: []
+            this.setState({
+                isLoadMore: true
+            }, () => {
+                API.listAvailable({
+                    page: this.currentPage, pageSize: 10,
+                    sgAppVersion: 310,
+                    ...params
+                }).then(res => {
+                    bridge.hiddenLoading();
+                    let data = res.data || {};
+                    let dataList = data.data || [];
+                    this.setState({
+                        isLoadMore: false
+                    });
+                    this.parseData(dataList);
+                    if (this.currentPage === data.totalPage) {
+                        if (!this.state.isEnd) {
+                            this.setState({
+                                isEnd: true
+                            });
+                        }
+                    }
+                }).catch(result => {
+                    bridge.hiddenLoading();
+                    this.setState({
+                        isFirstLoad: false, viewData: [], isLoadMore: false
+                    });
+                    bridge.$toast(result.msg);
                 });
-                this.isLoadMore = false;
-                bridge.$toast(result.msg);
             });
         } else if (this.props.justOne && status === 0 || this.dataSel.type === 99) {
             let arrData = [];
@@ -473,8 +451,7 @@ export default class MyCouponsItems extends Component {
                     redirectUrl: null
                 });
             }
-            this.setState({ viewData: arrData });
-            this.isEnd = true;
+            this.setState({ viewData: arrData, isEnd: true });
         } else if (this.dataSel.type === 7) {
             bridge.hiddenLoading();
             let dataList = [];
@@ -490,18 +467,22 @@ export default class MyCouponsItems extends Component {
                 bridge.hiddenLoading();
                 let data = result.data || {};
                 let dataList = data.data || [];
-                this.isLoadMore = false;
+                this.setState({
+                    isLoadMore: false
+                });
                 this.parseData(dataList);
-                if (dataList.length === 0) {
-                    this.isEnd = true;
-                    return;
+                if (this.currentPage === data.totalPage) {
+                    if (!this.state.isEnd) {
+                        this.setState({
+                            isEnd: true
+                        });
+                    }
                 }
             }).catch(result => {
                 bridge.hiddenLoading();
                 this.setState({
-                    isFirstLoad: false, viewData: []
+                    isFirstLoad: false, viewData: [], isLoadMore: false
                 });
-                this.isLoadMore = false;
                 bridge.$toast(result.msg);
             });
         }
@@ -517,7 +498,11 @@ export default class MyCouponsItems extends Component {
     onRefresh = (params = {}) => {
         this.dataSel = couponsModel.params || {};
         console.log('refresh');
-        this.isEnd = false;
+        if (this.state.isEnd) {
+            this.setState({
+                isEnd: false
+            });
+        }
         this.addData = true;
         this.currentPage = 1;
         if (user.isLogin) {
@@ -536,8 +521,14 @@ export default class MyCouponsItems extends Component {
     }
 
     onLoadMore = () => {
-        console.log('onLoadMore', this.isLoadMore, this.isEnd, this.state.isFirstLoad);
-        if (!this.isLoadMore && !this.isEnd && !this.state.isFirstLoad) {
+        if (this.state.isEnd) {
+            return;
+        }
+        if (this.state.isFirstLoad) {
+            return;
+        }
+        console.log('onLoadMore', this.state.isLoadMore, this.state.isEnd, this.state.isFirstLoad);
+        if (!this.state.isLoadMore && !this.state.isEnd && !this.state.isFirstLoad) {
             this.currentPage++;
             this.getDataFromNetwork(this.dataSel);
         } else if (this.state.pageStatus === 0 && this.addData && (this.dataSel.type === 99 || !this.dataSel.type)) {
@@ -622,7 +613,6 @@ const styles = StyleSheet.create(
             borderRadius: 12,
             justifyContent: 'flex-end',
             alignItems: 'center',
-            opacity: 0.8
         },
         couNumStyle: {
             width: px2dp(123),
@@ -673,6 +663,24 @@ const styles = StyleSheet.create(
             marginBottom: 5,
             fontSize: 13,
             color: DesignRule.textColor_mainTitle_222
+        },
+        footer_container: {
+            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: 44
+        },
+        footer: {
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: 50
+        },
+        text: {
+            marginLeft: 6,
+            color: DesignRule.textColor_instruction,
+            fontSize: DesignRule.fontSize_24
         }
     }
 );
