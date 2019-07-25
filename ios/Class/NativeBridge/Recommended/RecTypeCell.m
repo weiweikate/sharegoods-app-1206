@@ -247,7 +247,6 @@
 }
 
 -(void)tapCollectionBtn:(UIButton*)sender{
-  sender.selected = !sender.selected;
   if(self.recTypeDelegate){
     [self.recTypeDelegate collectionBtnClick:self];
   }
