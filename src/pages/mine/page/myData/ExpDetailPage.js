@@ -158,7 +158,7 @@ export default class ExpDetailPage extends BasePage {
 
     _accountInfoRender() {
         const progress = this.state.experience / this.state.levelExperience;
-        const marginLeft = progress ? ScreenUtils.px2dp(315) * progress : 0;
+        const marginLeft = progress ? progress>1 ? ScreenUtils.px2dp(315) : ScreenUtils.px2dp(315) * progress : 0;
         return (
             <ImageBackground source={account_bg_white} resizeMode={'stretch'} style={{
                 position: 'absolute',
@@ -399,7 +399,7 @@ const styles = StyleSheet.create({
         marginBottom: ScreenUtils.safeBottom
     },
     contentStyle: {
-        backgroundColor: DesignRule.bgColor,
+        backgroundColor: 'white',
         flex: 1
     },
     headerBg: {
