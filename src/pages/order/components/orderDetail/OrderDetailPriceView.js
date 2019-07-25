@@ -67,7 +67,7 @@ export default class OrderDetailPriceView extends Component {
                                 rightText={'-' + StringUtils.formatMoneyString(couponAmount)}
                                 rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
                                 isLine={false}/>
-                {this.renderLine()}
+                {this.renderWideLine()}
                 <UserSingleItem itemHeightStyle={{ height: 45 }} leftText={`${status > 1 ? '实付款' : '需付款'}`}
                                 leftTextStyle={{ color: DesignRule.textColor_mainTitle_222, fontSize: 15 }}
                                 rightText={StringUtils.formatMoneyString(payAmount)}

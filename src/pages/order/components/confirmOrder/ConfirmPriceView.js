@@ -32,7 +32,7 @@ export default class ConfirmPriceView extends Component {
 
     renderLine = () => {
         return (
-            <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inWhiteBg }}/>
+            <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inWhiteBg, marginHorizontal: 15 }}/>
         );
     };
     renderPriceView = () => {
@@ -79,7 +79,6 @@ export default class ConfirmPriceView extends Component {
                         </View>
                     </View>
                 }
-                <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
                 {promotionAmount != 0 ? <View style={styles.couponsStyle}
                                                activeOpacity={0.5}
                                                onPress={this.props.jumpToCouponsPage}>
@@ -92,7 +91,7 @@ export default class ConfirmPriceView extends Component {
                         <Image source={arrow_right}/>
                     </View>
                 </View> : null}
-
+                <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
                 <TouchableOpacity style={styles.couponsStyle}
                                   activeOpacity={0.5}
                                   disabled={!confirmOrderModel.canUseCou}

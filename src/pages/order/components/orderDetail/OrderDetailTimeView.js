@@ -96,7 +96,7 @@ export default class OrderDetailTimeView extends Component {
         let {userMessage, orderTime, payTime, cancelTime,receiveTime, deliverTime} = orderDetailModel.baseInfo
         let {subStatus, status} = orderDetailModel.merchantOrder;
         return (
-            <View style={{ backgroundColor: "white", paddingTop: px2dp(10), marginTop: px2dp(10) }}>
+            <View style={{ backgroundColor: "white", paddingTop: px2dp(10), marginTop: 10 }}>
                 {userMessage&&userMessage.length > 0? <View style={{  flexDirection: "row"}}>
                     <UIText value={"订单备注："}
                             style={[styles.textGoodsDownStyle]}/>
@@ -105,11 +105,11 @@ export default class OrderDetailTimeView extends Component {
                                 style={[styles.textGoodsDownStyle,{marginLeft: 0}]}/>
                     </View>
                 </View>: null}
-                <View style={{ justifyContent: "space-between", flexDirection: "row", alignItems: "center" }}>
+                <View style={{ justifyContent: "space-between", flexDirection: "row", alignItems: "center",marginBottom: 10}}>
                     <UIText value={"订单编号：" + `${orderDetailModel.merchantOrderNo}`}
-                            style={[styles.textGoodsDownStyle]}/>
+                            style={[styles.textGoodsDownStyle,{marginBottom: 0}]}/>
                     <NoMoreClick style={styles.clipStyle} onPress={() => this.copyOrderNumToClipboard()}>
-                        <Text style={{ paddingLeft: px2dp(10), paddingRight: px2dp(10) }}
+                        <Text style={{ fontSize: px2dp(13), color: DesignRule.mainColor}}
                               allowFontScaling={false}>复制</Text>
                     </NoMoreClick>
                 </View>
@@ -155,18 +155,11 @@ const styles = StyleSheet.create({
         color: DesignRule.textColor_instruction,
         fontSize: px2dp(13),
         marginLeft: px2dp(16),
-        marginBottom: px2dp(10)
+        marginBottom: 10
     },
     clipStyle: {
-        borderWidth: 1,
-        borderColor: DesignRule.color_ddd,
         marginRight: px2dp(10),
-        justifyContent: "center",
-        alignItems: "center",
-        height: px2dp(22),
-        width: px2dp(55),
-        // marginTop: px2dp(10),
-        borderRadius: px2dp(2)
+
     },
     couponsIconStyle: {
         width: px2dp(15),

@@ -27,7 +27,7 @@ export default class ConfirmAddressView extends Component {
 
     render() {
         return (
-            <View style={{ marginBottom: 15}}>
+            <View style={{ marginBottom: 10}}>
                 {this.renderAddress()}
                 {this.renderSelectImage()}
             </View>
