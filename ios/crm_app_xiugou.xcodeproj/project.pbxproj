@@ -23,7 +23,6 @@
 		014FF20122708C57008B0094 /* JXFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 014FF20022708C57008B0094 /* JXFooterView.m */; };
 		0153BAB122A1078A00BFD8AC /* ShowShareImgMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0153BAB022A1078A00BFD8AC /* ShowShareImgMaker.m */; };
 		0153BAB422A110AF00BFD8AC /* ShareImageMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0153BAB222A110AF00BFD8AC /* ShareImageMaker.m */; };
-		01561CCD22E6A813004FA59F /* libRNCAsyncStorage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 01561CCC22E6A7FA004FA59F /* libRNCAsyncStorage.a */; };
 		01739CD322BF283D00661677 /* ShowQueryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EAFA6221BFE89007AAEE0 /* ShowQueryModel.m */; };
 		01C3AF3B22E2AF1E00A76422 /* ActivetyViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C3AEE622E2AF1E00A76422 /* ActivetyViewManager.m */; };
 		01C3AF3C22E2AF1E00A76422 /* ActiveView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C3AEE922E2AF1E00A76422 /* ActiveView.m */; };
@@ -39,6 +38,7 @@
 		01C3B21C22E5DB9F00A76422 /* MBAVAssetResourceLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C3B21822E5DB9E00A76422 /* MBAVAssetResourceLoader.m */; };
 		01C3B21F22E5DBAE00A76422 /* MBURLTaskModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C3B21D22E5DBAE00A76422 /* MBURLTaskModel.m */; };
 		01E48F9422708B960038BEE6 /* JXHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E48F9322708B960038BEE6 /* JXHeaderView.m */; };
+		01EA013722E93BEB00F9B5C7 /* libRNCAsyncStorage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 01EA013622E93BD900F9B5C7 /* libRNCAsyncStorage.a */; };
 		033C66B821927ACB00433026 /* MRBannerViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 033C66B721927ACB00433026 /* MRBannerViewManager.m */; };
 		0347BAD52237CD0A0011184A /* Lottie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0347BAC92237CC680011184A /* Lottie.framework */; };
 		0347BAD62237CD0A0011184A /* Lottie.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0347BAC92237CC680011184A /* Lottie.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -373,9 +373,9 @@
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
 			remoteInfo = crm_app_xiugou;
 		};
-		01561CCB22E6A7FA004FA59F /* PBXContainerItemProxy */ = {
+		01EA013522E93BD900F9B5C7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 01561CC522E6A7FA004FA59F /* RNCAsyncStorage.xcodeproj */;
+			containerPortal = 01EA012F22E93BD900F9B5C7 /* RNCAsyncStorage.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNCAsyncStorage;
@@ -848,7 +848,6 @@
 		0153BAB022A1078A00BFD8AC /* ShowShareImgMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShowShareImgMaker.m; sourceTree = "<group>"; };
 		0153BAB222A110AF00BFD8AC /* ShareImageMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareImageMaker.m; sourceTree = "<group>"; };
 		0153BAB322A110AF00BFD8AC /* ShareImageMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareImageMaker.h; sourceTree = "<group>"; };
-		01561CC522E6A7FA004FA59F /* RNCAsyncStorage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNCAsyncStorage.xcodeproj; path = "../node_modules/@mr/rn-store/node_modules/@mr/mr-rn-storage/ios/RNCAsyncStorage.xcodeproj"; sourceTree = "<group>"; };
 		01739A3022BCC31F00661677 /* JXModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JXModel.h; sourceTree = "<group>"; };
 		01C3AEE622E2AF1E00A76422 /* ActivetyViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivetyViewManager.m; sourceTree = "<group>"; };
 		01C3AEE822E2AF1E00A76422 /* MBProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProtocol.h; sourceTree = "<group>"; };
@@ -877,6 +876,7 @@
 		01C3B21E22E5DBAE00A76422 /* MBURLTaskModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBURLTaskModel.h; sourceTree = "<group>"; };
 		01E48F9222708B960038BEE6 /* JXHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JXHeaderView.h; sourceTree = "<group>"; };
 		01E48F9322708B960038BEE6 /* JXHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JXHeaderView.m; sourceTree = "<group>"; };
+		01EA012F22E93BD900F9B5C7 /* RNCAsyncStorage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNCAsyncStorage.xcodeproj; path = "../node_modules/@mr/mr-rn-storage/ios/RNCAsyncStorage.xcodeproj"; sourceTree = "<group>"; };
 		033C66B621927ACB00433026 /* MRBannerViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRBannerViewManager.h; sourceTree = "<group>"; };
 		033C66B721927ACB00433026 /* MRBannerViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRBannerViewManager.m; sourceTree = "<group>"; };
 		0347BABB2237CC480011184A /* LottieReactNative.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LottieReactNative.xcodeproj; path = "../node_modules/lottie-react-native/src/ios/LottieReactNative.xcodeproj"; sourceTree = "<group>"; };
@@ -1395,7 +1395,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				01561CCD22E6A813004FA59F /* libRNCAsyncStorage.a in Frameworks */,
+				01EA013722E93BEB00F9B5C7 /* libRNCAsyncStorage.a in Frameworks */,
 				C4F2E49222BE30BC00FF6213 /* IJSFoundation.framework in Frameworks */,
 				BF2A519322B9EBC300A80506 /* libRNGestureHandler.a in Frameworks */,
 				BF2CCECE229F6D1600A5AD0D /* libRNCWebView.a in Frameworks */,
@@ -1571,14 +1571,6 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		01561CC622E6A7FA004FA59F /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				01561CCC22E6A7FA004FA59F /* libRNCAsyncStorage.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		01C3AEE522E2AF1E00A76422 /* ActivityVideo */ = {
 			isa = PBXGroup;
 			children = (
@@ -1633,6 +1625,14 @@
 				01C3AEF822E2AF1E00A76422 /* MBVideoHeaderView.m */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		01EA013022E93BD900F9B5C7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				01EA013622E93BD900F9B5C7 /* libRNCAsyncStorage.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		033C66B521927AA800433026 /* MRBannerView */ = {
@@ -2158,7 +2158,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				01561CC522E6A7FA004FA59F /* RNCAsyncStorage.xcodeproj */,
+				01EA012F22E93BD900F9B5C7 /* RNCAsyncStorage.xcodeproj */,
 				BF2A512722B9EB6C00A80506 /* RNGestureHandler.xcodeproj */,
 				104548412239FB4800E73EF8 /* CodePush.xcodeproj */,
 				0347BAC12237CC670011184A /* Lottie.xcodeproj */,
@@ -3193,8 +3193,8 @@
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
 				{
-					ProductGroup = 01561CC622E6A7FA004FA59F /* Products */;
-					ProjectRef = 01561CC522E6A7FA004FA59F /* RNCAsyncStorage.xcodeproj */;
+					ProductGroup = 01EA013022E93BD900F9B5C7 /* Products */;
+					ProjectRef = 01EA012F22E93BD900F9B5C7 /* RNCAsyncStorage.xcodeproj */;
 				},
 				{
 					ProductGroup = 1872318221CB96D300513B04 /* Products */;
@@ -3275,11 +3275,11 @@
 			remoteRef = 00C302E31ABCB9EE00DB3ED1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		01561CCC22E6A7FA004FA59F /* libRNCAsyncStorage.a */ = {
+		01EA013622E93BD900F9B5C7 /* libRNCAsyncStorage.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRNCAsyncStorage.a;
-			remoteRef = 01561CCB22E6A7FA004FA59F /* PBXContainerItemProxy */;
+			remoteRef = 01EA013522E93BD900F9B5C7 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		0347BAC02237CC490011184A /* libLottieReactNative.a */ = {
