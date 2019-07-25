@@ -281,8 +281,6 @@ public class LittleVideoListAdapter extends BaseVideoListAdapter<LittleVideoList
                     previewWrapper.setVisibility(View.VISIBLE);
                 }
             });
-
-
         }
 
         @Override

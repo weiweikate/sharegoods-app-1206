@@ -317,11 +317,11 @@ public class ShowDynamicView implements IShowgroundView, SwipeRefreshLayout.OnRe
                         for (int j = 0; j < resource.size(); j++) {
                             NewestShowGroundBean.DataBean.ResourceBean resourceBean = resource.get(j);
                             if (resourceBean.getType() == 2) {
-                                resolveResource.add(resourceBean.getUrl());
+                                resolveResource.add(resourceBean.getBaseUrl());
                             }
 
                             if (resourceBean.getType() == 5) {
-                                bean.setVideoCover(resourceBean.getUrl());
+                                bean.setVideoCover(resourceBean.getBaseUrl());
                                 break;
                             }
                         }
