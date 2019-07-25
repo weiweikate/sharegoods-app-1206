@@ -142,7 +142,7 @@
   .widthIs(KScreenWidth-30).heightIs(105);
   
   self.openOrclose.sd_layout.bottomSpaceToView(self, 96)
-  .rightSpaceToView(self, 15).widthIs(26).heightIs(19);
+  .rightSpaceToView(self, 15).widthIs(30).heightIs(19);
   
   [self setTagView];
   
