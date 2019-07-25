@@ -102,7 +102,7 @@
   if(self.dataArr.lastObject){
    currentShowNo = [self.dataArr.lastObject valueForKey:@"showNo"];
   }
-  if(self.isPersonal){
+  if(self.isPersonal&&self.userCode){
     [dic setObject:self.userCode forKey:@"queryUserCode"];
   }
   
@@ -134,14 +134,14 @@
 {
   NSMutableDictionary *dic = [NSMutableDictionary new];
   NSString *currentShowNo = [self.dataArr.lastObject valueForKey:@"showNo"];
-  if(self.isPersonal){
+  if(self.isPersonal&&self.userCode){
     [dic setObject:self.userCode forKey:@"queryUserCode"];
   }
   if(self.isCollect){
     [dic setObject:[NSNumber numberWithInt:1]  forKey:@"isCollect"];
   }
   
-  [dic addEntriesFromDictionary:@{@"currentShowNo": currentShowNo, @"queryUserCode": @""}];
+  [dic addEntriesFromDictionary:@{@"currentShowNo": currentShowNo}];
   __weak ActiveView * weakSelf = self;
 
   [NetWorkTool requestWithURL:@"/social/show/video/list/next@GET" params:dic toModel:nil success:^(NSDictionary* result) {

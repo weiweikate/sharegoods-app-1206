@@ -119,6 +119,7 @@
   if(!_firstImageView){
     _firstImageView = [[UIImageView alloc]init];
     _firstImageView.userInteractionEnabled = YES;
+    _firstImageView.contentMode = UIViewContentModeScaleAspectFit;
     [self addSubview:_firstImageView];
     [self addSubview:self.btnView1];
     self.btnView1.sd_layout
@@ -133,6 +134,7 @@
   if(!_secondImageView){
     _secondImageView = [[UIImageView alloc]init];
     _secondImageView.userInteractionEnabled = YES;
+    _secondImageView.contentMode = UIViewContentModeScaleAspectFit;
     [self addSubview:_secondImageView];
     [self addSubview:self.btnView2];
     self.btnView2.sd_layout
@@ -147,6 +149,7 @@
   if(!_thirdImageView){
     _thirdImageView = [[UIImageView alloc]init];
     _thirdImageView.userInteractionEnabled = YES;
+    _thirdImageView.contentMode = UIViewContentModeScaleAspectFit;
     [self addSubview:_thirdImageView];
     [self addSubview:self.btnView3];
     self.btnView3.sd_layout

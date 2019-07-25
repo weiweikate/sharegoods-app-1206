@@ -62,7 +62,6 @@ static NSString *IDType = @"TypeCell";
 }
 
 -(void)setUI{
-  self.backgroundColor = [UIColor redColor];
   UITableView *tableView = [[UITableView alloc]initWithFrame:self.bounds style: UITableViewStylePlain];
   tableView.backgroundColor = [UIColor colorWithRed:247/255.0 green:247/255.0 blue:247/255.0 alpha:1.0];
   tableView.delegate = self;
@@ -168,10 +167,6 @@ static NSString *IDType = @"TypeCell";
  */
 - (void)refreshData
 {
-  if(self.noMore){
-    [self.tableView.mj_footer endRefreshingWithNoMoreData];
-    return;
-  }
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   if (self.onStartRefresh) {
     self.onStartRefresh(@{});
