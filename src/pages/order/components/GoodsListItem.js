@@ -212,7 +212,7 @@ export default class GoodsListItem extends React.Component {
                     category={item.spec}
                     goodsNum={item.quantity}
                     onPress={()=> {goodsItemClick(); this.setState({isShow: false})}}
-                    activityCodes={[]}
+                    activityCodes={item.activityList || []}
                 />)
         })
     };

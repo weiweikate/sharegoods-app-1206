@@ -80,7 +80,7 @@ export default class BackAddressView extends React.Component {
                     justifyContent: 'center',
                     alignItems: 'center'
                 }}>
-                    <TouchableOpacity onPress={()=> {onPress(expressNo, expressCode, manyLogistics)}}
+                    <TouchableOpacity onPress={()=> {onPress(expressNo, expressCode, manyLogistics, expressName)}}
                                       style={styles.borderButton}>
                         <UIText value={'查看物流信息'}
                                 style={{

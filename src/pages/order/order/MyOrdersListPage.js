@@ -58,8 +58,10 @@ class MyOrdersListPage extends BasePage {
     componentDidMount() {
         //接收刷新的通知
         this.listener = DeviceEventEmitter.addListener('REFRESH_ORDER', ()=> {
-           let ref = this['reLoads_'+this.selectTab];
-           ref && ref.onRefresh();
+            setTimeout(()=> {//后台接口异步，先等待1s刷新
+                let ref = this['reLoads_'+this.selectTab];
+                ref && ref.onRefresh();
+            }, 1000)
         })
         this.getCancelReasons();
 

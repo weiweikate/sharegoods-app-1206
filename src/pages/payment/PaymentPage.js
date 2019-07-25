@@ -85,7 +85,7 @@ export default class PaymentPage extends BasePage {
                 });
             } else if (result.code === payStatus.payOut) {
                 Toast.$toast(payStatusMsg[result.code]);
-                this._goToOrder(2);
+                this._goToOrder(0);
             } else {
                 Toast.$toast(payStatusMsg[result.code]);
             }
@@ -206,7 +206,7 @@ export default class PaymentPage extends BasePage {
                 key: this.props.navigation.state.key,
                 type: 'ReplacePaymentPage',
                 routeName: 'order/order/MyOrdersListPage',
-                params: { index: index ? index : 1 }
+                params: { index: index ? index : 0 }
             });
         }
         payment.resetPayment();

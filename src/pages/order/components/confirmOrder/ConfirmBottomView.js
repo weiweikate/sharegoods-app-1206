@@ -27,8 +27,12 @@ export default class ConfirmBottomView extends Component {
                             color: DesignRule.textColor_mainTitle
                         }}/>
                         <UIText
-                            value={'¥'+confirmOrderModel.payInfo.payAmount}
+                            value={'¥'}
                             style={styles.commitAmountStyle}/>
+                        <UIText
+                            value={(confirmOrderModel.payInfo.payAmount || '0')}
+                            style={[styles.commitAmountStyle,{fontSize: ScreenUtils.px2dp(18),  marginRight: ScreenUtils.autoSizeWidth(15)}]}/>
+
                     </View>
                     <NoMoreClick
                         style={[styles.commitTouStyle,{backgroundColor: StringUtils.isEmpty(confirmOrderModel.err)&&confirmOrderModel.productOrderList.length ? DesignRule.mainColor : DesignRule.textColor_placeholder}]}
@@ -66,7 +70,6 @@ const styles = StyleSheet.create({
     commitAmountStyle: {
         fontSize: ScreenUtils.px2dp(15),
         color: DesignRule.mainColor,
-        marginRight: ScreenUtils.autoSizeWidth(15)
     },
     commitTouStyle: {
         justifyContent: 'center',

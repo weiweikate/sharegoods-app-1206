@@ -9,6 +9,7 @@ import shopCartCacheTool from "../../shopCart/model/ShopCartCacheTool";
 import { navigateBack, routePush } from '../../../navigation/RouterMap';
 import { payment } from '../../payment/Payment';
 import RouterMap from '../../../navigation/RouterMap';
+import API from '../../../api';
 
 class ConfirmOrderModel {
 
@@ -45,7 +46,7 @@ class ConfirmOrderModel {
     @action clearData() {
         this.loadingState = PageLoadingState.success;
         this.err=null;
-        this.canUseCou = true;
+        this.canUseCou = false;
 
         this.addressId = '';
         this.message = '';
@@ -64,10 +65,8 @@ class ConfirmOrderModel {
 
     @action
     selectAddressId(addressData){
-        let addressId = addressData.id + '';
-        if (this.addressId == addressId && this.addressId && this.addressId.length > 0) {
-            return;
-        }
+        let addressId = addressData.id || '';
+            addressId = addressId + '';
         this.addressId = addressId;
         this.addressData = addressData;
         this.tokenCoin = 0;
@@ -108,13 +107,17 @@ class ConfirmOrderModel {
         this.isAllVirtual = isAllVirtual;
     }
 
-    getParams(filterFail){
-
+    getAvailableProducts(){
         let orderProducts =  this.orderParamVO.orderProducts || [];
-        if (filterFail){
-            orderProducts = orderProducts.filter((item => {
+           return orderProducts.filter((item => {
                 return item.fail === false;
             }))
+    }
+
+    getParams(filterFail){
+        let orderProducts =  this.orderParamVO.orderProducts || [];
+        if (filterFail){
+            orderProducts = this.getAvailableProducts();
         }
         let productList = orderProducts.map(item => {
             // "skuCode":, //string 平台skuCode
@@ -148,6 +151,40 @@ class ConfirmOrderModel {
             ext: { //扩展信息
                 userMessage: this.message// string 买家留言
             }
+        }
+    }
+
+    getCouponParams(){
+        let orderProducts =  this.orderParamVO.orderProducts || [];
+        let arr = orderProducts.map((item) => {
+            return {
+                priceCode: item.skuCode,
+                productCode: item.productCode,
+                amount: item.quantity,
+                activityCode: item.activityCode,
+                batchNo: item.batchNo
+            };
+        });
+        let  params = { productPriceIds: arr };
+       return { sgAppVersion: 310, ...params}
+    }
+
+    @action
+    makeSureProduct_selectDefaltCoupon(couponsId){
+        if (couponsId){
+            API.listAvailable(this.getCouponParams()).then((data) => {
+               // couponConfigId	Integer	823
+               data = data.data || {};
+                (data.data || []).forEach((item) => {
+                    if (item.couponConfigId == couponsId) {
+                        this.userCouponCode = item.code;
+                    }
+                })
+            }).finally(()=> {
+                this.makeSureProduct();
+            })
+        }else {
+           this.makeSureProduct();
         }
     }
 
@@ -186,7 +223,7 @@ class ConfirmOrderModel {
             ]);
         } else if (err.code === 54001) {
             bridge.$toast('商品库存不足！');
-        } else if (err.code === 54002){
+        } else if (err.code === 43009){
             this.isNoAddress = true;
             Alert.alert('','您还没有收货地址，请点击添加',
                 [{text: '取消', onPress: () => {}},
@@ -216,6 +253,13 @@ class ConfirmOrderModel {
         if (this.payInfo.couponAmount === 0){
             this.userCouponCode = '';
         }
+        let canUseCou = false;
+        this.productOrderList.forEach(item=> {
+            if (item.canCoupon === true){
+                canUseCou = true;
+            }
+        })
+        this.canUseCou = canUseCou;
         //遍历出失效对应商品信息
         let failProductList = [];
         let list = data.failProductList || [];
@@ -249,7 +293,7 @@ class ConfirmOrderModel {
         if (this.productOrderList.length === 0){
             return;
         }
-        
+
         bridge.showLoading();
         OrderApi.submitOrder(this.getParams(true)).then((response) => {
             bridge.hiddenLoading();

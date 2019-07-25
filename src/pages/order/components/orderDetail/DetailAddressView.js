@@ -27,10 +27,12 @@ export default class DetailAddressView extends Component{
             address = '',
             receiver = '',
             receiverPhone = '',
+            street = ''
         } = receiveInfo;
         province = province || '';
         city = city || '';
         area = area || '';
+        street = street || '';
         address = address || '';
         return (
             <View style={styles.viewContainer}>
@@ -44,6 +46,7 @@ export default class DetailAddressView extends Component{
                         '收货地址:' + province
                         + city
                         + area
+                        + street
                         + address
                     }
                             style={[styles.innerTextStyle,{marginTop: px2dp(5)}]}/>

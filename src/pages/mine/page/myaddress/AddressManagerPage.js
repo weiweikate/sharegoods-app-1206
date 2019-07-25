@@ -131,7 +131,7 @@ export default class AddressManagerPage extends BasePage {
                         fontSize: 15,
                         color: DesignRule.textColor_mainTitle
                     }}>{item.item.receiver+ '     ' + item.item.receiverPhone}</Text>
-                    {item.item.defaultStatus === 1 ? <View style={{backgroundColor: 'rgba(255,0,80,0.1)', justifyContent: 'center', paddingHorizontal: 3, height: 16}}>
+                    {item.item.defaultStatus === 1 ? <View style={{backgroundColor: 'rgba(255,0,80,0.1)', justifyContent: 'center', paddingHorizontal: 3, height: 16, borderRadius: 4, overflow: 'hidden'}}>
                         <Text style={{color: '#FF0050', fontSize: 10}}>默认</Text>
                     </View>: null}
                 </View>

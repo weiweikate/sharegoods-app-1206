@@ -83,6 +83,7 @@ const GoodsItem = props => {
                         color: !failProduct?DesignRule.textColor_mainTitle: DesignRule.textColor_placeholder,
                         fontSize: 13,
                         marginLeft: 10,
+                        marginRight: 15,
                     }} numberOfLines={2} allowFontScaling={false}>{goodsName}</Text>
                 </View>
                 <View style={{

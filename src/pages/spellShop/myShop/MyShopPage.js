@@ -40,8 +40,6 @@ const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
 const NavLeft = resCommon.button.back_white;
 const shezhi = res.myShop.shezhi;
 const my_Shop_gengduo = res.myShop.my_Shop_gengduo;
-const onSc_03 = res.myShop.sc_03;
-const unSc_03 = res.myShop.wsc_03;
 
 const RmbIcon = res.myShop.zje_11;
 const QbIcon = res.myShop.dzfhj_03_03;
@@ -108,11 +106,7 @@ export default class MyShopPage extends BasePage {
             );
         } else {
             return (
-                <View style={styles.rightBarItemContainer}>
-                    <TouchableOpacity onPress={this.state.isLike ? this._clickUnLikeItem : this._clickLikeItem}>
-                        <Image source={this.state.isLike ? onSc_03 : unSc_03}/>
-                    </TouchableOpacity>
-                </View>
+                <View style={styles.rightBarItemContainer}/>
             );
         }
     };
@@ -167,10 +161,6 @@ export default class MyShopPage extends BasePage {
         this._requestGetById();
         this.MyShopDetailModel.requestShopBanner();
         this.MyShopDetailModel.requestShopProducts();
-        //非首页时请求
-        if (!this.props.leftNavItemHidden) {
-            this._requestGetByStoreId();
-        }
     };
 
     _requestGetById = () => {
@@ -199,44 +189,6 @@ export default class MyShopPage extends BasePage {
         });
     };
 
-    _requestGetByStoreId = () => {
-        //是否收藏店铺
-        SpellShopApi.getByStoreId({ storeCode: this.state.storeCode }).then((data) => {
-            if (data.data) {
-                this.setState({
-                    isLike: true
-                });
-            } else {
-                this.setState({
-                    isLike: false
-                });
-            }
-        }).catch((error) => {
-        });
-    };
-
-    //收藏
-    _clickLikeItem = () => {
-        SpellShopApi.storeCollectionCollection({ storeCode: this.state.storeCode }).then(() => {
-            this.setState({
-                isLike: true
-            });
-            this.$toastShow('收藏成功');
-        }).catch((error) => {
-            this.$toastShow(error.msg);
-        });
-    };
-    //取消收藏
-    _clickUnLikeItem = () => {
-        SpellShopApi.storeCollectionCancel({ storeCode: this.state.storeCode }).then(() => {
-            this.setState({
-                isLike: false
-            });
-            this.$toastShow('取消收藏成功');
-        }).catch((error) => {
-            this.$toastShow(error.msg);
-        });
-    };
     // 点击店铺设置
     _clickSettingItem = () => {
         const { myStore } = this.state.storeData;

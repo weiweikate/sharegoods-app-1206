@@ -38,7 +38,6 @@ import NavigatorBar from '../../../components/pageDecorator/NavigatorBar/Navigat
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { beginChatType, QYChatTool } from '../../../utils/QYModule/QYChatTool';
-import bridge from '../../../utils/bridge';
 const {
     PAGE_AREFUND,
     PAGE_SALES_RETURN,
@@ -294,7 +293,7 @@ class ExchangeGoodsDetailPage extends BasePage {
         if (EmptyUtils.isEmpty(pageData)){
             return;
         }
-        let supplierCode = pageData.service.supplierCode;
+        let supplierCode = pageData.service.merchantCode;
         if (!supplierCode){
             this.kefuData = {};
         }
@@ -336,7 +335,21 @@ class ExchangeGoodsDetailPage extends BasePage {
                     )
                 }
             ).catch((e) => {
-                bridge.$toast(e.msg)
+                QYChatTool.beginQYChat({
+                        routePath: '',
+                        urlString: '',
+                        title:  '平台客服',
+                        shopId: '',
+                        chatType: beginChatType.BEGIN_FROM_ORDER,
+                        data: {
+                            title: merchantOrderNo,
+                            desc,
+                            pictureUrlString,
+                            urlString: '',
+                            note: '',
+                        }
+                    }
+                )
             })
         }
     }
@@ -402,7 +415,7 @@ class ExchangeGoodsDetailPage extends BasePage {
         );
     };
 
-    returnLogists = (expressNo, expressCode, manyLogistics) => {
+    returnLogists = (expressNo, expressCode, manyLogistics, expressName) => {
         if (EmptyUtils.isEmpty(expressNo)) {
             this.$navigate('order/afterSaleService/FillReturnLogisticsPage', {
                 pageData: {productOrderNo: this.afterSaleDetailModel.pageData.product.productOrderNo},
@@ -413,12 +426,13 @@ class ExchangeGoodsDetailPage extends BasePage {
         } else {
             this.$navigate('order/logistics/LogisticsDetailsPage', {
                 expressNo: expressNo,
-                expressCode: expressCode
+                expressCode: expressCode,
+                expressName: expressName
             });
         }
     };
 
-    shopLogists = (expressNo, expressCode, manyLogistics) => {
+    shopLogists = (expressNo, expressCode, manyLogistics, expressName) => {
         // if (EmptyUtils.isEmpty(expressNo)) {
         //     this.$toastShow('请填写完整的退货物流信息\n才可以查看商家的物流信息');
         //     return;
@@ -430,7 +444,8 @@ class ExchangeGoodsDetailPage extends BasePage {
         }else {
             this.$navigate('order/logistics/LogisticsDetailsPage', {
                 expressNo: expressNo,
-                expressCode: expressCode
+                expressCode: expressCode,
+                expressName: expressName
             });
         }
     };

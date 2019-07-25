@@ -52,9 +52,11 @@ const detailData = {
     18: { title: '秀购惩罚', icon: res.cashAccount.chengFa_icon },
     19: { title: '抽奖奖励', icon: res.cashAccount.zengsong_icon },
     20: { title: '秀购奖励', icon: res.cashAccount.zengsong_icon },
+    24: { title: '购买经验值', icon: res.cashAccount.zengsong_icon },
     30: { title: '30天未登录扣除', icon: res.cashAccount.jinggao_icon },
     31: { title: '周交易额未达标扣除', icon: res.cashAccount.jinggao_icon },
-    32: { title: '邀请有礼奖励', icon: res.myData.icon_invite }
+    32: { title: '邀请有礼奖励', icon: res.myData.icon_invite },
+
 };
 export default class ExpDetailPage extends BasePage {
     constructor(props) {
@@ -156,7 +158,7 @@ export default class ExpDetailPage extends BasePage {
 
     _accountInfoRender() {
         const progress = this.state.experience / this.state.levelExperience;
-        const marginLeft = progress ? ScreenUtils.px2dp(315) * progress : 0;
+        const marginLeft = progress ? progress>1 ? ScreenUtils.px2dp(315) : ScreenUtils.px2dp(315) * progress : 0;
         return (
             <ImageBackground source={account_bg_white} resizeMode={'stretch'} style={{
                 position: 'absolute',
@@ -397,7 +399,7 @@ const styles = StyleSheet.create({
         marginBottom: ScreenUtils.safeBottom
     },
     contentStyle: {
-        backgroundColor: DesignRule.bgColor,
+        backgroundColor: 'white',
         flex: 1
     },
     headerBg: {

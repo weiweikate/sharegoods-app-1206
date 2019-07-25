@@ -171,16 +171,15 @@ export default class SetShopNamePage extends BasePage {
 
     /*选择区域*/
     _getCityPicker = () => {
-        this.$navigate(RouterMap.SelectAreaPage, {
-            setArea: this.setArea.bind(this),
-            tag: 'province',
-            fatherCode: '0'
+        this.$navigate(RouterMap.AddressSelectPage, {
+            callBack: this.setArea.bind(this),
+            tittle: '选择区域'
         });
     };
 
-    setArea(provinceCode, provinceName, cityCode, cityName, areaCode, areaName, areaText) {
+    setArea(provinceName, provinceCode, cityName, cityCode, areaName, areaCode) {
         this.setState({
-            textArea: areaText,
+            textArea: `${provinceName}${cityName}${areaName}`,
             provinceCode: provinceCode,
             cityCode: cityCode,
             areaCode: areaCode
