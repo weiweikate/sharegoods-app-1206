@@ -33,6 +33,9 @@ import com.meeruu.sharegoods.rn.showground.widgets.gridview.NineGridViewAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.meeruu.sharegoods.rn.showground.utils.VideoCoverUtils.TYPE43;
+import static com.meeruu.sharegoods.rn.showground.utils.VideoCoverUtils.TYPE916;
+
 public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGroundBean.DataBean, BaseViewHolder> {
     private NineGridView.clickL clickL;
     private ProductsAdapter.AddCartListener addCartListener;
@@ -154,6 +157,12 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
             FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) coverView.getLayoutParams();
             layoutParams.width = videoOrImageWH;
             layoutParams.height = videoOrImageWH;
+            if(TextUtils.equals(item.getCoverType(),TYPE43)){
+                layoutParams.height = videoOrImageWH/4*3;
+            }
+            if(TextUtils.equals(item.getCoverType(),TYPE916)){
+                layoutParams.height = videoOrImageWH/9*16;
+            }
             coverView.setLayoutParams(layoutParams);
             ImageLoadUtils.loadRoundNetImage(item.getVideoCover(), coverView, videoOrImageWH,
                     videoOrImageWH, radius_5);
@@ -260,7 +269,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         SimpleDraweeView simpleDraweeView = helper.getView(R.id.image);
         if (item.getResource() != null) {
             String tag = (String) simpleDraweeView.getTag();
-            String url = item.getResource().get(0).getUrl();
+            String url = item.getResource().get(0).getBaseUrl();
             if (!TextUtils.equals(url, tag)) {
                 simpleDraweeView.setTag(url);
                 LinearLayout.LayoutParams linearParams = (LinearLayout.LayoutParams) simpleDraweeView.getLayoutParams();

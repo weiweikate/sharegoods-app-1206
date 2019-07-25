@@ -50,6 +50,7 @@ import com.meeruu.sharegoods.rn.showground.event.onSharePressEvent;
 import com.meeruu.sharegoods.rn.showground.event.onStartRefreshEvent;
 import com.meeruu.sharegoods.rn.showground.event.onStartScrollEvent;
 import com.meeruu.sharegoods.rn.showground.presenter.ShowgroundPresenter;
+import com.meeruu.sharegoods.rn.showground.utils.VideoCoverUtils;
 import com.meeruu.sharegoods.rn.showground.view.IShowgroundView;
 import com.meeruu.sharegoods.rn.showground.widgets.CustomLoadMoreView;
 import com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView;
@@ -512,11 +513,12 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
                         for (int j = 0; j < resource.size(); j++) {
                             NewestShowGroundBean.DataBean.ResourceBean resourceBean = resource.get(j);
                             if (resourceBean.getType() == 2) {
-                                resolveResource.add(resourceBean.getUrl());
+                                resolveResource.add(resourceBean.getBaseUrl());
                             }
 
                             if (resourceBean.getType() == 5) {
-                                bean.setVideoCover(resourceBean.getUrl());
+                                bean.setVideoCover(resourceBean.getBaseUrl());
+                                bean.setCoverType(VideoCoverUtils.getCoverType(resourceBean.getWidth(),resourceBean.getHeight()));
                                 break;
                             }
                         }

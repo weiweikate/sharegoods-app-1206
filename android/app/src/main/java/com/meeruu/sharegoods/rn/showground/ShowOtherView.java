@@ -210,12 +210,12 @@ public class ShowOtherView  implements IShowgroundView, SwipeRefreshLayout.OnRef
                             NewestShowGroundBean.DataBean.ResourceBean resourceBean = resource.get(j);
                             if (resourceBean.getType() == 2) {
 
-                                resolveResource.add(resourceBean.getUrl());
+                                resolveResource.add(resourceBean.getBaseUrl());
                             }
 
                             if(resourceBean.getType() == 5){
 
-                                bean.setVideoCover(resourceBean.getUrl());
+                                bean.setVideoCover(resourceBean.getBaseUrl());
                                 break;
                             }
                         }

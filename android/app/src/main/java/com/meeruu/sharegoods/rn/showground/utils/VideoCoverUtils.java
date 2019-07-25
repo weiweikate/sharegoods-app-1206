@@ -20,6 +20,9 @@ import java.io.File;
 import java.net.URI;
 
 public class VideoCoverUtils {
+    public static final String TYPE11 = "type11";
+    public static final String TYPE43 = "type43";
+    public static final String TYPE916 = "type916";
 
     public static ImageBean getVideoThumb(Context mContext, String filePath) {
 
@@ -74,6 +77,28 @@ public class VideoCoverUtils {
         } else {
            return null;
         }
+    }
+
+    public static String getCoverType(double width,double height){
+        double roate11 = 1;
+        double roate43 = 4/3.0;
+        double roate916 = 9/16.0;
+        double[] roates = new double[]{roate11,roate43,roate916};
+        double roate = width/height*1.0f;
+        String result = TYPE11;
+        double diff = Math.abs(roates[0]-roate);
+        double diff1 = Math.abs(roates[1]-roate);
+        double diff2 = Math.abs(roates[2]-roate);
+
+        if(diff1<diff){
+            diff = diff1;
+            result = TYPE43;
+        }
+        if(diff2 < diff){
+            diff = diff2;
+            result = TYPE916;
+        }
+        return result;
     }
     
 }
