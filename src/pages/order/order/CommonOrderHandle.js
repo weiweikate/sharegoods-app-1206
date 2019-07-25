@@ -13,7 +13,7 @@ function clickOrderLogistics(merchantOrderNo){
         let deliveryPackage = data.deliveryPackage || [];
         let unDeliveryProductList = data.unDeliveryProductList || [];
         let length =  deliveryPackage.length + unDeliveryProductList.length;
-        if (length === 0){
+        if (length === 0 ){
             bridge.$toast('无物流信息')
         } else if (length === 1){
             let express = [...deliveryPackage, ...unDeliveryProductList][0] || {}
