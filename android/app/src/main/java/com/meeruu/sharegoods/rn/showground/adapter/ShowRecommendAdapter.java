@@ -136,6 +136,9 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
             collect.setImageResource(R.mipmap.icon_collection_gray);
         }
 
+        TextView tvCollection = helper.getView(R.id.collection_num);
+        tvCollection.setText(NumUtils.formatShowNum(item.getCollectCount()));
+
         TextView name = helper.getView(R.id.user_name);
         name.setText(item.getUserInfoVO().getUserName());
         TextView tvHot =helper.getView(R.id.tv_hotCount);
@@ -205,7 +208,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         }
 
         ImageView ivRecommend = helper.getView(R.id.iv_recommend);
-        if (item.getCreateSource() == CommValue.NORMAL_USER_CONTENT) {
+        if ((item.getCreateSource() == CommValue.NORMAL_USER_CONTENT) || (item.getCreateSource() == CommValue.WRITER_CONTENT)) {
             ivRecommend.setVisibility(View.VISIBLE);
         } else {
             ivRecommend.setVisibility(View.GONE);

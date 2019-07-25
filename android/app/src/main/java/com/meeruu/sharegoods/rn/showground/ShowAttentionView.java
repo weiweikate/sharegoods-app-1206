@@ -327,7 +327,7 @@ public class ShowAttentionView implements IShowgroundView, SwipeRefreshLayout.On
                         case ParameterUtils.SHOW_REPLACE_DELAY:
                             final List<NewestShowGroundBean.DataBean> data = adapter.getData();
                             NewestShowGroundBean.DataBean bean = JSON.parseObject((String) msg.obj, NewestShowGroundBean.DataBean.class);
-                            data.set(msg.arg1, bean);
+                            data.set(msg.arg1, resolveItem(bean));
                             adapter.replaceData(data);
                             break;
                         default:
@@ -534,6 +534,30 @@ public class ShowAttentionView implements IShowgroundView, SwipeRefreshLayout.On
         return data;
     }
 
+    private NewestShowGroundBean.DataBean resolveItem(NewestShowGroundBean.DataBean bean){
+        if (bean.getItemType() == 1 || bean.getItemType() == 3) {
+            List<NewestShowGroundBean.DataBean.ResourceBean> resource = bean.getResource();
+            List<String> resolveResource = new ArrayList<>();
+            if (resource != null) {
+                for (int j = 0; j < resource.size(); j++) {
+                    NewestShowGroundBean.DataBean.ResourceBean resourceBean = resource.get(j);
+                    if (resourceBean.getType() == 2) {
+                        resolveResource.add(resourceBean.getBaseUrl());
+                    }
+
+                    if(resourceBean.getType() == 5){
+                        bean.setCoverType(VideoCoverUtils.getCoverType(resourceBean.getWidth(),resourceBean.getHeight()));
+                        bean.setVideoCover(resourceBean.getBaseUrl());
+                        break;
+                    }
+                }
+                bean.setImgUrls(resolveResource);
+            }
+
+        }
+        return bean;
+    }
+
     @Override
     public void loadMoreEnd() {
         showList();
@@ -544,6 +568,19 @@ public class ShowAttentionView implements IShowgroundView, SwipeRefreshLayout.On
 
     @Override
     public void repelaceData(final int index, final int clickNum) {
+        if (adapter != null) {
+            final List<NewestShowGroundBean.DataBean> data = adapter.getData();
+
+            recyclerView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    NewestShowGroundBean.DataBean bean = data.get(index);
+                    bean.setHotCount(clickNum);
+                    adapter.replaceData(data);
+
+                }
+            }, 200);
+        }
     }
 
     public void scrollIndex(int index) {

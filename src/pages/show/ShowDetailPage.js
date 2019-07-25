@@ -134,7 +134,7 @@ export default class ShowDetailPage extends BasePage {
             if (this.params.isFormHeader) {
                 this.params.ref && this.params.ref.setClick(detail.click);
             } else {
-                this.params.ref && this.params.ref.replaceData(this.params.index, detail.click);
+                this.params.ref && this.params.ref.replaceData(this.params.index, detail.hotCount);
             }
             this.setState({
                 pageState: PageLoadingState.success
@@ -414,17 +414,11 @@ export default class ShowDetailPage extends BasePage {
             return;
         }
         let { detail } = this.showDetailModule;
-        if (!EmptyUtils.isEmptyArr(detail.resource)) {
-            let urls = detail.resource.map((value) => {
-                return value.url;
-            });
-            ShowUtils.downloadShow(urls, detail.content).then(() => {
-                detail.downloadCount += 1;
-                this.incrCountByType(4);
-                this.showDetailModule.setDetail(detail);
-            });
-        }
-        DownloadUtils.downloadProduct({ detail });
+        DownloadUtils.downloadShow(detail).then(() => {
+            detail.downloadCount += 1;
+            this.incrCountByType(4);
+            this.showDetailModule.setDetail(detail);
+        });
         const { showNo, userInfoVO } = detail;
         const { userNo } = userInfoVO || {};
         track(trackEvent.XiuChangDownLoadClick, {
