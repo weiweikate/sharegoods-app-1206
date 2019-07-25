@@ -34,8 +34,7 @@ export default ({ navigation, hasMessage }) =>
                     routeNavigate(RouterMap.LoginPage);
                     return;
                 }
-                // navigation(RouterMap.MessageCenterPage);
-                routeNavigate('login/login/LoginView');
+                navigation(RouterMap.MessageCenterPage);
             }}>
                 <View style={{ height: 32, width: 32, justifyContent: 'center', alignItems: 'center' }}>
                     <Image source={messageImg} style={styles.msgIcon}/>
