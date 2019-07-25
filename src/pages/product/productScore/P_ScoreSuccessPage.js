@@ -49,7 +49,7 @@ export default class P_ScoreSuccessPage extends BasePage {
 
     _goPublish = (warehouseOrderNo) => {
         OrderApi.checkInfo({ warehouseOrderNo: warehouseOrderNo }).then(res => {
-            if (res.data === false) {
+            if (res.data) {
                 this.$navigate(RouterMap.P_ScorePublishPage, { orderNo: warehouseOrderNo });
             } else {
                 this._loadPageData();
