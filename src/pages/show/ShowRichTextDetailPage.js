@@ -44,7 +44,7 @@ import ShowApi from './ShowApi';
 import LinearGradient from 'react-native-linear-gradient';
 import WhiteModel from './model/WhiteModel';
 
-const { iconShowFire, iconLike, iconNoLike, iconShowShare, dynamicEmpty } = res;
+const { iconShowFire, iconLike, iconNoLike, iconShowShare, dynamicEmpty,collected,uncollected  } = res;
 
 
 @SmoothPushPreLoadHighComponent
@@ -437,6 +437,44 @@ export default class ShowRichTextDetailPage extends BasePage {
         }
     };
 
+    _collectClick = () => {
+        let { detail } = this.showDetailModule;
+        if (detail.collect) {
+            if (detail.collectCount <= 0) {
+                return;
+            }
+            this.reduceCountByType(2);
+            detail.collect = false;
+            detail.collectCount -= 1;
+            this.showDetailModule.setDetail(detail);
+
+            // const { showNo, userInfoVO } = detail;
+            // const { userNo } = userInfoVO || {};
+            // track(trackEvent.XiuChangLikeClick, {
+            //     xiuChangBtnLocation: '2',
+            //     xiuChangListType: '',
+            //     articleCode: showNo,
+            //     author: userNo,
+            //     likeType: 2
+            // });
+        } else {
+            this.incrCountByType(2);
+            detail.collect = true;
+            detail.collectCount += 1;
+            this.showDetailModule.setDetail(detail);
+
+            // const { showNo, userInfoVO } = detail;
+            // const { userNo } = userInfoVO || {};
+            // track(trackEvent.XiuChangLikeClick, {
+            //     xiuChangBtnLocation: '2',
+            //     xiuChangListType: '',
+            //     articleCode: showNo,
+            //     author: userNo,
+            //     likeType: 1
+            // });
+        }
+    };
+
     _bottomRender = () => {
         let { detail } = this.showDetailModule;
         return (
@@ -450,9 +488,18 @@ export default class ShowRichTextDetailPage extends BasePage {
                     </View>
                 </NoMoreClick>
                 <View style={{ width: px2dp(24) }}/>
+                <NoMoreClick onPress={this._collectClick}>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Image source={detail.collect ? collected:uncollected} style={styles.bottomIcon}/>
+                        <Text style={styles.bottomNumText}>
+                            {ShowUtils.formatShowNum(detail.collectCount)}
+                        </Text>
+                    </View>
+                </NoMoreClick>
+                <View style={{ width: px2dp(24) }}/>
 
                 <View style={{ flex: 1 }}/>
-                {!EmptyUtils.isEmptyArr(detail.products) ? <TouchableWithoutFeedback onPress={() => {
+                <TouchableWithoutFeedback onPress={() => {
                     this.setState({
                         productModalVisible: true
                     });
@@ -490,7 +537,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                             </Text>
                         </View>
                     </View>
-                </TouchableWithoutFeedback> : null}
+                </TouchableWithoutFeedback>
 
             </View>
         );
