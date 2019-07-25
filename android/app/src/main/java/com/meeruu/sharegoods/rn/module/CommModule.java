@@ -400,6 +400,13 @@ public class CommModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void removeLaunch() {
         EventBus.getDefault().post(new HideSplashEvent());
+        String baseUrl = (String) SPCacheUtils.get("D_baseUrl", "");
+        if (!TextUtils.isEmpty(baseUrl)) {
+            WritableMap map = new WritableNativeMap();
+            map.putString("baseUrl", baseUrl);
+            this.mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                    .emit("Event_change_baseUrl", map);
+        }
     }
 
     @ReactMethod
@@ -621,15 +628,6 @@ public class CommModule extends ReactContextBaseJavaModule {
         map.putString("uri", event.getUrl());
         this.mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit("Event_navigateHtmlPage", map);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void baseUrl(Event.MRBaseUrlEvent event) {
-        WritableMap map = new WritableNativeMap();
-        this.baseUrl = event.getUrl();
-        map.putString("baseUrl", this.baseUrl);
-        this.mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                .emit("Event_change_baseUrl", map);
     }
 
     @Nullable
