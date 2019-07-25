@@ -34,7 +34,9 @@ public class AppInitUtils {
             @Override
             public void onSuccess(String result) {
                 if (!TextUtils.isEmpty(result)) {
-                    EventBus.getDefault().post(new Event.MRBaseUrlEvent(result));
+                    SPCacheUtils.put("D_baseUrl", result);
+                } else {
+                    SPCacheUtils.remove("D_baseUrl");
                 }
             }
         });
