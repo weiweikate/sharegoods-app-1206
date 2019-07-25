@@ -77,21 +77,21 @@ public class ShowAttentionViewManager extends ViewGroupManager<ViewGroup> {
         switch (commandId) {
             case REPLACE_DATA: {
                 Object object = root.getTag();
-                if (object != null && object instanceof ShowRecommendView) {
+                if (object != null && object instanceof ShowAttentionView) {
                     ((ShowAttentionView) object).repelaceData(args.getInt(0), args.getInt(1));
                 }
             }
             break;
             case REPLACE_ITEM_DATA: {
                 Object object = root.getTag();
-                if (object != null && object instanceof ShowRecommendView) {
+                if (object != null && object instanceof ShowAttentionView) {
                     ((ShowAttentionView) object).repelaceItemData(args.getInt(0), args.getString(1));
                 }
             }
             break;
             case SCROLL_TO_TOP: {
                 Object object = root.getTag();
-                if (object != null && object instanceof ShowRecommendView) {
+                if (object != null && object instanceof ShowAttentionView) {
                     ((ShowAttentionView) object).scrollIndex(0);
                 }
             }

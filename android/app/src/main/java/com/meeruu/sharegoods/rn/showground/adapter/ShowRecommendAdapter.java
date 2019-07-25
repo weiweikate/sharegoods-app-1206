@@ -136,6 +136,9 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
             collect.setImageResource(R.mipmap.icon_collection_gray);
         }
 
+        TextView tvCollection = helper.getView(R.id.collection_num);
+        tvCollection.setText(NumUtils.formatShowNum(item.getCollectCount()));
+
         TextView name = helper.getView(R.id.user_name);
         name.setText(item.getUserInfoVO().getUserName());
         TextView tvHot =helper.getView(R.id.tv_hotCount);

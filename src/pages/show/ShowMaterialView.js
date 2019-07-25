@@ -18,8 +18,6 @@ import shopCartCacheTool from '../shopCart/model/ShopCartCacheTool';
 import { track, trackEvent } from '../../utils/SensorsTrack';
 import bridge from '../../utils/bridge';
 import ShowApi from './ShowApi';
-import EmptyUtils from '../../utils/EmptyUtils';
-import ShowUtils from './utils/ShowUtils';
 import RouterMap, { routeNavigate, routePush } from '../../navigation/RouterMap';
 import DownloadUtils from './utils/DownloadUtils';
 import WhiteModel from './model/WhiteModel';
@@ -189,21 +187,15 @@ export default class ShowMaterialView extends React.Component {
                                                return;
                                            }
                                            let { detail } = nativeEvent;
-                                           if (!EmptyUtils.isEmptyArr(detail.resource)) {
-                                               let urls = detail.resource.map((value) => {
-                                                   return value.url;
+                                           DownloadUtils.downloadShow(detail).then(() => {
+                                               detail.downloadCount += 1;
+                                               ShowApi.incrCountByType({
+                                                   showNo: nativeEvent.detail.showNo,
+                                                   type: 4
                                                });
-                                               ShowUtils.downloadShow(urls, detail.content).then(() => {
-                                                   detail.downloadCount += 1;
-                                                   ShowApi.incrCountByType({
-                                                       showNo: nativeEvent.detail.showNo,
-                                                       type: 4
-                                                   });
-                                                   this.materialList && this.materialList.replaceItemData(nativeEvent.index, JSON.stringify(detail));
-                                               });
-                                           }
+                                               this.materialList && this.materialList.replaceItemData(nativeEvent.index, JSON.stringify(detail));
+                                           });
 
-                                           DownloadUtils.downloadProduct(nativeEvent);
                                            this.shareModal && this.shareModal.open();
                                            this.props.onShare(nativeEvent);
                                            const { showNo , userInfoVO } = detail;
