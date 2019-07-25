@@ -127,7 +127,7 @@ export default class ShowVideoPage extends BasePage {
                                        onSharePress={({ nativeEvent }) => {
                                            this.setState({ detail: null }, () => {
                                                this.setState({
-                                                   detail: nativeEvent
+                                                   detail: nativeEvent.detail
                                                }, () => {
                                                    this.shareModal && this.shareModal.open();
                                                });
