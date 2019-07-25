@@ -28,7 +28,24 @@ function getUrlVars(url) {
     return vars;
 }
 
+function getCover(detail) {
+    if(detail){
+        if(detail.showType === 3){
+            let resource = detail.resource;
+            for(let i = 0;i<resource.length;i++){
+                if(resource[i].type === 5){
+                    return resource[i].baseUrl;
+                }
+            }
+        }else {
+            return detail.resource[0].baseUrl;
+        }
+    }
+    return '';
+}
+
 export default {
     formatShowNum,
-    getUrlVars
+    getUrlVars,
+    getCover
 };
