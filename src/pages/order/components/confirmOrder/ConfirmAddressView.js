@@ -27,7 +27,7 @@ export default class ConfirmAddressView extends Component {
 
     render() {
         return (
-            <View>
+            <View style={{ marginBottom: 15}}>
                 {this.renderAddress()}
                 {this.renderSelectImage()}
             </View>
@@ -110,9 +110,7 @@ export default class ConfirmAddressView extends Component {
     renderSelectImage = () => {
         return (
             <View style={{ backgroundColor: 'white' }}>
-                <View style={{ marginBottom: ScreenUtils.autoSizeWidth(10) }}>
                     <Image source={colorLine} style={{ height: 3, width: ScreenUtils.width }}/>
-                </View>
                 {confirmOrderModel.orderParamVO.orderType === 3 ?
                     <View style={styles.giftOutStyle}>
                         <View style={styles.giftInnerStyle}>
@@ -132,7 +130,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingTop: ScreenUtils.autoSizeWidth(10),
-        paddingBottom: ScreenUtils.autoSizeWidth(10)
+        paddingBottom: ScreenUtils.autoSizeWidth(10),
     },
     commonTextStyle: {
         fontSize: ScreenUtils.px2dp(15),

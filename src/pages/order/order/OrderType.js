@@ -11,17 +11,17 @@ const OrderType = {
     PAID:        6, //"已付款"
 }
 
-const ActivityTypes = {
-    SECKILL:         1,  //"秒杀"
-    DEPRECIATE:      2,  //"降价拍"
-    LEVELUP_PACKAGE: 3,  //"升级礼包"
-    ORDINARY_PACKAGE:4,  // "普通礼包"
-    EXPRIENCE:       5,  //"经验专区"
-    MIAO_SHA:        10, //"秒杀"
-    TAO_CAN:         20, //"套餐"
-    ZHI_JIANG:       30, //"直降"
-    MAN_JIAN:        40, //"满减")
-}
+// const ActivityTypes = {
+//     SECKILL:         1,  //"秒杀"
+//     DEPRECIATE:      2,  //"降价拍"
+//     LEVELUP_PACKAGE: 3,  //"升级礼包"
+//     ORDINARY_PACKAGE:4,  // "普通礼包"
+//     EXPRIENCE:       5,  //"经验专区"
+//     MIAO_SHA:        10, //"秒杀"
+//     TAO_CAN:         20, //"套餐"
+//     ZHI_JIANG:       30, //"直降"
+//     MAN_JIAN:        40, //"满减")
+// }
 
 const ViewOrderStatus = {
     0:  {
@@ -131,8 +131,7 @@ function checkOrderAfterSaleService(products = [], status, nowTime, isShowToast)
     let hasAfterSaleService = false;
 
     products.forEach((product) => {
-        let { activityList, afterSaleEndTime ,afterSale, orderType } = product
-        activityList = activityList || [];
+        let { restrictions, afterSaleEndTime ,afterSale, orderType } = product
         afterSale = afterSale || {};
         let afterStaus = afterSale.afterStaus;
         if (orderType == 1){
@@ -141,18 +140,11 @@ function checkOrderAfterSaleService(products = [], status, nowTime, isShowToast)
             }
             return;
         }
-        let activityTypes = activityList.map((item) => {
-            return item.activityType;
-        });
         //礼包产品3  经验值专区商品5 只支持退换，不支持退款
-        if (activityTypes.indexOf(ActivityTypes.LEVELUP_PACKAGE) !== -1 || activityTypes.indexOf(ActivityTypes.ORDINARY_PACKAGE) !== -1) {
+        if (restrictions === 1) {
             if (status === OrderType.WAIT_DELIVER || status === OrderType.PAID){
                 if (isShowToast){
-                    if (activityTypes.indexOf(ActivityTypes.LEVELUP_PACKAGE) !== -1 ) {
-                        bridge.$toast('该商品属于升级礼包产品，不能退款');
-                    }else {
-                        bridge.$toast('该商品属于经验值专区商品，不能退款');
-                    }
+                        bridge.$toast('该商品不能退款');
                 }
                 return;
             }
