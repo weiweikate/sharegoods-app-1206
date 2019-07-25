@@ -86,6 +86,9 @@ class ApiEnvironment {
      * @returns {Promise<void>}
      */
     loadLastApiSettingFromDiskCache() {
+        if ( NativeModules.commModule.baseUrl){
+            return;
+        }
         store.get(KEY_ApiEnvironment).then(envType => {
             if (envType && Object.keys(ApiConfig).indexOf(envType) >= 0) {
                 this.envType = envType;
