@@ -293,7 +293,7 @@ class ExchangeGoodsDetailPage extends BasePage {
         if (EmptyUtils.isEmpty(pageData)){
             return;
         }
-        let supplierCode = pageData.service.supplierCode;
+        let supplierCode = pageData.service.merchantCode;
         if (!supplierCode){
             this.kefuData = {};
         }

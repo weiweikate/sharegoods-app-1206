@@ -102,8 +102,7 @@
   if ([[UIDevice currentDevice].systemVersion floatValue] >= 8.0) {}
   __weak typeof(self)  weakSelf = self;
   [JPUSHService registerForRemoteNotificationConfig:entity delegate:weakSelf];
-  
-  BOOL isProduction = NO;
+
   NSString * appKey ;
   [JPUSHService setupWithOption:launchOptions
                          appKey:KJSPushKey

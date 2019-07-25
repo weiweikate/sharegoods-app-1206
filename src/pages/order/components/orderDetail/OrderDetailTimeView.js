@@ -42,13 +42,12 @@ export default class OrderDetailTimeView extends Component {
     };
 
     concactKeFu(){
-        let supplierCode = '';
+        let supplierCode = orderDetailModel.merchantOrder.merchantCode || '';
         let desc = ''
         let pictureUrlString = '';
         let num = ''
         if (orderDetailModel.productsList().length > 0){
             let item = orderDetailModel.productsList()[0];
-               supplierCode = item.supplierCode	|| '';
                 desc = item.productName || '';
                 pictureUrlString = item.specImg || '';
                 num = '共'+item.quantity +'件商品';
