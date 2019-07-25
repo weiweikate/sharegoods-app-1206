@@ -50,7 +50,8 @@ export default class AfterLogisticsListView extends BasePage {
                     onPress={() => {
                         this.$navigate(RouterMap.LogisticsDetailsPage, {
                             expressNo: expNO,
-                            expressCode: expressCode
+                            expressCode: expressCode,
+                            expressName: expName
                         });
                     }}>
                     <View style={styles.expStyle}>
@@ -71,7 +72,8 @@ export default class AfterLogisticsListView extends BasePage {
                     onPress={() => {
                         this.$navigate(RouterMap.LogisticsDetailsPage, {
                             expressNo: expNO,
-                            expressCode: expressCode
+                            expressCode: expressCode,
+                            expressName: expName
                         });
                     }}
                 />

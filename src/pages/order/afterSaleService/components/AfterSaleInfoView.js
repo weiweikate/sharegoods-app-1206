@@ -42,25 +42,26 @@ export default class AfterSaleInfoView extends React.Component {
 
     /** 图片*/
     renderCertificateImage = (imgList) => {
-        let arr = [];
-        imgList = imgList || '';
-        imgList = imgList.split(',');
-        for (let i = 0; i < imgList.length; i++) {
-            if (imgList[i].length > 0){
-                arr.push(
-                    <TouchableOpacity onPress={()=> {this.imgClick(imgList,i)}}>
-                        <ImageLoader source={{ uri: imgList[i] }}
-                                     style={{
-                                         height: 83,
-                                         width: 83,
-                                         marginLeft: 15,
-                                         marginTop: 10
-                                     }}/>
-                    </TouchableOpacity>
-                );
-            }
+        if (imgList){
+            imgList = imgList.split(',');
+          return  imgList.map((item, i) => {
+              if (item){
+                  return (
+                      <TouchableOpacity onPress={()=> {this.imgClick(item,i)}}>
+                          <ImageLoader source={{ uri: item }}
+                                       style={{
+                                           height: 83,
+                                           width: 83,
+                                           marginLeft: 15,
+                                           marginTop: 10
+                                       }}/>
+                      </TouchableOpacity>
+                  )
+              } else {
+                  return <View />
+              }
+            })
         }
-        return arr;
     };
 
     render() {
@@ -89,7 +90,7 @@ export default class AfterSaleInfoView extends React.Component {
                                                          style={styles.refundReason}/> :null
                 }
 
-                <UIText value={ ['退款','退货','换货'][pageType - 1] + "说明：" + (afterSaleInfo.description || "")}
+                <UIText value={ ['退款','退货','换货'][pageType - 1] + "说明：" + (afterSaleInfo.description || "/")}
                         style={styles.refundReason}/>
                 <UIText value={"申请时间：" + DateUtils.formatDate(afterSaleInfo.createTime|| '')}
                         style={styles.refundReason}/>
@@ -109,7 +110,7 @@ export default class AfterSaleInfoView extends React.Component {
                         <MRText style={styles.copyBtnText}>复制</MRText>
                     </TouchableOpacity>
                 </View>
-                <UIText value={"凭证图片："}
+                <UIText value={"凭证图片：" + (afterSaleInfo.imgList?'':'/')}
                         style={styles.refundReason}/>
                 <View style={{
                     flexDirection: "row",

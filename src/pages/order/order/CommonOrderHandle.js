@@ -17,7 +17,7 @@ function clickOrderLogistics(merchantOrderNo){
             bridge.$toast('无物流信息')
         } else if (length === 1){
             let express = [...deliveryPackage, ...unDeliveryProductList][0] || {}
-            routePush(RouterMap.LogisticsDetailsPage,{expressNo: express.expressNo, expressCode: express.expressCode})
+            routePush(RouterMap.LogisticsDetailsPage,{expressNo: express.expressNo, expressCode: express.expressCode, expressName: express.expressName})
         } else {
             routePush(RouterMap.CheckLogisticsPage, {
                 expressList: deliveryPackage,

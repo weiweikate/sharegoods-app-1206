@@ -18,10 +18,11 @@ export default class CheckLogisticsPage extends BasePage {
         show: true// false则隐藏导航
     };
 
-    show(expressNo, expressCode) {
+    show(expressNo, expressCode, expressName) {
         this.$navigate(RouterMap.LogisticsDetailsPage, {
             expressNo: expressNo,
-            expressCode: expressCode
+            expressCode: expressCode,
+            expressName: expressName
         });
     }
 //{this.params.expressList.length + this.params.unSendProductInfoList.length}
@@ -46,7 +47,7 @@ export default class CheckLogisticsPage extends BasePage {
                             <TouchableOpacity
                                 style={{ height: 40, backgroundColor: DesignRule.white, justifyContent: 'center' }}
                                 onPress={() => {
-                                    this.show(item.expressNo, item.expressCode);
+                                    this.show(item.expressNo, item.expressCode, item.expressName);
                                 }}>
                                 <View style={styles.expStyle}>
                                     <Text style={{

@@ -91,7 +91,7 @@ export default class NegotiationHistoryPage extends BasePage {
                     <MRText style={styles.detail}>{'申请售后理由：'+ reason}</MRText>
                     <MRText style={styles.detail}>{'申请数量：' + applyQuantity}</MRText>
                     {type != 3?  <MRText style={styles.detail}>{'退款金额：¥' + applyRefundAmount}</MRText> : null}
-                    <MRText style={styles.detail}>{'问题描述：' + description}</MRText>
+                    <MRText style={styles.detail}>{'问题描述：' + (description || '/')}</MRText>
                     <MRText style={styles.detail}>{"申请时间：" + DateUtils.formatDate(createTime|| '')}</MRText>
                     <View style={{flexDirection: 'row'}}>
                         <MRText style={styles.detail}>{"订单号：" + merchantOrderNo}</MRText>
@@ -108,7 +108,7 @@ export default class NegotiationHistoryPage extends BasePage {
                             <MRText style={styles.copyBtnText}>复制</MRText>
                         </TouchableOpacity>
                     </View>
-                    <MRText style={styles.detail}>上传图片</MRText>
+                    <MRText style={styles.detail}>{'上传图片:'+(imgList?'':'/')}</MRText>
                     <View style={{
                         flexDirection: "row",
                         flexWrap: "wrap",

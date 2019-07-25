@@ -415,7 +415,7 @@ class ExchangeGoodsDetailPage extends BasePage {
         );
     };
 
-    returnLogists = (expressNo, expressCode, manyLogistics) => {
+    returnLogists = (expressNo, expressCode, manyLogistics, expressName) => {
         if (EmptyUtils.isEmpty(expressNo)) {
             this.$navigate('order/afterSaleService/FillReturnLogisticsPage', {
                 pageData: {productOrderNo: this.afterSaleDetailModel.pageData.product.productOrderNo},
@@ -426,12 +426,13 @@ class ExchangeGoodsDetailPage extends BasePage {
         } else {
             this.$navigate('order/logistics/LogisticsDetailsPage', {
                 expressNo: expressNo,
-                expressCode: expressCode
+                expressCode: expressCode,
+                expressName: expressName
             });
         }
     };
 
-    shopLogists = (expressNo, expressCode, manyLogistics) => {
+    shopLogists = (expressNo, expressCode, manyLogistics, expressName) => {
         // if (EmptyUtils.isEmpty(expressNo)) {
         //     this.$toastShow('请填写完整的退货物流信息\n才可以查看商家的物流信息');
         //     return;
@@ -443,7 +444,8 @@ class ExchangeGoodsDetailPage extends BasePage {
         }else {
             this.$navigate('order/logistics/LogisticsDetailsPage', {
                 expressNo: expressNo,
-                expressCode: expressCode
+                expressCode: expressCode,
+                expressName: expressName
             });
         }
     };

@@ -32,6 +32,7 @@ export default class DetailAddressView extends Component{
         province = province || '';
         city = city || '';
         area = area || '';
+        street = street || '';
         address = address || '';
         return (
             <View style={styles.viewContainer}>
