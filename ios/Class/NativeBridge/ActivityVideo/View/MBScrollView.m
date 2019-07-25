@@ -246,6 +246,7 @@
     }
   self.isInitVideo = YES;
   self.playerView.playDelegate = self;
+  //视频渲染结束,先隐藏视频页
   [self.playerView setHidden:YES];
 }
 
@@ -361,7 +362,8 @@
     self.pagIndex = self.currentIndexOfShowView;
   }
 }
-
+  
+//如果视频加载结束返回此代理
 - (void)playerViewDidPrepareToShowVideo {
     dispatch_async(dispatch_get_main_queue(), ^{
 //        [self addSubview:self.playerView];
@@ -370,6 +372,7 @@
 }
 
 #pragma mark -  MBBtnViewDelegate
+//点击播放和暂停
 -(void)clickPlayOrPause{
   if(self.isInitVideo){
       if(self.playerView.isPlaying){
@@ -382,32 +385,32 @@
   }
 
 }
-
+//点击下载按钮
 - (void)clickDownload:(MBModelData *)model{
   if(self.dataDelegate){
     [self.dataDelegate clickDownload:model];
   }
 }
-
+//点击收藏按钮
 -(void)clicCollection:(MBModelData *)model{
   if(self.dataDelegate){
     [self.dataDelegate clicCollection:model];
   }
 }
-
+//点击点赞按钮
 -(void)clickZan:(MBModelData *)model{
   if(self.dataDelegate){
     [self.dataDelegate clickZan:model];
   }
 }
-
+//点击购买
 -(void)clickBuy:(MBModelData *)model{
   if(self.dataDelegate){
     [self.dataDelegate clickBuy:model];
   }
 }
 
-
+//点击不同标签页
 -(void)clickTag:(MBModelData *)model index:(NSInteger)index{
   if(self.dataDelegate){
     [self.dataDelegate clickTagBtn:model index:index];
@@ -418,6 +421,7 @@
 
 }
 
+  //获取不同类型图片
 -(NSString*)getUrlfromArr:(MBModelData*)data type:(NSString*)type{
   NSString * url = @"";
   if(data.resource.count>0){

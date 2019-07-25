@@ -358,13 +358,13 @@
 }
 
 #pragma arguments - dataDelegate
-
+  //点击购买按钮并返回代理方法
 -(void)clickBuy{
   if(self.dataDelegate){
     [self.dataDelegate clickBuy:self.model];
   }
 }
-
+  //点击播放按钮并返回代理方法
 -(void)clickPlay{
   AppDelegate *myDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
   
@@ -380,6 +380,7 @@
   }
 }
 
+  //点击下载按钮并返回代理方法
 -(void)clickDownLoad:(UIButton*)sender{
   AppDelegate *myDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
   if(self.isLogin){
@@ -401,7 +402,7 @@
     }
   }
 }
-
+  //点击收藏按钮并返回代理方法
 -(void)clicCollection:(UIButton*)sender{
   MBModelData* modeltemp = self.model;
   if(self.isLogin){
@@ -418,7 +419,7 @@
     [self.dataDelegate clicCollection:modeltemp];
   }
 }
-
+  //点击点赞按钮并返回代理方法
 -(void)clickZan:(UIButton*)sender{
   MBModelData* modeltemp = self.model;
   if(sender.selected){
@@ -433,7 +434,7 @@
     [self.dataDelegate clickZan:self.model];
   }
 }
-
+  //点击标签按钮并返回代理方法
 -(void)clickTag:(UIButton*)sender{
   if(self.dataDelegate){
     [self.dataDelegate clickTag:self.model index:sender.tag];
