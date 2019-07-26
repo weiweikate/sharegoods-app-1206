@@ -11,10 +11,7 @@ import ProtocolView from '../components/Login.protocol.view';
 import RouterMap, { replaceRoute, routeNavigate } from '../../../navigation/RouterMap';
 import LinearGradient from 'react-native-linear-gradient';
 import { getWxUserInfo, wxLoginAction } from '../model/LoginActionModel';
-import { getToken } from '../model/PhoneAuthenAction';
-import LoginAPI from '../api/LoginApi';
-import StringUtils from '../../../utils/StringUtils';
-import store from '@mr/rn-store';
+import { checkInitResult } from '../model/PhoneAuthenAction';
 
 const { px2dp } = ScreenUtils;
 const btnWidth = ScreenUtils.width - px2dp(60);
@@ -23,20 +20,9 @@ export default class LoginPage extends BasePage {
     componentDidMount() {
         // 获取手机号
         InteractionManager.runAfterInteractions(() => {
-            getToken().then((token) => {
-                alert(token);
-                LoginAPI.getMobileByToken({
-                    token
-                }).then((res) => {
-                    let phone = res.data || '';
-                    alert(phone);
-                    if (StringUtils.isNoEmpty(phone)) {
-                        store.save('@mr/localPhone', phone);
-                    }
-                }).catch(e => {
-                });
-            }).catch(e => {
-            });
+            checkInitResult().then((isVerifyEnable) => {
+                this.isVerifyEnable = isVerifyEnable;
+            }).catch();
         });
     }
 

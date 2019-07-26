@@ -46,6 +46,7 @@ import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.SDCardUtils;
+import com.meeruu.commonlib.utils.SPCacheUtils;
 import com.meeruu.commonlib.utils.SecurityUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.sharegoods.bean.NetCommonParamsBean;
@@ -80,7 +81,6 @@ public class CommModule extends ReactContextBaseJavaModule {
     private ReactApplicationContext mContext;
     public static final String MODULE_NAME = "commModule";
     private Promise gongMao;
-    private String baseUrl;
 
 
     /**
@@ -400,6 +400,13 @@ public class CommModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void removeLaunch() {
         EventBus.getDefault().post(new HideSplashEvent());
+        String baseUrl = (String) SPCacheUtils.get("D_baseUrl", "");
+        if (!TextUtils.isEmpty(baseUrl)) {
+            WritableMap map = new WritableNativeMap();
+            map.putString("baseUrl", baseUrl);
+            this.mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                    .emit("Event_change_baseUrl", map);
+        }
     }
 
     @ReactMethod
@@ -623,20 +630,11 @@ public class CommModule extends ReactContextBaseJavaModule {
                 .emit("Event_navigateHtmlPage", map);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void baseUrl(Event.MRBaseUrlEvent event) {
-        WritableMap map = new WritableNativeMap();
-        this.baseUrl = event.getUrl();
-        map.putString("baseUrl", this.baseUrl);
-        this.mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                .emit("Event_change_baseUrl", map);
-    }
-
     @Nullable
     @Override
     public Map<String, Object> getConstants() {
         final Map<String, Object> constants = new HashMap<>();
-        constants.put("baseUrl", this.baseUrl);
+        constants.put("baseUrl", SPCacheUtils.get("D_baseUrl", ""));
         return constants;
     }
 }

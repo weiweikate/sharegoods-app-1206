@@ -63,27 +63,10 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
         }
         JVerificationInterface.setCustomUIWithConfig(builder.build());
         boolean isVerifyEnable = JVerificationInterface.checkVerifyEnable(getCurrentActivity());
-        callback.resolve(isVerifyEnable);
-    }
-
-    @ReactMethod
-    public void getToken(final Promise callback) {
-        boolean isVerifyEnable = JVerificationInterface.checkVerifyEnable(getCurrentActivity());
         if (isVerifyEnable) {
-            JVerificationInterface.getToken(mContext, 5000, new VerifyListener() {
-                @Override
-                public void onResult(int i, String s, String s1) {
-                    if (i == 2000) {
-                        JVerificationInterface.preLogin(mContext, 5000, null);
-                        callback.resolve(s);
-                    } else {
-                        callback.resolve("获取本机号码失败");
-                    }
-                }
-            });
-        } else {
-            callback.reject("当前网络不支持一键登录");
+            JVerificationInterface.preLogin(mContext, 5000, null);
         }
+        callback.resolve(isVerifyEnable);
     }
 
     @ReactMethod

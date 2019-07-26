@@ -3,12 +3,11 @@
  * Api HOST配置
  * 支持动态切换
  */
-import {
-    NativeModules,
-} from 'react-native';
+import { NativeModules } from 'react-native';
 import store from '@mr/rn-store';
 import config from '../../config';
 import StringUtils from '../utils/StringUtils';
+import { homeModule } from '../pages/home/model/Modules';
 // 磁盘缓存key
 const KEY_ApiEnvironment = '@mr/apiEnvironment';
 const KEY_HostJson = '@mr/hostJson';
@@ -19,18 +18,19 @@ const ApiConfig = config.env;
 class ApiEnvironment {
 
     constructor() {
-        let baseHost = NativeModules.commModule.baseUrl
+        let baseHost = NativeModules.commModule.baseUrl;
+        console.log('-----' + baseHost);
         let hasBaseUrl = false;
-        if(StringUtils.isNoEmpty(baseHost)){
-            for(let obj in config.env){
-                if(config.env[obj] && (config.env[obj].host === baseHost)){
+        if (StringUtils.isNoEmpty(baseHost)) {
+            for (let obj in config.env) {
+                if (config.env[obj] && (config.env[obj].host === baseHost)) {
                     hasBaseUrl = true;
-                    this.envType = String(obj)
+                    this.envType = String(obj);
                     break;
                 }
             }
         }
-        if(!hasBaseUrl){
+        if (!hasBaseUrl) {
             const envType = config.envType;
             this.envType = envType && Object.keys(ApiConfig).indexOf(envType) >= 0 ? envType : 'online';
         }
@@ -86,6 +86,9 @@ class ApiEnvironment {
      * @returns {Promise<void>}
      */
     loadLastApiSettingFromDiskCache() {
+        if (StringUtils.isNoEmpty(NativeModules.commModule.baseUrl)) {
+            return;
+        }
         store.get(KEY_ApiEnvironment).then(envType => {
             if (envType && Object.keys(ApiConfig).indexOf(envType) >= 0) {
                 this.envType = envType;
@@ -121,6 +124,8 @@ class ApiEnvironment {
                     await store.save(KEY_HostJson, ApiConfig[envType]);
                 }
                 this.envType = envType;
+                // 刷新首页
+                homeModule.loadHomeList();
             } else {
                 __DEV__ && console.error(`Not support envType with: 【${envType}】, for more details to see documents in ApiEnvironment.js file`);
             }

@@ -4,12 +4,11 @@ import android.text.TextUtils;
 
 import com.meeruu.commonlib.callback.BaseCallback;
 import com.meeruu.commonlib.config.BaseRequestConfig;
-import com.meeruu.commonlib.event.Event;
 import com.meeruu.commonlib.server.RequestManager;
 import com.meeruu.commonlib.utils.HttpUrlUtils;
+import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
-
-import org.greenrobot.eventbus.EventBus;
+import com.meeruu.commonlib.utils.SPCacheUtils;
 
 import java.util.Map;
 
@@ -34,7 +33,9 @@ public class AppInitUtils {
             @Override
             public void onSuccess(String result) {
                 if (!TextUtils.isEmpty(result)) {
-                    EventBus.getDefault().post(new Event.MRBaseUrlEvent(result));
+                    SPCacheUtils.put("D_baseUrl", result);
+                } else {
+                    SPCacheUtils.remove("D_baseUrl");
                 }
             }
         });
