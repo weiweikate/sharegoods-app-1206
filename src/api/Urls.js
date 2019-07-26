@@ -4,6 +4,6 @@ export default {
     // 获取订单可用优惠券列表[di.g]
     listAvailable: '/user/coupon/listOrderAvailableV2',
     queryCoupons: ['/user/coupon/queryByUserCode', { method: 'get' }],
-    invokeCoupons:['/coupon/invoke', { method: 'get' }],
+    invokeCoupons:['/Coupon/invoke', { method: 'get' }],
     checkCanInvoke:['/Coupon/canInvoke', { method: 'get' }],
 };
