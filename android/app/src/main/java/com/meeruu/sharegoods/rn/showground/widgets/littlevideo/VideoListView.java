@@ -96,6 +96,7 @@ public class VideoListView {
     private boolean isCollect;
     private boolean isPersonal;
     private String personalCode;
+    private int tabType = 0;
     /**
      * 数据是否到达最后一页
      */
@@ -758,7 +759,7 @@ public class VideoListView {
      *
      * @param list 刷新数据
      */
-    public void refreshData(List<NewestShowGroundBean.DataBean> list, boolean isPersonal, boolean isCollect) {
+    public void refreshData(List<NewestShowGroundBean.DataBean> list, boolean isPersonal, boolean isCollect,int tabType) {
         isEnd = false;
         isLoadingData = false;
         adapter.refreshData(list);
@@ -766,6 +767,7 @@ public class VideoListView {
         currentShowNo = dataBean.getShowNo();
         this.isPersonal = isPersonal;
         this.isCollect = isCollect;
+        this.tabType = tabType;
         if (this.isPersonal) {
             this.personalCode = dataBean.getUserInfoVO().getUserNo();
         }
@@ -782,7 +784,7 @@ public class VideoListView {
     }
 
     private void loadMoreData() {
-        videoModel.getVideoList(currentShowNo, personalCode, isCollect, new BaseCallback<String>() {
+        videoModel.getVideoList(currentShowNo, personalCode, isCollect,tabType, new BaseCallback<String>() {
             @Override
             public void onErr(String errCode, String msg) {
             }
@@ -791,9 +793,13 @@ public class VideoListView {
             public void onSuccess(String result) {
                 NewestShowGroundBean newestShowGroundBean = JSON.parseObject(result, NewestShowGroundBean.class);
                 List<NewestShowGroundBean.DataBean> list = newestShowGroundBean.getData();
-                addMoreData(list);
-                NewestShowGroundBean.DataBean last = list.get(list.size() - 1);
-                currentShowNo = last.getShowNo();
+                if(list != null && list.size() >0){
+                    addMoreData(list);
+                    NewestShowGroundBean.DataBean last = list.get(list.size() - 1);
+                    currentShowNo = last.getShowNo();
+                }else {
+                    isEnd =true;
+                }
             }
         });
     }

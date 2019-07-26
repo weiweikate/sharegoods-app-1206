@@ -19,9 +19,9 @@ import ScreenUtils from '../../utils/ScreenUtils';
 import TagDescriptionView from './components/TagDescriptionView';
 import { MRText } from '../../components/ui';
 import ShowApi from './ShowApi';
-import CommShareModal from '../../comm/components/CommShareModal';
 import apiEnvironment from '../../api/ApiEnvironment';
 import TagDetailItemView from './components/TagDetailItemView';
+import CommShowShareModal from '../../comm/components/CommShowShareModal';
 
 const { iconShowShare, dynamicEmpty } = res;
 const { px2dp } = ScreenUtils;
@@ -140,13 +140,13 @@ export default class TagDetailPage extends BasePage {
                             onRefresh={this.refresh}
                         />
                     }/>
-                <CommShareModal ref={(ref) => this.shareModal = ref}
-                                defaultModalVisible={this.params.openShareModal}
-                                webJson={{
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/aTag/list?tagId=${this.params.tagId}`,//(图文分享下的链接)
-                                    title: this.params.name || '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
-                                    dec: '好物不独享，内有惊喜福利~'
-                                }}
+                <CommShowShareModal ref={(ref) => this.shareModal = ref}
+                                    type={'show'}
+                                    webJson={{
+                                        linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/aTag/list?tagId=${this.params.tagId}`,//(图文分享下的链接)
+                                        title: this.params.name || '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
+                                        dec: '好物不独享，内有惊喜福利~'
+                                    }}
                 />
             </View>
         );

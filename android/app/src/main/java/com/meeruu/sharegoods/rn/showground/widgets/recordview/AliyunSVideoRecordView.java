@@ -413,6 +413,7 @@ public class AliyunSVideoRecordView extends FrameLayout implements ScaleGestureD
                         .videoMinSecond(1)// 显示多少秒以内的视频or音频也可适用 int
                         //.recordVideoSecond()//视频秒数录制 默认60s int
                         .isDragFrame(false)// 是否可拖动裁剪框(固定)
+                        .videoMinSecond(5)
                         .forResult(result_code);//结果回调onActivityResult code
             }
         });

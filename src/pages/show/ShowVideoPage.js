@@ -18,16 +18,17 @@ import EmptyUtils from '../../utils/EmptyUtils';
 import user from '../../model/user';
 import RouterMap, { routeNavigate, routePop } from '../../navigation/RouterMap';
 import { observer } from 'mobx-react';
-import CommShareModal from '../../comm/components/CommShareModal';
 import apiEnvironment from '../../api/ApiEnvironment';
 import { trackEvent } from '../../utils/SensorsTrack';
-import ShowListIndexModel from './model/ShowListIndexModel';
 import ProductListModal from './components/ProductListModal';
 import WhiteModel from './model/WhiteModel';
 import DesignRule from '../../constants/DesignRule';
 import res from './res';
 import ScreenUtils from '../../utils/ScreenUtils';
 import NetFailedView from '../../components/pageDecorator/BaseView/NetFailedView';
+import ShareUtil from '../../utils/ShareUtil';
+import CommShowShareModal from '../../comm/components/CommShowShareModal';
+import ShowUtils from './utils/ShowUtils';
 const {px2dp} = ScreenUtils;
 const ShowVideoListView = requireNativeComponent('MrShowVideoListView');
 @observer
@@ -69,6 +70,10 @@ export default class ShowVideoPage extends BasePage {
             }else {
                 this.data.isPersonal = false;
             }
+
+            if(this.params.tabType){
+                this.data.tabType = this.params.tabType;
+            }
             this.setState({
                 pageState: PageLoadingState.success
             });
@@ -79,7 +84,6 @@ export default class ShowVideoPage extends BasePage {
             });
         });
     }
-
 
     _render() {
         const { pageState } = this.state;
@@ -97,6 +101,7 @@ export default class ShowVideoPage extends BasePage {
 
         if (pageState === PageLoadingState.success) {
             const { detail } = this.state;
+
             return (
                 <View style={{ flex: 1 }}>
                     <ShowVideoListView style={{ flex: 1 }}
@@ -127,7 +132,7 @@ export default class ShowVideoPage extends BasePage {
                                        onSharePress={({ nativeEvent }) => {
                                            this.setState({ detail: null }, () => {
                                                this.setState({
-                                                   detail: nativeEvent.detail
+                                                   detail: nativeEvent
                                                }, () => {
                                                    this.shareModal && this.shareModal.open();
                                                });
@@ -199,36 +204,35 @@ export default class ShowVideoPage extends BasePage {
                                        isLogin={!EmptyUtils.isEmpty(user.token)}
                                        params={this.data}/>
                     {detail ?
-                        <CommShareModal ref={(ref) => this.shareModal = ref}
-                                        type={'web'}
-                                        trackEvent={trackEvent.XiuChangShareClick}
-                                        trackParmas={{
-                                            articleCode: detail.code,
-                                            author: (detail.userInfoVO || {}).userNo,
-                                            xiuChangBtnLocation: '1',
-                                            xiuChangListType: ShowListIndexModel.pageIndex + 1
-                                        }}
-                                        imageJson={{
-                                            imageType: 'show',
-                                            imageUrlStr: detail.resource[0] ? detail.resource[0].url : '',
-                                            titleStr: detail.showType === 1 ? detail.content : detail.title,
-                                            QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
-                                            headerImage: (detail.userInfoVO && detail.userInfoVO.userImg) ? detail.userInfoVO.userImg : null,
-                                            userName: (detail.userInfoVO && detail.userInfoVO.userName) ? detail.userInfoVO.userName : '',
-                                            dec: '好物不独享，内有惊喜福利~'
-                                        }}
-                                        taskShareParams={{
-                                            uri: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
-                                            code: detail.showType === 1 ? 22 : 25,
-                                            data: detail.showNo
-                                        }}
-                                        webJson={{
-                                            title: detail.title || '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
-                                            linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
-                                            thumImage: detail.resource && detail.resource[0] && detail.resource[0].url
-                                                ? detail.resource[0].url : '',//(分享图标小图(https链接)图文分享使用)
-                                            dec: '好物不独享，内有惊喜福利~'
-                                        }}
+                        <CommShowShareModal ref={(ref) => this.shareModal = ref}
+                                            type={ShareUtil.showSharedetailDataType(detail && detail.showType)}
+                                            trackEvent={trackEvent.XiuChangShareClick}
+                                            trackParmas={{
+                                                articleCode: detail.code,
+                                                author: (detail.userInfoVO || {}).userNo,
+                                                xiuChangBtnLocation: '2',
+                                                xiuChangListType: ''
+                                            }}
+                                            imageJson={{
+                                                imageType: 'show',
+                                                imageUrlStr: ShowUtils.getCover(detail),
+                                                titleStr: detail.showType === 1 ? detail.content : detail.title,
+                                                QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
+                                                headerImage: (detail.userInfoVO && detail.userInfoVO.userImg) ? detail.userInfoVO.userImg : null,
+                                                userName: (detail.userInfoVO && detail.userInfoVO.userName) ? detail.userInfoVO.userName : '',
+                                                dec: '好物不独享，内有惊喜福利~'
+                                            }}
+                                            taskShareParams={{
+                                                uri: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
+                                                code: detail.showType === 1 ? 22 : 25,
+                                                data: detail.showNo
+                                            }}
+                                            webJson={{
+                                                title: detail.title || '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
+                                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
+                                                thumImage:ShowUtils.getCover(detail),//(分享图标小图(https链接)图文分享使用)
+                                                dec: '好物不独享，内有惊喜福利~'
+                                            }}
                         /> : null}
                     {(detail && detail.products) ? <ProductListModal visible={this.state.productModalVisible}
                                                                      pressProduct={(prodCode) => {

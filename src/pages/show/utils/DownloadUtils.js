@@ -88,9 +88,10 @@ const downloadVideo = (data) => {
             }
         });
         return NativeModules.commModule.saveVideoToPhotoAlbumWithUrl(url).then(() => {
-            Toast.$toast('文案已复制,图片已下载到相册');
+            Toast.$toast('文案已复制,视频已下载到相册');
             return Promise.resolve();
         }).catch((error) => {
+            Toast.$toast('保存失败');
             return Promise.reject();
         });
     }

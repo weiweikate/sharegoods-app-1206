@@ -200,7 +200,7 @@ export default class ShowHotView extends React.Component {
                                            if (nativeEvent.showType === 1) {
                                                navigate(RouterMap.ShowDetailPage, params);
                                            }  else if(nativeEvent.showType === 3){
-                                               navigate(RouterMap.ShowVideoPage, {code:showNo});
+                                               navigate(RouterMap.ShowVideoPage, {code:showNo,tabType:1});
                                            }else {
                                                navigate(RouterMap.ShowRichTextDetailPage, params);
                                            }

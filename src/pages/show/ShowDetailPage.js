@@ -13,13 +13,11 @@ import ShowImageView from './ShowImageView';
 import res from './res';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
-// import AutoHeightWebView from '@mr/react-native-autoheight-webview';
 import LinearGradient from 'react-native-linear-gradient';
 
 const { px2dp } = ScreenUtils;
 import { ShowDetail } from './Show';
 import { observer } from 'mobx-react';
-import CommShareModal from '../../comm/components/CommShareModal';
 import user from '../../model/user';
 import apiEnvironment from '../../api/ApiEnvironment';
 import BasePage from '../../BasePage';
@@ -31,7 +29,6 @@ import Toast from '../../utils/bridge';
 import { NetFailedView } from '../../components/pageDecorator/BaseView';
 import AvatarImage from '../../components/ui/AvatarImage';
 import { track, trackEvent } from '../../utils/SensorsTrack';
-// import { SmoothPushPreLoadHighComponent } from '../../comm/components/SmoothPushHighComponent';
 import ProductRowListView from './components/ProductRowListView';
 import ProductListModal from './components/ProductListModal';
 import ShowUtils from './utils/ShowUtils';
@@ -46,9 +43,10 @@ import RouterMap, { routePop, routeNavigate } from '../../navigation/RouterMap';
 import DownloadUtils from './utils/DownloadUtils';
 import ShowVideoView from './components/ShowVideoView';
 import WhiteModel from './model/WhiteModel';
+import CommShowShareModal from '../../comm/components/CommShowShareModal';
+import ShareUtil from '../../utils/ShareUtil';
 
 const { iconShowFire, iconLike, iconNoLike, iconDownload, iconShowShare, dynamicEmpty,collected,uncollected } = res;
-// @SmoothPushPreLoadHighComponent
 @observer
 export default class ShowDetailPage extends BasePage {
 
@@ -776,38 +774,37 @@ export default class ShowDetailPage extends BasePage {
             }}/> : null}
 
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
-            <CommShareModal ref={(ref) => this.shareModal = ref}
-                            defaultModalVisible={this.params.openShareModal}
-                            type={'Show'}
-                            trackEvent={trackEvent.XiuChangShareClick}
-                            trackParmas={{
-                                articleCode: detail.code,
-                                author: (detail.userInfoVO || {}).userNo,
-                                xiuChangBtnLocation: '2',
-                                xiuChangListType: ''
-                            }}
-                            imageJson={{
-                                imageType: 'show',
-                                imageUrlStr: detail.resource ? detail.resource[0].url : '',
-                                titleStr: detail.content,
-                                QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
-                                headerImage: (detail.userInfoVO && detail.userInfoVO.userImg) ? detail.userInfoVO.userImg : null,
-                                userName: (detail.userInfoVO && detail.userInfoVO.userName) ? detail.userInfoVO.userName : '',
-                                dec: '好物不独享，内有惊喜福利~'
-                            }}
-                            taskShareParams={{
-                                uri: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
-                                code: 22,
-                                data: detail.showNo
-                            }}
-                            webJson={{
-                                title: detail.title || '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
-                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
-                                thumImage: detail.resource && detail.resource[0] && detail.resource[0].url
-                                    ? detail.resource[0].url : '', //(分享图标小图(https链接)图文分享使用)
-                                dec: '好物不独享，内有惊喜福利~'
-                            }}
-            />
+            {detail ?
+                <CommShowShareModal ref={(ref) => this.shareModal = ref}
+                                    type={ShareUtil.showSharedetailDataType(detail && detail.showType)}
+                                    trackEvent={trackEvent.XiuChangShareClick}
+                                    trackParmas={{
+                                        articleCode: detail.code,
+                                        author: (detail.userInfoVO || {}).userNo,
+                                        xiuChangBtnLocation: '2',
+                                        xiuChangListType: ''
+                                    }}
+                                    imageJson={{
+                                        imageType: 'show',
+                                        imageUrlStr: ShowUtils.getCover(detail),
+                                        titleStr: detail.showType === 1 ? detail.content : detail.title,
+                                        QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
+                                        headerImage: (detail.userInfoVO && detail.userInfoVO.userImg) ? detail.userInfoVO.userImg : null,
+                                        userName: (detail.userInfoVO && detail.userInfoVO.userName) ? detail.userInfoVO.userName : '',
+                                        dec: '好物不独享，内有惊喜福利~'
+                                    }}
+                                    taskShareParams={{
+                                        uri: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
+                                        code: detail.showType === 1 ? 22 : 25,
+                                        data: detail.showNo
+                                    }}
+                                    webJson={{
+                                        title: detail.title || '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
+                                        linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
+                                        thumImage:ShowUtils.getCover(detail),//(分享图标小图(https链接)图文分享使用)
+                                        dec: '好物不独享，内有惊喜福利~'
+                                    }}
+                /> : null}
             {detail.status === 3 && (EmptyUtils.isEmpty(detail.userInfoVO) || detail.userInfoVO.userNo === user.code) ? this._shieldRender() : null}
             {detail.status === 2 && (EmptyUtils.isEmpty(detail.userInfoVO) || detail.userInfoVO.userNo === user.code) ? this._renderChecking() : null}
         </View>;
