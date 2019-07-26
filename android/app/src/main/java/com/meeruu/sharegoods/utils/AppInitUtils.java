@@ -8,6 +8,7 @@ import com.meeruu.commonlib.event.Event;
 import com.meeruu.commonlib.server.RequestManager;
 import com.meeruu.commonlib.utils.HttpUrlUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
+import com.meeruu.commonlib.utils.SPCacheUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
