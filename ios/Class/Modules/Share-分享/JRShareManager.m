@@ -253,7 +253,8 @@ SINGLETON_FOR_CLASS(JRShareManager)
     if (compatible)
     {
       //保存相册核心代码
-      UISaveVideoAtPathToSavedPhotosAlbum([url path], self, @selector(savedPhotoImage:didFinishSavingWithError:contextInfo:), (__bridge void * _Nullable)(finshBlock));
+      UISaveVideoAtPathToSavedPhotosAlbum([url path], self, @selector(savedPhotoImage:didFinishSavingWithError:contextInfo:), (__bridge_retained
+ void * _Nullable)(finshBlock));
     }
   }
 }
@@ -267,7 +268,8 @@ SINGLETON_FOR_CLASS(JRShareManager)
     [JRLoadingAndToastTool showToast:@"保存视频失败" andDelyTime:0.5f];
   }else {
     NSLog(@"保存视频成功");
-    [JRLoadingAndToastTool showToast:@"文案已复制,视频已下载到相册" andDelyTime:0.5f];
+    finshBlock(@"");
+//    [JRLoadingAndToastTool showToast:@"文案已复制,视频已下载到相册" andDelyTime:0.5f];
   }
 }
 
