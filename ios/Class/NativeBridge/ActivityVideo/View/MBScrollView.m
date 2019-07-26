@@ -232,17 +232,23 @@
   self.playerView.frame = CGRectMake(0, 0, KScreenWidth, KScreenHeight);
     if (self.firstImageView && self.firstImageView.frame.size.width>0
         &&self.firstImageView.frame.origin.y == self.contentOffset.y) {
-      [self.firstImageView addSubview:self.playerView ];
+      self.playerView.frame = self.firstImageView.frame;
+      [self addSubview:self.playerView ];
+      [self bringSubviewToFront:self.btnView1];
     }
 
     if (self.secondImageView && self.secondImageView.frame.size.width>0
         &&self.secondImageView.frame.origin.y == self.contentOffset.y) {
-      [self.secondImageView addSubview:self.playerView ];
+      self.playerView.frame = self.secondImageView.frame;
+      [self addSubview:self.playerView ];
+      [self bringSubviewToFront:self.btnView2];
     }
 
     if (self.thirdImageView && self.thirdImageView.frame.size.width>0
         &&self.thirdImageView.frame.origin.y == self.contentOffset.y) {
-      [self.thirdImageView addSubview:self.playerView ];
+      self.playerView.frame = self.thirdImageView.frame;
+      [self addSubview:self.playerView ];
+      [self bringSubviewToFront:self.btnView3];
     }
   self.isInitVideo = YES;
   self.playerView.playDelegate = self;

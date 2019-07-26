@@ -19,7 +19,7 @@
 #import "MBScrollView.h"
 #import "MBVideoModel.h"
 #import "MBVideoHeaderView.h"
-#import "MBNetworkManager.h"
+#import "MBFileManager.h"
 
 @interface ActiveView()<MBSrcollViewDataDelegate,MBHeaderViewDelegate>
 
@@ -68,7 +68,7 @@
   self=[super init];
   if(self){
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"guanzhu"];
-    [[MBNetworkManager shareInstance] clearDownloadingOffset]; //清除网络层保存的下载进度
+    [MBFileManager clearCache]; //清除网络层保存的下载进度
     self.didPausePlay = NO;
     [self initData];
     [self initUI];
