@@ -45,6 +45,7 @@ import com.meeruu.commonlib.utils.ImageCacheUtils;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
+import com.meeruu.commonlib.utils.SPCacheUtils;
 import com.meeruu.commonlib.utils.SDCardUtils;
 import com.meeruu.commonlib.utils.SecurityUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
