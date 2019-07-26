@@ -40,7 +40,7 @@ class HomeModule {
         const { topicBannerProductDTOList } = data;
         let product = null;
         let productType = '';
-        if (topicBannerProductDTOList) {
+        if (topicBannerProductDTOList && topicBannerProductDTOList.length > 0) {
             product = topicBannerProductDTOList[0];
             if (product) {
                 productType = product.productType;

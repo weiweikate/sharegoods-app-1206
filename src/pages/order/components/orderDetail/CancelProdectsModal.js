@@ -14,17 +14,9 @@
 
 import React from 'react';
 
-import {
-    StyleSheet,
-    View,
-    TouchableOpacity,
-    TouchableWithoutFeedback,
-    ScrollView
-} from 'react-native';
+import { ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 
-import {
-    UIText
-} from '../../../../components/ui';
+import { UIText } from '../../../../components/ui';
 import CommModal from '../../../../comm/components/CommModal';
 import OrderApi from '../../api/orderApi';
 import bridge from '../../../../utils/bridge';
@@ -44,84 +36,90 @@ export default class CancelProdectsModal extends React.Component {
     }
 
 
-    open(platformOrderNo, callBack, isPay){
+    open(platformOrderNo, callBack, isPay) {
         this.isPay = isPay;
         this.callBack = callBack;
-        if (this.platformOrderNo === platformOrderNo ) {
+        if (this.platformOrderNo === platformOrderNo) {
             this.openOrNext(this.state.data);
-            this.platformOrderNo = platformOrderNo
+            this.platformOrderNo = platformOrderNo;
             return;
         }
-        this.platformOrderNo = platformOrderNo
+        this.platformOrderNo = platformOrderNo;
         bridge.showLoading();
-        OrderApi.getAllProductOrder({platformOrderNo: platformOrderNo}).then((data)=> {
+        OrderApi.getAllProductOrder({ platformOrderNo: platformOrderNo }).then((data) => {
             bridge.hiddenLoading();
-            (data.data||[]).map(item => {
-                if (item.couponAmount > 0){
+            (data.data || []).map(item => {
+                if (item.couponAmount > 0) {
                     this.isCoupon = true;
                 }
-            })
-            this.setState({data:data.data||[]})
-            this.openOrNext(data.data)
+            });
+            this.setState({ data: data.data || [] });
+            this.openOrNext(data.data);
 
         }).catch((err) => {
             bridge.$toast(err.msg);
             bridge.hiddenLoading();
             this.platformOrderNo = '';
-        })
+        });
 
     }
 
-    close(){
-        this.setState({visible: false})
+    close() {
+        this.setState({ visible: false });
     }
 
     openOrNext = (data) => {
-        if (data.length > 1){//商品数量大于1
+        if (data && data.length > 1) {//商品数量大于1
             let merchantOrderNo = data[0].merchantOrderNo;
             let visible = false;
-            for (let i = 1; i < data.length; i++){
+            for (let i = 1; i < data.length; i++) {
                 if (merchantOrderNo !== data[i].merchantOrderNo) {//有两个以上的商家
                     visible = true;
                 }
             }
-            if (visible){
+            if (visible) {
                 //显示要一起取消的商品modal
-                this.setState({visible: true});
+                this.setState({ visible: true });
                 return;
             }
         }
         //直接去下一步选择取消理由modal
         this.clickSure();
-    }
+    };
 
     clickSure = () => {
-        this.callBack &&  this.callBack();
-        this.close()
-    }
+        this.callBack && this.callBack();
+        this.close();
+    };
 
-    renderItems(){
+    renderItems() {
         return this.state.data.map((item, index) => {
-            let {specImg, quantity, productName, unitPrice} = item;
-            return(
-                <View key={'CancelProdectsModal'+index} style={{height: 100, paddingTop: 10, flexDirection: 'row', width: ScreenUtils.width, paddingRight: 15}}>
-                    <UIImage style={{width: 80, height: 80, marginLeft: 15}} source={{uri: specImg}}/>
-                    <View style={{marginLeft: 10, flex: 1}}>
-                        <UIText  value={productName} style={{fontSize: 14, color: '#333333'}}/>
-                        <View style={{marginTop: 5, flexDirection: 'row'}}>
-                            <UIText  value={'¥'+unitPrice} style={{fontSize: 14, color: '#666666'}}/>
-                            <View style={{flex: 1}}/>
-                            <UIText  value={'x'+quantity} style={{fontSize: 12, color: '#999999'}}/>
+            let { specImg, quantity, productName, unitPrice } = item;
+            return (
+                <View key={'CancelProdectsModal' + index} style={{
+                    height: 100,
+                    paddingTop: 10,
+                    flexDirection: 'row',
+                    width: ScreenUtils.width,
+                    paddingRight: 15
+                }}>
+                    <UIImage style={{ width: 80, height: 80, marginLeft: 15 }} source={{ uri: specImg }}/>
+                    <View style={{ marginLeft: 10, flex: 1 }}>
+                        <UIText value={productName} style={{ fontSize: 14, color: '#333333' }}/>
+                        <View style={{ marginTop: 5, flexDirection: 'row' }}>
+                            <UIText value={'¥' + unitPrice} style={{ fontSize: 14, color: '#666666' }}/>
+                            <View style={{ flex: 1 }}/>
+                            <UIText value={'x' + quantity} style={{ fontSize: 12, color: '#999999' }}/>
                         </View>
                     </View>
                 </View>
-            )
-        })
+            );
+        });
     }
 
     render() {
-        let title = this.isPay ? '支付':'取消';
-        let coupon = this.isCoupon ? '共享优惠': ''
+        let title = this.isPay ? '支付' : '取消';
+        let coupon = this.isCoupon ? '共享优惠' : '';
         return (
             <CommModal visible={this.state.visible}
                        ref={(ref) => {
@@ -131,27 +129,37 @@ export default class CancelProdectsModal extends React.Component {
                            this.close();
                        }}
             >
-                <TouchableWithoutFeedback onPress={()=> this.close()}>
-                    <View style={{flex: 1}}/>
+                <TouchableWithoutFeedback onPress={() => this.close()}>
+                    <View style={{ flex: 1 }}/>
                 </TouchableWithoutFeedback>
                 <View style={styles.container}>
                     <View style={{
                         marginTop: 10,
-                        alignItems: 'center',
+                        alignItems: 'center'
                     }}>
-                        <UIText value={title+'订单'} style={{fontSize: 16, fontWeight: '600'}}/>
-                        <UIText value={'由于以下商品'+coupon+'，需要一起'+title} style={{fontSize: 12, color: '#666666'}}/>
+                        <UIText value={title + '订单'} style={{ fontSize: 16, fontWeight: '600' }}/>
+                        <UIText value={'由于以下商品' + coupon + '，需要一起' + title} style={{ fontSize: 12, color: '#666666' }}/>
                     </View>
-                    <ScrollView style={{marginTop: 20}}>
+                    <ScrollView style={{ marginTop: 20 }}>
                         {this.renderItems()}
                     </ScrollView>
-                    <TouchableOpacity style={{  height:  45 ,justifyContent: 'center', alignItems: 'center',backgroundColor: DesignRule.mainColor}}
-                                      onPress={() => {this.clickSure()}}>
-                        <UIText value={title+'订单'} style={{ color: 'white', fontSize: 16}}/>
+                    <TouchableOpacity style={{
+                        height: 45,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: DesignRule.mainColor
+                    }}
+                                      onPress={() => {
+                                          this.clickSure();
+                                      }}>
+                        <UIText value={title + '订单'} style={{ color: 'white', fontSize: 16 }}/>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{ right: 15, width: 50 ,top: 0, height: 50, position: 'absolute'}}
-                                      onPress={() => {this.close()}}>
-                        <UIText value={'x'} style={{ color: DesignRule.textColor_hint, fontSize: 24, textAlign: 'right'}}/>
+                    <TouchableOpacity style={{ right: 15, width: 50, top: 0, height: 50, position: 'absolute' }}
+                                      onPress={() => {
+                                          this.close();
+                                      }}>
+                        <UIText value={'x'}
+                                style={{ color: DesignRule.textColor_hint, fontSize: 24, textAlign: 'right' }}/>
                     </TouchableOpacity>
                 </View>
             </CommModal>

@@ -1,17 +1,12 @@
 import React, { Component } from 'react';
-import {
-    View, Alert, Keyboard, TouchableWithoutFeedback,
-    StyleSheet, TouchableOpacity, Image
-} from 'react-native';
+import { Alert, Image, Keyboard, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import GoodsListItem from './GoodsListItem';
 import SingleSelectionModal from './BottomSingleSelectModal';
 import Toast from '../../../utils/bridge';
 import OrderApi from '../api/orderApi';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
-import {
-    MRText as Text
-} from '../../../components/ui';
+import { MRText as Text } from '../../../components/ui';
 import RouterMap from '../../../navigation/RouterMap';
 import { payment } from '../../payment/Payment';
 import { SmoothPushPreLoadHighComponent } from '../../../comm/components/SmoothPushHighComponent';
@@ -21,6 +16,7 @@ import CancelProdectsModal from './orderDetail/CancelProdectsModal';
 import { orderDetailModel } from '../model/OrderDetailModel';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { OrderType } from '../order/OrderType';
+
 const emptyIcon = res.kongbeuye_dingdan;
 
 @SmoothPushPreLoadHighComponent
@@ -29,7 +25,7 @@ export default class MyOrdersListView extends Component {
         super(props);
         this.state = {
             timeOff: [],//待付款时间
-            pageStatus: this.props.pageStatus,
+            pageStatus: this.props.pageStatus
         };
         this.item = {};
 
@@ -37,33 +33,45 @@ export default class MyOrdersListView extends Component {
 
     onRefresh = () => {
         this.list && this.list.onRefresh();
-    }
+    };
 
     render() {
         let { pageStatus } = this.state;
-        let params ={
-            status: pageStatus > 0? pageStatus: '',
-            commentStatus:  pageStatus > 3 ? true : '',
+        let params = {
+            status: pageStatus > 0 ? pageStatus : '',
+            commentStatus: pageStatus > 3 ? true : '',
             keywords: this.props.keywords || '',
             orderNo: ''
         };
         return (
             <View style={{ flex: 1, backgroundColor: DesignRule.bgColor }}>
                 <RefreshFlatList
-                    ref={ref=> {this.list = ref}}
+                    ref={ref => {
+                        this.list = ref;
+                    }}
                     url={OrderApi.queryPage}
-                    paramsFunc={()=> {return params}}
+                    paramsFunc={() => {
+                        return params;
+                    }}
                     renderItem={this.renderItem}
                     renderError={(error) => this.renderError(error)}
                     defaultEmptyImage={emptyIcon}
                     defaultEmptyText={'暂无订单'}
-                    renderHeader={()=>{return <View style={{ height: 10 }}/>}}
-                    handleRequestResult={(data)=>{return this.handleRequestResult(data)}}
+                    renderHeader={() => {
+                        return <View style={{ height: 10 }}/>;
+                    }}
+                    handleRequestResult={(data) => {
+                        return this.handleRequestResult(data);
+                    }}
                     totalPageNum={(result) => {
                         return result.data.isMore ? 10 : 0;
                     }}
-                    onStartRefresh={()=> {Toast.showLoading()}}
-                    onEndRefresh={() => {Toast.hiddenLoading()}}
+                    onStartRefresh={() => {
+                        Toast.showLoading();
+                    }}
+                    onEndRefresh={() => {
+                        Toast.hiddenLoading();
+                    }}
                     emptyHeight={ScreenUtils.height - ScreenUtils.headerHeight - 200}
                 />
                 {this.renderModal()}
@@ -74,18 +82,19 @@ export default class MyOrdersListView extends Component {
             </View>
         );
     }
+
     //对数据进行排空处理
     handleRequestResult = (result) => {
         let data = result.data.data || [];
         return data.map(item => {
             item.baseInfo = item.baseInfo || {};
             item.merchantOrder = item.merchantOrder || {};
-            item.merchantOrder.productOrderList = item.merchantOrder.productOrderList||[];
+            item.merchantOrder.productOrderList = item.merchantOrder.productOrderList || [];
             item.payInfo = item.payInfo || {};
             item.receiveInfo = item.receiveInfo || {};
             return item;
-        })
-    }
+        });
+    };
 
     renderItem = ({ item, index }) => {
         return (
@@ -136,7 +145,7 @@ export default class MyOrdersListView extends Component {
                 }}
                 detail={this.props.cancelReasons}
                 commit={(index) => {
-                    this.cancelOrder(index)
+                    this.cancelOrder(index);
                 }}
             />
 
@@ -147,7 +156,7 @@ export default class MyOrdersListView extends Component {
         Toast.showLoading();
         OrderApi.cancelOrder({
             cancelReason: this.props.cancelReasons[index],
-            platformOrderNo: this.item.merchantOrder.platformOrderNo,
+            platformOrderNo: this.item.merchantOrder.platformOrderNo
         }).then((response) => {
             Toast.hiddenLoading();
             if (response.code === 10000) {
@@ -161,17 +170,17 @@ export default class MyOrdersListView extends Component {
             Toast.$toast(e.msg);
         });
 
-    }
+    };
 
 
-    clickItem = (data,index) => {
-            orderDetailModel.handleData(data);
-            this.props.nav('order/order/MyOrdersDetailPage', {
-                merchantOrderNo: data.merchantOrder.merchantOrderNo,
-                dataHandleConfirmOrder: ()=>this.dataHandleConfirmOrder(data, index),
-                dataHandleDeleteOrder: ()=>this.dataHandleDeleteOrder(data,index),
-                dataHandlecancel: () =>this.dataHandlecancel(data,index)
-            });
+    clickItem = (data, index) => {
+        orderDetailModel.handleData(data);
+        this.props.nav('order/order/MyOrdersDetailPage', {
+            merchantOrderNo: data.merchantOrder.merchantOrderNo,
+            dataHandleConfirmOrder: () => this.dataHandleConfirmOrder(data, index),
+            dataHandleDeleteOrder: () => this.dataHandleDeleteOrder(data, index),
+            dataHandlecancel: () => this.dataHandlecancel(data, index)
+        });
     };
     operationMenuClick = (menu, index, data) => {
         /*
@@ -191,30 +200,38 @@ export default class MyOrdersListView extends Component {
         let orderProduct = data.merchantOrder.productOrderList || [];
         let merchantOrderNo = data.merchantOrder.merchantOrderNo;
         let platformOrderNo = data.merchantOrder.platformOrderNo;
-        let subStatus = data.merchantOrder.subStatus
+        let subStatus = data.merchantOrder.subStatus;
         switch (menu.id) {
             case 1:
                 if (this.props.cancelReasons.length > 0) {
-                    this.cancelProdectsModal && this.cancelProdectsModal.open(platformOrderNo,()=>{this.cancelModal &&this.cancelModal.open()});
+                    this.cancelProdectsModal && this.cancelProdectsModal.open(platformOrderNo, () => {
+                        this.cancelModal && this.cancelModal.open();
+                    });
                 } else {
                     Toast.$toast('无取消理由');
                 }
 
                 break;
             case 2:
-                this.cancelProdectsModal && this.cancelProdectsModal.open(platformOrderNo,()=>{ this._goToPay(data)}, true);
+                this.cancelProdectsModal && this.cancelProdectsModal.open(platformOrderNo, () => {
+                    this._goToPay(data);
+                }, true);
                 break;
             case 3:
-                this.cancelProdectsModal && this.cancelProdectsModal.open(platformOrderNo,()=>{ this._goToPay(data)}, true);
+                this.cancelProdectsModal && this.cancelProdectsModal.open(platformOrderNo, () => {
+                    this._goToPay(data);
+                }, true);
                 break;
             case 4:
-                this.cancelProdectsModal && this.cancelProdectsModal.open(platformOrderNo,()=>{ this._goToPay(data), true});
+                this.cancelProdectsModal && this.cancelProdectsModal.open(platformOrderNo, () => {
+                    this._goToPay(data), true;
+                });
                 break;
             case 5:
-                clickOrderLogistics(merchantOrderNo)
+                clickOrderLogistics(merchantOrderNo);
                 break;
             case 6:
-                clickOrderConfirmReceipt(merchantOrderNo,subStatus, () => this.dataHandleConfirmOrder(data, index))
+                clickOrderConfirmReceipt(merchantOrderNo, subStatus, () => this.dataHandleConfirmOrder(data, index));
                 break;
             case 7:
             case 9:
@@ -226,7 +243,7 @@ export default class MyOrdersListView extends Component {
                     {
                         text: `确定`, onPress: () => {
                             Toast.showLoading();
-                            OrderApi.deleteOrder({ merchantOrderNo: merchantOrderNo}).then((response) => {
+                            OrderApi.deleteOrder({ merchantOrderNo: merchantOrderNo }).then((response) => {
                                 Toast.hiddenLoading();
                                 Toast.$toast('订单已删除！');
                                 this.dataHandleDeleteOrder(data, index);
@@ -240,10 +257,10 @@ export default class MyOrdersListView extends Component {
                 ], { cancelable: true });
                 break;
             case 8:
-                clickOrderAgain(merchantOrderNo, orderProduct)
+                clickOrderAgain(merchantOrderNo, orderProduct);
                 break;
             case 10:
-                OrderApi.checkInfo({ warehouseOrderNo: merchantOrderNo}).then(res => {
+                OrderApi.checkInfo({ warehouseOrderNo: merchantOrderNo }).then(res => {
                     if (res.data === true) {
                         this.props.nav(RouterMap.P_ScorePublishPage, {
                             orderNo: merchantOrderNo
@@ -257,8 +274,8 @@ export default class MyOrdersListView extends Component {
                 });
                 break;
             case 99:
-                this.clickItem(data, index)
-                break
+                this.clickItem(data, index);
+                break;
         }
 
     };
@@ -266,46 +283,47 @@ export default class MyOrdersListView extends Component {
     _goToPay(data) {
         let orderProduct = data.merchantOrder.productOrderList || [];
         let platformOrderNo = data.merchantOrder.platformOrderNo;
-        payment.checkOrderToPage(platformOrderNo, orderProduct[0].productName)
-
+        if (orderProduct && orderProduct.length > 0) {
+            payment.checkOrderToPage(platformOrderNo, orderProduct[0].productName);
+        }
     }
 
     /** 本地数据处理*/
-    dataHandleDeleteOrder =  (item, index) => {
-     if(this.list){
-        let data = this.list.getSourceData();
-        data.splice(index, 1);
-        this.list.changeData([...data])
-     }
-    }
+    dataHandleDeleteOrder = (item, index) => {
+        if (this.list) {
+            let data = this.list.getSourceData();
+            data.splice(index, 1);
+            this.list.changeData([...data]);
+        }
+    };
     //确认收货
-    dataHandleConfirmOrder =  (item, index) => {
-        if (this.props.pageStatus !== 0){//如果不是在全部里面确认收货，就走删除逻辑
+    dataHandleConfirmOrder = (item, index) => {
+        if (this.props.pageStatus !== 0) {//如果不是在全部里面确认收货，就走删除逻辑
             this.dataHandleDeleteOrder(item, index);
             return;
         }
-        if(this.list){
+        if (this.list) {
             let data = this.list.getSourceData();
-            if (data[index].merchantOrder){
+            if (data[index].merchantOrder) {
                 data[index].merchantOrder.status = OrderType.COMPLETED;
-                this.list.changeData([...data])
+                this.list.changeData([...data]);
             }
         }
-    }
+    };
     //取消订单
-    dataHandlecancel  =  (item, index) => {
-        if (this.props.pageStatus !== 0){//如果不是在全部里面确认收货，就走删除逻辑
+    dataHandlecancel = (item, index) => {
+        if (this.props.pageStatus !== 0) {//如果不是在全部里面确认收货，就走删除逻辑
             this.dataHandleDeleteOrder(item, index);
             return;
         }
-        if(this.list){
+        if (this.list) {
             let data = this.list.getSourceData();
-            if (data[index].merchantOrder){
+            if (data[index].merchantOrder) {
                 data[index].merchantOrder.status = OrderType.CLOSED;
-                this.list.changeData([...data])
+                this.list.changeData([...data]);
             }
         }
-    }
+    };
 }
 
 const styles = StyleSheet.create({

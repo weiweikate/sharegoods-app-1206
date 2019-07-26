@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-    View,
-    StyleSheet, ScrollView, RefreshControl, Clipboard, TouchableWithoutFeedback
-} from 'react-native';
+import { Clipboard, RefreshControl, ScrollView, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import DesignRule from '../../../../constants/DesignRule';
 import BasePage from '../../../../BasePage';
 import UserSingleItem from '../../components/UserSingleItem';
@@ -10,13 +7,13 @@ import user from '../../../../model/user';
 import { observer } from 'mobx-react';
 import BusinessUtils from '../../components/BusinessUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-
-const dismissKeyboard = require('dismissKeyboard');
 import MineApi from '../../api/MineApi';
 import RouterMap, { routeNavigate } from '../../../../navigation/RouterMap';
 import CommModal from '../../../../comm/components/CommModal';
 import { MRText as Text } from '../../../../components/ui';
 import { track, trackEvent } from '../../../../utils/SensorsTrack';
+
+const dismissKeyboard = require('dismissKeyboard');
 
 /**
  * @author chenxiang
@@ -169,7 +166,7 @@ export default class UserInformationPage extends BasePage {
                                 onPress={() => this.jumpToSetWechatPage()}/>
                 {this.renderWideLine()}
                 <UserSingleItem leftText={'所在区域'}
-                                rightText={user.area ? user.province + user.city + user.area  : ''}
+                                rightText={user.area ? user.province + user.city + user.area : ''}
                                 rightTextStyle={[styles.grayText, {
                                     maxWidth: ScreenUtils.width / 5 * 3,
                                     numberOfLines: 2
@@ -198,26 +195,28 @@ export default class UserInformationPage extends BasePage {
     takePhoto = () => {
         track(trackEvent.ClickModifyAvatar, {});
         BusinessUtils.getImagePicker(callback => {
-            this.$loadingShow();
-            MineApi.updateUserById({ headImg: callback.imageUrl[0], type: 1 }).then((response) => {
-                console.log(response);
-                this.$loadingDismiss();
-                if (response.code === 10000) {
-                    user.headImg = callback.imageUrl[0];
-                    this.$toastShow('头像修改成功');
-                    if (callback.camera === true) {
-                        track(trackEvent.ModifuAvatarSuccess, { modificationMode: 1 });
-                    } else {
-                        track(trackEvent.ModifuAvatarSuccess, { modificationMode: 2 });
+            if (callback.imageUrl && callback.imageUrl.length > 0) {
+                this.$loadingShow();
+                MineApi.updateUserById({ headImg: callback.imageUrl[0], type: 1 }).then((response) => {
+                    console.log(response);
+                    this.$loadingDismiss();
+                    if (response.code === 10000) {
+                        user.headImg = callback.imageUrl[0];
+                        this.$toastShow('头像修改成功');
+                        if (callback.camera === true) {
+                            track(trackEvent.ModifuAvatarSuccess, { modificationMode: 1 });
+                        } else {
+                            track(trackEvent.ModifuAvatarSuccess, { modificationMode: 2 });
+                        }
                     }
-                }
-            }).catch(err => {
+                }).catch(err => {
 
-                this.$loadingDismiss();
-                if (err.code === 10009) {
-                    this.gotoLoginPage();
-                }
-            });
+                    this.$loadingDismiss();
+                    if (err.code === 10009) {
+                        this.gotoLoginPage();
+                    }
+                });
+            }
         }, 1, true);
     };
     jumpToIDVertify2Page = () => {
@@ -248,13 +247,19 @@ export default class UserInformationPage extends BasePage {
         this.$navigate(RouterMap.ProfileEditPage);
     };
 
-    setArea(provinceCode, provinceName, cityCode, cityName, areaCode, areaName, streetCode, streetName,areaText) {
+    setArea(provinceCode, provinceName, cityCode, cityName, areaCode, areaName, streetCode, streetName, areaText) {
         user.province = provinceName;
         user.city = cityName;
         user.area = areaName;
         user.street = streetName;
 
-        MineApi.updateUserById({ type: 3, provinceId: provinceCode, cityId: cityCode, areaId: areaCode, streetCode: streetCode}).then(res => {
+        MineApi.updateUserById({
+            type: 3,
+            provinceId: provinceCode,
+            cityId: cityCode,
+            areaId: areaCode,
+            streetCode: streetCode
+        }).then(res => {
             this.$toastShow('地址修改成功');
         }).catch(err => {
             this.$toastShow(err.msg);

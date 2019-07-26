@@ -1,4 +1,4 @@
-import { observable, action, computed } from 'mobx';
+import { action, computed, observable } from 'mobx';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import EmptyUtils from '../../../utils/EmptyUtils';
 import MessageApi from '../../message/api/MessageApi';
@@ -98,10 +98,12 @@ class XpDetailModel {
 
         let goodsNumberText;
         for (let item of (stockSysConfig || [])) {
-            const tempArr = item.value.split('★');
-            if (parseFloat(count) >= parseFloat(tempArr[0])) {
-                goodsNumberText = tempArr[1];
-                break;
+            const tempArr = (item.value && item.value.split('★')) || [];
+            if (tempArr.length > 0) {
+                if (parseFloat(count) >= parseFloat(tempArr[0])) {
+                    goodsNumberText = tempArr[1] || '';
+                    break;
+                }
             }
         }
         return goodsNumberText || count;

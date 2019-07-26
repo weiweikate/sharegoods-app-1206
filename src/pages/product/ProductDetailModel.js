@@ -342,13 +342,13 @@ export default class ProductDetailModel {
     @computed get levelText() {
         const { priceType, activityStatus, activityType } = this;
         if (activityStatus === activity_status.inSell && activityType === activity_type.verDown) {
-            return this.tags[0];
+            return this.tags[0] || '';
         }
         return priceType === 2 ? '拼店价' : '';
     }
 
     @computed get sectionDataList() {
-        const { promoteInfoVOList, contentArr, paramList, productDetailCouponsViewModel, type,isGroupIn } = this;
+        const { promoteInfoVOList, contentArr, paramList, productDetailCouponsViewModel, type, isGroupIn } = this;
         const { couponsList } = productDetailCouponsViewModel;
         /*头部*/
         let sectionArr = [
