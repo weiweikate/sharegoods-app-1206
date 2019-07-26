@@ -19,7 +19,7 @@
 #import "MBScrollView.h"
 #import "MBVideoModel.h"
 #import "MBVideoHeaderView.h"
-#import "MBNetworkManager.h"
+#import "MBFileManager.h"
 
 @interface ActiveView()<MBSrcollViewDataDelegate,MBHeaderViewDelegate>
 
@@ -36,6 +36,7 @@
 @property (nonatomic, assign) BOOL didPausePlay;
 @property (nonatomic, assign) BOOL isPersonal;
 @property (nonatomic, assign) BOOL isCollect;
+@property (nonatomic, assign) NSInteger tabType;
 
 @property(nonatomic, strong)UILabel *emptyLb;
 @property (nonatomic, strong)UIView *emptyView;
@@ -67,7 +68,7 @@
   self=[super init];
   if(self){
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"guanzhu"];
-    [[MBNetworkManager shareInstance] clearDownloadingOffset]; //清除网络层保存的下载进度
+    [MBFileManager clearCache]; //清除网络层保存的下载进度
     self.didPausePlay = NO;
     [self initData];
     [self initUI];
@@ -105,12 +106,15 @@
   if(self.isPersonal&&self.userCode){
     [dic setObject:self.userCode forKey:@"queryUserCode"];
   }
-  
+
   if(self.isCollect){
     [dic setObject:[NSNumber numberWithInt:1]  forKey:@"isCollect"];
   }
+  if(self.tabType){
+    [dic setObject:[NSNumber numberWithInteger:self.tabType]  forKey:@"spreadPosition"];
+  }
   [dic addEntriesFromDictionary:@{@"currentShowNo":currentShowNo}];
-                                  
+
   __weak ActiveView * weakSelf = self;
   [NetWorkTool requestWithURL:@"/social/show/video/list/next@GET" params:dic toModel:nil success:^(NSDictionary* result) {
     MBVideoModel* model = [MBVideoModel modelWithJSON:result];
@@ -122,8 +126,7 @@
     [self.scrollView setupData:weakSelf.dataArr];
 
   } failure:^(NSString *msg, NSInteger code) {
-    MBVideoModel* model = [MBVideoModel new];
-    [self.scrollView setupData:[model.data mutableCopy]];
+    [MBProgressHUD showSuccess:msg];
   } showLoading:nil];
 }
 
@@ -140,7 +143,9 @@
   if(self.isCollect){
     [dic setObject:[NSNumber numberWithInt:1]  forKey:@"isCollect"];
   }
-  
+  if(self.tabType){
+    [dic setObject:[NSNumber numberWithInteger:self.tabType]  forKey:@"spreadPosition"];
+  }
   [dic addEntriesFromDictionary:@{@"currentShowNo": currentShowNo}];
   __weak ActiveView * weakSelf = self;
 
@@ -155,8 +160,7 @@
       }
       [self.scrollView setupData:[model.data mutableCopy]];
     } failure:^(NSString *msg, NSInteger code) {
-      MBVideoModel* model = [MBVideoModel new];
-      [self.scrollView setupData:[model.data mutableCopy]];
+      [MBProgressHUD showSuccess:msg];
     } showLoading:nil];
 }
 
@@ -182,8 +186,12 @@
   if(self.isPersonal&&[params valueForKey:@"isCollect"]){
     self.isCollect = [params valueForKey:@"isCollect"];
   }
+  if([params valueForKey:@"tabType"]){
+    self.tabType = (NSInteger)[params valueForKey:@"tabType"];
+  }
   self.dataArr = [NSMutableArray arrayWithObject:firstData];
   self.callBackArr = [NSMutableArray arrayWithObject:params];
+  self.VideoHeaderView.model = firstData;
   [self.scrollView setupData:self.dataArr];
   [self refreshData];
 

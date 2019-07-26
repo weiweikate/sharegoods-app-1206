@@ -304,7 +304,6 @@
 }
 
 -(void)tapCollectionBtn:(UIButton*)sender{
-  sender.selected = !sender.selected;
   if(self.collectionBlock){
     self.collectionBlock(@"");
   }

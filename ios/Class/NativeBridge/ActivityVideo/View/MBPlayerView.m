@@ -40,6 +40,7 @@
 }
 
 - (void)dealloc {
+  //清空
   [self.player pause];
   [self.playerItem cancelPendingSeeks];
   [self.playerItem.asset cancelLoading];

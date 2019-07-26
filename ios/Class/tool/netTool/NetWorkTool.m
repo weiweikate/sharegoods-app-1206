@@ -198,4 +198,32 @@
 {
  return [[self manager] GET:url parameters:parameters progress:downloadProgress success:success failure:failure];
 }
+  
++ (void)downloadWithPath:(NSString *)url success:(HttpSuccessBlock)success failure:(HttpFailureBlock)failure progress:(HttpDownloadProgressBlock)progress {    
+    // 下载
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
+    
+    NSURLSessionDownloadTask *downloadTask = [[self manager] downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
+      
+      progress(downloadProgress.fractionCompleted);
+      
+    } destination:^NSURL * _Nonnull(NSURL * _Nonnull targetPath, NSURLResponse * _Nonnull response) {
+      
+      // 获取沙盒cache路径
+      NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSCachesDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
+      
+      return [documentsDirectoryURL URLByAppendingPathComponent:[response suggestedFilename]];
+      
+    } completionHandler:^(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath, NSError * _Nullable error) {
+      
+      if (error) {
+        failure(error);
+      } else {
+        success(filePath.path);
+      }
+      
+    }];
+    
+    [downloadTask resume];
+  }
 @end

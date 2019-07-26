@@ -382,6 +382,7 @@ static NSString *IDType = @"TypeCell";
 -(void)collectionClick:(RecommendedCell *)cell{
   NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
   JXModelData *model = self.dataArr[indexPath.row];
+  if(self.userCode&&self.userCode.length>0){
   if(!model.collect){
     model.collectCount++;
   }else{
@@ -395,7 +396,7 @@ static NSString *IDType = @"TypeCell";
   [self.callBackArr replaceObjectAtIndex:indexPath.row withObject:dic];
 
   [self.tableView reloadRowAtIndexPath:indexPath withRowAnimation:UITableViewRowAnimationNone];
-
+  }
   if(_onCollectPress) {
     _onCollectPress(@{
                   @"detail":self.callBackArr[indexPath.item],
@@ -455,6 +456,9 @@ static NSString *IDType = @"TypeCell";
   }
 }
 
+-(void)setUserCode:(NSString *)userCode{
+    _userCode = userCode;
+}
 - (void)setHeaderHeight:(NSInteger)headerHeight
 {
   _headerHeight  = headerHeight;
@@ -499,20 +503,21 @@ static NSString *IDType = @"TypeCell";
 -(void)collectionBtnClick:(RecommendedCell *)cell{
   NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
   JXModelData *model = self.dataArr[indexPath.row];
-  if(!model.collect){
-    model.collectCount++;
-  }else{
-    model.collectCount--;
+  if(self.userCode&&self.userCode.length>0){
+    if(!model.collect){
+      model.collectCount++;
+    }else{
+      model.collectCount--;
+    }
+    model.collect = !model.collect;
+
+    NSMutableDictionary * dic = [NSMutableDictionary dictionaryWithDictionary:self.callBackArr[indexPath.row]];
+    [dic setObject:[NSNumber numberWithInteger:model.collectCount] forKey:@"collectCount"];
+    [dic setObject:@(model.collect) forKey:@"collect"];
+    [self.callBackArr replaceObjectAtIndex:indexPath.row withObject:dic];
+    
+    [self.tableView reloadRowAtIndexPath:indexPath withRowAnimation:UITableViewRowAnimationNone];
   }
-  model.collect = !model.collect;
-
-  NSMutableDictionary * dic = [NSMutableDictionary dictionaryWithDictionary:self.callBackArr[indexPath.row]];
-  [dic setObject:[NSNumber numberWithInteger:model.collectCount] forKey:@"collectCount"];
-  [dic setObject:@(model.collect) forKey:@"collect"];
-  [self.callBackArr replaceObjectAtIndex:indexPath.row withObject:dic];
-
-  [self.tableView reloadRowAtIndexPath:indexPath withRowAnimation:UITableViewRowAnimationNone];
-
   if(_onCollectPress) {
     _onCollectPress(@{
                   @"detail":self.callBackArr[indexPath.item],
@@ -589,7 +594,7 @@ static NSString *IDType = @"TypeCell";
     JXModelData* model = [JXModelData modelWithJSON:data];
     [self.dataArr replaceObjectAtIndex:index withObject:model];
     [self.callBackArr replaceObjectAtIndex:index withObject:data];
-  [self.tableView reloadRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] withRowAnimation:UITableViewRowAnimationNone];
+    [self.tableView reloadRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] withRowAnimation:UITableViewRowAnimationNone];
   }
 }
 
