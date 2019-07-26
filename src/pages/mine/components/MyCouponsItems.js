@@ -3,6 +3,7 @@ import { ActivityIndicator, FlatList, Image, RefreshControl, StyleSheet, Touchab
 import { MRText as Text } from '../../../components/ui';
 import Modal from '../../../comm/components/CommModal';
 import ScreenUtils from '../../../utils/ScreenUtils';
+import DateUtils from '../../../utils/DateUtils';
 import API from '../../../api';
 import bridge from '../../../utils/bridge';
 import { observer } from 'mobx-react';
@@ -36,7 +37,9 @@ export default class MyCouponsItems extends Component {
             tokenCoinNum: this.props.justOne,
             isFirstLoad: true,
             isLoadMore: false,
-            isEnd: false
+            isEnd: false,
+            invokeData:{},
+            canInvoke:true
         };
         this.currentPage = 0;
         this.addData = true;
@@ -54,26 +57,39 @@ export default class MyCouponsItems extends Component {
                 <CouponExplainItem item={item} index={index} toExtendData={() => this.toExtendData(item)}
                                    pickUpData={() => this.pickUpData(item)}
                                    clickItem={() => this.clickItem(index, item)}
-                                   onActivity={()=>{this.onRequestOpen()}}
+                                   onActivity={(item)=>{this.canInvoke(item)}}
                 />
             );
         } else {
             return (
                 <CouponNormalItem item={item} index={index} clickItem={() => this.clickItem(index, item)}
-                                  onActivity={()=>{this.onRequestOpen()}}
+                                  onActivity={(item)=>{this.canInvoke(item)}}
                 />
             );
         }
     };
     onRequestClose = () => {
-        this.setState({ showDialogModal: false });
+        this.setState({ showDialogModal: false, invokeData:{}});
     };
 
-    onRequestOpen = () => {
-        this.setState({ showDialogModal: true });
-    };
+    canInvoke=(item)=>{
+        API.checkCanInvoke({userCouponCode:item.code || ''})
+            .then(res=>{
+                this.setState({
+                    showDialogModal: true,
+                    canInvoke:true,
+                    invokeData:item
+                });
+            }).catch(error=>{
+            this.setState({
+                showDialogModal: true,
+                canInvoke:false,
+                invokeData:item
+            });
+        });
+    }
 
-    renderDialogModal() {
+    renderDialogModal=()=> {
         return (
             <Modal
                 animationType='fade'
@@ -88,12 +104,18 @@ export default class MyCouponsItems extends Component {
     }
 
     renderModalContent = () => {
+        const {invokeData,canInvoke} = this.state;
+        console.log('time',DateUtils.getDateDiff(invokeData.startTime))
+        let time = invokeData.startTime ? DateUtils.getDateDiff(invokeData.startTime) : '';
         return (
             <View style={styles.contentStyle}>
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                    <View style={{width:286,height:122}}/>
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center',marginHorizontal:16 }}>
+                    <Text style={{fontSize:17}}>激活兑换券</Text>
+                    {canInvoke ?
+                        <Text style={{fontSize:13,textAlign:'center'}}>现手动激活此券后，此券有效期为 {time}，确定要激活吗？</Text> :
+                        <Text style={{fontSize:13,textAlign:'center'}}>不要贪心呦，一次只能激活1张，先去使用才能再次激活呦</Text>
+                    }
                 </View>
-
                 <View style={{ width: '100%', height: 0.5, backgroundColor: DesignRule.textColor_placeholder }}/>
                 <View style={{ height: px2dp(43), flexDirection: 'row', alignItems: 'center' }}>
                     <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
@@ -101,9 +123,11 @@ export default class MyCouponsItems extends Component {
                         <Text style={{ color: '#0076FF', fontSize: px2dp(17) }} allowFontScaling={false}>取消</Text>
                     </TouchableOpacity>
                     <View style={{ height: '100%', width: 0.5, backgroundColor: DesignRule.textColor_placeholder }}/>
-                    <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
-                                      onPress={this.commitTokenCoin}>
-                        <Text style={{ color: '#0076FF', fontSize: px2dp(17) }} allowFontScaling={false}>确定</Text>
+                    <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center', flex: 1}}
+                                      onPress={() => this.commitTokenCoin(invokeData)}>
+                        <Text style={{color: '#0076FF', fontSize: px2dp(17)}} allowFontScaling={false}>
+                            {canInvoke ? '确定' : '去使用'}
+                        </Text>
                     </TouchableOpacity>
                 </View>
 
@@ -111,44 +135,26 @@ export default class MyCouponsItems extends Component {
         );
     };
     quitTokenCoin = () => {
-        this.setState({ showDialogModal: false });
+        this.setState({ showDialogModal: false,invokeData:{} });
     };
     commitTokenCoin = () => {
-        bridge.showLoading();
-        this.props.useCoupons(this.state.tokenCoinNum || 0);
-        this.setState({ showDialogModal: false });
-    };
-    reduceTokenCoin = () => {
-        let num = this.state.tokenCoinNum;
-        if (num >= 1) {
-            this.setState({ tokenCoinNum: (num - 1) });
+        const {invokeData,canInvoke} = this.state;
+        console.log('canInvoke',canInvoke)
+        if(canInvoke) {
+            this.setState({showDialogModal: false}, () => {
+                API.invokeCoupons({userCouponCode: invokeData.code || ''}).then(res => {
+                    bridge.$toast('激活成功');
+                    this.onRefresh();
+                }).catch(err => {
+                    bridge.$toast('激活失败');
+                });
+            });
+        }else {
+            this.clickItem(0,invokeData);
         }
     };
-    plusTokenCoin = () => {
-        let num = this.state.tokenCoinNum;
-        if (num <= (Math.min(parseInt(this.props.justOne), user.tokenCoin) - 1)) {
-            this.setState({ tokenCoinNum: (num + 1) });
-        }
-    };
-    _onChangeText = (num) => {
-        console.log('coupons', num);
-        if ((parseInt(num) >= 0) && (parseInt(num) <= parseInt(this.props.justOne)) && (num <= user.tokenCoin)) {
-            this.setState({ tokenCoinNum: parseInt(num) });
-        }
-        if (num === '') {
-            this.setState({ tokenCoinNum: '' });
-        }
-        if (parseInt(num) > parseInt(this.props.justOne) || parseInt(num) > user.tokenCoin) {
-            bridge.$toast('1元券超出使用张数~');
-            this.setState({ tokenCoinNum: Math.min(parseInt(this.props.justOne), user.tokenCoin) });
-        }
-    };
-    _onFocus = () => {
-        let nums = (this.state.tokenCoinNum < user.tokenCoin) ? this.state.tokenCoinNum : user.tokenCoin;
-        this.setState({
-            tokenCoinNum: parseInt(nums)
-        });
-    };
+
+
     _keyExtractor = (item, index) => index;
     // 空布局
     _renderEmptyView = () => {
@@ -331,7 +337,10 @@ export default class MyCouponsItems extends Component {
                             levelimit: false,
                             count: item.number || 0,
                             redirectType: item.type === 11 ? 0 : item.redirectType,
-                            redirectUrl: item.type === 11 ? null : item.redirectUrl
+                            redirectUrl: item.type === 11 ? null : item.redirectUrl,
+                            canInvoke: item.canInvoke || false,         //是不是可以展示 激活按钮
+                            startTime: item.startTime || '',          //优惠券开始时间
+                            expireTime :item.startTime || '',         //优惠券结束时间
 
                         });
                     });
@@ -369,8 +378,12 @@ export default class MyCouponsItems extends Component {
                 levelimit: item.levels ? (item.levels.indexOf(user.levelId) !== -1 ? false : true) : false,
                 count: item.count || 0,
                 redirectType: item.redirectType,
-                redirectUrl: item.redirectUrl
-            });
+                redirectUrl: item.redirectUrl,
+                canInvoke: item.canInvoke || false,         //是不是可以展示 激活按钮
+                startTime: item.startTime,          //优惠券开始时间
+                expireTime :item.startTime ,         //优惠券结束时间
+
+        });
         });
     };
 
@@ -418,7 +431,7 @@ export default class MyCouponsItems extends Component {
                         isLoadMore: false
                     });
                     this.parseData(dataList);
-                    if (this.currentPage === data.totalPage) {
+                    if (this.currentPage === data.totalPage || data.totalPage === 0) {
                         if (!this.state.isEnd) {
                             this.setState({
                                 isEnd: true
@@ -471,7 +484,7 @@ export default class MyCouponsItems extends Component {
                     isLoadMore: false
                 });
                 this.parseData(dataList);
-                if (this.currentPage === data.totalPage) {
+                if (this.currentPage === data.totalPage || data.totalPage === 0) {
                     if (!this.state.isEnd) {
                         this.setState({
                             isEnd: true
@@ -613,6 +626,7 @@ const styles = StyleSheet.create(
             borderRadius: 12,
             justifyContent: 'flex-end',
             alignItems: 'center',
+            opacity: 0.8
         },
         couNumStyle: {
             width: px2dp(123),
