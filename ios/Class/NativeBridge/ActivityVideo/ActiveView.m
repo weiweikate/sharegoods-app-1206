@@ -106,7 +106,7 @@
   if(self.isPersonal&&self.userCode){
     [dic setObject:self.userCode forKey:@"queryUserCode"];
   }
-  
+
   if(self.isCollect){
     [dic setObject:[NSNumber numberWithInt:1]  forKey:@"isCollect"];
   }
@@ -114,7 +114,7 @@
     [dic setObject:[NSNumber numberWithInteger:self.tabType]  forKey:@"spreadPosition"];
   }
   [dic addEntriesFromDictionary:@{@"currentShowNo":currentShowNo}];
-                                  
+
   __weak ActiveView * weakSelf = self;
   [NetWorkTool requestWithURL:@"/social/show/video/list/next@GET" params:dic toModel:nil success:^(NSDictionary* result) {
     MBVideoModel* model = [MBVideoModel modelWithJSON:result];
@@ -126,8 +126,7 @@
     [self.scrollView setupData:weakSelf.dataArr];
 
   } failure:^(NSString *msg, NSInteger code) {
-    MBVideoModel* model = [MBVideoModel new];
-    [self.scrollView setupData:[model.data mutableCopy]];
+    [MBProgressHUD showSuccess:msg];
   } showLoading:nil];
 }
 
@@ -161,8 +160,7 @@
       }
       [self.scrollView setupData:[model.data mutableCopy]];
     } failure:^(NSString *msg, NSInteger code) {
-      MBVideoModel* model = [MBVideoModel new];
-      [self.scrollView setupData:[model.data mutableCopy]];
+      [MBProgressHUD showSuccess:msg];
     } showLoading:nil];
 }
 
