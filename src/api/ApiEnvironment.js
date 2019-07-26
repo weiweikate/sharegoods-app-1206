@@ -3,7 +3,9 @@
  * Api HOST配置
  * 支持动态切换
  */
-import { NativeModules } from 'react-native';
+import {
+    NativeModules,
+} from 'react-native';
 import store from '@mr/rn-store';
 import config from '../../config';
 import StringUtils from '../utils/StringUtils';
@@ -18,19 +20,18 @@ const ApiConfig = config.env;
 class ApiEnvironment {
 
     constructor() {
-        let baseHost = NativeModules.commModule.baseUrl;
-        console.log('-----' + baseHost);
+        let baseHost = NativeModules.commModule.baseUrl
         let hasBaseUrl = false;
-        if (StringUtils.isNoEmpty(baseHost)) {
-            for (let obj in config.env) {
-                if (config.env[obj] && (config.env[obj].host === baseHost)) {
+        if(StringUtils.isNoEmpty(baseHost)){
+            for(let obj in config.env){
+                if(config.env[obj] && (config.env[obj].host === baseHost)){
                     hasBaseUrl = true;
-                    this.envType = String(obj);
+                    this.envType = String(obj)
                     break;
                 }
             }
         }
-        if (!hasBaseUrl) {
+        if(!hasBaseUrl){
             const envType = config.envType;
             this.envType = envType && Object.keys(ApiConfig).indexOf(envType) >= 0 ? envType : 'online';
         }
@@ -86,7 +87,7 @@ class ApiEnvironment {
      * @returns {Promise<void>}
      */
     loadLastApiSettingFromDiskCache() {
-        if (StringUtils.isNoEmpty(NativeModules.commModule.baseUrl)) {
+        if (StringUtils.isNoEmpty(NativeModules.commModule.baseUrl)){
             return;
         }
         store.get(KEY_ApiEnvironment).then(envType => {

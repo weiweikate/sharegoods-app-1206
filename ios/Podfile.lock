@@ -104,7 +104,7 @@ DEPENDENCIES:
   - JVerification (~> 2.3.2)
   - MBProgressHUD (~> 1.1.0)
   - MJRefresh
-  - QIYU_iOS_SDK (~> 4.9.0)
+  - QIYU_iOS_SDK (= 4.9.0)
   - SandBoxPreviewTool (~> 1.1)
   - SDAutoLayout
   - SDWebImage (~> 4.4.6)
@@ -178,6 +178,6 @@ SPEC CHECKSUMS:
   WechatOpenSDK: 9b721089507c895d05f997408c30bb6e6f5f9b60
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-PODFILE CHECKSUM: f82ffa87c72e206a8ee452fb3120d83ef3e28c6a
+PODFILE CHECKSUM: 7dcdd2cf18f9ee778d213e6be15143c68bf7153a
 
 COCOAPODS: 1.6.1
