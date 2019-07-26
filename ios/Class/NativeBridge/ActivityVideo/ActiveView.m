@@ -36,6 +36,7 @@
 @property (nonatomic, assign) BOOL didPausePlay;
 @property (nonatomic, assign) BOOL isPersonal;
 @property (nonatomic, assign) BOOL isCollect;
+@property (nonatomic, assign) NSInteger tabType;
 
 @property(nonatomic, strong)UILabel *emptyLb;
 @property (nonatomic, strong)UIView *emptyView;
@@ -109,6 +110,9 @@
   if(self.isCollect){
     [dic setObject:[NSNumber numberWithInt:1]  forKey:@"isCollect"];
   }
+  if(self.tabType){
+    [dic setObject:[NSNumber numberWithInteger:self.tabType]  forKey:@"spreadPosition"];
+  }
   [dic addEntriesFromDictionary:@{@"currentShowNo":currentShowNo}];
                                   
   __weak ActiveView * weakSelf = self;
@@ -140,7 +144,9 @@
   if(self.isCollect){
     [dic setObject:[NSNumber numberWithInt:1]  forKey:@"isCollect"];
   }
-  
+  if(self.tabType){
+    [dic setObject:[NSNumber numberWithInteger:self.tabType]  forKey:@"spreadPosition"];
+  }
   [dic addEntriesFromDictionary:@{@"currentShowNo": currentShowNo}];
   __weak ActiveView * weakSelf = self;
 
@@ -182,8 +188,12 @@
   if(self.isPersonal&&[params valueForKey:@"isCollect"]){
     self.isCollect = [params valueForKey:@"isCollect"];
   }
+  if([params valueForKey:@"tabType"]){
+    self.tabType = (NSInteger)[params valueForKey:@"tabType"];
+  }
   self.dataArr = [NSMutableArray arrayWithObject:firstData];
   self.callBackArr = [NSMutableArray arrayWithObject:params];
+  self.VideoHeaderView.model = firstData;
   [self.scrollView setupData:self.dataArr];
   [self refreshData];
 

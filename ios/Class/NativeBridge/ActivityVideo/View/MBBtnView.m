@@ -507,7 +507,7 @@
 -(void)showDownloadAlterWith:(UIButton*)sender{
   __weak typeof(self) weakSelf = self;
   UIAlertController *alterController = [UIAlertController alertControllerWithTitle:@"温馨提示"
-                                                                           message:@"您当前处于2G/3G/4G环境 继续下载将使用5M流量"
+                                                                           message:@"您当前处于2G/3G/4G环境 继续下载将使用流量"
                                                                     preferredStyle:UIAlertControllerStyleAlert];
   UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"返回"
                                                          style:UIAlertActionStyleDefault
@@ -533,7 +533,7 @@
 -(void)showVideoPlayAlterWith{
   __weak typeof(self) weakSelf = self;
   UIAlertController *alterController = [UIAlertController alertControllerWithTitle:@"温馨提示"
-                                                                           message:@"您当前处于2G/3G/4G环境                       继续播放将使用5M流量"
+                                                                           message:@"您当前处于2G/3G/4G环境                       继续播放将使用流量"
                                                                     preferredStyle:UIAlertControllerStyleAlert];
   UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"返回"
                                                          style:UIAlertActionStyleDefault
