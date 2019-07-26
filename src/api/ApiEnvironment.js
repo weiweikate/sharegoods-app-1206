@@ -27,6 +27,10 @@ class ApiEnvironment {
                 if(config.env[obj] && (config.env[obj].host === baseHost)){
                     hasBaseUrl = true;
                     this.envType = String(obj)
+                     const envType = config.envType;
+                    if (envType && (envType !== this.envType)) {
+                        this.saveEnv(this.envType);
+                    }
                     break;
                 }
             }
