@@ -133,7 +133,7 @@ export default class ShowMaterialView extends React.Component {
                                            if (nativeEvent.showType === 1) {
                                                navigate(RouterMap.ShowDetailPage, params);
                                            } else if(nativeEvent.showType === 3){
-                                               navigate(RouterMap.ShowVideoPage, {code:showNo});
+                                               navigate(RouterMap.ShowVideoPage, {code:showNo,tabType:2});
                                            } else {
                                                navigate(RouterMap.ShowRichTextDetailPage, params);
                                            }

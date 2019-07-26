@@ -70,6 +70,10 @@ export default class ShowVideoPage extends BasePage {
             }else {
                 this.data.isPersonal = false;
             }
+
+            if(this.params.tabType){
+                this.data.tabType = this.params.tabType;
+            }
             this.setState({
                 pageState: PageLoadingState.success
             });
@@ -79,10 +83,6 @@ export default class ShowVideoPage extends BasePage {
                 errorMsg:error.msg
             });
         });
-    }
-
-    _getCover=(detail)=>{
-
     }
 
     _render() {
