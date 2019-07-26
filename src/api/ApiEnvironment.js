@@ -18,11 +18,11 @@ const ApiConfig = config.env;
 class ApiEnvironment {
 
     constructor() {
-        let baseHost = NativeModules.commModule.baseUrl;
+        let baseHost = NativeModules.commModule.baseUrl
         let hasBaseUrl = false;
-        if (StringUtils.isNoEmpty(baseHost)) {
-            for (let obj in config.env) {
-                if (config.env[obj] && (config.env[obj].host === baseHost)) {
+        if(StringUtils.isNoEmpty(baseHost)){
+            for(let obj in config.env){
+                if(config.env[obj] && (config.env[obj].host === baseHost)){
                     hasBaseUrl = true;
                     this.envType = String(obj);
                     const envType = config.envType;
