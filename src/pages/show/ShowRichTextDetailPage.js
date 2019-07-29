@@ -13,7 +13,7 @@ import res from './res';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
 import AutoHeightWebView from '@mr/react-native-autoheight-webview';
-import SkeletonPlaceholder from "react-native-skeleton-placeholder";
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 const { px2dp } = ScreenUtils;
 import { ShowDetail } from './Show';
@@ -46,8 +46,8 @@ import WhiteModel from './model/WhiteModel';
 import ShareUtil from '../../utils/ShareUtil';
 import CommShowShareModal from '../../comm/components/CommShowShareModal';
 
-const { iconShowFire, iconLike, iconNoLike, iconShowShare, dynamicEmpty,collected,uncollected  } = res;
-
+const { iconShowFire, iconLike, iconNoLike, iconShowShare, dynamicEmpty, collected, uncollected } = res;
+const SkeletonWidth = DesignRule.width - px2dp(30);
 
 @SmoothPushPreLoadHighComponent
 @observer
@@ -65,7 +65,8 @@ export default class ShowRichTextDetailPage extends BasePage {
         this.state = {
             pageState: PageLoadingState.loading,
             errorMsg: '',
-            productModalVisible: false
+            productModalVisible: false,
+            showHtml: false
         };
         this.noNeedRefresh = false;
     }
@@ -248,11 +249,11 @@ export default class ShowRichTextDetailPage extends BasePage {
         let userImage = (detail.userInfoVO && detail.userInfoVO.userImg) ? detail.userInfoVO.userImg : '';
         let userName = (detail.userInfoVO && detail.userInfoVO.userName) ? detail.userInfoVO.userName : '';
         let attentionText = '';
-        if(detail.attentionStatus === 0){
+        if (detail.attentionStatus === 0) {
             attentionText = '关注';
-        }else if(detail.attentionStatus === 1){
+        } else if (detail.attentionStatus === 1) {
             attentionText = '已关注';
-        }else if(detail.attentionStatus === 2){
+        } else if (detail.attentionStatus === 2) {
             attentionText = '相互关注';
         }
         return (
@@ -285,16 +286,16 @@ export default class ShowRichTextDetailPage extends BasePage {
                 </View>
                 {detail.userInfoVO ?
                     <TouchableWithoutFeedback onPress={() => {
-                        if(detail.attentionStatus === 0){
-                            ShowApi.userFollow({ userNo: detail.userInfoVO.userNo }).then(()=>{
+                        if (detail.attentionStatus === 0) {
+                            ShowApi.userFollow({ userNo: detail.userInfoVO.userNo }).then(() => {
                                 this.showDetailModule.setAttentionStatus(1);
-                            }).catch((err)=>{
+                            }).catch((err) => {
                                 this.$toastShow(err.msg);
                             });
-                        }else {
-                            ShowApi.cancelFollow({ userNo: detail.userInfoVO.userNo }).then(()=>{
+                        } else {
+                            ShowApi.cancelFollow({ userNo: detail.userInfoVO.userNo }).then(() => {
                                 this.showDetailModule.setAttentionStatus(0);
-                            }).catch((err)=>{
+                            }).catch((err) => {
                                 this.$toastShow(err.msg);
                             });
                         }
@@ -492,7 +493,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                 <View style={{ width: px2dp(24) }}/>
                 <NoMoreClick onPress={this._collectClick}>
                     <View style={{ flexDirection: 'row' }}>
-                        <Image source={detail.collect ? collected:uncollected} style={styles.bottomIcon}/>
+                        <Image source={detail.collect ? collected : uncollected} style={styles.bottomIcon}/>
                         <Text style={styles.bottomNumText}>
                             {ShowUtils.formatShowNum(detail.collectCount)}
                         </Text>
@@ -696,32 +697,58 @@ export default class ShowRichTextDetailPage extends BasePage {
                     {detail.title}
                 </Text>
 
-                <SkeletonPlaceholder>
-                    <View style={{ width: "100%", height: 140 }} />
+                <View>
+                    <AutoHeightWebView source={{ html: html }}
+                                       onSizeUpdated={() => {
+                                           this.setState({ showHtml: true });
+                                       }}
+                                       style={{ width: DesignRule.width - 30, alignSelf: 'center' }}
+                                       scalesPageToFit={true}
+                                       javaScriptEnabled={true}
+                                       cacheEnabled={true}
+                                       domStorageEnabled={true}
+                                       mixedContentMode={'always'}
+                                       onLongClickImage={this._onLongClickImage}
+                                       showsHorizontalScrollIndicator={false}
+                                       showsVerticalScrollIndicator={false}
 
-                    <View style={{ width: 120, height: 20, alignSelf: "center" }} />
-                    <View
-                        style={{
-                            width: 240,
-                            height: 20,
-                            alignSelf: "center",
-                            marginTop: 12
-                        }}
                     />
-                </SkeletonPlaceholder>
-
-                <AutoHeightWebView source={{ html: html }}
-                                   style={{ width: DesignRule.width - 30, alignSelf: 'center' }}
-                                   scalesPageToFit={true}
-                                   javaScriptEnabled={true}
-                                   cacheEnabled={true}
-                                   domStorageEnabled={true}
-                                   mixedContentMode={'always'}
-                                   onLongClickImage={this._onLongClickImage}
-                                   showsHorizontalScrollIndicator={false}
-                                   showsVerticalScrollIndicator={false}
-
-                />
+                    {!this.state.showHtml ?
+                        <View style={{ position: 'absolute', top: 0, left: 0, backgroundColor: '#fff' }}>
+                            <SkeletonPlaceholder>
+                                <View style={{ width: SkeletonWidth, height: 150, marginHorizontal: px2dp(15) }}/>
+                                <View style={{ width: SkeletonWidth, height: 20, marginHorizontal: 15, marginTop: 5 }}/>
+                                <View style={{ width: SkeletonWidth, height: 20, marginHorizontal: 15, marginTop: 5 }}/>
+                                <View style={{ width: SkeletonWidth, height: 20, marginHorizontal: 15, marginTop: 5 }}/>
+                                <View style={{
+                                    width: SkeletonWidth - 80,
+                                    height: 20,
+                                    marginHorizontal: 15,
+                                    marginTop: 5
+                                }}/>
+                                <View style={{ width: SkeletonWidth, height: 150, marginHorizontal: px2dp(15) ,marginTop:5}}/>
+                                <View style={{ width: SkeletonWidth, height: 20, marginHorizontal: 15, marginTop: 5 }}/>
+                                <View style={{ width: SkeletonWidth, height: 20, marginHorizontal: 15, marginTop: 5 }}/>
+                                <View style={{ width: SkeletonWidth, height: 20, marginHorizontal: 15, marginTop: 5 }}/>
+                                <View style={{
+                                    width: SkeletonWidth - 80,
+                                    height: 20,
+                                    marginHorizontal: 15,
+                                    marginTop: 5
+                                }}/>
+                                <View style={{ width: SkeletonWidth, height: 150, marginHorizontal: px2dp(15) ,marginTop:5}}/>
+                                <View style={{ width: SkeletonWidth, height: 20, marginHorizontal: 15, marginTop: 5 }}/>
+                                <View style={{ width: SkeletonWidth, height: 20, marginHorizontal: 15, marginTop: 5 }}/>
+                                <View style={{ width: SkeletonWidth, height: 20, marginHorizontal: 15, marginTop: 5 }}/>
+                                <View style={{
+                                    width: SkeletonWidth - 80,
+                                    height: 20,
+                                    marginHorizontal: 15,
+                                    marginTop: 5
+                                }}/>
+                            </SkeletonPlaceholder></View> : null
+                    }
+                </View>
 
                 {this.renderTags()}
 
@@ -804,7 +831,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                                     }}
                                     imageJson={{
                                         imageType: 'show',
-                                        imageUrlStr:ShowUtils.getCover(detail),
+                                        imageUrlStr: ShowUtils.getCover(detail),
                                         titleStr: detail.showType === 1 ? detail.content : detail.title,
                                         QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
                                         headerImage: (detail.userInfoVO && detail.userInfoVO.userImg) ? detail.userInfoVO.userImg : null,
@@ -819,7 +846,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                                     webJson={{
                                         title: detail.title || '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
                                         linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
-                                        thumImage:ShowUtils.getCover(detail),//(分享图标小图(https链接)图文分享使用)
+                                        thumImage: ShowUtils.getCover(detail),//(分享图标小图(https链接)图文分享使用)
                                         dec: '好物不独享，内有惊喜福利~'
                                     }}
                 /> : null}
