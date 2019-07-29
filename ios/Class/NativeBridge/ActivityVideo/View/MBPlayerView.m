@@ -41,18 +41,20 @@
 
 - (void)dealloc {
   //清空
-  [self.player pause];
   [self.playerItem cancelPendingSeeks];
   [self.playerItem.asset cancelLoading];
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
-  [self.playerLayer removeFromSuperlayer];
-  self.player = nil;
-  self.playerLayer = nil;
-  self.resourceLoader = nil;
-  self.backgroundColor = [UIColor clearColor];
+  [self.player pause];
   if (self.playerItem) {
     [self.playerItem removeObserver:self forKeyPath:@"status"];
   }
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  [self.playerLayer removeFromSuperlayer];
+  self.player = nil;
+  self.playerItem = nil;
+  self.playerLayer = nil;
+  self.resourceLoader = nil;
+  self.backgroundColor = [UIColor clearColor];
+
 }
 
 #pragma mark - Custom Accessors
