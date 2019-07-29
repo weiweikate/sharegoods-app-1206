@@ -95,6 +95,10 @@ const allType = {
     13: {
         title: '系统升级',
         icon: hongbao
+    },
+    17:{
+        title: '抽奖奖励',
+        icon: renwu
     }
 
 };

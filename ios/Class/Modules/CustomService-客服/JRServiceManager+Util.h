@@ -21,6 +21,7 @@ typedef NS_ENUM(NSInteger,CHAT_TYPE){
 typedef NS_ENUM(NSInteger,CARD_TYPE) {
   PRODUCT_CARD=0, //商品卡片
   ORDER_CARD=1,//订单卡片
+  LINK_CLICK=2
 };
 
 @interface JRServiceManager (Util)
