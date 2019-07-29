@@ -160,7 +160,7 @@ export default class CouponExplainItem extends Component {
 
                                 : <View style={{justifyContent: 'center', alignItems: 'center'}}>
                                     {item.canInvoke && item.status === 3 ? <NoMoreClick style={{
-                                            height: ScreenUtils.autoSizeWidth(20),
+                                            height: ScreenUtils.autoSizeWidth(27),
                                             width: ScreenUtils.autoSizeWidth(60),
                                             borderRadius: ScreenUtils.autoSizeWidth(14),
                                             overflow: 'hidden',
