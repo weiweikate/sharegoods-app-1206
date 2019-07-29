@@ -13,6 +13,7 @@ import res from './res';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
 import AutoHeightWebView from '@mr/react-native-autoheight-webview';
+import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 
 const { px2dp } = ScreenUtils;
 import { ShowDetail } from './Show';
@@ -694,6 +695,20 @@ export default class ShowRichTextDetailPage extends BasePage {
                       ellipsizeMode={'tail'}>
                     {detail.title}
                 </Text>
+
+                <SkeletonPlaceholder>
+                    <View style={{ width: "100%", height: 140 }} />
+
+                    <View style={{ width: 120, height: 20, alignSelf: "center" }} />
+                    <View
+                        style={{
+                            width: 240,
+                            height: 20,
+                            alignSelf: "center",
+                            marginTop: 12
+                        }}
+                    />
+                </SkeletonPlaceholder>
 
                 <AutoHeightWebView source={{ html: html }}
                                    style={{ width: DesignRule.width - 30, alignSelf: 'center' }}
