@@ -4,7 +4,6 @@ import {
     View,
     Image,
     TouchableOpacity,
-    Platform
 } from 'react-native';
 import BasePage from '../../BasePage';
 import DesignRule from '../../constants/DesignRule';
@@ -42,9 +41,6 @@ export default class MyDynamicPage extends BasePage {
     }
 
     renderHeader = () => {
-        if(Platform.OS === 'ios'){
-            return null;
-        }
         return <UserInfoView userType={this.params.userType} userInfo={this.params.userInfo}/>
     };
 
@@ -102,12 +98,11 @@ export default class MyDynamicPage extends BasePage {
 
     _render() {
         let Waterfall = ShowDynamicView;
-        let headerHeight = Platform.OS === 'ios' ? 210 : 200;
         const {userNo = ''} = this.params.userInfo || {};
         return (
             <View style={styles.contain}>
                 <Waterfall style={{ flex: 1, marginTop: -10 }}
-                           headerHeight={px2dp(headerHeight+100)}
+                           headerHeight={this.params.userType !== 'mineNormal' ? px2dp(270):px2dp(235)}
                            changeNav={({nativeEvent})=>{
                                this.setState({
                                    changeHeader:nativeEvent.show
