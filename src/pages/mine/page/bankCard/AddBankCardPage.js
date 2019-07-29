@@ -10,16 +10,42 @@ import {
     UIText, UIButton
 } from '../../../../components/ui';
 import { MRText as Text, MRTextInput as RNTextInput } from '../../../../components/ui';
-
-import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import MineApi from '../../api/MineApi';
 import Toast from '../../../../utils/bridge';
 import user from '../../../../model/user';
 import DesignRule from '../../../../constants/DesignRule';
 import { observer } from 'mobx-react';
+import StringUtils from '../../../../utils/StringUtils';
 
 let lastcommit = null;
+
+export function formatCardWithSpace(text) {
+    if (text) {
+        let phone = text.replace(/ /g, '');
+        if (phone && phone.length < 5) {
+            return phone;
+        }
+
+        if (phone && phone.length < 9) {
+            return `${phone.substring(0, 4)} ${phone.substring(4, phone.length)}`;
+        }
+
+        if (phone && phone.length < 13) {
+            return `${phone.substring(0, 4)} ${phone.substring(4, 8)} ${phone.substring(8, phone.length)}`;
+        }
+
+        if (phone && phone.length < 17) {
+            return `${phone.substring(0, 4)} ${phone.substring(4, 8)} ${phone.substring(8, 12)} ${phone.substring(12, phone.length)}`;
+        }
+
+        if (phone && phone.length > 16) {
+            return `${phone.substring(0, 4)} ${phone.substring(4, 8)} ${phone.substring(8, 12)} ${phone.substring(12, 16)} ${phone.substring(16, phone.length)}`;
+        }
+    } else {
+        return text;
+    }
+}
 
 @observer
 class AddBankCardPage extends BasePage {
@@ -38,7 +64,8 @@ class AddBankCardPage extends BasePage {
             account: user.realname,
             bankName: '',
             cardNo: '',
-            cardType: ''
+            cardType: '',
+            type: ''
         };
     }
 
@@ -69,36 +96,6 @@ class AddBankCardPage extends BasePage {
         } else {
             return text;
         }
-
-    }
-
-    _formatCard(text) {
-
-        if (text) {
-            let phone = text.replace(/ /g, '');
-            if (phone && phone.length < 5) {
-                return phone;
-            }
-
-            if (phone && phone.length < 9) {
-                return `${phone.substring(0, 4)} ${phone.substring(4, phone.length)}`;
-            }
-
-            if (phone && phone.length < 13) {
-                return `${phone.substring(0, 4)} ${phone.substring(4, 8)} ${phone.substring(8, phone.length)}`;
-            }
-
-            if (phone && phone.length < 17) {
-                return `${phone.substring(0, 4)} ${phone.substring(4, 8)} ${phone.substring(8, 12)} ${phone.substring(12, phone.length)}`;
-            }
-
-            if (phone && phone.length > 16) {
-                return `${phone.substring(0, 4)} ${phone.substring(4, 8)} ${phone.substring(8, 12)} ${phone.substring(12, 16)} ${phone.substring(16, phone.length)}`;
-            }
-        } else {
-            return text;
-        }
-
 
     }
 
@@ -149,6 +146,8 @@ class AddBankCardPage extends BasePage {
                     <RNTextInput
                         style={styles.inputTextStyle}
                         onChangeText={(text) => this.inputCardNum(text)}
+                        onEndEditing={this.getBankType}
+                        onSubmitEditing={this.getBankType}
                         value={this.state.cardNo}
                         placeholder={'请输入卡号'}
                     />
@@ -161,7 +160,8 @@ class AddBankCardPage extends BasePage {
                     backgroundColor: 'white'
                 }}>
                     <Text style={styles.accountStyle}>{'卡类型'}</Text>
-                    <Text style={styles.accountStyle2}>{`${this.state.bankName}  ${this.state.cardType}`}</Text>
+                    <Text
+                        style={styles.accountStyle2}>{`${this.state.bankName}  ${StringUtils.isNoEmpty(this.state.type) ? (parseInt(this.state.type) === 2 ? '信用卡' : '储蓄卡') : ''}`}</Text>
 
                 </View>
                 <UIButton
@@ -192,42 +192,31 @@ class AddBankCardPage extends BasePage {
         );
     };
     inputCardNum = (cardNo) => {
-        this.setState({ cardNo: this._formatCard(cardNo) });
-        let card = cardNo.replace(/ /g, '');
-        this.getBankType(card);
+        this.setState({ cardNo: formatCardWithSpace(cardNo) });
     };
-    getBankType = (bankCard) => {
-        if (StringUtils.isEmpty(bankCard)) {
-            this.setState({
-                bankName: '',
-                cardType: ''
-            });
-            return;
-        }
-        if (bankCard.length < 6) {
-            this.setState({
-                bankName: '',
-                cardType: ''
-            });
-            return;
-        }
-        MineApi.findByBankCard({ cardnumber: bankCard }).then((response) => {
+    getBankType = () => {
+        const bankCard = this.state.cardNo.replace(/ /g, '');
+        MineApi.findByBankCardV2({ cardNumber: bankCard }).then((response) => {
             if (response.data) {
+                const data = response.data || {};
                 this.setState({
-                    bankName: response.data[0],
-                    cardType: response.data[1]
+                    bankName: data.bankName || '',
+                    cardType: data.cardType || '',
+                    type: data.type || ''
                 });
             } else {
-                this.setState({
-                    bankName: '',
-                    cardType: ''
-                });
+                this._setDefault();
             }
         }).catch(e => {
-            this.setState({
-                bankName: '',
-                cardType: ''
-            });
+            this._setDefault();
+            this.$toastShow(e.msg);
+        });
+    };
+    _setDefault = () => {
+        this.setState({
+            bankName: '',
+            cardType: '',
+            type: ''
         });
     };
     renderWideLine = () => {
@@ -262,7 +251,8 @@ class AddBankCardPage extends BasePage {
             bankName: this.state.bankName,
             cardNo: this.state.cardNo.replace(/ /g, ''),
             cardType: this.state.cardType,
-            phone: this.state.phone.replace(/ /g, '')
+            phone: this.state.phone.replace(/ /g, ''),
+            type: this.state.type
         };
 
         lastcommit = now;
@@ -286,7 +276,7 @@ class AddBankCardPage extends BasePage {
         //     return;
         // }
         Toast.showLoading();
-        MineApi.addUserBank(params).then((response) => {
+        MineApi.addUserBankV2(params).then((response) => {
             Toast.hiddenLoading();
             this.$toastShow('绑定银行卡成功');
             DeviceEventEmitter.emit('bindBank');

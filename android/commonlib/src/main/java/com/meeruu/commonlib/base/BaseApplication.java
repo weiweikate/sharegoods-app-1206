@@ -127,7 +127,7 @@ public class BaseApplication extends MultiDexApplication {
         JPushInterface.init(getApplicationContext());
         if (Utils.isApkInDebug()) {
             // 七鱼初始化
-            Unicorn.init(getApplicationContext(), "b87fd67831699ca494a9d3de266cd3b0", QiYuOptions(),
+            Unicorn.init(getApplicationContext(), "ae7a2c616148c5aec7ffedfa50ad90a7", QiYuOptions(),
                     new QiyuImageLoader(getApplicationContext()));
             // jpush debug
             JPushInterface.setDebugMode(true);

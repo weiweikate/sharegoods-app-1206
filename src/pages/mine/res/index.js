@@ -12,6 +12,7 @@ import collectShop from './collectShop';
 import mentor from './mentor';
 import cashAccount from './userInfoImg/cashAccountImg';
 import showFans from './showFans';
+import bankCardIcon from './bankCardIcon'
 
 const index = {
     collectShop: {
@@ -52,6 +53,9 @@ const index = {
     },
     showFans:{
         ...showFans
+    },
+    bankCardIcon:{
+        ...bankCardIcon
     },
     ...res
 };
