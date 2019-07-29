@@ -72,7 +72,7 @@ export default class ShowVideoPage extends BasePage {
             }
 
             if(this.params.tabType){
-                this.data.tabType = this.params.tabType;
+                this.data.tabType = this.params.tabType + '';
             }
             this.setState({
                 pageState: PageLoadingState.success

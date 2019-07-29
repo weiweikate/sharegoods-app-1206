@@ -29,7 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) RCTBubblingEventBlock onEndScroll;
 @property (nonatomic, copy) NSString* uri;
 @property (nonatomic, copy) NSString* type;
-@property (nonatomic, copy) NSString* userCode;
+@property (nonatomic, assign) BOOL isLogin;
 @property (nonatomic, strong) NSDictionary* params;
 @property (nonatomic, assign) NSInteger headerHeight;
 
