@@ -1337,7 +1337,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     //商品分享图片
     public static void draw(Context context, Bitmap bitmap, Bitmap header, ShareImageBean shareImageBean, Callback success, Callback fail) {
         int precision = 3;
-        int titleSize = 23 * precision;
+        int titleSize = 16 * precision;
         String title = shareImageBean.getTitleStr() + "";
         int titleCount = (328 * precision) / titleSize;
         String retailPrice = shareImageBean.getRetail();
@@ -1345,7 +1345,12 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         String price = shareImageBean.getPriceStr();
         String info = shareImageBean.getQRCodeStr();
         String tip = "为您推荐好物";
-
+        boolean isTwoLine;
+        if (title.length() <= titleCount) {
+            isTwoLine = false;
+        } else {
+            isTwoLine = true;
+        }
         String spellPrice = shareImageBean.getSpell();
         String discountPrice = shareImageBean.getDiscount();
 
@@ -1423,29 +1428,44 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             topRightBtp.recycle();
         }
 
-
         //绘制文字
         Rect bounds = new Rect();
         paint.setColor(Color.parseColor("#333333"));
         paint.setTextSize(titleSize);
         paint.setFakeBoldText(true);
 
-        if (titleCount < title.length()) {
-            title = title.substring(0, titleCount);
+        if (title.length() <= titleCount) {
+            paint.getTextBounds(title, 0, title.length(), bounds);
+            canvas.drawText(title, 24 * precision, 380 * precision + bounds.height(), paint);
         }
-        paint.getTextBounds(title, 0, title.length(), bounds);
-        canvas.drawText(title, 24 * precision, 393 * precision + bounds.height(), paint);
+        if (title.length() <= titleCount * 2 && title.length() > titleCount) {
+            String s = title.substring(0, titleCount);
+            //获取文字的字宽高以便把文字与图片中心对齐
+            paint.getTextBounds(s, 0, titleCount, bounds);
+            //画文字的时候高度需要注意文字大小以及文字行间距
+            canvas.drawText(s, 24 * precision, 380 * precision + bounds.height(), paint);
+            s = title.substring(titleCount);
+            canvas.drawText(s, 24 * precision, 387  * precision + titleSize + bounds.height() , paint);
 
-
+        }
+        if (title.length() > titleCount * 2) {
+            String s = title.substring(0, titleCount);
+            //获取文字的字宽高以便把文字与图片中心对齐
+            paint.getTextBounds(s, 0, titleCount, bounds);
+            //画文字的时候高度需要注意文字大小以及文字行间距
+            canvas.drawText(s, 24 * precision, 380 * precision + bounds.height(), paint);
+            s = title.substring(titleCount, titleCount * 2 - 2) + "...";
+            canvas.drawText(s, 24 * precision, 387 * precision + bounds.height(), paint);
+        }
         paint.setColor(Color.parseColor("#FF0050"));
         paint.setTextSize(30 * precision);
         paint.setFakeBoldText(true);
         String pdj = retailPrice;
         paint.getTextBounds(pdj, 0, pdj.length(), bounds);
-        canvas.drawText(pdj, 16 * precision, 437 * precision + bounds.height(), paint);
+        canvas.drawText(pdj, 16 * precision, isTwoLine?440 * precision + bounds.height() : 437 * precision + bounds.height(), paint);
 
         int tagLeft = 16 * precision;
-        int top = 503 * precision;
+        int top = isTwoLine ?495 * precision:492*precision;
         paint.setTypeface(null);
 
         for (String tag : tags) {
@@ -1468,7 +1488,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         String marketStr = "市场价： ";
         marketStr += price;
         paint.getTextBounds(marketStr, 0, marketStr.length(), bounds);
-        canvas.drawText(marketStr, 16 * precision, 543 * precision + +bounds.height(), paint);
+        canvas.drawText(marketStr, 16 * precision, 537 * precision + +bounds.height(), paint);
         Bitmap qrBitmap = createQRImage(info, 100 * precision, 100 * precision);
         canvas.drawBitmap(qrBitmap, 252 * precision, 441 * precision, paint);
 
