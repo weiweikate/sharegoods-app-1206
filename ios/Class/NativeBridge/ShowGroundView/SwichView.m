@@ -156,11 +156,6 @@
     [self addSubview:btn];
     btn.frame = CGRectMake(0, kNavBarHeight - 44, 44, 44);
     [self addSubview:self.swichView];
-    self.swichView.selectBlock = ^(NSInteger index) {
-      if (self.selectBlock) {
-        self.selectBlock(index);
-      }
-    };
   }
   return self;
 }
@@ -169,6 +164,12 @@
   if (self.backBlock) {
     self.backBlock();
   }
+}
+
+- (void)setSelectBlock:(void (^)(NSInteger))selectBlock
+{
+   _selectBlock = selectBlock;
+   self.swichView.selectBlock = selectBlock;
 }
 
 - (void)setData:(NSArray<NSString *> *)data

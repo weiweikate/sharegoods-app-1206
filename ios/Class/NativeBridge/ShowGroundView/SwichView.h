@@ -21,6 +21,6 @@
 @interface SwichViewNavi : UIView
 @property(nonatomic, strong)NSArray<NSString *> *data;
 @property(nonatomic, strong)SwichView *swichView;
-@property(nonatomic, strong)void(^selectBlock)(NSInteger index);
-@property(nonatomic, strong)void(^backBlock)();
+@property(nonatomic, copy)void(^selectBlock)(NSInteger index);
+@property(nonatomic, copy)void(^backBlock)();
 @end
