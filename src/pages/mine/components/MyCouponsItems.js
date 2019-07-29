@@ -150,7 +150,9 @@ export default class MyCouponsItems extends Component {
                 });
             });
         }else {
-            this.clickItem(0,invokeData);
+            this.setState({showDialogModal: false}, () => {
+                this.clickItem(0, invokeData);
+            });
         }
     };
 
