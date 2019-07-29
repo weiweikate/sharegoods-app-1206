@@ -32,6 +32,7 @@ import CommModal from '../../../comm/components/CommModal';
 import { track, TrackApi, trackEvent } from '../../../utils/SensorsTrack';
 import settingModel from '../model/SettingModel'
 import PullView from '../components/pulltorefreshlayout'
+import WhiteModel from '../../show/model/WhiteModel'
 
 
 const {
@@ -57,6 +58,7 @@ const {
     mine_icon_mentor,
     mine_user_icon,
     mine_icon_fans,
+    mine_icon_show,
     // mine_levelBg,
     mine_showOrder
 } = res.homeBaseImg;
@@ -129,6 +131,7 @@ export default class MinePage extends BasePage {
                 const { state } = payload;
                 this.loadMessageCount();
                 this._needShowFans();
+                WhiteModel.saveWhiteType();
                 console.log('willFocusSubscriptionMine', state);
                 if (state && state.routeName === 'MinePage') {
                     this.refresh();
@@ -911,15 +914,15 @@ export default class MinePage extends BasePage {
                 this.$navigate(RouterMap.AddressManagerPage);
             }
         };
-        // let collect = {
-        //     text: '秀场收藏',
-        //     icon: mine_icon_discollect,
-        //     onPress: () => {
-        //         TrackApi.ViewMyXiuCollection();
-        //         TrackApi.WatchXiuChang({ xiuChangModuleSource: 3 });
-        //         this.$navigate(RouterMap.ShowConnectPage);
-        //     }
-        // };
+        let collect = {
+            text: '秀场收藏',
+            icon: mine_icon_show,
+            onPress: () => {
+                TrackApi.ViewMyXiuCollection();
+                TrackApi.WatchXiuChang({ xiuChangModuleSource: 3 });
+                this.$navigate(RouterMap.MyDynamicPage, { userType: WhiteModel.userStatus === 2 ? 'mineWriter' : 'mineNormal' });
+            }
+        };
 
 
         let mentorSet = {
@@ -948,7 +951,7 @@ export default class MinePage extends BasePage {
         }
 
 
-        let menu = [message, service, address, setting];
+        let menu = [message, service, address, collect, setting];
 
 
         if (this.state.hasFans) {

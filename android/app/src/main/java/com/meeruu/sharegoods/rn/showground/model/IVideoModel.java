@@ -3,7 +3,7 @@ package com.meeruu.sharegoods.rn.showground.model;
 import com.meeruu.commonlib.callback.BaseCallback;
 
 public interface IVideoModel {
-    void getVideoList(String showNo,String userCode, BaseCallback callback);
+    void getVideoList(String showNo,String userCode,boolean isCollect,int type,BaseCallback callback);
     void attentionUser(String userCode, BaseCallback callback);
     void notAttentionUser(String userCode, BaseCallback callback);
 }

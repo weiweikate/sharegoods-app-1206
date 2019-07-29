@@ -17,10 +17,10 @@ import { track, trackEvent } from '../../utils/SensorsTrack';
 import bridge from '../../utils/bridge';
 import ShowApi from './ShowApi';
 import EmptyUtils from '../../utils/EmptyUtils';
-import ShowUtils from './utils/ShowUtils';
 import RouterMap, { routeNavigate, routePush } from '../../navigation/RouterMap';
 import DownloadUtils from './utils/DownloadUtils';
 import ShowAttentionView from './components/ShowAttentionView';
+import WhiteModel from './model/WhiteModel';
 
 @observer
 export default class ShowAttentionPage extends React.Component {
@@ -133,7 +133,12 @@ export default class ShowAttentionPage extends React.Component {
                                            }
                                        }}
                                        onSeeUser={({nativeEvent})=>{
-                                           routeNavigate(RouterMap.MyDynamicPage,{userType:'others',userCode:nativeEvent.userInfoVO.userNo});
+                                           let userNo = nativeEvent.userInfoVO.userNo;
+                                           if(user.code === userNo){
+                                               routeNavigate(RouterMap.MyDynamicPage, { userType: WhiteModel.userStatus === 2 ? 'mineWriter' : 'mineNormal' });
+                                           }else {
+                                               routeNavigate(RouterMap.MyDynamicPage,{userType:'others',userInfo:nativeEvent.userInfoVO});
+                                           }
                                        }}
                                        onItemPress={({ nativeEvent }) => {
                                            const { showNo , userInfoVO } = nativeEvent;
@@ -204,21 +209,14 @@ export default class ShowAttentionPage extends React.Component {
                                                return;
                                            }
                                            let { detail } = nativeEvent;
-                                           if (!EmptyUtils.isEmptyArr(detail.resource)) {
-                                               let urls = detail.resource.map((value) => {
-                                                   return value.url;
+                                           DownloadUtils.downloadShow(detail).then(() => {
+                                               detail.downloadCount += 1;
+                                               ShowApi.incrCountByType({
+                                                   showNo: nativeEvent.detail.showNo,
+                                                   type: 4
                                                });
-                                               ShowUtils.downloadShow(urls, detail.content).then(() => {
-                                                   detail.downloadCount += 1;
-                                                   ShowApi.incrCountByType({
-                                                       showNo: nativeEvent.detail.showNo,
-                                                       type: 4
-                                                   });
-                                                   this.RecommendShowList && this.RecommendShowList.replaceItemData(nativeEvent.index, JSON.stringify(detail));
-                                               });
-                                           }
-
-                                           DownloadUtils.downloadProduct(nativeEvent);
+                                               this.RecommendShowList && this.RecommendShowList.replaceItemData(nativeEvent.index, JSON.stringify(detail));
+                                           });
                                            this.shareModal && this.shareModal.open();
                                            this.props.onShare(nativeEvent);
 

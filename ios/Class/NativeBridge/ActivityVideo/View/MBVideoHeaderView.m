@@ -186,12 +186,14 @@
   }
 }
 
+  //分享
 -(void)clickShareImg{
   if(self.dataDelegate){
     [self.dataDelegate shareClick:self.model];
   }
 }
 
+  //关注
 -(void)tapGuanzhuBtn:(UIButton*)sender{
   MBModelData* modeltemp = self.model;
   if(self.isLogin){
@@ -221,6 +223,7 @@
   }
 }
 
+  //返回
 -(void)goBack{
   if(self.dataDelegate){
     [self.dataDelegate goBack];
@@ -258,6 +261,7 @@
 
 #pragma arguments - Networking
 
+  //关注请求
 -(void)follow:(NSString*)userNo{
   [NetWorkTool requestWithURL:@"/social/show/user/follow@POST" params:@{@"userNo":userNo} toModel:nil success:^(NSDictionary* result) {
     NSLog(@"success");
@@ -266,6 +270,7 @@
   } showLoading:nil];
 }
 
+  //取消关注
 -(void)cancelFollow:(NSString*)userNo{
   [NetWorkTool requestWithURL:@"/social/show/user/cancel/follow@POST" params:@{@"userNo":userNo} toModel:nil success:^(NSDictionary* result) {
     NSLog(@"success");

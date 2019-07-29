@@ -50,6 +50,7 @@ import com.meeruu.sharegoods.rn.showground.event.onSharePressEvent;
 import com.meeruu.sharegoods.rn.showground.event.onStartRefreshEvent;
 import com.meeruu.sharegoods.rn.showground.event.onStartScrollEvent;
 import com.meeruu.sharegoods.rn.showground.presenter.ShowgroundPresenter;
+import com.meeruu.sharegoods.rn.showground.utils.VideoCoverUtils;
 import com.meeruu.sharegoods.rn.showground.view.IShowgroundView;
 import com.meeruu.sharegoods.rn.showground.widgets.CustomLoadMoreView;
 import com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView;
@@ -323,7 +324,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
                         case ParameterUtils.SHOW_REPLACE_DELAY:
                             final List<NewestShowGroundBean.DataBean> data = adapter.getData();
                             NewestShowGroundBean.DataBean bean = JSON.parseObject((String) msg.obj, NewestShowGroundBean.DataBean.class);
-                            data.set(msg.arg1, bean);
+                            data.set(msg.arg1, resolveItem(bean));
                             adapter.replaceData(data);
                             break;
                         default:
@@ -501,6 +502,29 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         }
     }
 
+    private NewestShowGroundBean.DataBean resolveItem(NewestShowGroundBean.DataBean bean){
+        if (bean.getItemType() == 1 || bean.getItemType() == 3) {
+            List<NewestShowGroundBean.DataBean.ResourceBean> resource = bean.getResource();
+            List<String> resolveResource = new ArrayList<>();
+            if (resource != null) {
+                for (int j = 0; j < resource.size(); j++) {
+                    NewestShowGroundBean.DataBean.ResourceBean resourceBean = resource.get(j);
+                    if (resourceBean.getType() == 2) {
+                        resolveResource.add(resourceBean.getBaseUrl());
+                    }
+
+                    if(resourceBean.getType() == 5){
+                        bean.setCoverType(VideoCoverUtils.getCoverType(resourceBean.getWidth(),resourceBean.getHeight()));
+                        bean.setVideoCover(resourceBean.getBaseUrl());
+                        break;
+                    }
+                }
+                bean.setImgUrls(resolveResource);
+            }
+        }
+        return bean;
+    }
+
     private List resolveData(List data) {
         if (data != null) {
             for (int i = 0; i < data.size(); i++) {
@@ -512,11 +536,12 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
                         for (int j = 0; j < resource.size(); j++) {
                             NewestShowGroundBean.DataBean.ResourceBean resourceBean = resource.get(j);
                             if (resourceBean.getType() == 2) {
-                                resolveResource.add(resourceBean.getUrl());
+                                resolveResource.add(resourceBean.getBaseUrl());
                             }
 
                             if (resourceBean.getType() == 5) {
-                                bean.setVideoCover(resourceBean.getUrl());
+                                bean.setVideoCover(resourceBean.getBaseUrl());
+                                bean.setCoverType(VideoCoverUtils.getCoverType(resourceBean.getWidth(),resourceBean.getHeight()));
                                 break;
                             }
                         }

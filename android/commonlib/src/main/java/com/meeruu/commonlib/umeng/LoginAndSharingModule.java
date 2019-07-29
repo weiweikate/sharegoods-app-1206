@@ -268,7 +268,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         String currentPrice = (String) data.get(currentPriceKey);
 
         int ratio = 2;
-        int titleSize = 18 * ratio;
+        int titleSize = 16 * ratio;
         int titleCount = (int) ((340 * ratio) / titleSize);
         boolean isTwoLine;
         if (title.length() <= titleCount) {
@@ -285,40 +285,73 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         paint.setColor(Color.WHITE);
         canvas.drawRect(0, 0, 375 * ratio, 667 * ratio, paint);
 
-        Bitmap logo = BitmapFactory.decodeResource(context.getResources(), R.drawable.sharelogo);
-        Rect mSrcRect = new Rect(0, 0, logo.getWidth(), logo.getHeight());
-        Rect mDestRect = new Rect(104 * ratio, 46 * ratio, 141 * ratio, 83 * ratio);
-        canvas.drawBitmap(logo, mSrcRect, mDestRect, paint);
+        BlurFactor blurFactor = new BlurFactor();
+        blurFactor.width = bitmap.getWidth();
+        blurFactor.height = bitmap.getHeight();
+        Bitmap outBitmap = Blur.of(context, bitmap, blurFactor);
+        int outWidth = outBitmap.getWidth();
+        int outHeight = outBitmap.getHeight();
+        if (outWidth * 1.0 / outHeight > 375 / 667) {
+            int height = outHeight;
+            int width = (int) (height * (375 / 667.0));
+            Rect mSrcRect = new Rect((outWidth - width) / 2, 0, outWidth - (width / 2), height);
+            Rect mDestRect = new Rect(0, 0, 375 * ratio, 667 * ratio);
+            canvas.drawBitmap(outBitmap, mSrcRect, mDestRect, paint);
+        } else {
+            int height = (int) (outWidth / (375 * 667.0));
+            Rect mSrcRect = new Rect(0, (outHeight - height) / 2, outWidth, outHeight - (height / 2));
+            Rect mDestRect = new Rect(0, 0, 375 * ratio, 667 * ratio);
+            canvas.drawBitmap(outBitmap, mSrcRect, mDestRect, paint);
+        }
 
-        paint.setColor(Color.parseColor("#FF0050"));
-        paint.setTextSize(17 * ratio);
-        canvas.drawText("秀一秀 赚到够", 152 * ratio, 72 * ratio, paint);
 
 
-        Bitmap bitmapCenter = Bitmap.createScaledBitmap(bitmap, 339 * ratio, 339 * ratio, true);
+        RectF white = new RectF(35 * ratio, 67 * ratio, 340 * ratio, 477 * ratio);
+        canvas.drawRoundRect(white, 5*ratio, 5*ratio, paint);
+
+        Bitmap bitmapCenter = Bitmap.createScaledBitmap(bitmap, 275 * ratio, 275 * ratio, true);
         Bitmap bitmapCenter1 = BitmapFillet.fillet(bitmapCenter, 5 * ratio, CORNER_ALL);
 
-        canvas.drawBitmap(bitmapCenter1, 18 * ratio, 100 * ratio, paint);
+        canvas.drawBitmap(bitmapCenter1, 50 * ratio, 82 * ratio, paint);
+
+        Rect bounds = new Rect();
+
+        //绘制价格
+        paint.setColor(Color.parseColor("#FF0050"));
+        paint.setTextSize(30 * ratio);
+        paint.setFakeBoldText(true);
+        String pdj = currentPrice;
+        paint.getTextBounds(pdj, 0, pdj.length(), bounds);
+        canvas.drawText(pdj, 51 * ratio,  (367 + titleSize) * ratio, paint);
+
+        int left = bounds.width() + 61 * ratio;
+
+        paint.setStrikeThruText(true);
+        paint.setFakeBoldText(false);
+        paint.setTextSize(13 * ratio);
+        paint.setColor(Color.parseColor("#999999"));
+        String marketStr = "市场价："+price;
+        canvas.drawText(marketStr, left, (367 + titleSize) * ratio, paint);
 
         //绘制文字
         paint.setColor(Color.parseColor("#333333"));
+        paint.setStrikeThruText(false);
         paint.setTextSize(titleSize);
-        Rect bounds = new Rect();
         if (title.length() <= titleCount) {
             String s = title.substring(0, title.length());
             //获取文字的字宽高以便把文字与图片中心对齐
             paint.getTextBounds(s, 0, s.length(), bounds);
             //画文字的时候高度需要注意文字大小以及文字行间距
-            canvas.drawText(s, 18 * ratio, (457 + titleSize / 2) * ratio, paint);
+            canvas.drawText(s, 51 * ratio, (417 + titleSize / 2) * ratio, paint);
         }
         if (title.length() <= titleCount * 2 && title.length() > titleCount) {
             String s = title.substring(0, titleCount);
             //获取文字的字宽高以便把文字与图片中心对齐
             paint.getTextBounds(s, 0, titleCount, bounds);
             //画文字的时候高度需要注意文字大小以及文字行间距
-            canvas.drawText(s, 18 * ratio, (457 + titleSize / 2) * ratio, paint);
+            canvas.drawText(s, 51 * ratio, (417 + titleSize / 2) * ratio, paint);
             s = title.substring(titleCount, title.length());
-            canvas.drawText(s, 18 * ratio, (457 + titleSize / 2) * ratio + titleSize + bounds.height() / 2, paint);
+            canvas.drawText(s, 51 * ratio, (417 + titleSize / 2) * ratio + titleSize + bounds.height() / 2, paint);
         }
 
         if (title.length() > titleCount * 2) {
@@ -326,31 +359,19 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             //获取文字的字宽高以便把文字与图片中心对齐
             paint.getTextBounds(s, 0, titleCount, bounds);
             //画文字的时候高度需要注意文字大小以及文字行间距
-            canvas.drawText(s, 18 * ratio, (457 + titleSize / 2) * ratio, paint);
+            canvas.drawText(s, 51 * ratio, (417 + titleSize / 2) * ratio, paint);
             s = title.substring(titleCount, titleCount * 2 - 2) + "...";
-            canvas.drawText(s, 18 * ratio, (457 + titleSize / 2) * ratio + titleSize + bounds.height() / 2, paint);
+            canvas.drawText(s, 51 * ratio, (417 + titleSize / 2) * ratio + titleSize + bounds.height() / 2, paint);
         }
 
+        Bitmap qrBitmap = createQRImage(info, 90 * ratio, 90 * ratio);
+        canvas.drawBitmap(qrBitmap, 143 * ratio, 535 * ratio, paint);
 
-        paint.setColor(Color.parseColor("#FF0050"));
-        paint.setTextSize(22 * ratio);
-        paint.setFakeBoldText(true);
-        String pdj = currentPrice;
-        paint.getTextBounds(pdj, 0, pdj.length(), bounds);
-        canvas.drawText(pdj, 18 * ratio, isTwoLine ? (470 + titleSize) * ratio + titleSize + bounds.height() / 2 : (470 + titleSize) * ratio, paint);
+        paint.setColor(Color.WHITE);
+        paint.setTextSize(13*ratio);
+        String tip = "秀一秀 赚到够";
+        canvas.drawText(tip, 147 * ratio,  647 * ratio, paint);
 
-        int left = bounds.width() + 31 * ratio;
-        int top = isTwoLine ? (453 + titleSize) * ratio + titleSize + bounds.height() / 2 : (453 + titleSize) * ratio;
-        int bottom = top + 18 * ratio;
-
-        paint.setStrikeThruText(true);
-        paint.setTextSize(13 * ratio);
-        paint.setColor(Color.parseColor("#999999"));
-        String marketStr = price;
-        canvas.drawText(marketStr, 18 * ratio, bottom + 25 * ratio, paint);
-
-        Bitmap qrBitmap = createQRImage(info, 77 * ratio, 77 * ratio);
-        canvas.drawBitmap(qrBitmap, 268 * ratio, bottom - titleSize - 6 * ratio, paint);
 
         String path = BitmapUtils.saveImageToCache(result, "shareImage.png", JSON.toJSONString(data));
         if (!TextUtils.isEmpty(path)) {
@@ -371,9 +392,9 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             result = null;
         }
 
-        if (logo != null && !logo.isRecycled()) {
-            logo.recycle();
-            logo = null;
+        if (outBitmap != null && !outBitmap.isRecycled()) {
+            outBitmap.recycle();
+            outBitmap = null;
         }
 
         if (bitmapCenter != null && !bitmapCenter.isRecycled()) {
@@ -1316,7 +1337,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     //商品分享图片
     public static void draw(Context context, Bitmap bitmap, Bitmap header, ShareImageBean shareImageBean, Callback success, Callback fail) {
         int precision = 3;
-        int titleSize = 23 * precision;
+        int titleSize = 16 * precision;
         String title = shareImageBean.getTitleStr() + "";
         int titleCount = (328 * precision) / titleSize;
         String retailPrice = shareImageBean.getRetail();
@@ -1324,7 +1345,12 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         String price = shareImageBean.getPriceStr();
         String info = shareImageBean.getQRCodeStr();
         String tip = "为您推荐好物";
-
+        boolean isTwoLine;
+        if (title.length() <= titleCount) {
+            isTwoLine = false;
+        } else {
+            isTwoLine = true;
+        }
         String spellPrice = shareImageBean.getSpell();
         String discountPrice = shareImageBean.getDiscount();
 
@@ -1402,29 +1428,44 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             topRightBtp.recycle();
         }
 
-
         //绘制文字
         Rect bounds = new Rect();
         paint.setColor(Color.parseColor("#333333"));
         paint.setTextSize(titleSize);
         paint.setFakeBoldText(true);
 
-        if (titleCount < title.length()) {
-            title = title.substring(0, titleCount);
+        if (title.length() <= titleCount) {
+            paint.getTextBounds(title, 0, title.length(), bounds);
+            canvas.drawText(title, 24 * precision, 380 * precision + bounds.height(), paint);
         }
-        paint.getTextBounds(title, 0, title.length(), bounds);
-        canvas.drawText(title, 24 * precision, 393 * precision + bounds.height(), paint);
+        if (title.length() <= titleCount * 2 && title.length() > titleCount) {
+            String s = title.substring(0, titleCount);
+            //获取文字的字宽高以便把文字与图片中心对齐
+            paint.getTextBounds(s, 0, titleCount, bounds);
+            //画文字的时候高度需要注意文字大小以及文字行间距
+            canvas.drawText(s, 24 * precision, 380 * precision + bounds.height(), paint);
+            s = title.substring(titleCount);
+            canvas.drawText(s, 24 * precision, 387  * precision + titleSize + bounds.height() , paint);
 
-
+        }
+        if (title.length() > titleCount * 2) {
+            String s = title.substring(0, titleCount);
+            //获取文字的字宽高以便把文字与图片中心对齐
+            paint.getTextBounds(s, 0, titleCount, bounds);
+            //画文字的时候高度需要注意文字大小以及文字行间距
+            canvas.drawText(s, 24 * precision, 380 * precision + bounds.height(), paint);
+            s = title.substring(titleCount, titleCount * 2 - 2) + "...";
+            canvas.drawText(s, 24 * precision, 387 * precision + bounds.height(), paint);
+        }
         paint.setColor(Color.parseColor("#FF0050"));
         paint.setTextSize(30 * precision);
         paint.setFakeBoldText(true);
         String pdj = retailPrice;
         paint.getTextBounds(pdj, 0, pdj.length(), bounds);
-        canvas.drawText(pdj, 16 * precision, 437 * precision + bounds.height(), paint);
+        canvas.drawText(pdj, 16 * precision, isTwoLine?440 * precision + bounds.height() : 437 * precision + bounds.height(), paint);
 
         int tagLeft = 16 * precision;
-        int top = 503 * precision;
+        int top = isTwoLine ?495 * precision:492*precision;
         paint.setTypeface(null);
 
         for (String tag : tags) {
@@ -1447,7 +1488,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         String marketStr = "市场价： ";
         marketStr += price;
         paint.getTextBounds(marketStr, 0, marketStr.length(), bounds);
-        canvas.drawText(marketStr, 16 * precision, 543 * precision + +bounds.height(), paint);
+        canvas.drawText(marketStr, 16 * precision, 537 * precision + +bounds.height(), paint);
         Bitmap qrBitmap = createQRImage(info, 100 * precision, 100 * precision);
         canvas.drawBitmap(qrBitmap, 252 * precision, 441 * precision, paint);
 

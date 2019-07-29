@@ -19,7 +19,7 @@
 #import "MBScrollView.h"
 #import "MBVideoModel.h"
 #import "MBVideoHeaderView.h"
-#import "MBNetworkManager.h"
+#import "MBFileManager.h"
 
 @interface ActiveView()<MBSrcollViewDataDelegate,MBHeaderViewDelegate>
 
@@ -34,6 +34,9 @@
 
 @property (nonatomic, strong) MBScrollView *scrollView;
 @property (nonatomic, assign) BOOL didPausePlay;
+@property (nonatomic, assign) BOOL isPersonal;
+@property (nonatomic, assign) BOOL isCollect;
+@property (nonatomic, assign) NSInteger tabType;
 
 @property(nonatomic, strong)UILabel *emptyLb;
 @property (nonatomic, strong)UIView *emptyView;
@@ -49,7 +52,7 @@
   if (!_scrollView) {
     _scrollView = [[MBScrollView alloc] init];
   }
-  
+
   return _scrollView;
 }
 
@@ -65,7 +68,7 @@
   self=[super init];
   if(self){
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"guanzhu"];
-    [[MBNetworkManager shareInstance] clearDownloadingOffset]; //清除网络层保存的下载进度
+    [MBFileManager clearCache]; //清除网络层保存的下载进度
     self.didPausePlay = NO;
     [self initData];
     [self initUI];
@@ -100,7 +103,18 @@
   if(self.dataArr.lastObject){
    currentShowNo = [self.dataArr.lastObject valueForKey:@"showNo"];
   }
-  [dic addEntriesFromDictionary:@{@"currentShowNo":currentShowNo , @"queryUserCode": @""}];
+  if(self.isPersonal&&self.userCode){
+    [dic setObject:self.userCode forKey:@"queryUserCode"];
+  }
+
+  if(self.isCollect){
+    [dic setObject:[NSNumber numberWithInt:1]  forKey:@"isCollect"];
+  }
+  if(self.tabType){
+    [dic setObject:[NSNumber numberWithInteger:self.tabType]  forKey:@"spreadPosition"];
+  }
+  [dic addEntriesFromDictionary:@{@"currentShowNo":currentShowNo}];
+
   __weak ActiveView * weakSelf = self;
   [NetWorkTool requestWithURL:@"/social/show/video/list/next@GET" params:dic toModel:nil success:^(NSDictionary* result) {
     MBVideoModel* model = [MBVideoModel modelWithJSON:result];
@@ -112,8 +126,7 @@
     [self.scrollView setupData:weakSelf.dataArr];
 
   } failure:^(NSString *msg, NSInteger code) {
-    MBVideoModel* model = [MBVideoModel new];
-    [self.scrollView setupData:[model.data mutableCopy]];
+    [MBProgressHUD showSuccess:msg];
   } showLoading:nil];
 }
 
@@ -124,7 +137,16 @@
 {
   NSMutableDictionary *dic = [NSMutableDictionary new];
   NSString *currentShowNo = [self.dataArr.lastObject valueForKey:@"showNo"];
-  [dic addEntriesFromDictionary:@{@"currentShowNo": currentShowNo, @"queryUserCode": @""}];
+  if(self.isPersonal&&self.userCode){
+    [dic setObject:self.userCode forKey:@"queryUserCode"];
+  }
+  if(self.isCollect){
+    [dic setObject:[NSNumber numberWithInt:1]  forKey:@"isCollect"];
+  }
+  if(self.tabType){
+    [dic setObject:[NSNumber numberWithInteger:self.tabType]  forKey:@"spreadPosition"];
+  }
+  [dic addEntriesFromDictionary:@{@"currentShowNo": currentShowNo}];
   __weak ActiveView * weakSelf = self;
 
   [NetWorkTool requestWithURL:@"/social/show/video/list/next@GET" params:dic toModel:nil success:^(NSDictionary* result) {
@@ -138,8 +160,7 @@
       }
       [self.scrollView setupData:[model.data mutableCopy]];
     } failure:^(NSString *msg, NSInteger code) {
-      MBVideoModel* model = [MBVideoModel new];
-      [self.scrollView setupData:[model.data mutableCopy]];
+      [MBProgressHUD showSuccess:msg];
     } showLoading:nil];
 }
 
@@ -150,7 +171,7 @@
 
   self.scrollView.sd_layout.topEqualToView(self)
   .leftEqualToView(self).widthIs(KScreenWidth).heightIs(KScreenHeight);
-  
+
   self.VideoHeaderView.sd_layout
   .topSpaceToView(self, 0).leftSpaceToView(self, 0)
   .rightSpaceToView(self, 0).heightIs(100);
@@ -159,8 +180,18 @@
 
 -(void)setParams:(NSDictionary *)params{
   MBModelData* firstData = [MBModelData modelWithJSON:params];
+  if([params valueForKey:@"isPersonal"]){
+    self.isPersonal = [params valueForKey:@"isPersonal"];
+  }
+  if(self.isPersonal&&[params valueForKey:@"isCollect"]){
+    self.isCollect = [params valueForKey:@"isCollect"];
+  }
+  if([params valueForKey:@"tabType"]){
+    self.tabType = (NSInteger)[params valueForKey:@"tabType"];
+  }
   self.dataArr = [NSMutableArray arrayWithObject:firstData];
   self.callBackArr = [NSMutableArray arrayWithObject:params];
+  self.VideoHeaderView.model = firstData;
   [self.scrollView setupData:self.dataArr];
   [self refreshData];
 
@@ -189,7 +220,7 @@
 -(void)getCurrentDataIndex:(NSInteger)index{
   NSLog(@"getCurrentDataIndex==%ld",index);
   self.current = index;
-  if([self.dataArr objectAtIndex:self.current]){
+  if(self.current<self.dataArr.count&&[self.dataArr objectAtIndex:self.current]){
     self.VideoHeaderView.model =[self.dataArr objectAtIndex:self.current];
   }
 }
@@ -236,7 +267,9 @@
 }
 
 -(void)headerClick:(MBModelData *)model{
-  
+  if(_onSeeUser){
+    _onSeeUser(self.callBackArr[self.current]);
+  }
 }
 
 - (void)guanzhuClick:(MBModelData *)model{

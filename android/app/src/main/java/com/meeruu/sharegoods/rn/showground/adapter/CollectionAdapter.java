@@ -46,7 +46,7 @@ public class CollectionAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
             if (item.getShowType() != 3) {
                 //非视频类型
                 NewestShowGroundBean.DataBean.ResourceBean resourceBean = item.getResource().get(0);
-                imgUrl = resourceBean.getUrl();
+                imgUrl = resourceBean.getBaseUrl();
                 width = resourceBean.getWidth();
                 height = resourceBean.getHeight();
             } else {
@@ -96,7 +96,12 @@ public class CollectionAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
         }
 
         TextView title = helper.getView(R.id.showground_item_title);
-        String titleStr = item.getContent();
+        String titleStr = "";
+        if(item.getShowType() == 2){
+            titleStr = item.getTitle();
+        }else {
+            titleStr = item.getContent();
+        }
         if (titleStr != null && titleStr.trim().length() > 0) {
             title.setText(titleStr);
             title.setVisibility(View.VISIBLE);

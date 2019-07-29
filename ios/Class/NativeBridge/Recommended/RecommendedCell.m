@@ -69,7 +69,9 @@
     _headView = [[JXHeaderView alloc] init];
     __weak RecommendedCell *weakSelf = self;
     _headView.clickHeaderImgBlock = ^(){
-      
+      if (weakSelf.cellDelegate) {
+        [weakSelf.cellDelegate headerImgClick:weakSelf];
+      }
     };
   }
   return _headView;
@@ -107,7 +109,7 @@
 //      weakSelf.footerView.isLike = weakSelf.model.like;
 //      weakSelf.footerView.likesCount = weakSelf.model.likesCount;
     };
-    
+
     _footerView.collectionBlock = ^(NSString* a){
       if (weakSelf.cellDelegate) {
         [weakSelf.cellDelegate collectionClick:weakSelf];
@@ -115,7 +117,7 @@
 //      weakSelf.footerView.isCollect = weakSelf.model.collect;
 //      weakSelf.footerView.collectCount = weakSelf.model.collectCount;
     };
-    
+
     _footerView.downloadBlock =  ^(NSString* a){
       NSLog(@"downloadClick");
       if (weakSelf.cellDelegate) {
@@ -123,7 +125,7 @@
       }
       weakSelf.footerView.downloadCount = weakSelf.model.downloadCount;
     };
-    
+
     _footerView.shareBlock =  ^(NSString* a){
       NSLog(@"shareClick");
       if (weakSelf.cellDelegate) {
@@ -176,7 +178,7 @@
     .rightSpaceToView(self.contentView, 0)
     .topSpaceToView(self.contentView, 5)
     .autoHeightRatio(0);
-  
+
   self.headView.sd_layout
   .topSpaceToView(bgView, 9)
   .leftSpaceToView(bgView, 0)
@@ -219,23 +221,21 @@
   self.headView.UserInfoModel = model.userInfoVO;
   self.headView.time = model.publishTimeStr;
   self.headView.hotCount = model.hotCount;
-  
+
   if(model.showType==3){
     self.bodyView.imageType = YES;
-    self.footerView.type = YES;
   }else{
     self.bodyView.imageType = NO;
-    self.footerView.type = NO;
   }
   self.bodyView.sources = model.resource;
-  if((model.createSource&&model.createSource==2)){
+  if((model.createSource&&(model.createSource==2||model.createSource==4))){
     self.headView.type = NO;
     self.jingpin.hidden = NO;
   }else{
     self.headView.type = YES;
     self.jingpin.hidden = YES;
   }
-  
+
     self.contentLab.text = model.content;
 
     self.footerView.products = model.products;

@@ -33,6 +33,9 @@ import com.meeruu.sharegoods.rn.showground.widgets.gridview.NineGridViewAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.meeruu.sharegoods.rn.showground.utils.VideoCoverUtils.TYPE43;
+import static com.meeruu.sharegoods.rn.showground.utils.VideoCoverUtils.TYPE916;
+
 public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGroundBean.DataBean, BaseViewHolder> {
     private NineGridView.clickL clickL;
     private ProductsAdapter.AddCartListener addCartListener;
@@ -133,8 +136,13 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
             collect.setImageResource(R.mipmap.icon_collection_gray);
         }
 
+        TextView tvCollection = helper.getView(R.id.collection_num);
+        tvCollection.setText(NumUtils.formatShowNum(item.getCollectCount()));
+
         TextView name = helper.getView(R.id.user_name);
         name.setText(item.getUserInfoVO().getUserName());
+        TextView tvHot =helper.getView(R.id.tv_hotCount);
+        tvHot.setText(NumUtils.formatShowNum(item.getHotCount()));
 
         TextView download = helper.getView(R.id.download_num);
 
@@ -152,6 +160,12 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
             FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) coverView.getLayoutParams();
             layoutParams.width = videoOrImageWH;
             layoutParams.height = videoOrImageWH;
+            if(TextUtils.equals(item.getCoverType(),TYPE43)){
+                layoutParams.height = videoOrImageWH/4*3;
+            }
+            if(TextUtils.equals(item.getCoverType(),TYPE916)){
+                layoutParams.height = videoOrImageWH/9*16;
+            }
             coverView.setLayoutParams(layoutParams);
             ImageLoadUtils.loadRoundNetImage(item.getVideoCover(), coverView, videoOrImageWH,
                     videoOrImageWH, radius_5);
@@ -194,7 +208,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         }
 
         ImageView ivRecommend = helper.getView(R.id.iv_recommend);
-        if (item.getCreateSource() == CommValue.NORMAL_USER_CONTENT) {
+        if ((item.getCreateSource() == CommValue.NORMAL_USER_CONTENT) || (item.getCreateSource() == CommValue.WRITER_CONTENT)) {
             ivRecommend.setVisibility(View.VISIBLE);
         } else {
             ivRecommend.setVisibility(View.GONE);
@@ -258,7 +272,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         SimpleDraweeView simpleDraweeView = helper.getView(R.id.image);
         if (item.getResource() != null) {
             String tag = (String) simpleDraweeView.getTag();
-            String url = item.getResource().get(0).getUrl();
+            String url = item.getResource().get(0).getBaseUrl();
             if (!TextUtils.equals(url, tag)) {
                 simpleDraweeView.setTag(url);
                 LinearLayout.LayoutParams linearParams = (LinearLayout.LayoutParams) simpleDraweeView.getLayoutParams();

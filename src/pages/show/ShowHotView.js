@@ -21,9 +21,9 @@ import { track, trackEvent } from '../../utils/SensorsTrack';
 import bridge from '../../utils/bridge';
 import ShowApi from './ShowApi';
 import EmptyUtils from '../../utils/EmptyUtils';
-import ShowUtils from './utils/ShowUtils';
 import RouterMap, { routeNavigate, routePush } from '../../navigation/RouterMap';
 import DownloadUtils from './utils/DownloadUtils';
+import WhiteModel from './model/WhiteModel';
 
 @observer
 export default class ShowHotView extends React.Component {
@@ -159,8 +159,8 @@ export default class ShowHotView extends React.Component {
                                            this.RecommendShowList = ref;
                                        }}
                                        isLogin={!EmptyUtils.isEmpty(user.token)}
-                                       type={'recommend'}
-                                       headerHeight={this.props.hasBanner ? showBannerModules.bannerHeight + 20:0}
+                                       type={this.props.type || ''}
+                                       headerHeight={this.props.hasBanner ? showBannerModules.bannerHeight + 20 : 0}
                                        renderHeader={Platform.OS === 'ios' ? this.renderHeader() : this.state.headerView}
                                        onStartRefresh={() => {
                                            this.loadData();
@@ -180,7 +180,12 @@ export default class ShowHotView extends React.Component {
                                            }
                                        }}
                                        onSeeUser={({nativeEvent})=>{
-                                           routeNavigate(RouterMap.MyDynamicPage,{userType:'others',userCode:nativeEvent.userInfoVO.userNo});
+                                           let userNo = nativeEvent.userInfoVO.userNo;
+                                           if(user.code === userNo){
+                                               routeNavigate(RouterMap.MyDynamicPage, { userType: WhiteModel.userStatus === 2 ? 'mineWriter' : 'mineNormal' });
+                                           }else {
+                                               routeNavigate(RouterMap.MyDynamicPage,{userType:'others',userInfo:nativeEvent.userInfoVO});
+                                           }
                                        }}
                                        params={{ spreadPosition: tag.Recommend + '' }}
                                        onItemPress={({ nativeEvent }) => {
@@ -195,7 +200,7 @@ export default class ShowHotView extends React.Component {
                                            if (nativeEvent.showType === 1) {
                                                navigate(RouterMap.ShowDetailPage, params);
                                            }  else if(nativeEvent.showType === 3){
-                                               navigate(RouterMap.ShowVideoPage, {code:showNo});
+                                               navigate(RouterMap.ShowVideoPage, {code:showNo,tabType:1});
                                            }else {
                                                navigate(RouterMap.ShowRichTextDetailPage, params);
                                            }
@@ -221,7 +226,7 @@ export default class ShowHotView extends React.Component {
                                        onPressProduct={({ nativeEvent }) => {
                                            const detail = JSON.parse(nativeEvent.detail)
                                            const product = JSON.parse(nativeEvent.product)
-                                           const {showNo} = detail ||{};
+                                           const {showNo} = detail || {};
                                            track(trackEvent.XiuChangSpuClick, {
                                                xiuChangBtnLocation:'1',
                                                xiuChangListType:'1',
@@ -246,26 +251,20 @@ export default class ShowHotView extends React.Component {
                                        }}
 
                                        onDownloadPress={({ nativeEvent }) => {
+
                                            if (!user.isLogin) {
                                                routeNavigate(RouterMap.LoginPage);
                                                return;
                                            }
                                            let { detail } = nativeEvent;
-                                           if (!EmptyUtils.isEmptyArr(detail.resource)) {
-                                               let urls = detail.resource.map((value) => {
-                                                   return value.url;
+                                           DownloadUtils.downloadShow(detail).then(() => {
+                                               detail.downloadCount += 1;
+                                               ShowApi.incrCountByType({
+                                                   showNo: nativeEvent.detail.showNo,
+                                                   type: 4
                                                });
-                                               ShowUtils.downloadShow(urls, detail.content).then(() => {
-                                                   detail.downloadCount += 1;
-                                                   ShowApi.incrCountByType({
-                                                       showNo: nativeEvent.detail.showNo,
-                                                       type: 4
-                                                   });
-                                                   this.RecommendShowList && this.RecommendShowList.replaceItemData(nativeEvent.index, JSON.stringify(detail));
-                                               });
-                                           }
-
-                                           DownloadUtils.downloadProduct(nativeEvent);
+                                               this.RecommendShowList && this.RecommendShowList.replaceItemData(nativeEvent.index, JSON.stringify(detail));
+                                           });
                                            this.shareModal && this.shareModal.open();
                                            this.props.onShare(nativeEvent);
 

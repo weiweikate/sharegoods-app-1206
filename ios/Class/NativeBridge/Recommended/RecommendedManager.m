@@ -24,6 +24,8 @@ RCT_EXPORT_VIEW_PROPERTY(onDownloadPress, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onSharePress, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onAddCartClick, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onPressProduct, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onSeeUser, RCTBubblingEventBlock)
+
 
 RCT_EXPORT_VIEW_PROPERTY(onScrollStateChanged, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onScrollY, RCTBubblingEventBlock)
@@ -33,6 +35,7 @@ RCT_EXPORT_VIEW_PROPERTY(uri, NSString)
 RCT_EXPORT_VIEW_PROPERTY(type, NSString)
 RCT_EXPORT_VIEW_PROPERTY(params, NSDictionary)
 RCT_EXPORT_VIEW_PROPERTY(headerHeight, NSInteger)
+RCT_EXPORT_VIEW_PROPERTY(userCode, NSString)
 RCT_EXPORT_VIEW_PROPERTY(onStartScroll, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onEndScroll, RCTBubblingEventBlock)
 

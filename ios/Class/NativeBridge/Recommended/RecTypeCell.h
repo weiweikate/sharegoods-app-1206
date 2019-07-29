@@ -19,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)zanBtnClick:(RecTypeCell*)cell;
 - (void)collectionBtnClick:(RecTypeCell*)cell;
+-(void)recTypeHeaderImgClick:(RecTypeCell*)cell;
 - (void)shareBtnClick:(RecTypeCell*)cell;
 
 @end

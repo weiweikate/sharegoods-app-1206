@@ -40,13 +40,13 @@ public class ShowDynamicViewManager extends ViewGroupManager<ViewGroup> {
     }
 
 
-    @ReactProp(name = "params")
-    public void setParams(View view, ReadableMap map) {
-        Object object = view.getTag();
-        if (object != null && object instanceof ShowDynamicView) {
-            ((ShowDynamicView) object).setParams(map.toHashMap());
-        }
-    }
+//    @ReactProp(name = "params")
+//    public void setParams(View view, ReadableMap map) {
+//        Object object = view.getTag();
+//        if (object != null && object instanceof ShowDynamicView) {
+//            ((ShowDynamicView) object).setParams(map.toHashMap());
+//        }
+//    }
 
     @ReactProp(name = "userType")
     public void setUserType(View view, String s) {
@@ -122,6 +122,8 @@ public class ShowDynamicViewManager extends ViewGroupManager<ViewGroup> {
                 .put("MrShowScrollStateChangeEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onScrollStateChanged")))
                 .put("MrScrollY", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onScrollY")))
                 .put("MrNavStatusEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "changeNav")))
+                .put("MrGoCollectionEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "goCollection")))
+                .put("MrGoPublishEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "goPublish")))
                 .build();
     }
 

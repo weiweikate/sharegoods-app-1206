@@ -115,7 +115,7 @@
     if(self.imageType){
       if(sources[i].type==5){
         if(arr.count>=1) break;
-        [arr addObject:sources[0]];
+        [arr addObject:sources[i]];
       }
     }else{
       if(sources[i].type==2){
@@ -163,6 +163,7 @@
 
             imageView.hidden = NO;
             imageView.frame = CGRectMake(columnIndex * (itemW + margin), rowIndex * (itemH + margin), itemW, itemH);
+            self.bgView.sd_layout.widthIs(itemW).heightIs(itemH);
         }];
   
         CGFloat w = perRowItemCount * itemW + (perRowItemCount - 1) * margin;

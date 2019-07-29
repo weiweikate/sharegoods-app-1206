@@ -35,6 +35,9 @@ public class TabPageAdapter extends PagerAdapter {
             ViewGroup view = null;
             switch (type) {
                 case MINENORMAL:
+                    view = new ShowCollectionView().getShowCollectionView(context,dynamicInterface);
+                    container.addView(view);
+                    break;
                 case MINEWRITER:
                     view = new ShowDynamicView().getShowDynamicView(context,dynamicInterface);
                     container.addView(view);
@@ -84,13 +87,13 @@ public class TabPageAdapter extends PagerAdapter {
         String title = "";
         switch (type) {
             case MINENORMAL:
-                title = "文章";
+                title = "收藏";
                 break;
             case MINEWRITER:
                 title = position == 0 ? "文章" : "收藏";
                 break;
             default:
-                title = "收藏";
+                title = "文章";
                 break;
         }
         return title;

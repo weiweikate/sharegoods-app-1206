@@ -1,10 +1,13 @@
 package com.meeruu.sharegoods.rn.showground.widgets.littlevideo;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -49,6 +52,8 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.meeruu.commonlib.callback.BaseCallback;
 import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
+import com.meeruu.commonlib.utils.SPCacheUtils;
+import com.meeruu.commonlib.utils.TimeUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.adapter.BaseVideoListAdapter;
@@ -59,13 +64,17 @@ import com.meeruu.sharegoods.rn.showground.event.OnBackPressEvent;
 import com.meeruu.sharegoods.rn.showground.event.OnBuyEvent;
 import com.meeruu.sharegoods.rn.showground.event.OnCollectionEvent;
 import com.meeruu.sharegoods.rn.showground.event.OnPressTagEvent;
+import com.meeruu.sharegoods.rn.showground.event.OnSeeUserEvent;
 import com.meeruu.sharegoods.rn.showground.event.onDownloadPressEvent;
 import com.meeruu.sharegoods.rn.showground.event.onSharePressEvent;
 import com.meeruu.sharegoods.rn.showground.event.OnZanPressEvent;
 import com.meeruu.sharegoods.rn.showground.model.VideoModel;
 import com.meeruu.sharegoods.rn.showground.utils.CacheDataSourceFactory;
+import com.meeruu.sharegoods.rn.showground.utils.NetWatchdog;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -84,6 +93,10 @@ public class VideoListView {
     private VideoModel videoModel;
     public static boolean isLogin;
     public static String userCode;
+    private boolean isCollect;
+    private boolean isPersonal;
+    private String personalCode;
+    private int tabType = 0;
     /**
      * 数据是否到达最后一页
      */
@@ -117,23 +130,34 @@ public class VideoListView {
     private TextView tvName, tvHotCount, tvAttention;
     private Handler mainHandler = new Handler();
     private EventDispatcher eventDispatcher;
-    //    private List<NewestShowGroundBean.DataBean> list;
     private List<String> attentionList = new ArrayList<>();
+    private List<String> noAttentionList = new ArrayList<>();
 
     private GestureDetector gestureDetector;
     private int minBufferMs = DefaultLoadControl.DEFAULT_MIN_BUFFER_MS;
     private int maxBufferMs = DefaultLoadControl.DEFAULT_MAX_BUFFER_MS;
     private int bufferForPlaybackMs = DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS;
     private int bufferForPlaybackAfterRebufferMs = DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS;
+    private static final String SPKey = "ShowVideoNetWarning";
+    /**
+     * 网络状态监听器
+     */
+    private NetWatchdog netWatchdog;
 
     public View getVideoListView(ReactContext context) {
         this.mContext = context;
         View view = LayoutInflater.from(mContext).inflate(R.layout.layout_video_list, null, false);
         eventDispatcher = context.getNativeModule(UIManagerModule.class).getEventDispatcher();
-
+        // 网络监听
+        initNetWatchDog(view);
         initPlayer(view);
         init(view);
         return view;
+    }
+
+    private void initNetWatchDog(View view) {
+        netWatchdog = new NetWatchdog(this.mContext);
+        netWatchdog.setNetChangeListener(new MyNetConnectedListener(view));
     }
 
     private void initPlayer(final View view) {
@@ -172,6 +196,8 @@ public class VideoListView {
                         holder.getPlayIcon().setVisibility(GONE);
                     }
                     mPlayIcon.setVisibility(GONE);
+                }else {
+                    mPlayIcon.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -249,8 +275,19 @@ public class VideoListView {
      * 恢复播放
      */
     public void resumePlay() {
+        if(!NetWatchdog.hasNet(this.mContext)){
+            ToastUtils.showToast("请检测网络连接");
+        }
+
+        long date = (long) SPCacheUtils.get(SPKey, 0L);
+        if(date == 0 || !TimeUtils.isSameDate(date,System.currentTimeMillis())){
+            if(NetWatchdog.is4GConnected(this.mContext)){
+                showNetWarning(this.mContext);
+                return;
+            }
+        }
+
         isPauseInvoke = false;
-        mPlayIcon.setVisibility(GONE);
         exoPlayer.setPlayWhenReady(true);
     }
 
@@ -262,7 +299,6 @@ public class VideoListView {
             return;
         }
         isPauseInvoke = true;
-        mPlayIcon.setVisibility(View.VISIBLE);
         if (exoPlayer.getPlayWhenReady()) {
             exoPlayer.setPlayWhenReady(false);
         }
@@ -283,11 +319,12 @@ public class VideoListView {
         view.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
             @Override
             public void onViewAttachedToWindow(View v) {
-
+                netWatchdog.startWatch();
             }
 
             @Override
             public void onViewDetachedFromWindow(View v) {
+                netWatchdog.stopWatch();
                 //view销毁释放player
                 if (exoPlayer != null) {
                     exoPlayer.release();
@@ -310,6 +347,21 @@ public class VideoListView {
 
 
         userIcon = view.findViewById(R.id.user_icon);
+        userIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pausePlay();
+                OnSeeUserEvent seeUserEvent = new OnSeeUserEvent();
+                seeUserEvent.init(view.getId());
+                NewestShowGroundBean.DataBean dataBean = getCurrentData();
+                String jsonStr = JSON.toJSONString(dataBean);
+                Map map = JSONObject.parseObject(jsonStr);
+                WritableMap realData = Arguments.makeNativeMap(map);
+                seeUserEvent.setData(realData);
+                eventDispatcher.dispatchEvent(seeUserEvent);
+            }
+        });
+
         tvName = view.findViewById(R.id.tv_name);
         tvHotCount = view.findViewById(R.id.tv_hotCount);
         tvAttention = view.findViewById(R.id.tv_attention);
@@ -328,27 +380,17 @@ public class VideoListView {
                         updateAttentions(userNo, false);
                         setAttentionView(false);
                     }
-                } else {
-                    pausePlay();
+
                     OnAttentionPressEvent attentionPressEvent = new OnAttentionPressEvent();
                     attentionPressEvent.init(view.getId());
+                    String jsonStr = JSON.toJSONString(dataBean);
+                    Map map = JSONObject.parseObject(jsonStr);
+                    WritableMap realData = Arguments.makeNativeMap(map);
+                    attentionPressEvent.setData(realData);
                     eventDispatcher.dispatchEvent(attentionPressEvent);
                 }
             }
         });
-//        tvAttention.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                return attentionDetector.onTouchEvent(event);
-//            }
-//        });
-
-//        share.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
 
         recycler = view.findViewById(R.id.recycler);
         recycler.setHasFixedSize(true);
@@ -385,6 +427,7 @@ public class VideoListView {
                     BaseVideoListAdapter.BaseHolder holder = (BaseVideoListAdapter.BaseHolder) recycler.findViewHolderForLayoutPosition(position);
                     if (holder != null) {
                         holder.getCoverView().setVisibility(View.VISIBLE);
+                        holder.getPlayIcon().setVisibility(View.VISIBLE);
                     }
                 }
 
@@ -453,13 +496,6 @@ public class VideoListView {
                     bean.setCollectCount(bean.getCollectCount() + 1);
                 }
                 if (eventDispatcher != null) {
-//            OnCollectionEvent onCollectionEvent = new OnCollectionEvent();
-//            onCollectionEvent.init(view.getId());
-//            String jsonStr = JSON.toJSONString(bean);
-//            Map map = JSONObject.parseObject(jsonStr);
-//            WritableMap realData = Arguments.makeNativeMap(map);
-//            onCollectionEvent.setData(realData);
-//            eventDispatcher.dispatchEvent(onCollectionEvent);
                     OnCollectionEvent buyEvent = new OnCollectionEvent();
                     buyEvent.init(view.getId());
                     String jsonStr = JSON.toJSONString(bean);
@@ -507,7 +543,7 @@ public class VideoListView {
         });
     }
 
-    private void collection(NewestShowGroundBean.DataBean bean,final int position,View view){
+    private void collection(NewestShowGroundBean.DataBean bean, final int position, View view) {
         if (bean.isCollect()) {
             bean.setCollect(false);
             if (bean.getCollectCount() > 0) {
@@ -539,8 +575,8 @@ public class VideoListView {
         adapter.notifyItemChanged(position, 1);
     }
 
-    private void download(NewestShowGroundBean.DataBean bean,final int position,View view){
-        if(isLogin){
+    private void download(NewestShowGroundBean.DataBean bean, final int position, View view) {
+        if (isLogin) {
             bean.setDownloadCount(bean.getDownloadCount() + 1);
             List list = adapter.getDataList();
             list.set(position, bean);
@@ -601,9 +637,15 @@ public class VideoListView {
             if (!attentionList.contains(usercode)) {
                 attentionList.add(usercode);
             }
+            if (!noAttentionList.contains(usercode)) {
+                noAttentionList.remove(usercode);
+            }
         } else {
             if (!attentionList.contains(usercode)) {
                 attentionList.remove(usercode);
+            }
+            if (!noAttentionList.contains(usercode)) {
+                noAttentionList.add(usercode);
             }
         }
     }
@@ -628,6 +670,8 @@ public class VideoListView {
         }
 
         if (bean.getAttentionStatus() == 0 && !attentionList.contains(bean.getUserInfoVO().getUserNo())) {
+            setAttentionView(false);
+        } else if (bean.getAttentionStatus() != 0 && noAttentionList.contains(bean.getUserInfoVO().getUserNo())) {
             setAttentionView(false);
         } else {
             setAttentionView(true);
@@ -657,9 +701,9 @@ public class VideoListView {
         }
         NewestShowGroundBean.DataBean video = list.get(position);
         //恢复界面状态
-        mPlayIcon.setVisibility(View.VISIBLE);
 //        isPauseInvoke = false;
         BaseVideoListAdapter.BaseHolder holder = (BaseVideoListAdapter.BaseHolder) recycler.findViewHolderForLayoutPosition(position);
+        holder.getPlayIcon().setVisibility(View.VISIBLE);
         ViewParent parent = mPlayerViewContainer.getParent();
         if (parent != null && parent instanceof FrameLayout) {
             ((ViewGroup) parent).removeView(mPlayerViewContainer);
@@ -715,14 +759,20 @@ public class VideoListView {
      *
      * @param list 刷新数据
      */
-    public void refreshData(List<NewestShowGroundBean.DataBean> list) {
+    public void refreshData(List<NewestShowGroundBean.DataBean> list, boolean isPersonal, boolean isCollect,int tabType) {
         isEnd = false;
         isLoadingData = false;
         adapter.refreshData(list);
-        currentShowNo = list.get(0).getShowNo();
+        NewestShowGroundBean.DataBean dataBean = list.get(0);
+        currentShowNo = dataBean.getShowNo();
+        this.isPersonal = isPersonal;
+        this.isCollect = isCollect;
+        this.tabType = tabType;
+        if (this.isPersonal) {
+            this.personalCode = dataBean.getUserInfoVO().getUserNo();
+        }
         loadMoreData();
-        NewestShowGroundBean.DataBean bean = list.get(0);
-        changeHeader(bean);
+        changeHeader(dataBean);
     }
 
     public void setLogin(boolean login) {
@@ -734,7 +784,7 @@ public class VideoListView {
     }
 
     private void loadMoreData() {
-        videoModel.getVideoList(currentShowNo, null, new BaseCallback<String>() {
+        videoModel.getVideoList(currentShowNo, personalCode, isCollect,tabType, new BaseCallback<String>() {
             @Override
             public void onErr(String errCode, String msg) {
             }
@@ -743,9 +793,13 @@ public class VideoListView {
             public void onSuccess(String result) {
                 NewestShowGroundBean newestShowGroundBean = JSON.parseObject(result, NewestShowGroundBean.class);
                 List<NewestShowGroundBean.DataBean> list = newestShowGroundBean.getData();
-                addMoreData(list);
-                NewestShowGroundBean.DataBean last = list.get(list.size() - 1);
-                currentShowNo = last.getShowNo();
+                if(list != null && list.size() >0){
+                    addMoreData(list);
+                    NewestShowGroundBean.DataBean last = list.get(list.size() - 1);
+                    currentShowNo = last.getShowNo();
+                }else {
+                    isEnd =true;
+                }
             }
         });
     }
@@ -768,4 +822,56 @@ public class VideoListView {
         }
         return null;
     }
+
+    private static void showNetWarning(Context context){
+        AlertDialog alertDialog = new AlertDialog.Builder(context).setTitle("温馨提示").setMessage("您当前处于2G/3G/4G环境\n继续播放将使用流量").setPositiveButton("确定", new DialogInterface.OnClickListener() {//添加"Yes"按钮
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                long time = System.currentTimeMillis();
+                SPCacheUtils.put(SPKey, time);
+            }
+        })
+
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {//添加取消
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                }).create();
+        alertDialog.show();
+    }
+
+
+    /**
+     * 网络断开重连监听
+     */
+    private static class MyNetConnectedListener implements NetWatchdog.NetChangeListener {
+        private WeakReference<View> weakReference;
+
+        MyNetConnectedListener(View view) {
+            weakReference = new WeakReference<>(view);
+        }
+
+        @Override
+        public void onWifiTo4G() {
+            View view = weakReference.get();
+            if (view != null && view.isShown()) {
+                long date = (long) SPCacheUtils.get(SPKey, 0L);
+                if(date == 0 || !TimeUtils.isSameDate(date,System.currentTimeMillis())){
+                   showNetWarning(view.getContext());
+                }
+
+            }
+        }
+
+        @Override
+        public void on4GToWifi() {
+
+        }
+
+        @Override
+        public void onNetDisconnected() {
+
+        }
+    }
+
 }

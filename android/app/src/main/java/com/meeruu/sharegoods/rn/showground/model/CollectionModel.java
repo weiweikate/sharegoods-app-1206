@@ -85,7 +85,7 @@ public class CollectionModel  implements IShowgroundModel {
         public Map getParams() {
             HashMap map = new HashMap();
             map.put("showNo",showNo);
-            map.put("type",2);
+            map.put("type",2+"");
             return map;
         }
     }

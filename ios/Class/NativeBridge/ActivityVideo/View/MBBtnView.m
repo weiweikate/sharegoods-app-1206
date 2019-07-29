@@ -142,7 +142,7 @@
   .widthIs(KScreenWidth-30).heightIs(105);
   
   self.openOrclose.sd_layout.bottomSpaceToView(self, 96)
-  .rightSpaceToView(self, 15).widthIs(26).heightIs(19);
+  .rightSpaceToView(self, 15).widthIs(30).heightIs(19);
   
   [self setTagView];
   
@@ -358,13 +358,13 @@
 }
 
 #pragma arguments - dataDelegate
-
+  //点击购买按钮并返回代理方法
 -(void)clickBuy{
   if(self.dataDelegate){
     [self.dataDelegate clickBuy:self.model];
   }
 }
-
+  //点击播放按钮并返回代理方法
 -(void)clickPlay{
   AppDelegate *myDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
   
@@ -380,6 +380,7 @@
   }
 }
 
+  //点击下载按钮并返回代理方法
 -(void)clickDownLoad:(UIButton*)sender{
   AppDelegate *myDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
   if(self.isLogin){
@@ -401,7 +402,7 @@
     }
   }
 }
-
+  //点击收藏按钮并返回代理方法
 -(void)clicCollection:(UIButton*)sender{
   MBModelData* modeltemp = self.model;
   if(self.isLogin){
@@ -418,7 +419,7 @@
     [self.dataDelegate clicCollection:modeltemp];
   }
 }
-
+  //点击点赞按钮并返回代理方法
 -(void)clickZan:(UIButton*)sender{
   MBModelData* modeltemp = self.model;
   if(sender.selected){
@@ -433,7 +434,7 @@
     [self.dataDelegate clickZan:self.model];
   }
 }
-
+  //点击标签按钮并返回代理方法
 -(void)clickTag:(UIButton*)sender{
   if(self.dataDelegate){
     [self.dataDelegate clickTag:self.model index:sender.tag];
@@ -506,7 +507,7 @@
 -(void)showDownloadAlterWith:(UIButton*)sender{
   __weak typeof(self) weakSelf = self;
   UIAlertController *alterController = [UIAlertController alertControllerWithTitle:@"温馨提示"
-                                                                           message:@"您当前处于2G/3G/4G环境 继续下载将使用5M流量"
+                                                                           message:@"您当前处于2G/3G/4G环境 继续下载将使用流量"
                                                                     preferredStyle:UIAlertControllerStyleAlert];
   UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"返回"
                                                          style:UIAlertActionStyleDefault
@@ -532,7 +533,7 @@
 -(void)showVideoPlayAlterWith{
   __weak typeof(self) weakSelf = self;
   UIAlertController *alterController = [UIAlertController alertControllerWithTitle:@"温馨提示"
-                                                                           message:@"您当前处于2G/3G/4G环境                       继续播放将使用5M流量"
+                                                                           message:@"您当前处于2G/3G/4G环境                       继续播放将使用流量"
                                                                     preferredStyle:UIAlertControllerStyleAlert];
   UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"返回"
                                                          style:UIAlertActionStyleDefault

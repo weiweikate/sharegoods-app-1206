@@ -18,10 +18,9 @@ import shopCartCacheTool from '../shopCart/model/ShopCartCacheTool';
 import { track, trackEvent } from '../../utils/SensorsTrack';
 import bridge from '../../utils/bridge';
 import ShowApi from './ShowApi';
-import EmptyUtils from '../../utils/EmptyUtils';
-import ShowUtils from './utils/ShowUtils';
 import RouterMap, { routeNavigate, routePush } from '../../navigation/RouterMap';
 import DownloadUtils from './utils/DownloadUtils';
+import WhiteModel from './model/WhiteModel';
 
 @observer
 export default class ShowMaterialView extends React.Component {
@@ -134,7 +133,7 @@ export default class ShowMaterialView extends React.Component {
                                            if (nativeEvent.showType === 1) {
                                                navigate(RouterMap.ShowDetailPage, params);
                                            } else if(nativeEvent.showType === 3){
-                                               navigate(RouterMap.ShowVideoPage, {code:showNo});
+                                               navigate(RouterMap.ShowVideoPage, {code:showNo,tabType:2});
                                            } else {
                                                navigate(RouterMap.ShowRichTextDetailPage, params);
                                            }
@@ -188,21 +187,15 @@ export default class ShowMaterialView extends React.Component {
                                                return;
                                            }
                                            let { detail } = nativeEvent;
-                                           if (!EmptyUtils.isEmptyArr(detail.resource)) {
-                                               let urls = detail.resource.map((value) => {
-                                                   return value.url;
+                                           DownloadUtils.downloadShow(detail).then(() => {
+                                               detail.downloadCount += 1;
+                                               ShowApi.incrCountByType({
+                                                   showNo: nativeEvent.detail.showNo,
+                                                   type: 4
                                                });
-                                               ShowUtils.downloadShow(urls, detail.content).then(() => {
-                                                   detail.downloadCount += 1;
-                                                   ShowApi.incrCountByType({
-                                                       showNo: nativeEvent.detail.showNo,
-                                                       type: 4
-                                                   });
-                                                   this.materialList && this.materialList.replaceItemData(nativeEvent.index, JSON.stringify(detail));
-                                               });
-                                           }
+                                               this.materialList && this.materialList.replaceItemData(nativeEvent.index, JSON.stringify(detail));
+                                           });
 
-                                           DownloadUtils.downloadProduct(nativeEvent);
                                            this.shareModal && this.shareModal.open();
                                            this.props.onShare(nativeEvent);
                                            const { showNo , userInfoVO } = detail;
@@ -223,6 +216,14 @@ export default class ShowMaterialView extends React.Component {
                                            });
                                        }}
 
+                                       onSeeUser={({nativeEvent})=>{
+                                           let userNo = nativeEvent.userInfoVO.userNo;
+                                           if(user.code === userNo){
+                                               routeNavigate(RouterMap.MyDynamicPage, { userType: WhiteModel.userStatus === 2 ? 'mineWriter' : 'mineNormal' });
+                                           }else {
+                                               routeNavigate(RouterMap.MyDynamicPage,{userType:'others',userInfo:nativeEvent.userInfoVO});
+                                           }
+                                       }}
 
                                        onSharePress={({ nativeEvent }) => {
                                            this.shareModal && this.shareModal.open();

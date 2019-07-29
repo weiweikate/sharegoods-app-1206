@@ -45,7 +45,7 @@ public class ShowDynamicAdapter extends BaseQuickAdapter<NewestShowGroundBean.Da
             if (item.getShowType() != 3) {
                 //非视频类型
                 NewestShowGroundBean.DataBean.ResourceBean resourceBean = item.getResource().get(0);
-                imgUrl = resourceBean.getUrl();
+                imgUrl = resourceBean.getBaseUrl();
                 width = resourceBean.getWidth();
                 height = resourceBean.getHeight();
             } else {

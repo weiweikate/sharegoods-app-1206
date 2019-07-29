@@ -110,7 +110,7 @@ public class ShowOtherView  implements IShowgroundView, SwipeRefreshLayout.OnRef
             public void onItemClick(final BaseQuickAdapter adapter, View view1, final int position) {
                 final List<NewestShowGroundBean.DataBean> data = adapter.getData();
                 if (data != null && dynamicInterface != null) {
-                    dynamicInterface.onItemPress(data.get(position),position);
+                    dynamicInterface.onItemPress(data.get(position),position,true,false);
                 }
             }
         });
@@ -210,12 +210,12 @@ public class ShowOtherView  implements IShowgroundView, SwipeRefreshLayout.OnRef
                             NewestShowGroundBean.DataBean.ResourceBean resourceBean = resource.get(j);
                             if (resourceBean.getType() == 2) {
 
-                                resolveResource.add(resourceBean.getUrl());
+                                resolveResource.add(resourceBean.getBaseUrl());
                             }
 
                             if(resourceBean.getType() == 5){
 
-                                bean.setVideoCover(resourceBean.getUrl());
+                                bean.setVideoCover(resourceBean.getBaseUrl());
                                 break;
                             }
                         }

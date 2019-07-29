@@ -26,17 +26,21 @@ import ShowActivityViewIOS from './ShowActivityView';
 import user from '../../model/user';
 import res from '../mine/res';
 import EmptyUtils from '../../utils/EmptyUtils';
+import ShareUtil from '../../utils/ShareUtil'
 import MessageApi from '../message/api/MessageApi';
 import ShowFoundView from './ShowFoundView';
 import ShowMaterialView from './ShowMaterialView';
 import apiEnvironment from '../../api/ApiEnvironment';
-import CommShareModal from '../../comm/components/CommShareModal';
+// import CommShareModal from '../../comm/components/CommShareModal';
+import CommShowShareModal from '../../comm/components/CommShowShareModal';
+
 import WhiteModel from './model/WhiteModel';
 import ShowListIndexModel from './model/ShowListIndexModel';
 import { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
 import { routeNavigate } from '../../navigation/RouterMap';
 import RouterMap from '../../navigation/RouterMap';
 import { track, trackEvent } from '../../utils/SensorsTrack';
+import ShowUtils from './utils/ShowUtils';
 
 const {
     mine_user_icon,
@@ -220,7 +224,7 @@ export default class ShowListPage extends BasePage {
         let AttentionView = null;
         if (needsExpensive) {
             HotView = require('./ShowHotView').default;
-            AttentionView = Platform.OS === 'ios' ?HotView:require('./ShowAttentionPage').default;
+            AttentionView = Platform.OS === 'ios' ? HotView : require('./ShowAttentionPage').default;
         }
         let icon = (user.headImg && user.headImg.length > 0) ?
             <AvatarImage source={{ uri: user.headImg }} style={styles.userIcon}
@@ -303,6 +307,7 @@ export default class ShowListPage extends BasePage {
             <ScrollableTabView
                 ref={(ref) => this.scrollableTabView = ref}
                 style={styles.tab}
+                initialPage={1}
                 page={ShowListIndexModel.pageIndex}
                 renderTabBar={() => <DefaultTabBar style={styles.tabBar}/>}
                 tabBarUnderlineStyle={styles.underline}
@@ -316,6 +321,7 @@ export default class ShowListPage extends BasePage {
                             <AttentionView ref={(ref) => {
                                 this.hotList = ref;
                             }}
+                                     type={'attention'}
                                      uri={'/social/show/content/page/query/attention@GET'}
                                      hasBanner={false}
                                      navigate={this.$navigate}
@@ -335,6 +341,7 @@ export default class ShowListPage extends BasePage {
                                 this.hotList = ref;
                             }}
                                      hasBanner={true}
+                                     type={'recommend'}
                                      uri={'/social/show/content/page/query@GET'}
                                      navigate={this.$navigate}
                                      pageFocus={this.state.pageFocused}
@@ -415,8 +422,8 @@ export default class ShowListPage extends BasePage {
             </ScrollableTabView>
             <IntervalMsgView pageType={IntervalType.xiuChang}/>
             {detail ?
-                <CommShareModal ref={(ref) => this.shareModal = ref}
-                                type={'Show'}
+                <CommShowShareModal ref={(ref) => this.shareModal = ref}
+                                type={ShareUtil.showSharedetailDataType(detail && detail.showType)}
                                 trackEvent={trackEvent.XiuChangShareClick}
                                 trackParmas={{
                                     articleCode: detail.code,
@@ -426,7 +433,7 @@ export default class ShowListPage extends BasePage {
                                 }}
                                 imageJson={{
                                     imageType: 'show',
-                                    imageUrlStr: detail.resource[0] ? detail.resource[0].url : '',
+                                    imageUrlStr: ShowUtils.getCover(detail),
                                     titleStr: detail.showType === 1 ? detail.content : detail.title,
                                     QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
                                     headerImage: (detail.userInfoVO && detail.userInfoVO.userImg) ? detail.userInfoVO.userImg : null,
@@ -441,8 +448,7 @@ export default class ShowListPage extends BasePage {
                                 webJson={{
                                     title: detail.title || '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
                                     linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
-                                    thumImage: detail.resource && detail.resource[0] && detail.resource[0].url
-                                        ? detail.resource[0].url : '',//(分享图标小图(https链接)图文分享使用)
+                                    thumImage: ShowUtils.getCover(detail),//(分享图标小图(https链接)图文分享使用)
                                     dec: '好物不独享，内有惊喜福利~'
                                 }}
                 /> : null}
