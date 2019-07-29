@@ -27,6 +27,8 @@
 #import "JRBaseVC.h"
 #import <React-Native-Webview-Bridge/RCTWebViewBridge.h>
 #import "StorageFromRN.h"
+#import "JRServiceManager.h"
+#import "NSString+UrlAddParams.h"
 @interface RCTWebViewBridge (ConfigLib)
 - (BOOL)webView:(__unused UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request
        navigationType:(UIWebViewNavigationType)navigationType;
@@ -105,6 +107,23 @@
 -(void)configQYLib{
   
   [[QYSDK sharedSDK] registerAppId:KQiYuKey appName:@"秀购"];
+  [[QYSDK sharedSDK] customActionConfig].botClick = ^(NSString *target, NSString *params) {
+    NSMutableDictionary *dic = [target getURLParameters];
+    NSString *targetUrl = dic[@"targetUrl"];
+    if (!target || target.length == 0) {
+      return;
+    }
+    //判断地址是否 qiyukf.com/client
+    if (![targetUrl containsString:@"https://qiyukf.com/client?"]&& ![targetUrl containsString:@"http://qiyukf.com/client?"]) {
+      return;
+    }
+    //判断参数是否包含 k、bid
+    NSMutableDictionary *p = [targetUrl getURLParameters];
+    if (p[@"k"]&&p[@"bid"]) {
+      //
+        [[JRServiceManager sharedInstance] connetMerchant:p[@"bid"]];
+    }
+  };
   [QYCustomUIConfig sharedInstance].customMessageTextColor=[UIColor whiteColor];
 //  [QYCustomUIConfig sharedInstance].customerMessageBubbleNormalImage = [[UIImage imageNamed:@"qipao"] resizableImageWithCapInsets:UIEdgeInsetsMake(25, 10, 10, 10) resizingMode:UIImageResizingModeStretch];
 //  [QYCustomUIConfig sharedInstance].customerMessageBubblePressedImage = [[UIImage imageNamed:@"qipao"]resizableImageWithCapInsets:UIEdgeInsetsMake(25, 10, 10, 10) resizingMode:UIImageResizingModeStretch];
