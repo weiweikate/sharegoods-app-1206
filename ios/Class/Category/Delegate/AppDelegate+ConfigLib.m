@@ -29,7 +29,7 @@
 #import "StorageFromRN.h"
 @interface RCTWebViewBridge (ConfigLib)
 - (BOOL)webView:(__unused UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request
-       navigationType:(UIWebViewNavigationType)navigationType;
+ navigationType:(UIWebViewNavigationType)navigationType;
 @end
 @implementation RCTWebViewBridge (ConfigLib)
 + (void)load
@@ -44,11 +44,11 @@
   // 交互方法:runtime
   method_exchangeImplementations(imageNamedMethod, xmg_imageNamedMethod);
   
- 
+  
 }
 
 - (BOOL)track_webView:(__unused UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request
- navigationType:(UIWebViewNavigationType)navigationType{
+       navigationType:(UIWebViewNavigationType)navigationType{
   if ([[SensorsAnalyticsSDK sharedInstance] showUpWebView:webView WithRequest:request enableVerify:YES]) {
     return NO;
   }
@@ -78,10 +78,10 @@
 
 -(void)configUM{
   [UMConfigure initWithAppkey:KUmSocialAppkey channel:nil];
-  #if DEBUG
+#if DEBUG
   [MobClick setCrashReportEnabled:NO];
-  #endif
-
+#endif
+  
   [[UMSocialManager defaultManager] openLog:YES];
   /* 设置微信的appKey和appSecret */
   [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_WechatSession
@@ -106,11 +106,11 @@
   
   [[QYSDK sharedSDK] registerAppId:KQiYuKey appName:@"秀购"];
   [QYCustomUIConfig sharedInstance].customMessageTextColor=[UIColor whiteColor];
-//  [QYCustomUIConfig sharedInstance].customerMessageBubbleNormalImage = [[UIImage imageNamed:@"qipao"] resizableImageWithCapInsets:UIEdgeInsetsMake(25, 10, 10, 10) resizingMode:UIImageResizingModeStretch];
-//  [QYCustomUIConfig sharedInstance].customerMessageBubblePressedImage = [[UIImage imageNamed:@"qipao"]resizableImageWithCapInsets:UIEdgeInsetsMake(25, 10, 10, 10) resizingMode:UIImageResizingModeStretch];
+  //  [QYCustomUIConfig sharedInstance].customerMessageBubbleNormalImage = [[UIImage imageNamed:@"qipao"] resizableImageWithCapInsets:UIEdgeInsetsMake(25, 10, 10, 10) resizingMode:UIImageResizingModeStretch];
+  //  [QYCustomUIConfig sharedInstance].customerMessageBubblePressedImage = [[UIImage imageNamed:@"qipao"]resizableImageWithCapInsets:UIEdgeInsetsMake(25, 10, 10, 10) resizingMode:UIImageResizingModeStretch];
   [QYCustomUIConfig sharedInstance].serviceMessageHyperLinkColor = [UIColor colorWithHexString:@"#FF0050"];
   [QYCustomUIConfig sharedInstance].serviceMessageTextFontSize = 13.0f;
-//  [QYCustomUIConfig sharedInstance].showShopEntrance = YES;
+  //  [QYCustomUIConfig sharedInstance].showShopEntrance = YES;
   
 }
 #pragma mark - delegate
@@ -140,7 +140,9 @@
   
   // 打开自动采集, 并指定追踪哪些 AutoTrack 事件
   [sdkInstance enableAutoTrack:SensorsAnalyticsEventTypeAppStart|
-                               SensorsAnalyticsEventTypeAppEnd];
+                               SensorsAnalyticsEventTypeAppEnd|
+                               SensorsAnalyticsEventTypeAppClick|
+                               SensorsAnalyticsEventTypeAppViewScreen];
   /** 设置公共属性*/
   NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
   NSString *app_Name = [infoDictionary objectForKey:@"CFBundleDisplayName"];
