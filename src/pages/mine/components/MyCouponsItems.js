@@ -628,7 +628,6 @@ const styles = StyleSheet.create(
             borderRadius: 12,
             justifyContent: 'flex-end',
             alignItems: 'center',
-            opacity: 0.8
         },
         couNumStyle: {
             width: px2dp(123),
