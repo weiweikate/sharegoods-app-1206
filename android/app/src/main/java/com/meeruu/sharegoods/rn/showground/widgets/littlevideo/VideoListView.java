@@ -380,13 +380,9 @@ public class VideoListView {
                         updateAttentions(userNo, false);
                         setAttentionView(false);
                     }
-
+                }else {
                     OnAttentionPressEvent attentionPressEvent = new OnAttentionPressEvent();
                     attentionPressEvent.init(view.getId());
-                    String jsonStr = JSON.toJSONString(dataBean);
-                    Map map = JSONObject.parseObject(jsonStr);
-                    WritableMap realData = Arguments.makeNativeMap(map);
-                    attentionPressEvent.setData(realData);
                     eventDispatcher.dispatchEvent(attentionPressEvent);
                 }
             }
