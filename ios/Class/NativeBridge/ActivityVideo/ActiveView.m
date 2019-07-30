@@ -281,9 +281,9 @@
 
 - (void)guanzhuClick:(MBModelData *)model{
   [self.dataArr replaceObjectAtIndex:self.current withObject:model];
-//  if(_onAttentionPress){
-//    _onAttentionPress(self.callBackArr[self.current]);
-//  }
+  if(_onAttentionPress){
+    _onAttentionPress(self.callBackArr[self.current]);
+  }
 }
 
 - (void)shareClick:(MBModelData *)model{
