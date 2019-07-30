@@ -397,8 +397,8 @@ static NSString *IDType = @"TypeCell";
 
   [self.tableView reloadRowAtIndexPath:indexPath withRowAnimation:UITableViewRowAnimationNone];
   }
-  if(_onCollectPress) {
-    _onCollectPress(@{
+  if(_onCollection) {
+    _onCollection(@{
                   @"detail":self.callBackArr[indexPath.item],
                   @"index":[NSNumber numberWithInteger:indexPath.row]});
   }
@@ -515,8 +515,8 @@ static NSString *IDType = @"TypeCell";
     
     [self.tableView reloadRowAtIndexPath:indexPath withRowAnimation:UITableViewRowAnimationNone];
   }
-  if(_onCollectPress) {
-    _onCollectPress(@{
+  if(_onCollection) {
+    _onCollection(@{
                   @"detail":self.callBackArr[indexPath.item],
                   @"index":[NSNumber numberWithInteger:indexPath.row]});
   }
