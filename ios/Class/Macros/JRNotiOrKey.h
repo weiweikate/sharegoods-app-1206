@@ -30,7 +30,7 @@
 #else
 #define SA_DEBUG_MODE SensorsAnalyticsDebugOff
 #endif
-#define SA_SERVER_URL_production @"https://track.sharegoodsmall.com/sa?project=production"
-#define SA_SERVER_URL_default  @"https://track.sharegoodsmall.com/sa?project=default"
+#define SA_SERVER_URL_production @"http://192.168.32.133:8080/sa?project=default"
+#define SA_SERVER_URL_default  @"http://192.168.32.133:8080/sa?project=default"
 
 #endif /* JRNotiOrKey_h */
