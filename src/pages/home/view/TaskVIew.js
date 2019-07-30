@@ -195,7 +195,7 @@ class TaskItem extends React.Component {
     }
 
     btnClick(item, subTask, title) {
-        if (item.interactiveCode == IntervalMsgType.sign){
+        if (item.interactiveCode == IntervalMsgType.sign && this.props.isSignIn){
             this.props.signIn && this.props.signIn()
         } else {
             this.props.model.getMissionPrize(item, subTask, title);
@@ -443,7 +443,7 @@ export default class TaskVIew extends React.Component {
                             this.model.tasks.map((item, index) => {
                                 return <TaskItem key={'TaskItem_' + item.no}
                                                  data={item} model={this.model}
-                                                 userSign={this.props.userSign}
+                                                 isSignIn={this.props.isSignIn}
                                                  signIn={this.props.signIn}
                                 />;
                             })
