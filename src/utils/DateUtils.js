@@ -124,8 +124,20 @@ export const getDateDiff = (endDate) => {
         diff -= timeLeft.min * 60;
     }
     timeLeft.sec = diff;
-    let time = `${timeLeft.days > 0 ? timeLeft.days + '天' : ''}${timeLeft.hours > 0 ? timeLeft.hours + '时' : ''}${timeLeft.min > 0 ? timeLeft.min + '分' : ''}`
-    return time;
+    if(timeLeft.days > 0){
+        return `${timeLeft.days > 0 ? timeLeft.days + '天' : ''}${timeLeft.hours > 0 ? timeLeft.hours + '时' : ''}${timeLeft.min > 0 ? timeLeft.min + '分' : ''}`;
+
+    }else if(timeLeft.hours > 0){
+        return `${timeLeft.hours > 0 ? timeLeft.hours + '时' : ''}${timeLeft.min > 0 ? timeLeft.min + '分' : ''}`;
+
+    }else if(timeLeft.min > 0 ){
+        return `${timeLeft.min > 0 ? timeLeft.min + '分' : ''}`;
+
+    }else if(timeLeft.sec){
+        return `${timeLeft.sec > 0 ? timeLeft.sec + '秒' : ''}`;
+
+    }
+    return '';
 }
 
 export default {
