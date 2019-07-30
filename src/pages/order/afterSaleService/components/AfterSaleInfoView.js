@@ -47,7 +47,7 @@ export default class AfterSaleInfoView extends React.Component {
           return  imgList.map((item, i) => {
               if (item){
                   return (
-                      <TouchableOpacity onPress={()=> {this.imgClick(item,i)}}>
+                      <TouchableOpacity onPress={()=> {this.imgClick(imgList,i)}}>
                           <ImageLoader source={{ uri: item }}
                                        style={{
                                            height: 83,
