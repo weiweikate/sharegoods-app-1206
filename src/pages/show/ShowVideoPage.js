@@ -29,6 +29,7 @@ import NetFailedView from '../../components/pageDecorator/BaseView/NetFailedView
 import ShareUtil from '../../utils/ShareUtil';
 import CommShowShareModal from '../../comm/components/CommShowShareModal';
 import ShowUtils from './utils/ShowUtils';
+import DownloadUtils from './utils/DownloadUtils';
 const {px2dp} = ScreenUtils;
 const ShowVideoListView = requireNativeComponent('MrShowVideoListView');
 @observer
@@ -148,8 +149,7 @@ export default class ShowVideoPage extends BasePage {
                                        }}
                                        onDownloadPress={({ nativeEvent }) => {
                                            if (user.isLogin) {
-                                               //TODO 下载功能
-                                               this.$toastShow('下载成功！');
+                                               DownloadUtils.downloadShow(nativeEvent);
                                            } else {
                                                routeNavigate(RouterMap.LoginPage);
                                            }

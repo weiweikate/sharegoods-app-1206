@@ -96,7 +96,7 @@ public class VideoListView {
     private boolean isCollect;
     private boolean isPersonal;
     private String personalCode;
-    private int tabType = 0;
+    private String tabType = "0";
     /**
      * 数据是否到达最后一页
      */
@@ -759,7 +759,7 @@ public class VideoListView {
      *
      * @param list 刷新数据
      */
-    public void refreshData(List<NewestShowGroundBean.DataBean> list, boolean isPersonal, boolean isCollect,int tabType) {
+    public void refreshData(List<NewestShowGroundBean.DataBean> list, boolean isPersonal, boolean isCollect,String tabType) {
         isEnd = false;
         isLoadingData = false;
         adapter.refreshData(list);
