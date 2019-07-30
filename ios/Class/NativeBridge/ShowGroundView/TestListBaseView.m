@@ -26,8 +26,6 @@
         whcLayout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10);
         whcLayout.colCount = 2;
         whcLayout.delegate = self;
-        
-        
         UICollectionView * collectionView = [[UICollectionView alloc]initWithFrame:self.bounds collectionViewLayout:whcLayout];
         collectionView.showsVerticalScrollIndicator = NO;
         collectionView.showsHorizontalScrollIndicator = NO;
@@ -44,7 +42,6 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-
     self.collectionView.frame = self.bounds;
 }
 

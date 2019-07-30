@@ -12,6 +12,7 @@
 @interface TestListBaseView : UIView <JXPagerViewListViewDelegate>
 
 @property(nonatomic, strong)UICollectionView *collectionView;
-@property (nonatomic, strong) NSArray <NSString *> *dataSource;
-
+@property(nonatomic, strong) NSArray <NSString *> *dataSource;
+@property(nonatomic, copy)NSString *api;
+@property(nonatomic, assign)NSInteger type;//0 我的文章 1我的收藏 2他的文章
 @end
