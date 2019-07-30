@@ -28,11 +28,11 @@
 
 - (instancetype)init {
     self = [super init];
-    
+
     if (self) {
         self.taskDic = [NSMutableDictionary dictionary];
     }
-    
+
     return self;
 }
 
@@ -42,7 +42,7 @@
     if (!_session) {
         _session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
     }
-    
+
     return _session;
 }
 
@@ -56,7 +56,7 @@
     dispatch_once(&onceToken, ^{
         networkManager = [[MBNetworkManager alloc] init];
     });
-    
+
     return networkManager;
 }
 
@@ -65,9 +65,9 @@
     if (task) {
         return task;
     }
-    
+
     MBURLTaskModel *newTask = [[MBURLTaskModel alloc] initWithURL:url];
-    
+
     return newTask;
 }
 
@@ -75,25 +75,25 @@
     if ([self.currentTaskModel.downloadURL.absoluteString isEqualToString:taskModel.downloadURL.absoluteString]) {//有相同的任务开始下载了
         return;
     }
-    
+
     if (![self.taskDic objectForKey:taskModel.downloadURL.absoluteString]) {
         [self.taskDic setObject:taskModel forKey:taskModel.downloadURL.absoluteString];
     }
-    
+
     self.currentTaskModel = taskModel;
-    
+
     if (self.currentTask) {
         [self.currentTask cancel];
     }
-    
+
     self.downLoadingOffset = taskModel.downloadingOffset;
-    
+
     NSURLComponents *actualURLComponents = [[NSURLComponents alloc] initWithURL:taskModel.downloadURL resolvingAgainstBaseURL:NO];
     actualURLComponents.scheme = @"http";
-    
+
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[actualURLComponents URL] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:20.0];
     request.timeoutInterval = 10;
-    
+
     if (taskModel.downloadingOffset > 0) {
         if (taskModel.videoLength > 0) {
             [request addValue:[NSString stringWithFormat:@"bytes=%ld-%ld", (long)taskModel.downloadingOffset, (long)taskModel.videoLength] forHTTPHeaderField:@"Range"];
@@ -101,11 +101,11 @@
             [request addValue:[NSString stringWithFormat:@"bytes=%ld-", (long)taskModel.downloadingOffset] forHTTPHeaderField:@"Range"];
         }
     }
-    
+
     NSURLSessionDataTask *dataTask = [self.session dataTaskWithRequest:request];
-    
+
     self.currentTask = dataTask;
-    
+
     [dataTask resume];
 }
 
@@ -129,6 +129,7 @@
             model.downloadingOffset = 0;
         }
     }
+  self.currentTaskModel = nil;
 }
 
 #pragma mark - Private
@@ -138,7 +139,7 @@
     if (totalBytes.length == 0 || fileURLString.length == 0) {
         return;
     }
-    
+
     NSString *key = [fileURLString stringByAppendingString:@"_totalBytes"];
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
     [userDefault setValue:totalBytes forKey:key];
@@ -150,31 +151,31 @@
 - (void)URLSession:(NSURLSession *)session dataTask:(nonnull NSURLSessionDataTask *)dataTask didReceiveResponse:(nonnull NSURLResponse *)response completionHandler:(nonnull void (^)(NSURLSessionResponseDisposition))completionHandler {
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
     NSDictionary *dic = (NSDictionary *)[httpResponse allHeaderFields];
-    
+
     NSString *content = [dic objectForKey:@"Content-Range"];
     NSArray *array = [content componentsSeparatedByString:@"/"];
     NSString *length = array.lastObject;
-    
+
     long long videoLength;
-    
+
     if ([length integerValue] == 0) {
         videoLength = httpResponse.expectedContentLength;
     }else {
         videoLength = [length longLongValue];
     }
-    
+
     self.currentTaskModel.videoLength = videoLength;
-    
+
 //    NSLog(@"videoLength: %ld", videoLength);
-    
+
     //保存当前下载任务video的总长度，用于断点续传。
     [self saveTotalBytes:[NSString stringWithFormat:@"%lld", videoLength] forKey:self.currentTaskModel.downloadURL.absoluteString];
-    
+
     NSString *savePath = [MBFileManager savePathWithURL:self.currentTaskModel.downloadURL];
     NSLog(@"savePath: %@", savePath);
     [MBFileManager createFileInPath:savePath];
     self.fileHandle = [NSFileHandle fileHandleForWritingAtPath:savePath];
-    
+
     completionHandler(NSURLSessionResponseAllow);//没有这个代码，不会调用下面的didReceiveData方法
 }
 
@@ -182,12 +183,12 @@
     NSLog(@"receiveData: %ld",data.length);
     [self.fileHandle seekToEndOfFile];
     [self.fileHandle writeData:data];
-    
+
     self.currentTaskModel.downloadingOffset += data.length;
     self.downLoadingOffset += data.length;
-    
+
     NSLog(@"in NEtwork %lld", self.currentTaskModel.downloadingOffset);
-    
+
     if ([self.delegate respondsToSelector:@selector(didReceiveDataWithTaskModel:)]) {
         [self.delegate didReceiveDataWithTaskModel:self.currentTaskModel];
     }
