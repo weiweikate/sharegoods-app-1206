@@ -76,6 +76,7 @@ export default class PhoneLoginPage extends BasePage {
         getVerifyToken().then((data => {
             // token去服务端号码认证，认证通过登录成功
             this.$loadingDismiss();
+            // 如果没有绑定微信，绑定微信
         })).catch(e => {
             // 认证失败，
             this.$loadingDismiss();

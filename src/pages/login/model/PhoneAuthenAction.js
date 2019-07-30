@@ -31,7 +31,7 @@ const closeAuth = () => {
 };
 
 const getVerifyToken = () => {
-    return PhoneAuthenModule.getVerifyCode();
+    return PhoneAuthenModule.getVerifyToken();
 };
 
 export { isCanPhoneAuthen, startPhoneAuthen, startLoginAuth, checkInitResult, preLogin, closeAuth, getVerifyToken };

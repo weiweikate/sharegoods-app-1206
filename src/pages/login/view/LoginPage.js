@@ -157,7 +157,7 @@ export default class LoginPage extends BasePage {
                                 this.justLogin();
                             }}>
                                 <Image style={{ width: px2dp(48), height: px2dp(48), marginBottom: px2dp(13) }}
-                                       source={res.login_phone}/>
+                                       source={res.login_one}/>
                                 <UIText style={{
                                     fontSize: px2dp(13),
                                     height: px2dp(25),
@@ -169,7 +169,7 @@ export default class LoginPage extends BasePage {
                             replaceRoute(RouterMap.PwdLoginPage, { ...this.params });
                         }}>
                             <Image style={{ width: px2dp(48), height: px2dp(48), marginBottom: px2dp(13) }}
-                                   source={res.login_phone}/>
+                                   source={res.login_pwd}/>
                             <UIText style={{
                                 fontSize: px2dp(13),
                                 height: px2dp(25),
