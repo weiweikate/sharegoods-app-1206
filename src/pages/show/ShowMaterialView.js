@@ -215,7 +215,20 @@ export default class ShowMaterialView extends React.Component {
                                                showToTop: nativeEvent.YDistance > ScreenUtils.height
                                            });
                                        }}
-
+                                       onCollection={({nativeEvent})=>{
+                                           if (!user.isLogin) {
+                                               routeNavigate(RouterMap.LoginPage);
+                                               return;
+                                           }
+                                           if (!nativeEvent.detail.collect) {
+                                               ShowApi.reduceCountByType({
+                                                   showNo: nativeEvent.detail.showNo,
+                                                   type: 2
+                                               });
+                                           } else {
+                                               ShowApi.incrCountByType({ showNo: nativeEvent.detail.showNo, type: 2 });
+                                           }
+                                       }}
                                        onSeeUser={({nativeEvent})=>{
                                            let userNo = nativeEvent.userInfoVO.userNo;
                                            if(user.code === userNo){
