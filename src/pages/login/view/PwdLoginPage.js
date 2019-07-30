@@ -1,7 +1,7 @@
 import BasePage from '../../../BasePage';
 import React from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
-import res from '../res';
+import resLogin from '../res';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { MRText as Text, MRTextInput as TextInput, UIText } from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
@@ -13,6 +13,7 @@ import StringUtils from '../../../utils/StringUtils';
 import LinearGradient from 'react-native-linear-gradient';
 import { getWxUserInfo, pwdLoginAction, wxLoginAction } from '../model/LoginActionModel';
 import bridge from '../../../utils/bridge';
+import res from '../../../comm/res';
 
 const { px2dp } = ScreenUtils;
 export default class PwdLoginPage extends BasePage {
@@ -79,7 +80,7 @@ export default class PwdLoginPage extends BasePage {
     _render() {
         return (
             <View style={Styles.contentStyle}>
-                <Image style={Styles.loginLogo} source={res.login_logo}/>
+                <Image style={Styles.loginLogo} source={resLogin.login_logo}/>
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                     <View style={{ width: ScreenUtils.width - px2dp(60), marginTop: px2dp(32) }}>
                         <View style={{
@@ -104,8 +105,8 @@ export default class PwdLoginPage extends BasePage {
                                     phoneNum: ''
                                 });
                             }}>
-                                <Image style={Styles.seePasswordImageStyle}
-                                       source={this.state.phoneNum.length > 0 ? res.inputtext_clear : null}/>
+                                <Image style={[Styles.seePasswordImageStyle, { padding: 1.5 }]}
+                                       source={this.state.phoneNum.length > 0 ? res.button.inputtext_clear : null}/>
                             </TouchableOpacity>
                         </View>
                         <View style={{
@@ -132,7 +133,7 @@ export default class PwdLoginPage extends BasePage {
                                 });
                             }}>
                                 <Image style={Styles.seePasswordImageStyle}
-                                       source={this.state.isSecret ? res.close_eye : res.open_eye}/>
+                                       source={this.state.isSecret ? res.button.close_eye : res.button.open_eye}/>
                             </TouchableOpacity>
                         </View>
                         <View style={{ width: ScreenUtils.width - px2dp(60), alignItems: 'flex-end' }}>
@@ -205,7 +206,7 @@ export default class PwdLoginPage extends BasePage {
                             replaceRoute(RouterMap.PhoneLoginPage, { ...this.params, needBottom: true });
                         }}>
                             <Image style={{ width: px2dp(48), height: px2dp(48), marginBottom: px2dp(13) }}
-                                   source={res.login_phone}/>
+                                   source={resLogin.login_phone}/>
                             <UIText style={{
                                 fontSize: px2dp(13),
                                 height: px2dp(25),
@@ -281,7 +282,7 @@ const Styles = StyleSheet.create(
         },
         seePasswordImageStyle: {
             width: 20,
-            height: 15,
+            height: 20,
             marginLeft: 5
         }
     }

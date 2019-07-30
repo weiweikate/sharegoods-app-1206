@@ -103,7 +103,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void loginWX(final Callback callback) {
-        final String TAG = "";
         UMShareAPI.get(getCurrentActivity()).getPlatformInfo(getCurrentActivity(), SHARE_MEDIA.WEIXIN, new UMAuthListener() {
             @Override
             public void onStart(SHARE_MEDIA share_media) {
@@ -148,7 +147,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     }
 
     private void umengDeleteOauth(SHARE_MEDIA share_media_type) {
-        final String TAG = "";
         UMShareAPI.get(getCurrentActivity()).deleteOauth(getCurrentActivity(), share_media_type, new UMAuthListener() {
             @Override
             public void onStart(SHARE_MEDIA share_media) {

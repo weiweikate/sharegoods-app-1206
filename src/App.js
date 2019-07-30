@@ -34,6 +34,8 @@ import chatModel from './utils/QYModule/QYChatModel';
 import showPinFlagModel from './model/ShowPinFlag';
 import settingModel from './pages/mine/model/SettingModel';
 import StringUtils from './utils/StringUtils';
+import { checkInitResult } from './pages/login/model/PhoneAuthenAction';
+import loginModel from './pages/login/model/LoginModel';
 
 const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
@@ -132,6 +134,13 @@ class App extends Component {
             TimerMixin.setTimeout(() => {
                 // 移除启动页
                 bridge.removeLaunch();
+                // 一键登录初始化
+                checkInitResult().then((data) => {
+                    loginModel.setAuthPhone(data);
+                }).catch((erro) => {
+                    loginModel.setAuthPhone(null);
+                });
+                // 定位
                 geolocation.init({
                     ios: 'f85b644981f8642aef08e5a361e9ab6b',
                     android: '4a3ff7c2164aaf7d67a98fb9b88ae0e6'

@@ -102,13 +102,13 @@ class User {
     @observable
     availableBalance = null;//可提现金额
     @observable
-    totalBalance=null;      // 余额加待提现余额
+    totalBalance = null;      // 余额加待提现余额
     @observable
     historicalBalance = null;  //总金额
     @observable
     blockedBalance = null; //冻结金额
     @observable
-    couponCount = null  // * 一元券加优惠券数量
+    couponCount = null;  // * 一元券加优惠券数量
     @observable
     tokenCoin = null;       //一元券数量
     @observable
@@ -122,7 +122,7 @@ class User {
     @observable
     historicalScore = null;  //总秀豆积分
     @observable
-    blockedUserScore  = null; //待入账秀豆积分
+    blockedUserScore = null; //待入账秀豆积分
     @observable
     password = null;        //密码
     @observable
@@ -489,6 +489,7 @@ class User {
                 this.saveUserInfo(data);
             }
             return res.data;
+        }).catch(e => {
         });
     }
 
@@ -521,10 +522,10 @@ autorun(() => {
     }
 });
 
-autorun(()=>{
+autorun(() => {
     if (user.isLogin) {
         JPushUtils.updatePushTags();
         JPushUtils.updatePushAlias();
     }
-})
+});
 export default user;

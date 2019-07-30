@@ -96,7 +96,7 @@ const allType = {
         title: '系统升级',
         icon: hongbao
     },
-    17:{
+    17: {
         title: '抽奖奖励',
         icon: renwu
     }
@@ -119,7 +119,6 @@ export default class MyCashAccountPage extends BasePage {
         this.currentPage = 0;
         this.type = null;
         this.biType = null;
-        this.st = 0;
     }
 
     $NavBarRightPressed = () => {
@@ -138,14 +137,12 @@ export default class MyCashAccountPage extends BasePage {
     _onScroll = (event) => {
         let Y = event.nativeEvent.contentOffset.y;
         if (Y <= 175) {
-            this.st = 0;
             if (this.state.changeHeader) {
                 this.setState({
                     changeHeader: false
                 });
             }
         } else {
-            this.st = 1;
             if (!this.state.changeHeader) {
                 this.setState({
                     changeHeader: true

@@ -28,7 +28,7 @@ const api = {
     queryShowFansStatus: ['/user/queryShowFansStatus', { method: 'post' }],
     //一键登录后去绑定微信操作
     phoneBindWx: ['/user/userLogin/bindWeChat'],
-    //一键登录校验token借口
+    //一键登录校验token接口
     oneClickLoginValidation: ['/user/userLogin/autoLoginByJiGuang'],
     // 获取本地手机号
     getMobileByToken: ['/user/userLogin/getMobileByJiGuangToken']

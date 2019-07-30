@@ -1,7 +1,6 @@
 import BasePage from '../../../BasePage';
 import React from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
-import res from '../res';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { MRText as Text, MRTextInput as TextInput, UIText } from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
@@ -14,7 +13,9 @@ import bridge from '../../../utils/bridge';
 import LinearGradient from 'react-native-linear-gradient';
 import store from '@mr/rn-store';
 import { getWxUserInfo, oneClickLoginValidation, wxLoginAction } from '../model/LoginActionModel';
-import { startLoginAuth } from '../model/PhoneAuthenAction';
+import { getVerifyToken } from '../model/PhoneAuthenAction';
+import res from '../../../comm/res';
+import resLogin from '../res';
 
 const { px2dp } = ScreenUtils;
 const btnWidth = ScreenUtils.width - px2dp(60);
@@ -37,7 +38,8 @@ export default class PhoneLoginPage extends BasePage {
         loginModel.saveIsSelectProtocol(true);
         if (StringUtils.isNoEmpty(loginModel.phoneNumber)) {
             this.setState({
-                phoneNum: loginModel.phoneNumber
+                phoneNum: loginModel.phoneNumber,
+                redBtnBg: true
             });
         } else {
             store.get('@mr/localPhone').then((phone) => {
@@ -69,14 +71,13 @@ export default class PhoneLoginPage extends BasePage {
                 return;
             }
         }
-        // 一键登录
+        // 号码认证
         this.$loadingShow();
-        startLoginAuth().then((data) => {
+        getVerifyToken().then((data => {
+            // token去服务端号码认证，认证通过登录成功
             this.$loadingDismiss();
-            let { navigation } = this.props;
-            oneClickLoginValidation(this.state.phoneNum, data, navigation);
-        }).catch((error) => {
-            // 一键登录失败，
+        })).catch(e => {
+            // 认证失败，
             this.$loadingDismiss();
             loginModel.savePhoneNumber(this.state.phoneNum);
             routeNavigate(RouterMap.LoginVerifyCodePage, { ...this.params, phoneNum: this.state.phoneNum });
@@ -97,7 +98,7 @@ export default class PhoneLoginPage extends BasePage {
     _render() {
         return (
             <View style={Styles.contentStyle}>
-                <Image style={Styles.loginLogo} source={res.login_logo}/>
+                <Image style={Styles.loginLogo} source={resLogin.login_logo}/>
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: px2dp(-50) }}>
                     <View style={{
                         backgroundColor: DesignRule.bgColor,
@@ -134,12 +135,14 @@ export default class PhoneLoginPage extends BasePage {
                         />
                         <TouchableOpacity
                             style={{ justifyContent: 'center', width: px2dp(30) }} onPress={() => {
-                            this.setState({
-                                phoneNum: ''
-                            });
+                            if (this.state.phoneNum.length > 0) {
+                                this.setState({
+                                    phoneNum: ''
+                                });
+                            }
                         }}>
-                            <Image style={Styles.seePasswordImageStyle}
-                                   source={this.state.phoneNum.length > 0 ? res.inputtext_clear : null}/>
+                            <Image style={[Styles.seePasswordImageStyle, { padding: 1.5 }]}
+                                   source={this.state.phoneNum.length > 0 ? res.button.inputtext_clear : null}/>
                         </TouchableOpacity>
                     </View>
                     {
@@ -224,7 +227,7 @@ export default class PhoneLoginPage extends BasePage {
                             replaceRoute(RouterMap.PwdLoginPage, { ...this.params });
                         }}>
                             <Image style={{ width: px2dp(48), height: px2dp(48), marginBottom: px2dp(13) }}
-                                   source={this.params.needBottom ? res.login_pwd : null}/>
+                                   source={this.params.needBottom ? resLogin.login_pwd : null}/>
                             <UIText style={{
                                 fontSize: px2dp(13),
                                 height: px2dp(25),
@@ -299,6 +302,11 @@ const Styles = StyleSheet.create(
             width: ScreenUtils.width - px2dp(110),
             height: px2dp(42),
             fontSize: px2dp(14)
+        },
+        seePasswordImageStyle: {
+            width: 20,
+            height: 20,
+            marginLeft: 5
         }
     }
 );

@@ -240,7 +240,7 @@ export default class FlyImageViewer extends Component {
     // 记录已加载的图片 index
     loadedIndex = new Map();
 
-    componentWillMount() {
+    componentDidMount() {
         this.init(this.props);
     }
 

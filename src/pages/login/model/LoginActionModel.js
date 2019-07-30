@@ -17,13 +17,13 @@ import RouterMap, { loginBack, routePush } from '../../../navigation/RouterMap';
 import StringUtils from '../../../utils/StringUtils';
 
 /**
- * @param phone 校验手机号
+ * @param phone 一键登录
  * @param athenToken  ali 返回的校验token
  * @param navigation  导航器
  * @param successCallBack 登录成功后的回调
  * hyf 后期更改去掉phone
  */
-const oneClickLoginValidation = (phone, authenToken, navigation, successCallBack) => {
+const oneClickLoginValidation = (authenToken, navigation, successCallBack, failCallBack) => {
     TrackApi.LoginButtonClick({ 'loginMethod': 4 });
     LoginAPI.oneClickLoginValidation({
         token: authenToken
@@ -49,11 +49,12 @@ const oneClickLoginValidation = (phone, authenToken, navigation, successCallBack
         homeModule.loadHomeList();
         bridge.setCookies(result.data);
     }).catch(error => {
+        failCallBack && failCallBack();
         bridge.$toast(error.msg);
     });
 };
 /**
- * 一键登录后未绑定微信去绑定微信
+ * 绑定微信
  */
 const phoneBindWx = (wxInfo) => {
     //去绑定微信，成功与否不管

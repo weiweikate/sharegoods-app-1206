@@ -1,6 +1,6 @@
 import BasePage from '../../../BasePage';
 import React from 'react';
-import { Image, InteractionManager, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import res from '../res';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { MRText as Text, UIText } from '../../../components/ui';
@@ -10,20 +10,28 @@ import loginModel from '../model/LoginModel';
 import ProtocolView from '../components/Login.protocol.view';
 import RouterMap, { replaceRoute, routeNavigate } from '../../../navigation/RouterMap';
 import LinearGradient from 'react-native-linear-gradient';
-import { getWxUserInfo, wxLoginAction } from '../model/LoginActionModel';
-import { checkInitResult } from '../model/PhoneAuthenAction';
+import { getWxUserInfo, oneClickLoginValidation, wxLoginAction } from '../model/LoginActionModel';
+import { checkInitResult, closeAuth, preLogin, startLoginAuth } from '../model/PhoneAuthenAction';
 
 const { px2dp } = ScreenUtils;
 const btnWidth = ScreenUtils.width - px2dp(60);
 export default class LoginPage extends BasePage {
 
-    componentDidMount() {
-        // 获取手机号
-        InteractionManager.runAfterInteractions(() => {
+    constructor(props) {
+        super(props);
+        if (loginModel.authPhone) {
+            // 预登录
+            preLogin();
+        } else {
             checkInitResult().then((isVerifyEnable) => {
-                this.isVerifyEnable = isVerifyEnable;
-            }).catch();
-        });
+                loginModel.setAuthPhone(isVerifyEnable);
+                if (isVerifyEnable) {
+                    // 预登录
+                    preLogin();
+                }
+            }).catch(e => {
+            });
+        }
     }
 
     // 禁用某个页面的手势
@@ -36,6 +44,46 @@ export default class LoginPage extends BasePage {
         leftNavImage: res.other.close_X,
         leftImageStyle: { marginLeft: 10 },
         headerStyle: { borderBottomWidth: 0 }
+    };
+
+    justLogin = () => {
+        // 一键登录
+        this.$loadingShow();
+        if (loginModel.authPhone) {
+            // 可以一键登录
+            this.startOneLogin();
+        } else {
+            checkInitResult().then((isVerifyEnable) => {
+                this.$loadingDismiss();
+                loginModel.setAuthPhone(isVerifyEnable);
+                if (isVerifyEnable) {
+                    this.startOneLogin();
+                } else {
+                    this.$toastShow('请开启数据网络后重试');
+                }
+            }).catch(e => {
+                this.$loadingDismiss();
+                if (e.code === '555') {
+                    closeAuth();
+                } else {
+                    replaceRoute(RouterMap.PhoneLoginPage, { ...this.params, needBottom: true });
+                }
+            });
+        }
+    };
+
+    startOneLogin = () => {
+        startLoginAuth().then((data) => {
+            let { navigation } = this.props;
+            oneClickLoginValidation(data, navigation, () => {
+                this.$loadingDismiss();
+            }, () => {
+                this.$loadingDismiss();
+            });
+        }).catch((error) => {
+            this.$loadingDismiss();
+            replaceRoute(RouterMap.PhoneLoginPage, { ...this.params, needBottom: true });
+        });
     };
 
     _render() {
@@ -92,6 +140,7 @@ export default class LoginPage extends BasePage {
                     </View>
                     <View style={{ flexDirection: 'row', marginHorizontal: px2dp(30), marginTop: px2dp(20) }}>
                         <TouchableOpacity style={{ flex: 1, alignItems: 'center' }} onPress={() => {
+                            // 手机号登录
                             replaceRoute(RouterMap.PhoneLoginPage, { ...this.params, needBottom: true });
                         }}>
                             <Image style={{ width: px2dp(48), height: px2dp(48), marginBottom: px2dp(13) }}
@@ -102,11 +151,25 @@ export default class LoginPage extends BasePage {
                                 color: DesignRule.textColor_mainTitle
                             }} value={'手机号登录'}/>
                         </TouchableOpacity>
+                        {loginModel.authPhone ?
+                            <TouchableOpacity style={{ flex: 1, alignItems: 'center' }} onPress={() => {
+                                // 一键登录
+                                this.justLogin();
+                            }}>
+                                <Image style={{ width: px2dp(48), height: px2dp(48), marginBottom: px2dp(13) }}
+                                       source={res.login_phone}/>
+                                <UIText style={{
+                                    fontSize: px2dp(13),
+                                    height: px2dp(25),
+                                    color: DesignRule.textColor_mainTitle
+                                }} value={'一键登录'}/>
+                            </TouchableOpacity> : null
+                        }
                         <TouchableOpacity style={{ flex: 1, alignItems: 'center' }} onPress={() => {
                             replaceRoute(RouterMap.PwdLoginPage, { ...this.params });
                         }}>
                             <Image style={{ width: px2dp(48), height: px2dp(48), marginBottom: px2dp(13) }}
-                                   source={res.login_pwd}/>
+                                   source={res.login_phone}/>
                             <UIText style={{
                                 fontSize: px2dp(13),
                                 height: px2dp(25),
