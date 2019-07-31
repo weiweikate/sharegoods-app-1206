@@ -347,7 +347,8 @@ export default class MyCouponsItems extends Component {
                         });
                     });
                     this.handleList(dataList, arrData);
-                    this.setState({ viewData: arrData, isFirstLoad: false, isLoadMore: false });
+                    this.setState({ viewData: arrData, isFirstLoad: false, isLoadMore: false,
+                        isEnd: (couponsModel.params.type === 7) || (data.length === 0) });
                 }).catch(err => {
                     console.log(err);
                     this.handleList(dataList, arrData);
