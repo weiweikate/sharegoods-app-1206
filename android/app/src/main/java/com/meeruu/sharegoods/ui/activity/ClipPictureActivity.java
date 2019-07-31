@@ -50,7 +50,9 @@ public class ClipPictureActivity extends BaseActivity {
         } else if (SQUARE.equals(type)) {
             mClipImageLayout = (ClipImageLayout) findViewById(R.id.id_clipImageLayout_square);
         }
-        mClipImageLayout.setVisibility(VISIBLE);
+        if (mClipImageLayout != null) {
+            mClipImageLayout.setVisibility(VISIBLE);
+        }
         String path = intent.getStringExtra("path");
         File file = new File(path);
         if (isEmpty(path) || !(file.exists())) {

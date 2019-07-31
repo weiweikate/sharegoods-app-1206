@@ -101,7 +101,7 @@ export default class Login extends BasePage {
         } else if (btnType === loginBtnType.localPhoneNumLoginType) {
             startLoginAuth().then((data) => {
                 let { navigation } = this.props;
-                oneClickLoginValidation(loginModel.authPhone, data, navigation);
+                oneClickLoginValidation(data, loginModel.authPhone, navigation);
             }).catch((error) => {
                 this.$toastShow('认证失败,请选择其他登录方式');
             });

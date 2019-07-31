@@ -15,8 +15,8 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
-import com.meeruu.commonlib.event.QiyuUrlEvent;
 import com.meeruu.commonlib.utils.AppUtils;
+import com.meeruu.qiyu.Event;
 import com.meeruu.qiyu.preference.PreferenceUtil;
 import com.qiyukf.unicorn.api.ConsultSource;
 import com.qiyukf.unicorn.api.ProductDetail;
@@ -255,7 +255,7 @@ public class QYChatModule extends ReactContextBaseJavaModule {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onQiyuUrl(QiyuUrlEvent event) {
+    public void onQiyuUrl(Event.QiyuUrlEvent event) {
         WritableMap map = Arguments.createMap();
         if (!TextUtils.isEmpty(event.getUrl()) && !event.getUrl().contains("http:///")) {
             map.putInt("card_type", 0);

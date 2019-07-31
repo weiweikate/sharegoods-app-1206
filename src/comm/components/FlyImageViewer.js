@@ -240,7 +240,7 @@ export default class FlyImageViewer extends Component {
     // 记录已加载的图片 index
     loadedIndex = new Map();
 
-    componentWillMount() {
+    componentDidMount() {
         this.init(this.props);
     }
 
@@ -602,6 +602,9 @@ export default class FlyImageViewer extends Component {
 
         const ImageElements = this.props.imageUrls.map((image, index) => {
             const imageInfo = this.state.imageSizes[index];
+            if (!imageInfo) {
+                return;
+            }
             let width = imageInfo && imageInfo.width;
             let height = imageInfo && imageInfo.height;
             // 如果宽大于屏幕宽度,整体缩放到宽度是屏幕宽度

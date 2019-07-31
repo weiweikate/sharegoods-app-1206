@@ -8,6 +8,7 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.SPCacheUtils;
 import com.meeruu.sharegoods.R;
@@ -57,16 +58,38 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
                 .setNumberColor(mContext.getResources().getColor(R.color.app_main_text_color))
                 .setSloganTextColor(mContext.getResources().getColor(R.color.app_ccc_text_color))
                 .setAppPrivacyColor(mContext.getResources().getColor(R.color.app_666_text_color),
-                        mContext.getResources().getColor(R.color.app_main_color));
+                        mContext.getResources().getColor(R.color.app_main_color))
+                .setPrivacyState(true);
         if (!TextUtils.isEmpty(contractUrl)) {
             builder.setAppPrivacyOne("《秀购用户协议》", contractUrl);
         }
         JVerificationInterface.setCustomUIWithConfig(builder.build());
         boolean isVerifyEnable = JVerificationInterface.checkVerifyEnable(getCurrentActivity());
-        if (isVerifyEnable) {
-            JVerificationInterface.preLogin(mContext, 5000, null);
-        }
         callback.resolve(isVerifyEnable);
+    }
+
+    @ReactMethod
+    public void preLogin() {
+        JVerificationInterface.preLogin(mContext, 5000, null);
+    }
+
+    @ReactMethod
+    public void closeAuth() {
+        JVerificationInterface.dismissLoginAuthActivity();
+    }
+
+    @ReactMethod
+    public void getVerifyToken(final Promise callback) {
+        JVerificationInterface.getToken(mContext, 5000, new VerifyListener() {
+            @Override
+            public void onResult(int i, String s, String s1) {
+                if (i == 2000) {
+                    callback.resolve(s);
+                } else {
+                    callback.reject(s, s1);
+                }
+            }
+        });
     }
 
     @ReactMethod
@@ -74,10 +97,13 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
         JVerificationInterface.loginAuth(getCurrentActivity(), new VerifyListener() {
             @Override
             public void onResult(int code, String token, String operator) {
+                LogUtils.d("login=====" + code);
                 if (code == 6000) {
                     callback.resolve(token);
+                } else if (code == 6002) {
+                    callback.reject("555", "取消授权");
                 } else {
-                    callback.reject("一键登录失败");
+                    callback.reject("556", "一键登录失败");
                 }
             }
         });

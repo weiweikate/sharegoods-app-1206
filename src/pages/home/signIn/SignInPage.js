@@ -242,14 +242,18 @@ export default class SignInPage extends BasePage {
         let Y = event.nativeEvent.contentOffset.y;
         if (Y <= 200) {
             this.st = Y / 200;
-            this.setState({
-                changeHeader: true
-            });
+            if(!this.state.changeHeader){
+                this.setState({
+                    changeHeader: true
+                });
+            }
         } else {
             this.st = 1;
-            this.setState({
-                changeHeader: false
-            });
+            if(this.state.changeHeader){
+                this.setState({
+                    changeHeader: false
+                });
+            }
         }
 
         this.headerBg.setNativeProps({
@@ -562,6 +566,7 @@ export default class SignInPage extends BasePage {
             <View style={styles.container}>
                 <ScrollView
                     onScroll={this._onScroll}
+                    scrollEventThrottle={30}
                     showsVerticalScrollIndicator={false}>
                     {this._headerIconRender()}
                     {this.state.signInData ? this._signInInfoRender() : null}

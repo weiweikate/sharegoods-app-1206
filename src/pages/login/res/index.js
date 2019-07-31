@@ -11,6 +11,7 @@ const index = {
     login_logo: require('./login_logo.png'),
     login_phone: require('./login_phone.png'),
     login_pwd: require('./login_pwd.png'),
+    login_one: require('./login_one.png'),
     ...res
 };
 export default index;
