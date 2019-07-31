@@ -25,6 +25,8 @@
 #import "MyShowCellNode.h"
 #import "NSObject+Util.h"
 #import "SwichView.h"
+#import "NSString+UrlAddParams.h"
+#import "NSDictionary+Util.h"
 
 #define kReuseIdentifier @"ShowCell"
 #define SystemUpgradeCode 9999
@@ -187,6 +189,7 @@
  */
 - (void)refreshData
 {
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   if (self.onStartRefresh) {
     self.onStartRefresh(@{});
   }
@@ -198,6 +201,9 @@
   [dic addEntriesFromDictionary:@{@"page": [NSString stringWithFormat:@"%ld",self.page], @"size": @"20"}];
   __weak ASDK_ShowGround * weakSelf = self;
   [NetWorkTool requestWithURL:[self getCurrentUrl] params:dic  toModel:nil success:^(NSDictionary* result) {
+    if(![self.type isEqualToString:@"MyDynamic"]){
+      [defaults setObject:[NSString convertNSDictionaryToJsonString:result] forKey:self.type];
+    }
     ShowQueryModel* model = [ShowQueryModel modelWithJSON:result];
     weakSelf.dataArr = [model.data mutableCopy];
     if([result valueForKey:@"data"]&&![[result valueForKey:@"data"] isKindOfClass:[NSNull class]]){
@@ -319,8 +325,10 @@
 
 - (ASCellNodeBlock)js_collectionNode:(ASCollectionNode *)collectionNode nodeBlockForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+  
   ShowQuery_dataModel *model = self.dataArr[indexPath.item];
   if([self.type isEqualToString:@"MyDynamic"]){
+    
     return ^{
       MyShowCellNode *node = [[MyShowCellNode alloc]initWithModel:model index:indexPath.row ];
       node.deletBtnTapBlock = ^(ShowQuery_dataModel *m, NSInteger index) {
@@ -496,6 +504,20 @@
   }
 
   
+}
+
+-(void)setType:(NSString *)type{
+  _type = type;
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  if(![type isEqualToString:@"MyDynamic"]&& [defaults objectForKey:type]){
+    NSDictionary *dicData = [NSDictionary dictionaryWithJsonString:[defaults objectForKey:type]];
+    if (dicData) {
+      self.callBackArr = [[dicData valueForKey:@"data"] mutableCopy];
+      ShowQueryModel* model = [ShowQueryModel modelWithJSON:dicData];
+      self.dataArr = [model.data mutableCopy];
+    }
+    //    [self.collectionNode reloadData];
+  }
 }
 
 - (void)setHeaderHeight:(NSInteger)headerHeight
