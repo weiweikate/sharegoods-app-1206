@@ -20,6 +20,7 @@
 #import "MBVideoModel.h"
 #import "MBVideoHeaderView.h"
 #import "MBFileManager.h"
+#import "MBNetworkManager.h"
 
 @interface ActiveView()<MBSrcollViewDataDelegate,MBHeaderViewDelegate>
 
@@ -68,7 +69,9 @@
   self=[super init];
   if(self){
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"guanzhu"];
-    [MBFileManager clearCache]; //清除网络层保存的下载进度
+    if([MBFileManager clearCache]){//清除网络层保存的下载进度
+      [[MBNetworkManager shareInstance] clearDownloadingOffset]; //清除网络层保存的下载进度
+    };
     self.didPausePlay = NO;
     [self initData];
     [self initUI];
@@ -187,7 +190,7 @@
     self.isCollect = [params valueForKey:@"isCollect"];
   }
   if([params valueForKey:@"tabType"]){
-    self.tabType = (NSInteger)[params valueForKey:@"tabType"];
+    self.tabType = [[params valueForKey:@"tabType"] intValue];
   }
   self.dataArr = [NSMutableArray arrayWithObject:firstData];
   self.callBackArr = [NSMutableArray arrayWithObject:params];
@@ -234,15 +237,19 @@
 
 -(void)clicCollection:(MBModelData *)model{
   [self.dataArr replaceObjectAtIndex:self.current withObject:model];
+  NSMutableDictionary * dic = [NSMutableDictionary dictionaryWithDictionary:self.callBackArr[self.current]];
+  [dic setObject:@(model.collect) forKey:@"collect"];
   if(_onCollection){
-    _onCollection(self.callBackArr[self.current]);
+    _onCollection(dic);
   }
 }
 
 -(void)clickZan:(MBModelData *)model{
   [self.dataArr replaceObjectAtIndex:self.current withObject:model];
+  NSMutableDictionary * dic = [NSMutableDictionary dictionaryWithDictionary:self.callBackArr[self.current]];
+  [dic setObject:@(model.like) forKey:@"like"];
   if(_onZanPress){
-    _onZanPress(self.callBackArr[self.current]);
+    _onZanPress(dic);
   }
 }
 

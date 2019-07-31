@@ -63,7 +63,7 @@ public class ShowVideoViewManager extends SimpleViewManager<View> {
     public void initData(View view, ReadableMap map) {
         boolean isPersonal = false;
         boolean isCollect = false;
-        int type = 0;
+        String type = "0";
         HashMap data = map.toHashMap();
         if(data.containsKey("isPersonal")){
             isPersonal = (boolean) data.get("isPersonal");
@@ -72,7 +72,7 @@ public class ShowVideoViewManager extends SimpleViewManager<View> {
             }
         }
         if(data.containsKey("tabType")){
-            type =((Double) data.get("tabType")).intValue();
+            type = (String)data.get("tabType");
         }
 
         NewestShowGroundBean.DataBean videoListBean = JSON.parseObject(JSONObject.toJSONString(data), NewestShowGroundBean.DataBean.class);

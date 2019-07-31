@@ -91,7 +91,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
     }
 
     private void covertVideo(final BaseViewHolder helper, final NewestShowGroundBean.DataBean item) {
-        final ExpandableTextView content = helper.getView(R.id.content);
+        final TextView content = helper.getView(R.id.content);
         final SimpleDraweeView userIcon = helper.getView(R.id.user_icon);
         String userTag = (String) userIcon.getTag();
         String userUrl = item.getUserInfoVO().getUserImg();
@@ -114,9 +114,8 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         String titleStr = item.getContent();
         if (titleStr != null && titleStr.trim().length() > 0) {
             if (!TextUtils.equals(titleStr, (String) content.getTag())) {
-                content.updateForRecyclerView(titleStr, maxWidth);
                 content.setTag(titleStr);
-                content.setExpandListener(null);
+                content.setText(titleStr);
                 content.setVisibility(View.VISIBLE);
             }
         } else {
@@ -290,7 +289,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
 
 
     private void convertDynamic(final BaseViewHolder helper, final NewestShowGroundBean.DataBean item) {
-        final ExpandableTextView content = helper.getView(R.id.content);
+        final TextView content = helper.getView(R.id.content);
         final SimpleDraweeView userIcon = helper.getView(R.id.user_icon);
         String userTag = (String) userIcon.getTag();
         String userUrl = item.getUserInfoVO().getUserImg();
@@ -319,9 +318,8 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         String titleStr = item.getContent();
         if (titleStr != null && titleStr.trim().length() > 0) {
             if (!TextUtils.equals(titleStr, (String) content.getTag())) {
-                content.updateForRecyclerView(titleStr, maxWidth);
                 content.setTag(titleStr);
-                content.setExpandListener(null);
+                content.setText(titleStr);
                 content.setVisibility(View.VISIBLE);
             }
         } else {

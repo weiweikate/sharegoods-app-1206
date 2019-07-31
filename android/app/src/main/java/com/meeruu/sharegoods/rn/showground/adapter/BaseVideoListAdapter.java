@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
@@ -62,7 +63,7 @@ public abstract class BaseVideoListAdapter<VH extends BaseVideoListAdapter.BaseH
 
         if (!TextUtils.equals(cover, tag)) {
             iv.setTag(cover);
-            ImageLoadUtils.loadNetImage(cover,iv);
+            ImageLoadUtils.loadScaleTypeNetImage(cover,iv, ScalingUtils.ScaleType.FIT_CENTER,true);
         }
 
 //        new ImageLoaderImpl().loadImage(context, coverPath, new ImageLoaderOptions.Builder()

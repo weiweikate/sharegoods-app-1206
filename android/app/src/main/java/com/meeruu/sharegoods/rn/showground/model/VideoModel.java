@@ -14,7 +14,7 @@ import static com.meeruu.commonlib.utils.ParameterUtils.ONLY_NETWORK;
 
 public class VideoModel implements IVideoModel {
     @Override
-    public void getVideoList(String showNo, String userCode,boolean isCollect,int tabType, BaseCallback callback) {
+    public void getVideoList(String showNo, String userCode,boolean isCollect,String tabType, BaseCallback callback) {
         VideoRequestConfig videoRequestConfig = new VideoRequestConfig();
         HashMap params = new HashMap();
         params.put("currentShowNo",showNo);
@@ -22,7 +22,7 @@ public class VideoModel implements IVideoModel {
             params.put("queryUserCode",userCode);
             params.put("isCollect",(isCollect?1:0)+"");
         }
-        if(tabType != 0){
+        if(!TextUtils.equals(tabType,"0")){
             params.put("spreadPosition",tabType+"");
         }
         videoRequestConfig.setParams(params);

@@ -21,6 +21,7 @@ import ShowApi from './ShowApi';
 import RouterMap, { routeNavigate, routePush } from '../../navigation/RouterMap';
 import DownloadUtils from './utils/DownloadUtils';
 import WhiteModel from './model/WhiteModel';
+import EmptyUtils from '../../utils/EmptyUtils';
 
 @observer
 export default class ShowMaterialView extends React.Component {
@@ -120,7 +121,7 @@ export default class ShowMaterialView extends React.Component {
                                        }}
                                        type={'material'}
                                        params={{ spreadPosition: tag.Material + '' }}
-                                       userIsLogin={user.token ? true : false}
+                                       isLogin={!EmptyUtils.isEmpty(user.token)}
                                        onItemPress={({ nativeEvent }) => {
                                            const { navigate } = this.props;
                                            const { showNo , userInfoVO } = nativeEvent;
@@ -215,7 +216,20 @@ export default class ShowMaterialView extends React.Component {
                                                showToTop: nativeEvent.YDistance > ScreenUtils.height
                                            });
                                        }}
-
+                                       onCollection={({nativeEvent})=>{
+                                           if (!user.isLogin) {
+                                               routeNavigate(RouterMap.LoginPage);
+                                               return;
+                                           }
+                                           if (!nativeEvent.detail.collect) {
+                                               ShowApi.reduceCountByType({
+                                                   showNo: nativeEvent.detail.showNo,
+                                                   type: 2
+                                               });
+                                           } else {
+                                               ShowApi.incrCountByType({ showNo: nativeEvent.detail.showNo, type: 2 });
+                                           }
+                                       }}
                                        onSeeUser={({nativeEvent})=>{
                                            let userNo = nativeEvent.userInfoVO.userNo;
                                            if(user.code === userNo){

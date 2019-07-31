@@ -382,7 +382,7 @@ static NSString *IDType = @"TypeCell";
 -(void)collectionClick:(RecommendedCell *)cell{
   NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
   JXModelData *model = self.dataArr[indexPath.row];
-  if(self.userCode&&self.userCode.length>0){
+  if(self.isLogin){
   if(!model.collect){
     model.collectCount++;
   }else{
@@ -397,8 +397,8 @@ static NSString *IDType = @"TypeCell";
 
   [self.tableView reloadRowAtIndexPath:indexPath withRowAnimation:UITableViewRowAnimationNone];
   }
-  if(_onCollectPress) {
-    _onCollectPress(@{
+  if(_onCollection) {
+    _onCollection(@{
                   @"detail":self.callBackArr[indexPath.item],
                   @"index":[NSNumber numberWithInteger:indexPath.row]});
   }
@@ -456,9 +456,6 @@ static NSString *IDType = @"TypeCell";
   }
 }
 
--(void)setUserCode:(NSString *)userCode{
-    _userCode = userCode;
-}
 - (void)setHeaderHeight:(NSInteger)headerHeight
 {
   _headerHeight  = headerHeight;
@@ -503,7 +500,7 @@ static NSString *IDType = @"TypeCell";
 -(void)collectionBtnClick:(RecommendedCell *)cell{
   NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
   JXModelData *model = self.dataArr[indexPath.row];
-  if(self.userCode&&self.userCode.length>0){
+  if(self.isLogin){
     if(!model.collect){
       model.collectCount++;
     }else{
@@ -518,8 +515,8 @@ static NSString *IDType = @"TypeCell";
     
     [self.tableView reloadRowAtIndexPath:indexPath withRowAnimation:UITableViewRowAnimationNone];
   }
-  if(_onCollectPress) {
-    _onCollectPress(@{
+  if(_onCollection) {
+    _onCollection(@{
                   @"detail":self.callBackArr[indexPath.item],
                   @"index":[NSNumber numberWithInteger:indexPath.row]});
   }

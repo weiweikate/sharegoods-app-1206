@@ -30,8 +30,8 @@ import { MRText as Text, AvatarImage } from '../../../components/ui';
 import LoginAPI from '../../login/api/LoginApi';
 import CommModal from '../../../comm/components/CommModal';
 import { track, TrackApi, trackEvent } from '../../../utils/SensorsTrack';
-import settingModel from '../model/SettingModel'
-import PullView from '../components/pulltorefreshlayout'
+import settingModel from '../model/SettingModel';
+import PullView from '../components/pulltorefreshlayout';
 import WhiteModel from '../../show/model/WhiteModel'
 
 
