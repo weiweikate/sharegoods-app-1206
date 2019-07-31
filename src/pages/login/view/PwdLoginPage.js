@@ -64,6 +64,7 @@ export default class PwdLoginPage extends BasePage {
             phoneNumber: this.state.phoneNum,
             password: this.state.pwd
         };
+        this.$loadingShow();
         pwdLoginAction(loginParam, (data) => {
             if (data.code === 10000) {
                 this.$toastShow('登录成功');

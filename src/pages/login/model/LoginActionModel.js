@@ -122,12 +122,11 @@ const wxLoginAction = (data, callBack) => {
             TrackApi.wxSignUpSuccess();
         } else if (res.code === 10000) {
             callBack && callBack(res.code, data);
-            UserModel.saveToken(data.data.token);
+            UserModel.saveToken(res.data.token);
             UserModel.saveUserInfo(res.data);
             TrackApi.wxLoginSuccess();
             bridge.$toast('登录成功');
             console.log(UserModel);
-            homeModule.loadHomeList();
             bridge.setCookies(res.data);
             // 埋点登录成功
             login(data.data.code);

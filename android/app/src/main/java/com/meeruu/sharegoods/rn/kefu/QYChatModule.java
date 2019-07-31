@@ -16,6 +16,7 @@ import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.meeruu.commonlib.utils.AppUtils;
+import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.qiyu.Event;
 import com.meeruu.qiyu.preference.PreferenceUtil;
 import com.qiyukf.unicorn.api.ConsultSource;

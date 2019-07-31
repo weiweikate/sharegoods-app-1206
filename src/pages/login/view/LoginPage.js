@@ -92,6 +92,32 @@ export default class LoginPage extends BasePage {
         });
     };
 
+    wxLogin = () => {
+        if (!loginModel.isSelectProtocol) {
+            this.$toastShow('请先勾选用户协议');
+            return;
+        }
+        // 微信授权登录
+        getWxUserInfo((wxData) => {
+            this.$loadingShow('加载中');
+            wxLoginAction(wxData, (code, data) => {
+                this.$loadingDismiss();
+                if (code === 10000) {
+                    this.$navigateBack();
+                    this.params.callback && this.params.callback();
+                } else if (code === 34005) {
+                    // 绑定手机
+                    this.$toastShow('请绑定手机号');
+                    routeNavigate(RouterMap.PhoneLoginPage, {
+                        ...this.params,
+                        needBottom: false,
+                        wxData
+                    });
+                }
+            });
+        });
+    };
+
     _render() {
         return (
             <View style={Styles.contentStyle}>
@@ -103,29 +129,7 @@ export default class LoginPage extends BasePage {
                         <TouchableOpacity
                             style={Styles.touchableStyle}
                             onPress={() => {
-                                if (!loginModel.isSelectProtocol) {
-                                    this.$toastShow('请先勾选用户协议');
-                                    return;
-                                }
-                                // 微信授权登录
-                                getWxUserInfo((wxData) => {
-                                    this.$loadingShow('加载中');
-                                    wxLoginAction(wxData, (code, data) => {
-                                        this.$loadingDismiss();
-                                        if (code === 10000) {
-                                            this.$navigateBack();
-                                            this.params.callback && this.params.callback();
-                                        } else if (code === 34005) {
-                                            // 绑定手机
-                                            this.$toastShow('请绑定手机号');
-                                            routeNavigate(RouterMap.PhoneLoginPage, {
-                                                ...this.params,
-                                                needBottom: false,
-                                                wxData
-                                            });
-                                        }
-                                    });
-                                });
+                                this.wxLogin();
                             }}>
                             <UIText style={{ color: 'white', fontSize: px2dp(17) }} value={'微信登录'}/>
                         </TouchableOpacity>
