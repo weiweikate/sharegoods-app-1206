@@ -172,6 +172,7 @@
 
 - (void)setupData:(NSArray<MBModelData *> *)data {
     if (data.count == 0) {
+      self.isLoading = NO;
         return;
     }
 

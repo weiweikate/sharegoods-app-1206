@@ -103,7 +103,7 @@
   .topEqualToView(collectionView).widthIs(30).heightIs(30);
   
   self.collectionNum.sd_layout.centerXEqualToView(self.collectionBtn)
-  .topSpaceToView(self.collectionBtn, 7).widthIs(30).heightIs(20);
+  .topSpaceToView(self.collectionBtn, 0).widthIs(30).heightIs(20);
   
   [collectionView setupAutoHeightWithBottomView:self.collectionNum bottomMargin:2];
 
@@ -114,7 +114,7 @@
   .topEqualToView(downloadView).widthIs(30).heightIs(30);
   
   self.downLoadNum.sd_layout.centerXEqualToView(self.downloadBtn)
-  .topSpaceToView(self.downloadBtn, 7).widthIs(30).heightIs(20);
+  .topSpaceToView(self.downloadBtn, 0).widthIs(30).heightIs(20);
 
   [downloadView setupAutoHeightWithBottomView:self.downLoadNum bottomMargin:2];
   
@@ -125,7 +125,7 @@
   .topEqualToView(zanView).widthIs(30).heightIs(30);
   
   self.zanNum.sd_layout.centerXEqualToView(self.zanBtn)
-  .topSpaceToView(self.zanBtn, 7).widthIs(30).heightIs(20);
+  .topSpaceToView(self.zanBtn, 0).widthIs(30).heightIs(20);
 
   [zanView setupAutoHeightWithBottomView:self.zanNum bottomMargin:2];
   
