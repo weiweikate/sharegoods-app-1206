@@ -69,11 +69,12 @@ RCT_EXPORT_METHOD(checkInitResult:(RCTPromiseResolveBlock)resolve reject:(RCTPro
 
 RCT_EXPORT_METHOD(getVerifyToken:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 {
-  [JVERIFICATIONService getToken:5 completion:^(NSDictionary *result) {
-     if ([result[@"code"] integerValue] == 2000) {
-      
+  [JVERIFICATIONService getToken:0 completion:^(NSDictionary *result) {
+     if ([result[@"code"] integerValue] == 2000 && result[@"token"]) {
+       NSLog(@"%@",result);
+       resolve(result[@"token"]);
      }else{
-       
+       reject(@"0",@"获取失败",[NSError new]);
      }
   }];
 }
@@ -85,7 +86,7 @@ RCT_EXPORT_METHOD(closeAuth)
 
 RCT_EXPORT_METHOD(preLogin)
 {
-  [JVERIFICATIONService preLogin:5 completion:^(NSDictionary *result) {
+  [JVERIFICATIONService preLogin:0 completion:^(NSDictionary *result) {
     
   }];
 }
