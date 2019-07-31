@@ -234,7 +234,8 @@ const styles = StyleSheet.create({
         width: ScreenUtils.width,
         height: px2dp(250),
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        paddingTop: ScreenUtils.statusBarHeight
     },
     headerIconWrapper: {
         height: px2dp(80),
