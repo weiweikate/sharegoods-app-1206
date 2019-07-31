@@ -53,6 +53,7 @@ import com.meeruu.commonlib.callback.BaseCallback;
 import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.commonlib.utils.SPCacheUtils;
+import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.commonlib.utils.TimeUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.sharegoods.R;
@@ -71,6 +72,7 @@ import com.meeruu.sharegoods.rn.showground.event.OnZanPressEvent;
 import com.meeruu.sharegoods.rn.showground.model.VideoModel;
 import com.meeruu.sharegoods.rn.showground.utils.CacheDataSourceFactory;
 import com.meeruu.sharegoods.rn.showground.utils.NetWatchdog;
+import com.reactnative.ivpusic.imagepicker.picture.lib.tools.DoubleUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -79,6 +81,7 @@ import java.util.List;
 import java.util.Map;
 
 import static android.view.View.GONE;
+import static com.google.android.exoplayer2.C.VIDEO_SCALING_MODE_SCALE_TO_FIT;
 
 public class VideoListView {
     private static String TAG = VideoListView.class.getSimpleName();
@@ -163,13 +166,14 @@ public class VideoListView {
     private void initPlayer(final View view) {
         mPlayerViewContainer = View.inflate(mContext, R.layout.layout_player_view, null);
         videoView = mPlayerViewContainer.findViewById(R.id.video_view);
-        videoView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_ZOOM);
+//        videoView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH);
         videoView.setUseController(false);
         TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(new DefaultBandwidthMeter());
         MappingTrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
         DefaultAllocator allocator = new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE);
         DefaultLoadControl defaultLoadControl = new DefaultLoadControl(allocator, minBufferMs, maxBufferMs, bufferForPlaybackMs, bufferForPlaybackAfterRebufferMs, -1, true);
         exoPlayer = ExoPlayerFactory.newSimpleInstance(mContext, trackSelector, defaultLoadControl);
+//        ((SimpleExoPlayer) exoPlayer).setVideoScalingMode(C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING);
         exoPlayer.setRepeatMode(Player.REPEAT_MODE_ONE);
         exoPlayer.addListener(new Player.EventListener() {
             @Override
@@ -715,6 +719,20 @@ public class VideoListView {
                 NewestShowGroundBean.DataBean.ResourceBean resourceBean = resource.get(j);
                 if (resourceBean.getType() == 4) {
                     videoUrl = resourceBean.getBaseUrl();
+                    double width = resourceBean.getWidth();
+                    double height = resourceBean.getHeight();
+                    if(width == 0 || height == 0){
+                        FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) videoView.getLayoutParams();
+                        layoutParams.width = FrameLayout.LayoutParams.MATCH_PARENT;
+                        layoutParams.height = FrameLayout.LayoutParams.MATCH_PARENT;
+                        videoView.setLayoutParams(layoutParams);
+                    }else {
+                        FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) videoView.getLayoutParams();
+                        layoutParams.width = ScreenUtils.getScreenWidth();
+                        layoutParams.height =  new Double((height/width)*ScreenUtils.getScreenWidth()).intValue();
+                        videoView.setLayoutParams(layoutParams);
+                    }
+
                     break;
                 }
             }
