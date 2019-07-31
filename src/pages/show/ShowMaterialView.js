@@ -21,6 +21,7 @@ import ShowApi from './ShowApi';
 import RouterMap, { routeNavigate, routePush } from '../../navigation/RouterMap';
 import DownloadUtils from './utils/DownloadUtils';
 import WhiteModel from './model/WhiteModel';
+import EmptyUtils from '../../utils/EmptyUtils';
 
 @observer
 export default class ShowMaterialView extends React.Component {
@@ -120,7 +121,7 @@ export default class ShowMaterialView extends React.Component {
                                        }}
                                        type={'material'}
                                        params={{ spreadPosition: tag.Material + '' }}
-                                       userIsLogin={user.token ? true : false}
+                                       isLogin={!EmptyUtils.isEmpty(user.token)}
                                        onItemPress={({ nativeEvent }) => {
                                            const { navigate } = this.props;
                                            const { showNo , userInfoVO } = nativeEvent;

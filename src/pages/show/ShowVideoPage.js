@@ -150,7 +150,6 @@ export default class ShowVideoPage extends BasePage {
                                        onDownloadPress={({ nativeEvent }) => {
                                            if (user.isLogin) {
                                                DownloadUtils.downloadShow(nativeEvent).then(()=>{
-                                                   alert(nativeEvent.showNo);
                                                    ShowApi.incrCountByType({
                                                        showNo: nativeEvent.showNo,
                                                        type: 4

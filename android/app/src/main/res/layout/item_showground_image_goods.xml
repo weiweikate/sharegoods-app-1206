@@ -59,22 +59,17 @@
         android:textColor="@color/textColor_instruction"
         android:textSize="11sp" />
 
-    <com.meeruu.commonlib.customview.ExpandableTextView
+    <TextView
         android:id="@+id/content"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/user_icon"
         android:layout_marginTop="10dp"
         android:layout_alignParentLeft="true"
         android:textColor="@color/textColor_secondTitle"
         android:textSize="13sp"
-        app:etv_EllipsisHint="..."
-        app:etv_EnableToggle="false"
-        app:etv_InitState="shrink"
-        app:etv_MaxLinesOnShrink="3"
-        app:etv_ToExpandHint="全文"
-        app:etv_ToExpandHintColor="@color/app_main_color"
-        app:etv_ToShrinkHintColor="@color/app_main_color" />
+        android:lines="2"
+        android:ellipsize="end" />
 
 
     <com.meeruu.sharegoods.rn.showground.widgets.gridview.NineGridView
