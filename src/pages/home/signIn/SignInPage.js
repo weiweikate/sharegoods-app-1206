@@ -210,6 +210,7 @@ export default class SignInPage extends BasePage {
                     showModal: true
                 });
             }
+            mineTaskModel.getData();
         }).catch((error) => {
             this.signinRequesting = false;
             this.$toastShow(error.msg);
@@ -563,6 +564,8 @@ export default class SignInPage extends BasePage {
                     {this._headerIconRender()}
                     {this.state.signInData ? this._signInInfoRender() : null}
                     <TaskVIew type={'mine'}
+                              isSignIn={true}
+                              signIn={this.userSign}
                               style={{ marginTop: platformHeight, backgroundColor: '#F7F7F7', paddingBottom: 0 }}/>
                     {this.state.exchangeData ? this._couponRender() : null}
                     {/*{this.state.exchangeData ? this._reminderRender() : null}*/}
