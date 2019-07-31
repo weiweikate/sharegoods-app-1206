@@ -98,7 +98,7 @@ class User {
     @observable
     auzEndTime = null;      //授权结束时间
     @observable
-    upDealerid = null;      //上级
+    upUserid = null;      //上级
     @observable
     availableBalance = null;//可提现金额
     @observable
@@ -247,7 +247,7 @@ class User {
         this.unionid = info.unionid;
         this.id = info.id;                          //用户id
         this.code = info.code;                      //授权码
-        this.appOpenid = info.appOpenid;                  //
+        this.appOpenid = info.openid;                  //
         this.nickname = info.nickname;              //昵称
         this.wechatId = info.wechatId;              //微信号id
         this.wechatName = info.wechatName;          //微信用户名称
@@ -273,7 +273,7 @@ class User {
         this.dType = info.dType;                    //经销商类型
         this.auzBeginTime = info.auzBeginTime;      //授权开始时间
         this.auzEndTime = info.auzEndTime;          //授权结束时间
-        this.upDealerid = info.upDealerid;          //上级
+        this.upUserid = info.upUserid;          //上级
         this.availableBalance = info.availableBalance;//可提现金额
         this.blockedBalance = info.blockedBalance; //冻结金额
         this.tokenCoin = info.tokenCoin;            //一元券数量
@@ -406,7 +406,7 @@ class User {
         this.dType = null;           //经销商类型
         this.auzBeginTime = null;    //授权开始时间
         this.auzEndTime = null;      //授权结束时间
-        this.upDealerid = null;      //上级
+        this.upUserid = null;      //上级
         this.availableBalance = null;//可提现金额
         this.blockedBalance = null; //冻结金额
         this.tokenCoin = null;       //代币金额

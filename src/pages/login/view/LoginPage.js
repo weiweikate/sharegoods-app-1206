@@ -12,6 +12,7 @@ import RouterMap, { replaceRoute, routeNavigate } from '../../../navigation/Rout
 import LinearGradient from 'react-native-linear-gradient';
 import { getWxUserInfo, oneClickLoginValidation, wxLoginAction } from '../model/LoginActionModel';
 import { checkInitResult, closeAuth, preLogin, startLoginAuth } from '../model/PhoneAuthenAction';
+import store from '@mr/rn-store';
 
 const { px2dp } = ScreenUtils;
 const btnWidth = ScreenUtils.width - px2dp(60);
@@ -32,6 +33,11 @@ export default class LoginPage extends BasePage {
             }).catch(e => {
             });
         }
+        // 获取最近一次输入的手机号
+        store.get('@mr/lastPhone').then((data) => {
+            loginModel.phoneNumber = data;
+        }).catch(e => {
+        });
     }
 
     // 禁用某个页面的手势
@@ -75,7 +81,7 @@ export default class LoginPage extends BasePage {
     startOneLogin = () => {
         startLoginAuth().then((data) => {
             let { navigation } = this.props;
-            oneClickLoginValidation(data, navigation, () => {
+            oneClickLoginValidation(data, null, navigation, () => {
                 this.$loadingDismiss();
             }, () => {
                 this.$loadingDismiss();

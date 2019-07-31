@@ -93,7 +93,13 @@ export default class PwdLoginPage extends BasePage {
                                 allowFontScaling={false}
                                 style={Styles.phoneNumberInputStyle}
                                 value={this.state.phoneNum}
-                                onChangeText={text => this.setState({ phoneNum: text })}
+                                onChangeText={text => {
+                                    this.setState({ phoneNum: text || '' }, () => {
+                                        if (this.state.phoneNum.trim().length === 11) {
+                                            loginModel.savePhoneNumber(this.state.phoneNum);
+                                        }
+                                    });
+                                }}
                                 placeholder='请输入手机号'
                                 placeholderTextColor={DesignRule.textColor_instruction}
                                 keyboardType='numeric'
@@ -139,7 +145,7 @@ export default class PwdLoginPage extends BasePage {
                         <View style={{ width: ScreenUtils.width - px2dp(60), alignItems: 'flex-end' }}>
                             <TouchableOpacity style={{ height: px2dp(35), justifyContent: 'center' }}
                                               onPress={() => {
-                                                  routeNavigate(RouterMap.ForgetPasswordPage);
+                                                  routeNavigate(RouterMap.ForgetPasswordPage, { phoneNum: loginModel.phoneNumber });
                                               }}>
                                 <UIText style={{
                                     fontSize: px2dp(12), marginRight: px2dp(5),

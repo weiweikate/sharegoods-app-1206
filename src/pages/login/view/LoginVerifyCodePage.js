@@ -67,25 +67,19 @@ export default class LoginVerifyCodePage extends BasePage {
 
         codeLoginAction(loginParams, (data) => {
             if (data.code === 10000) {
-                if (data.data.newUser) {
+                console.log('----' + JSON.stringify(data.data));
+                if (data.data.withRegister) {
                     this.$toastShow('注册成功');
                     this.$navigate(RouterMap.InviteCodePage);
                     TrackApi.phoneSignUpSuccess({ 'signUpPhone': this.params.phoneNum });
                     mediatorCallFunc('Home_RequestNoviceGift');
                 } else {
                     this.$toastShow('登录成功');
+                    this.$navigateBack(3);
                     TrackApi.codeLoginSuccess();
                 }
                 this.params.callback && this.params.callback();
                 this.$loadingDismiss();
-                //走了注册
-                if (data.data.withRegister) {
-                    mediatorCallFunc('Home_RequestNoviceGift');
-                    this.$navigate(RouterMap.InviteCodePage);
-                    // TrackApi.phoneSignUpSuccess({ 'signUpPhone': phoneNum });
-                } else {
-                    this.$navigateBack(3);
-                }
             } else {
                 this.$loadingDismiss();
                 this.$toastShow(data.msg);

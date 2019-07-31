@@ -12,7 +12,7 @@ import StringUtils from '../../../utils/StringUtils';
 import bridge from '../../../utils/bridge';
 import LinearGradient from 'react-native-linear-gradient';
 import store from '@mr/rn-store';
-import { getWxUserInfo, oneClickLoginValidation, wxLoginAction } from '../model/LoginActionModel';
+import { getWxUserInfo, wxLoginAction } from '../model/LoginActionModel';
 import { getVerifyToken } from '../model/PhoneAuthenAction';
 import res from '../../../comm/res';
 import resLogin from '../res';
@@ -85,17 +85,6 @@ export default class PhoneLoginPage extends BasePage {
         });
     };
 
-    /**
-     * 开始认证函数
-     * @param phone
-     * @param authenToken
-     * @private
-     */
-    _beginAuthen = (phone, authenToken = '') => {
-        let { navigation } = this.props;
-        oneClickLoginValidation(phone, authenToken, navigation);
-    };
-
     _render() {
         return (
             <View style={Styles.contentStyle}>
@@ -117,6 +106,7 @@ export default class PhoneLoginPage extends BasePage {
                                     phoneNum: text || ''
                                 }, () => {
                                     if (this.state.phoneNum.trim().length === 11) {
+                                        loginModel.savePhoneNumber(this.state.phoneNum);
                                         this.setState({
                                             redBtnBg: true
                                         });
