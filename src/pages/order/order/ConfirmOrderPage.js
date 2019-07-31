@@ -25,6 +25,7 @@ export default class ConfirmOrderPage extends BasePage {
     constructor(props) {
         super(props);
         confirmOrderModel.clearData();
+        this.params.orderParamVO.couponsId = this.params.orderParamVO.couponsId || '81';
     }
 
     $navigationBarOptions = {
@@ -96,7 +97,7 @@ export default class ConfirmOrderPage extends BasePage {
     componentDidMount() {
         bridge.showLoading('加载中');
         setTimeout(() => {
-            this.loadPageData();
+            confirmOrderModel.firstLoad(this.params.orderParamVO, this.params.orderParamVO.couponsId)
         }, 0);
         this.didFocusSubscription = this.props.navigation.addListener(
             'didFocus',
@@ -194,6 +195,7 @@ export default class ConfirmOrderPage extends BasePage {
                         addressId: confirmOrderModel.addressId
                     };
                     confirmOrderModel.userCouponCode = data.code;
+                    confirmOrderModel.CouponId = data.couponConfigId;
                     confirmOrderModel.couponName = data.name;
                     confirmOrderModel.tokenCoin = 0;
                     confirmOrderModel.tokenCoinText = '选择使用1元券';
@@ -203,6 +205,7 @@ export default class ConfirmOrderPage extends BasePage {
                 } else if (data === 'giveUp') {
                     confirmOrderModel.giveUpCou = true;
                     confirmOrderModel.userCouponCode = null;
+                    confirmOrderModel.CouponId = null;
                     confirmOrderModel.couponName = null;
                     // confirmOrderModel.tokenCoin = 0;
                     // confirmOrderModel.tokenCoinText = '选择使用1元券';
