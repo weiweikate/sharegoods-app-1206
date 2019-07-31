@@ -435,7 +435,7 @@
   UIImage *QRCodeImage = [UIImage QRCodeWithStr:QRCodeStr];
   [nodes addObject:@{@"value": QRCodeImage,
                      @"locationType": @"rect",
-                     @"location": [NSValue valueWithCGRect:CGRectMake((375-80)*i/2, 544*i, 80*i, 80*i)]}
+                     @"location": [NSValue valueWithCGRect:CGRectMake((375-100)*i/2, 524*i, 100*i, 100*i)]}
    ];
 
   //广告词
