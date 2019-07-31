@@ -4,6 +4,7 @@ import {
     View,
     Image,
     TouchableOpacity,
+    Platform
 } from 'react-native';
 import BasePage from '../../BasePage';
 import DesignRule from '../../constants/DesignRule';
@@ -45,6 +46,9 @@ export default class MyDynamicPage extends BasePage {
     };
 
     navRender = () => {
+        if (Platform.OS === 'ios'){
+            return null;
+        }
         return (
             <View
                 style={{ position: 'absolute', top: 0, left: 0, right: 0 }}>

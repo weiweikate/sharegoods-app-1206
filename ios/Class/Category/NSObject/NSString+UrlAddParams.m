@@ -251,4 +251,20 @@
   return params;
 }
 
+-(CGFloat)getHeightWithFontSize:(CGFloat)fontSize viewWidth:(CGFloat)width maxLineCount:(NSInteger)lineCount
+{
+  if (!self || self.length == 0) {
+    return 0.0;
+  }
+  NSArray *lines = [self getLinesArrayWithfont:[UIFont systemFontOfSize:fontSize] andLableWidth:width];
+  NSString *str = self;
+  if (lines.count > lineCount) {
+    str = @"";
+    for (int i = 0; i < lineCount; i++) {
+      str = [NSString stringWithFormat:@"%@%@",str, lines[i]];
+    }
+  }
+  return [str getStringHeightWithfontSize:fontSize viewWidth:width];
+}
+
 @end

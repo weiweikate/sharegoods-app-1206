@@ -70,6 +70,7 @@ NS_ASSUME_NONNULL_END
 @property (nonatomic, readonly, assign)NSString *showImage;
 
 @property (nonatomic, readonly, assign)NSString *showImage_oss;
+@property (nonatomic, readonly, assign)NSString *userHeadImg_oss;
 
 @end
 
