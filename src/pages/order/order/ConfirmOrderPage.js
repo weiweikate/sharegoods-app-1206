@@ -30,6 +30,7 @@ export default class ConfirmOrderPage extends BasePage {
         //                                 quantity: 1, //int 购买数量
         //         activityCode: '', //string 活动code
         //         batchNo: 1}],source : 1}
+        confirmOrderModel.clearData();
         confirmOrderModel.orderParamVO = this.params.orderParamVO;
         confirmOrderModel.judgeIsAllVirtual(this.params.orderParamVO.orderProducts);
 

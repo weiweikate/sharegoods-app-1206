@@ -171,21 +171,26 @@ class ConfirmOrderModel {
 
     @action
     makeSureProduct_selectDefaltCoupon(couponsId) {
-        if (couponsId) {
             API.listAvailable(this.getCouponParams()).then((data) => {
                 // couponConfigId	Integer	823
                 data = data.data || {};
-                (data.data || []).forEach((item) => {
+                let userCouponCode = '';
+                (data.data || []).find((item)=>{
                     if (item.couponConfigId == couponsId) {
-                        this.userCouponCode = item.code;
+                        userCouponCode = item.code;
+                        return true;
+                    }
+                    if (item.type == 5 && !userCouponCode) {
+                        userCouponCode = item.code;
+                        if (!couponsId) {
+                            return true;
+                        }
                     }
                 });
+                this.userCouponCode = userCouponCode;
             }).finally(() => {
                 this.makeSureProduct();
             });
-        } else {
-            this.makeSureProduct();
-        }
     }
 
     @action makeSureProduct() {
