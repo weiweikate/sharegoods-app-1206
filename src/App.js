@@ -129,6 +129,7 @@ class App extends Component {
                 }
             }
         );
+
         //初始化init  定位存储  和app变活跃 会定位
         InteractionManager.runAfterInteractions(() => {
             TimerMixin.setTimeout(() => {

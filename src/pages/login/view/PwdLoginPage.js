@@ -206,7 +206,7 @@ export default class PwdLoginPage extends BasePage {
                             <UIText style={{
                                 fontSize: px2dp(13),
                                 height: px2dp(25),
-                                color: DesignRule.textColor_mainTitle
+                                color: DesignRule.textColor_instruction
                             }} value={'微信登录'}/>
                         </TouchableOpacity>
                         <TouchableOpacity style={{ flex: 1, alignItems: 'center' }} onPress={() => {
@@ -217,7 +217,7 @@ export default class PwdLoginPage extends BasePage {
                             <UIText style={{
                                 fontSize: px2dp(13),
                                 height: px2dp(25),
-                                color: DesignRule.textColor_mainTitle
+                                color: DesignRule.textColor_instruction
                             }}
                                     value={'手机号登录'}/>
                         </TouchableOpacity>

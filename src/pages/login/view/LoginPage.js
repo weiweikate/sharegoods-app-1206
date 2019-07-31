@@ -1,6 +1,6 @@
 import BasePage from '../../../BasePage';
 import React from 'react';
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Image, NativeAppEventEmitter, StyleSheet, TouchableOpacity, View } from 'react-native';
 import res from '../res';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { MRText as Text, UIText } from '../../../components/ui';
@@ -52,6 +52,26 @@ export default class LoginPage extends BasePage {
         headerStyle: { borderBottomWidth: 0 }
     };
 
+    componentDidMount() {
+        // 登录页面type
+        this.subscription = NativeAppEventEmitter.addListener(
+            'Event_Login_Type',
+            (data) => {
+                if (data.login_type === '1') {
+                    // 微信登录
+                    this.wxLogin();
+                } else if (data.login_type === '2') {
+                    // 手机号登录
+                    replaceRoute(RouterMap.PhoneLoginPage, { ...this.params, needBottom: true });
+                }
+            }
+        );
+    }
+
+    componentWillUnmount() {
+        this.subscription && this.subscription.remove();
+    }
+
     justLogin = () => {
         // 一键登录
         this.$loadingShow();
@@ -69,11 +89,6 @@ export default class LoginPage extends BasePage {
                 }
             }).catch(e => {
                 this.$loadingDismiss();
-                if (e.code === '555') {
-                    closeAuth();
-                } else {
-                    replaceRoute(RouterMap.PhoneLoginPage, { ...this.params, needBottom: true });
-                }
             });
         }
     };
@@ -88,7 +103,11 @@ export default class LoginPage extends BasePage {
             });
         }).catch((error) => {
             this.$loadingDismiss();
-            replaceRoute(RouterMap.PhoneLoginPage, { ...this.params, needBottom: true });
+            if (error.code === '555') {
+                closeAuth();
+            } else {
+                replaceRoute(RouterMap.PhoneLoginPage, { ...this.params, needBottom: true });
+            }
         });
     };
 
@@ -158,7 +177,7 @@ export default class LoginPage extends BasePage {
                             <UIText style={{
                                 fontSize: px2dp(13),
                                 height: px2dp(25),
-                                color: DesignRule.textColor_mainTitle
+                                color: DesignRule.textColor_instruction
                             }} value={'手机号登录'}/>
                         </TouchableOpacity>
                         {loginModel.authPhone ?
@@ -171,7 +190,7 @@ export default class LoginPage extends BasePage {
                                 <UIText style={{
                                     fontSize: px2dp(13),
                                     height: px2dp(25),
-                                    color: DesignRule.textColor_mainTitle
+                                    color: DesignRule.textColor_instruction
                                 }} value={'一键登录'}/>
                             </TouchableOpacity> : null
                         }
@@ -183,7 +202,7 @@ export default class LoginPage extends BasePage {
                             <UIText style={{
                                 fontSize: px2dp(13),
                                 height: px2dp(25),
-                                color: DesignRule.textColor_mainTitle
+                                color: DesignRule.textColor_instruction
                             }} value={'密码登录'}/>
                         </TouchableOpacity>
                     </View>

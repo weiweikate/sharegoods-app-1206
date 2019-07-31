@@ -210,7 +210,7 @@ export default class PhoneLoginPage extends BasePage {
                             <UIText style={{
                                 fontSize: px2dp(13),
                                 height: px2dp(25),
-                                color: DesignRule.textColor_mainTitle
+                                color: DesignRule.textColor_instruction
                             }} value={this.params.needBottom ? '微信登录' : ''}/>
                         </TouchableOpacity>
                         <TouchableOpacity style={{ flex: 1, alignItems: 'center' }} onPress={() => {
@@ -222,7 +222,7 @@ export default class PhoneLoginPage extends BasePage {
                             <UIText style={{
                                 fontSize: px2dp(13),
                                 height: px2dp(25),
-                                color: DesignRule.textColor_mainTitle
+                                color: DesignRule.textColor_instruction
                             }} value={this.params.needBottom ? '密码登录' : ''}/>
                         </TouchableOpacity>
                     </View>
