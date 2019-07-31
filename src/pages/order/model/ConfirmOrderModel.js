@@ -212,9 +212,10 @@ class ConfirmOrderModel {
 
     disPoseErr = (err) => {
         if (this.data) {//原来有数据，清除选择优惠券信息
-            this.data.payInfo.payAmount += this.data.payInfo.couponAmount;
-            this.data.payInfo.couponAmount = 0;//清除优惠券信息
-            this.handleNetData(this.data);
+            // this.data.payInfo.payAmount += this.data.payInfo.couponAmount;
+            // this.data.payInfo.couponAmount = 0;//清除优惠券信息
+            // this.handleNetData(this.data);
+             this.receiveInfo = {};
         } else {//原来没有数据的时候，展示自己带下来的数据
             this.productOrderList = this.orderParamVO.orderProducts || [];
         }
