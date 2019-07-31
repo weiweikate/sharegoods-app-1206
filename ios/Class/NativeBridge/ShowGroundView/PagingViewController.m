@@ -89,19 +89,22 @@ static const NSString * USERTYPE_others = @"others";
 
 - (id<JXPagerViewListViewDelegate>)pagerView:(JXPagerView *)pagerView initListAtIndex:(NSInteger)index {
   TestListBaseView *list = [[TestListBaseView alloc] init];
+  list.onItemPress = self.onItemPress;
   NSString *title=  self.swichView.data[index];
   if ([title isEqualToString:@"文章"]) {
-    if (self.userType == USERTYPE_mineWriter) {
+    if ([self.userType isEqualToString: USERTYPE_mineWriter]) {
       list.api = ShowApi_mineQuery;
       list.type = 0;
     }else{
-       list.api = ShowApi_otherQuery;
+      list.api = ShowApi_otherQuery;
+       list.params = @{@"userCode": [self.userType stringByReplacingOccurrencesOfString:@"others" withString:@""]};
        list.type = 2;
     }
   }else if ([title isEqualToString:@"收藏"]){
      list.api = ShowApi_mineCollect;
      list.type = 1;
   }
+  [list refreshData];
   return list;
 }
 
@@ -122,6 +125,12 @@ static const NSString * USERTYPE_others = @"others";
 
 - (void)categoryView:(JXCategoryBaseView *)categoryView didSelectedItemAtIndex:(NSInteger)index {
   //    self.navigationController.interactivePopGestureRecognizer.enabled = (index == 0);
+}
+
+- (void)setHeaderHeight:(NSInteger)headerHeight
+{
+  _headerHeight = headerHeight + 50;
+  self.headerView.height_sd = _headerHeight;
 }
 
 
@@ -158,7 +167,7 @@ static const NSString * USERTYPE_others = @"others";
   } else if ([self.userType isEqualToString:@"mineNormal"]){
     self.swichView.data = @[@"收藏"];
     self.Navi.data = @[ @"收藏"];
-  } else if ([self.userType isEqualToString:@"others"]){
+  } else if ([self.userType containsString:@"others"]){
     self.swichView.data = @[@"文章"];
     self.Navi.data = @[@"文章"];
   }

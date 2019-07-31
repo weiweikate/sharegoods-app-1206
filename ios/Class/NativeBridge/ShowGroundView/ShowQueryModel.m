@@ -93,4 +93,12 @@
   }
   return aspectRatio;
 }
+
+- (NSString *)userHeadImg_oss
+{
+  if (_userInfoVO.userImg) {
+   return [_userInfoVO.userImg  getUrlAndWidth:30 height:30];
+  }
+  return @"";
+}
 @end

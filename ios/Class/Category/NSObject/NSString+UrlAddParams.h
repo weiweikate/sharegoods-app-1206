@@ -40,6 +40,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(CGFloat)getWidthStringfontSize:(CGFloat)fontSize viewWidth:(CGFloat)width;
 
+/**获取文字最多几行的高度
+ */
+-(CGFloat)getHeightWithFontSize:(CGFloat)fontSize viewWidth:(CGFloat)width maxLineCount:(NSInteger)lineCount;
+
 - (NSMutableDictionary *)getURLParameters;
 
 @end
