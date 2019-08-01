@@ -277,6 +277,9 @@
 		C4FB48D922DDBE69007BBEBA /* AlivcUIConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = C4FB48D722DDBE69007BBEBA /* AlivcUIConfig.m */; };
 		C4FB48DC22DDBEFB007BBEBA /* UIColor+AlivcHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C4FB48DB22DDBEFB007BBEBA /* UIColor+AlivcHelper.m */; };
 		C4FB48DF22DDC285007BBEBA /* AliyunPathManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C4FB48DE22DDC285007BBEBA /* AliyunPathManager.m */; };
+		CD094E8222F192CF00BB12AE /* MineArticleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CD094E8122F192CF00BB12AE /* MineArticleCell.m */; };
+		CD094E8522F1BF8C00BB12AE /* MineCollectCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CD094E8422F1BF8C00BB12AE /* MineCollectCell.m */; };
+		CD094EAA22F1C97E00BB12AE /* OtherArticleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CD094EA922F1C97E00BB12AE /* OtherArticleCell.m */; };
 		CD11955721870DE1007F602E /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD11955421870DB6007F602E /* libRCTVideo.a */; };
 		CD13656721BA0F4200754B0E /* MBProgressHUD+PD.m in Sources */ = {isa = PBXBuildFile; fileRef = CD13653321BA0F4200754B0E /* MBProgressHUD+PD.m */; };
 		CD14EA192183FC9A00480A06 /* XGImageCompression.m in Sources */ = {isa = PBXBuildFile; fileRef = CD14EA182183FC9A00480A06 /* XGImageCompression.m */; };
@@ -757,6 +760,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = ED296FEE214C9CF800B7C4FE;
 			remoteInfo = "jsiexecutor-tvOS";
+		};
+		CD094E4922F1927500BB12AE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0347BAC12237CC670011184A /* Lottie.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6445B0D5207E0D4D00D84F6A;
+			remoteInfo = LottieLibraryMacOS;
 		};
 		CD11955321870DB6007F602E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1284,6 +1294,12 @@
 		C4FB48DD22DDC285007BBEBA /* AliyunPathManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunPathManager.h; sourceTree = "<group>"; };
 		C4FB48DE22DDC285007BBEBA /* AliyunPathManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunPathManager.m; sourceTree = "<group>"; };
 		CAB2E4DB260FDFCE4611A647 /* libPods-crm_app_xiugou-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-crm_app_xiugou-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CD094E8022F192CF00BB12AE /* MineArticleCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MineArticleCell.h; sourceTree = "<group>"; };
+		CD094E8122F192CF00BB12AE /* MineArticleCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MineArticleCell.m; sourceTree = "<group>"; };
+		CD094E8322F1BF8C00BB12AE /* MineCollectCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MineCollectCell.h; sourceTree = "<group>"; };
+		CD094E8422F1BF8C00BB12AE /* MineCollectCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MineCollectCell.m; sourceTree = "<group>"; };
+		CD094EA822F1C97E00BB12AE /* OtherArticleCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OtherArticleCell.h; sourceTree = "<group>"; };
+		CD094EA922F1C97E00BB12AE /* OtherArticleCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OtherArticleCell.m; sourceTree = "<group>"; };
 		CD11954E21870DB6007F602E /* RCTVideo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTVideo.xcodeproj; path = "../node_modules/react-native-video/ios/RCTVideo.xcodeproj"; sourceTree = "<group>"; };
 		CD13653321BA0F4200754B0E /* MBProgressHUD+PD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+PD.m"; sourceTree = "<group>"; };
 		CD13656621BA0F4200754B0E /* MBProgressHUD+PD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+PD.h"; sourceTree = "<group>"; };
@@ -1659,6 +1675,7 @@
 				0347BACB2237CC680011184A /* Lottie.framework */,
 				0347BACD2237CC680011184A /* Lottie.framework */,
 				0347BACF2237CC680011184A /* libLottie.a */,
+				CD094E4A22F1927500BB12AE /* libLottie.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2761,6 +2778,19 @@
 			path = MediaConfig;
 			sourceTree = "<group>";
 		};
+		CD094E3D22F1927500BB12AE /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				CD094E8022F192CF00BB12AE /* MineArticleCell.h */,
+				CD094E8122F192CF00BB12AE /* MineArticleCell.m */,
+				CD094E8322F1BF8C00BB12AE /* MineCollectCell.h */,
+				CD094E8422F1BF8C00BB12AE /* MineCollectCell.m */,
+				CD094EA822F1C97E00BB12AE /* OtherArticleCell.h */,
+				CD094EA922F1C97E00BB12AE /* OtherArticleCell.m */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
 		CD11954F21870DB6007F602E /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -2857,6 +2887,7 @@
 		CD5EAF9A221BFADF007AAEE0 /* ShowGroundView */ = {
 			isa = PBXGroup;
 			children = (
+				CD094E3D22F1927500BB12AE /* Cell */,
 				CDB33CC722E6BE44000CCDCF /* JXPagerView */,
 				CDB33C8122E6BCE7000CCDCF /* PagingViewController.h */,
 				CDB33CC222E6BCE7000CCDCF /* PagingViewController.m */,
@@ -3646,6 +3677,13 @@
 			remoteRef = C4D450982249F6B900196E1B /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		CD094E4A22F1927500BB12AE /* libLottie.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLottie.a;
+			remoteRef = CD094E4922F1927500BB12AE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		CD11955421870DB6007F602E /* libRCTVideo.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -3940,6 +3978,7 @@
 				C4F2E47822BE303100FF6213 /* IJSPhotoPreviewController.m in Sources */,
 				CD6741F621DEF78500464549 /* AdView.m in Sources */,
 				C4F2E45822BE303100FF6213 /* IJSImageManagerController.m in Sources */,
+				CD094EAA22F1C97E00BB12AE /* OtherArticleCell.m in Sources */,
 				C4F2E44022BE303100FF6213 /* WAAVSERotateCommand.m in Sources */,
 				C4F2E47F22BE303100FF6213 /* IJSDToolBarView.m in Sources */,
 				C4FB48D922DDBE69007BBEBA /* AlivcUIConfig.m in Sources */,
@@ -3993,6 +4032,7 @@
 				CD23951022BB5F2C00AAB013 /* MyShowCellNode.m in Sources */,
 				C4F2E48322BE303100FF6213 /* UIImage+CropRotate.m in Sources */,
 				5077FDCA21A79326003B860D /* JSPushManager.m in Sources */,
+				CD094E8222F192CF00BB12AE /* MineArticleCell.m in Sources */,
 				01091615227053800043E997 /* RecommendedManager.m in Sources */,
 				C4F2E47622BE303100FF6213 /* IJSPhotoPickerController.m in Sources */,
 				C4F2E44622BE303100FF6213 /* WAAVSEDubbedCommand.m in Sources */,
@@ -4086,6 +4126,7 @@
 				CDB33AE422E1940F000CCDCF /* SwichView.m in Sources */,
 				C4F2E42322BE303100FF6213 /* SGRecordViewController.m in Sources */,
 				C4FB48CC22DDBB41007BBEBA /* AlivcRecordUIConfig.m in Sources */,
+				CD094E8522F1BF8C00BB12AE /* MineCollectCell.m in Sources */,
 				C4F2E42122BE303100FF6213 /* SGRecordManager.m in Sources */,
 				C4FB48B422DDB248007BBEBA /* AliyunMagicCameraViewController.m in Sources */,
 				CD14EA192183FC9A00480A06 /* XGImageCompression.m in Sources */,

@@ -64,7 +64,7 @@
     [self.btns[i] removeFromSuperview];
   }
   [self.btns removeAllObjects];
-  self.lineView.hidden = _data.count == 0;
+  self.lineView.hidden = _data.count == 1;
   if (_data.count == 0) {
     return;
   }
@@ -74,7 +74,7 @@
     [btn addTarget:self action:@selector(btnTap:) forControlEvents:UIControlEventTouchUpInside];
     [btn setTitle:_data[i] forState:0];
     btn.titleLabel.font = [UIFont systemFontOfSize:14];
-    if (_data.count > 0) {
+    if (_data.count > 1) {
       [btn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
       [btn setTitleColor:[UIColor colorWithHexString:@"#FF0050"] forState:UIControlStateSelected];
     }else{
@@ -156,11 +156,6 @@
     [self addSubview:btn];
     btn.frame = CGRectMake(0, kNavBarHeight - 44, 44, 44);
     [self addSubview:self.swichView];
-    self.swichView.selectBlock = ^(NSInteger index) {
-      if (self.selectBlock) {
-        self.selectBlock(index);
-      }
-    };
   }
   return self;
 }
@@ -169,6 +164,12 @@
   if (self.backBlock) {
     self.backBlock();
   }
+}
+
+- (void)setSelectBlock:(void (^)(NSInteger))selectBlock
+{
+   _selectBlock = selectBlock;
+   self.swichView.selectBlock = selectBlock;
 }
 
 - (void)setData:(NSArray<NSString *> *)data
