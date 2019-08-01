@@ -101,7 +101,7 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
             bottomView.findViewById(R.id.tv_phone).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // 微信登录
+                    // 手机号登录
                     WritableMap wechatMap = new WritableNativeMap();
                     wechatMap.putString("login_type", "2");
                     mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
