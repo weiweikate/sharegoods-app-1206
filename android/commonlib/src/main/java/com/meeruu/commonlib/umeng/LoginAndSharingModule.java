@@ -134,14 +134,14 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
             @Override
             public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
-                callback.invoke("");
+                callback.invoke(JSON.parse(""));
                 ToastUtils.showToast("授权失败");
                 LogUtils.d("onError: " + "授权失败");
             }
 
             @Override
             public void onCancel(SHARE_MEDIA share_media, int i) {
-                callback.invoke("");
+                callback.invoke(JSON.parse(""));
                 ToastUtils.showToast("授权取消");
                 LogUtils.d("onError: " + "授权取消");
             }

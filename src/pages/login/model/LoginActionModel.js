@@ -39,7 +39,7 @@ const oneClickLoginValidation = (authenToken, localPhone, navigation, successCal
             if (StringUtils.isEmpty(result.data.unionid)) {
                 //未绑定微信
                 getWxUserInfo((wxInfo) => {
-                    if (StringUtils.isNoEmpty(wxInfo)) {
+                    if (wxInfo) {
                         phoneBindWx(wxInfo, () => {
                             this.loginJump(result.data);
                         });
@@ -105,6 +105,10 @@ const getWxUserInfo = (callback) => {
  */
 const wxLoginAction = (data, callBack) => {
     TrackApi.LoginButtonClick({ 'loginMethod': 1 });
+    if (!data) {
+        callBack && callBack();
+        return;
+    }
     LoginAPI.appWechatLogin({
         device: data.device,
         encryptedData: '',
@@ -190,7 +194,7 @@ const codeLoginAction = (LoginParam, callBack) => {
             } else {
                 //未绑定微信
                 getWxUserInfo((wxInfo) => {
-                    if (StringUtils.isNoEmpty(wxInfo)) {
+                    if (wxInfo) {
                         phoneBindWx(wxInfo, callBack, data);
                     } else {
                         callBack(data);
@@ -248,7 +252,7 @@ const pwdLoginAction = (LoginParam, callBack) => {
             } else {
                 //未绑定微信
                 getWxUserInfo((wxInfo) => {
-                    if (StringUtils.isNoEmpty(wxInfo)) {
+                    if (wxInfo) {
                         phoneBindWx(wxInfo, callBack, data);
                     } else {
                         callBack(data);
