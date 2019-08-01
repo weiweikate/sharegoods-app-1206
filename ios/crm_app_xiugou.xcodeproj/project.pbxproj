@@ -39,6 +39,7 @@
 		0386E930218C59D900697612 /* libbz2.1.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0386E92F218C59D900697612 /* libbz2.1.0.tbd */; };
 		03A568E621DEFA1E00D6A770 /* libRNGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03A568E121DEFA0C00D6A770 /* libRNGeolocation.a */; };
 		03B93B4222E0546F00C184EA /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD11955421870DB6007F602E /* libRCTVideo.a */; };
+		03BD77F222F1BE1D00FBEFAD /* UIButton+ImageText.m in Sources */ = {isa = PBXBuildFile; fileRef = 03BD77F122F1BE1D00FBEFAD /* UIButton+ImageText.m */; };
 		101157BA219AB489001F5E99 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 101157B9219AB489001F5E99 /* SystemConfiguration.framework */; };
 		101157C4219AB6FD001F5E99 /* ExternalAccessory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 101157C3219AB6FD001F5E99 /* ExternalAccessory.framework */; };
 		101157C6219AB715001F5E99 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 101157C5219AB715001F5E99 /* libc++.tbd */; };
@@ -840,6 +841,8 @@
 		037DBABD21B0E3030003DA18 /* money_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = money_1.png; sourceTree = "<group>"; };
 		0386E92D218C59CA00697612 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		0386E92F218C59D900697612 /* libbz2.1.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.1.0.tbd; path = usr/lib/libbz2.1.0.tbd; sourceTree = SDKROOT; };
+		03BD77F022F1BE1D00FBEFAD /* UIButton+ImageText.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIButton+ImageText.h"; sourceTree = "<group>"; };
+		03BD77F122F1BE1D00FBEFAD /* UIButton+ImageText.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIButton+ImageText.m"; sourceTree = "<group>"; };
 		0409D8EA222F7706003A53EC /* RNCWebView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNCWebView.xcodeproj; path = "../node_modules/@mr/react-native-webview/ios/RNCWebView.xcodeproj"; sourceTree = "<group>"; };
 		101157B9219AB489001F5E99 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		101157C3219AB6FD001F5E99 /* ExternalAccessory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExternalAccessory.framework; path = System/Library/Frameworks/ExternalAccessory.framework; sourceTree = SDKROOT; };
@@ -1795,6 +1798,8 @@
 				5068357821379B78001AB175 /* UIView+captureSceen.m */,
 				CDCB5BD82196DF71006B5F4E /* UIImage+Util.h */,
 				CDCB5BD92196DF71006B5F4E /* UIImage+Util.m */,
+				03BD77F022F1BE1D00FBEFAD /* UIButton+ImageText.h */,
+				03BD77F122F1BE1D00FBEFAD /* UIButton+ImageText.m */,
 			);
 			path = UIView;
 			sourceTree = "<group>";
@@ -3836,6 +3841,7 @@
 				5068363A21379B78001AB175 /* SGQRCodeScanningView.m in Sources */,
 				C4F2E42322BE303100FF6213 /* SGRecordViewController.m in Sources */,
 				C4F2E42122BE303100FF6213 /* SGRecordManager.m in Sources */,
+				03BD77F222F1BE1D00FBEFAD /* UIButton+ImageText.m in Sources */,
 				CD14EA192183FC9A00480A06 /* XGImageCompression.m in Sources */,
 				C4F2E46122BE303100FF6213 /* IJSIColorButtonView.m in Sources */,
 				CD24240921F825C1008C7FF4 /* StorageFromRN.m in Sources */,
