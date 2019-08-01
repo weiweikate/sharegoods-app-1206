@@ -3,7 +3,7 @@ import {
     View,
     StyleSheet,
     DeviceEventEmitter, InteractionManager,
-    RefreshControl, BackHandler,
+    RefreshControl,
     NativeEventEmitter,
     NativeModules,
     ActivityIndicator
@@ -47,6 +47,7 @@ import { limitGoModule } from './model/HomeLimitGoModel';
 import HomeExpandBannerView from './view/HomeExpandBannerView';
 import HomeFocusAdView from './view/HomeFocusAdView';
 import PraiseModel from './view/PraiseModel';
+import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 
 const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
@@ -70,6 +71,7 @@ import taskModel from './model/TaskModel';
 import TaskVIew from './view/TaskVIew';
 import intervalMsgModel, { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
 import { UserLevelModalView } from './view/TaskModalView';
+import { routePush } from '../../navigation/RouterMap';
 
 const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
     <ActivityIndicator style={{ marginRight: 6 }} animating={errorMsg ? false : (isEnd ? false : true)} size={'small'}
@@ -77,18 +79,8 @@ const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
     <Text style={styles.text}
           allowFontScaling={false}>{errorMsg ? errorMsg : (isEnd ? '我也是有底线的~' : (isFetching ? '加载中...' : '加载更多中...'))}</Text>
 </View>;
-
 @observer
-class HomePage extends BasePage {
-
-    st = 0;
-    offsetY = 0;
-
-    $navigationBarOptions = {
-        title: '',
-        show: false
-    };
-
+class HomeList extends React.Component {
     dataProvider = new DataProvider((r1, r2) => {
         return r1 !== r2;
     });
@@ -147,18 +139,6 @@ class HomePage extends BasePage {
         }
     });
 
-
-    state = {
-        showMessage: false,
-        messageData: null,
-        messageIndex: 0,
-        updateData: {},
-        showUpdate: false,
-        forceUpdate: false,
-        apkExist: false,
-        hasMessage: false
-    };
-
     constructor(props) {
         super(props);
         // 重置
@@ -167,178 +147,36 @@ class HomePage extends BasePage {
         this.offsetY = 0;
     }
 
-    componentDidMount() {
-        this.willBlurSubscription = this.props.navigation.addListener(
-            'willBlur',
-            payload => {
-                homeModule.homeFocused(false);
-                homeTabManager.setHomeFocus(false);
-                const { state } = payload;
-                if (state && state.routeName === 'HomePage') {
-                    homeModalManager.leaveHome();
-                }
-                BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
-            }
-        );
-
-        this.willFocusSubscription = this.props.navigation.addListener(
-            'willFocus',
-            payload => {
-                const { state } = payload;
-                if (state && state.routeName === 'HomePage') {
-                    if (homeModule.firstLoad) {
-                        homeModule.loadHomeList(true);
-                    }
-                }
-            }
-        );
-
-        this.didFocusSubscription = this.props.navigation.addListener(
-            'didFocus',
-            payload => {
-                BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
-
-                const { state } = payload;
-                if (state && state.routeName === 'HomePage') {
-                    this.luckyIcon && this.luckyIcon.getLucky(1, '');
-                    homeTabManager.setHomeFocus(true);
-                    homeModule.homeFocused(true);
-                    homeModalManager.entryHome();
-                    user.getToken().then(() => {//让user初始化完成
-                        this.luckyIcon && this.luckyIcon.getLucky(1, '');
-                        homeModalManager.requestData();
-                        if (user.token) {
-                            this.loadMessageCount();
-                        } else {
-                            this.setState({
-                                hasMessage: false
-                            });
-                        }
-                        if (!homeModule.firstLoad) {
-                            taskModel.getData();
-                        }
-                        homeModalManager.refreshPrize();
-                    });
-                    if (!homeModule.firstLoad) {
-                        limitGoModule.loadLimitGo(false);
-                    }
-                    // 修复首页图标不准确
-                    this.homeTabChange();
-                }
-                TrackApi.homePage();//埋点
-            }
-        );
-        this.listener = DeviceEventEmitter.addListener('homePage_message', this.getMessageData);
-        this.listenerMessage = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
-        this.listenerLogout = DeviceEventEmitter.addListener('login_out', this.loadMessageCount);
-        this.listenerRetouchHome = DeviceEventEmitter.addListener('retouch_home', this.retouchHome);
-        this.listenerHomeRefresh = JSManagerEmitter.addListener(HOME_REFRESH, this.homeTypeRefresh);
-        this.listenerSkip = JSManagerEmitter.addListener(HOME_SKIP, this.homeSkip);
-
-    }
-
-    homeTabChange = () => {
-        this.toGoods && this.toGoods.measure((fx, fy, w, h, left, top) => {
-            if (top) {
-                if (top < 0) {
-                    if (!homeTabManager.isAboveRecommend) {
-                        homeTabManager.setAboveRecommend(true);
-                    }
-                } else {
-                    if (this.offsetY > height && top < scrollDist) {
-                        if (!homeTabManager.isAboveRecommend) {
-                            homeTabManager.setAboveRecommend(true);
-                        }
-                    } else {
-                        if (homeTabManager.isAboveRecommend) {
-                            homeTabManager.setAboveRecommend(false);
-                        }
-                    }
-                }
-            }
-        });
-    };
-
-    homeTypeRefresh = (type) => {
-        homeModule.refreshHome(type);
-    };
-
-    homeSkip = (data) => {
-        // 跳标
-        const content = JSON.parse(data) || {};
-        intervalMsgModel.setMsgData(content);
-    };
-
-    componentWillUnmount() {
-        this.willBlurSubscription && this.willBlurSubscription.remove();
-        this.willFocusSubscription && this.willFocusSubscription.remove();
-        this.didFocusSubscription && this.didFocusSubscription.remove();
-        this.listener && this.listener.remove();
-        this.listenerMessage && this.listenerMessage.remove();
-        this.listenerLogout && this.listenerLogout.remove();
-        this.listenerRetouchHome && this.listenerRetouchHome.remove();
-        this.listenerHomeRefresh && this.listenerHomeRefresh.remove();
-        this.listenerSkip && this.listenerSkip.remove();
-    }
-
-    retouchHome = () => {
-        if (homeTabManager.aboveRecommend) {
-            this.recyclerListView && this.recyclerListView.scrollToTop(true);
-        }
-    };
-
-    handleBackPress = () => {
-        return this.state.forceUpdate;
-    };
-
-
-    loadMessageCount = () => {
-        if (user.token) {
-            InteractionManager.runAfterInteractions(() => {
-                MessageApi.getNewNoticeMessageCount().then(result => {
-                    if (!EmptyUtils.isEmpty(result.data)) {
-                        this.setState({
-                            hasMessage: result.data.shopMessageCount || result.data.noticeCount || result.data.messageCount
-                        });
-                    }
-                }).catch((error) => {
-                    this.setState({
-                        hasMessage: false
-                    });
-                });
-            });
-        }
-    };
 
     _keyExtractor = (item, index) => item.id + '';
 
     _renderItem = (type, item, index) => {
         let data = item;
         if (type === homeType.category) {
-            return <HomeCategoryView navigate={this.$navigate}/>;
+            return <HomeCategoryView navigate={routePush}/>;
         } else if (type === homeType.swiper) {
-            return <HomeBannerView navigate={this.$navigate}/>;
+            return <HomeBannerView navigate={routePush}/>;
         } else if (type === homeType.user) {
-            return <HomeUserView navigate={this.$navigate}/>;
+            return <HomeUserView navigate={routePush}/>;
         } else if (type === homeType.task) {
             return <TaskVIew type={'home'} style={{marginTop: ScreenUtils.autoSizeWidth(10)}}/>;
         } else if (type === homeType.channel) {
-            return <HomeChannelView navigate={this.$navigate}/>;
+            return <HomeChannelView navigate={routePush}/>;
         } else if (type === homeType.expandBanner) {
-            return <HomeExpandBannerView navigate={this.$navigate}/>;
+            return <HomeExpandBannerView navigate={routePush}/>;
         } else if (type === homeType.focusGrid) {
-            return <HomeFocusAdView navigate={this.$navigate}/>;
+            return <HomeFocusAdView navigate={routePush}/>;
         } else if (type === homeType.limitGo) {
-            return <HomeLimitGoView navigate={this.$navigate}/>;
+            return <HomeLimitGoView navigate={routePush}/>;
         } else if (type === homeType.today) {
-            return <HomeTodayView navigate={this.$navigate}/>;
+            return <HomeTodayView navigate={routePush}/>;
         } else if (type === homeType.fine) {
-            return <HomeRecommendView navigate={this.$navigate}/>;
+            return <HomeRecommendView navigate={routePush}/>;
         } else if (type === homeType.homeHot) {
-            return <HomeSubjectView navigate={this.$navigate}/>;
+            return <HomeSubjectView navigate={routePush}/>;
         } else if (type === homeType.goods) {
             return <GoodsCell data={data} goodsRowIndex={index} otherLen={homeModule.goodsOtherLen}
-                              navigate={this.$navigate}/>;
+                              navigate={routePush}/>;
         } else if (type === homeType.goodsTitle) {
             return <View style={styles.titleView}
                          ref={e => this.toGoods = e}
@@ -376,14 +214,33 @@ class HomePage extends BasePage {
         });
     };
 
+    homeTabChange = () => {
+        this.toGoods && this.toGoods.measure((fx, fy, w, h, left, top) => {
+            if (top) {
+                if (top < 0) {
+                    if (!homeTabManager.isAboveRecommend) {
+                        homeTabManager.setAboveRecommend(true);
+                    }
+                } else {
+                    if (this.offsetY > height && top < scrollDist) {
+                        if (!homeTabManager.isAboveRecommend) {
+                            homeTabManager.setAboveRecommend(true);
+                        }
+                    } else {
+                        if (homeTabManager.isAboveRecommend) {
+                            homeTabManager.setAboveRecommend(false);
+                        }
+                    }
+                }
+            }
+        });
+    };
+
+
     render() {
         const { homeList } = homeModule;
         this.dataProvider = this.dataProvider.cloneWithRows(homeList);
         return (
-            <View style={[styles.container, { minHeight: ScreenUtils.headerHeight, minWidth: 1 }]}>
-                <HomeSearchView navigation={this.$navigate}
-                                hasMessage={this.state.hasMessage}
-                />
                 <RecyclerListView
                     ref={(ref) => {
                         this.recyclerListView = ref;
@@ -397,9 +254,7 @@ class HomePage extends BasePage {
                     dataProvider={this.dataProvider}
                     rowRenderer={this._renderItem.bind(this)}
                     layoutProvider={this.layoutProvider}
-                    onScrollBeginDrag={() => {
-                        this.luckyIcon.close();
-                    }}
+                    onScrollBeginDrag={this.props.onScrollBeginDrag}
                     showsVerticalScrollIndicator={false}
                     removeClippedSubviews={false}
                     onScroll={this._onListViewScroll}
@@ -409,6 +264,161 @@ class HomePage extends BasePage {
                         isEnd={homeModule.isEnd}/>
                     }
                 />
+        );
+    }
+
+    componentDidMount() {
+        this.listenerRetouchHome = DeviceEventEmitter.addListener('retouch_home', this.retouchHome);
+        this.listenerHomeRefresh = JSManagerEmitter.addListener(HOME_REFRESH, this.homeTypeRefresh);
+        this.listenerSkip = JSManagerEmitter.addListener(HOME_SKIP, this.homeSkip);
+        // 修复首页图标不准确
+        this.homeTabChange();
+    }
+
+    componentWillUnmount() {
+        this.listenerRetouchHome && this.listenerRetouchHome.remove();
+        this.listenerHomeRefresh && this.listenerHomeRefresh.remove();
+        this.listenerSkip && this.listenerSkip.remove();
+    }
+
+    retouchHome = () => {
+        if (homeTabManager.aboveRecommend) {
+            this.recyclerListView && this.recyclerListView.scrollToTop(true);
+        }
+    };
+
+    homeTypeRefresh = (type) => {
+        homeModule.refreshHome(type);
+    };
+
+    homeSkip = (data) => {
+        // 跳标
+        const content = JSON.parse(data) || {};
+        intervalMsgModel.setMsgData(content);
+    };
+
+}
+
+
+class HomePage extends BasePage {
+
+    $navigationBarOptions = {
+        title: '',
+        show: false
+    };
+
+    state = {
+        hasMessage: false
+    };
+
+
+    componentDidMount() {
+        this.willBlurSubscription = this.props.navigation.addListener(
+            'willBlur',
+            payload => {
+                homeModule.homeFocused(false);
+                homeTabManager.setHomeFocus(false);
+                const { state } = payload;
+                if (state && state.routeName === 'HomePage') {
+                    homeModalManager.leaveHome();
+                }
+            }
+        );
+
+        this.willFocusSubscription = this.props.navigation.addListener(
+            'willFocus',
+            payload => {
+                const { state } = payload;
+                if (state && state.routeName === 'HomePage') {
+                    if (homeModule.firstLoad) {
+                        homeModule.loadHomeList(true);
+                    }
+                }
+            }
+        );
+
+        this.didFocusSubscription = this.props.navigation.addListener(
+            'didFocus',
+            payload => {
+                const { state } = payload;
+                if (state && state.routeName === 'HomePage') {
+                    this.luckyIcon && this.luckyIcon.getLucky(1, '');
+                    homeTabManager.setHomeFocus(true);
+                    homeModule.homeFocused(true);
+                    homeModalManager.entryHome();
+                    user.getToken().then(() => {//让user初始化完成
+                        this.luckyIcon && this.luckyIcon.getLucky(1, '');
+                        if (user.token) {
+                            this.loadMessageCount();
+                        } else {
+                            this.setState({
+                                hasMessage: false
+                            });
+                        }
+                        if (!homeModule.firstLoad) {
+                            taskModel.getData();
+                            limitGoModule.loadLimitGo(false);
+                        }
+                        homeModalManager.requestData();
+                        homeModalManager.refreshPrize();
+                    });
+                }
+                TrackApi.homePage();//埋点
+            }
+        );
+        this.listener = DeviceEventEmitter.addListener('homePage_message', this.getMessageData);
+        this.listenerMessage = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
+        this.listenerLogout = DeviceEventEmitter.addListener('login_out', this.loadMessageCount);
+    }
+    componentWillUnmount() {
+        this.willBlurSubscription && this.willBlurSubscription.remove();
+        this.willFocusSubscription && this.willFocusSubscription.remove();
+        this.didFocusSubscription && this.didFocusSubscription.remove();
+        this.listener && this.listener.remove();
+        this.listenerMessage && this.listenerMessage.remove();
+        this.listenerLogout && this.listenerLogout.remove();
+    }
+
+    loadMessageCount = () => {
+        if (user.token) {
+            InteractionManager.runAfterInteractions(() => {
+                MessageApi.getNewNoticeMessageCount().then(result => {
+                    if (!EmptyUtils.isEmpty(result.data)) {
+                        this.setState({
+                            hasMessage: result.data.shopMessageCount || result.data.noticeCount || result.data.messageCount
+                        });
+                    }
+                }).catch((error) => {
+                    this.setState({
+                        hasMessage: false
+                    });
+                });
+            });
+        }
+    };
+
+
+    render() {
+        return (
+            <View style={[styles.container, { minHeight: ScreenUtils.headerHeight, minWidth: 1 }]}>
+                <HomeSearchView navigation={routePush}
+                                hasMessage={this.state.hasMessage}
+                />
+                <ScrollableTabView
+                    onChangeTab={(obj) => {
+                        this.setState({ selectTab: obj.i });
+                    }}
+                    style={styles.container}
+                    renderTabBar={this._renderTabBar}
+                    //进界面的时候打算进第几个
+                    initialPage={0}>
+                <HomeList
+                    tabLabel='Tab 1'
+                    onScrollBeginDrag={() => {
+                    this.luckyIcon.close();
+                }}/>
+                    <View  tabLabel='Tab 2'/>
+                </ScrollableTabView>
                 <LuckyIcon ref={(ref) => {
                     this.luckyIcon = ref;
                 }}/>
@@ -421,6 +431,21 @@ class HomePage extends BasePage {
                 <VersionUpdateModalView/>
             </View>
         );
+    }
+
+    _renderTabBar(){
+        return (
+            <DefaultTabBar
+                containerWidth = {50}
+                underlineStyle={{
+                               width: 40,
+                               height: 2,
+                               marginLeft: 5,
+                               backgroundColor: DesignRule.mainColor,
+                               borderRadius: 1,
+
+                           }}/>
+        )
     }
 }
 
