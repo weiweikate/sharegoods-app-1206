@@ -39,10 +39,10 @@ const oneClickLoginValidation = (authenToken, localPhone, navigation, successCal
             if (StringUtils.isEmpty(result.data.unionid)) {
                 //未绑定微信
                 getWxUserInfo((wxInfo) => {
-                    if (wxInfo) {
+                    if (wxInfo && wxInfo.unionid) {
                         phoneBindWx(wxInfo, () => {
                             loginJump(result.data);
-                        });
+                        }, result);
                     } else {
                         loginJump(result.data);
                     }
@@ -63,7 +63,7 @@ const loginJump = (data) => {
         // 新用户，跳转到上级页面
         routePush(RouterMap.InviteCodePage, {});
     } else {
-        //老用户
+        // 老用户
         routePop(1);
     }
 };
@@ -79,10 +79,16 @@ const phoneBindWx = (wxInfo, callBack, data) => {
         headImg: wxInfo.headerImg,
         nickname: wxInfo.nickName
     }).then(result => {
-        callBack(data);
+        setTimeout(() => {
+            callBack(data);
+        }, 200);
     }).catch(error => {
-        bridge.$toast(error.msg);
-        callBack(data);
+        if (data.data.withRegister) {
+            bridge.$toast(error.msg);
+        }
+        setTimeout(() => {
+            callBack(data);
+        }, 200);
     });
 };
 /**
@@ -196,7 +202,7 @@ const codeLoginAction = (LoginParam, callBack) => {
             } else {
                 //未绑定微信
                 getWxUserInfo((wxInfo) => {
-                    if (wxInfo) {
+                    if (wxInfo && wxInfo.unionid) {
                         phoneBindWx(wxInfo, callBack, data);
                     } else {
                         callBack(data);
@@ -254,7 +260,7 @@ const pwdLoginAction = (LoginParam, callBack) => {
             } else {
                 //未绑定微信
                 getWxUserInfo((wxInfo) => {
-                    if (wxInfo) {
+                    if (wxInfo && wxInfo.unionid) {
                         phoneBindWx(wxInfo, callBack, data);
                     } else {
                         callBack(data);

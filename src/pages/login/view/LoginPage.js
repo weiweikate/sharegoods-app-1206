@@ -20,17 +20,11 @@ export default class LoginPage extends BasePage {
 
     constructor(props) {
         super(props);
-        if (loginModel.authPhone) {
-            // 预登录
-            preLogin();
-        } else {
+        if (!loginModel.authPhone) {
             checkInitResult().then((isVerifyEnable) => {
                 loginModel.setAuthPhone(isVerifyEnable);
-                if (isVerifyEnable) {
-                    // 预登录
-                    preLogin();
-                }
             }).catch(e => {
+                loginModel.setAuthPhone(null);
             });
         }
         // 获取最近一次输入的手机号
@@ -94,20 +88,24 @@ export default class LoginPage extends BasePage {
     };
 
     startOneLogin = () => {
-        startLoginAuth().then((data) => {
-            this.$loadingShow();
-            let { navigation } = this.props;
-            oneClickLoginValidation(data, null, navigation, () => {
-                this.$loadingDismiss();
-            }, () => {
-                this.$loadingDismiss();
+        preLogin().then(() => {
+            startLoginAuth().then((data) => {
+                this.$loadingShow();
+                let { navigation } = this.props;
+                oneClickLoginValidation(data, null, navigation, () => {
+                    this.$loadingDismiss();
+                }, () => {
+                    this.$loadingDismiss();
+                });
+            }).catch((error) => {
+                if (error.code === '555') {
+                    closeAuth();
+                } else {
+                    replaceRoute(RouterMap.PhoneLoginPage, { ...this.params, needBottom: true });
+                }
             });
-        }).catch((error) => {
-            if (error.code === '555') {
-                closeAuth();
-            } else {
-                replaceRoute(RouterMap.PhoneLoginPage, { ...this.params, needBottom: true });
-            }
+        }).catch(error => {
+            replaceRoute(RouterMap.PhoneLoginPage, { ...this.params, needBottom: true });
         });
     };
 

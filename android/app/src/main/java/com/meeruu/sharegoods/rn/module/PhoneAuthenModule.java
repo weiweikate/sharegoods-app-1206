@@ -20,6 +20,7 @@ import com.meeruu.sharegoods.R;
 
 import cn.jiguang.verifysdk.api.JVerificationInterface;
 import cn.jiguang.verifysdk.api.JVerifyUIConfig;
+import cn.jiguang.verifysdk.api.PreLoginListener;
 import cn.jiguang.verifysdk.api.VerifyListener;
 
 public class PhoneAuthenModule extends ReactContextBaseJavaModule {
@@ -42,14 +43,39 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void checkInitResult(Promise callback) {
-        boolean isVerifyEnable = JVerificationInterface.checkVerifyEnable(getCurrentActivity());
-        callback.resolve(isVerifyEnable);
+    public void checkInitResult(final Promise callback) {
+        if (JVerificationInterface.isInitSuccess()) {
+            if (JVerificationInterface.checkVerifyEnable(mContext)) {
+                JVerificationInterface.preLogin(mContext, 5000, new PreLoginListener() {
+                    @Override
+                    public void onResult(int i, String s) {
+                        if (i == 7000) {
+                            callback.resolve(true);
+                        } else {
+                            callback.reject(i + "", "当前网络不支持号码认证");
+                        }
+                    }
+                });
+            } else {
+                callback.reject("-1", "当前网络不支持号码认证");
+            }
+        } else {
+            callback.reject("-1", "初始化失败");
+        }
     }
 
     @ReactMethod
-    public void preLogin() {
-        JVerificationInterface.preLogin(mContext, 5000, null);
+    public void preLogin(final Promise callback) {
+        JVerificationInterface.preLogin(mContext, 5000, new PreLoginListener() {
+            @Override
+            public void onResult(int i, String s) {
+                if (i == 7000) {
+                    callback.resolve(true);
+                } else {
+                    callback.reject(i + "", "一键登录失败");
+                }
+            }
+        });
     }
 
     @ReactMethod
