@@ -89,7 +89,10 @@ static const NSString * USERTYPE_others = @"others";
 
 - (id<JXPagerViewListViewDelegate>)pagerView:(JXPagerView *)pagerView initListAtIndex:(NSInteger)index {
   TestListBaseView *list = [[TestListBaseView alloc] init];
-  list.onItemPress = self.onItemPress;
+  list.onPersonItemPress = self.onPersonItemPress;
+  list.onPersonPublish = self.onPersonPublish;
+  list.onPersonCollection = self.onPersonCollection;
+
   NSString *title=  self.swichView.data[index];
   if ([title isEqualToString:@"文章"]) {
     if ([self.userType isEqualToString: USERTYPE_mineWriter]) {

@@ -17,6 +17,9 @@
 @property(nonatomic, copy)NSString *api;
 @property(nonatomic, copy)NSDictionary *params;
 @property(nonatomic, assign)NSInteger type;//0 我的文章 1我的收藏 2他的文章
-@property (nonatomic, copy) RCTBubblingEventBlock onItemPress;
+@property (nonatomic, copy) RCTBubblingEventBlock onPersonItemPress;
+@property (nonatomic, copy) RCTBubblingEventBlock onPersonCollection;
+@property (nonatomic, copy) RCTBubblingEventBlock onPersonPublish;
+
 - (void)refreshData;
 @end

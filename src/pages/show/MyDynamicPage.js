@@ -115,7 +115,7 @@ export default class MyDynamicPage extends BasePage {
                            userType={`${this.params.userType}${userNo}`}
                            type={'MyDynamic'}
                            renderHeader={this.renderHeader()}
-                           onItemPress={({ nativeEvent }) => {
+                            onPersonItemPress={({ nativeEvent }) => {
                                let params = {
                                    code: nativeEvent.showNo
                                };
@@ -130,10 +130,10 @@ export default class MyDynamicPage extends BasePage {
                                }
 
                            }}
-                           goCollection={()=>{
+                           onPersonCollection={()=>{
                                backToShow(1);
                            }}
-                           goPublish={()=>{
+                           onPersonPublish={()=>{
                                this.$navigate(RouterMap.ReleaseNotesPage);
                            }}
                 />

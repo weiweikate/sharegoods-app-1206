@@ -150,12 +150,12 @@
     self.frame = CGRectMake(0, 0, KScreenWidth, kNavBarHeight);
     self.backgroundColor = [UIColor whiteColor];
     self.swichView = [SwichView new];
-    btn = [UIButton new];
-    [btn addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
-    [btn setImage:[UIImage imageNamed:@"back"] forState:0];
-    [self addSubview:btn];
-    btn.frame = CGRectMake(0, kNavBarHeight - 44, 44, 44);
-    [self addSubview:self.swichView];
+//    btn = [UIButton new];
+//    [btn addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+//    [btn setImage:[UIImage imageNamed:@"back"] forState:0];
+//    [self addSubview:btn];
+//    btn.frame = CGRectMake(0, kNavBarHeight - 44, 44, 44);
+//    [self addSubview:self.swichView];
   }
   return self;
 }

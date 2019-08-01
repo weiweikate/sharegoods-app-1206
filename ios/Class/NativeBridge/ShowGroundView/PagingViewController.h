@@ -12,7 +12,10 @@
  该库的JXPagerView不能保证为最新版本，强烈建议阅读JXPagingView库：https://github.com/pujiaxin33/JXPagingView，里面有更丰富的效果支持！！！
  */
 @interface PagingViewController : UIView
-@property (nonatomic, copy) RCTBubblingEventBlock onItemPress;
+@property (nonatomic, copy) RCTBubblingEventBlock onPersonItemPress;
+@property (nonatomic, copy) RCTBubblingEventBlock onPersonCollection;
+@property (nonatomic, copy) RCTBubblingEventBlock onPersonPublish;
+
 @property (nonatomic, strong) NSString* userType;
 @property (nonatomic, assign) NSInteger headerHeight;
 @end
