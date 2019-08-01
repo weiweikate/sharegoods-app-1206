@@ -131,7 +131,7 @@ export default class LoginVerifyCodePage extends BasePage {
                                 this.setState({
                                     code: text
                                 }, () => {
-                                    if (this.state.code.length >= 4) {
+                                    if (this.state.code.length === 4) {
                                         // 登录
                                         this.toLogin();
                                     }

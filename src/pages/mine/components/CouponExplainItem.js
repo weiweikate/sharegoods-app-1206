@@ -33,7 +33,7 @@ export default class CouponExplainItem extends Component {
     render() {
         let { item, index } = this.props;
         let stateImg = item.status === 1 ? res.couponsImg.youhuiquan_icon_yishiyong :
-            (item.status === 2 ? res.couponsImg.youhuiquan_icon_yishixiao : res.couponsImg.youhuiquan_icon_daijihuo);
+            (item.status === 2 ? res.couponsImg.youhuiquan_icon_yishixiao : item.status === 3 ? (res.couponsImg.youhuiquan_icon_daijihuo) : null);
         return (
             <TouchableOpacity
                 style={{ backgroundColor: DesignRule.bgColor, marginBottom: 5, justifyContent: 'center' }}
@@ -106,18 +106,18 @@ export default class CouponExplainItem extends Component {
                                         <View style={{alignItems: 'center', marginRight: 10}}>
                                             {item.status === 3 ?
                                                 (!StringUtils.isEmpty(user.blockedTokenCoin) && user.blockedTokenCoin !== 0 ?
-                                                <View style={{
-                                                    justifyContent: 'center',
-                                                    alignItems: 'center'
-                                                }}>
-                                                    <Image style={{width: 55, height: 55}}
-                                                           source={res.couponsImg.youhuiquan_icon_daijihuo}/>
-                                                    <UIText value={'x' + user.blockedTokenCoin}
-                                                            style={styles.xNumsStyle}/>
-                                                </View>
-                                                : null)
+                                                    <View style={{
+                                                        justifyContent: 'center',
+                                                        alignItems: 'center'
+                                                    }}>
+                                                        <Image style={{width: 55, height: 55}}
+                                                               source={res.couponsImg.youhuiquan_icon_daijihuo}/>
+                                                        <UIText value={'x' + user.blockedTokenCoin}
+                                                                style={styles.xNumsStyle}/>
+                                                    </View>
+                                                    : null)
                                                 : <UIText style={[styles.xNumStyle, {marginRight: 0}]}
-                                                value={'x' + user.tokenCoin}/>
+                                                          value={'x' + user.tokenCoin}/>
                                             }
                                         </View>
                                         : (item.levelimit ?
@@ -132,13 +132,15 @@ export default class CouponExplainItem extends Component {
                                                                       style={styles.xNumsStyle}/> : null}
                                         </View>
                                         :
-                                            (item.redirectType && item.redirectType != 0 ?
+                                        (item.redirectType && item.redirectType != 0 ?
                                             <NoMoreClick style={{
                                                 height: ScreenUtils.autoSizeWidth(27),
                                                 width: ScreenUtils.autoSizeWidth(60),
                                                 borderRadius: ScreenUtils.autoSizeWidth(14),
                                                 overflow: 'hidden'
-                                            }} onPress={() => {this.props.clickItem(index, item);}}>
+                                            }} onPress={() => {
+                                                this.props.clickItem && this.props.clickItem(index, item);
+                                            }}>
                                                 <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}}
                                                                 colors={['#FC5D39', '#FF0050']}
                                                                 style={{
@@ -154,11 +156,35 @@ export default class CouponExplainItem extends Component {
                                                     }} allowFontScaling={false}>去使用</Text>
                                                 </LinearGradient>
                                             </NoMoreClick> : (item.count > 1 ? <UIText value={'x' + item.count}
-                                                                                     style={styles.xNumsStyle}/> : null))))
+                                                                                       style={styles.xNumsStyle}/> : null))))
 
                                 : <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                                    <Image style={{width: 55, height: 55}}
-                                           source={stateImg}/>
+                                    {item.canInvoke && item.status === 3 ? <NoMoreClick style={{
+                                            height: ScreenUtils.autoSizeWidth(27),
+                                            width: ScreenUtils.autoSizeWidth(60),
+                                            borderRadius: ScreenUtils.autoSizeWidth(14),
+                                            overflow: 'hidden',
+                                        }} onPress={() => {
+                                            this.props.onActivity && this.props.onActivity(item)
+                                        }}>
+                                            <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}}
+                                                            colors={['#FFCB02', '#FF9502']}
+                                                            style={{
+                                                                alignItems: 'center',
+                                                                flexDirection: 'row',
+                                                                justifyContent: 'center',
+                                                                flex: 1
+                                                            }}
+                                            >
+                                                <Text style={{
+                                                    fontSize: 12,
+                                                    color: 'white',
+                                                }} allowFontScaling={false}>去激活</Text>
+                                            </LinearGradient>
+                                        </NoMoreClick> :
+                                        <Image style={{width: 55, height: 55}}
+                                               source={stateImg}/>
+                                    }
                                     {item.count > 1 ? <UIText value={'x' + item.count}
                                                               style={styles.xNumsStyle}/> : null}
                                 </View>}

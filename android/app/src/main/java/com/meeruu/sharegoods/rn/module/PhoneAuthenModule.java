@@ -1,6 +1,8 @@
 package com.meeruu.sharegoods.rn.module;
 
 import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -8,6 +10,9 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeMap;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.SPCacheUtils;
@@ -38,32 +43,6 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void checkInitResult(Promise callback) {
-        String hostJson = (String) SPCacheUtils.get(ParameterUtils.API_SERVER, "");
-        String contractUrl = "";
-        String h5Url = "";
-        if (!TextUtils.isEmpty(hostJson)) {
-            JSONObject object = JSON.parseObject(hostJson);
-            h5Url = object.getString("h5");
-            if (TextUtils.isEmpty(h5Url)) {
-                h5Url = "https://h5.sharegoodsmall.com";
-            }
-            contractUrl = h5Url + "/static/protocol/service.html";
-        }
-        JVerifyUIConfig.Builder builder = new JVerifyUIConfig.Builder();
-
-        builder.setNavReturnImgPath("ic_go_back")
-                .setNavColor(mContext.getResources().getColor(R.color.white))
-                .setNavText("")
-                .setNavTextColor(mContext.getResources().getColor(R.color.app_main_text_color))
-                .setNumberColor(mContext.getResources().getColor(R.color.app_main_text_color))
-                .setSloganTextColor(mContext.getResources().getColor(R.color.app_ccc_text_color))
-                .setAppPrivacyColor(mContext.getResources().getColor(R.color.app_666_text_color),
-                        mContext.getResources().getColor(R.color.app_main_color))
-                .setPrivacyState(true);
-        if (!TextUtils.isEmpty(contractUrl)) {
-            builder.setAppPrivacyOne("《秀购用户协议》", contractUrl);
-        }
-        JVerificationInterface.setCustomUIWithConfig(builder.build());
         boolean isVerifyEnable = JVerificationInterface.checkVerifyEnable(getCurrentActivity());
         callback.resolve(isVerifyEnable);
     }
@@ -94,6 +73,65 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void startLoginAuth(final Promise callback) {
+        String hostJson = (String) SPCacheUtils.get(ParameterUtils.API_SERVER, "");
+        String contractUrl = "";
+        String h5Url = "";
+        if (!TextUtils.isEmpty(hostJson)) {
+            JSONObject object = JSON.parseObject(hostJson);
+            h5Url = object.getString("h5");
+            if (TextUtils.isEmpty(h5Url)) {
+                h5Url = "https://h5.sharegoodsmall.com";
+            }
+            contractUrl = h5Url + "/static/protocol/service.html";
+        }
+        JVerifyUIConfig.Builder builder = new JVerifyUIConfig.Builder();
+        View bottomView = LayoutInflater.from(mContext).inflate(R.layout.one_login_other, null);
+        if (bottomView != null) {
+            bottomView.findViewById(R.id.tv_wechat).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // 微信登录
+                    WritableMap wechatMap = new WritableNativeMap();
+                    wechatMap.putString("login_type", "1");
+                    mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                            .emit("Event_Login_Type", wechatMap);
+                    closeAuth();
+                }
+            });
+            bottomView.findViewById(R.id.tv_phone).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // 微信登录
+                    WritableMap wechatMap = new WritableNativeMap();
+                    wechatMap.putString("login_type", "2");
+                    mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                            .emit("Event_Login_Type", wechatMap);
+                    closeAuth();
+                }
+            });
+        }
+        builder.setNavReturnImgPath("close_x")
+                .setNavColor(mContext.getResources().getColor(R.color.white))
+                .setNavText("")
+                .setNavTextColor(mContext.getResources().getColor(R.color.app_main_text_color))
+                .setLogoImgPath("login_logo")
+                .setLogoHeight(43)
+                .setLogoWidth(59)
+                .setLogoOffsetY(42)
+                .setNumFieldOffsetY(140)
+                .setSloganOffsetY(165)
+                .setLogBtnOffsetY(180)
+                .setNumberColor(mContext.getResources().getColor(R.color.app_main_text_color))
+                .setSloganTextColor(mContext.getResources().getColor(R.color.transparent))
+                .setAppPrivacyColor(mContext.getResources().getColor(R.color.app_666_text_color),
+                        mContext.getResources().getColor(R.color.app_main_color))
+                .addCustomView(bottomView, true, null)
+                .setPrivacyOffsetY(-1)
+                .setPrivacyState(true);
+        if (!TextUtils.isEmpty(contractUrl)) {
+            builder.setAppPrivacyOne("《秀购用户协议》", contractUrl);
+        }
+        JVerificationInterface.setCustomUIWithConfig(builder.build());
         JVerificationInterface.loginAuth(getCurrentActivity(), new VerifyListener() {
             @Override
             public void onResult(int code, String token, String operator) {

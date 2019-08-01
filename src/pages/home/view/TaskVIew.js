@@ -12,6 +12,8 @@
 
 'use strict';
 
+import { IntervalMsgType } from '../../../comm/components/IntervalMsgView';
+
 const BoxStatusClose = 0;
 const BoxStatusCanOpen = 1;
 const BoxStatusOpen = 2;
@@ -164,6 +166,9 @@ class TaskItem extends React.Component {
         } else {
             let btn = item.status === TaskStatusUndone ? red_btn : yellow_btn;
             let title = item.status === TaskStatusUndone ? '前往' : '领奖';
+            if (item.interactiveCode == IntervalMsgType.sign && this.props.isSignIn){
+                title = item.status === TaskStatusUndone ? '签到' : '领奖';
+            }
             return (
                 <TouchableOpacity style={{
                     width:  ScreenUtils.autoSizeWidth(63),
@@ -190,7 +195,11 @@ class TaskItem extends React.Component {
     }
 
     btnClick(item, subTask, title) {
+        if (item.interactiveCode == IntervalMsgType.sign && this.props.isSignIn){
+            this.props.signIn && this.props.signIn()
+        } else {
             this.props.model.getMissionPrize(item, subTask, title);
+        }
 
     }
 
@@ -432,7 +441,11 @@ export default class TaskVIew extends React.Component {
                     >
                         {
                             this.model.tasks.map((item, index) => {
-                                return <TaskItem key={'TaskItem_' + item.no} data={item} model={this.model}/>;
+                                return <TaskItem key={'TaskItem_' + item.no}
+                                                 data={item} model={this.model}
+                                                 isSignIn={this.props.isSignIn}
+                                                 signIn={this.props.signIn}
+                                />;
                             })
                         }
 
