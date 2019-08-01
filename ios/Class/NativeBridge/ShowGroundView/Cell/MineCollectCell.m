@@ -8,6 +8,8 @@
 
 #import "MineCollectCell.h"
 #import <SDAutoLayout.h>
+#import "NetWorkTool.h"
+#import "MBProgressHUD+PD.h"
 @interface MineCollectCell()
 @property(nonatomic, strong)UIImageView *imgView;
 @property(nonatomic, strong)UILabel *titleLb;
@@ -106,11 +108,21 @@
   _titleLb.text = model.pureContent_1;
   _userNameLb.text = model.userInfoVO.userName;
   [_userHeaderImgView setImageWithURL:[NSURL URLWithString: model.userHeadImg_oss] placeholder:[UIImage imageNamed:@"default_avatar"]];
-  _btn.selected = YES;
+  _btn.selected = model.collect;;
 }
 
 - (void)btnTap:(UIButton *)b
 {
-  b.selected = !b.selected;
+  if (!self.model.showNo) {
+     return;
+  }
+  __weak MineCollectCell * weakSelf = self;
+  NSString *api = b.selected? ShowApi_reduceCountByType :ShowApi_incrCountByType;
+  [NetWorkTool requestWithURL:api params:@{@"showNo": self.model.showNo, @"type": @"2"} toModel:nil success:^(id result) {
+     b.selected = !b.selected;
+     weakSelf.model.collect = b.selected;
+   } failure:^(NSString *msg, NSInteger code) {
+     [MBProgressHUD showSuccess:msg];
+  } showLoading:@""];
 }
 @end

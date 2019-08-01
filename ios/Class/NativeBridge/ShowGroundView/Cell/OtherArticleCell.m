@@ -8,6 +8,7 @@
 
 #import "OtherArticleCell.h"
 #import <SDAutoLayout.h>
+#import "MBProgressHUD+PD.h"
 @interface OtherArticleCell()
 @property(nonatomic, strong)UIImageView *imgView;
 @property(nonatomic, strong)UILabel *titleLb;
