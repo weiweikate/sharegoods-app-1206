@@ -54,6 +54,7 @@ NS_ASSUME_NONNULL_END
 @property (nonatomic, assign)CGFloat coverImgHigh;
 @property (nonatomic, assign)CGFloat imgWide;
 @property (nonatomic, assign)CGFloat imgHigh;
+@property (nonatomic, assign)BOOL collect;
 
 @property (nonatomic, copy)NSString *showNo;
 @property (nonatomic, assign)NSInteger showType;

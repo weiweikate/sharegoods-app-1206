@@ -23,7 +23,6 @@
 		014FF20122708C57008B0094 /* JXFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 014FF20022708C57008B0094 /* JXFooterView.m */; };
 		0153BAB122A1078A00BFD8AC /* ShowShareImgMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0153BAB022A1078A00BFD8AC /* ShowShareImgMaker.m */; };
 		0153BAB422A110AF00BFD8AC /* ShareImageMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0153BAB222A110AF00BFD8AC /* ShareImageMaker.m */; };
-		01739CD322BF283D00661677 /* ShowQueryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EAFA6221BFE89007AAEE0 /* ShowQueryModel.m */; };
 		01C3AF3B22E2AF1E00A76422 /* ActivetyViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C3AEE622E2AF1E00A76422 /* ActivetyViewManager.m */; };
 		01C3AF3C22E2AF1E00A76422 /* ActiveView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C3AEE922E2AF1E00A76422 /* ActiveView.m */; };
 		01C3AF3D22E2AF1E00A76422 /* MBVideoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C3AEEC22E2AF1E00A76422 /* MBVideoModel.m */; };
@@ -280,6 +279,7 @@
 		CD094E8222F192CF00BB12AE /* MineArticleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CD094E8122F192CF00BB12AE /* MineArticleCell.m */; };
 		CD094E8522F1BF8C00BB12AE /* MineCollectCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CD094E8422F1BF8C00BB12AE /* MineCollectCell.m */; };
 		CD094EAA22F1C97E00BB12AE /* OtherArticleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CD094EA922F1C97E00BB12AE /* OtherArticleCell.m */; };
+		CD094FF722F291C400BB12AE /* ShowQueryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EAFA6221BFE89007AAEE0 /* ShowQueryModel.m */; };
 		CD11955721870DE1007F602E /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD11955421870DB6007F602E /* libRCTVideo.a */; };
 		CD13656721BA0F4200754B0E /* MBProgressHUD+PD.m in Sources */ = {isa = PBXBuildFile; fileRef = CD13653321BA0F4200754B0E /* MBProgressHUD+PD.m */; };
 		CD14EA192183FC9A00480A06 /* XGImageCompression.m in Sources */ = {isa = PBXBuildFile; fileRef = CD14EA182183FC9A00480A06 /* XGImageCompression.m */; };
@@ -3918,8 +3918,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD094FF722F291C400BB12AE /* ShowQueryModel.m in Sources */,
 				01C3AFEF22E45C7A00A76422 /* JXModel.m in Sources */,
-				01739CD322BF283D00661677 /* ShowQueryModel.m in Sources */,
 				01C3AF3C22E2AF1E00A76422 /* ActiveView.m in Sources */,
 				5068363521379B78001AB175 /* RCTPayTool.m in Sources */,
 				C4F01EEC222D141200ACA1B4 /* PhoneAutherTool.m in Sources */,
