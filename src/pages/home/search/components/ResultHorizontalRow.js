@@ -36,7 +36,7 @@ export default class ResultHorizontalRow extends Component {
 
     render() {
         const { isActivity } = this.props;
-        let { minPrice, promotionMinPrice, name, imgUrl, monthSaleCount } = this.props.itemData || {};
+        let { minPrice, promotionMinPrice, name, imgUrl, monthSaleCount, orderOnProduct } = this.props.itemData || {};
         return (
             <TouchableWithoutFeedback onPress={() => {
                 this.props.onPressAtIndex(this.props.itemData || {});
@@ -67,7 +67,7 @@ export default class ResultHorizontalRow extends Component {
                             style={{ color: DesignRule.mainColor, fontSize: 17 }}
                             allowFontScaling={false}>{`￥${isActivity ? promotionMinPrice : minPrice}起`}</Text>
 
-                        <TouchableWithoutFeedback onPress={() => {
+                        {orderOnProduct === 1 && <TouchableWithoutFeedback onPress={() => {
                             this.props.storeProduct(this.props.itemData);
                         }}>
                             <View style={{
@@ -78,7 +78,7 @@ export default class ResultHorizontalRow extends Component {
                             }}>
                                 <Image source={gwc}/>
                             </View>
-                        </TouchableWithoutFeedback>
+                        </TouchableWithoutFeedback>}
                     </View>
                 </View>
             </TouchableWithoutFeedback>
