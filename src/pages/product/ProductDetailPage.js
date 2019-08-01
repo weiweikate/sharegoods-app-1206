@@ -33,7 +33,7 @@ import {
 } from './components/ProductDetailItemView';
 import DetailHeaderScoreView from './components/DetailHeaderScoreView';
 import DetailParamsModal from './components/DetailParamsModal';
-import { ContentSectionView, SectionLineView, SectionNullView } from './components/ProductDetailSectionView';
+import { ContentSectionView, SectionNullView } from './components/ProductDetailSectionView';
 import ProductDetailNavView from './components/ProductDetailNavView';
 import { IntervalMsgType, IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
 import ProductDetailCouponsView, { ProductDetailCouponsWindowView } from './components/ProductDetailCouponsView';
@@ -155,7 +155,7 @@ export default class ProductDetailPage extends BasePage {
 
     //选择规格确认
     _selectionViewConfirm = (amount, skuCode, item) => {
-        const { prodCode, name, originalPrice, productIsPromotionPrice ,isGroupIn,groupActivity} = this.productDetailModel;
+        const { prodCode, name, originalPrice, productIsPromotionPrice, isGroupIn, groupActivity } = this.productDetailModel;
         const { goType } = this.state;
         if (goType === 'gwc') {
             shopCartCacheTool.addGoodItem({
@@ -358,9 +358,6 @@ export default class ProductDetailPage extends BasePage {
                          }}
                          sections={sectionDataList}
                          scrollEventThrottle={10}
-                         ItemSeparatorComponent={() => {
-                             return <SectionLineView/>;
-                         }}
                          showsVerticalScrollIndicator={false}/>
             <DetailBottomView bottomViewAction={this._bottomViewAction}
                               pData={this.productDetailModel}/>
