@@ -71,7 +71,7 @@ const loginJump = (data) => {
 const phoneBindWx = (wxInfo, data) => {
     //去绑定微信，成功与否不管，都执行回调
     LoginAPI.phoneBindWx({
-        unionId: wxInfo.unionid,
+        unionId: wxInfo.unionid ? wxInfo.unionid : wxInfo.unionId,
         appOpenid: wxInfo.appOpenid,
         headImg: wxInfo.headerImg ? wxInfo.headerImg : wxInfo.headImg,
         nickname: wxInfo.nickName ? wxInfo.nickName : wxInfo.nickname
