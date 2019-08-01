@@ -76,8 +76,8 @@ const phoneBindWx = (wxInfo, callBack, data) => {
     LoginAPI.phoneBindWx({
         unionId: wxInfo.unionid,
         appOpenid: wxInfo.appOpenid,
-        headImg: wxInfo.headerImg,
-        nickname: wxInfo.nickName
+        headImg: wxInfo.headImg,
+        nickname: wxInfo.nickname
     }).then(result => {
         setTimeout(() => {
             callBack(data);
