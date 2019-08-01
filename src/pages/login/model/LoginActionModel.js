@@ -36,19 +36,16 @@ const oneClickLoginValidation = (authenToken, localPhone, navigation, successCal
             homeModule.loadHomeList();
             bridge.setCookies(result.data);
             successCallBack && successCallBack();
+            loginJump(result.data);
             if (StringUtils.isEmpty(result.data.unionid)) {
                 //未绑定微信
-                getWxUserInfo((wxInfo) => {
-                    if (wxInfo && wxInfo.unionid) {
-                        phoneBindWx(wxInfo, () => {
-                            loginJump(result.data);
-                        }, result);
-                    } else {
-                        loginJump(result.data);
-                    }
-                });
-            } else {
-                loginJump(result.data);
+                setTimeout(() => {
+                    getWxUserInfo((wxInfo) => {
+                        if (wxInfo && wxInfo.unionid) {
+                            phoneBindWx(wxInfo, result);
+                        }
+                    });
+                }, 265);
             }
             TrackApi.localPhoneNumLogin({ 'loginMethod': 4 });
         })
@@ -71,7 +68,7 @@ const loginJump = (data) => {
 /**
  * 绑定微信
  */
-const phoneBindWx = (wxInfo, callBack, data) => {
+const phoneBindWx = (wxInfo, data) => {
     //去绑定微信，成功与否不管，都执行回调
     LoginAPI.phoneBindWx({
         unionId: wxInfo.unionid,
@@ -79,16 +76,11 @@ const phoneBindWx = (wxInfo, callBack, data) => {
         headImg: wxInfo.headImg,
         nickname: wxInfo.nickname
     }).then(result => {
-        setTimeout(() => {
-            callBack(data);
-        }, 200);
+        // 微信绑定成功
     }).catch(error => {
         if (data.data.withRegister) {
             bridge.$toast(error.msg);
         }
-        setTimeout(() => {
-            callBack(data);
-        }, 200);
     });
 };
 /**
@@ -194,20 +186,22 @@ const codeLoginAction = (LoginParam, callBack) => {
         //推送
         JPushUtils.updatePushTags();
         JPushUtils.updatePushAlias();
+        // 回调
+        callBack(data);
         // 绑定微信
         if (StringUtils.isEmpty(data.data.unionid)) {
             if (StringUtils.isNoEmpty(LoginParam.unionid)) {
                 // 直接绑定微信
-                phoneBindWx(LoginParam, callBack, data);
+                phoneBindWx(LoginParam, data);
             } else {
                 //未绑定微信
-                getWxUserInfo((wxInfo) => {
-                    if (wxInfo && wxInfo.unionid) {
-                        phoneBindWx(wxInfo, callBack, data);
-                    } else {
-                        callBack(data);
-                    }
-                });
+                setTimeout(() => {
+                    getWxUserInfo((wxInfo) => {
+                        if (wxInfo && wxInfo.unionid) {
+                            phoneBindWx(wxInfo, data);
+                        }
+                    });
+                }, 265);
             }
         } else {
             callBack(data);
@@ -252,23 +246,23 @@ const pwdLoginAction = (LoginParam, callBack) => {
         //推送
         JPushUtils.updatePushTags();
         JPushUtils.updatePushAlias();
+        // 回调
+        callBack(data);
         // 绑定微信
         if (StringUtils.isEmpty(data.data.unionid)) {
             if (StringUtils.isNoEmpty(LoginParam.unionid)) {
                 // 直接绑定微信
-                phoneBindWx(LoginParam, callBack, data);
+                phoneBindWx(LoginParam, data);
             } else {
                 //未绑定微信
-                getWxUserInfo((wxInfo) => {
-                    if (wxInfo && wxInfo.unionid) {
-                        phoneBindWx(wxInfo, callBack, data);
-                    } else {
-                        callBack(data);
-                    }
-                });
+                setTimeout(() => {
+                    getWxUserInfo((wxInfo) => {
+                        if (wxInfo && wxInfo.unionid) {
+                            phoneBindWx(wxInfo, data);
+                        }
+                    });
+                }, 265);
             }
-        } else {
-            callBack(data);
         }
     }).catch((error) => {
         callBack(error);
