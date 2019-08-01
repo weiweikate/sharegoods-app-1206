@@ -47,10 +47,10 @@ RCT_EXPORT_METHOD(startLoginAuth:(RCTPromiseResolveBlock)resolve reject:(RCTProm
           resolve(result[@"loginToken"]);
         }
       }else{
-        if ([result[@"code"] integerValue] != 6002) {
-          reject(@"555",@"取消授权",[NSError new]);
+        if ([result[@"code"] integerValue] == 6002) {
+          reject(@"555",@"取消授权",nil);
         }else{
-          reject(@"666",@"一键登录失败",[NSError new]);
+          reject(@"666",@"一键登录失败",nil);
         }
       }
     }];
@@ -74,7 +74,7 @@ RCT_EXPORT_METHOD(getVerifyToken:(RCTPromiseResolveBlock)resolve reject:(RCTProm
        NSLog(@"%@",result);
        resolve(result[@"token"]);
      }else{
-       reject(@"0",@"获取失败",[NSError new]);
+       reject(@"0",@"获取失败",nil);
      }
   }];
 }

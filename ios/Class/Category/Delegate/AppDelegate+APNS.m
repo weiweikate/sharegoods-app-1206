@@ -126,6 +126,7 @@
 -(void)customUI{
   /*移动*/
   JVMobileUIConfig *mobileUIConfig = [[JVMobileUIConfig alloc] init];
+  mobileUIConfig.privacyState = true;
   mobileUIConfig.logoImg = [UIImage imageNamed:@"cmccLogo"];
    mobileUIConfig.navColor = [UIColor whiteColor];
   NSMutableAttributedString * attriString =[[NSMutableAttributedString  alloc]initWithString:@"一键登录"];
@@ -147,6 +148,7 @@
   
   /*联通*/
   JVUnicomUIConfig *unicomUIConfig = [[JVUnicomUIConfig alloc] init];
+  unicomUIConfig.privacyState = true;
   unicomUIConfig.navColor = [UIColor whiteColor];
   unicomUIConfig.navText = attriString;
   //  https://h5.sharegoodsmall.com/static/protocol/service.html
@@ -166,6 +168,7 @@
   
   /*电信*/
   JVTelecomUIConfig *telecomUIConfig = [[JVTelecomUIConfig alloc] init];
+  telecomUIConfig.privacyState = true;
   telecomUIConfig.navColor = [UIColor whiteColor];
   telecomUIConfig.navText = attriString;
   //  https://h5.sharegoodsmall.com/static/protocol/service.html
@@ -237,7 +240,7 @@
 
 - (void)phoneLoginAction{
   [[NSNotificationCenter defaultCenter] postNotificationName:@"EventToRN"
-                                                      object:@{@"eventName":@"Event_navigateHtmlPage",
+                                                      object:@{@"eventName":@"Event_Login_Type",
                                                                @"login_type":@"2"}];
   [JVERIFICATIONService dismissLoginController];
 }
