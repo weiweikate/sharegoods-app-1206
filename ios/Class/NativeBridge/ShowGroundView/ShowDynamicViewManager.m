@@ -12,9 +12,12 @@
 #import "PagingViewController.h"
 @implementation ShowDynamicViewManager
 RCT_EXPORT_MODULE(ShowDynamicView)
-RCT_EXPORT_VIEW_PROPERTY(onItemPress, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(userType, NSString)
 RCT_EXPORT_VIEW_PROPERTY(headerHeight, NSInteger)
+RCT_EXPORT_VIEW_PROPERTY(onPersonItemPress, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onPersonCollection, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onPersonPublish, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onPersonChangeNav, RCTBubblingEventBlock)
 
 /*
 // Only override drawRect: if you perform custom drawing.

@@ -16,10 +16,15 @@
 #import "MBProgressHUD+PD.h"
 #import "MineCollectCell.h"
 #import "OtherArticleCell.h"
-@interface TestListBaseView()<UICollectionViewDataSource, WHCWaterfallFlowLayoutDelegate, UICollectionViewDelegate, UIScrollViewDelegate>
+#import "UIScrollView+EmptyDataSet.h"
+
+
+@interface TestListBaseView()<UICollectionViewDataSource, WHCWaterfallFlowLayoutDelegate, UICollectionViewDelegate, UIScrollViewDelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate>
 @property (nonatomic, copy) void(^scrollCallback)(UIScrollView *scrollView);
 @property (nonatomic, assign)NSInteger page;
 @property(nonatomic, strong)NSMutableArray<ShowQuery_dataModel *> *dataArr;
+@property(nonatomic, assign)BOOL isError;
+
 @end
 
 @implementation TestListBaseView
@@ -40,6 +45,8 @@
         collectionView.showsHorizontalScrollIndicator = NO;
         collectionView.dataSource = self;
         collectionView.delegate = self;
+        collectionView.emptyDataSetSource = self;
+        collectionView.emptyDataSetDelegate = self;
         collectionView.backgroundColor = [UIColor colorWithHexString:@"F5F5F5"];
         [collectionView registerClass:[MineArticleCell class] forCellWithReuseIdentifier:@"MineArticleCell"];
       [collectionView registerClass:[MineCollectCell class] forCellWithReuseIdentifier:@"MineCollectCell"];
@@ -71,6 +78,7 @@
 - (void)refreshData
 {
   self.page = 1;
+  self.isError = NO;
   NSMutableDictionary *dic = [NSMutableDictionary new];
   if (self.params) {
     dic = [self.params mutableCopy];
@@ -87,7 +95,9 @@
     }
     [weakSelf.collectionView reloadData];
   } failure:^(NSString *msg, NSInteger code) {
-  
+    [MBProgressHUD showSuccess:msg];
+    self.isError = YES;
+    [self.collectionView reloadData];
   } showLoading:nil];
  
 }
@@ -133,6 +143,10 @@
 - (void)setApi:(NSString *)api
 {
   _api = api;
+}
+
+-(void)setType:(NSInteger)type{
+  _type = type;
 }
 
 #pragma mark - UITableViewDataSource, UITableViewDelegate
@@ -183,8 +197,8 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-  if (self.onItemPress) {
-    self.onItemPress([self.dataArr[indexPath.row] modelToJSONObject]);
+  if (self.onPersonItemPress) {
+    self.onPersonItemPress([self.dataArr[indexPath.row] modelToJSONObject]);
   }
 }
 
@@ -193,6 +207,131 @@
     self.scrollCallback(scrollView);
 }
 
+
+#pragma arguments - DZNEmptyDataSetDelegate
+
+- (UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView {
+  return [UIImage imageNamed:@"empty"];
+}
+
+// 空白页显示返回按钮图片
+- (NSAttributedString *)buttonTitleForEmptyDataSet:(UIScrollView *)scrollView forState:(UIControlState)state {
+  NSString *text = @"点击刷新";
+  if(!self.isError){
+    if(self.type == 0){
+      text = @"去发布";
+    }else if(self.type == 1){
+      text = @"点击去收藏";
+    }
+  }
+  UIFont   *font = [UIFont systemFontOfSize:15.0];
+  // 设置默认状态、点击高亮状态下的按钮字体颜色
+  UIColor  *textColor = [UIColor whiteColor];
+  
+  NSMutableDictionary *attributes = [NSMutableDictionary new];
+  [attributes setObject:font      forKey:NSFontAttributeName];
+  [attributes setObject:textColor forKey:NSForegroundColorAttributeName];
+  
+  return [[NSAttributedString alloc] initWithString:text attributes:attributes];
+}
+
+- (NSAttributedString *)titleForEmptyDataSet:(UIScrollView *)scrollView {
+  NSString *title = @"暂无数据";
+  if(!self.isError){
+    if(self.type == 0){
+      title = @"暂无内容，马上去发布文章";
+    }else if(self.type == 1){
+      title = @"暂无内容，马上去收藏好文";
+    }
+  }
+  NSDictionary *attributes = @{
+                               NSFontAttributeName:[UIFont
+                                                    systemFontOfSize:13.0],
+                               NSForegroundColorAttributeName:[UIColor colorWithHexString:@"666666"]
+                               };
+  return [[NSAttributedString alloc] initWithString:title attributes:attributes];
+}
+
+
+- (nullable UIImage *)buttonBackgroundImageForEmptyDataSet:(UIScrollView *)scrollView forState:(UIControlState)state{
+  CGRect frame = CGRectMake(0, 0, 100, 34);
+  //底部上下渐变效果背景
+  //通过图片上下文设置颜色空间间
+  UIGraphicsBeginImageContext(frame.size);
+  //获得当前的上下文
+  CGContextRef context = UIGraphicsGetCurrentContext();
+  //创建颜色空间 /* Create a DeviceRGB color space. */
+  CGColorSpaceRef rgb = CGColorSpaceCreateDeviceRGB();
+  //通过矩阵调整空间变换
+  CGContextScaleCTM(context, frame.size.width, frame.size.height);
+  //通过颜色组件获得渐变上下文
+  CGGradientRef backGradient;
+  CGFloat colors[] = {
+    252/255.0, 93/255.0, 57/255.0, 1.0,
+    255/255.0, 0/255.0, 80/255.0, 1.0,
+  };
+  backGradient = CGGradientCreateWithColorComponents(rgb, colors, NULL, sizeof(colors)/(sizeof(colors[0])*4));
+  //释放颜色渐变
+  CGColorSpaceRelease(rgb);
+  //通过上下文绘画线色渐变
+  //设置渐变颜色方向，左上点为(0,0), 右下点为(1,1)
+  CGContextDrawLinearGradient(context, backGradient, CGPointMake(0, 0.5), CGPointMake(1, 0.5), kCGGradientDrawsBeforeStartLocation);
+  //通过图片上下文获得照片
+  UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+  
+  return image;
+}
+
+- (void)emptyDataSet:(UIScrollView *)scrollView didTapButton:(UIButton *)button {
+  if(!self.isError){
+    if(self.type == 0){
+      if (self.onPersonPublish) {
+        self.onPersonPublish(@{});
+      }
+    }else if(self.type == 1){
+      if (self.onPersonCollection) {
+        self.onPersonCollection(@{});
+      }
+    }
+  }else{
+    [self refreshData];
+  }
+}
+
+- (void)emptyDataSetWillAppear:(UIScrollView *)scrollView{
+  self.collectionView.mj_footer.hidden = YES;
+}
+
+-(void)emptyDataSetDidAppear:(UIScrollView *)scrollView{
+  UIButton *button = [scrollView valueForKeyPath:@"emptyDataSetView.button"];
+  button.layer.cornerRadius = 17;
+  button.clipsToBounds = YES;
+  if (button) {
+    // Change button width
+    for (NSLayoutConstraint *constraint in button.superview.constraints) {
+      if (constraint.firstItem == button && constraint.firstAttribute == NSLayoutAttributeLeading) {
+        constraint.constant = 100.0;
+      } else if (constraint.secondItem == button && constraint.secondAttribute == NSLayoutAttributeTrailing) {
+        constraint.constant = 100.0;
+      }
+    }
+    // Change button height
+    for (NSLayoutConstraint *constraint in button.constraints) {
+      if (constraint.firstItem == button && constraint.firstAttribute == NSLayoutAttributeHeight) {
+        constraint.constant = 34.0;
+      }
+    }
+  }
+}
+
+- (void)emptyDataSetWillDisappear:(UIScrollView *)scrollView{
+  self.collectionView.mj_footer.hidden = NO;
+}
+
+- (CGFloat)verticalOffsetForEmptyDataSet:(UIScrollView *)scrollView{
+  
+  return -130;
+}
 
 #pragma mark - JXPagingViewListViewDelegate
 
