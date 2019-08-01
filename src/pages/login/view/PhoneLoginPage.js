@@ -12,7 +12,7 @@ import StringUtils from '../../../utils/StringUtils';
 import bridge from '../../../utils/bridge';
 import LinearGradient from 'react-native-linear-gradient';
 import store from '@mr/rn-store';
-import { getWxUserInfo, wxLoginAction } from '../model/LoginActionModel';
+import { getWxUserInfo, oneClickLoginValidation, wxLoginAction } from '../model/LoginActionModel';
 import { getVerifyToken } from '../model/PhoneAuthenAction';
 import res from '../../../comm/res';
 import resLogin from '../res';
@@ -75,7 +75,15 @@ export default class PhoneLoginPage extends BasePage {
         this.$loadingShow();
         getVerifyToken().then((data => {
             // token去服务端号码认证，认证通过登录成功
-            this.$loadingDismiss();
+            let { navigation } = this.props;
+            oneClickLoginValidation(data, this.state.phoneNum, navigation, () => {
+                this.$loadingDismiss();
+            }, () => {
+                // 认证失败，
+                this.$loadingDismiss();
+                loginModel.savePhoneNumber(this.state.phoneNum);
+                routeNavigate(RouterMap.LoginVerifyCodePage, { ...this.params, phoneNum: this.state.phoneNum });
+            });
             // 如果没有绑定微信，绑定微信
         })).catch(e => {
             // 认证失败，
