@@ -77,6 +77,8 @@ const phoneBindWx = (wxInfo, data) => {
         nickname: wxInfo.nickName ? wxInfo.nickName : wxInfo.nickname
     }).then(result => {
         // 微信绑定成功
+        UserModel.unionid = wxInfo.unionid ? wxInfo.unionid : wxInfo.unionId;
+        UserModel.appOpenid = wxInfo.appOpenid;
     }).catch(error => {
         if (data.data.withRegister) {
             bridge.$toast(error.msg);
