@@ -9,6 +9,7 @@ import RouterMap, { routeNavigate, routePush } from '../../../navigation/RouterM
 import MineAPI from '../../mine/api/MineApi';
 import ProductApi from '../api/ProductApi';
 import user from '../../../model/user';
+import { SectionLineView } from './ProductDetailSectionView';
 
 const { arrow_right_black } = res.button;
 const { pAddress } = res;
@@ -19,17 +20,20 @@ export class ProductDetailSetAddressView extends React.Component {
         const { productDetailAddressModel } = this.props;
         const { showAreaText } = productDetailAddressModel;
         return (
-            <NoMoreClick style={pStyles.containerView} onPress={() => {
-                if (!user.isLogin) {
-                    routeNavigate(RouterMap.LoginPage);
-                    return;
-                }
-                routePush(RouterMap.ProductAddressListPage, { productDetailAddressModel });
-            }}>
-                <MRText style={pStyles.nameText}>选择</MRText>
-                <MRText style={pStyles.valueText}>配送至: {showAreaText}</MRText>
-                <Image source={arrow_right_black}/>
-            </NoMoreClick>
+            <View>
+                <SectionLineView/>
+                <NoMoreClick style={pStyles.containerView} onPress={() => {
+                    if (!user.isLogin) {
+                        routeNavigate(RouterMap.LoginPage);
+                        return;
+                    }
+                    routePush(RouterMap.ProductAddressListPage, { productDetailAddressModel });
+                }}>
+                    <MRText style={pStyles.nameText}>选择</MRText>
+                    <MRText style={pStyles.valueText}>配送至: {showAreaText}</MRText>
+                    <Image source={arrow_right_black}/>
+                </NoMoreClick>
+            </View>
         );
     }
 }

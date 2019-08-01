@@ -24,6 +24,7 @@ import { activity_type, activity_status } from '../ProductDetailModel';
 import bridge from '../../../utils/bridge';
 import { getSource } from '@mr/image-placeholder/oos';
 import { getSize } from '../../../utils/OssHelper';
+import { SectionLineView } from './ProductDetailSectionView';
 
 const { isNoEmpty } = StringUtils;
 const { arrow_right_black } = RES.button;
@@ -422,13 +423,20 @@ export class ParamItemView extends Component {
             return item.paramName;
         });
         return (
-            <NoMoreClick style={ParamItemViewStyles.paramView} onPress={paramAction}>
-                <Text style={ParamItemViewStyles.paramText}>参数</Text>
-                <View style={{ flex: 1, justifyContent: 'center', marginLeft: 10 }}>
-                    <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: 13 }}>{paramNames.join(' ')}</Text>
-                </View>
-                <Image source={arrow_right_black}/>
-            </NoMoreClick>
+            <View>
+                <SectionLineView/>
+                <NoMoreClick style={ParamItemViewStyles.paramView} onPress={paramAction}>
+                    <Text style={ParamItemViewStyles.paramText}>参数</Text>
+                    <View style={{ flex: 1, justifyContent: 'center', marginLeft: 10 }}>
+                        <Text style={{
+                            color: DesignRule.textColor_mainTitle,
+                            fontSize: 13
+                        }}>{paramNames.join(' ')}</Text>
+                    </View>
+                    <Image source={arrow_right_black}/>
+                </NoMoreClick>
+            </View>
+
         );
     }
 }
