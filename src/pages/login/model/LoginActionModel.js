@@ -13,7 +13,7 @@ import { login, track, TrackApi } from '../../../utils/SensorsTrack';
 import JPushUtils from '../../../utils/JPushUtils';
 import DeviceInfo from 'react-native-device-info/deviceinfo';
 import { DeviceEventEmitter } from 'react-native';
-import RouterMap, { loginBack, routePush } from '../../../navigation/RouterMap';
+import RouterMap, { routePop, routePush } from '../../../navigation/RouterMap';
 import StringUtils from '../../../utils/StringUtils';
 
 /**
@@ -41,12 +41,14 @@ const oneClickLoginValidation = (authenToken, localPhone, navigation, successCal
                 getWxUserInfo((wxInfo) => {
                     if (wxInfo) {
                         phoneBindWx(wxInfo, () => {
-                            this.loginJump(result.data);
+                            loginJump(result.data);
                         });
                     } else {
-                        this.loginJump(result.data);
+                        loginJump(result.data);
                     }
                 });
+            } else {
+                loginJump(result.data);
             }
             TrackApi.localPhoneNumLogin({ 'loginMethod': 4 });
         })
@@ -62,7 +64,7 @@ const loginJump = (data) => {
         routePush(RouterMap.InviteCodePage, {});
     } else {
         //老用户
-        loginBack();
+        routePop(1);
     }
 };
 
