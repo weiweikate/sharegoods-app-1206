@@ -74,11 +74,11 @@ export default class LoginPage extends BasePage {
 
     justLogin = () => {
         // 一键登录
-        this.$loadingShow();
         if (loginModel.authPhone) {
             // 可以一键登录
             this.startOneLogin();
         } else {
+            this.$loadingShow();
             checkInitResult().then((isVerifyEnable) => {
                 this.$loadingDismiss();
                 loginModel.setAuthPhone(isVerifyEnable);
@@ -95,6 +95,7 @@ export default class LoginPage extends BasePage {
 
     startOneLogin = () => {
         startLoginAuth().then((data) => {
+            this.$loadingShow();
             let { navigation } = this.props;
             oneClickLoginValidation(data, null, navigation, () => {
                 this.$loadingDismiss();
@@ -102,7 +103,6 @@ export default class LoginPage extends BasePage {
                 this.$loadingDismiss();
             });
         }).catch((error) => {
-            this.$loadingDismiss();
             if (error.code === '555') {
                 closeAuth();
             } else {
