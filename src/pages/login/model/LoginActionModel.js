@@ -73,8 +73,8 @@ const phoneBindWx = (wxInfo, data) => {
     LoginAPI.phoneBindWx({
         unionId: wxInfo.unionid,
         appOpenid: wxInfo.appOpenid,
-        headImg: wxInfo.headImg,
-        nickname: wxInfo.nickname
+        headImg: wxInfo.headerImg ? wxInfo.headerImg : wxInfo.headImg,
+        nickname: wxInfo.nickName ? wxInfo.nickName : wxInfo.nickname
     }).then(result => {
         // 微信绑定成功
     }).catch(error => {
