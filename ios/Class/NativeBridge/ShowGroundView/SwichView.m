@@ -155,7 +155,7 @@
 //    [btn setImage:[UIImage imageNamed:@"back"] forState:0];
 //    [self addSubview:btn];
 //    btn.frame = CGRectMake(0, kNavBarHeight - 44, 44, 44);
-//    [self addSubview:self.swichView];
+    [self addSubview:self.swichView];
   }
   return self;
 }
@@ -180,12 +180,17 @@
   self.swichView.center = CGPointMake(self.centerX_sd, (kNavBarHeight - 44) + 22);
 }
 
-- (void)setHidden:(BOOL)hidden
-{
-  self.swichView.hidden = hidden;
-//  [btn setImage:[UIImage imageNamed:hidden?@"":@"back"] forState:0];
-//  btn.tintColor = hidden?[UIColor whiteColor]:[UIColor blackColor];
-  self.backgroundColor = hidden?[UIColor clearColor]:[UIColor whiteColor];
-}
+//- (void)setHidden:(BOOL)hidden
+//{
+//  self.swichView.hidden = hidden;
+////  [btn setImage:[UIImage imageNamed:hidden?@"":@"back"] forState:0];
+////  btn.tintColor = hidden?[UIColor whiteColor]:[UIColor blackColor];
+//  self.backgroundColor = hidden?[UIColor clearColor]:[UIColor whiteColor];
+//}
+//
+//- (BOOL)isHidden
+//{
+//  return self.swichView.hidden;
+//}
 
 @end

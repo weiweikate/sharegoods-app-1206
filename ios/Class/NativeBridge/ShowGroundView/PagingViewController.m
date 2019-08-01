@@ -35,7 +35,7 @@ static const NSString * USERTYPE_others = @"others";
 - (instancetype)init
 {
   if (self = [super init]) {
-    
+
     _pagingView = [[JXPagerView alloc] initWithDelegate:self];
     [self addSubview:self.pagingView];
     [self.pagingView.listContainerView.collectionView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:nil];
@@ -119,9 +119,15 @@ static const NSString * USERTYPE_others = @"others";
     left = left/((hei)*1.0 );
     left = left * Y;
     self.swichView.frame = CGRectMake(left+15, self.swichView.origin.y, self.swichView.width_sd, self.swichView.height_sd);
-    
+
   }
-  _Navi.hidden =  Y < hei;
+  if (_Navi.hidden !=  Y < hei) {
+    _Navi.hidden =  Y < hei;
+    if (hei != Y) {
+      self.onPersonChangeNav(@{@"show": @(_Navi.hidden) });
+    }
+  }
+
 }
 
 #pragma mark - JXCategoryViewDelegate

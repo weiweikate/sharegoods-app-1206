@@ -4,7 +4,7 @@ import {
     View,
     Image,
     TouchableOpacity,
-    Platform
+    // Platform
 } from 'react-native';
 import BasePage from '../../BasePage';
 import DesignRule from '../../constants/DesignRule';
@@ -46,20 +46,19 @@ export default class MyDynamicPage extends BasePage {
     };
 
     navRender = () => {
-        if (Platform.OS === 'ios'){
-            return null;
-        }
+        // if (Platform.OS === 'ios'){
+        //     return null;
+        // }
         return (
             <View
-                style={{ position: 'absolute', top: 0, left: 0, right: 0 }}>
+                style={{ position: 'absolute', top: 0, left: 0, width: 60, height: headerHeight}}>
                 <View style={{
                     flexDirection: 'row',
                     alignItems: 'center',
                     paddingRight: px2dp(15),
-                    height: headerHeight,
-                    paddingTop: ScreenUtils.statusBarHeight
+                    height: 44,
+                    marginTop: ScreenUtils.statusBarHeight
                 }}>
-                    <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row' }}>
                         <TouchableOpacity
                             style={styles.left}
                             onPress={() => {
@@ -71,7 +70,6 @@ export default class MyDynamicPage extends BasePage {
                                 style={{ height: 20, width: 20 }}
                             />
                         </TouchableOpacity>
-                    </View>
                 </View>
             </View>
         );
@@ -107,10 +105,10 @@ export default class MyDynamicPage extends BasePage {
             <View style={styles.contain}>
                 <Waterfall style={{ flex: 1, marginTop: -10 }}
                            headerHeight={this.params.userType !== 'mineNormal' ? px2dp(270):px2dp(235)}
-                           changeNav={({nativeEvent})=>{
-                               this.setState({
-                                   changeHeader:nativeEvent.show
-                               })
+                           onPersonChangeNav={({nativeEvent})=> {
+                                   this.setState({
+                                       changeHeader: nativeEvent.show
+                                   })
                            }}
                            userType={`${this.params.userType}${userNo}`}
                            type={'MyDynamic'}

@@ -15,6 +15,7 @@
 @property (nonatomic, copy) RCTBubblingEventBlock onPersonItemPress;
 @property (nonatomic, copy) RCTBubblingEventBlock onPersonCollection;
 @property (nonatomic, copy) RCTBubblingEventBlock onPersonPublish;
+@property (nonatomic, copy) RCTBubblingEventBlock onPersonChangeNav;
 
 @property (nonatomic, strong) NSString* userType;
 @property (nonatomic, assign) NSInteger headerHeight;
