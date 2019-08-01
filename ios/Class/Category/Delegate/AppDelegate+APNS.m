@@ -128,14 +128,11 @@
   JVMobileUIConfig *mobileUIConfig = [[JVMobileUIConfig alloc] init];
   mobileUIConfig.privacyState = true;
   mobileUIConfig.logoImg = [UIImage imageNamed:@"cmccLogo"];
-   mobileUIConfig.navColor = [UIColor whiteColor];
-  NSMutableAttributedString * attriString =[[NSMutableAttributedString  alloc]initWithString:@"一键登录"];
-  [ attriString  addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#4d4d4d"] range:NSMakeRange(0, 4)];
-  mobileUIConfig.navText = attriString;
+  mobileUIConfig.navColor = [UIColor whiteColor];
   //  https://h5.sharegoodsmall.com/static/protocol/service.html
   mobileUIConfig.appPrivacyOne = @[@"用户协议",@"https://h5.sharegoodsmall.com/static/protocol/service.html"];
   mobileUIConfig.logoImg = [UIImage imageNamed:@"logo"];
-  mobileUIConfig.navReturnImg = [UIImage imageNamed:@"back"];
+  mobileUIConfig.navReturnImg = [UIImage imageNamed:@"oneLoginCancel"];
   mobileUIConfig.logBtnImgs = @[[UIImage imageNamed:@"umcsdk_login_btn_normal"],
                                 [UIImage imageNamed:@"umcsdk_login_btn_unable"],
                                 [UIImage imageNamed:@"umcsdk_login_btn_press"],];
@@ -150,11 +147,10 @@
   JVUnicomUIConfig *unicomUIConfig = [[JVUnicomUIConfig alloc] init];
   unicomUIConfig.privacyState = true;
   unicomUIConfig.navColor = [UIColor whiteColor];
-  unicomUIConfig.navText = attriString;
   //  https://h5.sharegoodsmall.com/static/protocol/service.html
   unicomUIConfig.appPrivacyOne = @[@"用户协议",@"https://h5.sharegoodsmall.com/static/protocol/service.html"];
   unicomUIConfig.logoImg = [UIImage imageNamed:@"logo"];
-  unicomUIConfig.navReturnImg = [UIImage imageNamed:@"back"];
+  unicomUIConfig.navReturnImg = [UIImage imageNamed:@"oneLoginCancel"];
   unicomUIConfig.logBtnImgs = @[[UIImage imageNamed:@"umcsdk_login_btn_normal"],
                                 [UIImage imageNamed:@"umcsdk_login_btn_unable"],
                                 [UIImage imageNamed:@"umcsdk_login_btn_press"],];
@@ -170,11 +166,10 @@
   JVTelecomUIConfig *telecomUIConfig = [[JVTelecomUIConfig alloc] init];
   telecomUIConfig.privacyState = true;
   telecomUIConfig.navColor = [UIColor whiteColor];
-  telecomUIConfig.navText = attriString;
   //  https://h5.sharegoodsmall.com/static/protocol/service.html
   telecomUIConfig.appPrivacyOne = @[@"用户协议",@"https://h5.sharegoodsmall.com/static/protocol/service.html"];
   telecomUIConfig.logoImg = [UIImage imageNamed:@"logo"];
-  telecomUIConfig.navReturnImg = [UIImage imageNamed:@"back"];
+  telecomUIConfig.navReturnImg = [UIImage imageNamed:@"oneLoginCancel"];
   telecomUIConfig.logBtnImgs = @[[UIImage imageNamed:@"umcsdk_login_btn_normal"],
                                 [UIImage imageNamed:@"umcsdk_login_btn_unable"],
                                 [UIImage imageNamed:@"umcsdk_login_btn_press"],];
