@@ -329,17 +329,22 @@
     return;
   }
   if (!self.isLoadJS) {
-    __weak AppDelegate * weakSelf = self;
- [NSTimer scheduledTimerWithTimeInterval:1 repeats:YES block:^(NSTimer * _Nonnull timer) {
-      if (weakSelf.isLoadJS) {
-        [self openScheme:openURL];
-        [timer invalidate];
-      }
-    }];
+    [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerRepeat:) userInfo:openURL repeats:YES];
   }else{
     [self openScheme:openURL];
   }
 }
+- (void)timerRepeat:(NSTimer *)timer{
+  if (self.isLoadJS) {
+    if (timer.isValid) {
+      [timer  invalidate];
+      timer = nil;
+    }
+    NSString *openUrl = (NSString *)timer.userInfo;
+    [self openScheme:openUrl];
+  }
+}
+
 - (void)openScheme:(NSString *)openURL{
   if ([[UIApplication sharedApplication] respondsToSelector:@selector(openURL:options:completionHandler:)]) {
     [[UIApplication sharedApplication]openURL:[NSURL URLWithString:openURL] options:@{} completionHandler:nil];
