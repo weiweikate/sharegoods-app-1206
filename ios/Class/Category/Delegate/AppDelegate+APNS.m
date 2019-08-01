@@ -19,6 +19,9 @@
 #import <AdSupport/AdSupport.h>
 #import "JVERIFICATIONService.h"
 #import <SensorsAnalyticsSDK.h>
+#import "UIView+SDAutoLayout.h"
+#import "UIButton+ImageText.h"
+
 #define NotificationStatusTime @"NotificationStatusTime"
 
 @interface AppDelegate (APNS)<JPUSHRegisterDelegate>
@@ -138,43 +141,8 @@
    mobileUIConfig.appPrivacyColor = @[[UIColor colorWithHexString:@"#3d3d3d"], [UIColor colorWithHexString:@"#F00050"]];
   mobileUIConfig.checkedImg = [UIImage imageNamed:@"umcsdk_check_image"];
   mobileUIConfig.uncheckedImg = [UIImage imageNamed:@"umcsdk_uncheck_image"];
-  /*
-   mobileUIConfig.authPageBackgroundImage = [UIImage imageNamed:@"背景图"];
-   mobileUIConfig.navColor = [UIColor redColor];
-   mobileUIConfig.barStyle = 0;
-   mobileUIConfig.navText = [[NSAttributedString alloc] initWithString:@"自定义标题"];
-   mobileUIConfig.navReturnImg = [UIImage imageNamed:@"自定义返回键"];
-   UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-   button.frame = CGRectMake(0, 0, 44, 44);
-   button.backgroundColor = [UIColor greenColor];
-   mobileUIConfig.navControl = [[UIBarButtonItem alloc] initWithCustomView:button];
-   mobileUIConfig.logoWidth = 100;
-   mobileUIConfig.logoHeight = 100;
-   mobileUIConfig.logoOffsetY = 50;
-   mobileUIConfig.logoHidden = NO;
-   mobileUIConfig.logBtnText = @"自定义登录按钮文字";
-   mobileUIConfig.logoOffsetY = 100;
-   mobileUIConfig.logBtnTextColor = [UIColor redColor];
-   mobileUIConfig.numberColor = [UIColor blueColor];
-   mobileUIConfig.numFieldOffsetY = 80;
-   mobileUIConfig.uncheckedImg = [UIImage imageNamed:@"未选中图片"];
-   mobileUIConfig.checkedImg = [UIImage imageNamed:@"选中图片"];
-   mobileUIConfig.appPrivacyOne = @[@"应用自定义服务条款1",@"https://www.jiguang.cn/about"];
-   mobileUIConfig.appPrivacyTwo = @[@"应用自定义服务条款2",@"https://www.jiguang.cn/about"];
-   mobileUIConfig.appPrivacyColor = @[[UIColor redColor], [UIColor blueColor]];
-   mobileUIConfig.privacyOffsetY = 20;
-   mobileUIConfig.sloganOffsetY = 70;
-   mobileUIConfig.sloganTextColor = [UIColor redColor];
-   */
   [JVERIFICATIONService customUIWithConfig:mobileUIConfig customViews:^(UIView *customAreaView) {
-    /*
-     //添加一个自定义label
-     UILabel *lable  = [[UILabel alloc] init];
-     lable.text = @"这是一个自定义label";
-     [lable sizeToFit];
-     lable.center = customAreaView.center;
-     [customAreaView addSubview:lable];
-     */
+    [self customLoginView:customAreaView];
   }];
   
   /*联通*/
@@ -191,36 +159,9 @@
   unicomUIConfig.appPrivacyColor = @[[UIColor colorWithHexString:@"#3d3d3d"], [UIColor colorWithHexString:@"#F00050"]];
   unicomUIConfig.checkedImg = [UIImage imageNamed:@"umcsdk_check_image"];
   unicomUIConfig.uncheckedImg = [UIImage imageNamed:@"umcsdk_uncheck_image"];
-  /*
-   unicomUIConfig.authPageBackgroundImage = [UIImage imageNamed:@"背景图"];
-   unicomUIConfig.navColor = [UIColor redColor];
-   unicomUIConfig.barStyle = 0;
-   unicomUIConfig.navText = [[NSAttributedString alloc] initWithString:@"自定义标题"];
-   unicomUIConfig.navReturnImg = [UIImage imageNamed:@"自定义返回键"];
-   UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-   button.frame = CGRectMake(0, 0, 44, 44);
-   button.backgroundColor = [UIColor greenColor];
-   unicomUIConfig.navControl = [[UIBarButtonItem alloc] initWithCustomView:button];
-   unicomUIConfig.logoWidth = 100;
-   unicomUIConfig.logoHeight = 100;
-   unicomUIConfig.logoOffsetY = 50;
-   unicomUIConfig.logoHidden = NO;
-   unicomUIConfig.logBtnText = @"自定义登录按钮文字";
-   unicomUIConfig.logoOffsetY = 100;
-   unicomUIConfig.logBtnTextColor = [UIColor redColor];
-   unicomUIConfig.numberColor = [UIColor blueColor];
-   unicomUIConfig.numFieldOffsetY = 80;
-   unicomUIConfig.uncheckedImg = [UIImage imageNamed:@"未选中图片"];
-   unicomUIConfig.checkedImg = [UIImage imageNamed:@"选中图片"];
-   unicomUIConfig.appPrivacyOne = @[@"应用自定义服务条款1",@"https://www.jiguang.cn/about"];
-   unicomUIConfig.appPrivacyTwo = @[@"应用自定义服务条款2",@"https://www.jiguang.cn/about"];
-   unicomUIConfig.appPrivacyColor = @[[UIColor redColor], [UIColor blueColor]];
-   unicomUIConfig.privacyOffsetY = 20;
-   unicomUIConfig.sloganOffsetY = 70;
-   unicomUIConfig.sloganTextColor = [UIColor redColor];
-   */
+  
   [JVERIFICATIONService customUIWithConfig:unicomUIConfig customViews:^(UIView *customAreaView) {
-    //添加自定义控件
+    [self customLoginView:customAreaView];
   }];
   
   /*电信*/
@@ -237,46 +178,69 @@
   telecomUIConfig.appPrivacyColor = @[[UIColor colorWithHexString:@"#3d3d3d"], [UIColor colorWithHexString:@"#F00050"]];
   telecomUIConfig.checkedImg = [UIImage imageNamed:@"umcsdk_check_image"];
   telecomUIConfig.uncheckedImg = [UIImage imageNamed:@"umcsdk_uncheck_image"];
-  /*
-   telecomUIConfig.authPageBackgroundImage = [UIImage imageNamed:@"背景图"];
-   telecomUIConfig.navColor = [UIColor redColor];
-   telecomUIConfig.barStyle = 0;
-   telecomUIConfig.navText = [[NSAttributedString alloc] initWithString:@"自定义标题"];
-   telecomUIConfig.navReturnImg = [UIImage imageNamed:@"自定义返回键"];
-   UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-   button.frame = CGRectMake(0, 0, 44, 44);
-   button.backgroundColor = [UIColor greenColor];
-   telecomUIConfig.navControl = [[UIBarButtonItem alloc] initWithCustomView:button];
-   telecomUIConfig.logoWidth = 100;
-   telecomUIConfig.logoHeight = 100;
-   telecomUIConfig.logoOffsetY = 50;
-   telecomUIConfig.logoHidden = NO;
-   telecomUIConfig.logBtnText = @"自定义登录按钮文字";
-   telecomUIConfig.logoOffsetY = 100;
-   telecomUIConfig.logBtnTextColor = [UIColor redColor];
-   telecomUIConfig.numberColor = [UIColor blueColor];
-   telecomUIConfig.numFieldOffsetY = 80;
-   telecomUIConfig.uncheckedImg = [UIImage imageNamed:@"未选中图片"];
-   telecomUIConfig.checkedImg = [UIImage imageNamed:@"选中图片"];
-   telecomUIConfig.appPrivacyOne = @[@"应用自定义服务条款1",@"https://www.jiguang.cn/about"];
-   telecomUIConfig.appPrivacyTwo = @[@"应用自定义服务条款2",@"https://www.jiguang.cn/about"];
-   telecomUIConfig.appPrivacyColor = @[[UIColor redColor], [UIColor blueColor]];
-   telecomUIConfig.privacyOffsetY = 20;
-   telecomUIConfig.sloganOffsetY = 70;
-   telecomUIConfig.sloganTextColor = [UIColor redColor];
-   */
   [JVERIFICATIONService customUIWithConfig:telecomUIConfig customViews:^(UIView *customAreaView) {
-    /*
-     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom]}
-     button.frame = CGRectMake(50, 300, 44, 44);
-     button.backgroundColor = [UIColor redColor];
-     [button addTarget:self action:@selector(buttonTouch) forControlEvents:UIControlEventTouchUpInside];
-     [customAreaView addSubview:button];
-     */
+    [self customLoginView:customAreaView];
   }];
 }
 
+- (void)customLoginView:(UIView *)customView{
+  UIView *bgView = [UIView new];
+  [customView addSubview:bgView];
+  bgView.sd_layout.bottomSpaceToView(customView, kRealValue(70)+kTabBarMoreHeight).leftEqualToView(customView).rightEqualToView(customView).heightIs(110);
+  UILabel *tittleLabel = [[UILabel alloc] init];
+  tittleLabel.text = @"其他登录方式";
+  tittleLabel.textColor = RGB(102, 102, 102);
+  tittleLabel.font = [UIFont systemFontOfSize:13];
+  [bgView addSubview:tittleLabel];
+  tittleLabel.sd_layout.centerXEqualToView(bgView).topEqualToView(bgView).heightIs(19);
+  [tittleLabel setSingleLineAutoResizeWithMaxWidth:300];
+  
+  UIView *lineLeftView = [[UIView alloc] init];
+  lineLeftView.backgroundColor = RGB(228, 228, 228);
+  [bgView addSubview:lineLeftView];
+  lineLeftView.sd_layout.rightSpaceToView(tittleLabel, 7).centerYEqualToView(tittleLabel).widthIs(kRealValue(102)).heightIs(1);
+  
+  UIView *lineRightView = [[UIView alloc] init];
+  lineRightView.backgroundColor = RGB(228, 228, 228);
+  [bgView addSubview:lineRightView];
+  lineRightView.sd_layout.leftSpaceToView(tittleLabel, 7).centerYEqualToView(tittleLabel).widthIs(kRealValue(102)).heightIs(1);
+  
+  UIButton *leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+  [leftBtn setImage:[UIImage imageNamed:@"oneLoginWeix"] forState:UIControlStateNormal];
+  [leftBtn setTitle:@"微信登录" forState:UIControlStateNormal];
+  [leftBtn setTitleColor:RGB(153, 153, 153) forState:UIControlStateNormal];
+  [leftBtn addTarget:self action:@selector(weiXLoginAction) forControlEvents:UIControlEventTouchUpInside];
+  leftBtn.titleLabel.font = [UIFont systemFontOfSize:11];
+  [bgView addSubview:leftBtn];
+  leftBtn.sd_layout.centerXEqualToView(bgView)
+  .offset(-74).bottomEqualToView(bgView).heightIs(73).widthIs(60);
+  [leftBtn layoutButtonWithImageTitleSpace:10];
+  
+  UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+  [rightBtn setImage:[UIImage imageNamed:@"oneLoginPhone"] forState:UIControlStateNormal];
+  [rightBtn setTitle:@"手机号登录" forState:UIControlStateNormal];
+  [rightBtn setTitleColor:RGB(153, 153, 153) forState:UIControlStateNormal];
+  [rightBtn addTarget:self action:@selector(phoneLoginAction) forControlEvents:UIControlEventTouchUpInside];
+  rightBtn.titleLabel.font = [UIFont systemFontOfSize:11];
+  [bgView addSubview:rightBtn];
+  rightBtn.sd_layout.centerXEqualToView(bgView).offset(74).bottomEqualToView(bgView)
+  .heightIs(73).widthIs(60);
+  [rightBtn layoutButtonWithImageTitleSpace:10];
+}
 
+- (void)weiXLoginAction{
+  [[NSNotificationCenter defaultCenter] postNotificationName:@"EventToRN"
+                                                      object:@{@"eventName":@"Event_Login_Type",
+                                                               @"login_type":@"1"}];
+  [JVERIFICATIONService dismissLoginController];
+}
+
+- (void)phoneLoginAction{
+  [[NSNotificationCenter defaultCenter] postNotificationName:@"EventToRN"
+                                                      object:@{@"eventName":@"Event_navigateHtmlPage",
+                                                               @"login_type":@"2"}];
+  [JVERIFICATIONService dismissLoginController];
+}
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
   //Optional
