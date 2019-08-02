@@ -7,7 +7,8 @@ import {
     NativeEventEmitter,
     NativeModules,
     ActivityIndicator,
-    TouchableOpacity
+    TouchableOpacity,
+    ScrollView
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import { observer } from 'mobx-react';
@@ -21,8 +22,8 @@ import HomeSubjectView from './view/HomeSubjectView';
 import HomeBannerView, { bannerHeight } from './view/HomeBannerView';
 import GoodsCell, { kHomeGoodsViewHeight } from './view/HomeGoodsView';
 import HomeUserView from './view/HomeUserView';
-import HomeCategoryView, { categoryHeight } from './view/HomeCategoryView';
-import { categoryModule } from './model/HomeCategoryModel';
+// import HomeCategoryView, { categoryHeight } from './view/HomeCategoryView';
+// import { categoryModule } from './model/HomeCategoryModel';
 import MessageApi from '../message/api/MessageApi';
 import EmptyUtils from '../../utils/EmptyUtils';
 import VersionUpdateModalView from './view/VersionUpdateModalView';
@@ -55,6 +56,7 @@ const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
 
 const HOME_REFRESH = 'homeRefresh';
 const HOME_SKIP = 'activitySkip';
+
 
 /**
  * @author zhangjian
@@ -97,7 +99,8 @@ class HomeList extends React.Component {
 
         switch (type) {
             case homeType.category:
-                dim.height = categoryModule.categoryList.length > 0 ? categoryHeight : 0;
+                // dim.height = categoryModule.categoryList.length > 0 ? categoryHeight : 0;
+                dim.height = 40;
                 break;
             case homeType.swiper:
                 dim.height = bannerModule.bannerList.length > 0 ? bannerHeight : 0;
@@ -154,7 +157,8 @@ class HomeList extends React.Component {
     _renderItem = (type, item, index) => {
         let data = item;
         if (type === homeType.category) {
-            return <HomeCategoryView navigate={routePush}/>;
+            // return <HomeCategoryView navigate={routePush}/>;
+            return <View />
         } else if (type === homeType.swiper) {
             return <HomeBannerView navigate={routePush}/>;
         } else if (type === homeType.user) {
@@ -206,6 +210,7 @@ class HomeList extends React.Component {
             return;
         }
         this.offsetY = event.nativeEvent.contentOffset.y;
+        this.props.onScroll(this.offsetY);
         this.toGoods && this.toGoods.measure((fx, fy, w, h, left, top) => {
             if (this.offsetY > height && top < scrollDist) {
                 homeTabManager.setAboveRecommend(true);
@@ -288,6 +293,9 @@ class HomeList extends React.Component {
         }
     };
 
+    scrollToTop = () => {
+        this.recyclerListView && this.recyclerListView.scrollToTop(true);
+    }
     homeTypeRefresh = (type) => {
         homeModule.refreshHome(type);
     };
@@ -309,7 +317,8 @@ class HomePage extends BasePage {
     };
 
     state = {
-        hasMessage: false
+        hasMessage: false,
+        y: 0
     };
 
 
@@ -407,18 +416,31 @@ class HomePage extends BasePage {
                 />
                 <ScrollableTabView
                     onChangeTab={(obj) => {
-                        this.setState({ selectTab: obj.i });
+                        // this.setState({ selectTab: obj.i });
+                        this.homeList && this.homeList.scrollToTop();
                     }}
                     style={styles.container}
-                    renderTabBar={this._renderTabBar}
+                    contentProps={{flex: 1, position: 'relative'}}
+                    renderTabBar={this._renderTabBar.bind(this)}
                     //进界面的时候打算进第几个
                     initialPage={0}>
                     <HomeList
                         tabLabel={'推荐'}
+                        ref={(ref => {this.homeList = ref})}
                         onScrollBeginDrag={() => {
                             this.luckyIcon.close();
-                        }}/>
-                    <View  tabLabel={'待付款'}/>
+                        }}
+                        onScroll={(y)=>{
+                            if (y > 40 && this.state.y >= 40) {
+                                return
+                            }
+                            this.setState({ y })
+
+                        }}
+                    />
+                    <ScrollView  tabLabel={'待付款'}>
+                        <View style={{height: 1000}}/>
+                    </ScrollView>
                 </ScrollableTabView>
                 <LuckyIcon ref={(ref) => {
                     this.luckyIcon = ref;
@@ -435,22 +457,23 @@ class HomePage extends BasePage {
     }
 
     _renderTabBar(p){
-        let itemWidth = 50;
+        let itemWidth = 60;
         let tabBarHeight = 40;
         return (
-            <View style={{backgroundColor: 'white', height: tabBarHeight}}>
+            <View style={{backgroundColor: 'white', height: tabBarHeight, position: 'absolute', top: - this.state.y, left: 0, zIndex: 1, right: 0}}>
                 <DefaultTabBar
+                    activeTab={p.activeTab}
                     style={{ width: itemWidth*p.tabs.length, borderBottomWidth: 0, height: tabBarHeight}}
                     containerWidth={itemWidth*p.tabs.length}
                     scrollValue={p.scrollValue}
                     tabs={p.tabs}
-                    underlineStyle={{backgroundColor: DesignRule.mainColor, left: 15, width: 20, bottom: 2}}
+                    underlineStyle={{backgroundColor: DesignRule.mainColor, left: (itemWidth -20)/2, width: 20, bottom: 2}}
                     renderTab = {(name, page, isTabActive, goToPage) => {
                         return(
                             <TouchableOpacity style={{height: 36, alignItems: 'center', justifyContent: 'center',width: itemWidth}}
-                                 onPress={() => p.goToPage(page)}
+                                              onPress={() => p.goToPage(page)}
                             >
-                                <Text>{name}</Text>
+                                <Text style={isTabActive? styles.tabSelect: styles.tabNomal}>{name}</Text>
                             </TouchableOpacity>
                         )
                     }}
@@ -497,6 +520,14 @@ const styles = StyleSheet.create({
     text: {
         color: DesignRule.textColor_instruction,
         fontSize: DesignRule.fontSize_24
+    },
+    tabNomal:{
+        fontSize: 12,
+        color: '#999999'
+    },
+    tabSelect:{
+        fontSize: 14,
+        color: DesignRule.mainColor
     }
 });
 
