@@ -47,6 +47,7 @@ export default class ResultHorizontalRow extends Component {
                         <Image source={saleSmall_1001} style={{ width: 50, height: 18, marginTop: 5 }}/>}
                     </ReuserImage>
                     <Text style={{
+                        flex:1,
                         color: DesignRule.textColor_mainTitle,
                         fontSize: 13,
                         paddingHorizontal: 10,
