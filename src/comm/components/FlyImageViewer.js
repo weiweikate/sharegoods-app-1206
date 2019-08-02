@@ -824,8 +824,9 @@ export default class FlyImageViewer extends Component {
             <View>
                 {this.getContent()}
                 {this.getMenu()}
-                {this.downloadIcon()}
+                {this.props.unShowDown !== true && this.downloadIcon()}
                 {this.closeIcon()}
+                {this.props.children}
             </View>
         );
 

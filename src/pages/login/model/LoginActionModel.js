@@ -13,8 +13,9 @@ import { login, track, TrackApi } from '../../../utils/SensorsTrack';
 import JPushUtils from '../../../utils/JPushUtils';
 import DeviceInfo from 'react-native-device-info/deviceinfo';
 import { DeviceEventEmitter } from 'react-native';
-import RouterMap, { loginBack, routePush } from '../../../navigation/RouterMap';
+import RouterMap, { routePop, routePush } from '../../../navigation/RouterMap';
 import StringUtils from '../../../utils/StringUtils';
+import { mediatorCallFunc } from '../../../SGMediator';
 
 /**
  * @param phone 一键登录
@@ -23,11 +24,16 @@ import StringUtils from '../../../utils/StringUtils';
  * @param successCallBack 登录成功后的回调
  * hyf 后期更改去掉phone
  */
-const oneClickLoginValidation = (authenToken, localPhone, navigation, successCallBack, failCallBack) => {
+const oneClickLoginValidation = (authenToken, localPhone, navigation, successCallBack, failCallBack, extraProps = {}) => {
     TrackApi.LoginButtonClick({ 'loginMethod': 4 });
     let params = { token: authenToken };
     if (StringUtils.isNoEmpty(localPhone)) {
         params.phone = localPhone;
+    }
+    /*微信登录过来绑定手机号的?*/
+    if (extraProps.wxData) {
+        params.unionId = extraProps.wxData.unionid;
+        params.appOpenid = extraProps.wxData.appOpenid;
     }
     LoginAPI.oneClickLoginValidation(params)
         .then(result => {
@@ -36,51 +42,59 @@ const oneClickLoginValidation = (authenToken, localPhone, navigation, successCal
             homeModule.loadHomeList();
             bridge.setCookies(result.data);
             successCallBack && successCallBack();
+            loginJump(result.data, extraProps);
             if (StringUtils.isEmpty(result.data.unionid)) {
-                //未绑定微信
-                getWxUserInfo((wxInfo) => {
-                    if (StringUtils.isNoEmpty(wxInfo)) {
-                        phoneBindWx(wxInfo, () => {
-                            this.loginJump(result.data);
-                        });
+                setTimeout(() => {
+                    //未绑定微信
+                    /*已有微信登录信息*/
+                    if (extraProps.wxData) {
+                        phoneBindWx(extraProps.wxData, result);
                     } else {
-                        this.loginJump(result.data);
+                        getWxUserInfo((wxInfo) => {
+                            if (wxInfo && wxInfo.unionid) {
+                                phoneBindWx(wxInfo, result);
+                            }
+                        });
                     }
-                });
+                }, 265);
             }
             TrackApi.localPhoneNumLogin({ 'loginMethod': 4 });
-        })
-        .catch(error => {
-            failCallBack && failCallBack();
+        }).catch(error => {
+            failCallBack && failCallBack(error.code);
             bridge.$toast(error.msg);
         });
 };
 
-const loginJump = (data) => {
+const loginJump = (data, extraProps) => {
     if (data.regNow) {
         // 新用户，跳转到上级页面
+        mediatorCallFunc('Home_RequestNoviceGift');
         routePush(RouterMap.InviteCodePage, {});
     } else {
-        //老用户
-        loginBack();
+        // 老用户
+        routePop(extraProps.popNumber || 1);
     }
 };
 
 /**
  * 绑定微信
  */
-const phoneBindWx = (wxInfo, callBack, data) => {
+const phoneBindWx = (wxInfo, data) => {
     //去绑定微信，成功与否不管，都执行回调
     LoginAPI.phoneBindWx({
-        unionId: wxInfo.unionid,
+        unionId: wxInfo.unionid ? wxInfo.unionid : wxInfo.unionId,
         appOpenid: wxInfo.appOpenid,
-        headImg: wxInfo.headerImg,
-        nickname: wxInfo.nickName
+        headImg: wxInfo.headerImg ? wxInfo.headerImg : wxInfo.headImg,
+        nickname: wxInfo.nickName ? wxInfo.nickName : wxInfo.nickname
     }).then(result => {
-        callBack(data);
+        // 微信绑定成功
+        UserModel.unionid = wxInfo.unionid ? wxInfo.unionid : wxInfo.unionId;
+        UserModel.appOpenid = wxInfo.appOpenid;
+        UserModel.wechatName = wxInfo.nickName ? wxInfo.nickName : wxInfo.nickname;
     }).catch(error => {
-        bridge.$toast(error.msg);
-        callBack(data);
+        if (data.data.withRegister) {
+            bridge.$toast(error.msg);
+        }
     });
 };
 /**
@@ -105,6 +119,10 @@ const getWxUserInfo = (callback) => {
  */
 const wxLoginAction = (data, callBack) => {
     TrackApi.LoginButtonClick({ 'loginMethod': 1 });
+    if (!data) {
+        callBack && callBack();
+        return;
+    }
     LoginAPI.appWechatLogin({
         device: data.device,
         encryptedData: '',
@@ -122,12 +140,11 @@ const wxLoginAction = (data, callBack) => {
             TrackApi.wxSignUpSuccess();
         } else if (res.code === 10000) {
             callBack && callBack(res.code, data);
-            UserModel.saveToken(data.data.token);
+            UserModel.saveToken(res.data.token);
             UserModel.saveUserInfo(res.data);
             TrackApi.wxLoginSuccess();
             bridge.$toast('登录成功');
             console.log(UserModel);
-            homeModule.loadHomeList();
             bridge.setCookies(res.data);
             // 埋点登录成功
             login(data.data.code);
@@ -183,20 +200,22 @@ const codeLoginAction = (LoginParam, callBack) => {
         //推送
         JPushUtils.updatePushTags();
         JPushUtils.updatePushAlias();
+        // 回调
+        callBack(data);
         // 绑定微信
         if (StringUtils.isEmpty(data.data.unionid)) {
             if (StringUtils.isNoEmpty(LoginParam.unionid)) {
                 // 直接绑定微信
-                phoneBindWx(LoginParam, callBack, data);
+                phoneBindWx(LoginParam, data);
             } else {
                 //未绑定微信
-                getWxUserInfo((wxInfo) => {
-                    if (StringUtils.isNoEmpty(wxInfo)) {
-                        phoneBindWx(wxInfo, callBack, data);
-                    } else {
-                        callBack(data);
-                    }
-                });
+                setTimeout(() => {
+                    getWxUserInfo((wxInfo) => {
+                        if (wxInfo && wxInfo.unionid) {
+                            phoneBindWx(wxInfo, data);
+                        }
+                    });
+                }, 265);
             }
         } else {
             callBack(data);
@@ -241,23 +260,23 @@ const pwdLoginAction = (LoginParam, callBack) => {
         //推送
         JPushUtils.updatePushTags();
         JPushUtils.updatePushAlias();
+        // 回调
+        callBack(data);
         // 绑定微信
         if (StringUtils.isEmpty(data.data.unionid)) {
             if (StringUtils.isNoEmpty(LoginParam.unionid)) {
                 // 直接绑定微信
-                phoneBindWx(LoginParam, callBack, data);
+                phoneBindWx(LoginParam, data);
             } else {
                 //未绑定微信
-                getWxUserInfo((wxInfo) => {
-                    if (StringUtils.isNoEmpty(wxInfo)) {
-                        phoneBindWx(wxInfo, callBack, data);
-                    } else {
-                        callBack(data);
-                    }
-                });
+                setTimeout(() => {
+                    getWxUserInfo((wxInfo) => {
+                        if (wxInfo && wxInfo.unionid) {
+                            phoneBindWx(wxInfo, data);
+                        }
+                    });
+                }, 265);
             }
-        } else {
-            callBack(data);
         }
     }).catch((error) => {
         callBack(error);

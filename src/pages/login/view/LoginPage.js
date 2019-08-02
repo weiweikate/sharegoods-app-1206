@@ -1,6 +1,6 @@
 import BasePage from '../../../BasePage';
 import React from 'react';
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Image, NativeAppEventEmitter, StyleSheet, TouchableOpacity, View } from 'react-native';
 import res from '../res';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { MRText as Text, UIText } from '../../../components/ui';
@@ -13,26 +13,22 @@ import LinearGradient from 'react-native-linear-gradient';
 import { getWxUserInfo, oneClickLoginValidation, wxLoginAction } from '../model/LoginActionModel';
 import { checkInitResult, closeAuth, preLogin, startLoginAuth } from '../model/PhoneAuthenAction';
 import store from '@mr/rn-store';
+import { observer } from 'mobx-react';
 
 const { px2dp } = ScreenUtils;
 const btnWidth = ScreenUtils.width - px2dp(60);
+
+@observer
 export default class LoginPage extends BasePage {
 
     constructor(props) {
         super(props);
-        if (loginModel.authPhone) {
-            // 预登录
-            preLogin();
-        } else {
-            checkInitResult().then((isVerifyEnable) => {
-                loginModel.setAuthPhone(isVerifyEnable);
-                if (isVerifyEnable) {
-                    // 预登录
-                    preLogin();
-                }
-            }).catch(e => {
-            });
-        }
+        checkInitResult().then((isVerifyEnable) => {
+            loginModel.setAuthPhone(isVerifyEnable);
+        }).catch(e => {
+            loginModel.setAuthPhone(null);
+        });
+
         // 获取最近一次输入的手机号
         store.get('@mr/lastPhone').then((data) => {
             loginModel.phoneNumber = data;
@@ -52,13 +48,33 @@ export default class LoginPage extends BasePage {
         headerStyle: { borderBottomWidth: 0 }
     };
 
+    componentDidMount() {
+        // 登录页面type
+        this.subscription = NativeAppEventEmitter.addListener(
+            'Event_Login_Type',
+            (data) => {
+                if (data.login_type === '1') {
+                    // 微信登录
+                    this.wxLogin();
+                } else if (data.login_type === '2') {
+                    // 手机号登录
+                    replaceRoute(RouterMap.PhoneLoginPage, { ...this.params, needBottom: true });
+                }
+            }
+        );
+    }
+
+    componentWillUnmount() {
+        this.subscription && this.subscription.remove();
+    }
+
     justLogin = () => {
         // 一键登录
-        this.$loadingShow();
         if (loginModel.authPhone) {
             // 可以一键登录
             this.startOneLogin();
         } else {
+            this.$loadingShow();
             checkInitResult().then((isVerifyEnable) => {
                 this.$loadingDismiss();
                 loginModel.setAuthPhone(isVerifyEnable);
@@ -69,26 +85,58 @@ export default class LoginPage extends BasePage {
                 }
             }).catch(e => {
                 this.$loadingDismiss();
-                if (e.code === '555') {
-                    closeAuth();
-                } else {
-                    replaceRoute(RouterMap.PhoneLoginPage, { ...this.params, needBottom: true });
-                }
             });
         }
     };
 
     startOneLogin = () => {
-        startLoginAuth().then((data) => {
-            let { navigation } = this.props;
-            oneClickLoginValidation(data, null, navigation, () => {
-                this.$loadingDismiss();
-            }, () => {
-                this.$loadingDismiss();
+        preLogin().then(() => {
+            startLoginAuth().then((data) => {
+                this.$loadingShow();
+                let { navigation } = this.props;
+                oneClickLoginValidation(data, null, navigation, () => {
+                    this.$loadingDismiss();
+                }, () => {
+                    this.$loadingDismiss();
+                });
+            }).catch((error) => {
+                if (error.code === '555') {
+                    this.$toastShow('取消授权');
+                    closeAuth();
+                } else {
+                    this.$toastShow('一键登录失败');
+                    replaceRoute(RouterMap.PhoneLoginPage, { ...this.params, needBottom: true });
+                }
             });
-        }).catch((error) => {
-            this.$loadingDismiss();
+        }).catch(error => {
+            this.$toastShow('一键登录失败');
             replaceRoute(RouterMap.PhoneLoginPage, { ...this.params, needBottom: true });
+        });
+    };
+
+    wxLogin = () => {
+        if (!loginModel.isSelectProtocol) {
+            this.$toastShow('请先勾选用户协议');
+            return;
+        }
+        // 微信授权登录
+        getWxUserInfo((wxData) => {
+            this.$loadingShow('加载中');
+            wxLoginAction(wxData, (code, data) => {
+                this.$loadingDismiss();
+                if (code === 10000) {
+                    this.$navigateBack();
+                    this.params.callback && this.params.callback();
+                } else if (code === 34005) {
+                    // 绑定手机
+                    this.$toastShow('请绑定手机号');
+                    routeNavigate(RouterMap.PhoneLoginPage, {
+                        ...this.params,
+                        needBottom: false,
+                        wxData
+                    });
+                }
+            });
         });
     };
 
@@ -103,29 +151,7 @@ export default class LoginPage extends BasePage {
                         <TouchableOpacity
                             style={Styles.touchableStyle}
                             onPress={() => {
-                                if (!loginModel.isSelectProtocol) {
-                                    this.$toastShow('请先勾选用户协议');
-                                    return;
-                                }
-                                // 微信授权登录
-                                getWxUserInfo((wxData) => {
-                                    this.$loadingShow('加载中');
-                                    wxLoginAction(wxData, (code, data) => {
-                                        this.$loadingDismiss();
-                                        if (code === 10000) {
-                                            this.$navigateBack();
-                                            this.params.callback && this.params.callback();
-                                        } else if (code === 34005) {
-                                            // 绑定手机
-                                            this.$toastShow('请绑定手机号');
-                                            routeNavigate(RouterMap.PhoneLoginPage, {
-                                                ...this.params,
-                                                needBottom: false,
-                                                wxData
-                                            });
-                                        }
-                                    });
-                                });
+                                this.wxLogin();
                             }}>
                             <UIText style={{ color: 'white', fontSize: px2dp(17) }} value={'微信登录'}/>
                         </TouchableOpacity>
@@ -154,7 +180,7 @@ export default class LoginPage extends BasePage {
                             <UIText style={{
                                 fontSize: px2dp(13),
                                 height: px2dp(25),
-                                color: DesignRule.textColor_mainTitle
+                                color: DesignRule.textColor_instruction
                             }} value={'手机号登录'}/>
                         </TouchableOpacity>
                         {loginModel.authPhone ?
@@ -167,7 +193,7 @@ export default class LoginPage extends BasePage {
                                 <UIText style={{
                                     fontSize: px2dp(13),
                                     height: px2dp(25),
-                                    color: DesignRule.textColor_mainTitle
+                                    color: DesignRule.textColor_instruction
                                 }} value={'一键登录'}/>
                             </TouchableOpacity> : null
                         }
@@ -179,7 +205,7 @@ export default class LoginPage extends BasePage {
                             <UIText style={{
                                 fontSize: px2dp(13),
                                 height: px2dp(25),
-                                color: DesignRule.textColor_mainTitle
+                                color: DesignRule.textColor_instruction
                             }} value={'密码登录'}/>
                         </TouchableOpacity>
                     </View>

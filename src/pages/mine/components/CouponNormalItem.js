@@ -89,23 +89,25 @@ export default class CouponNormalItem extends Component {
                             marginLeft: 5,
                             justifyContent: 'center',}}>
                             {item.status === 0 ? (item.levelimit ?
-                                <View style={{marginRight: 15, justifyContent: 'center', alignItems: 'center'}}>
-                                    <UIText value={'等级受限'}
-                                            style={{
-                                                fontSize: 13,
-                                                color: DesignRule.textColor_instruction,
-                                                marginRight: 15
-                                            }}/>
-                                    {item.count > 1 ? <UIText value={'x' + item.count}
-                                                              style={styles.xNumsStyle}/> : null}
-                                </View> :
+                                    <View style={{marginRight: 15, justifyContent: 'center', alignItems: 'center'}}>
+                                        <UIText value={'等级受限'}
+                                                style={{
+                                                    fontSize: 13,
+                                                    color: DesignRule.textColor_instruction,
+                                                    marginRight: 15
+                                                }}/>
+                                        {item.count > 1 ? <UIText value={'x' + item.count}
+                                                                  style={styles.xNumsStyle}/> : null}
+                                    </View> :
                                     (item.redirectType && item.redirectType != 0 ?
-                                            <NoMoreClick style={{
+                                        <NoMoreClick style={{
                                             height: ScreenUtils.autoSizeWidth(27),
                                             width: ScreenUtils.autoSizeWidth(60),
                                             borderRadius: ScreenUtils.autoSizeWidth(14),
                                             overflow: 'hidden'
-                                        }} onPress={() => { this.props.clickItem(index, item)}}>
+                                        }} onPress={() => {
+                                            this.props.clickItem && this.props.clickItem(index, item)
+                                        }}>
                                             <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}}
                                                             colors={['#FC5D39', '#FF0050']}
                                                             style={{
@@ -124,11 +126,36 @@ export default class CouponNormalItem extends Component {
                                                                                    style={styles.xNumsStyle}/> : null))
                                 ) :
                                 (stateImg ? <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                                    <Image style={{width: 55, height: 55}}
-                                           source={stateImg}/>
+
+
+                                    {item.canInvoke && item.status === 3 ? <NoMoreClick style={{
+                                            height: ScreenUtils.autoSizeWidth(27),
+                                            width: ScreenUtils.autoSizeWidth(60),
+                                            borderRadius: ScreenUtils.autoSizeWidth(14),
+                                            overflow: 'hidden',
+                                        }} onPress={() => {
+                                            this.props.onActivity && this.props.onActivity(item)
+                                        }}>
+                                            <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}}
+                                                            colors={['#FFCB02', '#FF9502']}
+                                                            style={{
+                                                                alignItems: 'center',
+                                                                flexDirection: 'row',
+                                                                justifyContent: 'center',
+                                                                flex: 1
+                                                            }}
+                                            >
+                                                <Text style={{
+                                                    fontSize: 12,
+                                                    color: 'white',
+                                                }} allowFontScaling={false}>去激活</Text>
+                                            </LinearGradient>
+                                        </NoMoreClick> :
+                                        <Image style={{width: 55, height: 55}}
+                                               source={stateImg}/>
+                                    }
                                     {item.count > 1 ? <UIText value={'x' + item.count}
                                                               style={styles.xNumsStyle}/> : null}
-
                                 </View> : null)}
                         </View>
                     </View>

@@ -67,7 +67,7 @@ export default class LoginVerifyCodePage extends BasePage {
 
         codeLoginAction(loginParams, (data) => {
             if (data.code === 10000) {
-                console.log('----' + JSON.stringify(data.data));
+                this.$loadingDismiss();
                 if (data.data.withRegister) {
                     this.$toastShow('注册成功');
                     this.$navigate(RouterMap.InviteCodePage);
@@ -79,7 +79,6 @@ export default class LoginVerifyCodePage extends BasePage {
                     TrackApi.codeLoginSuccess();
                 }
                 this.params.callback && this.params.callback();
-                this.$loadingDismiss();
             } else {
                 this.$loadingDismiss();
                 this.$toastShow(data.msg);
@@ -131,7 +130,7 @@ export default class LoginVerifyCodePage extends BasePage {
                                 this.setState({
                                     code: text
                                 }, () => {
-                                    if (this.state.code.length >= 4) {
+                                    if (this.state.code.length === 4) {
                                         // 登录
                                         this.toLogin();
                                     }

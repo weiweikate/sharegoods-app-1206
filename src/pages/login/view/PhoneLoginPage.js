@@ -12,7 +12,7 @@ import StringUtils from '../../../utils/StringUtils';
 import bridge from '../../../utils/bridge';
 import LinearGradient from 'react-native-linear-gradient';
 import store from '@mr/rn-store';
-import { getWxUserInfo, wxLoginAction } from '../model/LoginActionModel';
+import { getWxUserInfo, oneClickLoginValidation, wxLoginAction } from '../model/LoginActionModel';
 import { getVerifyToken } from '../model/PhoneAuthenAction';
 import res from '../../../comm/res';
 import resLogin from '../res';
@@ -75,7 +75,19 @@ export default class PhoneLoginPage extends BasePage {
         this.$loadingShow();
         getVerifyToken().then((data => {
             // token去服务端号码认证，认证通过登录成功
-            this.$loadingDismiss();
+            let { navigation } = this.props;
+            oneClickLoginValidation(data, this.state.phoneNum, navigation, () => {
+                this.$loadingDismiss();
+            }, (code) => {
+                // 认证失败，
+                this.$loadingDismiss();
+                if (code === 34014) {
+                    /*微信号已经其他手机号绑定*/
+                    return;
+                }
+                loginModel.savePhoneNumber(this.state.phoneNum);
+                routeNavigate(RouterMap.LoginVerifyCodePage, { ...this.params, phoneNum: this.state.phoneNum });
+            }, { popNumber: 2, wxData: this.params.wxData });
             // 如果没有绑定微信，绑定微信
         })).catch(e => {
             // 认证失败，
@@ -210,7 +222,7 @@ export default class PhoneLoginPage extends BasePage {
                             <UIText style={{
                                 fontSize: px2dp(13),
                                 height: px2dp(25),
-                                color: DesignRule.textColor_mainTitle
+                                color: DesignRule.textColor_instruction
                             }} value={this.params.needBottom ? '微信登录' : ''}/>
                         </TouchableOpacity>
                         <TouchableOpacity style={{ flex: 1, alignItems: 'center' }} onPress={() => {
@@ -222,7 +234,7 @@ export default class PhoneLoginPage extends BasePage {
                             <UIText style={{
                                 fontSize: px2dp(13),
                                 height: px2dp(25),
-                                color: DesignRule.textColor_mainTitle
+                                color: DesignRule.textColor_instruction
                             }} value={this.params.needBottom ? '密码登录' : ''}/>
                         </TouchableOpacity>
                     </View>
