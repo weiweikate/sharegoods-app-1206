@@ -23,7 +23,7 @@ import StringUtils from '../../../utils/StringUtils';
  * @param successCallBack 登录成功后的回调
  * hyf 后期更改去掉phone
  */
-const oneClickLoginValidation = (authenToken, localPhone, navigation, successCallBack, failCallBack) => {
+const oneClickLoginValidation = (authenToken, localPhone, navigation, successCallBack, failCallBack, extraProps = {}) => {
     TrackApi.LoginButtonClick({ 'loginMethod': 4 });
     let params = { token: authenToken };
     if (StringUtils.isNoEmpty(localPhone)) {
@@ -36,7 +36,7 @@ const oneClickLoginValidation = (authenToken, localPhone, navigation, successCal
             homeModule.loadHomeList();
             bridge.setCookies(result.data);
             successCallBack && successCallBack();
-            loginJump(result.data);
+            loginJump(result.data, extraProps);
             if (StringUtils.isEmpty(result.data.unionid)) {
                 //未绑定微信
                 setTimeout(() => {
@@ -55,13 +55,13 @@ const oneClickLoginValidation = (authenToken, localPhone, navigation, successCal
         });
 };
 
-const loginJump = (data) => {
+const loginJump = (data, extraProps) => {
     if (data.regNow) {
         // 新用户，跳转到上级页面
         routePush(RouterMap.InviteCodePage, {});
     } else {
         // 老用户
-        routePop(1);
+        routePop(extraProps.popNumber || 1);
     }
 };
 
