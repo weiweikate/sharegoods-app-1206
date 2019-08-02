@@ -179,7 +179,7 @@ SINGLETON_FOR_CLASS(JRServiceManager)
           NSDictionary *urlData = @{@"card_type":@(PRODUCT_CARD), @"linkUrl":eventData};
          [[NSNotificationCenter defaultCenter]postNotificationName:QY_CARD_CLICK object:urlData];
       }else{
-        NSDictionary * urlData = @{@"card_type":@(LINK_CLICK),@"uri":eventData};
+        NSDictionary * urlData = @{@"card_type":@(LINK_CLICK),@"uri":eventData,@"eventName": @"Event_navigateHtmlPage"};
         [[NSNotificationCenter defaultCenter]postNotificationName:@"EventToRN" object:urlData];
       }
     }
