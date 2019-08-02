@@ -112,7 +112,7 @@ export default class SelectOneTicketModel extends React.Component {
                                 {'1元现金券'}
                             </Text>
                             <Text style={styles.detail}>
-                                {'金额门槛\n无时间限制\n任意商品可用\n可叠加使用 '}
+                                {'无金额门槛\n无时间限制\n任意商品可用\n可叠加使用 '}
                             </Text>
                         </View>
                         <Text style={{
