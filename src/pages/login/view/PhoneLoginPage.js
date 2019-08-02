@@ -78,9 +78,13 @@ export default class PhoneLoginPage extends BasePage {
             let { navigation } = this.props;
             oneClickLoginValidation(data, this.state.phoneNum, navigation, () => {
                 this.$loadingDismiss();
-            }, () => {
+            }, (code) => {
                 // 认证失败，
                 this.$loadingDismiss();
+                if (code === 34014) {
+                    /*微信号已经其他手机号绑定*/
+                    return;
+                }
                 loginModel.savePhoneNumber(this.state.phoneNum);
                 routeNavigate(RouterMap.LoginVerifyCodePage, { ...this.params, phoneNum: this.state.phoneNum });
             }, { popNumber: 2, wxData: this.params.wxData });
