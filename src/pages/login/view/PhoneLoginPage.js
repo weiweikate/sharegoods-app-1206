@@ -83,7 +83,7 @@ export default class PhoneLoginPage extends BasePage {
                 this.$loadingDismiss();
                 loginModel.savePhoneNumber(this.state.phoneNum);
                 routeNavigate(RouterMap.LoginVerifyCodePage, { ...this.params, phoneNum: this.state.phoneNum });
-            },{ popNumber: 2 });
+            }, { popNumber: 2, wxData: this.params.wxData });
             // 如果没有绑定微信，绑定微信
         })).catch(e => {
             // 认证失败，

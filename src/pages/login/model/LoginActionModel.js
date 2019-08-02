@@ -40,11 +40,15 @@ const oneClickLoginValidation = (authenToken, localPhone, navigation, successCal
             if (StringUtils.isEmpty(result.data.unionid)) {
                 //未绑定微信
                 setTimeout(() => {
-                    getWxUserInfo((wxInfo) => {
-                        if (wxInfo && wxInfo.unionid) {
-                            phoneBindWx(wxInfo, result);
-                        }
-                    });
+                    if (extraProps.wxData) {
+                        phoneBindWx(extraProps.wxData, result);
+                    } else {
+                        getWxUserInfo((wxInfo) => {
+                            if (wxInfo && wxInfo.unionid) {
+                                phoneBindWx(wxInfo, result);
+                            }
+                        });
+                    }
                 }, 265);
             }
             TrackApi.localPhoneNumLogin({ 'loginMethod': 4 });
