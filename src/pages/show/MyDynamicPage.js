@@ -4,7 +4,7 @@ import {
     View,
     Image,
     TouchableOpacity,
-    // Platform
+    Platform
 } from 'react-native';
 import BasePage from '../../BasePage';
 import DesignRule from '../../constants/DesignRule';
@@ -106,6 +106,10 @@ export default class MyDynamicPage extends BasePage {
                 <Waterfall style={{ flex: 1, marginTop: -10 }}
                            headerHeight={this.params.userType !== 'mineNormal' ? px2dp(270):px2dp(235)}
                            onPersonChangeNav={({nativeEvent})=> {
+                               if (Platform.OS === 'ios'){
+                                   alert('ssss')
+                                   return null;
+                               }
                                    this.setState({
                                        changeHeader: nativeEvent.show
                                    })
