@@ -144,9 +144,9 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
                 .setLogoHeight(43)
                 .setLogoWidth(59)
                 .setLogoOffsetY(42)
-                .setNumFieldOffsetY(140)
-                .setSloganOffsetY(165)
-                .setLogBtnOffsetY(180)
+                .setNumFieldOffsetY(160)
+                .setSloganOffsetY(185)
+                .setLogBtnOffsetY(200)
                 .setNumberColor(mContext.getResources().getColor(R.color.app_main_text_color))
                 .setSloganTextColor(mContext.getResources().getColor(R.color.transparent))
                 .setAppPrivacyColor(mContext.getResources().getColor(R.color.app_666_text_color),
