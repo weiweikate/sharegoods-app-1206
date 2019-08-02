@@ -6,7 +6,8 @@ import {
     RefreshControl,
     NativeEventEmitter,
     NativeModules,
-    ActivityIndicator
+    ActivityIndicator,
+    TouchableOpacity
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import { observer } from 'mobx-react';
@@ -241,29 +242,29 @@ class HomeList extends React.Component {
         const { homeList } = homeModule;
         this.dataProvider = this.dataProvider.cloneWithRows(homeList);
         return (
-                <RecyclerListView
-                    ref={(ref) => {
-                        this.recyclerListView = ref;
-                    }}
-                    style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1 }}
-                    refreshControl={<RefreshControl refreshing={homeModule.isRefreshing}
-                                                    onRefresh={this._onRefresh.bind(this)}
-                                                    colors={[DesignRule.mainColor]}/>}
-                    onEndReached={this._onEndReached.bind(this)}
-                    onEndReachedThreshold={ScreenUtils.height / 3}
-                    dataProvider={this.dataProvider}
-                    rowRenderer={this._renderItem.bind(this)}
-                    layoutProvider={this.layoutProvider}
-                    onScrollBeginDrag={this.props.onScrollBeginDrag}
-                    showsVerticalScrollIndicator={false}
-                    removeClippedSubviews={false}
-                    onScroll={this._onListViewScroll}
-                    renderFooter={() => <Footer
-                        isFetching={homeModule.isFetching}
-                        errorMsg={homeModule.errorMsg}
-                        isEnd={homeModule.isEnd}/>
-                    }
-                />
+            <RecyclerListView
+                ref={(ref) => {
+                    this.recyclerListView = ref;
+                }}
+                style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1 }}
+                refreshControl={<RefreshControl refreshing={homeModule.isRefreshing}
+                                                onRefresh={this._onRefresh.bind(this)}
+                                                colors={[DesignRule.mainColor]}/>}
+                onEndReached={this._onEndReached.bind(this)}
+                onEndReachedThreshold={ScreenUtils.height / 3}
+                dataProvider={this.dataProvider}
+                rowRenderer={this._renderItem.bind(this)}
+                layoutProvider={this.layoutProvider}
+                onScrollBeginDrag={this.props.onScrollBeginDrag}
+                showsVerticalScrollIndicator={false}
+                removeClippedSubviews={false}
+                onScroll={this._onListViewScroll}
+                renderFooter={() => <Footer
+                    isFetching={homeModule.isFetching}
+                    errorMsg={homeModule.errorMsg}
+                    isEnd={homeModule.isEnd}/>
+                }
+            />
         );
     }
 
@@ -412,12 +413,12 @@ class HomePage extends BasePage {
                     renderTabBar={this._renderTabBar}
                     //进界面的时候打算进第几个
                     initialPage={0}>
-                <HomeList
-                    tabLabel='Tab 1'
-                    onScrollBeginDrag={() => {
-                    this.luckyIcon.close();
-                }}/>
-                    <View  tabLabel='Tab 2'/>
+                    <HomeList
+                        tabLabel={'推荐'}
+                        onScrollBeginDrag={() => {
+                            this.luckyIcon.close();
+                        }}/>
+                    <View  tabLabel={'待付款'}/>
                 </ScrollableTabView>
                 <LuckyIcon ref={(ref) => {
                     this.luckyIcon = ref;
@@ -433,18 +434,28 @@ class HomePage extends BasePage {
         );
     }
 
-    _renderTabBar(){
+    _renderTabBar(p){
+        let itemWidth = 50;
+        let tabBarHeight = 40;
         return (
-            <DefaultTabBar
-                containerWidth = {50}
-                underlineStyle={{
-                               width: 40,
-                               height: 2,
-                               marginLeft: 5,
-                               backgroundColor: DesignRule.mainColor,
-                               borderRadius: 1,
-
-                           }}/>
+            <View style={{backgroundColor: 'white', height: tabBarHeight}}>
+                <DefaultTabBar
+                    style={{ width: itemWidth*p.tabs.length, borderBottomWidth: 0, height: tabBarHeight}}
+                    containerWidth={itemWidth*p.tabs.length}
+                    scrollValue={p.scrollValue}
+                    tabs={p.tabs}
+                    underlineStyle={{backgroundColor: DesignRule.mainColor, left: 15, width: 20, bottom: 2}}
+                    renderTab = {(name, page, isTabActive, goToPage) => {
+                        return(
+                            <TouchableOpacity style={{height: 36, alignItems: 'center', justifyContent: 'center',width: itemWidth}}
+                                 onPress={() => p.goToPage(page)}
+                            >
+                                <Text>{name}</Text>
+                            </TouchableOpacity>
+                        )
+                    }}
+                />
+            </View>
         )
     }
 }
