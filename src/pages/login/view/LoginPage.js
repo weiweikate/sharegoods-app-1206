@@ -98,6 +98,7 @@ export default class LoginPage extends BasePage {
                     this.$loadingDismiss();
                 });
             }).catch((error) => {
+                this.$toastShow(error.message);
                 if (error.code === '555') {
                     closeAuth();
                 } else {
@@ -105,6 +106,7 @@ export default class LoginPage extends BasePage {
                 }
             });
         }).catch(error => {
+            this.$toastShow(error.message);
             replaceRoute(RouterMap.PhoneLoginPage, { ...this.params, needBottom: true });
         });
     };
