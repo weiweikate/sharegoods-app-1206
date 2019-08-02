@@ -13,20 +13,22 @@ import LinearGradient from 'react-native-linear-gradient';
 import { getWxUserInfo, oneClickLoginValidation, wxLoginAction } from '../model/LoginActionModel';
 import { checkInitResult, closeAuth, preLogin, startLoginAuth } from '../model/PhoneAuthenAction';
 import store from '@mr/rn-store';
+import { observer } from 'mobx-react';
 
 const { px2dp } = ScreenUtils;
 const btnWidth = ScreenUtils.width - px2dp(60);
+
+@observer
 export default class LoginPage extends BasePage {
 
     constructor(props) {
         super(props);
-        if (!loginModel.authPhone) {
-            checkInitResult().then((isVerifyEnable) => {
-                loginModel.setAuthPhone(isVerifyEnable);
-            }).catch(e => {
-                loginModel.setAuthPhone(null);
-            });
-        }
+        checkInitResult().then((isVerifyEnable) => {
+            loginModel.setAuthPhone(isVerifyEnable);
+        }).catch(e => {
+            loginModel.setAuthPhone(null);
+        });
+
         // 获取最近一次输入的手机号
         store.get('@mr/lastPhone').then((data) => {
             loginModel.phoneNumber = data;
@@ -98,15 +100,16 @@ export default class LoginPage extends BasePage {
                     this.$loadingDismiss();
                 });
             }).catch((error) => {
-                this.$toastShow(error.message);
                 if (error.code === '555') {
+                    this.$toastShow('取消授权');
                     closeAuth();
                 } else {
+                    this.$toastShow('一键登录失败');
                     replaceRoute(RouterMap.PhoneLoginPage, { ...this.params, needBottom: true });
                 }
             });
         }).catch(error => {
-            this.$toastShow(error.message);
+            this.$toastShow('一键登录失败');
             replaceRoute(RouterMap.PhoneLoginPage, { ...this.params, needBottom: true });
         });
     };
