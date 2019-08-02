@@ -131,7 +131,7 @@
   mobileUIConfig.navColor = [UIColor whiteColor];
   //  https://h5.sharegoodsmall.com/static/protocol/service.html
   mobileUIConfig.appPrivacyOne = @[@"用户协议",@"https://h5.sharegoodsmall.com/static/protocol/service.html"];
-  mobileUIConfig.logoImg = [UIImage imageNamed:@"logo"];
+  mobileUIConfig.logoImg = [UIImage imageNamed:@"oneLoginLogo"];
   mobileUIConfig.navReturnImg = [UIImage imageNamed:@"oneLoginCancel"];
   mobileUIConfig.logBtnImgs = @[[UIImage imageNamed:@"umcsdk_login_btn_normal"],
                                 [UIImage imageNamed:@"umcsdk_login_btn_unable"],
@@ -149,7 +149,7 @@
   unicomUIConfig.navColor = [UIColor whiteColor];
   //  https://h5.sharegoodsmall.com/static/protocol/service.html
   unicomUIConfig.appPrivacyOne = @[@"用户协议",@"https://h5.sharegoodsmall.com/static/protocol/service.html"];
-  unicomUIConfig.logoImg = [UIImage imageNamed:@"logo"];
+  unicomUIConfig.logoImg = [UIImage imageNamed:@"oneLoginLogo"];
   unicomUIConfig.navReturnImg = [UIImage imageNamed:@"oneLoginCancel"];
   unicomUIConfig.logBtnImgs = @[[UIImage imageNamed:@"umcsdk_login_btn_normal"],
                                 [UIImage imageNamed:@"umcsdk_login_btn_unable"],
@@ -168,7 +168,7 @@
   telecomUIConfig.navColor = [UIColor whiteColor];
   //  https://h5.sharegoodsmall.com/static/protocol/service.html
   telecomUIConfig.appPrivacyOne = @[@"用户协议",@"https://h5.sharegoodsmall.com/static/protocol/service.html"];
-  telecomUIConfig.logoImg = [UIImage imageNamed:@"logo"];
+  telecomUIConfig.logoImg = [UIImage imageNamed:@"oneLoginLogo"];
   telecomUIConfig.navReturnImg = [UIImage imageNamed:@"oneLoginCancel"];
   telecomUIConfig.logBtnImgs = @[[UIImage imageNamed:@"umcsdk_login_btn_normal"],
                                 [UIImage imageNamed:@"umcsdk_login_btn_unable"],
