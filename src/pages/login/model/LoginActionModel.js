@@ -29,6 +29,11 @@ const oneClickLoginValidation = (authenToken, localPhone, navigation, successCal
     if (StringUtils.isNoEmpty(localPhone)) {
         params.phone = localPhone;
     }
+    /*微信登录过来绑定手机号的?*/
+    if (extraProps.wxData) {
+        params.unionId = extraProps.wxData.unionid;
+        params.appOpenid = extraProps.wxData.appOpenid;
+    }
     LoginAPI.oneClickLoginValidation(params)
         .then(result => {
             UserModel.saveToken(result.data.token);
@@ -38,8 +43,9 @@ const oneClickLoginValidation = (authenToken, localPhone, navigation, successCal
             successCallBack && successCallBack();
             loginJump(result.data, extraProps);
             if (StringUtils.isEmpty(result.data.unionid)) {
-                //未绑定微信
                 setTimeout(() => {
+                    //未绑定微信
+                    /*已有微信登录信息*/
                     if (extraProps.wxData) {
                         phoneBindWx(extraProps.wxData, result);
                     } else {
@@ -52,8 +58,7 @@ const oneClickLoginValidation = (authenToken, localPhone, navigation, successCal
                 }, 265);
             }
             TrackApi.localPhoneNumLogin({ 'loginMethod': 4 });
-        })
-        .catch(error => {
+        }).catch(error => {
             failCallBack && failCallBack();
             bridge.$toast(error.msg);
         });
