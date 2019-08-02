@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { requireNativeComponent } from 'react-native';
+import { findNodeHandle, requireNativeComponent, UIManager } from 'react-native';
 import PropTypes from 'prop-types';
 
 const RCTMRBannerView = requireNativeComponent('MRBannerView', MRBannerView);
+const RCTMRBannerViewRef = 'RCTMRBannerViewRef';
 
 export default class MRBannerView extends Component {
     static propTypes = {
@@ -29,9 +30,20 @@ export default class MRBannerView extends Component {
         pageFocused: PropTypes.bool
     };
 
+    scrollToIndexWithAnimate = (index, animate) => {
+        UIManager.dispatchViewManagerCommand(
+            this.getHandle(),
+            UIManager.MRBannerView.Commands.scrollToIndexWithAnimate,
+            [index, animate]
+        );
+    };
+    getHandle = () => {
+        return findNodeHandle(this.refs[RCTMRBannerViewRef]);
+    };
+
     render() {
         return (
-            <RCTMRBannerView {...this.props}/>
+            <RCTMRBannerView {...this.props} ref={RCTMRBannerViewRef}/>
         );
     }
 }

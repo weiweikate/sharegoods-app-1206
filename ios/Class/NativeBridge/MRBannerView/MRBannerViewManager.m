@@ -9,7 +9,8 @@
 #import "MRBannerViewManager.h"
 #import "TYCyclePagerView.h"
 #import "UIImageView+WebCache.h"
-
+#import <React/RCTBridge.h>
+#import <React/RCTUIManager.h>
 @implementation MRBannerViewManager
 
 RCT_EXPORT_MODULE()
@@ -17,6 +18,7 @@ RCT_EXPORT_VIEW_PROPERTY(imgUrlArray, NSArray)
 RCT_EXPORT_VIEW_PROPERTY(tittleArray, NSArray)
 RCT_EXPORT_VIEW_PROPERTY(autoInterval,CGFloat)
 RCT_EXPORT_VIEW_PROPERTY(itemWidth,CGFloat)
+RCT_EXPORT_VIEW_PROPERTY(resizeMode,NSString)
 RCT_EXPORT_VIEW_PROPERTY(itemSpace,CGFloat)
 RCT_EXPORT_VIEW_PROPERTY(autoLoop,BOOL)
 RCT_EXPORT_VIEW_PROPERTY(itemRadius,CGFloat)
@@ -26,6 +28,21 @@ RCT_EXPORT_VIEW_PROPERTY(onDidScrollToIndex, RCTBubblingEventBlock)
 - (UIView *)view{
   MRBannerView *pagerView = [[MRBannerView alloc]init];
   return pagerView;
+}
+
+RCT_EXPORT_METHOD(scrollToIndexWithAnimate:(nonnull NSNumber *)reactTag
+                  index:(NSInteger)index
+                  animate:(BOOL)animate) {
+  
+    [self.bridge.uiManager addUIBlock:^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *, MRBannerView *> *viewRegistry) {
+      MRBannerView *view = viewRegistry[reactTag];
+      if (![view isKindOfClass:[MRBannerView class]]) {
+        RCTLogError(@"Invalid view returned from registry, expecting RNCUIWebView, got: %@", view);
+      } else {
+        [view scrollToIndex:index animate:animate];
+      }
+    }];
+  
 }
 
 @end
@@ -57,7 +74,9 @@ static CGFloat initAutoInterval = 0;
   [super layoutSubviews];
   _pgView.frame = self.bounds;
 }
-
+-(void)scrollToIndex:(NSInteger)index animate:(BOOL)animate{
+  [_pgView scrollToItemAtIndex:index animate:animate];
+}
 - (void)setImgUrlArray:(NSArray *)imgUrlArray{
   _imgUrlArray = [imgUrlArray copy];
   [_pgView updateData];
@@ -84,6 +103,9 @@ static CGFloat initAutoInterval = 0;
   }
   NSString *tempUrlString = _imgUrlArray[index];
   [cell.imgView setImageURL:[NSURL URLWithString: [tempUrlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]]];
+  if ([self.resizeMode isEqualToString:@"contain"]) {
+    cell.imgView.contentMode = UIViewContentModeScaleAspectFit;
+  }
   if (_tittleArray && _tittleArray.count>index) {
     cell.tittleLabel.text = _tittleArray[index];
   }

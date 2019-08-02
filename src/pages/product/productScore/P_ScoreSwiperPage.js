@@ -11,7 +11,7 @@ import NoMoreClick from '../../../components/ui/NoMoreClick';
 import pRes from '../res/product';
 import VideoView from '../../../components/ui/video/VideoView';
 import DesignRule from '../../../constants/DesignRule';
-import XGSwiper from '../../../components/ui/XGSwiper';
+import MRBannerView from '../../../components/ui/bannerView/MRBannerView';
 
 const { swiper_cancel } = pRes.productScore;
 
@@ -38,8 +38,14 @@ export default class P_ScoreSwiperPage extends BasePage {
         }
     };
 
+    componentDidMount() {
+        setTimeout(() => {
+            this.MRBannerView.scrollToIndexWithAnimate(this.params.index, false);
+        }, 0);
+    }
+
     _render() {
-        const { images, content, index } = this.params;
+        const { images, content } = this.params;
 
         this.videoImageList = [...images];
         //去掉视频
@@ -48,18 +54,22 @@ export default class P_ScoreSwiperPage extends BasePage {
         // }
         return (
             <View style={styles.containerView}>
-                <XGSwiper height={height} width={width}
-                          index={index}
-                          loop={false}
-                          renderRow={this._renderViewPageItem}
-                          dataSource={this.videoImageList}
-                          onDidChange={(item, index) => {
-                              // if (this.state.index !== index) {
-                              this.setState({
-                                  index: index + 1
-                              });
-                              // }
-                          }}/>
+                <MRBannerView style={{ height: ScreenUtils.height, width: ScreenUtils.width + 0.5 }}
+                              ref={(ref) => {
+                                  this.MRBannerView = ref;
+                              }}
+                              resizeMode='contain'
+                              itemWidth={ScreenUtils.width + 0.5}
+                              imgUrlArray={this.videoImageList}
+                              itemSpace={0}
+                              onDidScrollToIndex={(e) => {
+                                  let index = e.nativeEvent.index;
+                                  this.setState({
+                                      index: index + 1
+                                  });
+                              }}
+                              autoLoop={false}
+                />
                 <View style={{
                     position: 'absolute',
                     alignSelf: 'center',
