@@ -15,6 +15,7 @@ import DeviceInfo from 'react-native-device-info/deviceinfo';
 import { DeviceEventEmitter } from 'react-native';
 import RouterMap, { routePop, routePush } from '../../../navigation/RouterMap';
 import StringUtils from '../../../utils/StringUtils';
+import { mediatorCallFunc } from '../../../SGMediator';
 
 /**
  * @param phone 一键登录
@@ -67,6 +68,7 @@ const oneClickLoginValidation = (authenToken, localPhone, navigation, successCal
 const loginJump = (data, extraProps) => {
     if (data.regNow) {
         // 新用户，跳转到上级页面
+        mediatorCallFunc('Home_RequestNoviceGift');
         routePush(RouterMap.InviteCodePage, {});
     } else {
         // 老用户
