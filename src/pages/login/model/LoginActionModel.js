@@ -59,7 +59,7 @@ const oneClickLoginValidation = (authenToken, localPhone, navigation, successCal
             }
             TrackApi.localPhoneNumLogin({ 'loginMethod': 4 });
         }).catch(error => {
-            failCallBack && failCallBack();
+            failCallBack && failCallBack(error.code);
             bridge.$toast(error.msg);
         });
 };
