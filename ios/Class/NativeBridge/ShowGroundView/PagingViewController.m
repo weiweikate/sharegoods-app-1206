@@ -123,9 +123,6 @@ static const NSString * USERTYPE_others = @"others";
   }
   if (_Navi.hidden !=  Y < hei) {
     _Navi.hidden =  Y < hei;
-    if (hei != Y) {
-      self.onPersonChangeNav(@{@"show": @(_Navi.hidden) });
-    }
   }
 
 }
@@ -202,9 +199,9 @@ static const NSString * USERTYPE_others = @"others";
     _Navi = [SwichViewNavi new];
     _Navi.hidden = YES;
     _Navi.backBlock = ^{
-      //      if (weakSelf.goBack) {
-      //        weakSelf.goBack(@{});
-      //      }
+            if (weakSelf.onPersonChangeNav) {
+              weakSelf.onPersonChangeNav(@{});
+            }
     };
     _Navi.selectBlock = ^(NSInteger index) {
       [weakSelf.swichView changToIndex:index];

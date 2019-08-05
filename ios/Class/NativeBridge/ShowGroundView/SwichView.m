@@ -150,11 +150,11 @@
     self.frame = CGRectMake(0, 0, KScreenWidth, kNavBarHeight);
     self.backgroundColor = [UIColor whiteColor];
     self.swichView = [SwichView new];
-//    btn = [UIButton new];
-//    [btn addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
-//    [btn setImage:[UIImage imageNamed:@"back"] forState:0];
-//    [self addSubview:btn];
-//    btn.frame = CGRectMake(0, kNavBarHeight - 44, 44, 44);
+    btn = [UIButton new];
+    [btn addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+    [btn setImage:[UIImage imageNamed:@"back"] forState:0];
+    [self addSubview:btn];
+    btn.frame = CGRectMake(0, kNavBarHeight - 44, 44, 44);
     [self addSubview:self.swichView];
   }
   return self;
@@ -180,17 +180,17 @@
   self.swichView.center = CGPointMake(self.centerX_sd, (kNavBarHeight - 44) + 22);
 }
 
-//- (void)setHidden:(BOOL)hidden
-//{
-//  self.swichView.hidden = hidden;
-////  [btn setImage:[UIImage imageNamed:hidden?@"":@"back"] forState:0];
-////  btn.tintColor = hidden?[UIColor whiteColor]:[UIColor blackColor];
-//  self.backgroundColor = hidden?[UIColor clearColor]:[UIColor whiteColor];
-//}
-//
-//- (BOOL)isHidden
-//{
-//  return self.swichView.hidden;
-//}
+- (void)setHidden:(BOOL)hidden
+{
+  self.swichView.hidden = hidden;
+//  [btn setImage:[UIImage imageNamed:hidden?@"":@"back"] forState:0];
+//  btn.tintColor = hidden?[UIColor whiteColor]:[UIColor blackColor];
+  self.backgroundColor = hidden?[UIColor clearColor]:[UIColor whiteColor];
+}
+
+- (BOOL)isHidden
+{
+  return self.swichView.hidden;
+}
 
 @end
