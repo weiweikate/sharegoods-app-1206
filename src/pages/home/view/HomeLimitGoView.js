@@ -127,6 +127,7 @@ export default class HomeLimitGoView extends Component {
 
     openModal() {
         this.modal && this.modal.open();
+        track(trackEvent.HomePagePopShow, {homePagePopType: 1});
     }
 
     seeMore() {

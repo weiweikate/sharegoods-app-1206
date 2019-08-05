@@ -20,6 +20,7 @@ class OrderDetailModel {
     @observable merchantOrderNo = ''
     @observable platformOrderNo = ''
     @observable isAllVirtual = true;
+    @observable loadingState = PageLoadingState.loading
 
     productsList() {
         return this.merchantOrder.productOrderList || []
