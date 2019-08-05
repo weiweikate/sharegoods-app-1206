@@ -216,7 +216,7 @@ export default class PaymentPage extends BasePage {
         const { selectedBalace, name, bizType, oneCoupon } = payment;
         const { showPwd } = this.state;
         let { availableBalance } = user;
-
+        availableBalance = availableBalance || '0.00'
         let channelAmount = payment.amounts;
         //有优惠券先减掉优惠券
         if (bizType === 1) {
