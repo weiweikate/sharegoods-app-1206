@@ -311,7 +311,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                     title: merchantOrderNo,
                     desc,
                     pictureUrlString,
-                    urlString:'',
+                    urlString:'/' + merchantOrderNo,
                     note:'',
                 }}
             )
@@ -328,7 +328,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                                 title: merchantOrderNo,
                                 desc,
                                 pictureUrlString,
-                                urlString: '',
+                                urlString:'/' + merchantOrderNo,
                                 note: '',
                             }
                         }
