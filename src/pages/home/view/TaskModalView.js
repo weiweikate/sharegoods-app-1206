@@ -204,7 +204,7 @@ export class UserLevelModalView extends React.Component {
     }
 
     onPress(v){
-        HomeModalManager.closeUserLevel();
+        HomeModalManager.closeUserLevel(true, v);
         if (v === 'V2') {
             navigateBackToStore()
         }

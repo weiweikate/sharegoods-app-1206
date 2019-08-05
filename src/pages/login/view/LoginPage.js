@@ -11,7 +11,7 @@ import ProtocolView from '../components/Login.protocol.view';
 import RouterMap, { replaceRoute, routeNavigate } from '../../../navigation/RouterMap';
 import LinearGradient from 'react-native-linear-gradient';
 import { getWxUserInfo, oneClickLoginValidation, wxLoginAction } from '../model/LoginActionModel';
-import { checkInitResult, closeAuth, preLogin, startLoginAuth } from '../model/PhoneAuthenAction';
+import { checkInitResult, closeAuth, startLoginAuth } from '../model/PhoneAuthenAction';
 import store from '@mr/rn-store';
 import { observer } from 'mobx-react';
 
@@ -23,11 +23,13 @@ export default class LoginPage extends BasePage {
 
     constructor(props) {
         super(props);
-        checkInitResult().then((isVerifyEnable) => {
-            loginModel.setAuthPhone(isVerifyEnable);
-        }).catch(e => {
-            loginModel.setAuthPhone(null);
-        });
+        if (!loginModel.authPhone) {
+            checkInitResult().then((isVerifyEnable) => {
+                loginModel.setAuthPhone(isVerifyEnable);
+            }).catch(e => {
+                loginModel.setAuthPhone(null);
+            });
+        }
 
         // 获取最近一次输入的手机号
         store.get('@mr/lastPhone').then((data) => {
@@ -90,27 +92,20 @@ export default class LoginPage extends BasePage {
     };
 
     startOneLogin = () => {
-        preLogin().then(() => {
-            startLoginAuth().then((data) => {
-                this.$loadingShow();
-                let { navigation } = this.props;
-                oneClickLoginValidation(data, null, navigation, () => {
-                    this.$loadingDismiss();
-                }, () => {
-                    this.$loadingDismiss();
-                });
-            }).catch((error) => {
-                if (error.code === '555') {
-                    this.$toastShow('取消授权');
-                    closeAuth();
-                } else {
-                    this.$toastShow('一键登录失败');
-                    replaceRoute(RouterMap.PhoneLoginPage, { ...this.params, needBottom: true });
-                }
+        startLoginAuth().then((data) => {
+            this.$loadingShow();
+            let { navigation } = this.props;
+            oneClickLoginValidation(data, null, navigation, () => {
+                this.$loadingDismiss();
+            }, () => {
+                this.$loadingDismiss();
             });
-        }).catch(error => {
-            this.$toastShow('一键登录失败');
-            replaceRoute(RouterMap.PhoneLoginPage, { ...this.params, needBottom: true });
+        }).catch((error) => {
+            if (error.code === '555') {
+                closeAuth();
+            } else {
+                replaceRoute(RouterMap.PhoneLoginPage, { ...this.params, needBottom: true });
+            }
         });
     };
 
