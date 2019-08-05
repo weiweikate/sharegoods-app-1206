@@ -31,9 +31,9 @@ const ViewOrderStatus = {
     1:  {
         status: '待付款',
         menuData:[{ id:1, operation:'取消订单', isRed:false},
-                  { id:2, operation:'去支付'  , isRed:true, }],
+            { id:2, operation:'去支付'  , isRed:true, }],
         menu_orderDetail: [{ id:1, operation:'取消订单', isRed:false, },
-                           { id:2, operation:'去支付', isRed:true, }]
+            { id:2, operation:'去支付', isRed:true, }]
     },
     2:  {
         status: '待发货',
@@ -43,25 +43,25 @@ const ViewOrderStatus = {
     3:  {
         status: '已发货',
         menuData:[{ id:5, operation:'查看物流', isRed:false, },
-                  { id:6, operation:'确认收货', isRed:true, }],
+            { id:6, operation:'确认收货', isRed:true, }],
         menu_orderDetail: [{ id: 5, operation: '查看物流', isRed: false },
-                           { id: 6, operation: '确认收货', isRed: true }]
+            { id: 6, operation: '确认收货', isRed: true }]
     },
     4:  {
         status: '交易完成',
         menuData:[{ id:7, operation:'删除订单', isRed:false,},
-                  { id:5, operation:'查看物流', isRed:false,},
-                  { id:8, operation:'再次购买', isRed:true, }],
+            { id:5, operation:'查看物流', isRed:false,},
+            { id:8, operation:'再次购买', isRed:true, }],
         menu_orderDetail: [{ id:7, operation:'删除订单', isRed:false, },
-                           { id:5, operation: '查看物流', isRed: false },
-                           { id:8, operation:'再次购买', isRed:true, }],
+            { id:5, operation: '查看物流', isRed: false },
+            { id:8, operation:'再次购买', isRed:true, }],
     },
     5:  {
         status: '交易关闭',
         menuData:[{ id:7, operation:'删除订单', isRed:false, },
-                  { id:8, operation:'再次购买', isRed:true, }],
+            { id:8, operation:'再次购买', isRed:true, }],
         menu_orderDetail: [{ id:7, operation:'删除订单', isRed:false, },
-                           { id:8, operation:'再次购买', isRed:true, }],
+            { id:8, operation:'再次购买', isRed:true, }],
     },
     6:  {
         status: '已付款',
@@ -88,7 +88,7 @@ function GetAfterBtns(product) {
         }}
     if (!type){//这个type为空，说明没有申请过售后
         if (product.status === OrderType.WAIT_DELIVER) {
-           return [{ id:1, operation:'退款', isRed:false}]
+            return [{ id:1, operation:'退款', isRed:false}]
         }else {
             return [{ id:2, operation:'退换', isRed:false}]
         }
@@ -144,7 +144,7 @@ function checkOrderAfterSaleService(products = [], status, nowTime, isShowToast)
         if (restrictions === 1) {
             if (status === OrderType.WAIT_DELIVER || status === OrderType.PAID){
                 if (isShowToast){
-                        bridge.$toast('该商品不能退款');
+                    bridge.$toast('该商品不能退款');
                 }
                 return;
             }
