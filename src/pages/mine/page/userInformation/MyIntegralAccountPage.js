@@ -16,7 +16,6 @@ import DataUtils from '../../../../utils/DateUtils';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
 import Toast from '../../../../utils/bridge' ;
-import { observer } from 'mobx-react';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import { MRText as Text } from '../../../../components/ui';
@@ -59,7 +58,6 @@ const allKinds = {
 };
 
 
-@observer
 export default class MyIntegralAccountPage extends BasePage {
     constructor(props) {
         super(props);
@@ -75,6 +73,8 @@ export default class MyIntegralAccountPage extends BasePage {
         this.type = null;
         this.biType = null;
         this.st = 0;
+        this.loadding = false;
+        this.isMore = true;
     }
 
     $navigationBarOptions = {
@@ -371,6 +371,7 @@ export default class MyIntegralAccountPage extends BasePage {
     getDataFromNetwork = () => {
         let use_type_symbol = ['', '+', '-'];
         let arrData = this.currentPage === 1 ? [] : this.state.viewData;
+        Toast.showLoading();
         MineApi.userScoreQuery({
             page: this.currentPage,
             size: 10,
@@ -380,8 +381,10 @@ export default class MyIntegralAccountPage extends BasePage {
         }).then((response) => {
             Toast.hiddenLoading();
             console.log(response);
+            this.loadding = false;
             if (response.code === 10000) {
                 let data = response.data;
+                this.isMore = (data.data || []).length === 10;
                 data.data.map((item, index) => {
                     arrData.push({
                         type: allKinds[item.useType] ? allKinds[item.useType].title : '其他',
@@ -404,6 +407,7 @@ export default class MyIntegralAccountPage extends BasePage {
                 NativeModules.commModule.toast(response.msg);
             }
         }).catch(e => {
+            this.loadding = false;
             Toast.hiddenLoading();
             this.setState({ refreshing: false, viewData: arrData, isEmpty: true });
 
@@ -428,6 +432,10 @@ export default class MyIntegralAccountPage extends BasePage {
 
     onRefresh = () => {
         this.currentPage = 1;
+        if (this.loadding){
+            return;
+        }
+        this.loadding = true;
         if (user.isLogin) {
             MineApi.getUser().then(resp => {
                 let data = resp.data;
@@ -441,6 +449,9 @@ export default class MyIntegralAccountPage extends BasePage {
         this.getDataFromNetwork();
     };
     onLoadMore = () => {
+        if (this.loadding || this.isMore === false){
+            return;
+        }
         if (!this.state.isEmpty) {
             this.currentPage++;
             this.getDataFromNetwork();
