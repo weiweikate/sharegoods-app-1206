@@ -1,21 +1,17 @@
-import React, { Component } from "react";
-import {
-    StyleSheet,
-    View,
-    Alert
-} from "react-native";
-import ScreenUtils from "../../../../utils/ScreenUtils";
-import DesignRule from "../../../../constants/DesignRule";
-import { orderDetailModel, assistDetailModel } from "../../model/OrderDetailModel";
-import OrderApi from "../../api/orderApi";
-import Toast from "../../../../utils/bridge";
-import { observer } from "mobx-react";
-import RouterMap, {  routePop, routePush } from '../../../../navigation/RouterMap';
-import { payment } from "../../../payment/Payment";
+import React, { Component } from 'react';
+import { Alert, StyleSheet, View } from 'react-native';
+import ScreenUtils from '../../../../utils/ScreenUtils';
+import DesignRule from '../../../../constants/DesignRule';
+import { assistDetailModel, orderDetailModel } from '../../model/OrderDetailModel';
+import OrderApi from '../../api/orderApi';
+import Toast from '../../../../utils/bridge';
+import { observer } from 'mobx-react';
+import RouterMap, { routePop, routePush } from '../../../../navigation/RouterMap';
+import { payment } from '../../../payment/Payment';
+import { MRText as Text, NoMoreClick, UIText } from '../../../../components/ui';
+import { clickOrderAgain, clickOrderConfirmReceipt, clickOrderLogistics } from '../../order/CommonOrderHandle';
 
 const { px2dp } = ScreenUtils;
-import { MRText as Text, NoMoreClick, UIText } from "../../../../components/ui";
-import { clickOrderAgain, clickOrderConfirmReceipt, clickOrderLogistics } from '../../order/CommonOrderHandle';
 
 @observer
 export default class OrderDetailBottomButtonView extends Component {
@@ -29,15 +25,6 @@ export default class OrderDetailBottomButtonView extends Component {
 
     render() {
         let nameArr = [...orderDetailModel.menu];
-        nameArr = nameArr.filter((item) => {
-            if (!orderDetailModel.isAllVirtual){
-                return true;
-            }
-            if (item.operation === '查看物流' || item.operation === '确认收货'){
-                return false;
-            }
-            return true;
-        })
         if (nameArr.length > 0) {
             if (nameArr.length === 4) {
                 return (
@@ -45,17 +32,17 @@ export default class OrderDetailBottomButtonView extends Component {
                         <View style={{
                             height: px2dp(48),
                             marginRight: 6,
-                            alignItems: "center",
-                            justifyContent: "center",
+                            alignItems: 'center',
+                            justifyContent: 'center'
                         }}>
-                            <UIText value={"更多"} style={{ color: DesignRule.textColor_secondTitle, fontSize: 13 }}
+                            <UIText value={'更多'} style={{ color: DesignRule.textColor_secondTitle, fontSize: 13 }}
                                     onPress={
-                                       this.props.switchButton
+                                        this.props.switchButton
                                     }/>
                         </View>
                         {nameArr.map((item, i) => {
-                            if (i === 0){
-                                return <View />
+                            if (i === 0) {
+                                return <View/>;
                             }
                             return <NoMoreClick key={i}
                                                 style={[styles.touchableStyle, { borderColor: item.isRed ? DesignRule.mainColor : DesignRule.color_ddd }]}
@@ -70,7 +57,7 @@ export default class OrderDetailBottomButtonView extends Component {
                     </View>
                 );
             } else {
-                let datas= nameArr;
+                let datas = nameArr;
                 return (
                     <View style={styles.containerStyle}>
                         {datas.map((item, i) => {
@@ -109,28 +96,32 @@ export default class OrderDetailBottomButtonView extends Component {
         switch (menu.id) {
             case 1:
                 if (assistDetailModel.cancelArr.length > 0) {
-                    this.props.openCancelModal&&this.props.openCancelModal();
+                    this.props.openCancelModal && this.props.openCancelModal();
                 } else {
-                    Toast.$toast("无取消类型！");
+                    Toast.$toast('无取消类型！');
                 }
 
                 break;
             case 2:
-                this.props.openCancelModal&&this.props.openCancelModal(()=> {this._goToPay()});
+                this.props.openCancelModal && this.props.openCancelModal(() => {
+                    this._goToPay();
+                });
                 break;
             case 3:
-                this.props.openCancelModal&&this.props.openCancelModal(()=> {this._goToPay()});
+                this.props.openCancelModal && this.props.openCancelModal(() => {
+                    this._goToPay();
+                });
                 break;
             case 4:
                 break;
             case 5:
-                clickOrderLogistics(orderDetailModel.merchantOrderNo)
+                clickOrderLogistics(orderDetailModel.merchantOrderNo);
                 break;
             case 6:
-                clickOrderConfirmReceipt(orderDetailModel.merchantOrderNo,orderDetailModel.merchantOrder.subStatus, ()=> {
+                clickOrderConfirmReceipt(orderDetailModel.merchantOrderNo, orderDetailModel.merchantOrder.subStatus, () => {
                     this.props.dataHandleConfirmOrder && this.props.dataHandleConfirmOrder();//本地修改列表数据状态到交易完成
                     orderDetailModel.dataHandleConfirmOrder();//本地修改详情状态到交易完成
-                })
+                });
                 break;
             case 8:
                 clickOrderAgain(orderDetailModel.merchantOrderNo, orderDetailModel.productsList());
@@ -140,26 +131,26 @@ export default class OrderDetailBottomButtonView extends Component {
                 this.deleteOrder();
                 break;
             case 10:
-                OrderApi.checkInfo({warehouseOrderNo:orderDetailModel.merchantOrderNo}).then(res => {
-                    if(res.data === true){
+                OrderApi.checkInfo({ warehouseOrderNo: orderDetailModel.merchantOrderNo }).then(res => {
+                    if (res.data === true) {
                         routePush(RouterMap.P_ScorePublishPage, {
                             orderNo: orderDetailModel.merchantOrderNo
-                        })
-                    }else{
+                        });
+                    } else {
                         Toast.$toast('该商品已晒过单！');
-                        this.props.loadPageData()
+                        this.props.loadPageData();
                     }
 
-                }).catch(e =>{
+                }).catch(e => {
                     Toast.$toast(e.msg);
-                })
+                });
 
                 break;
         }
     };
 
-    deleteOrder(){
-        Alert.alert("", `确定删除此订单吗?`, [
+    deleteOrder() {
+        Alert.alert('', `确定删除此订单吗?`, [
             {
                 text: `取消`, onPress: () => {
                 }
@@ -169,9 +160,9 @@ export default class OrderDetailBottomButtonView extends Component {
                     Toast.showLoading();
                     OrderApi.deleteOrder({ merchantOrderNo: orderDetailModel.merchantOrderNo }).then((response) => {
                         Toast.hiddenLoading();
-                        Toast.$toast("订单已删除");
-                        this.props.dataHandleDeleteOrder&&this.props.dataHandleDeleteOrder()
-                        routePop()
+                        Toast.$toast('订单已删除');
+                        this.props.dataHandleDeleteOrder && this.props.dataHandleDeleteOrder();
+                        routePop();
                     }).catch(e => {
                         Toast.hiddenLoading();
                         Toast.$toast(e.msg);
@@ -182,23 +173,25 @@ export default class OrderDetailBottomButtonView extends Component {
         ], { cancelable: true });
     }
 
-     _goToPay() {
-         let orderProductList = orderDetailModel.productsList();
-         let platformOrderNo = orderDetailModel.platformOrderNo
-         payment.checkOrderToPage(platformOrderNo, orderProductList[0].productName)
-     }
+    _goToPay() {
+        let orderProductList = orderDetailModel.productsList();
+        let platformOrderNo = orderDetailModel.platformOrderNo;
+        if (orderProductList && orderProductList.length > 0) {
+            payment.checkOrderToPage(platformOrderNo, orderProductList[0].productName);
+        }
+    }
 }
 const styles = StyleSheet.create({
     containerStyle: {
-        height: px2dp(48), flexDirection: "row", alignItems: "center",
-        justifyContent: "flex-end", backgroundColor: "white", marginTop: 1
+        height: px2dp(48), flexDirection: 'row', alignItems: 'center',
+        justifyContent: 'flex-end', backgroundColor: 'white', marginTop: 1
     },
     touchableStyle: {
         borderWidth: 1,
         height: px2dp(30),
         borderRadius: px2dp(15),
         marginRight: px2dp(15),
-        justifyContent: "center",
+        justifyContent: 'center',
         paddingLeft: px2dp(20),
         paddingRight: px2dp(20)
     }
