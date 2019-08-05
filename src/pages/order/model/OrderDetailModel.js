@@ -20,7 +20,7 @@ class OrderDetailModel {
     @observable merchantOrderNo = ''
     @observable platformOrderNo = ''
     @observable isAllVirtual = true;
-    @observable loadingState = PageLoadingState.loading;
+    @observable loadingState = PageLoadingState.loading
 
     productsList() {
         return this.merchantOrder.productOrderList || []
@@ -63,7 +63,7 @@ class OrderDetailModel {
         orderDetailModel.loadingState=PageLoadingState.success
         this.platformOrderNo = this.merchantOrder.platformOrderNo || '';
         let menu =  [...GetViewOrderStatus(this.merchantOrder.status).menu_orderDetail];
-        let hasAfterSaleService = checkOrderAfterSaleService(this.merchantOrder.productOrderList, this.merchantOrder.orderStatus, this.baseInfo.nowTime);
+        let hasAfterSaleService = checkOrderAfterSaleService(this.merchantOrder.productOrderList, this.merchantOrder.status, this.baseInfo.nowTime);
         let isAllVirtual = true;
         this.merchantOrder.productOrderList.forEach((item) => {
             if (item.orderType != 1){
@@ -140,6 +140,15 @@ class OrderDetailModel {
                 this.buyState = '';
                 break;
         }
+        menu = menu.filter((item) => {
+            if (!isAllVirtual) {
+                return true;
+            }
+            if (item.operation === '查看物流' || item.operation === '确认收货') {
+                return false;
+            }
+            return true;
+        });
         this.menu = menu;
     }
 

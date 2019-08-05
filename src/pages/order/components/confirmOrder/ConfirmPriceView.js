@@ -56,6 +56,9 @@ export default class ConfirmPriceView extends Component {
         // "promotionAmount":, //BigDecimal 促销金额
         // "tokenCoinAmount":, //BigDecimal 一元券抵扣金额
         // "couponCount":, //int 优惠券数量
+        if (confirmOrderModel.productOrderList.length === 0){
+            return null;
+        }
 
         let {totalFreightFee = 0, totalAmount = 0, couponAmount = 0, promotionAmount = 0, tokenCoinAmount = 0} = confirmOrderModel.payInfo;
         return (

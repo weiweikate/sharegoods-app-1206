@@ -171,26 +171,26 @@ class ConfirmOrderModel {
 
     @action
     makeSureProduct_selectDefaltCoupon(couponsId) {
-        API.listAvailable(this.getCouponParams()).then((data) => {
-            // couponConfigId	Integer	823
-            data = data.data || {};
-            let userCouponCode = '';
-            (data.data || []).find((item)=>{
-                if (item.couponConfigId == couponsId) {
-                    userCouponCode = item.code;
-                    return true;
-                }
-                if (item.type == 5 && !userCouponCode) {
-                    userCouponCode = item.code;
-                    if (!couponsId) {
+            API.listAvailable(this.getCouponParams()).then((data) => {
+                // couponConfigId	Integer	823
+                data = data.data || {};
+                let userCouponCode = '';
+                (data.data || []).find((item)=>{
+                    if (item.couponConfigId == couponsId) {
+                        userCouponCode = item.code;
                         return true;
                     }
-                }
+                    if (item.type == 5 && !userCouponCode) {
+                        userCouponCode = item.code;
+                        if (!couponsId) {
+                            return true;
+                        }
+                    }
+                });
+                this.userCouponCode = userCouponCode;
+            }).finally(() => {
+                this.makeSureProduct();
             });
-            this.userCouponCode = userCouponCode;
-        }).finally(() => {
-            this.makeSureProduct();
-        });
     }
 
     @action makeSureProduct() {
@@ -215,7 +215,7 @@ class ConfirmOrderModel {
             // this.data.payInfo.payAmount += this.data.payInfo.couponAmount;
             // this.data.payInfo.couponAmount = 0;//清除优惠券信息
             // this.handleNetData(this.data);
-            this.receiveInfo = {};
+             this.receiveInfo = {};
         } else {//原来没有数据的时候，展示自己带下来的数据
             this.productOrderList = this.orderParamVO.orderProducts || [];
         }

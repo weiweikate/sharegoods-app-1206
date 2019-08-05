@@ -120,7 +120,7 @@ export default class AfterSaleListPage extends BasePage<Props> {
                     alignItems: 'center',
                     backgroundColor: 'white',
                     borderTopWidth: 0.5,
-                    borderTopColor: DesignRule.textColor_placeholder
+                    borderTopColor: DesignRule.lineColor_inWhiteBg
                 }}>
                     <UIImage source={[icon_refund, icon_return_goods, icon_exchange][type - 1]}
                              style={styles.image}

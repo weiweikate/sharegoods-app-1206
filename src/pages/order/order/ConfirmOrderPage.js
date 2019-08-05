@@ -79,18 +79,18 @@ export default class ConfirmOrderPage extends BasePage {
                     {
                         confirmOrderModel.failProductList.length > 0 ?
                             confirmOrderModel.failProductList.map((item, index) => {
-                                return <GoodsItem
-                                    key={'failProductList'+index}
-                                    uri={item.specImg}
-                                    activityCodes={item.failReason?[item.failReason]:[]}
-                                    goodsName={item.productName}
-                                    salePrice={item.unitPrice}
-                                    category={item.spec}
-                                    goodsNum={'x' + item.quantity}
-                                    onPress={() => {
-                                    }}
-                                    failProduct={true}
-                                />
+                               return <GoodsItem
+                                   key={'failProductList'+index}
+                                   uri={item.specImg}
+                                   activityCodes={item.failReason?[item.failReason]:[]}
+                                   goodsName={item.productName}
+                                   salePrice={item.unitPrice}
+                                   category={item.spec}
+                                   goodsNum={'x' + item.quantity}
+                                   onPress={() => {
+                                   }}
+                                   failProduct={true}
+                               />
                             })  : null
                     }
                     <KeyboardAvoidingView>

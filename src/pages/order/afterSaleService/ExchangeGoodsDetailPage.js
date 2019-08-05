@@ -138,7 +138,6 @@ class ExchangeGoodsDetailPage extends BasePage {
                 unitPrice,
                 spec,
                 quantity,
-                payAmount,
                 merchantOrderNo,
             },
             refundAddress,
@@ -236,7 +235,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                                                 <MRText style={{fontSize: 12,
                                                     color: DesignRule.textColor_mainTitle,
                                                     fontWeight: '600'
-                                                }}>{'¥'+payAmount}</MRText>
+                                                }}>{'¥'+applyRefundAmount}</MRText>
                                             </View>
                                         )
                                     }
@@ -311,7 +310,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                     title: merchantOrderNo,
                     desc,
                     pictureUrlString,
-                    urlString:'/' + merchantOrderNo,
+                    urlString:'',
                     note:'',
                 }}
             )
@@ -328,7 +327,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                                 title: merchantOrderNo,
                                 desc,
                                 pictureUrlString,
-                                urlString:'/' + merchantOrderNo,
+                                urlString: '',
                                 note: '',
                             }
                         }
