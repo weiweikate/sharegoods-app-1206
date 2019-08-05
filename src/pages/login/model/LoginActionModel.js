@@ -41,8 +41,8 @@ const oneClickLoginValidation = (authenToken, localPhone, navigation, successCal
             UserModel.saveUserInfo(result.data);
             homeModule.loadHomeList();
             bridge.setCookies(result.data);
-            successCallBack && successCallBack();
             loginJump(result.data, extraProps);
+            successCallBack && successCallBack();
             if (StringUtils.isEmpty(result.data.unionid)) {
                 setTimeout(() => {
                     //未绑定微信
@@ -60,9 +60,9 @@ const oneClickLoginValidation = (authenToken, localPhone, navigation, successCal
             }
             TrackApi.localPhoneNumLogin({ 'loginMethod': 4 });
         }).catch(error => {
-            failCallBack && failCallBack(error.code);
-            bridge.$toast(error.msg);
-        });
+        failCallBack && failCallBack(error.code);
+        bridge.$toast(error.msg);
+    });
 };
 
 const loginJump = (data, extraProps) => {

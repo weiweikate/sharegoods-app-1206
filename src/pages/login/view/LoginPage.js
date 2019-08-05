@@ -11,7 +11,7 @@ import ProtocolView from '../components/Login.protocol.view';
 import RouterMap, { replaceRoute, routeNavigate } from '../../../navigation/RouterMap';
 import LinearGradient from 'react-native-linear-gradient';
 import { getWxUserInfo, oneClickLoginValidation, wxLoginAction } from '../model/LoginActionModel';
-import { checkInitResult, closeAuth, startLoginAuth } from '../model/PhoneAuthenAction';
+import { checkInitResult, closeAuth, preLogin, startLoginAuth } from '../model/PhoneAuthenAction';
 import store from '@mr/rn-store';
 import { observer } from 'mobx-react';
 
@@ -28,6 +28,10 @@ export default class LoginPage extends BasePage {
                 loginModel.setAuthPhone(isVerifyEnable);
             }).catch(e => {
                 loginModel.setAuthPhone(null);
+            });
+        } else {
+            preLogin().then(data => {
+            }).catch(error => {
             });
         }
 
@@ -92,19 +96,21 @@ export default class LoginPage extends BasePage {
     };
 
     startOneLogin = () => {
+        this.$loadingShow();
         startLoginAuth().then((data) => {
-            this.$loadingShow();
             let { navigation } = this.props;
             oneClickLoginValidation(data, null, navigation, () => {
                 this.$loadingDismiss();
+                this.$toastShow('登录成功');
             }, () => {
                 this.$loadingDismiss();
             });
         }).catch((error) => {
+            this.$loadingDismiss();
             if (error.code === '555') {
                 closeAuth();
             } else {
-                replaceRoute(RouterMap.PhoneLoginPage, { ...this.params, needBottom: true });
+                this.$toastShow(error.message);
             }
         });
     };

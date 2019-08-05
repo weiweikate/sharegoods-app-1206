@@ -150,7 +150,7 @@ public class BaseApplication extends MultiDexApplication {
             // 一键登录debug
             JVerificationInterface.setDebugMode(true);
             // 神策
-//            SensorsDataAPI.sharedInstance().enableLog(true);
+            // SensorsDataAPI.sharedInstance().enableLog(true);
         } else {
             // 七鱼初始化
             Unicorn.init(getApplicationContext(), "b87fd67831699ca494a9d3de266cd3b0", QiYuOptions(),

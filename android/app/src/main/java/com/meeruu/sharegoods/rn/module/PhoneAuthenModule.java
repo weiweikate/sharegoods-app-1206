@@ -64,41 +64,7 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
         }
     }
 
-    @ReactMethod
-    public void preLogin(final Promise callback) {
-        JVerificationInterface.preLogin(mContext, 5000, new PreLoginListener() {
-            @Override
-            public void onResult(int i, String s) {
-                if (i == 7000) {
-                    callback.resolve(true);
-                } else {
-                    callback.reject(i + "", "一键登录失败");
-                }
-            }
-        });
-    }
-
-    @ReactMethod
-    public void closeAuth() {
-        JVerificationInterface.dismissLoginAuthActivity();
-    }
-
-    @ReactMethod
-    public void getVerifyToken(final Promise callback) {
-        JVerificationInterface.getToken(mContext, 5000, new VerifyListener() {
-            @Override
-            public void onResult(int i, String s, String s1) {
-                if (i == 2000) {
-                    callback.resolve(s);
-                } else {
-                    callback.reject(s, s1);
-                }
-            }
-        });
-    }
-
-    @ReactMethod
-    public void startLoginAuth(final Promise callback) {
+    private void initUI() {
         String hostJson = (String) SPCacheUtils.get(ParameterUtils.API_SERVER, "");
         String contractUrl = "";
         String h5Url = "";
@@ -158,7 +124,45 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
             builder.setAppPrivacyOne("《秀购用户协议》", contractUrl);
         }
         JVerificationInterface.setCustomUIWithConfig(builder.build());
-        JVerificationInterface.loginAuth(getCurrentActivity(), new VerifyListener() {
+    }
+
+    @ReactMethod
+    public void preLogin(final Promise callback) {
+        JVerificationInterface.preLogin(mContext, 5000, new PreLoginListener() {
+            @Override
+            public void onResult(int i, String s) {
+                if (i == 7000) {
+                    callback.resolve(true);
+                } else {
+                    callback.reject(i + "", "一键登录失败");
+                }
+            }
+        });
+    }
+
+    @ReactMethod
+    public void closeAuth() {
+        JVerificationInterface.dismissLoginAuthActivity();
+    }
+
+    @ReactMethod
+    public void getVerifyToken(final Promise callback) {
+        JVerificationInterface.getToken(mContext, 5000, new VerifyListener() {
+            @Override
+            public void onResult(int i, String s, String s1) {
+                if (i == 2000) {
+                    callback.resolve(s);
+                } else {
+                    callback.reject(s, s1);
+                }
+            }
+        });
+    }
+
+    @ReactMethod
+    public void startLoginAuth(final Promise callback) {
+        initUI();
+        JVerificationInterface.loginAuth(mContext.getApplicationContext(), true, new VerifyListener() {
             @Override
             public void onResult(int code, String token, String operator) {
                 LogUtils.d("login=====" + code);
