@@ -161,12 +161,12 @@ function AdViewBindModal(modal, dataName = 'AdData', visibleName = 'isShowAd', c
                 if (router) {
                     routePush(router, params);
                 }
-                this.close();
+                this.close(true);
                 //页面跳转
             };
 
-            close() {
-                modal[closeFunc] && modal[closeFunc]();
+            close(click) {
+                modal[closeFunc] && modal[closeFunc](click);
             }
 
             render() {

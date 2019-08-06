@@ -9,65 +9,92 @@ import LoginAPI from '../api/LoginApi';
 import bridge from '../../../utils/bridge';
 import { homeModule } from '../../home/model/Modules';
 import UserModel from '../../../model/user';
-import { login, TrackApi } from '../../../utils/SensorsTrack';
+import { login, track, TrackApi } from '../../../utils/SensorsTrack';
 import JPushUtils from '../../../utils/JPushUtils';
 import DeviceInfo from 'react-native-device-info/deviceinfo';
 import { DeviceEventEmitter } from 'react-native';
-import RouterMap, { loginBack, routePush } from '../../../navigation/RouterMap';
-import { track } from '../../../utils/SensorsTrack';
+import RouterMap, { routePop, routePush } from '../../../navigation/RouterMap';
 import StringUtils from '../../../utils/StringUtils';
+import { mediatorCallFunc } from '../../../SGMediator';
 
 /**
- * @param phone 校验手机号
+ * @param phone 一键登录
  * @param athenToken  ali 返回的校验token
  * @param navigation  导航器
  * @param successCallBack 登录成功后的回调
  * hyf 后期更改去掉phone
  */
-const oneClickLoginValidation = (phone, authenToken, navigation, successCallBack) => {
+const oneClickLoginValidation = (authenToken, localPhone, navigation, successCallBack, failCallBack, extraProps = {}) => {
     TrackApi.LoginButtonClick({ 'loginMethod': 4 });
-    LoginAPI.oneClickLoginValidation({
-        token: authenToken
-    }).then(result => {
-        successCallBack && successCallBack();
-        TrackApi.localPhoneNumLogin({ 'loginMethod': 4 });
-        if (result.data.unionid == null) {
-            //未绑定微信
-            phoneBindWx();
-        }
-        if (result.data.regNow) {
-            //新用户
-            routePush(RouterMap.InviteCodePage, {});
-        } else {
-            //老用户
-            loginBack();
-        }
-
-        UserModel.saveUserInfo(result.data);
-        UserModel.saveToken(result.data.token);
-        homeModule.loadHomeList();
-        bridge.setCookies(result.data);
-    }).catch(error => {
-        bridge.$toast(error.msg);
-    });
-};
-/**
- * 一键登录后未绑定微信去绑定微信
- */
-const phoneBindWx = () => {
-    getWxUserInfo((wxInfo) => {
-        console.log(wxInfo);
-        //去绑定微信，成功与否不管
-        LoginAPI.phoneBindWx({
-            unionId: wxInfo.unionid,
-            appOpenid: wxInfo.appOpenid,
-            headImg: wxInfo.headerImg,
-            nickname: wxInfo.nickName
-        }).then(result => {
-            // bridge.$toast('微信绑定成功');
+    let params = { token: authenToken };
+    if (StringUtils.isNoEmpty(localPhone)) {
+        params.phone = localPhone;
+    }
+    /*微信登录过来绑定手机号的?*/
+    if (extraProps.wxData) {
+        params.unionId = extraProps.wxData.unionid;
+        params.appOpenid = extraProps.wxData.appOpenid;
+    }
+    LoginAPI.oneClickLoginValidation(params)
+        .then(result => {
+            UserModel.saveToken(result.data.token);
+            UserModel.saveUserInfo(result.data);
+            homeModule.loadHomeList();
+            bridge.setCookies(result.data);
+            successCallBack && successCallBack();
+            loginJump(result.data, extraProps);
+            if (StringUtils.isEmpty(result.data.unionid)) {
+                setTimeout(() => {
+                    //未绑定微信
+                    /*已有微信登录信息*/
+                    if (extraProps.wxData) {
+                        phoneBindWx(extraProps.wxData, result);
+                    } else {
+                        getWxUserInfo((wxInfo) => {
+                            if (wxInfo && wxInfo.unionid) {
+                                phoneBindWx(wxInfo, result);
+                            }
+                        });
+                    }
+                }, 265);
+            }
+            TrackApi.localPhoneNumLogin({ 'loginMethod': 4 });
         }).catch(error => {
+            failCallBack && failCallBack(error.code);
             bridge.$toast(error.msg);
         });
+};
+
+const loginJump = (data, extraProps) => {
+    if (data.regNow) {
+        // 新用户，跳转到上级页面
+        mediatorCallFunc('Home_RequestNoviceGift');
+        routePush(RouterMap.InviteCodePage, {});
+    } else {
+        // 老用户
+        routePop(extraProps.popNumber || 1);
+    }
+};
+
+/**
+ * 绑定微信
+ */
+const phoneBindWx = (wxInfo, data) => {
+    //去绑定微信，成功与否不管，都执行回调
+    LoginAPI.phoneBindWx({
+        unionId: wxInfo.unionid ? wxInfo.unionid : wxInfo.unionId,
+        appOpenid: wxInfo.appOpenid,
+        headImg: wxInfo.headerImg ? wxInfo.headerImg : wxInfo.headImg,
+        nickname: wxInfo.nickName ? wxInfo.nickName : wxInfo.nickname
+    }).then(result => {
+        // 微信绑定成功
+        UserModel.unionid = wxInfo.unionid ? wxInfo.unionid : wxInfo.unionId;
+        UserModel.appOpenid = wxInfo.appOpenid;
+        UserModel.wechatName = wxInfo.nickName ? wxInfo.nickName : wxInfo.nickname;
+    }).catch(error => {
+        if (data.data.withRegister) {
+            bridge.$toast(error.msg);
+        }
     });
 };
 /**
@@ -90,44 +117,45 @@ const getWxUserInfo = (callback) => {
  * 回调code 和 数据 34005 需要去绑定手机号 10000 登录成功
  * @param callBack
  */
-const wxLoginAction = (callBack) => {
+const wxLoginAction = (data, callBack) => {
     TrackApi.LoginButtonClick({ 'loginMethod': 1 });
-    getWxUserInfo((data) => {
-        LoginAPI.appWechatLogin({
-            device: data.device,
-            encryptedData: '',
-            headImg: data.headerImg,
-            iv: '',
-            nickname: data.nickName,
-            appOpenid: data.appOpenid,
-            systemVersion: data.systemVersion,
-            wechatVersion: '',
-            unionid: data.unionid
-        }).then((res) => {
-            if (res.code === 34005) {
-                data.title = '绑定手机号';
-                callBack && callBack(res.code, data);
-                TrackApi.wxSignUpSuccess();
-            } else if (res.code === 10000) {
-                callBack && callBack(res.code, data);
-                UserModel.saveUserInfo(res.data);
-                UserModel.saveToken(res.data.token);
-                TrackApi.wxLoginSuccess();
-                bridge.$toast('登录成功');
-                console.log(UserModel);
-                homeModule.loadHomeList();
-                bridge.setCookies(res.data);
-                // 埋点登录成功
-                login(data.data.code);
-            }
-        }).catch((error) => {
-            if (error.code === 34005) {
-                data.title = '绑定手机号';
-                callBack && callBack(error.code, data);
-                TrackApi.wxSignUpSuccess();
-            }
-            bridge.$toast(data.msg);
-        });
+    if (!data) {
+        callBack && callBack();
+        return;
+    }
+    LoginAPI.appWechatLogin({
+        device: data.device,
+        encryptedData: '',
+        headImg: data.headerImg,
+        iv: '',
+        nickname: data.nickName,
+        appOpenid: data.appOpenid,
+        systemVersion: data.systemVersion,
+        wechatVersion: '',
+        unionid: data.unionid
+    }).then((res) => {
+        if (res.code === 34005) {
+            data.title = '绑定手机号';
+            callBack && callBack(res.code, data);
+            TrackApi.wxSignUpSuccess();
+        } else if (res.code === 10000) {
+            callBack && callBack(res.code, data);
+            UserModel.saveToken(res.data.token);
+            UserModel.saveUserInfo(res.data);
+            TrackApi.wxLoginSuccess();
+            bridge.$toast('登录成功');
+            console.log(UserModel);
+            bridge.setCookies(res.data);
+            // 埋点登录成功
+            login(data.data.code);
+        }
+    }).catch((error) => {
+        if (error.code === 34005) {
+            data.title = '绑定手机号';
+            callBack && callBack(error.code, data);
+            TrackApi.wxSignUpSuccess();
+        }
+        bridge.$toast(data.msg);
     });
 };
 /**
@@ -150,24 +178,48 @@ const codeLoginAction = (LoginParam, callBack) => {
         wechatCode: '',
         wechatVersion: ''
     };
+    // 微信信息存在，传给服务端进行绑定
+    if (StringUtils.isNoEmpty(LoginParam.unionid)) {
+        requestParams.unionid = LoginParam.unionid;
+        requestParams.appOpenid = LoginParam.appOpenid;
+        requestParams.headImg = LoginParam.headerImg;
+    }
 
     if (StringUtils.isEmpty(LoginParam.spm) && !StringUtils.isEmpty(LoginParam.campaignType)) {
         requestParams.popupBoxType = 1;//0:全部 1:app 2:h5 3:小程序
     }
 
     LoginAPI.codeLogin(requestParams).then((data) => {
-        callBack(data);
-        UserModel.saveUserInfo(data.data);
+        console.log('----' + JSON.stringify(data));
         UserModel.saveToken(data.data.token);
+        UserModel.saveUserInfo(data.data);
         bridge.setCookies(data.data);
         DeviceEventEmitter.emit('homePage_message', null);
         DeviceEventEmitter.emit('contentViewed', null);
-        bridge.$toast('登录成功');
-        TrackApi.codeLoginSuccess();
         homeModule.loadHomeList();
         //推送
         JPushUtils.updatePushTags();
         JPushUtils.updatePushAlias();
+        // 回调
+        callBack(data);
+        // 绑定微信
+        if (StringUtils.isEmpty(data.data.unionid)) {
+            if (StringUtils.isNoEmpty(LoginParam.unionid)) {
+                // 直接绑定微信
+                phoneBindWx(LoginParam, data);
+            } else {
+                //未绑定微信
+                setTimeout(() => {
+                    getWxUserInfo((wxInfo) => {
+                        if (wxInfo && wxInfo.unionid) {
+                            phoneBindWx(wxInfo, data);
+                        }
+                    });
+                }, 265);
+            }
+        } else {
+            callBack(data);
+        }
     }).catch((error) => {
         callBack(error);
         bridge.$toast(error.msg);
@@ -180,7 +232,7 @@ const codeLoginAction = (LoginParam, callBack) => {
  */
 const pwdLoginAction = (LoginParam, callBack) => {
     TrackApi.LoginButtonClick({ 'loginMethod': 3 });
-    LoginAPI.passwordLogin({
+    let requestParams = {
         authcode: '22',
         code: LoginParam.code,
         device: DeviceInfo.getDeviceName() + '',
@@ -190,10 +242,16 @@ const pwdLoginAction = (LoginParam, callBack) => {
         username: '',
         wechatCode: '11',
         wechatVersion: '11'
-    }).then((data) => {
-        callBack(data);
-        UserModel.saveUserInfo(data.data);
+    };
+    // 微信信息存在，传给服务端进行绑定
+    if (StringUtils.isNoEmpty(LoginParam.unionid)) {
+        requestParams.unionid = LoginParam.unionid;
+        requestParams.appOpenid = LoginParam.appOpenid;
+        requestParams.headImg = LoginParam.headerImg;
+    }
+    LoginAPI.passwordLogin(requestParams).then((data) => {
         UserModel.saveToken(data.data.token);
+        UserModel.saveUserInfo(data.data);
         TrackApi.pwdLoginSuccess();
         bridge.setCookies(data.data);
         DeviceEventEmitter.emit('homePage_message', null);
@@ -202,6 +260,24 @@ const pwdLoginAction = (LoginParam, callBack) => {
         //推送
         JPushUtils.updatePushTags();
         JPushUtils.updatePushAlias();
+        // 回调
+        callBack(data);
+        // 绑定微信
+        if (StringUtils.isEmpty(data.data.unionid)) {
+            if (StringUtils.isNoEmpty(LoginParam.unionid)) {
+                // 直接绑定微信
+                phoneBindWx(LoginParam, data);
+            } else {
+                //未绑定微信
+                setTimeout(() => {
+                    getWxUserInfo((wxInfo) => {
+                        if (wxInfo && wxInfo.unionid) {
+                            phoneBindWx(wxInfo, data);
+                        }
+                    });
+                }, 265);
+            }
+        }
     }).catch((error) => {
         callBack(error);
         bridge.$toast(error.msg);
@@ -228,16 +304,16 @@ const registAction = (params, callback) => {
     LoginAPI.findMemberByPhone(requestParams).then((data) => {
         if (data.code === 10000) {
             callback(data);
-            //推送
-            JPushUtils.updatePushTags();
-            JPushUtils.updatePushAlias();
-            UserModel.saveUserInfo(data.data);
             UserModel.saveToken(data.data.token);
+            UserModel.saveUserInfo(data.data);
             homeModule.loadHomeList();
             track('SignUpSuccess', { 'signUpMethod': 2, 'signUpPhone': params.phone, 'signUpPlatform': 1 });
             bridge.setCookies(data.data);
             DeviceEventEmitter.emit('homePage_message', null);
             DeviceEventEmitter.emit('contentViewed', null);
+            //推送
+            JPushUtils.updatePushTags();
+            JPushUtils.updatePushAlias();
         } else {
             callback(data);
         }
@@ -248,10 +324,12 @@ const registAction = (params, callback) => {
 };
 
 export {
+    getWxUserInfo,
     wxLoginAction,
     codeLoginAction,
     pwdLoginAction,
     registAction,
     phoneBindWx,
-    oneClickLoginValidation
+    oneClickLoginValidation,
+    loginJump
 };

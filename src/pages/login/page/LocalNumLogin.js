@@ -183,7 +183,7 @@ export default class LocalNumLogin extends BasePage {
     _beginAuthen = (phone, authenToken = '') => {
 
         let { navigation } = this.props;
-        oneClickLoginValidation(phone, authenToken, navigation);
+        oneClickLoginValidation(authenToken, phone, navigation);
     };
 }
 

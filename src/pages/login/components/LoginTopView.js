@@ -1,11 +1,6 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
-import {
-    View,
-    TouchableOpacity,
-    StyleSheet,
-    Image
-} from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
 import StringUtils from '../../../utils/StringUtils';
 import bridge from '../../../utils/bridge';
@@ -28,12 +23,12 @@ const dismissKeyboard = require('dismissKeyboard');
 @observer
 export default class LoginTopView extends Component {
     LoginModel = loginModel;
+
     constructor(props) {
         super(props);
     }
 
     render() {
-        // const {  } = this.props;
         return (
             <View style={Styles.containViewStyle}>
                 <View style={Styles.switchBgStyle}>
@@ -42,7 +37,7 @@ export default class LoginTopView extends Component {
                     }}>
                         <UIText
                             value={'验证码登录'}
-                            style={[Styles.switchBtnStyle, loginModel.selectIndex ? { color: DesignRule.textColor_secondTitle } : { color: DesignRule.mainColor }]} />
+                            style={[Styles.switchBtnStyle, loginModel.selectIndex ? { color: DesignRule.textColor_secondTitle } : { color: DesignRule.mainColor }]}/>
                         <View
                             style={loginModel.selectIndex ? Styles.btnBottomLineNonStyle : Styles.btnBottomLineStyle}/>
                     </TouchableOpacity>
@@ -51,7 +46,7 @@ export default class LoginTopView extends Component {
                     }}>
                         <UIText
                             value={'密码登录'}
-                            style={[Styles.switchBtnStyle, loginModel.selectIndex ? { color: DesignRule.mainColor } : { color: DesignRule.textColor_secondTitle }]} />
+                            style={[Styles.switchBtnStyle, loginModel.selectIndex ? { color: DesignRule.mainColor } : { color: DesignRule.textColor_secondTitle }]}/>
                         <View
                             style={loginModel.selectIndex ? Styles.btnBottomLineStyle : Styles.btnBottomLineNonStyle}/>
                     </TouchableOpacity>
@@ -89,7 +84,7 @@ export default class LoginTopView extends Component {
 
                         <UIText style={Styles.loginBtnTextStyle}
                                 value={'登录'}
-                         />
+                        />
 
                     </View>
                 </TouchableOpacity>
@@ -121,7 +116,7 @@ export default class LoginTopView extends Component {
                     >
                         <UIText style={Styles.codeTextStyle}
                                 value={loginModel.dowTime > 0 ? `${loginModel.dowTime}秒后重新获取` : '获取验证码'}
-                         />
+                        />
                     </TouchableOpacity>
                 </View>
                 <CommSpaceLine style={Styles.lineStyle}/>
@@ -179,7 +174,7 @@ export default class LoginTopView extends Component {
                         <TouchableOpacity onPress={this.props.forgetPasswordClick}>
                             <UIText style={Styles.codeTextStyle}
                                     value={'忘记密码'}
-                             />
+                            />
                         </TouchableOpacity>
                     </View>
                 </View>

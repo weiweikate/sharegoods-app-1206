@@ -3,9 +3,7 @@
  * Api HOST配置
  * 支持动态切换
  */
-import {
-    NativeModules,
-} from 'react-native';
+import { NativeModules } from 'react-native';
 import store from '@mr/rn-store';
 import config from '../../config';
 import StringUtils from '../utils/StringUtils';
@@ -26,8 +24,8 @@ class ApiEnvironment {
             for(let obj in config.env){
                 if(config.env[obj] && (config.env[obj].host === baseHost)){
                     hasBaseUrl = true;
-                    this.envType = String(obj)
-                     const envType = config.envType;
+                    this.envType = String(obj);
+                    const envType = config.envType;
                     if (envType && (envType !== this.envType)) {
                         this.saveEnv(this.envType);
                     }
@@ -35,7 +33,7 @@ class ApiEnvironment {
                 }
             }
         }
-        if(!hasBaseUrl){
+        if (!hasBaseUrl) {
             const envType = config.envType;
             this.envType = envType && Object.keys(ApiConfig).indexOf(envType) >= 0 ? envType : 'online';
         }
@@ -91,7 +89,7 @@ class ApiEnvironment {
      * @returns {Promise<void>}
      */
     loadLastApiSettingFromDiskCache() {
-        if (StringUtils.isNoEmpty(NativeModules.commModule.baseUrl)){
+        if (StringUtils.isNoEmpty(NativeModules.commModule.baseUrl)) {
             return;
         }
         store.get(KEY_ApiEnvironment).then(envType => {

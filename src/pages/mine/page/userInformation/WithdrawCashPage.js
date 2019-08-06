@@ -1,18 +1,23 @@
 import React from 'react';
 import {
-    StyleSheet,
-    View,
-    TouchableOpacity, Alert,
+    Alert,
     DeviceEventEmitter,
+    Image,
+    StyleSheet,
+    TouchableOpacity,
     TouchableWithoutFeedback,
-    Image
+    View
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import * as math from 'mathjs';
 import {
-    UIText, UIImage, UIButton, MRText
+    MRText,
+    MRText as Text,
+    MRTextInput as RNTextInput,
+    UIButton,
+    UIImage,
+    UIText
 } from '../../../../components/ui';
-import { MRText as Text, MRTextInput as RNTextInput } from '../../../../components/ui';
 import StringUtils, { isNoEmpty } from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import user from '../../../../model/user';
@@ -57,7 +62,7 @@ function number_format(number, decimals, dec_point, thousands_sep, roundtag) {
         };
     s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
     let re = /(-?\d+)(\d{3})/;
-    while (re.test(s[0])) {
+    while (s[0] && re.test(s[0])) {
         s[0] = s[0].replace(re, '$1' + sep + '$2');
     }
 

@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-    StyleSheet,
-    View,
-    Image,
-    ScrollView, ImageBackground, Platform
-} from 'react-native';
+import { Image, ImageBackground, Platform, ScrollView, StyleSheet, View } from 'react-native';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
 import UIImage from '../../../../components/ui/UIImage';
@@ -18,6 +13,9 @@ import StringUtils from '../../../../utils/StringUtils';
 import MineApi from '../../api/MineApi';
 import Modal from '../../../../comm/components/CommModal';
 import { MRText as Text } from '../../../../components/ui';
+import DesignRule from '../../../../constants/DesignRule';
+import NavigatorBar from '../../../../components/pageDecorator/NavigatorBar/NavigatorBar';
+import { track, trackEvent } from '../../../../utils/SensorsTrack';
 
 const {
     icon_arrow_up,
@@ -29,9 +27,6 @@ const {
 } = res.helperAndCustomerService;
 
 const rightIcon = res.button.tongyon_icon_check_green;
-import DesignRule from '../../../../constants/DesignRule';
-import NavigatorBar from '../../../../components/pageDecorator/NavigatorBar/NavigatorBar';
-import { track, trackEvent } from '../../../../utils/SensorsTrack';
 
 /**
  * @author chenxiang
@@ -96,8 +91,10 @@ export default class HelperFeedbackPage extends BasePage {
     choosePicker = () => {
         let imageArr = this.state.imageArr;
         BusinessUtils.getImagePicker(callback => {
-            imageArr.push({ imageUrl: callback.imageUrl[0], imageThumbUrl: callback.imageThumbUrl[0] });
-            this.setState({ imageArr: imageArr });
+            if (callback.imageUrl && callback.imageUrl.length > 0) {
+                imageArr.push({ imageUrl: callback.imageUrl[0], imageThumbUrl: callback.imageThumbUrl[0] });
+                this.setState({ imageArr: imageArr });
+            }
         });
     };
 
@@ -136,8 +133,8 @@ export default class HelperFeedbackPage extends BasePage {
         }).then(res => {
             this.disabled = true;
             this.setState({ isShowFinishModal: true });
-            track(trackEvent.ProblemFeedback,{
-                problemType:this.state.course
+            track(trackEvent.ProblemFeedback, {
+                problemType: this.state.course
             });
             this.finishModal && this.finishModal.open();
         }).catch(err => {

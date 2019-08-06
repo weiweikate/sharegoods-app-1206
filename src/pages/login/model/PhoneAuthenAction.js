@@ -13,6 +13,7 @@ const startPhoneAuthen = (phoneNum) => {
     return PhoneAuthenModule.startPhoneAuthenWithPhoneNum(phoneNum);
 };
 
+// 一键登录相关接口
 const startLoginAuth = () => {
     return PhoneAuthenModule.startLoginAuth();
 };
@@ -21,5 +22,16 @@ const checkInitResult = () => {
     return PhoneAuthenModule.checkInitResult();
 };
 
+const preLogin = () => {
+    return PhoneAuthenModule.preLogin();
+};
 
-export { isCanPhoneAuthen, startPhoneAuthen, startLoginAuth, checkInitResult };
+const closeAuth = () => {
+    return PhoneAuthenModule.closeAuth();
+};
+
+const getVerifyToken = () => {
+    return PhoneAuthenModule.getVerifyToken();
+};
+
+export { isCanPhoneAuthen, startPhoneAuthen, startLoginAuth, checkInitResult, preLogin, closeAuth, getVerifyToken };

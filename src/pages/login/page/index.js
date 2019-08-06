@@ -1,5 +1,5 @@
 import OtherLoginPage from './LoginPage';
-import LoginPage from './Login';
+import LoginPage from '../view/LoginPage';
 import InputPhoneNum from './InputPhoneNum';
 import InputCode from './InputCode';
 

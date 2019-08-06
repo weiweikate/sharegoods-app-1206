@@ -103,7 +103,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void loginWX(final Callback callback) {
-        final String TAG = "";
         UMShareAPI.get(getCurrentActivity()).getPlatformInfo(getCurrentActivity(), SHARE_MEDIA.WEIXIN, new UMAuthListener() {
             @Override
             public void onStart(SHARE_MEDIA share_media) {
@@ -135,12 +134,14 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
             @Override
             public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
+                callback.invoke(JSON.parse(""));
                 ToastUtils.showToast("授权失败");
                 LogUtils.d("onError: " + "授权失败");
             }
 
             @Override
             public void onCancel(SHARE_MEDIA share_media, int i) {
+                callback.invoke(JSON.parse(""));
                 ToastUtils.showToast("授权取消");
                 LogUtils.d("onError: " + "授权取消");
             }
@@ -148,7 +149,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     }
 
     private void umengDeleteOauth(SHARE_MEDIA share_media_type) {
-        final String TAG = "";
         UMShareAPI.get(getCurrentActivity()).deleteOauth(getCurrentActivity(), share_media_type, new UMAuthListener() {
             @Override
             public void onStart(SHARE_MEDIA share_media) {
@@ -190,9 +190,9 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             getWebBitmap(mContext, shareImageBean, success, fail);
         } else if ("webActivity".equals(shareImageBean.getImageType())) {
             getWebActivityBitmap(mContext, shareImageBean, success, fail);
-        } else if("invite".equals(shareImageBean.getImageType())){
-            getInviteBitmap(mContext,shareImageBean,success,fail);
-        }else {
+        } else if ("invite".equals(shareImageBean.getImageType())) {
+            getInviteBitmap(mContext, shareImageBean, success, fail);
+        } else {
             getBitmap(mContext, shareImageBean, success, fail);
         }
     }
@@ -474,10 +474,10 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         }
     }
 
-    public void getInviteBitmap(final Context context, final ShareImageBean shareImageBean, final Callback success, final Callback fail){
+    public void getInviteBitmap(final Context context, final ShareImageBean shareImageBean, final Callback success, final Callback fail) {
         if (TextUtils.isEmpty(shareImageBean.getHeaderImage()) || "logo.png".equals(shareImageBean.getHeaderImage())) {
             Bitmap bitmap = getDefaultIcon(context);
-            drawInviteFriendsImage(context,bitmap, shareImageBean, success, fail);
+            drawInviteFriendsImage(context, bitmap, shareImageBean, success, fail);
         } else {
             downloadHeaderImg(context, shareImageBean.getHeaderImage(), shareImageBean, success, fail);
         }
@@ -591,7 +591,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         paint.reset();
         Paint headerPaint = new Paint();
         headerPaint.setDither(true);
-        Bitmap header = getCircleHeaderBitmap(headBitmap, precision,18);
+        Bitmap header = getCircleHeaderBitmap(headBitmap, precision, 18);
         canvas.drawBitmap(header, 64 * precision, 425 * precision, headerPaint);
 
         Paint textPaint = new Paint();
@@ -715,7 +715,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         paint.reset();
         Paint headerPaint = new Paint();
         headerPaint.setDither(true);
-        Bitmap header = getCircleHeaderBitmap(headBitmap, precision,18);
+        Bitmap header = getCircleHeaderBitmap(headBitmap, precision, 18);
         canvas.drawBitmap(header, 30 * precision, 412 * precision, headerPaint);
 
         Paint textPaint = new Paint();
@@ -808,19 +808,19 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         }
     }
 
-    public static Bitmap getCircleHeaderBitmap(Bitmap bmp, int precision,int radius) {
+    public static Bitmap getCircleHeaderBitmap(Bitmap bmp, int precision, int radius) {
         //获取bmp的宽高 小的一个做为圆的直径r
         int w = bmp.getWidth();
         int h = bmp.getHeight();
         int r = Math.min(w, h);
-        float sx = radius*2 * precision * 1.0f / w;
-        float sy = radius *2* precision * 1.0f / h;
+        float sx = radius * 2 * precision * 1.0f / w;
+        float sy = radius * 2 * precision * 1.0f / h;
         float scale = Math.max(sx, sy);
 
         //创建一个paint
         Paint paint = new Paint();
 
-        Bitmap newBitmap = Bitmap.createBitmap(radius *2* precision, radius*2 * precision, Bitmap.Config.ARGB_8888);
+        Bitmap newBitmap = Bitmap.createBitmap(radius * 2 * precision, radius * 2 * precision, Bitmap.Config.ARGB_8888);
 
         Canvas canvas = new Canvas(newBitmap);
 
@@ -1055,17 +1055,17 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     }
 
 
-    public void drawInviteFriendsImage(final Context context, Bitmap icon,final ShareImageBean shareImageBean, final Callback success, final Callback fail) {
+    public void drawInviteFriendsImage(final Context context, Bitmap icon, final ShareImageBean shareImageBean, final Callback success, final Callback fail) {
         int precision = 3;
-        Bitmap result = Bitmap.createBitmap(375*precision, 667*precision, Bitmap.Config.ARGB_8888);
+        Bitmap result = Bitmap.createBitmap(375 * precision, 667 * precision, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(result);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.invite_bg);
-        Bitmap qrBitmap = createQRImage(shareImageBean.getQRCodeStr(), 144*precision, 144*precision);
+        Bitmap qrBitmap = createQRImage(shareImageBean.getQRCodeStr(), 144 * precision, 144 * precision);
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
-        int newWidth = 375*precision;
-        int newHeight = 667*precision;
+        int newWidth = 375 * precision;
+        int newHeight = 667 * precision;
         float scaleWidth = ((float) newWidth) / width;
         float scaleHeight = ((float) newHeight) / height;
         //获取想要缩放的matrix
@@ -1074,42 +1074,42 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
         Bitmap newbitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
         canvas.drawBitmap(newbitmap, 0, 0, paint);
-        canvas.drawBitmap(qrBitmap, 116*precision, 282*precision, paint);
+        canvas.drawBitmap(qrBitmap, 116 * precision, 282 * precision, paint);
 
 
         Bitmap tipbitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.invite_tip_bg);
         width = tipbitmap.getWidth();
         height = tipbitmap.getHeight();
-        newWidth = 258*precision;
-        newHeight = 59*precision;
+        newWidth = 258 * precision;
+        newHeight = 59 * precision;
         scaleWidth = ((float) newWidth) / width;
         scaleHeight = ((float) newHeight) / height;
         Matrix matrixTip = new Matrix();
         matrixTip.postScale(scaleWidth, scaleHeight);
         Bitmap newTipBg = Bitmap.createBitmap(tipbitmap, 0, 0, width, height, matrix, true);
-        canvas.drawBitmap(newTipBg, 60*precision, 208*precision, paint);
+        canvas.drawBitmap(newTipBg, 60 * precision, 208 * precision, paint);
 
         paint.setColor(Color.parseColor("#B93C3B"));
-        paint.setTextSize(13*precision);
+        paint.setTextSize(13 * precision);
         Rect bounds = new Rect();
         String name = shareImageBean.userName;
-        if(!TextUtils.isEmpty(name)){
+        if (!TextUtils.isEmpty(name)) {
             paint.getTextBounds(name, 0, name.length(), bounds);
-            canvas.drawText(name,(375*precision-bounds.width())/2,230*precision+bounds.height(),paint);
+            canvas.drawText(name, (375 * precision - bounds.width()) / 2, 230 * precision + bounds.height(), paint);
         }
         String tipStr = "已有4000000+用户领取成功～";
         paint.getTextBounds(tipStr, 0, tipStr.length(), bounds);
-        canvas.drawText(tipStr,(375*precision-bounds.width())/2,246*precision+bounds.height(),paint);
+        canvas.drawText(tipStr, (375 * precision - bounds.width()) / 2, 246 * precision + bounds.height(), paint);
 
         tipStr = "手机扫一扫注册新用户";
         paint.setColor(Color.parseColor("#ffffff"));
         paint.getTextBounds(tipStr, 0, tipStr.length(), bounds);
-        canvas.drawText(tipStr,(375*precision-bounds.width())/2,431*precision+bounds.height(),paint);
+        canvas.drawText(tipStr, (375 * precision - bounds.width()) / 2, 431 * precision + bounds.height(), paint);
 
         int iconW = icon.getWidth();
         int iconH = icon.getHeight();
         // 设置想要的大小
-        int newIconLenght = 56*precision;
+        int newIconLenght = 56 * precision;
         // 计算缩放比例
         float iconWidthScale = ((float) newIconLenght) / iconW;
         float iconHeightScale = ((float) newIconLenght) / iconH;
@@ -1121,7 +1121,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
         Bitmap roundIcon = createCircleBitmap(newIcon);
 
-        canvas.drawBitmap(roundIcon, 161*precision, 153*precision, paint);
+        canvas.drawBitmap(roundIcon, 161 * precision, 153 * precision, paint);
 
         String path = BitmapUtils.saveImageToCache(result, "inviteFriends.png", shareImageBean.getQRCodeStr());
 
@@ -1271,10 +1271,10 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     }
 
     public static void getHeaderBitmap(final Context context, final Bitmap productBitmap, final ShareImageBean shareImageBean, final Callback success, final Callback fail) {
-        if(TextUtils.isEmpty(shareImageBean.getHeaderImage())){
-            Bitmap header = BitmapFactory.decodeResource(context.getResources(),R.drawable.bg_app_user);
+        if (TextUtils.isEmpty(shareImageBean.getHeaderImage())) {
+            Bitmap header = BitmapFactory.decodeResource(context.getResources(), R.drawable.bg_app_user);
             draw(context, productBitmap, header, shareImageBean, success, fail);
-        }else if(Fresco.hasBeenInitialized()) {
+        } else if (Fresco.hasBeenInitialized()) {
             ImageLoadUtils.preFetch(Uri.parse(shareImageBean.getHeaderImage()), 0, 0, new BaseRequestListener() {
                 @Override
                 public void onRequestSuccess(ImageRequest request, String requestId, boolean isPrefetch) {
@@ -1282,13 +1282,13 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                     CacheKey cacheKey = DefaultCacheKeyFactory.getInstance().getEncodedCacheKey(request, this);
                     BinaryResource resource = ImagePipelineFactory.getInstance().getMainFileCache().getResource(cacheKey);
                     if (resource == null) {
-                        Bitmap header = BitmapFactory.decodeResource(context.getResources(),R.drawable.bg_app_user);
+                        Bitmap header = BitmapFactory.decodeResource(context.getResources(), R.drawable.bg_app_user);
                         draw(context, productBitmap, header, shareImageBean, success, fail);
                         return;
                     }
                     final File file = ((FileBinaryResource) resource).getFile();
                     if (file == null) {
-                        Bitmap header = BitmapFactory.decodeResource(context.getResources(),R.drawable.bg_app_user);
+                        Bitmap header = BitmapFactory.decodeResource(context.getResources(), R.drawable.bg_app_user);
                         draw(context, productBitmap, header, shareImageBean, success, fail);
                         return;
                     }
@@ -1303,7 +1303,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                 @Override
                 public void onRequestFailure(ImageRequest request, String requestId, Throwable throwable, boolean isPrefetch) {
                     super.onRequestFailure(request, requestId, throwable, isPrefetch);
-                    Bitmap header = BitmapFactory.decodeResource(context.getResources(),R.drawable.bg_app_user);
+                    Bitmap header = BitmapFactory.decodeResource(context.getResources(), R.drawable.bg_app_user);
                     draw(context, productBitmap, header, shareImageBean, success, fail);
                 }
 
@@ -1378,7 +1378,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             topRightBtp = BitmapFactory.decodeResource(context.getResources(), R.drawable.sale_big_501);
         } else if (shareImageBean.getMonthSaleType() == 3) {
             topRightBtp = BitmapFactory.decodeResource(context.getResources(), R.drawable.sale_big_1001);
-        }else if (shareImageBean.getMonthSaleType() == 4){
+        } else if (shareImageBean.getMonthSaleType() == 4) {
             topRightBtp = BitmapFactory.decodeResource(context.getResources(), R.drawable.sale_big_1002);
         }
 
@@ -1393,12 +1393,12 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             matrixType.postScale(scaleWidthType, scaleHeightType);
             Bitmap typeBtm = Bitmap.createBitmap(topRightBtp, 0, 0, typeWidth, typeHeight, matrixType, true);
             canvas.drawBitmap(typeBtm, 250 * precision, 40 * precision, paint);
-            if(typeBtm != null && !typeBtm.isRecycled()){
+            if (typeBtm != null && !typeBtm.isRecycled()) {
                 typeBtm.recycle();
             }
         }
 
-        if(topRightBtp != null && !topRightBtp.isRecycled()){
+        if (topRightBtp != null && !topRightBtp.isRecycled()) {
             topRightBtp.recycle();
         }
 
@@ -1460,32 +1460,32 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             int bottomLeft = (375 * precision - 110 * precision - bounds.width()) / 2;
             Bitmap ous = BitmapFactory.decodeResource(context.getResources(), R.drawable.sharelogo);
             paint.setDither(true);
-            Bitmap bitmap1 = getCircleHeaderBitmap(ous, precision,20);
+            Bitmap bitmap1 = getCircleHeaderBitmap(ous, precision, 20);
             canvas.drawBitmap(bitmap1, bottomLeft, 613 * precision, paint);
-            Bitmap bitmap2 = getCircleHeaderBitmap(header, precision,20);
+            Bitmap bitmap2 = getCircleHeaderBitmap(header, precision, 20);
             canvas.drawBitmap(bitmap2, bottomLeft + 58 * precision, 613 * precision, paint);
             canvas.drawText(tip, bottomLeft + 110 * precision, 633 * precision + bounds.height() / 2, paint);
 
-            if(bitmap1 != null && !bitmap1.isRecycled()){
+            if (bitmap1 != null && !bitmap1.isRecycled()) {
                 bitmap1.recycle();
             }
-            if(bitmap2 != null && !bitmap2.isRecycled()){
+            if (bitmap2 != null && !bitmap2.isRecycled()) {
                 bitmap2.recycle();
             }
         } else {
             int bottomLeft = (375 * precision - 52 * precision - bounds.width()) / 2;
             Bitmap ous = BitmapFactory.decodeResource(context.getResources(), R.drawable.sharelogo);
             paint.setDither(true);
-            Bitmap bitmap1 = getCircleHeaderBitmap(ous, precision,20);
+            Bitmap bitmap1 = getCircleHeaderBitmap(ous, precision, 20);
             canvas.drawBitmap(bitmap1, bottomLeft, 613 * precision, paint);
             canvas.drawText(tip, bottomLeft + 52 * precision, 633 * precision + bounds.height() / 2, paint);
-            if(bitmap1 != null && !bitmap1.isRecycled()){
+            if (bitmap1 != null && !bitmap1.isRecycled()) {
                 bitmap1.recycle();
             }
         }
 
         String path = BitmapUtils.saveImageToCache(result, "shareImage.png", shareImageBean.toString());
-        if(result != null && !result.isRecycled()){
+        if (result != null && !result.isRecycled()) {
             result.recycle();
         }
 

@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-    View,
-    Image,
-    TouchableOpacity, StyleSheet
-} from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import StringUtils from '../../../utils/StringUtils';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res/product';
@@ -64,10 +60,12 @@ export default class SelectionHeaderView extends Component {
         });
         let goodsNumberText;
         for (let item of (stockSysConfig || [])) {
-            const tempArr = item.value.split('★');
-            if (parseFloat(stock) >= parseFloat(tempArr[0])) {
-                goodsNumberText = tempArr[1];
-                break;
+            const tempArr = (item.value && item.value.split('★')) || [];
+            if (tempArr.length > 0) {
+                if (parseFloat(stock) >= parseFloat(tempArr[0])) {
+                    goodsNumberText = tempArr[1] || '';
+                    break;
+                }
             }
         }
         let selectStrListTemp = this.props.selectStrList.filter((item) => {

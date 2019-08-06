@@ -12,5 +12,6 @@
 #define ShowApi_query   @"/discover/query@GET"
 #define AdApi_query   @"/advertising/queryAdvertisingList"
 #define Api_queryBaseUrl   @"/redirect/baseUrl@GET"
+#define ChatApi_ShopInfoBySupplierCode @"/product/getProductShopInfoBySupplierCode@GET"
 
 #endif /* Header_h */

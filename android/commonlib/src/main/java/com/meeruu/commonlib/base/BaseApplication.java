@@ -10,29 +10,41 @@ import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 import android.webkit.WebView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineFactory;
 import com.facebook.soloader.SoLoader;
+import com.meeruu.commonlib.callback.BaseCallback;
 import com.meeruu.commonlib.callback.ForegroundCallbacks;
+import com.meeruu.commonlib.config.BaseRequestConfig;
 import com.meeruu.commonlib.config.FrescoImagePipelineConfig;
 import com.meeruu.commonlib.event.Event;
-import com.meeruu.commonlib.event.QiyuUrlEvent;
 import com.meeruu.commonlib.handler.CrashHandler;
 import com.meeruu.commonlib.rn.QiyuImageLoader;
+import com.meeruu.commonlib.server.RequestManager;
 import com.meeruu.commonlib.umeng.UApp;
 import com.meeruu.commonlib.umeng.UShare;
 import com.meeruu.commonlib.utils.AppUtils;
+import com.meeruu.commonlib.utils.HttpUrlUtils;
 import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.SensorsUtils;
+import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.commonlib.utils.Utils;
 import com.meeruu.qiyu.activity.QiyuServiceMessageActivity;
 import com.meituan.android.walle.WalleChannelReader;
+import com.qiyukf.unicorn.api.OnBotEventListener;
 import com.qiyukf.unicorn.api.OnMessageItemClickListener;
 import com.qiyukf.unicorn.api.Unicorn;
 import com.qiyukf.unicorn.api.YSFOptions;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.HashMap;
+import java.util.Map;
 
 import cn.jiguang.verifysdk.api.JVerificationInterface;
 import cn.jpush.android.api.JPushInterface;
@@ -127,7 +139,7 @@ public class BaseApplication extends MultiDexApplication {
         JPushInterface.init(getApplicationContext());
         if (Utils.isApkInDebug()) {
             // 七鱼初始化
-            Unicorn.init(getApplicationContext(), "ae7a2c616148c5aec7ffedfa50ad90a7", QiYuOptions(),
+            Unicorn.init(getApplicationContext(), "b87fd67831699ca494a9d3de266cd3b0", QiYuOptions(),
                     new QiyuImageLoader(getApplicationContext()));
             // jpush debug
             JPushInterface.setDebugMode(true);
@@ -157,19 +169,72 @@ public class BaseApplication extends MultiDexApplication {
             // 响应url点击事件
             @Override
             public void onURLClicked(Context context, String url) {
-                LogUtils.d("=====" + url);
-                // 商品卡片，订单卡片
-                if (url.contains("h5.sharegoodsmall.com/product") || url.contains("http:///")) {
-                    QiyuUrlEvent event = new QiyuUrlEvent();
-                    event.setUrl(url);
-                    EventBus.getDefault().post(event);
-                } else {
-                    EventBus.getDefault().post(new Event.MR2HTMLEvent(url));
+                try {
+                    url = URLDecoder.decode(url, "utf-8");
+                    LogUtils.d("=====" + url);
+                    // 商品卡片，订单卡片
+                    if (url.contains("h5.sharegoodsmall.com/product") || url.contains("http:///")) {
+                        EventBus.getDefault().post(new com.meeruu.qiyu.Event.QiyuUrlEvent(url));
+                    } else {
+                        EventBus.getDefault().post(new Event.MR2HTMLEvent(url));
+                    }
+                    ((QiyuServiceMessageActivity) context).finish();
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
                 }
-                ((QiyuServiceMessageActivity) context).finish();
             }
         };
+        getShopInfo(ysfOptions);
         return ysfOptions;
+    }
+
+    /**
+     * 获取七鱼商家信息
+     *
+     * @param ysfOptions
+     */
+    private void getShopInfo(YSFOptions ysfOptions) {
+        ysfOptions.onBotEventListener = new OnBotEventListener() {
+            @Override
+            public boolean onUrlClick(Context context, String s) {
+                try {
+                    s = URLDecoder.decode(s, "utf-8");
+                    LogUtils.d("=====" + s);
+                    if (s.contains("qiyukf.com/client")) {
+                        final String bid = HttpUrlUtils.getValueByName(s, "bid");
+                        RequestManager.getInstance().doGet(ParameterUtils.NETWORK_ELSE_CACHED, new BaseRequestConfig() {
+                            @Override
+                            public String getUrl() {
+                                return HttpUrlUtils.getUrl(HttpUrlUtils.URL_SHOPINFO);
+                            }
+
+                            @Override
+                            public Map getParams() {
+                                Map<String, String> map = new HashMap();
+                                map.put("supplierCode", bid);
+                                return map;
+                            }
+                        }, new BaseCallback<String>() {
+                            @Override
+                            public void onErr(String errCode, String msg) {
+                                ToastUtils.showToast("获取商家信息失败");
+                            }
+
+                            @Override
+                            public void onSuccess(String result) {
+                                JSONObject object = JSON.parseObject(result);
+                                String shopId = object.getString("shopId");
+                                String title = object.getString("title");
+                                EventBus.getDefault().post(new com.meeruu.qiyu.Event.QiyuShopIdEvent(shopId, title));
+                            }
+                        });
+                    }
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                return true;
+            }
+        };
     }
 
     @Override

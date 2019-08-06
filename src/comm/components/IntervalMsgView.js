@@ -197,7 +197,7 @@ class IntervalMsgViewModel {
                 return;
             }
             //取新数据第一条匹配上一批消息 一样不显示
-            if (this.showItems.length > 0) {
+            if (this.showItems && this.showItems.length > 0) {
                 const firstItem = list[0];
                 const { keyCode } = firstItem || {};
                 const filterList = this.showItems.filter((item) => {

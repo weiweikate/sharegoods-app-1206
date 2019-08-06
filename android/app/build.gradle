@@ -21,8 +21,8 @@ android {
         applicationId rootProject.ext.android.applicationId
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
-        versionCode 2000
-        versionName "2.0.0"
+        versionCode 2001
+        versionName "2.0.1"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -78,7 +78,9 @@ android {
             manifestPlaceholders = [
                     JPUSH_PKGNAME : "com.meeruu.sharegoods",
                     // 开发环境
-                    JPUSH_APPKEY  : "3288c3f3feb6c119e3d88049",
+//                    JPUSH_APPKEY  : "3288c3f3feb6c119e3d88049",
+                    // 生产环境
+                    JPUSH_APPKEY  : "7fde54543daf045a209a7abf",
                     JPUSH_CHANNEL : "guanwang", //暂时填写默认值即可.
                     XIAOMI_APPKEY : "",//小米平台注册的appkey
                     XIAOMI_APPID  : "",//小米平台注册的appid

@@ -81,7 +81,6 @@ public class CommModule extends ReactContextBaseJavaModule {
     private ReactApplicationContext mContext;
     public static final String MODULE_NAME = "commModule";
     private Promise gongMao;
-    private String baseUrl;
 
 
     /**
@@ -635,7 +634,7 @@ public class CommModule extends ReactContextBaseJavaModule {
     @Override
     public Map<String, Object> getConstants() {
         final Map<String, Object> constants = new HashMap<>();
-        constants.put("baseUrl", this.baseUrl);
+        constants.put("baseUrl", SPCacheUtils.get("D_baseUrl", ""));
         return constants;
     }
 }

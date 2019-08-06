@@ -31,7 +31,7 @@
 #define kRealValue(with)     ((with)*(KScreenWidth/375.f))
 #define kIphone4             (KScreenHeight == 480.f)
 #define kIphoneN             (KScreenHeight == 667.f)
-#define kIPhoneX             (KScreenHeight == 812.f ? YES : NO)
+#define kIPhoneX             (kStatusBarHeight > 20.f ? YES : NO)
 
 ///IOS 版本判断
 #define IOSAVAILABLEVERSION(version) ([[UIDevice currentDevice] availableVersion:version] < 0)

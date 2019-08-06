@@ -4,19 +4,17 @@
  */
 import React from 'react';
 import {
-    StyleSheet,
-    View,
-    TouchableOpacity,
-    ImageBackground,
     Image,
+    ImageBackground,
+    ScrollView,
+    StyleSheet,
+    TouchableOpacity,
     TouchableWithoutFeedback,
-    ScrollView
+    View
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import SignInCircleView from './components/SignInCircleView';
-
-const { px2dp } = ScreenUtils;
 import ImageLoader from '@mr/image-placeholder';
 import HomeAPI from '../api/HomeAPI';
 import { homeType } from '../HomeTypes';
@@ -36,6 +34,8 @@ import RouterMap from '../../../navigation/RouterMap';
 import LinearGradient from 'react-native-linear-gradient';
 import TaskVIew from '../view/TaskVIew';
 import { mineTaskModel } from '../model/TaskModel';
+
+const { px2dp } = ScreenUtils;
 
 const platformHeight = 10;
 
@@ -243,14 +243,18 @@ export default class SignInPage extends BasePage {
         let Y = event.nativeEvent.contentOffset.y;
         if (Y <= 200) {
             this.st = Y / 200;
-            this.setState({
-                changeHeader: true
-            });
+            if(!this.state.changeHeader){
+                this.setState({
+                    changeHeader: true
+                });
+            }
         } else {
             this.st = 1;
-            this.setState({
-                changeHeader: false
-            });
+            if(this.state.changeHeader){
+                this.setState({
+                    changeHeader: false
+                });
+            }
         }
 
         this.headerBg.setNativeProps({
@@ -436,7 +440,7 @@ export default class SignInPage extends BasePage {
                 }}>
                     <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row' }}>
                         <TouchableOpacity
-                            style={[styles.left,{width: 40}]}
+                            style={[styles.left, { width: 40 }]}
                             onPress={() => {
                                 this.props.navigation.goBack();
                             }}>
@@ -519,10 +523,12 @@ export default class SignInPage extends BasePage {
         this.setState({
             showModal: false
         });
-        const item = this.state.modalInfo[0];
-        let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
-        let params = homeModule.paramsNavigate(item);
-        this.$navigate(router, { ...params });
+        if (this.state.modalInfo && this.state.modalInfo.length > 0) {
+            const item = this.state.modalInfo[0];
+            let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
+            let params = homeModule.paramsNavigate(item);
+            this.$navigate(router, { ...params });
+        }
     };
 
     _signModalRender() {
@@ -561,6 +567,7 @@ export default class SignInPage extends BasePage {
             <View style={styles.container}>
                 <ScrollView
                     onScroll={this._onScroll}
+                    scrollEventThrottle={30}
                     showsVerticalScrollIndicator={false}>
                     {this._headerIconRender()}
                     {this.state.signInData ? this._signInInfoRender() : null}

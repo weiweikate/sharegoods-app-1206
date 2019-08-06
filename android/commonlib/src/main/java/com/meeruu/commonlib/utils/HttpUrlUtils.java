@@ -15,6 +15,7 @@ public class HttpUrlUtils {
     public static final String URL_DELETE_DYNAMIC = "/social/show/content/delete"; // 秀场个人中心
     public static final String URL_GONGMAO = "/gongmall/contract/notify"; // 签约回调
     public static final String URL_BASE_URL = "/redirect/baseUrl"; // 域名
+    public static final String URL_SHOPINFO = "/product/getProductShopInfoBySupplierCode"; // 商家信息
 
 
     /*********获取api接口url***********/
@@ -48,5 +49,25 @@ public class HttpUrlUtils {
             SERVER = object.getString("gongmao");
         }
         return SERVER;
+    }
+
+    /***
+     * 获取url 指定name的value;
+     * @param url
+     * @param name
+     * @return
+     */
+    public static String getValueByName(String url, String name) {
+        String result = "";
+        int index = url.lastIndexOf("?");
+        String temp = url.substring(index + 1);
+        String[] keyValue = temp.split("&");
+        for (String str : keyValue) {
+            if (str.contains(name)) {
+                result = str.replace(name + "=", "");
+                break;
+            }
+        }
+        return result;
     }
 }

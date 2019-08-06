@@ -31,7 +31,7 @@ pod 'UMCShare/Social/ReducedWeChat','~> 6.9.6'
 pod 'UMCShare/Social/ReducedQQ','~> 6.9.6'
 pod 'UMCShare/Social/ReducedSina','~> 6.9.6'
 #七鱼
-pod 'QIYU_iOS_SDK',   '4.9.0'
+pod 'QIYU_iOS_SDK',   '5.0.0'
 #极光
 pod 'JPush',   '~> 3.2.1'
 pod 'JVerification',   '~> 2.3.2'
