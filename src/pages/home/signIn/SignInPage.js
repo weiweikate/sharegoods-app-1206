@@ -198,11 +198,11 @@ export default class SignInPage extends BasePage {
         TrackApi.SignUpFeedback({
             continuousSignNumber: count,
             signRewardType: 1,
-            signRewardAmount: this.state.signInData[3].canReward
+            signRewardAmount: this.state.signInData[3] && this.state.signInData[3].canReward
         });
         HomeAPI.userSign().then((data) => {
             this.signinRequesting = false;
-            this.$toastShow(`签到成功 +${this.state.signInData[3].canReward}秀豆`);
+            this.$toastShow(`签到成功 +${(this.state.signInData[3] && this.state.signInData[3].canReward) || 0}秀豆`);
             this.getSignData();
             this.reSaveUserInfo();
             if (this.state.modalInfo && this.state.modalInfo.length > 0) {
@@ -225,7 +225,7 @@ export default class SignInPage extends BasePage {
         this.exchangeing = true;
         track(trackEvent.receiveshowDou, {
             showDouDeduct: 'exchange',
-            showDouAmount: this.state.signInData[3].canReward
+            showDouAmount: this.state.signInData[3] && this.state.signInData[3].canReward
         });
         track(trackEvent.receiveOneyuan, { yiYuanCouponsAmount: 1, yiYuanCouponsGetMethod: 'exchange' });
         HomeAPI.exchangeTokenCoin().then((data) => {
@@ -243,14 +243,14 @@ export default class SignInPage extends BasePage {
         let Y = event.nativeEvent.contentOffset.y;
         if (Y <= 200) {
             this.st = Y / 200;
-            if(!this.state.changeHeader){
+            if (!this.state.changeHeader) {
                 this.setState({
                     changeHeader: true
                 });
             }
         } else {
             this.st = 1;
-            if(this.state.changeHeader){
+            if (this.state.changeHeader) {
                 this.setState({
                     changeHeader: false
                 });

@@ -81,10 +81,10 @@ export default class MyCouponsItems extends Component {
         API.checkCanInvoke({ userCouponCode: item.code || '' })
             .then(res => {
                 //可激活请求下张优惠券的信息
-                API.getInvokeInfo({userCouponCode: item.code || ''})
-                    .then(res =>{
-                        let  data = item;
-                        if(data.expireTime && res.data && res.data.expireTime){
+                API.getInvokeInfo({ userCouponCode: item.code || '' })
+                    .then(res => {
+                        let data = item;
+                        if (data.expireTime && res.data && res.data.expireTime) {
                             data.expireTime = res.data.expireTime;
                         }
                         console.log(data);

@@ -3,6 +3,8 @@ package com.meeruu.sharegoods.rn.module;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -13,6 +15,7 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.SPCacheUtils;
@@ -79,6 +82,10 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
         JVerifyUIConfig.Builder builder = new JVerifyUIConfig.Builder();
         View bottomView = LayoutInflater.from(mContext).inflate(R.layout.one_login_other, null);
         if (bottomView != null) {
+            RelativeLayout.LayoutParams mLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    DensityUtils.dip2px(170f));
+            mLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+            bottomView.setLayoutParams(mLayoutParams);
             bottomView.findViewById(R.id.tv_wechat).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

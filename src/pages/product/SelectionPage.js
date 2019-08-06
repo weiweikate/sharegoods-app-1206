@@ -1,10 +1,5 @@
 import React, { Component } from 'react';
-import {
-    View,
-    StyleSheet,
-    TouchableWithoutFeedback,
-    ScrollView
-} from 'react-native';
+import { ScrollView, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import SelectionHeaderView from './components/SelectionHeaderView';
 import SelectionSectionView from './components/SelectionSectionView';
@@ -237,7 +232,7 @@ export default class SelectionPage extends Component {
         let itemData;
         const { skuList } = this.state.data;
         (skuList || []).forEach((item) => {
-            if (item.propertyValues === itemValues) {
+            if (item && item.propertyValues === itemValues) {
                 itemData = item;
             }
         });
@@ -266,7 +261,7 @@ export default class SelectionPage extends Component {
         if (!this.state.modalVisible) {
             return null;
         }
-        const { afterAmount, type, productIsPromotionPrice, unShowAmount, isAreaSku ,isGroupIn} = this.state.propData;
+        const { afterAmount, type, productIsPromotionPrice, unShowAmount, isAreaSku, isGroupIn } = this.state.propData;
         const { productDetailAddressModel } = this.state.data;
         return (
             <View style={styles.bgView}>
