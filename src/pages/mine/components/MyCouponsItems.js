@@ -38,8 +38,8 @@ export default class MyCouponsItems extends Component {
             isFirstLoad: true,
             isLoadMore: false,
             isEnd: false,
-            invokeData:{},
-            canInvoke:true
+            invokeData: {},
+            canInvoke: true
         };
         this.currentPage = 0;
         this.addData = true;
@@ -57,39 +57,60 @@ export default class MyCouponsItems extends Component {
                 <CouponExplainItem item={item} index={index} toExtendData={() => this.toExtendData(item)}
                                    pickUpData={() => this.pickUpData(item)}
                                    clickItem={() => this.clickItem(index, item)}
-                                   onActivity={(item)=>{this.canInvoke(item)}}
+                                   onActivity={(item) => {
+                                       this.canInvoke(item);
+                                   }}
                 />
             );
         } else {
             return (
                 <CouponNormalItem item={item} index={index} clickItem={() => this.clickItem(index, item)}
-                                  onActivity={(item)=>{this.canInvoke(item)}}
+                                  onActivity={(item) => {
+                                      this.canInvoke(item);
+                                  }}
                 />
             );
         }
     };
     onRequestClose = () => {
-        this.setState({ showDialogModal: false, invokeData:{}});
+        this.setState({ showDialogModal: false, invokeData: {} });
     };
 
-    canInvoke=(item)=>{
-        API.checkCanInvoke({userCouponCode:item.code || ''})
-            .then(res=>{
-                this.setState({
-                    showDialogModal: true,
-                    canInvoke:true,
-                    invokeData:item
+    canInvoke = (item) => {
+        // 判断是否可激活
+        API.checkCanInvoke({ userCouponCode: item.code || '' })
+            .then(res => {
+                //可激活请求下张优惠券的信息
+                API.getInvokeInfo({userCouponCode: item.code || ''})
+                    .then(res =>{
+                        let  data = item;
+                        if(data.expireTime && res.data && res.data.expireTime){
+                            data.expireTime = res.data.expireTime;
+                        }
+                        console.log(data);
+                        this.setState({
+                            showDialogModal: true,
+                            canInvoke: true,
+                            invokeData: data
+                        });
+                    }).catch(error => {
+                    this.setState({
+                        showDialogModal: false,
+                        canInvoke: false,
+                        invokeData: {}
+                    });
                 });
-            }).catch(error=>{
+
+            }).catch(error => {
             this.setState({
                 showDialogModal: true,
-                canInvoke:false,
-                invokeData:item
+                canInvoke: false,
+                invokeData: item
             });
         });
-    }
+    };
 
-    renderDialogModal=()=> {
+    renderDialogModal = () => {
         return (
             <Modal
                 animationType='fade'
@@ -101,19 +122,19 @@ export default class MyCouponsItems extends Component {
                 </View>
             </Modal>
         );
-    }
+    };
 
     renderModalContent = () => {
-        const {invokeData,canInvoke} = this.state;
-        console.log('time',DateUtils.getDateDiff(invokeData.startTime))
-        let time = invokeData.startTime ? DateUtils.getDateDiff(invokeData.startTime) : '';
+        const { invokeData, canInvoke } = this.state;
+        console.log('time', DateUtils.getDateDiff(invokeData.startTime));
+        let time = invokeData.expireTime ? DateUtils.getDateDiff(invokeData.expireTime) : '';
         return (
             <View style={styles.contentStyle}>
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center',marginHorizontal:16 }}>
-                    <Text style={{fontSize:17}}>激活兑换券</Text>
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginHorizontal: 16 }}>
+                    <Text style={{ fontSize: 17 }}>激活兑换券</Text>
                     {canInvoke ?
-                        <Text style={{fontSize:13,textAlign:'center'}}>现手动激活此券后，此券有效期为 {time}，确定要激活吗？</Text> :
-                        <Text style={{fontSize:13,textAlign:'center'}}>不要贪心呦，一次只能激活1张，先去使用才能再次激活呦</Text>
+                        <Text style={{ fontSize: 13, textAlign: 'center' }}>现手动激活此券后，此券有效期为 {time}，确定要激活吗？</Text> :
+                        <Text style={{ fontSize: 13, textAlign: 'center' }}>不要贪心呦，一次只能激活1张，先去使用才能再次激活呦</Text>
                     }
                 </View>
                 <View style={{ width: '100%', height: 0.5, backgroundColor: DesignRule.textColor_placeholder }}/>
@@ -123,9 +144,9 @@ export default class MyCouponsItems extends Component {
                         <Text style={{ color: '#0076FF', fontSize: px2dp(17) }} allowFontScaling={false}>取消</Text>
                     </TouchableOpacity>
                     <View style={{ height: '100%', width: 0.5, backgroundColor: DesignRule.textColor_placeholder }}/>
-                    <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center', flex: 1}}
+                    <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
                                       onPress={() => this.commitTokenCoin(invokeData)}>
-                        <Text style={{color: '#0076FF', fontSize: px2dp(17)}} allowFontScaling={false}>
+                        <Text style={{ color: '#0076FF', fontSize: px2dp(17) }} allowFontScaling={false}>
                             {canInvoke ? '确定' : '去使用'}
                         </Text>
                     </TouchableOpacity>
@@ -135,22 +156,22 @@ export default class MyCouponsItems extends Component {
         );
     };
     quitTokenCoin = () => {
-        this.setState({ showDialogModal: false,invokeData:{} });
+        this.setState({ showDialogModal: false, invokeData: {} });
     };
     commitTokenCoin = () => {
-        const {invokeData,canInvoke} = this.state;
-        console.log('canInvoke',canInvoke)
-        if(canInvoke) {
-            this.setState({showDialogModal: false}, () => {
-                API.invokeCoupons({userCouponCode: invokeData.code || ''}).then(res => {
+        const { invokeData, canInvoke } = this.state;
+        console.log('canInvoke', canInvoke);
+        if (canInvoke) {
+            this.setState({ showDialogModal: false }, () => {
+                API.invokeCoupons({ userCouponCode: invokeData.code || '' }).then(res => {
                     bridge.$toast('激活成功');
                     this.onRefresh();
                 }).catch(err => {
                     bridge.$toast('激活失败');
                 });
             });
-        }else {
-            this.setState({showDialogModal: false}, () => {
+        } else {
+            this.setState({ showDialogModal: false }, () => {
                 this.clickItem(0, invokeData);
             });
         }
@@ -342,13 +363,16 @@ export default class MyCouponsItems extends Component {
                             redirectUrl: item.type === 11 ? null : item.redirectUrl,
                             canInvoke: item.canInvoke || false,         //是不是可以展示 激活按钮
                             startTime: item.startTime || '',          //优惠券开始时间
-                            expireTime :item.startTime || '',         //优惠券结束时间
+                            expireTime: item.startTime || ''         //优惠券结束时间
 
                         });
                     });
                     this.handleList(dataList, arrData);
-                    this.setState({ viewData: arrData, isFirstLoad: false, isLoadMore: false,
-                                    isEnd: this.state.isEnd ? this.state.isEnd : couponsModel.params.type === 7
+                    this.setState({
+                        viewData: arrData,
+                        isFirstLoad: false,
+                        isLoadMore: false,
+                        isEnd: this.state.isEnd ? this.state.isEnd : couponsModel.params.type === 7
                     });
                 }).catch(err => {
                     console.log(err);
@@ -385,9 +409,9 @@ export default class MyCouponsItems extends Component {
                 redirectUrl: item.redirectUrl,
                 canInvoke: item.canInvoke || false,         //是不是可以展示 激活按钮
                 startTime: item.startTime,          //优惠券开始时间
-                expireTime :item.startTime ,         //优惠券结束时间
+                expireTime: item.startTime         //优惠券结束时间
 
-        });
+            });
         });
     };
 
@@ -435,7 +459,7 @@ export default class MyCouponsItems extends Component {
                         isLoadMore: false
                     });
                     this.parseData(dataList);
-                    if (this.currentPage === data.totalPage || data.totalPage === 0) {
+                    if (this.currentPage >= data.totalPage || data.totalPage === 0) {
                         if (!this.state.isEnd) {
                             this.setState({
                                 isEnd: true
@@ -488,7 +512,7 @@ export default class MyCouponsItems extends Component {
                     isLoadMore: false
                 });
                 this.parseData(dataList);
-                if (this.currentPage === data.totalPage || data.totalPage === 0) {
+                if (this.currentPage >= data.totalPage || data.totalPage === 0) {
                     if (!this.state.isEnd) {
                         this.setState({
                             isEnd: true
@@ -629,7 +653,7 @@ const styles = StyleSheet.create(
             backgroundColor: '#FCFCFC',
             borderRadius: 12,
             justifyContent: 'flex-end',
-            alignItems: 'center',
+            alignItems: 'center'
         },
         couNumStyle: {
             width: px2dp(123),
