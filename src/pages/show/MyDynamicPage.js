@@ -46,9 +46,9 @@ export default class MyDynamicPage extends BasePage {
     };
 
     navRender = () => {
-        // if (Platform.OS === 'ios'){
-        //     return null;
-        // }
+        if (Platform.OS === 'ios'){
+            return null;
+        }
         return (
             <View
                 style={{ position: 'absolute', top: 0, left: 0, width: 60, height: headerHeight}}>
@@ -104,11 +104,11 @@ export default class MyDynamicPage extends BasePage {
         return (
             <View style={styles.contain}>
                 <Waterfall style={{ flex: 1, marginTop: -10 }}
-                           headerHeight={this.params.userType !== 'mineNormal' ? px2dp(270):px2dp(235)}
+                           headerHeight={this.params.userType !== 'mineNormal' ? px2dp(270) : px2dp(235)}
                            onPersonChangeNav={({nativeEvent})=> {
                                if (Platform.OS === 'ios'){
-                                   alert('ssss')
-                                   return null;
+                                   this.props.navigation.goBack();
+                                   return;
                                }
                                    this.setState({
                                        changeHeader: nativeEvent.show

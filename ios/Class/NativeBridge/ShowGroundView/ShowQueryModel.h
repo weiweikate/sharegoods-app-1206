@@ -78,6 +78,9 @@ NS_ASSUME_NONNULL_END
 @interface ResourceModel : NSObject
 @property (nonatomic,copy) NSString * baseUrl;
 @property (nonatomic,assign) NSInteger type;
+@property (nonatomic, assign)CGFloat height;
+@property (nonatomic, assign)CGFloat width;
+
 @end
 
 @interface ProductsModel : NSObject

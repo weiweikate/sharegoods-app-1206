@@ -121,10 +121,7 @@ static const NSString * USERTYPE_others = @"others";
     self.swichView.frame = CGRectMake(left+15, self.swichView.origin.y, self.swichView.width_sd, self.swichView.height_sd);
 
   }
-  if (_Navi.hidden !=  Y < hei) {
     _Navi.hidden =  Y < hei;
-  }
-
 }
 
 #pragma mark - JXCategoryViewDelegate
