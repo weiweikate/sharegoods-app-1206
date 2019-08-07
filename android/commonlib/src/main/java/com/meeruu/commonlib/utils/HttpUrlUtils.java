@@ -1,4 +1,4 @@
-package com.meeruu.sharegoods.utils;
+package com.meeruu.commonlib.utils;
 
 
 import android.text.TextUtils;
