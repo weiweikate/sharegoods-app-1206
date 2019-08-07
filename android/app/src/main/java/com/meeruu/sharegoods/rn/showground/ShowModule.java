@@ -21,17 +21,13 @@ import com.facebook.react.bridge.WritableNativeMap;
 import com.meeruu.commonlib.callback.BaseCallback;
 import com.meeruu.commonlib.config.BaseRequestConfig;
 import com.meeruu.commonlib.server.RequestManager;
-import com.meeruu.sharegoods.event.LoadingDialogEvent;
+import com.meeruu.commonlib.utils.HttpUrlUtils;
 import com.meeruu.sharegoods.event.ShowVideoEvent;
-import com.meeruu.sharegoods.rn.showground.activity.VideoPlayActivity;
 import com.meeruu.sharegoods.rn.showground.activity.VideoRecordActivity;
 import com.meeruu.sharegoods.rn.showground.bean.ImageBean;
 import com.meeruu.sharegoods.rn.showground.bean.VideoAuthBean;
 import com.meeruu.sharegoods.rn.showground.utils.VideoCoverUtils;
-import com.meeruu.sharegoods.utils.HttpUrlUtils;
 import com.reactnative.ivpusic.imagepicker.picture.lib.PictureSelector;
-import com.reactnative.ivpusic.imagepicker.picture.lib.config.PictureConfig;
-import com.reactnative.ivpusic.imagepicker.picture.lib.config.PictureMimeType;
 import com.reactnative.ivpusic.imagepicker.picture.lib.entity.LocalMedia;
 
 import org.greenrobot.eventbus.EventBus;

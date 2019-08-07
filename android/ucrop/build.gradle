@@ -11,6 +11,26 @@ android {
     }
     buildTypes {
         releaseStaging {}
+        debug {
+            manifestPlaceholders = [
+                    JPUSH_PKGNAME : "com.meeruu.sharegoods",
+                    // 开发环境
+//                    JPUSH_APPKEY  : "3288c3f3feb6c119e3d88049",
+                    // 生产环境
+                    JPUSH_APPKEY  : "7fde54543daf045a209a7abf",
+                    JPUSH_CHANNEL : "guanwang", //暂时填写默认值即可.
+                    XIAOMI_APPKEY : "",//小米平台注册的appkey
+                    XIAOMI_APPID  : "",//小米平台注册的appid
+                    HUAWEI_APPID  : "",//华为平台注册的appid
+                    MEIZU_APPKEY  : "",//魅族平台注册的appkey
+                    MEIZU_APPID   : "",//魅族平台注册的appid
+                    OPPO_APPKEY   : "", // OPPO平台注册的appkey
+                    OPPO_APPID    : "", // OPPO平台注册的appid
+                    OPPO_APPSECRET: "",//OPPO平台注册的appsecret
+                    //                VIVO_APPKEY  : "您的应用对应的vivo的AppKey", // VIVO平台注册的appkey
+                    //                VIVO_APPID   : "您的应用对应的vivo的AppID", // VIVO平台注册的appid
+            ]
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
