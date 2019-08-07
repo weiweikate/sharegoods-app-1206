@@ -185,7 +185,6 @@ dependencies {
     api rootProject.ext.dependencies.lottie
     api rootProject.ext.dependencies.webp
     api rootProject.ext.dependencies.webpAnimated
-    api rootProject.ext.dependencies.design
 
 
     api(name: 'alipaySdk-15.5.9-20181123210657-noUtdid', ext: 'aar')
