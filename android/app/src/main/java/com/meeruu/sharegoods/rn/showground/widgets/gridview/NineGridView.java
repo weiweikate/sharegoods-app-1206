@@ -1,11 +1,10 @@
-package com.meeruu.sharegoods.rn.showground.widgets.GridView;
+package com.meeruu.sharegoods.rn.showground.widgets.gridview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
