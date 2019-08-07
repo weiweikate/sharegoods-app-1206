@@ -79,6 +79,7 @@ const sizes = {
     margin_listGroup: autoSizeWidth(10),//列表组之间的间距
     margin_imageText: autoSizeWidth(10),//图文间距
     height_bigBtn: autoSizeWidth(49),//按钮高度
+    margin_width: width - autoSizeWidth(30),
     lineHeight: onePixel
 };
 

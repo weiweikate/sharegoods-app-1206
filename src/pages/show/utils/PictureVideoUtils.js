@@ -2,18 +2,18 @@
  * @author xzm
  * @date 2019/6/22
  */
-import {NativeModules,Platform} from 'react-native';
+import { NativeModules, Platform } from 'react-native';
 import ImagePicker from '@mr/rn-image-crop-picker';
 import Toast from '../../../utils/bridge';
 import { request } from '@mr/rn-request/index';
 import apiEnvironment from '../../../api/ApiEnvironment';
 
 class PictureVideoUtils {
-    selectPictureOrVideo = (num,canVideo,callBack) => {
-        if (Platform.OS === 'ios'){
+    selectPictureOrVideo = (num, canVideo, callBack) => {
+        if (Platform.OS === 'ios') {
             NativeModules.MRImagePickerBridge.getImageOrVideo(
                 {
-                    edit:true,
+                    edit: true,
                     multiple: true,
                     waitAnimationEnd: false,
                     includeExif: true,
@@ -23,14 +23,13 @@ class PictureVideoUtils {
                     mediaType: 'photo',
                     loadingLabelText: '处理中...'
                 }
-
             ).then(images => {
-                if(images && images.length === 1 && images[0].type.indexOf('video')>-1){
-                        let video = images[0];
-                        this.uploadVideo(video, (data) => {
-                            callBack(data);
-                        });
-                }else {
+                if (images && images.length === 1 && images[0].type.indexOf('video') > -1) {
+                    let video = images[0];
+                    this.uploadVideo(video, (data) => {
+                        callBack(data);
+                    });
+                } else {
                     this.upload(images.map((item) => {
                         let path = item.path;
                         let width = item.width;
@@ -40,9 +39,9 @@ class PictureVideoUtils {
                 }
             }).catch(e => {
             });
-        }else {
+        } else {
             ImagePicker.openPicker({
-                edit:true,
+                edit: true,
                 multiple: true,
                 waitAnimationEnd: false,
                 includeExif: true,
@@ -52,16 +51,16 @@ class PictureVideoUtils {
                 mediaType: 'photo',
                 loadingLabelText: '处理中...'
             }).then(images => {
-                if(images && images.length === 1 && images[0].type.indexOf('video')>-1){
-                    NativeModules.commModule.compressVideo(images[0].path).then((data)=>{
+                if (images && images.length === 1 && images[0].type.indexOf('video') > -1) {
+                    NativeModules.commModule.compressVideo(images[0].path).then((data) => {
                         let video = images[0];
-                        video.path = 'file://'+data;
+                        video.path = 'file://' + data;
                         this.uploadVideo(video, (data) => {
                             callBack(data);
                         });
-                    }).catch((error)=>{
-                    })
-                }else {
+                    }).catch((error) => {
+                    });
+                } else {
                     this.upload(images.map((item) => {
                         let path = item.path;
                         let width = item.width;
@@ -109,7 +108,7 @@ class PictureVideoUtils {
         let promise2 = NativeModules.commModule.RN_Video_Image(video.path).then(({ imagePath }) => {
             let datas = {
                 type: 'image/png',
-                uri:  ''+imagePath,
+                uri: '' + imagePath,
                 name: new Date().getTime() + 'c.png'
             };
             let formData = new FormData();
@@ -177,7 +176,8 @@ class PictureVideoUtils {
         let upload = () => {
             //commonAPI/ossClient
             //user/
-            let url = apiEnvironment.getCurrentHostUrl();
+            // let url = apiEnvironment.getCurrentHostUrl();
+            let url = 'https://testapi.sharegoodsmall.com/gateway';
             request.setBaseUrl(url);
             let promises = [];
 
@@ -224,6 +224,32 @@ class PictureVideoUtils {
         });
         NativeModules.commModule.RN_ImageCompression(paths, sizes, 1024 * 1024 * 1, upload);
     };
+
+    uploadSingleImage = (image, callback) => {
+        let url = apiEnvironment.getCurrentHostUrl();
+        // url ='https://testapi.sharegoodsmall.com/gateway';
+        request.setBaseUrl(url);
+        let datas = {
+            type: 'image/png',
+            uri: 'file://' + image,
+            name: new Date().getTime() + 'c.png'
+        };
+        let formData = new FormData();
+        formData.append('file', datas);
+        let upload = () => {
+            request.upload('/common/upload/oss', datas, {}).then((res) => {
+                if (res.code === 10000 && res.data) {
+                    callback({ url: res.data });
+                } else {
+                    callback(null);
+                }
+            }).catch((error)=>{
+            });
+        };
+        NativeModules.commModule.RN_ImageCompression([image], null, 1024 * 1024 * 1, upload);
+    };
+
 }
+
 
 export default new PictureVideoUtils();
