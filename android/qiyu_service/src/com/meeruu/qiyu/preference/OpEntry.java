@@ -1,7 +1,8 @@
 package com.meeruu.qiyu.preference;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.HashSet;

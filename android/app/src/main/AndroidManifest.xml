@@ -103,7 +103,7 @@
 
         <!-- android N适配 -->
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="com.meeruu.sharegoods.fileProvider"
             android:exported="false"
             android:grantUriPermissions="true">

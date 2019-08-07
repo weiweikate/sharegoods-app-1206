@@ -2,10 +2,10 @@ package com.reactnative.ivpusic.imagepicker.picture.lib;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.annotation.FloatRange;
-import android.support.annotation.IntRange;
-import android.support.annotation.StyleRes;
 
+import androidx.annotation.FloatRange;
+import androidx.annotation.IntRange;
+import androidx.annotation.StyleRes;
 import androidx.fragment.app.Fragment;
 
 import com.reactnative.ivpusic.imagepicker.R;

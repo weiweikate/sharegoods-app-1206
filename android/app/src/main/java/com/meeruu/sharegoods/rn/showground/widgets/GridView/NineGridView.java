@@ -2,13 +2,13 @@ package com.meeruu.sharegoods.rn.showground.widgets.GridView;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.meeruu.sharegoods.R;

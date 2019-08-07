@@ -12,14 +12,15 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
-import android.support.annotation.RequiresApi;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 
 import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.Promise;

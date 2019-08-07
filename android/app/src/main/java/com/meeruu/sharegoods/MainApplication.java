@@ -28,7 +28,6 @@ import com.reactlibrary.RNGeolocationPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.request.MRNetStatePackage;
-import com.squareup.leakcanary.LeakCanary;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 
 import java.util.Arrays;
@@ -48,8 +47,6 @@ public class MainApplication extends BaseApplication implements ReactApplication
     @Override
     public void onCreate() {
         super.onCreate();
-        // 检测内存泄漏
-        LeakCanary.install(this);
         // 获取主域名
         AppInitUtils.getAndSaveHost();
     }

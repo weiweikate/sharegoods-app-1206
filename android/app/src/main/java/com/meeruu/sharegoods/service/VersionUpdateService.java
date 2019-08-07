@@ -12,10 +12,10 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.widget.RemoteViews;
+
+import androidx.annotation.RequiresApi;
 
 import com.meeruu.commonlib.base.BaseApplication;
 import com.meeruu.commonlib.callback.OnProgressListener;
@@ -180,7 +180,7 @@ public class VersionUpdateService extends Service {
     /**
      * 通知
      */
-    NotificationCompat.Builder mNotification;
+    Notification.Builder mNotification;
 
 
     /**
@@ -190,8 +190,11 @@ public class VersionUpdateService extends Service {
         int icon = R.mipmap.ic_launcher;
         CharSequence tickerText = "开始下载";
         long when = System.currentTimeMillis();
-        mNotification = new NotificationCompat.Builder(VersionUpdateService.this,
-                AppContants.MR_NOTIFY_CHANNEL_ID);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            mNotification = new Notification.Builder(VersionUpdateService.this, AppContants.MR_NOTIFY_CHANNEL_ID);
+        } else {
+            mNotification = new Notification.Builder(VersionUpdateService.this);
+        }
         mNotification.setSmallIcon(icon);
         mNotification.setTicker(tickerText);
         mNotification.setWhen(when);
@@ -208,7 +211,7 @@ public class VersionUpdateService extends Service {
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
         mNotification.setContentIntent(contentIntent);
-        mNotification.setPriority(NotificationCompat.PRIORITY_HIGH);
+        mNotification.setPriority(Notification.PRIORITY_HIGH);
         mNotificationManager.notify(NOTIFY_ID, mNotification.build());
     }
 

@@ -1,8 +1,9 @@
 package com.meeruu.sharegoods.rn.kefu;
 
 import android.content.SharedPreferences;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
+
+import androidx.annotation.Nullable;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;

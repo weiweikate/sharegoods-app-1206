@@ -7,7 +7,6 @@ import com.qiyukf.nim.uikit.session.activity.CaptureVideoActivity;
 
 public class QiyuCaptureVideoActivity extends CaptureVideoActivity {
 
-
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.Animation;
@@ -12,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 
 import com.reactnative.ivpusic.imagepicker.R;

@@ -9,10 +9,11 @@ import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
+
+import androidx.annotation.NonNull;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;

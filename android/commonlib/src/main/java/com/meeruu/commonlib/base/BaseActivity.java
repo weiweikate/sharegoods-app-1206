@@ -1,11 +1,11 @@
 package com.meeruu.commonlib.base;
 
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.meeruu.commonlib.R;

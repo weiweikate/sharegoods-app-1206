@@ -9,8 +9,6 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.ColorRes;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -20,6 +18,8 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import androidx.annotation.ColorRes;
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;

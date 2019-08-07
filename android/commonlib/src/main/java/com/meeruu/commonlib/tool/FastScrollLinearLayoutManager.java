@@ -2,9 +2,9 @@ package com.meeruu.commonlib.tool;
 
 import android.content.Context;
 import android.graphics.PointF;
-import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;

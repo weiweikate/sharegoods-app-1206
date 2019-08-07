@@ -1,9 +1,9 @@
 package com.meeruu.commonlib.customview.loopbanner;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 

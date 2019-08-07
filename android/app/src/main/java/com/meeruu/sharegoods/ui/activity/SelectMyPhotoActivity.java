@@ -11,7 +11,6 @@ import android.os.Environment;
 import android.os.Handler.Callback;
 import android.os.Message;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +20,7 @@ import android.widget.PopupWindow.OnDismissListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 

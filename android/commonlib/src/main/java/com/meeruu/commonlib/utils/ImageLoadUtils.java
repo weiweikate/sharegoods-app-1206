@@ -2,9 +2,10 @@ package com.meeruu.commonlib.utils;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.annotation.DrawableRes;
 import android.text.TextUtils;
 import android.view.ViewTreeObserver;
+
+import androidx.annotation.DrawableRes;
 
 import com.facebook.common.executors.CallerThreadExecutor;
 import com.facebook.common.executors.UiThreadImmediateExecutorService;
