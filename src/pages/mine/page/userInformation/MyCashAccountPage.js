@@ -103,6 +103,8 @@ const allType = {
 
 };
 
+const newTypeIcons = [];
+
 @observer
 export default class MyCashAccountPage extends BasePage {
     constructor(props) {
@@ -477,12 +479,21 @@ export default class MyCashAccountPage extends BasePage {
                 let data = response.data;
                 if (data.data instanceof Array) {
                     data.data.map((item, index) => {
+                        let remark = '';
+                        let  icon = '';
+                        if(item.useType){
+                            remark = allType[item.useType] ?  allType[item.useType].title : '其他';
+                            icon = allType[item.useType] ? allType[item.useType].icon : renwu;
+                        }else {
+                            remark = item.remark.length > 0 ? item.remark : '其他';
+                            icon = newTypeIcons[item.useType] ? newTypeIcons[item.useType] : renwu
+                        }
                         arrData.push({
-                            type: allType[item.useType] ?  allType[item.useType].title : '其他',
+                            type: remark,
                             time: DataUtils.getFormatDate(item.createTime / 1000),
                             serialNumber: item.serialNo,
                             capital: use_type_symbol[item.biType] + (item.balance ? item.balance : 0.00),
-                            iconImage: allType[item.useType] ? allType[item.useType].icon : renwu,
+                            iconImage: icon,
                             capitalRed: use_type_symbol[item.biType] === '-',
                             realBalance: item.realBalance,
                             status: item.status

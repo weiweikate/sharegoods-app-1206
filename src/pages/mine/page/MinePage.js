@@ -33,6 +33,7 @@ import { track, TrackApi, trackEvent } from '../../../utils/SensorsTrack';
 import settingModel from '../model/SettingModel';
 import PullView from '../components/pulltorefreshlayout';
 import WhiteModel from '../../show/model/WhiteModel'
+import { mediatorCallFunc } from '../../../SGMediator';
 
 
 const {
@@ -55,7 +56,7 @@ const {
     // mine_icon_discollect,
     mine_message_icon_white,
     mine_setting_icon_white,
-    profile_banner,
+    // profile_banner,
     mine_icon_mentor,
     mine_user_icon,
     mine_icon_fans,
@@ -100,7 +101,8 @@ export default class MinePage extends BasePage {
             hasMessageNum: 0,
             hasFans: false,
             hasFansMSGNum: 0,
-            modalId: false
+            modalId: false,
+            adArr:[]
         };
 
     }
@@ -131,6 +133,7 @@ export default class MinePage extends BasePage {
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
                 const { state } = payload;
                 this.loadMessageCount();
+                this.loadAd();
                 this._needShowFans();
                 WhiteModel.saveWhiteType();
                 console.log('willFocusSubscriptionMine', state);
@@ -169,6 +172,21 @@ export default class MinePage extends BasePage {
     $isMonitorNetworkStatus() {
         return false;
     }
+
+    loadAd = () => {
+        MineApi.queryAdList({type:24}).then(result => {
+            if (!EmptyUtils.isEmpty(result.data)) {
+                this.setState({
+                    adArr: result.data
+                });
+            }
+        }).catch((error) => {
+            this.setState({
+                adArr: []
+            });
+        });
+
+    };
 
     loadMessageCount = () => {
         MessageApi.getNewNoticeMessageCount().then(result => {
@@ -787,22 +805,34 @@ export default class MinePage extends BasePage {
                 {this.orderRender()}
                 {this.activeRender()}
                 {this.utilsRender()}
-                {/*{this.renderMoreMoney()}*/}
+                {this.renderADView()}
             </View>
         );
     };
 
-    renderMoreMoney = () => {
+    renderADView = () => {
+        if(this.state.adArr.length <= 0){
+            return null;
+        }
+
         return (
-            <TouchableWithoutFeedback onPress={() => {
-                this.$navigate(RouterMap.ShowRichTextDetailPage, {
-                    fromHome: false,
-                    code: 'SHOW2019052714482778300000600000'
-                });
-                TrackApi.ViewHowTo();
-            }}>
-                <UIImage style={styles.makeMoneyMoreBackground} resizeMode={'stretch'} source={profile_banner}/>
-            </TouchableWithoutFeedback>
+            <View>
+                {this.state.adArr.map((item,index)=>{
+                    console.log('adArr',item.image)
+                    return(
+                        <View>
+                            <TouchableOpacity onPress={()=>{mediatorCallFunc('Home_AdNavigate',item)}}>
+                            {item.image ?
+                                <Image source={{uri:item.image}} style={{width:ScreenUtils.width ,height:200}}/>
+                                : null
+                            }
+                            </TouchableOpacity>
+                        </View>
+                    )
+
+                    })
+                }
+            </View>
         );
     };
 
