@@ -39,7 +39,7 @@ import AddCartModel from './model/AddCartModel';
 import { sourceType } from '../product/SelectionPage';
 import shopCartCacheTool from '../shopCart/model/ShopCartCacheTool';
 import SelectionPage from '../product/SelectionPage';
-import RouterMap, { routePop, routeNavigate } from '../../navigation/RouterMap';
+import RouterMap, { routePop, routeNavigate,routePush } from '../../navigation/RouterMap';
 import DownloadUtils from './utils/DownloadUtils';
 import ShowVideoView from './components/ShowVideoView';
 import WhiteModel from './model/WhiteModel';
@@ -270,7 +270,7 @@ export default class ShowDetailPage extends BasePage {
     _renderNormalTitle() {
         let { detail } = this.showDetailModule;
         if (!detail) {
-            detail = { imgs: '', products: [], click: 0, content: '' };
+            detail = { imgs: '', products: [], click: 0, content: '' ,userInfoVO:{}};
         }
 
         let userImage = (detail.userInfoVO && detail.userInfoVO.userImg) ? detail.userInfoVO.userImg : '';
@@ -298,7 +298,7 @@ export default class ShowDetailPage extends BasePage {
                             if(user.code === userNo){
                                 routeNavigate(RouterMap.MyDynamicPage, { userType: WhiteModel.userStatus === 2 ? 'mineWriter' : 'mineNormal' });
                             }else {
-                                routeNavigate(RouterMap.MyDynamicPage,{userType:'others',userInfo:detail.userInfoVO});
+                                routePush(RouterMap.MyDynamicPage,{userType:'others',userInfo:detail.userInfoVO});
                             }
                         }}>
                             <View>

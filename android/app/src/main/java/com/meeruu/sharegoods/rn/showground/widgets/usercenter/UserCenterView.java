@@ -25,6 +25,7 @@ import com.meeruu.sharegoods.rn.showground.DynamicInterface;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
 import com.meeruu.sharegoods.rn.showground.event.GoCollectionEvent;
 import com.meeruu.sharegoods.rn.showground.event.GoPublishEvent;
+import com.meeruu.sharegoods.rn.showground.event.OnPersonItemPress;
 import com.meeruu.sharegoods.rn.showground.event.SetNavStatusEvent;
 import com.meeruu.sharegoods.rn.showground.event.onItemPressEvent;
 
@@ -89,7 +90,7 @@ public class UserCenterView {
                 map.put("isCollect",isCollect);
                 WritableMap realData = Arguments.makeNativeMap(map);
                 if (eventDispatcher != null) {
-                    onItemPressEvent itemPressEvent = new onItemPressEvent();
+                    OnPersonItemPress itemPressEvent = new OnPersonItemPress();
                     itemPressEvent.init(view.getId());
                     itemPressEvent.setData(realData);
                     eventDispatcher.dispatchEvent(itemPressEvent);

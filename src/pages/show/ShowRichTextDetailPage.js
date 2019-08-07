@@ -269,7 +269,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                             if (user.code === userNo) {
                                 routeNavigate(RouterMap.MyDynamicPage, { userType: WhiteModel.userStatus === 2 ? 'mineWriter' : 'mineNormal' });
                             } else {
-                                routeNavigate(RouterMap.MyDynamicPage, {
+                                routePush(RouterMap.MyDynamicPage, {
                                     userType: 'others',
                                     userInfo: detail.userInfoVO
                                 });

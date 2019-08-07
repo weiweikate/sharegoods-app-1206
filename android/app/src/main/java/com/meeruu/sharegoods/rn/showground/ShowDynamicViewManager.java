@@ -114,7 +114,7 @@ public class ShowDynamicViewManager extends ViewGroupManager<ViewGroup> {
     @Override
     public Map<String, Object> getExportedCustomBubblingEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
-                .put("MrShowGroundOnItemPressEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onItemPress")))
+                .put("MrOnPersonItemPressEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onPersonItemPress")))
                 .put("MrShowGroundOnStartRefreshEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onStartRefresh")))
                 .put("MrShowGroundOnStartScrollEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onStartScroll")))
                 .put("MrShowGroundOnEndScrollEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onEndScroll")))
@@ -122,8 +122,8 @@ public class ShowDynamicViewManager extends ViewGroupManager<ViewGroup> {
                 .put("MrShowScrollStateChangeEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onScrollStateChanged")))
                 .put("MrScrollY", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onScrollY")))
                 .put("MrNavStatusEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "changeNav")))
-                .put("MrGoCollectionEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "goCollection")))
-                .put("MrGoPublishEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "goPublish")))
+                .put("MrGoCollectionEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onPersonCollection")))
+                .put("MrGoPublishEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onPersonPublish")))
                 .build();
     }
 
