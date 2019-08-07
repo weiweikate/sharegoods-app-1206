@@ -54,7 +54,27 @@
   if ([aspectRatioDic valueForKey:@"height"]) {
     height = [[aspectRatioDic valueForKey:@"height"] floatValue];
   }
-  
+
+  if(self.showType&&self.showType == 3){
+    for(int i=0;i<self.resource.count;i++){
+      if(self.resource[i].type==5 && [self.resource[i] valueForKey:@"baseUrl"]){
+        if([self.resource[i] valueForKey:@"width"]&&[[self.resource[i] valueForKey:@"width"]floatValue]>0){
+          width = [[self.resource[i] valueForKey:@"width"]floatValue];
+        }
+        if([self.resource[i] valueForKey:@"height"]&&[[self.resource[i] valueForKey:@"height"]floatValue]>0){
+          height = [[self.resource[i] valueForKey:@"height"]floatValue];
+        }
+      }
+    }
+  }else if([self.resource[0] valueForKey:@"baseUrl"]){
+    if([self.resource[0] valueForKey:@"width"]&&[[self.resource[0] valueForKey:@"width"]floatValue]>0){
+      width = [[self.resource[0] valueForKey:@"width"]floatValue];
+    }
+    if([self.resource[0] valueForKey:@"height"]&&[[self.resource[0] valueForKey:@"height"]floatValue]>0){
+      height = [[self.resource[0] valueForKey:@"height"]floatValue];
+    }
+  }
+
   return width / height;
 }
 
@@ -76,7 +96,7 @@
 - (NSString *)showImage_oss
 {
  CGFloat itemWidth=  [UIScreen mainScreen].bounds.size.width / 2.0;
- CGFloat aspectRatio = self.aspectRatio;
+ CGFloat aspectRatio = self.aspectRatio_show;
  return  [self.showImage getUrlAndWidth:itemWidth height:itemWidth*aspectRatio];
 }
 
@@ -87,10 +107,18 @@
   if (aspectRatio < minRatio) {
     aspectRatio = minRatio;
   }
-  
+
   if (aspectRatio > maxRatio) {
     aspectRatio = maxRatio;
   }
   return aspectRatio;
+}
+
+- (NSString *)userHeadImg_oss
+{
+  if (_userInfoVO.userImg) {
+   return [_userInfoVO.userImg  getUrlAndWidth:30 height:30];
+  }
+  return @"";
 }
 @end

@@ -537,8 +537,8 @@ class FlyImageZoom extends Component {
             }
         });
     }
-
-    handleLayout(event: React.LayoutChangeEvent) {
+  // React.LayoutChangeEvent
+    handleLayout(event) {
         //  this.centerX = event.nativeEvent.layout.x + event.nativeEvent.layout.width / 2;
         //  this.centerY = event.nativeEvent.layout.y + event.nativeEvent.layout.height / 2;
     }
