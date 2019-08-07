@@ -18,12 +18,15 @@
 #import "AppDelegate.h"
 #import <CodePush/CodePush.h>
 #import "CommentTool.h"
+#import <AFNetworking.h>
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import "ShareImageMaker.h"
 #import "WelcomeView.h"
 #import "NetWorkTool.h"
+#import "MBProgressHUD+PD.h"
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -43,7 +46,7 @@
   }
   [self configureUserAgent];
   [self getAd];
-  
+  [self checkworking];
 //  [[CommentTool sharedInstance]checkIsCanComment];
 
   return YES;
@@ -109,6 +112,40 @@
   } failure:^(NSURLSessionDataTask * _Nullable task, NSError *error) {
     
   }];
+}
+
+// 检测网络状态
+
+-(void)checkworking{
+  // 创建管理者
+  AFNetworkReachabilityManager *manger = [AFNetworkReachabilityManager sharedManager];
+  // 查询网络状态
+  
+  /*
+        AFNetworkReachabilityStatusUnknown          = -1, // 代表不知道什么网络
+       AFNetworkReachabilityStatusNotReachable     = 0,  // 代表没有网络
+       AFNetworkReachabilityStatusReachableViaWWAN = 1,    // 代表蜂窝数据(你自己的网络)
+       AFNetworkReachabilityStatusReachableViaWiFi = 2, // 代表 wifi
+   */
+  
+  [manger setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+    switch (status) {
+      case 0:
+        self.AFNetworkStatus = 0;
+        [MBProgressHUD showSuccess:@"当前无网络，请检查网络"];
+        break;
+      case 1:
+        self.AFNetworkStatus = 1;
+        [MBProgressHUD showSuccess:@"当前为非Wifi环境,请注意流量消耗"];
+        break;
+      case 2:
+        self.AFNetworkStatus = 2;
+      default:
+        break;
+    }
+  }];
+  [manger startMonitoring];
+  
 }
 
 @end

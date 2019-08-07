@@ -76,6 +76,7 @@ export default class ShowActivityView extends Component {
                     params={{ spreadPosition: 4 }}
                     renderError={this.renderError}
                     onScroll={this.onListViewScroll}
+                    cache={true}
                 />
             </View>
         );

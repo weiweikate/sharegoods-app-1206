@@ -9,6 +9,8 @@ public class CommValue {
     public static int SHIELD = 3;
     //删除
     public static int DELETED = 4;
+    //转码中
+    public static int TRANSCODING = 5;
 
     //运营文章/素材
     public static int OPERATE_CONTENT = 1;

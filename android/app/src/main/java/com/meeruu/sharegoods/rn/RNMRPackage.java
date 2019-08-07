@@ -15,9 +15,12 @@ import com.meeruu.sharegoods.rn.module.PhoneAuthenModule;
 import com.meeruu.sharegoods.rn.module.QRCodeModule;
 import com.meeruu.sharegoods.rn.popmodal.PopModalManager;
 import com.meeruu.sharegoods.rn.showground.RecyclerViewHeaderManager;
+import com.meeruu.sharegoods.rn.showground.ShowAttentionViewManager;
 import com.meeruu.sharegoods.rn.showground.ShowDynamicViewManager;
 import com.meeruu.sharegoods.rn.showground.ShowGroundViewManager;
+import com.meeruu.sharegoods.rn.showground.ShowModule;
 import com.meeruu.sharegoods.rn.showground.ShowRecommendViewManager;
+import com.meeruu.sharegoods.rn.showground.ShowVideoViewManager;
 import com.meeruu.sharegoods.rn.viewmanager.MRBannerViewManager;
 
 import java.util.ArrayList;
@@ -65,6 +68,7 @@ public class RNMRPackage implements ReactPackage {
         modules.add(analyticsModule);
         modules.add(phoneAuthenModule);
         modules.add(jPushModule);
+        modules.add(new ShowModule(reactContext));
 
         return modules;
     }
@@ -73,13 +77,15 @@ public class RNMRPackage implements ReactPackage {
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
         return Arrays.<ViewManager>asList(
-                new PopModalManager(),
-                new MRLoadingViewManager(),
-                new MRBannerViewManager(),
-                new RecyclerViewHeaderManager(),
-                new ShowGroundViewManager(),
-                new ShowRecommendViewManager(),
-                new ShowDynamicViewManager());
+        new PopModalManager(),
+        new MRLoadingViewManager(),
+         new MRBannerViewManager(),
+         new RecyclerViewHeaderManager(),
+          new ShowGroundViewManager(),
+           new ShowRecommendViewManager(),
+            new ShowDynamicViewManager(),
+            new ShowVideoViewManager(),
+            new ShowAttentionViewManager());
     }
 
 }

@@ -14,16 +14,19 @@ NS_ASSUME_NONNULL_BEGIN
 @interface JXFooterView : UIView
 
 @property (nonatomic,assign) NSInteger downloadCount;
-
 @property (nonatomic,assign) NSInteger likesCount;
+@property (nonatomic,assign) NSInteger collectCount;
+
 @property (nonatomic,assign) NSInteger shareCount;
 @property (nonatomic,copy) NSString * showNo;
 @property (nonatomic,assign) BOOL type; //事件类型
 @property (nonatomic,strong)NSArray * products;
 @property (nonatomic,assign) BOOL isLike;
+@property (nonatomic,assign) BOOL isCollect;
 
 @property(nonatomic,copy)void (^clickGoods)(GoodsDataModel*);
 @property(nonatomic,copy)void (^zanBlock)(NSString*);
+@property(nonatomic,copy)void (^collectionBlock)(NSString*);
 @property(nonatomic,copy)void (^downloadBlock)(NSString*);
 @property(nonatomic,copy)void (^shareBlock)(NSString*);
 @property(nonatomic,copy)void (^addCarBlock)(GoodsDataModel*);

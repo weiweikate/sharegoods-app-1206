@@ -591,7 +591,7 @@ static NSString *const IJSSelectedCellID = @"IJSSelectedCell";
         [vc showAlertWithTitle:title];
         return;
     }
-    if ((model.type != JSAssetModelMediaTypeVideo || model.type != JSAssetModelMediaTypeAudio) && !vc.allowPickingImage)
+    if ((model.type != JSAssetModelMediaTypeVideo && model.type != JSAssetModelMediaTypeAudio) && !vc.allowPickingImage)
     {
         NSString *title = [NSString stringWithFormat:@"%@", [NSBundle localizedStringForKey:@"Do not support selection of image types"]];
         [vc showAlertWithTitle:title];

@@ -114,7 +114,7 @@
   for(int i=0;i<sources.count;i++){
     if(self.imageType){
       if(sources[i].type==5){
-        if(arr.count>1) break;
+        if(arr.count>=1) break;
         [arr addObject:sources[i]];
       }
     }else{
@@ -140,7 +140,11 @@
         CGFloat itemW = [self itemWidthForPicPathArray:_sources];
         CGFloat itemH = 0;
         if (_sources.count < 2) {
+          if(self.imageType){
+            itemH = [self itemHeightForWidth:itemW SourcesModel:_sources[0]];
+          }else{
             itemH = itemW;
+          }
         } else {
             itemH = itemW;
         }
@@ -159,6 +163,7 @@
 
             imageView.hidden = NO;
             imageView.frame = CGRectMake(columnIndex * (itemW + margin), rowIndex * (itemH + margin), itemW, itemH);
+            self.bgView.sd_layout.widthIs(itemW).heightIs(itemH);
         }];
   
         CGFloat w = perRowItemCount * itemW + (perRowItemCount - 1) * margin;
@@ -184,6 +189,9 @@
 - (CGFloat)itemWidthForPicPathArray:(NSArray *)array
 {
   if (array.count == 1){
+      if(self.imageType){
+      
+      }
       return (SCREEN_WIDTH-158);
   }else if(array.count==4||array.count==2) {
       return (SCREEN_WIDTH-161)/2;
@@ -203,6 +211,27 @@
 }
 
 
+- (CGFloat)itemHeightForWidth:(CGFloat)width SourcesModel:(SourcesModel*)data{
+  if(data.width&&data.height){
+    CGFloat a = data.height/data.width;
+    CGFloat type1 = 9/16.0;
+    CGFloat type2 = 1.0;
+    CGFloat type3 = 4/3.0;
+    double a1 = fabs(a-type1);
+    double a2 = fabs(a-type2);
+    double a3 = fabs(a-type3);
+    if(a1<a2&&a1<a3){
+      return width/type1;
+    }
+    if(a2<a1&&a2<a3){
+      return width/type2;
+    }
+    if(a3<a1&&a3<a2){
+      return width/type3;
+    }
+  }
+    return width;
+}
 
 //-(void)setUI{
 ////    CGFloat viewWidth = self.frame.size.width;
