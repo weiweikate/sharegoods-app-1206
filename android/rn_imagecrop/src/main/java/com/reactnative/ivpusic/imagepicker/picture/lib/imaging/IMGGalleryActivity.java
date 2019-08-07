@@ -4,14 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.controller.AbstractDraweeController;
@@ -28,7 +29,6 @@ import com.reactnative.ivpusic.imagepicker.picture.lib.imaging.gallery.model.IMG
 import com.reactnative.ivpusic.imagepicker.picture.lib.imaging.gallery.model.IMGImageInfo;
 import com.reactnative.ivpusic.imagepicker.picture.lib.imaging.gallery.model.IMGImageViewModel;
 import com.reactnative.ivpusic.imagepicker.picture.lib.imaging.widget.IMGGalleryHolderCallback;
-
 
 import java.util.ArrayList;
 import java.util.List;

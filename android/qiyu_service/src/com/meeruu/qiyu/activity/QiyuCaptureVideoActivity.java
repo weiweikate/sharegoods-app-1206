@@ -17,4 +17,5 @@ public class QiyuCaptureVideoActivity extends CaptureVideoActivity {
                 .statusBarDarkFont(true)
                 .navigationBarDarkIcon(true).init();
     }
+
 }

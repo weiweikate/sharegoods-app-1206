@@ -28,9 +28,6 @@ android {
 }
 
 dependencies {
-    //noinspection GradleCompatible
-    api rootProject.ext.dependencies.support
-    //noinspection GradleCompatible
     api rootProject.ext.dependencies.recyclerview
     api project(':commonlib')
 }

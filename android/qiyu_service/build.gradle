@@ -37,7 +37,6 @@ android {
 
 dependencies {
     api fileTree(include: ['*.jar'], exclude: ['android-support-v4.jar'], dir: 'libs')
-    api rootProject.ext.dependencies.support
     api rootProject.ext.dependencies.eventbus
     api project(':statusbar')
     api files('libs/qiyu-sdk-5.0.0.jar')

@@ -8,13 +8,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.reactnative.ivpusic.imagepicker.cameralibrary.JCameraView;
 import com.reactnative.ivpusic.imagepicker.cameralibrary.listener.ClickListener;

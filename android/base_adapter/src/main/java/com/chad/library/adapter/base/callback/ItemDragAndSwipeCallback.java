@@ -1,17 +1,17 @@
 package com.chad.library.adapter.base.callback;
 
 import android.graphics.Canvas;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.R;
 import com.chad.library.adapter.base.BaseItemDraggableAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 /**
- *
  * @author luoxw
  * @date 2016/6/20
  */
@@ -56,7 +56,7 @@ public class ItemDragAndSwipeCallback extends ItemTouchHelper.Callback {
     }
 
     @Override
-    public void clearView(@NonNull RecyclerView recyclerView,@NonNull RecyclerView.ViewHolder viewHolder) {
+    public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
         super.clearView(recyclerView, viewHolder);
         if (isViewCreateByAdapter(viewHolder)) {
             return;
@@ -84,12 +84,12 @@ public class ItemDragAndSwipeCallback extends ItemTouchHelper.Callback {
     }
 
     @Override
-    public boolean onMove(@NonNull RecyclerView recyclerView,@NonNull RecyclerView.ViewHolder source,@NonNull RecyclerView.ViewHolder target) {
+    public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder source, @NonNull RecyclerView.ViewHolder target) {
         return source.getItemViewType() == target.getItemViewType();
     }
 
     @Override
-    public void onMoved(@NonNull RecyclerView recyclerView,@NonNull RecyclerView.ViewHolder source, int fromPos,@NonNull RecyclerView.ViewHolder target, int toPos, int x, int y) {
+    public void onMoved(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder source, int fromPos, @NonNull RecyclerView.ViewHolder target, int toPos, int x, int y) {
         super.onMoved(recyclerView, source, fromPos, target, toPos, x, y);
         mAdapter.onItemDragMoving(source, target);
     }
@@ -162,7 +162,7 @@ public class ItemDragAndSwipeCallback extends ItemTouchHelper.Callback {
     }
 
     @Override
-    public void onChildDrawOver(@NonNull Canvas c, @NonNull RecyclerView recyclerView,@NonNull RecyclerView.ViewHolder viewHolder,
+    public void onChildDrawOver(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder,
                                 float dX, float dY, int actionState, boolean isCurrentlyActive) {
         super.onChildDrawOver(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
 

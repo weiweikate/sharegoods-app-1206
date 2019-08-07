@@ -3,7 +3,8 @@ package com.meeruu.commonlib.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.v4.content.SharedPreferencesCompat;
+
+import androidx.core.content.SharedPreferencesCompat;
 
 import com.meeruu.commonlib.base.BaseApplication;
 
@@ -42,7 +43,7 @@ public class SPCacheUtils {
                     editor.putString(key, object.toString());
                 }
             }
-            SharedPreferencesCompat.EditorCompat.getInstance().apply(editor);
+            editor.apply();
         }
     }
 
@@ -83,7 +84,7 @@ public class SPCacheUtils {
                 Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.remove(key);
-        SharedPreferencesCompat.EditorCompat.getInstance().apply(editor);
+        editor.apply();
     }
 
     /**
@@ -94,7 +95,7 @@ public class SPCacheUtils {
                 Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.clear();
-        SharedPreferencesCompat.EditorCompat.getInstance().apply(editor);
+        editor.apply();
     }
 
     /**

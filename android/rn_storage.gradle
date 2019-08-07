@@ -30,5 +30,4 @@ dependencies {
     api(rootProject.ext.dependencies.rn) {
         exclude group: 'com.android.support'
     }
-    api rootProject.ext.dependencies.support
 }

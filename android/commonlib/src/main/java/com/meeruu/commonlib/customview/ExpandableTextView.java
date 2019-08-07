@@ -3,7 +3,6 @@ package com.meeruu.commonlib.customview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
-import android.support.v7.widget.AppCompatTextView;
 import android.text.DynamicLayout;
 import android.text.Layout;
 import android.text.Selection;
@@ -19,6 +18,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.TextView;
+
+import androidx.appcompat.widget.AppCompatTextView;
 
 import com.meeruu.commonlib.R;
 
@@ -353,7 +354,7 @@ public class ExpandableTextView extends AppCompatTextView {
         setTextInternal(getNewTextByConfig(), type);
     }
 
-    private void setTextInternal(CharSequence text, BufferType type) {
+    private void setTextInternal(CharSequence text, TextView.BufferType type) {
         super.setText(text, type);
     }
 

@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.support.annotation.FloatRange;
 import android.support.annotation.IntRange;
 import android.support.annotation.StyleRes;
-import android.support.v4.app.Fragment;
 
+import androidx.fragment.app.Fragment;
 
 import com.reactnative.ivpusic.imagepicker.R;
 import com.reactnative.ivpusic.imagepicker.picture.lib.config.PictureSelectionConfig;

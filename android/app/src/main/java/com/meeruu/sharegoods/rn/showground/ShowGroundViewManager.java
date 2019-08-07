@@ -3,7 +3,6 @@ package com.meeruu.sharegoods.rn.showground;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
@@ -11,10 +10,6 @@ import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
-import com.facebook.react.views.webview.ReactWebViewManager;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Map;
 
@@ -26,6 +21,7 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> {
     public static final int ADD_DATA_TOP = 2;
     public static final int REPLACE_ITEM_DATA = 3;
     public static final int SCROLL_TO_TOP = 4;
+
     @Override
     public String getName() {
         return COMPONENT_NAME;
@@ -60,7 +56,7 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> {
     @Nullable
     @Override
     public Map<String, Integer> getCommandsMap() {
-        return MapBuilder.of("replaceData", REPLACE_DATA,"addDataToTop",ADD_DATA_TOP,"replaceItemData",REPLACE_ITEM_DATA,"scrollToTop",SCROLL_TO_TOP);
+        return MapBuilder.of("replaceData", REPLACE_DATA, "addDataToTop", ADD_DATA_TOP, "replaceItemData", REPLACE_ITEM_DATA, "scrollToTop", SCROLL_TO_TOP);
     }
 
     @Override
@@ -73,21 +69,21 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> {
                 }
             }
             break;
-            case ADD_DATA_TOP:{
+            case ADD_DATA_TOP: {
                 Object object = root.getTag();
                 if (object != null && object instanceof ShowGroundView) {
                     ((ShowGroundView) object).addDataToTop(args.getString(0));
                 }
             }
             break;
-            case REPLACE_ITEM_DATA:{
+            case REPLACE_ITEM_DATA: {
                 Object object = root.getTag();
                 if (object != null && object instanceof ShowGroundView) {
                     ((ShowGroundView) object).repelaceItemData(args.getInt(0), args.getString(1));
                 }
             }
             break;
-            case SCROLL_TO_TOP:{
+            case SCROLL_TO_TOP: {
                 Object object = root.getTag();
                 if (object != null && object instanceof ShowGroundView) {
                     ((ShowGroundView) object).scrollIndex(0);
