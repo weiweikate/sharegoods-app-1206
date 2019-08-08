@@ -7,22 +7,25 @@ export class AutoHeightImage extends React.Component {
         imgHeight: 0
     };
 
-    shouldComponentUpdate(nextProps) {
-        if (this.state.imgHeight === 0 || this.props.imgUrl !== nextProps.imgUrl) {
-            return true;
-        }
-        return false;
+    componentDidMount() {
+        this.getImgHeight(this.props);
     }
 
-    componentDidMount() {
-        const { source, ImgWidth } = this.props;
+    componentWillReceiveProps(nextProps) {
+        if (this.props.source.uri !== nextProps.source.uri) {
+            this.getImgHeight(nextProps);
+        }
+    }
+
+    getImgHeight = (props) => {
+        const { source, ImgWidth } = props;
         getSize(source.uri, (width, height) => {
             height = height / width * ImgWidth;
             this.setState({
                 imgHeight: height
             });
         });
-    }
+    };
 
     render() {
         const { ImgWidth, children, style, ...attributes } = this.props;
