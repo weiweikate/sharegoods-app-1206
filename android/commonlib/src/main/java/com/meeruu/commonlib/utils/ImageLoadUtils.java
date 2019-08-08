@@ -507,7 +507,7 @@ public class ImageLoadUtils {
         }
         ImageRequest request = requestBuilder.build();
         DraweeController controller = Fresco.newDraweeControllerBuilder().setImageRequest(request).setOldController(view.getController()).build();
-        GenericDraweeHierarchy hierarchy = new GenericDraweeHierarchyBuilder(BaseApplication.appContext.getResources()).setRoundingParams(roundParams).setPlaceholderImage(R.drawable.bg_app_img).setPlaceholderImageScaleType(ScalingUtils.ScaleType.CENTER_CROP).build();
+        GenericDraweeHierarchy hierarchy = new GenericDraweeHierarchyBuilder(BaseApplication.appContext.getResources()).setPlaceholderImage(R.drawable.bg_app_img).setPlaceholderImageScaleType(ScalingUtils.ScaleType.CENTER_CROP).build();
         if (scaleType != null) {
             hierarchy.setActualImageScaleType(scaleType);
         } else {

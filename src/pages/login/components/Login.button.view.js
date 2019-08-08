@@ -1,13 +1,8 @@
-import React from "react";
-import {
-    Text,
-    View,
-    StyleSheet,
-    TouchableOpacity
-} from "react-native";
-import ScreenUtils from "../../../utils/ScreenUtils";
-import DesignRule from "../../../constants/DesignRule";
-import LinearGradient from "react-native-linear-gradient";
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import DesignRule from '../../../constants/DesignRule';
+import LinearGradient from 'react-native-linear-gradient';
 
 const { px2dp, width } = ScreenUtils;
 
@@ -71,13 +66,13 @@ const Styles = StyleSheet.create(
         },
         touchableStyle: {
             flex: 1,
-            justifyContent: "center",
-            alignItems: "center"
+            justifyContent: 'center',
+            alignItems: 'center'
         },
         bottomTipBtnBgStyle: {
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
             marginBottom: px2dp(40),
             marginTop: px2dp(15)
         },
@@ -113,11 +108,12 @@ const getTextStyle = {
 
 };
 
-const getLoginBtn = (btnStyle, btnText, btnClick, isC = true) => (<View style={[getLoginBtnBgStyle[btnStyle],isC?{borderWidth:0}:null]}>
+const getLoginBtn = (btnStyle, btnText, btnClick, isC = true) => (
+    <View style={[getLoginBtnBgStyle[btnStyle], isC ? { borderWidth: 0 } : null]}>
         {
             isC ?
-                <LinearGradient colors={["#FF1C89", "#FD0129"]}
-                                style={{ flex: 1 , borderRadius: px2dp(20),}}
+                <LinearGradient colors={['#FF1C89', '#FD0129']}
+                                style={{ flex: 1, borderRadius: px2dp(20) }}
                 >
                     <TouchableOpacity
                         style={Styles.touchableStyle}
@@ -126,7 +122,7 @@ const getLoginBtn = (btnStyle, btnText, btnClick, isC = true) => (<View style={[
                         }}
                     >
                         <Text
-                            style={[getTextStyle[btnStyle],isC?{color:'white'}:null]}
+                            style={[getTextStyle[btnStyle], isC ? { color: 'white' } : null]}
                         >
                             {btnText}
                         </Text>
@@ -150,61 +146,61 @@ const getLoginBtn = (btnStyle, btnText, btnClick, isC = true) => (<View style={[
     </View>
 );
 const createBottomButton = (textArr, clickAction) => {
-    if (textArr.length === 2) {
-        return (
-            <View style={Styles.bottomTipBtnBgStyle}>
-                <TouchableOpacity
-                    onPress={() => {
-                        clickAction && clickAction(textArr[0]);
-                    }}
-                >
-                    <Text style={Styles.bottomTipBtnStyle}>
-                        {textArr[0]}
-                    </Text>
-                </TouchableOpacity>
+    if (textArr && textArr.length > 0) {
+        if (textArr.length === 2) {
+            return (
+                <View style={Styles.bottomTipBtnBgStyle}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            clickAction && clickAction(textArr[0]);
+                        }}
+                    >
+                        <Text style={Styles.bottomTipBtnStyle}>
+                            {textArr[0]}
+                        </Text>
+                    </TouchableOpacity>
 
-                <View style={Styles.bottomLineStyle}/>
+                    <View style={Styles.bottomLineStyle}/>
 
-                <TouchableOpacity
-                    onPress={() => {
-                        clickAction && clickAction(textArr[1]);
-                    }}
+                    <TouchableOpacity
+                        onPress={() => {
+                            clickAction && clickAction(textArr[1]);
+                        }}
+                    >
+                        <Text style={Styles.bottomTipBtnStyle}>
+                            {textArr[1]}
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+            );
+        } else {
+            return (
+                <View
+                    style={Styles.bottomTipBtnBgStyle}
                 >
-                    <Text style={Styles.bottomTipBtnStyle}>
-                        {textArr[1]}
-                    </Text>
-                </TouchableOpacity>
-            </View>
-        );
-    } else {
-        return (
-            <View
-                style={Styles.bottomTipBtnBgStyle}
-            >
-                <TouchableOpacity
-                    onPress={() => {
-                        clickAction && clickAction(textArr[0]);
-                    }}
-                >
-                    <Text style={Styles.bottomTipBtnStyle}>
-                        {textArr[0]}
-                    </Text>
-                </TouchableOpacity>
-            </View>
-        );
+                    <TouchableOpacity
+                        onPress={() => {
+                            clickAction && clickAction(textArr[0]);
+                        }}
+                    >
+                        <Text style={Styles.bottomTipBtnStyle}>
+                            {textArr[0]}
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+            );
+        }
     }
-
-
 };
 
 
-const createLoginButton = (btnType, btnText, btnClick,isC=false) => {
+const createLoginButton = (btnType, btnText, btnClick, isC = false) => {
     if (btnType === loginBtnType.wxLoginBtnType) {
-        return getLoginBtn(btnType, btnText, btnClick,isC);
+        return getLoginBtn(btnType, btnText, btnClick, isC);
     } else if (btnType === loginBtnType.localPhoneNumLoginType) {
-        return getLoginBtn(btnType, btnText, btnClick,isC);
+        return getLoginBtn(btnType, btnText, btnClick, isC);
     } else {
-        return getLoginBtn(btnType, btnText, btnClick,isC);
+        return getLoginBtn(btnType, btnText, btnClick, isC);
     }
 };
 

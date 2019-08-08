@@ -27,9 +27,11 @@
 #import "JRBaseVC.h"
 #import <React-Native-Webview-Bridge/RCTWebViewBridge.h>
 #import "StorageFromRN.h"
+#import "JRServiceManager.h"
+#import "NSString+UrlAddParams.h"
 @interface RCTWebViewBridge (ConfigLib)
 - (BOOL)webView:(__unused UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request
-       navigationType:(UIWebViewNavigationType)navigationType;
+ navigationType:(UIWebViewNavigationType)navigationType;
 @end
 @implementation RCTWebViewBridge (ConfigLib)
 + (void)load
@@ -44,11 +46,11 @@
   // 交互方法:runtime
   method_exchangeImplementations(imageNamedMethod, xmg_imageNamedMethod);
   
- 
+  
 }
 
 - (BOOL)track_webView:(__unused UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request
- navigationType:(UIWebViewNavigationType)navigationType{
+       navigationType:(UIWebViewNavigationType)navigationType{
   if ([[SensorsAnalyticsSDK sharedInstance] showUpWebView:webView WithRequest:request enableVerify:YES]) {
     return NO;
   }
@@ -78,10 +80,10 @@
 
 -(void)configUM{
   [UMConfigure initWithAppkey:KUmSocialAppkey channel:nil];
-  #if DEBUG
+#if DEBUG
   [MobClick setCrashReportEnabled:NO];
-  #endif
-
+#endif
+  
   [[UMSocialManager defaultManager] openLog:YES];
   /* 设置微信的appKey和appSecret */
   [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_WechatSession
@@ -105,12 +107,29 @@
 -(void)configQYLib{
   
   [[QYSDK sharedSDK] registerAppId:KQiYuKey appName:@"秀购"];
+  [[QYSDK sharedSDK] customActionConfig].botClick = ^(NSString *target, NSString *params) {
+    NSMutableDictionary *dic = [target getURLParameters];
+    NSString *targetUrl = dic[@"targetUrl"];
+    if (!target || target.length == 0) {
+      return;
+    }
+    //判断地址是否 qiyukf.com/client
+    if (![targetUrl containsString:@"https://qiyukf.com/client?"]&& ![targetUrl containsString:@"http://qiyukf.com/client?"]) {
+      return;
+    }
+    //判断参数是否包含 k、bid
+    NSMutableDictionary *p = [targetUrl getURLParameters];
+    if (p[@"k"]&&p[@"bid"]) {
+      //
+        [[JRServiceManager sharedInstance] connetMerchant:p[@"bid"]];
+    }
+  };
   [QYCustomUIConfig sharedInstance].customMessageTextColor=[UIColor whiteColor];
-//  [QYCustomUIConfig sharedInstance].customerMessageBubbleNormalImage = [[UIImage imageNamed:@"qipao"] resizableImageWithCapInsets:UIEdgeInsetsMake(25, 10, 10, 10) resizingMode:UIImageResizingModeStretch];
-//  [QYCustomUIConfig sharedInstance].customerMessageBubblePressedImage = [[UIImage imageNamed:@"qipao"]resizableImageWithCapInsets:UIEdgeInsetsMake(25, 10, 10, 10) resizingMode:UIImageResizingModeStretch];
+  //  [QYCustomUIConfig sharedInstance].customerMessageBubbleNormalImage = [[UIImage imageNamed:@"qipao"] resizableImageWithCapInsets:UIEdgeInsetsMake(25, 10, 10, 10) resizingMode:UIImageResizingModeStretch];
+  //  [QYCustomUIConfig sharedInstance].customerMessageBubblePressedImage = [[UIImage imageNamed:@"qipao"]resizableImageWithCapInsets:UIEdgeInsetsMake(25, 10, 10, 10) resizingMode:UIImageResizingModeStretch];
   [QYCustomUIConfig sharedInstance].serviceMessageHyperLinkColor = [UIColor colorWithHexString:@"#FF0050"];
   [QYCustomUIConfig sharedInstance].serviceMessageTextFontSize = 13.0f;
-//  [QYCustomUIConfig sharedInstance].showShopEntrance = YES;
+  //  [QYCustomUIConfig sharedInstance].showShopEntrance = YES;
   
 }
 #pragma mark - delegate
@@ -140,7 +159,9 @@
   
   // 打开自动采集, 并指定追踪哪些 AutoTrack 事件
   [sdkInstance enableAutoTrack:SensorsAnalyticsEventTypeAppStart|
-                               SensorsAnalyticsEventTypeAppEnd];
+                               SensorsAnalyticsEventTypeAppEnd|
+                               SensorsAnalyticsEventTypeAppClick|
+                               SensorsAnalyticsEventTypeAppViewScreen];
   /** 设置公共属性*/
   NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
   NSString *app_Name = [infoDictionary objectForKey:@"CFBundleDisplayName"];

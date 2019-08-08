@@ -1,11 +1,5 @@
 import React, { Component } from 'react';
-import {
-    View,
-    StyleSheet,
-    TouchableWithoutFeedback,
-    ScrollView,
-    TouchableOpacity, Image
-} from 'react-native';
+import { Image, ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import StringUtils from '../../utils/StringUtils';
 import bridge from '../../utils/bridge';
@@ -13,9 +7,7 @@ import Modal from '../../comm/components/CommModal';
 import DesignRule from '../../constants/DesignRule';
 import res from './res';
 import UIImage from '@mr/image-placeholder';
-import {
-    MRText as Text
-} from '../../components/ui';
+import { MRText as Text } from '../../components/ui';
 
 const icon_close = res.button.close_gray_circle;
 
@@ -180,10 +172,12 @@ export default class TopicDetailSelectPage extends Component {
         //库存显示变动
         let goodsNumberText;
         for (let item of (stockSysConfig || [])) {
-            const tempArr = item.value.split('★');
-            if (parseFloat(surplusNumber) >= parseFloat(tempArr[0])) {
-                goodsNumberText = tempArr[1];
-                break;
+            const tempArr = (item.value && item.value.split('★')) || [];
+            if (tempArr.length > 0) {
+                if (parseFloat(surplusNumber) >= parseFloat(tempArr[0])) {
+                    goodsNumberText = tempArr[1] || '';
+                    break;
+                }
             }
         }
 

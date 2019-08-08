@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, Image } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import LinearGradient from 'react-native-linear-gradient';
@@ -8,6 +8,7 @@ import ImageLoader from '@mr/image-placeholder';
 import { limitGoModule, limitStatus } from '../model/HomeLimitGoModel';
 import DesignRule from '../../../constants/DesignRule';
 import resHome from '../res';
+import res from '../res';
 import { homeLinkType, homeRoute } from '../HomeTypes';
 import { MRText } from '../../../components/ui';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
@@ -15,7 +16,6 @@ import user from '../../../model/user';
 import RouterMap, { routeNavigate, routePush } from '../../../navigation/RouterMap';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import productRes from '../../product/res/product';
-import res from '../res'
 import XiuDouResultModal from './XiuDouResultModal';
 
 const { px2dp } = ScreenUtils;
@@ -47,7 +47,7 @@ export default class HomeLimitGoView extends Component {
         const selectedValue = (value) => value.id === name;
         const selectedModels = limitGoModule.spikeList.filter(selectedValue);
         let selected = null;
-        if (selectedModels) {
+        if (selectedModels && selectedModels.length > 0) {
             selected = selectedModels[0];
         }
         if (!selected) {
@@ -125,8 +125,9 @@ export default class HomeLimitGoView extends Component {
         return goodsItems.length > 0 ? goodsItems : null;
     }
 
-    openModal(){
+    openModal() {
         this.modal && this.modal.open();
+        track(trackEvent.HomePagePopShow, {homePagePopType: 1});
     }
 
     seeMore() {
@@ -134,6 +135,7 @@ export default class HomeLimitGoView extends Component {
             uri: `/spike`
         });
     }
+
     render() {
         let viewItems = [];
         const { spikeList } = limitGoModule;
@@ -152,17 +154,22 @@ export default class HomeLimitGoView extends Component {
 
         return (
             <View style={styles.container}>
-                <View style={{ paddingHorizontal: px2dp(15), flexDirection: 'row', alignItems: 'center'}}>
+                <View style={{ paddingHorizontal: px2dp(15), flexDirection: 'row', alignItems: 'center' }}>
                     <HomeTitleView title={'限时购'}/>
-                    <View style={{flex: 1}}/>
-                    <TouchableOpacity onPress={()=>{this.seeMore()}}>
-                        <MRText style={{color: DesignRule.textColor_placeholder, fontSize: px2dp(12)}}>更多></MRText>
+                    <View style={{ flex: 1 }}/>
+                    <TouchableOpacity onPress={() => {
+                        this.seeMore();
+                    }}>
+                        <MRText style={{ color: DesignRule.textColor_placeholder, fontSize: px2dp(12) }}>更多></MRText>
                     </TouchableOpacity>
                 </View>
                 {
                     limitGoModule.isShowFreeOrder ?
-                        <TouchableOpacity onPress={()=>{this.openModal()}}>
-                            <Image source={res.limitGoHeader} style={{height: px2dp(60), width: ScreenUtils.width, marginTop: px2dp(-5)}}/>
+                        <TouchableOpacity onPress={() => {
+                            this.openModal();
+                        }}>
+                            <Image source={res.limitGoHeader}
+                                   style={{ height: px2dp(60), width: ScreenUtils.width, marginTop: px2dp(-5) }}/>
                         </TouchableOpacity> : null
                 }
 
@@ -183,7 +190,9 @@ export default class HomeLimitGoView extends Component {
                 >
                     {viewItems}
                 </ScrollableTabView>
-                <XiuDouResultModal ref={(ref)=>{this.modal = ref}}/>
+                <XiuDouResultModal ref={(ref) => {
+                    this.modal = ref;
+                }}/>
             </View>);
     }
 }

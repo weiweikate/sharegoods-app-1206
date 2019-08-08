@@ -214,7 +214,7 @@ export default class PaymentFinshPage extends BasePage {
             orderPayType: 2,
             orderPayResultBtnType: 2
         });
-        replaceRoute('order/order/MyOrdersListPage', { index: 2 });
+        replaceRoute('order/order/MyOrdersListPage', { index: 0 });
     };
 
     /**

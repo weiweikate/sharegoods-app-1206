@@ -1,4 +1,5 @@
 <resources>
+    <string name="app_name">秀购</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
@@ -29,4 +30,6 @@
     <string name="choose_pic">选择图片</string>
     <string name="move_and_zoom">移动和缩放</string>
     <string name="take_photo">拍摄照片</string>
+    <string name="alivc_svideo_play_film">play</string>
+    <string name="alivc_svideo_pause_film">pause</string>
 </resources>

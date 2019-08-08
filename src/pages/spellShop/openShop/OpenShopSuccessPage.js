@@ -1,24 +1,16 @@
 //开店页面
 import React from 'react';
-import {
-    View,
-    Image,
-    Dimensions,
-    StyleSheet,
-    ScrollView,
-    TouchableOpacity
-} from 'react-native';
+import { Image, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import res from '../res';
 import BasePage from '../../../BasePage';
 import SpellShopApi from '../api/SpellShopApi';
 import DesignRule from '../../../constants/DesignRule';
-
-const SCREEN_WIDTH = Dimensions.get('window').width;
-const SuccessImg = res.button.tongyon_icon_check_green;
-import {
-    MRText as Text
-} from '../../../components/ui';
+import { MRText as Text } from '../../../components/ui';
 import RouterMap from '../../../navigation/RouterMap';
+import ScreenUtils from '../../../utils/ScreenUtils';
+
+const SCREEN_WIDTH = ScreenUtils.width;
+const SuccessImg = res.button.tongyon_icon_check_green;
 
 
 export default class OpenShopSuccessPage extends BasePage {

@@ -15,5 +15,7 @@
 @property (nonatomic, strong) UIWindow *window;
 @property (nonatomic, weak)AdView * adView;
 @property (nonatomic, assign) BOOL isLoadJS;// js 已经加载完成
+@property (nonatomic,assign)NSInteger AFNetworkStatus;
+
 - (void)removeLaunch;
 @end

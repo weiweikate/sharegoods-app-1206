@@ -16,6 +16,7 @@ export default class CheckBigImagesView extends BasePage {
         gesturesEnabled: false
     };
 
+
     _render() {
         return (
             <View style={styles.container}>

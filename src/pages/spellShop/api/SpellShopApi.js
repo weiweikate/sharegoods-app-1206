@@ -44,13 +44,6 @@ const api = {
     // 查看店铺人员 -- 共同行为get
     findUserDetail: ['/user/storeUser/findUserDetail', { method: 'get' }],
 
-    // 查看是否收藏店铺 -- 店员行为
-    getByStoreId: ['/user/storeCollection/getByStoreId', { method: 'get' }],
-    // 取消收藏店铺 -- 店员行为
-    storeCollectionCancel: '/user/storeCollection/cancel',
-    // 收藏店铺 -- 店员行为
-    storeCollectionCollection: '/user/storeCollection/collection',
-
     // 举报店铺post
     storeTipOffInsert: '/user/storeTipOff/insert',
     // 请求加入店铺 -- 店员行为post

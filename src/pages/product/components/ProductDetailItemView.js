@@ -23,6 +23,7 @@ import { activity_type, activity_status } from '../ProductDetailModel';
 import bridge from '../../../utils/bridge';
 import { getSource } from '@mr/image-placeholder/oos';
 import { getSize } from '../../../utils/OssHelper';
+import { SectionLineView } from './ProductDetailSectionView';
 
 const { isNoEmpty } = StringUtils;
 const { arrow_right_black } = RES.button;
@@ -91,7 +92,7 @@ export class HeaderItemView extends Component {
         const { navigation, productDetailModel, shopAction } = this.props;
         const {
             freight, monthSaleCount, originalPrice, minPrice, groupPrice, promotionMinPrice, maxPrice, promotionMaxPrice, name,
-            secondName, levelText, priceType, activityType, activityStatus
+            secondName, levelText, priceType, activityType, activityStatus, type
         } = productDetailModel;
         let showWill = activityType === activity_type.skill && activityStatus === activity_status.unBegin;
         let showIn = activityType === activity_type.skill && activityStatus === activity_status.inSell;
@@ -123,12 +124,13 @@ export class HeaderItemView extends Component {
                     Clipboard.setString(name);
                     bridge.$toast('已将商品名称复制至剪贴板');
                 }}>
-                    <Text style={styles.nameText} numberOfLines={2}>{name}</Text>
+                    <Text style={styles.nameText}>{name}</Text>
                 </NoMoreClick>
                 {isNoEmpty(secondName) && <Text style={styles.secondNameText} numberOfLines={2}>{secondName}</Text>}
                 <View style={styles.freightMonthView}>
                     {/*值为0*/}
-                    <Text style={styles.freightMonthText}>快递：{freight == 0 ? '包邮' : `${freight}元`}</Text>
+                    <Text
+                        style={styles.freightMonthText}>快递：{type === 3 ? '免运费' : (freight == 0 ? '包邮' : `${freight}元`)}</Text>
                     <Text style={styles.freightMonthText}>{`近期销量: ${monthSaleCount}`}</Text>
                 </View>
             </View>
@@ -290,15 +292,14 @@ export class ServiceItemView extends Component {
 
     render() {
         const { productDetailModel, serviceAction } = this.props;
-        const { restrictions } = productDetailModel;
-        const { afterSaleLimit } = (productDetailModel || {}).groupActivity || {};
+        const { afterSaleLimit, sevenDayReturn } = (productDetailModel || {}).groupActivity || {};
         return (
             <NoMoreClick style={ServiceItemViewStyles.serviceView} onPress={serviceAction}>
                 <Text style={ServiceItemViewStyles.serviceNameText}>服务</Text>
                 <View style={{ flexDirection: 'row', flex: 1 }}>
                     {this._imgText('质量保障')}
                     {this._imgText('48小时发货')}
-                    {afterSaleLimit ? this._imgText('仅支持换货') : (restrictions & 4) === 4 && this._imgText('7天退换')}
+                    {afterSaleLimit ? this._imgText('仅支持换货') : (sevenDayReturn ? this._imgText('7天退换') : null)}
                 </View>
                 <Image source={arrow_right_black}/>
             </NoMoreClick>
@@ -328,12 +329,29 @@ const ServiceItemViewStyles = StyleSheet.create({
 * */
 export class ParamItemView extends Component {
     render() {
-        const { paramAction } = this.props;
+        const { paramAction, productDetailModel } = this.props;
+        const { paramList } = productDetailModel;
+        const paramNames = paramList.map((item, index) => {
+            if (index > 1) {
+                return null;
+            }
+            return item.paramName;
+        });
         return (
-            <NoMoreClick style={ParamItemViewStyles.paramView} onPress={paramAction}>
-                <Text style={ParamItemViewStyles.paramText}>参数</Text>
-                <Image source={arrow_right_black}/>
-            </NoMoreClick>
+            <View>
+                <SectionLineView/>
+                <NoMoreClick style={ParamItemViewStyles.paramView} onPress={paramAction}>
+                    <Text style={ParamItemViewStyles.paramText}>参数</Text>
+                    <View style={{ flex: 1, justifyContent: 'center', marginLeft: 10 }}>
+                        <Text style={{
+                            color: DesignRule.textColor_mainTitle,
+                            fontSize: 13
+                        }}>{paramNames.join(' ')}</Text>
+                    </View>
+                    <Image source={arrow_right_black}/>
+                </NoMoreClick>
+            </View>
+
         );
     }
 }

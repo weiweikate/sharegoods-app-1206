@@ -12,16 +12,16 @@ const { px2dp } = ScreenUtils;
 import ShowRecommendView from './components/ShowRecommendView';
 import ReleaseButton from './components/ReleaseButton';
 import user from '../../model/user';
-import SelectionPage, { sourceType } from '../product/SelectionPage';
+import SelectionPage from '../product/SelectionPage';
 import AddCartModel from './model/AddCartModel';
 import shopCartCacheTool from '../shopCart/model/ShopCartCacheTool';
 import { track, trackEvent } from '../../utils/SensorsTrack';
 import bridge from '../../utils/bridge';
 import ShowApi from './ShowApi';
-import EmptyUtils from '../../utils/EmptyUtils';
-import ShowUtils from './utils/ShowUtils';
 import RouterMap, { routeNavigate, routePush } from '../../navigation/RouterMap';
 import DownloadUtils from './utils/DownloadUtils';
+import WhiteModel from './model/WhiteModel';
+import EmptyUtils from '../../utils/EmptyUtils';
 
 @observer
 export default class ShowMaterialView extends React.Component {
@@ -99,7 +99,7 @@ export default class ShowMaterialView extends React.Component {
                     pricePerCommodity: originalPrice,
                     spuAmount: amount,
                 });
-            }, { sourceType: productIsPromotionPrice ? sourceType.promotion : null });
+            }, { productIsPromotionPrice: productIsPromotionPrice });
         }, (error) => {
             bridge.$toast(error.msg || '服务器繁忙');
         });
@@ -119,23 +119,26 @@ export default class ShowMaterialView extends React.Component {
                                        ref={(ref) => {
                                            this.materialList = ref;
                                        }}
+                                       type={'material'}
                                        params={{ spreadPosition: tag.Material + '' }}
-                                       userIsLogin={user.token ? true : false}
+                                       isLogin={!EmptyUtils.isEmpty(user.token)}
                                        onItemPress={({ nativeEvent }) => {
                                            const { navigate } = this.props;
+                                           const { showNo , userInfoVO } = nativeEvent;
+                                           const { userNo } = userInfoVO || {};
                                            let params = {
                                                data: nativeEvent,
                                                ref: this.materialList,
                                                index: nativeEvent.index
                                            };
-                                           if (nativeEvent.showType === 1 || nativeEvent.showType === 3) {
+                                           if (nativeEvent.showType === 1) {
                                                navigate(RouterMap.ShowDetailPage, params);
+                                           } else if(nativeEvent.showType === 3){
+                                               navigate(RouterMap.ShowVideoPage, {code:showNo,tabType:2});
                                            } else {
                                                navigate(RouterMap.ShowRichTextDetailPage, params);
                                            }
 
-                                           const { showNo , userInfoVO } = nativeEvent;
-                                           const { userNo } = userInfoVO || {};
                                            track(trackEvent.XiuChangEnterClick,{
                                                xiuChangListType:2,
                                                articleCode:showNo,
@@ -185,21 +188,15 @@ export default class ShowMaterialView extends React.Component {
                                                return;
                                            }
                                            let { detail } = nativeEvent;
-                                           if (!EmptyUtils.isEmptyArr(detail.resource)) {
-                                               let urls = detail.resource.map((value) => {
-                                                   return value.url;
+                                           DownloadUtils.downloadShow(detail).then(() => {
+                                               detail.downloadCount += 1;
+                                               ShowApi.incrCountByType({
+                                                   showNo: nativeEvent.detail.showNo,
+                                                   type: 4
                                                });
-                                               ShowUtils.downloadShow(urls, detail.content).then(() => {
-                                                   detail.downloadCount += 1;
-                                                   ShowApi.incrCountByType({
-                                                       showNo: nativeEvent.detail.showNo,
-                                                       type: 4
-                                                   });
-                                                   this.materialList && this.materialList.replaceItemData(nativeEvent.index, JSON.stringify(detail));
-                                               });
-                                           }
+                                               this.materialList && this.materialList.replaceItemData(nativeEvent.index, JSON.stringify(detail));
+                                           });
 
-                                           DownloadUtils.downloadProduct(nativeEvent);
                                            this.shareModal && this.shareModal.open();
                                            this.props.onShare(nativeEvent);
                                            const { showNo , userInfoVO } = detail;
@@ -219,7 +216,28 @@ export default class ShowMaterialView extends React.Component {
                                                showToTop: nativeEvent.YDistance > ScreenUtils.height
                                            });
                                        }}
-
+                                       onCollection={({nativeEvent})=>{
+                                           if (!user.isLogin) {
+                                               routeNavigate(RouterMap.LoginPage);
+                                               return;
+                                           }
+                                           if (!nativeEvent.detail.collect) {
+                                               ShowApi.reduceCountByType({
+                                                   showNo: nativeEvent.detail.showNo,
+                                                   type: 2
+                                               });
+                                           } else {
+                                               ShowApi.incrCountByType({ showNo: nativeEvent.detail.showNo, type: 2 });
+                                           }
+                                       }}
+                                       onSeeUser={({nativeEvent})=>{
+                                           let userNo = nativeEvent.userInfoVO.userNo;
+                                           if(user.code === userNo){
+                                               routeNavigate(RouterMap.MyDynamicPage, { userType: WhiteModel.userStatus === 2 ? 'mineWriter' : 'mineNormal' });
+                                           }else {
+                                               routeNavigate(RouterMap.MyDynamicPage,{userType:'others',userInfo:nativeEvent.userInfoVO});
+                                           }
+                                       }}
 
                                        onSharePress={({ nativeEvent }) => {
                                            this.shareModal && this.shareModal.open();

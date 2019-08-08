@@ -65,9 +65,9 @@ export default class SuitProductModel {
         let afterSaleLimitText = '';
         const { afterSaleLimit } = this.packageItem;
         (afterSaleLimit || '').split(',').forEach((item) => {
-            afterSaleLimitText = `${afterSaleLimitText}${afterSaleLimitType[item]}`;
+            afterSaleLimitText = `${afterSaleLimitText},${afterSaleLimitType[item]}`;
         });
-        return afterSaleLimitText;
+        return afterSaleLimitText.slice(1);
     }
 
     //是否能增加

@@ -6,4 +6,6 @@ export default {
     queryCoupons: ['/user/coupon/queryByUserCode', { method: 'get' }],
     invokeCoupons:['/Coupon/invoke', { method: 'get' }],
     checkCanInvoke:['/Coupon/canInvoke', { method: 'get' }],
+    getInvokeInfo:['/Coupon/getInvokeInfo', { method: 'get' }],
+
 };

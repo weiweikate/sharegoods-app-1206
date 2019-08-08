@@ -23,6 +23,11 @@
   }
   
     // Do any additional setup after loading the view.
+  if (@available(iOS 11.0, *)) {
+    
+  } else {
+    self.automaticallyAdjustsScrollViewInsets = false;
+  }
 }
 
 - (void)didReceiveMemoryWarning {

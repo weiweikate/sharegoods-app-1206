@@ -13,7 +13,7 @@ import {
     RefreshControl
 } from 'react-native';
 import BasePage from '../../../BasePage';
-import { UIText, UIImage } from '../../../components/ui';
+import { UIText, UIImage, MRText } from '../../../components/ui';
 import StringUtils from '../../../utils/StringUtils';
 import GoodsItem from '../components/GoodsGrayItem';
 // import DateUtils from '../../../utils/DateUtils';
@@ -22,22 +22,45 @@ import OrderApi from '../api/orderApi';
 import DesignRule from '../../../constants/DesignRule';
 import AfterSaleDetailModel from './AfterSaleDetailModel';
 import {
-    CustomerServiceView,
     AfterSaleInfoView,
     OperationApplyView,
-    TipView,
     HeaderView,
     RefundDetailView,
-    RefuseReasonView,
+    StatusInfoView,
     BackAddressView,
-    ShippingAddressView,
-    LogisticsView
+    FillAddressView
 } from './components';
 import { observer } from 'mobx-react';
 import res from '../res';
-import RouterMap, { popToRouteName } from '../../../navigation/RouterMap';
+import RouterMap from '../../../navigation/RouterMap';
+import { PageType, isRefundFail, AfterStatus, SubStatus } from './AfterType';
+import NavigatorBar from '../../../components/pageDecorator/NavigatorBar/NavigatorBar';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import { track, trackEvent } from '../../../utils/SensorsTrack';
+import { beginChatType, QYChatTool } from '../../../utils/QYModule/QYChatTool';
+
+const {
+    PAGE_AREFUND,
+    PAGE_SALES_RETURN,
+    PAGE_EXCHANGE
+} = PageType;
+
+const {
+    STATUS_WAREHOUSE_CONFIRMED,  //待仓库确认
+    STATUS_PLATFORM_PROCESSING, //待平台处理
+    STATUS_SUCCESS,              //售后完成
+    STATUS_FAIL
+} = AfterStatus;
+
+const {
+    REFUSE_AFTER      //拒绝售后
+} = SubStatus;
+
 
 const netError = res.placeholder.netError;
+const arrow_right_black = res.button.arrow_right_black;
+const back_white = res.button.back_white;
+const tongyong_icon_kefu_white = res.afterSaleService.tongyong_icon_kefu_white;
 
 @observer
 class ExchangeGoodsDetailPage extends BasePage {
@@ -48,21 +71,18 @@ class ExchangeGoodsDetailPage extends BasePage {
         this._bindFunc();
         this.afterSaleDetailModel = new AfterSaleDetailModel();
         this.afterSaleDetailModel.serviceNo = this.params.serviceNo;
-        // this.afterSaleDetailModel.serviceNo = '2018170912071644346885712';
         this.afterSaleDetailModel.loadingShow = this.$loadingShow;
         this.afterSaleDetailModel.loadingDismiss = this.$loadingDismiss;
         this.afterSaleDetailModel.toastShow = this.$toastShow;
-        this.afterSaleDetailModel.navigationBarResetTitle = this.$NavigationBarResetTitle;
     }
 
     $navigationBarOptions = {
-        // title: ['退款详情', '退货详情', '换货详情'][this.params.pageType],
-        show: true,// false则隐藏导航
-        title: '售后详情'
+        show: false,// false则隐藏导航
+        title: '售后进度'
     };
 
     $NavigationBarDefaultLeftPressed = () => {
-        popToRouteName(RouterMap.MyOrdersDetailPage);
+        this.$navigateBack('order/order/MyOrdersDetailPage');
     };
 
     $isMonitorNetworkStatus() {
@@ -99,104 +119,55 @@ class ExchangeGoodsDetailPage extends BasePage {
 
         let pageData = this.afterSaleDetailModel.pageData;
         let {
-            type,
-            status,// 1.待审核 2.待寄回 3.待仓库确认 4.待平台处理 5.售后完成 6.售后关闭
-            // subStatus,  // REVOKED(1, "手动撤销"),OVERTIME(2, "超时关闭"),(3, "拒绝关闭");
-            refundStatus,//退款状态: 1.待退款 2.退款成功 3.三方退款失败 4.平台退款失败 5.取消退款(关闭)
-            // orderProductNo,
-            refundPrice,
-            refundAccountAmount,
-            refundCashAmount,
-            //平台物流
-            sendExpressName,
-            sendExpressNo,
-            sendExpressCode,
-            //退款信息
-            reason,
-            description,
-            imgList,
-            createTime,
-            serviceNo,
-            warehouseOrderNo,
-            //用户地址
-            receiver,
-            receiverPhone,
-            province,
-            city,
-            area,
-            street,
-            address,
-            //寄回地址
-            refundAddress,
-            //商品info
-            specImg,
-            productName,
-            unitPrice,
-            spec,
-            quantity,
-            //寄回物流
-            orderRefundExpress = {}
+            exchangeExpress = {},
+            service: {
+                status,
+                subStatus,
+                type,
+                remarks,
+                reason,
+                applyRefundAmount,
+                description,
+                imgList,
+                serviceNo,
+                createTime
+            },
+            refundInfo,
+            product: {
+                specImg,
+                productName,
+                unitPrice,
+                spec,
+                quantity,
+                merchantOrderNo
+            },
+            refundAddress
         } = pageData;
 
-        let pageType = type - 1;
-        let reject = this.afterSaleDetailModel.reject;
+        let pageType = type;
         let isShow_operationApplyView = status === 1;
-        /** 退款成功、退货成功、换货变退款成功, (!refundStatus|| refundStatus === 3|| refundStatus === 4)退款没有失败*/
-        let isShow_refundDetailView = ((pageType === 0 && status === 5) || (pageType === 1 && status === 5)) && ((!refundStatus || (refundStatus !== 3 && refundStatus !== 4)));
 
-        let isShow_refuseReasonView = false;
-        let refuseReasonViewType = 0;
-        /** 退款、退货、在提交申请中和完成时候显示金额*/
-        if (pageType === 0 && (status === 1 || status === 5) ||
-            pageType === 1 && (status === 1 || status === 5)
-        ) {
-            isShow_refuseReasonView = true;
-
-            /** 只要是被拒绝就显示拒绝理由*/
-        } else if (status === 6) {
-            if (reject && reject.length > 0) {
-                isShow_refuseReasonView = true;
-                refuseReasonViewType = 1;
-            }
+        let isShow_refundDetailView = false;
+        /** 退款成功、退货成功、换货变退款成功,退款没有失败*/
+        if ((pageType === PAGE_AREFUND || pageType === PAGE_SALES_RETURN) && status === STATUS_SUCCESS && !isRefundFail(refundInfo.status)) {
+            isShow_refundDetailView = true;
         }
 
-        let isShow_shippingAddressView = false;
+
+        //平台物流有、且为换货，就展示
+        let isShow_shippingAddressView = !EmptyUtils.isEmpty(exchangeExpress) && pageType === PAGE_EXCHANGE;
         let isShow_backAddressView = false;
-        /** 退货 寄回地址在申请中，和关闭的情况不显示，收货人地址始终不显示*/
-        if (pageType === 1 && (status === 2 || status === 3 || status === 4 || status === 5)) {
-            isShow_backAddressView = true;
-            /** 退货 寄回地址、收货人地址在申请中，和关闭的情况不显示*/
-        } else if (pageType === 2 && (status === 2 || status === 3 || status === 4 || status === 5)) {
-            // isShow_shippingAddressView = true;
-            isShow_backAddressView = true;
-        }
-        let logistics = [];
-        /** 平台物流只有在换货， 4.待平台处理 5.售后完成才显示*/
-        if (pageType === 2 && (status === 4 || status === 5)) {
-            if (sendExpressNo) {
-                logistics.push({
-                    title: '平台换货物流',
-                    value: sendExpressName,
-                    placeholder: '',
-                    expressNo: sendExpressNo,
-                    expressCode: sendExpressCode,
-                    onPress: this.shopLogists
-                });
+        if (pageType === PAGE_SALES_RETURN || pageType === PAGE_EXCHANGE) {
+            if ([STATUS_WAREHOUSE_CONFIRMED, STATUS_PLATFORM_PROCESSING, STATUS_SUCCESS].indexOf(status) !== -1) {
+                isShow_backAddressView = true;
             }
+            if (status === STATUS_FAIL && subStatus === REFUSE_AFTER) {
+                isShow_backAddressView = true;
+            }
+
         }
-        /** 寄回物流在换货、退货，  2.待寄回 3.待仓库确认 4.待平台处理 5.售后完成才显示*/
-        if ((pageType === 1 || pageType === 2) &&
-            (status === 2 || status === 3 || status === 4 || status === 5)) {
-            orderRefundExpress = orderRefundExpress || {};
-            logistics.push({
-                title: '用户寄回物流',
-                value: orderRefundExpress.expressName,
-                placeholder: '请填写寄回物流信息',
-                expressNo: orderRefundExpress.expressNo,
-                expressCode: orderRefundExpress.expressCode,
-                onPress: this.returnLogists
-            });
-        }
+
+        let isShow_afterInfo = !isShow_backAddressView;
         return (
             <View style={styles.container}>
                 <ScrollView showsVerticalScrollIndicator={false}
@@ -209,76 +180,191 @@ class ExchangeGoodsDetailPage extends BasePage {
                                 />
                             }
                 >
-                    <TipView pageType={pageType} status={status}/>
                     <HeaderView pageType={pageType}
                                 status={status}
-                                headerTitle={this.afterSaleDetailModel.headerTitle}
-                                detailTitle={this.afterSaleDetailModel.detailTitle}
-                                timeString={this.afterSaleDetailModel.timeString}
+                                subStatus={subStatus}
+                                refundStatus={refundInfo.status}
                     />
                     {isShow_operationApplyView ?
                         <OperationApplyView pageType={pageType}
                                             cancelPress={this.cancelPress}
                                             changePress={this.changePress}/> : null}
-                    {
-                        isShow_refuseReasonView ?
-                            <RefuseReasonView type={refuseReasonViewType}
-                                              refundPrice={refundPrice}
-                                              reject={reject}
-                            /> : null
-                    }
+                    <StatusInfoView pageType={pageType}
+                                    status={status}
+                                    subStatus={subStatus}
+                                    remarks={remarks}
+                                    refundStatus={refundInfo.status}
+                    />
+                    <FillAddressView
+                        afterSaleDetailModel={this.afterSaleDetailModel}
+                        status={status}
+                    />
+                    {isShow_shippingAddressView ? <BackAddressView
+                        title={'平台寄回物流信息'}
+                        data={exchangeExpress}
+                        onPress={this.shopLogists}
+                    /> : null}
+                    {isShow_backAddressView ? <BackAddressView
+                        title={'用户寄回物流信息'}
+                        data={refundAddress}
+                        onPress={this.returnLogists}
+                    /> : null}
                     {
                         isShow_refundDetailView ?
-                            <RefundDetailView refundAccountAmount={refundAccountAmount}
-                                              refundCashAmount={refundCashAmount}
+                            <RefundDetailView refundInfo={refundInfo}
                             /> : null
                     }
                     {
-                        isShow_shippingAddressView ?
-                            <ShippingAddressView
-                                receiver={receiver}
-                                receiverPhone={receiverPhone}
-                                province={province}
-                                city={city}
-                                area={area}
-                                street={street}
-                                address={address}
-                            /> : null
+                        isShow_afterInfo ? this.renderOrder() : null
                     }
                     {
-                        isShow_backAddressView ?
-                            <BackAddressView refundAddress={refundAddress}/> : null
-                    }
-                    {
-                        logistics.length > 0 ?
-                            <LogisticsView data={logistics}
+                        isShow_afterInfo ?
+                            <GoodsItem
+                                uri={specImg}
+                                goodsName={productName}
+                                salePrice={StringUtils.formatMoneyString(unitPrice)}
+                                category={spec}
+                                goodsNum={quantity}
+                                style={{ backgroundColor: DesignRule.white }}
+                                renderExtraView={() => {
+                                    if (pageType === PAGE_AREFUND || pageType === PAGE_SALES_RETURN) {
+                                        return (
+                                            <View style={{ marginTop: 10, flexDirection: 'row' }}>
+                                                <MRText style={{
+                                                    fontSize: 12,
+                                                    color: DesignRule.textColor_instruction
+                                                }}>退款金额：</MRText>
+                                                <MRText style={{
+                                                    fontSize: 12,
+                                                    color: DesignRule.textColor_mainTitle,
+                                                    fontWeight: '600'
+                                                }}>{'¥' + applyRefundAmount}</MRText>
+                                            </View>
+                                        );
+                                    }
+
+                                    return null;
+                                }}
                             /> : null
                     }
-                    {this.renderOrder()}
-                    <GoodsItem
-                        uri={specImg}
-                        goodsName={productName}
-                        salePrice={StringUtils.formatMoneyString(unitPrice)}
-                        category={spec}
-                        goodsNum={quantity}
-                        style={{ backgroundColor: DesignRule.white }}
-                    />
-                    <AfterSaleInfoView pageData={pageData}
-                                       pageType={pageType}
-                                       afterSaleInfo={{
-                                           reason,
-                                           description,
-                                           imgList,
-                                           createTime,
-                                           serviceNo,
-                                           warehouseOrderNo
-                                       }}
-                    />
-                    <CustomerServiceView pageData={pageData}/>
+
+                    {
+                        isShow_afterInfo ? <AfterSaleInfoView pageData={pageData}
+                                                              pageType={pageType}
+                                                              afterSaleInfo={{
+                                                                  reason,
+                                                                  description,
+                                                                  imgList,
+                                                                  refundPrice: applyRefundAmount,
+                                                                  quantity,
+                                                                  serviceNo,
+                                                                  merchantOrderNo,
+                                                                  createTime
+
+                                                              }}
+                        /> : null
+                    }
+                    <TouchableOpacity style={styles.item_style}
+                                      onPress={() => {
+                                          this.gotoNegotiateHistory();
+                                      }}
+                    >
+                        <MRText style={styles.item_text}>协商记录</MRText>
+                        <UIImage style={styles.item_arrow} source={arrow_right_black}/>
+                    </TouchableOpacity>
+                    <View style={{ height: ScreenUtils.safeBottom }}/>
                 </ScrollView>
+                <NavigatorBar headerStyle={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    backgroundColor: 'rgba(0,0,0,0)',
+                    borderBottomWidth: 0
+                }}
+                              leftNavImage={back_white}
+                              leftPressed={() => {
+                                  this.$navigateBack();
+                              }}
+                              title={'售后进度'}
+                              titleStyle={{ color: 'white' }}
+                              rightNavImage={tongyong_icon_kefu_white}
+                              rightPressed={() => {
+                                  this.connetKefu();
+                              }}
+                />
             </View>
         );
     }
+
+    connetKefu = () => {
+        track(trackEvent.ClickOnlineCustomerService, { customerServiceModuleSource: 4 });
+        let pageData = this.afterSaleDetailModel.pageData;
+        if (EmptyUtils.isEmpty(pageData)) {
+            return;
+        }
+        let supplierCode = pageData.service.merchantCode;
+        if (!supplierCode) {
+            this.kefuData = {};
+        }
+        let pictureUrlString = pageData.product.specImg || '';
+        let desc = pageData.product.productName || '';
+        let merchantOrderNo = pageData.product.merchantOrderNo || '';
+        if (this.kefuData) {
+            QYChatTool.beginQYChat({
+                    routePath: '',
+                    urlString: '',
+                    title: this.kefuData.title || '平台客服',
+                    shopId: this.kefuData.shopId || '',
+                    chatType: beginChatType.BEGIN_FROM_ORDER,
+                    data: {
+                        title: merchantOrderNo,
+                        desc,
+                        pictureUrlString,
+                        urlString: '',
+                        note: ''
+                    }
+                }
+            );
+        } else {
+            OrderApi.getProductShopInfoBySupplierCode({ supplierCode }).then((data) => {
+                    this.kefuData = data.data;
+                    QYChatTool.beginQYChat({
+                            routePath: '',
+                            urlString: '',
+                            title: this.kefuData.title || '平台客服',
+                            shopId: this.kefuData.shopId || '',
+                            chatType: beginChatType.BEGIN_FROM_ORDER,
+                            data: {
+                                title: merchantOrderNo,
+                                desc,
+                                pictureUrlString,
+                                urlString: '/' + merchantOrderNo,
+                                note: ''
+                            }
+                        }
+                    );
+                }
+            ).catch((e) => {
+                QYChatTool.beginQYChat({
+                        routePath: '',
+                        urlString: '',
+                        title: '平台客服',
+                        shopId: '',
+                        chatType: beginChatType.BEGIN_FROM_ORDER,
+                        data: {
+                            title: merchantOrderNo,
+                            desc,
+                            pictureUrlString,
+                            urlString: '/' + merchantOrderNo,
+                            note: ''
+                        }
+                    }
+                );
+            });
+        }
+    };
+
 
     _renderEmptyView() {
         return (
@@ -297,8 +383,26 @@ class ExchangeGoodsDetailPage extends BasePage {
                             }}
                     />
                 </TouchableOpacity>
+                <NavigatorBar headerStyle={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    borderBottomWidth: 0
+                }}
+                              leftPressed={() => {
+                                  this.$navigateBack();
+                              }}
+                              title={'售后进度'}
+
+                />
             </View>
         );
+    }
+
+    gotoNegotiateHistory() {
+        this.$navigate(RouterMap.NegotiationHistoryPage, { serviceNo: this.params.serviceNo });
+
     }
 
     //取消申请
@@ -312,61 +416,54 @@ class ExchangeGoodsDetailPage extends BasePage {
 
 
     renderOrder = () => {
-        let pageType = this.afterSaleDetailModel.pageData.type - 1;
         return (
             <View
                 style={{
-                    backgroundColor: DesignRule.bgColor,
+                    backgroundColor: 'white',
                     height: 40,
                     justifyContent: 'center',
                     paddingLeft: 15,
-                    marginTop: -5
+                    marginTop: 10
                 }}>
-                <UIText value={['退款订单', '退货订单', '换货订单'][pageType]}
-                        style={{ color: DesignRule.textColor_instruction, fontSize: 13 }}/>
+                <UIText value={'售后信息'}
+                        style={{ color: DesignRule.textColor_mainTitle, fontSize: 13 }}/>
             </View>
         );
     };
 
-    returnLogists = (expressNo, expressCode) => {
+    returnLogists = (expressNo, expressCode, manyLogistics, expressName) => {
         if (EmptyUtils.isEmpty(expressNo)) {
-            this.$navigate(RouterMap.FillReturnLogisticsPage, {
-                pageData: this.afterSaleDetailModel.pageData,
+            this.$navigate('order/afterSaleService/FillReturnLogisticsPage', {
+                pageData: { productOrderNo: this.afterSaleDetailModel.pageData.product.productOrderNo },
                 callBack: () => {
                     this.afterSaleDetailModel.loadPageData();
                 }
             });
         } else {
-            this.$navigate(RouterMap.LogisticsDetailsPage, {
+            this.$navigate('order/logistics/LogisticsDetailsPage', {
                 expressNo: expressNo,
-                expressCode: expressCode
+                expressCode: expressCode,
+                expressName: expressName
             });
         }
     };
 
-    shopLogists = (expressNo, expressCode) => {
-        if (EmptyUtils.isEmpty(expressNo)) {
-            this.$toastShow('请填写完整的退货物流信息\n才可以查看商家的物流信息');
-            return;
+    shopLogists = (expressNo, expressCode, manyLogistics, expressName) => {
+        // if (EmptyUtils.isEmpty(expressNo)) {
+        //     this.$toastShow('请填写完整的退货物流信息\n才可以查看商家的物流信息');
+        //     return;
+        // }
+        if (manyLogistics) {
+            this.$navigate(RouterMap.AfterLogisticsListView, {
+                serviceNo: this.params.serviceNo
+            });
+        } else {
+            this.$navigate('order/logistics/LogisticsDetailsPage', {
+                expressNo: expressNo,
+                expressCode: expressCode,
+                expressName: expressName
+            });
         }
-        this.logisticsDetailsPage(expressNo, expressCode);
-    };
-
-    logisticsDetailsPage = (expressNo, expressCode) => {
-        OrderApi.return_express({ serviceNo: this.params.serviceNo }).then((data) => {
-            if (data.data && data.data.length > 1) {//有多个物流
-                this.$navigate(RouterMap.AfterLogisticsListView, {
-                    serviceNo: this.params.serviceNo
-                });
-            } else {
-                this.$navigate(RouterMap.LogisticsDetailsPage, {
-                    expressNo: expressNo,
-                    expressCode: expressCode
-                });
-            }
-        }).catch(err => {
-            this.$toastShow(err.msg);
-        });
     };
 
     /**
@@ -376,14 +473,14 @@ class ExchangeGoodsDetailPage extends BasePage {
     onPressOperationApply(cancel) {
         let that = this;
         // pageType 0 退款详情  1 退货详情   2 换货详情
-        let pageType = this.afterSaleDetailModel.pageData.type - 1;
-        let num = this.afterSaleDetailModel.pageData.maxRevokeTimes - this.afterSaleDetailModel.pageData.hadRevokeTimes || 0;
+        let pageType = this.afterSaleDetailModel.pageData.service.type - 1;
+        let num = this.afterSaleDetailModel.pageData.service.maxRevokeTimes - this.afterSaleDetailModel.pageData.service.hadRevokeTimes || 0;
         if (cancel) {
             let tips = ['确认撤销本次退款申请？您最多只能发起' + num + '次',
                 '确认撤销本次退货退款申请？您最多只能发起' + num + '次',
                 '确认撤销本次换货申请？您最多只能发起' + num + '次'];
             if (num <= 0) {
-                this.$toastShow('平台售后操作已到上线');
+                this.$toastShow('平台售后操作已到上限');
                 return;
             }
 
@@ -400,8 +497,8 @@ class ExchangeGoodsDetailPage extends BasePage {
                             that.$loadingShow();
                             OrderApi.afterSaleCancel({ serviceNo: this.params.serviceNo }).then(result => {
                                 that.$loadingDismiss();
-                                DeviceEventEmitter.emit('OrderNeedRefresh');
-                                popToRouteName(RouterMap.MyOrdersDetailPage);
+                                DeviceEventEmitter.emit('REFRESH_ORDER');
+                                that.afterSaleDetailModel.userCancel();
                             }).catch(error => {
                                 that.$loadingDismiss();
                                 that.$toastShow(error.msg || '操作失败，请重试');
@@ -426,7 +523,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                 imgList = imgList.split(',');
             }
 
-            this.$navigate(RouterMap.AfterSaleServicePage, {
+            this.$navigate('order/afterSaleService/AfterSaleServicePage', {
                 pageType: type - 1,
                 isEdit: true,
                 callBack: () => {
@@ -446,10 +543,28 @@ class ExchangeGoodsDetailPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, backgroundColor: DesignRule.bgColor,
-        justifyContent: 'flex-end'
+        flex: 1,
+        backgroundColor: DesignRule.bgColor
+
     },
-    addressStyle: {}
+    addressStyle: {},
+    item_style: {
+        height: 50,
+        marginTop: 10,
+        paddingHorizontal: 15,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        backgroundColor: 'white'
+    },
+    item_text: {
+        fontSize: 13,
+        color: DesignRule.textColor_mainTitle
+    },
+    item_arrow: {
+        height: 10,
+        width: 6
+    }
 });
 
 export default ExchangeGoodsDetailPage;

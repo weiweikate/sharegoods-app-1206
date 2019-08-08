@@ -18,17 +18,17 @@ export const roundFun = (value, n)=> {
 * */
 const formatMoneyString = (num, needSymbol = true) => {
     let temp = (isNoEmpty(num) ? num : 0) + '';
-    // if (temp.indexOf('.') === -1) {
-    //     temp += '.00';
-    // }
+    if (temp.indexOf('.') === -1) {
+        temp += '.00';
+    }
     //截取
-    // if ((temp.indexOf('.') + 3) < temp.length) {
-    //     temp = temp.substr(0, temp.indexOf('.') + 3);
-    // }
+    if ((temp.indexOf('.') + 3) < temp.length) {
+        temp = temp.substr(0, temp.indexOf('.') + 3);
+    }
     //添加
-    // if ((temp.indexOf('.') + 2 === temp.length)) {
-    //     temp += '0';
-    // }
+    if ((temp.indexOf('.') + 2 === temp.length)) {
+        temp += '0';
+    }
 
     if (needSymbol && temp.indexOf('¥') === -1) {
         temp = '¥' + temp;
@@ -98,7 +98,6 @@ const isChineseName = (name) => {
     let reg = /^[\u4E00-\u9FA5\uf900-\ufa2d·s|A-Za-z]{2,16}$/;
     return reg.test(name);
 };
-
 //111122223333889=>'* * * *   * * * *   * * * *   8 8 9'
 const formatBankCardNum = (num) => {
     let str = num + '';

@@ -11,24 +11,16 @@
 'use strict';
 
 import React, { Component } from 'react';
-import {
-    StyleSheet,
-    View,
-    TouchableOpacity,
-    TouchableHighlight
-} from 'react-native';
+import { Image, StyleSheet, TouchableHighlight, TouchableOpacity, View } from 'react-native';
 import PropTypes from 'prop-types';
-import {
-    UIText,
-    UIImage,
-    MRTextInput as TextInput
-} from '../../../components/ui';
+import { MRTextInput as TextInput, UIImage, UIText } from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
 import shopCartStore from '../model/ShopCartStore';
 import { getSelectImage, getTipString, statueImage } from '../model/ShopCartMacro';
 import bridge from '../../../utils/bridge';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import shopCartCacheTool from '../model/ShopCartCacheTool';
+import shopRes from '../res';
 
 const dismissKeyboard = require('dismissKeyboard');
 
@@ -39,6 +31,7 @@ export default class ShopCartCell extends Component {
     constructor(props) {
         super(props);
     }
+
     render() {
         const { itemData, rowMap, rowId, cellClickAction, sectionData } = this.props;
         return (
@@ -47,6 +40,7 @@ export default class ShopCartCell extends Component {
             </View>
         );
     }
+
     _renderCellView = (itemData, rowMap, rowId, cellClickAction, sectionData) => {
         return (
             <View rowMap={rowMap} style={{
@@ -69,13 +63,16 @@ export default class ShopCartCell extends Component {
 
                             <UIImage source={{ uri: itemData.imgUrl ? itemData.imgUrl : '' }}
                                      style={[styles.validProductImg]}/>
-                            {//是否售完
-                                itemData.productStatus === 1 ? null :
-                                    <UIImage source={statueImage[itemData.productStatus]} style={styles.statusImg}/>
+                            {
+                                (itemData.productStatus !== 1) ?
+                                    <UIImage source={statueImage[itemData.productStatus]}
+                                             style={styles.statusImg}/>
+                                    : (itemData.orderOnProduct === 0 ?
+                                    <UIImage source={statueImage[4]} style={styles.statusImg}/> : null)
                             }
                         </View>
                         <View style={styles.validContextContainer}>
-                            <View style={{flex: 1}}>
+                            <View style={{ flex: 1 }}>
                                 <UIText value={itemData.productName ? itemData.productName : ''} numberOfLines={2}
                                         style={styles.productName}/>
                                 <UIText value={itemData.specifyContent ? itemData.specifyContent : ''} numberOfLines={2}
@@ -90,12 +87,9 @@ export default class ShopCartCell extends Component {
                                     <TouchableOpacity style={styles.rectangle} onPress={() => {
                                         this._reduceProductNum(itemData, rowId);
                                     }}>
-                                        <UIText
-                                            value={'-'}
-                                            style={[styles.addOrReduceBtnStyle,
-                                                (itemData.sellStock === 0 || itemData.productStatus === 0 || itemData.productStatus === 2) ?
-                                                    { color: DesignRule.textColor_placeholder } : null]}
-                                        />
+                                        <Image style={styles.addOrReduceBtnStyle} source={(itemData.sellStock === 0 ||
+                                            itemData.productStatus === 0 ||
+                                            itemData.productStatus === 2) ? shopRes.gouwuche_jian_hui : shopRes.gouwuche_jian}/>
                                     </TouchableOpacity>
                                     <View style={[styles.textInputBgView]}>
                                         <TextInput
@@ -150,22 +144,9 @@ export default class ShopCartCell extends Component {
                                         onPress={() => {
                                             this._addProductNum(itemData, rowId);
                                         }}>
-                                        <UIText
-                                            value={'+'}
-                                            style={
-                                                [styles.addOrReduceBtnStyle,
-
-                                                    (itemData.sellStock === 0 ||
-                                                        itemData.productStatus === 0 ||
-                                                        itemData.productStatus === 2)
-                                                        ?
-                                                        {
-                                                            color: DesignRule.textColor_placeholder
-                                                        }
-                                                        : null
-                                                ]
-                                            }
-                                        />
+                                        <Image style={styles.addOrReduceBtnStyle} source={(itemData.sellStock === 0 ||
+                                            itemData.productStatus === 0 ||
+                                            itemData.productStatus === 2) ? shopRes.gouwuche_jia_hui : shopRes.gouwuche_jia}/>
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -194,7 +175,8 @@ export default class ShopCartCell extends Component {
         if ((tempValues[sectionData.sectionIndex].data)[rowId].productStatus === 0 ||
             (tempValues[sectionData.sectionIndex].data)[rowId].productStatus === 2 ||
             (tempValues[sectionData.sectionIndex].data)[rowId].productStatus === 3 ||
-            (tempValues[sectionData.sectionIndex].data)[rowId].sellStock === 0) {
+            (tempValues[sectionData.sectionIndex].data)[rowId].sellStock === 0 ||
+            (tempValues[sectionData.sectionIndex].data)[rowId].orderOnProduct === 0) {
             bridge.$toast('此商品不可结算');
             (tempValues[sectionData.sectionIndex].data)[rowId].isSelected = false;
         } else {
@@ -284,22 +266,20 @@ const styles = StyleSheet.create({
         width: ScreenUtils.width - px2dp(30),
         flexDirection: 'row',
         marginRight: px2dp(15),
-        borderRadius:px2dp(5),
+        borderRadius: px2dp(5)
     },
     itemSelectImg: { marginLeft: px2dp(10), width: px2dp(18), height: px2dp(18) },
     rectangle: {
-        height: px2dp(22),
-        width: px2dp(22),
-        borderRadius: px2dp(3),
+        height: px2dp(28),
+        width: px2dp(40),
         justifyContent: 'center',
-        backgroundColor: DesignRule.bgColor,
         alignItems: 'center'
     },
     addOrReduceBtnStyle: {
         height: px2dp(22),
+        width: px2dp(22),
         fontSize: px2dp(15),
-        marginTop: px2dp(-2),
-        color: DesignRule.textColor_mainTitle
+        marginTop: px2dp(-2)
     },
     validProductImg: {
         width: px2dp(80),
@@ -321,13 +301,13 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         justifyContent: 'center',
         textAlign: 'center',
-        paddingVertical: 0,
+        paddingVertical: 0
     },
     validContextContainer: {
         flex: 1,
         height: px2dp(130),
         justifyContent: 'space-between',
-        paddingRight: px2dp(15),
+        paddingRight: px2dp(15)
     },
     labelBgView: {
         paddingLeft: px2dp(2),
@@ -357,9 +337,9 @@ const styles = StyleSheet.create({
         marginTop: px2dp(-3),
         color: DesignRule.textColor_mainTitle
     },
-    specifyContent: { fontSize: px2dp(10),lineHeight: px2dp(14), color: DesignRule.textColor_instruction },
+    specifyContent: { fontSize: px2dp(10), lineHeight: px2dp(14), color: DesignRule.textColor_instruction },
     topTipString: { fontSize: px2dp(10), color: DesignRule.mainColor },
-    priceText: { fontSize: px2dp(17),fontWeight: '400', color: DesignRule.mainColor }
+    priceText: { fontSize: px2dp(17), fontWeight: '400', color: DesignRule.mainColor }
 });
 
 

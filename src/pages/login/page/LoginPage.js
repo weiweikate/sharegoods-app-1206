@@ -1,11 +1,6 @@
 import React from 'react';
 import LoginTopView from '../components/LoginTopView';
-import {
-    View,
-    StyleSheet,
-    TouchableOpacity,
-    Image
-} from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { MRText as Text } from '../../../components/ui';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
 import BasePage from '../../../BasePage';
@@ -14,7 +9,7 @@ import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import { TrackApi } from '../../../utils/SensorsTrack';
 import RouterMap from '../../../navigation/RouterMap';
-import { wxLoginAction, codeLoginAction, pwdLoginAction } from '../model/LoginActionModel';
+import { codeLoginAction, getWxUserInfo, pwdLoginAction, wxLoginAction } from '../model/LoginActionModel';
 import ProtocolView from '../components/Login.protocol.view';
 import loginModel from '../model/LoginModel';
 import { mediatorCallFunc } from '../../../SGMediator';
@@ -128,13 +123,17 @@ export default class LoginPage extends BasePage {
     /*微信登陆*/
     weChatLoginClick = () => {
         // track(trackEvent.login, { loginMethod: '微信登录用' });
-        wxLoginAction((code, data) => {
-            if (code === 10000) {
-                this.params.callback && this.params.callBack();
-                this.$navigateBack(2);
-            } else if (code === 34005) {
-                this.$navigate(RouterMap.InputPhoneNum, data);
-            }
+        getWxUserInfo((wxData) => {
+            this.$loadingShow('加载中');
+            wxLoginAction(wxData, (code, data) => {
+                this.$loadingDismiss();
+                if (code === 10000) {
+                    this.$navigateBack(2);
+                    this.params.callback && this.params.callBack();
+                } else if (code === 34005) {
+                    this.$navigate(RouterMap.InputPhoneNum, data);
+                }
+            });
         });
     };
     /*老用户登陆*/

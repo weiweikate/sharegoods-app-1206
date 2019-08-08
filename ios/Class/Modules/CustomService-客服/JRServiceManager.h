@@ -28,4 +28,6 @@ SINGLETON_FOR_HEADER(JRServiceManager)
  */
 -(void)onCleanCache;
 -(void)qiYULogout;
+
+-(void)connetMerchant:(NSString *)code;
 @end

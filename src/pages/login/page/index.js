@@ -1,16 +1,20 @@
 import OtherLoginPage from './LoginPage';
-import LoginPage from './Login'
-import InputPhoneNum from './InputPhoneNum'
-import InputCode from './InputCode'
+import LoginPage from '../view/LoginPage';
+import InputPhoneNum from './InputPhoneNum';
+import InputCode from './InputCode';
 
 import SetPasswordPage from './SetPasswordPage';
 import RegistPage from './RegistPage';
 import ForgetPasswordPage from './ForgetPasswordPage';
 import GetRedpacketPage from './GetRedpacketPage';
 import InviteCodePage from './InviteCodePage';
-import SelectMentorPage from './SelectMentorPage'
-import MentorDetailPage from './MentorDetailPage'
-import LocalNumLogin from  './LocalNumLogin'
+import SelectMentorPage from './SelectMentorPage';
+import MentorDetailPage from './MentorDetailPage';
+import LocalNumLogin from './LocalNumLogin';
+import LoginView from '../view/LoginPage';
+import PwdLoginPage from '../view/PwdLoginPage';
+import PhoneLoginPage from '../view/PhoneLoginPage';
+import LoginVerifyCodePage from '../view/LoginVerifyCodePage';
 
 // 访问路径 'Login/Demo1'
 export default {
@@ -28,7 +32,11 @@ export default {
         GetRedpacketPage,
         InviteCodePage,
         SelectMentorPage,
-        MentorDetailPage
+        MentorDetailPage,
+        LoginView,
+        PhoneLoginPage,
+        PwdLoginPage,
+        LoginVerifyCodePage
     }
 };
 

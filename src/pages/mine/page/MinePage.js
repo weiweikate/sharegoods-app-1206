@@ -1,12 +1,14 @@
 import React from 'react';
 import {
-    StyleSheet,
-    View,
+    BackHandler,
+    Clipboard,
+    DeviceEventEmitter,
+    Image,
     ImageBackground,
-    // RefreshControl,
+    StyleSheet,
+    TouchableOpacity,
     TouchableWithoutFeedback,
-    DeviceEventEmitter, TouchableOpacity,
-    Image, BackHandler, Clipboard
+    View
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import UIText from '../../../components/ui/UIText';
@@ -26,12 +28,13 @@ import EmptyUtils from '../../../utils/EmptyUtils';
 import MessageApi from '../../message/api/MessageApi';
 // import ImageLoad from '@mr/image-placeholder';
 import UIImage from '../../../components/ui/UIImage';
-import { MRText as Text, AvatarImage } from '../../../components/ui';
+import { AvatarImage, MRText as Text } from '../../../components/ui';
 import LoginAPI from '../../login/api/LoginApi';
 import CommModal from '../../../comm/components/CommModal';
 import { track, TrackApi, trackEvent } from '../../../utils/SensorsTrack';
 import settingModel from '../model/SettingModel';
 import PullView from '../components/pulltorefreshlayout';
+import WhiteModel from '../../show/model/WhiteModel'
 
 
 const {
@@ -58,6 +61,7 @@ const {
     mine_icon_mentor,
     mine_user_icon,
     mine_icon_fans,
+    mine_icon_show,
     // mine_levelBg,
     mine_showOrder
 } = res.homeBaseImg;
@@ -130,6 +134,7 @@ export default class MinePage extends BasePage {
                 const { state } = payload;
                 this.loadMessageCount();
                 this._needShowFans();
+                WhiteModel.saveWhiteType();
                 console.log('willFocusSubscriptionMine', state);
                 if (state && state.routeName === 'MinePage') {
                     this.refresh();
@@ -553,7 +558,7 @@ export default class MinePage extends BasePage {
                         TrackApi.ViewAccountBalance();
                     })}
                     <View style={{ height: 30, width: 1, backgroundColor: '#E4E4E4' }}/>
-                    {this.accountItemView(StringUtils.formatMoneyString(user.totalScore ? user.totalScore : '0', false), '秀豆账户(枚)', 2, () => {
+                    {this.accountItemView(user.totalScore ? user.totalScore : '0', '秀豆账户(枚)', 2, () => {
                         settingModel.userScoreAdd();
                         this.go2CashDetailPage(2);
                         TrackApi.ViewShowDou();
@@ -934,15 +939,15 @@ export default class MinePage extends BasePage {
                 this.$navigate(RouterMap.AddressManagerPage);
             }
         };
-        // let collect = {
-        //     text: '秀场收藏',
-        //     icon: mine_icon_discollect,
-        //     onPress: () => {
-        //         TrackApi.ViewMyXiuCollection();
-        //         TrackApi.WatchXiuChang({ xiuChangModuleSource: 3 });
-        //         this.$navigate(RouterMap.ShowConnectPage);
-        //     }
-        // };
+        let collect = {
+            text: '秀场收藏',
+            icon: mine_icon_show,
+            onPress: () => {
+                TrackApi.ViewMyXiuCollection();
+                TrackApi.WatchXiuChang({ xiuChangModuleSource: 3 });
+                this.$navigate(RouterMap.MyDynamicPage, { userType: WhiteModel.userStatus === 2 ? 'mineWriter' : 'mineNormal' });
+            }
+        };
 
 
         let mentorSet = {
@@ -971,7 +976,7 @@ export default class MinePage extends BasePage {
         };
 
 
-        let menu = [message, service, address, setting];
+        let menu = [message, service, address, collect, setting];
 
 
         if (this.state.hasFans) {

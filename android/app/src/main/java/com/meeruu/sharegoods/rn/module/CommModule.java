@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 
@@ -46,6 +47,7 @@ import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.SDCardUtils;
+import com.meeruu.commonlib.utils.SPCacheUtils;
 import com.meeruu.commonlib.utils.SecurityUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.sharegoods.bean.NetCommonParamsBean;
@@ -63,8 +65,12 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.net.URI;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Nullable;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -76,6 +82,7 @@ public class CommModule extends ReactContextBaseJavaModule {
     private ReactApplicationContext mContext;
     public static final String MODULE_NAME = "commModule";
     private Promise gongMao;
+
 
     /**
      * 构造方法必须实现
@@ -91,8 +98,7 @@ public class CommModule extends ReactContextBaseJavaModule {
         this.mContext.addActivityEventListener(new ActivityEventListener() {
             @Override
             public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
-                if (gongMao != null && requestCode == ParameterUtils.REQUEST_CODE_GONGMAO
-                        && resultCode == ParameterUtils.SIGN_OK) {
+                if (gongMao != null && requestCode == ParameterUtils.REQUEST_CODE_GONGMAO && resultCode == ParameterUtils.SIGN_OK) {
                     gongMao.resolve(null);
                 }
             }
@@ -394,6 +400,13 @@ public class CommModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void removeLaunch() {
         EventBus.getDefault().post(new HideSplashEvent());
+        String baseUrl = (String) SPCacheUtils.get("D_baseUrl", "");
+        if (!TextUtils.isEmpty(baseUrl)) {
+            WritableMap map = new WritableNativeMap();
+            map.putString("baseUrl", baseUrl);
+            this.mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                    .emit("Event_change_baseUrl", map);
+        }
     }
 
     @ReactMethod
@@ -533,8 +546,7 @@ public class CommModule extends ReactContextBaseJavaModule {
                 }
                 String exten = FileUtils.getExtensionName(url);
                 String filename = FileUtils.getFileNameNoEx(file.getName());
-                final String storePath = SDCardUtils.getFileDirPath(mContext, "MR/picture")
-                        .getAbsolutePath() + File.separator + filename + "." + exten;
+                final String storePath = SDCardUtils.getFileDirPath(mContext, "MR/picture").getAbsolutePath() + File.separator + filename + "." + exten;
                 try {
                     FileUtils.copyFile(file.getAbsolutePath(), storePath);
                 } catch (Exception e) {
@@ -562,7 +574,6 @@ public class CommModule extends ReactContextBaseJavaModule {
     }
 
 
-    //TODO 视频下载
     @ReactMethod
     public void saveVideoToPhotoAlbumWithUrl(final String url, final Promise promise) {
         if (TextUtils.isEmpty(url)) {
@@ -570,10 +581,10 @@ public class CommModule extends ReactContextBaseJavaModule {
             return;
         }
 
-        final String storePath = SDCardUtils.getFileDirPath(mContext, "MR/picture")
-                .getAbsolutePath();
-
-        RequestManager.getInstance().downLoadFile(url, storePath, new ReqProgressCallBack<Object>() {
+        final String storePath = SDCardUtils.getFileDirPath(mContext, "MR/picture").getAbsolutePath();
+        final String fileName = url.substring(url.lastIndexOf('/') + 1);
+        final String destFile = storePath+ File.separator +fileName;
+        RequestManager.getInstance().downLoadFile(url, destFile, new ReqProgressCallBack<Object>() {
             @Override
             public void onErr(String errCode, String msg) {
                 promise.reject(msg);
@@ -581,7 +592,11 @@ public class CommModule extends ReactContextBaseJavaModule {
 
             @Override
             public void onSuccess(Object result) {
-                //
+                Uri uri = Uri.parse("file://" + destFile);
+                Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                intent.setData(uri);
+                mContext.sendBroadcast(intent);
+                promise.resolve(null);
             }
 
             @Override
@@ -589,9 +604,6 @@ public class CommModule extends ReactContextBaseJavaModule {
 
             }
         });
-
-        // 预加载原图
-
     }
 
     @ReactMethod
@@ -613,7 +625,14 @@ public class CommModule extends ReactContextBaseJavaModule {
     public void event2RNHtmlPage(Event.MR2HTMLEvent event) {
         WritableMap map = new WritableNativeMap();
         map.putString("uri", event.getUrl());
-        this.mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                .emit("Event_navigateHtmlPage", map);
+        this.mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("Event_navigateHtmlPage", map);
+    }
+
+    @Nullable
+    @Override
+    public Map<String, Object> getConstants() {
+        final Map<String, Object> constants = new HashMap<>();
+        constants.put("baseUrl", SPCacheUtils.get("D_baseUrl", ""));
+        return constants;
     }
 }

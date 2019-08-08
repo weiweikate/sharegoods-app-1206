@@ -63,16 +63,11 @@ export default class P_ScorePublishModel {
     };
 
     _lookDetail = (orderNo) => {
-        orderApi.lookDetail({ orderNo: orderNo }).then((data) => {
-            let tempList = [];
+        orderApi.lookDetail({ merchantOrderNo: orderNo }).then((data) => {
             let tempData = data.data;
-            tempData = (tempData || {}).warehouseOrderDTOList || [];
-            tempData.forEach((item) => {
-                (item || {}).products.forEach((item) => {
-                    tempList.push(item);
-                });
-            });
-            this.setDefaultData(tempList, orderNo);
+            let merchantOrder = tempData.merchantOrder || {};
+            let productOrderList = (merchantOrder || {}).productOrderList || [];
+            this.setDefaultData(productOrderList, orderNo);
         });
     };
     _publish = (callBack) => {

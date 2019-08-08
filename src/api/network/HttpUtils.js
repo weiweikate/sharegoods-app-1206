@@ -136,7 +136,7 @@ export default class HttpUtils {
         });
     }
 
-    static async post(uri, isRSA, data, config) {
+    static async post(uri, isRSA, params, config) {
         let host = apiEnvironment.getCurrentHostUrl();
         let url = uri.indexOf('http') > -1 ? uri : (host + uri);
         /**
@@ -145,8 +145,8 @@ export default class HttpUtils {
          */
         let signParam = {};
         signParam = await HttpUtils.sign(signParam, isRSA);
-        data = {
-            ...data
+        params = {
+            ...params
         };
 
         if (!this.platform) {
@@ -162,9 +162,9 @@ export default class HttpUtils {
                 'version': rsa_config.version,
                 'channel': Platform.OS === 'ios' ? 'appstore' : RNDeviceInfo.channel
             };
-            return axios.post(url, data, config);
+            return axios.post(url, params, config);
         }).then(response => {
-            console.log('post—response', url, data, response);
+            console.log('post—response', url, params, response);
             let data = response.data || {};
             if (EnvConfig.showDebugPanel) {
                 let history = createHistory(response || {}, timeLineStart);
@@ -172,7 +172,7 @@ export default class HttpUtils {
             }
             return data;
         }).catch(response => {
-            console.log('post error', url, data, response);
+            console.log('post error', url, params, response);
             let data = response.data || {};
             if (EnvConfig.showDebugPanel) {
                 let history = createHistory(response || {}, timeLineStart);

@@ -32,7 +32,7 @@ const api = {
         method: 'post'
     }],
     //购物车列表
-    carList: ["/user/shoppingcart/list", {
+    carList: ['/user/shoppingcart/list', {
         method: 'get',
         checkLogin: true
     }],
@@ -68,7 +68,44 @@ const api = {
     //查询单个标签信息
     getTagInfo: ['/social/show/tag/info', {
         method: 'get'
+    }],
+    //添加视频
+    saveVideo:['/social/show/content/video/save',{
+        method:'post'
+    }],
+    //查询我的粉丝
+    getUserFans: ['/social/show/user/query/my/fans', {
+        method: 'get'
+    }],
+    //查询我的关注
+    getUserFollow: ['/social/show/user/query/my/follow', {
+        method: 'get'
+    }],
+    //查询Ta的粉丝
+    getOtherFans: ['/social/show/user/query/other/fans', {
+        method: 'get'
+    }],
+    //查询Ta的关注
+    getOtherFollow: ['/social/show/user/query/other/follow', {
+        method: 'get'
+    }],
+    //取消关注
+    cancelFollow: ['/social/show/user/cancel/follow',  {
+        method: 'post'
+    }],
+    //关注
+    userFollow: ['/social/show/user/follow',  {
+        method: 'post'
+    }],
+    //查询其他用户信息
+    getOthersInfo: ['/social/show/user/query/other/info',  {
+        method: 'get'
+    }],
+    //查询自己用户信息
+    getMineInfo: ['/social/show/user/query/mine/info',  {
+        method: 'get'
     }]
+
 };
 import ApiUtils from '../../api/network/ApiUtils';
 

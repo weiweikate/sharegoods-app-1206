@@ -10,8 +10,6 @@ import DesignRule from '../../constants/DesignRule';
 import ScreenUtils from '../../utils/ScreenUtils';
 import {MRText as Text}from './UIText';
 
-
-// const MAX_SCREEN = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);
 // const PANNELHEIGHT = 203;
 // const Animated_Duration = 300; //默认的动画持续时间
 export default class ConfirmAlert extends Component {

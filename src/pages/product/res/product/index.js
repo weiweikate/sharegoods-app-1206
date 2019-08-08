@@ -24,6 +24,7 @@ const product = {
     couponRemarkHide: require('./couponRemarkHide.png'),
     couponRemarkShow: require('./couponRemarkShow.png'),
     pAddress: require('./pAddress.png'),
+    productDelete: require('./productDelete.png'),
     detailNavView: {
         ...detailNavView
     },

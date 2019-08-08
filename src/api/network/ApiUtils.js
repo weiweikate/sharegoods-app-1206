@@ -13,7 +13,7 @@ export default function ApiUtils(Urls) {
                 name,
                 uri: value
             });
-        } else if (value.length) {
+        } else if (value && value.length > 0) {
             list.push({
                 name,
                 uri: value[0],

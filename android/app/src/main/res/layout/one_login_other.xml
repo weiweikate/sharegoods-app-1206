@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="170dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_other"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0.5dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="7dp"
+            android:layout_weight="1"
+            android:background="#e4e4e4" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="其他登录方式"
+            android:textColor="#666666"
+            android:textSize="13sp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0.5dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="40dp"
+            android:layout_weight="1"
+            android:background="#e4e4e4" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll_other"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginBottom="25dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_wechat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:drawableTop="@drawable/login_wechat"
+                android:drawablePadding="10dp"
+                android:gravity="center"
+                android:text="微信登录"
+                android:textColor="#999999"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:drawableTop="@drawable/login_phone"
+                android:drawablePadding="10dp"
+                android:gravity="center"
+                android:text="手机号登录"
+                android:textColor="#999999"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

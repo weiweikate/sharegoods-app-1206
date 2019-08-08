@@ -1,24 +1,17 @@
 //开放店铺设置页面
 import React from 'react';
-import {
-    View,
-    Animated,
-    Dimensions,
-    StyleSheet,
-    ScrollView,
-    TouchableWithoutFeedback
-} from 'react-native';
+import { Animated, ScrollView, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import BasePage from '../../../BasePage';
 import SpellShopApi from '../api/SpellShopApi';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
+import { MRText as Text } from '../../../components/ui';
+import ScreenUtils from '../../../utils/ScreenUtils';
+
 const SelIcon = res.shopSetting.SelIcon;
 const UnSelIcon = res.shopSetting.UnSelIcon;
 
-const SCREEN_WIDTH = Dimensions.get('window').width;
-import {
-    MRText as Text
-} from '../../../components/ui';
+const SCREEN_WIDTH = ScreenUtils.width;
 
 export default class InvitationSettingPage extends BasePage {
 

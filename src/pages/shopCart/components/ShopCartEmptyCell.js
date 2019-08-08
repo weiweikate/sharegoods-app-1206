@@ -83,3 +83,4 @@ export default class ShopCartEmptyCell extends Component {
         return tipViewArr;
     };
 }
+
