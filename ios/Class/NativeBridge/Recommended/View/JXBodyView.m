@@ -213,7 +213,7 @@
 
 - (CGFloat)itemHeightForWidth:(CGFloat)width SourcesModel:(SourcesModel*)data{
   if(data.width&&data.height){
-    CGFloat a = data.height/data.width;
+    CGFloat a = data.width/(data.height*1.0);
     CGFloat type1 = 9/16.0;
     CGFloat type2 = 1.0;
     CGFloat type3 = 4/3.0;

@@ -493,8 +493,8 @@ export default class MyCashAccountPage extends BasePage {
                             remark = allType[item.useType] ?  allType[item.useType].title : '其他';
                             icon = allType[item.useType] ? allType[item.useType].icon : qita;
                         }else {
-                            remark = item.remark.length > 0 ? item.remark : '其他';
-                            icon = newTypeIcons[item.tradeType] ? newTypeIcons[item.tradeType] : renwu
+                            remark = item.remark ? item.remark : '其他';
+                            icon = newTypeIcons[item.tradeType] ? newTypeIcons[item.tradeType].icon : renwu
                         }
                         arrData.push({
                             type: remark,
