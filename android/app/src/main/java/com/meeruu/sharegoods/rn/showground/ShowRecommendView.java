@@ -83,7 +83,6 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
     private WeakHandler mHandler;
     private View errView;
     private View errImg;
-    private boolean sIsScrolling;
     public static boolean isLogin;
 
     private int page = 1;

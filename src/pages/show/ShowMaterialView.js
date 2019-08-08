@@ -188,26 +188,25 @@ export default class ShowMaterialView extends React.Component {
                                                return;
                                            }
                                            let { detail } = nativeEvent;
-                                           DownloadUtils.downloadShow(detail).then(() => {
+                                           let callback = ()=>{
                                                detail.downloadCount += 1;
                                                ShowApi.incrCountByType({
                                                    showNo: nativeEvent.detail.showNo,
                                                    type: 4
                                                });
                                                this.materialList && this.materialList.replaceItemData(nativeEvent.index, JSON.stringify(detail));
-                                           });
-
-                                           this.shareModal && this.shareModal.open();
-                                           this.props.onShare(nativeEvent);
-                                           const { showNo , userInfoVO } = detail;
-                                           const { userNo } = userInfoVO || {};
-                                           track(trackEvent.XiuChangDownLoadClick,{
-                                               xiuChangBtnLocation:'1',
-                                               xiuChangListType:'2',
-                                               articleCode:showNo,
-                                               author:userNo
-                                           })
-
+                                               this.shareModal && this.shareModal.open();
+                                               this.props.onShare(nativeEvent);
+                                               const { showNo , userInfoVO } = detail;
+                                               const { userNo } = userInfoVO || {};
+                                               track(trackEvent.XiuChangDownLoadClick,{
+                                                   xiuChangBtnLocation:'1',
+                                                   xiuChangListType:'2',
+                                                   articleCode:showNo,
+                                                   author:userNo
+                                               })
+                                           }
+                                           DownloadUtils.downloadShow(detail,callback);
                                        }}
 
                                        onScrollY={({ nativeEvent }) => {

@@ -124,6 +124,8 @@ public class NewestShowGroundBean {
         private List<ShowTagsBean> showTags;
         private List<String> imgUrls;
         private String videoCover;
+        private double coverWidth;
+        private double coverHeight;
         private String coverType;
         private boolean owner;
         private int createSource;
@@ -158,6 +160,23 @@ public class NewestShowGroundBean {
 
         public void setVideoCover(String videoCover) {
             this.videoCover = videoCover;
+        }
+
+
+        public double getCoverWidth() {
+            return coverWidth;
+        }
+
+        public void setCoverWidth(double coverWidth) {
+            this.coverWidth = coverWidth;
+        }
+
+        public double getCoverHeight() {
+            return coverHeight;
+        }
+
+        public void setCoverHeight(double coverHeight) {
+            this.coverHeight = coverHeight;
         }
 
         public String getCoverType() {

@@ -254,6 +254,8 @@ public class ShowCollectionView  implements IShowgroundView, SwipeRefreshLayout.
                             }
                             if(resourceBean.getType() == 5){
                                 bean.setVideoCover(resourceBean.getBaseUrl());
+                                bean.setCoverWidth(resourceBean.getWidth());
+                                bean.setCoverHeight(resourceBean.getHeight());
                                 break;
                             }
                         }

@@ -377,9 +377,11 @@ public class VideoListView {
                     String userNo = dataBean.getUserInfoVO().getUserNo();
                     if (dataBean.getAttentionStatus() == 0) {
                         videoModel.attentionUser(userNo, null);
+                        dataBean.setAttentionStatus(1);
                         updateAttentions(userNo, true);
                         setAttentionView(true);
                     } else {
+                        dataBean.setAttentionStatus(0);
                         videoModel.notAttentionUser(userNo, null);
                         updateAttentions(userNo, false);
                         setAttentionView(false);
@@ -661,7 +663,7 @@ public class VideoListView {
             ImageLoadUtils.loadCircleNetImage(userUrl, userIcon, userImgW, userImgW);
         }
         tvName.setText(userInfoVOBean.getUserName());
-        tvHotCount.setText(bean.getHotCount() + "");
+        tvHotCount.setText(bean.getHotCount() + "人气值");
 
         if (TextUtils.equals(userInfoVOBean.getUserNo(), userCode)) {
             tvAttention.setVisibility(View.INVISIBLE);

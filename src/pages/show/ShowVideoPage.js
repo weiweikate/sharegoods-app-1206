@@ -149,14 +149,13 @@ export default class ShowVideoPage extends BasePage {
                                        }}
                                        onDownloadPress={({ nativeEvent }) => {
                                            if (user.isLogin) {
-                                               DownloadUtils.downloadShow(nativeEvent).then(()=>{
+                                               let callback=()=>{
                                                    ShowApi.incrCountByType({
                                                        showNo: nativeEvent.showNo,
                                                        type: 4
                                                    });
-                                               }).catch((err)=>{
-
-                                               })
+                                               }
+                                               DownloadUtils.downloadShow(nativeEvent,callback);
                                            } else {
                                                routeNavigate(RouterMap.LoginPage);
                                            }
