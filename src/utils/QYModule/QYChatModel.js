@@ -103,7 +103,10 @@ class QYChatModel {
     cardClickHandle = (handleData) => {
         let productUrl = handleData && handleData.linkUrl ? handleData.linkUrl : '';
         if (this.preProductUrl !== productUrl) {
-            let productCode = productUrl.substring(productUrl.lastIndexOf('/') + 1, productUrl.indexOf('?'));
+            let productCode = productUrl.substring(productUrl.lastIndexOf('/') + 1);
+            if (productUrl.indexOf('?') !== -1) {
+                productCode = productUrl.substring(productUrl.lastIndexOf('/') + 1, productUrl.indexOf('?'));
+            }
             let card_type = handleData ? handleData.card_type : -1;
             if (parseInt(card_type) === CARD_TYPE.PRODUCT_CARD) {
                 routePush(RouterMap.ProductDetailPage, { productCode: productCode });

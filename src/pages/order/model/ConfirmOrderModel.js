@@ -27,6 +27,7 @@ class ConfirmOrderModel {
     addressData = {};
     @observable
     userCouponCode = null;
+    CouponId = null;
     @observable
     tokenCoinText = null;
     @observable
@@ -84,6 +85,82 @@ class ConfirmOrderModel {
         this.allProductPrice = 0;
         this.couponAmount = 0
         this.promotionAmount = '';
+        this.CouponId = null;
+    }
+
+    @action firstLoad(orderParamVO, couid){
+        this.orderParamVO = orderParamVO;
+        let arr = [];
+        let params = {};
+        //老的降价拍礼包走
+        if ( this.orderParamVO.orderType === OrderType.depreciate_old || this.orderParamVO.orderType === OrderType.gift) {
+            this.orderParamVO.orderProducts.map((item, index) => {
+                arr.push({
+                    priceCode: item.skuCode,
+                    productCode: item.productCode || item.prodCode,
+                    amount: 1
+                });
+            });
+            params = {
+                productPriceIds: arr,
+                activityCode: this.orderParamVO.activityCode,
+                activityType: this.orderParamVO.orderType === OrderType.gift ? this.orderParamVO.orderSubType :  this.orderParamVO.orderType
+            };
+        } else{//其他
+            this.orderParamVO.orderProducts.map((item, index) => {
+
+                let {quantity, num , skuCode, productCode, activityCode, batchNo} = item
+                let  amount = quantity || num;
+                arr.push({
+                    priceCode: skuCode,
+                    productCode: productCode,
+                    amount: amount,
+                    activityCode: activityCode,
+                    batchNo
+                });
+            });
+
+            params = { productPriceIds: arr };
+            //orderType1：秒杀，2：降价拍，3（，orderSubType 3升级礼包 4普通礼包）
+        }
+        API.listAvailable({ page: 1, pageSize: 20, ...params }).then(resp => {
+            let data = resp.data || {};
+            let dataList = data.data || [];
+            let p = {}
+           if (couid){
+               for (let i = 0; i < dataList.length; i++){
+                   let item = dataList[i];
+                   if (item.couponConfigId == couid) {
+                       this.CouponId = item.couponConfigId;
+                       this.userCouponCode = item.code;
+                       p = {userCouponCode: item.code};
+                       break;
+                   }
+
+                   if (item.type == 5 && !p.userCouponCode) {
+                       this.CouponId = item.couponConfigId;
+                       this.userCouponCode = item.code;
+                       p = {userCouponCode: item.code};
+                   }
+
+               }
+           } else {
+               for (let i = 0; i < dataList.length; i++){
+                   let item = dataList[i];
+                   if (item.type == 5) {
+                       this.CouponId = item.couponConfigId;
+                       this.userCouponCode = item.code;
+                       p = {userCouponCode: item.code};
+                       break;
+                   }
+               }
+
+           }
+           this.makeSureProduct(orderParamVO, p)
+
+        }).catch(result => {
+            this.makeSureProduct(orderParamVO)
+        });
     }
 
     @action makeSureProduct(orderParamVO, params = {}) {
@@ -129,7 +206,7 @@ class ConfirmOrderModel {
                     // orderSubType:  "",//1.秒杀 2.降价拍 3.升级礼包 4.普通礼包
                     source: orderParamVO.source,//1.购物车 2.直接下单
                     sgAppVersion:310,
-                    couponsId: orderParamVO.couponsId,
+                    couponsId: this.CouponId,
                     // source: 4,//1.购物车 2.直接下单,4 周期券
                     channel: 2,//1.小程序 2.APP 3.H5
                     orderProductList: orderParamVO.orderProducts,
@@ -310,7 +387,7 @@ class ConfirmOrderModel {
                     source:  orderParamVO.source,
                     channel: 2,
                     sgAppVersion:310,
-                    couponsId: orderParamVO.couponsId,
+                    couponsId: this.CouponId,
                 };
                 OrderApi.submitOrder(paramsnor).then((response) => {
                     bridge.hiddenLoading();
