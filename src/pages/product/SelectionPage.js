@@ -297,7 +297,8 @@ export default class SelectionPage extends Component {
                                     height: 49,
                                     backgroundColor: DesignRule.mainColor,
                                     alignItems: 'center',
-                                    justifyContent: 'center'
+                                    justifyContent: 'center',
+                                    marginBottom:ScreenUtils.safeBottom
                                 }}>
                                     <Text style={{ fontSize: 16, color: 'white' }} allowFontScaling={false}>确认</Text>
                                 </View>

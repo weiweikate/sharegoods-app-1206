@@ -9,6 +9,7 @@ import DateUtils from '../../utils/DateUtils';
 import TopicAPI from '../topic/api/TopicApi';
 import { ProductDetailCouponsViewModel } from './components/ProductDetailCouponsView';
 import { ProductDetailAddressModel } from './components/ProductDetailAddressView';
+import { ProductDetailSuitModel } from './components/ProductDetailSuitView';
 
 const { width, height } = ScreenUtils;
 const { isNoEmpty } = StringUtils;
@@ -70,9 +71,10 @@ export default class ProductDetailModel {
 
     productDetailCouponsViewModel = new ProductDetailCouponsViewModel();
     productDetailAddressModel = new ProductDetailAddressModel();
+    productDetailSuitModel = new ProductDetailSuitModel();
 
-    @observable trackType;
-    @observable trackCode;
+    trackType;
+    trackCode;
     @observable prodCode;
     @observable loadingState = PageLoadingState.loading;
     @observable netFailedInfo = {};
@@ -324,14 +326,15 @@ export default class ProductDetailModel {
     }
 
     @computed get sectionDataList() {
-        const { promoteInfoVOList, contentArr, paramList, productDetailCouponsViewModel, isGroupIn } = this;
+        const { promoteInfoVOList, contentArr, paramList, productDetailCouponsViewModel, isGroupIn, productDetailSuitModel } = this;
         const { couponsList } = productDetailCouponsViewModel;
+        const { activityCode } = productDetailSuitModel;
         /*头部*/
         let sectionArr = [
             { key: sectionType.sectionHeader, data: [{ itemKey: productItemType.headerView }] }
         ];
         /*优惠套餐*/
-        if (isGroupIn) {
+        if (isGroupIn || activityCode) {
             sectionArr.push(
                 { key: sectionType.sectionSuit, data: [{ itemKey: productItemType.suit }] }
             );
@@ -543,6 +546,7 @@ export default class ProductDetailModel {
             this.productSuccess(tempData);
             this.requestShopInfo(tempData.supplierCode);
             this.productDetailCouponsViewModel.requestListProdCoupon(this.prodCode);
+            this.productDetailSuitModel.request_promotion_detail(this.prodCode);
         }).catch((e) => {
             this.productError(e);
         });

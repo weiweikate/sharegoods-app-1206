@@ -9,6 +9,7 @@ const api = {
     listProdCoupon: ['/Coupon/listProdCoupon', { method: 'get' }],
     /*领取优惠券*/
     getProdCoupon: ['/Coupon/getProdCoupon', { method: 'get' }],
+    promotion_detail: ['/promotion/package/detail', { method: 'get' }],
     // 获取产品规格信息
     getProductSpec: ['/product/getProductSpec', { method: 'get' }],
     /**评论**/

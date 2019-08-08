@@ -1,64 +1,98 @@
 import { observable, computed, action } from 'mobx';
-import bridge from '../../../utils/bridge';
 import StringUtils from '../../../utils/StringUtils';
+import { suitType } from '../components/ProductDetailSuitView';
 
 const { add, mul } = StringUtils;
 
-export default class SuitProductModel {
-    @observable groupCode;
-    @observable selectedAmount = 1;
-    /*主商品*/
-    /*
-    * product级别 额外增加字段 选择的sku
-    * selectedSkuItem: null,
-    * isSelected: false,
-    * */
-    @observable mainProduct = {};
+const afterSaleLimitType = {
+    '01': '支持退换货',
+    '02': '支持退款',
+    '03': '支持换货',
+    '11': '不支持售后'
+};
 
-    /*子商品们*/
+export default class SuitProductModel {
+    /*套餐类型*/
+    @observable extraType;
+    /*数量*/
+    @observable selectedAmount = 1;
+    /*子商品活动信息
+    * groupCode
+    * content
+    * image
+    * shareContent
+    * singlePurchaseNumber
+    * afterSaleLimit
+    * afterSaleTip
+    * maxPurchaseTimes
+    * purchaseTimes
+    * subProducts
+    * */
+    @observable packageItem = {};
+    /*商品们*/
     /*product级别 额外增加字段
     * selectedSkuItem: null,
-    * isSelected: false,
-    * minDecrease: 活动商品最小优惠价格
+    * isSelected,
     * */
-    @observable subProductArr = [];
-    /*子商品们skuS*/
-    @observable selectedItems = [];
+    @observable suitProducts = [];
 
-    /*去选择的商品*/
-    @observable selectItem = {};
+    /*被选中的商品*/
+    @computed get selectedProductSkuS() {
+        const selectedSkuItems = [];
+        this.suitProducts.forEach((item) => {
+            if (item.selectedSkuItem) {
+                selectedSkuItems.push(item.selectedSkuItem);
+            }
+        });
+        return selectedSkuItems;
+    }
+
+    @computed get selected_products() {
+        const selectedItems = [];
+        this.suitProducts.forEach((item) => {
+            if (item.selectedSkuItem) {
+                selectedItems.push(item);
+            }
+        });
+        return selectedItems;
+    }
+
+    @computed get isSuitFixed() {
+        return this.extraType === suitType.fixedSuit;
+    }
+
+    @computed get afterSaleLimitText() {
+        let afterSaleLimitText = '';
+        const { afterSaleLimit } = this.packageItem;
+        (afterSaleLimit || '').split(',').forEach((item) => {
+            afterSaleLimitText = `${afterSaleLimitText}${afterSaleLimitType[item]}`;
+        });
+        return afterSaleLimitText;
+    }
 
     //是否能增加
     @computed get canAddAmount() {
-        //最大能点击数 选择里面的最小
-        if (this.selectedItems.length === 0 && this.mainProduct.isSelected) {
+        if (this.selectedProductSkuS.length === 0) {
             return true;
         } else {
-            /*子商品*/
-            let sellStockList = this.selectedItems.map((item) => {
-                return item.promotionStockNum;
+            const sellStockList = this.selectedProductSkuS.map((item) => {
+                return item.sellStock;
             });
-            /*主商品*/
-            if (this.mainProduct.isSelected) {
-                sellStockList.push(this.mainProduct.selectedSkuItem.sellStock);
-            }
-            let minSellStock = Math.min.apply(null, sellStockList);
+            const minSellStock = Math.min.apply(null, sellStockList);
             return minSellStock > this.selectedAmount;
         }
     }
 
     @computed get totalPayMoney() {
-        let subPrice = this.selectedItems.reduce((pre, cur) => {
+        const payPrice = this.selectedProductSkuS.reduce((pre, cur) => {
             const { promotionPrice } = cur;
             return add(pre, mul(promotionPrice, this.selectedAmount));
         }, 0);
-
-        const { price = 0 } = this.mainProduct.selectedSkuItem || {};
-        return add(subPrice, mul(price, this.selectedAmount));
+        return payPrice;
     }
 
     @computed get totalSubMoney() {
-        return this.selectedItems.reduce((pre, cur) => {
+        return this.selectedProductSkuS.reduce((pre, cur) => {
             const { promotionDecreaseAmount } = cur;
             return add(pre, mul(promotionDecreaseAmount, this.selectedAmount));
         }, 0);
@@ -66,7 +100,6 @@ export default class SuitProductModel {
 
     @action addAmount = () => {
         this.selectedAmount++;
-        // this.changeArr();
     };
 
     @action subAmount = () => {
@@ -74,59 +107,60 @@ export default class SuitProductModel {
             return;
         }
         this.selectedAmount--;
-        //是否能选择
-        // this.changeArr();
     };
 
-    @action changeItem = (item, isPromotion, isUpdate) => {
-        const { isSelected } = this.selectItem;
-        if (isSelected && !isUpdate) {
-            /*选择了:删除sku和选择状态*/
-            this.selectItem.selectedSkuItem = null;
-            this.selectItem.isSelected = false;
-        } else {
-            /*未选择:弹框选择规格后*/
-            if ((isPromotion ? item.promotionStockNum : item.sellStock) < this.selectedAmount) {
-                bridge.$toast(`所选规格的商品库存不满${this.selectedAmount}件`);
-            } else {
-                this.selectItem.selectedSkuItem = item;
-                this.selectItem.isSelected = true;
-            }
-        }
-        //获取选择的item
-        let tempArr = this.subProductArr.filter((item1) => {
-            return item1.isSelected;
-        });
-        this.selectedItems = tempArr.map((item) => {
-            return item.selectedSkuItem;
-        });
+    @action changeItemWithSku = ({ productItem, skuItem }) => {
+        productItem.selectedSkuItem = skuItem;
     };
 
     /*初始化*/
-    @action setSubProductArr = (productDetailModel) => {
-        const { productData, groupActivity } = productDetailModel;
-        let tempProductData = JSON.parse(JSON.stringify(productData || {}));
-        let tempGroupActivity = JSON.parse(JSON.stringify(groupActivity || {}));
+    @action setProductArr = (productDetailSuitModel, packageIndex) => {
+        const { mainProduct, packages, extraType } = productDetailSuitModel;
+        this.extraType = extraType;
+        const packageItem = packages[packageIndex] || {};
+        this.packageItem = JSON.parse(JSON.stringify(packageItem));
 
-        this.groupCode = groupActivity.code;
-
-        //主商品不参加活动
-        this.mainProduct = {
-            ...tempProductData,
-            selectedSkuItem: null,
-            isSelected: false
+        const tempMainProduct = JSON.parse(JSON.stringify(mainProduct || {}));
+        /*
+        * defaultSkuItem是否不可选择规格,直接显示
+        * selectedSkuItem已选规格
+        * 主商品单规格->默认赋值
+        * 子商品单规格->固定套餐->默认赋值
+        * */
+        //主商品
+        const mainDefault = this.getDefaultSku(tempMainProduct);
+        const mainTemp = {
+            isMainProduct: true,
+            ...tempMainProduct,
+            selectedSkuItem: mainDefault,
+            defaultSkuItem: mainDefault
         };
-        this.subProductArr = (tempGroupActivity.subProductList || []).map((item) => {
-            let decreaseList = (item.skuList || []).map((sku) => {
-                return sku.promotionDecreaseAmount;
-            });
+        /*子商品*/
+        const { subProducts } = this.packageItem;
+        const subProductsTemp = (subProducts || []).map((item) => {
+            const itemDefault = this.getDefaultSku(item);
             return {
                 ...item,
-                /*选择的库存*/
-                selectedSkuItem: null,
-                isSelected: false,
-                minDecrease: decreaseList.length === 0 ? 0 : Math.min.apply(null, decreaseList)
+                selectedSkuItem: extraType === suitType.fixedSuit ? itemDefault : null,
+                defaultSkuItem: itemDefault
             };
         });
+        this.suitProducts = [mainTemp, ...(subProductsTemp || [])];
+    };
+
+    getDefaultSku = (productData) => {
+        const { skuList, specifyList } = productData;
+        let isSingle = true;
+        /*是否单规格*/
+        for (const item of (specifyList || [])) {
+            if (item.specValues.length > 1) {
+                isSingle = false;
+                return;
+            }
+        }
+        if (isSingle) {
+            return skuList[0];
+        }
+        return null;
     };
 }

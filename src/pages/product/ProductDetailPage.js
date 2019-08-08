@@ -27,8 +27,14 @@ import {
     HeaderItemView,
     ParamItemView,
     PromoteItemView,
-    ServiceItemView, ShowTopView, SuitItemView, PriceExplain
+    ServiceItemView, ShowTopView, PriceExplain
 } from './components/ProductDetailItemView';
+import {
+    ProductDetailSuitGiftView,
+    ProductDetailSuitFixedView,
+    suitType,
+    ProductDetailSuitChooseView
+} from './components/ProductDetailSuitView';
 import ProductDetailScoreView from './components/ProductDetailScoreView';
 import DetailParamsModal from './components/DetailParamsModal';
 import { ContentSectionView, SectionLineView, SectionNullView } from './components/ProductDetailSectionView';
@@ -60,7 +66,7 @@ export default class ProductDetailPage extends BasePage {
         this.state = {
             goType: ''
         };
-        this.productDetailModel.prodCode = this.params.productCode;
+        this.productDetailModel.prodCode = 'SPU00000188';
         this.productDetailModel.trackCode = this.params.trackCode;
         this.productDetailModel.trackType = this.params.trackType;
     }
@@ -225,7 +231,7 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _renderItem = ({ item, index, section: { key } }) => {
-        const { productDetailCouponsViewModel, productDetailAddressModel } = this.productDetailModel;
+        const { productDetailCouponsViewModel, productDetailAddressModel, productDetailSuitModel } = this.productDetailModel;
         if (key === sectionType.sectionContent) {
             return <ContentItemView item={item}/>;
         }
@@ -239,7 +245,14 @@ export default class ProductDetailPage extends BasePage {
                                        }}/>;
             }
             case productItemType.suit: {
-                return <SuitItemView productDetailModel={this.productDetailModel}/>;
+                const { extraType } = productDetailSuitModel;
+                if (extraType === suitType.fixedSuit) {
+                    return <ProductDetailSuitFixedView productDetailSuitModel={productDetailSuitModel}/>;
+                } else if (extraType === suitType.chooseSuit) {
+                    return <ProductDetailSuitChooseView productDetailSuitModel={productDetailSuitModel}/>;
+                } else {
+                    return <ProductDetailSuitGiftView productDetailModel={this.productDetailModel}/>;
+                }
             }
             case productItemType.coupons: {
                 return <ProductDetailCouponsView productDetailCouponsViewModel={productDetailCouponsViewModel}

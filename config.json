@@ -1,5 +1,5 @@
 {
-    "showDebugPanel": false,
+    "showDebugPanel": true,
     "envType": "online",
     "__注释__": "[showDebugPanel]:是否显示调试面板   [envType]:决定网络启动后，默认的网络环境类型",
     "env": {
@@ -177,7 +177,7 @@
         },
         "dengxuekai": {
             "name": "邓学凯",
-            "host": "http://172.16.10.13:1080/gateway"
+            "host": "http://172.18.7.17:9090/gateway"
         },
         "申xiangyu": {
             "name": "申xiangyu",
