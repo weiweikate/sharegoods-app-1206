@@ -36,6 +36,7 @@ import settingModel from '../model/SettingModel';
 import PullView from '../components/pulltorefreshlayout';
 import WhiteModel from '../../show/model/WhiteModel'
 import { mediatorCallFunc } from '../../../SGMediator';
+import { AutoHeightImage } from '../../../components/ui/AutoHeightImage';
 
 
 const {
@@ -820,12 +821,13 @@ export default class MinePage extends BasePage {
         return (
             <View>
                 {this.state.adArr.map((item,index)=>{
-                    console.log('adArr',item.image)
                     return(
                         <View>
                             <TouchableOpacity onPress={()=>{mediatorCallFunc('Home_AdNavigate',item)}}>
                             {item.image ?
-                                <Image source={{uri:item.image}} style={{width:ScreenUtils.width ,height:200}}/>
+                                <AutoHeightImage source={{ uri: item.image }} style={{}}
+                                                 borderRadius={5}
+                                                 ImgWidth={ScreenUtils.width}/>
                                 : null
                             }
                             </TouchableOpacity>
