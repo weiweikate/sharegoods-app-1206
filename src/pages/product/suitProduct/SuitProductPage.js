@@ -8,20 +8,39 @@ import SuitProductBottomView from './components/SuitProductBottomView';
 import RouterMap from '../../../navigation/RouterMap';
 import user from '../../../model/user';
 import { MRText } from '../../../components/ui';
-import res from '../res/product';
 import DesignRule from '../../../constants/DesignRule';
 import { AutoHeightImage } from '../../../components/ui/AutoHeightImage';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import SuitExplainModal from './components/SuitExplainModal';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
+import StringUtils from '../../../utils/StringUtils';
+import res from '../res/product';
+import apiEnvironment from '../../../api/ApiEnvironment';
+import { trackEvent } from '../../../utils/SensorsTrack';
+import CommShareModal from '../../../comm/components/CommShareModal';
+
+const { share } = res.pDetailNav;
 
 @observer
 export default class SuitProductPage extends BasePage {
-
     suitProductModel = new SuitProductModel();
 
     $navigationBarOptions = {
         title: '优惠套装'
+    };
+
+    $NavBarRenderRightItem = () => {
+        const { isSuitFixed } = this.suitProductModel;
+        if (isSuitFixed) {
+            return (
+                <NoMoreClick style={styles.rightNavBtn} onPress={() => {
+                    this.shareModal && this.shareModal.open();
+                }}>
+                    <Image source={share}/>
+                </NoMoreClick>
+            );
+        }
+        return null;
     };
 
     constructor(props) {
@@ -30,12 +49,28 @@ export default class SuitProductPage extends BasePage {
         this.suitProductModel.setProductArr(productDetailSuitModel, packageIndex);
     }
 
+    componentDidMount() {
+        const { packageItem, isSuitFixed } = this.suitProductModel;
+        const { content } = packageItem;
+        if (isSuitFixed && StringUtils.isNoEmpty(content)) {
+            this.$NavigationBarResetTitle(content);
+        }
+    }
+
     _bottomAction = () => {
         if (!user.isLogin) {
             this.gotoLoginPage();
             return;
         }
-        const { selectedAmount, packageItem, suitProducts, selectedProductSkuS, isSuitFixed, selected_products } = this.suitProductModel;
+        const {
+            activityCode, selectedAmount, packageItem, suitProducts,
+            selectedProductSkuS, isSuitFixed, selected_products
+        } = this.suitProductModel;
+        const { groupCode, maxPurchaseTimes, purchaseTimes } = packageItem;
+        //有限购次数&&已买次数>=限购次数
+        if (maxPurchaseTimes && purchaseTimes >= maxPurchaseTimes) {
+            this.$toastShow(`最多可购买${maxPurchaseTimes}次，已超过购买次数`);
+        }
         if (isSuitFixed) {
             if (suitProducts.length !== selectedProductSkuS.length) {
                 this.$toastShow('还有商品未选择规格');
@@ -58,12 +93,11 @@ export default class SuitProductPage extends BasePage {
                 return;
             }
         }
-        const { groupCode } = packageItem;
         let orderProductList = selectedProductSkuS.map((item) => {
             const { prodCode, skuCode } = item;
             return {
-                activityCode: groupCode,
-                batchNo: 1,
+                activityCode: activityCode,
+                batchNo: groupCode,
                 productCode: prodCode,
                 skuCode: skuCode,
                 quantity: selectedAmount
@@ -79,9 +113,11 @@ export default class SuitProductPage extends BasePage {
     };
 
     _render() {
-        const { suitProducts, packageItem, afterSaleLimitText } = this.suitProductModel;
+        const { mainProduct } = this.params.productDetailSuitModel;
+        const { prodCode } = mainProduct;
+        const { suitProducts, packageItem, afterSaleLimitText, priceRetailTotal, priceTotal } = this.suitProductModel;
         const totalProduct = suitProducts || [];
-        const { image, afterSaleTip } = packageItem;
+        const { image, afterSaleTip, shareContent } = packageItem;
         return (
             <View style={styles.container}>
                 <ScrollView>
@@ -106,6 +142,31 @@ export default class SuitProductPage extends BasePage {
                 </ScrollView>
                 <SuitProductBottomView suitProductModel={this.suitProductModel} bottomAction={this._bottomAction}/>
                 <SuitExplainModal ref={(ref) => this.SuitExplainModal = ref}/>
+
+                <CommShareModal ref={(ref) => this.shareModal = ref}
+                                trackParmas={{
+                                    spuCode: prodCode,
+                                    spuName: shareContent
+                                }}
+                                trackEvent={trackEvent.Share}
+                                type={'Image'}
+                                imageJson={{
+                                    monthSaleType: 5,
+                                    imageUrlStr: image,
+                                    titleStr: `${shareContent}`,
+                                    retailPrice: `套餐价：￥${priceRetailTotal}`,
+                                    priceType: [],
+                                    priceStr: `￥${priceTotal}`,
+                                    QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`,
+                                    shareMoney: '',
+                                    spellPrice: ''
+                                }}
+                                webJson={{
+                                    title: shareContent,
+                                    dec: '套餐',
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`,
+                                    thumImage: image
+                                }}/>
             </View>
         );
     }
@@ -114,6 +175,9 @@ export default class SuitProductPage extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1
+    },
+    rightNavBtn: {
+        justifyContent: 'center', alignItems: 'center', height: 44, width: 44
     },
     imgView: {
         marginVertical: 10, marginLeft: 15

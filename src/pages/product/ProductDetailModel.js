@@ -75,7 +75,6 @@ export default class ProductDetailModel {
 
     trackType;
     trackCode;
-    @observable prodCode;
     @observable loadingState = PageLoadingState.loading;
     @observable netFailedInfo = {};
 
@@ -351,7 +350,7 @@ export default class ProductDetailModel {
     }
 
     @computed get sectionDataList() {
-        const { promoteInfoVOList, contentArr, paramList, productDetailCouponsViewModel,type, isGroupIn, productDetailSuitModel } = this;
+        const { promoteInfoVOList, contentArr, paramList, productDetailCouponsViewModel, type, isGroupIn, productDetailSuitModel } = this;
         const { couponsList } = productDetailCouponsViewModel;
         const { activityCode } = productDetailSuitModel;
         /*头部*/
@@ -547,8 +546,6 @@ export default class ProductDetailModel {
 
     /****商详网络请求****/
     requestProductDetail = () => {
-        /**获取收货地址**/
-        this.productDetailAddressModel.requestAddress();
         /*
         * SPU00000263 秒杀
         * SPU00000375 直降
@@ -565,6 +562,12 @@ export default class ProductDetailModel {
         } else {
             this.requestProductDetailReal(this.prodCode);
         }
+        /**获取收货地址**/
+        this.productDetailAddressModel.requestAddress();
+        /*获取当前商品优惠券列表*/
+        this.productDetailCouponsViewModel.requestListProdCoupon(this.prodCode);
+        /*获取套餐信息*/
+        this.productDetailSuitModel.request_promotion_detail(this.prodCode);
     };
 
     /**请求商品**/
@@ -577,10 +580,6 @@ export default class ProductDetailModel {
             this.productSuccess(tempData);
             /*获取当前商品供应商*/
             this.requestShopInfo(tempData.merchantCode);
-            /*获取当前商品优惠券列表*/
-            this.productDetailCouponsViewModel.requestListProdCoupon(this.prodCode);
-            /*获取套餐信息*/
-            this.productDetailSuitModel.request_promotion_detail(this.prodCode);
             /**赋值prodCode会autoRun自动拉取库存**/
             if (tempData && tempData.type !== 3) {
                 this.productDetailAddressModel.prodCode = this.prodCode;

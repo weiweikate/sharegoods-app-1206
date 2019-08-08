@@ -376,8 +376,6 @@ export default class ProductDetailPage extends BasePage {
             <ShowTopView productDetailModel={this.productDetailModel}
                          toTopAction={this._onPressToTop}/>
             <IntervalMsgView pageType={IntervalType.productDetail}/>
-            <ProductDetailCouponsWindowView ref={(ref) => this.ProductDetailCouponsWindowView = ref}
-                                            productDetailCouponsViewModel={productDetailCouponsViewModel}/>
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             defaultModalVisible={this.params.openShareModal}
@@ -413,6 +411,8 @@ export default class ProductDetailPage extends BasePage {
             <DetailHeaderServiceModal ref={(ref) => this.DetailHeaderServiceModal = ref}/>
             <DetailPromoteModal ref={(ref) => this.DetailPromoteModal = ref}/>
             <DetailParamsModal ref={(ref) => this.DetailParamsModal = ref}/>
+            <ProductDetailCouponsWindowView ref={(ref) => this.ProductDetailCouponsWindowView = ref}
+                                            productDetailCouponsViewModel={productDetailCouponsViewModel}/>
         </View>;
     };
 

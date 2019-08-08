@@ -10,7 +10,12 @@ import LinearGradient from 'react-native-linear-gradient';
 @observer
 export default class SuitProductBottomView extends Component {
     render() {
-        const { totalSubMoney, totalPayMoney, selectedAmount, isSuitFixed, addAmount, subAmount, canAddAmount } = this.props.suitProductModel;
+        const {
+            isSuitFixed, totalSubMoney, totalPayMoney,
+            selectedAmount, addAmount, subAmount, canAddAmount,
+            packageItem
+        } = this.props.suitProductModel;
+        const { singlePurchaseNumber } = packageItem;
         return (
             <View style={styles.bgView}>
                 {
@@ -19,9 +24,10 @@ export default class SuitProductBottomView extends Component {
                             <MRText style={{ color: DesignRule.textColor_mainTitle, fontSize: 14, marginRight: 10 }}>
                                 购买数量
                             </MRText>
-                            <MRText style={{ color: DesignRule.textColor_instruction, fontSize: 10 }}>
-                                最多可购买个
-                            </MRText>
+                            {singlePurchaseNumber ?
+                                <MRText style={{ color: DesignRule.textColor_instruction, fontSize: 10 }}>
+                                    最多可购买{singlePurchaseNumber}个
+                                </MRText> : null}
                         </View>
                         <View style={styles.amountRight}>
                             <NoMoreClick style={styles.amountCount} onPress={subAmount}>
@@ -29,12 +35,15 @@ export default class SuitProductBottomView extends Component {
                             </NoMoreClick>
                             <View style={styles.amountCountView}>
                                 <MRText style={{
-                                    color: DesignRule.textColor_mainTitle,
+                                    color: selectedAmount === 1 ? DesignRule.textColor_placeholder : DesignRule.textColor_mainTitle,
                                     fontSize: 10
                                 }}>{selectedAmount}</MRText>
                             </View>
-                            <NoMoreClick style={styles.amountCount} onPress={addAmount} disabled={!canAddAmount}>
-                                <MRText style={{ color: DesignRule.textColor_mainTitle, fontSize: 12 }}>+</MRText>
+                            <NoMoreClick style={styles.amountCount} onPress={addAmount}>
+                                <MRText style={{
+                                    color: canAddAmount ? DesignRule.textColor_mainTitle : DesignRule.textColor_placeholder,
+                                    fontSize: 12
+                                }}>+</MRText>
                             </NoMoreClick>
                         </View>
                     </View>
