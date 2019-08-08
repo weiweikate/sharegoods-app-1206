@@ -15,7 +15,7 @@ const arrow_right = RES.button.arrow_right_black;
 const { px2dp, width } = ScreenUtils;
 const img_w_h = (width - 30 - px2dp(16) - 1) / 3;
 
-export class DetailHeaderScoreView extends Component {
+export class ProductDetailScoreView extends Component {
 
     componentDidMount = () => {
         this._getVideoImage(this.props);
@@ -182,4 +182,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default DetailHeaderScoreView;
+export default ProductDetailScoreView;

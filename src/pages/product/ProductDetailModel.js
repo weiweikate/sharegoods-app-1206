@@ -9,6 +9,7 @@ import DateUtils from '../../utils/DateUtils';
 import TopicAPI from '../topic/api/TopicApi';
 import { ProductDetailCouponsViewModel } from './components/ProductDetailCouponsView';
 import { ProductDetailAddressModel } from './components/ProductDetailAddressView';
+import { ProductDetailSuitModel } from './components/ProductDetailSuitView';
 
 const { width, height } = ScreenUtils;
 const { isNoEmpty } = StringUtils;
@@ -70,9 +71,11 @@ export default class ProductDetailModel {
 
     productDetailCouponsViewModel = new ProductDetailCouponsViewModel();
     productDetailAddressModel = new ProductDetailAddressModel();
+    productDetailSuitModel = new ProductDetailSuitModel();
 
-    @observable trackType;
-    @observable trackCode;
+    trackType;
+    trackCode;
+    @observable prodCode;
     @observable loadingState = PageLoadingState.loading;
     @observable netFailedInfo = {};
 
@@ -348,14 +351,15 @@ export default class ProductDetailModel {
     }
 
     @computed get sectionDataList() {
-        const { promoteInfoVOList, contentArr, paramList, productDetailCouponsViewModel, type, isGroupIn } = this;
+        const { promoteInfoVOList, contentArr, paramList, productDetailCouponsViewModel,type, isGroupIn, productDetailSuitModel } = this;
         const { couponsList } = productDetailCouponsViewModel;
+        const { activityCode } = productDetailSuitModel;
         /*头部*/
         let sectionArr = [
             { key: sectionType.sectionHeader, data: [{ itemKey: productItemType.headerView }] }
         ];
         /*优惠套餐*/
-        if (isGroupIn) {
+        if (isGroupIn || activityCode) {
             sectionArr.push(
                 { key: sectionType.sectionSuit, data: [{ itemKey: productItemType.suit }] }
             );
@@ -575,7 +579,9 @@ export default class ProductDetailModel {
             this.requestShopInfo(tempData.merchantCode);
             /*获取当前商品优惠券列表*/
             this.productDetailCouponsViewModel.requestListProdCoupon(this.prodCode);
-            /**赋值prodCode会自动拉取库存**/
+            /*获取套餐信息*/
+            this.productDetailSuitModel.request_promotion_detail(this.prodCode);
+            /**赋值prodCode会autoRun自动拉取库存**/
             if (tempData && tempData.type !== 3) {
                 this.productDetailAddressModel.prodCode = this.prodCode;
             }
