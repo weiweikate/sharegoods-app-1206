@@ -325,7 +325,7 @@ export default class CommShowShareModal extends React.Component {
             }
         });
 
-        if( type === 'showWeb'){
+        if( type === 'show'){
             this.showImage();
             arrayWeb.push({
                 image: res.share.download, title: '下载推广图片', onPress: () => {

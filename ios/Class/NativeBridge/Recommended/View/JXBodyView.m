@@ -40,7 +40,7 @@
   if(!_bgImage){
     _bgImage = [[UIImageView alloc]init];
     _bgImage.hidden = YES;
-    _bgImage.image = [UIImage imageNamed:@"vedio"];
+    _bgImage.image = [UIImage imageNamed:@"video"];
   }
   return _bgImage;
 }
@@ -213,13 +213,13 @@
 
 - (CGFloat)itemHeightForWidth:(CGFloat)width SourcesModel:(SourcesModel*)data{
   if(data.width&&data.height){
-    CGFloat a = data.height/data.width;
+    CGFloat a = data.width/(data.height*1.0);
     CGFloat type1 = 9/16.0;
     CGFloat type2 = 1.0;
     CGFloat type3 = 4/3.0;
-    double a1 = fabs(a-type1);
-    double a2 = fabs(a-type2);
-    double a3 = fabs(a-type3);
+    double a1 = fabs(type1-a);
+    double a2 = fabs(type2-a);
+    double a3 = fabs(type3-a);
     if(a1<a2&&a1<a3){
       return width/type1;
     }
