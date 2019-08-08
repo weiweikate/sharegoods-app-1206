@@ -47,14 +47,6 @@
 {
   CGFloat width = 1.0;
   CGFloat height = 1.0;
-   NSDictionary * aspectRatioDic = [self.showImage getURLParameters];
-  if ([aspectRatioDic valueForKey:@"width"]) {
-    width = [[aspectRatioDic valueForKey:@"width"] floatValue];
-  }
-  if ([aspectRatioDic valueForKey:@"height"]) {
-    height = [[aspectRatioDic valueForKey:@"height"] floatValue];
-  }
-
   if(self.showType&&self.showType == 3){
     for(int i=0;i<self.resource.count;i++){
       if(self.resource[i].type==5 && [self.resource[i] valueForKey:@"baseUrl"]){
