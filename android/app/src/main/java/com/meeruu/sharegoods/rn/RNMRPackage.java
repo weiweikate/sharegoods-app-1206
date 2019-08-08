@@ -42,6 +42,7 @@ public class RNMRPackage implements ReactPackage {
     private AnalyticsModule analyticsModule;
     private PhoneAuthenModule phoneAuthenModule;
     private JPushModule jPushModule;
+    private ShowModule showModule;
 
     /**
      * 创建Native Module
@@ -60,7 +61,7 @@ public class RNMRPackage implements ReactPackage {
         analyticsModule = new AnalyticsModule(reactContext);
         phoneAuthenModule = new PhoneAuthenModule(reactContext);
         jPushModule = new JPushModule(reactContext);
-
+        showModule = new ShowModule(reactContext);
         modules.add(mModule);
         modules.add(qyChatModule);
         modules.add(appPayModule);
@@ -69,6 +70,7 @@ public class RNMRPackage implements ReactPackage {
         modules.add(analyticsModule);
         modules.add(phoneAuthenModule);
         modules.add(jPushModule);
+        modules.add(showModule);
 
         return modules;
     }
