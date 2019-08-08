@@ -67,7 +67,7 @@ export default class ProductDetailPage extends BasePage {
         this.state = {
             goType: ''
         };
-        this.productDetailModel.prodCode = 'SPU00000188';
+        this.productDetailModel.prodCode = this.params.productCode;
         this.productDetailModel.trackCode = this.params.trackCode;
         this.productDetailModel.trackType = this.params.trackType;
     }
