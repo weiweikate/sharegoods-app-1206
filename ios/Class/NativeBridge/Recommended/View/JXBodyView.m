@@ -40,7 +40,7 @@
   if(!_bgImage){
     _bgImage = [[UIImageView alloc]init];
     _bgImage.hidden = YES;
-    _bgImage.image = [UIImage imageNamed:@"vedio"];
+    _bgImage.image = [UIImage imageNamed:@"video"];
   }
   return _bgImage;
 }

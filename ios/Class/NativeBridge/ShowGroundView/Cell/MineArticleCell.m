@@ -16,6 +16,8 @@
 @property(nonatomic, strong)UILabel *statusLb;
 @property(nonatomic, strong)UIImageView *maskImgView;
 @property(nonatomic, strong)UIButton *btn;
+@property(nonatomic, strong)UIImageView *videoImgView;
+
 @end
 
 @implementation MineArticleCell
@@ -34,6 +36,9 @@
 {
   _imgView = [UIImageView new];
   
+  _videoImgView = [UIImageView new];
+  _videoImgView.image = [UIImage imageNamed:@"video"];
+  
   _titleLb = [UILabel new];
   _titleLb.font = [UIFont systemFontOfSize:13];
   _titleLb.textColor = [UIColor colorWithHexString:@"333333"];
@@ -50,6 +55,7 @@
   [_btn addTarget:self action:@selector(btnTap:) forControlEvents:UIControlEventTouchUpInside];
   
   [self.contentView sd_addSubviews:@[_imgView,
+                                     _videoImgView,
                                      _titleLb,
                                      _statusLb,
                                      _maskImgView,
@@ -63,6 +69,11 @@
   .widthIs(200)
   .leftSpaceToView(self.contentView, 10)
   .bottomSpaceToView(self.contentView, 0);
+  
+  _videoImgView.sd_layout
+  .centerXEqualToView(_imgView)
+  .centerYEqualToView(_imgView)
+  .widthIs(50).heightIs(50);
   
   _btn.sd_layout
   .heightIs(35)
@@ -96,6 +107,12 @@
   _model = model;
   _imgView.sd_layout.autoHeightRatio(1/model.aspectRatio_show);
   [_imgView setImageURL:[NSURL URLWithString:model.showImage_oss]];
+  
+  if(model.showType==3){
+    _videoImgView.hidden = NO;
+  }else{
+    _videoImgView.hidden = YES;
+  }
   _titleLb.text = model.pureContent_1;
   
   NSString * statusStr = @"";

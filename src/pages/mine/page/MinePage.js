@@ -823,7 +823,7 @@ export default class MinePage extends BasePage {
                 {this.state.adArr.map((item,index)=>{
                     return(
                         <View>
-                            <TouchableOpacity onPress={()=>{mediatorCallFunc('Home_AdNavigate',item)}}>
+                            <TouchableOpacity onPress={()=>{console.log('item',item);mediatorCallFunc('Home_AdNavigate',item)}}>
                             {item.image ?
                                 <AutoHeightImage source={{ uri: item.image }} style={{}}
                                                  borderRadius={5}
