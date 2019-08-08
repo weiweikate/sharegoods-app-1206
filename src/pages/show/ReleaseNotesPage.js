@@ -25,7 +25,7 @@ import UIImage from '../../components/ui/UIImage';
 import Emoticons, * as emoticons from '../../comm/components/emoticons';
 import EmptyUtils from '../../utils/EmptyUtils';
 import ShowApi from './ShowApi';
-import RouterMap, { replaceRoute } from '../../navigation/RouterMap';
+import RouterMap, {replaceRoute,} from '../../navigation/RouterMap';
 import TagView from './components/TagView';
 import PictureVideoUtils from './utils/PictureVideoUtils';
 import ImageOrVideoModal from './components/ImageOrVideoModal';
@@ -149,7 +149,11 @@ export default class ReleaseNotesPage extends BasePage {
             })
         };
         ShowApi.publishShow(params).then((data) => {
-            replaceRoute(RouterMap.MyDynamicPage, { userType: 'mineWriter' });
+            if(this.params.fromDynamic){
+                this.$navigateBack();
+            }else {
+                replaceRoute(RouterMap.MyDynamicPage, { userType: 'mineWriter' });
+            }
         }).catch((error) => {
             this.$toastShow(error.msg || '网络错误');
         });
