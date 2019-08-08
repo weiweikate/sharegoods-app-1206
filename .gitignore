@@ -25,6 +25,8 @@ Pods/
 !ATAuthSDK.bundle
 !JSPhotoSDK.bundle
 !JVerificationResource.bundle
+# CocoaPods
+/ios/Pods/
 
 # Android/IntelliJ
 #

@@ -1,13 +1,8 @@
 import React from 'react';
-import {
-    View,
-    StyleSheet,
-    AppState,
-    NetInfo, BackHandler
-} from 'react-native';
+import { AppState, BackHandler, StyleSheet, View } from 'react-native';
 
 import BasePage from '../../BasePage';
-
+import NetInfo from '@react-native-community/netinfo';
 import { observer } from 'mobx-react';
 import MyShopPage from './myShop/MyShopPage';
 import ShopRecruitPage from './shopRecruit/ShopRecruitPage';

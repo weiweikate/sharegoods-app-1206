@@ -26,8 +26,8 @@ ext {
             wechat       : 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:5.1.6',
             walle        : 'com.meituan.android.walle:library:1.1.6',
             fastjson     : 'com.alibaba:fastjson:1.1.68.android',
-            exoplayer    : 'com.google.android.exoplayer:exoplayer:2.7.3',
-            exopOKhttp   : 'com.google.android.exoplayer:extension-okhttp:2.7.3',
+            exoplayer    : 'com.google.android.exoplayer:exoplayer:2.9.3',
+            exopOKhttp   : 'com.google.android.exoplayer:extension-okhttp:2.9.3',
             multidex     : 'androidx.multidex:multidex:+',
             sensors      : 'com.sensorsdata.analytics.android:SensorsAnalyticsSDK:3.0.4',
             okhttp       : 'com.squareup.okhttp3:okhttp:3.12.1',
@@ -35,6 +35,6 @@ ext {
             lottie       : 'com.airbnb.android:lottie:3.0.0',
             // 如果你需要支持WebP格式，包括WebP动图
             webpAnimated : 'com.facebook.fresco:animated-webp:2.0.0',
-            webp         : 'com.facebook.fresco:webpsupport:2.0.0'
+            webp         : 'com.facebook.fresco:webpsupport:2.0.0',
     ]
 }

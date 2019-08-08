@@ -10,7 +10,7 @@ public class HttpUrlUtils {
 
     /**************************** api ***************************/
     public static final String URL_SHOWLIST = "/social/show/content/page/query"; // 秀场列表
-    public static final String URL_START_AD = "/advertising/queryAdvertisingList"; // 秀场列表
+    public static final String URL_START_AD = "/advertising/queryAdvertisingList"; // 开机广告
     public static final String URL_DYNAMIC = "/social/show/content/page/mine/query"; // 秀场个人中心
     public static final String URL_DELETE_DYNAMIC = "/social/show/content/delete"; // 秀场个人中心
     public static final String URL_GONGMAO = "/gongmall/contract/notify"; // 签约回调

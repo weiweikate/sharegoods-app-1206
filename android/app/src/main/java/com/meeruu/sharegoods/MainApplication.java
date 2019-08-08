@@ -27,6 +27,7 @@ import com.psykar.cookiemanager.CookieManagerPackage;
 import com.reactlibrary.RNGeolocationPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
+import com.reactnativecommunity.netinfo.NetInfoPackage;
 import com.request.MRNetStatePackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 
@@ -101,6 +102,7 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     new WebViewBridgePackage(),
                     new LottiePackage(),
                     new MRNetStatePackage(),
+                    new NetInfoPackage(),
                     new RNSensorsAnalyticsPackage(),
                     new PickerPackage(),
                     new ExtraDimensionsPackage(),

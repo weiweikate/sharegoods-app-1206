@@ -2,20 +2,11 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 
-import {
-    View,
-    StyleSheet,
-    TouchableOpacity,
-    ListView,
-    RefreshControl,
-    BackHandler
-} from 'react-native';
+import { BackHandler, RefreshControl, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { SwipeListView } from '../../../components/ui/react-native-swipe-list-view';
 import BasePage from '../../../BasePage';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import {
-    UIText
-} from '../../../components/ui/index';
+import { UIText } from '../../../components/ui/index';
 import shopCartStore from '../model/ShopCartStore';
 import shopCartCacheTool from '../model/ShopCartCacheTool';
 import DesignRule from '../../../constants/DesignRule';
@@ -39,8 +30,6 @@ export default class ShopCartPage extends BasePage {
 
     constructor(props) {
         super(props);
-        this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-        this.contentList = null;
         let hiddeLeft = true;
         if (!(this.params.hiddeLeft === undefined)) {
             hiddeLeft = this.params.hiddeLeft;
@@ -86,7 +75,7 @@ export default class ShopCartPage extends BasePage {
 
     handleBackPress = () => {
         if (this.$navigationBarOptions.leftNavItemHidden) {
-            this.$navigateBackToHome()
+            this.$navigateBackToHome();
             return true;
         } else {
             return false;
@@ -133,7 +122,6 @@ export default class ShopCartPage extends BasePage {
                             return (<SectionHeaderView sectionData={sectionData.section} navigate={this.$navigate}/>);
                         }
                     }}
-                    listViewRef={(listView) => this.contentList = listView}
                     rightOpenValue={-75}
                     showsVerticalScrollIndicator={false}
                     swipeRefreshControl={
