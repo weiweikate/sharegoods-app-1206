@@ -136,7 +136,7 @@ export default class MyDynamicPage extends BasePage {
                                backToShow(1);
                            }}
                            onPersonPublish={()=>{
-                               this.$navigate(RouterMap.ReleaseNotesPage);
+                               this.$navigate(RouterMap.ReleaseNotesPage,{fromDynamic:true});
                            }}
                 />
                 {this.navRender()}
