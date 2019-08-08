@@ -14,18 +14,19 @@ const afterSaleLimitType = {
 export default class SuitProductModel {
     /*套餐类型*/
     @observable extraType;
+    @observable activityCode;
     /*数量*/
     @observable selectedAmount = 1;
     /*子商品活动信息
     * groupCode
     * content
-    * image
-    * shareContent
-    * singlePurchaseNumber
-    * afterSaleLimit
-    * afterSaleTip
-    * maxPurchaseTimes
-    * purchaseTimes
+    * image 套餐营销图
+    * shareContent 套餐分享内容
+    * singlePurchaseNumber 单次购买个数
+    * afterSaleLimit '01,02'售后type
+    * afterSaleTip 售后解释
+    * maxPurchaseTimes 最大购买次数限制 0:无限制
+    * purchaseTimes 剩余可买次数
     * subProducts
     * */
     @observable packageItem = {};
@@ -70,25 +71,44 @@ export default class SuitProductModel {
         return afterSaleLimitText.slice(1);
     }
 
+    @computed get priceRetailTotal() {
+        return this.suitProducts.reduce((pre, cur) => {
+            const { promotionPrice } = cur;
+            return add(pre, promotionPrice);
+        }, 0);
+    }
+
+    @computed get priceTotal() {
+        return this.suitProducts.reduce((pre, cur) => {
+            const { price } = cur;
+            return add(pre, price);
+        }, 0);
+    }
+
     //是否能增加
     @computed get canAddAmount() {
+        const { singlePurchaseNumber } = this.packageItem;
         if (this.selectedProductSkuS.length === 0) {
-            return true;
+            /*限购情况:限购数>选择数*/
+            return singlePurchaseNumber ? singlePurchaseNumber > this.selectedAmount : true;
         } else {
             const sellStockList = this.selectedProductSkuS.map((item) => {
                 return item.sellStock;
             });
             const minSellStock = Math.min.apply(null, sellStockList);
+            if (singlePurchaseNumber) {
+                /*限购情况:限购数>选择数*/
+                return (minSellStock > this.selectedAmount) && (singlePurchaseNumber > this.selectedAmount);
+            }
             return minSellStock > this.selectedAmount;
         }
     }
 
     @computed get totalPayMoney() {
-        const payPrice = this.selectedProductSkuS.reduce((pre, cur) => {
+        return this.selectedProductSkuS.reduce((pre, cur) => {
             const { promotionPrice } = cur;
             return add(pre, mul(promotionPrice, this.selectedAmount));
         }, 0);
-        return payPrice;
     }
 
     @computed get totalSubMoney() {
@@ -99,6 +119,9 @@ export default class SuitProductModel {
     }
 
     @action addAmount = () => {
+        if (!this.canAddAmount) {
+            return;
+        }
         this.selectedAmount++;
     };
 
@@ -111,12 +134,22 @@ export default class SuitProductModel {
 
     @action changeItemWithSku = ({ productItem, skuItem }) => {
         productItem.selectedSkuItem = skuItem;
+
+        /*如果选择的规格的库存小于选择数   修改选择数量*/
+        const sellStockList = this.selectedProductSkuS.map((item) => {
+            return item.sellStock;
+        });
+        const minSellStock = Math.min.apply(null, sellStockList);
+        if (minSellStock < this.selectedAmount) {
+            this.selectedAmount = minSellStock;
+        }
     };
 
     /*初始化*/
     @action setProductArr = (productDetailSuitModel, packageIndex) => {
-        const { mainProduct, packages, extraType } = productDetailSuitModel;
+        const { mainProduct, packages, extraType, activityCode } = productDetailSuitModel;
         this.extraType = extraType;
+        this.activityCode = activityCode;
         const packageItem = packages[packageIndex] || {};
         this.packageItem = JSON.parse(JSON.stringify(packageItem));
 

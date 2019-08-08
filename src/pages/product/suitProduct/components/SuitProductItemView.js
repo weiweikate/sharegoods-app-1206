@@ -45,7 +45,7 @@ export class SubProductView extends Component {
 
         const property = defaultSkuItem ? defaultSkuItem.propertyValues : (propertyValues ? StringUtils.trimWithChar(propertyValues, '@') : null);
 
-        const propertyShow = property ? property.replace(/@/g, ',') : '请选择规格';
+        const propertyShow = property ? property.replace(/@/g, ',') : '请选择商品规格';
         const priceShow = defaultSkuItem ? defaultSkuItem.price : price;
         return (
             <View style={[mStyles.bgView, { marginHorizontal: 15 }]}>
