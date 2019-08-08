@@ -42,6 +42,11 @@ const red_up = res.cashAccount.zhanghu_red;
 const lv_down = res.cashAccount.zhanghu_lv;
 const writer = res.cashAccount.writer_icon;
 const cash_noData = res.cashAccount.cash_noData;
+const qita = res.cashAccount.qita_icon;
+const chengFa = res.cashAccount.chengFa_icon;
+const shouru = res.cashAccount.shouru_icon;
+const shouyi = res.cashAccount.shouyi_icon;
+// const renwuShuoMing = res.cashAccount.renwuShuoMing_icon;
 
 const allType = {
     1: {
@@ -103,7 +108,14 @@ const allType = {
 
 };
 
-const newTypeIcons = [];
+const newTypeIcons = {
+    1: {title: '消费', icon: xiaofei},
+    2: {title: '退款', icon: chengFa},
+    3: {title: '余额发放', icon: shouru},
+    4: {title: '提现', icon: tixiang},
+    5: {title: '待入账结算', icon: shouyi},
+    6: {title: '系统调账', icon: renwu}
+};
 
 @observer
 export default class MyCashAccountPage extends BasePage {
@@ -479,10 +491,10 @@ export default class MyCashAccountPage extends BasePage {
                         let  icon = '';
                         if(item.useType){
                             remark = allType[item.useType] ?  allType[item.useType].title : '其他';
-                            icon = allType[item.useType] ? allType[item.useType].icon : renwu;
+                            icon = allType[item.useType] ? allType[item.useType].icon : qita;
                         }else {
                             remark = item.remark.length > 0 ? item.remark : '其他';
-                            icon = newTypeIcons[item.useType] ? newTypeIcons[item.useType] : renwu
+                            icon = newTypeIcons[item.tradeType] ? newTypeIcons[item.tradeType] : renwu
                         }
                         arrData.push({
                             type: remark,
