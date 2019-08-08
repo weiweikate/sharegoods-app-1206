@@ -94,7 +94,7 @@ public class ShowOtherView  implements IShowgroundView, SwipeRefreshLayout.OnRef
         layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         recyclerView.setLayoutManager(layoutManager);
         adapter.setEnableLoadMore(true);
-        View emptyView = LayoutInflater.from(context).inflate(R.layout.dynamic_empty_view, null);
+        View emptyView = LayoutInflater.from(context).inflate(R.layout.other_empty_view, null);
         emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         adapter.setEmptyView(emptyView);
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {

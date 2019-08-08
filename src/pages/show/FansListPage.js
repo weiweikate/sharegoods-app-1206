@@ -194,6 +194,14 @@ export default class FansListPage extends BasePage {
     };
 
     renderBtn(item, index) {
+        //非写手隐藏按钮
+        if(item.userType !== 1){
+            return null;
+        }
+        //如果是自己，隐藏按钮
+        if(user.code === item.userNo){
+            return null;
+        }
         let relationType = item.relationType;
         //  0 相互未关注 1 为我关注他，2 为相互关注 3为他关注我
         switch (relationType) {

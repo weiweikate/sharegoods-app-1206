@@ -411,20 +411,22 @@ export default class ShowDetailPage extends BasePage {
             return;
         }
         let { detail } = this.showDetailModule;
-        DownloadUtils.downloadShow(detail).then(() => {
+        let callback = ()=>{
             detail.downloadCount += 1;
             this.incrCountByType(4);
             this.showDetailModule.setDetail(detail);
-        });
-        const { showNo, userInfoVO } = detail;
-        const { userNo } = userInfoVO || {};
-        track(trackEvent.XiuChangDownLoadClick, {
-            xiuChangBtnLocation: '2',
-            xiuChangListType: '',
-            articleCode: showNo,
-            author: userNo
-        });
-        this._goToShare();
+            const { showNo, userInfoVO } = detail;
+            const { userNo } = userInfoVO || {};
+            track(trackEvent.XiuChangDownLoadClick, {
+                xiuChangBtnLocation: '2',
+                xiuChangListType: '',
+                articleCode: showNo,
+                author: userNo
+            });
+            this._goToShare();
+        }
+        DownloadUtils.downloadShow(detail,callback);
+
     };
 
     _clickLike = () => {

@@ -78,16 +78,16 @@ public class RNMRPackage implements ReactPackage {
 
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
-        return Arrays.<ViewManager>asList(
-        new PopModalManager(),
-        new MRLoadingViewManager(),
-         new MRBannerViewManager(),
-         new RecyclerViewHeaderManager(),
-          new ShowGroundViewManager(),
-           new ShowRecommendViewManager(),
-            new ShowDynamicViewManager(),
-            new ShowVideoViewManager(),
-            new ShowAttentionViewManager());
+        return Arrays.<ViewManager>asList(new PopModalManager(),
+                new MRLoadingViewManager(),
+                new MRBannerViewManager(),
+                new RecyclerViewHeaderManager(),
+                new ShowGroundViewManager(),
+                new ShowRecommendViewManager(),
+                new ShowDynamicViewManager(),
+                new ShowVideoViewManager(),
+                new ShowAttentionViewManager(),
+                new DottedLineManager());
     }
 
 }

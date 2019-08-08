@@ -200,7 +200,7 @@ export default class ShowHotView extends React.Component {
                                            if (nativeEvent.showType === 1) {
                                                navigate(RouterMap.ShowDetailPage, params);
                                            }  else if(nativeEvent.showType === 3){
-                                               navigate(RouterMap.ShowVideoPage, {code:showNo,tabType:1});
+                                               navigate(RouterMap.ShowVideoPage, {code:showNo,tabType:this.props.type === 'attention' ? 0:1});
                                            }else {
                                                navigate(RouterMap.ShowRichTextDetailPage, params);
                                            }
@@ -257,25 +257,26 @@ export default class ShowHotView extends React.Component {
                                                return;
                                            }
                                            let { detail } = nativeEvent;
-                                           DownloadUtils.downloadShow(detail).then(() => {
+                                           let callback = ()=>{
                                                detail.downloadCount += 1;
                                                ShowApi.incrCountByType({
                                                    showNo: nativeEvent.detail.showNo,
                                                    type: 4
                                                });
                                                this.RecommendShowList && this.RecommendShowList.replaceItemData(nativeEvent.index, JSON.stringify(detail));
-                                           });
-                                           this.shareModal && this.shareModal.open();
-                                           this.props.onShare(nativeEvent);
+                                               this.shareModal && this.shareModal.open();
+                                               this.props.onShare(nativeEvent);
 
-                                           const { showNo , userInfoVO } = detail;
-                                           const { userNo } = userInfoVO || {};
-                                           track(trackEvent.XiuChangDownLoadClick,{
-                                               xiuChangBtnLocation:'1',
-                                               xiuChangListType:'1',
-                                               articleCode:showNo,
-                                               author:userNo
-                                           })
+                                               const { showNo , userInfoVO } = detail;
+                                               const { userNo } = userInfoVO || {};
+                                               track(trackEvent.XiuChangDownLoadClick,{
+                                                   xiuChangBtnLocation:'1',
+                                                   xiuChangListType:'1',
+                                                   articleCode:showNo,
+                                                   author:userNo
+                                               })
+                                           }
+                                           DownloadUtils.downloadShow(detail,callback);
                                        }}
 
                                        onSharePress={({ nativeEvent }) => {

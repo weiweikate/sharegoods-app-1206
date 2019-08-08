@@ -1,5 +1,6 @@
 package com.meeruu.sharegoods.rn.showground.adapter;
 
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -38,22 +39,28 @@ public class CollectionAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
 
     @Override
     protected void convert(BaseViewHolder helper, NewestShowGroundBean.DataBean item) {
-        final SimpleDraweeView imageView = helper.getView(R.id.dynamic_item_image);
+        final SimpleDraweeView imageView = helper.getView(R.id.showground_item_image);
+        final ImageView playIcon = helper.getView(R.id.icon_play);
+        final FrameLayout content = helper.getView(R.id.cover_wrapper);
         double width = 1;
         double height = 1;
         String imgUrl = null;
+        Drawable drawable = mContext.getResources().getDrawable(R.drawable.black_transparent);
+
         if (item.getResource() != null) {
-            if (item.getShowType() != 3) {
-                //非视频类型
+            if (item.getShowType() == 3) {
+                imgUrl = item.getVideoCover();
+                width = item.getCoverWidth();
+                height = item.getCoverHeight();
+                playIcon.setVisibility(View.VISIBLE);
+                content.setForeground(drawable);
+            } else {
                 NewestShowGroundBean.DataBean.ResourceBean resourceBean = item.getResource().get(0);
                 imgUrl = resourceBean.getBaseUrl();
-                width = resourceBean.getWidth();
-                height = resourceBean.getHeight();
-            } else {
-                //视频类型，取封面
-                imgUrl = item.getVideoCover();
-                width = videoOrImageWH;
-                height = videoOrImageWH;
+                width = (float) resourceBean.getWidth();
+                height = (float) resourceBean.getHeight();
+                playIcon.setVisibility(View.GONE);
+                content.setForeground(null);
             }
         }
 
@@ -75,7 +82,7 @@ public class CollectionAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
 
         if (!TextUtils.equals(imgUrl, tag)) {
             imageView.setTag(imgUrl);
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) imageView.getLayoutParams();
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) imageView.getLayoutParams();
             params.height = realHeight;
             params.width = realWidth;
             imageView.setLayoutParams(params);

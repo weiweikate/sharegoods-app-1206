@@ -1406,6 +1406,8 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             topRightBtp = BitmapFactory.decodeResource(context.getResources(), R.drawable.sale_big_1001);
         } else if (shareImageBean.getMonthSaleType() == 4) {
             topRightBtp = BitmapFactory.decodeResource(context.getResources(), R.drawable.sale_big_1002);
+        }else if (shareImageBean.getMonthSaleType() == 5) {
+            topRightBtp = BitmapFactory.decodeResource(context.getResources(), R.drawable.sale_big_1003);
         }
 
         if (topRightBtp != null) {

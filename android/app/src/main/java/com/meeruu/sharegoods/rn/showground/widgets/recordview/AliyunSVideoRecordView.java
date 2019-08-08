@@ -86,9 +86,9 @@ public class AliyunSVideoRecordView extends FrameLayout implements ScaleGestureD
     //视频比例
     private int mRatioMode = AliyunSnapVideoParam.RATIO_MODE_3_4;
     //最小录制时长
-    private int minRecordTime = 2000;
+    private int minRecordTime = 5000;
     //最大录制时长
-    private int maxRecordTime = 15 * 1000;
+    private int maxRecordTime = 30 * 1000;
     private ProgressDialog progressBar;
     private OrientationDetector orientationDetector;
     //视频分辨率
@@ -125,7 +125,7 @@ public class AliyunSVideoRecordView extends FrameLayout implements ScaleGestureD
     private boolean isStopToCompleteDuration;
     public static final int PERMISSION_REQUEST_CODE = 1000;
     //最小录制时长
-    private static final int MIN_RECORD_TIME = 0;
+    private static final int MIN_RECORD_TIME = 5;
     //最大录制时长
     private static final int MAX_RECORD_TIME = Integer.MAX_VALUE;
     private static int TEST_VIDEO_WIDTH = 540;
