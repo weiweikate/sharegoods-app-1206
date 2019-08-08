@@ -306,7 +306,7 @@ SINGLETON_FOR_CLASS(JRServiceManager)
                                 @"status":@(sessionInfo.status),
                                 @"lastMessageTimeStamp":@(lastTime),
                                 @"shopId":sessionInfo.shopId,
-                                @"avatarImageUrlString":sessionInfo.avatarImageUrlString,
+                            @"avatarImageUrlString":sessionInfo.avatarImageUrlString?sessionInfo.avatarImageUrlString:[NSNull null],
                                 @"sessionName":sessionInfo.sessionName,
                                 };
     NSLog(@"%@",session);

@@ -4,7 +4,7 @@ import {
     Image,
     TouchableWithoutFeedback,
     StyleSheet,
-    FlatList, Clipboard
+    Clipboard
 } from 'react-native';
 
 import DesignRule from '../../../constants/DesignRule';
@@ -15,9 +15,8 @@ import { MRText as Text } from '../../../components/ui/index';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import { contentImgWidth, price_type } from '../ProductDetailModel';
 import { ActivityDidBeginView, ActivityWillBeginView } from './ProductDetailActivityView';
-import UIImage from '@mr/image-placeholder';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import RouterMap, { routeNavigate, routePush } from '../../../navigation/RouterMap';
+import RouterMap, { routeNavigate } from '../../../navigation/RouterMap';
 import { observer } from 'mobx-react';
 import res from '../../home/res';
 import { activity_type, activity_status } from '../ProductDetailModel';
@@ -31,7 +30,6 @@ const { arrow_right_black } = RES.button;
 const { arrow_right_red } = RES;
 const { service_true } = RES.service;
 const { toTop } = res.search;
-const { px2dp } = ScreenUtils;
 const { saleBig_1001 } = RES.pSacle;
 
 /*
@@ -201,89 +199,6 @@ const styles = StyleSheet.create({
     freightMonthText: {
         paddingBottom: 10,
         color: DesignRule.textColor_instruction, fontSize: 12
-    }
-});
-
-/*
-* 套餐
-* */
-export class SuitItemView extends Component {
-    _renderItem = ({ item }) => {
-        const { imgUrl, name, skuList } = item;
-        const { specImg, promotionDecreaseAmount, price } = skuList[0] || {};
-        return (
-            <View style={SuitItemViewStyles.item}>
-                <NoMoreClick onPress={() => this._goSuitPage(item)}>
-                    <UIImage style={SuitItemViewStyles.itemImg} source={{ uri: specImg || imgUrl }}>
-                        <View style={SuitItemViewStyles.subView}>
-                            <Text style={SuitItemViewStyles.subText}>立省{promotionDecreaseAmount || ''}</Text>
-                        </View>
-                    </UIImage>
-                </NoMoreClick>
-                <Text style={SuitItemViewStyles.itemText}
-                      numberOfLines={1}>{name}</Text>
-                <Text style={SuitItemViewStyles.itemPrice}>{`¥${price || ''}`}</Text>
-            </View>
-        );
-    };
-
-    _goSuitPage = (item) => {
-        routePush(RouterMap.ProductDetailPage, { productCode: item.prodCode });
-    };
-
-    render() {
-        const { productDetailModel } = this.props;
-        const { groupActivity } = productDetailModel;
-        return (
-            <View style={SuitItemViewStyles.bgView}>
-                <View style={SuitItemViewStyles.tittleView}>
-                    <Text style={SuitItemViewStyles.LeftText}>优惠套餐</Text>
-                </View>
-                <FlatList
-                    style={SuitItemViewStyles.flatList}
-                    data={groupActivity.subProductList || []}
-                    keyExtractor={(item) => item.prodCode + ''}
-                    renderItem={this._renderItem}
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                    initialNumToRender={5}
-                />
-            </View>
-        );
-    }
-}
-
-const SuitItemViewStyles = StyleSheet.create({
-    bgView: {
-        backgroundColor: DesignRule.white
-    },
-    tittleView: {
-        justifyContent: 'center', marginHorizontal: 15, height: 40
-    },
-    LeftText: {
-        color: DesignRule.textColor_mainTitle, fontSize: 15, fontWeight: '500'
-    },
-    flatList: {
-        marginLeft: 15
-    },
-    item: {
-        width: px2dp(100) + 5
-    },
-    itemImg: {
-        overflow: 'hidden',
-        width: px2dp(100), height: px2dp(100), borderRadius: 5
-    },
-    subView: {
-        position: 'absolute', bottom: 5, left: 5, backgroundColor: DesignRule.mainColor, borderRadius: 1
-    },
-    subText: {
-        color: DesignRule.white, fontSize: 10, padding: 2
-    },
-    itemText: {
-        color: DesignRule.textColor_secondTitle, fontSize: 12
-    },
-    itemPrice: {
-        color: DesignRule.textColor_redWarn, fontSize: 12, paddingBottom: 19
     }
 });
 
@@ -492,7 +407,7 @@ export class ContentItemView extends Component {
     }
 }
 
-/*显示*/
+/*显示向上箭头*/
 @observer
 export class ShowTopView extends Component {
     render() {
@@ -512,5 +427,31 @@ const showTopViewStyles = StyleSheet.create({
     },
     showTopBtn: {
         width: 44, height: 44
+    }
+});
+
+/*价格说明*/
+export class PriceExplain extends Component {
+    render() {
+        return (
+            <View style={{ backgroundColor: 'white' }}>
+                <Text style={PriceExplainStyles.tittleText}>价格说明</Text>
+                <View style={PriceExplainStyles.lineView}/>
+                <Text
+                    style={PriceExplainStyles.contentText}>{'划线价格：指商品的专柜价、吊牌价、正品零售价、厂商指导价或该商品的曾经展示过销售价等，并非原价，仅供参考\n未划线价格：指商品的实时价格，不因表述的差异改变性质。具体成交价格根据商品参加活动，或会员使用优惠券、积分等发生变化最终以订单结算页价格为准。'}</Text>
+            </View>
+        );
+    }
+}
+
+const PriceExplainStyles = StyleSheet.create({
+    tittleText: {
+        paddingVertical: 13, marginLeft: 15, fontSize: 15, color: DesignRule.textColor_mainTitle
+    },
+    lineView: {
+        height: 0.5, marginHorizontal: 0, backgroundColor: DesignRule.lineColor_inColorBg
+    },
+    contentText: {
+        padding: 15, color: DesignRule.textColor_instruction, fontSize: 13
     }
 });

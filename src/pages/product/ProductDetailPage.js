@@ -6,7 +6,6 @@ import {
 } from 'react-native';
 import BasePage from '../../BasePage';
 import DetailBottomView from './components/DetailBottomView';
-import PriceExplain from './components/PriceExplain';
 import SelectionPage from './SelectionPage';
 import ScreenUtils from '../../utils/ScreenUtils';
 import shopCartCacheTool from '../shopCart/model/ShopCartCacheTool';
@@ -29,9 +28,15 @@ import {
     HeaderItemView,
     ParamItemView,
     PromoteItemView,
-    ServiceItemView, ShowTopView, SuitItemView
+    ServiceItemView, ShowTopView, PriceExplain
 } from './components/ProductDetailItemView';
-import DetailHeaderScoreView from './components/DetailHeaderScoreView';
+import {
+    ProductDetailSuitGiftView,
+    ProductDetailSuitFixedView,
+    suitType,
+    ProductDetailSuitChooseView
+} from './components/ProductDetailSuitView';
+import ProductDetailScoreView from './components/ProductDetailScoreView';
 import DetailParamsModal from './components/DetailParamsModal';
 import { ContentSectionView, SectionNullView } from './components/ProductDetailSectionView';
 import ProductDetailNavView from './components/ProductDetailNavView';
@@ -62,7 +67,7 @@ export default class ProductDetailPage extends BasePage {
         this.state = {
             goType: ''
         };
-        this.productDetailModel.prodCode = this.params.productCode;
+        this.productDetailModel.prodCode = 'SPU00000188';
         this.productDetailModel.trackCode = this.params.trackCode;
         this.productDetailModel.trackType = this.params.trackType;
     }
@@ -242,7 +247,7 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _renderItem = ({ item, index, section: { key } }) => {
-        const { productDetailCouponsViewModel, productDetailAddressModel } = this.productDetailModel;
+        const { productDetailCouponsViewModel, productDetailAddressModel, productDetailSuitModel } = this.productDetailModel;
         if (key === sectionType.sectionContent) {
             return <ContentItemView item={item}/>;
         }
@@ -256,7 +261,14 @@ export default class ProductDetailPage extends BasePage {
                                        }}/>;
             }
             case productItemType.suit: {
-                return <SuitItemView productDetailModel={this.productDetailModel}/>;
+                const { extraType } = productDetailSuitModel;
+                if (extraType === suitType.fixedSuit) {
+                    return <ProductDetailSuitFixedView productDetailSuitModel={productDetailSuitModel}/>;
+                } else if (extraType === suitType.chooseSuit) {
+                    return <ProductDetailSuitChooseView productDetailSuitModel={productDetailSuitModel}/>;
+                } else {
+                    return <ProductDetailSuitGiftView productDetailModel={this.productDetailModel}/>;
+                }
             }
             case productItemType.coupons: {
                 return <ProductDetailCouponsView productDetailCouponsViewModel={productDetailCouponsViewModel}
@@ -289,8 +301,8 @@ export default class ProductDetailPage extends BasePage {
                 return <ProductDetailSetAddressView productDetailAddressModel={productDetailAddressModel}/>;
             }
             case productItemType.comment: {
-                return <DetailHeaderScoreView pData={this.productDetailModel}
-                                              navigation={this.props.navigation}/>;
+                return <ProductDetailScoreView pData={this.productDetailModel}
+                                               navigation={this.props.navigation}/>;
             }
             case productItemType.priceExplain: {
                 return <PriceExplain/>;

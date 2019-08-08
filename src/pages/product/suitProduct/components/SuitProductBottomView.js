@@ -10,20 +10,42 @@ import LinearGradient from 'react-native-linear-gradient';
 @observer
 export default class SuitProductBottomView extends Component {
     render() {
-        const { totalSubMoney, totalPayMoney } = this.props.suitProductModel;
+        const { totalSubMoney, totalPayMoney, selectedAmount, isSuitFixed, addAmount, subAmount, canAddAmount } = this.props.suitProductModel;
         return (
             <View style={styles.bgView}>
+                {
+                    isSuitFixed && <View style={styles.amountView}>
+                        <View style={styles.amountLeft}>
+                            <MRText style={{ color: DesignRule.textColor_mainTitle, fontSize: 14, marginRight: 10 }}>
+                                购买数量
+                            </MRText>
+                            <MRText style={{ color: DesignRule.textColor_instruction, fontSize: 10 }}>
+                                最多可购买个
+                            </MRText>
+                        </View>
+                        <View style={styles.amountRight}>
+                            <NoMoreClick style={styles.amountCount} onPress={subAmount}>
+                                <MRText style={{ color: DesignRule.textColor_mainTitle, fontSize: 12 }}>-</MRText>
+                            </NoMoreClick>
+                            <View style={styles.amountCountView}>
+                                <MRText style={{
+                                    color: DesignRule.textColor_mainTitle,
+                                    fontSize: 10
+                                }}>{selectedAmount}</MRText>
+                            </View>
+                            <NoMoreClick style={styles.amountCount} onPress={addAmount} disabled={!canAddAmount}>
+                                <MRText style={{ color: DesignRule.textColor_mainTitle, fontSize: 12 }}>+</MRText>
+                            </NoMoreClick>
+                        </View>
+                    </View>
+                }
                 <View style={styles.container}>
                     <View style={styles.leftView}>
-                        <MRText style={styles.leftTopText1}>合计：<MRText
+                        <MRText style={styles.leftTopText1}>套餐价：<MRText
                             style={styles.leftTopText2}>￥{totalPayMoney}</MRText></MRText>
-                        <MRText style={styles.leftBottomText1}>活动已减<MRText
-                            style={styles.leftBottomText2}>￥{totalSubMoney}</MRText></MRText>
+                        <MRText style={styles.leftBottomText1}>为你节省￥{totalSubMoney}</MRText>
                     </View>
-
-                    <NoMoreClick onPress={() => {
-                        this.props.bottomAction();
-                    }}>
+                    <NoMoreClick onPress={this.props.bottomAction}>
                         <LinearGradient style={styles.rightBtn}
                                         start={{ x: 0, y: 0 }}
                                         end={{ x: 1, y: 0 }}
@@ -39,8 +61,27 @@ export default class SuitProductBottomView extends Component {
 
 const styles = StyleSheet.create({
     bgView: {
-        paddingBottom: ScreenUtils.safeBottom, backgroundColor: 'white'
+        paddingBottom: ScreenUtils.safeBottom, backgroundColor: 'white',
+        borderTopLeftRadius: 15, borderTopRightRadius: 15
     },
+
+    amountView: {
+        height: 40, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'
+    },
+    amountLeft: {
+        marginLeft: 15, flexDirection: 'row', alignItems: 'center'
+    },
+    amountRight: {
+        marginRight: 15, flexDirection: 'row', alignItems: 'center'
+    },
+    amountCountView: {
+        width: 34, justifyContent: 'center', alignItems: 'center'
+    },
+    amountCount: {
+        backgroundColor: DesignRule.bgColor,
+        borderRadius: 3, width: 20, height: 20, justifyContent: 'center', alignItems: 'center'
+    },
+
     container: {
         flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
         height: 48
@@ -49,22 +90,19 @@ const styles = StyleSheet.create({
         marginLeft: 15, justifyContent: 'center'
     },
     leftTopText1: {
-        fontSize: 13, color: DesignRule.textColor_mainTitle
+        fontSize: 12, color: DesignRule.textColor_mainTitle
     },
     leftTopText2: {
-        fontSize: 17, color: DesignRule.textColor_redWarn
+        fontSize: 17, color: DesignRule.textColor_redWarn, fontWeight: '400'
     },
     leftBottomText1: {
-        fontSize: 12, color: DesignRule.textColor_instruction
-    },
-    leftBottomText2: {
-        fontSize: 12, color: DesignRule.textColor_redWarn
+        fontSize: 10, color: DesignRule.textColor_redWarn
     },
     rightBtn: {
         alignItems: 'center', justifyContent: 'center', marginRight: 15,
-        height: 34, width: ScreenUtils.px2dp(100), borderRadius: 17
+        height: 40, width: ScreenUtils.px2dp(100), borderRadius: 20
     },
     rightText: {
-        fontSize: 14, color: DesignRule.white, fontWeight: '600'
+        fontSize: 14, color: DesignRule.white, fontWeight: '400'
     }
 });
