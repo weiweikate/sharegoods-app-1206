@@ -102,7 +102,7 @@ public class VideoRecordActivity extends Activity {
 
     private void getData() {
         mResolutionMode = getIntent().getIntExtra(AliyunSnapVideoParam.VIDEO_RESOLUTION, AliyunSnapVideoParam.RESOLUTION_540P);
-        mMinDuration = getIntent().getIntExtra(AliyunSnapVideoParam.MIN_DURATION, 2000);
+        mMinDuration = getIntent().getIntExtra(AliyunSnapVideoParam.MIN_DURATION, 5000);
         mMaxDuration = getIntent().getIntExtra(AliyunSnapVideoParam.MAX_DURATION, 30000);
         mRatioMode = getIntent().getIntExtra(AliyunSnapVideoParam.VIDEO_RATIO, AliyunSnapVideoParam.RATIO_MODE_9_16);
         mGop = getIntent().getIntExtra(AliyunSnapVideoParam.VIDEO_GOP, 250);
