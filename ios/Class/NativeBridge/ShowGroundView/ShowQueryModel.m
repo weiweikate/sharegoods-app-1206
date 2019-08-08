@@ -47,14 +47,6 @@
 {
   CGFloat width = 1.0;
   CGFloat height = 1.0;
-   NSDictionary * aspectRatioDic = [self.showImage getURLParameters];
-  if ([aspectRatioDic valueForKey:@"width"]) {
-    width = [[aspectRatioDic valueForKey:@"width"] floatValue];
-  }
-  if ([aspectRatioDic valueForKey:@"height"]) {
-    height = [[aspectRatioDic valueForKey:@"height"] floatValue];
-  }
-
   if(self.showType&&self.showType == 3){
     for(int i=0;i<self.resource.count;i++){
       if(self.resource[i].type==5 && [self.resource[i] valueForKey:@"baseUrl"]){
@@ -102,16 +94,37 @@
 
 - (CGFloat)aspectRatio_show{
   CGFloat aspectRatio = self.aspectRatio;
-  CGFloat minRatio = 120 / 167.0;
-  CGFloat maxRatio = 240 / 167.0;
-  if (aspectRatio < minRatio) {
-    aspectRatio = minRatio;
-  }
-
-  if (aspectRatio > maxRatio) {
-    aspectRatio = maxRatio;
-  }
-  return aspectRatio;
+//  if(self.showType&&self.showType==3){
+//      CGFloat type1 = 9/16.0;
+//      CGFloat type2 = 1.0;
+//      CGFloat type3 = 4/3.0;
+//      double a1 = fabs(type1-aspectRatio);
+//      double a2 = fabs(type2-aspectRatio);
+//      double a3 = fabs(type3-aspectRatio);
+//      if(a1<a2&&a1<a3){
+//        return type1;
+//      }
+//      if(a2<a1&&a2<a3){
+//        return type2;
+//      }
+//      if(a3<a1&&a3<a2){
+//        return type3;
+//      }
+//    return aspectRatio;
+//
+//  }else{
+    CGFloat minRatio = 120 / 167.0;
+    CGFloat maxRatio = 240 / 167.0;
+    if (aspectRatio < minRatio) {
+      aspectRatio = minRatio;
+    }
+    
+    if (aspectRatio > maxRatio) {
+      aspectRatio = maxRatio;
+    }
+    return aspectRatio;
+//  }
+  
 }
 
 - (NSString *)userHeadImg_oss

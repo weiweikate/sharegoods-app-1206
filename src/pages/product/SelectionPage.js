@@ -265,7 +265,9 @@ export default class SelectionPage extends Component {
         const { productDetailAddressModel } = this.state.data;
         return (
             <View style={styles.bgView}>
-                <TouchableWithoutFeedback onPress={() => this.setState({ modalVisible: false })}>
+                <TouchableWithoutFeedback onPress={() => this.setState({ modalVisible: false }, () => {
+                    this.props.closeCallBack && this.props.closeCallBack();
+                })}>
                     <View style={{ height: ScreenUtils.autoSizeHeight(175) }}/>
                 </TouchableWithoutFeedback>
                 <View style={{ flex: 1 }}>
@@ -273,7 +275,9 @@ export default class SelectionPage extends Component {
                                          productIsPromotionPrice={productIsPromotionPrice}
                                          selectStrList={this.state.selectStrList}
                                          selectSpecList={this.state.selectSpecList}
-                                         closeSelectionPage={() => this.setState({ modalVisible: false })}/>
+                                         closeSelectionPage={() => this.setState({ modalVisible: false }, () => {
+                                             this.props.closeCallBack && this.props.closeCallBack();
+                                         })}/>
                     <View style={{ flex: 1, backgroundColor: 'white' }}>
                         <ScrollView>
                             {
@@ -296,7 +300,8 @@ export default class SelectionPage extends Component {
                                 height: 49,
                                 backgroundColor: DesignRule.mainColor,
                                 alignItems: 'center',
-                                justifyContent: 'center'
+                                justifyContent: 'center',
+                                marginBottom: ScreenUtils.safeBottom
                             }}>
                                 <Text style={{ fontSize: 16, color: 'white' }} allowFontScaling={false}>确认</Text>
                             </View>

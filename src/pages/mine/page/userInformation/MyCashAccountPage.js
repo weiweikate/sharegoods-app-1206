@@ -42,6 +42,11 @@ const red_up = res.cashAccount.zhanghu_red;
 const lv_down = res.cashAccount.zhanghu_lv;
 const writer = res.cashAccount.writer_icon;
 const cash_noData = res.cashAccount.cash_noData;
+const qita = res.cashAccount.qita_icon;
+const chengFa = res.cashAccount.chengFa_icon;
+const shouru = res.cashAccount.shouru_icon;
+const shouyi = res.cashAccount.shouyi_icon;
+// const renwuShuoMing = res.cashAccount.renwuShuoMing_icon;
 
 const allType = {
     1: {
@@ -101,6 +106,15 @@ const allType = {
         icon: renwu
     }
 
+};
+
+const newTypeIcons = {
+    1: {title: '消费', icon: xiaofei},
+    2: {title: '退款', icon: chengFa},
+    3: {title: '余额发放', icon: shouru},
+    4: {title: '提现', icon: tixiang},
+    5: {title: '待入账结算', icon: shouyi},
+    6: {title: '系统调账', icon: renwu}
 };
 
 @observer
@@ -473,12 +487,21 @@ export default class MyCashAccountPage extends BasePage {
                 let data = response.data;
                 if (data.data instanceof Array) {
                     data.data.map((item, index) => {
+                        let remark = '';
+                        let  icon = '';
+                        if(item.useType){
+                            remark = allType[item.useType] ?  allType[item.useType].title : '其他';
+                            icon = allType[item.useType] ? allType[item.useType].icon : qita;
+                        }else {
+                            remark = item.remark ? item.remark : '其他';
+                            icon = newTypeIcons[item.tradeType] ? newTypeIcons[item.tradeType].icon : renwu
+                        }
                         arrData.push({
-                            type: allType[item.useType] ?  allType[item.useType].title : '其他',
+                            type: remark,
                             time: DataUtils.getFormatDate(item.createTime / 1000),
                             serialNumber: item.serialNo,
                             capital: use_type_symbol[item.biType] + (item.balance ? item.balance : 0.00),
-                            iconImage: allType[item.useType] ? allType[item.useType].icon : renwu,
+                            iconImage: icon,
                             capitalRed: use_type_symbol[item.biType] === '-',
                             realBalance: item.realBalance,
                             status: item.status

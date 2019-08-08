@@ -13,154 +13,87 @@ import StringUtils from '../../../../utils/StringUtils';
 import SelectionPage from '../../SelectionPage';
 
 const { px2dp } = ScreenUtils;
-const { suitProduct } = res;
-const { selected, default_selected, un_selected, selected_sku } = suitProduct;
-
-@observer
-export class AmountItemView extends Component {
-    render() {
-        const { suitProductModel } = this.props;
-        const { canAddAmount, selectedAmount, addAmount, subAmount } = suitProductModel;
-        let btnTextColor = canAddAmount ? DesignRule.textColor_mainTitle : DesignRule.textColor_placeholder;
-        return (
-            <View style={aStyles.bgView}>
-                <MRText style={aStyles.leftText}>套餐商品</MRText>
-                <View style={aStyles.rightView}>
-                    <NoMoreClick style={aStyles.rightBtn} onPress={subAmount}>
-                        <MRText style={{ color: DesignRule.textColor_mainTitle, fontSize: 10 }}>-</MRText>
-                    </NoMoreClick>
-                    <View style={aStyles.amountView}>
-                        <MRText style={aStyles.amountText}>{selectedAmount}</MRText>
-                    </View>
-                    <NoMoreClick style={aStyles.rightBtn}
-                                 disabled={!canAddAmount}
-                                 onPress={addAmount}>
-                        <MRText style={{ color: btnTextColor, fontSize: 10 }}>+</MRText>
-                    </NoMoreClick>
-                </View>
-            </View>
-        );
-    }
-}
-
-const aStyles = StyleSheet.create({
-    bgView: {
-        flexDirection: 'row', paddingHorizontal: 15, alignItems: 'center', justifyContent: 'space-between',
-        height: 34, backgroundColor: DesignRule.white
-    },
-    leftText: {
-        fontSize: 14, color: DesignRule.textColor_mainTitle
-    },
-    rightView: {
-        alignItems: 'center', flexDirection: 'row'
-    },
-    rightBtn: {
-        justifyContent: 'center', alignItems: 'center',
-        borderRadius: 3, width: 20, height: 20, backgroundColor: DesignRule.bgColor
-    },
-    amountView: {
-        justifyContent: 'center', alignItems: 'center',
-        width: 34
-    },
-    amountText: {
-        color: DesignRule.textColor_mainTitle, fontSize: 10
-    }
-});
-
-@observer
-export class MainProductView extends Component {
-
-    _chooseSku = (productItem, isUpdate) => {
-        const { suitProductModel } = this.props;
-        suitProductModel.selectItem = productItem;
-        const { changeItem } = suitProductModel;
-        if (productItem.isSelected && !isUpdate) {
-            changeItem();
-            return;
-        }
-
-        this.SelectionPage.show(productItem, (amount, skuCode, skuItem) => {
-            changeItem(skuItem, false, isUpdate);
-        }, { unShowAmount: true });
-    };
-
-    render() {
-        const { suitProductModel } = this.props;
-        const { selectedAmount, mainProduct } = suitProductModel;
-        const { isSelected, name, imgUrl, minPrice, selectedSkuItem } = mainProduct;
-        const { propertyValues, price } = selectedSkuItem || {};
-        return (
-            <NoMoreClick style={[mStyles.bgView, { paddingHorizontal: 15 }]}
-                         onPress={() => this._chooseSku(mainProduct)}>
-                <Image style={mStyles.selectImg} source={default_selected}/>
-                <UIImage style={mStyles.productImg} source={{ uri: imgUrl }}/>
-                <NoMoreClick style={mStyles.productView} onPress={() => this._chooseSku(mainProduct, true)}>
-                    <MRText style={mStyles.nameText}>{name}</MRText>
-                    <View style={mStyles.specView}>
-                        <MRText style={mStyles.specText}
-                                numberOfLines={2}>规格: {isSelected ? StringUtils.trimWithChar(propertyValues, '@').replace(/@/g, ',') : '请选择'}</MRText>
-                        <Image style={mStyles.specImg} source={selected_sku}/>
-                        <MRText style={mStyles.specAmountText}>x{selectedAmount}</MRText>
-                    </View>
-                    <MRText
-                        style={mStyles.priceText}>{isSelected ? `¥${price}` : `¥${minPrice}起`}</MRText>
-                </NoMoreClick>
-                <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
-            </NoMoreClick>
-        );
-    }
-}
+const { selected, un_selected, selected_sku, suitSaleOut } = res.suitProduct;
 
 @observer
 export class SubProductView extends Component {
 
-    _chooseSku = (productItem, isUpdate) => {
+    _selectSku = (productItem) => {
         const { suitProductModel } = this.props;
-        suitProductModel.selectItem = productItem;
-        const { changeItem } = suitProductModel;
-        if (productItem.isSelected && !isUpdate) {
-            changeItem();
+        const { changeItemWithSku } = suitProductModel;
+        this.SelectionPage.show(productItem, (amount, skuCode, skuItem) => {
+            changeItemWithSku({ productItem, skuItem });
+        }, { unShowAmount: true });
+    };
+
+    _unSelectSku = (productItem) => {
+        const { isMainProduct } = productItem;
+        /*主商品不能重置*/
+        if (isMainProduct) {
             return;
         }
-        this.SelectionPage.show(productItem, (amount, skuCode, skuItem) => {
-            changeItem(skuItem, true, isUpdate);
-        }, { unShowAmount: true });
+        const { suitProductModel } = this.props;
+        const { changeItemWithSku } = suitProductModel;
+        changeItemWithSku({ productItem });
     };
 
     render() {
         const { item, suitProductModel } = this.props;
-        const { selectedAmount } = suitProductModel;
-        const { isSelected, name, imgUrl, minPrice, minDecrease, selectedSkuItem, prodCode } = item;
-        const { price, promotionDecreaseAmount, propertyValues } = selectedSkuItem || {};
+        const { selectedAmount, isSuitFixed } = suitProductModel;
+        const { isMainProduct, selectedSkuItem, name, imgUrl, minPrice, prodCode, defaultSkuItem, totalStock } = item;
+        const { price, propertyValues } = selectedSkuItem || {};
+
+        const property = defaultSkuItem ? defaultSkuItem.propertyValues : (propertyValues ? StringUtils.trimWithChar(propertyValues, '@') : null);
+
+        const propertyShow = property ? property.replace(/@/g, ',') : '请选择商品规格';
+        const priceShow = defaultSkuItem ? defaultSkuItem.price : price;
         return (
-            <NoMoreClick style={[mStyles.bgView, { marginHorizontal: 15, marginTop: 10, borderRadius: 5 }]}
-                         onPress={() => this._chooseSku(item)}>
-                <Image style={mStyles.selectImg}
-                       source={isSelected ? selected : un_selected}/>
+            <View style={[mStyles.bgView, { marginHorizontal: 15 }]}>
+                {
+                    isSuitFixed ?
+                        <View style={{ width: 15 }}/>
+                        :
+                        <NoMoreClick onPress={() => {
+                            selectedSkuItem ? this._unSelectSku(item) : this._selectSku(item);
+                        }} style={{ alignSelf: 'stretch', justifyContent: 'center' }}>
+                            <Image style={mStyles.selectImg}
+                                   source={(selectedSkuItem || isMainProduct) ? selected : un_selected}/>
+                        </NoMoreClick>
+                }
                 <NoMoreClick onPress={() => {
                     routePush(RouterMap.ProductDetailPage, { productCode: prodCode });
                 }}>
-                    <UIImage style={mStyles.productImg} source={{ uri: imgUrl }}/>
+                    <UIImage style={mStyles.productImg} source={{ uri: imgUrl }}>
+                        {
+                            totalStock < 1 &&
+                            <Image source={suitSaleOut} style={{ height: px2dp(60), width: px2dp(60) }}/>
+                        }
+                    </UIImage>
                 </NoMoreClick>
-                <NoMoreClick style={mStyles.productView} onPress={() => this._chooseSku(item, true)}>
-                    <MRText style={mStyles.nameText}>{name}</MRText>
-                    <View style={mStyles.specView}>
-                        <MRText style={mStyles.specText}
-                                numberOfLines={2}>规格: {isSelected ? StringUtils.trimWithChar(propertyValues, '@').replace(/@/g, ',') : '请选择'}</MRText>
-                        <Image style={mStyles.specImg} source={selected_sku}/>
-                        <MRText style={mStyles.specAmountText}>x{selectedAmount}</MRText>
-                    </View>
-                    <View style={{ flexDirection: 'row' }}>
-                        <View style={mStyles.bonusView}>
-                            <MRText
-                                style={mStyles.bonusText}>{isSelected ? `立省￥${promotionDecreaseAmount}` : `立省￥${minDecrease}起`}</MRText>
+                <NoMoreClick style={mStyles.productView} onPress={() => {
+                    if (defaultSkuItem) {
+                        return;
+                    }
+                    this._selectSku(item);
+                }}>
+                    <View>
+                        <MRText style={mStyles.nameText}>{name}</MRText>
+                        <View style={mStyles.specView}>
+                            <MRText style={mStyles.specText}
+                                    numberOfLines={2}>{propertyShow}</MRText>
+                            {
+                                defaultSkuItem ? null : <Image style={mStyles.specImg} source={selected_sku}/>
+                            }
                         </View>
                     </View>
-                    <MRText
-                        style={mStyles.priceText}>{isSelected ? `¥${price}` : `¥${minPrice}起`}</MRText>
+                    <View style={mStyles.priceView}>
+                        <MRText
+                            style={mStyles.priceText}>原价:{`¥${priceShow || `${minPrice}起`}`}</MRText>
+                        <MRText style={mStyles.specAmountText}>x{selectedAmount}</MRText>
+                    </View>
                 </NoMoreClick>
                 <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
-            </NoMoreClick>
+            </View>
         );
     }
 }
@@ -170,15 +103,16 @@ const mStyles = StyleSheet.create({
         flexDirection: 'row', alignItems: 'center', backgroundColor: DesignRule.white
     },
     selectImg: {
-        marginHorizontal: 10, width: 17, height: 17
+        marginLeft: 10, marginRight: 5, width: 17, height: 17
     },
     productImg: {
-        marginRight: 10, overflow: 'hidden',
+        justifyContent: 'center', alignItems: 'center',
+        marginRight: 10, overflow: 'hidden', marginVertical: 10,
         height: px2dp(80), width: px2dp(80), borderRadius: 5
     },
 
     productView: {
-        flex: 1, marginRight: 10, marginVertical: 10
+        flex: 1, marginRight: 10, height: px2dp(80), justifyContent: 'space-between'
     },
     nameText: {
         paddingBottom: 5,
@@ -188,26 +122,21 @@ const mStyles = StyleSheet.create({
         flexDirection: 'row', alignItems: 'center', marginBottom: 5
     },
     specText: {
-        flex: 1,
         color: DesignRule.textColor_instruction, fontSize: 10
     },
     specImg: {
-        marginHorizontal: 10, width: 8, height: 8
+        marginLeft: 5, marginRight: 10, width: 8, height: 8
+    },
+
+    priceView: {
+        flexDirection: 'row', alignItems: 'center'
     },
     specAmountText: {
         color: DesignRule.textColor_instruction, fontSize: 12
     },
-
-    bonusView: {
-        marginBottom: 5,
-        height: 14, borderRadius: 2, backgroundColor: 'rgba(255,0,80,0.1)'
-    },
-    bonusText: {
-        paddingHorizontal: 4,
-        color: DesignRule.textColor_redWarn, fontSize: 10
-    },
-
     priceText: {
+        flex: 1,
         color: DesignRule.textColor_redWarn, fontSize: 13
     }
 });
+

@@ -36,7 +36,7 @@
 
 - (UIImageView *)playImageView {
   if (!_playImageView) {
-    _playImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"vedio"]];
+    _playImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"video"]];
   }
   return _playImageView;
 }
