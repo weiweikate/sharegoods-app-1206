@@ -16,7 +16,7 @@ import ShowApi from './ShowApi';
 import { PageLoadingState } from '../../components/pageDecorator/PageState';
 import EmptyUtils from '../../utils/EmptyUtils';
 import user from '../../model/user';
-import RouterMap, { routeNavigate, routePop } from '../../navigation/RouterMap';
+import RouterMap, { routeNavigate, routePop,routePush } from '../../navigation/RouterMap';
 import { observer } from 'mobx-react';
 import apiEnvironment from '../../api/ApiEnvironment';
 import { trackEvent } from '../../utils/SensorsTrack';
@@ -124,7 +124,7 @@ export default class ShowVideoPage extends BasePage {
                                            if(user.code === userNo){
                                                routeNavigate(RouterMap.MyDynamicPage, { userType: WhiteModel.userStatus === 2 ? 'mineWriter' : 'mineNormal' });
                                            }else {
-                                               routeNavigate(RouterMap.MyDynamicPage,{userType:'others',userInfo:nativeEvent.userInfoVO});
+                                               routePush(RouterMap.MyDynamicPage,{userType:'others',userInfo:nativeEvent.userInfoVO});
                                            }
                                        }}
                                        onPressTag={({ nativeEvent }) => {
