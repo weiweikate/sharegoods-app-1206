@@ -116,10 +116,10 @@ export default class SelectionAmountView extends Component {
 
 
     render() {
-        const { type, maxCount, isGroupIn } = this.props;
+        const { type, maxCount } = this.props;
 
         let leftEnable = this.state.amount > 1;
-        let rightEnable = this.state.amount !== maxCount && !isGroupIn;
+        let rightEnable = this.state.amount !== maxCount;
         const { promotionLimit } = this.props;
         return (
             <View style={[{
@@ -163,7 +163,7 @@ export default class SelectionAmountView extends Component {
                     </View>
                     <View style={{ height: 28, width: 1, backgroundColor: DesignRule.lineColor_inGrayBg }}/>
                     <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}
-                                      onPress={this._rightAction} disabled={type === 'after' || isGroupIn}>
+                                      onPress={this._rightAction} disabled={type === 'after'}>
                         <Text style={{
                             color: rightEnable ? DesignRule.textColor_mainTitle : DesignRule.lineColor_inGrayBg,
                             fontSize: 15,

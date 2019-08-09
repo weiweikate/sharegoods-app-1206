@@ -34,7 +34,7 @@ export default class DetailBottomView extends Component {
         let { pData } = this.props;
         let {
             productStatus, skuList, showSellOut, productIsPromotionPrice, selfReturning,
-            orderOnProduct, isGroupIn, groupSubProductCanSell, upTime
+            orderOnProduct, upTime
         } = pData || {};
         //总库存
         let stock = 0;
@@ -43,8 +43,8 @@ export default class DetailBottomView extends Component {
         });
         //显示已下架
         const isDown = productStatus === product_status.down;
-        //不能购买(不是上架状态||不能单独购买||(isGroupIn&&不能买))
-        const cantBuy = productStatus !== product_status.on || orderOnProduct === 0 || (isGroupIn && !groupSubProductCanSell);
+        //不能购买(不是上架状态||不能单独购买)
+        const cantBuy = productStatus !== product_status.on || orderOnProduct === 0;
         //不能加购(不能单独购买)
         const cantJoin = orderOnProduct === 0;
         return (
@@ -73,15 +73,15 @@ export default class DetailBottomView extends Component {
                                 alignItems: 'center',
                                 justifyContent: 'center'
                             }}>
-                                {!isGroupIn && <TouchableOpacity style={styles.leftBtn}
-                                                                 onPress={() => this.props.bottomViewAction('gwc')}
-                                                                 disabled={cantJoin}>
+                                {<TouchableOpacity style={styles.leftBtn}
+                                                   onPress={() => this.props.bottomViewAction('gwc')}
+                                                   disabled={cantJoin}>
                                     <Image style={styles.leftImage}
                                            source={cantJoin ? jiarugouwuche_no : xiangqing_btn_gouwuche_nor}/>
                                     <Text
                                         style={[styles.leftText, { color: cantJoin ? '#E4E4E4' : DesignRule.textColor_secondTitle }]}>加购</Text>
                                 </TouchableOpacity>}
-                                <View style={[styles.btnView, { width: !isGroupIn ? px2dp(260) : px2dp(292) }]}>
+                                <View style={[styles.btnView, { width: px2dp(260) }]}>
                                     <TouchableOpacity
                                         style={[styles.btn, { backgroundColor: cantBuy ? DesignRule.textColor_placeholder : DesignRule.mainColor }]}
                                         onPress={() => this.props.bottomViewAction('buy')} disabled={cantBuy}>

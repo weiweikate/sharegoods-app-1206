@@ -24,103 +24,8 @@ export const suitType = {
     fixedSuit: '11',
     chooseSuit: '12'
 };
-/*
-* 公用图片文字item
-* */
-const SuitItemView = ({ imgUrl, name, promotionDecreaseAmount, price, pushCallback }) => {
-    return (
-        <View style={suitItemStyle.item}>
-            <NoMoreClick onPress={pushCallback}>
-                <UIImage style={suitItemStyle.itemImg} source={{ uri: imgUrl }}>
-                    <View style={suitItemStyle.subView}>
-                        <MRText style={suitItemStyle.subText}>{promotionDecreaseAmount}</MRText>
-                    </View>
-                </UIImage>
-            </NoMoreClick>
-            <MRText style={suitItemStyle.itemText}
-                    numberOfLines={1}>{name}</MRText>
-            <MRText style={suitItemStyle.itemPrice}>{price}</MRText>
-        </View>
-    );
-};
 
-const suitItemStyle = StyleSheet.create({
-    item: {
-        width: px2dp(100) + 5
-    },
-    itemImg: {
-        overflow: 'hidden',
-        width: px2dp(100), height: px2dp(100), borderRadius: 5
-    },
-    subView: {
-        position: 'absolute', bottom: 5, left: 5, backgroundColor: DesignRule.mainColor, borderRadius: 1
-    },
-    subText: {
-        color: DesignRule.white, fontSize: 10, padding: 2
-    },
-    itemText: {
-        color: DesignRule.textColor_secondTitle, fontSize: 12
-    },
-    itemPrice: {
-        color: DesignRule.textColor_redWarn, fontSize: 12, paddingBottom: 19
-    }
-});
-
-/**老礼包**/
-export class ProductDetailSuitGiftView extends Component {
-    _renderItem = ({ item }) => {
-        const { imgUrl, name, skuList } = item;
-        const { specImg, promotionDecreaseAmount, price } = skuList[0] || {};
-        const props = {
-            imgUrl: specImg || imgUrl,
-            name,
-            promotionDecreaseAmount: `立省${promotionDecreaseAmount || ''}`,
-            price: `¥${price || ''}`,
-            pushCallback: this._goProductPage.bind(this, item)
-        };
-        return <SuitItemView {...props}/>;
-    };
-
-    _goProductPage = (item) => {
-        routePush(RouterMap.ProductDetailPage, { productCode: item.prodCode });
-    };
-
-    render() {
-        const { productDetailModel } = this.props;
-        const { groupActivity } = productDetailModel;
-        return (
-            <View style={SuitGiftStyles.bgView}>
-                <View style={SuitGiftStyles.tittleView}>
-                    <MRText style={SuitGiftStyles.LeftText}>优惠套餐</MRText>
-                </View>
-                <FlatList
-                    style={SuitGiftStyles.flatList}
-                    data={groupActivity.subProductList || []}
-                    keyExtractor={(item) => item.prodCode + ''}
-                    renderItem={this._renderItem}
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                    initialNumToRender={5}
-                />
-            </View>
-        );
-    }
-}
-
-const SuitGiftStyles = StyleSheet.create({
-    bgView: {
-        backgroundColor: DesignRule.white
-    },
-    tittleView: {
-        justifyContent: 'center', marginHorizontal: 15, height: 40
-    },
-    LeftText: {
-        color: DesignRule.textColor_mainTitle, fontSize: 15, fontWeight: '500'
-    },
-    flatList: {
-        marginLeft: 15
-    }
-});
+/**固定套餐**/
 
 const SuitFixedView = ({ mainProduct, subProducts, itemIndex, pushCallback }) => {
     const productList = [mainProduct, ...(subProducts || [])];
@@ -177,7 +82,6 @@ const fixedStyles = StyleSheet.create({
     }
 });
 
-/**固定套餐**/
 export class ProductDetailSuitFixedView extends Component {
     _goSuitPage = (packageIndex) => {
         if (!user.isLogin) {
@@ -233,6 +137,46 @@ const SuitFixedStyles = StyleSheet.create({
 });
 
 /**搭配套餐**/
+
+const SuitItemView = ({ imgUrl, name, promotionDecreaseAmount, price, pushCallback }) => {
+    return (
+        <View style={suitItemStyle.item}>
+            <NoMoreClick onPress={pushCallback}>
+                <UIImage style={suitItemStyle.itemImg} source={{ uri: imgUrl }}>
+                    <View style={suitItemStyle.subView}>
+                        <MRText style={suitItemStyle.subText}>{promotionDecreaseAmount}</MRText>
+                    </View>
+                </UIImage>
+            </NoMoreClick>
+            <MRText style={suitItemStyle.itemText}
+                    numberOfLines={1}>{name}</MRText>
+            <MRText style={suitItemStyle.itemPrice}>{price}</MRText>
+        </View>
+    );
+};
+
+const suitItemStyle = StyleSheet.create({
+    item: {
+        width: px2dp(100) + 5
+    },
+    itemImg: {
+        overflow: 'hidden',
+        width: px2dp(100), height: px2dp(100), borderRadius: 5
+    },
+    subView: {
+        position: 'absolute', bottom: 5, left: 5, backgroundColor: DesignRule.mainColor, borderRadius: 1
+    },
+    subText: {
+        color: DesignRule.white, fontSize: 10, padding: 2
+    },
+    itemText: {
+        color: DesignRule.textColor_secondTitle, fontSize: 12
+    },
+    itemPrice: {
+        color: DesignRule.textColor_redWarn, fontSize: 12, paddingBottom: 19
+    }
+});
+
 export class ProductDetailSuitChooseView extends Component {
     _renderItem = ({ item }) => {
         const { imgUrl, name, minPrice, skuList } = item;
