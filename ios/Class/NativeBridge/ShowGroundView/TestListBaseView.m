@@ -222,6 +222,8 @@
       text = @"去发布";
     }else if(self.type == 1){
       text = @"点击去收藏";
+    }else{
+      return nil;
     }
   }
   UIFont   *font = [UIFont systemFontOfSize:15.0];
