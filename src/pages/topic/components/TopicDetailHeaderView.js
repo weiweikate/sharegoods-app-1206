@@ -21,7 +21,7 @@ import {
 // const { px2dp } = ScreenUtils;
 import res from '../res';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
-import DetailHeaderScoreView from '../../product/components/DetailHeaderScoreView';
+import ProductDetailScoreView from '../../product/components/ProductDetailScoreView';
 import RES from '../../../comm/res';
 
 const xjt_03 = res.xjt_03;
@@ -169,7 +169,7 @@ export default class TopicDetailHeaderView extends Component {
                     {activityType !== 3 ? <Image source={arrow_right}/> : null}
                 </NoMoreClick>
                 {activityType === 3 ? null :
-                    <DetailHeaderScoreView style={{ marginBottom: 10 }} pData={data} navigation={navigation}/>}
+                    <ProductDetailScoreView style={{ marginBottom: 10 }} pData={data} navigation={navigation}/>}
             </View>
         );
     }

@@ -123,7 +123,9 @@ const api = {
     //电签结果查询接口
     gongmallResult:['/gongmall/query',{method:'get'}],
     //查询秀迷等级列表
-    getFansLevelList:['/user/fansLevelList',{method:'get'}]
+    getFansLevelList:['/user/fansLevelList',{method:'get'}],
+    //获取我的页面广告
+    queryAdList:['/advertising/queryAdvertisingList',{method:'post'}]
 
 };
 import ApiUtils from '../../../api/network/ApiUtils';

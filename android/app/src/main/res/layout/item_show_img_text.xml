@@ -25,6 +25,20 @@
         android:includeFontPadding="false"
         android:textColor="@color/textColor_mainTitle"
         android:textSize="13sp" />
+    <ImageView android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/icon_fire"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@id/user_name"
+        android:id="@+id/iv_fire"/>
+    <TextView android:layout_height="20dp"
+        android:layout_width="wrap_content"
+        android:id="@+id/tv_hotCount"
+        android:layout_marginLeft="5dp"
+        android:textSize="11sp"
+        android:textColor="#FF0050"
+        android:layout_gravity="center_vertical"
+        android:layout_toRightOf="@id/iv_fire"/>
 
     <TextView
         android:id="@+id/publish_time"
@@ -43,8 +57,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/user_icon"
-        android:layout_alignParentLeft="true"
         android:layout_marginTop="10dp"
+        android:layout_alignParentLeft="true"
         android:background="@drawable/bg_show_image_text"
         android:orientation="vertical">
 
@@ -63,24 +77,49 @@
 
     </LinearLayout>
 
-
     <ImageView
-        android:id="@+id/icon_fire"
+        android:id="@+id/icon_hand"
         android:layout_width="28dp"
         android:layout_height="28dp"
         android:layout_below="@id/content"
-        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="2dp"
         android:layout_marginTop="15dp"
+        android:layout_alignParentLeft="true"
         android:padding="2dp"
-        android:src="@drawable/icon_fire" />
+        android:src="@mipmap/icon_hand_gray" />
 
     <TextView
         android:id="@+id/like_num"
-        android:layout_width="wrap_content"
+        android:layout_width="45dp"
         android:layout_height="28dp"
-        android:layout_alignTop="@+id/icon_fire"
+        android:layout_alignTop="@+id/icon_hand"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/icon_fire"
+        android:layout_toRightOf="@+id/icon_hand"
+        android:maxLines="1"
+        android:gravity="center_vertical"
+        android:textColor="@color/textColor_mainTitle"
+        android:textSize="10sp" />
+
+    <ImageView
+        android:id="@+id/icon_collection"
+        android:layout_width="26dp"
+        android:layout_height="28dp"
+        android:layout_below="@id/content"
+        android:layout_marginTop="15dp"
+        android:layout_toRightOf="@id/like_num"
+        android:paddingLeft="2dp"
+        android:paddingTop="4dp"
+        android:paddingRight="2dp"
+        android:paddingBottom="2dp"
+        android:src="@mipmap/icon_collection_gray" />
+
+    <TextView
+        android:id="@+id/collection_num"
+        android:layout_width="45dp"
+        android:layout_height="28dp"
+        android:layout_alignTop="@+id/icon_collection"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/icon_collection"
         android:gravity="center_vertical"
         android:textColor="@color/textColor_mainTitle"
         android:textSize="10sp" />

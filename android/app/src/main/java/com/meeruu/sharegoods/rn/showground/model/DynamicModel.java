@@ -91,5 +91,8 @@ public class DynamicModel implements IShowgroundModel {
         }
     }
 
+    @Override
+    public void unCollection(String showNo, BaseCallback callback) {
 
+    }
 }

@@ -1,7 +1,10 @@
 package com.meeruu.sharegoods.rn.showground.adapter;
 
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -14,6 +17,7 @@ import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
 import com.meeruu.sharegoods.rn.showground.utils.NumUtils;
+import com.meeruu.sharegoods.rn.showground.utils.VideoCoverUtils;
 
 import static com.meeruu.sharegoods.rn.showground.adapter.ShowRecommendAdapter.userImgWH;
 import static com.meeruu.sharegoods.rn.showground.adapter.ShowRecommendAdapter.videoOrImageWH;
@@ -48,19 +52,26 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
             userIcon.setTag(userUrl);
         }
         final SimpleDraweeView imageView = helper.getView(R.id.showground_item_image);
-        float width = 1;
-        float height = 1;
+        final ImageView playIcon = helper.getView(R.id.icon_play);
+        final FrameLayout content = helper.getView(R.id.cover_wrapper);
+        double width = 1;
+        double height = 1;
         String imgUrl = null;
+        Drawable drawable = mContext.getResources().getDrawable(R.drawable.black_transparent);
         if (item.getResource() != null) {
             if (item.getShowType() == 3) {
                 imgUrl = item.getVideoCover();
-                width = videoOrImageWH;
-                height = videoOrImageWH;
+                width = item.getCoverWidth();
+                height = item.getCoverHeight();
+                playIcon.setVisibility(View.VISIBLE);
+                content.setForeground(drawable);
             } else {
                 NewestShowGroundBean.DataBean.ResourceBean resourceBean = item.getResource().get(0);
                 imgUrl = resourceBean.getBaseUrl();
                 width = (float) resourceBean.getWidth();
                 height = (float) resourceBean.getHeight();
+                playIcon.setVisibility(View.GONE);
+                content.setForeground(null);
             }
         }
 
@@ -82,7 +93,7 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
 
         if (!TextUtils.equals(imgUrl, tag)) {
             imageView.setTag(imgUrl);
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) imageView.getLayoutParams();
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) imageView.getLayoutParams();
             params.width = realWidth;
             params.height = realHeight;
             imageView.setLayoutParams(params);

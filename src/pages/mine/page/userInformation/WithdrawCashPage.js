@@ -95,6 +95,7 @@ function formatMoneyString(num, needSymbol = true) {
 export default class WithdrawCashPage extends BasePage {
     constructor(props) {
         super(props);
+        user.availableBalance = 10000;
         this.state = {
             phone: '',
             pwd: '',

@@ -6,7 +6,6 @@ import {
 } from 'react-native';
 import BasePage from '../../BasePage';
 import DetailBottomView from './components/DetailBottomView';
-import PriceExplain from './components/PriceExplain';
 import SelectionPage from './SelectionPage';
 import ScreenUtils from '../../utils/ScreenUtils';
 import shopCartCacheTool from '../shopCart/model/ShopCartCacheTool';
@@ -29,9 +28,14 @@ import {
     HeaderItemView,
     ParamItemView,
     PromoteItemView,
-    ServiceItemView, ShowTopView, SuitItemView
+    ServiceItemView, ShowTopView, PriceExplain
 } from './components/ProductDetailItemView';
-import DetailHeaderScoreView from './components/DetailHeaderScoreView';
+import {
+    ProductDetailSuitFixedView,
+    suitType,
+    ProductDetailSuitChooseView
+} from './components/ProductDetailSuitView';
+import ProductDetailScoreView from './components/ProductDetailScoreView';
 import DetailParamsModal from './components/DetailParamsModal';
 import { ContentSectionView, SectionNullView } from './components/ProductDetailSectionView';
 import ProductDetailNavView from './components/ProductDetailNavView';
@@ -155,7 +159,7 @@ export default class ProductDetailPage extends BasePage {
 
     //选择规格确认
     _selectionViewConfirm = (amount, skuCode, item) => {
-        const { prodCode, name, originalPrice, productIsPromotionPrice, isGroupIn, groupActivity } = this.productDetailModel;
+        const { prodCode, name, originalPrice, productIsPromotionPrice } = this.productDetailModel;
         const { goType } = this.state;
         if (goType === 'gwc') {
             shopCartCacheTool.addGoodItem({
@@ -173,35 +177,6 @@ export default class ProductDetailPage extends BasePage {
                 shoppingcartEntrance: 1
             });
         } else if (goType === 'buy') {
-            if (isGroupIn) {
-                const { subProductList, code } = groupActivity;
-                let orderProductList = (subProductList || []).map((subProduct) => {
-                    const { skuList, prodCode } = subProduct || {};
-                    const skuItem = (skuList || [])[0];
-                    const { skuCode } = skuItem || {};
-                    return {
-                        activityCode: code,
-                        batchNo: 1,
-                        productCode: prodCode,
-                        skuCode: skuCode,
-                        quantity: amount
-                    };
-                });
-                this.$navigate(RouterMap.ConfirOrderPage, {
-                    orderParamVO: {
-                        orderType: 1,
-                        source: 2,
-                        orderProducts: [{
-                            activityCode: code,
-                            batchNo: 1,
-                            productCode: prodCode,
-                            skuCode: skuCode,
-                            quantity: amount
-                        }, ...orderProductList]
-                    }
-                });
-                return;
-            }
             const { type, couponId } = this.params;
             const { specImg, promotionPrice, price, propertyValues } = item;
             let orderProducts = [{
@@ -242,7 +217,7 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _renderItem = ({ item, index, section: { key } }) => {
-        const { productDetailCouponsViewModel, productDetailAddressModel } = this.productDetailModel;
+        const { productDetailCouponsViewModel, productDetailAddressModel, productDetailSuitModel } = this.productDetailModel;
         if (key === sectionType.sectionContent) {
             return <ContentItemView item={item}/>;
         }
@@ -256,7 +231,14 @@ export default class ProductDetailPage extends BasePage {
                                        }}/>;
             }
             case productItemType.suit: {
-                return <SuitItemView productDetailModel={this.productDetailModel}/>;
+                const { extraType } = productDetailSuitModel;
+                if (extraType === suitType.fixedSuit) {
+                    return <ProductDetailSuitFixedView productDetailSuitModel={productDetailSuitModel}/>;
+                } else if (extraType === suitType.chooseSuit) {
+                    return <ProductDetailSuitChooseView productDetailSuitModel={productDetailSuitModel}/>;
+                } else {
+                    return null;
+                }
             }
             case productItemType.coupons: {
                 return <ProductDetailCouponsView productDetailCouponsViewModel={productDetailCouponsViewModel}
@@ -289,8 +271,8 @@ export default class ProductDetailPage extends BasePage {
                 return <ProductDetailSetAddressView productDetailAddressModel={productDetailAddressModel}/>;
             }
             case productItemType.comment: {
-                return <DetailHeaderScoreView pData={this.productDetailModel}
-                                              navigation={this.props.navigation}/>;
+                return <ProductDetailScoreView pData={this.productDetailModel}
+                                               navigation={this.props.navigation}/>;
             }
             case productItemType.priceExplain: {
                 return <PriceExplain/>;
@@ -364,8 +346,6 @@ export default class ProductDetailPage extends BasePage {
             <ShowTopView productDetailModel={this.productDetailModel}
                          toTopAction={this._onPressToTop}/>
             <IntervalMsgView pageType={IntervalType.productDetail}/>
-            <ProductDetailCouponsWindowView ref={(ref) => this.ProductDetailCouponsWindowView = ref}
-                                            productDetailCouponsViewModel={productDetailCouponsViewModel}/>
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             defaultModalVisible={this.params.openShareModal}
@@ -401,6 +381,8 @@ export default class ProductDetailPage extends BasePage {
             <DetailHeaderServiceModal ref={(ref) => this.DetailHeaderServiceModal = ref}/>
             <DetailPromoteModal ref={(ref) => this.DetailPromoteModal = ref}/>
             <DetailParamsModal ref={(ref) => this.DetailParamsModal = ref}/>
+            <ProductDetailCouponsWindowView ref={(ref) => this.ProductDetailCouponsWindowView = ref}
+                                            productDetailCouponsViewModel={productDetailCouponsViewModel}/>
         </View>;
     };
 

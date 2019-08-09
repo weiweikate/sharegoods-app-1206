@@ -5,6 +5,8 @@ buildscript {
         mavenCentral()
         google()
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        //阿里云上传maven库
+        maven {url 'https://dl.bintray.com/calvinning/maven'}
         //添加 Sensors Analytics maven 库地址
         maven {
             url 'https://dl.bintray.com/zouyuhan/maven'
@@ -23,6 +25,8 @@ allprojects {
         mavenCentral()
         google()
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        //阿里云上传maven库
+        maven {url 'https://dl.bintray.com/calvinning/maven'}
         //添加 Sensors Analytics maven 库地址
         maven { url 'https://dl.bintray.com/zouyuhan/maven' }
         maven { url 'https://jitpack.io' }

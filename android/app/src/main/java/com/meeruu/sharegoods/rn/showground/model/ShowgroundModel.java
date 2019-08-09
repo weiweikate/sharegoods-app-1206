@@ -66,4 +66,9 @@ public class ShowgroundModel implements IShowgroundModel {
     public void deleteDynamic(String showNo, BaseCallback callback) {
 
     }
+
+    @Override
+    public void unCollection(String showNo, BaseCallback callback) {
+
+    }
 }

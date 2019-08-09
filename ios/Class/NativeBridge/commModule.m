@@ -14,6 +14,7 @@
 #import "GongMaoVC.h"
 #import "CommentTool.h"
 #import "IJSVideoManager.h"
+#import "NetWorkTool.h"
 
 #define AppVersion [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]
 
@@ -441,4 +442,30 @@ RCT_EXPORT_METHOD(saveImageToPhotoAlbumWithUrl:(NSString *) url
   }];
 }
 
+  /**
+   @QRCodeStr  下载保存视频到本地相册
+   onSuccess(NSSting) 成功的回调
+   onError(NSSting)   失败的回调
+   */
+RCT_EXPORT_METHOD(saveVideoToPhotoAlbumWithUrl:(NSString *) url
+                    resolve:(RCTPromiseResolveBlock)resolve
+                    reject:(RCTPromiseRejectBlock)reject){
+  [NetWorkTool downloadWithPath:url success:^(id json) {
+    NSLog(@"jsonFilePath = %@",json);
+    [[JRShareManager sharedInstance] saveVideo:json withCallBackBlock:^(NSString *errorStr) {
+      NSLog(@"errorStr = %@",errorStr);
+      resolve(errorStr);
+    }];
+
+  } failure:^(NSError *error) {
+      NSLog(@"errorStr = %@",error);
+      reject(nil,nil,error);
+  } progress:^(CGFloat progress) {
+    
+  }];
+
+  
+
+}
+  
 @end

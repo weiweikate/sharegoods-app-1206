@@ -22,6 +22,10 @@
 #import "JRServiceBridge.h"
 #import "MRImageVideoManager.h"
 
+#import "AliyunMediaConfig.h"
+#import "AliyunMagicCameraViewController.h"
+#import "AliyunIConfig.h"
+
 
 @implementation AppDelegate (ConfigVC)
 
@@ -39,12 +43,32 @@
                                                initialProperties:@{@"statusBarHeight":[NSNumber numberWithFloat:kStatusBarHeight]}
                                                    launchOptions:launchOptions];
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
- 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   JRBaseVC *rootViewController = [JRBaseVC new];
   rootViewController.view = rootView;
   JRBaseNavVC * nav = [[JRBaseNavVC alloc] initWithRootViewController:rootViewController];
   self.window.rootViewController = nav;
+//
+//  AliyunMediaConfig * _mediaConfig;
+//  _mediaConfig = [AliyunMediaConfig defaultConfig];
+//  _mediaConfig.minDuration = 2.0;
+//  _mediaConfig.maxDuration = 5;
+//  _mediaConfig.fps = 25;
+//  _mediaConfig.gop = 5;
+//  _mediaConfig.cutMode = AliyunMediaCutModeScaleAspectFill;
+//  _mediaConfig.videoOnly = NO;
+//  _mediaConfig.backgroundColor = [UIColor blackColor];
+//
+//
+//  AliyunIConfig * config = [[AliyunIConfig alloc]init];
+//  [AliyunIConfig setConfig:config];
+//
+//  AliyunMagicCameraViewController * controller = [[AliyunMagicCameraViewController alloc]init];
+//  [controller setValue:_mediaConfig forKey:@"quVideo"];
+//
+//  JRBaseNavVC * navVC = [[JRBaseNavVC alloc]initWithRootViewController:controller];
+//  [navVC setNavigationBarHidden:YES];
+//   self.window.rootViewController = navVC;
   [self.window makeKeyAndVisible];
 //  [NSThread sleepForTimeInterval:3];
 //  [self createDebugSuspensionButton];

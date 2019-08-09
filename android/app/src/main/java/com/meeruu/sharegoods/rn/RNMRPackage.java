@@ -16,9 +16,12 @@ import com.meeruu.sharegoods.rn.module.PhoneAuthenModule;
 import com.meeruu.sharegoods.rn.module.QRCodeModule;
 import com.meeruu.sharegoods.rn.popmodal.PopModalManager;
 import com.meeruu.sharegoods.rn.showground.RecyclerViewHeaderManager;
+import com.meeruu.sharegoods.rn.showground.ShowAttentionViewManager;
 import com.meeruu.sharegoods.rn.showground.ShowDynamicViewManager;
 import com.meeruu.sharegoods.rn.showground.ShowGroundViewManager;
+import com.meeruu.sharegoods.rn.showground.ShowModule;
 import com.meeruu.sharegoods.rn.showground.ShowRecommendViewManager;
+import com.meeruu.sharegoods.rn.showground.ShowVideoViewManager;
 import com.meeruu.sharegoods.rn.viewmanager.MRBannerViewManager;
 
 import java.util.ArrayList;
@@ -39,6 +42,7 @@ public class RNMRPackage implements ReactPackage {
     private AnalyticsModule analyticsModule;
     private PhoneAuthenModule phoneAuthenModule;
     private JPushModule jPushModule;
+    private ShowModule showModule;
 
     /**
      * 创建Native Module
@@ -57,7 +61,7 @@ public class RNMRPackage implements ReactPackage {
         analyticsModule = new AnalyticsModule(reactContext);
         phoneAuthenModule = new PhoneAuthenModule(reactContext);
         jPushModule = new JPushModule(reactContext);
-
+        showModule = new ShowModule(reactContext);
         modules.add(mModule);
         modules.add(qyChatModule);
         modules.add(appPayModule);
@@ -66,6 +70,7 @@ public class RNMRPackage implements ReactPackage {
         modules.add(analyticsModule);
         modules.add(phoneAuthenModule);
         modules.add(jPushModule);
+        modules.add(showModule);
 
         return modules;
     }
@@ -73,14 +78,15 @@ public class RNMRPackage implements ReactPackage {
 
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
-        return Arrays.<ViewManager>asList(
-                new PopModalManager(),
+        return Arrays.<ViewManager>asList(new PopModalManager(),
                 new MRLoadingViewManager(),
                 new MRBannerViewManager(),
                 new RecyclerViewHeaderManager(),
                 new ShowGroundViewManager(),
                 new ShowRecommendViewManager(),
                 new ShowDynamicViewManager(),
+                new ShowVideoViewManager(),
+                new ShowAttentionViewManager(),
                 new DottedLineManager());
     }
 

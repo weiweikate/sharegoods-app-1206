@@ -186,13 +186,13 @@ export default class RequestDetailPage extends BasePage {
         if (msg.action === 'exitShowAlert') {
             this.webType = 'exitShowAlert';
             let parmas = msg.params || {};
-            this.manager.getAd(parmas.showPage, parmas.showPageValue, homeType.Alert);
+            this.manager.getAd(parmas.showPage, parmas.showPageValue, homeType.Alert, this.currentUrl);
             return;
         }
 
         if (msg.action === 'showFloat') {
             let parmas = msg.params || {};
-            this.luckyIcon && this.luckyIcon.getLucky(parmas.showPage, parmas.showPageValue);
+            this.luckyIcon && this.luckyIcon.getLucky(parmas.showPage, parmas.showPageValue,  this.currentUrl);
             return;
         }
 
@@ -245,6 +245,7 @@ export default class RequestDetailPage extends BasePage {
                         if (event && event.nativeEvent) {
                             this.canGoBack = event.nativeEvent.canGoBack;
                             this.$NavigationBarResetTitle(this.state.title || event.nativeEvent.title);
+                            this.currentUrl = event.nativeEvent.url;
                         }
                     }}
                     postMessage={msg => this._postMessage(msg)}

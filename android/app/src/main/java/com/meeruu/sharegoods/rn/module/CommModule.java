@@ -10,6 +10,7 @@ import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 
@@ -50,6 +51,7 @@ import com.meeruu.commonlib.utils.SDCardUtils;
 import com.meeruu.commonlib.utils.SPCacheUtils;
 import com.meeruu.commonlib.utils.SecurityUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
+import com.meeruu.commonlib.utils.VideoUtils;
 import com.meeruu.sharegoods.bean.NetCommonParamsBean;
 import com.meeruu.sharegoods.event.HideSplashEvent;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
@@ -98,8 +100,7 @@ public class CommModule extends ReactContextBaseJavaModule {
         this.mContext.addActivityEventListener(new ActivityEventListener() {
             @Override
             public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
-                if (gongMao != null && requestCode == ParameterUtils.REQUEST_CODE_GONGMAO
-                        && resultCode == ParameterUtils.SIGN_OK) {
+                if (gongMao != null && requestCode == ParameterUtils.REQUEST_CODE_GONGMAO && resultCode == ParameterUtils.SIGN_OK) {
                     gongMao.resolve(null);
                 }
             }
@@ -506,8 +507,7 @@ public class CommModule extends ReactContextBaseJavaModule {
                 return;
             }
         }
-
-        Bitmap bmp = ThumbnailUtils.createVideoThumbnail(curPath, MediaStore.Images.Thumbnails.MINI_KIND);
+        Bitmap bmp = VideoUtils.getNetVideoBitmap(curPath);
         if (bmp != null) {
             String returnPath = BitmapUtils.saveImageToCache(bmp, "video.png", filePath);
             if (bmp != null && !bmp.isRecycled()) {
@@ -547,8 +547,7 @@ public class CommModule extends ReactContextBaseJavaModule {
                 }
                 String exten = FileUtils.getExtensionName(url);
                 String filename = FileUtils.getFileNameNoEx(file.getName());
-                final String storePath = SDCardUtils.getFileDirPath(mContext, "MR/picture")
-                        .getAbsolutePath() + File.separator + filename + "." + exten;
+                final String storePath = SDCardUtils.getFileDirPath(mContext, "MR/picture").getAbsolutePath() + File.separator + filename + "." + exten;
                 try {
                     FileUtils.copyFile(file.getAbsolutePath(), storePath);
                 } catch (Exception e) {
@@ -576,7 +575,6 @@ public class CommModule extends ReactContextBaseJavaModule {
     }
 
 
-    //TODO 视频下载
     @ReactMethod
     public void saveVideoToPhotoAlbumWithUrl(final String url, final Promise promise) {
         if (TextUtils.isEmpty(url)) {
@@ -584,10 +582,10 @@ public class CommModule extends ReactContextBaseJavaModule {
             return;
         }
 
-        final String storePath = SDCardUtils.getFileDirPath(mContext, "MR/picture")
-                .getAbsolutePath();
-
-        RequestManager.getInstance().downLoadFile(url, storePath, new ReqProgressCallBack<Object>() {
+        final String storePath = SDCardUtils.getFileDirPath(mContext, "MR/picture").getAbsolutePath();
+        final String fileName = url.substring(url.lastIndexOf('/') + 1);
+        final String destFile = storePath+ File.separator +fileName;
+        RequestManager.getInstance().downLoadFile(url, destFile, new ReqProgressCallBack<Object>() {
             @Override
             public void onErr(String errCode, String msg) {
                 promise.reject(msg);
@@ -595,7 +593,11 @@ public class CommModule extends ReactContextBaseJavaModule {
 
             @Override
             public void onSuccess(Object result) {
-                //
+                Uri uri = Uri.parse("file://" + destFile);
+                Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                intent.setData(uri);
+                mContext.sendBroadcast(intent);
+                promise.resolve(null);
             }
 
             @Override
@@ -603,9 +605,6 @@ public class CommModule extends ReactContextBaseJavaModule {
 
             }
         });
-
-        // 预加载原图
-
     }
 
     @ReactMethod
@@ -627,8 +626,7 @@ public class CommModule extends ReactContextBaseJavaModule {
     public void event2RNHtmlPage(Event.MR2HTMLEvent event) {
         WritableMap map = new WritableNativeMap();
         map.putString("uri", event.getUrl());
-        this.mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                .emit("Event_navigateHtmlPage", map);
+        this.mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("Event_navigateHtmlPage", map);
     }
 
     @Nullable

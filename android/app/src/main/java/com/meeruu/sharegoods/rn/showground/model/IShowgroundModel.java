@@ -11,4 +11,6 @@ public interface IShowgroundModel {
     void setParams(Map map);
 
     void deleteDynamic(String showNo,BaseCallback callback);
+
+    void unCollection(String showNo,BaseCallback callback);
 }

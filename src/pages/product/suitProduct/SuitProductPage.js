@@ -1,84 +1,197 @@
 import React from 'react';
-import { View, FlatList } from 'react-native';
+import { View, ScrollView, Image, StyleSheet } from 'react-native';
 import BasePage from '../../../BasePage';
-import { AmountItemView, MainProductView, SubProductView } from './components/SuitProductItemView';
+import { SubProductView } from './components/SuitProductItemView';
 import SuitProductModel from './SuitProductModel';
 import { observer } from 'mobx-react';
 import SuitProductBottomView from './components/SuitProductBottomView';
 import RouterMap from '../../../navigation/RouterMap';
 import user from '../../../model/user';
+import { MRText } from '../../../components/ui';
+import DesignRule from '../../../constants/DesignRule';
+import { AutoHeightImage } from '../../../components/ui/AutoHeightImage';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import SuitExplainModal from './components/SuitExplainModal';
+import NoMoreClick from '../../../components/ui/NoMoreClick';
+import StringUtils from '../../../utils/StringUtils';
+import res from '../res/product';
+import apiEnvironment from '../../../api/ApiEnvironment';
+import { trackEvent } from '../../../utils/SensorsTrack';
+import CommShareModal from '../../../comm/components/CommShareModal';
+
+const { share } = res.pDetailNav;
 
 @observer
 export default class SuitProductPage extends BasePage {
-
     suitProductModel = new SuitProductModel();
 
     $navigationBarOptions = {
         title: '优惠套装'
     };
 
+    $NavBarRenderRightItem = () => {
+        const { isSuitFixed } = this.suitProductModel;
+        if (isSuitFixed) {
+            return (
+                <NoMoreClick style={styles.rightNavBtn} onPress={() => {
+                    this.shareModal && this.shareModal.open();
+                }}>
+                    <Image source={share}/>
+                </NoMoreClick>
+            );
+        }
+        return null;
+    };
+
     constructor(props) {
         super(props);
-        const { productDetailModel } = this.params;
-        this.suitProductModel.setSubProductArr(productDetailModel);
+        const { productDetailSuitModel, packageIndex } = this.params;
+        this.suitProductModel.setProductArr(productDetailSuitModel, packageIndex);
     }
 
-    _renderItem = ({ item }) => {
-        return <SubProductView item={item}
-                               suitProductModel={this.suitProductModel}/>;
-    };
+    componentDidMount() {
+        const { packageItem, isSuitFixed } = this.suitProductModel;
+        const { content } = packageItem;
+        if (isSuitFixed && StringUtils.isNoEmpty(content)) {
+            this.$NavigationBarResetTitle(content);
+        }
+    }
 
     _bottomAction = () => {
         if (!user.isLogin) {
             this.gotoLoginPage();
             return;
         }
-        const { groupCode, selectedAmount, mainProduct } = this.suitProductModel;
-        let orderProductList = this.suitProductModel.selectedItems.map((item) => {
+        const {
+            activityCode, selectedAmount, packageItem, suitProducts,
+            selectedProductSkuS, isSuitFixed, selected_products
+        } = this.suitProductModel;
+        const { groupCode, maxPurchaseTimes, purchaseTimes } = packageItem;
+        //有限购次数&&已买次数>=限购次数
+        if (maxPurchaseTimes && purchaseTimes >= maxPurchaseTimes) {
+            this.$toastShow(`最多可购买${maxPurchaseTimes}次，已超过购买次数`);
+        }
+        if (isSuitFixed) {
+            if (suitProducts.length !== selectedProductSkuS.length) {
+                this.$toastShow('还有商品未选择规格');
+                return;
+            }
+        } else {
+            let hasMainProduct;
+            for (const item of selected_products) {
+                if (item.isMainProduct) {
+                    hasMainProduct = true;
+                    break;
+                }
+            }
+            if (!hasMainProduct) {
+                this.$toastShow('主商品未选择规格');
+                return;
+            }
+            if (selectedProductSkuS.length < 2) {
+                this.$toastShow('至少选择一件搭配商品');
+                return;
+            }
+        }
+        let orderProductList = selectedProductSkuS.map((item) => {
             const { prodCode, skuCode } = item;
             return {
-                activityCode: groupCode,
-                batchNo: 1,
+                activityCode: activityCode,
+                batchNo: groupCode,
                 productCode: prodCode,
                 skuCode: skuCode,
                 quantity: selectedAmount
             };
         });
-        const { prodCode, skuCode } = mainProduct.selectedSkuItem || {};
-        if (!prodCode) {
-            this.$toastShow('还有商品未选择规格');
-            return;
-        }
-        if (orderProductList.length === 0) {
-            this.$toastShow('至少选择一件搭配商品');
-            return;
-        }
         this.$navigate(RouterMap.ConfirOrderPage, {
             orderParamVO: {
                 orderType: 1,
                 source: 2,
-                orderProducts: [{
-                    activityCode: groupCode,
-                    batchNo: 1,
-                    productCode: prodCode,
-                    skuCode: skuCode,
-                    quantity: selectedAmount
-                }, ...orderProductList]
+                orderProducts: [...orderProductList]
             }
         });
     };
 
     _render() {
-        const { subProductArr } = this.suitProductModel;
-        return <View style={{ flex: 1 }}>
-            <AmountItemView suitProductModel={this.suitProductModel}/>
-            <MainProductView suitProductModel={this.suitProductModel}/>
-            <FlatList data={subProductArr}
-                      keyExtractor={(item, index) => item + index}
-                      renderItem={this._renderItem}
-                      initialNumToRender={5}
-            />
-            <SuitProductBottomView suitProductModel={this.suitProductModel} bottomAction={this._bottomAction}/>
-        </View>;
+        const { mainProduct } = this.params.productDetailSuitModel;
+        const { prodCode } = mainProduct;
+        const { suitProducts, packageItem, afterSaleLimitText, priceRetailTotal, priceTotal } = this.suitProductModel;
+        const totalProduct = suitProducts || [];
+        const { image, afterSaleTip, shareContent } = packageItem;
+        return (
+            <View style={styles.container}>
+                <ScrollView>
+                    <AutoHeightImage source={{ uri: image }} style={styles.imgView}
+                                     borderRadius={5}
+                                     ImgWidth={ScreenUtils.width - 30}/>
+                    <View style={styles.whiteView}>
+                        {
+                            totalProduct.map((item, index) => {
+                                return <SubProductView item={item}
+                                                       key={index}
+                                                       suitProductModel={this.suitProductModel}/>;
+                            })
+                        }
+                    </View>
+                    <NoMoreClick style={styles.iconView} onPress={() => {
+                        this.SuitExplainModal.open(afterSaleLimitText, afterSaleTip);
+                    }}>
+                        <MRText style={styles.iconText}>{afterSaleLimitText}</MRText>
+                        <Image style={styles.iconImg} source={res.suitProduct.suitWhy}/>
+                    </NoMoreClick>
+                </ScrollView>
+                <SuitProductBottomView suitProductModel={this.suitProductModel} bottomAction={this._bottomAction}/>
+                <SuitExplainModal ref={(ref) => this.SuitExplainModal = ref}/>
+
+                <CommShareModal ref={(ref) => this.shareModal = ref}
+                                trackParmas={{
+                                    spuCode: prodCode,
+                                    spuName: shareContent
+                                }}
+                                trackEvent={trackEvent.Share}
+                                type={'Image'}
+                                imageJson={{
+                                    monthSaleType: 5,
+                                    imageUrlStr: image,
+                                    titleStr: `${shareContent}`,
+                                    retailPrice: `套餐价：￥${priceRetailTotal}`,
+                                    priceType: [],
+                                    priceStr: `￥${priceTotal}`,
+                                    QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`,
+                                    shareMoney: '',
+                                    spellPrice: ''
+                                }}
+                                webJson={{
+                                    title: shareContent,
+                                    dec: '套餐',
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`,
+                                    thumImage: image
+                                }}/>
+            </View>
+        );
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    },
+    rightNavBtn: {
+        justifyContent: 'center', alignItems: 'center', height: 44, width: 44
+    },
+    imgView: {
+        marginVertical: 10, marginLeft: 15
+    },
+    whiteView: {
+        borderRadius: 5, marginTop: 10
+    },
+    iconView: {
+        justifyContent: 'flex-end', flexDirection: 'row', alignItems: 'center'
+    },
+    iconText: {
+        color: DesignRule.textColor_instruction, fontSize: 10, marginRight: 5
+    },
+    iconImg: {
+        width: 16, height: 16, marginVertical: 10, marginRight: 15
+    }
+});

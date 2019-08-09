@@ -176,7 +176,8 @@ class PictureVideoUtils {
         let upload = () => {
             //commonAPI/ossClient
             //user/
-            let url = apiEnvironment.getCurrentHostUrl();
+            // let url = apiEnvironment.getCurrentHostUrl();
+            let url = 'https://testapi.sharegoodsmall.com/gateway';
             request.setBaseUrl(url);
             let promises = [];
 
@@ -223,6 +224,32 @@ class PictureVideoUtils {
         });
         NativeModules.commModule.RN_ImageCompression(paths, sizes, 1024 * 1024 * 1, upload);
     };
+
+    uploadSingleImage = (image, callback) => {
+        let url = apiEnvironment.getCurrentHostUrl();
+        // url ='https://testapi.sharegoodsmall.com/gateway';
+        request.setBaseUrl(url);
+        let datas = {
+            type: 'image/png',
+            uri: 'file://' + image,
+            name: new Date().getTime() + 'c.png'
+        };
+        let formData = new FormData();
+        formData.append('file', datas);
+        let upload = () => {
+            request.upload('/common/upload/oss', datas, {}).then((res) => {
+                if (res.code === 10000 && res.data) {
+                    callback({ url: res.data });
+                } else {
+                    callback(null);
+                }
+            }).catch((error)=>{
+            });
+        };
+        NativeModules.commModule.RN_ImageCompression([image], null, 1024 * 1024 * 1, upload);
+    };
+
 }
+
 
 export default new PictureVideoUtils();

@@ -2,6 +2,7 @@ package com.meeruu.sharegoods.rn.showground;
 
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 
@@ -11,6 +12,8 @@ import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
+import com.meeruu.sharegoods.R;
+import com.meeruu.sharegoods.rn.showground.widgets.usercenter.UserCenterView;
 
 import java.util.Map;
 
@@ -31,28 +34,35 @@ public class ShowDynamicViewManager extends ViewGroupManager<ViewGroup> {
 
     @Override
     protected ViewGroup createViewInstance(ThemedReactContext reactContext) {
-        ShowDynamicView showGroundView = new ShowDynamicView();
-        ViewGroup viewGroup = showGroundView.getShowDynamicView(reactContext);
-        viewGroup.setTag(showGroundView);
-        return viewGroup;
+        UserCenterView userCenter = new UserCenterView();
+        ViewGroup userCenterView = userCenter.getUserCenterView(reactContext);
+        userCenterView.setTag(userCenter);
+        return userCenterView;
 
     }
 
 
-    @ReactProp(name = "params")
-    public void setParams(View view, ReadableMap map) {
+//    @ReactProp(name = "params")
+//    public void setParams(View view, ReadableMap map) {
+//        Object object = view.getTag();
+//        if (object != null && object instanceof ShowDynamicView) {
+//            ((ShowDynamicView) object).setParams(map.toHashMap());
+//        }
+//    }
+
+    @ReactProp(name = "userType")
+    public void setUserType(View view, String s) {
         Object object = view.getTag();
-        if (object != null && object instanceof ShowDynamicView) {
-            ((ShowDynamicView) object).setParams(map.toHashMap());
+        if (object != null && object instanceof UserCenterView) {
+            ((UserCenterView) object).setUserType(s,view);
         }
     }
 
     @Override
     public void addView(ViewGroup parent, View child, int index) {
-        Object object = parent.getTag();
-        if (object != null && object instanceof ShowDynamicView) {
-            ((ShowDynamicView) object).addHeader(child);
-        }
+        ViewGroup headerWrapper = parent.findViewById(R.id.header_wrapper);
+        headerWrapper.removeAllViews();
+        headerWrapper.addView(child);
     }
 
     @Nullable
@@ -106,13 +116,16 @@ public class ShowDynamicViewManager extends ViewGroupManager<ViewGroup> {
     @Override
     public Map<String, Object> getExportedCustomBubblingEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
-                .put("MrShowGroundOnItemPressEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onItemPress")))
+                .put("MrOnPersonItemPressEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onPersonItemPress")))
                 .put("MrShowGroundOnStartRefreshEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onStartRefresh")))
                 .put("MrShowGroundOnStartScrollEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onStartScroll")))
                 .put("MrShowGroundOnEndScrollEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onEndScroll")))
                 .put("MrNineClickEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onNineClick")))
                 .put("MrShowScrollStateChangeEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onScrollStateChanged")))
                 .put("MrScrollY", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onScrollY")))
+                .put("MrNavStatusEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onPersonChangeNav")))
+                .put("MrGoCollectionEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onPersonCollection")))
+                .put("MrGoPublishEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onPersonPublish")))
                 .build();
     }
 

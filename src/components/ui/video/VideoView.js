@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import {
     Image,
-    NativeModules,
-    Platform,
     Slider,
     StyleSheet,
     Text,
@@ -43,7 +41,7 @@ export default class VideoView extends Component {
         super(props);
         this.state = {
             videoUrl: props.videoUrl,
-            videoCover: '',
+            videoCover: props.videoCover,
             videoWidth: screenWidth,
             videoHeight: screenWidth * 9 / 16, // 默认16：9的宽高比
             showVideoCover: true,    // 是否显示视频封面
@@ -69,11 +67,11 @@ export default class VideoView extends Component {
     }
 
     componentDidMount() {
-        NativeModules.commModule.RN_Video_Image(this.state.videoUrl).then(({ imagePath }) => {
-            this.setState({
-                videoCover: Platform.OS === 'android' ? 'file://' + imagePath : '' + imagePath
-            });
-        });
+        // NativeModules.commModule.RN_Video_Image(this.state.videoUrl).then(({ imagePath }) => {
+        //     this.setState({
+        //         videoCover: Platform.OS === 'android' ? 'file://' + imagePath : '' + imagePath
+        //     });
+        // });
     }
 
     componentWillUnmount() {

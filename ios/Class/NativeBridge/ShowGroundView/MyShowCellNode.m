@@ -26,11 +26,13 @@
     if (model.status==3||model.status==4) {
       [self setMask];
     }
+    if(model.status!=5){
+      [self addSubnode:self.deleteBtnNode];
+    }
     [self addSubnode:self.imageNode];
     [self addSubnode:self.statusImgNode];
     [self addSubnode:self.titleNode];
     [self addSubnode:self.statusNode];
-    [self addSubnode:self.deleteBtnNode];
     self.backgroundColor = [UIColor whiteColor];
     self.cornerRadius = 5;
     self.clipsToBounds = YES;
@@ -110,7 +112,7 @@
   if (!_statusNode) {
     _statusNode = [ASTextNode new];
     NSString * statusStr = @"";
-    NSString * color = @"";
+    NSString * color = @"#999999";
     if(self.model.status==1){
       statusStr = @"已发布";
       color = @"#FF0050";
@@ -120,6 +122,9 @@
     }else if (self.model.status==3){
       statusStr = @"已屏蔽";
       color = @"#999999";
+    }else if (self.model.status==5){
+      statusStr = @"转码中";
+      color = @"#3187FF";
     }
     _statusNode.attributedText = [[NSAttributedString alloc]initWithString:statusStr attributes:@{
                                                                                                       NSFontAttributeName: [UIFont systemFontOfSize:12],
