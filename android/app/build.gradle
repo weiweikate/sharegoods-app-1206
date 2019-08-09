@@ -193,7 +193,7 @@ dependencies {
     api rootProject.ext.dependencies.webpAnimated
 
     api(name: 'alipaySdk-15.5.9-20181123210657-noUtdid', ext: 'aar')
-    api project(':react-native-video')
+    api project(':@mr_react-native-video')
     api project(':react-native-linear-gradient')
     api project(':react-native-fetch-blob')
     api project(':@react-native-community_netinfo')
@@ -203,7 +203,7 @@ dependencies {
     api project(':base_adapter')
     api project(':react-native-extra-dimensions-android')
     api project(':react-native-code-push')
-    implementation project(':react-native-gesture-handler')
+    implementation project(':@mr_react-native-gesture-handler')
     implementation project(':@mr_mr-rn-storage')
     implementation project(':@mr_rn-request')
     implementation project(':@mr_rn-geolocation')

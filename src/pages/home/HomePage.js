@@ -402,7 +402,7 @@ class HomePage extends BasePage {
                     onScrollBeginDrag={() => {
                         this.luckyIcon.close();
                     }}
-                    renderAheadOffset={ScreenUtils.height}
+                    renderAheadOffset={ScreenUtils.height - ScreenUtils.headerHeight}
                     showsVerticalScrollIndicator={false}
                     removeClippedSubviews={false}
                     onScroll={this._onListViewScroll}

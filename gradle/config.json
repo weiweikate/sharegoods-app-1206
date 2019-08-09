@@ -20,8 +20,8 @@
         "bulid_path": "../node_modules/react-native-linear-gradient/android/build.gradle"
     },
     "video": {
-        "content": "apply from: '../../../android/rn-video.gradle'",
-        "bulid_path": "../node_modules/react-native-video/android-exoplayer/build.gradle"
+        "content": "apply from: '../../../../android/rn-video.gradle'",
+        "bulid_path": "../node_modules/@mr/react-native-video/android-exoplayer/build.gradle"
     },
     "extra_dimensions": {
         "content": "apply from: '../../../android/rn_extra_dimensions.gradle'",
@@ -36,8 +36,8 @@
         "bulid_path": "../node_modules/@mr/mr-rn-storage/android/build.gradle"
     },
     "rn-gesture": {
-        "content": "apply from: '../../../android/rn-gesture.gradle'",
-        "bulid_path": "../node_modules/react-native-gesture-handler/android/build.gradle"
+        "content": "apply from: '../../../../android/rn-gesture.gradle'",
+        "bulid_path": "../node_modules/@mr/react-native-gesture-handler/android/build.gradle"
     },
     "rn-netInfo": {
         "content": "apply from: '../../../../android/rn-netInfo.gradle'",
