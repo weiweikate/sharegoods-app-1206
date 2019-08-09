@@ -17,7 +17,6 @@ import com.meeruu.commonlib.customview.loopbanner.BannerLayout;
 import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.sharegoods.ui.adapter.WebBannerAdapter;
-import com.reactnative.ivpusic.imagepicker.cameralibrary.util.LogUtil;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -106,13 +105,11 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
                 adapter = (WebBannerAdapter) view.getAdapter();
                 adapter.setUrlList(null);
                 view.postDelayed(() -> {
-                    setWidth(adapter, view);
                     adapter.setUrlList(datas);
                     view.setBannerSize(adapter);
                 }, 500);
             } else {
-                adapter = new WebBannerAdapter(view.getContext(), datas);
-                setWidth(adapter, view);
+                adapter = new WebBannerAdapter(view, datas);
                 view.setAdapter(adapter);
             }
             if (!view.isPlaying()) {
@@ -130,16 +127,12 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
         }
     }
 
-    private void setWidth(WebBannerAdapter adapter, BannerLayout view) {
-        if (view.getItemWidth() > 0) {
-            adapter.setItemWidth(view.getItemWidth());
-        }
-    }
-
     @ReactProp(name = "itemWidth")
     public void setItemWidth(BannerLayout view, Integer width) {
         if (width > 0 && BaseApplication.appContext != null) {
-            view.setItemWidth(DensityUtils.dip2px(width));
+            if (view.getItemWidth() != width) {
+                view.setItemWidth(DensityUtils.dip2px(width));
+            }
         }
     }
 

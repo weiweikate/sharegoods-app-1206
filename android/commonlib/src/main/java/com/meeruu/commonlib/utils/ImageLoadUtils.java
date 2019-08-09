@@ -252,7 +252,6 @@ public class ImageLoadUtils {
             loadRoundImage(uri, view, radius);
             return;
         }
-
         view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             boolean hasMeasured = false;
 
@@ -578,7 +577,10 @@ public class ImageLoadUtils {
             requestBuilder.setResizeOptions(new ResizeOptions(ScreenUtils.getScreenWidth(), ScreenUtils.getScreenHeight() / 2));
         }
         ImageRequest request = requestBuilder.build();
-        GenericDraweeHierarchy hierarchy = new GenericDraweeHierarchyBuilder(BaseApplication.appContext.getResources()).setRoundingParams(RoundingParams.fromCornersRadius(radius)).setPlaceholderImage(R.drawable.bg_app_img).setPlaceholderImageScaleType(ScalingUtils.ScaleType.CENTER_CROP).setActualImageScaleType(ScalingUtils.ScaleType.CENTER_CROP).build();
+        GenericDraweeHierarchy hierarchy = new GenericDraweeHierarchyBuilder(BaseApplication.appContext.getResources())
+                .setRoundingParams(RoundingParams.fromCornersRadius(radius)).setPlaceholderImage(R.drawable.bg_app_img)
+                .setPlaceholderImageScaleType(ScalingUtils.ScaleType.CENTER_CROP)
+                .setActualImageScaleType(ScalingUtils.ScaleType.CENTER_CROP).build();
         DraweeController controller = Fresco.newDraweeControllerBuilder().setImageRequest(request).setOldController(view.getController()).build();
         view.setHierarchy(hierarchy);
         view.setController(controller);
