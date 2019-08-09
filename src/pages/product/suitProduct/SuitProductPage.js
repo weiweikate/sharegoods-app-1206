@@ -18,6 +18,7 @@ import res from '../res/product';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import { trackEvent } from '../../../utils/SensorsTrack';
 import CommShareModal from '../../../comm/components/CommShareModal';
+import SelectionPage from '../SelectionPage';
 
 const { share } = res.pDetailNav;
 
@@ -70,6 +71,7 @@ export default class SuitProductPage extends BasePage {
         //有限购次数&&已买次数>=限购次数
         if (maxPurchaseTimes && purchaseTimes >= maxPurchaseTimes) {
             this.$toastShow(`最多可购买${maxPurchaseTimes}次，已超过购买次数`);
+            return;
         }
         if (isSuitFixed) {
             if (suitProducts.length !== selectedProductSkuS.length) {
@@ -111,6 +113,11 @@ export default class SuitProductPage extends BasePage {
             }
         });
     };
+    _selectSkuWithSelectionPage = (productItem, changeItem) => {
+        this.SelectionPage.show(productItem, (amount, skuCode, skuItem) => {
+            changeItem(amount, skuCode, skuItem);
+        }, { unShowAmount: true });
+    };
 
     _render() {
         const { mainProduct } = this.params.productDetailSuitModel;
@@ -129,6 +136,7 @@ export default class SuitProductPage extends BasePage {
                             totalProduct.map((item, index) => {
                                 return <SubProductView item={item}
                                                        key={index}
+                                                       selectSkuWithSelectionPage={this._selectSkuWithSelectionPage}
                                                        suitProductModel={this.suitProductModel}/>;
                             })
                         }
@@ -167,6 +175,7 @@ export default class SuitProductPage extends BasePage {
                                     linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`,
                                     thumImage: image
                                 }}/>
+                <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             </View>
         );
     }
