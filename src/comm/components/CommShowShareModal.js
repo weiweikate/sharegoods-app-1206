@@ -160,9 +160,9 @@ export default class CommShowShareModal extends React.Component {
         let name = user.nickname && user.nickname.length > 8 ? user.nickname.replace(/^(\d{3})\d*(\d{4})$/, '$1****$2') : user.nickname;
         params.shareMoney && (params.shareMoney = this.getMoneyText(params.shareMoney));
         params = { headerImage: user.headImg || '', userName: name || '', ...params };
-        if (type === 'showWeb') {
+        if (type === 'show') {
             if (this.state.path.length === 0) {
-                if (type === 'showWeb') {
+                if (type === 'show') {
                     let url = params && params.imageUrlStr;
                     this.props.imageJson && (params.imageUrlStr = getSource({ uri: url }, this.imageWidth, this.imageHeight, 'lfit').uri);
                     bridge.creatShareImage(params, (path) => {
