@@ -45,7 +45,8 @@ export default class UserInfoView extends PureComponent {
             attentions: 0,
             fans: 0,
             hot: 0,
-            relationType: -1
+            relationType: -1,
+            userType:0
         };
     }
 
@@ -64,12 +65,13 @@ export default class UserInfoView extends PureComponent {
         } else {
             const { userNo = '' } = this.props.userInfo || {};
             ShowApi.getOthersInfo({ userCode: userNo }).then((data) => {
-                const { fansCount, followCount, likeCount, collectCount, relationType } = data.data;
+                const { fansCount, followCount, likeCount, collectCount, relationType,userType } = data.data;
                 this.setState({
                     relationType,
                     attentions: followCount,
                     fans: fansCount,
-                    hot: likeCount + collectCount
+                    hot: likeCount + collectCount,
+                    userType
                 });
             }).catch((err) => {
 
@@ -166,7 +168,7 @@ export default class UserInfoView extends PureComponent {
                 <ImageBackground source={EmptyUtils.isEmpty(img) ? showHeaderBg : { uri: img }}
                                  style={styles.headerContainer} blurRadius={EmptyUtils.isEmpty(img) ? 0 : 20}>
                     {icon}
-                    {(this.state.relationType !== -1 && this.props.userType !== 'mineNormal' && this.props.userType !== 'mineWriter') ?
+                    {(this.state.relationType !== -1 && this.props.userType !== 'mineNormal' && this.props.userType !== 'mineWriter' && this.state.userType !== 0) ?
                         this._attentionButton() : null
                     }
 

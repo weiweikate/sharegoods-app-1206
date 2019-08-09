@@ -17,9 +17,9 @@ import { PageLoadingState } from '../../components/pageDecorator/PageState';
 import EmptyUtils from '../../utils/EmptyUtils';
 import user from '../../model/user';
 import RouterMap, { routeNavigate, routePop,routePush } from '../../navigation/RouterMap';
+import { track, trackEvent } from '../../utils/SensorsTrack';
 import { observer } from 'mobx-react';
 import apiEnvironment from '../../api/ApiEnvironment';
-import { trackEvent } from '../../utils/SensorsTrack';
 import ProductListModal from './components/ProductListModal';
 import WhiteModel from './model/WhiteModel';
 import DesignRule from '../../constants/DesignRule';
@@ -30,8 +30,12 @@ import ShareUtil from '../../utils/ShareUtil';
 import CommShowShareModal from '../../comm/components/CommShowShareModal';
 import ShowUtils from './utils/ShowUtils';
 import DownloadUtils from './utils/DownloadUtils';
+import AddCartModel from './model/AddCartModel';
 const {px2dp} = ScreenUtils;
 const ShowVideoListView = requireNativeComponent('MrShowVideoListView');
+import shopCartCacheTool from '../shopCart/model/ShopCartCacheTool';
+import SelectionPage from '../product/SelectionPage';
+
 @observer
 export default class ShowVideoPage extends BasePage {
     $navigationBarOptions = {
@@ -85,6 +89,41 @@ export default class ShowVideoPage extends BasePage {
             });
         });
     }
+
+
+    addCart = (detail) => {
+        let addCartModel = new AddCartModel();
+
+        addCartModel.requestProductDetail(detail.prodCode, (productIsPromotionPrice) => {
+            this.setState({
+                productModalVisible: false
+            });
+            this.SelectionPage.show(addCartModel, (amount, skuCode) => {
+                const { prodCode, name, originalPrice } = addCartModel;
+                shopCartCacheTool.addGoodItem({
+                    'amount': amount,
+                    'skuCode': skuCode,
+                    'productCode': detail.prodCode
+                });
+                /*加入购物车埋点*/
+                const { showNo, userInfoVO } = detail;
+                const { userNo } = userInfoVO || {};
+                track(trackEvent.XiuChangAddToCart, {
+                    xiuChangBtnLocation: '2',
+                    xiuChangListType: '',
+                    articleCode: showNo,
+                    author: userNo,
+                    spuCode: prodCode,
+                    skuCode: skuCode,
+                    spuName: name,
+                    pricePerCommodity: originalPrice,
+                    spuAmount: amount
+                });
+            }, { productIsPromotionPrice: productIsPromotionPrice });
+        }, (error) => {
+            this.$toastShow(error.msg || '服务器繁忙');
+        });
+    };
 
     _render() {
         const { pageState } = this.state;
@@ -247,6 +286,8 @@ export default class ShowVideoPage extends BasePage {
                                                 dec: '好物不独享，内有惊喜福利~'
                                             }}
                         /> : null}
+                    <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
+
                     {(detail && detail.products) ? <ProductListModal visible={this.state.productModalVisible}
                                                                      pressProduct={(prodCode) => {
                                                                          this.setState({
