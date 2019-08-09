@@ -10,7 +10,6 @@ import { observer } from 'mobx-react';
 import { routePush } from '../../../../navigation/RouterMap';
 import RouterMap from '../../../../navigation/RouterMap';
 import StringUtils from '../../../../utils/StringUtils';
-import SelectionPage from '../../SelectionPage';
 
 const { px2dp } = ScreenUtils;
 const { selected, un_selected, selected_sku, suitSaleOut } = res.suitProduct;
@@ -19,11 +18,16 @@ const { selected, un_selected, selected_sku, suitSaleOut } = res.suitProduct;
 export class SubProductView extends Component {
 
     _selectSku = (productItem) => {
+        const { defaultSkuItem } = productItem;
         const { suitProductModel } = this.props;
         const { changeItemWithSku } = suitProductModel;
-        this.SelectionPage.show(productItem, (amount, skuCode, skuItem) => {
+        if (defaultSkuItem) {
+            changeItemWithSku({ productItem, skuItem: defaultSkuItem });
+            return;
+        }
+        this.props.selectSkuWithSelectionPage(productItem, (amount, skuCode, skuItem) => {
             changeItemWithSku({ productItem, skuItem });
-        }, { unShowAmount: true });
+        });
     };
 
     _unSelectSku = (productItem) => {
@@ -92,7 +96,6 @@ export class SubProductView extends Component {
                         <MRText style={mStyles.specAmountText}>x{selectedAmount}</MRText>
                     </View>
                 </NoMoreClick>
-                <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             </View>
         );
     }

@@ -178,7 +178,7 @@ const suitItemStyle = StyleSheet.create({
 });
 
 export class ProductDetailSuitChooseView extends Component {
-    _renderItem = ({ item }) => {
+    _renderItem = ({ item, index }) => {
         const { imgUrl, name, minPrice, skuList } = item;
         let decreaseList = (skuList || []).map((sku) => {
             return sku.promotionDecreaseAmount;
@@ -190,18 +190,18 @@ export class ProductDetailSuitChooseView extends Component {
             name,
             promotionDecreaseAmount: `立省${minDecrease}起`,
             price: `¥${minPrice || ''}起`,
-            pushCallback: this._goSuitPage.bind(this, item)
+            pushCallback: this._goSuitPage.bind(this, index)
         };
         return <SuitItemView {...props}/>;
     };
 
-    _goSuitPage = () => {
+    _goSuitPage = (packageIndex) => {
         if (!user.isLogin) {
             routeNavigate(RouterMap.LoginPage);
             return;
         }
-        const { productDetailModel } = this.props;
-        routePush(RouterMap.SuitProductPage, { productDetailModel });
+        const { productDetailSuitModel } = this.props;
+        routePush(RouterMap.SuitProductPage, { productDetailSuitModel, packageIndex });
     };
 
     render() {
@@ -214,7 +214,7 @@ export class ProductDetailSuitChooseView extends Component {
                 </View>
                 <FlatList
                     style={SuitChooseStyles.flatList}
-                    data={packages[0].subProductList || []}
+                    data={packages[0].subProducts || []}
                     keyExtractor={(item) => item.prodCode + ''}
                     renderItem={this._renderItem}
                     horizontal={true}

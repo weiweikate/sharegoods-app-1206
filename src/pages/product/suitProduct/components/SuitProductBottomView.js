@@ -31,11 +31,12 @@ export default class SuitProductBottomView extends Component {
                         </View>
                         <View style={styles.amountRight}>
                             <NoMoreClick style={styles.amountCount} onPress={subAmount}>
-                                <MRText style={{ color: DesignRule.textColor_mainTitle, fontSize: 12 }}>-</MRText>
+                                <MRText
+                                    style={{ color: selectedAmount === 1 ? DesignRule.textColor_placeholder : DesignRule.textColor_mainTitle }}>-</MRText>
                             </NoMoreClick>
                             <View style={styles.amountCountView}>
                                 <MRText style={{
-                                    color: selectedAmount === 1 ? DesignRule.textColor_placeholder : DesignRule.textColor_mainTitle,
+                                    color: DesignRule.textColor_mainTitle,
                                     fontSize: 10
                                 }}>{selectedAmount}</MRText>
                             </View>
