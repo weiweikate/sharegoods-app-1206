@@ -14,9 +14,10 @@ import com.facebook.react.uimanager.events.EventDispatcher;
 import com.meeruu.commonlib.base.BaseApplication;
 import com.meeruu.commonlib.callback.ForegroundCallbacks;
 import com.meeruu.commonlib.customview.loopbanner.BannerLayout;
-import com.meeruu.commonlib.customview.loopbanner.OnPageSelected;
 import com.meeruu.commonlib.utils.DensityUtils;
+import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.sharegoods.ui.adapter.WebBannerAdapter;
+import com.reactnative.ivpusic.imagepicker.cameralibrary.util.LogUtil;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -49,21 +50,18 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
     private void initBannerEvent(final ReactContext reactContext, final BannerLayout banner) {
         scrollToIndexEvent = new onDidScrollToIndexEvent();
         selectItemAtIndexEvent = new onDidSelectItemAtIndexEvent();
-        banner.setOnPageSelected(new OnPageSelected() {
-            @Override
-            public void pageSelected(int position) {
-                if (eventDispatcher == null) {
-                    eventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
-                }
-                if (scrollToIndexEvent == null) {
-                    scrollToIndexEvent = new onDidScrollToIndexEvent();
-                }
-                scrollToIndexEvent.setIndex(position);
-                scrollToIndexEvent.init(banner.getId());
-                try {
-                    eventDispatcher.dispatchEvent(scrollToIndexEvent);
-                } catch (AssertionError e) {
-                }
+        banner.setOnPageSelected(position -> {
+            if (eventDispatcher == null) {
+                eventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
+            }
+            if (scrollToIndexEvent == null) {
+                scrollToIndexEvent = new onDidScrollToIndexEvent();
+            }
+            scrollToIndexEvent.setIndex(position);
+            scrollToIndexEvent.init(banner.getId());
+            try {
+                eventDispatcher.dispatchEvent(scrollToIndexEvent);
+            } catch (AssertionError e) {
             }
         });
     }
@@ -73,7 +71,7 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
         private WeakReference<BannerLayout> reference;
 
 
-        public MRListener(BannerLayout view) {
+        MRListener(BannerLayout view) {
             reference = new WeakReference<>(view);
         }
 
@@ -98,6 +96,7 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
 
     @ReactProp(name = "imgUrlArray")
     public void setImgUrlArray(final BannerLayout view, ReadableArray urls) {
+        LogUtils.d("======" + urls.toString());
         if (urls != null) {
             final List datas = urls.toArrayList();
             final WebBannerAdapter adapter;
@@ -106,13 +105,10 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
                 view.set2First();
                 adapter = (WebBannerAdapter) view.getAdapter();
                 adapter.setUrlList(null);
-                view.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        setWidth(adapter, view);
-                        adapter.setUrlList(datas);
-                        view.setBannerSize(adapter);
-                    }
+                view.postDelayed(() -> {
+                    setWidth(adapter, view);
+                    adapter.setUrlList(datas);
+                    view.setBannerSize(adapter);
                 }, 500);
             } else {
                 adapter = new WebBannerAdapter(view.getContext(), datas);
@@ -122,16 +118,13 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
             if (!view.isPlaying()) {
                 view.setAutoPlaying(true);
             }
-            adapter.setOnBannerItemClickListener(new BannerLayout.OnBannerItemClickListener() {
-                @Override
-                public void onItemClick(int position) {
-                    view.setAutoPlaying(false);
-                    selectItemAtIndexEvent.init(view.getId());
-                    selectItemAtIndexEvent.setIndex(position);
-                    try {
-                        eventDispatcher.dispatchEvent(selectItemAtIndexEvent);
-                    } catch (AssertionError e) {
-                    }
+            adapter.setOnBannerItemClickListener(position -> {
+                view.setAutoPlaying(false);
+                selectItemAtIndexEvent.init(view.getId());
+                selectItemAtIndexEvent.setIndex(position);
+                try {
+                    eventDispatcher.dispatchEvent(selectItemAtIndexEvent);
+                } catch (AssertionError e) {
                 }
             });
         }
