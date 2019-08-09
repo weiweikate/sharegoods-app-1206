@@ -1,21 +1,18 @@
 package com.meeruu.sharegoods.rn.showground;
 
-import android.support.annotation.Nullable;
 import android.view.View;
-import android.view.ViewGroup;
+
+import androidx.annotation.Nullable;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReadableMap;
-import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
-import com.meeruu.sharegoods.rn.showground.adapter.LittleVideoListAdapter;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
-import com.meeruu.sharegoods.rn.showground.bean.VideoListBean;
 import com.meeruu.sharegoods.rn.showground.widgets.littlevideo.VideoListView;
 
 import java.util.ArrayList;
@@ -43,7 +40,8 @@ public class ShowVideoViewManager extends SimpleViewManager<View> {
 
         reactContext.addLifecycleEventListener(new LifecycleEventListener() {
             @Override
-            public void onHostResume() {}
+            public void onHostResume() {
+            }
 
             @Override
             public void onHostPause() {
@@ -65,29 +63,29 @@ public class ShowVideoViewManager extends SimpleViewManager<View> {
         boolean isCollect = false;
         String type = "0";
         HashMap data = map.toHashMap();
-        if(data.containsKey("isPersonal")){
+        if (data.containsKey("isPersonal")) {
             isPersonal = (boolean) data.get("isPersonal");
-            if(isPersonal){
+            if (isPersonal) {
                 isCollect = (boolean) data.get("isCollect");
             }
         }
-        if(data.containsKey("tabType")){
-            type = (String)data.get("tabType");
+        if (data.containsKey("tabType")) {
+            type = (String) data.get("tabType");
         }
 
         NewestShowGroundBean.DataBean videoListBean = JSON.parseObject(JSONObject.toJSONString(data), NewestShowGroundBean.DataBean.class);
         List<NewestShowGroundBean.DataBean> list = new ArrayList<NewestShowGroundBean.DataBean>();
         list.add(videoListBean);
-        ((VideoListView) view.getTag()).refreshData(list,isPersonal,isCollect,type);
+        ((VideoListView) view.getTag()).refreshData(list, isPersonal, isCollect, type);
     }
 
     @ReactProp(name = "isLogin")
-    public void setLogin(View view, boolean isLogin){
+    public void setLogin(View view, boolean isLogin) {
         ((VideoListView) view.getTag()).setLogin(isLogin);
     }
 
     @ReactProp(name = "userCode")
-    public void setLogin(View view, String userCode){
+    public void setLogin(View view, String userCode) {
         ((VideoListView) view.getTag()).setUserCode(userCode);
     }
 

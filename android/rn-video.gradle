@@ -21,7 +21,7 @@ dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
 //    // From node_modules
     api rootProject.ext.dependencies.rn
-    implementation rootProject.ext.dependencies.exoplayer
+    api rootProject.ext.dependencies.exoplayer
     api(rootProject.ext.dependencies.exopOKhttp) {
         exclude group: 'com.squareup.okhttp3', module: 'okhttp'
     }

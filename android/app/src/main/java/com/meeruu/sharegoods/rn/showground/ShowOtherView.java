@@ -2,16 +2,17 @@ package com.meeruu.sharegoods.rn.showground;
 
 import android.content.Context;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SimpleItemAnimator;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.facebook.react.bridge.ReactContext;
@@ -29,7 +30,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShowOtherView  implements IShowgroundView, SwipeRefreshLayout.OnRefreshListener{
+public class ShowOtherView implements IShowgroundView, SwipeRefreshLayout.OnRefreshListener {
     private EventDispatcher eventDispatcher;
     private Handler handler;
     private WeakReference<View> showgroundView;
@@ -44,7 +45,7 @@ public class ShowOtherView  implements IShowgroundView, SwipeRefreshLayout.OnRef
     private String userCode;
     private DynamicInterface dynamicInterface;
 
-    public ViewGroup getShowOtherView(ReactContext reactContext,String userCode,DynamicInterface dynamicInterface){
+    public ViewGroup getShowOtherView(ReactContext reactContext, String userCode, DynamicInterface dynamicInterface) {
         eventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
         this.userCode = userCode;
         this.dynamicInterface = dynamicInterface;
@@ -110,7 +111,7 @@ public class ShowOtherView  implements IShowgroundView, SwipeRefreshLayout.OnRef
             public void onItemClick(final BaseQuickAdapter adapter, View view1, final int position) {
                 final List<NewestShowGroundBean.DataBean> data = adapter.getData();
                 if (data != null && dynamicInterface != null) {
-                    dynamicInterface.onItemPress(data.get(position),position,true,false);
+                    dynamicInterface.onItemPress(data.get(position), position, true, false);
                 }
             }
         });
@@ -136,7 +137,7 @@ public class ShowOtherView  implements IShowgroundView, SwipeRefreshLayout.OnRef
     }
 
     private void initData() {
-        presenter = new OthersPresenter(this,userCode);
+        presenter = new OthersPresenter(this, userCode);
     }
 
     private void setEmptyText() {
@@ -213,7 +214,7 @@ public class ShowOtherView  implements IShowgroundView, SwipeRefreshLayout.OnRef
                                 resolveResource.add(resourceBean.getBaseUrl());
                             }
 
-                            if(resourceBean.getType() == 5){
+                            if (resourceBean.getType() == 5) {
 
                                 bean.setVideoCover(resourceBean.getBaseUrl());
                                 break;

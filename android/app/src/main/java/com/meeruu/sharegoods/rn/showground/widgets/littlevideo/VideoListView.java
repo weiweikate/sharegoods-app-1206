@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -45,7 +44,6 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
-import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
@@ -66,22 +64,19 @@ import com.meeruu.sharegoods.rn.showground.event.OnBuyEvent;
 import com.meeruu.sharegoods.rn.showground.event.OnCollectionEvent;
 import com.meeruu.sharegoods.rn.showground.event.OnPressTagEvent;
 import com.meeruu.sharegoods.rn.showground.event.OnSeeUserEvent;
+import com.meeruu.sharegoods.rn.showground.event.OnZanPressEvent;
 import com.meeruu.sharegoods.rn.showground.event.onDownloadPressEvent;
 import com.meeruu.sharegoods.rn.showground.event.onSharePressEvent;
-import com.meeruu.sharegoods.rn.showground.event.OnZanPressEvent;
 import com.meeruu.sharegoods.rn.showground.model.VideoModel;
 import com.meeruu.sharegoods.rn.showground.utils.CacheDataSourceFactory;
 import com.meeruu.sharegoods.rn.showground.utils.NetWatchdog;
-import com.reactnative.ivpusic.imagepicker.picture.lib.tools.DoubleUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import static android.view.View.GONE;
-import static com.google.android.exoplayer2.C.VIDEO_SCALING_MODE_SCALE_TO_FIT;
 
 public class VideoListView {
     private static String TAG = VideoListView.class.getSimpleName();
@@ -200,7 +195,7 @@ public class VideoListView {
                         holder.getPlayIcon().setVisibility(GONE);
                     }
                     mPlayIcon.setVisibility(GONE);
-                }else {
+                } else {
                     mPlayIcon.setVisibility(View.VISIBLE);
                 }
             }
@@ -279,13 +274,13 @@ public class VideoListView {
      * 恢复播放
      */
     public void resumePlay() {
-        if(!NetWatchdog.hasNet(this.mContext)){
+        if (!NetWatchdog.hasNet(this.mContext)) {
             ToastUtils.showToast("请检测网络连接");
         }
 
         long date = (long) SPCacheUtils.get(SPKey, 0L);
-        if(date == 0 || !TimeUtils.isSameDate(date,System.currentTimeMillis())){
-            if(NetWatchdog.is4GConnected(this.mContext)){
+        if (date == 0 || !TimeUtils.isSameDate(date, System.currentTimeMillis())) {
+            if (NetWatchdog.is4GConnected(this.mContext)) {
                 showNetWarning(this.mContext);
                 return;
             }
@@ -386,7 +381,7 @@ public class VideoListView {
                         updateAttentions(userNo, false);
                         setAttentionView(false);
                     }
-                }else {
+                } else {
                     OnAttentionPressEvent attentionPressEvent = new OnAttentionPressEvent();
                     attentionPressEvent.init(view.getId());
                     eventDispatcher.dispatchEvent(attentionPressEvent);
@@ -723,15 +718,15 @@ public class VideoListView {
                     videoUrl = resourceBean.getBaseUrl();
                     double width = resourceBean.getWidth();
                     double height = resourceBean.getHeight();
-                    if(width == 0 || height == 0){
+                    if (width == 0 || height == 0) {
                         FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) videoView.getLayoutParams();
                         layoutParams.width = FrameLayout.LayoutParams.MATCH_PARENT;
                         layoutParams.height = FrameLayout.LayoutParams.MATCH_PARENT;
                         videoView.setLayoutParams(layoutParams);
-                    }else {
+                    } else {
                         FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) videoView.getLayoutParams();
                         layoutParams.width = ScreenUtils.getScreenWidth();
-                        layoutParams.height =  new Double((height/width)*ScreenUtils.getScreenWidth()).intValue();
+                        layoutParams.height = new Double((height / width) * ScreenUtils.getScreenWidth()).intValue();
                         videoView.setLayoutParams(layoutParams);
                     }
 
@@ -775,7 +770,7 @@ public class VideoListView {
      *
      * @param list 刷新数据
      */
-    public void refreshData(List<NewestShowGroundBean.DataBean> list, boolean isPersonal, boolean isCollect,String tabType) {
+    public void refreshData(List<NewestShowGroundBean.DataBean> list, boolean isPersonal, boolean isCollect, String tabType) {
         isEnd = false;
         isLoadingData = false;
         adapter.refreshData(list);
@@ -800,7 +795,7 @@ public class VideoListView {
     }
 
     private void loadMoreData() {
-        videoModel.getVideoList(currentShowNo, personalCode, isCollect,tabType, new BaseCallback<String>() {
+        videoModel.getVideoList(currentShowNo, personalCode, isCollect, tabType, new BaseCallback<String>() {
             @Override
             public void onErr(String errCode, String msg) {
             }
@@ -809,12 +804,12 @@ public class VideoListView {
             public void onSuccess(String result) {
                 NewestShowGroundBean newestShowGroundBean = JSON.parseObject(result, NewestShowGroundBean.class);
                 List<NewestShowGroundBean.DataBean> list = newestShowGroundBean.getData();
-                if(list != null && list.size() >0){
+                if (list != null && list.size() > 0) {
                     addMoreData(list);
                     NewestShowGroundBean.DataBean last = list.get(list.size() - 1);
                     currentShowNo = last.getShowNo();
-                }else {
-                    isEnd =true;
+                } else {
+                    isEnd = true;
                 }
             }
         });
@@ -839,7 +834,7 @@ public class VideoListView {
         return null;
     }
 
-    private static void showNetWarning(Context context){
+    private static void showNetWarning(Context context) {
         AlertDialog alertDialog = new AlertDialog.Builder(context).setTitle("温馨提示").setMessage("您当前处于2G/3G/4G环境\n继续播放将使用流量").setPositiveButton("确定", new DialogInterface.OnClickListener() {//添加"Yes"按钮
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -872,8 +867,8 @@ public class VideoListView {
             View view = weakReference.get();
             if (view != null && view.isShown()) {
                 long date = (long) SPCacheUtils.get(SPKey, 0L);
-                if(date == 0 || !TimeUtils.isSameDate(date,System.currentTimeMillis())){
-                   showNetWarning(view.getContext());
+                if (date == 0 || !TimeUtils.isSameDate(date, System.currentTimeMillis())) {
+                    showNetWarning(view.getContext());
                 }
 
             }

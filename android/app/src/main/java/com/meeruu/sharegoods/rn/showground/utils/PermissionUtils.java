@@ -6,11 +6,12 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Binder;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,19 +27,21 @@ public class PermissionUtils {
     private static final String BRAND_XIAOMI = "xiaomi";
     private static final String BRAND_HUAWEI = "HUAWEI";
     private static final String BRAND_GOOGLE = "google";
+
     /**
      * 申请权限
+     *
      * @param activity
      * @param permissions
      * @param requestCode
      */
     public static void requestPermissions(Activity activity, String[] permissions, int requestCode) {
-        List<String> permissionList = getNoCheckPermission(activity,permissions);
+        List<String> permissionList = getNoCheckPermission(activity, permissions);
         String[] strings = new String[permissionList.size()];
         permissionList.toArray(strings);
         // 先检查是否已经授权
         if (!checkPermissionsGroup(activity, permissions)) {
-            ActivityCompat.requestPermissions(activity,strings, requestCode);
+            ActivityCompat.requestPermissions(activity, strings, requestCode);
         }
     }
 
@@ -48,6 +51,7 @@ public class PermissionUtils {
 
     /**
      * 检查单个权限
+     *
      * @param context
      * @param permission
      * @return
@@ -66,6 +70,7 @@ public class PermissionUtils {
 
     /**
      * 检查多个权限
+     *
      * @param context
      * @param permissions
      * @return
@@ -75,21 +80,22 @@ public class PermissionUtils {
             return true;
         }
 
-        List<String> permissionList = getNoCheckPermission(context,permissions);
+        List<String> permissionList = getNoCheckPermission(context, permissions);
 
-        if (permissionList.size()>0){
+        if (permissionList.size() > 0) {
             return false;
-        }else {
+        } else {
             return true;
         }
     }
-    public static List<String> getNoCheckPermission(Context context,String[] permissions){
+
+    public static List<String> getNoCheckPermission(Context context, String[] permissions) {
         List<String> strings = Arrays.asList(permissions);
         List<String> permissionList = new ArrayList(strings);
 
         Iterator<String> iterator = permissionList.listIterator();
         while (iterator.hasNext()) {
-            if (checkPersmission(context, iterator.next())){
+            if (checkPersmission(context, iterator.next())) {
                 iterator.remove();
             }
         }
@@ -97,13 +103,13 @@ public class PermissionUtils {
     }
 
     /**
-     *
      * 通过AppOpsManager判断小米手机授权情况
+     *
      * @return
      */
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static boolean checkXiaomi(Context context, String[] opstrArrays) {
-        AppOpsManager appOpsManager = (AppOpsManager)context.getSystemService(Context.APP_OPS_SERVICE);
+        AppOpsManager appOpsManager = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
         String packageName = context.getPackageName();
         for (String opstr : opstrArrays) {
             int locationOp = appOpsManager.checkOp(opstr, Binder.getCallingUid(), packageName);
@@ -114,18 +120,20 @@ public class PermissionUtils {
 
         return true;
     }
+
     public static boolean checkIsOppoRom() {
         //https://github.com/zhaozepeng/FloatWindowPermission/pull/26
         return Build.MANUFACTURER.contains("OPPO") || Build.MANUFACTURER.contains("oppo");
     }
+
     public static boolean checkIsMeizuRom() {
         //return Build.MANUFACTURER.contains("Meizu");
-        String meizuFlymeOSFlag  = getSystemProperty("ro.build.display.id");
-        if (TextUtils.isEmpty(meizuFlymeOSFlag)){
+        String meizuFlymeOSFlag = getSystemProperty("ro.build.display.id");
+        if (TextUtils.isEmpty(meizuFlymeOSFlag)) {
             return false;
-        }else if (meizuFlymeOSFlag.contains("flyme") || meizuFlymeOSFlag.toLowerCase().contains("flyme")){
-            return  true;
-        }else {
+        } else if (meizuFlymeOSFlag.contains("flyme") || meizuFlymeOSFlag.toLowerCase().contains("flyme")) {
+            return true;
+        } else {
             return false;
         }
     }

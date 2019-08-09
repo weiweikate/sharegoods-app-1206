@@ -1,10 +1,11 @@
 package com.meeruu.sharegoods.rn.showground.widgets.usercenter;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.viewpager.widget.PagerAdapter;
 
 import com.facebook.react.bridge.ReactContext;
 import com.meeruu.sharegoods.rn.showground.DynamicInterface;
@@ -21,7 +22,7 @@ public class TabPageAdapter extends PagerAdapter {
     private DynamicInterface dynamicInterface;
 
 
-    public TabPageAdapter(ReactContext context, String type,DynamicInterface dynamicInterface) {
+    public TabPageAdapter(ReactContext context, String type, DynamicInterface dynamicInterface) {
         super();
         this.context = context;
         this.type = type;
@@ -35,16 +36,16 @@ public class TabPageAdapter extends PagerAdapter {
             ViewGroup view = null;
             switch (type) {
                 case MINENORMAL:
-                    view = new ShowCollectionView().getShowCollectionView(context,dynamicInterface);
+                    view = new ShowCollectionView().getShowCollectionView(context, dynamicInterface);
                     container.addView(view);
                     break;
                 case MINEWRITER:
-                    view = new ShowDynamicView().getShowDynamicView(context,dynamicInterface);
+                    view = new ShowDynamicView().getShowDynamicView(context, dynamicInterface);
                     container.addView(view);
                     break;
                 default:
                     String userCode = type.replace("others", "");
-                    view = new ShowOtherView().getShowOtherView(context, userCode,dynamicInterface);
+                    view = new ShowOtherView().getShowOtherView(context, userCode, dynamicInterface);
                     container.addView(view);
                     break;
             }
@@ -52,7 +53,7 @@ public class TabPageAdapter extends PagerAdapter {
             return view;
         }
         if (position == 1) {
-            ViewGroup view = new ShowCollectionView().getShowCollectionView(context,dynamicInterface);
+            ViewGroup view = new ShowCollectionView().getShowCollectionView(context, dynamicInterface);
             container.addView(view);
             return view;
         }

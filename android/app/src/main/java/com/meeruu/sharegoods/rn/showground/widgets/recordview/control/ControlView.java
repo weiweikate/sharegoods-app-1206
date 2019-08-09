@@ -3,7 +3,6 @@ package com.meeruu.sharegoods.rn.showground.widgets.recordview.control;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -13,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
 
 import com.aliyun.svideo.sdk.external.struct.recorder.CameraType;
 import com.aliyun.svideo.sdk.external.struct.recorder.FlashType;
@@ -49,6 +50,7 @@ public class ControlView extends RelativeLayout implements View.OnTouchListener 
     private boolean hasRecordPiece = false;
     //是否可以完成录制，录制时长大于最小录制时长时为true
     private boolean canComplete = false;
+
     public ControlView(Context context) {
         this(context, null);
     }
@@ -62,7 +64,7 @@ public class ControlView extends RelativeLayout implements View.OnTouchListener 
         init();
     }
 
-    private void init(){
+    private void init() {
         calculateItemWidth();
         //Inflate布局
         LayoutInflater.from(getContext()).inflate(R.layout.aliyun_svideo_view_control, this, true);
@@ -72,7 +74,7 @@ public class ControlView extends RelativeLayout implements View.OnTouchListener 
         updateAllViews();
     }
 
-    private void updateAllViews(){
+    private void updateAllViews() {
         //准备录制和音乐选择的时候所有view隐藏
         if (recordState == RecordState.READY) {
             setVisibility(GONE);
@@ -82,8 +84,6 @@ public class ControlView extends RelativeLayout implements View.OnTouchListener 
             updateTittleView();
         }
     }
-
-
 
 
     /**
@@ -100,7 +100,7 @@ public class ControlView extends RelativeLayout implements View.OnTouchListener 
     }
 
 
-    private void setViewListener(){
+    private void setViewListener() {
         // 返回按钮
         aliyunBack.setOnClickListener(new OnClickListener() {
             @Override
@@ -113,7 +113,6 @@ public class ControlView extends RelativeLayout implements View.OnTouchListener 
                 }
             }
         });
-
 
 
         // 闪光灯
@@ -219,7 +218,7 @@ public class ControlView extends RelativeLayout implements View.OnTouchListener 
     /**
      * 倒计时按钮是否可以点击
      *
-     * @param isClickable  true: 可点击, 按钮白色, false: 不可点击, 按钮置灰
+     * @param isClickable true: 可点击, 按钮白色, false: 不可点击, 按钮置灰
      */
     public void updataCutDownView(boolean isClickable) {
         if (isClickable) {
@@ -299,18 +298,18 @@ public class ControlView extends RelativeLayout implements View.OnTouchListener 
         //底部滤镜，美颜，美肌对应的按钮图片
         //底部动图mv对应的按钮图片
         UIConfigManager.setImageResourceConfig(
-            new ImageView[] {ivReadyRecord}
-            , new int[] { R.attr.countdownImage}
-            , new int[] {R.mipmap.alivc_svideo_icon_magic}
+                new ImageView[]{ivReadyRecord}
+                , new int[]{R.attr.countdownImage}
+                , new int[]{R.mipmap.alivc_svideo_icon_magic}
         );
 
         //回删对应的图片
         //拍摄中红点对应的图片
         UIConfigManager.setImageResourceConfig(
-            new TextView[] {aliyunDelete, aliyunRecordDuration}
-            , new int[] {0, 0}
-            , new int[] {R.attr.deleteImage, R.attr.dotImage}
-            , new int[] {R.mipmap.alivc_svideo_icon_delete, R.mipmap.alivc_svideo_record_time_tip});
+                new TextView[]{aliyunDelete, aliyunRecordDuration}
+                , new int[]{0, 0}
+                , new int[]{R.attr.deleteImage, R.attr.dotImage}
+                , new int[]{R.mipmap.alivc_svideo_icon_delete, R.mipmap.alivc_svideo_record_time_tip});
         //切换摄像头的图片
         aliyunSwitchCamera.setImageDrawable(getSwitchCameraDrawable());
 //        List<String> strings = new ArrayList<>(2);
@@ -332,10 +331,10 @@ public class ControlView extends RelativeLayout implements View.OnTouchListener 
         Drawable pressDrawable = drawable.getConstantState().newDrawable().mutate();
         pressDrawable.setAlpha(66);//透明度60%
         StateListDrawable stateListDrawable = new StateListDrawable();
-        stateListDrawable.addState(new int[] {android.R.attr.state_pressed},
-            pressDrawable);
-        stateListDrawable.addState(new int[] {},
-            drawable);
+        stateListDrawable.addState(new int[]{android.R.attr.state_pressed},
+                pressDrawable);
+        stateListDrawable.addState(new int[]{},
+                drawable);
         return stateListDrawable;
     }
 
@@ -374,7 +373,7 @@ public class ControlView extends RelativeLayout implements View.OnTouchListener 
             }
 
         } else if (event.getAction() == MotionEvent.ACTION_CANCEL
-            || event.getAction() == MotionEvent.ACTION_UP) {
+                || event.getAction() == MotionEvent.ACTION_UP) {
             if (recordState == RecordState.COUNT_DOWN_RECORDING) {
                 if (mListener != null) {
                     mListener.onStopRecordClick();
@@ -449,18 +448,20 @@ public class ControlView extends RelativeLayout implements View.OnTouchListener 
         updateDeleteView();
 //        updateMusicSelView();
     }
+
     /**
      * 更新删除按钮
      */
     private void updateDeleteView() {
 
         if (!hasRecordPiece || recordState == RecordState.RECORDING
-            || recordState == RecordState.COUNT_DOWN_RECORDING) {
+                || recordState == RecordState.COUNT_DOWN_RECORDING) {
             aliyunDelete.setVisibility(GONE);
         } else {
             aliyunDelete.setVisibility(VISIBLE);
         }
     }
+
     /**
      * 设置摄像头类型，并刷新页面，摄像头切换后被调用
      *
@@ -471,6 +472,7 @@ public class ControlView extends RelativeLayout implements View.OnTouchListener 
         //        updateCameraView();
         updateLightSwitchView();
     }
+
     public CameraType getCameraType() {
         return cameraType;
     }
@@ -478,9 +480,11 @@ public class ControlView extends RelativeLayout implements View.OnTouchListener 
     public void setRecording(boolean recording) {
         isRecording = recording;
     }
+
     public boolean isRecording() {
         return isRecording;
     }
+
     /**
      * 设置complete按钮是否可以点击
      *
@@ -529,7 +533,7 @@ public class ControlView extends RelativeLayout implements View.OnTouchListener 
         updateLightSwitchView();
     }
 
-    private void updateBottomView(){
+    private void updateBottomView() {
         aliyunRecordLayoutBottom.setVisibility(VISIBLE);
         updateRecordBtnView();
         updateDeleteView();
