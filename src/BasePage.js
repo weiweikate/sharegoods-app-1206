@@ -16,7 +16,6 @@ import { NavigationActions, StackActions } from 'react-navigation';
 import { netState } from '@mr/rn-request';
 import res from './comm/res';
 import bridge from './utils/bridge';
-import Toast from './utils/bridge';
 import DesignRule from './constants/DesignRule';
 import RouterMap, { GoToTabItem, replaceRoute, routeNavigate, routePop, routePush } from './navigation/RouterMap';
 
@@ -243,11 +242,10 @@ export default class BasePage extends Component {
     $toastShow = (title) => {
         bridge.$toast(title);
     };
-    $loadingShow = (msg, timeout = 0, callback = () => {
-    }) => {
-        Toast.showLoading(msg, timeout, callback());
+    $loadingShow = (msg, timeout = 0) => {
+        bridge.showLoading(msg, timeout);
     };
-    $loadingDismiss = (callBack) => {
-        Toast.hiddenLoading(callBack);
+    $loadingDismiss = () => {
+        bridge.hiddenLoading();
     };
 }
