@@ -225,7 +225,7 @@ export default class SignInPage extends BasePage {
         this.exchangeing = true;
         track(trackEvent.receiveshowDou, {
             showDouDeduct: 'exchange',
-            showDouAmount: this.state.signInData[3].canReward
+            showDouAmount: this.state.signInData[3] && this.state.signInData[3].canReward
         });
         track(trackEvent.receiveOneyuan, { yiYuanCouponsAmount: 1, yiYuanCouponsGetMethod: 'exchange' });
         HomeAPI.exchangeTokenCoin().then((data) => {

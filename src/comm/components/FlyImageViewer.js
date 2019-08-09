@@ -248,37 +248,37 @@ export default class FlyImageViewer extends Component {
      * props 有变化时执行
      */
     init(nextProps) {
-        if (nextProps.imageUrls.length === 0) {
+        if (nextProps.imageUrls && nextProps.imageUrls.length === 0) {
             // 隐藏时候清空
             this.fadeAnim.setValue(0);
             return this.setState(staticStyle);
-        }
-
-        // 给 imageSizes 塞入空数组
-        const imageSizes = [];
-        nextProps.imageUrls.forEach(imageUrl => {
-            imageSizes.push({
-                width: (imageUrl && imageUrl.width) || 0,
-                height: (imageUrl && imageUrl.height) || 0,
-                status: 'loading'
+        } else {
+            // 给 imageSizes 塞入空数组
+            const imageSizes = [];
+            nextProps.imageUrls.forEach(imageUrl => {
+                imageSizes.push({
+                    width: (imageUrl && imageUrl.width) || 0,
+                    height: (imageUrl && imageUrl.height) || 0,
+                    status: 'loading'
+                });
             });
-        });
 
-        this.setState({
-            currentShowIndex: nextProps.index,
-            imageSizes
-        }, () => {
-            // 立刻预加载要看的图
-            this.loadImage(nextProps.index);
+            this.setState({
+                currentShowIndex: nextProps.index,
+                imageSizes
+            }, () => {
+                // 立刻预加载要看的图
+                this.loadImage(nextProps.index);
 
-            this.jumpToCurrentImage();
+                this.jumpToCurrentImage();
 
-            // 显示动画
-            Animated.timing(this.fadeAnim, {
-                toValue: 1,
-                duration: 200
-            }).start();
-        });
+                // 显示动画
+                Animated.timing(this.fadeAnim, {
+                    toValue: 1,
+                    duration: 200
+                }).start();
+            });
+        }
     }
 
     /**
@@ -300,7 +300,7 @@ export default class FlyImageViewer extends Component {
         }
         this.loadedIndex.set(index, true);
 
-        const image = this.props.imageUrls && this.props.imageUrls[index] || {};
+        const image = (this.props.imageUrls && this.props.imageUrls[index]) || '';
         let imageStatus = Object.assign({}, this.state.imageSizes[index]) || {};
 
         // 保存 imageSize
@@ -317,7 +317,7 @@ export default class FlyImageViewer extends Component {
             });
         };
 
-        if (this.state.imageSizes[index].status === 'success') {
+        if (this.state.imageSizes[index] && this.state.imageSizes[index].status === 'success') {
             // 已经加载过就不会加载了
             return;
         }
@@ -860,3 +860,4 @@ const simpleStyle = StyleSheet.create({
         textShadowRadius: 0
     }
 });
+
