@@ -154,6 +154,13 @@ export default class ShowVideoPage extends BasePage {
                                                        showNo: nativeEvent.showNo,
                                                        type: 4
                                                    });
+                                                   this.setState({ detail: null }, () => {
+                                                       this.setState({
+                                                           detail: nativeEvent
+                                                       }, () => {
+                                                           this.shareModal && this.shareModal.open();
+                                                       });
+                                                   });
                                                }
                                                DownloadUtils.downloadShow(nativeEvent,callback);
                                            } else {
