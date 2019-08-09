@@ -50,6 +50,7 @@ import com.meeruu.commonlib.utils.SDCardUtils;
 import com.meeruu.commonlib.utils.SPCacheUtils;
 import com.meeruu.commonlib.utils.SecurityUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
+import com.meeruu.commonlib.utils.VideoUtils;
 import com.meeruu.sharegoods.bean.NetCommonParamsBean;
 import com.meeruu.sharegoods.event.HideSplashEvent;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
@@ -505,8 +506,7 @@ public class CommModule extends ReactContextBaseJavaModule {
                 return;
             }
         }
-
-        Bitmap bmp = ThumbnailUtils.createVideoThumbnail(curPath, MediaStore.Images.Thumbnails.MINI_KIND);
+        Bitmap bmp = VideoUtils.getNetVideoBitmap(curPath);
         if (bmp != null) {
             String returnPath = BitmapUtils.saveImageToCache(bmp, "video.png", filePath);
             if (bmp != null && !bmp.isRecycled()) {
