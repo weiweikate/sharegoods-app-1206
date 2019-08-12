@@ -161,35 +161,35 @@ export default class FansListPage extends BasePage {
             detail = '萌新驾到，还没留下什么';
         }
         return (
-            <View style={styles.itemContainer}>
-                <TouchableWithoutFeedback onPress={()=>{
-                    if(user.code === userNo){
-                        routeNavigate(RouterMap.MyDynamicPage, { userType: WhiteModel.userStatus === 2 ? 'mineWriter' : 'mineNormal' });
-                    }else {
-                        let userInfo = {
-                            userNo,
-                            userImg,
-                            userName
-                        }
-                        this.$navigate(RouterMap.MyDynamicPage,{userType:'others',userInfo:userInfo});
+            <TouchableWithoutFeedback onPress={()=>{
+                if(user.code === userNo){
+                    routeNavigate(RouterMap.MyDynamicPage, { userType: WhiteModel.userStatus === 2 ? 'mineWriter' : 'mineNormal' });
+                }else {
+                    let userInfo = {
+                        userNo,
+                        userImg,
+                        userName
                     }
-                }}>
+                    this.$navigate(RouterMap.MyDynamicPage,{userType:'others',userInfo:userInfo});
+                }
+            }}>
+                <View style={styles.itemContainer}>
                     <View>
                         <ImageLoad source={{ uri: userImg }}
                                    style={styles.userImg}
                                    isAvatar={true}
                         />
                     </View>
-                </TouchableWithoutFeedback>
-                <View style={{
-                    marginLeft: autoSizeWidth(10),
-                    flex: 1
-                }}>
-                    <MRText style={styles.userName}>{userName}</MRText>
-                    {detail.length ? <MRText style={styles.detail}>{detail}</MRText> : null}
+                    <View style={{
+                        marginLeft: autoSizeWidth(10),
+                        flex: 1
+                    }}>
+                        <MRText style={styles.userName}>{userName}</MRText>
+                        {detail.length ? <MRText style={styles.detail}>{detail}</MRText> : null}
+                    </View>
+                    {this.renderBtn(item, index)}
                 </View>
-                {this.renderBtn(item, index)}
-            </View>
+            </TouchableWithoutFeedback>
         );
     };
 

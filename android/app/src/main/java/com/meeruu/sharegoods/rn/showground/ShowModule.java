@@ -46,6 +46,7 @@ public class ShowModule extends ReactContextBaseJavaModule implements LifecycleE
     private ReactApplicationContext mContext;
     private VODUploadCallback callback;
     private Promise videoPromise;
+    private Promise uploadPromise;
     VODUploadClient uploader;
     private String uploadAuth,uploadAddress;
     public static final int result_code = 1234;
@@ -71,11 +72,17 @@ public class ShowModule extends ReactContextBaseJavaModule implements LifecycleE
             @Override
             public void onUploadSucceed(UploadFileInfo info) {
                 super.onUploadSucceed(info);
+                if(uploadPromise!=null){
+                    uploadPromise.resolve(null);
+                    uploadPromise = null;
+                }
             }
 
             @Override
             public void onUploadFailed(UploadFileInfo info, String code, String message) {
                 super.onUploadFailed(info, code, message);
+                uploadPromise.reject("上传失败");
+                uploadPromise = null;
             }
 
             @Override
@@ -116,36 +123,48 @@ public class ShowModule extends ReactContextBaseJavaModule implements LifecycleE
     }
 
     @ReactMethod
-    public void uploadVideo(final String title, final String path, final Promise promise){
+    public void uploadVideo(final String title, final String path,final String videoAuth, final Promise promise){
         File file = new File(path);
         if(!file.exists()){
             promise.reject("文件不存在");
             return;
         }
+        this.uploadPromise = promise;
         final String fileName = file.getName();
-        ShowVideoAuthRequest showVideoAuthRequest = new ShowVideoAuthRequest();
-        HashMap hashMap = new HashMap();
-        hashMap.put("fileName",fileName);
-        hashMap.put("title",title);
-        showVideoAuthRequest.setParams(hashMap);
-        RequestManager.getInstance().doPost(showVideoAuthRequest, new BaseCallback<String>() {
-            @Override
-            public void onErr(String errCode, String msg) {
-                promise.reject(msg);
-            }
+//        ShowVideoAuthRequest showVideoAuthRequest = new ShowVideoAuthRequest();
+//        HashMap hashMap = new HashMap();
+//        hashMap.put("fileName",fileName);
+//        hashMap.put("title",title);
+//        showVideoAuthRequest.setParams(hashMap);
+//        RequestManager.getInstance().doPost(showVideoAuthRequest, new BaseCallback<String>() {
+//            @Override
+//            public void onErr(String errCode, String msg) {
+//                promise.reject(msg);
+//            }
+//
+//            @Override
+//            public void onSuccess(String result) {
+//                VideoAuthBean videoAuthBean = JSON.parseObject(result, VideoAuthBean.class);
+//                uploadAddress = videoAuthBean.getUploadAddress();
+//                uploadAuth = videoAuthBean.getUploadAuth();
+//                startUpload(title,fileName,path);
+//                WritableMap writableMap = Arguments.createMap();
+//                writableMap.putString("showNo",videoAuthBean.getShowNo());
+//                writableMap.putString("videoId",videoAuthBean.getVideoId());
+//                promise.resolve(writableMap);
+//            }
+//        });
 
-            @Override
-            public void onSuccess(String result) {
-                VideoAuthBean videoAuthBean = JSON.parseObject(result, VideoAuthBean.class);
-                uploadAddress = videoAuthBean.getUploadAddress();
-                uploadAuth = videoAuthBean.getUploadAuth();
-                startUpload(title,fileName,path);
-                WritableMap writableMap = Arguments.createMap();
-                writableMap.putString("showNo",videoAuthBean.getShowNo());
-                writableMap.putString("videoId",videoAuthBean.getVideoId());
-                promise.resolve(writableMap);
-            }
-        });
+
+        VideoAuthBean videoAuthBean = JSON.parseObject(videoAuth, VideoAuthBean.class);
+        uploadAddress = videoAuthBean.getUploadAddress();
+        uploadAuth = videoAuthBean.getUploadAuth();
+        startUpload(title,fileName,path);
+
+//        WritableMap writableMap = Arguments.createMap();
+//        writableMap.putString("showNo",videoAuthBean.getShowNo());
+//        writableMap.putString("videoId",videoAuthBean.getVideoId());
+//        promise.resolve(writableMap);
     }
 
     private void startUpload(String title, String fileName,String path){
