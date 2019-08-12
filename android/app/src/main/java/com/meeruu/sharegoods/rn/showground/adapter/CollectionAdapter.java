@@ -46,6 +46,7 @@ public class CollectionAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
         double height = 1;
         String imgUrl = null;
         Drawable drawable = mContext.getResources().getDrawable(R.drawable.black_transparent);
+        RelativeLayout foreground = helper.getView(R.id.foreground_view);
 
         if (item.getResource() != null) {
             if (item.getShowType() == 3) {
@@ -53,14 +54,14 @@ public class CollectionAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
                 width = item.getCoverWidth();
                 height = item.getCoverHeight();
                 playIcon.setVisibility(View.VISIBLE);
-                content.setForeground(drawable);
+                foreground.setVisibility(View.VISIBLE);
             } else {
                 NewestShowGroundBean.DataBean.ResourceBean resourceBean = item.getResource().get(0);
                 imgUrl = resourceBean.getBaseUrl();
                 width = (float) resourceBean.getWidth();
                 height = (float) resourceBean.getHeight();
                 playIcon.setVisibility(View.GONE);
-                content.setForeground(null);
+                foreground.setVisibility(View.GONE);
             }
         }
 
@@ -86,6 +87,9 @@ public class CollectionAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
             params.height = realHeight;
             params.width = realWidth;
             imageView.setLayoutParams(params);
+            if(item.getShowType() == 3){
+                foreground.setLayoutParams(params);
+            }
             ImageLoadUtils.loadRoundNetImage(imgUrl, imageView, realWidth, realHeight, arr_raduis,false);
         }
 

@@ -11,6 +11,8 @@ public class CommValue {
     public static int DELETED = 4;
     //转码中
     public static int TRANSCODING = 5;
+    //发布失败
+    public static int TRANSCODFAILED = 6;
 
     //运营文章/素材
     public static int OPERATE_CONTENT = 1;

@@ -18,6 +18,10 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:id="@+id/showground_item_image"/>
+        <RelativeLayout android:background="@drawable/black_transparent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/foreground_view"/>
         <ImageView android:layout_width="53dp"
             android:layout_height="53dp"
             android:layout_gravity="center"
