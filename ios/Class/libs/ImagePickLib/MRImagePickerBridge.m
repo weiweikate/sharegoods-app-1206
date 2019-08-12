@@ -54,13 +54,13 @@ RCT_EXPORT_METHOD(uploadVideo:(NSString *)title and:(NSString *)path dic:(NSStri
     NSString * fileName =  [path  lastPathComponent];
     NSLog(@"%@---%@",title,path);
     NSDictionary * dicParams = [NSDictionary dictionaryWithJsonString:json];
-//    [NetWorkTool requestWithURL:ShowApi_Video_Auth params:dicParams toModel:nil success:^(id result) {
-//      NSLog(@"%@",result);
-//      NSDictionary * dicResut = @{
-//                                  @"showNo":result[@"showNo"]?result[@"showNo"]:@"",
-//                                  @"videoId":result[@"videoId"]?result[@"videoId"]:@""
-//                                  };
-//      resolve(dicResut);
+    //    [NetWorkTool requestWithURL:ShowApi_Video_Auth params:dicParams toModel:nil success:^(id result) {
+    //      NSLog(@"%@",result);
+    //      NSDictionary * dicResut = @{
+    //                                  @"showNo":result[@"showNo"]?result[@"showNo"]:@"",
+    //                                  @"videoId":result[@"videoId"]?result[@"videoId"]:@""
+    //                                  };
+    //      resolve(dicResut);
     if(dicParams[@"uploadAddress"]&&dicParams[@"uploadAuth"]){
       NSString * uploadAddress = dicParams[@"uploadAddress"];
       NSString * uploadAuth = dicParams[@"uploadAuth"];
@@ -68,17 +68,13 @@ RCT_EXPORT_METHOD(uploadVideo:(NSString *)title and:(NSString *)path dic:(NSStri
       [HYFUploaderVideo sharedInstance].finshBlock = ^(NSString *finshParam) {
         resolve(@"");
       };
-      
+
       [HYFUploaderVideo sharedInstance].errorBlock = ^(NSString *finshParam) {
         reject(@"",@"",nil);
       };
-      
+    }else{
+      reject(@"",@"",nil);
     }
-//    } failure:^(NSString *msg, NSInteger code) {
-//      NSLog(@"%@",msg);
-//      reject([NSString stringWithFormat:@"%ld",code],msg,nil);
-    reject(@"",@"",nil);
-//    } showLoading:nil];
   });
 }
 
