@@ -135,11 +135,11 @@ const mStyles = StyleSheet.create({
         flexDirection: 'row', alignItems: 'center'
     },
     specAmountText: {
-        color: DesignRule.textColor_instruction, fontSize: 12
+        color: DesignRule.textColor_instruction, fontSize: 10
     },
     priceText: {
         flex: 1,
-        color: DesignRule.textColor_redWarn, fontSize: 13
+        color: DesignRule.textColor_instruction, fontSize: 12
     }
 });
 
