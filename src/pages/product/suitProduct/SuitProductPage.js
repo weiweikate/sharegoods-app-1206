@@ -148,7 +148,7 @@ export default class SuitProductPage extends BasePage {
         const { suitProducts, packageItem, afterSaleLimitText, priceRetailTotal, priceTotal } = this.suitProductModel;
         const totalProduct = suitProducts || [];
         const { image, afterSaleTip, shareContent } = packageItem;
-        const htmlUrl = `${apiEnvironment.getCurrentH5Url()}/package-product?spucode=${prodCode}&upuserid=${user.code || ''}&index=${this.params.packageIndex || ''}`;
+        const htmlUrl = `${apiEnvironment.getCurrentH5Url()}/package-product?spucode=${prodCode}&upuserid=${user.code || ''}&index=${this.params.packageIndex}`;
         return (
             <View style={styles.container}>
                 <ScrollView>
