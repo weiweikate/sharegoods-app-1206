@@ -386,7 +386,7 @@ export default class CommShareModal extends React.Component {
         const shareMoneyText = this.getMoneyText(shareMoney);
         let icon = (user.headImg && user.headImg.length > 0) ?
             <Image source={{ uri: user.headImg }} style={styles.userIcon}
-                   borderRadius={13}/> : <Image source={res.other.avatar_default} style={styles.userIcon}
+                   borderRadius={13}/> : <Image source={res.placeholder.avatar_default} style={styles.userIcon}
                                                 borderRadius={13}/>;
 
         return (

@@ -213,7 +213,7 @@ export default class MyPromotionPage extends BasePage {
 
         let icon = (this.state.headImg && this.state.headImg.length > 0) ?
             <AvatarImage source={{ uri: this.state.headImg }} style={styles.userIconNavStyle}
-                         borderRadius={px2dp(13)}/> : <Image source={res.other.avatar_default} style={styles.userIconNavStyle}
+                         borderRadius={px2dp(13)}/> : <Image source={res.placeholder.avatar_default} style={styles.userIconNavStyle}
                                                              borderRadius={px2dp(13)}/>;
 
                                                              return (

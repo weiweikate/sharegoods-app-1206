@@ -25,7 +25,7 @@ import SettingModel from '../../model/SettingModel';
 
 // const HeaderBarBgImg = res.myShop.txbg_03;
 const back_white = res.button.back_white;
-const mine_user_icon = res.other.avatar_default;
+const mine_user_icon = res.placeholder.avatar_default;
 const headerHeight = ScreenUtils.statusBarHeight + 44;
 const { fans_noData } = homeRes.showFans;
 
