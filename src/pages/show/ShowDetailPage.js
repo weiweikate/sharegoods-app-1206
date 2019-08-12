@@ -345,7 +345,8 @@ export default class ShowDetailPage extends BasePage {
                     </TouchableWithoutFeedback> : null
                 }
                 {detail.status === 1 ? <TouchableOpacity style={styles.shareView} onPress={() => {
-                    this._goToShare();
+                    this.setState({showText:false},this._goToShare)
+
                 }}>
                     <Image source={iconShowShare}/>
                 </TouchableOpacity> : null}
@@ -423,7 +424,7 @@ export default class ShowDetailPage extends BasePage {
                 articleCode: showNo,
                 author: userNo
             });
-            this._goToShare();
+            this.setState({showText:true},this._goToShare)
         }
         DownloadUtils.downloadShow(detail,callback);
 
@@ -777,7 +778,7 @@ export default class ShowDetailPage extends BasePage {
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             {detail ?
                 <CommShowShareModal ref={(ref) => this.shareModal = ref}
-                                    type={ShareUtil.showSharedetailDataType(detail && detail.showType)}
+                                    type={this.state.showText?ShareUtil.showSharedetailDataType(detail && detail.showType):null}
                                     trackEvent={trackEvent.XiuChangShareClick}
                                     trackParmas={{
                                         articleCode: detail.code,
