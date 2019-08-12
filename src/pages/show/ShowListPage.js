@@ -43,7 +43,6 @@ import { track, trackEvent } from '../../utils/SensorsTrack';
 import ShowUtils from './utils/ShowUtils';
 
 const {
-    mine_user_icon,
     mine_message_icon_gray
 } = res.homeBaseImg;
 const { icon_header_back } = res.button;
@@ -139,15 +138,18 @@ export default class ShowListPage extends BasePage {
     retouchShow = () => {
         switch (ShowListIndexModel.pageIndex) {
             case 0:
-                this.hotList && this.hotList.scrollToTop();
+                this.attention && this.attention.scrollToTop();
                 break;
             case 1:
-                this.materialList && this.materialList.scrollToTop();
+                this.hotList && this.hotList.scrollToTop();
                 break;
             case 2:
-                this.foundList && this.foundList.scrollToTop();
+                this.materialList && this.materialList.scrollToTop();
                 break;
             case 3:
+                this.foundList && this.foundList.scrollToTop();
+                break;
+            case 4:
                 this.activityList && this.activityList.scrollToTop();
                 break;
         }
@@ -228,7 +230,7 @@ export default class ShowListPage extends BasePage {
         }
         let icon = (user.headImg && user.headImg.length > 0) ?
             <AvatarImage source={{ uri: user.headImg }} style={styles.userIcon}
-                         borderRadius={px2dp(15)}/> : <Image source={mine_user_icon} style={styles.userIcon}
+                         borderRadius={px2dp(15)}/> : <Image source={res.placeholder.avatar_default} style={styles.userIcon}
                                                              borderRadius={px2dp(15)}/>;
 
         let message = (
@@ -319,7 +321,7 @@ export default class ShowListPage extends BasePage {
                         needsExpensive
                             ?
                             <AttentionView ref={(ref) => {
-                                this.hotList = ref;
+                                this.attention = ref;
                             }}
                                      type={'attention'}
                                      uri={'/social/show/content/page/query/attention@GET'}

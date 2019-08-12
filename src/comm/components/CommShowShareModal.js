@@ -134,6 +134,7 @@ export default class CommShowShareModal extends React.Component {
                     }]);
             return;
         }
+        console.log('type',this.props.type)
         this.defaultShareType = 1;
         this.setState({ modalVisible: true, shareType: this.defaultShareType, showToastImage: false });
         this.modal && this.modal.open();
@@ -384,8 +385,8 @@ export default class CommShowShareModal extends React.Component {
                                         color: DesignRule.textColor_mainTitle,
                                         fontSize: autoSizeWidth(12),
                                         marginHorizontal: 7,
-                                    }}>{type === 'showImage' ? '文案已复制，图片已下载到相册' :
-                                        type === 'showVideo' ? '文案已复制，视频已下载到相册' : ''}</MRText>
+                                    }}>{type === 'showDown' ? '文案已复制，图片已下载到相册' :
+                                        type === 'showVideoDown' ? '文案已复制，视频已下载到相册' : ''}</MRText>
                                 </View>
                                 <View style={{ flex: 2, flexDirection: 'row', borderRadius: 10,justifyContent:'center' }}>
                                     {

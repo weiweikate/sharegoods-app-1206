@@ -4,13 +4,7 @@
  */
 
 import React, { PureComponent } from 'react';
-import {
-    StyleSheet,
-    View,
-    ImageBackground,
-    Image,
-    TouchableWithoutFeedback
-} from 'react-native';
+import { Image, ImageBackground, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import user from '../../../model/user';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import res from '../../mine/res';
@@ -18,22 +12,14 @@ import showRes from '../res';
 import EmptyUtils from '../../../utils/EmptyUtils';
 import DesignRule from '../../../constants/DesignRule';
 import WriterInfoView from './WriterInfoView';
-import {
-    MRText as Text,
-    AvatarImage
-
-} from '../../../components/ui';
-import { routePush } from '../../../navigation/RouterMap';
-import RouterMap from '../../../navigation/RouterMap';
+import { AvatarImage, MRText as Text } from '../../../components/ui';
+import RouterMap, { routePush } from '../../../navigation/RouterMap';
 import LinearGradient from 'react-native-linear-gradient';
 import ShowApi from '../ShowApi';
 import ShowUtils from '../utils/ShowUtils';
 import bridge from '../../../utils/bridge';
 
 const { px2dp } = ScreenUtils;
-const {
-    mine_user_icon
-} = res.homeBaseImg;
 
 const {
     showHeaderBg
@@ -46,7 +32,7 @@ export default class UserInfoView extends PureComponent {
             fans: 0,
             hot: 0,
             relationType: -1,
-            userType:0
+            userType: 0
         };
     }
 
@@ -65,7 +51,7 @@ export default class UserInfoView extends PureComponent {
         } else {
             const { userNo = '' } = this.props.userInfo || {};
             ShowApi.getOthersInfo({ userCode: userNo }).then((data) => {
-                const { fansCount, followCount, likeCount, collectCount, relationType,userType } = data.data;
+                const { fansCount, followCount, likeCount, collectCount, relationType, userType } = data.data;
                 this.setState({
                     relationType,
                     attentions: followCount,
@@ -149,8 +135,9 @@ export default class UserInfoView extends PureComponent {
         }
         let icon = (!EmptyUtils.isEmpty(img)) ?
             <AvatarImage source={{ uri: img }} style={styles.userIcon}
-                         borderRadius={px2dp(75 / 2)}/> : <Image source={mine_user_icon} style={styles.userIcon}
-                                                                 borderRadius={px2dp(75 / 2)}/>;
+                         borderRadius={px2dp(75 / 2)}/> :
+            <Image source={res.placeholder.avatar_default} style={styles.userIcon}
+                   borderRadius={px2dp(75 / 2)}/>;
 
 
         //布局不能改，否则android不能显示
