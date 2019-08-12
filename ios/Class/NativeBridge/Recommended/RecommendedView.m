@@ -149,7 +149,7 @@ static NSString *IDType = @"TypeCell";
 - (void)setErrCode:(NSInteger)errCode
 {
   _errCode = errCode;
-  if (self.dataArr.count > 0||self.tableView.tableHeaderView) {
+  if (self.dataArr&&(self.dataArr.count > 0||self.tableView.tableHeaderView)) {
     _emptyView.hidden = YES;
 
   }else{
@@ -447,7 +447,7 @@ static NSString *IDType = @"TypeCell";
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   if(type&&[defaults objectForKey:type]){
     NSDictionary *dicData = [NSDictionary dictionaryWithJsonString:[defaults objectForKey:type]];
-    if (dicData) {
+    if (dicData && [[dicData valueForKey:@"data"] isKindOfClass:[NSArray class]]) {
       self.callBackArr = [[dicData valueForKey:@"data"] mutableCopy];
       JXModel *model = [JXModel modelWithJSON:dicData];
       self.dataArr = [model.data mutableCopy];
