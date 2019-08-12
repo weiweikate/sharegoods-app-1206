@@ -99,9 +99,13 @@ export default class MyDynamicPage extends BasePage {
                                if (nativeEvent.showType === 1) {
                                    this.$navigate(RouterMap.ShowDetailPage, params);
                                }else if(nativeEvent.showType == 3){
-                                   params.isCollect = nativeEvent.isCollect;
-                                   params.isPersonal = nativeEvent.isPersonal;
-                                   this.$navigate(RouterMap.ShowVideoPage, params);
+                                   if(nativeEvent.status === 5){
+                                       this.$toastShow('视频转码中，请稍后查看');
+                                   }else {
+                                       params.isCollect = nativeEvent.isCollect;
+                                       params.isPersonal = nativeEvent.isPersonal;
+                                       this.$navigate(RouterMap.ShowVideoPage, params);
+                                   }
                                }else {
                                    this.$navigate(RouterMap.ShowRichTextDetailPage, params);
                                }
