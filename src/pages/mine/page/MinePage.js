@@ -384,7 +384,7 @@ export default class MinePage extends BasePage {
 
         let icon = (user.headImg && user.headImg.length > 0) ?
             <AvatarImage source={{ uri: user.headImg }} style={styles.userIconStyle}
-                         borderRadius={px2dp(27)}/> : <Image source={res.other.avatar_default} style={styles.userIconStyle}
+                         borderRadius={px2dp(27)}/> : <Image source={res.placeholder.avatar_default} style={styles.userIconStyle}
                                                              borderRadius={px2dp(27)}/>;
 
         return (
@@ -488,7 +488,7 @@ export default class MinePage extends BasePage {
 
         let icon = (user.headImg && user.headImg.length > 0) ?
             <AvatarImage source={{ uri: user.headImg }} style={styles.userIconNavStyle}
-                         borderRadius={px2dp(15)}/> : <Image source={res.other.avatar_default} style={styles.userIconNavStyle}
+                         borderRadius={px2dp(15)}/> : <Image source={res.placeholder.avatar_default} style={styles.userIconNavStyle}
                                                              borderRadius={px2dp(15)}/>;
 
         return (

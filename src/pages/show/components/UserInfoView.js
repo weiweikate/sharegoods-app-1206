@@ -136,7 +136,7 @@ export default class UserInfoView extends PureComponent {
         let icon = (!EmptyUtils.isEmpty(img)) ?
             <AvatarImage source={{ uri: img }} style={styles.userIcon}
                          borderRadius={px2dp(75 / 2)}/> :
-            <Image source={res.other.avatar_default} style={styles.userIcon}
+            <Image source={res.placeholder.avatar_default} style={styles.userIcon}
                    borderRadius={px2dp(75 / 2)}/>;
 
 

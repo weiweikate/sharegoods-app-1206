@@ -230,7 +230,7 @@ export default class ShowListPage extends BasePage {
         }
         let icon = (user.headImg && user.headImg.length > 0) ?
             <AvatarImage source={{ uri: user.headImg }} style={styles.userIcon}
-                         borderRadius={px2dp(15)}/> : <Image source={res.other.avatar_default} style={styles.userIcon}
+                         borderRadius={px2dp(15)}/> : <Image source={res.placeholder.avatar_default} style={styles.userIcon}
                                                              borderRadius={px2dp(15)}/>;
 
         let message = (

@@ -112,7 +112,7 @@ export default class TagDetailItemView extends PureComponent {
                             {!EmptyUtils.isEmpty(itemData.userInfoVO.userImg) ?
                                 <ImageLoad source={{ uri: itemData.userInfoVO.userImg }}
                                            style={{ width: px2dp(20), height: px2dp(20), borderRadius: px2dp(10) }}/> :
-                                <Image source={res.other.avatar_default}
+                                <Image source={res.placeholder.avatar_default}
                                        style={{ width: px2dp(20), height: px2dp(20), borderRadius: px2dp(10) }}
                                        borderRadius={px2dp(10)}/>}
                         </View>
