@@ -96,8 +96,8 @@ export default class LoginPage extends BasePage {
     };
 
     startOneLogin = () => {
-        this.$loadingShow();
         startLoginAuth().then((data) => {
+            this.$loadingShow();
             let { navigation } = this.props;
             oneClickLoginValidation(data, null, navigation, () => {
                 this.$loadingDismiss();
@@ -106,7 +106,6 @@ export default class LoginPage extends BasePage {
                 this.$loadingDismiss();
             });
         }).catch((error) => {
-            this.$loadingDismiss();
             if (error.code === '555') {
                 closeAuth();
             } else {
