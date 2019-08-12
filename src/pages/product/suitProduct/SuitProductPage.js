@@ -60,7 +60,18 @@ export default class SuitProductPage extends BasePage {
     };
 
     componentDidMount() {
-        this.requestData();
+        this.willFocusSubscription = this.props.navigation.addListener(
+            'didFocus',
+            payload => {
+                const { state } = payload;
+                console.log('didFocus', state);
+                this.requestData();
+            }
+        );
+    }
+
+    componentWillUnmount() {
+        this.willFocusSubscription && this.willFocusSubscription.remove();
     }
 
     requestData = () => {
