@@ -125,38 +125,38 @@
   //点赞
   [_zanBtn addTarget:self action:@selector(tapZanBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.zanBtn.sd_layout.topSpaceToView(self.scrollView,10)
-  .heightIs(26).widthIs(26)
+  .heightIs(20).widthIs(21)
   .leftSpaceToView(self, 0);
 
   self.zanNum.sd_layout.centerYEqualToView(self.zanBtn)
-  .leftSpaceToView(self.zanBtn, 1)
+  .leftSpaceToView(self.zanBtn, 5)
   .widthIs(40).heightIs(26);
 
   //收藏
   [_collectionBtn addTarget:self action:@selector(tapCollectionBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.collectionBtn.sd_layout.centerYEqualToView(self.zanNum)
   .leftSpaceToView(self.zanNum, 10)
-  .heightIs(26).widthIs(26);
+  .heightIs(20).widthIs(20);
   
   self.collectionNum.sd_layout.centerYEqualToView(self.collectionBtn)
-  .leftSpaceToView(self.collectionBtn, 1)
+  .leftSpaceToView(self.collectionBtn, 5)
   .widthIs(40).heightIs(26);
   
   //下载
   [_downloadBtn addTarget:self action:@selector(tapDownloadBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.downloadBtn.sd_layout.centerYEqualToView(self.zanNum)
   .leftSpaceToView(self.collectionNum, 10)
-  .widthIs(26).heightIs(26);
+  .widthIs(15).heightIs(15);
 
   self.downLoadNUm.sd_layout.centerYEqualToView(self.downloadBtn)
-  .leftSpaceToView(self.downloadBtn, 1)
+  .leftSpaceToView(self.downloadBtn, 5)
   .widthIs(40).heightIs(26);
 
   //分享/转发
   [_shareBtn addTarget:self action:@selector(tapShareBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.shareBtn.sd_layout.centerYEqualToView(self.zanBtn)
-     .rightSpaceToView(self, 10)
-     .widthIs(70).heightIs(30);
+     .rightSpaceToView(self, 15)
+     .widthIs(70).heightIs(28);
 
   [self setupAutoHeightWithBottomView:self.zanBtn bottomMargin:10];
 }

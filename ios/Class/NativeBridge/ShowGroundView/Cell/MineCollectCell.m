@@ -98,7 +98,7 @@
   _userNameLb.sd_layout
   .heightIs(20)
   .centerYEqualToView(_userHeaderImgView)
-  .leftSpaceToView(_userHeaderImgView, 5)
+  .leftSpaceToView(_userHeaderImgView, 8)
   .rightSpaceToView(_btn, 10);
   
   _btn.imageView.sd_layout
