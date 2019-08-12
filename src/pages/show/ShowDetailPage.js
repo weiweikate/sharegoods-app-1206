@@ -778,7 +778,7 @@ export default class ShowDetailPage extends BasePage {
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             {detail ?
                 <CommShowShareModal ref={(ref) => this.shareModal = ref}
-                                    type={this.state.showText?ShareUtil.showSharedetailDataType(detail && detail.showType):null}
+                                    type={!this.state.showText?ShareUtil.showSharedetailDataType(detail && detail.showType):null}
                                     trackEvent={trackEvent.XiuChangShareClick}
                                     trackParmas={{
                                         articleCode: detail.code,
