@@ -29,7 +29,11 @@
             android:layout_gravity="center"
             android:src="@drawable/ic_video_play"
             />
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="165dp"
+            android:layout_gravity="bottom"
+            android:background="@drawable/transparent_black_gradient" />
     </FrameLayout>
 
     <RelativeLayout
@@ -42,7 +46,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="15dp"
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
@@ -106,7 +110,6 @@
             android:id="@+id/tv_buy"
             android:layout_width="wrap_content"
             android:layout_height="34dp"
-
             android:background="@drawable/buy_background"
             android:gravity="center"
             android:paddingLeft="17dp"
@@ -119,9 +122,9 @@
         <View
             android:id="@+id/line"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="1px"
             android:layout_above="@+id/buy_wrapper"
-            android:background="@color/white" />
+            android:background="#999" />
 
         <LinearLayout
             android:id="@+id/tag_wrapper"

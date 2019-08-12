@@ -14,9 +14,7 @@ import ShowDynamicView from './components/ShowDynamicView';
 import RouterMap,{backToShow} from '../../navigation/RouterMap';
 import UserInfoView from './components/UserInfoView';
 
-const headerBgSize = { width: 375, height: 200 };
 const headerHeight = ScreenUtils.statusBarHeight + 44;
-const offset = ScreenUtils.getImgHeightWithWidth(headerBgSize) - headerHeight;
 
 const { px2dp } = ScreenUtils;
 
@@ -74,29 +72,6 @@ export default class MyDynamicPage extends BasePage {
             </View>
         );
     };
-
-    _onScroll = (nativeEvent) => {
-        let Y = nativeEvent.YDistance - px2dp(10);
-        // alert(Y);
-        if (Y < offset) {
-            this.st = Y / offset;
-
-            this.setState({
-                changeHeader: this.st > 0.7 ? false : true
-            });
-        } else {
-            this.st = 1;
-            this.setState({
-                changeHeader: false
-            });
-        }
-
-
-        this.headerBg.setNativeProps({
-            opacity: this.st
-        });
-    };
-
 
     _render() {
         let Waterfall = ShowDynamicView;

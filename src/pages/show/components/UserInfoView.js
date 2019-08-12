@@ -115,7 +115,7 @@ export default class UserInfoView extends PureComponent {
                 }
 
             }}>
-                <LinearGradient
+                {relationType === 0?<LinearGradient
                     start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
                     colors={['#FFCB02', '#FF9502']}
                     style={{
@@ -129,7 +129,21 @@ export default class UserInfoView extends PureComponent {
                     <Text style={{ color: DesignRule.white, fontSize: DesignRule.fontSize_threeTitle }}>
                         {text}
                     </Text>
-                </LinearGradient>
+                </LinearGradient>:<View
+                    style={{
+                        width: px2dp(65),
+                        height: px2dp(22),
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: px2dp(11),
+                        marginTop: px2dp(-11),
+                        backgroundColor:'#FFEACC'
+                    }}>
+                    <Text style={{ color: '#FF9502', fontSize: DesignRule.fontSize_threeTitle }}>
+                        {text}
+                    </Text>
+                </View>}
+
             </TouchableWithoutFeedback>);
     };
 
@@ -235,7 +249,7 @@ var styles = StyleSheet.create({
         paddingHorizontal: 15
     },
     nameStyle: {
-        marginTop: px2dp(15),
+        marginTop: px2dp(10),
         color: DesignRule.white,
         fontSize: px2dp(17)
     }

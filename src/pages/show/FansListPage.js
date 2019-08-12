@@ -174,20 +174,21 @@ export default class FansListPage extends BasePage {
                         this.$navigate(RouterMap.MyDynamicPage,{userType:'others',userInfo:userInfo});
                     }
                 }}>
-                    <View>
+                    <View style={{ flexDirection: 'row'}}>
                         <ImageLoad source={{ uri: userImg }}
                                    style={styles.userImg}
                                    isAvatar={true}
                         />
+                        <View style={{
+                            marginLeft: autoSizeWidth(10),
+
+                        }}>
+                            <MRText style={styles.userName}>{userName}</MRText>
+                            {detail.length ? <MRText style={styles.detail}>{detail}</MRText> : null}
+                        </View>
                     </View>
                 </TouchableWithoutFeedback>
-                <View style={{
-                    marginLeft: autoSizeWidth(10),
-                    flex: 1
-                }}>
-                    <MRText style={styles.userName}>{userName}</MRText>
-                    {detail.length ? <MRText style={styles.detail}>{detail}</MRText> : null}
-                </View>
+                <View style={{flex:1}}/>
                 {this.renderBtn(item, index)}
             </View>
         );
