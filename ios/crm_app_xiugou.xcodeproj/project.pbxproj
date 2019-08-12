@@ -4347,6 +4347,7 @@
 					"$(SRCROOT)/../node_modules/@mr/rn-geolocation/ios/**",
 					"$(SRCROOT)/../node_modules/@mr/rn-request/ios",
 					"$(SRCROOT)/../node_modules/react-native-webp",
+					"$(SRCROOT)/../node_modules/react-native-code-push/ios",
 				);
 				INFOPLIST_FILE = crm_app_xiugou/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -4521,6 +4522,7 @@
 					"$(SRCROOT)/../node_modules/@mr/rn-geolocation/ios/**",
 					"$(SRCROOT)/../node_modules/@mr/rn-request/ios",
 					"$(SRCROOT)/../node_modules/react-native-webp",
+					"$(SRCROOT)/../node_modules/react-native-code-push/ios",
 				);
 				INFOPLIST_FILE = crm_app_xiugou/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -4595,6 +4597,7 @@
 					"$(SRCROOT)/../node_modules/@mr/rn-geolocation/ios/**",
 					"$(SRCROOT)/../node_modules/@mr/rn-request/ios",
 					"$(SRCROOT)/../node_modules/react-native-webp",
+					"$(SRCROOT)/../node_modules/react-native-code-push/ios",
 				);
 				INFOPLIST_FILE = crm_app_xiugou/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;

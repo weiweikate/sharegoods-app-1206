@@ -139,7 +139,7 @@ const mStyles = StyleSheet.create({
     },
     priceText: {
         flex: 1,
-        color: DesignRule.textColor_redWarn, fontSize: 13
+        color: DesignRule.textColor_instruction, fontSize: 13
     }
 });
 
