@@ -358,7 +358,7 @@ export class BaseLoadMoreComponent extends React.Component {
     }
 }
 
-class DefaultLoadMoreComponent extends BaseLoadMoreComponent {
+export class DefaultLoadMoreComponent extends BaseLoadMoreComponent {
 
     renderIdleMore() {
         return (

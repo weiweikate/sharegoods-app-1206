@@ -26,7 +26,10 @@ export const homeType = {
     guideInfo: 17,
     Alert: 21,//退出的弹窗
     shopProducts: 22,//拼店详情商品列表
-    shopBanner: 23//拼店详情底部banner
+    shopBanner: 23,//拼店详情底部banner
+    custom_imgAD: 'WIDGET-IMAGE-ADV',
+    custom_text: 'WIDGET-TEXT',
+    custom_goods: 'WIDGET-GOODS'
 };
 
 

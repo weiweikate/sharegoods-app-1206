@@ -8,7 +8,6 @@ import {
     NativeModules,
     ActivityIndicator,
     TouchableOpacity,
-    ScrollView
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import { observer } from 'mobx-react';
@@ -39,7 +38,6 @@ import { todayModule } from './model/HomeTodayModel';
 import { recommendModule } from './model/HomeRecommendModel';
 import { subjectModule } from './model/HomeSubjectModel';
 import { homeExpandBnnerModel } from './model/HomeExpandBnnerModel';
-import HomeTitleView from './view/HomeTitleView';
 import LuckyIcon from '../guide/LuckyIcon';
 import HomeMessageModalView, { HomeAdModal, GiftModal } from './view/HomeMessageModalView';
 import { channelModules } from './model/HomeChannelModel';
@@ -75,6 +73,11 @@ import TaskVIew from './view/TaskVIew';
 import intervalMsgModel, { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
 import { UserLevelModalView } from './view/TaskModalView';
 import { routePush } from '../../navigation/RouterMap';
+import ImageAdView from './view/ImageAdView';
+import GoodsCustomView from './view/GoodsCustomView';
+import HomeAPI from './api/HomeAPI';
+import HomeNormalList from './view/HomeNormalList';
+import TabTitleView from './view/TabTitleView';
 
 const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
     <ActivityIndicator style={{ marginRight: 6 }} animating={errorMsg ? false : (isEnd ? false : true)} size={'small'}
@@ -89,7 +92,7 @@ class HomeList extends React.Component {
     });
 
     layoutProvider = new LayoutProvider((i) => {
-        return this.dataProvider.getDataForIndex(i).type || 0;
+        return this.dataProvider.getDataForIndex(i) || {};
     }, (type, dim) => {
         dim.width = ScreenUtils.width;
         const { todayList } = todayModule;
@@ -97,7 +100,7 @@ class HomeList extends React.Component {
         const { subjectHeight, subjectList } = subjectModule;
         const { foucusHeight } = homeFocusAdModel;
 
-        switch (type) {
+        switch (type.type) {
             case homeType.category:
                 // dim.height = categoryModule.categoryList.length > 0 ? categoryHeight : 0;
                 dim.height = 40;
@@ -133,10 +136,14 @@ class HomeList extends React.Component {
                 dim.height = subjectList.length > 0 ? subjectHeight : 0;
                 break;
             case homeType.goodsTitle:
-                dim.height = px2dp(52);
+                dim.height = homeModule.tabList.length > 0 ? px2dp(43+24): 0;
                 break;
             case homeType.goods:
                 dim.height = kHomeGoodsViewHeight;
+                break;
+            case homeType.custom_goods:
+            case homeType.custom_imgAD:
+                dim.height = type.itemHeight;
                 break;
             default:
                 dim.height = 0;
@@ -155,6 +162,7 @@ class HomeList extends React.Component {
     _keyExtractor = (item, index) => item.id + '';
 
     _renderItem = (type, item, index) => {
+        type = type.type
         let data = item;
         if (type === homeType.category) {
             // return <HomeCategoryView navigate={routePush}/>;
@@ -188,8 +196,12 @@ class HomeList extends React.Component {
                          onLayout={event => {
                              // 保留，不能删除
                          }}>
-                <HomeTitleView title={'为你推荐'}/>
+                <TabTitleView />
             </View>;
+        } else if (type === homeType.custom_imgAD) {
+            return <ImageAdView data={item}/>;
+        }else if (type === homeType.custom_goods) {
+            return <GoodsCustomView data={item}/>;
         }
         return <View/>;
     };
@@ -202,6 +214,7 @@ class HomeList extends React.Component {
         homeModule.isRefreshing = true;
         homeModule.loadHomeList(true);
         taskModel.getData();
+        this.props.loadTabData();
         this.luckyIcon && this.luckyIcon.getLucky(1, '');
     }
 
@@ -279,6 +292,7 @@ class HomeList extends React.Component {
         this.listenerSkip = JSManagerEmitter.addListener(HOME_SKIP, this.homeSkip);
         // 修复首页图标不准确
         this.homeTabChange();
+        this.props.loadTabData();
     }
 
     componentWillUnmount() {
@@ -315,11 +329,14 @@ class HomePage extends BasePage {
         title: '',
         show: false
     };
-
-    state = {
-        hasMessage: false,
-        y: 0
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            hasMessage: false,
+            y: 0,
+            tabData: [],
+        };
+    }
 
 
     componentDidMount() {
@@ -379,6 +396,7 @@ class HomePage extends BasePage {
         this.listener = DeviceEventEmitter.addListener('homePage_message', this.getMessageData);
         this.listenerMessage = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
         this.listenerLogout = DeviceEventEmitter.addListener('login_out', this.loadMessageCount);
+        // this.loadTabData();
     }
     componentWillUnmount() {
         this.willBlurSubscription && this.willBlurSubscription.remove();
@@ -387,6 +405,12 @@ class HomePage extends BasePage {
         this.listener && this.listener.remove();
         this.listenerMessage && this.listenerMessage.remove();
         this.listenerLogout && this.listenerLogout.remove();
+    }
+
+    loadTabData = () => {
+        HomeAPI.getFirstList().then((data)=> {
+            this.setState({tabData: data.data});
+        })
     }
 
     loadMessageCount = () => {
@@ -409,6 +433,7 @@ class HomePage extends BasePage {
 
 
     render() {
+       let tabData = this.state.tabData || [];
         return (
             <View style={[styles.container, { minHeight: ScreenUtils.headerHeight, minWidth: 1 }]}>
                 <HomeSearchView navigation={routePush}
@@ -430,17 +455,22 @@ class HomePage extends BasePage {
                         onScrollBeginDrag={() => {
                             this.luckyIcon.close();
                         }}
+                        loadTabData={this.loadTabData}
                         onScroll={(y)=>{
-                            if (y > 40 && this.state.y >= 40) {
+                            if (y > 40 && this.state.y >= 40 || y < 0) {
                                 return
                             }
                             this.setState({ y })
 
                         }}
                     />
-                    <ScrollView  tabLabel={'待付款'}>
-                        <View style={{height: 1000}}/>
-                    </ScrollView>
+                    {tabData.map((item) => {
+                        return(
+                            <HomeNormalList  tabLabel={item.navName}
+                                             data = {item}
+                            />
+                        )
+                    })}
                 </ScrollableTabView>
                 <LuckyIcon ref={(ref) => {
                     this.luckyIcon = ref;
@@ -490,8 +520,8 @@ const styles = StyleSheet.create({
         backgroundColor: DesignRule.bgColor
     },
     titleView: {
-        marginTop: px2dp(10),
-        paddingLeft: px2dp(15),
+
+        height: px2dp(43 + 24),
         width: ScreenUtils.width
     },
     messageBgStyle: {
