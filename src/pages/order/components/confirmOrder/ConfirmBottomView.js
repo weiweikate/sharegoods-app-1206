@@ -68,12 +68,14 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     commitAmountStyle: {
-        fontSize: ScreenUtils.px2dp(15),
+        fontSize: ScreenUtils.px2dp(12),
         color: DesignRule.mainColor,
     },
     commitTouStyle: {
         justifyContent: 'center',
         alignItems: 'center',
-        height: ScreenUtils.autoSizeHeight(49)
+        height: ScreenUtils.autoSizeHeight(49),
+        borderRadius: 4,
+        overflow: 'hidden'
     }
 });
