@@ -159,14 +159,14 @@
 
   self.headView.sd_layout
   .topSpaceToView(bgView, 9)
-  .leftSpaceToView(bgView, 0)
+  .leftSpaceToView(bgView, 5)
   .rightSpaceToView(bgView, 5)
   .heightIs(34);
 
   //内容背景
   self.contentLabView.sd_layout.topSpaceToView(self.headView,10 )
-  .leftSpaceToView(bgView, 10)
-  .rightSpaceToView(bgView, 10);
+  .leftSpaceToView(bgView, 15)
+  .rightSpaceToView(bgView, 15);
 
   [self.contentLabView setupAutoHeightWithBottomView:_contentLab bottomMargin:10];
 
@@ -184,18 +184,18 @@
   //点赞
   [_zanBtn addTarget:self action:@selector(tapZanBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.zanBtn.sd_layout.topSpaceToView(self.contentLabView,10)
-  .leftSpaceToView(bgView, 10)
-   .widthIs(26).heightIs(26);
+  .leftSpaceToView(bgView, 15)
+   .widthIs(21).heightIs(20);
 
   self.zanNum.sd_layout.centerYEqualToView(self.zanBtn)
-  .leftSpaceToView(self.zanBtn, 1)
+  .leftSpaceToView(self.zanBtn, 5)
   .widthIs(40).heightIs(26);
 
   //收藏
   [_collectionBtn addTarget:self action:@selector(tapCollectionBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.collectionBtn.sd_layout.centerYEqualToView(self.zanNum)
   .leftSpaceToView(self.zanNum, 10)
-  .heightIs(26).widthIs(26);
+  .heightIs(20).widthIs(20);
   
   self.collectionNum.sd_layout.centerYEqualToView(self.collectionBtn)
   .leftSpaceToView(self.collectionBtn, 1)
@@ -204,8 +204,8 @@
   //分享/转发
   [_shareBtn addTarget:self action:@selector(tapShareBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.shareBtn.sd_layout.centerYEqualToView(self.zanBtn)
-  .rightSpaceToView(bgView,10)
-  .widthIs(70).heightIs(30);
+  .rightSpaceToView(bgView,15)
+  .widthIs(70).heightIs(28);
 
   [bgView setupAutoHeightWithBottomView:self.shareBtn bottomMargin:5];
   [self setupAutoHeightWithBottomView:bgView bottomMargin:5];

@@ -101,10 +101,18 @@
 -(UIButton*)guanBtn{
   if(!_guanBtn){
     _guanBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _guanBtn.titleLabel.font = [UIFont systemFontOfSize:13];
+    //关注
+    [_guanBtn setBackgroundImage:[UIImage imageNamed:@"vGuanzhu"] forState:UIControlStateNormal];
+    [_guanBtn setBackgroundImage:[self createImageWithColor:[UIColor colorWithHexString:@"FFF5CC"]] forState:UIControlStateSelected];
+    
     [_guanBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [_guanBtn setTitleColor:[UIColor colorWithHexString:@"FF9502"] forState:UIControlStateSelected];
+    
+    [_guanBtn setTitle:@"关注" forState:UIControlStateNormal];
+    [_guanBtn setTitle:@"已关注" forState:UIControlStateSelected];
+    
+    _guanBtn.titleLabel.font = [UIFont systemFontOfSize:13];
     _guanBtn.layer.cornerRadius = 14;
-    _guanBtn.backgroundColor = [UIColor colorWithHexString:@"#FF9502"];
     _guanBtn.layer.masksToBounds = YES;
   }
   return _guanBtn;
@@ -148,12 +156,12 @@
   self.headImg.layer.cornerRadius = self.headImg.frame.size.width/2.0;
   
   //昵称
-  self.nameLab.sd_layout.leftSpaceToView(_headImg, 4)
+  self.nameLab.sd_layout.leftSpaceToView(_headImg, 10)
   .heightIs(15).topEqualToView(self.headImg);
   [_nameLab setSingleLineAutoResizeWithMaxWidth:150];
   
   //热度
-  hotImage.sd_layout.leftSpaceToView(_headImg, 4)
+  hotImage.sd_layout.leftSpaceToView(_headImg, 10)
   .topSpaceToView(self.nameLab, 2)
   .heightIs(15).widthIs(15);
   
@@ -163,8 +171,6 @@
   [self.hotLab setSingleLineAutoResizeWithMaxWidth:150];
   
   //关注
-    [_guanBtn setTitle:@"关注" forState:UIControlStateNormal];
-    [_guanBtn setTitle:@"已关注" forState:UIControlStateSelected];
     [_guanBtn addTarget:self action:@selector(tapGuanzhuBtn:) forControlEvents:UIControlEventTouchUpInside];
   
     self.guanBtn.sd_layout.centerYEqualToView(self.headImg)
@@ -174,8 +180,8 @@
   
   self.shareImg.sd_layout.centerYEqualToView(self.headImg)
   .rightSpaceToView(self, 18)
-  .heightIs(14)
-  .widthIs(16);
+  .heightIs(20)
+  .widthIs(20);
   
   
 }
@@ -279,4 +285,16 @@
   } showLoading:nil];
 }
 
+//UIColor 转UIImage（UIImage+YYAdd.m也是这种实现）
+- (UIImage*) createImageWithColor: (UIColor*) color
+{
+  CGRect rect=CGRectMake(0.0f, 0.0f, 65.0f, 28.0f);
+  UIGraphicsBeginImageContext(rect.size);
+  CGContextRef context = UIGraphicsGetCurrentContext();
+  CGContextSetFillColorWithColor(context, [color CGColor]);
+  CGContextFillRect(context, rect);
+  UIImage *theImage = UIGraphicsGetImageFromCurrentImageContext();
+  UIGraphicsEndImageContext();
+  return theImage;
+}
 @end
