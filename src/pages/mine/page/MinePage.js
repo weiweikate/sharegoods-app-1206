@@ -61,7 +61,6 @@ const {
     mine_setting_icon_white,
     // profile_banner,
     mine_icon_mentor,
-    mine_user_icon,
     mine_icon_fans,
     mine_icon_show,
     // mine_levelBg,
@@ -385,7 +384,7 @@ export default class MinePage extends BasePage {
 
         let icon = (user.headImg && user.headImg.length > 0) ?
             <AvatarImage source={{ uri: user.headImg }} style={styles.userIconStyle}
-                         borderRadius={px2dp(27)}/> : <Image source={mine_user_icon} style={styles.userIconStyle}
+                         borderRadius={px2dp(27)}/> : <Image source={res.other.avatar_default} style={styles.userIconStyle}
                                                              borderRadius={px2dp(27)}/>;
 
         return (
@@ -489,7 +488,7 @@ export default class MinePage extends BasePage {
 
         let icon = (user.headImg && user.headImg.length > 0) ?
             <AvatarImage source={{ uri: user.headImg }} style={styles.userIconNavStyle}
-                         borderRadius={px2dp(15)}/> : <Image source={mine_user_icon} style={styles.userIconNavStyle}
+                         borderRadius={px2dp(15)}/> : <Image source={res.other.avatar_default} style={styles.userIconNavStyle}
                                                              borderRadius={px2dp(15)}/>;
 
         return (

@@ -4,24 +4,18 @@
  */
 
 import React, { PureComponent } from 'react';
-import {
-    View,
-    TouchableWithoutFeedback,
-    Image
-} from 'react-native';
+import { Image, TouchableWithoutFeedback, View } from 'react-native';
 import ImageLoad from '@mr/image-placeholder';
 import DesignRule from '../../../constants/DesignRule';
 import ShowUtils from '../utils/ShowUtils';
 import RouterMap, { routePush } from '../../../navigation/RouterMap';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import res from '../res';
-import mineRes from '../../mine/res';
 import { MRText } from '../../../components/ui';
 import EmptyUtils from '../../../utils/EmptyUtils';
 
 const { px2dp } = ScreenUtils;
 const { iconShowFire } = res;
-const { mine_user_icon } = mineRes.homeBaseImg;
 
 
 export default class TagDetailItemView extends PureComponent {
@@ -118,7 +112,7 @@ export default class TagDetailItemView extends PureComponent {
                             {!EmptyUtils.isEmpty(itemData.userInfoVO.userImg) ?
                                 <ImageLoad source={{ uri: itemData.userInfoVO.userImg }}
                                            style={{ width: px2dp(20), height: px2dp(20), borderRadius: px2dp(10) }}/> :
-                                <Image source={mine_user_icon}
+                                <Image source={res.other.avatar_default}
                                        style={{ width: px2dp(20), height: px2dp(20), borderRadius: px2dp(10) }}
                                        borderRadius={px2dp(10)}/>}
                         </View>
