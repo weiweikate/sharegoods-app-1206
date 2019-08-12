@@ -521,7 +521,7 @@ export default class ShowDetailPage extends BasePage {
                 <View style={{ width: px2dp(20) }}/>
                 <NoMoreClick onPress={this._collectClick}>
                     <View style={{ flexDirection: 'row' }}>
-                        <Image source={detail.collect ? collected:uncollected} style={styles.bottomIcon}/>
+                        <Image source={detail.collect ? collected : uncollected} style={styles.bottomIcon}/>
                         <Text style={styles.bottomNumText}>
                             {ShowUtils.formatShowNum(detail.collectCount)}
                         </Text>
@@ -778,7 +778,7 @@ export default class ShowDetailPage extends BasePage {
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             {detail ?
                 <CommShowShareModal ref={(ref) => this.shareModal = ref}
-                                    type={this.state.showText?ShareUtil.showSharedetailDataType(detail && detail.showType):null}
+                                    type={ShareUtil.showSharedetailDataType(detail && detail.showType,this.state.showText)}
                                     trackEvent={trackEvent.XiuChangShareClick}
                                     trackParmas={{
                                         articleCode: detail.code,
