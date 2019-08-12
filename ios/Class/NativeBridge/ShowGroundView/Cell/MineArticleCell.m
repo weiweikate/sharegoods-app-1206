@@ -129,6 +129,9 @@
   }else if (self.model.status==5){
     statusStr = @"转码中";
     color = @"#3187FF";
+  }else if (self.model.status==6){
+    statusStr = @"发布失败";
+    color = @"#999999";
   }
   
   _statusLb.text = statusStr;

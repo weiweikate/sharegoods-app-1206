@@ -181,7 +181,7 @@
 
   self.headView.sd_layout
   .topSpaceToView(bgView, 9)
-  .leftSpaceToView(bgView, 0)
+  .leftSpaceToView(bgView, 5)
   .rightSpaceToView(bgView, 5)
   .heightIs(34);
 
@@ -200,12 +200,12 @@
   //九宫格图片
   self.bodyView.sd_layout
   .topSpaceToView(self.foldLabel, 5)
-  .leftSpaceToView(bgView, 10);
+  .leftSpaceToView(bgView, 15);
 
     //
   self.footerView.sd_layout
   .topSpaceToView(self.bodyView, 10)
-  .leftSpaceToView(bgView, 10)
+  .leftSpaceToView(bgView, 15)
   .rightSpaceToView(bgView, 0);
 
   self.jingpin.sd_layout.topSpaceToView(bgView, 5)

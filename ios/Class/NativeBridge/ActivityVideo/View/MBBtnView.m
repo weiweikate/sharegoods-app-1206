@@ -61,7 +61,7 @@
 
 -(void)setUI{
   UIView *lineview = [[UIView alloc]init];
-  lineview.backgroundColor = [UIColor colorWithRed:229/255.0 green:229/255.0 blue:229/255.0 alpha:1.0];
+  lineview.backgroundColor = [UIColor colorWithHexString:@"999999"];
   
   UILabel *text = [[UILabel alloc]init];
   text.text = @"立即购买";
@@ -97,7 +97,7 @@
   .widthIs(60).heightIs(60);
   
   collectionView.sd_layout.centerYEqualToView(self)
-  .rightSpaceToView(self, 20).widthIs(32);
+  .rightSpaceToView(self, 15).widthIs(32);
   
   self.collectionBtn.sd_layout.centerXEqualToView(collectionView)
   .topEqualToView(collectionView).widthIs(30).heightIs(30);
@@ -335,8 +335,16 @@
 -(UIView *)buyBtn{
   if(!_buyBtn){
     _buyBtn = [[UIView alloc]init];
+    CAGradientLayer *gradient = [CAGradientLayer layer];
+    //设置开始和结束位置(设置渐变的方向)
+    gradient.startPoint = CGPointMake(0.87, 0.84);
+    gradient.endPoint = CGPointMake(0.05, 0.08);;
+    gradient.frame =CGRectMake(0,0,90,34);
+    gradient.colors = @[(__bridge id)[UIColor colorWithRed:255/255.0 green:149/255.0 blue:2/255.0 alpha:1.0].CGColor, (__bridge id)[UIColor colorWithRed:255/255.0 green:203/255.0 blue:2/255.0 alpha:1.0].CGColor];
+    gradient.locations = @[@(0), @(1.0f)];
+    gradient.cornerRadius = 17;
     _buyBtn.layer.cornerRadius = 17;
-    _buyBtn.backgroundColor = [UIColor colorWithHexString:@"FF9502"];
+    [_buyBtn.layer insertSublayer:gradient atIndex:0];
     _buyBtn.userInteractionEnabled = YES;//打开用户交互
     UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickBuy)];
     [_buyBtn addGestureRecognizer:tapGesture];
