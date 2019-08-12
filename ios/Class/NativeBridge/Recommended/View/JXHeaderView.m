@@ -60,7 +60,7 @@
   if(!_hotLab){
     _hotLab = [[UILabel alloc]init];
     _hotLab.font = [UIFont systemFontOfSize:11];
-    _hotLab.textColor = [UIColor colorWithRed:153/255.0 green:153/255.0 blue:153/255.0 alpha:1.0];
+    _hotLab.textColor = [UIColor colorWithHexString:@"FF0050"];
   }
   return _hotLab;
 }
