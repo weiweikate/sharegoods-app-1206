@@ -1,6 +1,7 @@
 import { observable, computed, action } from 'mobx';
 import StringUtils from '../../../utils/StringUtils';
 import { suitType } from '../components/ProductDetailSuitView';
+import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 
 const { add, mul } = StringUtils;
 
@@ -12,6 +13,8 @@ const afterSaleLimitType = {
 };
 
 export default class SuitProductModel {
+    @observable loadingState = PageLoadingState.loading;
+    @observable netFailedInfo = {};
     /*套餐类型*/
     @observable extraType;
     @observable activityCode;
