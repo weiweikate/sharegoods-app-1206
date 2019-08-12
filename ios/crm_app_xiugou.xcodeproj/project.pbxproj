@@ -1631,15 +1631,15 @@
 			isa = PBXGroup;
 			children = (
 				0157962022FAB01400122524 /* MBBtnView.h */,
-				0157962122FAB01400122524 /* MBScrollView.m */,
-				0157962222FAB01400122524 /* MBToastLabelView.m */,
-				0157962322FAB01400122524 /* MBVideoHeaderView.h */,
-				0157962422FAB01400122524 /* MBPlayerView.h */,
 				0157962522FAB01400122524 /* MBBtnView.m */,
-				0157962622FAB01400122524 /* MBScrollView.h */,
-				0157962722FAB01400122524 /* MBPlayerView.m */,
+				0157962122FAB01400122524 /* MBScrollView.m */,
+				0157962322FAB01400122524 /* MBVideoHeaderView.h */,
 				0157962822FAB01400122524 /* MBVideoHeaderView.m */,
+				0157962622FAB01400122524 /* MBScrollView.h */,
+				0157962422FAB01400122524 /* MBPlayerView.h */,
+				0157962722FAB01400122524 /* MBPlayerView.m */,
 				0157962922FAB01400122524 /* MBToastLabelView.h */,
+				0157962222FAB01400122524 /* MBToastLabelView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";

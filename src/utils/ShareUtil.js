@@ -134,16 +134,16 @@ const shareFunc = (params, luckyDraw, api, callback = () => {
     });
 };
 
-const showSharedetailDataType = (type)=>{
+const showSharedetailDataType = (type,download = false)=>{
     if(type){
         if(type === 1){
-            return 'show';
+            return download ? 'showDown' : 'show';
 
         }else if(type === 2){
-            return 'showWeb';
+            return download ? 'showWebDown' : 'showWeb';
 
         }else  if(type === 3) {
-            return 'showVideo';
+            return download ? 'showVideoDown' : 'showVideo';
 
         }else {
             return '';
