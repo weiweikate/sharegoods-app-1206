@@ -165,14 +165,14 @@ export default class SuitProductPage extends BasePage {
                                     retailPrice: `套餐价：￥${priceRetailTotal}`,
                                     priceType: [],
                                     priceStr: `￥${priceTotal}`,
-                                    QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`,
+                                    QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/package-product?spucode=${prodCode}&upuserid=${user.code || ''}`,
                                     shareMoney: '',
                                     spellPrice: ''
                                 }}
                                 webJson={{
                                     title: shareContent,
                                     dec: '套餐',
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`,
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/package-product?spucode=${prodCode}&upuserid=${user.code || ''}`,
                                     thumImage: image
                                 }}/>
                 <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
