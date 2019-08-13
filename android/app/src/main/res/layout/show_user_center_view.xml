@@ -31,7 +31,9 @@
             android:layout_marginLeft="15dp"
             app:tabIndicatorColor="#FF0050"
             app:tabSelectedTextColor="#FF0050"
-            app:tabTextColor="#333333" />
+            app:tabTextColor="#333333"
+            app:tabIndicatorHeight="2dp"
+            app:tabIndicator="@drawable/indicator"/>
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.widget.NestedScrollView
