@@ -324,7 +324,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         paint.getTextBounds(pdj, 0, pdj.length(), bounds);
         canvas.drawText(pdj, 51 * ratio,  (367 + titleSize) * ratio, paint);
 
-        int left = bounds.width() + 61 * ratio;
+        int left = bounds.width() + 71 * ratio;
 
         paint.setStrikeThruText(true);
         paint.setFakeBoldText(false);
