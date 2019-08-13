@@ -83,8 +83,8 @@ export default class SuitProductModel {
 
     @computed get priceTotal() {
         return this.suitProducts.reduce((pre, cur) => {
-            const { minPrice } = cur;
-            return add(pre, minPrice);
+            const { originalPrice } = cur;
+            return add(pre, originalPrice);
         }, 0);
     }
 
