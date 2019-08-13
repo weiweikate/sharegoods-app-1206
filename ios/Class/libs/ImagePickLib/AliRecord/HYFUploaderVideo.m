@@ -33,12 +33,14 @@ SINGLETON_FOR_CLASS(HYFUploaderVideo)
   __weak HYFUploaderVideo *weakSelf = self;
   OnUploadFinishedListener testFinishCallbackFunc = ^(UploadFileInfo* fileInfo,  VodUploadResult* result){
     dispatch_async(dispatch_get_main_queue(), ^{
+      self.finshBlock(@"finsh");
       [JRLoadingAndToastTool dissmissLoading];
     });
   };
   
   OnUploadFailedListener testFailedCallbackFunc = ^(UploadFileInfo* fileInfo, NSString *code, NSString* message){
     dispatch_async(dispatch_get_main_queue(), ^{
+      self.errorBlock(@"finsh");
       [JRLoadingAndToastTool dissmissLoading];
       [JRLoadingAndToastTool showToast:@"上传失败" andDelyTime:0.5];
     });
@@ -63,6 +65,7 @@ SINGLETON_FOR_CLASS(HYFUploaderVideo)
   
   OnUploadTokenExpiredListener testTokenExpiredCallbackFunc = ^{
     NSLog(@"token expired.");
+    self.errorBlock(@"finsh");
     dispatch_async(dispatch_get_main_queue(), ^{
       [JRLoadingAndToastTool showToast:@"token过期" andDelyTime:0.5];
     });

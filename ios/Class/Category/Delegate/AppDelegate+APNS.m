@@ -331,11 +331,11 @@
 }
 - (void)timerRepeat:(NSTimer *)timer{
   if (self.isLoadJS) {
+    NSString *openUrl = (NSString *)timer.userInfo;
     if (timer.isValid) {
       [timer  invalidate];
       timer = nil;
     }
-    NSString *openUrl = (NSString *)timer.userInfo;
     [self openScheme:openUrl];
   }
 }

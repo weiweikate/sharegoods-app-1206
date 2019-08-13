@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -151,7 +152,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         like.setText(NumUtils.formatShowNum(item.getHotCount()));
 
         SimpleDraweeView coverView = helper.getView(R.id.iv_cover);
-
+        RelativeLayout foreground = helper.getView(R.id.foreground_view);
         //九宫格数据在网络请求完APP端处理的
         String coverTag = (String) coverView.getTag();
         if (!TextUtils.equals(coverTag, item.getVideoCover())) {
@@ -166,6 +167,7 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
                 layoutParams.height = videoOrImageWH/9*16;
             }
             coverView.setLayoutParams(layoutParams);
+            foreground.setLayoutParams(layoutParams);
             ImageLoadUtils.loadRoundNetImage(item.getVideoCover(), coverView, videoOrImageWH,
                     videoOrImageWH, radius_5);
         }

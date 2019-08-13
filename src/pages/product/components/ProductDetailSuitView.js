@@ -89,7 +89,7 @@ export class ProductDetailSuitFixedView extends Component {
             return;
         }
         const { productDetailSuitModel } = this.props;
-        routePush(RouterMap.SuitProductPage, { productDetailSuitModel, packageIndex });
+        routePush(RouterMap.SuitProductPage, { productCode: productDetailSuitModel.productCode, packageIndex });
     };
 
     render() {
@@ -201,7 +201,7 @@ export class ProductDetailSuitChooseView extends Component {
             return;
         }
         const { productDetailSuitModel } = this.props;
-        routePush(RouterMap.SuitProductPage, { productDetailSuitModel, packageIndex });
+        routePush(RouterMap.SuitProductPage, { productCode: productDetailSuitModel.productCode, packageIndex });
     };
 
     render() {
@@ -243,6 +243,7 @@ const SuitChooseStyles = StyleSheet.create({
 
 
 export class ProductDetailSuitModel {
+    @observable productCode;
     @observable activityCode;
     @observable extraType;
     @observable mainProduct = {};
@@ -260,15 +261,17 @@ export class ProductDetailSuitModel {
     @observable packages = [];
 
     request_promotion_detail = (productCode) => {
-        ProductApi.promotion_detail({ productCode }).then((data) => {
+        return ProductApi.promotion_detail({ productCode }).then((data) => {
             const dataDic = data.data || {};
             const { activityCode, extraType, mainProduct, packages } = dataDic;
+            this.productCode = productCode;
             this.activityCode = activityCode;
             this.extraType = extraType;
             this.mainProduct = mainProduct || {};
             this.packages = packages || [];
+            return Promise.resolve();
         }).catch(e => {
-
+            return Promise.reject(e);
         });
     };
 }

@@ -62,7 +62,7 @@ const allType = {
         icon: xiaofei
     },
     4: {
-        title: '导师管理费',
+        title: '导师管理',
         icon: daoshi
     },
     5: {
@@ -70,7 +70,7 @@ const allType = {
         icon: fenhong
     },
     6: {
-        title: '品牌推广奖励金',
+        title: '品牌推广奖励',
         icon: tuiguang
     },
     7: {

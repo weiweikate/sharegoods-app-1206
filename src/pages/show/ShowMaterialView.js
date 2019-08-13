@@ -195,8 +195,7 @@ export default class ShowMaterialView extends React.Component {
                                                    type: 4
                                                });
                                                this.materialList && this.materialList.replaceItemData(nativeEvent.index, JSON.stringify(detail));
-                                               this.shareModal && this.shareModal.open();
-                                               this.props.onShare(nativeEvent);
+                                               this.props.onShare(nativeEvent,true);
                                                const { showNo , userInfoVO } = detail;
                                                const { userNo } = userInfoVO || {};
                                                track(trackEvent.XiuChangDownLoadClick,{
@@ -239,8 +238,7 @@ export default class ShowMaterialView extends React.Component {
                                        }}
 
                                        onSharePress={({ nativeEvent }) => {
-                                           this.shareModal && this.shareModal.open();
-                                           this.props.onShare(nativeEvent);
+                                           this.props.onShare(nativeEvent,false);
 
                                        }}
                                        onScrollStateChanged={({ nativeEvent }) => {

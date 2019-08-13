@@ -104,7 +104,9 @@ const api = {
     //查询自己用户信息
     getMineInfo: ['/social/show/user/query/mine/info',  {
         method: 'get'
-    }]
+    }],
+    //获取发布视频token
+    getShowVideoToken:['/social/show/token',{method:'post'}]
 
 };
 import ApiUtils from '../../api/network/ApiUtils';
