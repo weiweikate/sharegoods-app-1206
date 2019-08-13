@@ -51,7 +51,6 @@ export default class ShowVideoPage extends BasePage {
             pageState: PageLoadingState.loading,
             productModalVisible: false,
             errorMsg:'网络错误'
-
         };
 
     }
@@ -172,7 +171,8 @@ export default class ShowVideoPage extends BasePage {
                                        onSharePress={({ nativeEvent }) => {
                                            this.setState({ detail: null }, () => {
                                                this.setState({
-                                                   detail: nativeEvent
+                                                   detail: nativeEvent,
+                                                   showText:false
                                                }, () => {
                                                    this.shareModal && this.shareModal.open();
                                                });
@@ -195,7 +195,8 @@ export default class ShowVideoPage extends BasePage {
                                                    });
                                                    this.setState({ detail: null }, () => {
                                                        this.setState({
-                                                           detail: nativeEvent
+                                                           detail: nativeEvent,
+                                                           showText:true
                                                        }, () => {
                                                            this.shareModal && this.shareModal.open();
                                                        });
@@ -257,7 +258,7 @@ export default class ShowVideoPage extends BasePage {
                                        params={this.data}/>
                     {detail ?
                         <CommShowShareModal ref={(ref) => this.shareModal = ref}
-                                            type={ShareUtil.showSharedetailDataType(detail && detail.showType)}
+                                            type={ShareUtil.showSharedetailDataType(detail && detail.showType,this.state.showText)}
                                             trackEvent={trackEvent.XiuChangShareClick}
                                             trackParmas={{
                                                 articleCode: detail.code,
