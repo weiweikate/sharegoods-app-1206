@@ -138,11 +138,15 @@ const SuitFixedStyles = StyleSheet.create({
 
 /**搭配套餐**/
 
-const SuitItemView = ({ imgUrl, name, promotionDecreaseAmount, price, pushCallback }) => {
+const SuitItemView = ({ imgUrl, name, promotionDecreaseAmount, price, pushCallback, totalStock }) => {
     return (
         <View style={suitItemStyle.item}>
             <NoMoreClick onPress={pushCallback}>
                 <UIImage style={suitItemStyle.itemImg} source={{ uri: imgUrl }}>
+                    {
+                        totalStock < 1 &&
+                        <Image source={suitSaleOut} style={{ height: px2dp(60), width: px2dp(60) }}/>
+                    }
                     <View style={suitItemStyle.subView}>
                         <MRText style={suitItemStyle.subText}>{promotionDecreaseAmount}</MRText>
                     </View>
@@ -160,14 +164,14 @@ const suitItemStyle = StyleSheet.create({
         width: px2dp(100) + 5
     },
     itemImg: {
-        overflow: 'hidden',
+        overflow: 'hidden', justifyContent: 'center', alignItems: 'center',
         width: px2dp(100), height: px2dp(100), borderRadius: 5
     },
     subView: {
-        position: 'absolute', bottom: 5, left: 5, backgroundColor: DesignRule.mainColor, borderRadius: 1
+        position: 'absolute', bottom: 0, right: 3, backgroundColor: DesignRule.mainColor, borderRadius: 3
     },
     subText: {
-        color: DesignRule.white, fontSize: 10, padding: 2
+        color: DesignRule.white, fontSize: 10, paddingHorizontal: 4, paddingVertical: 2
     },
     itemText: {
         color: DesignRule.textColor_secondTitle, fontSize: 12
@@ -179,16 +183,17 @@ const suitItemStyle = StyleSheet.create({
 
 export class ProductDetailSuitChooseView extends Component {
     _renderItem = ({ item, index }) => {
-        const { imgUrl, name, minPrice, skuList } = item;
+        const { imgUrl, name, minPrice, skuList, totalStock } = item;
         let decreaseList = (skuList || []).map((sku) => {
             return sku.promotionDecreaseAmount;
         });
-        let minDecrease = decreaseList.length === 0 ? 0 : Math.min.apply(null, decreaseList);
+        let maxDecrease = decreaseList.length === 0 ? 0 : Math.max.apply(null, decreaseList);
 
         const props = {
+            totalStock,
             imgUrl: imgUrl,
             name,
-            promotionDecreaseAmount: `立省${minDecrease}起`,
+            promotionDecreaseAmount: `至多省${maxDecrease}`,
             price: `¥${minPrice || ''}起`,
             pushCallback: this._goSuitPage.bind(this, index)
         };
