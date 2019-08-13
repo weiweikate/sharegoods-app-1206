@@ -122,10 +122,10 @@ const styles = StyleSheet.create({
     },
 
     bottomView: {
-        height: 49 + safeBottom, alignItems: 'center'
+        height: 40 + safeBottom + 15, alignItems: 'center'
     },
     bottomBtn: {
-        marginTop: 4.5, justifyContent: 'center', alignItems: 'center',
+        marginBottom: 15, justifyContent: 'center', alignItems: 'center',
         height: 40, backgroundColor: DesignRule.mainColor, borderRadius: 20, width: px2dp(345)
     },
     bottomText: {
