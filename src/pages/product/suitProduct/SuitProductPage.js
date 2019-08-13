@@ -155,11 +155,11 @@ export default class SuitProductPage extends BasePage {
     };
 
     _render() {
-        const { prodCode } = this.productDetailSuitModel;
+        const { packageIndex, productCode } = this.params;
         const { suitProducts, packageItem, afterSaleLimitText, priceRetailTotal, priceTotal } = this.suitProductModel;
         const totalProduct = suitProducts || [];
         const { image, afterSaleTip, shareContent } = packageItem;
-        const htmlUrl = `${apiEnvironment.getCurrentH5Url()}/package-product?spucode=${prodCode}&upuserid=${user.code || ''}&index=${this.params.packageIndex}`;
+        const htmlUrl = `${apiEnvironment.getCurrentH5Url()}/package-product?spucode=${productCode}&upuserid=${user.code || ''}&index=${packageIndex}`;
         return (
             <View style={styles.container}>
                 <ScrollView>
@@ -188,7 +188,7 @@ export default class SuitProductPage extends BasePage {
 
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 trackParmas={{
-                                    spuCode: prodCode,
+                                    spuCode: productCode,
                                     spuName: shareContent
                                 }}
                                 trackEvent={trackEvent.Share}
