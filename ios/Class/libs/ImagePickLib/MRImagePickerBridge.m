@@ -12,6 +12,7 @@
 #import "NetWorkTool.h"
 #import <VODUpload/VODUploadClient.h>
 #import <VODUpload/VODUploadModel.h>
+#import "NSDictionary+Util.h"
 
 #import "HYFUploaderVideo.h"
 @implementation MRImagePickerBridge
@@ -37,7 +38,7 @@ RCT_EXPORT_METHOD(getShowVideo:(RCTPromiseResolveBlock)resolve reject:(RCTPromis
   });
 }
 
-RCT_EXPORT_METHOD(uploadVideo:(NSString *)title and:(NSString *)path :(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject){
+RCT_EXPORT_METHOD(uploadVideo:(NSString *)title and:(NSString *)path dic:(NSString*)json resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject){
   dispatch_async(dispatch_get_main_queue(), ^{
     NSString * tempFile ;
     if ([path containsString:@"file:///"]) {
@@ -52,28 +53,28 @@ RCT_EXPORT_METHOD(uploadVideo:(NSString *)title and:(NSString *)path :(RCTPromis
     }
     NSString * fileName =  [path  lastPathComponent];
     NSLog(@"%@---%@",title,path);
-    NSDictionary * dicParams = @{
-                                 @"fileName": fileName,
-                                 @"title":title
-                                 };
-    [NetWorkTool requestWithURL:ShowApi_Video_Auth params:dicParams toModel:nil success:^(id result) {
-      NSLog(@"%@",result);
-      NSDictionary * dicResut = @{
-                                  @"showNo":result[@"showNo"]?result[@"showNo"]:@"",
-                                  @"videoId":result[@"videoId"]?result[@"videoId"]:@""
-                                  };
-      resolve(dicResut);
-      
-      NSString * uploadAddress = result[@"uploadAddress"];
-      NSString * uploadAuth = result[@"uploadAuth"];
-      
+    NSDictionary * dicParams = [NSDictionary dictionaryWithJsonString:json];
+    //    [NetWorkTool requestWithURL:ShowApi_Video_Auth params:dicParams toModel:nil success:^(id result) {
+    //      NSLog(@"%@",result);
+    //      NSDictionary * dicResut = @{
+    //                                  @"showNo":result[@"showNo"]?result[@"showNo"]:@"",
+    //                                  @"videoId":result[@"videoId"]?result[@"videoId"]:@""
+    //                                  };
+    //      resolve(dicResut);
+    if(dicParams[@"uploadAddress"]&&dicParams[@"uploadAuth"]){
+      NSString * uploadAddress = dicParams[@"uploadAddress"];
+      NSString * uploadAuth = dicParams[@"uploadAuth"];
       [[HYFUploaderVideo sharedInstance]startUpLoad:fileName and:path and:title andUpLoadAuth:uploadAuth andUpLoadAddress:uploadAddress];
-      
-    } failure:^(NSString *msg, NSInteger code) {
-      NSLog(@"%@",msg);
-      reject([NSString stringWithFormat:@"%ld",code],msg,nil);
-//      reject(msg);
-    } showLoading:nil];
+      [HYFUploaderVideo sharedInstance].finshBlock = ^(NSString *finshParam) {
+        resolve(@"");
+      };
+
+      [HYFUploaderVideo sharedInstance].errorBlock = ^(NSString *finshParam) {
+        reject(@"",@"",nil);
+      };
+    }else{
+      reject(@"",@"",nil);
+    }
   });
 }
 
