@@ -31,8 +31,14 @@ const SuitFixedView = ({ mainProduct, subProducts, itemIndex, pushCallback }) =>
     const productList = [mainProduct, ...(subProducts || [])];
     let suitPrice = 0, dePrice = 0;
     productList.forEach((item) => {
-        const { skuList, minPrice } = item;
+        const { skuList } = item;
+
+        const suiPriceArr = skuList.map((item) => {
+            return item.promotionPrice;
+        });
+        const minPrice = Math.min.apply(null, suiPriceArr);
         suitPrice = add(suitPrice, minPrice);
+
         const priceArr = skuList.map((item) => {
             return item.promotionDecreaseAmount;
         });
@@ -183,7 +189,13 @@ const suitItemStyle = StyleSheet.create({
 
 export class ProductDetailSuitChooseView extends Component {
     _renderItem = ({ item, index }) => {
-        const { imgUrl, name, minPrice, skuList, totalStock } = item;
+        const { imgUrl, name, skuList, totalStock } = item;
+
+        const suiPriceArr = skuList.map((item) => {
+            return item.promotionPrice;
+        });
+        const minPrice = Math.min.apply(null, suiPriceArr);
+
         let decreaseList = (skuList || []).map((sku) => {
             return sku.promotionDecreaseAmount;
         });
