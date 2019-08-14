@@ -860,3 +860,4 @@ const simpleStyle = StyleSheet.create({
         textShadowRadius: 0
     }
 });
+

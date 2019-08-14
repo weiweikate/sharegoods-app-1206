@@ -7,7 +7,7 @@ import DesignRule from '../../../constants/DesignRule';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
 import loginModel from '../model/LoginModel';
 import ProtocolView from '../components/Login.protocol.view';
-import RouterMap, { replaceRoute, routeNavigate } from '../../../navigation/RouterMap';
+import RouterMap, { replaceRoute, routeNavigate, routePush } from '../../../navigation/RouterMap';
 import StringUtils from '../../../utils/StringUtils';
 import bridge from '../../../utils/bridge';
 import LinearGradient from 'react-native-linear-gradient';
@@ -208,7 +208,7 @@ export default class PhoneLoginPage extends BasePage {
                                     } else if (code === 34005) {
                                         // 绑定手机
                                         this.$toastShow('请绑定手机号');
-                                        routeNavigate(RouterMap.PhoneLoginPage, {
+                                        routePush(RouterMap.PhoneLoginPage, {
                                             ...this.params,
                                             needBottom: false,
                                             wxData

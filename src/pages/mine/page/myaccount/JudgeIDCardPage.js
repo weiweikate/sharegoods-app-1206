@@ -114,7 +114,7 @@ export default class SetNewPhoneNumPage extends BasePage {
                 userName,
                 cardNum,
                 oldPwd: '',
-                tips: '重新设置新的交易密码',
+                tips: '设置新的交易密码',
                 title: '重置交易密码',
                 from: 'edit'
             });
