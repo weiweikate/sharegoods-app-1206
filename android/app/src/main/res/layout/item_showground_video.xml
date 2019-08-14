@@ -67,7 +67,7 @@
         android:layout_alignParentLeft="true"
         android:textColor="@color/textColor_secondTitle"
         android:textSize="13sp"
-        android:lines="2"
+        android:maxLines="2"
         android:ellipsize="end"
         />
 

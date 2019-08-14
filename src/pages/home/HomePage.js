@@ -396,6 +396,7 @@ class HomePage extends BasePage {
                                                     colors={[DesignRule.mainColor]}/>}
                     onEndReached={this._onEndReached.bind(this)}
                     onEndReachedThreshold={ScreenUtils.height / 3}
+                    renderAheadOffset={ScreenUtils.height - ScreenUtils.headerHeight}
                     dataProvider={this.dataProvider}
                     rowRenderer={this._renderItem.bind(this)}
                     layoutProvider={this.layoutProvider}
