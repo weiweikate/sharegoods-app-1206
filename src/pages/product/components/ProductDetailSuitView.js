@@ -218,7 +218,8 @@ export class ProductDetailSuitChooseView extends Component {
             return;
         }
         const { productDetailSuitModel } = this.props;
-        routePush(RouterMap.SuitProductPage, { productCode: productDetailSuitModel.productCode, packageIndex });
+        /*搭配套餐不需要传index 0下标就行*/
+        routePush(RouterMap.SuitProductPage, { productCode: productDetailSuitModel.productCode, packageIndex: 0 });
     };
 
     render() {
