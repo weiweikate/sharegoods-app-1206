@@ -50,6 +50,7 @@ export default class TabTitleView extends React.Component {
         return (
             <ScrollView horizontal = {true}
                         style={{marginLeft: autoSizeWidth(5)}}
+                        showsHorizontalScrollIndicator={false}
             >
                 {
                     homeModule.tabList.map((item, index) => {

@@ -1,3 +1,4 @@
+import RouterMap, { routePush } from '../../navigation/RouterMap';
 
 export const homeType = {
     swiper: 2,           // 首页顶部轮播
@@ -86,3 +87,19 @@ export const homePoint = {
 // 51：登录/注册页面广告位
 // 100：其他
 };
+
+
+export function topicAdOnPress(linkType, linkValue) {
+    switch (linkType){
+        case 1:
+        case 4:
+            routePush(RouterMap.ProductDetailPage,{productCode: linkValue})
+            break
+        case 2:
+            routePush('HtmlPage', {uri: '/custom/'+linkValue})
+            break
+        case 3:
+            routePush('HtmlPage', {uri: '/spike'})
+            break
+    }
+}

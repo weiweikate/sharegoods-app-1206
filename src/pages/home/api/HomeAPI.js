@@ -3,6 +3,7 @@ const api = {
     getFirstList: ['/homeNav/getFirstList', { method: 'get' }],
     getSecondaryList: ['/homeNav/getSecondaryList', { method: 'get' }],
     getTabList: ['/recommend/getTabList', { method: 'get' }],
+    getCustomTopic: ['/customTopic/findByCode', { method: 'get' }],
     getRecommendList: '/recommend/getRecommendList',
     // 搜索框关键词匹配
     getKeywords: ['/product/getKeywords', { method: 'get' }],

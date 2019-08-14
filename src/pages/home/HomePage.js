@@ -78,6 +78,7 @@ import GoodsCustomView from './view/GoodsCustomView';
 import HomeAPI from './api/HomeAPI';
 import HomeNormalList from './view/HomeNormalList';
 import TabTitleView from './view/TabTitleView';
+import DIYTopicList from './view/DIYTopicList';
 
 const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
     <ActivityIndicator style={{ marginRight: 6 }} animating={errorMsg ? false : (isEnd ? false : true)} size={'small'}
@@ -464,12 +465,16 @@ class HomePage extends BasePage {
 
                         }}
                     />
+                    <DIYTopicList />
                     {tabData.map((item) => {
-                        return(
-                            <HomeNormalList  tabLabel={item.navName}
-                                             data = {item}
-                            />
-                        )
+                        if (item.navType === 2){
+                         return  <DIYTopicList tabLabel={item.navName}
+                                          data = {item}/>
+                        }
+                        if (item.navType === 1){
+                        return <HomeNormalList  tabLabel={item.navName}
+                                             data = {item}/>
+                        }
                     })}
                 </ScrollableTabView>
                 <LuckyIcon ref={(ref) => {
