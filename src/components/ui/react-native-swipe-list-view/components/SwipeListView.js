@@ -228,6 +228,9 @@ class SwipeListView extends Component {
                     ref={c => this.setRefs(c)}
                     onScroll={e => this.onScroll(e)}
                     renderItem={(rowData) => this.renderItem(rowData, this._rows)}
+                    refreshControl={this.props.swipeRefreshControl || null}
+                    renderSectionHeader={this.props.renderHeaderView || null}
+                    stickySectionHeadersEnabled={this.props.stickyHeadersEnabled || false}
                 />
             );
         }
@@ -239,6 +242,7 @@ class SwipeListView extends Component {
                 ref={c => this.setRefs(c)}
                 onScroll={e => this.onScroll(e)}
                 renderItem={(rowData) => this.renderItem(rowData, this._rows)}
+                refreshControl={this.props.swipeRefreshControl || null}
             />
         );
     }
@@ -416,7 +420,18 @@ SwipeListView.propTypes = {
     /**
      * useNativeDriver: true for all animations where possible
      */
-    useNativeDriver: PropTypes.bool
+    useNativeDriver: PropTypes.bool,
+
+    /**
+     * 下拉组件
+     */
+    swipeRefreshControl: PropTypes.element,
+
+    listHeaderView: PropTypes.func,
+
+    renderHeaderView: PropTypes.func,
+
+    stickyHeadersEnabled: PropTypes.bool
 };
 
 SwipeListView.defaultProps = {

@@ -105,7 +105,7 @@ export default class ShopCartEmptyView extends Component {
                         fontSize: px2dp(13),
                         color: 'rgba(153, 153, 153, 1)',
                         marginTop: px2dp(5)
-                    }}>暂无商品</MRText>
+                    }}>购物车竟然是空的</MRText>
                 </View>
                 <View
                     style={{ width: ScreenUtils.width, height: px2dp(40), flexDirection: 'row', alignItems: 'center' }}>

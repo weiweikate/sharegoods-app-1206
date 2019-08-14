@@ -102,7 +102,6 @@ export default class ShopCartPage extends BasePage {
         if (!this.pageFocus) {
             return;
         }
-        const { statusBarHeight } = ScreenUtils;
         return (
             <View style={styles.listBgContent}>
                 <SwipeListView
@@ -118,9 +117,7 @@ export default class ShopCartPage extends BasePage {
                         this._renderRowHiddenComponent(data, rowMap)
                     )}
                     renderHeaderView={(sectionData) => {
-                        {
-                            return (<SectionHeaderView sectionData={sectionData.section} navigate={this.$navigate}/>);
-                        }
+                        return (<SectionHeaderView sectionData={sectionData.section} navigate={this.$navigate}/>);
                     }}
                     rightOpenValue={-75}
                     showsVerticalScrollIndicator={false}
@@ -131,7 +128,7 @@ export default class ShopCartPage extends BasePage {
                                 this._refreshFun();
                             }
                             }
-                            progressViewOffset={statusBarHeight + 44}
+                            progressViewOffset={44}
                             colors={[DesignRule.mainColor]}
                             title="下拉刷新"
                             tintColor={DesignRule.textColor_instruction}
@@ -177,10 +174,9 @@ export default class ShopCartPage extends BasePage {
                           rowMap={rowMap}
                           rowId={itemData.index}
                           sectionData={itemData.section}
-                          cellClickAction={
-                              (itemData) => {
-                                  this._jumpToProductDetailPage(itemData);
-                              }}/>
+                          cellClickAction={(itemData) => {
+                              this._jumpToProductDetailPage(itemData);
+                          }}/>
         );
     };
 
