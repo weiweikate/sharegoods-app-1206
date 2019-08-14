@@ -48,8 +48,8 @@ const SuitFixedView = ({ mainProduct, subProducts, itemIndex, pushCallback }) =>
     });
     return (
         <NoMoreClick style={fixedStyles.container} onPress={pushCallback}>
-            <MRText style={fixedStyles.suitOText}>{`套餐${itemIndex + 1}￥${suitPrice}`}<MRText
-                style={fixedStyles.suitDText}>{`至多省￥${dePrice}`}</MRText></MRText>
+            <MRText style={fixedStyles.suitOText}>{`套餐${itemIndex + 1} ￥${suitPrice}`}<MRText
+                style={fixedStyles.suitDText}>{` 至多省￥${dePrice}`}</MRText></MRText>
             <View style={fixedStyles.imgContainer}>
                 {
                     (productList || []).map((item, index) => {
@@ -262,6 +262,7 @@ const SuitChooseStyles = StyleSheet.create({
 export class ProductDetailSuitModel {
     @observable productCode;
     @observable activityCode;
+    @observable activityName;
     @observable extraType;
     @observable mainProduct = {};
     /*packages层级下的对象
@@ -280,9 +281,10 @@ export class ProductDetailSuitModel {
     request_promotion_detail = (productCode) => {
         return ProductApi.promotion_detail({ productCode }).then((data) => {
             const dataDic = data.data || {};
-            const { activityCode, extraType, mainProduct, packages } = dataDic;
+            const { activityCode, activityName, extraType, mainProduct, packages } = dataDic;
             this.productCode = productCode;
             this.activityCode = activityCode;
+            this.activityName = activityName;
             this.extraType = extraType;
             this.mainProduct = mainProduct || {};
             this.packages = packages || [];
