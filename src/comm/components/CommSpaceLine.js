@@ -11,6 +11,7 @@ export default class CommSpaceLine extends Component {
         super(props);
         this.style = props.style;
     }
+
     render() {
         return (
             <View style={[Styles.CommLineStyle, this.style]}/>
@@ -20,6 +21,6 @@ export default class CommSpaceLine extends Component {
 const Styles = StyleSheet.create({
     CommLineStyle: {
         height: 0.5,
-        backgroundColor: DesignRule.lineColor_inColorBg
+        backgroundColor: DesignRule.lineColor_inWhiteBg
     }
 });

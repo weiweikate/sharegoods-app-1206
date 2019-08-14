@@ -35,7 +35,7 @@ export default class LogisticsDetailsPage extends BasePage {
         this.state = {
             orderId: this.params.orderId ? this.params.orderId : 0,
             expressNo: this.params.expressNo ? this.params.expressNo : '',
-            expressName: '',
+            expressName: this.params.expressName || '',
             loadingState: 'loading',
             flags: false,
             viewData: []
@@ -77,7 +77,7 @@ export default class LogisticsDetailsPage extends BasePage {
     _render() {
         return (
             <View style={styles.container}>
-                {this.state.flags || StringUtils.isEmpty(this.state.expressNo) ?
+                {this.state.viewData.length === 0 ?
                     this.renderEmpty() : this.renderSuccess()}
             </View>
         );
@@ -85,9 +85,12 @@ export default class LogisticsDetailsPage extends BasePage {
 
     renderEmpty() {
         return (
+            <View style={styles.container}>
+                {this.state.expressNo?this.renderHeader(): null}
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                 <Image source={Nowuliu} style={{ width: 92, height: 61 }}/>
                 <Text style={{ color: '#909090', fontSize: 15, marginTop: 25 }}>暂无物流信息</Text>
+            </View>
             </View>
         );
     }
@@ -124,12 +127,12 @@ export default class LogisticsDetailsPage extends BasePage {
             OrderApi.findLogisticsDetail({ expressNo: this.state.expressNo, expressCode: this.params.expressCode }).then((response) => {
                 // console.log(response.data.list);
                 let arrData = [];
-                if (response.data && response.data.list.length > 0) {
-                    response.data.list.map((item, index) => {
+                if (response.data&& response.data.expressContent && response.data.expressContent.length > 0) {
+                    response.data.expressContent.map((item, index) => {
                         let time = item.time;
                         arrData.push({
                             time: time ? time.replace(' ', '\n') : '',
-                            content1: item.status
+                            content1: item.content
                         });
                     });
                 } else {
@@ -141,8 +144,8 @@ export default class LogisticsDetailsPage extends BasePage {
                     return;
                 }
                 this.setState({
-                    expressName: response.data.expName,
-                    viewData: arrData,
+                    expressName: response.data.expressName,
+                    viewData: arrData || [],
                     loadingState: 'success'
                 });
             }).catch(e => {

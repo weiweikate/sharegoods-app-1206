@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-    StyleSheet,
-    View,
-    Image,
-    ScrollView
-} from 'react-native';
+import { Image, ScrollView, StyleSheet, View } from 'react-native';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
 import ScreenUtils from '../../../../utils/ScreenUtils';
@@ -32,7 +27,7 @@ export default class HelperQuestionListPage extends BasePage {
     }
 
     $navigationBarOptions = {
-        title: this.params.list[0] ? this.params.list[0].name : '列表名称',
+        title: this.params.list && this.params.list.length > 0 ? this.params.list[0].name : '列表名称',
         show: true // false则隐藏导航
     };
 

@@ -18,9 +18,13 @@
 
 @property (nonatomic,strong)JXHeaderView* headView;
 @property (nonatomic,strong) UILabel * contentLab;
-@property (nonatomic,strong) UIButton * zanBtn;
 @property (nonatomic,strong) UIButton * shareBtn;
+
+@property (nonatomic,strong) UIButton * zanBtn;
+@property (nonatomic,strong) UIButton * collectionBtn;
 @property (nonatomic,strong) UILabel * zanNum;
+@property (nonatomic,strong) UILabel * collectionNum;
+
 @property (nonatomic,strong) UIImageView * picImg;
 @property (nonatomic,strong) UIView * contentLabView;
 
@@ -46,6 +50,12 @@
 -(JXHeaderView *)headView{
   if (!_headView) {
     _headView = [[JXHeaderView alloc] init];
+    __weak RecTypeCell *weakSelf = self;
+    _headView.clickHeaderImgBlock = ^(){
+      if (weakSelf.recTypeDelegate) {
+        [weakSelf.recTypeDelegate recTypeHeaderImgClick:weakSelf];
+      }
+    };
   }
   return _headView;
 }
@@ -76,10 +86,30 @@
 -(UIButton*)zanBtn{
   if(!_zanBtn){
     _zanBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_zanBtn setBackgroundImage:[UIImage imageNamed:@"hot"] forState:UIControlStateNormal];
-    [_zanBtn setBackgroundImage:[UIImage imageNamed:@"hot"] forState:UIControlStateSelected];
+    [_zanBtn setBackgroundImage:[UIImage imageNamed:@"zan"] forState:UIControlStateNormal];
+    [_zanBtn setBackgroundImage:[UIImage imageNamed:@"yizan"] forState:UIControlStateSelected];
   }
   return _zanBtn;
+}
+
+-(UILabel *)collectionNum{
+  if(!_collectionNum){
+    _collectionNum = [[UILabel alloc]init];
+    _collectionNum.font = [UIFont systemFontOfSize:10];
+    _collectionNum.textColor =[UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
+  }
+  return _collectionNum;
+  
+}
+
+-(UIButton*)collectionBtn{
+  if(!_collectionBtn){
+    _collectionBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_collectionBtn setBackgroundImage:[UIImage imageNamed:@"showCollectNo"] forState:UIControlStateNormal];
+    [_collectionBtn setBackgroundImage:[UIImage imageNamed:@"showCollect"] forState:UIControlStateSelected];
+    
+  }
+  return _collectionBtn;
 }
 
 -(UIButton*)shareBtn{
@@ -115,6 +145,8 @@
   [bgView addSubview:self.contentLabView];
   [bgView addSubview:self.zanBtn];
   [bgView addSubview:self.zanNum];
+  [bgView addSubview:self.collectionBtn];
+  [bgView addSubview:self.collectionNum];
   [bgView addSubview:self.shareBtn];
   [self.contentLabView addSubview:self.picImg];
   [self.contentLabView addSubview:self.contentLab];
@@ -127,14 +159,14 @@
 
   self.headView.sd_layout
   .topSpaceToView(bgView, 9)
-  .leftSpaceToView(bgView, 0)
+  .leftSpaceToView(bgView, 5)
   .rightSpaceToView(bgView, 5)
   .heightIs(34);
 
   //内容背景
   self.contentLabView.sd_layout.topSpaceToView(self.headView,10 )
-  .leftSpaceToView(bgView, 10)
-  .rightSpaceToView(bgView, 10);
+  .leftSpaceToView(bgView, 15)
+  .rightSpaceToView(bgView, 15);
 
   [self.contentLabView setupAutoHeightWithBottomView:_contentLab bottomMargin:10];
 
@@ -152,18 +184,28 @@
   //点赞
   [_zanBtn addTarget:self action:@selector(tapZanBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.zanBtn.sd_layout.topSpaceToView(self.contentLabView,10)
-  .leftSpaceToView(bgView, 10)
-   .widthIs(26).heightIs(26);
+  .leftSpaceToView(bgView, 15)
+   .widthIs(21).heightIs(20);
 
   self.zanNum.sd_layout.centerYEqualToView(self.zanBtn)
-  .leftSpaceToView(self.zanBtn, 1)
+  .leftSpaceToView(self.zanBtn, 5)
   .widthIs(40).heightIs(26);
 
+  //收藏
+  [_collectionBtn addTarget:self action:@selector(tapCollectionBtn:) forControlEvents:UIControlEventTouchUpInside];
+  self.collectionBtn.sd_layout.centerYEqualToView(self.zanNum)
+  .leftSpaceToView(self.zanNum, 10)
+  .heightIs(20).widthIs(20);
+  
+  self.collectionNum.sd_layout.centerYEqualToView(self.collectionBtn)
+  .leftSpaceToView(self.collectionBtn, 1)
+  .widthIs(40).heightIs(26);
+  
   //分享/转发
   [_shareBtn addTarget:self action:@selector(tapShareBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.shareBtn.sd_layout.centerYEqualToView(self.zanBtn)
-  .rightSpaceToView(bgView,10)
-  .widthIs(70).heightIs(30);
+  .rightSpaceToView(bgView,15)
+  .widthIs(70).heightIs(28);
 
   [bgView setupAutoHeightWithBottomView:self.shareBtn bottomMargin:5];
   [self setupAutoHeightWithBottomView:bgView bottomMargin:5];
@@ -172,10 +214,14 @@
 -(void)setModel:(JXModelData *)model{
   _model = model;
   self.headView.UserInfoModel = model.userInfoVO;
-  _headView.time = model.publishTimeStr;
-  _zanBtn.selected = model.like;
-  _zanNum.text =  [self zanNumWithFormat:self.model.hotCount];
-
+  self.headView.time = model.publishTimeStr;
+  self.headView.hotCount = model.hotCount;
+  
+  self.zanBtn.selected = model.like;
+  self.zanNum.text =  [NSString stringWithNumber:self.model.like];
+  self.collectionBtn.selected = model.collect;
+  self.collectionNum.text = [NSString stringWithNumber:self.model.collectCount];
+  
   NSString* imageUrl = [[NSString alloc]init];
   for(SourcesModel *obj in model.resource){
     if(obj.type==1){
@@ -194,11 +240,16 @@
 
 
 -(void)tapZanBtn:(UIButton*)sender{
-//  if(self.recTypeDelegate){
-//    [self.recTypeDelegate zanBtnClick:self];
-//  }
-//  self.zanBtn.selected = !self.zanBtn.selected;
-//  self.zanNum.text = [self zanNumWithFormat:self.model.likesCount];
+  sender.selected = !sender.selected;
+  if(self.recTypeDelegate){
+    [self.recTypeDelegate zanBtnClick:self];
+  }
+}
+
+-(void)tapCollectionBtn:(UIButton*)sender{
+  if(self.recTypeDelegate){
+    [self.recTypeDelegate collectionBtnClick:self];
+  }
 }
 
 -(void)tapShareBtn:(UIButton*)sender{
@@ -211,20 +262,6 @@
   if(self.recTypeDelegate){
     [self.recTypeDelegate clickLabel:self];
   }
-}
-
--(NSString*)zanNumWithFormat:(NSInteger)count{
-  NSString * num = @"";
-    if(count<=999){
-        num = [NSString stringWithFormat:@"%ld",count>0?count:0];
-    }else if(count<10000){
-        num = [NSString stringWithFormat:@"%ldK+",count>0?count/1000:0];
-    }else if(count<100000){
-        num = [NSString stringWithFormat:@"%ldW+",count>0?count/10000:0];
-    }else{
-        num = @"10W+";
-    }
-  return num;
 }
 
 - (void)awakeFromNib {

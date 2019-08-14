@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-    View
-} from 'react-native';
+import { View } from 'react-native';
 import { observer } from 'mobx-react';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import BasePage from '../../../BasePage';
@@ -21,6 +19,7 @@ export default class ForgetPasswordPage extends BasePage {
                 <CommRegistView
                     // config={viewType:0}
                     viewType={1}
+                    phoneNum={this.params.phoneNum}
                     loginClick={(phone, code, password) => this.clickNext(phone, code, password)}
                 />
                 <View style={{
@@ -30,7 +29,7 @@ export default class ForgetPasswordPage extends BasePage {
                     marginTop: 20,
                     height: 11,
                     width: ScreenUtils.width
-                }} />
+                }}/>
             </View>
 
 
@@ -41,7 +40,7 @@ export default class ForgetPasswordPage extends BasePage {
     clickNext = (phone, code, password) => {
         this.$loadingShow();
         LoginAPI.resetPassword({
-            authcode:'',
+            authcode: '',
             code: code,
             device: this.params.device ? this.params.device : 'eeeeee',
             inviteId: '',//邀请id
@@ -51,11 +50,11 @@ export default class ForgetPasswordPage extends BasePage {
             systemVersion: this.params.systemVersion ? this.params.systemVersion : '11',
             wechatVersion: '11'
         }).then((data) => {
-            this.$loadingDismiss()
+            this.$loadingDismiss();
             this.$navigateBack();
-           bridge.$toast(data.msg);
+            bridge.$toast(data.msg);
         }).catch((response) => {
-            this.$loadingDismiss()
+            this.$loadingDismiss();
             bridge.$toast(response.msg);
         });
 

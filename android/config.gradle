@@ -17,6 +17,7 @@ ext {
     dependencies = [
             //此处是27.+，需要在rn中做排除
             support      : 'com.android.support:appcompat-v7:28.0.0',
+            design       : 'com.android.support:design:28.0.0',
             recyclerview : 'com.android.support:recyclerview-v7:28.0.0',
             rn           : 'com.facebook.react:react-native:+',
             design       : 'com.android.support:design:28.0.0',

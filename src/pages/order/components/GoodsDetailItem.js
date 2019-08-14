@@ -12,7 +12,7 @@ import {
 } from '../../../components/ui';
 // status,//账单状态：0出账中，1待支付，2已支付，3逾期
 const GoodsDetailItem = props => {
-    const {
+    let {
         uri,
         goodsName,
         salePrice,
@@ -24,7 +24,7 @@ const GoodsDetailItem = props => {
         style,
         activityCodes,
     } = props;
-
+    afterSaleService = afterSaleService || []
     this.renderLine = () => {
         return (
             <View style={{

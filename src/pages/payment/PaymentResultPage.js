@@ -56,7 +56,7 @@ export default class PaymentResultPage extends BasePage {
 
     /** 去订单列表*/
     goToOrder = () => {
-        replaceRoute( RouterMap.MyOrdersListPage, { index: 2 });
+        replaceRoute( RouterMap.MyOrdersListPage, { index: 0 });
     };
 
     /** 重新支付*/

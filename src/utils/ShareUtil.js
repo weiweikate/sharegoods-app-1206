@@ -134,7 +134,26 @@ const shareFunc = (params, luckyDraw, api, callback = () => {
     });
 };
 
+const showSharedetailDataType = (type,download = false)=>{
+    if(type){
+        if(type === 1){
+            return download ? 'showDown' : 'show';
+
+        }else if(type === 2){
+            return download ? 'showWebDown' : 'showWeb';
+
+        }else  if(type === 3) {
+            return download ? 'showVideoDown' : 'showVideo';
+
+        }else {
+            return '';
+        }
+    }
+    return '';
+}
+
 export default {
     onShare,
-    queryString
+    queryString,
+    showSharedetailDataType
 };

@@ -287,11 +287,13 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
                         for (int j = 0; j < resource.size(); j++) {
                             NewestShowGroundBean.DataBean.ResourceBean resourceBean = resource.get(j);
                             if (resourceBean.getType() == 2) {
-                                resolveResource.add(resourceBean.getUrl());
+                                resolveResource.add(resourceBean.getBaseUrl());
                             }
 
                             if (resourceBean.getType() == 5) {
-                                bean.setVideoCover(resourceBean.getUrl());
+                                bean.setVideoCover(resourceBean.getBaseUrl());
+                                bean.setCoverWidth(resourceBean.getWidth());
+                                bean.setCoverHeight(resourceBean.getHeight());
                                 break;
                             }
                         }

@@ -1,13 +1,13 @@
 import React from 'react';
 import {
-    StyleSheet,
-    View,
-    ImageBackground,
     Alert,
     Image,
-    TouchableWithoutFeedback,
+    ImageBackground,
+    RefreshControl,
     SectionList,
-    RefreshControl
+    StyleSheet,
+    TouchableWithoutFeedback,
+    View
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
@@ -42,6 +42,11 @@ const red_up = res.cashAccount.zhanghu_red;
 const lv_down = res.cashAccount.zhanghu_lv;
 const writer = res.cashAccount.writer_icon;
 const cash_noData = res.cashAccount.cash_noData;
+const qita = res.cashAccount.qita_icon;
+const chengFa = res.cashAccount.chengFa_icon;
+const shouru = res.cashAccount.shouru_icon;
+const shouyi = res.cashAccount.shouyi_icon;
+// const renwuShuoMing = res.cashAccount.renwuShuoMing_icon;
 
 const allType = {
     1: {
@@ -57,7 +62,7 @@ const allType = {
         icon: xiaofei
     },
     4: {
-        title: '导师管理费',
+        title: '导师管理',
         icon: daoshi
     },
     5: {
@@ -65,7 +70,7 @@ const allType = {
         icon: fenhong
     },
     6: {
-        title: '品牌推广奖励金',
+        title: '品牌推广奖励',
         icon: tuiguang
     },
     7: {
@@ -96,11 +101,20 @@ const allType = {
         title: '系统升级',
         icon: hongbao
     },
-    17:{
+    17: {
         title: '抽奖奖励',
         icon: renwu
     }
 
+};
+
+const newTypeIcons = {
+    1: {title: '消费', icon: xiaofei},
+    2: {title: '退款', icon: chengFa},
+    3: {title: '余额发放', icon: shouru},
+    4: {title: '提现', icon: tixiang},
+    5: {title: '待入账结算', icon: shouyi},
+    6: {title: '系统调账', icon: renwu}
 };
 
 @observer
@@ -119,7 +133,6 @@ export default class MyCashAccountPage extends BasePage {
         this.currentPage = 0;
         this.type = null;
         this.biType = null;
-        this.st = 0;
     }
 
     $NavBarRightPressed = () => {
@@ -138,14 +151,12 @@ export default class MyCashAccountPage extends BasePage {
     _onScroll = (event) => {
         let Y = event.nativeEvent.contentOffset.y;
         if (Y <= 175) {
-            this.st = 0;
             if (this.state.changeHeader) {
                 this.setState({
                     changeHeader: false
                 });
             }
         } else {
-            this.st = 1;
             if (!this.state.changeHeader) {
                 this.setState({
                     changeHeader: true
@@ -255,14 +266,13 @@ export default class MyCashAccountPage extends BasePage {
                         this.$navigateBack();
                     }}>
                         <View style={{
-                            width: 60,
-                            paddingLeft: DesignRule.margin_page,
+                            paddingLeft: px2dp(5),
                             height: 40,
                             justifyContent: 'center',
-                            alignItems: 'flex-start',
                             flex: 1
                         }}>
-                            <Image source={res.button.white_back}/>
+                            <Image source={res.button.back_white}
+                                   style={{ width: 30, height: 30 }}/>
                         </View>
                     </TouchableWithoutFeedback>
                     <Text style={{
@@ -390,7 +400,7 @@ export default class MyCashAccountPage extends BasePage {
                                 <Text style={{
                                     fontSize: 17,
                                     color: DesignRule.textColor_mainTitle
-                                }}>{StringUtils.formatMoneyString(item.capital, false)}</Text>
+                                }}>{item.capital ? item.capital : 0}</Text>
                             </View>
                             <Text style={{
                                 fontSize: 12, color: DesignRule.textColor_instruction
@@ -477,12 +487,21 @@ export default class MyCashAccountPage extends BasePage {
                 let data = response.data;
                 if (data.data instanceof Array) {
                     data.data.map((item, index) => {
+                        let remark = '';
+                        let  icon = '';
+                        if(item.useType){
+                            remark = allType[item.useType] ?  allType[item.useType].title : '其他';
+                            icon = allType[item.useType] ? allType[item.useType].icon : qita;
+                        }else {
+                            remark = item.remark ? item.remark : '其他';
+                            icon = newTypeIcons[item.tradeType] ? newTypeIcons[item.tradeType].icon : renwu
+                        }
                         arrData.push({
-                            type: allType[item.useType] ? allType[item.useType].title : '其他',
+                            type: remark,
                             time: DataUtils.getFormatDate(item.createTime / 1000),
                             serialNumber: item.serialNo,
                             capital: use_type_symbol[item.biType] + (item.balance ? item.balance : 0.00),
-                            iconImage: allType[item.useType] ? allType[item.useType].icon : renwu,
+                            iconImage: icon,
                             capitalRed: use_type_symbol[item.biType] === '-',
                             realBalance: item.realBalance,
                             status: item.status
@@ -574,13 +593,6 @@ const styles = StyleSheet.create({
         marginHorizontal: (ScreenUtils.width * 2 / 3 - 10 * 4) / 8,
         backgroundColor: DesignRule.mainColor,
         borderRadius: 1
-    },
-    viewStyle: {
-        height: 95,
-        marginTop: 10,
-        marginBottom: 10,
-        marginLeft: 15,
-        marginRight: 15
     },
     headerWrapper: {
         flexDirection: 'row',

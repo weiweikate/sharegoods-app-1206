@@ -112,17 +112,47 @@ public class NewestShowGroundBean {
         private int shareCount;
         private int downloadCount;
         private int clickCount;
-
+        private int collectCount;
+        private boolean collect;
+        private int attentionStatus;
 
         private int hotCount;
         private long nowTime;
         private boolean like;
         private List<ProductsBean> products;
         private List<ResourceBean> resource;
+        private List<ShowTagsBean> showTags;
         private List<String> imgUrls;
         private String videoCover;
+        private double coverWidth;
+        private double coverHeight;
+        private String coverType;
         private boolean owner;
         private int createSource;
+
+        public int getAttentionStatus() {
+            return attentionStatus;
+        }
+
+        public void setAttentionStatus(int attentionStatus) {
+            this.attentionStatus = attentionStatus;
+        }
+
+        public int getCollectCount() {
+            return collectCount;
+        }
+
+        public void setCollectCount(int collectCount) {
+            this.collectCount = collectCount;
+        }
+
+        public boolean isCollect() {
+            return collect;
+        }
+
+        public void setCollect(boolean collect) {
+            this.collect = collect;
+        }
 
         public String getVideoCover() {
             return videoCover;
@@ -132,7 +162,32 @@ public class NewestShowGroundBean {
             this.videoCover = videoCover;
         }
 
-        public int getCreateSource() {
+
+        public double getCoverWidth() {
+            return coverWidth;
+        }
+
+        public void setCoverWidth(double coverWidth) {
+            this.coverWidth = coverWidth;
+        }
+
+        public double getCoverHeight() {
+            return coverHeight;
+        }
+
+        public void setCoverHeight(double coverHeight) {
+            this.coverHeight = coverHeight;
+        }
+
+        public String getCoverType() {
+            return coverType;
+        }
+
+        public void setCoverType(String coverType) {
+            this.coverType = coverType;
+        }
+
+        public double getCreateSource() {
             return createSource;
         }
 
@@ -148,6 +203,13 @@ public class NewestShowGroundBean {
             this.owner = owner;
         }
 
+        public List<ShowTagsBean> getShowTags() {
+            return showTags;
+        }
+
+        public void setShowTags(List<ShowTagsBean> showTags) {
+            this.showTags = showTags;
+        }
         public List<String> getImgUrls() {
             return imgUrls;
         }
@@ -325,6 +387,27 @@ public class NewestShowGroundBean {
 
             public void setUserName(String userName) {
                 this.userName = userName;
+            }
+        }
+
+        public static class ShowTagsBean {
+            private String name;
+            private int tagId;
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public int getTagId() {
+                return tagId;
+            }
+
+            public void setTagId(int tagId) {
+                this.tagId = tagId;
             }
         }
 

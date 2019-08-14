@@ -1,234 +1,221 @@
-import { observable, action, computed } from 'mobx'
+import { observable, action } from 'mobx'
 import OrderApi from '../api/orderApi'
-import StringUtils from '../../../utils/StringUtils';
-import Toast from '../../../utils/bridge';
-import { PageLoadingState } from '../../../components/pageDecorator/PageState';
+// import StringUtils from "../../../utils/StringUtils";
+import Toast from "../../../utils/bridge";
+import { PageLoadingState } from "../../../components/pageDecorator/PageState";
+import { checkOrderAfterSaleService, GetViewOrderStatus, OrderType } from '../order/OrderType';
 
-export const orderStatus = {
-    prePayment: 1,
-    didPayment: 2
-}
-
-export const orderStatusMessage = {
-    [orderStatus.prePayment] : '等待买家付款',
-    [orderStatus.didPayment] : '买家已付款'
-}
-
-class OrderStatusModel {
-    @observable status = 0
-    @observable statusMsg = 0
-}
-
-export const orderStatusModel = new OrderStatusModel()
 
 class OrderDetailModel {
+    @observable data = {};
+    @observable menu = []
+    @observable moreDetail = '';
+    @observable sellerState = '';
+    @observable buyState = '';
 
-    @observable detail = {}
-    @observable statusDic = [{}]
-    @observable expList=[]
-    @observable warehouseOrderDTOList=[]
-    @observable unSendProductInfoList=[]
-    @observable status=null
-    @observable deleteInfo=false
+    @observable baseInfo = {};
+    @observable merchantOrder = {};
+    @observable payInfo = {};
+    @observable receiveInfo = {};
+    @observable merchantOrderNo = ''
+    @observable platformOrderNo = ''
+    @observable isAllVirtual = true;
+    @observable loadingState = PageLoadingState.loading
 
-    @action  getOrderNo(){
-     return   this.status > 1 ? this.warehouseOrderDTOList[0].warehouseOrderNo : this.warehouseOrderDTOList[0].platformOrderNo
-    }
-
-    @action  productsList() {
-        let dataArr = []
-        this.warehouseOrderDTOList.map((value) => {
-            value.products.map((item)=>{
-                dataArr.push({
-                    productId: item.id,
-                    uri: item.specImg,
-                    goodsName: item.productName,
-                    salePrice: StringUtils.isNoEmpty(item.payAmount) ? item.payAmount : 0,
-                    category: item.specValues,
-                    goodsNum: item.quantity,
-                    // afterSaleService: this.getAfterSaleService(item, index),
-                    // returnProductStatus: item.returnProductStatus,
-                    // returnType: item.returnType,
-                    status: item.status,
-                    activityCode: item.activityCode,
-                    orderProductNo:item.orderProductNo,
-                    orderCustomerServiceInfoDTO:item.orderCustomerServiceInfoDTO,
-                    afterSaleTime:item.afterSaleTime,
-                    orderSubType:item.orderSubType,
-                    prodCode:item.prodCode
-
-                })
-            })
-        })
-        return dataArr
+    productsList() {
+        return this.merchantOrder.productOrderList || []
     }
 
 
-    @action loadDetailInfo(orderNo) {
-        this.deleteInfo = false
-        orderDetailAfterServiceModel.addAfterServiceList();
+    @action loadDetailInfo(merchantOrderNo) {
+        this.merchantOrderNo = merchantOrderNo;
+        this.deleteInfo=false
         return OrderApi.lookDetail({
-            orderNo:orderNo
+            merchantOrderNo:merchantOrderNo
         }).then(rep => {
-            this.detail = rep.data
-            this.expList = rep.data.warehouseOrderDTOList[0].expList || []
-            this.unSendProductInfoList = rep.data.warehouseOrderDTOList[0].unSendProductInfoList || []
-            orderStatusModel.statusMsg = orderStatusMessage[rep.data.status]
-            orderDetailModel.giftCouponDTOList = rep.data.giftCouponDTOList || []
-            orderDetailModel.orderSubType = rep.data.orderSubType
-            this.warehouseOrderDTOList = rep.data.warehouseOrderDTOList
-            orderDetailModel.receiverPhone = rep.data.receiverPhone
-            orderDetailModel.receiver = rep.data.receiver
-            orderDetailModel.tokenCoinAmount = rep.data.tokenCoinAmount
-            orderDetailModel.platformOrderNo = rep.data.platformOrderNo
-            orderDetailModel.source = rep.data.source
-            orderDetailModel.channel = rep.data.channel
-            orderDetailModel.quantity = rep.data.quantity
-            orderDetailModel.province = rep.data.province
-            orderDetailModel.street = rep.data.street
-            orderDetailModel.city = rep.data.city
-            orderDetailModel.area = rep.data.area
-            orderDetailModel.address = rep.data.address
-            this.status = rep.data.warehouseOrderDTOList[0].status
-            orderDetailModel.payAmount = rep.data.payAmount
-            // orderDetailModel.loading=false
-            orderDetailModel.loadingState = PageLoadingState.success
-
-            return rep
+            this.data = rep.data;
+            this.handleData(rep.data || {})
         }).catch(err=>{
-                if(err.code === 47002){
-                    this.deleteInfo = true
-                }else{
-                    orderDetailModel.netFailedInfo = err
-                    orderDetailModel.loadingState = PageLoadingState.fail
-                }
-                // orderDetailModel.netFailedInfo=err
-                // orderDetailModel.loadingState=PageLoadingState.fail
+            if(err.code===47002){
+                this.deleteInfo=true
+            }else{
+                orderDetailModel.netFailedInfo=err
+                orderDetailModel.loadingState=PageLoadingState.fail
+            }
             Toast.hiddenLoading();
             Toast.$toast(err.msg);
-            console.log(err);
         })
     }
-
-
-    @computed
-    get upDateOrderProductList(){
-      let k =  this.warehouseOrderDTOList.length;
-      console.log('upDateOrderProductList',k);
-        // return this.orderProductList.length;
+    @action dataHandleConfirmOrder(){
+        if (this.data&&this.data.merchantOrder) {
+            this.data.merchantOrder.status = OrderType.COMPLETED;
+            this.handleData({...this.data})
+        }
     }
+    @action handleData(data){
+        this.stopTimer();
+        //判空
+        this.baseInfo = data.baseInfo || {}
+        this.merchantOrder = data.merchantOrder || {}
+        this.payInfo = data.payInfo || {}
+        this.receiveInfo = data.receiveInfo || {}
+        let {cancelTime, nowTime, receiveTime, cancelReason} = this.baseInfo
+        orderDetailModel.loadingState=PageLoadingState.success
+        this.platformOrderNo = this.merchantOrder.platformOrderNo || '';
+        let menu =  [...GetViewOrderStatus(this.merchantOrder.status).menu_orderDetail];
+        let hasAfterSaleService = checkOrderAfterSaleService(this.merchantOrder.productOrderList, this.merchantOrder.status, this.baseInfo.nowTime);
+        let isAllVirtual = true;
+        this.merchantOrder.productOrderList.forEach((item) => {
+            if (item.orderType != 1){
+                isAllVirtual = false;
+            }
+        });
+
+        this.isAllVirtual = isAllVirtual;
+
+
+        switch (this.merchantOrder.status) {
+            case OrderType.WAIT_PAY:
+            {
+                this.moreDetail = '';
+                this.sellerState = '';
+                this.buyState = '等待买家付款';
+                if (cancelTime - nowTime > 0){
+                    this.startTimer((cancelTime - nowTime)/1000);
+                }
+                break;
+            }
+            case OrderType.WAIT_DELIVER:
+            {
+                this.moreDetail = '';
+                this.sellerState = '';
+                this.buyState = '买家已付款';
+                break;
+            }
+            case OrderType.DELIVERED:
+            {
+                this.moreDetail = '';
+                this.sellerState = '';
+                this.buyState = '平台已发货';
+                if (receiveTime - nowTime > 0){
+                    this.startTimer((receiveTime - nowTime)/1000);
+                }
+                break;
+            }
+            case OrderType.COMPLETED:
+            {
+                this.moreDetail = '';
+                this.sellerState = '';
+                this.buyState = '订单完成';
+                if (this.merchantOrder.commentStatus){
+                    menu.push({
+                        id: 10,
+                        operation: '晒单',
+                        isRed: true
+                    })
+                }
+                if (hasAfterSaleService){
+                    let cancelIndex = -1;
+                    menu.forEach((item, index) => {
+                        if (item.operation === '删除订单') {
+                            cancelIndex = index ;
+                        }
+                    })
+                    if (cancelIndex !== -1) {
+                        menu.splice(cancelIndex, 1);
+                    }
+                }
+                break;
+            }
+            case OrderType.CLOSED:
+            {
+                this.moreDetail = cancelReason;
+                this.sellerState = '';
+                this.buyState = '交易关闭';
+                break;
+            }
+            default:
+                this.moreDetail = '';
+                this.sellerState = '';
+                this.buyState = '';
+                break;
+        }
+        menu = menu.filter((item) => {
+            if (!isAllVirtual) {
+                return true;
+            }
+            if (item.operation === '查看物流' || item.operation === '确认收货') {
+                return false;
+            }
+            return true;
+        });
+        this.menu = menu;
+    }
+
+    @action
+    stopTimer() {
+        this.timer && clearInterval(this.timer);
+    }
+
+    /**
+     * 获取剩余时间的字符串
+     * @param out_time 失效时间 number
+     * return 如果当前时间大于 out_time 返回 null
+     */
+    @action
+    getRemainingTime(remainingTime) {
+        if (remainingTime <= 0) {
+            return '已超时';
+        }
+        let s = remainingTime % 60;
+        remainingTime = (remainingTime - s) / 60;
+        let m = remainingTime % 60;
+        remainingTime = (remainingTime - m) / 60;
+        let H = remainingTime % 24;
+        remainingTime = (remainingTime - H) / 24;
+        let d = remainingTime;
+
+        let time =  d + '天' + H + '小时' + m + '分' + s + '秒';
+        if (d === 0){
+            time =  H + '小时' + m + '分' + s + '秒';
+            if (H === 0){
+                time = m + '分' + s + '秒';
+            }
+        }
+        if (this.merchantOrder.status ===  OrderType.WAIT_PAY){
+            return '还剩'+ time + '时间自动关闭订单'
+        }else {
+            return '还剩'+ time + '时间自动确认收货'
+        }
+
+    }
+
+    @action
+    startTimer(remainingTime) {
+        remainingTime = parseInt(remainingTime)
+        this.stopTimer();
+        if (remainingTime === null || remainingTime === undefined) {
+            return;
+        }
+        /** 当前的时间已经超出，不开启定时器*/
+        this.moreDetail = this.getRemainingTime(remainingTime);
+        this.timer = setInterval(() => {
+            remainingTime--;
+            this.moreDetail = this.getRemainingTime(remainingTime);
+            if (this.moreDetail === '已超时') {
+                this.stopTimer();
+                this.loadDetailInfo(this.merchantOrderNo);
+            } else {
+
+            }
+        }, 1000);
+    }
+
 
 }
 export  const orderDetailModel = new OrderDetailModel();
 
-
-
-class OrderDetailAfterServiceModel{
-
-    @observable
-    AfterServiceList=[];
-    @observable
-    currentAsList=[];
-    @observable
-    buyState:'';
-    @observable
-    moreDetail:'';
-    @observable
-    sellerState:'';
-    @observable
-    totalAsList={};
-    @observable
-    menu=[]
-    @observable
-    sellerState=''
-
-    @action
-    addAfterServiceList=()=>{
-        this.AfterServiceList = [ {
-
-        }, {
-            index:1,
-            buyState:'等待买家付款',
-            menu:[
-                {
-                    id:1,
-                    operation:'取消订单',
-                    isRed:false,
-                },{
-                    id:2,
-                    operation:'去支付',
-                    isRed:true,
-                },
-            ],
-        }, {
-            index:2,
-            buyState:'买家已付款',
-            moreDetail:'',
-            sellerState:'订单正在处理中...',
-            menu:[
-                {
-                    id:4,
-                    operation:'订单退款',
-                    isRed:false,
-                }
-            ],
-        },{
-            index:3,
-            buyState:'卖家已发货',
-            moreDetail:'',
-            sellerState:'等待平台发货',
-            menu:[
-                {
-                    id:5,
-                    operation:'查看物流',
-                    isRed:false,
-                },{
-                    id:6,
-                    operation:'确认收货',
-                    isRed:true,
-                },
-            ],
-        },{
-            index:4,
-            buyState:'订单已完成',
-            moreDetail:'',
-            sellerState:'已签收',
-            menu:[
-                {
-                    id:7,
-                    operation:'删除订单',
-                    isRed:false,
-                },{
-                    id:8,
-                    operation:'再次购买',
-                    isRed:true,
-                },
-            ],
-        },{
-            index:5,
-            buyState:'交易关闭',
-            moreDetail:'',
-            sellerState:'已关闭',
-            menu:[
-                {
-                    id:7,
-                    operation:'删除订单',
-                    isRed:false,
-                },{
-                    id:8,
-                    operation:'再次购买',
-                    isRed:true,
-                },
-            ],
-        },]
-    }
-
-}
-export const orderDetailAfterServiceModel = new OrderDetailAfterServiceModel();
-
 class AssistDetailModel{
-    @observable
-    isShowSingleSelctionModal=false;
     @observable
     isShowShowMessageModal=false;
     @observable
@@ -236,10 +223,6 @@ class AssistDetailModel{
     @observable
     cancelArr=[];
 
-    @action
-    setIsShowSingleSelctionModal(bool){
-        this.isShowSingleSelctionModal = bool
-    }
     @action
     setIsShowShowMessageModal(bool){
         this.isShowShowMessageModal = bool;

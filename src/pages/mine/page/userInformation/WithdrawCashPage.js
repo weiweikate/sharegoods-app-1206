@@ -1,18 +1,23 @@
 import React from 'react';
 import {
-    StyleSheet,
-    View,
-    TouchableOpacity, Alert,
+    Alert,
     DeviceEventEmitter,
+    Image,
+    StyleSheet,
+    TouchableOpacity,
     TouchableWithoutFeedback,
-    Image
+    View
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import * as math from 'mathjs';
 import {
-    UIText, UIImage, UIButton, MRText
+    MRText,
+    MRText as Text,
+    MRTextInput as RNTextInput,
+    UIButton,
+    UIImage,
+    UIText
 } from '../../../../components/ui';
-import { MRText as Text, MRTextInput as RNTextInput } from '../../../../components/ui';
 import StringUtils, { isNoEmpty } from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import user from '../../../../model/user';
@@ -24,7 +29,6 @@ import BankTradingModal from './../../components/BankTradingModal';
 import EmptyUtils from '../../../../utils/EmptyUtils';
 import { PageLoadingState } from '../../../../components/pageDecorator/PageState';
 import WithdrawFinishModal from './Modal/WithdrawFinishModal';
-import DateUtils from '../../../../utils/DateUtils';
 import RouterMap from '../../../../navigation/RouterMap';
 
 const arrow_right = res.button.arrow_right_black;
@@ -57,7 +61,7 @@ function number_format(number, decimals, dec_point, thousands_sep, roundtag) {
         };
     s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
     let re = /(-?\d+)(\d{3})/;
-    while (re.test(s[0])) {
+    while (s[0] && re.test(s[0])) {
         s[0] = s[0].replace(re, '$1' + sep + '$2');
     }
 
@@ -90,6 +94,7 @@ function formatMoneyString(num, needSymbol = true) {
 export default class WithdrawCashPage extends BasePage {
     constructor(props) {
         super(props);
+        user.availableBalance = 10000;
         this.state = {
             phone: '',
             pwd: '',
@@ -356,52 +361,6 @@ export default class WithdrawCashPage extends BasePage {
         );
     };
 
-    renderArrive = () => {
-        if (this.state.currentTime) {
-            let dateTime = new Date(parseInt(this.state.currentTime));
-            let show = false;
-            if (EmptyUtils.isEmptyArr(this.state.withdrawApplyConfigVOList)) {
-                show = true;
-            } else {
-                let day = dateTime.getDate();
-                for (let i = 0; i < this.state.withdrawApplyConfigVOList.length; i++) {
-                    let from = this.state.withdrawApplyConfigVOList[i].from;
-                    let to = this.state.withdrawApplyConfigVOList[i].to;
-                    if (day >= from && day <= to) {
-                        show = true;
-                        break;
-                    }
-                }
-            }
-            if (!show) {
-                return null;
-            }
-
-
-            dateTime = dateTime.setDate(dateTime.getDate() + 25);
-
-            return (
-                <View
-                    style={{ padding: DesignRule.margin_page, marginVertical: 10, backgroundColor: DesignRule.white }}>
-                    <MRText style={{
-                        color: DesignRule.textColor_secondTitle,
-                        fontSize: DesignRule.fontSize_threeTitle
-                    }}>
-                        到账时间
-                    </MRText>
-                    <MRText style={{
-                        color: DesignRule.textColor_secondTitle,
-                        fontSize: DesignRule.fontSize_threeTitle, marginTop: 5
-                    }}>
-                        {`预计${DateUtils.formatDate(dateTime, 'MM月dd日')}（25天后）23:59前到账`}
-                    </MRText>
-                </View>
-            );
-        } else {
-            return null;
-        }
-    };
-
     renderTip = () => {
 
         let tip2index = 1, tip3Index = 1, tip4Index = 1;
@@ -623,8 +582,6 @@ export default class WithdrawCashPage extends BasePage {
 
 
                 <View style={{ backgroundColor: DesignRule.bgColor }}>
-                    {this.renderArrive()}
-
                     {this.renderTip()}
                 </View>
             </View>

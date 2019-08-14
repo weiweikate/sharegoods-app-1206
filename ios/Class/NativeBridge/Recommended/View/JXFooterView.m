@@ -9,6 +9,7 @@
 #import "JXFooterView.h"
 #import "UIView+SDAutoLayout.h"
 #import "UIImageView+WebCache.h"
+#import "NSString+UrlAddParams.h"
 
 #define SCREEN_WIDTH ([UIScreen mainScreen].bounds.size.width)
 
@@ -16,9 +17,11 @@
 @property (nonatomic, strong)UIScrollView * scrollView;
 @property (nonatomic,strong) UIButton * zanBtn;
 @property (nonatomic,strong) UIButton * downloadBtn;
+@property (nonatomic,strong) UIButton * collectionBtn;
 @property (nonatomic,strong) UIButton * shareBtn;
 @property (nonatomic,strong) UILabel * zanNum;
 @property (nonatomic,strong) UILabel * downLoadNUm;
+@property (nonatomic,strong) UILabel * collectionNum;
 
 @end
 
@@ -54,22 +57,43 @@
 
 }
 
+-(UILabel *)collectionNum{
+  if(!_collectionNum){
+    _collectionNum = [[UILabel alloc]init];
+    _collectionNum.font = [UIFont systemFontOfSize:10];
+    _collectionNum.textColor =[UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
+  }
+  return _collectionNum;
+  
+}
+
 -(UIButton*)zanBtn{
   if(!_zanBtn){
     _zanBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_zanBtn setBackgroundImage:[UIImage imageNamed:@"hot"] forState:UIControlStateNormal];
-    [_zanBtn setBackgroundImage:[UIImage imageNamed:@"hot"] forState:UIControlStateSelected];
+    [_zanBtn setBackgroundImage:[UIImage imageNamed:@"zan"] forState:UIControlStateNormal];
+    [_zanBtn setBackgroundImage:[UIImage imageNamed:@"yizan"] forState:UIControlStateSelected];
 
   }
   return _zanBtn;
 }
 
+
 -(UIButton*)downloadBtn{
   if(!_downloadBtn){
     _downloadBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_downloadBtn setBackgroundImage:[UIImage imageNamed:@"download"] forState:UIControlStateNormal];
+    [_downloadBtn setBackgroundImage:[UIImage imageNamed:@"showDownload"] forState:UIControlStateNormal];
   }
   return _downloadBtn;
+}
+
+-(UIButton*)collectionBtn{
+  if(!_collectionBtn){
+    _collectionBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_collectionBtn setBackgroundImage:[UIImage imageNamed:@"showCollectNo"] forState:UIControlStateNormal];
+    [_collectionBtn setBackgroundImage:[UIImage imageNamed:@"showCollect"] forState:UIControlStateSelected];
+    
+  }
+  return _collectionBtn;
 }
 
 -(UIButton*)shareBtn{
@@ -92,6 +116,8 @@
     [self addSubview:self.scrollView];
     [self addSubview:self.zanBtn];
     [self addSubview:self.zanNum];
+    [self addSubview:self.collectionBtn];
+    [self addSubview:self.collectionNum];
     [self addSubview:self.downloadBtn];
     [self addSubview:self.downLoadNUm];
     [self addSubview:self.shareBtn];
@@ -99,32 +125,40 @@
   //点赞
   [_zanBtn addTarget:self action:@selector(tapZanBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.zanBtn.sd_layout.topSpaceToView(self.scrollView,10)
-  .heightIs(26).widthIs(26)
+  .heightIs(20).widthIs(21)
   .leftSpaceToView(self, 0);
 
   self.zanNum.sd_layout.centerYEqualToView(self.zanBtn)
-  .leftSpaceToView(self.zanBtn, 1)
+  .leftSpaceToView(self.zanBtn, 5)
   .widthIs(40).heightIs(26);
 
+  //收藏
+  [_collectionBtn addTarget:self action:@selector(tapCollectionBtn:) forControlEvents:UIControlEventTouchUpInside];
+  self.collectionBtn.sd_layout.centerYEqualToView(self.zanNum)
+  .leftSpaceToView(self.zanNum, 10)
+  .heightIs(20).widthIs(20);
+  
+  self.collectionNum.sd_layout.centerYEqualToView(self.collectionBtn)
+  .leftSpaceToView(self.collectionBtn, 5)
+  .widthIs(40).heightIs(26);
+  
   //下载
   [_downloadBtn addTarget:self action:@selector(tapDownloadBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.downloadBtn.sd_layout.centerYEqualToView(self.zanNum)
-  .leftSpaceToView(self.zanNum, 10)
-  .widthIs(26).heightIs(26);
+  .leftSpaceToView(self.collectionNum, 10)
+  .widthIs(20).heightIs(20);
 
   self.downLoadNUm.sd_layout.centerYEqualToView(self.downloadBtn)
-  .leftSpaceToView(self.downloadBtn, 1)
+  .leftSpaceToView(self.downloadBtn, 5)
   .widthIs(40).heightIs(26);
 
   //分享/转发
   [_shareBtn addTarget:self action:@selector(tapShareBtn:) forControlEvents:UIControlEventTouchUpInside];
   self.shareBtn.sd_layout.centerYEqualToView(self.zanBtn)
-     .rightSpaceToView(self, 10)
-     .widthIs(70).heightIs(30);
+     .rightSpaceToView(self, 15)
+     .widthIs(70).heightIs(28);
 
   [self setupAutoHeightWithBottomView:self.zanBtn bottomMargin:10];
-
-
 }
 
 
@@ -147,36 +181,27 @@
 
 -(void)setDownloadCount:(NSInteger)downloadCount{
     _downloadCount = downloadCount;
-  NSString * num = @"";
-    if(downloadCount<=999){
-      num = [NSString stringWithFormat:@"%ld",downloadCount>0?downloadCount:0];
-    }else if(downloadCount<10000){
-      num = [NSString stringWithFormat:@"%ldK+",downloadCount>0?downloadCount/1000:0];
-    }else if(downloadCount<100000){
-      num = [NSString stringWithFormat:@"%ldW+",downloadCount>0?downloadCount/10000:0];
-    }else{
-      num = @"10W+";
-    }
-  self.downLoadNUm.text = num;
+  self.downLoadNUm.text = [NSString stringWithNumber:downloadCount];
 }
 
 -(void)setLikesCount:(NSInteger)likesCount{
   _likesCount = likesCount;
-  NSString * num = @"";
-    if(likesCount<=999){
-      num = [NSString stringWithFormat:@"%ld",likesCount>0?likesCount:0];
-    }else if(likesCount<10000){
-      num = [NSString stringWithFormat:@"%ldK+",likesCount>0?likesCount/1000:0];
-    }else if(likesCount<100000){
-      num = [NSString stringWithFormat:@"%ldW+",likesCount>0?likesCount/10000:0];
-    }else{
-      num = @"10W+";
-    }
-  self.zanNum.text = num;
+  self.zanNum.text = [NSString stringWithNumber:likesCount];
+}
+
+-(void)setCollectCount:(NSInteger)collectCount{
+  _collectCount = collectCount;
+  self.collectionNum.text = [NSString stringWithNumber:collectCount];
 }
 
 -(void)setIsLike:(BOOL)isLike{
+  _isLike = isLike;
   self.zanBtn.selected = isLike;
+}
+
+-(void)setIsCollect:(BOOL)isCollect{
+  _isCollect = isCollect;
+  self.collectionBtn.selected = isCollect;
 }
 
 -(void)setGoodsView{
@@ -194,7 +219,6 @@
     for(UIView *view in [self.scrollView subviews]){
       [view removeFromSuperview];
     }
-
       self.scrollView.contentSize = len>0&&len<=1?CGSizeMake(width*len, 70):CGSizeMake(width*len+10*len, 70);
     for (int i=0; i<len; i++) {
         UIView *bgView = [[UIView alloc] init];
@@ -272,10 +296,17 @@
   }
 }
 
--(void)tapZanBtn:(NSString*)sender{
-//  if(self.zanBlock){
-//    self.zanBlock(@"");
-//  }
+-(void)tapZanBtn:(UIButton*)sender{
+  sender.selected = !sender.selected;
+  if(self.zanBlock){
+    self.zanBlock(@"");
+  }
+}
+
+-(void)tapCollectionBtn:(UIButton*)sender{
+  if(self.collectionBlock){
+    self.collectionBlock(@"");
+  }
 }
 
 -(void)tapDownloadBtn:(UIButton*)sender{

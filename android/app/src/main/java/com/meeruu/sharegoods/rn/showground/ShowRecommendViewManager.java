@@ -10,6 +10,7 @@ import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
+import com.meeruu.sharegoods.rn.showground.widgets.littlevideo.VideoListView;
 
 import java.util.Map;
 
@@ -51,6 +52,10 @@ public class ShowRecommendViewManager extends ViewGroupManager<ViewGroup> {
         if (object != null && object instanceof ShowRecommendView) {
             ((ShowRecommendView) object).setType(type);
         }
+    }
+    @ReactProp(name = "isLogin")
+    public void setLogin(View view, boolean isLogin){
+        ((ShowRecommendView) view.getTag()).setLogin(isLogin);
     }
 
 
@@ -112,6 +117,8 @@ public class ShowRecommendViewManager extends ViewGroupManager<ViewGroup> {
                 .put("MrSharePress", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onSharePress")))
                 .put("MrScrollY", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onScrollY")))
                 .put("MrPressProductEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onPressProduct")))
+                .put("MrCollectionEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onCollection")))
+                .put("MrSeeUserEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onSeeUser")))
                 .build();
     }
 }

@@ -134,8 +134,9 @@ export default class P_ScoreListPage extends BasePage {
     };
 
     //选择规格确认
-    _selectionViewConfirm = (amount, skuCode) => {
+    _selectionViewConfirm = (amount, skuCode, item) => {
         const { pData } = this.params;
+        const { productIsPromotionPrice } = pData || {};
         let orderProducts = [];
         if (this.state.goType === 'gwc') {
             //hyf更改
@@ -156,10 +157,17 @@ export default class P_ScoreListPage extends BasePage {
             });
             shopCartCacheTool.addGoodItem(temp);
         } else if (this.state.goType === 'buy') {
+            const { specImg, productName, promotionPrice, price, propertyValues } = item;
             orderProducts.push({
                 skuCode: skuCode,
                 quantity: amount,
-                productCode: pData.prodCode
+                productCode: pData.prodCode,
+                activityCode: '',
+                batchNo: 1,
+                specImg,
+                productName,
+                unitPrice: productIsPromotionPrice ? promotionPrice : price,
+                spec: (propertyValues || '').replace(/@/g, '-')
             });
             this.$navigate(RouterMap.ConfirOrderPage, {
                 orderParamVO: {

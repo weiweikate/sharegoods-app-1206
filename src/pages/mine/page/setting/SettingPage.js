@@ -1,15 +1,15 @@
 import React from 'react';
 import {
-    StyleSheet,
-    View,
+    Alert,
+    DeviceEventEmitter,
     Image,
-    NativeModules,
-    TouchableOpacity, Alert, Platform,
     Linking,
-    DeviceEventEmitter
+    NativeModules,
+    Platform,
+    StyleSheet,
+    TouchableOpacity,
+    View
 } from 'react-native';
-
-const { CachesModule } = NativeModules;
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
 import ScreenUtils from '../../../../utils/ScreenUtils';
@@ -33,10 +33,12 @@ import { QYChatTool } from '../../../../utils/QYModule/QYChatTool';
 import WhiteModel from '../../../show/model/WhiteModel';
 import store from '@mr/rn-store';
 import { observer } from 'mobx-react';
-import { forceToHome } from '../../../../navigation/RouterMap';
 import RouterMap from '../../../../navigation/RouterMap';
-import Switch from '../../components/SwitchComponent'
+import Switch from '../../components/SwitchComponent';
 import JPushDeleteUtil from '../../../../utils/JPushDeleteUtil';
+
+const { CachesModule } = NativeModules;
+
 /**
  * @author luoyongming
  * @date on 2018/9/13
@@ -137,7 +139,7 @@ class SettingPage extends BasePage {
                         <Image source={arrow_right}/>
                     </TouchableOpacity>
                     {this.renderLine()}
-                    <View style={{height:10,width:1}}/>
+                    <View style={{ height: 10, width: 1 }}/>
 
                     <TouchableOpacity style={styles.viewStyle}
                                       onPress={() => this.getNewVersion()}>
@@ -261,7 +263,7 @@ class SettingPage extends BasePage {
     };
 
     toHomePage = () => {
-        forceToHome();
+        this.$navigateBackToHome();
     };
 
 

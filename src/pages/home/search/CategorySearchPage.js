@@ -62,7 +62,7 @@ export default class CategorySearchPage extends BasePage {
             let item = { id: -10, name: '为您推荐' };
             datas.unshift(item);
             this.setState({
-                nameArr: datas
+                nameArr: datas || []
             });
         }).catch((data) => {
             this.$loadingDismiss();
@@ -75,7 +75,7 @@ export default class CategorySearchPage extends BasePage {
         HomeAPI.findHotList().then((response) => {
             let datas = response.data || {};
             this.setState({
-                sectionArr: [{ index: 0, title: '热门分类', data: datas.productCategoryList }],
+                sectionArr: [{ index: 0, title: '热门分类', data: datas.productCategoryList || [] }],
                 bannerData: StringUtils.isEmpty(datas.img) ? [] : [{
                     img: datas.img,
                     linkType: datas.linkType,
@@ -177,7 +177,7 @@ export default class CategorySearchPage extends BasePage {
                             renderItem={this._sectionItem}
                             renderSectionHeader={this._sectionHeader}
                             ListFooterComponent={this._listFooter}
-                            sections={this.state.sectionArr}
+                            sections={this.state.sectionArr || []}
                             initialNumToRender={15}
                             removeClippedSubviews={false}
                             stickySectionHeadersEnabled={false}
@@ -246,7 +246,7 @@ export default class CategorySearchPage extends BasePage {
                             bridge.hiddenLoading();
                             let datas = response.data || {};
                             this.setState({
-                                sectionArr: [{ index: 0, title: '热门分类', data: datas.productCategoryList }],
+                                sectionArr: [{ index: 0, title: '热门分类', data: datas.productCategoryList || [] }],
                                 bannerData: StringUtils.isEmpty(datas.img) ? [] : [{
                                     img: datas.img,
                                     linkType: datas.linkType,
@@ -263,11 +263,11 @@ export default class CategorySearchPage extends BasePage {
                         HomeAPI.findProductCategoryList({ id: item.id }).then((response) => {
                             bridge.hiddenLoading();
                             let datas = response.data || {};
-                            let arr = datas.productCategoryList.map((item, index) => {
+                            let arr = datas.productCategoryList && datas.productCategoryList.map((item, index) => {
                                 return {
                                     index: index,
                                     title: item.name,
-                                    data: item.productCategoryList
+                                    data: item.productCategoryList || []
                                 };
                             });
                             this.setState({

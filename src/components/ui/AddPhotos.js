@@ -5,6 +5,8 @@ import NoMoreClick from '../ui/NoMoreClick';
 import res from '../../comm/res';
 import ScreenUtils from '../../utils/ScreenUtils'
 import ImageLoad from '@mr/image-placeholder'
+import { routePush } from '../../navigation/RouterMap';
+import RouterMap from '../../navigation/RouterMap';
 const addPic = res.placeholder.add_picture;
 const deleteImage = res.button.delete_picture;
 
@@ -37,9 +39,11 @@ class AddPhotos extends Component {
         );
     };
 
-    renderPhotoItem = (item, index) => {
+    renderPhotoItem = (item, index, imgList) => {
         return (
-            <View style={{ marginRight: ScreenUtils.autoSizeWidth(5), marginBottom: 12 }} key={index}>
+            <TouchableOpacity style={{ marginRight: ScreenUtils.autoSizeWidth(5), marginBottom: 12 }} key={index}
+                              onPress={()=> {this.imgClick(imgList,index)}}
+            >
                 <ImageLoad style={styles.photo_item} source={{ uri: this.props.imageArr[index] }}/>
                 <TouchableOpacity style={styles.delete_btn} onPress={() => {
                     this.props.deletePic(index);
@@ -47,14 +51,18 @@ class AddPhotos extends Component {
                     <Image style={{ width: 24, height: 24 }} source={deleteImage}/>
                 </TouchableOpacity>
 
-            </View>);
+            </TouchableOpacity>);
     };
+
+    imgClick(imageUrls, index){
+        routePush(RouterMap.CheckBigImagesView,{imageUrls, index})
+    }
 
     render() {
         return (
             <View style={{ flexDirection: 'row', flexWrap: 'wrap' , paddingVertical: ScreenUtils.autoSizeWidth(10)}}>
-                {this.props.imageArr.map((item, index) => {
-                    return this.renderPhotoItem(item, index);
+                {this.props.imageArr.map((item, index, arr) => {
+                    return this.renderPhotoItem(item, index, arr);
                 })}
                 {this.renderAddItem()}
             </View>

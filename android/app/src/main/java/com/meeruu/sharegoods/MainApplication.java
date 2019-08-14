@@ -19,6 +19,7 @@ import com.meeruu.sharegoods.rn.lottie.LottiePackage;
 import com.meeruu.sharegoods.rn.reactwebview.RNCWebViewPackage;
 import com.meeruu.sharegoods.rn.sensors.RNSensorsAnalyticsPackage;
 import com.meeruu.sharegoods.rn.webviewbridge.WebViewBridgePackage;
+import com.meeruu.sharegoods.utils.AppInitUtils;
 import com.microsoft.codepush.react.CodePush;
 import com.microsoft.codepush.react.CodePushUpdateManager;
 import com.microsoft.codepush.react.SettingsManager;
@@ -49,6 +50,8 @@ public class MainApplication extends BaseApplication implements ReactApplication
         super.onCreate();
         // 检测内存泄漏
         LeakCanary.install(this);
+        // 获取主域名
+        AppInitUtils.getAndSaveHost();
     }
 
     private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {

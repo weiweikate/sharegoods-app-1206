@@ -96,17 +96,22 @@ class HomeModalManager {
 
         if (this.needShowUpdate === true) {
             this.isShowUpdate = true;
+            track(trackEvent.HomePagePopShow, {homePagePopType: 5});
         } else if (this.needShowNotice === true) {
             this.isShowNotice = true;
+            track(trackEvent.HomePagePopShow, {homePagePopType: 2});
         } else if (this.needShowAd === true) {
             this.isShowAd = true;
+            track(trackEvent.HomePagePopShow, {homePagePopType: 7});
         } else if (this.needShowGift === true) {
             this.isShowGift = true;
-            track(trackEvent.NewUserGuideShow, {});
+            track(trackEvent.HomePagePopShow, {homePagePopType: 4});
         } else if (this.needShowPrize === true) {
             this.isShowPrize = true;
+            track(trackEvent.HomePagePopShow, {homePagePopType: 6});
         } else if (this.needShowUser === true) {
             this.isShowUser = true;
+            track(trackEvent.HomePagePopShow, {homePagePopType: 3});
         }
     }
 
@@ -118,6 +123,8 @@ class HomeModalManager {
                     this.versionData = null;
                 });
             }
+        }else {
+            track(trackEvent.HomePagePopBtnClick, {homePagePopType: 5, homePagePopImgURL: ''});
         }
         this.isShowUpdate = false;
         this.needShowUpdate = false;
@@ -125,7 +132,7 @@ class HomeModalManager {
     }
 
     @action
-    closeMessage() {
+    closeMessage() {//公告无点击
         let currStr = new Date().getTime();
         store.save('@mr/lastMessageTime', String(currStr));
         this.isShowNotice = false;
@@ -139,20 +146,25 @@ class HomeModalManager {
 
 
     @action
-    closeAd() {
+    closeAd(open) {
+        if (open){
+            track(trackEvent.HomePagePopBtnClick, {homePagePopType: 7, homePagePopImgURL: this.AdData.image});
+        }
         let currStr = new Date().getTime();
         store.save('@mr/home_lastAdTime', String(currStr));
         this.isShowAd = false;
         this.needShowAd = false;
         this.AdData = null;
-
         this.isShowNotice = false;
         this.needShowNotice = false;
         this.openNext();
     }
 
     @action
-    closePrize() {
+    closePrize(open) {
+        if (open){
+            track(trackEvent.HomePagePopBtnClick, {homePagePopType: 6, homePagePopImgURL: 'btn_bg.png'});
+        }
         this.isShowPrize = false;
         this.needShowPrize = false;
         this.prizeData = null;
@@ -160,16 +172,21 @@ class HomeModalManager {
     }
 
     @action
-    closeGift() {
+    closeGift(open) {
+        if (open){
+            track(trackEvent.HomePagePopBtnClick, {homePagePopType: 4, homePagePopImgURL:  this.giftData.image});
+        }
         this.isShowGift = false;
         this.needShowGift = false;
         this.giftData = null;
-        track(trackEvent.NewUserGuideBtnClick, {});
         this.openNext();
     }
 
     @action
-    closeUserLevel() {
+    closeUserLevel(open, v) {
+        if (open){
+            track(trackEvent.HomePagePopBtnClick, {homePagePopType: 3, homePagePopImgURL:  v + 'png'});
+        }
         this.isShowUser = false;
         this.needShowUser = false;
         this.openNext();

@@ -1,18 +1,11 @@
 //公告详情页面
 import React from 'react';
-import {
-    View,
-    Dimensions,
-    StyleSheet,
-    ScrollView,
-    ImageBackground
-} from 'react-native';
+import { ImageBackground, ScrollView, StyleSheet, View } from 'react-native';
 import BasePage from '../../../BasePage';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
-import {
-    MRText as Text
-} from '../../../components/ui';
+import { MRText as Text } from '../../../components/ui';
+import ScreenUtils from '../../../utils/ScreenUtils';
 
 const Banner = res.shopSetting.banner_02;
 
@@ -58,8 +51,8 @@ const styles = StyleSheet.create({
     },
     banner: {
         alignItems: 'center',
-        width: Dimensions.get('window').width,
-        height: 150 / 375 * Dimensions.get('window').width
+        width: ScreenUtils.width,
+        height: 150 / 375 * ScreenUtils.width
     },
     content: {
         fontSize: 13,

@@ -14,6 +14,7 @@
 #import "GongMaoVC.h"
 #import "CommentTool.h"
 #import "IJSVideoManager.h"
+#import "NetWorkTool.h"
 
 #define AppVersion [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]
 
@@ -42,11 +43,29 @@ RCT_EXPORT_MODULE()
 
 -(void)receiveSalesNotifaction:(NSNotification *)notify
 {
-  [self.bridge.eventDispatcher sendAppEventWithName:@"Event_navigateHtmlPage" body:notify.object];
+  NSDictionary * dic = notify.object;
+  if (!dic || ![dic isKindOfClass:[NSDictionary class]]) {
+    return;
+  }
+  NSString *eventName = dic[@"eventName"];
+  if (!eventName) {
+    return;
+  }
+  [self.bridge.eventDispatcher sendAppEventWithName:eventName  body:notify.object];
 }
 
 - (void)dealloc{
   [[NSNotificationCenter defaultCenter]  removeObserver:self];
+}
+
+
+- (NSDictionary *)constantsToExport
+{
+  NSString * baseUrl = [[NSUserDefaults standardUserDefaults] stringForKey:@"dynamicBaseUrl"];
+  if (!baseUrl) {
+    return @{};
+  }
+  return @{ @"baseUrl": baseUrl };
 }
 
 RCT_EXPORT_METHOD(captureScreenImage:(NSDictionary *)info and:(RCTResponseSenderBlock)callback){
@@ -303,44 +322,27 @@ RCT_EXPORT_METHOD(RN_ImageCompression:(NSArray *) paths
 RCT_EXPORT_METHOD(RN_Video_Image:(NSString*) path
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject){
+  NSURL *videoUrl;
+  if ([path hasPrefix:@"file://"]) {
+    videoUrl = [NSURL fileURLWithPath:path];
+  }else{
+    videoUrl = [NSURL URLWithString:path];
+  }
+  NSDictionary *opts = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:AVURLAssetPreferPreciseDurationAndTimingKey];
+  AVURLAsset *urlAsset = [AVURLAsset URLAssetWithURL:videoUrl options:opts];
+  AVAssetImageGenerator *generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:urlAsset];
+  generator.appliesPreferredTrackTransform = YES;
+  NSError *error = nil;
+  CGImageRef img = [generator copyCGImageAtTime:CMTimeMakeWithSeconds(0.0, 600) actualTime:NULL error:&error];
+  UIImage *videoImage = [[UIImage alloc] initWithCGImage:img];
+  CGImageRelease(img);
+  NSData * imageData = UIImageJPEGRepresentation(videoImage,1.0);
   
-  NSArray *paths=NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);
-  NSString *documentsDirectory=[paths objectAtIndex:0];
-  NSString *savedImagePath=[documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png",path.md5String]];
-  
-  YYCache *cache = [YYCache cacheWithName:@"crm_app_xiugou_video_image"];
-  [cache objectForKey:savedImagePath withBlock:^(NSString * _Nonnull key, id<NSCoding>  _Nonnull object) {
-    if (object) {
-      resolve(@{@"imagePath":key});
-    }else{
-      NSURL *videoUrl;
-      if ([path hasPrefix:@"file://"]) {
-        videoUrl = [NSURL fileURLWithPath:path];
-      }else{
-        videoUrl = [NSURL URLWithString:path];
-      }
-      
-      NSDictionary *opts = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:AVURLAssetPreferPreciseDurationAndTimingKey];
-      AVURLAsset *urlAsset = [AVURLAsset URLAssetWithURL:videoUrl options:opts];
-      AVAssetImageGenerator *generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:urlAsset];
-      generator.appliesPreferredTrackTransform = YES;
-      NSError *error = nil;
-      CGImageRef img = [generator copyCGImageAtTime:CMTimeMakeWithSeconds(0.0, 600) actualTime:NULL error:&error];
-      UIImage *videoImage = [[UIImage alloc] initWithCGImage:img];
-      CGImageRelease(img);
-      NSData * data = UIImageJPEGRepresentation(videoImage,1.0);
-//    [IJSVideoManager saveImageToSandBoxImage:image completion:^(NSURL *outputPath, NSError *error) {
-//
-//        }];
-      key = [NSString stringWithFormat:@"%@%@",@"file://",key];
-      BOOL isRight = [data writeToURL:[NSURL URLWithString:key] atomically:YES];
-      if (isRight) {
-        [cache setObject:data forKey:key withBlock:^{
-          resolve(@{@"imagePath":key});
-        }];
-      }
-    }
-  }];
+  NSString * homePath =NSHomeDirectory();
+  homePath =[homePath stringByAppendingString:[NSString stringWithFormat:@"/Documents/Product%@.png",path.md5String]];
+  if ([imageData writeToFile:homePath atomically:YES]) {
+    resolve(@{@"imagePath":homePath});
+  }
 }
 
 RCT_EXPORT_METHOD(removeLaunch){
@@ -440,4 +442,30 @@ RCT_EXPORT_METHOD(saveImageToPhotoAlbumWithUrl:(NSString *) url
   }];
 }
 
+  /**
+   @QRCodeStr  下载保存视频到本地相册
+   onSuccess(NSSting) 成功的回调
+   onError(NSSting)   失败的回调
+   */
+RCT_EXPORT_METHOD(saveVideoToPhotoAlbumWithUrl:(NSString *) url
+                    resolve:(RCTPromiseResolveBlock)resolve
+                    reject:(RCTPromiseRejectBlock)reject){
+  [NetWorkTool downloadWithPath:url success:^(id json) {
+    NSLog(@"jsonFilePath = %@",json);
+    [[JRShareManager sharedInstance] saveVideo:json withCallBackBlock:^(NSString *errorStr) {
+      NSLog(@"errorStr = %@",errorStr);
+      resolve(errorStr);
+    }];
+
+  } failure:^(NSError *error) {
+      NSLog(@"errorStr = %@",error);
+      reject(nil,nil,error);
+  } progress:^(CGFloat progress) {
+    
+  }];
+
+  
+
+}
+  
 @end

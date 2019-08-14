@@ -1,13 +1,13 @@
 import React from 'react';
 import {
-    View,
-    Text,
-    StyleSheet,
-    ImageBackground,
-    TouchableWithoutFeedback,
     Image,
+    ImageBackground,
+    RefreshControl,
     SectionList,
-    RefreshControl
+    StyleSheet,
+    Text,
+    TouchableWithoutFeedback,
+    View
 } from 'react-native';
 import { PageLoadingState, renderViewByLoadingState } from '../../../../components/pageDecorator/PageState';
 import MineApi from '../../api/MineApi';
@@ -20,8 +20,8 @@ import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import user from '../../../../model/user';
 import StringUtils from '../../../../utils/StringUtils';
-import LinearGradient from 'react-native-linear-gradient'
-import EmptyUtils from "../../../../utils/EmptyUtils";
+import LinearGradient from 'react-native-linear-gradient';
+import EmptyUtils from '../../../../utils/EmptyUtils';
 
 const account_bg_white = res.bankCard.account_bg_white;
 const red_up = res.cashAccount.zhanghu_red;
@@ -52,9 +52,11 @@ const detailData = {
     18: { title: '秀购惩罚', icon: res.cashAccount.chengFa_icon },
     19: { title: '抽奖奖励', icon: res.cashAccount.zengsong_icon },
     20: { title: '秀购奖励', icon: res.cashAccount.zengsong_icon },
+    24: { title: '购买经验值', icon: res.cashAccount.zengsong_icon },
     30: { title: '30天未登录扣除', icon: res.cashAccount.jinggao_icon },
     31: { title: '周交易额未达标扣除', icon: res.cashAccount.jinggao_icon },
-    32: { title: '邀请有礼奖励', icon: res.myData.icon_invite }
+    32: { title: '邀请有礼奖励', icon: res.myData.icon_invite },
+
 };
 export default class ExpDetailPage extends BasePage {
     constructor(props) {
@@ -67,7 +69,7 @@ export default class ExpDetailPage extends BasePage {
             isEmpty: false,
             loadingState: PageLoadingState.loading,
             changeHeader: false,
-            refreshing: false,
+            refreshing: false
 
 
         };
@@ -96,22 +98,22 @@ export default class ExpDetailPage extends BasePage {
 
 
     _onScroll = (event) => {
-            let Y = event.nativeEvent.contentOffset.y;
-            if (Y <= 175) {
-                this.st = 0;
-                if(this.state.changeHeader) {
-                    this.setState({
-                        changeHeader: false
-                    });
-                }
-            } else {
-                this.st = 1;
-                if(!this.state.changeHeader) {
-                    this.setState({
-                        changeHeader: true
-                    });
-                }
+        let Y = event.nativeEvent.contentOffset.y;
+        if (Y <= 175) {
+            this.st = 0;
+            if (this.state.changeHeader) {
+                this.setState({
+                    changeHeader: false
+                });
             }
+        } else {
+            this.st = 1;
+            if (!this.state.changeHeader) {
+                this.setState({
+                    changeHeader: true
+                });
+            }
+        }
     };
 
     _render() {
@@ -133,24 +135,22 @@ export default class ExpDetailPage extends BasePage {
                         this.$navigateBack();
                     }}>
                         <View style={{
-                            width: 60,
-                            paddingLeft: DesignRule.margin_page,
+                            paddingLeft: px2dp(5),
                             height: 40,
                             justifyContent: 'center',
-                            alignItems:'flex-start',
-                            flex:1
+                            flex: 1
                         }}>
-                            <Image source={res.button.white_back}/>
+                            <Image source={res.button.back_white} style={{ width: 30, height: 30 }}/>
                         </View>
                     </TouchableWithoutFeedback>
-                        <Text style={{
-                            color: DesignRule.white,
-                            fontSize: px2dp(17),
-                            includeFontPadding: false
-                        }}>
-                            {this.state.changeHeader ? '我的经验' : ''}
-                        </Text>
-                    <View style={{flex:1}}/>
+                    <Text style={{
+                        color: DesignRule.white,
+                        fontSize: px2dp(17),
+                        includeFontPadding: false
+                    }}>
+                        {this.state.changeHeader ? '我的经验' : ''}
+                    </Text>
+                    <View style={{ flex: 1 }}/>
                 </View>
             </LinearGradient>
         );
@@ -158,7 +158,7 @@ export default class ExpDetailPage extends BasePage {
 
     _accountInfoRender() {
         const progress = this.state.experience / this.state.levelExperience;
-        const marginLeft = progress ? ScreenUtils.px2dp(315) * progress : 0;
+        const marginLeft = progress ? progress>1 ? ScreenUtils.px2dp(315) : ScreenUtils.px2dp(315) * progress : 0;
         return (
             <ImageBackground source={account_bg_white} resizeMode={'stretch'} style={{
                 position: 'absolute',
@@ -166,7 +166,7 @@ export default class ExpDetailPage extends BasePage {
                 height: px2dp(184),
                 width: DesignRule.width,
                 left: 0,
-                paddingHorizontal: DesignRule.margin_page,
+                paddingHorizontal: DesignRule.margin_page
             }}>
 
                 <View style={styles.withdrawWrapper}>
@@ -232,19 +232,19 @@ export default class ExpDetailPage extends BasePage {
     }
 
     sectionComp = (info) => {
-        return null
+        return null;
     };
 
-    extraUniqueKey=(item,index)=>{
+    extraUniqueKey = (item, index) => {
         return index + item;
     };
 
 
     _renderContent = () => {
-        const {viewData} = this.state;
+        const { viewData } = this.state;
         let sections = [
-            { key: 'A', data: [{title:'head'}] },
-            { key: 'B', data:  !EmptyUtils.isEmpty(viewData) ? viewData : [{title:'empty'}] },
+            { key: 'A', data: [{ title: 'head' }] },
+            { key: 'B', data: !EmptyUtils.isEmpty(viewData) ? viewData : [{ title: 'empty' }] }
         ];
 
         return (
@@ -254,12 +254,14 @@ export default class ExpDetailPage extends BasePage {
                     renderSectionHeader={this.sectionComp}
                     renderItem={this.renderItem}
                     sections={sections}
-                    keyExtractor = {this.extraUniqueKey}// 生成一个不重复的key
+                    keyExtractor={this.extraUniqueKey}// 生成一个不重复的key
                     ItemSeparatorComponent={() => <View/>}
                     onEndReached={this.onLoadMore}
                     onEndReachedThreshold={0.1}
                     stickySectionHeadersEnabled={true}
-                    onScroll={(e)=>{this._onScroll(e)}}
+                    onScroll={(e) => {
+                        this._onScroll(e);
+                    }}
                     showsVerticalScrollIndicator={false}
                     refreshControl={
                         <RefreshControl
@@ -279,20 +281,27 @@ export default class ExpDetailPage extends BasePage {
         if (key === 'A') {
             return (
                 <View>
-                    <LinearGradient style={{marginBottom: 10, height: px2dp(164), width: ScreenUtils.width, backgroundColor: 'white'}}
-                                    start={{x: 0, y: 0}}
-                                    end={{x: 1, y: 0}}
+                    <LinearGradient style={{
+                        marginBottom: 10,
+                        height: px2dp(164),
+                        width: ScreenUtils.width,
+                        backgroundColor: 'white'
+                    }}
+                                    start={{ x: 0, y: 0 }}
+                                    end={{ x: 1, y: 0 }}
                                     colors={['#FF0050', '#FC5D39']}
                     />
-                    <View style={{height:10, width:ScreenUtils.width, backgroundColor:'white'}}/>
+                    <View style={{ height: 10, width: ScreenUtils.width, backgroundColor: 'white' }}/>
                     {this._accountInfoRender()}
                 </View>
-            )
+            );
         }
-        if(item.title && item.title === 'empty'){
-            return(
-                <EmptyView style={{flex:1}} imageStyle={{width:267, height:192}} description={''} subDescription={'暂无明细数据～'} source={cash_noData}/>
-            )}
+        if (item.title && item.title === 'empty') {
+            return (
+                <EmptyView style={{ flex: 1 }} imageStyle={{ width: 267, height: 192 }} description={''}
+                           subDescription={'暂无明细数据～'} source={cash_noData}/>
+            );
+        }
 
         return (
             <View style={{
@@ -301,7 +310,7 @@ export default class ExpDetailPage extends BasePage {
                 alignItems: 'center',
                 width: ScreenUtils.width,
                 marginBottom: 10,
-                marginTop:10
+                marginTop: 10
             }}>
                 <Image source={item.iconImage} style={{ marginLeft: 15, width: 40, height: 40 }}/>
                 <View style={{
@@ -357,15 +366,21 @@ export default class ExpDetailPage extends BasePage {
                 isEmpty: data.data && data.data.length !== 0 ? false : true
             });
         }).catch(e => {
-            this.setState({refreshing: false, loadingState: PageLoadingState.fail, netFailedInfo: e, viewData: arrData, isEmpty: true });
+            this.setState({
+                refreshing: false,
+                loadingState: PageLoadingState.fail,
+                netFailedInfo: e,
+                viewData: arrData,
+                isEmpty: true
+            });
 
         });
     };
-    onLoad = ()=>{
+    onLoad = () => {
         this.currentPage = 1;
         this.setState({ refreshing: this.currentPage === 1 });
         this.getDataFromNetwork();
-    }
+    };
 
     onRefresh = () => {
         this.currentPage = 1;
@@ -384,7 +399,7 @@ const styles = StyleSheet.create({
         marginBottom: ScreenUtils.safeBottom
     },
     contentStyle: {
-        backgroundColor: DesignRule.bgColor,
+        backgroundColor: 'white',
         flex: 1
     },
     headerBg: {
@@ -400,7 +415,7 @@ const styles = StyleSheet.create({
     headerContainer: {
         height: px2dp(188),
         width: ScreenUtils.width,
-        marginBottom:20,
+        marginBottom: 20
     },
     withdrawButtonWrapper: {
         height: px2dp(28),

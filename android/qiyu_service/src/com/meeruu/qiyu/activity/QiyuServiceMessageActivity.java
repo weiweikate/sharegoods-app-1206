@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.meeruu.qiyu.Event;
 import com.meeruu.qiyu.KeyBoardUtils;
 import com.meeruu.qiyu.SoftKeyboardFixerForFullscreen;
 import com.meeruu.qiyu.preference.PreferenceUtil;
@@ -16,6 +17,10 @@ import com.qiyukf.unicorn.R;
 import com.qiyukf.unicorn.api.ConsultSource;
 import com.qiyukf.unicorn.api.Unicorn;
 import com.qiyukf.unicorn.ui.activity.ServiceMessageActivity;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 public class QiyuServiceMessageActivity extends ServiceMessageActivity {
 
@@ -30,6 +35,9 @@ public class QiyuServiceMessageActivity extends ServiceMessageActivity {
                 .navigationBarColor(android.R.color.white)
                 .statusBarDarkFont(true)
                 .navigationBarDarkIcon(true).init();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         MyKefuButton myKefuButton = findViewById(R.id.mb_kefu_btn);
         final ImageView ivKefu = findViewById(R.id.iv_kefu);
         Bundle data = getIntent().getExtras();
@@ -71,9 +79,20 @@ public class QiyuServiceMessageActivity extends ServiceMessageActivity {
         });
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void toChatShop(final Event.QiyuShopIdEvent event) {
+        Bundle data = getIntent().getExtras();
+        source = (ConsultSource) data.getSerializable("source");
+        source.shopId = event.getShopId();
+        Unicorn.openServiceActivity(QiyuServiceMessageActivity.this, event.getShopName(), source);
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
         EditText editText = findViewById(R.id.editTextMessage);
         if (editText != null) {
             KeyBoardUtils.closeKeybord(editText, this);

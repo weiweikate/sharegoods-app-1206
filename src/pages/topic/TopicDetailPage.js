@@ -9,7 +9,7 @@ import {
 import BasePage from '../../BasePage';
 import TopicDetailHeaderView from './components/TopicDetailHeaderView';
 import TopicDetailSegmentView from './components/TopicDetailSegmentView';
-import PriceExplain from '../product/components/PriceExplain';
+import { PriceExplain } from '../product/components/ProductDetailItemView';
 import ScreenUtils from '../../utils/ScreenUtils';
 import HTML from 'react-native-render-html';
 import TopicApi from './api/TopicApi';
@@ -277,10 +277,10 @@ export default class TopicDetailPage extends BasePage {
         let orderProducts = [];
         orderProducts.push({
             skuCode: skuCode,
-            num: amount,
-            code: this.state.activityData.activityCode,
+            quantity: amount,
+            activityCode: this.state.activityData.activityCode,
             productCode: this.state.activityData.prodCode,
-            spuName: this.state.data.name
+            batchNo: 1
         });
         this.$navigate(RouterMap.ConfirOrderPage, {
             orderParamVO: {
@@ -296,22 +296,13 @@ export default class TopicDetailPage extends BasePage {
         let priceList = [];
         selectData.forEach((item) => {
             priceList.push({
-                // num: 1,
                 skuCode: item.skuCode,
-                prodCode: item.prodCode
-                // productName: item.productName,
-                // sourceId: item.id,
-                // spec: item.specValues,
-                // specImg: item.specImg
+                quantity: amount,
+                productCode: item.prodCode,
+                activityCode: this.params.activityCode,
+                batchNo: 1,
             });
         });
-        //
-        // let orderProducts = [{
-        //     num: 1,
-        //     priceId: this.state.data.packageCode,
-        //     productId: this.state.data.packageCode,
-        //     priceList: priceList
-        // }];
 
         this.$navigate(RouterMap.ConfirOrderPage, {
             orderParamVO: {
@@ -324,6 +315,8 @@ export default class TopicDetailPage extends BasePage {
                 quantity: 1
             }
         });
+
+
     };
 
     //segment 详情0 参数1 选项
@@ -450,81 +443,6 @@ export default class TopicDetailPage extends BasePage {
         });
     };
 
-    // _renderCouponModal = () => {
-    //
-    //     let view = (
-    //         <TouchableWithoutFeedback onPress={() => {
-    //             this.setState({
-    //                 canGetCoupon: false
-    //             });
-    //             this.$navigate('mine/userInformation/MyCashAccountPage', { availableBalance: user.availableBalance });
-    //         }}>
-    //             <View style={{ position: 'absolute', bottom: 18, left: 0, right: 0, alignItems: 'center' }}>
-    //                 <Text style={{ color: 'white', fontSize: px2dp(24) }}>
-    //                     领取成功
-    //                 </Text>
-    //                 <Text style={{ color: 'white', fontSize: px2dp(11), marginTop: px2dp(5) }}>
-    //                     可前往我的-
-    //                     <Text style={{ textDecorationLine: 'underline' }}>现金账户</Text>
-    //                     查看
-    //                 </Text>
-    //             </View>
-    //         </TouchableWithoutFeedback>
-    //     );
-    //
-    //     let button = (
-    //         <TouchableWithoutFeedback onPress={this.getCoupon}>
-    //             <Text
-    //                 style={{ position: 'absolute', top: px2dp(220), left: px2dp(115), color: '#80522A', fontSize: 14 }}>
-    //                 {`立即\n领取`}
-    //             </Text>
-    //         </TouchableWithoutFeedback>
-    //     );
-    //
-    //     return (
-    //         <CommModal visible={this.state.canGetCoupon}>
-    //             <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center', justifyContent: 'center' }}>
-    //                 <ImageBackground source={redEnvelopeBg} style={{
-    //                     height: px2dp(362), width: px2dp(257),
-    //                     alignItems: 'center'
-    //                 }}>
-    //                     <Text style={{ color: 'white', includeFontPadding: false, fontSize: px2dp(14), marginTop: 26 }}>
-    //                         {EmptyUtils.isEmpty(this.state.couponData) ? null : StringUtils.encryptPhone(this.state.couponData.phone)}
-    //                     </Text>
-    //                     <Text style={{ color: 'white', includeFontPadding: false, fontSize: px2dp(14) }}>
-    //                         赠送了你一个红包
-    //                     </Text>
-    //
-    //                     <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(60), marginTop: 20 }}>
-    //                         {EmptyUtils.isEmpty(this.state.couponData) ? null : StringUtils.formatMoneyString(this.state.couponData.price, false)}
-    //                         <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(15) }}>
-    //                             元
-    //                         </Text>
-    //                     </Text>
-    //                     <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(14), marginTop: 12 }}>
-    //                         红包抵扣金
-    //                     </Text>
-    //                     {this.state.hasGetCoupon ? null : button}
-    //
-    //                     {this.state.hasGetCoupon ? view : null}
-    //                 </ImageBackground>
-    //                 <TouchableWithoutFeedback onPress={() => {
-    //                     this.setState({
-    //                         canGetCoupon: false
-    //                     });
-    //                 }}>
-    //                     <Image source={tongyong_btn_close_white} style={{
-    //                         position: 'absolute',
-    //                         top: 107,
-    //                         right: 35,
-    //                         width: 24,
-    //                         height: 24
-    //                     }}/>
-    //                 </TouchableWithoutFeedback>
-    //             </View>
-    //         </CommModal>
-    //     );
-    // };
 
     _render() {
         let superStatus = this._getSuperStatus();

@@ -11,6 +11,20 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface NSString (UrlAddParams)
+
+/*
+ * 对数字格式处理显示1K+ ,2W+, 10W+
+ */
++(NSString *)stringWithNumber:(NSInteger)count;
+
+/*
+ * 存储状态
+ * 判断存储时间是否为当天
+ */
++(BOOL)stringWithStorgeKey:(NSString*)key;
+
++(NSString*)convertNSDictionaryToJsonString:(NSDictionary *)json;
+
 -(NSString*)getUrlAndWidth:(CGFloat)width height:(CGFloat)height;
 
 -(NSString *)urlAddCompnentForValue:(NSString *)value key:(NSString *)key;
@@ -25,6 +39,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 -(CGFloat)getWidthStringfontSize:(CGFloat)fontSize viewWidth:(CGFloat)width;
+
+/**获取文字最多几行的高度
+ */
+-(CGFloat)getHeightWithFontSize:(CGFloat)fontSize viewWidth:(CGFloat)width maxLineCount:(NSInteger)lineCount;
 
 - (NSMutableDictionary *)getURLParameters;
 

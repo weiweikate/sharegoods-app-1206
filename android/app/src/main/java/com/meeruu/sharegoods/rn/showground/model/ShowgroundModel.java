@@ -3,7 +3,7 @@ package com.meeruu.sharegoods.rn.showground.model;
 import com.meeruu.commonlib.callback.BaseCallback;
 import com.meeruu.commonlib.config.BaseRequestConfig;
 import com.meeruu.commonlib.server.RequestManager;
-import com.meeruu.sharegoods.utils.HttpUrlUtils;
+import com.meeruu.commonlib.utils.HttpUrlUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -64,6 +64,11 @@ public class ShowgroundModel implements IShowgroundModel {
 
     @Override
     public void deleteDynamic(String showNo, BaseCallback callback) {
+
+    }
+
+    @Override
+    public void unCollection(String showNo, BaseCallback callback) {
 
     }
 }

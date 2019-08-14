@@ -13,6 +13,7 @@ import { MRText as Text } from '../../../components/ui/index';
 import { product_status } from '../ProductDetailModel';
 import LinearGradient from 'react-native-linear-gradient';
 import StringUtils from '../../../utils/StringUtils';
+import { formatDate } from '../../../utils/DateUtils';
 
 const { xiangqing_btn_gouwuche_nor, jiarugouwuche_no, me_bangzu_kefu_icon } = res;
 const { px2dp } = ScreenUtils;
@@ -31,31 +32,27 @@ export default class DetailBottomView extends Component {
 
     render() {
         let { pData } = this.props;
-        //productStatus  1正常  2下架  3当前时间不能买
-        let { productStatus, skuList, showSellOut, productIsPromotionPrice, selfReturning, isGroupIn, groupSubProductCanSell } = pData || {};
+        let {
+            productStatus, skuList, showSellOut, productIsPromotionPrice, selfReturning,
+            orderOnProduct, upTime
+        } = pData || {};
         //总库存
         let stock = 0;
         (skuList || []).forEach((item) => {
             stock = stock + (productIsPromotionPrice ? item.promotionStockNum : item.sellStock);
         });
-        //提示消息样式
-        let isDown = productStatus === product_status.down;
-        let showNoticeText = '商品已经下架啦~';
-
-        //不能加入购物车
-        let cantJoin = productStatus === product_status.down;
-
-        //不能立即购买  不正常||库存0 || (isGroupIn&&不能买)
-        let cantBuy = productStatus !== product_status.on || stock === 0 || (isGroupIn && !groupSubProductCanSell);
-        //立即购买文案
-        let buyText = productStatus === product_status.future ? '暂不可购买' : '立即购买';
-
+        //显示已下架
+        const isDown = productStatus === product_status.down;
+        //不能购买(不是上架状态||不能单独购买)
+        const cantBuy = productStatus !== product_status.on || orderOnProduct === 0;
+        //不能加购(不能单独购买)
+        const cantJoin = orderOnProduct === 0;
         return (
-            <View style={{ height: 49 + ScreenUtils.safeBottom + (isDown ? 20 : 0), backgroundColor: 'white' }}>
+            <View style={{ backgroundColor: 'white' }}>
                 {
-                    isDown &&
+                    orderOnProduct === 0 &&
                     <View style={styles.toastView}>
-                        <Text style={styles.toastText}>{showNoticeText}</Text>
+                        <Text style={styles.toastText}>该商品不支持单独购买</Text>
                     </View>
                 }
                 <View style={styles.container}>
@@ -65,9 +62,9 @@ export default class DetailBottomView extends Component {
                         <Text style={styles.leftText}>客服</Text>
                     </TouchableOpacity>
                     {
-                        (showSellOut || stock === 0) ?
+                        (showSellOut || isDown || stock === 0) ?
                             <View style={styles.outView}>
-                                <Text style={styles.outText}>{showSellOut ? '已抢光' : '已售罄'}</Text>
+                                <Text style={styles.outText}>{showSellOut ? '已抢光' : (isDown ? '已下架' : '已售罄')}</Text>
                             </View>
                             :
                             <View style={{
@@ -76,31 +73,50 @@ export default class DetailBottomView extends Component {
                                 alignItems: 'center',
                                 justifyContent: 'center'
                             }}>
-                                {!isGroupIn && <TouchableOpacity style={styles.leftBtn}
-                                                                 onPress={() => this.props.bottomViewAction('gwc')}
-                                                                 disabled={cantJoin}>
+                                {<TouchableOpacity style={styles.leftBtn}
+                                                   onPress={() => this.props.bottomViewAction('gwc')}
+                                                   disabled={cantJoin}>
                                     <Image style={styles.leftImage}
                                            source={cantJoin ? jiarugouwuche_no : xiangqing_btn_gouwuche_nor}/>
-                                    <Text style={styles.leftText}>加购</Text>
+                                    <Text
+                                        style={[styles.leftText, { color: cantJoin ? '#E4E4E4' : DesignRule.textColor_secondTitle }]}>加购</Text>
                                 </TouchableOpacity>}
-                                <View style={[styles.btnView, { width: !isGroupIn ? px2dp(260) : px2dp(292) }]}>
+                                <View style={[styles.btnView, { width: px2dp(260) }]}>
                                     <TouchableOpacity
                                         style={[styles.btn, { backgroundColor: cantBuy ? DesignRule.textColor_placeholder : DesignRule.mainColor }]}
                                         onPress={() => this.props.bottomViewAction('buy')} disabled={cantBuy}>
-                                        <LinearGradient style={styles.LinearGradient}
-                                                        start={{ x: 0, y: 0 }}
-                                                        end={{ x: 1, y: 0 }}
-                                                        colors={['#FFCB02', '#FF9502']}>
-                                            <Text style={[styles.btnText, {
-                                                color: cantBuy ? DesignRule.textColor_instruction : DesignRule.white,
-                                                fontSize: (isNoEmpty(selfReturning) && selfReturning > 0) ? 14 : 17
-                                            }]}>{buyText}</Text>
-                                            {(isNoEmpty(selfReturning) && selfReturning > 0) && < Text style={{
-                                                fontSize: 11, color: 'white', marginTop: -2
-                                            }}>返{selfReturning}</Text>}
-                                        </LinearGradient>
+                                        {
+                                            productStatus === product_status.future ?
+                                                <LinearGradient style={styles.LinearGradient}
+                                                                start={{ x: 0, y: 0 }}
+                                                                end={{ x: 1, y: 0 }}
+                                                                colors={['#FFE5ED', '#FFE5ED']}>
+                                                    <Text style={[styles.btnText, {
+                                                        color: DesignRule.mainColor,
+                                                        fontSize: 14
+                                                    }]}>{upTime ? formatDate(upTime, 'MM月dd日HH:mm') : ''}</Text>
+                                                    < Text style={{
+                                                        fontSize: 10,
+                                                        color: DesignRule.mainColor,
+                                                        marginTop: -2
+                                                    }}>开始售卖</Text>
+                                                </LinearGradient>
+                                                :
+                                                <LinearGradient style={styles.LinearGradient}
+                                                                start={{ x: 0, y: 0 }}
+                                                                end={{ x: 1, y: 0 }}
+                                                                colors={cantBuy ? ['#CCCCCC', '#CCCCCC'] : ['#FFCB02', '#FF9502']}>
+                                                    <Text style={[styles.btnText, {
+                                                        color: DesignRule.white,
+                                                        fontSize: (isNoEmpty(selfReturning) && selfReturning > 0) ? 14 : 17
+                                                    }]}>立即购买</Text>
+                                                    {(isNoEmpty(selfReturning) && selfReturning > 0) && < Text style={{
+                                                        fontSize: 11, color: 'white', marginTop: -2
+                                                    }}>返{selfReturning}</Text>}
+                                                </LinearGradient>
+                                        }
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={[styles.btn, { backgroundColor: '#FBBB50' }]}
+                                    <TouchableOpacity style={[styles.btn]}
                                                       onPress={() => this.props.bottomViewAction('jlj')}>
                                         <LinearGradient style={styles.LinearGradient}
                                                         start={{ x: 0, y: 0 }}
@@ -121,14 +137,14 @@ export default class DetailBottomView extends Component {
 const styles = StyleSheet.create({
     toastView: {
         justifyContent: 'center', alignItems: 'center',
-        height: 20, backgroundColor: 'rgba(0,0,0,0.5)'
+        height: 22, backgroundColor: '#FFE5ED'
     },
     toastText: {
-        color: DesignRule.white, fontSize: 13
+        color: DesignRule.textColor_redWarn, fontSize: 12
     },
 
     container: {
-        height: 49, flexDirection: 'row', alignItems: 'center',
+        height: 49, flexDirection: 'row', alignItems: 'center', marginBottom: ScreenUtils.safeBottom,
         backgroundColor: 'white'
     },
     leftBtn: {

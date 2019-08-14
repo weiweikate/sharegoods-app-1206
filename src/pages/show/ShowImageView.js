@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
-
-const { width, px2dp } = ScreenUtils;
 import ViewPager from '../../components/ui/ViewPager';
 import ImageLoad from '@mr/image-placeholder';
-import {
-    MRText as Text
-} from '../../components/ui';
+import { MRText as Text } from '../../components/ui';
 import ShowUtils from './utils/ShowUtils';
+
+const { width, px2dp } = ScreenUtils;
 
 const maxHeight = ScreenUtils.height * 0.72;
 const minHeight = ScreenUtils.height * 0.36;
@@ -24,8 +22,8 @@ export default class ShowImageView extends Component {
         this.imageHeight = width;
         this.heights = [];
         let changeHeight = true;
-        this.state.items = []
-        for(let i = 0;i<this.props.items.length;i++){
+        this.state.items = [];
+        for (let i = 0; i < this.props.items.length; i++) {
             let value = this.props.items[i];
             if (value.type === 2) {
                 if (value.url.indexOf('?') === -1) {
@@ -42,15 +40,14 @@ export default class ShowImageView extends Component {
                 }
                 this.state.items.push(value.url);
             }
-
         }
         if (changeHeight) {
             this.heights.sort((a, b) => {
                 return a - b;
             });
-
-            this.imageHeight = this.heights[0];
-
+            if (this.heights && this.heights.length > 0) {
+                this.imageHeight = this.heights[0];
+            }
         }
     }
 
@@ -69,7 +66,7 @@ export default class ShowImageView extends Component {
         </View>;
     }
 
-    _renderViewPageItem(item,index) {
+    _renderViewPageItem(item, index) {
         return <TouchableWithoutFeedback onPress={() => this.props.onPress(this.state.items, this.index)}>
             <View>
                 <ImageLoad style={{
