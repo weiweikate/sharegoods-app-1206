@@ -36,21 +36,14 @@ export default class DIYTopicList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
+
         this.loadMoreDataUtil = new LoadMoreDataUtil()
         this.loadMoreDataUtil.API = HomeAPI.getCustomTopic;
-        this.loadMoreDataUtil.paramsFunc = () => {return{topicCode: 'ZDYZT201908131856401'}};
+        this.loadMoreDataUtil.paramsFunc = () => {return{topicCode: (this.props.data || {}).linkCode}};
         this.loadMoreDataUtil.handleData = (data) => {
             data = data.data.widgets.data || []
 
             return    data.map((item, index) => {
-                // item.buyButtonType = 1;
-                // item.buyButtonVisible = false
-                // item.titleVisible = false;
-                // item.commissionVisible = false
-                // item.subtitleVisible = false;
-                // item.priceVisible = false;
-                // item.priceNameVisible = false;
-                // item.priceHasInvalidVisible = false;
                 if (item.type === homeType.custom_goods){
                     item.itemHeight = GoodsCustomViewGetHeight(item)
                 }

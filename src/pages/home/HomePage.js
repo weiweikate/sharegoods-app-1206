@@ -465,7 +465,6 @@ class HomePage extends BasePage {
 
                         }}
                     />
-                    <DIYTopicList />
                     {tabData.map((item) => {
                         if (item.navType === 2){
                          return  <DIYTopicList tabLabel={item.navName}
