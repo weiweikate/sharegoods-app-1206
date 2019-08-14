@@ -18,6 +18,7 @@ export default class SuitProductModel {
     /*套餐类型*/
     @observable extraType;
     @observable activityCode;
+    @observable activityName;
     /*数量*/
     @observable selectedAmount = 1;
     /*子商品活动信息
@@ -88,6 +89,17 @@ export default class SuitProductModel {
         }, 0);
     }
 
+    @computed get totalShareMoney() {
+        return this.suitProducts.reduce((pre, cur) => {
+            const { skuList } = cur;
+            const skuMin = skuList.map((item) => {
+                return item.minPriceY || 0;
+            });
+            const skuMinShare = Math.min.apply(null, skuMin);
+            return add(pre, skuMinShare);
+        }, 0);
+    }
+
     //是否能增加
     @computed get canAddAmount() {
         const { singlePurchaseNumber } = this.packageItem;
@@ -150,9 +162,10 @@ export default class SuitProductModel {
 
     /*初始化*/
     @action setProductArr = (productDetailSuitModel, packageIndex) => {
-        const { mainProduct, packages, extraType, activityCode } = productDetailSuitModel;
+        const { mainProduct, packages, extraType, activityCode, activityName } = productDetailSuitModel;
         this.extraType = extraType;
         this.activityCode = activityCode;
+        this.activityName = activityName;
         const packageItem = packages[packageIndex] || {};
         this.packageItem = JSON.parse(JSON.stringify(packageItem));
 
