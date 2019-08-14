@@ -92,7 +92,11 @@ export default class SuitProductModel {
     @computed get totalShareMoney() {
         return this.suitProducts.reduce((pre, cur) => {
             const { skuList } = cur;
-            return add(pre, skuList[0].minPriceY || 0);
+            const skuMin = skuList.map((item) => {
+                return item.minPriceY || 0;
+            });
+            const skuMinShare = Math.min.apply(null, skuMin);
+            return add(pre, skuMinShare);
         }, 0);
     }
 

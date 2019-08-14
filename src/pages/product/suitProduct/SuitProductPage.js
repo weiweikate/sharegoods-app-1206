@@ -197,7 +197,7 @@ export default class SuitProductPage extends BasePage {
                                     priceType: [],
                                     priceStr: `￥${priceTotal}`,
                                     QRCodeStr: htmlUrl,
-                                    shareMoney: totalShareMoney,
+                                    shareMoney: totalShareMoney + '',
                                     spellPrice: ''
                                 }}
                                 webJson={{
