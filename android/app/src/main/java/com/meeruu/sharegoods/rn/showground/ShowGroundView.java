@@ -109,7 +109,7 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
         startScrollEvent = new onStartScrollEvent();
         onScrollYEvent = new onScrollYEvent();
         endScrollEvent = new onEndScrollEvent();
-        adapter = new ShowGroundAdapter();
+        adapter = new ShowGroundAdapter(40);
         adapter.setPreLoadNumber(3);
         adapter.setHasStableIds(true);
         layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
