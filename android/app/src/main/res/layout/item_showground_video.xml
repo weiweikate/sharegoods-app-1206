@@ -38,7 +38,6 @@
     <TextView android:layout_height="20dp"
         android:layout_width="wrap_content"
         android:id="@+id/tv_hotCount"
-        android:layout_marginLeft="5dp"
         android:textSize="11sp"
         android:layout_marginTop="12dp"
         android:textColor="#FF0050"
@@ -68,7 +67,7 @@
         android:layout_alignParentLeft="true"
         android:textColor="@color/textColor_secondTitle"
         android:textSize="13sp"
-        android:lines="2"
+        android:maxLines="2"
         android:ellipsize="end"
         />
 
@@ -77,12 +76,15 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/content"
         android:layout_marginTop="10dp"
-        android:layout_alignParentLeft="true"
-        android:foreground="@drawable/black_transparent">
+        android:layout_alignParentLeft="true">
         <com.facebook.drawee.view.SimpleDraweeView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:id="@+id/iv_cover"/>
+        <RelativeLayout android:background="@drawable/black_transparent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/foreground_view"/>
         <ImageView android:layout_width="53dp"
             android:layout_height="53dp"
             android:layout_gravity="center"

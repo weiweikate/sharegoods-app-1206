@@ -4,6 +4,7 @@ import BasePage from '../../../BasePage';
 import { SubProductView } from './components/SuitProductItemView';
 import SuitProductModel from './SuitProductModel';
 import { observer } from 'mobx-react';
+import { autorun } from 'mobx';
 import SuitProductBottomView from './components/SuitProductBottomView';
 import RouterMap from '../../../navigation/RouterMap';
 import user from '../../../model/user';
@@ -19,11 +20,14 @@ import apiEnvironment from '../../../api/ApiEnvironment';
 import { trackEvent } from '../../../utils/SensorsTrack';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import SelectionPage from '../SelectionPage';
+import { ProductDetailSuitModel } from '../components/ProductDetailSuitView';
+import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 
 const { share } = res.pDetailNav;
 
 @observer
 export default class SuitProductPage extends BasePage {
+    productDetailSuitModel = new ProductDetailSuitModel();
     suitProductModel = new SuitProductModel();
 
     $navigationBarOptions = {
@@ -43,20 +47,51 @@ export default class SuitProductPage extends BasePage {
         }
         return null;
     };
-
-    constructor(props) {
-        super(props);
-        const { productDetailSuitModel, packageIndex } = this.params;
-        this.suitProductModel.setProductArr(productDetailSuitModel, packageIndex);
-    }
+    $getPageStateOptions = () => {
+        const { loadingState, netFailedInfo } = this.suitProductModel;
+        return {
+            loadingState: loadingState,
+            netFailedProps: {
+                buttonText: '重新加载',
+                netFailedInfo: netFailedInfo,
+                reloadBtnClick: this.requestData
+            }
+        };
+    };
 
     componentDidMount() {
+        this.willFocusSubscription = this.props.navigation.addListener(
+            'didFocus',
+            payload => {
+                const { state } = payload;
+                console.log('didFocus', state);
+                this.requestData();
+            }
+        );
+    }
+
+    componentWillUnmount() {
+        this.willFocusSubscription && this.willFocusSubscription.remove();
+    }
+
+    requestData = () => {
+        const { packageIndex, productCode } = this.params;
+        this.productDetailSuitModel.request_promotion_detail(productCode).then(() => {
+            this.suitProductModel.setProductArr(this.productDetailSuitModel, packageIndex);
+            this.suitProductModel.loadingState = PageLoadingState.success;
+        }).catch((e) => {
+            this.suitProductModel.loadingState = PageLoadingState.fail;
+            this.suitProductModel.netFailedInfo = e;
+        });
+    };
+
+    setNav = autorun(() => {
         const { packageItem, isSuitFixed } = this.suitProductModel;
         const { content } = packageItem;
         if (isSuitFixed && StringUtils.isNoEmpty(content)) {
             this.$NavigationBarResetTitle(content);
         }
-    }
+    });
 
     _bottomAction = () => {
         if (!user.isLogin) {
@@ -120,11 +155,11 @@ export default class SuitProductPage extends BasePage {
     };
 
     _render() {
-        const { mainProduct } = this.params.productDetailSuitModel;
-        const { prodCode } = mainProduct;
+        const { packageIndex, productCode } = this.params;
         const { suitProducts, packageItem, afterSaleLimitText, priceRetailTotal, priceTotal } = this.suitProductModel;
         const totalProduct = suitProducts || [];
         const { image, afterSaleTip, shareContent } = packageItem;
+        const htmlUrl = `${apiEnvironment.getCurrentH5Url()}/package-product?spucode=${productCode}&upuserid=${user.code || ''}&index=${packageIndex}`;
         return (
             <View style={styles.container}>
                 <ScrollView>
@@ -153,7 +188,7 @@ export default class SuitProductPage extends BasePage {
 
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 trackParmas={{
-                                    spuCode: prodCode,
+                                    spuCode: productCode,
                                     spuName: shareContent
                                 }}
                                 trackEvent={trackEvent.Share}
@@ -165,14 +200,14 @@ export default class SuitProductPage extends BasePage {
                                     retailPrice: `套餐价：￥${priceRetailTotal}`,
                                     priceType: [],
                                     priceStr: `￥${priceTotal}`,
-                                    QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`,
+                                    QRCodeStr: htmlUrl,
                                     shareMoney: '',
                                     spellPrice: ''
                                 }}
                                 webJson={{
                                     title: shareContent,
                                     dec: '套餐',
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`,
+                                    linkUrl: htmlUrl,
                                     thumImage: image
                                 }}/>
                 <SelectionPage ref={(ref) => this.SelectionPage = ref}/>

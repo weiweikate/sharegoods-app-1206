@@ -53,25 +53,28 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
         }
         final SimpleDraweeView imageView = helper.getView(R.id.showground_item_image);
         final ImageView playIcon = helper.getView(R.id.icon_play);
-        final FrameLayout content = helper.getView(R.id.cover_wrapper);
+        RelativeLayout foreground = helper.getView(R.id.foreground_view);
+
         double width = 1;
         double height = 1;
         String imgUrl = null;
-        Drawable drawable = mContext.getResources().getDrawable(R.drawable.black_transparent);
+
         if (item.getResource() != null) {
             if (item.getShowType() == 3) {
                 imgUrl = item.getVideoCover();
                 width = item.getCoverWidth();
                 height = item.getCoverHeight();
+
                 playIcon.setVisibility(View.VISIBLE);
-                content.setForeground(drawable);
+                foreground.setVisibility(View.VISIBLE);
+
             } else {
                 NewestShowGroundBean.DataBean.ResourceBean resourceBean = item.getResource().get(0);
                 imgUrl = resourceBean.getBaseUrl();
                 width = (float) resourceBean.getWidth();
                 height = (float) resourceBean.getHeight();
                 playIcon.setVisibility(View.GONE);
-                content.setForeground(null);
+                foreground.setVisibility(View.GONE);
             }
         }
 
@@ -98,6 +101,9 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
             params.height = realHeight;
             imageView.setLayoutParams(params);
             ImageLoadUtils.loadRoundNetImage(imgUrl, imageView, realWidth, realHeight, arr_raduis, false);
+            if(item.getShowType() == 3){
+                foreground.setLayoutParams(params);
+            }
         }
         TextView name = helper.getView(R.id.showground_item_name);
         name.setText(item.getUserInfoVO().getUserName());

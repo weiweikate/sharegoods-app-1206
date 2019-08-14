@@ -1,6 +1,7 @@
 package com.meeruu.sharegoods.rn.showground.widgets.usercenter;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;

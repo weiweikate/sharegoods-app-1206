@@ -31,8 +31,14 @@ const SuitFixedView = ({ mainProduct, subProducts, itemIndex, pushCallback }) =>
     const productList = [mainProduct, ...(subProducts || [])];
     let suitPrice = 0, dePrice = 0;
     productList.forEach((item) => {
-        const { skuList, minPrice } = item;
+        const { skuList } = item;
+
+        const suiPriceArr = skuList.map((item) => {
+            return item.promotionPrice;
+        });
+        const minPrice = Math.min.apply(null, suiPriceArr);
         suitPrice = add(suitPrice, minPrice);
+
         const priceArr = skuList.map((item) => {
             return item.promotionDecreaseAmount;
         });
@@ -89,7 +95,7 @@ export class ProductDetailSuitFixedView extends Component {
             return;
         }
         const { productDetailSuitModel } = this.props;
-        routePush(RouterMap.SuitProductPage, { productDetailSuitModel, packageIndex });
+        routePush(RouterMap.SuitProductPage, { productCode: productDetailSuitModel.productCode, packageIndex });
     };
 
     render() {
@@ -138,11 +144,15 @@ const SuitFixedStyles = StyleSheet.create({
 
 /**搭配套餐**/
 
-const SuitItemView = ({ imgUrl, name, promotionDecreaseAmount, price, pushCallback }) => {
+const SuitItemView = ({ imgUrl, name, promotionDecreaseAmount, price, pushCallback, totalStock }) => {
     return (
         <View style={suitItemStyle.item}>
             <NoMoreClick onPress={pushCallback}>
                 <UIImage style={suitItemStyle.itemImg} source={{ uri: imgUrl }}>
+                    {
+                        totalStock < 1 &&
+                        <Image source={suitSaleOut} style={{ height: px2dp(60), width: px2dp(60) }}/>
+                    }
                     <View style={suitItemStyle.subView}>
                         <MRText style={suitItemStyle.subText}>{promotionDecreaseAmount}</MRText>
                     </View>
@@ -160,14 +170,14 @@ const suitItemStyle = StyleSheet.create({
         width: px2dp(100) + 5
     },
     itemImg: {
-        overflow: 'hidden',
+        overflow: 'hidden', justifyContent: 'center', alignItems: 'center',
         width: px2dp(100), height: px2dp(100), borderRadius: 5
     },
     subView: {
-        position: 'absolute', bottom: 5, left: 5, backgroundColor: DesignRule.mainColor, borderRadius: 1
+        position: 'absolute', bottom: 0, right: 3, backgroundColor: DesignRule.mainColor, borderRadius: 3
     },
     subText: {
-        color: DesignRule.white, fontSize: 10, padding: 2
+        color: DesignRule.white, fontSize: 10, paddingHorizontal: 4, paddingVertical: 2
     },
     itemText: {
         color: DesignRule.textColor_secondTitle, fontSize: 12
@@ -179,17 +189,24 @@ const suitItemStyle = StyleSheet.create({
 
 export class ProductDetailSuitChooseView extends Component {
     _renderItem = ({ item, index }) => {
-        const { imgUrl, name, minPrice, skuList } = item;
+        const { imgUrl, name, skuList, totalStock } = item;
+
+        const suiPriceArr = skuList.map((item) => {
+            return item.promotionPrice;
+        });
+        const minPrice = Math.min.apply(null, suiPriceArr);
+
         let decreaseList = (skuList || []).map((sku) => {
             return sku.promotionDecreaseAmount;
         });
-        let minDecrease = decreaseList.length === 0 ? 0 : Math.min.apply(null, decreaseList);
+        let maxDecrease = decreaseList.length === 0 ? 0 : Math.max.apply(null, decreaseList);
 
         const props = {
+            totalStock,
             imgUrl: imgUrl,
             name,
-            promotionDecreaseAmount: `立省${minDecrease}起`,
-            price: `¥${minPrice || ''}起`,
+            promotionDecreaseAmount: `至多省${maxDecrease}`,
+            price: `¥${minPrice || ''}`,
             pushCallback: this._goSuitPage.bind(this, index)
         };
         return <SuitItemView {...props}/>;
@@ -201,7 +218,7 @@ export class ProductDetailSuitChooseView extends Component {
             return;
         }
         const { productDetailSuitModel } = this.props;
-        routePush(RouterMap.SuitProductPage, { productDetailSuitModel, packageIndex });
+        routePush(RouterMap.SuitProductPage, { productCode: productDetailSuitModel.productCode, packageIndex });
     };
 
     render() {
@@ -243,6 +260,7 @@ const SuitChooseStyles = StyleSheet.create({
 
 
 export class ProductDetailSuitModel {
+    @observable productCode;
     @observable activityCode;
     @observable extraType;
     @observable mainProduct = {};
@@ -260,15 +278,17 @@ export class ProductDetailSuitModel {
     @observable packages = [];
 
     request_promotion_detail = (productCode) => {
-        ProductApi.promotion_detail({ productCode }).then((data) => {
+        return ProductApi.promotion_detail({ productCode }).then((data) => {
             const dataDic = data.data || {};
             const { activityCode, extraType, mainProduct, packages } = dataDic;
+            this.productCode = productCode;
             this.activityCode = activityCode;
             this.extraType = extraType;
             this.mainProduct = mainProduct || {};
             this.packages = packages || [];
+            return Promise.resolve();
         }).catch(e => {
-
+            return Promise.reject(e);
         });
     };
 }

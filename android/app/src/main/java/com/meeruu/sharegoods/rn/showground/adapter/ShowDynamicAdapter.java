@@ -38,6 +38,9 @@ public class ShowDynamicAdapter extends BaseQuickAdapter<NewestShowGroundBean.Da
     @Override
     protected void convert(BaseViewHolder helper, NewestShowGroundBean.DataBean item) {
         final SimpleDraweeView imageView = helper.getView(R.id.dynamic_item_image);
+        RelativeLayout foreground = helper.getView(R.id.foreground_view);
+        FrameLayout bottomWrapper = helper.getView(R.id.bottom_wrapper);
+
         double width = 1;
         double height = 1;
         String imgUrl = null;
@@ -78,11 +81,11 @@ public class ShowDynamicAdapter extends BaseQuickAdapter<NewestShowGroundBean.Da
             params.height = realHeight;
             params.width = realWidth;
             imageView.setLayoutParams(params);
+            foreground.setLayoutParams(params);
             ImageLoadUtils.loadRoundNetImage(imgUrl, imageView, realWidth, realHeight, arr_raduis,false);
         }
 
         ImageView shadow = helper.getView(R.id.iv_shadow);
-        FrameLayout root = helper.getView(R.id.root_view);
         if (item.getStatus() == 3) {
             int length = minHeight - 30;
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) shadow.getLayoutParams();
@@ -90,10 +93,13 @@ public class ShowDynamicAdapter extends BaseQuickAdapter<NewestShowGroundBean.Da
             params.height = length;
             shadow.setLayoutParams(params);
             shadow.setVisibility(View.VISIBLE);
-            root.setForeground(root.getContext().getResources().getDrawable(R.drawable.white_shadow));
+            foreground.setVisibility(View.VISIBLE);
+            bottomWrapper.setForeground(bottomWrapper.getContext().getResources().getDrawable(R.drawable.white_shadow));
+
         } else {
             shadow.setVisibility(View.GONE);
-            root.setForeground(null);
+            foreground.setVisibility(View.GONE);
+            bottomWrapper.setForeground(null);
         }
 
         TextView desc = helper.getView(R.id.tv_desc);
@@ -113,6 +119,9 @@ public class ShowDynamicAdapter extends BaseQuickAdapter<NewestShowGroundBean.Da
             desc.setTextColor(desc.getContext().getResources().getColor(R.color.status_blue));
         } else if (item.getStatus() == CommValue.DELETED) {
             desc.setText("已删除");
+            desc.setTextColor(desc.getContext().getResources().getColor(R.color.status_gray));
+        }else if (item.getStatus() == CommValue.TRANSCODFAILED) {
+            desc.setText("发布失败");
             desc.setTextColor(desc.getContext().getResources().getColor(R.color.status_gray));
         }
 

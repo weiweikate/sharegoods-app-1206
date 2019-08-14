@@ -202,10 +202,11 @@ export default class ShowListPage extends BasePage {
     };
 
 
-    _setDetail = (detail) => {
+    _setDetail = (detail,showText) => {
         this.setState({ detail: null }, () => {
             this.setState({
-                detail
+                detail,
+                showText
             }, () => {
                 this.shareModal && this.shareModal.open();
             });
@@ -328,8 +329,8 @@ export default class ShowListPage extends BasePage {
                                      hasBanner={false}
                                      navigate={this.$navigate}
                                      pageFocus={this.state.pageFocused}
-                                     onShare={(item) => {
-                                         this._setDetail(item.detail);
+                                     onShare={(item,showText) => {
+                                         this._setDetail(item.detail,showText);
                                      }}/>
                             :
                             null
@@ -347,8 +348,8 @@ export default class ShowListPage extends BasePage {
                                      uri={'/social/show/content/page/query@GET'}
                                      navigate={this.$navigate}
                                      pageFocus={this.state.pageFocused}
-                                     onShare={(item) => {
-                                         this._setDetail(item.detail);
+                                     onShare={(item,showText) => {
+                                         this._setDetail(item.detail,showText);
                                      }}/>
                             :
                             null
@@ -363,8 +364,8 @@ export default class ShowListPage extends BasePage {
                                     this.materialList = ref;
                                 }}
                                 navigate={this.$navigate}
-                                onShare={(item) => {
-                                    this._setDetail(item.detail);
+                                onShare={(item,showText) => {
+                                    this._setDetail(item.detail,showText);
                                 }}/>
                             :
                             null
@@ -425,7 +426,7 @@ export default class ShowListPage extends BasePage {
             <IntervalMsgView pageType={IntervalType.xiuChang}/>
             {detail ?
                 <CommShowShareModal ref={(ref) => this.shareModal = ref}
-                                type={ShareUtil.showSharedetailDataType(detail && detail.showType)}
+                                type={ShareUtil.showSharedetailDataType(detail && detail.showType,this.state.showText)}
                                 trackEvent={trackEvent.XiuChangShareClick}
                                 trackParmas={{
                                     articleCode: detail.code,

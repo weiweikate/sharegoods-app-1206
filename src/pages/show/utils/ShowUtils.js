@@ -30,8 +30,15 @@ function getUrlVars(url) {
 
 function getCover(detail) {
     if(detail){
+        //判断是否有转发图
+        let resource = detail.resource || [];
+        for(let i = 0;i<resource.length;i++){
+            if(resource[i].type === 6){
+                return resource[i].baseUrl;
+            }
+        }
+        //判断是否是视频类型
         if(detail.showType === 3){
-            let resource = detail.resource || [];
             for(let i = 0;i<resource.length;i++){
                 if(resource[i].type === 5){
                     return resource[i].baseUrl;

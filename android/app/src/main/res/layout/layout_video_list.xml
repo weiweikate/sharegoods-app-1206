@@ -17,11 +17,7 @@
         android:layout_height="100dp"
         android:background="@drawable/black_transparent_gradient" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="165dp"
-        android:layout_gravity="bottom"
-        android:background="@drawable/transparent_black_gradient" />
+
 
     <RelativeLayout
         android:layout_width="match_parent"

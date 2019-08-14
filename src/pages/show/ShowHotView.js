@@ -264,8 +264,7 @@ export default class ShowHotView extends React.Component {
                                                    type: 4
                                                });
                                                this.RecommendShowList && this.RecommendShowList.replaceItemData(nativeEvent.index, JSON.stringify(detail));
-                                               this.shareModal && this.shareModal.open();
-                                               this.props.onShare(nativeEvent);
+                                               this.props.onShare(nativeEvent,true);
 
                                                const { showNo , userInfoVO } = detail;
                                                const { userNo } = userInfoVO || {};
@@ -280,8 +279,7 @@ export default class ShowHotView extends React.Component {
                                        }}
 
                                        onSharePress={({ nativeEvent }) => {
-                                           this.shareModal && this.shareModal.open();
-                                           this.props.onShare(nativeEvent);
+                                           this.props.onShare(nativeEvent,false);
                                        }}
 
                                        onScrollY={({ nativeEvent }) => {

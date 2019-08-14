@@ -1,6 +1,7 @@
 import { observable, computed, action } from 'mobx';
 import StringUtils from '../../../utils/StringUtils';
 import { suitType } from '../components/ProductDetailSuitView';
+import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 
 const { add, mul } = StringUtils;
 
@@ -12,6 +13,8 @@ const afterSaleLimitType = {
 };
 
 export default class SuitProductModel {
+    @observable loadingState = PageLoadingState.loading;
+    @observable netFailedInfo = {};
     /*套餐类型*/
     @observable extraType;
     @observable activityCode;
@@ -80,8 +83,8 @@ export default class SuitProductModel {
 
     @computed get priceTotal() {
         return this.suitProducts.reduce((pre, cur) => {
-            const { minPrice } = cur;
-            return add(pre, minPrice);
+            const { originalPrice } = cur;
+            return add(pre, originalPrice);
         }, 0);
     }
 
