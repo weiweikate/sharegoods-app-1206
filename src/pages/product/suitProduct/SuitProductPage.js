@@ -152,7 +152,7 @@ export default class SuitProductPage extends BasePage {
 
     _render() {
         const { packageIndex, productCode } = this.params;
-        const { suitProducts, packageItem, afterSaleLimitText, priceRetailTotal, priceTotal } = this.suitProductModel;
+        const { suitProducts, packageItem, afterSaleLimitText, priceRetailTotal, priceTotal, totalShareMoney } = this.suitProductModel;
         const totalProduct = suitProducts || [];
         const { image, afterSaleTip, shareContent } = packageItem;
         const htmlUrl = `${apiEnvironment.getCurrentH5Url()}/package-product?spucode=${productCode}&upuserid=${user.code || ''}&index=${packageIndex}`;
@@ -197,7 +197,7 @@ export default class SuitProductPage extends BasePage {
                                     priceType: [],
                                     priceStr: `￥${priceTotal}`,
                                     QRCodeStr: htmlUrl,
-                                    shareMoney: '',
+                                    shareMoney: totalShareMoney,
                                     spellPrice: ''
                                 }}
                                 webJson={{

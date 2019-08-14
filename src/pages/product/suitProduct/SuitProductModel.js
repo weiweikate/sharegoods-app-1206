@@ -89,6 +89,13 @@ export default class SuitProductModel {
         }, 0);
     }
 
+    @computed get totalShareMoney() {
+        return this.suitProducts.reduce((pre, cur) => {
+            const { skuList } = cur;
+            return add(pre, skuList[0].minPriceY || 0);
+        }, 0);
+    }
+
     //是否能增加
     @computed get canAddAmount() {
         const { singlePurchaseNumber } = this.packageItem;
