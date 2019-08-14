@@ -296,7 +296,7 @@ export default class IDVertify2Page extends BasePage {
                     userName: this.state.name,
                     cardNum: this.state.idNumber,
                     oldPwd: '',
-                    tips: '重新设置新的交易密码',
+                    tips: '设置新的交易密码',
                     title: '重置交易密码',
                     from: 'edit'
                 });
