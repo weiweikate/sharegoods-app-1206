@@ -109,6 +109,9 @@ export default class LoginPage extends BasePage {
             if (error.code === '555') {
                 closeAuth();
             } else {
+                // 手机号登录
+                replaceRoute(RouterMap.PhoneLoginPage, { ...this.params, needBottom: true });
+                loginModel.setAuthPhone(null);
                 this.$toastShow(error.message);
             }
         });
