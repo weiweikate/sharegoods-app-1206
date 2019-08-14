@@ -206,7 +206,7 @@ export class ProductDetailSuitChooseView extends Component {
             imgUrl: imgUrl,
             name,
             promotionDecreaseAmount: `至多省${maxDecrease}`,
-            price: `¥${minPrice || ''}起`,
+            price: `¥${minPrice || ''}`,
             pushCallback: this._goSuitPage.bind(this, index)
         };
         return <SuitItemView {...props}/>;

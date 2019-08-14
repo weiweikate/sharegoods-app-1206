@@ -186,7 +186,7 @@
   .heightIs(34);
 
     //内容
-  self.contentLab.sd_layout.topSpaceToView(self.headView, 8)
+  self.contentLab.sd_layout.topSpaceToView(self.headView, 0)
   .leftSpaceToView(bgView, 15)
   .rightSpaceToView(bgView, 15)
   .autoHeightRatio(0);
@@ -199,7 +199,7 @@
 
   //九宫格图片
   self.bodyView.sd_layout
-  .topSpaceToView(self.foldLabel, 5)
+  .topSpaceToView(self.contentLab, 0)
   .leftSpaceToView(bgView, 15);
 
     //
@@ -237,6 +237,14 @@
   }
 
     self.contentLab.text = model.content;
+    if(model.content.length>0){
+      self.contentLab.sd_layout.topSpaceToView(self.headView, 3);
+      self.bodyView.sd_layout.topSpaceToView(self.contentLab, 6);
+
+    }else{
+      self.contentLab.sd_layout.topSpaceToView(self.headView, 0);
+      self.bodyView.sd_layout.topSpaceToView(self.contentLab, 3);
+    }
 
     self.footerView.products = model.products;
     self.footerView.downloadCount = model.downloadCount;
