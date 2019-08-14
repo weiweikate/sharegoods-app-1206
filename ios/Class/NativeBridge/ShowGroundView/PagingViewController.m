@@ -146,6 +146,7 @@ static const NSString * USERTYPE_others = @"others";
       view.sd_layout
       .spaceToSuperView(UIEdgeInsetsMake(0, 0, 44, 0));
       UIView *view2 = [UIView new];
+      view2.backgroundColor = [UIColor colorWithHexString:@"F5F5F5"];
       [bgView addSubview:view2];
       view2.sd_layout
       .bottomSpaceToView(bgView, 0)
