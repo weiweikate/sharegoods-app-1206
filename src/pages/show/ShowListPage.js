@@ -26,7 +26,7 @@ import ShowActivityViewIOS from './ShowActivityView';
 import user from '../../model/user';
 import res from '../mine/res';
 import EmptyUtils from '../../utils/EmptyUtils';
-import ShareUtil from '../../utils/ShareUtil'
+import ShareUtil from '../../utils/ShareUtil';
 import MessageApi from '../message/api/MessageApi';
 import ShowFoundView from './ShowFoundView';
 import ShowMaterialView from './ShowMaterialView';
@@ -202,7 +202,7 @@ export default class ShowListPage extends BasePage {
     };
 
 
-    _setDetail = (detail,showText) => {
+    _setDetail = (detail, showText) => {
         this.setState({ detail: null }, () => {
             this.setState({
                 detail,
@@ -231,8 +231,9 @@ export default class ShowListPage extends BasePage {
         }
         let icon = (user.headImg && user.headImg.length > 0) ?
             <AvatarImage source={{ uri: user.headImg }} style={styles.userIcon}
-                         borderRadius={px2dp(15)}/> : <Image source={res.placeholder.avatar_default} style={styles.userIcon}
-                                                             borderRadius={px2dp(15)}/>;
+                         borderRadius={px2dp(15)}/> :
+            <Image source={res.placeholder.avatar_default} style={styles.userIcon}
+                   borderRadius={px2dp(15)}/>;
 
         let message = (
             <View>
@@ -258,7 +259,7 @@ export default class ShowListPage extends BasePage {
                     left
                         ?
                         <TouchableOpacity style={styles.backImg} onPress={() => this._onLeftPressed()}>
-                            <Image source={icon_header_back} />
+                            <Image source={icon_header_back}/>
                         </TouchableOpacity>
                         :
                         null
@@ -324,14 +325,14 @@ export default class ShowListPage extends BasePage {
                             <AttentionView ref={(ref) => {
                                 this.attention = ref;
                             }}
-                                     type={'attention'}
-                                     uri={'/social/show/content/page/query/attention@GET'}
-                                     hasBanner={false}
-                                     navigate={this.$navigate}
-                                     pageFocus={this.state.pageFocused}
-                                     onShare={(item,showText) => {
-                                         this._setDetail(item.detail,showText);
-                                     }}/>
+                                           type={'attention'}
+                                           uri={'/social/show/content/page/query/attention@GET'}
+                                           hasBanner={false}
+                                           navigate={this.$navigate}
+                                           pageFocus={this.state.pageFocused}
+                                           onShare={(item, showText) => {
+                                               this._setDetail(item.detail, showText);
+                                           }}/>
                             :
                             null
                     }
@@ -348,8 +349,8 @@ export default class ShowListPage extends BasePage {
                                      uri={'/social/show/content/page/query@GET'}
                                      navigate={this.$navigate}
                                      pageFocus={this.state.pageFocused}
-                                     onShare={(item,showText) => {
-                                         this._setDetail(item.detail,showText);
+                                     onShare={(item, showText) => {
+                                         this._setDetail(item.detail, showText);
                                      }}/>
                             :
                             null
@@ -364,8 +365,8 @@ export default class ShowListPage extends BasePage {
                                     this.materialList = ref;
                                 }}
                                 navigate={this.$navigate}
-                                onShare={(item,showText) => {
-                                    this._setDetail(item.detail,showText);
+                                onShare={(item, showText) => {
+                                    this._setDetail(item.detail, showText);
                                 }}/>
                             :
                             null
@@ -401,7 +402,7 @@ export default class ShowListPage extends BasePage {
                                                        if (data.showType === 1) {
                                                            navigate(RouterMap.ShowDetailPage, params);
                                                        } else if (data.showType === 3) {
-                                                           navigate(RouterMap.ShowVideoPage, {code:data.showNo});
+                                                           navigate(RouterMap.ShowVideoPage, { code: data.showNo });
                                                        } else if (data.showType === 4) {
                                                            navigate(RouterMap.TagDetailPage, {
                                                                tagId: data.tagId,
@@ -426,34 +427,35 @@ export default class ShowListPage extends BasePage {
             <IntervalMsgView pageType={IntervalType.xiuChang}/>
             {detail ?
                 <CommShowShareModal ref={(ref) => this.shareModal = ref}
-                                type={ShareUtil.showSharedetailDataType(detail && detail.showType,this.state.showText)}
-                                trackEvent={trackEvent.XiuChangShareClick}
-                                trackParmas={{
-                                    articleCode: detail.code,
-                                    author: (detail.userInfoVO || {}).userNo,
-                                    xiuChangBtnLocation: '1',
-                                    xiuChangListType: ShowListIndexModel.pageIndex + 1
-                                }}
-                                imageJson={{
-                                    imageType: 'show',
-                                    imageUrlStr: ShowUtils.getCover(detail),
-                                    titleStr: detail.showType === 1 ? detail.content : detail.title,
-                                    QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
-                                    headerImage: (detail.userInfoVO && detail.userInfoVO.userImg) ? detail.userInfoVO.userImg : null,
-                                    userName: (detail.userInfoVO && detail.userInfoVO.userName) ? detail.userInfoVO.userName : '',
-                                    dec: '好物不独享，内有惊喜福利~'
-                                }}
-                                taskShareParams={{
-                                    uri: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
-                                    code: detail.showType === 1 ? 22 : 25,
-                                    data: detail.showNo
-                                }}
-                                webJson={{
-                                    title: detail.title || '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
-                                    thumImage: ShowUtils.getCover(detail),//(分享图标小图(https链接)图文分享使用)
-                                    dec: '好物不独享，内有惊喜福利~'
-                                }}
+                                    shareName={detail && detail.userInfoVO && detail.userInfoVO.userName}
+                                    type={ShareUtil.showSharedetailDataType(detail && detail.showType, this.state.showText)}
+                                    trackEvent={trackEvent.XiuChangShareClick}
+                                    trackParmas={{
+                                        articleCode: detail.code,
+                                        author: (detail.userInfoVO || {}).userNo,
+                                        xiuChangBtnLocation: '1',
+                                        xiuChangListType: ShowListIndexModel.pageIndex + 1
+                                    }}
+                                    imageJson={{
+                                        imageType: 'show',
+                                        imageUrlStr: ShowUtils.getCover(detail),
+                                        titleStr: detail.showType === 1 ? detail.content : detail.title,
+                                        QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
+                                        headerImage: (detail.userInfoVO && detail.userInfoVO.userImg) ? detail.userInfoVO.userImg : null,
+                                        userName: (detail.userInfoVO && detail.userInfoVO.userName) ? detail.userInfoVO.userName : '',
+                                        dec: '好物不独享，内有惊喜福利~'
+                                    }}
+                                    taskShareParams={{
+                                        uri: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
+                                        code: detail.showType === 1 ? 22 : 25,
+                                        data: detail.showNo
+                                    }}
+                                    webJson={{
+                                        title: detail.title || '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
+                                        linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
+                                        thumImage: ShowUtils.getCover(detail),//(分享图标小图(https链接)图文分享使用)
+                                        dec: '好物不独享，内有惊喜福利~'
+                                    }}
                 /> : null}
 
         </View>;
