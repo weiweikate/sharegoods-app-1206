@@ -159,14 +159,12 @@ public class VideoListView {
                 100 * 1024 * 1024);
         factory = new ExtractorMediaSource.Factory(cacheDataSourceFactory);
         videoView = mPlayerViewContainer.findViewById(R.id.video_view);
-//        videoView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH);
         videoView.setUseController(false);
         TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(new DefaultBandwidthMeter());
         MappingTrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
         DefaultAllocator allocator = new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE);
         DefaultLoadControl defaultLoadControl = new DefaultLoadControl(allocator, minBufferMs, maxBufferMs, bufferForPlaybackMs, bufferForPlaybackAfterRebufferMs, -1, true);
         exoPlayer = ExoPlayerFactory.newSimpleInstance(mContext, new DefaultRenderersFactory(mContext), trackSelector, defaultLoadControl);
-//        ((SimpleExoPlayer) exoPlayer).setVideoScalingMode(C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING);
         exoPlayer.setRepeatMode(Player.REPEAT_MODE_ONE);
         exoPlayer.addListener(new Player.EventListener() {
 
@@ -656,26 +654,25 @@ public class VideoListView {
                 NewestShowGroundBean.DataBean.ResourceBean resourceBean = resource.get(j);
                 if (resourceBean.getType() == 4) {
                     videoUrl = resourceBean.getBaseUrl();
-                    double width = resourceBean.getWidth();
-                    double height = resourceBean.getHeight();
-                    if (width == 0 || height == 0) {
-                        FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) videoView.getLayoutParams();
-                        layoutParams.width = FrameLayout.LayoutParams.MATCH_PARENT;
-                        layoutParams.height = FrameLayout.LayoutParams.MATCH_PARENT;
-                        videoView.setLayoutParams(layoutParams);
-                    } else {
-                        FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) videoView.getLayoutParams();
-                        layoutParams.width = ScreenUtils.getScreenWidth();
-                        layoutParams.height = new Double((height / width) * ScreenUtils.getScreenWidth()).intValue();
-                        videoView.setLayoutParams(layoutParams);
+                    if (!TextUtils.equals(videoUrl, (CharSequence) videoView.getTag(R.id.mr_video + position))) {
+                        videoView.setTag(R.id.mr_video + position, videoUrl);
+                        double width = resourceBean.getWidth();
+                        double height = resourceBean.getHeight();
+                        if (width == 0) {
+                            FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
+                                    FrameLayout.LayoutParams.MATCH_PARENT);
+                            videoView.getVideoSurfaceView().setLayoutParams(layoutParams);
+                        } else {
+                            FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ScreenUtils.getScreenWidth(),
+                                    Double.valueOf((height / width) * ScreenUtils.getScreenWidth()).intValue());
+                            videoView.getVideoSurfaceView().setLayoutParams(layoutParams);
+                        }
                     }
-
                     break;
                 }
             }
         }
         exoPlayer.prepare(buildSource(videoUrl));
-
     }
 
     private MediaSource buildSource(String url) {

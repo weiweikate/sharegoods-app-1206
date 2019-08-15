@@ -14,7 +14,7 @@
 
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
-import { View, Image, RefreshControl, Text } from 'react-native';
+import { Image, RefreshControl, Text, View } from 'react-native';
 import DesignRule from '../../../constants/DesignRule';
 import PropTypes from 'prop-types';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -22,7 +22,7 @@ import { EmptyViewTypes, shopCartEmptyModel } from '../model/ShopCartEmptyModel'
 import { MRText } from '../../../components/ui';
 import ShopCartEmptyCell from './ShopCartEmptyCell';
 import res from '../res';
-import { RecyclerListView, LayoutProvider, DataProvider } from 'recyclerlistview';
+import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
 import { homeModule } from '../../home/model/Modules';
 import RouterMap from '../../../navigation/RouterMap';
 import { TrackApi } from '../../../utils/SensorsTrack';
