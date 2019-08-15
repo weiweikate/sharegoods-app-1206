@@ -55,17 +55,22 @@ export default class ShowVideoPage extends BasePage {
 
     }
 
+
     _renderNormalTitle() {
         return (
             <View style={styles.navTitle}>
                 <TouchableOpacity style={styles.backView} onPress={() => routePop()}>
-                    <Image source={res.back}/>
+                    <Image source={res.button.icon_header_back}/>
                 </TouchableOpacity>
             </View>
         );
     }
 
     componentDidMount() {
+        this.getData();
+    }
+
+    getData=()=>{
         ShowApi.showDetail({ showNo: this.params.code }).then((data) => {
             this.data = data.data || {};
             if(this.params.isPersonal){
@@ -88,6 +93,7 @@ export default class ShowVideoPage extends BasePage {
             });
         });
     }
+
 
 
     addCart = (detail) => {
@@ -128,7 +134,7 @@ export default class ShowVideoPage extends BasePage {
         const { pageState } = this.state;
         if (pageState === PageLoadingState.fail) {
             return <View style={styles.container}>
-                <NetFailedView netFailedInfo={{ msg: this.state.errorMsg }}/>
+                <NetFailedView reloadBtnClick={this.getData} netFailedInfo={{ msg: this.state.errorMsg }}/>
                 {this._renderNormalTitle()}
             </View>;
         }
@@ -323,7 +329,7 @@ var styles = StyleSheet.create({
         top: ScreenUtils.statusBarHeight,
         position: 'absolute',
         left: 0,
-        backgroundColor: DesignRule.white
+        backgroundColor:DesignRule.white
     },
     container: {
         flex: 1,
