@@ -264,6 +264,7 @@ export default class ShowVideoPage extends BasePage {
                                        params={this.data}/>
                     {detail ?
                         <CommShowShareModal ref={(ref) => this.shareModal = ref}
+                                            shareName={detail && detail.userInfoVO && detail.userInfoVO.userName}
                                             type={ShareUtil.showSharedetailDataType(detail && detail.showType,this.state.showText)}
                                             trackEvent={trackEvent.XiuChangShareClick}
                                             trackParmas={{
