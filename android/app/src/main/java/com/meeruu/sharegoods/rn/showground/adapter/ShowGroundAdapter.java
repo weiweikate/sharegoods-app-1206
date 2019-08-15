@@ -32,9 +32,9 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
     private final int radius = DensityUtils.dip2px(5);
     private float[] arr_raduis = {radius, radius, radius, radius, 0, 0, 0, 0};
 
-    public ShowGroundAdapter() {
+    public ShowGroundAdapter(int paddingH) {
         super(R.layout.item_showground);
-        realWidth = (ScreenUtils.getScreenWidth() - DensityUtils.dip2px(40)) / 2;
+        realWidth = (ScreenUtils.getScreenWidth() - DensityUtils.dip2px(paddingH)) / 2;
         minHeight = realWidth * 120 / 167;
         maxHeight = realWidth * 240 / 167;
     }

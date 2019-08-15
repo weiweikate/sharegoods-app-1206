@@ -223,7 +223,7 @@ export default class CommShowShareModal extends React.Component {
         }
 
         if(platformType === 4){
-            let name = user.nickname && user.nickname.length > 8 ? user.nickname.replace(/^(\d{3})\d*(\d{4})$/, '$1****$2') : user.nickname;
+            let name = this.props.shareName ? this.props.shareName : '';
             params.title = '';
             params.dec = `${name}的文章 ${params.title}(想看更多？下载：@秀购App：https://h5.sharegoodsmall.com/download )文章链接请点击：`;
         }

@@ -67,7 +67,7 @@
         android:layout_alignParentLeft="true"
         android:textColor="@color/textColor_secondTitle"
         android:textSize="13sp"
-        android:lines="2"
+        android:maxLines="2"
         android:ellipsize="end"
         />
 
@@ -109,7 +109,7 @@
         android:layout_marginTop="15dp"
         android:layout_alignParentLeft="true"
         android:padding="2dp"
-        android:src="@mipmap/icon_hand_gray" />
+        android:src="@drawable/icon_hand_gray" />
 
     <TextView
         android:id="@+id/like_num"
@@ -134,7 +134,7 @@
         android:paddingTop="4dp"
         android:paddingRight="2dp"
         android:paddingBottom="2dp"
-        android:src="@mipmap/icon_collection_gray" />
+        android:src="@drawable/icon_collection_gray" />
 
     <TextView
         android:id="@+id/collection_num"
@@ -158,7 +158,7 @@
         android:paddingTop="4dp"
         android:paddingRight="2dp"
         android:paddingBottom="2dp"
-        android:src="@mipmap/icon_download_gray" />
+        android:src="@drawable/icon_download_gray" />
 
     <TextView
         android:id="@+id/download_num"

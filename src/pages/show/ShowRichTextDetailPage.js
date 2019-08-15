@@ -259,7 +259,7 @@ export default class ShowRichTextDetailPage extends BasePage {
 
             <View style={styles.navTitle}>
                 <TouchableOpacity style={styles.backView} onPress={() => this._goBack()}>
-                    <Image source={res.button.back_black}  style={{width: 30, height: 30}}/>
+                    <Image source={res.button.back_black} style={{ width: 30, height: 30 }}/>
                 </TouchableOpacity>
                 <View style={styles.profileRow}>
                     <View style={styles.profileLeft}>
@@ -299,7 +299,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                             });
                         }
                     }}>
-                        <LinearGradient
+                        {detail.attentionStatus === 0 ? <LinearGradient
                             start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
                             colors={['#FFCB02', '#FF9502']}
                             style={{
@@ -308,12 +308,25 @@ export default class ShowRichTextDetailPage extends BasePage {
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 borderRadius: px2dp(14),
-                                marginRight: detail.status === 1 ? px2dp(20) : px2dp(15)
+                                marginRight: detail.status === 1 ? 0 : px2dp(15)
                             }}>
                             <Text style={{ color: DesignRule.white, fontSize: DesignRule.fontSize_threeTitle }}>
                                 {attentionText}
                             </Text>
-                        </LinearGradient>
+                        </LinearGradient> : <View style={{
+                            width: px2dp(65),
+                            height: px2dp(28),
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            borderRadius: px2dp(14),
+                            backgroundColor: '#FFF5CC',
+                            marginRight: detail.status === 1 ? 0 : px2dp(15)
+                        }}>
+                            <Text style={{ color: '#FF9502', fontSize: DesignRule.fontSize_threeTitle }}>
+                                {attentionText}
+                            </Text>
+                        </View>}
+
                     </TouchableWithoutFeedback> : null
                 }
                 {detail.status === 1 ? <TouchableOpacity style={styles.shareView} onPress={() => {
@@ -725,7 +738,12 @@ export default class ShowRichTextDetailPage extends BasePage {
                                     marginHorizontal: 15,
                                     marginTop: 5
                                 }}/>
-                                <View style={{ width: SkeletonWidth, height: 150, marginHorizontal: px2dp(15) ,marginTop:5}}/>
+                                <View style={{
+                                    width: SkeletonWidth,
+                                    height: 150,
+                                    marginHorizontal: px2dp(15),
+                                    marginTop: 5
+                                }}/>
                                 <View style={{ width: SkeletonWidth, height: 20, marginHorizontal: 15, marginTop: 5 }}/>
                                 <View style={{ width: SkeletonWidth, height: 20, marginHorizontal: 15, marginTop: 5 }}/>
                                 <View style={{ width: SkeletonWidth, height: 20, marginHorizontal: 15, marginTop: 5 }}/>
@@ -735,7 +753,12 @@ export default class ShowRichTextDetailPage extends BasePage {
                                     marginHorizontal: 15,
                                     marginTop: 5
                                 }}/>
-                                <View style={{ width: SkeletonWidth, height: 150, marginHorizontal: px2dp(15) ,marginTop:5}}/>
+                                <View style={{
+                                    width: SkeletonWidth,
+                                    height: 150,
+                                    marginHorizontal: px2dp(15),
+                                    marginTop: 5
+                                }}/>
                                 <View style={{ width: SkeletonWidth, height: 20, marginHorizontal: 15, marginTop: 5 }}/>
                                 <View style={{ width: SkeletonWidth, height: 20, marginHorizontal: 15, marginTop: 5 }}/>
                                 <View style={{ width: SkeletonWidth, height: 20, marginHorizontal: 15, marginTop: 5 }}/>
@@ -820,6 +843,7 @@ export default class ShowRichTextDetailPage extends BasePage {
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             {detail ?
                 <CommShowShareModal ref={(ref) => this.shareModal = ref}
+                                    shareName={detail && detail.userInfoVO && detail.userInfoVO.userName}
                                     type={ShareUtil.showSharedetailDataType(detail && detail.showType)}
                                     trackEvent={trackEvent.XiuChangShareClick}
                                     trackParmas={{
@@ -1025,10 +1049,11 @@ let styles = StyleSheet.create({
         justifyContent: 'center'
     },
     shareView: {
-        width: px2dp(50),
+        width: px2dp(30),
         height: px2dp(44),
-        alignItems: 'center',
-        justifyContent: 'center'
+        alignItems: 'flex-end',
+        justifyContent: 'center',
+        marginRight:px2dp(15)
     },
     titleView: {
         flex: 1,

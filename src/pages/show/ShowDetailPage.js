@@ -327,7 +327,7 @@ export default class ShowDetailPage extends BasePage {
                             });
                         }
                     }}>
-                        <LinearGradient
+                        {detail.attentionStatus === 0 ? <LinearGradient
                             start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
                             colors={['#FFCB02', '#FF9502']}
                             style={{
@@ -336,12 +336,25 @@ export default class ShowDetailPage extends BasePage {
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 borderRadius: px2dp(14),
-                                marginRight: detail.status === 1 ? px2dp(20) : px2dp(15)
+                                marginRight: detail.status === 1 ? 0 : px2dp(15)
                             }}>
                             <Text style={{ color: DesignRule.white, fontSize: DesignRule.fontSize_threeTitle }}>
                                 {attentionText}
                             </Text>
-                        </LinearGradient>
+                        </LinearGradient> : <View style={{
+                            width: px2dp(65),
+                            height: px2dp(28),
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            borderRadius: px2dp(14),
+                            backgroundColor: '#FFF5CC',
+                            marginRight: detail.status === 1 ? 0 : px2dp(15)
+                        }}>
+                            <Text style={{ color: '#FF9502', fontSize: DesignRule.fontSize_threeTitle }}>
+                                {attentionText}
+                            </Text>
+                        </View>}
+
                     </TouchableWithoutFeedback> : null
                 }
                 {detail.status === 1 ? <TouchableOpacity style={styles.shareView} onPress={() => {
@@ -778,6 +791,7 @@ export default class ShowDetailPage extends BasePage {
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             {detail ?
                 <CommShowShareModal ref={(ref) => this.shareModal = ref}
+                                    shareName={detail && detail.userInfoVO && detail.userInfoVO.userName}
                                     type={ShareUtil.showSharedetailDataType(detail && detail.showType,this.state.showText)}
                                     trackEvent={trackEvent.XiuChangShareClick}
                                     trackParmas={{
@@ -986,10 +1000,11 @@ let styles = StyleSheet.create({
         justifyContent: 'center'
     },
     shareView: {
-        width: px2dp(50),
+        width: px2dp(30),
         height: px2dp(44),
-        alignItems: 'center',
-        justifyContent: 'center'
+        alignItems: 'flex-end',
+        justifyContent: 'center',
+        marginRight:px2dp(15)
     },
     titleView: {
         flex: 1,
@@ -1080,7 +1095,7 @@ let styles = StyleSheet.create({
     emptyTip: {
         color: DesignRule.textColor_secondTitle,
         fontSize: DesignRule.fontSize_threeTitle
-    }
+    },
 
 });
 
