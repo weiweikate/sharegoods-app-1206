@@ -107,6 +107,7 @@ class QYChatModel {
             if (productUrl.indexOf('?') !== -1) {
                 productCode = productUrl.substring(productUrl.lastIndexOf('/') + 1, productUrl.indexOf('?'));
             }
+            console.log('------' + productCode);
             let card_type = handleData ? handleData.card_type : -1;
             if (parseInt(card_type) === CARD_TYPE.PRODUCT_CARD) {
                 routePush(RouterMap.ProductDetailPage, { productCode: productCode });

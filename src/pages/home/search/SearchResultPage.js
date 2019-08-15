@@ -15,7 +15,7 @@ import ResultVerticalRow from './components/ResultVerticalRow';
 import RouterMap from '../../../navigation/RouterMap';
 import HomeAPI from '../api/HomeAPI';
 import DateUtils from '../../../utils/DateUtils';
-import SelectionPage, { sourceType } from '../../product/SelectionPage';
+import SelectionPage from '../../product/SelectionPage';
 import StringUtils from '../../../utils/StringUtils';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
@@ -61,10 +61,8 @@ export default class SearchResultPage extends BasePage {
 
             showTop: false,
             isHorizontal: true,
-            //排序类型(1.综合 2.销量 3. 价格)
-            sortType: 1,
-            //排序方式 (1.升序 2.降序)
-            sortModel: 2,
+            //排序类型(0.综合 1.销量降序 2. 价格降序,3价格降序)
+            sortType: 0,
             //页码
             page: 1,
 
@@ -99,8 +97,7 @@ export default class SearchResultPage extends BasePage {
         let param = {};
         param.page = this.state.page;
         param.pageSize = 10;
-        param.sortModel = this.state.sortModel;
-        param.sortType = this.state.sortType;
+        param.sort = this.state.sortType;
         param.time = DateUtils.formatDate(new Date());
 
         //分类只需要categoryId
@@ -223,7 +220,7 @@ export default class SearchResultPage extends BasePage {
         this.productItem = item;
         this.SelectionPage.show(item, this._selectionViewConfirm, {
             needUpdate: true,
-            sourceType: this._itemIsActivity(item) ? sourceType.promotion : null
+            productIsPromotionPrice: this._itemIsActivity(item)
         });
     };
 
@@ -234,16 +231,15 @@ export default class SearchResultPage extends BasePage {
     };
 
     _segmentOnPressAtIndex = (index) => {
-        if (index === 2 && this.state.sortType === 3) {
-            if (this.state.sortModel === 1) {
-                this.state.sortModel = 2;
+        if (index === 2 && (this.state.sortType === 2 || this.state.sortType === 3)) {
+            if (this.state.sortType === 2) {
+                this.state.sortType = 3;
             } else {
-                this.state.sortModel = 1;
+                this.state.sortType = 2;
             }
         } else {
-            this.state.sortModel = 2;
+            this.state.sortType = index;
         }
-        this.state.sortType = index + 1;
         this._emptyRequest();
     };
 

@@ -27,6 +27,11 @@
     [_manager startRunning];
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+  [super viewWillAppear:animated];
+  [self.navigationController setNavigationBarHidden:NO animated:YES];
+}
+
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];

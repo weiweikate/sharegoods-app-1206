@@ -39,8 +39,8 @@ const productTrack = {
     SpikeTimeClick:'FlashSaleTimeRangeClick',// 限时购tab
     SpikeProdClick:'FlashSaleProductClick',// 限时购商品
     homeTopicProdClick:'SpecialTopicProductClick',// 专题商品
-    NewUserGuideShow: 'NewUserGuideShow',//显示新手礼包
-    NewUserGuideBtnClick: 'NewUserGuideBtnClick',//新手礼包按钮点击
+    HomePagePopShow: 'HomePagePopShow',//homePagePopType 首页弹窗展示  0：未知 1：限时购免单 2：公告 3：用户等级升级 4：新手礼包  5：APP升级 6：奖池中奖弹框
+    HomePagePopBtnClick: 'HomePagePopBtnClick',//homePagePopType homePagePopImgURL  图片地址
 }
 
 const homeEvent = {

@@ -1,5 +1,5 @@
 import {
-    View, StyleSheet, TouchableOpacity, Image
+    View, StyleSheet, TouchableOpacity, Image, Alert
 } from 'react-native';
 import React from 'react';
 import BasePage from '../../../../BasePage';
@@ -11,7 +11,7 @@ import UIImage from '../../../../components/ui/UIImage';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import { MRText as Text, MRTextInput as TextInput } from '../../../../components/ui';
-import RouterMap from '../../../../navigation/RouterMap';
+import RouterMap, { routePop } from '../../../../navigation/RouterMap';
 
 const addrSelectedIcon = res.button.selected_circle_red;
 const addrUnSelectedIcon = res.button.unselected_circle;
@@ -32,6 +32,36 @@ export default class AddressEditAndAddPage extends BasePage {
         rightTitleStyle: { color: DesignRule.mainColor },
         rightNavTitle: '保存'
     };
+
+    $NavigationBarDefaultLeftPressed = () => {
+        if (this.params.from === 'edit') {
+            const { receiver, tel, address } = this.params;
+            if (this.state.receiverText === receiver &&
+                this.state.telText === tel&&
+                this.state.addrText ===  address
+            ){
+                routePop();
+            }else {
+                Alert.alert('','信息未保存，确认返回吗？',[
+                    { text: `取消`, onPress: () => {} },
+                    { text: `确定`, onPress: () => {routePop()}}])
+            }
+
+        }else {
+            if (StringUtils.isEmpty(this.state.receiverText) &&
+                StringUtils.isEmpty(this.state.telText) &&
+                StringUtils.isEmpty(this.state.provinceCode) &&
+                StringUtils.isEmpty(this.state.addrText)
+            ) {
+                routePop();
+            }else {
+                Alert.alert('','信息未保存，确认返回吗？',[
+                    { text: `取消`, onPress: () => {} },
+                    { text: `确定`, onPress: () => {routePop()}}])
+            }
+        }
+    };
+
 
     $NavBarRightPressed = () => {
         if (this.isLoadding === true) {
@@ -64,7 +94,7 @@ export default class AddressEditAndAddPage extends BasePage {
             bridge.$toast('请填写详细地址');
             return;
         }
-        const { refreshing, id, from } = this.params;
+        const { refreshing, id, from, callBack } = this.params;
         this.isLoadding = true;
         if (from === 'edit') {
             //编辑地址
@@ -76,6 +106,7 @@ export default class AddressEditAndAddPage extends BasePage {
                 provinceCode: this.state.provinceCode,
                 cityCode: this.state.cityCode,
                 areaCode: this.state.areaCode,
+                streetCode: this.state.streetCode,
                 defaultStatus: this.state.isDefault ? '1' : '2'
             }).then((data) => {
                 this.isLoadding = false;
@@ -95,11 +126,18 @@ export default class AddressEditAndAddPage extends BasePage {
                 provinceCode: this.state.provinceCode,
                 cityCode: this.state.cityCode,
                 areaCode: this.state.areaCode,
+                streetCode: this.state.streetCode,
                 defaultStatus: this.state.isDefault ? '1' : '2'
             }).then((data) => {
                 this.isLoadding = false;
                 bridge.$toast('添加成功');
                 refreshing && refreshing();
+                data = data.data || {};
+                data.province = this.state.provinceName;
+                data.city = this.state.cityName;
+                data.area = this.state.areaName;
+                data.street = this.state.streetName;
+                callBack && callBack(data);
                 this.$navigateBack();
             }).catch((data) => {
                 this.isLoadding = false;
@@ -110,7 +148,7 @@ export default class AddressEditAndAddPage extends BasePage {
 
     constructor(props) {
         super(props);
-        const { receiver, tel, address, areaText, provinceCode, cityCode, areaCode, isDefault, from } = this.params;
+        const { receiver, tel, address, areaText, provinceCode, cityCode, areaCode, isDefault, from, streetCode } = this.params;
         if (from === 'edit') {
             this.$navigationBarOptions.title = '编辑地址';
         } else if (from === 'add') {
@@ -127,6 +165,8 @@ export default class AddressEditAndAddPage extends BasePage {
             cityName: '',
             areaCode: areaCode,
             areaName: '',
+            streetCode: streetCode,
+            streetName: '',
             isDefault: isDefault || false,
             from
         };
@@ -203,7 +243,7 @@ export default class AddressEditAndAddPage extends BasePage {
         });
     };
 
-    setArea(provinceCode, provinceName, cityCode, cityName, areaCode, areaName, areaText) {
+    setArea(provinceCode, provinceName, cityCode, cityName, areaCode, areaName,streetCode, streetName,areaText) {
         console.log(areaText);
         this.setState({
             areaText: areaText,
@@ -212,7 +252,9 @@ export default class AddressEditAndAddPage extends BasePage {
             cityCode: cityCode,
             cityName: cityName,
             areaCode: areaCode,
-            areaName: areaName
+            areaName: areaName,
+            streetCode,
+            streetName
         });
     }
 }

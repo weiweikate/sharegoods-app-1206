@@ -2,21 +2,11 @@
 //三种角色身份 普通 店长 店员
 
 import React from 'react';
-import {
-    View,
-    Image,
-    StyleSheet,
-    ScrollView,
-    RefreshControl,
-    TouchableOpacity,
-    Alert
-} from 'react-native';
+import { Alert, Image, RefreshControl, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { observer } from 'mobx-react';
 import BasePage from '../../../BasePage';
-import {
-    MRText as Text
-} from '../../../components/ui';
+import { MRText as Text } from '../../../components/ui';
 
 import ShopHeader from './components/ShopHeader';
 import ShopHeaderBonus from './components/ShopHeaderBonus';
@@ -24,8 +14,6 @@ import MembersRow from './components/MembersRow';
 import InfoRow from './components/InfoRow';
 import ActionSheetView from '../components/ActionSheetView';
 import ReportAlert from '../components/ReportAlert';
-// 图片资源
-
 import SpellShopApi from '../api/SpellShopApi';
 import DateUtils from '../../../utils/DateUtils';
 import StringUtils from '../../../utils/StringUtils';
@@ -46,13 +34,12 @@ import { ShopBottomBannerView, ShopCardView, ShopProductItemView } from './compo
 import MyShopDetailModel from './MyShopDetailModel';
 import { IntervalMsgView, IntervalType } from '../../../comm/components/IntervalMsgView';
 import RouterMap from '../../../navigation/RouterMap';
+// 图片资源
 
 const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
-const NavLeft = resCommon.button.white_back;
+const NavLeft = resCommon.button.back_white;
 const shezhi = res.myShop.shezhi;
 const my_Shop_gengduo = res.myShop.my_Shop_gengduo;
-const onSc_03 = res.myShop.sc_03;
-const unSc_03 = res.myShop.wsc_03;
 
 const RmbIcon = res.myShop.zje_11;
 const QbIcon = res.myShop.dzfhj_03_03;
@@ -87,10 +74,11 @@ export default class MyShopPage extends BasePage {
         return (<View style={styles.transparentView}>
                 <View style={styles.leftBarItemContainer}>
                     {!this.props.leftNavItemHidden ?
-                        <TouchableOpacity style={{ width: 44 }} onPress={() => {
-                            this.$navigateBack();
-                        }}>
-                            <Image source={NavLeft}/>
+                        <TouchableOpacity style={{ width: 40, justifyContent: 'center' }}
+                                          onPress={() => {
+                                              this.$navigateBack();
+                                          }}>
+                            <Image source={NavLeft} style={{ width: 30, height: 30 }}/>
                         </TouchableOpacity> : null}
                 </View>
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -118,11 +106,7 @@ export default class MyShopPage extends BasePage {
             );
         } else {
             return (
-                <View style={styles.rightBarItemContainer}>
-                    <TouchableOpacity onPress={this.state.isLike ? this._clickUnLikeItem : this._clickLikeItem}>
-                        <Image source={this.state.isLike ? onSc_03 : unSc_03}/>
-                    </TouchableOpacity>
-                </View>
+                <View style={styles.rightBarItemContainer}/>
             );
         }
     };
@@ -177,10 +161,6 @@ export default class MyShopPage extends BasePage {
         this._requestGetById();
         this.MyShopDetailModel.requestShopBanner();
         this.MyShopDetailModel.requestShopProducts();
-        //非首页时请求
-        if (!this.props.leftNavItemHidden) {
-            this._requestGetByStoreId();
-        }
     };
 
     _requestGetById = () => {
@@ -209,44 +189,6 @@ export default class MyShopPage extends BasePage {
         });
     };
 
-    _requestGetByStoreId = () => {
-        //是否收藏店铺
-        SpellShopApi.getByStoreId({ storeCode: this.state.storeCode }).then((data) => {
-            if (data.data) {
-                this.setState({
-                    isLike: true
-                });
-            } else {
-                this.setState({
-                    isLike: false
-                });
-            }
-        }).catch((error) => {
-        });
-    };
-
-    //收藏
-    _clickLikeItem = () => {
-        SpellShopApi.storeCollectionCollection({ storeCode: this.state.storeCode }).then(() => {
-            this.setState({
-                isLike: true
-            });
-            this.$toastShow('收藏成功');
-        }).catch((error) => {
-            this.$toastShow(error.msg);
-        });
-    };
-    //取消收藏
-    _clickUnLikeItem = () => {
-        SpellShopApi.storeCollectionCancel({ storeCode: this.state.storeCode }).then(() => {
-            this.setState({
-                isLike: false
-            });
-            this.$toastShow('取消收藏成功');
-        }).catch((error) => {
-            this.$toastShow(error.msg);
-        });
-    };
     // 点击店铺设置
     _clickSettingItem = () => {
         const { myStore } = this.state.storeData;
@@ -565,7 +507,7 @@ const styles = StyleSheet.create({
         height: 44,
         backgroundColor: 'transparent',
         position: 'absolute',
-        left: 15,
+        left: 5,
         right: 15,
         zIndex: 4,
         flexDirection: 'row',

@@ -18,10 +18,11 @@ export default class CheckLogisticsPage extends BasePage {
         show: true// false则隐藏导航
     };
 
-    show(expressNo, expressCode) {
+    show(expressNo, expressCode, expressName) {
         this.$navigate(RouterMap.LogisticsDetailsPage, {
             expressNo: expressNo,
-            expressCode: expressCode
+            expressCode: expressCode,
+            expressName: expressName
         });
     }
 //{this.params.expressList.length + this.params.unSendProductInfoList.length}
@@ -46,24 +47,24 @@ export default class CheckLogisticsPage extends BasePage {
                             <TouchableOpacity
                                 style={{ height: 40, backgroundColor: DesignRule.white, justifyContent: 'center' }}
                                 onPress={() => {
-                                    this.show(item.expNO, item.expressCode);
+                                    this.show(item.expressNo, item.expressCode, item.expressName);
                                 }}>
                                 <View style={styles.expStyle}>
                                     <Text style={{
                                         fontSize: 12,
                                         color: DesignRule.textColor_mainTitle
-                                    }}>{`${item.expName}: ${item.expNO}`}</Text>
+                                    }}>{`${item.expressName}: ${item.expressNo}`}</Text>
                                     <Image source={res.button.arrow_right_black}/>
                                 </View>
                             </TouchableOpacity>
                             <View style={{ backgroundColor: '#E4E4E4', height: 0.5, width: ScreenUtils.width }}/>
-                            {item.list && item.list.map((data) => {
+                            {item.productList && item.productList.map((data) => {
                                 return <GoodsGrayItem
                                     uri={data.specImg}
                                     goodsName={data.productName}
                                     salePrice={data.unitPrice}
                                     category={data.spec}
-                                    goodsNum={data.quantity}
+                                    // goodsNum={data.quantity}
                                     style={{ backgroundColor: 'white' }}
                                 />;
                             })}
@@ -91,7 +92,7 @@ export default class CheckLogisticsPage extends BasePage {
                                 goodsName={item.productName}
                                 salePrice={item.unitPrice}
                                 category={item.spec}
-                                goodsNum={item.quantity}
+                                // goodsNum={item.quantity}
                                 style={{ backgroundColor: 'white' }}
                             />
                             <View

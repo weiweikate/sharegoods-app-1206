@@ -61,7 +61,7 @@ export default class PraiseModel extends React.Component {
                     <MRText style={styles.title}>{title}</MRText>
                     <TouchableOpacity onPress={() => {
                         routePush('HtmlPage', { uri: '/awardPool' });
-                        HomeModalManager.closePrize();
+                        HomeModalManager.closePrize(true);
                     }
                     }>
                         <ImageBackground source={btn_bg} style={styles.btn}>

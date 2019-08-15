@@ -1,22 +1,16 @@
 'use strict';
 
 import React from 'react';
-import {
-    Text,
-    View,
-    TouchableOpacity,
-    StyleSheet,
-    Dimensions,
-    Image,
-    Platform,
-} from 'react-native';
-const {height, width} = Dimensions.get('window');
+import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import ScreenUtils from '../../../utils/ScreenUtils';
+
+const { height, width } = ScreenUtils;
 let backImg = require('./rg_left.png');
 
 class Webview extends React.Component {
 
     static navigationOptions = ({ navigation, screenProps }) => ({
-        title: 'GreatGreatGreatGreat',
+        title: 'GreatGreatGreatGreat'
     });
 
     componentDidMount() {
@@ -32,23 +26,24 @@ class Webview extends React.Component {
 
     render() {
         return (
-            <View style={[styles.container, Platform.OS === 'android' ? {marginTop: 21} : {marginTop: 21}]} visible='hidden'>
+            <View style={[styles.container, Platform.OS === 'android' ? { marginTop: 21 } : { marginTop: 21 }]}
+                  visible='hidden'>
                 <View style={styles.toolbar}>
                     <TouchableOpacity
                         style={styles.leftIOSContainer}
                         onPress={this._onBackPress.bind(this)}
-                        >
+                    >
                         <Image
                             style={styles.leftIOS}
                             source={backImg}
-                            />
+                        />
                     </TouchableOpacity>
 
                     <View style={styles.titleViewIOS}>
                         <TouchableOpacity style={styles.titleViewIOSClick}>
                             <Text
                                 style={styles.titleIOS}
-                                >
+                            >
                                 表情商城
                             </Text>
                         </TouchableOpacity>
@@ -67,7 +62,7 @@ class Webview extends React.Component {
 
             </View>
 
-        )
+        );
     }
 
 }
@@ -86,9 +81,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
-        //height: 58,
-        //shadowOffset: {width: 0, height: .2,},
-        //shadowOpacity: .3,
         borderBottomWidth: 1,
         borderColor: '#eee',
         shadowColor: '#555',
@@ -100,16 +92,14 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: '#696969',
         fontWeight: '500',
-        fontSize: 20,
+        fontSize: 20
     },
     leftIOSContainer: {
         width: 40,
         height: 35,
-        justifyContent: 'center',
+        justifyContent: 'center'
     },
     leftIOS: {
-        //height: 18,
-        //width: 24,
         marginLeft: 10
     },
     titleViewIOS: {
@@ -133,7 +123,7 @@ const styles = StyleSheet.create({
     },
     tip: {
         fontSize: 20,
-        marginTop:30,
+        marginTop: 30
     },
     tip1: {
         fontSize: 12,
@@ -141,7 +131,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         width: width,
         color: 'red',
-        bottom: 100,
+        bottom: 100
     }
 });
 

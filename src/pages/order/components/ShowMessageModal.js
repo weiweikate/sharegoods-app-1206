@@ -50,7 +50,7 @@ class ShowMessageModal extends Component {
     }
 
     renderMenu = () => {
-        let nameArr = this.props.detail;
+        let nameArr = this.props.detail || [];
         let itemArr = [];
         let arrLen = nameArr.length;
         for (let i = 0; i < arrLen; i++) {

@@ -1,10 +1,10 @@
 import React from 'react-native';
+import ScreenUtils from '../../../utils/ScreenUtils';
 
 const {
-    StyleSheet,
-    Dimensions,
-    } = React;
-const {height, width} = Dimensions.get('window');
+    StyleSheet
+} = React;
+const { height, width } = ScreenUtils;
 
 const styles = StyleSheet.create({
     baseText: {
@@ -13,21 +13,21 @@ const styles = StyleSheet.create({
         lineHeight: 18
     },
     dimText: {
-        color: '#9b9b9b',
+        color: '#9b9b9b'
     },
-    wvContainer:{
+    wvContainer: {
         backgroundColor: '#fff',
         height: height,
         width: width,
         // position: 'absolute',
         // bottom: 0,
         // left:0,
-        zIndex:1000
+        zIndex: 1000
     },
     container: {
         backgroundColor: '#fff',
         height: 300,
-        width: width,
+        width: width
         // position: 'absolute',
         // bottom: 0,
         // left:0,
@@ -38,14 +38,14 @@ const styles = StyleSheet.create({
         lineHeight: 30,
         color: '#rgba(0,0,0,1)'
     },
-    emojiTouch:{
+    emojiTouch: {
         width: (width - 30) / 6,
         height: 50,
         justifyContent: 'center',
         alignItems: 'center'
     },
-    delete:{
-        right:0
+    delete: {
+        right: 0
     },
     scrollTable: {
         width: width
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
         paddingBottom: 50
     },
     cateView: {
-        flex: 1,
+        flex: 1
     },
     groupView: {
         flex: 1,
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
         borderLeftWidth: 0,
         borderRightWidth: 0,
         borderTopColor: 'rgba(178,178,178,0.3)',
-        backgroundColor: 'rgba(255,255,255,1)',
+        backgroundColor: 'rgba(255,255,255,1)'
     },
     tabsDot: {
         height: 40,
@@ -106,11 +106,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#f1f1f1',
         width: 6,
         height: 6,
-        borderRadius: 3,
+        borderRadius: 3
     },
-    backspace:{
-        width:30,
-        height:30,
+    backspace: {
+        width: 30,
+        height: 30,
         opacity: 0.5
     },
     plusButton: {

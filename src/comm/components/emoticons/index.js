@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-    Text,
-    View,
-    TouchableOpacity,
-    Animated,
-    Image,
-    TouchableHighlight,
-    Platform
-} from 'react-native';
+import { Animated, Image, Platform, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
 import styles from './style';
 import emojiData from 'emoji-datasource';
 import _ from 'lodash';
@@ -113,7 +105,7 @@ class Emoticons extends React.Component {
             });
             _.each(choiceness, (value) => {
                 const one = temp.filter(e => _.includes([value], e.name));
-                if (one[0]) {
+                if (one && one[0]) {
                     this.state.data.push(one[0]);
                 }
             });
@@ -179,10 +171,7 @@ class Emoticons extends React.Component {
     };
 
     group = (emoji, type) => {
-
-
         let groupView = [];
-
         const blocks = Math.ceil(emoji.length / blockIconNum);
         for (let i = 0; i < blocks; i++) {
             let ge = _.slice(emoji, i * blockIconNum, (i + 1) * blockIconNum);

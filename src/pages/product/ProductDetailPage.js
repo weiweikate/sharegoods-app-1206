@@ -6,8 +6,7 @@ import {
 } from 'react-native';
 import BasePage from '../../BasePage';
 import DetailBottomView from './components/DetailBottomView';
-import PriceExplain from './components/PriceExplain';
-import SelectionPage, { sourceType } from './SelectionPage';
+import SelectionPage from './SelectionPage';
 import ScreenUtils from '../../utils/ScreenUtils';
 import shopCartCacheTool from '../shopCart/model/ShopCartCacheTool';
 import CommShareModal from '../../comm/components/CommShareModal';
@@ -22,17 +21,24 @@ import DetailPromoteModal from './components/DetailPromoteModal';
 import { beginChatType, QYChatTool } from '../../utils/QYModule/QYChatTool';
 import ProductDetailModel, { productItemType, sectionType } from './ProductDetailModel';
 import { observer } from 'mobx-react';
+import { autorun } from 'mobx';
 import RouterMap from '../../navigation/RouterMap';
 import {
     ContentItemView,
     HeaderItemView,
     ParamItemView,
     PromoteItemView,
-    ServiceItemView, ShowTopView, SuitItemView
+    ServiceItemView, ShowTopView, PriceExplain
 } from './components/ProductDetailItemView';
-import DetailHeaderScoreView from './components/DetailHeaderScoreView';
+import {
+    ProductDetailSuitGiftView,
+    ProductDetailSuitFixedView,
+    suitType,
+    ProductDetailSuitChooseView
+} from './components/ProductDetailSuitView';
+import ProductDetailScoreView from './components/ProductDetailScoreView';
 import DetailParamsModal from './components/DetailParamsModal';
-import { ContentSectionView, SectionLineView, SectionNullView } from './components/ProductDetailSectionView';
+import { ContentSectionView, SectionNullView } from './components/ProductDetailSectionView';
 import ProductDetailNavView from './components/ProductDetailNavView';
 import { IntervalMsgType, IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
 import ProductDetailCouponsView, { ProductDetailCouponsWindowView } from './components/ProductDetailCouponsView';
@@ -78,31 +84,35 @@ export default class ProductDetailPage extends BasePage {
         };
     };
 
+    /**登录刷新**/
+    listenerLogin = autorun(() => {
+        const loginChange = user.isLogin ? 1 : 1;
+        if (this.isLoad && loginChange) {
+            this.productDetailModel && this.productDetailModel.requestProductDetail();
+        }
+    });
 
     componentDidMount() {
-        this.willFocusSubscription = this.props.navigation.addListener('willFocus', payload => {
-                const { state } = payload;
-                if (state && state.routeName === 'product/ProductDetailPage' && !user.isProdFirstLoad) {
-                    this.productDetailModel && this.productDetailModel.requestProductDetail();
-                }
-            }
-        );
+        this.isLoad = true;
         if (user.isProdFirstLoad) {
             setTimeout(() => {
                 user.isProdFirstLoad = false;
                 this.productDetailModel && this.productDetailModel.requestProductDetail();
             }, 200);
+        } else {
+            this.productDetailModel && this.productDetailModel.requestProductDetail();
         }
     }
 
     componentWillUnmount() {
+        this.isLoad = false;
         this.productDetailModel.clearTime();
         this.willFocusSubscription && this.willFocusSubscription.remove();
     }
 
     //去购物车
     _bottomViewAction = (type) => {
-        const { productIsPromotionPrice, isGroupIn } = this.productDetailModel;
+        const { productIsPromotionPrice } = this.productDetailModel;
         switch (type) {
             case 'jlj':
                 this.shareModal && this.shareModal.open();
@@ -134,20 +144,23 @@ export default class ProductDetailPage extends BasePage {
                 }
                 this.state.goType = type;
                 this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, {
-                    sourceType: productIsPromotionPrice ? sourceType.promotion : null,
-                    isGroupIn
+                    productIsPromotionPrice,
+                    isAreaSku: this.productDetailModel.type !== 3
                 });
                 break;
             case 'gwc':
                 this.state.goType = type;
-                this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, { sourceType: productIsPromotionPrice ? sourceType.promotion : null });
+                this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, {
+                    productIsPromotionPrice,
+                    isAreaSku: this.productDetailModel.type !== 3
+                });
                 break;
         }
     };
 
     //选择规格确认
-    _selectionViewConfirm = (amount, skuCode) => {
-        const { prodCode, name, originalPrice, isGroupIn, groupActivity } = this.productDetailModel;
+    _selectionViewConfirm = (amount, skuCode, item) => {
+        const { prodCode, name, originalPrice, productIsPromotionPrice, isGroupIn, groupActivity } = this.productDetailModel;
         const { goType } = this.state;
         if (goType === 'gwc') {
             shopCartCacheTool.addGoodItem({
@@ -195,10 +208,18 @@ export default class ProductDetailPage extends BasePage {
                 return;
             }
             const { type, couponId } = this.params;
+            const { specImg, promotionPrice, price, propertyValues } = item;
             let orderProducts = [{
+                productType: this.productDetailModel.type,
                 skuCode: skuCode,
                 quantity: amount,
-                productCode: prodCode
+                productCode: prodCode,
+                activityCode: '',
+                batchNo: 1,
+                specImg,
+                productName: name,
+                unitPrice: productIsPromotionPrice ? promotionPrice : price,
+                spec: (propertyValues || '').replace(/@/g, '-')
             }];
             this.$navigate(RouterMap.ConfirOrderPage, {
                 orderParamVO: {
@@ -226,7 +247,7 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _renderItem = ({ item, index, section: { key } }) => {
-        const { productDetailCouponsViewModel, productDetailAddressModel } = this.productDetailModel;
+        const { productDetailCouponsViewModel, productDetailAddressModel, productDetailSuitModel } = this.productDetailModel;
         if (key === sectionType.sectionContent) {
             return <ContentItemView item={item}/>;
         }
@@ -240,7 +261,14 @@ export default class ProductDetailPage extends BasePage {
                                        }}/>;
             }
             case productItemType.suit: {
-                return <SuitItemView productDetailModel={this.productDetailModel}/>;
+                const { extraType } = productDetailSuitModel;
+                if (extraType === suitType.fixedSuit) {
+                    return <ProductDetailSuitFixedView productDetailSuitModel={productDetailSuitModel}/>;
+                } else if (extraType === suitType.chooseSuit) {
+                    return <ProductDetailSuitChooseView productDetailSuitModel={productDetailSuitModel}/>;
+                } else {
+                    return <ProductDetailSuitGiftView productDetailModel={this.productDetailModel}/>;
+                }
             }
             case productItemType.coupons: {
                 return <ProductDetailCouponsView productDetailCouponsViewModel={productDetailCouponsViewModel}
@@ -265,7 +293,7 @@ export default class ProductDetailPage extends BasePage {
                                         }}/>;
             }
             case productItemType.param: {
-                return <ParamItemView paramAction={() => {
+                return <ParamItemView productDetailModel={this.productDetailModel} paramAction={() => {
                     this.DetailParamsModal.show(this.productDetailModel);
                 }}/>;
             }
@@ -273,8 +301,8 @@ export default class ProductDetailPage extends BasePage {
                 return <ProductDetailSetAddressView productDetailAddressModel={productDetailAddressModel}/>;
             }
             case productItemType.comment: {
-                return <DetailHeaderScoreView pData={this.productDetailModel}
-                                              navigation={this.props.navigation}/>;
+                return <ProductDetailScoreView pData={this.productDetailModel}
+                                               navigation={this.props.navigation}/>;
             }
             case productItemType.priceExplain: {
                 return <PriceExplain/>;
@@ -342,17 +370,12 @@ export default class ProductDetailPage extends BasePage {
                          }}
                          sections={sectionDataList}
                          scrollEventThrottle={10}
-                         ItemSeparatorComponent={() => {
-                             return <SectionLineView/>;
-                         }}
                          showsVerticalScrollIndicator={false}/>
             <DetailBottomView bottomViewAction={this._bottomViewAction}
                               pData={this.productDetailModel}/>
             <ShowTopView productDetailModel={this.productDetailModel}
                          toTopAction={this._onPressToTop}/>
             <IntervalMsgView pageType={IntervalType.productDetail}/>
-            <ProductDetailCouponsWindowView ref={(ref) => this.ProductDetailCouponsWindowView = ref}
-                                            productDetailCouponsViewModel={productDetailCouponsViewModel}/>
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             defaultModalVisible={this.params.openShareModal}
@@ -388,6 +411,8 @@ export default class ProductDetailPage extends BasePage {
             <DetailHeaderServiceModal ref={(ref) => this.DetailHeaderServiceModal = ref}/>
             <DetailPromoteModal ref={(ref) => this.DetailPromoteModal = ref}/>
             <DetailParamsModal ref={(ref) => this.DetailParamsModal = ref}/>
+            <ProductDetailCouponsWindowView ref={(ref) => this.ProductDetailCouponsWindowView = ref}
+                                            productDetailCouponsViewModel={productDetailCouponsViewModel}/>
         </View>;
     };
 

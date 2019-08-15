@@ -8,6 +8,7 @@
 
 #import "StorageFromRN.h"
 #import "NSDictionary+Util.h"
+#import <RNCAsyncStorage/RNCAsyncStorage.h>
 
 static NSString *const RCTStorageDirectory = @"RCTAsyncLocalStorage_V1";
 static NSString *const RCTManifestFileName = @"manifest.json";

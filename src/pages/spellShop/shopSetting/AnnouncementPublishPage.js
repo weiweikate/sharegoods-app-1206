@@ -1,22 +1,15 @@
 //发布公告页面
 import React from 'react';
-import {
-    View,
-    Dimensions,
-    StyleSheet,
-    ScrollView,
-} from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import BasePage from '../../../BasePage';
 import StringUtils from '../../../utils/StringUtils';
 import SpellShopApi from '../api/SpellShopApi';
 import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import {
-    MRText as Text, MRTextInput as TextInput
-} from '../../../components/ui';
+import { MRText as Text, MRTextInput as TextInput } from '../../../components/ui';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 
-const SCREEN_WIDTH = Dimensions.get('window').width;
+const SCREEN_WIDTH = ScreenUtils.width;
 
 export default class AnnouncementPublishPage extends BasePage {
 
@@ -36,7 +29,10 @@ export default class AnnouncementPublishPage extends BasePage {
             return;
         }
 
-        SpellShopApi.storeNoticeInsert({ content: this.state.text, storeCode: this.params.storeData.storeNumber }).then(() => {
+        SpellShopApi.storeNoticeInsert({
+            content: this.state.text,
+            storeCode: this.params.storeData.storeNumber
+        }).then(() => {
             const { publishSuccess } = this.params;
             this.$toastShow('发布成功');
             publishSuccess && publishSuccess();
@@ -79,7 +75,7 @@ export default class AnnouncementPublishPage extends BasePage {
                                 position: 'absolute',
                                 bottom: 10,
                                 right: 10,
-                                color:DesignRule.textColor_instruction
+                                color: DesignRule.textColor_instruction
                             }} allowFontScaling={false}>{`${this.state.text.length}/180`}</Text>
                         </View>
                         <View style={styles.btnRow}>

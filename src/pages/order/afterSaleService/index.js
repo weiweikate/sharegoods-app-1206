@@ -5,6 +5,7 @@ import FillReturnLogisticsPage from './FillReturnLogisticsPage';
 import SelectLogisticsCompanyPage from './SelectLogisticsCompanyPage';
 import AfterSaleListPage from './AfterSaleListPage'
 import AfterLogisticsListView from './AfterLogisticsListView'
+import NegotiationHistoryPage from './NegotiationHistoryPage'
 
 export default {
     moduleName: 'afterSaleService',    //模块名称
@@ -15,6 +16,7 @@ export default {
         FillReturnLogisticsPage,
         SelectLogisticsCompanyPage,
         AfterSaleListPage,
-        AfterLogisticsListView
+        AfterLogisticsListView,
+        NegotiationHistoryPage
     }
 };

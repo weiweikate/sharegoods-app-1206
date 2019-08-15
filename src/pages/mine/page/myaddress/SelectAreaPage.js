@@ -7,7 +7,7 @@ import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
 import RefreshFlatList from '../../../../comm/components/RefreshFlatList';
-import RouterMap from '../../../../navigation/RouterMap';
+import RouterMap, { routePop } from '../../../../navigation/RouterMap';
 
 const arrow_right = res.button.arrow_right;
 export default class SelectAreaPage extends BasePage {
@@ -43,7 +43,13 @@ export default class SelectAreaPage extends BasePage {
                 isSupportLoadingMore={false}
                 url={MineAPI.getAreaList}
                 params={{ fatherCode: this.state.fatherCode }}
-                handleRequestResult={(response) => response.data || []}
+                handleRequestResult={(response) => {
+                   let data = response.data || [];
+                   if (this.params.tag === 'street') {
+                       data = [{name: '不选择街道', code: ''},...data]
+                   }
+                   return data;
+                }}
             />
         );
     }
@@ -60,7 +66,7 @@ export default class SelectAreaPage extends BasePage {
     };
 
     _onItemClick = (item) => {
-        const { setArea } = this.props.navigation.state.params || {};
+        const { setArea, provinceCode, provinceName, cityCode, cityName, areaCode,areaName  } = this.props.navigation.state.params || {};
         if (this.state.tag === 'province') {
             // 跳转到市级
             this.$navigate(RouterMap.SelectAreaPage, {
@@ -68,27 +74,50 @@ export default class SelectAreaPage extends BasePage {
                 tag: 'city',
                 provinceCode: item.code,
                 provinceName: item.name,
-                fatherCode: item.code
+                fatherCode: item.code,
+                type: this.params.type
             });
         } else if (this.state.tag === 'city') {
             // 跳转到区级
             this.$navigate(RouterMap.SelectAreaPage, {
                 setArea: setArea,
                 tag: 'area',
-                provinceCode: this.props.navigation.state.params.provinceCode,
-                provinceName: this.props.navigation.state.params.provinceName,
+                provinceCode,
+                provinceName,
                 cityCode: item.code,
                 cityName: item.name,
-                fatherCode: item.code
+                fatherCode: item.code,
+                type: this.params.type
             });
         } else if (this.state.tag === 'area') {
+            if (this.params.type === 3){
+                if (this.canBack) {
+                    this.canBack = false;
+                    routePop(3);
+                    let areaText = provinceName + cityName + item.name ;
+                    setArea && setArea(provinceCode, provinceName, cityCode, cityName, item.code, item.name, '', '',areaText, );
+                }
+                return;
+            }
+            this.$navigate(RouterMap.SelectAreaPage, {
+                setArea: setArea,
+                tag: 'street',
+                provinceCode,
+                provinceName,
+                cityCode,
+                cityName,
+                areaCode: item.code,
+                areaName: item.name,
+                fatherCode: item.code
+            });
+        } else if (this.state.tag === 'street') {
             // 回退并刷新
             if (this.canBack) {
                 this.canBack = false;
-                this.$navigateBack(3);
-                const { provinceCode, provinceName, cityCode, cityName } = this.props.navigation.state.params || {};
-                let areaText = provinceName + cityName + item.name;
-                setArea && setArea(provinceCode, provinceName, cityCode, cityName, item.code, item.name, areaText);
+                routePop(4);
+                let streetName = item.code === '' ? '':item.name;
+                let areaText = provinceName + cityName + areaName + streetName;
+                setArea && setArea(provinceCode, provinceName, cityCode, cityName, areaCode, areaName, item.code, streetName,areaText, );
             }
         }
     };

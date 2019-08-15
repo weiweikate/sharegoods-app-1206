@@ -13,11 +13,11 @@ import res from './res';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
 import AutoHeightWebView from '@mr/react-native-autoheight-webview';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 const { px2dp } = ScreenUtils;
 import { ShowDetail } from './Show';
 import { observer } from 'mobx-react';
-import CommShareModal from '../../comm/components/CommShareModal';
 import user from '../../model/user';
 import apiEnvironment from '../../api/ApiEnvironment';
 import BasePage from '../../BasePage';
@@ -28,11 +28,10 @@ import {
 import Toast from '../../utils/bridge';
 import { NetFailedView } from '../../components/pageDecorator/BaseView';
 import AvatarImage from '../../components/ui/AvatarImage';
-import { track , trackEvent } from '../../utils/SensorsTrack';
+import { track, trackEvent } from '../../utils/SensorsTrack';
 import { SmoothPushPreLoadHighComponent } from '../../comm/components/SmoothPushHighComponent';
 import ProductRowListView from './components/ProductRowListView';
 import ShowUtils from './utils/ShowUtils';
-import { sourceType } from '../product/SelectionPage';
 import AddCartModel from './model/AddCartModel';
 import shopCartCacheTool from '../shopCart/model/ShopCartCacheTool';
 import SelectionPage from '../product/SelectionPage';
@@ -42,9 +41,12 @@ import ProductListModal from './components/ProductListModal';
 import RouterMap, { routePop, routeNavigate, routePush } from '../../navigation/RouterMap';
 import ShowApi from './ShowApi';
 import LinearGradient from 'react-native-linear-gradient';
+import WhiteModel from './model/WhiteModel';
+import ShareUtil from '../../utils/ShareUtil';
+import CommShowShareModal from '../../comm/components/CommShowShareModal';
 
-const { iconShowFire, iconLike, iconNoLike, iconShowShare ,dynamicEmpty} = res;
-
+const { iconShowFire, iconLike, iconNoLike, iconShowShare, dynamicEmpty, collected, uncollected } = res;
+const SkeletonWidth = DesignRule.width - px2dp(30);
 
 @SmoothPushPreLoadHighComponent
 @observer
@@ -62,7 +64,8 @@ export default class ShowRichTextDetailPage extends BasePage {
         this.state = {
             pageState: PageLoadingState.loading,
             errorMsg: '',
-            productModalVisible: false
+            productModalVisible: false,
+            showHtml: false
         };
         this.noNeedRefresh = false;
     }
@@ -100,10 +103,10 @@ export default class ShowRichTextDetailPage extends BasePage {
                         this.params.ref && this.params.ref.replaceData(this.params.index, data.hotCount);
 
                         const { detail } = this.showDetailModule;
-                        track(trackEvent.ViewXiuChangDetails,{
+                        track(trackEvent.ViewXiuChangDetails, {
                             articleCode: detail.showNo,
                             author: detail.userInfoVO.userNo
-                        })
+                        });
                     }
                     this.incrCountByType(6);
                 }
@@ -121,10 +124,10 @@ export default class ShowRichTextDetailPage extends BasePage {
     getDetailByIdOrCode = (code) => {
         this.showDetailModule.showDetailCode(code).then(() => {
             const { detail } = this.showDetailModule;
-            track(trackEvent.ViewXiuChangDetails,{
+            track(trackEvent.ViewXiuChangDetails, {
                 articleCode: detail.showNo,
                 author: detail.userInfoVO.userNo
-            })
+            });
             if (this.params.isFormHeader) {
                 this.params.ref && this.params.ref.setClick(detail.click);
             } else {
@@ -244,21 +247,88 @@ export default class ShowRichTextDetailPage extends BasePage {
 
         let userImage = (detail.userInfoVO && detail.userInfoVO.userImg) ? detail.userInfoVO.userImg : '';
         let userName = (detail.userInfoVO && detail.userInfoVO.userName) ? detail.userInfoVO.userName : '';
-
+        let attentionText = '';
+        if (detail.attentionStatus === 0) {
+            attentionText = '关注';
+        } else if (detail.attentionStatus === 1) {
+            attentionText = '已关注';
+        } else if (detail.attentionStatus === 2) {
+            attentionText = '相互关注';
+        }
         return (
 
             <View style={styles.navTitle}>
                 <TouchableOpacity style={styles.backView} onPress={() => this._goBack()}>
-                    <Image source={res.back}/>
+                    <Image source={res.button.back_black} style={{ width: 30, height: 30 }}/>
                 </TouchableOpacity>
                 <View style={styles.profileRow}>
                     <View style={styles.profileLeft}>
-                        <AvatarImage borderRadius={px2dp(15)} style={styles.portrait}
-                                     source={{ uri: userImage }}/>
+                        <TouchableWithoutFeedback onPress={() => {
+                            let userNo = detail.userInfoVO.userNo;
+                            if (user.code === userNo) {
+                                routeNavigate(RouterMap.MyDynamicPage, { userType: WhiteModel.userStatus === 2 ? 'mineWriter' : 'mineNormal' });
+                            } else {
+                                routePush(RouterMap.MyDynamicPage, {
+                                    userType: 'others',
+                                    userInfo: detail.userInfoVO
+                                });
+                            }
+                        }}>
+                            <View>
+                                <AvatarImage borderRadius={px2dp(15)} style={styles.portrait}
+                                             source={{ uri: userImage }}/>
+                            </View>
+                        </TouchableWithoutFeedback>
                         <Text style={styles.showName}
                               allowFontScaling={false}>{userName}</Text>
                     </View>
                 </View>
+                {detail.userInfoVO ?
+                    <TouchableWithoutFeedback onPress={() => {
+                        if (detail.attentionStatus === 0) {
+                            ShowApi.userFollow({ userNo: detail.userInfoVO.userNo }).then(() => {
+                                this.showDetailModule.setAttentionStatus(1);
+                            }).catch((err) => {
+                                this.$toastShow(err.msg);
+                            });
+                        } else {
+                            ShowApi.cancelFollow({ userNo: detail.userInfoVO.userNo }).then(() => {
+                                this.showDetailModule.setAttentionStatus(0);
+                            }).catch((err) => {
+                                this.$toastShow(err.msg);
+                            });
+                        }
+                    }}>
+                        {detail.attentionStatus === 0 ? <LinearGradient
+                            start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+                            colors={['#FFCB02', '#FF9502']}
+                            style={{
+                                width: px2dp(65),
+                                height: px2dp(28),
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                borderRadius: px2dp(14),
+                                marginRight: detail.status === 1 ? 0 : px2dp(15)
+                            }}>
+                            <Text style={{ color: DesignRule.white, fontSize: DesignRule.fontSize_threeTitle }}>
+                                {attentionText}
+                            </Text>
+                        </LinearGradient> : <View style={{
+                            width: px2dp(65),
+                            height: px2dp(28),
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            borderRadius: px2dp(14),
+                            backgroundColor: '#FFF5CC',
+                            marginRight: detail.status === 1 ? 0 : px2dp(15)
+                        }}>
+                            <Text style={{ color: '#FF9502', fontSize: DesignRule.fontSize_threeTitle }}>
+                                {attentionText}
+                            </Text>
+                        </View>}
+
+                    </TouchableWithoutFeedback> : null
+                }
                 {detail.status === 1 ? <TouchableOpacity style={styles.shareView} onPress={() => {
                     this._goToShare();
                 }}>
@@ -355,30 +425,68 @@ export default class ShowRichTextDetailPage extends BasePage {
             detail.likesCount -= 1;
             this.showDetailModule.setDetail(detail);
 
-            const { showNo , userInfoVO } = detail;
+            const { showNo, userInfoVO } = detail;
             const { userNo } = userInfoVO || {};
-            track(trackEvent.XiuChangLikeClick,{
-                xiuChangBtnLocation:'2',
-                xiuChangListType:'',
-                articleCode:showNo,
-                author:userNo,
-                likeType:2
-            })
+            track(trackEvent.XiuChangLikeClick, {
+                xiuChangBtnLocation: '2',
+                xiuChangListType: '',
+                articleCode: showNo,
+                author: userNo,
+                likeType: 2
+            });
         } else {
             this.incrCountByType(1);
             detail.like = true;
             detail.likesCount += 1;
             this.showDetailModule.setDetail(detail);
 
-            const { showNo , userInfoVO } = detail;
+            const { showNo, userInfoVO } = detail;
             const { userNo } = userInfoVO || {};
-            track(trackEvent.XiuChangLikeClick,{
-                xiuChangBtnLocation:'2',
-                xiuChangListType:'',
-                articleCode:showNo,
-                author:userNo,
-                likeType:1
-            })
+            track(trackEvent.XiuChangLikeClick, {
+                xiuChangBtnLocation: '2',
+                xiuChangListType: '',
+                articleCode: showNo,
+                author: userNo,
+                likeType: 1
+            });
+        }
+    };
+
+    _collectClick = () => {
+        let { detail } = this.showDetailModule;
+        if (detail.collect) {
+            if (detail.collectCount <= 0) {
+                return;
+            }
+            this.reduceCountByType(2);
+            detail.collect = false;
+            detail.collectCount -= 1;
+            this.showDetailModule.setDetail(detail);
+
+            // const { showNo, userInfoVO } = detail;
+            // const { userNo } = userInfoVO || {};
+            // track(trackEvent.XiuChangLikeClick, {
+            //     xiuChangBtnLocation: '2',
+            //     xiuChangListType: '',
+            //     articleCode: showNo,
+            //     author: userNo,
+            //     likeType: 2
+            // });
+        } else {
+            this.incrCountByType(2);
+            detail.collect = true;
+            detail.collectCount += 1;
+            this.showDetailModule.setDetail(detail);
+
+            // const { showNo, userInfoVO } = detail;
+            // const { userNo } = userInfoVO || {};
+            // track(trackEvent.XiuChangLikeClick, {
+            //     xiuChangBtnLocation: '2',
+            //     xiuChangListType: '',
+            //     articleCode: showNo,
+            //     author: userNo,
+            //     likeType: 1
+            // });
         }
     };
 
@@ -395,9 +503,18 @@ export default class ShowRichTextDetailPage extends BasePage {
                     </View>
                 </NoMoreClick>
                 <View style={{ width: px2dp(24) }}/>
+                <NoMoreClick onPress={this._collectClick}>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Image source={detail.collect ? collected : uncollected} style={styles.bottomIcon}/>
+                        <Text style={styles.bottomNumText}>
+                            {ShowUtils.formatShowNum(detail.collectCount)}
+                        </Text>
+                    </View>
+                </NoMoreClick>
+                <View style={{ width: px2dp(24) }}/>
 
                 <View style={{ flex: 1 }}/>
-                {!EmptyUtils.isEmptyArr(detail.products) ? <TouchableWithoutFeedback onPress={() => {
+                <TouchableWithoutFeedback onPress={() => {
                     this.setState({
                         productModalVisible: true
                     });
@@ -435,7 +552,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                             </Text>
                         </View>
                     </View>
-                </TouchableWithoutFeedback> : null}
+                </TouchableWithoutFeedback>
 
             </View>
         );
@@ -455,20 +572,20 @@ export default class ShowRichTextDetailPage extends BasePage {
                     'productCode': detail.prodCode
                 });
                 /*加入购物车埋点*/
-                const { showNo , userInfoVO } = this.showDetailModule.detail;
+                const { showNo, userInfoVO } = this.showDetailModule.detail;
                 const { userNo } = userInfoVO || {};
                 track(trackEvent.XiuChangAddToCart, {
-                    xiuChangBtnLocation:'2',
-                    xiuChangListType:'',
-                    articleCode:showNo,
-                    author:userNo,
+                    xiuChangBtnLocation: '2',
+                    xiuChangListType: '',
+                    articleCode: showNo,
+                    author: userNo,
                     spuCode: prodCode,
                     skuCode: skuCode,
                     spuName: name,
                     pricePerCommodity: originalPrice,
-                    spuAmount: amount,
+                    spuAmount: amount
                 });
-            }, { sourceType: productIsPromotionPrice ? sourceType.promotion : null });
+            }, { productIsPromotionPrice: productIsPromotionPrice });
         }, (error) => {
             this.$toastShow(error.msg || '服务器繁忙');
         });
@@ -508,11 +625,16 @@ export default class ShowRichTextDetailPage extends BasePage {
         if (detail.status !== 1 && (EmptyUtils.isEmpty(detail.userInfoVO) || detail.userInfoVO.userNo !== user.code)) {
 
             return (<View style={styles.container}>
-                <View style={{backgroundColor:DesignRule.bgColor,alignItems:'center',flex:1,marginTop:ScreenUtils.statusBarHeight}}>
+                <View style={{
+                    backgroundColor: DesignRule.bgColor,
+                    alignItems: 'center',
+                    flex: 1,
+                    marginTop: ScreenUtils.statusBarHeight
+                }}>
                     <Image source={dynamicEmpty}
-                           style={{ width: px2dp(267), height: px2dp(192), marginTop:px2dp(165) }}/>
+                           style={{ width: px2dp(267), height: px2dp(192), marginTop: px2dp(165) }}/>
                     <Text style={styles.emptyTip}>
-                        {detail.status === 2 ? '系统正在快马加鞭审核中,耐心等待哦！':'文章不见了，先看看别的吧！'}
+                        {detail.status === 2 ? '系统正在快马加鞭审核中,耐心等待哦！' : '文章不见了，先看看别的吧！'}
                     </Text>
                 </View>
                 {this._renderNormalTitle()}
@@ -587,18 +709,68 @@ export default class ShowRichTextDetailPage extends BasePage {
                     {detail.title}
                 </Text>
 
-                <AutoHeightWebView source={{ html: html }}
-                                   style={{ width: DesignRule.width - 30, alignSelf: 'center' }}
-                                   scalesPageToFit={true}
-                                   javaScriptEnabled={true}
-                                   cacheEnabled={true}
-                                   domStorageEnabled={true}
-                                   mixedContentMode={'always'}
-                                   onLongClickImage={this._onLongClickImage}
-                                   showsHorizontalScrollIndicator={false}
-                                   showsVerticalScrollIndicator={false}
+                <View>
+                    <AutoHeightWebView source={{ html: html }}
+                                       onSizeUpdated={() => {
+                                           this.setState({ showHtml: true });
+                                       }}
+                                       style={{ width: DesignRule.width - 30, alignSelf: 'center' }}
+                                       scalesPageToFit={true}
+                                       javaScriptEnabled={true}
+                                       cacheEnabled={true}
+                                       domStorageEnabled={true}
+                                       mixedContentMode={'always'}
+                                       onLongClickImage={this._onLongClickImage}
+                                       showsHorizontalScrollIndicator={false}
+                                       showsVerticalScrollIndicator={false}
 
-                />
+                    />
+                    {!this.state.showHtml ?
+                        <View style={{ position: 'absolute', top: 0, left: 0, backgroundColor: '#fff' }}>
+                            <SkeletonPlaceholder>
+                                <View style={{ width: SkeletonWidth, height: 150, marginHorizontal: px2dp(15) }}/>
+                                <View style={{ width: SkeletonWidth, height: 20, marginHorizontal: 15, marginTop: 5 }}/>
+                                <View style={{ width: SkeletonWidth, height: 20, marginHorizontal: 15, marginTop: 5 }}/>
+                                <View style={{ width: SkeletonWidth, height: 20, marginHorizontal: 15, marginTop: 5 }}/>
+                                <View style={{
+                                    width: SkeletonWidth - 80,
+                                    height: 20,
+                                    marginHorizontal: 15,
+                                    marginTop: 5
+                                }}/>
+                                <View style={{
+                                    width: SkeletonWidth,
+                                    height: 150,
+                                    marginHorizontal: px2dp(15),
+                                    marginTop: 5
+                                }}/>
+                                <View style={{ width: SkeletonWidth, height: 20, marginHorizontal: 15, marginTop: 5 }}/>
+                                <View style={{ width: SkeletonWidth, height: 20, marginHorizontal: 15, marginTop: 5 }}/>
+                                <View style={{ width: SkeletonWidth, height: 20, marginHorizontal: 15, marginTop: 5 }}/>
+                                <View style={{
+                                    width: SkeletonWidth - 80,
+                                    height: 20,
+                                    marginHorizontal: 15,
+                                    marginTop: 5
+                                }}/>
+                                <View style={{
+                                    width: SkeletonWidth,
+                                    height: 150,
+                                    marginHorizontal: px2dp(15),
+                                    marginTop: 5
+                                }}/>
+                                <View style={{ width: SkeletonWidth, height: 20, marginHorizontal: 15, marginTop: 5 }}/>
+                                <View style={{ width: SkeletonWidth, height: 20, marginHorizontal: 15, marginTop: 5 }}/>
+                                <View style={{ width: SkeletonWidth, height: 20, marginHorizontal: 15, marginTop: 5 }}/>
+                                <View style={{
+                                    width: SkeletonWidth - 80,
+                                    height: 20,
+                                    marginHorizontal: 15,
+                                    marginTop: 5
+                                }}/>
+                            </SkeletonPlaceholder></View> : null
+                    }
+                </View>
 
                 {this.renderTags()}
 
@@ -609,16 +781,20 @@ export default class ShowRichTextDetailPage extends BasePage {
                                         this.setState({
                                             productModalVisible: false
                                         });
-                                        const {prodCode,name} = data;
+                                        const { prodCode, name } = data;
                                         track(trackEvent.XiuChangSpuClick, {
-                                            xiuChangBtnLocation:'2',
-                                            xiuChangListType:'0',
-                                            articleCode:detail.showNo,
+                                            xiuChangBtnLocation: '2',
+                                            xiuChangListType: '0',
+                                            articleCode: detail.showNo,
                                             spuCode: prodCode,
                                             spuName: name,
                                             author: detail.userInfoVO ? detail.userInfoVO.userNo : ''
                                         });
-                                        this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode ,trackType:3,trackCode:detail.showNo});
+                                        this.$navigate(RouterMap.ProductDetailPage, {
+                                            productCode: prodCode,
+                                            trackType: 3,
+                                            trackCode: detail.showNo
+                                        });
                                     }}
                 />
 
@@ -650,7 +826,11 @@ export default class ShowRichTextDetailPage extends BasePage {
                                                      this.setState({
                                                          productModalVisible: false
                                                      });
-                                                     this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode ,trackType:3,trackCode:detail.showNo});
+                                                     this.$navigate(RouterMap.ProductDetailPage, {
+                                                         productCode: prodCode,
+                                                         trackType: 3,
+                                                         trackCode: detail.showNo
+                                                     });
                                                  }}
                                                  addCart={this.addCart}
                                                  products={detail.products} requestClose={() => {
@@ -658,35 +838,41 @@ export default class ShowRichTextDetailPage extends BasePage {
                     productModalVisible: false
                 });
             }}/> : null}
-            {detail.status === 3  && (EmptyUtils.isEmpty(detail.userInfoVO) || detail.userInfoVO.userNo === user.code) ? this._shieldRender() : null}
+            {detail.status === 3 && (EmptyUtils.isEmpty(detail.userInfoVO) || detail.userInfoVO.userNo === user.code) ? this._shieldRender() : null}
             {detail.status === 2 && (EmptyUtils.isEmpty(detail.userInfoVO) || detail.userInfoVO.userNo === user.code) ? this._renderChecking() : null}
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
-            <CommShareModal ref={(ref) => this.shareModal = ref}
-                            defaultModalVisible={this.params.openShareModal}
-                            type={'Show'}
-                            trackEvent={trackEvent.XiuChangShareClick}
-                            trackParmas={{ articleCode: detail.code, author: (detail.userInfoVO||{}).userNo,xiuChangBtnLocation:'2',xiuChangListType:''}}
-                            imageJson={{
-                                imageType: 'show',
-                                imageUrlStr: detail.resource ? detail.resource[0].url : '',
-                                titleStr: detail.title,
-                                QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
-                                headerImage: (detail.userInfoVO && detail.userInfoVO.userImg) ? detail.userInfoVO.userImg : null,
-                                userName: (detail.userInfoVO && detail.userInfoVO.userName) ? detail.userInfoVO.userName : '',
-                                dec: '好物不独享，内有惊喜福利~'
-                            }}
-                            taskShareParams={{
-                                uri: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
-                                code: 25,
-                                data: detail.showNo
-                            }}
-                            webJson={{
-                                title: detail.title || '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
-                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
-                                thumImage: detail.resource && detail.resource[0] ? detail.resource[0].url : '',//(分享图标小图(https链接)图文分享使用)
-                                dec: '好物不独享，内有惊喜福利~'
-                            }}
-            />
+            {detail ?
+                <CommShowShareModal ref={(ref) => this.shareModal = ref}
+                                    shareName={detail && detail.userInfoVO && detail.userInfoVO.userName}
+                                    type={ShareUtil.showSharedetailDataType(detail && detail.showType)}
+                                    trackEvent={trackEvent.XiuChangShareClick}
+                                    trackParmas={{
+                                        articleCode: detail.code,
+                                        author: (detail.userInfoVO || {}).userNo,
+                                        xiuChangBtnLocation: '2',
+                                        xiuChangListType: ''
+                                    }}
+                                    imageJson={{
+                                        imageType: 'show',
+                                        imageUrlStr: ShowUtils.getCover(detail),
+                                        titleStr: detail.showType === 1 ? detail.content : detail.title,
+                                        QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
+                                        headerImage: (detail.userInfoVO && detail.userInfoVO.userImg) ? detail.userInfoVO.userImg : null,
+                                        userName: (detail.userInfoVO && detail.userInfoVO.userName) ? detail.userInfoVO.userName : '',
+                                        dec: '好物不独享，内有惊喜福利~'
+                                    }}
+                                    taskShareParams={{
+                                        uri: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
+                                        code: detail.showType === 1 ? 22 : 25,
+                                        data: detail.showNo
+                                    }}
+                                    webJson={{
+                                        title: detail.title || '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
+                                        linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
+                                        thumImage: ShowUtils.getCover(detail),//(分享图标小图(https链接)图文分享使用)
+                                        dec: '好物不独享，内有惊喜福利~'
+                                    }}
+                /> : null}
         </View>;
     }
 }
@@ -857,16 +1043,17 @@ let styles = StyleSheet.create({
         marginTop: ScreenUtils.statusBarHeight
     },
     backView: {
-        width: px2dp(44),
+        width: px2dp(40),
         height: px2dp(44),
         alignItems: 'center',
         justifyContent: 'center'
     },
     shareView: {
-        width: px2dp(50),
+        width: px2dp(30),
         height: px2dp(44),
-        alignItems: 'center',
-        justifyContent: 'center'
+        alignItems: 'flex-end',
+        justifyContent: 'center',
+        marginRight:px2dp(15)
     },
     titleView: {
         flex: 1,
@@ -959,13 +1146,13 @@ let styles = StyleSheet.create({
         left: 0,
         right: 0
     },
-    checkingTextWrapper:{
+    checkingTextWrapper: {
         width: DesignRule.width,
         backgroundColor: 'black',
         paddingHorizontal: DesignRule.margin_page,
-        height:px2dp(44),
-        flexDirection:'row',
-        alignItems:'center'
-    },
+        height: px2dp(44),
+        flexDirection: 'row',
+        alignItems: 'center'
+    }
 });
 

@@ -1,12 +1,5 @@
 import React, { Component } from 'react';
-import {
-    StyleSheet,
-    FlatList,
-    View,
-    ActivityIndicator,
-    TouchableOpacity,
-    Image, RefreshControl
-} from 'react-native';
+import { ActivityIndicator, FlatList, Image, RefreshControl, StyleSheet, TouchableOpacity, View } from 'react-native';
 import PropTypes from 'prop-types';
 import ScreenUtils from '../../utils/ScreenUtils';
 import res from '../../comm/res';
@@ -22,12 +15,12 @@ export default class RefreshList extends Component {
     static defaultProps = {
         data: [],
         isHideFooter: true,
-        topBtn:false,
+        topBtn: false
     };
 
     static propTypes = {
         emptyIcon: PropTypes.any,
-        topBtn: PropTypes.bool,
+        topBtn: PropTypes.bool
     };
 
     constructor(props) {
@@ -80,8 +73,8 @@ export default class RefreshList extends Component {
                 } else {
                     return (
                         <View style={styles.footer_container}>
-                            <ActivityIndicator size="small" color="#888888"/>
-                            <Text style={styles.footer_text}>拼命加载中…</Text>
+                            <ActivityIndicator size="small" color={DesignRule.mainColor}/>
+                            <Text style={styles.footer_text}>加载中…</Text>
                         </View>);
                 }
             }
@@ -100,7 +93,7 @@ export default class RefreshList extends Component {
     };
 
     renderEmpty = () => {
-        return <EmptyView description={''} subDescription={this.state.emptyTip} source={this.state.emptyIcon}/>
+        return <EmptyView description={''} subDescription={this.state.emptyTip} source={this.state.emptyIcon}/>;
     };
 
     refresh = () => {
@@ -118,40 +111,43 @@ export default class RefreshList extends Component {
 
 
     render() {
-        const { data, headerData, firstLoading, renderItem, onRefresh, keyExtractor, onListViewScroll, isEmpty, extraData, progressViewOffset, topBtn, ...attributes} = this.props;
+        const { data, headerData, firstLoading, renderItem, onRefresh, keyExtractor, onListViewScroll, isEmpty, extraData, progressViewOffset, topBtn, ...attributes } = this.props;
         let refreshingState = this.state.refreshing;
-        if(firstLoading){
-            refreshingState = firstLoading === 1 ? true : this.state.refreshing
+        if (firstLoading) {
+            refreshingState = firstLoading === 1 ? true : this.state.refreshing;
         }
         if (data.length > 0 || headerData) {
             return (
-                <View style={{flex:1}}>
-                <FlatList
-                    style={[{ width: ScreenUtils.width, flex: 1 }, this.props.style && this.props.style]}
-                    data={data}
-                    showsVerticalScrollIndicator={false}
-                    renderItem={renderItem}
-                    onEndReached={this.props.onLoadMore ? this.onEndReached : null}
-                    extraData={extraData}
-                    onEndReachedThreshold={0.1}
-                    onScroll={(e)=>{onListViewScroll && onListViewScroll(e)}}
-                    ListFooterComponent={this.renderFooter}
-                    ListHeaderComponent={this.props.ListHeaderComponent}
-                    keyExtractor={keyExtractor ? keyExtractor : (item, index) => index.toString()}
-                    refreshControl={<RefreshControl refreshing={refreshingState}
-                                                    onRefresh={onRefresh ? this.refresh : null}
-                                                    colors={[DesignRule.mainColor]}
-                                                    progressViewOffset={progressViewOffset}/>}
-                    ref={'flatlist'}
-                    {...attributes}
-                />
+                <View style={{ flex: 1 }}>
+                    <FlatList
+                        style={[{ width: ScreenUtils.width, flex: 1 }, this.props.style && this.props.style]}
+                        data={data}
+                        showsVerticalScrollIndicator={false}
+                        renderItem={renderItem}
+                        onEndReached={this.props.onLoadMore ? this.onEndReached : null}
+                        extraData={extraData}
+                        onEndReachedThreshold={0.1}
+                        onScroll={(e) => {
+                            onListViewScroll && onListViewScroll(e);
+                        }}
+                        ListFooterComponent={this.renderFooter}
+                        ListHeaderComponent={this.props.ListHeaderComponent}
+                        keyExtractor={keyExtractor ? keyExtractor : (item, index) => index.toString()}
+                        refreshControl={<RefreshControl refreshing={refreshingState}
+                                                        onRefresh={onRefresh ? this.refresh : null}
+                                                        colors={[DesignRule.mainColor]}
+                                                        progressViewOffset={progressViewOffset}/>}
+                        ref={'flatlist'}
+                        {...attributes}
+                    />
                     {topBtn ?
                         <View style={styles.topbtnStyle}>
-                            <TouchableOpacity onPress={()=>this.scrollToIndex({viewPosition: 0, index: 0 })}>
+                            <TouchableOpacity onPress={() => this.scrollToIndex({ viewPosition: 0, index: 0 })}>
                                 <Image source={res.other.top_Icon}
-                                       style={{width: ScreenUtils.px2dp(45),
-                                           height: ScreenUtils.px2dp(45),
-                                       }} />
+                                       style={{
+                                           width: ScreenUtils.px2dp(45),
+                                           height: ScreenUtils.px2dp(45)
+                                       }}/>
                             </TouchableOpacity>
                         </View>
                         : null
@@ -186,10 +182,10 @@ const styles = StyleSheet.create({
         margin: 10,
         height: 44
     },
-    topbtnStyle:{
+    topbtnStyle: {
         position: 'absolute',
         right: 14,
-        bottom: 50,
+        bottom: 50
     }
 });
 

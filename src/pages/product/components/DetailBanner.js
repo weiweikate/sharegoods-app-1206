@@ -8,7 +8,6 @@ import VideoView from '../../../components/ui/video/VideoView';
 import StringUtils from '../../../utils/StringUtils';
 import UIImage from '@mr/image-placeholder';
 import DesignRule from '../../../constants/DesignRule';
-import { formatDate } from '../../../utils/DateUtils';
 import { MRText as Text } from '../../../components/ui/index';
 import { routeNavigate } from '../../../navigation/RouterMap';
 import RouterMap from '../../../navigation/RouterMap';
@@ -73,7 +72,7 @@ export class DetailBanner extends Component {
 
     render() {
         //有视频第一个添加为视频
-        const { imgFileList, videoUrl, imgUrl, productStatus, upTime } = this.props.data || {};
+        const { imgFileList, videoUrl, imgUrl } = this.props.data || {};
 
         let productImgListTemp = [...(imgFileList || [])];
         productImgListTemp = productImgListTemp || [];
@@ -115,19 +114,6 @@ export class DetailBanner extends Component {
                                 bounces={true}
                             />
                     }
-                    {/*未开始售卖*/}
-                    {productStatus === 3 ? <View style={{
-                        position: 'absolute',
-                        bottom: 0, left: 0, right: 0, height: 20,
-                        backgroundColor: 'rgba(255,0,80,0.8)',
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                    }}>
-                        <Text style={{
-                            color: DesignRule.white,
-                            fontSize: 13
-                        }} allowFontScaling={false}>{`${upTime ? formatDate(upTime, 'yyyy-MM-dd HH:mm') : ''}开售`}</Text>
-                    </View> : null}
                     {Platform.OS === 'ios' ? this._renderStyle() : null}
                 </View>
             );

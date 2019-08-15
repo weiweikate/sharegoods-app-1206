@@ -1,24 +1,15 @@
 import React, { Component } from 'react';
-import {
-    Animated,
-    Dimensions,
-    Keyboard,
-    PixelRatio,
-    Platform,
-    StyleSheet,
-    TouchableWithoutFeedback,
-    View
-} from 'react-native';
+import { Animated, Keyboard, PixelRatio, Platform, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import Modal from '../../../comm/components/CommModal';
 import DesignRule from '../../../constants/DesignRule';
 import { MRText as Text } from '../../../components/ui';
 import ScreenUtils from '../../../utils/ScreenUtils';
 
-const MAX_SCREENT = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);
-const MIN_SCREENT = Math.min(Dimensions.get('window').width, Dimensions.get('window').height);
+const MAX_SCREENT = ScreenUtils.MAX_SCREENT;
+const MIN_SCREENT = ScreenUtils.MIN_SCREENT;
 const IPHONEX = (Platform.OS === 'ios') && (MIN_SCREENT === 375.00 && MAX_SCREENT === 812.0);
 
-const SCREEN_HEIGHT = Dimensions.get('window').height;
+const SCREEN_HEIGHT = ScreenUtils.height;
 const Animated_Duration = 300;//默认的动画持续时间
 
 //默认回调。防止用户使用时，回调设置为空

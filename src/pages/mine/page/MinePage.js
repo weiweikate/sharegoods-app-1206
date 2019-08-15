@@ -1,12 +1,14 @@
 import React from 'react';
 import {
-    StyleSheet,
-    View,
+    BackHandler,
+    Clipboard,
+    DeviceEventEmitter,
+    Image,
     ImageBackground,
-    // RefreshControl,
+    StyleSheet,
+    TouchableOpacity,
     TouchableWithoutFeedback,
-    DeviceEventEmitter, TouchableOpacity,
-    Image, BackHandler, Clipboard
+    View
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import UIText from '../../../components/ui/UIText';
@@ -26,12 +28,15 @@ import EmptyUtils from '../../../utils/EmptyUtils';
 import MessageApi from '../../message/api/MessageApi';
 // import ImageLoad from '@mr/image-placeholder';
 import UIImage from '../../../components/ui/UIImage';
-import { MRText as Text, AvatarImage } from '../../../components/ui';
+import { AvatarImage, MRText as Text } from '../../../components/ui';
 import LoginAPI from '../../login/api/LoginApi';
 import CommModal from '../../../comm/components/CommModal';
 import { track, TrackApi, trackEvent } from '../../../utils/SensorsTrack';
 import settingModel from '../model/SettingModel';
 import PullView from '../components/pulltorefreshlayout';
+import WhiteModel from '../../show/model/WhiteModel'
+import { mediatorCallFunc } from '../../../SGMediator';
+import { AutoHeightImage } from '../../../components/ui/AutoHeightImage';
 
 
 const {
@@ -54,10 +59,10 @@ const {
     // mine_icon_discollect,
     mine_message_icon_white,
     mine_setting_icon_white,
-    profile_banner,
+    // profile_banner,
     mine_icon_mentor,
-    mine_user_icon,
     mine_icon_fans,
+    mine_icon_show,
     // mine_levelBg,
     mine_showOrder
 } = res.homeBaseImg;
@@ -98,7 +103,8 @@ export default class MinePage extends BasePage {
             hasMessageNum: 0,
             hasFans: false,
             hasFansMSGNum: 0,
-            modalId: false
+            modalId: false,
+            adArr:[]
         };
 
     }
@@ -129,7 +135,9 @@ export default class MinePage extends BasePage {
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
                 const { state } = payload;
                 this.loadMessageCount();
+                this.loadAd();
                 this._needShowFans();
+                WhiteModel.saveWhiteType();
                 console.log('willFocusSubscriptionMine', state);
                 if (state && state.routeName === 'MinePage') {
                     this.refresh();
@@ -166,6 +174,21 @@ export default class MinePage extends BasePage {
     $isMonitorNetworkStatus() {
         return false;
     }
+
+    loadAd = () => {
+        MineApi.queryAdList({type:24}).then(result => {
+            if (!EmptyUtils.isEmpty(result.data)) {
+                this.setState({
+                    adArr: result.data
+                });
+            }
+        }).catch((error) => {
+            this.setState({
+                adArr: []
+            });
+        });
+
+    };
 
     loadMessageCount = () => {
         MessageApi.getNewNoticeMessageCount().then(result => {
@@ -361,7 +384,7 @@ export default class MinePage extends BasePage {
 
         let icon = (user.headImg && user.headImg.length > 0) ?
             <AvatarImage source={{ uri: user.headImg }} style={styles.userIconStyle}
-                         borderRadius={px2dp(27)}/> : <Image source={mine_user_icon} style={styles.userIconStyle}
+                         borderRadius={px2dp(27)}/> : <Image source={res.placeholder.avatar_default} style={styles.userIconStyle}
                                                              borderRadius={px2dp(27)}/>;
 
         return (
@@ -465,7 +488,7 @@ export default class MinePage extends BasePage {
 
         let icon = (user.headImg && user.headImg.length > 0) ?
             <AvatarImage source={{ uri: user.headImg }} style={styles.userIconNavStyle}
-                         borderRadius={px2dp(15)}/> : <Image source={mine_user_icon} style={styles.userIconNavStyle}
+                         borderRadius={px2dp(15)}/> : <Image source={res.placeholder.avatar_default} style={styles.userIconNavStyle}
                                                              borderRadius={px2dp(15)}/>;
 
         return (
@@ -553,7 +576,7 @@ export default class MinePage extends BasePage {
                         TrackApi.ViewAccountBalance();
                     })}
                     <View style={{ height: 30, width: 1, backgroundColor: '#E4E4E4' }}/>
-                    {this.accountItemView(StringUtils.formatMoneyString(user.totalScore ? user.totalScore : '0', false), '秀豆账户(枚)', 2, () => {
+                    {this.accountItemView(user.totalScore ? user.totalScore : '0', '秀豆账户(枚)', 2, () => {
                         settingModel.userScoreAdd();
                         this.go2CashDetailPage(2);
                         TrackApi.ViewShowDou();
@@ -784,22 +807,35 @@ export default class MinePage extends BasePage {
                 {this.orderRender()}
                 {this.activeRender()}
                 {this.utilsRender()}
-                {/*{this.renderMoreMoney()}*/}
+                {this.renderADView()}
             </View>
         );
     };
 
-    renderMoreMoney = () => {
+    renderADView = () => {
+        if(this.state.adArr.length <= 0){
+            return null;
+        }
+
         return (
-            <TouchableWithoutFeedback onPress={() => {
-                this.$navigate(RouterMap.ShowRichTextDetailPage, {
-                    fromHome: false,
-                    code: 'SHOW2019052714482778300000600000'
-                });
-                TrackApi.ViewHowTo();
-            }}>
-                <UIImage style={styles.makeMoneyMoreBackground} resizeMode={'stretch'} source={profile_banner}/>
-            </TouchableWithoutFeedback>
+            <View>
+                {this.state.adArr.map((item,index)=>{
+                    return(
+                        <View>
+                            <TouchableOpacity onPress={()=>{console.log('item',item);mediatorCallFunc('Home_AdNavigate',item)}}>
+                            {item.image ?
+                                <AutoHeightImage source={{ uri: item.image }} style={{}}
+                                                 borderRadius={5}
+                                                 ImgWidth={ScreenUtils.width}/>
+                                : null
+                            }
+                            </TouchableOpacity>
+                        </View>
+                    )
+
+                    })
+                }
+            </View>
         );
     };
 
@@ -934,15 +970,15 @@ export default class MinePage extends BasePage {
                 this.$navigate(RouterMap.AddressManagerPage);
             }
         };
-        // let collect = {
-        //     text: '秀场收藏',
-        //     icon: mine_icon_discollect,
-        //     onPress: () => {
-        //         TrackApi.ViewMyXiuCollection();
-        //         TrackApi.WatchXiuChang({ xiuChangModuleSource: 3 });
-        //         this.$navigate(RouterMap.ShowConnectPage);
-        //     }
-        // };
+        let collect = {
+            text: '秀场收藏',
+            icon: mine_icon_show,
+            onPress: () => {
+                TrackApi.ViewMyXiuCollection();
+                TrackApi.WatchXiuChang({ xiuChangModuleSource: 3 });
+                this.$navigate(RouterMap.MyDynamicPage, { userType: WhiteModel.userStatus === 2 ? 'mineWriter' : 'mineNormal' });
+            }
+        };
 
 
         let mentorSet = {
@@ -971,7 +1007,7 @@ export default class MinePage extends BasePage {
         };
 
 
-        let menu = [message, service, address, setting];
+        let menu = [message, service, address, collect, setting];
 
 
         if (this.state.hasFans) {

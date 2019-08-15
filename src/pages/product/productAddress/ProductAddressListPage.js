@@ -6,7 +6,7 @@ import DesignRule from '../../../constants/DesignRule';
 import { MRText } from '../../../components/ui';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import RouterMap, { navigate } from '../../../navigation/RouterMap';
+import RouterMap, { routePush, popToRouteName } from '../../../navigation/RouterMap';
 import { observer } from 'mobx-react';
 
 const { pAddress } = res;
@@ -18,37 +18,43 @@ export class ProductAddressPage extends BasePage {
         title: '配送至'
     };
 
-    componentDidMount() {
-        const { productDetailAddressModel } = this.params;
-        productDetailAddressModel.requestAddress();
-    }
-
     _renderItem = ({ item }) => {
-        const { receiverPhone, receiver, province, city, area, address } = item;
+        const { receiverPhone, receiver, province, city, area, address, areaCode, defaultStatus } = item;
         return (
-            <View style={styles.itemView}>
+            <NoMoreClick style={styles.itemView} onPress={() => {
+                const { productDetailAddressModel } = this.params;
+                productDetailAddressModel.addressSelectedText = `${province || ''}${city || ''}${area || ''}`;
+                productDetailAddressModel.addressSelectedCode = areaCode;
+                popToRouteName(RouterMap.ProductDetailPage);
+            }}>
                 <View style={styles.itemTopView}>
-                    <MRText style={styles.itemNameText}>{receiver || ''}</MRText>
-                    <MRText style={styles.itemPhoneText}>{receiverPhone || ''}</MRText>
+                    <View style={styles.itemDefaultView}>
+                        <MRText style={styles.itemNameText}>{receiver || ''}</MRText>
+                        <MRText style={styles.itemPhoneText}>{receiverPhone || ''}</MRText>
+                    </View>
+                    {defaultStatus === 1 && <View style={styles.itemDefaultRedView}>
+                        <MRText style={styles.itemDefaultRedText}>默认</MRText>
+                    </View>}
                 </View>
                 <MRText
                     style={styles.itemAddressText}>{`${province || ''}${city || ''}${area || ''}${address || ''}`}</MRText>
-            </View>
+            </NoMoreClick>
         );
     };
+
     _keyExtractor = (item, index) => {
-        return item.id + index + '';
+        return item.areaCode + index;
     };
 
     _render() {
         const { productDetailAddressModel } = this.params;
-        const { addressText, addressList } = productDetailAddressModel;
+        const { showAreaText, addressList } = productDetailAddressModel;
         return (
             <View style={{ flex: 1 }}>
                 <MRText style={styles.sectionText}>当前配送至</MRText>
                 <View style={styles.section1View}>
                     <Image source={pAddress} style={styles.addressImg}/>
-                    <MRText style={styles.section1ViewText}>{addressText}</MRText>
+                    <MRText style={styles.section1ViewText}>{showAreaText}</MRText>
                 </View>
                 <MRText style={styles.sectionText}>从我的收货地址选择</MRText>
                 <FlatList data={addressList}
@@ -57,7 +63,7 @@ export class ProductAddressPage extends BasePage {
                           showsVerticalScrollIndicator={false}/>
                 <View style={styles.bottomView}>
                     <NoMoreClick style={styles.bottomBtn} onPress={() => {
-                        navigate(RouterMap.AddressSelectPage, { productDetailAddressModel });
+                        routePush(RouterMap.AddressSelectPage, { productDetailAddressModel });
                     }}>
                         <MRText style={styles.bottomText}>选择其他地区</MRText>
                     </NoMoreClick>
@@ -90,14 +96,24 @@ const styles = StyleSheet.create({
         backgroundColor: 'white', borderRadius: 5
     },
     itemTopView: {
-        flexDirection: 'row', justifyContent: 'space-between', marginVertical: 10
+        flexDirection: 'row', justifyContent: 'space-between', marginVertical: 10, alignItems: 'center'
     },
     itemNameText: {
         marginLeft: 10,
         color: DesignRule.textColor_mainTitle, fontSize: 12
     },
+    itemDefaultView: {
+        flexDirection: 'row', alignItems: 'center'
+    },
+    itemDefaultRedView: {
+        alignItems: 'center', justifyContent: 'center', marginRight: 10,
+        width: 30, height: 17, backgroundColor: '#FFE5ED', borderRadius: 3
+    },
+    itemDefaultRedText: {
+        color: DesignRule.textColor_redWarn, fontSize: 10
+    },
     itemPhoneText: {
-        marginRight: 10,
+        marginLeft: 10,
         color: DesignRule.textColor_mainTitle, fontSize: 12
     },
     itemAddressText: {
@@ -106,10 +122,10 @@ const styles = StyleSheet.create({
     },
 
     bottomView: {
-        height: 49 + safeBottom, alignItems: 'center'
+        height: 40 + safeBottom + 15, alignItems: 'center'
     },
     bottomBtn: {
-        marginTop: 4.5, justifyContent: 'center', alignItems: 'center',
+        marginBottom: 15, justifyContent: 'center', alignItems: 'center',
         height: 40, backgroundColor: DesignRule.mainColor, borderRadius: 20, width: px2dp(345)
     },
     bottomText: {

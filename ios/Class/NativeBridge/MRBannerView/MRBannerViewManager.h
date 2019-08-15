@@ -29,6 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) CGFloat autoInterval;
 /**卡片宽*/
 @property (nonatomic, assign) CGFloat itemWidth;
+@property (nonatomic, strong) NSString *resizeMode;
 /**视图间距*/
 @property (nonatomic, assign) CGFloat itemSpace;
 /**圆角*/
@@ -39,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) RCTBubblingEventBlock onDidSelectItemAtIndex;
 /**滚动事件*/
 @property (nonatomic, copy) RCTBubblingEventBlock onDidScrollToIndex;
-
+-(void)scrollToIndex:(NSInteger)index animate:(BOOL)animate;
 @end
 
 

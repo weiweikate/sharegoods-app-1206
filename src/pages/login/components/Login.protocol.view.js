@@ -1,11 +1,5 @@
 import React, { Component } from 'react';
-import {
-    View,
-    TouchableOpacity,
-    StyleSheet,
-    Image,
-    Text
-} from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
@@ -22,13 +16,15 @@ const ProtocolViewStyle = StyleSheet.create({
     bgContent: {
         flexDirection: 'row',
         justifyContent: 'center',
-        marginTop: px2dp(20),
-        height: px2dp(50),
-        width: ScreenUtils.width,
+        alignItems: 'center',
+        marginTop: px2dp(15),
+        height: px2dp(21),
+        marginBottom: px2dp(12),
+        width: ScreenUtils.width
     },
-    selectImageStyle: { width: px2dp(11), height: px2dp(11), marginRight: px2dp(5) },
+    selectImageStyle: { width: px2dp(12), height: px2dp(12), marginRight: px2dp(5) },
     readTextStyle: { fontSize: 11, color: DesignRule.textColor_secondTitle },
-    protocolClickTextStyle: { color: DesignRule.mainColor, fontSize: 11 }
+    protocolClickTextStyle: { color: DesignRule.mainColor, fontSize: px2dp(11), height: px2dp(15) }
 });
 export default class ProtocolView extends Component {
     constructor(props) {
@@ -56,13 +52,13 @@ export default class ProtocolView extends Component {
                         style={ProtocolViewStyle.selectImageStyle}/>
                 </TouchableOpacity>
                 <Text style={ProtocolViewStyle.readTextStyle}>
-                    阅读并已接受
+                    登录代表你已同意
                 </Text>
                 <TouchableOpacity onPress={() => {
                     textClick && textClick(htmlUrl);
                 }}>
                     <Text style={ProtocolViewStyle.protocolClickTextStyle}>
-                        《用户协议》
+                        《秀购用户协议》
                     </Text>
                 </TouchableOpacity>
             </View>

@@ -1,19 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-    Text,
-    View,
-    Image,
-    PixelRatio,
-    Dimensions,
-    StyleSheet,
-    TouchableOpacity
-} from 'react-native';
+import { Image, PixelRatio, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../../../comm/res';
 
-const SCREEN_WIDTH = Dimensions.get('window').width;
+const SCREEN_WIDTH = ScreenUtils.width;
 
 export default class NavigatorBar extends Component {
 
@@ -282,7 +274,7 @@ const styles = StyleSheet.create({
         left: 0,
         bottom: 0,
         justifyContent: 'center',
-        paddingHorizontal: 15
+        paddingHorizontal: 5
     },
     leftImage: {
         position: 'absolute',

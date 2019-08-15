@@ -14,16 +14,16 @@ import ShowRecommendView from './components/ShowRecommendView';
 import ReleaseButton from './components/ReleaseButton';
 
 import user from '../../model/user';
-import SelectionPage, { sourceType } from '../product/SelectionPage';
+import SelectionPage from '../product/SelectionPage';
 import AddCartModel from './model/AddCartModel';
 import shopCartCacheTool from '../shopCart/model/ShopCartCacheTool';
 import { track, trackEvent } from '../../utils/SensorsTrack';
 import bridge from '../../utils/bridge';
 import ShowApi from './ShowApi';
 import EmptyUtils from '../../utils/EmptyUtils';
-import ShowUtils from './utils/ShowUtils';
 import RouterMap, { routeNavigate, routePush } from '../../navigation/RouterMap';
 import DownloadUtils from './utils/DownloadUtils';
+import WhiteModel from './model/WhiteModel';
 
 @observer
 export default class ShowHotView extends React.Component {
@@ -98,7 +98,7 @@ export default class ShowHotView extends React.Component {
                     pricePerCommodity: originalPrice,
                     spuAmount: amount,
                 });
-            }, { sourceType: productIsPromotionPrice ? sourceType.promotion : null });
+            }, { productIsPromotionPrice: productIsPromotionPrice });
         }, (error) => {
             bridge.$toast(error.msg || '服务器繁忙');
         });
@@ -125,6 +125,9 @@ export default class ShowHotView extends React.Component {
     };
 
     renderHeader = () => {
+        if(!this.props.hasBanner){
+            return <View/>
+        }
         const { bannerList } = showBannerModules;
         if (!bannerList || bannerList.length <= 0) {
             return null;
@@ -151,33 +154,57 @@ export default class ShowHotView extends React.Component {
             <View style={styles.container}>
                 <View style={{ flex: 1, paddingHorizontal: 15 }}>
                     <ShowRecommendView style={{ flex: 1 }}
-                                       uri={'/social/show/content/page/query@GET'}
+                                       uri={this.props.uri}
                                        ref={(ref) => {
                                            this.RecommendShowList = ref;
                                        }}
-                                       type={'recommend'}
-                                       headerHeight={showBannerModules.bannerHeight + 20}
+                                       isLogin={!EmptyUtils.isEmpty(user.token)}
+                                       type={this.props.type || ''}
+                                       headerHeight={this.props.hasBanner ? showBannerModules.bannerHeight + 20 : 0}
                                        renderHeader={Platform.OS === 'ios' ? this.renderHeader() : this.state.headerView}
                                        onStartRefresh={() => {
                                            this.loadData();
                                        }}
+                                       onCollection={({nativeEvent})=>{
+                                           if (!user.isLogin) {
+                                               routeNavigate(RouterMap.LoginPage);
+                                               return;
+                                           }
+                                           if (!nativeEvent.detail.collect) {
+                                               ShowApi.reduceCountByType({
+                                                   showNo: nativeEvent.detail.showNo,
+                                                   type: 2
+                                               });
+                                           } else {
+                                               ShowApi.incrCountByType({ showNo: nativeEvent.detail.showNo, type: 2 });
+                                           }
+                                       }}
+                                       onSeeUser={({nativeEvent})=>{
+                                           let userNo = nativeEvent.userInfoVO.userNo;
+                                           if(user.code === userNo){
+                                               routeNavigate(RouterMap.MyDynamicPage, { userType: WhiteModel.userStatus === 2 ? 'mineWriter' : 'mineNormal' });
+                                           }else {
+                                               routeNavigate(RouterMap.MyDynamicPage,{userType:'others',userInfo:nativeEvent.userInfoVO});
+                                           }
+                                       }}
                                        params={{ spreadPosition: tag.Recommend + '' }}
                                        onItemPress={({ nativeEvent }) => {
-
+                                           const { showNo , userInfoVO } = nativeEvent;
+                                           const { userNo } = userInfoVO || {};
                                            const { navigate } = this.props;
                                            let params = {
                                                data: nativeEvent,
                                                ref: this.RecommendShowList,
                                                index: nativeEvent.index
                                            };
-                                           if (nativeEvent.showType === 1 || nativeEvent.showType === 3) {
+                                           if (nativeEvent.showType === 1) {
                                                navigate(RouterMap.ShowDetailPage, params);
-                                           } else {
+                                           }  else if(nativeEvent.showType === 3){
+                                               navigate(RouterMap.ShowVideoPage, {code:showNo,tabType:this.props.type === 'attention' ? 0:1});
+                                           }else {
                                                navigate(RouterMap.ShowRichTextDetailPage, params);
                                            }
 
-                                           const { showNo , userInfoVO } = nativeEvent;
-                                           const { userNo } = userInfoVO || {};
                                            track(trackEvent.XiuChangEnterClick,{
                                                xiuChangListType:1,
                                                articleCode:showNo,
@@ -199,7 +226,7 @@ export default class ShowHotView extends React.Component {
                                        onPressProduct={({ nativeEvent }) => {
                                            const detail = JSON.parse(nativeEvent.detail)
                                            const product = JSON.parse(nativeEvent.product)
-                                           const {showNo} = detail ||{};
+                                           const {showNo} = detail || {};
                                            track(trackEvent.XiuChangSpuClick, {
                                                xiuChangBtnLocation:'1',
                                                xiuChangListType:'1',
@@ -224,42 +251,35 @@ export default class ShowHotView extends React.Component {
                                        }}
 
                                        onDownloadPress={({ nativeEvent }) => {
+
                                            if (!user.isLogin) {
                                                routeNavigate(RouterMap.LoginPage);
                                                return;
                                            }
                                            let { detail } = nativeEvent;
-                                           if (!EmptyUtils.isEmptyArr(detail.resource)) {
-                                               let urls = detail.resource.map((value) => {
-                                                   return value.url;
+                                           let callback = ()=>{
+                                               detail.downloadCount += 1;
+                                               ShowApi.incrCountByType({
+                                                   showNo: nativeEvent.detail.showNo,
+                                                   type: 4
                                                });
-                                               ShowUtils.downloadShow(urls, detail.content).then(() => {
-                                                   detail.downloadCount += 1;
-                                                   ShowApi.incrCountByType({
-                                                       showNo: nativeEvent.detail.showNo,
-                                                       type: 4
-                                                   });
-                                                   this.RecommendShowList && this.RecommendShowList.replaceItemData(nativeEvent.index, JSON.stringify(detail));
-                                               });
+                                               this.RecommendShowList && this.RecommendShowList.replaceItemData(nativeEvent.index, JSON.stringify(detail));
+                                               this.props.onShare(nativeEvent,true);
+
+                                               const { showNo , userInfoVO } = detail;
+                                               const { userNo } = userInfoVO || {};
+                                               track(trackEvent.XiuChangDownLoadClick,{
+                                                   xiuChangBtnLocation:'1',
+                                                   xiuChangListType:'1',
+                                                   articleCode:showNo,
+                                                   author:userNo
+                                               })
                                            }
-
-                                           DownloadUtils.downloadProduct(nativeEvent);
-                                           this.shareModal && this.shareModal.open();
-                                           this.props.onShare(nativeEvent);
-
-                                           const { showNo , userInfoVO } = detail;
-                                           const { userNo } = userInfoVO || {};
-                                           track(trackEvent.XiuChangDownLoadClick,{
-                                               xiuChangBtnLocation:'1',
-                                               xiuChangListType:'1',
-                                               articleCode:showNo,
-                                               author:userNo
-                                           })
+                                           DownloadUtils.downloadShow(detail,callback);
                                        }}
 
                                        onSharePress={({ nativeEvent }) => {
-                                           this.shareModal && this.shareModal.open();
-                                           this.props.onShare(nativeEvent);
+                                           this.props.onShare(nativeEvent,false);
                                        }}
 
                                        onScrollY={({ nativeEvent }) => {

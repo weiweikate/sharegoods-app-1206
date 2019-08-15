@@ -27,7 +27,7 @@ const api = {
     //一元优惠券兑换
     exchangeTokenCoin: ['/user/exchangeTokenCoin', { method: 'post', checkLogin: true }],
     //首页分类
-    classify: ['/config/advertisement/queryCategoryList', { method: 'get' }],
+    classify: ['/advertising/queryCategoryList', { method: 'get' }],
     //秀豆兑换比例
     getExchange: ['/common/config/getExchange', { method: 'get' }],
     //获取红包  type1:获取红包信息并领取 type2：获取红包信息

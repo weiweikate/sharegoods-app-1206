@@ -1,45 +1,16 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
     View,
-    StyleSheet, NativeModules
-    // Image
-} from 'react-native';
-import { orderDetailAfterServiceModel, orderDetailModel } from '../../model/OrderDetailModel';
-import { observer } from 'mobx-react';
-import StringUtils from '../../../../utils/StringUtils';
-import UserSingleItem from '../UserSingleItem';
-// import res from "../../res";
+} from "react-native";
+import { orderDetailModel } from "../../model/OrderDetailModel";
+import { observer } from "mobx-react";
+import StringUtils from "../../../../utils/StringUtils";
+import UserSingleItem from "../UserSingleItem";
 import DesignRule from '../../../../constants/DesignRule';
-import { MRText as Text, NoMoreClick } from '../../../../components/ui';
-import ScreenUtils from '../../../../utils/ScreenUtils';
-import RouterMap, { routePush } from '../../../../navigation/RouterMap';
-
-const { px2dp } = ScreenUtils;
 
 @observer
 export default class OrderDetailPriceView extends Component {
 
-    renderGiftAfterSales = () => {
-
-        return (
-            <View>
-                {orderDetailAfterServiceModel.currentAsList.length === 0 ? null :
-                    <View>
-                        <View style={{
-                            flexDirection: 'row',
-                            height: 48,
-                            justifyContent: 'flex-end',
-                            alignItems: 'center',
-                            backgroundColor: 'white'
-                        }}>
-                            {this.renderMenus()}
-                        </View>
-                        {this.renderLine()}
-                    </View>
-                }
-            </View>
-        );
-    };
     renderLine = () => {
         return (
             <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/>
@@ -50,90 +21,37 @@ export default class OrderDetailPriceView extends Component {
             <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
         );
     };
-    renderMenus = () => {
-        let itemArr = [];
-        for (let i = 0; i < orderDetailAfterServiceModel.currentAsList.length; i++) {
-            itemArr.push(
-                <NoMoreClick key={i}
-                             style={[styles.grayView, { borderColor: orderDetailAfterServiceModel.currentAsList[i].isRed ? DesignRule.mainColor : DesignRule.color_ddd }]}
-                             onPress={() => {
-                                 this.afterSaleServiceClick(orderDetailAfterServiceModel.currentAsList[i], i);
-                             }}>
-                    <Text
-                        style={[styles.grayText, { color: orderDetailAfterServiceModel.currentAsList[i].isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle }]}
-                        allowFontScaling={false}>{orderDetailAfterServiceModel.currentAsList[i].operation}</Text>
-                </NoMoreClick>
-            );
-        }
-        return itemArr;
-    };
-    afterSaleServiceClick = (menu, index) => {
-        console.log(menu);
-        let products = orderDetailModel.warehouseOrderDTOList[0].products[index];
-        let innerStatus = (products.orderCustomerServiceInfoDTO && products.orderCustomerServiceInfoDTO.status) || null;
-        if (orderDetailModel.orderSubType === 3 && orderDetailModel.status === 2) {
-            NativeModules.commModule.toast('该商品属于升级礼包产品，不能退款');
-            return;
-        } else if (orderDetailModel.orderSubType === 5 && orderDetailModel.status === 2) {
-            NativeModules.commModule.toast('该商品属于经验值专区商品，不能退款');
-            return;
-        }
-        else if (orderDetailModel.status > 3 && products.afterSaleTime < orderDetailModel.warehouseOrderDTOList[0].nowTime && orderDetailModel.warehouseOrderDTOList[0].nowTime
-            && !(innerStatus < 6 && innerStatus >= 1)) {
-            NativeModules.commModule.toast('该商品售后已过期');
-            return;
-        }
-        switch (menu.id) {
-            case 0:
-                routePush(RouterMap.AfterSaleServicePage, {
-                    pageType: 0,
-                    orderProductNo: products.orderProductNo
-                });
-                break;
-            case 1:
-                routePush(RouterMap.AfterSaleServiceHomePage, {
-                    pageData: { ...products, orderSubType: orderDetailModel.orderSubType }
-                });
-                break;
-            case 2:
-                routePush('order/afterSaleService/ExchangeGoodsDetailPage', {
-                    serviceNo: products.orderCustomerServiceInfoDTO.serviceNo
-                });
-                break;
-            case 3:
-                routePush('order/afterSaleService/ExchangeGoodsDetailPage', {
-                    serviceNo: products.orderCustomerServiceInfoDTO.serviceNo
-                });
-                break;
-            case 6:
-                routePush('order/afterSaleService/ExchangeGoodsDetailPage', {
-                    serviceNo: products.orderCustomerServiceInfoDTO.serviceNo
-                });
-                break;
-        }
-    };
+    render(){
+        let {status} = orderDetailModel.merchantOrder;
+        let {
+            promotionAmount,
+            totalAmount,
+            freightAmount,
+            tokenCoinAmount,
+            couponAmount,
+            payAmount} = orderDetailModel.payInfo
 
-    render() {
-        let promotionAmount = orderDetailModel.status > 1 ? orderDetailModel.warehouseOrderDTOList[0].promotionAmount : orderDetailModel.detail.promotionAmount;
-        promotionAmount = promotionAmount || 0;
-        promotionAmount = parseFloat(promotionAmount);
-        return (
-            <View style={{ backgroundColor: 'white', marginTop: 10, paddingTop: 10 }}>
+        return(
+            <View style={{ backgroundColor: 'white',marginTop:10 ,paddingTop:10}}>
                 <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'商品总价'}
                                 leftTextStyle={{ color: DesignRule.textColor_instruction }}
-                                rightText={orderDetailModel.status > 1 ? StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].productPrice) : StringUtils.formatMoneyString(orderDetailModel.detail.productPrice)}
-                                rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
-                                isLine={false}/>
-                <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'运费（快递）'}
-                                leftTextStyle={{ color: DesignRule.textColor_instruction }}
-                                rightText={orderDetailModel.status > 1 ? StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].freightAmount) : StringUtils.formatMoneyString(orderDetailModel.detail.freightAmount)}
+                                rightText={StringUtils.formatMoneyString(totalAmount)}
                                 rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
                                 isLine={false}/>
                 {
-                    promotionAmount !== 0 ?
+                    orderDetailModel.isAllVirtual ? null :
+                        <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'运费（快递）'}
+                                        leftTextStyle={{ color: DesignRule.textColor_instruction }}
+                                        rightText={StringUtils.formatMoneyString(freightAmount)}
+                                        rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
+                                        isLine={false}/>
+                }
+
+                {
+                    promotionAmount !== 0?
                         <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'组合优惠'}
                                         leftTextStyle={{ color: DesignRule.textColor_instruction }}
-                                        rightText={promotionAmount >= 0 ? ('-¥' + promotionAmount) : ('+¥' + Math.abs(promotionAmount))}
+                                        rightText={promotionAmount>=0?('-¥'+promotionAmount):('+¥'+ Math.abs(promotionAmount))}
                                         rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
                                         isLine={false}/>
                         : null
@@ -141,69 +59,22 @@ export default class OrderDetailPriceView extends Component {
 
                 <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'1元现金券'}
                                 leftTextStyle={{ color: DesignRule.textColor_instruction }}
-                                rightText={'-' + (orderDetailModel.status > 1 ? StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].tokenCoinAmount) : StringUtils.formatMoneyString(orderDetailModel.detail.tokenCoinAmount))}
+                                rightText={'-' + StringUtils.formatMoneyString(tokenCoinAmount)}
                                 rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
                                 isLine={false}/>
                 <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'优惠券优惠'}
                                 leftTextStyle={{ color: DesignRule.textColor_instruction }}
-                                rightText={'-' + (orderDetailModel.status > 1 ? StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].couponAmount) : StringUtils.formatMoneyString(orderDetailModel.detail.couponAmount))}
+                                rightText={'-' + StringUtils.formatMoneyString(couponAmount)}
                                 rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
                                 isLine={false}/>
-                <UserSingleItem itemHeightStyle={{ height: 35 }} leftText={'订单总价'}
+                {this.renderWideLine()}
+                <UserSingleItem itemHeightStyle={{ height: 45 }} leftText={`${status > 1 ? '实付款' : '需付款'}`}
                                 leftTextStyle={{ color: DesignRule.textColor_mainTitle_222, fontSize: 15 }}
-                                rightText={orderDetailModel.status > 1 ? StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].orderAmount) : StringUtils.formatMoneyString(orderDetailModel.detail.orderAmount)}
-                                rightTextStyle={{ color: DesignRule.textColor_mainTitle_222, fontSize: 15 }}
-                                isArrow={false}
-                                isLine={false}/>
-                {this.renderLine()}
-                <UserSingleItem itemHeightStyle={{ height: 45 }}
-                                leftText={`${orderDetailModel.status > 1 ? '实付款' : '需付款'}`}
-                                leftTextStyle={{ color: DesignRule.textColor_mainTitle_222, fontSize: 15 }}
-                                rightText={orderDetailModel.status > 1 ? StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].payAmount) : StringUtils.formatMoneyString(orderDetailModel.detail.payAmount)}
+                                rightText={StringUtils.formatMoneyString(payAmount)}
                                 rightTextStyle={{ color: DesignRule.mainColor, fontSize: 15 }} isArrow={false}
                                 isLine={true}/>
             </View>
-        );
+        )
     }
 }
-const styles = StyleSheet.create({
-    couponsIconStyle: {
-        width: 15,
-        height: 12,
-        position: 'absolute',
-        left: 15,
-        top: 12
-    },
-    couponsOuterStyle: {
-        height: 34,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginLeft: 36
-    },
-    couponsTextStyle: {
-        color: DesignRule.textColor_instruction,
-        fontSize: 13,
-        alignSelf: 'center'
-    },
-    couponsLineStyle: {
-        marginLeft: 36,
-        backgroundColor: DesignRule.bgColor,
-        height: 0.5,
-        width: '100%'
-    },
-    grayView: {
-        width: px2dp(90),
-        height: px2dp(30),
-        borderRadius: px2dp(15),
-        backgroundColor: 'white',
-        // borderStyle: "solid",
-        borderWidth: 1,
-        borderColor: DesignRule.lineColor_inGrayBg,
-        marginRight: px2dp(15),
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingLeft: px2dp(10),
-        paddingRight: px2dp(10)
-    }
-});
 

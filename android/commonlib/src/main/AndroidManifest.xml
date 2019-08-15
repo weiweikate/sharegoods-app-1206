@@ -36,5 +36,5 @@
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
-    <application />
+    <application android:label="@string/app_name" />
 </manifest>

@@ -71,7 +71,6 @@ import { MRText, UIImage, UIText } from '../../components/ui';
 import ScreenUtils from '../../utils/ScreenUtils';
 import CommModal from './CommModal';
 import res from '../res';
-import resHome from '../../pages/mine/res';
 import bridge from '../../utils/bridge';
 import DesignRule from '../../constants/DesignRule';
 import { track } from '../../utils/SensorsTrack';
@@ -387,7 +386,7 @@ export default class CommShareModal extends React.Component {
         const shareMoneyText = this.getMoneyText(shareMoney);
         let icon = (user.headImg && user.headImg.length > 0) ?
             <Image source={{ uri: user.headImg }} style={styles.userIcon}
-                   borderRadius={13}/> : <Image source={resHome.homeBaseImg.mine_user_icon} style={styles.userIcon}
+                   borderRadius={13}/> : <Image source={res.placeholder.avatar_default} style={styles.userIcon}
                                                 borderRadius={13}/>;
 
         return (

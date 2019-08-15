@@ -10,6 +10,12 @@
 #import "XG_Api.h"
 typedef void (^SuccessBlock)(id result);
 typedef void (^AFErrorBlock)(NSString *msg, NSInteger code);
+
+typedef void(^HttpSuccessBlock)(id json);
+typedef void(^HttpFailureBlock)(NSError *error);
+typedef void(^HttpDownloadProgressBlock)(CGFloat progress);
+typedef void(^HttpUploadProgressBlock)(CGFloat progress);
+
 @interface NetWorkTool : NSObject
 
 + (void)requestWithURL:(NSString *)url
@@ -24,4 +30,18 @@ typedef void (^AFErrorBlock)(NSString *msg, NSInteger code);
                           progress:(nullable void (^)(NSProgress *downloadProgress))downloadProgress
                            success:(nullable void (^)(NSURLSessionDataTask *task, id _Nullable responseObject))success
                            failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError *error))failure;
+  
+  /**
+   下载文件
+   
+   @param path url路径
+   @param success 下载成功
+   @param failure 下载失败
+   @param progress 下载进度
+   */
++ (void)downloadWithPath:(NSString *)url
+                 success:(HttpSuccessBlock)success
+                 failure:(HttpFailureBlock)failure
+                progress:(HttpDownloadProgressBlock)progress;
+  
 @end

@@ -41,8 +41,8 @@ export default class AfterLogisticsListView extends BasePage {
     };
 
     renderItem = ({ item }) => {
-        let { quantity, product, expNO, expName, expressCode } = item;
-        let { productName, specImg, payAmount, spec } = product;
+        let { quantity, productName, specImg, payAmount, spec, expNO, expName, expressCode } = item;
+        // let { productName, specImg, payAmount, spec } = product;
         return (
             <View style={{ paddingBottom: 10 }}>
                 <TouchableOpacity
@@ -50,7 +50,8 @@ export default class AfterLogisticsListView extends BasePage {
                     onPress={() => {
                         this.$navigate(RouterMap.LogisticsDetailsPage, {
                             expressNo: expNO,
-                            expressCode: expressCode
+                            expressCode: expressCode,
+                            expressName: expName
                         });
                     }}>
                     <View style={styles.expStyle}>
@@ -71,7 +72,8 @@ export default class AfterLogisticsListView extends BasePage {
                     onPress={() => {
                         this.$navigate(RouterMap.LogisticsDetailsPage, {
                             expressNo: expNO,
-                            expressCode: expressCode
+                            expressCode: expressCode,
+                            expressName: expName
                         });
                     }}
                 />
