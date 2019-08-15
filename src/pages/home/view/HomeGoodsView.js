@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { View, StyleSheet, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import EmptyUtils from '../../../utils/EmptyUtils';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
@@ -10,7 +10,7 @@ import DesignRule from '../../../constants/DesignRule';
 import ImageLoader from '@mr/image-placeholder';
 import { MRText as Text } from '../../../components/ui/index';
 import StringUtils from '../../../utils/StringUtils';
-import { homePoint } from '../HomeTypes';
+import { homePoint, topicAdOnPress } from '../HomeTypes';
 
 export const kHomeGoodsViewHeight = px2dp(246);
 const goodsWidth = (ScreenUtils.width - px2dp(35)) / 2;
@@ -25,33 +25,43 @@ const MoneyItems = ({ money }) => {
     return <Text style={styles.unit}>{unitStr}<Text style={styles.money}>{moneyStr}</Text> 起</Text>;
 };
 
-export const Goods = ({ goods, press }) => <TouchableWithoutFeedback onPress={() => press && press()}>
-    <View style={styles.container}>
-        <View style={styles.image}>
-            <ReuserImage style={styles.image} source={{ uri: goods.image ? goods.image : '' }}/>
-            {
-                StringUtils.isEmpty(goods.secTitle)
-                    ?
-                    null
-                    :
-                    <View style={styles.titleView}>
-                        <Text style={styles.title} numberOfLines={1} allowFontScaling={false}>{goods.secTitle}</Text>
-                    </View>
-            }
+export const Goods = ({ goods, press }) => {
+    if (goods.linkType === 2) {
+        return <TouchableOpacity onPress={() => press && press()}>
+            <ReuserImage style={styles.container} source={{ uri: goods.topicImage ? goods.topicImage : '' }}/>
+        </TouchableOpacity>
+    }
+    return   <TouchableWithoutFeedback onPress={() => press && press()}>
+
+        <View style={styles.container}>
+            <View style={styles.image}>
+                <ReuserImage style={styles.image} source={{ uri: goods.image ? goods.image : '' }}/>
+                {
+                    StringUtils.isEmpty(goods.secTitle)
+                        ?
+                        null
+                        :
+                        <View style={styles.titleView}>
+                            <Text style={styles.title} numberOfLines={1}
+                                  allowFontScaling={false}>{goods.secTitle}</Text>
+                        </View>
+                }
+            </View>
+            <Text style={styles.dis} numberOfLines={2} allowFontScaling={false}>{goods.title}</Text>
+            <View style={{ flex: 1 }}/>
+            <MoneyItems money={goods.promotionMinPrice ? goods.promotionMinPrice : goods.price}/>
         </View>
-        <Text style={styles.dis} numberOfLines={2} allowFontScaling={false}>{goods.title}</Text>
-        <View style={{ flex: 1 }}/>
-        <MoneyItems money={goods.promotionMinPrice ? goods.promotionMinPrice : goods.price}/>
-    </View>
-</TouchableWithoutFeedback>;
+    </TouchableWithoutFeedback>;
+}
 
 export default class GoodsCell extends Component {
     _goodsAction(data, index) {
         track(trackEvent.bannerClick, homeModule.bannerPoint(data, homePoint.homeForyou, index));
-        let route = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
-        const { navigate } = this.props;
-        let params = homeModule.paramsNavigate(data);
-        navigate(route, params);
+        // let route = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
+        topicAdOnPress(data.linkType, data.linkCode);
+        // const { navigate } = this.props;
+        // let params = homeModule.paramsNavigate(data);
+        // navigate(route, params);
     }
 
     render() {

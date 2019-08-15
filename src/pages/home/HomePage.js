@@ -294,7 +294,6 @@ class HomeList extends React.Component {
         this.listenerSkip = JSManagerEmitter.addListener(HOME_SKIP, this.homeSkip);
         // 修复首页图标不准确
         this.homeTabChange();
-        this.props.loadTabData();
     }
 
     componentWillUnmount() {
@@ -360,6 +359,7 @@ class HomePage extends BasePage {
                 const { state } = payload;
                 if (state && state.routeName === 'HomePage') {
                     if (homeModule.firstLoad) {
+                        this.loadTabData();
                         homeModule.loadHomeList(true);
                     }
                 }

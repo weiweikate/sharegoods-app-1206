@@ -116,14 +116,14 @@ export default class HomeNormalList extends React.Component {
             itemData = itemData.slice(0,count)
             itemData.push({
 
-                "iconName": "全部分类",
+                "iconName": "查看更多",
                 "iconImage": "https://devcdn.sharegoodsmall.com/sharegoods/3c43abb4f88942f7b3745bf6a4efd51c.jpg",
                 "linkType": 'all',
             })
         } else {
             itemData = itemData.slice(0,9)
             itemData.push({
-                "iconName": "全部分类",
+                "iconName": "查看更多",
                 "iconImage": "https://devcdn.sharegoodsmall.com/sharegoods/3c43abb4f88942f7b3745bf6a4efd51c.jpg",
                 "linkType": 'all',
             })
@@ -227,10 +227,13 @@ export default class HomeNormalList extends React.Component {
             if (temp.length === 2){
                 arr.push(temp);
                 temp = []
-            } else {
-                temp.push(item);
             }
+            temp.push(item);
+
         });
+        if (temp.length > 0){
+            arr.push(temp);
+        }
         return arr;
     }
 
@@ -246,10 +249,13 @@ export default class HomeNormalList extends React.Component {
             if (temp.length === 2){
                 arr.push(temp);
                 temp = []
-            } else {
-                temp.push(item);
             }
+            temp.push(item);
+
         });
+        if (temp.length > 0){
+            arr.push(temp);
+        }
         return arr;
     }
 
