@@ -8,6 +8,7 @@ import {
     NativeModules,
     ActivityIndicator,
     TouchableOpacity,
+    ScrollView
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import { observer } from 'mobx-react';
@@ -443,6 +444,7 @@ class HomePage extends BasePage {
                 <ScrollableTabView
                     onChangeTab={(obj) => {
                         // this.setState({ selectTab: obj.i });
+                        this.tab && this.tab.scrollTo({x: obj.i*60 - ScreenUtils.width/2 + 30})
                         this.homeList && this.homeList.scrollToTop();
                     }}
                     style={styles.container}
@@ -450,7 +452,7 @@ class HomePage extends BasePage {
                     renderTabBar={this._renderTabBar.bind(this)}
                     //进界面的时候打算进第几个
                     initialPage={0}>
-                    <HomeList
+                   <HomeList
                         tabLabel={'推荐'}
                         ref={(ref => {this.homeList = ref})}
                         onScrollBeginDrag={() => {
@@ -495,6 +497,11 @@ class HomePage extends BasePage {
         let tabBarHeight = 40;
         return (
             <View style={{backgroundColor: 'white', height: tabBarHeight, position: 'absolute', top: - this.state.y, left: 0, zIndex: 1, right: 0}}>
+                <ScrollView
+                    horizontal = {true}
+                    showsHorizontalScrollIndicator={false}
+                    ref={ref=>{this.tab = ref}}
+                >
                 <DefaultTabBar
                     activeTab={p.activeTab}
                     style={{ width: itemWidth*p.tabs.length, borderBottomWidth: 0, height: tabBarHeight}}
@@ -512,6 +519,7 @@ class HomePage extends BasePage {
                         )
                     }}
                 />
+                </ScrollView>
             </View>
         )
     }
