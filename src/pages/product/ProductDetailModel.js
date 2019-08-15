@@ -252,6 +252,24 @@ export default class ProductDetailModel {
         return activityType === activity_type.skill && activityStatus === activity_status.inSell;
     }
 
+    @computed get isGroupIn() {
+        const { activityType, activityStatus, groupActivity } = this;
+        return activityType === activity_type.group && activityStatus === activity_status.inSell && (groupActivity.subProductList || []).length > 0;
+    }
+
+    @computed get groupSubProductCanSell() {
+        const { subProductList } = this.groupActivity;
+        for (const subProduct of (subProductList || [])) {
+            const { skuList } = subProduct || {};
+            const skuItem = (skuList || [])[0];
+            const { sellStock } = skuItem || {};
+            if (sellStock < 1) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /*秒杀倒计时显示*/
     @computed get showTimeText() {
         const { skillTimeout, activityStatus } = this;
@@ -332,7 +350,7 @@ export default class ProductDetailModel {
     }
 
     @computed get sectionDataList() {
-        const { promoteInfoVOList, contentArr, paramList, productDetailCouponsViewModel, type, productDetailSuitModel } = this;
+        const { promoteInfoVOList, contentArr, paramList, productDetailCouponsViewModel, type, isGroupIn, productDetailSuitModel } = this;
         const { couponsList } = productDetailCouponsViewModel;
         const { activityCode } = productDetailSuitModel;
         /*头部*/
@@ -340,7 +358,7 @@ export default class ProductDetailModel {
             { key: sectionType.sectionHeader, data: [{ itemKey: productItemType.headerView }] }
         ];
         /*优惠套餐*/
-        if (activityCode) {
+        if (isGroupIn || activityCode) {
             sectionArr.push(
                 { key: sectionType.sectionSuit, data: [{ itemKey: productItemType.suit }] }
             );
@@ -549,7 +567,7 @@ export default class ProductDetailModel {
         /*获取当前商品优惠券列表*/
         this.productDetailCouponsViewModel.requestListProdCoupon(this.prodCode);
         /*获取套餐信息*/
-        this.productDetailSuitModel.request_promotion_detail(this.prodCode);
+        // this.productDetailSuitModel.request_promotion_detail(this.prodCode);
     };
 
     /**请求商品**/
