@@ -24,7 +24,6 @@ export default class ConfirmPriceView extends Component {
     render() {
         return (
             <View style={{ marginBottom: 250 }}>
-                {this.renderLine()}
                 {this.renderPriceView()}
             </View>
         );
@@ -82,6 +81,7 @@ export default class ConfirmPriceView extends Component {
                         </View>
                     </View>
                 }
+                {confirmOrderModel.isAllVirtual ? null :this.renderLine()}
                 {promotionAmount != 0 ? <View style={styles.couponsStyle}
                                                activeOpacity={0.5}
                                                onPress={this.props.jumpToCouponsPage}>

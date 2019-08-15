@@ -8,7 +8,7 @@
 
 #import <React/RCTImageLoader.h>
 
-@interface AA : NSObject <RCTImageDataDecoder>
+@interface SGImageDecode : NSObject <RCTImageDataDecoder>
 
 @end
 

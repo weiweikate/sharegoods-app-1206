@@ -148,7 +148,6 @@
   self = [super init];
   if (self) {
     self.frame = CGRectMake(0, 0, KScreenWidth, kNavBarHeight);
-    self.backgroundColor = [UIColor whiteColor];
     self.swichView = [SwichView new];
     [self addSubview:self.swichView];
     btn = [UIButton new];

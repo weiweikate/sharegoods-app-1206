@@ -737,7 +737,8 @@ var styles = StyleSheet.create({
     },
     noteContain: {
         backgroundColor: DesignRule.white,
-        width: DesignRule.width
+        width: DesignRule.width,
+        marginBottom:px2dp(20)
     },
     textInputStyle: {
         width: DesignRule.width - 2 * DesignRule.margin_page,
@@ -769,7 +770,7 @@ var styles = StyleSheet.create({
     },
     addProductWrapper: {
         alignItems: 'center',
-        marginTop: px2dp(11),
+        marginTop: px2dp(-4),
         marginBottom: px2dp(20),
         marginLeft: DesignRule.margin_page,
         alignSelf: 'flex-start',
@@ -825,7 +826,8 @@ var styles = StyleSheet.create({
     },
     validProductImg: {
         width: px2dp(60),
-        height: px2dp(60)
+        height: px2dp(60),
+        borderRadius:px2dp(5)
     },
     itemTitle: {
         color: DesignRule.textColor_mainTitle,

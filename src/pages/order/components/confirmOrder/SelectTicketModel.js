@@ -156,6 +156,7 @@ export default class SelectTicketModel extends React.Component {
                                          style={{backgroundColor: DesignRule.bgColor}}
                                          paramsFunc={()=>{return this.parmas}}
                                          renderItem={this.renderItem}
+                                         renderHeader={()=> <View style={{height: 20}}/>}
                                          renderEmpty={()=> {
                                              return(
                                                  <View style={{height: autoSizeWidth(480 - 95), alignItems: 'center', justifyContent: 'center'}}>

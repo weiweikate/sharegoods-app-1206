@@ -237,12 +237,18 @@ export default class MyOrdersDetailPage extends BasePage {
         );
     };
     renderItem = (item, index ) => {
+        let resource = item.resource || {}
+        let resourceType = resource.resourceType;
+        let category = item.spec
+        if (resourceType === 'TELEPHONE_CHARGE'){
+            category = '充值号码：' + orderDetailModel.receiveInfo.receiverPhone
+        }
         return (
             <GoodsDetailItem
                 uri={item.specImg}
                 goodsName={item.productName}
                 salePrice={StringUtils.formatMoneyString(item.unitPrice, false)}
-                category={item.spec}
+                category={category}
                 goodsNum={item.quantity}
                 activityCodes={item.activityList || []}
                 style={{ backgroundColor: 'white' }}

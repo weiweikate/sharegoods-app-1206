@@ -159,7 +159,7 @@
 -(void)setType:(BOOL)type{
   _type = type;
   if(type){
-    self.nameLab.sd_layout.topEqualToView(self.headImg);
+    self.nameLab.sd_layout.topSpaceToView(self, 0);
     self.timeLab.sd_layout.heightIs(15);
   }else{
     self.nameLab.sd_layout.topSpaceToView(self, 7.5);
