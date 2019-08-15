@@ -78,6 +78,10 @@ function GetAfterBtns(product) {
         return [];
     }
 
+    if (product.orderType == 1){
+        return [];
+    }
+
     let afterSale = product.afterSale || {}
     let {type, status} = afterSale;
     if (product.status === OrderType.CLOSED){
