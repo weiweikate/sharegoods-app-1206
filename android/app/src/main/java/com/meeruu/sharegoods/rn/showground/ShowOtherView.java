@@ -88,7 +88,7 @@ public class ShowOtherView implements IShowgroundView, SwipeRefreshLayout.OnRefr
                 onRefresh();
             }
         }, 200);
-        adapter = new ShowGroundAdapter();
+        adapter = new ShowGroundAdapter(30);
         adapter.setPreLoadNumber(3);
         adapter.setHasStableIds(true);
         layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);

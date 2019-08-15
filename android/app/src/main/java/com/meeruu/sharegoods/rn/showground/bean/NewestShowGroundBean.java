@@ -187,7 +187,7 @@ public class NewestShowGroundBean {
             this.coverType = coverType;
         }
 
-        public double getCreateSource() {
+        public int getCreateSource() {
             return createSource;
         }
 

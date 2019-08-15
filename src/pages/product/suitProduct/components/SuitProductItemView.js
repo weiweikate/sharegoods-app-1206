@@ -81,10 +81,11 @@ export class SubProductView extends Component {
                     this._selectSku(item);
                 }}>
                     <View>
-                        <MRText style={mStyles.nameText}>{name}</MRText>
+                        <MRText style={mStyles.nameText} numberOfLines={2}>{name}</MRText>
                         <View style={mStyles.specView}>
-                            <MRText style={mStyles.specText}
-                                    numberOfLines={2}>{propertyShow}</MRText>
+                            <MRText
+                                style={[mStyles.specText, !property ? { color: DesignRule.textColor_redWarn } : null]}
+                                numberOfLines={2}>{propertyShow}</MRText>
                             {
                                 defaultSkuItem ? null : <Image style={mStyles.specImg} source={selected_sku}/>
                             }

@@ -125,15 +125,15 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         }
         ImageView hand = helper.getView(R.id.icon_hand);
         if(item.isLike()){
-            hand.setImageResource(R.mipmap.icon_liked);
+            hand.setImageResource(R.drawable.icon_liked);
         }else {
-            hand.setImageResource(R.mipmap.icon_hand_gray);
+            hand.setImageResource(R.drawable.icon_hand_gray);
         }
         ImageView collect = helper.getView(R.id.icon_collection);
         if (item.isCollect()) {
-            collect.setImageResource(R.mipmap.icon_collected);
+            collect.setImageResource(R.drawable.icon_collected);
         } else {
-            collect.setImageResource(R.mipmap.icon_collection_gray);
+            collect.setImageResource(R.drawable.icon_collection_gray);
         }
 
         TextView tvCollection = helper.getView(R.id.collection_num);
@@ -232,15 +232,15 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         }
         ImageView hand = helper.getView(R.id.icon_hand);
         if(item.isLike()){
-            hand.setImageResource(R.mipmap.icon_liked);
+            hand.setImageResource(R.drawable.icon_liked);
         }else {
-            hand.setImageResource(R.mipmap.icon_hand_gray);
+            hand.setImageResource(R.drawable.icon_hand_gray);
         }
         ImageView collect = helper.getView(R.id.icon_collection);
         if (item.isCollect()) {
-            collect.setImageResource(R.mipmap.icon_collected);
+            collect.setImageResource(R.drawable.icon_collected);
         } else {
-            collect.setImageResource(R.mipmap.icon_collection_gray);
+            collect.setImageResource(R.drawable.icon_collection_gray);
         }
 
         TextView collectNum = helper.getView(R.id.collection_num);
@@ -331,15 +331,15 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
 
         ImageView hand = helper.getView(R.id.icon_hand);
         if(item.isLike()){
-            hand.setImageResource(R.mipmap.icon_liked);
+            hand.setImageResource(R.drawable.icon_liked);
         }else {
-            hand.setImageResource(R.mipmap.icon_hand_gray);
+            hand.setImageResource(R.drawable.icon_hand_gray);
         }
         ImageView collect = helper.getView(R.id.icon_collection);
         if (item.isCollect()) {
-            collect.setImageResource(R.mipmap.icon_collected);
+            collect.setImageResource(R.drawable.icon_collected);
         } else {
-            collect.setImageResource(R.mipmap.icon_collection_gray);
+            collect.setImageResource(R.drawable.icon_collection_gray);
         }
 
         TextView name = helper.getView(R.id.user_name);
@@ -413,7 +413,8 @@ public class ShowRecommendAdapter extends BaseMultiItemQuickAdapter<NewestShowGr
         }
 
         ImageView ivRecommend = helper.getView(R.id.iv_recommend);
-        if (item.getCreateSource() == CommValue.NORMAL_USER_CONTENT) {
+        int createSource = item.getCreateSource();
+        if (createSource == CommValue.NORMAL_USER_CONTENT || createSource == CommValue.WRITER_CONTENT) {
             ivRecommend.setVisibility(View.VISIBLE);
         } else {
             ivRecommend.setVisibility(View.GONE);
