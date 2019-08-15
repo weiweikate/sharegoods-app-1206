@@ -33,4 +33,9 @@ RCT_EXPORT_MODULE();
   return ^{};
 }
 
+- (float)decoderPriority
+{
+  return -1.0;
+}
+
 @end
