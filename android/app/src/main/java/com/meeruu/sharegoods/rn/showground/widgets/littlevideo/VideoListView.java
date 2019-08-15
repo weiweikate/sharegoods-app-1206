@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -28,22 +27,16 @@ import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
-import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
@@ -126,7 +119,6 @@ public class VideoListView {
     private ImageView back;
     private SimpleDraweeView userIcon;
     private TextView tvName, tvHotCount, tvAttention;
-    private Handler mainHandler = new Handler();
     private EventDispatcher eventDispatcher;
     private List<String> attentionList = new ArrayList<>();
     private List<String> noAttentionList = new ArrayList<>();
@@ -141,6 +133,8 @@ public class VideoListView {
      * 网络状态监听器
      */
     private NetWatchdog netWatchdog;
+    private ExtractorMediaSource.Factory factory;
+    private CacheDataSourceFactory cacheDataSourceFactory;
 
     public View getVideoListView(ReactContext context) {
         this.mContext = context;
@@ -159,7 +153,11 @@ public class VideoListView {
     }
 
     private void initPlayer(final View view) {
+        releasePlayer();
         mPlayerViewContainer = View.inflate(mContext, R.layout.layout_player_view, null);
+        cacheDataSourceFactory = new CacheDataSourceFactory(mContext, 10 * 1024 * 1024,
+                100 * 1024 * 1024);
+        factory = new ExtractorMediaSource.Factory(cacheDataSourceFactory);
         videoView = mPlayerViewContainer.findViewById(R.id.video_view);
 //        videoView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH);
         videoView.setUseController(false);
@@ -167,24 +165,10 @@ public class VideoListView {
         MappingTrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
         DefaultAllocator allocator = new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE);
         DefaultLoadControl defaultLoadControl = new DefaultLoadControl(allocator, minBufferMs, maxBufferMs, bufferForPlaybackMs, bufferForPlaybackAfterRebufferMs, -1, true);
-        exoPlayer = ExoPlayerFactory.newSimpleInstance(mContext, trackSelector, defaultLoadControl);
+        exoPlayer = ExoPlayerFactory.newSimpleInstance(mContext, new DefaultRenderersFactory(mContext), trackSelector, defaultLoadControl);
 //        ((SimpleExoPlayer) exoPlayer).setVideoScalingMode(C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING);
         exoPlayer.setRepeatMode(Player.REPEAT_MODE_ONE);
         exoPlayer.addListener(new Player.EventListener() {
-            @Override
-            public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
-
-            }
-
-            @Override
-            public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-
-            }
-
-            @Override
-            public void onLoadingChanged(boolean isLoading) {
-
-            }
 
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
@@ -199,39 +183,8 @@ public class VideoListView {
                     mPlayIcon.setVisibility(View.VISIBLE);
                 }
             }
-
-            @Override
-            public void onRepeatModeChanged(int repeatMode) {
-
-            }
-
-            @Override
-            public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
-
-            }
-
-            @Override
-            public void onPlayerError(ExoPlaybackException error) {
-
-            }
-
-            @Override
-            public void onPositionDiscontinuity(int reason) {
-
-            }
-
-            @Override
-            public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
-
-            }
-
-            @Override
-            public void onSeekProcessed() {
-
-            }
         });
-        videoView.setPlayer((SimpleExoPlayer) exoPlayer);
-
+        videoView.setPlayer(exoPlayer);
         mPlayIcon = mPlayerViewContainer.findViewById(R.id.iv_play_icon);
         gestureDetector = new GestureDetector(mContext, new GestureDetector.SimpleOnGestureListener() {
 
@@ -312,6 +265,9 @@ public class VideoListView {
             exoPlayer.release();
             exoPlayer = null;
         }
+        if (cacheDataSourceFactory != null) {
+            cacheDataSourceFactory.realseCache();
+        }
     }
 
     private void init(final View view) {
@@ -335,57 +291,48 @@ public class VideoListView {
         this.videoModel = new VideoModel();
 
         back = view.findViewById(R.id.back_icon);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OnBackPressEvent backPressEvent = new OnBackPressEvent();
-                backPressEvent.init(view.getId());
-                eventDispatcher.dispatchEvent(backPressEvent);
-            }
+        back.setOnClickListener(v -> {
+            OnBackPressEvent backPressEvent = new OnBackPressEvent();
+            backPressEvent.init(view.getId());
+            eventDispatcher.dispatchEvent(backPressEvent);
         });
 
 
         userIcon = view.findViewById(R.id.user_icon);
-        userIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pausePlay();
-                OnSeeUserEvent seeUserEvent = new OnSeeUserEvent();
-                seeUserEvent.init(view.getId());
-                NewestShowGroundBean.DataBean dataBean = getCurrentData();
-                String jsonStr = JSON.toJSONString(dataBean);
-                Map map = JSONObject.parseObject(jsonStr);
-                WritableMap realData = Arguments.makeNativeMap(map);
-                seeUserEvent.setData(realData);
-                eventDispatcher.dispatchEvent(seeUserEvent);
-            }
+        userIcon.setOnClickListener(v -> {
+            pausePlay();
+            OnSeeUserEvent seeUserEvent = new OnSeeUserEvent();
+            seeUserEvent.init(view.getId());
+            NewestShowGroundBean.DataBean dataBean = getCurrentData();
+            String jsonStr = JSON.toJSONString(dataBean);
+            Map map = JSONObject.parseObject(jsonStr);
+            WritableMap realData = Arguments.makeNativeMap(map);
+            seeUserEvent.setData(realData);
+            eventDispatcher.dispatchEvent(seeUserEvent);
         });
 
         tvName = view.findViewById(R.id.tv_name);
         tvHotCount = view.findViewById(R.id.tv_hotCount);
         tvAttention = view.findViewById(R.id.tv_attention);
-        tvAttention.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isLogin) {
-                    NewestShowGroundBean.DataBean dataBean = getCurrentData();
-                    String userNo = dataBean.getUserInfoVO().getUserNo();
-                    if (dataBean.getAttentionStatus() == 0) {
-                        videoModel.attentionUser(userNo, null);
-                        dataBean.setAttentionStatus(1);
-                        updateAttentions(userNo, true);
-                        setAttentionView(true);
-                    } else {
-                        dataBean.setAttentionStatus(0);
-                        videoModel.notAttentionUser(userNo, null);
-                        updateAttentions(userNo, false);
-                        setAttentionView(false);
-                    }
+        tvAttention.setOnClickListener(v -> {
+            if (isLogin) {
+                NewestShowGroundBean.DataBean dataBean = getCurrentData();
+                String userNo = dataBean.getUserInfoVO().getUserNo();
+                if (dataBean.getAttentionStatus() == 0) {
+                    videoModel.attentionUser(userNo, null);
+                    dataBean.setAttentionStatus(1);
+                    updateAttentions(userNo, true);
+                    setAttentionView(true);
                 } else {
-                    OnAttentionPressEvent attentionPressEvent = new OnAttentionPressEvent();
-                    attentionPressEvent.init(view.getId());
-                    eventDispatcher.dispatchEvent(attentionPressEvent);
+                    dataBean.setAttentionStatus(0);
+                    videoModel.notAttentionUser(userNo, null);
+                    updateAttentions(userNo, false);
+                    setAttentionView(false);
                 }
+            } else {
+                OnAttentionPressEvent attentionPressEvent = new OnAttentionPressEvent();
+                attentionPressEvent.init(view.getId());
+                eventDispatcher.dispatchEvent(attentionPressEvent);
             }
         });
 
@@ -551,13 +498,6 @@ public class VideoListView {
             bean.setCollectCount(bean.getCollectCount() + 1);
         }
         if (eventDispatcher != null) {
-//            OnCollectionEvent onCollectionEvent = new OnCollectionEvent();
-//            onCollectionEvent.init(view.getId());
-//            String jsonStr = JSON.toJSONString(bean);
-//            Map map = JSONObject.parseObject(jsonStr);
-//            WritableMap realData = Arguments.makeNativeMap(map);
-//            onCollectionEvent.setData(realData);
-//            eventDispatcher.dispatchEvent(onCollectionEvent);
             OnCollectionEvent buyEvent = new OnCollectionEvent();
             buyEvent.init(view.getId());
             String jsonStr = JSON.toJSONString(bean);
@@ -740,9 +680,9 @@ public class VideoListView {
 
     private MediaSource buildSource(String url) {
         Uri mp4VideoUri = Uri.parse(url);
-        MediaSource videoSource = new ExtractorMediaSource(mp4VideoUri, new CacheDataSourceFactory(mContext, 100 * 1024 * 1024, 5 * 1024 * 1024), new DefaultExtractorsFactory(), mainHandler, null);
-        return videoSource;
-
+        String fileName = url.substring(url.lastIndexOf("/"), url.lastIndexOf("."));
+        cacheDataSourceFactory.setFileName(fileName);
+        return factory.createMediaSource(mp4VideoUri);
     }
 
     /**

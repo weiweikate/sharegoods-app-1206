@@ -1,10 +1,11 @@
 import user from '../../../model/user';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import bridge from '../../../utils/bridge';
-import EmptyUtils from '../../../utils/EmptyUtils';
-import { NativeModules, NetInfo, Alert } from 'react-native';
 import Toast from '../../../utils/bridge';
+import EmptyUtils from '../../../utils/EmptyUtils';
+import { Alert, NativeModules } from 'react-native';
 import StringUtils from '../../../utils/StringUtils';
+import NetInfo from '@react-native-community/netinfo';
 import store from '@mr/rn-store';
 
 const key = '@show/net';
@@ -99,7 +100,7 @@ const downloadVideo = (data) => {
     }
 };
 
-function downloadShow  (data, callback){
+function downloadShow(data, callback) {
     if (EmptyUtils.isEmpty(data)) {
         return;
     }
@@ -116,20 +117,20 @@ function downloadShow  (data, callback){
         } else if (type === 'cellular') {
             store.get(key).then((time) => {
                 if (EmptyUtils.isEmpty(time)) {
-                    showAlert(data,callback);
-                    return
+                    showAlert(data, callback);
+                    return;
                 }
                 let now = Date.parse(new Date());
-                if((now - time) > 24*60*60*1000){
-                    showAlert(data,callback);
-                    return
+                if ((now - time) > 24 * 60 * 60 * 1000) {
+                    showAlert(data, callback);
+                    return;
                 }
-                startDownload(data,callback);
+                startDownload(data, callback);
             }).catch(error => {
-                showAlert(data,callback);
+                showAlert(data, callback);
             });
         } else {
-            startDownload(data,callback);
+            startDownload(data, callback);
         }
     });
 };
@@ -154,7 +155,7 @@ function startDownload(data, callback) {
     }
 }
 
-function showAlert(data,callback) {
+function showAlert(data, callback) {
     Alert.alert('温馨提示', '您当前处于2G/3G/4G环境\n继续下载将使用流量',
         [
             {

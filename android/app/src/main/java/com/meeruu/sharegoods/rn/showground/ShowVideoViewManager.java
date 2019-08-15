@@ -34,7 +34,7 @@ public class ShowVideoViewManager extends SimpleViewManager<View> {
     @Nonnull
     @Override
     protected View createViewInstance(@Nonnull ThemedReactContext reactContext) {
-        final VideoListView videoListView = new VideoListView();
+        VideoListView videoListView = new VideoListView();
         View view = videoListView.getVideoListView(reactContext);
         view.setTag(videoListView);
 
@@ -103,5 +103,13 @@ public class ShowVideoViewManager extends SimpleViewManager<View> {
                 .put("MrCollectionEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onCollection")))
                 .put("MrSeeUserEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onSeeUser")))
                 .build();
+    }
+
+    @Override
+    public void onDropViewInstance(@Nonnull View view) {
+        super.onDropViewInstance(view);
+        if (view.getTag() != null) {
+            ((VideoListView) view.getTag()).releasePlayer();
+        }
     }
 }
