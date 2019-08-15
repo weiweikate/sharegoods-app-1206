@@ -8,6 +8,7 @@ import { routeNavigate, routePush } from '../../../navigation/RouterMap';
 import RouterMap from '../../../navigation/RouterMap';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import UIImage from '@mr/image-placeholder';
+import LinearGradient from 'react-native-linear-gradient';
 import { MRText } from '../../../components/ui';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import ProductApi from '../api/ProductApi';
@@ -153,9 +154,12 @@ const SuitItemView = ({ imgUrl, name, promotionDecreaseAmount, price, pushCallba
                         totalStock < 1 &&
                         <Image source={suitSaleOut} style={{ height: px2dp(60), width: px2dp(60) }}/>
                     }
-                    <View style={suitItemStyle.subView}>
+                    <LinearGradient style={suitItemStyle.subView}
+                                    start={{ x: 0, y: 0 }}
+                                    end={{ x: 1, y: 0 }}
+                                    colors={['#FC5D39', '#FF0050']}>
                         <MRText style={suitItemStyle.subText}>{promotionDecreaseAmount}</MRText>
-                    </View>
+                    </LinearGradient>
                 </UIImage>
             </NoMoreClick>
             <MRText style={suitItemStyle.itemText}
@@ -174,16 +178,16 @@ const suitItemStyle = StyleSheet.create({
         width: px2dp(100), height: px2dp(100), borderRadius: 5
     },
     subView: {
-        position: 'absolute', bottom: 0, right: 3, backgroundColor: DesignRule.mainColor, borderRadius: 3
+        position: 'absolute', bottom: 0, right: 3, borderRadius: 3
     },
     subText: {
         color: DesignRule.white, fontSize: 10, paddingHorizontal: 4, paddingVertical: 2
     },
     itemText: {
-        color: DesignRule.textColor_secondTitle, fontSize: 12
+        color: DesignRule.textColor_secondTitle, fontSize: 12, paddingTop: 5
     },
     itemPrice: {
-        color: DesignRule.textColor_redWarn, fontSize: 12, paddingBottom: 19
+        color: DesignRule.textColor_redWarn, fontSize: 12, paddingBottom: 10
     }
 });
 
