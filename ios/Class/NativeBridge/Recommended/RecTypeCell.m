@@ -164,7 +164,7 @@
   .heightIs(34);
 
   //内容背景
-  self.contentLabView.sd_layout.topSpaceToView(self.headView,10 )
+  self.contentLabView.sd_layout.topSpaceToView(self.headView,5 )
   .leftSpaceToView(bgView, 15)
   .rightSpaceToView(bgView, 15);
 
