@@ -167,20 +167,6 @@ public class VideoListView {
         exoPlayer = ExoPlayerFactory.newSimpleInstance(mContext, trackSelector, defaultLoadControl);
         exoPlayer.setRepeatMode(Player.REPEAT_MODE_ONE);
         exoPlayer.addListener(new Player.EventListener() {
-            @Override
-            public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
-
-            }
-
-            @Override
-            public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-
-            }
-
-            @Override
-            public void onLoadingChanged(boolean isLoading) {
-
-            }
 
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
@@ -195,36 +181,6 @@ public class VideoListView {
                         holder.getPlayIcon().setVisibility(View.VISIBLE);
                     }
                 }
-            }
-
-            @Override
-            public void onRepeatModeChanged(int repeatMode) {
-
-            }
-
-            @Override
-            public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
-
-            }
-
-            @Override
-            public void onPlayerError(ExoPlaybackException error) {
-
-            }
-
-            @Override
-            public void onPositionDiscontinuity(int reason) {
-
-            }
-
-            @Override
-            public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
-
-            }
-
-            @Override
-            public void onSeekProcessed() {
-
             }
         });
         videoView.setPlayer((SimpleExoPlayer) exoPlayer);
