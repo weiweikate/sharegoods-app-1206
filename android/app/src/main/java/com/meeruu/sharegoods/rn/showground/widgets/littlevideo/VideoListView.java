@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -27,16 +28,22 @@ import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
-import com.google.android.exoplayer2.DefaultRenderersFactory;
+import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.Timeline;
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
@@ -44,7 +51,6 @@ import com.meeruu.commonlib.callback.BaseCallback;
 import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.commonlib.utils.SPCacheUtils;
-import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.commonlib.utils.TimeUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.sharegoods.R;
@@ -63,6 +69,7 @@ import com.meeruu.sharegoods.rn.showground.event.onSharePressEvent;
 import com.meeruu.sharegoods.rn.showground.model.VideoModel;
 import com.meeruu.sharegoods.rn.showground.utils.CacheDataSourceFactory;
 import com.meeruu.sharegoods.rn.showground.utils.NetWatchdog;
+import com.meeruu.sharegoods.rn.showground.widgets.RnFrameLayout;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -77,8 +84,7 @@ public class VideoListView {
     private RecyclerViewEmptySupport recycler;
     private LittleVideoListAdapter adapter;
     private PagerLayoutManager pagerLayoutManager;
-    private View mPlayerViewContainer;
-    private ImageView mPlayIcon;
+    private RnFrameLayout mPlayerViewContainer;
     private PlayerView videoView;
     private ExoPlayer exoPlayer;
     private VideoModel videoModel;
@@ -92,7 +98,6 @@ public class VideoListView {
      * 数据是否到达最后一页
      */
     private boolean isEnd;
-    //    private List<NewestShowGroundBean.DataBean> list;
     private String currentShowNo;
     public static int userImgW = DensityUtils.dip2px(30f);
 
@@ -119,6 +124,7 @@ public class VideoListView {
     private ImageView back;
     private SimpleDraweeView userIcon;
     private TextView tvName, tvHotCount, tvAttention;
+    private Handler mainHandler = new Handler();
     private EventDispatcher eventDispatcher;
     private List<String> attentionList = new ArrayList<>();
     private List<String> noAttentionList = new ArrayList<>();
@@ -133,8 +139,6 @@ public class VideoListView {
      * 网络状态监听器
      */
     private NetWatchdog netWatchdog;
-    private ExtractorMediaSource.Factory factory;
-    private CacheDataSourceFactory cacheDataSourceFactory;
 
     public View getVideoListView(ReactContext context) {
         this.mContext = context;
@@ -153,37 +157,77 @@ public class VideoListView {
     }
 
     private void initPlayer(final View view) {
-        releasePlayer();
-        mPlayerViewContainer = View.inflate(mContext, R.layout.layout_player_view, null);
-        cacheDataSourceFactory = new CacheDataSourceFactory(mContext, 10 * 1024 * 1024,
-                100 * 1024 * 1024);
-        factory = new ExtractorMediaSource.Factory(cacheDataSourceFactory);
+        mPlayerViewContainer = (RnFrameLayout) View.inflate(mContext, R.layout.layout_player_view, null);
         videoView = mPlayerViewContainer.findViewById(R.id.video_view);
         videoView.setUseController(false);
         TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(new DefaultBandwidthMeter());
         MappingTrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
         DefaultAllocator allocator = new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE);
         DefaultLoadControl defaultLoadControl = new DefaultLoadControl(allocator, minBufferMs, maxBufferMs, bufferForPlaybackMs, bufferForPlaybackAfterRebufferMs, -1, true);
-        exoPlayer = ExoPlayerFactory.newSimpleInstance(mContext, new DefaultRenderersFactory(mContext), trackSelector, defaultLoadControl);
+        exoPlayer = ExoPlayerFactory.newSimpleInstance(mContext, trackSelector, defaultLoadControl);
         exoPlayer.setRepeatMode(Player.REPEAT_MODE_ONE);
         exoPlayer.addListener(new Player.EventListener() {
+            @Override
+            public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
+
+            }
+
+            @Override
+            public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+
+            }
+
+            @Override
+            public void onLoadingChanged(boolean isLoading) {
+
+            }
 
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                BaseVideoListAdapter.BaseHolder holder = (BaseVideoListAdapter.BaseHolder) recycler.findViewHolderForLayoutPosition(mCurrentPosition);
                 if (playWhenReady) {
-                    BaseVideoListAdapter.BaseHolder holder = (BaseVideoListAdapter.BaseHolder) recycler.findViewHolderForLayoutPosition(mCurrentPosition);
                     if (holder != null) {
                         holder.getCoverView().setVisibility(GONE);
                         holder.getPlayIcon().setVisibility(GONE);
                     }
-                    mPlayIcon.setVisibility(GONE);
-                } else {
-                    mPlayIcon.setVisibility(View.VISIBLE);
+                }else {
+                    if (holder != null) {
+                        holder.getPlayIcon().setVisibility(View.VISIBLE);
+                    }
                 }
             }
+
+            @Override
+            public void onRepeatModeChanged(int repeatMode) {
+
+            }
+
+            @Override
+            public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
+
+            }
+
+            @Override
+            public void onPlayerError(ExoPlaybackException error) {
+
+            }
+
+            @Override
+            public void onPositionDiscontinuity(int reason) {
+
+            }
+
+            @Override
+            public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
+
+            }
+
+            @Override
+            public void onSeekProcessed() {
+
+            }
         });
-        videoView.setPlayer(exoPlayer);
-        mPlayIcon = mPlayerViewContainer.findViewById(R.id.iv_play_icon);
+        videoView.setPlayer((SimpleExoPlayer) exoPlayer);
         gestureDetector = new GestureDetector(mContext, new GestureDetector.SimpleOnGestureListener() {
 
             @Override
@@ -225,13 +269,13 @@ public class VideoListView {
      * 恢复播放
      */
     public void resumePlay() {
-        if (!NetWatchdog.hasNet(this.mContext)) {
+        if(!NetWatchdog.hasNet(this.mContext)){
             ToastUtils.showToast("请检测网络连接");
         }
 
         long date = (long) SPCacheUtils.get(SPKey, 0L);
-        if (date == 0 || !TimeUtils.isSameDate(date, System.currentTimeMillis())) {
-            if (NetWatchdog.is4GConnected(this.mContext)) {
+        if(date == 0 || !TimeUtils.isSameDate(date,System.currentTimeMillis())){
+            if(NetWatchdog.is4GConnected(this.mContext)){
                 showNetWarning(this.mContext);
                 return;
             }
@@ -263,9 +307,6 @@ public class VideoListView {
             exoPlayer.release();
             exoPlayer = null;
         }
-        if (cacheDataSourceFactory != null) {
-            cacheDataSourceFactory.realseCache();
-        }
     }
 
     private void init(final View view) {
@@ -289,48 +330,57 @@ public class VideoListView {
         this.videoModel = new VideoModel();
 
         back = view.findViewById(R.id.back_icon);
-        back.setOnClickListener(v -> {
-            OnBackPressEvent backPressEvent = new OnBackPressEvent();
-            backPressEvent.init(view.getId());
-            eventDispatcher.dispatchEvent(backPressEvent);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OnBackPressEvent backPressEvent = new OnBackPressEvent();
+                backPressEvent.init(view.getId());
+                eventDispatcher.dispatchEvent(backPressEvent);
+            }
         });
 
 
         userIcon = view.findViewById(R.id.user_icon);
-        userIcon.setOnClickListener(v -> {
-            pausePlay();
-            OnSeeUserEvent seeUserEvent = new OnSeeUserEvent();
-            seeUserEvent.init(view.getId());
-            NewestShowGroundBean.DataBean dataBean = getCurrentData();
-            String jsonStr = JSON.toJSONString(dataBean);
-            Map map = JSONObject.parseObject(jsonStr);
-            WritableMap realData = Arguments.makeNativeMap(map);
-            seeUserEvent.setData(realData);
-            eventDispatcher.dispatchEvent(seeUserEvent);
+        userIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pausePlay();
+                OnSeeUserEvent seeUserEvent = new OnSeeUserEvent();
+                seeUserEvent.init(view.getId());
+                NewestShowGroundBean.DataBean dataBean = getCurrentData();
+                String jsonStr = JSON.toJSONString(dataBean);
+                Map map = JSONObject.parseObject(jsonStr);
+                WritableMap realData = Arguments.makeNativeMap(map);
+                seeUserEvent.setData(realData);
+                eventDispatcher.dispatchEvent(seeUserEvent);
+            }
         });
 
         tvName = view.findViewById(R.id.tv_name);
         tvHotCount = view.findViewById(R.id.tv_hotCount);
         tvAttention = view.findViewById(R.id.tv_attention);
-        tvAttention.setOnClickListener(v -> {
-            if (isLogin) {
-                NewestShowGroundBean.DataBean dataBean = getCurrentData();
-                String userNo = dataBean.getUserInfoVO().getUserNo();
-                if (dataBean.getAttentionStatus() == 0) {
-                    videoModel.attentionUser(userNo, null);
-                    dataBean.setAttentionStatus(1);
-                    updateAttentions(userNo, true);
-                    setAttentionView(true);
-                } else {
-                    dataBean.setAttentionStatus(0);
-                    videoModel.notAttentionUser(userNo, null);
-                    updateAttentions(userNo, false);
-                    setAttentionView(false);
+        tvAttention.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isLogin) {
+                    NewestShowGroundBean.DataBean dataBean = getCurrentData();
+                    String userNo = dataBean.getUserInfoVO().getUserNo();
+                    if (dataBean.getAttentionStatus() == 0) {
+                        videoModel.attentionUser(userNo, null);
+                        dataBean.setAttentionStatus(1);
+                        updateAttentions(userNo, true);
+                        setAttentionView(true);
+                    } else {
+                        dataBean.setAttentionStatus(0);
+                        videoModel.notAttentionUser(userNo, null);
+                        updateAttentions(userNo, false);
+                        setAttentionView(false);
+                    }
+                }else {
+                    OnAttentionPressEvent attentionPressEvent = new OnAttentionPressEvent();
+                    attentionPressEvent.init(view.getId());
+                    eventDispatcher.dispatchEvent(attentionPressEvent);
                 }
-            } else {
-                OnAttentionPressEvent attentionPressEvent = new OnAttentionPressEvent();
-                attentionPressEvent.init(view.getId());
-                eventDispatcher.dispatchEvent(attentionPressEvent);
             }
         });
 
@@ -496,6 +546,13 @@ public class VideoListView {
             bean.setCollectCount(bean.getCollectCount() + 1);
         }
         if (eventDispatcher != null) {
+//            OnCollectionEvent onCollectionEvent = new OnCollectionEvent();
+//            onCollectionEvent.init(view.getId());
+//            String jsonStr = JSON.toJSONString(bean);
+//            Map map = JSONObject.parseObject(jsonStr);
+//            WritableMap realData = Arguments.makeNativeMap(map);
+//            onCollectionEvent.setData(realData);
+//            eventDispatcher.dispatchEvent(onCollectionEvent);
             OnCollectionEvent buyEvent = new OnCollectionEvent();
             buyEvent.init(view.getId());
             String jsonStr = JSON.toJSONString(bean);
@@ -634,7 +691,7 @@ public class VideoListView {
         if (position < 0 || position > list.size()) {
             return;
         }
-        NewestShowGroundBean.DataBean video = list.get(position);
+        final NewestShowGroundBean.DataBean video = list.get(position);
         //恢复界面状态
 //        isPauseInvoke = false;
         BaseVideoListAdapter.BaseHolder holder = (BaseVideoListAdapter.BaseHolder) recycler.findViewHolderForLayoutPosition(position);
@@ -643,10 +700,10 @@ public class VideoListView {
         if (parent != null && parent instanceof FrameLayout) {
             ((ViewGroup) parent).removeView(mPlayerViewContainer);
         }
-
         if (holder != null) {
             holder.getContainerView().addView(mPlayerViewContainer, 0);
         }
+
         List<NewestShowGroundBean.DataBean.ResourceBean> resource = video.getResource();
         String videoUrl = null;
         if (resource != null) {
@@ -654,20 +711,6 @@ public class VideoListView {
                 NewestShowGroundBean.DataBean.ResourceBean resourceBean = resource.get(j);
                 if (resourceBean.getType() == 4) {
                     videoUrl = resourceBean.getBaseUrl();
-                    if (!TextUtils.equals(videoUrl, (CharSequence) videoView.getTag(R.id.mr_video + position))) {
-                        videoView.setTag(R.id.mr_video + position, videoUrl);
-                        double width = resourceBean.getWidth();
-                        double height = resourceBean.getHeight();
-                        if (width == 0) {
-                            FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
-                                    FrameLayout.LayoutParams.MATCH_PARENT);
-                            videoView.getVideoSurfaceView().setLayoutParams(layoutParams);
-                        } else {
-                            FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ScreenUtils.getScreenWidth(),
-                                    Double.valueOf((height / width) * ScreenUtils.getScreenWidth()).intValue());
-                            videoView.getVideoSurfaceView().setLayoutParams(layoutParams);
-                        }
-                    }
                     break;
                 }
             }
@@ -677,9 +720,9 @@ public class VideoListView {
 
     private MediaSource buildSource(String url) {
         Uri mp4VideoUri = Uri.parse(url);
-        String fileName = url.substring(url.lastIndexOf("/"), url.lastIndexOf("."));
-        cacheDataSourceFactory.setFileName(fileName);
-        return factory.createMediaSource(mp4VideoUri);
+        MediaSource videoSource = new ExtractorMediaSource(mp4VideoUri, new CacheDataSourceFactory(mContext, 100 * 1024 * 1024, 5 * 1024 * 1024), new DefaultExtractorsFactory(), mainHandler, null);
+        return videoSource;
+
     }
 
     /**
@@ -707,7 +750,7 @@ public class VideoListView {
      *
      * @param list 刷新数据
      */
-    public void refreshData(List<NewestShowGroundBean.DataBean> list, boolean isPersonal, boolean isCollect, String tabType) {
+    public void refreshData(List<NewestShowGroundBean.DataBean> list, boolean isPersonal, boolean isCollect,String tabType) {
         isEnd = false;
         isLoadingData = false;
         adapter.refreshData(list);
@@ -732,7 +775,7 @@ public class VideoListView {
     }
 
     private void loadMoreData() {
-        videoModel.getVideoList(currentShowNo, personalCode, isCollect, tabType, new BaseCallback<String>() {
+        videoModel.getVideoList(currentShowNo, personalCode, isCollect,tabType, new BaseCallback<String>() {
             @Override
             public void onErr(String errCode, String msg) {
             }
@@ -741,12 +784,12 @@ public class VideoListView {
             public void onSuccess(String result) {
                 NewestShowGroundBean newestShowGroundBean = JSON.parseObject(result, NewestShowGroundBean.class);
                 List<NewestShowGroundBean.DataBean> list = newestShowGroundBean.getData();
-                if (list != null && list.size() > 0) {
+                if(list != null && list.size() >0){
                     addMoreData(list);
                     NewestShowGroundBean.DataBean last = list.get(list.size() - 1);
                     currentShowNo = last.getShowNo();
-                } else {
-                    isEnd = true;
+                }else {
+                    isEnd =true;
                 }
             }
         });
@@ -771,7 +814,7 @@ public class VideoListView {
         return null;
     }
 
-    private static void showNetWarning(Context context) {
+    private static void showNetWarning(Context context){
         AlertDialog alertDialog = new AlertDialog.Builder(context).setTitle("温馨提示").setMessage("您当前处于2G/3G/4G环境\n继续播放将使用流量").setPositiveButton("确定", new DialogInterface.OnClickListener() {//添加"Yes"按钮
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -804,8 +847,8 @@ public class VideoListView {
             View view = weakReference.get();
             if (view != null && view.isShown()) {
                 long date = (long) SPCacheUtils.get(SPKey, 0L);
-                if (date == 0 || !TimeUtils.isSameDate(date, System.currentTimeMillis())) {
-                    showNetWarning(view.getContext());
+                if(date == 0 || !TimeUtils.isSameDate(date,System.currentTimeMillis())){
+                   showNetWarning(view.getContext());
                 }
 
             }
