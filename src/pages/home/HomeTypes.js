@@ -1,4 +1,5 @@
 import RouterMap, { routePush } from '../../navigation/RouterMap';
+import { track, trackEvent } from '../../utils/SensorsTrack';
 
 export const homeType = {
     swiper: 2,           // 首页顶部轮播
@@ -89,17 +90,31 @@ export const homePoint = {
 };
 
 
-export function topicAdOnPress(linkType, linkValue) {
+export function topicAdOnPress(linkType, linkValue, p, title) {
+    let p2 = {}
     switch (linkType){
         case 1:
+            p2.contentType = 1
+            p2.contentKey = linkValue
+            routePush(RouterMap.ProductDetailPage,{productCode: linkValue})
         case 4:
+            p2.contentType = 8
+            p2.contentKey = linkValue
             routePush(RouterMap.ProductDetailPage,{productCode: linkValue})
             break
         case 2:
+            p2.contentType = 3
+            p2.contentKey = linkValue
             routePush('HtmlPage', {uri: '/custom/'+linkValue})
             break
         case 3:
+            p2.contentType = 6
+            p2.contentKey = '/spike'
             routePush('HtmlPage', {uri: '/spike'})
             break
+    }
+    if (p){
+        p.contentValue = title || '';
+        track(trackEvent.SpecialTopicBtnClick, {...p});
     }
 }

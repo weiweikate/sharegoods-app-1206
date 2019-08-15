@@ -68,7 +68,7 @@ const HOME_SKIP = 'activitySkip';
 const { px2dp, height, headerHeight } = ScreenUtils;
 const scrollDist = height / 2 - headerHeight;
 import BasePage from '../../BasePage';
-import { TrackApi } from '../../utils/SensorsTrack';
+import { track, TrackApi, trackEvent } from '../../utils/SensorsTrack';
 import taskModel from './model/TaskModel';
 import TaskVIew from './view/TaskVIew';
 import intervalMsgModel, { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
@@ -372,6 +372,7 @@ class HomePage extends BasePage {
                 const { state } = payload;
                 if (state && state.routeName === 'HomePage') {
                     this.luckyIcon && this.luckyIcon.getLucky(1, '');
+                    track(trackEvent.ViewHomePage);
                     homeTabManager.setHomeFocus(true);
                     homeModule.homeFocused(true);
                     homeModalManager.entryHome();
@@ -435,7 +436,7 @@ class HomePage extends BasePage {
 
 
     render() {
-       let tabData = this.state.tabData || [];
+        let tabData = this.state.tabData || [];
         return (
             <View style={[styles.container, { minHeight: ScreenUtils.headerHeight, minWidth: 1 }]}>
                 <HomeSearchView navigation={routePush}
@@ -444,15 +445,35 @@ class HomePage extends BasePage {
                 <ScrollableTabView
                     onChangeTab={(obj) => {
                         // this.setState({ selectTab: obj.i });
-                        this.tab && this.tab.scrollTo({x: obj.i*60 - ScreenUtils.width/2 + 30})
+                        let i = obj.i;
+                        this.tab && this.tab.scrollTo({x: i*60 - ScreenUtils.width/2 + 30})
                         this.homeList && this.homeList.scrollToTop();
+                        // channelType  频道页类型      0：未知 1：推荐 2：专题 3：类目
+                        // channelName  频道页名称  字符串  8.15
+                        let channelType = 0
+                        let channelName = ''
+                        if (i === 0){
+                            channelType = 1
+                            channelName = '推荐'
+                        } else {
+                            let navType = tabData[i-1].navType
+                            if (navType === 2 ) {
+                                channelType = 2;
+                            }
+
+                            if (navType === 1 ) {
+                                channelType = 3;
+                            }
+                            channelName =  tabData[i-1].navName
+                        }
+                        track(trackEvent.ViewHomePageChannel,{channelType,channelName})
                     }}
                     style={styles.container}
                     contentProps={{flex: 1, position: 'relative'}}
                     renderTabBar={this._renderTabBar.bind(this)}
                     //进界面的时候打算进第几个
                     initialPage={0}>
-                   <HomeList
+                    <HomeList
                         tabLabel={'推荐'}
                         ref={(ref => {this.homeList = ref})}
                         onScrollBeginDrag={() => {
@@ -469,12 +490,15 @@ class HomePage extends BasePage {
                     />
                     {tabData.map((item) => {
                         if (item.navType === 2){
-                         return  <DIYTopicList tabLabel={item.navName}
-                                          data = {item}/>
+                            return  <DIYTopicList tabLabel={item.navName}
+                                                  key ={'id' + item.id}
+                                                  data = {item}/>
                         }
                         if (item.navType === 1){
-                        return <HomeNormalList  tabLabel={item.navName}
-                                             data = {item}/>
+                            return <HomeNormalList  tabLabel={item.navName}
+                                                    data = {item}
+                                                    key ={'id' + item.id}
+                            />
                         }
                     })}
                 </ScrollableTabView>
@@ -502,23 +526,23 @@ class HomePage extends BasePage {
                     showsHorizontalScrollIndicator={false}
                     ref={ref=>{this.tab = ref}}
                 >
-                <DefaultTabBar
-                    activeTab={p.activeTab}
-                    style={{ width: itemWidth*p.tabs.length, borderBottomWidth: 0, height: tabBarHeight}}
-                    containerWidth={itemWidth*p.tabs.length}
-                    scrollValue={p.scrollValue}
-                    tabs={p.tabs}
-                    underlineStyle={{backgroundColor: DesignRule.mainColor, left: (itemWidth -20)/2, width: 20, bottom: 2}}
-                    renderTab = {(name, page, isTabActive, goToPage) => {
-                        return(
-                            <TouchableOpacity style={{height: 36, alignItems: 'center', justifyContent: 'center',width: itemWidth}}
-                                              onPress={() => p.goToPage(page)}
-                            >
-                                <Text style={isTabActive? styles.tabSelect: styles.tabNomal}>{name}</Text>
-                            </TouchableOpacity>
-                        )
-                    }}
-                />
+                    <DefaultTabBar
+                        activeTab={p.activeTab}
+                        style={{ width: itemWidth*p.tabs.length, borderBottomWidth: 0, height: tabBarHeight}}
+                        containerWidth={itemWidth*p.tabs.length}
+                        scrollValue={p.scrollValue}
+                        tabs={p.tabs}
+                        underlineStyle={{backgroundColor: DesignRule.mainColor, left: (itemWidth -20)/2, width: 20, bottom: 2}}
+                        renderTab = {(name, page, isTabActive, goToPage) => {
+                            return(
+                                <TouchableOpacity style={{height: 36, alignItems: 'center', justifyContent: 'center',width: itemWidth}}
+                                                  onPress={() => p.goToPage(page)}
+                                >
+                                    <Text style={isTabActive? styles.tabSelect: styles.tabNomal}>{name}</Text>
+                                </TouchableOpacity>
+                            )
+                        }}
+                    />
                 </ScrollView>
             </View>
         )

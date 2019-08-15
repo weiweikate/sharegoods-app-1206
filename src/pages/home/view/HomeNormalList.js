@@ -32,6 +32,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import { DefaultLoadMoreComponent } from '../../../comm/components/RefreshFlatList';
 import { routePush } from '../../../navigation/RouterMap';
 import RouterMap from '../../../navigation/RouterMap';
+import { track, trackEvent } from '../../../utils/SensorsTrack';
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 
 class HeaderView extends React.Component {
@@ -305,19 +306,28 @@ export default class HomeNormalList extends React.Component {
                     {item.data.map((icon)=> {
                         return(
                             <TouchableWithoutFeedback onPress={()=> {
+                                let p = {}
                                 if (icon.linkType === 'all'){
                                     routePush(RouterMap.CategorySearchPage)
-                                    return;
+                                    p = {contentType: 10, contentKey: ''}
+
                                 }
 
                                 if (icon.linkType === 1){
                                     routePush(RouterMap.SearchResultPage, { categoryId: icon.linkCode,})
-                                    return;
+                                    p = {contentType: 12, contentKey: icon.linkCode}
+
                                 }
                                 if (icon.linkType === 2){
                                     routePush('HtmlPage', {uri: '/custom/'+icon.linkCode})
-                                    return;
+                                    p = {contentType: 3, contentKey: icon.linkCode}
+
                                 }
+                                track(trackEvent.CategoryBtnClick,{firstCategoryId: this.props.data.firstCategoryId,
+                                    firstCategoryName: this.props.data.navName,
+                                    contentValue: icon.iconName,
+                                    ...p
+                                });
                             }}>
                                 <View style={{alignItems: 'center', height:ScreenUtils.autoSizeWidth(93),width: ScreenUtils.autoSizeWidth(73) - 0.5}}>
                                     <ImageLoader style={{width: ScreenUtils.autoSizeWidth(60) , height: ScreenUtils.autoSizeWidth(60)}}
@@ -340,7 +350,16 @@ export default class HomeNormalList extends React.Component {
                     {item.map(good => {
                         return (
                             <TouchableWithoutFeedback
-                                onPress={()=> {routePush(RouterMap.ProductDetailPage, { productCode: good.prodCode })}}
+                                onPress={()=> {
+                                    routePush(RouterMap.ProductDetailPage, { productCode: good.prodCode })
+                                    track(trackEvent.CategoryBtnClick,{firstCategoryId: this.props.data.firstCategoryId,
+                                        firstCategoryName: this.props.data.navName,
+                                        contentValue: good.name,
+                                         contentType: 3,
+                                        contentKey: good.prodCode
+                                    });
+                                }}
+
                             >
                                 <View style={{width: ScreenUtils.autoSizeWidth(170),
                                     height: ScreenUtils.autoSizeWidth(246),

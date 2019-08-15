@@ -117,7 +117,7 @@ export class TopicImageAdView extends React.Component {
                         links.map((item) => {
                             return (
                                 <TouchableOpacity onPress={()=> {
-                                    topicAdOnPress(item.linkType,item.linkValue[0])
+                                    topicAdOnPress(item.linkType,item.linkValue[0], {...this.props.p})
 
                                 }}
                                                   style={{flex: 1}}
@@ -141,7 +141,7 @@ export class TopicImageAdView extends React.Component {
                     onDidSelectItemAtIndex={(i) => {
                         let links = data.imgs[i].links;
                         if (links && links.length > 0){
-                            topicAdOnPress(links[0].linkType,links[0].linkValue[0])
+                            topicAdOnPress(links[0].linkType,links[0].linkValue[0], {...this.props.p})
                         }
 
                     }}/>

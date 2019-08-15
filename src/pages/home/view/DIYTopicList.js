@@ -82,12 +82,16 @@ export default class DIYTopicList extends React.Component {
 
     _renderItem = (type, item, index) => {
         type = type.type
+        let p = {specialTopicId:  this.props.data.linkCode}
         if (type === homeType.custom_text) {
-            return <TextCustomView data={item}/>;
+            p.specialTopicArea = 6;
+            return <TextCustomView data={item} p={p}/>;
         } else if (type === homeType.custom_imgAD) {
-            return <TopicImageAdView data={item}/>;
+            p.specialTopicArea = 1;
+            return <TopicImageAdView data={item}  p={p}/>;
         } else if (type === homeType.custom_goods) {
-            return <GoodsCustomView data={item}/>;
+            p.specialTopicArea = 3;
+            return <GoodsCustomView data={item} p={p}/>;
         }
         return <View/>;
     };

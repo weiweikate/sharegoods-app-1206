@@ -28,7 +28,6 @@ import {
 } from '../../../components/ui';
 import ImageLoader from '@mr/image-placeholder';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import RouterMap, { routePush } from '../../../navigation/RouterMap';
 import DesignRule from '../../../constants/DesignRule';
 import LinearGradient from 'react-native-linear-gradient';
 import { topicAdOnPress } from '../HomeTypes';
@@ -503,11 +502,12 @@ export default class GoodsCustomView extends React.Component {
     }
 
     gotoProduceDetail(item){
-        routePush(RouterMap.ProductDetailPage, {productCode: item.prodCode})
+        topicAdOnPress(1,item.prodCode, this.props.p, item.name)
+
     }
     //添加购物车
     addShopCar(item){
-        routePush(RouterMap.ProductDetailPage, {productCode: item.prodCode})
+        topicAdOnPress(1,item.prodCode, this.props.p, item.name)
     }
 
 
