@@ -258,13 +258,13 @@ export default class ShowListPage extends BasePage {
                     left
                         ?
                         <TouchableOpacity style={styles.backImg} onPress={() => this._onLeftPressed()}>
-                            <Image source={icon_header_back} style={styles.img}/>
+                            <Image source={icon_header_back} />
                         </TouchableOpacity>
                         :
                         null
                 }
                 <TouchableWithoutFeedback onPress={this._goMyDynamicPage}>
-                    <View style={[{ marginLeft: left ? px2dp(10) : px2dp(15) }]}>
+                    <View style={[{ marginLeft: left ? px2dp(5) : px2dp(15) }]}>
                         {icon}
                     </View>
                 </TouchableWithoutFeedback>
@@ -485,7 +485,7 @@ let styles = StyleSheet.create({
     backImg: {
         height: 44,
         width: 45,
-        paddingLeft: 15,
+        paddingLeft: 10,
         flexDirection: 'row',
         alignItems: 'center'
     },
