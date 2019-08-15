@@ -1,4 +1,4 @@
-import { observable, action, autorun } from 'mobx';
+import { action, autorun, observable } from 'mobx';
 import ShopCartAPI from '../api/ShopCartApi';
 import user from '../../../model/user';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -15,28 +15,15 @@ class ShopCartEmptyModel {
     @observable
     emptyViewList = [];
     @observable
+    isRefreshing = false;
+
     isFetching = false;
-    @observable
     errorMsg = '';
-    @observable
-    isEnd = true;
+    isEnd = false;
     pageSize = 10;
     page = 1;
-    constructor(props) {
-        this.createData();
-    }
-    createData = () => {
-        this.emptyViewList.push(
-            {
-                id: 0,
-                type: EmptyViewTypes.topEmptyItem,
-                height: Cell_Height,
-                imageHeight: px2dp(168)
-            }
-        );
-    };
-    @observable
-    isRefreshing = false;
+    firstLoad = true;
+
     @action
     getRecommendProducts = (isRefresh = true) => {
         if (isRefresh) {
@@ -45,11 +32,13 @@ class ShopCartEmptyModel {
             this.isFetching = true;
             this.page = this.page + 1;
         }
+        this.firstLoad = false;
         if (user.isLogin) {
             ShopCartAPI.recommendProducts({
                 page: this.page,
                 pageSize: this.pageSize
             }).then(result => {
+                this.isEnd = true;
                 let goodList = result.data || [];
                 let tempArr = [];
                 let newArr = [];
@@ -63,23 +52,33 @@ class ShopCartEmptyModel {
                     };
                 });
                 if (isRefresh) {
-                    newArr.push({
-                        id: 0,
-                        type: EmptyViewTypes.topEmptyItem,
-                        height: Cell_Height,
-                        imageHeight: px2dp(168)
-                    });
+                    if (tempArr && tempArr.length > 0) {
+                        newArr.push({
+                            id: 0,
+                            type: EmptyViewTypes.topEmptyItem,
+                            height: Cell_Height,
+                            imageHeight: px2dp(168)
+                        });
+                    }
                     newArr = newArr.concat(tempArr);
                 }
                 this.emptyViewList = newArr;
+                this.errorMsg = '';
+                this.isFetching = false;
+                this.isRefreshing = false;
                 console.log(result);
             }).catch(error => {
+                this.isEnd = true;
+                this.isFetching = false;
+                this.isRefreshing = false;
+                this.errorMsg = error.msg;
             });
         } else {
             ShopCartAPI.recommend_products_not_login({
                 page: this.page,
                 pageSize: this.pageSize
             }).then(result => {
+                this.isEnd = true;
                 let goodList = result.data || [];
                 let tempArr = [];
                 let newArr = [];
@@ -94,18 +93,26 @@ class ShopCartEmptyModel {
                     };
                 });
                 if (isRefresh) {
-                    newArr.push({
-                        id: 0,
-                        type: EmptyViewTypes.topEmptyItem,
-                        height: Cell_Height,
-                        imageHeight: px2dp(168)
-                    });
+                    if (tempArr && tempArr.length > 0) {
+                        newArr.push({
+                            id: 0,
+                            type: EmptyViewTypes.topEmptyItem,
+                            height: Cell_Height,
+                            imageHeight: px2dp(168)
+                        });
+                    }
                     newArr = newArr.concat(tempArr);
                 }
                 this.emptyViewList = newArr;
+                this.errorMsg = '';
+                this.isFetching = false;
+                this.isRefreshing = false;
                 console.log(result);
             }).catch(error => {
-
+                this.isEnd = true;
+                this.isFetching = false;
+                this.isRefreshing = false;
+                this.errorMsg = error.msg;
             });
         }
     };
