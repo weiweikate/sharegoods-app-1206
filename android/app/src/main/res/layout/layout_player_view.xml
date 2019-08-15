@@ -1,19 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.meeruu.sharegoods.rn.showground.widgets.RnFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black">
-
     <com.google.android.exoplayer2.ui.PlayerView
         android:id="@+id/video_view"
         android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <ImageView android:id="@+id/iv_play_icon"
-        android:layout_height="53dp"
-        android:layout_width="53dp"
-        android:layout_gravity="center"
-        android:src="@drawable/ic_video_play"
-        android:visibility="gone"/>
-</FrameLayout>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</com.meeruu.sharegoods.rn.showground.widgets.RnFrameLayout>
