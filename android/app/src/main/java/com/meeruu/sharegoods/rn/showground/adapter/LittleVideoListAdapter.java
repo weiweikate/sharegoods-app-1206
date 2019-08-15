@@ -57,15 +57,15 @@ public class LittleVideoListAdapter extends BaseVideoListAdapter<LittleVideoList
         } else {
             final NewestShowGroundBean.DataBean itemData = this.list.get(position);
             if(itemData.isLike()){
-                holder.ivLike.setImageResource(R.mipmap.icon_liked);
+                holder.ivLike.setImageResource(R.drawable.icon_liked);
             }else {
-                holder.ivLike.setImageResource(R.mipmap.icon_like);
+                holder.ivLike.setImageResource(R.drawable.icon_like);
             }
 
             if(itemData.isCollect()){
-                holder.ivCollection.setImageResource(R.mipmap.icon_collected);
+                holder.ivCollection.setImageResource(R.drawable.icon_collected);
             }else {
-                holder.ivCollection.setImageResource(R.mipmap.icon_collection);
+                holder.ivCollection.setImageResource(R.drawable.icon_collection);
             }
         }
     }
@@ -117,9 +117,9 @@ public class LittleVideoListAdapter extends BaseVideoListAdapter<LittleVideoList
         myHolder.like.setTag(itemData.getLikesCount());
 
         if(itemData.isLike()){
-            myHolder.ivLike.setImageResource(R.mipmap.icon_liked);
+            myHolder.ivLike.setImageResource(R.drawable.icon_liked);
         }else {
-            myHolder.ivLike.setImageResource(R.mipmap.icon_like);
+            myHolder.ivLike.setImageResource(R.drawable.icon_like);
         }
         myHolder.ivLike.setTag(itemData.isLike());
 
@@ -132,9 +132,9 @@ public class LittleVideoListAdapter extends BaseVideoListAdapter<LittleVideoList
         }
 
         if(itemData.isCollect()){
-            myHolder.ivCollection.setImageResource(R.mipmap.icon_collected);
+            myHolder.ivCollection.setImageResource(R.drawable.icon_collected);
         }else {
-            myHolder.ivCollection.setImageResource(R.mipmap.icon_collection);
+            myHolder.ivCollection.setImageResource(R.drawable.icon_collection);
         }
         myHolder.ivCollection.setTag(itemData.isCollect());
 
@@ -172,14 +172,14 @@ public class LittleVideoListAdapter extends BaseVideoListAdapter<LittleVideoList
                 boolean isLike = (Boolean) myHolder.ivLike.getTag();
                 if(isLike){
                     myHolder.ivLike.setTag(Boolean.FALSE);
-                    myHolder.ivLike.setImageResource(R.mipmap.icon_like);
+                    myHolder.ivLike.setImageResource(R.drawable.icon_like);
                     int like = (Integer) myHolder.like.getTag();
                     like-=1;
                     myHolder.like.setTag(like);
                     myHolder.like.setText(NumUtils.formatShowNum(like));
                 }else {
                     myHolder.ivLike.setTag(Boolean.TRUE);
-                    myHolder.ivLike.setImageResource(R.mipmap.icon_liked);
+                    myHolder.ivLike.setImageResource(R.drawable.icon_liked);
                     int like = (Integer) myHolder.like.getTag();
                     like+=1;
                     myHolder.like.setTag(like);
@@ -204,14 +204,14 @@ public class LittleVideoListAdapter extends BaseVideoListAdapter<LittleVideoList
                 boolean isCollectioned =(Boolean) myHolder.ivCollection.getTag();
                 if(isCollectioned){
                     myHolder.ivCollection.setTag(Boolean.FALSE);
-                    myHolder.ivCollection.setImageResource(R.mipmap.icon_collection);
+                    myHolder.ivCollection.setImageResource(R.drawable.icon_collection);
                     int collectionTag = (Integer) myHolder.collection.getTag();
                     collectionTag-=1;
                     myHolder.collection.setTag(collectionTag);
                     myHolder.collection.setText(NumUtils.formatShowNum(collectionTag));
                 }else {
                     myHolder.ivCollection.setTag(Boolean.TRUE);
-                    myHolder.ivCollection.setImageResource(R.mipmap.icon_collected);
+                    myHolder.ivCollection.setImageResource(R.drawable.icon_collected);
                     int collectionTag = (Integer) myHolder.collection.getTag();
                     collectionTag+=1;
                     myHolder.collection.setTag(collectionTag);
