@@ -55,6 +55,7 @@ import taskModel from './model/TaskModel';
 import TaskVIew from './view/TaskVIew';
 import intervalMsgModel, { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
 import { UserLevelModalView } from './view/TaskModalView';
+import StringUtils from '../../utils/StringUtils';
 
 const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
@@ -234,7 +235,6 @@ class HomePage extends BasePage {
         );
         this.listener = DeviceEventEmitter.addListener('homePage_message', this.getMessageData);
         this.listenerMessage = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
-        this.listenerLogout = DeviceEventEmitter.addListener('login_out', this.loadMessageCount);
         this.listenerRetouchHome = DeviceEventEmitter.addListener('retouch_home', this.retouchHome);
         this.listenerHomeRefresh = JSManagerEmitter.addListener(HOME_REFRESH, this.homeTypeRefresh);
         this.listenerSkip = JSManagerEmitter.addListener(HOME_SKIP, this.homeSkip);
@@ -283,7 +283,6 @@ class HomePage extends BasePage {
         this.didFocusSubscription && this.didFocusSubscription.remove();
         this.listener && this.listener.remove();
         this.listenerMessage && this.listenerMessage.remove();
-        this.listenerLogout && this.listenerLogout.remove();
         this.listenerRetouchHome && this.listenerRetouchHome.remove();
         this.listenerHomeRefresh && this.listenerHomeRefresh.remove();
         this.listenerSkip && this.listenerSkip.remove();
@@ -301,7 +300,7 @@ class HomePage extends BasePage {
 
 
     loadMessageCount = () => {
-        if (user.token) {
+        if (StringUtils.isNoEmpty(user.token)) {
             InteractionManager.runAfterInteractions(() => {
                 MessageApi.getNewNoticeMessageCount().then(result => {
                     if (!EmptyUtils.isEmpty(result.data)) {

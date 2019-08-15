@@ -3,12 +3,7 @@
  */
 
 import React, { Component } from 'react';
-import {
-    StyleSheet,
-    View,
-    TouchableOpacity,
-    Image
-} from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import { channelModules } from '../model/HomeChannelModel';
