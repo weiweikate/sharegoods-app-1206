@@ -223,7 +223,7 @@ export default class CommShowShareModal extends React.Component {
         }
 
         if(platformType === 4){
-            let name = this.props.shareName;
+            let name = this.props.shareName ? this.props.shareName : '';
             params.title = '';
             params.dec = `${name}的文章 ${params.title}(想看更多？下载：@秀购App：https://h5.sharegoodsmall.com/download )文章链接请点击：`;
         }
