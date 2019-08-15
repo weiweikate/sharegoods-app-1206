@@ -253,7 +253,7 @@
                     android:id="@+id/iv_gif_effect"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/select_video_icon"/>
+                    android:src="@drawable/select_video_icon"/>
 
             </LinearLayout>
         </RelativeLayout>

@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -45,7 +44,6 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
-import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
@@ -53,7 +51,6 @@ import com.meeruu.commonlib.callback.BaseCallback;
 import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.commonlib.utils.SPCacheUtils;
-import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.commonlib.utils.TimeUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.sharegoods.R;
@@ -66,22 +63,20 @@ import com.meeruu.sharegoods.rn.showground.event.OnBuyEvent;
 import com.meeruu.sharegoods.rn.showground.event.OnCollectionEvent;
 import com.meeruu.sharegoods.rn.showground.event.OnPressTagEvent;
 import com.meeruu.sharegoods.rn.showground.event.OnSeeUserEvent;
+import com.meeruu.sharegoods.rn.showground.event.OnZanPressEvent;
 import com.meeruu.sharegoods.rn.showground.event.onDownloadPressEvent;
 import com.meeruu.sharegoods.rn.showground.event.onSharePressEvent;
-import com.meeruu.sharegoods.rn.showground.event.OnZanPressEvent;
 import com.meeruu.sharegoods.rn.showground.model.VideoModel;
 import com.meeruu.sharegoods.rn.showground.utils.CacheDataSourceFactory;
 import com.meeruu.sharegoods.rn.showground.utils.NetWatchdog;
-import com.reactnative.ivpusic.imagepicker.picture.lib.tools.DoubleUtils;
+import com.meeruu.sharegoods.rn.showground.widgets.RnFrameLayout;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import static android.view.View.GONE;
-import static com.google.android.exoplayer2.C.VIDEO_SCALING_MODE_SCALE_TO_FIT;
 
 public class VideoListView {
     private static String TAG = VideoListView.class.getSimpleName();
@@ -89,8 +84,7 @@ public class VideoListView {
     private RecyclerViewEmptySupport recycler;
     private LittleVideoListAdapter adapter;
     private PagerLayoutManager pagerLayoutManager;
-    private View mPlayerViewContainer;
-    private ImageView mPlayIcon;
+    private RnFrameLayout mPlayerViewContainer;
     private PlayerView videoView;
     private ExoPlayer exoPlayer;
     private VideoModel videoModel;
@@ -104,7 +98,6 @@ public class VideoListView {
      * 数据是否到达最后一页
      */
     private boolean isEnd;
-    //    private List<NewestShowGroundBean.DataBean> list;
     private String currentShowNo;
     public static int userImgW = DensityUtils.dip2px(30f);
 
@@ -164,16 +157,14 @@ public class VideoListView {
     }
 
     private void initPlayer(final View view) {
-        mPlayerViewContainer = View.inflate(mContext, R.layout.layout_player_view, null);
+        mPlayerViewContainer = (RnFrameLayout) View.inflate(mContext, R.layout.layout_player_view, null);
         videoView = mPlayerViewContainer.findViewById(R.id.video_view);
-//        videoView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH);
         videoView.setUseController(false);
         TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(new DefaultBandwidthMeter());
         MappingTrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
         DefaultAllocator allocator = new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE);
         DefaultLoadControl defaultLoadControl = new DefaultLoadControl(allocator, minBufferMs, maxBufferMs, bufferForPlaybackMs, bufferForPlaybackAfterRebufferMs, -1, true);
         exoPlayer = ExoPlayerFactory.newSimpleInstance(mContext, trackSelector, defaultLoadControl);
-//        ((SimpleExoPlayer) exoPlayer).setVideoScalingMode(C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING);
         exoPlayer.setRepeatMode(Player.REPEAT_MODE_ONE);
         exoPlayer.addListener(new Player.EventListener() {
             @Override
@@ -193,15 +184,16 @@ public class VideoListView {
 
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                BaseVideoListAdapter.BaseHolder holder = (BaseVideoListAdapter.BaseHolder) recycler.findViewHolderForLayoutPosition(mCurrentPosition);
                 if (playWhenReady) {
-                    BaseVideoListAdapter.BaseHolder holder = (BaseVideoListAdapter.BaseHolder) recycler.findViewHolderForLayoutPosition(mCurrentPosition);
                     if (holder != null) {
                         holder.getCoverView().setVisibility(GONE);
                         holder.getPlayIcon().setVisibility(GONE);
                     }
-                    mPlayIcon.setVisibility(GONE);
                 }else {
-                    mPlayIcon.setVisibility(View.VISIBLE);
+                    if (holder != null) {
+                        holder.getPlayIcon().setVisibility(View.VISIBLE);
+                    }
                 }
             }
 
@@ -236,8 +228,6 @@ public class VideoListView {
             }
         });
         videoView.setPlayer((SimpleExoPlayer) exoPlayer);
-
-        mPlayIcon = mPlayerViewContainer.findViewById(R.id.iv_play_icon);
         gestureDetector = new GestureDetector(mContext, new GestureDetector.SimpleOnGestureListener() {
 
             @Override
@@ -701,7 +691,7 @@ public class VideoListView {
         if (position < 0 || position > list.size()) {
             return;
         }
-        NewestShowGroundBean.DataBean video = list.get(position);
+        final NewestShowGroundBean.DataBean video = list.get(position);
         //恢复界面状态
 //        isPauseInvoke = false;
         BaseVideoListAdapter.BaseHolder holder = (BaseVideoListAdapter.BaseHolder) recycler.findViewHolderForLayoutPosition(position);
@@ -710,10 +700,10 @@ public class VideoListView {
         if (parent != null && parent instanceof FrameLayout) {
             ((ViewGroup) parent).removeView(mPlayerViewContainer);
         }
-
         if (holder != null) {
             holder.getContainerView().addView(mPlayerViewContainer, 0);
         }
+
         List<NewestShowGroundBean.DataBean.ResourceBean> resource = video.getResource();
         String videoUrl = null;
         if (resource != null) {
@@ -721,26 +711,11 @@ public class VideoListView {
                 NewestShowGroundBean.DataBean.ResourceBean resourceBean = resource.get(j);
                 if (resourceBean.getType() == 4) {
                     videoUrl = resourceBean.getBaseUrl();
-                    double width = resourceBean.getWidth();
-                    double height = resourceBean.getHeight();
-                    if(width == 0 || height == 0){
-                        FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) videoView.getLayoutParams();
-                        layoutParams.width = FrameLayout.LayoutParams.MATCH_PARENT;
-                        layoutParams.height = FrameLayout.LayoutParams.MATCH_PARENT;
-                        videoView.setLayoutParams(layoutParams);
-                    }else {
-                        FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) videoView.getLayoutParams();
-                        layoutParams.width = ScreenUtils.getScreenWidth();
-                        layoutParams.height =  new Double((height/width)*ScreenUtils.getScreenWidth()).intValue();
-                        videoView.setLayoutParams(layoutParams);
-                    }
-
                     break;
                 }
             }
         }
         exoPlayer.prepare(buildSource(videoUrl));
-
     }
 
     private MediaSource buildSource(String url) {

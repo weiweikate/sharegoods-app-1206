@@ -112,9 +112,9 @@ const newTypeIcons = {
     1: {title: '消费', icon: xiaofei},
     2: {title: '退款', icon: chengFa},
     3: {title: '余额发放', icon: shouru},
-    4: {title: '提现', icon: tixiang},
-    5: {title: '待入账结算', icon: shouyi},
-    6: {title: '系统调账', icon: renwu}
+    6: {title: '提现', icon: tixiang},
+    9: {title: '待入账结算', icon: shouyi},
+    99: {title: '系统调账', icon: renwu}
 };
 
 @observer
