@@ -25,6 +25,7 @@ const resHome = {
     win:require('./win.png'),
     limitGoHeader:require('./limitGoHeader.png'),
     modalBg:require('./modalBg.png'),
+    shouye_icon_gengduo:require('./shouye_icon_gengduo.png'),
     signIn: {
         ...signIn
     },

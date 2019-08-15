@@ -196,12 +196,21 @@ export default class GoodsListItem extends React.Component {
 
 
     renderGoodsList = () => {
-        const {
+        let {
             merchantOrder,
-            goodsItemClick
+            goodsItemClick,
+            receiveInfo,
         } = this.props;
+        receiveInfo = receiveInfo || {}
         let orderProduct = merchantOrder.productOrderList || []
         return orderProduct.map((item, index) => {
+            let resource = item.resource || {}
+            let resourceType = resource.resourceType;
+            let category = item.spec
+            if (resourceType === 'TELEPHONE_CHARGE'){
+                category = '充值号码：' + receiveInfo.receiverPhone
+            }
+            // receiverPhone	String	18761600928
             return(
                 <GoodsGrayItem
                     key={index}
@@ -209,7 +218,7 @@ export default class GoodsListItem extends React.Component {
                     uri={item.specImg || ''}
                     goodsName={item.productName}
                     salePrice={item.unitPrice}
-                    category={item.spec}
+                    category={category}
                     goodsNum={item.quantity}
                     onPress={()=> {goodsItemClick(); this.setState({isShow: false})}}
                     activityCodes={item.activityList || []}

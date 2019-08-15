@@ -1,3 +1,4 @@
+import RouterMap, { routePush } from '../../navigation/RouterMap';
 
 export const homeType = {
     swiper: 2,           // 首页顶部轮播
@@ -26,7 +27,10 @@ export const homeType = {
     guideInfo: 17,
     Alert: 21,//退出的弹窗
     shopProducts: 22,//拼店详情商品列表
-    shopBanner: 23//拼店详情底部banner
+    shopBanner: 23,//拼店详情底部banner
+    custom_imgAD: 'WIDGET-IMAGE-ADV',
+    custom_text: 'WIDGET-TEXT',
+    custom_goods: 'WIDGET-GOODS'
 };
 
 
@@ -83,3 +87,19 @@ export const homePoint = {
 // 51：登录/注册页面广告位
 // 100：其他
 };
+
+
+export function topicAdOnPress(linkType, linkValue) {
+    switch (linkType){
+        case 1:
+        case 4:
+            routePush(RouterMap.ProductDetailPage,{productCode: linkValue})
+            break
+        case 2:
+            routePush('HtmlPage', {uri: '/custom/'+linkValue})
+            break
+        case 3:
+            routePush('HtmlPage', {uri: '/spike'})
+            break
+    }
+}

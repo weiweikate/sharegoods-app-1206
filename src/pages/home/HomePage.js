@@ -3,10 +3,12 @@ import {
     View,
     StyleSheet,
     DeviceEventEmitter, InteractionManager,
-    RefreshControl, BackHandler,
+    RefreshControl,
     NativeEventEmitter,
     NativeModules,
-    ActivityIndicator
+    ActivityIndicator,
+    TouchableOpacity,
+    ScrollView
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import { observer } from 'mobx-react';
@@ -20,8 +22,8 @@ import HomeSubjectView from './view/HomeSubjectView';
 import HomeBannerView, { bannerHeight } from './view/HomeBannerView';
 import GoodsCell, { kHomeGoodsViewHeight } from './view/HomeGoodsView';
 import HomeUserView from './view/HomeUserView';
-import HomeCategoryView, { categoryHeight } from './view/HomeCategoryView';
-import { categoryModule } from './model/HomeCategoryModel';
+// import HomeCategoryView, { categoryHeight } from './view/HomeCategoryView';
+// import { categoryModule } from './model/HomeCategoryModel';
 import MessageApi from '../message/api/MessageApi';
 import EmptyUtils from '../../utils/EmptyUtils';
 import VersionUpdateModalView from './view/VersionUpdateModalView';
@@ -37,7 +39,6 @@ import { todayModule } from './model/HomeTodayModel';
 import { recommendModule } from './model/HomeRecommendModel';
 import { subjectModule } from './model/HomeSubjectModel';
 import { homeExpandBnnerModel } from './model/HomeExpandBnnerModel';
-import HomeTitleView from './view/HomeTitleView';
 import LuckyIcon from '../guide/LuckyIcon';
 import HomeMessageModalView, { HomeAdModal, GiftModal } from './view/HomeMessageModalView';
 import { channelModules } from './model/HomeChannelModel';
@@ -47,12 +48,14 @@ import { limitGoModule } from './model/HomeLimitGoModel';
 import HomeExpandBannerView from './view/HomeExpandBannerView';
 import HomeFocusAdView from './view/HomeFocusAdView';
 import PraiseModel from './view/PraiseModel';
+import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 
 const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
 
 const HOME_REFRESH = 'homeRefresh';
 const HOME_SKIP = 'activitySkip';
+
 
 /**
  * @author zhangjian
@@ -70,6 +73,13 @@ import taskModel from './model/TaskModel';
 import TaskVIew from './view/TaskVIew';
 import intervalMsgModel, { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
 import { UserLevelModalView } from './view/TaskModalView';
+import { routePush } from '../../navigation/RouterMap';
+import ImageAdView from './view/ImageAdView';
+import GoodsCustomView from './view/GoodsCustomView';
+import HomeAPI from './api/HomeAPI';
+import HomeNormalList from './view/HomeNormalList';
+import TabTitleView from './view/TabTitleView';
+import DIYTopicList from './view/DIYTopicList';
 
 const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
     <ActivityIndicator style={{ marginRight: 6 }} animating={errorMsg ? false : (isEnd ? false : true)} size={'small'}
@@ -77,24 +87,14 @@ const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
     <Text style={styles.text}
           allowFontScaling={false}>{errorMsg ? errorMsg : (isEnd ? '我也是有底线的~' : (isFetching ? '加载中...' : '加载更多中...'))}</Text>
 </View>;
-
 @observer
-class HomePage extends BasePage {
-
-    st = 0;
-    offsetY = 0;
-
-    $navigationBarOptions = {
-        title: '',
-        show: false
-    };
-
+class HomeList extends React.Component {
     dataProvider = new DataProvider((r1, r2) => {
         return r1 !== r2;
     });
 
     layoutProvider = new LayoutProvider((i) => {
-        return this.dataProvider.getDataForIndex(i).type || 0;
+        return this.dataProvider.getDataForIndex(i) || {};
     }, (type, dim) => {
         dim.width = ScreenUtils.width;
         const { todayList } = todayModule;
@@ -102,9 +102,10 @@ class HomePage extends BasePage {
         const { subjectHeight, subjectList } = subjectModule;
         const { foucusHeight } = homeFocusAdModel;
 
-        switch (type) {
+        switch (type.type) {
             case homeType.category:
-                dim.height = categoryModule.categoryList.length > 0 ? categoryHeight : 0;
+                // dim.height = categoryModule.categoryList.length > 0 ? categoryHeight : 0;
+                dim.height = 40;
                 break;
             case homeType.swiper:
                 dim.height = bannerModule.bannerList.length > 0 ? bannerHeight : 0;
@@ -137,27 +138,19 @@ class HomePage extends BasePage {
                 dim.height = subjectList.length > 0 ? subjectHeight : 0;
                 break;
             case homeType.goodsTitle:
-                dim.height = px2dp(52);
+                dim.height = homeModule.tabList.length > 0 ? px2dp(43+24): 0;
                 break;
             case homeType.goods:
                 dim.height = kHomeGoodsViewHeight;
+                break;
+            case homeType.custom_goods:
+            case homeType.custom_imgAD:
+                dim.height = type.itemHeight;
                 break;
             default:
                 dim.height = 0;
         }
     });
-
-
-    state = {
-        showMessage: false,
-        messageData: null,
-        messageIndex: 0,
-        updateData: {},
-        showUpdate: false,
-        forceUpdate: false,
-        apkExist: false,
-        hasMessage: false
-    };
 
     constructor(props) {
         super(props);
@@ -167,75 +160,80 @@ class HomePage extends BasePage {
         this.offsetY = 0;
     }
 
-    componentDidMount() {
-        this.willBlurSubscription = this.props.navigation.addListener(
-            'willBlur',
-            payload => {
-                homeModule.homeFocused(false);
-                homeTabManager.setHomeFocus(false);
-                const { state } = payload;
-                if (state && state.routeName === 'HomePage') {
-                    homeModalManager.leaveHome();
-                }
-                BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
-            }
-        );
 
-        this.willFocusSubscription = this.props.navigation.addListener(
-            'willFocus',
-            payload => {
-                const { state } = payload;
-                if (state && state.routeName === 'HomePage') {
-                    if (homeModule.firstLoad) {
-                        homeModule.loadHomeList(true);
-                    }
-                }
-            }
-        );
+    _keyExtractor = (item, index) => item.id + '';
 
-        this.didFocusSubscription = this.props.navigation.addListener(
-            'didFocus',
-            payload => {
-                BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+    _renderItem = (type, item, index) => {
+        type = type.type
+        let data = item;
+        if (type === homeType.category) {
+            // return <HomeCategoryView navigate={routePush}/>;
+            return <View />
+        } else if (type === homeType.swiper) {
+            return <HomeBannerView navigate={routePush}/>;
+        } else if (type === homeType.user) {
+            return <HomeUserView navigate={routePush}/>;
+        } else if (type === homeType.task) {
+            return <TaskVIew type={'home'} style={{marginTop: ScreenUtils.autoSizeWidth(10)}}/>;
+        } else if (type === homeType.channel) {
+            return <HomeChannelView navigate={routePush}/>;
+        } else if (type === homeType.expandBanner) {
+            return <HomeExpandBannerView navigate={routePush}/>;
+        } else if (type === homeType.focusGrid) {
+            return <HomeFocusAdView navigate={routePush}/>;
+        } else if (type === homeType.limitGo) {
+            return <HomeLimitGoView navigate={routePush}/>;
+        } else if (type === homeType.today) {
+            return <HomeTodayView navigate={routePush}/>;
+        } else if (type === homeType.fine) {
+            return <HomeRecommendView navigate={routePush}/>;
+        } else if (type === homeType.homeHot) {
+            return <HomeSubjectView navigate={routePush}/>;
+        } else if (type === homeType.goods) {
+            return <GoodsCell data={data} goodsRowIndex={index} otherLen={homeModule.goodsOtherLen}
+                              navigate={routePush}/>;
+        } else if (type === homeType.goodsTitle) {
+            return <View style={styles.titleView}
+                         ref={e => this.toGoods = e}
+                         onLayout={event => {
+                             // 保留，不能删除
+                         }}>
+                <TabTitleView />
+            </View>;
+        } else if (type === homeType.custom_imgAD) {
+            return <ImageAdView data={item}/>;
+        }else if (type === homeType.custom_goods) {
+            return <GoodsCustomView data={item}/>;
+        }
+        return <View/>;
+    };
 
-                const { state } = payload;
-                if (state && state.routeName === 'HomePage') {
-                    this.luckyIcon && this.luckyIcon.getLucky(1, '');
-                    homeTabManager.setHomeFocus(true);
-                    homeModule.homeFocused(true);
-                    homeModalManager.entryHome();
-                    user.getToken().then(() => {//让user初始化完成
-                        this.luckyIcon && this.luckyIcon.getLucky(1, '');
-                        homeModalManager.requestData();
-                        if (user.token) {
-                            this.loadMessageCount();
-                        } else {
-                            this.setState({
-                                hasMessage: false
-                            });
-                        }
-                        if (!homeModule.firstLoad) {
-                            taskModel.getData();
-                        }
-                        homeModalManager.refreshPrize();
-                    });
-                    if (!homeModule.firstLoad) {
-                        limitGoModule.loadLimitGo(false);
-                    }
-                    // 修复首页图标不准确
-                    this.homeTabChange();
-                }
-                TrackApi.homePage();//埋点
-            }
-        );
-        this.listener = DeviceEventEmitter.addListener('homePage_message', this.getMessageData);
-        this.listenerMessage = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
-        this.listenerLogout = DeviceEventEmitter.addListener('login_out', this.loadMessageCount);
-        this.listenerRetouchHome = DeviceEventEmitter.addListener('retouch_home', this.retouchHome);
-        this.listenerHomeRefresh = JSManagerEmitter.addListener(HOME_REFRESH, this.homeTypeRefresh);
-        this.listenerSkip = JSManagerEmitter.addListener(HOME_SKIP, this.homeSkip);
-
+    _onEndReached() {
+        homeModule.loadMoreHomeList();
     }
+
+    _onRefresh() {
+        homeModule.isRefreshing = true;
+        homeModule.loadHomeList(true);
+        taskModel.getData();
+        this.props.loadTabData();
+        this.luckyIcon && this.luckyIcon.getLucky(1, '');
+    }
+
+    _onListViewScroll = (event) => {
+        if (!homeModule.isFocused) {
+            return;
+        }
+        this.offsetY = event.nativeEvent.contentOffset.y;
+        this.props.onScroll(this.offsetY);
+        this.toGoods && this.toGoods.measure((fx, fy, w, h, left, top) => {
+            if (this.offsetY > height && top < scrollDist) {
+                homeTabManager.setAboveRecommend(true);
+            } else {
+                homeTabManager.setAboveRecommend(false);
+            }
+        });
+    };
 
     homeTabChange = () => {
         this.toGoods && this.toGoods.measure((fx, fy, w, h, left, top) => {
@@ -259,23 +257,46 @@ class HomePage extends BasePage {
         });
     };
 
-    homeTypeRefresh = (type) => {
-        homeModule.refreshHome(type);
-    };
 
-    homeSkip = (data) => {
-        // 跳标
-        const content = JSON.parse(data) || {};
-        intervalMsgModel.setMsgData(content);
-    };
+    render() {
+        const { homeList } = homeModule;
+        this.dataProvider = this.dataProvider.cloneWithRows(homeList);
+        return (
+            <RecyclerListView
+                ref={(ref) => {
+                    this.recyclerListView = ref;
+                }}
+                style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1 }}
+                refreshControl={<RefreshControl refreshing={homeModule.isRefreshing}
+                                                onRefresh={this._onRefresh.bind(this)}
+                                                colors={[DesignRule.mainColor]}/>}
+                onEndReached={this._onEndReached.bind(this)}
+                onEndReachedThreshold={ScreenUtils.height / 3}
+                dataProvider={this.dataProvider}
+                rowRenderer={this._renderItem.bind(this)}
+                layoutProvider={this.layoutProvider}
+                onScrollBeginDrag={this.props.onScrollBeginDrag}
+                showsVerticalScrollIndicator={false}
+                removeClippedSubviews={false}
+                onScroll={this._onListViewScroll}
+                renderFooter={() => <Footer
+                    isFetching={homeModule.isFetching}
+                    errorMsg={homeModule.errorMsg}
+                    isEnd={homeModule.isEnd}/>
+                }
+            />
+        );
+    }
+
+    componentDidMount() {
+        this.listenerRetouchHome = DeviceEventEmitter.addListener('retouch_home', this.retouchHome);
+        this.listenerHomeRefresh = JSManagerEmitter.addListener(HOME_REFRESH, this.homeTypeRefresh);
+        this.listenerSkip = JSManagerEmitter.addListener(HOME_SKIP, this.homeSkip);
+        // 修复首页图标不准确
+        this.homeTabChange();
+    }
 
     componentWillUnmount() {
-        this.willBlurSubscription && this.willBlurSubscription.remove();
-        this.willFocusSubscription && this.willFocusSubscription.remove();
-        this.didFocusSubscription && this.didFocusSubscription.remove();
-        this.listener && this.listener.remove();
-        this.listenerMessage && this.listenerMessage.remove();
-        this.listenerLogout && this.listenerLogout.remove();
         this.listenerRetouchHome && this.listenerRetouchHome.remove();
         this.listenerHomeRefresh && this.listenerHomeRefresh.remove();
         this.listenerSkip && this.listenerSkip.remove();
@@ -287,10 +308,112 @@ class HomePage extends BasePage {
         }
     };
 
-    handleBackPress = () => {
-        return this.state.forceUpdate;
+    scrollToTop = () => {
+        this.recyclerListView && this.recyclerListView.scrollToTop(true);
+    }
+    homeTypeRefresh = (type) => {
+        homeModule.refreshHome(type);
     };
 
+    homeSkip = (data) => {
+        // 跳标
+        const content = JSON.parse(data) || {};
+        intervalMsgModel.setMsgData(content);
+    };
+
+}
+
+
+class HomePage extends BasePage {
+
+    $navigationBarOptions = {
+        title: '',
+        show: false
+    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            hasMessage: false,
+            y: 0,
+            tabData: [],
+        };
+    }
+
+
+    componentDidMount() {
+        this.willBlurSubscription = this.props.navigation.addListener(
+            'willBlur',
+            payload => {
+                homeModule.homeFocused(false);
+                homeTabManager.setHomeFocus(false);
+                const { state } = payload;
+                if (state && state.routeName === 'HomePage') {
+                    homeModalManager.leaveHome();
+                }
+            }
+        );
+
+        this.willFocusSubscription = this.props.navigation.addListener(
+            'willFocus',
+            payload => {
+                const { state } = payload;
+                if (state && state.routeName === 'HomePage') {
+                    if (homeModule.firstLoad) {
+                        this.loadTabData();
+                        homeModule.loadHomeList(true);
+                    }
+                }
+            }
+        );
+
+        this.didFocusSubscription = this.props.navigation.addListener(
+            'didFocus',
+            payload => {
+                const { state } = payload;
+                if (state && state.routeName === 'HomePage') {
+                    this.luckyIcon && this.luckyIcon.getLucky(1, '');
+                    homeTabManager.setHomeFocus(true);
+                    homeModule.homeFocused(true);
+                    homeModalManager.entryHome();
+                    user.getToken().then(() => {//让user初始化完成
+                        this.luckyIcon && this.luckyIcon.getLucky(1, '');
+                        if (user.token) {
+                            this.loadMessageCount();
+                        } else {
+                            this.setState({
+                                hasMessage: false
+                            });
+                        }
+                        if (!homeModule.firstLoad) {
+                            taskModel.getData();
+                            limitGoModule.loadLimitGo(false);
+                        }
+                        homeModalManager.requestData();
+                        homeModalManager.refreshPrize();
+                    });
+                }
+                TrackApi.homePage();//埋点
+            }
+        );
+        this.listener = DeviceEventEmitter.addListener('homePage_message', this.getMessageData);
+        this.listenerMessage = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
+        this.listenerLogout = DeviceEventEmitter.addListener('login_out', this.loadMessageCount);
+        // this.loadTabData();
+    }
+    componentWillUnmount() {
+        this.willBlurSubscription && this.willBlurSubscription.remove();
+        this.willFocusSubscription && this.willFocusSubscription.remove();
+        this.didFocusSubscription && this.didFocusSubscription.remove();
+        this.listener && this.listener.remove();
+        this.listenerMessage && this.listenerMessage.remove();
+        this.listenerLogout && this.listenerLogout.remove();
+    }
+
+    loadTabData = () => {
+        HomeAPI.getFirstList().then((data)=> {
+            this.setState({tabData: data.data});
+        })
+    }
 
     loadMessageCount = () => {
         if (user.token) {
@@ -310,106 +433,51 @@ class HomePage extends BasePage {
         }
     };
 
-    _keyExtractor = (item, index) => item.id + '';
-
-    _renderItem = (type, item, index) => {
-        let data = item;
-        if (type === homeType.category) {
-            return <HomeCategoryView navigate={this.$navigate}/>;
-        } else if (type === homeType.swiper) {
-            return <HomeBannerView navigate={this.$navigate}/>;
-        } else if (type === homeType.user) {
-            return <HomeUserView navigate={this.$navigate}/>;
-        } else if (type === homeType.task) {
-            return <TaskVIew type={'home'} style={{ marginTop: ScreenUtils.autoSizeWidth(10) }}/>;
-        } else if (type === homeType.channel) {
-            return <HomeChannelView navigate={this.$navigate}/>;
-        } else if (type === homeType.expandBanner) {
-            return <HomeExpandBannerView navigate={this.$navigate}/>;
-        } else if (type === homeType.focusGrid) {
-            return <HomeFocusAdView navigate={this.$navigate}/>;
-        } else if (type === homeType.limitGo) {
-            return <HomeLimitGoView navigate={this.$navigate}/>;
-        } else if (type === homeType.today) {
-            return <HomeTodayView navigate={this.$navigate}/>;
-        } else if (type === homeType.fine) {
-            return <HomeRecommendView navigate={this.$navigate}/>;
-        } else if (type === homeType.homeHot) {
-            return <HomeSubjectView navigate={this.$navigate}/>;
-        } else if (type === homeType.goods) {
-            return <GoodsCell data={data} goodsRowIndex={index} otherLen={homeModule.goodsOtherLen}
-                              navigate={this.$navigate}/>;
-        } else if (type === homeType.goodsTitle) {
-            return <View style={styles.titleView}
-                         ref={e => this.toGoods = e}
-                         onLayout={event => {
-                             // 保留，不能删除
-                         }}>
-                <HomeTitleView title={'为你推荐'}/>
-            </View>;
-        }
-        return <View/>;
-    };
-
-    _onEndReached() {
-        homeModule.loadMoreHomeList();
-    }
-
-    _onRefresh() {
-        homeModule.isRefreshing = true;
-        homeModule.loadHomeList(true);
-        taskModel.getData();
-        this.luckyIcon && this.luckyIcon.getLucky(1, '');
-    }
-
-    _onListViewScroll = (event) => {
-        if (!homeModule.isFocused) {
-            return;
-        }
-        this.offsetY = event.nativeEvent.contentOffset.y;
-        this.toGoods && this.toGoods.measure((fx, fy, w, h, left, top) => {
-            if (this.offsetY > height && top < scrollDist) {
-                homeTabManager.setAboveRecommend(true);
-            } else {
-                homeTabManager.setAboveRecommend(false);
-            }
-        });
-    };
 
     render() {
-        const { homeList } = homeModule;
-        this.dataProvider = this.dataProvider.cloneWithRows(homeList);
+       let tabData = this.state.tabData || [];
         return (
             <View style={[styles.container, { minHeight: ScreenUtils.headerHeight, minWidth: 1 }]}>
-                <HomeSearchView navigation={this.$navigate}
+                <HomeSearchView navigation={routePush}
                                 hasMessage={this.state.hasMessage}
                 />
-                <RecyclerListView
-                    ref={(ref) => {
-                        this.recyclerListView = ref;
+                <ScrollableTabView
+                    onChangeTab={(obj) => {
+                        // this.setState({ selectTab: obj.i });
+                        this.tab && this.tab.scrollTo({x: obj.i*60 - ScreenUtils.width/2 + 30})
+                        this.homeList && this.homeList.scrollToTop();
                     }}
-                    style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1 }}
-                    refreshControl={<RefreshControl refreshing={homeModule.isRefreshing}
-                                                    onRefresh={this._onRefresh.bind(this)}
-                                                    colors={[DesignRule.mainColor]}/>}
-                    onEndReached={this._onEndReached.bind(this)}
-                    onEndReachedThreshold={ScreenUtils.height / 3}
-                    renderAheadOffset={ScreenUtils.height - ScreenUtils.headerHeight}
-                    dataProvider={this.dataProvider}
-                    rowRenderer={this._renderItem.bind(this)}
-                    layoutProvider={this.layoutProvider}
-                    onScrollBeginDrag={() => {
-                        this.luckyIcon.close();
-                    }}
-                    showsVerticalScrollIndicator={false}
-                    removeClippedSubviews={false}
-                    onScroll={this._onListViewScroll}
-                    renderFooter={() => <Footer
-                        isFetching={homeModule.isFetching}
-                        errorMsg={homeModule.errorMsg}
-                        isEnd={homeModule.isEnd}/>
-                    }
-                />
+                    style={styles.container}
+                    contentProps={{flex: 1, position: 'relative'}}
+                    renderTabBar={this._renderTabBar.bind(this)}
+                    //进界面的时候打算进第几个
+                    initialPage={0}>
+                   <HomeList
+                        tabLabel={'推荐'}
+                        ref={(ref => {this.homeList = ref})}
+                        onScrollBeginDrag={() => {
+                            this.luckyIcon.close();
+                        }}
+                        loadTabData={this.loadTabData}
+                        onScroll={(y)=>{
+                            if (y > 40 && this.state.y >= 40 || y < 0) {
+                                return
+                            }
+                            this.setState({ y })
+
+                        }}
+                    />
+                    {tabData.map((item) => {
+                        if (item.navType === 2){
+                         return  <DIYTopicList tabLabel={item.navName}
+                                          data = {item}/>
+                        }
+                        if (item.navType === 1){
+                        return <HomeNormalList  tabLabel={item.navName}
+                                             data = {item}/>
+                        }
+                    })}
+                </ScrollableTabView>
                 <LuckyIcon ref={(ref) => {
                     this.luckyIcon = ref;
                 }}/>
@@ -423,6 +491,38 @@ class HomePage extends BasePage {
             </View>
         );
     }
+
+    _renderTabBar(p){
+        let itemWidth = 60;
+        let tabBarHeight = 40;
+        return (
+            <View style={{backgroundColor: 'white', height: tabBarHeight, position: 'absolute', top: - this.state.y, left: 0, zIndex: 1, right: 0}}>
+                <ScrollView
+                    horizontal = {true}
+                    showsHorizontalScrollIndicator={false}
+                    ref={ref=>{this.tab = ref}}
+                >
+                <DefaultTabBar
+                    activeTab={p.activeTab}
+                    style={{ width: itemWidth*p.tabs.length, borderBottomWidth: 0, height: tabBarHeight}}
+                    containerWidth={itemWidth*p.tabs.length}
+                    scrollValue={p.scrollValue}
+                    tabs={p.tabs}
+                    underlineStyle={{backgroundColor: DesignRule.mainColor, left: (itemWidth -20)/2, width: 20, bottom: 2}}
+                    renderTab = {(name, page, isTabActive, goToPage) => {
+                        return(
+                            <TouchableOpacity style={{height: 36, alignItems: 'center', justifyContent: 'center',width: itemWidth}}
+                                              onPress={() => p.goToPage(page)}
+                            >
+                                <Text style={isTabActive? styles.tabSelect: styles.tabNomal}>{name}</Text>
+                            </TouchableOpacity>
+                        )
+                    }}
+                />
+                </ScrollView>
+            </View>
+        )
+    }
 }
 
 
@@ -432,8 +532,8 @@ const styles = StyleSheet.create({
         backgroundColor: DesignRule.bgColor
     },
     titleView: {
-        marginTop: px2dp(10),
-        paddingLeft: px2dp(15),
+
+        height: px2dp(43 + 24),
         width: ScreenUtils.width
     },
     messageBgStyle: {
@@ -462,6 +562,14 @@ const styles = StyleSheet.create({
     text: {
         color: DesignRule.textColor_instruction,
         fontSize: DesignRule.fontSize_24
+    },
+    tabNomal:{
+        fontSize: 12,
+        color: '#999999'
+    },
+    tabSelect:{
+        fontSize: 14,
+        color: DesignRule.mainColor
     }
 });
 
