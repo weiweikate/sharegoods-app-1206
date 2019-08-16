@@ -64,7 +64,7 @@ RCT_EXPORT_METHOD(uploadVideo:(NSString *)title and:(NSString *)path dic:(NSStri
     if(dicParams[@"uploadAddress"]&&dicParams[@"uploadAuth"]){
       NSString * uploadAddress = dicParams[@"uploadAddress"];
       NSString * uploadAuth = dicParams[@"uploadAuth"];
-      [[HYFUploaderVideo sharedInstance]startUpLoad:fileName and:path and:title andUpLoadAuth:uploadAuth andUpLoadAddress:uploadAddress];
+      [[HYFUploaderVideo sharedInstance]startUpLoad:fileName and:tempFile and:title andUpLoadAuth:uploadAuth andUpLoadAddress:uploadAddress];
       [HYFUploaderVideo sharedInstance].finshBlock = ^(NSString *finshParam) {
         resolve(@"");
       };
