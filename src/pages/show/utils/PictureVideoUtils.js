@@ -225,9 +225,8 @@ class PictureVideoUtils {
         NativeModules.commModule.RN_ImageCompression(paths, sizes, 1024 * 1024 * 1, upload);
     };
 
-    uploadSingleImage = (image, callback) => {
+    uploadSingleImage = (image, callback,uploadErr) => {
         let url = apiEnvironment.getCurrentHostUrl();
-        // url ='https://testapi.sharegoodsmall.com/gateway';
         request.setBaseUrl(url);
         let datas = {
             type: 'image/png',
@@ -244,6 +243,7 @@ class PictureVideoUtils {
                     callback(null);
                 }
             }).catch((error)=>{
+                uploadErr();
             });
         };
         NativeModules.commModule.RN_ImageCompression([image], null, 1024 * 1024 * 1, upload);
