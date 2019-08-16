@@ -92,13 +92,13 @@ export class HeaderItemView extends Component {
         const { navigation, productDetailModel, shopAction } = this.props;
         const {
             freight, monthSaleCount, originalPrice, minPrice, groupPrice, promotionMinPrice, maxPrice, promotionMaxPrice, name,
-            secondName, levelText, priceType, activityType, activityStatus, type
+            secondName, levelText, priceType, activityType, activityStatus, type, isHuaFei
         } = productDetailModel;
         let showWill = activityType === activity_type.skill && activityStatus === activity_status.unBegin;
         let showIn = activityType === activity_type.skill && activityStatus === activity_status.inSell;
         let showPrice = !(activityType === activity_type.skill && activityStatus === activity_status.inSell);
-        /*秒杀不显示 拼店*/
-        let showShop = !(activityType === activity_type.skill && activityStatus === activity_status.inSell);
+        /*秒杀||话费 不显示拼店*/
+        let showShop = !(activityType === activity_type.skill && activityStatus === activity_status.inSell) && !isHuaFei;
         /*直降中显示活动价 价格区间*/
         let verDownInSell = activityType === activity_type.verDown && activityStatus === activity_status.inSell;
         return (

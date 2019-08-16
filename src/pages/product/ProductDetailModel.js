@@ -252,22 +252,15 @@ export default class ProductDetailModel {
         return activityType === activity_type.skill && activityStatus === activity_status.inSell;
     }
 
-    @computed get isGroupIn() {
-        const { activityType, activityStatus, groupActivity } = this;
-        return activityType === activity_type.group && activityStatus === activity_status.inSell && (groupActivity.subProductList || []).length > 0;
-    }
-
-    @computed get groupSubProductCanSell() {
-        const { subProductList } = this.groupActivity;
-        for (const subProduct of (subProductList || [])) {
-            const { skuList } = subProduct || {};
-            const skuItem = (skuList || [])[0];
-            const { sellStock } = skuItem || {};
-            if (sellStock < 1) {
-                return false;
+    @computed get isHuaFei() {
+        const { type, skuList } = this;
+        if (type === 3) {
+            const { assetsBind } = skuList[0] || {};
+            if ((assetsBind || {}).assetsType === 'TELEPHONE_CHARGE') {
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     /*秒杀倒计时显示*/
@@ -350,7 +343,7 @@ export default class ProductDetailModel {
     }
 
     @computed get sectionDataList() {
-        const { promoteInfoVOList, contentArr, paramList, productDetailCouponsViewModel, type, isGroupIn, productDetailSuitModel } = this;
+        const { promoteInfoVOList, contentArr, paramList, productDetailCouponsViewModel, type, productDetailSuitModel, isHuaFei } = this;
         const { couponsList } = productDetailCouponsViewModel;
         const { activityCode } = productDetailSuitModel;
         /*头部*/
@@ -358,8 +351,8 @@ export default class ProductDetailModel {
             { key: sectionType.sectionHeader, data: [{ itemKey: productItemType.headerView }] }
         ];
         /*优惠套餐*/
-        if (isGroupIn || activityCode) {
-            sectionArr.push(
+        if (activityCode) {
+            !isHuaFei && sectionArr.push(
                 { key: sectionType.sectionSuit, data: [{ itemKey: productItemType.suit }] }
             );
         }
@@ -367,10 +360,14 @@ export default class ProductDetailModel {
         let promoteItemList = [];
         couponsList.length !== 0 && promoteItemList.push({ itemKey: productItemType.coupons });
         promoteInfoVOList.length !== 0 && promoteItemList.push({ itemKey: productItemType.promote });
-        promoteItemList.length !== 0 && sectionArr.push({ key: sectionType.sectionPromotion, data: promoteItemList });
+        (promoteItemList.length !== 0 && !isHuaFei) && sectionArr.push({
+            key: sectionType.sectionPromotion,
+            data: promoteItemList
+        });
 
         /*服务,参数,选择地址*/
-        let settingList = [{ itemKey: productItemType.service }];
+        let settingList = [];
+        !isHuaFei && settingList.push({ itemKey: productItemType.service });
         paramList.length !== 0 && settingList.push({ itemKey: productItemType.param });
         type !== 3 && settingList.push({ itemKey: productItemType.address });
         sectionArr.push({ key: sectionType.sectionSetting, data: settingList });
@@ -567,7 +564,7 @@ export default class ProductDetailModel {
         /*获取当前商品优惠券列表*/
         this.productDetailCouponsViewModel.requestListProdCoupon(this.prodCode);
         /*获取套餐信息*/
-        // this.productDetailSuitModel.request_promotion_detail(this.prodCode);
+        this.productDetailSuitModel.request_promotion_detail(this.prodCode);
     };
 
     /**请求商品**/
