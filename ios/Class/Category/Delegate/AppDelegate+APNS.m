@@ -139,6 +139,7 @@
    mobileUIConfig.appPrivacyColor = @[[UIColor colorWithHexString:@"#3d3d3d"], [UIColor colorWithHexString:@"#F00050"]];
   mobileUIConfig.checkedImg = [UIImage imageNamed:@"umcsdk_check_image"];
   mobileUIConfig.uncheckedImg = [UIImage imageNamed:@"umcsdk_uncheck_image"];
+  mobileUIConfig.sloganTextColor = [UIColor clearColor];
   [JVERIFICATIONService customUIWithConfig:mobileUIConfig customViews:^(UIView *customAreaView) {
     [self customLoginView:customAreaView];
   }];
@@ -157,6 +158,7 @@
   unicomUIConfig.appPrivacyColor = @[[UIColor colorWithHexString:@"#3d3d3d"], [UIColor colorWithHexString:@"#F00050"]];
   unicomUIConfig.checkedImg = [UIImage imageNamed:@"umcsdk_check_image"];
   unicomUIConfig.uncheckedImg = [UIImage imageNamed:@"umcsdk_uncheck_image"];
+  unicomUIConfig.sloganTextColor = [UIColor clearColor];
   
   [JVERIFICATIONService customUIWithConfig:unicomUIConfig customViews:^(UIView *customAreaView) {
     [self customLoginView:customAreaView];
@@ -176,6 +178,7 @@
   telecomUIConfig.appPrivacyColor = @[[UIColor colorWithHexString:@"#3d3d3d"], [UIColor colorWithHexString:@"#F00050"]];
   telecomUIConfig.checkedImg = [UIImage imageNamed:@"umcsdk_check_image"];
   telecomUIConfig.uncheckedImg = [UIImage imageNamed:@"umcsdk_uncheck_image"];
+  telecomUIConfig.sloganTextColor = [UIColor clearColor];
   [JVERIFICATIONService customUIWithConfig:telecomUIConfig customViews:^(UIView *customAreaView) {
     [self customLoginView:customAreaView];
   }];
