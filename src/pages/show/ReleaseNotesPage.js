@@ -234,7 +234,6 @@ export default class ReleaseNotesPage extends BasePage {
                                 this.$toastShow('上传失败');
                                 this.$loadingDismiss();
                             })
-
                         }).catch((error) => {
                             this.$toastShow(error.msg);
                             this.$loadingDismiss();
@@ -243,13 +242,15 @@ export default class ReleaseNotesPage extends BasePage {
                         this.$toastShow('上传失败');
                         this.$loadingDismiss();
                     }
+                },()=>{
+                    this.$toastShow('上传失败');
+                    this.$loadingDismiss();
                 });
             }).catch((error)=>{
                 this.$loadingDismiss();
                 this.$toastShow('发布失败');
             })
         } else {
-
 
             this.$loadingShow('发布中');
             ShowApi.getShowVideoToken({
@@ -294,6 +295,9 @@ export default class ReleaseNotesPage extends BasePage {
                         this.$toastShow('上传失败');
                         this.$loadingDismiss();
                     }
+                },()=>{
+                    this.$toastShow('上传失败');
+                    this.$loadingDismiss();
                 });
             }).catch((error)=>{
                 this.$loadingDismiss();
