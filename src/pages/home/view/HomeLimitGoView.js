@@ -45,7 +45,8 @@ export default class HomeLimitGoView extends Component {
     _renderTab(name, page, isTabActive, onPressHandler, onLayoutHandler) {
         const textColor = isTabActive ? '#FC533B' : '#333';
         const selectedValue = (value) => value.id === name;
-        const selectedModels = limitGoModule.spikeList.filter(selectedValue);
+        const { spikeList } = limitGoModule;
+        const selectedModels = spikeList.filter(selectedValue);
         let selected = null;
         if (selectedModels && selectedModels.length > 0) {
             selected = selectedModels[0];
@@ -127,7 +128,7 @@ export default class HomeLimitGoView extends Component {
 
     openModal() {
         this.modal && this.modal.open();
-        track(trackEvent.HomePagePopShow, {homePagePopType: 1});
+        track(trackEvent.HomePagePopShow, { homePagePopType: 1 });
     }
 
     seeMore() {
