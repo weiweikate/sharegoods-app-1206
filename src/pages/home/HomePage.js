@@ -80,6 +80,7 @@ import HomeAPI from './api/HomeAPI';
 import HomeNormalList from './view/HomeNormalList';
 import TabTitleView from './view/TabTitleView';
 import DIYTopicList from './view/DIYTopicList';
+const nowTime = new Date().getTime();
 
 const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
     <ActivityIndicator style={{ marginRight: 6 }} animating={errorMsg ? false : (isEnd ? false : true)} size={'small'}
@@ -312,7 +313,11 @@ class HomeList extends React.Component {
         this.recyclerListView && this.recyclerListView.scrollToTop(true);
     }
     homeTypeRefresh = (type) => {
-        homeModule.refreshHome(type);
+        let refreshTime = new Date().getTime();
+        // 防止透传消息堆积，不停的刷新
+        if (refreshTime - nowTime > 10 * 1000) {
+            homeModule.refreshHome(type);
+        }
     };
 
     homeSkip = (data) => {
