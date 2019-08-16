@@ -1,21 +1,8 @@
 //店员详情页面
 import React from 'react';
-import {
-    View,
-    Image,
-    Dimensions,
-    StyleSheet,
-    ScrollView,
-    ImageBackground,
-    TouchableOpacity
-} from 'react-native';
+import { Image, ImageBackground, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import UIImage from '@mr/image-placeholder';
-import {
-    MRText as Text
-} from '../../../components/ui';
-//Source
-const SCREEN_WIDTH = Dimensions.get('window').width;
-
+import { MRText as Text } from '../../../components/ui';
 import BasePage from '../../../BasePage';
 import DateUtils from '../../../utils/DateUtils';
 import SpellShopApi from '../api/SpellShopApi';
@@ -24,6 +11,8 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import StringUtils from '../../../utils/StringUtils';
 import res from '../res';
 import resCommon from '../../../comm/res';
+//Source
+const SCREEN_WIDTH = ScreenUtils.width;
 
 const RingImg = res.myShop.headBg;
 const HeaderBarBgImg = res.myShop.txbg_03;
@@ -35,7 +24,7 @@ const QbIcon = res.myShop.dzfhj_03_03;
 const MoneyIcon = res.myShop.ccz_03;
 const detail_zongti = res.myShop.detail_zongti;
 const detail_benci = res.myShop.detail_benci;
-const NavLeft = resCommon.button.white_back;
+const NavLeft = resCommon.button.back_white;
 
 export default class ShopAssistantDetailPage extends BasePage {
 
@@ -56,8 +45,8 @@ export default class ShopAssistantDetailPage extends BasePage {
 
                     <TouchableOpacity onPress={() => {
                         this.$navigateBack();
-                    }}>
-                        <Image source={NavLeft}/>
+                    }} style={{ width: 40, justifyContent: 'center', alignItems: 'center' }}>
+                        <Image source={NavLeft} style={{ width: 30, height: 30 }}/>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -185,7 +174,7 @@ const styles = StyleSheet.create({
         height: 44,
         backgroundColor: 'transparent',
         position: 'absolute',
-        left: 15,
+        left: 5,
         right: 15,
         zIndex: 3,
         flexDirection: 'row',

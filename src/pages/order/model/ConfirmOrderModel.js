@@ -1,336 +1,329 @@
-import { observable, action } from 'mobx';
+import { action, observable } from 'mobx';
 import OrderApi from '../api/orderApi';
 import StringUtils from '../../../utils/StringUtils';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import bridge from '../../../utils/bridge';
-import API from '../../../api';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { Alert } from 'react-native';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
-import { routePop } from '../../../navigation/RouterMap';
-import { OrderType } from '../../../utils/EnumUtil';
+import RouterMap, { navigateBack, routePush } from '../../../navigation/RouterMap';
+import { payment } from '../../payment/Payment';
+import API from '../../../api';
 
 class ConfirmOrderModel {
-    @observable
-    orderProductList = [];
-    @observable
-    payAmount = '0';
-    @observable
-    totalFreightFee = '0';
-    @observable
-    userAddressDTO = null;
-    @observable
-    orderNo = null;
-    @observable
-    tokenCoin = 0;
-    @observable
-    addressData = {};
-    @observable
-    userCouponCode = null;
-    @observable
-    tokenCoinText = null;
-    @observable
-    couponName = null;
-    @observable
-    canUseCou = false;
-    @observable
-    couponList = [];
-    @observable
-    message = '';
-    @observable
-    addressId = null;
-    @observable
-    orderParamVO = {};
-    @observable
-    canCommit = true;
+
     @observable
     loadingState = PageLoadingState.success;
     @observable
-    giveUpCou = false;
+    err = null;
     @observable
-    couponCount=0;
+    canUseCou = true;
     @observable
-    couponData={}
+    isAllVirtual = false;
+
+    addressId = '';
+    addressData = {};
+    isNoAddress = false;
+
+    orderParamVO = {};
+    tokenCoin = 0;
+    userCouponCode = '';
     @observable
-    err=null
+    message = '';
+
     @observable
-    allProductPrice = 0;
+    platformOrderNo = '';
     @observable
-    promotionAmount
+    productOrderList = [];
     @observable
-    couponAmount
+    failProductList = [];
+    @observable
+    payInfo = {};
+    @observable
+    receiveInfo = {};
 
     @action clearData() {
-        this.orderProductList = [];
-        this.payAmount = '0';
-        this.totalFreightFee = '0';
-        this.userAddressDTO = null;
-        this.orderNo = null;
-        this.tokenCoin = 0;
-        this.addressData = {};
-        this.userCouponCode = null;
-        this.tokenCoinText = null;
-        this.couponName = null;
+        this.loadingState = PageLoadingState.success;
+        this.err = null;
         this.canUseCou = false;
-        this.couponList = [];
+
+        this.addressId = '';
         this.message = '';
-        this.addressId = null;
+        this.tokenCoin = 0;
         this.orderParamVO = {};
-        this.canCommit = true;
-        this.giveUpCou = false;
-        this.couponCount = 0;
-        this.couponData = {};
-        this.err = null;
-        this.allProductPrice = 0;
-        this.couponAmount = 0
-        this.promotionAmount = '';
+        this.userCouponCode = '';
+
+        this.platformOrderNo = null;
+        this.productOrderList = [];
+        this.failProductList = [];
+        this.payInfo = {};
+        this.receiveInfo = {};
+        this.data = null;
+
     }
 
-    @action makeSureProduct(orderParamVO, params = {}) {
-        this.orderParamVO = orderParamVO;
-        this.err = null;
-        switch (orderParamVO.orderType) {
-            case OrderType.depreciate_old:// 2.降价拍
-                return OrderApi.DepreciateMakeSureOrder({
-                    activityCode: orderParamVO.orderProducts[0].code,
-                    channel: 2,
-                    num: orderParamVO.orderProducts[0].num,
-                    source: 2,
-                    submitType: 1,
-                    ...params
-                }).then(response => {
-                    this.handleNetData(response.data);
-                }).catch(err => {
-                    this.disPoseErr(err, orderParamVO, params);
-                });
-                break;
-            case OrderType.gift://礼包
-                return OrderApi.PackageMakeSureOrder({
-                    activityCode: orderParamVO.activityCode,
-                    orderType: 2,//1.普通订单 2.活动订单  -- 下单必传
-                    orderSubType: orderParamVO.orderSubType,//,1.秒杀 2.降价拍 3.升级礼包 4.普通礼包
-                    source: 2,//1.购物车 2.直接下单
-                    channel: 2,//1.小程序 2.APP 3.H5
-                    orderProductList: orderParamVO.orderProducts,
-                    submitType: 1,
-                    quantity: 1,
-                    ...params
-                }).then(
-                    response => {
-                        this.handleNetData(response.data);
-                    }
-                ).catch(err => {
-                    this.disPoseErr(err, orderParamVO, params);
-                });
-                break;
-            default://其他
-                OrderApi.makeSureOrder({
-                    orderType: 1,//1.普通订单 2.活动订单  -- 下单必传
-                    // orderSubType:  "",//1.秒杀 2.降价拍 3.升级礼包 4.普通礼包
-                    source: orderParamVO.source,//1.购物车 2.直接下单
-                    sgAppVersion:310,
-                    couponsId: orderParamVO.couponsId,
-                    // source: 4,//1.购物车 2.直接下单,4 周期券
-                    channel: 2,//1.小程序 2.APP 3.H5
-                    orderProductList: orderParamVO.orderProducts,
-                    ...params
-                }).then(response => {
-                    this.handleNetData(response.data);
-                }).catch(err => {
-                    this.disPoseErr(err, orderParamVO, params);
-                });
-                break;
+    @action
+    selectAddressId(addressData) {
+        let addressId = addressData.id || '';
+        addressId = addressId + '';
+        this.addressId = addressId;
+        this.addressData = addressData;
+        this.tokenCoin = 0;
+        this.makeSureProduct();
+    }
 
+    @action
+    selecttokenCoin(num) {
+        if (this.tokenCoin == num) {
+            return;
         }
-
+        this.tokenCoin = num;
+        this.makeSureProduct();
     }
 
-    disPoseErr = (err, orderParamVO, params) => {
-        bridge.hiddenLoading();
-        this.canCommit = true;
-        this.err = err;
+    @action
+    selectUserCoupon(userCouponCode) {
+        if (this.userCouponCode == userCouponCode) {
+            return;
+        }
+        this.tokenCoin = 0;
+        this.userCouponCode = userCouponCode;
+        this.makeSureProduct();
+    }
+
+    @action
+    judgeIsAllVirtual(orderProducts) {
+        let isAllVirtual = true;
+        (orderProducts || []).forEach(item => {
+            // "skuCode":, //string 平台skuCode
+            // "quantity":, //int 购买数量
+            // "activityCode":, //string 活动code
+            // "batchNo": //string 活动批次号
+            let { productType } = item;
+            if (productType !== 3) {
+                isAllVirtual = false;
+            }
+        });
+        this.isAllVirtual = isAllVirtual;
+    }
+
+    getAvailableProducts() {
+        let orderProducts = this.orderParamVO.orderProducts || [];
+        return orderProducts.filter((item => {
+            return item.fail === false;
+        }));
+    }
+
+    getParams(filterFail) {
+        let orderProducts = this.orderParamVO.orderProducts || [];
+        if (filterFail) {
+            orderProducts = this.getAvailableProducts();
+        }
+        let productList = orderProducts.map(item => {
+            // "skuCode":, //string 平台skuCode
+            // "quantity":, //int 购买数量
+            // "activityCode":, //string 活动code
+            // "batchNo": //string 活动批次号
+            let { skuCode, quantity, activityCode, batchNo } = item;
+            return { skuCode, quantity, activityCode, batchNo };
+        });
+        let { receiver, receiverPhone, province, city, area, street, address } = this.addressData;
+        return {
+            couponInfo: { //券信息
+                couponCode: this.userCouponCode, //本次下单使用的优惠券code
+                tokenCoin: this.tokenCoin//BigDecimal 一元券抵扣金额
+            },
+            receiveInfo: {
+                id: this.addressId, //int 收货地址ID
+                receiver,
+                receiverPhone,
+                province,
+                city,
+                area,
+                street,
+                address
+            },
+            productList: productList,
+            invokeInfo: { //接口请求信息
+                source: this.orderParamVO.source,  //int 订单来源: 1.购物车 2.直接下单
+                channel: 2//int 渠道来源: 1.小程序 2.APP 3.H5
+            },
+            ext: { //扩展信息
+                userMessage: this.message// string 买家留言
+            }
+        };
+    }
+
+    getCouponParams() {
+        let orderProducts = this.orderParamVO.orderProducts || [];
+        let arr = orderProducts.map((item) => {
+            return {
+                priceCode: item.skuCode,
+                productCode: item.productCode,
+                amount: item.quantity,
+                activityCode: item.activityCode,
+                batchNo: item.batchNo
+            };
+        });
+        let params = { productPriceIds: arr };
+        return { sgAppVersion: 310, ...params };
+    }
+
+    @action
+    makeSureProduct_selectDefaltCoupon(couponsId) {
+            API.listAvailable(this.getCouponParams()).then((data) => {
+                // couponConfigId	Integer	823
+                data = data.data || {};
+                let userCouponCode = '';
+                (data.data || []).find((item)=>{
+                    if (item.couponConfigId == couponsId) {
+                        userCouponCode = item.code;
+                        return true;
+                    }
+                    if (item.type == 5 && !userCouponCode) {
+                        userCouponCode = item.code;
+                        if (!couponsId) {
+                            return true;
+                        }
+                    }
+                });
+                this.userCouponCode = userCouponCode;
+            }).finally(() => {
+                this.makeSureProduct();
+            });
+    }
+
+    @action makeSureProduct() {
+        this.isNoAddress = false;
+        bridge.showLoading();
+        OrderApi.makeSureOrder(this.getParams()).then(response => {
+            bridge.hiddenLoading();
+            this.err = null;
+            this.loadingState = PageLoadingState.success;
+            this.handleNetData(response.data || {});
+        }).catch(err => {
+            bridge.hiddenLoading();
+            this.err = err;
+            this.disPoseErr(err);
+
+        });
+    }
+
+
+    disPoseErr = (err) => {
+        if (this.data) {//原来有数据，清除选择优惠券信息
+            // this.data.payInfo.payAmount += this.data.payInfo.couponAmount;
+            // this.data.payInfo.couponAmount = 0;//清除优惠券信息
+            // this.handleNetData(this.data);
+             this.receiveInfo = {};
+        } else {//原来没有数据的时候，展示自己带下来的数据
+            this.productOrderList = this.orderParamVO.orderProducts || [];
+        }
         if (err.code === 10003 && err.msg.indexOf('不在限制的购买时间') !== -1) {
             Alert.alert('提示', err.msg, [
                 {
                     text: '确定', onPress: () => {
-                        routePop()
+                        navigateBack();
                     }
                 }
             ]);
         } else if (err.code === 54001) {
             bridge.$toast('商品库存不足！');
+        } else if (err.code === 43009) {
+            this.isNoAddress = true;
+            Alert.alert('', '您还没有收货地址，请点击添加',
+                [{
+                    text: '取消', onPress: () => {
+                    }
+                },
+                    {
+                        text: '添加', onPress: () => {
+                            routePush(RouterMap.AddressEditAndAddPage, {
+                                callBack: (json) => {
+                                    this.selectAddressId(json);
+                                },
+                                from: 'add'
+                            });
+                        }
+                    }
+                ]);
         } else {
             bridge.$toast(err.msg);
         }
     };
 
     handleNetData = (data) => {
-        this.err = null;
-        bridge.hiddenLoading();
-        this.canCommit = true;
-        this.loadingState = PageLoadingState.success;
-        this.orderProductList = data.orderProductList;
-        this.addressData = data.userAddressDTO || data.userAddress || {};
-        this.addressId = this.addressData.id;
-        this.payAmount = data.payAmount;
-        this.totalFreightFee = data.totalFreightFee ? data.totalFreightFee : 0;
-        this.couponList = data.couponList ? data.couponList : null;
-        this.couponCount = data.couponCount;
-        this.allProductPrice = data.totalAmount;
-        this.promotionAmount = data.promotionAmount;
-        this.couponAmount = data.couponAmount;
-        this.orderProductList.map((item) => {
-            if ((item.restrictions & 1) === 1) {
-                this.canUseCou = true;
+        this.data = data;
+        this.platformOrderNo = data.platformOrderNo || '';
+        this.productOrderList = data.productOrderList || [];
+        this.payInfo = data.payInfo || {};
+        this.receiveInfo = data.receiveInfo || {};
+        this.addressId = this.receiveInfo.id ? this.receiveInfo.id + '' : '';
+        this.addressData = this.receiveInfo;
+        this.tokenCoin = this.payInfo.tokenCoinAmount;
+        if (this.payInfo.couponAmount === 0) {
+            this.userCouponCode = '';
+        }
+        let canUseCou = false;
+        this.productOrderList.forEach(item => {
+            if (item.canCoupon === true) {
+                canUseCou = true;
             }
         });
-        if (this.canUseCou) {
-            let arr = [];
-            let params = {};
-            //老的降价拍礼包走
-           if ( this.orderParamVO.orderType === OrderType.depreciate_old || this.orderParamVO.orderType === OrderType.gift) {
-                this.orderParamVO.orderProducts.map((item, index) => {
-                    arr.push({
-                        priceCode: item.skuCode,
-                        productCode: item.productCode || item.prodCode,
-                        amount: 1
-                    });
-                });
-                params = {
-                    productPriceIds: arr,
-                    activityCode: this.orderParamVO.activityCode,
-                    activityType: this.orderParamVO.orderType === OrderType.gift ? this.orderParamVO.orderSubType :  this.orderParamVO.orderType
-                };
-            } else{//其他
-                this.orderParamVO.orderProducts.map((item, index) => {
-
-                    let {quantity, num , skuCode, productCode, activityCode, batchNo} = item
-                    let  amount = quantity || num;
-                    arr.push({
-                        priceCode: skuCode,
-                        productCode: productCode,
-                        amount: amount,
-                        activityCode: activityCode,
-                        batchNo
-                    });
-                });
-
-                params = { productPriceIds: arr };
-                //orderType1：秒杀，2：降价拍，3（，orderSubType 3升级礼包 4普通礼包）
-            }
-            API.listAvailable({ page: 1, pageSize: 20, ...params }).then(resp => {
-                let data = resp.data || {};
-                let dataList = data.data || [];
-                if (dataList.length === 0) {
-                    this.couponName = '暂无优惠券';
+        this.canUseCou = canUseCou;
+        //遍历出失效对应商品信息
+        let failProductList = [];
+        let list = data.failProductList || [];
+        let orderProducts = this.orderParamVO.orderProducts || [];
+        for (let j = 0; j < orderProducts.length; j++) {
+            let product = orderProducts[j];
+            product.fail = false;
+            for (let i = 0; i < list.length; i++) {
+                if (list[i].skuCode == orderProducts[j].skuCode &&
+                    list[i].quantity == orderProducts[j].quantity &&
+                    list[i].activityCode == orderProducts[j].activityCode &&
+                    list[i].batchNo == orderProducts[j].batchNo
+                ) {
+                    product.fail = true;
+                    failProductList.push({ ...product, failReason: list[i].failReason });
+                    break;
                 }
-            }).catch(result => {
-                console.log(result);
-            });
+            }
         }
-        return data;
+        this.failProductList = failProductList;
     };
 
-    @action submitProduct(orderParamVO, { callback }) {
-        if (StringUtils.isEmpty(this.addressId)) {
+    @action submitProduct() {
+        if (StringUtils.isEmpty(this.addressId) && !this.isAllVirtual) {
             bridge.$toast('请先添加地址');
-            bridge.hiddenLoading();
             return;
         }
-        if(!StringUtils.isEmpty(this.err)){
-            bridge.hiddenLoading();
+        if (!StringUtils.isEmpty(this.err)) {
             return;
         }
-        let baseParams = {
-            message: this.message,
-            tokenCoin: this.tokenCoin,
-            userCouponCode: this.userCouponCode,
-            addressId: this.addressId,
-        };
-        switch (orderParamVO.orderType) {
-            case OrderType.depreciate_old:
-                let needParams2 = {
-                    ...baseParams,
-                    activityCode: orderParamVO.orderProducts[0].code,
-                    channel: 2,
-                    num: orderParamVO.orderProducts[0].num,
-                    source: 2,
-                    submitType: 2
-                };
-                OrderApi.DepreciateSubmitOrder(needParams2).then((response) => {
-                    bridge.hiddenLoading();
-                    let data = response.data;
-                    this.canCommit = true;
-                    callback(data);
-                    shopCartCacheTool.getShopCartGoodsListData();
-                    track(trackEvent.submitOrder, {
-                        orderId: data.orderNo,
-                        orderSubmitPage: 1
-                    });
-                }).catch(err => {
-                    this.canCommit = true;
-                    bridge.hiddenLoading();
-                    bridge.$toast(err.msg);
-                });
-                break;
-            case OrderType.gift:
-                let params = {
-                    ...baseParams,
-                    activityCode: orderParamVO.activityCode,
-                    orderType: 2,//1.普通订单 2.活动订单  -- 下单必传
-                    orderSubType: orderParamVO.orderSubType,//,1.秒杀 2.降价拍 3.升级礼包 4.普通礼包
-                    source: 2,//1.购物车 2.直接下单
-                    channel: 2,//1.小程序 2.APP 3.H5
-                    orderProductList: orderParamVO.orderProducts,
-                    submitType: 2,
-                    quantity: 1
-                };
-                OrderApi.PackageSubmitOrder(params).then((response) => {
-                    bridge.hiddenLoading();
-                    let data = response.data;
-                    this.canCommit = true;
-                    callback(data);
-                    shopCartCacheTool.getShopCartGoodsListData();
-                    track(trackEvent.submitOrder, {
-                        orderId: data.orderNo,
-                        orderSubmitPage: 1
-                    });
-                }).catch(err => {
-                    this.canCommit = true;
-                    bridge.hiddenLoading();
-                    bridge.$toast(err.msg);
-                });
-                break;
-            default://其他走正常下单接口
-                let paramsnor = {
-                    ...baseParams,
-                    orderProductList: orderParamVO.orderProducts,
-                    // orderType: this.state.orderParam.orderType,
-                    orderType: 1,
-                    source:  orderParamVO.source,
-                    channel: 2,
-                    sgAppVersion:310,
-                    couponsId: orderParamVO.couponsId,
-                };
-                OrderApi.submitOrder(paramsnor).then((response) => {
-                    bridge.hiddenLoading();
-                    let data = response.data;
-                    this.canCommit = true;
-                    shopCartCacheTool.getShopCartGoodsListData();
-                    callback(data);
-                    shopCartCacheTool.getShopCartGoodsListData();
-                    track(trackEvent.submitOrder, {
-                        orderId: data.orderNo,
-                        orderSubmitPage:orderParamVO.source == 1 ? 11 : 1
-                    });
-                }).catch(err => {
-                    this.canCommit = true;
-                    bridge.hiddenLoading();
-                    bridge.$toast(err.msg);
-                });
-                break;
+        if (!this.productOrderList) {
+            return;
+        }
+        if (this.productOrderList.length === 0) {
+            return;
+        }
 
-        }
+        bridge.showLoading();
+        OrderApi.submitOrder(this.getParams(true)).then((response) => {
+            bridge.hiddenLoading();
+            let data = response.data || {};
+            if (this.orderParamVO.source === 1) {
+                shopCartCacheTool.getShopCartGoodsListData();
+            }
+            payment.checkOrderToPage(data.platformOrderNo, data.productOrderList[0].productName);
+            track(trackEvent.submitOrder, {
+                orderId: data.orderNo,
+                orderSubmitPage: this.orderParamVO.source == 1 ? 11 : 1
+            });
+        }).catch(err => {
+            bridge.hiddenLoading();
+            bridge.$toast(err.msg);
+        });
     }
 }
 

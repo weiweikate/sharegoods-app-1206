@@ -1,26 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-    View,
-    Image,
-    Animated,
-    StyleSheet,
-    Dimensions,
-    TouchableOpacity
-} from 'react-native';
+import { Animated, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import Modal from '../../../comm/components/CommModal';
-import {
-    MRText as Text, MRTextInput as TextInput
-} from '../../../components/ui';
-
-const MAX_SCREEN = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);
-const PANNELHEIGHT = ScreenUtils.autoSizeWidth(357);
-const Animated_Duration = 300; //默认的动画持续时间
+import { MRText as Text, MRTextInput as TextInput } from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import StringUtils from '../../../utils/StringUtils';
 import bridge from '../../../utils/bridge';
+
+const MAX_SCREEN = ScreenUtils.MAX_SCREENT;
+const PANNELHEIGHT = ScreenUtils.autoSizeWidth(357);
+const Animated_Duration = 300; //默认的动画持续时间
 
 const KeFuIcon = res.jbtk_03;
 

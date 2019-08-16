@@ -1,40 +1,48 @@
 import React from 'react';
 import {
-    BackHandler,
-    DeviceEventEmitter,
-    Image,
-    InteractionManager,
+    View,
     StyleSheet,
     TouchableOpacity,
-    TouchableWithoutFeedback,
-    View
+    Image,
+    BackHandler,
+    InteractionManager,
+    DeviceEventEmitter, TouchableWithoutFeedback,
+    Platform
 } from 'react-native';
 import BasePage from '../../BasePage';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 import ScreenUtils from '../../utils/ScreenUtils';
+
+const { px2dp } = ScreenUtils;
 import DesignRule from '../../constants/DesignRule';
 import { observer } from 'mobx-react';
-import { AvatarImage, MRText as Text, UIImage } from '../../components/ui';
+import {
+    MRText as Text,
+    AvatarImage,
+    UIImage
+} from '../../components/ui';
 import ShowActivityViewIOS from './ShowActivityView';
 
 import user from '../../model/user';
 import res from '../mine/res';
 import EmptyUtils from '../../utils/EmptyUtils';
+import ShareUtil from '../../utils/ShareUtil';
 import MessageApi from '../message/api/MessageApi';
 import ShowFoundView from './ShowFoundView';
 import ShowMaterialView from './ShowMaterialView';
 import apiEnvironment from '../../api/ApiEnvironment';
-import CommShareModal from '../../comm/components/CommShareModal';
+// import CommShareModal from '../../comm/components/CommShareModal';
+import CommShowShareModal from '../../comm/components/CommShowShareModal';
+
 import WhiteModel from './model/WhiteModel';
 import ShowListIndexModel from './model/ShowListIndexModel';
 import { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
-import RouterMap, { routeNavigate } from '../../navigation/RouterMap';
+import { routeNavigate } from '../../navigation/RouterMap';
+import RouterMap from '../../navigation/RouterMap';
 import { track, trackEvent } from '../../utils/SensorsTrack';
-
-const { px2dp } = ScreenUtils;
+import ShowUtils from './utils/ShowUtils';
 
 const {
-    mine_user_icon,
     mine_message_icon_gray
 } = res.homeBaseImg;
 const { icon_header_back } = res.button;
@@ -130,15 +138,18 @@ export default class ShowListPage extends BasePage {
     retouchShow = () => {
         switch (ShowListIndexModel.pageIndex) {
             case 0:
-                this.hotList && this.hotList.scrollToTop();
+                this.attention && this.attention.scrollToTop();
                 break;
             case 1:
-                this.materialList && this.materialList.scrollToTop();
+                this.hotList && this.hotList.scrollToTop();
                 break;
             case 2:
-                this.foundList && this.foundList.scrollToTop();
+                this.materialList && this.materialList.scrollToTop();
                 break;
             case 3:
+                this.foundList && this.foundList.scrollToTop();
+                break;
+            case 4:
                 this.activityList && this.activityList.scrollToTop();
                 break;
         }
@@ -191,10 +202,11 @@ export default class ShowListPage extends BasePage {
     };
 
 
-    _setDetail = (detail) => {
+    _setDetail = (detail, showText) => {
         this.setState({ detail: null }, () => {
             this.setState({
-                detail
+                detail,
+                showText
             }, () => {
                 this.shareModal && this.shareModal.open();
             });
@@ -206,19 +218,22 @@ export default class ShowListPage extends BasePage {
             this.$navigate(RouterMap.LoginPage);
             return;
         }
-        this.$navigate(RouterMap.MyDynamicPage);
+        this.$navigate(RouterMap.MyDynamicPage, { userType: WhiteModel.userStatus === 2 ? 'mineWriter' : 'mineNormal' });
     };
 
     _render() {
         const { left, needsExpensive, detail } = this.state;
         let HotView = null;
+        let AttentionView = null;
         if (needsExpensive) {
             HotView = require('./ShowHotView').default;
+            AttentionView = Platform.OS === 'ios' ? HotView : require('./ShowAttentionPage').default;
         }
         let icon = (user.headImg && user.headImg.length > 0) ?
             <AvatarImage source={{ uri: user.headImg }} style={styles.userIcon}
-                         borderRadius={px2dp(15)}/> : <Image source={mine_user_icon} style={styles.userIcon}
-                                                             borderRadius={px2dp(15)}/>;
+                         borderRadius={px2dp(15)}/> :
+            <Image source={res.placeholder.avatar_default} style={styles.userIcon}
+                   borderRadius={px2dp(15)}/>;
 
         let message = (
             <View>
@@ -244,42 +259,48 @@ export default class ShowListPage extends BasePage {
                     left
                         ?
                         <TouchableOpacity style={styles.backImg} onPress={() => this._onLeftPressed()}>
-                            <Image source={icon_header_back} style={styles.img}/>
+                            <Image source={icon_header_back}/>
                         </TouchableOpacity>
                         :
                         null
                 }
                 <TouchableWithoutFeedback onPress={this._goMyDynamicPage}>
-                    <View style={[{ marginLeft: left ? px2dp(10) : px2dp(15) }]}>
+                    <View style={[{ marginLeft: left ? px2dp(5) : px2dp(15) }]}>
                         {icon}
                     </View>
                 </TouchableWithoutFeedback>
                 <View style={{ flex: 1 }}/>
                 <View style={styles.titleView}>
-                    <TouchableOpacity style={styles.items} onPress={() => this._gotoPage(0)}>
+                    <TouchableOpacity style={[styles.items, { marginRight: px2dp(20) }]}
+                                      onPress={() => this._gotoPage(0)}>
                         <Text style={[ShowListIndexModel.pageIndex === 0 ? styles.activityIndex : styles.index]}
-                              allowFontScaling={false}>推荐</Text>
+                              allowFontScaling={false}>关注</Text>
                         {ShowListIndexModel.pageIndex === 0 ? <View style={styles.line}/> : null}
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.items} onPress={() => this._gotoPage(1)}>
+                        <Text style={[ShowListIndexModel.pageIndex === 1 ? styles.activityIndex : styles.index]}
+                              allowFontScaling={false}>推荐</Text>
+                        {ShowListIndexModel.pageIndex === 1 ? <View style={styles.line}/> : null}
                     </TouchableOpacity>
                     <View style={{ width: px2dp(20) }}/>
                     <TouchableOpacity style={[{ marginRight: px2dp(20) }, styles.items]}
-                                      onPress={() => this._gotoPage(1)}>
-                        <Text style={ShowListIndexModel.pageIndex === 1 ? styles.activityIndex : styles.index}
-                              allowFontScaling={false}>素材圈</Text>
-                        {ShowListIndexModel.pageIndex === 1 ? <View style={styles.line}/> : null}
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={[styles.items, { marginRight: px2dp(20) }]}
                                       onPress={() => this._gotoPage(2)}>
                         <Text style={ShowListIndexModel.pageIndex === 2 ? styles.activityIndex : styles.index}
-                              allowFontScaling={false}>发现</Text>
+                              allowFontScaling={false}>素材圈</Text>
                         {ShowListIndexModel.pageIndex === 2 ? <View style={styles.line}/> : null}
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.items} onPress={() => this._gotoPage(3)}>
+                    <TouchableOpacity style={[styles.items, { marginRight: px2dp(20) }]}
+                                      onPress={() => this._gotoPage(3)}>
                         <Text style={ShowListIndexModel.pageIndex === 3 ? styles.activityIndex : styles.index}
-                              allowFontScaling={false}>活动</Text>
+                              allowFontScaling={false}>发现</Text>
                         {ShowListIndexModel.pageIndex === 3 ? <View style={styles.line}/> : null}
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.items} onPress={() => this._gotoPage(4)}>
+                        <Text style={ShowListIndexModel.pageIndex === 4 ? styles.activityIndex : styles.index}
+                              allowFontScaling={false}>活动</Text>
+                        {ShowListIndexModel.pageIndex === 4 ? <View style={styles.line}/> : null}
                     </TouchableOpacity>
                 </View>
                 <View style={{ flex: 1 }}/>
@@ -290,12 +311,32 @@ export default class ShowListPage extends BasePage {
             <ScrollableTabView
                 ref={(ref) => this.scrollableTabView = ref}
                 style={styles.tab}
+                initialPage={1}
                 page={ShowListIndexModel.pageIndex}
                 renderTabBar={() => <DefaultTabBar style={styles.tabBar}/>}
                 tabBarUnderlineStyle={styles.underline}
                 onChangeTab={(number) => this._onChangeTab(number)}
                 showsVerticalScrollIndicator={false}
             >
+                <View key={0} style={styles.container} tabLabel="">
+                    {
+                        needsExpensive
+                            ?
+                            <AttentionView ref={(ref) => {
+                                this.attention = ref;
+                            }}
+                                           type={'attention'}
+                                           uri={'/social/show/content/page/query/attention@GET'}
+                                           hasBanner={false}
+                                           navigate={this.$navigate}
+                                           pageFocus={this.state.pageFocused}
+                                           onShare={(item, showText) => {
+                                               this._setDetail(item.detail, showText);
+                                           }}/>
+                            :
+                            null
+                    }
+                </View>
                 <View key={1} style={styles.container} tabLabel="">
                     {
                         needsExpensive
@@ -303,14 +344,19 @@ export default class ShowListPage extends BasePage {
                             <HotView ref={(ref) => {
                                 this.hotList = ref;
                             }}
-                                     navigate={this.$navigate} pageFocus={this.state.pageFocused} onShare={(item) => {
-                                this._setDetail(item.detail);
-                            }}/>
+                                     hasBanner={true}
+                                     type={'recommend'}
+                                     uri={'/social/show/content/page/query@GET'}
+                                     navigate={this.$navigate}
+                                     pageFocus={this.state.pageFocused}
+                                     onShare={(item, showText) => {
+                                         this._setDetail(item.detail, showText);
+                                     }}/>
                             :
                             null
                     }
                 </View>
-                <View key={2} style={styles.container} tabLabel="  ">
+                <View key={2} style={styles.container} tabLabel="   ">
                     {
                         needsExpensive
                             ?
@@ -319,8 +365,8 @@ export default class ShowListPage extends BasePage {
                                     this.materialList = ref;
                                 }}
                                 navigate={this.$navigate}
-                                onShare={(item) => {
-                                    this._setDetail(item.detail);
+                                onShare={(item, showText) => {
+                                    this._setDetail(item.detail, showText);
                                 }}/>
                             :
                             null
@@ -340,7 +386,7 @@ export default class ShowListPage extends BasePage {
                     }
                 </View>
 
-                <View key={4} style={styles.container} tabLabel="    ">
+                <View key={4} style={styles.container} tabLabel="   ">
                     {
                         needsExpensive
                             ? <ShowActivityViewIOS ref={(ref) => {
@@ -353,8 +399,10 @@ export default class ShowListPage extends BasePage {
                                                            ref: this.activityList,
                                                            index
                                                        };
-                                                       if (data.showType === 1 || data.showType === 3) {
+                                                       if (data.showType === 1) {
                                                            navigate(RouterMap.ShowDetailPage, params);
+                                                       } else if (data.showType === 3) {
+                                                           navigate(RouterMap.ShowVideoPage, { code: data.showNo });
                                                        } else if (data.showType === 4) {
                                                            navigate(RouterMap.TagDetailPage, {
                                                                tagId: data.tagId,
@@ -378,36 +426,36 @@ export default class ShowListPage extends BasePage {
             </ScrollableTabView>
             <IntervalMsgView pageType={IntervalType.xiuChang}/>
             {detail ?
-                <CommShareModal ref={(ref) => this.shareModal = ref}
-                                type={'Show'}
-                                trackEvent={trackEvent.XiuChangShareClick}
-                                trackParmas={{
-                                    articleCode: detail.code,
-                                    author: (detail.userInfoVO || {}).userNo,
-                                    xiuChangBtnLocation: '1',
-                                    xiuChangListType: ShowListIndexModel.pageIndex + 1
-                                }}
-                                imageJson={{
-                                    imageType: 'show',
-                                    imageUrlStr: detail.resource[0] ? detail.resource[0].url : '',
-                                    titleStr: detail.showType === 1 ? detail.content : detail.title,
-                                    QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
-                                    headerImage: (detail.userInfoVO && detail.userInfoVO.userImg) ? detail.userInfoVO.userImg : null,
-                                    userName: (detail.userInfoVO && detail.userInfoVO.userName) ? detail.userInfoVO.userName : '',
-                                    dec: '好物不独享，内有惊喜福利~'
-                                }}
-                                taskShareParams={{
-                                    uri: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
-                                    code: detail.showType === 1 ? 22 : 25,
-                                    data: detail.showNo
-                                }}
-                                webJson={{
-                                    title: detail.title || '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
-                                    thumImage: detail.resource && detail.resource[0] && detail.resource[0].url
-                                        ? detail.resource[0].url : '',//(分享图标小图(https链接)图文分享使用)
-                                    dec: '好物不独享，内有惊喜福利~'
-                                }}
+                <CommShowShareModal ref={(ref) => this.shareModal = ref}
+                                    shareName={detail && detail.userInfoVO && detail.userInfoVO.userName}
+                                    type={ShareUtil.showSharedetailDataType(detail && detail.showType, this.state.showText)}
+                                    trackEvent={trackEvent.XiuChangShareClick}
+                                    trackParmas={{
+                                        articleCode: detail.code,
+                                        author: (detail.userInfoVO || {}).userNo,
+                                        xiuChangBtnLocation: '1',
+                                        xiuChangListType: ShowListIndexModel.pageIndex + 1
+                                    }}
+                                    imageJson={{
+                                        imageType: 'show',
+                                        imageUrlStr: ShowUtils.getCover(detail),
+                                        titleStr: detail.showType === 1 ? detail.content : detail.title,
+                                        QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
+                                        headerImage: (detail.userInfoVO && detail.userInfoVO.userImg) ? detail.userInfoVO.userImg : null,
+                                        userName: (detail.userInfoVO && detail.userInfoVO.userName) ? detail.userInfoVO.userName : '',
+                                        dec: '好物不独享，内有惊喜福利~'
+                                    }}
+                                    taskShareParams={{
+                                        uri: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,
+                                        code: detail.showType === 1 ? 22 : 25,
+                                        data: detail.showNo
+                                    }}
+                                    webJson={{
+                                        title: detail.title || '秀一秀 赚到够',//分享标题(当为图文分享时候使用)
+                                        linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/newDetail/${detail.showNo}?upuserid=${user.code || ''}`,//(图文分享下的链接)
+                                        thumImage: ShowUtils.getCover(detail),//(分享图标小图(https链接)图文分享使用)
+                                        dec: '好物不独享，内有惊喜福利~'
+                                    }}
                 /> : null}
 
         </View>;
@@ -439,7 +487,7 @@ let styles = StyleSheet.create({
     backImg: {
         height: 44,
         width: 45,
-        paddingLeft: 15,
+        paddingLeft: 10,
         flexDirection: 'row',
         alignItems: 'center'
     },

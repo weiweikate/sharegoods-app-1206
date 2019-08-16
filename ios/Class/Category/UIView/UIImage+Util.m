@@ -18,17 +18,20 @@
   
   CGSize viewSize = [UIScreen mainScreen].bounds.size;
   NSString *viewOr = @"Portrait";//垂直
-  NSString *launchImage = nil;
+  UIImage *launchImage = nil;
   NSArray *launchImages =  [[[NSBundle mainBundle] infoDictionary] valueForKey:@"UILaunchImages"];
   
   for (NSDictionary *dict in launchImages) {
     CGSize imageSize = CGSizeFromString(dict[@"UILaunchImageSize"]);
     
     if (CGSizeEqualToSize(viewSize, imageSize) && [viewOr isEqualToString:dict[@"UILaunchImageOrientation"]]) {
-      launchImage = dict[@"UILaunchImageName"];
+      UIImage* image = [UIImage imageNamed:dict[@"UILaunchImageName"]];
+      if ([UIScreen screenScale] == image.scale) {
+        launchImage = image;
+      }
     }
   }
-  return [UIImage imageNamed:launchImage];
+  return launchImage;
 }
 
 -(NSData *)compressWithMaxLength:(NSUInteger)maxLength{

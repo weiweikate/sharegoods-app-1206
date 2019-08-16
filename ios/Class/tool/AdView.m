@@ -281,7 +281,9 @@
   [self removeFromWindow];
   if (_linkTypeCode && _linkTypeCode.length > 0 && !_tap) {
     _tap = YES;
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"EventToRN" object:@{@"uri": _linkTypeCode}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"EventToRN" object:@{@"uri": _linkTypeCode,
+                                                                                     @"eventName":@"Event_navigateHtmlPage"
+                                                                                     }];
   }
 }
 

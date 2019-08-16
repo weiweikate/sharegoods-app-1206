@@ -3,18 +3,12 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-    Platform,
-    Animated,
-    StatusBar,
-    StyleSheet,
-    Dimensions,
-    PanResponder
-} from 'react-native';
+import { Animated, PanResponder, Platform, StatusBar, StyleSheet } from 'react-native';
+import ScreenUtils from '../../utils/ScreenUtils';
 
 const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 0 : StatusBar.currentHeight;//默认只处理安卓
-const ScreenHeight = Dimensions.get('window').height;
-const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = ScreenUtils.height;
+const ScreenWidth = ScreenUtils.width;
 const MOVE_DIS = 1.5;
 
 export default class SuspensionButton extends Component {
@@ -190,7 +184,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         position: 'absolute',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'center'
         // backgroundColor: 'red'
     }
 });

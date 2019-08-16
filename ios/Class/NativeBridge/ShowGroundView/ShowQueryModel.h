@@ -54,6 +54,7 @@ NS_ASSUME_NONNULL_END
 @property (nonatomic, assign)CGFloat coverImgHigh;
 @property (nonatomic, assign)CGFloat imgWide;
 @property (nonatomic, assign)CGFloat imgHigh;
+@property (nonatomic, assign)BOOL collect;
 
 @property (nonatomic, copy)NSString *showNo;
 @property (nonatomic, assign)NSInteger showType;
@@ -62,20 +63,24 @@ NS_ASSUME_NONNULL_END
 /**
  宽高比
  */
-@property (nonatomic, readonly, assign)CGFloat aspectRatio;
-@property (nonatomic, readonly, assign)CGFloat aspectRatio_show;
+@property (nonatomic, assign)CGFloat aspectRatio;
+@property (nonatomic, assign)CGFloat aspectRatio_show;
 /**
  显示图片链接
  */
 @property (nonatomic, readonly, assign)NSString *showImage;
 
 @property (nonatomic, readonly, assign)NSString *showImage_oss;
+@property (nonatomic, readonly, assign)NSString *userHeadImg_oss;
 
 @end
 
 @interface ResourceModel : NSObject
 @property (nonatomic,copy) NSString * baseUrl;
 @property (nonatomic,assign) NSInteger type;
+@property (nonatomic, assign)CGFloat height;
+@property (nonatomic, assign)CGFloat width;
+
 @end
 
 @interface ProductsModel : NSObject

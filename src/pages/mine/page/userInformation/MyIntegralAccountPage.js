@@ -16,16 +16,14 @@ import DataUtils from '../../../../utils/DateUtils';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
 import Toast from '../../../../utils/bridge' ;
-import { observer } from 'mobx-react';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import { MRText as Text } from '../../../../components/ui';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
-import StringUtils from '../../../../utils/StringUtils';
 import RouterMap from '../../../../navigation/RouterMap';
 import EmptyView from '../../../../components/pageDecorator/BaseView/EmptyView';
 import EmptyUtils from '../../../../utils/EmptyUtils';
-import LinearGradient from 'react-native-linear-gradient'
+import LinearGradient from 'react-native-linear-gradient';
 
 const { px2dp } = ScreenUtils;
 
@@ -60,7 +58,6 @@ const allKinds = {
 };
 
 
-@observer
 export default class MyIntegralAccountPage extends BasePage {
     constructor(props) {
         super(props);
@@ -69,13 +66,15 @@ export default class MyIntegralAccountPage extends BasePage {
             currentPage: 1,
             isEmpty: false,
             changeHeader: false,
-            refreshing: false,
+            refreshing: false
 
         };
         this.currentPage = 1;
         this.type = null;
         this.biType = null;
         this.st = 0;
+        this.loadding = false;
+        this.isMore = true;
     }
 
     $navigationBarOptions = {
@@ -85,10 +84,10 @@ export default class MyIntegralAccountPage extends BasePage {
 
     sectionComp = (info) => {
         let txt = info.section.key;
-        return txt === 'B' ? this.renderReHeader() : null
+        return txt === 'B' ? this.renderReHeader() : null;
     };
 
-    extraUniqueKey=(item,index)=>{
+    extraUniqueKey = (item, index) => {
         return index + item;
     };
 
@@ -96,14 +95,14 @@ export default class MyIntegralAccountPage extends BasePage {
         let Y = event.nativeEvent.contentOffset.y;
         if (Y <= 175) {
             this.st = 0;
-            if(this.state.changeHeader) {
+            if (this.state.changeHeader) {
                 this.setState({
                     changeHeader: false
                 });
             }
         } else {
             this.st = 1;
-            if(!this.state.changeHeader) {
+            if (!this.state.changeHeader) {
                 this.setState({
                     changeHeader: true
                 });
@@ -113,10 +112,10 @@ export default class MyIntegralAccountPage extends BasePage {
 
     //**********************************ViewPart******************************************
     _render() {
-        const {viewData} = this.state;
+        const { viewData } = this.state;
         let sections = [
-            { key: 'A', data: [{title:'head'}] },
-            { key: 'B', data:  !EmptyUtils.isEmpty(viewData) ? viewData : [{title:'empty'}] },
+            { key: 'A', data: [{ title: 'head' }] },
+            { key: 'B', data: !EmptyUtils.isEmpty(viewData) ? viewData : [{ title: 'empty' }] }
         ];
 
         return (
@@ -126,12 +125,14 @@ export default class MyIntegralAccountPage extends BasePage {
                     renderSectionHeader={this.sectionComp}
                     renderItem={this.renderItem}
                     sections={sections}
-                    keyExtractor = {this.extraUniqueKey}// 生成一个不重复的key
+                    keyExtractor={this.extraUniqueKey}// 生成一个不重复的key
                     ItemSeparatorComponent={() => <View/>}
                     onEndReached={this.onLoadMore}
                     onEndReachedThreshold={0.1}
                     stickySectionHeadersEnabled={true}
-                    onScroll={(e)=>{this._onScroll(e)}}
+                    onScroll={(e) => {
+                        this._onScroll(e);
+                    }}
                     showsVerticalScrollIndicator={false}
                     refreshControl={
                         <RefreshControl
@@ -153,7 +154,7 @@ export default class MyIntegralAccountPage extends BasePage {
                 height: px2dp(184),
                 width: ScreenUtils.width,
                 left: 0,
-                paddingHorizontal: DesignRule.margin_page,
+                paddingHorizontal: DesignRule.margin_page
             }}>
 
                 <View style={styles.withdrawWrapper}>
@@ -184,12 +185,13 @@ export default class MyIntegralAccountPage extends BasePage {
                     lineHeight: 58
                 }}>{user.userScore ? user.userScore : 0}</Text>
 
-                <View style={{display:'flex', flexDirection:'row',marginTop: 15}} >
-                    <View style={{flex:1,marginLeft: 15, justifyContent:'center'}}>
-                        <Text style={styles.numTextStyle}>{user.blockedUserScore ? user.blockedUserScore : '0.00'}</Text>
+                <View style={{ display: 'flex', flexDirection: 'row', marginTop: 15 }}>
+                    <View style={{ flex: 1, marginLeft: 15, justifyContent: 'center' }}>
+                        <Text
+                            style={styles.numTextStyle}>{user.blockedUserScore ? user.blockedUserScore : '0.00'}</Text>
                         <Text style={styles.numRemarkStyle}>待入账秀豆（枚）</Text>
                     </View>
-                    <View style={{flex:1,marginLeft: 15, justifyContent:'center'}}>
+                    <View style={{ flex: 1, marginLeft: 15, justifyContent: 'center' }}>
                         <Text style={styles.numTextStyle}>{user.historicalScore ? user.historicalScore : '0.00'}</Text>
                         <Text style={styles.numRemarkStyle}>累计秀豆（枚）</Text>
                     </View>
@@ -210,14 +212,12 @@ export default class MyIntegralAccountPage extends BasePage {
                         this.$navigateBack();
                     }}>
                         <View style={{
-                            width: 60,
-                            paddingLeft: DesignRule.margin_page,
+                            paddingLeft: px2dp(5),
                             height: 40,
                             justifyContent: 'center',
-                            alignItems:'flex-start',
-                            flex:1
+                            flex: 1
                         }}>
-                            <Image source={res.button.white_back}/>
+                            <Image source={res.button.back_white} style={{ width: 30, height: 30 }}/>
                         </View>
                     </TouchableWithoutFeedback>
                     <Text style={{
@@ -227,7 +227,7 @@ export default class MyIntegralAccountPage extends BasePage {
                     }}>
                         {this.state.changeHeader ? '秀豆' : ''}
                     </Text>
-                    <View style={{flex:1}}/>
+                    <View style={{ flex: 1 }}/>
                 </View>
             </LinearGradient>
         );
@@ -239,20 +239,27 @@ export default class MyIntegralAccountPage extends BasePage {
         if (key === 'A') {
             return (
                 <View>
-                    <LinearGradient style={{marginBottom: 10, height: px2dp(164), width: ScreenUtils.width, backgroundColor: 'white'}}
-                                    start={{x: 0, y: 0}}
-                                    end={{x: 1, y: 0}}
+                    <LinearGradient style={{
+                        marginBottom: 10,
+                        height: px2dp(164),
+                        width: ScreenUtils.width,
+                        backgroundColor: 'white'
+                    }}
+                                    start={{ x: 0, y: 0 }}
+                                    end={{ x: 1, y: 0 }}
                                     colors={['#FF0050', '#FC5D39']}
                     />
-                    <View style={{height:10, width:ScreenUtils.width, backgroundColor:'white'}}/>
+                    <View style={{ height: 10, width: ScreenUtils.width, backgroundColor: 'white' }}/>
                     {this._accountInfoRender()}
                 </View>
-            )
+            );
         }
-        if(item.title && item.title === 'empty'){
-            return(
-                <EmptyView style={{flex:1}} imageStyle={{width:267, height:192}} description={''} subDescription={'暂无明细数据～'} source={cash_noData}/>
-            )}
+        if (item.title && item.title === 'empty') {
+            return (
+                <EmptyView style={{ flex: 1 }} imageStyle={{ width: 267, height: 192 }} description={''}
+                           subDescription={'暂无明细数据～'} source={cash_noData}/>
+            );
+        }
 
         return (
             <View style={{
@@ -280,25 +287,25 @@ export default class MyIntegralAccountPage extends BasePage {
                         }}>{item.time}</Text>
                     </View>
                     {item.status === 2 || (this.type === 2 && this.biType === 1) ?
-                        <View style={{justifyContent: 'space-between', alignItems: 'flex-end'}}>
-                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <View style={{ justifyContent: 'space-between', alignItems: 'flex-end' }}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <Text style={{
                                     fontSize: 17,
                                     color: DesignRule.textColor_mainTitle
-                                }}>{StringUtils.formatMoneyString(item.capital, false)}</Text>
+                                }}>{item.capital ? item.capital : 0}</Text>
 
                             </View>
                             <Text style={{
                                 fontSize: 12, color: DesignRule.textColor_instruction
-                            }}>{item.realUserScore == 0 || (  item.realUserScore && item.realUserScore >= 0) ? `已入账：${item.realUserScore}` : '待入账：？'}</Text>
+                            }}>{item.realUserScore == 0 || (item.realUserScore && item.realUserScore >= 0) ? `已入账：${item.realUserScore}` : '待入账：？'}</Text>
                         </View>
                         :
-                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Text style={{
                                 fontSize: 17,
                                 color: DesignRule.textColor_mainTitle
-                            }}>{StringUtils.formatMoneyString(item.capital, false)}</Text>
-                            <Image style={{marginLeft: 5, width: 8, height: 5}}
+                            }}>{item.capital ? item.capital : 0}</Text>
+                            <Image style={{ marginLeft: 5, width: 8, height: 5 }}
                                    source={item.capitalRed ? red_up : lv_down}/>
                         </View>}
                 </View>
@@ -324,18 +331,18 @@ export default class MyIntegralAccountPage extends BasePage {
                             this.type = null;
                             this.biType = null;
                         }
-                        this.onRefresh()
+                        this.onRefresh();
                     }}
-                    style={{flex: 1, width: ScreenUtils.width * 2 / 3, marginBottom: ScreenUtils.safeBottom}}
+                    style={{ flex: 1, width: ScreenUtils.width * 2 / 3, marginBottom: ScreenUtils.safeBottom }}
                     scrollWithoutAnimation={true}
                     renderTabBar={this._renderTabBar}
                     //进界面的时候打算进第几个
                     initialPage={0}
                 >
-                    <View tabLabel={'全部'} style={{width:1,height:1}}/>
-                    <View tabLabel={'收入'} style={{width:1,height:1}}/>
-                    <View tabLabel={'支出'} style={{width:1,height:1}}/>
-                    <View tabLabel={'待入账'} style={{width:1,height:1}}/>
+                    <View tabLabel={'全部'} style={{ width: 1, height: 1 }}/>
+                    <View tabLabel={'收入'} style={{ width: 1, height: 1 }}/>
+                    <View tabLabel={'支出'} style={{ width: 1, height: 1 }}/>
+                    <View tabLabel={'待入账'} style={{ width: 1, height: 1 }}/>
                 </ScrollableTabView>
             </View>
 
@@ -353,8 +360,9 @@ export default class MyIntegralAccountPage extends BasePage {
                 style={styles.tabBar}
                 tabStyle={styles.tab}
             />
-        )
+        );
     };
+
     //**********************************BusinessPart******************************************
     componentDidMount() {
         this.onRefresh();
@@ -363,6 +371,7 @@ export default class MyIntegralAccountPage extends BasePage {
     getDataFromNetwork = () => {
         let use_type_symbol = ['', '+', '-'];
         let arrData = this.currentPage === 1 ? [] : this.state.viewData;
+        Toast.showLoading();
         MineApi.userScoreQuery({
             page: this.currentPage,
             size: 10,
@@ -372,8 +381,10 @@ export default class MyIntegralAccountPage extends BasePage {
         }).then((response) => {
             Toast.hiddenLoading();
             console.log(response);
+            this.loadding = false;
             if (response.code === 10000) {
                 let data = response.data;
+                this.isMore = (data.data || []).length === 10;
                 data.data.map((item, index) => {
                     arrData.push({
                         type: allKinds[item.useType] ? allKinds[item.useType].title : '其他',
@@ -386,19 +397,24 @@ export default class MyIntegralAccountPage extends BasePage {
                         status: item.status
                     });
                 });
-                this.setState({refreshing: false, viewData: arrData, isEmpty: data.data && data.data.length !== 0 ? false : true });
+                this.setState({
+                    refreshing: false,
+                    viewData: arrData,
+                    isEmpty: data.data && data.data.length !== 0 ? false : true
+                });
             } else {
-                this.setState({ refreshing: false});
+                this.setState({ refreshing: false });
                 NativeModules.commModule.toast(response.msg);
             }
         }).catch(e => {
+            this.loadding = false;
             Toast.hiddenLoading();
             this.setState({ refreshing: false, viewData: arrData, isEmpty: true });
 
         });
     };
 
-    onLoad = ()=>{
+    onLoad = () => {
         if (user.isLogin) {
             MineApi.getUser().then(resp => {
                 let data = resp.data;
@@ -412,10 +428,14 @@ export default class MyIntegralAccountPage extends BasePage {
         this.currentPage = 1;
         this.setState({ refreshing: this.currentPage === 1 });
         this.getDataFromNetwork();
-    }
+    };
 
     onRefresh = () => {
         this.currentPage = 1;
+        if (this.loadding){
+            return;
+        }
+        this.loadding = true;
         if (user.isLogin) {
             MineApi.getUser().then(resp => {
                 let data = resp.data;
@@ -429,6 +449,9 @@ export default class MyIntegralAccountPage extends BasePage {
         this.getDataFromNetwork();
     };
     onLoadMore = () => {
+        if (this.loadding || this.isMore === false){
+            return;
+        }
         if (!this.state.isEmpty) {
             this.currentPage++;
             this.getDataFromNetwork();
@@ -496,13 +519,13 @@ const styles = StyleSheet.create({
         height: 44,
         width: ScreenUtils.width
     },
-    numTextStyle:{
-        color:'#333333',
-        fontSize:19,
+    numTextStyle: {
+        color: '#333333',
+        fontSize: 19
     },
-    numRemarkStyle:{
-        color:'#999999',
-        fontSize:12,
+    numRemarkStyle: {
+        color: '#999999',
+        fontSize: 12
     }
 });
 

@@ -112,6 +112,7 @@ export default class XiuDouResultModal extends React.Component {
             <View style={{flexDirection: 'row', height:  ScreenUtils.autoSizeWidth(45), alignItems: 'center', backgroundColor: 'white'}}>
                 <ImageLoader source={{uri: headImg}}
                              isAvatar={true}
+                             borderRadius={ScreenUtils.autoSizeWidth(16)}
                              style={{marginLeft: ScreenUtils.autoSizeWidth(15), height: ScreenUtils.autoSizeWidth(32), width: ScreenUtils.autoSizeWidth(32)}}/>
                 <MRText style={[styles.title, {marginLeft: ScreenUtils.autoSizeWidth(32), flex: 1, fontSize: ScreenUtils.autoSizeWidth(14)}]}>{award}</MRText>
                 <MRText style={[styles.detail, {marginRight: ScreenUtils.autoSizeWidth(15)}]}>{time}</MRText>

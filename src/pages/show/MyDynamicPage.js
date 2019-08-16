@@ -3,42 +3,27 @@ import {
     StyleSheet,
     View,
     Image,
-    ImageBackground,
     TouchableOpacity,
     Platform
 } from 'react-native';
 import BasePage from '../../BasePage';
 import DesignRule from '../../constants/DesignRule';
-import user from '../../model/user';
 import res from '../mine/res';
-import showRes from './res';
-import {
-    MRText as Text,
-    AvatarImage
-
-} from '../../components/ui';
 import ScreenUtils from '../../utils/ScreenUtils';
-import EmptyUtils from '../../utils/EmptyUtils';
 import ShowDynamicView from './components/ShowDynamicView';
-import ShowGroundView from './components/ShowGroundView';
-import RouterMap from '../../navigation/RouterMap';
+import RouterMap,{backToShow} from '../../navigation/RouterMap';
+import UserInfoView from './components/UserInfoView';
 
-const headerBgSize = { width: 375, height: 200 };
 const headerHeight = ScreenUtils.statusBarHeight + 44;
-const offset = ScreenUtils.getImgHeightWithWidth(headerBgSize) - headerHeight;
 
 const { px2dp } = ScreenUtils;
-const {
-    mine_user_icon
-} = res.homeBaseImg;
+
 
 const {
     back_white,
     back_black
 } = res.button;
-const {
-    showHeaderBg
-} = showRes;
+
 
 export default class MyDynamicPage extends BasePage {
     $navigationBarOptions = {
@@ -55,57 +40,23 @@ export default class MyDynamicPage extends BasePage {
     }
 
     renderHeader = () => {
-        let icon = (user.headImg && user.headImg.length > 0) ?
-            <AvatarImage source={{ uri: user.headImg }} style={styles.userIcon}
-                         borderRadius={px2dp(65 / 2)}/> : <Image source={mine_user_icon} style={styles.userIcon}
-                                                                 borderRadius={px2dp(65 / 2)}/>;
-        let name = '';
-        if (EmptyUtils.isEmpty(user.nickname)) {
-            name = user.phone ? user.phone : '未登录';
-        } else {
-            name = user.nickname.length > 6 ? user.nickname.substring(0, 6) + '...' : user.nickname;
-        }
-
-        return (
-            <View style={{flex: 1, marginBottom: px2dp(ScreenUtils.isIOS ? 10 : 0)}}>
-                <ImageBackground source={EmptyUtils.isEmpty(user.headImg) ? showHeaderBg : {uri: user.headImg}}
-                                 style={styles.headerContainer} blurRadius={EmptyUtils.isEmpty(user.headImg) ? 0 : 10}>
-                    {icon}
-                    <Text style={styles.nameStyle}>
-                        {name}
-                    </Text>
-                </ImageBackground>
-            </View>
-        );
+        return <UserInfoView userType={this.params.userType} userInfo={this.params.userInfo}/>
     };
 
-    navBackgroundRender() {
-        return (
-            <View ref={(ref) => this.headerBg = ref}
-                  style={{
-                      backgroundColor: 'white',
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      height: headerHeight,
-                      opacity: 0
-                  }}/>
-        );
-    }
-
     navRender = () => {
+        if (Platform.OS === 'ios'){
+            return null;
+        }
         return (
             <View
-                style={{ position: 'absolute', top: 0, left: 0, right: 0 }}>
+                style={{ position: 'absolute', top: 0, left: 0, width: 60, height: headerHeight}}>
                 <View style={{
                     flexDirection: 'row',
                     alignItems: 'center',
                     paddingRight: px2dp(15),
-                    height: headerHeight,
-                    paddingTop: ScreenUtils.statusBarHeight
+                    height: 44,
+                    marginTop: ScreenUtils.statusBarHeight
                 }}>
-                    <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row' }}>
                         <TouchableOpacity
                             style={styles.left}
                             onPress={() => {
@@ -114,93 +65,73 @@ export default class MyDynamicPage extends BasePage {
                             <Image
                                 source={this.state.changeHeader ? back_white : back_black}
                                 resizeMode={'stretch'}
-                                style={{ height: 20, width: 20 }}
+                                style={{ height: 30, width: 30 }}
                             />
                         </TouchableOpacity>
-                    </View>
-                    <Text style={{
-                        color: this.state.changeHeader ? DesignRule.white : DesignRule.textColor_mainTitle,
-                        fontSize: px2dp(17),
-                        includeFontPadding: false
-                    }}>
-                        我的
-                    </Text>
-                    <View style={{ flex: 1 }}/>
-
                 </View>
             </View>
         );
     };
 
-    _onScroll = (nativeEvent) => {
-        let Y = nativeEvent.YDistance - px2dp(10);
-        // alert(Y);
-        if (Y < offset) {
-            this.st = Y / offset;
-
-            this.setState({
-                changeHeader: this.st > 0.7 ? false : true
-            });
-        } else {
-            this.st = 1;
-            this.setState({
-                changeHeader: false
-            });
-        }
-
-
-        this.headerBg.setNativeProps({
-            opacity: this.st
-        });
-    };
-
-
     _render() {
-        let Waterfall = Platform.OS === 'ios' ? ShowGroundView : ShowDynamicView;
-        let headerHeight = Platform.OS === 'ios' ? 210 : 200;
+        let Waterfall = ShowDynamicView;
+        const {userNo = ''} = this.params.userInfo || {};
         return (
             <View style={styles.contain}>
                 <Waterfall style={{ flex: 1, marginTop: -10 }}
-                           ref={(ref) => {
-                               this.dynamicList = ref;
+                           headerHeight={this.params.userType !== 'mineNormal' ? px2dp(270) : px2dp(235)}
+                           onPersonChangeNav={({nativeEvent})=> {
+                               if (Platform.OS === 'ios'){
+                                   this.props.navigation.goBack();
+                                   return;
+                               }
+                                   this.setState({
+                                       changeHeader: nativeEvent.show
+                                   })
                            }}
-                           uri={'/social/show/content/page/mine/query@GET'}
-                           headerHeight={px2dp(headerHeight)}
+                           userType={`${this.params.userType}${userNo}`}
                            type={'MyDynamic'}
                            renderHeader={this.renderHeader()}
-                           onItemPress={({ nativeEvent }) => {
+                            onPersonItemPress={({ nativeEvent }) => {
                                let params = {
-                                   data: nativeEvent,
-                                   ref: this.dynamicList,
-                                   index: nativeEvent.index
+                                   code: nativeEvent.showNo
                                };
-                               if (nativeEvent.showType === 1 || nativeEvent.showType == 3) {
+                               if (nativeEvent.showType === 1) {
                                    this.$navigate(RouterMap.ShowDetailPage, params);
-                               } else {
+                               }else if(nativeEvent.showType == 3){
+                                   if(nativeEvent.status === 5){
+                                       this.$toastShow('视频转码中，请稍后查看');
+                                   }else {
+                                       params.isCollect = nativeEvent.isCollect;
+                                       params.isPersonal = nativeEvent.isPersonal;
+                                       this.$navigate(RouterMap.ShowVideoPage, params);
+                                   }
+                               }else {
                                    this.$navigate(RouterMap.ShowRichTextDetailPage, params);
                                }
 
                            }}
-                           onScrollY={({ nativeEvent }) => {
-                               this._onScroll(nativeEvent);
+                           onPersonCollection={()=>{
+                               backToShow(1);
+                           }}
+                           onPersonPublish={()=>{
+                               this.$navigate(RouterMap.ReleaseNotesPage,{fromDynamic:true});
                            }}
                 />
-                {this.navBackgroundRender()}
                 {this.navRender()}
 
             </View>
         );
     }
-
 }
 
 var styles = StyleSheet.create({
     contain: {
-        flex: 1,
+        flex: 1
     },
     headerContainer: {
         width: DesignRule.width,
-        height: px2dp(200),
+        height: px2dp(235),
         alignItems: 'center'
     },
     userIcon: {
@@ -212,7 +143,7 @@ var styles = StyleSheet.create({
         backgroundColor: DesignRule.bgColor
     },
     left: {
-        paddingHorizontal: 15
+        paddingHorizontal: 5
     },
     nameStyle: {
         marginTop: px2dp(15),

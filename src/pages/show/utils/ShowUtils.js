@@ -2,10 +2,7 @@
  * @author xzm
  * @date 2019/5/14
  */
-import StringUtils from '../../../utils/StringUtils';
-import { NativeModules, Platform } from 'react-native';
-import Toast from '../../../utils/bridge';
-import EmptyUtils from '../../../utils/EmptyUtils';
+
 
 const formatShowNum = (num) => {
     if (num <= 999) {
@@ -19,49 +16,6 @@ const formatShowNum = (num) => {
     }
 };
 
-const downloadShow = (urls, content) => {
-    StringUtils.clipboardSetString(content);
-    let promises = [];
-    if (urls) {
-        urls.map((value) => {
-            let url = value;
-            let index = value.indexOf('?');
-            if (index !== -1) {
-                url = value.substring(0, index);
-            }
-            let videoType = ['avi', 'wmv', 'mpeg', 'mp4', 'mov', 'mkv', 'flv', 'f4v', 'm4v', 'rmvb', 'rm', '3gp'];
-            let aUrl = url.toLowerCase();
-            let isVideo = false;
-            for (let i = 0; i < videoType.length; i++) {
-                if (StringEndWith(aUrl, videoType[i])) {
-                    isVideo = true;
-                    break;
-                }
-            }
-            if(!isVideo){
-                NativeModules.commModule.saveImageToPhotoAlbumWithUrl(url);
-            }
-        });
-    }
-
-    return Promise.all(promises).then(res => {
-        if (Platform.OS === 'android') {
-            Toast.$toast('文案已复制,图片已下载到相册');
-        }
-        return Promise.resolve();
-    }).catch(error => {
-        Toast.$toast('保存失败');
-        return Promise.reject();
-    });
-};
-
-function StringEndWith(oriStr, endStr) {
-    if (EmptyUtils.isEmpty(oriStr) || EmptyUtils.isEmpty(endStr)) {
-        return false;
-    }
-    let d = oriStr.length - endStr.length;
-    return (d >= 0 && oriStr.lastIndexOf(endStr) == d);
-}
 
 function getUrlVars(url) {
 
@@ -74,8 +28,33 @@ function getUrlVars(url) {
     return vars;
 }
 
+function getCover(detail) {
+    if(detail){
+        //判断是否有转发图
+        let resource = detail.resource || [];
+        for(let i = 0;i<resource.length;i++){
+            if(resource[i].type === 6){
+                return resource[i].baseUrl;
+            }
+        }
+        //判断是否是视频类型
+        if(detail.showType === 3){
+            for(let i = 0;i<resource.length;i++){
+                if(resource[i].type === 5){
+                    return resource[i].baseUrl;
+                }
+            }
+        }else {
+            if(detail.resource){
+                return detail.resource[0].baseUrl;
+            }
+        }
+    }
+    return '';
+}
+
 export default {
     formatShowNum,
-    downloadShow,
-    getUrlVars
+    getUrlVars,
+    getCover
 };

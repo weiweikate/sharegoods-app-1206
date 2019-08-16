@@ -20,8 +20,6 @@ import DebugButton from './components/debug/DebugButton';
 import { netStatus } from './comm/components/NoNetHighComponent';
 import Navigator, { getCurrentRouteName } from './navigation/Navigator';
 import { SpellShopFlag, SpellShopTab } from './navigation/Tab';
-import { checkInitResult } from './pages/login/model/PhoneAuthenAction';
-import loginModel from './pages/login/model/LoginModel';
 import RouterMap, { routeNavigate, routePush } from './navigation/RouterMap';
 import user from '../src/model/user';
 import apiEnvironment from './api/ApiEnvironment';
@@ -35,6 +33,9 @@ import codePush from 'react-native-code-push';
 import chatModel from './utils/QYModule/QYChatModel';
 import showPinFlagModel from './model/ShowPinFlag';
 import settingModel from './pages/mine/model/SettingModel';
+import StringUtils from './utils/StringUtils';
+import { checkInitResult } from './pages/login/model/PhoneAuthenAction';
+import loginModel from './pages/login/model/LoginModel';
 
 const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
@@ -95,6 +96,7 @@ class App extends Component {
     componentDidMount() {
         // 在加载完了，允许重启
         codePush.allowRestart();
+        // 开机广告
         this.subscription = NativeAppEventEmitter.addListener(
             'Event_navigateHtmlPage',
             (reminder) => {
@@ -106,17 +108,40 @@ class App extends Component {
                 }, 100);
             }
         );
+        // 动态域名
+        this.startAdvSubscription = NativeAppEventEmitter.addListener(
+            'Event_change_baseUrl',
+            (data) => {
+                // 动态域名
+                let host = data.baseUrl || '';
+                // 当前域名
+                let currentUrl = apiEnvironment.getCurrentHostUrl();
+                if (StringUtils.isNoEmpty(host) && host !== currentUrl) {
+                    for (let obj in CONFIG.env) {
+                        if (CONFIG.env[obj] && (CONFIG.env[obj].host === host)) {
+                            // 清空用户信息
+                            user.clearUserInfo();
+                            // 保存域名环境
+                            apiEnvironment.saveEnv(String(obj));
+                            break;
+                        }
+                    }
+                }
+            }
+        );
+
         //初始化init  定位存储  和app变活跃 会定位
         InteractionManager.runAfterInteractions(() => {
             TimerMixin.setTimeout(() => {
                 // 移除启动页
                 bridge.removeLaunch();
+                // 一键登录初始化
                 checkInitResult().then((data) => {
                     loginModel.setAuthPhone(data);
                 }).catch((erro) => {
                     loginModel.setAuthPhone(null);
                 });
-
+                // 定位
                 geolocation.init({
                     ios: 'f85b644981f8642aef08e5a361e9ab6b',
                     android: '4a3ff7c2164aaf7d67a98fb9b88ae0e6'
@@ -142,6 +167,7 @@ class App extends Component {
 
     componentWillUnmount() {
         this.listenerJSMessage && this.listenerJSMessage.remove();
+        this.startAdvSubscription && this.startAdvSubscription.remove();
     }
 
 

@@ -292,6 +292,12 @@ export class ShowDetail {
         this.detail = data;
     })
 
+    @action setAttentionStatus = flow(function* (data) {
+        if(this.detail){
+            this.detail.attentionStatus = data;
+        }
+    })
+
     @action showDetailCode = flow(function* (code) {
         try {
             const result = yield ShowApi.showDetailCode({ showNo: code });

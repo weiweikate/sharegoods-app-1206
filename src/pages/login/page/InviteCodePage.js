@@ -62,7 +62,7 @@ export default class InviteCodePage extends BasePage {
     }
 
     $navigationBarOptions = {
-        title: '',
+        title: '邀请人',
         show: true,// false则隐藏导航
         leftNavItemHidden: true
     };

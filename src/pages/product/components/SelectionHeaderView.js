@@ -1,16 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-    View,
-    Image,
-    TouchableOpacity, StyleSheet
-} from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import StringUtils from '../../../utils/StringUtils';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res/product';
 import UIImage from '@mr/image-placeholder';
 import { MRText as Text } from '../../../components/ui/index';
-import { sourceType } from '../SelectionPage';
 import RouterMap, { routeNavigate } from '../../../navigation/RouterMap';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 
@@ -52,7 +47,7 @@ export default class SelectionHeaderView extends Component {
 
     render() {
         const { imgUrl, minPrice, promotionMinPrice, stockSysConfig } = this.props.product || {};
-        let isPromotion = this.props.sourceType === sourceType.promotion;
+        let isPromotion = this.props.productIsPromotionPrice;
 
         let price = isPromotion ? promotionMinPrice : minPrice;
         let stock = 0;
@@ -65,10 +60,12 @@ export default class SelectionHeaderView extends Component {
         });
         let goodsNumberText;
         for (let item of (stockSysConfig || [])) {
-            const tempArr = item.value.split('★');
-            if (parseFloat(stock) >= parseFloat(tempArr[0])) {
-                goodsNumberText = tempArr[1];
-                break;
+            const tempArr = (item.value && item.value.split('★')) || [];
+            if (tempArr.length > 0) {
+                if (parseFloat(stock) >= parseFloat(tempArr[0])) {
+                    goodsNumberText = tempArr[1] || '';
+                    break;
+                }
             }
         }
         let selectStrListTemp = this.props.selectStrList.filter((item) => {
@@ -97,7 +94,7 @@ export default class SelectionHeaderView extends Component {
                             color: DesignRule.textColor_mainTitle,
                             fontSize: 13,
                             marginTop: 6
-                        }} numberOfLines={2}
+                        }} numberOfLines={1}
                               allowFontScaling={false}>{selectStrListTemp.join(',').replace(/@/g, '')}</Text>
                     </View>
                     <TouchableOpacity style={{ position: 'absolute', top: 16, right: 16 }}

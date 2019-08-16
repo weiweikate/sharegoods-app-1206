@@ -41,7 +41,7 @@ import { SmoothPushPreLoadHighComponentFirstDelay } from '../../../../comm/compo
 
 const {
     button: {
-        white_back
+        back_white
     },
     invite: {
         bgColor,
@@ -198,19 +198,15 @@ export default class InviteFriendsPage extends BasePage<Props> {
                     this.$navigateBack();
                 }}>
                     <View style={{
-                        width: 44,
+                        width: 40,
                         height: 44,
                         top: ScreenUtils.statusBarHeight,
                         left: 0,
                         position: 'absolute',
-                        alignItems: 'center',
-                        justifyContent: 'center'
+                        justifyContent: 'center',
+                        alignItems: 'center'
                     }}>
-                        <UIImage source={white_back}
-                                 style={{
-                                     width: 10,
-                                     height: 18
-                                 }}/>
+                        <UIImage source={back_white} style={{width: 30, height: 30}}/>
                     </View>
                 </TouchableWithoutFeedback>
 

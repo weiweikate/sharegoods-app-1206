@@ -22,6 +22,8 @@
 @property(nonatomic, strong)ASTextNode *numNode;
 @property(nonatomic, strong)ASImageNode *numBgNode;
 @property(nonatomic, strong)ASImageNode *hotNode;
+@property(nonatomic, strong)ASImageNode *videoImgNode;
+
 @end
 @implementation ShowCellNode
 
@@ -32,12 +34,16 @@
     _index = index;
     _model = model;
     [self addSubnode:self.imageNode];
+    [self addSubnode:self.videoImgNode];
     [self addSubnode:self.titleNode];
     [self addSubnode:self.userNameNode];
     [self addSubnode:self.headerNode];
     [self addSubnode:self.hotNode];
     [self addSubnode:self.hotNumNode];
     self.backgroundColor = [UIColor whiteColor];
+    if(_model.showType==3){
+      self.videoImgNode.hidden = NO;
+    }
   }
   return self;
 }
@@ -45,8 +51,17 @@
 
 - (ASLayoutSpec *)layoutSpecThatFits:(ASSizeRange)constrainedSize
 {
-  ASRatioLayoutSpec *ImageSpec = [ASRatioLayoutSpec ratioLayoutSpecWithRatio:self.model.aspectRatio_show
+  ASRatioLayoutSpec *ImageSpec = [ASRatioLayoutSpec ratioLayoutSpecWithRatio:1/self.model.aspectRatio_show
                                                                        child:_imageNode];
+  
+  //已屏蔽，返回下面的布局
+  self.videoImgNode.style.preferredSize = CGSizeMake(50, 50);
+  ASStackLayoutSpec *textInsetSpec = [ASStackLayoutSpec stackLayoutSpecWithDirection:ASStackLayoutDirectionHorizontal
+                                                                             spacing:0
+                                                                      justifyContent:ASStackLayoutJustifyContentCenter
+                                                                          alignItems:ASStackLayoutAlignItemsCenter children:@[self.videoImgNode]];
+  ASOverlayLayoutSpec *OverlayLayoutSpec =  [ASOverlayLayoutSpec overlayLayoutSpecWithChild:ImageSpec overlay:textInsetSpec];
+  
   _headerNode.style.spacingBefore = 10;
   _headerNode.style.preferredSize = CGSizeMake(30, 30);
   _headerNode.style.spacingAfter = 5;
@@ -69,7 +84,7 @@
     ASStackLayoutSpec *vSpec = [ASStackLayoutSpec stackLayoutSpecWithDirection:ASStackLayoutDirectionVertical
                                             spacing:_titleNode.attributedText.length>0?10:0
                                       justifyContent:ASStackLayoutJustifyContentStart alignItems:ASStackLayoutAlignItemsStart
-                                            children:@[ImageSpec,
+                                            children:@[OverlayLayoutSpec,
                                                       [ASInsetLayoutSpec insetLayoutSpecWithInsets:UIEdgeInsetsMake(0, 10, 0, 10) child:_titleNode],
                                                           hSpec                                                                ]];
   
@@ -103,8 +118,8 @@
   if (!_titleNode) {
     _titleNode = [ASTextNode new];
     _titleNode.maximumNumberOfLines = 2;
-    if(_model.title){
-    _titleNode.attributedText = [[NSAttributedString alloc]initWithString:_model.title attributes:@{
+    if(_model.pureContent_1){
+    _titleNode.attributedText = [[NSAttributedString alloc]initWithString:_model.pureContent_1 attributes:@{
                                                                                                             NSFontAttributeName: [UIFont systemFontOfSize:12],
                                                                                                             NSForegroundColorAttributeName: [UIColor colorWithHexString:@"333333"]
                                                                                                             }];
@@ -210,6 +225,16 @@
     _hotNode.image = [UIImage imageNamed:@"hot"];
   }
   return _hotNode;
+}
+
+- (ASImageNode *)videoImgNode
+{
+  if (!_videoImgNode) {
+    _videoImgNode = [ASImageNode new];
+    _videoImgNode.image = [UIImage imageNamed:@"video"];
+    _videoImgNode.hidden = YES;
+  }
+  return _videoImgNode;
 }
 
 

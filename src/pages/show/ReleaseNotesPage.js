@@ -10,7 +10,9 @@ import {
     Image,
     TouchableWithoutFeedback,
     Keyboard,
-    TextInput
+    TextInput,
+    NativeModules,
+    Platform
 } from 'react-native';
 import BasePage from '../../BasePage';
 import { MRText } from '../../components/ui';
@@ -23,9 +25,11 @@ import UIImage from '../../components/ui/UIImage';
 import Emoticons, * as emoticons from '../../comm/components/emoticons';
 import EmptyUtils from '../../utils/EmptyUtils';
 import ShowApi from './ShowApi';
-import RouterMap,{replaceRoute} from '../../navigation/RouterMap';
+import RouterMap, {replaceRoute,} from '../../navigation/RouterMap';
 import TagView from './components/TagView';
 import PictureVideoUtils from './utils/PictureVideoUtils';
+import ImageOrVideoModal from './components/ImageOrVideoModal';
+import user from '../../model/user';
 
 const { addIcon, delIcon, iconShowDown, iconShowEmoji, addShowIcon, showTagIcon } = res;
 const { arrow_right_black } = res.button;
@@ -49,7 +53,8 @@ export default class ReleaseNotesPage extends BasePage {
             keyBoardHeight: 0,
             products: [],
             tags: [],
-            videoData: null
+            videoData: null,
+            selector: false
         };
 
     }
@@ -92,6 +97,10 @@ export default class ReleaseNotesPage extends BasePage {
     };
 
     _publish = () => {
+        if (this.state.videoData) {
+            this.publishVideo();
+            return;
+        }
         if (EmptyUtils.isEmptyArr(this.state.imageArr) && this.state.videoData === null) {
             this.$toastShow('至少需要上传一张图片哦');
             return;
@@ -140,26 +149,238 @@ export default class ReleaseNotesPage extends BasePage {
             })
         };
         ShowApi.publishShow(params).then((data) => {
-            replaceRoute(RouterMap.MyDynamicPage);
+            if(this.params.fromDynamic){
+                this.$navigateBack();
+            }else {
+                replaceRoute(RouterMap.MyDynamicPage, { userType: 'mineWriter' });
+            }
         }).catch((error) => {
             this.$toastShow(error.msg || '网络错误');
         });
     };
 
+    publishVideo = () => {
+        const { videoPath, videoCover, width, height } = this.state.videoData;
+        let content = this.state.text || '';
+        let products = this.state.products || [];
+        let productsPar = products.map((value) => {
+            return value.spuCode;
+        });
+        let title = `${user.code}-${new Date().getTime()}-${this.state.titleText}`;
+        if (Platform.OS === 'android') {
+            // NativeModules.ShowModule.uploadVideo(title, videoPath).then((data) => {
+            //     PictureVideoUtils.uploadSingleImage(videoCover, (res) => {
+            //         if (res.url) {
+            //             let videoCover = {
+            //                 baseUrl: res.url,
+            //                 height,
+            //                 width,
+            //                 type: 5
+            //             };
+            //             let params = {
+            //                 content,
+            //                 videoCover,
+            //                 products: productsPar,
+            //                 showNo: data.showNo,
+            //                 tagList: this.state.tags.map((item) => {
+            //                     return item.tagId;
+            //                 }),
+            //                 title: this.state.titleText,
+            //                 videoId: data.videoId
+            //             };
+            //             ShowApi.saveVideo(params).then((data) => {
+            //                 replaceRoute(RouterMap.MyDynamicPage,{userType:'mineWriter'});
+            //             }).catch((error) => {
+            //                 this.$toastShow(error.msg);
+            //             });
+            //         } else {
+            //             this.$toastShow('上传失败');
+            //         }
+            //     });
+            // }).catch((error) => {
+            //     this.$toastShow('上传失败');
+            // });
+            this.$loadingShow('发布中');
+            ShowApi.getShowVideoToken({
+                title,
+                fileName:videoPath
+            }).then(data=>{
+                return Promise.resolve(data.data);
+            }).then((data)=>{
+                PictureVideoUtils.uploadSingleImage(videoCover, (res) => {
+                    if (res.url) {
+                        let videoCover = {
+                            baseUrl: res.url,
+                            height,
+                            width,
+                            type: 5
+                        };
+                        let params = {
+                            content,
+                            videoCover,
+                            products: productsPar,
+                            showNo: data.showNo,
+                            tagList: this.state.tags.map((item) => {
+                                return item.tagId;
+                            }),
+                            title: this.state.titleText,
+                            videoId: data.videoId
+                        };
+                        ShowApi.saveVideo(params).then(() => {
+                            NativeModules.ShowModule.uploadVideo(title, videoPath,JSON.stringify(data)).then(()=>{
+                                this.$loadingDismiss();
+                                replaceRoute(RouterMap.MyDynamicPage,{userType:'mineWriter'});
+                            }).catch(()=>{
+                                this.$toastShow('上传失败');
+                                this.$loadingDismiss();
+                            })
+                        }).catch((error) => {
+                            this.$toastShow(error.msg);
+                            this.$loadingDismiss();
+                        });
+                    } else {
+                        this.$toastShow('上传失败');
+                        this.$loadingDismiss();
+                    }
+                },()=>{
+                    this.$toastShow('上传失败');
+                    this.$loadingDismiss();
+                });
+            }).catch((error)=>{
+                this.$loadingDismiss();
+                this.$toastShow('发布失败');
+            })
+        } else {
+
+            this.$loadingShow('发布中');
+            ShowApi.getShowVideoToken({
+                title,
+                fileName:videoPath
+            }).then(data=>{
+                return Promise.resolve(data.data);
+            }).then((data)=>{
+                PictureVideoUtils.uploadSingleImage(videoCover, (res) => {
+                    if (res.url) {
+                        let videoCover = {
+                            baseUrl: res.url,
+                            height,
+                            width,
+                            type: 5
+                        };
+                        let params = {
+                            content,
+                            videoCover,
+                            products: productsPar,
+                            showNo: data.showNo,
+                            tagList: this.state.tags.map((item) => {
+                                return item.tagId;
+                            }),
+                            title: this.state.titleText,
+                            videoId: data.videoId
+                        };
+                        ShowApi.saveVideo(params).then(() => {
+                            NativeModules.MRImagePickerBridge.uploadVideo(title, videoPath,JSON.stringify(data)).then(()=>{
+                                this.$loadingDismiss();
+                                replaceRoute(RouterMap.MyDynamicPage,{userType:'mineWriter'});
+                            }).catch(()=>{
+                                this.$toastShow('上传失败');
+                                this.$loadingDismiss();
+                            })
+
+                        }).catch((error) => {
+                            this.$toastShow(error.msg);
+                            this.$loadingDismiss();
+                        });
+                    } else {
+                        this.$toastShow('上传失败');
+                        this.$loadingDismiss();
+                    }
+                },()=>{
+                    this.$toastShow('上传失败');
+                    this.$loadingDismiss();
+                });
+            }).catch((error)=>{
+                this.$loadingDismiss();
+                this.$toastShow('发布失败');
+            })
+
+            // NativeModules.MRImagePickerBridge.uploadVideo(title, videoPath).then((data) => {
+            //     PictureVideoUtils.uploadSingleImage(videoCover, (res) => {
+            //         if (res.url) {
+            //             let videoCover = {
+            //                 baseUrl: res.url,
+            //                 height,
+            //                 width,
+            //                 type: 5
+            //             };
+            //             let params = {
+            //                 content,
+            //                 videoCover,
+            //                 products: productsPar,
+            //                 showNo: data.showNo,
+            //                 tagList: this.state.tags.map((item) => {
+            //                     return item.tagId;
+            //                 }),
+            //                 title: this.state.titleText,
+            //                 videoId: data.videoId
+            //             };
+            //             ShowApi.saveVideo(params).then((data) => {
+            //                 replaceRoute(RouterMap.MyDynamicPage,{userType:'mineWriter'});
+            //             }).catch((error) => {
+            //                 this.$toastShow(error.msg);
+            //             });
+            //         } else {
+            //             this.$toastShow('上传失败');
+            //         }
+            //     });
+            // }).catch((error) => {
+            //     this.$toastShow(error.msg);
+            //     // this.$toastShow('上传失败');
+            // });
+
+        }
+
+    };
+
     choosePicker = () => {
         let imageArr = this.state.imageArr;
-        if (imageArr.length >= 8) {
-            return;
+        if (EmptyUtils.isEmptyArr(imageArr)) {
+            this.setState({ selector: true });
+        } else {
+            this.chooseImage();
         }
-        let num = 8 - imageArr.length;
-        PictureVideoUtils.selectPictureOrVideo(num,false,callback => {
-            if (callback.type === 'video') {
-                this.setState({ videoData: callback });
-            } else {
-                let result = imageArr.concat(callback.images);
-                this.setState({ imageArr: result });
+    };
+
+    chooseImage = () => {
+        this.setState({ selector: false }, () => {
+            let imageArr = this.state.imageArr;
+            if (imageArr.length >= 8) {
+                return;
             }
-        })
+            let num = 8 - imageArr.length;
+            PictureVideoUtils.selectPictureOrVideo(num, false, callback => {
+                if (callback.type === 'video') {
+                    this.setState({ videoData: callback });
+                } else {
+                    let result = imageArr.concat(callback.images);
+                    this.setState({ imageArr: result });
+                }
+            });
+        });
+    };
+
+    chooseVideo = () => {
+        this.setState({ selector: false });
+        if (Platform.OS === 'android') {
+            NativeModules.ShowModule.recordVideo().then((data) => {
+                this.setState({ videoData: data });
+            });
+        } else {
+            NativeModules.MRImagePickerBridge.getShowVideo().then((data) => {
+                this.setState({ videoData: data });
+            });
+        }
+
     };
 
     deletePic = (index) => {
@@ -177,7 +398,8 @@ export default class ReleaseNotesPage extends BasePage {
             return (
                 <View style={styles.imagesWrapper}>
                     <View>
-                        <ImageLoad style={styles.photo_item} source={{ uri: this.state.videoData.cover }}/>
+                        <ImageLoad style={styles.photo_item}
+                                   source={{ uri: `file://${this.state.videoData.videoCover}` }}/>
                         <NoMoreClick style={styles.delete_btn} onPress={() => {
                             this.setState({ videoData: null });
                         }}>
@@ -404,7 +626,7 @@ export default class ReleaseNotesPage extends BasePage {
 
         return (
             <TouchableWithoutFeedback onPress={() => {
-                this.$navigate(RouterMap.TagSelectorPage, { callback: this.refreshTags ,tags:this.state.tags});
+                this.$navigate(RouterMap.TagSelectorPage, { callback: this.refreshTags, tags: this.state.tags });
             }}>
                 <View style={styles.tagWrapper}>
                     {this.state.tags.map((item, index) => {
@@ -491,6 +713,18 @@ export default class ReleaseNotesPage extends BasePage {
 
 
                 {this.state.showEmoji ? emoji : null}
+                <ImageOrVideoModal
+                    visible={this.state.selector}
+                    selectImage={() => {
+                        this.chooseImage();
+                    }}
+                    selectVideo={() => {
+                        this.chooseVideo();
+                    }}
+                    onRequestClose={() => {
+                        this.setState({ selector: false });
+                    }}
+                />
             </View>
         );
     }
@@ -507,7 +741,8 @@ var styles = StyleSheet.create({
     },
     noteContain: {
         backgroundColor: DesignRule.white,
-        width: DesignRule.width
+        width: DesignRule.width,
+        marginBottom:px2dp(20)
     },
     textInputStyle: {
         width: DesignRule.width - 2 * DesignRule.margin_page,
@@ -518,7 +753,7 @@ var styles = StyleSheet.create({
         margin: px2dp(15)
     },
     lineStyle: {
-        height: 1,
+        height: ScreenUtils.onePixel,
         width: DesignRule.width - 2 * DesignRule.margin_page,
         alignSelf: 'center',
         backgroundColor: DesignRule.lineColor_inWhiteBg
@@ -539,7 +774,7 @@ var styles = StyleSheet.create({
     },
     addProductWrapper: {
         alignItems: 'center',
-        marginTop: px2dp(11),
+        marginTop: px2dp(-4),
         marginBottom: px2dp(20),
         marginLeft: DesignRule.margin_page,
         alignSelf: 'flex-start',
@@ -595,7 +830,8 @@ var styles = StyleSheet.create({
     },
     validProductImg: {
         width: px2dp(60),
-        height: px2dp(60)
+        height: px2dp(60),
+        borderRadius:px2dp(5)
     },
     itemTitle: {
         color: DesignRule.textColor_mainTitle,
@@ -621,7 +857,7 @@ var styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         paddingHorizontal: DesignRule.margin_page,
-        borderBottomWidth: 1,
+        borderBottomWidth: ScreenUtils.onePixel,
         borderBottomColor: 'rgba(0,0,0,0.1)'
     },
     numLimitTextStyle: {

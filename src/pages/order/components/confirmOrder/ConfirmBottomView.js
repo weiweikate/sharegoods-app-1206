@@ -10,7 +10,6 @@ import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import { confirmOrderModel } from '../../model/ConfirmOrderModel';
-import bridge from '../../../../utils/bridge';
 import { observer } from 'mobx-react';
 
 @observer
@@ -28,16 +27,17 @@ export default class ConfirmBottomView extends Component {
                             color: DesignRule.textColor_mainTitle
                         }}/>
                         <UIText
-                            value={StringUtils.formatMoneyString(confirmOrderModel.payAmount)}
+                            value={'¥'}
                             style={styles.commitAmountStyle}/>
+                        <UIText
+                            value={(confirmOrderModel.payInfo.payAmount || '0')}
+                            style={[styles.commitAmountStyle,{fontSize: ScreenUtils.px2dp(18),  marginRight: ScreenUtils.autoSizeWidth(15)}]}/>
+
                     </View>
                     <NoMoreClick
-                        style={[styles.commitTouStyle,{backgroundColor: StringUtils.isEmpty(confirmOrderModel.err) ? DesignRule.mainColor : DesignRule.textColor_placeholder}]}
+                        style={[styles.commitTouStyle,{backgroundColor: StringUtils.isEmpty(confirmOrderModel.err)&&confirmOrderModel.productOrderList.length ? DesignRule.mainColor : DesignRule.textColor_placeholder}]}
                         onPress={() => {
-                            bridge.showLoading('提交中...');
-                            setTimeout(() => {
                                 this.props.commitOrder();
-                            }, 200);
                         }}>
                         <UIText value={'提交订单'}
                                 style={{
@@ -68,13 +68,14 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     commitAmountStyle: {
-        fontSize: ScreenUtils.px2dp(15),
+        fontSize: ScreenUtils.px2dp(12),
         color: DesignRule.mainColor,
-        marginRight: ScreenUtils.autoSizeWidth(15)
     },
     commitTouStyle: {
         justifyContent: 'center',
         alignItems: 'center',
-        height: ScreenUtils.autoSizeHeight(49)
+        height: ScreenUtils.autoSizeHeight(49),
+        borderRadius: 4,
+        overflow: 'hidden'
     }
 });

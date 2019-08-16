@@ -7,7 +7,8 @@ const deepLinkPath = {
     'ShowRichTextDetailPage':'path/ShowRichTextDetailPage/:code',
     'TagDetailPage':'path/TagDetailPage/:tagId/:name',
     'HtmlPage':'path/HtmlPage/:uri',
-    'MyCashAccountPage':'path/MyCashAccountPage/:index'
+    'MyCashAccountPage':'path/MyCashAccountPage/:index',
+    'ShowVideoPage':'path/ShowVideoPage/:code'
 }
 
 export default deepLinkPath;

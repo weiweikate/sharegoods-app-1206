@@ -271,7 +271,7 @@ RCT_EXPORT_METHOD(createShowProductImage:(id) jsonParam
               }else{
                 UIImage * img = [UIImage imageWithContentsOfFile:pathStr];
                 if(img){
-                  [[JRShareManager sharedInstance]saveImage:img];
+                  [[JRShareManager sharedInstance]saveDownloadImage:img];
                   resolve(@"0000");
                 }
               }

@@ -10,6 +10,52 @@
 
 @implementation NSString (UrlAddParams)
 
+
++(BOOL)stringWithStorgeKey:(NSString *)key{
+  NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+  NSDateFormatter *format = [[NSDateFormatter alloc]init];
+  [format setDateFormat:@"yyyy-MM-dd"];
+  
+  if([userDefaults objectForKey:key]){
+    NSDate *date = [format dateFromString:[userDefaults objectForKey:key]];
+    BOOL isToday = [[NSCalendar currentCalendar] isDateInToday:date];
+    if(isToday){
+      return NO;
+    }else{
+      return YES;
+    }
+  }else{
+    return YES;
+  }
+}
+
++(NSString *)stringWithNumber:(NSInteger)count{
+  NSString * num = @"0";
+  if(count<=999){
+    num = [NSString stringWithFormat:@"%ld",count>0?count:0];
+  }else if(count<10000){
+    num = [NSString stringWithFormat:@"%ldK+",count>0?count/1000:0];
+  }else if(count<=100000){
+    num = [NSString stringWithFormat:@"%ldW+",count>0?count/10000:0];
+  }else if(count>100000){
+    num = @"10W+";
+  }
+  
+  return num;
+}
+
++(NSString*)convertNSDictionaryToJsonString:(NSDictionary *)json{
+  NSError *error;
+  NSData *jsonData = [NSJSONSerialization dataWithJSONObject:json options:NSJSONWritingPrettyPrinted error:&error];
+  if (error) {
+    NSLog(@"json解析失败:%@", error);
+    return nil;
+  }
+  NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+  return jsonString;
+}
+
+
 -(NSString *)urlAddCompnentForValue:(NSString *)value key:(NSString *)key{
   
   NSMutableString *string = [[NSMutableString alloc]initWithString:self];
@@ -203,6 +249,22 @@
   }
   
   return params;
+}
+
+-(CGFloat)getHeightWithFontSize:(CGFloat)fontSize viewWidth:(CGFloat)width maxLineCount:(NSInteger)lineCount
+{
+  if (!self || self.length == 0) {
+    return 0.0;
+  }
+  NSArray *lines = [self getLinesArrayWithfont:[UIFont systemFontOfSize:fontSize] andLableWidth:width];
+  NSString *str = self;
+  if (lines.count > lineCount) {
+    str = @"";
+    for (int i = 0; i < lineCount; i++) {
+      str = [NSString stringWithFormat:@"%@%@",str, lines[i]];
+    }
+  }
+  return [str getStringHeightWithfontSize:fontSize viewWidth:width];
 }
 
 @end

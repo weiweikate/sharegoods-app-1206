@@ -4,19 +4,17 @@
  */
 import React from 'react';
 import {
-    StyleSheet,
-    View,
-    TouchableOpacity,
-    ImageBackground,
     Image,
+    ImageBackground,
+    ScrollView,
+    StyleSheet,
+    TouchableOpacity,
     TouchableWithoutFeedback,
-    ScrollView
+    View
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import SignInCircleView from './components/SignInCircleView';
-
-const { px2dp } = ScreenUtils;
 import ImageLoader from '@mr/image-placeholder';
 import HomeAPI from '../api/HomeAPI';
 import { homeType } from '../HomeTypes';
@@ -36,6 +34,8 @@ import RouterMap from '../../../navigation/RouterMap';
 import LinearGradient from 'react-native-linear-gradient';
 import TaskVIew from '../view/TaskVIew';
 import { mineTaskModel } from '../model/TaskModel';
+
+const { px2dp } = ScreenUtils;
 
 const platformHeight = 10;
 
@@ -198,11 +198,11 @@ export default class SignInPage extends BasePage {
         TrackApi.SignUpFeedback({
             continuousSignNumber: count,
             signRewardType: 1,
-            signRewardAmount: this.state.signInData[3].canReward
+            signRewardAmount: this.state.signInData[3] && this.state.signInData[3].canReward
         });
         HomeAPI.userSign().then((data) => {
             this.signinRequesting = false;
-            this.$toastShow(`签到成功 +${this.state.signInData[3].canReward}秀豆`);
+            this.$toastShow(`签到成功 +${(this.state.signInData[3] && this.state.signInData[3].canReward) || 0}秀豆`);
             this.getSignData();
             this.reSaveUserInfo();
             if (this.state.modalInfo && this.state.modalInfo.length > 0) {
@@ -210,6 +210,7 @@ export default class SignInPage extends BasePage {
                     showModal: true
                 });
             }
+            mineTaskModel.getData();
         }).catch((error) => {
             this.signinRequesting = false;
             this.$toastShow(error.msg);
@@ -224,7 +225,7 @@ export default class SignInPage extends BasePage {
         this.exchangeing = true;
         track(trackEvent.receiveshowDou, {
             showDouDeduct: 'exchange',
-            showDouAmount: this.state.signInData[3].canReward
+            showDouAmount: this.state.signInData[3] && this.state.signInData[3].canReward
         });
         track(trackEvent.receiveOneyuan, { yiYuanCouponsAmount: 1, yiYuanCouponsGetMethod: 'exchange' });
         HomeAPI.exchangeTokenCoin().then((data) => {
@@ -242,14 +243,18 @@ export default class SignInPage extends BasePage {
         let Y = event.nativeEvent.contentOffset.y;
         if (Y <= 200) {
             this.st = Y / 200;
-            this.setState({
-                changeHeader: true
-            });
+            if (!this.state.changeHeader) {
+                this.setState({
+                    changeHeader: true
+                });
+            }
         } else {
             this.st = 1;
-            this.setState({
-                changeHeader: false
-            });
+            if (this.state.changeHeader) {
+                this.setState({
+                    changeHeader: false
+                });
+            }
         }
 
         this.headerBg.setNativeProps({
@@ -428,20 +433,21 @@ export default class SignInPage extends BasePage {
                 <View style={{
                     flexDirection: 'row',
                     alignItems: 'center',
-                    paddingHorizontal: px2dp(15),
+                    paddingLeft: px2dp(5),
+                    paddingRight: px2dp(15),
                     height: headerHeight,
                     paddingTop: ScreenUtils.statusBarHeight
                 }}>
                     <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row' }}>
                         <TouchableOpacity
-                            style={styles.left}
+                            style={[styles.left, { width: 40 }]}
                             onPress={() => {
                                 this.props.navigation.goBack();
                             }}>
                             <Image
                                 source={this.state.changeHeader ? back_white : back_black}
                                 resizeMode={'stretch'}
-                                style={{ height: 20, width: 20 }}
+                                style={{ height: 30, width: 30 }}
                             />
                         </TouchableOpacity>
                     </View>
@@ -517,10 +523,12 @@ export default class SignInPage extends BasePage {
         this.setState({
             showModal: false
         });
-        const item = this.state.modalInfo[0];
-        let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
-        let params = homeModule.paramsNavigate(item);
-        this.$navigate(router, { ...params });
+        if (this.state.modalInfo && this.state.modalInfo.length > 0) {
+            const item = this.state.modalInfo[0];
+            let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
+            let params = homeModule.paramsNavigate(item);
+            this.$navigate(router, { ...params });
+        }
     };
 
     _signModalRender() {
@@ -559,10 +567,13 @@ export default class SignInPage extends BasePage {
             <View style={styles.container}>
                 <ScrollView
                     onScroll={this._onScroll}
+                    scrollEventThrottle={30}
                     showsVerticalScrollIndicator={false}>
                     {this._headerIconRender()}
                     {this.state.signInData ? this._signInInfoRender() : null}
                     <TaskVIew type={'mine'}
+                              isSignIn={true}
+                              signIn={this.userSign}
                               style={{ marginTop: platformHeight, backgroundColor: '#F7F7F7', paddingBottom: 0 }}/>
                     {this.state.exchangeData ? this._couponRender() : null}
                     {/*{this.state.exchangeData ? this._reminderRender() : null}*/}

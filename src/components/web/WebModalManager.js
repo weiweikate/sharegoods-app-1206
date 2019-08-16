@@ -16,13 +16,15 @@ class Manager {
     @observable
     AdData = null;
     isHome = true;
+    currentUrl = '';
+    needShowAds = {};
     //showPage：
     // EXCHANGE(2, "兑换专区"),web
     // EXPERIENCE(3, "经验值专区"),web
     // TOPIC(4, "专题"),app
     // CUSTOMTOPIC(5, "自定义专题"）web
     @action
-    getAd(showPage, showPageValue, type) { //获取数据
+    getAd(showPage, showPageValue, type, currentUrl) { //获取数据
         let currStr = new Date().toDateString();
         let _showPageValue = showPageValue || '';
         let _showPage = showPage || '';
@@ -33,6 +35,7 @@ class Manager {
                 HomeAPI.getHomeData({ showPage, showPageValue, type }).then(resp => {
                     if (resp.data && resp.data.length > 0) {
                         this.needShowAd = true;
+                        // needShowAds
                         this.AdData = resp.data[0];
                     } else {
                     }

@@ -1,3 +1,5 @@
+import bridge from '../../../utils/bridge';
+
 export default function configureResponseError(error) {
     let result = {};
     // 这里是返回状态码不为200时候的错误处理
@@ -75,11 +77,12 @@ export default function configureResponseError(error) {
         }
     } else {
         result = {
-            msg: '网络连接异常，请检查您的网络连接',
+            msg: '网络走神，请检查网络连接后重试',
             status: -1,
             code: -1
         };
     }
+    bridge.hiddenLoading();
     error.data = result;
     return Promise.reject(error);
 }

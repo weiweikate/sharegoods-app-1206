@@ -1,4 +1,4 @@
-import { Linking, ActionSheetIOS, Platform, Alert, NativeModules } from 'react-native';
+import { ActionSheetIOS, Alert, Linking, NativeModules, Platform } from 'react-native';
 // import ImagePicker from 'react-native-image-picker';
 // import Toast from "../components/Toast"; //第三方相机
 import apiEnvironment from '../../../api/ApiEnvironment';
@@ -170,15 +170,17 @@ const Utiles = {
             let uri = images[i].path;
             uri = uri || '';
             let array = uri.split('.');
-            array.reverse();
-            let fileType = array[0].toLowerCase();
-            let videoType = ['avi', 'wmv', 'mpeg', 'mp4', 'mov', 'mkv', 'flv', 'f4v', 'm4v', 'rmvb', 'rm', '3gp'];
-            if (fileType === 'gif') {
-                Toast.$toast('不支持上传动态图');
-                return;
-            } else if (videoType.indexOf(fileType) !== -1) {
-                Toast.$toast('不支持上传视频');
-                return;
+            if (array && array.length > 0) {
+                array.reverse();
+                let fileType = array[0].toLowerCase();
+                let videoType = ['avi', 'wmv', 'mpeg', 'mp4', 'mov', 'mkv', 'flv', 'f4v', 'm4v', 'rmvb', 'rm', '3gp'];
+                if (fileType === 'gif') {
+                    Toast.$toast('不支持上传动态图');
+                    return;
+                } else if (videoType.indexOf(fileType) !== -1) {
+                    Toast.$toast('不支持上传视频');
+                    return;
+                }
             }
         }
 

@@ -18,7 +18,6 @@ import {
     StyleSheet,
     View,
     TouchableOpacity,
-    ImageBackground,
     Image
 } from 'react-native';
 
@@ -31,9 +30,7 @@ import bridge from '../../../../utils/bridge';
 import user from '../../../../model/user';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
-import res from '../../../mine/res'
 import res1 from '../../res'
-const unUsedBgex = res.couponsImg.youhuiquan_bg_unUsedBg;
 const emptyIcon = res1.empty_icon;
 let {autoSizeWidth, safeBottom} = ScreenUtils
 export default class SelectOneTicketModel extends React.Component {
@@ -56,7 +53,7 @@ export default class SelectOneTicketModel extends React.Component {
     open = (orderAmount, callBack) => {
         this.callBack = callBack;
         this.setState({modalVisible: true});
-        this.orderAmount = orderAmount;
+        this.orderAmount = orderAmount || 0;
         this._getnum(this.state.tokenCoin, orderAmount);
         orderApi.getUser({}).then((data)=> {
             if (data && data.tokenCoin) {
@@ -91,10 +88,11 @@ export default class SelectOneTicketModel extends React.Component {
         if (this.state.tokenCoin > 0){
             return(
                 <View style={{flex: 1, alignItems: 'center'}}>
-                    <ImageBackground source={unUsedBgex}
+                    <View
                                      style={{width: autoSizeWidth(345),
                                          height: autoSizeWidth(94),
                                          top: autoSizeWidth(10),
+                                         backgroundColor: 'white',
                                      alignItems: 'center',
                                      flexDirection: 'row'}}>
                         <Text style={{
@@ -111,16 +109,10 @@ export default class SelectOneTicketModel extends React.Component {
                         </Text>
                         <View style={{flex: 1, marginLeft: autoSizeWidth(30)}}>
                             <Text style={{color: '#222222', fontSize: autoSizeWidth(13)}}>
-                                1元现金券
-                                <Text style={styles.detail}>
-                                    （可叠加使用）
-                                </Text>
+                                {'1元现金券'}
                             </Text>
                             <Text style={styles.detail}>
-                                无时间限制
-                            </Text>
-                            <Text style={styles.detail}>
-                                全品类：无金额门槛
+                                {'无金额门槛\n无时间限制\n任意商品可用\n可叠加使用 '}
                             </Text>
                         </View>
                         <Text style={{
@@ -129,7 +121,7 @@ export default class SelectOneTicketModel extends React.Component {
                             color: '#333333'}}>
                             {'x' + this.state.tokenCoin}
                         </Text>
-                    </ImageBackground>
+                    </View>
                     <View style={{marginTop: autoSizeWidth(20), alignItems: 'center', flexDirection: 'row' , width: autoSizeWidth(345)}}>
                         <Text style={{fontSize: autoSizeWidth(13), color: '#666666'}}>请选择券数</Text>
                         <View style={{flex: 1}}/>
@@ -240,8 +232,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     detail: {
-        marginTop: autoSizeWidth(5),
-        fontSize: autoSizeWidth(11),
-        color: DesignRule.textColor_instruction
+        fontSize: autoSizeWidth(10),
+        color: DesignRule.textColor_placeholder,
+        lineHeight: autoSizeWidth(8),
     }
 });

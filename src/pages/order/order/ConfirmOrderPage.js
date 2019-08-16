@@ -1,11 +1,12 @@
 import React from 'react';
 import {
     StyleSheet,
-    View, FlatList
+    View,
+    ScrollView,
+    KeyboardAvoidingView
 } from 'react-native';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import bridge from '../../../utils/bridge';
 import GoodsItem from '../components/confirmOrder/GoodsItem';
 import { confirmOrderModel } from '../model/ConfirmOrderModel';
 import { observer } from 'mobx-react';
@@ -18,62 +19,103 @@ import ConfirmBottomView from '../components/confirmOrder/ConfirmBottomView';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import SelectOneTicketModel from '../components/confirmOrder/SelectOneTicketModel';
 import SelectTicketModel from '../components/confirmOrder/SelectTicketModel';
+import { MRText } from '../../../components/ui';
 import RouterMap from '../../../navigation/RouterMap';
 
 @observer
 export default class ConfirmOrderPage extends BasePage {
     constructor(props) {
         super(props);
+        // this.params.orderParamVO = {orderProducts: [{ skuCode: 'SKU000000890001', //string 平台skuCode
+        //                                 quantity: 1, //int 购买数量
+        //         activityCode: '', //string 活动code
+        //         batchNo: 1}],source : 1}
         confirmOrderModel.clearData();
+        confirmOrderModel.orderParamVO = this.params.orderParamVO;
+        confirmOrderModel.judgeIsAllVirtual(this.params.orderParamVO.orderProducts);
+
     }
 
     $navigationBarOptions = {
         title: '确认订单',
         show: true // false则隐藏导航
     };
-
-
     //**********************************ViewPart******************************************
     _renderContent = () => {
         return (
             <View style={{ flex: 1, justifyContent: 'flex-end', marginBottom: ScreenUtils.safeBottom }}>
-                <FlatList
+                <ScrollView
                     ref={(e) => this.listView = e}
                     style={{ flex: 1 }}
-                    showsVerticalScrollIndicator={false}
-                    data={confirmOrderModel.orderProductList}
-                    ListHeaderComponent={() => {
-                        return (<ConfirmAddressView selectAddress={() => this.selectAddress()}/>);
-                    }}
-                    ListFooterComponent={() => {
-                        return (<ConfirmPriceView
+                    showsVerticalScrollIndicator={false}>
+                    {
+                        !confirmOrderModel.isAllVirtual?  <ConfirmAddressView selectAddress={() => this.selectAddress()}/>:null
+                    }
+                    {
+                        confirmOrderModel.productOrderList.map((item, index) => {
+                            return this._renderItem(item, index)
+                        })
+                    }
+
+                    {
+                        confirmOrderModel.failProductList.length > 0 ?
+                            <View style={{
+                                backgroundColor: 'white',
+                                paddingLeft: 15,
+                                height: 36,
+                                justifyContent: 'center',
+                                marginTop: 5,
+                                borderBottomWidth: 1,
+                                borderBottomColor: DesignRule.lineColor_inWhiteBg
+                            }}>
+                                <MRText style={{
+                                    fontSize: 12,
+                                    color: '#333333'}}>
+                                    失效商品
+                                </MRText>
+                            </View> : null
+                    }
+
+                    {
+                        confirmOrderModel.failProductList.length > 0 ?
+                            confirmOrderModel.failProductList.map((item, index) => {
+                               return <GoodsItem
+                                   key={'failProductList'+index}
+                                   uri={item.specImg}
+                                   activityCodes={item.failReason?[item.failReason]:[]}
+                                   goodsName={item.productName}
+                                   salePrice={item.unitPrice}
+                                   category={item.spec}
+                                   goodsNum={'x' + item.quantity}
+                                   onPress={() => {
+                                   }}
+                                   failProduct={true}
+                               />
+                            })  : null
+                    }
+                    <KeyboardAvoidingView>
+                        <ConfirmPriceView
                             jumpToCouponsPage={(params) => this.jumpToCouponsPage(params)}
                             inputFocus={() => {
-                                this.listView.scrollToEnd();
-                            }}/>);
-                    }}
-                    renderItem={this._renderItem}
-                />
+                            }}/>
+                    </KeyboardAvoidingView>
+                </ScrollView>
                 <ConfirmBottomView commitOrder={() => this.commitOrder()}/>
-                <SelectOneTicketModel ref={(ref) => {
-                    this.oneTicketModel = ref;
-                }}/>
-                <SelectTicketModel ref={(ref) => {
-                    this.ticketModel = ref;
-                }}/>
+                <SelectOneTicketModel ref={(ref)=>{this.oneTicketModel = ref}}/>
+                <SelectTicketModel ref={(ref)=>{this.ticketModel = ref}} />
             </View>
         );
     };
 
-    _renderItem = (item) => {
+    _renderItem = (item, index) => {
         return (<GoodsItem
-            key={item.index}
-            uri={item.item.specImg}
-            activityCodes={item.item.activityCodes}
-            goodsName={item.item.productName}
-            salePrice={StringUtils.formatMoneyString(item.item.unitPrice)}
-            category={item.item.spec}
-            goodsNum={'x' + item.item.quantity}
+            key={index}
+            uri={item.specImg}
+            activityCodes={item.activityList || []}
+            goodsName={item.productName}
+            salePrice={StringUtils.formatMoneyString(item.unitPrice)}
+            category={item.spec}
+            goodsNum={'x' + item.quantity}
             onPress={() => {
             }}
         />);
@@ -81,8 +123,6 @@ export default class ConfirmOrderPage extends BasePage {
 
     componentWillUnmount() {
         confirmOrderModel.clearData();
-        clearTimeout();
-        this.didFocusSubscription && this.didFocusSubscription.remove();
     }
 
     _render() {
@@ -94,74 +134,46 @@ export default class ConfirmOrderPage extends BasePage {
     }
 
     componentDidMount() {
-        bridge.showLoading('加载中');
-        setTimeout(() => {
-            this.loadPageData();
-        }, 0);
-        this.didFocusSubscription = this.props.navigation.addListener(
-            'didFocus',
-            payload => {
-                track(trackEvent.ViewOrderConfirmPage, {});
-            }
-        );
+        this.loadPageData(this.params.orderParamVO.couponsId);
     }
 
-    loadPageData = (params) => {
+    loadPageData = (couponsId) => {
         // 获取订单数据
-        confirmOrderModel.makeSureProduct(this.params.orderParamVO, params);
+        confirmOrderModel.makeSureProduct_selectDefaltCoupon(couponsId);
     };
 
     // 地址重新选择
     selectAddress = () => {
-        this.$navigate(RouterMap.AddressManagerPage, {
-            from: 'order',
-            currentId: confirmOrderModel.addressId,
-            callBack: (json) => {
-                let params = {
-                    addressId: json.id,
-                    tokenCoin: 0,
-                    userCouponCode: confirmOrderModel.userCouponCode
-                };
-                confirmOrderModel.tokenCoinText = '选择使用1元券',
-                    confirmOrderModel.tokenCoin = 0;
-                // confirmOrderModel.addressId = json.id;
-                setTimeout(() => {
-                    this.loadPageData(params);
-                }, 0);
-            }
-        });
+        if (confirmOrderModel.isNoAddress === false){
+            this.$navigate('mine/address/AddressManagerPage', {
+                from: 'order',
+                currentId: confirmOrderModel.addressId,
+                callBack: (json) => {
+                    confirmOrderModel.selectAddressId(json)
+                }
+            });
+        }else {
+            this.$navigate(RouterMap.AddressEditAndAddPage,{
+                callBack: (json) => {
+                    confirmOrderModel.selectAddressId(json)
+                },
+                from: 'add'
+            });
+        }
     };
 
     // 提交订单
     commitOrder = () => {
-        if (!confirmOrderModel.canCommit) {
-            bridge.hiddenLoading();
-            return;
-        }
-        confirmOrderModel.canCommit = false;
-        confirmOrderModel.submitProduct(this.params.orderParamVO, {
-
-            callback: (data) => {
-                console.log('submitProduct', data);
-                this.$navigateReplace(RouterMap.PaymentPage, {
-                    orderNum: data.orderNo,
-                    amounts: data.payAmount,
-                    pageType: 0,
-                    orderProductList: data.orderProductList,
-                    outTradeNo: data.orderNo,
-                    platformOrderNo: data.platformOrderNo
-                });
-            }
-        });
+        confirmOrderModel.submitProduct();
     };
 
     // 选择优惠券
     jumpToCouponsPage = (params) => {
         if (params === 'justOne') {//一元券
-            let payAmount = parseInt(confirmOrderModel.payAmount); //要实付钱
-            let tokenCoin = parseInt(confirmOrderModel.tokenCoin);//一元优惠的券
+            let payAmount = parseInt(confirmOrderModel.payInfo.payAmount || 0); //要实付钱
+            let tokenCoin =  parseInt(confirmOrderModel.tokenCoin);//一元优惠的券
             let orderAmount = payAmount + tokenCoin;
-            if (orderAmount < 1) {//订单总价格要大于1
+            if (orderAmount < 1 || orderAmount.isNaN){//订单总价格要大于1
                 this.$toastShow('订单价格大于1元才可使用一元优惠');
                 return;
             }
@@ -169,55 +181,19 @@ export default class ConfirmOrderPage extends BasePage {
             this.oneTicketModel && this.oneTicketModel.open(orderAmount, (data) => {
                 //选择完以后回调
                 data = parseInt(data);
-                if (data >= 0) {
-                    let params = {
-                        tokenCoin: data,
-                        userCouponCode: confirmOrderModel.userCouponCode,
-                        addressId: confirmOrderModel.addressId
-                    };
-                    confirmOrderModel.tokenCoin = data;
-                    confirmOrderModel.tokenCoinText = data !== 0 ? '-¥' + data : '选择使用1元券';
-                    setTimeout(() => {
-                        this.loadPageData(params);
-                    }, 0);
-                }
-            });
+                confirmOrderModel.selecttokenCoin(data);
+            })
         } else {
             track(trackEvent.ViewCoupon, { couponModuleSource: 3 });
-            this.ticketModel && this.ticketModel.open(confirmOrderModel.orderParamVO, (data) => {
-                console.log('CouponsPage', data);
-                confirmOrderModel.couponData = data;
-                if (data && data.id) {
-                    let params = {
-                        userCouponCode: data.code,
-                        tokenCoin: 0,
-                        addressId: confirmOrderModel.addressId
-                    };
-                    confirmOrderModel.userCouponCode = data.code;
-                    confirmOrderModel.couponName = data.name;
-                    confirmOrderModel.tokenCoin = 0;
-                    confirmOrderModel.tokenCoinText = '选择使用1元券';
-                    setTimeout(() => {
-                        this.loadPageData(params);
-                    }, 0);
+            this.ticketModel && this.ticketModel.open(confirmOrderModel.getAvailableProducts(), (data) => {
+                if (data.code) {
+                    confirmOrderModel.selectUserCoupon(data.code)
                 } else if (data === 'giveUp') {
-                    confirmOrderModel.giveUpCou = true;
-                    confirmOrderModel.userCouponCode = null;
-                    confirmOrderModel.couponName = null;
-                    // confirmOrderModel.tokenCoin = 0;
-                    // confirmOrderModel.tokenCoinText = '选择使用1元券';
-                    setTimeout(() => {
-                        this.loadPageData({
-                            userCouponCode: null,
-                            tokenCoin: confirmOrderModel.tokenCoin,
-                            addressId: confirmOrderModel.addressId
-                        });
-                    }, 0);
+                    confirmOrderModel.selectUserCoupon('')
                 }
-            });
-            return;
+            })
         }
-    };
+    }
 }
 
 const styles = StyleSheet.create({

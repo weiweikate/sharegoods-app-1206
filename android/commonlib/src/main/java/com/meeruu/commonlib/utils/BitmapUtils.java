@@ -506,10 +506,10 @@ public final class BitmapUtils {
     }
 
     public static BitmapFactory.Options getBitmapOption(int inSampleSize) {
-        System.gc();
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPurgeable = true;
         options.inSampleSize = inSampleSize;
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
         return options;
     }
 }

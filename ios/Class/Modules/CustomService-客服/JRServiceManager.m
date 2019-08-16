@@ -13,6 +13,7 @@
 #import "JRServiceBridge.h"
 #import <SandBoxPreviewTool/SuspensionButton.h>
 #import "SuspensionBtn.h"
+#import "NetWorkTool.h"
 
 #define all_unread_count @"unreadCount"
 #define sessionListData  @"sessionListData"
@@ -76,6 +77,9 @@ SINGLETON_FOR_CLASS(JRServiceManager)
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
        [[UIApplication sharedApplication].delegate.window addSubview:self.suspensionBtn];
     });
+    NSMutableDictionary *dic = [self.dataDic mutableCopy];
+    dic[@"title"] = self.preTitle;
+    dic[@"shopId"] = self.preShopId;
     [KRootVC dismissViewControllerAnimated:NO completion:^{
       dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self swichGroup:@{
@@ -90,6 +94,22 @@ SINGLETON_FOR_CLASS(JRServiceManager)
     [JRLoadingAndToastTool showToast:@"暂不可直接切换到供应商客服~可在我的页面客服发起" andDelyTime:1];
     [self.changeToSupplierBtn removeFromSuperview];
   }
+}
+-(void)connetMerchant:(NSString *)code
+{
+  if (!code) {
+    return;
+  }
+  __block JRServiceManager* weakSelf = self;
+  [NetWorkTool requestWithURL:ChatApi_ShopInfoBySupplierCode params:@{@"supplierCode": code} toModel:nil success:^(NSDictionary* result) {
+    if (result[@"shopId"]&& ![result[@"shopId"] isEqualToString:suspensionId]) {
+      weakSelf.preTitle = result[@"title"] ? result[@"title"]: @"商家";
+      weakSelf.preShopId = result[@"shopId"];
+      [self changeToSupplierAction:nil];
+    }
+  } failure:^(NSString *msg, NSInteger code) {
+    
+  } showLoading:@""];
 }
 //切换到平台客服
 -(void)changeToPlatformAction:(UIButton *)btn{
@@ -159,7 +179,7 @@ SINGLETON_FOR_CLASS(JRServiceManager)
           NSDictionary *urlData = @{@"card_type":@(PRODUCT_CARD), @"linkUrl":eventData};
          [[NSNotificationCenter defaultCenter]postNotificationName:QY_CARD_CLICK object:urlData];
       }else{
-        NSDictionary * urlData = @{@"card_type":@(LINK_CLICK),@"uri":eventData};
+        NSDictionary * urlData = @{@"card_type":@(LINK_CLICK),@"uri":eventData,@"eventName": @"Event_navigateHtmlPage"};
         [[NSNotificationCenter defaultCenter]postNotificationName:@"EventToRN" object:urlData];
       }
     }
@@ -174,6 +194,7 @@ SINGLETON_FOR_CLASS(JRServiceManager)
    NSDictionary * chatInfo = swichData;
    self.dataDic = chatInfo;//暂存来的数据
   QYSessionViewController * sessionVC = [[QYSDK sharedSDK] sessionViewController];
+  
   sessionVC.vipLevel = self.isVip?11:0;
   //暂存客服来源类型
   if (![chatInfo[@"shopId"] isEqualToString:suspensionId] && ((NSString *)chatInfo[@"shopId"]).length != 0) {
@@ -285,7 +306,7 @@ SINGLETON_FOR_CLASS(JRServiceManager)
                                 @"status":@(sessionInfo.status),
                                 @"lastMessageTimeStamp":@(lastTime),
                                 @"shopId":sessionInfo.shopId,
-                                @"avatarImageUrlString":sessionInfo.avatarImageUrlString,
+                            @"avatarImageUrlString":sessionInfo.avatarImageUrlString?sessionInfo.avatarImageUrlString:[NSNull null],
                                 @"sessionName":sessionInfo.sessionName,
                                 };
     NSLog(@"%@",session);

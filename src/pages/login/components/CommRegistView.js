@@ -1,15 +1,9 @@
-import {
-    View,
-    StyleSheet,
-    TouchableOpacity,
-    Image
-
-} from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 // import UIText from '../../../components/ui/UIText';
 import React, { Component } from 'react';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
 import { observer } from 'mobx-react';
-import { observable, computed, action } from 'mobx';
+import { action, computed, observable } from 'mobx';
 import StringUtils from '../../../utils/StringUtils';
 import bridge from '../../../utils/bridge';
 import { TimeDownUtils } from '../../../utils/TimeDownUtils';
@@ -93,7 +87,7 @@ export default class CommRegistView extends Component {
         this.state = {
             viewType: props.viewType
         };
-        this.registModel.phoneNumber = this.props.phone || '';
+        this.registModel.phoneNumber = this.props.phoneNum || '';
     }
 
     changeSelectState() {
@@ -197,7 +191,8 @@ export default class CommRegistView extends Component {
                         this.registModel.isSecuret = !this.registModel.isSecuret;
                     }}>
                         <Image
-                            source={this.registModel.isSecuret ? close_eye : open_eye} style={{ marginLeft: 10 }}/>
+                            source={this.registModel.isSecuret ? close_eye : open_eye}
+                            style={{ marginLeft: 10, width: 20, height: 20 }}/>
                     </TouchableOpacity>
                 </View>
                 <TouchableOpacity

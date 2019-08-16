@@ -5,6 +5,7 @@ const placeholder = {
     add_three_pticture: require('./add_three_pticture.png'),
     noHeadImage: require('./me_img_touxiang_nor.png'),
     add_picture: require('./add_picture.png'),
+    avatar_default: require('./me_img_touxiang_nor.png'),
     no_data_img: require('./no_data_img.png')
 };
 export default placeholder;

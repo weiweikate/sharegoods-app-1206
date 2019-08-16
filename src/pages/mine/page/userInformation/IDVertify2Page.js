@@ -1,15 +1,13 @@
 import React from 'react';
-import {
-    NativeModules,
-    StyleSheet,
-    View,
-    Image,
-    TouchableOpacity,
-    ScrollView
-} from 'react-native';
+import { Image, NativeModules, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import BasePage from '../../../../BasePage';
 import {
-    UIText, TakePhotoModal, NoMoreClick, UIImage
+    MRText as Text,
+    MRTextInput as RNTextInput,
+    NoMoreClick,
+    TakePhotoModal,
+    UIImage,
+    UIText
 } from '../../../../components/ui';
 import ImageLoad from '@mr/image-placeholder';
 import StringUtils from '../../../../utils/StringUtils';
@@ -20,11 +18,9 @@ import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
-import { MRText as Text, MRTextInput as RNTextInput } from '../../../../components/ui';
 import apiEnvironment from '../../../../api/ApiEnvironment';
 import { track, trackEvent } from '../../../../utils/SensorsTrack';
-import { routeNavigate } from '../../../../navigation/RouterMap';
-import RouterMap from '../../../../navigation/RouterMap';
+import RouterMap, { routeNavigate } from '../../../../navigation/RouterMap';
 
 const IDcard_country = res.userInfoImg.IDcard_country;
 const IDcard_persion = res.userInfoImg.IDcard_persion;
@@ -240,12 +236,16 @@ export default class IDVertify2Page extends BasePage {
     //**********************************BusinessPart******************************************
     getIDcard_persion = () => {
         BusinessUtils.getImagePicker(callback => {
-            this.setState({ frontIdCard: callback.imageUrl[0] });
+            if (callback.imageUrl && callback.imageUrl.length > 0) {
+                this.setState({ frontIdCard: callback.imageUrl[0] });
+            }
         });
     };
     getIDcard_country = () => {
         BusinessUtils.getImagePicker(callback => {
-            this.setState({ backIdCard: callback.imageUrl[0] });
+            if (callback.imageUrl && callback.imageUrl.length > 0) {
+                this.setState({ backIdCard: callback.imageUrl[0] });
+            }
         });
     };
 
@@ -296,7 +296,7 @@ export default class IDVertify2Page extends BasePage {
                     userName: this.state.name,
                     cardNum: this.state.idNumber,
                     oldPwd: '',
-                    tips: '重新设置新的交易密码',
+                    tips: '设置新的交易密码',
                     title: '重置交易密码',
                     from: 'edit'
                 });

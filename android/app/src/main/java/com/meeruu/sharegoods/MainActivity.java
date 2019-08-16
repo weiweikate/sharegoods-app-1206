@@ -25,6 +25,7 @@ import com.meeruu.commonlib.config.BaseRequestConfig;
 import com.meeruu.commonlib.event.Event;
 import com.meeruu.commonlib.handler.WeakHandler;
 import com.meeruu.commonlib.server.RequestManager;
+import com.meeruu.commonlib.utils.HttpUrlUtils;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.SPCacheUtils;
@@ -35,7 +36,6 @@ import com.meeruu.sharegoods.event.HideSplashEvent;
 import com.meeruu.sharegoods.rn.preload.ReactNativePreLoader;
 import com.meeruu.sharegoods.ui.activity.GuideActivity;
 import com.meeruu.sharegoods.ui.activity.MainRNActivity;
-import com.meeruu.sharegoods.utils.HttpUrlUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

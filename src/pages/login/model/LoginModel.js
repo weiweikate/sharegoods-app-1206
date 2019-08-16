@@ -1,4 +1,5 @@
-import { observable, action, computed } from 'mobx';
+import { action, computed, observable } from 'mobx';
+import store from '@mr/rn-store';
 
 class LoginModel {
     @observable
@@ -21,7 +22,7 @@ class LoginModel {
     authPhone = null;
 
     @action
-    setAuthPhone(str){
+    setAuthPhone(str) {
         this.authPhone = str;
     }
 
@@ -37,6 +38,7 @@ class LoginModel {
             return;
         }
         this.phoneNumber = phoneNmber;
+        store.save('@mr/lastPhone', this.phoneNumber);
     }
 
     @action

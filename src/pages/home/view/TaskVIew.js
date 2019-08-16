@@ -12,6 +12,8 @@
 
 'use strict';
 
+import { IntervalMsgType } from '../../../comm/components/IntervalMsgView';
+
 const BoxStatusClose = 0;
 const BoxStatusCanOpen = 1;
 const BoxStatusOpen = 2;
@@ -106,7 +108,7 @@ class TaskItem extends React.Component {
                 }}>
                     {
                         this.state.isShowDefaultImage? <UIImage style={{width: autoSizeWidth(40), height: autoSizeWidth(40)}}
-                                                                    source={defaultImage}
+                                                                source={defaultImage}
                         />: <ImageLoader style={{width: autoSizeWidth(40), height: autoSizeWidth(40)}}
                                          source={{uri: logoUrl}}
                                          onError={()=>{this.setState({isShowDefaultImage: true})}}
@@ -164,6 +166,9 @@ class TaskItem extends React.Component {
         } else {
             let btn = item.status === TaskStatusUndone ? red_btn : yellow_btn;
             let title = item.status === TaskStatusUndone ? '前往' : '领奖';
+            if (item.interactiveCode == IntervalMsgType.sign && this.props.isSignIn){
+                title = item.status === TaskStatusUndone ? '签到' : '领奖';
+            }
             return (
                 <TouchableOpacity style={{
                     width:  ScreenUtils.autoSizeWidth(63),
@@ -190,7 +195,11 @@ class TaskItem extends React.Component {
     }
 
     btnClick(item, subTask, title) {
+        if (item.interactiveCode == IntervalMsgType.sign && this.props.isSignIn){
+            this.props.signIn && this.props.signIn()
+        } else {
             this.props.model.getMissionPrize(item, subTask, title);
+        }
 
     }
 
@@ -299,55 +308,55 @@ export default class TaskVIew extends React.Component {
         return (
             <View style={{paddingHorizontal: 10}}>
                 <View style={{backgroundColor: "#FFF1D9", height: autoSizeWidth(80), alignItems: 'center', borderRadius: 5, overflow: 'hidden'}}>
-                        <View style={{ height: autoSizeWidth(40), justifyContent: 'center', marginTop: autoSizeWidth(25)}}>
+                    <View style={{ height: autoSizeWidth(40), justifyContent: 'center', marginTop: autoSizeWidth(25)}}>
+                        <View style={{
+                            width: autoSizeWidth(290),
+                            backgroundColor: '#f5f5f5',
+                            height: autoSizeWidth(5),
+                            borderRadius: autoSizeWidth(4),
+                            overflow: 'hidden',
+                            borderColor: '#eeeeee'
+                        }}>
                             <View style={{
-                                width: autoSizeWidth(290),
-                                backgroundColor: '#f5f5f5',
                                 height: autoSizeWidth(5),
+                                width: autoSizeWidth(290) * progress,
                                 borderRadius: autoSizeWidth(4),
-                                overflow: 'hidden',
-                                borderColor: '#eeeeee'
+                                overflow: 'hidden'
                             }}>
-                                <View style={{
-                                    height: autoSizeWidth(5),
-                                    width: autoSizeWidth(290) * progress,
-                                    borderRadius: autoSizeWidth(4),
-                                    overflow: 'hidden'
-                                }}>
-                                    <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
-                                                    colors={['#FC5D39', '#FF0050']}
-                                                    style={{ width: autoSizeWidth(290), height: autoSizeWidth(5)}}
-                                    />
-                                </View>
+                                <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+                                                colors={['#FC5D39', '#FF0050']}
+                                                style={{ width: autoSizeWidth(290), height: autoSizeWidth(5)}}
+                                />
                             </View>
-                            <View style={[DesignRule.style_absoluteFullParent,
-                                {
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    left: -10,
-                                    right: -10
-                                }]}>
-                                {
-                                    this.model.boxs.map((item) => {
-                                        return (
-                                            this.renderBox(item)
-                                        );
-                                    })
-                                }
-                            </View>
-                            {
-                                this.model.canOpenProgress !== -1?  <UIImage source={task_run_people}
-                                                                             style={{
-                                                                                 position: 'absolute',
-                                                                                 left: this.model.canOpenProgress/this.model.totalProgress * autoSizeWidth(290) - autoSizeWidth(5),
-                                                                                 width: autoSizeWidth(25),
-                                                                                 height: autoSizeWidth(23),
-                                                                                 top: autoSizeWidth(5)
-                                                                             }}
-                                /> : null
-                            }
-
                         </View>
+                        <View style={[DesignRule.style_absoluteFullParent,
+                            {
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                left: -10,
+                                right: -10
+                            }]}>
+                            {
+                                this.model.boxs.map((item) => {
+                                    return (
+                                        this.renderBox(item)
+                                    );
+                                })
+                            }
+                        </View>
+                        {
+                            this.model.canOpenProgress !== -1?  <UIImage source={task_run_people}
+                                                                         style={{
+                                                                             position: 'absolute',
+                                                                             left: this.model.canOpenProgress/this.model.totalProgress * autoSizeWidth(290) - autoSizeWidth(5),
+                                                                             width: autoSizeWidth(25),
+                                                                             height: autoSizeWidth(23),
+                                                                             top: autoSizeWidth(5)
+                                                                         }}
+                            /> : null
+                        }
+
+                    </View>
                 </View>
             </View>
         );
@@ -432,7 +441,11 @@ export default class TaskVIew extends React.Component {
                     >
                         {
                             this.model.tasks.map((item, index) => {
-                                return <TaskItem key={'TaskItem_' + item.no} data={item} model={this.model}/>;
+                                return <TaskItem key={'TaskItem_' + item.no}
+                                                 data={item} model={this.model}
+                                                 isSignIn={this.props.isSignIn}
+                                                 signIn={this.props.signIn}
+                                />;
                             })
                         }
 

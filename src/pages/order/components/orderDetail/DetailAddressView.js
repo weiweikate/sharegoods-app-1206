@@ -19,19 +19,35 @@ const position = res.dizhi_icon;
 export default class DetailAddressView extends Component{
 
     render(){
+        let receiveInfo = orderDetailModel.receiveInfo
+        let {
+            province = '',
+            city = '',
+            area = '',
+            address = '',
+            receiver = '',
+            receiverPhone = '',
+            street = ''
+        } = receiveInfo;
+        province = province || '';
+        city = city || '';
+        area = area || '';
+        street = street || '';
+        address = address || '';
         return (
             <View style={styles.viewContainer}>
                 <UIImage source={position} style={{ height: px2dp(20), width:  px2dp(20), marginLeft:  px2dp(20) }} resizeMode={'contain'}/>
                 <View style={{ flex: 1, marginLeft:  px2dp(15), marginRight:  px2dp(20) }}>
                     <View style={{flexDirection: 'row' }}>
-                        <Text style={[styles.innerTextStyle,{flex:1}]} allowFontScaling={false}>收货人:{orderDetailModel.receiver}</Text>
-                        <Text style={[styles.innerTextStyle,{marginLeft: px2dp(5)}]} allowFontScaling={false}>{orderDetailModel.receiverPhone}</Text>
+                        <Text style={[styles.innerTextStyle,{flex:1}]} allowFontScaling={false}>收货人:{receiver}</Text>
+                        <Text style={[styles.innerTextStyle,{marginLeft: px2dp(5)}]} allowFontScaling={false}>{receiverPhone}</Text>
                     </View>
                     <UIText value={
-                        '收货地址:' + orderDetailModel.province
-                        + orderDetailModel.city
-                        + orderDetailModel.area
-                        + orderDetailModel.address
+                        '收货地址:' + province
+                        + city
+                        + area
+                        + street
+                        + address
                     }
                             style={[styles.innerTextStyle,{marginTop: px2dp(5)}]}/>
                 </View>
@@ -45,9 +61,8 @@ const styles = StyleSheet.create({
          backgroundColor: 'white',
          flexDirection: 'row',
          paddingTop:  px2dp(10),
-         paddingBottom:  px2dp(10),
+         paddingBottom:  px2dp(20),
          alignItems: 'center',
-         marginTop:105
      },
     innerTextStyle:{
         fontSize: 15,

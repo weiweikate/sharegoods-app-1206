@@ -21,7 +21,7 @@ import { track, trackEvent } from '../../../utils/SensorsTrack';
 import DetailNavShowModal from '../components/DetailNavShowModal';
 import user from '../../../model/user';
 import RouterMap, { routeNavigate } from '../../../navigation/RouterMap';
-import DetailHeaderScoreView from '../components/DetailHeaderScoreView';
+import ProductDetailScoreView from '../components/ProductDetailScoreView';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import { beginChatType, QYChatTool } from '../../../utils/QYModule/QYChatTool';
@@ -196,7 +196,9 @@ export class XpDetailPage extends BasePage {
             orderProducts.push({
                 skuCode: skuCode,
                 quantity: amount,
-                productCode: this.xpDetailModel.selectedSpuCode
+                productCode: this.xpDetailModel.selectedSpuCode,
+                activityCode: '',
+                batchNo: 1,
             });
             this.$navigate(RouterMap.ConfirOrderPage, {
                 orderParamVO: {
@@ -237,8 +239,8 @@ export class XpDetailPage extends BasePage {
                     </View> : null
                 }
             </View>
-            <DetailHeaderScoreView style={{ marginTop: 10, marginBottom: 0 }} pData={pData}
-                                   navigation={this.props.navigation}/>
+            <ProductDetailScoreView style={{ marginTop: 10, marginBottom: 0 }} pData={pData}
+                                    navigation={this.props.navigation}/>
             <View style={styles.productInfoView}>
                 <View style={styles.infoTextView}>
                     <Text style={styles.pramsText}>商品信息</Text>

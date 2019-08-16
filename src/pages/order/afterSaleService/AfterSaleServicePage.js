@@ -21,11 +21,9 @@ import {
 import BottomSingleSelectModal from '../components/BottomSingleSelectModal';
 import StringUtils from '../../../utils/StringUtils';
 import AutoExpandingInput from '../../../components/ui/AutoExpandingInput';
-// import DateUtils from '../../../utils/DateUtils';
 import BusinessUtils from '../../mine/components/BusinessUtils';
 
 import OrderApi from '../api/orderApi';
-// import SelectionPage from '../../home/product/SelectionPage';
 import EmptyUtils from '../../../utils/EmptyUtils';
 import bridge from '../../../utils/bridge';
 import DesignRule from '../../../constants/DesignRule';
@@ -42,7 +40,6 @@ class AfterSaleServicePage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            isShowSingleSelctionModal: false,
             pageType: this.params.pageType || 0, //  0(退款),1(退货退款),2(换货)
             activeProduct: ['', '退回商品需由买家承担运费，请确保商品不影响二次销售', '仅可更换同规格的商品，请确保退换商品不影响二次销售'],
             reason: ['退款原因', '退货原因', '换货原因'],
@@ -97,13 +94,14 @@ class AfterSaleServicePage extends BasePage {
     renderOrderNum = () => {
         return (
             <View style={{ height: 40, backgroundColor: 'white', justifyContent: 'center' }}>
-                <UIText value={'订单编号：' + this.state.productData.warehouseOrderNo}
+                <UIText value={'订单编号：' + (this.state.productData.merchantOrderNo||'')}
                         style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>
             </View>
         );
     };
     refundAndExchangeType = () => {
         let { payAmount, freightAmount } = this.state.productData;
+        freightAmount = freightAmount || 0;
         switch (this.state.pageType) {
             case 0:
                 return (
@@ -183,7 +181,7 @@ class AfterSaleServicePage extends BasePage {
                         </View>
                         <UIText value={`最多¥${payAmount}，含发货邮费¥${freightAmount}`}
                                 style={{
-                                    height: 14,
+                                    height: DesignRule.autoSizeWidth(18),
                                     marginLeft: DesignRule.margin_page,
                                     color: DesignRule.textColor_instruction,
                                     fontSize: DesignRule.fontSize_24,
@@ -340,23 +338,15 @@ class AfterSaleServicePage extends BasePage {
         let returnReasons = this.state.returnReasons.map((item) => {
             return item.value;
         });
-        if (this.state.productData.restrictions && ((this.state.productData.restrictions & 4) === 4)) {
-            returnReasons.unshift('七天无理由退换');
-        }
 
         return (
             <View>
                 <BottomSingleSelectModal
-                    isShow={this.state.isShowSingleSelctionModal}
                     detail={returnReasons}
                     ref={(ref) => {
                         this.cancelModal = ref;
                     }}
-                    closeWindow={() => {
-                        this.setState({ isShowSingleSelctionModal: false });
-                    }}
                     commit={(index) => {
-                        this.setState({ isShowSingleSelctionModal: false });
                         this.setState({ returnReason: returnReasons[index] });
                     }}
                 />
@@ -409,15 +399,20 @@ class AfterSaleServicePage extends BasePage {
         );
     };
 
-    _getReturnReason(fah) {//是否发货
-        let pageType = this.params.pageType;
+    _getReturnReason(fah, sevenDayReturn) {//是否发货
+        let pageType = this.params.pageType || 0;
         if (fah === false) {
             pageType = 3;
         }
 
         let that = this;
         OrderApi.getReturnReason({ code: ['JTK', 'THTK', 'HH', 'WFH'][pageType] }).then((result) => {
-            that.setState({ returnReasons: result.data || [] });
+            let returnReasons = result.data || [];
+            if (sevenDayReturn) {
+                let returnReason = '七天无理由'+['退款','退货','换货','退款'][pageType];
+                returnReasons = [{value: returnReason}, ...returnReasons]
+            }
+            that.setState({ returnReasons: returnReasons });
         }).catch((error) => {
 
         });
@@ -425,9 +420,6 @@ class AfterSaleServicePage extends BasePage {
 
     //**********************************BusinessPart******************************************
     showRefundReason = () => {
-        this.setState({
-            isShowSingleSelctionModal: true
-        });
         this.cancelModal && this.cancelModal.open();
     };
     exchangeType = () => {
@@ -446,7 +438,7 @@ class AfterSaleServicePage extends BasePage {
     loadPageData() {
         let that = this;
         this.$loadingShow();
-        OrderApi.subOrder({ orderProductNo: this.params.orderProductNo + '' }).then((result) => {
+        OrderApi.afterSaleProduceDetail({ productOrderNo: this.params.orderProductNo + '' }).then((result) => {
             that.$loadingDismiss();
             let productData = result.data || {};
             let status = productData.status;
@@ -454,9 +446,9 @@ class AfterSaleServicePage extends BasePage {
             let payAmount = productData.payAmount || 0;
             if (status === 2 || status === 1) {  //  状态 1.待付款 2.已付款 3.已发货 4.交易完成 5.交易关闭
                 editable = false;
-                that._getReturnReason(false);
+                that._getReturnReason(false,productData.sevenDayReturn);
             } else {
-                that._getReturnReason(true);
+                that._getReturnReason(true,productData.sevenDayReturn);
             }
             if (payAmount === 0) {
                 editable = false;
@@ -507,7 +499,7 @@ class AfterSaleServicePage extends BasePage {
                 // smallImgUrls = ',' + this.state.imageArr[i].imageThumbUrl;
             }
         }
-        let { orderProductNo, pageType, serviceNo } = this.params;
+        let { orderProductNo, pageType = 0, serviceNo } = this.params;
         let { applyRefundAmount } = this.state;
         let { remark, returnReason } = this.state;
         let params = {
@@ -557,11 +549,11 @@ class AfterSaleServicePage extends BasePage {
                 actualPaymentAmount:  payAmount,// 用户实际支付金额
             });
             /** 提交申请、提交申请成功要通知订单刷新*/
-            params.orderProductNo = orderProductNo;
+            params.productOrderNo = orderProductNo;
             this.$loadingShow();
             OrderApi.afterSaleApply(params).then((response) => {
                 this.$loadingDismiss();
-                DeviceEventEmitter.emit('OrderNeedRefresh');
+                DeviceEventEmitter.emit('REFRESH_ORDER');
                 this.$navigate(RouterMap.ExchangeGoodsDetailPage, {
                     serviceNo: response.data.serviceNo
                 });

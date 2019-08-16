@@ -6,16 +6,30 @@
     android:layout_height="wrap_content"
     android:background="@drawable/showground_item_background">
 
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/showground_item_image"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <FrameLayout  android:id="@+id/cover_wrapper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true">
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/showground_item_image"/>
+        <RelativeLayout android:background="@drawable/black_transparent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/foreground_view"/>
+        <ImageView android:layout_width="53dp"
+            android:layout_height="53dp"
+            android:layout_gravity="center"
+            android:id="@+id/icon_play"
+            android:src="@drawable/icon_play"/>
+    </FrameLayout>
     
     <TextView
         android:id="@+id/showground_item_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/showground_item_image"
+        android:layout_below="@+id/cover_wrapper"
         android:ellipsize="end"
         android:includeFontPadding="false"
         android:maxLines="2"

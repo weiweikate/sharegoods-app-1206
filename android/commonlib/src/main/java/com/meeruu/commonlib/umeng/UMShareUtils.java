@@ -91,26 +91,44 @@ public class UMShareUtils {
                         .share();
                 break;
             case 1:
-                if (params.containsKey("hdImageURL")) {
-                    image = fixThumImage(mContext, params.get("hdImageURL") + "");
-                } else {
-                    image = fixThumImage(mContext, params.get("thumImage") + "");
+                //微博分享网页带图片
+                if(platformType == 4){
+                    if (params.containsKey("hdImageURL")) {
+                        image = fixThumImage(mContext, params.get("hdImageURL") + "");
+                    } else {
+                        image = fixThumImage(mContext, params.get("thumImage") + "");
+                    }
+                    String dec = "";
+                    if (params.containsKey("dec")) {
+                        dec = params.get("dec") + (String)params.get("linkUrl") + "";
+                    }
+                    new ShareAction(mContext).setPlatform(platform)//传入平台
+                            .withText(dec)
+                            .withMedia(image).setCallback(umShareListener)//回调监听器
+                            .share();
+                }else {
+                    if (params.containsKey("hdImageURL")) {
+                        image = fixThumImage(mContext, params.get("hdImageURL") + "");
+                    } else {
+                        image = fixThumImage(mContext, params.get("thumImage") + "");
+                    }
+                    image.compressStyle = UMImage.CompressStyle.QUALITY;
+                    UMWeb web = new UMWeb(params.get("linkUrl") + "");
+                    if (params.containsKey("title")) {
+                        web.setTitle(params.get("title") + "");//标题
+                    }
+                    web.setThumb(image);  //缩略图
+                    String dec = null;
+                    if (params.containsKey("dec")) {
+                        dec = params.get("dec") + "";
+                        web.setDescription(dec);//描述
+                    }
+                    new ShareAction(mContext).setPlatform(platform)//传入平台
+                            .withMedia(web).withText(dec)//分享内容
+                            .setCallback(umShareListener)//回调监听器
+                            .share();
                 }
-                image.compressStyle = UMImage.CompressStyle.QUALITY;
-                UMWeb web = new UMWeb(params.get("linkUrl") + "");
-                if (params.containsKey("title")) {
-                    web.setTitle(params.get("title") + "");//标题
-                }
-                web.setThumb(image);  //缩略图
-                String dec = null;
-                if (params.containsKey("dec")) {
-                    dec = params.get("dec") + "";
-                    web.setDescription(dec);//描述
-                }
-                new ShareAction(mContext).setPlatform(platform)//传入平台
-                        .withMedia(web).withText(dec)//分享内容
-                        .setCallback(umShareListener)//回调监听器
-                        .share();
+
                 break;
             case 2:
                 UMMin umMin = new UMMin(params.get("linkUrl") + "");

@@ -19,5 +19,7 @@
 #import "NSObject+Util.h"
 #import <YYKit.h>
 
+#import "AlivcImage.h"
+
 
 #endif /* Jure_pch */

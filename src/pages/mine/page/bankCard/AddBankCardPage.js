@@ -193,9 +193,14 @@ class AddBankCardPage extends BasePage {
     };
     inputCardNum = (cardNo) => {
         this.setState({ cardNo: formatCardWithSpace(cardNo) });
+        this.getBankType();
     };
     getBankType = () => {
         const bankCard = this.state.cardNo.replace(/ /g, '');
+        if (bankCard.length < 10) {
+            this._setDefault();
+            return;
+        }
         MineApi.findByBankCardV2({ cardNumber: bankCard }).then((response) => {
             if (response.data) {
                 const data = response.data || {};

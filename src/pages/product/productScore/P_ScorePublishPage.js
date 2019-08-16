@@ -1,12 +1,11 @@
 import React from 'react';
-import { View, StyleSheet, FlatList } from 'react-native';
+import { DeviceEventEmitter, FlatList, StyleSheet, View } from 'react-native';
 import BasePage from '../../../BasePage';
 import P_ScorePubItemView from './components/P_ScorePubItemView';
 import ActionSheetView from '../../spellShop/components/ActionSheetView';
 import P_ScorePublishModel from './P_ScorePublishModel';
 import { observer } from 'mobx-react';
 import ImagePicker from '@mr/rn-image-crop-picker';
-
 // import CameraView from '../../../../components/ui/CameraView';
 import BusinessUtils from '../../mine/components/BusinessUtils';
 import DesignRule from '../../../constants/DesignRule';
@@ -25,6 +24,7 @@ export class P_ScorePublishPage extends BasePage {
 
     $NavBarRightPressed = () => {
         this.p_ScorePublishModel._publish(() => {
+            DeviceEventEmitter.emit('REFRESH_ORDER');
             this.$navigateReplace(RouterMap.P_ScoreSuccessPage);
         });
     };
@@ -132,7 +132,7 @@ export class P_ScorePublishPage extends BasePage {
                     this.ActionSheetView = ref;
                 }}/>
                 {/*<CameraView ref={(ref) => {*/}
-                    {/*this.CameraView = ref;*/}
+                {/*this.CameraView = ref;*/}
                 {/*}}/>*/}
             </View>
 
