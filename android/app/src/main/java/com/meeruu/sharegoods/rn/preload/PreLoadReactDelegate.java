@@ -117,6 +117,8 @@ public class PreLoadReactDelegate extends ReactActivityDelegate {
         if (getReactNativeHost().hasInstance()) {
             getReactNativeHost().getReactInstanceManager().onHostDestroy(getPlainActivity());
         }
+        // 清楚view
+        ReactNativePreLoader.detachView(mMainComponentName);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
