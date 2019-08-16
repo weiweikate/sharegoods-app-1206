@@ -94,4 +94,9 @@ public class CollectionModel  implements IShowgroundModel {
     public void deleteDynamic(String showNo, BaseCallback callback) {
 
     }
+
+    @Override
+    public void fetchRecommendList(String cursor, int size, BaseCallback callback) {
+
+    }
 }

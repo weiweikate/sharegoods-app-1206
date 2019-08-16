@@ -449,4 +449,14 @@ public class ShowDynamicView implements IShowgroundView, SwipeRefreshLayout.OnRe
             ToastUtils.showToast(err);
         }
     }
+
+    @Override
+    public void refreshShowground(List data, String cursor) {
+
+    }
+
+    @Override
+    public void viewLoadMore(List data, String cursor) {
+
+    }
 }

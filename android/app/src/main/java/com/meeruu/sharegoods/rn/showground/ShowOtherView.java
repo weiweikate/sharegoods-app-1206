@@ -39,7 +39,8 @@ public class ShowOtherView  implements IShowgroundView, SwipeRefreshLayout.OnRef
     private RnRecyclerView recyclerView;
     private ShowGroundAdapter adapter;
     private StaggeredGridLayoutManager layoutManager;
-    private int page = 1;
+//    private int page = 1;
+    private String cursor = null;
     private OthersPresenter presenter;
     private String userCode;
     private DynamicInterface dynamicInterface;
@@ -100,8 +101,8 @@ public class ShowOtherView  implements IShowgroundView, SwipeRefreshLayout.OnRef
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                page++;
-                presenter.getShowList(page);
+//                page++;
+                presenter.getShowList(cursor);
             }
         }, recyclerView);
         adapter.setLoadMoreView(new CustomLoadMoreView());
@@ -154,8 +155,9 @@ public class ShowOtherView  implements IShowgroundView, SwipeRefreshLayout.OnRef
     @Override
     public void onRefresh() {
         adapter.setEnableLoadMore(false);
-        page = 1;
-        presenter.getShowList(page);
+//        page = 1;
+        cursor = null;
+        presenter.getShowList(cursor);
     }
 
     @Override
@@ -169,7 +171,7 @@ public class ShowOtherView  implements IShowgroundView, SwipeRefreshLayout.OnRef
         handler.post(new Runnable() {
             @Override
             public void run() {
-                if (TextUtils.equals(code, "9999") && page == 1) {
+                if (TextUtils.equals(code, "9999") && TextUtils.isEmpty(cursor)) {
                     errView.setVisibility(View.VISIBLE);
                     swipeRefreshLayout.setVisibility(View.INVISIBLE);
                 } else {
@@ -181,7 +183,8 @@ public class ShowOtherView  implements IShowgroundView, SwipeRefreshLayout.OnRef
     }
 
     @Override
-    public void viewLoadMore(final List data) {
+    public void viewLoadMore(final List data,String cursor) {
+        this.cursor = cursor;
         showList();
         if (data != null) {
             adapter.addData(resolveData(data));
@@ -189,8 +192,9 @@ public class ShowOtherView  implements IShowgroundView, SwipeRefreshLayout.OnRef
     }
 
     @Override
-    public void refreshShowground(final List data) {
+    public void refreshShowground(final List data,String cursor) {
         if (adapter != null) {
+            this.cursor = cursor;
             adapter.setEnableLoadMore(true);
             adapter.setNewData(resolveData(data));
             swipeRefreshLayout.setRefreshing(false);
@@ -280,6 +284,16 @@ public class ShowOtherView  implements IShowgroundView, SwipeRefreshLayout.OnRef
 
     @Override
     public void addDataToTop(String value) {
+
+    }
+
+    @Override
+    public void refreshShowground(List data) {
+
+    }
+
+    @Override
+    public void viewLoadMore(List data) {
 
     }
 }
