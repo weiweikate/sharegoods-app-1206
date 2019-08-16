@@ -29,6 +29,8 @@ import { homeModule } from '../model/Modules';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
 import LinearGradient from 'react-native-linear-gradient';
+import { track, trackEvent } from '../../../utils/SensorsTrack';
+import { ContentType } from '../HomeTypes';
 
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 
@@ -54,9 +56,16 @@ export default class TabTitleView extends React.Component {
             >
                 {
                     homeModule.tabList.map((item, index) => {
+                        if (item.linkType != 1){
+                            return <View />
+                        }
                         return (
                             <View style={{justifyContent: 'center'}} key = {index+'TabTitleView'}>
-                                <TouchableWithoutFeedback onPress={()=> {homeModule.tabSelect(index, item.id)}}>
+                                <TouchableWithoutFeedback onPress={()=> {
+                                    homeModule.tabSelect(index, item.id, item.name)
+                                    track(trackEvent.HomeRecommendClick, {homeRecArea: 1,contentType: ContentType.tab,
+                                        contentValue: item.name, contentIndex: index})
+                                }}>
                                     {homeModule.tabListIndex === index?
                                         <LinearGradient style={styles.item}
                                                         start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}

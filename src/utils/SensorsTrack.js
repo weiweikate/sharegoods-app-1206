@@ -47,6 +47,7 @@ const homeEvent = {
     MissionBtnClick: 'MissionBtnClick',//任务按钮点击
     BoxBtnClick: 'BoxBtnClick',//宝箱按钮点击
     MissionFrameBtnClick: 'MissionFrameBtnClick',//任务按钮点击
+    HomeRecommendClick: 'HomeRecommendClick'
 }
 /** 订单相关的埋点事件名称*/
 const inviteEvent = {

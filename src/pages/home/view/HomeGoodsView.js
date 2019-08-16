@@ -10,7 +10,7 @@ import DesignRule from '../../../constants/DesignRule';
 import ImageLoader from '@mr/image-placeholder';
 import { MRText as Text } from '../../../components/ui/index';
 import StringUtils from '../../../utils/StringUtils';
-import { homePoint, topicAdOnPress } from '../HomeTypes';
+import { topicAdOnPress } from '../HomeTypes';
 
 export const kHomeGoodsViewHeight = px2dp(246);
 const goodsWidth = (ScreenUtils.width - px2dp(35)) / 2;
@@ -56,7 +56,7 @@ export const Goods = ({ goods, press }) => {
 
 export default class GoodsCell extends Component {
     _goodsAction(data, index) {
-        track(trackEvent.bannerClick, homeModule.bannerPoint(data, homePoint.homeForyou, index));
+        track(trackEvent.HomeRecommendClick, {homeRecArea: 2,contentKey: data.linkCode, contentValue: data.title, contentIndex: index, tabName: homeModule.tabName});
         // let route = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
         topicAdOnPress(data.linkType, data.linkCode);
         // const { navigate } = this.props;

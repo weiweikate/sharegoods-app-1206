@@ -73,20 +73,35 @@ export const homePoint = {
     none: 0, //0：未知
     homeBanner: 1, //1：app首页banner广告位
     homeAd: 2, //2：app首页推荐位
-    homeStar: 3, //3：app首页明星店铺推荐位
+    homeIcon: 11, //首页4个图标
+    // homeStar: 3, //3：app首页明星店铺推荐位
     homeToday: 4, //4:app首页今日榜单广告位
     homeRecommad: 5, //5：app首页精品推荐广告位
     homeSubject: 6,//6：app首页超值热卖专题广告位
     homeForyou: 7, //7：app首页为你推荐广告位
-// 8：app首页右下角浮动广告位
+    // homeFloat:8,//app首页右下角浮动广告位
     homeExpand: 9,// app通用广告位
 // 21：拼店首页banner推荐位
-    homeCategory: 31// 类目搜索banner广告位
+    homeCategory: 31,// 类目搜索banner广告位
+    homeDiy: 13,//自定义模块
 // 32：秀场banner推荐
 // 41：签到广告位
 // 51：登录/注册页面广告位
 // 100：其他
 };
+
+export const ContentType = {
+    none: 0, //  6：限时购 7：抽奖 8：直降商品 9：优惠券 10：文本 11：tab导航
+    good:1 ,//：商品
+    zt: 3,//专题
+    show: 4, //秀场
+    gift: 5, //礼包
+    limtGo: 7,//抽奖
+    good_coupon: 8,//直降商品
+    coupon: 9,//
+    text: 10,//文本
+    tab: 11,//tab导航
+}
 
 
 export function topicAdOnPress(linkType, linkValue) {

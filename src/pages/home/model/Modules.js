@@ -196,17 +196,21 @@ class HomeModule {
                 this.homeList = [...this.homeList, ...home];
                 if (this.tabId){
                     let tabId = this.tabList[0].id;
+                    let tabName = this.tabList[0].name;
                     let tabListIndex = 0;
                     this.tabList.forEach((item, index) => {
                         if (item.id === this.tabId) {
                             tabListIndex = index
                             tabId = item.id;
+                            tabName = item.name;
                         }
                     })
                     this.tabId = tabId;
+                    this.tabName = tabName;
                     this.tabListIndex = tabListIndex;
                 }else {
                     this.tabId = this.tabList[0].id;
+                    this.tabName = this.tabList[0].name;;
                     this.tabListIndex = 0;
                 }
                 this.getGoods();
@@ -342,9 +346,10 @@ class HomeModule {
         this.isFocused = focuse;
     };
 
-    @action tabSelect(index, tabId){
+    @action tabSelect(index, tabId, tabName){
         this.tabListIndex = index;
         this.tabId = tabId;
+        this.tabName = tabName;
         this.getGoods();
     }
 }
