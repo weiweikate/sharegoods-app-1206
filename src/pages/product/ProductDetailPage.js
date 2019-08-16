@@ -112,7 +112,7 @@ export default class ProductDetailPage extends BasePage {
 
     //去购物车
     _bottomViewAction = (type) => {
-        const { productIsPromotionPrice } = this.productDetailModel;
+        const { productIsPromotionPrice, isHuaFei } = this.productDetailModel;
         switch (type) {
             case 'jlj':
                 this.shareModal && this.shareModal.open();
@@ -140,6 +140,13 @@ export default class ProductDetailPage extends BasePage {
             case 'buy':
                 if (!user.isLogin) {
                     this.gotoLoginPage();
+                    return;
+                }
+                if (isHuaFei) {
+                    const uri = apiEnvironment.getCurrentH5Url() + '/pay/virtual-product';
+                    this.$navigate(RouterMap.HtmlPage, {
+                        uri: uri
+                    });
                     return;
                 }
                 this.state.goType = type;
