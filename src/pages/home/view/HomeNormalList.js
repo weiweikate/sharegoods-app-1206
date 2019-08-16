@@ -366,7 +366,7 @@ export default class HomeNormalList extends React.Component {
                                         marginTop: autoSizeWidth(3)
                                     }}>
                                         ¥<MRText  style={{fontSize: autoSizeWidth(14),
-                                        color: DesignRule.mainColor, fontWeight: '600'}}>{good.minPrice}</MRText>起
+                                        color: DesignRule.mainColor, fontWeight: '600'}}>{good.promotionMinPrice || good.minPrice}</MRText>起
                                     </MRText>
                                 </View>
                             </TouchableWithoutFeedback>

@@ -143,6 +143,9 @@ class OrderDetailModel {
                 this.moreDetail = cancelReason;
                 this.sellerState = '';
                 this.buyState = '交易关闭';
+                if (isPhoneOrder && !cancelReason){
+                    this.moreDetail = '系统超时关闭';
+                }
                 break;
             }
             default:
