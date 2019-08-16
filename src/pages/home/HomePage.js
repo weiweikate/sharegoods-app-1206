@@ -514,7 +514,7 @@ class HomePage extends BasePage {
                             <TouchableOpacity style={{height: 36, alignItems: 'center', justifyContent: 'center',width: itemWidth}}
                                               onPress={() => p.goToPage(page)}
                             >
-                                <Text style={isTabActive? styles.tabSelect: styles.tabNomal}>{name}</Text>
+                                <Text style={isTabActive? styles.tabSelect: styles.tabNomal} numberOfLines={1}>{name}</Text>
                             </TouchableOpacity>
                         )
                     }}

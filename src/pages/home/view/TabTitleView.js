@@ -76,7 +76,7 @@ export default class TabTitleView extends React.Component {
                                         </LinearGradient>
                                         :<View style={styles.item}>
                                             <MRText style={styles.title}>{item.name}</MRText>
-                                            <MRText style={styles.detail}>>{item.secName}</MRText>
+                                            <MRText style={styles.detail}>{item.secName}</MRText>
                                         </View>
                                     }
                                 </TouchableWithoutFeedback>

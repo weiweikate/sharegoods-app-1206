@@ -90,9 +90,9 @@ export default class HomeNormalList extends React.Component {
         this.isLoadMore = false;
         this.page = 1;
         //排序类型(1.综合 2.销量 3. 价格)
-        this.sortType = 1;
-            //排序方式 (1.升序 2.降序)
-        this.sortModel = 2;
+        this.sort = 0;
+        //     //排序方式 (1.升序 2.降序)
+        // this.sortModel = 2;
     }
 
     // case 'idle':
@@ -136,21 +136,17 @@ export default class HomeNormalList extends React.Component {
         switch (index){
             case 0:
                 // alert('综合')
-                this.sortType = 1;
-                this.sortModel = 2;
+                this.sort = 0;
                 break
             case 1:
                 // alert('销量')
-                this.sortType = 2;
-                this.sortModel = 2;
+                this.sort = 1;
                 break
             case 2:
-                this.sortType = 3;
-                this.sortModel = 2;
+                this.sort = 2;
                 break
             case 3:
-                this.sortType = 3;
-                this.sortModel = 1;
+                this.sort = 3;
                 break
         }
         this.refreshData(true);
@@ -162,8 +158,7 @@ export default class HomeNormalList extends React.Component {
             page: this.page,
             pageSize: 10,
             categoryId: data.firstCategoryId,
-            sortType: this.sortType,
-            sortModel: this.sortModel
+            sort: this.sort,
         }
     }
 

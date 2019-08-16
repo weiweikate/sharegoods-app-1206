@@ -176,6 +176,9 @@ class ConfirmOrderModel {
                 data = data.data || {};
                 let userCouponCode = '';
                 (data.data || []).find((item)=>{
+                    if (item.available === false){
+                        return;//不可用
+                    }
                     if (item.couponConfigId == couponsId) {
                         userCouponCode = item.code;
                         return true;
