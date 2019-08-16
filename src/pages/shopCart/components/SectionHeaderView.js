@@ -107,7 +107,7 @@ export default class SectionHeaderView extends Component {
                         borderRadius: px2dp(1),
                         backgroundColor: '#FF0050'
                     }}/>
-                    <MRText style={{ marginLeft: px2dp(5), fontSize: px2dp(16) }}>为你推荐</MRText>
+                    <MRText style={{ marginLeft: px2dp(5), fontSize: px2dp(16),fontWeight: '600' }}>为你推荐</MRText>
                 </View>
                 {viewItemList}
                 <Footer isFetching={shopCartEmptyModel.isFetching}
