@@ -62,7 +62,8 @@ const homeEvent = {
 // contentType  内容类型  字典  8.15  0：未知 1：商品 2：链接 3：专题 4：秀场 5：礼包  6：限时购 7：抽奖 8：直降商品 9：优惠券 10：文本 11：tab导航
 // contentKey  内容key  字符串  8.15  根据内容类型取值，如为商品则值为商品Code；如为链接则值为链接等
 // contentValue  内容值  字符串  8.15  根据内容key取值，如为商品则值为商品名称，特别说明：如果专题页位置 = 导航，则这里为导航名称
-    SpecialTopicBtnClick: 'SpecialTopicBtnClick'
+    SpecialTopicBtnClick: 'SpecialTopicBtnClick',
+    HomeRecommendClick: 'HomeRecommendClick'
 }
 /** 订单相关的埋点事件名称*/
 const inviteEvent = {

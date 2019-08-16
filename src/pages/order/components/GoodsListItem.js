@@ -94,9 +94,14 @@ export default class GoodsListItem extends React.Component {
         }
 
         let isAllVirtual = true;
+        let isPhoneOrder = true;
         merchantOrder.productOrderList.forEach((item) => {
             if (item.orderType != 1){
                 isAllVirtual = false;
+            }
+
+            if ((item.resource || {}).resourceType !== 'TELEPHONE_CHARGE'){
+                isPhoneOrder = false;
             }
         });
 
@@ -105,6 +110,10 @@ export default class GoodsListItem extends React.Component {
                 return true;
             }
             if (item.operation === '查看物流' || item.operation === '确认收货'){
+                return false;
+            }
+
+            if (isPhoneOrder && item.operation === '再次购买') {
                 return false;
             }
             return true;

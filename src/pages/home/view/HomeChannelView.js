@@ -13,7 +13,8 @@ import { MRText as Text } from '../../../components/ui/index';
 import { homeModule } from '../model/Modules';
 import RouterMap, { routeNavigate, routePush } from '../../../navigation/RouterMap';
 import user from '../../../model/user';
-import { TrackApi } from '../../../utils/SensorsTrack';
+import { track, trackEvent } from '../../../utils/SensorsTrack';
+import { homePoint } from '../HomeTypes';
 
 
 const { px2dp } = ScreenUtils;
@@ -53,15 +54,11 @@ export default class HomeChannelView extends Component {
 
     _onItemPress = (data, index) => {
         // const { navigate } = this.props;
-        TrackApi.homeIconClick({
-            iconTitle: data.title,
-            iconIndex: index,
-            iconContent: data.linkTypeCode
-        });
         let router = homeModule.homeNavigate(data.linkType, data.linkTypeCode) || '';
         let params = homeModule.paramsNavigate(data);
         params.fromHome = true;
         this._filterNav(router, { ...params });
+        track(trackEvent.bannerClick, homeModule.bannerPoint(data,homePoint.homeIcon,index))
     };
 
     renderItems = () => {

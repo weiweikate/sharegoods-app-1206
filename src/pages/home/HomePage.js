@@ -531,23 +531,23 @@ class HomePage extends BasePage {
                     showsHorizontalScrollIndicator={false}
                     ref={ref=>{this.tab = ref}}
                 >
-                    <DefaultTabBar
-                        activeTab={p.activeTab}
-                        style={{ width: itemWidth*p.tabs.length, borderBottomWidth: 0, height: tabBarHeight}}
-                        containerWidth={itemWidth*p.tabs.length}
-                        scrollValue={p.scrollValue}
-                        tabs={p.tabs}
-                        underlineStyle={{backgroundColor: DesignRule.mainColor, left: (itemWidth -20)/2, width: 20, bottom: 2}}
-                        renderTab = {(name, page, isTabActive, goToPage) => {
-                            return(
-                                <TouchableOpacity style={{height: 36, alignItems: 'center', justifyContent: 'center',width: itemWidth}}
-                                                  onPress={() => p.goToPage(page)}
-                                >
-                                    <Text style={isTabActive? styles.tabSelect: styles.tabNomal}>{name}</Text>
-                                </TouchableOpacity>
-                            )
-                        }}
-                    />
+                <DefaultTabBar
+                    activeTab={p.activeTab}
+                    style={{ width: itemWidth*p.tabs.length, borderBottomWidth: 0, height: tabBarHeight}}
+                    containerWidth={itemWidth*p.tabs.length}
+                    scrollValue={p.scrollValue}
+                    tabs={p.tabs}
+                    underlineStyle={{backgroundColor: DesignRule.mainColor, left: (itemWidth -20)/2, width: 20, bottom: 2}}
+                    renderTab = {(name, page, isTabActive, goToPage) => {
+                        return(
+                            <TouchableOpacity style={{height: 36, alignItems: 'center', justifyContent: 'center',width: itemWidth}}
+                                              onPress={() => p.goToPage(page)}
+                            >
+                                <Text style={isTabActive? styles.tabSelect: styles.tabNomal} numberOfLines={1}>{name}</Text>
+                            </TouchableOpacity>
+                        )
+                    }}
+                />
                 </ScrollView>
             </View>
         )
