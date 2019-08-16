@@ -87,12 +87,16 @@ export default class LoginVerifyCodePage extends BasePage {
     };
 
     componentDidMount() {
+        this.timeDown();
+    }
+
+    timeDown = () => {
         (new TimeDownUtils()).startDown((time) => {
             this.setState({
                 downTime: time
             });
         });
-    }
+    };
 
     $navigationBarOptions = {
         show: true, // false则隐藏导航
@@ -144,11 +148,12 @@ export default class LoginVerifyCodePage extends BasePage {
                         <View style={{ height: px2dp(25), width: 1, backgroundColor: DesignRule.mainColor }}/>
                         <TouchableOpacity style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
                                           onPress={() => {
-                                              if (this.state.downTime === 0) {
+                                              this.setState({
+                                                  downTime: 60
+                                              }, () => {
+                                                  this.timeDown();
                                                   this.getVerifyCode();
-                                              } else {
-                                                  bridge.$toast('验证码发送中，请稍后');
-                                              }
+                                              });
                                           }}>
                             <UIText style={{
                                 fontSize: px2dp(14),

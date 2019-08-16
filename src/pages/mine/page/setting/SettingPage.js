@@ -1,15 +1,5 @@
 import React from 'react';
-import {
-    Alert,
-    DeviceEventEmitter,
-    Image,
-    Linking,
-    NativeModules,
-    Platform,
-    StyleSheet,
-    TouchableOpacity,
-    View
-} from 'react-native';
+import { Alert, Image, Linking, NativeModules, Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
 import ScreenUtils from '../../../../utils/ScreenUtils';
@@ -22,7 +12,6 @@ import DesignRule from '../../../../constants/DesignRule';
 // import QYChatUtil from '../helper/QYChatModel';
 import res from '../../res';
 import { getSizeFromat } from '../../../../utils/FileSizeFormate';
-import { homeModule } from '../../../home/model/Modules';
 import { logout } from '../../../../utils/SensorsTrack';
 import { MRText as Text } from '../../../../components/ui';
 import userOrderNum from '../../../../model/userOrderNum';
@@ -33,7 +22,7 @@ import { QYChatTool } from '../../../../utils/QYModule/QYChatTool';
 import WhiteModel from '../../../show/model/WhiteModel';
 import store from '@mr/rn-store';
 import { observer } from 'mobx-react';
-import RouterMap from '../../../../navigation/RouterMap';
+import RouterMap, { forceToHome } from '../../../../navigation/RouterMap';
 import Switch from '../../components/SwitchComponent';
 import JPushDeleteUtil from '../../../../utils/JPushDeleteUtil';
 
@@ -245,9 +234,7 @@ class SettingPage extends BasePage {
                         loginModel.clearPassword();
                         //清空购物车
                         shopCartStore.data = [];
-                        this.toHomePage();
-                        DeviceEventEmitter.emit('login_out');
-                        homeModule.loadHomeList();
+                        forceToHome();
                         MineApi.signOut();
                         // 退出七鱼
                         QYChatTool.qiYULogout();
@@ -261,11 +248,6 @@ class SettingPage extends BasePage {
             ]
         );
     };
-
-    toHomePage = () => {
-        this.$navigateBackToHome();
-    };
-
 
     //**********************************BusinessPart******************************************
     jumpToAddressManagePage = () => {
