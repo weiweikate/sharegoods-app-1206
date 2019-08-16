@@ -38,7 +38,6 @@ import WhiteModel from '../../show/model/WhiteModel'
 import { mediatorCallFunc } from '../../../SGMediator';
 import { AutoHeightImage } from '../../../components/ui/AutoHeightImage';
 
-
 const {
     // mine_header_bg,
     // mine_account_bg,
@@ -822,7 +821,16 @@ export default class MinePage extends BasePage {
                 {this.state.adArr.map((item,index)=>{
                     return(
                         <View>
-                            <TouchableOpacity onPress={()=>{console.log('item',item);mediatorCallFunc('Home_AdNavigate',item)}}>
+                            <TouchableOpacity onPress={()=>{console.log('item',item);
+                                track(trackEvent.bannerClick, {
+                                    bannerLocation:61,
+                                    bannerName:item.name,
+                                    bannerId:item.id,
+                                    bannerRank:item.rank,
+                                    bannerType:item.type,
+                                    bannerContent:item.title
+                                });
+                                mediatorCallFunc('Home_AdNavigate',item)}}>
                             {item.image ?
                                 <AutoHeightImage source={{ uri: item.image }} style={{}}
                                                  borderRadius={5}
