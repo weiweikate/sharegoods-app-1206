@@ -4,8 +4,9 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {View, Text, Easing, Animated, StyleSheet, TouchableOpacity} from 'react-native';
+import { Animated, Easing, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import LoadingImg from './source/sxin_03.png';
+
 export default class ListFooter extends Component {
     static propTypes = {
         loadingMore: PropTypes.bool, //是否正在加载更多
@@ -23,7 +24,7 @@ export default class ListFooter extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            rotateValue: new Animated.Value(0),
+            rotateValue: new Animated.Value(0)
         };
     }
 
@@ -43,8 +44,8 @@ export default class ListFooter extends Component {
     }
 
     // 判断是否继续动画
-    judgeWhetherReload = ()=>{
-        if(this.__Mount__){
+    judgeWhetherReload = () => {
+        if (this.__Mount__) {
             this.startLoading();
         } else {
             this.state.rotateValue.setValue(0);
@@ -52,14 +53,14 @@ export default class ListFooter extends Component {
     };
 
     // 开始动画
-    startLoading = ()=>{
+    startLoading = () => {
         this.state.rotateValue.setValue(0);//首先至为0位置
         Animated.parallel([
             Animated.timing(this.state.rotateValue, {
                 toValue: 1,      //角度从0变1
                 duration: 800,  //从0到1的时间
-                easing: Easing.out(Easing.linear),//线性变化，匀速旋转
-            }),
+                easing: Easing.out(Easing.linear)//线性变化，匀速旋转
+            })
         ]).start(this.judgeWhetherReload);
     };
 
@@ -68,15 +69,17 @@ export default class ListFooter extends Component {
         // 是否正在加载
         if (loadingMore) {
             return (
-                <View style={[styles.container,{flexDirection: 'row',alignItems: 'center'}]}>
+                <View style={[styles.container, { flexDirection: 'row', alignItems: 'center' }]}>
                     <Animated.Image style={{
                         transform: [{
                             rotateZ: this.state.rotateValue.interpolate({
-                                inputRange: [0,1],
-                                outputRange: ['0deg','360deg']
+                                inputRange: [0, 1],
+                                outputRange: ['0deg', '360deg']
                             })
-                        }]}} source={LoadingImg}/>
-                    <Text style={{marginLeft: 8,color: '#B5B5B5',fontSize: 12}} allowFontScaling={false}>加载更多中...</Text>
+                        }]
+                    }} source={LoadingImg}/>
+                    <Text style={{ marginLeft: 8, color: '#B5B5B5', fontSize: 12 }}
+                          allowFontScaling={false}>加载更多中...</Text>
                     {/*<ActivityIndicator animating={true} color={'gray'} size={'small'} />*/}
                 </View>
             );
@@ -98,7 +101,7 @@ export default class ListFooter extends Component {
         return (
             <View style={styles.container}>
                 <Text num style={styles.title} allowFontScaling={false}>
-                    到底啦~
+                    我也是有底线的~
                 </Text>
             </View>
         );
