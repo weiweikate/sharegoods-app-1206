@@ -143,7 +143,7 @@ class HomeModule {
         this.isEnd = false;
         this.firstLoad = false;
 
-        this.homeList = [{
+        let home = [{
             id: 0,
             type: homeType.category
         }, {
@@ -183,7 +183,7 @@ class HomeModule {
         if (this.isFetching === true) {
             return;
         }
-        let home = [];
+        this.homeList = home ;
         try {
             this.refreshing = true;
             const tabData =  yield HomeApi.getTabList();
@@ -193,7 +193,7 @@ class HomeModule {
                     id: 11,
                     type: homeType.goodsTitle
                 });
-                this.homeList = [...this.homeList, ...home];
+                this.homeList = [...home];
                 if (this.tabId){
                     let tabId = this.tabList[0].id;
                     let tabName = this.tabList[0].name;
