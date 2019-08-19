@@ -144,7 +144,14 @@ class OrderDetailModel {
                 this.sellerState = '';
                 this.buyState = '交易关闭';
                 if (isPhoneOrder && !cancelReason){
-                    this.moreDetail = '系统超时关闭';
+                  if (  this.merchantOrder.subStatus == 1){
+                      this.moreDetail = '系统超时关闭';
+                  } else if(this.merchantOrder.subStatus == 2){
+                      this.moreDetail = '你已取消该订单';
+                  }else {
+                      this.moreDetail = '充值失败，充值金额预计3-5个工作日退回到账';
+                  }
+
                 }
                 break;
             }
