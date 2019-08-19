@@ -8,7 +8,6 @@ import { routeNavigate, routePush } from '../../../navigation/RouterMap';
 import RouterMap from '../../../navigation/RouterMap';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import UIImage from '@mr/image-placeholder';
-import LinearGradient from 'react-native-linear-gradient';
 import { MRText } from '../../../components/ui';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import ProductApi from '../api/ProductApi';
@@ -16,6 +15,7 @@ import { observable } from 'mobx';
 import StringUtils from '../../../utils/StringUtils';
 import res from '../res/product';
 import user from '../../../model/user';
+import LinearGradient from 'react-native-linear-gradient';
 
 const { suitSaleOut } = res.suitProduct;
 const { px2dp } = ScreenUtils;
@@ -26,8 +26,102 @@ export const suitType = {
     chooseSuit: '12'
 };
 
-/**固定套餐**/
+/**老礼包**/
+const SuitItemView = ({ imgUrl, name, promotionDecreaseAmount, price, pushCallback }) => {
+    return (
+        <View style={suitItemStyle.item}>
+            <NoMoreClick onPress={pushCallback}>
+                <UIImage style={suitItemStyle.itemImg} source={{ uri: imgUrl }}>
+                    <View style={suitItemStyle.subView}>
+                        <MRText style={suitItemStyle.subText}>{promotionDecreaseAmount}</MRText>
+                    </View>
+                </UIImage>
+            </NoMoreClick>
+            <MRText style={suitItemStyle.itemText}
+                    numberOfLines={1}>{name}</MRText>
+            <MRText style={suitItemStyle.itemPrice}>{price}</MRText>
+        </View>
+    );
+};
 
+const suitItemStyle = StyleSheet.create({
+    item: {
+        width: px2dp(100) + 5
+    },
+    itemImg: {
+        overflow: 'hidden',
+        width: px2dp(100), height: px2dp(100), borderRadius: 5
+    },
+    subView: {
+        position: 'absolute', bottom: 5, left: 5, backgroundColor: DesignRule.mainColor, borderRadius: 1
+    },
+    subText: {
+        color: DesignRule.white, fontSize: 10, padding: 2
+    },
+    itemText: {
+        color: DesignRule.textColor_secondTitle, fontSize: 12
+    },
+    itemPrice: {
+        color: DesignRule.textColor_redWarn, fontSize: 12, paddingBottom: 19
+    }
+});
+
+export class ProductDetailSuitGiftView extends Component {
+    _renderItem = ({ item }) => {
+        const { imgUrl, name, skuList } = item;
+        const { specImg, promotionDecreaseAmount, price } = skuList[0] || {};
+        const props = {
+            imgUrl: specImg || imgUrl,
+            name,
+            promotionDecreaseAmount: `立省${promotionDecreaseAmount || ''}`,
+            price: `¥${price || ''}`,
+            pushCallback: this._goProductPage.bind(this, item)
+        };
+        return <SuitItemView {...props}/>;
+    };
+
+    _goProductPage = (item) => {
+        routePush(RouterMap.ProductDetailPage, { productCode: item.prodCode });
+    };
+
+    render() {
+        const { productDetailModel } = this.props;
+        const { groupActivity } = productDetailModel;
+        return (
+            <View style={SuitGiftStyles.bgView}>
+                <View style={SuitGiftStyles.tittleView}>
+                    <MRText style={SuitGiftStyles.LeftText}>优惠套餐</MRText>
+                </View>
+                <FlatList
+                    style={SuitGiftStyles.flatList}
+                    data={groupActivity.subProductList || []}
+                    keyExtractor={(item) => item.prodCode + ''}
+                    renderItem={this._renderItem}
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                    initialNumToRender={5}
+                />
+            </View>
+        );
+    }
+}
+
+const SuitGiftStyles = StyleSheet.create({
+    bgView: {
+        backgroundColor: DesignRule.white
+    },
+    tittleView: {
+        justifyContent: 'center', marginHorizontal: 15, height: 40
+    },
+    LeftText: {
+        color: DesignRule.textColor_mainTitle, fontSize: 15, fontWeight: '500'
+    },
+    flatList: {
+        marginLeft: 15
+    }
+});
+
+/**固定套餐**/
 const SuitFixedView = ({ mainProduct, subProducts, itemIndex, pushCallback }) => {
     const productList = [mainProduct, ...(subProducts || [])];
     let suitPrice = 0, dePrice = 0;
@@ -89,6 +183,7 @@ const fixedStyles = StyleSheet.create({
     }
 });
 
+
 export class ProductDetailSuitFixedView extends Component {
     _goSuitPage = (packageIndex) => {
         if (!user.isLogin) {
@@ -145,31 +240,31 @@ const SuitFixedStyles = StyleSheet.create({
 
 /**搭配套餐**/
 
-const SuitItemView = ({ imgUrl, name, promotionDecreaseAmount, price, pushCallback, totalStock }) => {
+const SuitItemCView = ({ imgUrl, name, promotionDecreaseAmount, price, pushCallback, totalStock }) => {
     return (
-        <View style={suitItemStyle.item}>
+        <View style={suitItemCStyle.item}>
             <NoMoreClick onPress={pushCallback}>
-                <UIImage style={suitItemStyle.itemImg} source={{ uri: imgUrl }}>
+                <UIImage style={suitItemCStyle.itemImg} source={{ uri: imgUrl }}>
                     {
                         totalStock < 1 &&
                         <Image source={suitSaleOut} style={{ height: px2dp(60), width: px2dp(60) }}/>
                     }
-                    <LinearGradient style={suitItemStyle.subView}
+                    <LinearGradient style={suitItemCStyle.subView}
                                     start={{ x: 0, y: 0 }}
                                     end={{ x: 1, y: 0 }}
                                     colors={['#FC5D39', '#FF0050']}>
-                        <MRText style={suitItemStyle.subText}>{promotionDecreaseAmount}</MRText>
+                        <MRText style={suitItemCStyle.subText}>{promotionDecreaseAmount}</MRText>
                     </LinearGradient>
                 </UIImage>
             </NoMoreClick>
-            <MRText style={suitItemStyle.itemText}
+            <MRText style={suitItemCStyle.itemText}
                     numberOfLines={1}>{name}</MRText>
-            <MRText style={suitItemStyle.itemPrice}>{price}</MRText>
+            <MRText style={suitItemCStyle.itemPrice}>{price}</MRText>
         </View>
     );
 };
 
-const suitItemStyle = StyleSheet.create({
+const suitItemCStyle = StyleSheet.create({
     item: {
         width: px2dp(100) + 5
     },
@@ -213,7 +308,7 @@ export class ProductDetailSuitChooseView extends Component {
             price: `¥${minPrice || ''}`,
             pushCallback: this._goSuitPage.bind(this, index)
         };
-        return <SuitItemView {...props}/>;
+        return <SuitItemCView {...props}/>;
     };
 
     _goSuitPage = (packageIndex) => {
