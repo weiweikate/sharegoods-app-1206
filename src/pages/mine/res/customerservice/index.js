@@ -10,7 +10,10 @@ const  helperAndCustomerService = {
     icon_arrow_up:require('./fankui_icon_shouhui_up.png'),
     icon_arrow_down:require('./fankui_icon_zhankai_down.png'),
     icon_dashframe:require('./xuxian_kuang.png'),
-    icon_red_select:require('./bangzu_dugou.png')
+    icon_red_select:require('./bangzu_dugou.png'),
+    icon_tuikuan_2:require('./icon_tuikuan_2.png'),
+    icon_feedback_2:require('./icon_feedback_2.png'),
+    icon_auto_feedback_2:require('./icon_auto_feedback_2.png'),
 }
 
 export default helperAndCustomerService;
