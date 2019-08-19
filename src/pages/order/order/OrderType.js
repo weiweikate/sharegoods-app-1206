@@ -83,7 +83,7 @@ function GetAfterBtns(product) {
     // }
     let { restrictions} = product
     if (restrictions) {
-        if (restrictions & 8 === 8) {
+        if ((restrictions & 8) === 8) {
             return [];
         }
     }
@@ -150,13 +150,13 @@ function checkOrderAfterSaleService(products = [], status, nowTime, isShowToast)
         // NO_SUPPORT_AFTER_SALES(8, "不支持售后"),
 
         if (restrictions){
-            if (restrictions & 8 === 8) {
+            if ((restrictions & 8) === 8) {
                 if (isShowToast) {
                     bridge.$toast('该商品不支持售后');
                 }
                 return;
                 if (status === OrderType.WAIT_DELIVER || status === OrderType.PAID)
-                if (restrictions & 4 !== 4) {
+                if ((restrictions & 4) !== 4) {
                     if (isShowToast) {
                         bridge.$toast('该商品不能退款');
                     }
