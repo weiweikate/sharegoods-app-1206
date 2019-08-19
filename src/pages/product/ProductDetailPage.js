@@ -254,7 +254,7 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _renderItem = ({ item, index, section: { key } }) => {
-        const { productDetailCouponsViewModel, productDetailAddressModel, productDetailSuitModel } = this.productDetailModel;
+        const { productDetailCouponsViewModel, productDetailAddressModel, productDetailSuitModel, isGroupIn } = this.productDetailModel;
         if (key === sectionType.sectionContent) {
             return <ContentItemView item={item}/>;
         }
@@ -268,14 +268,16 @@ export default class ProductDetailPage extends BasePage {
                                        }}/>;
             }
             case productItemType.suit: {
+                if (isGroupIn) {
+                    return <ProductDetailSuitGiftView productDetailModel={this.productDetailModel}/>;
+                }
                 const { extraType } = productDetailSuitModel;
                 if (extraType === suitType.fixedSuit) {
                     return <ProductDetailSuitFixedView productDetailSuitModel={productDetailSuitModel}/>;
                 } else if (extraType === suitType.chooseSuit) {
                     return <ProductDetailSuitChooseView productDetailSuitModel={productDetailSuitModel}/>;
-                } else {
-                    return <ProductDetailSuitGiftView productDetailModel={this.productDetailModel}/>;
                 }
+                return null;
             }
             case productItemType.coupons: {
                 return <ProductDetailCouponsView productDetailCouponsViewModel={productDetailCouponsViewModel}

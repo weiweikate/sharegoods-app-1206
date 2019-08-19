@@ -582,7 +582,7 @@ export default class ProductDetailModel {
         /*获取当前商品优惠券列表*/
         this.productDetailCouponsViewModel.requestListProdCoupon(this.prodCode);
         /*获取套餐信息*/
-        // this.productDetailSuitModel.request_promotion_detail(this.prodCode);
+        this.productDetailSuitModel.request_promotion_detail(this.prodCode);
     };
 
     /**请求商品**/
