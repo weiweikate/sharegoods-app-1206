@@ -262,6 +262,7 @@ export default class ProductDetailPage extends BasePage {
         switch (itemKey) {
             case productItemType.headerView: {
                 return <HeaderItemView productDetailModel={this.productDetailModel}
+                                       paramsType={this.params.type}
                                        navigation={this.props.navigation}
                                        shopAction={() => {
                                            this.$navigateBackToStore();
@@ -364,6 +365,7 @@ export default class ProductDetailPage extends BasePage {
             priceTypeTextList, monthSaleCount
         } = this.productDetailModel;
         const { couponId } = this.params;
+        const isDuiHuang = this.params.type === '9';
         return <View style={styles.container}>
             <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
             <ProductDetailNavView productDetailModel={this.productDetailModel}
@@ -400,7 +402,7 @@ export default class ProductDetailPage extends BasePage {
                                 titleStr: `${name}`,
                                 priceType: priceTypeTextList,
                                 priceStr: `￥${originalPrice}`,
-                                retailPrice: `￥${productIsPromotionPrice ? promotionMinPrice : v0Price}`,
+                                retailPrice: isDuiHuang ? '付邮免费领' : `￥${productIsPromotionPrice ? promotionMinPrice : v0Price}`,
                                 shareMoney: shareMoney,
                                 spellPrice: `￥${groupPrice}`,
                                 QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}&couponId=${couponId}`

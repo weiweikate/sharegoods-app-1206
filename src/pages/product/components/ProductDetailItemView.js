@@ -43,18 +43,26 @@ export class HeaderItemView extends Component {
             <View style={styles.priceView}>
                 {
                     /*值相等*/
-                    minPrice == maxPrice
-                        ?
-                        <Text style={styles.priceText}>¥<Text
-                            style={{ fontSize: 24, fontWeight: '400' }}>{minPrice}</Text></Text>
+                    this.props.paramsType === '9' ?
+                        <Text style={{
+                            fontSize: 24,
+                            fontWeight: '400',
+                            color: DesignRule.textColor_redWarn
+                        }}>付邮免费领</Text>
                         :
-                        <Text style={styles.priceText}>¥<Text
-                            style={{ fontSize: 24, fontWeight: '400' }}>{minPrice}</Text>-¥<Text
-                            style={{ fontSize: 24, fontWeight: '400' }}>{maxPrice}</Text></Text>
+                        (
+                            minPrice == maxPrice ?
+                                <Text style={styles.priceText}>¥<Text
+                                    style={{ fontSize: 24, fontWeight: '400' }}>{minPrice}</Text></Text>
+                                :
+                                <Text style={styles.priceText}>¥<Text
+                                    style={{ fontSize: 24, fontWeight: '400' }}>{minPrice}</Text>-¥<Text
+                                    style={{ fontSize: 24, fontWeight: '400' }}>{maxPrice}</Text></Text>
+                        )
                 }
                 <Text style={styles.originalText}>¥{originalPrice}</Text>
                 {
-                    isNoEmpty(levelText) ? <View style={styles.levelView}>
+                    isNoEmpty(levelText) && this.props.paramsType !== '9' ? <View style={styles.levelView}>
                         <Text style={styles.levelText}>{levelText}</Text>
                     </View> : null
                 }
@@ -97,8 +105,8 @@ export class HeaderItemView extends Component {
         let showWill = activityType === activity_type.skill && activityStatus === activity_status.unBegin;
         let showIn = activityType === activity_type.skill && activityStatus === activity_status.inSell;
         let showPrice = !(activityType === activity_type.skill && activityStatus === activity_status.inSell);
-        /*秒杀||话费 不显示拼店*/
-        let showShop = !(activityType === activity_type.skill && activityStatus === activity_status.inSell) && !isHuaFei;
+        /*秒杀||话费 || 兑换 不显示拼店*/
+        let showShop = (activityType === activity_type.skill && activityStatus === activity_status.inSell) || isHuaFei || this.props.paramsType === '9';
         /*直降中显示活动价 价格区间*/
         let verDownInSell = activityType === activity_type.verDown && activityStatus === activity_status.inSell;
         return (
@@ -118,7 +126,7 @@ export class HeaderItemView extends Component {
                         :
                         this._renderPriceView({ minPrice, maxPrice, originalPrice, levelText, monthSaleCount }))
                 }
-                {showShop && this._renderShop({ priceType, shopAction, groupPrice })}
+                {!showShop && this._renderShop({ priceType, shopAction, groupPrice })}
                 <NoMoreClick onPress={() => {
                 }} onLongPress={() => {
                     Clipboard.setString(name);
