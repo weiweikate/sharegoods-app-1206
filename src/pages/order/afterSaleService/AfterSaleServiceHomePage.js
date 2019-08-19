@@ -66,13 +66,11 @@ class AfterSaleServiceHomePage extends BasePage {
         let restrictions = this.params.pageData.restrictions;
         let image = [refund, return_goods, exchange];
         let title = ['退款', '退货退款', '换货'];
+        let status = [4, 2, 1];
         let content = ['未收到货', '已收到货，需要退换已收到的货物', '需要更换货'];
         let arr = [];
         for (let i = 0; i < image.length; i++) {
-            if ((restrictions == 1) && i < 2) {
-                continue;//升级礼包     //经验值专区的商品
-            }
-            // if ((productData.restrictions & status[i]) !== status[i]) {
+            if ((restrictions & status[i]) !== status[i]) {
             arr.push(
                 <TouchableOpacity style={{
                     flexDirection: 'row',
@@ -90,7 +88,7 @@ class AfterSaleServiceHomePage extends BasePage {
                     </View>
                 </TouchableOpacity>
             );
-            // }
+            }
         }
         return arr;
     };
