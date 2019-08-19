@@ -85,7 +85,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
     private View errImg;
     public static boolean isLogin;
 
-    private int page = 1;
+    private String cursor = null;
 
     public ViewGroup getShowRecommendView(ReactContext reactContext) {
         eventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
@@ -209,8 +209,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                page++;
-                presenter.getShowList(page);
+                presenter.getShowList(cursor);
             }
         }, recyclerView);
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -317,8 +316,8 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
                 public boolean handleMessage(Message msg) {
                     switch (msg.what) {
                         case ParameterUtils.REQUEST_DELAY:
-                            page = 1;
-                            presenter.getShowList(page);
+                            cursor = null;
+                            presenter.getShowList(cursor);
                             break;
                         case ParameterUtils.SHOW_REPLACE_DELAY:
                             final List<NewestShowGroundBean.DataBean> data = adapter.getData();
@@ -445,7 +444,7 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
             adapter.loadMoreFail();
             setEmptyText();
         }
-        if (TextUtils.equals(code, "9999") && page == 1) {
+        if (TextUtils.equals(code, "9999") && TextUtils.isEmpty(cursor)) {
             errView.setVisibility(View.VISIBLE);
             swipeRefreshLayout.setVisibility(View.INVISIBLE);
         } else {
@@ -458,7 +457,9 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
     public void viewLoadMore(final List data) {
         swipeRefreshLayout.setRefreshing(false);
         showList();
-        if (data != null) {
+        if (data != null && data.size() > 0) {
+            NewestShowGroundBean.DataBean dataBean =(NewestShowGroundBean.DataBean) data.get(data.size()-1);
+            this.cursor = dataBean.getCursor();
             adapter.addData(resolveData(data));
         }
     }
@@ -483,6 +484,10 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
     public void refreshShowground(final List data) {
         swipeRefreshLayout.setRefreshing(false);
         if (adapter != null) {
+            if(data != null &&  data.size() > 0 ){
+                NewestShowGroundBean.DataBean dataBean =(NewestShowGroundBean.DataBean) data.get(data.size()-1);
+                this.cursor = dataBean.getCursor();
+            }
             adapter.setEnableLoadMore(true);
             adapter.setNewData(resolveData(data));
             setEmptyText();

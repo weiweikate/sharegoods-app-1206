@@ -45,7 +45,6 @@ import java.util.List;
 import java.util.Map;
 
 public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRefreshListener {
-    private int page = 1;
     private SwipeRefreshLayout swipeRefreshLayout;
     private RnRecyclerView recyclerView;
     private StaggeredGridLayoutManager layoutManager;
@@ -61,6 +60,7 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
     private WeakReference<View> showgroundView;
     private Handler handler;
     private View errImg;
+    private String cursor = null;
 
     public ViewGroup getShowGroundView(ReactContext reactContext) {
         eventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
@@ -122,8 +122,7 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                page++;
-                presenter.getShowList(page);
+                presenter.getShowList(cursor);
             }
         }, recyclerView);
         adapter.setLoadMoreView(new CustomLoadMoreView());
@@ -232,8 +231,8 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
             }
         }
         adapter.setEnableLoadMore(false);
-        page = 1;
-        presenter.getShowList(page);
+        cursor = null;
+        presenter.getShowList(cursor);
     }
 
     @Override
@@ -247,7 +246,7 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
         handler.post(new Runnable() {
             @Override
             public void run() {
-                if (TextUtils.equals(code, "9999") && page == 1) {
+                if (TextUtils.equals(code, "9999") && TextUtils.isEmpty(cursor)) {
                     errView.setVisibility(View.VISIBLE);
                     swipeRefreshLayout.setVisibility(View.INVISIBLE);
                 } else {
@@ -261,7 +260,9 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
     @Override
     public void viewLoadMore(final List data) {
         showList();
-        if (data != null) {
+        if (data != null && data.size() > 0) {
+            NewestShowGroundBean.DataBean dataBean =(NewestShowGroundBean.DataBean) data.get(data.size()-1);
+            this.cursor = dataBean.getCursor();
             adapter.addData(resolveData(data));
         }
     }
@@ -269,6 +270,10 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
     @Override
     public void refreshShowground(final List data) {
         if (adapter != null) {
+            if(data != null &&  data.size() > 0 ){
+                NewestShowGroundBean.DataBean dataBean =(NewestShowGroundBean.DataBean) data.get(data.size()-1);
+                this.cursor = dataBean.getCursor();
+            }
             adapter.setEnableLoadMore(true);
             adapter.setNewData(resolveData(data));
             swipeRefreshLayout.setRefreshing(false);
