@@ -120,6 +120,8 @@ export function topicAdOnPress(linkType, linkValue, p, title) {
             p2.contentType = 3
             p2.contentKey = linkValue
             if (linkValue &&  linkValue.indexOf("ZT") === 0) {
+                routePush('HtmlPage', {uri: '/subject/'+linkValue})
+            }else if (linkValue &&  linkValue.indexOf("ST") === 0) {
                 routePush('HtmlPage', {uri: '/topic/temp/'+linkValue})
             }else {
                 routePush('HtmlPage', {uri: '/custom/'+linkValue})
