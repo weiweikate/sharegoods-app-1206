@@ -84,7 +84,6 @@ export default class SelectTicketModel extends React.Component {
         return (
             <View style={{alignItems: 'center'}}>
                 <CouponNormalItem item={item} index={index} ticketClickItem={()=> {
-                    alert(item.available)
                     if (item.canInvoke === true){
                         return;//未激活的优惠券
                     }
@@ -93,10 +92,13 @@ export default class SelectTicketModel extends React.Component {
                                   onActivity = {() => {
                                       bridge.showLoading('');
                                       API.invokeCoupons({userCouponCode: item.code}).then((data) => {
-                                          this.clickItem(item)
+                                          if (data.data){
+                                              this.clickItem(item)
+                                          }else {
+                                              bridge.$toast('激活失败')
+                                          }
                                           bridge.hiddenLoading();
                                       }).catch((err) => {
-                                          bridge.$toast(err.msg)
                                           bridge.hiddenLoading();
                                       })
                                   }}

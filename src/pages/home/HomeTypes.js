@@ -34,7 +34,6 @@ export const homeType = {
     custom_goods: 'WIDGET-GOODS'
 };
 
-
 export const homeLinkType = {
     good: 1,      //普通商品
     subject: 2,   //专题
@@ -120,7 +119,11 @@ export function topicAdOnPress(linkType, linkValue, p, title) {
         case 2:
             p2.contentType = 3
             p2.contentKey = linkValue
-            routePush('HtmlPage', {uri: '/custom/'+linkValue})
+            if (linkValue &&  linkValue.indexOf("ZT") === 0) {
+                routePush('HtmlPage', {uri: '/topic/temp/'+linkValue})
+            }else {
+                routePush('HtmlPage', {uri: '/custom/'+linkValue})
+            }
             break
         case 3:
             p2.contentType = 6
