@@ -52,7 +52,7 @@
       [collectionView registerClass:[OtherArticleCell class] forCellWithReuseIdentifier:@"OtherArticleCell"];
         self.collectionView = collectionView;
         [self addSubview:collectionView];
-      
+
       MJRefreshAutoNormalFooter *footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreData)];
       footer.triggerAutomaticallyRefreshPercent = -10;
       [footer setTitle:@"上拉加载" forState:MJRefreshStateIdle];
@@ -61,7 +61,7 @@
       footer.stateLabel.font = [UIFont systemFontOfSize:11];
       footer.stateLabel.textColor = [UIColor colorWithRed:144/255.f green:144/255.f blue:144/255.f alpha:1.0f];
       self.collectionView.mj_footer = footer;
-      
+
     }
     return self;
 }
@@ -98,7 +98,7 @@
     self.isError = YES;
     [self.collectionView reloadData];
   } showLoading:nil];
- 
+
 }
 
 
@@ -115,9 +115,8 @@
   [dic addEntriesFromDictionary:@{@"page": [NSString stringWithFormat:@"%ld",self.page], @"size": @"20"}];
   __weak TestListBaseView * weakSelf = self;
   [NetWorkTool requestWithURL:_api params:dic toModel:[ShowQueryModel class] success:^(ShowQueryModel* model) {
-    
+
     [weakSelf.dataArr addObjectsFromArray:model.data];
-  
     NSMutableArray *indexPaths = [NSMutableArray new];
     for (int i = 0; i<model.data.count; i++) {
       NSIndexPath *indexPath = [NSIndexPath indexPathForRow:weakSelf.dataArr.count - 1 - i inSection:0];
@@ -155,9 +154,9 @@
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    
+
     //  self.collectionView.mj_footer.hidden = self.shops.count == 0;
-    
+
     return self.dataArr.count;
 }
 
@@ -177,11 +176,11 @@
     cell.model = self.dataArr[indexPath.row];
     return cell;
   }
-  
+
   OtherArticleCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"OtherArticleCell" forIndexPath:indexPath];
   cell.model = self.dataArr[indexPath.row];
   return cell;
-  
+
   return nil;
 
 }
@@ -191,8 +190,8 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
   CGFloat width = (kScreenWidth - 20 -10)/2.0;
   ShowQuery_dataModel *model = self.dataArr[indexPath.row];
-  CGFloat titleHeight = [model.pureContent_1 getHeightWithFontSize:13 viewWidth:width - 20 maxLineCount:2];
-  return CGSizeMake(width, width /model.aspectRatio_show + 45 + titleHeight);
+  return CGSizeMake(width, width /model.aspectRatio_show + 45 + model.titleHeight);
+
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
@@ -229,11 +228,11 @@
   UIFont   *font = [UIFont systemFontOfSize:15.0];
   // 设置默认状态、点击高亮状态下的按钮字体颜色
   UIColor  *textColor = [UIColor whiteColor];
-  
+
   NSMutableDictionary *attributes = [NSMutableDictionary new];
   [attributes setObject:font      forKey:NSFontAttributeName];
   [attributes setObject:textColor forKey:NSForegroundColorAttributeName];
-  
+
   return [[NSAttributedString alloc] initWithString:text attributes:attributes];
 }
 
@@ -280,7 +279,7 @@
   CGContextDrawLinearGradient(context, backGradient, CGPointMake(0, 0.5), CGPointMake(1, 0.5), kCGGradientDrawsBeforeStartLocation);
   //通过图片上下文获得照片
   UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-  
+
   return image;
 }
 
@@ -331,7 +330,7 @@
 }
 
 - (CGFloat)verticalOffsetForEmptyDataSet:(UIScrollView *)scrollView{
-  
+
   return -130;
 }
 

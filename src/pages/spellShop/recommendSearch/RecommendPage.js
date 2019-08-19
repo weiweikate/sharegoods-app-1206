@@ -235,7 +235,7 @@ export default class RecommendPage extends BasePage {
 
     // 点击查看某个店铺
     _RecommendRowOnPress = (storeCode) => {
-        this.$navigate(RouterMap.MyShop_RecruitPage, { storeCode: storeCode,wayToPinType:2 });
+        this.$navigate(RouterMap.MyShop_RecruitPage, { storeCode: storeCode, wayToPinType: 2 });
     };
 
     // 点击轮播图广告
@@ -320,13 +320,14 @@ export default class RecommendPage extends BasePage {
                                      titleColor={DesignRule.textColor_instruction}
                                      colors={[DesignRule.mainColor]}/>}
                              onEndReached={this._onEndReached.bind(this)}
-                             onEndReachedThreshold={0.3}
+                             onEndReachedThreshold={2.5}
                              ListFooterComponent={this._ListFooterComponent}
                              showsVerticalScrollIndicator={false}
                              ListHeaderComponent={this._renderListHeader}
                              renderSectionHeader={this._renderSectionHeader}
                              renderItem={this._renderItem}
                              sections={[{ data: this.state.dataList }]}
+                             stickySectionHeadersEnabled={true}
                              initialNumToRender={5}/>
                 <IntervalMsgView pageType={IntervalType.shopHome}/>
             </View>
