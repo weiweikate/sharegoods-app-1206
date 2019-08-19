@@ -263,6 +263,24 @@ export default class ProductDetailModel {
         return false;
     }
 
+    @computed get isGroupIn() {
+        const { activityType, activityStatus, groupActivity } = this;
+        return activityType === activity_type.group && activityStatus === activity_status.inSell && (groupActivity.subProductList || []).length > 0;
+    }
+
+    @computed get groupSubProductCanSell() {
+        const { subProductList } = this.groupActivity;
+        for (const subProduct of (subProductList || [])) {
+            const { skuList } = subProduct || {};
+            const skuItem = (skuList || [])[0];
+            const { sellStock } = skuItem || {};
+            if (sellStock < 1) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /*秒杀倒计时显示*/
     @computed get showTimeText() {
         const { skillTimeout, activityStatus } = this;
@@ -343,7 +361,7 @@ export default class ProductDetailModel {
     }
 
     @computed get sectionDataList() {
-        const { promoteInfoVOList, contentArr, paramList, productDetailCouponsViewModel, type, productDetailSuitModel, isHuaFei } = this;
+        const { promoteInfoVOList, contentArr, paramList, productDetailCouponsViewModel, type, isGroupIn, productDetailSuitModel, isHuaFei } = this;
         const { couponsList } = productDetailCouponsViewModel;
         const { activityCode } = productDetailSuitModel;
         /*头部*/
@@ -351,7 +369,7 @@ export default class ProductDetailModel {
             { key: sectionType.sectionHeader, data: [{ itemKey: productItemType.headerView }] }
         ];
         /*优惠套餐*/
-        if (activityCode) {
+        if (isGroupIn || activityCode) {
             !isHuaFei && sectionArr.push(
                 { key: sectionType.sectionSuit, data: [{ itemKey: productItemType.suit }] }
             );
