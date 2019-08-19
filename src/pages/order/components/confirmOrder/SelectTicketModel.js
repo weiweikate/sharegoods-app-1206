@@ -93,7 +93,7 @@ export default class SelectTicketModel extends React.Component {
                                       bridge.showLoading('');
                                       API.invokeCoupons({userCouponCode: item.code}).then((data) => {
                                           if (data.data){
-                                              this.clickItem(item)
+                                              this.clickItem(data.data)
                                           }else {
                                               bridge.$toast('激活失败')
                                           }
