@@ -63,8 +63,8 @@ NS_ASSUME_NONNULL_END
 /**
  宽高比
  */
-@property (nonatomic, readonly, assign)CGFloat aspectRatio;
-@property (nonatomic, readonly, assign)CGFloat aspectRatio_show;
+@property (nonatomic, assign)CGFloat aspectRatio;
+@property (nonatomic, assign)CGFloat aspectRatio_show;
 /**
  显示图片链接
  */

@@ -74,6 +74,7 @@ class HomeTab extends Component {
                     }}
                     style={styles.home}
                     loop={false}
+                    enableMergePathsAndroidForKitKatAndAbove={true}
                     imageAssetsFolder={'lottie/home'}
                     source={require('./tab_to_top.json')}/>
             </ImageBackground>
@@ -111,6 +112,7 @@ const ShowFlag = () =>
                 style={styles.shopFlag}
                 autoPlay={true}
                 loop={true}
+                enableMergePathsAndroidForKitKatAndAbove={true}
                 hardwareAccelerationAndroid={true}
                 source={require('./pin_flag.json')}/>
         </View>

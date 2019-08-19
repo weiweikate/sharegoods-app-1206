@@ -2,11 +2,11 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 
-import { BackHandler, RefreshControl, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { BackHandler, Image, RefreshControl, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { SwipeListView } from '../../../components/ui/react-native-swipe-list-view';
 import BasePage from '../../../BasePage';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import { UIText } from '../../../components/ui/index';
+import { MRText, UIText } from '../../../components/ui/index';
 import shopCartStore from '../model/ShopCartStore';
 import shopCartCacheTool from '../model/ShopCartCacheTool';
 import DesignRule from '../../../constants/DesignRule';
@@ -17,8 +17,10 @@ import RouterMap from '../../../navigation/RouterMap';
 import { TrackApi } from '../../../utils/SensorsTrack';
 import BottomMenu from '../components/BottomMenu';
 import { shopCartEmptyModel } from '../model/ShopCartEmptyModel';
+import res from '../res';
 
 const { px2dp } = ScreenUtils;
+const { shopCartNoGoods } = res;
 
 
 @observer
@@ -51,6 +53,9 @@ export default class ShopCartPage extends BasePage {
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
                 this.pageFocus = true;
                 shopCartCacheTool.getShopCartGoodsListData();
+                if (shopCartEmptyModel.firstLoad || shopCartEmptyModel.emptyViewList.length === 0) {
+                    shopCartEmptyModel.getRecommendProducts(true);
+                }
             }
         );
         this.willBlurSubscription = this.props.navigation.addListener(
@@ -92,6 +97,17 @@ export default class ShopCartPage extends BasePage {
     }
 
     _renderEmptyView = () => {
+        const { emptyViewList } = shopCartEmptyModel;
+        if (emptyViewList && emptyViewList.length === 0) {
+            return <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                <Image source={shopCartNoGoods} style={{ width: px2dp(244), height: px2dp(140) }}/>
+                <MRText style={{
+                    fontSize: px2dp(13),
+                    color: 'rgba(153, 153, 153, 1)',
+                    marginTop: px2dp(5)
+                }}>购物车竟然是空的</MRText>
+            </View>;
+        }
         return (
             <ShopCartEmptyView
                 navigateToHome={this.$navigate}
@@ -102,6 +118,7 @@ export default class ShopCartPage extends BasePage {
         if (!this.pageFocus) {
             return;
         }
+        const { statusBarHeight } = ScreenUtils;
         return (
             <View style={styles.listBgContent}>
                 <SwipeListView
@@ -117,8 +134,11 @@ export default class ShopCartPage extends BasePage {
                         this._renderRowHiddenComponent(data, rowMap)
                     )}
                     renderHeaderView={(sectionData) => {
-                        return (<SectionHeaderView sectionData={sectionData.section} navigate={this.$navigate}/>);
+                        {
+                            return (<SectionHeaderView sectionData={sectionData.section} navigate={this.$navigate}/>);
+                        }
                     }}
+                    listViewRef={(listView) => this.contentList = listView}
                     rightOpenValue={-75}
                     showsVerticalScrollIndicator={false}
                     swipeRefreshControl={
@@ -128,7 +148,7 @@ export default class ShopCartPage extends BasePage {
                                 this._refreshFun();
                             }
                             }
-                            progressViewOffset={44}
+                            progressViewOffset={statusBarHeight + 44}
                             colors={[DesignRule.mainColor]}
                             title="下拉刷新"
                             tintColor={DesignRule.textColor_instruction}
@@ -174,9 +194,10 @@ export default class ShopCartPage extends BasePage {
                           rowMap={rowMap}
                           rowId={itemData.index}
                           sectionData={itemData.section}
-                          cellClickAction={(itemData) => {
-                              this._jumpToProductDetailPage(itemData);
-                          }}/>
+                          cellClickAction={
+                              (itemData) => {
+                                  this._jumpToProductDetailPage(itemData);
+                              }}/>
         );
     };
 

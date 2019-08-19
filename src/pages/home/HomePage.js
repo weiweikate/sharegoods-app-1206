@@ -55,6 +55,7 @@ import taskModel from './model/TaskModel';
 import TaskVIew from './view/TaskVIew';
 import intervalMsgModel, { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
 import { UserLevelModalView } from './view/TaskModalView';
+import StringUtils from '../../utils/StringUtils';
 
 const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
@@ -72,6 +73,7 @@ const HOME_SKIP = 'activitySkip';
 
 const { px2dp, height, headerHeight } = ScreenUtils;
 const scrollDist = height / 2 - headerHeight;
+const nowTime = new Date().getTime();
 
 const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
     <ActivityIndicator style={{ marginRight: 6 }} animating={errorMsg ? false : (isEnd ? false : true)} size={'small'}
@@ -232,7 +234,6 @@ class HomePage extends BasePage {
         );
         this.listener = DeviceEventEmitter.addListener('homePage_message', this.getMessageData);
         this.listenerMessage = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
-        this.listenerLogout = DeviceEventEmitter.addListener('login_out', this.loadMessageCount);
         this.listenerRetouchHome = DeviceEventEmitter.addListener('retouch_home', this.retouchHome);
         this.listenerHomeRefresh = JSManagerEmitter.addListener(HOME_REFRESH, this.homeTypeRefresh);
         this.listenerSkip = JSManagerEmitter.addListener(HOME_SKIP, this.homeSkip);
@@ -262,7 +263,11 @@ class HomePage extends BasePage {
     };
 
     homeTypeRefresh = (type) => {
-        homeModule.refreshHome(type);
+        let refreshTime = new Date().getTime();
+        // 防止透传消息堆积，不停的刷新
+        if (refreshTime - nowTime > 10 * 1000) {
+            homeModule.refreshHome(type);
+        }
     };
 
     homeSkip = (data) => {
@@ -277,7 +282,6 @@ class HomePage extends BasePage {
         this.didFocusSubscription && this.didFocusSubscription.remove();
         this.listener && this.listener.remove();
         this.listenerMessage && this.listenerMessage.remove();
-        this.listenerLogout && this.listenerLogout.remove();
         this.listenerRetouchHome && this.listenerRetouchHome.remove();
         this.listenerHomeRefresh && this.listenerHomeRefresh.remove();
         this.listenerSkip && this.listenerSkip.remove();
@@ -295,7 +299,7 @@ class HomePage extends BasePage {
 
 
     loadMessageCount = () => {
-        if (user.token) {
+        if (StringUtils.isNoEmpty(user.token)) {
             InteractionManager.runAfterInteractions(() => {
                 MessageApi.getNewNoticeMessageCount().then(result => {
                     if (!EmptyUtils.isEmpty(result.data)) {
@@ -403,7 +407,6 @@ class HomePage extends BasePage {
                     onScrollBeginDrag={() => {
                         this.luckyIcon.close();
                     }}
-                    renderAheadOffset={ScreenUtils.height - ScreenUtils.headerHeight}
                     showsVerticalScrollIndicator={false}
                     removeClippedSubviews={false}
                     onScroll={this._onListViewScroll}

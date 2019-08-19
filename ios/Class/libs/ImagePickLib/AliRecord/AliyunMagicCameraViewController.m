@@ -616,7 +616,7 @@
     if (assets.count > 0) {
       PHAsset * asset = assets[0];
       if (asset.mediaType == PHAssetMediaTypeVideo ) {
-        [JRLoadingAndToastTool showLoadingText:@"视频拉去中"];
+        [JRLoadingAndToastTool showLoadingText:@"视频拉取中"];
         [[IJSImageManager shareManager]getVideoOutputPathWithAsset:assets[0] completion:^(NSURL *outputPath, NSError *error, IJSImageState state) {
           [JRLoadingAndToastTool dissmissLoading];
           if (state == IJSImageExportSessionStatusCompleted ) {

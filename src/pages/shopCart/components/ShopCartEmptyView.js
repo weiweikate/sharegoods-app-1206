@@ -14,7 +14,7 @@
 
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
-import { Image, RefreshControl, Text, View } from 'react-native';
+import { ActivityIndicator, Image, RefreshControl, Text, View } from 'react-native';
 import DesignRule from '../../../constants/DesignRule';
 import PropTypes from 'prop-types';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -31,16 +31,20 @@ const { px2dp } = ScreenUtils;
 const { shopCartNoGoods } = res;
 
 const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={{
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     height: 50
 }}>
+    <ActivityIndicator style={{ marginRight: 6 }} animating={errorMsg ? false : (isEnd ? false : true)} size={'small'}
+                       color={DesignRule.mainColor}/>
     <Text style={{
         color: DesignRule.textColor_instruction,
         fontSize: DesignRule.fontSize_24
     }}
-          allowFontScaling={false}>{errorMsg ? errorMsg : (isEnd ? '我也是有底线的' : (isFetching ? '加载中...' : '加载更多'))}</Text>
+          allowFontScaling={false}>{errorMsg ? errorMsg : (isEnd ? '我也是有底线的~' : (isFetching ? '加载中...' : '加载更多中...'))}</Text>
 </View>;
+
 @observer
 export default class ShopCartEmptyView extends Component {
     st = 0;
@@ -115,7 +119,7 @@ export default class ShopCartEmptyView extends Component {
                         borderRadius: px2dp(1),
                         backgroundColor: '#FF0050'
                     }}/>
-                    <MRText style={{ marginLeft: px2dp(5), fontSize: px2dp(16) }}>为你推荐</MRText>
+                    <MRText style={{ marginLeft: px2dp(5), fontSize: px2dp(16), fontWeight: '600' }}>为你推荐</MRText>
                 </View>
             </View>
         );
