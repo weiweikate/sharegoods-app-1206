@@ -31,6 +31,7 @@ import {
     ServiceItemView, ShowTopView, PriceExplain
 } from './components/ProductDetailItemView';
 import {
+    ProductDetailSuitGiftView,
     ProductDetailSuitFixedView,
     suitType,
     ProductDetailSuitChooseView
@@ -166,7 +167,7 @@ export default class ProductDetailPage extends BasePage {
 
     //选择规格确认
     _selectionViewConfirm = (amount, skuCode, item) => {
-        const { prodCode, name, originalPrice, productIsPromotionPrice } = this.productDetailModel;
+        const { prodCode, name, originalPrice, productIsPromotionPrice, isGroupIn, groupActivity } = this.productDetailModel;
         const { goType } = this.state;
         if (goType === 'gwc') {
             shopCartCacheTool.addGoodItem({
@@ -184,6 +185,35 @@ export default class ProductDetailPage extends BasePage {
                 shoppingcartEntrance: 1
             });
         } else if (goType === 'buy') {
+            if (isGroupIn) {
+                const { subProductList, code } = groupActivity;
+                let orderProductList = (subProductList || []).map((subProduct) => {
+                    const { skuList, prodCode } = subProduct || {};
+                    const skuItem = (skuList || [])[0];
+                    const { skuCode } = skuItem || {};
+                    return {
+                        activityCode: code,
+                        batchNo: 1,
+                        productCode: prodCode,
+                        skuCode: skuCode,
+                        quantity: amount
+                    };
+                });
+                this.$navigate(RouterMap.ConfirOrderPage, {
+                    orderParamVO: {
+                        orderType: 1,
+                        source: 2,
+                        orderProducts: [{
+                            activityCode: code,
+                            batchNo: 1,
+                            productCode: prodCode,
+                            skuCode: skuCode,
+                            quantity: amount
+                        }, ...orderProductList]
+                    }
+                });
+                return;
+            }
             const { type, couponId } = this.params;
             const { specImg, promotionPrice, price, propertyValues } = item;
             let orderProducts = [{
@@ -244,7 +274,7 @@ export default class ProductDetailPage extends BasePage {
                 } else if (extraType === suitType.chooseSuit) {
                     return <ProductDetailSuitChooseView productDetailSuitModel={productDetailSuitModel}/>;
                 } else {
-                    return null;
+                    return <ProductDetailSuitGiftView productDetailModel={this.productDetailModel}/>;
                 }
             }
             case productItemType.coupons: {
