@@ -78,9 +78,9 @@ function GetAfterBtns(product) {
         return [];
     }
 
-    // if (product.orderType == 1){
-    //     return [];
-    // }
+    if (product.orderType == 1){
+        return [];
+    }
     let { restrictions} = product
     if (restrictions) {
         if ((restrictions & 8) === 8) {
@@ -141,9 +141,15 @@ function checkOrderAfterSaleService(products = [], status, nowTime, isShowToast)
     let hasAfterSaleService = false;
 
     products.forEach((product) => {
-        let { restrictions, afterSaleEndTime ,afterSale} = product
+        let { restrictions, afterSaleEndTime ,afterSale, orderType} = product
         afterSale = afterSale || {};
         let afterStaus = afterSale.afterStaus;
+        if (orderType == 1){
+            if (isShowToast){
+                bridge.$toast('该商品属于虚拟商品，不能售后');
+            }
+            return;
+        }
         //SUPPORT_EXCHANGE(1, "售后仅支持换货"),
         // SUPPORT_RETURN_REFUND(2, "售后仅支持退货退款"),
         // SUPPORT_REFUND(4, "售后仅支持退款"),
