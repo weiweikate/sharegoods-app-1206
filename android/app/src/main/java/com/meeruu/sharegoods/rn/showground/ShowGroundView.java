@@ -414,14 +414,4 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
     public void deleteFail(String err) {
 
     }
-
-    @Override
-    public void refreshShowground(List data, String cursor) {
-
-    }
-
-    @Override
-    public void viewLoadMore(List data, String cursor) {
-
-    }
 }

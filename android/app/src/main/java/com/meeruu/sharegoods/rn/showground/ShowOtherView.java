@@ -15,8 +15,6 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.facebook.react.bridge.ReactContext;
-import com.facebook.react.uimanager.UIManagerModule;
-import com.facebook.react.uimanager.events.EventDispatcher;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.adapter.ShowGroundAdapter;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
@@ -25,28 +23,24 @@ import com.meeruu.sharegoods.rn.showground.view.IShowgroundView;
 import com.meeruu.sharegoods.rn.showground.widgets.CustomLoadMoreView;
 import com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ShowOtherView  implements IShowgroundView, SwipeRefreshLayout.OnRefreshListener{
-    private EventDispatcher eventDispatcher;
+
     private Handler handler;
-    private WeakReference<View> showgroundView;
     private View errView;
     private View errImg;
     private SwipeRefreshLayout swipeRefreshLayout;
     private RnRecyclerView recyclerView;
     private ShowGroundAdapter adapter;
     private StaggeredGridLayoutManager layoutManager;
-//    private int page = 1;
     private String cursor = null;
     private OthersPresenter presenter;
     private String userCode;
     private DynamicInterface dynamicInterface;
 
     public ViewGroup getShowOtherView(ReactContext reactContext,String userCode,DynamicInterface dynamicInterface){
-        eventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
         this.userCode = userCode;
         this.dynamicInterface = dynamicInterface;
         LayoutInflater inflater = LayoutInflater.from(reactContext);
@@ -58,7 +52,6 @@ public class ShowOtherView  implements IShowgroundView, SwipeRefreshLayout.OnRef
 
     private void initView(final Context context, final View view) {
         handler = new Handler();
-        showgroundView = new WeakReference<>(view);
         errView = view.findViewById(R.id.err_view);
         errImg = view.findViewById(R.id.errImg);
         errImg.setOnClickListener(new View.OnClickListener() {
@@ -183,18 +176,23 @@ public class ShowOtherView  implements IShowgroundView, SwipeRefreshLayout.OnRef
     }
 
     @Override
-    public void viewLoadMore(final List data,String cursor) {
-        this.cursor = cursor;
+    public void viewLoadMore(final List data) {
         showList();
-        if (data != null) {
+        if (data != null && data.size() > 0) {
+            NewestShowGroundBean.DataBean dataBean =(NewestShowGroundBean.DataBean) data.get(data.size()-1);
+            this.cursor = dataBean.getCursor();
             adapter.addData(resolveData(data));
         }
     }
 
     @Override
-    public void refreshShowground(final List data,String cursor) {
+    public void refreshShowground(final List data) {
+
         if (adapter != null) {
-            this.cursor = cursor;
+            if(data != null &&  data.size() > 0 ){
+                NewestShowGroundBean.DataBean dataBean =(NewestShowGroundBean.DataBean) data.get(data.size()-1);
+                this.cursor = dataBean.getCursor();
+            }
             adapter.setEnableLoadMore(true);
             adapter.setNewData(resolveData(data));
             swipeRefreshLayout.setRefreshing(false);
@@ -213,12 +211,10 @@ public class ShowOtherView  implements IShowgroundView, SwipeRefreshLayout.OnRef
                         for (int j = 0; j < resource.size(); j++) {
                             NewestShowGroundBean.DataBean.ResourceBean resourceBean = resource.get(j);
                             if (resourceBean.getType() == 2) {
-
                                 resolveResource.add(resourceBean.getBaseUrl());
                             }
 
                             if(resourceBean.getType() == 5){
-
                                 bean.setVideoCover(resourceBean.getBaseUrl());
                                 break;
                             }
@@ -287,13 +283,4 @@ public class ShowOtherView  implements IShowgroundView, SwipeRefreshLayout.OnRef
 
     }
 
-    @Override
-    public void refreshShowground(List data) {
-
-    }
-
-    @Override
-    public void viewLoadMore(List data) {
-
-    }
 }

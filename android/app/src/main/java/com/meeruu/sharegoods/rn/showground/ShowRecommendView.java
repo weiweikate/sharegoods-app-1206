@@ -619,13 +619,4 @@ public class ShowRecommendView implements IShowgroundView, SwipeRefreshLayout.On
 
     }
 
-    @Override
-    public void refreshShowground(List data, String cursor) {
-
-    }
-
-    @Override
-    public void viewLoadMore(List data, String cursor) {
-
-    }
 }

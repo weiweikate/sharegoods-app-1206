@@ -6,8 +6,6 @@ public interface IShowgroundView {
 
     void refreshShowground(List data);
 
-    void refreshShowground(List data,String cursor);
-
     void loadMoreEnd();
 
     void loadMoreComplete();
@@ -15,8 +13,6 @@ public interface IShowgroundView {
     void loadMoreFail(String code);
 
     void viewLoadMore(List data);
-
-    void viewLoadMore(List data,String cursor);
 
     void repelaceData(int index,int clickNum);
 

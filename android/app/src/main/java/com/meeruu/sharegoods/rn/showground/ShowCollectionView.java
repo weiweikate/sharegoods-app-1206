@@ -324,13 +324,4 @@ public class ShowCollectionView  implements IShowgroundView, SwipeRefreshLayout.
 
     }
 
-    @Override
-    public void refreshShowground(List data, String cursor) {
-
-    }
-
-    @Override
-    public void viewLoadMore(List data, String cursor) {
-
-    }
 }
