@@ -71,6 +71,7 @@ export default class TabTitleView extends React.Component {
                                     {homeModule.tabListIndex === index?
                                         <ImageBackground style={styles.item}
                                                          source = {tabBg}
+                                                         resizeMode={'contain'}
                                         >
                                             <MRText style={[styles.title, {color: 'white'}]} numberOfLines={1}>{item.name}</MRText>
                                             {item.secName?<MRText style={[styles.detail, {color: 'white'}]} numberOfLines={1}>{item.secName}</MRText>:null}
@@ -95,11 +96,10 @@ const styles = StyleSheet.create({
     item: {
         height: autoSizeWidth(53),
         width: autoSizeWidth(70),
-        borderRadius: 10,
         overflow: 'hidden',
         alignItems: 'center',
         justifyContent: 'center',
-        marginLeft: autoSizeWidth(10),
+        marginLeft: autoSizeWidth(5),
         paddingBottom: autoSizeWidth(8)
     },
     title: {
