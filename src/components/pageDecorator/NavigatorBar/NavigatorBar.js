@@ -227,7 +227,6 @@ export default class NavigatorBar extends Component {
                 {this.props.renderTitle()}
             </View>;
         }
-        alert(title)
         return (
             <Text style={[styles.title, titleStyle]} allowFontScaling={false} numberOfLines={1}>{title || ' '}</Text>);
     };
