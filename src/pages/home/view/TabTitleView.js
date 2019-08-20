@@ -72,7 +72,7 @@ export default class TabTitleView extends React.Component {
                                                         colors={['#FC5D39', '#FF0050']}
                                         >
                                             <MRText style={[styles.title, {color: 'white'}]}>{item.name}</MRText>
-                                            <MRText style={[styles.detail, {color: 'white'}]}>>{item.secName}</MRText>
+                                            <MRText style={[styles.detail, {color: 'white'}]}>{item.secName}</MRText>
                                         </LinearGradient>
                                         :<View style={styles.item}>
                                             <MRText style={styles.title}>{item.name}</MRText>
@@ -94,7 +94,6 @@ const styles = StyleSheet.create({
     item: {
         height: autoSizeWidth(43),
         paddingHorizontal: autoSizeWidth(10),
-        backgroundColor: 'white',
         borderRadius: 5,
         overflow: 'hidden',
         alignItems: 'center',

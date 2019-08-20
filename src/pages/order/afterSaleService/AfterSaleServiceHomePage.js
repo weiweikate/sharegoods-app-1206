@@ -70,7 +70,7 @@ class AfterSaleServiceHomePage extends BasePage {
         let content = ['未收到货', '已收到货，需要退换已收到的货物', '需要更换货'];
         let arr = [];
         for (let i = 0; i < image.length; i++) {
-            if ((restrictions & status[i]) === status[i]) {
+            if (((restrictions & status[i]) === status[i]) || !restrictions) {
             arr.push(
                 <TouchableOpacity style={{
                     flexDirection: 'row',

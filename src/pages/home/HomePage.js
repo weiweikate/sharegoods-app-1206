@@ -509,7 +509,7 @@ class HomePage extends BasePage {
                                                   data = {item}/>
                         }
                         if (item.navType === 1){
-                            return <HomeNormalList  tabLabel={1}
+                            return <HomeNormalList  tabLabel={item.navName}
                                                     data = {item}
                                                     key ={'id' + item.id}
                             />
