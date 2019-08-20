@@ -17,7 +17,7 @@ import bridge from './bridge';
 export default class LoadMoreDataUtil{
 
     @observable
-    footerStatus = 'idle' // idle  loading  noMoreData
+    footerStatus = 'hidden' // idle  loading  noMoreData hidden
     @observable
     refreshing = false
     @observable

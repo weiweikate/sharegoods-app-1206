@@ -88,7 +88,7 @@ export default class HomeNormalList extends React.Component {
 
         this.state = {
             itemData: [],
-            footerStatus: 'idle',
+            footerStatus: 'hidden',
             refreshing: false,
             goods: []
         };
