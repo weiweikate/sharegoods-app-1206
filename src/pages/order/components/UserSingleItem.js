@@ -52,7 +52,7 @@ const UserSingleItem = props => {
 
     this.renderLine = () => {
         return (!isLine ? null :
-                <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inColorBg }}/>
+                <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inWhiteBg }}/>
         );
     };
 

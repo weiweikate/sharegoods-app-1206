@@ -65,6 +65,7 @@ NS_ASSUME_NONNULL_END
  */
 @property (nonatomic, assign)CGFloat aspectRatio;
 @property (nonatomic, assign)CGFloat aspectRatio_show;
+@property (nonatomic, assign)CGFloat titleHeight;
 /**
  显示图片链接
  */
