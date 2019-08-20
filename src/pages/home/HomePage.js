@@ -1,15 +1,14 @@
 import React from 'react';
 import {
-    ActivityIndicator,
-    Animated,
-    DeviceEventEmitter,
-    InteractionManager,
+    View,
+    StyleSheet,
+    DeviceEventEmitter, InteractionManager,
+    RefreshControl,
     NativeEventEmitter,
     NativeModules,
-    RefreshControl,
-    StyleSheet,
+    ActivityIndicator,
     TouchableOpacity,
-    View
+    Animated
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import { observer } from 'mobx-react';
@@ -34,14 +33,14 @@ import { withNavigationFocus } from 'react-navigation';
 import user from '../../model/user';
 import { homeTabManager } from './manager/HomeTabManager';
 import { MRText as Text } from '../../components/ui';
-import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
+import { RecyclerListView, LayoutProvider, DataProvider } from 'recyclerlistview';
 import { homeFocusAdModel } from './model/HomeFocusAdModel';
 import { todayModule } from './model/HomeTodayModel';
 import { recommendModule } from './model/HomeRecommendModel';
 import { subjectModule } from './model/HomeSubjectModel';
 import { homeExpandBnnerModel } from './model/HomeExpandBnnerModel';
 import LuckyIcon from '../guide/LuckyIcon';
-import HomeMessageModalView, { GiftModal, HomeAdModal } from './view/HomeMessageModalView';
+import HomeMessageModalView, { HomeAdModal, GiftModal } from './view/HomeMessageModalView';
 import { channelModules } from './model/HomeChannelModel';
 import { bannerModule } from './model/HomeBannerModel';
 import HomeLimitGoView from './view/HomeLimitGoView';
@@ -49,20 +48,8 @@ import { limitGoModule } from './model/HomeLimitGoModel';
 import HomeExpandBannerView from './view/HomeExpandBannerView';
 import HomeFocusAdView from './view/HomeFocusAdView';
 import PraiseModel from './view/PraiseModel';
+import store from '@mr/rn-store';
 import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view';
-import BasePage from '../../BasePage';
-import { track, TrackApi, trackEvent } from '../../utils/SensorsTrack';
-import taskModel from './model/TaskModel';
-import TaskVIew from './view/TaskVIew';
-import intervalMsgModel, { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
-import { UserLevelModalView } from './view/TaskModalView';
-import { routePush } from '../../navigation/RouterMap';
-import ImageAdView from './view/ImageAdView';
-import GoodsCustomView from './view/GoodsCustomView';
-import HomeAPI from './api/HomeAPI';
-import HomeNormalList from './view/HomeNormalList';
-import TabTitleView from './view/TabTitleView';
-import DIYTopicList from './view/DIYTopicList';
 
 const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
@@ -81,7 +68,19 @@ const HOME_SKIP = 'activitySkip';
 
 const { px2dp, height, headerHeight } = ScreenUtils;
 const scrollDist = height / 2 - headerHeight;
-
+import BasePage from '../../BasePage';
+import { track, TrackApi, trackEvent } from '../../utils/SensorsTrack';
+import taskModel from './model/TaskModel';
+import TaskVIew from './view/TaskVIew';
+import intervalMsgModel, { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
+import { UserLevelModalView } from './view/TaskModalView';
+import { routePush } from '../../navigation/RouterMap';
+import ImageAdView from './view/ImageAdView';
+import GoodsCustomView from './view/GoodsCustomView';
+import HomeAPI from './api/HomeAPI';
+import HomeNormalList from './view/HomeNormalList';
+import TabTitleView from './view/TabTitleView';
+import DIYTopicList from './view/DIYTopicList';
 const nowTime = new Date().getTime();
 
 const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
@@ -90,7 +89,6 @@ const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
     <Text style={styles.text}
           allowFontScaling={false}>{errorMsg ? errorMsg : (isEnd ? '我也是有底线的~' : (isFetching ? '加载中...' : '加载更多中...'))}</Text>
 </View>;
-
 @observer
 class HomeList extends React.Component {
     dataProvider = new DataProvider((r1, r2) => {
@@ -142,7 +140,7 @@ class HomeList extends React.Component {
                 dim.height = subjectList.length > 0 ? subjectHeight : 0;
                 break;
             case homeType.goodsTitle:
-                dim.height = homeModule.tabList.length > 0 ? px2dp(43 + 24) : 0;
+                dim.height = homeModule.tabList.length > 0 ? px2dp(43+24): 0;
                 break;
             case homeType.goods:
                 dim.height = kHomeGoodsViewHeight;
@@ -159,26 +157,26 @@ class HomeList extends React.Component {
     constructor(props) {
         super(props);
         // 重置
-        homeModule.initHomeParams();
-        homeTabManager.setAboveRecommend(false);
-        this.offsetY = 0;
+        // homeModule.initHomeParams();
+        // homeTabManager.setAboveRecommend(false);
+        // this.offsetY = 0;
     }
 
 
     _keyExtractor = (item, index) => item.id + '';
 
     _renderItem = (type, item, index) => {
-        type = type.type;
+        type = type.type
         let data = item;
         if (type === homeType.category) {
             // return <HomeCategoryView navigate={routePush}/>;
-            return <View/>;
+            return <View />
         } else if (type === homeType.swiper) {
             return <HomeBannerView navigate={routePush}/>;
         } else if (type === homeType.user) {
             return <HomeUserView navigate={routePush}/>;
         } else if (type === homeType.task) {
-            return <TaskVIew type={'home'} style={{ marginTop: ScreenUtils.autoSizeWidth(10) }}/>;
+            return <TaskVIew type={'home'} style={{marginTop: ScreenUtils.autoSizeWidth(10)}}/>;
         } else if (type === homeType.channel) {
             return <HomeChannelView navigate={routePush}/>;
         } else if (type === homeType.expandBanner) {
@@ -202,11 +200,11 @@ class HomeList extends React.Component {
                          onLayout={event => {
                              // 保留，不能删除
                          }}>
-                <TabTitleView/>
+                <TabTitleView />
             </View>;
         } else if (type === homeType.custom_imgAD) {
             return <ImageAdView data={item}/>;
-        } else if (type === homeType.custom_goods) {
+        }else if (type === homeType.custom_goods) {
             return <GoodsCustomView data={item}/>;
         }
         return <View/>;
@@ -229,7 +227,7 @@ class HomeList extends React.Component {
             return;
         }
         this.offsetY = event.nativeEvent.contentOffset.y;
-        this.props.onScroll && this.props.onScroll(this.offsetY);
+        this.props.onScroll&&this.props.onScroll(this.offsetY);
         this.toGoods && this.toGoods.measure((fx, fy, w, h, left, top) => {
             if (this.offsetY > height && top < scrollDist) {
                 homeTabManager.setAboveRecommend(true);
@@ -314,7 +312,7 @@ class HomeList extends React.Component {
 
     scrollToTop = () => {
         this.recyclerListView && this.recyclerListView.scrollToTop(true);
-    };
+    }
     homeTypeRefresh = (type) => {
         let refreshTime = new Date().getTime();
         // 防止透传消息堆积，不停的刷新
@@ -338,18 +336,22 @@ class HomePage extends BasePage {
         title: '',
         show: false
     };
-
     constructor(props) {
         super(props);
         this.state = {
             hasMessage: false,
             y: new Animated.Value(0),
-            tabData: []
+            tabData: [],
         };
     }
 
 
     componentDidMount() {
+        // store.get('@home/tabData').then((tabData)=> {
+        //     if (tabData && tabData.length > 0){
+        //         this.setState({tabData})
+        //     }
+        // })
         this.willBlurSubscription = this.props.navigation.addListener(
             'willBlur',
             payload => {
@@ -410,7 +412,6 @@ class HomePage extends BasePage {
         this.listenerLogout = DeviceEventEmitter.addListener('login_out', this.loadMessageCount);
         // this.loadTabData();
     }
-
     componentWillUnmount() {
         this.willBlurSubscription && this.willBlurSubscription.remove();
         this.willFocusSubscription && this.willFocusSubscription.remove();
@@ -421,10 +422,11 @@ class HomePage extends BasePage {
     }
 
     loadTabData = () => {
-        HomeAPI.getFirstList().then((data) => {
-            this.setState({ tabData: data.data });
-        });
-    };
+        HomeAPI.getFirstList().then((data)=> {
+            store.save('@home/tabData',data.data)
+            this.setState({tabData: data.data});
+        })
+    }
 
     loadMessageCount = () => {
         if (user.token) {
@@ -444,6 +446,28 @@ class HomePage extends BasePage {
         }
     };
 
+    trackViewHomePageChannel(tabData, i){
+        // channelType  频道页类型      0：未知 1：推荐 2：专题 3：类目
+        // channelName  频道页名称  字符串  8.15
+        let channelType = 0
+        let channelName = ''
+        if (i === 0){
+            channelType = 1
+            channelName = '推荐'
+        } else {
+            let navType = tabData[i-1].navType
+            if (navType === 2 ) {
+                channelType = 2;
+            }
+
+            if (navType === 1 ) {
+                channelType = 3;
+            }
+            channelName =  tabData[i-1].navName
+        }
+        track(trackEvent.ViewHomePageChannel,{channelType,channelName})
+    }
+
 
     render() {
         let tabData = this.state.tabData || [];
@@ -455,55 +479,40 @@ class HomePage extends BasePage {
                 <ScrollableTabView
                     onChangeTab={(obj) => {
                         let i = obj.i;
+                        //首页回顶部
                         this.homeList && this.homeList.scrollToTop();
-                        return;
-                        // channelType  频道页类型      0：未知 1：推荐 2：专题 3：类目
-                        // channelName  频道页名称  字符串  8.15
-                        let channelType = 0;
-                        let channelName = '';
-                        if (i === 0) {
-                            channelType = 1;
-                            channelName = '推荐';
-                        } else {
-                            let navType = tabData[i - 1].navType;
-                            if (navType === 2) {
-                                channelType = 2;
-                            }
+                        //埋点
+                        this.trackViewHomePageChannel(tabData,i)
 
-                            if (navType === 1) {
-                                channelType = 3;
-                            }
-                            channelName = tabData[i - 1].navName;
-                        }
-                        track(trackEvent.ViewHomePageChannel, { channelType, channelName });
                     }}
                     style={styles.container}
-                    contentProps={{ flex: 1, position: 'relative' }}
+                    contentProps={{flex: 1, position: 'relative'}}
                     renderTabBar={this._renderTabBar.bind(this)}
+                    locked={true}
+                    scrollWithoutAnimation={true}
                     //进界面的时候打算进第几个
                     initialPage={0}>
                     <HomeList
-                        key={'HomeList'}
+                        key={'HomeList__flag'}
                         tabLabel={'推荐'}
-                        ref={(ref => {
-                            this.homeList = ref;
-                        })}
+                        ref={(ref => {this.homeList = ref})}
                         onScrollBeginDrag={() => {
                             this.luckyIcon.close();
                         }}
                         loadTabData={this.loadTabData}
                     />
+
                     {tabData.map((item) => {
-                        if (item.navType === 2) {
-                            return <DIYTopicList tabLabel={item.navName}
-                                                 key={'id' + item.id}
-                                                 data={item}/>;
+                        if (item.navType === 2){
+                            return  <DIYTopicList tabLabel={item.navName}
+                                                  key ={'id' + item.id}
+                                                  data = {item}/>
                         }
-                        if (item.navType === 1) {
-                            return <HomeNormalList tabLabel={item.navName}
-                                                   data={item}
-                                                   key={'id' + item.id}
-                            />;
+                        if (item.navType === 1){
+                            return <HomeNormalList  tabLabel={1}
+                                                    data = {item}
+                                                    key ={'id' + item.id}
+                            />
                         }
                     })}
                 </ScrollableTabView>
@@ -536,8 +545,6 @@ class HomePage extends BasePage {
                     bottom: 8,
                     borderRadius: 2
                 }}
-                locked={true}
-                scrollWithoutAnimation={true}
                 renderTab={(name, page, isTabActive, goToPage, onLayoutHandler) => {
                     return (
                         <TouchableOpacity
@@ -593,11 +600,11 @@ const styles = StyleSheet.create({
         color: DesignRule.textColor_instruction,
         fontSize: DesignRule.fontSize_24
     },
-    tabNomal: {
+    tabNomal:{
         fontSize: 12,
         color: '#999999'
     },
-    tabSelect: {
+    tabSelect:{
         fontSize: 14,
         color: DesignRule.mainColor
     }
