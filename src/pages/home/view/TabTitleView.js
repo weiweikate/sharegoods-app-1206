@@ -72,11 +72,11 @@ export default class TabTitleView extends React.Component {
                                                         colors={['#FC5D39', '#FF0050']}
                                         >
                                             <MRText style={[styles.title, {color: 'white'}]}>{item.name}</MRText>
-                                            <MRText style={[styles.detail, {color: 'white'}]}>{item.secName}</MRText>
+                                            {item.secName?<MRText style={[styles.detail, {color: 'white'}]}>{item.secName}</MRText>:null}
                                         </LinearGradient>
                                         :<View style={styles.item}>
                                             <MRText style={styles.title}>{item.name}</MRText>
-                                            <MRText style={styles.detail}>{item.secName}</MRText>
+                                            {item.secName?<MRText style={styles.detail}>{item.secName}</MRText>:null}
                                         </View>
                                     }
                                 </TouchableWithoutFeedback>
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     item: {
         height: autoSizeWidth(43),
         paddingHorizontal: autoSizeWidth(10),
-        borderRadius: 5,
+        borderRadius: 10,
         overflow: 'hidden',
         alignItems: 'center',
         justifyContent: 'center',
@@ -108,5 +108,6 @@ const styles = StyleSheet.create({
     detail: {
         fontSize: autoSizeWidth(10),
         color: DesignRule.textColor_instruction,
+        marginTop: -3
     }
 });
