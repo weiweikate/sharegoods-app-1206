@@ -339,7 +339,7 @@ export default class HomeNormalList extends React.Component {
                                     <MRText style={{fontSize: ScreenUtils.autoSizeWidth(12),
                                         height:  ScreenUtils.autoSizeWidth(20),
                                         color: '#333333',
-                                        marginTop: ScreenUtils.autoSizeWidth(10),
+                                        marginTop: ScreenUtils.autoSizeWidth(5),
                                     }}>{icon.iconName}</MRText>
                                 </View>
                             </TouchableWithoutFeedback>
