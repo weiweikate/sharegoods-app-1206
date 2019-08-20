@@ -19,6 +19,7 @@ import {
     // TouchableOpacity,
     SectionList,
     TouchableWithoutFeedback,
+    Image
 } from 'react-native';
 
 import {
@@ -33,6 +34,7 @@ import { DefaultLoadMoreComponent } from '../../../comm/components/RefreshFlatLi
 import { routePush } from '../../../navigation/RouterMap';
 import RouterMap from '../../../navigation/RouterMap';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
+import res from '../res'
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 
 class HeaderView extends React.Component {
@@ -56,9 +58,13 @@ class HeaderView extends React.Component {
                         color: index === 1? DesignRule.mainColor : DesignRule.textColor_instruction}}>销量</MRText>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress = {() =>this.onPress(this.state.index === 2?3:2)}>
-                    <View>
+                    <View style = {{flexDirection: 'row', alignItems: 'center'}}>
                         <MRText style={{fontSize: autoSizeWidth(15),
                             color: (index === 2 || index === 3)? DesignRule.mainColor : DesignRule.textColor_instruction}}>价格</MRText>
+                        <View style={{marginLeft: 2}}>
+                            <Image source={res.arrow_top} style={{height: 6, width: 6, marginBottom: 3, tintColor: index === 3?  DesignRule.mainColor : DesignRule.textColor_instruction }} />
+                            <Image source={res.arrow_bottom} style={{height: 6, width: 6,tintColor: index === 2?  DesignRule.mainColor : DesignRule.textColor_instruction }}/>
+                        </View>
                     </View>
                 </TouchableWithoutFeedback>
             </View>
@@ -118,14 +124,14 @@ export default class HomeNormalList extends React.Component {
             itemData.push({
 
                 "iconName": "查看更多",
-                "iconImage": "https://devcdn.sharegoodsmall.com/sharegoods/3c43abb4f88942f7b3745bf6a4efd51c.jpg",
+                "iconImage": res.more,
                 "linkType": 'all',
             })
         } else {
             itemData = itemData.slice(0,9)
             itemData.push({
                 "iconName": "查看更多",
-                "iconImage": "https://devcdn.sharegoodsmall.com/sharegoods/3c43abb4f88942f7b3745bf6a4efd51c.jpg",
+                "iconImage": res.more,
                 "linkType": 'all',
             })
         }
@@ -258,7 +264,7 @@ export default class HomeNormalList extends React.Component {
 
     render() {
         return (
-            <View style={[DesignRule.style_container,{marginTop: 40}]}>
+            <View style={[DesignRule.style_container,{marginTop: 0}]}>
                 <SectionList
                     renderItem={(item) => this.renderItem(item)}
                     renderSectionHeader={(s) => this.renderSectionHeader(s)}
@@ -325,9 +331,11 @@ export default class HomeNormalList extends React.Component {
                                 });
                             }}>
                                 <View style={{alignItems: 'center', height:ScreenUtils.autoSizeWidth(93),width: ScreenUtils.autoSizeWidth(73) - 0.5}}>
-                                    <ImageLoader style={{width: ScreenUtils.autoSizeWidth(60) , height: ScreenUtils.autoSizeWidth(60)}}
-                                                 source = {{uri: icon.iconImage}}
-                                    />
+                                    { typeof(icon.iconImage) === 'string'? <ImageLoader style={{width: ScreenUtils.autoSizeWidth(60) , height: ScreenUtils.autoSizeWidth(60)}}
+                                                                                        source = {{uri: icon.iconImage}}
+                                    />:
+                                    <Image  style={{width: ScreenUtils.autoSizeWidth(60) , height: ScreenUtils.autoSizeWidth(60)}}
+                                        source={icon.iconImage}/>}
                                     <MRText style={{fontSize: ScreenUtils.autoSizeWidth(12),
                                         height:  ScreenUtils.autoSizeWidth(20),
                                         color: '#333333',

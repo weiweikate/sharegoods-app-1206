@@ -100,6 +100,7 @@ export default class SelectTicketModel extends React.Component {
                                           }
                                           bridge.hiddenLoading();
                                       }).catch((err) => {
+                                          bridge.$toast(err.msg)
                                           bridge.hiddenLoading();
                                       })
                                   }}

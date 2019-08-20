@@ -203,6 +203,7 @@ export default class RequestDetailPage extends BasePage {
 
         if (msg.action === 'changeTitle') {
             let parmas = msg.params || {};
+            this.state.title = parmas.title;
             this.$NavigationBarResetTitle(parmas.title);
             return;
         }

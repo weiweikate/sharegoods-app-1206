@@ -366,6 +366,7 @@ export default class ProductDetailPage extends BasePage {
         } = this.productDetailModel;
         const { couponId } = this.params;
         const isDuiHuang = this.params.type === '9';
+        const htmlUrl = `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}&couponId=${couponId}&type=${this.params.type}`;
         return <View style={styles.container}>
             <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
             <ProductDetailNavView productDetailModel={this.productDetailModel}
@@ -405,16 +406,16 @@ export default class ProductDetailPage extends BasePage {
                                 retailPrice: isDuiHuang ? '付邮免费领' : `￥${productIsPromotionPrice ? promotionMinPrice : v0Price}`,
                                 shareMoney: shareMoney,
                                 spellPrice: `￥${groupPrice}`,
-                                QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}&couponId=${couponId}`
+                                QRCodeStr: htmlUrl
                             }}
                             webJson={{
                                 title: nameShareText.name,
                                 dec: nameShareText.desc,
-                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}&couponId=${couponId}`,
+                                linkUrl: htmlUrl,
                                 thumImage: imgUrl
                             }}
                             taskShareParams={{
-                                uri: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}&couponId=${couponId}`,
+                                uri: htmlUrl,
                                 code: IntervalMsgType.productDetail,
                                 data: prodCode
                             }}/>
