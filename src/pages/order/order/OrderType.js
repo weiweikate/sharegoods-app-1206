@@ -161,14 +161,15 @@ function checkOrderAfterSaleService(products = [], status, nowTime, isShowToast)
                     bridge.$toast('该商品不支持售后');
                 }
                 return;
-                if (status === OrderType.WAIT_DELIVER || status === OrderType.PAID)
+            }
+
+            if (status === OrderType.WAIT_DELIVER || status === OrderType.PAID)
                 if ((restrictions & 4) !== 4) {
                     if (isShowToast) {
                         bridge.$toast('该商品不能退款');
                     }
                     return;
                 }
-            }
         }
         if (status === OrderType.COMPLETED && nowTime && afterSaleEndTime && afterSaleEndTime < nowTime && !(afterStaus<7 && afterStaus>=1)) {
             if (isShowToast){
