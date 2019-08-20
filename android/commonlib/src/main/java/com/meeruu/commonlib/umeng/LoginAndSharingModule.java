@@ -1457,7 +1457,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             //画文字的时候高度需要注意文字大小以及文字行间距
             canvas.drawText(s, 24 * precision, 380 * precision + bounds.height(), paint);
             s = title.substring(titleCount, titleCount * 2 - 2) + "...";
-            canvas.drawText(s, 24 * precision, 387 * precision + bounds.height(), paint);
+            canvas.drawText(s, 24 * precision, 387 * precision +titleSize+ bounds.height(), paint);
         }
         paint.setColor(Color.parseColor("#FF0050"));
         paint.setTextSize(30 * precision);

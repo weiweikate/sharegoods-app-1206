@@ -8,6 +8,7 @@ import IDVertify2Page from './IDVertify2Page';
 import ProfileEditPage from './ProfileEditPage';
 import GongMallContractPage from './GongMallContractPage';
 import SetWechatPage from './SetWechatPage';
+import WithdrawRecordPage from './WithdrawRecordPage';
 
 
 
@@ -23,6 +24,7 @@ export default {
         IDVertify2Page,
         ProfileEditPage,
         GongMallContractPage,
-        SetWechatPage
+        SetWechatPage,
+        WithdrawRecordPage
     }
 };
