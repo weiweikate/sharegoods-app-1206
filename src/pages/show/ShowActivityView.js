@@ -86,7 +86,7 @@ export default class ShowActivityView extends Component {
         let dataSource = this.List && this.List.getSourceData();
         let keyValue = { spreadPosition: 4 };
         if(dataSource && dataSource.length > 0){
-            let data = dataSource.pop();
+            let data = dataSource[dataSource.length - 1];
             if(data.cursor){
                 keyValue.cursor = data.cursor;
             }
