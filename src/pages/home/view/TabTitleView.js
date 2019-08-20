@@ -18,7 +18,8 @@ import {
     StyleSheet,
     View,
     ScrollView,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    ImageBackground
 } from 'react-native';
 
 import {
@@ -28,11 +29,12 @@ import { observer } from 'mobx-react';
 import { homeModule } from '../model/Modules';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
-import LinearGradient from 'react-native-linear-gradient';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { ContentType } from '../HomeTypes';
+import res from '../res'
 
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
+const tabBg = res.tabBg
 
 @observer
 export default class TabTitleView extends React.Component {
@@ -67,16 +69,15 @@ export default class TabTitleView extends React.Component {
                                         contentValue: item.name, contentIndex: index})
                                 }}>
                                     {homeModule.tabListIndex === index?
-                                        <LinearGradient style={styles.item}
-                                                        start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
-                                                        colors={['#FC5D39', '#FF0050']}
+                                        <ImageBackground style={styles.item}
+                                                         source = {tabBg}
                                         >
-                                            <MRText style={[styles.title, {color: 'white'}]}>{item.name}</MRText>
-                                            {item.secName?<MRText style={[styles.detail, {color: 'white'}]}>{item.secName}</MRText>:null}
-                                        </LinearGradient>
+                                            <MRText style={[styles.title, {color: 'white'}]} numberOfLines={1}>{item.name}</MRText>
+                                            {item.secName?<MRText style={[styles.detail, {color: 'white'}]} numberOfLines={1}>{item.secName}</MRText>:null}
+                                        </ImageBackground>
                                         :<View style={styles.item}>
-                                            <MRText style={styles.title}>{item.name}</MRText>
-                                            {item.secName?<MRText style={styles.detail}>{item.secName}</MRText>:null}
+                                            <MRText style={styles.title} numberOfLines={1}>{item.name}</MRText>
+                                            {item.secName?<MRText style={styles.detail} numberOfLines={1}>{item.secName}</MRText>:null}
                                         </View>
                                     }
                                 </TouchableWithoutFeedback>
@@ -92,16 +93,17 @@ export default class TabTitleView extends React.Component {
 
 const styles = StyleSheet.create({
     item: {
-        height: autoSizeWidth(43),
-        paddingHorizontal: autoSizeWidth(10),
+        height: autoSizeWidth(53),
+        width: autoSizeWidth(70),
         borderRadius: 10,
         overflow: 'hidden',
         alignItems: 'center',
         justifyContent: 'center',
         marginLeft: autoSizeWidth(10),
+        paddingBottom: autoSizeWidth(8)
     },
     title: {
-        fontSize: autoSizeWidth(16),
+        fontSize: autoSizeWidth(13),
         fontWeight: '600',
         color: DesignRule.textColor_mainTitle
     },
