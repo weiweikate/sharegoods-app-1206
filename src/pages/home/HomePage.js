@@ -1,14 +1,15 @@
 import React from 'react';
 import {
-    View,
-    StyleSheet,
-    DeviceEventEmitter, InteractionManager,
-    RefreshControl,
+    ActivityIndicator,
+    DeviceEventEmitter,
+    InteractionManager,
     NativeEventEmitter,
     NativeModules,
-    ActivityIndicator,
+    RefreshControl,
+    ScrollView,
+    StyleSheet,
     TouchableOpacity,
-    ScrollView
+    View
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import { observer } from 'mobx-react';
@@ -33,14 +34,14 @@ import { withNavigationFocus } from 'react-navigation';
 import user from '../../model/user';
 import { homeTabManager } from './manager/HomeTabManager';
 import { MRText as Text } from '../../components/ui';
-import { RecyclerListView, LayoutProvider, DataProvider } from 'recyclerlistview';
+import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
 import { homeFocusAdModel } from './model/HomeFocusAdModel';
 import { todayModule } from './model/HomeTodayModel';
 import { recommendModule } from './model/HomeRecommendModel';
 import { subjectModule } from './model/HomeSubjectModel';
 import { homeExpandBnnerModel } from './model/HomeExpandBnnerModel';
 import LuckyIcon from '../guide/LuckyIcon';
-import HomeMessageModalView, { HomeAdModal, GiftModal } from './view/HomeMessageModalView';
+import HomeMessageModalView, { GiftModal, HomeAdModal } from './view/HomeMessageModalView';
 import { channelModules } from './model/HomeChannelModel';
 import { bannerModule } from './model/HomeBannerModel';
 import HomeLimitGoView from './view/HomeLimitGoView';
@@ -49,6 +50,19 @@ import HomeExpandBannerView from './view/HomeExpandBannerView';
 import HomeFocusAdView from './view/HomeFocusAdView';
 import PraiseModel from './view/PraiseModel';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
+import BasePage from '../../BasePage';
+import { track, TrackApi, trackEvent } from '../../utils/SensorsTrack';
+import taskModel from './model/TaskModel';
+import TaskVIew from './view/TaskVIew';
+import intervalMsgModel, { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
+import { UserLevelModalView } from './view/TaskModalView';
+import { routePush } from '../../navigation/RouterMap';
+import ImageAdView from './view/ImageAdView';
+import GoodsCustomView from './view/GoodsCustomView';
+import HomeAPI from './api/HomeAPI';
+import HomeNormalList from './view/HomeNormalList';
+import TabTitleView from './view/TabTitleView';
+import DIYTopicList from './view/DIYTopicList';
 
 const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
@@ -67,19 +81,7 @@ const HOME_SKIP = 'activitySkip';
 
 const { px2dp, height, headerHeight } = ScreenUtils;
 const scrollDist = height / 2 - headerHeight;
-import BasePage from '../../BasePage';
-import { track, TrackApi, trackEvent } from '../../utils/SensorsTrack';
-import taskModel from './model/TaskModel';
-import TaskVIew from './view/TaskVIew';
-import intervalMsgModel, { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
-import { UserLevelModalView } from './view/TaskModalView';
-import { routePush } from '../../navigation/RouterMap';
-import ImageAdView from './view/ImageAdView';
-import GoodsCustomView from './view/GoodsCustomView';
-import HomeAPI from './api/HomeAPI';
-import HomeNormalList from './view/HomeNormalList';
-import TabTitleView from './view/TabTitleView';
-import DIYTopicList from './view/DIYTopicList';
+
 const nowTime = new Date().getTime();
 
 const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
@@ -88,6 +90,7 @@ const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
     <Text style={styles.text}
           allowFontScaling={false}>{errorMsg ? errorMsg : (isEnd ? '我也是有底线的~' : (isFetching ? '加载中...' : '加载更多中...'))}</Text>
 </View>;
+
 @observer
 class HomeList extends React.Component {
     dataProvider = new DataProvider((r1, r2) => {
@@ -106,7 +109,7 @@ class HomeList extends React.Component {
         switch (type.type) {
             case homeType.category:
                 // dim.height = categoryModule.categoryList.length > 0 ? categoryHeight : 0;
-                dim.height = 40;
+                dim.height = 42;
                 break;
             case homeType.swiper:
                 dim.height = bannerModule.bannerList.length > 0 ? bannerHeight : 0;
@@ -139,7 +142,7 @@ class HomeList extends React.Component {
                 dim.height = subjectList.length > 0 ? subjectHeight : 0;
                 break;
             case homeType.goodsTitle:
-                dim.height = homeModule.tabList.length > 0 ? px2dp(43+24): 0;
+                dim.height = homeModule.tabList.length > 0 ? px2dp(43 + 24) : 0;
                 break;
             case homeType.goods:
                 dim.height = kHomeGoodsViewHeight;
@@ -165,17 +168,17 @@ class HomeList extends React.Component {
     _keyExtractor = (item, index) => item.id + '';
 
     _renderItem = (type, item, index) => {
-        type = type.type
+        type = type.type;
         let data = item;
         if (type === homeType.category) {
             // return <HomeCategoryView navigate={routePush}/>;
-            return <View />
+            return <View/>;
         } else if (type === homeType.swiper) {
             return <HomeBannerView navigate={routePush}/>;
         } else if (type === homeType.user) {
             return <HomeUserView navigate={routePush}/>;
         } else if (type === homeType.task) {
-            return <TaskVIew type={'home'} style={{marginTop: ScreenUtils.autoSizeWidth(10)}}/>;
+            return <TaskVIew type={'home'} style={{ marginTop: ScreenUtils.autoSizeWidth(10) }}/>;
         } else if (type === homeType.channel) {
             return <HomeChannelView navigate={routePush}/>;
         } else if (type === homeType.expandBanner) {
@@ -199,11 +202,11 @@ class HomeList extends React.Component {
                          onLayout={event => {
                              // 保留，不能删除
                          }}>
-                <TabTitleView />
+                <TabTitleView/>
             </View>;
         } else if (type === homeType.custom_imgAD) {
             return <ImageAdView data={item}/>;
-        }else if (type === homeType.custom_goods) {
+        } else if (type === homeType.custom_goods) {
             return <GoodsCustomView data={item}/>;
         }
         return <View/>;
@@ -311,7 +314,7 @@ class HomeList extends React.Component {
 
     scrollToTop = () => {
         this.recyclerListView && this.recyclerListView.scrollToTop(true);
-    }
+    };
     homeTypeRefresh = (type) => {
         let refreshTime = new Date().getTime();
         // 防止透传消息堆积，不停的刷新
@@ -335,12 +338,13 @@ class HomePage extends BasePage {
         title: '',
         show: false
     };
+
     constructor(props) {
         super(props);
         this.state = {
             hasMessage: false,
             y: 0,
-            tabData: [],
+            tabData: []
         };
     }
 
@@ -406,6 +410,7 @@ class HomePage extends BasePage {
         this.listenerLogout = DeviceEventEmitter.addListener('login_out', this.loadMessageCount);
         // this.loadTabData();
     }
+
     componentWillUnmount() {
         this.willBlurSubscription && this.willBlurSubscription.remove();
         this.willFocusSubscription && this.willFocusSubscription.remove();
@@ -416,10 +421,10 @@ class HomePage extends BasePage {
     }
 
     loadTabData = () => {
-        HomeAPI.getFirstList().then((data)=> {
-            this.setState({tabData: data.data});
-        })
-    }
+        HomeAPI.getFirstList().then((data) => {
+            this.setState({ tabData: data.data });
+        });
+    };
 
     loadMessageCount = () => {
         if (user.token) {
@@ -451,59 +456,57 @@ class HomePage extends BasePage {
                     onChangeTab={(obj) => {
                         // this.setState({ selectTab: obj.i });
                         let i = obj.i;
-                        this.tab && this.tab.scrollTo({x: i*60 - ScreenUtils.width/2 + 30})
-                        this.homeList && this.homeList.scrollToTop();
                         // channelType  频道页类型      0：未知 1：推荐 2：专题 3：类目
                         // channelName  频道页名称  字符串  8.15
-                        let channelType = 0
-                        let channelName = ''
-                        if (i === 0){
-                            channelType = 1
-                            channelName = '推荐'
+                        let channelType = 0;
+                        let channelName = '';
+                        if (i === 0) {
+                            channelType = 1;
+                            channelName = '推荐';
                         } else {
-                            let navType = tabData[i-1].navType
-                            if (navType === 2 ) {
+                            let navType = tabData[i - 1].navType;
+                            if (navType === 2) {
                                 channelType = 2;
                             }
 
-                            if (navType === 1 ) {
+                            if (navType === 1) {
                                 channelType = 3;
                             }
-                            channelName =  tabData[i-1].navName
+                            channelName = tabData[i - 1].navName;
                         }
-                        track(trackEvent.ViewHomePageChannel,{channelType,channelName})
+                        track(trackEvent.ViewHomePageChannel, { channelType, channelName });
                     }}
-                    style={styles.container}
-                    contentProps={{flex: 1, position: 'relative'}}
+                    style={[styles.container, { marginBottom: 2 }]}
+                    contentProps={{ flex: 1, position: 'relative' }}
                     renderTabBar={this._renderTabBar.bind(this)}
                     //进界面的时候打算进第几个
                     initialPage={0}>
                     <HomeList
                         tabLabel={'推荐'}
-                        ref={(ref => {this.homeList = ref})}
+                        ref={(ref => {
+                            this.homeList = ref;
+                        })}
                         onScrollBeginDrag={() => {
                             this.luckyIcon.close();
                         }}
                         loadTabData={this.loadTabData}
-                        onScroll={(y)=>{
-                            if (y > 40 && this.state.y >= 40 || y < 0) {
-                                return
+                        onScroll={(y) => {
+                            if ((y > 42 && this.state.y >= 42) || y < 0) {
+                                return;
                             }
-                            this.setState({ y })
-
+                            this.setState({ y });
                         }}
                     />
                     {tabData.map((item) => {
-                        if (item.navType === 2){
-                            return  <DIYTopicList tabLabel={item.navName}
-                                                  key ={'id' + item.id}
-                                                  data = {item}/>
+                        if (item.navType === 2) {
+                            return <DIYTopicList tabLabel={item.navName}
+                                                 key={'id' + item.id}
+                                                 data={item}/>;
                         }
-                        if (item.navType === 1){
-                            return <HomeNormalList  tabLabel={item.navName}
-                                                    data = {item}
-                                                    key ={'id' + item.id}
-                            />
+                        if (item.navType === 1) {
+                            return <HomeNormalList tabLabel={item.navName}
+                                                   data={item}
+                                                   key={'id' + item.id}/>;
                         }
                     })}
                 </ScrollableTabView>
@@ -521,36 +524,56 @@ class HomePage extends BasePage {
         );
     }
 
-    _renderTabBar(p){
-        let itemWidth = 60;
-        let tabBarHeight = 40;
+    _renderTabBar(p) {
+        let itemWidth = 62;
+        let tabBarHeight = 42;
         return (
-            <View style={{backgroundColor: 'white', height: tabBarHeight, position: 'absolute', top: - this.state.y, left: 0, zIndex: 1, right: 0}}>
+            <View style={{
+                backgroundColor: 'white',
+                height: tabBarHeight,
+                position: 'absolute',
+                top: -this.state.y,
+                left: 0,
+                zIndex: 1,
+                right: 0
+            }}>
                 <ScrollView
-                    horizontal = {true}
+                    horizontal={true}
                     showsHorizontalScrollIndicator={false}
-                    ref={ref=>{this.tab = ref}}
-                >
-                <DefaultTabBar
-                    activeTab={p.activeTab}
-                    style={{ width: itemWidth*p.tabs.length, borderBottomWidth: 0, height: tabBarHeight}}
-                    containerWidth={itemWidth*p.tabs.length}
-                    scrollValue={p.scrollValue}
-                    tabs={p.tabs}
-                    underlineStyle={{backgroundColor: DesignRule.mainColor, left: (itemWidth -20)/2, width: 20, bottom: 2}}
-                    renderTab = {(name, page, isTabActive, goToPage) => {
-                        return(
-                            <TouchableOpacity style={{height: 36, alignItems: 'center', justifyContent: 'center',width: itemWidth}}
-                                              onPress={() => p.goToPage(page)}
-                            >
-                                <Text style={isTabActive? styles.tabSelect: styles.tabNomal} numberOfLines={1}>{name}</Text>
-                            </TouchableOpacity>
-                        )
-                    }}
-                />
+                    ref={ref => {
+                        this.tab = ref;
+                    }}>
+                    <DefaultTabBar
+                        activeTab={p.activeTab}
+                        style={{ width: itemWidth * p.tabs.length, borderBottomWidth: 0, height: tabBarHeight }}
+                        containerWidth={itemWidth * p.tabs.length}
+                        scrollValue={p.scrollValue}
+                        tabs={p.tabs}
+                        underlineStyle={{
+                            backgroundColor: DesignRule.mainColor,
+                            left: (itemWidth - 20) / 2,
+                            width: 18,
+                            height: 2.5,
+                            bottom: 8,
+                            borderRadius: 2
+                        }}
+                        renderTab={(name, page, isTabActive, goToPage) => {
+                            return (
+                                <TouchableOpacity style={{
+                                    height: 36,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    width: itemWidth
+                                }} onPress={() => p.goToPage(page)}>
+                                    <Text style={isTabActive ? styles.tabSelect : styles.tabNomal}
+                                          numberOfLines={1}>{name}</Text>
+                                </TouchableOpacity>
+                            );
+                        }}
+                    />
                 </ScrollView>
             </View>
-        )
+        );
     }
 }
 
@@ -561,7 +584,6 @@ const styles = StyleSheet.create({
         backgroundColor: DesignRule.bgColor
     },
     titleView: {
-
         height: px2dp(43 + 24),
         width: ScreenUtils.width
     },
@@ -592,11 +614,11 @@ const styles = StyleSheet.create({
         color: DesignRule.textColor_instruction,
         fontSize: DesignRule.fontSize_24
     },
-    tabNomal:{
+    tabNomal: {
         fontSize: 12,
         color: '#999999'
     },
-    tabSelect:{
+    tabSelect: {
         fontSize: 14,
         color: DesignRule.mainColor
     }

@@ -170,7 +170,7 @@ export default class HomeLimitGoView extends Component {
                             this.openModal();
                         }}>
                             <Image source={res.limitGoHeader}
-                                   style={{ height: px2dp(60), width: ScreenUtils.width, marginTop: px2dp(-5) }}/>
+                                   style={{ height: px2dp(60), width: ScreenUtils.width, marginTop: px2dp(-11) }}/>
                         </TouchableOpacity> : null
                 }
 
