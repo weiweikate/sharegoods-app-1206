@@ -29,6 +29,7 @@ const resHome = {
     more:require('./more.png'),
     arrow_bottom:require('./arrow_bottom.png'),
     arrow_top:require('./arrow_top.png'),
+    tabBg:require('./tabBg.png'),
     signIn: {
         ...signIn
     },
