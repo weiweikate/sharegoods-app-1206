@@ -74,8 +74,8 @@ class HomeModule {
     };
 
     @action initHomeParams() {
-        this.homeList = [];
-        this.page = 1;
+        // this.homeList = [];
+        // this.page = 1;
         this.isFetching = false;
         this.isEnd = false;
         this.firstLoad = true;

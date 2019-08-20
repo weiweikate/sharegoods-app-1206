@@ -157,9 +157,9 @@ class HomeList extends React.Component {
     constructor(props) {
         super(props);
         // 重置
-        // homeModule.initHomeParams();
-        // homeTabManager.setAboveRecommend(false);
-        // this.offsetY = 0;
+        homeModule.initHomeParams();
+        homeTabManager.setAboveRecommend(false);
+        this.offsetY = 0;
     }
 
 
@@ -347,11 +347,11 @@ class HomePage extends BasePage {
 
 
     componentDidMount() {
-        // store.get('@home/tabData').then((tabData)=> {
-        //     if (tabData && tabData.length > 0){
-        //         this.setState({tabData})
-        //     }
-        // })
+        store.get('@home/tabData').then((tabData)=> {
+            if (tabData && tabData.length > 0){
+                this.setState({tabData})
+            }
+        })
         this.willBlurSubscription = this.props.navigation.addListener(
             'willBlur',
             payload => {
