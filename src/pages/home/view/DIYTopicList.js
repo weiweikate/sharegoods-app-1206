@@ -108,7 +108,7 @@ export default class DIYTopicList extends React.Component {
                 ref={(ref) => {
                     this.recyclerListView = ref;
                 }}
-                style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1, marginTop: 40}}
+                style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1, marginTop: 0}}
                 refreshControl={<RefreshControl refreshing={this.loadMoreDataUtil.refreshing}
                                                 onRefresh={this.loadMoreDataUtil.onRefresh}
                                                 colors={[DesignRule.mainColor]}/>}

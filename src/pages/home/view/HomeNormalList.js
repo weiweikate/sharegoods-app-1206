@@ -264,7 +264,7 @@ export default class HomeNormalList extends React.Component {
 
     render() {
         return (
-            <View style={[DesignRule.style_container,{marginTop: 40}]}>
+            <View style={[DesignRule.style_container,{marginTop: 0}]}>
                 <SectionList
                     renderItem={(item) => this.renderItem(item)}
                     renderSectionHeader={(s) => this.renderSectionHeader(s)}

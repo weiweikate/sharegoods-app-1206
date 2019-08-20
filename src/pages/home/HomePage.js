@@ -8,7 +8,7 @@ import {
     NativeModules,
     ActivityIndicator,
     TouchableOpacity,
-    ScrollView
+    Animated
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import { observer } from 'mobx-react';
@@ -48,7 +48,7 @@ import { limitGoModule } from './model/HomeLimitGoModel';
 import HomeExpandBannerView from './view/HomeExpandBannerView';
 import HomeFocusAdView from './view/HomeFocusAdView';
 import PraiseModel from './view/PraiseModel';
-import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
+import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view';
 
 const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
@@ -106,7 +106,7 @@ class HomeList extends React.Component {
         switch (type.type) {
             case homeType.category:
                 // dim.height = categoryModule.categoryList.length > 0 ? categoryHeight : 0;
-                dim.height = 40;
+                dim.height = 0;
                 break;
             case homeType.swiper:
                 dim.height = bannerModule.bannerList.length > 0 ? bannerHeight : 0;
@@ -226,7 +226,7 @@ class HomeList extends React.Component {
             return;
         }
         this.offsetY = event.nativeEvent.contentOffset.y;
-        this.props.onScroll(this.offsetY);
+        this.props.onScroll&&this.props.onScroll(this.offsetY);
         this.toGoods && this.toGoods.measure((fx, fy, w, h, left, top) => {
             if (this.offsetY > height && top < scrollDist) {
                 homeTabManager.setAboveRecommend(true);
@@ -339,7 +339,7 @@ class HomePage extends BasePage {
         super(props);
         this.state = {
             hasMessage: false,
-            y: 0,
+            y: new Animated.Value(0),
             tabData: [],
         };
     }
@@ -449,9 +449,7 @@ class HomePage extends BasePage {
                 />
                 <ScrollableTabView
                     onChangeTab={(obj) => {
-                        // this.setState({ selectTab: obj.i });
                         let i = obj.i;
-                        this.tab && this.tab.scrollTo({x: i*60 - ScreenUtils.width/2 + 30})
                         this.homeList && this.homeList.scrollToTop();
                         // channelType  频道页类型      0：未知 1：推荐 2：专题 3：类目
                         // channelName  频道页名称  字符串  8.15
@@ -479,20 +477,15 @@ class HomePage extends BasePage {
                     //进界面的时候打算进第几个
                     initialPage={0}>
                     <HomeList
+                        key={'HomeList'}
                         tabLabel={'推荐'}
                         ref={(ref => {this.homeList = ref})}
                         onScrollBeginDrag={() => {
                             this.luckyIcon.close();
                         }}
                         loadTabData={this.loadTabData}
-                        onScroll={(y)=>{
-                            if (y > 40 && this.state.y >= 40 || y < 0) {
-                                return
-                            }
-                            this.setState({ y })
-
-                        }}
                     />
+
                     {tabData.map((item) => {
                         if (item.navType === 2){
                             return  <DIYTopicList tabLabel={item.navName}
@@ -525,31 +518,22 @@ class HomePage extends BasePage {
         let itemWidth = 60;
         let tabBarHeight = 40;
         return (
-            <View style={{backgroundColor: 'white', height: tabBarHeight, position: 'absolute', top: - this.state.y, left: 0, zIndex: 1, right: 0}}>
-                <ScrollView
-                    horizontal = {true}
-                    showsHorizontalScrollIndicator={false}
-                    ref={ref=>{this.tab = ref}}
-                >
-                <DefaultTabBar
-                    activeTab={p.activeTab}
-                    style={{ width: itemWidth*p.tabs.length, borderBottomWidth: 0, height: tabBarHeight}}
-                    containerWidth={itemWidth*p.tabs.length}
-                    scrollValue={p.scrollValue}
-                    tabs={p.tabs}
-                    underlineStyle={{backgroundColor: DesignRule.mainColor, left: (itemWidth -20)/2, width: 20, bottom: 2}}
-                    renderTab = {(name, page, isTabActive, goToPage) => {
-                        return(
-                            <TouchableOpacity style={{height: 36, alignItems: 'center', justifyContent: 'center',width: itemWidth}}
-                                              onPress={() => p.goToPage(page)}
-                            >
-                                <Text style={isTabActive? styles.tabSelect: styles.tabNomal} numberOfLines={1}>{name}</Text>
-                            </TouchableOpacity>
-                        )
-                    }}
-                />
-                </ScrollView>
-            </View>
+            <ScrollableTabBar
+                style={{borderBottomWidth: 0, height: tabBarHeight}}
+                tabsContainerStyle={{justifyContent: 'flex-start'}}
+                underlineStyle={{backgroundColor: DesignRule.mainColor, width: 20, bottom: 2, marginLeft: itemWidth/2-20/2}}
+                renderTab = {(name, page, isTabActive, goToPage, onLayoutHandler) => {
+                    return(
+                        <TouchableOpacity style={{height: 36, alignItems: 'center', justifyContent: 'center',width: itemWidth}}
+                                          onPress={() => p.goToPage(page)}
+                                          onLayout={onLayoutHandler}
+
+                        >
+                            <Text style={isTabActive? styles.tabSelect: styles.tabNomal} numberOfLines={1}>{name}</Text>
+                        </TouchableOpacity>
+                    )
+                }}
+            />
         )
     }
 }
@@ -558,7 +542,8 @@ class HomePage extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: DesignRule.bgColor
+        backgroundColor: DesignRule.bgColor,
+        width: ScreenUtils.width
     },
     titleView: {
 
