@@ -1,14 +1,15 @@
 import React from 'react';
 import {
-    View,
-    StyleSheet,
-    DeviceEventEmitter, InteractionManager,
-    RefreshControl,
+    ActivityIndicator,
+    Animated,
+    DeviceEventEmitter,
+    InteractionManager,
     NativeEventEmitter,
     NativeModules,
-    ActivityIndicator,
+    RefreshControl,
+    StyleSheet,
     TouchableOpacity,
-    Animated
+    View
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import { observer } from 'mobx-react';
@@ -33,14 +34,14 @@ import { withNavigationFocus } from 'react-navigation';
 import user from '../../model/user';
 import { homeTabManager } from './manager/HomeTabManager';
 import { MRText as Text } from '../../components/ui';
-import { RecyclerListView, LayoutProvider, DataProvider } from 'recyclerlistview';
+import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
 import { homeFocusAdModel } from './model/HomeFocusAdModel';
 import { todayModule } from './model/HomeTodayModel';
 import { recommendModule } from './model/HomeRecommendModel';
 import { subjectModule } from './model/HomeSubjectModel';
 import { homeExpandBnnerModel } from './model/HomeExpandBnnerModel';
 import LuckyIcon from '../guide/LuckyIcon';
-import HomeMessageModalView, { HomeAdModal, GiftModal } from './view/HomeMessageModalView';
+import HomeMessageModalView, { GiftModal, HomeAdModal } from './view/HomeMessageModalView';
 import { channelModules } from './model/HomeChannelModel';
 import { bannerModule } from './model/HomeBannerModel';
 import HomeLimitGoView from './view/HomeLimitGoView';
@@ -50,6 +51,19 @@ import HomeFocusAdView from './view/HomeFocusAdView';
 import PraiseModel from './view/PraiseModel';
 import store from '@mr/rn-store';
 import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view';
+import BasePage from '../../BasePage';
+import { track, TrackApi, trackEvent } from '../../utils/SensorsTrack';
+import taskModel from './model/TaskModel';
+import TaskVIew from './view/TaskVIew';
+import intervalMsgModel, { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
+import { UserLevelModalView } from './view/TaskModalView';
+import { routePush } from '../../navigation/RouterMap';
+import ImageAdView from './view/ImageAdView';
+import GoodsCustomView from './view/GoodsCustomView';
+import HomeAPI from './api/HomeAPI';
+import HomeNormalList from './view/HomeNormalList';
+import TabTitleView from './view/TabTitleView';
+import DIYTopicList from './view/DIYTopicList';
 
 const { JSPushBridge } = NativeModules;
 const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
@@ -68,19 +82,6 @@ const HOME_SKIP = 'activitySkip';
 
 const { px2dp, height, headerHeight } = ScreenUtils;
 const scrollDist = height / 2 - headerHeight;
-import BasePage from '../../BasePage';
-import { track, TrackApi, trackEvent } from '../../utils/SensorsTrack';
-import taskModel from './model/TaskModel';
-import TaskVIew from './view/TaskVIew';
-import intervalMsgModel, { IntervalMsgView, IntervalType } from '../../comm/components/IntervalMsgView';
-import { UserLevelModalView } from './view/TaskModalView';
-import { routePush } from '../../navigation/RouterMap';
-import ImageAdView from './view/ImageAdView';
-import GoodsCustomView from './view/GoodsCustomView';
-import HomeAPI from './api/HomeAPI';
-import HomeNormalList from './view/HomeNormalList';
-import TabTitleView from './view/TabTitleView';
-import DIYTopicList from './view/DIYTopicList';
 
 const nowTime = new Date().getTime();
 
@@ -121,7 +122,7 @@ class HomeList extends React.Component {
                 dim.height = taskModel.homeHeight;
                 break;
             case homeType.channel:
-                dim.height = channelModules.channelList.length > 0 ? px2dp(90) : 0;
+                dim.height = channelModules.channelHeight;
                 break;
             case homeType.expandBanner:
                 dim.height = homeExpandBnnerModel.bannerHeight;
