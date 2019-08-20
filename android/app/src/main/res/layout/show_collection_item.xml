@@ -71,5 +71,5 @@
         android:layout_alignParentRight="true"
         android:layout_marginTop="10dp"
         android:layout_marginRight="15dp"
-        android:src="@mipmap/icon_collected" />
+        android:src="@drawable/icon_collected" />
 </RelativeLayout>

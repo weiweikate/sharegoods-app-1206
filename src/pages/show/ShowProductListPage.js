@@ -182,7 +182,7 @@ export default class ShowProductListPage extends BasePage {
             <View style={styles.header}>
                 <View style={styles.flex}>
                     <TouchableOpacity style={styles.backImg} onPress={() => this.$navigateBack()}>
-                        <Image source={res.button.icon_header_back} style={styles.img}/>
+                        <Image source={res.button.icon_header_back}/>
                     </TouchableOpacity>
                 </View>
                 <TouchableWithoutFeedback onPress={() => {
@@ -286,7 +286,8 @@ var styles = StyleSheet.create({
     },
     validProductImg: {
         width: px2dp(80),
-        height: px2dp(80)
+        height: px2dp(80),
+        borderRadius:px2dp(5)
     },
     itemTitle: {
         color: DesignRule.textColor_mainTitle,
@@ -304,7 +305,7 @@ var styles = StyleSheet.create({
     },
     titleText: {
         color: DesignRule.textColor_mainTitle,
-        fontSize: DesignRule.fontSize_mainTitle
+        fontSize: 18
     }
 });
 

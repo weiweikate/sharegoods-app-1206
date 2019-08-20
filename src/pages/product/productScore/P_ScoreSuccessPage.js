@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Image, FlatList } from 'react-native';
+import { FlatList, Image, StyleSheet, View } from 'react-native';
 import { MRText as Text } from '../../../components/ui/index';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import UIImage from '@mr/image-placeholder';
@@ -23,10 +23,10 @@ export default class P_ScoreSuccessPage extends BasePage {
     };
 
     componentDidMount() {
-       this._loadPageData();
+        this._loadPageData();
     }
 
-    _loadPageData = ()=>{
+    _loadPageData = () => {
         ProductApi.queryCommentByUserCode().then((data) => {
             let tempList = (data || {}).data || [];
             this.setState({
@@ -37,7 +37,7 @@ export default class P_ScoreSuccessPage extends BasePage {
                 isFail: true
             });
         });
-    }
+    };
 
     $NavBarLeftPressed = () => {
         this.$navigateBack();
@@ -50,7 +50,7 @@ export default class P_ScoreSuccessPage extends BasePage {
     _goPublish = (warehouseOrderNo) => {
         OrderApi.checkInfo({ warehouseOrderNo: warehouseOrderNo }).then(res => {
             if (res.data) {
-                this.$navigate(RouterMap.P_ScorePublishPage, { orderNo: warehouseOrderNo });
+                this.$navigateReplace(RouterMap.P_ScorePublishPage, { orderNo: warehouseOrderNo });
             } else {
                 this._loadPageData();
                 this.$toastShow('该商品已晒过单！');

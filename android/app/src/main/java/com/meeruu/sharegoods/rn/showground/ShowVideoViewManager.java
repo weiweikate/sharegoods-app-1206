@@ -2,20 +2,16 @@ package com.meeruu.sharegoods.rn.showground;
 
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReadableMap;
-import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
-import com.meeruu.sharegoods.rn.showground.adapter.LittleVideoListAdapter;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
-import com.meeruu.sharegoods.rn.showground.bean.VideoListBean;
 import com.meeruu.sharegoods.rn.showground.widgets.littlevideo.VideoListView;
 
 import java.util.ArrayList;
@@ -32,6 +28,12 @@ public class ShowVideoViewManager extends SimpleViewManager<View> {
     @Override
     public String getName() {
         return COMPONENT_NAME;
+    }
+
+    @Override
+    public void onDropViewInstance(@Nonnull View view) {
+        super.onDropViewInstance(view);
+        ((VideoListView)view.getTag()).releasePlayer();
     }
 
     @Nonnull
@@ -55,6 +57,7 @@ public class ShowVideoViewManager extends SimpleViewManager<View> {
                 videoListView.releasePlayer();
             }
         });
+
         return view;
     }
 

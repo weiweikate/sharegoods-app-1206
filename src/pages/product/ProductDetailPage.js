@@ -31,6 +31,7 @@ import {
     ServiceItemView, ShowTopView, PriceExplain
 } from './components/ProductDetailItemView';
 import {
+    ProductDetailSuitGiftView,
     ProductDetailSuitFixedView,
     suitType,
     ProductDetailSuitChooseView
@@ -111,7 +112,7 @@ export default class ProductDetailPage extends BasePage {
 
     //去购物车
     _bottomViewAction = (type) => {
-        const { productIsPromotionPrice } = this.productDetailModel;
+        const { productIsPromotionPrice, isHuaFei } = this.productDetailModel;
         switch (type) {
             case 'jlj':
                 this.shareModal && this.shareModal.open();
@@ -141,6 +142,13 @@ export default class ProductDetailPage extends BasePage {
                     this.gotoLoginPage();
                     return;
                 }
+                if (isHuaFei) {
+                    const uri = apiEnvironment.getCurrentH5Url() + '/pay/virtual-product';
+                    this.$navigate(RouterMap.HtmlPage, {
+                        uri: uri
+                    });
+                    return;
+                }
                 this.state.goType = type;
                 this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, {
                     productIsPromotionPrice,
@@ -159,7 +167,7 @@ export default class ProductDetailPage extends BasePage {
 
     //选择规格确认
     _selectionViewConfirm = (amount, skuCode, item) => {
-        const { prodCode, name, originalPrice, productIsPromotionPrice } = this.productDetailModel;
+        const { prodCode, name, originalPrice, productIsPromotionPrice, isGroupIn, groupActivity } = this.productDetailModel;
         const { goType } = this.state;
         if (goType === 'gwc') {
             shopCartCacheTool.addGoodItem({
@@ -177,6 +185,35 @@ export default class ProductDetailPage extends BasePage {
                 shoppingcartEntrance: 1
             });
         } else if (goType === 'buy') {
+            if (isGroupIn) {
+                const { subProductList, code } = groupActivity;
+                let orderProductList = (subProductList || []).map((subProduct) => {
+                    const { skuList, prodCode } = subProduct || {};
+                    const skuItem = (skuList || [])[0];
+                    const { skuCode } = skuItem || {};
+                    return {
+                        activityCode: code,
+                        batchNo: 1,
+                        productCode: prodCode,
+                        skuCode: skuCode,
+                        quantity: amount
+                    };
+                });
+                this.$navigate(RouterMap.ConfirOrderPage, {
+                    orderParamVO: {
+                        orderType: 1,
+                        source: 2,
+                        orderProducts: [{
+                            activityCode: code,
+                            batchNo: 1,
+                            productCode: prodCode,
+                            skuCode: skuCode,
+                            quantity: amount
+                        }, ...orderProductList]
+                    }
+                });
+                return;
+            }
             const { type, couponId } = this.params;
             const { specImg, promotionPrice, price, propertyValues } = item;
             let orderProducts = [{
@@ -217,7 +254,7 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _renderItem = ({ item, index, section: { key } }) => {
-        const { productDetailCouponsViewModel, productDetailAddressModel, productDetailSuitModel } = this.productDetailModel;
+        const { productDetailCouponsViewModel, productDetailAddressModel, productDetailSuitModel, isGroupIn } = this.productDetailModel;
         if (key === sectionType.sectionContent) {
             return <ContentItemView item={item}/>;
         }
@@ -225,20 +262,23 @@ export default class ProductDetailPage extends BasePage {
         switch (itemKey) {
             case productItemType.headerView: {
                 return <HeaderItemView productDetailModel={this.productDetailModel}
+                                       paramsType={this.params.type}
                                        navigation={this.props.navigation}
                                        shopAction={() => {
                                            this.$navigateBackToStore();
                                        }}/>;
             }
             case productItemType.suit: {
+                if (isGroupIn) {
+                    return <ProductDetailSuitGiftView productDetailModel={this.productDetailModel}/>;
+                }
                 const { extraType } = productDetailSuitModel;
                 if (extraType === suitType.fixedSuit) {
                     return <ProductDetailSuitFixedView productDetailSuitModel={productDetailSuitModel}/>;
                 } else if (extraType === suitType.chooseSuit) {
                     return <ProductDetailSuitChooseView productDetailSuitModel={productDetailSuitModel}/>;
-                } else {
-                    return null;
                 }
+                return null;
             }
             case productItemType.coupons: {
                 return <ProductDetailCouponsView productDetailCouponsViewModel={productDetailCouponsViewModel}
@@ -325,6 +365,8 @@ export default class ProductDetailPage extends BasePage {
             priceTypeTextList, monthSaleCount
         } = this.productDetailModel;
         const { couponId } = this.params;
+        const isDuiHuang = this.params.type === '9';
+        const htmlUrl = `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}&couponId=${couponId}&type=${this.params.type}`;
         return <View style={styles.container}>
             <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
             <ProductDetailNavView productDetailModel={this.productDetailModel}
@@ -361,19 +403,19 @@ export default class ProductDetailPage extends BasePage {
                                 titleStr: `${name}`,
                                 priceType: priceTypeTextList,
                                 priceStr: `￥${originalPrice}`,
-                                retailPrice: `￥${productIsPromotionPrice ? promotionMinPrice : v0Price}`,
+                                retailPrice: isDuiHuang ? '付邮免费领' : `￥${productIsPromotionPrice ? promotionMinPrice : v0Price}`,
                                 shareMoney: shareMoney,
                                 spellPrice: `￥${groupPrice}`,
-                                QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}&couponId=${couponId}`
+                                QRCodeStr: htmlUrl
                             }}
                             webJson={{
                                 title: nameShareText.name,
                                 dec: nameShareText.desc,
-                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}&couponId=${couponId}`,
+                                linkUrl: htmlUrl,
                                 thumImage: imgUrl
                             }}
                             taskShareParams={{
-                                uri: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}&couponId=${couponId}`,
+                                uri: htmlUrl,
                                 code: IntervalMsgType.productDetail,
                                 data: prodCode
                             }}/>

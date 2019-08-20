@@ -45,6 +45,9 @@
 
 - (CGFloat)aspectRatio
 {
+  if (_aspectRatio !=0) {
+    return _aspectRatio;
+  }
   CGFloat width = 1.0;
   CGFloat height = 1.0;
   if(self.showType&&self.showType == 3){
@@ -66,8 +69,8 @@
       height = [[self.resource[0] valueForKey:@"height"]floatValue];
     }
   }
-
-  return width / height;
+  _aspectRatio = width / height;
+  return _aspectRatio;
 }
 
 - (NSString *)showImage
@@ -93,6 +96,9 @@
 }
 
 - (CGFloat)aspectRatio_show{
+  if (_aspectRatio_show !=0) {
+    return _aspectRatio_show;
+  }
   CGFloat aspectRatio = self.aspectRatio;
 //  if(self.showType&&self.showType==3){
 //      CGFloat type1 = 9/16.0;
@@ -113,6 +119,7 @@
 //    return aspectRatio;
 //
 //  }else{
+  
     CGFloat minRatio = 120 / 167.0;
     CGFloat maxRatio = 240 / 167.0;
     if (aspectRatio < minRatio) {
@@ -122,7 +129,8 @@
     if (aspectRatio > maxRatio) {
       aspectRatio = maxRatio;
     }
-    return aspectRatio;
+    _aspectRatio_show = aspectRatio;
+    return _aspectRatio_show;
 //  }
   
 }
@@ -133,5 +141,18 @@
    return [_userInfoVO.userImg  getUrlAndWidth:30 height:30];
   }
   return @"";
+}
+
+- (CGFloat)titleHeight
+{
+  if (!_pureContent_1 || _pureContent_1.length == 0) {
+    return 0;
+  }
+  if (_titleHeight) {
+    return _titleHeight;
+  }
+   CGFloat width = (kScreenWidth - 20 -10)/2.0;
+  _titleHeight = [_pureContent_1 getHeightWithFontSize:13 viewWidth:width - 20 maxLineCount:2];
+  return _titleHeight;
 }
 @end

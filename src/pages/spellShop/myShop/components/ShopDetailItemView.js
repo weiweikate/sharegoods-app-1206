@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Image, FlatList, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { FlatList, Image, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import { MRText } from '../../../../components/ui';
 import UIImage from '@mr/image-placeholder';
 import DesignRule from '../../../../constants/DesignRule';
@@ -7,7 +7,7 @@ import shopRes from '../../res';
 import LinearGradient from 'react-native-linear-gradient';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import { observer } from 'mobx-react';
-import { routePush } from '../../../../navigation/RouterMap';
+import RouterMap, { routePush } from '../../../../navigation/RouterMap';
 import { homeModule } from '../../../home/model/Modules';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
 import CommShareModal from '../../../../comm/components/CommShareModal';
@@ -17,7 +17,6 @@ import spellStatusModel from '../../model/SpellStatusModel';
 import bridge from '../../../../utils/bridge';
 import { getSource } from '@mr/image-placeholder/oos';
 import { getSize } from '../../../../utils/OssHelper';
-import RouterMap from '../../../../navigation/RouterMap';
 
 const { myShop } = shopRes;
 const { shopProduct, shopProductShare, shop_card } = myShop;
@@ -289,7 +288,7 @@ class ShopDetailImageView extends Component {
             return null;
         }
         return <TouchableWithoutFeedback onPress={onPress}>
-            <Image source={getSource({ uri: item }, ScreenUtils.width, height, 'lfit')}
+            <Image source={getSource({ uri: item }, width, height, 'lfit')}
                    style={{ width, height }}/>
         </TouchableWithoutFeedback>;
     }

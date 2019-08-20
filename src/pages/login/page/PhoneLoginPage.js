@@ -73,28 +73,34 @@ export default class PhoneLoginPage extends BasePage {
         }
         // 号码认证
         this.$loadingShow();
-        getVerifyToken().then((data => {
-            // token去服务端号码认证，认证通过登录成功
-            let { navigation } = this.props;
-            oneClickLoginValidation(data, this.state.phoneNum, navigation, () => {
-                this.$loadingDismiss();
-            }, (code) => {
+        if (loginModel.authPhone) {
+            getVerifyToken().then((data => {
+                // token去服务端号码认证，认证通过登录成功
+                let { navigation } = this.props;
+                oneClickLoginValidation(data, this.state.phoneNum, navigation, () => {
+                    this.$loadingDismiss();
+                }, (code) => {
+                    // 认证失败，
+                    this.$loadingDismiss();
+                    if (code === 34014) {
+                        /*微信号已经其他手机号绑定*/
+                        return;
+                    }
+                    loginModel.savePhoneNumber(this.state.phoneNum);
+                    routeNavigate(RouterMap.LoginVerifyCodePage, { ...this.params, phoneNum: this.state.phoneNum });
+                }, { popNumber: 2, wxData: this.params.wxData });
+                // 如果没有绑定微信，绑定微信
+            })).catch(e => {
                 // 认证失败，
                 this.$loadingDismiss();
-                if (code === 34014) {
-                    /*微信号已经其他手机号绑定*/
-                    return;
-                }
                 loginModel.savePhoneNumber(this.state.phoneNum);
                 routeNavigate(RouterMap.LoginVerifyCodePage, { ...this.params, phoneNum: this.state.phoneNum });
-            }, { popNumber: 2, wxData: this.params.wxData });
-            // 如果没有绑定微信，绑定微信
-        })).catch(e => {
-            // 认证失败，
+            });
+        } else {
             this.$loadingDismiss();
             loginModel.savePhoneNumber(this.state.phoneNum);
             routeNavigate(RouterMap.LoginVerifyCodePage, { ...this.params, phoneNum: this.state.phoneNum });
-        });
+        }
     };
 
     _render() {

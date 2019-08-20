@@ -20,7 +20,9 @@ function _renderTips(tips, failProduct){
                                 paddingVertical: 3,
                                 color: DesignRule.mainColor,
                                 marginVertical: 2.5,
-                                backgroundColor: !failProduct?'rgba(255,0,80,0.1)': 'white'
+                                backgroundColor: !failProduct?'rgba(255,0,80,0.1)': 'white',
+                                borderRadius: 4,
+                                overflow: 'hidden'
                             }}>
                                 {item}
                             </Text>

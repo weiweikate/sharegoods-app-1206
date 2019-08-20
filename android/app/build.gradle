@@ -21,8 +21,8 @@ android {
         applicationId rootProject.ext.android.applicationId
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
-        versionCode 2001
-        versionName "2.0.1"
+        versionCode 2002
+        versionName "2.0.2"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -207,9 +207,9 @@ dependencies {
 
     implementation 'com.aliyun.video.android:svideosnap:3.10.5'//短视频基础版SDK必须依赖
     implementation 'com.aliyun.video.android:core:1.2.0' //核心库必须依赖
-    implementation  'com.alivc.conan:AlivcConan:0.9.5'//核心库必须依赖
-    implementation  'com.aliyun.video.android:AlivcSvideoFFmpeg:1.0.1'//必须依赖
-    implementation  'com.aliyun.video.android:upload:1.5.2'// 上传库,如不需要上传可不依赖
+    implementation 'com.alivc.conan:AlivcConan:0.9.5'//核心库必须依赖
+    implementation 'com.aliyun.video.android:AlivcSvideoFFmpeg:1.0.1'//必须依赖
+    implementation 'com.aliyun.video.android:upload:1.5.2'// 上传库,如不需要上传可不依赖
     implementation 'com.google.code.gson:gson:2.8.2'
     implementation 'com.aliyun.video.android:upload:1.5.2'
     implementation 'com.aliyun.dpa:oss-android-sdk:+'

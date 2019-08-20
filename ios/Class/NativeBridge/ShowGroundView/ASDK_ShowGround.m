@@ -118,7 +118,7 @@
   footer.triggerAutomaticallyRefreshPercent = -10;
   [footer setTitle:@"上拉加载" forState:MJRefreshStateIdle];
   [footer setTitle:@"正在加载 ..." forState:MJRefreshStateRefreshing];
-  [footer setTitle:@"我也是有底线" forState:MJRefreshStateNoMoreData];
+  [footer setTitle:@"我也是有底线的~" forState:MJRefreshStateNoMoreData];
   footer.stateLabel.font = [UIFont systemFontOfSize:11];
   footer.stateLabel.textColor = [UIColor colorWithRed:144/255.f green:144/255.f blue:144/255.f alpha:1.0f];
   

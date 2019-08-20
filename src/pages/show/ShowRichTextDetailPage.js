@@ -308,7 +308,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 borderRadius: px2dp(14),
-                                marginRight: detail.status === 1 ? px2dp(20) : px2dp(15)
+                                marginRight: detail.status === 1 ? 0 : px2dp(15)
                             }}>
                             <Text style={{ color: DesignRule.white, fontSize: DesignRule.fontSize_threeTitle }}>
                                 {attentionText}
@@ -320,7 +320,7 @@ export default class ShowRichTextDetailPage extends BasePage {
                             justifyContent: 'center',
                             borderRadius: px2dp(14),
                             backgroundColor: '#FFF5CC',
-                            marginRight: detail.status === 1 ? px2dp(20) : px2dp(15)
+                            marginRight: detail.status === 1 ? 0 : px2dp(15)
                         }}>
                             <Text style={{ color: '#FF9502', fontSize: DesignRule.fontSize_threeTitle }}>
                                 {attentionText}
@@ -843,6 +843,7 @@ export default class ShowRichTextDetailPage extends BasePage {
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             {detail ?
                 <CommShowShareModal ref={(ref) => this.shareModal = ref}
+                                    shareName={detail && detail.userInfoVO && detail.userInfoVO.userName}
                                     type={ShareUtil.showSharedetailDataType(detail && detail.showType)}
                                     trackEvent={trackEvent.XiuChangShareClick}
                                     trackParmas={{
@@ -1048,10 +1049,11 @@ let styles = StyleSheet.create({
         justifyContent: 'center'
     },
     shareView: {
-        width: px2dp(50),
+        width: px2dp(30),
         height: px2dp(44),
-        alignItems: 'center',
-        justifyContent: 'center'
+        alignItems: 'flex-end',
+        justifyContent: 'center',
+        marginRight:px2dp(15)
     },
     titleView: {
         flex: 1,

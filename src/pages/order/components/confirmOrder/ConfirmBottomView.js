@@ -23,7 +23,7 @@ export default class ConfirmBottomView extends Component {
                     <View
                         style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', flex: 1 }}>
                         <UIText value={'应付款：'} style={{
-                            fontSize: ScreenUtils.px2dp(15),
+                            fontSize: ScreenUtils.px2dp(12),
                             color: DesignRule.textColor_mainTitle
                         }}/>
                         <UIText

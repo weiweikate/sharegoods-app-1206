@@ -2,20 +2,11 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 
-import {
-    View,
-    StyleSheet,
-    TouchableOpacity,
-    ListView,
-    RefreshControl,
-    BackHandler
-} from 'react-native';
+import { BackHandler, Image, ListView, RefreshControl, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { SwipeListView } from '../../../components/ui/react-native-swipe-list-view';
 import BasePage from '../../../BasePage';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import {
-    UIText
-} from '../../../components/ui/index';
+import { MRText, UIText } from '../../../components/ui/index';
 import shopCartStore from '../model/ShopCartStore';
 import shopCartCacheTool from '../model/ShopCartCacheTool';
 import DesignRule from '../../../constants/DesignRule';
@@ -26,8 +17,10 @@ import RouterMap from '../../../navigation/RouterMap';
 import { TrackApi } from '../../../utils/SensorsTrack';
 import BottomMenu from '../components/BottomMenu';
 import { shopCartEmptyModel } from '../model/ShopCartEmptyModel';
+import res from '../res';
 
 const { px2dp } = ScreenUtils;
+const { shopCartNoGoods } = res;
 
 
 @observer
@@ -62,6 +55,9 @@ export default class ShopCartPage extends BasePage {
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
                 this.pageFocus = true;
                 shopCartCacheTool.getShopCartGoodsListData();
+                if (shopCartEmptyModel.firstLoad || shopCartEmptyModel.emptyViewList.length === 0) {
+                    shopCartEmptyModel.getRecommendProducts(true);
+                }
             }
         );
         this.willBlurSubscription = this.props.navigation.addListener(
@@ -86,7 +82,7 @@ export default class ShopCartPage extends BasePage {
 
     handleBackPress = () => {
         if (this.$navigationBarOptions.leftNavItemHidden) {
-            this.$navigateBackToHome()
+            this.$navigateBackToHome();
             return true;
         } else {
             return false;
@@ -103,6 +99,17 @@ export default class ShopCartPage extends BasePage {
     }
 
     _renderEmptyView = () => {
+        const { emptyViewList } = shopCartEmptyModel;
+        if (emptyViewList && emptyViewList.length === 0) {
+            return <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                <Image source={shopCartNoGoods} style={{ width: px2dp(244), height: px2dp(140) }}/>
+                <MRText style={{
+                    fontSize: px2dp(13),
+                    color: 'rgba(153, 153, 153, 1)',
+                    marginTop: px2dp(5)
+                }}>购物车竟然是空的</MRText>
+            </View>;
+        }
         return (
             <ShopCartEmptyView
                 navigateToHome={this.$navigate}

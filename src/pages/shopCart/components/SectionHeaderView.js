@@ -13,7 +13,7 @@
 'use strict';
 import { observer } from 'mobx-react';
 import React, { Component } from 'react';
-import { View, StyleSheet, Alert, Text } from 'react-native';
+import { ActivityIndicator, Alert, StyleSheet, Text, View } from 'react-native';
 import { MRText, UIText } from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -29,19 +29,21 @@ import { TrackApi } from '../../../utils/SensorsTrack';
 const { px2dp } = ScreenUtils;
 const section_width = ScreenUtils.width - px2dp(30);
 
-
 const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={{
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    height: 50,
-    width: section_width
+    height: 50
 }}>
+    <ActivityIndicator style={{ marginRight: 6 }} animating={errorMsg ? false : (isEnd ? false : true)} size={'small'}
+                       color={DesignRule.mainColor}/>
     <Text style={{
         color: DesignRule.textColor_instruction,
         fontSize: DesignRule.fontSize_24
     }}
-          allowFontScaling={false}>{errorMsg ? errorMsg : (isEnd ? '我也是有底线的' : (isFetching ? '加载中...' : '加载更多'))}</Text>
+          allowFontScaling={false}>{errorMsg ? errorMsg : (isEnd ? '我也是有底线的~' : (isFetching ? '加载中...' : '加载更多中...'))}</Text>
 </View>;
+
 @observer
 export default class SectionHeaderView extends Component {
 
@@ -86,6 +88,9 @@ export default class SectionHeaderView extends Component {
         });
         //删除头部视图
         viewItemList.shift();
+        if (viewItemList && viewItemList.length === 0) {
+            return null;
+        }
         return (
             <View style={{
                 width: section_width,
@@ -102,10 +107,12 @@ export default class SectionHeaderView extends Component {
                         borderRadius: px2dp(1),
                         backgroundColor: '#FF0050'
                     }}/>
-                    <MRText style={{ marginLeft: px2dp(5), fontSize: px2dp(16) }}>为你推荐</MRText>
+                    <MRText style={{ marginLeft: px2dp(5), fontSize: px2dp(16),fontWeight: '600' }}>为你推荐</MRText>
                 </View>
                 {viewItemList}
-                <Footer isEnd={true}/>
+                <Footer isFetching={shopCartEmptyModel.isFetching}
+                        errorMsg={shopCartEmptyModel.errorMsg}
+                        isEnd={shopCartEmptyModel.isEnd}/>
             </View>
         );
     };

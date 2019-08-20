@@ -234,7 +234,6 @@ export default class ReleaseNotesPage extends BasePage {
                                 this.$toastShow('上传失败');
                                 this.$loadingDismiss();
                             })
-
                         }).catch((error) => {
                             this.$toastShow(error.msg);
                             this.$loadingDismiss();
@@ -243,13 +242,15 @@ export default class ReleaseNotesPage extends BasePage {
                         this.$toastShow('上传失败');
                         this.$loadingDismiss();
                     }
+                },()=>{
+                    this.$toastShow('上传失败');
+                    this.$loadingDismiss();
                 });
             }).catch((error)=>{
                 this.$loadingDismiss();
                 this.$toastShow('发布失败');
             })
         } else {
-
 
             this.$loadingShow('发布中');
             ShowApi.getShowVideoToken({
@@ -294,6 +295,9 @@ export default class ReleaseNotesPage extends BasePage {
                         this.$toastShow('上传失败');
                         this.$loadingDismiss();
                     }
+                },()=>{
+                    this.$toastShow('上传失败');
+                    this.$loadingDismiss();
                 });
             }).catch((error)=>{
                 this.$loadingDismiss();
@@ -737,7 +741,8 @@ var styles = StyleSheet.create({
     },
     noteContain: {
         backgroundColor: DesignRule.white,
-        width: DesignRule.width
+        width: DesignRule.width,
+        marginBottom:px2dp(20)
     },
     textInputStyle: {
         width: DesignRule.width - 2 * DesignRule.margin_page,
@@ -769,7 +774,7 @@ var styles = StyleSheet.create({
     },
     addProductWrapper: {
         alignItems: 'center',
-        marginTop: px2dp(11),
+        marginTop: px2dp(-4),
         marginBottom: px2dp(20),
         marginLeft: DesignRule.margin_page,
         alignSelf: 'flex-start',
@@ -825,7 +830,8 @@ var styles = StyleSheet.create({
     },
     validProductImg: {
         width: px2dp(60),
-        height: px2dp(60)
+        height: px2dp(60),
+        borderRadius:px2dp(5)
     },
     itemTitle: {
         color: DesignRule.textColor_mainTitle,

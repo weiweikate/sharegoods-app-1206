@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, ImageBackground } from 'react-native';
+import { Image, ImageBackground, StyleSheet, View } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import LottieView from 'lottie-react-native';
-
-const { px2dp } = ScreenUtils;
 import res from '../../res';
 import StringUtils from '../../../../utils/StringUtils';
-import {
-    MRText as Text
-} from '../../../../components/ui';
+import { MRText as Text } from '../../../../components/ui';
+
+const { px2dp } = ScreenUtils;
 
 
 const CCZImg = res.myShop.ccz_03;
@@ -67,6 +65,7 @@ export default class ShopHeaderBonus extends Component {
                                                 width: px2dp(60),
                                                 height: px2dp(60)
                                             }}
+                                            enableMergePathsAndroidForKitKatAndAbove={true}
                                             imageAssetsFolder={'lottie/spellShop'}
                                             source={require('./animation_money.json')}
                                             loop/>
@@ -79,7 +78,7 @@ export default class ShopHeaderBonus extends Component {
                                 style={{ color: DesignRule.textColor_mainTitle }}>元待分红</Text></Text>
                         </View>
 
-                        <View style = {{flex:1}}>
+                        <View style={{ flex: 1 }}>
                             <View style={{ justifyContent: 'space-between', flex: 1 }}>
                                 <Text style={{
                                     fontSize: 12,

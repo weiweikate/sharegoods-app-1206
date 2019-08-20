@@ -14,7 +14,6 @@ import { AutoHeightImage } from '../../../components/ui/AutoHeightImage';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import SuitExplainModal from './components/SuitExplainModal';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
-import StringUtils from '../../../utils/StringUtils';
 import res from '../res/product';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import { trackEvent } from '../../../utils/SensorsTrack';
@@ -86,11 +85,8 @@ export default class SuitProductPage extends BasePage {
     };
 
     setNav = autorun(() => {
-        const { packageItem, isSuitFixed } = this.suitProductModel;
-        const { content } = packageItem;
-        if (isSuitFixed && StringUtils.isNoEmpty(content)) {
-            this.$NavigationBarResetTitle(content);
-        }
+        const { activityName } = this.suitProductModel;
+        this.$NavigationBarResetTitle(activityName || '优惠套装');
     });
 
     _bottomAction = () => {
@@ -151,12 +147,12 @@ export default class SuitProductPage extends BasePage {
     _selectSkuWithSelectionPage = (productItem, changeItem) => {
         this.SelectionPage.show(productItem, (amount, skuCode, skuItem) => {
             changeItem(amount, skuCode, skuItem);
-        }, { unShowAmount: true });
+        }, { unShowAmount: true, needUpdate: true });
     };
 
     _render() {
         const { packageIndex, productCode } = this.params;
-        const { suitProducts, packageItem, afterSaleLimitText, priceRetailTotal, priceTotal } = this.suitProductModel;
+        const { suitProducts, packageItem, afterSaleLimitText, priceRetailTotal, priceTotal, totalShareMoney } = this.suitProductModel;
         const totalProduct = suitProducts || [];
         const { image, afterSaleTip, shareContent } = packageItem;
         const htmlUrl = `${apiEnvironment.getCurrentH5Url()}/package-product?spucode=${productCode}&upuserid=${user.code || ''}&index=${packageIndex}`;
@@ -201,7 +197,7 @@ export default class SuitProductPage extends BasePage {
                                     priceType: [],
                                     priceStr: `￥${priceTotal}`,
                                     QRCodeStr: htmlUrl,
-                                    shareMoney: '',
+                                    shareMoney: totalShareMoney + '',
                                     spellPrice: ''
                                 }}
                                 webJson={{
