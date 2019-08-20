@@ -12,6 +12,7 @@ import BasePage from '../../../../BasePage';
 import DesignRule from '../../../../constants/DesignRule';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import { MRText } from '../../../../components/ui';
+import DateUtils from '../../../../utils/DateUtils';
 
 const { px2dp } = ScreenUtils;
 
@@ -22,10 +23,13 @@ export default class WithdrawRecordDetailPage extends BasePage {
 
     $navigationBarOptions = {
         title: '提现详情',
+        headerStyle:{
+            borderBottomWidth:0
+        },
         show: true // false则隐藏导航
     };
 
-    _renderRow=(key,value,top=DesignRule.onePixel)=>{
+    _renderRow=(key,value,top=1)=>{
         return(
             <View style={[styles.rowWrapper,{ marginTop: top}]}>
                 <MRText style={styles.keyStyle}>
@@ -39,20 +43,21 @@ export default class WithdrawRecordDetailPage extends BasePage {
     }
 
     _render() {
+        const  {applyTime,cardNo,withdrawBalance,withdrawRemark,bankName,withdrawNum}  =this.params;
         return (
             <View style={{ flex: 1 }}>
                 <View style={styles.headerWrapper}>
                     <MRText style={styles.numStyle}>
-                        ￥100
+                        {`￥${withdrawBalance}`}
                     </MRText>
                     <MRText style={styles.tipStyle}>
-                        申请中
+                        {withdrawRemark}
                     </MRText>
                 </View>
-                {this._renderRow('申请时间','2019-8-9')}
-                {this._renderRow('银行卡号','2019-8-9')}
-                {this._renderRow('所属银行','2019-8-9')}
-                {this._renderRow('申请单号','2019-8-9')}
+                {this._renderRow('申请时间',DateUtils.formatDate(applyTime),px2dp(10))}
+                {this._renderRow('银行卡号',cardNo)}
+                {this._renderRow('所属银行',bankName)}
+                {this._renderRow('申请单号',withdrawNum)}
             </View>
         );
     }
@@ -60,7 +65,7 @@ export default class WithdrawRecordDetailPage extends BasePage {
 
 var styles = StyleSheet.create({
     headerWrapper: {
-        background: DesignRule.white,
+        backgroundColor: DesignRule.white,
         height: px2dp(138),
         justifyContent:'center',
         alignItems:'center'
@@ -81,7 +86,7 @@ var styles = StyleSheet.create({
         justifyContent:'space-between',
         alignItems:'center',
         paddingHorizontal:DesignRule.margin_page,
-        background:DesignRule.white
+        backgroundColor:DesignRule.white
     },
     keyStyle:{
         color:DesignRule.textColor_instruction,

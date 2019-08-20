@@ -9,6 +9,7 @@ import ProfileEditPage from './ProfileEditPage';
 import GongMallContractPage from './GongMallContractPage';
 import SetWechatPage from './SetWechatPage';
 import WithdrawRecordPage from './WithdrawRecordPage';
+import WithdrawRecordDetailPage from './WithdrawRecordDetailPage';
 
 
 
@@ -25,6 +26,7 @@ export default {
         ProfileEditPage,
         GongMallContractPage,
         SetWechatPage,
-        WithdrawRecordPage
+        WithdrawRecordPage,
+        WithdrawRecordDetailPage
     }
 };
