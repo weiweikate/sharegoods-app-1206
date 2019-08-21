@@ -93,7 +93,8 @@ export default class MyCouponsItems extends Component {
                             canInvoke: true,
                             invokeData: data
                         });
-                    }).catch(error => {
+                    }).catch((error) => {
+                    bridge.$toast(error.msg);
                     this.setState({
                         showDialogModal: false,
                         canInvoke: false,

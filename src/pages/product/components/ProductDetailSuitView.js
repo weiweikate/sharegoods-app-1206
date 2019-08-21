@@ -15,6 +15,7 @@ import { observable } from 'mobx';
 import StringUtils from '../../../utils/StringUtils';
 import res from '../res/product';
 import user from '../../../model/user';
+import LinearGradient from 'react-native-linear-gradient';
 
 const { suitSaleOut } = res.suitProduct;
 const { px2dp } = ScreenUtils;
@@ -24,9 +25,8 @@ export const suitType = {
     fixedSuit: '11',
     chooseSuit: '12'
 };
-/*
-* 公用图片文字item
-* */
+
+/**老礼包**/
 const SuitItemView = ({ imgUrl, name, promotionDecreaseAmount, price, pushCallback }) => {
     return (
         <View style={suitItemStyle.item}>
@@ -66,7 +66,6 @@ const suitItemStyle = StyleSheet.create({
     }
 });
 
-/**老礼包**/
 export class ProductDetailSuitGiftView extends Component {
     _renderItem = ({ item }) => {
         const { imgUrl, name, skuList } = item;
@@ -122,6 +121,7 @@ const SuitGiftStyles = StyleSheet.create({
     }
 });
 
+/**固定套餐**/
 const SuitFixedView = ({ mainProduct, subProducts, itemIndex, pushCallback }) => {
     const productList = [mainProduct, ...(subProducts || [])];
     let suitPrice = 0, dePrice = 0;
@@ -183,7 +183,7 @@ const fixedStyles = StyleSheet.create({
     }
 });
 
-/**固定套餐**/
+
 export class ProductDetailSuitFixedView extends Component {
     _goSuitPage = (packageIndex) => {
         if (!user.isLogin) {
@@ -238,53 +238,53 @@ const SuitFixedStyles = StyleSheet.create({
     }
 });
 
-// /**搭配套餐**/
-//
-// const SuitItemView = ({ imgUrl, name, promotionDecreaseAmount, price, pushCallback, totalStock }) => {
-//     return (
-//         <View style={suitItemStyle.item}>
-//             <NoMoreClick onPress={pushCallback}>
-//                 <UIImage style={suitItemStyle.itemImg} source={{ uri: imgUrl }}>
-//                     {
-//                         totalStock < 1 &&
-//                         <Image source={suitSaleOut} style={{ height: px2dp(60), width: px2dp(60) }}/>
-//                     }
-//                     <LinearGradient style={suitItemStyle.subView}
-//                                     start={{ x: 0, y: 0 }}
-//                                     end={{ x: 1, y: 0 }}
-//                                     colors={['#FC5D39', '#FF0050']}>
-//                         <MRText style={suitItemStyle.subText}>{promotionDecreaseAmount}</MRText>
-//                     </LinearGradient>
-//                 </UIImage>
-//             </NoMoreClick>
-//             <MRText style={suitItemStyle.itemText}
-//                     numberOfLines={1}>{name}</MRText>
-//             <MRText style={suitItemStyle.itemPrice}>{price}</MRText>
-//         </View>
-//     );
-// };
-//
-// const suitItemStyle = StyleSheet.create({
-//     item: {
-//         width: px2dp(100) + 5
-//     },
-//     itemImg: {
-//         overflow: 'hidden', justifyContent: 'center', alignItems: 'center',
-//         width: px2dp(100), height: px2dp(100), borderRadius: 5
-//     },
-//     subView: {
-//         position: 'absolute', bottom: 0, right: 3, borderRadius: 3
-//     },
-//     subText: {
-//         color: DesignRule.white, fontSize: 10, paddingHorizontal: 4, paddingVertical: 2
-//     },
-//     itemText: {
-//         color: DesignRule.textColor_secondTitle, fontSize: 12, paddingTop: 5
-//     },
-//     itemPrice: {
-//         color: DesignRule.textColor_redWarn, fontSize: 12, paddingBottom: 10
-//     }
-// });
+/**搭配套餐**/
+
+const SuitItemCView = ({ imgUrl, name, promotionDecreaseAmount, price, pushCallback, totalStock }) => {
+    return (
+        <View style={suitItemCStyle.item}>
+            <NoMoreClick onPress={pushCallback}>
+                <UIImage style={suitItemCStyle.itemImg} source={{ uri: imgUrl }}>
+                    {
+                        totalStock < 1 &&
+                        <Image source={suitSaleOut} style={{ height: px2dp(60), width: px2dp(60) }}/>
+                    }
+                    <LinearGradient style={suitItemCStyle.subView}
+                                    start={{ x: 0, y: 0 }}
+                                    end={{ x: 1, y: 0 }}
+                                    colors={['#FC5D39', '#FF0050']}>
+                        <MRText style={suitItemCStyle.subText}>{promotionDecreaseAmount}</MRText>
+                    </LinearGradient>
+                </UIImage>
+            </NoMoreClick>
+            <MRText style={suitItemCStyle.itemText}
+                    numberOfLines={1}>{name}</MRText>
+            <MRText style={suitItemCStyle.itemPrice}>{price}</MRText>
+        </View>
+    );
+};
+
+const suitItemCStyle = StyleSheet.create({
+    item: {
+        width: px2dp(100) + 5
+    },
+    itemImg: {
+        overflow: 'hidden', justifyContent: 'center', alignItems: 'center',
+        width: px2dp(100), height: px2dp(100), borderRadius: 5
+    },
+    subView: {
+        position: 'absolute', bottom: 0, right: 3, borderRadius: 3
+    },
+    subText: {
+        color: DesignRule.white, fontSize: 10, paddingHorizontal: 4, paddingVertical: 2
+    },
+    itemText: {
+        color: DesignRule.textColor_secondTitle, fontSize: 12, paddingTop: 5
+    },
+    itemPrice: {
+        color: DesignRule.textColor_redWarn, fontSize: 12, paddingBottom: 10
+    }
+});
 
 export class ProductDetailSuitChooseView extends Component {
     _renderItem = ({ item, index }) => {
@@ -308,7 +308,7 @@ export class ProductDetailSuitChooseView extends Component {
             price: `¥${minPrice || ''}`,
             pushCallback: this._goSuitPage.bind(this, index)
         };
-        return <SuitItemView {...props}/>;
+        return <SuitItemCView {...props}/>;
     };
 
     _goSuitPage = (packageIndex) => {

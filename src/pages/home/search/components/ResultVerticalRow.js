@@ -35,7 +35,14 @@ export default class ResultVerticalRow extends Component {
 
     render() {
         const { isActivity } = this.props;
-        let { minPrice, promotionMinPrice, imgUrl, name, monthSaleCount, orderOnProduct } = this.props.itemData || {};
+        let { minPrice, promotionMinPrice, imgUrl, name, monthSaleCount, orderOnProduct, type, skuList } = this.props.itemData || {};
+        let isHuaFei = false;
+        if (type === 3) {
+            const { assetsBind } = skuList[0] || {};
+            if ((assetsBind || {}).assetsType === 'TELEPHONE_CHARGE') {
+                isHuaFei = true;
+            }
+        }
         return (
             <TouchableWithoutFeedback onPress={() => {
                 this.props.onPressAtIndex(this.props.itemData || {});
@@ -58,7 +65,7 @@ export default class ResultVerticalRow extends Component {
                                 </Text>
                             </View>
                         </View>
-                        {orderOnProduct === 1 && <TouchableWithoutFeedback onPress={() => {
+                        {orderOnProduct === 1 && !isHuaFei && <TouchableWithoutFeedback onPress={() => {
                             this.props.storeProduct(this.props.itemData);
                         }}>
                             <View style={{

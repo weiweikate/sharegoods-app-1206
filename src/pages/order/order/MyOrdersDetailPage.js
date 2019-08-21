@@ -7,7 +7,7 @@ import {
     ScrollView, Text, Alert, DeviceEventEmitter
 } from 'react-native';
 import BasePage from '../../../BasePage';
-import { NoMoreClick, UIText } from '../../../components/ui';
+import { MRText, NoMoreClick, UIText } from '../../../components/ui';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import GoodsDetailItem from '../components/GoodsDetailItem';
@@ -29,11 +29,10 @@ import OrderDetailTimeView from '../components/orderDetail/OrderDetailTimeView';
 import OrderDetailBottomButtonView from '../components/orderDetail/OrderDetailBottomButtonView';
 import { orderDetailModel, assistDetailModel } from '../model/OrderDetailModel';
 import { observer } from 'mobx-react';
-import GiftHeaderView from '../components/orderDetail/GiftHeaderView';
 import { SmoothPushPreLoadHighComponent } from '../../../comm/components/SmoothPushHighComponent';
 import { GetAfterBtns, checkOrderAfterSaleService, judgeProduceIsContainActivityTypes } from './OrderType';
 import CancelProdectsModal from '../components/orderDetail/CancelProdectsModal';
-import { backToHome } from '../../../navigation/RouterMap';
+import { backToHome, routePush } from '../../../navigation/RouterMap';
 import RouterMap from '../../../navigation/RouterMap';
 
 const buyerHasPay = res.buyerHasPay;
@@ -237,17 +236,25 @@ export default class MyOrdersDetailPage extends BasePage {
         );
     };
     renderItem = (item, index ) => {
+        let resource = item.resource || {}
+        let resourceType = resource.resourceType;
+        let isPhoneGood = false
+        let category = item.spec
+        if (resourceType === 'TELEPHONE_CHARGE'){
+            category = '充值号码：' + orderDetailModel.receiveInfo.receiverPhone
+            isPhoneGood = true;
+        }
         return (
             <GoodsDetailItem
                 uri={item.specImg}
                 goodsName={item.productName}
                 salePrice={StringUtils.formatMoneyString(item.unitPrice, false)}
-                category={item.spec}
+                category={category}
                 goodsNum={item.quantity}
                 activityCodes={item.activityList || []}
                 style={{ backgroundColor: 'white' }}
                 clickItem={() => {
-                    this.clickItem(item);
+                    this.clickItem(item, isPhoneGood);
                 }}
                 afterSaleService={GetAfterBtns(item)}
                 afterSaleServiceClick={(menu) => this.afterSaleServiceClick(menu, item)}
@@ -257,9 +264,16 @@ export default class MyOrdersDetailPage extends BasePage {
     };
     renderHeader = () => {
         return (
-            <View>
+            <View style={{marginBottom: 10}}>
                 {this.renderState()}
-                <GiftHeaderView/>
+                {orderDetailModel.isPhoneOrder?
+                    <View style={{backgroundColor: 'white', height: ScreenUtils.autoSizeWidth(40), justifyContent: 'center'}}>
+                        <MRText style={{color: DesignRule.textColor_mainTitle,
+                            fontSize: DesignRule.fontSize_threeTitle_28,
+                            marginLeft: ScreenUtils.autoSizeWidth(15)
+                        }}>{'充值号码:' + orderDetailModel.receiveInfo.receiverPhone}</MRText>
+                    </View> : null
+                }
             </View>
         );
     };
@@ -345,7 +359,11 @@ export default class MyOrdersDetailPage extends BasePage {
         orderDetailModel.loadDetailInfo(this.params.merchantOrderNo || this.params.orderNo || '');
     }
     //去商品详情
-    clickItem = (item) => {
+    clickItem = (item,isPhoneGood) => {
+        if(isPhoneGood){
+            routePush('HtmlPage',{uri: '/pay/virtual-product'})
+            return;
+        }
         // 2://降价拍
         // 3://礼包
         let activityData = judgeProduceIsContainActivityTypes(item, [2, 3])

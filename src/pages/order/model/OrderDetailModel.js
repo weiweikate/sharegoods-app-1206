@@ -20,6 +20,7 @@ class OrderDetailModel {
     @observable merchantOrderNo = ''
     @observable platformOrderNo = ''
     @observable isAllVirtual = true;
+    @observable isPhoneOrder = false;
     @observable loadingState = PageLoadingState.loading
 
     productsList() {
@@ -65,11 +66,17 @@ class OrderDetailModel {
         let menu =  [...GetViewOrderStatus(this.merchantOrder.status).menu_orderDetail];
         let hasAfterSaleService = checkOrderAfterSaleService(this.merchantOrder.productOrderList, this.merchantOrder.status, this.baseInfo.nowTime);
         let isAllVirtual = true;
+        let isPhoneOrder = true;
         this.merchantOrder.productOrderList.forEach((item) => {
             if (item.orderType != 1){
                 isAllVirtual = false;
             }
+
+            if ((item.resource || {}).resourceType !== 'TELEPHONE_CHARGE'){
+                isPhoneOrder = false;
+            }
         });
+        this.isPhoneOrder = isPhoneOrder;
 
         this.isAllVirtual = isAllVirtual;
 
@@ -90,6 +97,10 @@ class OrderDetailModel {
                 this.moreDetail = '';
                 this.sellerState = '';
                 this.buyState = '买家已付款';
+                if (isPhoneOrder){
+                    this.buyState = '等待发货';
+                    this.moreDetail = '注:充值1个工作日未到账，订单金额会原路退回';
+                }
                 break;
             }
             case OrderType.DELIVERED:
@@ -132,6 +143,16 @@ class OrderDetailModel {
                 this.moreDetail = cancelReason;
                 this.sellerState = '';
                 this.buyState = '交易关闭';
+                if (isPhoneOrder && !cancelReason){
+                  if (  this.merchantOrder.subStatus == 1){
+                      this.moreDetail = '系统超时关闭';
+                  } else if(this.merchantOrder.subStatus == 2){
+                      this.moreDetail = '你已取消该订单';
+                  }else {
+                      this.moreDetail = '充值失败，充值金额预计3-5个工作日退回到账';
+                  }
+
+                }
                 break;
             }
             default:
@@ -145,6 +166,10 @@ class OrderDetailModel {
                 return true;
             }
             if (item.operation === '查看物流' || item.operation === '确认收货') {
+                return false;
+            }
+
+            if (isPhoneOrder && item.operation === '再次购买') {
                 return false;
             }
             return true;

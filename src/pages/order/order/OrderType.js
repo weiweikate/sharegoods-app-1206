@@ -78,6 +78,16 @@ function GetAfterBtns(product) {
         return [];
     }
 
+    if (product.orderType == 1){
+        return [];
+    }
+    let { restrictions} = product
+    if (restrictions) {
+        if ((restrictions & 8) === 8) {
+            return [];
+        }
+    }
+
     let afterSale = product.afterSale || {}
     let {type, status} = afterSale;
     if (product.status === OrderType.CLOSED){
@@ -131,7 +141,7 @@ function checkOrderAfterSaleService(products = [], status, nowTime, isShowToast)
     let hasAfterSaleService = false;
 
     products.forEach((product) => {
-        let { restrictions, afterSaleEndTime ,afterSale, orderType } = product
+        let { restrictions, afterSaleEndTime ,afterSale, orderType} = product
         afterSale = afterSale || {};
         let afterStaus = afterSale.afterStaus;
         if (orderType == 1){
@@ -140,14 +150,26 @@ function checkOrderAfterSaleService(products = [], status, nowTime, isShowToast)
             }
             return;
         }
-        //礼包产品3  经验值专区商品5 只支持退换，不支持退款
-        if (restrictions === 1) {
-            if (status === OrderType.WAIT_DELIVER || status === OrderType.PAID){
-                if (isShowToast){
-                        bridge.$toast('该商品不能退款');
+        //SUPPORT_EXCHANGE(1, "售后仅支持换货"),
+        // SUPPORT_RETURN_REFUND(2, "售后仅支持退货退款"),
+        // SUPPORT_REFUND(4, "售后仅支持退款"),
+        // NO_SUPPORT_AFTER_SALES(8, "不支持售后"),
+
+        if (restrictions){
+            if ((restrictions & 8) === 8) {
+                if (isShowToast) {
+                    bridge.$toast('该商品不支持售后');
                 }
                 return;
             }
+
+            if (status === OrderType.WAIT_DELIVER || status === OrderType.PAID)
+                if ((restrictions & 4) !== 4) {
+                    if (isShowToast) {
+                        bridge.$toast('该商品不能退款');
+                    }
+                    return;
+                }
         }
         if (status === OrderType.COMPLETED && nowTime && afterSaleEndTime && afterSaleEndTime < nowTime && !(afterStaus<7 && afterStaus>=1)) {
             if (isShowToast){
