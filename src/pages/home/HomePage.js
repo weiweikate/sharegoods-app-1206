@@ -307,11 +307,13 @@ class HomeList extends React.Component {
     retouchHome = () => {
         if (homeTabManager.aboveRecommend) {
             this.recyclerListView && this.recyclerListView.scrollToTop(true);
+            homeTabManager.setAboveRecommend(false);
         }
     };
 
     scrollToTop = () => {
         this.recyclerListView && this.recyclerListView.scrollToTop(true);
+        homeTabManager.setAboveRecommend(false);
     }
     homeTypeRefresh = (type) => {
         let refreshTime = new Date().getTime();
