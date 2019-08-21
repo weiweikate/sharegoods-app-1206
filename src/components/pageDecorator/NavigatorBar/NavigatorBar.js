@@ -173,7 +173,7 @@ export default class NavigatorBar extends Component {
                 <Image
                     source={leftNavImage}
                     resizeMode={'stretch'}
-                    style={leftImageStyle}
+                    style={[{ width: 30, height: 30 }, leftImageStyle]}
                 />
             </TouchableOpacity>;
         }

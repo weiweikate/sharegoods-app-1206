@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, TouchableOpacity, ImageBackground } from 'react-native';
+import { Image, ImageBackground, StyleSheet, TouchableOpacity, View } from 'react-native';
 import ScreenUtil from '../../../utils/ScreenUtils';
-
-const { px2dp } = ScreenUtil;
 import user from '../../../model/user';
 import { observer } from 'mobx-react';
 import res from '../res/index';
@@ -10,6 +8,8 @@ import { MRText as Text } from '../../../components/ui/index';
 import { bannerModule } from '../model/HomeBannerModel';
 import { TrackApi } from '../../../utils/SensorsTrack';
 import RouterMap from '../../../navigation/RouterMap';
+
+const { px2dp } = ScreenUtil;
 
 @observer
 export default class HomeUserView extends Component {
@@ -44,7 +44,7 @@ export default class HomeUserView extends Component {
                 <View style={{ flex: 1 }}/>
                 <TouchableOpacity style={styles.acount} onPress={() => this._goToPromotionPage()}>
                     <Text style={styles.see} allowFontScaling={false}>查看账户</Text>
-                    <Image source={res.arrowRight}/>
+                    <Image source={res.button.arrow_right_black} style={{ width: 6, height: 10 }}/>
                     <View style={{ width: 10 }}/>
                 </TouchableOpacity>
             </ImageBackground>
