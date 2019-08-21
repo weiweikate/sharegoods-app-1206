@@ -14,7 +14,6 @@ import {MRText as Text, NoMoreClick} from '../../../../components/ui';
 import LinearGradient from 'react-native-linear-gradient';
 import user from '../../../../model/user';
 import {observer} from 'mobx-react';
-import OssHelper from '../../../../utils/OssHelper';
 import StringUtils from '../../../../utils/StringUtils';
 import {SmoothPushPreLoadHighComponentFirstDelay} from '../../../../comm/components/SmoothPushHighComponent';
 import RouterMap, {routeNavigate} from '../../../../navigation/RouterMap';
@@ -98,7 +97,7 @@ export default class MyHelperCenter extends BasePage {
                                 }
                                 <NoMoreClick style={styles.hotQuestionItemStyle}
                                              activeOpacity={0.6}
-                                             onPress={() => this.jumpToAllQuestionDetail(59)}
+                                             onPress={() => this.jumpToAllQuestionDetail(3)}
                                 >
                                     <UIText value={item.name}
                                             numberOfLines={1}
@@ -117,9 +116,19 @@ export default class MyHelperCenter extends BasePage {
             </View>
         );
     };
+    renderFeedBackButton = (type,icon,name)=>{
+        return (
+            <NoMoreClick activeOpacity={0.6}
+                         onPress={() => this.questionFeedBack(type)}
+                         style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
+            >
+                <Image source={icon} style={{width: 37, height: 37}}/>
+                <Text style={styles.textFontstyle} allowFontScaling={false}>{name}</Text>
+            </NoMoreClick>
+        )
+    }
     renderBodyView = () => {
-        let helperIcon = OssHelper('/app/bangzu_kefu.png');
-        console.log('renderBodyView', helperIcon);
+
         return (
             <View style={{flex: 1}}>
                 <ScrollView showsVerticalScrollIndicator={false}>
@@ -159,27 +168,9 @@ export default class MyHelperCenter extends BasePage {
                                     backgroundColor: 'white',
                                     borderRadius: 5,
                                 }}>
-                                    <NoMoreClick activeOpacity={0.6}
-                                                 onPress={() => this.questioneedBack(3)}
-                                                 style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
-                                    >
-                                        <Image source={icon_auto_feedback_2} style={{width: 37, height: 37}}/>
-                                        <Text style={styles.textFontstyle} allowFontScaling={false}>查看订单</Text>
-                                    </NoMoreClick>
-                                    <NoMoreClick activeOpacity={0.6}
-                                                 onPress={() => this.questioneedBack(2)}
-                                                 style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
-                                    >
-                                        <Image source={icon_feedback_2} style={{width: 37, height: 37}}/>
-                                        <Text style={styles.textFontstyle} allowFontScaling={false}>问题反馈</Text>
-                                    </NoMoreClick>
-                                    <NoMoreClick activeOpacity={0.6}
-                                                 onPress={() => this.questionfeedBack(1)}
-                                                 style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
-                                    >
-                                        <Image source={icon_tuikuan_2} style={{width: 37, height: 37}}/>
-                                        <Text style={styles.textFontstyle} allowFontScaling={false}>售后进度</Text>
-                                    </NoMoreClick>
+                                    {this.renderFeedBackButton(3,icon_auto_feedback_2,'查看订单')}
+                                    {this.renderFeedBackButton(2,icon_feedback_2,'问题反馈')}
+                                    {this.renderFeedBackButton(1,icon_tuikuan_2,'售后进度')}
                                 </View>
                             </View>
                         </View>
@@ -284,6 +275,11 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         paddingRight: 10,
+    },
+    textFontstyle: {
+        color:'#666666',
+        fontSize:13,
+        marginTop:4
     }
 });
 
