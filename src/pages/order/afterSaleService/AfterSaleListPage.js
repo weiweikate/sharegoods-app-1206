@@ -125,7 +125,7 @@ export default class AfterSaleListPage extends BasePage<Props> {
                     <UIImage source={[icon_refund, icon_return_goods, icon_exchange][type - 1]}
                              style={styles.image}
                     />
-                    <UIText value={['仅退款', '退货退款', '换货'][type - 1]}
+                    <UIText value={['退款', '退货退款', '换货'][type - 1]}
                             style={styles.text}
                     />
                     <UIText value={this.getStatusText(item)}
@@ -163,7 +163,7 @@ export default class AfterSaleListPage extends BasePage<Props> {
         if (type === 11 || type === 12) {
             type = 1;
         }
-        let typeStr = ['仅退款', '退款', '换货'][type - 1];
+        let typeStr = ['退款', '退款', '换货'][type - 1];
         switch (item.status) {
             case 1:
             case 7://在c端，7、1都是待审核

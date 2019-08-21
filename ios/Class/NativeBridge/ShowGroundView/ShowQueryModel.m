@@ -142,4 +142,17 @@
   }
   return @"";
 }
+
+- (CGFloat)titleHeight
+{
+  if (!_pureContent_1 || _pureContent_1.length == 0) {
+    return 0;
+  }
+  if (_titleHeight) {
+    return _titleHeight;
+  }
+   CGFloat width = (kScreenWidth - 20 -10)/2.0;
+  _titleHeight = [_pureContent_1 getHeightWithFontSize:13 viewWidth:width - 20 maxLineCount:2];
+  return _titleHeight;
+}
 @end
