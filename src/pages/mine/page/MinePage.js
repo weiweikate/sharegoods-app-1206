@@ -1128,7 +1128,11 @@ export default class MinePage extends BasePage {
             routeNavigate(RouterMap.LoginPage);
             return;
         }
-        routeNavigate(RouterMap.MessageCenterPage);
+
+
+
+
+
     };
 
     jumpToSettingPage = () => {
