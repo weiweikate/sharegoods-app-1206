@@ -25,6 +25,7 @@ export default class WithdrawRecordPage extends BasePage {
     constructor(props) {
         super(props);
         this.currentYear = null;
+        this.data = null;
     }
 
     $navigationBarOptions = {
@@ -36,7 +37,7 @@ export default class WithdrawRecordPage extends BasePage {
 
         if (item.app_record_header) {
             return (
-                <View style={{height:px2dp(50),marginLeft:px2dp(15),flexDirection:'row', alignItems: 'center'}}>
+                <View style={{ height: px2dp(50), marginLeft: px2dp(15), flexDirection: 'row', alignItems: 'center' }}>
                     <MRText
                         style={{ color: DesignRule.textColor_mainTitle, fontSize: DesignRule.fontSize_threeTitle_28 }}>
                         {`${item.year}年`}
@@ -45,6 +46,12 @@ export default class WithdrawRecordPage extends BasePage {
             );
         }
 
+        let showLine = true;
+        if (index === this.data.length-1) {
+            showLine = false;
+        } else if (this.data[index + 1].app_record_header) {
+            showLine = false;
+        }
         return (
             <TouchableWithoutFeedback onPress={() => {
                 this._goDetail(item);
@@ -69,11 +76,14 @@ export default class WithdrawRecordPage extends BasePage {
                             {item.withdrawRemark}
                         </MRText>
                     </View>
-                    <View style={{
-                        height: 1,
-                        width: DesignRule.width - px2dp(15),
-                        backgroundColor: DesignRule.lineColor_inWhiteBg
-                    }}/>
+                    {
+                        showLine ? <View style={{
+                            height: 1,
+                            width: DesignRule.width - px2dp(15),
+                            backgroundColor: DesignRule.lineColor_inWhiteBg
+                        }}/> : null
+                    }
+
                 </View>
             </TouchableWithoutFeedback>
         );
@@ -84,7 +94,7 @@ export default class WithdrawRecordPage extends BasePage {
     };
 
     _handleRequestResult = (result, isRefresh) => {
-        if(isRefresh){
+        if (isRefresh) {
             this.currentYear = null;
         }
         let data = result.data.data || [];
@@ -99,17 +109,17 @@ export default class WithdrawRecordPage extends BasePage {
             data.splice(0, 0, header);
         }
 
-        data.forEach((item,index)=>{
-            if(!item.app_record_header){
+        data.forEach((item, index) => {
+            if (!item.app_record_header) {
                 let date = new Date(item.applyTime);
                 let year = date.getFullYear();
-                if(year !== this.currentYear){
+                if (year !== this.currentYear) {
                     this.currentYear = year;
                     let header = { app_record_header: true, year };
                     data.splice(index, 0, header);
                 }
             }
-        })
+        });
         return data;
     };
 
@@ -133,6 +143,9 @@ export default class WithdrawRecordPage extends BasePage {
                     url={MineAPI.queryWithdrawRecord}
                     renderItem={this._listItemRender}
                     handleRequestResult={this._handleRequestResult}
+                    dataChangeListener={(data) => {
+                        this.data = data;
+                    }}
                 />
             </View>
         );
