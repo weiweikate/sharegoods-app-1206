@@ -6,9 +6,9 @@
 //  Copyright © 2019 Facebook. All rights reserved.
 //
 
-#import "AA.h"
+#import "SGImageDecode.h"
 
-@implementation AA
+@implementation SGImageDecode
 RCT_EXPORT_MODULE();
 - (BOOL)canDecodeImageData:(NSData *)imageData
 {
@@ -21,6 +21,7 @@ RCT_EXPORT_MODULE();
                                         resizeMode:(UIViewContentMode)resizeMode
                                  completionHandler:(RCTImageLoaderCompletionBlock)completionHandler
 {
+  
   YYImageDecoder *decoder = [YYImageDecoder decoderWithData:imageData scale:[UIScreen mainScreen].scale];
   UIImage *image = nil;
   if (decoder.frameCount == 1) {
@@ -33,8 +34,7 @@ RCT_EXPORT_MODULE();
   return ^{};
 }
 
-- (float)decoderPriority
-{
+- (float)decoderPriority{
   return -1.0;
 }
 

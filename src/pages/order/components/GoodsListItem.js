@@ -94,9 +94,14 @@ export default class GoodsListItem extends React.Component {
         }
 
         let isAllVirtual = true;
+        let isPhoneOrder = true;
         merchantOrder.productOrderList.forEach((item) => {
             if (item.orderType != 1){
                 isAllVirtual = false;
+            }
+
+            if ((item.resource || {}).resourceType !== 'TELEPHONE_CHARGE'){
+                isPhoneOrder = false;
             }
         });
 
@@ -105,6 +110,10 @@ export default class GoodsListItem extends React.Component {
                 return true;
             }
             if (item.operation === '查看物流' || item.operation === '确认收货'){
+                return false;
+            }
+
+            if (isPhoneOrder && item.operation === '再次购买') {
                 return false;
             }
             return true;
@@ -196,12 +205,21 @@ export default class GoodsListItem extends React.Component {
 
 
     renderGoodsList = () => {
-        const {
+        let {
             merchantOrder,
-            goodsItemClick
+            goodsItemClick,
+            receiveInfo,
         } = this.props;
+        receiveInfo = receiveInfo || {}
         let orderProduct = merchantOrder.productOrderList || []
         return orderProduct.map((item, index) => {
+            let resource = item.resource || {}
+            let resourceType = resource.resourceType;
+            let category = item.spec
+            if (resourceType === 'TELEPHONE_CHARGE'){
+                category = '充值号码：' + receiveInfo.receiverPhone
+            }
+            // receiverPhone	String	18761600928
             return(
                 <GoodsGrayItem
                     key={index}
@@ -209,7 +227,7 @@ export default class GoodsListItem extends React.Component {
                     uri={item.specImg || ''}
                     goodsName={item.productName}
                     salePrice={item.unitPrice}
-                    category={item.spec}
+                    category={category}
                     goodsNum={item.quantity}
                     onPress={()=> {goodsItemClick(); this.setState({isShow: false})}}
                     activityCodes={item.activityList || []}

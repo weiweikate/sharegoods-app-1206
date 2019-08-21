@@ -25,6 +25,11 @@ const resHome = {
     win:require('./win.png'),
     limitGoHeader:require('./limitGoHeader.png'),
     modalBg:require('./modalBg.png'),
+    shouye_icon_gengduo:require('./shouye_icon_gengduo.png'),
+    more:require('./more.png'),
+    arrow_bottom:require('./arrow_bottom.png'),
+    arrow_top:require('./arrow_top.png'),
+    tabBg:require('./tabBg.png'),
     signIn: {
         ...signIn
     },
