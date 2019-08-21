@@ -140,7 +140,7 @@ class HomeList extends React.Component {
                 dim.height = subjectList.length > 0 ? subjectHeight : 0;
                 break;
             case homeType.goodsTitle:
-                dim.height = homeModule.tabList.length > 0 ? px2dp(60): 0;
+                dim.height = homeModule.tabList.length > 0 ? px2dp(70): 0;
                 break;
             case homeType.goods:
                 dim.height = kHomeGoodsViewHeight;

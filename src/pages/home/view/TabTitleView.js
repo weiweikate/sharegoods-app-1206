@@ -31,60 +31,58 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { ContentType } from '../HomeTypes';
-import res from '../res'
+import res from '../res';
 
-const autoSizeWidth = ScreenUtils.autoSizeWidth;
-const tabBg = res.tabBg
+const autoSizeWidth = ScreenUtils.px2dp;
+const tabBg = res.tabBg;
 
 @observer
 export default class TabTitleView extends React.Component {
 
     constructor(props) {
         super(props);
-
-
         this.state = {};
     }
 
-    componentDidMount() {
-    }
-
-
     render() {
         return (
-            <ScrollView horizontal = {true}
-                        style={{marginLeft: autoSizeWidth(5)}}
-                        showsHorizontalScrollIndicator={false}
-            >
+            <ScrollView horizontal={true}
+                        style={{ marginLeft: autoSizeWidth(5), marginTop: autoSizeWidth(13) }}
+                        showsHorizontalScrollIndicator={false}>
                 {
                     homeModule.tabList.map((item, index) => {
-                        if (item.linkType != 1){
-                            return <View />
+                        if (item.linkType != 1) {
+                            return <View/>;
                         }
                         return (
-                            <View style={{justifyContent: 'center'}} key = {index+'TabTitleView'}>
-                                <TouchableWithoutFeedback onPress={()=> {
-                                    homeModule.tabSelect(index, item.id, item.name)
-                                    track(trackEvent.HomeRecommendClick, {homeRecArea: 1,contentType: ContentType.tab,
-                                        contentValue: item.name, contentIndex: index})
+                            <View style={{ justifyContent: 'center' }} key={index + 'TabTitleView'}>
+                                <TouchableWithoutFeedback onPress={() => {
+                                    homeModule.tabSelect(index, item.id, item.name);
+                                    track(trackEvent.HomeRecommendClick, {
+                                        homeRecArea: 1, contentType: ContentType.tab,
+                                        contentValue: item.name, contentIndex: index
+                                    });
                                 }}>
-                                    {homeModule.tabListIndex === index?
+                                    {homeModule.tabListIndex === index ?
                                         <ImageBackground style={styles.item}
-                                                         source = {tabBg}
+                                                         source={tabBg}
                                                          resizeMode={'contain'}
                                         >
-                                            <MRText style={[styles.title, {color: 'white'}]} numberOfLines={1}>{item.name}</MRText>
-                                            {item.secName?<MRText style={[styles.detail, {color: 'white'}]} numberOfLines={1}>{item.secName}</MRText>:null}
+                                            <MRText style={[styles.title, { color: 'white' }]}
+                                                    numberOfLines={1}>{item.name}</MRText>
+                                            {item.secName ? <MRText style={[styles.detail, { color: 'white' }]}
+                                                                    numberOfLines={1}>{item.secName}</MRText> : null}
                                         </ImageBackground>
-                                        :<View style={styles.item}>
+                                        : <View style={styles.item}>
                                             <MRText style={styles.title} numberOfLines={1}>{item.name}</MRText>
-                                            {item.secName?<MRText style={styles.detail} numberOfLines={1}>{item.secName}</MRText>:null}
+                                            {item.secName ? <MRText style={styles.detail}
+                                                                    numberOfLines={1}>{item.secName}</MRText> : null}
                                         </View>
                                     }
                                 </TouchableWithoutFeedback>
                             </View>
 
-                        )
+                        );
                     })
                 }
             </ScrollView>
