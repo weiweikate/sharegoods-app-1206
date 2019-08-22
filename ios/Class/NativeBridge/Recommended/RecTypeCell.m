@@ -218,7 +218,7 @@
   self.headView.hotCount = model.hotCount;
   
   self.zanBtn.selected = model.like;
-  self.zanNum.text =  [NSString stringWithNumber:self.model.like];
+  self.zanNum.text =  [NSString stringWithNumber:self.model.likesCount];
   self.collectionBtn.selected = model.collect;
   self.collectionNum.text = [NSString stringWithNumber:self.model.collectCount];
   

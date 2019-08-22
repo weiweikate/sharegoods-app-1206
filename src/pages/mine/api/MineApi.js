@@ -125,7 +125,9 @@ const api = {
     //查询秀迷等级列表
     getFansLevelList:['/user/fansLevelList',{method:'get'}],
     //获取我的页面广告
-    queryAdList:['/advertising/queryAdvertisingList',{method:'post'}]
+    queryAdList:['/advertising/queryAdvertisingList',{method:'post'}],
+    //提现记录
+    queryWithdrawRecord:['/user/withdraw/query',{method:'post'}]
 
 };
 import ApiUtils from '../../../api/network/ApiUtils';

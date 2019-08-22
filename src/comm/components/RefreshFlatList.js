@@ -283,6 +283,7 @@ export default class RefreshFlatList extends React.Component {
             }
 
             that.allLoadCompleted = allLoadCompleted;
+            this.props.dataChangeListener && this.props.dataChangeListener(data);
             that.setState({
                 refreshing: false,
                 loadingMore: false,
@@ -405,7 +406,7 @@ export class DefaultLoadMoreComponent extends BaseLoadMoreComponent {
 
 const styles = StyleSheet.create({
     footer: {
-        height: 70,
+        height: 50,
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'row'
