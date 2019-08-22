@@ -4,13 +4,7 @@
 //isChangeStoreInfo true表示修改信息  false表示第一个创建
 
 import React from 'react';
-import {
-    View,
-    Image,
-    StyleSheet,
-    ScrollView,
-    TouchableOpacity
-} from 'react-native';
+import { Image, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import BasePage from '../../../BasePage';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -19,9 +13,7 @@ import SpellShopApi from '../api/SpellShopApi';
 import spellStatusModel from '../model/SpellStatusModel';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../../../comm/res';
-import {
-    MRText as Text, MRTextInput as TextInput
-} from '../../../components/ui';
+import { MRText as Text, MRTextInput as TextInput } from '../../../components/ui';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import AvatarImage from '../../../components/ui/AvatarImage';
 import RouterMap from '../../../navigation/RouterMap';
@@ -277,7 +269,9 @@ const styles = StyleSheet.create({
     },
     arrowImg: {
         marginLeft: 10,
-        marginRight: 15
+        marginRight: 15,
+        height: 10,
+        width: 7
     },
     /*右  完成*/
     rightItem: {

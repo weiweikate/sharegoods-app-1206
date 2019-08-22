@@ -89,12 +89,12 @@ class SettingPage extends BasePage {
                 <View style={{ backgroundColor: 'white' }}>
                     <TouchableOpacity style={styles.viewStyle} onPress={() => this.jumpToAccountSettingPage()}>
                         <UIText value={'账号与安全'} style={styles.blackText}/>
-                        <Image source={arrow_right}/>
+                        <Image source={arrow_right} style={{ width: 10, height: 15 }}/>
                     </TouchableOpacity>
                     {this.renderLine()}
                     <TouchableOpacity style={styles.viewStyle} onPress={() => this.jumpToAddressManagePage()}>
                         <UIText value={'收货地址管理'} style={styles.blackText}/>
-                        <Image source={arrow_right}/>
+                        <Image source={arrow_right} style={{ width: 10, height: 15 }}/>
                     </TouchableOpacity>
                     {this.renderLine()}
                     {Platform.OS === 'ios' ? null :
@@ -125,7 +125,7 @@ class SettingPage extends BasePage {
                     {this.renderLine()}
                     <TouchableOpacity style={styles.viewStyle} onPress={() => this.jumptToAboutUsPage()}>
                         <UIText value={'关于我们'} style={styles.blackText}/>
-                        <Image source={arrow_right}/>
+                        <Image source={arrow_right} style={{ width: 10, height: 15 }}/>
                     </TouchableOpacity>
                     {this.renderLine()}
                     <View style={{ height: 10, width: 1 }}/>
