@@ -84,7 +84,7 @@ export default class ProductDetailCouponsView extends React.Component {
                         })
                     }
                 </View>
-                <Image source={arrow_right_black}/>
+                <Image source={arrow_right_black} style={{ width: 7, height: 10 }}/>
             </NoMoreClick>
         );
     }
