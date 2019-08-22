@@ -144,7 +144,7 @@ export class AddCapacityHistoryPage extends BasePage {
     };
 
     _renderItem = ({ item }) => {
-        const { payTime, personNum, price, status, expandId, orderNo, tokenCoinAmount } = item;
+        const { payTime, personNum, price, status, expandId } = item;
         let explainText = '';
         let textColor = status === 2 ? DesignRule.textColor_redWarn : (status === 3 ? DesignRule.color_green : DesignRule.textColor_instruction);
         switch (status) {
@@ -168,7 +168,7 @@ export class AddCapacityHistoryPage extends BasePage {
         return (
             <View style={styles.itemView}>
                 <NoMoreClick style={styles.itemContentView} onPress={() => {
-                    this._check(status, orderNo, price, tokenCoinAmount);
+                    this._check(item);
                 }}>
                     <View style={styles.itemVerticalView}>
                         <Text style={styles.contentText}>{`店铺扩容${personNum || ''}人`}</Text>
@@ -191,11 +191,14 @@ export class AddCapacityHistoryPage extends BasePage {
      * @param tokenCoinAmount
      * @private
      */
-    _check = (status, orderNo, price, tokenCoinAmount) => {
+    _check = (item) => {
+        const { status, orderNo, price, tokenCoinAmount, payVersion, payCallBackUrl, paySign } = item;
         if (status !== 2) {
             return;
         }
-        payment.checkOrderStatus(orderNo, 1, 1, price).then(result => {
+        payment.checkOrderStatus(orderNo, 1, 1, price, '', {
+            payAmount: price, paySign, payVersion, payCallBackUrl
+        }).then(result => {
             if (result.code === payStatus.payNo) {
                 this._toPay(orderNo, price, tokenCoinAmount, payStatus.payNo);
             } else if (result.code === payStatus.payNeedThrid) {
