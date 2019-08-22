@@ -9,7 +9,7 @@ import {
     View,
     TouchableOpacity,
     Image,
-    requireNativeComponent, InteractionManager
+    requireNativeComponent
 } from 'react-native';
 import BasePage from '../../BasePage';
 import ShowApi from './ShowApi';
@@ -67,9 +67,7 @@ export default class ShowVideoPage extends BasePage {
     }
 
     componentDidMount() {
-        InteractionManager.runAfterInteractions(()=>{
-            this.getData();
-        });
+        this.getData();
     }
 
     getData=()=>{
