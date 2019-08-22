@@ -43,6 +43,7 @@ export default class WithdrawRecordDetailPage extends BasePage {
         )
     }
 
+    //后台建议字符串判断
     _getRemarkColor = (text) => {
         let color = DesignRule.textColor_instruction;
         if (text === '审核中') {
