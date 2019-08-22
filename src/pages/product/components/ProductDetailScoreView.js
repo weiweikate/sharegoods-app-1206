@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
         fontSize: 12, color: DesignRule.textColor_instruction
     },
     moreImage: {
-        marginLeft: 5
+        marginLeft: 5, width: 7, height: 10
     },
     /**内容**/
     iconView: {
