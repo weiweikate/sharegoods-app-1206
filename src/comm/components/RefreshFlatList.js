@@ -283,6 +283,7 @@ export default class RefreshFlatList extends React.Component {
             }
 
             that.allLoadCompleted = allLoadCompleted;
+            this.props.dataChangeListener && this.props.dataChangeListener(data);
             that.setState({
                 refreshing: false,
                 loadingMore: false,
