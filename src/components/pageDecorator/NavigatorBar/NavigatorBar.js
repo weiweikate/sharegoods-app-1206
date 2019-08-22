@@ -165,10 +165,9 @@ export default class NavigatorBar extends Component {
         // 图片
         if (leftNavImage) {
             return <TouchableOpacity
-                style={[styles.left,
-                    {
-                        top: ScreenUtils.statusBarHeight
-                    }]}
+                style={[styles.left, {
+                    top: ScreenUtils.statusBarHeight
+                }]}
                 onPress={this._onLeftPressed}>
                 <Image
                     source={leftNavImage}
@@ -204,7 +203,9 @@ export default class NavigatorBar extends Component {
                 style={styles.right}
                 onPress={this._onRightPressed}>
                 <View>
-                    <Image source={rightNavImage}/>
+                    <Image source={rightNavImage}
+                           resizeMode={'stretch'}
+                           style={{ width: 30, height: 30 }}/>
                 </View>
             </TouchableOpacity>;
         }
@@ -290,7 +291,7 @@ const styles = StyleSheet.create({
         right: 0,
         bottom: 0,
         justifyContent: 'center',
-        paddingHorizontal: 10
+        paddingHorizontal: 5
     },
     button: {
         color: DesignRule.textColor_mainTitle,

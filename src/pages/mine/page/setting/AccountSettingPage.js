@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     // Switch,
-    View, Image, TouchableOpacity, StyleSheet, Alert,
+    View, Image, TouchableOpacity, StyleSheet, Alert
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
@@ -66,7 +66,7 @@ export default class AccountSettingPage extends BasePage {
                     <UIText value={'修改手机号'} style={[styles.blackText, { flex: 1 }]}/>
                     <UIText value={user.phone}
                             style={{ fontSize: 13, color: DesignRule.textColor_secondTitle, marginRight: 8 }}/>
-                    <Image source={arrow_right} resizeMode={'contain'}/>
+                    <Image source={arrow_right} style={{ width: 10, height: 15 }} resizeMode={'contain'}/>
                 </TouchableOpacity>
                 <View style={{
                     height: 0.5,
@@ -76,7 +76,7 @@ export default class AccountSettingPage extends BasePage {
                 }}/>
                 <TouchableOpacity style={styles.viewStyle} onPress={() => this._toEditPwd()}>
                     <UIText value={this.state.phonePwdStatus === 1 ? '设置密码' : '修改密码'} style={styles.blackText}/>
-                    <Image source={arrow_right} resizeMode={'contain'}/>
+                    <Image source={arrow_right} style={{ width: 10, height: 15 }} resizeMode={'contain'}/>
                 </TouchableOpacity>
                 <View style={{
                     height: 0.5,
@@ -86,7 +86,7 @@ export default class AccountSettingPage extends BasePage {
                 }}/>
                 <TouchableOpacity style={styles.viewStyle} onPress={() => this._toEditPayPwd()}>
                     <UIText value={'交易密码设置'} style={styles.blackText}/>
-                    <Image source={arrow_right} resizeMode={'contain'}/>
+                    <Image source={arrow_right} style={{ width: 10, height: 15 }} resizeMode={'contain'}/>
                 </TouchableOpacity>
                 <View style={{
                     height: 0.5,
@@ -98,67 +98,67 @@ export default class AccountSettingPage extends BasePage {
                     <UIText value={'微信账号'} style={[styles.blackText, { flex: 1 }]}/>
                     <UIText value={StringUtils.isEmpty(user.unionid) ? '未绑定' : (user.wechatName || '无昵称')}
                             style={{ fontSize: 13, color: DesignRule.textColor_secondTitle, marginRight: 8 }}/>
-                    <Image source={arrow_right} resizeMode={'contain'}/>
+                    <Image source={arrow_right} style={{ width: 10, height: 15 }} resizeMode={'contain'}/>
                 </TouchableOpacity>
 
                 {/*{this.renderLine()}*/}
                 {/*<View style={{*/}
-                    {/*height: 15,*/}
-                    {/*backgroundColor: DesignRule.bgColor,*/}
+                {/*height: 15,*/}
+                {/*backgroundColor: DesignRule.bgColor,*/}
                 {/*}}/>*/}
                 {/*<TouchableOpacity style={styles.viewStyle}>*/}
-                    {/*<UIText value={'通过短信联系我'} style={styles.blackText}/>*/}
-                    {/*<Switch value={SettingModel.messageState}*/}
-                            {/*onTintColor={'#00D914'}*/}
-                            {/*thumbTintColor={Platform.OS === 'android' ? 'white' : ''}*/}
-                            {/*tintColor={DesignRule.textColor_hint}*/}
-                            {/*onValueChange={() => {*/}
-                                {/*if(SettingModel.messageState) {*/}
+                {/*<UIText value={'通过短信联系我'} style={styles.blackText}/>*/}
+                {/*<Switch value={SettingModel.messageState}*/}
+                {/*onTintColor={'#00D914'}*/}
+                {/*thumbTintColor={Platform.OS === 'android' ? 'white' : ''}*/}
+                {/*tintColor={DesignRule.textColor_hint}*/}
+                {/*onValueChange={() => {*/}
+                {/*if(SettingModel.messageState) {*/}
 
-                                    {/*Alert.alert('确认关闭', '若关闭短信通道，你的秀迷将不能再通过发送短信联系您哦~',*/}
-                                        {/*[*/}
-                                            {/*{*/}
-                                                {/*text: '取消', onPress: () => {*/}
-                                                {/*}*/}
-                                            {/*},*/}
-                                            {/*{*/}
-                                                {/*text: '确定', onPress: () => {*/}
-                                                    {/*SettingModel.messageClick();*/}
-                                                {/*}*/}
-                                            {/*}*/}
-                                        {/*]*/}
-                                    {/*);*/}
-                                {/*}else {*/}
-                                    {/*SettingModel.messageClick();*/}
-                                {/*}*/}
-                            {/*}}/>*/}
+                {/*Alert.alert('确认关闭', '若关闭短信通道，你的秀迷将不能再通过发送短信联系您哦~',*/}
+                {/*[*/}
+                {/*{*/}
+                {/*text: '取消', onPress: () => {*/}
+                {/*}*/}
+                {/*},*/}
+                {/*{*/}
+                {/*text: '确定', onPress: () => {*/}
+                {/*SettingModel.messageClick();*/}
+                {/*}*/}
+                {/*}*/}
+                {/*]*/}
+                {/*);*/}
+                {/*}else {*/}
+                {/*SettingModel.messageClick();*/}
+                {/*}*/}
+                {/*}}/>*/}
                 {/*</TouchableOpacity>*/}
 
                 {/*{this.renderLine()}*/}
                 {/*<TouchableOpacity style={styles.viewStyle}>*/}
-                    {/*<UIText value={'展示微信号'} style={styles.blackText}/>*/}
-                    {/*<Switch value={SettingModel.WXChatState}*/}
-                            {/*onTintColor={'#00D914'}*/}
-                            {/*thumbTintColor={Platform.OS === 'android' ? 'white' : ''}*/}
-                            {/*tintColor={DesignRule.textColor_hint}*/}
-                            {/*onValueChange={() => {*/}
-                                {/*if(SettingModel.WXChatState){*/}
-                                    {/*Alert.alert('确认关闭', '若关闭微信通道，你的秀迷将不能通过微信联系到您哦～',*/}
-                                        {/*[*/}
-                                            {/*{*/}
-                                                {/*text: '取消', onPress: () => {*/}
-                                                {/*}*/}
-                                            {/*},*/}
-                                            {/*{*/}
-                                                {/*text: '确定', onPress: () => {*/}
-                                                    {/*SettingModel.wxChatClick();                                                }*/}
-                                            {/*}*/}
-                                        {/*]*/}
-                                    {/*);*/}
-                                {/*}else {*/}
-                                    {/*SettingModel.wxChatClick();*/}
-                                {/*}*/}
-                            {/*}}/>*/}
+                {/*<UIText value={'展示微信号'} style={styles.blackText}/>*/}
+                {/*<Switch value={SettingModel.WXChatState}*/}
+                {/*onTintColor={'#00D914'}*/}
+                {/*thumbTintColor={Platform.OS === 'android' ? 'white' : ''}*/}
+                {/*tintColor={DesignRule.textColor_hint}*/}
+                {/*onValueChange={() => {*/}
+                {/*if(SettingModel.WXChatState){*/}
+                {/*Alert.alert('确认关闭', '若关闭微信通道，你的秀迷将不能通过微信联系到您哦～',*/}
+                {/*[*/}
+                {/*{*/}
+                {/*text: '取消', onPress: () => {*/}
+                {/*}*/}
+                {/*},*/}
+                {/*{*/}
+                {/*text: '确定', onPress: () => {*/}
+                {/*SettingModel.wxChatClick();                                                }*/}
+                {/*}*/}
+                {/*]*/}
+                {/*);*/}
+                {/*}else {*/}
+                {/*SettingModel.wxChatClick();*/}
+                {/*}*/}
+                {/*}}/>*/}
                 {/*</TouchableOpacity>*/}
             </View>
         );

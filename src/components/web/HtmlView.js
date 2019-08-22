@@ -92,7 +92,8 @@ export default class RequestDetailPage extends BasePage {
                     alignItems: 'center',
                     justifyContent: 'center'
                 }}>
-                    <Image source={moreIcon}/>
+                    <Image source={moreIcon} style={{ width: 22 }}
+                           resizeMode={'contain'}/>
                 </TouchableOpacity>
             );
         } else {
@@ -197,7 +198,7 @@ export default class RequestDetailPage extends BasePage {
 
         if (msg.action === 'showFloat') {
             let parmas = msg.params || {};
-            this.luckyIcon && this.luckyIcon.getLucky(parmas.showPage, parmas.showPageValue,  this.currentUrl);
+            this.luckyIcon && this.luckyIcon.getLucky(parmas.showPage, parmas.showPageValue, this.currentUrl);
             return;
         }
 
