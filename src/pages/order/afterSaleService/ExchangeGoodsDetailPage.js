@@ -270,7 +270,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                                       }}
                     >
                         <MRText style={styles.item_text}>协商记录</MRText>
-                        <UIImage style={styles.item_arrow} source={arrow_right_black}/>
+                        <UIImage style={styles.item_arrow} source={arrow_right_black} resizeMode={'contain'}/>
                     </TouchableOpacity>
                     <View style={{ height: ScreenUtils.safeBottom }}/>
                 </ScrollView>
@@ -563,7 +563,7 @@ const styles = StyleSheet.create({
     },
     item_arrow: {
         height: 10,
-        width: 6
+        width: 7
     }
 });
 

@@ -4,24 +4,16 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-    View,
-    Image,
-    StyleSheet,
-    ScrollView,
-    TouchableOpacity
-} from 'react-native';
+import { Image, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import cRes from '../../../../comm/res';
 import AvatarImage from '../../../../components/ui/AvatarImage';
+import { MRText as Text } from '../../../../components/ui';
 
 const PeopleImg = res.shopRecruit.dy_07;
 const arrowImg = cRes.button.arrow_right_black;
-import {
-    MRText as Text
-} from '../../../../components/ui';
 
 
 export default class AssistantRow extends Component {
@@ -93,7 +85,9 @@ const styles = StyleSheet.create({
     },
     topArrow: {
         marginLeft: 5,
-        marginRight: 21
+        marginRight: 21,
+        height: 10,
+        width: 7
     },
     dash: {
         width: ScreenUtils.width,
