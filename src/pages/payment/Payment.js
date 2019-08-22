@@ -139,16 +139,27 @@ export class Payment {
     });
 
     //检查订单状态
-    @action checkOrderStatus = flow(function* (pOrderNo, bizType = 0, modeType = 0, payAmount, tradeDesc = 'APP支付') {
+    @action checkOrderStatus = flow(function* (pOrderNo, bizType = 0, modeType = 0, payAmount, tradeDesc = 'APP支付', paySignResult) {
         try {
+            /*不能通过接口查询支付签名的,需要外面传进来 拼店支付*/
+            if (bizType === 0) {
+                Toast.showLoading();
+                paySignResult = yield PaymentApi.queryPaySign({ platformOrderNo: pOrderNo });
+                paySignResult = paySignResult.data;
+                Toast.hiddenLoading();
+            }
+
             Toast.showLoading();
             let checkParams = {
                 // platformOrderNo: pOrderNo ? pOrderNo : this.platformOrderNo
                 outTradeNo: pOrderNo ? pOrderNo : this.platformOrderNo,//外部订单号
                 bizType: bizType,//业务类型.0:普通订单;1:拼店扩容;
                 modeType: modeType,//结算模式.0:正常流程结算;1:立即结算.例如:拼店扩容应该是立即结算;普通商品交易应该是普通结算
-                payAmount: payAmount,
-                tradeDesc: tradeDesc
+                payAmount: (paySignResult || {}).payAmount,
+                tradeDesc: tradeDesc,
+                signData: (paySignResult || {}).paySign,
+                version: (paySignResult || {}).payVersion,
+                returnUrl: (paySignResult || {}).payCallBackUrl
             };
             console.log('checkParams' + checkParams);
             const result = yield PaymentApi.check(checkParams);
@@ -256,9 +267,9 @@ export class Payment {
                     payType: paymentType.zeroPay,
                     payAmount: result.unpaidAmount
                 });
-                this.platformPay('',this.fundsTradingNo,detailList,title).then(result=>{
+                this.platformPay('', this.fundsTradingNo, detailList, title).then(result => {
                     replaceRoute(RouterMap.PaymentFinshPage, { payResult: PaymentResult.success });
-                }).catch(error=>{
+                }).catch(error => {
                     Toast.$toast(error.msg);
                 });
                 return;
@@ -268,18 +279,18 @@ export class Payment {
                     amounts: result.unpaidAmount,
                     platformOrderNo: platformOrderNo,
                     orderProductList: [],
-                    productTitle :title
+                    productTitle: title
                 });
             } else if (result.code === payStatus.payNeedThrid) {
                 routePush('payment/ChannelPage', {
                     remainMoney: result.unpaidAmount,
                     platformOrderNo: platformOrderNo,
                     orderProductList: [],
-                    productTitle:title
+                    productTitle: title
                 });
             } else if (result.code === payStatus.payOut) {
                 Toast.$toast(payStatusMsg[result.code]);
-                replaceRoute('order/order/MyOrdersListPage', { index: 2 })
+                replaceRoute('order/order/MyOrdersListPage', { index: 2 });
             } else {
                 Toast.$toast(payStatusMsg[result.code] || '系统处理失败');
             }

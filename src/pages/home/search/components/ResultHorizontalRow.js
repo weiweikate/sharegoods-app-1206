@@ -84,7 +84,7 @@ export default class ResultHorizontalRow extends Component {
                                 alignItems: 'center',
                                 justifyContent: 'center'
                             }}>
-                                <Image source={gwc}/>
+                                <Image source={gwc} style={{ width: 15, height: 15 }}/>
                             </View>
                         </TouchableWithoutFeedback>}
                     </View>
