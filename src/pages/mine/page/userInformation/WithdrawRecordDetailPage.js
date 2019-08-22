@@ -43,6 +43,18 @@ export default class WithdrawRecordDetailPage extends BasePage {
         )
     }
 
+    _getRemarkColor = (text) => {
+        let color = DesignRule.textColor_instruction;
+        if (text === '审核中') {
+            color = '#3187FF';
+        } else if (text === '提现成功') {
+            color = '#57CF1C';
+        } else if (text === '提现失败') {
+            color = '#FF0050';
+        }
+        return color;
+    };
+
     _render() {
         const  {applyTime,cardNo,withdrawBalance,withdrawRemark,bankName,withdrawNum}  =this.params;
         return (
@@ -51,7 +63,7 @@ export default class WithdrawRecordDetailPage extends BasePage {
                     <MRText style={styles.numStyle}>
                         {`￥${StringUtils.numberFormat(withdrawBalance)}`}
                     </MRText>
-                    <MRText style={styles.tipStyle}>
+                    <MRText style={[styles.tipStyle,{color:this._getRemarkColor(withdrawRemark)}]}>
                         {withdrawRemark}
                     </MRText>
                 </View>
@@ -77,7 +89,6 @@ var styles = StyleSheet.create({
     },
     tipStyle:{
         fontSize:DesignRule.fontSize_threeTitle_28,
-        color:'#3187FF',
         marginTop:px2dp(15)
     },
     rowWrapper:{
