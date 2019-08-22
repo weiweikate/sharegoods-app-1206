@@ -54,7 +54,9 @@ const GiftType = {
     exp: 1,
     xiudou: 2,
     coupon: 3,
-    lottery: 4
+    lottery: 4,
+    lotteryChance: 5,
+    adv: 6
 }
 @observer
 export default class TaskModalView extends React.Component {
