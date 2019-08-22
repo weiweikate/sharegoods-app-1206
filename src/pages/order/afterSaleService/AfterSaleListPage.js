@@ -67,7 +67,7 @@ export default class AfterSaleListPage extends BasePage<Props> {
         } else {
             return (
                 <TouchableOpacity onPress={this.gotoSearchPage}>
-                    <Image source={search}/>
+                    <Image source={search} style={{ width: 22, height: 22, marginRight: 10 }}/>
                 </TouchableOpacity>);
         }
     };
@@ -88,17 +88,19 @@ export default class AfterSaleListPage extends BasePage<Props> {
         // alert(this.list)
         //  this.list._onRefresh && this.list._onRefresh();
     }
-  //1.售前仅退款 2.退货退款 3.换货
+
+    //1.售前仅退款 2.退货退款 3.换货
     renderItem({ item }) {
-        let {status,
+        let {
+            status,
             specImg,
             productName,
             unitPrice,
             spec,
             refundNum,
             type,
-            serviceNo,
-           // productOrderNo
+            serviceNo
+            // productOrderNo
         } = item;
         if (type === 11 || type === 12) {
             type = 1;
@@ -147,9 +149,10 @@ export default class AfterSaleListPage extends BasePage<Props> {
                         this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
                             serviceNo: serviceNo
                         });
-                    }} style={[styles.btnContainer,{borderColor: status === 2? DesignRule.mainColor: DesignRule.lineColor_inGrayBg}]}>
+                    }}
+                                      style={[styles.btnContainer, { borderColor: status === 2 ? DesignRule.mainColor : DesignRule.lineColor_inGrayBg }]}>
                         <UIText value={status === 2 ? '填写物流' : '查看详情'}
-                                style={[styles.btnText, {color: status === 2? DesignRule.mainColor: DesignRule.textColor_instruction}]}
+                                style={[styles.btnText, { color: status === 2 ? DesignRule.mainColor : DesignRule.textColor_instruction }]}
                         />
                     </TouchableOpacity>
                 </View>
@@ -201,7 +204,9 @@ export default class AfterSaleListPage extends BasePage<Props> {
                     handleRequestResult={(result) => {
                         return result.data.data;
                     }}
-                     ref={(ref) => {this.list = ref}}
+                    ref={(ref) => {
+                        this.list = ref;
+                    }}
                 />
             </View>
         );
