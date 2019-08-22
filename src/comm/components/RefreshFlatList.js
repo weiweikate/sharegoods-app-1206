@@ -405,7 +405,7 @@ export class DefaultLoadMoreComponent extends BaseLoadMoreComponent {
 
 const styles = StyleSheet.create({
     footer: {
-        height: 70,
+        height: 50,
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'row'
