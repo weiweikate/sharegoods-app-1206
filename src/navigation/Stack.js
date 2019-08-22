@@ -24,7 +24,6 @@ import message from '../pages/message';
 import topic from '../pages/topic';
 import show from '../pages/show/Index';
 import deepLinkPath from './DeepLinkPath';
-// import WithdrawRecordPage from '../pages/mine/page/userInformation/WithdrawRecordPage';
 
 const Router = {
     Tab: {
