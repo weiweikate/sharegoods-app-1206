@@ -13,6 +13,7 @@ import DesignRule from '../../../../constants/DesignRule';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import { MRText } from '../../../../components/ui';
 import DateUtils from '../../../../utils/DateUtils';
+import StringUtils from '../../../../utils/StringUtils';
 
 const { px2dp } = ScreenUtils;
 
@@ -48,7 +49,7 @@ export default class WithdrawRecordDetailPage extends BasePage {
             <View style={{ flex: 1 }}>
                 <View style={styles.headerWrapper}>
                     <MRText style={styles.numStyle}>
-                        {`￥${withdrawBalance}`}
+                        {`￥${StringUtils.numberFormat(withdrawBalance)}`}
                     </MRText>
                     <MRText style={styles.tipStyle}>
                         {withdrawRemark}

@@ -18,6 +18,7 @@ import DesignRule from '../../../../constants/DesignRule';
 import DateUtils from '../../../../utils/DateUtils';
 import RouterMap from '../../../../navigation/RouterMap';
 import EmptyUtils from '../../../../utils/EmptyUtils';
+import StringUtils from '../../../../utils/StringUtils';
 
 const { px2dp } = ScreenUtils;
 
@@ -62,7 +63,7 @@ export default class WithdrawRecordPage extends BasePage {
                             {item.withdrawNum}
                         </MRText>
                         <MRText style={styles.codeStyle}>
-                            {item.withdrawBalance}
+                            {StringUtils.numberFormat(item.withdrawBalance)}
                         </MRText>
                     </View>
                     <View style={[styles.rowWrapper, { marginTop: px2dp(5), marginBottom: px2dp(10) }]}>
