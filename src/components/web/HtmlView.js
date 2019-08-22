@@ -157,6 +157,11 @@ export default class RequestDetailPage extends BasePage {
         }
     };
 
+    _onLoadStart() {
+        this.state.hasRightItem = false;
+        this.$renderSuperView();//为了触发render
+    }
+
     _postMessage = (msg) => {
         if (msg.action === 'share') {
             // this.webJson = msg.shareParmas;
@@ -198,6 +203,7 @@ export default class RequestDetailPage extends BasePage {
 
         if (msg.action === 'changeTitle') {
             let parmas = msg.params || {};
+            this.state.title = parmas.title;
             this.$NavigationBarResetTitle(parmas.title);
             return;
         }
@@ -236,7 +242,8 @@ export default class RequestDetailPage extends BasePage {
                         this.$NavigationBarResetTitle('加载失败');
                     }}
 
-                    // onLoadStart={() => this._onLoadStart()}
+
+                    onLoadStart={() => this._onLoadStart()}
                     onLoadEnd={(event) => {
                         if (this.openShareModal) {
                             this.openShareModal = false;

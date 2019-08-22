@@ -172,12 +172,8 @@ class PictureVideoUtils {
         }
 
         Toast.showLoading('正在上传');
-        // this.$toastShow('图片上传中，请稍后');
         let upload = () => {
-            //commonAPI/ossClient
-            //user/
-            // let url = apiEnvironment.getCurrentHostUrl();
-            let url = 'https://testapi.sharegoodsmall.com/gateway';
+            let url = apiEnvironment.getCurrentHostUrl();
             request.setBaseUrl(url);
             let promises = [];
 

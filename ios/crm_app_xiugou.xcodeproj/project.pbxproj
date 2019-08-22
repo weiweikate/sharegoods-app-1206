@@ -169,7 +169,7 @@
 		C48634F722C1B6A00096C8EC /* edit_img_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C48634F522C1B6A00096C8EC /* edit_img_bg@2x.png */; };
 		C48634FA22C1B74D0096C8EC /* record_finsh_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C48634F822C1B74D0096C8EC /* record_finsh_bg@2x.png */; };
 		C48634FB22C1B74D0096C8EC /* record_finsh_bg@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C48634F922C1B74D0096C8EC /* record_finsh_bg@3x.png */; };
-		C48636B622C343950096C8EC /* AA.m in Sources */ = {isa = PBXBuildFile; fileRef = C48636B422C343950096C8EC /* AA.m */; };
+		C48636B622C343950096C8EC /* SGImageDecode.m in Sources */ = {isa = PBXBuildFile; fileRef = C48636B422C343950096C8EC /* SGImageDecode.m */; };
 		C48636B922C344290096C8EC /* UIImageView+ConfigLib.m in Sources */ = {isa = PBXBuildFile; fileRef = C48636B822C344290096C8EC /* UIImageView+ConfigLib.m */; };
 		C4D4505A2249F6B800196E1B /* JRServiceManager+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D450592249F6B800196E1B /* JRServiceManager+Util.m */; };
 		C4F01EEC222D141200ACA1B4 /* PhoneAutherTool.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F01EEB222D141200ACA1B4 /* PhoneAutherTool.m */; };
@@ -301,6 +301,7 @@
 		CD23951022BB5F2C00AAB013 /* MyShowCellNode.m in Sources */ = {isa = PBXBuildFile; fileRef = CD23950F22BB5F2C00AAB013 /* MyShowCellNode.m */; };
 		CD24240921F825C1008C7FF4 /* StorageFromRN.m in Sources */ = {isa = PBXBuildFile; fileRef = CD24240821F825C1008C7FF4 /* StorageFromRN.m */; };
 		CD24240F21F837A9008C7FF4 /* NSDictionary+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = CD24240E21F837A9008C7FF4 /* NSDictionary+Util.m */; };
+		CD288A9D230A450600C2C30E /* CHTCollectionViewWaterfallLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = CD288A9C230A450600C2C30E /* CHTCollectionViewWaterfallLayout.m */; };
 		CD3A8A0721F05DF3003B9803 /* MRLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD3A8A0621F05DF3003B9803 /* MRLoadingView.m */; };
 		CD3A8A0A21F05E17003B9803 /* MRLoadingViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CD3A8A0921F05E17003B9803 /* MRLoadingViewManager.m */; };
 		CD5EAF48221BEA9F007AAEE0 /* NetWorkTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EAF11221BEA9F007AAEE0 /* NetWorkTool.m */; };
@@ -791,6 +792,13 @@
 			remoteGlobalIDString = 3400A8081CEB54A6008A0BC7;
 			remoteInfo = imageCropPicker;
 		};
+		CD8A6E7B2305832E008C9291 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0347BAC12237CC670011184A /* Lottie.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6445B0D5207E0D4D00D84F6A;
+			remoteInfo = LottieLibraryMacOS;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -1077,8 +1085,8 @@
 		C48634F522C1B6A00096C8EC /* edit_img_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "edit_img_bg@2x.png"; sourceTree = "<group>"; };
 		C48634F822C1B74D0096C8EC /* record_finsh_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "record_finsh_bg@2x.png"; sourceTree = "<group>"; };
 		C48634F922C1B74D0096C8EC /* record_finsh_bg@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "record_finsh_bg@3x.png"; sourceTree = "<group>"; };
-		C48636B422C343950096C8EC /* AA.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AA.m; sourceTree = "<group>"; };
-		C48636B522C343950096C8EC /* AA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AA.h; sourceTree = "<group>"; };
+		C48636B422C343950096C8EC /* SGImageDecode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGImageDecode.m; sourceTree = "<group>"; };
+		C48636B522C343950096C8EC /* SGImageDecode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGImageDecode.h; sourceTree = "<group>"; };
 		C48636B722C344290096C8EC /* UIImageView+ConfigLib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImageView+ConfigLib.h"; sourceTree = "<group>"; };
 		C48636B822C344290096C8EC /* UIImageView+ConfigLib.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+ConfigLib.m"; sourceTree = "<group>"; };
 		C4D450582249F6B800196E1B /* JRServiceManager+Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JRServiceManager+Util.h"; sourceTree = "<group>"; };
@@ -1322,6 +1330,8 @@
 		CD24240821F825C1008C7FF4 /* StorageFromRN.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StorageFromRN.m; sourceTree = "<group>"; };
 		CD24240D21F837A9008C7FF4 /* NSDictionary+Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Util.h"; sourceTree = "<group>"; };
 		CD24240E21F837A9008C7FF4 /* NSDictionary+Util.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Util.m"; sourceTree = "<group>"; };
+		CD288A9B230A450600C2C30E /* CHTCollectionViewWaterfallLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHTCollectionViewWaterfallLayout.h; sourceTree = "<group>"; };
+		CD288A9C230A450600C2C30E /* CHTCollectionViewWaterfallLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHTCollectionViewWaterfallLayout.m; sourceTree = "<group>"; };
 		CD3A8A0521F05DF3003B9803 /* MRLoadingView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRLoadingView.h; sourceTree = "<group>"; };
 		CD3A8A0621F05DF3003B9803 /* MRLoadingView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRLoadingView.m; sourceTree = "<group>"; };
 		CD3A8A0821F05E17003B9803 /* MRLoadingViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRLoadingViewManager.h; sourceTree = "<group>"; };
@@ -2368,8 +2378,8 @@
 		C48636B322C343860096C8EC /* Decode */ = {
 			isa = PBXGroup;
 			children = (
-				C48636B522C343950096C8EC /* AA.h */,
-				C48636B422C343950096C8EC /* AA.m */,
+				C48636B522C343950096C8EC /* SGImageDecode.h */,
+				C48636B422C343950096C8EC /* SGImageDecode.m */,
 				C48636B722C344290096C8EC /* UIImageView+ConfigLib.h */,
 				C48636B822C344290096C8EC /* UIImageView+ConfigLib.m */,
 			);
@@ -2878,6 +2888,8 @@
 		CD5EAF9A221BFADF007AAEE0 /* ShowGroundView */ = {
 			isa = PBXGroup;
 			children = (
+				CD288A9B230A450600C2C30E /* CHTCollectionViewWaterfallLayout.h */,
+				CD288A9C230A450600C2C30E /* CHTCollectionViewWaterfallLayout.m */,
 				017FB3F022FBAE8B003677B4 /* Cell */,
 				017FB43D22FBAE8C003677B4 /* JXPagerView */,
 				017FB43922FBAE8B003677B4 /* PagingViewController.h */,
@@ -3678,6 +3690,13 @@
 			remoteRef = CD67429721E43F5F00464549 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		CD8A6E7C2305832E008C9291 /* libLottie.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLottie.a;
+			remoteRef = CD8A6E7B2305832E008C9291 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -3784,8 +3803,6 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou-resources.sh",
 				"${PODS_ROOT}/IQKeyboardManager/IQKeyboardManager/Resources/IQKeyboardManager.bundle",
@@ -3799,8 +3816,6 @@
 				"${PODS_ROOT}/SensorsAnalyticsSDK/SensorsAnalyticsSDK/SensorsAnalyticsSDK.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/IQKeyboardManager.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MJRefresh.bundle",
@@ -3844,8 +3859,6 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou-frameworks.sh",
 				"${PODS_ROOT}/AlivcConan/AlivcConan.framework",
@@ -3853,8 +3866,6 @@
 				"${PODS_ROOT}/QuCore-ThirdParty/frameworks/alivcffmpeg.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlivcConan.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AliyunVideoSDKPro.framework",
@@ -3923,7 +3934,7 @@
 				50043A7E21C772AF00270DFA /* MRShopCartCellManager.m in Sources */,
 				C4F2E43A22BE303100FF6213 /* SGRecordSuccessPreview.m in Sources */,
 				5068363221379B78001AB175 /* JRDeviceInfo.m in Sources */,
-				C48636B622C343950096C8EC /* AA.m in Sources */,
+				C48636B622C343950096C8EC /* SGImageDecode.m in Sources */,
 				C4F2E45622BE303100FF6213 /* IJSVideoManagerController.m in Sources */,
 				C4F2E45122BE303100FF6213 /* NSError+IJSError.m in Sources */,
 				C4F2E46D22BE303100FF6213 /* IJSAlbumModel.m in Sources */,
@@ -4023,6 +4034,7 @@
 				C4F2E46622BE303100FF6213 /* IJSVideoRulerView.m in Sources */,
 				C48634EF22C10C770096C8EC /* MRCacheManager.m in Sources */,
 				017FB44A22FBAE8C003677B4 /* PagingViewController.m in Sources */,
+				CD288A9D230A450600C2C30E /* CHTCollectionViewWaterfallLayout.m in Sources */,
 				017FB44D22FBAE8C003677B4 /* TestListBaseView.m in Sources */,
 				C4F2E46C22BE303100FF6213 /* IJSImageManager.m in Sources */,
 				017FB44E22FBAE8C003677B4 /* JXPagerListContainerView.m in Sources */,

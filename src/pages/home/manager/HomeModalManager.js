@@ -213,7 +213,7 @@ class HomeModalManager {
     @action
     getVersion = () => {
         return MineApi.getVersion({ version: DeviceInfo.getVersion() }).then((resp) => {
-            this.versionData = resp.data || {};
+            // this.versionData = resp.data || {};
             this.actionFinish();
         }).catch(() => {
             this.actionFinish();

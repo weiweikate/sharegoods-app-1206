@@ -43,7 +43,7 @@ export default class HomeLimitGoView extends Component {
     }
 
     _renderTab(name, page, isTabActive, onPressHandler, onLayoutHandler) {
-        const textColor = isTabActive ? '#FC533B' : '#333';
+        const textColor = isTabActive ? '#FC533B' : '#666';
         const selectedValue = (value) => value.id === name;
         const { spikeList } = limitGoModule;
         const selectedModels = spikeList.filter(selectedValue);
@@ -170,7 +170,7 @@ export default class HomeLimitGoView extends Component {
                             this.openModal();
                         }}>
                             <Image source={res.limitGoHeader}
-                                   style={{ height: px2dp(60), width: ScreenUtils.width, marginTop: px2dp(-5) }}/>
+                                   style={{ height: px2dp(60), width: ScreenUtils.width, marginTop: px2dp(-11) }}/>
                         </TouchableOpacity> : null
                 }
 
@@ -310,7 +310,7 @@ const styles = StyleSheet.create({
         borderRadius: px2dp(10)
     },
     normalTitle: {
-        color: '#333',
+        color: '#666',
         fontSize: px2dp(12)
     },
     active: {

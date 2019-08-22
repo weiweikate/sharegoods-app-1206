@@ -9,7 +9,7 @@ import {
     View,
     TouchableOpacity,
     Image,
-    requireNativeComponent
+    requireNativeComponent, InteractionManager
 } from 'react-native';
 import BasePage from '../../BasePage';
 import ShowApi from './ShowApi';
@@ -60,14 +60,16 @@ export default class ShowVideoPage extends BasePage {
         return (
             <View style={styles.navTitle}>
                 <TouchableOpacity style={styles.backView} onPress={() => routePop()}>
-                    <Image source={res.button.icon_header_back}/>
+                    <Image source={res.button.icon_header_back} style={{ width: 30, height: 30 }}/>
                 </TouchableOpacity>
             </View>
         );
     }
 
     componentDidMount() {
-        this.getData();
+        InteractionManager.runAfterInteractions(()=>{
+            this.getData();
+        });
     }
 
     getData=()=>{

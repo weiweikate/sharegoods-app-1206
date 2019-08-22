@@ -34,7 +34,7 @@ export default class DetailBottomView extends Component {
         let { pData } = this.props;
         let {
             productStatus, skuList, showSellOut, productIsPromotionPrice, selfReturning,
-            orderOnProduct, isGroupIn, groupSubProductCanSell, upTime
+            orderOnProduct, isGroupIn, groupSubProductCanSell, upTime, isHuaFei
         } = pData || {};
         //总库存
         let stock = 0;
@@ -46,7 +46,7 @@ export default class DetailBottomView extends Component {
         //不能购买(不是上架状态||不能单独购买||(isGroupIn&&不能买))
         const cantBuy = productStatus !== product_status.on || orderOnProduct === 0 || (isGroupIn && !groupSubProductCanSell);
         //不能加购(不能单独购买)
-        const cantJoin = orderOnProduct === 0;
+        const cantJoin = orderOnProduct === 0 || isHuaFei;
         return (
             <View style={{ backgroundColor: 'white' }}>
                 {
