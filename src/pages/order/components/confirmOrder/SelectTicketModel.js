@@ -31,6 +31,7 @@ import res1 from '../../res'
 import RefreshFlatList from '../../../../comm/components/RefreshFlatList';
 import CouponNormalItem from '../../../mine/components/CouponNormalItem';
 import API from '../../../../api';
+import bridge from '../../../../utils/bridge';
 const emptyIcon = res1.empty_icon;
 let {autoSizeWidth, safeBottom} = ScreenUtils
 
@@ -77,11 +78,33 @@ export default class SelectTicketModel extends React.Component {
             remarks: item.remarks,
             type: item.type,
             levelimit: item.levels ? (item.levels.indexOf(user.levelId) !== -1 ? false : true) : false,
-            count: item.count
+            count: item.count,
+            canInvoke: item.canInvoke,
         }
         return (
             <View style={{alignItems: 'center'}}>
-                <CouponNormalItem item={item} index={index} ticketClickItem={()=> {this.clickItem(item)}}/>
+                <CouponNormalItem item={item} index={index} ticketClickItem={()=> {
+                    if (item.canInvoke === true){
+                        return;//未激活的优惠券
+                    }
+                    this.clickItem(item)
+                }}
+                                  onActivity = {() => {
+                                      bridge.showLoading('');
+                                      API.invokeCoupons({userCouponCode: item.code}).then((data) => {
+                                          if (data.data){
+                                              this.clickItem(data.data)
+                                              bridge.$toast('激活成功')
+                                          }else {
+                                              bridge.$toast('激活失败')
+                                          }
+                                          bridge.hiddenLoading();
+                                      }).catch((err) => {
+                                          bridge.$toast(err.msg)
+                                          bridge.hiddenLoading();
+                                      })
+                                  }}
+                />
             </View>)
     }
 
@@ -156,6 +179,7 @@ export default class SelectTicketModel extends React.Component {
                                          style={{backgroundColor: DesignRule.bgColor}}
                                          paramsFunc={()=>{return this.parmas}}
                                          renderItem={this.renderItem}
+                                         renderHeader={()=> <View style={{height: 20}}/>}
                                          renderEmpty={()=> {
                                              return(
                                                  <View style={{height: autoSizeWidth(480 - 95), alignItems: 'center', justifyContent: 'center'}}>

@@ -367,11 +367,13 @@ export class BaseLoadMoreComponent extends React.Component {
                 return this.renderLoadingMore();
             case 'noMoreData':
                 return this.renderLoadCompleted();
+            default:
+                return <View />
         }
     }
 }
 
-class DefaultLoadMoreComponent extends BaseLoadMoreComponent {
+export class DefaultLoadMoreComponent extends BaseLoadMoreComponent {
 
     renderIdleMore() {
         return (

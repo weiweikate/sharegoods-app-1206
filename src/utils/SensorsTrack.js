@@ -47,6 +47,23 @@ const homeEvent = {
     MissionBtnClick: 'MissionBtnClick',//任务按钮点击
     BoxBtnClick: 'BoxBtnClick',//宝箱按钮点击
     MissionFrameBtnClick: 'MissionFrameBtnClick',//任务按钮点击
+    ViewHomePageChannel: 'ViewHomePageChannel',
+    ViewHomePage: 'ViewHomePage',
+//     CategoryBtnClick  类目页按钮点击  点击    $预置属性
+//     firstCategoryId  一级类目id  字符串  8.15
+//     firstCategoryName  一级类目名称  字符串  8.15
+//     contentType  内容类型  字典  8.15  0：未知 1：商品 2：链接 3：专题 4：秀场 5：礼包  6：限时购 7：抽奖 8：直降商品 9：优惠券 10：文本 11：tab导航 12：类目
+// contentKey  内容key  字符串  8.15  根据内容类型取值，如为商品则值为商品Code；如为二级类目则为二级类目id
+// contentValue  内容值  字符串  8.15  根据内容key取值，如为商品则值为商品名称，如为二级类目，则为二级类目名称
+    CategoryBtnClick: 'CategoryBtnClick',
+//     SpecialTopicBtnClick  专题页按钮点击  点击    $预置属性  　  8.15
+//     specialTopicId  专题id  字符串  8.15
+//     specialTopicArea  专题页的区域  字典  8.15  0：未知 1：图片 2：导航 3：商详列表 4：优惠券 5：限时购 6：文本
+// contentType  内容类型  字典  8.15  0：未知 1：商品 2：链接 3：专题 4：秀场 5：礼包  6：限时购 7：抽奖 8：直降商品 9：优惠券 10：文本 11：tab导航
+// contentKey  内容key  字符串  8.15  根据内容类型取值，如为商品则值为商品Code；如为链接则值为链接等
+// contentValue  内容值  字符串  8.15  根据内容key取值，如为商品则值为商品名称，特别说明：如果专题页位置 = 导航，则这里为导航名称
+    SpecialTopicBtnClick: 'SpecialTopicBtnClick',
+    HomeRecommendClick: 'HomeRecommendClick'
 }
 /** 订单相关的埋点事件名称*/
 const inviteEvent = {

@@ -13,18 +13,28 @@ import { MRText as Text } from '../../../components/ui/index';
 import { homeModule } from '../model/Modules';
 import RouterMap, { routeNavigate, routePush } from '../../../navigation/RouterMap';
 import user from '../../../model/user';
-import { TrackApi } from '../../../utils/SensorsTrack';
+import { track, trackEvent } from '../../../utils/SensorsTrack';
+import { homePoint } from '../HomeTypes';
 
 
-const { px2dp } = ScreenUtils;
+const { px2dp, width } = ScreenUtils;
 
 class Item extends Component {
 
+    constructor(props) {
+        super(props);
+        this.itemSpace = (width - px2dp(16) * 2 - px2dp(56) * 5) / 8;
+    }
+
     render() {
-        const { onPress, data } = this.props;
+        const { onPress, data, index } = this.props;
         const { image, title } = this.props.data;
         let source = { uri: image };
-        return <TouchableOpacity style={styles.item} onPress={() => onPress(data)}>
+        return <TouchableOpacity style={[styles.item, {
+            marginLeft: index % 5 === 0 ? 0 : this.itemSpace,
+            marginRight: index % 5 === 4 ? 0 : this.itemSpace,
+            marginTop: index > 4 ? px2dp(-6) : 0
+        }]} onPress={() => onPress(data)}>
             <Image style={styles.icon} showPlaceholder={false} source={source}/>
             <Text style={styles.name} allowFontScaling={false} numberOfLines={1}>{title}</Text>
         </TouchableOpacity>;
@@ -42,7 +52,6 @@ class Item extends Component {
 @observer
 export default class HomeChannelView extends Component {
 
-
     _filterNav = (router, params) => {
         if (router === RouterMap.SignInPage && !user.isLogin) {
             routeNavigate(RouterMap.LoginPage);
@@ -53,15 +62,11 @@ export default class HomeChannelView extends Component {
 
     _onItemPress = (data, index) => {
         // const { navigate } = this.props;
-        TrackApi.homeIconClick({
-            iconTitle: data.title,
-            iconIndex: index,
-            iconContent: data.linkTypeCode
-        });
         let router = homeModule.homeNavigate(data.linkType, data.linkTypeCode) || '';
         let params = homeModule.paramsNavigate(data);
         params.fromHome = true;
         this._filterNav(router, { ...params });
+        track(trackEvent.bannerClick, homeModule.bannerPoint(data, homePoint.homeIcon, index));
     };
 
     renderItems = () => {
@@ -70,9 +75,9 @@ export default class HomeChannelView extends Component {
             return null;
         }
         let itemViews = [];
-        // 5个
-        channelList.slice(0, 5).map((value, index) => {
-            itemViews.push(<Item key={index} data={value} onPress={(data) => {
+        // 最多两排
+        channelList.map((value, index) => {
+            itemViews.push(<Item key={index} index={index} data={value} onPress={(data) => {
                 this._onItemPress(data, index);
             }}/>);
         });
