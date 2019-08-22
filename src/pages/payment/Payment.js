@@ -144,7 +144,7 @@ export class Payment {
             /*不能通过接口查询支付签名的,需要外面传进来 拼店支付*/
             if (bizType === 0) {
                 Toast.showLoading();
-                paySignResult = yield PaymentApi.queryPaySign({ platformOrderNo: pOrderNo });
+                paySignResult = yield PaymentApi.queryPaySign({ platformOrderNo: pOrderNo || this.platformOrderNo });
                 paySignResult = paySignResult.data;
                 Toast.hiddenLoading();
             }

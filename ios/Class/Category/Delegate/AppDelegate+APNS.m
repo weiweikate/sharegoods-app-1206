@@ -319,9 +319,12 @@
 -(void)showChatViewController:(NSDictionary *)userInfo{
   NSString *openURL = nil;
   NSString * linkUrl = userInfo[@"linkUrl"];
+  NSString * linkNativeUrl = userInfo[@"linkNativeUrl"];
   if (linkUrl &&[linkUrl isKindOfClass:[NSString class]] &&linkUrl.length > 0) {
     NSString*hString = [linkUrl stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet characterSetWithCharactersInString:@"`#%^{}\"[]|\\<> "]];
     openURL = [NSString stringWithFormat:@"meeruu://path/HtmlPage/%@",hString];
+  }else if(linkNativeUrl &&[linkNativeUrl isKindOfClass:[NSString class]] &&linkNativeUrl.length > 0){
+    openURL = [NSString stringWithFormat:@"meeruu://path/%@",linkNativeUrl];
   }
   if (!openURL) {
     return;
